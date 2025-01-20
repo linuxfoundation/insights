@@ -16,6 +16,9 @@
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.10.5",
-    "@vue/eslint-config-airbnb": "^8.0.0"
+    "@vue/eslint-config-airbnb": "^8.0.0",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.5.1",
+    "tailwindcss": "^3.4.17"
   }
 }
