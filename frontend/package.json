@@ -1,0 +1,21 @@
+{
+  "name": "lfx-insights",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "nuxt": "^3.15.2",
+    "vue": "latest",
+    "vue-router": "latest"
+  },
+  "devDependencies": {
+    "@rushstack/eslint-patch": "^1.10.5",
+    "@vue/eslint-config-airbnb": "^8.0.0"
+  }
+}
