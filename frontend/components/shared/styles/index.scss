@@ -1,0 +1,27 @@
+@use './_semantic-colors.scss' as *;
+
+:root {
+  --primary: $primary;
+  --background-primary: $background-primary;
+  --background-secondary: $background-secondary;
+  --text-primary: $text-primary;
+  --text-secondary: $text-secondary;
+  --link-primary: $link-primary;
+  --link-secondary: $link-secondary;
+  --alert-info-background: $alert-info-background;
+  --alert-info-text: $alert-info-text;
+  --alert-info-border: $alert-info-border;
+  --alert-info-icon: $alert-info-icon;
+  --alert-warning-background: $alert-warning-background;
+  --alert-warning-text: $alert-warning-text;
+  --alert-warning-border: $alert-warning-border;
+  --alert-warning-icon: $alert-warning-icon;
+  --alert-success-background: $alert-success-background;
+  --alert-success-text: $alert-success-text;
+  --alert-success-border: $alert-success-border;
+  --alert-success-icon: $alert-success-icon;
+  --alert-error-background: $alert-error-background;
+  --alert-error-text: $alert-error-text;
+  --alert-error-border: $alert-error-border;
+  --alert-error-icon: $alert-error-icon;
+}

@@ -1,0 +1,31 @@
+@use './_primitive-colors.scss' as *;
+$primary: $blue-500;
+
+$background-primary: $white;
+$background-secondary: $gray-50;
+
+$text-primary: $gray-900;
+$text-secondary: $gray-500;
+
+$link-primary: $primary;
+$link-secondary: $gray-700;
+
+$alert-info-background: $blue-50;
+$alert-info-text: $blue-900;
+$alert-info-border: $blue-300;
+$alert-info-icon: $blue-500;
+
+$alert-warning-background: $amber-50;
+$alert-warning-text: $amber-900;
+$alert-warning-border: $amber-300;
+$alert-warning-icon: $amber-500;
+
+$alert-success-background: $emerald-50;
+$alert-success-text: $emerald-900;
+$alert-success-border: $emerald-300;
+$alert-success-icon: $emerald-500;
+
+$alert-error-background: $red-50;
+$alert-error-text: $red-900;
+$alert-error-border: $red-300;
+$alert-error-icon: $red-500;
