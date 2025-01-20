@@ -5,7 +5,7 @@ export default defineNuxtConfig({
   modules: ['@nuxtjs/tailwindcss'],
   tailwindcss: {
     exposeConfig: true,
-    viewer: true,
+    viewer: { endpoint: '/_tailwind', exportViewer: true },
   },
-  css: ['~/components/shared/styles/index.scss'],
+  css: ['~/assets/styles/main.scss'],
 });
