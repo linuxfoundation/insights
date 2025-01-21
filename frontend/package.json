@@ -18,6 +18,7 @@
     "@nuxtjs/tailwindcss": "^6.13.1",
     "@rushstack/eslint-patch": "^1.10.5",
     "@vue/eslint-config-airbnb": "^8.0.0",
+    "sass": "^1.83.4",
     "sass-embedded": "^1.83.4"
   }
 }

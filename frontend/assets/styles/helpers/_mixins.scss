@@ -1,0 +1,8 @@
+/* ---------------------------------- *\
+            Mixins & helpers
+\* ---------------------------------- */
+
+/* responsive font-size */
+@function toRem($size, $base: 16) {
+  @return #{$size / $base}rem;
+}

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="border border-solid text-primary">Sample Page</h1>
+    <h1 class="border text-primary-500 bg-white p-32">Sample Page</h1>
   </div>
 </template>
 
