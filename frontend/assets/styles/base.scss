@@ -20,3 +20,7 @@ body {
   background: var(--lfx-color-background);
   -webkit-overflow-scrolling: touch;
 }
+
+*{
+  font-family: var(--lfx-font-primary), sans-serif;
+}
