@@ -6,8 +6,8 @@
 </template>
 
 <script setup lang="ts">
-const test = 'test';
+const test = "test";
 const sampleFunction = () => {
-  return test;
+    return test;
 };
 </script>
