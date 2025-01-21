@@ -6,9 +6,8 @@
 
 <script lang="ts">
 export default {
-    name: "Card"
+    name: "LfxCard"
 };
 </script>
 
-<style lang="scss" scoped src="./card.scss"></style>
 
