@@ -72,6 +72,10 @@ export default {
         50: 'var(--lfx-color-warning-50)',
       },
     },
+    fontFamily: {
+      primary: ['var(--lfx-font-primary)', 'sans-serif'],
+      secondary: ['var(--lfx-font-secondary)', 'sans-serif'],
+    },
 
     configViewer: {
       themeReplacements,
