@@ -1,13 +1,13 @@
 <template>
-  <div>
-    <h1 class="border text-primary-500 bg-white p-32">Sample Page</h1>
-    <h1>{{ sampleFunction() }}</h1>
+  <div class="container mx-auto">
+    <h1 class="text-primary-500 mb-20">Sample Page</h1>
+    <Card class="p-5">
+      Sample Card
+    </Card>
   </div>
 </template>
 
 <script setup lang="ts">
-const test = "test";
-const sampleFunction = () => {
-    return test;
-};
+import Card from "@/components/uikit/card/Card.vue";
+
 </script>
