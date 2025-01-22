@@ -1,0 +1,42 @@
+/* ---------------------------------- *\
+            Font
+\* ---------------------------------- */
+
+:root {
+  /* Text */
+  // extra tiny
+  --lfx-text-xtiny-font-size:  #{toRem(10)};
+  --lfx-text-xtiny-line-height:  #{toRem(12)};
+  // Tiny
+  --lfx-text-tiny-font-size:  #{toRem(12)};
+  --lfx-text-tiny-line-height:  #{toRem(16)};
+  // Small
+  --lfx-text-small-font-size:  #{toRem(13)};
+  --lfx-text-small-line-height:  #{toRem(16)};
+  // Medium
+  --lfx-text-medium-font-size:  #{toRem(14)};
+  --lfx-text-medium-line-height:  #{toRem(20)};
+  // Large
+  --lfx-text-large-font-size:  #{toRem(16)};
+  --lfx-text-large-line-height:  #{toRem(24)};
+
+  /* Heading */
+  // H1
+  --lfx-heading-1-font-size:  #{toRem(40)};
+  --lfx-heading-1-line-height:  #{toRem(50)};
+  // H2
+  --lfx-heading-2-font-size:  #{toRem(32)};
+  --lfx-heading-2-line-height:  #{toRem(40)};
+  // H3
+  --lfx-heading-3-font-size:  #{toRem(28)};
+  --lfx-heading-3-line-height:  #{toRem(35)};
+  // H4
+  --lfx-heading-4-font-size:  #{toRem(24)};
+  --lfx-heading-4-line-height:  #{toRem(30)};
+  // H5
+  --lfx-heading-5-font-size:  #{toRem(20)};
+  --lfx-heading-5-line-height:  #{toRem(25)};
+  // H6
+  --lfx-heading-6-font-size:  #{toRem(16)};
+  --lfx-heading-6-line-height:  #{toRem(20)};
+}

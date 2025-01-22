@@ -7,19 +7,28 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "dependencies": {
     "@pinia/nuxt": "0.9.0",
+    "@nuxt/eslint": "^0.7.5",
+    "eslint": "^9.18.0",
     "nuxt": "^3.15.2",
     "pinia": "^2.3.0",
     "vue": "latest",
     "vue-router": "latest"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3.2.0",
     "@nuxtjs/tailwindcss": "^6.13.1",
     "@rushstack/eslint-patch": "^1.10.5",
-    "@vue/eslint-config-airbnb": "^8.0.0",
-    "sass-embedded": "^1.83.4"
+    "@types/eslint__eslintrc": "^2.1.2",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-airbnb-typescript": "^18.0.0",
+    "sass": "^1.83.4",
+    "sass-embedded": "^1.83.4",
+    "typescript": "^5.7.3"
   }
 }
