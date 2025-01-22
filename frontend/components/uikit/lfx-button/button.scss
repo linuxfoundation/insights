@@ -1,0 +1,40 @@
+/* TODO: This a temporary styling until we have a proper design system */
+.p-button {
+  @apply bg-primary-500 border-0 text-white p-2 flex items-center gap-2 rounded;
+
+  &-secondary {
+    @apply bg-secondary-500;
+  }
+
+  &-success {
+    @apply bg-green-500;
+  }
+
+  &-info {
+    @apply bg-primary-500;
+  }
+
+  &-warn {
+    @apply bg-yellow-500;
+  }
+
+  &-help {
+    @apply bg-purple-500;
+  }
+
+  &-danger {
+    @apply bg-red-500;
+  }
+
+  &-contrast {
+    @apply bg-black;
+  }
+}
+
+.p-button:enabled:hover {
+  @apply bg-primary-500;
+}
+
+.p-button:enabled:active {
+  @apply bg-primary-500;
+}
