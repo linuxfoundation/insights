@@ -38,6 +38,6 @@
 
 <script setup lang="ts">
 import LfxCard from "@/components/uikit/card/Card.vue";
-import LfxButton from '~/components/uikit/lfx-button/LfxButton.vue';
+import LfxButton from "~/components/uikit/button/button.vue";
 
 </script>
