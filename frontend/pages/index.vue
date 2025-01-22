@@ -18,6 +18,8 @@
       <lfx-button type="info">
         Info
       </lfx-button>
+    </div>
+    <div class="flex flex-row gap-2">
       <lfx-button type="warn">
         Warn
       </lfx-button>
