@@ -80,7 +80,14 @@ export default {
     configViewer: {
       themeReplacements,
     },
-    extend: {},
+    extend: {
+      boxShadow: {
+        DEFAULT: 'var(--shadow-default)',
+      },
+      borderColor: {
+        DEFAULT: 'var(--lfx-color-gray-200)',
+      },
+    },
   },
   plugins: [],
 };
