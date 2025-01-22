@@ -13,14 +13,17 @@
   },
   "dependencies": {
     "@nuxt/eslint": "^0.7.5",
+    "@primevue/themes": "^4.2.5",
     "eslint": "^9.18.0",
     "nuxt": "^3.15.2",
+    "primevue": "^4.2.5",
     "vue": "latest",
     "vue-router": "latest"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
     "@nuxtjs/tailwindcss": "^6.13.1",
+    "@primevue/nuxt-module": "^4.2.5",
     "@rushstack/eslint-patch": "^1.10.5",
     "@types/eslint__eslintrc": "^2.1.2",
     "eslint-config-airbnb-base": "^15.0.0",
