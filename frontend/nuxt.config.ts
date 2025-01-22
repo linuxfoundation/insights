@@ -1,5 +1,4 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-// import Aura from '@primevue/themes/aura';
 
 export default defineNuxtConfig({
   app: {
@@ -21,7 +20,7 @@ export default defineNuxtConfig({
   css: ['~/assets/styles/main.scss'],
   primevue: {
     options: {
-      theme: 'none',
+      theme: 'none', // This setting means we have to manually add styles to all the components
     },
   },
 });
