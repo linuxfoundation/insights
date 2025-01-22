@@ -1,0 +1,26 @@
+html {
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: transparent;
+  height: 100%;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  position: relative;
+}
+
+body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  color: var(--lfx-color-text);
+  background: var(--lfx-color-background);
+  -webkit-overflow-scrolling: touch;
+}
+
+*{
+  font-family: var(--lfx-font-primary), sans-serif;
+}
