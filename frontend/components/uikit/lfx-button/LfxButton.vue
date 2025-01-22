@@ -1,6 +1,7 @@
 <!-- NOTE: This filename and export name must be LfxButton.vue otherwise it causes a circular error with PrimeVue -->
 <template>
   <Button :severity="props.type">
+    <!-- TODO: Add loading icon -->
     <slot />
   </Button>
 </template>
@@ -10,6 +11,7 @@ import { type ButtonType } from './types/ButtonType';
 
 const props = withDefaults(defineProps<{
   type?: ButtonType,
+  loading?: boolean,
 }>(), {
   type: 'primary',
 });
