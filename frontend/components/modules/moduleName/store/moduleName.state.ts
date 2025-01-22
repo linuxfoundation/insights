@@ -1,7 +1,7 @@
 export interface ModuleNameState {
-  token: any,
+  token: string,
 }
 
 export default () => ({
-  token: null,
+    token: null
 } as ModuleNameState);
