@@ -1,105 +1,86 @@
-const {getThemeReplacementsValues} = require("./.tailwind/colorConverter");
+const { getThemeReplacementsValues } = require('./.tailwind/colorConverter.js');
 
 const themeReplacements = getThemeReplacementsValues();
 
 /** @type {import('tailwindcss').Config} */
 export default {
-    content: [],
-    theme: {
-        colors: {
-            transparent: "var(--lfx-color-transparent)",
-            current: "currentColor",
-            black: "var(--lfx-color-black)",
-            white: "var(--lfx-color-white)",
-            background: "var(--lfx-color-background)",
-            primary: {
-                900: "var(--lfx-color-primary-900)",
-                800: "var(--lfx-color-primary-800)",
-                700: "var(--lfx-color-primary-700)",
-                600: "var(--lfx-color-primary-600)",
-                500: "var(--lfx-color-primary-500)",
-                400: "var(--lfx-color-primary-400)",
-                300: "var(--lfx-color-primary-300)",
-                200: "var(--lfx-color-primary-200)",
-                100: "var(--lfx-color-primary-100)",
-                50: "var(--lfx-color-primary-50)",
-                25: "var(--lfx-color-primary-25)"
-            },
-            secondary: {
-                500: "var(--lfx-color-secondary-500)",
-                400: "var(--lfx-color-secondary-400)",
-                300: "var(--lfx-color-secondary-300)",
-                200: "var(--lfx-color-secondary-200)",
-                100: "var(--lfx-color-secondary-100)",
-                50: "var(--lfx-color-secondary-50)"
-            },
-            gray: {
-                900: "var(--lfx-color-gray-900)",
-                800: "var(--lfx-color-gray-800)",
-                700: "var(--lfx-color-gray-700)",
-                600: "var(--lfx-color-gray-600)",
-                500: "var(--lfx-color-gray-500)",
-                400: "var(--lfx-color-gray-400)",
-                300: "var(--lfx-color-gray-300)",
-                200: "var(--lfx-color-gray-200)",
-                100: "var(--lfx-color-gray-100)",
-                50: "var(--lfx-color-gray-50)"
-            },
-            red: {
-                900: "var(--lfx-color-red-900)",
-                800: "var(--lfx-color-red-800)",
-                700: "var(--lfx-color-red-700)",
-                600: "var(--lfx-color-red-600)",
-                500: "var(--lfx-color-red-500)",
-                400: "var(--lfx-color-red-400)",
-                300: "var(--lfx-color-red-300)",
-                200: "var(--lfx-color-red-200)",
-                100: "var(--lfx-color-red-100)",
-                50: "var(--lfx-color-red-50)"
-            },
-            yellow: {
-                900: "var(--lfx-color-yellow-900)",
-                800: "var(--lfx-color-yellow-800)",
-                700: "var(--lfx-color-yellow-700)",
-                600: "var(--lfx-color-yellow-600)",
-                500: "var(--lfx-color-yellow-500)",
-                400: "var(--lfx-color-yellow-400)",
-                300: "var(--lfx-color-yellow-300)",
-                200: "var(--lfx-color-yellow-200)",
-                100: "var(--lfx-color-yellow-100)",
-                50: "var(--lfx-color-yellow-50)"
-            },
-            green: {
-                1000: "var(--lfx-color-green-1000)",
-                900: "var(--lfx-color-green-900)",
-                800: "var(--lfx-color-green-800)",
-                700: "var(--lfx-color-green-700)",
-                600: "var(--lfx-color-green-600)",
-                500: "var(--lfx-color-green-500)",
-                400: "var(--lfx-color-green-400)",
-                300: "var(--lfx-color-green-300)",
-                200: "var(--lfx-color-green-200)",
-                100: "var(--lfx-color-green-100)",
-                50: "var(--lfx-color-green-50)"
-            },
-            purple: {
-                900: "var(--lfx-color-purple-900)",
-                800: "var(--lfx-color-purple-800)",
-                700: "var(--lfx-color-purple-700)",
-                600: "var(--lfx-color-purple-600)",
-                500: "var(--lfx-color-purple-500)",
-                400: "var(--lfx-color-purple-400)",
-                300: "var(--lfx-color-purple-300)",
-                200: "var(--lfx-color-purple-200)",
-                100: "var(--lfx-color-purple-100)",
-                50: "var(--lfx-color-purple-50)"
-            }
-        },
-
-        configViewer: {
-            themeReplacements
-        },
-        extend: {}
+  content: [],
+  theme: {
+    colors: {
+      transparent: 'var(--lfx-color-transparent)',
+      current: 'currentColor',
+      black: 'var(--lfx-color-black)',
+      white: 'var(--lfx-color-white)',
+      brand: {
+        900: 'var(--lfx-color-brand-900)',
+        800: 'var(--lfx-color-brand-800)',
+        700: 'var(--lfx-color-brand-700)',
+        600: 'var(--lfx-color-brand-600)',
+        500: 'var(--lfx-color-brand-500)',
+        400: 'var(--lfx-color-brand-400)',
+        300: 'var(--lfx-color-brand-300)',
+        200: 'var(--lfx-color-brand-200)',
+        100: 'var(--lfx-color-brand-100)',
+        50: 'var(--lfx-color-brand-50)',
+      },
+      neutral: {
+        900: 'var(--lfx-color-neutral-900)',
+        800: 'var(--lfx-color-neutral-800)',
+        700: 'var(--lfx-color-neutral-700)',
+        600: 'var(--lfx-color-neutral-600)',
+        500: 'var(--lfx-color-neutral-500)',
+        400: 'var(--lfx-color-neutral-400)',
+        300: 'var(--lfx-color-neutral-300)',
+        200: 'var(--lfx-color-neutral-200)',
+        100: 'var(--lfx-color-neutral-100)',
+        50: 'var(--lfx-color-neutral-50)',
+      },
+      positive: {
+        900: 'var(--lfx-color-positive-900)',
+        800: 'var(--lfx-color-positive-800)',
+        700: 'var(--lfx-color-positive-700)',
+        600: 'var(--lfx-color-positive-600)',
+        500: 'var(--lfx-color-positive-500)',
+        400: 'var(--lfx-color-positive-400)',
+        300: 'var(--lfx-color-positive-300)',
+        200: 'var(--lfx-color-positive-200)',
+        100: 'var(--lfx-color-positive-100)',
+        50: 'var(--lfx-color-positive-50)',
+      },
+      negative: {
+        900: 'var(--lfx-color-negative-900)',
+        800: 'var(--lfx-color-negative-800)',
+        700: 'var(--lfx-color-negative-700)',
+        600: 'var(--lfx-color-negative-600)',
+        500: 'var(--lfx-color-negative-500)',
+        400: 'var(--lfx-color-negative-400)',
+        300: 'var(--lfx-color-negative-300)',
+        200: 'var(--lfx-color-negative-200)',
+        100: 'var(--lfx-color-negative-100)',
+        50: 'var(--lfx-color-negative-50)',
+      },
+      warning: {
+        900: 'var(--lfx-color-warning-900)',
+        800: 'var(--lfx-color-warning-800)',
+        700: 'var(--lfx-color-warning-700)',
+        600: 'var(--lfx-color-warning-600)',
+        500: 'var(--lfx-color-warning-500)',
+        400: 'var(--lfx-color-warning-400)',
+        300: 'var(--lfx-color-warning-300)',
+        200: 'var(--lfx-color-warning-200)',
+        100: 'var(--lfx-color-warning-100)',
+        50: 'var(--lfx-color-warning-50)',
+      },
     },
-    plugins: []
+    fontFamily: {
+      primary: ['var(--lfx-font-primary)', 'sans-serif'],
+      secondary: ['var(--lfx-font-secondary)', 'sans-serif'],
+    },
+
+    configViewer: {
+      themeReplacements,
+    },
+    extend: {},
+  },
+  plugins: [],
 };
