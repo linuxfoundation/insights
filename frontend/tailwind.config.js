@@ -80,9 +80,7 @@ export default {
     configViewer: {
       themeReplacements,
     },
-    extend: {
-
-    },
+    extend: {},
   },
   plugins: [],
 };
