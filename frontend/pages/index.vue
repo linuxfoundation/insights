@@ -35,8 +35,8 @@
     </div>
 
     <div class="flex flex-row gap-2">
-      <lfx-icon name="fa-solid fa-circle-info" />
-      <lfx-icon name="fa-solid fa-circle-info" :size="32" />
+      <lfx-icon name="circle-info" type="solid" />
+      <lfx-icon name="circle-info" type="light" :size="32" />
     </div>
   </div>
 </template>

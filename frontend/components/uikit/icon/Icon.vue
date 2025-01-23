@@ -1,31 +1,26 @@
 <template>
-  <i :class="`${props.name} fa-${props.type}`" :style="sizeStyle" class="c-icon" />
+  <i :class="`fa-${props.name} fa-${props.type}`" :style="sizeStyle" class="c-icon" />
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue';
+import {computed} from "vue";
 
 const props = withDefaults(defineProps<{
   name: string,
-  type?: string,
+  type?: "light" | "regular" | "solid" | "duotone" | "brands",
   size?: number,
 }>(), {
-  type: 'light',
-  size: undefined,
+    type: "light",
+    size: 16
 });
 
-const sizeStyle = computed(() => {
-  if (!props.size) {
-    return undefined;
-  }
-  return {
-    '--lf-icon-size': `${(props.size / 16)}rem`,
-  };
-});
+const sizeStyle = computed(() => ({
+    "--lf-icon-size": `${(props.size / 16)}rem`
+}));
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxIcon',
+    name: "LfxIcon"
 };
 </script>
