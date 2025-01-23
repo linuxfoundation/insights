@@ -45,4 +45,5 @@
 import LfxCard from "@/components/uikit/card/Card.vue";
 import LfxButton from "@/components/uikit/button/button.vue";
 import LfxIcon from "@/components/uikit/icon/Icon.vue";
+// test husky
 </script>

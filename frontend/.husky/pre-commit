@@ -1,1 +1,2 @@
-pnpm test
+cd frontend && pnpm lint:fix
+echo "Linting complete!!"
