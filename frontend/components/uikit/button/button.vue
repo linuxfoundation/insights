@@ -1,7 +1,7 @@
 <!-- NOTE: This filename and export name must be LfxButton.vue otherwise it causes a circular error with PrimeVue -->
 <template>
   <pv-button :severity="props.type">
-    <!-- TODO: Add loading icon -->
+    <i v-if="props.loading" class="fa-sharp fa-light fa-spinner-third animate-spin" />
     <slot />
   </pv-button>
 </template>
