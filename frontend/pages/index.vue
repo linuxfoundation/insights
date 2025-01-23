@@ -33,11 +33,16 @@
         Contrast
       </lfx-button>
     </div>
+
+    <div class="flex flex-row gap-2">
+      <lfx-icon name="circle-info" type="solid" />
+      <lfx-icon name="circle-info" type="light" :size="32" />
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import LfxCard from "@/components/uikit/card/Card.vue";
-import LfxButton from "~/components/uikit/button/button.vue";
-
+import LfxButton from "@/components/uikit/button/button.vue";
+import LfxIcon from "@/components/uikit/icon/Icon.vue";
 </script>
