@@ -7,7 +7,7 @@ const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 
 const compat = new FlatCompat({
-  baseDirectory: dirname,
+  baseDirectory: dirname
 });
 const getRules = (extendedRules, excludeKeys = null) => {
   const rules = extendedRules
@@ -25,6 +25,8 @@ const getRules = (extendedRules, excludeKeys = null) => {
     });
   }
 
+  delete rules['max-len'];
+
   return rules;
 };
 
@@ -33,14 +35,16 @@ export default withNuxt({
     'import/resolver': {
       alias: {
         extensions: ['.js', '.jsx', '.ts', '.tsx'],
-        map: [['@', './components']],
+        map: [['@', './components']]
       },
-      typescript: {},
-    },
+      typescript: {}
+    }
     // extends: [...compat.extends('airbnb-base'), ...compat.extends('airbnb-typescript/base')],
   },
   ignores: ['*.config.*js', '.tailwind/*'],
   rules: {
+    ...getRules(compat.extends('airbnb-base')),
+    ...getRules(compat.extends('airbnb-typescript/base'), '@typescript-eslint/'),
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'vue/no-unused-components': 'error',
@@ -64,10 +68,18 @@ export default withNuxt({
     'vue/max-len': [
       'error',
       {
-        code: 150,
+        code: 120,
         ignoreComments: true,
-        ignoreUrls: true,
-      },
+        ignoreUrls: true
+      }
+    ],
+    'max-len': [
+      'error',
+      {
+        code: 120,
+        ignoreComments: true,
+        ignoreUrls: true
+      }
     ],
     'import/extensions': [
       'error',
@@ -77,9 +89,8 @@ export default withNuxt({
         jsx: 'never',
         ts: 'never',
         tsx: 'never',
-      },
-    ],
-    ...getRules(compat.extends('airbnb-base')),
-    ...getRules(compat.extends('airbnb-typescript/base'), '@typescript-eslint/'),
-  },
+        '': 'never'
+      }
+    ]
+  }
 });
