@@ -23,6 +23,9 @@ importers:
       eslint:
         specifier: ^9.18.0
         version: 9.18.0(jiti@2.4.2)
+      luxon:
+        specifier: ^3.5.0
+        version: 3.5.0
       nuxt:
         specifier: ^3.15.2
         version: 3.15.2(@parcel/watcher@2.5.0)(@types/node@22.10.7)(db0@0.2.1)(eslint@9.18.0(jiti@2.4.2))(ioredis@5.4.2)(magicast@0.3.5)(optionator@0.9.4)(rollup@4.31.0)(sass-embedded@1.83.4)(sass@1.83.4)(terser@5.37.0)(typescript@5.7.3)(vite@6.0.7(@types/node@22.10.7)(jiti@2.4.2)(sass-embedded@1.83.4)(sass@1.83.4)(terser@5.37.0)(yaml@2.7.0))(yaml@2.7.0)
@@ -54,6 +57,9 @@ importers:
       '@types/eslint__eslintrc':
         specifier: ^2.1.2
         version: 2.1.2
+      '@types/luxon':
+        specifier: ^3.4.2
+        version: 3.4.2
       '@typescript-eslint/eslint-plugin':
         specifier: ^8.21.0
         version: 8.21.0(@typescript-eslint/parser@8.21.0(eslint@9.18.0(jiti@2.4.2))(typescript@5.7.3))(eslint@9.18.0(jiti@2.4.2))(typescript@5.7.3)
@@ -1143,6 +1149,9 @@ packages:
 
   '@types/json5@0.0.29':
     resolution: {integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==}
+
+  '@types/luxon@3.4.2':
+    resolution: {integrity: sha512-TifLZlFudklWlMBfhubvgqTXRzLDI5pCbGa4P8a3wPyUQSW+1xQ5eDsreP9DWHX3tjq1ke96uYG/nwundroWcA==}
 
   '@types/node@22.10.7':
     resolution: {integrity: sha512-V09KvXxFiutGp6B7XkpaDXlNadZxrzajcY50EuoLIpQ6WWYCSvf19lVIazzfIzQvhUN2HjX12spLojTnhuKlGg==}
@@ -2940,6 +2949,10 @@ packages:
 
   lru-cache@5.1.1:
     resolution: {integrity: sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w==}
+
+  luxon@3.5.0:
+    resolution: {integrity: sha512-rh+Zjr6DNfUYR3bPwJEnuwDdqMbxZW7LOQfUN4B54+Cl+0o5zaU9RJ6bcidfDtC1cWCZXQ+nvX8bf6bAji37QQ==}
+    engines: {node: '>=12'}
 
   magic-string-ast@0.7.0:
     resolution: {integrity: sha512-686fgAHaJY7wLTFEq7nnKqeQrhqmXB19d1HnqT35Ci7BN6hbAYLZUezTQ062uUHM7ggZEQlqJ94Ftls+KDXU8Q==}
@@ -6052,6 +6065,8 @@ snapshots:
 
   '@types/json5@0.0.29': {}
 
+  '@types/luxon@3.4.2': {}
+
   '@types/node@22.10.7':
     dependencies:
       undici-types: 6.20.0
@@ -8172,6 +8187,8 @@ snapshots:
   lru-cache@5.1.1:
     dependencies:
       yallist: 3.1.1
+
+  luxon@3.5.0: {}
 
   magic-string-ast@0.7.0:
     dependencies:

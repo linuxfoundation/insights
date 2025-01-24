@@ -22,7 +22,7 @@
     </div>
 
     <lfx-button @click="changeData"> Change Data </lfx-button>
-    <lfx-chart :data="chartData" :series="chartSeries" />
+    <lfx-chart :config="lineChartConfig" />
   </div>
 </template>
 
@@ -33,6 +33,7 @@ import LfxIcon from '@/components/uikit/icon/Icon.vue';
 import LfxChart from '@/components/uikit/chart/Chart.vue';
 import { convertToChartData, type RawChartData } from '@/components/uikit/chart/helpers/chart-helpers';
 import type { ChartData, ChartSeries } from '@/components/uikit/chart/types/ChartTypes';
+import { getLineAreaChartConfig } from '@/components/uikit/chart/configs/line.area.chart';
 
 const { data } = await useAsyncData('chart-data', () => $fetch('/api/issues-data'));
 
@@ -45,23 +46,24 @@ const chartSeries = ref<ChartSeries[]>([
     type: 'line',
     yAxisIndex: 0,
     dataIndex: 0,
-    position: 'right'
-  },
-  {
-    name: 'Issues Opened',
-    type: 'bar',
-    yAxisIndex: 1,
-    dataIndex: 1,
-    position: 'left'
-  },
-  {
-    name: 'Issues Closed',
-    type: 'bar',
-    yAxisIndex: 1,
-    dataIndex: 2,
     position: 'left'
   }
+  // {
+  //   name: 'Issues Opened',
+  //   type: 'bar',
+  //   yAxisIndex: 1,
+  //   dataIndex: 1,
+  //   position: 'left'
+  // },
+  // {
+  //   name: 'Issues Closed',
+  //   type: 'bar',
+  //   yAxisIndex: 1,
+  //   dataIndex: 2,
+  //   position: 'left'
+  // }
 ]);
+const lineChartConfig = computed(() => getLineAreaChartConfig(chartData.value, chartSeries.value));
 
 const changeData = () => {
   const tmp = data.value?.map((item: RawChartData) => ({
