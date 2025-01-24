@@ -1,4 +1,3 @@
-// @ts-check
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { FlatCompat } from '@eslint/eslintrc';
@@ -8,40 +7,53 @@ const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 
 const compat = new FlatCompat({
-  baseDirectory: dirname,
+  baseDirectory: dirname
 });
+const getRules = (extendedRules, excludeKeys = null) => {
+  const rules = extendedRules
+    .filter((rule) => rule.rules)
+    .map((rule) => rule.rules)
+    .reduce((r, c) => Object.assign(r, c), {});
+
+  if (excludeKeys) {
+    // remove all the properties from the rules object that matches the excludeKeys string
+    // these keys from airbnb rules are not supported by eslint 9
+    Object.keys(rules).forEach((key) => {
+      if (key.includes(excludeKeys)) {
+        delete rules[key];
+      }
+    });
+  }
+
+  delete rules['max-len'];
+
+  return rules;
+};
 
 export default withNuxt({
   settings: {
     'import/resolver': {
       alias: {
         extensions: ['.js', '.jsx', '.ts', '.tsx'],
-        map: [['@', './components']],
+        map: [['@', './components']]
       },
-      typescript: {},
-    },
-    extends: [...compat.extends('airbnb-base'), ...compat.extends('airbnb-typescript/base')],
+      typescript: {}
+    }
+    // extends: [...compat.extends('airbnb-base'), ...compat.extends('airbnb-typescript/base')],
   },
-  ignores: ['*.config.*js'],
+  ignores: ['*.config.*js', '.tailwind/*'],
   rules: {
+    ...getRules(compat.extends('airbnb-base')),
+    ...getRules(compat.extends('airbnb-typescript/base'), '@typescript-eslint/'),
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    semi: 'warn',
-    'comma-dangle': 'warn',
-    indent: 'warn',
-    'no-trailing-spaces': 'warn',
     'vue/no-unused-components': 'error',
     'vue/html-closing-bracket-spacing': 'warn',
     'vue/html-indent': 'warn',
     'vue/html-self-closing': 'warn',
-    'object-curly-spacing': 'warn',
     'vue/html-button-has-type': 'warn',
     'import/order': 'warn',
-    'keyword-spacing': 'warn',
-    'space-before-blocks': 'warn',
-    quotes: 'warn',
     'no-unused-vars': 'off',
-    'no-multiple-empty-lines': 'warn',
     'vue/no-v-html': 'off',
     'import/prefer-default-export': 'off',
     'import/no-named-as-default': 'off',
@@ -56,10 +68,18 @@ export default withNuxt({
     'vue/max-len': [
       'error',
       {
-        code: 150,
+        code: 120,
         ignoreComments: true,
-        ignoreUrls: true,
-      },
+        ignoreUrls: true
+      }
+    ],
+    'max-len': [
+      'error',
+      {
+        code: 120,
+        ignoreComments: true,
+        ignoreUrls: true
+      }
     ],
     'import/extensions': [
       'error',
@@ -69,7 +89,8 @@ export default withNuxt({
         jsx: 'never',
         ts: 'never',
         tsx: 'never',
-      },
-    ],
-  },
+        '': 'never'
+      }
+    ]
+  }
 });
