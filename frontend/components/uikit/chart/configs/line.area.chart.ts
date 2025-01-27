@@ -42,11 +42,7 @@ const defaultSeriesStyle: LineSeriesOption = {
   }
 };
 
-const applySeriesStyle = (
-  chartSeries: ChartSeries[],
-  series: SeriesTypes[] | undefined,
-  customStyle?: Partial<SeriesTypes>
-): SeriesTypes[] => {
+const applySeriesStyle = (chartSeries: ChartSeries[], series: SeriesTypes[] | undefined): SeriesTypes[] => {
   if (!series) return [];
 
   return series.map((seriesItem: SeriesTypes, index: number) => {
@@ -69,42 +65,59 @@ const applySeriesStyle = (
       };
     }
 
-    if (customStyle) {
-      // Deep merge custom styles
-      return {
-        ...baseStyle,
-        ...customStyle,
-        lineStyle: {
-          ...baseStyle.lineStyle,
-          ...(customStyle as LineSeriesOption)?.lineStyle
-        },
-        areaStyle: {
-          ...baseStyle.areaStyle,
-          ...(customStyle as LineSeriesOption)?.areaStyle
-        }
-      } as LineSeriesOption;
-    }
-
     return baseStyle;
   });
 };
 
-export const getLineAreaChartConfig = (
-  data: ChartData[],
-  series: ChartSeries[],
-  customStyle?: Partial<SeriesTypes>,
-  graphOnly?: boolean
-): ECOption => {
+export const getLineAreaChartConfig = (data: ChartData[], series: ChartSeries[]): ECOption => {
   const xAxis = {
-    ...(graphOnly ? defaultGraphOnlyOption.xAxis : defaultLineOption.xAxis),
+    ...defaultLineOption.xAxis,
     data: convertDateData(data) ?? []
   };
-  const styledSeries = applySeriesStyle(series, buildSeries(series, data), customStyle);
+  const styledSeries = applySeriesStyle(series, buildSeries(series, data));
 
   return {
-    ...(graphOnly ? defaultGraphOnlyOption : defaultLineOption),
+    ...defaultLineOption,
     xAxis,
     // yAxis: buildYAxis(series),
+    series: styledSeries
+  };
+};
+
+export const getLineAreChartConfigCustom = (
+  data: ChartData[],
+  series: ChartSeries[],
+  customStyle: Partial<SeriesTypes>
+): ECOption => {
+  const styledSeries = applySeriesStyle(series, buildSeries(series, data)).map((seriesItem) => ({
+      ...seriesItem,
+      ...customStyle,
+      lineStyle: {
+        ...(seriesItem as LineSeriesOption).lineStyle,
+        ...(customStyle as LineSeriesOption)?.lineStyle
+      },
+      areaStyle: {
+        ...(seriesItem as LineSeriesOption).areaStyle,
+        ...(customStyle as LineSeriesOption)?.areaStyle
+      }
+    } as LineSeriesOption));
+
+  return {
+    ...defaultLineOption,
+    series: styledSeries
+  };
+};
+
+export const getLineAreaChartConfigGraphOnly = (data: ChartData[], series: ChartSeries[]): ECOption => {
+  const xAxis = {
+    ...defaultGraphOnlyOption.xAxis,
+    data: convertDateData(data) ?? []
+  };
+  const styledSeries = applySeriesStyle(series, buildSeries(series, data));
+
+  return {
+    ...defaultGraphOnlyOption,
+    xAxis,
     series: styledSeries
   };
 };

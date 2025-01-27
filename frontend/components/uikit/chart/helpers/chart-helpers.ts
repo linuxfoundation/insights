@@ -5,14 +5,14 @@ import type {
 
 export const convertToChartData = (data: RawChartData[] | null, dateField: string, valuesKey: string[]) => data?.map(
     (item: RawChartData) => ({
-        date: item[dateField],
+        key: item[dateField],
         values: valuesKey.map((key: string) => item[key])
       } as ChartData)
   ) ?? [];
 
 export const convertDateData = (
   chartData: ChartData[] //
-) => chartData.map((item: ChartData) => new Date(item.date).getTime()) || [];
+) => chartData.map((item: ChartData) => new Date(item.key).getTime()) || [];
 
 // TODO: check if we'll need multiple yAxis
 // export const buildYAxis = (series: ChartSeries[]): YAXisOption[] | undefined =>

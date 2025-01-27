@@ -48,11 +48,7 @@ const defaultSeriesStyle: BarSeriesOption = {
   }
 };
 
-const applySeriesStyle = (
-  chartSeries: ChartSeries[],
-  series: SeriesTypes[] | undefined,
-  customStyle?: Partial<SeriesTypes>
-): SeriesTypes[] => {
+const applySeriesStyle = (chartSeries: ChartSeries[], series: SeriesTypes[] | undefined): SeriesTypes[] => {
   if (!series) return [];
 
   return series.map((seriesItem: SeriesTypes, index: number) => {
@@ -62,25 +58,38 @@ const applySeriesStyle = (
     };
     baseStyle.color = chartSeries[index].color || colors.brand[500];
 
-    if (customStyle) {
-      // Deep merge custom styles
-      return {
-        ...baseStyle,
-        ...customStyle
-      } as BarSeriesOption;
-    }
-
     return baseStyle as SeriesTypes;
   });
 };
 
-export const getBarChartConfig = (
+export const getBarChartConfig = (data: ChartData[], series: ChartSeries[]): ECOption => {
+  const xAxis = { ...defaultBarOption.xAxis, data: convertDateData(data) ?? [] };
+  const styledSeries = applySeriesStyle(series, buildSeries(series, data));
+
+  return {
+    ...defaultBarOption,
+    xAxis,
+    series: styledSeries
+  };
+};
+
+export const getBarChartConfigStacked = (
+  data: ChartData[],
+  series: ChartSeries[]
+): ECOption => getBarChartConfigCustom(data, series, { stack: 'stack' }); //
+
+export const getBarChartConfigCustom = (
   data: ChartData[],
   series: ChartSeries[],
-  customStyle?: Partial<SeriesTypes>
+  customStyle: Partial<SeriesTypes>
 ): ECOption => {
   const xAxis = { ...defaultBarOption.xAxis, data: convertDateData(data) ?? [] };
-  const styledSeries = applySeriesStyle(series, buildSeries(series, data), customStyle);
+  const styledSeries = applySeriesStyle(series, buildSeries(series, data)).map(
+    (seriesItem) => ({
+        ...seriesItem,
+        ...customStyle
+      } as BarSeriesOption)
+  );
 
   return {
     ...defaultBarOption,

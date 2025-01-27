@@ -13,7 +13,7 @@ export interface ChartSeries {
 }
 
 export interface ChartData {
-  date: string;
+  key: string;
   values: number[];
 }
 

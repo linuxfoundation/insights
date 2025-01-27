@@ -9,13 +9,14 @@
     </div>
 
     <div class="flex flex-row gap-2">
-      <lfx-button @click="changeChartType('line')"> Line </lfx-button>
-      <lfx-button type="secondary" @click="changeChartType('bar')"> Bar </lfx-button>
-      <lfx-button type="success" @click="changeChartType('bar', true)"> Stacked Bar </lfx-button>
-      <lfx-button type="danger" @click="changeChartType('graph-only')"> Graph Only </lfx-button>
+      <lfx-button @click="changeChartType('line')"> Line Chart </lfx-button>
+      <lfx-button type="danger" @click="changeChartType('graph-only')"> Graph Only Chart </lfx-button>
+      <lfx-button type="secondary" @click="changeChartType('bar')"> Bar Chart </lfx-button>
     </div>
 
-    <lfx-chart :config="chartConfig" />
+    <lfx-line-chart-sample v-if="chartType === 'line'" :chart-data="chartData" />
+    <lfx-bar-chart-sample v-if="chartType === 'bar'" :chart-data="chartData" />
+    <lfx-line-chart-nogrid-sample v-if="chartType === 'graph-only'" :chart-data="chartData" />
     <lfx-button class="mt-5" @click="changeData"> Change Data </lfx-button>
   </div>
 </template>
@@ -24,69 +25,21 @@
 import LfxCard from '@/components/uikit/card/Card.vue';
 import LfxButton from '@/components/uikit/button/button.vue';
 import LfxIcon from '@/components/uikit/icon/Icon.vue';
-import LfxChart from '@/components/uikit/chart/Chart.vue';
 import { convertToChartData } from '@/components/uikit/chart/helpers/chart-helpers';
-import type { ChartData, ChartSeries, RawChartData } from '@/components/uikit/chart/types/ChartTypes';
-import { getLineAreaChartConfig } from '@/components/uikit/chart/configs/line.area.chart';
-import colors from '@/assets/constants/colors.json';
-import { getBarChartConfig } from '~/components/uikit/chart/configs/bar.chart';
+import type { ChartData, RawChartData } from '@/components/uikit/chart/types/ChartTypes';
+import LfxLineChartSample from '@/components/samples/line-chart.sample.vue';
+import LfxBarChartSample from '@/components/samples/bar-chart.sample.vue';
+import LfxLineChartNogridSample from '@/components/samples/line-chart-nogrid.sample.vue';
 
 const { data } = await useAsyncData('chart-data', () => $fetch('/api/issues-data'));
 
 const chartType = ref<'line' | 'bar' | 'graph-only'>('line');
-const showStackedBar = ref(false);
 const chartData = ref<ChartData[]>(
   convertToChartData(data.value, 'BUCKET_DT_FROM', ['CUMULATIVE_ISSUES', 'ISSUES_OPENED', 'ISSUES_CLOSED'])
 );
-const chartSeries = ref<ChartSeries[]>([
-  {
-    name: 'Issues Opened',
-    type: chartType.value === 'graph-only' ? 'line' : chartType.value,
-    yAxisIndex: 0,
-    dataIndex: 1,
-    position: 'left',
-    color: colors.positive[500],
-    lineStyle: 'dashed'
-  },
-  {
-    name: 'Issues Closed',
-    type: chartType.value === 'graph-only' ? 'line' : chartType.value,
-    yAxisIndex: 0,
-    dataIndex: 2,
-    position: 'left',
-    color: colors.brand[500]
-  }
-]);
-const chartSeriesGraphOnly: ChartSeries[] = [
-  {
-    name: 'Cumulative Issues',
-    type: 'line',
-    yAxisIndex: 0,
-    dataIndex: 0,
-    position: 'left',
-    color: colors.brand[500]
-  }
-];
 
-const lineChartConfig = computed(() => getLineAreaChartConfig(chartData.value, chartSeries.value));
-const barChartConfig = computed(
-  () => getBarChartConfig(chartData.value, chartSeries.value, { stack: showStackedBar.value ? 'stack' : undefined })
-  // TODO: fix auto lint fixer for this, has different max-len value
-);
-
-const chartConfig = computed(() => {
-  if (chartType.value === 'graph-only') {
-    return getLineAreaChartConfig(chartData.value, chartSeriesGraphOnly, undefined, true);
-  }
-  return chartType.value === 'line' ? lineChartConfig.value : barChartConfig.value;
-});
-
-const changeChartType = (type: 'line' | 'bar' | 'graph-only', stacked: boolean = false) => {
+const changeChartType = (type: 'line' | 'bar' | 'graph-only') => {
   chartType.value = type;
-  if (type !== 'graph-only') {
-    chartSeries.value = chartSeries.value.map((series) => ({ ...series, type }));
-    showStackedBar.value = stacked;
-  }
 };
 const changeData = () => {
   const tmp = data.value?.map((item: RawChartData) => ({
