@@ -1,4 +1,4 @@
-import {lfxColors} from "./components/config/colors";
+import {lfxColors} from "./app/components/config/colors";
 
 /** @type {import('tailwindcss').Config} */
 export default {
