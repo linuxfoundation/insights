@@ -9,14 +9,14 @@
     </div>
 
     <div class="flex flex-row gap-2">
-      <lfx-button> Line </lfx-button>
-      <lfx-button type="secondary"> Bar </lfx-button>
-      <!-- <lfx-button type="success"> Success </lfx-button>
-      <lfx-button type="danger"> Danger </lfx-button> -->
+      <lfx-button @click="changeChartType('line')"> Line </lfx-button>
+      <lfx-button type="secondary" @click="changeChartType('bar')"> Bar </lfx-button>
+      <lfx-button type="success" @click="changeChartType('bar', true)"> Stacked Bar </lfx-button>
+      <!-- <lfx-button type="danger"> Danger </lfx-button> -->
     </div>
 
-    <lfx-chart :config="lineChartConfig" />
-    <lfx-button @click="changeData" class="mt-5"> Change Data </lfx-button>
+    <lfx-chart :config="chartType === 'line' ? lineChartConfig : barChartConfig" />
+    <lfx-button class="mt-5" @click="changeData"> Change Data </lfx-button>
   </div>
 </template>
 
@@ -29,9 +29,12 @@ import { convertToChartData } from '@/components/uikit/chart/helpers/chart-helpe
 import type { ChartData, ChartSeries, RawChartData } from '@/components/uikit/chart/types/ChartTypes';
 import { getLineAreaChartConfig } from '@/components/uikit/chart/configs/line.area.chart';
 import colors from '@/assets/constants/colors.json';
+import { getBarChartConfig } from '~/components/uikit/chart/configs/bar.chart';
 
 const { data } = await useAsyncData('chart-data', () => $fetch('/api/issues-data'));
 
+const chartType = ref<'line' | 'bar'>('line');
+const showStackedBar = ref(false);
 const chartData = ref<ChartData[]>(
   convertToChartData(data.value, 'BUCKET_DT_FROM', ['CUMULATIVE_ISSUES', 'ISSUES_OPENED', 'ISSUES_CLOSED'])
 );
@@ -46,16 +49,16 @@ const chartSeries = ref<ChartSeries[]>([
   // },
   {
     name: 'Issues Opened',
-    type: 'line',
+    type: chartType.value,
     yAxisIndex: 0,
     dataIndex: 1,
     position: 'left',
-    color: colors.neutral[900],
+    color: colors.positive[500],
     lineStyle: 'dashed'
   },
   {
     name: 'Issues Closed',
-    type: 'line',
+    type: chartType.value,
     yAxisIndex: 0,
     dataIndex: 2,
     position: 'left',
@@ -63,10 +66,18 @@ const chartSeries = ref<ChartSeries[]>([
   }
 ]);
 const lineChartConfig = computed(() => getLineAreaChartConfig(chartData.value, chartSeries.value));
+const barChartConfig = computed(
+  () => getBarChartConfig(chartData.value, chartSeries.value, { stack: showStackedBar.value ? 'stack' : undefined })
+  // TODO: fix auto lint fixer for this, has different max-len value
+);
 
+const changeChartType = (type: 'line' | 'bar', stacked: boolean = false) => {
+  chartType.value = type;
+  chartSeries.value = chartSeries.value.map((series) => ({ ...series, type }));
+  showStackedBar.value = stacked;
+};
 const changeData = () => {
-  const tmp =
-    data.value?.map((item: RawChartData) => ({
+  const tmp = data.value?.map((item: RawChartData) => ({
       BUCKET_DT_FROM: item.BUCKET_DT_FROM,
       BUCKET_DT_TO: item.BUCKET_DT_TO,
       IS_SUMMARY: item.IS_SUMMARY,
