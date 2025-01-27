@@ -12,10 +12,10 @@
       <lfx-button @click="changeChartType('line')"> Line </lfx-button>
       <lfx-button type="secondary" @click="changeChartType('bar')"> Bar </lfx-button>
       <lfx-button type="success" @click="changeChartType('bar', true)"> Stacked Bar </lfx-button>
-      <!-- <lfx-button type="danger"> Danger </lfx-button> -->
+      <lfx-button type="danger" @click="changeChartType('graph-only')"> Graph Only </lfx-button>
     </div>
 
-    <lfx-chart :config="chartType === 'line' ? lineChartConfig : barChartConfig" />
+    <lfx-chart :config="chartConfig" />
     <lfx-button class="mt-5" @click="changeData"> Change Data </lfx-button>
   </div>
 </template>
@@ -33,23 +33,15 @@ import { getBarChartConfig } from '~/components/uikit/chart/configs/bar.chart';
 
 const { data } = await useAsyncData('chart-data', () => $fetch('/api/issues-data'));
 
-const chartType = ref<'line' | 'bar'>('line');
+const chartType = ref<'line' | 'bar' | 'graph-only'>('line');
 const showStackedBar = ref(false);
 const chartData = ref<ChartData[]>(
   convertToChartData(data.value, 'BUCKET_DT_FROM', ['CUMULATIVE_ISSUES', 'ISSUES_OPENED', 'ISSUES_CLOSED'])
 );
 const chartSeries = ref<ChartSeries[]>([
-  // {
-  //   name: 'Cumulative Issues',
-  //   type: 'line',
-  //   yAxisIndex: 0,
-  //   dataIndex: 0,
-  //   position: 'left',
-  //   color: colors.negative[900]
-  // },
   {
     name: 'Issues Opened',
-    type: chartType.value,
+    type: chartType.value === 'graph-only' ? 'line' : chartType.value,
     yAxisIndex: 0,
     dataIndex: 1,
     position: 'left',
@@ -58,23 +50,43 @@ const chartSeries = ref<ChartSeries[]>([
   },
   {
     name: 'Issues Closed',
-    type: chartType.value,
+    type: chartType.value === 'graph-only' ? 'line' : chartType.value,
     yAxisIndex: 0,
     dataIndex: 2,
     position: 'left',
     color: colors.brand[500]
   }
 ]);
+const chartSeriesGraphOnly: ChartSeries[] = [
+  {
+    name: 'Cumulative Issues',
+    type: 'line',
+    yAxisIndex: 0,
+    dataIndex: 0,
+    position: 'left',
+    color: colors.brand[500]
+  }
+];
+
 const lineChartConfig = computed(() => getLineAreaChartConfig(chartData.value, chartSeries.value));
 const barChartConfig = computed(
   () => getBarChartConfig(chartData.value, chartSeries.value, { stack: showStackedBar.value ? 'stack' : undefined })
   // TODO: fix auto lint fixer for this, has different max-len value
 );
 
-const changeChartType = (type: 'line' | 'bar', stacked: boolean = false) => {
+const chartConfig = computed(() => {
+  if (chartType.value === 'graph-only') {
+    return getLineAreaChartConfig(chartData.value, chartSeriesGraphOnly, undefined, true);
+  }
+  return chartType.value === 'line' ? lineChartConfig.value : barChartConfig.value;
+});
+
+const changeChartType = (type: 'line' | 'bar' | 'graph-only', stacked: boolean = false) => {
   chartType.value = type;
-  chartSeries.value = chartSeries.value.map((series) => ({ ...series, type }));
-  showStackedBar.value = stacked;
+  if (type !== 'graph-only') {
+    chartSeries.value = chartSeries.value.map((series) => ({ ...series, type }));
+    showStackedBar.value = stacked;
+  }
 };
 const changeData = () => {
   const tmp = data.value?.map((item: RawChartData) => ({

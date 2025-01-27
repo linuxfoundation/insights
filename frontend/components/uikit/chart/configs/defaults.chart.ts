@@ -1,7 +1,7 @@
 import { axisLabelFormatter } from '../helpers/formatters';
 import colors from '@/assets/constants/colors.json';
 
-const defaultLineOption: ECOption = {
+const defaultOption: ECOption = {
   xAxis: {
     type: 'category',
     axisLabel: {
@@ -37,4 +37,22 @@ const defaultLineOption: ECOption = {
   }
 };
 
-export default defaultLineOption;
+export const defaultGraphOnlyOption: ECOption = {
+  xAxis: {
+    type: 'category',
+    boundaryGap: false,
+    axisLabel: {
+      show: false
+    },
+    axisLine: {
+      show: false
+    },
+    splitLine: { show: false },
+    axisTick: { show: false }
+  },
+  yAxis: {
+    show: false
+  }
+};
+
+export default defaultOption;

@@ -6,7 +6,7 @@ import {
 
 import { tooltipFormatter, tooltipLabelFormatter } from '../helpers/formatters';
 import type { ChartData, ChartSeries, SeriesTypes } from '../types/ChartTypes';
-import defaultOption from './defaults.chart';
+import defaultOption, { defaultGraphOnlyOption } from './defaults.chart';
 import colors from '@/assets/constants/colors.json';
 
 const defaultLineOption: ECOption = {
@@ -92,13 +92,17 @@ const applySeriesStyle = (
 export const getLineAreaChartConfig = (
   data: ChartData[],
   series: ChartSeries[],
-  customStyle?: Partial<SeriesTypes>
+  customStyle?: Partial<SeriesTypes>,
+  graphOnly?: boolean
 ): ECOption => {
-  const xAxis = { ...defaultLineOption.xAxis, data: convertDateData(data) ?? [] };
+  const xAxis = {
+    ...(graphOnly ? defaultGraphOnlyOption.xAxis : defaultLineOption.xAxis),
+    data: convertDateData(data) ?? []
+  };
   const styledSeries = applySeriesStyle(series, buildSeries(series, data), customStyle);
 
   return {
-    ...defaultLineOption,
+    ...(graphOnly ? defaultGraphOnlyOption : defaultLineOption),
     xAxis,
     // yAxis: buildYAxis(series),
     series: styledSeries
