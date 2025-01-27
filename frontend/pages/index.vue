@@ -31,9 +31,10 @@ import LfxCard from '@/components/uikit/card/Card.vue';
 import LfxButton from '@/components/uikit/button/button.vue';
 import LfxIcon from '@/components/uikit/icon/Icon.vue';
 import LfxChart from '@/components/uikit/chart/Chart.vue';
-import { convertToChartData, type RawChartData } from '@/components/uikit/chart/helpers/chart-helpers';
-import type { ChartData, ChartSeries } from '@/components/uikit/chart/types/ChartTypes';
+import { convertToChartData } from '@/components/uikit/chart/helpers/chart-helpers';
+import type { ChartData, ChartSeries, RawChartData } from '@/components/uikit/chart/types/ChartTypes';
 import { getLineAreaChartConfig } from '@/components/uikit/chart/configs/line.area.chart';
+import colors from '@/assets/constants/colors.json';
 
 const { data } = await useAsyncData('chart-data', () => $fetch('/api/issues-data'));
 
@@ -41,27 +42,31 @@ const chartData = ref<ChartData[]>(
   convertToChartData(data.value, 'BUCKET_DT_FROM', ['CUMULATIVE_ISSUES', 'ISSUES_OPENED', 'ISSUES_CLOSED'])
 );
 const chartSeries = ref<ChartSeries[]>([
+  // {
+  //   name: 'Cumulative Issues',
+  //   type: 'line',
+  //   yAxisIndex: 0,
+  //   dataIndex: 0,
+  //   position: 'left',
+  //   color: colors.negative[900]
+  // },
   {
-    name: 'Cumulative Issues',
+    name: 'Issues Opened',
     type: 'line',
     yAxisIndex: 0,
-    dataIndex: 0,
-    position: 'left'
+    dataIndex: 1,
+    position: 'left',
+    color: colors.neutral[900],
+    lineStyle: 'dashed'
+  },
+  {
+    name: 'Issues Closed',
+    type: 'line',
+    yAxisIndex: 0,
+    dataIndex: 2,
+    position: 'left',
+    color: colors.brand[500]
   }
-  // {
-  //   name: 'Issues Opened',
-  //   type: 'bar',
-  //   yAxisIndex: 1,
-  //   dataIndex: 1,
-  //   position: 'left'
-  // },
-  // {
-  //   name: 'Issues Closed',
-  //   type: 'bar',
-  //   yAxisIndex: 1,
-  //   dataIndex: 2,
-  //   position: 'left'
-  // }
 ]);
 const lineChartConfig = computed(() => getLineAreaChartConfig(chartData.value, chartSeries.value));
 
