@@ -5,7 +5,9 @@
       <span>Show Stacked Bar</span>
     </label>
   </div>
-  <lfx-chart :config="barChartConfig" />
+  <div style="width: 100%; height: 500px">
+    <lfx-chart :config="barChartConfig" />
+  </div>
 </template>
 
 <script setup lang="ts">

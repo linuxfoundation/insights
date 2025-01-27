@@ -1,7 +1,5 @@
 <template>
-  <div style="width: 100%; height: 500px">
-    <VChart :option="props.config" />
-  </div>
+  <VChart :option="props.config" />
 </template>
 
 <script setup lang="ts">

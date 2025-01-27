@@ -3,6 +3,14 @@ import type {
  ChartData, ChartSeries, RawChartData, SeriesTypes
 } from '../types/ChartTypes';
 
+/**
+ * Convert raw data to chart data. Since data coming from the backend is not in
+ * the format we need, we need to convert it.
+ * @param data - Raw data
+ * @param dateField - Date field
+ * @param valuesKey - Values key
+ * @returns Chart data
+ */
 export const convertToChartData = (data: RawChartData[] | null, dateField: string, valuesKey: string[]) => data?.map(
     (item: RawChartData) => ({
         key: item[dateField],
@@ -10,6 +18,7 @@ export const convertToChartData = (data: RawChartData[] | null, dateField: strin
       } as ChartData)
   ) ?? [];
 
+// function to convert date data to timestamp since the chart needs the date in this format
 export const convertDateData = (
   chartData: ChartData[] //
 ) => chartData.map((item: ChartData) => new Date(item.key).getTime()) || [];
@@ -24,6 +33,12 @@ export const convertDateData = (
 //       }))
 //     : undefined;
 
+/**
+ * Build series for the chart. The series is where the data is added to the chart.
+ * @param series - Series
+ * @param data - Data
+ * @returns Series
+ */
 export const buildSeries = (series: ChartSeries[], data: ChartData[]): SeriesTypes[] | undefined => (series.length > 0
     ? series.map(
         (series: ChartSeries) => ({
@@ -47,6 +62,7 @@ export const convertToGradientColor = (color: string) => new graphic.LinearGradi
     }
   ]);
 
+// handy function to convert hex color to rgba used for gradient colors in charts
 export const hexToRgba = (hex: string, alpha: number = 1): string => {
   // Remove the hash if present
   let cleanHex = hex.replace('#', '');

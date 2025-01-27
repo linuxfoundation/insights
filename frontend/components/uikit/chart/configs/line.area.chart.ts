@@ -42,6 +42,13 @@ const defaultSeriesStyle: LineSeriesOption = {
   }
 };
 
+/**
+ * Apply series style to the chart. This function takes in the default series style and the series
+ * and returns the series with the style applied.
+ * @param chartSeries - Chart series
+ * @param series - Series
+ * @returns Series
+ */
 const applySeriesStyle = (chartSeries: ChartSeries[], series: SeriesTypes[] | undefined): SeriesTypes[] => {
   if (!series) return [];
 
@@ -56,6 +63,7 @@ const applySeriesStyle = (chartSeries: ChartSeries[], series: SeriesTypes[] | un
       type: chartSeries[index].lineStyle || baseStyle.lineStyle?.type
     };
 
+    // Only solid lines have an area
     if (chartSeries[index].lineStyle && chartSeries[index].lineStyle !== 'solid') {
       baseStyle.areaStyle = undefined;
     } else {
@@ -69,6 +77,12 @@ const applySeriesStyle = (chartSeries: ChartSeries[], series: SeriesTypes[] | un
   });
 };
 
+/**
+ * Get line area chart config. This function takes in the data and series and returns the chart config.
+ * @param data - Data
+ * @param series - Series
+ * @returns Chart config
+ */
 export const getLineAreaChartConfig = (data: ChartData[], series: ChartSeries[]): ECOption => {
   const xAxis = {
     ...defaultLineOption.xAxis,
@@ -84,23 +98,33 @@ export const getLineAreaChartConfig = (data: ChartData[], series: ChartSeries[])
   };
 };
 
+/**
+ * Get line area chart config custom. This can be used to add custom styles to the chart.
+ * or override the default styles.
+ * @param data - Data
+ * @param series - Series
+ * @param customStyle - Custom style
+ * @returns Chart config
+ */
 export const getLineAreChartConfigCustom = (
   data: ChartData[],
   series: ChartSeries[],
   customStyle: Partial<SeriesTypes>
 ): ECOption => {
-  const styledSeries = applySeriesStyle(series, buildSeries(series, data)).map((seriesItem) => ({
-      ...seriesItem,
-      ...customStyle,
-      lineStyle: {
-        ...(seriesItem as LineSeriesOption).lineStyle,
-        ...(customStyle as LineSeriesOption)?.lineStyle
-      },
-      areaStyle: {
-        ...(seriesItem as LineSeriesOption).areaStyle,
-        ...(customStyle as LineSeriesOption)?.areaStyle
-      }
-    } as LineSeriesOption));
+  const styledSeries = applySeriesStyle(series, buildSeries(series, data)).map(
+    (seriesItem) => ({
+        ...seriesItem,
+        ...customStyle,
+        lineStyle: {
+          ...(seriesItem as LineSeriesOption).lineStyle,
+          ...(customStyle as LineSeriesOption)?.lineStyle
+        },
+        areaStyle: {
+          ...(seriesItem as LineSeriesOption).areaStyle,
+          ...(customStyle as LineSeriesOption)?.areaStyle
+        }
+      } as LineSeriesOption)
+  );
 
   return {
     ...defaultLineOption,
@@ -108,6 +132,13 @@ export const getLineAreChartConfigCustom = (
   };
 };
 
+/**
+ * Get line area chart config graph only.
+ * This config is mostly used for charts that appear on the overview page
+ * @param data - Data
+ * @param series - Series
+ * @returns Chart config
+ */
 export const getLineAreaChartConfigGraphOnly = (data: ChartData[], series: ChartSeries[]): ECOption => {
   const xAxis = {
     ...defaultGraphOnlyOption.xAxis,

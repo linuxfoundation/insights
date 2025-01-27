@@ -1,5 +1,7 @@
 <template>
-  <lfx-chart :config="getLineAreaChartConfig(props.chartData, chartSeries)" />
+  <div style="width: 100%; height: 500px">
+    <lfx-chart :config="getLineAreaChartConfig(props.chartData, chartSeries)" />
+  </div>
 </template>
 
 <script setup lang="ts">
