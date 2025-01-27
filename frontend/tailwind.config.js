@@ -42,6 +42,7 @@ export default {
       '2xl': 'var(--lfx-radius-2xl)',
       '3xl': 'var(--lfx-radius-3xl)',
       full: '9999px',
+
     },
 
     extend: {
