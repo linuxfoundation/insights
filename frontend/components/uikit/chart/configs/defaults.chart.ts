@@ -26,6 +26,13 @@ const defaultLineOption: ECOption = {
       fontWeight: 'normal',
       color: colors.neutral[400],
       formatter: (value: number) => `${value === 0 ? '' : value}`
+    },
+    splitLine: {
+      lineStyle: {
+        type: 'dashed',
+        color: colors.neutral[200]
+      },
+      showMinLine: false
     }
   }
 };

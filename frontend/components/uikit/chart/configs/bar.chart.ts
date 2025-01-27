@@ -24,8 +24,14 @@ const defaultBarOption: ECOption = {
 };
 
 const defaultSeriesStyle: BarSeriesOption = {
-  // stack: 'stack',
-  color: colors.brand[500]
+  color: colors.brand[500],
+  barWidth: 20,
+  barGap: '30%',
+  itemStyle: {
+    borderRadius: [2, 2, 2, 2],
+    borderWidth: 1,
+    borderColor: '#fff'
+  }
 };
 
 const applySeriesStyle = (
@@ -36,11 +42,10 @@ const applySeriesStyle = (
   if (!series) return [];
 
   return series.map((seriesItem: SeriesTypes, index: number) => {
-    const baseStyle = {
+    const baseStyle: BarSeriesOption = {
       ...defaultSeriesStyle,
-      ...seriesItem
+      ...(seriesItem as BarSeriesOption)
     };
-
     baseStyle.color = chartSeries[index].color || colors.brand[500];
 
     if (customStyle) {
