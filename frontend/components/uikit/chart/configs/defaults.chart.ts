@@ -1,5 +1,5 @@
 import { axisLabelFormatter } from '../helpers/formatters';
-import colors from '@/assets/constants/colors.json';
+import {lfxColors} from "~/components/config/colors";
 
 const defaultOption: ECOption = {
   xAxis: {
@@ -10,7 +10,7 @@ const defaultOption: ECOption = {
       interval: 0,
       fontSize: '12px',
       fontWeight: 'normal',
-      color: colors.neutral[400] // TODO: change this when we have the correct color
+      color: lfxColors.neutral[400] // TODO: change this when we have the correct color
       // the designs are currently using a color hex not defined in the design system
     },
     axisLine: {
@@ -24,13 +24,13 @@ const defaultOption: ECOption = {
     axisLabel: {
       fontSize: '12px',
       fontWeight: 'normal',
-      color: colors.neutral[400],
+      color: lfxColors.neutral[400],
       formatter: (value: number) => `${value === 0 ? '' : value}`
     },
     splitLine: {
       lineStyle: {
         type: 'dashed',
-        color: colors.neutral[200]
+        color: lfxColors.neutral[200]
       },
       showMinLine: false
     }

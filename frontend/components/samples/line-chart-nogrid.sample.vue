@@ -6,7 +6,7 @@
 import LfxChart from '@/components/uikit/chart/Chart.vue';
 import type { ChartData, ChartSeries } from '@/components/uikit/chart/types/ChartTypes';
 import { getLineAreaChartConfigGraphOnly } from '@/components/uikit/chart/configs/line.area.chart';
-import colors from '@/assets/constants/colors.json';
+import {lfxColors} from "~/components/config/colors";
 
 const props = defineProps<{
   chartData: ChartData[];
@@ -19,7 +19,7 @@ const chartSeries = ref<ChartSeries[]>([
     yAxisIndex: 0,
     dataIndex: 0,
     position: 'left',
-    color: colors.brand[500]
+    color: lfxColors.brand[500]
   }
 ]);
 </script>

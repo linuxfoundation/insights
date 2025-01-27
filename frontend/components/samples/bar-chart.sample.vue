@@ -12,7 +12,7 @@
 import LfxChart from '@/components/uikit/chart/Chart.vue';
 import type { ChartData, ChartSeries } from '@/components/uikit/chart/types/ChartTypes';
 import { getBarChartConfig, getBarChartConfigStacked } from '@/components/uikit/chart/configs/bar.chart';
-import colors from '@/assets/constants/colors.json';
+import {lfxColors} from "~/components/config/colors";
 
 const props = defineProps<{
   chartData: ChartData[];
@@ -26,7 +26,7 @@ const chartSeries = ref<ChartSeries[]>([
     yAxisIndex: 0,
     dataIndex: 1,
     position: 'left',
-    color: colors.positive[500]
+    color: lfxColors.positive[500]
   },
   {
     name: 'Issues Closed',
@@ -34,7 +34,7 @@ const chartSeries = ref<ChartSeries[]>([
     yAxisIndex: 0,
     dataIndex: 2,
     position: 'left',
-    color: colors.brand[500]
+    color: lfxColors.brand[500]
   }
 ]);
 const barChartConfig = computed(() => (isStacked.value

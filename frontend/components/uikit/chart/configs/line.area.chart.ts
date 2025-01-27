@@ -7,7 +7,7 @@ import {
 import { tooltipFormatter, tooltipLabelFormatter } from '../helpers/formatters';
 import type { ChartData, ChartSeries, SeriesTypes } from '../types/ChartTypes';
 import defaultOption, { defaultGraphOnlyOption } from './defaults.chart';
-import colors from '@/assets/constants/colors.json';
+import {lfxColors} from "~/components/config/colors";
 
 const defaultLineOption: ECOption = {
   ...defaultOption,
@@ -36,8 +36,8 @@ const defaultSeriesStyle: LineSeriesOption = {
   },
   areaStyle: {
     color: new graphic.LinearGradient(0, 0, 0, 1, [
-      { offset: 0, color: hexToRgba(colors.brand[500], 0.1) },
-      { offset: 0.8, color: hexToRgba(colors.white, 0) }
+      { offset: 0, color: hexToRgba(lfxColors.brand[500], 0.1) },
+      { offset: 0.8, color: hexToRgba(lfxColors.white, 0) }
     ])
   }
 };
@@ -52,7 +52,7 @@ const applySeriesStyle = (chartSeries: ChartSeries[], series: SeriesTypes[] | un
     };
     baseStyle.lineStyle = {
       ...baseStyle.lineStyle,
-      color: chartSeries[index].color || colors.brand[500],
+      color: chartSeries[index].color || lfxColors.brand[500],
       type: chartSeries[index].lineStyle || baseStyle.lineStyle?.type
     };
 
@@ -61,7 +61,7 @@ const applySeriesStyle = (chartSeries: ChartSeries[], series: SeriesTypes[] | un
     } else {
       baseStyle.areaStyle = {
         ...baseStyle.areaStyle,
-        color: convertToGradientColor(chartSeries[index].color || hexToRgba(colors.brand[500]))
+        color: convertToGradientColor(chartSeries[index].color || hexToRgba(lfxColors.brand[500]))
       };
     }
 
