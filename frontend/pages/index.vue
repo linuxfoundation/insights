@@ -4,25 +4,19 @@
     <lfx-card class="p-5"> Sample Card </lfx-card>
 
     <div class="flex flex-row gap-2">
-      <lfx-button> Primary </lfx-button>
-      <lfx-button type="secondary"> Secondary </lfx-button>
-      <lfx-button type="success"> Success </lfx-button>
-      <lfx-button type="info"> Info </lfx-button>
-    </div>
-    <div class="flex flex-row gap-2">
-      <lfx-button type="warn"> Warn </lfx-button>
-      <lfx-button type="help"> Help </lfx-button>
-      <lfx-button type="danger"> Danger </lfx-button>
-      <lfx-button type="contrast"> Contrast </lfx-button>
-    </div>
-
-    <div class="flex flex-row gap-2">
       <lfx-icon name="circle-info" type="solid" />
       <lfx-icon name="circle-info" type="light" :size="32" />
     </div>
 
-    <lfx-button @click="changeData"> Change Data </lfx-button>
+    <div class="flex flex-row gap-2">
+      <lfx-button> Line </lfx-button>
+      <lfx-button type="secondary"> Bar </lfx-button>
+      <!-- <lfx-button type="success"> Success </lfx-button>
+      <lfx-button type="danger"> Danger </lfx-button> -->
+    </div>
+
     <lfx-chart :config="lineChartConfig" />
+    <lfx-button @click="changeData" class="mt-5"> Change Data </lfx-button>
   </div>
 </template>
 
@@ -71,7 +65,8 @@ const chartSeries = ref<ChartSeries[]>([
 const lineChartConfig = computed(() => getLineAreaChartConfig(chartData.value, chartSeries.value));
 
 const changeData = () => {
-  const tmp = data.value?.map((item: RawChartData) => ({
+  const tmp =
+    data.value?.map((item: RawChartData) => ({
       BUCKET_DT_FROM: item.BUCKET_DT_FROM,
       BUCKET_DT_TO: item.BUCKET_DT_TO,
       IS_SUMMARY: item.IS_SUMMARY,

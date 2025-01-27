@@ -1,10 +1,10 @@
 import { graphic } from 'echarts';
-import type { ChartData, ChartSeries, RawChartData, SeriesTypes } from '../types/ChartTypes';
+import type {
+ ChartData, ChartSeries, RawChartData, SeriesTypes
+} from '../types/ChartTypes';
 
-export const convertToChartData = (data: RawChartData[] | null, dateField: string, valuesKey: string[]) =>
-  data?.map(
-    (item: RawChartData) =>
-      ({
+export const convertToChartData = (data: RawChartData[] | null, dateField: string, valuesKey: string[]) => data?.map(
+    (item: RawChartData) => ({
         date: item[dateField],
         values: valuesKey.map((key: string) => item[key])
       } as ChartData)
@@ -24,11 +24,9 @@ export const convertDateData = (
 //       }))
 //     : undefined;
 
-export const buildSeries = (series: ChartSeries[], data: ChartData[]): SeriesTypes[] | undefined =>
-  series.length > 0
+export const buildSeries = (series: ChartSeries[], data: ChartData[]): SeriesTypes[] | undefined => (series.length > 0
     ? series.map(
-        (series: ChartSeries) =>
-          ({
+        (series: ChartSeries) => ({
             type: series.type,
             name: series.name,
             yAxisIndex: series.yAxisIndex,
@@ -36,10 +34,9 @@ export const buildSeries = (series: ChartSeries[], data: ChartData[]): SeriesTyp
             data: data.map((item: ChartData) => item.values[series.dataIndex]) || []
           } as SeriesTypes)
       )
-    : undefined;
+    : undefined);
 
-export const convertToGradientColor = (color: string) =>
-  new graphic.LinearGradient(0, 0, 0, 1, [
+export const convertToGradientColor = (color: string) => new graphic.LinearGradient(0, 0, 0, 1, [
     {
       offset: 0,
       color // Start color

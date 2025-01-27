@@ -1,6 +1,8 @@
 import { graphic } from 'echarts';
 import type { LineSeriesOption } from 'echarts/types/dist/shared';
-import { buildSeries, convertDateData, convertToGradientColor, hexToRgba } from '../helpers/chart-helpers';
+import {
+ buildSeries, convertDateData, convertToGradientColor, hexToRgba
+} from '../helpers/chart-helpers';
 
 import { tooltipFormatter, tooltipLabelFormatter } from '../helpers/formatters';
 import type { ChartData, ChartSeries, SeriesTypes } from '../types/ChartTypes';
