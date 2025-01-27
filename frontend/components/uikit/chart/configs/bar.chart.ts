@@ -20,6 +20,20 @@ const defaultBarOption: ECOption = {
       }
     },
     formatter: tooltipFormatter
+  },
+  legend: {
+    orient: 'horizontal',
+    left: 'center',
+    bottom: 0,
+    itemWidth: 15,
+    itemHeight: 15,
+    itemGap: 40,
+    textStyle: {
+      fontSize: 12,
+      fontWeight: 'normal',
+      color: colors.black,
+      fontFamily: 'Inter'
+    }
   }
 };
 
