@@ -35,7 +35,10 @@ export default withNuxt({
     'import/resolver': {
       alias: {
         extensions: ['.js', '.jsx', '.ts', '.tsx'],
-        map: [['@', './components']]
+        map: [
+            ['@', './app'],
+            ['~', './app']
+        ]
       },
       typescript: {}
     }

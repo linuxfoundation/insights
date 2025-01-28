@@ -1,8 +1,9 @@
 /* ---------------------------------- *\
-            Mixins & helpers
+            Helpers
 \* ---------------------------------- */
+@use "sass:math";
 
 /* responsive font-size */
 @function toRem($size, $base: 16) {
-  @return #{$size / $base}rem;
+  @return #{math.div($size, $base)}rem;
 }

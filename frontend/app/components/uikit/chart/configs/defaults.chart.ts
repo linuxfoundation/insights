@@ -1,5 +1,5 @@
 import { axisLabelFormatter } from '../helpers/formatters';
-import { lfxColors } from '~/components/config/colors';
+import {lfxColors} from "~/components/config/styles/colors";
 
 const defaultOption: ECOption = {
   xAxis: {
