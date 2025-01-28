@@ -32,5 +32,13 @@ export const tooltipFormatter = (
   paramsRaw: TopLevelFormatterParams // Tooltip hover box
 ): string | HTMLElement | HTMLElement[] => {
   const params: MultipleTooltipFormatterParams = paramsRaw as MultipleTooltipFormatterParams;
-  return `${formatDate(params[0].name, '{MMM} {yyyy}')}<br>${params.map(tooltipSingleValue)}`;
+  return `${formatDate(params[0]?.name || '', '{MMM} {yyyy}')}<br>${params.map(tooltipSingleValue)}`;
+};
+
+export const punchCardFormatter = (
+  paramsRaw: TopLevelFormatterParams // Tooltip hover box
+): string | HTMLElement | HTMLElement[] => {
+  const params: SingleTooltipFormatterParams = paramsRaw as SingleTooltipFormatterParams;
+
+  return `${(params.data as number[])[2]} ${params.seriesName}`;
 };

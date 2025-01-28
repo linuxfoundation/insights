@@ -1,10 +1,10 @@
-import type {BarSeriesOption} from "echarts/types/dist/shared";
+import type { BarSeriesOption } from 'echarts/types/dist/shared';
 import { buildSeries, convertDateData } from '../helpers/chart-helpers';
 
 import { tooltipFormatter, tooltipLabelFormatter } from '../helpers/formatters';
 import type { ChartData, ChartSeries, SeriesTypes } from '../types/ChartTypes';
 import defaultOption from './defaults.chart';
-import {lfxColors} from "~/components/config/colors";
+import { lfxColors } from '~/components/config/colors';
 
 const defaultBarOption: ECOption = {
   ...defaultOption,
@@ -64,7 +64,7 @@ const applySeriesStyle = (chartSeries: ChartSeries[], series: SeriesTypes[] | un
       ...(seriesItem as BarSeriesOption)
     };
     // override the color with the color from the chart series if it exists
-    baseStyle.color = chartSeries[index].color || lfxColors.brand[500];
+    baseStyle.color = chartSeries[index]?.color || lfxColors.brand[500];
 
     return baseStyle as SeriesTypes;
   });

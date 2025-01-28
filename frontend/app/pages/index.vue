@@ -12,11 +12,13 @@
       <lfx-button @click="changeChartType('line')"> Line Chart </lfx-button>
       <lfx-button type="danger" @click="changeChartType('graph-only')"> Graph Only Chart </lfx-button>
       <lfx-button type="secondary" @click="changeChartType('bar')"> Bar Chart </lfx-button>
+      <lfx-button type="secondary" @click="changeChartType('scatter')"> Scatter Chart </lfx-button>
     </div>
 
     <lfx-line-chart-sample v-if="chartType === 'line'" :chart-data="chartData" />
     <lfx-bar-chart-sample v-if="chartType === 'bar'" :chart-data="chartData" />
     <lfx-line-chart-nogrid-sample v-if="chartType === 'graph-only'" :chart-data="chartData" />
+    <lfx-scatter-chart-sample v-if="chartType === 'scatter'" :chart-data="scatterChartData" />
     <lfx-button class="mt-5" @click="changeData"> Change Data </lfx-button>
   </div>
 </template>
@@ -30,15 +32,19 @@ import type { ChartData, RawChartData } from '@/components/uikit/chart/types/Cha
 import LfxLineChartSample from '@/components/samples/line-chart.sample.vue';
 import LfxBarChartSample from '@/components/samples/bar-chart.sample.vue';
 import LfxLineChartNogridSample from '@/components/samples/line-chart-nogrid.sample.vue';
+import LfxScatterChartSample from '@/components/samples/scatter-chart.sample.vue';
 
 const { data } = await useAsyncData('chart-data', () => $fetch('/api/issues-data'));
+const { data: scatterCardData } = await useAsyncData('scatter-data', () => $fetch('/api/scatter-data'));
 
-const chartType = ref<'line' | 'bar' | 'graph-only'>('line');
+const chartType = ref<'line' | 'bar' | 'graph-only' | 'scatter'>('scatter');
 const chartData = ref<ChartData[]>(
   convertToChartData(data.value, 'BUCKET_DT_FROM', ['CUMULATIVE_ISSUES', 'ISSUES_OPENED', 'ISSUES_CLOSED'])
 );
 
-const changeChartType = (type: 'line' | 'bar' | 'graph-only') => {
+const scatterChartData = ref<ChartData[]>(convertToChartData(scatterCardData.value, 'DAY', ['COMMITS'], 'HOUR'));
+
+const changeChartType = (type: 'line' | 'bar' | 'graph-only' | 'scatter') => {
   chartType.value = type;
 };
 const changeData = () => {
@@ -53,4 +59,6 @@ const changeData = () => {
 
   chartData.value = convertToChartData(tmp, 'BUCKET_DT_FROM', ['CUMULATIVE_ISSUES', 'ISSUES_OPENED', 'ISSUES_CLOSED']);
 };
+
+// console.log(convertToChartData(scatterCardData.value, 'DAY', ['COMMITS'], 'HOUR'));
 </script>
