@@ -1,5 +1,5 @@
-import {lfxColors} from "~/components/config/styles/colors";
-import {lfxFontSizes} from "~/components/config/styles/font-size.js";
+import {lfxColors} from "./app/components/config/styles/colors.ts";
+import {lfxFontSizes} from "./app/components/config/styles/font-size.ts";
 
 /** @type {import('tailwindcss').Config} */
 export default {

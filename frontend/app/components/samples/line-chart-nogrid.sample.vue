@@ -5,10 +5,10 @@
 </template>
 
 <script setup lang="ts">
-import LfxChart from '@/components/uikit/chart/Chart.vue';
-import type { ChartData, ChartSeries } from '@/components/uikit/chart/types/ChartTypes';
-import { getLineAreaChartConfigGraphOnly } from '@/components/uikit/chart/configs/line.area.chart';
-import {lfxColors} from "~/components/config/colors";
+import LfxChart from '~/components/uikit/chart/Chart.vue';
+import type { ChartData, ChartSeries } from '~/components/uikit/chart/types/ChartTypes';
+import { getLineAreaChartConfigGraphOnly } from '~/components/uikit/chart/configs/line.area.chart';
+import {lfxColors} from "~/components/config/styles/colors";
 
 const props = defineProps<{
   chartData: ChartData[];

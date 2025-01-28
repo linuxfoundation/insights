@@ -5,7 +5,7 @@ import type {
  CategoryData, ChartData, ChartSeries, SeriesTypes
 } from '../types/ChartTypes';
 import defaultOption from './defaults.chart';
-import { lfxColors } from '~/components/config/colors';
+import {lfxColors} from "~/components/config/styles/colors";
 
 const defaultScatterOption: ECOption = {
   ...defaultOption,

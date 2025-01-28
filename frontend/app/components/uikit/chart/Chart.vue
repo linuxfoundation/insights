@@ -5,7 +5,7 @@
 <script setup lang="ts">
 import { registerMap } from 'echarts';
 import world from './configs/world.json';
-import type { SeriesTypes } from '@/components/uikit/chart/types/ChartTypes';
+import type { SeriesTypes } from '~/components/uikit/chart/types/ChartTypes';
 
 const props = defineProps<{
   config: ECOption;
