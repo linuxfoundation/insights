@@ -5,9 +5,9 @@
 </template>
 
 <script setup lang="ts">
-import LfxChart from '@/components/uikit/chart/Chart.vue';
-import type { ChartData, ChartSeries } from '@/components/uikit/chart/types/ChartTypes';
-import { getGeoMapChartConfig } from '@/components/uikit/chart/configs/geo-map.chart';
+import LfxChart from '~/components/uikit/chart/Chart.vue';
+import type { ChartData, ChartSeries } from '~/components/uikit/chart/types/ChartTypes';
+import { getGeoMapChartConfig } from '~/components/uikit/chart/configs/geo-map.chart';
 
 const chartData = ref<ChartData[]>([
   { key: 'United States of America', values: [48202] },

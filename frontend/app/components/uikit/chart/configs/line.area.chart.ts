@@ -7,7 +7,7 @@ import {
 import { tooltipFormatter, tooltipLabelFormatter } from '../helpers/formatters';
 import type { ChartData, ChartSeries, SeriesTypes } from '../types/ChartTypes';
 import defaultOption, { defaultGraphOnlyOption } from './defaults.chart';
-import {lfxColors} from "~/components/config/colors";
+import {lfxColors} from "~/components/config/styles/colors";
 
 const defaultLineOption: ECOption = {
   ...defaultOption,
@@ -59,17 +59,17 @@ const applySeriesStyle = (chartSeries: ChartSeries[], series: SeriesTypes[] | un
     };
     baseStyle.lineStyle = {
       ...baseStyle.lineStyle,
-      color: chartSeries[index].color || lfxColors.brand[500],
-      type: chartSeries[index].lineStyle || baseStyle.lineStyle?.type
+      color: chartSeries[index]?.color || lfxColors.brand[500],
+      type: chartSeries[index]?.lineStyle || baseStyle.lineStyle?.type
     };
 
     // Only solid lines have an area
-    if (chartSeries[index].lineStyle && chartSeries[index].lineStyle !== 'solid') {
+    if (chartSeries[index]?.lineStyle && chartSeries[index].lineStyle !== 'solid') {
       baseStyle.areaStyle = undefined;
     } else {
       baseStyle.areaStyle = {
         ...baseStyle.areaStyle,
-        color: convertToGradientColor(chartSeries[index].color || hexToRgba(lfxColors.brand[500]))
+        color: convertToGradientColor(chartSeries[index]?.color || hexToRgba(lfxColors.brand[500]))
       };
     }
 

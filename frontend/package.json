@@ -10,6 +10,7 @@
     "postinstall": "nuxt prepare",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
+    "tsc-check": "tsc --noEmit",
     "prepare": "cd .. && husky ./frontend/.husky"
   },
   "dependencies": {

@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto">
+  <div class="container">
     <h1 class="text-primary-500 mb-20">Sample Page</h1>
     <lfx-card class="p-5"> Sample Card </lfx-card>
 
@@ -26,16 +26,16 @@
 </template>
 
 <script setup lang="ts">
-import LfxCard from '@/components/uikit/card/Card.vue';
-import LfxButton from '@/components/uikit/button/button.vue';
-import LfxIcon from '@/components/uikit/icon/Icon.vue';
-import { convertToChartData } from '@/components/uikit/chart/helpers/chart-helpers';
-import type { ChartData, RawChartData } from '@/components/uikit/chart/types/ChartTypes';
-import LfxLineChartSample from '@/components/samples/line-chart.sample.vue';
-import LfxBarChartSample from '@/components/samples/bar-chart.sample.vue';
-import LfxLineChartNogridSample from '@/components/samples/line-chart-nogrid.sample.vue';
-import LfxGeoMapSample from '@/components/samples/geo-map.sample.vue';
-import LfxScatterChartSample from '@/components/samples/scatter-chart.sample.vue';
+import LfxCard from '~/components/uikit/card/Card.vue';
+import LfxButton from '~/components/uikit/button/button.vue';
+import LfxIcon from '~/components/uikit/icon/Icon.vue';
+import { convertToChartData } from '~/components/uikit/chart/helpers/chart-helpers';
+import type { ChartData, RawChartData } from '~/components/uikit/chart/types/ChartTypes';
+import LfxLineChartSample from '~/components/samples/line-chart.sample.vue';
+import LfxBarChartSample from '~/components/samples/bar-chart.sample.vue';
+import LfxLineChartNogridSample from '~/components/samples/line-chart-nogrid.sample.vue';
+import LfxGeoMapSample from '~/components/samples/geo-map.sample.vue';
+import LfxScatterChartSample from '~/components/samples/scatter-chart.sample.vue';
 
 const { data } = await useAsyncData('chart-data', () => $fetch('/api/issues-data'));
 const { data: scatterCardData } = await useAsyncData('scatter-data', () => $fetch('/api/scatter-data'));
