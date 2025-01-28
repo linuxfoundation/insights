@@ -7,13 +7,19 @@ import type {
  * Convert raw data to chart data. Since data coming from the backend is not in
  * the format we need, we need to convert it.
  * @param data - Raw data
- * @param dateField - Date field
+ * @param keyField - Key field
  * @param valuesKey - Values key
  * @returns Chart data
  */
-export const convertToChartData = (data: RawChartData[] | null, dateField: string, valuesKey: string[]) => data?.map(
+export const convertToChartData = (
+  data: RawChartData[] | null,
+  keyField: string,
+  valuesKey: string[],
+  yAxisKey?: string
+) => data?.map(
     (item: RawChartData) => ({
-        key: item[dateField],
+        key: item[keyField],
+        yAxisKey: yAxisKey ? item[yAxisKey] : undefined,
         values: valuesKey.map((key: string) => item[key])
       } as ChartData)
   ) ?? [];
