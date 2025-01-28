@@ -1,4 +1,5 @@
-import {lfxColors} from "./app/components/config/colors";
+import {lfxColors} from "~/components/config/styles/colors";
+import {lfxFontSizes} from "~/components/config/styles/font-size.js";
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -10,14 +11,7 @@ export default {
       secondary: ['var(--lfx-font-secondary)', 'sans-serif'],
     },
     fontSize: {
-      'xs': ['var(--lfx-font-size-xs)'],
-      'sm': ['var(--lfx-font-size-sm)'],
-      'base': ['var(--lfx-font-size-base)'],
-      'lg': ['var(--lfx-font-size-lg)'],
-      'xl': ['var(--lfx-font-size-xl)'],
-      '2xl': ['var(--lfx-font-size-2xl)'],
-      '3xl': ['var(--lfx-font-size-3xl)'],
-      '4xl': ['var(--lfx-font-size-4xl)'],
+      ...lfxFontSizes,
       'data-display-1': ['var(--lfx-text-data-display-1-font-size)', 'var(--lfx-text-data-display-1-line-height)'],
       'data-display-2': ['var(--lfx-text-data-display-2-font-size)', 'var(--lfx-text-data-display-2-line-height)'],
       'heading-1': ['var(--lfx-text-heading-1-font-size)', 'var(--lfx-text-heading-1-line-height)'],
@@ -28,13 +22,30 @@ export default {
       'body-2': ['var(--lfx-text-body-2-font-size)', 'var(--lfx-text-body-2-line-height)'],
     },
 
+    boxShadow: {
+      DEFAULT: 'var(--lfx-shadow-default)',
+      none: 'var(--lfx-shadow-none)',
+      sm: 'var(--lfx-shadow-sm)',
+      md: 'var(--lfx-shadow-md)',
+      lg: 'var(--lfx-shadow-lg)',
+      xl: 'var(--lfx-shadow-xl)',
+      '2xl': 'var(--lfx-shadow-2xl)',
+    },
+
+    borderRadius: {
+      none: '0',
+      sm: 'var(--lfx-radius-sm)',
+      DEFAULT: 'var(--lfx-radius-default)',
+      md: 'var(--lfx-radius-md)',
+      lg: 'var(--lfx-radius-lg)',
+      xl: 'var(--lfx-radius-xl)',
+      '2xl': 'var(--lfx-radius-2xl)',
+      '3xl': 'var(--lfx-radius-3xl)',
+      full: '9999px',
+
+    },
+
     extend: {
-      boxShadow: {
-        DEFAULT: 'var(--shadow-default)',
-      },
-      borderColor: {
-        DEFAULT: 'var(--lfx-color-gray-200)',
-      },
     },
   },
   plugins: [],
