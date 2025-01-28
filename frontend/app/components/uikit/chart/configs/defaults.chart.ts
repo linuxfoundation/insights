@@ -1,5 +1,5 @@
 import { axisLabelFormatter } from '../helpers/formatters';
-import {lfxColors} from "~/components/config/colors";
+import { lfxColors } from '~/components/config/colors';
 
 const defaultOption: ECOption = {
   xAxis: {
@@ -32,7 +32,8 @@ const defaultOption: ECOption = {
         type: 'dashed',
         color: lfxColors.neutral[200]
       },
-      showMinLine: false
+      showMinLine: false,
+      show: true
     }
   }
 };
