@@ -51,8 +51,7 @@ const changeChartType = (type: 'line' | 'bar' | 'graph-only' | 'geo-map' | 'scat
   chartType.value = type;
 };
 const changeData = () => {
-  const tmp =
-    data.value?.map((item: RawChartData) => ({
+  const tmp = data.value?.map((item: RawChartData) => ({
       BUCKET_DT_FROM: item.BUCKET_DT_FROM,
       BUCKET_DT_TO: item.BUCKET_DT_TO,
       IS_SUMMARY: item.IS_SUMMARY,
