@@ -4,7 +4,7 @@ import type {
 
 export interface ChartSeries {
   name: string;
-  type: 'line' | 'bar' | 'map';
+  type: 'line' | 'bar' | 'map' | 'scatter';
   yAxisIndex: number;
   dataIndex: number;
   color?: string;
@@ -14,7 +14,18 @@ export interface ChartSeries {
 
 export interface ChartData {
   key: string;
+  yAxisKey?: string;
   values: number[];
+}
+
+export interface CategoryDataItem {
+  key: string;
+  value: string;
+}
+// For charts the don't use date series like scatter, we need to pass in the category data
+export interface CategoryData {
+  xAxis: CategoryDataItem[];
+  yAxis: CategoryDataItem[];
 }
 
 export type RawChartData = Record<string, string | number | boolean | null>;
