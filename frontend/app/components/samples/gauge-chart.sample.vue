@@ -1,7 +1,13 @@
 <template>
-  <div style="width: 100%; height: 400px">
-    <lfx-chart :config="getGaugeChartConfig(chartData)" />
+  <div style="width: 100%; height: 400px" class="flex justify-center items-center">
+    <div class="w-1/2" style="height: 400px">
+      <lfx-chart id="chartHalf" :config="getGaugeChartConfig(chartData)" />
+    </div>
+    <div class="w-1/2" style="height: 120px">
+      <lfx-chart id="chartFull" :config="getGaugeChartConfig(chartDataFull)" />
+    </div>
   </div>
+  <span style="font-size: 24px; font-family: Inter">90</span>
 </template>
 
 <script setup lang="ts">
@@ -11,9 +17,16 @@ import { getGaugeChartConfig } from '~/components/uikit/chart/configs/gauge.char
 import { lfxColors } from '~/components/config/styles/colors';
 
 const chartData: GaugeData = {
-  value: 100, // 0-100
+  value: 1, // 0-100
   name: 'Excellent',
   gaugeType: 'half',
+  color: lfxColors.positive[500]
+};
+
+const chartDataFull: GaugeData = {
+  value: 100, // 0-100
+  name: '',
+  gaugeType: 'full',
   color: lfxColors.positive[500]
 };
 </script>

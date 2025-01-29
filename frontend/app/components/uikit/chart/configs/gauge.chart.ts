@@ -1,38 +1,13 @@
 import type { GaugeSeriesOption } from 'echarts';
 import type { GaugeData } from '../types/ChartTypes';
+import { defaultGaugeSeriesStyle } from './defaults.chart';
 import { lfxColors } from '~/components/config/styles/colors';
 
 // Not inheriting the default chart options here
-const defaultSeriesStyle: GaugeSeriesOption = {
-  type: 'gauge',
+const halfSeriesStyle: GaugeSeriesOption = {
+  ...defaultGaugeSeriesStyle,
   startAngle: 180,
   endAngle: 0,
-  pointer: {
-    show: false
-  },
-  progress: {
-    show: true,
-    overlap: false,
-    roundCap: true,
-    clip: false
-  },
-  axisLine: {
-    lineStyle: {
-      width: 10
-    }
-  },
-  splitLine: {
-    show: false,
-    distance: 0,
-    length: 10
-  },
-  axisTick: {
-    show: false
-  },
-  axisLabel: {
-    show: false,
-    distance: 50
-  },
   title: {
     width: 80,
     height: 20,
@@ -46,9 +21,67 @@ const defaultSeriesStyle: GaugeSeriesOption = {
   },
   detail: {
     fontSize: '60px',
+    fontFamily: 'Inter',
     color: lfxColors.black
-    // formatter: '{value}%'
   }
+};
+
+const fullSeriesStyle: GaugeSeriesOption = {
+  ...defaultGaugeSeriesStyle,
+  startAngle: 90,
+  endAngle: -270,
+  axisLine: {
+    lineStyle: {
+      width: 5
+    }
+  },
+  detail: {
+    fontSize: '24px',
+    fontFamily: 'Inter',
+    color: lfxColors.black
+  }
+};
+
+const halfDataOpts = {
+  title: {
+    offsetCenter: ['0%', '0%']
+  },
+  detail: {
+    valueAnimation: true,
+    offsetCenter: ['-10%', '-30%']
+  }
+};
+
+const fullDataOpts = {
+  title: {
+    offsetCenter: ['0%', '0%']
+  },
+  detail: {
+    valueAnimation: true,
+    offsetCenter: ['-18%', '5%']
+  }
+};
+
+const getMaxLabelElem = (value: number, maxVal?: number, gaugeType: 'half' | 'full' = 'half') => {
+  const maxValue = maxVal || 100;
+  const halfLeftPadding = [5, 15, 40][value.toString().length - 1];
+  const fullLeftPadding = [5, 10, 13][value.toString().length - 1];
+
+  return {
+    type: 'text',
+    left: '50%',
+    top: gaugeType === 'half' ? '38%' : '50%',
+    style: {
+      text: `/${maxValue}`, // ${space}/
+      fontSize: gaugeType === 'half' ? '20px' : '8px',
+      fontFamily: 'Inter',
+      padding: gaugeType === 'half' ? [0, 4, 0, halfLeftPadding] : [0, 0, 0, fullLeftPadding],
+      borderWidth: 1,
+      borderColor: 'transparent',
+      fill: lfxColors.neutral[400],
+      fontWeight: 400
+    }
+  };
 };
 
 /**
@@ -58,47 +91,22 @@ const defaultSeriesStyle: GaugeSeriesOption = {
  * @returns Chart config
  */
 export const getGaugeChartConfig = (data: GaugeData): ECOption => {
-  const gaugeSeries = { ...defaultSeriesStyle };
-  gaugeSeries.title = { ...defaultSeriesStyle.title, backgroundColor: data.color || lfxColors.brand[500] };
+  const gaugeSeries = { ...(data.gaugeType === 'half' ? halfSeriesStyle : fullSeriesStyle) };
+  gaugeSeries.title = { ...gaugeSeries.title, backgroundColor: data.color || lfxColors.brand[500] };
+  // data.name === '' ? undefined : ;
   gaugeSeries.data = [
     {
       value: data.value,
       name: data.name,
-      title: {
-        offsetCenter: ['0%', '0%']
-      },
-      detail: {
-        valueAnimation: true,
-        offsetCenter: ['-10%', '-30%']
-      }
+      ...(data.gaugeType === 'half' ? halfDataOpts : fullDataOpts)
     }
   ];
-
-  const maxValue = data.maxValue || 100;
-  const space = Array(data.value.toString().length - 1)
-    .fill('     ')
-    .join('');
 
   return {
     series: [gaugeSeries],
     graphic: {
       // TODO: Find a better way to do this
-      elements: [
-        {
-          type: 'text',
-          left: '50%',
-          top: '40%',
-          style: {
-            text: `${space}/${maxValue}`,
-            font: '20px Inter',
-            padding: [0, 175, 4, 0],
-            borderWidth: 1,
-            borderColor: 'transparent',
-            fill: lfxColors.neutral[400],
-            fontWeight: 400
-          }
-        }
-      ]
+      elements: [getMaxLabelElem(data.value, data.maxValue, data.gaugeType)]
     }
   };
 };
