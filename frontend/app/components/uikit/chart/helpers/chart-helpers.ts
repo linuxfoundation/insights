@@ -87,3 +87,15 @@ export const hexToRgba = (hex: string, alpha: number = 1): string => {
   // Return rgba string
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 };
+
+/**
+ * Converts ChartData array to array of numbers for scatter plot and
+ * heat map data points.
+ * @param data - Array of ChartData objects
+ * @returns Array of number arrays representing [x, y, value] coordinates
+ */
+export const convertToScatterData = (data: ChartData[]): number[][] => data.map(
+    (
+      item // data is formatted as [x, y, value]
+    ) => [parseInt(item.key, 10), parseInt(item.yAxisKey || '0', 10), item.values[0] || 0]
+  );

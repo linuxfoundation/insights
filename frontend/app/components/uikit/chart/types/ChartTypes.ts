@@ -19,8 +19,8 @@ export interface ChartData {
 }
 
 export interface CategoryDataItem {
-  key: string;
-  value: string;
+  key: string | number;
+  value: string | number;
 }
 // For charts the don't use date series like scatter, we need to pass in the category data
 export interface CategoryData {

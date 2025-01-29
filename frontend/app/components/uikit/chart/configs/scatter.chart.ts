@@ -4,8 +4,9 @@ import { punchCardFormatter } from '../helpers/formatters';
 import type {
  CategoryData, ChartData, ChartSeries, SeriesTypes
 } from '../types/ChartTypes';
+import { convertToScatterData } from '../helpers/chart-helpers';
 import defaultOption from './defaults.chart';
-import {lfxColors} from "~/components/config/styles/colors";
+import { lfxColors } from '~/components/config/styles/colors';
 
 const defaultScatterOption: ECOption = {
   ...defaultOption,
@@ -59,36 +60,25 @@ const defaultSeriesStyle: ScatterSeriesOption = {
 const applySeriesStyle = (chartSeries: ChartSeries[], data: number[][]): SeriesTypes[] => {
   if (!chartSeries) return [];
 
-  return chartSeries.map((seriesItem: ChartSeries, index: number) => {
+  // Find the maximum value in the current dataset
+  const maxValue = Math.max(...data.map((item) => item[2] || 0));
+
+  return chartSeries.map((seriesItem: ChartSeries) => {
     const baseStyle: ScatterSeriesOption = {
       ...defaultSeriesStyle,
       name: seriesItem.name,
-      color: seriesItem.color,
+      color: seriesItem.color || lfxColors.brand[500],
       symbolSize: (val: number[]) => {
         if (val.length <= 2) return 0;
         const value = val[2] || 0;
-        // Find the maximum value in the current dataset
-        const maxValue = Math.max(...data.map((item) => item[2] || 0));
 
         return normalizeSymbolSize(value, maxValue);
       },
       data
     };
-    baseStyle.color = chartSeries[index]?.color || lfxColors.brand[500];
     return baseStyle as SeriesTypes;
   });
 };
-
-/**
- * Converts ChartData array to array of numbers for scatter plot data points
- * @param data - Array of ChartData objects
- * @returns Array of number arrays representing [x, y, value] coordinates
- */
-const convertToScatterData = (data: ChartData[]): number[][] => data.map(
-    (
-      item // data is formatted as [x, y, value]
-    ) => [parseInt(item.key, 10), parseInt(item.yAxisKey || '0', 10), item.values[0] || 0]
-  );
 
 /**
  * Get scatter chart config. This function takes in the data and series and returns the chart config.
