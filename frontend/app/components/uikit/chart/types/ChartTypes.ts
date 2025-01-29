@@ -18,6 +18,14 @@ export interface ChartData {
   values: number[];
 }
 
+export interface GaugeData {
+  value: number;
+  name: string;
+  maxValue?: number;
+  color?: string;
+  gaugeType: 'half' | 'full';
+}
+
 export interface CategoryDataItem {
   key: string | number;
   value: string | number;
