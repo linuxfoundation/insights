@@ -39,6 +39,7 @@ const { data: scatterCardData } = await useAsyncData('scatter-data', () => $fetc
 const { data: heatMapData } = await useAsyncData('heat-map-data', () => $fetch('/api/heat-data'));
 
 const chartType = ref<'line' | 'bar' | 'graph-only' | 'geo-map' | 'scatter' | 'heatmap' | 'gauge'>('line');
+
 const chartData = ref<ChartData[]>(
   convertToChartData(data.value, 'BUCKET_DT_FROM', ['CUMULATIVE_ISSUES', 'ISSUES_OPENED', 'ISSUES_CLOSED'])
 );

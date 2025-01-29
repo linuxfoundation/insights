@@ -1,5 +1,5 @@
 <template>
-  <VChart :option="props.config" />
+  <VChart id="chart" :option="props.config" />
 </template>
 
 <script setup lang="ts">
