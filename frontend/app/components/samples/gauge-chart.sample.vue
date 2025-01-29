@@ -7,7 +7,6 @@
       <lfx-chart id="chartFull" :config="getGaugeChartConfig(chartDataFull)" />
     </div>
   </div>
-  <span style="font-size: 24px; font-family: Inter">90</span>
 </template>
 
 <script setup lang="ts">
