@@ -1,5 +1,6 @@
+import type { GaugeSeriesOption } from 'echarts';
 import { axisLabelFormatter } from '../helpers/formatters';
-import {lfxColors} from "~/components/config/styles/colors";
+import { lfxColors } from '~/components/config/styles/colors';
 
 const defaultOption: ECOption = {
   xAxis: {
@@ -53,6 +54,36 @@ export const defaultGraphOnlyOption: ECOption = {
   },
   yAxis: {
     show: false
+  }
+};
+
+export const defaultGaugeSeriesStyle: GaugeSeriesOption = {
+  type: 'gauge',
+  pointer: {
+    show: false
+  },
+  progress: {
+    show: true,
+    overlap: false,
+    roundCap: true,
+    clip: false
+  },
+  axisLine: {
+    lineStyle: {
+      width: 10
+    }
+  },
+  splitLine: {
+    show: false,
+    distance: 0,
+    length: 10
+  },
+  axisTick: {
+    show: false
+  },
+  axisLabel: {
+    show: false,
+    distance: 50
   }
 };
 

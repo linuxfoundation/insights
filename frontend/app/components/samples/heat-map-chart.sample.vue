@@ -1,5 +1,5 @@
 <template>
-  <div style="width: 100%; height: 180px">
+  <div style="width: 60%; height: 180px">
     <lfx-chart :config="getHeatMapChartConfig(props.chartData, chartSeries, categoryData)" />
   </div>
 </template>
