@@ -18,28 +18,6 @@ const halfSeriesStyle: GaugeSeriesOption = {
     borderWidth: 0,
     fontFamily: 'Inter',
     color: lfxColors.white
-  },
-  detail: {
-    color: lfxColors.black,
-    formatter: '{a|{value}}{b|/100}',
-    rich: {
-      a: {
-        fontSize: '60px',
-        fontWeight: 500,
-        fontFamily: 'Inter',
-        color: lfxColors.black,
-        align: 'center',
-        padding: [0, 5, 0, 0]
-      },
-      b: {
-        fontSize: '20px',
-        fontWeight: 400,
-        fontFamily: 'Inter',
-        align: 'center',
-        color: lfxColors.black,
-        padding: [40, 0, 20, 0]
-      }
-    }
   }
 };
 
