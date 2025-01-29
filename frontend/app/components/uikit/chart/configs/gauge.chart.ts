@@ -20,9 +20,69 @@ const halfSeriesStyle: GaugeSeriesOption = {
     color: lfxColors.white
   },
   detail: {
-    fontSize: '60px',
-    fontFamily: 'Inter',
-    color: lfxColors.black
+    color: lfxColors.black,
+    formatter: '{a|{value}}{b|/100}',
+    rich: {
+      a: {
+        fontSize: '60px',
+        fontWeight: 500,
+        fontFamily: 'Inter',
+        color: lfxColors.black,
+        align: 'center',
+        padding: [0, 5, 0, 0]
+      },
+      b: {
+        fontSize: '20px',
+        fontWeight: 400,
+        fontFamily: 'Inter',
+        align: 'center',
+        color: lfxColors.black,
+        padding: [40, 0, 20, 0]
+      }
+    }
+  }
+};
+
+const halfDetail: GaugeSeriesOption['detail'] = {
+  color: lfxColors.black,
+  formatter: '{a|{value}}{b|/100}',
+  rich: {
+    a: {
+      fontSize: '60px',
+      fontWeight: 500,
+      fontFamily: 'Inter',
+      color: lfxColors.black,
+      align: 'center',
+      padding: [0, 5, 0, 0]
+    },
+    b: {
+      fontSize: '20px',
+      fontWeight: 400,
+      fontFamily: 'Inter',
+      align: 'center',
+      color: lfxColors.black,
+      padding: [40, 0, 20, 0]
+    }
+  }
+};
+
+const fullDetail: GaugeSeriesOption['detail'] = {
+  formatter: '{a|{value}}{b|/100}',
+  rich: {
+    a: {
+      fontSize: '24px',
+      fontWeight: 600,
+      fontFamily: 'Inter',
+      align: 'center',
+      padding: [0, 5, 0, 0]
+    },
+    b: {
+      fontSize: '8px',
+      fontWeight: 400,
+      fontFamily: 'Inter',
+      align: 'center',
+      padding: [25, 0, 20, 0]
+    }
   }
 };
 
@@ -48,7 +108,7 @@ const halfDataOpts = {
   },
   detail: {
     valueAnimation: true,
-    offsetCenter: ['-10%', '-30%']
+    offsetCenter: ['0%', '-30%']
   }
 };
 
@@ -58,30 +118,8 @@ const fullDataOpts = {
   },
   detail: {
     valueAnimation: true,
-    offsetCenter: ['-18%', '5%']
+    offsetCenter: ['0%', '0%']
   }
-};
-
-const getMaxLabelElem = (value: number, maxVal?: number, gaugeType: 'half' | 'full' = 'half') => {
-  const maxValue = maxVal || 100;
-  const halfLeftPadding = [5, 15, 40][value.toString().length - 1];
-  const fullLeftPadding = [5, 10, 13][value.toString().length - 1];
-
-  return {
-    type: 'text',
-    left: '50%',
-    top: gaugeType === 'half' ? '38%' : '50%',
-    style: {
-      text: `/${maxValue}`, // ${space}/
-      fontSize: gaugeType === 'half' ? '20px' : '8px',
-      fontFamily: 'Inter',
-      padding: gaugeType === 'half' ? [0, 4, 0, halfLeftPadding] : [0, 0, 0, fullLeftPadding],
-      borderWidth: 1,
-      borderColor: 'transparent',
-      fill: lfxColors.neutral[400],
-      fontWeight: 400
-    }
-  };
 };
 
 /**
@@ -92,6 +130,10 @@ const getMaxLabelElem = (value: number, maxVal?: number, gaugeType: 'half' | 'fu
  */
 export const getGaugeChartConfig = (data: GaugeData): ECOption => {
   const gaugeSeries = { ...(data.gaugeType === 'half' ? halfSeriesStyle : fullSeriesStyle) };
+  gaugeSeries.detail = {
+    ...(data.gaugeType === 'half' ? halfDetail : fullDetail),
+    formatter: `{a|{value}}{b|/${data.maxValue || 100}}`
+  };
   gaugeSeries.title = { ...gaugeSeries.title, backgroundColor: data.color || lfxColors.brand[500] };
   // data.name === '' ? undefined : ;
   gaugeSeries.data = [
@@ -103,10 +145,6 @@ export const getGaugeChartConfig = (data: GaugeData): ECOption => {
   ];
 
   return {
-    series: [gaugeSeries],
-    graphic: {
-      // TODO: Find a better way to do this
-      elements: [getMaxLabelElem(data.value, data.maxValue, data.gaugeType)]
-    }
+    series: [gaugeSeries]
   };
 };

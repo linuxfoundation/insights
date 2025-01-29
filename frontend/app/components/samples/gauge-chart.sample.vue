@@ -3,7 +3,7 @@
     <div class="w-1/2" style="height: 400px">
       <lfx-chart id="chartHalf" :config="getGaugeChartConfig(chartData)" />
     </div>
-    <div class="w-1/2" style="height: 120px">
+    <div class="w-1/2" style="height: 100px">
       <lfx-chart id="chartFull" :config="getGaugeChartConfig(chartDataFull)" />
     </div>
   </div>
@@ -17,14 +17,14 @@ import { getGaugeChartConfig } from '~/components/uikit/chart/configs/gauge.char
 import { lfxColors } from '~/components/config/styles/colors';
 
 const chartData: GaugeData = {
-  value: 1, // 0-100
+  value: 10, // 0-100
   name: 'Excellent',
   gaugeType: 'half',
   color: lfxColors.positive[500]
 };
 
 const chartDataFull: GaugeData = {
-  value: 100, // 0-100
+  value: 99, // 0-100
   name: '',
   gaugeType: 'full',
   color: lfxColors.positive[500]
