@@ -1,11 +1,12 @@
 <template>
-  <VChart :option="props.config" />
+  <VChart id="chart" :option="props.config" />
 </template>
 
 <script setup lang="ts">
 import { registerMap } from 'echarts';
 import world from './configs/world.json';
 import type { SeriesTypes } from '~/components/uikit/chart/types/ChartTypes';
+// import * as echarts from 'echarts';
 
 const props = defineProps<{
   config: ECOption;
@@ -21,6 +22,11 @@ onBeforeMount(() => {
     }
   });
 });
+
+// onMounted(() => {
+//   const chart = echarts.getInstanceByDom(document.getElementById('chart'));
+//   console.log(chart?.ren);
+// });
 </script>
 
 <script lang="ts">
