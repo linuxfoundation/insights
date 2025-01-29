@@ -15,7 +15,7 @@ const props = withDefaults(defineProps<{
 });
 
 const sizeStyle = computed(() => ({
-    "--lf-icon-size": `${(props.size / 16)}rem`
+    "--lfx-icon-size": `${(props.size / 16)}rem`
 }));
 </script>
 
