@@ -5,6 +5,13 @@ import {lfxFontSizes} from "./app/components/config/styles/font-size.ts";
 export default {
   content: [],
   theme: {
+    screens:{
+      sm: '640px',
+      md: '768px',
+      lg: '1080px',
+      xl: '1280px',
+      '2xl': '1440px',
+    },
     colors: lfxColors,
     fontFamily: {
       primary: ['var(--lfx-font-primary)', 'sans-serif'],
@@ -46,6 +53,12 @@ export default {
     },
 
     extend: {
+      height: {
+        18: '4.5rem',
+      },
+      outlineWidth:{
+        3: '0.1875rem'
+      }
     },
   },
   plugins: [],

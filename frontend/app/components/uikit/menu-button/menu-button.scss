@@ -1,0 +1,22 @@
+.c-menu-button {
+  @apply flex items-center gap-2 px-3 py-2 rounded-full text-sm text-neutral-500 font-medium;
+  @apply cursor-pointer outline outline-3 outline-transparent transition select-none whitespace-nowrap;
+
+  &:hover{
+    @apply bg-neutral-50;
+  }
+
+  &:active{
+    @apply outline-brand-200
+  }
+
+  &.is-active{
+    // To maintain text width
+    letter-spacing: -0.005em;
+    @apply bg-brand-50 font-semibold text-neutral-900;
+
+    .c-icon{
+      @apply text-brand-500 font-black;
+    }
+  }
+}
