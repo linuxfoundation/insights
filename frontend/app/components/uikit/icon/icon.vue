@@ -7,7 +7,7 @@ import {computed} from "vue";
 
 const props = withDefaults(defineProps<{
   name: string,
-  type?: "light" | "regular" | "solid" | "duotone" | "brands",
+  type?: "light" | "regular" | "solid" | "duotone",
   size?: number,
 }>(), {
     type: "light",
