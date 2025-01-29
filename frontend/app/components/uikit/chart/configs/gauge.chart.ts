@@ -123,9 +123,8 @@ const fullDataOpts = {
 };
 
 /**
- * Get heat map chart config. This function takes in the data and series and returns the chart config.
- * @param data - Data
- * @param series - Series
+ * Get gauge chart config. This function generates the configuration for half or full gauge charts.
+ * @param data - GaugeData containing value, name, gaugeType, color, and optional maxValue
  * @returns Chart config
  */
 export const getGaugeChartConfig = (data: GaugeData): ECOption => {
