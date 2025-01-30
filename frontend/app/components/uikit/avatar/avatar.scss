@@ -1,18 +1,34 @@
 .p-avatar {
-  @apply h-8 w-8 overflow-hidden rounded-md border border-neutral-300 border-solid inline-block bg-white;
+  @apply h-8 w-8 overflow-hidden rounded-md border border-neutral-200 border-solid inline-block;
   &.p-avatar-circle {
     @apply rounded-full;
   }
-  .p-avatar-label {
+  &.has-image {
+    @apply border-0;
+  }
+  .p-avatar-label, .p-avatar-icon {
     @apply flex items-center justify-center block h-full;
   }
   
   &.p-avatar-lg {
-    @apply h-10 w-10;
+    @apply h-12 w-12;
+    .p-avatar-label, .p-avatar-icon {
+      @apply text-xl;
+    }
   }
 
   &.p-avatar-xl {
-    @apply h-12 w-12;
+    @apply h-16 w-16;
+    .p-avatar-label, .p-avatar-icon {
+      @apply text-3xl;
+    }
+  }
+
+  &.p-avatar-sm {
+    @apply h-6 w-6;
+    .p-avatar-label, .p-avatar-icon {
+      @apply text-xs;
+    }
   }
 }
 
