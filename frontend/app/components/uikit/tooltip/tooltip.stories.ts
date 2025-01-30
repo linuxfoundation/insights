@@ -42,3 +42,24 @@ export const Default = {
     default: 'Hover me'
   }
 };
+
+export const CustomContent = {
+  label: 'Custom Content',
+  args: {
+    placement: 'bottom',
+    disabled: false,
+    default: 'Hover me'
+  },
+  render: (args) => ({
+    components: { LfxTooltip },
+    template: `<lfx-tooltip placement="${args.placement}">
+      <template #content>
+        <h4>Header In Tooltip</h4>
+        <div>
+          <p>Custom content</p>
+        </div>
+      </template>
+      <span>Hover me</span>
+    </lfx-tooltip>`
+  })
+};

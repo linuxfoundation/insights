@@ -3,7 +3,7 @@
 
   &__content{
     @apply text-xs font-semibold text-white bg-black rounded-md bg-neutral-900 px-3 py-2;
-    @apply absolute w-max invisible opacity-0 transition duration-200 z-10 text-center;
+    @apply absolute w-max invisible opacity-0 transition duration-200 z-10 text-center max-w-md;
   }
 
   &:hover{
