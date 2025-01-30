@@ -1,0 +1,19 @@
+.p-avatar {
+  @apply h-8 w-8 overflow-hidden rounded-md border border-neutral-300 border-solid inline-block bg-white;
+  &.p-avatar-circle {
+    @apply rounded-full;
+  }
+  .p-avatar-label {
+    @apply flex items-center justify-center block h-full;
+  }
+  
+  &.p-avatar-lg {
+    @apply h-10 w-10;
+  }
+
+  &.p-avatar-xl {
+    @apply h-12 w-12;
+  }
+}
+
+/* p-component p-avatar-circle  */

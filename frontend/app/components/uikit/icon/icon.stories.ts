@@ -9,26 +9,26 @@ export default {
     name: {
       description: 'Specifies icon name',
       defaultValue: '',
-      control: 'text',
+      control: 'text'
     },
     type: {
       description: 'Specifies icon type',
       defaultValue: 'light',
       control: 'select',
-      options: ["light", "regular", "solid", "duotone"],
+      options: ['light', 'regular', 'solid', 'duotone']
     },
     size: {
       description: 'Specifies icon size in px',
       defaultValue: '16',
-      control: 'number',
-    },
-  },
+      control: 'number'
+    }
+  }
 };
 
 export const Default = {
   args: {
     name: 'compass',
     type: 'light',
-    size: 48,
-  },
+    size: 48
+  }
 };
