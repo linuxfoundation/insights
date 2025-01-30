@@ -1,4 +1,5 @@
 import LfxAvatar from './Avatar.vue';
+import { avatarShapes, avatarSizes } from './types/Avatar.types';
 
 export default {
   title: 'LinuxFoundation/Avatar',
@@ -12,12 +13,12 @@ export default {
     size: {
       description: 'Size of the avatar',
       control: 'select',
-      options: ['xlarge', 'large', 'normal']
+      options: avatarSizes
     },
     shape: {
       description: 'Shape of the avatar',
       control: 'select',
-      options: ['circle', 'square']
+      options: avatarShapes
     },
     src: {
       description: 'Source of the avatar',
@@ -29,7 +30,6 @@ export default {
 };
 
 export const Default = {
-  label: 'Primary',
   args: {
     name: 'Sample Name',
     size: 'normal',
@@ -39,11 +39,24 @@ export const Default = {
 };
 
 export const TextOnly = {
-  label: 'Primary',
+  args: {
+    name: 'Sample Name',
+    size: 'normal',
+    shape: 'circle'
+  }
+};
+
+export const IconOnly = {
   args: {
     name: 'Sample Name',
     size: 'normal',
     shape: 'circle',
+    icon: 'fa-solid fa-user',
     class: 'bg-brand-500'
-  }
+  },
+  render: (args) => ({
+    components: { LfxAvatar },
+    template: `<lfx-avatar name="${args.name}" size="${args.size}" 
+      shape="${args.shape}" icon="${args.icon}" class="${args.class}" />`
+  })
 };
