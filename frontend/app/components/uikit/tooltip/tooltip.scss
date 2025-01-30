@@ -1,0 +1,45 @@
+.lfx-tooltip{
+  @apply relative w-fit h-fit flex;
+
+  &__content{
+    @apply text-xs font-semibold text-white bg-black rounded-md bg-neutral-900 px-3 py-2;
+    @apply absolute w-max invisible opacity-0 transition duration-200 z-10 text-center;
+  }
+
+  &:hover{
+    .lfx-tooltip__content{
+      @apply opacity-100 visible;
+    }
+  }
+
+  &--top{
+    .lfx-tooltip__content{
+      @apply bottom-full left-1/2 transform -translate-x-1/2;
+    }
+  }
+
+  &--bottom{
+    .lfx-tooltip__content{
+      @apply top-full left-1/2 transform -translate-x-1/2;
+    }
+  }
+
+
+  &--left {
+    .lfx-tooltip__content{
+      @apply right-full top-1/2 transform -translate-y-1/2;
+    }
+  }
+
+  &--right {
+    .lfx-tooltip__content{
+      @apply left-full top-1/2 transform -translate-y-1/2;
+    }
+  }
+
+  &--disabled{
+    .lfx-tooltip__content{
+      @apply hidden;
+    }
+  }
+}

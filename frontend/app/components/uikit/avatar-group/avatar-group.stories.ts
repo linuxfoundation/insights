@@ -8,7 +8,7 @@ export default {
   argTypes: {
     // Slots
     default: {
-      description: 'Text or html content of the button',
+      description: 'List of avatars',
       control: {
         type: null
       }
