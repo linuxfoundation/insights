@@ -9,7 +9,6 @@
       <lfx-button type="secondary" @click="changeChartType('scatter')"> Scatter Chart </lfx-button>
       <lfx-button type="secondary" @click="changeChartType('heatmap')"> Heat Map Chart </lfx-button>
       <lfx-button type="secondary" @click="changeChartType('gauge')"> Gauge Chart </lfx-button>
-      <lfx-avatar name="Sample Name" size="large" class="bg-brand-500" />
     </div>
 
     <lfx-line-chart-sample v-if="chartType === 'line'" :chart-data="chartData" />
@@ -34,7 +33,6 @@ import LfxGeoMapSample from '~/components/samples/geo-map.sample.vue';
 import LfxScatterChartSample from '~/components/samples/scatter-chart.sample.vue';
 import LfxHeatMapChartSample from '~/components/samples/heat-map-chart.sample.vue';
 import LfxGaugeChartSample from '~/components/samples/gauge-chart.sample.vue';
-import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
 
 const { data } = await useAsyncData('chart-data', () => $fetch('/api/issues-data'));
 const { data: scatterCardData } = await useAsyncData('scatter-data', () => $fetch('/api/scatter-data'));
@@ -53,7 +51,8 @@ const changeChartType = (type: 'line' | 'bar' | 'graph-only' | 'geo-map' | 'scat
   chartType.value = type;
 };
 const changeData = () => {
-  const tmp = data.value?.map((item: RawChartData) => ({
+  const tmp =
+    data.value?.map((item: RawChartData) => ({
       BUCKET_DT_FROM: item.BUCKET_DT_FROM,
       BUCKET_DT_TO: item.BUCKET_DT_TO,
       IS_SUMMARY: item.IS_SUMMARY,
