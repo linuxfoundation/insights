@@ -1,40 +1,35 @@
 <template>
   <pv-avatar
-    :label="label"
-    :icon="props.icon"
+    :icon="icon"
     :image="props.src"
-    :shape="props.shape"
+    :shape="props.type === 'user' ? 'circle' : 'square'"
     :size="props.size"
-    :class="classes" />
+    :class="{ [`type-${props.type}`]: true, 'p-avatar-sm': props.size === 'small', 'has-image': props.src }" />
 </template>
 
 <script setup lang="ts">
-import type { AvatarSize, AvatarShape } from './types/Avatar.types';
+import type { AvatarSize, AvatarType } from './types/Avatar.types';
+import { AvatarIcons } from './types/Avatar.types';
 
 const props = withDefaults(
   defineProps<{
-    name: string;
+    type: AvatarType;
     size?: AvatarSize;
-    shape?: AvatarShape;
     src?: string;
-    icon?: string;
   }>(),
   {
     size: 'normal',
-    shape: 'circle',
-    src: undefined,
-    icon: undefined
+    type: 'user',
+    src: undefined
   }
 );
 
-const label = computed(() => (props.src || props.icon ? undefined : props.name.charAt(0)));
-// PrimeVue Avatar component doesn't support small size
-const classes = computed(() => {
-  let cls = props.size === 'small' ? 'p-avatar-sm' : undefined;
+const icon = computed(() => {
   if (props.src) {
-    cls = cls ? `${cls} has-image` : 'has-image';
+    return undefined;
   }
-  return cls;
+
+  return props.type === 'user' ? AvatarIcons.User : AvatarIcons.Organization;
 });
 </script>
 

@@ -23,9 +23,9 @@ export const Default = {
   render: (args) => ({
     components: { LfxAvatarGroup, LfxAvatar },
     template: `<lfx-avatar-group>
-      <lfx-avatar name="${args.name}" size="normal" class="bg-brand-500" />
-      <lfx-avatar name="${args.name}" size="normal" class="bg-brand-500" />
-      <lfx-avatar name="${args.name}" size="normal" class="bg-brand-500" />
+      <lfx-avatar name="${args.name}" size="normal" />
+      <lfx-avatar name="${args.name}" size="normal" />
+      <lfx-avatar name="${args.name}" size="normal" />
     </lfx-avatar-group>`
   })
 };
@@ -37,9 +37,9 @@ export const Small = {
   render: (args) => ({
     components: { LfxAvatarGroup, LfxAvatar },
     template: `<lfx-avatar-group>
-      <lfx-avatar name="${args.name}" size="small" class="bg-brand-500" />
-      <lfx-avatar name="${args.name}" size="small" class="bg-brand-500" />
-      <lfx-avatar name="${args.name}" size="small" class="bg-brand-500" />
+      <lfx-avatar name="${args.name}" size="small" />
+      <lfx-avatar name="${args.name}" size="small" />
+      <lfx-avatar name="${args.name}" size="small" />
     </lfx-avatar-group>`
   })
 };
@@ -51,9 +51,9 @@ export const Large = {
   render: (args) => ({
     components: { LfxAvatarGroup, LfxAvatar },
     template: `<lfx-avatar-group>
-      <lfx-avatar name="${args.name}" size="large" class="bg-brand-500" />
-      <lfx-avatar name="${args.name}" size="large" class="bg-brand-500" />
-      <lfx-avatar name="${args.name}" size="large" class="bg-brand-500" />
+      <lfx-avatar name="${args.name}" size="large" />
+      <lfx-avatar name="${args.name}" size="large" />
+      <lfx-avatar name="${args.name}" size="large" />
     </lfx-avatar-group>`
   })
 };
@@ -65,9 +65,9 @@ export const XLarge = {
   render: (args) => ({
     components: { LfxAvatarGroup, LfxAvatar },
     template: `<lfx-avatar-group>
-      <lfx-avatar name="${args.name}" size="xlarge" class="bg-brand-500" />
-      <lfx-avatar name="${args.name}" size="xlarge" class="bg-brand-500" />
-      <lfx-avatar name="${args.name}" size="xlarge" class="bg-brand-500" />
+      <lfx-avatar name="${args.name}" size="xlarge" />
+      <lfx-avatar name="${args.name}" size="xlarge" />
+      <lfx-avatar name="${args.name}" size="xlarge" />
     </lfx-avatar-group>`
   })
 };

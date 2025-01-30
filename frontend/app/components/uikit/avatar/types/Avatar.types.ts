@@ -1,5 +1,10 @@
 export const avatarSizes = ['xlarge', 'large', 'normal', 'small'] as const;
-export const avatarShapes = ['circle', 'square'] as const;
+export const avatarTypes = ['user', 'organization'] as const;
+
+export enum AvatarIcons {
+  User = 'fa-solid fa-user',
+  Organization = 'fa-solid fa-building'
+}
 
 export type AvatarSize = (typeof avatarSizes)[number];
-export type AvatarShape = (typeof avatarShapes)[number];
+export type AvatarType = (typeof avatarTypes)[number];

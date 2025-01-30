@@ -1,24 +1,20 @@
-import LfxAvatar from './Avatar.vue';
-import { avatarShapes, avatarSizes } from './types/Avatar.types';
+import LfxAvatar from './avatar.vue';
+import { avatarTypes, avatarSizes } from './types/Avatar.types';
 
 export default {
   title: 'LinuxFoundation/Avatar',
   component: LfxAvatar,
   tags: ['autodocs'],
   argTypes: {
-    name: {
-      description: 'Name of the avatar',
-      control: 'text'
+    type: {
+      description: 'Type of the avatar',
+      control: 'select',
+      options: avatarTypes
     },
     size: {
       description: 'Size of the avatar',
       control: 'select',
       options: avatarSizes
-    },
-    shape: {
-      description: 'Shape of the avatar',
-      control: 'select',
-      options: avatarShapes
     },
     src: {
       description: 'Source of the avatar',
@@ -31,32 +27,30 @@ export default {
 
 export const Default = {
   args: {
-    name: 'Sample Name',
+    type: 'user',
     size: 'normal',
-    shape: 'circle',
     src: 'https://primefaces.org/cdn/primevue/images/organization/walter.jpg'
   }
 };
 
-export const TextOnly = {
+export const UserNoImage = {
   args: {
-    name: 'Sample Name',
-    size: 'normal',
-    shape: 'circle'
+    type: 'user',
+    size: 'normal'
   }
 };
 
-export const IconOnly = {
+export const OrganizationWithImage = {
   args: {
-    name: 'Sample Name',
+    type: 'organization',
     size: 'normal',
-    shape: 'circle',
-    icon: 'fa-solid fa-user',
-    class: 'bg-brand-500'
-  },
-  render: (args) => ({
-    components: { LfxAvatar },
-    template: `<lfx-avatar name="${args.name}" size="${args.size}" 
-      shape="${args.shape}" icon="${args.icon}" class="${args.class}" />`
-  })
+    src: 'https://static-00.iconduck.com/assets.00/linux-icon-256x256-773o7tyd.png'
+  }
+};
+
+export const OrganizationNoImage = {
+  args: {
+    type: 'organization',
+    size: 'normal'
+  }
 };
