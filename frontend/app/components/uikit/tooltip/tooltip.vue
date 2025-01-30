@@ -10,6 +10,8 @@
 </template>
 
 <script setup lang="ts">
+// Creating a custom component for tooltip instead of using PrimeVue Tooltip component
+// because PrimeVue Tooltip component is not very flexible and does not support all the features we need
 import type { TooltipPlacement } from './types/TooltipPlacement';
 
 const props = withDefaults(
