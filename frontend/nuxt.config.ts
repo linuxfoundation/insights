@@ -1,5 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-
+// import Aura from '@primevue/themes/aura';
 export default defineNuxtConfig({
   future: {
     compatibilityVersion: 4
@@ -39,10 +39,11 @@ export default defineNuxtConfig({
     autoImport: false,
     components: {
       prefix: 'pv',
-      include: ['Button', 'DataTable']
+      include: ['Button', 'DataTable', 'Avatar']
     },
     options: {
       theme: 'none' // This setting means we have to manually add styles to all the components
+      // preset: Aura
     }
   },
   echarts: {
