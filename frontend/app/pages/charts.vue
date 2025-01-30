@@ -1,6 +1,6 @@
 <template>
-  <div class="container">
-    <h1 class="text-primary-500 mb-20">Charts test page</h1>
+  <div class="container pt-8">
+    <h1 class="text-heading-1 font-semibold pb-4">Charts</h1>
     <div class="flex flex-row gap-2">
       <lfx-button @click="changeChartType('line')"> Line Chart </lfx-button>
       <lfx-button type="danger" @click="changeChartType('graph-only')"> Graph Only Chart </lfx-button>
