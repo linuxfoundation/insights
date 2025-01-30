@@ -14,7 +14,7 @@ export default {
       options: tooltipPlacements
     },
     content: {
-      description: 'Value for radio when selected',
+      description: 'Content of the tooltip',
       control: 'text'
     },
     disabled: {
@@ -25,7 +25,7 @@ export default {
 
     // Slots
     default: {
-      description: 'Text or html content of the radio',
+      description: 'Text or html content of the tooltip',
       control: {
         type: null
       }
@@ -52,14 +52,17 @@ export const CustomContent = {
   },
   render: (args) => ({
     components: { LfxTooltip },
-    template: `<lfx-tooltip placement="${args.placement}">
-      <template #content>
-        <h4>Header In Tooltip</h4>
-        <div>
-          <p>Custom content</p>
-        </div>
-      </template>
-      <span>Hover me</span>
-    </lfx-tooltip>`
+    template: `
+    <div style="height: 150px; display: flex; justify-content: center; align-items: center;">
+      <lfx-tooltip :placement="${args.placement}" :disabled="${args.disabled}">
+        <template #content>
+          <h4>Header In Tooltip</h4>
+          <div>
+            <p>Custom content</p>
+          </div>
+        </template>
+        <span>Hover me</span>
+      </lfx-tooltip>
+    </div>`
   })
 };
