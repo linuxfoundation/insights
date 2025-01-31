@@ -56,6 +56,9 @@ export default {
       height: {
         18: '4.5rem',
       },
+      spacing: {
+        header: '4.5625rem',
+      },
       outlineWidth:{
         3: '0.1875rem'
       }
