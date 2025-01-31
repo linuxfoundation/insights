@@ -1,0 +1,9 @@
+.p-selectbutton {
+  @apply flex bg-neutral-50 rounded-lg p-1 flex-row justify-evenly gap-1;
+  .p-togglebutton {
+    @apply text-neutral-500 w-full py-0.5 px-2 min-w-8 min-h-8 text-nowrap;
+    &.p-togglebutton-checked {
+      @apply bg-white text-neutral-900 rounded-md;
+    }
+  }
+}
