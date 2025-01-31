@@ -1,5 +1,5 @@
 import LfxButton from './button.vue';
-import { buttonTypes, iconPosition, buttonSizes } from './types/ButtonType';
+import { buttonTypes, iconPosition, buttonSizes } from './types/button.types';
 
 export default {
   title: 'LinuxFoundation/Button',
