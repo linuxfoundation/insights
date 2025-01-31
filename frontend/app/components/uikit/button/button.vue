@@ -11,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-import type { ButtonType, ButtonSize, IconPosition } from './types/ButtonType';
+import type { ButtonType, ButtonSize, IconPosition } from './types/button.types';
 
 const props = withDefaults(
   defineProps<{
