@@ -4,7 +4,8 @@
     v-bind="$attrs"
     :to="props.to"
     class="c-menu-button"
-    active-class="is-active"
+    :active-class="!props.exact ? 'is-active' : undefined"
+    :exact-active-class="props.exact ? 'is-active' : undefined"
     :class="{ 'is-active': props.active }"
   >
     <slot />
@@ -26,9 +27,11 @@
   const props = withDefaults(defineProps<{
     active?: boolean;
     to?: RouteLocationRaw;
+    exact?: boolean;
   }>(), {
     active: false,
     to: undefined,
+    exact: false,
   })
 </script>
 

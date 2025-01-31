@@ -55,6 +55,7 @@ export default withNuxt({
     'vue/html-indent': 'warn',
     'vue/html-self-closing': 'warn',
     'vue/html-button-has-type': 'warn',
+    'vue/no-multiple-template-root': 'off',
     'import/order': 'warn',
     'no-unused-vars': 'off',
     'vue/no-v-html': 'off',
