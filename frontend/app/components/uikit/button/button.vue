@@ -4,9 +4,9 @@
     :label="props.label"
     :icon="props.icon"
     :icon-position="props.iconPosition"
+    :loading="props.loading"
     :disabled="props.disabled">
-    <i v-if="props.loading" class="fa-sharp fa-light fa-spinner-third animate-spin" />
-    <slot v-else />
+    <slot :loading="props.loading" />
   </pv-button>
 </template>
 
@@ -27,7 +27,9 @@ const props = withDefaults(
     type: 'primary',
     size: 'medium',
     iconPosition: 'left',
-    disabled: false
+    disabled: false,
+    label: '',
+    icon: undefined
   }
 );
 </script>

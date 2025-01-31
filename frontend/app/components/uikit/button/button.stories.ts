@@ -1,6 +1,5 @@
 import LfxButton from './button.vue';
-import { buttonTypes, iconPosition } from './types/ButtonType';
-import { buttonSizes } from './types/ButtonType';
+import { buttonTypes, iconPosition, buttonSizes } from './types/ButtonType';
 
 export default {
   title: 'LinuxFoundation/Button',
@@ -89,5 +88,52 @@ export const WithIcons = {
     loading: false,
     icon: 'fa-solid fa-chart-line',
     iconPosition: 'left'
+  }
+};
+
+const customTmpl = `
+  <div class="flex flex-row gap-4">
+    <lfx-button v-bind="propsObj">
+      <template #default="buttonProps">
+        <i :class="buttonProps.loading ? 
+        'fa-sharp fa-light fa-spinner-third animate-spin' : 'fa-solid fa-chart-scatter'" />
+        Custom Button - Handle Loading State
+        <i class="fa-solid fa-chart-scatter" />
+      </template>
+    </lfx-button>
+    <lfx-button v-bind="propsObj">
+      <i class="fa-solid fa-chart-scatter" />
+      Custom Button - No State
+      <i class="fa-solid fa-chart-scatter" />
+    </lfx-button>
+  </div>`;
+
+export const CustomTemplate = {
+  label: 'Primary',
+  args: {
+    label: 'Button',
+    type: 'primary',
+    size: 'medium',
+    loading: false
+  },
+  render: (args, { argTypes }) => ({
+    components: { LfxButton },
+    props: Object.keys(argTypes),
+    template: customTmpl,
+    computed: {
+      propsObj() {
+        return args;
+      }
+    }
+  }),
+  parameters: {
+    docs: {
+      source: {
+        code: `
+<template>
+  ${customTmpl}
+</template>`
+      }
+    }
   }
 };
