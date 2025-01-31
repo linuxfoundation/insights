@@ -1,6 +1,6 @@
 <template>
-  <div class="container">
-    <h1 class="text-primary-500 mb-20">Charts test page</h1>
+  <div class="container pt-8">
+    <h1 class="text-heading-1 font-semibold pb-4">Charts</h1>
     <div class="p-4 bg-white">
       <lfx-tabs v-model="chartType" :tabs="chartTypes">
         <!-- <template #slotItem="{ option }">
