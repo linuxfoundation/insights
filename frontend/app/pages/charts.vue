@@ -1,14 +1,12 @@
 <template>
   <div class="container pt-8">
     <h1 class="text-heading-1 font-semibold pb-4">Charts</h1>
-    <div class="flex flex-row gap-2">
-      <lfx-button @click="changeChartType('line')"> Line Chart </lfx-button>
-      <lfx-button type="danger" @click="changeChartType('graph-only')"> Graph Only Chart </lfx-button>
-      <lfx-button type="secondary" @click="changeChartType('bar')"> Bar Chart </lfx-button>
-      <lfx-button type="secondary" @click="changeChartType('geo-map')"> Geo Map Chart </lfx-button>
-      <lfx-button type="secondary" @click="changeChartType('scatter')"> Scatter Chart </lfx-button>
-      <lfx-button type="secondary" @click="changeChartType('heatmap')"> Heat Map Chart </lfx-button>
-      <lfx-button type="secondary" @click="changeChartType('gauge')"> Gauge Chart </lfx-button>
+    <div class="p-4 bg-white">
+      <lfx-tabs v-model="chartType" :tabs="chartTypes">
+        <!-- <template #slotItem="{ option }">
+          <span class="text-neutral-500">{{ option.label }}123</span>
+        </template> -->
+      </lfx-tabs>
     </div>
 
     <lfx-line-chart-sample v-if="chartType === 'line'" :chart-data="chartData" />
@@ -33,12 +31,31 @@ import LfxGeoMapSample from '~/components/samples/geo-map.sample.vue';
 import LfxScatterChartSample from '~/components/samples/scatter-chart.sample.vue';
 import LfxHeatMapChartSample from '~/components/samples/heat-map-chart.sample.vue';
 import LfxGaugeChartSample from '~/components/samples/gauge-chart.sample.vue';
+import LfxTabs from '~/components/uikit/tabs/tabs.vue';
 
 const { data } = await useAsyncData('chart-data', () => $fetch('/api/issues-data'));
 const { data: scatterCardData } = await useAsyncData('scatter-data', () => $fetch('/api/scatter-data'));
 const { data: heatMapData } = await useAsyncData('heat-map-data', () => $fetch('/api/heat-data'));
 
 const chartType = ref<'line' | 'bar' | 'graph-only' | 'geo-map' | 'scatter' | 'heatmap' | 'gauge'>('line');
+// const chartTypes = ref([
+//   { value: 'line', label: 'Line Chart' },
+//   { value: 'bar', label: 'Bar Chart' },
+//   { value: 'graph-only', label: 'Graph Only Chart' },
+//   { value: 'geo-map', label: 'Geo Map Chart' },
+//   { value: 'scatter', label: 'Scatter Chart' },
+//   { value: 'heatmap', label: 'Heat Map Chart' },
+//   { value: 'gauge', label: 'Gauge Chart' }
+// ]);
+const chartTypes = ref([
+  { value: 'line', label: 'Line Chart', icon: 'fa-solid fa-chart-line' },
+  { value: 'bar', label: 'Bar Chart', icon: 'fa-solid fa-chart-bar' },
+  { value: 'graph-only', label: 'Graph Only Chart', icon: 'fa-solid fa-chart-line' },
+  { value: 'geo-map', label: 'Geo Map Chart', icon: 'fa-solid fa-map' },
+  { value: 'scatter', label: 'Scatter Chart', icon: 'fa-solid fa-chart-scatter' },
+  { value: 'heatmap', label: 'Heat Map Chart', icon: 'fa-solid fa-chart-tree-map' },
+  { value: 'gauge', label: 'Gauge Chart', icon: 'fa-solid fa-gauge' }
+]);
 
 const chartData = ref<ChartData[]>(
   convertToChartData(data.value, 'BUCKET_DT_FROM', ['CUMULATIVE_ISSUES', 'ISSUES_OPENED', 'ISSUES_CLOSED'])
@@ -47,9 +64,6 @@ const chartData = ref<ChartData[]>(
 const scatterChartData = ref<ChartData[]>(convertToChartData(scatterCardData.value, 'DAY', ['COMMITS'], 'HOUR'));
 const heatMapChartData = ref<ChartData[]>(convertToChartData(heatMapData.value, 'HOUR', ['COMMITS'], 'DAY'));
 
-const changeChartType = (type: 'line' | 'bar' | 'graph-only' | 'geo-map' | 'scatter' | 'heatmap' | 'gauge') => {
-  chartType.value = type;
-};
 const changeData = () => {
   const tmp = data.value?.map((item: RawChartData) => ({
       BUCKET_DT_FROM: item.BUCKET_DT_FROM,
