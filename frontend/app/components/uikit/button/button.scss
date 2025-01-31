@@ -1,41 +1,59 @@
 /* TODO: This a temporary styling until we have a proper design system */
 .p-button {
-  @apply bg-brand-500 border-0 text-white p-2 flex items-center gap-2 rounded;
+  @apply bg-brand-500 border-0 text-white px-4 py-2 flex items-center gap-2 rounded-lg;
+  @apply text-sm;
+
+  &:enabled:hover {
+    @apply bg-brand-600;
+  }
+
+  &:enabled:active {
+    @apply bg-brand-500 outline outline-brand-200 outline-[3px];
+  }
+
+  &:disabled {
+    @apply bg-brand-200 cursor-not-allowed;
+  }
 
   &-secondary {
-    @apply bg-neutral-500;
+    @apply bg-brand-50 text-brand-500 font-semibold;
+
+    &:enabled:hover {
+      @apply bg-brand-100;
+    }
+  
+    &:enabled:active {
+      @apply bg-brand-50 outline-brand-200;
+    }
+  
+    &:disabled {
+      @apply bg-brand-50 text-brand-300;
+    }
   }
 
-  /* TODO: Change this values after the PR for tailwind config colors is merged */
-  &-success {
-    @apply bg-positive-500;
+  &-tertiary {
+    @apply bg-white text-neutral-900 border border-solid border-neutral-200;
+
+    &:enabled:hover {
+      @apply bg-neutral-50;
+    }
+  
+    &:enabled:active {
+      @apply bg-white outline-brand-200;
+    }
+  
+    &:disabled {
+      @apply bg-white text-neutral-400;
+    }
   }
 
-  &-info {
-    @apply bg-neutral-500;
+  &-small {
+    @apply text-xs px-3 py-1.5;
   }
 
-  &-warn {
-    @apply bg-neutral-500;
+  &-large {
+    @apply text-base px-5 py-3;
   }
 
-  &-help {
-    @apply bg-neutral-500;
-  }
-
-  &-danger {
-    @apply bg-negative-500;
-  }
-
-  &-contrast {
-    @apply bg-neutral-500;
-  }
-}
-
-.p-button:enabled:hover {
-  @apply bg-brand-500;
-}
-
-.p-button:enabled:active {
-  @apply bg-brand-500;
+  
 }
