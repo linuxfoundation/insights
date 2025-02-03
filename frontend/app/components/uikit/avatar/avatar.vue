@@ -34,7 +34,7 @@ const icon = computed(() => {
     return undefined;
   }
 
-  return props.type === 'member' ? AvatarIcons.User : AvatarIcons.Organization;
+  return props.type === 'member' ? AvatarIcons.Member : AvatarIcons.Organization;
 });
 </script>
 
