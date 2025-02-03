@@ -1,7 +1,7 @@
 .p-avatar {
   @apply h-8 w-8 overflow-hidden rounded-md bg-neutral-100 inline-block text-neutral-300;
   
-  &.type-user {
+  &.type-member {
     @apply rounded-full;
     .p-avatar-icon {
       @apply text-[1.5rem] mt-[18%];
@@ -24,7 +24,7 @@
     .p-avatar-icon {
       @apply text-4xl;
     }
-    &.type-user {
+    &.type-member {
       .p-avatar-icon {
         @apply text-[3.25rem];
       }
@@ -36,7 +36,7 @@
     .p-avatar-icon {
       @apply text-3xl;
     }
-    &.type-user {
+    &.type-member {
       .p-avatar-icon {
         @apply text-[2.25rem];
       }
@@ -48,7 +48,7 @@
     .p-avatar-icon {
       @apply text-base;
     }
-    &.type-user {
+    &.type-member {
       .p-avatar-icon {
         @apply text-[1.25rem];
       }
@@ -60,7 +60,7 @@
     .p-avatar-icon {
       @apply text-[0.625rem];
     }
-    &.type-user {
+    &.type-member {
       .p-avatar-icon {
         @apply text-[0.75rem];
       }

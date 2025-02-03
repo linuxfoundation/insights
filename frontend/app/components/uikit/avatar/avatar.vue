@@ -2,7 +2,7 @@
   <pv-avatar
     :icon="icon"
     :image="props.src"
-    :shape="props.type === 'user' ? 'circle' : 'square'"
+    :shape="props.type === 'member' ? 'circle' : 'square'"
     :size="props.size"
     :class="{
       [`type-${props.type}`]: true,
@@ -24,7 +24,7 @@ const props = withDefaults(
   }>(),
   {
     size: 'normal',
-    type: 'user',
+    type: 'member',
     src: undefined
   }
 );
@@ -34,7 +34,7 @@ const icon = computed(() => {
     return undefined;
   }
 
-  return props.type === 'user' ? AvatarIcons.User : AvatarIcons.Organization;
+  return props.type === 'member' ? AvatarIcons.User : AvatarIcons.Organization;
 });
 </script>
 

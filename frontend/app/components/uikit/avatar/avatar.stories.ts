@@ -27,7 +27,7 @@ export default {
 
 export const Default = {
   args: {
-    type: 'user',
+    type: 'member',
     size: 'normal',
     src: 'https://primefaces.org/cdn/primevue/images/organization/walter.jpg'
   }
@@ -35,7 +35,7 @@ export const Default = {
 
 export const UserNoImage = {
   args: {
-    type: 'user',
+    type: 'member',
     size: 'normal'
   }
 };
