@@ -4,7 +4,12 @@
     :image="props.src"
     :shape="props.type === 'user' ? 'circle' : 'square'"
     :size="props.size"
-    :class="{ [`type-${props.type}`]: true, 'p-avatar-sm': props.size === 'small', 'has-image': props.src }" />
+    :class="{
+      [`type-${props.type}`]: true,
+      'p-avatar-sm': props.size === 'small',
+      'p-avatar-xsmall': props.size === 'xsmall',
+      'has-image': props.src
+    }" />
 </template>
 
 <script setup lang="ts">

@@ -1,4 +1,4 @@
-export const avatarSizes = ['xlarge', 'large', 'normal', 'small'] as const;
+export const avatarSizes = ['xlarge', 'large', 'normal', 'small', 'xsmall'] as const;
 export const avatarTypes = ['user', 'organization'] as const;
 
 export enum AvatarIcons {
