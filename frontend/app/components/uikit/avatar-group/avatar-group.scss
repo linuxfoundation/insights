@@ -1,0 +1,16 @@
+.p-avatar-group {
+  @apply flex items-center;
+
+  .p-avatar:not(:first-child) {
+    @apply -ms-4;
+    &.p-avatar-sm {
+      @apply -ms-3;
+    }
+    &.p-avatar-lg {
+      @apply -ms-5;
+    }
+    &.p-avatar-xl {
+      @apply -ms-7;
+    }
+  }
+}

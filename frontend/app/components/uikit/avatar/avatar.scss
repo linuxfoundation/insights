@@ -1,0 +1,71 @@
+.p-avatar {
+  @apply h-8 w-8 overflow-hidden rounded-md bg-neutral-100 inline-block text-neutral-300;
+  
+  &.type-member {
+    @apply rounded-full;
+    .p-avatar-icon {
+      @apply text-[1.5rem] mt-[18%];
+    }
+  }
+
+  .p-avatar-icon {
+    @apply text-lg flex items-center justify-center block h-full;
+  }
+
+  &.type-organization {
+    @apply outline-none;
+    &.has-image {
+      @apply outline outline-neutral-200;
+    }
+  }
+
+  &.p-avatar-xl {
+    @apply h-16 w-16;
+    .p-avatar-icon {
+      @apply text-4xl;
+    }
+    &.type-member {
+      .p-avatar-icon {
+        @apply text-[3.25rem];
+      }
+    }
+  }
+  
+  &.p-avatar-lg {
+    @apply h-12 w-12;
+    .p-avatar-icon {
+      @apply text-3xl;
+    }
+    &.type-member {
+      .p-avatar-icon {
+        @apply text-[2.25rem];
+      }
+    }
+  }
+
+  &.p-avatar-sm {
+    @apply h-6 w-6;
+    .p-avatar-icon {
+      @apply text-base;
+    }
+    &.type-member {
+      .p-avatar-icon {
+        @apply text-[1.25rem];
+      }
+    }
+  }
+
+  &.p-avatar-xsmall {
+    @apply h-4 w-4;
+    .p-avatar-icon {
+      @apply text-[0.625rem];
+    }
+    &.type-member {
+      .p-avatar-icon {
+        @apply text-[0.75rem];
+      }
+    }
+  }
+}
+
+/* p-component p-avatar-circle  */
