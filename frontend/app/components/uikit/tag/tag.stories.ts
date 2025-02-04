@@ -33,11 +33,64 @@ export default {
 };
 
 export const Default = {
-  label: 'Primary',
   args: {
     default: 'I\'m tag content',
     style: 'default',
     size: 'medium',
     type: 'solid'
+  }
+};
+
+export const Info = {
+  args: {
+    default: 'I\'m tag content',
+    style: 'info',
+    size: 'medium',
+    type: 'solid'
+  }
+};
+
+export const Positive = {
+  args: {
+    default: 'I\'m tag content',
+    style: 'positive',
+    size: 'medium',
+    type: 'solid'
+  }
+};
+
+export const Warning = {
+  args: {
+    default: 'I\'m tag content',
+    style: 'warning',
+    size: 'medium',
+    type: 'solid'
+  }
+};
+
+export const Negative = {
+  args: {
+    default: 'I\'m tag content',
+    style: 'negative',
+    size: 'medium',
+    type: 'solid'
+  }
+};
+
+export const Small = {
+  args: {
+    default: 'I\'m tag content',
+    style: 'info',
+    size: 'small',
+    type: 'solid'
+  }
+};
+
+export const Transparent = {
+  args: {
+    default: 'I\'m tag content',
+    style: 'info',
+    size: 'medium',
+    type: 'transparent'
   }
 };
