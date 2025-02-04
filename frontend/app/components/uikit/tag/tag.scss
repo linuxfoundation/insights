@@ -1,0 +1,46 @@
+.c-tag{
+  @apply gap-1.5 inline-flex text-sm items-center rounded-full font-semibold;
+
+  /* Styles */
+  &--default{
+    @apply bg-neutral-100 text-neutral-600;
+  }
+
+  &--info{
+    @apply bg-brand-50 text-brand-600;
+  }
+
+  &--positive{
+    @apply bg-positive-50 text-positive-600;
+  }
+
+  &--warning{
+    @apply bg-warning-50 text-warning-600;
+  }
+
+  &--negative{
+    @apply bg-negative-50 text-negative-600;
+  }
+
+  /* Sizes */
+  &--medium{
+    @apply px-2.5 h-7 text-sm;
+
+    .c-icon{
+      --lfx-icon-size: 0.875rem;
+    }
+  }
+
+  &--small{
+    @apply px-1.5 h-5 text-xs;
+
+    .c-icon{
+      --lfx-icon-size: 0.75rem;
+    }
+  }
+
+  /* Type */
+  &--transparent{
+    @apply bg-transparent px-0;
+  }
+}
