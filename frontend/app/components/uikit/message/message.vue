@@ -40,19 +40,19 @@ const props = withDefaults(
 const messageIcon = computed(() => {
   if (props.messageStyle === 'default' && props.icon) {
     return props.icon;
-  } else {
-    switch (props.messageStyle) {
-      case 'info':
-        return 'fa-solid fa-circle-info';
-      case 'positive':
-        return 'fa-solid fa-circle-check';
-      case 'warning':
-        return 'fa-solid fa-triangle-exclamation';
-      case 'negative':
-        return 'fa-solid fa-circle-exclamation';
-      default:
-        return 'fa-light fa-compass';
-    }
+  }
+
+  switch (props.messageStyle) {
+    case 'info':
+      return 'fa-solid fa-circle-info';
+    case 'positive':
+      return 'fa-solid fa-circle-check';
+    case 'warning':
+      return 'fa-solid fa-triangle-exclamation';
+    case 'negative':
+      return 'fa-solid fa-circle-exclamation';
+    default:
+      return 'fa-light fa-compass';
   }
 });
 
