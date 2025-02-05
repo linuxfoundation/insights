@@ -27,26 +27,32 @@ const props = withDefaults(
     messageStyle?: MessageStyle;
     size?: MessageSize;
     type?: MessageType;
+    icon?: string;
   }>(),
   {
     messageStyle: 'default',
     size: 'default',
-    type: 'box'
+    type: 'box',
+    icon: undefined
   }
 );
 
 const messageIcon = computed(() => {
-  switch (props.messageStyle) {
-    case 'info':
-      return 'fa-solid fa-circle-info';
-    case 'positive':
-      return 'fa-solid fa-circle-check';
-    case 'warning':
-      return 'fa-solid fa-triangle-exclamation';
-    case 'negative':
-      return 'fa-solid fa-circle-exclamation';
-    default:
-      return 'fa-light fa-compass';
+  if (props.messageStyle === 'default' && props.icon) {
+    return props.icon;
+  } else {
+    switch (props.messageStyle) {
+      case 'info':
+        return 'fa-solid fa-circle-info';
+      case 'positive':
+        return 'fa-solid fa-circle-check';
+      case 'warning':
+        return 'fa-solid fa-triangle-exclamation';
+      case 'negative':
+        return 'fa-solid fa-circle-exclamation';
+      default:
+        return 'fa-light fa-compass';
+    }
   }
 });
 

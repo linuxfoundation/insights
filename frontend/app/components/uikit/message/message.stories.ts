@@ -25,6 +25,10 @@ export default {
       control: 'select',
       options: messageTypes
     },
+    icon: {
+      description: 'Icon of the message (only for default style)',
+      control: 'text'
+    },
 
     // Slots
     default: {
