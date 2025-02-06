@@ -1,8 +1,8 @@
 <template>
-  <lfx-menu-button class="!px-2" @click="toggle">
+  <lfx-menu-button class="!px-2" :class="{'bg-neutral-100 text-neutral-600': isOpen}" @click="toggle">
     <lfx-icon name="grid-round" class="font-black" />
   </lfx-menu-button>
-  <lfx-popover ref="menu">
+  <lfx-popover ref="menu" v-model:is-open="isOpen">
     <div class="p-3 w-149">
       <div class="flex flex-wrap -m-1.5">
         <div
@@ -53,6 +53,7 @@
   import {lfxTools} from "~/config/tools";
 
   const menu = ref();
+  const isOpen = ref(false);
 
   const toggle = (event: MouseEvent) => {
     menu.value.toggle(event);
