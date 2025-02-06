@@ -1,7 +1,7 @@
 <template>
-  <div v-if="isVisible" :class="`p-chip p-chip-size-${props.size} p-chip-type-${props.type}`">
+  <div v-if="isVisible" :class="`p-chip p-chip-size-${props.size} p-chip-type-${props.type}`" role="alert">
     <slot />
-    <i v-if="props.removable" class="p-chip-remove-icon fa-solid fa-circle-xmark" @click="isVisible = false" />
+    <i v-if="props.removable" class="p-chip-remove-icon fa-solid fa-circle-xmark" @click="dismiss" />
   </div>
 </template>
 
@@ -20,7 +20,14 @@ const props = withDefaults(
     removable: false
   }
 );
+const emit = defineEmits<{ (e: 'dismissed'): void }>();
+
 const isVisible = ref(true);
+
+const dismiss = () => {
+  isVisible.value = false;
+  emit('dismissed');
+};
 </script>
 
 <script lang="ts">
