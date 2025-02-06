@@ -58,6 +58,7 @@ export default {
       },
       spacing: {
         header: '4.5625rem',
+        25: '6.25rem',
       },
       outlineWidth:{
         3: '0.1875rem'

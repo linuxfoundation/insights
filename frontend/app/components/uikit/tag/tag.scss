@@ -25,18 +25,10 @@
   /* Sizes */
   &--medium{
     @apply px-2.5 h-7 text-sm;
-
-    .c-icon{
-      --lfx-icon-size: 0.875rem;
-    }
   }
 
   &--small{
     @apply px-1.5 h-5 text-xs;
-
-    .c-icon{
-      --lfx-icon-size: 0.75rem;
-    }
   }
 
   /* Type */
