@@ -25,5 +25,6 @@ export default defineNuxtConfig({
   css: ['~/assets/styles/main.scss'],
   tailwindcss,
   primevue,
-  echarts
+  echarts,
+  plugins: ['~/components/shared/plugins/toast.plugin.ts']
 });
