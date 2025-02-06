@@ -1,6 +1,6 @@
-import LfxChip from './chip.vue';
 import LfxIcon from '../icon/icon.vue';
 import LfxAvatar from '../avatar/avatar.vue';
+import LfxChip from './chip.vue';
 import { chipSizes, chipTypes } from './types/chip.types';
 
 export default {
