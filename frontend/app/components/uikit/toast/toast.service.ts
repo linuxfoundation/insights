@@ -1,14 +1,9 @@
 import { useToast } from 'primevue/usetoast';
 import type { ToastOptions, ToastSeverity, ToastType } from './types/toast.types';
 
-export default class ToastService {
-  private toast = useToast();
-
-  constructor() {
-    this.toast = useToast();
-  }
-
-  public showToast(message: string, toastType: ToastType, icon?: string, delay?: number) {
+const useToastService = () => {
+  const toast = useToast();
+  const showToast = (message: string, toastType: ToastType, icon?: string, delay?: number) => {
     const test: ToastOptions = {
       severity: toastType as ToastSeverity,
       summary: toastType,
@@ -17,6 +12,12 @@ export default class ToastService {
       icon,
       life: delay
     };
-    this.toast.add(test);
+    toast.add(test);
+  }
+
+  return {
+    showToast
   }
 }
+
+export default useToastService;

@@ -9,7 +9,7 @@ export enum ToastTypesEnum {
   negative = 'error'
 }
 
-// export const toastTypes = ['secondary', 'info', 'success', 'warn', 'danger'] as const;
+export const toastTypes = ['secondary', 'info', 'success', 'warn', 'danger'] as const;
 export const toastThemes = ['light', 'dark'] as const;
 
 export type ToastType = (typeof ToastTypesEnum)[keyof typeof ToastTypesEnum];

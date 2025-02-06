@@ -1,50 +1,63 @@
-import LfxToastTester from './toast-tester.vue';
+import Toast from "primevue/toast";
+import LfxButton from "../button/button.vue";
+import useToastService from "./toast.service";
+import {toastTypes} from "./types/toast.types";
 
 export default {
-  title: 'LinuxFoundation/Toast',
-  component: LfxToastTester,
-  tags: ['autodocs'],
+  title: "LinuxFoundation/Toast",
+  tags: ["autodocs"],
   argTypes: {
     message: {
-      description: 'Message of the toast',
-      control: 'text'
+      description: "Message of the toast",
+      control: "text",
+    },
+    toastType: {
+      description: 'The type of the toast',
+      control: 'select',
+      options: toastTypes,
     },
     delay: {
-      description: 'Delay of the toast',
-      control: 'number'
-    }
+      description: "Delay of the toast",
+      control: "number",
+    },
+    icon: {
+      description: "Delay of the toast",
+      control: "string",
+    },
   },
-  parameters: {
-    docs: {
-      source: {
-        code: `
-<template>
-  <!-- must be added to the root component -->
-  <lfx-toast theme="light" />
-
-  <div>
-    <lfx-button label="Show Toast" @click="showToast" />
-  </div>
-</template>
-<script setup lang="ts">
-import LfxButton from '../button/button.vue';
-import LfxToast from './toast.vue';
-import ToastService from './toast.service';
-const toastService = new ToastService();
-
-const showToast = () => {
-  toastService.showToast('This is a toast message', 'info', 'fa-solid fa-compass');
 };
-</script>
-`
-      }
-    }
-  }
-};
+
+const render = (args) => ({
+  components: { LfxButton, Toast }, // Include Toast component
+  setup() {
+    const { showToast } = useToastService();
+    const displayToast = () => {
+      showToast(args.message, args.toastType, args.icon, args.delay);
+    };
+    return { args, displayToast };
+  },
+  template: `
+    <div>
+      <Toast /> <!-- Ensure Toast is rendered -->
+      <lfx-button @click="displayToast">Show Toast</lfx-button>
+    </div>
+  `,
+});
 
 export const Default = {
   args: {
-    message: 'This is a toast message',
-    delay: 3000
-  }
+    message: "This is a toast message",
+    toastType: 'secondary',
+    delay: 3000,
+  },
+  render,
+};
+
+export const Info = {
+  args: {
+    message: "This is a toast message",
+    toastType: 'info',
+    delay: 3000,
+  },
+  render,
 };
