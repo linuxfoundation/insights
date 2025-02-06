@@ -1,5 +1,6 @@
-import { avatarTypes } from '../avatar/types/Avatar.types';
 import LfxChip from './chip.vue';
+import LfxIcon from '../icon/icon.vue';
+import LfxAvatar from '../avatar/avatar.vue';
 import { chipSizes, chipTypes } from './types/chip.types';
 
 export default {
@@ -7,10 +8,6 @@ export default {
   component: LfxChip,
   tags: ['autodocs'],
   argTypes: {
-    label: {
-      description: 'Label of the chip',
-      control: 'text'
-    },
     size: {
       description: 'Size of the chip',
       control: 'select',
@@ -21,68 +18,114 @@ export default {
       control: 'select',
       options: chipTypes
     },
-    icon: {
-      description: 'Icon of the chip',
-      control: 'text'
-    },
-    image: {
-      description: 'Image of the chip (for Member or Organization)',
-      control: 'text'
-    },
-    avatarType: {
-      description: 'Type of the avatar (for Member or Organization)',
-      control: 'select',
-      options: avatarTypes
-    },
     removable: {
       description: 'Whether the chip is removable',
       control: 'boolean'
+    },
+    // slot
+    default: {
+      description: 'Label of the chip',
+      control: {
+        type: null
+      }
     }
   }
 };
 
 export const Default = {
   args: {
-    label: 'Chip',
-    size: 'normal'
+    default: 'Chip',
+    size: 'default',
+    type: 'default'
   }
 };
 
-export const Dark = {
+export const Bordered = {
   args: {
-    label: 'Chip',
+    default: 'Chip',
     size: 'normal',
-    type: 'dark'
+    type: 'bordered'
   }
 };
 
 export const Small = {
   args: {
-    label: 'Chip',
+    default: 'Small Chip',
     size: 'small'
   }
 };
 
+const withIconTmpl = `
+<lfx-chip v-bind="propsObj">
+  <lfx-icon name="compass" />
+  With Icon
+</lfx-chip>`;
+
 export const WithIcon = {
   args: {
-    label: 'Chip with icon',
-    size: 'normal',
-    icon: 'fa-regular fa-circle-info'
+    size: 'default',
+    type: 'bordered'
+  },
+  render: (args, { argTypes }) => ({
+    components: { LfxChip, LfxIcon },
+    props: Object.keys(argTypes),
+    template: withIconTmpl,
+    computed: {
+      propsObj() {
+        return args;
+      }
+    }
+  }),
+  parameters: {
+    docs: {
+      source: {
+        code: `
+<template>
+  ${withIconTmpl}
+</template>`
+      }
+    }
   }
 };
 
+const withAvatarTmpl = `
+<lfx-chip v-bind="propsObj">
+  <lfx-avatar :type="props.avatarType" 
+  src="https://primefaces.org/cdn/primevue/images/organization/walter.jpg" :size="xsmall" />
+  With Avatar
+</lfx-chip>`;
+
 export const WithAvatar = {
   args: {
-    label: 'Chip with Avatar',
-    size: 'normal',
-    image: 'https://primefaces.org/cdn/primevue/images/organization/walter.jpg'
+    size: 'default',
+    type: 'bordered'
+  },
+  render: (args, { argTypes }) => ({
+    components: { LfxChip, LfxAvatar },
+    props: Object.keys(argTypes),
+    template: withAvatarTmpl,
+    computed: {
+      propsObj() {
+        return args;
+      }
+    }
+  }),
+  parameters: {
+    docs: {
+      source: {
+        code: `
+<template>
+  ${withAvatarTmpl}
+</template>`
+      }
+    }
   }
 };
 
 export const WithLogo = {
   args: {
     label: 'Chip with Logo',
-    size: 'normal',
+    size: 'default',
     avatarType: 'organization',
     image: 'https://static-00.iconduck.com/assets.00/linux-icon-256x256-773o7tyd.png'
   }
@@ -91,7 +134,7 @@ export const WithLogo = {
 export const Dismissable = {
   args: {
     label: 'Chip dismissable',
-    size: 'normal',
+    size: 'default',
     removable: true
   }
 };
