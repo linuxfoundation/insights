@@ -24,9 +24,7 @@
     </div>
     <div class="border-r border-neutral-200 h-6" />
 
-    <lfx-menu-button class="!px-2" :to="{name: LfxRoutes.CHARTS}">
-      <lfx-icon name="grid-round" class="font-black" />
-    </lfx-menu-button>
+    <lfx-tools />
   </div>
 </template>
 
@@ -34,6 +32,7 @@
   import LfxMenuButton from "~/components/uikit/menu-button/menu-button.vue";
   import LfxIcon from "~/components/uikit/icon/icon.vue";
   import {LfxRoutes} from "~/components/shared/types/routes";
+  import LfxTools from "~/components/shared/layout/tools.vue";
 </script>
 
 <script lang="ts">
