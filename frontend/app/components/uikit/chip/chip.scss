@@ -9,7 +9,7 @@
     @apply text-base cursor-pointer text-neutral-300;
   }
 
-  &-small {
+  &-size-small {
     @apply text-xs;
 
     .c-icon {
@@ -21,11 +21,11 @@
     }
   }
 
-  &-bordered {
+  &-type-bordered {
     @apply bg-white border border-solid border-neutral-200;
   }
 
-  &-default {
+  &-type-default {
     @apply bg-neutral-100 border-0;
   }
 }

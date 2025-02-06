@@ -90,8 +90,8 @@ export const WithIcon = {
 
 const withAvatarTmpl = `
 <lfx-chip v-bind="propsObj">
-  <lfx-avatar :type="props.avatarType" 
-  src="https://primefaces.org/cdn/primevue/images/organization/walter.jpg" :size="xsmall" />
+  <lfx-avatar type="member" 
+  src="https://primefaces.org/cdn/primevue/images/organization/walter.jpg" size="xsmall" />
   With Avatar
 </lfx-chip>`;
 
@@ -122,18 +122,43 @@ export const WithAvatar = {
   }
 };
 
+const withLogoTmpl = `
+<lfx-chip v-bind="propsObj">
+  <lfx-avatar type="member" 
+  src="https://static-00.iconduck.com/assets.00/linux-icon-256x256-773o7tyd.png" size="xsmall" />
+  With Logo
+</lfx-chip>`;
+
 export const WithLogo = {
   args: {
-    label: 'Chip with Logo',
     size: 'default',
-    avatarType: 'organization',
-    image: 'https://static-00.iconduck.com/assets.00/linux-icon-256x256-773o7tyd.png'
+    type: 'bordered'
+  },
+  render: (args, { argTypes }) => ({
+    components: { LfxChip, LfxAvatar },
+    props: Object.keys(argTypes),
+    template: withLogoTmpl,
+    computed: {
+      propsObj() {
+        return args;
+      }
+    }
+  }),
+  parameters: {
+    docs: {
+      source: {
+        code: `
+<template>
+  ${withLogoTmpl}
+</template>`
+      }
+    }
   }
 };
 
 export const Dismissable = {
   args: {
-    label: 'Chip dismissable',
+    default: 'Chip dismissable',
     size: 'default',
     removable: true
   }
