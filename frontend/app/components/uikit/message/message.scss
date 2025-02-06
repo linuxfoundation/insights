@@ -1,0 +1,124 @@
+.c-message {
+  @apply flex flex-col gap-2 px-4 py-2 bg-neutral-100 rounded-md text-sm;
+
+  .c-message-header {
+    @apply flex justify-between items-center gap-2;
+    .c-message-icon {
+      @apply text-neutral-900 text-base;
+    }
+    .c-message-title {
+      @apply text-neutral-900 font-medium grow text-sm;
+    }
+    .c-message-close {
+      @apply text-neutral-600 cursor-pointer text-base;
+    }
+  }
+
+  .c-message-content {
+    @apply text-neutral-600 text-sm;
+  }
+
+  &--info {
+    @apply bg-brand-50;
+
+    .c-message-header {
+      .c-message-icon {
+        @apply text-brand-600;
+      }
+      .c-message-title {
+        @apply text-brand-800;
+      }
+      .c-message-close {
+        @apply text-brand-800;
+      }
+    }
+
+    .c-message-content {
+      @apply text-brand-800;
+    }
+  }
+
+  &--positive {
+    @apply bg-positive-50;
+
+    .c-message-header {
+      .c-message-icon {
+        @apply text-positive-600;
+      }
+      .c-message-title {
+        @apply text-positive-800;
+      }
+      .c-message-close {
+        @apply text-positive-800;
+      }
+    }
+
+    .c-message-content {
+      @apply text-positive-800;
+    }
+  }
+
+  &--warning {
+    @apply bg-warning-50;
+
+    .c-message-header {
+      .c-message-icon {
+        @apply text-warning-600;
+      }
+      .c-message-title {
+        @apply text-warning-800;
+      }
+      .c-message-close {
+        @apply text-warning-800;
+      }
+    }
+
+    .c-message-content {
+      @apply text-warning-800;
+    }
+  }
+
+  &--negative {
+    @apply bg-negative-50;
+
+    .c-message-header {
+      .c-message-icon {
+        @apply text-negative-600;
+      }
+      .c-message-title {
+        @apply text-negative-800;
+      }
+      .c-message-close {
+        @apply text-negative-800;
+      }
+    }
+
+    .c-message-content {
+      @apply text-negative-800;
+    }
+  }
+
+  &--small {
+    @apply px-3 py-2;
+
+    .c-message-header {
+      .c-message-icon {
+        @apply text-sm;
+      }
+      .c-message-title {
+        @apply text-xs;
+      }
+      .c-message-close {
+        @apply text-sm;
+      }
+    }
+
+    .c-message-content {
+      @apply text-xs;
+    }
+  }
+
+  &--transparent {
+    @apply bg-transparent;
+  }
+}
