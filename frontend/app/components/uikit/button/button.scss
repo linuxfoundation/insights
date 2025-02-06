@@ -1,13 +1,12 @@
 /* TODO: This a temporary styling until we have a proper design system */
 .p-button {
-  @apply bg-brand-500 border-0 text-white px-4 py-2 flex items-center gap-2 rounded-lg;
-  @apply text-sm;
+  @apply bg-brand-500 border-0 text-white px-4 py-2 flex items-center gap-2 rounded-lg transition-all text-sm;
 
-  &:enabled:hover {
+  &:hover {
     @apply bg-brand-600;
   }
 
-  &:enabled:active {
+  &:active {
     @apply bg-brand-500 outline outline-brand-200 outline-[3px];
   }
 
@@ -18,14 +17,14 @@
   &-secondary {
     @apply bg-brand-50 text-brand-500 font-semibold;
 
-    &:enabled:hover {
+    &:hover {
       @apply bg-brand-100;
     }
-  
-    &:enabled:active {
+
+    &:active {
       @apply bg-brand-50 outline-brand-200;
     }
-  
+
     &:disabled {
       @apply bg-brand-50 text-brand-300;
     }
@@ -34,14 +33,14 @@
   &-tertiary {
     @apply bg-white text-neutral-900 border border-solid border-neutral-200;
 
-    &:enabled:hover {
+    &:hover {
       @apply bg-neutral-50;
     }
-  
-    &:enabled:active {
+
+    &:active {
       @apply bg-white outline-brand-200;
     }
-  
+
     &:disabled {
       @apply bg-white text-neutral-400;
     }
@@ -55,5 +54,5 @@
     @apply text-base px-5 py-3;
   }
 
-  
+
 }
