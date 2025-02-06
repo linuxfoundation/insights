@@ -1,0 +1,31 @@
+.p-chip {
+  @apply inline-flex items-center gap-1.5 text-sm rounded-full px-2.5 py-1 text-neutral-900 text-sm;
+
+  .c-icon {
+    @apply text-base;
+  }
+
+  .p-chip-remove-icon {
+    @apply text-base cursor-pointer text-neutral-300;
+  }
+
+  &-size-small {
+    @apply text-xs;
+
+    .c-icon {
+      @apply text-sm;
+    }
+
+    .p-chip-remove-icon {
+      @apply text-sm;
+    }
+  }
+
+  &-type-bordered {
+    @apply bg-white border border-solid border-neutral-200;
+  }
+
+  &-type-default {
+    @apply bg-neutral-100 border-0;
+  }
+}
