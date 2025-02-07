@@ -1,0 +1,63 @@
+.p-select {
+  @apply bg-white border border-solid border-neutral-200 rounded-lg shadow-sm flex items-center;
+  @apply px-3 py-2;
+
+  .p-select-label {
+    @apply grow;
+    .dropdown-icon {
+      @apply text-base;
+    }
+    div {
+      @apply text-neutral-900 text-sm;
+    }
+  }
+
+  .p-select-dropdown {
+    .p-select-dropdown-icon {
+      @apply text-xs;
+    }
+  }
+
+  &.p-select-sm {
+    @apply px-2 py-1;
+    .p-select-label {
+      .dropdown-icon {
+        @apply text-sm;
+      }
+      div {
+        @apply text-xs;
+      }
+    }
+  }
+
+  &.p-select--transparent {
+    @apply bg-transparent border-0 shadow-none;
+  }
+
+  &:hover, &:focus {
+    @apply bg-neutral-100;
+  }
+}
+
+.p-select-overlay {
+  @apply bg-white border border-solid border-neutral-200 rounded-lg shadow-lg p-1 min-w-full;
+
+  .p-select-option {
+    @apply text-neutral-900 text-sm px-3 py-2 flex justify-between items-center;
+    i {
+      @apply text-base;
+    }
+
+    &.p-focus {
+      @apply bg-neutral-50 rounded-md cursor-pointer;
+    }
+    
+    .p-select-option-icon {
+      @apply text-base text-brand-500 invisible;
+    }
+
+    &.p-select-option-selected .p-select-option-icon {
+      @apply visible;
+    }
+  }
+}

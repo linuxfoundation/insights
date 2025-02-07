@@ -3,13 +3,17 @@ export interface DropdownOption {
   value: string;
 }
 
+export const dropdownSizes = ['default', 'small'] as const;
+export const dropdownTypes = ['filled', 'transparent'] as const;
+
+export type DropdownSize = (typeof dropdownSizes)[number];
+export type DropdownType = (typeof dropdownTypes)[number];
+
 export interface DropdownProps {
   modelValue?: string;
   options: DropdownOption[];
-  optionLabel?: string;
-  optionValue?: string;
   placeholder?: string;
   disabled?: boolean;
-  type?: 'field' | 'transparent';
-  size?: 'default' | 'small';
+  type?: DropdownType;
+  size?: DropdownSize;
 }
