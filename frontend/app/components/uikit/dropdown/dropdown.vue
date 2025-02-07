@@ -14,6 +14,8 @@
       :filter="props.showFilter"
       filter-placeholder="Search..."
       filter-icon="fa-light fa-magnifying-glass"
+      clear-icon="fa-solid fa-circle-xmark"
+      reset-filter-on-clear="true"
       append-to="self"
       :class="[`p-select--${props.type}`, { 'p-select-group-breaks': props.showGroupBreaks }]">
       <template #value="slotProps">
@@ -34,6 +36,12 @@
           <i class="p-select-option-icon fa-light fa-check" />
         </slot>
       </template>
+      <!-- TODO: implement this -->
+      <!-- <template #header>
+        <button class="p-select-clear-filter" v-if="props.showFilter" @click="clearFilter">
+          <i class="fa-solid fa-circle-xmark" />
+        </button>
+      </template> -->
     </pv-select>
   </div>
 </template>
@@ -71,6 +79,11 @@ const getLabel = (value: string) => {
   }
   return (props.options as DropdownOption[]).find((option) => option.value === value)?.label || '';
 };
+
+// TODO: implement this
+// const clearFilter = () => {
+//   // value.value = '';
+// };
 </script>
 
 <script lang="ts">

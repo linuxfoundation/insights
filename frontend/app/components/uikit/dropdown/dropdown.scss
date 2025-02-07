@@ -52,7 +52,7 @@
 }
 
 .p-select-overlay {
-  @apply bg-white border border-solid border-neutral-200 rounded-lg shadow-lg p-1 min-w-full;
+  @apply bg-white border border-solid border-neutral-200 rounded-lg shadow-lg p-1 min-w-full relative;
 
   .p-select-option {
     @apply text-neutral-900 text-sm px-3 py-2 flex justify-between items-center;
@@ -90,6 +90,14 @@
         @apply text-base text-neutral-400;
       }
     }
+  }
+
+  .p-select-clear-filter {
+    @apply text-base text-neutral-300 absolute right-3 top-[10px];
+  }
+
+  .p-select-empty-message {
+    @apply px-3 py-2 text-sm text-neutral-400 w-full text-center;
   }
 }
 
