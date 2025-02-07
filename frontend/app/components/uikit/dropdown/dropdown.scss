@@ -39,6 +39,18 @@
   }
 }
 
+.p-select-sm {
+  .p-select-overlay {
+    .p-select-option {
+      @apply text-xs py-1 px-2;
+
+      i {
+        @apply text-sm;
+      }
+    }
+  }
+}
+
 .p-select-overlay {
   @apply bg-white border border-solid border-neutral-200 rounded-lg shadow-lg p-1 min-w-full;
 
@@ -56,8 +68,15 @@
       @apply text-base text-brand-500 invisible;
     }
 
-    &.p-select-option-selected .p-select-option-icon {
-      @apply visible;
+    &.p-select-option-selected {
+      @apply font-medium;
+      .p-select-option-icon {
+        @apply visible;
+      }
     }
+
+  }
+  .p-select-option-group {
+    @apply px-3 pt-1 text-neutral-400 text-xs font-semibold;
   }
 }

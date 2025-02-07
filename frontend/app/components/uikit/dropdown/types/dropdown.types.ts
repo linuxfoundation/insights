@@ -1,6 +1,12 @@
 export interface DropdownOption {
   label: string;
   value: string;
+  description?: string;
+}
+
+export interface DropdownGroupOptions {
+  label: string;
+  items: DropdownOption[];
 }
 
 export const dropdownSizes = ['default', 'small'] as const;
@@ -11,7 +17,7 @@ export type DropdownType = (typeof dropdownTypes)[number];
 
 export interface DropdownProps {
   modelValue?: string;
-  options: DropdownOption[];
+  options: DropdownOption[] | DropdownGroupOptions[];
   placeholder?: string;
   disabled?: boolean;
   type?: DropdownType;

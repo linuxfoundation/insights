@@ -6,6 +6,8 @@
       option-label="label"
       option-value="value"
       dropdown-icon="fa-light fa-chevron-down"
+      :option-group-label="isGrouped ? 'label' : undefined"
+      :option-group-children="isGrouped ? 'items' : undefined"
       :placeholder="props.placeholder"
       :disabled="props.disabled"
       :size="size"
@@ -35,7 +37,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import type { DropdownProps } from './types/dropdown.types';
+import type { DropdownProps, DropdownOption, DropdownGroupOptions } from './types/dropdown.types';
 
 const props = withDefaults(defineProps<DropdownProps>(), {
   placeholder: 'Select an option',
@@ -57,7 +59,15 @@ const value = computed({
 
 const size = computed(() => (props.size === 'small' ? 'small' : 'large'));
 
-const getLabel = (value: string) => props.options.find((option) => option.value === value)?.label || '';
+const isGrouped = computed(() => props.options.some((option) => 'items' in option && Array.isArray(option.items)));
+
+const getLabel = (value: string) => {
+  if (isGrouped.value) {
+    const flattenedOptions = props.options.flatMap((group) => (group as DropdownGroupOptions).items);
+    return flattenedOptions.find((option) => option.value === value)?.label || '';
+  }
+  return (props.options as DropdownOption[]).find((option) => option.value === value)?.label || '';
+};
 </script>
 
 <script lang="ts">
