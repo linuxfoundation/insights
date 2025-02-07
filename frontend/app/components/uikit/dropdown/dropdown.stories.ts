@@ -31,6 +31,14 @@ export default {
       description: 'The size of the dropdown',
       control: 'select',
       options: dropdownSizes
+    },
+    showGroupBreaks: {
+      description: 'Whether to show group breaks',
+      control: 'boolean'
+    },
+    showFilter: {
+      description: 'Whether to show the filter',
+      control: 'boolean'
     }
   }
 };
@@ -127,6 +135,37 @@ export const GroupedOptions = {
         ]
       }
     ]
+  },
+  render: (args) => ({
+    components: {
+      LfxDropdown
+    },
+    setup() {
+      return { args };
+    },
+    template: `
+    <div class="flex flex-row gap-4" style="height: 250px;">
+      <div class="w-1/2">
+        <LfxDropdown v-bind="args" />
+      </div>
+    </div>`
+  })
+};
+
+export const WithFilter = {
+  args: {
+    options: [
+      { label: 'Apple', value: 'apple' },
+      { label: 'Banana', value: 'banana' },
+      { label: 'Cherry', value: 'cherry' },
+      { label: 'Date', value: 'date' },
+      { label: 'Elderberry', value: 'elderberry' },
+      { label: 'Fig', value: 'fig' }
+    ],
+    type: 'filled',
+    size: 'default',
+    modelValue: 'apple',
+    showFilter: true
   },
   render: (args) => ({
     components: {

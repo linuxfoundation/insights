@@ -11,8 +11,11 @@
       :placeholder="props.placeholder"
       :disabled="props.disabled"
       :size="size"
+      :filter="props.showFilter"
+      filter-placeholder="Search..."
+      filter-icon="fa-light fa-magnifying-glass"
       append-to="self"
-      :class="[`p-select--${props.type}`]">
+      :class="[`p-select--${props.type}`, { 'p-select-group-breaks': props.showGroupBreaks }]">
       <template #value="slotProps">
         <div class="flex items-center gap-2">
           <i class="dropdown-icon fa-light fa-bars-filter" />

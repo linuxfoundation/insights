@@ -79,4 +79,24 @@
   .p-select-option-group {
     @apply px-3 pt-1 text-neutral-400 text-xs font-semibold;
   }
+
+  .p-select-header {
+    .p-iconfield {
+      @apply w-full flex flex-row-reverse gap-2 items-center px-3 py-2 border-b border-solid border-neutral-100;
+      input {
+        @apply grow text-sm text-neutral-400;
+      }
+      .p-inputicon {
+        @apply text-base text-neutral-400;
+      }
+    }
+  }
+}
+
+.p-select-group-breaks {
+  .p-select-overlay {
+    .p-select-option-group:not(:first-child) {
+      @apply border-t border-solid border-neutral-100;
+    }
+  }
 }

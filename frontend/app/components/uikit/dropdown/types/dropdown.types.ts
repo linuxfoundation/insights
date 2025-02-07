@@ -22,4 +22,6 @@ export interface DropdownProps {
   disabled?: boolean;
   type?: DropdownType;
   size?: DropdownSize;
+  showFilter?: boolean;
+  showGroupBreaks?: boolean;
 }
