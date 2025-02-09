@@ -4,7 +4,7 @@ import { buildSeries, convertDateData } from '../helpers/chart-helpers';
 import { tooltipFormatter, tooltipLabelFormatter } from '../helpers/formatters';
 import type { ChartData, ChartSeries, SeriesTypes } from '../types/ChartTypes';
 import defaultOption from './defaults.chart';
-import {lfxColors} from "~/components/config/styles/colors";
+import {lfxColors} from "~/config/styles/colors";
 
 const defaultBarOption: ECOption = {
   ...defaultOption,

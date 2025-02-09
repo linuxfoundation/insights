@@ -1,11 +1,16 @@
 <template>
-  <pv-popover v-bind="$attrs" ref="popover">
+  <pv-popover
+    v-bind="$attrs" ref="popover"
+    @show="emit('update:isOpen', true)"
+    @hide="emit('update:isOpen', false)">
     <slot />
   </pv-popover>
 </template>
 
 <script lang="ts" setup>
 import { ref } from 'vue';
+
+const emit = defineEmits<{(e: 'update:isOpen', value: boolean): void}>();
 
 const popover = ref();
 

@@ -1,7 +1,7 @@
 import type { GaugeSeriesOption } from 'echarts';
 import type { GaugeData } from '../types/ChartTypes';
 import { defaultGaugeSeriesStyle } from './defaults.chart';
-import { lfxColors } from '~/components/config/styles/colors';
+import { lfxColors } from '~/config/styles/colors';
 
 // Not inheriting the default chart options here
 const halfSeriesStyle: GaugeSeriesOption = {

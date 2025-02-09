@@ -7,7 +7,7 @@ import {
 import { tooltipFormatter, tooltipLabelFormatter } from '../helpers/formatters';
 import type { ChartData, ChartSeries, SeriesTypes } from '../types/ChartTypes';
 import defaultOption, { defaultGraphOnlyOption } from './defaults.chart';
-import {lfxColors} from "~/components/config/styles/colors";
+import {lfxColors} from "~/config/styles/colors";
 
 const defaultLineOption: ECOption = {
   ...defaultOption,
