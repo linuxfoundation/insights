@@ -14,7 +14,7 @@
 import LfxChart from '~/components/uikit/chart/Chart.vue';
 import type { ChartData, ChartSeries } from '~/components/uikit/chart/types/ChartTypes';
 import { getBarChartConfig, getBarChartConfigStacked } from '~/components/uikit/chart/configs/bar.chart';
-import {lfxColors} from "~/components/config/styles/colors";
+import {lfxColors} from "~/config/styles/colors";
 
 const props = defineProps<{
   chartData: ChartData[];

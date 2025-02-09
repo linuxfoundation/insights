@@ -8,9 +8,9 @@ export default {
     screens:{
       sm: '640px',
       md: '768px',
-      lg: '1080px',
+      lg: '1024px',
       xl: '1280px',
-      '2xl': '1440px',
+      '2xl': '1536px',
     },
     colors: lfxColors,
     fontFamily: {
@@ -54,13 +54,13 @@ export default {
 
     extend: {
       height: {
+        17: '4.25rem',
         18: '4.5rem',
       },
       width: {
         149: '37.25rem',
       },
       spacing: {
-        header: '4.5625rem',
         25: '6.25rem',
       },
       outlineWidth:{
