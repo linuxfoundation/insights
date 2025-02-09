@@ -64,13 +64,13 @@
 <script setup lang="ts">
 import {ref, watch} from 'vue';
 import {useRoute} from 'vue-router';
+import {lfxMenu} from "../../../../config/menu";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
 import LfxMenuButton from "~/components/uikit/menu-button/menu-button.vue";
 import LfxIconButton from "~/components/uikit/icon-button/icon-button.vue";
 import LfxMenuStaticLinks from "~/components/shared/layout/menu/static-links.vue";
 import {lfxTools} from "~/config/menu/tools";
 import LfxButton from "~/components/uikit/button/button.vue";
-import {lfxMenu} from "../../../../config/menu";
 
 const route = useRoute();
 
