@@ -1,0 +1,61 @@
+.c-icon-button{
+  @apply flex items-center justify-center rounded-full transition-all;
+
+  // Types
+  &--default{
+    @apply outline outline-neutral-200 bg-white text-neutral-900 cursor-pointer;
+
+    &:hover{
+      @apply bg-neutral-50;
+    }
+
+    &:active{
+      @apply outline-brand-200 outline-3 bg-white;
+    }
+
+    &.is-disabled{
+      @apply outline-neutral-100 outline-3 bg-white text-neutral-400 cursor-default;
+    }
+  }
+
+  &--transparent{
+    @apply outline outline-transparent bg-transparent text-neutral-900;
+
+    &:hover{
+      @apply bg-neutral-100;
+    }
+
+    &:active{
+      @apply outline-brand-200 outline-3 bg-transparent;
+    }
+
+    &.is-disabled{
+      @apply text-neutral-400 cursor-default;
+    }
+  }
+
+  // Sizes
+  &--small{
+    @apply w-7 h-7;
+
+    .c-icon{
+      --lfx-icon-size: 1rem;
+    }
+  }
+
+  &--medium{
+    @apply w-9 h-9;
+
+    .c-icon{
+      --lfx-icon-size: 1.125rem;
+    }
+  }
+
+  &--large{
+    @apply w-11 h-11;
+
+    .c-icon{
+      --lfx-icon-size: 1.5rem;
+    }
+  }
+}

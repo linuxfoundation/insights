@@ -7,11 +7,12 @@
 
 <script setup lang="ts">
 import type { ChipSize, ChipType } from './types/chip.types';
+import {ref} from 'vue';
 
 const props = withDefaults(
   defineProps<{
-    size: ChipSize;
-    type: ChipType;
+    size?: ChipSize;
+    type?: ChipType;
     removable?: boolean;
   }>(),
   {

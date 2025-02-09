@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white border-b border-neutral-200 sticky top-header">
+  <div class="bg-white border-b border-neutral-200 sticky top-14 lg:top-17">
     <section class="container">
       <div class="flex items-center justify-between py-6">
         <div class="flex items-center">

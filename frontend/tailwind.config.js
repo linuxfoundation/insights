@@ -59,8 +59,13 @@ export default {
       },
       width: {
         149: '37.25rem',
+        78: '19.5rem',
+      },
+      minWidth: {
+        29: '7.25rem',
       },
       spacing: {
+        17: '4.25rem',
         25: '6.25rem',
       },
       outlineWidth:{
