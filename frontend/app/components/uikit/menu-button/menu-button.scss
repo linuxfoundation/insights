@@ -1,5 +1,5 @@
 .c-menu-button {
-  @apply flex items-center gap-2 px-3 py-2 rounded-full text-sm text-neutral-500 font-medium;
+  @apply flex items-center gap-2 px-3 py-2 rounded-full text-sm text-neutral-500 font-medium leading-5;
   @apply cursor-pointer outline outline-3 outline-transparent transition select-none whitespace-nowrap;
 
   &:hover{

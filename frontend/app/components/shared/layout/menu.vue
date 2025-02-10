@@ -1,26 +1,12 @@
 <template>
   <!-- Mobile menu button -->
-  <div class="block lg:!hidden">
-    <lfx-menu-button class="!px-2">
-      <lfx-icon name="bars" class="font-black" />
-    </lfx-menu-button>
-  </div>
+  <lfx-menu-tablet  class="hidden sm:block lg:!hidden" />
+  <lfx-menu-mobile  class="block sm:!hidden" />
 
   <!-- Menu -->
   <div class="items-center gap-4 hidden lg:flex">
     <div class="flex items-center gap-3 ">
-      <lfx-menu-button :to="{name: LfxRoutes.EXPLORE}">
-        <lfx-icon name="compass" />
-        Explore
-      </lfx-menu-button>
-      <lfx-menu-button :to="{name: LfxRoutes.COLLECTIONS}">
-        <lfx-icon name="rectangle-history" />
-        Collections
-      </lfx-menu-button>
-      <lfx-menu-button :to="{name: LfxRoutes.OPENSOURCEINDEX}">
-        <lfx-icon name="globe" />
-        Open Source Index
-      </lfx-menu-button>
+      <lfx-menu-static-links />
     </div>
     <div class="border-r border-neutral-200 h-6" />
     <lfx-tools />
@@ -28,10 +14,10 @@
 </template>
 
 <script setup lang="ts">
-  import LfxMenuButton from "~/components/uikit/menu-button/menu-button.vue";
-  import LfxIcon from "~/components/uikit/icon/icon.vue";
-  import {LfxRoutes} from "~/components/shared/types/routes";
   import LfxTools from "~/components/shared/layout/tools.vue";
+  import LfxMenuMobile from "~/components/shared/layout/menu/menu-mobile.vue";
+  import LfxMenuTablet from "~/components/shared/layout/menu/menu-tablet.vue";
+  import LfxMenuStaticLinks from "~/components/shared/layout/menu/static-links.vue";
 </script>
 
 <script lang="ts">

@@ -29,13 +29,13 @@
     </div>
     <div class="py-2 px-3 bg-neutral-100 flex justify-center">
       <a
-        href="https://www.linuxfoundation.org/"
+        :href="lfxMenu.footer.href"
         target="_blank"
         rel="noopener noreferrer"
         class="flex items-center gap-1.5"
       >
         <p class="text-xs font-medium text-neutral-500">
-          Know more about LFX Platform
+          {{ lfxMenu.footer.label }}
         </p>
         <lfx-icon
           name="arrow-up-right"
@@ -50,7 +50,8 @@
   import LfxMenuButton from "~/components/uikit/menu-button/menu-button.vue";
   import LfxIcon from "~/components/uikit/icon/icon.vue";
   import LfxPopover from "~/components/uikit/popover/popover.vue";
-  import {lfxTools} from "~/config/tools";
+  import {lfxTools} from "~/config/menu/tools";
+  import {lfxMenu} from "~/config/menu";
 
   const menu = ref();
   const isOpen = ref(false);
