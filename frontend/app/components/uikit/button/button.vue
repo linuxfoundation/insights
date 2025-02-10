@@ -6,7 +6,9 @@
     :icon="props.icon"
     :icon-position="props.iconPosition"
     :loading="props.loading"
-    :disabled="props.disabled" />
+    :disabled="props.disabled">
+    <slot />
+  </pv-button>
 </template>
 
 <script setup lang="ts">
