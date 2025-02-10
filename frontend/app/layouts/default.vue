@@ -2,8 +2,9 @@
   <main>
     <lfx-navbar />
     <slot />
+    <lfx-toast />
   </main>
 </template>
 <script setup lang="ts">
-import LfxNavbar from "~/components/shared/layout/navbar.vue";
+import LfxNavbar from '~/components/shared/layout/navbar.vue';
 </script>
