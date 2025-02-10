@@ -1,6 +1,6 @@
 import type { GaugeSeriesOption } from 'echarts';
 import { axisLabelFormatter } from '../helpers/formatters';
-import { lfxColors } from '~/components/config/styles/colors';
+import { lfxColors } from '~/config/styles/colors';
 
 const defaultOption: ECOption = {
   xAxis: {

@@ -23,7 +23,6 @@
       </lfx-menu-button>
     </div>
     <div class="border-r border-neutral-200 h-6" />
-
     <lfx-tools />
   </div>
 </template>

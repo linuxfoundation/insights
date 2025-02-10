@@ -13,7 +13,7 @@
 import LfxChart from '~/components/uikit/chart/Chart.vue';
 import type { GaugeData } from '~/components/uikit/chart/types/ChartTypes';
 import { getGaugeChartConfig } from '~/components/uikit/chart/configs/gauge.chart';
-import { lfxColors } from '~/components/config/styles/colors';
+import { lfxColors } from '~/config/styles/colors';
 
 const chartData: GaugeData = {
   value: 10, // 0-100
