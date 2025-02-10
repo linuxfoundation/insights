@@ -1,0 +1,40 @@
+.p-toast {
+  .p-toast-message {
+    @apply bg-neutral-900 border-0 text-white rounded-lg mb-2 px-4 py-3;
+    @apply text-sm shadow-2xl;
+
+    .p-toast-icon {
+      @apply mr-2 text-base text-neutral-400;
+    }
+
+    &-info {
+      .p-toast-icon {
+        @apply text-brand-500;
+      }
+    }
+
+    &-success {
+      .p-toast-icon {
+        @apply text-positive-500;
+      }
+    }
+
+    &-warn {
+      .p-toast-icon {
+        @apply text-warning-500;
+      }
+    }
+
+    &-error {
+      .p-toast-icon {
+        @apply text-negative-500;
+      }
+    }
+  }
+
+  &[theme='light'] {
+    .p-toast-message {
+      @apply bg-neutral-50 border border-solid border-neutral-200 text-neutral-900;
+    }
+  }
+}

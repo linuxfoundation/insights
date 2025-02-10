@@ -36,7 +36,7 @@ export default {
     disabled: {
       description: 'Whether the button is disabled',
       control: 'boolean'
-    }
+    },
   },
   parameters: {
     backgrounds: {

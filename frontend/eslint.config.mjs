@@ -36,8 +36,8 @@ export default withNuxt({
       alias: {
         extensions: ['.js', '.jsx', '.ts', '.tsx'],
         map: [
-            ['@', './app'],
-            ['~', './app']
+          ['@', './app'],
+          ['~', './app']
         ]
       },
       typescript: {}
