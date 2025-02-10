@@ -42,8 +42,8 @@
       </template>
       <template #header>
         <i
-          class="fa-solid fa-circle-xmark p-select-clear-filter"
           v-if="props.showFilter && filter.length > 0"
+          class="fa-solid fa-circle-xmark p-select-clear-filter"
           @click="clearFilter" />
       </template>
     </pv-select>
