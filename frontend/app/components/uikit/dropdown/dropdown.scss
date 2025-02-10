@@ -1,20 +1,20 @@
 .p-select {
-  @apply bg-white border border-solid border-neutral-200 rounded-lg shadow-sm flex items-center;
+  @apply bg-white border border-solid border-neutral-200 rounded-lg shadow-sm inline-flex items-center;
   @apply px-3 py-2;
 
   .p-select-label {
-    @apply grow;
+    @apply grow outline-none;
     .dropdown-icon {
       @apply text-base;
     }
     div {
-      @apply text-neutral-900 text-sm;
+      @apply text-neutral-900 text-sm font-medium mr-4;
     }
   }
 
   .p-select-dropdown {
     .p-select-dropdown-icon {
-      @apply text-xs;
+      @apply text-xs text-neutral-500;
     }
   }
 
@@ -52,10 +52,10 @@
 }
 
 .p-select-overlay {
-  @apply bg-white border border-solid border-neutral-200 rounded-lg shadow-lg p-1 min-w-full relative;
+  @apply bg-white border border-solid border-neutral-200 rounded-lg shadow-lg p-1 min-w-[150%] relative -mt-1;
 
   .p-select-option {
-    @apply text-neutral-900 text-sm px-3 py-2 flex justify-between items-center;
+    @apply text-neutral-900 text-sm px-3 py-2 flex justify-between items-center cursor-pointer;
     i {
       @apply text-base;
     }
@@ -65,7 +65,7 @@
     }
     
     .p-select-option-icon {
-      @apply text-base text-brand-500 invisible;
+      @apply text-base text-brand-500 invisible ml-4;
     }
 
     &.p-select-option-selected {
@@ -82,12 +82,13 @@
 
   .p-select-header {
     .p-iconfield {
-      @apply w-full flex flex-row-reverse gap-2 items-center px-3 py-2 border-b border-solid border-neutral-100;
+      @apply w-full flex flex-row-reverse gap-2 items-center border-b border-solid border-neutral-100;
+      @apply relative;
       input {
-        @apply grow text-sm text-neutral-400;
+        @apply grow text-sm text-neutral-900 outline-none pl-10 pr-3 py-2 placeholder:text-neutral-400;
       }
       .p-inputicon {
-        @apply text-base text-neutral-400;
+        @apply text-base text-neutral-400 absolute left-3 top-2;
       }
     }
   }

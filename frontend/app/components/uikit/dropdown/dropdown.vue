@@ -1,5 +1,5 @@
 <template>
-  <div class="relative">
+  <span class="relative">
     <pv-select
       v-model="value"
       :options="props.options"
@@ -43,7 +43,7 @@
         </button>
       </template> -->
     </pv-select>
-  </div>
+  </span>
 </template>
 
 <script setup lang="ts">
