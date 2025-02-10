@@ -16,7 +16,7 @@ const props = withDefaults(
     theme?: ToastTheme;
   }>(),
   {
-    theme: 'light'
+    theme: 'dark'
   }
 );
 
