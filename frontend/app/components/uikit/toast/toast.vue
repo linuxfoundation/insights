@@ -1,5 +1,5 @@
 <template>
-  <pv-toast :theme="props.theme">
+  <pv-toast :theme="props.theme" position="bottom-center">
     <template #message="slotProps">
       <i class="p-toast-icon" :class="getToastIcon(slotProps.message)" />
       {{ slotProps.message.detail }}
