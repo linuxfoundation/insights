@@ -1,4 +1,4 @@
-import type {ToolsItem} from "~/config/tools/index";
+import type {ToolsItem} from "~/config/menu/tools";
 
 const security: ToolsItem = {
     name: 'Security',

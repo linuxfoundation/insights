@@ -1,11 +1,12 @@
 <template>
-  <header class="border-b border-neutral-100 bg-white sticky top-0 left-0">
+  <header class="outline outline-neutral-100 bg-white sticky top-0 left-0 z-40">
     <div class="container">
-      <div class="h-18 flex justify-between items-center gap-5">
+      <div class="h-14 lg:h-17 flex justify-between items-center gap-4 lg:gap-5">
         <div class="flex items-center gap-6 flex-grow min-w-0">
           <div>
             <nuxt-link :to="{ name: LfxRoutes.EXPLORE }">
-              <img src="~/assets/images/logo.svg" alt="LFX Insights" class="h-6 min-w-44">
+              <img src="~/assets/images/logo.svg" alt="LFX Insights" class="h-6 min-w-44 hidden xl:block">
+              <img src="~/assets/images/logo-mobile.svg" alt="LFX Insights" class="h-6 min-w-29 block xl:hidden">
             </nuxt-link>
           </div>
           <lfx-search />
