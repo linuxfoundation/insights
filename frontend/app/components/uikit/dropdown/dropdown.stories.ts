@@ -101,7 +101,7 @@ export const CustomOptionTemplate = {
       return { args };
     },
     template: `
-    <div class="flex flex-row gap-4" style="height: 180px;">
+    <div class="flex flex-row gap-4" style="height: 300px;">
       <div class="w-1/2">
         <LfxDropdown v-bind="args">
           <template #optionTemplate="{ option }">
@@ -175,7 +175,7 @@ export const WithFilter = {
       return { args };
     },
     template: `
-    <div class="flex flex-row gap-4" style="height: 250px;">
+    <div class="flex flex-row gap-4" style="height: 300px;">
       <div class="w-1/2">
         <LfxDropdown v-bind="args" />
       </div>
