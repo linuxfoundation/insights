@@ -23,7 +23,7 @@
       :class="[`p-select--${props.type}`, { 'p-select-group-breaks': props.showGroupBreaks }]"
       @filter="selectFilter">
       <template #value="slotProps">
-        <div class="flex items-center gap-2">
+        <div>
           <i class="dropdown-icon fa-light fa-bars-filter" />
           <div v-if="slotProps.value">{{ getLabel(slotProps.value) }}</div>
           <div v-else>{{ slotProps.placeholder }}</div>

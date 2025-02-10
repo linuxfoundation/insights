@@ -1,14 +1,17 @@
 .p-select {
   @apply bg-white border border-solid border-neutral-200 rounded-lg shadow-sm inline-flex items-center;
-  @apply px-3 py-2;
+  @apply px-3 py-2 max-w-[320px];
 
   .p-select-label {
-    @apply grow outline-none;
+    @apply grow outline-none min-w-0;
     .dropdown-icon {
       @apply text-base;
     }
-    div {
-      @apply text-neutral-900 text-sm font-medium mr-4 leading-4;
+    &>div {
+      @apply text-neutral-900 text-sm font-medium mr-2 leading-4 flex items-center gap-2;
+      div {
+        @apply text-ellipsis w-full truncate;
+      }
     }
   }
 
@@ -22,11 +25,12 @@
   &.p-select-sm {
     @apply px-2 py-1;
     .p-select-label {
+      /* @apply gap-1.5; */
       .dropdown-icon {
         @apply text-sm;
       }
-      div {
-        @apply text-xs;
+      &>div {
+        @apply text-xs gap-1.5 mr-1.5;
       }
     }
   }
@@ -42,6 +46,8 @@
 
 .p-select-sm {
   .p-select-overlay {
+    @apply mt-0;
+    
     .p-select-option {
       @apply text-xs py-1 px-2;
 
@@ -53,7 +59,13 @@
 }
 
 .p-select-overlay {
-  @apply bg-white border border-solid border-neutral-200 rounded-lg shadow-lg p-1 min-w-[150%] relative -mt-1;
+  @apply bg-white border border-solid border-neutral-200 rounded-lg shadow-lg p-1;
+  @apply w-[320px] relative -mt-1;
+  /* setting fix width for now until we can confirm this from Nuno */
+
+  .p-select-list-container {
+    @apply overflow-y-auto;
+  }
 
   .p-select-list {
     @apply gap-1 flex flex-col;
@@ -87,7 +99,7 @@
   .p-select-header {
     @apply relative;
     .p-iconfield {
-      @apply w-full flex flex-row-reverse gap-2 items-center border-b border-solid border-neutral-100;
+      @apply w-full flex flex-row-reverse gap-2 items-center border-b border-solid border-neutral-100 pb-1 mb-1;
 
       input {
         @apply grow text-sm text-neutral-900 outline-none pl-10 pr-3 py-2 placeholder:text-neutral-400;
