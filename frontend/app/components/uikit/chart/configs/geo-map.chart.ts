@@ -1,7 +1,7 @@
 import type { MapSeriesOption } from 'echarts/types/dist/shared';
 
 import type { ChartData, ChartSeries, SeriesTypes } from '../types/ChartTypes';
-import {lfxColors} from "~/components/config/styles/colors";
+import {lfxColors} from "~/config/styles/colors";
 
 interface GeoMapData {
   name: string;

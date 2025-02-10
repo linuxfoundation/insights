@@ -1,5 +1,5 @@
 <template>
-  <header class="border-b border-neutral-100 bg-white sticky top-0 left-0 ">
+  <header class="border-b border-neutral-100 bg-white sticky top-0 left-0">
     <div class="container">
       <div class="h-18 flex justify-between items-center gap-5">
         <div class="flex items-center gap-6 flex-grow min-w-0">

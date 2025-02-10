@@ -6,7 +6,7 @@ import type {
 } from '../types/ChartTypes';
 import { convertToScatterData } from '../helpers/chart-helpers';
 import defaultOption from './defaults.chart';
-import { lfxColors } from '~/components/config/styles/colors';
+import { lfxColors } from '~/config/styles/colors';
 
 type pieceRange = {
   min: number;
