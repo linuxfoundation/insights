@@ -5,7 +5,7 @@ export const weekly = [
   },
   {
     contributionDate: '2024-01-08T00:00:00Z',
-    contributions: 112
+    contributions: 412
   },
   {
     contributionDate: '2024-01-15T00:00:00Z',
@@ -13,7 +13,7 @@ export const weekly = [
   },
   {
     contributionDate: '2024-01-22T00:00:00Z',
-    contributions: 145
+    contributions: 445
   },
   {
     contributionDate: '2024-01-29T00:00:00Z',
@@ -21,7 +21,7 @@ export const weekly = [
   },
   {
     contributionDate: '2024-02-05T00:00:00Z',
-    contributions: 234
+    contributions: 634
   },
   {
     contributionDate: '2024-02-12T00:00:00Z',
@@ -49,7 +49,7 @@ export const weekly = [
   },
   {
     contributionDate: '2024-03-25T00:00:00Z',
-    contributions: 3378
+    contributions: 789
   },
   {
     contributionDate: '2024-04-01T00:00:00Z',
@@ -72,15 +72,15 @@ export const monthly = [
   },
   {
     contributionDate: '2024-02-01T00:00:00Z',
-    contributions: 19
+    contributions: 619
   },
   {
     contributionDate: '2024-03-01T00:00:00Z',
-    contributions: 110
+    contributions: 710
   },
   {
     contributionDate: '2024-04-01T00:00:00Z',
-    contributions: 244
+    contributions: 444
   },
   {
     contributionDate: '2024-05-01T00:00:00Z',
@@ -104,15 +104,15 @@ export const monthly = [
   },
   {
     contributionDate: '2024-10-01T00:00:00Z',
-    contributions: 100
+    contributions: 500
   },
   {
     contributionDate: '2024-11-01T00:00:00Z',
-    contributions: 207
+    contributions: 307
   },
   {
     contributionDate: '2024-12-01T00:00:00Z',
-    contributions: 277
+    contributions: 377
   }
 ];
 
@@ -123,7 +123,7 @@ export const quarterly = [
   },
   {
     contributionDate: '2024-04-01T00:00:00Z',
-    contributions: 244
+    contributions: 1244
   },
   {
     contributionDate: '2024-07-01T00:00:00Z',
@@ -131,6 +131,6 @@ export const quarterly = [
   },
   {
     contributionDate: '2024-10-01T00:00:00Z',
-    contributions: 100
+    contributions: 900
   }
 ];
