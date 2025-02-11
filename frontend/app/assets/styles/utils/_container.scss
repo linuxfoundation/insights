@@ -1,3 +1,7 @@
 .container{
   @apply max-w-7xl mx-auto px-5 md:px-10;
 }
+
+hr {
+  @apply border-neutral-100;
+}

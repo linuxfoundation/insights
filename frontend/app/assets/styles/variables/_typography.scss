@@ -43,4 +43,8 @@
   // Body 2
   --lfx-text-body-2-font-size: var(--lfx-font-size-xs);
   --lfx-text-body-2-line-height: #{toRem(16)};
+
+  // Delta Display (Needs discussion)
+  --lfx-text-delta-display-font-size: #{toRem(13)};
+  --lfx-text-delta-display-line-height: #{toRem(16.25)};
 }

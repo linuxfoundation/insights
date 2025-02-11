@@ -4,7 +4,7 @@ import { buildSeries, convertDateData } from '../helpers/chart-helpers';
 import { tooltipFormatter, tooltipLabelFormatter } from '../helpers/formatters';
 import type { ChartData, ChartSeries, SeriesTypes } from '../types/ChartTypes';
 import defaultOption from './defaults.chart';
-import {lfxColors} from "~/config/styles/colors";
+import { lfxColors } from '~/config/styles/colors';
 
 const defaultBarOption: ECOption = {
   ...defaultOption,
@@ -20,21 +20,22 @@ const defaultBarOption: ECOption = {
       }
     },
     formatter: tooltipFormatter
-  },
-  legend: {
-    orient: 'horizontal',
-    left: 'center',
-    bottom: 0,
-    itemWidth: 15,
-    itemHeight: 15,
-    itemGap: 40,
-    textStyle: {
-      fontSize: 12,
-      fontWeight: 'normal',
-      color: lfxColors.black,
-      fontFamily: 'Inter'
-    }
   }
+  // hiding legend for now since there isn't any on the designs
+  // legend: {
+  //   orient: 'horizontal',
+  //   left: 'center',
+  //   bottom: 0,
+  //   itemWidth: 15,
+  //   itemHeight: 15,
+  //   itemGap: 40,
+  //   textStyle: {
+  //     fontSize: 12,
+  //     fontWeight: 'normal',
+  //     color: lfxColors.black,
+  //     fontFamily: 'Inter'
+  //   }
+  // }
 };
 
 const defaultSeriesStyle: BarSeriesOption = {
@@ -55,7 +56,10 @@ const defaultSeriesStyle: BarSeriesOption = {
  * @param series - Series
  * @returns Series
  */
-const applySeriesStyle = (chartSeries: ChartSeries[], series: SeriesTypes[] | undefined): SeriesTypes[] => {
+const applySeriesStyle = (
+  chartSeries: ChartSeries[],
+  series: SeriesTypes[] | undefined
+): SeriesTypes[] => {
   if (!series) return [];
 
   return series.map((seriesItem: SeriesTypes, index: number) => {
@@ -76,14 +80,19 @@ const applySeriesStyle = (chartSeries: ChartSeries[], series: SeriesTypes[] | un
  * @param series - Series
  * @returns Chart config
  */
-export const getBarChartConfig = (data: ChartData[], series: ChartSeries[]): ECOption => {
+export const getBarChartConfig = (
+  data: ChartData[],
+  series: ChartSeries[],
+  overrideConfig?: Partial<ECOption>
+): ECOption => {
   const xAxis = { ...defaultBarOption.xAxis, data: convertDateData(data) ?? [] };
   const styledSeries = applySeriesStyle(series, buildSeries(series, data));
 
   return {
     ...defaultBarOption,
     xAxis,
-    series: styledSeries
+    series: styledSeries,
+    ...overrideConfig
   };
 };
 

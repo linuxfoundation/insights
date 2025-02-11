@@ -7,7 +7,7 @@ const defaultOption: ECOption = {
     type: 'category',
     axisLabel: {
       align: 'center',
-      formatter: axisLabelFormatter,
+      formatter: axisLabelFormatter('{MMM} {yy}'),
       interval: 0,
       fontSize: '12px',
       fontWeight: 'normal',
