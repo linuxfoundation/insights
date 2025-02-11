@@ -16,7 +16,7 @@
           icon-type="solid" />
       </div>
 
-      <lfx-tabs :tabs="tabs" :model-value="activeTab" @update:model-value="handleTabChange" />
+      <lfx-tabs :tabs="tabs" :model-value="activeTab" @update:model-value="activeTab = $event" />
       <div class="w-full h-[330px]">
         <lfx-chart :config="barChartConfig" />
       </div>
@@ -25,7 +25,7 @@
 </template>
 
 <script setup lang="ts">
-import { useAsyncData } from 'nuxt/app';
+import { useFetch } from 'nuxt/app';
 import { ref, computed } from 'vue';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
@@ -42,14 +42,8 @@ import { lfxColors } from '~/config/styles/colors';
 import { axisLabelFormatter } from '~/components/uikit/chart/helpers/formatters';
 
 const activeTab = ref('weekly');
-const getData = async (interval: string) => {
-  const { data } = await useAsyncData(
-    'active-contributors', //
-    () => $fetch(`/api/contributors/active-contributors?interval=${interval}`)
-  );
-  return data.value;
-};
-const data = ref(await getData(activeTab.value));
+
+const { data } = useFetch(() => `/api/contributors/active-contributors?interval=${activeTab.value}`)
 
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
@@ -80,11 +74,6 @@ const configOverride = computed(() => ({
   }
 }));
 const barChartConfig = computed(() => getBarChartConfig(chartData.value, chartSeries.value, configOverride.value));
-
-const handleTabChange = async (value: string) => {
-  activeTab.value = value;
-  data.value = await getData(value);
-};
 </script>
 
 <script lang="ts">
