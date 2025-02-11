@@ -26,7 +26,7 @@
 </template>
 
 <script setup lang="ts">
-import { useFetch } from 'nuxt/app';
+import { useFetch, useRoute } from 'nuxt/app';
 import { ref, computed, watch } from 'vue';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
@@ -48,9 +48,12 @@ import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 const { showToast } = useToastService();
 
 const activeTab = ref('weekly');
+const route = useRoute();
 
 const { data, status, error } = useFetch(
-  () => `/api/contributors/active-contributors?interval=${activeTab.value}`
+  () => `/api/contributors/active-contributors?interval=${activeTab.value}&project=${
+      route.params.slug
+    }&repository=${route.params.name || ''}`
 );
 
 const chartData = computed<ChartData[]>(
