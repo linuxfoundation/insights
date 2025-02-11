@@ -1,5 +1,11 @@
 <template>
-  <pv-select-button v-model="value" :options="options" option-label="label" data-key="value" option-value="value">
+  <pv-select-button
+    v-model="value"
+    :options="options"
+    option-label="label"
+    data-key="value"
+    option-value="value"
+    :allowEmpty="false">
     <template #option="slotProps">
       <slot name="slotItem" :option="slotProps.option">
         <i v-if="slotProps.option.icon" :class="slotProps.option.icon" />
@@ -12,7 +18,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import type { TabsProps, TabsEmits } from './types/tab.types';
 
 const props = defineProps<TabsProps>();
