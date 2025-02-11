@@ -5,7 +5,7 @@
       Active contributor is an individual performing tasks such as commits, issues, or pull requests
       during the selected time period.
     </p>
-    <hr>
+    <hr />
     <section class="mt-5">
       <div class="flex flex-row gap-4 items-center mb-6">
         <div class="text-data-display-1">4,000</div>
@@ -39,6 +39,7 @@ import type {
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import { getBarChartConfig } from '~/components/uikit/chart/configs/bar.chart';
 import { lfxColors } from '~/config/styles/colors';
+import { axisLabelFormatter } from '~/components/uikit/chart/helpers/formatters';
 
 const activeTab = ref('weekly');
 const getData = async (interval: string) => {
@@ -71,12 +72,20 @@ const chartSeries = ref<ChartSeries[]>([
     color: lfxColors.brand[500]
   }
 ]);
-const barChartConfig = computed(() => getBarChartConfig(chartData.value, chartSeries.value));
+const configOverride = computed(() => ({
+  xAxis: {
+    axisLabel: {
+      formatter: axisLabelFormatter(activeTab.value === 'weekly' ? 'MMM dd' : 'MMM yyyy')
+    }
+  }
+}));
+const barChartConfig = computed(() =>
+  getBarChartConfig(chartData.value, chartSeries.value, configOverride.value)
+);
 
 const handleTabChange = async (value: string) => {
   activeTab.value = value;
   data.value = await getData(value);
-  console.log('data', data.value);
 };
 </script>
 
