@@ -3,6 +3,10 @@ import { axisLabelFormatter } from '../helpers/formatters';
 import { lfxColors } from '~/config/styles/colors';
 
 const defaultOption: ECOption = {
+  grid: {
+    left: '8%',
+    right: 0
+  },
   xAxis: {
     type: 'category',
     axisLabel: {
