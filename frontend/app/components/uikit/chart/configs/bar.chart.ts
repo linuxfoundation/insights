@@ -1,4 +1,5 @@
 import type { BarSeriesOption } from 'echarts/types/dist/shared';
+import { merge } from 'lodash';
 import { buildSeries, convertDateData } from '../helpers/chart-helpers';
 
 import { tooltipFormatter, tooltipLabelFormatter } from '../helpers/formatters';
@@ -85,20 +86,20 @@ export const getBarChartConfig = (
   series: ChartSeries[],
   overrideConfig?: Partial<ECOption>
 ): ECOption => {
-  const { xAxis: xAxisOverride, ...rest } = overrideConfig ?? {};
   const xAxis = {
     ...defaultBarOption.xAxis,
-    data: convertDateData(data) ?? [],
-    ...xAxisOverride
+    data: convertDateData(data) ?? []
   };
   const styledSeries = applySeriesStyle(series, buildSeries(series, data));
 
-  return {
-    ...defaultBarOption,
-    xAxis,
-    series: styledSeries,
-    ...rest
-  };
+  return merge(
+    {
+      ...defaultBarOption,
+      xAxis,
+      series: styledSeries
+    },
+    overrideConfig
+  );
 };
 
 /**
@@ -128,8 +129,7 @@ export const getBarChartConfigCustom = (
 ): ECOption => {
   const xAxis = { ...defaultBarOption.xAxis, data: convertDateData(data) ?? [] };
   const styledSeries = applySeriesStyle(series, buildSeries(series, data)).map(
-    (seriesItem) =>
-      ({
+    (seriesItem) => ({
         ...seriesItem,
         ...customStyle
       } as BarSeriesOption)
