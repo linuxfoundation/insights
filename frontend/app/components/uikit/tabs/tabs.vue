@@ -5,7 +5,7 @@
     option-label="label"
     data-key="value"
     option-value="value"
-    :allowEmpty="false">
+    :allow-empty="false">
     <template #option="slotProps">
       <slot name="slotItem" :option="slotProps.option">
         <i v-if="slotProps.option.icon" :class="slotProps.option.icon" />
