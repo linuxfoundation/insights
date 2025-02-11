@@ -18,7 +18,8 @@
 
       <lfx-tabs :tabs="tabs" :model-value="activeTab" @update:model-value="activeTab = $event" />
       <div class="w-full h-[330px]">
-        <lfx-chart :config="barChartConfig" />
+        <lfx-chart v-if="status !== 'pending'" :config="barChartConfig" />
+        <lfx-spinner v-else />
       </div>
     </section>
   </lfx-card>
@@ -26,7 +27,7 @@
 
 <script setup lang="ts">
 import { useFetch } from 'nuxt/app';
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
@@ -40,10 +41,17 @@ import LfxChart from '~/components/uikit/chart/chart.vue';
 import { getBarChartConfig } from '~/components/uikit/chart/configs/bar.chart';
 import { lfxColors } from '~/config/styles/colors';
 import { axisLabelFormatter } from '~/components/uikit/chart/helpers/formatters';
+import useToastService from '~/components/uikit/toast/toast.service';
+import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
+import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
+
+const { showToast } = useToastService();
 
 const activeTab = ref('weekly');
 
-const { data } = useFetch(() => `/api/contributors/active-contributors?interval=${activeTab.value}`)
+const { data, status, error } = useFetch(
+  () => `/api/contributors/active-contributors?interval=${activeTab.value}`
+);
 
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
@@ -74,6 +82,10 @@ const configOverride = computed(() => ({
   }
 }));
 const barChartConfig = computed(() => getBarChartConfig(chartData.value, chartSeries.value, configOverride.value));
+
+watch(error, (newError) => {
+  showToast(`Error fetching active contributors: ${newError?.message}`, ToastTypesEnum.negative);
+});
 </script>
 
 <script lang="ts">
