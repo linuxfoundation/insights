@@ -1,32 +1,42 @@
-import {lfxColors} from "./app/config/styles/colors.ts";
-import {lfxFontSizes} from "./app/config/styles/font-size.ts";
+import { lfxColors } from './app/config/styles/colors.ts';
+import { lfxFontSizes } from './app/config/styles/font-size.ts';
 
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [],
   theme: {
-    screens:{
+    screens: {
       sm: '640px',
       md: '768px',
       lg: '1024px',
       xl: '1280px',
-      '2xl': '1536px',
+      '2xl': '1536px'
     },
     colors: lfxColors,
     fontFamily: {
       primary: ['var(--lfx-font-primary)', 'sans-serif'],
-      secondary: ['var(--lfx-font-secondary)', 'sans-serif'],
+      secondary: ['var(--lfx-font-secondary)', 'sans-serif']
     },
     fontSize: {
       ...lfxFontSizes,
-      'data-display-1': ['var(--lfx-text-data-display-1-font-size)', 'var(--lfx-text-data-display-1-line-height)'],
-      'data-display-2': ['var(--lfx-text-data-display-2-font-size)', 'var(--lfx-text-data-display-2-line-height)'],
+      'data-display-1': [
+        'var(--lfx-text-data-display-1-font-size)',
+        'var(--lfx-text-data-display-1-line-height)'
+      ],
+      'data-display-2': [
+        'var(--lfx-text-data-display-2-font-size)',
+        'var(--lfx-text-data-display-2-line-height)'
+      ],
+      'delta-display': [
+        'var(--lfx-text-delta-display-font-size)',
+        'var(--lfx-text-delta-display-line-height)'
+      ],
       'heading-1': ['var(--lfx-text-heading-1-font-size)', 'var(--lfx-text-heading-1-line-height)'],
       'heading-2': ['var(--lfx-text-heading-2-font-size)', 'var(--lfx-text-heading-2-line-height)'],
       'heading-3': ['var(--lfx-text-heading-3-font-size)', 'var(--lfx-text-heading-3-line-height)'],
       'heading-4': ['var(--lfx-text-heading-4-font-size)', 'var(--lfx-text-heading-4-line-height)'],
       'body-1': ['var(--lfx-text-body-1-font-size)', 'var(--lfx-text-body-1-line-height)'],
-      'body-2': ['var(--lfx-text-body-2-font-size)', 'var(--lfx-text-body-2-line-height)'],
+      'body-2': ['var(--lfx-text-body-2-font-size)', 'var(--lfx-text-body-2-line-height)']
     },
 
     boxShadow: {
@@ -36,7 +46,7 @@ export default {
       md: 'var(--lfx-shadow-md)',
       lg: 'var(--lfx-shadow-lg)',
       xl: 'var(--lfx-shadow-xl)',
-      '2xl': 'var(--lfx-shadow-2xl)',
+      '2xl': 'var(--lfx-shadow-2xl)'
     },
 
     borderRadius: {
@@ -48,30 +58,29 @@ export default {
       xl: 'var(--lfx-radius-xl)',
       '2xl': 'var(--lfx-radius-2xl)',
       '3xl': 'var(--lfx-radius-3xl)',
-      full: '9999px',
-
+      full: '9999px'
     },
 
     extend: {
       height: {
         17: '4.25rem',
-        18: '4.5rem',
+        18: '4.5rem'
       },
       width: {
         149: '37.25rem',
-        78: '19.5rem',
+        78: '19.5rem'
       },
       minWidth: {
-        29: '7.25rem',
+        29: '7.25rem'
       },
       spacing: {
         17: '4.25rem',
-        25: '6.25rem',
+        25: '6.25rem'
       },
-      outlineWidth:{
+      outlineWidth: {
         3: '0.1875rem'
       }
-    },
+    }
   },
-  plugins: [],
+  plugins: []
 };
