@@ -41,12 +41,12 @@ const defaultBarOption: ECOption = {
 
 const defaultSeriesStyle: BarSeriesOption = {
   color: lfxColors.brand[500],
-  barWidth: 20,
+  barWidth: 15,
   barGap: '30%',
   itemStyle: {
-    borderRadius: [2, 2, 2, 2],
-    borderWidth: 1,
-    borderColor: '#fff'
+    borderRadius: [4, 4, 4, 4],
+    borderWidth: 1
+    // borderColor: '#fff'
   }
 };
 
@@ -129,7 +129,8 @@ export const getBarChartConfigCustom = (
 ): ECOption => {
   const xAxis = { ...defaultBarOption.xAxis, data: convertDateData(data) ?? [] };
   const styledSeries = applySeriesStyle(series, buildSeries(series, data)).map(
-    (seriesItem) => ({
+    (seriesItem) =>
+      ({
         ...seriesItem,
         ...customStyle
       } as BarSeriesOption)
