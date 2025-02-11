@@ -85,14 +85,19 @@ export const getBarChartConfig = (
   series: ChartSeries[],
   overrideConfig?: Partial<ECOption>
 ): ECOption => {
-  const xAxis = { ...defaultBarOption.xAxis, data: convertDateData(data) ?? [] };
+  const { xAxis: xAxisOverride, ...rest } = overrideConfig ?? {};
+  const xAxis = {
+    ...defaultBarOption.xAxis,
+    data: convertDateData(data) ?? [],
+    ...xAxisOverride
+  };
   const styledSeries = applySeriesStyle(series, buildSeries(series, data));
 
   return {
     ...defaultBarOption,
     xAxis,
     series: styledSeries,
-    ...overrideConfig
+    ...rest
   };
 };
 
@@ -123,7 +128,8 @@ export const getBarChartConfigCustom = (
 ): ECOption => {
   const xAxis = { ...defaultBarOption.xAxis, data: convertDateData(data) ?? [] };
   const styledSeries = applySeriesStyle(series, buildSeries(series, data)).map(
-    (seriesItem) => ({
+    (seriesItem) =>
+      ({
         ...seriesItem,
         ...customStyle
       } as BarSeriesOption)

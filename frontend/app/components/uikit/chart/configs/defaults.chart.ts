@@ -8,6 +8,7 @@ const defaultOption: ECOption = {
     axisLabel: {
       align: 'center',
       formatter: axisLabelFormatter('{MMM} {yy}'),
+      hideOverlap: true,
       interval: 0,
       fontSize: '12px',
       fontWeight: 'normal',
