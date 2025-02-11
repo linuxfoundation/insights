@@ -5,7 +5,7 @@
       Active contributor is an individual performing tasks such as commits, issues, or pull requests
       during the selected time period.
     </p>
-    <hr />
+    <hr>
     <section class="mt-5">
       <div class="flex flex-row gap-4 items-center mb-6">
         <div class="text-data-display-1">1,000</div>
@@ -79,9 +79,7 @@ const configOverride = computed(() => ({
     }
   }
 }));
-const barChartConfig = computed(() =>
-  getBarChartConfig(chartData.value, chartSeries.value, configOverride.value)
-);
+const barChartConfig = computed(() => getBarChartConfig(chartData.value, chartSeries.value, configOverride.value));
 
 const handleTabChange = async (value: string) => {
   activeTab.value = value;
