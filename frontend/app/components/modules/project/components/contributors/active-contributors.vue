@@ -86,8 +86,15 @@ const configOverride = computed(() => ({
 }));
 const barChartConfig = computed(() => getBarChartConfig(chartData.value, chartSeries.value, configOverride.value));
 
-watch(error, (newError) => {
-  showToast(`Error fetching active contributors: ${newError?.message}`, ToastTypesEnum.negative);
+watch(error, (status) => {
+  if (error) {
+    showToast(
+      `Error fetching active contributors: ${error.value?.statusMessage}`,
+      ToastTypesEnum.negative,
+      undefined,
+      10000
+    );
+  }
 });
 </script>
 

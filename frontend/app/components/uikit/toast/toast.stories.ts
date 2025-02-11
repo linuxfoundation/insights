@@ -31,7 +31,6 @@ const render = (args) => ({
   setup() {
     const { showToast } = useToastService();
     const displayToast = (toastType: ToastType, icon?: string) => {
-      console.log('args', args);
       showToast(args.message, toastType, icon, args.delay);
     };
     const typesEnum = ToastTypesEnum;
