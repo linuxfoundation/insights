@@ -16,17 +16,18 @@
           icon-type="solid" />
       </div>
 
-      <lfx-tabs :tabs="tabs" :model-value="activeTab" @update:model-value="handleTabChange" />
+      <lfx-tabs :tabs="tabs" :model-value="activeTab" @update:model-value="activeTab = $event" />
       <div class="w-full h-[330px]">
-        <lfx-chart :config="barChartConfig" />
+        <lfx-chart v-if="status !== 'pending'" :config="barChartConfig" />
+        <lfx-spinner v-else />
       </div>
     </section>
   </lfx-card>
 </template>
 
 <script setup lang="ts">
-import { useAsyncData } from 'nuxt/app';
-import { ref, computed } from 'vue';
+import { useFetch, useRoute } from 'nuxt/app';
+import { ref, computed, watch } from 'vue';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
@@ -40,16 +41,19 @@ import LfxChart from '~/components/uikit/chart/chart.vue';
 import { getBarChartConfig } from '~/components/uikit/chart/configs/bar.chart';
 import { lfxColors } from '~/config/styles/colors';
 import { axisLabelFormatter } from '~/components/uikit/chart/helpers/formatters';
+import useToastService from '~/components/uikit/toast/toast.service';
+import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
+import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
+
+const { showToast } = useToastService();
 
 const activeTab = ref('weekly');
-const getData = async (interval: string) => {
-  const { data } = await useAsyncData(
-    'active-orgs', //
-    () => $fetch(`/api/contributors/active-organizations?interval=${interval}`)
-  );
-  return data.value;
-};
-const data = ref(await getData(activeTab.value));
+const route = useRoute();
+const { data, status, error } = useFetch(
+  () => `/api/contributors/active-organizations?interval=${activeTab.value}&project=${
+      route.params.slug
+    }&repository=${route.params.name || ''}`
+);
 
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
@@ -81,10 +85,16 @@ const configOverride = computed(() => ({
 }));
 const barChartConfig = computed(() => getBarChartConfig(chartData.value, chartSeries.value, configOverride.value));
 
-const handleTabChange = async (value: string) => {
-  activeTab.value = value;
-  data.value = await getData(value);
-};
+watch(error, (err) => {
+  if (err) {
+    showToast(
+      `Error fetching active contributors: ${error.value?.statusMessage}`,
+      ToastTypesEnum.negative,
+      undefined,
+      10000
+    );
+  }
+});
 </script>
 
 <script lang="ts">
