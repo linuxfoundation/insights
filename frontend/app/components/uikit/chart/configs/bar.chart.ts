@@ -129,8 +129,7 @@ export const getBarChartConfigCustom = (
 ): ECOption => {
   const xAxis = { ...defaultBarOption.xAxis, data: convertDateData(data) ?? [] };
   const styledSeries = applySeriesStyle(series, buildSeries(series, data)).map(
-    (seriesItem) =>
-      ({
+    (seriesItem) => ({
         ...seriesItem,
         ...customStyle
       } as BarSeriesOption)
