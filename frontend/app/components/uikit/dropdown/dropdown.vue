@@ -1,0 +1,105 @@
+<template>
+  <span class="relative">
+    <pv-select
+      ref="filterRef"
+      v-model="value"
+      :options="props.options"
+      option-label="label"
+      option-value="value"
+      dropdown-icon="fa-light fa-chevron-down"
+      :option-group-label="isGrouped ? 'label' : undefined"
+      :option-group-children="isGrouped ? 'items' : undefined"
+      :placeholder="props.placeholder"
+      :disabled="props.disabled"
+      :size="size"
+      :filter="props.showFilter"
+      filter-placeholder="Search..."
+      filter-icon="fa-light fa-magnifying-glass"
+      clear-icon="fa-solid fa-circle-xmark"
+      reset-filter-on-clear="true"
+      append-to="self"
+      auto-filter-focus="true"
+      reset-filter-on-hide="true"
+      :class="[`p-select--${props.type}`, { 'p-select-group-breaks': props.showGroupBreaks }]"
+      @filter="selectFilter">
+      <template #value="slotProps">
+        <div>
+          <i class="dropdown-icon fa-light fa-bars-filter" />
+          <div v-if="slotProps.value">{{ getLabel(slotProps.value) }}</div>
+          <div v-else>{{ slotProps.placeholder }}</div>
+        </div>
+      </template>
+
+      <template #option="slotProps">
+        <slot name="option" :option="slotProps.option">
+          <div>
+            <slot name="optionTemplate" :option="slotProps.option">
+              {{ slotProps.option.label }}
+            </slot>
+          </div>
+          <i class="p-select-option-icon fa-light fa-check" />
+        </slot>
+      </template>
+      <template #header>
+        <i
+          v-if="props.showFilter && filter.length > 0"
+          class="fa-solid fa-circle-xmark p-select-clear-filter"
+          @click="clearFilter" />
+      </template>
+    </pv-select>
+  </span>
+</template>
+
+<script setup lang="ts">
+import { computed, ref } from 'vue';
+import type { DropdownProps, DropdownOption, DropdownGroupOptions } from './types/dropdown.types';
+
+const props = withDefaults(defineProps<DropdownProps>(), {
+  placeholder: 'Select an option',
+  disabled: false,
+  type: 'filled',
+  size: 'default'
+});
+
+const emit = defineEmits(['update:modelValue']);
+
+const value = computed({
+  get() {
+    return props.modelValue;
+  },
+  set(val: string) {
+    emit('update:modelValue', val);
+  }
+});
+
+const size = computed(() => (props.size === 'small' ? 'small' : 'large'));
+
+const isGrouped = computed(() => props.options.some((option) => 'items' in option && Array.isArray(option.items)));
+const filter = ref('');
+const filterRef = ref();
+
+const getLabel = (value: string) => {
+  if (isGrouped.value) {
+    const flattenedOptions = props.options.flatMap((group) => (group as DropdownGroupOptions).items);
+    return flattenedOptions.find((option) => option.value === value)?.label || '';
+  }
+  return (props.options as DropdownOption[]).find((option) => option.value === value)?.label || '';
+};
+
+const clearFilter = (e: Event) => {
+  e.preventDefault();
+  e.stopPropagation();
+  filter.value = '';
+  filterRef.value.filterValue = '';
+};
+
+const selectFilter = ({ value }: { value: string }) => {
+  filter.value = value;
+};
+</script>
+
+<script lang="ts">
+export default {
+  name: 'LfxDropdown'
+};
+</script>
