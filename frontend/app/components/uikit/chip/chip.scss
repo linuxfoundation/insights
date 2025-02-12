@@ -1,5 +1,5 @@
 .p-chip {
-  @apply inline-flex items-center gap-1.5 text-sm rounded-full px-2.5 py-1 text-neutral-900 text-sm;
+  @apply inline-flex items-center gap-1.5 text-sm rounded-full px-2.5 text-neutral-900 h-7;
 
   .c-icon {
     @apply text-base;
@@ -10,7 +10,7 @@
   }
 
   &-size-small {
-    @apply text-xs;
+    @apply text-xs h-6;
 
     .c-icon {
       @apply text-sm;
