@@ -46,8 +46,6 @@
 
 .p-select-sm {
   .p-select-overlay {
-    @apply mt-0;
-    
     .p-select-option {
       @apply text-xs py-1 px-2;
 
@@ -60,8 +58,7 @@
 
 .p-select-overlay {
   @apply bg-white border border-solid border-neutral-200 rounded-lg shadow-lg p-1;
-  @apply w-[320px] relative -mt-1;
-  /* setting fix width for now until we can confirm this from Nuno */
+  @apply min-w-[400px] relative mt-2;
 
   .p-select-list-container {
     @apply overflow-y-auto;

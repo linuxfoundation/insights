@@ -1,5 +1,5 @@
 <template>
-  <span class="relative">
+  <div class="relative">
     <pv-select
       ref="filterRef"
       v-model="value"
@@ -24,7 +24,7 @@
       @filter="selectFilter">
       <template #value="slotProps">
         <div>
-          <i class="dropdown-icon fa-light fa-bars-filter" />
+          <i :class="['dropdown-icon', props.dropdownIcon]" />
           <div v-if="slotProps.value">{{ getLabel(slotProps.value) }}</div>
           <div v-else>{{ slotProps.placeholder }}</div>
         </div>
@@ -47,7 +47,7 @@
           @click="clearFilter" />
       </template>
     </pv-select>
-  </span>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -58,7 +58,8 @@ const props = withDefaults(defineProps<DropdownProps>(), {
   placeholder: 'Select an option',
   disabled: false,
   type: 'filled',
-  size: 'default'
+  size: 'default',
+  dropdownIcon: 'fa-light fa-bars-filter'
 });
 
 const emit = defineEmits(['update:modelValue']);
@@ -80,7 +81,9 @@ const filterRef = ref();
 
 const getLabel = (value: string) => {
   if (isGrouped.value) {
-    const flattenedOptions = props.options.flatMap((group) => (group as DropdownGroupOptions).items);
+    const flattenedOptions = props.options.flatMap(
+      (group) => (group as DropdownGroupOptions).items
+    );
     return flattenedOptions.find((option) => option.value === value)?.label || '';
   }
   return (props.options as DropdownOption[]).find((option) => option.value === value)?.label || '';
