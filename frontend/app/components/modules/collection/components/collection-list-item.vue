@@ -12,7 +12,7 @@
           Featured projects
         </p>
         <div class="flex flex-wrap gap-3">
-          <lfx-chip type="bordered" v-for="i of 3" :key="i">
+          <lfx-chip v-for="i of 3" :key="i" type="bordered">
             <lfx-avatar src="https" size="xsmall" type="organization" />
             Prometheus
           </lfx-chip>
