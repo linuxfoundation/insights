@@ -6,7 +6,7 @@
       other metrics representing their relative activity levels and impact on the project.
     </p>
 
-    <hr>
+    <hr />
     <section class="mt-5">
       <div class="flex flex-row gap-4 items-center mb-6">
         <lfx-dropdown
@@ -55,7 +55,7 @@ import type { ContributorLeaderboard } from '~/components/shared/types/contribut
 import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
 import { formatNumber } from '~/components/shared/utils/formatter';
 import LfxDropdown from '~/components/uikit/dropdown/dropdown.vue';
-
+import { metricsOptions } from '~/components/shared/types/metrics';
 const props = withDefaults(
   defineProps<{
     timePeriod?: string;
@@ -66,17 +66,13 @@ const props = withDefaults(
 );
 const { showToast } = useToastService();
 
-const metricOptions = [
-  { label: 'All activities', value: 'all' },
-  { label: 'Commits', value: 'commits' },
-  { label: 'Issues', value: 'issues' },
-  { label: 'Pull Requests', value: 'pull-requests' }
-];
+const metricOptions = metricsOptions;
 
 const route = useRoute();
 const metric = ref('all');
 const { data, status, error } = useFetch(
-  () => `/api/contributors/contributor-leaderboard?metric=${metric.value}&project=${
+  () =>
+    `/api/contributors/contributor-leaderboard?metric=${metric.value}&project=${
       route.params.slug
     }&repository=${route.params.name || ''}&time-period=${props.timePeriod}`
 );
