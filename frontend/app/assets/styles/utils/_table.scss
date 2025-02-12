@@ -1,12 +1,13 @@
 .lfx-table {
-  @apply w-full flex flex-col gap-4;
+  @apply w-full flex flex-col gap-3;
 }
 
 .lfx-table-header {
-  @apply flex flex-row gap-4 justify-between text-neutral-400;
+  @apply flex flex-row gap-4 justify-between text-neutral-400 py-1;
+  @apply text-xs font-medium;
 }
 
-.lfx-table-header-cell {
-  @apply flex flex-row gap-4 justify-between text-neutral-900;
+.lfx-table-row {
+  @apply flex flex-row gap-4 justify-between text-neutral-900 py-1 text-sm;
 }
 
