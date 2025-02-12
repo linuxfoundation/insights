@@ -6,3 +6,10 @@ export interface ContributorLeaderboard {
   contributions: number;
   email: string;
 }
+
+export interface OrganizationLeaderboard {
+  logo: string;
+  name: string;
+  contributions: number;
+  website: string;
+}
