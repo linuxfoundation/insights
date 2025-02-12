@@ -11,7 +11,7 @@
       <div class="flex flex-row gap-4 items-center mb-6">
         <lfx-dropdown
           v-model="metric"
-          dropdown-icon="fa-light fa-display-code"
+          icon="fa-light fa-display-code"
           :options="metricOptions"
           full-width
           center />
