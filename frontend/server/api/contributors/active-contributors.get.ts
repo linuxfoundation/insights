@@ -27,7 +27,7 @@ export default defineEventHandler(async (event) => {
   if (query.repository) {
     data = data.map((item) => ({
       ...item,
-      contributions: item.contributions - 3000
+      contributors: item.contributors - 3000
     }));
   }
 
