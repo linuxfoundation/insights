@@ -5,7 +5,7 @@
       Active contributor is an individual performing tasks such as commits, issues, or pull requests
       during the selected time period.
     </p>
-    <hr>
+    <hr />
     <section class="mt-5">
       <div class="flex flex-row gap-4 items-center mb-6">
         <div class="text-data-display-1">4,000</div>
@@ -51,14 +51,15 @@ const activeTab = ref('weekly');
 const route = useRoute();
 
 const { data, status, error } = useFetch(
-  () => `/api/contributors/active-contributors?interval=${activeTab.value}&project=${
+  () =>
+    `/api/contributors/active-contributors?interval=${activeTab.value}&project=${
       route.params.slug
     }&repository=${route.params.name || ''}`
 );
 
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
-  () => convertToChartData(data.value as RawChartData[], 'contributionDate', ['contributions'])
+  () => convertToChartData(data.value as RawChartData[], 'date', ['contributors'])
 );
 
 const tabs = [
@@ -69,7 +70,7 @@ const tabs = [
 
 const chartSeries = ref<ChartSeries[]>([
   {
-    name: 'Contributions',
+    name: 'Contributors',
     type: 'bar',
     yAxisIndex: 0,
     dataIndex: 0,
@@ -84,7 +85,9 @@ const configOverride = computed(() => ({
     }
   }
 }));
-const barChartConfig = computed(() => getBarChartConfig(chartData.value, chartSeries.value, configOverride.value));
+const barChartConfig = computed(() =>
+  getBarChartConfig(chartData.value, chartSeries.value, configOverride.value)
+);
 
 watch(error, (err) => {
   if (err) {

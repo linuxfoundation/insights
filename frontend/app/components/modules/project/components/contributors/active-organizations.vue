@@ -2,10 +2,10 @@
   <lfx-card class="p-6">
     <h3 class="text-heading-3 font-semibold font-secondary pb-3">Active organizations</h3>
     <p class="text-body-2 text-neutral-500">
-      Active contributor is an individual performing tasks such as commits, issues, or pull requests
-      during the selected time period.
+      Active organization is an organization performing tasks such as commits, issues, or pull
+      requests during the selected time period.
     </p>
-    <hr>
+    <hr />
     <section class="mt-5">
       <div class="flex flex-row gap-4 items-center mb-6">
         <div class="text-data-display-1">1,000</div>
@@ -50,14 +50,15 @@ const { showToast } = useToastService();
 const activeTab = ref('weekly');
 const route = useRoute();
 const { data, status, error } = useFetch(
-  () => `/api/contributors/active-organizations?interval=${activeTab.value}&project=${
+  () =>
+    `/api/contributors/active-organizations?interval=${activeTab.value}&project=${
       route.params.slug
     }&repository=${route.params.name || ''}`
 );
 
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
-  () => convertToChartData(data.value as RawChartData[], 'contributionDate', ['contributions'])
+  () => convertToChartData(data.value as RawChartData[], 'date', ['organizations'])
 );
 
 const tabs = [
@@ -83,7 +84,9 @@ const configOverride = computed(() => ({
     }
   }
 }));
-const barChartConfig = computed(() => getBarChartConfig(chartData.value, chartSeries.value, configOverride.value));
+const barChartConfig = computed(() =>
+  getBarChartConfig(chartData.value, chartSeries.value, configOverride.value)
+);
 
 watch(error, (err) => {
   if (err) {

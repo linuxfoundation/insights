@@ -1,5 +1,12 @@
 import { quarterly, weekly, monthly } from '~~/server/mocks/active-orgs.mock';
 
+/**
+ * Frontend expects the data to be in the following format:
+ * {
+ *   date: string; // ISO 8601 date string
+ *   organizations: number; // count of active organizations
+ * }
+ */
 export default defineEventHandler(async (event) => {
   const query = getQuery(event);
   let data = [];

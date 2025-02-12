@@ -1,136 +1,136 @@
 export const weekly = [
   {
-    contributionDate: '2024-01-01T00:00:00Z',
-    contributions: 934
+    date: '2024-01-01T00:00:00Z',
+    organizations: 934
   },
   {
-    contributionDate: '2024-01-08T00:00:00Z',
-    contributions: 412
+    date: '2024-01-08T00:00:00Z',
+    organizations: 412
   },
   {
-    contributionDate: '2024-01-15T00:00:00Z',
-    contributions: 876
+    date: '2024-01-15T00:00:00Z',
+    organizations: 876
   },
   {
-    contributionDate: '2024-01-22T00:00:00Z',
-    contributions: 445
+    date: '2024-01-22T00:00:00Z',
+    organizations: 445
   },
   {
-    contributionDate: '2024-01-29T00:00:00Z',
-    contributions: 998
+    date: '2024-01-29T00:00:00Z',
+    organizations: 998
   },
   {
-    contributionDate: '2024-02-05T00:00:00Z',
-    contributions: 634
+    date: '2024-02-05T00:00:00Z',
+    organizations: 634
   },
   {
-    contributionDate: '2024-02-12T00:00:00Z',
-    contributions: 987
+    date: '2024-02-12T00:00:00Z',
+    organizations: 987
   },
   {
-    contributionDate: '2024-02-19T00:00:00Z',
-    contributions: 721
+    date: '2024-02-19T00:00:00Z',
+    organizations: 721
   },
   {
-    contributionDate: '2024-02-26T00:00:00Z',
-    contributions: 556
+    date: '2024-02-26T00:00:00Z',
+    organizations: 556
   },
   {
-    contributionDate: '2024-03-04T00:00:00Z',
-    contributions: 432
+    date: '2024-03-04T00:00:00Z',
+    organizations: 432
   },
   {
-    contributionDate: '2024-03-11T00:00:00Z',
-    contributions: 967
+    date: '2024-03-11T00:00:00Z',
+    organizations: 967
   },
   {
-    contributionDate: '2024-03-18T00:00:00Z',
-    contributions: 543
+    date: '2024-03-18T00:00:00Z',
+    organizations: 543
   },
   {
-    contributionDate: '2024-03-25T00:00:00Z',
-    contributions: 789
+    date: '2024-03-25T00:00:00Z',
+    organizations: 789
   },
   {
-    contributionDate: '2024-04-01T00:00:00Z',
-    contributions: 654
+    date: '2024-04-01T00:00:00Z',
+    organizations: 654
   },
   {
-    contributionDate: '2024-04-08T00:00:00Z',
-    contributions: 489
+    date: '2024-04-08T00:00:00Z',
+    organizations: 489
   },
   {
-    contributionDate: '2024-04-15T00:00:00Z',
-    contributions: 765
+    date: '2024-04-15T00:00:00Z',
+    organizations: 765
   }
 ];
 
 export const monthly = [
   {
-    contributionDate: '2024-01-01T00:00:00Z',
-    contributions: 934
+    date: '2024-01-01T00:00:00Z',
+    organizations: 934
   },
   {
-    contributionDate: '2024-02-01T00:00:00Z',
-    contributions: 619
+    date: '2024-02-01T00:00:00Z',
+    organizations: 619
   },
   {
-    contributionDate: '2024-03-01T00:00:00Z',
-    contributions: 710
+    date: '2024-03-01T00:00:00Z',
+    organizations: 710
   },
   {
-    contributionDate: '2024-04-01T00:00:00Z',
-    contributions: 444
+    date: '2024-04-01T00:00:00Z',
+    organizations: 444
   },
   {
-    contributionDate: '2024-05-01T00:00:00Z',
-    contributions: 425
+    date: '2024-05-01T00:00:00Z',
+    organizations: 425
   },
   {
-    contributionDate: '2024-06-01T00:00:00Z',
-    contributions: 554
+    date: '2024-06-01T00:00:00Z',
+    organizations: 554
   },
   {
-    contributionDate: '2024-07-01T00:00:00Z',
-    contributions: 711
+    date: '2024-07-01T00:00:00Z',
+    organizations: 711
   },
   {
-    contributionDate: '2024-08-01T00:00:00Z',
-    contributions: 869
+    date: '2024-08-01T00:00:00Z',
+    organizations: 869
   },
   {
-    contributionDate: '2024-09-01T00:00:00Z',
-    contributions: 961
+    date: '2024-09-01T00:00:00Z',
+    organizations: 961
   },
   {
-    contributionDate: '2024-10-01T00:00:00Z',
-    contributions: 500
+    date: '2024-10-01T00:00:00Z',
+    organizations: 500
   },
   {
-    contributionDate: '2024-11-01T00:00:00Z',
-    contributions: 307
+    date: '2024-11-01T00:00:00Z',
+    organizations: 307
   },
   {
-    contributionDate: '2024-12-01T00:00:00Z',
-    contributions: 377
+    date: '2024-12-01T00:00:00Z',
+    organizations: 377
   }
 ];
 
 export const quarterly = [
   {
-    contributionDate: '2024-01-01T00:00:00Z',
-    contributions: 934
+    date: '2024-01-01T00:00:00Z',
+    organizations: 934
   },
   {
-    contributionDate: '2024-04-01T00:00:00Z',
-    contributions: 1244
+    date: '2024-04-01T00:00:00Z',
+    organizations: 1244
   },
   {
-    contributionDate: '2024-07-01T00:00:00Z',
-    contributions: 711
+    date: '2024-07-01T00:00:00Z',
+    organizations: 711
   },
   {
-    contributionDate: '2024-10-01T00:00:00Z',
-    contributions: 900
+    date: '2024-10-01T00:00:00Z',
+    organizations: 900
   }
 ];
