@@ -16,7 +16,6 @@ export interface SearchRepository {
     projectSlug: string;
 }
 
-
 export interface SearchResults {
     projects: SearchProject[];
     repositories: SearchRepository[];
