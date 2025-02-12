@@ -81,6 +81,11 @@ const fetchSearchResults = () => {
         repositories.value = res.repositories;
         collections.value = res.collections;
       })
+      .catch(() => {
+        projects.value = [];
+        repositories.value = [];
+        collections.value = [];
+      })
       .finally(() => {
         loading.value = false;
       });
