@@ -7,6 +7,13 @@ import { quarterly, weekly, monthly } from '~~/server/mocks/active-contributors.
  *   contributors: number; // count of active contributors
  * }
  */
+/**
+ * Query params:
+ * - interval: 'weekly' | 'monthly' | 'quarterly'
+ * - project: string
+ * - repository: string
+ * - time-period: string
+ */
 export default defineEventHandler(async (event) => {
   const query = getQuery(event);
   let data = [];

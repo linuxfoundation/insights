@@ -7,6 +7,13 @@ import { quarterly, weekly, monthly } from '~~/server/mocks/active-orgs.mock';
  *   organizations: number; // count of active organizations
  * }
  */
+/**
+ * Query params:
+ * - interval: 'weekly' | 'monthly' | 'quarterly'
+ * - project: string
+ * - repository: string
+ * - time-period: string
+ */
 export default defineEventHandler(async (event) => {
   const query = getQuery(event);
   let data = [];

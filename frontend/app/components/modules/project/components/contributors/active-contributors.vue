@@ -45,6 +45,15 @@ import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 
+const props = withDefaults(
+  defineProps<{
+    timePeriod?: string;
+  }>(),
+  {
+    timePeriod: '90d'
+  }
+);
+
 const { showToast } = useToastService();
 
 const activeTab = ref('weekly');
@@ -53,7 +62,7 @@ const route = useRoute();
 const { data, status, error } = useFetch(
   () => `/api/contributors/active-contributors?interval=${activeTab.value}&project=${
       route.params.slug
-    }&repository=${route.params.name || ''}`
+    }&repository=${route.params.name || ''}&time-period=${props.timePeriod}`
 );
 
 const chartData = computed<ChartData[]>(
