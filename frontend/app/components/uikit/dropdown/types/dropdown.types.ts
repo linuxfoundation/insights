@@ -25,4 +25,10 @@ export interface DropdownProps {
   size?: DropdownSize;
   showFilter?: boolean;
   showGroupBreaks?: boolean;
+  // TODO: This is a temporary prop to allow the dropdown to be full width
+  // waiting for design confirmation
+  fullWidth?: boolean;
+  // TODO: This is a temporary prop to allow the dropdown to be centered
+  // waiting for design confirmation
+  center?: boolean;
 }

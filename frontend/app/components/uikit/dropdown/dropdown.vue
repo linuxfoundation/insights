@@ -1,5 +1,5 @@
 <template>
-  <div class="relative">
+  <div class="relative" :class="{ 'w-full': props.fullWidth }">
     <pv-select
       ref="filterRef"
       v-model="value"
@@ -20,7 +20,12 @@
       append-to="self"
       auto-filter-focus="true"
       reset-filter-on-hide="true"
-      :class="[`p-select--${props.type}`, { 'p-select-group-breaks': props.showGroupBreaks }]"
+      :class="[
+        `p-select--${props.type}`,
+        { 'p-select-group-breaks': props.showGroupBreaks },
+        { 'p-select-full-width': props.fullWidth },
+        { 'p-select-centered': props.center }
+      ]"
       @filter="selectFilter">
       <template #value="slotProps">
         <div>
