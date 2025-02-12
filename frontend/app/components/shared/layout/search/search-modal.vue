@@ -60,8 +60,8 @@ const isModalOpen = computed({
 
 const searchInputRef = ref(null);
 
-const search = ref<string>('asd');
-const searchQuery = ref<string>('asd');
+const search = ref<string>('');
+const searchQuery = ref<string>('');
 const loading = ref<boolean>(false);
 
 const projects = ref<SearchProject[]>([]);
