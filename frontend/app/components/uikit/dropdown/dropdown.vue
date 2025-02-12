@@ -1,5 +1,5 @@
 <template>
-  <div class="relative">
+  <div class="relative" :class="{ 'w-full': props.fullWidth }">
     <pv-select
       ref="filterRef"
       v-model="value"
