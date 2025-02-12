@@ -24,4 +24,5 @@ export interface DropdownProps {
   size?: DropdownSize;
   showFilter?: boolean;
   showGroupBreaks?: boolean;
+  icon?: string;
 }

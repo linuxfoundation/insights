@@ -61,6 +61,9 @@ export default {
         149: '37.25rem',
         78: '19.5rem',
       },
+      maxWidth: {
+        120: '30rem',
+      },
       minWidth: {
         29: '7.25rem',
       },

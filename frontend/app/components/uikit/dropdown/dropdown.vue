@@ -24,7 +24,7 @@
       @filter="selectFilter">
       <template #value="slotProps">
         <div>
-          <i class="dropdown-icon fa-light fa-bars-filter" />
+          <i class="dropdown-icon" :class="props.icon" />
           <div v-if="slotProps.value">{{ getLabel(slotProps.value) }}</div>
           <div v-else>{{ slotProps.placeholder }}</div>
         </div>
@@ -58,7 +58,8 @@ const props = withDefaults(defineProps<DropdownProps>(), {
   placeholder: 'Select an option',
   disabled: false,
   type: 'filled',
-  size: 'default'
+  size: 'default',
+  icon: 'fa-light fa-bars-filter'
 });
 
 const emit = defineEmits(['update:modelValue']);
