@@ -12,6 +12,11 @@ export default {
     tabs: {
       description: 'The tabs to display',
       control: 'object'
+    },
+    widthType: {
+      description: 'The width type of the tabs',
+      control: 'select',
+      options: ['full', 'inline']
     }
   },
   parameters: {
@@ -27,6 +32,19 @@ export const Default = {
   label: 'Primary',
   args: {
     modelValue: '1',
+    tabs: [
+      { value: '1', label: 'Tab 1' },
+      { value: '2', label: 'Tab 2' },
+      { value: '3', label: 'Tab 3' }
+    ]
+  }
+};
+
+export const Inline = {
+  label: 'Inline',
+  args: {
+    modelValue: '1',
+    widthType: 'inline',
     tabs: [
       { value: '1', label: 'Tab 1' },
       { value: '2', label: 'Tab 2' },
