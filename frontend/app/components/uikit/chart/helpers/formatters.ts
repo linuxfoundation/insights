@@ -1,6 +1,9 @@
 import type { CallbackDataParams, TopLevelFormatterParams } from 'echarts/types/dist/shared';
 import { DateTime } from 'luxon';
-import type { MultipleTooltipFormatterParams, SingleTooltipFormatterParams } from '../types/EChartTypes';
+import type {
+  MultipleTooltipFormatterParams,
+  SingleTooltipFormatterParams
+} from '../types/EChartTypes';
 
 declare type LabelFormatterParams = {
   value: number | string | Date;
@@ -12,12 +15,14 @@ declare type LabelFormatterParams = {
 // TODO: move this to a datetime utils file
 const formatDate = (value: string, format: string) => {
   const dt = DateTime.fromMillis(parseInt(value, 10));
+  // const dt = DateTime.fromISO(value);
   // Convert echarts format to luxon format
-  const luxonFormat = format.replace('{MMM}', 'MMM').replace('{yy}', 'yy').replace('{yyyy}', 'yyyy');
+  const luxonFormat = format.replace(/\{([^}]+)\}/g, '$1');
+
   return dt.toFormat(luxonFormat);
 };
 
-export const axisLabelFormatter = (value: string) => formatDate(value, '{MMM}\n{yy}');
+export const axisLabelFormatter = (format: string) => (value: string) => formatDate(value, format);
 
 export const tooltipLabelFormatter = (params: LabelFormatterParams) => {
   if (params.axisDimension === 'x') {
@@ -32,7 +37,9 @@ export const tooltipFormatter = (
   paramsRaw: TopLevelFormatterParams // Tooltip hover box
 ): string | HTMLElement | HTMLElement[] => {
   const params: MultipleTooltipFormatterParams = paramsRaw as MultipleTooltipFormatterParams;
-  return `${formatDate(params[0]?.name || '', '{MMM} {yyyy}')}<br>${params.map(tooltipSingleValue)}`;
+  return `${formatDate(params[0]?.name || '', '{MMM} {yyyy}')}<br>${params.map(
+    tooltipSingleValue
+  )}`;
 };
 
 export const punchCardFormatter = (
