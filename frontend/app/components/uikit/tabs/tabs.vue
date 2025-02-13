@@ -5,6 +5,7 @@
     option-label="label"
     data-key="value"
     option-value="value"
+    :allow-empty="false"
     :class="`tabs-width-${props.widthType}`">
     <template #option="slotProps">
       <slot name="slotItem" :option="slotProps.option">
