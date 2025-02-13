@@ -1,5 +1,5 @@
 <template>
-  <span class="relative">
+  <div class="relative">
     <pv-select
       ref="filterRef"
       v-model="value"
@@ -20,11 +20,17 @@
       append-to="self"
       auto-filter-focus="true"
       reset-filter-on-hide="true"
-      :class="[`p-select--${props.type}`, { 'p-select-group-breaks': props.showGroupBreaks }]"
+      :class="[
+        `p-select--${props.type}`,
+        { 'p-select-group-breaks': props.showGroupBreaks },
+        { 'p-select-full-width': props.fullWidth },
+        { 'p-select-centered': props.center },
+        `p-select-dropdown-${props.dropdownPosition}`
+      ]"
       @filter="selectFilter">
       <template #value="slotProps">
         <div>
-          <i class="dropdown-icon fa-light fa-bars-filter" />
+          <i :class="['dropdown-icon', props.icon]" />
           <div v-if="slotProps.value">{{ getLabel(slotProps.value) }}</div>
           <div v-else>{{ slotProps.placeholder }}</div>
         </div>
@@ -47,7 +53,7 @@
           @click="clearFilter" />
       </template>
     </pv-select>
-  </span>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -58,7 +64,9 @@ const props = withDefaults(defineProps<DropdownProps>(), {
   placeholder: 'Select an option',
   disabled: false,
   type: 'filled',
-  size: 'default'
+  size: 'default',
+  icon: 'fa-light fa-bars-filter',
+  dropdownPosition: 'left'
 });
 
 const emit = defineEmits(['update:modelValue']);
@@ -74,13 +82,17 @@ const value = computed({
 
 const size = computed(() => (props.size === 'small' ? 'small' : 'large'));
 
-const isGrouped = computed(() => props.options.some((option) => 'items' in option && Array.isArray(option.items)));
+const isGrouped = computed(() =>
+  props.options.some((option) => 'items' in option && Array.isArray(option.items))
+);
 const filter = ref('');
 const filterRef = ref();
 
 const getLabel = (value: string) => {
   if (isGrouped.value) {
-    const flattenedOptions = props.options.flatMap((group) => (group as DropdownGroupOptions).items);
+    const flattenedOptions = props.options.flatMap(
+      (group) => (group as DropdownGroupOptions).items
+    );
     return flattenedOptions.find((option) => option.value === value)?.label || '';
   }
   return (props.options as DropdownOption[]).find((option) => option.value === value)?.label || '';

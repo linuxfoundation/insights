@@ -66,6 +66,9 @@ export const Default = {
       <div class="w-1/2">
         <LfxDropdown v-bind="args" />
       </div>
+      <div class="w-1/2 flex justify-end">
+        <LfxDropdown v-bind="args" dropdown-position="right" />
+      </div>
     </div>`
   })
 };
