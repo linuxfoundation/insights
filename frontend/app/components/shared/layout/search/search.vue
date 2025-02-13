@@ -33,8 +33,11 @@ import LfxMenuButton from "~/components/uikit/menu-button/menu-button.vue";
 import LfxSearchModal from "~/components/shared/layout/search/search-modal.vue";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
 import LfxChip from "~/components/uikit/chip/chip.vue";
+import {watch} from "vue";
 
-const isModalOpen = ref(true);
+const route = useRoute();
+
+const isModalOpen = ref(false);
 const isMac = ref(false);
 const isMobile = ref(false);
 
@@ -59,6 +62,10 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   window.removeEventListener("keydown", handleKeydown);
+});
+
+watch(() => route.path, () => {
+  isModalOpen.value = false;
 });
 </script>
 

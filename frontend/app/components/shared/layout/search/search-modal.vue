@@ -24,7 +24,7 @@
       <!-- Result -->
       <div v-if="search.length && searchQuery.length > 0" class="border-t border-neutral-100 pt-1">
         <div v-if="loading" class="flex items-center justify-between h-32 py-1">
-          Loading
+          <lfx-spinner :size="40" class=" text-neutral-300" />
         </div>
         <!-- Results -->
         <lfx-search-result
@@ -46,6 +46,7 @@ import LfxSearchResult from "~/components/shared/layout/search/search-result.vue
 import type {
 SearchCollection, SearchProject, SearchRepository, SearchResults
 } from "~/components/shared/types/search";
+import LfxSpinner from "~/components/uikit/spinner/spinner.vue";
 
 const props = defineProps<{
   modelValue: boolean;
