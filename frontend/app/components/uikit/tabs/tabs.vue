@@ -1,5 +1,12 @@
 <template>
-  <pv-select-button v-model="value" :options="options" option-label="label" data-key="value" option-value="value">
+  <pv-select-button
+    v-model="value"
+    :options="options"
+    option-label="label"
+    data-key="value"
+    option-value="value"
+    :allow-empty="false"
+    :class="`tabs-width-${props.widthType}`">
     <template #option="slotProps">
       <slot name="slotItem" :option="slotProps.option">
         <i v-if="slotProps.option.icon" :class="slotProps.option.icon" />
@@ -12,10 +19,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import type { TabsProps, TabsEmits } from './types/tab.types';
 
-const props = defineProps<TabsProps>();
+const props = withDefaults(defineProps<TabsProps>(), {
+  widthType: 'full'
+});
 const emit = defineEmits<TabsEmits>();
 
 const value = computed({

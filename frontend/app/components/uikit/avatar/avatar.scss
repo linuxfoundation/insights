@@ -13,9 +13,8 @@
   }
 
   &.type-organization {
-    @apply outline-none;
     &.has-image {
-      @apply outline outline-neutral-200;
+      @apply outline outline-1 outline-neutral-200 bg-transparent;
     }
   }
 

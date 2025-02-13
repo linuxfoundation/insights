@@ -18,10 +18,15 @@ export type DropdownType = (typeof dropdownTypes)[number];
 export interface DropdownProps {
   modelValue?: string;
   options: DropdownOption[] | DropdownGroupOptions[];
+  dropdownIcon?: string;
   placeholder?: string;
   disabled?: boolean;
   type?: DropdownType;
   size?: DropdownSize;
   showFilter?: boolean;
   showGroupBreaks?: boolean;
+  icon?: string;
+  fullWidth?: boolean;
+  center?: boolean;
+  dropdownPosition?: 'left' | 'right';
 }
