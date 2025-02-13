@@ -8,14 +8,7 @@
 
     <hr>
     <section class="mt-5">
-      <div class="flex flex-row gap-4 items-center mb-6">
-        <lfx-dropdown
-          v-model="metric"
-          icon="fa-light fa-display-code"
-          :options="metricOptions"
-          full-width
-          center />
-      </div>
+      <lfx-metric-dropdown v-model="metric" />
 
       <div class="min-h-[500px]">
         <div v-if="status === 'pending'" class="flex justify-center items-center h-full">
@@ -54,7 +47,7 @@ import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 import type { ContributorLeaderboard } from '~/components/shared/types/contributors.types';
 import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
 import { formatNumber } from '~/components/shared/utils/formatter';
-import LfxDropdown from '~/components/uikit/dropdown/dropdown.vue';
+import LfxMetricDropdown from '~/components/modules/project/components/contributors/metric-dropdown.vue';
 import { metricsOptions } from '~/components/shared/types/metrics';
 
 const props = withDefaults(
@@ -66,8 +59,6 @@ const props = withDefaults(
   }
 );
 const { showToast } = useToastService();
-
-const metricOptions = metricsOptions;
 
 const route = useRoute();
 const metric = ref('all');
@@ -82,7 +73,7 @@ const contributionColumnHeader = computed(() => {
   if (metric.value === 'all') {
     return 'Total Contributions';
   }
-  return `Total ${metricOptions.find((option) => option.value === metric.value)?.label}`;
+  return `Total ${metricsOptions.find((option) => option.value === metric.value)?.label}`;
 });
 
 watch(error, (err) => {
