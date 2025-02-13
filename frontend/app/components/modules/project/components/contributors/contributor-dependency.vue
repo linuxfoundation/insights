@@ -2,8 +2,8 @@
   <lfx-card class="p-6">
     <h3 class="text-heading-3 font-semibold font-secondary pb-3">Contributor dependency</h3>
     <p class="text-body-2 text-neutral-500 mb-6">
-      It ranks contributors based on the number of code commits, pull requests, issues closed, and
-      other metrics representing their relative activity levels and impact on the project.
+      Distribution of contributions among different contributors, highlighting key individuals who
+      are actively involved in the project.
     </p>
 
     <hr>
@@ -20,8 +20,8 @@
           <lfx-metric-dropdown v-model="metric" />
 
           <lfx-dependency-display
-            :top-contributors="topContributors"
-            :other-contributors="otherContributors"
+            :top-dependency="topContributors"
+            :other-dependency="otherContributors"
             label="contributors">
             <lfx-avatar-group>
               <lfx-avatar
@@ -83,8 +83,6 @@ const { data, status, error } = useFetch(
 const topContributors = computed(() => (data.value as ContributorDependency)?.topContributors);
 const otherContributors = computed(() => (data.value as ContributorDependency)?.otherContributors);
 const contributors = computed(() => (data.value as ContributorDependency)?.list);
-
-console.log(contributors.value);
 
 const avatars = ref([
   {
