@@ -18,20 +18,7 @@
           <!-- <lfx-error-message /> -->
           <!-- TODO: Need to define an empty or error state here -->
         </div>
-        <div v-else class="lfx-table">
-          <div class="lfx-table-header">
-            <div>Contributor</div>
-            <div>{{ contributionColumnHeader }}</div>
-          </div>
-
-          <div v-for="(contributor, index) in contributors.data" :key="index" class="lfx-table-row">
-            <div class="flex flex-row gap-3 items-center">
-              <lfx-avatar :src="contributor.avatar" type="member" />
-              <div>{{ contributor.name }}</div>
-            </div>
-            <div>{{ formatNumber(contributor.contributions) }}</div>
-          </div>
-        </div>
+        <lfx-contributors-table v-else :metric="metric" :contributors="contributors.data" />
       </div>
     </section>
   </lfx-card>
@@ -40,15 +27,13 @@
 <script setup lang="ts">
 import { useFetch, useRoute } from 'nuxt/app';
 import { ref, watch, computed } from 'vue';
+import LfxMetricDropdown from './fragments/metric-dropdown.vue';
+import LfxContributorsTable from './fragments/contributors-table.vue';
 import LfxCard from '~/components/uikit/card/card.vue';
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 import type { ContributorLeaderboard } from '~/components/shared/types/contributors.types';
-import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
-import { formatNumber } from '~/components/shared/utils/formatter';
-import LfxMetricDropdown from '~/components/modules/project/components/contributors/metric-dropdown.vue';
-import { metricsOptions } from '~/components/shared/types/metrics';
 
 const props = withDefaults(
   defineProps<{
@@ -69,12 +54,6 @@ const { data, status, error } = useFetch(
 );
 
 const contributors = computed<ContributorLeaderboard>(() => data.value as ContributorLeaderboard);
-const contributionColumnHeader = computed(() => {
-  if (metric.value === 'all') {
-    return 'Total Contributions';
-  }
-  return `Total ${metricsOptions.find((option) => option.value === metric.value)?.label}`;
-});
 
 watch(error, (err) => {
   if (err) {

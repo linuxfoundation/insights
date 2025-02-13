@@ -12,30 +12,35 @@ export const allMetrics = {
       avatar: 'https://i.pravatar.cc/150?u=john.doe@example.com',
       name: 'John Doe',
       contributions: 1000,
+      percentage: 20,
       email: 'john.doe@example.com'
     },
     {
       avatar: 'https://i.pravatar.cc/150?u=jane.doe@example.com',
       name: 'Jane Doe',
       contributions: 900,
+      percentage: 15,
       email: 'jane.doe@example.com'
     },
     {
       avatar: 'https://i.pravatar.cc/150?u=john.smith@example.com',
       name: 'John Smith',
       contributions: 800,
+      percentage: 10,
       email: 'john.smith@example.com'
     },
     {
       avatar: 'https://i.pravatar.cc/150?u=jane.smith@example.com',
       name: 'Jane Smith',
       contributions: 700,
+      percentage: 8,
       email: 'jane.smith@example.com'
     },
     {
       avatar: 'https://i.pravatar.cc/150?u=jim.smith@example.com',
       name: 'Tom Ford',
       contributions: 600,
+      percentage: 5,
       email: 'tom.ford@example.com'
     }
   ]

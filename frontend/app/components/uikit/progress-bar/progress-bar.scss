@@ -1,0 +1,32 @@
+.c-progress-bar {
+  @apply flex flex-row items-stretch justify-between gap-0.5 h-2 w-full;
+
+  .c-progress-bar__value, .c-progress-bar__empty {
+    @apply rounded-sm transition-all;
+  }
+
+  &--normal {
+    .c-progress-bar__value {
+      @apply bg-brand-500;
+    }
+  }
+  &--positive {
+    .c-progress-bar__value {
+      @apply bg-positive-500;
+    }
+  }
+  &--warning {
+    .c-progress-bar__value {
+      @apply bg-warning-500;
+    }
+  }
+  &--negative {
+    .c-progress-bar__value {
+      @apply bg-negative-500;
+    }
+  }
+
+  .c-progress-bar__empty {
+    @apply bg-neutral-200 grow;
+  }
+}

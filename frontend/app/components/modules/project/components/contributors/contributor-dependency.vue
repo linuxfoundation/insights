@@ -8,17 +8,113 @@
 
     <hr>
     <section class="mt-5">
-      <lfx-metric-dropdown v-model="metric" />
+      <div class="min-h-[500px]">
+        <div v-if="status === 'pending'" class="flex justify-center items-center h-full">
+          <lfx-spinner />
+        </div>
+        <div v-else-if="status === 'error'" class="flex justify-center items-center h-full">
+          <!-- <lfx-error-message /> -->
+          <!-- TODO: Need to define an empty or error state here -->
+        </div>
+        <template v-else>
+          <lfx-metric-dropdown v-model="metric" />
+
+          <lfx-dependency-display
+            :top-contributors="topContributors"
+            :other-contributors="otherContributors"
+            label="contributors">
+            <lfx-avatar-group>
+              <lfx-avatar
+                v-for="avatar in avatars"
+                :key="avatar.name"
+                :name="avatar.name"
+                :src="avatar.avatar"
+                type="member" />
+            </lfx-avatar-group>
+          </lfx-dependency-display>
+
+          <hr class="mt-5 mb-8">
+
+          <div class="font-semibold mb-5">
+            <span class="text-black">Top contributors </span>
+            <span class="text-neutral-400"> over the {{ timePeriodLabel }} </span>
+          </div>
+
+          <lfx-contributors-table show-percentage :metric="metric" :contributors="contributors" />
+        </template>
+      </div>
     </section>
   </lfx-card>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed, watch } from 'vue';
+import { useRoute, useFetch } from 'nuxt/app';
+import LfxDependencyDisplay from './fragments/dependency-display.vue';
+import LfxContributorsTable from './fragments/contributors-table.vue';
 import LfxCard from '~/components/uikit/card/card.vue';
-import LfxMetricDropdown from '~/components/modules/project/components/contributors/metric-dropdown.vue';
+import LfxMetricDropdown from '~/components/modules/project/components/contributors/fragments/metric-dropdown.vue';
+import LfxAvatarGroup from '~/components/uikit/avatar-group/avatar-group.vue';
+import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
+import useToastService from '~/components/uikit/toast/toast.service';
+import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
+import type { ContributorDependency } from '~/components/shared/types/contributors.types';
+import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
+import { timePeriodsOptions } from '~/components/shared/types/time-periods';
 
+const props = withDefaults(
+  defineProps<{
+    timePeriod?: string;
+  }>(),
+  {
+    timePeriod: '90d'
+  }
+);
+const { showToast } = useToastService();
+
+const route = useRoute();
 const metric = ref('all');
+const { data, status, error } = useFetch(
+  () => `/api/contributors/contributor-dependency?metric=${metric.value}&project=${
+      route.params.slug
+    }&repository=${route.params.name || ''}&time-period=${props.timePeriod}`
+);
+
+const topContributors = computed(() => (data.value as ContributorDependency)?.topContributors);
+const otherContributors = computed(() => (data.value as ContributorDependency)?.otherContributors);
+const contributors = computed(() => (data.value as ContributorDependency)?.list);
+
+console.log(contributors.value);
+
+const avatars = ref([
+  {
+    name: 'John Doe',
+    avatar: 'https://i.pravatar.cc/150?u=john.doe@example.com'
+  },
+  {
+    name: 'Jane Doe',
+    avatar: 'https://i.pravatar.cc/150?u=jane.doe@example.com'
+  },
+  {
+    name: 'John Doe',
+    avatar: 'https://i.pravatar.cc/150?u=john.smith@example.com'
+  }
+]);
+
+const timePeriodLabel = computed(() => (
+    timePeriodsOptions.find((option) => option.value === props.timePeriod)?.label || ''
+  ).toLowerCase());
+
+watch(error, (err) => {
+  if (err) {
+    showToast(
+      `Error fetching contributor dependency: ${error.value?.statusMessage}`,
+      ToastTypesEnum.negative,
+      undefined,
+      10000
+    );
+  }
+});
 </script>
 
 <script lang="ts">

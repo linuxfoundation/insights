@@ -49,7 +49,7 @@ import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 import type { OrganizationLeaderboard } from '~/components/shared/types/contributors.types';
 import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
 import { formatNumber } from '~/components/shared/utils/formatter';
-import LfxMetricDropdown from '~/components/modules/project/components/contributors/metric-dropdown.vue';
+import LfxMetricDropdown from '~/components/modules/project/components/contributors/fragments/metric-dropdown.vue';
 import { metricsOptions } from '~/components/shared/types/metrics';
 
 const props = withDefaults(
