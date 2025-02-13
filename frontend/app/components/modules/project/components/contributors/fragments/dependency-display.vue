@@ -24,7 +24,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed } from 'vue';
 import LfxProgressBar from '~/components/uikit/progress-bar/progress-bar.vue';
 import type { Dependency } from '~/components/shared/types/contributors.types';
 import type { ProgressBarType } from '~/components/uikit/progress-bar/types/progress-bar.types';
@@ -41,7 +41,16 @@ const props = withDefaults(
   }
 );
 
-const dependencyColor = ref<ProgressBarType>('warning');
+// This needs clarification on how to handle the colors
+const dependencyColor = computed<ProgressBarType>(() => {
+  if (props.topDependency.percentage > 80) {
+    return 'negative' as ProgressBarType;
+  }
+  if (props.topDependency.percentage > 60) {
+    return 'warning' as ProgressBarType;
+  }
+  return 'positive' as ProgressBarType;
+});
 </script>
 
 <script lang="ts">

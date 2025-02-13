@@ -25,11 +25,11 @@
             label="organizations">
             <lfx-avatar-group>
               <lfx-avatar
-                v-for="avatar in avatars"
-                :key="avatar.name"
-                :name="avatar.name"
-                :src="avatar.avatar"
-                type="member" />
+                v-for="orgAvatar in topOrganizationsAvatars"
+                :key="orgAvatar.name"
+                :name="orgAvatar.name"
+                :src="orgAvatar.logo"
+                type="organization" />
             </lfx-avatar-group>
           </lfx-dependency-display>
 
@@ -89,20 +89,9 @@ const otherOrganizations = computed(
 );
 const organizations = computed(() => (data.value as OrganizationDependency)?.list);
 
-const avatars = ref([
-  {
-    name: 'John Doe',
-    avatar: 'https://i.pravatar.cc/150?u=john.doe@example.com'
-  },
-  {
-    name: 'Jane Doe',
-    avatar: 'https://i.pravatar.cc/150?u=jane.doe@example.com'
-  },
-  {
-    name: 'John Doe',
-    avatar: 'https://i.pravatar.cc/150?u=john.smith@example.com'
-  }
-]);
+const topOrganizationsAvatars = computed(() => (organizations.value?.length
+    ? organizations.value.slice(0, Math.min(3, organizations.value.length))
+    : []));
 
 const timePeriodLabel = computed(() => (
     timePeriodsOptions.find((option) => option.value === props.timePeriod)?.label || ''

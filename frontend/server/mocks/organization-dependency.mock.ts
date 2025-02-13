@@ -1,11 +1,11 @@
 export const allMetrics = {
   topOrganizations: {
     count: 2,
-    percentage: 68
+    percentage: 82
   },
   otherOrganizations: {
     count: 100,
-    percentage: 32
+    percentage: 18
   },
   list: [
     {

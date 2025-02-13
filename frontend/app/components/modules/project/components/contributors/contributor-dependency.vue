@@ -25,7 +25,7 @@
             label="contributors">
             <lfx-avatar-group>
               <lfx-avatar
-                v-for="avatar in avatars"
+                v-for="avatar in contributorsAvatars"
                 :key="avatar.name"
                 :name="avatar.name"
                 :src="avatar.avatar"
@@ -84,20 +84,9 @@ const topContributors = computed(() => (data.value as ContributorDependency)?.to
 const otherContributors = computed(() => (data.value as ContributorDependency)?.otherContributors);
 const contributors = computed(() => (data.value as ContributorDependency)?.list);
 
-const avatars = ref([
-  {
-    name: 'John Doe',
-    avatar: 'https://i.pravatar.cc/150?u=john.doe@example.com'
-  },
-  {
-    name: 'Jane Doe',
-    avatar: 'https://i.pravatar.cc/150?u=jane.doe@example.com'
-  },
-  {
-    name: 'John Doe',
-    avatar: 'https://i.pravatar.cc/150?u=john.smith@example.com'
-  }
-]);
+const contributorsAvatars = computed(() => (contributors.value?.length
+    ? contributors.value.slice(0, Math.min(3, contributors.value.length))
+    : []));
 
 const timePeriodLabel = computed(() => (
     timePeriodsOptions.find((option) => option.value === props.timePeriod)?.label || ''
