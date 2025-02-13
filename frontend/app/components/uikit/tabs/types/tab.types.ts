@@ -7,6 +7,7 @@ export interface Tab {
 export interface TabsProps {
   modelValue: string;
   tabs: Tab[];
+  widthType?: 'full' | 'inline';
 }
 
 export interface TabsEmits {
