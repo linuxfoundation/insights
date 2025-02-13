@@ -17,3 +17,33 @@ export interface ActiveOrganizations {
     organizations: number;
   }[];
 }
+
+export interface Meta {
+  offset: number;
+  limit: number;
+  total: number;
+}
+
+export interface Contributor {
+  avatar: string;
+  name: string;
+  contributions: number;
+  email: string;
+}
+
+export interface Organization {
+  logo: string;
+  name: string;
+  contributions: number;
+  website: string;
+}
+
+export interface ContributorLeaderboard {
+  meta: Meta;
+  data: Contributor[];
+}
+
+export interface OrganizationLeaderboard {
+  meta: Meta;
+  data: Organization[];
+}
