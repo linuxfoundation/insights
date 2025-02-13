@@ -1,6 +1,20 @@
 .p-select {
   @apply bg-white border border-solid border-neutral-200 rounded-lg shadow-sm inline-flex items-center;
-  @apply px-3 py-2 max-w-[320px];
+  @apply px-3 py-2 max-w-[320px] cursor-pointer;
+
+  &.p-select-full-width {
+    @apply w-full max-w-none;
+    .p-select-overlay {
+      @apply w-full;
+    }
+  }
+
+  &.p-select-centered {
+    @apply justify-center;
+    .p-select-label {
+      @apply flex-none;
+    }
+  }
 
   .p-select-label {
     @apply grow outline-none min-w-0;
@@ -42,12 +56,27 @@
   &:hover, &:focus {
     @apply bg-neutral-100;
   }
+
+  &.p-select-dropdown-left {
+    .p-select-overlay {
+      // Override the default top and left values
+      @apply left-0 right-auto #{!important};
+    }
+  }
+
+  &.p-select-dropdown-right {
+    .p-select-overlay {
+      // Override the default top and right values
+      @apply right-0 left-auto #{!important};
+    }
+  }
 }
 
 .p-select-sm {
   .p-select-overlay {
-    @apply mt-0;
-    
+    // Override the default top values
+    @apply top-9 #{!important};
+
     .p-select-option {
       @apply text-xs py-1 px-2;
 
@@ -60,8 +89,9 @@
 
 .p-select-overlay {
   @apply bg-white border border-solid border-neutral-200 rounded-lg shadow-lg p-1;
-  @apply w-[320px] relative -mt-1;
-  /* setting fix width for now until we can confirm this from Nuno */
+  @apply min-w-[400px] relative;
+  // Override the default top values
+  @apply top-11 #{!important};
 
   .p-select-list-container {
     @apply overflow-y-auto;
