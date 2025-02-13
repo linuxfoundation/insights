@@ -1,8 +1,8 @@
 import type { IconType } from '../../icon/types/icon.types';
+import type { Summary } from '~/components/shared/types/summary.types';
 
 export type DeltaDisplayProps = {
-  current: number;
-  previous: number;
+  summary: Summary;
   isReverse?: boolean;
   icon?: string;
   iconType?: IconType;
