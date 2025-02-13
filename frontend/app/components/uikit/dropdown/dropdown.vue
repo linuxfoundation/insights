@@ -1,5 +1,5 @@
 <template>
-  <div class="relative">
+  <div class="relative" :class="{ 'w-full': props.fullWidth }">
     <pv-select
       ref="filterRef"
       v-model="value"
@@ -82,7 +82,9 @@ const value = computed({
 
 const size = computed(() => (props.size === 'small' ? 'small' : 'large'));
 
-const isGrouped = computed(() => props.options.some((option) => 'items' in option && Array.isArray(option.items)));
+const isGrouped = computed(() =>
+  props.options.some((option) => 'items' in option && Array.isArray(option.items))
+);
 const filter = ref('');
 const filterRef = ref();
 
