@@ -7,13 +7,9 @@
     </p>
     <hr>
     <section class="mt-5">
-      <div class="flex flex-row gap-4 items-center mb-6">
-        <div class="text-data-display-1">4,000</div>
-        <lfx-delta-display
-          :current="4000"
-          :previous="3880"
-          icon="circle-arrow-up-right"
-          icon-type="solid" />
+      <div v-if="status === 'success'" class="flex flex-row gap-4 items-center mb-6">
+        <div class="text-data-display-1">{{ formatNumber(summary.current) }}</div>
+        <lfx-delta-display :summary="summary" icon="circle-arrow-up-right" icon-type="solid" />
       </div>
 
       <lfx-tabs :tabs="tabs" :model-value="activeTab" @update:model-value="activeTab = $event" />
@@ -44,6 +40,9 @@ import { axisLabelFormatter } from '~/components/uikit/chart/helpers/formatters'
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
+import type { ActiveContributors } from '~/components/shared/types/contributors.types';
+import type { Summary } from '~/components/shared/types/summary.types';
+import { formatNumber } from '~/components/shared/utils/formatter';
 
 const props = withDefaults(
   defineProps<{
@@ -65,9 +64,14 @@ const { data, status, error } = useFetch(
     }&repository=${route.params.name || ''}&time-period=${props.timePeriod}`
 );
 
+const activeContributors = computed<ActiveContributors>(() => data.value as ActiveContributors);
+
+const summary = computed<Summary>(() => activeContributors.value.summary);
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
-  () => convertToChartData(data.value as RawChartData[], 'date', ['contributors'])
+  () => convertToChartData(activeContributors.value.data as RawChartData[], 'dateFrom', [
+      'contributors'
+    ])
 );
 
 const tabs = [

@@ -1,136 +1,198 @@
-export const weekly = [
-  {
-    date: '2024-01-01T00:00:00Z',
-    organizations: 934
+export const weekly = {
+  summary: {
+    current: 1000,
+    previous: 880,
+    percentageChange: 3.1,
+    changeValue: 120,
+    periodFrom: '2024-11-11T00:00:00Z',
+    periodTo: '2025-02-12T00:00:00Z'
   },
-  {
-    date: '2024-01-08T00:00:00Z',
-    organizations: 412
-  },
-  {
-    date: '2024-01-15T00:00:00Z',
-    organizations: 876
-  },
-  {
-    date: '2024-01-22T00:00:00Z',
-    organizations: 445
-  },
-  {
-    date: '2024-01-29T00:00:00Z',
-    organizations: 998
-  },
-  {
-    date: '2024-02-05T00:00:00Z',
-    organizations: 634
-  },
-  {
-    date: '2024-02-12T00:00:00Z',
-    organizations: 987
-  },
-  {
-    date: '2024-02-19T00:00:00Z',
-    organizations: 721
-  },
-  {
-    date: '2024-02-26T00:00:00Z',
-    organizations: 556
-  },
-  {
-    date: '2024-03-04T00:00:00Z',
-    organizations: 432
-  },
-  {
-    date: '2024-03-11T00:00:00Z',
-    organizations: 967
-  },
-  {
-    date: '2024-03-18T00:00:00Z',
-    organizations: 543
-  },
-  {
-    date: '2024-03-25T00:00:00Z',
-    organizations: 789
-  },
-  {
-    date: '2024-04-01T00:00:00Z',
-    organizations: 654
-  },
-  {
-    date: '2024-04-08T00:00:00Z',
-    organizations: 489
-  },
-  {
-    date: '2024-04-15T00:00:00Z',
-    organizations: 765
-  }
-];
+  data: [
+    {
+      dateFrom: '2024-11-11T00:00:00Z',
+      dateTo: '2024-11-18T00:00:00Z',
+      organizations: 8934
+    },
+    {
+      dateFrom: '2024-11-18T00:00:00Z',
+      dateTo: '2024-11-25T00:00:00Z',
+      organizations: 6012
+    },
+    {
+      dateFrom: '2024-11-25T00:00:00Z',
+      dateTo: '2024-12-02T00:00:00Z',
+      organizations: 8876
+    },
+    {
+      dateFrom: '2024-12-02T00:00:00Z',
+      dateTo: '2024-12-09T00:00:00Z',
+      organizations: 5145
+    },
+    {
+      dateFrom: '2024-12-09T00:00:00Z',
+      dateTo: '2024-12-16T00:00:00Z',
+      organizations: 8998
+    },
+    {
+      dateFrom: '2024-12-16T00:00:00Z',
+      dateTo: '2024-12-23T00:00:00Z',
+      organizations: 5234
+    },
+    {
+      dateFrom: '2024-12-23T00:00:00Z',
+      dateTo: '2025-01-06T00:00:00Z',
+      organizations: 9087
+    },
+    {
+      dateFrom: '2024-12-23T00:00:00Z',
+      dateTo: '2025-01-06T00:00:00Z',
+      organizations: 7321
+    },
+    {
+      dateFrom: '2025-01-06T00:00:00Z',
+      dateTo: '2025-01-13T00:00:00Z',
+      organizations: 5156
+    },
+    {
+      dateFrom: '2025-01-13T00:00:00Z',
+      dateTo: '2025-01-20T00:00:00Z',
+      organizations: 9432
+    },
+    {
+      dateFrom: '2025-01-20T00:00:00Z',
+      dateTo: '2025-01-27T00:00:00Z',
+      organizations: 9267
+    },
+    {
+      dateFrom: '2025-01-27T00:00:00Z',
+      dateTo: '2025-02-03T00:00:00Z',
+      organizations: 4543
+    },
+    {
+      dateFrom: '2025-02-03T00:00:00Z',
+      dateTo: '2025-02-10T00:00:00Z',
+      organizations: 3378
+    },
+    {
+      dateFrom: '2025-02-10T00:00:00Z',
+      dateTo: '2025-02-17T00:00:00Z',
+      organizations: 6654
+    },
+    {
+      dateFrom: '2025-02-17T00:00:00Z',
+      dateTo: '2025-02-24T00:00:00Z',
+      organizations: 4489
+    },
+    {
+      dateFrom: '2025-02-24T00:00:00Z',
+      dateTo: '2025-03-03T00:00:00Z',
+      organizations: 9765
+    }
+  ]
+};
 
-export const monthly = [
-  {
-    date: '2024-01-01T00:00:00Z',
-    organizations: 934
+export const monthly = {
+  summary: {
+    current: 4000,
+    previous: 3880,
+    percentageChange: 3.1,
+    changeValue: 120,
+    periodFrom: '2024-11-11T00:00:00Z',
+    periodTo: '2025-02-12T00:00:00Z'
   },
-  {
-    date: '2024-02-01T00:00:00Z',
-    organizations: 619
-  },
-  {
-    date: '2024-03-01T00:00:00Z',
-    organizations: 710
-  },
-  {
-    date: '2024-04-01T00:00:00Z',
-    organizations: 444
-  },
-  {
-    date: '2024-05-01T00:00:00Z',
-    organizations: 425
-  },
-  {
-    date: '2024-06-01T00:00:00Z',
-    organizations: 554
-  },
-  {
-    date: '2024-07-01T00:00:00Z',
-    organizations: 711
-  },
-  {
-    date: '2024-08-01T00:00:00Z',
-    organizations: 869
-  },
-  {
-    date: '2024-09-01T00:00:00Z',
-    organizations: 961
-  },
-  {
-    date: '2024-10-01T00:00:00Z',
-    organizations: 500
-  },
-  {
-    date: '2024-11-01T00:00:00Z',
-    organizations: 307
-  },
-  {
-    date: '2024-12-01T00:00:00Z',
-    organizations: 377
-  }
-];
+  data: [
+    {
+      dateFrom: '2024-11-11T00:00:00Z',
+      dateTo: '2024-01-31T00:00:00Z',
+      organizations: 8934
+    },
+    {
+      dateFrom: '2024-02-01T00:00:00Z',
+      dateTo: '2024-02-29T00:00:00Z',
+      organizations: 9019
+    },
+    {
+      dateFrom: '2024-03-01T00:00:00Z',
+      dateTo: '2024-03-31T00:00:00Z',
+      organizations: 9110
+    },
+    {
+      dateFrom: '2024-04-01T00:00:00Z',
+      dateTo: '2024-04-30T00:00:00Z',
+      organizations: 9244
+    },
+    {
+      dateFrom: '2024-05-01T00:00:00Z',
+      dateTo: '2024-05-31T00:00:00Z',
+      organizations: 9425
+    },
+    {
+      dateFrom: '2024-06-01T00:00:00Z',
+      dateTo: '2024-06-30T00:00:00Z',
+      organizations: 9554
+    },
+    {
+      dateFrom: '2024-07-01T00:00:00Z',
+      dateTo: '2024-07-31T00:00:00Z',
+      organizations: 9711
+    },
+    {
+      dateFrom: '2024-08-01T00:00:00Z',
+      dateTo: '2024-08-31T00:00:00Z',
+      organizations: 9869
+    },
+    {
+      dateFrom: '2024-09-01T00:00:00Z',
+      dateTo: '2024-09-30T00:00:00Z',
+      organizations: 9961
+    },
+    {
+      dateFrom: '2024-10-01T00:00:00Z',
+      dateTo: '2024-10-31T00:00:00Z',
+      organizations: 10100
+    },
+    {
+      dateFrom: '2024-11-01T00:00:00Z',
+      dateTo: '2024-11-30T00:00:00Z',
+      organizations: 10207
+    },
+    {
+      dateFrom: '2024-12-01T00:00:00Z',
+      dateTo: '2024-12-31T00:00:00Z',
+      organizations: 10277
+    }
+  ]
+};
 
-export const quarterly = [
-  {
-    date: '2024-01-01T00:00:00Z',
-    organizations: 934
+export const quarterly = {
+  summary: {
+    current: 4000,
+    previous: 3880,
+    percentageChange: 3.1,
+    changeValue: 120,
+    periodFrom: '2024-11-11T00:00:00Z',
+    periodTo: '2025-02-12T00:00:00Z'
   },
-  {
-    date: '2024-04-01T00:00:00Z',
-    organizations: 1244
-  },
-  {
-    date: '2024-07-01T00:00:00Z',
-    organizations: 711
-  },
-  {
-    date: '2024-10-01T00:00:00Z',
-    organizations: 900
-  }
-];
+  data: [
+    {
+      dateFrom: '2024-01-01T00:00:00Z',
+      dateTo: '2024-03-31T00:00:00Z',
+      organizations: 8934
+    },
+    {
+      dateFrom: '2024-04-01T00:00:00Z',
+      dateTo: '2024-06-30T00:00:00Z',
+      organizations: 9244
+    },
+    {
+      dateFrom: '2024-07-01T00:00:00Z',
+      dateTo: '2024-09-30T00:00:00Z',
+      organizations: 9711
+    },
+    {
+      dateFrom: '2024-10-01T00:00:00Z',
+      dateTo: '2024-12-31T00:00:00Z',
+      organizations: 10100
+    }
+  ]
+};

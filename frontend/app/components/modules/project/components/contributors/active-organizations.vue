@@ -1,19 +1,15 @@
 <template>
   <lfx-card class="p-6">
     <h3 class="text-heading-3 font-semibold font-secondary pb-3">Active organizations</h3>
-    <p class="text-body-2 text-neutral-500">
+    <p class="text-body-2 text-neutral-500 mb-6">
       Active organization is an organization performing tasks such as commits, issues, or pull
       requests during the selected time period.
     </p>
     <hr>
     <section class="mt-5">
       <div class="flex flex-row gap-4 items-center mb-6">
-        <div class="text-data-display-1">1,000</div>
-        <lfx-delta-display
-          :current="4000"
-          :previous="3880"
-          icon="circle-arrow-up-right"
-          icon-type="solid" />
+        <div class="text-data-display-1">{{ formatNumber(summary.current) }}</div>
+        <lfx-delta-display :summary="summary" icon="circle-arrow-up-right" icon-type="solid" />
       </div>
 
       <lfx-tabs :tabs="tabs" :model-value="activeTab" @update:model-value="activeTab = $event" />
@@ -44,6 +40,9 @@ import { axisLabelFormatter } from '~/components/uikit/chart/helpers/formatters'
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
+import type { ActiveOrganizations } from '~/components/shared/types/contributors.types';
+import type { Summary } from '~/components/shared/types/summary.types';
+import { formatNumber } from '~/components/shared/utils/formatter';
 
 const props = withDefaults(
   defineProps<{
@@ -64,9 +63,15 @@ const { data, status, error } = useFetch(
     }&repository=${route.params.name || ''}&time-period=${props.timePeriod}`
 );
 
+const activeOrganizations = computed<ActiveOrganizations>(() => data.value as ActiveOrganizations);
+
+const summary = computed<Summary>(() => activeOrganizations.value.summary);
+
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
-  () => convertToChartData(data.value as RawChartData[], 'date', ['organizations'])
+  () => convertToChartData(activeOrganizations.value.data as RawChartData[], 'dateFrom', [
+      'organizations'
+    ])
 );
 
 const tabs = [

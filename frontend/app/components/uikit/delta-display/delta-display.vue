@@ -6,7 +6,9 @@
       <lfx-icon :name="props.icon" :type="props.iconType" :size="12" />
       {{ percentage }}% ({{ delta }})
     </span>
-    <span class="text-neutral-400 text-xs">vs. {{ formatNumber(props.previous) }} last period</span>
+    <span class="text-neutral-400 text-xs"
+    >vs. {{ formatNumber(props.summary.previous) }} last period</span
+    >
   </div>
 </template>
 
@@ -22,12 +24,9 @@ const props = withDefaults(defineProps<DeltaDisplayProps>(), {
   iconType: 'light'
 });
 
-const percentage = computed(() => formatNumber(((props.current - props.previous) / props.previous) * 100, 1));
+const percentage = computed(() => formatNumber(props.summary.percentageChange, 1));
 
-const delta = computed(() => {
-  const value = props.current - props.previous;
-  return value > 0 ? `+${value}` : value.toString();
-});
+const delta = computed(() => formatNumber(props.summary.changeValue, 1));
 
 const deltaColor = computed(() => (props.isReverse ? 'text-negative-500' : 'text-positive-500'));
 </script>
