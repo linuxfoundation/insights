@@ -5,7 +5,7 @@
       It ranks contributors based on the number of code commits, pull requests, issues closed, and
       other metrics representing their relative activity levels and impact on the project.
     </p>
-    <hr />
+    <hr>
     <section class="mt-5">
       <div class="flex flex-row gap-4 items-center mb-6">
         <lfx-dropdown
@@ -30,7 +30,10 @@
             <div>{{ contributionColumnHeader }}</div>
           </div>
 
-          <div v-for="(organization, index) in organizations" :key="index" class="lfx-table-row">
+          <div
+            v-for="(organization, index) in organizations.data"
+            :key="index"
+            class="lfx-table-row">
             <div class="flex flex-row gap-3 items-center">
               <lfx-avatar :src="organization.logo" type="organization" />
               <div>{{ organization.name }}</div>
@@ -50,7 +53,7 @@ import LfxCard from '~/components/uikit/card/card.vue';
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
-import type { OrganizationLeaderboard } from '~/components/shared/types/contributors';
+import type { OrganizationLeaderboard } from '~/components/shared/types/contributors.types';
 import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
 import { formatNumber } from '~/components/shared/utils/formatter';
 import LfxDropdown from '~/components/uikit/dropdown/dropdown.vue';
@@ -71,14 +74,13 @@ const metricOptions = metricsOptions;
 const route = useRoute();
 const metric = ref('all');
 const { data, status, error } = useFetch(
-  () =>
-    `/api/contributors/organization-leaderboard?metric=${metric.value}&project=${
+  () => `/api/contributors/organization-leaderboard?metric=${metric.value}&project=${
       route.params.slug
     }&repository=${route.params.name || ''}&time-period=${props.timePeriod}`
 );
 
-const organizations = computed<OrganizationLeaderboard[]>(
-  () => data.value as OrganizationLeaderboard[]
+const organizations = computed<OrganizationLeaderboard>(
+  () => data.value as OrganizationLeaderboard
 );
 const contributionColumnHeader = computed(() => {
   if (metric.value === 'all') {
