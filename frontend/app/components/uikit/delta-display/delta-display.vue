@@ -2,7 +2,7 @@
   <div class="flex flex-col gap-1">
     <!-- TODO: These colors seems different from what is defined in the design system
      Waiting for verification from Nuno -->
-    <span :class="['text-delta-display flex items-center gap-2', deltaColor]">
+    <span :class="['text-body-1 flex items-center gap-2', deltaColor]">
       <lfx-icon :name="props.icon" :type="props.iconType" :size="12" />
       {{ percentage }}% ({{ delta }})
     </span>

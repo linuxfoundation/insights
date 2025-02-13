@@ -27,10 +27,6 @@ export default {
         'var(--lfx-text-data-display-2-font-size)',
         'var(--lfx-text-data-display-2-line-height)'
       ],
-      'delta-display': [
-        'var(--lfx-text-delta-display-font-size)',
-        'var(--lfx-text-delta-display-line-height)'
-      ],
       'heading-1': ['var(--lfx-text-heading-1-font-size)', 'var(--lfx-text-heading-1-line-height)'],
       'heading-2': ['var(--lfx-text-heading-2-font-size)', 'var(--lfx-text-heading-2-line-height)'],
       'heading-3': ['var(--lfx-text-heading-3-font-size)', 'var(--lfx-text-heading-3-line-height)'],
