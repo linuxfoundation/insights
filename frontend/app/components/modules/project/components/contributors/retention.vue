@@ -2,10 +2,9 @@
   <lfx-card class="p-6">
     <h3 class="text-heading-3 font-semibold font-secondary pb-3">Retention</h3>
     <p class="text-body-2 text-neutral-500 mb-6">
-      It ranks contributors based on the number of code commits, pull requests, issues closed, and
-      other metrics representing their relative activity levels and impact on the project.
+      Rate at which contributors join and remain active participants of the project.
     </p>
-    <hr>
+    <hr />
     <section class="mt-5">
       <div class="flex flex-row gap-4 items-center mb-10">
         <div class="basis-1/2">
@@ -68,7 +67,8 @@ const activeTab = ref('contributors');
 const chartType = ref('line');
 
 const { data, status, error } = useFetch(
-  () => `/api/contributors/retention?type=${activeTab.value}&project=${route.params.slug}&repository=${
+  () =>
+    `/api/contributors/retention?type=${activeTab.value}&project=${route.params.slug}&repository=${
       route.params.name || ''
     }&time-period=${props.timePeriod}`
 );
@@ -124,11 +124,13 @@ const configOverride = computed(() => ({
     }
   }
 }));
-const lineAreaChartConfig = computed(() => getLineAreaChartConfig(
+const lineAreaChartConfig = computed(() =>
+  getLineAreaChartConfig(
     chartData.value, //
     chartSeries.value, //
     configOverride.value
-  ));
+  )
+);
 
 watch(error, (err) => {
   if (err) {
