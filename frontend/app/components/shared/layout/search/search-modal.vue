@@ -10,7 +10,7 @@
           type="text"
           class="outline-0 flex-grow text-sm text-neutral-900 leading-5"
           placeholder="Search projects, repositories, or collections..."
-          @update:model-value="triggerSearch"
+          @input="triggerSearch"
         >
         <lfx-icon
           v-if="search.length > 0"
@@ -39,43 +39,40 @@
 </template>
 
 <script setup lang="ts">
-import {computed, onMounted} from "vue";
+import { computed, onMounted, ref } from "vue";
+import { debounce } from "lodash";
 import LfxModal from "~/components/uikit/modal/modal.vue";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
 import LfxSearchResult from "~/components/shared/layout/search/search-result.vue";
 import type {
-SearchCollection, SearchProject, SearchRepository, SearchResults
+  SearchCollection, SearchProject, SearchRepository, SearchResults
 } from "~/components/shared/types/search";
 import LfxSpinner from "~/components/uikit/spinner/spinner.vue";
 
-const props = defineProps<{
-  modelValue: boolean;
-}>()
-
+const props = defineProps<{ modelValue: boolean }>();
 const emit = defineEmits<{(e: 'update:modelValue', value: boolean): void }>();
 
 const isModalOpen = computed({
   get: () => props.modelValue,
   set: (value: boolean) => emit('update:modelValue', value)
-})
+});
 
 const searchInputRef = ref(null);
-
 const search = ref<string>('');
 const searchQuery = ref<string>('');
 const loading = ref<boolean>(false);
-
 const projects = ref<SearchProject[]>([]);
 const repositories = ref<SearchRepository[]>([]);
 const collections = ref<SearchCollection[]>([]);
 
 const fetchSearchResults = () => {
   searchQuery.value = search.value;
+  if(searchQuery.value.length === 0){
+    return;
+  }
   loading.value = true;
   ($fetch('/api/search', {
-    query: {
-      query: searchQuery.value,
-    }
+    query: { query: searchQuery.value }
   }) as Promise<SearchResults>)
       .then((res: SearchResults) => {
         projects.value = res.projects;
@@ -90,24 +87,17 @@ const fetchSearchResults = () => {
       .finally(() => {
         loading.value = false;
       });
-}
+};
 
-const triggerSearch = () => {
-  const val = search.value;
-  setTimeout(() => {
-    if (val === search.value) {
-      fetchSearchResults();
-    }
-  }, 300);
-}
+const triggerSearch = debounce(fetchSearchResults, 300);
 
 onMounted(() => {
-  searchInputRef.value.focus();
-})
+  searchInputRef.value?.focus();
+});
 </script>
 
 <script lang="ts">
 export default {
   name: 'LfxSearchModal'
-}
+};
 </script>

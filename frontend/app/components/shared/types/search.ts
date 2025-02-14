@@ -12,7 +12,7 @@ export interface SearchProject {
 export interface SearchRepository {
     name: string;
     slug: string;
-    projecName: string;
+    projectName: string;
     projectSlug: string;
 }
 
