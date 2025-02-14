@@ -19,7 +19,7 @@
 </template>
 
 <script setup lang="ts">
-import LfxSearch from "~/components/shared/layout/search.vue";
+import LfxSearch from "~/components/shared/layout/search/search.vue";
 import {LfxRoutes} from "~/components/shared/types/routes";
 import LfxMenu from "~/components/shared/layout/menu.vue";
 </script>
