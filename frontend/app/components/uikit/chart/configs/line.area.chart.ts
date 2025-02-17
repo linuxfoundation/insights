@@ -1,16 +1,25 @@
 import { graphic } from 'echarts';
 import type { LineSeriesOption } from 'echarts/types/dist/shared';
+import { merge } from 'lodash';
 import {
- buildSeries, convertDateData, convertToGradientColor, hexToRgba
+  buildSeries,
+  convertDateData,
+  convertToGradientColor,
+  hexToRgba
 } from '../helpers/chart-helpers';
 
 import { tooltipFormatter, tooltipLabelFormatter } from '../helpers/formatters';
 import type { ChartData, ChartSeries, SeriesTypes } from '../types/ChartTypes';
 import defaultOption, { defaultGraphOnlyOption } from './defaults.chart';
-import {lfxColors} from "~/config/styles/colors";
+import { lfxColors } from '~/config/styles/colors';
 
 const defaultLineOption: ECOption = {
   ...defaultOption,
+  grid: {
+    top: '5%',
+    left: '8%',
+    right: '1%'
+  },
   xAxis: {
     ...defaultOption.xAxis,
     boundaryGap: false
@@ -31,7 +40,7 @@ const defaultSeriesStyle: LineSeriesOption = {
   smooth: true,
   showSymbol: false,
   lineStyle: {
-    width: 2,
+    width: 1,
     type: 'solid'
   },
   areaStyle: {
@@ -49,7 +58,10 @@ const defaultSeriesStyle: LineSeriesOption = {
  * @param series - Series
  * @returns Series
  */
-const applySeriesStyle = (chartSeries: ChartSeries[], series: SeriesTypes[] | undefined): SeriesTypes[] => {
+const applySeriesStyle = (
+  chartSeries: ChartSeries[],
+  series: SeriesTypes[] | undefined
+): SeriesTypes[] => {
   if (!series) return [];
 
   return series.map((seriesItem: SeriesTypes, index: number) => {
@@ -69,7 +81,9 @@ const applySeriesStyle = (chartSeries: ChartSeries[], series: SeriesTypes[] | un
     } else {
       baseStyle.areaStyle = {
         ...baseStyle.areaStyle,
-        color: convertToGradientColor(chartSeries[index]?.color || hexToRgba(lfxColors.brand[500]))
+        color: convertToGradientColor(
+          hexToRgba(chartSeries[index]?.color || lfxColors.brand[500], 0.1)
+        )
       };
     }
 
@@ -83,19 +97,26 @@ const applySeriesStyle = (chartSeries: ChartSeries[], series: SeriesTypes[] | un
  * @param series - Series
  * @returns Chart config
  */
-export const getLineAreaChartConfig = (data: ChartData[], series: ChartSeries[]): ECOption => {
+export const getLineAreaChartConfig = (
+  data: ChartData[],
+  series: ChartSeries[],
+  overrideConfig?: Partial<ECOption>
+): ECOption => {
   const xAxis = {
     ...defaultLineOption.xAxis,
     data: convertDateData(data) ?? []
   };
   const styledSeries = applySeriesStyle(series, buildSeries(series, data));
 
-  return {
-    ...defaultLineOption,
-    xAxis,
-    // yAxis: buildYAxis(series),
-    series: styledSeries
-  };
+  return merge(
+    {
+      ...defaultLineOption,
+      xAxis,
+      // yAxis: buildYAxis(series),
+      series: styledSeries
+    },
+    overrideConfig
+  );
 };
 
 /**
@@ -139,7 +160,10 @@ export const getLineAreChartConfigCustom = (
  * @param series - Series
  * @returns Chart config
  */
-export const getLineAreaChartConfigGraphOnly = (data: ChartData[], series: ChartSeries[]): ECOption => {
+export const getLineAreaChartConfigGraphOnly = (
+  data: ChartData[],
+  series: ChartSeries[]
+): ECOption => {
   const xAxis = {
     ...defaultGraphOnlyOption.xAxis,
     data: convertDateData(data) ?? []
