@@ -57,13 +57,17 @@ export const buildSeries = (series: ChartSeries[], data: ChartData[]): SeriesTyp
       )
     : undefined);
 
-export const convertToGradientColor = (color: string) => new graphic.LinearGradient(0, 0, 0, 1, [
+export const convertToGradientColor = (
+  color: string,
+  offsetStart: number = 0.1,
+  offsetEnd: number = 0.8
+) => new graphic.LinearGradient(0, 0, 0, 1, [
     {
-      offset: 0,
+      offset: offsetStart,
       color // Start color
     },
     {
-      offset: 1,
+      offset: offsetEnd,
       color: 'rgba(255, 255, 255, 0)' // Transparent white for gradient fade
     }
   ]);
