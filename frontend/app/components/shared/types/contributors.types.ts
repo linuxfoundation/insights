@@ -28,6 +28,7 @@ export interface Contributor {
   avatar: string;
   name: string;
   contributions: number;
+  percentage?: number;
   email: string;
 }
 
@@ -35,6 +36,7 @@ export interface Organization {
   logo: string;
   name: string;
   contributions: number;
+  percentage?: number;
   website: string;
 }
 
@@ -46,4 +48,21 @@ export interface ContributorLeaderboard {
 export interface OrganizationLeaderboard {
   meta: Meta;
   data: Organization[];
+}
+
+export interface Dependency {
+  count: number;
+  percentage: number;
+}
+
+export interface ContributorDependency {
+  topContributors: Dependency;
+  otherContributors: Dependency;
+  list: Contributor[];
+}
+
+export interface OrganizationDependency {
+  topOrganizations: Dependency;
+  otherOrganizations: Dependency;
+  list: Organization[];
 }

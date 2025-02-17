@@ -7,14 +7,7 @@
     </p>
     <hr>
     <section class="mt-5">
-      <div class="flex flex-row gap-4 items-center mb-6">
-        <lfx-dropdown
-          v-model="metric"
-          dropdown-icon="fa-light fa-display-code"
-          :options="metricOptions"
-          full-width
-          center />
-      </div>
+      <lfx-metric-dropdown v-model="metric" />
 
       <div class="min-h-[500px]">
         <div v-if="status === 'pending'" class="flex justify-center items-center h-full">
@@ -24,23 +17,11 @@
           <!-- <lfx-error-message /> -->
           <!-- TODO: Need to define an empty or error state here -->
         </div>
-        <div v-else class="lfx-table">
-          <div class="lfx-table-header">
-            <div>Contributor</div>
-            <div>{{ contributionColumnHeader }}</div>
-          </div>
-
-          <div
-            v-for="(organization, index) in organizations.data"
-            :key="index"
-            class="lfx-table-row">
-            <div class="flex flex-row gap-3 items-center">
-              <lfx-avatar :src="organization.logo" type="organization" />
-              <div>{{ organization.name }}</div>
-            </div>
-            <div>{{ formatNumber(organization.contributions) }}</div>
-          </div>
-        </div>
+        <lfx-organizations-table
+          v-else
+          :metric="metric"
+          :organizations="organizations.data"
+          :show-percentage="true" />
       </div>
     </section>
   </lfx-card>
@@ -49,15 +30,13 @@
 <script setup lang="ts">
 import { useFetch, useRoute } from 'nuxt/app';
 import { ref, watch, computed } from 'vue';
+import LfxMetricDropdown from './fragments/metric-dropdown.vue';
+import LfxOrganizationsTable from './fragments/organizations-table.vue';
 import LfxCard from '~/components/uikit/card/card.vue';
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 import type { OrganizationLeaderboard } from '~/components/shared/types/contributors.types';
-import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
-import { formatNumber } from '~/components/shared/utils/formatter';
-import LfxDropdown from '~/components/uikit/dropdown/dropdown.vue';
-import { metricsOptions } from '~/components/shared/types/metrics';
 
 const props = withDefaults(
   defineProps<{
@@ -68,8 +47,6 @@ const props = withDefaults(
   }
 );
 const { showToast } = useToastService();
-
-const metricOptions = metricsOptions;
 
 const route = useRoute();
 const metric = ref('all');
@@ -82,12 +59,6 @@ const { data, status, error } = useFetch(
 const organizations = computed<OrganizationLeaderboard>(
   () => data.value as OrganizationLeaderboard
 );
-const contributionColumnHeader = computed(() => {
-  if (metric.value === 'all') {
-    return 'Total Contributions';
-  }
-  return `Total ${metricOptions.find((option) => option.value === metric.value)?.label}`;
-});
 
 watch(error, (err) => {
   if (err) {

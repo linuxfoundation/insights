@@ -2,15 +2,15 @@
   @apply flex items-center;
 
   .p-avatar:not(:first-child) {
-    @apply -ms-4;
+    @apply -ms-3 outline outline-2 outline-white;
     &.p-avatar-sm {
-      @apply -ms-3;
+      @apply -ms-2;
     }
     &.p-avatar-lg {
-      @apply -ms-5;
+      @apply -ms-4;
     }
     &.p-avatar-xl {
-      @apply -ms-7;
+      @apply -ms-6;
     }
   }
 }
