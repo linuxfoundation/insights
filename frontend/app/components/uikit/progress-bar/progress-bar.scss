@@ -2,7 +2,7 @@
   @apply flex flex-row items-stretch justify-between gap-0.5 h-2 w-full;
 
   .c-progress-bar__value, .c-progress-bar__empty {
-    @apply rounded-sm transition-all;
+    @apply rounded-xs transition-all;
   }
 
   &--normal {

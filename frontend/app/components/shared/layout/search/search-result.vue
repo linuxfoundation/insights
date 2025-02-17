@@ -21,7 +21,7 @@
             :src="project.logo"
             size="xsmall"
             type="organization"
-            class="!rounded !outline-1"
+            class="!rounded-sm !outline-1"
           />
           {{project.name}}
         </nuxt-link>
