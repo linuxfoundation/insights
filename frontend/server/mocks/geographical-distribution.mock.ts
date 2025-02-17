@@ -8,42 +8,42 @@ export const geographicalDistributionMock = {
     {
       name: 'United States of America',
       code: 'US',
-      flag: 'https://flagcdn.com/w40/us.png',
+      flag: '🇺🇸',
       count: 10000,
       percentage: 20
     },
     {
       name: 'China',
       code: 'CN',
-      flag: 'https://flagcdn.com/w40/cn.png',
+      flag: '🇨🇳',
       count: 8000,
       percentage: 16
     },
     {
       name: 'Canada',
       code: 'CA',
-      flag: 'https://flagcdn.com/w40/ca.png',
+      flag: '🇨🇦',
       count: 6000,
       percentage: 12
     },
     {
       name: 'Australia',
       code: 'AU',
-      flag: 'https://flagcdn.com/w40/au.png',
+      flag: '🇦🇺',
       count: 4000,
       percentage: 8
     },
     {
       name: 'Brazil',
       code: 'BR',
-      flag: 'https://flagcdn.com/w40/br.png',
+      flag: '🇧🇷',
       count: 2000,
       percentage: 4
     },
     {
       name: 'Argentina',
       code: 'AR',
-      flag: 'https://flagcdn.com/w40/ar.png',
+      flag: '🇦🇷',
       count: 1000,
       percentage: 2
     }
@@ -59,42 +59,42 @@ export const organizationGeographicalDistributionMock = {
     {
       name: 'United States of America',
       code: 'US',
-      flag: 'https://flagcdn.com/w40/us.png',
+      flag: '🇺🇸',
       count: 1000,
       percentage: 20
     },
     {
       name: 'China',
       code: 'CN',
-      flag: 'https://flagcdn.com/w40/cn.png',
+      flag: '🇨🇳',
       count: 800,
       percentage: 16
     },
     {
       name: 'Canada',
       code: 'CA',
-      flag: 'https://flagcdn.com/w40/ca.png',
+      flag: '🇨🇦',
       count: 600,
       percentage: 12
     },
     {
       name: 'Australia',
       code: 'AU',
-      flag: 'https://flagcdn.com/w40/au.png',
+      flag: '🇦🇺',
       count: 400,
       percentage: 8
     },
     {
       name: 'Argentina',
       code: 'AR',
-      flag: 'https://flagcdn.com/w40/ar.png',
+      flag: '🇦🇷',
       count: 200,
       percentage: 4
     },
     {
       name: 'Philippines',
       code: 'PH',
-      flag: 'https://flagcdn.com/w40/ph.png',
+      flag: '🇵🇭',
       count: 100,
       percentage: 2
     }

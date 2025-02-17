@@ -40,8 +40,8 @@
             :key="item.name"
             class="flex flex-row justify-between items-center text-sm">
             <div class="flex flex-row gap-4 items-center">
-              <span class="w-4">
-                <img :src="item.flag" :alt="item.name" class="w-full">
+              <span class="text-base">
+                {{ item.flag }}
               </span>
               <span class="font-medium">
                 {{ item.name }}
