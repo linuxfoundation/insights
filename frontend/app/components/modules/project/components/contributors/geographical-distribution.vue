@@ -5,7 +5,7 @@
       <p class="text-body-2 text-neutral-500 mb-6">
         Distribution of contributors based on geographical location.
       </p>
-      <hr>
+      <hr />
     </div>
     <section class="mt-5">
       <div class="px-6">
@@ -40,8 +40,8 @@
             :key="item.name"
             class="flex flex-row justify-between items-center text-sm">
             <div class="flex flex-row gap-4 items-center">
-              <img :src="item.flag" :alt="item.name" class="w-4 h-4">
-              <span>
+              <img :src="item.flag" :alt="item.name" class="w-4 h-4" />
+              <span class="font-medium">
                 {{ item.name }}
               </span>
             </div>
@@ -93,7 +93,8 @@ const metric = ref('all');
 const activeTab = ref('contributors');
 
 const { data, status, error } = useFetch(
-  () => `/api/contributors/geographical-distribution?type=${activeTab.value}&project=${
+  () =>
+    `/api/contributors/geographical-distribution?type=${activeTab.value}&project=${
       route.params.slug
     }&repository=${route.params.name || ''}&time-period=${props.timePeriod}`
 );
@@ -115,7 +116,9 @@ const tabs = [
   }
 ];
 
-const label = computed(() => (activeTab.value === 'contributors' ? 'Contributors' : 'Organizations'));
+const label = computed(() =>
+  activeTab.value === 'contributors' ? 'Contributors' : 'Organizations'
+);
 
 const chartSeries = ref<ChartSeries[]>([
   {
