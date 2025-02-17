@@ -1,7 +1,7 @@
 import type { MapSeriesOption } from 'echarts/types/dist/shared';
-
+import { merge } from 'lodash';
 import type { ChartData, ChartSeries, SeriesTypes } from '../types/ChartTypes';
-import {lfxColors} from "~/config/styles/colors";
+import { lfxColors } from '~/config/styles/colors';
 
 interface GeoMapData {
   name: string;
@@ -10,25 +10,38 @@ interface GeoMapData {
 
 const defaultGeoOption: ECOption = {
   visualMap: {
-    left: 'right',
+    show: false,
     min: 0,
     max: 100000,
     inRange: {
-      color: Object.values(lfxColors.brand)
+      color: [lfxColors.white, lfxColors.brand[500]] // Object.values(lfxColors.brand)
     },
     text: ['High', 'Low'],
     calculable: true
+  },
+
+  tooltip: {
+    trigger: 'item',
+    showDelay: 0,
+    transitionDuration: 0.2
   }
 };
 
 const defaultSeriesStyle: MapSeriesOption = {
-  roam: true,
+  roam: false,
   type: 'map',
   map: 'world',
   emphasis: {
     label: {
-      show: true
+      show: false
+    },
+    itemStyle: {
+      areaColor: lfxColors.brand[600],
+      borderColor: lfxColors.neutral[900]
     }
+  },
+  itemStyle: {
+    areaColor: lfxColors.white
   }
 };
 
@@ -54,7 +67,19 @@ const serializeDataForGeoMap = (data: ChartData[]): GeoMapData[] => data.map((it
     value: item.values[0] ?? 0
   }));
 
-export const getGeoMapChartConfig = (data: ChartData[], series: ChartSeries[]): ECOption => ({
-  ...defaultGeoOption,
-  series: buildSeries(series, data)
-});
+export const getGeoMapChartConfig = (
+  data: ChartData[],
+  series: ChartSeries[],
+  maxValue: number = 100000
+): ECOption => {
+  const option = merge(defaultGeoOption, {
+    visualMap: {
+      max: maxValue
+    }
+  });
+
+  return {
+    ...option,
+    series: buildSeries(series, data)
+  };
+};
