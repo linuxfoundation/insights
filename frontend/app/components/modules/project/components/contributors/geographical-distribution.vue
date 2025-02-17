@@ -1,33 +1,55 @@
 <template>
-  <lfx-card class="p-6">
-    <h3 class="text-heading-3 font-semibold font-secondary pb-3">Geographical distribution</h3>
-    <p class="text-body-2 text-neutral-500">
-      Distribution of contributors based on geographical location.
-    </p>
-    <hr>
+  <lfx-card class="py-6">
+    <div class="px-6">
+      <h3 class="text-heading-3 font-semibold font-secondary pb-3">Geographical distribution</h3>
+      <p class="text-body-2 text-neutral-500 mb-6">
+        Distribution of contributors based on geographical location.
+      </p>
+      <hr>
+    </div>
     <section class="mt-5">
-      <div class="flex flex-row gap-4 items-center mb-10">
-        <div class="basis-1/2">
-          <lfx-tabs
-            :tabs="tabs"
-            :model-value="activeTab"
-            width-type="inline"
-            @update:model-value="activeTab = $event" />
-        </div>
-        <div class="basis-1/2 flex justify-end">
-          <lfx-dropdown
-            v-model="metric"
-            icon="fa-light fa-display-code"
-            :options="metricOptions"
-            full-width
-            center />
+      <div class="px-6">
+        <div class="flex flex-row gap-4 items-center mb-10">
+          <div class="basis-1/2">
+            <lfx-tabs
+              :tabs="tabs"
+              :model-value="activeTab"
+              width-type="inline"
+              @update:model-value="activeTab = $event" />
+          </div>
+          <div class="basis-1/2 flex justify-end">
+            <lfx-dropdown
+              v-model="metric"
+              icon="fa-light fa-display-code"
+              :options="metricOptions"
+              full-width
+              center />
+          </div>
         </div>
       </div>
-      <div class="w-full h-[330px]">
+      <div class="w-full h-[330px] border-solid border-neutral-100 border-x-0 border-y">
         <lfx-chart
           v-if="status !== 'pending'"
           :config="getGeoMapChartConfig(chartData, chartSeries, getMaxValue(chartData))" />
         <lfx-spinner v-else />
+      </div>
+      <div class="px-6 mt-5">
+        <div class="flex flex-col gap-5">
+          <div
+            v-for="item in geoMapData"
+            :key="item.name"
+            class="flex flex-row justify-between items-center text-sm">
+            <div class="flex flex-row gap-4 items-center">
+              <img :src="item.flag" :alt="item.name" class="w-4 h-4">
+              <span>
+                {{ item.name }}
+              </span>
+            </div>
+            <span>
+              {{ formatNumber(item.count) }} {{ label.toLowerCase() }} ({{ item.percentage }}%)
+            </span>
+          </div>
+        </div>
       </div>
     </section>
   </lfx-card>
@@ -52,6 +74,7 @@ import type {
 import { metricsOptions } from '~/components/shared/types/metrics';
 import { getGeoMapChartConfig } from '~/components/uikit/chart/configs/geo-map.chart';
 import type { GeoMapResponse, GeoMapData } from '~/components/shared/types/geo-map.types';
+import { formatNumber } from '~/components/shared/utils/formatter';
 
 const props = withDefaults(
   defineProps<{
@@ -78,7 +101,7 @@ const { data, status, error } = useFetch(
 const geoMapData = computed<GeoMapData[]>(() => (data.value as GeoMapResponse).data);
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
-  () => convertToChartData(geoMapData.value as unknown as RawChartData[], 'name', ['contribution'])
+  () => convertToChartData(geoMapData.value as unknown as RawChartData[], 'name', ['count'])
 );
 
 const tabs = [
@@ -92,9 +115,11 @@ const tabs = [
   }
 ];
 
+const label = computed(() => (activeTab.value === 'contributors' ? 'Contributors' : 'Organizations'));
+
 const chartSeries = ref<ChartSeries[]>([
   {
-    name: `${activeTab.value === 'contributors' ? 'Contributors' : 'Organizations'} by country`,
+    name: `${label.value} by country`,
     type: 'map',
     yAxisIndex: 0,
     dataIndex: 0

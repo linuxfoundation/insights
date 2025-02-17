@@ -2,7 +2,7 @@ export interface GeoMapData {
   name: string;
   code: string;
   flag: string;
-  contribution: number;
+  count: number;
   percentage: number;
 }
 

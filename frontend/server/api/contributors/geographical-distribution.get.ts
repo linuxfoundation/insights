@@ -15,7 +15,7 @@ import {
  *     name: string; // Country Name
  *     code: string; // country code
  *     flag: string; // flag url
- *     contribution: number; // total contribution of contributors or organizations in that country
+ *     count: number; // count of contributors or organizations in that country
  *     percentage: number; // percentage of the contribution based on the total
  *   }]
  * }
