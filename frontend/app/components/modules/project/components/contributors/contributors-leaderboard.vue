@@ -48,7 +48,7 @@ const { showToast } = useToastService();
 const route = useRoute();
 const metric = ref('all');
 const { data, status, error } = useFetch(
-  () => `/api/contributors/contributor-leaderboard?metric=${metric.value}&project=${
+  () => `/api/projects/contributors/contributor-leaderboard?metric=${metric.value}&project=${
       route.params.slug
     }&repository=${route.params.name || ''}&time-period=${props.timePeriod}`
 );

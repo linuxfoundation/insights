@@ -95,7 +95,7 @@ const metric = ref('all');
 const activeTab = ref('contributors');
 
 const { data, status, error } = useFetch(
-  () => `/api/contributors/geographical-distribution?type=${activeTab.value}&project=${
+  () => `/api/projects/contributors/geographical-distribution?type=${activeTab.value}&project=${
       route.params.slug
     }&repository=${route.params.name || ''}&time-period=${props.timePeriod}`
 );

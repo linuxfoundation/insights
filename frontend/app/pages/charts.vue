@@ -33,11 +33,13 @@ import LfxHeatMapChartSample from '~/components/samples/heat-map-chart.sample.vu
 import LfxGaugeChartSample from '~/components/samples/gauge-chart.sample.vue';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
 
-const { data } = await useAsyncData('chart-data', () => $fetch('/api/issues-data'));
-const { data: scatterCardData } = await useAsyncData('scatter-data', () => $fetch('/api/scatter-data'));
-const { data: heatMapData } = await useAsyncData('heat-map-data', () => $fetch('/api/heat-data'));
+const { data } = await useAsyncData('chart-data', () => $fetch('/api/testing/issues-data'));
+const { data: scatterCardData } = await useAsyncData('scatter-data', () => $fetch('/api/testing/scatter-data'));
+const { data: heatMapData } = await useAsyncData('heat-map-data', () => $fetch('/api/testing/heat-data'));
 
-const chartType = ref<'line' | 'bar' | 'graph-only' | 'geo-map' | 'scatter' | 'heatmap' | 'gauge'>('line');
+const chartType = ref<'line' | 'bar' | 'graph-only' | 'geo-map' | 'scatter' | 'heatmap' | 'gauge'>(
+  'line'
+);
 // const chartTypes = ref([
 //   { value: 'line', label: 'Line Chart' },
 //   { value: 'bar', label: 'Bar Chart' },
@@ -58,11 +60,19 @@ const chartTypes = ref([
 ]);
 
 const chartData = ref<ChartData[]>(
-  convertToChartData(data.value, 'BUCKET_DT_FROM', ['CUMULATIVE_ISSUES', 'ISSUES_OPENED', 'ISSUES_CLOSED'])
+  convertToChartData(data.value, 'BUCKET_DT_FROM', [
+    'CUMULATIVE_ISSUES',
+    'ISSUES_OPENED',
+    'ISSUES_CLOSED'
+  ])
 );
 
-const scatterChartData = ref<ChartData[]>(convertToChartData(scatterCardData.value, 'DAY', ['COMMITS'], 'HOUR'));
-const heatMapChartData = ref<ChartData[]>(convertToChartData(heatMapData.value, 'HOUR', ['COMMITS'], 'DAY'));
+const scatterChartData = ref<ChartData[]>(
+  convertToChartData(scatterCardData.value, 'DAY', ['COMMITS'], 'HOUR')
+);
+const heatMapChartData = ref<ChartData[]>(
+  convertToChartData(heatMapData.value, 'HOUR', ['COMMITS'], 'DAY')
+);
 
 const changeData = () => {
   const tmp = data.value?.map((item: RawChartData) => ({
@@ -74,6 +84,10 @@ const changeData = () => {
       ISSUES_CLOSED: typeof item.ISSUES_CLOSED === 'number' ? item.ISSUES_CLOSED + 100 : 0
     })) ?? [];
 
-  chartData.value = convertToChartData(tmp, 'BUCKET_DT_FROM', ['CUMULATIVE_ISSUES', 'ISSUES_OPENED', 'ISSUES_CLOSED']);
+  chartData.value = convertToChartData(tmp, 'BUCKET_DT_FROM', [
+    'CUMULATIVE_ISSUES',
+    'ISSUES_OPENED',
+    'ISSUES_CLOSED'
+  ]);
 };
 </script>

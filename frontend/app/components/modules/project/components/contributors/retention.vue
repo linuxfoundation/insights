@@ -67,9 +67,9 @@ const activeTab = ref('contributors');
 const chartType = ref('line');
 
 const { data, status, error } = useFetch(
-  () => `/api/contributors/retention?type=${activeTab.value}&project=${route.params.slug}&repository=${
-      route.params.name || ''
-    }&time-period=${props.timePeriod}`
+  () => `/api/projects/contributors/retention?type=${activeTab.value}&project=${
+      route.params.slug
+    }&repository=${route.params.name || ''}&time-period=${props.timePeriod}`
 );
 
 const chartData = computed<ChartData[]>(
