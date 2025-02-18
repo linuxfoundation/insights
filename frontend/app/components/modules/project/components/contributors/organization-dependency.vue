@@ -34,9 +34,7 @@
             </lfx-avatar-group>
           </lfx-dependency-display>
 
-          <hr class="mt-5 mb-8">
-
-          <div class="font-semibold mb-5">
+          <div class="font-semibold mb-5 mt-8">
             <span class="text-black">Top contributors </span>
             <span class="text-neutral-400"> over the {{ timePeriodLabel }} </span>
           </div>

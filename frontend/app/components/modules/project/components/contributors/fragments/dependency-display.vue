@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-row justify-between items-center mb-6">
-    <div class="flex flex-row gap-4 items-center">
+    <div class="flex flex-row gap-3 items-center">
       <div>
         <slot />
       </div>
