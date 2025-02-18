@@ -8,18 +8,18 @@
             size="large"
             class="mr-4"
             src="https://c8.alamy.com/comp/2M8NCEE/kubernetes-logo-white-background-2M8NCEE.jpg" />
-          <router-link :to="{ name: LfxRoutes.PROJECT }">
+          <nuxt-link :to="{ name: LfxRoutes.PROJECT }">
             <h1 class="font-semibold mr-2">{{ slug }}</h1>
-          </router-link>
+          </nuxt-link>
           <span class="mr-2 text-neutral-400">/</span>
           <div class="flex items-center gap-2 cursor-pointer">
             <p v-if="repoName" class="font-secondary text-neutral-400">{{ repoName }}</p>
 
-            <router-link
+            <nuxt-link
               v-else
               :to="{ name: LfxRoutes.REPOSITORY, params: { name: 'samplerepo' } }">
               <p class="font-secondary text-neutral-400">All repositories</p>
-            </router-link>
+            </nuxt-link>
             <lfx-icon name="angles-up-down" :size="12" class="text-neutral-400" />
           </div>
         </div>
