@@ -22,6 +22,7 @@
           <lfx-dependency-display
             :top-dependency="topContributors"
             :other-dependency="otherContributors"
+            :list="contributors"
             label="contributors">
             <lfx-avatar-group>
               <lfx-avatar
@@ -85,7 +86,7 @@ const otherContributors = computed(() => (data.value as ContributorDependency)?.
 const contributors = computed(() => (data.value as ContributorDependency)?.list);
 
 const contributorsAvatars = computed(() => (contributors.value?.length
-    ? contributors.value.slice(0, Math.min(3, contributors.value.length))
+    ? contributors.value.slice(0, Math.min(5, topContributors.value.count))
     : []));
 
 const timePeriodLabel = computed(() => (
