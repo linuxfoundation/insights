@@ -101,12 +101,19 @@
     @apply gap-1 flex flex-col;
   }
   .p-select-option {
-    @apply text-neutral-900 text-sm px-3 py-2 flex justify-between items-center cursor-pointer;
+    @apply relative cursor-pointer flex flex-col justify-between items-start;
+
+    &>div{
+      @apply text-neutral-900 text-sm px-3 py-2;
+    }
+    .split-line {
+      @apply w-full absolute bottom-[1px] left-0;
+    }
     i {
       @apply text-base;
     }
 
-    &.p-focus {
+    &.p-focus>div{
       @apply bg-neutral-50 rounded-md cursor-pointer;
     }
     
