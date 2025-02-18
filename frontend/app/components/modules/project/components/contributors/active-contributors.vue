@@ -24,6 +24,8 @@
 <script setup lang="ts">
 import { useFetch, useRoute } from 'nuxt/app';
 import { ref, computed, watch } from 'vue';
+import type { ActiveContributors } from './types/contributors.types';
+import type { Summary } from '~/components/shared/types/summary.types';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
@@ -40,8 +42,6 @@ import { axisLabelFormatter } from '~/components/uikit/chart/helpers/formatters'
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
-import type { ActiveContributors } from '~/components/shared/types/contributors.types';
-import type { Summary } from '~/components/shared/types/summary.types';
 import { formatNumber } from '~/components/shared/utils/formatter';
 
 const props = withDefaults(
@@ -59,7 +59,7 @@ const activeTab = ref('weekly');
 const route = useRoute();
 
 const { data, status, error } = useFetch(
-  () => `/api/contributors/active-contributors?interval=${activeTab.value}&project=${
+  () => `/api/projects/contributors/active-contributors?interval=${activeTab.value}&project=${
       route.params.slug
     }&repository=${route.params.name || ''}&time-period=${props.timePeriod}`
 );

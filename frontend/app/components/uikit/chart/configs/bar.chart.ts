@@ -93,6 +93,7 @@ export const getBarChartConfig = (
   const styledSeries = applySeriesStyle(series, buildSeries(series, data));
 
   return merge(
+    {},
     {
       ...defaultBarOption,
       xAxis,

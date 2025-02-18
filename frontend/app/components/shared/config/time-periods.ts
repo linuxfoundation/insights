@@ -1,3 +1,5 @@
+// This shared time periods will be used by all the tabs in the project page
+
 export const timePeriodsOptions = [
   { label: 'Last 90 days', value: '90d' },
   { label: 'Last 180 days', value: '180d' },

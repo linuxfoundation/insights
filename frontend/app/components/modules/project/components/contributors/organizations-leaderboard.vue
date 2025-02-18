@@ -32,11 +32,11 @@ import { useFetch, useRoute } from 'nuxt/app';
 import { ref, watch, computed } from 'vue';
 import LfxMetricDropdown from './fragments/metric-dropdown.vue';
 import LfxOrganizationsTable from './fragments/organizations-table.vue';
+import type { OrganizationLeaderboard } from './types/contributors.types';
 import LfxCard from '~/components/uikit/card/card.vue';
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
-import type { OrganizationLeaderboard } from '~/components/shared/types/contributors.types';
 
 const props = withDefaults(
   defineProps<{
@@ -51,7 +51,7 @@ const { showToast } = useToastService();
 const route = useRoute();
 const metric = ref('all');
 const { data, status, error } = useFetch(
-  () => `/api/contributors/organization-leaderboard?metric=${metric.value}&project=${
+  () => `/api/projects/contributors/organization-leaderboard?metric=${metric.value}&project=${
       route.params.slug
     }&repository=${route.params.name || ''}&time-period=${props.timePeriod}`
 );
