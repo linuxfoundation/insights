@@ -36,8 +36,8 @@ export default {
     },
 
     boxShadow: {
-      DEFAULT: 'var(--lfx-shadow-default)',
       none: 'var(--lfx-shadow-none)',
+      xs: 'var(--lfx-shadow-xs)',
       sm: 'var(--lfx-shadow-sm)',
       md: 'var(--lfx-shadow-md)',
       lg: 'var(--lfx-shadow-lg)',
@@ -47,8 +47,8 @@ export default {
 
     borderRadius: {
       none: '0',
+      xs: 'var(--lfx-radius-xs)',
       sm: 'var(--lfx-radius-sm)',
-      DEFAULT: 'var(--lfx-radius-default)',
       md: 'var(--lfx-radius-md)',
       lg: 'var(--lfx-radius-lg)',
       xl: 'var(--lfx-radius-xl)',
@@ -65,6 +65,9 @@ export default {
       width: {
         149: '37.25rem',
         78: '19.5rem'
+      },
+      maxWidth: {
+        120: '30rem',
       },
       minWidth: {
         29: '7.25rem'

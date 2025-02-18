@@ -16,3 +16,13 @@ export const formatNumber = (value: number, decimals = 0, forceDecimals = false)
   // Add commas for thousands
   return fixedNum.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 };
+
+/**
+ * Formats a number with short notation (e.g. 1.5M)
+ * @param value - The number to format
+ * @returns Formatted string representation of the number
+ */
+export const formatNumberShort = (value: number): string => new Intl.NumberFormat('en', {
+    notation: "compact",
+    compactDisplay: "short"
+  }).format(value);
