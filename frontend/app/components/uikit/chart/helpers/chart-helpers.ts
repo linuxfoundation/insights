@@ -24,6 +24,9 @@ export const convertToChartData = (
       } as ChartData)
   ) ?? [];
 
+export const getMaxValue = (data: ChartData[]): number => data //
+    .reduce((max, item) => Math.max(max, item.values[0] ?? 0), 0);
+
 // function to convert date data to timestamp since the chart needs the date in this format
 export const convertDateData = (
   chartData: ChartData[] //
