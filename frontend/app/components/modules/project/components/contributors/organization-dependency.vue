@@ -55,15 +55,15 @@ import { ref, computed, watch } from 'vue';
 import { useRoute, useFetch } from 'nuxt/app';
 import LfxDependencyDisplay from './fragments/dependency-display.vue';
 import LfxOrganizationsTable from './fragments/organizations-table.vue';
+import type { OrganizationDependency } from './types/contributors.types';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxMetricDropdown from '~/components/modules/project/components/contributors/fragments/metric-dropdown.vue';
 import LfxAvatarGroup from '~/components/uikit/avatar-group/avatar-group.vue';
 import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
-import type { OrganizationDependency } from '~/components/shared/types/contributors.types';
 import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
-import { timePeriodsOptions } from '~/components/shared/types/time-periods';
+import { timePeriodsOptions } from '~/components/shared/config/time-periods';
 
 const props = withDefaults(
   defineProps<{

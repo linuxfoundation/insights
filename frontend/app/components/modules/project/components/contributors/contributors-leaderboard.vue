@@ -29,11 +29,11 @@ import { useFetch, useRoute } from 'nuxt/app';
 import { ref, watch, computed } from 'vue';
 import LfxMetricDropdown from './fragments/metric-dropdown.vue';
 import LfxContributorsTable from './fragments/contributors-table.vue';
+import type { ContributorLeaderboard } from './types/contributors.types';
 import LfxCard from '~/components/uikit/card/card.vue';
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
-import type { ContributorLeaderboard } from '~/components/shared/types/contributors.types';
 
 const props = withDefaults(
   defineProps<{

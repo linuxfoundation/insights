@@ -17,9 +17,9 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { metricsOptions } from '~/components/shared/types/metrics';
+import { metricsOptions } from '../config/metrics';
+import type { Organization } from '../types/contributors.types';
 import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
-import type { Organization } from '~/components/shared/types/contributors.types';
 import { formatNumber } from '~/components/shared/utils/formatter';
 
 const props = withDefaults(

@@ -1,4 +1,4 @@
-import type { Summary } from './summary.types';
+import type { Summary } from '~/components/shared/types/summary.types';
 
 export interface ActiveContributors {
   summary: Summary;
