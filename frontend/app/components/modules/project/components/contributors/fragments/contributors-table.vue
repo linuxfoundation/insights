@@ -20,7 +20,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { metricsOptions } from '~/components/shared/types/metrics';
+import { metricsOptions } from '../config/metrics';
 import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
 import type { Contributor } from '~/components/shared/types/contributors.types';
 import { formatNumber } from '~/components/shared/utils/formatter';

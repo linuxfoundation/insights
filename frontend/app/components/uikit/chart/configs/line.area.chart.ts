@@ -109,6 +109,7 @@ export const getLineAreaChartConfig = (
   const styledSeries = applySeriesStyle(series, buildSeries(series, data));
 
   return merge(
+    {},
     {
       ...defaultLineOption,
       xAxis,

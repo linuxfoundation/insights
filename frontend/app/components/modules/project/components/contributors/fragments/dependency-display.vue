@@ -25,8 +25,8 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import type { Dependency } from '../types/contributors.types';
 import LfxProgressBar from '~/components/uikit/progress-bar/progress-bar.vue';
-import type { Dependency } from '~/components/shared/types/contributors.types';
 import type { ProgressBarType } from '~/components/uikit/progress-bar/types/progress-bar.types';
 
 const props = withDefaults(

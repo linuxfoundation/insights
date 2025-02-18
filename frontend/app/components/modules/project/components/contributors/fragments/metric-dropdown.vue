@@ -11,8 +11,8 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import { metricsOptions } from '../config/metrics';
 import LfxDropdown from '~/components/uikit/dropdown/dropdown.vue';
-import { metricsOptions } from '~/components/shared/types/metrics';
 
 const metricOptions = metricsOptions;
 
@@ -20,8 +20,7 @@ const props = defineProps<{
   modelValue: string;
 }>();
 
-const emit = defineEmits<{(e: 'update:modelValue', value: string): void;
-}>();
+const emit = defineEmits<{(e: 'update:modelValue', value: string): void }>();
 
 const metric = computed({
   get() {

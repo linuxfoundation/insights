@@ -61,6 +61,8 @@
 import { ref, watch, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { useFetch } from 'nuxt/app';
+import { metricsOptions } from './config/metrics';
+import type { GeoMapResponse, GeoMapData } from './types/geo-map.types';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
 import LfxChart from '~/components/uikit/chart/chart.vue';
@@ -73,9 +75,7 @@ import type {
   RawChartData,
   ChartSeries
 } from '~/components/uikit/chart/types/ChartTypes';
-import { metricsOptions } from '~/components/shared/types/metrics';
 import { getGeoMapChartConfig } from '~/components/uikit/chart/configs/geo-map.chart';
-import type { GeoMapResponse, GeoMapData } from '~/components/shared/types/geo-map.types';
 import { formatNumber } from '~/components/shared/utils/formatter';
 
 const props = withDefaults(
@@ -95,7 +95,7 @@ const metric = ref('all');
 const activeTab = ref('contributors');
 
 const { data, status, error } = useFetch(
-  () => `/api/contributors/geographical-distribution?type=${activeTab.value}&project=${
+  () => `/api/projects/contributors/geographical-distribution?type=${activeTab.value}&project=${
       route.params.slug
     }&repository=${route.params.name || ''}&time-period=${props.timePeriod}`
 );
