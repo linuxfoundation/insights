@@ -1,5 +1,5 @@
 .p-select {
-  @apply bg-white border border-solid border-neutral-200 rounded-lg shadow-sm inline-flex items-center;
+  @apply bg-white border border-solid border-neutral-200 rounded-lg shadow-xs inline-flex items-center;
   @apply px-3 py-2 max-w-[320px] cursor-pointer;
 
   &.p-select-full-width {
@@ -109,7 +109,7 @@
     &.p-focus {
       @apply bg-neutral-50 rounded-md cursor-pointer;
     }
-    
+
     .p-select-option-icon {
       @apply text-base text-brand-500 invisible ml-4;
     }
