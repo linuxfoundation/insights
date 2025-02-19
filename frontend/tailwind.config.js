@@ -63,8 +63,9 @@ export default {
         18: '4.5rem'
       },
       width: {
-        149: '37.25rem',
-        78: '19.5rem'
+        13: '3.25rem',
+        78: '19.5rem',
+        149: '37.25rem'
       },
       maxWidth: {
         120: '30rem',
