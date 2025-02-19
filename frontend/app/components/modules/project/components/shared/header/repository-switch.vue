@@ -84,7 +84,8 @@ const isModalOpen = computed({
 const searchInputRef = ref(null);
 const search = ref('');
 
-const result = computed(() => props.project.repositories.filter((repository) => repository.name.toLowerCase().includes(search.value.toLowerCase())));
+const result = computed(() => props.project.repositories
+    .filter((repository) => repository.name.toLowerCase().includes(search.value.toLowerCase())));
 
 const routeName = computed<{ project: LfxRoutes, repo: LfxRoutes }>(() => {
   const mapping: Record<string, { project: LfxRoutes, repo: LfxRoutes }> = {
