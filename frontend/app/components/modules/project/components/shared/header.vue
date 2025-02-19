@@ -3,6 +3,7 @@
     <div class="bg-white outline outline-neutral-200">
       <section class="container">
         <div
+          v-if="data"
           class="ease-linear transition-all"
           :class="scrollTop > 50 ? 'py-4' : 'py-6'">
 
@@ -16,24 +17,24 @@
                 type="organization"
                 :size="scrollTop > 50 ? 'normal' : 'large'"
                 class="mr-4"
-                src="https://c8.alamy.com/comp/2M8NCEE/kubernetes-logo-white-background-2M8NCEE.jpg" />
+                :src="data.logo || ''" />
               <h1
                 class="font-bold mr-3 ease-linear transition-all font-secondary duration-200"
                 :class="scrollTop > 50 ? 'text-heading-3' : 'text-heading-2'"
               >
-                {{ slug }}
+                {{ data.name }}
               </h1>
               <span
                 class="mr-1 text-neutral-400 font-secondary leading-8 ease-linear transition-all"
                 :class="scrollTop > 50 ? 'text-xl' : 'text-2xl'">/</span>
               <div
                 class="flex items-center gap-2 cursor-pointer px-2 py-0.5
-              rounded-lg transition hover:bg-neutral-100">
+              rounded-lg transition hover:bg-neutral-100" @click="isSearchRepoModalOpen = true">
                 <p
                   class="text-neutral-400 leading-8 ease-linear transition-all"
                   :class="scrollTop > 50 ? 'text-xl' : 'text-2xl'">
                   <span v-if="repoName" class="font-secondary">{{ repoName }}</span>
-                  <span class="font-secondary">All repositories</span>
+                  <span v-else class="font-secondary">All repositories</span>
                 </p>
                 <lfx-icon name="angles-up-down" :size="12" class="text-neutral-400" />
               </div>
@@ -85,10 +86,12 @@
       </section>
     </div>
   </div>
+  <lfx-project-repository-switch
+    v-if="isSearchRepoModalOpen && data" v-model="isSearchRepoModalOpen" :repo="repoName" :project="data" />
 </template>
 
 <script lang="ts" setup>
-import {useRoute} from 'nuxt/app';
+import {useFetch, useRoute} from 'nuxt/app';
 import {computed} from 'vue';
 import {LfxRoutes} from '~/components/shared/types/routes';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
@@ -98,13 +101,21 @@ import LfxButton from '~/components/uikit/button/button.vue';
 import useScroll from "~/components/shared/utils/scroll";
 import LfxIconButton from "~/components/uikit/icon-button/icon-button.vue";
 import LfxShare from "~/components/uikit/share/share.vue";
+import LfxProjectRepositorySwitch from "~/components/modules/project/components/shared/header/repository-switch.vue";
+import type {Project} from "~/components/modules/project/types/project";
 
 const route = useRoute();
 
 const slug = computed(() => route.params.slug);
-const repoName = computed(() => route.params.name);
+const repoName = computed<string>(() => route.params.name as string);
+
+const isSearchRepoModalOpen = ref(false);
 
 const {scrollTop} = useScroll();
+
+const { data } = useFetch<Project>(
+    () => `/api/projects/${slug.value}`,
+);
 </script>
 
 <script lang="ts">
