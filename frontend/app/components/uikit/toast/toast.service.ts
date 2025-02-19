@@ -3,7 +3,7 @@ import type { ToastOptions, ToastSeverity, ToastType } from './types/toast.types
 
 const useToastService = () => {
   const toast = useToast();
-  const showToast = (message: string, toastType: ToastType, icon?: string, delay?: number) => {
+  const showToast = (message: string, toastType: ToastType, icon?: string, delay: number = 3000) => {
     const test: ToastOptions = {
       severity: toastType as ToastSeverity,
       summary: toastType,
