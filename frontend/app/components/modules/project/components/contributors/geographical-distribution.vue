@@ -34,7 +34,7 @@
         <lfx-spinner v-else />
       </div>
       <div class="px-6 mt-5">
-        <div class="flex flex-col gap-5">
+        <div v-if="status !== 'pending'" class="flex flex-col gap-5">
           <div
             v-for="item in geoMapData"
             :key="item.name"
