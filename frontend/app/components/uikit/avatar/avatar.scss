@@ -1,6 +1,6 @@
 .p-avatar {
-  @apply h-8 w-8 overflow-hidden rounded-md bg-neutral-100 inline-block text-neutral-300;
-  
+  @apply h-8 w-8 overflow-hidden rounded-md bg-neutral-100 inline-block text-neutral-300 transition-all ease-linear;
+
   &.type-member {
     @apply rounded-full;
     .p-avatar-icon {
@@ -29,7 +29,7 @@
       }
     }
   }
-  
+
   &.p-avatar-lg {
     @apply h-12 w-12;
     .p-avatar-icon {

@@ -1,5 +1,5 @@
 .c-icon-button{
-  @apply flex items-center justify-center rounded-full transition-all;
+  @apply flex items-center justify-center rounded-full transition-all cursor-pointer;
 
   // Types
   &--default{
