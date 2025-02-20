@@ -1,0 +1,9 @@
+.lfx-side-nav {
+  a {
+    @apply text-xs text-neutral-500;
+
+    &.active {
+      @apply text-neutral-900 font-medium;
+    }
+  }
+}
