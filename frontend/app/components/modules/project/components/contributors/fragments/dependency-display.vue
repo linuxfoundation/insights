@@ -49,9 +49,9 @@ const props = withDefaults(
 // The maximum number of contributors/organizations is 4
 const dependencyValues = computed<number[]>(() => {
   if (
-    props.list &&
-    props.list.length >= props.topDependency.count &&
-    props.topDependency.count < 5 // limit the number of split values to 5
+    props.list
+    && props.list.length >= props.topDependency.count
+    && props.topDependency.count < 5 // limit the number of split values to 5
   ) {
     return props.list
       .slice(0, props.topDependency.count)

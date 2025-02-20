@@ -5,8 +5,7 @@
  * @returns Formatted string representation of the number
  */
 
-export const formatNumber = (value: number, decimals = 0): string =>
-  Intl.NumberFormat('en-US', {
+export const formatNumber = (value: number, decimals = 0): string => Intl.NumberFormat('en-US', {
     style: 'decimal',
     maximumFractionDigits: decimals
   }).format(value);
@@ -16,8 +15,7 @@ export const formatNumber = (value: number, decimals = 0): string =>
  * @param value - The number to format
  * @returns Formatted string representation of the number
  */
-export const formatNumberShort = (value: number): string =>
-  new Intl.NumberFormat('en', {
+export const formatNumberShort = (value: number): string => new Intl.NumberFormat('en', {
     notation: 'compact',
     compactDisplay: 'short'
   }).format(value);
