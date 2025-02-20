@@ -16,6 +16,6 @@ export const formatNumber = (value: number, decimals = 0): string => Intl.Number
  * @returns Formatted string representation of the number
  */
 export const formatNumberShort = (value: number): string => new Intl.NumberFormat('en', {
-    notation: "compact",
-    compactDisplay: "short"
+    notation: 'compact',
+    compactDisplay: 'short'
   }).format(value);

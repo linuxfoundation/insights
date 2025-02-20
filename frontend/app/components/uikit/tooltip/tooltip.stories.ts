@@ -1,3 +1,4 @@
+import LfxButton from '../button/button.vue';
 import LfxTooltip from './tooltip.vue';
 import { tooltipPlacements } from './types/TooltipPlacement';
 
@@ -40,7 +41,16 @@ export const Default = {
     disabled: false,
     content: 'Tooltip content',
     default: 'Hover me'
-  }
+  },
+  render: (args) => ({
+    components: { LfxTooltip, LfxButton },
+    template: `
+    <div style="height: 150px; display: flex; justify-content: center; align-items: center;">
+      <lfx-tooltip :placement="${args.placement}" :disabled="${args.disabled}" content="${args.content}">
+        <lfx-button>Hover me</lfx-button>
+      </lfx-tooltip>
+    </div>`
+  })
 };
 
 export const CustomContent = {
@@ -51,17 +61,17 @@ export const CustomContent = {
     default: 'Hover me'
   },
   render: (args) => ({
-    components: { LfxTooltip },
+    components: { LfxTooltip, LfxButton },
     template: `
     <div style="height: 150px; display: flex; justify-content: center; align-items: center;">
       <lfx-tooltip :placement="${args.placement}" :disabled="${args.disabled}">
         <template #content>
-          <h4>Header In Tooltip</h4>
+          <h4 class="font-semibold">The quick brown fox jumps over the lazy dog</h4>
           <div>
-            <p>Custom content</p>
+            <p>Voluptates dolores eum fugiat odio fugiat enim id corrupti explicabo veritatis voluptatem libero.</p>
           </div>
         </template>
-        <span>Hover me</span>
+        <lfx-button>Hover me</lfx-button>
       </lfx-tooltip>
     </div>`
   })

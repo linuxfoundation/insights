@@ -1,7 +1,7 @@
 <template>
   <lfx-card class="p-6">
     <h3 class="text-heading-3 font-semibold font-secondary pb-3">Contributor dependency</h3>
-    <p class="text-body-2 text-neutral-500 mb-6">
+    <p class="text-body-2 text-neutral-500 mb-5">
       Distribution of contributions among different contributors, highlighting key individuals who
       are actively involved in the project.
     </p>
@@ -22,6 +22,7 @@
           <lfx-dependency-display
             :top-dependency="topContributors"
             :other-dependency="otherContributors"
+            :list="contributors"
             label="contributors">
             <lfx-avatar-group>
               <lfx-avatar
@@ -33,9 +34,7 @@
             </lfx-avatar-group>
           </lfx-dependency-display>
 
-          <hr class="mt-5 mb-8">
-
-          <div class="font-semibold mb-5">
+          <div class="font-semibold mb-5 mt-8">
             <span class="text-black">Top contributors </span>
             <span class="text-neutral-400"> over the {{ timePeriodLabel }} </span>
           </div>
@@ -85,7 +84,7 @@ const otherContributors = computed(() => (data.value as ContributorDependency)?.
 const contributors = computed(() => (data.value as ContributorDependency)?.list);
 
 const contributorsAvatars = computed(() => (contributors.value?.length
-    ? contributors.value.slice(0, Math.min(3, contributors.value.length))
+    ? contributors.value.slice(0, Math.min(5, topContributors.value.count))
     : []));
 
 const timePeriodLabel = computed(() => (
