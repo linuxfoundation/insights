@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
 import {
- onMounted, onUnmounted, ref, watch
+  onMounted, onUnmounted, ref, watch
 } from 'vue';
 // import useScroll from '~/components/shared/utils/scroll';
 
@@ -16,19 +16,20 @@ const props = defineProps<{
   observer: IntersectionObserver | null;
 }>();
 
-// const { addObserver, removeObserver } = useScroll();
+const emit = defineEmits<{(e: 'scrolledToView', id: string): void;
+}>();
 
 onMounted(() => {
   if (scrollViewRef.value) {
     scrollViewRef.value.addEventListener('scrolledToView', () => {
-      console.log('scrolledToView', props.id);
+      emit('scrolledToView', props.id);
     });
   }
 });
 
 onUnmounted(() => {
   if (scrollViewRef.value) {
-    scrollViewRef.value.removeEventListener('scrolledToView', () => {});
+    scrollViewRef.value.removeEventListener('scrolledToView', () => { });
 
     if (props.observer) {
       props.observer.unobserve(scrollViewRef.value);

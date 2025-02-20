@@ -3,16 +3,12 @@
     <div id="intersect_area" class="fixed bottom-0 left-0 right-0 top-[200px] z-[-1]" />
     <div class="flex justify-between pt-12">
       <div class="w-1/4 pr-10">
-        <lfx-side-nav
-          :list="sideNavItems"
-          :model-value="activeItem"
-          @update:model-value="onSideNavUpdate" />
+        <lfx-side-nav :list="sideNavItems" :model-value="activeItem" @update:model-value="onSideNavUpdate" />
       </div>
 
       <div class="w-1/2">
-        <lfx-scroll-area class="flex flex-col gap-12">
+        <lfx-scroll-area class="flex flex-col gap-12" @scrolled-to-view="onScrolledToView">
           <template #default="{ observer }">
-            <!-- you can also do #default="{ state, multiple }" -->
             <lfx-scroll-view id="active-contributors" :observer="observer">
               <lfx-project-active-contributors />
             </lfx-scroll-view>
@@ -37,9 +33,9 @@
             <lfx-scroll-view id="geographical-distribution" :observer="observer">
               <lfx-project-geographical-distribution />
             </lfx-scroll-view>
-            <lfx-scroll-view id="industry-distribution" :observer="observer">
+            <!-- <lfx-scroll-view id="industry-distribution" :observer="observer">
               <lfx-project-industry-distribution />
-            </lfx-scroll-view>
+            </lfx-scroll-view> -->
           </template>
         </lfx-scroll-area>
       </div>
@@ -69,8 +65,6 @@ import LfxProjectRetention
   from '~/components/modules/project/components/contributors/retention.vue';
 import LfxProjectGeographicalDistribution
   from '~/components/modules/project/components/contributors/geographical-distribution.vue';
-import LfxProjectIndustryDistribution
-  from '~/components/modules/project/components/contributors/industry-distribution.vue';
 import LfxSideNav from '~/components/uikit/side-nav/side-nav.vue';
 import LfxScrollView from '~/components/uikit/scroll-view/scroll-view.vue';
 import LfxScrollArea from '~/components/uikit/scroll-view/scroll-area.vue';
@@ -84,17 +78,20 @@ const sideNavItems = [
   { label: 'Organization Dependency', key: 'organization-dependency' },
   { label: 'Retention', key: 'retention' },
   { label: 'Geographical Distribution', key: 'geographical-distribution' },
-  { label: 'Industry Distribution', key: 'industry-distribution' }
+  // { label: 'Industry Distribution', key: 'industry-distribution' }
 ];
 
 const activeItem = ref('active-contributors');
 
 const onSideNavUpdate = (value: string) => {
-  activeItem.value = value;
   const element = document.getElementById(value);
   if (element) {
     scrollToTargetAdjusted(element);
   }
+};
+
+const onScrolledToView = (value: string) => {
+  activeItem.value = value;
 };
 
 const scrollToTargetAdjusted = (element: HTMLElement) => {

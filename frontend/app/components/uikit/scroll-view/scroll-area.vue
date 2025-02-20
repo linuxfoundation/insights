@@ -11,10 +11,14 @@ const scrollAreaRef = ref<HTMLElement | null>(null);
 const observer = ref<IntersectionObserver | null>(null);
 const scrolledToView = new Event('scrolledToView');
 
+const emit = defineEmits<{(e: 'scrolledToView', id: string): void;
+}>();
+
 const handleIntersectCallback = (entries: IntersectionObserverEntry[]) => {
   entries.forEach((entry) => {
     if (entry.intersectionRatio >= 0.5) {
       entry.target.dispatchEvent(scrolledToView);
+      emit('scrolledToView', entry.target.id);
     }
   });
 };
