@@ -10,10 +10,10 @@
         <nuxt-link
           v-for="i of 3"
           :key="i"
-          :to="{name: LfxRoutes.PROJECT, params: {slug: 'lfx-insights'}}"
+          :to="{name: LfxRoutes.PROJECT, params: {slug: 'kubernetes'}}"
           class="flex-grow max-w-1/3">
           <lfx-card class="p-4 ">
-            <h4 class="text-heading-4">lfx-insights</h4>
+            <h4 class="text-heading-4">Kubernetes</h4>
             <p class="text-sm text-neutral-500">4,500 contributors</p>
           </lfx-card>
         </nuxt-link>
