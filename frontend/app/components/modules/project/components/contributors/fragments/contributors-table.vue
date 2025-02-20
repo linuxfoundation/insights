@@ -12,7 +12,7 @@
       </div>
       <div>
         {{ formatNumber(contributor.contributions) }}
-        <span v-if="props.showPercentage"> ({{ contributor.percentage }}%) </span>
+        <span v-if="props.showPercentage"> - {{ contributor.percentage }}% </span>
       </div>
     </div>
   </div>

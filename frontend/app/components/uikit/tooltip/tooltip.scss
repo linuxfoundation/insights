@@ -2,8 +2,12 @@
   @apply relative w-fit h-fit flex;
 
   &__content{
-    @apply text-xs font-semibold text-white bg-black rounded-md bg-neutral-900 px-3 py-2;
-    @apply absolute w-max invisible opacity-0 transition duration-200 z-10 text-center max-w-md;
+    @apply text-xs text-white bg-black rounded-md bg-neutral-900 px-3 py-2 mb-1;
+    @apply absolute w-max invisible opacity-0 transition duration-200 z-10 max-w-md;
+
+    &-default-title{
+      @apply leading-none text-center font-semibold;
+    }
   }
 
   &:hover{

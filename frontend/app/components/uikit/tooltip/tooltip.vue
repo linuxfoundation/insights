@@ -1,8 +1,12 @@
 <template>
-  <div class="lfx-tooltip" :class="[`lfx-tooltip--${placement}`, props.disabled ? 'lfx-tooltip--disabled' : '']">
+  <div
+    class="lfx-tooltip"
+    :class="[`lfx-tooltip--${placement}`, props.disabled ? 'lfx-tooltip--disabled' : '']">
     <div class="lfx-tooltip__content" :class="props.contentClass">
       <slot name="content">
-        {{ props.content }}
+        <div class="lfx-tooltip__content-default-title">
+          {{ props.content }}
+        </div>
       </slot>
     </div>
     <slot />
