@@ -38,13 +38,18 @@
 
       <template #option="slotProps">
         <slot name="option" :option="slotProps.option">
-          <div>
-            <slot name="optionTemplate" :option="slotProps.option">
-              {{ slotProps.option.label }}
-            </slot>
+          <div
+            class="flex items-center justify-between w-full"
+            :class="{ 'mb-2': props.splitLines?.includes(slotProps.index) }">
+            <div>
+              <slot name="optionTemplate" :option="slotProps.option">
+                {{ slotProps.option.label }}
+              </slot>
+            </div>
+            <i class="p-select-option-icon fa-light fa-check" />
           </div>
-          <i class="p-select-option-icon fa-light fa-check" />
         </slot>
+        <hr v-if="props.splitLines?.includes(slotProps.index)" class="split-line">
       </template>
       <template #header>
         <i

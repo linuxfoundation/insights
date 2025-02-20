@@ -10,7 +10,10 @@
         <lfx-avatar :src="organization.logo" type="organization" />
         <div>{{ organization.name }}</div>
       </div>
-      <div>{{ formatNumber(organization.contributions) }}</div>
+      <div>
+        {{ formatNumber(organization.contributions) }}
+        <span v-if="props.showPercentage"> - {{ organization.percentage }}% </span>
+      </div>
     </div>
   </div>
 </template>

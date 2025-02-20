@@ -32,10 +32,22 @@ import { allMetrics, commits } from '~~/server/mocks/contributor-dependency.mock
 export default defineEventHandler(async (event) => {
   const query = getQuery(event);
   const { metric } = query;
+  const data = { ...(metric === 'all' ? allMetrics : commits) };
 
-  if (metric === 'all') {
-    return allMetrics;
+  switch (metric) {
+    case 'all':
+      data.topContributors.count = 3;
+      break;
+    case 'commits':
+      data.topContributors.count = 5;
+      break;
+    case 'issues-opened':
+      data.topContributors.count = 1;
+      break;
+    default:
+      data.topContributors.count = 2;
+      break;
   }
 
-  return commits;
+  return data;
 });

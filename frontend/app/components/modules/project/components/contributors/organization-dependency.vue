@@ -1,7 +1,7 @@
 <template>
   <lfx-card class="p-6">
     <h3 class="text-heading-3 font-semibold font-secondary pb-3">Organization dependency</h3>
-    <p class="text-body-2 text-neutral-500 mb-6">
+    <p class="text-body-2 text-neutral-500 mb-5">
       Distribution of contributions by different organizations to the project. A project is at risk
       if only a few organizations are responsible for a large portion of the total activities.
     </p>
@@ -22,6 +22,7 @@
           <lfx-dependency-display
             :top-dependency="topOrganizations"
             :other-dependency="otherOrganizations"
+            :list="organizations"
             label="organizations">
             <lfx-avatar-group>
               <lfx-avatar
@@ -33,9 +34,7 @@
             </lfx-avatar-group>
           </lfx-dependency-display>
 
-          <hr class="mt-5 mb-8">
-
-          <div class="font-semibold mb-5">
+          <div class="font-semibold mb-5 mt-8">
             <span class="text-black">Top contributors </span>
             <span class="text-neutral-400"> over the {{ timePeriodLabel }} </span>
           </div>

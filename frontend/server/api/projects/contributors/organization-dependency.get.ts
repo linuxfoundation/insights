@@ -32,10 +32,22 @@ import { allMetrics, commits } from '~~/server/mocks/organization-dependency.moc
 export default defineEventHandler(async (event) => {
   const query = getQuery(event);
   const { metric } = query;
+  const data = { ...(metric === 'all' ? allMetrics : commits) };
 
-  if (metric === 'all') {
-    return allMetrics;
+  switch (metric) {
+    case 'all':
+      data.topOrganizations.count = 3;
+      break;
+    case 'pull-requests-opened':
+      data.topOrganizations.count = 5;
+      break;
+    case 'issues-opened':
+      data.topOrganizations.count = 1;
+      break;
+    default:
+      data.topOrganizations.count = 2;
+      break;
   }
 
-  return commits;
+  return data;
 });
