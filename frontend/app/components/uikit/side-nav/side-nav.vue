@@ -18,7 +18,7 @@ const props = defineProps<{
 }>();
 const router = useRouter();
 
-const emit = defineEmits<{(e: 'update:modelValue', value: string): void }>();
+const emit = defineEmits<{ (e: 'update:modelValue', value: string): void }>();
 
 const activeItem = computed<string>({
   get() {
