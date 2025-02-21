@@ -18,7 +18,8 @@ const defaultLineOption: ECOption = {
   grid: {
     top: '5%',
     left: '8%',
-    right: '1%'
+    right: '1%',
+    bottom: '15%'
   },
   xAxis: {
     ...defaultOption.xAxis,
