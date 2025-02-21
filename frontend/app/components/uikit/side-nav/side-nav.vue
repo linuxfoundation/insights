@@ -1,12 +1,8 @@
 <template>
-  <ul class="lfx-side-nav sticky top-[220px] flex flex-col gap-5">
+  <ul class="lfx-side-nav sticky top-[220px] flex flex-col gap-4">
     <li v-for="item in props.list" :key="item.label">
-      <a
-        :href="`#${item.key}`"
-        :class="{ active: activeItem === item.key }"
-        @click="onClick(item.key, $event)"
-      >{{ item.label }}</a
-      >
+      <a :href="`#${item.key}`" :class="{ active: activeItem === item.key }" @click="onClick(item.key, $event)">{{
+        item.label }}</a>
     </li>
   </ul>
 </template>

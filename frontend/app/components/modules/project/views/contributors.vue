@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div id="intersect_area" class="fixed bottom-0 left-0 right-0 top-[200px] z-[-1]" />
-    <div class="flex justify-between pt-12">
+    <div class="flex justify-between pt-10">
       <div class="w-1/4 pr-10">
         <lfx-side-nav :list="sideNavItems" :model-value="activeItem" @update:model-value="onSideNavUpdate" />
       </div>
@@ -40,9 +40,7 @@
         </lfx-scroll-area>
       </div>
 
-      <div class="w-1/4 pl-10">
-        <p>Feedback</p>
-      </div>
+      <div class="w-1/4 pl-10" />
     </div>
   </div>
 </template>
