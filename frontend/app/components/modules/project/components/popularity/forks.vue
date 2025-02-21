@@ -15,7 +15,7 @@
       </div>
 
       <lfx-tabs :tabs="tabs" :model-value="activeTab" @update:model-value="activeTab = $event" />
-      <div class="w-full h-[330px] mt-4">
+      <div class="w-full h-[330px]">
         <lfx-chart v-if="status !== 'pending'" :config="lineChartConfig" />
         <lfx-spinner v-else />
       </div>
