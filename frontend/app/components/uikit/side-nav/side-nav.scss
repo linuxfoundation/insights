@@ -1,4 +1,8 @@
 .lfx-side-nav {
+  li {
+    @apply leading-none;
+  }
+
   a {
     @apply text-xs text-neutral-500;
 
