@@ -1,43 +1,8 @@
 <template>
   <div class="container">
-    <div id="intersect_area" class="fixed bottom-0 left-0 right-0 top-[200px] z-[-1]" />
-    <div class="flex justify-between pt-12">
+    <div class="flex justify-between pt-10">
       <div class="w-1/4 pr-10">
         <lfx-side-nav :list="sideNavItems" :model-value="activeItem" @update:model-value="onSideNavUpdate" />
-      </div>
-
-      <div class="w-1/2">
-        <lfx-scroll-area class="flex flex-col gap-12" @scrolled-to-view="onScrolledToView">
-          <template #default="{ observer }">
-            <lfx-scroll-view id="active-contributors" :observer="observer">
-              <lfx-project-active-contributors />
-            </lfx-scroll-view>
-            <lfx-scroll-view id="active-organizations" :observer="observer">
-              <lfx-project-active-organizations />
-            </lfx-scroll-view>
-            <lfx-scroll-view id="contributors-leaderboard" :observer="observer">
-              <lfx-project-contributors-leaderboard />
-            </lfx-scroll-view>
-            <lfx-scroll-view id="organizations-leaderboard" :observer="observer">
-              <lfx-project-organizations-leaderboard />
-            </lfx-scroll-view>
-            <lfx-scroll-view id="contributor-dependency" :observer="observer">
-              <lfx-project-contributor-dependency />
-            </lfx-scroll-view>
-            <lfx-scroll-view id="organization-dependency" :observer="observer">
-              <lfx-project-organization-dependency />
-            </lfx-scroll-view>
-            <lfx-scroll-view id="retention" :observer="observer">
-              <lfx-project-retention />
-            </lfx-scroll-view>
-            <lfx-scroll-view id="geographical-distribution" :observer="observer">
-              <lfx-project-geographical-distribution />
-            </lfx-scroll-view>
-            <!-- <lfx-scroll-view id="industry-distribution" :observer="observer">
-              <lfx-project-industry-distribution />
-            </lfx-scroll-view> -->
-          </template>
-        </lfx-scroll-area>
       </div>
 
       <div class="w-1/2">
@@ -100,6 +65,7 @@ import LfxProjectGeographicalDistribution
 import LfxSideNav from '~/components/uikit/side-nav/side-nav.vue';
 import LfxScrollView from '~/components/uikit/scroll-view/scroll-view.vue';
 import LfxScrollArea from '~/components/uikit/scroll-view/scroll-area.vue';
+import useScroll from '~/components/shared/utils/scroll';
 
 const sideNavItems = [
   { label: 'Active Contributors', key: 'active-contributors' },
@@ -114,11 +80,16 @@ const sideNavItems = [
 ];
 
 const activeItem = ref('active-contributors');
+const { scrollToTarget, scrollToTop } = useScroll();
 
 const onSideNavUpdate = (value: string) => {
-  const element = document.getElementById(value);
-  if (element) {
-    scrollToTargetAdjusted(element);
+  if (value === sideNavItems[0]?.key) {
+    scrollToTop();
+  } else {
+    const element = document.getElementById(value);
+    if (element) {
+      scrollToTarget(element);
+    }
   }
 };
 
@@ -126,16 +97,6 @@ const onScrolledToView = (value: string) => {
   activeItem.value = value;
 };
 
-const scrollToTargetAdjusted = (element: HTMLElement) => {
-  const headerOffset = 220;
-  const elementPosition = element.getBoundingClientRect().top;
-  const offsetPosition = elementPosition + document.body.scrollTop - headerOffset;
-
-  document.body.scrollTo({
-    top: offsetPosition,
-    behavior: 'smooth'
-  });
-};
 </script>
 
 <script lang="ts">
