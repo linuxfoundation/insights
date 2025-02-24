@@ -1,23 +1,17 @@
 <template>
-  <lfx-dropdown
-    v-model="value" :options="options"
-    icon="fa-layer-group fa-light"
-    type="filled"
-    dropdown-position="left"
-    prefix="Stack"
-    placeholder="All"
-  />
+  <lfx-dropdown v-model="value" :options="options" icon="fa-layer-group fa-light" type="filled" dropdown-position="left"
+    prefix="Stack" placeholder="All" :split-lines="[1]" />
 </template>
 
 <script lang="ts" setup>
-import {computed} from "vue";
+import { computed } from "vue";
 import LfxDropdown from "~/components/uikit/dropdown/dropdown.vue";
 
 const props = defineProps<{
   modelValue: string;
 }>()
 
-const emit = defineEmits<{(e: 'update:modelValue', value: string): void}>();
+const emit = defineEmits<{ (e: 'update:modelValue', value: string): void }>();
 
 const value = computed({
   get: () => props.modelValue,
@@ -25,6 +19,12 @@ const value = computed({
 });
 
 const options = [
+  {
+    label: '',
+    items: [
+      { label: 'All Stacks', value: 'all-stacks' },
+    ]
+  },
   {
     label: "Application Definition and Development",
     items: [
