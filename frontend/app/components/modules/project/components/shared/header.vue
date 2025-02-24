@@ -9,9 +9,9 @@
 
           <div class="flex items-center justify-between ">
             <div class="flex items-center">
-                <lfx-back class="ease-linear transition-all pr-4">
-                  <lfx-icon-button type="transparent" icon="angle-left" class="" />
-                </lfx-back>
+              <lfx-back class="ease-linear transition-all pr-4">
+                <lfx-icon-button type="transparent" icon="angle-left" class="" />
+              </lfx-back>
               <lfx-avatar
                 type="organization"
                 :size="scrollTop > 50 ? 'normal' : 'large'"
