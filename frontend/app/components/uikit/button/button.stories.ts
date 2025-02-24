@@ -1,5 +1,10 @@
 import LfxButton from './button.vue';
-import { buttonTypes, iconPosition, buttonSizes } from './types/button.types';
+import {
+  buttonTypes,
+  iconPosition,
+  buttonSizes,
+  buttonStyles
+} from './types/button.types';
 
 export default {
   title: 'LinuxFoundation/Button',
@@ -24,6 +29,11 @@ export default {
       control: 'select',
       options: buttonSizes
     },
+    buttonStyle: {
+      description: 'The style of the button',
+      control: 'select',
+      options: buttonStyles
+    },
     iconPosition: {
       description: 'The position of the icon',
       control: 'select',
@@ -36,7 +46,7 @@ export default {
     disabled: {
       description: 'Whether the button is disabled',
       control: 'boolean'
-    },
+    }
   },
   parameters: {
     backgrounds: {
@@ -74,6 +84,17 @@ export const Tertiary = {
   args: {
     label: 'Button',
     type: 'tertiary',
+    size: 'medium',
+    loading: false
+  }
+};
+
+export const Pill = {
+  label: 'Pill',
+  args: {
+    label: 'Button',
+    type: 'primary',
+    buttonStyle: 'pill',
     size: 'medium',
     loading: false
   }
