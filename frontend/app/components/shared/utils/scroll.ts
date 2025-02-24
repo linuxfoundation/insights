@@ -1,26 +1,46 @@
-import {onMounted, onUnmounted, ref} from "vue";
+import {
+ computed, onMounted, onUnmounted, ref
+} from 'vue';
 
 const useScroll = () => {
-    const scrollTop = ref(0);
-    let body = document?.querySelector('body');
+  const scrollTop = ref(0);
+  const scrollTopPercentage = computed(() => (scrollTop.value / (body?.scrollHeight || 1)) * 100);
+  let body = document?.querySelector('body');
 
-    const updateScrollTop = () => {
-        scrollTop.value = body?.scrollTop || 0;
-    };
+  const updateScrollTop = () => {
+    scrollTop.value = body?.scrollTop || 0;
+  };
 
-    onMounted(() => {
-        body = document?.querySelector('body');
-        body?.addEventListener('scroll', updateScrollTop);
-        updateScrollTop();
+  const scrollToTop = (value: number = 0) => {
+    document.body.scrollTo({
+      top: value,
+      behavior: 'smooth'
     });
+  };
 
-    onUnmounted(() => {
-        window.removeEventListener('scroll', updateScrollTop);
-    })
+  const scrollToTarget = (element: HTMLElement, headerOffset: number = 220) => {
+    const elementPosition = element.getBoundingClientRect().top;
+    const offsetPosition = elementPosition + document.body.scrollTop - headerOffset;
 
-    return {
-        scrollTop,
-    }
-}
+    scrollToTop(offsetPosition);
+  };
+
+  onMounted(() => {
+    body = document?.querySelector('body');
+    body?.addEventListener('scroll', updateScrollTop);
+    updateScrollTop();
+  });
+
+  onUnmounted(() => {
+    window.removeEventListener('scroll', updateScrollTop);
+  });
+
+  return {
+    scrollTop,
+    scrollTopPercentage,
+    scrollToTarget,
+    scrollToTop
+  };
+};
 
 export default useScroll;
