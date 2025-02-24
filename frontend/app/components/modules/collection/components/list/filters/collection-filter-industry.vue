@@ -38,7 +38,7 @@ const options = computed<DropdownGroupOptions>(() => [
       },
     ]
   },
-  ...data.value,
+  ...(data.value || []),
 ])
 
 const { data } = useFetch<DropdownGroupOptions>(

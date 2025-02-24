@@ -35,7 +35,7 @@ const options = computed<DropdownGroupOptions>(() => [
       { label: 'All Stacks', value: '' },
     ]
   },
-    ...data.value,
+    ...(data.value || []),
 ])
 
 const { data } = useFetch<DropdownGroupOptions>(
