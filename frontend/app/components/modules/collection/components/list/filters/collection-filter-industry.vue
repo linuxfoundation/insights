@@ -1,10 +1,10 @@
 <template>
   <lfx-dropdown
     v-model="value" :options="data"
-    icon="fa-layer-group fa-light"
+    icon="fa-buildings fa-light"
     type="filled"
     dropdown-position="left"
-    prefix="Stack"
+    prefix="Industry"
     placeholder="All"
   />
 </template>
@@ -27,13 +27,12 @@ const value = computed({
 });
 
 const { data } = useFetch<DropdownGroupOptions>(
-    () => `/api/collections/stack`
+    () => `/api/collections/industry`
 );
-
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxCollectionFilterStack'
+  name: 'LfxCollectionFilterIndustry'
 };
 </script>

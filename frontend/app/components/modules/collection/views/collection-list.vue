@@ -14,9 +14,10 @@
   </section>
   <section class="sticky top-14 lg:top-17 bg-white">
     <div class="container py-5">
-      <div class="flex justify-between items-center">
+      <div class="flex justify-between items-center gap-4 flex-wrap">
         <div class="flex items-center gap-4">
           <lfx-collection-filter-stack v-model="stack" />
+          <lfx-collection-filter-industry v-model="industry" />
         </div>
         <lfx-dropdown
           v-model="sort"
@@ -50,16 +51,22 @@ import type {Pagination} from "~/components/shared/types/pagination";
 import type {Collection} from "~/components/modules/collection/types/Collection";
 import LfxCollectionFilterStack
   from "~/components/modules/collection/components/list/filters/collection-filter-stack.vue";
+import LfxCollectionFilterIndustry
+  from "~/components/modules/collection/components/list/filters/collection-filter-industry.vue";
 
 const sortOptions = [
   {
-    label: 'Most contributors',
-    value: 'contributorsCount_DESC'
+    label: 'Alphabetically',
+    value: 'name_DESC'
   },
   {
-    label: 'Alphabeticly',
-    value: 'name_DESC'
-  }
+    label: 'Most projects',
+    value: 'projectCount_DESC'
+  },
+  {
+    label: 'Most valuable',
+    value: 'softwareValueCount_DESC'
+  },
 ];
 
 const page = ref(1);
@@ -67,9 +74,11 @@ const pageSize = ref(50);
 const sort = ref('name_DESC');
 
 const stack = ref('');
+const industry = ref('');
 
 const { data } = useFetch<Pagination<Collection>>(
-    () => `/api/collections?sort=${sort.value}&page=${page.value}&pageSize=${pageSize.value}&stack=${stack.value}`,
+    () => `/api/collections?sort=${sort.value}&page=${page.value}&pageSize=${pageSize.value}
+    &stack=${stack.value}&industry=${industry.value}`,
 );
 </script>
 
