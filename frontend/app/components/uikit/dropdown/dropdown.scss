@@ -130,7 +130,10 @@
 
   }
   .p-select-option-group {
-    @apply px-3 pt-1 text-neutral-400 text-xs font-semibold;
+    @apply px-3 text-neutral-400 text-xs font-semibold;
+    &>div {
+      @apply mt-1;
+    }
   }
 
   .p-select-header {

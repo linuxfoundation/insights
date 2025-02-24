@@ -6,10 +6,12 @@
     dropdown-position="left"
     prefix="Stack"
     placeholder="All"
+    :split-lines="[1]"
   />
 </template>
 
 <script lang="ts" setup>
+import { computed } from "vue";
 import {computed} from "vue";
 import {useFetch} from "nuxt/app";
 import LfxDropdown from "~/components/uikit/dropdown/dropdown.vue";
@@ -19,13 +21,18 @@ const props = defineProps<{
   modelValue: string;
 }>()
 
-const emit = defineEmits<{(e: 'update:modelValue', value: string): void}>();
+const emit = defineEmits<{ (e: 'update:modelValue', value: string): void }>();
 
 const value = computed({
   get: () => props.modelValue,
   set: (value: string) => emit('update:modelValue', value)
 });
-
+{
+  label: '',
+      items: [
+  { label: 'All Stacks', value: 'all-stacks' },
+]
+},
 const { data } = useFetch<DropdownGroupOptions>(
     () => `/api/collections/stack`
 );
