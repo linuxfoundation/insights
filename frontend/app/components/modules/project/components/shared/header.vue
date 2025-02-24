@@ -9,10 +9,9 @@
 
           <div class="flex items-center justify-between ">
             <div class="flex items-center">
-              <div
-                class="ease-linear transition-all pr-4">
-                <lfx-icon-button type="transparent" icon="angle-left" class="" />
-              </div>
+                <lfx-back class="ease-linear transition-all pr-4">
+                  <lfx-icon-button type="transparent" icon="angle-left" class="" />
+                </lfx-back>
               <lfx-avatar
                 type="organization"
                 :size="scrollTop > 50 ? 'normal' : 'large'"
@@ -103,6 +102,7 @@ import LfxIconButton from "~/components/uikit/icon-button/icon-button.vue";
 import LfxShare from "~/components/uikit/share/share.vue";
 import LfxProjectRepositorySwitch from "~/components/modules/project/components/shared/header/repository-switch.vue";
 import type {Project} from "~/components/modules/project/types/project";
+import LfxBack from "~/components/uikit/back/back.vue";
 
 const route = useRoute();
 
