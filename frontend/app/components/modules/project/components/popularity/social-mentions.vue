@@ -15,7 +15,7 @@
       </div>
 
       <lfx-tabs :tabs="tabs" :model-value="activeTab" @update:model-value="activeTab = $event" />
-      <div class="w-full h-[330px]">
+      <div class="w-full h-[330px] mt-5">
         <lfx-chart v-if="status !== 'pending'" :config="barChartConfig" />
         <lfx-spinner v-else />
       </div>
@@ -122,6 +122,12 @@ const configOverride = computed(() => ({
     axisLabel: {
       formatter: axisLabelFormatter('MMM dd')
     }
+  },
+  legend: {
+    show: true
+  },
+  grid: {
+    top: '8%'
   }
 }));
 const barChartConfig = computed(() => getBarChartConfigStacked(

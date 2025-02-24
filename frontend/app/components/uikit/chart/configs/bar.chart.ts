@@ -21,22 +21,23 @@ const defaultBarOption: ECOption = {
       }
     },
     formatter: tooltipFormatter
-  }
+  },
   // hiding legend for now since there isn't any on the designs
-  // legend: {
-  //   orient: 'horizontal',
-  //   left: 'center',
-  //   bottom: 0,
-  //   itemWidth: 15,
-  //   itemHeight: 15,
-  //   itemGap: 40,
-  //   textStyle: {
-  //     fontSize: 12,
-  //     fontWeight: 'normal',
-  //     color: lfxColors.black,
-  //     fontFamily: 'Inter'
-  //   }
-  // }
+  legend: {
+    show: false,
+    orient: 'horizontal',
+    left: 'center',
+    bottom: 0,
+    itemWidth: 15,
+    itemHeight: 15,
+    itemGap: 40,
+    textStyle: {
+      fontSize: 12,
+      fontWeight: 'normal',
+      color: lfxColors.black,
+      fontFamily: 'Inter'
+    }
+  }
 };
 
 const defaultSeriesStyle: BarSeriesOption = {

@@ -1,9 +1,9 @@
-export const cumulative = {
+export const newMentions = {
   summary: {
-    current: 4000,
-    previous: 3880,
+    current: 400,
+    previous: 380,
     percentageChange: 3.1,
-    changeValue: 120,
+    changeValue: 20,
     periodFrom: '2024-11-11T00:00:00Z',
     periodTo: '2025-02-12T00:00:00Z'
   },
@@ -91,12 +91,12 @@ export const cumulative = {
   ]
 };
 
-export const newMentions = {
+export const cumulative = {
   summary: {
-    current: 400,
-    previous: 380,
+    current: 4000,
+    previous: 3880,
     percentageChange: 3.1,
-    changeValue: 20,
+    changeValue: 120,
     periodFrom: '2024-11-11T00:00:00Z',
     periodTo: '2025-02-12T00:00:00Z'
   },
@@ -104,82 +104,82 @@ export const newMentions = {
     {
       dateFrom: '2024-11-11T00:00:00Z',
       dateTo: '2024-11-18T00:00:00Z',
-      mentions: 934
+      mentions: 234
     },
     {
       dateFrom: '2024-11-18T00:00:00Z',
       dateTo: '2024-11-25T00:00:00Z',
-      mentions: 612
+      mentions: 312
     },
     {
       dateFrom: '2024-11-25T00:00:00Z',
       dateTo: '2024-12-02T00:00:00Z',
-      mentions: 876
+      mentions: 376
     },
     {
       dateFrom: '2024-12-02T00:00:00Z',
       dateTo: '2024-12-09T00:00:00Z',
-      mentions: 145
+      mentions: 445
     },
     {
       dateFrom: '2024-12-09T00:00:00Z',
       dateTo: '2024-12-16T00:00:00Z',
-      mentions: 998
+      mentions: 498
     },
     {
       dateFrom: '2024-12-16T00:00:00Z',
       dateTo: '2024-12-23T00:00:00Z',
-      mentions: 234
+      mentions: 534
     },
     {
       dateFrom: '2024-12-23T00:00:00Z',
       dateTo: '2025-01-06T00:00:00Z',
-      mentions: 987
+      mentions: 587
     },
     {
       dateFrom: '2024-12-23T00:00:00Z',
       dateTo: '2025-01-06T00:00:00Z',
-      mentions: 721
+      mentions: 621
     },
     {
       dateFrom: '2025-01-06T00:00:00Z',
       dateTo: '2025-01-13T00:00:00Z',
-      mentions: 556
+      mentions: 656
     },
     {
       dateFrom: '2025-01-13T00:00:00Z',
       dateTo: '2025-01-20T00:00:00Z',
-      mentions: 432
+      mentions: 732
     },
     {
       dateFrom: '2025-01-20T00:00:00Z',
       dateTo: '2025-01-27T00:00:00Z',
-      mentions: 267
+      mentions: 767
     },
     {
       dateFrom: '2025-01-27T00:00:00Z',
       dateTo: '2025-02-03T00:00:00Z',
-      mentions: 543
+      mentions: 843
     },
     {
       dateFrom: '2025-02-03T00:00:00Z',
       dateTo: '2025-02-10T00:00:00Z',
-      mentions: 378
+      mentions: 878
     },
     {
       dateFrom: '2025-02-10T00:00:00Z',
       dateTo: '2025-02-17T00:00:00Z',
-      mentions: 654
+      mentions: 954
     },
     {
       dateFrom: '2025-02-17T00:00:00Z',
       dateTo: '2025-02-24T00:00:00Z',
-      mentions: 489
+      mentions: 989
     },
     {
       dateFrom: '2025-02-24T00:00:00Z',
       dateTo: '2025-03-03T00:00:00Z',
-      mentions: 765
+      mentions: 1065
     }
   ]
 };

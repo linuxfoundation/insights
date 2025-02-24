@@ -21,11 +21,21 @@ export interface GithubMentions {
   }[];
 }
 
-export interface PastMentions {
+export interface PressMention {
+  thumbnail: string;
+  title: string;
+  url: string;
+  date: string;
+  description: string;
+  source: string;
+}
+
+export interface PressMentions {
   summary: Summary;
   data: {
     dateFrom: string;
     dateTo: string;
     mentions: number;
   }[];
+  list: PressMention[];
 }
