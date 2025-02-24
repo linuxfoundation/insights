@@ -1,11 +1,13 @@
 <template>
   <lfx-dropdown
-    v-model="value" :options="data"
+    v-model="value"
+    :options="options"
     icon="fa-buildings fa-light"
     type="filled"
     dropdown-position="left"
     prefix="Industry"
     placeholder="All"
+    :split-lines="[1]"
   />
 </template>
 
@@ -25,6 +27,19 @@ const value = computed({
   get: () => props.modelValue,
   set: (value: string) => emit('update:modelValue', value)
 });
+
+const options = computed<DropdownGroupOptions>(() => [
+  {
+    label: '',
+    items: [
+      {
+        label: 'All industries',
+        value: ''
+      },
+    ]
+  },
+  ...data.value,
+])
 
 const { data } = useFetch<DropdownGroupOptions>(
     () => `/api/collections/industry`

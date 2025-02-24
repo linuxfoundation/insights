@@ -1,6 +1,7 @@
 <template>
   <lfx-dropdown
-    v-model="value" :options="data"
+    v-model="value"
+    :options="options"
     icon="fa-layer-group fa-light"
     type="filled"
     dropdown-position="left"
@@ -11,7 +12,6 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from "vue";
 import {computed} from "vue";
 import {useFetch} from "nuxt/app";
 import LfxDropdown from "~/components/uikit/dropdown/dropdown.vue";
@@ -21,18 +21,23 @@ const props = defineProps<{
   modelValue: string;
 }>()
 
-const emit = defineEmits<{ (e: 'update:modelValue', value: string): void }>();
+const emit = defineEmits<{(e: 'update:modelValue', value: string): void }>();
 
 const value = computed({
   get: () => props.modelValue,
   set: (value: string) => emit('update:modelValue', value)
 });
-{
-  label: '',
-      items: [
-  { label: 'All Stacks', value: 'all-stacks' },
-]
-},
+
+const options = computed<DropdownGroupOptions>(() => [
+  {
+    label: '',
+    items: [
+      { label: 'All Stacks', value: '' },
+    ]
+  },
+    ...data.value,
+])
+
 const { data } = useFetch<DropdownGroupOptions>(
     () => `/api/collections/stack`
 );

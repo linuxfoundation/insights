@@ -1,8 +1,7 @@
 export enum LfxRoutes {
-    EXPLORE = 'index',
-    CHARTS = 'charts', // Temporary
+    // EXPLORE = 'index',
     OPENSOURCEINDEX = 'open-source-index',
-    COLLECTIONS = 'collection',
+    COLLECTIONS = 'index',
     COLLECTION = 'collection-slug',
     PROJECTS = 'project',
     PROJECT = 'project-slug',
