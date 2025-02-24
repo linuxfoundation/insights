@@ -111,9 +111,22 @@ export const getBarChartConfig = (
  */
 export const getBarChartConfigStacked = (
   data: ChartData[],
-  series: ChartSeries[]
+  series: ChartSeries[],
+  overrideConfig?: Partial<ECOption>
   // reuse the same function as the custom config but with the stack option
-): ECOption => getBarChartConfigCustom(data, series, { stack: 'stack' });
+): ECOption => getBarChartConfigCustom(
+    data,
+    series,
+    {
+      stack: 'stack',
+      itemStyle: {
+        borderRadius: [4, 4, 4, 4],
+        borderWidth: 1,
+        borderColor: '#fff'
+      }
+    },
+    overrideConfig
+  );
 
 /**
  * Get bar chart config custom. This can be used to add custom styles to the chart.
@@ -126,7 +139,8 @@ export const getBarChartConfigStacked = (
 export const getBarChartConfigCustom = (
   data: ChartData[],
   series: ChartSeries[],
-  customStyle: Partial<SeriesTypes>
+  customStyle: Partial<SeriesTypes>,
+  overrideConfig?: Partial<ECOption>
 ): ECOption => {
   const xAxis = { ...defaultBarOption.xAxis, data: convertDateData(data) ?? [] };
   const styledSeries = applySeriesStyle(series, buildSeries(series, data)).map(
@@ -136,9 +150,13 @@ export const getBarChartConfigCustom = (
       } as BarSeriesOption)
   );
 
-  return {
-    ...defaultBarOption,
-    xAxis,
-    series: styledSeries
-  };
+  return merge(
+    {},
+    {
+      ...defaultBarOption,
+      xAxis,
+      series: styledSeries
+    },
+    overrideConfig
+  );
 };
