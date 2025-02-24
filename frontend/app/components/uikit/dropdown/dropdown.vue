@@ -31,8 +31,12 @@
       <template #value="slotProps">
         <div>
           <i :class="['dropdown-icon', props.icon]" />
-          <div v-if="slotProps.value">{{ getLabel(slotProps.value) }}</div>
-          <div v-else>{{ slotProps.placeholder }}</div>
+          <div class="flex items-center gap-0.5">
+            <span v-if="props.prefix" class="font-medium">{{props.prefix}}:</span>
+            <div :class="props.prefix ? 'font-normal' : 'font-medium'">
+              {{ slotProps.value ? getLabel(slotProps.value) : slotProps.placeholder }}
+            </div>
+          </div>
         </div>
       </template>
 
@@ -71,7 +75,7 @@ const props = withDefaults(defineProps<DropdownProps>(), {
   type: 'filled',
   size: 'default',
   icon: 'fa-light fa-bars-filter',
-  dropdownPosition: 'left'
+  dropdownPosition: 'left',
 });
 
 const emit = defineEmits(['update:modelValue']);

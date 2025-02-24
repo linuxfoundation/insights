@@ -15,7 +15,9 @@
   <section class="sticky top-14 lg:top-17 bg-white">
     <div class="container py-5">
       <div class="flex justify-between items-center">
-        <div>Filters</div>
+        <div class="flex items-center gap-4">
+          <lfx-collection-filter-stack v-model="stack" />
+        </div>
         <lfx-dropdown
           v-model="sort"
           :options="sortOptions"
@@ -46,6 +48,8 @@ import LfxDropdown from '~/components/uikit/dropdown/dropdown.vue';
 import LfxCollectionListItem from '~/components/modules/collection/components/collection-list-item.vue';
 import type {Pagination} from "~/components/shared/types/pagination";
 import type {Collection} from "~/components/modules/collection/types/Collection";
+import LfxCollectionFilterStack
+  from "~/components/modules/collection/components/list/filters/collection-filter-stack.vue";
 
 const sortOptions = [
   {
@@ -62,8 +66,10 @@ const page = ref(1);
 const pageSize = ref(50);
 const sort = ref('name_DESC');
 
+const stack = ref('');
+
 const { data } = useFetch<Pagination<Collection>>(
-    () => `/api/collections?sort=${sort.value}&page=${page.value}&pageSize=${pageSize.value}`,
+    () => `/api/collections?sort=${sort.value}&page=${page.value}&pageSize=${pageSize.value}&stack=${stack.value}`,
 );
 </script>
 
