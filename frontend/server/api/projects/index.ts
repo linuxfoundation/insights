@@ -43,9 +43,6 @@ export default defineEventHandler(async (event) => {
                 return order === 'ASC' ? 1 : -1;
             }
             return 0;
-        }).map((project) => ({
-                ...project,
-                name: `${project.name} (${page})`,
-            }))
+        })
     };
 });

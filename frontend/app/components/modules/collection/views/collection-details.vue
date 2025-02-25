@@ -5,16 +5,11 @@
       <lfx-collection-filters v-model:sort="sort" v-model:tab="tab" />
     </div>
   </div>
-  <div class="container py-10">
-    <div class="grid grid-cols-3 gap-8">
-      <lfx-project-list-item v-for="project of data.data" :key="project.slug" :project="project" />
-      <lfx-project-list-item v-for="project of data.data" :key="project.slug" :project="project" />
-      <lfx-project-list-item v-for="project of data.data" :key="project.slug" :project="project" />
-      <lfx-project-list-item v-for="project of data.data" :key="project.slug" :project="project" />
-      <lfx-project-list-item v-for="project of data.data" :key="project.slug" :project="project" />
+  <div class="container py-10 flex flex-col gap-8">
+    <div v-if="!(status === 'pending' && data.page === 1)" class="grid grid-cols-3 gap-8">
       <lfx-project-list-item v-for="project of data.data" :key="project.slug" :project="project" />
     </div>
-    <div v-if="status === 'pending'" class="grid grid-cols-3 gap-8 pt-8">
+    <div v-if="status === 'pending'" class="grid grid-cols-3 gap-8">
       <lfx-project-list-item-loading v-for="i of 6" :key="i" />
     </div>
   </div>
@@ -28,10 +23,13 @@ import LfxProjectListItem from "~/components/modules/project/components/list/pro
 import type {Project} from "~/components/modules/project/types/project";
 import type {Pagination} from "~/components/shared/types/pagination";
 import LfxProjectListItemLoading from "~/components/modules/project/components/list/project-list-item-loading.vue";
+import useScroll from "~/components/shared/utils/scroll";
 
 const props = defineProps<{
   collection: Collection
 }>()
+
+const {scrollTopPercentage} = useScroll();
 
 const sort = ref('name_ASC');
 const tab = ref('all');
@@ -68,6 +66,13 @@ const { data, status } = useFetch<Pagination<Project>>(
       },
     }
 );
+
+watch(scrollTopPercentage, () => {
+  if (scrollTopPercentage.value >= 100 && projects.value.length < data.value.total) {
+    page.value += 1;
+    projects.value = [];
+  }
+});
 
 onMounted(() => {
   projects.value = data.value.data;
