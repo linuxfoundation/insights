@@ -17,10 +17,10 @@
   </main>
 </template>
 <script setup lang="ts">
+import {clearError, useRoute} from "nuxt/app";
 import LfxNavbar from '~/components/shared/layout/navbar.vue';
 import LfxButton from "~/components/uikit/button/button.vue";
 import {LfxRoutes} from "~/components/shared/types/routes";
-import {clearError, useRoute} from "nuxt/app";
 
 defineProps<{
   error: object
