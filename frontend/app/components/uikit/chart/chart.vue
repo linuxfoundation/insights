@@ -1,5 +1,10 @@
 <template>
-  <VChart id="chart" :option="props.config" />
+  <div class="w-full h-full flex flex-col justify-between">
+    <VChart id="chart" :option="props.config" />
+    <div>
+      <slot name="legend" />
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
