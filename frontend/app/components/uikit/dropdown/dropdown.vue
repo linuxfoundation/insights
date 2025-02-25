@@ -16,10 +16,10 @@
       filter-placeholder="Search..."
       filter-icon="fa-light fa-magnifying-glass"
       clear-icon="fa-solid fa-circle-xmark"
-      reset-filter-on-clear="true"
+      :reset-filter-on-clear="true"
       append-to="self"
-      auto-filter-focus="true"
-      reset-filter-on-hide="true"
+      :auto-filter-focus="true"
+      :reset-filter-on-hide="true"
       :class="[
         `p-select--${props.type}`,
         { 'p-select-group-breaks': props.showGroupBreaks },

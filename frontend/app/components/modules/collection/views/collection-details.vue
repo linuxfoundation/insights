@@ -1,13 +1,13 @@
 <template>
   <div class=" min-h-[12.875rem] sticky top-14 lg:top-17 z-10">
     <div class="bg-white outline outline-neutral-100">
-      <lfx-collection-header :collection="props.collection" />
+      <lfx-collection-header :loading="!collection" :collection="props.collection" />
       <lfx-collection-filters v-model:sort="sort" v-model:tab="tab" />
     </div>
   </div>
   <div class="container py-10 flex flex-col gap-8">
-    <div v-if="!(status === 'pending' && data.page === 1)" class="grid grid-cols-3 gap-8">
-      <lfx-project-list-item v-for="project of data.data" :key="project.slug" :project="project" />
+    <div v-if="data && !(status === 'pending' && data?.page === 1)" class="grid grid-cols-3 gap-8">
+      <lfx-project-list-item v-for="project of data?.data" :key="project.slug" :project="project" />
     </div>
     <div v-if="status === 'pending'" class="grid grid-cols-3 gap-8">
       <lfx-project-list-item-loading v-for="i of 6" :key="i" />

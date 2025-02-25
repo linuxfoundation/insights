@@ -10,7 +10,8 @@ export default defineNuxtConfig({
     compatibilityVersion: 4
   },
   app: {
-    head
+    head,
+    errorHandler: '~/app/error.vue'
   },
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },

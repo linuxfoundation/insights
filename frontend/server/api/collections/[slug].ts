@@ -57,5 +57,9 @@ const collections: Collection[] = [
 
 export default defineEventHandler(async (event) => {
     const {slug} = event.context.params as Record<string, string>;
-    return collections.find((c) => c.slug === slug);
+    const collection = collections.find((c) => c.slug === slug);
+    if(!collection){
+        throw createError({ statusCode: 404, statusMessage: 'Data not found' })
+    }
+    return collection;
 });
