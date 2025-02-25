@@ -28,12 +28,10 @@ import LfxProjectListItem from "~/components/modules/project/components/list/pro
 import type {Project} from "~/components/modules/project/types/project";
 import type {Pagination} from "~/components/shared/types/pagination";
 import LfxProjectListItemLoading from "~/components/modules/project/components/list/project-list-item-loading.vue";
-import useScroll from "~/components/shared/utils/scroll";
 
 const props = defineProps<{
   collection: Collection
 }>()
-
 
 const sort = ref('name_ASC');
 const tab = ref('all');
