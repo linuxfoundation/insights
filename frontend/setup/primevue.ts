@@ -10,7 +10,8 @@ export default {
       'SelectButton',
       'Toast',
       'Popover',
-      'Select'
+      'Select',
+      'Skeleton'
     ]
   },
   options: {
