@@ -43,7 +43,7 @@ watch([sort, tab], () => {
   page.value = 1;
 });
 
-const { data, status } = useFetch<Pagination<Project>>(
+const { data, status } = await useFetch<Pagination<Project>>(
     () => `/api/projects`,
     {
       params: {
@@ -75,7 +75,7 @@ watch(scrollTopPercentage, () => {
 });
 
 onMounted(() => {
-  projects.value = data.value.data;
+  projects.value = data.value?.data || [];
 });
 </script>
 
