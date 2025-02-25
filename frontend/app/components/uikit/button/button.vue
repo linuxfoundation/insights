@@ -1,24 +1,23 @@
 <template>
   <pv-button
-    v-bind="$attrs"
-    :class="`p-button-${props.size} p-button-${props.type}`"
-    :label="props.label"
-    :icon="props.icon"
-    :icon-position="props.iconPosition"
-    :loading="props.loading"
+    v-bind="$attrs" :class="`p-button-${props.size} p-button-${props.type} p-button-${props.buttonStyle}`"
+    :label="props.label" :icon="props.icon" :icon-position="props.iconPosition" :loading="props.loading"
     :disabled="props.disabled">
     <slot />
   </pv-button>
 </template>
 
 <script setup lang="ts">
-import type { ButtonType, ButtonSize, IconPosition } from './types/button.types';
+import type {
+  ButtonStyle, ButtonType, ButtonSize, IconPosition
+} from './types/button.types';
 
 const props = withDefaults(
   defineProps<{
     label?: string;
     icon?: string;
     type?: ButtonType;
+    buttonStyle?: ButtonStyle;
     loading?: boolean;
     size?: ButtonSize;
     iconPosition?: IconPosition;
@@ -30,7 +29,8 @@ const props = withDefaults(
     iconPosition: 'left',
     disabled: false,
     label: '',
-    icon: undefined
+    icon: undefined,
+    buttonStyle: 'rounded'
   }
 );
 </script>
