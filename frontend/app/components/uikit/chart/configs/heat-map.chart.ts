@@ -7,7 +7,7 @@ import type {
   ChartSeries,
   SeriesTypes
 } from '../types/ChartTypes';
-import { convertToScatterData } from '../helpers/chart-helpers';
+import { convertToHeatMapData } from '../helpers/chart-helpers';
 import defaultOption from './defaults.chart';
 import { lfxColors } from '~/config/styles/colors';
 
@@ -164,7 +164,7 @@ export const getHeatMapChartConfig = (
     ...defaultHeatMapOption.yAxis,
     data: categoryData.yAxis.map((item) => item.key)
   };
-  const convertedData = convertToScatterData(data);
+  const convertedData = convertToHeatMapData(data);
   const styledSeries = applySeriesStyle(series, convertedData);
   // Find the maximum value in the current dataset
   const maxValue = Math.max(...convertedData.map((item) => item[2] || 0));

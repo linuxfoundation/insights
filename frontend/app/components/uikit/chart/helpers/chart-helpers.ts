@@ -28,6 +28,9 @@ export const convertToChartData = (
       } as ChartData)
   ) ?? [];
 
+export const getMaxValue = (data: ChartData[]): number => data //
+    .reduce((max, item) => Math.max(max, item.values[0] ?? 0), 0);
+
 export const convertToCategoryData = (
   xData: ChartData[],
   yData: ChartData[]
@@ -119,7 +122,27 @@ export const hexToRgba = (hex: string, alpha: number = 1): string => {
  * @param data - Array of ChartData objects
  * @returns Array of number arrays representing [x, y, value] coordinates
  */
-export const convertToScatterData = (data: ChartData[]): number[][] => data.map(
+export const convertToScatterData = (
+  data: ChartData[],
+  categoryData: CategoryData
+): number[][] => {
+  const { xAxis } = categoryData;
+  const yAxis = [...categoryData.yAxis].reverse();
+
+  // the category data is mapped as x and y axis
+  // the y axis is reversed so we need to reverse the y axis key
+  return data.map(
+    (
+      item // data is formatted as [x, y, value]
+    ) => [
+      xAxis.findIndex((x) => x.value === item.key),
+      yAxis.findIndex((y) => y.value === item.yAxisKey),
+      item.values[0] || 0
+    ]
+  );
+};
+
+export const convertToHeatMapData = (data: ChartData[]): number[][] => data.map(
     (
       item // data is formatted as [x, y, value]
     ) => [parseInt(item.key, 10), parseInt(item.yAxisKey || '0', 10), item.values[0] || 0]
