@@ -6,6 +6,10 @@
     &.p-togglebutton-checked {
       @apply bg-white text-neutral-900 rounded-md font-medium;
     }
+
+    &-content{
+      @apply w-max;
+    }
   }
   &.tabs-width-inline {
     @apply inline-flex;
