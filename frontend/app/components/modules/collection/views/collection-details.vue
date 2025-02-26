@@ -9,6 +9,15 @@
     <div v-if="data && !(status === 'pending' && data?.page === 1)" class="grid grid-cols-3 gap-8">
       <lfx-project-list-item v-for="project of data?.data" :key="project.slug" :project="project" />
     </div>
+    <div v-if="data?.data.length === 0 && status == 'success'" class="flex flex-col items-center py-20">
+      <lfx-icon name="face-monocle" :size="80" class="text-neutral-300" />
+      <h3 class="text-center pt-5 text-heading-2 font-secondary font-bold text-neutral-500">
+        No projects found
+      </h3>
+      <p class="text-body-1 text-neutral-500 pt-3 text-center">
+        Try adjusting your filters to find what you’re looking for.
+      </p>
+    </div>
     <div v-if="status === 'pending'" class="grid grid-cols-3 gap-8">
       <lfx-project-list-item-loading v-for="i of 6" :key="i" />
     </div>
@@ -24,6 +33,7 @@ import type {Project} from "~/components/modules/project/types/project";
 import type {Pagination} from "~/components/shared/types/pagination";
 import LfxProjectListItemLoading from "~/components/modules/project/components/list/project-list-item-loading.vue";
 import useScroll from "~/components/shared/utils/scroll";
+import LfxIcon from "~/components/uikit/icon/icon.vue";
 
 const props = defineProps<{
   collection: Collection
