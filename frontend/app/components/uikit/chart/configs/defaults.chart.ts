@@ -1,5 +1,6 @@
 import type { GaugeSeriesOption } from 'echarts';
 import { axisLabelFormatter } from '../helpers/formatters';
+import { formatNumber } from '~/components/shared/utils/formatter';
 import { lfxColors } from '~/config/styles/colors';
 
 const defaultOption: ECOption = {
@@ -31,7 +32,7 @@ const defaultOption: ECOption = {
       fontSize: '12px',
       fontWeight: 'normal',
       color: lfxColors.neutral[400],
-      formatter: (value: number) => `${value === 0 ? '' : value}`
+      formatter: (value: number) => `${value === 0 ? '' : formatNumber(value)}`
     },
     splitLine: {
       lineStyle: {
