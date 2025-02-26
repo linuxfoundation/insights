@@ -1,6 +1,9 @@
 import { graphic } from 'echarts';
 import type {
- ChartData, ChartSeries, RawChartData, SeriesTypes
+  ChartData,
+  ChartSeries,
+  RawChartData,
+  SeriesTypes
 } from '../types/ChartTypes';
 
 /**
@@ -48,7 +51,10 @@ export const convertDateData = (
  * @param data - Data
  * @returns Series
  */
-export const buildSeries = (series: ChartSeries[], data: ChartData[]): SeriesTypes[] | undefined => (series.length > 0
+export const buildSeries = (
+  series: ChartSeries[],
+  data: ChartData[]
+): SeriesTypes[] | undefined => (series.length > 0
     ? series.map(
         (series: ChartSeries) => ({
             type: series.type,
@@ -63,7 +69,7 @@ export const buildSeries = (series: ChartSeries[], data: ChartData[]): SeriesTyp
 export const convertToGradientColor = (
   color: string,
   offsetStart: number = 0.1,
-  offsetEnd: number = 0.8
+  offsetEnd: number = 1
 ) => new graphic.LinearGradient(0, 0, 0, 1, [
     {
       offset: offsetStart,

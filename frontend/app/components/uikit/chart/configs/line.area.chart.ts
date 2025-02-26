@@ -73,20 +73,21 @@ const applySeriesStyle = (
     baseStyle.lineStyle = {
       ...baseStyle.lineStyle,
       color: chartSeries[index]?.color || lfxColors.brand[500],
-      type: chartSeries[index]?.lineStyle || baseStyle.lineStyle?.type
+      type: chartSeries[index]?.lineStyle || baseStyle.lineStyle?.type,
+      width: chartSeries[index]?.lineWidth || baseStyle.lineStyle?.width || 1
     };
 
     // Only solid lines have an area
-    if (chartSeries[index]?.lineStyle && chartSeries[index].lineStyle !== 'solid') {
-      baseStyle.areaStyle = undefined;
-    } else {
-      baseStyle.areaStyle = {
-        ...baseStyle.areaStyle,
-        color: convertToGradientColor(
-          hexToRgba(chartSeries[index]?.color || lfxColors.brand[500], 0.1)
-        )
-      };
-    }
+    // if (chartSeries[index]?.lineStyle && chartSeries[index].lineStyle !== 'solid') {
+    //   baseStyle.areaStyle = undefined;
+    // } else {
+    baseStyle.areaStyle = {
+      ...baseStyle.areaStyle,
+      color: convertToGradientColor(
+        hexToRgba(chartSeries[index]?.color || lfxColors.brand[500], 0.1)
+      )
+    };
+    // }
 
     return baseStyle;
   });
