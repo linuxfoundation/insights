@@ -9,7 +9,7 @@
     </p>
     <hr>
     <section class="mt-5">
-      <div v-if="status === 'success'" class="flex flex-row gap-4 items-center mb-6">
+      <div v-if="status === 'success' && summary" class="flex flex-row gap-4 items-center mb-6">
         <div class="text-data-display-1">{{ formatNumber(summary.current) }}</div>
         <lfx-delta-display :summary="summary" icon="circle-arrow-up-right" icon-type="solid" />
       </div>
@@ -67,7 +67,7 @@ const { data, status, error } = useFetch(
 
 const forks = computed<ForksData>(() => data.value as ForksData);
 
-const summary = computed<Summary>(() => forks.value.summary);
+const summary = computed<Summary | undefined>(() => forks.value?.summary);
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
   () => convertToChartData(forks.value.data as RawChartData[], 'dateFrom', [
