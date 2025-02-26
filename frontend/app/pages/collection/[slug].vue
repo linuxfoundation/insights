@@ -1,32 +1,32 @@
 <template>
-  <div class="py-8 bg-white border-b border-neutral-200">
-    <div class="container">
-      <h1 class="text-heading-1 font-semibold pb-4">{{ slug }}</h1>
-    </div>
-  </div>
-  <div class="container pt-8">
-    <section class="pb-8">
-      <div class="flex gap-4">
-        <nuxt-link
-          v-for="i of 3"
-          :key="i"
-          :to="{name: LfxRoutes.PROJECT, params: {slug: 'kubernetes'}}"
-          class="flex-grow max-w-1/3">
-          <lfx-card class="p-4 ">
-            <h4 class="text-heading-4">Kubernetes</h4>
-            <p class="text-sm text-neutral-500">4,500 contributors</p>
-          </lfx-card>
-        </nuxt-link>
-      </div>
-    </section>
-  </div>
+  <lfx-collection-details-view v-if="data" :collection="data" />
 </template>
 
 <script setup lang="ts">
-import {useRoute} from "nuxt/app";
-import LfxCard from '~/components/uikit/card/card.vue';
-import {LfxRoutes} from "~/components/shared/types/routes";
+import {
+useFetch, useRoute, createError, showError
+} from "nuxt/app";
+import LfxCollectionDetailsView from "~/components/modules/collection/views/collection-details.vue";
+import type {Collection} from "~/components/modules/collection/types/Collection";
 
 const route = useRoute();
 const {slug} = route.params;
+
+const {data} = await useFetch<Collection>(
+    () => `/api/collections/${slug}`,
+);
+
+if (!data.value) {
+  if (import.meta.server) {
+    throw createError({
+      statusCode: 404,
+      statusMessage: 'Collection Not Found'
+    })
+  } else {
+    showError({
+      statusCode: 404,
+      statusMessage: 'Collection Not Found'
+    })
+  }
+}
 </script>

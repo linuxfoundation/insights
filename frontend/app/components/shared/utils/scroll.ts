@@ -4,8 +4,12 @@ import {
 
 const useScroll = () => {
   const scrollTop = ref(0);
-  const scrollTopPercentage = computed(() => (scrollTop.value / (body?.scrollHeight || 1)) * 100);
   let body = document?.querySelector('body');
+  const scrollTopPercentage = computed(() => {
+    const scrollHeight = body?.scrollHeight || 1;
+    const clientHeight = body?.clientHeight || 0;
+    return (scrollTop.value / (scrollHeight - clientHeight)) * 100;
+  });
 
   const updateScrollTop = () => {
     scrollTop.value = body?.scrollTop || 0;

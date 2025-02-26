@@ -1,0 +1,19 @@
+.p-skeleton {
+  @apply bg-neutral-100 overflow-hidden relative;
+}
+
+.p-skeleton:after {
+  content: '';
+  animation: p-skeleton-animation 1.2s infinite ease-in-out;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0));
+  @apply h-full left-0 absolute right-0 top-0 w-full;
+}
+
+@keyframes p-skeleton-animation {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
