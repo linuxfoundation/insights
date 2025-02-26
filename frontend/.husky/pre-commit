@@ -3,4 +3,5 @@ if git diff --name-only --cached | grep 'frontend/';
   then
     echo "FRONTEND FOLDER CHANGED --> starting husky..."
     cd frontend && pnpm lint:fix && pnpm tsc-check
+    git add .
 fi

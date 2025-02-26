@@ -61,7 +61,7 @@ const activeTab = ref('cumulative');
 const route = useRoute();
 
 const { data, status, error } = useFetch(
-  () => `/api/projects/contributors/github-mentions?interval=${activeTab.value}&project=${route.params.slug
+  () => `/api/projects/popularity/github-mentions?interval=${activeTab.value}&project=${route.params.slug
     }&repository=${route.params.name || ''}&time-period=${props.timePeriod}`
 );
 
