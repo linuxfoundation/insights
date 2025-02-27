@@ -9,18 +9,26 @@
     </p>
     <hr>
     <section class="mt-5">
-      <div v-if="status === 'success'" class="flex flex-row justify-between items-center mb-6">
-        <!-- <div class="flex flex-row gap-4 items-center">
-          <div class="text-data-display-1">{{ formatNumber(summary.current) }}</div>
-          <lfx-delta-display :summary="summary" icon="circle-arrow-up-right" icon-type="solid" />
-        </div> -->
+      <div class="flex flex-row justify-between items-center mb-6 gap-8">
+        <div v-if="status === 'success'" class="flex flex-row gap-4 items-center grow">
+          <div class="text-data-display-1">{{ formatNumber(summary.current) }}%</div>
+          <lfx-delta-display :summary="summary" icon="circle-arrow-up-right" icon-type="solid" percentage-only />
+        </div>
         <div class="flex flex-col items-end justify-center">
           <span class="text-neutral-400 text-xs flex flex-row gap-2 items-center">
-            <lfx-icon name="gauge-high" :size="16" />
-            Avg. velocity
+            Mon-Fri (after 18:00)
           </span>
-          <!-- <span v-if="status === 'success'" class="text-xl">{{ formatNumber(pullRequests.avgVelocityInDays) }}
-            days</span> -->
+          <span v-if="status === 'success'" class="text-xl">
+            {{ formatNumber(weekdayOutsideHoursPercentage, 1) }}%
+          </span>
+        </div>
+        <div class="flex flex-col items-end justify-center">
+          <span class="text-neutral-400 text-xs flex flex-row gap-2 items-center">
+            Weekends
+          </span>
+          <span v-if="status === 'success'" class="text-xl">
+            {{ formatNumber(weekendOutsideHoursPercentage, 1) }}%
+          </span>
         </div>
       </div>
 
@@ -36,10 +44,9 @@
 import { useFetch, useRoute } from 'nuxt/app';
 import { ref, computed, watch } from 'vue';
 import type { ContributionOutsideHours } from './types/contribution-outside-hours.types';
-// import LfxProjectPullRequestLegendItem from './fragments/pull-request-legend-item.vue';
-// import type { Summary } from '~/components/shared/types/summary.types';
+import type { Summary } from '~/components/shared/types/summary.types';
 import LfxCard from '~/components/uikit/card/card.vue';
-// import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
+import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
 import { convertToChartData } from '~/components/uikit/chart/helpers/chart-helpers';
 import type {
   ChartData,
@@ -54,6 +61,7 @@ import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 import { getScatterChartConfig } from '~/components/uikit/chart/configs/scatter.chart';
+import { formatNumber } from '~/components/shared/utils/formatter';
 
 const props = withDefaults(
   defineProps<{
@@ -79,8 +87,9 @@ const { data, status, error } = useFetch(
   }
 );
 const contributionOutsideHours = computed<ContributionOutsideHours>(() => data.value as ContributionOutsideHours);
-
-// const summary = computed<Summary>(() => pullRequests.value.summary);
+const summary = computed<Summary>(() => contributionOutsideHours.value.summary);
+const weekdayOutsideHoursPercentage = computed<number>(() => contributionOutsideHours.value.weekdayOutsideHoursPercentage);
+const weekendOutsideHoursPercentage = computed<number>(() => contributionOutsideHours.value.weekendOutsideHoursPercentage);
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
   () => convertToChartData(
@@ -101,17 +110,6 @@ const chartSeries = ref<ChartSeries[]>([
     color: lfxColors.brand[500]
   }
 ]);
-// const configOverride = computed(() => ({
-//   xAxis: {
-//     axisLabel: {
-//       formatter: axisLabelFormatter('MMM dd')
-//     }
-//   },
-//   grid: {
-//     top: '8%',
-//     bottom: '8%'
-//   }
-// }));
 
 watch(error, (err) => {
   if (err) {

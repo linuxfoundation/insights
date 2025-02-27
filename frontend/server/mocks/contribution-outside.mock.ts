@@ -1,9 +1,9 @@
 export const contributionOutside = {
   summary: {
-    current: 100,
-    previous: 80,
-    percentageChange: 20,
-    changeValue: 20,
+    current: 32.5,
+    previous: 3.2,
+    percentageChange: 2.3,
+    changeValue: 30.2,
     periodFrom: '2024-01-01',
     periodTo: '2024-01-31'
   },
