@@ -1,5 +1,5 @@
 <template>
-  <lfx-project-header :slug="slug" />
+  <lfx-project-header />
   <div>
     <nuxt-page />
   </div>
