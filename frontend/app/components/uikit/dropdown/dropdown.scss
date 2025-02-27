@@ -89,7 +89,7 @@
 
 .p-select-overlay {
   @apply bg-white border border-solid border-neutral-200 rounded-lg shadow-lg p-1;
-  @apply min-w-[400px] relative;
+  @apply min-w-[320px] relative;
   // Override the default top values
   @apply top-11 #{!important};
 
@@ -130,7 +130,10 @@
 
   }
   .p-select-option-group {
-    @apply px-3 pt-1 text-neutral-400 text-xs font-semibold;
+    @apply px-3 text-neutral-400 text-xs font-semibold;
+    &>div {
+      @apply mt-1;
+    }
   }
 
   .p-select-header {
