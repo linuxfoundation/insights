@@ -8,4 +8,5 @@ export type DeltaDisplayProps = {
   iconType?: IconType;
   flipDisplay?: boolean;
   hidePreviousValue?: boolean;
+  percentageOnly?: boolean;
 };
