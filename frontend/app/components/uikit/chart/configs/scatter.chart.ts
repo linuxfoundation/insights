@@ -7,38 +7,23 @@ import type {
 import { punchCardFormatter } from '../helpers/formatters';
 import type {
   CategoryData,
+  CategoryDataItem,
   ChartData,
   ChartSeries,
   SeriesTypes
 } from '../types/ChartTypes';
 import { convertToScatterData } from '../helpers/chart-helpers';
-import defaultOption from './defaults.chart';
+import defaultOption, { categoryData } from './defaults.chart';
 import { lfxColors } from '~/config/styles/colors';
 
-const categoryData: CategoryData = {
-  xAxis: [
-    { key: 'Mon', value: 0 },
-    { key: 'Tue', value: 1 },
-    { key: 'Wed', value: 2 },
-    { key: 'Thu', value: 3 },
-    { key: 'Fri', value: 4 },
-    { key: 'Sat', value: 5 },
-    { key: 'Sun', value: 6 }
-  ],
-  yAxis: [
-    { key: '8:00', value: 8 },
-    { key: '10:00', value: 10 },
-    { key: '12:00', value: 12 },
-    { key: '14:00', value: 14 },
-    { key: '16:00', value: 16 },
-    { key: '18:00', value: 18 },
-    { key: '20:00', value: 20 },
-    { key: '22:00', value: 22 },
-    { key: '0:00+1', value: 0 },
-    { key: '2:00+1', value: 2 },
-    { key: '4:00+1', value: 4 },
-    { key: '6:00+1', value: 6 }
-  ]
+/**
+ * These are type declarations that were not exported from echarts
+ */
+declare type ZRLineType = 'solid' | 'dotted' | 'dashed' | number | number[];
+declare type YMarkLineOptionData = MarkLineOption & {
+  data: {
+    y?: number | string;
+  }[];
 };
 
 const defaultScatterOption: ECOption = {
@@ -52,8 +37,7 @@ const defaultScatterOption: ECOption = {
   xAxis: {
     ...defaultOption.xAxis,
     boundaryGap: false,
-    position: 'top',
-    // offset: 50,
+    position: 'top', // move the x axis to the top of the chart
     axisLine: {
       show: false
     },
@@ -62,13 +46,18 @@ const defaultScatterOption: ECOption = {
       interval: 0,
       fontSize: '12px',
       fontWeight: 'normal',
-      color: lfxColors.neutral[400] // TODO: change this when we have the correct color
-      // the designs are currently using a color hex not defined in the design system
+      color: lfxColors.neutral[400]
     },
     splitLine: {
       show: true,
       lineStyle: {
-        type: [5, 5],
+        type: [
+          // this is a hack to make the x axis line appear dashed in "working hours" sections
+          // and solid in "non-working hours" sections
+          5,
+          5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
+          5, 5, 5, 5, 1, 20, 140, 30
+        ],
         color: lfxColors.neutral[200]
       }
     }
@@ -89,6 +78,7 @@ const defaultScatterOption: ECOption = {
       fontWeight: 'normal',
       color: lfxColors.neutral[400],
       formatter: (value: string) => {
+        // make the y axis labels show the hour and the plus icon in smaller font
         const [hour, plus] = value.split('+');
         return plus ? `{a|${hour}}{b|+1}` : `{a|${hour}}`;
       },
@@ -122,8 +112,10 @@ const defaultScatterOption: ECOption = {
  */
 const normalizeSymbolSize = (value: number, maxValue: number): number => {
   if (maxValue === 0) return 0;
-  // Scale the value between 0 and 20, maintaining proportions
-  return (value / maxValue) * 30;
+  // Scale the value between 10 and 35
+  const minSize = 10;
+  const maxSize = 35;
+  return Math.max(minSize, (value / maxValue) * (maxSize - minSize) + minSize);
 };
 
 // Update the defaultSeriesStyle to use normalized sizes
@@ -131,6 +123,7 @@ const defaultSeriesStyle: ScatterSeriesOption = {
   type: 'scatter',
   z: 100,
   animationDelay: (idx: number) => idx * 5,
+  // default mark line for the y axis lines
   markLine: {
     symbol: 'none',
     animation: false,
@@ -151,11 +144,12 @@ const defaultSeriesStyle: ScatterSeriesOption = {
     }
   },
   itemStyle: {
+    // data points that are in the "working hours" section are gray, and the rest are blue
     color: (params: CallbackDataParams) => {
       const value = params.value as number[];
       const x = value[0] || 0;
       const y = value[1] || 0;
-      return x >= 0 && x < 5 && y > 5 ? lfxColors.neutral[200] : lfxColors.brand[500];
+      return x >= 0 && x < 5 && y > 5 ? lfxColors.neutral[200] : lfxColors.brand[200];
     }
   },
   emphasis: {
@@ -165,21 +159,69 @@ const defaultSeriesStyle: ScatterSeriesOption = {
   }
 };
 
-const buildMarkLineData = (categoryData: CategoryData): MarkLineOption => ({
-  ...defaultSeriesStyle.markLine,
-  data: [
-    ...categoryData.yAxis
-      .map((item, idx) => [
-        {
-          name: '',
-          yAxis: idx,
-          lineStyle: { type: +item.value >= 8 && +item.value <= 18 ? 'solid' : [5, 5] }
-        },
-        { yAxis: idx, x: '66%', lineStyle: { type: 'solid' } }
-      ])
-      .flat()
-  ]
-});
+const isInWorkingHours = (value: number): boolean => value >= 8 && value <= 18;
+
+/**
+ * Builds the y axis mark line data hack to make the y axis lines appear in the middle of the circles
+ * @param yAxis - The y axis data
+ * @returns The y axis mark line data
+ */
+const buildYAxisMarkLineData = (yAxis: CategoryDataItem[]): MarkLineOption['data'] => [
+  ...yAxis
+    .map((item, idx) => [
+      {
+        name: '',
+        yAxis: idx, // using the index instead of the value because the scatter plot is using x,y coordinates
+        lineStyle: {
+          type: isInWorkingHours(+item.value) ? 'solid' : ([5, 5] as ZRLineType)
+        }
+      },
+      {
+        // this is the hack to add the "gap" line between the working and non-working hours sections
+        yAxis: idx,
+        x: '66%',
+        lineStyle: {
+          type: 'solid' as ZRLineType,
+          color: isInWorkingHours(+item.value) ? 'inherit' : lfxColors.white
+        }
+      },
+      // this is the hack to add the solid line on the non-working days section
+      { yAxis: idx, x: '81%', lineStyle: { type: 'solid' as ZRLineType } }
+    ])
+    .flat()
+];
+
+/**
+ * Builds the x axis mark line data hack for non-working days
+ * @returns The x axis mark line data
+ */
+const buildXAxisMarkLineData = (): YMarkLineOptionData['data'] => [
+  {
+    // Saturday
+    xAxis: 5,
+    y: '94%',
+    lineStyle: { type: 'solid' as ZRLineType }
+  },
+  {
+    xAxis: 6,
+    y: '94%',
+    lineStyle: { type: 'solid' as ZRLineType }
+  }
+];
+
+/**
+ * Builds the mark line data
+ * @param categoryData - The category data
+ * @returns The mark line data
+ */
+const buildMarkLineData = (categoryData: CategoryData): MarkLineOption => {
+  const yAxisMarkLineData = buildYAxisMarkLineData(categoryData.yAxis);
+  const xAxisMarkLineData = buildXAxisMarkLineData();
+  return {
+    ...defaultSeriesStyle.markLine,
+    data: [...(yAxisMarkLineData || []), ...(xAxisMarkLineData || [])]
+  };
+};
 
 const applySeriesStyle = (
   chartSeries: ChartSeries[],
@@ -196,8 +238,8 @@ const applySeriesStyle = (
     const baseStyle: ScatterSeriesOption = {
       ...defaultSeriesStyle,
       name: seriesItem.name,
-      color: seriesItem.color || lfxColors.brand[500],
       symbolSize: (val: number[]) => {
+        // controls the size of the circles
         if (val.length <= 2) return 0;
         const value = val[2] || 0;
 
