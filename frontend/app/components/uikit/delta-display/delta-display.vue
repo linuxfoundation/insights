@@ -9,9 +9,10 @@
         ({{ delta }})
       </template>
     </span>
-    <span v-if="!props.hidePreviousValue" class="text-neutral-400 text-xs">vs. {{ formatNumber(props.summary.previous,
-                                                                                               props.percentageOnly ? 1 : 0)
-    }}{{ props.percentageOnly ? '%' : '' }} last period</span>
+    <span v-if="!props.hidePreviousValue" class="text-neutral-400 text-xs">
+      vs.
+      {{ formatNumber(props.summary.previous, props.percentageOnly ? 1 : 0) }}
+      {{ props.percentageOnly ? '%' : '' }} last period</span>
     <span v-else class="text-neutral-400 text-xs">
       vs. last period
     </span>

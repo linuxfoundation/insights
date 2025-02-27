@@ -50,17 +50,17 @@ const defaultScatterOption: ECOption = {
       color: lfxColors.neutral[400]
     },
     splitLine: {
-      show: true,
-      lineStyle: {
-        type: [
-          // this is a hack to make the x axis line appear dashed in "working hours" sections
-          // and solid in "non-working hours" sections
-          5,
-          5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
-          5, 5, 5, 5, 5, 5, 5, 5, 1, 28, 160, 30
-        ],
-        color: lfxColors.neutral[200]
-      }
+      show: false
+      // lineStyle: {
+      //   type: [
+      //     // this is a hack to make the x axis line appear dashed in "working hours" sections
+      //     // and solid in "non-working hours" sections
+      //     5,
+      //     5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
+      //     5, 5, 5, 5, 5, 5, 5, 5, 1, 28, 160, 30
+      //   ],
+      //   color: lfxColors.neutral[200]
+      // }
     }
   },
   yAxis: {
@@ -196,18 +196,38 @@ const buildYAxisMarkLineData = (yAxis: CategoryDataItem[]): MarkLineOption['data
  * Builds the x axis mark line data hack for non-working days
  * @returns The x axis mark line data
  */
-const buildXAxisMarkLineData = (): YMarkLineOptionData['data'] => [
-  {
-    // Saturday
-    xAxis: 5,
-    y: '94%',
-    lineStyle: { type: 'solid' as ZRLineType }
-  },
-  {
-    xAxis: 6,
-    y: '94%',
-    lineStyle: { type: 'solid' as ZRLineType }
-  }
+const buildXAxisMarkLineData = (
+  xAxis: CategoryDataItem[]
+): YMarkLineOptionData['data'] => [
+  ...xAxis
+    .map((item, idx) => {
+      const yGridLines = [];
+      if (idx < 5) {
+        // adding white line for the working hours section to cover the gray line
+        yGridLines.push({
+          xAxis: idx,
+          y: '56.2%',
+          lineStyle: { type: 'solid' as ZRLineType, color: lfxColors.white }
+        });
+        // adding dashed line for the working hours section on top of the white line
+        yGridLines.push({
+          xAxis: idx,
+          y: '49%',
+          lineStyle: { type: [5, 5] as ZRLineType, color: lfxColors.neutral[200] }
+        });
+      }
+
+      return [
+        {
+          // solid gray lines for all
+          xAxis: idx,
+          y: '93.5%',
+          lineStyle: { type: 'solid' as ZRLineType }
+        },
+        ...yGridLines
+      ];
+    })
+    .flat()
 ];
 
 /**
@@ -217,7 +237,7 @@ const buildXAxisMarkLineData = (): YMarkLineOptionData['data'] => [
  */
 const buildMarkLineData = (categoryData: CategoryData): MarkLineOption => {
   const yAxisMarkLineData = buildYAxisMarkLineData(categoryData.yAxis);
-  const xAxisMarkLineData = buildXAxisMarkLineData();
+  const xAxisMarkLineData = buildXAxisMarkLineData(categoryData.xAxis);
   return {
     ...defaultSeriesStyle.markLine,
     data: [...(yAxisMarkLineData || []), ...(xAxisMarkLineData || [])]

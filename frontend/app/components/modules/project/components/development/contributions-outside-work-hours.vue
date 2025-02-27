@@ -19,7 +19,7 @@
             Mon-Fri (after 18:00)
           </span>
           <span v-if="status === 'success'" class="text-xl">
-            {{ formatNumber(weekdayOutsideHoursPercentage, 1) }}%
+            {{ formatNumber(weekdayPercentage, 1) }}%
           </span>
         </div>
         <div class="flex flex-col items-end justify-center">
@@ -27,7 +27,7 @@
             Weekends
           </span>
           <span v-if="status === 'success'" class="text-xl">
-            {{ formatNumber(weekendOutsideHoursPercentage, 1) }}%
+            {{ formatNumber(weekendPercentage, 1) }}%
           </span>
         </div>
       </div>
@@ -88,8 +88,8 @@ const { data, status, error } = useFetch(
 );
 const contributionOutsideHours = computed<ContributionOutsideHours>(() => data.value as ContributionOutsideHours);
 const summary = computed<Summary>(() => contributionOutsideHours.value.summary);
-const weekdayOutsideHoursPercentage = computed<number>(() => contributionOutsideHours.value.weekdayOutsideHoursPercentage);
-const weekendOutsideHoursPercentage = computed<number>(() => contributionOutsideHours.value.weekendOutsideHoursPercentage);
+const weekdayPercentage = computed<number>(() => contributionOutsideHours.value.weekdayOutsideHoursPercentage);
+const weekendPercentage = computed<number>(() => contributionOutsideHours.value.weekendOutsideHoursPercentage);
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
   () => convertToChartData(
