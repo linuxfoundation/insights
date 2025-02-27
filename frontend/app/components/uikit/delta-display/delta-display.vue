@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col gap-1" :class="{ 'flex-col-reverse': props.flipDisplay }">
+  <div class="flex flex-col" :class="{ 'flex-col-reverse': props.flipDisplay }">
     <!-- TODO: These colors seems different from what is defined in the design system
      Waiting for verification from Nuno -->
     <span :class="['text-body-1 flex items-center gap-2', deltaColor]">

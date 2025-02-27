@@ -9,14 +9,25 @@
     </p>
     <hr>
     <section class="mt-5">
-      <div v-if="status === 'success'" class="flex flex-row gap-4 items-center mb-6">
-        <div class="text-data-display-1">{{ formatNumber(summary.current) }}</div>
+      <div v-if="status === 'success'" class="flex flex-row gap-4 items-center mb-8">
+        <div class="text-data-display-1">{{ formatNumber(summary.current) }} days</div>
         <lfx-delta-display :summary="summary" icon="circle-arrow-up-right" icon-type="solid" unit="d" />
       </div>
 
-      <div class="w-full h-[350px] mt-5 pb-6">
-        <div v-if="status === 'success'">
-          add lead time chart here
+      <div class="w-full min-h-[250px] mt-5">
+        <div v-if="status === 'success'" class="flex flex-col gap-10 pt-6">
+          <lfx-merge-lead-item
+            title="Pickup" description="Pull request raised" icon="code-pull-request"
+            :item-value="mergeLeadTime.data.pickup" />
+          <lfx-merge-lead-item
+            title="Review" description="Review started" icon="eye"
+            :item-value="mergeLeadTime.data.review" />
+          <lfx-merge-lead-item
+            title="Accepted" description="Pull request accepted" icon="check-circle"
+            :item-value="mergeLeadTime.data.accepted" />
+          <lfx-merge-lead-item
+            title="Merged" description="" icon="thumbs-up" :item-value="mergeLeadTime.data.pickup"
+            is-last />
         </div>
         <lfx-spinner v-else />
       </div>
@@ -26,19 +37,15 @@
 
 <script setup lang="ts">
 import { useFetch, useRoute } from 'nuxt/app';
-import { ref, computed, watch } from 'vue';
+import { computed, watch } from 'vue';
 import type { MergeLeadTime } from './types/merge-lead-time.types';
+import LfxMergeLeadItem from './fragments/merge-lead-item.vue';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
-import LfxChart from '~/components/uikit/chart/chart.vue';
-import { getLineAreaChartConfig } from '~/components/uikit/chart/configs/line.area.chart';
-import { lfxColors } from '~/config/styles/colors';
-import { axisLabelFormatter } from '~/components/uikit/chart/helpers/formatters';
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 import { formatNumber } from '~/components/shared/utils/formatter';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
 import type { Summary } from '~/components/shared/types/summary.types';
 
 const props = withDefaults(
