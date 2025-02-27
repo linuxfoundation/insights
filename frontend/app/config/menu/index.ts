@@ -14,19 +14,21 @@ interface MenuConfig{
 
 export const lfxMenu: MenuConfig = {
     links: [
-        {
-        label: 'Explore',
-        icon: 'compass',
-        route: LfxRoutes.EXPLORE
-    }, {
+    //     {
+    //     label: 'Explore',
+    //     icon: 'compass',
+    //     route: LfxRoutes.EXPLORE
+    // },
+    {
         label: 'Collections',
         icon: 'rectangle-history',
         route: LfxRoutes.COLLECTIONS
-    }, {
-        label: 'Open Source Index',
-        icon: 'globe',
-        route: LfxRoutes.OPENSOURCEINDEX
-    }
+    },
+    //     {
+    //     label: 'Open Source Index',
+    //     icon: 'globe',
+    //     route: LfxRoutes.OPENSOURCEINDEX
+    // }
     ],
     footer: {
         label: 'Know more about LFX Platform',
