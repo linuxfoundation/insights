@@ -12,7 +12,9 @@
       <div class="flex flex-row justify-between items-center mb-6 gap-8">
         <div v-if="status === 'success'" class="flex flex-row gap-4 items-center grow">
           <div class="text-data-display-1">{{ formatNumber(summary.current) }}%</div>
-          <lfx-delta-display :summary="summary" icon="circle-arrow-up-right" icon-type="solid" percentage-only />
+          <lfx-delta-display
+            :summary="summary" icon="circle-arrow-up-right" icon-type="solid" percentage-only
+            unit="%" />
         </div>
         <div class="flex flex-col items-end justify-center">
           <span class="text-neutral-400 text-xs flex flex-row gap-2 items-center">

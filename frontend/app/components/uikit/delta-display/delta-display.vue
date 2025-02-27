@@ -5,17 +5,11 @@
     <span :class="['text-body-1 flex items-center gap-2', deltaColor]">
       <lfx-icon :name="props.icon" :type="props.iconType" :size="12" />
       {{ percentage }}%
-      <template v-if="!props.percentageOnly">
-        ({{ delta }})
-      </template>
+      {{ deltaDisplay }}
     </span>
-    <span v-if="!props.hidePreviousValue" class="text-neutral-400 text-xs">
+    <span class="text-neutral-400 text-xs">
       vs.
-      {{ formatNumber(props.summary.previous, props.percentageOnly ? 1 : 0) }}
-      {{ props.percentageOnly ? '%' : '' }} last period</span>
-    <span v-else class="text-neutral-400 text-xs">
-      vs. last period
-    </span>
+      {{ previousDisplay }} last period</span>
   </div>
 </template>
 
@@ -40,4 +34,18 @@ const delta = computed(() => {
 });
 
 const deltaColor = computed(() => (props.isReverse ? 'text-negative-500' : 'text-positive-500'));
+
+const deltaDisplay = computed(() => {
+  if (!props.percentageOnly) {
+    return `(${delta.value}${props.unit || ''})`;
+  }
+  return '';
+});
+
+const previousDisplay = computed(() => {
+  if (!props.hidePreviousValue) {
+    return `${formatNumber(props.summary.previous, props.percentageOnly ? 1 : 0)}${props.unit || ''}`;
+  }
+  return '';
+});
 </script>
