@@ -42,20 +42,6 @@ export const convertToCategoryData = (
   }))
 });
 
-export const convertToCategoryData = (
-  xData: ChartData[],
-  yData: ChartData[]
-): CategoryData => ({
-  xAxis: xData.map((item: ChartData) => ({
-    key: parseInt(item.key, 10),
-    value: item.values[0] || 0
-  })),
-  yAxis: yData.map((item: ChartData) => ({
-    key: parseInt(item.key, 10),
-    value: item.values[0] || 0
-  }))
-});
-
 // function to convert date data to timestamp since the chart needs the date in this format
 export const convertDateData = (
   chartData: ChartData[] //
