@@ -1,4 +1,7 @@
-import type { CallbackDataParams, TopLevelFormatterParams } from 'echarts/types/dist/shared';
+import type {
+  CallbackDataParams,
+  TopLevelFormatterParams
+} from 'echarts/types/dist/shared';
 import { DateTime } from 'luxon';
 import type {
   MultipleTooltipFormatterParams,
@@ -37,9 +40,9 @@ export const tooltipFormatter = (
   paramsRaw: TopLevelFormatterParams // Tooltip hover box
 ): string | HTMLElement | HTMLElement[] => {
   const params: MultipleTooltipFormatterParams = paramsRaw as MultipleTooltipFormatterParams;
-  return `${formatDate(params[0]?.name || '', '{MMM} {yyyy}')}<br>${params.map(
-    tooltipSingleValue
-  )}`;
+  return `${formatDate(params[0]?.name || '', '{MMM} {yyyy}')}<br>${params
+    .map(tooltipSingleValue)
+    .join('')}`;
 };
 
 export const punchCardFormatter = (

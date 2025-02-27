@@ -6,4 +6,7 @@ export type DeltaDisplayProps = {
   isReverse?: boolean;
   icon?: string;
   iconType?: IconType;
+  flipDisplay?: boolean;
+  hidePreviousValue?: boolean;
+  percentageOnly?: boolean;
 };

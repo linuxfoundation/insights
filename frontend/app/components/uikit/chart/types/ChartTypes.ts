@@ -1,14 +1,18 @@
 import type {
- BarSeriesOption, LineSeriesOption, MapSeriesOption, PieSeriesOption
+  BarSeriesOption,
+  LineSeriesOption,
+  MapSeriesOption,
+  PieSeriesOption
 } from 'echarts/types/dist/shared';
 
 export interface ChartSeries {
   name: string;
-  type: 'line' | 'bar' | 'map' | 'scatter';
+  type: 'line' | 'bar' | 'map' | 'scatter' | 'heatmap';
   yAxisIndex: number;
   dataIndex: number;
   color?: string;
   lineStyle?: 'solid' | 'dashed' | 'dotted';
+  lineWidth?: number;
   position?: 'left' | 'right';
 }
 
@@ -37,4 +41,8 @@ export interface CategoryData {
 }
 
 export type RawChartData = Record<string, string | number | boolean | null>;
-export type SeriesTypes = BarSeriesOption | LineSeriesOption | PieSeriesOption | MapSeriesOption;
+export type SeriesTypes =
+  | BarSeriesOption
+  | LineSeriesOption
+  | PieSeriesOption
+  | MapSeriesOption;

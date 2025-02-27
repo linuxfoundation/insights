@@ -1,14 +1,21 @@
 <template>
-  <div class="flex flex-col gap-1">
+  <div class="flex flex-col gap-1" :class="{ 'flex-col-reverse': props.flipDisplay }">
     <!-- TODO: These colors seems different from what is defined in the design system
      Waiting for verification from Nuno -->
     <span :class="['text-body-1 flex items-center gap-2', deltaColor]">
       <lfx-icon :name="props.icon" :type="props.iconType" :size="12" />
-      {{ percentage }}% ({{ delta }})
+      {{ percentage }}%
+      <template v-if="!props.percentageOnly">
+        ({{ delta }})
+      </template>
     </span>
-    <span class="text-neutral-400 text-xs"
-    >vs. {{ formatNumber(props.summary.previous) }} last period</span
-    >
+    <span v-if="!props.hidePreviousValue" class="text-neutral-400 text-xs">
+      vs.
+      {{ formatNumber(props.summary.previous, props.percentageOnly ? 1 : 0) }}
+      {{ props.percentageOnly ? '%' : '' }} last period</span>
+    <span v-else class="text-neutral-400 text-xs">
+      vs. last period
+    </span>
   </div>
 </template>
 
@@ -26,7 +33,11 @@ const props = withDefaults(defineProps<DeltaDisplayProps>(), {
 
 const percentage = computed(() => formatNumber(props.summary.percentageChange, 1));
 
-const delta = computed(() => formatNumber(props.summary.changeValue, 1));
+const delta = computed(() => {
+  const value = props.summary.changeValue;
+  const sign = value >= 0 ? '+' : '';
+  return sign + formatNumber(value, 1);
+});
 
 const deltaColor = computed(() => (props.isReverse ? 'text-negative-500' : 'text-positive-500'));
 </script>

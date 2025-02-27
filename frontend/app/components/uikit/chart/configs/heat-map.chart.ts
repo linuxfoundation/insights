@@ -2,9 +2,12 @@ import type { HeatmapSeriesOption } from 'echarts/types/dist/shared';
 
 import { punchCardFormatter } from '../helpers/formatters';
 import type {
- CategoryData, ChartData, ChartSeries, SeriesTypes
+  CategoryData,
+  ChartData,
+  ChartSeries,
+  SeriesTypes
 } from '../types/ChartTypes';
-import { convertToScatterData } from '../helpers/chart-helpers';
+import { convertToHeatMapData } from '../helpers/chart-helpers';
 import defaultOption from './defaults.chart';
 import { lfxColors } from '~/config/styles/colors';
 
@@ -15,9 +18,16 @@ type pieceRange = {
 
 const defaultHeatMapOption: ECOption = {
   ...defaultOption,
+  grid: {
+    top: '3%',
+    left: '-15',
+    right: '0',
+    bottom: '45'
+  },
   xAxis: {
     ...defaultOption.xAxis,
-    boundaryGap: true,
+    // boundaryGap: true,
+    offset: 5,
     axisLabel: {
       show: false
     }
@@ -41,7 +51,14 @@ const defaultHeatMapOption: ECOption = {
     orient: 'horizontal',
     left: 'center',
     bottom: '5%',
-    // showLabel: false,
+    inRange: {
+      color: [
+        lfxColors.neutral[200],
+        lfxColors.brand[200],
+        lfxColors.brand[500],
+        lfxColors.brand[700]
+      ]
+    },
     itemWidth: 12,
     itemHeight: 12,
     itemGap: 0
@@ -79,10 +96,25 @@ const defaultSeriesStyle: HeatmapSeriesOption = {
   type: 'heatmap',
   label: {
     show: false
+  },
+  itemStyle: {
+    borderRadius: 4,
+    borderWidth: 4,
+    borderColor: lfxColors.white
+  },
+  emphasis: {
+    focus: 'series',
+    itemStyle: {
+      color: 'inherit',
+      borderWidth: 2
+    }
   }
 };
 
-const applySeriesStyle = (chartSeries: ChartSeries[], data: number[][]): SeriesTypes[] => {
+const applySeriesStyle = (
+  chartSeries: ChartSeries[],
+  data: number[][]
+): SeriesTypes[] => {
   if (!chartSeries) return [];
 
   return chartSeries.map((seriesItem: ChartSeries) => {
@@ -124,9 +156,15 @@ export const getHeatMapChartConfig = (
   series: ChartSeries[],
   categoryData: CategoryData
 ): ECOption => {
-  const xAxis = { ...defaultHeatMapOption.xAxis, data: categoryData.xAxis.map((item) => item.key) };
-  const yAxis = { ...defaultHeatMapOption.yAxis, data: categoryData.yAxis.map((item) => item.key) };
-  const convertedData = convertToScatterData(data);
+  const xAxis = {
+    ...defaultHeatMapOption.xAxis,
+    data: categoryData.xAxis.map((item) => item.key)
+  };
+  const yAxis = {
+    ...defaultHeatMapOption.yAxis,
+    data: categoryData.yAxis.map((item) => item.key)
+  };
+  const convertedData = convertToHeatMapData(data);
   const styledSeries = applySeriesStyle(series, convertedData);
   // Find the maximum value in the current dataset
   const maxValue = Math.max(...convertedData.map((item) => item[2] || 0));
@@ -137,9 +175,6 @@ export const getHeatMapChartConfig = (
     visualMap: {
       ...defaultHeatMapOption.visualMap,
       max: maxValue,
-      inRange: {
-        color: [lfxColors.neutral[100], series?.[0]?.color || lfxColors.brand[500]]
-      },
       pieces: splitRanges.map((range: pieceRange, index: number) => ({
         min: range.min,
         max: range.max,

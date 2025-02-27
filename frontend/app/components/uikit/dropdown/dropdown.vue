@@ -1,18 +1,33 @@
 <template>
   <div class="relative" :class="{ 'w-full': props.fullWidth }">
     <pv-select
-      ref="filterRef" v-model="value" :options="props.options" option-label="label" option-value="value"
-      dropdown-icon="fa-light fa-chevron-down" :option-group-label="isGrouped ? 'label' : undefined"
-      :option-group-children="isGrouped ? 'items' : undefined" :placeholder="props.placeholder"
-      :disabled="props.disabled" :size="size" :filter="props.showFilter" filter-placeholder="Search..."
-      filter-icon="fa-light fa-magnifying-glass" clear-icon="fa-solid fa-circle-xmark" reset-filter-on-clear="true"
-      append-to="self" auto-filter-focus="true" reset-filter-on-hide="true" :class="[
+      ref="filterRef"
+      v-model="value"
+      :options="props.options"
+      option-label="label"
+      option-value="value"
+      dropdown-icon="fa-light fa-chevron-down"
+      :option-group-label="isGrouped ? 'label' : undefined"
+      :option-group-children="isGrouped ? 'items' : undefined"
+      :placeholder="props.placeholder"
+      :disabled="props.disabled"
+      :size="size"
+      :filter="props.showFilter"
+      filter-placeholder="Search..."
+      filter-icon="fa-light fa-magnifying-glass"
+      clear-icon="fa-solid fa-circle-xmark"
+      :reset-filter-on-clear="true"
+      append-to="self"
+      :auto-filter-focus="true"
+      :reset-filter-on-hide="true"
+      :class="[
         `p-select--${props.type}`,
         { 'p-select-group-breaks': props.showGroupBreaks },
         { 'p-select-full-width': props.fullWidth },
         { 'p-select-centered': props.center },
         `p-select-dropdown-${props.dropdownPosition}`
-      ]" @filter="selectFilter">
+      ]"
+      @filter="selectFilter">
       <template #value="slotProps">
         <div>
           <i :class="['dropdown-icon', props.icon]" />
@@ -48,7 +63,8 @@
       </template>
       <template #header>
         <i
-          v-if="props.showFilter && filter.length > 0" class="fa-solid fa-circle-xmark p-select-clear-filter"
+          v-if="props.showFilter && filter.length > 0"
+          class="fa-solid fa-circle-xmark p-select-clear-filter"
           @click="clearFilter" />
       </template>
     </pv-select>

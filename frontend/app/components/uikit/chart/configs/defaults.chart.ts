@@ -1,5 +1,7 @@
 import type { GaugeSeriesOption } from 'echarts';
 import { axisLabelFormatter } from '../helpers/formatters';
+import type { CategoryData } from '../types/ChartTypes';
+import { formatNumber } from '~/components/shared/utils/formatter';
 import { lfxColors } from '~/config/styles/colors';
 
 const defaultOption: ECOption = {
@@ -31,7 +33,7 @@ const defaultOption: ECOption = {
       fontSize: '12px',
       fontWeight: 'normal',
       color: lfxColors.neutral[400],
-      formatter: (value: number) => `${value === 0 ? '' : value}`
+      formatter: (value: number) => `${value === 0 ? '' : formatNumber(value)}`
     },
     splitLine: {
       lineStyle: {
@@ -90,6 +92,32 @@ export const defaultGaugeSeriesStyle: GaugeSeriesOption = {
     show: false,
     distance: 50
   }
+};
+
+export const categoryData: CategoryData = {
+  xAxis: [
+    { key: 'Mon', value: 0 },
+    { key: 'Tue', value: 1 },
+    { key: 'Wed', value: 2 },
+    { key: 'Thu', value: 3 },
+    { key: 'Fri', value: 4 },
+    { key: 'Sat', value: 5 },
+    { key: 'Sun', value: 6 }
+  ],
+  yAxis: [
+    { key: '8:00', value: 8 },
+    { key: '10:00', value: 10 },
+    { key: '12:00', value: 12 },
+    { key: '14:00', value: 14 },
+    { key: '16:00', value: 16 },
+    { key: '18:00', value: 18 },
+    { key: '20:00', value: 20 },
+    { key: '22:00', value: 22 },
+    { key: '0:00+1', value: 0 },
+    { key: '2:00+1', value: 2 },
+    { key: '4:00+1', value: 4 },
+    { key: '6:00+1', value: 6 }
+  ]
 };
 
 export default defaultOption;
