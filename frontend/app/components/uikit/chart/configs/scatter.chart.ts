@@ -29,6 +29,7 @@ declare type YMarkLineOptionData = MarkLineOption & {
 const defaultScatterOption: ECOption = {
   ...defaultOption,
   grid: {
+    top: '3%',
     left: '5%',
     right: '5%',
     bottom: '3%',
@@ -56,7 +57,7 @@ const defaultScatterOption: ECOption = {
           // and solid in "non-working hours" sections
           5,
           5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
-          5, 5, 5, 5, 1, 20, 140, 30
+          5, 5, 5, 5, 5, 5, 5, 5, 1, 28, 160, 30
         ],
         color: lfxColors.neutral[200]
       }
@@ -72,7 +73,7 @@ const defaultScatterOption: ECOption = {
       show: false,
       onZero: false
     },
-    offset: 20,
+    offset: 20, // move the y axis to the left
     axisLabel: {
       fontSize: '12px',
       fontWeight: 'normal',
@@ -111,7 +112,7 @@ const defaultScatterOption: ECOption = {
  * @returns Normalized size between 0 and 20
  */
 const normalizeSymbolSize = (value: number, maxValue: number): number => {
-  if (maxValue === 0) return 0;
+  if (maxValue === 0 || value === 0) return 0;
   // Scale the value between 10 and 35
   const minSize = 10;
   const maxSize = 35;

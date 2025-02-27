@@ -83,12 +83,17 @@ const contributionOutsideHours = computed<ContributionOutsideHours>(() => data.v
 // const summary = computed<Summary>(() => pullRequests.value.summary);
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
-  () => convertToChartData(contributionOutsideHours.value.data as RawChartData[], 'DAY', ['COMMITS'], 'HOUR')
+  () => convertToChartData(
+    contributionOutsideHours.value.data as RawChartData[],
+    'day',
+    ['contributions'],
+    'hour'
+  )
 );
 
 const chartSeries = ref<ChartSeries[]>([
   {
-    name: 'Commits',
+    name: 'Contributions',
     type: 'scatter',
     yAxisIndex: 0,
     dataIndex: 0,

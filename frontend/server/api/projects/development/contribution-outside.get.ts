@@ -11,10 +11,12 @@ import { contributionOutside } from '~~/server/mocks/contribution-outside.mock';
  *     periodFrom: string; // period from
  *     periodTo: string; // period to
  *   },
+ *   weekdayOutsideHoursPercentage: number; // percentage of contributions outside of work hours on a weekday
+ *   weekendOutsideHoursPercentage: number; // percentage of contributions outside of work hours on a weekend
  *   data: {
- *     DAY: number; // day of the week
- *     HOUR: number; // hour of the day
- *     COMMITS: number; // count of contributions
+ *     day: number; // day of the week
+ *     hour: number; // hour of the day
+ *     contributions: number; // count of contributions
  *   }[],
  * }
  */
