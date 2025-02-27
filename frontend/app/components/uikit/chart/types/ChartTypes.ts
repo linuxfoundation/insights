@@ -7,7 +7,7 @@ import type {
 
 export interface ChartSeries {
   name: string;
-  type: 'line' | 'bar' | 'map' | 'scatter';
+  type: 'line' | 'bar' | 'map' | 'scatter' | 'heatmap';
   yAxisIndex: number;
   dataIndex: number;
   color?: string;

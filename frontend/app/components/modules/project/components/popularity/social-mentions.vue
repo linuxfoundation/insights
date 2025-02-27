@@ -61,7 +61,7 @@ const activeTab = ref('all-time');
 const route = useRoute();
 
 const { data, status, error } = useFetch(
-  () => `/api/projects/contributors/social-mentions?interval=${activeTab.value}&project=${route.params.slug
+  () => `/api/projects/popularity/social-mentions?interval=${activeTab.value}&project=${route.params.slug
     }&repository=${route.params.name || ''}&time-period=${props.timePeriod}`
 );
 

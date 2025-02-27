@@ -61,7 +61,7 @@ const { showToast } = useToastService();
 const route = useRoute();
 
 const { data, status, error } = useFetch(
-  () => `/api/projects/contributors/press-mentions?project=${route.params.slug
+  () => `/api/projects/popularity/press-mentions?project=${route.params.slug
     }&repository=${route.params.name || ''}&time-period=${props.timePeriod}`
 );
 

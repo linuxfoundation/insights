@@ -19,7 +19,8 @@
             <lfx-icon name="gauge-high" :size="16" />
             Avg. velocity
           </span>
-          <span class="text-xl">{{ formatNumber(pullRequests.avgVelocityInDays) }} days</span>
+          <span v-if="status === 'success'" class="text-xl">{{ formatNumber(pullRequests.avgVelocityInDays) }}
+            days</span>
         </div>
       </div>
 
@@ -28,10 +29,10 @@
         <lfx-spinner v-else />
       </div>
 
-      <div class="flex flex-col gap-5">
-        <lfx-project-pull-request-legend-item title="Open" :delta="openSummary" :color="chartSeries[0]!.color!" />
-        <lfx-project-pull-request-legend-item title="Merged" :delta="mergedSummary" :color="chartSeries[1]!.color!" />
-        <lfx-project-pull-request-legend-item title="Closed" :delta="closedSummary" :color="chartSeries[2]!.color!" />
+      <div v-if="status === 'success'" class="flex flex-col gap-5">
+        <lfx-project-pull-request-legend-item title="Open" :delta="openSummary!" :color="chartSeries[0]!.color!" />
+        <lfx-project-pull-request-legend-item title="Merged" :delta="mergedSummary!" :color="chartSeries[1]!.color!" />
+        <lfx-project-pull-request-legend-item title="Closed" :delta="closedSummary!" :color="chartSeries[2]!.color!" />
       </div>
     </section>
   </lfx-card>
@@ -96,9 +97,9 @@ const chartData = computed<ChartData[]>(
   ])
 );
 
-const openSummary = computed<Summary>(() => pullRequests.value.openSummary);
-const mergedSummary = computed<Summary>(() => pullRequests.value.mergedSummary);
-const closedSummary = computed<Summary>(() => pullRequests.value.closedSummary);
+const openSummary = computed<Summary | undefined>(() => pullRequests.value?.openSummary);
+const mergedSummary = computed<Summary | undefined>(() => pullRequests.value?.mergedSummary);
+const closedSummary = computed<Summary | undefined>(() => pullRequests.value?.closedSummary);
 
 const chartSeries = ref<ChartSeries[]>([
   {
