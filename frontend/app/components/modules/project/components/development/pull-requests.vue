@@ -75,7 +75,7 @@ const { showToast } = useToastService();
 const route = useRoute();
 
 const { data, status, error } = useFetch(
-  () => `/api/projects/development/pull-requests`,
+  () => `/api/project/${route.params.slug}/development/pull-requests`,
   {
     params: {
       project: route.params.slug,

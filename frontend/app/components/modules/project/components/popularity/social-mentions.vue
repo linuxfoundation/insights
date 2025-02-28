@@ -60,9 +60,15 @@ const { showToast } = useToastService();
 const activeTab = ref('all-time');
 const route = useRoute();
 
-const { data, status, error } = useFetch(
-  () => `/api/projects/popularity/social-mentions?interval=${activeTab.value}&project=${route.params.slug
-    }&repository=${route.params.name || ''}&time-period=${props.timePeriod}`
+const {data, status, error} = useFetch(
+`/api/project/${route.params.slug}/popularity/social-mentions`,
+    {
+  params: {
+    interval: activeTab.value,
+    repository: route.params.name || '',
+    'time-period': props.timePeriod
+  }
+}
 );
 
 const socialMentions = computed<SocialMentions>(() => data.value as SocialMentions);

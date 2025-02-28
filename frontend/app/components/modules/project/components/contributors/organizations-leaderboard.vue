@@ -50,10 +50,15 @@ const { showToast } = useToastService();
 
 const route = useRoute();
 const metric = ref('all');
-const { data, status, error } = useFetch(
-  () => `/api/projects/contributors/organization-leaderboard?metric=${metric.value}&project=${
-      route.params.slug
-    }&repository=${route.params.name || ''}&time-period=${props.timePeriod}`
+const {data, status, error} = useFetch(
+    `/api/project/${route.params.slug}/contributors/organization-leaderboard`,
+    {
+      params: {
+        metric: metric.value,
+        repository: route.params.name || '',
+        'time-period': props.timePeriod
+      }
+    }
 );
 
 const organizations = computed<OrganizationLeaderboard>(

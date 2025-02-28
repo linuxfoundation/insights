@@ -61,9 +61,14 @@ const { showToast } = useToastService();
 
 const route = useRoute();
 
-const { data, status, error } = useFetch(
-  () => `/api/projects/development/merge-lead-time?project=${route.params.slug
-    }&repository=${route.params.name || ''}&time-period=${props.timePeriod}`
+const {data, status, error} = useFetch(
+    `/api/project/${route.params.slug}/development/merge-lead-time`,
+    {
+      params: {
+        repository: route.params.name || '',
+        'time-period': props.timePeriod
+      }
+    }
 );
 
 const mergeLeadTime = computed<MergeLeadTime>(() => data.value as MergeLeadTime);

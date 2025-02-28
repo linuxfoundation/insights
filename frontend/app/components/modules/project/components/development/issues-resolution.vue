@@ -79,9 +79,14 @@ const { showToast } = useToastService();
 
 const route = useRoute();
 
-const { data, status, error } = useFetch(
-  () => `/api/projects/development/issues-resolution?project=${route.params.slug
-    }&repository=${route.params.name || ''}&time-period=${props.timePeriod}`
+const {data, status, error} = useFetch(
+    `/api/project/${route.params.slug}/development/issues-resolution`,
+    {
+      params: {
+        repository: route.params.name || '',
+        'time-period': props.timePeriod
+      }
+    }
 );
 
 const issuesResolution = computed<IssuesResolution>(() => data.value as IssuesResolution);
