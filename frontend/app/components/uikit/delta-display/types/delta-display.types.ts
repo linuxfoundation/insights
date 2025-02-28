@@ -9,4 +9,5 @@ export type DeltaDisplayProps = {
   flipDisplay?: boolean;
   hidePreviousValue?: boolean;
   percentageOnly?: boolean;
+  unit?: string;
 };
