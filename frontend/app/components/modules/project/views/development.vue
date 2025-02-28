@@ -22,13 +22,13 @@
             <lfx-scroll-view id="merge-lead-time" :observer="observer">
               <lfx-project-merge-lead-time />
             </lfx-scroll-view>
-            <lfx-scroll-view id="forks-review-time-by-pull-request-size" :observer="observer">
+            <lfx-scroll-view id="review-time-by-pull-request-size" :observer="observer">
               <lfx-project-forks-review-time-by-pull-request-size />
             </lfx-scroll-view>
             <lfx-scroll-view id="average-time-to-merge" :observer="observer">
               <lfx-project-average-time-to-merge />
             </lfx-scroll-view>
-            <lfx-scroll-view id="forks-wait-time-first-review" :observer="observer">
+            <lfx-scroll-view id="wait-time-first-review" :observer="observer">
               <lfx-project-forks-wait-time-first-review />
             </lfx-scroll-view>
             <lfx-scroll-view id="code-review-engagement" :observer="observer">
@@ -73,9 +73,9 @@ const sideNavItems = [
   { label: 'Active Days', key: 'active-days' },
   { label: 'Contributions Outside Work Hours', key: 'contributions-outside-work-hours' },
   { label: 'Merge Lead Time', key: 'merge-lead-time' },
-  { label: 'Forks Review Time by Pull Request Size', key: 'forks-review-time-by-pull-request-size' },
+  { label: 'Review Time by Pull Request Size', key: 'review-time-by-pull-request-size' },
   { label: 'Average Time to Merge', key: 'average-time-to-merge' },
-  { label: 'Forks Wait Time First Review', key: 'forks-wait-time-first-review' },
+  { label: 'Wait Time First Review', key: 'wait-time-first-review' },
   { label: 'Code Review Engagement', key: 'code-review-engagement' },
 ];
 
