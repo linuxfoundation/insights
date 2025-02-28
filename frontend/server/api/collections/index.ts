@@ -58,6 +58,16 @@ const collections: Collection[] = [
 export default defineEventHandler(async (event) => {
     const sort: string = getQuery(event)?.sort as string || '';
     const [field, order] = sort.split('_');
+
+    // Additional query parameters
+    // const stack: string = getQuery(event)?.stack as string || '';
+    // const industry: string = getQuery(event)?.industry as string || '';
+
+    // Pagination parameters
+    // const page: string = getQuery(event)?.page as string || '';
+    // const pageSize: string = getQuery(event)?.pageSize as string || '';
+    // This is just a showcase of which parameters are sent, feel free to use shorter syntax
+
     return {
         page: 1,
         pageSize: 10,
