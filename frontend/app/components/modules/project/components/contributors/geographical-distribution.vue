@@ -12,18 +12,11 @@
         <div class="flex flex-row gap-4 items-center mb-10">
           <div class="basis-1/2">
             <lfx-tabs
-              :tabs="tabs"
-              :model-value="activeTab"
-              width-type="inline"
+              :tabs="tabs" :model-value="activeTab" width-type="inline"
               @update:model-value="activeTab = $event" />
           </div>
           <div class="basis-1/2 flex justify-end">
-            <lfx-dropdown
-              v-model="metric"
-              icon="fa-light fa-display-code"
-              :options="metricOptions"
-              full-width
-              center />
+            <lfx-dropdown v-model="metric" icon="fa-light fa-display-code" :options="metricOptions" />
           </div>
         </div>
       </div>
@@ -35,10 +28,7 @@
       </div>
       <div class="px-6 mt-5">
         <div v-if="status !== 'pending'" class="flex flex-col gap-5">
-          <div
-            v-for="item in geoMapData"
-            :key="item.name"
-            class="flex flex-row justify-between items-center text-sm">
+          <div v-for="item in geoMapData" :key="item.name" class="flex flex-row justify-between items-center text-sm">
             <div class="flex flex-row gap-4 items-center">
               <span class="text-base">
                 {{ item.flag }}
@@ -67,6 +57,7 @@ import LfxCard from '~/components/uikit/card/card.vue';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
+import LfxDropdown from "~/components/uikit/dropdown/dropdown.vue";
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 import { convertToChartData, getMaxValue } from '~/components/uikit/chart/helpers/chart-helpers';
@@ -95,8 +86,7 @@ const metric = ref('all');
 const activeTab = ref('contributors');
 
 const { data, status, error } = useFetch(
-  () => `/api/projects/contributors/geographical-distribution?type=${activeTab.value}&project=${
-      route.params.slug
+  () => `/api/projects/contributors/geographical-distribution?type=${activeTab.value}&project=${route.params.slug
     }&repository=${route.params.name || ''}&time-period=${props.timePeriod}`
 );
 
