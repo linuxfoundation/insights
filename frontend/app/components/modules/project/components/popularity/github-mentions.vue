@@ -60,9 +60,15 @@ const { showToast } = useToastService();
 const activeTab = ref('cumulative');
 const route = useRoute();
 
-const { data, status, error } = useFetch(
-  () => `/api/projects/popularity/github-mentions?interval=${activeTab.value}&project=${route.params.slug
-    }&repository=${route.params.name || ''}&time-period=${props.timePeriod}`
+const {data, status, error} = useFetch(
+    `/api/project/${route.params.slug}/popularity/github-mentions`,
+    {
+      params: {
+        interval: activeTab.value,
+        repository: route.params.name || '',
+        'time-period': props.timePeriod
+      }
+    }
 );
 
 const mentions = computed<GithubMentions>(() => data.value as GithubMentions);

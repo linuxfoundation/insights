@@ -57,10 +57,15 @@ const { showToast } = useToastService();
 
 const activeTab = ref('weekly');
 const route = useRoute();
-const { data, status, error } = useFetch(
-  () => `/api/projects/contributors/active-organizations?interval=${activeTab.value}&project=${
-      route.params.slug
-    }&repository=${route.params.name || ''}&time-period=${props.timePeriod}`
+const {data, status, error} = useFetch(
+    `/api/project/${route.params.slug}/contributors/active-organizations`,
+    {
+      params: {
+        interval: activeTab.value,
+        repository: route.params.name || '',
+        'time-period': props.timePeriod
+      }
+    }
 );
 
 const activeOrganizations = computed<ActiveOrganizations>(() => data.value as ActiveOrganizations);

@@ -60,9 +60,15 @@ const { showToast } = useToastService();
 const activeTab = ref('cumulative');
 const route = useRoute();
 
-const { data, status, error } = useFetch(
-  () => `/api/projects/popularity/stars?type=${activeTab.value}&project=${route.params.slug
-    }&repository=${route.params.name || ''}&time-period=${props.timePeriod}`
+const {data, status, error} = useFetch(
+    `/api/project/${route.params.slug}/popularity/stars`,
+    {
+      params: {
+        type: activeTab.value,
+        repository: route.params.name || '',
+        'time-period': props.timePeriod
+      }
+    }
 );
 
 const stars = computed<StarsData>(() => data.value as StarsData);

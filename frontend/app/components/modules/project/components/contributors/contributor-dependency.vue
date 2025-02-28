@@ -73,10 +73,15 @@ const { showToast } = useToastService();
 
 const route = useRoute();
 const metric = ref('all');
-const { data, status, error } = useFetch(
-  () => `/api/projects/contributors/contributor-dependency?metric=${metric.value}&project=${
-      route.params.slug
-    }&repository=${route.params.name || ''}&time-period=${props.timePeriod}`
+const {data, status, error} = useFetch(
+    `/api/project/${route.params.slug}/contributors/contributor-dependency`,
+    {
+      params: {
+        metric: metric.value,
+        repository: route.params.name || '',
+        'time-period': props.timePeriod
+      }
+    }
 );
 
 const topContributors = computed(() => (data.value as ContributorDependency)?.topContributors);

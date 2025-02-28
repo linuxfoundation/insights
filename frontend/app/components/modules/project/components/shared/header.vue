@@ -114,7 +114,7 @@ const isSearchRepoModalOpen = ref(false);
 const {scrollTop} = useScroll();
 
 const { data } = useFetch<Project>(
-    () => `/api/projects/${slug.value}`,
+    () => `/api/project/${slug.value}`,
 );
 </script>
 

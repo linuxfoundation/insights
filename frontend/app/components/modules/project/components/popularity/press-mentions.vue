@@ -61,8 +61,13 @@ const { showToast } = useToastService();
 const route = useRoute();
 
 const { data, status, error } = useFetch(
-  () => `/api/projects/popularity/press-mentions?project=${route.params.slug
-    }&repository=${route.params.name || ''}&time-period=${props.timePeriod}`
+  () => `/api/project/${route.params.slug}/popularity/press-mentions`,
+    {
+      params: {
+        repository: route.params.name,
+        'time-period': props.timePeriod,
+      }
+    }
 );
 
 const mentions = computed<PressMentions>(() => data.value as PressMentions);

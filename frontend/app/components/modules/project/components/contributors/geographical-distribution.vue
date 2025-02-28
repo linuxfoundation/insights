@@ -94,10 +94,15 @@ const route = useRoute();
 const metric = ref('all');
 const activeTab = ref('contributors');
 
-const { data, status, error } = useFetch(
-  () => `/api/projects/contributors/geographical-distribution?type=${activeTab.value}&project=${
-      route.params.slug
-    }&repository=${route.params.name || ''}&time-period=${props.timePeriod}`
+const {data, status, error} = useFetch(
+    `/api/project/${route.params.slug}/contributors/geographical-distribution`,
+    {
+      params: {
+        type: activeTab.value,
+        repository: route.params.name || '',
+        'time-period': props.timePeriod
+      }
+    }
 );
 
 const geoMapData = computed<GeoMapData[]>(() => (data.value as GeoMapResponse).data);

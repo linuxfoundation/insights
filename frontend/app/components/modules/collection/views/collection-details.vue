@@ -54,7 +54,7 @@ watch([sort, tab], () => {
 });
 
 const { data, status } = await useFetch<Pagination<Project>>(
-    () => `/api/projects`,
+    () => `/api/project`,
     {
       params: {
         sort,

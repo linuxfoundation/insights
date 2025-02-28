@@ -71,8 +71,16 @@ const stack = ref('');
 const industry = ref('');
 
 const { data, status, error } = useFetch<Pagination<Collection>>(
-    () => `/api/collections?sort=${sort.value}&page=${page.value}&pageSize=${pageSize.value}
-    &stack=${stack.value}&industry=${industry.value}`,
+    () => `/api/collection`,
+    {
+      params: {
+        sort,
+        page,
+        pageSize,
+        stack,
+        industry,
+      },
+    }
 );
 
 watch(error, (err) => {

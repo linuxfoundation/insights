@@ -13,7 +13,7 @@ const route = useRoute();
 const {slug} = route.params;
 
 const {data} = await useFetch<Collection>(
-    () => `/api/collections/${slug}`,
+    () => `/api/collection/${slug}`,
 );
 
 if (!data.value) {

@@ -66,10 +66,15 @@ const route = useRoute();
 const activeTab = ref('contributors');
 const chartType = ref('line');
 
-const { data, status, error } = useFetch(
-  () => `/api/projects/contributors/retention?type=${activeTab.value}&project=${
-      route.params.slug
-    }&repository=${route.params.name || ''}&time-period=${props.timePeriod}`
+const {data, status, error} = useFetch(
+    `/api/project/${route.params.slug}/contributors/retention`,
+    {
+      params: {
+        type: activeTab.value,
+        repository: route.params.name || '',
+        'time-period': props.timePeriod
+      }
+    }
 );
 
 const chartData = computed<ChartData[]>(

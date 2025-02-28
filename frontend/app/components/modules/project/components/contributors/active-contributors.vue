@@ -59,9 +59,14 @@ const activeTab = ref('weekly');
 const route = useRoute();
 
 const { data, status, error } = useFetch(
-  () => `/api/projects/contributors/active-contributors?interval=${activeTab.value}&project=${
-      route.params.slug
-    }&repository=${route.params.name || ''}&time-period=${props.timePeriod}`
+  () => `/api/project/${route.params.slug}/contributors/active-contributors`,
+    {
+      params: {
+        interval: activeTab,
+        repository: route.params.name || '',
+        'time-period': props.timePeriod,
+      }
+    }
 );
 
 const activeContributors = computed<ActiveContributors>(() => data.value as ActiveContributors);
