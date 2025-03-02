@@ -9,30 +9,61 @@
     </p>
     <hr>
     <section class="mt-5">
-      <div v-if="status === 'success'" class="flex flex-row justify-between items-center mb-6">
+      <div
+        v-if="status === 'success'"
+        class="flex flex-row justify-between items-center mb-6"
+      >
         <div class="flex flex-row gap-4 items-center">
           <div class="text-data-display-1">{{ formatNumber(summary.current) }}</div>
-          <lfx-delta-display :summary="summary" icon="circle-arrow-up-right" icon-type="solid" />
+          <lfx-delta-display
+            :summary="summary"
+            icon="circle-arrow-up-right"
+            icon-type="solid"
+          />
         </div>
         <div class="flex flex-col items-end justify-center">
           <span class="text-neutral-400 text-xs flex flex-row gap-2 items-center">
-            <lfx-icon name="gauge-high" :size="16" />
+            <lfx-icon
+              name="gauge-high"
+              :size="16"
+            />
             Avg. velocity
           </span>
-          <span v-if="status === 'success'" class="text-xl">{{ formatNumber(pullRequests.avgVelocityInDays) }}
+          <span
+            v-if="status === 'success'"
+            class="text-xl"
+          >{{ formatNumber(pullRequests.avgVelocityInDays) }}
             days</span>
         </div>
       </div>
 
       <div class="w-full h-[330px] my-5">
-        <lfx-chart v-if="status !== 'pending'" :config="barChartConfig" />
+        <lfx-chart
+          v-if="status !== 'pending'"
+          :config="barChartConfig"
+        />
         <lfx-spinner v-else />
       </div>
 
-      <div v-if="status === 'success'" class="flex flex-col gap-5">
-        <lfx-project-pull-request-legend-item title="Open" :delta="openSummary!" :color="chartSeries[0]!.color!" />
-        <lfx-project-pull-request-legend-item title="Merged" :delta="mergedSummary!" :color="chartSeries[1]!.color!" />
-        <lfx-project-pull-request-legend-item title="Closed" :delta="closedSummary!" :color="chartSeries[2]!.color!" />
+      <div
+        v-if="status === 'success'"
+        class="flex flex-col gap-5"
+      >
+        <lfx-project-pull-request-legend-item
+          title="Open"
+          :delta="openSummary!"
+          :color="chartSeries[0]!.color!"
+        />
+        <lfx-project-pull-request-legend-item
+          title="Merged"
+          :delta="mergedSummary!"
+          :color="chartSeries[1]!.color!"
+        />
+        <lfx-project-pull-request-legend-item
+          title="Closed"
+          :delta="closedSummary!"
+          :color="chartSeries[2]!.color!"
+        />
       </div>
     </section>
   </lfx-card>

@@ -12,13 +12,21 @@
           <p class="text-neutral-400 text-body-2 font-medium pb-2">
             Featured projects
           </p>
-          <div class="flex flex-wrap gap-3" @click.prevent>
+          <div
+            class="flex flex-wrap gap-3"
+            @click.prevent
+          >
             <nuxt-link
               v-for="project of props.collection.featuredProjects"
               :key="project.slug"
-              :to="{name: LfxRoutes.PROJECT, params: {slug: project.slug}}">
+              :to="{name: LfxRoutes.PROJECT, params: {slug: project.slug}}"
+            >
               <lfx-chip type="bordered">
-                <lfx-avatar :src="project.logo" size="xsmall" type="organization" />
+                <lfx-avatar
+                  :src="project.logo"
+                  size="xsmall"
+                  type="organization"
+                />
                 {{ project.name }}
               </lfx-chip>
             </nuxt-link>
@@ -27,8 +35,14 @@
         <div class="w-5/12 px-2 flex justify-end">
           <div class="flex flex-wrap gap-8 justify-start">
             <article>
-              <lfx-tag type="transparent" size="small">
-                <lfx-icon name="people-group" :size="12" />
+              <lfx-tag
+                type="transparent"
+                size="small"
+              >
+                <lfx-icon
+                  name="people-group"
+                  :size="12"
+                />
                 Contributors
               </lfx-tag>
               <p class="text-lg leading-7 mt-1">
@@ -36,8 +50,14 @@
               </p>
             </article>
             <article>
-              <lfx-tag type="transparent" size="small">
-                <lfx-icon name="building" :size="12" />
+              <lfx-tag
+                type="transparent"
+                size="small"
+              >
+                <lfx-icon
+                  name="building"
+                  :size="12"
+                />
                 Organizations
               </lfx-tag>
               <p class="text-lg leading-7 mt-1">
@@ -45,8 +65,14 @@
               </p>
             </article>
             <article>
-              <lfx-tag type="transparent" size="small">
-                <lfx-icon name="laptop-code" :size="12" />
+              <lfx-tag
+                type="transparent"
+                size="small"
+              >
+                <lfx-icon
+                  name="laptop-code"
+                  :size="12"
+                />
                 Projects
               </lfx-tag>
               <p class="text-lg leading-7 mt-1">
@@ -54,8 +80,14 @@
               </p>
             </article>
             <article>
-              <lfx-tag type="transparent" size="small">
-                <lfx-icon name="dollar-circle" :size="12" />
+              <lfx-tag
+                type="transparent"
+                size="small"
+              >
+                <lfx-icon
+                  name="dollar-circle"
+                  :size="12"
+                />
                 Software value
               </lfx-tag>
               <p class="text-lg leading-7 mt-1">

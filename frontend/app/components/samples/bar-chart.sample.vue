@@ -1,7 +1,11 @@
 <template>
   <div class="mb-4">
     <label class="flex items-center">
-      <input v-model="isStacked" type="checkbox" class="mr-2">
+      <input
+        v-model="isStacked"
+        type="checkbox"
+        class="mr-2"
+      >
       <span>Show Stacked Bar</span>
     </label>
   </div>

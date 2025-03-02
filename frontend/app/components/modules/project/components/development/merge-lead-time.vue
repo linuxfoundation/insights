@@ -9,25 +9,49 @@
     </p>
     <hr>
     <section class="mt-5">
-      <div v-if="status === 'success'" class="flex flex-row gap-4 items-center mb-8">
+      <div
+        v-if="status === 'success'"
+        class="flex flex-row gap-4 items-center mb-8"
+      >
         <div class="text-data-display-1">{{ formatNumber(summary.current) }} days</div>
-        <lfx-delta-display :summary="summary" icon="circle-arrow-up-right" icon-type="solid" unit="d" />
+        <lfx-delta-display
+          :summary="summary"
+          icon="circle-arrow-up-right"
+          icon-type="solid"
+          unit="d"
+        />
       </div>
 
       <div class="w-full min-h-[250px] mt-5">
-        <div v-if="status === 'success'" class="flex flex-col gap-10 pt-6">
+        <div
+          v-if="status === 'success'"
+          class="flex flex-col gap-10 pt-6"
+        >
           <lfx-merge-lead-item
-            title="Pickup" description="Pull request raised" icon="code-pull-request"
-            :item-value="mergeLeadTime.data.pickup" />
+            title="Pickup"
+            description="Pull request raised"
+            icon="code-pull-request"
+            :item-value="mergeLeadTime.data.pickup"
+          />
           <lfx-merge-lead-item
-            title="Review" description="Review started" icon="eye"
-            :item-value="mergeLeadTime.data.review" />
+            title="Review"
+            description="Review started"
+            icon="eye"
+            :item-value="mergeLeadTime.data.review"
+          />
           <lfx-merge-lead-item
-            title="Accepted" description="Pull request accepted" icon="check-circle"
-            :item-value="mergeLeadTime.data.accepted" />
+            title="Accepted"
+            description="Pull request accepted"
+            icon="check-circle"
+            :item-value="mergeLeadTime.data.accepted"
+          />
           <lfx-merge-lead-item
-            title="Merged" description="" icon="thumbs-up" :item-value="mergeLeadTime.data.pickup"
-            is-last />
+            title="Merged"
+            description=""
+            icon="thumbs-up"
+            :item-value="mergeLeadTime.data.pickup"
+            is-last
+          />
         </div>
         <lfx-spinner v-else />
       </div>

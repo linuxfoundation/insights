@@ -20,7 +20,10 @@
       </div>
     </div>
   </div>
-  <lfx-progress-bar :values="dependencyValues" :color="dependencyColor" />
+  <lfx-progress-bar
+    :values="dependencyValues"
+    :color="dependencyColor"
+  />
   <span class="text-warning-600 text-negative-600 text-positive-600">
     <!-- tailwind classes don't show up unless they are used first -->
   </span>

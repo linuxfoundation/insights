@@ -1,14 +1,30 @@
 <template>
   <div class="bg-white">
     <section class="container">
-      <div class="flex justify-between" :class="scrollTop > 50 ? 'py-4' : 'py-5'">
+      <div
+        class="flex justify-between"
+        :class="scrollTop > 50 ? 'py-4' : 'py-5'"
+      >
         <div class="flex items-center gap-4">
-          <lfx-tabs width-type="inline" :tabs="tabs" :model-value="tab" @update:model-value="tab = $event">
+          <lfx-tabs
+            width-type="inline"
+            :tabs="tabs"
+            :model-value="tab"
+            @update:model-value="tab = $event"
+          >
             <template #slotItem="{option}">
               <div class="flex items-center gap-2">
                 <template v-if="option.value === 'lfx'">
-                  <img v-if="tab === 'lfx'" src="~/assets/images/icon.svg" alt="LFX icon">
-                  <img v-else src="~/assets/images/icon-gray.svg" alt="LFX icon">
+                  <img
+                    v-if="tab === 'lfx'"
+                    src="~/assets/images/icon.svg"
+                    alt="LFX icon"
+                  >
+                  <img
+                    v-else
+                    src="~/assets/images/icon-gray.svg"
+                    alt="LFX icon"
+                  >
                 </template>
                 {{option.label}}
               </div>
@@ -20,7 +36,8 @@
           :options="sortOptions"
           icon="fa-arrow-down-wide-short fa-light"
           type="transparent"
-          dropdown-position="right" />
+          dropdown-position="right"
+        />
       </div>
     </section>
   </div>

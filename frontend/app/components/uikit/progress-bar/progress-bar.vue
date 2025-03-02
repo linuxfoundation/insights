@@ -5,7 +5,8 @@
       v-for="(value, index) in props.values"
       :key="index"
       class="c-progress-bar__value"
-      :style="{ width: `${value}%` }" />
+      :style="{ width: `${value}%` }"
+    />
     <div class="c-progress-bar__empty" />
   </div>
 </template>

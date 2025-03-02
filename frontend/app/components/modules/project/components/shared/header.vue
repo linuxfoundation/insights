@@ -5,18 +5,24 @@
         <div
           v-if="data"
           class="ease-linear transition-all"
-          :class="scrollTop > 50 ? 'py-4' : 'py-6'">
+          :class="scrollTop > 50 ? 'py-4' : 'py-6'"
+        >
 
           <div class="flex items-center justify-between ">
             <div class="flex items-center">
               <lfx-back class="ease-linear transition-all pr-4">
-                <lfx-icon-button type="transparent" icon="angle-left" class="" />
+                <lfx-icon-button
+                  type="transparent"
+                  icon="angle-left"
+                  class=""
+                />
               </lfx-back>
               <lfx-avatar
                 type="organization"
                 :size="scrollTop > 50 ? 'normal' : 'large'"
                 class="mr-4"
-                :src="data.logo || ''" />
+                :src="data.logo || ''"
+              />
               <h1
                 class="font-bold mr-3 ease-linear transition-all font-secondary duration-200"
                 :class="scrollTop > 50 ? 'text-heading-3' : 'text-heading-2'"
@@ -25,58 +31,83 @@
               </h1>
               <span
                 class="mr-1 text-neutral-400 font-secondary leading-8 ease-linear transition-all"
-                :class="scrollTop > 50 ? 'text-xl' : 'text-2xl'">/</span>
+                :class="scrollTop > 50 ? 'text-xl' : 'text-2xl'"
+              >/</span>
               <div
                 class="flex items-center gap-2 cursor-pointer px-2 py-0.5
-              rounded-lg transition hover:bg-neutral-100" @click="isSearchRepoModalOpen = true">
+              rounded-lg transition hover:bg-neutral-100"
+                @click="isSearchRepoModalOpen = true"
+              >
                 <p
                   class="text-neutral-400 leading-8 ease-linear transition-all"
-                  :class="scrollTop > 50 ? 'text-xl' : 'text-2xl'">
-                  <span v-if="repoName" class="font-secondary">{{ repoName }}</span>
-                  <span v-else class="font-secondary">All repositories</span>
+                  :class="scrollTop > 50 ? 'text-xl' : 'text-2xl'"
+                >
+                  <span
+                    v-if="repoName"
+                    class="font-secondary"
+                  >{{ repoName }}</span>
+                  <span
+                    v-else
+                    class="font-secondary"
+                  >All repositories</span>
                 </p>
-                <lfx-icon name="angles-up-down" :size="12" class="text-neutral-400" />
+                <lfx-icon
+                  name="angles-up-down"
+                  :size="12"
+                  class="text-neutral-400"
+                />
               </div>
             </div>
             <lfx-share>
-              <lfx-button type="tertiary" class="!rounded-full">
+              <lfx-button
+                type="tertiary"
+                class="!rounded-full"
+              >
                 <lfx-icon name="link-simple" />
                 Share
               </lfx-button>
             </lfx-share>
           </div>
         </div>
-        <div class="flex justify-between items-center transition-all" :class="scrollTop > 50 ? 'py-4' : 'py-5'">
+        <div
+          class="flex justify-between items-center transition-all"
+          :class="scrollTop > 50 ? 'py-4' : 'py-5'"
+        >
           <div class="flex items-center gap-3">
             <lfx-menu-button
               :to="{ name: repoName ? LfxRoutes.REPOSITORY : LfxRoutes.PROJECT }"
-              exact>
+              exact
+            >
               <lfx-icon name="gauge-high" />
               Overview
             </lfx-menu-button>
             <lfx-menu-button
               :to="{
                 name: repoName ? LfxRoutes.REPOSITORY_CONTRIBUTORS : LfxRoutes.PROJECT_CONTRIBUTORS
-              }">
+              }"
+            >
               <lfx-icon name="people-group" />
               Contributors
             </lfx-menu-button>
             <lfx-menu-button
               :to="{
                 name: repoName ? LfxRoutes.REPOSITORY_POPULARITY : LfxRoutes.PROJECT_POPULARITY
-              }">
+              }"
+            >
               <lfx-icon name="fire" />
               Popularity
             </lfx-menu-button>
             <lfx-menu-button
               :to="{
                 name: repoName ? LfxRoutes.REPOSITORY_DEVELOPMENT : LfxRoutes.PROJECT_DEVELOPMENT
-              }">
+              }"
+            >
               <lfx-icon name="code" />
               Development
             </lfx-menu-button>
             <lfx-menu-button
-              :to="{ name: repoName ? LfxRoutes.REPOSITORY_SECURITY : LfxRoutes.PROJECT_SECURITY }">
+              :to="{ name: repoName ? LfxRoutes.REPOSITORY_SECURITY : LfxRoutes.PROJECT_SECURITY }"
+            >
               <lfx-icon name="shield-check" />
               Security & Best Practices
             </lfx-menu-button>
@@ -87,7 +118,11 @@
     </div>
   </div>
   <lfx-project-repository-switch
-    v-if="isSearchRepoModalOpen && data" v-model="isSearchRepoModalOpen" :repo="repoName" :project="data" />
+    v-if="isSearchRepoModalOpen && data"
+    v-model="isSearchRepoModalOpen"
+    :repo="repoName"
+    :project="data"
+  />
 </template>
 
 <script lang="ts" setup>

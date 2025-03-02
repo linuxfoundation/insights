@@ -1,8 +1,13 @@
 <template>
   <pv-button
-    v-bind="$attrs" :class="`p-button-${props.size} p-button-${props.type} p-button-${props.buttonStyle}`"
-    :label="props.label" :icon="props.icon" :icon-position="props.iconPosition" :loading="props.loading"
-    :disabled="props.disabled">
+    v-bind="$attrs"
+    :class="`p-button-${props.size} p-button-${props.type} p-button-${props.buttonStyle}`"
+    :label="props.label"
+    :icon="props.icon"
+    :icon-position="props.iconPosition"
+    :loading="props.loading"
+    :disabled="props.disabled"
+  >
     <slot />
   </pv-button>
 </template>
