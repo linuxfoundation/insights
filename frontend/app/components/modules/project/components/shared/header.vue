@@ -87,7 +87,8 @@
     </div>
   </div>
   <lfx-project-repository-switch
-    v-if="isSearchRepoModalOpen && props.project" v-model="isSearchRepoModalOpen" :repo="repoName" :project="props.project" />
+    v-if="isSearchRepoModalOpen && props.project" v-model="isSearchRepoModalOpen"
+    :repo="repoName" :project="props.project" />
 </template>
 
 <script lang="ts" setup>
