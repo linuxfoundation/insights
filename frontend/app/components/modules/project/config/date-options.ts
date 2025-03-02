@@ -10,7 +10,7 @@ export interface DateOptionConfig {
 
 const date = useDate();
 
-export const lfxProjectDateOptions: DateOptionConfig[] = [
+export const lfxProjectDateOptionsPast: DateOptionConfig[] = [
     {
         key: 'past90days',
         label: 'Past 90 days',
@@ -66,4 +66,19 @@ export const lfxProjectDateOptionsPrevious: DateOptionConfig[] = [
         description: `${date().subtract(10, 'year').format('YYYY')} 
         -> ${date().subtract(1, 'year').endOf('year').format('YYYY')}`
     },
+];
+
+export const lfxProjectDateOptionsGeneral: DateOptionConfig[] = [
+    {
+        key: 'alltime',
+        label: 'All time',
+        dateStart: null,
+        dateEnd: null,
+    },
+];
+
+export const lfxProjectDateOptions: DateOptionConfig[] = [
+    ...lfxProjectDateOptionsPast,
+    ...lfxProjectDateOptionsPrevious,
+    ...lfxProjectDateOptionsGeneral,
 ];

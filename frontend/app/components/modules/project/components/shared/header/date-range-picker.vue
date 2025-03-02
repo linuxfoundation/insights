@@ -6,13 +6,13 @@
     @click="toggle"
   >
     <lfx-icon name="calendar" :size="16" />
-    Past 90 days
+    {{selectedOption?.label}}
     <lfx-icon name="angle-down" :size="12" class="text-neutral-500" />
   </div>
   <lfx-popover ref="options" v-model:is-open="isOpen">
     <div class="flex flex-col p-1 gap-1 w-80">
       <article
-        v-for="option of lfxProjectDateOptions"
+        v-for="option of lfxProjectDateOptionsPast"
         :key="option.label"
         class="py-2 px-3 flex justify-between items-center rounded-md cursor-pointer hover:bg-neutral-50 transition"
         @click="changeSelected(option)">
@@ -53,7 +53,7 @@
       <div class="h-px bg-neutral-100 w-full" />
 
       <article
-        v-for="option of [alltimeOption]"
+        v-for="option of lfxProjectDateOptionsGeneral"
         :key="option.label"
         class="py-2 px-3 flex items-center rounded-md cursor-pointer hover:bg-neutral-50 transition"
         @click="changeSelected(option)">
@@ -71,13 +71,13 @@
 </template>
 
 <script setup lang="ts">
-import {ref} from "vue";
+import {computed, ref} from "vue";
 import {storeToRefs} from "pinia";
 import LfxPopover from "~/components/uikit/popover/popover.vue";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
 import {
-  type DateOptionConfig,
-  lfxProjectDateOptions,
+  type DateOptionConfig, lfxProjectDateOptions, lfxProjectDateOptionsGeneral,
+  lfxProjectDateOptionsPast,
   lfxProjectDateOptionsPrevious
 } from "~/components/modules/project/config/date-options";
 import {useProjectStore} from "~/components/modules/project/store/project.store";
@@ -89,12 +89,7 @@ const isOpen = ref(false);
 
 const selected = ref(lfxProjectDateOptions[0]?.key || 'past90days');
 
-const alltimeOption: DateOptionConfig = {
-  key: 'alltime',
-  label: 'All time',
-  dateStart: null,
-  dateEnd: null,
-};
+const selectedOption = computed(() => lfxProjectDateOptions.find((option) => option.key === selected.value));
 
 const toggle = (event: MouseEvent) => {
   options.value.toggle(event);
