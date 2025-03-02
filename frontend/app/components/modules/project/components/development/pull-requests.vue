@@ -64,7 +64,7 @@ import { formatNumber } from '~/components/shared/utils/formatter';
 import {useProjectStore} from "~/components/modules/project/store/project.store";
 
 const { showToast } = useToastService();
-const {dateStart, dateEnd} = storeToRefs(useProjectStore())
+const {startDate, endDate} = storeToRefs(useProjectStore())
 
 const route = useRoute();
 
@@ -74,8 +74,8 @@ const { data, status, error } = useFetch(
     params: {
       project: route.params.slug,
       repository: route.params.name || '',
-      dateStart,
-      dateEnd,
+      startDate,
+      endDate,
     }
   }
 );
