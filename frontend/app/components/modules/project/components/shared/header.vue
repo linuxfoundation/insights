@@ -3,7 +3,7 @@
     <div class="bg-white outline outline-neutral-200">
       <section class="container">
         <div
-          v-if="data"
+          v-if="props.project"
           class="ease-linear transition-all"
           :class="scrollTop > 50 ? 'py-4' : 'py-6'">
 
@@ -16,12 +16,12 @@
                 type="organization"
                 :size="scrollTop > 50 ? 'normal' : 'large'"
                 class="mr-4"
-                :src="data.logo || ''" />
+                :src="props.project.logo || ''" />
               <h1
                 class="font-bold mr-3 ease-linear transition-all font-secondary duration-200"
                 :class="scrollTop > 50 ? 'text-heading-3' : 'text-heading-2'"
               >
-                {{ data.name }}
+                {{ props.project.name }}
               </h1>
               <span
                 class="mr-1 text-neutral-400 font-secondary leading-8 ease-linear transition-all"
@@ -87,11 +87,11 @@
     </div>
   </div>
   <lfx-project-repository-switch
-    v-if="isSearchRepoModalOpen && data" v-model="isSearchRepoModalOpen" :repo="repoName" :project="data" />
+    v-if="isSearchRepoModalOpen && props.project" v-model="isSearchRepoModalOpen" :repo="repoName" :project="props.project" />
 </template>
 
 <script lang="ts" setup>
-import {useFetch, useRoute} from 'nuxt/app';
+import {useRoute} from 'nuxt/app';
 import {computed} from 'vue';
 import {LfxRoutes} from '~/components/shared/types/routes';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
@@ -106,18 +106,17 @@ import type {Project} from "~/components/modules/project/types/project";
 import LfxBack from "~/components/uikit/back/back.vue";
 import LfxProjectDateRangePicker from "~/components/modules/project/components/shared/header/date-range-picker.vue";
 
+const props = defineProps<{
+  project: Project
+}>();
+
 const route = useRoute();
 
-const slug = computed(() => route.params.slug);
 const repoName = computed<string>(() => route.params.name as string);
 
 const isSearchRepoModalOpen = ref(false);
 
 const {scrollTop} = useScroll();
-
-const { data } = useFetch<Project>(
-    () => `/api/project/${slug.value}`,
-);
 </script>
 
 <script lang="ts">
