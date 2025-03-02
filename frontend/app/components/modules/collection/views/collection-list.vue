@@ -50,7 +50,7 @@ import {watch} from "vue";
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxTag from '~/components/uikit/tag/tag.vue';
 import LfxDropdown from '~/components/uikit/dropdown/dropdown.vue';
-import LfxCollectionListItem from '~/components/modules/collection/components/collection-list-item.vue';
+import LfxCollectionListItem from '~/components/modules/collection/components/list/collection-list-item.vue';
 import type {Pagination} from "~/components/shared/types/pagination";
 import type {Collection} from "~/components/modules/collection/types/Collection";
 import LfxCollectionFilterStack
