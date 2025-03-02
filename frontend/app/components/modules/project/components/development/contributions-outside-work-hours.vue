@@ -45,6 +45,7 @@
 <script setup lang="ts">
 import { useFetch, useRoute } from 'nuxt/app';
 import { ref, computed, watch } from 'vue';
+import {storeToRefs} from "pinia";
 import type { ContributionOutsideHours } from './types/contribution-outside-hours.types';
 import type { Summary } from '~/components/shared/types/summary.types';
 import LfxCard from '~/components/uikit/card/card.vue';
@@ -64,17 +65,10 @@ import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 import { getScatterChartConfig } from '~/components/uikit/chart/configs/scatter.chart';
 import { formatNumber } from '~/components/shared/utils/formatter';
-
-const props = withDefaults(
-  defineProps<{
-    timePeriod?: string;
-  }>(),
-  {
-    timePeriod: '90d'
-  }
-);
+import {useProjectStore} from "~/components/modules/project/store/project.store";
 
 const { showToast } = useToastService();
+const {dateStart, dateEnd} = storeToRefs(useProjectStore())
 
 const route = useRoute();
 
@@ -84,7 +78,8 @@ const { data, status, error } = useFetch(
     params: {
       project: route.params.slug,
       repository: route.params.name || '',
-      'time-period': props.timePeriod
+      dateStart,
+      dateEnd,
     }
   }
 );

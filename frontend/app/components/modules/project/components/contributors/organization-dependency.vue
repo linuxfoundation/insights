@@ -36,7 +36,6 @@
 
           <div class="font-semibold mb-5 mt-8">
             <span class="text-black">Top contributors </span>
-            <span class="text-neutral-400"> over the {{ timePeriodLabel }} </span>
           </div>
 
           <lfx-organizations-table
@@ -52,6 +51,7 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
 import { useRoute, useFetch } from 'nuxt/app';
+import {storeToRefs} from "pinia";
 import LfxDependencyDisplay from './fragments/dependency-display.vue';
 import LfxOrganizationsTable from './fragments/organizations-table.vue';
 import type { OrganizationDependency } from './types/contributors.types';
@@ -62,17 +62,10 @@ import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
-import { timePeriodsOptions } from '~/components/shared/config/time-periods';
+import {useProjectStore} from "~/components/modules/project/store/project.store";
 
-const props = withDefaults(
-  defineProps<{
-    timePeriod?: string;
-  }>(),
-  {
-    timePeriod: '90d'
-  }
-);
 const { showToast } = useToastService();
+const {dateStart, dateEnd} = storeToRefs(useProjectStore())
 
 const route = useRoute();
 const metric = ref('all');
@@ -82,7 +75,8 @@ const {data, status, error} = useFetch(
       params: {
         metric: metric.value,
         repository: route.params.name || '',
-        'time-period': props.timePeriod
+        dateStart,
+        dateEnd,
       }
     }
 );
@@ -96,10 +90,6 @@ const organizations = computed(() => (data.value as OrganizationDependency)?.lis
 const topOrganizationsAvatars = computed(() => (organizations.value?.length
     ? organizations.value.slice(0, Math.min(3, organizations.value.length))
     : []));
-
-const timePeriodLabel = computed(() => (
-    timePeriodsOptions.find((option) => option.value === props.timePeriod)?.label || ''
-  ).toLowerCase());
 
 watch(error, (err) => {
   if (err) {
