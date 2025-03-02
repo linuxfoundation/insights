@@ -27,6 +27,7 @@
 <script setup lang="ts">
 import { useFetch, useRoute } from 'nuxt/app';
 import { ref, watch, computed } from 'vue';
+import {storeToRefs} from "pinia";
 import LfxMetricDropdown from './fragments/metric-dropdown.vue';
 import LfxContributorsTable from './fragments/contributors-table.vue';
 import type { ContributorLeaderboard } from './types/contributors.types';
@@ -34,16 +35,10 @@ import LfxCard from '~/components/uikit/card/card.vue';
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
+import {useProjectStore} from "~/components/modules/project/store/project.store";
 
-const props = withDefaults(
-  defineProps<{
-    timePeriod?: string;
-  }>(),
-  {
-    timePeriod: '90d'
-  }
-);
 const { showToast } = useToastService();
+const {dateStart, dateEnd} = storeToRefs(useProjectStore())
 
 const route = useRoute();
 const metric = ref('all');
@@ -53,7 +48,8 @@ const {data, status, error} = useFetch(
       params: {
         metric: metric.value,
         repository: route.params.name || '',
-        'time-period': props.timePeriod
+        dateStart,
+        dateEnd,
       }
     }
 );
