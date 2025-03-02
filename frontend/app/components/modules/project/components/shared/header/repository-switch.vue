@@ -89,10 +89,10 @@ const result = computed(() => props.project.repositories
 
 const routeName = computed<{ project: LfxRoutes, repo: LfxRoutes }>(() => {
   const mapping: Record<string, { project: LfxRoutes, repo: LfxRoutes }> = {
-    contributors: {
-      project: LfxRoutes.PROJECT_CONTRIBUTORS,
-      repo: LfxRoutes.REPOSITORY_CONTRIBUTORS,
-    },
+    // contributors: {
+    //   project: LfxRoutes.PROJECT_CONTRIBUTORS,
+    //   repo: LfxRoutes.REPOSITORY_CONTRIBUTORS,
+    // },
     popularity: {
       project: LfxRoutes.PROJECT_POPULARITY,
       repo: LfxRoutes.REPOSITORY_POPULARITY,
@@ -101,10 +101,10 @@ const routeName = computed<{ project: LfxRoutes, repo: LfxRoutes }>(() => {
       project: LfxRoutes.PROJECT_DEVELOPMENT,
       repo: LfxRoutes.REPOSITORY_DEVELOPMENT,
     },
-    security: {
-      project: LfxRoutes.PROJECT_SECURITY,
-      repo: LfxRoutes.REPOSITORY_SECURITY,
-    },
+    // security: {
+    //   project: LfxRoutes.PROJECT_SECURITY,
+    //   repo: LfxRoutes.REPOSITORY_SECURITY,
+    // },
   };
 
   const type: string = route.name.split('-').at(-1);

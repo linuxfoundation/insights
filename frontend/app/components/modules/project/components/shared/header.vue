@@ -48,16 +48,16 @@
         </div>
         <div class="flex justify-between items-center transition-all" :class="scrollTop > 50 ? 'py-4' : 'py-5'">
           <div class="flex items-center gap-3">
-            <lfx-menu-button
-              :to="{ name: repoName ? LfxRoutes.REPOSITORY : LfxRoutes.PROJECT }"
-              exact>
-              <lfx-icon name="gauge-high" />
-              Overview
-            </lfx-menu-button>
+            <!--            <lfx-menu-button-->
+            <!--              :to="{ name: repoName ? LfxRoutes.REPOSITORY : LfxRoutes.PROJECT }"-->
+            <!--              exact>-->
+            <!--              <lfx-icon name="gauge-high" />-->
+            <!--              Overview-->
+            <!--            </lfx-menu-button>-->
             <lfx-menu-button
               :to="{
-                name: repoName ? LfxRoutes.REPOSITORY_CONTRIBUTORS : LfxRoutes.PROJECT_CONTRIBUTORS
-              }">
+                name: repoName ? LfxRoutes.REPOSITORY : LfxRoutes.PROJECT
+              }" exact>
               <lfx-icon name="people-group" />
               Contributors
             </lfx-menu-button>
@@ -75,11 +75,11 @@
               <lfx-icon name="code" />
               Development
             </lfx-menu-button>
-            <lfx-menu-button
-              :to="{ name: repoName ? LfxRoutes.REPOSITORY_SECURITY : LfxRoutes.PROJECT_SECURITY }">
-              <lfx-icon name="shield-check" />
-              Security & Best Practices
-            </lfx-menu-button>
+            <!--            <lfx-menu-button-->
+            <!--              :to="{ name: repoName ? LfxRoutes.REPOSITORY_SECURITY : LfxRoutes.PROJECT_SECURITY }">-->
+            <!--              <lfx-icon name="shield-check" />-->
+            <!--              Security & Best Practices-->
+            <!--            </lfx-menu-button>-->
           </div>
           <lfx-project-date-range-picker />
         </div>
