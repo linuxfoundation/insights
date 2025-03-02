@@ -2,11 +2,11 @@ import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
 export const useProjectStore = defineStore('project', () => {
-    const dateStart = ref<string | null>(null);
-    const dateEnd = ref<string | null>(null);
+    const startDate = ref<string | null>(null);
+    const endDate = ref<string | null>(null);
 
     return {
-        dateStart,
-        dateEnd,
+        startDate,
+        endDate,
     }
 })

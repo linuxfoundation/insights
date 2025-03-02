@@ -82,7 +82,7 @@ import {
 } from "~/components/modules/project/config/date-options";
 import {useProjectStore} from "~/components/modules/project/store/project.store";
 
-const {dateStart, dateEnd} = storeToRefs(useProjectStore())
+const {startDate, endDate} = storeToRefs(useProjectStore())
 
 const options = ref();
 const isOpen = ref(false);
@@ -97,8 +97,8 @@ const toggle = (event: MouseEvent) => {
 
 const changeSelected = (option: DateOptionConfig) => {
   selected.value = option.key;
-  dateStart.value = option.dateStart;
-  dateEnd.value = option.dateEnd;
+  startDate.value = option.startDate;
+  endDate.value = option.endDate;
   options.value.hide();
 }
 </script>
