@@ -34,6 +34,7 @@
 import { ref, watch, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { useFetch } from 'nuxt/app';
+import {storeToRefs} from "pinia";
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
 import LfxChart from '~/components/uikit/chart/chart.vue';
@@ -49,17 +50,10 @@ import type {
 import { lfxColors } from '~/config/styles/colors';
 import { axisLabelFormatter } from '~/components/uikit/chart/helpers/formatters';
 import { getLineAreaChartConfig } from '~/components/uikit/chart/configs/line.area.chart';
-
-const props = withDefaults(
-  defineProps<{
-    timePeriod?: string;
-  }>(),
-  {
-    timePeriod: '90d'
-  }
-);
+import {useProjectStore} from "~/components/modules/project/store/project.store";
 
 const { showToast } = useToastService();
+const {dateStart, dateEnd} = storeToRefs(useProjectStore())
 
 const route = useRoute();
 
@@ -72,7 +66,8 @@ const {data, status, error} = useFetch(
       params: {
         type: activeTab.value,
         repository: route.params.name || '',
-        'time-period': props.timePeriod
+        dateStart,
+        dateEnd,
       }
     }
 );

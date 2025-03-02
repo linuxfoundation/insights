@@ -81,6 +81,7 @@
               Security & Best Practices
             </lfx-menu-button>
           </div>
+          <lfx-project-date-range-picker />
         </div>
       </section>
     </div>
@@ -103,6 +104,7 @@ import LfxShare from "~/components/uikit/share/share.vue";
 import LfxProjectRepositorySwitch from "~/components/modules/project/components/shared/header/repository-switch.vue";
 import type {Project} from "~/components/modules/project/types/project";
 import LfxBack from "~/components/uikit/back/back.vue";
+import LfxProjectDateRangePicker from "~/components/modules/project/components/shared/header/date-range-picker.vue";
 
 const route = useRoute();
 

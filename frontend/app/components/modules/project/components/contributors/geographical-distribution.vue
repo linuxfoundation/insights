@@ -61,6 +61,7 @@
 import { ref, watch, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { useFetch } from 'nuxt/app';
+import {storeToRefs} from "pinia";
 import { metricsOptions } from './config/metrics';
 import type { GeoMapResponse, GeoMapData } from './types/geo-map.types';
 import LfxCard from '~/components/uikit/card/card.vue';
@@ -77,15 +78,7 @@ import type {
 } from '~/components/uikit/chart/types/ChartTypes';
 import { getGeoMapChartConfig } from '~/components/uikit/chart/configs/geo-map.chart';
 import { formatNumber } from '~/components/shared/utils/formatter';
-
-const props = withDefaults(
-  defineProps<{
-    timePeriod?: string;
-  }>(),
-  {
-    timePeriod: '90d'
-  }
-);
+import {useProjectStore} from "~/components/modules/project/store/project.store";
 
 const { showToast } = useToastService();
 const metricOptions = metricsOptions;
@@ -94,13 +87,16 @@ const route = useRoute();
 const metric = ref('all');
 const activeTab = ref('contributors');
 
+const {dateStart, dateEnd} = storeToRefs(useProjectStore())
+
 const {data, status, error} = useFetch(
     `/api/project/${route.params.slug}/contributors/geographical-distribution`,
     {
       params: {
         type: activeTab.value,
         repository: route.params.name || '',
-        'time-period': props.timePeriod
+        dateStart,
+        dateEnd,
       }
     }
 );

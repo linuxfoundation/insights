@@ -38,6 +38,7 @@
 <script setup lang="ts">
 import { useFetch, useRoute } from 'nuxt/app';
 import { computed, watch } from 'vue';
+import {storeToRefs} from "pinia";
 import type { MergeLeadTime } from './types/merge-lead-time.types';
 import LfxMergeLeadItem from './fragments/merge-lead-item.vue';
 import LfxCard from '~/components/uikit/card/card.vue';
@@ -47,17 +48,10 @@ import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 import { formatNumber } from '~/components/shared/utils/formatter';
 import type { Summary } from '~/components/shared/types/summary.types';
-
-const props = withDefaults(
-  defineProps<{
-    timePeriod?: string;
-  }>(),
-  {
-    timePeriod: '90d'
-  }
-);
+import {useProjectStore} from "~/components/modules/project/store/project.store";
 
 const { showToast } = useToastService();
+const {dateStart, dateEnd} = storeToRefs(useProjectStore())
 
 const route = useRoute();
 
@@ -66,7 +60,8 @@ const {data, status, error} = useFetch(
     {
       params: {
         repository: route.params.name || '',
-        'time-period': props.timePeriod
+        dateStart,
+        dateEnd,
       }
     }
 );
