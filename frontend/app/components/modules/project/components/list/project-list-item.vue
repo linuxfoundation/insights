@@ -1,7 +1,14 @@
 <template>
-  <nuxt-link :to="{name: LfxRoutes.PROJECT, params: {slug: props.project.slug}}" class="flex flex-col">
+  <nuxt-link
+    :to="{name: LfxRoutes.PROJECT, params: {slug: props.project.slug}}"
+    class="flex flex-col"
+  >
     <lfx-card class="p-6 flex flex-col transition-all hover:shadow-sm h-full">
-      <lfx-avatar :src="props.project.logo || ''" size="large" type="organization" />
+      <lfx-avatar
+        :src="props.project.logo || ''"
+        size="large"
+        type="organization"
+      />
       <h3 class="text-heading-3 font-bold font-secondary pt-4 line-clamp-1">
         {{ props.project.name }}
       </h3>
@@ -11,8 +18,14 @@
       <div class="flex-grow" />
       <div class="pt-5 flex flex-col gap-2">
         <article class="flex justify-between items-center">
-          <lfx-tag type="transparent" size="medium">
-            <lfx-icon name="people-group" :size="14" />
+          <lfx-tag
+            type="transparent"
+            size="medium"
+          >
+            <lfx-icon
+              name="people-group"
+              :size="14"
+            />
             Contributors
           </lfx-tag>
           <p class="text-body-1">
@@ -20,8 +33,14 @@
           </p>
         </article>
         <article class="flex justify-between items-center">
-          <lfx-tag type="transparent" size="medium">
-            <lfx-icon name="building" :size="14" />
+          <lfx-tag
+            type="transparent"
+            size="medium"
+          >
+            <lfx-icon
+              name="building"
+              :size="14"
+            />
             Organizations
           </lfx-tag>
           <p class="text-body-1">
@@ -29,8 +48,14 @@
           </p>
         </article>
         <article class="flex justify-between items-center">
-          <lfx-tag type="transparent" size="medium">
-            <lfx-icon name="dollar-circle" :size="14" />
+          <lfx-tag
+            type="transparent"
+            size="medium"
+          >
+            <lfx-icon
+              name="dollar-circle"
+              :size="14"
+            />
             Software value
           </lfx-tag>
           <p class="text-body-1">

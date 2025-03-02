@@ -1,8 +1,10 @@
 <template>
   <pv-popover
-    v-bind="$attrs" ref="popover"
+    v-bind="$attrs"
+    ref="popover"
     @show="emit('update:isOpen', true)"
-    @hide="emit('update:isOpen', false)">
+    @hide="emit('update:isOpen', false)"
+  >
     <slot />
   </pv-popover>
 </template>

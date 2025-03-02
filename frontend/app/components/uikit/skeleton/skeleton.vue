@@ -1,6 +1,7 @@
 <template>
   <pv-skeleton
-    v-bind="$attrs" />
+    v-bind="$attrs"
+  />
 </template>
 
 <script setup lang="ts">

@@ -3,7 +3,11 @@
     <div class="p-1">
       <!-- Search input -->
       <label class="flex items-center justify-between px-3 py-2 gap-2">
-        <lfx-icon name="search" :size="16" class="text-neutral-400" />
+        <lfx-icon
+          name="search"
+          :size="16"
+          class="text-neutral-400"
+        />
         <input
           ref="searchInputRef"
           v-model="search"
@@ -22,9 +26,18 @@
       </label>
 
       <!-- Result -->
-      <div v-if="search.length && searchQuery.length > 0" class="border-t border-neutral-100 pt-1">
-        <div v-if="loading" class="flex items-center justify-between h-32 py-1">
-          <lfx-spinner :size="40" class=" text-neutral-300" />
+      <div
+        v-if="search.length && searchQuery.length > 0"
+        class="border-t border-neutral-100 pt-1"
+      >
+        <div
+          v-if="loading"
+          class="flex items-center justify-between h-32 py-1"
+        >
+          <lfx-spinner
+            :size="40"
+            class=" text-neutral-300"
+          />
         </div>
         <!-- Results -->
         <lfx-search-result
