@@ -76,7 +76,8 @@ export default {
       spacing: {
         13: '3.25rem',
         17: '4.25rem',
-        25: '6.25rem'
+        25: '6.25rem',
+        30: '7.5rem',
       },
       outlineWidth: {
         3: '0.1875rem'
