@@ -23,8 +23,6 @@
                 class="mr-4"
                 :src="props.project.logo || ''"
               />
-              :src="data.logo || ''"
-              />
               <h1
                 class="font-bold mr-3 ease-linear transition-all font-secondary duration-200"
                 :class="scrollTop > 50 ? 'text-heading-3' : 'text-heading-2'"
