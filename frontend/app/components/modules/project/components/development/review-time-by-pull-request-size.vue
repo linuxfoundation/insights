@@ -10,8 +10,15 @@
     <hr>
     <section class="mt-5">
       <div class="w-full min-h-[380px] my-5">
-        <div v-if="status === 'success'" class="flex flex-col gap-8 text-neutral-900 text-sm">
-          <div v-for="item in reviewTimeByPr" :key="item.sortId" class="flex flex-col gap-2">
+        <div
+          v-if="status === 'success'"
+          class="flex flex-col gap-8 text-neutral-900 text-sm"
+        >
+          <div
+            v-for="item in reviewTimeByPr"
+            :key="item.sortId"
+            class="flex flex-col gap-2"
+          >
             <div class="flex flex-row gap-2">
               <span>{{ item.lines }} lines</span>
               <span class="text-neutral-400">{{ item.prCount }} pull requests</span>
@@ -19,7 +26,9 @@
             <div class="pr-4">
               <lfx-progress-bar
                 :values="[item.averageReviewTime / maxValue * 100]"
-                :label="`${item.averageReviewTime} ${item.averageReviewTimeUnit}`" hide-empty />
+                :label="`${item.averageReviewTime} ${item.averageReviewTimeUnit}`"
+                hide-empty
+              />
             </div>
           </div>
         </div>

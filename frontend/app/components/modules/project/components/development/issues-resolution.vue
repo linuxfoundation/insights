@@ -9,14 +9,24 @@
     </p>
     <hr>
     <section class="mt-5">
-      <div v-if="status === 'success'" class="flex flex-row justify-between items-center mb-6">
+      <div
+        v-if="status === 'success'"
+        class="flex flex-row justify-between items-center mb-6"
+      >
         <div class="flex flex-row gap-4 items-center">
           <div class="text-data-display-1">{{ formatNumber(summary.current) }}</div>
-          <lfx-delta-display :summary="summary" icon="circle-arrow-up-right" icon-type="solid" />
+          <lfx-delta-display
+            :summary="summary"
+            icon="circle-arrow-up-right"
+            icon-type="solid"
+          />
         </div>
         <div class="flex flex-col items-end justify-center">
           <span class="text-neutral-400 text-xs flex flex-row gap-2 items-center">
-            <lfx-icon name="gauge-high" :size="16" />
+            <lfx-icon
+              name="gauge-high"
+              :size="16"
+            />
             Avg. velocity
           </span>
           <span class="text-xl">{{ formatNumber(summary.avgVelocityInDays) }} days</span>
@@ -24,7 +34,10 @@
       </div>
 
       <div class="w-full h-[350px] mt-5 pb-6">
-        <lfx-chart v-if="status !== 'pending'" :config="lineAreaChartConfig">
+        <lfx-chart
+          v-if="status !== 'pending'"
+          :config="lineAreaChartConfig"
+        >
           <template #legend>
             <div class="flex flex-row gap-5 items-center justify-center pt-2">
               <div class="flex flex-row items-center gap-2">
@@ -47,6 +60,7 @@
 <script setup lang="ts">
 import { useFetch, useRoute } from 'nuxt/app';
 import { ref, computed, watch } from 'vue';
+import {storeToRefs} from "pinia";
 import type { IssuesResolution, ResolutionSummary } from './types/issues-resolution.types';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
@@ -65,23 +79,22 @@ import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 import { formatNumber } from '~/components/shared/utils/formatter';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
-
-const props = withDefaults(
-  defineProps<{
-    timePeriod?: string;
-  }>(),
-  {
-    timePeriod: '90d'
-  }
-);
+import {useProjectStore} from "~/components/modules/project/store/project.store";
 
 const { showToast } = useToastService();
+const {startDate, endDate} = storeToRefs(useProjectStore())
 
 const route = useRoute();
 
-const { data, status, error } = useFetch(
-  () => `/api/projects/development/issues-resolution?project=${route.params.slug
-    }&repository=${route.params.name || ''}&time-period=${props.timePeriod}`
+const {data, status, error} = useFetch(
+    `/api/project/${route.params.slug}/development/issues-resolution`,
+    {
+      params: {
+        repository: route.params.name || '',
+        startDate,
+        endDate,
+      }
+    }
 );
 
 const issuesResolution = computed<IssuesResolution>(() => data.value as IssuesResolution);

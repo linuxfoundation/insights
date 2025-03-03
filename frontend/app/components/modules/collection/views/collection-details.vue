@@ -1,16 +1,36 @@
 <template>
   <div class=" min-h-[12.875rem] sticky top-14 lg:top-17 z-10">
     <div class="bg-white outline outline-neutral-100">
-      <lfx-collection-header :loading="!collection" :collection="props.collection" />
-      <lfx-collection-filters v-model:sort="sort" v-model:tab="tab" />
+      <lfx-collection-header
+        :loading="!collection"
+        :collection="props.collection"
+      />
+      <lfx-collection-filters
+        v-model:sort="sort"
+        v-model:tab="tab"
+      />
     </div>
   </div>
   <div class="container py-10 flex flex-col gap-8">
-    <div v-if="data && !(status === 'pending' && data?.page === 1)" class="grid grid-cols-3 gap-8">
-      <lfx-project-list-item v-for="project of data?.data" :key="project.slug" :project="project" />
+    <div
+      v-if="data && !(status === 'pending' && data?.page === 1)"
+      class="grid grid-cols-3 gap-8"
+    >
+      <lfx-project-list-item
+        v-for="project of data?.data"
+        :key="project.slug"
+        :project="project"
+      />
     </div>
-    <div v-if="data?.data.length === 0 && status == 'success'" class="flex flex-col items-center py-20">
-      <lfx-icon name="face-monocle" :size="80" class="text-neutral-300" />
+    <div
+      v-if="data?.data.length === 0 && status == 'success'"
+      class="flex flex-col items-center py-20"
+    >
+      <lfx-icon
+        name="face-monocle"
+        :size="80"
+        class="text-neutral-300"
+      />
       <h3 class="text-center pt-5 text-heading-2 font-secondary font-bold text-neutral-500">
         No projects found
       </h3>
@@ -18,8 +38,14 @@
         Try adjusting your filters to find what you’re looking for.
       </p>
     </div>
-    <div v-if="status === 'pending'" class="grid grid-cols-3 gap-8">
-      <lfx-project-list-item-loading v-for="i of 6" :key="i" />
+    <div
+      v-if="status === 'pending'"
+      class="grid grid-cols-3 gap-8"
+    >
+      <lfx-project-list-item-loading
+        v-for="i of 6"
+        :key="i"
+      />
     </div>
   </div>
 </template>
@@ -54,7 +80,7 @@ watch([sort, tab], () => {
 });
 
 const { data, status } = await useFetch<Pagination<Project>>(
-    () => `/api/projects`,
+    () => `/api/project`,
     {
       params: {
         sort,

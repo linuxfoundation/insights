@@ -1,5 +1,8 @@
 <template>
-  <lfx-collection-details-view v-if="data" :collection="data" />
+  <lfx-collection-details-view
+    v-if="data"
+    :collection="data"
+  />
 </template>
 
 <script setup lang="ts">
@@ -13,7 +16,7 @@ const route = useRoute();
 const {slug} = route.params;
 
 const {data} = await useFetch<Collection>(
-    () => `/api/collections/${slug}`,
+    () => `/api/collection/${slug}`,
 );
 
 if (!data.value) {

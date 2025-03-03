@@ -5,9 +5,16 @@
       <div>{{ organizationColumnHeader }}</div>
     </div>
 
-    <div v-for="(organization, index) in props.organizations" :key="index" class="lfx-table-row">
+    <div
+      v-for="(organization, index) in props.organizations"
+      :key="index"
+      class="lfx-table-row"
+    >
       <div class="flex flex-row gap-3 items-center">
-        <lfx-avatar :src="organization.logo" type="organization" />
+        <lfx-avatar
+          :src="organization.logo"
+          type="organization"
+        />
         <div>{{ organization.name }}</div>
       </div>
       <div>

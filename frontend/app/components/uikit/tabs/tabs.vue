@@ -6,10 +6,17 @@
     data-key="value"
     option-value="value"
     :allow-empty="false"
-    :class="`tabs-width-${props.widthType}`">
+    :class="`tabs-width-${props.widthType}`"
+  >
     <template #option="slotProps">
-      <slot name="slotItem" :option="slotProps.option">
-        <i v-if="slotProps.option.icon" :class="slotProps.option.icon" />
+      <slot
+        name="slotItem"
+        :option="slotProps.option"
+      >
+        <i
+          v-if="slotProps.option.icon"
+          :class="slotProps.option.icon"
+        />
         <template v-else>{{ slotProps.option.label }}</template>
       </slot>
       <!-- <span class="text-neutral-500">{{ slotProps.option.label }}123</span> -->

@@ -2,15 +2,28 @@
   <div class="container">
     <div class="flex justify-between pt-12">
       <div class="w-1/4 pr-10">
-        <lfx-side-nav :list="sideNavItems" :model-value="activeItem" @update:model-value="onSideNavUpdate" />
+        <lfx-side-nav
+          :list="sideNavItems"
+          :model-value="activeItem"
+          @update:model-value="onSideNavUpdate"
+        />
       </div>
       <div class="w-1/2">
-        <lfx-scroll-area class="flex flex-col gap-12" @scrolled-to-view="onScrolledToView">
+        <lfx-scroll-area
+          class="flex flex-col gap-12"
+          @scrolled-to-view="onScrolledToView"
+        >
           <template #default="{ observer }">
-            <lfx-scroll-view id="stars" :observer="observer">
+            <lfx-scroll-view
+              id="stars"
+              :observer="observer"
+            >
               <lfx-project-stars />
             </lfx-scroll-view>
-            <lfx-scroll-view id="forks" :observer="observer">
+            <lfx-scroll-view
+              id="forks"
+              :observer="observer"
+            >
               <lfx-project-forks />
             </lfx-scroll-view>
           </template>
