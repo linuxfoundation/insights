@@ -13,7 +13,10 @@
       </div>
       <div class="w-12 ml-10">
         <lfx-card class="w-12 h-12 !rounded-full flex items-center justify-center">
-          <lfx-icon name="link" :size="20" />
+          <lfx-icon
+            name="link"
+            :size="20"
+          />
         </lfx-card>
       </div>
     </div>

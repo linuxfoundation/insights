@@ -1,5 +1,9 @@
 <template>
-  <i :class="`fa-${props.name} fa-${props.type}`" :style="sizeStyle" class="c-icon" />
+  <i
+    :class="`fa-${props.name} fa-${props.type}`"
+    :style="sizeStyle"
+    class="c-icon"
+  />
 </template>
 
 <script lang="ts" setup>

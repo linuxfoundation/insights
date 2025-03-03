@@ -1,6 +1,10 @@
 <template>
   <div class="flex justify-center items-center h-full w-full">
-    <lfx-icon name="spinner-third" class="animate-spin font-normal" :size="props.size" />
+    <lfx-icon
+      name="spinner-third"
+      class="animate-spin font-normal"
+      :size="props.size"
+    />
   </div>
 </template>
 

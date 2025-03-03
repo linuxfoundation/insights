@@ -5,7 +5,8 @@
       `c-tag--${props.style}`,
       `c-tag--${props.size}`,
       `c-tag--${props.type}`
-    ]">
+    ]"
+  >
     <slot />
   </div>
 </template>

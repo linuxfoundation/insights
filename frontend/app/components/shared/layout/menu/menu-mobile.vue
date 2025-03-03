@@ -1,21 +1,33 @@
 <template>
   <div>
-    <lfx-menu-button class="!p-2" @click="isOpen = true">
-      <lfx-icon name="bars" class="font-black text-neutral-400 !h-5 !w-5" :size="18" />
+    <lfx-menu-button
+      class="!p-2"
+      @click="isOpen = true"
+    >
+      <lfx-icon
+        name="bars"
+        class="font-black text-neutral-400 !h-5 !w-5"
+        :size="18"
+      />
     </lfx-menu-button>
     <teleport to="body">
       <div
         class="fixed top-0 left-0 w-full h-full bg-gradient-to-b from-black/5 to-black/25 z-50 transition-all"
         :class="isOpen ? 'opacity-100 visible' : 'opacity-0 invisible'"
-        @click="isOpen = false" />
+        @click="isOpen = false"
+      />
       <div
         class="fixed top-0 right-0 h-full w-78 bg-white p-5 transition-all transform z-50"
         :class="isOpen ? 'translate-x-0' : 'translate-x-full'"
-        @click.stop>
+        @click.stop
+      >
         <div class="flex flex-col justify-between h-full">
           <div>
             <div class="flex justify-end pb-4">
-              <lfx-icon-button icon="close" @click="isOpen = false" />
+              <lfx-icon-button
+                icon="close"
+                @click="isOpen = false"
+              />
             </div>
             <div class="flex flex-col gap-3 items-start">
               <lfx-menu-static-links />
@@ -35,7 +47,8 @@
               >
                 <lfx-button
                   class="!rounded-full"
-                  type="tertiary" size="small"
+                  type="tertiary"
+                  size="small"
                   :icon="`fa-${tool.icon} fa-duotone text-[#00548F]`"
                   :label="tool.name"
                 />
@@ -52,7 +65,9 @@
               </p>
               <lfx-icon
                 name="arrow-up-right"
-                class="text-neutral-500" :size="14" />
+                class="text-neutral-500"
+                :size="14"
+              />
             </a>
           </div>
         </div>

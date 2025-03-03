@@ -1,18 +1,26 @@
 <template>
-  <lfx-modal v-model="isModalOpen" width="42.5rem">
+  <lfx-modal
+    v-model="isModalOpen"
+    width="42.5rem"
+  >
     <div class="p-6">
       <h3 class="text-heading-3 font-secondary font-bold pb-6">
         Custom time range
       </h3>
       <div>
         <lfx-datepicker
-          v-model="dateRange" inline  selection-mode="range" :manual-input="false"
-          :number-of-months="2" />
+          v-model="dateRange"
+          inline
+          selection-mode="range"
+          :manual-input="false"
+          :number-of-months="2"
+        />
       </div>
       <div class="flex justify-end gap-4 pt-6">
         <lfx-button
           type="tertiary"
-          @click="isModalOpen = false">
+          @click="isModalOpen = false"
+        >
           Cancel
         </lfx-button>
         <lfx-button

@@ -5,7 +5,8 @@
       `c-icon-button--${props.size}`,
       `c-icon-button--${props.type}`,
       {'is-disabled': props.disabled}
-    ]">
+    ]"
+  >
     <lfx-icon :name="props.icon" />
   </div>
 </template>

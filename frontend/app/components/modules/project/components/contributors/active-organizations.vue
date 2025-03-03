@@ -7,14 +7,28 @@
     </p>
     <hr>
     <section class="mt-5">
-      <div v-if="status === 'success'" class="flex flex-row gap-4 items-center mb-6">
+      <div
+        v-if="status === 'success'"
+        class="flex flex-row gap-4 items-center mb-6"
+      >
         <div class="text-data-display-1">{{ formatNumber(summary.current) }}</div>
-        <lfx-delta-display :summary="summary" icon="circle-arrow-up-right" icon-type="solid" />
+        <lfx-delta-display
+          :summary="summary"
+          icon="circle-arrow-up-right"
+          icon-type="solid"
+        />
       </div>
 
-      <lfx-tabs :tabs="tabs" :model-value="activeTab" @update:model-value="activeTab = $event" />
+      <lfx-tabs
+        :tabs="tabs"
+        :model-value="activeTab"
+        @update:model-value="activeTab = $event"
+      />
       <div class="w-full h-[330px]">
-        <lfx-chart v-if="status !== 'pending'" :config="barChartConfig" />
+        <lfx-chart
+          v-if="status !== 'pending'"
+          :config="barChartConfig"
+        />
         <lfx-spinner v-else />
       </div>
     </section>

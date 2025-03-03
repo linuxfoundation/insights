@@ -1,10 +1,25 @@
 <template>
-  <div style="width: 100%; height: 400px" class="flex justify-center items-center">
-    <div class="w-1/2" style="height: 400px">
-      <lfx-chart id="chartHalf" :config="getGaugeChartConfig(chartData)" />
+  <div
+    style="width: 100%; height: 400px"
+    class="flex justify-center items-center"
+  >
+    <div
+      class="w-1/2"
+      style="height: 400px"
+    >
+      <lfx-chart
+        id="chartHalf"
+        :config="getGaugeChartConfig(chartData)"
+      />
     </div>
-    <div class="w-1/2" style="height: 100px">
-      <lfx-chart id="chartFull" :config="getGaugeChartConfig(chartDataFull)" />
+    <div
+      class="w-1/2"
+      style="height: 100px"
+    >
+      <lfx-chart
+        id="chartFull"
+        :config="getGaugeChartConfig(chartDataFull)"
+      />
     </div>
   </div>
 </template>

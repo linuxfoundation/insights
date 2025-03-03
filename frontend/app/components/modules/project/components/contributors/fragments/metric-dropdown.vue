@@ -6,7 +6,8 @@
       icon="fa-light fa-display-code"
       :options="metricOptions"
       full-width
-      center />
+      center
+    />
   </div>
 </template>
 

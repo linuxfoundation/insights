@@ -1,9 +1,19 @@
 <template>
   <div>
-    <lfx-menu-button class="!p-2" @click="toggle">
-      <lfx-icon name="bars" class="font-black text-neutral-400 !h-5 !w-5" :size="18" />
+    <lfx-menu-button
+      class="!p-2"
+      @click="toggle"
+    >
+      <lfx-icon
+        name="bars"
+        class="font-black text-neutral-400 !h-5 !w-5"
+        :size="18"
+      />
     </lfx-menu-button>
-    <lfx-popover ref="menu" v-model:is-open="isOpen">
+    <lfx-popover
+      ref="menu"
+      v-model:is-open="isOpen"
+    >
       <div class="p-3 w-80">
         <div class="flex flex-col gap-3 items-start border-b border-neutral-100 pb-3">
           <lfx-menu-static-links />
@@ -21,7 +31,12 @@
               rel="noopener noreferrer"
               class="bg-white hover:bg-neutral-50 transition w-full px-3 py-2 flex items-center rounded-md"
             >
-              <lfx-icon :name="tool.icon" type="duotone" class="text-[#00548F]" :size="16" />
+              <lfx-icon
+                :name="tool.icon"
+                type="duotone"
+                class="text-[#00548F]"
+                :size="16"
+              />
               <div class="pl-3">
                 <h6 class="text-xs font-medium leading-5">{{tool.name}}</h6>
               </div>
@@ -41,7 +56,9 @@
           </p>
           <lfx-icon
             name="arrow-up-right"
-            class="text-neutral-500" :size="14" />
+            class="text-neutral-500"
+            :size="14"
+          />
         </a>
       </div>
     </lfx-popover>

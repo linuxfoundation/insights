@@ -9,10 +9,16 @@
     <hr>
     <section class="mt-5">
       <div class="min-h-[500px]">
-        <div v-if="status === 'pending'" class="flex justify-center items-center h-full">
+        <div
+          v-if="status === 'pending'"
+          class="flex justify-center items-center h-full"
+        >
           <lfx-spinner />
         </div>
-        <div v-else-if="status === 'error'" class="flex justify-center items-center h-full">
+        <div
+          v-else-if="status === 'error'"
+          class="flex justify-center items-center h-full"
+        >
           <!-- <lfx-error-message /> -->
           <!-- TODO: Need to define an empty or error state here -->
         </div>
@@ -23,14 +29,16 @@
             :top-dependency="topOrganizations"
             :other-dependency="otherOrganizations"
             :list="organizations"
-            label="organizations">
+            label="organizations"
+          >
             <lfx-avatar-group>
               <lfx-avatar
                 v-for="orgAvatar in topOrganizationsAvatars"
                 :key="orgAvatar.name"
                 :name="orgAvatar.name"
                 :src="orgAvatar.logo"
-                type="organization" />
+                type="organization"
+              />
             </lfx-avatar-group>
           </lfx-dependency-display>
 
@@ -41,7 +49,8 @@
           <lfx-organizations-table
             show-percentage
             :metric="metric"
-            :organizations="organizations" />
+            :organizations="organizations"
+          />
         </template>
       </div>
     </section>

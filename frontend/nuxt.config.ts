@@ -27,5 +27,4 @@ export default defineNuxtConfig({
   tailwindcss,
   primevue,
   echarts,
-  plugins: ['~/plugins/toast.plugin.ts']
 });

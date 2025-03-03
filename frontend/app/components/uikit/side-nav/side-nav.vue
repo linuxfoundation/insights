@@ -1,14 +1,25 @@
 <template>
   <ul class="lfx-side-nav sticky top-[240px] flex flex-col gap-4">
-    <li v-for="item in props.list" :key="item.label">
-      <a :href="`#${item.key}`" :class="{ active: activeItem === item.key }" @click="onClick(item.key, $event)">{{
+    <li
+      v-for="item in props.list"
+      :key="item.label"
+    >
+      <a
+        :href="`#${item.key}`"
+        :class="{ active: activeItem === item.key }"
+        @click="onClick(item.key, $event)"
+      >{{
         item.label }}</a>
     </li>
   </ul>
 
   <lfx-button
-    v-if="scrollTopPercentage > 25" class="fixed bottom-10 left-10" type="tertiary"
-    button-style="pill" @click="onClick(props.list[0]?.key || '', $event)">
+    v-if="scrollTopPercentage > 25"
+    class="fixed bottom-10 left-10"
+    type="tertiary"
+    button-style="pill"
+    @click="onClick(props.list[0]?.key || '', $event)"
+  >
     <lfx-icon name="arrow-up" />
     Back to top
   </lfx-button>

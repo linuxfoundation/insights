@@ -2,36 +2,70 @@
   <div class="container">
     <div class="flex justify-between pt-12">
       <div class="w-1/4 pr-10">
-        <lfx-side-nav :list="sideNavItems" :model-value="activeItem" @update:model-value="onSideNavUpdate" />
+        <lfx-side-nav
+          :list="sideNavItems"
+          :model-value="activeItem"
+          @update:model-value="onSideNavUpdate"
+        />
       </div>
       <div class="w-1/2">
-        <lfx-scroll-area class="flex flex-col gap-12" @scrolled-to-view="onScrolledToView">
+        <lfx-scroll-area
+          class="flex flex-col gap-12"
+          @scrolled-to-view="onScrolledToView"
+        >
           <template #default="{ observer }">
-            <lfx-scroll-view id="issues-resolution" :observer="observer">
+            <lfx-scroll-view
+              id="issues-resolution"
+              :observer="observer"
+            >
               <lfx-project-issues-resolution />
             </lfx-scroll-view>
-            <lfx-scroll-view id="pull-requests" :observer="observer">
+            <lfx-scroll-view
+              id="pull-requests"
+              :observer="observer"
+            >
               <lfx-project-pull-requests />
             </lfx-scroll-view>
-            <lfx-scroll-view id="active-days" :observer="observer">
+            <lfx-scroll-view
+              id="active-days"
+              :observer="observer"
+            >
               <lfx-project-active-days />
             </lfx-scroll-view>
-            <lfx-scroll-view id="contributions-outside-work-hours" :observer="observer">
+            <lfx-scroll-view
+              id="contributions-outside-work-hours"
+              :observer="observer"
+            >
               <lfx-project-contributions-outside-work-hours />
             </lfx-scroll-view>
-            <lfx-scroll-view id="merge-lead-time" :observer="observer">
+            <lfx-scroll-view
+              id="merge-lead-time"
+              :observer="observer"
+            >
               <lfx-project-merge-lead-time />
             </lfx-scroll-view>
-            <lfx-scroll-view id="forks-review-time-by-pull-request-size" :observer="observer">
+            <lfx-scroll-view
+              id="forks-review-time-by-pull-request-size"
+              :observer="observer"
+            >
               <lfx-project-forks-review-time-by-pull-request-size />
             </lfx-scroll-view>
-            <lfx-scroll-view id="average-time-to-merge" :observer="observer">
+            <lfx-scroll-view
+              id="average-time-to-merge"
+              :observer="observer"
+            >
               <lfx-project-average-time-to-merge />
             </lfx-scroll-view>
-            <lfx-scroll-view id="forks-wait-time-first-review" :observer="observer">
+            <lfx-scroll-view
+              id="forks-wait-time-first-review"
+              :observer="observer"
+            >
               <lfx-project-forks-wait-time-first-review />
             </lfx-scroll-view>
-            <lfx-scroll-view id="code-review-engagement" :observer="observer">
+            <lfx-scroll-view
+              id="code-review-engagement"
+              :observer="observer"
+            >
               <lfx-project-code-review-engagement />
             </lfx-scroll-view>
           </template>
