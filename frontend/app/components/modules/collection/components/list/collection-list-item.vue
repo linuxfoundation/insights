@@ -30,65 +30,30 @@
             </lfx-chip>
           </div>
         </div>
-        <div class="w-5/12 px-2 flex justify-end">
-          <div class="flex flex-wrap gap-8 justify-start">
-            <article>
-              <lfx-tag
-                type="transparent"
-                size="small"
-              >
-                <lfx-icon
-                  name="people-group"
-                  :size="12"
-                />
-                Contributors
-              </lfx-tag>
-              <p class="text-lg leading-7 mt-1">
-                {{ formatNumberShort(props.collection.contributorsCount) }}
-              </p>
-            </article>
-            <article>
-              <lfx-tag
-                type="transparent"
-                size="small"
-              >
-                <lfx-icon
-                  name="building"
-                  :size="12"
-                />
-                Organizations
-              </lfx-tag>
-              <p class="text-lg leading-7 mt-1">
-                {{ formatNumberShort(props.collection.organizationsCount) }}
-              </p>
-            </article>
-            <article>
-              <lfx-tag
-                type="transparent"
-                size="small"
-              >
+        <div class="w-5/12 px-2 flex justify-end items-start">
+          <div class="flex flex-wrap gap-6 justify-start">
+            <article class="flex items-center gap-2">
+              <div class="h-8 w-8 rounded-full flex items-center justify-center bg-brand-50">
                 <lfx-icon
                   name="laptop-code"
-                  :size="12"
+                  :size="16"
+                  class="text-brand-600"
                 />
-                Projects
-              </lfx-tag>
-              <p class="text-lg leading-7 mt-1">
-                {{ formatNumberShort(props.collection.projectsCount) }}
+              </div>
+              <p class="leading-6 transition-all text-sm">
+                {{formatNumberShort(props.collection.projectsCount)}} projects
               </p>
             </article>
-            <article>
-              <lfx-tag
-                type="transparent"
-                size="small"
-              >
+            <article class="flex items-center gap-2">
+              <div class="h-8 w-8 rounded-full flex items-center justify-center bg-positive-50">
                 <lfx-icon
                   name="dollar-circle"
-                  :size="12"
+                  :size="16"
+                  class="text-positive-600"
                 />
-                Software value
-              </lfx-tag>
-              <p class="text-lg leading-7 mt-1">
+              </div>
+              <p class="leading-6 transition-all text-sm">
+                <span class="text-neutral-500">Software value:</span>
                 ${{ formatNumberShort(props.collection.softwareValueCount) }}
               </p>
             </article>
@@ -104,7 +69,6 @@ import type {Collection} from "~/components/modules/collection/types/Collection"
 import LfxCard from "~/components/uikit/card/card.vue";
 import LfxChip from "~/components/uikit/chip/chip.vue";
 import LfxAvatar from "~/components/uikit/avatar/avatar.vue";
-import LfxTag from "~/components/uikit/tag/tag.vue";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
 import {LfxRoutes} from "~/components/shared/types/routes";
 import {formatNumberShort} from "~/components/shared/utils/formatter";
