@@ -12,18 +12,23 @@
             :tabs="tabs"
             :model-value="activeTab"
             width-type="inline"
-            @update:model-value="activeTab = $event" />
+            @update:model-value="activeTab = $event"
+          />
         </div>
         <div class="basis-1/2 flex justify-end">
           <lfx-tabs
             :tabs="chartTypes"
             :model-value="chartType"
             width-type="inline"
-            @update:model-value="chartType = $event" />
+            @update:model-value="chartType = $event"
+          />
         </div>
       </div>
       <div class="w-full h-[330px]">
-        <lfx-chart v-if="status !== 'pending'" :config="lineAreaChartConfig" />
+        <lfx-chart
+          v-if="status !== 'pending'"
+          :config="lineAreaChartConfig"
+        />
         <lfx-spinner v-else />
       </div>
     </section>
@@ -34,6 +39,7 @@
 import { ref, watch, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { useFetch } from 'nuxt/app';
+import {storeToRefs} from "pinia";
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
 import LfxChart from '~/components/uikit/chart/chart.vue';
@@ -49,27 +55,26 @@ import type {
 import { lfxColors } from '~/config/styles/colors';
 import { axisLabelFormatter } from '~/components/uikit/chart/helpers/formatters';
 import { getLineAreaChartConfig } from '~/components/uikit/chart/configs/line.area.chart';
-
-const props = withDefaults(
-  defineProps<{
-    timePeriod?: string;
-  }>(),
-  {
-    timePeriod: '90d'
-  }
-);
+import {useProjectStore} from "~/components/modules/project/store/project.store";
 
 const { showToast } = useToastService();
+const {startDate, endDate} = storeToRefs(useProjectStore())
 
 const route = useRoute();
 
 const activeTab = ref('contributors');
 const chartType = ref('line');
 
-const { data, status, error } = useFetch(
-  () => `/api/projects/contributors/retention?type=${activeTab.value}&project=${
-      route.params.slug
-    }&repository=${route.params.name || ''}&time-period=${props.timePeriod}`
+const {data, status, error} = useFetch(
+    `/api/project/${route.params.slug}/contributors/retention`,
+    {
+      params: {
+        type: activeTab.value,
+        repository: route.params.name || '',
+        startDate,
+        endDate,
+      }
+    }
 );
 
 const chartData = computed<ChartData[]>(

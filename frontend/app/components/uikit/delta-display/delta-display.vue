@@ -1,9 +1,16 @@
 <template>
-  <div class="flex flex-col" :class="{ 'flex-col-reverse': props.flipDisplay }">
+  <div
+    class="flex flex-col"
+    :class="{ 'flex-col-reverse': props.flipDisplay }"
+  >
     <!-- TODO: These colors seems different from what is defined in the design system
      Waiting for verification from Nuno -->
     <span :class="['text-body-1 flex items-center gap-2', deltaColor]">
-      <lfx-icon :name="props.icon" :type="props.iconType" :size="12" />
+      <lfx-icon
+        :name="props.icon"
+        :type="props.iconType"
+        :size="12"
+      />
       {{ percentage }}%
       {{ deltaDisplay }}
     </span>

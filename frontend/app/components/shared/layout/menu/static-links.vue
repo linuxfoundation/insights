@@ -1,6 +1,13 @@
 <template>
-  <lfx-menu-button v-for="link of lfxMenu.links" :key="link.label" :to="{name: link.route}">
-    <lfx-icon v-if="link.icon" :name="link.icon" />
+  <lfx-menu-button
+    v-for="link of lfxMenu.links"
+    :key="link.label"
+    :to="{name: link.route}"
+  >
+    <lfx-icon
+      v-if="link.icon"
+      :name="link.icon"
+    />
     {{ link.label }}
   </lfx-menu-button>
 </template>

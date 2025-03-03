@@ -1,6 +1,14 @@
 <template>
-  <lfx-tooltip placement="top" content="Copy link" :disabled="isSharable || !isCopyable">
-    <div v-if="isSharable || isCopyable" class="w-min" @click="share()">
+  <lfx-tooltip
+    placement="top"
+    content="Copy link"
+    :disabled="isSharable || !isCopyable"
+  >
+    <div
+      v-if="isSharable || isCopyable"
+      class="w-min"
+      @click="share()"
+    >
       <slot />
     </div>
   </lfx-tooltip>

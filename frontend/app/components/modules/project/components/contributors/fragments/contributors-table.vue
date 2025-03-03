@@ -5,9 +5,16 @@
       <div>{{ contributionColumnHeader }}</div>
     </div>
 
-    <div v-for="(contributor, index) in props.contributors" :key="index" class="lfx-table-row">
+    <div
+      v-for="(contributor, index) in props.contributors"
+      :key="index"
+      class="lfx-table-row"
+    >
       <div class="flex flex-row gap-3 items-center">
-        <lfx-avatar :src="contributor.avatar" type="member" />
+        <lfx-avatar
+          :src="contributor.avatar"
+          type="member"
+        />
         <div>{{ contributor.name }}</div>
       </div>
       <div>

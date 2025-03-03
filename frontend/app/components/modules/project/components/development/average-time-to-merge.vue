@@ -9,13 +9,24 @@
     </p>
     <hr>
     <section class="mt-5">
-      <div v-if="status === 'success'" class="flex flex-row gap-4 items-center mb-6">
+      <div
+        v-if="status === 'success'"
+        class="flex flex-row gap-4 items-center mb-6"
+      >
         <div class="text-data-display-1">{{ formatNumberToDuration(summary.current) }}</div>
-        <lfx-delta-display :summary="summary" icon="circle-arrow-up-right" icon-type="solid" is-duration />
+        <lfx-delta-display
+          :summary="summary"
+          icon="circle-arrow-up-right"
+          icon-type="solid"
+          is-duration
+        />
       </div>
 
       <div class="w-full h-[330px]">
-        <lfx-chart v-if="status !== 'pending'" :config="barChartConfig" />
+        <lfx-chart
+          v-if="status !== 'pending'"
+          :config="barChartConfig"
+        />
         <lfx-spinner v-else />
       </div>
     </section>
@@ -25,6 +36,7 @@
 <script setup lang="ts">
 import { useFetch, useRoute } from 'nuxt/app';
 import { ref, computed, watch } from 'vue';
+import { storeToRefs } from "pinia";
 import type { AverageTimeMerge } from './types/average-time-merge.types';
 import type { Summary } from '~/components/shared/types/summary.types';
 import LfxCard from '~/components/uikit/card/card.vue';
@@ -43,23 +55,22 @@ import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 import { formatNumberToDuration } from '~/components/shared/utils/formatter';
-
-const props = withDefaults(
-  defineProps<{
-    timePeriod?: string;
-  }>(),
-  {
-    timePeriod: '90d'
-  }
-);
+import { useProjectStore } from "~/components/modules/project/store/project.store";
 
 const { showToast } = useToastService();
+const { startDate, endDate } = storeToRefs(useProjectStore())
 
 const route = useRoute();
 
 const { data, status, error } = useFetch(
-  () => `/api/projects/development/average-time-merge?project=${route.params.slug
-    }&repository=${route.params.name || ''}&time-period=${props.timePeriod}`
+  `/api/project/${route.params.slug}/development/average-time-merge`,
+  {
+    params: {
+      repository: route.params.name || '',
+      startDate,
+      endDate,
+    }
+  }
 );
 
 const averageTimeMerge = computed<AverageTimeMerge>(() => data.value as AverageTimeMerge);

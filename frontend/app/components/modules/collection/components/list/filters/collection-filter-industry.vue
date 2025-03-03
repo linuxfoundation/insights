@@ -42,7 +42,7 @@ const options = computed<DropdownGroupOptions>(() => [
 ])
 
 const { data } = useFetch<DropdownGroupOptions>(
-    () => `/api/collections/industry`
+    () => `/api/collection/industry`
 );
 </script>
 

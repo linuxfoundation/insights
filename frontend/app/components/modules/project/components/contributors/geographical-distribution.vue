@@ -12,23 +12,38 @@
         <div class="flex flex-row gap-4 items-center mb-10">
           <div class="basis-1/2">
             <lfx-tabs
-              :tabs="tabs" :model-value="activeTab" width-type="inline"
-              @update:model-value="activeTab = $event" />
+              :tabs="tabs"
+              :model-value="activeTab"
+              width-type="inline"
+              @update:model-value="activeTab = $event"
+            />
           </div>
           <div class="basis-1/2 flex justify-end">
-            <lfx-dropdown v-model="metric" icon="fa-light fa-display-code" :options="metricOptions" />
+            <lfx-dropdown
+              v-model="metric"
+              icon="fa-light fa-display-code"
+              :options="metricOptions"
+            />
           </div>
         </div>
       </div>
       <div class="w-full h-[330px] border-solid border-neutral-100 border-x-0 border-y">
         <lfx-chart
           v-if="status !== 'pending'"
-          :config="getGeoMapChartConfig(chartData, chartSeries, getMaxValue(chartData))" />
+          :config="getGeoMapChartConfig(chartData, chartSeries, getMaxValue(chartData))"
+        />
         <lfx-spinner v-else />
       </div>
       <div class="px-6 mt-5">
-        <div v-if="status !== 'pending'" class="flex flex-col gap-5">
-          <div v-for="item in geoMapData" :key="item.name" class="flex flex-row justify-between items-center text-sm">
+        <div
+          v-if="status !== 'pending'"
+          class="flex flex-col gap-5"
+        >
+          <div
+            v-for="item in geoMapData"
+            :key="item.name"
+            class="flex flex-row justify-between items-center text-sm"
+          >
             <div class="flex flex-row gap-4 items-center">
               <span class="text-base">
                 {{ item.flag }}
@@ -51,6 +66,7 @@
 import { ref, watch, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { useFetch } from 'nuxt/app';
+import { storeToRefs } from "pinia";
 import { metricsOptions } from './config/metrics';
 import type { GeoMapResponse, GeoMapData } from './types/geo-map.types';
 import LfxCard from '~/components/uikit/card/card.vue';
@@ -68,15 +84,7 @@ import type {
 } from '~/components/uikit/chart/types/ChartTypes';
 import { getGeoMapChartConfig } from '~/components/uikit/chart/configs/geo-map.chart';
 import { formatNumber } from '~/components/shared/utils/formatter';
-
-const props = withDefaults(
-  defineProps<{
-    timePeriod?: string;
-  }>(),
-  {
-    timePeriod: '90d'
-  }
-);
+import { useProjectStore } from "~/components/modules/project/store/project.store";
 
 const { showToast } = useToastService();
 const metricOptions = metricsOptions;
@@ -85,9 +93,18 @@ const route = useRoute();
 const metric = ref('all');
 const activeTab = ref('contributors');
 
+const { startDate, endDate } = storeToRefs(useProjectStore())
+
 const { data, status, error } = useFetch(
-  () => `/api/projects/contributors/geographical-distribution?type=${activeTab.value}&project=${route.params.slug
-    }&repository=${route.params.name || ''}&time-period=${props.timePeriod}`
+  `/api/project/${route.params.slug}/contributors/geographical-distribution`,
+  {
+    params: {
+      type: activeTab.value,
+      repository: route.params.name || '',
+      startDate,
+      endDate,
+    }
+  }
 );
 
 const geoMapData = computed<GeoMapData[]>(() => (data.value as GeoMapResponse).data);

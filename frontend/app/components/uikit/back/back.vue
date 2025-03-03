@@ -1,5 +1,9 @@
 <template>
-  <div v-if="hasPreviousRoute" v-bind="$attrs" @click="goBack()">
+  <div
+    v-if="hasPreviousRoute"
+    v-bind="$attrs"
+    @click="goBack()"
+  >
     <slot />
   </div>
 </template>
