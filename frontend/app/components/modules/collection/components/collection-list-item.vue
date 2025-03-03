@@ -4,7 +4,7 @@
       <div class="flex -mx-2">
         <div class="w-7/12 px-2">
           <h3 class="text-heading-3 leading-7 font-secondary font-bold pb-2">
-            {{props.collection.name}}
+            {{ props.collection.name }}
           </h3>
           <p class="text-body-1 leading-5 text-neutral-500 pb-6">
             {{ props.collection.description }}
@@ -16,20 +16,18 @@
             class="flex flex-wrap gap-3"
             @click.prevent
           >
-            <nuxt-link
+            <lfx-chip
               v-for="project of props.collection.featuredProjects"
               :key="project.slug"
-              :to="{name: LfxRoutes.PROJECT, params: {slug: project.slug}}"
+              type="bordered"
             >
-              <lfx-chip type="bordered">
-                <lfx-avatar
-                  :src="project.logo"
-                  size="xsmall"
-                  type="organization"
-                />
-                {{ project.name }}
-              </lfx-chip>
-            </nuxt-link>
+              <lfx-avatar
+                :src="project.logo"
+                size="xsmall"
+                type="organization"
+              />
+              {{ project.name }}
+            </lfx-chip>
           </div>
         </div>
         <div class="w-5/12 px-2 flex justify-end">
@@ -61,7 +59,7 @@
                 Organizations
               </lfx-tag>
               <p class="text-lg leading-7 mt-1">
-                {{formatNumberShort(props.collection.organizationsCount)}}
+                {{ formatNumberShort(props.collection.organizationsCount) }}
               </p>
             </article>
             <article>
@@ -76,7 +74,7 @@
                 Projects
               </lfx-tag>
               <p class="text-lg leading-7 mt-1">
-                {{formatNumberShort(props.collection.projectsCount)}}
+                {{ formatNumberShort(props.collection.projectsCount) }}
               </p>
             </article>
             <article>
@@ -91,7 +89,7 @@
                 Software value
               </lfx-tag>
               <p class="text-lg leading-7 mt-1">
-                ${{formatNumberShort(props.collection.softwareValueCount)}}
+                ${{ formatNumberShort(props.collection.softwareValueCount) }}
               </p>
             </article>
           </div>
