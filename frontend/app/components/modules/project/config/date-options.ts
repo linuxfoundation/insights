@@ -1,4 +1,4 @@
-import useDate from "~/components/shared/utils/date";
+import { DateTime } from 'luxon';
 
 export interface DateOptionConfig {
     key: string;
@@ -8,29 +8,29 @@ export interface DateOptionConfig {
     description?: string;
 }
 
-const date = useDate();
+const now = DateTime.local();
 
 export const lfxProjectDateOptionsPast: DateOptionConfig[] = [
     {
         key: 'past90days',
         label: 'Past 90 days',
-        startDate: date().subtract(90, 'day').startOf('day').format('YYYY-MM-DD'),
-        endDate: date().endOf('day').format('YYYY-MM-DD'),
-        description: `${date().subtract(90, 'day').format('MMM D, YYYY')} -> Today`
+        startDate: now.minus({ days: 90 }).startOf('day').toFormat('yyyy-MM-dd'),
+        endDate: now.endOf('day').toFormat('yyyy-MM-dd'),
+        description: `${now.minus({ days: 90 }).toFormat('MMM d, yyyy')} -> Today`
     },
     {
         key: 'past180days',
         label: 'Past 180 days',
-        startDate: date().subtract(180, 'day').startOf('day').format('YYYY-MM-DD'),
-        endDate: date().endOf('day').format('YYYY-MM-DD'),
-        description: `${date().subtract(180, 'day').format('MMM D, YYYY')} -> Today`
+        startDate: now.minus({ days: 180 }).startOf('day').toFormat('yyyy-MM-dd'),
+        endDate: now.endOf('day').toFormat('yyyy-MM-dd'),
+        description: `${now.minus({ days: 180 }).toFormat('MMM d, yyyy')} -> Today`
     },
     {
         key: 'past365days',
         label: 'Past 365 days',
-        startDate: date().subtract(365, 'day').startOf('day').format('YYYY-MM-DD'),
-        endDate: date().endOf('day').format('YYYY-MM-DD'),
-        description: `${date().subtract(365, 'day').format('MMM D, YYYY')} -> Today`
+        startDate: now.minus({ days: 365 }).startOf('day').toFormat('yyyy-MM-dd'),
+        endDate: now.endOf('day').toFormat('yyyy-MM-dd'),
+        description: `${now.minus({ days: 365 }).toFormat('MMM d, yyyy')} -> Today`
     },
 ];
 
@@ -38,33 +38,33 @@ export const lfxProjectDateOptionsPrevious: DateOptionConfig[] = [
     {
         key: 'previousQuarter',
         label: 'Previous quarter',
-        startDate: date().subtract(1, 'quarter').startOf('quarter').format('YYYY-MM-DD'),
-        endDate: date().subtract(1, 'quarter').endOf('quarter').format('YYYY-MM-DD'),
-        description: `${date().subtract(1, 'quarter').startOf('quarter').format('MMM YYYY')} 
-        -> ${date().subtract(1, 'quarter').endOf('quarter').format('MMM YYYY')}`
+        startDate: now.minus({ quarters: 1 }).startOf('quarter').toFormat('yyyy-MM-dd'),
+        endDate: now.minus({ quarters: 1 }).endOf('quarter').toFormat('yyyy-MM-dd'),
+        description: `${now.minus({ quarters: 1 }).startOf('quarter').toFormat('MMM yyyy')} 
+        -> ${now.minus({ quarters: 1 }).endOf('quarter').toFormat('MMM yyyy')}`
     },
     {
         key: 'previousYear',
         label: 'Previous year',
-        startDate: date().subtract(1, 'year').startOf('year').format('YYYY-MM-DD'),
-        endDate: date().subtract(1, 'year').endOf('year').format('YYYY-MM-DD'),
-        description: `${date().subtract(1, 'year').format('YYYY')}`
+        startDate: now.minus({ years: 1 }).startOf('year').toFormat('yyyy-MM-dd'),
+        endDate: now.minus({ years: 1 }).endOf('year').toFormat('yyyy-MM-dd'),
+        description: `${now.minus({ years: 1 }).toFormat('yyyy')}`
     },
     {
         key: 'previous5Year',
         label: 'Previous 5 years',
-        startDate: date().subtract(5, 'year').startOf('year').format('YYYY-MM-DD'),
-        endDate: date().subtract(1, 'year').endOf('year').format('YYYY-MM-DD'),
-        description: `${date().subtract(5, 'year').format('YYYY')} 
-        -> ${date().subtract(1, 'year').endOf('year').format('YYYY')}`
+        startDate: now.minus({ years: 5 }).startOf('year').toFormat('yyyy-MM-dd'),
+        endDate: now.minus({ years: 1 }).endOf('year').toFormat('yyyy-MM-dd'),
+        description: `${now.minus({ years: 5 }).toFormat('yyyy')} 
+        -> ${now.minus({ years: 1 }).endOf('year').toFormat('yyyy')}`
     },
     {
         key: 'previous10Year',
         label: 'Previous 10 years',
-        startDate: date().subtract(10, 'year').startOf('year').format('YYYY-MM-DD'),
-        endDate: date().subtract(1, 'year').endOf('year').format('YYYY-MM-DD'),
-        description: `${date().subtract(10, 'year').format('YYYY')} 
-        -> ${date().subtract(1, 'year').endOf('year').format('YYYY')}`
+        startDate: now.minus({ years: 10 }).startOf('year').toFormat('yyyy-MM-dd'),
+        endDate: now.minus({ years: 1 }).endOf('year').toFormat('yyyy-MM-dd'),
+        description: `${now.minus({ years: 10 }).toFormat('yyyy')} 
+        -> ${now.minus({ years: 1 }).endOf('year').toFormat('yyyy')}`
     },
 ];
 
