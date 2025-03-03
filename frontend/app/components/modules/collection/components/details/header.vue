@@ -1,13 +1,23 @@
 <template>
   <div class="bg-white">
     <section class="container">
-      <div class="flex gap-4 transition-all"  :class="scrollTop > 50 ? 'py-4' : 'py-8'">
+      <div
+        class="flex gap-4 transition-all"
+        :class="scrollTop > 50 ? 'py-4' : 'py-8'"
+      >
         <lfx-back class="ease-linear transition-all">
-          <lfx-icon-button type="transparent" icon="angle-left" class="" />
+          <lfx-icon-button
+            type="transparent"
+            icon="angle-left"
+            class=""
+          />
         </lfx-back>
         <div class="flex justify-between gap-8 flex-wrap flex-grow">
           <div class="flex-grow flex">
-            <div :class="scrollTop > 50 ? 'pt-1' : 'pt-0.5'" class="w-full">
+            <div
+              :class="scrollTop > 50 ? 'pt-1' : 'pt-0.5'"
+              class="w-full"
+            >
               <lfx-skeleton
                 v-if="loading"
                 height="2rem"
@@ -17,26 +27,40 @@
               <h1
                 v-else-if="props.collection"
                 class="font-secondary font-bold transition-all"
-                :class="scrollTop > 50 ? 'text-heading-3' : 'text-heading-2'">
+                :class="scrollTop > 50 ? 'text-heading-3' : 'text-heading-2'"
+              >
                 {{ props.collection.name }}
               </h1>
-              <div v-if="scrollTop <= 50" class="pt-3 w-full">
+              <div
+                v-if="scrollTop <= 50"
+                class="pt-3 w-full"
+              >
                 <lfx-skeleton
                   v-if="loading"
                   height="1.25rem"
                   width="100%"
                   class="rounded-sm"
                 />
-                <p v-else-if="props.collection" class="text-body-1 text-neutral-500">
+                <p
+                  v-else-if="props.collection"
+                  class="text-body-1 text-neutral-500"
+                >
                   {{props.collection.description}}
                 </p>
               </div>
             </div>
           </div>
-          <div v-if="props.collection" class="flex justify-end transition-all gap-6">
+          <div
+            v-if="props.collection"
+            class="flex justify-end transition-all gap-6"
+          >
             <article class="flex items-center gap-2">
               <div class="h-8 w-8 rounded-full flex items-center justify-center bg-brand-50">
-                <lfx-icon name="laptop-code" :size="16" class="text-brand-600" />
+                <lfx-icon
+                  name="laptop-code"
+                  :size="16"
+                  class="text-brand-600"
+                />
               </div>
               <lfx-skeleton
                 v-if="loading"
@@ -44,13 +68,21 @@
                 width="5rem"
                 class="rounded-sm mt-2"
               />
-              <p v-else class="leading-6 transition-all" :class="scrollTop > 50 ? 'text-sm' : 'text-base'">
+              <p
+                v-else
+                class="leading-6 transition-all"
+                :class="scrollTop > 50 ? 'text-sm' : 'text-base'"
+              >
                 {{formatNumberShort(props.collection.projectsCount)}} projects
               </p>
             </article>
             <article class="flex items-center gap-2">
               <div class="h-8 w-8 rounded-full flex items-center justify-center bg-positive-50">
-                <lfx-icon name="dollar-circle" :size="16" class="text-positive-600" />
+                <lfx-icon
+                  name="dollar-circle"
+                  :size="16"
+                  class="text-positive-600"
+                />
               </div>
               <lfx-skeleton
                 v-if="loading"
@@ -58,7 +90,11 @@
                 width="5rem"
                 class="rounded-sm"
               />
-              <p v-else class="leading-6 transition-all" :class="scrollTop > 50 ? 'text-sm' : 'text-base'">
+              <p
+                v-else
+                class="leading-6 transition-all"
+                :class="scrollTop > 50 ? 'text-sm' : 'text-base'"
+              >
                 <span class="text-neutral-500">Software value:</span>
                 ${{ formatNumberShort(props.collection.softwareValueCount) }}
               </p>

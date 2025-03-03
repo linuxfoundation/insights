@@ -10,17 +10,27 @@
     <hr>
     <section class="mt-5">
       <div class="flex flex-row justify-between items-center mb-6 gap-8">
-        <div v-if="status === 'success'" class="flex flex-row gap-4 items-center grow">
+        <div
+          v-if="status === 'success'"
+          class="flex flex-row gap-4 items-center grow"
+        >
           <div class="text-data-display-1">{{ formatNumber(summary.current) }}%</div>
           <lfx-delta-display
-            :summary="summary" icon="circle-arrow-up-right" icon-type="solid" percentage-only
-            unit="%" />
+            :summary="summary"
+            icon="circle-arrow-up-right"
+            icon-type="solid"
+            percentage-only
+            unit="%"
+          />
         </div>
         <div class="flex flex-col items-end justify-center">
           <span class="text-neutral-400 text-xs flex flex-row gap-2 items-center">
             Mon-Fri (after 18:00)
           </span>
-          <span v-if="status === 'success'" class="text-xl">
+          <span
+            v-if="status === 'success'"
+            class="text-xl"
+          >
             {{ formatNumber(weekdayPercentage, 1) }}%
           </span>
         </div>
@@ -28,14 +38,20 @@
           <span class="text-neutral-400 text-xs flex flex-row gap-2 items-center">
             Weekends
           </span>
-          <span v-if="status === 'success'" class="text-xl">
+          <span
+            v-if="status === 'success'"
+            class="text-xl"
+          >
             {{ formatNumber(weekendPercentage, 1) }}%
           </span>
         </div>
       </div>
 
       <div class="w-full h-[430px] my-5">
-        <lfx-chart v-if="status !== 'pending'" :config="getScatterChartConfig(chartData, chartSeries)" />
+        <lfx-chart
+          v-if="status !== 'pending'"
+          :config="getScatterChartConfig(chartData, chartSeries)"
+        />
         <lfx-spinner v-else />
       </div>
     </section>

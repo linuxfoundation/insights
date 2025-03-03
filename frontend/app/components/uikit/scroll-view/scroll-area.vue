@@ -1,5 +1,8 @@
 <template>
-  <div ref="scrollAreaRef" class="scroll-area">
+  <div
+    ref="scrollAreaRef"
+    class="scroll-area"
+  >
     <slot :observer="observer" />
   </div>
 </template>

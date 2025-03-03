@@ -11,14 +11,24 @@
       <lfx-metric-dropdown v-model="metric" />
 
       <div class="min-h-[500px]">
-        <div v-if="status === 'pending'" class="flex justify-center items-center h-full">
+        <div
+          v-if="status === 'pending'"
+          class="flex justify-center items-center h-full"
+        >
           <lfx-spinner />
         </div>
-        <div v-else-if="status === 'error'" class="flex justify-center items-center h-full">
+        <div
+          v-else-if="status === 'error'"
+          class="flex justify-center items-center h-full"
+        >
           <!-- <lfx-error-message /> -->
           <!-- TODO: Need to define an empty or error state here -->
         </div>
-        <lfx-contributors-table v-else :metric="metric" :contributors="contributors.data" />
+        <lfx-contributors-table
+          v-else
+          :metric="metric"
+          :contributors="contributors.data"
+        />
       </div>
     </section>
   </lfx-card>

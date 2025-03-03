@@ -1,6 +1,9 @@
 <template>
   <div class="w-full h-full flex flex-col justify-between">
-    <VChart id="chart" :option="props.config" />
+    <VChart
+      id="chart"
+      :option="props.config"
+    />
     <div>
       <slot name="legend" />
     </div>

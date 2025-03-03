@@ -9,7 +9,8 @@
       'p-avatar-sm': props.size === 'small',
       'p-avatar-xsmall': props.size === 'xsmall',
       'has-image': props.src
-    }" />
+    }"
+  />
 </template>
 
 <script setup lang="ts">

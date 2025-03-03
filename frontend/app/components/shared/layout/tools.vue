@@ -1,8 +1,18 @@
 <template>
-  <lfx-menu-button class="!px-2" :class="{'bg-neutral-100 text-neutral-600': isOpen}" @click="toggle">
-    <lfx-icon name="grid-round" class="font-black" />
+  <lfx-menu-button
+    class="!px-2"
+    :class="{'bg-neutral-100 text-neutral-600': isOpen}"
+    @click="toggle"
+  >
+    <lfx-icon
+      name="grid-round"
+      class="font-black"
+    />
   </lfx-menu-button>
-  <lfx-popover ref="menu" v-model:is-open="isOpen">
+  <lfx-popover
+    ref="menu"
+    v-model:is-open="isOpen"
+  >
     <div class="p-3 w-149">
       <div class="flex flex-wrap -m-1.5">
         <div
@@ -16,7 +26,12 @@
             rel="noopener noreferrer"
             class="bg-white hover:bg-neutral-50 transition w-full px-3 py-2.5 flex items-center rounded-md"
           >
-            <lfx-icon :name="tool.icon" type="duotone" class="text-[#00548F]" :size="24" />
+            <lfx-icon
+              :name="tool.icon"
+              type="duotone"
+              class="text-[#00548F]"
+              :size="24"
+            />
             <div class="pl-4">
               <h6 class="text-sm font-semibold mb-0.5 leading-4.5">{{tool.name}}</h6>
               <p class="text-xs text-neutral-500 leading-4">
@@ -39,7 +54,9 @@
         </p>
         <lfx-icon
           name="arrow-up-right"
-          class="text-neutral-500" :size="14" />
+          class="text-neutral-500"
+          :size="14"
+        />
       </a>
     </div>
   </lfx-popover>

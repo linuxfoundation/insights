@@ -12,18 +12,23 @@
             :tabs="tabs"
             :model-value="activeTab"
             width-type="inline"
-            @update:model-value="activeTab = $event" />
+            @update:model-value="activeTab = $event"
+          />
         </div>
         <div class="basis-1/2 flex justify-end">
           <lfx-tabs
             :tabs="chartTypes"
             :model-value="chartType"
             width-type="inline"
-            @update:model-value="chartType = $event" />
+            @update:model-value="chartType = $event"
+          />
         </div>
       </div>
       <div class="w-full h-[330px]">
-        <lfx-chart v-if="status !== 'pending'" :config="lineAreaChartConfig" />
+        <lfx-chart
+          v-if="status !== 'pending'"
+          :config="lineAreaChartConfig"
+        />
         <lfx-spinner v-else />
       </div>
     </section>

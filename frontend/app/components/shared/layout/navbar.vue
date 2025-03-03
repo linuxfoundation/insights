@@ -5,8 +5,16 @@
         <div class="flex items-center gap-6 flex-grow min-w-0">
           <div>
             <nuxt-link :to="{ name: LfxRoutes.EXPLORE }">
-              <img src="~/assets/images/logo.svg" alt="LFX Insights" class="h-6 min-w-44 hidden xl:block">
-              <img src="~/assets/images/logo-mobile.svg" alt="LFX Insights" class="h-6 min-w-29 block xl:hidden">
+              <img
+                src="~/assets/images/logo.svg"
+                alt="LFX Insights"
+                class="h-6 min-w-44 hidden xl:block"
+              >
+              <img
+                src="~/assets/images/logo-mobile.svg"
+                alt="LFX Insights"
+                class="h-6 min-w-29 block xl:hidden"
+              >
             </nuxt-link>
           </div>
           <lfx-search />

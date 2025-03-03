@@ -2,31 +2,59 @@
   <div class="container">
     <div class="flex justify-between pt-10">
       <div class="w-1/4 pr-10">
-        <lfx-side-nav :list="sideNavItems" :model-value="activeItem" @update:model-value="onSideNavUpdate" />
+        <lfx-side-nav
+          :list="sideNavItems"
+          :model-value="activeItem"
+          @update:model-value="onSideNavUpdate"
+        />
       </div>
 
       <div class="w-1/2">
-        <lfx-scroll-area class="flex flex-col gap-12" @scrolled-to-view="onScrolledToView">
+        <lfx-scroll-area
+          class="flex flex-col gap-12"
+          @scrolled-to-view="onScrolledToView"
+        >
           <template #default="{ observer }">
-            <lfx-scroll-view id="active-contributors" :observer="observer">
+            <lfx-scroll-view
+              id="active-contributors"
+              :observer="observer"
+            >
               <lfx-project-active-contributors />
             </lfx-scroll-view>
-            <lfx-scroll-view id="active-organizations" :observer="observer">
+            <lfx-scroll-view
+              id="active-organizations"
+              :observer="observer"
+            >
               <lfx-project-active-organizations />
             </lfx-scroll-view>
-            <lfx-scroll-view id="contributors-leaderboard" :observer="observer">
+            <lfx-scroll-view
+              id="contributors-leaderboard"
+              :observer="observer"
+            >
               <lfx-project-contributors-leaderboard />
             </lfx-scroll-view>
-            <lfx-scroll-view id="organizations-leaderboard" :observer="observer">
+            <lfx-scroll-view
+              id="organizations-leaderboard"
+              :observer="observer"
+            >
               <lfx-project-organizations-leaderboard />
             </lfx-scroll-view>
-            <lfx-scroll-view id="contributor-dependency" :observer="observer">
+            <lfx-scroll-view
+              id="contributor-dependency"
+              :observer="observer"
+            >
               <lfx-project-contributor-dependency />
             </lfx-scroll-view>
-            <lfx-scroll-view id="organization-dependency" :observer="observer">
+            <lfx-scroll-view
+              id="organization-dependency"
+              :observer="observer"
+            >
               <lfx-project-organization-dependency />
             </lfx-scroll-view>
-            <lfx-scroll-view id="retention" :observer="observer">
+            <lfx-scroll-view
+              id="retention"
+              :observer="observer"
+            >
               <lfx-project-retention />
             </lfx-scroll-view>
             <!--            <lfx-scroll-view id="geographical-distribution" :observer="observer">-->

@@ -1,7 +1,13 @@
 <template>
-  <pv-toast :theme="props.theme" position="bottom-center">
+  <pv-toast
+    :theme="props.theme"
+    position="bottom-center"
+  >
     <template #message="slotProps">
-      <i class="p-toast-icon" :class="getToastIcon(slotProps.message)" />
+      <i
+        class="p-toast-icon"
+        :class="getToastIcon(slotProps.message)"
+      />
       {{ slotProps.message.detail }}
     </template>
   </pv-toast>

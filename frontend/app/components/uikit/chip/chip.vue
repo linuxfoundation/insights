@@ -1,7 +1,15 @@
 <template>
-  <div v-if="isVisible" :class="`p-chip p-chip-size-${props.size} p-chip-type-${props.type}`" role="alert">
+  <div
+    v-if="isVisible"
+    :class="`p-chip p-chip-size-${props.size} p-chip-type-${props.type}`"
+    role="alert"
+  >
     <slot />
-    <i v-if="props.removable" class="p-chip-remove-icon fa-solid fa-circle-xmark" @click="dismiss" />
+    <i
+      v-if="props.removable"
+      class="p-chip-remove-icon fa-solid fa-circle-xmark"
+      @click="dismiss"
+    />
   </div>
 </template>
 

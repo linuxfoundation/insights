@@ -9,16 +9,26 @@
     </p>
     <hr>
     <section class="mt-5">
-      <div v-if="status === 'success'" class="flex flex-row justify-between items-center mb-6">
+      <div
+        v-if="status === 'success'"
+        class="flex flex-row justify-between items-center mb-6"
+      >
         <div class="flex flex-row gap-4 items-center">
           <div class="text-data-display-1">{{ formatNumber(summary.current) }}</div>
-          <lfx-delta-display :summary="summary" icon="circle-arrow-up-right" icon-type="solid" />
+          <lfx-delta-display
+            :summary="summary"
+            icon="circle-arrow-up-right"
+            icon-type="solid"
+          />
         </div>
         <div class="flex flex-col items-end justify-center">
           <span class="text-neutral-400 text-xs flex flex-row gap-2 items-center">
             Avg. contributions per day
           </span>
-          <span v-if="status === 'success'" class="text-xl">
+          <span
+            v-if="status === 'success'"
+            class="text-xl"
+          >
             {{ formatNumber(activeDays.avgContributions) }}
           </span>
         </div>
@@ -26,7 +36,10 @@
 
       <div class="mt-8 mb-6 text-neutral-900 font-medium">Contributions per day</div>
       <div class="w-full h-[100px] mb-5">
-        <lfx-chart v-if="status !== 'pending'" :config="getHeatMapChartConfig(chartData, chartSeries, categoryData)" />
+        <lfx-chart
+          v-if="status !== 'pending'"
+          :config="getHeatMapChartConfig(chartData, chartSeries, categoryData)"
+        />
         <lfx-spinner v-else />
       </div>
     </section>

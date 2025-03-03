@@ -5,12 +5,20 @@
       border-neutral-200 rounded-full hidden sm:flex items-center gap-2 px-3 cursor-pointer"
       @click="isModalOpen = true"
     >
-      <lfx-icon name="search" class="text-neutral-400 font-normal" :size="14" />
+      <lfx-icon
+        name="search"
+        class="text-neutral-400 font-normal"
+        :size="14"
+      />
       <p class="text-body-1 text-neutral-400 truncate">
         Search projects, repositories...
       </p>
       <div class="flex-grow" />
-      <lfx-chip v-if="!isMobile" size="small" type="bordered">
+      <lfx-chip
+        v-if="!isMobile"
+        size="small"
+        type="bordered"
+      >
         <template v-if="isMac">
           ⌘+K
         </template>
@@ -20,12 +28,22 @@
       </lfx-chip>
     </div>
     <div class="flex sm:!hidden justify-end">
-      <lfx-menu-button class="!p-2" @click="isModalOpen = true">
-        <lfx-icon name="search" class="font-black text-neutral-400 !h-5 !w-5" :size="18" />
+      <lfx-menu-button
+        class="!p-2"
+        @click="isModalOpen = true"
+      >
+        <lfx-icon
+          name="search"
+          class="font-black text-neutral-400 !h-5 !w-5"
+          :size="18"
+        />
       </lfx-menu-button>
     </div>
   </div>
-  <lfx-search-modal v-if="isModalOpen" v-model="isModalOpen" />
+  <lfx-search-modal
+    v-if="isModalOpen"
+    v-model="isModalOpen"
+  />
 </template>
 
 <script setup lang="ts">

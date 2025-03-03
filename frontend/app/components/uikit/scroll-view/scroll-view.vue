@@ -1,5 +1,9 @@
 <template>
-  <div :id="props.id" ref="scrollViewRef" class="scroll-view">
+  <div
+    :id="props.id"
+    ref="scrollViewRef"
+    class="scroll-view"
+  >
     <slot />
   </div>
 </template>
