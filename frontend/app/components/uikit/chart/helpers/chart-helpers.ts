@@ -28,6 +28,9 @@ export const convertToChartData = (
       } as ChartData)
   ) ?? [];
 
+export const getMaxValue = (data: ChartData[]): number => data //
+    .reduce((max, item) => Math.max(max, item.values[0] ?? 0), 0);
+
 export const convertToCategoryData = (
   xData: ChartData[],
   yData: ChartData[]

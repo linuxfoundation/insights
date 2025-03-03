@@ -7,7 +7,14 @@
       class="c-progress-bar__value"
       :style="{ width: `${value}%` }"
     />
-    <div class="c-progress-bar__empty" />
+    <div
+      v-if="props.label"
+      class="c-progress-bar__label"
+    >{{ props.label }}</div>
+    <div
+      v-if="!props.hideEmpty"
+      class="c-progress-bar__empty"
+    />
   </div>
 </template>
 
@@ -19,9 +26,13 @@ const props = withDefaults(
     values: number[];
     // TODO: change this once we have the correct types
     color?: ProgressBarType;
+    label?: string;
+    hideEmpty?: boolean;
   }>(),
   {
-    color: 'normal'
+    color: 'normal',
+    hideEmpty: false,
+    label: undefined
   }
 );
 </script>
