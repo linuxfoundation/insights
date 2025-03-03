@@ -8,7 +8,10 @@
     >
       <lfx-icon name="calendar" :size="16" />
       <span v-if="selected !== 'custom'">{{selectedOption?.label}}</span>
-      <span v-else>{{date(startDate).format('MMM D, YYYY')}} -> {{date(endDate).format('MMM D, YYYY')}}</span>
+      <span v-else-if="startDate && endDate">
+        {{DateTime.fromFormat(startDate, 'yyyy-MM-dd').toFormat('MMM d, yyyy')}}
+        -> {{DateTime.fromFormat(endDate, 'yyyy-MM-dd').toFormat('MMM d, yyyy')}}
+      </span>
       <lfx-icon name="angle-down" :size="12" class="text-neutral-500" />
     </div>
     <lfx-popover ref="options" v-model:is-open="isOpen">
@@ -91,6 +94,7 @@
 <script setup lang="ts">
 import {computed, ref} from "vue";
 import {storeToRefs} from "pinia";
+import {DateTime} from 'luxon';
 import LfxPopover from "~/components/uikit/popover/popover.vue";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
 import {
@@ -101,15 +105,12 @@ import {
 import {useProjectStore} from "~/components/modules/project/store/project.store";
 import LfxProjectCustomDateRangePicker
   from "~/components/modules/project/components/shared/header/custom-date-range-picker.vue";
-import useDate from "~/components/shared/utils/date";
 
 const {startDate, endDate} = storeToRefs(useProjectStore())
 
 const options = ref();
 const isOpen = ref(false);
 const isCustomSelectorOpen = ref(false);
-
-const date = useDate();
 
 const selected = ref(lfxProjectDateOptions[0]?.key || 'past90days');
 

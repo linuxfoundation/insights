@@ -28,11 +28,11 @@
 
 <script setup lang="ts">
 import {computed} from "vue";
+import {DateTime} from 'luxon';
 import LfxModal from "~/components/uikit/modal/modal.vue";
 import LfxButton from "~/components/uikit/button/button.vue";
 import LfxDatepicker from "~/components/uikit/datepicker/datepicker.vue";
 import type {DateOptionConfig} from "~/components/modules/project/config/date-options";
-import useDate from "~/components/shared/utils/date";
 
 const props = defineProps<{
   modelValue: boolean;
@@ -45,17 +45,14 @@ const isModalOpen = computed({
   set: (value: boolean) => emit('update:modelValue', value)
 })
 
-const date = useDate();
-
 const dateRange = ref(null);
-
 const select = () => {
   const [start, end] = dateRange.value;
   emit('select', {
     key: 'custom',
     label: 'Custom',
-    startDate: date(start).format('YYYY-MM-DD'),
-    endDate: date(end).format('YYYY-MM-DD')
+    startDate: DateTime.fromJSDate(start).toFormat('yyyy-MM-dd'),
+    endDate: DateTime.fromJSDate(end).toFormat('yyyy-MM-dd')
   });
   emit('update:modelValue', false);
 }
