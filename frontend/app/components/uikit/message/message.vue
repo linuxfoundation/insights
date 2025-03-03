@@ -2,15 +2,26 @@
   <div
     v-if="isVisible"
     class="c-message"
-    :class="[`c-message--${props.messageStyle}`, `c-message--${props.size}`, `c-message--${props.type}`]">
+    :class="[`c-message--${props.messageStyle}`, `c-message--${props.size}`, `c-message--${props.type}`]"
+  >
     <div class="c-message-header">
-      <i class="c-message-icon" :class="messageIcon" />
+      <i
+        class="c-message-icon"
+        :class="messageIcon"
+      />
       <span class="c-message-title">
         {{ props.message }}
       </span>
-      <i v-if="props.type !== 'transparent'" class="c-message-close fa-light fa-xmark" @click="closeMessage" />
+      <i
+        v-if="props.type !== 'transparent'"
+        class="c-message-close fa-light fa-xmark"
+        @click="closeMessage"
+      />
     </div>
-    <div v-if="props.type !== 'transparent'" class="c-message-content">
+    <div
+      v-if="props.type !== 'transparent'"
+      class="c-message-content"
+    >
       <slot />
     </div>
   </div>

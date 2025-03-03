@@ -2,21 +2,45 @@
   <div class="container pt-8">
     <h1 class="text-heading-1 font-semibold pb-4">Charts</h1>
     <div class="p-4 bg-white">
-      <lfx-tabs v-model="chartType" :tabs="chartTypes">
+      <lfx-tabs
+        v-model="chartType"
+        :tabs="chartTypes"
+      >
         <!-- <template #slotItem="{ option }">
           <span class="text-neutral-500">{{ option.label }}123</span>
         </template> -->
       </lfx-tabs>
     </div>
 
-    <lfx-line-chart-sample v-if="chartType === 'line'" :chart-data="chartData" />
-    <lfx-bar-chart-sample v-if="chartType === 'bar'" :chart-data="chartData" />
-    <lfx-line-chart-nogrid-sample v-if="chartType === 'graph-only'" :chart-data="chartData" />
-    <lfx-geo-map-sample v-if="chartType === 'geo-map'" :chart-data="chartData" />
-    <lfx-scatter-chart-sample v-if="chartType === 'scatter'" :chart-data="scatterChartData" />
-    <lfx-heat-map-chart-sample v-if="chartType === 'heatmap'" :chart-data="heatMapChartData" />
+    <lfx-line-chart-sample
+      v-if="chartType === 'line'"
+      :chart-data="chartData"
+    />
+    <lfx-bar-chart-sample
+      v-if="chartType === 'bar'"
+      :chart-data="chartData"
+    />
+    <lfx-line-chart-nogrid-sample
+      v-if="chartType === 'graph-only'"
+      :chart-data="chartData"
+    />
+    <lfx-geo-map-sample
+      v-if="chartType === 'geo-map'"
+      :chart-data="chartData"
+    />
+    <lfx-scatter-chart-sample
+      v-if="chartType === 'scatter'"
+      :chart-data="scatterChartData"
+    />
+    <lfx-heat-map-chart-sample
+      v-if="chartType === 'heatmap'"
+      :chart-data="heatMapChartData"
+    />
     <lfx-gauge-chart-sample v-if="chartType === 'gauge'" />
-    <lfx-button class="mt-5" @click="changeData"> Change Data </lfx-button>
+    <lfx-button
+      class="mt-5"
+      @click="changeData"
+    > Change Data </lfx-button>
   </div>
 </template>
 

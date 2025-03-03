@@ -15,7 +15,8 @@
               :tabs="tabs"
               :model-value="activeTab"
               width-type="inline"
-              @update:model-value="activeTab = $event" />
+              @update:model-value="activeTab = $event"
+            />
           </div>
           <div class="basis-1/2 flex justify-end">
             <lfx-dropdown
@@ -23,22 +24,28 @@
               icon="fa-light fa-display-code"
               :options="metricOptions"
               full-width
-              center />
+              center
+            />
           </div>
         </div>
       </div>
       <div class="w-full h-[330px] border-solid border-neutral-100 border-x-0 border-y">
         <lfx-chart
           v-if="status !== 'pending'"
-          :config="getGeoMapChartConfig(chartData, chartSeries, getMaxValue(chartData))" />
+          :config="getGeoMapChartConfig(chartData, chartSeries, getMaxValue(chartData))"
+        />
         <lfx-spinner v-else />
       </div>
       <div class="px-6 mt-5">
-        <div v-if="status !== 'pending'" class="flex flex-col gap-5">
+        <div
+          v-if="status !== 'pending'"
+          class="flex flex-col gap-5"
+        >
           <div
             v-for="item in geoMapData"
             :key="item.name"
-            class="flex flex-row justify-between items-center text-sm">
+            class="flex flex-row justify-between items-center text-sm"
+          >
             <div class="flex flex-row gap-4 items-center">
               <span class="text-base">
                 {{ item.flag }}

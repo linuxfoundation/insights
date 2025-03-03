@@ -1,5 +1,8 @@
 <template>
-  <lfx-project-header v-if="data" :project="data" />
+  <lfx-project-header
+    v-if="data"
+    :project="data"
+  />
   <div>
     <nuxt-page />
   </div>

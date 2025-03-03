@@ -2,7 +2,10 @@
   <section class="bg-white">
     <div class="container py-8">
       <lfx-tag type="transparent">
-        <lfx-icon name="rectangle-history" :size="14" />
+        <lfx-icon
+          name="rectangle-history"
+          :size="14"
+        />
         Collections
       </lfx-tag>
       <div class="w-full max-w-120">
@@ -24,16 +27,26 @@
           :options="sortOptions"
           icon="fa-arrow-down-wide-short fa-light"
           type="transparent"
-          dropdown-position="right" />
+          dropdown-position="right"
+        />
       </div>
     </div>
   </section>
   <section>
     <div class="container">
-      <div v-if="status === 'pending'" class="flex items-center justify-between h-32 py-1">
-        <lfx-spinner :size="40" class=" text-neutral-300" />
+      <div
+        v-if="status === 'pending'"
+        class="flex items-center justify-between h-32 py-1"
+      >
+        <lfx-spinner
+          :size="40"
+          class=" text-neutral-300"
+        />
       </div>
-      <div v-else class="flex flex-col gap-8 pt-10 pb-16">
+      <div
+        v-else
+        class="flex flex-col gap-8 pt-10 pb-16"
+      >
         <lfx-collection-list-item
           v-for="collection of (data?.data || [])"
           :key="collection.slug"
@@ -50,7 +63,7 @@ import {watch} from "vue";
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxTag from '~/components/uikit/tag/tag.vue';
 import LfxDropdown from '~/components/uikit/dropdown/dropdown.vue';
-import LfxCollectionListItem from '~/components/modules/collection/components/collection-list-item.vue';
+import LfxCollectionListItem from '~/components/modules/collection/components/list/collection-list-item.vue';
 import type {Pagination} from "~/components/shared/types/pagination";
 import type {Collection} from "~/components/modules/collection/types/Collection";
 import LfxCollectionFilterStack

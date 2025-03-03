@@ -7,8 +7,6 @@ export interface Collection {
       slug: string;
       logo: string;
     }[];
-    contributorsCount: number;
-    organizationsCount: number;
     projectsCount: number;
     softwareValueCount: number;
 }

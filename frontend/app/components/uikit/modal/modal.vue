@@ -1,8 +1,16 @@
 <template>
   <div v-if="isModalOpened">
     <teleport to="body">
-      <div class="c-modal" @click="clickOutsideClose()">
-        <div class="c-modal__content" :style="{ 'max-width': props.width }" v-bind="$attrs" @click.stop>
+      <div
+        class="c-modal"
+        @click="clickOutsideClose()"
+      >
+        <div
+          class="c-modal__content"
+          :style="{ 'max-width': props.width }"
+          v-bind="$attrs"
+          @click.stop
+        >
           <slot :close="close" />
         </div>
       </div>

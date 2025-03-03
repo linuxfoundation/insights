@@ -1,8 +1,12 @@
 .c-progress-bar {
-  @apply flex flex-row items-stretch justify-between gap-0.5 h-2 w-full;
+  @apply flex flex-row items-center gap-0.5 w-full;
 
   .c-progress-bar__value, .c-progress-bar__empty {
-    @apply rounded-xs transition-all;
+    @apply rounded-xs transition-all h-2;
+  }
+
+  .c-progress-bar__label {
+    @apply text-sm text-neutral-900 ml-2 whitespace-nowrap;
   }
 
   &--normal {

@@ -1,5 +1,8 @@
 <template>
-  <lfx-collection-details-view v-if="data" :collection="data" />
+  <lfx-collection-details-view
+    v-if="data"
+    :collection="data"
+  />
 </template>
 
 <script setup lang="ts">

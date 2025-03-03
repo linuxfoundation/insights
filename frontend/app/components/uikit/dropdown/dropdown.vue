@@ -1,5 +1,8 @@
 <template>
-  <div class="relative" :class="{ 'w-full': props.fullWidth }">
+  <div
+    class="relative"
+    :class="{ 'w-full': props.fullWidth }"
+  >
     <pv-select
       ref="filterRef"
       v-model="value"
@@ -27,12 +30,16 @@
         { 'p-select-centered': props.center },
         `p-select-dropdown-${props.dropdownPosition}`
       ]"
-      @filter="selectFilter">
+      @filter="selectFilter"
+    >
       <template #value="slotProps">
         <div>
           <i :class="['dropdown-icon', props.icon]" />
           <div class="flex items-center gap-0.5">
-            <span v-if="props.prefix" class="font-medium">{{ props.prefix }}:</span>
+            <span
+              v-if="props.prefix"
+              class="font-medium"
+            >{{ props.prefix }}:</span>
             <div :class="props.prefix ? 'font-normal' : 'font-medium'">
               {{ slotProps.value ? getLabel(slotProps.value) : slotProps.placeholder }}
             </div>
@@ -47,25 +54,36 @@
       </template>
 
       <template #option="slotProps">
-        <slot name="option" :option="slotProps.option">
+        <slot
+          name="option"
+          :option="slotProps.option"
+        >
           <div
             class="flex items-center justify-between w-full"
-            :class="{ 'mb-2': props.splitLines?.includes(slotProps.index) }">
+            :class="{ 'mb-2': props.splitLines?.includes(slotProps.index) }"
+          >
             <div>
-              <slot name="optionTemplate" :option="slotProps.option">
+              <slot
+                name="optionTemplate"
+                :option="slotProps.option"
+              >
                 {{ slotProps.option.label }}
               </slot>
             </div>
             <i class="p-select-option-icon fa-light fa-check" />
           </div>
         </slot>
-        <hr v-if="props.splitLines?.includes(slotProps.index)" class="split-line">
+        <hr
+          v-if="props.splitLines?.includes(slotProps.index)"
+          class="split-line"
+        >
       </template>
       <template #header>
         <i
           v-if="props.showFilter && filter.length > 0"
           class="fa-solid fa-circle-xmark p-select-clear-filter"
-          @click="clearFilter" />
+          @click="clearFilter"
+        />
       </template>
     </pv-select>
   </div>
