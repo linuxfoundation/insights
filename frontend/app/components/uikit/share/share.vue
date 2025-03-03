@@ -33,8 +33,8 @@ const sharableLink = computed(() => {
   return props.url;
 });
 
-const isSharable = computed(() => !!navigator?.share);
-const isCopyable = computed(() => !!navigator?.clipboard);
+const isSharable = ref<boolean>(false);
+const isCopyable = ref<boolean>(false);
 
 const share = () => {
   if (navigator?.share) {
@@ -53,6 +53,11 @@ const share = () => {
     }
   }
 };
+
+onMounted(() => {
+  isSharable.value = !!navigator?.share;
+  isCopyable.value = !!navigator?.clipboard;
+});
 </script>
 
 <script lang="ts">

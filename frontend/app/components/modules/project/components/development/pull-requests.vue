@@ -93,6 +93,7 @@ import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 import { formatNumber } from '~/components/shared/utils/formatter';
 import {useProjectStore} from "~/components/modules/project/store/project.store";
+import LfxIcon from "~/components/uikit/icon/icon.vue";
 
 const { showToast } = useToastService();
 const {startDate, endDate} = storeToRefs(useProjectStore())
