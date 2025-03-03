@@ -11,7 +11,8 @@ export default {
       'Toast',
       'Popover',
       'Select',
-      'Skeleton'
+      'Skeleton',
+      'DatePicker',
     ]
   },
   options: {

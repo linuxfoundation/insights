@@ -3,7 +3,11 @@
     <lfx-navbar />
     <div class="container py-30">
       <div class="flex flex-col items-center">
-        <lfx-icon :name="notFound ? 'eyes' : 'triangle-person-digging'" :size="140" class="text-neutral-300" />
+        <lfx-icon
+          :name="notFound ? 'eyes' : 'triangle-person-digging'"
+          :size="140"
+          class="text-neutral-300"
+        />
         <p class="text-center text-body-1 text-neutral-500 pt-10">
           <span v-if="notFound">
             Page not found
@@ -13,10 +17,16 @@
           </span>
         </p>
         <h1 class="text-heading-3 font-bold text-center pt-3 text-neutral-500">
-          <span v-if="notFound" class="font-secondary">
+          <span
+            v-if="notFound"
+            class="font-secondary"
+          >
             Oops! The page you are looking for doesn’t exist.
           </span>
-          <span v-else class="font-secondary">
+          <span
+            v-else
+            class="font-secondary"
+          >
             Something went wrong. Please try again later.
           </span>
         </h1>
