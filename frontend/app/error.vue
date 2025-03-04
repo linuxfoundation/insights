@@ -5,7 +5,7 @@
       <div class="flex flex-col items-center">
         <lfx-icon
           :name="notFound ? 'eyes' : 'triangle-person-digging'"
-          :size="140"
+          :size="pageWidth < 768 ? 80 : 140"
           class="text-neutral-300"
         />
         <p class="text-center text-body-1 text-neutral-500 pt-10">
@@ -45,12 +45,14 @@ import LfxNavbar from '~/components/shared/layout/navbar.vue';
 import LfxButton from "~/components/uikit/button/button.vue";
 import {LfxRoutes} from "~/components/shared/types/routes";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
+import useResponsive from "~/components/shared/utils/responsive";
 
 const props = defineProps<{
   error: object
 }>()
 
 const route = useRoute();
+const {pageWidth} = useResponsive();
 
 const notFound = computed(() => props.error?.statusCode === 404)
 
