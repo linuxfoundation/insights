@@ -57,9 +57,12 @@
             >
               <lfx-project-retention />
             </lfx-scroll-view>
-            <!--            <lfx-scroll-view id="geographical-distribution" :observer="observer">-->
-            <!--              <lfx-project-geographical-distribution />-->
-            <!--            </lfx-scroll-view>-->
+            <lfx-scroll-view
+              id="geographical-distribution"
+              :observer="observer"
+            >
+              <lfx-project-geographical-distribution :observer="observer" />
+            </lfx-scroll-view>
             <!-- <lfx-scroll-view id="industry-distribution" :observer="observer">
               <lfx-project-industry-distribution />
             </lfx-scroll-view> -->
@@ -88,8 +91,8 @@ import LfxProjectOrganizationDependency
   from '~/components/modules/project/components/contributors/organization-dependency.vue';
 import LfxProjectRetention
   from '~/components/modules/project/components/contributors/retention.vue';
-// import LfxProjectGeographicalDistribution
-//   from '~/components/modules/project/components/contributors/geographical-distribution.vue';
+import LfxProjectGeographicalDistribution
+  from '~/components/modules/project/components/contributors/geographical-distribution.vue';
 import LfxSideNav from '~/components/uikit/side-nav/side-nav.vue';
 import LfxScrollView from '~/components/uikit/scroll-view/scroll-view.vue';
 import LfxScrollArea from '~/components/uikit/scroll-view/scroll-area.vue';

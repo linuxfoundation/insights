@@ -62,7 +62,7 @@
 <script setup lang="ts">
 import { useFetch, useRoute } from 'nuxt/app';
 import { computed, watch } from 'vue';
-import {storeToRefs} from "pinia";
+import { storeToRefs } from "pinia";
 import type { MergeLeadTime } from './types/merge-lead-time.types';
 import LfxMergeLeadItem from './fragments/merge-lead-item.vue';
 import LfxCard from '~/components/uikit/card/card.vue';
@@ -72,22 +72,22 @@ import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 import { formatNumber } from '~/components/shared/utils/formatter';
 import type { Summary } from '~/components/shared/types/summary.types';
-import {useProjectStore} from "~/components/modules/project/store/project.store";
+import { useProjectStore } from "~/components/modules/project/store/project.store";
 
 const { showToast } = useToastService();
-const {startDate, endDate} = storeToRefs(useProjectStore())
+const { startDate, endDate } = storeToRefs(useProjectStore())
 
 const route = useRoute();
 
-const {data, status, error} = useFetch(
-    `/api/project/${route.params.slug}/development/merge-lead-time`,
-    {
-      params: {
-        repository: route.params.name || '',
-        startDate,
-        endDate,
-      }
+const { data, status, error } = useFetch(
+  `/api/project/${route.params.slug}/development/merge-lead-time`,
+  {
+    params: {
+      repository: route.params.name || '',
+      startDate,
+      endDate,
     }
+  }
 );
 
 const mergeLeadTime = computed<MergeLeadTime>(() => data.value as MergeLeadTime);

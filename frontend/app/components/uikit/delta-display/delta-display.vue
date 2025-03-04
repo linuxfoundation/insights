@@ -24,7 +24,7 @@
 import { computed } from 'vue';
 import type { DeltaDisplayProps } from './types/delta-display.types';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
-import { formatNumber } from '~/components/shared/utils/formatter';
+import { formatNumber, formatNumberToDuration } from '~/components/shared/utils/formatter';
 
 const props = withDefaults(defineProps<DeltaDisplayProps>(), {
   isReverse: false,
@@ -37,7 +37,7 @@ const percentage = computed(() => formatNumber(props.summary.percentageChange, 1
 const delta = computed(() => {
   const value = props.summary.changeValue;
   const sign = value >= 0 ? '+' : '';
-  return sign + formatNumber(value, 1);
+  return sign + (props.isDuration ? formatNumberToDuration(value) : formatNumber(value, 1));
 });
 
 const deltaColor = computed(() => (props.isReverse ? 'text-negative-500' : 'text-positive-500'));
@@ -51,7 +51,10 @@ const deltaDisplay = computed(() => {
 
 const previousDisplay = computed(() => {
   if (!props.hidePreviousValue) {
-    return `${formatNumber(props.summary.previous, props.percentageOnly ? 1 : 0)}${props.unit || ''}`;
+    const previousValue = props.isDuration
+      ? formatNumberToDuration(props.summary.previous)
+      : formatNumber(props.summary.previous, props.percentageOnly ? 1 : 0);
+    return `${previousValue}${props.unit || ''}`;
   }
   return '';
 });
