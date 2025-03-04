@@ -17,6 +17,20 @@ export interface SearchResponse {
     name: string | null;
 }
 
+/**
+ * API Endpoint: Search Collections, Projects, and Repositories
+ *
+ * This handler processes search requests for collections, projects, and repositories.
+ * It fetches data from the Tinybird API and categorizes the results based on their types.
+ *
+ * @param {Event} event - The incoming request event containing the query parameters.
+ *
+ * Query Parameters:
+ * - query (string): The search term to filter results (optional).
+ *
+ * @returns {Promise<{ projects: SearchResponse[], repositories: SearchResponse[], collections: SearchResponse[] }>}
+ * - Returns an object containing arrays of categorized search results (projects, repositories, collections).
+ */
 export default defineEventHandler(async (event) => {
     const query: Record<string, string | number> = getQuery(event);
     const searchQuery = query?.query || '';
@@ -25,19 +39,19 @@ export default defineEventHandler(async (event) => {
     const repositories: SearchResponse[] = [];
     const collections: SearchResponse[] = [];
 
-    try{
+    try {
         const res = await fetchTinybird<SearchResponse[]>('/v0/pipes/search_collections_projects_repos.json', {
             limit: 10,
             search: searchQuery,
         })
 
-        if(res.data?.length > 0){
+        if (res.data?.length > 0) {
             res.data.forEach((item) => {
-                if(item.type === 'project'){
+                if (item.type === 'project') {
                     projects.push(item)
-                } else if(item.type === 'repository'){
+                } else if (item.type === 'repository') {
                     repositories.push(item)
-                } else if(item.type === 'collection'){
+                } else if (item.type === 'collection') {
                     collections.push(item)
                 }
             })
