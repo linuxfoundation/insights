@@ -48,7 +48,8 @@ export default defineEventHandler(async (event) => {
             repositories,
             collections
         };
-    } catch {
+    } catch (error) {
+        console.error('Error fetching search results:', error);
         return {
             projects,
             repositories,
