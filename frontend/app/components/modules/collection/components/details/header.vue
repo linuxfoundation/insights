@@ -3,7 +3,7 @@
     <section class="container">
       <div
         class="flex gap-4 transition-all"
-        :class="scrollTop > 50 ? 'py-4' : ' py-5 md:py-8'"
+        :class="scrollTop > 50 ? 'py-3 md:py-4' : ' py-5 md:py-8'"
       >
         <lfx-back class="ease-linear transition-all hidden md:block">
           <lfx-icon-button
@@ -12,7 +12,10 @@
             class=""
           />
         </lfx-back>
-        <div class="flex justify-between gap-5 md:gap-8 flex-grow flex-col sm:flex-row">
+        <div
+          class="flex justify-between gap-x-5 md:gap-x-8 flex-grow flex-col sm:flex-row"
+          :class="scrollTop > 50 ? 'gap-y-3': 'gap-y-5'"
+        >
           <div class="flex-grow flex">
             <div
               :class="scrollTop > 50 ? 'pt-1' : 'pt-0.5'"

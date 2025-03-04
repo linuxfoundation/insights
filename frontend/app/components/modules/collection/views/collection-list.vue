@@ -23,7 +23,7 @@
       class="container transition-all"
       :class="scrollTop > 50 ? 'py-3 md:py-4' : 'py-3 md:py-5'"
     >
-      <div class="flex justify-end items-center gap-4">
+      <div class="flex items-center gap-4">
         <!--        <div-->
         <!--          class="flex items-center gap-4 flex-grow"-->
         <!--          style="max-width: calc(100% - 3.625rem)"-->
@@ -40,7 +40,7 @@
           :options="sortOptions"
           icon="fa-arrow-down-wide-short fa-light"
           type="transparent"
-          dropdown-position="right"
+          dropdown-position="left"
         />
       </div>
     </div>

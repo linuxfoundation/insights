@@ -1,5 +1,5 @@
 <template>
-  <lfx-card class="p-6 hover:shadow-sm transition-all">
+  <lfx-card class="p-5 md:p-6 hover:shadow-sm transition-all">
     <lfx-skeleton
       width="25rem"
       height="1.25rem"
