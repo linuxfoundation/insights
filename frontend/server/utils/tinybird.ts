@@ -1,4 +1,4 @@
-export interface TinybirdResponse<T>{
+export interface TinybirdResponse<T> {
     data: T;
     meta: {
         name: string;
@@ -15,9 +15,13 @@ export interface TinybirdResponse<T>{
 
 export async function fetchTinybird<T>(
     path: string,
-    query: Record<string, string| boolean| number| string[]>,
+    query: Record<string, string | boolean | number | string[]>,
 ): Promise<TinybirdResponse<T>> {
     const config = useRuntimeConfig();
+    // Ensure tinybirdBaseUrl and token are available
+    if (!config.tinybirdBaseUrl || !config.tinybirdToken) {
+        throw new Error('Tinybird configuration is missing');
+    }
     const url = `${config.tinybirdBaseUrl}${path}`;
 
     // We need to format the dates so that Tinybird can understand them

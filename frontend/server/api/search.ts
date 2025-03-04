@@ -20,29 +20,39 @@ export interface SearchResponse {
 export default defineEventHandler(async (event) => {
     const query: Record<string, string | number> = getQuery(event);
     const searchQuery = query?.query || '';
-    const res = await fetchTinybird<SearchResponse[]>('/v0/pipes/search_collections_projects_repos.json', {
-        limit: 10,
-        search: searchQuery,
-    })
+
     const projects: SearchResponse[] = [];
     const repositories: SearchResponse[] = [];
     const collections: SearchResponse[] = [];
 
-    if(res.data?.length > 0){
-        res.data.forEach((item) => {
-            if(item.type === 'project'){
-                projects.push(item)
-            } else if(item.type === 'repository'){
-                repositories.push(item)
-            } else if(item.type === 'collection'){
-                collections.push(item)
-            }
+    try{
+        const res = await fetchTinybird<SearchResponse[]>('/v0/pipes/search_collections_projects_repos.json', {
+            limit: 10,
+            search: searchQuery,
         })
-    }
 
-    return {
-        projects,
-        repositories,
-        collections
-    };
+        if(res.data?.length > 0){
+            res.data.forEach((item) => {
+                if(item.type === 'project'){
+                    projects.push(item)
+                } else if(item.type === 'repository'){
+                    repositories.push(item)
+                } else if(item.type === 'collection'){
+                    collections.push(item)
+                }
+            })
+        }
+
+        return {
+            projects,
+            repositories,
+            collections
+        };
+    } catch {
+        return {
+            projects,
+            repositories,
+            collections
+        };
+    }
 });
