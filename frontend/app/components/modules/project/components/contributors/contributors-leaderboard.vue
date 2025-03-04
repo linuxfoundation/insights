@@ -57,7 +57,7 @@ const { data, status, error } = useFetch(
 
 const contributors = computed<ContributorLeaderboard>(() => data.value as ContributorLeaderboard);
 
-const isEmpty = computed(() => isEmptyData(contributors.value.data as unknown as Record<string, unknown>[]));
+const isEmpty = computed(() => isEmptyData(contributors.value?.data as unknown as Record<string, unknown>[]));
 </script>
 
 <script lang="ts">

@@ -30,6 +30,7 @@
       </div>
 
       <lfx-tabs
+        v-if="!isEmpty"
         :tabs="tabs"
         :model-value="activeTab"
         @update:model-value="activeTab = $event"
@@ -91,12 +92,12 @@ const { data, status, error } = useFetch(
   }
 );
 
-const forks = computed<ForksData>(() => data.value as ForksData);
+const forks = computed<ForksData | undefined>(() => data.value as ForksData);
 
 const summary = computed<Summary | undefined>(() => forks.value?.summary);
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
-  () => convertToChartData(forks.value.data as RawChartData[], 'dateFrom', [
+  () => convertToChartData(forks.value?.data as RawChartData[], 'dateFrom', [
     'forks'
   ])
 );

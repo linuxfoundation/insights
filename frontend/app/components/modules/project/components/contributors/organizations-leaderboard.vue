@@ -59,7 +59,7 @@ const organizations = computed<OrganizationLeaderboard>(
   () => data.value as OrganizationLeaderboard
 );
 
-const isEmpty = computed(() => isEmptyData(organizations.value.data as unknown as Record<string, unknown>[]));
+const isEmpty = computed(() => isEmptyData(organizations.value?.data as unknown as Record<string, unknown>[]));
 </script>
 
 <script lang="ts">

@@ -110,7 +110,7 @@ const { data, status, error } = useFetch(
   }
 );
 
-const geoMapData = computed<GeoMapData[]>(() => (data.value as GeoMapResponse).data);
+const geoMapData = computed<GeoMapData[] | undefined>(() => (data.value as GeoMapResponse)?.data);
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
   () => convertToChartData(geoMapData.value as unknown as RawChartData[], 'name', ['count'])

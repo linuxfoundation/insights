@@ -92,12 +92,12 @@ const { data, status, error } = useFetch(
   }
 );
 
-const stars = computed<StarsData>(() => data.value as StarsData);
+const stars = computed<StarsData | undefined>(() => data.value as StarsData);
 
 const summary = computed<Summary | undefined>(() => stars.value?.summary);
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
-  () => convertToChartData(stars.value.data as RawChartData[], 'dateFrom', [
+  () => convertToChartData(stars.value?.data as RawChartData[], 'dateFrom', [
     'stars'
   ])
 );

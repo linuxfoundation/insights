@@ -8,23 +8,20 @@
     <hr>
     <section class="mt-5">
       <div class="mb-6">
-        <div
-          v-if="status === 'success' && !isEmpty"
-          class="flex flex-row gap-4 items-center"
-        >
-          <div class="text-data-display-1">{{ formatNumber(summary.current) }}</div>
-          <lfx-delta-display
-            :summary="summary"
-            icon="circle-arrow-up-right"
-            icon-type="solid"
-          />
-        </div>
-        <lfx-skeleton
-          v-if="status === 'pending'"
+        <lfx-skeleton-state
+          :status="status"
           height="2rem"
           width="7.5rem"
-          class="rounded-sm"
-        />
+        >
+          <div class="flex flex-row gap-4 items-center">
+            <div class="text-data-display-1">{{ formatNumber(summary.current) }}</div>
+            <lfx-delta-display
+              :summary="summary"
+              icon="circle-arrow-up-right"
+              icon-type="solid"
+            />
+          </div>
+        </lfx-skeleton-state>
       </div>
 
       <lfx-tabs
@@ -50,6 +47,7 @@ import { useFetch, useRoute } from 'nuxt/app';
 import { ref, computed } from 'vue';
 import { storeToRefs } from "pinia";
 import LfxProjectLoadState from '../shared/load-state.vue';
+import LfxSkeletonState from '../shared/skeleton-state.vue';
 import type { ActiveContributors } from './types/contributors.types';
 import type { Summary } from '~/components/shared/types/summary.types';
 import LfxCard from '~/components/uikit/card/card.vue';
@@ -68,7 +66,6 @@ import { axisLabelFormatter } from '~/components/uikit/chart/helpers/formatters'
 import { formatNumber } from '~/components/shared/utils/formatter';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
 import { isEmptyData } from '~/components/shared/utils/helper';
-import LfxSkeleton from "~/components/uikit/skeleton/skeleton.vue";
 
 const { startDate, endDate } = storeToRefs(useProjectStore());
 
@@ -92,11 +89,11 @@ const activeContributors = computed<ActiveContributors>(() => data.value as Acti
 const summary = computed<Summary>(() => activeContributors.value.summary);
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
-  () => convertToChartData(activeContributors.value.data as RawChartData[], 'dateFrom', [
+  () => convertToChartData(activeContributors.value?.data as RawChartData[], 'dateFrom', [
     'contributors'
   ])
 );
-const isEmpty = computed(() => isEmptyData(activeContributors.value.data));
+const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
 
 const tabs = [
   { label: 'Weekly', value: 'weekly' },

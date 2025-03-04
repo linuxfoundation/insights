@@ -9,70 +9,84 @@
     </p>
     <hr>
     <section class="mt-5">
-      <div
-        v-if="status === 'success'"
-        class="flex flex-row justify-between items-center mb-6"
+      <div class="mb-6">
+        <div class="flex flex-row justify-between items-center">
+          <lfx-skeleton-state
+            :status="status"
+            height="2rem"
+            width="7.5rem"
+          >
+            <div class="flex flex-row gap-4 items-center">
+              <div class="text-data-display-1">{{ formatNumber(summary.current) }}</div>
+              <lfx-delta-display
+                :summary="summary"
+                icon="circle-arrow-up-right"
+                icon-type="solid"
+              />
+            </div>
+          </lfx-skeleton-state>
+
+          <div
+            v-if="!isEmpty"
+            class="flex flex-col items-end justify-center"
+          >
+            <span class="text-neutral-400 text-xs flex flex-row gap-2 items-center">
+              <lfx-icon
+                name="gauge-high"
+                :size="16"
+              />
+              Avg. velocity
+            </span>
+            <lfx-skeleton-state
+              :status="status"
+              height="1.25rem"
+              width="4rem"
+            >
+              <span class="text-xl">{{ formatNumber(pullRequests.avgVelocityInDays) }} days</span>
+            </lfx-skeleton-state>
+          </div>
+        </div>
+      </div>
+
+      <lfx-project-load-state
+        :status="status"
+        :error="error"
+        error-message="Error fetching forks"
+        :is-empty="isEmpty"
+        use-min-height
       >
-        <div class="flex flex-row gap-4 items-center">
-          <div class="text-data-display-1">{{ formatNumber(summary.current) }}</div>
-          <lfx-delta-display
-            :summary="summary"
-            icon="circle-arrow-up-right"
-            icon-type="solid"
+        <div class="w-full h-[330px] my-5">
+          <lfx-chart :config="barChartConfig" />
+        </div>
+
+        <div class="flex flex-col gap-5">
+          <lfx-project-pull-request-legend-item
+            title="Open"
+            :delta="openSummary!"
+            :color="chartSeries[0]!.color!"
+          />
+          <lfx-project-pull-request-legend-item
+            title="Merged"
+            :delta="mergedSummary!"
+            :color="chartSeries[1]!.color!"
+          />
+          <lfx-project-pull-request-legend-item
+            title="Closed"
+            :delta="closedSummary!"
+            :color="chartSeries[2]!.color!"
           />
         </div>
-        <div class="flex flex-col items-end justify-center">
-          <span class="text-neutral-400 text-xs flex flex-row gap-2 items-center">
-            <lfx-icon
-              name="gauge-high"
-              :size="16"
-            />
-            Avg. velocity
-          </span>
-          <span
-            v-if="status === 'success'"
-            class="text-xl"
-          >{{ formatNumber(pullRequests.avgVelocityInDays) }}
-            days</span>
-        </div>
-      </div>
-
-      <div class="w-full h-[330px] my-5">
-        <lfx-chart
-          v-if="status !== 'pending'"
-          :config="barChartConfig"
-        />
-        <lfx-spinner v-else />
-      </div>
-
-      <div
-        v-if="status === 'success'"
-        class="flex flex-col gap-5"
-      >
-        <lfx-project-pull-request-legend-item
-          title="Open"
-          :delta="openSummary!"
-          :color="chartSeries[0]!.color!"
-        />
-        <lfx-project-pull-request-legend-item
-          title="Merged"
-          :delta="mergedSummary!"
-          :color="chartSeries[1]!.color!"
-        />
-        <lfx-project-pull-request-legend-item
-          title="Closed"
-          :delta="closedSummary!"
-          :color="chartSeries[2]!.color!"
-        />
-      </div>
+      </lfx-project-load-state>
     </section>
   </lfx-card>
 </template>
 
 <script setup lang="ts">
 import { useFetch, useRoute } from 'nuxt/app';
-import { ref, computed, watch } from 'vue';
-import {storeToRefs} from "pinia";
+import { ref, computed } from 'vue';
+import { storeToRefs } from "pinia";
+import LfxSkeletonState from '../shared/skeleton-state.vue';
+import LfxProjectLoadState from '../shared/load-state.vue';
 import type { PullRequests } from './types/pull-requests.types';
 import LfxProjectPullRequestLegendItem from './fragments/pull-request-legend-item.vue';
 import type { Summary } from '~/components/shared/types/summary.types';
@@ -88,15 +102,12 @@ import LfxChart from '~/components/uikit/chart/chart.vue';
 import { getBarChartConfigStacked } from '~/components/uikit/chart/configs/bar.chart';
 import { lfxColors } from '~/config/styles/colors';
 import { axisLabelFormatter } from '~/components/uikit/chart/helpers/formatters';
-import useToastService from '~/components/uikit/toast/toast.service';
-import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
-import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 import { formatNumber } from '~/components/shared/utils/formatter';
-import {useProjectStore} from "~/components/modules/project/store/project.store";
+import { useProjectStore } from "~/components/modules/project/store/project.store";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
+import { isEmptyData } from '~/components/shared/utils/helper';
 
-const { showToast } = useToastService();
-const {startDate, endDate} = storeToRefs(useProjectStore())
+const { startDate, endDate } = storeToRefs(useProjectStore())
 
 const route = useRoute();
 
@@ -171,16 +182,7 @@ const barChartConfig = computed(() => getBarChartConfigStacked(
   configOverride.value
 ));
 
-watch(error, (err) => {
-  if (err) {
-    showToast(
-      `Error fetching social mentions: ${error.value?.statusMessage}`,
-      ToastTypesEnum.negative,
-      undefined,
-      10000
-    );
-  }
-});
+const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
 </script>
 
 <script lang="ts">
