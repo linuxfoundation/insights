@@ -14,19 +14,31 @@
         :model-value="activeTab"
         @update:model-value="activeTab = $event"
       />
-      <div
-        v-if="status === 'success'"
-        class="flex flex-row gap-4 items-center mt-7 mb-8"
-      >
-        <div class="text-data-display-1">{{ formatNumber(summary.current) }} contributors</div>
-        <lfx-delta-display
-          :summary="summary"
-          icon="circle-arrow-up-right"
-          icon-type="solid"
-        />
+      <div class="mt-7 mb-8">
+        <lfx-skeleton-state
+          :status="status"
+          height="2rem"
+          width="7.5rem"
+        >
+          <div class="flex flex-row gap-4 items-center">
+            <div class="text-data-display-1">{{ formatNumber(summary.current) }} contributors</div>
+            <lfx-delta-display
+              :summary="summary"
+              icon="circle-arrow-up-right"
+              icon-type="solid"
+            />
+          </div>
+        </lfx-skeleton-state>
       </div>
-      <div class="w-full h-[330px]">
-        <div v-if="status === 'success'">
+      <lfx-project-load-state
+        :status="status"
+        :error="error"
+        error-message="Error fetching forks"
+        :is-empty="isEmpty"
+        use-min-height
+        :height="330"
+      >
+        <div class="w-full h-[330px]">
           <div class="font-semibold mb-5 mt-8">
             <span class="text-black">Top contributors </span>
           </div>
@@ -37,29 +49,26 @@
             :code-review-item="codeReviewEngagement.data"
           />
         </div>
-        <lfx-spinner v-else />
-      </div>
+      </lfx-project-load-state>
     </section>
   </lfx-card>
 </template>
 
 <script setup lang="ts">
 import { useFetch, useRoute } from 'nuxt/app';
-import { ref, computed, watch } from 'vue';
+import { ref, computed } from 'vue';
 import { storeToRefs } from "pinia";
+import LfxProjectLoadState from '../shared/load-state.vue';
+import LfxSkeletonState from '../shared/skeleton-state.vue';
 import type { CodeReviewEngagement } from './types/code-review-engagement.types';
 import LfxCodeReviewTable from './fragments/code-review-table.vue';
 import type { Summary } from '~/components/shared/types/summary.types';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
-import useToastService from '~/components/uikit/toast/toast.service';
-import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
-import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 import { formatNumber } from '~/components/shared/utils/formatter';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
-
-const { showToast } = useToastService();
+import { isEmptyData } from '~/components/shared/utils/helper';
 
 const { startDate, endDate } = storeToRefs(useProjectStore());
 
@@ -88,16 +97,7 @@ const tabs = [
   { label: 'Code reviews', value: 'code-reviews' }
 ];
 
-watch(error, (err) => {
-  if (err) {
-    showToast(
-      `Error fetching code review engagement: ${error.value?.statusMessage}`,
-      ToastTypesEnum.negative,
-      undefined,
-      10000
-    );
-  }
-});
+const isEmpty = computed(() => isEmptyData(codeReviewEngagement.value.data as unknown as Record<string, unknown>[]));
 </script>
 
 <script lang="ts">

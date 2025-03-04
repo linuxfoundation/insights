@@ -9,34 +9,46 @@
     </p>
     <hr>
     <section class="mt-5">
-      <div
-        v-if="status === 'success'"
-        class="flex flex-row gap-4 items-center mb-6"
-      >
-        <div class="text-data-display-1">{{ formatNumberToDuration(summary.current) }}</div>
-        <lfx-delta-display
-          :summary="summary"
-          icon="circle-arrow-up-right"
-          icon-type="solid"
-          is-duration
-        />
+      <div class="mb-6">
+        <lfx-skeleton-state
+          :status="status"
+          height="2rem"
+          width="7.5rem"
+        >
+          <div class="flex flex-row gap-4 items-center">
+            <div class="text-data-display-1">{{ formatNumberToDuration(summary.current) }}</div>
+            <lfx-delta-display
+              :summary="summary"
+              icon="circle-arrow-up-right"
+              icon-type="solid"
+              is-duration
+            />
+          </div>
+        </lfx-skeleton-state>
       </div>
 
-      <div class="w-full h-[330px]">
-        <lfx-chart
-          v-if="status !== 'pending'"
-          :config="barChartConfig"
-        />
-        <lfx-spinner v-else />
-      </div>
+      <lfx-project-load-state
+        :status="status"
+        :error="error"
+        error-message="Error fetching forks"
+        :is-empty="isEmpty"
+        use-min-height
+        :height="330"
+      >
+        <div class="w-full h-[330px]">
+          <lfx-chart :config="barChartConfig" />
+        </div>
+      </lfx-project-load-state>
     </section>
   </lfx-card>
 </template>
 
 <script setup lang="ts">
 import { useFetch, useRoute } from 'nuxt/app';
-import { ref, computed, watch } from 'vue';
+import { ref, computed } from 'vue';
 import { storeToRefs } from "pinia";
+import LfxProjectLoadState from '../shared/load-state.vue';
+import LfxSkeletonState from '../shared/skeleton-state.vue';
 import type { AverageTimeMerge } from './types/average-time-merge.types';
 import type { Summary } from '~/components/shared/types/summary.types';
 import LfxCard from '~/components/uikit/card/card.vue';
@@ -51,13 +63,10 @@ import LfxChart from '~/components/uikit/chart/chart.vue';
 import { getBarChartConfig } from '~/components/uikit/chart/configs/bar.chart';
 import { lfxColors } from '~/config/styles/colors';
 import { axisLabelFormatter } from '~/components/uikit/chart/helpers/formatters';
-import useToastService from '~/components/uikit/toast/toast.service';
-import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
-import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 import { formatNumberToDuration } from '~/components/shared/utils/formatter';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
+import { isEmptyData } from '~/components/shared/utils/helper';
 
-const { showToast } = useToastService();
 const { startDate, endDate } = storeToRefs(useProjectStore())
 
 const route = useRoute();
@@ -110,16 +119,7 @@ const configOverride = computed(() => ({
 
 const barChartConfig = computed(() => getBarChartConfig(chartData.value, chartSeries.value, configOverride.value));
 
-watch(error, (err) => {
-  if (err) {
-    showToast(
-      `Error fetching average time to merge: ${error.value?.statusMessage}`,
-      ToastTypesEnum.negative,
-      undefined,
-      10000
-    );
-  }
-});
+const isEmpty = computed(() => isEmptyData(averageTimeMerge.value.data as unknown as Record<string, unknown>[]));
 </script>
 
 <script lang="ts">

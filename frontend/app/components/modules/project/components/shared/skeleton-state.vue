@@ -2,8 +2,8 @@
   <slot v-if="props.status === 'success'" />
   <lfx-skeleton
     v-else-if="props.status === 'pending'"
-    height="2rem"
-    width="7.5rem"
+    :height="props.height"
+    :width="props.width"
     class="rounded-sm"
   />
 </template>
