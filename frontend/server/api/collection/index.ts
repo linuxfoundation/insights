@@ -5,8 +5,6 @@ const collections: Collection[] = [
         slug: 'cncf',
         name: 'Cloud Native Computing Foundation',
         description: 'Driving innovation with open-source projects for scalable, resilient cloud-native systems',
-        contributorsCount: 2612,
-        organizationsCount: 800,
         projectsCount: 20,
         softwareValueCount: 43000000000,
         featuredProjects: [
@@ -31,8 +29,6 @@ const collections: Collection[] = [
         slug: 'crowdDotDev',
         name: 'Crowd.dev',
         description: 'Crowd-sourced software development',
-        contributorsCount: 100,
-        organizationsCount: 20,
         projectsCount: 5,
         softwareValueCount: 1000000,
         featuredProjects: [
