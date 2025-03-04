@@ -7,19 +7,28 @@
     </p>
     <hr>
     <section class="mt-5">
-      <div
-        v-if="status === 'success'"
-        class="flex flex-row gap-4 items-center mb-6"
-      >
-        <div class="text-data-display-1">{{ formatNumber(summary.current) }}</div>
-        <lfx-delta-display
-          :summary="summary"
-          icon="circle-arrow-up-right"
-          icon-type="solid"
+      <div class="mb-6">
+        <div
+          v-if="status === 'success' && !isEmpty"
+          class="flex flex-row gap-4 items-center"
+        >
+          <div class="text-data-display-1">{{ formatNumber(summary.current) }}</div>
+          <lfx-delta-display
+            :summary="summary"
+            icon="circle-arrow-up-right"
+            icon-type="solid"
+          />
+        </div>
+        <lfx-skeleton
+          v-if="status === 'pending'"
+          height="2rem"
+          width="7.5rem"
+          class="rounded-sm"
         />
       </div>
 
       <lfx-tabs
+        v-if="!isEmpty"
         :tabs="tabs"
         :model-value="activeTab"
         @update:model-value="activeTab = $event"
@@ -28,7 +37,7 @@
         :status="status"
         :error="error"
         error-message="Error fetching active contributors"
-        :is-empty="isEmpty(activeContributors?.data)"
+        :is-empty="isEmpty"
       >
         <lfx-chart :config="barChartConfig" />
       </lfx-project-load-state>
@@ -58,7 +67,8 @@ import { lfxColors } from '~/config/styles/colors';
 import { axisLabelFormatter } from '~/components/uikit/chart/helpers/formatters';
 import { formatNumber } from '~/components/shared/utils/formatter';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
-import { isEmpty } from '~/components/shared/utils/helper';
+import { isEmptyData } from '~/components/shared/utils/helper';
+import LfxSkeleton from "~/components/uikit/skeleton/skeleton.vue";
 
 const { startDate, endDate } = storeToRefs(useProjectStore());
 
@@ -86,6 +96,7 @@ const chartData = computed<ChartData[]>(
     'contributors'
   ])
 );
+const isEmpty = computed(() => isEmptyData(activeContributors.value.data));
 
 const tabs = [
   { label: 'Weekly', value: 'weekly' },
