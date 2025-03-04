@@ -19,8 +19,11 @@ export async function fetchTinybird<T>(
 ): Promise<TinybirdResponse<T>> {
     const config = useRuntimeConfig();
     // Ensure tinybirdBaseUrl and token are available
-    if (!config.tinybirdBaseUrl || !config.tinybirdToken) {
-        throw new Error('Tinybird configuration is missing');
+    if (!config.tinybirdBaseUrl) {
+        throw new Error('Tinybird base URL is not defined');
+    }
+    if (!config.tinybirdToken) {
+        throw new Error('Tinybird token is not defined');
     }
     const url = `${config.tinybirdBaseUrl}${path}`;
 
