@@ -1,7 +1,10 @@
 <template>
   <section class="bg-white">
-    <div class="container py-8">
-      <lfx-tag type="transparent">
+    <div class="container py-5 md:py-8">
+      <lfx-tag
+        type="transparent"
+        :size="pageWidth < 768 ? 'small' : 'medium'"
+      >
         <lfx-icon
           name="rectangle-history"
           :size="14"
@@ -9,18 +12,28 @@
         Collections
       </lfx-tag>
       <div class="w-full max-w-120">
-        <h1 class="text-heading-1 mt-5 font-secondary font-bold leading-10">
+        <h1 class="text-heading-2 lg:text-heading-1 mt-4 md:mt-5 font-secondary font-bold">
           Discover the world's most critical open source projects
         </h1>
       </div>
     </div>
   </section>
-  <section class="sticky top-14 lg:top-17 bg-white">
-    <div class="container py-5">
-      <div class="flex justify-between items-center gap-4 flex-wrap">
-        <div class="flex items-center gap-4">
-          <lfx-collection-filter-stack v-model="stack" />
-          <lfx-collection-filter-industry v-model="industry" />
+  <section class="sticky top-14 lg:top-17 bg-white border-b border-neutral-100">
+    <div
+      class="container transition-all"
+      :class="scrollTop > 50 ? 'py-3 md:py-4' : 'py-3 md:py-5'"
+    >
+      <div class="flex justify-between items-center gap-4">
+        <div
+          class="flex items-center gap-4 flex-grow"
+          style="max-width: calc(100% - 3.625rem)"
+        >
+          <div class="w-1/2 sm:w-auto">
+            <lfx-collection-filter-stack v-model="stack" />
+          </div>
+          <div class="w-1/2 sm:w-auto">
+            <lfx-collection-filter-industry v-model="industry" />
+          </div>
         </div>
         <lfx-dropdown
           v-model="sort"
@@ -28,6 +41,7 @@
           icon="fa-arrow-down-wide-short fa-light"
           type="transparent"
           dropdown-position="right"
+          :icon-only-mobile="true"
         />
       </div>
     </div>
@@ -45,7 +59,7 @@
       </div>
       <div
         v-else
-        class="flex flex-col gap-8 pt-10 pb-16"
+        class="flex flex-col gap-5 lg:gap-8 pt-5 lg:pt-10 pb-16"
       >
         <lfx-collection-list-item
           v-for="collection of (data?.data || [])"
@@ -73,8 +87,12 @@ import LfxCollectionFilterIndustry
 import LfxSpinner from "~/components/uikit/spinner/spinner.vue";
 import {ToastTypesEnum} from "~/components/uikit/toast/types/toast.types";
 import useToastService from "~/components/uikit/toast/toast.service";
+import useResponsive from "~/components/shared/utils/responsive";
+import useScroll from "~/components/shared/utils/scroll";
 
 const { showToast } = useToastService();
+const {pageWidth} = useResponsive();
+const {scrollTop} = useScroll();
 
 const page = ref(1);
 const pageSize = ref(50);

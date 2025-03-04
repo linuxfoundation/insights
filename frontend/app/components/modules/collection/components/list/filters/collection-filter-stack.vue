@@ -5,7 +5,7 @@
     icon="fa-layer-group fa-light"
     type="filled"
     dropdown-position="left"
-    prefix="Stack"
+    :prefix="pageWidth < 640 ? undefined : 'Stack'"
     placeholder="All"
     :split-lines="[1]"
   />
@@ -16,6 +16,7 @@ import {computed} from "vue";
 import {useFetch} from "nuxt/app";
 import LfxDropdown from "~/components/uikit/dropdown/dropdown.vue";
 import type {DropdownGroupOptions} from "~/components/uikit/dropdown/types/dropdown.types";
+import useResponsive from "~/components/shared/utils/responsive";
 
 const props = defineProps<{
   modelValue: string;
@@ -27,6 +28,8 @@ const value = computed({
   get: () => props.modelValue,
   set: (value: string) => emit('update:modelValue', value)
 });
+
+const {pageWidth} = useResponsive();
 
 const options = computed<DropdownGroupOptions>(() => [
   {

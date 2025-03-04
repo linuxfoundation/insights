@@ -5,7 +5,7 @@
     icon="fa-buildings fa-light"
     type="filled"
     dropdown-position="left"
-    prefix="Industry"
+    :prefix="pageWidth < 640 ? undefined : 'Industry'"
     placeholder="All"
     :split-lines="[1]"
   />
@@ -16,6 +16,7 @@ import {computed} from "vue";
 import {useFetch} from "nuxt/app";
 import LfxDropdown from "~/components/uikit/dropdown/dropdown.vue";
 import type {DropdownGroupOptions} from "~/components/uikit/dropdown/types/dropdown.types";
+import useResponsive from "~/components/shared/utils/responsive";
 
 const props = defineProps<{
   modelValue: string;
@@ -28,7 +29,9 @@ const value = computed({
   set: (value: string) => emit('update:modelValue', value)
 });
 
-const options = computed<DropdownGroupOptions>(() => [
+const {pageWidth} = useResponsive();
+
+const options = computed<DropdownGroupOptions[]>(() => [
   {
     label: '',
     items: [
