@@ -23,8 +23,6 @@
               v-model="metric"
               icon="fa-light fa-display-code"
               :options="metricOptions"
-              full-width
-              center
             />
           </div>
         </div>
@@ -68,13 +66,14 @@
 import { ref, watch, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { useFetch } from 'nuxt/app';
-import {storeToRefs} from "pinia";
+import { storeToRefs } from "pinia";
 import { metricsOptions } from './config/metrics';
 import type { GeoMapResponse, GeoMapData } from './types/geo-map.types';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
+import LfxDropdown from "~/components/uikit/dropdown/dropdown.vue";
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 import { convertToChartData, getMaxValue } from '~/components/uikit/chart/helpers/chart-helpers';
@@ -85,7 +84,7 @@ import type {
 } from '~/components/uikit/chart/types/ChartTypes';
 import { getGeoMapChartConfig } from '~/components/uikit/chart/configs/geo-map.chart';
 import { formatNumber } from '~/components/shared/utils/formatter';
-import {useProjectStore} from "~/components/modules/project/store/project.store";
+import { useProjectStore } from "~/components/modules/project/store/project.store";
 
 const { showToast } = useToastService();
 const metricOptions = metricsOptions;
@@ -94,18 +93,18 @@ const route = useRoute();
 const metric = ref('all');
 const activeTab = ref('contributors');
 
-const {startDate, endDate} = storeToRefs(useProjectStore())
+const { startDate, endDate } = storeToRefs(useProjectStore())
 
-const {data, status, error} = useFetch(
-    `/api/project/${route.params.slug}/contributors/geographical-distribution`,
-    {
-      params: {
-        type: activeTab.value,
-        repository: route.params.name || '',
-        startDate,
-        endDate,
-      }
+const { data, status, error } = useFetch(
+  `/api/project/${route.params.slug}/contributors/geographical-distribution`,
+  {
+    params: {
+      type: activeTab.value,
+      repository: route.params.name || '',
+      startDate,
+      endDate,
     }
+  }
 );
 
 const geoMapData = computed<GeoMapData[]>(() => (data.value as GeoMapResponse).data);

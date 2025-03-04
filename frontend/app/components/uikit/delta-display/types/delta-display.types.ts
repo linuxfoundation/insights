@@ -10,4 +10,5 @@ export type DeltaDisplayProps = {
   hidePreviousValue?: boolean;
   percentageOnly?: boolean;
   unit?: string;
+  isDuration?: boolean;
 };

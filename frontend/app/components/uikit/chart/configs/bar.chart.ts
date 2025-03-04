@@ -9,6 +9,11 @@ import { lfxColors } from '~/config/styles/colors';
 
 const defaultBarOption: ECOption = {
   ...defaultOption,
+  grid: {
+    top: '12%',
+    bottom: '12%',
+    right: 0
+  },
   xAxis: {
     ...defaultOption.xAxis
   },
