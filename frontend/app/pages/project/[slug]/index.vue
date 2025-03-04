@@ -1,7 +1,7 @@
 <template>
-  <lfx-project-overview-view />
+  <lfx-project-contributors-view />
 </template>
 
 <script setup lang="ts">
-import LfxProjectOverviewView from "~/components/modules/project/views/overview.vue";
+import LfxProjectContributorsView from "~/components/modules/project/views/contributors.vue";
 </script>

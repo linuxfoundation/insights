@@ -1,23 +1,23 @@
 <template>
-  <div
-    v-if="hasPreviousRoute"
+  <nuxt-link
+    v-if="previousRoute"
+    :to="previousRoute"
     v-bind="$attrs"
-    @click="goBack()"
   >
     <slot />
-  </div>
+  </nuxt-link>
 </template>
 
 <script setup lang="ts">
-import {useRouter} from "nuxt/app";
-import {computed} from "vue";
+import { ref, onMounted } from "vue";
+import { useRouter } from "nuxt/app";
 
 const router = useRouter();
+const previousRoute = ref<string | null>(null);
 
-const hasPreviousRoute = computed(() => router.options.history.state.back);
-const goBack = () => {
-  router.back();
-};
+onMounted(() => {
+  previousRoute.value = router.options.history.state.back as string || null;
+});
 </script>
 
 <script lang="ts">

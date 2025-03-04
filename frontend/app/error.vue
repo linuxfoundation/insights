@@ -1,17 +1,40 @@
 <template>
   <main>
     <lfx-navbar />
-    <div class="container py-10">
-      <h1 class="text-center text-[5rem] font-secondary">{{ error.statusCode }}</h1>
-      <p class="text-heading-4 text-neutral-600 text-center">
-        <span v-if="error.statusCode === 404">Oops! The page you are looking for does not exist.</span>
-        <span v-else>Something went wrong. Please try again later.</span>
-      </p>
-
-      <div class="flex justify-center pt-4">
-        <nuxt-link :to="{name: LfxRoutes.COLLECTIONS}">
-          <lfx-button type="tertiary">Return home</lfx-button>
-        </nuxt-link>
+    <div class="container py-30">
+      <div class="flex flex-col items-center">
+        <lfx-icon
+          :name="notFound ? 'eyes' : 'triangle-person-digging'"
+          :size="140"
+          class="text-neutral-300"
+        />
+        <p class="text-center text-body-1 text-neutral-500 pt-10">
+          <span v-if="notFound">
+            Page not found
+          </span>
+          <span v-else>
+            Internal Server Error
+          </span>
+        </p>
+        <h1 class="text-heading-3 font-bold text-center pt-3 text-neutral-500">
+          <span
+            v-if="notFound"
+            class="font-secondary"
+          >
+            Oops! The page you are looking for doesn’t exist.
+          </span>
+          <span
+            v-else
+            class="font-secondary"
+          >
+            Something went wrong. Please try again later.
+          </span>
+        </h1>
+        <div class="flex justify-center pt-10">
+          <nuxt-link :to="{name: LfxRoutes.COLLECTIONS}">
+            <lfx-button size="large">Go back to Home</lfx-button>
+          </nuxt-link>
+        </div>
       </div>
     </div>
   </main>
@@ -21,12 +44,15 @@ import {clearError, useRoute} from "nuxt/app";
 import LfxNavbar from '~/components/shared/layout/navbar.vue';
 import LfxButton from "~/components/uikit/button/button.vue";
 import {LfxRoutes} from "~/components/shared/types/routes";
+import LfxIcon from "~/components/uikit/icon/icon.vue";
 
-defineProps<{
+const props = defineProps<{
   error: object
 }>()
 
 const route = useRoute();
+
+const notFound = computed(() => props.error?.statusCode === 404)
 
 watch(route, () => {
   clearError();
