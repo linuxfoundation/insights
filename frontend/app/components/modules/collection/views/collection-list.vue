@@ -23,48 +23,63 @@
       class="container transition-all"
       :class="scrollTop > 50 ? 'py-3 md:py-4' : 'py-3 md:py-5'"
     >
-      <div class="flex justify-between items-center gap-4">
-        <div
-          class="flex items-center gap-4 flex-grow"
-          style="max-width: calc(100% - 3.625rem)"
-        >
-          <div class="w-1/2 sm:w-auto">
-            <lfx-collection-filter-stack v-model="stack" />
-          </div>
-          <div class="w-1/2 sm:w-auto">
-            <lfx-collection-filter-industry v-model="industry" />
-          </div>
-        </div>
+      <div class="flex justify-end items-center gap-4">
+        <!--        <div-->
+        <!--          class="flex items-center gap-4 flex-grow"-->
+        <!--          style="max-width: calc(100% - 3.625rem)"-->
+        <!--        >-->
+        <!--          <div class="w-1/2 sm:w-auto">-->
+        <!--            <lfx-collection-filter-stack v-model="stack" />-->
+        <!--          </div>-->
+        <!--          <div class="w-1/2 sm:w-auto">-->
+        <!--            <lfx-collection-filter-industry v-model="industry" />-->
+        <!--          </div>-->
+        <!--        </div>-->
         <lfx-dropdown
           v-model="sort"
           :options="sortOptions"
           icon="fa-arrow-down-wide-short fa-light"
           type="transparent"
           dropdown-position="right"
-          :icon-only-mobile="true"
         />
       </div>
     </div>
   </section>
   <section>
-    <div class="container">
+    <div class="container py-5 lg:py-10 flex flex-col  gap-5 lg:gap-8">
       <div
-        v-if="status === 'pending'"
-        class="flex items-center justify-between h-32 py-1"
+        v-if="data && !(status === 'pending' && data?.page === 1)"
+        class="flex flex-col gap-5 lg:gap-8"
       >
-        <lfx-spinner
-          :size="40"
-          class=" text-neutral-300"
+        <lfx-collection-list-item
+          v-for="collection of data?.data"
+          :key="collection.slug"
+          :collection="collection"
         />
       </div>
       <div
-        v-else
-        class="flex flex-col gap-5 lg:gap-8 pt-5 lg:pt-10 pb-16"
+        v-if="data?.data.length === 0 && status == 'success'"
+        class="flex flex-col items-center py-20"
       >
-        <lfx-collection-list-item
-          v-for="collection of (data?.data || [])"
-          :key="collection.slug"
-          :collection="collection"
+        <lfx-icon
+          name="face-monocle"
+          :size="80"
+          class="text-neutral-300"
+        />
+        <h3 class="text-center pt-5 text-heading-3 sm:text-heading-2 font-secondary font-bold text-neutral-500">
+          No collections found
+        </h3>
+        <p class="text-body-1 text-neutral-500 pt-3 text-center">
+          Try adjusting your filters to find what you’re looking for.
+        </p>
+      </div>
+      <div
+        v-if="status === 'pending'"
+        class="flex flex-col gap-5 lg:gap-8"
+      >
+        <lfx-collection-list-item-loading
+          v-for="i of 3"
+          :key="i"
         />
       </div>
     </div>
@@ -80,15 +95,12 @@ import LfxDropdown from '~/components/uikit/dropdown/dropdown.vue';
 import LfxCollectionListItem from '~/components/modules/collection/components/list/collection-list-item.vue';
 import type {Pagination} from "~/components/shared/types/pagination";
 import type {Collection} from "~/components/modules/collection/types/Collection";
-import LfxCollectionFilterStack
-  from "~/components/modules/collection/components/list/filters/collection-filter-stack.vue";
-import LfxCollectionFilterIndustry
-  from "~/components/modules/collection/components/list/filters/collection-filter-industry.vue";
-import LfxSpinner from "~/components/uikit/spinner/spinner.vue";
 import {ToastTypesEnum} from "~/components/uikit/toast/types/toast.types";
 import useToastService from "~/components/uikit/toast/toast.service";
 import useResponsive from "~/components/shared/utils/responsive";
 import useScroll from "~/components/shared/utils/scroll";
+import LfxCollectionListItemLoading
+  from "~/components/modules/collection/components/list/collection-list-item-loading.vue";
 
 const { showToast } = useToastService();
 const {pageWidth} = useResponsive();
@@ -98,21 +110,47 @@ const page = ref(1);
 const pageSize = ref(50);
 const sort = ref('name_DESC');
 
-const stack = ref('');
-const industry = ref('');
+// const stack = ref('');
+// const industry = ref('');
 
-const { data, status, error } = useFetch<Pagination<Collection>>(
+const {scrollTopPercentage} = useScroll();
+
+const collections = ref([]);
+
+watch([sort], () => {
+  page.value = 1;
+});
+
+const { data, status, error } = await useFetch<Pagination<Collection>>(
     () => `/api/collection`,
     {
       params: {
         sort,
         page,
         pageSize,
-        stack,
-        industry,
+      },
+      watch: [sort, page],
+      transform: (res: Pagination<Collection>) => {
+        console.log(collections.value);
+        if (res.page === 1) {
+          collections.value = res.data;
+        } else {
+          collections.value = [...collections.value, ...res.data];
+        }
+        console.log(collections.value);
+        return {
+          ...res,
+          data: collections.value,
+        };
       },
     }
 );
+
+watch(scrollTopPercentage, () => {
+  if (scrollTopPercentage.value >= 100 && collections.value.length < (data.value?.total || 0)) {
+    page.value += 1;
+  }
+});
 
 watch(error, (err) => {
   if (err) {
@@ -139,6 +177,10 @@ const sortOptions = [
     value: 'softwareValueCount_DESC'
   },
 ];
+
+onMounted(() => {
+  collections.value = data.value?.data || [];
+});
 </script>
 
 <script lang="ts">

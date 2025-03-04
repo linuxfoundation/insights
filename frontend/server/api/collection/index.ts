@@ -55,19 +55,15 @@ export default defineEventHandler(async (event) => {
     const sort: string = getQuery(event)?.sort as string || '';
     const [field, order] = sort.split('_');
 
-    // Additional query parameters
-    // const stack: string = getQuery(event)?.stack as string || '';
-    // const industry: string = getQuery(event)?.industry as string || '';
-
     // Pagination parameters
-    // const page: string = getQuery(event)?.page as string || '';
+    const page: string = getQuery(event)?.page as string || '';
     // const pageSize: string = getQuery(event)?.pageSize as string || '';
     // This is just a showcase of which parameters are sent, feel free to use shorter syntax
 
     return {
-        page: 1,
+        page: +page,
         pageSize: 10,
-        total: 2,
+        total: 20,
         data: collections.sort((a, b) => {
             const fieldA = a[field as keyof Collection];
             const fieldB = b[field as keyof Collection];

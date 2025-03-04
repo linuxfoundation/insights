@@ -1,5 +1,5 @@
 <template>
-  <div class=" min-h-[12.875rem] sticky top-14 lg:top-17 z-10">
+  <lfx-maintain-height class="sticky top-14 lg:top-17 z-10">
     <div class="bg-white outline outline-neutral-100">
       <lfx-collection-header
         :loading="!collection"
@@ -10,11 +10,11 @@
         v-model:tab="tab"
       />
     </div>
-  </div>
-  <div class="container py-10 flex flex-col gap-8">
+  </lfx-maintain-height>
+  <div class="container py-5 lg:py-10 flex flex-col gap-5 lg:gap-8">
     <div
       v-if="data && !(status === 'pending' && data?.page === 1)"
-      class="grid grid-cols-3 gap-8"
+      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 lg:gap-8"
     >
       <lfx-project-list-item
         v-for="project of data?.data"
@@ -31,7 +31,7 @@
         :size="80"
         class="text-neutral-300"
       />
-      <h3 class="text-center pt-5 text-heading-2 font-secondary font-bold text-neutral-500">
+      <h3 class="text-center pt-5 text-heading-3 sm:text-heading-2 font-secondary font-bold text-neutral-500">
         No projects found
       </h3>
       <p class="text-body-1 text-neutral-500 pt-3 text-center">
@@ -40,7 +40,7 @@
     </div>
     <div
       v-if="status === 'pending'"
-      class="grid grid-cols-3 gap-8"
+      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 lg:gap-8"
     >
       <lfx-project-list-item-loading
         v-for="i of 6"
@@ -60,6 +60,7 @@ import type {Pagination} from "~/components/shared/types/pagination";
 import LfxProjectListItemLoading from "~/components/modules/project/components/list/project-list-item-loading.vue";
 import useScroll from "~/components/shared/utils/scroll";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
+import LfxMaintainHeight from "~/components/uikit/maintain-height/maintain-height.vue";
 
 const props = defineProps<{
   collection: Collection
