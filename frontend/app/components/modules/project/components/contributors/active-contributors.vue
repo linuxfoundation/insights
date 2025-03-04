@@ -24,21 +24,23 @@
         :model-value="activeTab"
         @update:model-value="activeTab = $event"
       />
-      <div class="w-full h-[330px]">
-        <lfx-chart
-          v-if="status !== 'pending'"
-          :config="barChartConfig"
-        />
-        <lfx-spinner v-else />
-      </div>
+      <lfx-project-load-state
+        :status="status"
+        :error="error"
+        error-message="Error fetching active contributors"
+        :is-empty="isEmpty(activeContributors?.data)"
+      >
+        <lfx-chart :config="barChartConfig" />
+      </lfx-project-load-state>
     </section>
   </lfx-card>
 </template>
 
 <script setup lang="ts">
 import { useFetch, useRoute } from 'nuxt/app';
-import { ref, computed, watch } from 'vue';
-import {storeToRefs} from "pinia";
+import { ref, computed } from 'vue';
+import { storeToRefs } from "pinia";
+import LfxProjectLoadState from '../shared/load-state.vue';
 import type { ActiveContributors } from './types/contributors.types';
 import type { Summary } from '~/components/shared/types/summary.types';
 import LfxCard from '~/components/uikit/card/card.vue';
@@ -54,29 +56,25 @@ import LfxChart from '~/components/uikit/chart/chart.vue';
 import { getBarChartConfig } from '~/components/uikit/chart/configs/bar.chart';
 import { lfxColors } from '~/config/styles/colors';
 import { axisLabelFormatter } from '~/components/uikit/chart/helpers/formatters';
-import useToastService from '~/components/uikit/toast/toast.service';
-import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
-import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 import { formatNumber } from '~/components/shared/utils/formatter';
-import {useProjectStore} from "~/components/modules/project/store/project.store";
+import { useProjectStore } from "~/components/modules/project/store/project.store";
+import { isEmpty } from '~/components/shared/utils/helper';
 
-const { showToast } = useToastService();
-
-const {startDate, endDate} = storeToRefs(useProjectStore());
+const { startDate, endDate } = storeToRefs(useProjectStore());
 
 const activeTab = ref('weekly');
 const route = useRoute();
 
 const { data, status, error } = useFetch(
   () => `/api/project/${route.params.slug}/contributors/active-contributors`,
-    {
-      params: {
-        interval: activeTab,
-        repository: route.params.name || '',
-        startDate,
-        endDate,
-      }
+  {
+    params: {
+      interval: activeTab,
+      repository: route.params.name || '',
+      startDate,
+      endDate,
     }
+  }
 );
 
 const activeContributors = computed<ActiveContributors>(() => data.value as ActiveContributors);
@@ -85,8 +83,8 @@ const summary = computed<Summary>(() => activeContributors.value.summary);
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
   () => convertToChartData(activeContributors.value.data as RawChartData[], 'dateFrom', [
-      'contributors'
-    ])
+    'contributors'
+  ])
 );
 
 const tabs = [
@@ -114,16 +112,6 @@ const configOverride = computed(() => ({
 }));
 const barChartConfig = computed(() => getBarChartConfig(chartData.value, chartSeries.value, configOverride.value));
 
-watch(error, (err) => {
-  if (err) {
-    showToast(
-      `Error fetching active contributors: ${error.value?.statusMessage}`,
-      ToastTypesEnum.negative,
-      undefined,
-      10000
-    );
-  }
-});
 </script>
 
 <script lang="ts">
