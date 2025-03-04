@@ -15,7 +15,8 @@
         :error="error"
         error-message="Error fetching contributor leaderboard"
         :is-empty="isEmpty"
-        :height="500"
+        :height="400"
+        use-min-height
       >
         <lfx-contributors-table
           :metric="metric"

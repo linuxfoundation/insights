@@ -1,5 +1,8 @@
 <template>
-  <div :class="`w-full h-[${props.height}px]`">
+  <div
+    :class="`flex flex-col justify-evenly w-full`"
+    :style="heightStyle"
+  >
     <slot v-if="props.status === 'success' && !props.isEmpty" />
     <div
       v-else-if="props.status === 'pending'"
@@ -35,7 +38,7 @@
 <script setup lang="ts">
 // import type { FetchError } from 'ofetch';
 import type { AsyncDataRequestStatus } from 'nuxt/app';
-import { watch } from 'vue';
+import { watch, computed } from 'vue';
 import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
@@ -47,13 +50,17 @@ const props = withDefaults(defineProps<{
   height?: number;
   errorMessage?: string;
   error?: unknown;
+  useMinHeight?: boolean;
 }>(), {
   height: 330,
   errorMessage: 'Error fetching data',
-  error: undefined
+  error: undefined,
+  useMinHeight: false
 });
 
 const { showToast } = useToastService();
+const heightStyle = computed(() => (props.useMinHeight
+  ? { minHeight: `${props.height}px` } : { height: `${props.height}px` }));
 
 watch(() => props.error, (err) => {
   if (err) {
