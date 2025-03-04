@@ -24,28 +24,31 @@
           />
         </div>
       </div>
-      <div class="w-full h-[330px]">
-        <lfx-chart
-          v-if="status !== 'pending'"
-          :config="lineAreaChartConfig"
-        />
-        <lfx-spinner v-else />
-      </div>
+      <lfx-project-load-state
+        :status="status"
+        :error="error"
+        error-message="Error fetching retention"
+        :is-empty="isEmpty"
+        :height="330"
+        use-min-height
+      >
+        <div class="w-full h-[330px]">
+          <lfx-chart :config="lineAreaChartConfig" />
+        </div>
+      </lfx-project-load-state>
     </section>
   </lfx-card>
 </template>
 
 <script setup lang="ts">
-import { ref, watch, computed } from 'vue';
+import { ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { useFetch } from 'nuxt/app';
-import {storeToRefs} from "pinia";
+import { storeToRefs } from "pinia";
+import LfxProjectLoadState from '../shared/load-state.vue';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
 import LfxChart from '~/components/uikit/chart/chart.vue';
-import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
-import useToastService from '~/components/uikit/toast/toast.service';
-import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 import { convertToChartData } from '~/components/uikit/chart/helpers/chart-helpers';
 import type {
   ChartData,
@@ -55,32 +58,33 @@ import type {
 import { lfxColors } from '~/config/styles/colors';
 import { axisLabelFormatter } from '~/components/uikit/chart/helpers/formatters';
 import { getLineAreaChartConfig } from '~/components/uikit/chart/configs/line.area.chart';
-import {useProjectStore} from "~/components/modules/project/store/project.store";
+import { useProjectStore } from "~/components/modules/project/store/project.store";
+import { isEmptyData } from '~/components/shared/utils/helper';
 
-const { showToast } = useToastService();
-const {startDate, endDate} = storeToRefs(useProjectStore())
+const { startDate, endDate } = storeToRefs(useProjectStore())
 
 const route = useRoute();
 
 const activeTab = ref('contributors');
 const chartType = ref('line');
 
-const {data, status, error} = useFetch(
-    `/api/project/${route.params.slug}/contributors/retention`,
-    {
-      params: {
-        type: activeTab.value,
-        repository: route.params.name || '',
-        startDate,
-        endDate,
-      }
+const { data, status, error } = useFetch(
+  `/api/project/${route.params.slug}/contributors/retention`,
+  {
+    params: {
+      type: activeTab.value,
+      repository: route.params.name || '',
+      startDate,
+      endDate,
     }
+  }
 );
 
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
   () => convertToChartData(data.value as RawChartData[], 'dateFrom', ['percentage'])
 );
+const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
 
 const tabs = [
   {
@@ -129,21 +133,11 @@ const configOverride = computed(() => ({
   }
 }));
 const lineAreaChartConfig = computed(() => getLineAreaChartConfig(
-    chartData.value, //
-    chartSeries.value, //
-    configOverride.value
-  ));
+  chartData.value, //
+  chartSeries.value, //
+  configOverride.value
+));
 
-watch(error, (err) => {
-  if (err) {
-    showToast(
-      `Error fetching retention: ${error.value?.statusMessage}`,
-      ToastTypesEnum.negative,
-      undefined,
-      10000
-    );
-  }
-});
 </script>
 
 <script lang="ts">

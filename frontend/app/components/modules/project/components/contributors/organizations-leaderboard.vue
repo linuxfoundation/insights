@@ -12,7 +12,7 @@
       <lfx-project-load-state
         :status="status"
         :error="error"
-        error-message="Error fetching contributor leaderboard"
+        error-message="Error fetching organizations leaderboard"
         :is-empty="isEmpty"
         :height="400"
         use-min-height

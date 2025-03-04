@@ -8,7 +8,7 @@
           @update:model-value="onSideNavUpdate"
         />
       </div>
-      <div class="w-1/2">
+      <div class="w-1/2 pb-10">
         <lfx-scroll-area
           class="flex flex-col gap-12"
           @scrolled-to-view="onScrolledToView"
