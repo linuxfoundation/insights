@@ -18,6 +18,7 @@ export async function fetchTinybird<T>(
     query: Record<string, string | boolean | number | string[]>,
 ): Promise<TinybirdResponse<T>> {
     const config = useRuntimeConfig();
+    console.log(config);
     // Ensure tinybirdBaseUrl and token are available
     if (!config.tinybirdBaseUrl) {
         throw new Error('Tinybird base URL is not defined');

@@ -26,6 +26,7 @@
     "nuxt": "^3.15.3",
     "pinia": "^2.3.0",
     "primevue": "^4.2.5",
+    "vitest": "^3.0.7",
     "vue": "latest",
     "vue-router": "latest"
   },
