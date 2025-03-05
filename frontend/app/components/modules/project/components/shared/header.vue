@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-[10.75rem]  sticky top-14 lg:top-17 z-10">
+  <lfx-maintain-height class="sticky top-14 lg:top-17 z-10">
     <div class="bg-white outline outline-neutral-200">
       <section class="container">
         <div
@@ -115,7 +115,7 @@
         </div>
       </section>
     </div>
-  </div>
+  </lfx-maintain-height>
   <lfx-project-repository-switch
     v-if="isSearchRepoModalOpen && props.project"
     v-model="isSearchRepoModalOpen"
@@ -139,6 +139,7 @@ import LfxProjectRepositorySwitch from "~/components/modules/project/components/
 import type {Project} from "~/components/modules/project/types/project";
 import LfxBack from "~/components/uikit/back/back.vue";
 import LfxProjectDateRangePicker from "~/components/modules/project/components/shared/header/date-range-picker.vue";
+import LfxMaintainHeight from "~/components/uikit/maintain-height/maintain-height.vue";
 
 const props = defineProps<{
   project: Project

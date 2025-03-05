@@ -34,7 +34,7 @@
       @filter="selectFilter"
     >
       <template #value="slotProps">
-        <div :class="props.iconOnlyMobile ? '!mr-0' : ''">
+        <div :class="props.iconOnlyMobile ? '!mr-0 sm:!mr-2' : ''">
           <i :class="['dropdown-icon', props.icon]" />
           <div
             class="items-center gap-0.5"
