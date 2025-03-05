@@ -13,7 +13,7 @@ import {
   createError,
   showError,
   useFetch,
-  useRoute
+  useRoute,
 } from "nuxt/app";
 import {storeToRefs} from "pinia";
 import LfxProjectHeader from "~/components/modules/project/components/shared/header.vue";

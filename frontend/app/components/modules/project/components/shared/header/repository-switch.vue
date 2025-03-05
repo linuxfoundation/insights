@@ -75,7 +75,7 @@ computed, onMounted, ref, watch
 import {storeToRefs} from "pinia";
 import LfxModal from "~/components/uikit/modal/modal.vue";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
-import type {Project, ProjectRepository} from "~/components/modules/project/types/project";
+import type {ProjectRepository} from "~/components/modules/project/types/project";
 import LfxProjectRepositorySwitchItem
   from "~/components/modules/project/components/shared/header/repository-switch-item.vue";
 import {LfxRoutes} from "~/components/shared/types/routes";
@@ -84,7 +84,6 @@ import {useProjectStore} from "~/components/modules/project/store/project.store"
 const props = defineProps<{
   modelValue: boolean;
   repo: string;
-  project: Project;
 }>();
 const emit = defineEmits<{(e: 'update:modelValue', value: boolean): void }>();
 
