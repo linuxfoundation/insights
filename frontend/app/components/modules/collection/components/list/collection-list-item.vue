@@ -1,7 +1,7 @@
 <template>
   <nuxt-link :to="{name: LfxRoutes.COLLECTION, params: {slug: props.collection.slug}}">
     <lfx-card class="p-5 md:p-6 hover:shadow-sm transition-all">
-      <div class="flex justify-between flex-col md:flex-row items-start gap-4 pb-4 md:pb-6">
+      <div class="flex justify-between flex-col md:flex-row items-start gap-4">
         <div>
           <h3 class="text-heading-3 leading-7 font-secondary font-bold pb-2">
             {{ props.collection.name }}
@@ -24,42 +24,48 @@
               {{formatNumberShort(props.collection.projectsCount)}} projects
             </p>
           </article>
-          <article class="flex items-center gap-2">
-            <div class="h-8 w-8 rounded-full flex items-center justify-center bg-positive-50">
-              <lfx-icon
-                name="dollar-circle"
-                :size="16"
-                class="text-positive-600"
-              />
-            </div>
-            <p class="leading-6 transition-all text-sm whitespace-nowrap">
-              <span class="text-neutral-500">Software value:</span>
-              ${{ formatNumberShort(props.collection.softwareValueCount) }}
-            </p>
-          </article>
+          <!--          <article class="flex items-center gap-2">-->
+          <!--            <div class="h-8 w-8 rounded-full flex items-center justify-center bg-positive-50">-->
+          <!--              <lfx-icon-->
+          <!--                name="dollar-circle"-->
+          <!--                :size="16"-->
+          <!--                class="text-positive-600"-->
+          <!--              />-->
+          <!--            </div>-->
+          <!--            <p class="leading-6 transition-all text-sm whitespace-nowrap">-->
+          <!--              <span class="text-neutral-500">Software value:</span>-->
+          <!--              ${{ formatNumberShort(props.collection.softwareValueCount) }}-->
+          <!--            </p>-->
+          <!--          </article>-->
         </div>
       </div>
 
-      <p class="text-neutral-400 text-body-2 font-medium pb-2">
-        Featured projects
-      </p>
-      <div
-        class="flex flex-wrap gap-3"
-        @click.prevent
+      <section
+        v-if="props.collection.featuredProjects.length > 0"
+        class="pt-4 md:pt-6"
       >
-        <lfx-chip
-          v-for="project of props.collection.featuredProjects"
-          :key="project.slug"
-          type="bordered"
+        <p class="text-neutral-400 text-body-2 font-medium pb-2">
+          Featured projects
+        </p>
+        <div
+          class="flex flex-wrap gap-3"
+          @click.prevent
         >
-          <lfx-avatar
-            :src="project.logo"
-            size="xsmall"
-            type="organization"
-          />
-          {{ project.name }}
-        </lfx-chip>
-      </div>
+          <lfx-chip
+            v-for="project of props.collection.featuredProjects"
+            :key="project.slug"
+            type="bordered"
+          >
+            <lfx-avatar
+              :src="project.logo"
+              size="xsmall"
+              type="organization"
+            />
+            {{ project.name }}
+          </lfx-chip>
+        </div>
+      </section>
+
     </lfx-card>
   </nuxt-link>
 </template>
