@@ -63,7 +63,7 @@ export default defineEventHandler(async (event) => {
         }
         return res.data[0];
     } catch (err) {
-        console.error('Error fetching search results:', err);
+        console.error('Error fetching collection details:', err);
         return createError({statusCode: 500, statusMessage: 'Internal server error'});
     }
 });

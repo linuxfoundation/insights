@@ -56,7 +56,7 @@ export default defineEventHandler(async (event) => {
             data: res.data,
         };
     } catch (error) {
-        console.error('Error fetching search results:', error);
+        console.error('Error collection list:', error);
         throw createError({statusCode: 500, statusMessage: 'Internal Server Error'});
     }
 });
