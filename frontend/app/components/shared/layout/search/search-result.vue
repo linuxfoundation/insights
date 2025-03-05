@@ -34,7 +34,7 @@
             type="organization"
             class="!rounded-sm !outline-1"
           />
-          {{project.name}} {{route.name}}
+          {{project.name}}
         </nuxt-link>
       </section>
       <section
