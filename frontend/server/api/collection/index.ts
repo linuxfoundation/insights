@@ -34,7 +34,7 @@ interface CollectionResponse {
  */
 export default defineEventHandler(async (event) => {
     const query = getQuery(event);
-    const sort: string = (query?.sort as string) || '';
+    const sort: string = (query?.sort as string) || 'name_ASC';
 
     // Pagination parameters
     const page: number = +(query?.page ?? 0);
