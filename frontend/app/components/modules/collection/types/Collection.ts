@@ -1,12 +1,13 @@
 export interface Collection {
+    id: string;
     name: string;
     slug: string;
     description: string;
-    featuredProjects?: {
-      name: string;
-      slug: string;
-      logo: string;
-    }[];
+    isLf: number;
     projectsCount: number;
-    softwareValueCount: number;
+    featuredProjects: {
+        name: string;
+        slug: string;
+        logo: string;
+    }[];
 }

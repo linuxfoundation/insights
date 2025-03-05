@@ -1,7 +1,7 @@
 <template>
   <div
     ref="maintainHeightRef"
-    :style="{ 'min-height': fixedHeight + 'px' }"
+    :style="{ 'height': fixedHeight + 'px' }"
   >
     <slot />
   </div>
