@@ -67,8 +67,8 @@ export type TinybirdContributorsDataResponse = {
 
 export type TinybirdContributorsResponse = TinybirdContributorsDataResponse | TinybirdContributorsSummaryResponse
 
-export function formatDateForTinyBird(date: DateTime): string {
-  return date.toISODate() ?? '';
+function formatDateForTinyBird(date: DateTime): string {
+  return date.toFormat('yyyy-MM-dd 00:00:00') ?? '';
 }
 
 export async function fetchFromTinybird(

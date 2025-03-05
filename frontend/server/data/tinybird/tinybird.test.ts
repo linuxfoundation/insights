@@ -4,7 +4,7 @@ import {
 import type {$Fetch} from "nitropack";
 import type {ActiveContributorsFilter} from "../types";
 import { ContributorsFilterGranularity} from "../types";
-import {formatDateForTinyBird, fetchFromTinybird} from './tinybird';
+import {fetchFromTinybird} from './tinybird';
 import {useRuntimeConfig} from "#imports";
 import {DateTime} from "luxon";
 
@@ -20,8 +20,8 @@ describe('fetchFromTinybird', () => {
       project: 'test-project',
       repo: 'test-repo',
       granularity: ContributorsFilterGranularity.MONTHLY,
-      fromDate: DateTime.utc(2023, 0, 1),
-      toDate: DateTime.utc(2023, 11, 31),
+      fromDate: DateTime.utc(2023, 1, 1),
+      toDate: DateTime.utc(2023, 12, 31),
     }
     await fetchFromTinybird(endpoint, query, mockFetch);
 
@@ -32,8 +32,8 @@ describe('fetchFromTinybird', () => {
       {
         query: {
           ...query,
-          fromDate: formatDateForTinyBird(<DateTime>query.fromDate),
-          toDate: formatDateForTinyBird(<DateTime>query.toDate),
+          fromDate: '2023-01-01 00:00:00',
+          toDate: '2023-12-31 00:00:00',
         },
         headers: {
           Authorization: `Bearer ${tinybirdToken}`,
