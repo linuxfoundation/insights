@@ -1,6 +1,6 @@
 .p-select {
   @apply bg-white border border-solid border-neutral-200 rounded-lg shadow-xs inline-flex items-center;
-  @apply px-3 py-2 max-w-[320px] cursor-pointer;
+  @apply px-3 py-2 max-w-[320px] cursor-pointer w-full;
 
   &.p-select-full-width {
     @apply w-full max-w-none;
@@ -22,9 +22,9 @@
       @apply text-base;
     }
     &>div {
-      @apply text-neutral-900 text-sm font-medium mr-2 leading-4 flex items-center gap-2;
+      @apply text-neutral-900 text-sm font-medium mr-2 leading-4 flex items-center justify-center gap-2;
       div {
-        @apply text-ellipsis w-full truncate;
+        @apply text-ellipsis truncate max-w-max;
       }
     }
   }
@@ -164,5 +164,11 @@
     .p-select-option-group:not(:first-child) {
       @apply border-t border-solid border-neutral-100;
     }
+  }
+}
+
+.p-select-icon-only-mobile{
+  .p-select-dropdown {
+    @apply hidden;
   }
 }

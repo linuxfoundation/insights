@@ -28,14 +28,18 @@
         { 'p-select-group-breaks': props.showGroupBreaks },
         { 'p-select-full-width': props.fullWidth },
         { 'p-select-centered': props.center },
+        { 'p-select-icon-only-mobile': props.iconOnlyMobile },
         `p-select-dropdown-${props.dropdownPosition}`
       ]"
       @filter="selectFilter"
     >
       <template #value="slotProps">
-        <div>
+        <div :class="props.iconOnlyMobile ? '!mr-0' : ''">
           <i :class="['dropdown-icon', props.icon]" />
-          <div class="flex items-center gap-0.5">
+          <div
+            class="items-center gap-0.5"
+            :class="props.iconOnlyMobile ? 'hidden sm:flex' : 'flex'"
+          >
             <span
               v-if="props.prefix"
               class="font-medium"

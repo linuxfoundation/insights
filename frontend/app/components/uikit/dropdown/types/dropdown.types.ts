@@ -30,5 +30,6 @@ export interface DropdownProps {
   center?: boolean;
   prefix?: string;
   dropdownPosition?: 'left' | 'right';
+  iconOnlyMobile?: boolean;
   splitLines?: number[]; // index of the lines to split the dropdown
 }
