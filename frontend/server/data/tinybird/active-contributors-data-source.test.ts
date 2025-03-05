@@ -10,6 +10,7 @@ import {
 import {createActiveContributorsDataSource} from '../active-contributors-data-source';
 import type {ActiveContributorsResponse} from "../types";
 import { ContributorsFilterGranularity} from "../types";
+import {DateTime} from "luxon";
 
 describe('ContributorsDataSource', () => {
   test('should fetch contributors data with correct parameters', async () => {
@@ -25,8 +26,8 @@ describe('ContributorsDataSource', () => {
 
     const dataSource = createActiveContributorsDataSource(mockFetch);
 
-    const currentFromDate = new Date(2022, 0, 1);
-    const currentToDate = new Date(2023, 0, 1);
+    const currentFromDate = DateTime.utc(2022, 0, 1);
+    const currentToDate = DateTime.utc(2023, 0, 1);
 
     const filter = {
       granularity: ContributorsFilterGranularity.WEEKLY,
@@ -36,9 +37,9 @@ describe('ContributorsDataSource', () => {
       toDate: currentToDate
     };
 
-    const fakeDate = new Date(2022, 11, 11)
+    const fakeDate = DateTime.utc(2022, 11, 11)
     vi.useFakeTimers();
-    vi.setSystemTime(fakeDate);
+    vi.setSystemTime(fakeDate.toJSDate());
 
     const result = await dataSource.fetchActiveContributors(filter);
 

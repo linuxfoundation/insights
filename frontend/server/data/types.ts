@@ -1,3 +1,5 @@
+import type {DateTime} from "luxon";
+
 export type FetchFunction = typeof $fetch;
 
 export enum ContributorsFilterGranularity {
@@ -10,8 +12,8 @@ export type ActiveContributorsFilter = {
   project: string;
   repo?: string;
   granularity?: ContributorsFilterGranularity;
-  fromDate?: Date;
-  toDate?: Date;
+  fromDate?: DateTime;
+  toDate?: DateTime;
 };
 
 // This probably shouldn't be here.
@@ -28,8 +30,8 @@ export type ActiveContributorsResponse = {
     previous: number; // Previous number of active contributors
     percentageChange: number; // Percentage change in active contributors
     changeValue: number; // Change in the number of active contributors
-    periodFrom: Date; // Start of the period (e.g. last 90 days)
-    periodTo: Date; // End of the period (e.g. last 90 days)
+    periodFrom: DateTime; // Start of the period (e.g. last 90 days)
+    periodTo: DateTime; // End of the period (e.g. last 90 days)
   };
   data: ActiveContributorsResponseData
 };

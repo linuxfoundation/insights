@@ -23,7 +23,7 @@
  * - repository: string
  * - time-period: string // This isn't defined yet, but we'll add '90d', '1y', '5y' for now
  */
-import {parseISO} from 'date-fns';
+import { DateTime } from "luxon";
 
 import {
   createActiveContributorsDataSource
@@ -51,11 +51,11 @@ export default defineEventHandler(async (event) => {
   }
 
   if (query.fromDate && (query.fromDate as string).trim() !== '') {
-    filter.fromDate = parseISO(query.fromDate as string);
+    filter.fromDate = DateTime.fromISO(query.fromDate as string);
   }
 
   if (query.toDate && (query.toDate as string).trim() !== '') {
-    filter.toDate = parseISO(query.toDate as string);
+    filter.toDate = DateTime.fromISO(query.toDate as string);
   }
 
   const dataSource = createActiveContributorsDataSource();

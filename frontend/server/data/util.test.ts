@@ -2,17 +2,18 @@ import {
   describe, test, expect, vi
 } from 'vitest';
 
+import {DateTime} from "luxon";
 import {earliestPossibleFromDate, getPreviousDates} from './util';
 
 describe('getPreviousDates', () => {
   test('should return the previous interval start and end dates, for the current start and end dates', () => {
-    const currentFromDate = new Date(2025, 0, 10);
-    const currentToDate = new Date(2025, 0, 15);
+    const currentFromDate = DateTime.utc(2025, 1, 10);
+    const currentToDate = DateTime.utc(2025, 1, 15);
 
     const result = getPreviousDates(currentFromDate, currentToDate);
 
-    const expectedFromDate = new Date(2025, 0, 4);
-    const expectedToDate = new Date(2025, 0, 9);
+    const expectedFromDate = DateTime.utc(2025, 1, 4);
+    const expectedToDate = DateTime.utc(2025, 1, 9);
 
     expect(result).toEqual({
       current: {
@@ -28,14 +29,14 @@ describe('getPreviousDates', () => {
 
   test('should return the earliest possible fromDate when no fromDate is provided', () => {
     const currentFromDate = undefined;
-    const currentToDate = new Date(2025, 0, 1);
+    const currentToDate = DateTime.utc(2025, 1, 1);
 
     const result = getPreviousDates(currentFromDate, currentToDate);
 
     const expectedCurrentFromDate = earliestPossibleFromDate;
 
-    const expectedPreviousFromDate = new Date(1994, 11, 31);
-    const expectedPreviousToDate = new Date(2009, 11, 31);
+    const expectedPreviousFromDate = DateTime.utc(1994, 12, 31);
+    const expectedPreviousToDate = DateTime.utc(2009, 12, 31);
 
     expect(result).toEqual({
       current: {
@@ -50,20 +51,20 @@ describe('getPreviousDates', () => {
   });
 
   test('should return a toDate equal to the current date when no toDate is provided', () => {
-    const currentFromDate = new Date(2024, 0, 1);
+    const currentFromDate = DateTime.utc(2024, 1, 1);
     const currentToDate = undefined;
 
-    const fakeTodayDate = new Date(2025, 0, 1);
+    const fakeTodayDate = DateTime.utc(2025, 1, 1);
 
     vi.useFakeTimers();
-    vi.setSystemTime(fakeTodayDate);
+    vi.setSystemTime(fakeTodayDate.toJSDate());
 
     const result = getPreviousDates(currentFromDate, currentToDate);
 
     vi.useRealTimers();
 
-    const expectedPreviousFromDate = new Date(2022, 11, 30);
-    const expectedPreviousToDate = new Date(2023, 11, 31);
+    const expectedPreviousFromDate = DateTime.utc(2022, 12, 31);
+    const expectedPreviousToDate = DateTime.utc(2023, 12, 31);
 
     expect(result).toEqual({
       current: {

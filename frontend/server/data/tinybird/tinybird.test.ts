@@ -6,6 +6,7 @@ import type {ActiveContributorsFilter} from "../types";
 import { ContributorsFilterGranularity} from "../types";
 import {formatDateForTinyBird, fetchFromTinybird} from './tinybird';
 import {useRuntimeConfig} from "#imports";
+import {DateTime} from "luxon";
 
 describe('fetchFromTinybird', () => {
   const config = useRuntimeConfig();
@@ -19,8 +20,8 @@ describe('fetchFromTinybird', () => {
       project: 'test-project',
       repo: 'test-repo',
       granularity: ContributorsFilterGranularity.MONTHLY,
-      fromDate: new Date(2023, 0, 1),
-      toDate: new Date(2023, 11, 31),
+      fromDate: DateTime.utc(2023, 0, 1),
+      toDate: DateTime.utc(2023, 11, 31),
     }
     await fetchFromTinybird(endpoint, query, mockFetch);
 
@@ -31,8 +32,8 @@ describe('fetchFromTinybird', () => {
       {
         query: {
           ...query,
-          fromDate: formatDateForTinyBird(<Date>query.fromDate),
-          toDate: formatDateForTinyBird(<Date>query.toDate),
+          fromDate: formatDateForTinyBird(<DateTime>query.fromDate),
+          toDate: formatDateForTinyBird(<DateTime>query.toDate),
         },
         headers: {
           Authorization: `Bearer ${tinybirdToken}`,

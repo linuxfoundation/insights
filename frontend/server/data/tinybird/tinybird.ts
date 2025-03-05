@@ -1,6 +1,6 @@
-import { format } from "date-fns/format";
-import {useRuntimeConfig} from '#imports';
+import type {DateTime} from "luxon";
 import type {ActiveContributorsFilter, ContributorsFilterGranularity} from "../types";
+import {useRuntimeConfig} from '#imports';
 
 type FetchFunction = typeof $fetch;
 
@@ -67,8 +67,8 @@ export type TinybirdContributorsDataResponse = {
 
 export type TinybirdContributorsResponse = TinybirdContributorsDataResponse | TinybirdContributorsSummaryResponse
 
-export function formatDateForTinyBird(date: Date): string {
-  return format(date, 'yyyy-MM-dd 00:00:00');
+export function formatDateForTinyBird(date: DateTime): string {
+  return date.toISODate() ?? '';
 }
 
 export async function fetchFromTinybird(
@@ -99,7 +99,7 @@ export async function fetchFromTinybird(
     ...(toDate && { toDate: formatDateForTinyBird(toDate) })
   };
 
-  if (query.repo) tinybirdQuery.repo = 'https://gerrit.automotivelinux.org/gerrit/q/project:apps/homescreen';
+  // if (query.repo) tinybirdQuery.repo = 'https://gerrit.automotivelinux.org/gerrit/q/project:apps/homescreen';
 
   const result = await fetchFn(url.toString(), {
     query: tinybirdQuery,
