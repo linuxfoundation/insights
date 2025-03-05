@@ -11,8 +11,6 @@ WORKDIR /usr/src/app
 # Install dependencies
 FROM base AS deps
 
-ARG NPM_TOKEN
-
 WORKDIR /usr/src/app
 
 COPY package.json pnpm-lock.yaml ./
