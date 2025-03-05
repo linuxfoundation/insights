@@ -102,7 +102,7 @@ import { formatNumber } from '~/components/shared/utils/formatter';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
 import { isEmptyData } from '~/components/shared/utils/helper';
 
-const { startDate, endDate } = storeToRefs(useProjectStore())
+const { startDate, endDate, selectedRepository } = storeToRefs(useProjectStore())
 
 const route = useRoute();
 
@@ -111,7 +111,7 @@ const { data, status, error } = useFetch(
   {
     params: {
       project: route.params.slug,
-      repository: route.params.name || '',
+      repository: selectedRepository,
       startDate,
       endDate,
     }

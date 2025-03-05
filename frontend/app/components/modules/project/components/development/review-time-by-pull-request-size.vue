@@ -46,30 +46,25 @@
 <script setup lang="ts">
 import { useFetch, useRoute } from 'nuxt/app';
 import { computed } from 'vue';
+import {storeToRefs} from "pinia";
 import LfxProjectLoadState from '../shared/load-state.vue';
 import type { ReviewTimeByPrItem } from './types/review-time-by-pr.types';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxProgressBar from '~/components/uikit/progress-bar/progress-bar.vue';
 import { isEmptyData } from '~/components/shared/utils/helper';
-
-const props = withDefaults(
-  defineProps<{
-    timePeriod?: string;
-  }>(),
-  {
-    timePeriod: '90d'
-  }
-);
+import {useProjectStore} from "~/components/modules/project/store/project.store";
 
 const route = useRoute();
+const { startDate, endDate, selectedRepository } = storeToRefs(useProjectStore());
 
 const { data, status, error } = useFetch(
   `/api/project/${route.params.slug}/development/review-time-by-pr-size`,
   {
     params: {
       project: route.params.slug,
-      repository: route.params.name || '',
-      'time-period': props.timePeriod
+      repository: selectedRepository,
+      startDate,
+      endDate,
     }
   }
 );

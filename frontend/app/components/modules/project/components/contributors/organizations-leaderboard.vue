@@ -39,7 +39,7 @@ import LfxCard from '~/components/uikit/card/card.vue';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
 import { isEmptyData } from '~/components/shared/utils/helper';
 
-const { startDate, endDate } = storeToRefs(useProjectStore())
+const { startDate, endDate, selectedRepository } = storeToRefs(useProjectStore())
 
 const route = useRoute();
 const metric = ref('all');
@@ -48,7 +48,7 @@ const { data, status, error } = useFetch(
   {
     params: {
       metric: metric.value,
-      repository: route.params.name || '',
+      repository: selectedRepository,
       startDate,
       endDate,
     }
