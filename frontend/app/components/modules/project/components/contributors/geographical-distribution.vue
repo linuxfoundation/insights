@@ -96,14 +96,14 @@ const route = useRoute();
 const metric = ref('all');
 const activeTab = ref('contributors');
 
-const { startDate, endDate } = storeToRefs(useProjectStore())
+const { startDate, endDate, selectedRepository } = storeToRefs(useProjectStore())
 
 const { data, status, error } = useFetch(
   `/api/project/${route.params.slug}/contributors/geographical-distribution`,
   {
     params: {
       type: activeTab.value,
-      repository: route.params.name || '',
+      repository: selectedRepository,
       startDate,
       endDate,
     }
