@@ -18,18 +18,28 @@ export interface SearchResponse {
 }
 
 /**
- * API Endpoint: Search Collections, Projects, and Repositories
- *
- * This handler processes search requests for collections, projects, and repositories.
- * It fetches data from the Tinybird API and categorizes the results based on their types.
- *
- * @param {Event} event - The incoming request event containing the query parameters.
+ * API Endpoint: /api/search
+ * Method: GET
+ * Description: Searches for collections, projects, and repositories based on the provided query.
  *
  * Query Parameters:
- * - query (string): The search term to filter results (optional).
+ * - query (string, optional): The search term to query collections, projects, and repositories.
+ * - limit (number, optional): The maximum number of results to return (default: 10).
  *
- * @returns {Promise<{ projects: SearchResponse[], repositories: SearchResponse[], collections: SearchResponse[] }>}
- * - Returns an object containing arrays of categorized search results (projects, repositories, collections).
+ * Response:
+ * - projects (Array<SearchResponse>): A list of search results of type "project".
+ * - repositories (Array<SearchResponse>): A list of search results of type "repository".
+ * - collections (Array<SearchResponse>): A list of search results of type "collection".
+ *
+ * Search Response Object (SearchResponse):
+ * - type (string): The type identifier for the search result (e.g., "project", "repository", "collection").
+ * - slug (string): A unique slug identifier for the search result.
+ * - logo (string | null): The logo URL associated with the search result, or null if unavailable.
+ * - projectSlug (string | null): The project slug associated with the result, or null if absent.
+ * - name (string | null): The name or title of the search result, or null if not provided.
+ *
+ * Errors:
+ * - 500: Internal Server Error.
  */
 export default defineEventHandler(async (event) => {
     const query: Record<string, string | number> = getQuery(event);

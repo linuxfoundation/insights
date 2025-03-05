@@ -41,7 +41,7 @@
       <div class="flex flex-col gap-1 max-h-[29.5rem] overflow-y-auto">
         <nuxt-link
           v-for="repository of result"
-          :key="repository.name"
+          :key="repository.repo"
           :to="{ name: routeName.repo, params: {name: repository.name}}"
         >
           <lfx-project-repository-switch-item
@@ -72,17 +72,18 @@
 import {
 computed, onMounted, ref, watch
 } from "vue";
+import {storeToRefs} from "pinia";
 import LfxModal from "~/components/uikit/modal/modal.vue";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
-import type {Project} from "~/components/modules/project/types/project";
+import type {ProjectRepository} from "~/components/modules/project/types/project";
 import LfxProjectRepositorySwitchItem
   from "~/components/modules/project/components/shared/header/repository-switch-item.vue";
 import {LfxRoutes} from "~/components/shared/types/routes";
+import {useProjectStore} from "~/components/modules/project/store/project.store";
 
 const props = defineProps<{
   modelValue: boolean;
   repo: string;
-  project: Project;
 }>();
 const emit = defineEmits<{(e: 'update:modelValue', value: boolean): void }>();
 
@@ -96,8 +97,10 @@ const isModalOpen = computed({
 const searchInputRef = ref(null);
 const search = ref('');
 
-const result = computed(() => props.project.repositories
-    .filter((repository) => repository.name.toLowerCase().includes(search.value.toLowerCase())));
+const {projectRepos} = storeToRefs(useProjectStore());
+
+const result = computed<ProjectRepository[]>(() => projectRepos.value
+    .filter((repository: ProjectRepository) => repository.name.toLowerCase().includes(search.value.toLowerCase())));
 
 const routeName = computed<{ project: LfxRoutes, repo: LfxRoutes }>(() => {
   const mapping: Record<string, { project: LfxRoutes, repo: LfxRoutes }> = {

@@ -26,6 +26,7 @@
           :to="{name: LfxRoutes.PROJECT, params: {slug: project.slug}}"
           class="px-3 py-2 rounded-md transition-all
         hover:bg-neutral-50 flex items-center gap-2 cursor-pointer text-sm text-neutral-900"
+          :external="(route.name as string || '').includes('repository')"
         >
           <lfx-avatar
             :src="project.logo"
@@ -149,6 +150,7 @@
 </template>
 
 <script setup lang="ts">
+import {useRoute} from "nuxt/app";
 import LfxTabs from "~/components/uikit/tabs/tabs.vue";
 import LfxAvatar from "~/components/uikit/avatar/avatar.vue";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
@@ -161,6 +163,8 @@ const props = defineProps<{
   repositories: SearchRepository[];
   collections: SearchCollection[];
 }>()
+
+const route = useRoute();
 
 const tab = ref('');
 
