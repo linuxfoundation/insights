@@ -1,13 +1,17 @@
 export interface ProjectRepository {
+    projectId: string;
+    projectName: string;
+    projectSlug: string;
+    repo: string;
     name: string;
 }
 export interface Project{
-    slug: string;
+    id: string;
     name: string;
-    logo: string | null;
-    description: string | null;
-    repositories: ProjectRepository[];
+    slug: string;
+    description: string;
+    logo: string;
     contributorsCount: number;
     organizationsCount: number;
-    softwareValueCount: number;
+    repositories: ProjectRepository[];
 }

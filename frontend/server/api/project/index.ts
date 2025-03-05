@@ -1,48 +1,70 @@
-import type {Project} from "~/components/modules/project/types/project";
+interface ProjectResponse {
+    id: string;
+    name: string;
+    slug: string;
+    description: string;
+    logo: string;
+    contributorsCount: number;
+    organizationsCount: number;
+}
 
-const projects: Project[] = [
-    {
-        slug: 'kubernetes',
-        name: 'Kubernetes',
-        description: 'Driving innovation with open-source projects for scalable, resilient cloud-native systems',
-        logo: 'https://c8.alamy.com/comp/2M8NCEE/kubernetes-logo-white-background-2M8NCEE.jpg',
-        contributorsCount: 2612,
-        organizationsCount: 800,
-        softwareValueCount: 43000000000,
-        repositories: [],
-    },
-    {
-        slug: 'crowdDotDev',
-        name: 'Crowd.dev',
-        description: 'Crowd-sourced software development',
-        contributorsCount: 100,
-        organizationsCount: 20,
-        softwareValueCount: 1000000,
-        logo: 'https://avatars.githubusercontent.com/u/85551972?v=4',
-        repositories: [],
-    },
-]
-
+/**
+ * API Endpoint: /api/project
+ * Method: GET
+ * Description: Fetches a paginated list of projects with sorting options and additional metadata.
+ *
+ * Query Parameters:
+ * - sort (string, optional): Specifies the sorting order for the projects (default: "name_ASC").
+ * - page (number, optional): The page number for pagination (default: 0).
+ * - pageSize (number, optional): The number of projects per page (default: 10).
+ * - count (boolean, optional): Whether to include the total count of projects (default: false).
+ * - isLf (boolean, optional): If a project belongs to lf (default: false).
+ *
+ * Response:
+ * - page (number): The current page number in the response.
+ * - pageSize (number): The number of projects returned in the response.
+ * - total (number): The total number of projects available (if `count` is true).
+ * - data (Array<ProjectResponse>): The list of projects in the current page.
+ *
+ * Project Response Object (ProjectResponse):
+ * - id (string): The unique identifier of the project.
+ * - name (string): The name of the project.
+ * - slug (string): The slug of the project.
+ * - description (string): A brief description of the project.
+ * - logo (string): URL to the logo of the project.
+ * - contributorsCount (number): The count of contributors involved in the project.
+ * - organizationsCount (number): The count of organizations associated with the project.
+ *
+ * Errors:
+ * - 500: Internal Server Error.
+ */
 export default defineEventHandler(async (event) => {
-    const sort: string = getQuery(event)?.sort as string || '';
-    const page: string = getQuery(event)?.page as string || '';
-    const pageSize: string = getQuery(event)?.pageSize as string || '';
-    // const isLfx: boolean = getQuery(event)?.isLfx === true || false;
-    const [field, order] = sort.split('_');
-    return {
-        page: +page,
-        pageSize: +pageSize,
-        total: 2,
-        data: projects.sort((a, b) => {
-            const fieldA = a[field as keyof Project];
-            const fieldB = b[field as keyof Project];
-            if (fieldA < fieldB) {
-                return order === 'ASC' ? -1 : 1;
-            }
-            if (fieldA > fieldB) {
-                return order === 'ASC' ? 1 : -1;
-            }
-            return 0;
-        })
-    };
+    const query = getQuery(event);
+    const sort: string = (query?.sort as string) || 'name_ASC';
+
+    // Pagination parameters
+    const page: number = +(query?.page ?? 0);
+    const pageSize: number = +(query?.pageSize ?? 10);
+    const count: boolean = !!query?.count;
+    const isLf: boolean = !!query?.isLf;
+
+    try {
+        const res = await fetchTinybird<ProjectResponse[]>('/v0/pipes/projects_list.json', {
+            count,
+            page,
+            pageSize,
+            sort,
+            isLf,
+        });
+
+        return {
+            page,
+            pageSize,
+            total: res.rows,
+            data: res.data,
+        };
+    } catch (error) {
+        console.error('Error fetching project list:', error);
+        throw createError({statusCode: 500, statusMessage: 'Internal Server Error'});
+    }
 });

@@ -87,7 +87,7 @@ const { data, status } = await useFetch<Pagination<Project>>(
         sort,
         page,
         pageSize,
-        isLfx: tab.value === 'lfx',
+        isLf: tab.value === 'lfx',
       },
       watch: [sort, tab, page],
       transform: (res: Pagination<Project>) => {
