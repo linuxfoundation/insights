@@ -1,6 +1,6 @@
 <template>
   <nuxt-link :to="{name: LfxRoutes.COLLECTION, params: {slug: props.collection.slug}}">
-    <lfx-card class="p-6 hover:shadow-sm transition-all">
+    <lfx-card class="p-5 md:p-6 hover:shadow-sm transition-all">
       <div class="flex justify-between flex-col md:flex-row items-start gap-4 pb-4 md:pb-6">
         <div>
           <h3 class="text-heading-3 leading-7 font-secondary font-bold pb-2">

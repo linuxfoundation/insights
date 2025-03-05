@@ -1,5 +1,5 @@
 <template>
-  <lfx-card class="p-6 flex flex-col">
+  <lfx-card class="p-5 md:p-6 flex flex-col">
     <lfx-skeleton
       width="3rem"
       height="3rem"

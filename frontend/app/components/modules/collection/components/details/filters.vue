@@ -2,12 +2,13 @@
   <div class="bg-white">
     <section class="container">
       <div
-        class="flex justify-between"
-        :class="scrollTop > 50 ? 'py-4' : 'py-5'"
+        class="flex justify-between gap-4"
+        :class="scrollTop > 50 ? 'py-3 md:py-4' : 'py-3 md:py-5'"
       >
-        <div class="flex items-center gap-4">
+        <div class="flex items-center gap-4 flex-grow">
           <lfx-tabs
-            width-type="inline"
+            class="w-full sm:w-auto"
+            :width-type="pageWidth < 640 ? 'full' : 'inline'"
             :tabs="tabs"
             :model-value="tab"
             @update:model-value="tab = $event"
@@ -26,7 +27,13 @@
                     alt="LFX icon"
                   >
                 </template>
-                {{option.label}}
+                <template v-if="option.value === 'lfx'">
+                  <span class="hidden sm:inline">Linux Foundation projects</span>
+                  <span class="inline sm:hidden">LF projects</span>
+                </template>
+                <template v-else>
+                  {{option.label}}
+                </template>
               </div>
             </template>
           </lfx-tabs>
@@ -37,6 +44,7 @@
           icon="fa-arrow-down-wide-short fa-light"
           type="transparent"
           dropdown-position="right"
+          :icon-only-mobile="true"
         />
       </div>
     </section>
@@ -48,6 +56,7 @@ import {computed} from "vue";
 import useScroll from "~/components/shared/utils/scroll";
 import LfxDropdown from "~/components/uikit/dropdown/dropdown.vue";
 import LfxTabs from "~/components/uikit/tabs/tabs.vue";
+import useResponsive from "~/components/shared/utils/responsive";
 
 const props = defineProps<{
   sort: string;
@@ -57,6 +66,7 @@ const props = defineProps<{
 const emit = defineEmits<{(e: 'update:sort' | 'update:tab', value: string): void}>();
 
 const {scrollTop} = useScroll();
+const {pageWidth} = useResponsive();
 
 const tabs = [
   { label: 'All projects', value: 'all' },

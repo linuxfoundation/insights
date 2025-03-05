@@ -2,7 +2,7 @@ export interface Collection {
     name: string;
     slug: string;
     description: string;
-    featuredProjects: {
+    featuredProjects?: {
       name: string;
       slug: string;
       logo: string;

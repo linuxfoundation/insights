@@ -170,5 +170,8 @@
 .p-select-icon-only-mobile{
   .p-select-dropdown {
     @apply hidden;
+    @screen sm{
+      @apply block;
+    }
   }
 }
