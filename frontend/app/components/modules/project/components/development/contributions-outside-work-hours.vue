@@ -10,58 +10,81 @@
     <hr>
     <section class="mt-5">
       <div class="flex flex-row justify-between items-center mb-6 gap-8">
-        <div
-          v-if="status === 'success'"
-          class="flex flex-row gap-4 items-center grow"
+        <lfx-skeleton-state
+          :status="status"
+          height="2rem"
+          width="7.5rem"
         >
-          <div class="text-data-display-1">{{ formatNumber(summary.current) }}%</div>
-          <lfx-delta-display
-            :summary="summary"
-            icon="circle-arrow-up-right"
-            icon-type="solid"
-            percentage-only
-            unit="%"
-          />
-        </div>
+          <div class="flex flex-row gap-4 items-center grow">
+            <div class="text-data-display-1">{{ formatNumber(summary.current) }}%</div>
+            <lfx-delta-display
+              :summary="summary"
+              icon="circle-arrow-up-right"
+              icon-type="solid"
+              percentage-only
+              unit="%"
+            />
+          </div>
+        </lfx-skeleton-state>
+
         <div class="flex flex-col items-end justify-center">
           <span class="text-neutral-400 text-xs flex flex-row gap-2 items-center">
             Mon-Fri (after 18:00)
           </span>
-          <span
-            v-if="status === 'success'"
-            class="text-xl"
+          <lfx-skeleton-state
+            :status="status"
+            height="1.25rem"
+            width="4rem"
           >
-            {{ formatNumber(weekdayPercentage, 1) }}%
-          </span>
+            <span
+              v-if="status === 'success'"
+              class="text-xl"
+            >
+              {{ formatNumber(weekdayPercentage, 1) }}%
+            </span>
+          </lfx-skeleton-state>
         </div>
         <div class="flex flex-col items-end justify-center">
           <span class="text-neutral-400 text-xs flex flex-row gap-2 items-center">
             Weekends
           </span>
-          <span
-            v-if="status === 'success'"
-            class="text-xl"
+          <lfx-skeleton-state
+            :status="status"
+            height="1.25rem"
+            width="4rem"
           >
-            {{ formatNumber(weekendPercentage, 1) }}%
-          </span>
+            <span
+              v-if="status === 'success'"
+              class="text-xl"
+            >
+              {{ formatNumber(weekendPercentage, 1) }}%
+            </span>
+          </lfx-skeleton-state>
         </div>
       </div>
 
-      <div class="w-full h-[430px] my-5">
-        <lfx-chart
-          v-if="status !== 'pending'"
-          :config="getScatterChartConfig(chartData, chartSeries)"
-        />
-        <lfx-spinner v-else />
-      </div>
+      <lfx-project-load-state
+        :status="status"
+        :error="error"
+        error-message="Error fetching forks"
+        :is-empty="isEmpty"
+        use-min-height
+        :height="430"
+      >
+        <div class="w-full h-[430px] my-5">
+          <lfx-chart :config="getScatterChartConfig(chartData, chartSeries)" />
+        </div>
+      </lfx-project-load-state>
     </section>
   </lfx-card>
 </template>
 
 <script setup lang="ts">
 import { useFetch, useRoute } from 'nuxt/app';
-import { ref, computed, watch } from 'vue';
+import { ref, computed } from 'vue';
 import { storeToRefs } from "pinia";
+import LfxProjectLoadState from '../shared/load-state.vue';
+import LfxSkeletonState from '../shared/skeleton-state.vue';
 import type { ContributionOutsideHours } from './types/contribution-outside-hours.types';
 import type { Summary } from '~/components/shared/types/summary.types';
 import LfxCard from '~/components/uikit/card/card.vue';
@@ -73,17 +96,12 @@ import type {
   ChartSeries
 } from '~/components/uikit/chart/types/ChartTypes';
 import LfxChart from '~/components/uikit/chart/chart.vue';
-// import { getBarChartConfigStacked } from '~/components/uikit/chart/configs/bar.chart';
 import { lfxColors } from '~/config/styles/colors';
-// import { axisLabelFormatter } from '~/components/uikit/chart/helpers/formatters';
-import useToastService from '~/components/uikit/toast/toast.service';
-import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
-import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 import { getScatterChartConfig } from '~/components/uikit/chart/configs/scatter.chart';
 import { formatNumber } from '~/components/shared/utils/formatter';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
+import { isEmptyData } from '~/components/shared/utils/helper';
 
-const { showToast } = useToastService();
 const { startDate, endDate } = storeToRefs(useProjectStore())
 
 const route = useRoute();
@@ -124,16 +142,7 @@ const chartSeries = ref<ChartSeries[]>([
   }
 ]);
 
-watch(error, (err) => {
-  if (err) {
-    showToast(
-      `Error fetching social mentions: ${error.value?.statusMessage}`,
-      ToastTypesEnum.negative,
-      undefined,
-      10000
-    );
-  }
-});
+const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
 
 </script>
 
