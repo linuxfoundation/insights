@@ -47,28 +47,28 @@
             {{formatNumber(props.project.organizationsCount)}}
           </p>
         </article>
-        <article class="flex justify-between items-center">
-          <lfx-tag
-            type="transparent"
-            size="medium"
-          >
-            <lfx-icon
-              name="dollar-circle"
-              :size="14"
-            />
-            Software value
-          </lfx-tag>
-          <p class="text-body-1">
-            ${{formatNumberShort(props.project.softwareValueCount)}}
-          </p>
-        </article>
+        <!--<article class="flex justify-between items-center">-->
+        <!--  <lfx-tag-->
+        <!--    type="transparent"-->
+        <!--    size="medium"-->
+        <!--  >-->
+        <!--    <lfx-icon-->
+        <!--      name="dollar-circle"-->
+        <!--      :size="14"-->
+        <!--    />-->
+        <!--    Software value-->
+        <!--  </lfx-tag>-->
+        <!--  <p class="text-body-1">-->
+        <!--    ${{formatNumberShort(props.project.softwareValueCount)}}-->
+        <!--  </p>-->
+        <!--</article>-->
       </div>
     </lfx-card>
   </nuxt-link>
 </template>
 
 <script lang="ts" setup>
-import {formatNumber, formatNumberShort} from "../../../../shared/utils/formatter";
+import {formatNumber} from "~/components/shared/utils/formatter";
 import LfxCard from "~/components/uikit/card/card.vue";
 import LfxAvatar from "~/components/uikit/avatar/avatar.vue";
 import LfxTag from "~/components/uikit/tag/tag.vue";
