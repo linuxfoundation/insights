@@ -24,6 +24,6 @@ export default defineEventHandler(async (event) => {
         return res.data[0];
     } catch (error) {
         console.error('Error fetching search results:', error);
-        throw createError({ statusCode: 404, statusMessage: 'Collection not found' })
+        throw createError({ statusCode: 500, statusMessage: 'Internal server error' })
     }
 });
