@@ -18,33 +18,35 @@
       </div>
     </div>
   </section>
-  <section class="sticky top-14 lg:top-17 bg-white border-b border-neutral-100">
-    <div
-      class="container transition-all"
-      :class="scrollTop > 50 ? 'py-3 md:py-4' : 'py-3 md:py-5'"
-    >
-      <div class="flex items-center gap-4">
-        <!--        <div-->
-        <!--          class="flex items-center gap-4 flex-grow"-->
-        <!--          style="max-width: calc(100% - 3.625rem)"-->
-        <!--        >-->
-        <!--          <div class="w-1/2 sm:w-auto">-->
-        <!--            <lfx-collection-filter-stack v-model="stack" />-->
-        <!--          </div>-->
-        <!--          <div class="w-1/2 sm:w-auto">-->
-        <!--            <lfx-collection-filter-industry v-model="industry" />-->
-        <!--          </div>-->
-        <!--        </div>-->
-        <lfx-dropdown
-          v-model="sort"
-          :options="sortOptions"
-          icon="fa-arrow-down-wide-short fa-light"
-          type="transparent"
-          dropdown-position="left"
-        />
+  <lfx-maintain-height class="sticky top-14 lg:top-17 ">
+    <div class="bg-white border-b border-neutral-100">
+      <div
+        class="container transition-all"
+        :class="scrollTop > 50 ? 'py-3 md:py-4' : 'py-3 md:py-5'"
+      >
+        <div class="flex items-center gap-4">
+          <!--        <div-->
+          <!--          class="flex items-center gap-4 flex-grow"-->
+          <!--          style="max-width: calc(100% - 3.625rem)"-->
+          <!--        >-->
+          <!--          <div class="w-1/2 sm:w-auto">-->
+          <!--            <lfx-collection-filter-stack v-model="stack" />-->
+          <!--          </div>-->
+          <!--          <div class="w-1/2 sm:w-auto">-->
+          <!--            <lfx-collection-filter-industry v-model="industry" />-->
+          <!--          </div>-->
+          <!--        </div>-->
+          <lfx-dropdown
+            v-model="sort"
+            :options="sortOptions"
+            icon="fa-arrow-down-wide-short fa-light"
+            type="transparent"
+            dropdown-position="left"
+          />
+        </div>
       </div>
     </div>
-  </section>
+  </lfx-maintain-height>
   <section>
     <div class="container py-5 lg:py-10 flex flex-col  gap-5 lg:gap-8">
       <div
@@ -101,13 +103,14 @@ import useResponsive from "~/components/shared/utils/responsive";
 import useScroll from "~/components/shared/utils/scroll";
 import LfxCollectionListItemLoading
   from "~/components/modules/collection/components/list/collection-list-item-loading.vue";
+import LfxMaintainHeight from "~/components/uikit/maintain-height/maintain-height.vue";
 
 const { showToast } = useToastService();
 const {pageWidth} = useResponsive();
 const {scrollTop} = useScroll();
 
-const page = ref(1);
-const pageSize = ref(50);
+const page = ref(0);
+const pageSize = ref(10);
 const sort = ref('name_DESC');
 
 // const stack = ref('');
@@ -118,7 +121,7 @@ const {scrollTopPercentage} = useScroll();
 const collections = ref([]);
 
 watch([sort], () => {
-  page.value = 1;
+  page.value = 0;
 });
 
 const { data, status, error } = await useFetch<Pagination<Collection>>(
@@ -131,13 +134,11 @@ const { data, status, error } = await useFetch<Pagination<Collection>>(
       },
       watch: [sort, page],
       transform: (res: Pagination<Collection>) => {
-        console.log(collections.value);
-        if (res.page === 1) {
-          collections.value = res.data;
-        } else {
+        if (res.page >0) {
           collections.value = [...collections.value, ...res.data];
+        } else {
+          collections.value = res.data;
         }
-        console.log(collections.value);
         return {
           ...res,
           data: collections.value,
@@ -166,16 +167,16 @@ watch(error, (err) => {
 const sortOptions = [
   {
     label: 'Alphabetically',
-    value: 'name_DESC'
+    value: 'name_ASC'
   },
   {
     label: 'Most projects',
     value: 'projectCount_DESC'
   },
-  {
-    label: 'Most valuable',
-    value: 'softwareValueCount_DESC'
-  },
+  // {
+  //   label: 'Most valuable',
+  //   value: 'softwareValueCount_DESC'
+  // },
 ];
 
 onMounted(() => {

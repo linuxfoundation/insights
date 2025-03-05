@@ -1,65 +1,69 @@
-import type {Collection} from "~/components/modules/collection/types/Collection";
+interface CollectionDetailsResponse {
+    id: string;
+    name: string;
+    slug: string;
+    description: string;
+    isLf: number;
+    projectsCount: number;
+    featuredProjects: {
+        name: string;
+        slug: string;
+        logo: string;
+    }[];
+}
 
-const collections: Collection[] = [
-    {
-        slug: 'cncf',
-        name: 'Cloud Native Computing Foundation',
-        description: 'Driving innovation with open-source projects for scalable, resilient cloud-native systems',
-        contributorsCount: 2612,
-        organizationsCount: 800,
-        projectsCount: 20,
-        softwareValueCount: 43000000000,
-        featuredProjects: [
-            {
-                name: 'Kubernetes',
-                slug: 'kubernetes',
-                logo: 'https://c8.alamy.com/comp/2M8NCEE/kubernetes-logo-white-background-2M8NCEE.jpg'
-            },
-            {
-                name: 'Prometheus',
-                slug: 'prometheus',
-                logo: 'https://c8.alamy.com/comp/2M8NCEE/kubernetes-logo-white-background-2M8NCEE.jpg'
-            },
-            {
-                name: 'Envoy',
-                slug: 'envoy',
-                logo: ''
-            }
-        ]
-    },
-    {
-        slug: 'crowdDotDev',
-        name: 'Crowd.dev',
-        description: 'Crowd-sourced software development',
-        contributorsCount: 100,
-        organizationsCount: 20,
-        projectsCount: 5,
-        softwareValueCount: 1000000,
-        featuredProjects: [
-            {
-                name: 'CrowdKube',
-                slug: 'crowdKube',
-                logo: ''
-            },
-            {
-                name: 'CrowdSQL',
-                slug: 'crowdSQL',
-                logo: ''
-            },
-            {
-                name: 'CrowdML',
-                slug: 'crowdML',
-                logo: ''
-            }
-        ]
-    },
-]
-
+/**
+ * API Endpoint: Fetch Collection Details by Slug
+ *
+ * Method: GET
+ * URL: /api/collection/:slug
+ *
+ * Description:
+ * This endpoint retrieves details of a specific collection identified by its slug.
+ *
+ * Request Parameters:
+ * - slug (string) [URL Parameter]: The unique slug identifier for the collection.
+ *
+ * Response:
+ * - 200 OK: Returns the details of the collection in the following structure:
+ *   {
+ *     id: string;
+ *     name: string;
+ *     slug: string;
+ *     description: string;
+ *     isLf: number;
+ *     projectsCount: number;
+ *     featuredProjects: {
+ *       name: string;
+ *       slug: string;
+ *       logo: string;
+ *     }[];
+ *   }
+ *
+ * - 404 Not Found: If the collection with the provided slug does not exist.
+ *   {
+ *     statusCode: 404;
+ *     statusMessage: "Collection not found"
+ *   }
+ *
+ * - 500 Internal Server Error: If an unexpected error occurs while processing the request.
+ *   {
+ *     statusCode: 500;
+ *     statusMessage: "Internal server error"
+ *   }
+ */
 export default defineEventHandler(async (event) => {
     const {slug} = event.context.params as Record<string, string>;
-    const collection = collections.find((c) => c.slug === slug);
-    if(!collection){
-        throw createError({ statusCode: 404, statusMessage: 'Data not found' })
+    try {
+        const res = await fetchTinybird<CollectionDetailsResponse[]>('/v0/pipes/collections_list.json', {
+            slug,
+        });
+        if (!res.data || res.data.length === 0) {
+            return createError({statusCode: 404, statusMessage: 'Collection not found'});
+        }
+        return res.data[0];
+    } catch (err) {
+        console.error('Error fetching collection details:', err);
+        return createError({statusCode: 500, statusMessage: 'Internal server error'});
     }
-    return collection;
 });
