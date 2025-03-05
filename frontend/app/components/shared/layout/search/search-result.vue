@@ -62,9 +62,9 @@
         class="flex flex-col gap-1"
       >
         <nuxt-link
-          v-for="repository of props.repositories"
+          v-for="repository of repos"
           :key="repository.slug"
-          :to="{name: LfxRoutes.REPOSITORY, params: {name: repository.slug, slug: repository.projectSlug}}"
+          :to="{name: LfxRoutes.REPOSITORY, params: {name: repository.name, slug: repository.projectSlug}}"
           class="px-3 py-2 rounded-md transition-all
         hover:bg-neutral-50 flex items-center gap-2 cursor-pointer text-sm text-neutral-900"
         >
@@ -154,6 +154,7 @@ import LfxAvatar from "~/components/uikit/avatar/avatar.vue";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
 import {LfxRoutes} from "~/components/shared/types/routes";
 import type {SearchCollection, SearchProject, SearchRepository} from "~/components/shared/types/search";
+import {getRepoNameFromUrl} from "~/components/modules/repository/utils/repository.helpers";
 
 const props = defineProps<{
   projects: SearchProject[];
@@ -162,6 +163,11 @@ const props = defineProps<{
 }>()
 
 const tab = ref('');
+
+const repos = computed(() => props.repositories.map((repo) => ({
+      ...repo,
+      name: getRepoNameFromUrl(repo.slug),
+    })))
 
 const tabs = [
   {
