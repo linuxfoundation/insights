@@ -1,9 +1,9 @@
 export const weekly = {
   summary: {
-    current: 1000,
-    previous: 880,
+    current: 880,
+    previous: 1000,
     percentageChange: 3.1,
-    changeValue: 120,
+    changeValue: -120,
     periodFrom: '2024-11-11T00:00:00Z',
     periodTo: '2025-02-12T00:00:00Z'
   },
@@ -166,10 +166,10 @@ export const monthly = {
 
 export const quarterly = {
   summary: {
-    current: 4000,
-    previous: 3880,
+    current: 3880,
+    previous: 4000,
     percentageChange: 3.1,
-    changeValue: 120,
+    changeValue: -120,
     periodFrom: '2024-11-11T00:00:00Z',
     periodTo: '2025-02-12T00:00:00Z'
   },

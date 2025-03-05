@@ -9,75 +9,57 @@
     <section class="mt-5">
       <lfx-metric-dropdown v-model="metric" />
 
-      <div class="min-h-[500px]">
-        <div
-          v-if="status === 'pending'"
-          class="flex justify-center items-center h-full"
-        >
-          <lfx-spinner />
-        </div>
-        <div
-          v-else-if="status === 'error'"
-          class="flex justify-center items-center h-full"
-        >
-          <!-- <lfx-error-message /> -->
-          <!-- TODO: Need to define an empty or error state here -->
-        </div>
+      <lfx-project-load-state
+        :status="status"
+        :error="error"
+        error-message="Error fetching organizations leaderboard"
+        :is-empty="isEmpty"
+        :height="400"
+        use-min-height
+      >
         <lfx-organizations-table
-          v-else
           :metric="metric"
           :organizations="organizations.data"
           :show-percentage="true"
         />
-      </div>
+      </lfx-project-load-state>
     </section>
   </lfx-card>
 </template>
 
 <script setup lang="ts">
 import { useFetch, useRoute } from 'nuxt/app';
-import { ref, watch, computed } from 'vue';
-import {storeToRefs} from "pinia";
+import { ref, computed } from 'vue';
+import { storeToRefs } from "pinia";
+import LfxProjectLoadState from '../shared/load-state.vue';
 import LfxMetricDropdown from './fragments/metric-dropdown.vue';
 import LfxOrganizationsTable from './fragments/organizations-table.vue';
 import type { OrganizationLeaderboard } from './types/contributors.types';
 import LfxCard from '~/components/uikit/card/card.vue';
-import useToastService from '~/components/uikit/toast/toast.service';
-import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
-import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
-import {useProjectStore} from "~/components/modules/project/store/project.store";
+import { useProjectStore } from "~/components/modules/project/store/project.store";
+import { isEmptyData } from '~/components/shared/utils/helper';
 
-const { showToast } = useToastService();
-const {startDate, endDate} = storeToRefs(useProjectStore())
+const { startDate, endDate } = storeToRefs(useProjectStore())
 
 const route = useRoute();
 const metric = ref('all');
-const {data, status, error} = useFetch(
-    `/api/project/${route.params.slug}/contributors/organization-leaderboard`,
-    {
-      params: {
-        metric: metric.value,
-        repository: route.params.name || '',
-        startDate,
-        endDate,
-      }
+const { data, status, error } = useFetch(
+  `/api/project/${route.params.slug}/contributors/organization-leaderboard`,
+  {
+    params: {
+      metric: metric.value,
+      repository: route.params.name || '',
+      startDate,
+      endDate,
     }
+  }
 );
 
 const organizations = computed<OrganizationLeaderboard>(
   () => data.value as OrganizationLeaderboard
 );
 
-watch(error, (err) => {
-  if (err) {
-    showToast(
-      `Error fetching contributor leaderboard: ${error.value?.statusMessage}`,
-      ToastTypesEnum.negative,
-      undefined,
-      10000
-    );
-  }
-});
+const isEmpty = computed(() => isEmptyData(organizations.value?.data as unknown as Record<string, unknown>[]));
 </script>
 
 <script lang="ts">

@@ -8,59 +8,53 @@
 
     <hr>
     <section class="mt-5">
-      <div class="min-h-[500px]">
-        <div
-          v-if="status === 'pending'"
-          class="flex justify-center items-center h-full"
+      <lfx-project-load-state
+        :status="status"
+        :error="error"
+        error-message="Error fetching contributor dependency"
+        :is-empty="isEmpty"
+        :height="400"
+        use-min-height
+      >
+        <lfx-metric-dropdown v-model="metric" />
+
+        <lfx-dependency-display
+          :top-dependency="topContributors"
+          :other-dependency="otherContributors"
+          :list="contributors"
+          label="contributors"
         >
-          <lfx-spinner />
+          <lfx-avatar-group>
+            <lfx-avatar
+              v-for="avatar in contributorsAvatars"
+              :key="avatar.name"
+              :name="avatar.name"
+              :src="avatar.avatar"
+              type="member"
+            />
+          </lfx-avatar-group>
+        </lfx-dependency-display>
+
+        <div class="font-semibold mb-5 mt-8">
+          <span class="text-black">Top contributors </span>
         </div>
-        <div
-          v-else-if="status === 'error'"
-          class="flex justify-center items-center h-full"
-        >
-          <!-- <lfx-error-message /> -->
-          <!-- TODO: Need to define an empty or error state here -->
-        </div>
-        <template v-else>
-          <lfx-metric-dropdown v-model="metric" />
 
-          <lfx-dependency-display
-            :top-dependency="topContributors"
-            :other-dependency="otherContributors"
-            :list="contributors"
-            label="contributors"
-          >
-            <lfx-avatar-group>
-              <lfx-avatar
-                v-for="avatar in contributorsAvatars"
-                :key="avatar.name"
-                :name="avatar.name"
-                :src="avatar.avatar"
-                type="member"
-              />
-            </lfx-avatar-group>
-          </lfx-dependency-display>
+        <lfx-contributors-table
+          show-percentage
+          :metric="metric"
+          :contributors="contributors"
+        />
+      </lfx-project-load-state>
 
-          <div class="font-semibold mb-5 mt-8">
-            <span class="text-black">Top contributors </span>
-          </div>
-
-          <lfx-contributors-table
-            show-percentage
-            :metric="metric"
-            :contributors="contributors"
-          />
-        </template>
-      </div>
     </section>
   </lfx-card>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
+import { ref, computed } from 'vue';
 import { useRoute, useFetch } from 'nuxt/app';
-import {storeToRefs} from "pinia";
+import { storeToRefs } from "pinia";
+import LfxProjectLoadState from '../shared/load-state.vue';
 import LfxDependencyDisplay from './fragments/dependency-display.vue';
 import LfxContributorsTable from './fragments/contributors-table.vue';
 import type { ContributorDependency } from './types/contributors.types';
@@ -68,26 +62,23 @@ import LfxCard from '~/components/uikit/card/card.vue';
 import LfxMetricDropdown from '~/components/modules/project/components/contributors/fragments/metric-dropdown.vue';
 import LfxAvatarGroup from '~/components/uikit/avatar-group/avatar-group.vue';
 import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
-import useToastService from '~/components/uikit/toast/toast.service';
-import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
-import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
-import {useProjectStore} from "~/components/modules/project/store/project.store";
+import { useProjectStore } from "~/components/modules/project/store/project.store";
+import { isEmptyData } from '~/components/shared/utils/helper';
 
-const { showToast } = useToastService();
-const {startDate, endDate} = storeToRefs(useProjectStore())
+const { startDate, endDate } = storeToRefs(useProjectStore())
 
 const route = useRoute();
 const metric = ref('all');
-const {data, status, error} = useFetch(
-    `/api/project/${route.params.slug}/contributors/contributor-dependency`,
-    {
-      params: {
-        metric: metric.value,
-        repository: route.params.name || '',
-        startDate,
-        endDate,
-      }
+const { data, status, error } = useFetch(
+  `/api/project/${route.params.slug}/contributors/contributor-dependency`,
+  {
+    params: {
+      metric: metric.value,
+      repository: route.params.name || '',
+      startDate,
+      endDate,
     }
+  }
 );
 
 const topContributors = computed(() => (data.value as ContributorDependency)?.topContributors);
@@ -95,19 +86,10 @@ const otherContributors = computed(() => (data.value as ContributorDependency)?.
 const contributors = computed(() => (data.value as ContributorDependency)?.list);
 
 const contributorsAvatars = computed(() => (contributors.value?.length
-    ? contributors.value.slice(0, Math.min(5, topContributors.value.count))
-    : []));
+  ? contributors.value.slice(0, Math.min(5, topContributors.value.count))
+  : []));
 
-watch(error, (err) => {
-  if (err) {
-    showToast(
-      `Error fetching contributor dependency: ${error.value?.statusMessage}`,
-      ToastTypesEnum.negative,
-      undefined,
-      10000
-    );
-  }
-});
+const isEmpty = computed(() => isEmptyData(contributors.value as unknown as Record<string, unknown>[]));
 </script>
 
 <script lang="ts">

@@ -27,55 +27,58 @@
           </div>
         </div>
       </div>
-      <div class="w-full h-[330px] border-solid border-neutral-100 border-x-0 border-y">
-        <lfx-chart
-          v-if="status !== 'pending'"
-          :config="getGeoMapChartConfig(chartData, chartSeries, getMaxValue(chartData))"
-        />
-        <lfx-spinner v-else />
-      </div>
-      <div class="px-6 mt-5">
-        <div
-          v-if="status !== 'pending'"
-          class="flex flex-col gap-5"
-        >
+      <lfx-project-load-state
+        :status="status"
+        :error="error"
+        error-message="Error fetching geographical distribution"
+        :is-empty="isEmpty"
+        :height="400"
+        use-min-height
+      >
+        <div class="w-full h-[330px] border-solid border-neutral-100 border-x-0 border-y">
+          <lfx-chart :config="getGeoMapChartConfig(chartData, chartSeries, getMaxValue(chartData))" />
+        </div>
+        <div class="px-6 mt-5">
           <div
-            v-for="item in geoMapData"
-            :key="item.name"
-            class="flex flex-row justify-between items-center text-sm"
+            v-if="status !== 'pending'"
+            class="flex flex-col gap-5"
           >
-            <div class="flex flex-row gap-4 items-center">
-              <span class="text-base">
-                {{ item.flag }}
-              </span>
-              <span class="font-medium">
-                {{ item.name }}
+            <div
+              v-for="item in geoMapData"
+              :key="item.name"
+              class="flex flex-row justify-between items-center text-sm"
+            >
+              <div class="flex flex-row gap-4 items-center">
+                <span class="text-base">
+                  {{ item.flag }}
+                </span>
+                <span class="font-medium">
+                  {{ item.name }}
+                </span>
+              </div>
+              <span>
+                {{ formatNumber(item.count) }} {{ label.toLowerCase() }} ({{ item.percentage }}%)
               </span>
             </div>
-            <span>
-              {{ formatNumber(item.count) }} {{ label.toLowerCase() }} ({{ item.percentage }}%)
-            </span>
           </div>
         </div>
-      </div>
+      </lfx-project-load-state>
     </section>
   </lfx-card>
 </template>
 
 <script setup lang="ts">
-import { ref, watch, computed } from 'vue';
+import { ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { useFetch } from 'nuxt/app';
 import { storeToRefs } from "pinia";
+import LfxProjectLoadState from '../shared/load-state.vue';
 import { metricsOptions } from './config/metrics';
 import type { GeoMapResponse, GeoMapData } from './types/geo-map.types';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
 import LfxChart from '~/components/uikit/chart/chart.vue';
-import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 import LfxDropdown from "~/components/uikit/dropdown/dropdown.vue";
-import useToastService from '~/components/uikit/toast/toast.service';
-import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 import { convertToChartData, getMaxValue } from '~/components/uikit/chart/helpers/chart-helpers';
 import type {
   ChartData,
@@ -85,8 +88,8 @@ import type {
 import { getGeoMapChartConfig } from '~/components/uikit/chart/configs/geo-map.chart';
 import { formatNumber } from '~/components/shared/utils/formatter';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
+import { isEmptyData } from '~/components/shared/utils/helper';
 
-const { showToast } = useToastService();
 const metricOptions = metricsOptions;
 
 const route = useRoute();
@@ -107,11 +110,13 @@ const { data, status, error } = useFetch(
   }
 );
 
-const geoMapData = computed<GeoMapData[]>(() => (data.value as GeoMapResponse).data);
+const geoMapData = computed<GeoMapData[] | undefined>(() => (data.value as GeoMapResponse)?.data);
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
   () => convertToChartData(geoMapData.value as unknown as RawChartData[], 'name', ['count'])
 );
+
+const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
 
 const tabs = [
   {
@@ -135,16 +140,6 @@ const chartSeries = ref<ChartSeries[]>([
   }
 ]);
 
-watch(error, (err) => {
-  if (err) {
-    showToast(
-      `Error fetching retention: ${error.value?.statusMessage}`,
-      ToastTypesEnum.negative,
-      undefined,
-      10000
-    );
-  }
-});
 </script>
 
 <script lang="ts">

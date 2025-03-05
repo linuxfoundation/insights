@@ -9,47 +9,66 @@
     </p>
     <hr>
     <section class="mt-5">
-      <div
-        v-if="status === 'success'"
-        class="flex flex-row justify-between items-center mb-6"
-      >
-        <div class="flex flex-row gap-4 items-center">
-          <div class="text-data-display-1">{{ formatNumber(summary.current) }}</div>
-          <lfx-delta-display
-            :summary="summary"
-            icon="circle-arrow-up-right"
-            icon-type="solid"
-          />
-        </div>
-        <div class="flex flex-col items-end justify-center">
-          <span class="text-neutral-400 text-xs flex flex-row gap-2 items-center">
-            Avg. contributions per day
-          </span>
-          <span
-            v-if="status === 'success'"
-            class="text-xl"
+      <div class="mb-6">
+        <div class="flex flex-row justify-between items-center">
+          <lfx-skeleton-state
+            :status="status"
+            height="2rem"
+            width="7.5rem"
           >
-            {{ formatNumber(activeDays.avgContributions) }}
-          </span>
+            <div class="flex flex-row gap-4 items-center">
+              <div class="text-data-display-1">{{ formatNumber(summary.current) }}</div>
+              <lfx-delta-display
+                :summary="summary"
+                icon="circle-arrow-up-right"
+                icon-type="solid"
+              />
+            </div>
+          </lfx-skeleton-state>
+
+          <div
+            v-if="!isEmpty"
+            class="flex flex-col items-end justify-center"
+          >
+            <span class="text-neutral-400 text-xs flex flex-row gap-2 items-center">
+              Avg. contributions per day
+            </span>
+            <lfx-skeleton-state
+              :status="status"
+              height="1.25rem"
+              width="4rem"
+            >
+              <span class="text-xl">
+                {{ formatNumber(activeDays.avgContributions) }}
+              </span>
+            </lfx-skeleton-state>
+          </div>
         </div>
       </div>
 
       <div class="mt-8 mb-6 text-neutral-900 font-medium">Contributions per day</div>
-      <div class="w-full h-[100px] mb-5">
-        <lfx-chart
-          v-if="status !== 'pending'"
-          :config="getHeatMapChartConfig(chartData, chartSeries, categoryData)"
-        />
-        <lfx-spinner v-else />
-      </div>
+      <lfx-project-load-state
+        :status="status"
+        :error="error"
+        error-message="Error fetching forks"
+        :is-empty="isEmpty"
+        use-min-height
+        :height="100"
+      >
+        <div class="w-full h-[100px] mb-5">
+          <lfx-chart :config="getHeatMapChartConfig(chartData, chartSeries, categoryData)" />
+        </div>
+      </lfx-project-load-state>
     </section>
   </lfx-card>
 </template>
 
 <script setup lang="ts">
 import { useFetch, useRoute } from 'nuxt/app';
-import { ref, computed, watch } from 'vue';
-import {storeToRefs} from "pinia";
+import { ref, computed } from 'vue';
+import { storeToRefs } from "pinia";
+import LfxProjectLoadState from '../shared/load-state.vue';
+import LfxSkeletonState from '../shared/skeleton-state.vue';
 import type { ActiveDays } from './types/active-days.types';
 import type { Summary } from '~/components/shared/types/summary.types';
 import LfxCard from '~/components/uikit/card/card.vue';
@@ -64,14 +83,11 @@ import type {
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import { getHeatMapChartConfig } from '~/components/uikit/chart/configs/heat-map.chart';
 import { lfxColors } from '~/config/styles/colors';
-import useToastService from '~/components/uikit/toast/toast.service';
-import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
-import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 import { formatNumber } from '~/components/shared/utils/formatter';
-import {useProjectStore} from "~/components/modules/project/store/project.store";
+import { useProjectStore } from "~/components/modules/project/store/project.store";
+import { isEmptyData } from '~/components/shared/utils/helper';
 
-const { showToast } = useToastService();
-const {startDate, endDate} = storeToRefs(useProjectStore())
+const { startDate, endDate } = storeToRefs(useProjectStore())
 
 const route = useRoute();
 
@@ -108,18 +124,7 @@ const chartSeries = ref<ChartSeries[]>([
     color: lfxColors.brand[700]
   }
 ]);
-
-watch(error, (err) => {
-  if (err) {
-    showToast(
-      `Error fetching social mentions: ${error.value?.statusMessage}`,
-      ToastTypesEnum.negative,
-      undefined,
-      10000
-    );
-  }
-});
-
+const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
 </script>
 
 <script lang="ts">

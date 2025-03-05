@@ -7,7 +7,7 @@
      Waiting for verification from Nuno -->
     <span :class="['text-body-1 flex items-center gap-2', deltaColor]">
       <lfx-icon
-        :name="props.icon"
+        :name="deltaIcon"
         :type="props.iconType"
         :size="12"
       />
@@ -28,11 +28,27 @@ import { formatNumber, formatNumberToDuration } from '~/components/shared/utils/
 
 const props = withDefaults(defineProps<DeltaDisplayProps>(), {
   isReverse: false,
-  icon: '',
+  icon: '', // ignoring this property for now, it seems there are only 2 types
   iconType: 'light'
 });
 
 const percentage = computed(() => formatNumber(props.summary.percentageChange, 1));
+
+/**
+ * This is used to determine the direction of the delta display
+ * It is used to determine the color of the delta display
+ * It is used to determine the icon of the delta display
+ * If props.isReverse is true, the delta direction is reversed
+ */
+const deltaDirection = computed<'positive' | 'negative'>(() => {
+  const value = props.summary.changeValue;
+
+  if (props.isReverse) {
+    return value >= 0 ? 'negative' : 'positive';
+  }
+
+  return value >= 0 ? 'positive' : 'negative';
+});
 
 const delta = computed(() => {
   const value = props.summary.changeValue;
@@ -40,7 +56,8 @@ const delta = computed(() => {
   return sign + (props.isDuration ? formatNumberToDuration(value) : formatNumber(value, 1));
 });
 
-const deltaColor = computed(() => (props.isReverse ? 'text-negative-500' : 'text-positive-500'));
+const deltaColor = computed(() => (deltaDirection.value === 'negative'
+  ? 'text-negative-500' : 'text-positive-500'));
 
 const deltaDisplay = computed(() => {
   if (!props.percentageOnly) {
@@ -48,6 +65,9 @@ const deltaDisplay = computed(() => {
   }
   return '';
 });
+
+const deltaIcon = computed(() => (deltaDirection.value === 'negative'
+  ? 'circle-arrow-down-right' : 'circle-arrow-up-right'));
 
 const previousDisplay = computed(() => {
   if (!props.hidePreviousValue) {

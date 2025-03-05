@@ -16,7 +16,7 @@ import type {
  * @returns Chart data
  */
 export const convertToChartData = (
-  data: RawChartData[] | null,
+  data: RawChartData[] | null | undefined,
   keyField: string,
   valuesKey: string[],
   yAxisKey?: string
