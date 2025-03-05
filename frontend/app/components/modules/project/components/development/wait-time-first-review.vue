@@ -67,7 +67,7 @@ import { formatNumberToDuration } from '~/components/shared/utils/formatter';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
 import { isEmptyData } from '~/components/shared/utils/helper';
 
-const { startDate, endDate } = storeToRefs(useProjectStore())
+const { startDate, endDate, selectedRepository } = storeToRefs(useProjectStore())
 
 const route = useRoute();
 
@@ -75,7 +75,7 @@ const { data, status, error } = useFetch(
   `/api/project/${route.params.slug}/development/wait-time-1st-review`,
   {
     params: {
-      repository: route.params.name || '',
+      repository: selectedRepository,
       startDate,
       endDate,
     }
