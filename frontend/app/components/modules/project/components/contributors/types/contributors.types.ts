@@ -3,9 +3,9 @@ import type { Summary } from '~/components/shared/types/summary.types';
 export interface ActiveContributors {
   summary: Summary;
   data: {
-    dateFrom: string;
-    dateTo: string;
-    contributors: number;
+    fromDate: string;
+    toDate: string;
+    contributorCount: number;
   }[];
 }
 

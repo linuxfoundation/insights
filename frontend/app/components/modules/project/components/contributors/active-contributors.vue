@@ -67,7 +67,9 @@ import { formatNumber } from '~/components/shared/utils/formatter';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
 import { isEmptyData } from '~/components/shared/utils/helper';
 
-const { startDate, endDate, selectedRepository } = storeToRefs(useProjectStore());
+const {
+ project, startDate, endDate, selectedRepository, granularity
+} = storeToRefs(useProjectStore());
 
 const activeTab = ref('weekly');
 const route = useRoute();
@@ -76,7 +78,8 @@ const { data, status, error } = useFetch(
   () => `/api/project/${route.params.slug}/contributors/active-contributors`,
   {
     params: {
-      interval: activeTab,
+      project: project.value?.slug,
+      granularity,
       repository: selectedRepository,
       startDate,
       endDate,
@@ -89,16 +92,15 @@ const activeContributors = computed<ActiveContributors>(() => data.value as Acti
 const summary = computed<Summary>(() => activeContributors.value.summary);
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
-  () => convertToChartData(activeContributors.value?.data as RawChartData[], 'dateFrom', [
-    'contributors'
+  () => convertToChartData(activeContributors.value?.data as RawChartData[], 'fromDate', [
+    'contributorCount'
   ])
 );
 const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
 
 const tabs = [
   { label: 'Weekly', value: 'weekly' },
-  { label: 'Monthly', value: 'monthly' },
-  { label: 'Quarterly', value: 'quarterly' }
+  { label: 'Monthly', value: 'monthly' }
 ];
 
 const chartSeries = ref<ChartSeries[]>([
@@ -114,7 +116,7 @@ const chartSeries = ref<ChartSeries[]>([
 const configOverride = computed(() => ({
   xAxis: {
     axisLabel: {
-      formatter: axisLabelFormatter(activeTab.value === 'weekly' ? 'MMM dd' : 'MMM yyyy')
+      formatter: axisLabelFormatter(granularity.value === 'weekly' ? 'MMM dd' : 'MMM yyyy')
     }
   }
 }));

@@ -1,4 +1,12 @@
-import { quarterly, weekly, monthly } from '~~/server/mocks/active-contributors.mock';
+import type { Summary } from '~/components/shared/types/summary.types';
+import type { DateRange} from '~~/server/utils/date.service';
+import { addTimeToDate } from '~~/server/utils/date.service';
+
+export interface ActiveContributorsResponse {
+  dateFrom?: string;
+  dateTo?: string;
+  contributorCount: number;
+}
 
 /**
  * Frontend expects the data to be in the following format:
@@ -20,34 +28,95 @@ import { quarterly, weekly, monthly } from '~~/server/mocks/active-contributors.
  */
 /**
  * Query params:
- * - interval: 'weekly' | 'monthly' | 'quarterly'
+ * - granularity: 'weekly' | 'monthly'
  * - project: string
  * - repository: string
- * - time-period: string // This is isn't defined yet, but we'll add '90d', '1y', '5y' for now
+ * - startDate: string
+ * - endDate: string
  */
 export default defineEventHandler(async (event) => {
-  const query = getQuery(event);
-  let data;
+  const query: Record<string, string | number> = getQuery(event);
+  const params: Record<string, string | number> = {
+    project: query.project
+  };
+  let previousRange: DateRange | undefined;
+  let summaryPreviousRes: TinybirdResponse<ActiveContributorsResponse[]> | undefined;
+  const summaryData: Summary = {
+    current: 0,
+    previous: 0,
+    percentageChange: 0,
+    changeValue: 0,
+    periodFrom: '',
+    periodTo: ''
+  };
 
-  switch (query.interval) {
-    case 'weekly':
-      data = weekly;
-      break;
-    case 'monthly':
-      data = monthly;
-      break;
-    default:
-      data = quarterly;
-      break;
+  if (query.repository && (query.repository as string).length > 0) {
+    params.repo = query.repository;
   }
 
-  // doing fake changes to data if query.repository is not empty
-  if (query.repository) {
-    data.data = data.data.map((item) => ({
-      ...item,
-      contributors: item.contributors - 3000
-    }));
+  if (query.startDate && query.endDate) {
+    params.fromDate = addTimeToDate(query.startDate as string);
+    params.toDate = addTimeToDate(query.endDate as string);
+
+    previousRange = getPreviousDateRange(
+      query.startDate as string,
+      query.endDate as string
+    );
+
+    summaryData.periodFrom = previousRange.fromDate;
+    summaryData.periodTo = previousRange.toDate;
   }
 
-  return data;
+  try {
+    // fetch the current data (totals)
+    const summaryCurrentRes = await fetchTinybird<ActiveContributorsResponse[]>(
+      '/v0/pipes/active_contributors.json',
+      params
+    );
+
+    if (summaryCurrentRes.data.length > 0) {
+      summaryData.current = summaryCurrentRes.data[0].contributorCount;
+    }
+
+    // fetch the previous data (totals)
+    if (previousRange) {
+      summaryPreviousRes = await fetchTinybird<ActiveContributorsResponse[]>(
+        '/v0/pipes/active_contributors.json',
+        {
+          ...params,
+          fromDate: addTimeToDate(previousRange.fromDate),
+          toDate: addTimeToDate(previousRange.toDate)
+        }
+      );
+
+      if (summaryPreviousRes.data.length > 0) {
+        summaryData.previous = summaryPreviousRes.data[0].contributorCount;
+      }
+    }
+
+    // fetch the actual chart data
+    const res = await fetchTinybird<ActiveContributorsResponse[]>(
+      '/v0/pipes/active_contributors.json',
+      { ...params, granularity: query.granularity }
+    );
+
+    summaryData.changeValue = summaryData.current - summaryData.previous;
+    summaryData.percentageChange = (summaryData.changeValue / summaryData.previous) * 100;
+
+    console.log('!!!!RES!!!!', params);
+    return { summary: summaryData, data: res.data };
+  } catch (error) {
+    console.error('Error fetching active contributors:', error);
+    return {
+      summary: {
+        current: 0,
+        previous: 0,
+        percentageChange: 0,
+        changeValue: 0,
+        periodFrom: '',
+        periodTo: ''
+      },
+      data: []
+    };
+  }
 });
