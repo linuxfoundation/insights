@@ -8,8 +8,6 @@ export interface ContributorsDataSource {
     fetchActiveContributors: (filter: ActiveContributorsFilter) => Promise<ActiveContributorsResponse>;
 }
 
-type FetchFunction = typeof $fetch;
-
-export function createActiveContributorsDataSource(fetchFn?: FetchFunction): ContributorsDataSource {
-    return createTinybirdDataSource(fetchFn);
+export function createActiveContributorsDataSource(): ContributorsDataSource {
+    return createTinybirdDataSource();
 }

@@ -12,15 +12,15 @@ export type ActiveContributorsFilter = {
   project: string;
   repo?: string;
   granularity?: ContributorsFilterGranularity;
-  fromDate?: DateTime;
-  toDate?: DateTime;
+  startDate?: DateTime;
+  endDate?: DateTime;
 };
 
 // This probably shouldn't be here.
 // It represents the format the API should return, but the data layer shouldn't know about the API layer.
 export type ActiveContributorsDataPoint = {
-  fromDate: string;
-  toDate: string;
+  startDate: string;
+  endDate: string;
   contributors: number;
 };
 export type ActiveContributorsResponseData = ActiveContributorsDataPoint[];

@@ -1,76 +1,44 @@
 import {
- describe, test, expect, vi
+describe, expect, it, vi
 } from 'vitest';
-import type {$Fetch} from "nitropack";
-import type {ActiveContributorsFilter} from "../types";
-import { ContributorsFilterGranularity} from "../types";
-import {fetchFromTinybird} from './tinybird';
-import {useRuntimeConfig} from "#imports";
-import {DateTime} from "luxon";
+import { fetchTinybird } from './tinybird';
 
-describe('fetchFromTinybird', () => {
-  const config = useRuntimeConfig();
-  const {tinybirdToken} = config;
-  const mockFetch = vi.fn().mockImplementation(() => Promise.resolve({})) as unknown as $Fetch;
+const mockRuntimeConfig = (baseUrl: string | null, token: string | null) => {
+    vi.stubGlobal('useRuntimeConfig', vi.fn().mockReturnValue({
+        tinybirdBaseUrl: baseUrl,
+        tinybirdToken: token,
+    }));
+};
 
-  test('should send a request to Tinybird with the desired parameters', async () => {
-    const endpoint = '/v0/pipes/active_contributors.json';
+describe('fetchTinybird', () => {
+    vi.stubGlobal('$fetch', vi.fn().mockResolvedValue({success: true}));
 
-    const query: ActiveContributorsFilter = {
-      project: 'test-project',
-      repo: 'test-repo',
-      granularity: ContributorsFilterGranularity.MONTHLY,
-      fromDate: DateTime.utc(2023, 1, 1),
-      toDate: DateTime.utc(2023, 12, 31),
-    }
-    await fetchFromTinybird(endpoint, query, mockFetch);
-
-    // Check that the request was made with the right parameters, including the Tinybird token,
-    // which should have been added to the query
-    expect(mockFetch).toHaveBeenCalledWith(
-      expect.stringContaining(endpoint),
-      {
-        query: {
-          ...query,
-          fromDate: '2023-01-01 00:00:00',
-          toDate: '2023-12-31 00:00:00',
-        },
-        headers: {
-          Authorization: `Bearer ${tinybirdToken}`,
-        }
-      }
-    );
-  });
-
-  test('active contributors request should not include parameters that are not provided', async () => {
-    const endpoint = '/v0/pipes/active_contributors.json';
-
-    const query: ActiveContributorsFilter = {
-      project: 'test-project',
-      granularity: ContributorsFilterGranularity.MONTHLY,
-    }
-    await fetchFromTinybird(endpoint, query, mockFetch);
-
-    expect(mockFetch).toHaveBeenCalledWith(
-      expect.stringContaining(endpoint),
-      {
-        query: {
-          ...query,
-        },
-        headers: {
-          Authorization: `Bearer ${tinybirdToken}`,
-        }
-      }
-    );
-  });
-
-  test('should handle API errors gracefully', async () => {
-    const mockFetch = vi.fn().mockImplementation(() => Promise.reject(new Error('API Error'))) as unknown as $Fetch;
-    const endpoint = '/v0/pipes/active_contributors.json';
-      const query: ActiveContributorsFilter = {
-        project: 'test-project',
-        granularity: ContributorsFilterGranularity.MONTHLY,
-      }
-      await expect(fetchFromTinybird(endpoint, query, mockFetch)).rejects.toThrow('API Error');
+    it('throws if tinybirdBaseUrl is not defined', async () => {
+        mockRuntimeConfig(null, 'mockToken');
+        await expect(
+            fetchTinybird('/mock-path', {key: 'value'})
+        ).rejects.toThrowError('Tinybird base URL is not defined');
     });
+
+    it('throws if tinybirdToken is not defined', async () => {
+        mockRuntimeConfig('https://api.tinybird.co', null);
+        await expect(
+            fetchTinybird('/mock-path', {key: 'value'})
+        ).rejects.toThrowError('Tinybird token is not defined');
+    });
+
+    it('makes a request with the correct URL and query', async () => {
+        mockRuntimeConfig('https://api.tinybird.co', 'mockToken');
+
+        const result = await fetchTinybird<{ key: string }>('/mock-path', {
+            key: 'value',
+        });
+
+        expect($fetch).toHaveBeenCalledWith('https://api.tinybird.co/mock-path', {
+            query: {key: 'value'}, headers: {Authorization: 'Bearer mockToken'}
+        });
+        expect(result).toEqual({success: true});
+    });
+
+    vi.unstubAllEnvs();
 });

@@ -26,15 +26,15 @@ describe('ContributorsDataSource', () => {
 
     const dataSource = createActiveContributorsDataSource(mockFetch);
 
-    const currentFromDate = DateTime.utc(2022, 0, 1);
-    const currentToDate = DateTime.utc(2023, 0, 1);
+    const currentStartDate = DateTime.utc(2022, 0, 1);
+    const currentEndDate = DateTime.utc(2023, 0, 1);
 
     const filter = {
       granularity: ContributorsFilterGranularity.WEEKLY,
       project: 'gerrit',
       repo: 'https://gerrit.automotivelinux.org/gerrit/q/project:apps/homescreen',
-      fromDate: currentFromDate,
-      toDate: currentToDate
+      startDate: currentStartDate,
+      endDate: currentEndDate
     };
 
     const fakeDate = DateTime.utc(2022, 11, 11)
@@ -56,12 +56,12 @@ describe('ContributorsDataSource', () => {
         previous: previousContributorCount,
         percentageChange,
         changeValue,
-        periodFrom: currentFromDate,
-        periodTo: currentToDate
+        periodFrom: currentStartDate,
+        periodTo: currentEndDate
       },
       data: mockWeeklyTimeseries.data.map((item) => ({
-        fromDate: item.fromDate,
-        toDate: item.toDate,
+        startDate: item.startDate,
+        endDate: item.endDate,
         contributors: item.contributorCount
       }))
     };

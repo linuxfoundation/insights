@@ -42,20 +42,20 @@ export default defineEventHandler(async (event) => {
     granularity: (query.granularity as ContributorsFilterGranularity) || ContributorsFilterGranularity.QUARTERLY,
     project,
     repo: undefined,
-    fromDate: undefined,
-    toDate: undefined
+    startDate: undefined,
+    endDate: undefined
   };
 
   if (query.repository && (query.repository as string).trim() !== '') {
     filter.repo = query.repository as string;
   }
 
-  if (query.fromDate && (query.fromDate as string).trim() !== '') {
-    filter.fromDate = DateTime.fromISO(query.fromDate as string);
+  if (query.startDate && (query.startDate as string).trim() !== '') {
+    filter.startDate = DateTime.fromISO(query.startDate as string);
   }
 
-  if (query.toDate && (query.toDate as string).trim() !== '') {
-    filter.toDate = DateTime.fromISO(query.toDate as string);
+  if (query.endDate && (query.endDate as string).trim() !== '') {
+    filter.endDate = DateTime.fromISO(query.endDate as string);
   }
 
   const dataSource = createActiveContributorsDataSource();

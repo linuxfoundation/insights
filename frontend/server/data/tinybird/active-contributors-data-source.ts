@@ -10,82 +10,93 @@ import type {
   ActiveContributorsResponse,
   ActiveContributorsResponseData,
   ActiveContributorsFilter,
-  FetchFunction
 } from "../types";
 import type {ContributorsDataSource} from "../active-contributors-data-source";
 import {getPreviousDates} from "../util";
-import type {TinybirdContributorsDataResponse} from './tinybird';
-import {fetchFromTinybird} from './tinybird';
+import type {TinybirdResponse} from './tinybird';
+import {fetchTinybird} from './tinybird'
 
-export function createTinybirdDataSource(fetchFn: FetchFunction = $fetch): ContributorsDataSource {
+type TinybirdContributorsSummary = {
+  contributorCount: number;
+}[];
+
+type TinybirdContributorsData = {
+  startDate: string;
+  endDate: string;
+  contributorCount: number;
+}[];
+
+async function fetchActiveContributors(filter: ActiveContributorsFilter) {
+  const dates = getPreviousDates(filter.startDate, filter.endDate);
+
+  const currentSummaryQuery = {
+    project: filter.project,
+    repo: filter.repo,
+    startDate: dates.current.from,
+    endDate: dates.current.to
+  };
+
+  const previousSummaryQuery = {
+    project: filter.project,
+    repo: filter.repo,
+    startDate: dates.previous.from,
+    endDate: dates.previous.to
+  };
+
+  const dataQuery = {
+    project: filter.project,
+    granularity: filter.granularity,
+    repo: filter.repo,
+    startDate: dates.current.from,
+    endDate: dates.current.to
+  };
+
+  const [currentSummary, previousSummary, data] = await Promise.all([
+    fetchTinybird<TinybirdContributorsSummary>('/v0/pipes/active_contributors.json', currentSummaryQuery),
+    fetchTinybird<TinybirdContributorsSummary>('/v0/pipes/active_contributors.json', previousSummaryQuery),
+    fetchTinybird<TinybirdContributorsData>('/v0/pipes/active_contributors.json', dataQuery)
+  ]);
+
+  let processedData: ActiveContributorsResponseData = [];
+  if (data !== undefined) {
+    processedData = (data as TinybirdResponse<TinybirdContributorsData>)?.data.map(
+      (item): ActiveContributorsResponseData[0] => ({
+        startDate: item.startDate,
+        endDate: item.endDate,
+        contributors: item.contributorCount
+      })
+    );
+  }
+
+  const currentContributorCount = currentSummary.data[0].contributorCount;
+  const previousContributorCount = previousSummary.data[0].contributorCount;
+  const changeValue = currentContributorCount - previousContributorCount;
+  let percentageChange = 0;
+  if (previousContributorCount === 0 && currentContributorCount > 0) {
+    percentageChange = 100;
+  } else if (previousContributorCount === 0 && currentContributorCount === 0) {
+    percentageChange = 0;
+  } else if (previousContributorCount !== 0) {
+    percentageChange = ((currentContributorCount - previousContributorCount) / previousContributorCount) * 100;
+  }
+
+  const response: ActiveContributorsResponse = {
+    summary: {
+      current: currentContributorCount,
+      previous: previousContributorCount,
+      percentageChange,
+      changeValue,
+      periodFrom: dates.current.from,
+      periodTo: dates.current.to,
+    },
+    data: processedData,
+  };
+
+  return response;
+}
+
+export function createTinybirdDataSource(): ContributorsDataSource {
   return {
-    async fetchActiveContributors(filter: ActiveContributorsFilter) {
-      const dates = getPreviousDates(filter.fromDate, filter.toDate);
-
-      const currentSummaryQuery: ActiveContributorsFilter = {
-        project: filter.project,
-        repo: filter.repo,
-        fromDate: dates.current.from,
-        toDate: dates.current.to
-      }
-
-      const previousSummaryQuery: ActiveContributorsFilter = {
-        project: filter.project,
-        repo: filter.repo,
-        fromDate: dates.previous.from,
-        toDate: dates.previous.to
-      };
-
-      const dataQuery: ActiveContributorsFilter = {
-        project: filter.project,
-        granularity: filter.granularity,
-        repo: filter.repo,
-        fromDate: dates.current.from,
-        toDate: dates.current.to
-      };
-
-      const [currentSummary, previousSummary, data] = await Promise.all([
-        fetchFromTinybird('/v0/pipes/active_contributors.json', currentSummaryQuery, fetchFn),
-        fetchFromTinybird('/v0/pipes/active_contributors.json', previousSummaryQuery, fetchFn),
-        fetchFromTinybird('/v0/pipes/active_contributors.json', dataQuery, fetchFn)
-      ]);
-
-      let processedData: ActiveContributorsResponseData = [];
-      if (data !== undefined) {
-        processedData = (data as TinybirdContributorsDataResponse)?.data.map(
-          (item): ActiveContributorsResponseData[0] => ({
-            fromDate: item.fromDate,
-            toDate: item.toDate,
-            contributors: item.contributorCount
-          })
-        );
-      }
-
-      const currentContributorCount = currentSummary.data[0].contributorCount;
-      const previousContributorCount = previousSummary.data[0].contributorCount;
-      const changeValue = currentContributorCount - previousContributorCount;
-      let percentageChange = 0;
-      if (previousContributorCount === 0 && currentContributorCount > 0) {
-        percentageChange = 100;
-      } else if (previousContributorCount === 0 && currentContributorCount === 0) {
-        percentageChange = 0;
-      } else if (previousContributorCount !== 0) {
-        percentageChange = ((currentContributorCount - previousContributorCount) / previousContributorCount) * 100;
-      }
-
-      const response: ActiveContributorsResponse = {
-        summary: {
-          current: currentContributorCount,
-          previous: previousContributorCount,
-          percentageChange,
-          changeValue,
-          periodFrom: dates.current.from,
-          periodTo: dates.current.to,
-        },
-        data: processedData,
-      };
-
-      return response;
-    }
+    fetchActiveContributors
   };
 }

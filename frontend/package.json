@@ -59,7 +59,6 @@
     "sass": "^1.83.4",
     "sass-embedded": "^1.83.4",
     "storybook": "8.4.7",
-    "vitest": "^3.0.7",
     "typescript": "^5.7.3",
     "typescript-eslint": "^8.21.0",
     "vitest": "^3.0.7"
