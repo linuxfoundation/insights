@@ -1,5 +1,3 @@
-import { quarterly, weekly, monthly } from '~~/server/mocks/active-contributors.mock';
-
 /**
  * Frontend expects the data to be in the following format:
  * {
@@ -20,34 +18,56 @@ import { quarterly, weekly, monthly } from '~~/server/mocks/active-contributors.
  */
 /**
  * Query params:
- * - interval: 'weekly' | 'monthly' | 'quarterly'
+ * - granularity: 'weekly' | 'monthly' | 'quarterly'
  * - project: string
  * - repository: string
- * - time-period: string // This is isn't defined yet, but we'll add '90d', '1y', '5y' for now
+ * - time-period: string // This isn't defined yet, but we'll add '90d', '1y', '5y' for now
  */
+import { DateTime } from "luxon";
+
+import {
+  createActiveContributorsDataSource
+} from '~~/server/data/active-contributors-data-source';
+import type {ActiveContributorsFilter} from '~~/server/data/types';
+import {ContributorsFilterGranularity} from '~~/server/data/types';
+
 export default defineEventHandler(async (event) => {
+  // TODO: Check the project configuration to determine whether to show the data.
   const query = getQuery(event);
-  let data;
 
-  switch (query.interval) {
-    case 'weekly':
-      data = weekly;
-      break;
-    case 'monthly':
-      data = monthly;
-      break;
-    default:
-      data = quarterly;
-      break;
+  const project = (event.context.params as { slug: string }).slug;
+
+  // TODO: Validate the query params
+  const filter: ActiveContributorsFilter = {
+    granularity: (query.granularity as ContributorsFilterGranularity) || ContributorsFilterGranularity.QUARTERLY,
+    project,
+    repo: undefined,
+    startDate: undefined,
+    endDate: undefined
+  };
+
+  if (query.repository && (query.repository as string).trim() !== '') {
+    filter.repo = query.repository as string;
   }
 
-  // doing fake changes to data if query.repository is not empty
-  if (query.repository) {
-    data.data = data.data.map((item) => ({
-      ...item,
-      contributors: item.contributors - 3000
-    }));
+  if (query.startDate && (query.startDate as string).trim() !== '') {
+    filter.startDate = DateTime.fromISO(query.startDate as string);
   }
 
-  return data;
+  if (query.endDate && (query.endDate as string).trim() !== '') {
+    filter.endDate = DateTime.fromISO(query.endDate as string);
+  }
+
+  const dataSource = createActiveContributorsDataSource();
+
+  try {
+    return await dataSource.fetchActiveContributors(filter);
+  } catch (error) {
+    console.error('Error fetching active contributors:', error);
+    throw createError({
+      statusCode: 500,
+      statusMessage: 'Failed to fetch active contributors data',
+      data: { message: error.message }
+    });
+  }
 });
