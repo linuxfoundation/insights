@@ -1,5 +1,5 @@
 import type { Summary } from '~/components/shared/types/summary.types';
-import type { DateRange} from '~~/server/utils/date.service';
+import type { DateRange } from '~~/server/utils/date.service';
 import { addTimeToDate } from '~~/server/utils/date.service';
 
 export interface ActiveContributorsResponse {
@@ -103,7 +103,6 @@ export default defineEventHandler(async (event) => {
     summaryData.changeValue = summaryData.current - summaryData.previous;
     summaryData.percentageChange = (summaryData.changeValue / summaryData.previous) * 100;
 
-    console.log('!!!!RES!!!!', params);
     return { summary: summaryData, data: res.data };
   } catch (error) {
     console.error('Error fetching active contributors:', error);
