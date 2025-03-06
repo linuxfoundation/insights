@@ -14,3 +14,14 @@ export type ActiveContributorsFilter = {
   startDate?: DateTime;
   endDate?: DateTime;
 };
+
+export enum ContributorsLeaderboardFilterMetric {
+  ALL = 'all',
+  COMMITS = 'commits'
+}
+export type ContributorsLeaderboardFilter = {
+  metric: ContributorsLeaderboardFilterMetric;
+  repository: string;
+  startDate?: DateTime;
+  endDate?: DateTime;
+}
