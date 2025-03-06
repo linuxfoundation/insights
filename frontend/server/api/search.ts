@@ -1,3 +1,5 @@
+import {fetchFromTinybird} from "~~/server/data/tinybird/tinybird";
+
 /**
  * Represents the response object for a search operation.
  *
@@ -50,7 +52,7 @@ export default defineEventHandler(async (event) => {
     const collections: SearchResponse[] = [];
 
     try {
-        const res = await fetchTinybird<SearchResponse[]>('/v0/pipes/search_collections_projects_repos.json', {
+        const res = await fetchFromTinybird<SearchResponse[]>('/v0/pipes/search_collections_projects_repos.json', {
             limit: 10,
             search: searchQuery,
         })

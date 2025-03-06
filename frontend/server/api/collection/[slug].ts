@@ -1,3 +1,5 @@
+import {fetchFromTinybird} from "~~/server/data/tinybird/tinybird";
+
 interface CollectionDetailsResponse {
     id: string;
     name: string;
@@ -55,7 +57,7 @@ interface CollectionDetailsResponse {
 export default defineEventHandler(async (event) => {
     const {slug} = event.context.params as Record<string, string>;
     try {
-        const res = await fetchTinybird<CollectionDetailsResponse[]>('/v0/pipes/collections_list.json', {
+        const res = await fetchFromTinybird<CollectionDetailsResponse[]>('/v0/pipes/collections_list.json', {
             slug,
         });
         if (!res.data || res.data.length === 0) {

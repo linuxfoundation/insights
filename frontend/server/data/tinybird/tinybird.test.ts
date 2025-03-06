@@ -1,7 +1,7 @@
 import {
 describe, expect, it, vi
 } from 'vitest';
-import { fetchTinybird } from './tinybird';
+import { fetchFromTinybird } from './tinybird';
 
 const mockRuntimeConfig = (baseUrl: string | null, token: string | null) => {
     vi.stubGlobal('useRuntimeConfig', vi.fn().mockReturnValue({
@@ -10,27 +10,27 @@ const mockRuntimeConfig = (baseUrl: string | null, token: string | null) => {
     }));
 };
 
-describe('fetchTinybird', () => {
+describe('fetchFromTinybird', () => {
     vi.stubGlobal('$fetch', vi.fn().mockResolvedValue({success: true}));
 
     it('throws if tinybirdBaseUrl is not defined', async () => {
         mockRuntimeConfig(null, 'mockToken');
         await expect(
-            fetchTinybird('/mock-path', {key: 'value'})
+            fetchFromTinybird('/mock-path', {key: 'value'})
         ).rejects.toThrowError('Tinybird base URL is not defined');
     });
 
     it('throws if tinybirdToken is not defined', async () => {
         mockRuntimeConfig('https://api.tinybird.co', null);
         await expect(
-            fetchTinybird('/mock-path', {key: 'value'})
+            fetchFromTinybird('/mock-path', {key: 'value'})
         ).rejects.toThrowError('Tinybird token is not defined');
     });
 
     it('makes a request with the correct URL and query', async () => {
         mockRuntimeConfig('https://api.tinybird.co', 'mockToken');
 
-        const result = await fetchTinybird<{ key: string }>('/mock-path', {
+        const result = await fetchFromTinybird<{ key: string }>('/mock-path', {
             key: 'value',
         });
 
