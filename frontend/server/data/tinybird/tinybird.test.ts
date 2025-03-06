@@ -35,8 +35,10 @@ describe('fetchTinybird', () => {
         });
 
         expect($fetch).toHaveBeenCalledWith('https://api.tinybird.co/mock-path', {
-            query: {token: 'mockToken', key: 'value'},
+            query: {key: 'value'}, headers: {Authorization: 'Bearer mockToken'}
         });
         expect(result).toEqual({success: true});
     });
+
+    vi.unstubAllEnvs();
 });

@@ -21,7 +21,8 @@ export default defineNuxtConfig({
     '@nuxt/eslint',
     '@primevue/nuxt-module',
     'nuxt-echarts',
-    '@nuxtjs/storybook'
+    '@nuxtjs/storybook',
+    '@nuxt/test-utils/module'
   ],
   css: ['~/assets/styles/main.scss'],
   tailwindcss,

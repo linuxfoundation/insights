@@ -76,7 +76,7 @@ const { data, status, error } = useFetch(
   () => `/api/project/${route.params.slug}/contributors/active-contributors`,
   {
     params: {
-      interval: activeTab,
+      granularity: activeTab,
       repository: selectedRepository,
       startDate,
       endDate,
