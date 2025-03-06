@@ -1,3 +1,5 @@
+import {fetchFromTinybird} from "~~/server/data/tinybird/tinybird";
+
 interface CollectionResponse {
     id: string;
     name: string;
@@ -42,7 +44,7 @@ export default defineEventHandler(async (event) => {
     const count: boolean = !!query?.count;
 
     try {
-        const res = await fetchTinybird<CollectionResponse[]>('/v0/pipes/collections_list.json', {
+        const res = await fetchFromTinybird<CollectionResponse[]>('/v0/pipes/collections_list.json', {
             count,
             page,
             pageSize,

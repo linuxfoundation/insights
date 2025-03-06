@@ -1,3 +1,5 @@
+import {fetchFromTinybird} from "~~/server/data/tinybird/tinybird";
+
 interface ProjectRepository {
     projectId: string;
     projectName: string;
@@ -47,7 +49,7 @@ interface ProjectDetailsResponse {
 export default defineEventHandler(async (event) => {
     const {slug} = event.context.params as Record<string, string>;
     try {
-        const res = await fetchTinybird<ProjectDetailsResponse[]>('/v0/pipes/projects_list.json', {
+        const res = await fetchFromTinybird<ProjectDetailsResponse[]>('/v0/pipes/projects_list.json', {
             slug,
         });
         if (!res.data || res.data.length === 0) {

@@ -1,3 +1,5 @@
+import {fetchFromTinybird} from "~~/server/data/tinybird/tinybird";
+
 interface ProjectResponse {
     id: string;
     name: string;
@@ -49,7 +51,7 @@ export default defineEventHandler(async (event) => {
     const isLf: boolean = !!query?.isLf;
 
     try {
-        const res = await fetchTinybird<ProjectResponse[]>('/v0/pipes/projects_list.json', {
+        const res = await fetchFromTinybird<ProjectResponse[]>('/v0/pipes/projects_list.json', {
             count,
             page,
             pageSize,

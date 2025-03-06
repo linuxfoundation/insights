@@ -21,7 +21,7 @@ function formatDateForTinyBird(date: DateTime): string {
     return date.toFormat('yyyy-MM-dd 00:00:00') ?? '';
 }
 
-export async function fetchTinybird<T>(
+export async function fetchFromTinybird<T>(
     path: string,
     query: Record<string, string | number | boolean | string[] | DateTime | undefined>
 ): Promise<TinybirdResponse<T>> {

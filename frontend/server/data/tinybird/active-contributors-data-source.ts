@@ -14,7 +14,7 @@ import type {
 import type {ContributorsDataSource} from "../active-contributors-data-source";
 import {getPreviousDates} from "../util";
 import type {TinybirdResponse} from './tinybird';
-import {fetchTinybird} from './tinybird'
+import {fetchFromTinybird} from './tinybird'
 
 type TinybirdContributorsSummary = {
   contributorCount: number;
@@ -52,9 +52,9 @@ async function fetchActiveContributors(filter: ActiveContributorsFilter) {
   };
 
   const [currentSummary, previousSummary, data] = await Promise.all([
-    fetchTinybird<TinybirdContributorsSummary>('/v0/pipes/active_contributors.json', currentSummaryQuery),
-    fetchTinybird<TinybirdContributorsSummary>('/v0/pipes/active_contributors.json', previousSummaryQuery),
-    fetchTinybird<TinybirdContributorsData>('/v0/pipes/active_contributors.json', dataQuery)
+    fetchFromTinybird<TinybirdContributorsSummary>('/v0/pipes/active_contributors.json', currentSummaryQuery),
+    fetchFromTinybird<TinybirdContributorsSummary>('/v0/pipes/active_contributors.json', previousSummaryQuery),
+    fetchFromTinybird<TinybirdContributorsData>('/v0/pipes/active_contributors.json', dataQuery)
   ]);
 
   let processedData: ActiveContributorsResponseData = [];
