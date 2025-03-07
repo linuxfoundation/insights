@@ -3,8 +3,8 @@ import type { Summary } from '~/components/shared/types/summary.types';
 export interface ActiveContributors {
   summary: Summary;
   data: {
-    dateFrom: string;
-    dateTo: string;
+    startDate: string;
+    endDate: string;
     contributors: number;
   }[];
 }
@@ -12,8 +12,8 @@ export interface ActiveContributors {
 export interface ActiveOrganizations {
   summary: Summary;
   data: {
-    dateFrom: string;
-    dateTo: string;
+    startDate: string;
+    endDate: string;
     organizations: number;
   }[];
 }

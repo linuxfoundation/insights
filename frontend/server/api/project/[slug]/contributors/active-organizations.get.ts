@@ -12,15 +12,15 @@ import { quarterly, weekly, monthly } from '~~/server/mocks/active-orgs.mock';
  *     periodTo: string; // period to
  *   },
  *   data: {
- *     dateFrom: string; // ISO 8601 date string - start of the bucket. Based on the interval
- *     dateTo: string; // ISO 8601 date string - end of the bucket. Based on the interval
+ *     startDate: string; // ISO 8601 date string - start of the bucket. Based on the interval
+ *     endDate: string; // ISO 8601 date string - end of the bucket. Based on the interval
  *     organizations: number; // count of active organizations
  *   }[];
  * }
  */
 /**
  * Query params:
- * - interval: 'weekly' | 'monthly' | 'quarterly'
+ * - granularity: 'weekly' | 'monthly' | 'quarterly' | 'yearly'
  * - project: string
  * - repository: string
  * - time-period: string // This is isn't defined yet, but we'll add '90d', '1y', '5y' for now

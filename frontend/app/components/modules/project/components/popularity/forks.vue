@@ -43,7 +43,7 @@
         use-min-height
       >
         <div class="w-full h-[330px] mt-4">
-          <lfx-chart :config="barChartConfig" />
+          <lfx-chart :config="activeTab === 'cumulative' ? lineChartConfig : barChartConfig" />
         </div>
       </lfx-project-load-state>
     </section>
@@ -57,6 +57,7 @@ import { storeToRefs } from "pinia";
 import LfxProjectLoadState from '../shared/load-state.vue';
 import LfxSkeletonState from '../shared/skeleton-state.vue';
 import type { ForksData } from './types/popularity.types';
+import { cumulativeGranularities, newGranularities } from './config/granularities';
 import type { Summary } from '~/components/shared/types/summary.types';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
@@ -69,13 +70,16 @@ import type {
 } from '~/components/uikit/chart/types/ChartTypes';
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import { getBarChartConfig } from '~/components/uikit/chart/configs/bar.chart';
+import { getLineAreaChartConfig } from '~/components/uikit/chart/configs/line.area.chart';
 import { lfxColors } from '~/config/styles/colors';
 import { axisLabelFormatter } from '~/components/uikit/chart/helpers/formatters';
 import { formatNumber } from '~/components/shared/utils/formatter';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
 import { isEmptyData } from '~/components/shared/utils/helper';
 
-const { startDate, endDate, selectedRepository } = storeToRefs(useProjectStore())
+const {
+ startDate, endDate, selectedRepository, selectedKey
+} = storeToRefs(useProjectStore())
 
 const activeTab = ref('cumulative');
 const route = useRoute();
@@ -84,6 +88,9 @@ const { data, status, error } = useFetch(
   `/api/project/${route.params.slug}/popularity/forks`,
   {
     params: {
+      granularity: activeTab.value === 'cumulative'
+        ? cumulativeGranularities[selectedKey.value as keyof typeof cumulativeGranularities]
+        : newGranularities[selectedKey.value as keyof typeof newGranularities],
       type: activeTab.value,
       repository: selectedRepository,
       startDate,
@@ -108,10 +115,10 @@ const tabs = [
   { label: 'New', value: 'new' }
 ];
 
-const chartSeries = ref<ChartSeries[]>([
+const chartSeries = computed<ChartSeries[]>(() => [
   {
     name: 'Forks',
-    type: 'bar',
+    type: activeTab.value === 'cumulative' ? 'line' : 'bar',
     yAxisIndex: 0,
     dataIndex: 0,
     position: 'left',
@@ -125,6 +132,11 @@ const configOverride = computed(() => ({
     }
   }
 }));
+const lineChartConfig = computed(() => getLineAreaChartConfig(
+  chartData.value,
+  chartSeries.value,
+  configOverride.value
+));
 const barChartConfig = computed(() => getBarChartConfig(
   chartData.value,
   chartSeries.value,

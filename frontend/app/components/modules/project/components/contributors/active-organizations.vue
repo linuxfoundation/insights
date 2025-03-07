@@ -69,7 +69,7 @@ import { useProjectStore } from "~/components/modules/project/store/project.stor
 import { isEmptyData } from '~/components/shared/utils/helper';
 
 const {
- startDate, endDate, selectedRepository, selectedKey
+  startDate, endDate, selectedRepository, selectedKey
 } = storeToRefs(useProjectStore())
 
 const activeTab = ref(granularityTabs[0]?.value || 'weekly');
@@ -92,7 +92,7 @@ const summary = computed<Summary>(() => activeOrganizations.value.summary);
 
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
-  () => convertToChartData(activeOrganizations.value?.data as RawChartData[], 'dateFrom', [
+  () => convertToChartData((activeOrganizations.value?.data || []) as RawChartData[], 'startDate', [
     'organizations'
   ])
 );
