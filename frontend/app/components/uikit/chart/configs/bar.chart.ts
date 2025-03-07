@@ -11,7 +11,7 @@ import {
 import type { ChartData, ChartSeries, SeriesTypes } from '../types/ChartTypes';
 import defaultOption from './defaults.chart';
 import { lfxColors } from '~/config/styles/colors';
-import { granularityTabs } from '~/components/modules/project/components/contributors/config/active-granularity-tabs';
+import { formatByGranularity } from '~/components/shared/types/granularity';
 
 const defaultBarOption: ECOption = {
   ...defaultOption,
@@ -103,7 +103,7 @@ export const getBarChartConfig = (
   series: ChartSeries[],
   granularity: string
 ): ECOption => {
-  const axisLabelFormat = granularityTabs.find((tab) => tab.value === granularity)?.format || 'MMM yyyy';
+  const axisLabelFormat = formatByGranularity[granularity as keyof typeof formatByGranularity] || 'MMM yyyy';
 
   const xAxis = {
     ...defaultBarOption.xAxis,
@@ -167,7 +167,7 @@ export const getBarChartConfigCustom = (
   granularity: string,
   overrideConfig?: Partial<ECOption>
 ): ECOption => {
-  const axisLabelFormat = granularityTabs.find((tab) => tab.value === granularity)?.format || 'MMM yyyy';
+  const axisLabelFormat = formatByGranularity[granularity as keyof typeof formatByGranularity] || 'MMM yyyy';
 
   const xAxis = {
     ...defaultBarOption.xAxis,

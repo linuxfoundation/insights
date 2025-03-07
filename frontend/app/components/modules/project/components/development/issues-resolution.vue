@@ -95,7 +95,6 @@ import type {
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import { getLineAreaChartConfig } from '~/components/uikit/chart/configs/line.area.chart';
 import { lfxColors } from '~/config/styles/colors';
-import { axisLabelFormatter } from '~/components/uikit/chart/helpers/formatters';
 import { formatNumber } from '~/components/shared/utils/formatter';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
@@ -107,11 +106,12 @@ const {
 } = storeToRefs(useProjectStore())
 
 const route = useRoute();
+const granularity = computed(() => lineGranularities[selectedKey.value as keyof typeof lineGranularities]);
 const { data, status, error } = useFetch(
   `/api/project/${route.params.slug}/development/issues-resolution`,
   {
     params: {
-      granularity: lineGranularities[selectedKey.value as keyof typeof lineGranularities].granularity,
+      granularity,
       repository: selectedRepository,
       startDate,
       endDate,
@@ -129,7 +129,6 @@ const chartData = computed<ChartData[]>(
     'totalIssues'
   ], undefined, 'dateTo')
 );
-const axisLabelFormat = computed(() => lineGranularities[selectedKey.value as keyof typeof lineGranularities].format);
 
 const chartSeries = ref<ChartSeries[]>([
   {
@@ -152,20 +151,11 @@ const chartSeries = ref<ChartSeries[]>([
     lineWidth: 2
   }
 ]);
-const configOverride = computed(() => ({
-  xAxis: {
-    axisLabel: {
-      formatter: axisLabelFormatter(axisLabelFormat.value)
-    }
-  },
-  grid: {
-    top: '8%'
-  }
-}));
+
 const lineAreaChartConfig = computed(() => getLineAreaChartConfig(
   chartData.value,
   chartSeries.value,
-  configOverride.value
+  granularity.value,
 ));
 const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
 </script>

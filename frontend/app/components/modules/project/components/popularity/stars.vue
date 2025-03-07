@@ -72,7 +72,6 @@ import LfxChart from '~/components/uikit/chart/chart.vue';
 import { getBarChartConfig } from '~/components/uikit/chart/configs/bar.chart';
 import { getLineAreaChartConfig } from '~/components/uikit/chart/configs/line.area.chart';
 import { lfxColors } from '~/config/styles/colors';
-import { axisLabelFormatter } from '~/components/uikit/chart/helpers/formatters';
 import { formatNumber } from '~/components/shared/utils/formatter';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
 import { isEmptyData } from '~/components/shared/utils/helper';
@@ -84,14 +83,15 @@ const {
 const activeTab = ref('cumulative');
 const route = useRoute();
 
-const barGranularity = computed(() => barGranularities[selectedKey.value as keyof typeof barGranularities].granularity);
+const barGranularity = computed(() => barGranularities[selectedKey.value as keyof typeof barGranularities]);
+const lineGranularity = computed(() => lineGranularities[selectedKey.value as keyof typeof lineGranularities]);
 const { data, status, error } = useFetch(
   `/api/project/${route.params.slug}/popularity/stars`,
   {
     params: {
       granularity: activeTab.value === 'cumulative'
-        ? lineGranularities[selectedKey.value as keyof typeof lineGranularities].granularity
-        : barGranularity,
+        ? lineGranularity.value
+        : barGranularity.value,
       type: activeTab.value,
       repository: selectedRepository,
       startDate,
@@ -110,9 +110,6 @@ const chartData = computed<ChartData[]>(
   ], undefined, 'dateTo')
 );
 const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
-const axisLabelFormat = computed(() => (activeTab.value === 'cumulative'
-  ? lineGranularities[selectedKey.value as keyof typeof lineGranularities].format
-  : barGranularities[selectedKey.value as keyof typeof barGranularities].format));
 
 const tabs = [
   { label: 'Cumulative', value: 'cumulative' },
@@ -129,17 +126,11 @@ const chartSeries = computed<ChartSeries[]>(() => [
     color: lfxColors.brand[500]
   }
 ]);
-const configOverride = computed(() => ({
-  xAxis: {
-    axisLabel: {
-      formatter: axisLabelFormatter(axisLabelFormat.value)
-    }
-  }
-}));
+
 const lineChartConfig = computed(() => getLineAreaChartConfig(
   chartData.value,
   chartSeries.value,
-  configOverride.value
+  lineGranularity.value
 ));
 const barChartConfig = computed(() => getBarChartConfig(
   chartData.value,

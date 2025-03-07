@@ -98,7 +98,7 @@ const chartData = computed<ChartData[]>(
 
 const chartSeries = ref<ChartSeries[]>([
   {
-    name: 'Average time to merge',
+    name: 'Average time',
     type: 'bar',
     yAxisIndex: 0,
     dataIndex: 0,

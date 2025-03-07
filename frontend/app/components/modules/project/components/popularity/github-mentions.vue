@@ -40,7 +40,7 @@
 <script setup lang="ts">
 import { useFetch, useRoute } from 'nuxt/app';
 import { ref, computed, watch } from 'vue';
-import {storeToRefs} from "pinia";
+import { storeToRefs } from "pinia";
 import type { GithubMentions } from './types/mentions.types';
 import type { Summary } from '~/components/shared/types/summary.types';
 import LfxCard from '~/components/uikit/card/card.vue';
@@ -55,29 +55,28 @@ import type {
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import { getLineAreaChartConfig } from '~/components/uikit/chart/configs/line.area.chart';
 import { lfxColors } from '~/config/styles/colors';
-import { axisLabelFormatter } from '~/components/uikit/chart/helpers/formatters';
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 import { formatNumber } from '~/components/shared/utils/formatter';
-import {useProjectStore} from "~/components/modules/project/store/project.store";
+import { useProjectStore } from "~/components/modules/project/store/project.store";
 
 const { showToast } = useToastService();
-const {startDate, endDate, selectedRepository} = storeToRefs(useProjectStore())
+const { startDate, endDate, selectedRepository } = storeToRefs(useProjectStore())
 
 const activeTab = ref('cumulative');
 const route = useRoute();
 
-const {data, status, error} = useFetch(
-    `/api/project/${route.params.slug}/popularity/github-mentions`,
-    {
-      params: {
-        interval: activeTab.value,
-        repository: selectedRepository,
-        startDate,
-        endDate,
-      }
+const { data, status, error } = useFetch(
+  `/api/project/${route.params.slug}/popularity/github-mentions`,
+  {
+    params: {
+      interval: activeTab.value,
+      repository: selectedRepository,
+      startDate,
+      endDate,
     }
+  }
 );
 
 const mentions = computed<GithubMentions>(() => data.value as GithubMentions);
@@ -105,17 +104,11 @@ const chartSeries = ref<ChartSeries[]>([
     color: lfxColors.brand[500]
   }
 ]);
-const configOverride = computed(() => ({
-  xAxis: {
-    axisLabel: {
-      formatter: axisLabelFormatter('MMM dd')
-    }
-  }
-}));
+
 const lineAreaChartConfig = computed(() => getLineAreaChartConfig(
   chartData.value,
   chartSeries.value,
-  configOverride.value
+  'weekly'
 ));
 
 watch(error, (err) => {

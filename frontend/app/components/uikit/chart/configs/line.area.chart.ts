@@ -8,10 +8,16 @@ import {
   hexToRgba
 } from '../helpers/chart-helpers';
 
-import { tooltipFormatter, tooltipLabelFormatter } from '../helpers/formatters';
+import {
+  axisLabelFormatter,
+  tooltipFormatter,
+  tooltipFormatterWithData,
+  tooltipLabelFormatter
+} from '../helpers/formatters';
 import type { ChartData, ChartSeries, SeriesTypes } from '../types/ChartTypes';
 import defaultOption, { defaultGraphOnlyOption } from './defaults.chart';
 import { lfxColors } from '~/config/styles/colors';
+import { formatByGranularity } from '~/components/shared/types/granularity';
 
 const defaultLineOption: ECOption = {
   ...defaultOption,
@@ -28,7 +34,7 @@ const defaultLineOption: ECOption = {
   tooltip: {
     trigger: 'axis',
     axisPointer: {
-      type: 'cross',
+      type: 'none',
       label: {
         formatter: tooltipLabelFormatter
       }
@@ -102,12 +108,30 @@ const applySeriesStyle = (
 export const getLineAreaChartConfig = (
   data: ChartData[],
   series: ChartSeries[],
-  overrideConfig?: Partial<ECOption>
+  granularity: string,
+  yAxisFormatter?: (value: number) => string
 ): ECOption => {
+  const axisLabelFormat = formatByGranularity[granularity as keyof typeof formatByGranularity] || 'MMM yyyy';
+
   const xAxis = {
     ...defaultLineOption.xAxis,
-    data: convertDateData(data) ?? []
+    data: convertDateData(data) ?? [],
+    axisLabel: {
+      ...defaultLineOption.xAxis.axisLabel,
+      formatter: axisLabelFormatter(axisLabelFormat)
+    }
   };
+  const yAxis = {
+    ...defaultLineOption.yAxis,
+    axisLabel: {
+      ...defaultLineOption.yAxis.axisLabel,
+      formatter: yAxisFormatter
+    }
+  };
+  const tooltip = merge({}, defaultLineOption.tooltip, {
+    formatter: tooltipFormatterWithData(data, granularity)
+  });
+
   const styledSeries = applySeriesStyle(series, buildSeries(series, data));
 
   return merge(
@@ -115,10 +139,10 @@ export const getLineAreaChartConfig = (
     {
       ...defaultLineOption,
       xAxis,
-      // yAxis: buildYAxis(series),
-      series: styledSeries
-    },
-    overrideConfig
+      yAxis,
+      series: styledSeries,
+      tooltip
+    }
   );
 };
 
@@ -133,8 +157,20 @@ export const getLineAreaChartConfig = (
 export const getLineAreChartConfigCustom = (
   data: ChartData[],
   series: ChartSeries[],
-  customStyle: Partial<SeriesTypes>
+  customStyle: Partial<SeriesTypes>,
+  granularity: string
 ): ECOption => {
+  const axisLabelFormat = formatByGranularity[granularity as keyof typeof formatByGranularity] || 'MMM yyyy';
+
+  const xAxis = {
+    ...defaultLineOption.xAxis,
+    data: convertDateData(data) ?? [],
+    axisLabel: {
+      ...defaultLineOption.xAxis.axisLabel,
+      formatter: axisLabelFormatter(axisLabelFormat)
+    }
+  };
+
   const styledSeries = applySeriesStyle(series, buildSeries(series, data)).map(
     (seriesItem) => ({
         ...seriesItem,
@@ -150,10 +186,10 @@ export const getLineAreChartConfigCustom = (
       } as LineSeriesOption)
   );
 
-  return {
-    ...defaultLineOption,
+  return merge({}, defaultLineOption, {
+    xAxis,
     series: styledSeries
-  };
+  });
 };
 
 /**
