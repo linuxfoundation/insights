@@ -102,7 +102,7 @@ export const getBarChartConfig = (
     data: convertDateData(data) ?? []
   };
   const styledSeries = applySeriesStyle(series, buildSeries(series, data));
-  console.log(styledSeries);
+
   return merge(
     {},
     {

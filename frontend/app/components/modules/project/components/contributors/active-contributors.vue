@@ -44,11 +44,12 @@
 
 <script setup lang="ts">
 import { useFetch, useRoute } from 'nuxt/app';
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { storeToRefs } from "pinia";
 import LfxProjectLoadState from '../shared/load-state.vue';
 import LfxSkeletonState from '../shared/skeleton-state.vue';
 import type { ActiveContributors } from './types/contributors.types';
+import { granularityTabs } from './config/active-granularity-tabs';
 import type { Summary } from '~/components/shared/types/summary.types';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
@@ -67,9 +68,11 @@ import { formatNumber } from '~/components/shared/utils/formatter';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
 import { isEmptyData } from '~/components/shared/utils/helper';
 
-const { startDate, endDate, selectedRepository } = storeToRefs(useProjectStore());
+const {
+ startDate, endDate, selectedRepository, selectedKey
+} = storeToRefs(useProjectStore());
 
-const activeTab = ref('weekly');
+const activeTab = ref(granularityTabs[0]?.value || 'weekly');
 const route = useRoute();
 
 const { data, status, error } = useFetch(
@@ -95,11 +98,7 @@ const chartData = computed<ChartData[]>(
 );
 const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
 
-const tabs = [
-  { label: 'Weekly', value: 'weekly' },
-  { label: 'Monthly', value: 'monthly' },
-  { label: 'Quarterly', value: 'quarterly' }
-];
+const tabs = computed(() => granularityTabs.filter((tab) => tab.showForKeys.includes(selectedKey.value)));
 
 const chartSeries = ref<ChartSeries[]>([
   {
@@ -120,6 +119,9 @@ const configOverride = computed(() => ({
 }));
 const barChartConfig = computed(() => getBarChartConfig(chartData.value, chartSeries.value, configOverride.value));
 
+watch(selectedKey, () => {
+  activeTab.value = tabs.value[0]?.value || 'weekly';
+});
 </script>
 
 <script lang="ts">
