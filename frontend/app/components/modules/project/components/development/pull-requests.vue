@@ -101,7 +101,6 @@ import type {
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import { getBarChartConfigStacked } from '~/components/uikit/chart/configs/bar.chart';
 import { lfxColors } from '~/config/styles/colors';
-import { axisLabelFormatter } from '~/components/uikit/chart/helpers/formatters';
 import { formatNumber } from '~/components/shared/utils/formatter';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
@@ -139,7 +138,6 @@ const chartData = computed<ChartData[]>(
     'closed'
   ], undefined, 'dateTo')
 );
-const axisLabelFormat = computed(() => barGranularities[selectedKey.value as keyof typeof barGranularities].format);
 
 const openSummary = computed<Summary | undefined>(() => pullRequests.value?.openSummary);
 const mergedSummary = computed<Summary | undefined>(() => pullRequests.value?.mergedSummary);
@@ -168,25 +166,14 @@ const chartSeries = ref<ChartSeries[]>([
     yAxisIndex: 0,
     dataIndex: 2,
     position: 'left',
-    color: lfxColors.neutral[200]
+    color: lfxColors.negative[500]
   }
 ]);
-const configOverride = computed(() => ({
-  xAxis: {
-    axisLabel: {
-      formatter: axisLabelFormatter(axisLabelFormat.value)
-    }
-  },
-  grid: {
-    top: '8%',
-    bottom: '8%'
-  }
-}));
+
 const barChartConfig = computed(() => getBarChartConfigStacked(
   chartData.value,
   chartSeries.value,
   granularity.value,
-  configOverride.value
 ));
 
 const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));

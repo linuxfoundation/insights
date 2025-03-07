@@ -2,11 +2,11 @@ import type { BarSeriesOption } from 'echarts/types/dist/shared';
 import { merge } from 'lodash';
 import { buildSeries, convertDateData } from '../helpers/chart-helpers';
 import {
- axisLabelFormatter,
+  axisLabelFormatter,
   tooltipFormatter,
   tooltipFormatterWithData,
   tooltipLabelFormatter
- } from '../helpers/formatters';
+} from '../helpers/formatters';
 
 import type { ChartData, ChartSeries, SeriesTypes } from '../types/ChartTypes';
 import defaultOption from './defaults.chart';
@@ -143,7 +143,7 @@ export const getBarChartConfigStacked = (
     {
       stack: 'stack',
       itemStyle: {
-        borderRadius: [4, 4, 4, 4],
+        borderRadius: [2, 2, 2, 2],
         borderWidth: 1,
         borderColor: '#fff'
       }

@@ -42,7 +42,18 @@ export const tooltipLabelFormatter = (params: LabelFormatterParams) => {
   return parseInt(params.value as string, 10).toString();
 };
 
-const tooltipSingleValue = (params: SingleTooltipFormatterParams) => `${params.seriesName}: ${params.value} <br>`;
+// charts tooltip can't use tailwind classes, so we need to use inline styles
+const tooltipSingleValue = (params: SingleTooltipFormatterParams) => `
+  <div style="display: flex; 
+    flex-direction: row; 
+    align-items: center; 
+    justify-content: space-between;
+    min-width: 150px;
+  ">
+    <span>${params.seriesName}</span>
+    <span>${params.value}</span>
+  </div>
+  `;
 
 export const tooltipFormatter = (
   paramsRaw: TopLevelFormatterParams // Tooltip hover box
