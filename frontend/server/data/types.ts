@@ -38,3 +38,14 @@ export type ContributorsLeaderboardFilter = {
   startDate?: DateTime;
   endDate?: DateTime;
 }
+
+export enum OrganizationsLeaderboardFilterMetric {
+  ALL = 'all',
+  COMMITS = 'commits'
+}
+export type OrganizationsLeaderboardFilter = {
+  metric: OrganizationsLeaderboardFilterMetric;
+  repository: string;
+  startDate?: DateTime;
+  endDate?: DateTime;
+}
