@@ -100,14 +100,18 @@ import { formatNumber } from '~/components/shared/utils/formatter';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
 import { isEmptyData } from '~/components/shared/utils/helper';
+import { lineGranularities } from '~/components/shared/types/granularity';
 
-const { startDate, endDate, selectedRepository } = storeToRefs(useProjectStore())
+const {
+ startDate, endDate, selectedRepository, selectedKey
+} = storeToRefs(useProjectStore())
 
 const route = useRoute();
 const { data, status, error } = useFetch(
   `/api/project/${route.params.slug}/development/issues-resolution`,
   {
     params: {
+      granularity: lineGranularities[selectedKey.value as keyof typeof lineGranularities],
       repository: selectedRepository,
       startDate,
       endDate,

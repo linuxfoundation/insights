@@ -66,8 +66,11 @@ import { axisLabelFormatter } from '~/components/uikit/chart/helpers/formatters'
 import { formatNumberToDuration } from '~/components/shared/utils/formatter';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
 import { isEmptyData } from '~/components/shared/utils/helper';
+import { barGranularities } from '~/components/shared/types/granularity';
 
-const { startDate, endDate, selectedRepository } = storeToRefs(useProjectStore())
+const {
+ startDate, endDate, selectedRepository, selectedKey
+} = storeToRefs(useProjectStore())
 
 const route = useRoute();
 
@@ -75,6 +78,7 @@ const { data, status, error } = useFetch(
   `/api/project/${route.params.slug}/development/average-time-merge`,
   {
     params: {
+      granularity: barGranularities[selectedKey.value as keyof typeof barGranularities],
       repository: selectedRepository,
       startDate,
       endDate,

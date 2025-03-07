@@ -57,7 +57,7 @@ import { storeToRefs } from "pinia";
 import LfxProjectLoadState from '../shared/load-state.vue';
 import LfxSkeletonState from '../shared/skeleton-state.vue';
 import type { StarsData } from './types/popularity.types';
-import { cumulativeGranularities, newGranularities } from './config/granularities';
+import { lineGranularities, barGranularities } from '~/components/shared/types/granularity';
 import type { Summary } from '~/components/shared/types/summary.types';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
@@ -89,8 +89,8 @@ const { data, status, error } = useFetch(
   {
     params: {
       granularity: activeTab.value === 'cumulative'
-        ? cumulativeGranularities[selectedKey.value as keyof typeof cumulativeGranularities]
-        : newGranularities[selectedKey.value as keyof typeof newGranularities],
+        ? lineGranularities[selectedKey.value as keyof typeof lineGranularities]
+        : barGranularities[selectedKey.value as keyof typeof barGranularities],
       type: activeTab.value,
       repository: selectedRepository,
       startDate,
