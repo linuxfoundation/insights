@@ -89,7 +89,7 @@ const activeContributors = computed<ActiveContributors>(() => data.value as Acti
 const summary = computed<Summary>(() => activeContributors.value.summary);
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
-  () => convertToChartData(activeContributors.value?.data as RawChartData[], 'dateFrom', [
+  () => convertToChartData(activeContributors.value?.data as RawChartData[], 'startDate', [
     'contributors'
   ])
 );
@@ -114,7 +114,7 @@ const chartSeries = ref<ChartSeries[]>([
 const configOverride = computed(() => ({
   xAxis: {
     axisLabel: {
-      formatter: axisLabelFormatter(activeTab.value === 'weekly' ? 'MMM dd' : 'MMM yyyy')
+      formatter: axisLabelFormatter(activeTab.value === 'weekly' ? 'MMM d' : 'MMM yyyy')
     }
   }
 }));

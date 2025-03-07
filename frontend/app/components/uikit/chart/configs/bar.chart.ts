@@ -15,12 +15,15 @@ const defaultBarOption: ECOption = {
     right: 0
   },
   xAxis: {
-    ...defaultOption.xAxis
+    ...defaultOption.xAxis,
+    axisLabel: {
+      ...defaultOption.xAxis.axisLabel
+    }
   },
   tooltip: {
     trigger: 'axis',
     axisPointer: {
-      type: 'cross',
+      type: 'shadow',
       label: {
         formatter: tooltipLabelFormatter
       }
@@ -47,10 +50,12 @@ const defaultBarOption: ECOption = {
 
 const defaultSeriesStyle: BarSeriesOption = {
   color: lfxColors.brand[500],
-  barWidth: 15,
+  // barWidth: '60%',
+  barMaxWidth: 32,
   barGap: '30%',
+  barCategoryGap: '60%',
   itemStyle: {
-    borderRadius: [4, 4, 4, 4],
+    borderRadius: [2, 2, 2, 2],
     borderWidth: 1
     // borderColor: '#fff'
   }
@@ -97,7 +102,7 @@ export const getBarChartConfig = (
     data: convertDateData(data) ?? []
   };
   const styledSeries = applySeriesStyle(series, buildSeries(series, data));
-
+  console.log(styledSeries);
   return merge(
     {},
     {
