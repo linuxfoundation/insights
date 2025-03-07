@@ -1,5 +1,3 @@
-import { quarterly, weekly, monthly } from '~~/server/mocks/active-orgs.mock';
-
 /**
  * Frontend expects the data to be in the following format:
  * {
@@ -18,6 +16,11 @@ import { quarterly, weekly, monthly } from '~~/server/mocks/active-orgs.mock';
  *   }[];
  * }
  */
+import {DateTime} from "luxon";
+import type {ActiveOrganizationsFilter} from "~~/server/data/types";
+import {ActiveOrganizationsFilterGranularity} from "~~/server/data/types";
+import {createDataSource} from "~~/server/data/data-sources";
+
 /**
  * Query params:
  * - granularity: 'weekly' | 'monthly' | 'quarterly' | 'yearly'
@@ -26,28 +29,42 @@ import { quarterly, weekly, monthly } from '~~/server/mocks/active-orgs.mock';
  * - time-period: string // This is isn't defined yet, but we'll add '90d', '1y', '5y' for now
  */
 export default defineEventHandler(async (event) => {
+  // TODO: Check the project configuration to determine whether to show the data.
   const query = getQuery(event);
-  let data;
 
-  switch (query.interval) {
-    case 'weekly':
-      data = weekly;
-      break;
-    case 'monthly':
-      data = monthly;
-      break;
-    default:
-      data = quarterly;
-      break;
+  const project = (event.context.params as { slug: string }).slug;
+
+  // TODO: Validate the query params
+  const filter: ActiveOrganizationsFilter = {
+    granularity: (query.granularity as ActiveOrganizationsFilterGranularity) || ActiveOrganizationsFilterGranularity.QUARTERLY,
+    project,
+    repository: undefined,
+    startDate: undefined,
+    endDate: undefined
+  };
+
+  if (query.repository && (query.repository as string).trim() !== '') {
+    filter.repository = query.repository as string;
   }
 
-  // doing fake changes to data if query.repository is not empty
-  if (query.repository) {
-    data.data = data.data.map((item) => ({
-      ...item,
-      organizations: item.organizations - 200
-    }));
+  if (query.startDate && (query.startDate as string).trim() !== '') {
+    filter.startDate = DateTime.fromISO(query.startDate as string);
   }
 
-  return data;
+  if (query.endDate && (query.endDate as string).trim() !== '') {
+    filter.endDate = DateTime.fromISO(query.endDate as string);
+  }
+
+  const dataSource = createDataSource();
+
+  try {
+    return await dataSource.fetchActiveOrganizations(filter);
+  } catch (error) {
+    console.error('Error fetching active organizations:', error);
+    throw createError({
+      statusCode: 500,
+      statusMessage: 'Failed to fetch active organizations data',
+      data: { message: error.message }
+    });
+  }
 });
