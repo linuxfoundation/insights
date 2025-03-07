@@ -9,6 +9,7 @@ import type {
 } from '../types/EChartTypes';
 import type { ChartData } from '../types/ChartTypes';
 import { Granularity } from '~/components/shared/types/granularity';
+import { formatNumber } from '~/components/shared/utils/formatter';
 
 declare type LabelFormatterParams = {
   value: number | string | Date;
@@ -51,7 +52,7 @@ const tooltipSingleValue = (params: SingleTooltipFormatterParams) => `
     min-width: 150px;
   ">
     <span>${params.seriesName}</span>
-    <span>${params.value}</span>
+    <span>${formatNumber(Number(params.value))}</span>
   </div>
   `;
 
