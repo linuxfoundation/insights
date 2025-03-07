@@ -128,7 +128,7 @@ const pullRequests = computed<PullRequests>(() => data.value as PullRequests);
 const summary = computed<Summary>(() => pullRequests.value.summary);
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
-  () => convertToChartData(pullRequests.value.data as RawChartData[], 'dateFrom', [
+  () => convertToChartData((pullRequests.value?.data || []) as RawChartData[], 'dateFrom', [
     'open',
     'merged',
     'closed'

@@ -120,7 +120,7 @@ const issuesResolution = computed<IssuesResolution>(() => data.value as IssuesRe
 const summary = computed<ResolutionSummary>(() => issuesResolution.value.summary);
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
-  () => convertToChartData(issuesResolution.value.data as RawChartData[], 'dateFrom', [
+  () => convertToChartData((issuesResolution.value?.data || []) as RawChartData[], 'dateFrom', [
     'closedIssues',
     'totalIssues'
   ])

@@ -108,7 +108,7 @@ const activeDays = computed<ActiveDays>(() => data.value as ActiveDays);
 const summary = computed<Summary>(() => activeDays.value.summary);
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
-  () => convertToChartData(activeDays.value.data as RawChartData[], 'day', [
+  () => convertToChartData((activeDays.value?.data || []) as RawChartData[], 'day', [
     'contributions'
   ])
 );

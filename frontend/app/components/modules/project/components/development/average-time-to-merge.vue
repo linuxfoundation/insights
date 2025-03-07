@@ -87,7 +87,7 @@ const averageTimeMerge = computed<AverageTimeMerge>(() => data.value as AverageT
 const summary = computed<Summary>(() => averageTimeMerge.value.summary);
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
-  () => convertToChartData(averageTimeMerge.value.data as RawChartData[], 'dateFrom', [
+  () => convertToChartData((averageTimeMerge.value?.data || []) as RawChartData[], 'dateFrom', [
     'averageTime'
   ])
 );
@@ -119,7 +119,9 @@ const configOverride = computed(() => ({
 
 const barChartConfig = computed(() => getBarChartConfig(chartData.value, chartSeries.value, configOverride.value));
 
-const isEmpty = computed(() => isEmptyData(averageTimeMerge.value.data as unknown as Record<string, unknown>[]));
+const isEmpty = computed(() => isEmptyData(
+  (averageTimeMerge.value?.data || []) as unknown as Record<string, unknown>[]
+));
 </script>
 
 <script lang="ts">
