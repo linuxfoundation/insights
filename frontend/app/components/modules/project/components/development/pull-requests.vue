@@ -114,11 +114,12 @@ const {
 
 const route = useRoute();
 
+const granularity = computed(() => barGranularities[selectedKey.value as keyof typeof barGranularities].granularity);
 const { data, status, error } = useFetch(
   () => `/api/project/${route.params.slug}/development/pull-requests`,
   {
     params: {
-      granularity: barGranularities[selectedKey.value as keyof typeof barGranularities].granularity,
+      granularity,
       project: route.params.slug,
       repository: selectedRepository,
       startDate,
@@ -136,7 +137,7 @@ const chartData = computed<ChartData[]>(
     'open',
     'merged',
     'closed'
-  ])
+  ], undefined, 'dateTo')
 );
 const axisLabelFormat = computed(() => barGranularities[selectedKey.value as keyof typeof barGranularities].format);
 
@@ -184,6 +185,7 @@ const configOverride = computed(() => ({
 const barChartConfig = computed(() => getBarChartConfigStacked(
   chartData.value,
   chartSeries.value,
+  granularity.value,
   configOverride.value
 ));
 

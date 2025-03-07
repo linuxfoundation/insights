@@ -84,13 +84,14 @@ const {
 const activeTab = ref('cumulative');
 const route = useRoute();
 
+const barGranularity = computed(() => barGranularities[selectedKey.value as keyof typeof barGranularities].granularity);
 const { data, status, error } = useFetch(
   `/api/project/${route.params.slug}/popularity/stars`,
   {
     params: {
       granularity: activeTab.value === 'cumulative'
         ? lineGranularities[selectedKey.value as keyof typeof lineGranularities].granularity
-        : barGranularities[selectedKey.value as keyof typeof barGranularities].granularity,
+        : barGranularity,
       type: activeTab.value,
       repository: selectedRepository,
       startDate,
@@ -106,7 +107,7 @@ const chartData = computed<ChartData[]>(
   // convert the data to chart data
   () => convertToChartData(stars.value?.data as RawChartData[], 'dateFrom', [
     'stars'
-  ])
+  ], undefined, 'dateTo')
 );
 const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
 const axisLabelFormat = computed(() => (activeTab.value === 'cumulative'
@@ -143,7 +144,7 @@ const lineChartConfig = computed(() => getLineAreaChartConfig(
 const barChartConfig = computed(() => getBarChartConfig(
   chartData.value,
   chartSeries.value,
-  configOverride.value
+  barGranularity.value
 ));
 </script>
 

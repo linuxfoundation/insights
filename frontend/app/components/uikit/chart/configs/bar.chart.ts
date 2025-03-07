@@ -1,11 +1,17 @@
 import type { BarSeriesOption } from 'echarts/types/dist/shared';
 import { merge } from 'lodash';
 import { buildSeries, convertDateData } from '../helpers/chart-helpers';
+import {
+ axisLabelFormatter,
+  tooltipFormatter,
+  tooltipFormatterWithData,
+  tooltipLabelFormatter
+ } from '../helpers/formatters';
 
-import { tooltipFormatter, tooltipLabelFormatter } from '../helpers/formatters';
 import type { ChartData, ChartSeries, SeriesTypes } from '../types/ChartTypes';
 import defaultOption from './defaults.chart';
 import { lfxColors } from '~/config/styles/colors';
+import { granularityTabs } from '~/components/modules/project/components/contributors/config/active-granularity-tabs';
 
 const defaultBarOption: ECOption = {
   ...defaultOption,
@@ -95,23 +101,28 @@ const applySeriesStyle = (
 export const getBarChartConfig = (
   data: ChartData[],
   series: ChartSeries[],
-  overrideConfig?: Partial<ECOption>
+  granularity: string
 ): ECOption => {
+  const axisLabelFormat = granularityTabs.find((tab) => tab.value === granularity)?.format || 'MMM yyyy';
+
   const xAxis = {
     ...defaultBarOption.xAxis,
-    data: convertDateData(data) ?? []
+    data: convertDateData(data) ?? [],
+    axisLabel: {
+      ...defaultBarOption.xAxis.axisLabel,
+      formatter: axisLabelFormatter(axisLabelFormat)
+    }
   };
+  const tooltip = merge({}, defaultBarOption.tooltip, {
+    formatter: tooltipFormatterWithData(data, granularity)
+  });
   const styledSeries = applySeriesStyle(series, buildSeries(series, data));
 
-  return merge(
-    {},
-    {
-      ...defaultBarOption,
-      xAxis,
-      series: styledSeries
-    },
-    overrideConfig
-  );
+  return merge({}, defaultBarOption, {
+    xAxis,
+    series: styledSeries,
+    tooltip
+  });
 };
 
 /**
@@ -123,6 +134,7 @@ export const getBarChartConfig = (
 export const getBarChartConfigStacked = (
   data: ChartData[],
   series: ChartSeries[],
+  granularity: string,
   overrideConfig?: Partial<ECOption>
   // reuse the same function as the custom config but with the stack option
 ): ECOption => getBarChartConfigCustom(
@@ -136,6 +148,7 @@ export const getBarChartConfigStacked = (
         borderColor: '#fff'
       }
     },
+    granularity,
     overrideConfig
   );
 
@@ -151,9 +164,23 @@ export const getBarChartConfigCustom = (
   data: ChartData[],
   series: ChartSeries[],
   customStyle: Partial<SeriesTypes>,
+  granularity: string,
   overrideConfig?: Partial<ECOption>
 ): ECOption => {
-  const xAxis = { ...defaultBarOption.xAxis, data: convertDateData(data) ?? [] };
+  const axisLabelFormat = granularityTabs.find((tab) => tab.value === granularity)?.format || 'MMM yyyy';
+
+  const xAxis = {
+    ...defaultBarOption.xAxis,
+    data: convertDateData(data) ?? [],
+    axisLabel: {
+      ...defaultBarOption.xAxis.axisLabel,
+      formatter: axisLabelFormatter(axisLabelFormat)
+    }
+  };
+  const tooltip = merge({}, defaultBarOption.tooltip, {
+    formatter: tooltipFormatterWithData(data, granularity)
+  });
+
   const styledSeries = applySeriesStyle(series, buildSeries(series, data)).map(
     (seriesItem) => ({
         ...seriesItem,
@@ -166,7 +193,8 @@ export const getBarChartConfigCustom = (
     {
       ...defaultBarOption,
       xAxis,
-      series: styledSeries
+      series: styledSeries,
+      tooltip
     },
     overrideConfig
   );

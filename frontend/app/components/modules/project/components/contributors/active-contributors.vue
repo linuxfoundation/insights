@@ -63,7 +63,6 @@ import type {
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import { getBarChartConfig } from '~/components/uikit/chart/configs/bar.chart';
 import { lfxColors } from '~/config/styles/colors';
-import { axisLabelFormatter } from '~/components/uikit/chart/helpers/formatters';
 import { formatNumber } from '~/components/shared/utils/formatter';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
 import { isEmptyData } from '~/components/shared/utils/helper';
@@ -94,13 +93,11 @@ const chartData = computed<ChartData[]>(
   // convert the data to chart data
   () => convertToChartData(activeContributors.value?.data as RawChartData[], 'startDate', [
     'contributors'
-  ])
+  ], undefined, 'endDate')
 );
 const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
 
 const tabs = computed(() => granularityTabs.filter((tab) => tab.showForKeys.includes(selectedKey.value)));
-const axisLabelFormat = computed(() => granularityTabs.find((tab) => tab.value === activeTab.value)?.format
-  || 'MMM yyyy');
 
 const chartSeries = ref<ChartSeries[]>([
   {
@@ -112,14 +109,8 @@ const chartSeries = ref<ChartSeries[]>([
     color: lfxColors.brand[500]
   }
 ]);
-const configOverride = computed(() => ({
-  xAxis: {
-    axisLabel: {
-      formatter: axisLabelFormatter(axisLabelFormat.value)
-    }
-  }
-}));
-const barChartConfig = computed(() => getBarChartConfig(chartData.value, chartSeries.value, configOverride.value));
+
+const barChartConfig = computed(() => getBarChartConfig(chartData.value, chartSeries.value, activeTab.value));
 
 watch(selectedKey, () => {
   activeTab.value = tabs.value[0]?.value || 'weekly';

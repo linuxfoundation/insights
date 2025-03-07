@@ -127,7 +127,7 @@ const chartData = computed<ChartData[]>(
   () => convertToChartData((issuesResolution.value?.data || []) as RawChartData[], 'dateFrom', [
     'closedIssues',
     'totalIssues'
-  ])
+  ], undefined, 'dateTo')
 );
 const axisLabelFormat = computed(() => lineGranularities[selectedKey.value as keyof typeof lineGranularities].format);
 

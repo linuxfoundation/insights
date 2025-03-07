@@ -82,7 +82,7 @@ const { data, status, error } = useFetch(
 
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
-  () => convertToChartData(data.value as RawChartData[], 'dateFrom', ['percentage'])
+  () => convertToChartData(data.value as RawChartData[], 'dateFrom', ['percentage'], undefined, 'dateTo')
 );
 const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
 
