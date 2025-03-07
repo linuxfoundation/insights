@@ -6,7 +6,7 @@ export const granularityTabs: GranularityTabs[] = [
   {
     label: 'Weekly',
     value: Granularity.Weekly,
-    format: 'MMM d, yyyy',
+    format: 'MMM d',
     showForKeys: [
       dateOptKeys.past90days,
       dateOptKeys.past180days,
@@ -18,7 +18,7 @@ export const granularityTabs: GranularityTabs[] = [
   {
     label: 'Monthly',
     value: Granularity.Monthly,
-    format: 'MMM yyyy',
+    format: 'MMM, yyyy',
     showForKeys: [
       dateOptKeys.past90days,
       dateOptKeys.past180days,
@@ -33,7 +33,7 @@ export const granularityTabs: GranularityTabs[] = [
   {
     label: 'Quarterly',
     value: Granularity.Quarterly,
-    format: 'MMM yyyy',
+    format: 'MMM d',
     showForKeys: [
       dateOptKeys.past180days,
       dateOptKeys.past365days,

@@ -109,7 +109,7 @@ import { isEmptyData } from '~/components/shared/utils/helper';
 import { barGranularities } from '~/components/shared/types/granularity';
 
 const {
- startDate, endDate, selectedRepository, selectedKey
+  startDate, endDate, selectedRepository, selectedKey
 } = storeToRefs(useProjectStore())
 
 const route = useRoute();
@@ -118,7 +118,7 @@ const { data, status, error } = useFetch(
   () => `/api/project/${route.params.slug}/development/pull-requests`,
   {
     params: {
-      granularity: barGranularities[selectedKey.value as keyof typeof barGranularities],
+      granularity: barGranularities[selectedKey.value as keyof typeof barGranularities].granularity,
       project: route.params.slug,
       repository: selectedRepository,
       startDate,
@@ -138,6 +138,7 @@ const chartData = computed<ChartData[]>(
     'closed'
   ])
 );
+const axisLabelFormat = computed(() => barGranularities[selectedKey.value as keyof typeof barGranularities].format);
 
 const openSummary = computed<Summary | undefined>(() => pullRequests.value?.openSummary);
 const mergedSummary = computed<Summary | undefined>(() => pullRequests.value?.mergedSummary);
@@ -172,7 +173,7 @@ const chartSeries = ref<ChartSeries[]>([
 const configOverride = computed(() => ({
   xAxis: {
     axisLabel: {
-      formatter: axisLabelFormatter('MMM dd')
+      formatter: axisLabelFormatter(axisLabelFormat.value)
     }
   },
   grid: {

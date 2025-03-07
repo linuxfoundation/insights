@@ -69,7 +69,7 @@ import { useProjectStore } from "~/components/modules/project/store/project.stor
 import { isEmptyData } from '~/components/shared/utils/helper';
 
 const {
- startDate, endDate, selectedRepository, selectedKey
+  startDate, endDate, selectedRepository, selectedKey
 } = storeToRefs(useProjectStore());
 
 const activeTab = ref(granularityTabs[0]?.value || 'weekly');
@@ -99,6 +99,7 @@ const chartData = computed<ChartData[]>(
 const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
 
 const tabs = computed(() => granularityTabs.filter((tab) => tab.showForKeys.includes(selectedKey.value)));
+const axisLabelFormat = computed(() => granularityTabs.find((tab) => tab.value === activeTab.value)?.format || 'MMM yyyy');
 
 const chartSeries = ref<ChartSeries[]>([
   {
@@ -113,7 +114,7 @@ const chartSeries = ref<ChartSeries[]>([
 const configOverride = computed(() => ({
   xAxis: {
     axisLabel: {
-      formatter: axisLabelFormatter(activeTab.value === 'weekly' ? 'MMM d' : 'MMM yyyy')
+      formatter: axisLabelFormatter(axisLabelFormat.value)
     }
   }
 }));

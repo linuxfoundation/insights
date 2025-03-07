@@ -69,7 +69,7 @@ import { isEmptyData } from '~/components/shared/utils/helper';
 import { barGranularities } from '~/components/shared/types/granularity';
 
 const {
- startDate, endDate, selectedRepository, selectedKey
+  startDate, endDate, selectedRepository, selectedKey
 } = storeToRefs(useProjectStore())
 
 const route = useRoute();
@@ -78,7 +78,7 @@ const { data, status, error } = useFetch(
   `/api/project/${route.params.slug}/development/wait-time-1st-review`,
   {
     params: {
-      granularity: barGranularities[selectedKey.value as keyof typeof barGranularities],
+      granularity: barGranularities[selectedKey.value as keyof typeof barGranularities].granularity,
       repository: selectedRepository,
       startDate,
       endDate,
@@ -95,6 +95,7 @@ const chartData = computed<ChartData[]>(
     'waitTime'
   ])
 );
+const axisLabelFormat = computed(() => barGranularities[selectedKey.value as keyof typeof barGranularities].format);
 
 const chartSeries = ref<ChartSeries[]>([
   {
@@ -109,7 +110,7 @@ const chartSeries = ref<ChartSeries[]>([
 const configOverride = computed(() => ({
   xAxis: {
     axisLabel: {
-      formatter: axisLabelFormatter('MMM dd')
+      formatter: axisLabelFormatter(axisLabelFormat.value)
     }
   },
   yAxis: {

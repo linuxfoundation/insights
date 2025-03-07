@@ -103,7 +103,7 @@ import { isEmptyData } from '~/components/shared/utils/helper';
 import { lineGranularities } from '~/components/shared/types/granularity';
 
 const {
- startDate, endDate, selectedRepository, selectedKey
+  startDate, endDate, selectedRepository, selectedKey
 } = storeToRefs(useProjectStore())
 
 const route = useRoute();
@@ -111,7 +111,7 @@ const { data, status, error } = useFetch(
   `/api/project/${route.params.slug}/development/issues-resolution`,
   {
     params: {
-      granularity: lineGranularities[selectedKey.value as keyof typeof lineGranularities],
+      granularity: lineGranularities[selectedKey.value as keyof typeof lineGranularities].granularity,
       repository: selectedRepository,
       startDate,
       endDate,
@@ -129,6 +129,7 @@ const chartData = computed<ChartData[]>(
     'totalIssues'
   ])
 );
+const axisLabelFormat = computed(() => lineGranularities[selectedKey.value as keyof typeof lineGranularities].format);
 
 const chartSeries = ref<ChartSeries[]>([
   {
@@ -154,7 +155,7 @@ const chartSeries = ref<ChartSeries[]>([
 const configOverride = computed(() => ({
   xAxis: {
     axisLabel: {
-      formatter: axisLabelFormatter('MMM dd')
+      formatter: axisLabelFormatter(axisLabelFormat.value)
     }
   },
   grid: {

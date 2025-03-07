@@ -89,8 +89,8 @@ const { data, status, error } = useFetch(
   {
     params: {
       granularity: activeTab.value === 'cumulative'
-        ? lineGranularities[selectedKey.value as keyof typeof lineGranularities]
-        : barGranularities[selectedKey.value as keyof typeof barGranularities],
+        ? lineGranularities[selectedKey.value as keyof typeof lineGranularities].granularity
+        : barGranularities[selectedKey.value as keyof typeof barGranularities].granularity,
       type: activeTab.value,
       repository: selectedRepository,
       startDate,
@@ -109,6 +109,9 @@ const chartData = computed<ChartData[]>(
   ])
 );
 const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
+const axisLabelFormat = computed(() => (activeTab.value === 'cumulative'
+  ? lineGranularities[selectedKey.value as keyof typeof lineGranularities].format
+  : barGranularities[selectedKey.value as keyof typeof barGranularities].format));
 
 const tabs = [
   { label: 'Cumulative', value: 'cumulative' },
@@ -128,7 +131,7 @@ const chartSeries = computed<ChartSeries[]>(() => [
 const configOverride = computed(() => ({
   xAxis: {
     axisLabel: {
-      formatter: axisLabelFormatter('MMM dd')
+      formatter: axisLabelFormatter(axisLabelFormat.value)
     }
   }
 }));
