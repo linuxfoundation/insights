@@ -99,7 +99,8 @@ const chartData = computed<ChartData[]>(
 const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
 
 const tabs = computed(() => granularityTabs.filter((tab) => tab.showForKeys.includes(selectedKey.value)));
-const axisLabelFormat = computed(() => granularityTabs.find((tab) => tab.value === activeTab.value)?.format || 'MMM yyyy');
+const axisLabelFormat = computed(() => granularityTabs.find((tab) => tab.value === activeTab.value)?.format
+  || 'MMM yyyy');
 
 const chartSeries = ref<ChartSeries[]>([
   {
