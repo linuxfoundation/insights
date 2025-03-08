@@ -8,9 +8,9 @@ import {
   mockWeeklyCurrentSummary,
   mockWeeklyPreviousSummary
 } from '../../mocks/tinybird-active-contributors-response.mock';
-import {createActiveContributorsDataSource} from '../data-sources';
-import type {ActiveContributorsResponse} from "../types";
-import { ContributorsFilterGranularity} from "../types";
+import { createDataSource } from '../data-sources';
+import { FilterGranularity} from "../types";
+import type { ActiveContributorsResponse } from "~~/server/data/tinybird/active-contributors-data-source";
 
 describe('ActiveContributorsDataSource', () => {
   test('should fetch contributors data with correct parameters', async () => {
@@ -24,13 +24,13 @@ describe('ActiveContributorsDataSource', () => {
       // cast to anything) and then cast it to $Fetch.
       .mockResolvedValueOnce(mockWeeklyTimeseries) as unknown as $Fetch;
 
-    const dataSource = createActiveContributorsDataSource(mockFetch);
+    const dataSource = createDataSource(mockFetch);
 
     const currentStartDate = DateTime.utc(2022, 0, 1);
     const currentEndDate = DateTime.utc(2023, 0, 1);
 
     const filter = {
-      granularity: ContributorsFilterGranularity.WEEKLY,
+      granularity: FilterGranularity.WEEKLY,
       project: 'gerrit',
       repo: 'https://gerrit.automotivelinux.org/gerrit/q/project:apps/homescreen',
       startDate: currentStartDate,
