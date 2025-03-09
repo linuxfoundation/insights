@@ -46,12 +46,21 @@ export type ContributorsLeaderboardFilter = {
 
 export type OrganizationsLeaderboardFilter = {
   metric: FilterActivityMetric;
-  repository: string;
+  repository?: string;
+  limit?: number;
   startDate?: DateTime;
   endDate?: DateTime;
 }
 
 export type ContributorDependencyFilter = {
+  project: string;
+  repository?: string;
+  metric?: FilterActivityMetric;
+  startDate?: DateTime;
+  endDate?: DateTime;
+}
+
+export type OrganizationDependencyFilter = {
   project: string;
   repository?: string;
   metric?: FilterActivityMetric;
