@@ -5,10 +5,7 @@ import {
   dateOptKeys,
   lfxProjectDateOptions
 } from '~/components/modules/project/config/date-options';
-import type {
-  Project,
-  ProjectRepository
-} from '~/components/modules/project/types/project';
+import type {Project, ProjectRepository} from "~~/types/project";
 import { getRepoNameFromUrl } from '~/components/modules/repository/utils/repository.helpers';
 
 export const useProjectStore = defineStore('project', () => {

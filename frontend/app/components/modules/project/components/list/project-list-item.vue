@@ -29,7 +29,7 @@
             Contributors
           </lfx-tag>
           <p class="text-body-1">
-            {{formatNumber(props.project.contributorsCount)}}
+            {{formatNumber(props.project.contributorCount)}}
           </p>
         </article>
         <article class="flex justify-between items-center">
@@ -44,7 +44,7 @@
             Organizations
           </lfx-tag>
           <p class="text-body-1">
-            {{formatNumber(props.project.organizationsCount)}}
+            {{formatNumber(props.project.organizationCount)}}
           </p>
         </article>
         <!--<article class="flex justify-between items-center">-->
@@ -68,12 +68,12 @@
 </template>
 
 <script lang="ts" setup>
+import type {Project} from "~~/types/project";
 import {formatNumber} from "~/components/shared/utils/formatter";
 import LfxCard from "~/components/uikit/card/card.vue";
 import LfxAvatar from "~/components/uikit/avatar/avatar.vue";
 import LfxTag from "~/components/uikit/tag/tag.vue";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
-import type {Project} from "~/components/modules/project/types/project";
 import {LfxRoutes} from "~/components/shared/types/routes";
 
 const props = defineProps<{

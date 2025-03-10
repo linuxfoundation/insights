@@ -1,22 +1,5 @@
 import {fetchFromTinybird} from "~~/server/data/tinybird/tinybird";
-
-interface ProjectRepository {
-    projectId: string;
-    projectName: string;
-    projectSlug: string;
-    repo: string;
-}
-
-interface ProjectDetailsResponse {
-    id: string;
-    name: string;
-    slug: string;
-    description: string;
-    logo: string;
-    contributorsCount: number;
-    organizationsCount: number;
-    repositories: ProjectRepository[];
-}
+import type {Project} from "~~/types/project";
 
 /**
  * API Endpoint: /api/projects/{slug}
@@ -32,8 +15,8 @@ interface ProjectDetailsResponse {
  * - slug (string): The slug of the project.
  * - description (string): A brief description of the project.
  * - logo (string): URL to the logo of the project.
- * - contributorsCount (number): The count of contributors involved in the project.
- * - organizationsCount (number): The count of organizations associated with the project.
+ * - contributorCount (number): The count of contributors involved in the project.
+ * - organizationCount (number): The count of organizations associated with the project.
  * - repositories (Array<ProjectRepository>): List of associated repositories for the project.
  *
  * Repository Object (ProjectRepository):
@@ -46,10 +29,10 @@ interface ProjectDetailsResponse {
  * - 404: Project not found.
  * - 500: Internal Server Error.
  */
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async (event): Promise<Project | Error> => {
     const {slug} = event.context.params as Record<string, string>;
     try {
-        const res = await fetchFromTinybird<ProjectDetailsResponse[]>('/v0/pipes/projects_list.json', {
+        const res = await fetchFromTinybird<Project[]>('/v0/pipes/projects_list.json', {
             slug,
         });
         if (!res.data || res.data.length === 0) {

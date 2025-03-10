@@ -21,7 +21,7 @@
               />
             </div>
             <p class="leading-6 transition-all text-sm whitespace-nowrap">
-              {{formatNumberShort(props.collection.projectsCount)}} projects
+              {{formatNumberShort(props.collection.projectCount)}} projects
             </p>
           </article>
           <!--          <article class="flex items-center gap-2">-->
@@ -71,7 +71,7 @@
 </template>
 
 <script setup lang="ts">
-import type {Collection} from "~/components/modules/collection/types/Collection";
+import type {Collection} from "~~/types/collection";
 import LfxCard from "~/components/uikit/card/card.vue";
 import LfxChip from "~/components/uikit/chip/chip.vue";
 import LfxAvatar from "~/components/uikit/avatar/avatar.vue";

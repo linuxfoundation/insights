@@ -151,11 +151,11 @@
 
 <script setup lang="ts">
 import {useRoute} from "nuxt/app";
+import type {SearchCollection, SearchProject, SearchRepository} from "~~/types/search";
 import LfxTabs from "~/components/uikit/tabs/tabs.vue";
 import LfxAvatar from "~/components/uikit/avatar/avatar.vue";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
 import {LfxRoutes} from "~/components/shared/types/routes";
-import type {SearchCollection, SearchProject, SearchRepository} from "~/components/shared/types/search";
 import {getRepoNameFromUrl} from "~/components/modules/repository/utils/repository.helpers";
 
 const props = defineProps<{
