@@ -1,7 +1,11 @@
-const title = 'LFX Insights | Enhance data-driven collaboration management';
-const description = 'Unlock key insights with LFX Insights – a powerful tool for open-source projects, '
-    + 'providing contributor analytics, popularity trends, development activity, and security insights to '
-    + 'enhance collaboration and decision-making.';
+const title = 'LFX Insights – Data-Driven Collaboration for Open Source Projects';
+const description = 'LFX Insights helps open-source teams track contributor activity, analyze trends, and '
+    + 'enhance collaboration. Get real-time insights into your project\'s development, security, and popularity.';
+const keywords = 'LFX Insights, open source analytics, contributor tracking, software security, '
+    + 'project collaboration, developer insights, Linux Foundation'
+
+const shortDescription = 'Track contributor activity, analyze trends, and boost collaboration with real-time '
+    + 'insights for open-source projects.'
 
 export default {
     title,
@@ -16,7 +20,7 @@ export default {
             name: 'description',
             content: description
         },
-        { hid: 'keywords', name: 'keywords', content: 'lfx, insights, opensource' },
+        { hid: 'keywords', name: 'keywords', content: keywords },
         { hid: 'author', name: 'author', content: 'The Linux Foundation' },
         { hid: 'theme-color', name: 'theme-color', content: '#ffffff' }, // Browser theme color
         {
@@ -27,7 +31,7 @@ export default {
         {
             hid: 'og:description',
             property: 'og:description',
-            content: description
+            content: shortDescription
         },
         { hid: 'og:type', property: 'og:type', content: 'website' },
         { hid: 'og:image', property: 'og:image', content: 'https://cdn.platform.linuxfoundation.org/assets/lf-favicon.png' },
@@ -41,7 +45,7 @@ export default {
         {
             hid: 'twitter:description',
             name: 'twitter:description',
-            content: description
+            content: shortDescription
         },
         { hid: 'twitter:image', name: 'twitter:image', content: 'https://cdn.platform.linuxfoundation.org/assets/lf-favicon.png' }
     ],
