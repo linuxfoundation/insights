@@ -91,12 +91,12 @@
 <script setup lang="ts">
 import {useFetch} from "nuxt/app";
 import {watch} from "vue";
+import type {Pagination} from "~~/types/shared/pagination";
+import type {Collection} from "~~/types/collection";
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxTag from '~/components/uikit/tag/tag.vue';
 import LfxDropdown from '~/components/uikit/dropdown/dropdown.vue';
 import LfxCollectionListItem from '~/components/modules/collection/components/list/collection-list-item.vue';
-import type {Pagination} from "~/components/shared/types/pagination";
-import type {Collection} from "~/components/modules/collection/types/Collection";
 import {ToastTypesEnum} from "~/components/uikit/toast/types/toast.types";
 import useToastService from "~/components/uikit/toast/toast.service";
 import useResponsive from "~/components/shared/utils/responsive";
@@ -111,7 +111,7 @@ const {scrollTop} = useScroll();
 
 const page = ref(0);
 const pageSize = ref(10);
-const sort = ref('name_ASC');
+const sort = ref('name_asc');
 
 // const stack = ref('');
 // const industry = ref('');
@@ -167,15 +167,15 @@ watch(error, (err) => {
 const sortOptions = [
   {
     label: 'Alphabetically',
-    value: 'name_ASC'
+    value: 'name_asc'
   },
   {
     label: 'Most projects',
-    value: 'projectCount_DESC'
+    value: 'projectCount_desc'
   },
   // {
   //   label: 'Most valuable',
-  //   value: 'softwareValueCount_DESC'
+  //   value: 'softwareValueCount_desc'
   // },
 ];
 

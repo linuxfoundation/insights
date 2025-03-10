@@ -54,12 +54,12 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from "vue";
 import { debounce } from "lodash";
+import type {
+  SearchCollection, SearchProject, SearchRepository, SearchResults
+} from "~~/types/search";
 import LfxModal from "~/components/uikit/modal/modal.vue";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
 import LfxSearchResult from "~/components/shared/layout/search/search-result.vue";
-import type {
-  SearchCollection, SearchProject, SearchRepository, SearchResults
-} from "~/components/shared/types/search";
 import LfxSpinner from "~/components/uikit/spinner/spinner.vue";
 
 const props = defineProps<{ modelValue: boolean }>();

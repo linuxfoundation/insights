@@ -75,7 +75,7 @@
                 class="leading-6 transition-all"
                 :class="scrollTop > 50 ? 'text-xs md:text-sm' : 'text-xs md:text-base'"
               >
-                {{formatNumberShort(props.collection.projectsCount)}} projects
+                {{formatNumberShort(props.collection.projectCount)}} projects
               </p>
             </article>
             <!--<article class="flex items-center gap-2 h-min">-->
@@ -108,9 +108,9 @@
 </template>
 
 <script lang="ts" setup>
+import type {Collection} from "~~/types/collection";
 import LfxIconButton from "~/components/uikit/icon-button/icon-button.vue";
 import LfxBack from "~/components/uikit/back/back.vue";
-import type {Collection} from "~/components/modules/collection/types/Collection";
 import {formatNumberShort} from "~/components/shared/utils/formatter";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
 import useScroll from "~/components/shared/utils/scroll";

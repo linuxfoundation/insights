@@ -6,7 +6,7 @@ export interface SearchCollection {
 export interface SearchProject {
     name: string;
     slug: string;
-    logo: string;
+    logo: string | null;
 }
 
 export interface SearchRepository {

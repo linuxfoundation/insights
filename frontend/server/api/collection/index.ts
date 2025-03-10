@@ -1,18 +1,6 @@
 import {fetchFromTinybird} from "~~/server/data/tinybird/tinybird";
-
-interface CollectionResponse {
-    id: string;
-    name: string;
-    slug: string;
-    description: string;
-    isLf: number;
-    projectsCount: number;
-    featuredProjects: {
-        name: string;
-        slug: string;
-        logo: string;
-    }[];
-}
+import type {Pagination} from "~~/types/shared/pagination";
+import type {Collection} from "~~/types/collection";
 
 /**
  * API Endpoint: /api/collection
@@ -29,14 +17,15 @@ interface CollectionResponse {
  * - page (number): The current page number.
  * - pageSize (number): The number of items returned per page.
  * - total (number): The total number of items (if count is true).
- * - data (Array<CollectionResponse>): The list of collections.
+ * - data (Array<Collection>): The list of collections.
  *
  * Errors:
  * - 500: Internal Server Error
  */
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async (event): Promise<Pagination<Collection> | Error> => {
     const query = getQuery(event);
-    const sort: string = (query?.sort as string) || 'name_ASC';
+    const sort: string = (query?.sort as string) || 'name_asc';
+    const [orderByField, orderByDirection] = sort.split('_');
 
     // Pagination parameters
     const page: number = +(query?.page ?? 0);
@@ -44,19 +33,22 @@ export default defineEventHandler(async (event) => {
     const count: boolean = !!query?.count;
 
     try {
-        const res = await fetchFromTinybird<CollectionResponse[]>('/v0/pipes/collections_list.json', {
+        const res = await fetchFromTinybird<Collection[]>('/v0/pipes/collections_list.json', {
             count,
             page,
             pageSize,
-            sort,
+            orderByField,
+            orderByDirection,
         });
 
-        return {
+        const data: Pagination<Collection> = {
             page,
             pageSize,
             total: res.rows,
             data: res.data,
-        };
+        }
+
+        return data
     } catch (error) {
         console.error('Error collection list:', error);
         throw createError({statusCode: 500, statusMessage: 'Internal Server Error'});

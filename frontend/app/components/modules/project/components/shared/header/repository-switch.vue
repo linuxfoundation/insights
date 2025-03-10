@@ -73,9 +73,9 @@ import {
 computed, onMounted, ref, watch
 } from "vue";
 import {storeToRefs} from "pinia";
+import type {ProjectRepository} from "~~/types/project";
 import LfxModal from "~/components/uikit/modal/modal.vue";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
-import type {ProjectRepository} from "~/components/modules/project/types/project";
 import LfxProjectRepositorySwitchItem
   from "~/components/modules/project/components/shared/header/repository-switch-item.vue";
 import {LfxRoutes} from "~/components/shared/types/routes";

@@ -51,12 +51,13 @@
 </template>
 
 <script setup lang="ts">
-import type {Collection} from "~/components/modules/collection/types/Collection";
+import {useRoute} from 'vue-router';
+import type {Collection} from "~~/types/collection";
+import type {Project} from "~~/types/project";
+import type {Pagination} from "~~/types/shared/pagination";
 import LfxCollectionHeader from "~/components/modules/collection/components/details/header.vue";
 import LfxCollectionFilters from "~/components/modules/collection/components/details/filters.vue";
 import LfxProjectListItem from "~/components/modules/project/components/list/project-list-item.vue";
-import type {Project} from "~/components/modules/project/types/project";
-import type {Pagination} from "~/components/shared/types/pagination";
 import LfxProjectListItemLoading from "~/components/modules/project/components/list/project-list-item-loading.vue";
 import useScroll from "~/components/shared/utils/scroll";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
@@ -66,18 +67,21 @@ const props = defineProps<{
   collection: Collection
 }>()
 
+const route = useRoute();
+const collectionSlug = route.params.slug as string;
+
 const {scrollTopPercentage} = useScroll();
 
-const sort = ref('name_ASC');
+const sort = ref('name_asc');
 const tab = ref('all');
 
-const page = ref(1);
+const page = ref(0);
 const pageSize = ref(50);
 
 const projects = ref([]);
 
 watch([sort, tab], () => {
-  page.value = 1;
+  page.value = 0;
 });
 
 const { data, status } = await useFetch<Pagination<Project>>(
@@ -88,10 +92,11 @@ const { data, status } = await useFetch<Pagination<Project>>(
         page,
         pageSize,
         isLf: tab.value === 'lfx',
+        collectionSlug
       },
       watch: [sort, tab, page],
       transform: (res: Pagination<Project>) => {
-        if (res.page === 1) {
+        if (res.page === 0) {
           projects.value = res.data;
         } else {
           projects.value = [...projects.value, ...res.data];

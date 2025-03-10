@@ -11,7 +11,7 @@ export interface Project{
     slug: string;
     description: string;
     logo: string;
-    contributorsCount: number;
-    organizationsCount: number;
+    contributorCount: number;
+    organizationCount: number;
     repositories: ProjectRepository[];
 }

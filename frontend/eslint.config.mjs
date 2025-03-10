@@ -1,6 +1,6 @@
 import path from 'path';
-import { fileURLToPath } from 'url';
-import { FlatCompat } from '@eslint/eslintrc';
+import {fileURLToPath} from 'url';
+import {FlatCompat} from '@eslint/eslintrc';
 import withNuxt from './.nuxt/eslint.config.mjs';
 
 const filename = fileURLToPath(import.meta.url);
@@ -11,9 +11,9 @@ const compat = new FlatCompat({
 });
 const getRules = (extendedRules, excludeKeys = null) => {
   const rules = extendedRules
-    .filter((rule) => rule.rules)
-    .map((rule) => rule.rules)
-    .reduce((r, c) => Object.assign(r, c), {});
+      .filter((rule) => rule.rules)
+      .map((rule) => rule.rules)
+      .reduce((r, c) => Object.assign(r, c), {});
 
   if (excludeKeys) {
     // remove all the properties from the rules object that matches the excludeKeys string
@@ -37,12 +37,18 @@ export default withNuxt({
         extensions: ['.js', '.jsx', '.ts', '.tsx'],
         map: [
           ['@', './app'],
-          ['~', './app']
+          ['~', './app'],
+          ['~~', '.']
         ]
       },
-      typescript: {}
+      typescript: {
+        paths: {
+          '~/*': ['./app/*'],
+          '@/*': ['./app/*'],
+          '~~/*': ['./*']
+        }
+      }
     }
-    // extends: [...compat.extends('airbnb-base'), ...compat.extends('airbnb-typescript/base')],
   },
   ignores: ['*.config.*js', '.tailwind/*'],
   rules: {
