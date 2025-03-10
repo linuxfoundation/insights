@@ -76,7 +76,7 @@ export async function fetchActiveContributors(filter: ActiveContributorsFilter) 
   let processedData: ActiveContributorsResponseData = [];
   if (data !== undefined) {
     processedData = (data as TinybirdResponse<TinybirdActiveContributorsData>)?.data.map(
-      (item): ActiveContributorsResponseData[0] => ({
+      (item): ActiveContributorsDataPoint => ({
         startDate: item.startDate,
         endDate: item.endDate,
         contributors: item.contributorCount

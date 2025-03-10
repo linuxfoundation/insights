@@ -40,7 +40,6 @@ export default defineEventHandler(async (event) => {
     total: 100
   };
 
-  // Create filter from query params
   const filter: ContributorsLeaderboardFilter = {
     metric: (query.metric as ContributorsLeaderboardFilterMetric) || ContributorsLeaderboardFilterMetric.ALL,
     repository: query.repository as string,
