@@ -102,7 +102,7 @@ const { data, status, error } = useFetch(
   `/api/project/${route.params.slug}/contributors/geographical-distribution`,
   {
     params: {
-      type: activeTab.value,
+      type: activeTab,
       repository: selectedRepository,
       startDate,
       endDate,
