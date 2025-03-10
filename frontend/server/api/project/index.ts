@@ -19,9 +19,9 @@ import type {Project} from "~~/types/project";
  * - page (number): The current page number in the response.
  * - pageSize (number): The number of projects returned in the response.
  * - total (number): The total number of projects available (if `count` is true).
- * - data (Array<ProjectResponse>): The list of projects in the current page.
+ * - data (Array<Project>): The list of projects in the current page.
  *
- * Project Response Object (ProjectResponse):
+ * Project Response Object (Project):
  * - id (string): The unique identifier of the project.
  * - name (string): The name of the project.
  * - slug (string): The slug of the project.
