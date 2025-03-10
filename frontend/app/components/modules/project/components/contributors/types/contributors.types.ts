@@ -3,8 +3,8 @@ import type { Summary } from '~/components/shared/types/summary.types';
 export interface ActiveContributors {
   summary: Summary;
   data: {
-    dateFrom: string;
-    dateTo: string;
+    startDate: string;
+    endDate: string;
     contributors: number;
   }[];
 }
@@ -12,8 +12,8 @@ export interface ActiveContributors {
 export interface ActiveOrganizations {
   summary: Summary;
   data: {
-    dateFrom: string;
-    dateTo: string;
+    startDate: string;
+    endDate: string;
     organizations: number;
   }[];
 }
@@ -65,4 +65,11 @@ export interface OrganizationDependency {
   topOrganizations: Dependency;
   otherOrganizations: Dependency;
   list: Organization[];
+}
+
+export interface GranularityTabs {
+  label: string;
+  value: string;
+  format: string;
+  showForKeys: string[];
 }

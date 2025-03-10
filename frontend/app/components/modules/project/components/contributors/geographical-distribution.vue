@@ -131,7 +131,7 @@ const tabs = [
 
 const label = computed(() => (activeTab.value === 'contributors' ? 'Contributors' : 'Organizations'));
 
-const chartSeries = ref<ChartSeries[]>([
+const chartSeries = computed<ChartSeries[]>(() => [
   {
     name: `${label.value} by country`,
     type: 'map',

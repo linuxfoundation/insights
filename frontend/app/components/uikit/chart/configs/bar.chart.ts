@@ -1,11 +1,17 @@
 import type { BarSeriesOption } from 'echarts/types/dist/shared';
 import { merge } from 'lodash';
 import { buildSeries, convertDateData } from '../helpers/chart-helpers';
+import {
+  axisLabelFormatter,
+  tooltipFormatter,
+  tooltipFormatterWithData,
+  tooltipLabelFormatter
+} from '../helpers/formatters';
 
-import { tooltipFormatter, tooltipLabelFormatter } from '../helpers/formatters';
 import type { ChartData, ChartSeries, SeriesTypes } from '../types/ChartTypes';
 import defaultOption from './defaults.chart';
 import { lfxColors } from '~/config/styles/colors';
+import { formatByGranularity } from '~/components/shared/types/granularity';
 
 const defaultBarOption: ECOption = {
   ...defaultOption,
@@ -15,12 +21,15 @@ const defaultBarOption: ECOption = {
     right: 0
   },
   xAxis: {
-    ...defaultOption.xAxis
+    ...defaultOption.xAxis,
+    axisLabel: {
+      ...defaultOption.xAxis.axisLabel
+    }
   },
   tooltip: {
     trigger: 'axis',
     axisPointer: {
-      type: 'cross',
+      type: 'shadow',
       label: {
         formatter: tooltipLabelFormatter
       }
@@ -47,10 +56,12 @@ const defaultBarOption: ECOption = {
 
 const defaultSeriesStyle: BarSeriesOption = {
   color: lfxColors.brand[500],
-  barWidth: 15,
+  // barWidth: '60%',
+  barMaxWidth: 32,
   barGap: '30%',
+  barCategoryGap: '60%',
   itemStyle: {
-    borderRadius: [4, 4, 4, 4],
+    borderRadius: [2, 2, 2, 2],
     borderWidth: 1
     // borderColor: '#fff'
   }
@@ -90,23 +101,28 @@ const applySeriesStyle = (
 export const getBarChartConfig = (
   data: ChartData[],
   series: ChartSeries[],
-  overrideConfig?: Partial<ECOption>
+  granularity: string
 ): ECOption => {
+  const axisLabelFormat = formatByGranularity[granularity as keyof typeof formatByGranularity] || 'MMM yyyy';
+
   const xAxis = {
     ...defaultBarOption.xAxis,
-    data: convertDateData(data) ?? []
+    data: convertDateData(data) ?? [],
+    axisLabel: {
+      ...defaultBarOption.xAxis.axisLabel,
+      formatter: axisLabelFormatter(axisLabelFormat)
+    }
   };
+  const tooltip = merge({}, defaultBarOption.tooltip, {
+    formatter: tooltipFormatterWithData(data, granularity)
+  });
   const styledSeries = applySeriesStyle(series, buildSeries(series, data));
 
-  return merge(
-    {},
-    {
-      ...defaultBarOption,
-      xAxis,
-      series: styledSeries
-    },
-    overrideConfig
-  );
+  return merge({}, defaultBarOption, {
+    xAxis,
+    series: styledSeries,
+    tooltip
+  });
 };
 
 /**
@@ -118,6 +134,7 @@ export const getBarChartConfig = (
 export const getBarChartConfigStacked = (
   data: ChartData[],
   series: ChartSeries[],
+  granularity: string,
   overrideConfig?: Partial<ECOption>
   // reuse the same function as the custom config but with the stack option
 ): ECOption => getBarChartConfigCustom(
@@ -126,11 +143,12 @@ export const getBarChartConfigStacked = (
     {
       stack: 'stack',
       itemStyle: {
-        borderRadius: [4, 4, 4, 4],
+        borderRadius: [2, 2, 2, 2],
         borderWidth: 1,
         borderColor: '#fff'
       }
     },
+    granularity,
     overrideConfig
   );
 
@@ -146,9 +164,23 @@ export const getBarChartConfigCustom = (
   data: ChartData[],
   series: ChartSeries[],
   customStyle: Partial<SeriesTypes>,
+  granularity: string,
   overrideConfig?: Partial<ECOption>
 ): ECOption => {
-  const xAxis = { ...defaultBarOption.xAxis, data: convertDateData(data) ?? [] };
+  const axisLabelFormat = formatByGranularity[granularity as keyof typeof formatByGranularity] || 'MMM yyyy';
+
+  const xAxis = {
+    ...defaultBarOption.xAxis,
+    data: convertDateData(data) ?? [],
+    axisLabel: {
+      ...defaultBarOption.xAxis.axisLabel,
+      formatter: axisLabelFormatter(axisLabelFormat)
+    }
+  };
+  const tooltip = merge({}, defaultBarOption.tooltip, {
+    formatter: tooltipFormatterWithData(data, granularity)
+  });
+
   const styledSeries = applySeriesStyle(series, buildSeries(series, data)).map(
     (seriesItem) => ({
         ...seriesItem,
@@ -161,7 +193,8 @@ export const getBarChartConfigCustom = (
     {
       ...defaultBarOption,
       xAxis,
-      series: styledSeries
+      series: styledSeries,
+      tooltip
     },
     overrideConfig
   );

@@ -20,6 +20,7 @@ export interface ChartData {
   key: string;
   yAxisKey?: string;
   values: number[];
+  xAxisKey2?: string;
 }
 
 export interface GaugeData {

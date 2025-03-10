@@ -10,10 +10,10 @@
         name="calendar"
         :size="16"
       />
-      <span v-if="selected !== 'custom'">{{selectedOption?.label}}</span>
+      <span v-if="selected !== 'custom'">{{ selectedOption?.label }}</span>
       <span v-else-if="startDate && endDate">
-        {{DateTime.fromFormat(startDate, 'yyyy-MM-dd').toFormat('MMM d, yyyy')}}
-        -> {{DateTime.fromFormat(endDate, 'yyyy-MM-dd').toFormat('MMM d, yyyy')}}
+        {{ DateTime.fromFormat(startDate, 'yyyy-MM-dd').toFormat('MMM d, yyyy') }}
+        -> {{ DateTime.fromFormat(endDate, 'yyyy-MM-dd').toFormat('MMM d, yyyy') }}
       </span>
       <lfx-icon
         name="angle-down"
@@ -43,14 +43,14 @@
               class="text-sm leading-5  pl-3"
               :class="selected === option.key ? 'font-medium' : 'font-normal'"
             >
-              {{option.label}}
+              {{ option.label }}
             </p>
           </div>
           <p
             v-if="option.description"
             class="text-xs leading-5 text-neutral-400"
           >
-            {{option.description}}
+            {{ option.description }}
           </p>
         </article>
         <div class="h-px bg-neutral-100 w-full" />
@@ -71,14 +71,14 @@
               class="text-sm leading-5  pl-3"
               :class="selected === option.key ? 'font-medium' : 'font-normal'"
             >
-              {{option.label}}
+              {{ option.label }}
             </p>
           </div>
           <p
             v-if="option.description"
             class="text-xs leading-5 text-neutral-400"
           >
-            {{option.description}}
+            {{ option.description }}
           </p>
         </article>
         <div class="h-px bg-neutral-100 w-full" />
@@ -99,7 +99,7 @@
             class="text-sm leading-5  pl-3"
             :class="selected === option.key ? 'font-medium' : 'font-normal'"
           >
-            {{option.label}}
+            {{ option.label }}
           </p>
         </article>
 
@@ -131,27 +131,28 @@
 </template>
 
 <script setup lang="ts">
-import {computed, ref} from "vue";
-import {storeToRefs} from "pinia";
-import {DateTime} from 'luxon';
+import { computed, ref } from "vue";
+import { storeToRefs } from "pinia";
+import { DateTime } from 'luxon';
 import LfxPopover from "~/components/uikit/popover/popover.vue";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
 import {
   type DateOptionConfig, lfxProjectDateOptions, lfxProjectDateOptionsGeneral,
   lfxProjectDateOptionsPast,
-  lfxProjectDateOptionsPrevious
+  lfxProjectDateOptionsPrevious,
+  dateOptKeys
 } from "~/components/modules/project/config/date-options";
-import {useProjectStore} from "~/components/modules/project/store/project.store";
+import { useProjectStore } from "~/components/modules/project/store/project.store";
 import LfxProjectCustomDateRangePicker
   from "~/components/modules/project/components/shared/header/custom-date-range-picker.vue";
 
-const {startDate, endDate} = storeToRefs(useProjectStore())
+const { selectedKey, startDate, endDate } = storeToRefs(useProjectStore())
 
 const options = ref();
 const isOpen = ref(false);
 const isCustomSelectorOpen = ref(false);
 
-const selected = ref(lfxProjectDateOptions[0]?.key || 'past90days');
+const selected = ref(lfxProjectDateOptions[0]?.key || dateOptKeys.past90days);
 
 const selectedOption = computed(() => lfxProjectDateOptions.find((option) => option.key === selected.value));
 
@@ -161,6 +162,7 @@ const toggle = (event: MouseEvent) => {
 
 const changeSelected = (option: DateOptionConfig) => {
   selected.value = option.key;
+  selectedKey.value = option.key;
   startDate.value = option.startDate;
   endDate.value = option.endDate;
   options.value.hide();

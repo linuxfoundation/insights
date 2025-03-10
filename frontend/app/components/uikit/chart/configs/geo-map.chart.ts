@@ -23,7 +23,8 @@ const defaultGeoOption: ECOption = {
   tooltip: {
     trigger: 'item',
     showDelay: 0,
-    transitionDuration: 0.2
+    transitionDuration: 0.2,
+    borderColor: lfxColors.neutral[100]
   }
 };
 
@@ -52,7 +53,10 @@ const defaultSeriesStyle: MapSeriesOption = {
  * @param data - Data
  * @returns Series
  */
-const buildSeries = (series: ChartSeries[], data: ChartData[]): SeriesTypes[] | undefined => (series.length > 0
+const buildSeries = (
+  series: ChartSeries[],
+  data: ChartData[]
+): SeriesTypes[] | undefined => (series.length > 0
     ? series.map(
         (series: ChartSeries) => ({
             name: series.name,

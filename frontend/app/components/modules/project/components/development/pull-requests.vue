@@ -101,20 +101,24 @@ import type {
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import { getBarChartConfigStacked } from '~/components/uikit/chart/configs/bar.chart';
 import { lfxColors } from '~/config/styles/colors';
-import { axisLabelFormatter } from '~/components/uikit/chart/helpers/formatters';
 import { formatNumber } from '~/components/shared/utils/formatter';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
 import { isEmptyData } from '~/components/shared/utils/helper';
+import { barGranularities } from '~/components/shared/types/granularity';
 
-const { startDate, endDate, selectedRepository } = storeToRefs(useProjectStore())
+const {
+  startDate, endDate, selectedRepository, selectedKey
+} = storeToRefs(useProjectStore())
 
 const route = useRoute();
 
+const granularity = computed(() => barGranularities[selectedKey.value as keyof typeof barGranularities].granularity);
 const { data, status, error } = useFetch(
   () => `/api/project/${route.params.slug}/development/pull-requests`,
   {
     params: {
+      granularity,
       project: route.params.slug,
       repository: selectedRepository,
       startDate,
@@ -128,11 +132,11 @@ const pullRequests = computed<PullRequests>(() => data.value as PullRequests);
 const summary = computed<Summary>(() => pullRequests.value.summary);
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
-  () => convertToChartData(pullRequests.value.data as RawChartData[], 'dateFrom', [
+  () => convertToChartData((pullRequests.value?.data || []) as RawChartData[], 'dateFrom', [
     'open',
     'merged',
     'closed'
-  ])
+  ], undefined, 'dateTo')
 );
 
 const openSummary = computed<Summary | undefined>(() => pullRequests.value?.openSummary);
@@ -162,24 +166,14 @@ const chartSeries = ref<ChartSeries[]>([
     yAxisIndex: 0,
     dataIndex: 2,
     position: 'left',
-    color: lfxColors.neutral[200]
+    color: lfxColors.negative[500]
   }
 ]);
-const configOverride = computed(() => ({
-  xAxis: {
-    axisLabel: {
-      formatter: axisLabelFormatter('MMM dd')
-    }
-  },
-  grid: {
-    top: '8%',
-    bottom: '8%'
-  }
-}));
+
 const barChartConfig = computed(() => getBarChartConfigStacked(
   chartData.value,
   chartSeries.value,
-  configOverride.value
+  granularity.value,
 ));
 
 const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));

@@ -10,26 +10,24 @@
  *     periodTo: string; // period to
  *   },
  *   data: {
- *     dateFrom: string; // ISO 8601 date string - start of the bucket. Based on the interval
- *     dateTo: string; // ISO 8601 date string - end of the bucket. Based on the interval
+ *     startDate: string; // ISO 8601 date string - start of the bucket. Based on the interval
+ *     endDate: string; // ISO 8601 date string - end of the bucket. Based on the interval
  *     contributors: number; // count of active contributors
  *   }[];
  * }
  */
 /**
  * Query params:
- * - granularity: 'weekly' | 'monthly' | 'quarterly'
+ * - granularity: 'weekly' | 'monthly' | 'quarterly' | 'yearly'
  * - project: string
  * - repository: string
  * - time-period: string // This isn't defined yet, but we'll add '90d', '1y', '5y' for now
  */
-import { DateTime } from "luxon";
+import { DateTime } from 'luxon';
 
-import {
-  createActiveContributorsDataSource
-} from '~~/server/data/active-contributors-data-source';
-import type {ActiveContributorsFilter} from '~~/server/data/types';
-import {ContributorsFilterGranularity} from '~~/server/data/types';
+import { createActiveContributorsDataSource } from '~~/server/data/active-contributors-data-source';
+import type { ActiveContributorsFilter } from '~~/server/data/types';
+import { ContributorsFilterGranularity } from '~~/server/data/types';
 
 export default defineEventHandler(async (event) => {
   // TODO: Check the project configuration to determine whether to show the data.
@@ -39,7 +37,9 @@ export default defineEventHandler(async (event) => {
 
   // TODO: Validate the query params
   const filter: ActiveContributorsFilter = {
-    granularity: (query.granularity as ContributorsFilterGranularity) || ContributorsFilterGranularity.QUARTERLY,
+    granularity:
+      (query.granularity as ContributorsFilterGranularity)
+      || ContributorsFilterGranularity.QUARTERLY,
     project,
     repo: undefined,
     startDate: undefined,

@@ -18,7 +18,7 @@
 import LfxChart from '~/components/uikit/chart/Chart.vue';
 import type { ChartData, ChartSeries } from '~/components/uikit/chart/types/ChartTypes';
 import { getBarChartConfig, getBarChartConfigStacked } from '~/components/uikit/chart/configs/bar.chart';
-import {lfxColors} from "~/config/styles/colors";
+import { lfxColors } from "~/config/styles/colors";
 
 const props = defineProps<{
   chartData: ChartData[];
@@ -44,8 +44,9 @@ const chartSeries = ref<ChartSeries[]>([
   }
 ]);
 const barChartConfig = computed(() => (isStacked.value
-    ? getBarChartConfigStacked(props.chartData, chartSeries.value)
-    : getBarChartConfig(props.chartData, chartSeries.value)));
+  ? getBarChartConfigStacked(props.chartData, chartSeries.value, 'weekly')
+  : getBarChartConfig(props.chartData, chartSeries.value, 'weekly')
+));
 </script>
 
 <script lang="ts">

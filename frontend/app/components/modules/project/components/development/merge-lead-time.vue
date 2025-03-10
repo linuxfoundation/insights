@@ -102,7 +102,7 @@ const mergeLeadTime = computed<MergeLeadTime>(() => data.value as MergeLeadTime)
 
 const summary = computed<Summary>(() => mergeLeadTime.value.summary);
 
-const isEmpty = computed(() => isEmptyData(mergeLeadTime.value.data as unknown as Record<string, unknown>[]));
+const isEmpty = computed(() => isEmptyData((mergeLeadTime.value?.data || []) as unknown as Record<string, unknown>[]));
 </script>
 
 <script lang="ts">
