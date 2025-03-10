@@ -13,6 +13,7 @@ import type {Project} from "~~/types/project";
  * - pageSize (number, optional): The number of projects per page (default: 10).
  * - count (boolean, optional): Whether to include the total count of projects (default: false).
  * - isLf (boolean, optional): If a project belongs to lf (default: false).
+ * - collectionSlug (string, optional): The slug of the collection to filter projects by.
  *
  * Response:
  * - page (number): The current page number in the response.
@@ -26,8 +27,8 @@ import type {Project} from "~~/types/project";
  * - slug (string): The slug of the project.
  * - description (string): A brief description of the project.
  * - logo (string): URL to the logo of the project.
- * - contributorsCount (number): The count of contributors involved in the project.
- * - organizationsCount (number): The count of organizations associated with the project.
+ * - contributorCount (number): The count of contributors involved in the project.
+ * - organizationCount (number): The count of organizations associated with the project.
  *
  * Errors:
  * - 500: Internal Server Error.

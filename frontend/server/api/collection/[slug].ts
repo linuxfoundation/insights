@@ -21,7 +21,7 @@ import type {Collection} from "~~/types/collection";
  *     slug: string;
  *     description: string;
  *     isLf: number;
- *     projectsCount: number;
+ *     projectCount: number;
  *     featuredProjects: {
  *       name: string;
  *       slug: string;

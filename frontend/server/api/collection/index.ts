@@ -17,7 +17,7 @@ import type {Collection} from "~~/types/collection";
  * - page (number): The current page number.
  * - pageSize (number): The number of items returned per page.
  * - total (number): The total number of items (if count is true).
- * - data (Array<CollectionResponse>): The list of collections.
+ * - data (Array<Collection>): The list of collections.
  *
  * Errors:
  * - 500: Internal Server Error
