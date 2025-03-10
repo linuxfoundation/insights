@@ -32,14 +32,6 @@ export default defineEventHandler(async (event): Promise<Pagination<Collection> 
     const pageSize: number = +(query?.pageSize ?? 10);
     const count: boolean = !!query?.count;
 
-    console.log({
-        count,
-        page,
-        pageSize,
-        orderByField,
-        orderByDirection,
-    })
-
     try {
         const res = await fetchFromTinybird<Collection[]>('/v0/pipes/collections_list.json', {
             count,
