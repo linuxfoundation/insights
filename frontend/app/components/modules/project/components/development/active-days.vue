@@ -89,7 +89,7 @@ import { isEmptyData } from '~/components/shared/utils/helper';
 import { lineGranularities } from '~/components/shared/types/granularity';
 
 const {
-  startDate, endDate, selectedRepository, selectedKey
+  startDate, endDate, selectedRepository, selectedTimeRangeKey
 } = storeToRefs(useProjectStore())
 
 const route = useRoute();
@@ -99,7 +99,7 @@ const { data, status, error } = useFetch(
   {
     params: {
       // Active days follow line chart granularities
-      granularity: lineGranularities[selectedKey.value as keyof typeof lineGranularities],
+      granularity: lineGranularities[selectedTimeRangeKey.value as keyof typeof lineGranularities],
       project: route.params.slug,
       repository: selectedRepository,
       startDate,
