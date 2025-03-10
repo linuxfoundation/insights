@@ -33,7 +33,7 @@ import type {Project} from "~~/types/project";
  * Errors:
  * - 500: Internal Server Error.
  */
-export default defineEventHandler(async (event): Promise<Pagination<Project | Error>> => {
+export default defineEventHandler(async (event): Promise<Pagination<Project> | Error> => {
     const query = getQuery(event);
     const sort: string = (query?.sort as string) || 'name_asc';
     const [orderByField, orderByDirection] = sort.split('_');
