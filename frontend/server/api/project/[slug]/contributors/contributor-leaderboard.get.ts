@@ -1,4 +1,7 @@
-import { allMetrics, commits } from '~~/server/mocks/contributor-leaderboard.mock';
+import {DateTime} from "luxon";
+import {createDataSource} from "~~/server/data/data-sources";
+import type {ContributorsLeaderboardFilter} from "~~/server/data/types";
+import { ContributorsLeaderboardFilterMetric} from "~~/server/data/types";
 
 /**
  * Frontend expects the data to be in the following format:
@@ -30,22 +33,26 @@ import { allMetrics, commits } from '~~/server/mocks/contributor-leaderboard.moc
  */
 export default defineEventHandler(async (event) => {
   const query = getQuery(event);
-  const { metric } = query;
+
   const meta = {
     offset: 0,
     limit: 10,
     total: 100
   };
 
-  if (metric === 'all') {
-    return {
-      meta,
-      data: allMetrics
-    };
-  }
+  // Create filter from query params
+  const filter: ContributorsLeaderboardFilter = {
+    metric: (query.metric as ContributorsLeaderboardFilterMetric) || ContributorsLeaderboardFilterMetric.ALL,
+    repository: query.repository as string,
+    startDate: query.startDate ? DateTime.fromISO(query.startDate as string) : undefined,
+    endDate: query.endDate ? DateTime.fromISO(query.endDate as string) : undefined,
+  };
+
+  const dataSource = createDataSource();
+  const result = await dataSource.fetchContributorsLeaderboard(filter);
 
   return {
     meta,
-    data: commits
+    data: result.data
   };
 });

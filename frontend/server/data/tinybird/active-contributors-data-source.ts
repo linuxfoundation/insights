@@ -6,29 +6,45 @@ in the format the API will return to the client, which isn't ideal. If we ever n
 let's refactor it to return the data in a more generic format.
  */
 
-import type {
-  ActiveContributorsResponse,
-  ActiveContributorsResponseData,
-  ActiveContributorsFilter,
-} from "../types";
-import type {ContributorsDataSource} from "../active-contributors-data-source";
+import type {DateTime} from "luxon";
+import type {ActiveContributorsFilter} from "../types";
 import {getPreviousDates} from "../util";
 import type {TinybirdResponse} from './tinybird';
 import {fetchFromTinybird} from './tinybird'
 
-type TinybirdContributorsSummary = {
+export type ActiveContributorsDataPoint = {
+  startDate: string;
+  endDate: string;
+  contributors: number;
+};
+export type ActiveContributorsResponseData = ActiveContributorsDataPoint[];
+export type ActiveContributorsResponse = {
+  summary: {
+    current: number; // Current number of active contributors
+    previous: number; // Previous number of active contributors
+    percentageChange: number; // Percentage change in active contributors
+    changeValue: number; // Change in the number of active contributors
+    periodFrom: DateTime; // Start of the period (e.g. last 90 days)
+    periodTo: DateTime; // End of the period (e.g. last 90 days)
+  };
+  data: ActiveContributorsResponseData
+};
+
+type TinybirdActiveContributorsSummary = {
   contributorCount: number;
 }[];
 
-type TinybirdContributorsData = {
+type TinybirdActiveContributorsData = {
   startDate: string;
   endDate: string;
   contributorCount: number;
 }[];
 
-async function fetchActiveContributors(filter: ActiveContributorsFilter) {
+export async function fetchActiveContributors(filter: ActiveContributorsFilter) {
   const dates = getPreviousDates(filter.startDate, filter.endDate);
 
+  // TODO: We're passing unchecked query parameters to TinyBird directly from the frontend.
+  //  We need to ensure this doesn't pose a security risk.
   const currentSummaryQuery = {
     project: filter.project,
     repo: filter.repo,
@@ -52,14 +68,14 @@ async function fetchActiveContributors(filter: ActiveContributorsFilter) {
   };
 
   const [currentSummary, previousSummary, data] = await Promise.all([
-    fetchFromTinybird<TinybirdContributorsSummary>('/v0/pipes/active_contributors.json', currentSummaryQuery),
-    fetchFromTinybird<TinybirdContributorsSummary>('/v0/pipes/active_contributors.json', previousSummaryQuery),
-    fetchFromTinybird<TinybirdContributorsData>('/v0/pipes/active_contributors.json', dataQuery)
+    fetchFromTinybird<TinybirdActiveContributorsSummary>('/v0/pipes/active_contributors.json', currentSummaryQuery),
+    fetchFromTinybird<TinybirdActiveContributorsSummary>('/v0/pipes/active_contributors.json', previousSummaryQuery),
+    fetchFromTinybird<TinybirdActiveContributorsData>('/v0/pipes/active_contributors.json', dataQuery)
   ]);
 
   let processedData: ActiveContributorsResponseData = [];
   if (data !== undefined) {
-    processedData = (data as TinybirdResponse<TinybirdContributorsData>)?.data.map(
+    processedData = (data as TinybirdResponse<TinybirdActiveContributorsData>)?.data.map(
       (item): ActiveContributorsResponseData[0] => ({
         startDate: item.startDate,
         endDate: item.endDate,
@@ -93,10 +109,4 @@ async function fetchActiveContributors(filter: ActiveContributorsFilter) {
   };
 
   return response;
-}
-
-export function createTinybirdDataSource(): ContributorsDataSource {
-  return {
-    fetchActiveContributors
-  };
 }
