@@ -1,7 +1,7 @@
 <template>
   <pv-select-button
     v-model="value"
-    :options="options"
+    :options="props.tabs"
     option-label="label"
     data-key="value"
     option-value="value"
@@ -26,7 +26,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { computed } from 'vue';
 import type { TabsProps, TabsEmits } from './types/tab.types';
 
 const props = withDefaults(defineProps<TabsProps>(), {
@@ -42,7 +42,6 @@ const value = computed({
     emit('update:modelValue', value);
   }
 });
-const options = ref(props.tabs);
 </script>
 
 <script lang="ts">

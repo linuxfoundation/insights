@@ -56,22 +56,26 @@ import type {
   ChartSeries
 } from '~/components/uikit/chart/types/ChartTypes';
 import { lfxColors } from '~/config/styles/colors';
-import { axisLabelFormatter } from '~/components/uikit/chart/helpers/formatters';
 import { getLineAreaChartConfig } from '~/components/uikit/chart/configs/line.area.chart';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
 import { isEmptyData } from '~/components/shared/utils/helper';
+import { lineGranularities } from '~/components/shared/types/granularity';
 
-const { startDate, endDate, selectedRepository } = storeToRefs(useProjectStore())
+const {
+ startDate, endDate, selectedRepository, selectedKey
+} = storeToRefs(useProjectStore())
 
 const route = useRoute();
 
 const activeTab = ref('contributors');
 const chartType = ref('line');
 
+const granularity = computed(() => lineGranularities[selectedKey.value as keyof typeof lineGranularities]);
 const { data, status, error } = useFetch(
   `/api/project/${route.params.slug}/contributors/retention`,
   {
     params: {
+      granularity,
       type: activeTab.value,
       repository: selectedRepository,
       startDate,
@@ -82,7 +86,7 @@ const { data, status, error } = useFetch(
 
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
-  () => convertToChartData(data.value as RawChartData[], 'dateFrom', ['percentage'])
+  () => convertToChartData(data.value as RawChartData[], 'dateFrom', ['percentage'], undefined, 'dateTo')
 );
 const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
 
@@ -120,22 +124,12 @@ const chartSeries = ref<ChartSeries[]>([
     color: lfxColors.brand[500]
   }
 ]);
-const configOverride = computed(() => ({
-  xAxis: {
-    axisLabel: {
-      formatter: axisLabelFormatter('MMM dd')
-    }
-  },
-  yAxis: {
-    axisLabel: {
-      formatter: (value: number) => `${value === 0 ? '' : `${value}%`}`
-    }
-  }
-}));
+
 const lineAreaChartConfig = computed(() => getLineAreaChartConfig(
   chartData.value, //
   chartSeries.value, //
-  configOverride.value
+  granularity.value,
+  (value: number) => `${value === 0 ? '' : `${value}%`}`
 ));
 
 </script>

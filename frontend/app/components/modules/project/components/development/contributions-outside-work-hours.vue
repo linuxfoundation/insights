@@ -124,7 +124,7 @@ const weekendPercentage = computed<number>(() => contributionOutsideHours.value.
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
   () => convertToChartData(
-    contributionOutsideHours.value.data as RawChartData[],
+    (contributionOutsideHours.value?.data || []) as RawChartData[],
     'day',
     ['contributions'],
     'hour'

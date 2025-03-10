@@ -37,7 +37,7 @@
 <script setup lang="ts">
 import { useFetch, useRoute } from 'nuxt/app';
 import { ref, computed, watch } from 'vue';
-import {storeToRefs} from "pinia";
+import { storeToRefs } from "pinia";
 import type { PressMentions, PressMention } from './types/mentions.types';
 import LfxProjectPressMentionLists from './fragments/press-mention-lists.vue';
 import type { Summary } from '~/components/shared/types/summary.types';
@@ -52,27 +52,26 @@ import type {
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import { getLineAreaChartConfig } from '~/components/uikit/chart/configs/line.area.chart';
 import { lfxColors } from '~/config/styles/colors';
-import { axisLabelFormatter } from '~/components/uikit/chart/helpers/formatters';
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 import { formatNumber } from '~/components/shared/utils/formatter';
-import {useProjectStore} from "~/components/modules/project/store/project.store";
+import { useProjectStore } from "~/components/modules/project/store/project.store";
 
 const { showToast } = useToastService();
-const {startDate, endDate, selectedRepository} = storeToRefs(useProjectStore())
+const { startDate, endDate, selectedRepository } = storeToRefs(useProjectStore())
 
 const route = useRoute();
 
 const { data, status, error } = useFetch(
   () => `/api/project/${route.params.slug}/popularity/press-mentions`,
-    {
-      params: {
-        repository: selectedRepository,
-        startDate,
-        endDate,
-      }
+  {
+    params: {
+      repository: selectedRepository,
+      startDate,
+      endDate,
     }
+  }
 );
 
 const mentions = computed<PressMentions>(() => data.value as PressMentions);
@@ -97,17 +96,11 @@ const chartSeries = ref<ChartSeries[]>([
     color: lfxColors.brand[500]
   }
 ]);
-const configOverride = computed(() => ({
-  xAxis: {
-    axisLabel: {
-      formatter: axisLabelFormatter('MMM dd')
-    }
-  }
-}));
+
 const lineAreaChartConfig = computed(() => getLineAreaChartConfig(
   chartData.value,
   chartSeries.value,
-  configOverride.value
+  'weekly'
 ));
 
 watch(error, (err) => {

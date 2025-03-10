@@ -97,7 +97,9 @@ const tabs = [
   { label: 'Code reviews', value: 'code-reviews' }
 ];
 
-const isEmpty = computed(() => isEmptyData(codeReviewEngagement.value.data as unknown as Record<string, unknown>[]));
+const isEmpty = computed(() => isEmptyData(
+  (codeReviewEngagement.value?.data || []) as unknown as Record<string, unknown>[]
+));
 </script>
 
 <script lang="ts">

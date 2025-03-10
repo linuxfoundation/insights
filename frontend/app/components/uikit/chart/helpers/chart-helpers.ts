@@ -19,12 +19,14 @@ export const convertToChartData = (
   data: RawChartData[] | null | undefined,
   keyField: string,
   valuesKey: string[],
-  yAxisKey?: string
+  yAxisKey?: string,
+  xAxisKey2?: string
 ) => data?.map(
     (item: RawChartData) => ({
-        key: item[keyField],
+        key: item[keyField], // usually the startDate
         yAxisKey: yAxisKey ? item[yAxisKey] : undefined,
-        values: valuesKey.map((key: string) => item[key])
+        values: valuesKey.map((key: string) => item[key]),
+        xAxisKey2: xAxisKey2 ? item[xAxisKey2] : undefined
       } as ChartData)
   ) ?? [];
 
