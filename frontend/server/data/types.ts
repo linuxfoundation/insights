@@ -15,6 +15,19 @@ export type ActiveContributorsFilter = {
   endDate?: DateTime;
 };
 
+export enum ActiveOrganizationsFilterGranularity {
+  WEEKLY = 'weekly',
+  MONTHLY = 'monthly',
+  QUARTERLY = 'quarterly'
+}
+export type ActiveOrganizationsFilter = {
+  project: string;
+  repository?: string;
+  granularity?: ActiveOrganizationsFilterGranularity;
+  startDate?: DateTime;
+  endDate?: DateTime;
+};
+
 export enum ContributorsLeaderboardFilterMetric {
   ALL = 'all',
   COMMITS = 'commits'
