@@ -16,8 +16,8 @@ import {
   useRoute,
 } from "nuxt/app";
 import {storeToRefs} from "pinia";
+import type {Project} from "~~/types/project";
 import LfxProjectHeader from "~/components/modules/project/components/shared/header.vue";
-import type {Project} from "~/components/modules/project/types/project";
 import {useProjectStore} from "~/components/modules/project/store/project.store";
 
 const route = useRoute();

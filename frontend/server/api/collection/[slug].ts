@@ -1,18 +1,5 @@
 import {fetchFromTinybird} from "~~/server/data/tinybird/tinybird";
-
-interface CollectionDetailsResponse {
-    id: string;
-    name: string;
-    slug: string;
-    description: string;
-    isLf: number;
-    projectsCount: number;
-    featuredProjects: {
-        name: string;
-        slug: string;
-        logo: string;
-    }[];
-}
+import type {Collection} from "~~/types/collection";
 
 /**
  * API Endpoint: Fetch Collection Details by Slug
@@ -54,10 +41,10 @@ interface CollectionDetailsResponse {
  *     statusMessage: "Internal server error"
  *   }
  */
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async (event): Promise<Collection | Error> => {
     const {slug} = event.context.params as Record<string, string>;
     try {
-        const res = await fetchFromTinybird<CollectionDetailsResponse[]>('/v0/pipes/collections_list.json', {
+        const res = await fetchFromTinybird<Collection[]>('/v0/pipes/collections_list.json', {
             slug,
         });
         if (!res.data || res.data.length === 0) {

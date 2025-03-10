@@ -127,6 +127,7 @@
 <script lang="ts" setup>
 import {useRoute} from 'nuxt/app';
 import {computed} from 'vue';
+import type {Project} from "~~/types/project";
 import {LfxRoutes} from '~/components/shared/types/routes';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxMenuButton from '~/components/uikit/menu-button/menu-button.vue';
@@ -136,7 +137,6 @@ import useScroll from "~/components/shared/utils/scroll";
 import LfxIconButton from "~/components/uikit/icon-button/icon-button.vue";
 import LfxShare from "~/components/uikit/share/share.vue";
 import LfxProjectRepositorySwitch from "~/components/modules/project/components/shared/header/repository-switch.vue";
-import type {Project} from "~/components/modules/project/types/project";
 import LfxBack from "~/components/uikit/back/back.vue";
 import LfxProjectDateRangePicker from "~/components/modules/project/components/shared/header/date-range-picker.vue";
 import LfxMaintainHeight from "~/components/uikit/maintain-height/maintain-height.vue";

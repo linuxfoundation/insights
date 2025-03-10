@@ -9,8 +9,8 @@
 import {
 useFetch, useRoute, createError, showError
 } from "nuxt/app";
+import type {Collection} from "~~/types/collection";
 import LfxCollectionDetailsView from "~/components/modules/collection/views/collection-details.vue";
-import type {Collection} from "~/components/modules/collection/types/Collection";
 
 const route = useRoute();
 const {slug} = route.params;

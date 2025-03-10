@@ -1,14 +1,6 @@
 import {fetchFromTinybird} from "~~/server/data/tinybird/tinybird";
-
-interface ProjectResponse {
-    id: string;
-    name: string;
-    slug: string;
-    description: string;
-    logo: string;
-    contributorsCount: number;
-    organizationsCount: number;
-}
+import type {Pagination} from "~~/types/shared/pagination";
+import type {Project} from "~~/types/project";
 
 /**
  * API Endpoint: /api/project
@@ -16,7 +8,7 @@ interface ProjectResponse {
  * Description: Fetches a paginated list of projects with sorting options and additional metadata.
  *
  * Query Parameters:
- * - sort (string, optional): Specifies the sorting order for the projects (default: "name_ASC").
+ * - sort (string, optional): Specifies the sorting order for the projects (default: "name_asc").
  * - page (number, optional): The page number for pagination (default: 0).
  * - pageSize (number, optional): The number of projects per page (default: 10).
  * - count (boolean, optional): Whether to include the total count of projects (default: false).
@@ -40,31 +32,37 @@ interface ProjectResponse {
  * Errors:
  * - 500: Internal Server Error.
  */
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async (event): Promise<Pagination<Project | Error>> => {
     const query = getQuery(event);
-    const sort: string = (query?.sort as string) || 'name_ASC';
+    const sort: string = (query?.sort as string) || 'name_asc';
+    const [orderByField, orderByDirection] = sort.split('_');
 
     // Pagination parameters
     const page: number = +(query?.page ?? 0);
     const pageSize: number = +(query?.pageSize ?? 10);
     const count: boolean = !!query?.count;
+    const collectionSlug: string | undefined = query?.collectionSlug as string || undefined;
     const isLf: boolean = !!query?.isLf;
 
     try {
-        const res = await fetchFromTinybird<ProjectResponse[]>('/v0/pipes/projects_list.json', {
+        const res = await fetchFromTinybird<Project[]>('/v0/pipes/projects_list.json', {
             count,
             page,
             pageSize,
-            sort,
+            collectionSlug,
             isLf,
+            orderByField,
+            orderByDirection,
         });
 
-        return {
+        const data: Pagination<Project> = {
             page,
             pageSize,
             total: res.rows,
             data: res.data,
-        };
+        }
+
+        return data;
     } catch (error) {
         console.error('Error fetching project list:', error);
         throw createError({statusCode: 500, statusMessage: 'Internal Server Error'});

@@ -2,6 +2,7 @@ import {
   describe, test, expect, vi
 } from 'vitest';
 import type { $Fetch } from 'nitropack';
+import {DateTime} from "luxon";
 import {
   mockWeeklyTimeseries,
   mockWeeklyCurrentSummary,
@@ -10,7 +11,6 @@ import {
 import {createActiveContributorsDataSource} from '../active-contributors-data-source';
 import type {ActiveContributorsResponse} from "../types";
 import { ContributorsFilterGranularity} from "../types";
-import {DateTime} from "luxon";
 
 describe('ContributorsDataSource', () => {
   test('should fetch contributors data with correct parameters', async () => {

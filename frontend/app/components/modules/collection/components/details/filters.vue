@@ -86,19 +86,19 @@ const sort = computed({
 const sortOptions = [
   {
     label: 'Alphabeticly',
-    value: 'name_ASC'
+    value: 'name_asc'
   },
   {
     label: 'Most contributors',
-    value: 'contributorsCount_DESC'
+    value: 'contributorCount_desc'
   },
   {
     label: 'Most organizations',
-    value: 'organizationsCount_DESC'
+    value: 'organizationCount_desc'
   },
   // {
   //   label: 'Most valuable',
-  //   value: 'softwareValueCount_DESC'
+  //   value: 'softwareValueCount_desc'
   // },
 ];
 </script>

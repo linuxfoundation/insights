@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
 import { useRoute } from 'nuxt/app';
+import type {Project, ProjectRepository} from "~~/types/project";
 import {lfxProjectDateOptions} from "~/components/modules/project/config/date-options";
-import type {Project, ProjectRepository} from "~/components/modules/project/types/project";
 import {getRepoNameFromUrl} from "~/components/modules/repository/utils/repository.helpers";
 
 export const useProjectStore = defineStore('project', () => {
