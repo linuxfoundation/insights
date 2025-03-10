@@ -43,7 +43,7 @@
         use-min-height
       >
         <div class="w-full h-[330px] mt-4">
-          <lfx-chart :config="barChartConfig" />
+          <lfx-chart :config="activeTab === 'cumulative' ? lineChartConfig : barChartConfig" />
         </div>
       </lfx-project-load-state>
     </section>
@@ -57,6 +57,7 @@ import { storeToRefs } from "pinia";
 import LfxProjectLoadState from '../shared/load-state.vue';
 import LfxSkeletonState from '../shared/skeleton-state.vue';
 import type { ForksData } from './types/popularity.types';
+import { lineGranularities, barGranularities } from '~/components/shared/types/granularity';
 import type { Summary } from '~/components/shared/types/summary.types';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
@@ -69,21 +70,28 @@ import type {
 } from '~/components/uikit/chart/types/ChartTypes';
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import { getBarChartConfig } from '~/components/uikit/chart/configs/bar.chart';
+import { getLineAreaChartConfig } from '~/components/uikit/chart/configs/line.area.chart';
 import { lfxColors } from '~/config/styles/colors';
-import { axisLabelFormatter } from '~/components/uikit/chart/helpers/formatters';
 import { formatNumber } from '~/components/shared/utils/formatter';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
 import { isEmptyData } from '~/components/shared/utils/helper';
 
-const { startDate, endDate, selectedRepository } = storeToRefs(useProjectStore())
+const {
+  startDate, endDate, selectedRepository, selectedKey
+} = storeToRefs(useProjectStore())
 
 const activeTab = ref('cumulative');
 const route = useRoute();
 
+const barGranularity = computed(() => barGranularities[selectedKey.value as keyof typeof barGranularities]);
+const lineGranularity = computed(() => lineGranularities[selectedKey.value as keyof typeof lineGranularities]);
 const { data, status, error } = useFetch(
   `/api/project/${route.params.slug}/popularity/forks`,
   {
     params: {
+      granularity: activeTab.value === 'cumulative'
+        ? lineGranularity.value
+        : barGranularity.value,
       type: activeTab.value,
       repository: selectedRepository,
       startDate,
@@ -99,7 +107,7 @@ const chartData = computed<ChartData[]>(
   // convert the data to chart data
   () => convertToChartData(forks.value?.data as RawChartData[], 'dateFrom', [
     'forks'
-  ])
+  ], undefined, 'dateTo')
 );
 const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
 
@@ -108,27 +116,26 @@ const tabs = [
   { label: 'New', value: 'new' }
 ];
 
-const chartSeries = ref<ChartSeries[]>([
+const chartSeries = computed<ChartSeries[]>(() => [
   {
     name: 'Forks',
-    type: 'bar',
+    type: activeTab.value === 'cumulative' ? 'line' : 'bar',
     yAxisIndex: 0,
     dataIndex: 0,
     position: 'left',
     color: lfxColors.brand[500]
   }
 ]);
-const configOverride = computed(() => ({
-  xAxis: {
-    axisLabel: {
-      formatter: axisLabelFormatter('MMM dd')
-    }
-  }
-}));
+
+const lineChartConfig = computed(() => getLineAreaChartConfig(
+  chartData.value,
+  chartSeries.value,
+  lineGranularity.value
+));
 const barChartConfig = computed(() => getBarChartConfig(
   chartData.value,
   chartSeries.value,
-  configOverride.value
+  barGranularity.value
 ));
 </script>
 

@@ -44,11 +44,12 @@
 
 <script setup lang="ts">
 import { useFetch, useRoute } from 'nuxt/app';
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { storeToRefs } from "pinia";
 import LfxProjectLoadState from '../shared/load-state.vue';
 import LfxSkeletonState from '../shared/skeleton-state.vue';
 import type { ActiveContributors } from './types/contributors.types';
+import { granularityTabs } from './config/active-granularity-tabs';
 import type { Summary } from '~/components/shared/types/summary.types';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
@@ -62,14 +63,15 @@ import type {
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import { getBarChartConfig } from '~/components/uikit/chart/configs/bar.chart';
 import { lfxColors } from '~/config/styles/colors';
-import { axisLabelFormatter } from '~/components/uikit/chart/helpers/formatters';
 import { formatNumber } from '~/components/shared/utils/formatter';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
 import { isEmptyData } from '~/components/shared/utils/helper';
 
-const { startDate, endDate, selectedRepository } = storeToRefs(useProjectStore());
+const {
+  startDate, endDate, selectedRepository, selectedKey
+} = storeToRefs(useProjectStore());
 
-const activeTab = ref('weekly');
+const activeTab = ref(granularityTabs[0]?.value || 'weekly');
 const route = useRoute();
 
 const { data, status, error } = useFetch(
@@ -89,17 +91,13 @@ const activeContributors = computed<ActiveContributors>(() => data.value as Acti
 const summary = computed<Summary>(() => activeContributors.value.summary);
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
-  () => convertToChartData(activeContributors.value?.data as RawChartData[], 'dateFrom', [
+  () => convertToChartData(activeContributors.value?.data as RawChartData[], 'startDate', [
     'contributors'
-  ])
+  ], undefined, 'endDate')
 );
 const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
 
-const tabs = [
-  { label: 'Weekly', value: 'weekly' },
-  { label: 'Monthly', value: 'monthly' },
-  { label: 'Quarterly', value: 'quarterly' }
-];
+const tabs = computed(() => granularityTabs.filter((tab) => tab.showForKeys.includes(selectedKey.value)));
 
 const chartSeries = ref<ChartSeries[]>([
   {
@@ -111,15 +109,12 @@ const chartSeries = ref<ChartSeries[]>([
     color: lfxColors.brand[500]
   }
 ]);
-const configOverride = computed(() => ({
-  xAxis: {
-    axisLabel: {
-      formatter: axisLabelFormatter(activeTab.value === 'weekly' ? 'MMM dd' : 'MMM yyyy')
-    }
-  }
-}));
-const barChartConfig = computed(() => getBarChartConfig(chartData.value, chartSeries.value, configOverride.value));
 
+const barChartConfig = computed(() => getBarChartConfig(chartData.value, chartSeries.value, activeTab.value));
+
+watch(selectedKey, () => {
+  activeTab.value = tabs.value[0]?.value || 'weekly';
+});
 </script>
 
 <script lang="ts">

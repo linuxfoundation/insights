@@ -15,7 +15,6 @@ const defaultOption: ECOption = {
       align: 'center',
       formatter: axisLabelFormatter('{MMM} {yy}'),
       hideOverlap: true,
-      interval: 0,
       fontSize: '12px',
       fontWeight: 'normal',
       color: lfxColors.neutral[400] // TODO: change this when we have the correct color
@@ -43,6 +42,10 @@ const defaultOption: ECOption = {
       showMinLine: false,
       show: true
     }
+    // max: (value: { min: number; max: number }) => {
+    //   console.log(value.max, value.min);
+    //   return value.max + value.min;
+    // } //(value.max - value.min)
   }
 };
 

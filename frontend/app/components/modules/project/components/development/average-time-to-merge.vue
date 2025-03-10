@@ -60,21 +60,25 @@ import type {
   ChartSeries
 } from '~/components/uikit/chart/types/ChartTypes';
 import LfxChart from '~/components/uikit/chart/chart.vue';
-import { getBarChartConfig } from '~/components/uikit/chart/configs/bar.chart';
+import { getBarChartConfigCustom } from '~/components/uikit/chart/configs/bar.chart';
 import { lfxColors } from '~/config/styles/colors';
-import { axisLabelFormatter } from '~/components/uikit/chart/helpers/formatters';
 import { formatNumberToDuration } from '~/components/shared/utils/formatter';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
 import { isEmptyData } from '~/components/shared/utils/helper';
+import { barGranularities } from '~/components/shared/types/granularity';
 
-const { startDate, endDate, selectedRepository } = storeToRefs(useProjectStore())
+const {
+  startDate, endDate, selectedRepository, selectedKey
+} = storeToRefs(useProjectStore())
 
 const route = useRoute();
 
+const granularity = computed(() => barGranularities[selectedKey.value as keyof typeof barGranularities].granularity);
 const { data, status, error } = useFetch(
   `/api/project/${route.params.slug}/development/average-time-merge`,
   {
     params: {
+      granularity,
       repository: selectedRepository,
       startDate,
       endDate,
@@ -87,14 +91,14 @@ const averageTimeMerge = computed<AverageTimeMerge>(() => data.value as AverageT
 const summary = computed<Summary>(() => averageTimeMerge.value.summary);
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
-  () => convertToChartData(averageTimeMerge.value.data as RawChartData[], 'dateFrom', [
+  () => convertToChartData((averageTimeMerge.value?.data || []) as RawChartData[], 'dateFrom', [
     'averageTime'
-  ])
+  ], undefined, 'dateTo')
 );
 
 const chartSeries = ref<ChartSeries[]>([
   {
-    name: 'Average time to merge',
+    name: 'Average time',
     type: 'bar',
     yAxisIndex: 0,
     dataIndex: 0,
@@ -103,11 +107,6 @@ const chartSeries = ref<ChartSeries[]>([
   }
 ]);
 const configOverride = computed(() => ({
-  xAxis: {
-    axisLabel: {
-      formatter: axisLabelFormatter('MMM dd')
-    }
-  },
   yAxis: {
     axisLabel: {
       formatter: (value: number) => `${value === 0 ? '' : `${value}h`}`
@@ -117,9 +116,17 @@ const configOverride = computed(() => ({
   }
 }));
 
-const barChartConfig = computed(() => getBarChartConfig(chartData.value, chartSeries.value, configOverride.value));
+const barChartConfig = computed(() => getBarChartConfigCustom(
+  chartData.value,
+  chartSeries.value,
+  {},
+  granularity.value,
+  configOverride.value
+));
 
-const isEmpty = computed(() => isEmptyData(averageTimeMerge.value.data as unknown as Record<string, unknown>[]));
+const isEmpty = computed(() => isEmptyData(
+  (averageTimeMerge.value?.data || []) as unknown as Record<string, unknown>[]
+));
 </script>
 
 <script lang="ts">

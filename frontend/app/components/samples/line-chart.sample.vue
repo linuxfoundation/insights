@@ -1,6 +1,6 @@
 <template>
   <div style="width: 100%; height: 500px">
-    <lfx-chart :config="getLineAreaChartConfig(props.chartData, chartSeries)" />
+    <lfx-chart :config="getLineAreaChartConfig(props.chartData, chartSeries, 'weekly')" />
   </div>
 </template>
 
@@ -8,7 +8,7 @@
 import LfxChart from '~/components/uikit/chart/Chart.vue';
 import type { ChartData, ChartSeries } from '~/components/uikit/chart/types/ChartTypes';
 import { getLineAreaChartConfig } from '~/components/uikit/chart/configs/line.area.chart';
-import {lfxColors} from "~/config/styles/colors";
+import { lfxColors } from "~/config/styles/colors";
 
 const props = defineProps<{
   chartData: ChartData[];

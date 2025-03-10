@@ -40,7 +40,7 @@
 <script setup lang="ts">
 import { useFetch, useRoute } from 'nuxt/app';
 import { ref, computed, watch } from 'vue';
-import {storeToRefs} from "pinia";
+import { storeToRefs } from "pinia";
 import type { SocialMentions } from './types/mentions.types';
 import type { Summary } from '~/components/shared/types/summary.types';
 import LfxCard from '~/components/uikit/card/card.vue';
@@ -60,24 +60,24 @@ import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 import { formatNumber } from '~/components/shared/utils/formatter';
-import {useProjectStore} from "~/components/modules/project/store/project.store";
+import { useProjectStore } from "~/components/modules/project/store/project.store";
 
 const { showToast } = useToastService();
-const {startDate, endDate, selectedRepository} = storeToRefs(useProjectStore())
+const { startDate, endDate, selectedRepository } = storeToRefs(useProjectStore())
 
 const activeTab = ref('all-time');
 const route = useRoute();
 
-const {data, status, error} = useFetch(
-`/api/project/${route.params.slug}/popularity/social-mentions`,
-    {
-  params: {
-    interval: activeTab.value,
-    repository: selectedRepository,
-    startDate,
-    endDate,
+const { data, status, error } = useFetch(
+  `/api/project/${route.params.slug}/popularity/social-mentions`,
+  {
+    params: {
+      interval: activeTab.value,
+      repository: selectedRepository,
+      startDate,
+      endDate,
+    }
   }
-}
 );
 
 const socialMentions = computed<SocialMentions>(() => data.value as SocialMentions);
@@ -148,6 +148,7 @@ const configOverride = computed(() => ({
 const barChartConfig = computed(() => getBarChartConfigStacked(
   chartData.value,
   chartSeries.value,
+  'weekly',
   configOverride.value
 ));
 

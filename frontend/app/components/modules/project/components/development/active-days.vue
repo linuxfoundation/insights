@@ -86,8 +86,11 @@ import { lfxColors } from '~/config/styles/colors';
 import { formatNumber } from '~/components/shared/utils/formatter';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
 import { isEmptyData } from '~/components/shared/utils/helper';
+import { lineGranularities } from '~/components/shared/types/granularity';
 
-const { startDate, endDate, selectedRepository } = storeToRefs(useProjectStore())
+const {
+  startDate, endDate, selectedRepository, selectedKey
+} = storeToRefs(useProjectStore())
 
 const route = useRoute();
 
@@ -95,6 +98,8 @@ const { data, status, error } = useFetch(
   () => `/api/project/${route.params.slug}/development/active-days`,
   {
     params: {
+      // Active days follow line chart granularities
+      granularity: lineGranularities[selectedKey.value as keyof typeof lineGranularities],
       project: route.params.slug,
       repository: selectedRepository,
       startDate,
@@ -108,7 +113,7 @@ const activeDays = computed<ActiveDays>(() => data.value as ActiveDays);
 const summary = computed<Summary>(() => activeDays.value.summary);
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
-  () => convertToChartData(activeDays.value.data as RawChartData[], 'day', [
+  () => convertToChartData((activeDays.value?.data || []) as RawChartData[], 'day', [
     'contributions'
   ])
 );
