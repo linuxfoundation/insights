@@ -25,7 +25,7 @@
  */
 import { DateTime } from 'luxon';
 
-import { createActiveContributorsDataSource } from '~~/server/data/active-contributors-data-source';
+import { createDataSource } from '~~/server/data/data-sources';
 import type { ActiveContributorsFilter } from '~~/server/data/types';
 import { ContributorsFilterGranularity } from '~~/server/data/types';
 
@@ -58,7 +58,7 @@ export default defineEventHandler(async (event) => {
     filter.endDate = DateTime.fromISO(query.endDate as string);
   }
 
-  const dataSource = createActiveContributorsDataSource();
+  const dataSource = createDataSource();
 
   try {
     return await dataSource.fetchActiveContributors(filter);

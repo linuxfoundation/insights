@@ -8,11 +8,11 @@ import {
   mockWeeklyCurrentSummary,
   mockWeeklyPreviousSummary
 } from '../../mocks/tinybird-active-contributors-response.mock';
-import {createActiveContributorsDataSource} from '../active-contributors-data-source';
+import {createActiveContributorsDataSource} from '../data-sources';
 import type {ActiveContributorsResponse} from "../types";
 import { ContributorsFilterGranularity} from "../types";
 
-describe('ContributorsDataSource', () => {
+describe('ActiveContributorsDataSource', () => {
   test('should fetch contributors data with correct parameters', async () => {
     const mockFetch = vi.fn()
       .mockResolvedValueOnce(mockWeeklyCurrentSummary)
