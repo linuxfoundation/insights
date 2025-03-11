@@ -56,7 +56,7 @@ import { ref, computed } from 'vue';
 import { storeToRefs } from "pinia";
 import LfxProjectLoadState from '../shared/load-state.vue';
 import LfxSkeletonState from '../shared/skeleton-state.vue';
-import type { ForksData } from './types/popularity.types';
+import type { ForksData } from '~~/types/popularity/responses.types';
 import { lineGranularities, barGranularities } from '~/components/shared/types/granularity';
 import type { Summary } from '~~/types/shared/summary.types';
 import LfxCard from '~/components/uikit/card/card.vue';
