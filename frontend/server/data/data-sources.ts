@@ -7,7 +7,8 @@ import type {
   ContributorsLeaderboardFilter,
   OrganizationsLeaderboardFilter,
   ContributorDependencyFilter,
-  OrganizationDependencyFilter
+  OrganizationDependencyFilter,
+  GeographicDistributionFilter
 } from "~~/server/data/types";
 import type {ActiveContributorsResponse} from "~~/server/data/tinybird/active-contributors-data-source";
 import type {ActiveOrganizationsResponse} from "~~/server/data/tinybird/active-organizations-data-source";
@@ -15,12 +16,14 @@ import type {ContributorsLeaderboardResponse} from "~~/server/data/tinybird/cont
 import type {OrganizationsLeaderboardResponse} from "~~/server/data/tinybird/organizations-leaderboard-source";
 import type {ContributorDependencyResponse} from "~~/server/data/tinybird/contributors-dependency-data-source";
 import type {OrganizationDependencyResponse} from "~~/server/data/tinybird/organizations-dependency-data-source";
+import type {GeographicDistributionResponse} from "~~/server/data/tinybird/geographic-distribution-data-source";
 import {fetchActiveContributors} from "~~/server/data/tinybird/active-contributors-data-source";
 import {fetchActiveOrganizations} from "~~/server/data/tinybird/active-organizations-data-source";
 import {fetchContributorsLeaderboard} from "~~/server/data/tinybird/contributors-leaderboard-source";
 import {fetchOrganizationsLeaderboard} from "~~/server/data/tinybird/organizations-leaderboard-source";
 import {fetchContributorDependency} from "~~/server/data/tinybird/contributors-dependency-data-source";
 import {fetchOrganizationDependency} from "~~/server/data/tinybird/organizations-dependency-data-source";
+import {fetchGeographicDistribution} from "~~/server/data/tinybird/geographic-distribution-data-source";
 
 export interface DataSource {
     fetchActiveContributors: (filter: ActiveContributorsFilter) => Promise<ActiveContributorsResponse>;
@@ -29,6 +32,7 @@ export interface DataSource {
     fetchOrganizationsLeaderboard: (filter: OrganizationsLeaderboardFilter) => Promise<OrganizationsLeaderboardResponse>;
     fetchContributorDependency: (filter: ContributorDependencyFilter) => Promise<ContributorDependencyResponse>;
     fetchOrganizationDependency: (filter: OrganizationDependencyFilter) => Promise<OrganizationDependencyResponse>;
+    fetchGeographicDistribution: (filter: GeographicDistributionFilter) => Promise<GeographicDistributionResponse>;
 }
 
 export function createDataSource(): DataSource {
@@ -38,6 +42,7 @@ export function createDataSource(): DataSource {
         fetchActiveOrganizations,
         fetchOrganizationsLeaderboard,
         fetchContributorDependency,
-        fetchOrganizationDependency
+        fetchOrganizationDependency,
+        fetchGeographicDistribution
     };
 }
