@@ -91,14 +91,15 @@ const barGranularity = computed(() => (selectedTimeRangeKey.value === dateOptKey
 const lineGranularity = computed(() => (selectedTimeRangeKey.value === dateOptKeys.custom
   ? customRangeGranularity.value[0] as Granularity
   : lineGranularities[selectedTimeRangeKey.value as keyof typeof lineGranularities]));
+const granularity = computed(() => (activeTab.value === 'cumulative'
+  ? lineGranularity.value
+  : barGranularity.value));
 const { data, status, error } = useFetch(
   `/api/project/${route.params.slug}/popularity/forks`,
   {
     params: {
-      granularity: activeTab.value === 'cumulative'
-        ? lineGranularity.value
-        : barGranularity.value,
-      type: activeTab.value,
+      granularity,
+      type: activeTab,
       repository: selectedRepository,
       startDate,
       endDate,

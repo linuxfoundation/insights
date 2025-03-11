@@ -73,7 +73,7 @@ const { data, status, error } = useFetch(
   `/api/project/${route.params.slug}/contributors/contributor-dependency`,
   {
     params: {
-      metric: metric.value,
+      metric,
       repository: selectedRepository,
       startDate,
       endDate,
