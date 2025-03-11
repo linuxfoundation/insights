@@ -4,6 +4,12 @@ import { Granularity } from '~~/types/shared/granularity';
 
 export const granularityTabs: GranularityTabs[] = [
   {
+    label: 'Daily',
+    value: Granularity.DAILY,
+    format: 'MMM d',
+    showForKeys: [dateOptKeys.custom]
+  },
+  {
     label: 'Weekly',
     value: Granularity.WEEKLY,
     format: 'MMM d',
