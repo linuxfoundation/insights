@@ -66,14 +66,18 @@ import { formatNumberToDuration } from '~/components/shared/utils/formatter';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
 import { isEmptyData } from '~/components/shared/utils/helper';
 import { barGranularities } from '~/components/shared/types/granularity';
+import { dateOptKeys } from '~/components/modules/project/config/date-options';
+import type { Granularity } from '~~/types/shared/granularity';
 
 const {
-  startDate, endDate, selectedRepository, selectedTimeRangeKey
+  startDate, endDate, selectedRepository, selectedTimeRangeKey, customRangeGranularity
 } = storeToRefs(useProjectStore())
 
 const route = useRoute();
 
-const granularity = computed(() => barGranularities[selectedTimeRangeKey.value as keyof typeof barGranularities]);
+const granularity = computed(() => (selectedTimeRangeKey.value === dateOptKeys.custom
+  ? customRangeGranularity.value[0] as Granularity
+  : barGranularities[selectedTimeRangeKey.value as keyof typeof barGranularities]));
 const { data, status, error } = useFetch(
   `/api/project/${route.params.slug}/development/average-time-merge`,
   {
