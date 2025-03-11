@@ -67,3 +67,17 @@ export type OrganizationDependencyFilter = {
   startDate?: DateTime;
   endDate?: DateTime;
 }
+
+export enum GeographicDistributionType {
+  CONTRIBUTORS = 'contributors',
+  ORGANIZATIONS = 'organizations'
+}
+
+export type GeographicDistributionFilter = {
+  project: string;
+  metric?: FilterActivityMetric;
+  repository?: string;
+  type?: GeographicDistributionType;
+  startDate?: DateTime;
+  endDate?: DateTime;
+}
