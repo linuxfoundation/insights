@@ -1,10 +1,13 @@
-import { contributorRetention, organizationRetention } from '~~/server/mocks/retention.mock';
+import {
+  contributorRetention,
+  organizationRetention
+} from '~~/server/mocks/retention.mock';
 
 /**
  * Frontend expects the data to be in the following format:
  * {
- *   dateFrom: string; // ISO 8601 date string - start of the bucket. Based on the interval
- *   dateTo: string; // ISO 8601 date string - end of the bucket. Based on the interval
+ *   startDate: string; // ISO 8601 date string - start of the bucket. Based on the interval
+ *   endDate: string; // ISO 8601 date string - end of the bucket. Based on the interval
  *   percentage: number; // percentage retention
  * }[]
  */

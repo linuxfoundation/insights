@@ -34,7 +34,7 @@ import { storeToRefs } from "pinia";
 import LfxProjectLoadState from '../shared/load-state.vue';
 import LfxMetricDropdown from './fragments/metric-dropdown.vue';
 import LfxContributorsTable from './fragments/contributors-table.vue';
-import type { ContributorLeaderboard } from './types/contributors.types';
+import type { ContributorLeaderboard } from '~~/types/contributors/responses.types';
 import LfxCard from '~/components/uikit/card/card.vue';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
 import { isEmptyData } from '~/components/shared/utils/helper';
