@@ -83,7 +83,7 @@ import { ref, computed } from 'vue';
 import { storeToRefs } from "pinia";
 import LfxProjectLoadState from '../shared/load-state.vue';
 import LfxSkeletonState from '../shared/skeleton-state.vue';
-import type { IssuesResolution, ResolutionSummary } from './types/issues-resolution.types';
+import type { IssuesResolution, ResolutionSummary } from '~~/types/development/responses.types';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
 import { convertToChartData } from '~/components/uikit/chart/helpers/chart-helpers';

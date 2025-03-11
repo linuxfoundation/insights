@@ -85,7 +85,7 @@ import { ref, computed } from 'vue';
 import { storeToRefs } from "pinia";
 import LfxProjectLoadState from '../shared/load-state.vue';
 import LfxSkeletonState from '../shared/skeleton-state.vue';
-import type { ContributionOutsideHours } from './types/contribution-outside-hours.types';
+import type { ContributionOutsideHours } from '~~/types/development/responses.types';
 import type { Summary } from '~~/types/shared/summary.types';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
