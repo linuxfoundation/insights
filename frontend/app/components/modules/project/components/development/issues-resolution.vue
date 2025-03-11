@@ -100,13 +100,17 @@ import LfxIcon from '~/components/uikit/icon/icon.vue';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
 import { isEmptyData } from '~/components/shared/utils/helper';
 import { lineGranularities } from '~/components/shared/types/granularity';
+import { dateOptKeys } from '~/components/modules/project/config/date-options';
+import type { Granularity } from '~~/types/shared/granularity';
 
 const {
-  startDate, endDate, selectedRepository, selectedTimeRangeKey
+  startDate, endDate, selectedRepository, selectedTimeRangeKey, customRangeGranularity
 } = storeToRefs(useProjectStore())
 
 const route = useRoute();
-const granularity = computed(() => lineGranularities[selectedTimeRangeKey.value as keyof typeof lineGranularities]);
+const granularity = computed(() => (selectedTimeRangeKey.value === dateOptKeys.custom
+  ? customRangeGranularity.value[0] as Granularity
+  : lineGranularities[selectedTimeRangeKey.value as keyof typeof lineGranularities]));
 const { data, status, error } = useFetch(
   `/api/project/${route.params.slug}/development/issues-resolution`,
   {
