@@ -27,13 +27,18 @@ export async function fetchFromTinybird<T>(
 ): Promise<TinybirdResponse<T>> {
     const config = useRuntimeConfig();
 
-    if (!config.tinybirdBaseUrl) {
+    const tinybirdBaseUrl = process.env.TINYBIRD_BASE_URL || config.tinybirdBaseUrl;
+    const tinybirdToken = process.env.TINYBIRD_TOKEN || config.tinybirdToken;
+
+    console.log(tinybirdToken);
+
+    if (!tinybirdBaseUrl) {
         throw new Error('Tinybird base URL is not defined');
     }
-    if (!config.tinybirdToken) {
+    if (!tinybirdToken) {
         throw new Error('Tinybird token is not defined');
     }
-    const url = `${config.tinybirdBaseUrl}${path}`;
+    const url = `${tinybirdBaseUrl}${path}`;
 
     // We don't want o send undefined values to TinyBird, so we remove those from the query. We also format DateTime objects for TinyBird
     const processedQuery = Object.fromEntries(
@@ -50,7 +55,7 @@ export async function fetchFromTinybird<T>(
     return await $fetch(url, {
         query: {
             ...processedQuery,
-            token: config.tinybirdToken
+            token: tinybirdToken
         },
         headers: {
             Authorization: `Bearer ${config.tinybirdToken}`,
