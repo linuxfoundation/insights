@@ -1,3 +1,78 @@
-.p-popover{
-  @apply bg-white shadow-lg border border-neutral-200 rounded-lg mt-2;
+.c-popover {
+  @apply relative w-fit flex;
+
+  &__trigger {
+    @apply w-fit;
+  }
+
+  &__content {
+    @apply absolute z-50 w-max transition overflow-visible;
+    @apply bg-white shadow-lg rounded-lg border border-neutral-200;
+
+    &.is-hidden {
+      @apply invisible opacity-0 pointer-events-none;
+    }
+
+    &.is-placed {
+      &-bottom-start {
+        left: var(--lfx-popover-trigger-left);
+        top: calc(var(--lfx-popover-trigger-bottom) + var(--lfx-popover-spacing));
+      }
+
+      &-bottom-end {
+        left: calc(var(--lfx-popover-trigger-right) - var(--lfx-popover-content-width));
+        top: calc(var(--lfx-popover-trigger-top) + var(--lfx-popover-trigger-height) + var(--lfx-popover-spacing));
+      }
+
+      &-bottom {
+        left: calc(var(--lfx-popover-trigger-left) + var(--lfx-popover-trigger-width) / 2 - var(--lfx-popover-content-width) / 2);
+        top: calc(var(--lfx-popover-trigger-bottom) + var(--lfx-popover-spacing));
+      }
+
+      &-top-start {
+        left: var(--lfx-popover-trigger-left);
+        top: calc(var(--lfx-popover-trigger-top) - var(--lfx-popover-content-height) - var(--lfx-popover-spacing));
+      }
+
+      &-top-end {
+        left: calc(var(--lfx-popover-trigger-right) - var(--lfx-popover-content-width));
+        top: calc(var(--lfx-popover-trigger-top) - var(--lfx-popover-content-height) - var(--lfx-popover-spacing));
+      }
+
+      &-top {
+        left: calc(var(--lfx-popover-trigger-left) + var(--lfx-popover-trigger-width) / 2 - var(--lfx-popover-content-width) / 2);
+        top: calc(var(--lfx-popover-trigger-top) - var(--lfx-popover-content-height) - var(--lfx-popover-spacing));
+      }
+
+      &-left {
+        left: calc(var(--lfx-popover-trigger-left) - var(--lfx-popover-content-width) - var(--lfx-popover-spacing));
+        top: calc(var(--lfx-popover-trigger-top) + var(--lfx-popover-trigger-height) / 2 - var(--lfx-popover-content-height) / 2);
+      }
+
+      &-left-start {
+        left: calc(var(--lfx-popover-trigger-left) - var(--lfx-popover-content-width) - var(--lfx-popover-spacing));
+        top: var(--lfx-popover-trigger-top);
+      }
+
+      &-left-end {
+        left: calc(var(--lfx-popover-trigger-left) - var(--lfx-popover-content-width) - var(--lfx-popover-spacing));
+        top: calc(var(--lfx-popover-trigger-bottom) - var(--lfx-popover-content-height));
+      }
+
+      &-right {
+        left: calc(var(--lfx-popover-trigger-right) + var(--lfx-popover-spacing));
+        top: calc(var(--lfx-popover-trigger-top) + var(--lfx-popover-trigger-height) / 2 - var(--lfx-popover-content-height) / 2);
+      }
+
+      &-right-start {
+        left: calc(var(--lfx-popover-trigger-right) + var(--lfx-popover-spacing));
+        top: var(--lfx-popover-trigger-top);
+      }
+
+      &-right-end {
+        left: calc(var(--lfx-popover-trigger-right) + var(--lfx-popover-spacing));
+        top: calc(var(--lfx-popover-trigger-bottom) - var(--lfx-popover-content-height));
+      }
+    }
+  }
 }
