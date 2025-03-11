@@ -5,22 +5,26 @@ import type {
   ActiveContributorsFilter,
   ActiveOrganizationsFilter,
   ContributorsLeaderboardFilter,
-  OrganizationsLeaderboardFilter
+  OrganizationsLeaderboardFilter,
+  ContributorDependencyFilter
 } from "~~/server/data/types";
 import type {ActiveContributorsResponse} from "~~/server/data/tinybird/active-contributors-data-source";
 import type {ActiveOrganizationsResponse} from "~~/server/data/tinybird/active-organizations-data-source";
 import type {ContributorsLeaderboardResponse} from "~~/server/data/tinybird/contributors-leaderboard-source";
 import type {OrganizationsLeaderboardResponse} from "~~/server/data/tinybird/organizations-leaderboard-source";
+import type {ContributorDependencyResponse} from "~~/server/data/tinybird/contributors-dependency-data-source";
 import {fetchActiveContributors} from "~~/server/data/tinybird/active-contributors-data-source";
 import {fetchActiveOrganizations} from "~~/server/data/tinybird/active-organizations-data-source";
 import {fetchContributorsLeaderboard} from "~~/server/data/tinybird/contributors-leaderboard-source";
 import {fetchOrganizationsLeaderboard} from "~~/server/data/tinybird/organizations-leaderboard-source";
+import {fetchContributorDependency} from "~~/server/data/tinybird/contributors-dependency-data-source";
 
 export interface DataSource {
     fetchActiveContributors: (filter: ActiveContributorsFilter) => Promise<ActiveContributorsResponse>;
     fetchActiveOrganizations: (filter: ActiveOrganizationsFilter) => Promise<ActiveOrganizationsResponse>;
     fetchContributorsLeaderboard: (filter: ContributorsLeaderboardFilter) => Promise<ContributorsLeaderboardResponse>;
     fetchOrganizationsLeaderboard: (filter: OrganizationsLeaderboardFilter) => Promise<OrganizationsLeaderboardResponse>;
+    fetchContributorDependency: (filter: ContributorDependencyFilter) => Promise<ContributorDependencyResponse>;
 }
 
 export function createDataSource(): DataSource {
@@ -28,6 +32,7 @@ export function createDataSource(): DataSource {
         fetchActiveContributors,
         fetchContributorsLeaderboard,
         fetchActiveOrganizations,
-        fetchOrganizationsLeaderboard
+        fetchOrganizationsLeaderboard,
+        fetchContributorDependency
     };
 }

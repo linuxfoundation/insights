@@ -1,7 +1,7 @@
 import {DateTime} from "luxon";
 import {createDataSource} from "~~/server/data/data-sources";
 import type {OrganizationsLeaderboardFilter} from "~~/server/data/types";
-import {OrganizationsLeaderboardFilterMetric} from "~~/server/data/types";
+import {FilterActivityMetric} from "~~/server/data/types";
 
 /**
  * Frontend expects the data to be in the following format:
@@ -41,7 +41,7 @@ export default defineEventHandler(async (event) => {
   };
 
   const filter: OrganizationsLeaderboardFilter = {
-    metric: (query.metric as OrganizationsLeaderboardFilterMetric) || OrganizationsLeaderboardFilterMetric.ALL,
+    metric: (query.metric as FilterActivityMetric) || FilterActivityMetric.ALL,
     repository: query.repository as string,
     startDate: query.startDate ? DateTime.fromISO(query.startDate as string) : undefined,
     endDate: query.endDate ? DateTime.fromISO(query.endDate as string) : undefined,
