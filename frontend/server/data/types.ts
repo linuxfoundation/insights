@@ -7,7 +7,6 @@ export enum ContributorsFilterGranularity {
   MONTHLY = 'monthly',
   QUARTERLY = 'quarterly'
 }
-
 export type ActiveContributorsFilter = {
   project: string;
   repo?: string;
@@ -16,22 +15,26 @@ export type ActiveContributorsFilter = {
   endDate?: DateTime;
 };
 
-// This probably shouldn't be here.
-// It represents the format the API should return, but the data layer shouldn't know about the API layer.
-export type ActiveContributorsDataPoint = {
-  startDate: string;
-  endDate: string;
-  contributors: number;
+export enum ActiveOrganizationsFilterGranularity {
+  WEEKLY = 'weekly',
+  MONTHLY = 'monthly',
+  QUARTERLY = 'quarterly'
+}
+export type ActiveOrganizationsFilter = {
+  project: string;
+  repository?: string;
+  granularity?: ActiveOrganizationsFilterGranularity;
+  startDate?: DateTime;
+  endDate?: DateTime;
 };
-export type ActiveContributorsResponseData = ActiveContributorsDataPoint[];
-export type ActiveContributorsResponse = {
-  summary: {
-    current: number; // Current number of active contributors
-    previous: number; // Previous number of active contributors
-    percentageChange: number; // Percentage change in active contributors
-    changeValue: number; // Change in the number of active contributors
-    periodFrom: DateTime; // Start of the period (e.g. last 90 days)
-    periodTo: DateTime; // End of the period (e.g. last 90 days)
-  };
-  data: ActiveContributorsResponseData
-};
+
+export enum ContributorsLeaderboardFilterMetric {
+  ALL = 'all',
+  COMMITS = 'commits'
+}
+export type ContributorsLeaderboardFilter = {
+  metric: ContributorsLeaderboardFilterMetric;
+  repository: string;
+  startDate?: DateTime;
+  endDate?: DateTime;
+}

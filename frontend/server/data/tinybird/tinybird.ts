@@ -38,7 +38,7 @@ export async function fetchFromTinybird<T>(
     // We don't want o send undefined values to TinyBird, so we remove those from the query. We also format DateTime objects for TinyBird
     const processedQuery = Object.fromEntries(
       Object.entries(query)
-        .filter(([_, value]) => value !== undefined)
+        .filter(([_, value]) => (value !== undefined) && (value !== '') && (value !== null))
         .map(([key, value]) => [
             key,
             value instanceof DateTime
