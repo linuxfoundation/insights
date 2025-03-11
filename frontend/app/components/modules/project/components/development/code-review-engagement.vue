@@ -79,7 +79,7 @@ const { data, status, error } = useFetch(
   () => `/api/project/${route.params.slug}/development/code-review-engagement`,
   {
     params: {
-      metric: activeTab.value,
+      metric: activeTab,
       repository: selectedRepository,
       startDate,
       endDate,

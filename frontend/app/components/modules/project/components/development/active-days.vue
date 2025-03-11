@@ -93,14 +93,13 @@ const {
 } = storeToRefs(useProjectStore())
 
 const route = useRoute();
-
+const granularity = computed(() => lineGranularities[selectedTimeRangeKey.value as keyof typeof lineGranularities]);
 const { data, status, error } = useFetch(
   () => `/api/project/${route.params.slug}/development/active-days`,
   {
     params: {
       // Active days follow line chart granularities
-      granularity: lineGranularities[selectedTimeRangeKey.value as keyof typeof lineGranularities],
-      project: route.params.slug,
+      granularity,
       repository: selectedRepository,
       startDate,
       endDate,

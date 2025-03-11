@@ -76,7 +76,7 @@ const { data, status, error } = useFetch(
   {
     params: {
       granularity,
-      type: activeTab.value,
+      type: activeTab,
       repository: selectedRepository,
       startDate,
       endDate,

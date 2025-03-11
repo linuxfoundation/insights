@@ -110,7 +110,6 @@ const { data, status, error } = useFetch(
   () => `/api/project/${route.params.slug}/development/contribution-outside`,
   {
     params: {
-      project: route.params.slug,
       repository: selectedRepository,
       startDate,
       endDate,

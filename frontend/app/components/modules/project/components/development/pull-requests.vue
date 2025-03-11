@@ -119,7 +119,6 @@ const { data, status, error } = useFetch(
   {
     params: {
       granularity,
-      project: route.params.slug,
       repository: selectedRepository,
       startDate,
       endDate,
