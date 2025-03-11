@@ -8,7 +8,7 @@ import type {
   SingleTooltipFormatterParams
 } from '../types/EChartTypes';
 import type { ChartData } from '../types/ChartTypes';
-import { Granularity } from '~/components/shared/types/granularity';
+import { Granularity } from '~~/types/shared/granularity';
 import { formatNumber } from '~/components/shared/utils/formatter';
 
 declare type LabelFormatterParams = {
@@ -71,15 +71,15 @@ const formatDateRange = (
   granularity: string
 ) => {
   switch (granularity) {
-    case Granularity.Weekly:
-    case Granularity.Quarterly:
+    case Granularity.WEEKLY:
+    case Granularity.QUARTERLY:
       return `${formatDate(startDateMillis, 'MMM d')} - ${formatIsoDate(
         endDateIso,
         'MMM d'
       )}`;
-    case Granularity.Monthly:
+    case Granularity.MONTHLY:
       return `${formatDate(startDateMillis, 'MMM yyyy')}`;
-    case Granularity.Yearly:
+    case Granularity.YEARLY:
       return `${formatDate(startDateMillis, 'yyyy')}`;
     default:
       return `${formatDate(startDateMillis, 'MMM d, yyyy')}`;

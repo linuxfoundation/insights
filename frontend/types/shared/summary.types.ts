@@ -6,3 +6,9 @@ export interface Summary {
   periodFrom: string;
   periodTo: string;
 }
+
+export interface Meta {
+  offset: number;
+  limit: number;
+  total: number;
+}

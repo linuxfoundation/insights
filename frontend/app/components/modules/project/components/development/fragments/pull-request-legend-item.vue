@@ -23,7 +23,7 @@
 
 <script setup lang="ts">
 import { formatNumber } from '~/components/shared/utils/formatter';
-import type { Summary } from '~/components/shared/types/summary.types';
+import type { Summary } from '~~/types/shared/summary.types';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
 
 const props = defineProps<{

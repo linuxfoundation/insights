@@ -1,5 +1,5 @@
 import type { IconType } from '../../icon/types/icon.types';
-import type { Summary } from '~/components/shared/types/summary.types';
+import type { Summary } from '~~/types/shared/summary.types';
 
 export type DeltaDisplayProps = {
   summary: Summary;

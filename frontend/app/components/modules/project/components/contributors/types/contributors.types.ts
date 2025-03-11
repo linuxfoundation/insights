@@ -1,4 +1,4 @@
-import type { Summary } from '~/components/shared/types/summary.types';
+import type { Summary, Meta } from '~~/types/shared/summary.types';
 
 export interface ActiveContributors {
   summary: Summary;
@@ -16,12 +16,6 @@ export interface ActiveOrganizations {
     endDate: string;
     organizations: number;
   }[];
-}
-
-export interface Meta {
-  offset: number;
-  limit: number;
-  total: number;
 }
 
 export interface Contributor {

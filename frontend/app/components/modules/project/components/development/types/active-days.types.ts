@@ -1,4 +1,4 @@
-import type { Summary } from '~/components/shared/types/summary.types';
+import type { Summary } from '~~/types/shared/summary.types';
 
 export interface ActiveDays {
   summary: Summary;
