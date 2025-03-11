@@ -6,18 +6,21 @@ import type {
   ActiveOrganizationsFilter,
   ContributorsLeaderboardFilter,
   OrganizationsLeaderboardFilter,
-  ContributorDependencyFilter
+  ContributorDependencyFilter,
+  OrganizationDependencyFilter
 } from "~~/server/data/types";
 import type {ActiveContributorsResponse} from "~~/server/data/tinybird/active-contributors-data-source";
 import type {ActiveOrganizationsResponse} from "~~/server/data/tinybird/active-organizations-data-source";
 import type {ContributorsLeaderboardResponse} from "~~/server/data/tinybird/contributors-leaderboard-source";
 import type {OrganizationsLeaderboardResponse} from "~~/server/data/tinybird/organizations-leaderboard-source";
 import type {ContributorDependencyResponse} from "~~/server/data/tinybird/contributors-dependency-data-source";
+import type {OrganizationDependencyResponse} from "~~/server/data/tinybird/organizations-dependency-data-source";
 import {fetchActiveContributors} from "~~/server/data/tinybird/active-contributors-data-source";
 import {fetchActiveOrganizations} from "~~/server/data/tinybird/active-organizations-data-source";
 import {fetchContributorsLeaderboard} from "~~/server/data/tinybird/contributors-leaderboard-source";
 import {fetchOrganizationsLeaderboard} from "~~/server/data/tinybird/organizations-leaderboard-source";
 import {fetchContributorDependency} from "~~/server/data/tinybird/contributors-dependency-data-source";
+import {fetchOrganizationDependency} from "~~/server/data/tinybird/organizations-dependency-data-source";
 
 export interface DataSource {
     fetchActiveContributors: (filter: ActiveContributorsFilter) => Promise<ActiveContributorsResponse>;
@@ -25,6 +28,7 @@ export interface DataSource {
     fetchContributorsLeaderboard: (filter: ContributorsLeaderboardFilter) => Promise<ContributorsLeaderboardResponse>;
     fetchOrganizationsLeaderboard: (filter: OrganizationsLeaderboardFilter) => Promise<OrganizationsLeaderboardResponse>;
     fetchContributorDependency: (filter: ContributorDependencyFilter) => Promise<ContributorDependencyResponse>;
+    fetchOrganizationDependency: (filter: OrganizationDependencyFilter) => Promise<OrganizationDependencyResponse>;
 }
 
 export function createDataSource(): DataSource {
@@ -33,6 +37,7 @@ export function createDataSource(): DataSource {
         fetchContributorsLeaderboard,
         fetchActiveOrganizations,
         fetchOrganizationsLeaderboard,
-        fetchContributorDependency
+        fetchContributorDependency,
+        fetchOrganizationDependency
     };
 }

@@ -6,6 +6,7 @@ export type OrganizationsLeaderboardDataPoint = {
   name: string; // Full name of the organization
   contributions: number; // Total number of contributions
   contributionValue: number; // Value of the contribution
+  contributionPercentage: number;
   website: string; // We don't seem to have this at the moment
 }
 export type OrganizationsLeaderboardData = OrganizationsLeaderboardDataPoint[];
@@ -45,6 +46,7 @@ export async function fetchOrganizationsLeaderboard(filter: OrganizationsLeaderb
         name: item.displayName,
         contributions: item.contributionCount,
         contributionValue: 0,
+        contributionPercentage: item.contributionPercentage,
         website: '' // We don't seem to have this at the moment
       })
     );

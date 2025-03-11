@@ -1,4 +1,7 @@
 import { allMetrics, commits } from '~~/server/mocks/organization-dependency.mock';
+import {FilterActivityMetric} from "~~/server/data/types";
+import {DateTime} from "luxon";
+import {createDataSource} from "~~/server/data/data-sources";
 
 /**
  * Frontend expects the data to be in the following format:
@@ -31,23 +34,15 @@ import { allMetrics, commits } from '~~/server/mocks/organization-dependency.moc
  */
 export default defineEventHandler(async (event) => {
   const query = getQuery(event);
-  const { metric } = query;
-  const data = { ...(metric === 'all' ? allMetrics : commits) };
 
-  switch (metric) {
-    case 'all':
-      data.topOrganizations.count = 3;
-      break;
-    case 'pull-requests-opened':
-      data.topOrganizations.count = 5;
-      break;
-    case 'issues-opened':
-      data.topOrganizations.count = 1;
-      break;
-    default:
-      data.topOrganizations.count = 2;
-      break;
+  const filter = {
+    metric: (query.metric as FilterActivityMetric) || FilterActivityMetric.ALL,
+    project: query.project as string,
+    repository: query.repository as string,
+    startDate: query.startDate ? DateTime.fromISO(query.startDate as string) : undefined,
+    endDate: query.endDate ? DateTime.fromISO(query.endDate as string) : undefined,
   }
 
-  return data;
+  const dataSource = createDataSource();
+  return await dataSource.fetchOrganizationDependency(filter);
 });
