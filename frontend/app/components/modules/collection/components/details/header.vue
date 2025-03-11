@@ -1,25 +1,56 @@
 <template>
   <div class="bg-white">
-    <section class="container">
+    <section
+      class="container"
+      :class="scrollTop > 50 ? 'py-3 md:py-4' : ' py-5 md:py-8'"
+    >
       <div
-        class="flex gap-4 transition-all"
-        :class="scrollTop > 50 ? 'py-3 md:py-4' : ' py-5 md:py-8'"
+        :class="scrollTop > 50 ? 'h-0 opacity-0' : 'h-10 sm:h-0 p-px sm:p-0 opacity-100'"
+        class="transition-all overflow-hidden ease-linear"
       >
-        <lfx-back class="ease-linear transition-all hidden md:block">
-          <lfx-icon-button
-            type="transparent"
-            icon="angle-left"
-            class=""
+        <nuxt-link
+          :to="{name: LfxRoutes.COLLECTIONS}"
+          class="block sm:hidden"
+        >
+          <lfx-button
+            type="tertiary"
+            size="small"
+            icon="fa fa-angle-left fa-light"
+            label="Collections"
+            class="!rounded-full"
           />
-        </lfx-back>
+        </nuxt-link>
+      </div>
+      <div
+        class="flex  transition-all"
+      >
+        <div
+          :class="
+            scrollTop > 50
+              ? 'w-9 mr-3 md:mr-4 opacity-100 visible'
+              : 'w-0 sm:w-9 opacity-0 sm:opacity-100 invisible sm:visible pr-0 sm:mr-3 md:mr-4'
+          "
+          class="transition-all ease-linear"
+        >
+          <lfx-back
+            class="ease-linear transition-all"
+            :class="scrollTop > 50 ? 'block' : 'hidden sm:block'"
+          >
+            <lfx-icon-button
+              type="transparent"
+              icon="angle-left"
+              class=""
+            />
+          </lfx-back>
+        </div>
+
         <div
           class="flex justify-between gap-x-5 md:gap-x-8 flex-grow flex-col sm:flex-row"
-          :class="scrollTop > 50 ? 'gap-y-3': 'gap-y-5'"
+          :class="scrollTop > 50 ? 'sm:items-center': ''"
         >
           <div class="flex-grow flex">
             <div
-              :class="scrollTop > 50 ? 'pt-1' : 'pt-0.5'"
-              class="w-full"
+              class="w-full flex flex-col justify-center"
             >
               <lfx-skeleton
                 v-if="loading"
@@ -30,13 +61,13 @@
               <h1
                 v-else-if="props.collection"
                 class="font-secondary font-bold transition-all"
-                :class="scrollTop > 50 ? 'text-heading-3' : 'text-heading-3 md:text-heading-2'"
+                :class="scrollTop > 50 ? 'text-heading-4 md:text-heading-3' : 'text-heading-3 md:text-heading-2'"
               >
                 {{ props.collection.name }}
               </h1>
               <div
-                v-if="scrollTop <= 50"
-                class="pt-2 md:pt-3 w-full"
+                :class="scrollTop > 50 ? 'h-0 opacity-0 invisible pt-0' : 'h-6 md:h-8 opacity-100 visible pt-2 md:pt-3'"
+                class=" w-full transition-all ease-linear"
               >
                 <lfx-skeleton
                   v-if="loading"
@@ -46,7 +77,7 @@
                 />
                 <p
                   v-else-if="props.collection"
-                  class="text-body-2 md:text-body-1 text-neutral-500"
+                  class="text-body-2 md:text-body-1 text-neutral-500 line-clamp-1"
                 >
                   {{props.collection.description}}
                 </p>
@@ -55,7 +86,12 @@
           </div>
           <div
             v-if="props.collection"
-            class="flex flex-wrap sm:justify-end transition-all gap-5 md:gap-6"
+            class="flex flex-wrap sm:justify-end transition-all ease-linear gap-5 md:gap-6"
+            :class="
+              scrollTop > 50
+                ? 'h-0 sm:h-auto opacity-0 sm:opacity-100 invisible sm:visible pt-0'
+                : 'h-6 pt-5 sm:pt-0 opacity-100 visible'
+            "
           >
             <article class="flex items-center gap-2 h-min">
               <div class="h-6 w-6 md:h-8 md:w-8 rounded-full flex items-center justify-center bg-brand-50">
@@ -115,6 +151,8 @@ import {formatNumberShort} from "~/components/shared/utils/formatter";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
 import useScroll from "~/components/shared/utils/scroll";
 import LfxSkeleton from "~/components/uikit/skeleton/skeleton.vue";
+import {LfxRoutes} from "~/components/shared/types/routes";
+import LfxButton from "~/components/uikit/button/button.vue";
 
 const props = defineProps<{
   collection?: Collection,
