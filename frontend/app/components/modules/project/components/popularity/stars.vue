@@ -77,14 +77,14 @@ import { useProjectStore } from "~/components/modules/project/store/project.stor
 import { isEmptyData } from '~/components/shared/utils/helper';
 
 const {
-  startDate, endDate, selectedRepository, selectedKey
+  startDate, endDate, selectedRepository, selectedTimeRangeKey
 } = storeToRefs(useProjectStore())
 
 const activeTab = ref('cumulative');
 const route = useRoute();
 
-const barGranularity = computed(() => barGranularities[selectedKey.value as keyof typeof barGranularities]);
-const lineGranularity = computed(() => lineGranularities[selectedKey.value as keyof typeof lineGranularities]);
+const barGranularity = computed(() => barGranularities[selectedTimeRangeKey.value as keyof typeof barGranularities]);
+const lineGranularity = computed(() => lineGranularities[selectedTimeRangeKey.value as keyof typeof lineGranularities]);
 const { data, status, error } = useFetch(
   `/api/project/${route.params.slug}/popularity/stars`,
   {

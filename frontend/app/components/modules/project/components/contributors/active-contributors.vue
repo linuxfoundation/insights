@@ -68,7 +68,7 @@ import { useProjectStore } from "~/components/modules/project/store/project.stor
 import { isEmptyData } from '~/components/shared/utils/helper';
 
 const {
-  startDate, endDate, selectedRepository, selectedKey
+  startDate, endDate, selectedRepository, selectedTimeRangeKey
 } = storeToRefs(useProjectStore());
 
 const activeTab = ref(granularityTabs[0]?.value || 'weekly');
@@ -97,7 +97,7 @@ const chartData = computed<ChartData[]>(
 );
 const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
 
-const tabs = computed(() => granularityTabs.filter((tab) => tab.showForKeys.includes(selectedKey.value)));
+const tabs = computed(() => granularityTabs.filter((tab) => tab.showForKeys.includes(selectedTimeRangeKey.value)));
 
 const chartSeries = ref<ChartSeries[]>([
   {
@@ -112,7 +112,7 @@ const chartSeries = ref<ChartSeries[]>([
 
 const barChartConfig = computed(() => getBarChartConfig(chartData.value, chartSeries.value, activeTab.value));
 
-watch(selectedKey, () => {
+watch(selectedTimeRangeKey, () => {
   activeTab.value = tabs.value[0]?.value || 'weekly';
 });
 </script>
