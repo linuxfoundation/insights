@@ -1,5 +1,5 @@
 <template>
-  <lfx-maintain-height class="sticky top-14 lg:top-17 z-10">
+  <div class="sticky top-14 lg:top-17 z-10">
     <div class="bg-white outline outline-neutral-200">
       <section class="container">
         <div
@@ -115,7 +115,7 @@
         </div>
       </section>
     </div>
-  </lfx-maintain-height>
+  </div>
   <lfx-project-repository-switch
     v-if="isSearchRepoModalOpen && props.project"
     v-model="isSearchRepoModalOpen"
