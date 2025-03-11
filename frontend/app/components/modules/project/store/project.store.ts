@@ -11,7 +11,7 @@ import { getRepoNameFromUrl } from '~/components/modules/repository/utils/reposi
 export const useProjectStore = defineStore('project', () => {
   const route = useRoute();
 
-  const selectedKey = ref<string>(
+  const selectedTimeRangeKey = ref<string>(
     lfxProjectDateOptions[0]?.key || dateOptKeys.past90days
   );
   const startDate = ref<string | null>(lfxProjectDateOptions[0]?.startDate || null);
@@ -28,7 +28,7 @@ export const useProjectStore = defineStore('project', () => {
   );
 
   return {
-    selectedKey,
+    selectedTimeRangeKey,
     startDate,
     endDate,
     project,

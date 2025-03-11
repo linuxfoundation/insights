@@ -146,7 +146,7 @@ import { useProjectStore } from "~/components/modules/project/store/project.stor
 import LfxProjectCustomDateRangePicker
   from "~/components/modules/project/components/shared/header/custom-date-range-picker.vue";
 
-const { selectedKey, startDate, endDate } = storeToRefs(useProjectStore())
+const { selectedTimeRangeKey, startDate, endDate } = storeToRefs(useProjectStore())
 
 const options = ref();
 const isOpen = ref(false);
@@ -162,7 +162,7 @@ const toggle = (event: MouseEvent) => {
 
 const changeSelected = (option: DateOptionConfig) => {
   selected.value = option.key;
-  selectedKey.value = option.key;
+  selectedTimeRangeKey.value = option.key;
   startDate.value = option.startDate;
   endDate.value = option.endDate;
   options.value.hide();

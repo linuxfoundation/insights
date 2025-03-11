@@ -62,7 +62,7 @@ import { isEmptyData } from '~/components/shared/utils/helper';
 import { lineGranularities } from '~/components/shared/types/granularity';
 
 const {
- startDate, endDate, selectedRepository, selectedKey
+  startDate, endDate, selectedRepository, selectedTimeRangeKey
 } = storeToRefs(useProjectStore())
 
 const route = useRoute();
@@ -70,7 +70,7 @@ const route = useRoute();
 const activeTab = ref('contributors');
 const chartType = ref('line');
 
-const granularity = computed(() => lineGranularities[selectedKey.value as keyof typeof lineGranularities]);
+const granularity = computed(() => lineGranularities[selectedTimeRangeKey.value as keyof typeof lineGranularities]);
 const { data, status, error } = useFetch(
   `/api/project/${route.params.slug}/contributors/retention`,
   {
