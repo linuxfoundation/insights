@@ -9,57 +9,25 @@
     </p>
     <hr>
     <section class="mt-5">
-      <lfx-skeleton-state
-        :status="status"
-        height="2rem"
-        width="7.5rem"
-      >
+      <lfx-skeleton-state :status="status" height="2rem" width="7.5rem">
         <div class="flex flex-row gap-4 items-center">
           <div class="text-data-display-1">{{ formatNumber(summary.current) }} days</div>
-          <lfx-delta-display
-            :summary="summary"
-            icon="circle-arrow-up-right"
-            icon-type="solid"
-            unit="d"
-          />
+          <lfx-delta-display :summary="summary" icon="circle-arrow-up-right" icon-type="solid" unit="d" />
         </div>
       </lfx-skeleton-state>
 
-      <lfx-project-load-state
-        :status="status"
-        :error="error"
-        error-message="Error fetching forks"
-        :is-empty="isEmpty"
-        use-min-height
-        :height="250"
-      >
+      <lfx-project-load-state :status="status" :error="error" error-message="Error fetching forks" :is-empty="isEmpty"
+        use-min-height :height="250">
         <div class="w-full min-h-[250px] mt-5">
           <div class="flex flex-col gap-10 pt-6">
-            <lfx-merge-lead-item
-              title="Pickup"
-              description="Pull request raised"
-              icon="code-pull-request"
-              :item-value="mergeLeadTime.data.pickup"
-            />
-            <lfx-merge-lead-item
-              title="Review"
-              description="Review started"
-              icon="eye"
-              :item-value="mergeLeadTime.data.review"
-            />
-            <lfx-merge-lead-item
-              title="Accepted"
-              description="Pull request accepted"
-              icon="check-circle"
-              :item-value="mergeLeadTime.data.accepted"
-            />
-            <lfx-merge-lead-item
-              title="Merged"
-              description=""
-              icon="thumbs-up"
-              :item-value="mergeLeadTime.data.pickup"
-              is-last
-            />
+            <lfx-merge-lead-item title="Pickup" description="Pull request raised" icon="code-pull-request"
+              :item-value="mergeLeadTime.data.pickup" />
+            <lfx-merge-lead-item title="Review" description="Review started" icon="eye"
+              :item-value="mergeLeadTime.data.review" />
+            <lfx-merge-lead-item title="Accepted" description="Pull request accepted" icon="check-circle"
+              :item-value="mergeLeadTime.data.accepted" />
+            <lfx-merge-lead-item title="Merged" description="" icon="thumbs-up" :item-value="mergeLeadTime.data.pickup"
+              is-last />
           </div>
         </div>
       </lfx-project-load-state>
@@ -79,7 +47,7 @@ import LfxMergeLeadItem from './fragments/merge-lead-item.vue';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
 import { formatNumber } from '~/components/shared/utils/formatter';
-import type { Summary } from '~/components/shared/types/summary.types';
+import type { Summary } from '~~/types/shared/summary.types';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
 import { isEmptyData } from '~/components/shared/utils/helper';
 

@@ -11,70 +11,37 @@
     <section class="mt-5">
       <div class="mb-6">
         <div class="flex flex-row justify-between items-center">
-          <lfx-skeleton-state
-            :status="status"
-            height="2rem"
-            width="7.5rem"
-          >
+          <lfx-skeleton-state :status="status" height="2rem" width="7.5rem">
             <div class="flex flex-row gap-4 items-center">
               <div class="text-data-display-1">{{ formatNumber(summary.current) }}</div>
-              <lfx-delta-display
-                :summary="summary"
-                icon="circle-arrow-up-right"
-                icon-type="solid"
-              />
+              <lfx-delta-display :summary="summary" icon="circle-arrow-up-right" icon-type="solid" />
             </div>
           </lfx-skeleton-state>
 
-          <div
-            v-if="!isEmpty"
-            class="flex flex-col items-end justify-center"
-          >
+          <div v-if="!isEmpty" class="flex flex-col items-end justify-center">
             <span class="text-neutral-400 text-xs flex flex-row gap-2 items-center">
-              <lfx-icon
-                name="gauge-high"
-                :size="16"
-              />
+              <lfx-icon name="gauge-high" :size="16" />
               Avg. velocity
             </span>
-            <lfx-skeleton-state
-              :status="status"
-              height="1.25rem"
-              width="4rem"
-            >
+            <lfx-skeleton-state :status="status" height="1.25rem" width="4rem">
               <span class="text-xl">{{ formatNumber(pullRequests.avgVelocityInDays) }} days</span>
             </lfx-skeleton-state>
           </div>
         </div>
       </div>
 
-      <lfx-project-load-state
-        :status="status"
-        :error="error"
-        error-message="Error fetching forks"
-        :is-empty="isEmpty"
-        use-min-height
-      >
+      <lfx-project-load-state :status="status" :error="error" error-message="Error fetching forks" :is-empty="isEmpty"
+        use-min-height>
         <div class="w-full h-[330px] my-5">
           <lfx-chart :config="barChartConfig" />
         </div>
 
         <div class="flex flex-col gap-5">
-          <lfx-project-pull-request-legend-item
-            title="Open"
-            :delta="openSummary!"
-            :color="chartSeries[0]!.color!"
-          />
-          <lfx-project-pull-request-legend-item
-            title="Merged"
-            :delta="mergedSummary!"
-            :color="chartSeries[1]!.color!"
-          />
-          <lfx-project-pull-request-legend-item
-            title="Closed"
-            :delta="closedSummary!"
-            :color="chartSeries[2]!.color!"
-          />
+          <lfx-project-pull-request-legend-item title="Open" :delta="openSummary!" :color="chartSeries[0]!.color!" />
+          <lfx-project-pull-request-legend-item title="Merged" :delta="mergedSummary!"
+            :color="chartSeries[1]!.color!" />
+          <lfx-project-pull-request-legend-item title="Closed" :delta="closedSummary!"
+            :color="chartSeries[2]!.color!" />
         </div>
       </lfx-project-load-state>
     </section>
@@ -89,7 +56,7 @@ import LfxSkeletonState from '../shared/skeleton-state.vue';
 import LfxProjectLoadState from '../shared/load-state.vue';
 import type { PullRequests } from './types/pull-requests.types';
 import LfxProjectPullRequestLegendItem from './fragments/pull-request-legend-item.vue';
-import type { Summary } from '~/components/shared/types/summary.types';
+import type { Summary } from '~~/types/shared/summary.types';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
 import { convertToChartData } from '~/components/uikit/chart/helpers/chart-helpers';

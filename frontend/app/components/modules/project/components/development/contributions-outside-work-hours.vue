@@ -10,20 +10,11 @@
     <hr>
     <section class="mt-5">
       <div class="flex flex-row justify-between items-center mb-6 gap-8">
-        <lfx-skeleton-state
-          :status="status"
-          height="2rem"
-          width="7.5rem"
-        >
+        <lfx-skeleton-state :status="status" height="2rem" width="7.5rem">
           <div class="flex flex-row gap-4 items-center grow">
             <div class="text-data-display-1">{{ formatNumber(summary.current) }}%</div>
-            <lfx-delta-display
-              :summary="summary"
-              icon="circle-arrow-up-right"
-              icon-type="solid"
-              percentage-only
-              unit="%"
-            />
+            <lfx-delta-display :summary="summary" icon="circle-arrow-up-right" icon-type="solid" percentage-only
+              unit="%" />
           </div>
         </lfx-skeleton-state>
 
@@ -31,15 +22,8 @@
           <span class="text-neutral-400 text-xs flex flex-row gap-2 items-center">
             Mon-Fri (after 18:00)
           </span>
-          <lfx-skeleton-state
-            :status="status"
-            height="1.25rem"
-            width="4rem"
-          >
-            <span
-              v-if="status === 'success'"
-              class="text-xl"
-            >
+          <lfx-skeleton-state :status="status" height="1.25rem" width="4rem">
+            <span v-if="status === 'success'" class="text-xl">
               {{ formatNumber(weekdayPercentage, 1) }}%
             </span>
           </lfx-skeleton-state>
@@ -48,29 +32,16 @@
           <span class="text-neutral-400 text-xs flex flex-row gap-2 items-center">
             Weekends
           </span>
-          <lfx-skeleton-state
-            :status="status"
-            height="1.25rem"
-            width="4rem"
-          >
-            <span
-              v-if="status === 'success'"
-              class="text-xl"
-            >
+          <lfx-skeleton-state :status="status" height="1.25rem" width="4rem">
+            <span v-if="status === 'success'" class="text-xl">
               {{ formatNumber(weekendPercentage, 1) }}%
             </span>
           </lfx-skeleton-state>
         </div>
       </div>
 
-      <lfx-project-load-state
-        :status="status"
-        :error="error"
-        error-message="Error fetching forks"
-        :is-empty="isEmpty"
-        use-min-height
-        :height="430"
-      >
+      <lfx-project-load-state :status="status" :error="error" error-message="Error fetching forks" :is-empty="isEmpty"
+        use-min-height :height="430">
         <div class="w-full h-[430px] my-5">
           <lfx-chart :config="getScatterChartConfig(chartData, chartSeries)" />
         </div>
@@ -86,7 +57,7 @@ import { storeToRefs } from "pinia";
 import LfxProjectLoadState from '../shared/load-state.vue';
 import LfxSkeletonState from '../shared/skeleton-state.vue';
 import type { ContributionOutsideHours } from './types/contribution-outside-hours.types';
-import type { Summary } from '~/components/shared/types/summary.types';
+import type { Summary } from '~~/types/shared/summary.types';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
 import { convertToChartData } from '~/components/uikit/chart/helpers/chart-helpers';

@@ -10,38 +10,17 @@
     <hr>
     <section class="mt-5">
       <div class="mb-6">
-        <lfx-skeleton-state
-          :status="status"
-          height="2rem"
-          width="7.5rem"
-        >
-          <div
-            v-if="summary"
-            class="flex flex-row gap-4 items-center"
-          >
+        <lfx-skeleton-state :status="status" height="2rem" width="7.5rem">
+          <div v-if="summary" class="flex flex-row gap-4 items-center">
             <div class="text-data-display-1">{{ formatNumber(summary.current) }}</div>
-            <lfx-delta-display
-              :summary="summary"
-              icon="circle-arrow-up-right"
-              icon-type="solid"
-            />
+            <lfx-delta-display :summary="summary" icon="circle-arrow-up-right" icon-type="solid" />
           </div>
         </lfx-skeleton-state>
       </div>
 
-      <lfx-tabs
-        v-if="!isEmpty"
-        :tabs="tabs"
-        :model-value="activeTab"
-        @update:model-value="activeTab = $event"
-      />
-      <lfx-project-load-state
-        :status="status"
-        :error="error"
-        error-message="Error fetching forks"
-        :is-empty="isEmpty"
-        use-min-height
-      >
+      <lfx-tabs v-if="!isEmpty" :tabs="tabs" :model-value="activeTab" @update:model-value="activeTab = $event" />
+      <lfx-project-load-state :status="status" :error="error" error-message="Error fetching forks" :is-empty="isEmpty"
+        use-min-height>
         <div class="w-full h-[330px] mt-4">
           <lfx-chart :config="activeTab === 'cumulative' ? lineChartConfig : barChartConfig" />
         </div>
@@ -58,7 +37,7 @@ import LfxProjectLoadState from '../shared/load-state.vue';
 import LfxSkeletonState from '../shared/skeleton-state.vue';
 import type { ForksData } from './types/popularity.types';
 import { lineGranularities, barGranularities } from '~/components/shared/types/granularity';
-import type { Summary } from '~/components/shared/types/summary.types';
+import type { Summary } from '~~/types/shared/summary.types';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
