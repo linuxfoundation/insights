@@ -35,7 +35,6 @@ FROM node:${NODE_VERSION}-slim AS prod
 
 WORKDIR /usr/src/app
 
-COPY --from=deps /usr/src/app/node_modules ./node_modules
 COPY --from=builder /usr/src/app/.output ./.output
 
 EXPOSE 3000
