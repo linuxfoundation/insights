@@ -32,4 +32,16 @@ if (!data.value) {
     })
   }
 }
+
+const title = `${data.value?.name || 'Collection'} | LFX Insights`;
+const description = `${data.value?.description || ''}`;
+
+useSeoMeta({
+  title,
+  description,
+  ogTitle: title,
+  ogDescription: description,
+  twitterTitle: title,
+  twitterDescription: description
+})
 </script>
