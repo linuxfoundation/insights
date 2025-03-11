@@ -1,11 +1,11 @@
 import type { GranularityTabs } from '../types/contributors.types';
 import { dateOptKeys } from '~/components/modules/project/config/date-options';
-import { Granularity } from '~/components/shared/types/granularity';
+import { Granularity } from '~~/types/shared/granularity';
 
 export const granularityTabs: GranularityTabs[] = [
   {
     label: 'Weekly',
-    value: Granularity.Weekly,
+    value: Granularity.WEEKLY,
     format: 'MMM d',
     showForKeys: [
       dateOptKeys.past90days,
@@ -17,7 +17,7 @@ export const granularityTabs: GranularityTabs[] = [
   },
   {
     label: 'Monthly',
-    value: Granularity.Monthly,
+    value: Granularity.MONTHLY,
     format: 'MMM, yyyy',
     showForKeys: [
       dateOptKeys.past90days,
@@ -32,7 +32,7 @@ export const granularityTabs: GranularityTabs[] = [
   },
   {
     label: 'Quarterly',
-    value: Granularity.Quarterly,
+    value: Granularity.QUARTERLY,
     format: 'MMM d',
     showForKeys: [
       dateOptKeys.past180days,
@@ -45,7 +45,7 @@ export const granularityTabs: GranularityTabs[] = [
   },
   {
     label: 'Yearly',
-    value: Granularity.Yearly,
+    value: Granularity.YEARLY,
     format: 'yyyy',
     showForKeys: [
       dateOptKeys.previous5Year,
