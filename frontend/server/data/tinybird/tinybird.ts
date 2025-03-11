@@ -49,10 +49,7 @@ export async function fetchFromTinybird<T>(
     );
 
     return await $fetch(url, {
-        query: {
-            ...processedQuery,
-            token: config.tinybirdToken
-        },
+        query: processedQuery,
         headers: {
             Authorization: `Bearer ${config.tinybirdToken}`,
         }
