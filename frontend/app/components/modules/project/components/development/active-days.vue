@@ -105,7 +105,6 @@ const { data, status, error } = useFetch(
     params: {
       // Active days follow line chart granularities
       granularity,
-      project: route.params.slug,
       repository: selectedRepository,
       startDate,
       endDate,

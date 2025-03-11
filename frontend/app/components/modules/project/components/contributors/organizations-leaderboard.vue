@@ -47,7 +47,7 @@ const { data, status, error } = useFetch(
   `/api/project/${route.params.slug}/contributors/organization-leaderboard`,
   {
     params: {
-      metric: metric.value,
+      metric,
       repository: selectedRepository,
       startDate,
       endDate,
