@@ -56,8 +56,8 @@ const emit = defineEmits<{(e: 'update:visibility', value: boolean): void }>();
 
 const {scrollTop} = useScroll();
 
-const trigger = ref<any>(null);
-const popover = ref<any>(null);
+const trigger = ref(null);
+const popover = ref(null);
 const isVisible = ref(props.visibility);
 
 watch(() => props.visibility, (newValue) => {
@@ -84,7 +84,7 @@ const hidePopover = () => {
   removeOutsideClickListener();
 };
 
-const handleClickOutside = (event: any) => {
+const handleClickOutside = (event: Event) => {
   if (
     !trigger.value?.contains(event.target)
       && !popover.value?.contains(event.target)
