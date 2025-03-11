@@ -36,7 +36,8 @@ export default defineEventHandler(async (event) => {
 
   // TODO: Validate the query params
   const filter: ActiveOrganizationsFilter = {
-    granularity: (query.granularity as ActiveOrganizationsFilterGranularity) || ActiveOrganizationsFilterGranularity.QUARTERLY,
+    granularity: (query.granularity as ActiveOrganizationsFilterGranularity)
+      || ActiveOrganizationsFilterGranularity.QUARTERLY,
     project,
     repository: undefined,
     startDate: undefined,

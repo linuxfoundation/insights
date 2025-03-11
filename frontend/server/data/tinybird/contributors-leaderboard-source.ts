@@ -24,7 +24,9 @@ type TinybirdContributorsLeaderboardData = {
   contributionPercentage: number
 }[];
 
-export async function fetchContributorsLeaderboard(filter: ContributorsLeaderboardFilter): Promise<ContributorsLeaderboardResponse> {
+export async function fetchContributorsLeaderboard(
+  filter: ContributorsLeaderboardFilter
+): Promise<ContributorsLeaderboardResponse> {
   // TODO: We're passing unchecked query parameters to TinyBird directly from the frontend.
   //  We need to ensure this doesn't pose a security risk.
 
@@ -34,7 +36,10 @@ export async function fetchContributorsLeaderboard(filter: ContributorsLeaderboa
     endDate: filter.endDate,
   };
 
-  const data = await fetchFromTinybird<TinybirdContributorsLeaderboardData>('/v0/pipes/contributors_leaderboard.json', contributorsLeaderboardQuery);
+  const data = await fetchFromTinybird<TinybirdContributorsLeaderboardData>(
+    '/v0/pipes/contributors_leaderboard.json',
+    contributorsLeaderboardQuery
+  );
 
   let processedData: ContributorsLeaderboardData = [];
   if (data !== undefined) {
