@@ -2,7 +2,7 @@
   <div class="bg-white">
     <section class="container">
       <div
-        class="flex justify-between gap-4"
+        class="flex justify-between gap-4 transition"
         :class="scrollTop > 50 ? 'py-3 md:py-4' : 'py-3 md:py-5'"
       >
         <!--        <div class="flex items-center gap-4 flex-grow">-->
@@ -44,7 +44,7 @@
           icon="fa-arrow-down-wide-short fa-light"
           type="transparent"
           dropdown-position="left"
-          :icon-only-mobile="true"
+          :icon-only-mobile="false"
         />
       </div>
     </section>
