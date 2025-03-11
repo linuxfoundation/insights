@@ -9,23 +9,45 @@
     </p>
     <hr>
     <section class="mt-5">
-      <lfx-tabs :tabs="tabs" :model-value="activeTab" @update:model-value="activeTab = $event" />
+      <lfx-tabs
+        :tabs="tabs"
+        :model-value="activeTab"
+        @update:model-value="activeTab = $event"
+      />
       <div class="mt-7 mb-8">
-        <lfx-skeleton-state :status="status" height="2rem" width="7.5rem">
+        <lfx-skeleton-state
+          :status="status"
+          height="2rem"
+          width="7.5rem"
+        >
           <div class="flex flex-row gap-4 items-center">
             <div class="text-data-display-1">{{ formatNumber(summary.current) }} contributors</div>
-            <lfx-delta-display :summary="summary" icon="circle-arrow-up-right" icon-type="solid" />
+            <lfx-delta-display
+              :summary="summary"
+              icon="circle-arrow-up-right"
+              icon-type="solid"
+            />
           </div>
         </lfx-skeleton-state>
       </div>
-      <lfx-project-load-state :status="status" :error="error" error-message="Error fetching forks" :is-empty="isEmpty"
-        use-min-height :height="330">
+      <lfx-project-load-state
+        :status="status"
+        :error="error"
+        error-message="Error fetching forks"
+        :is-empty="isEmpty"
+        use-min-height
+        :height="330"
+      >
         <div class="w-full h-[330px]">
           <div class="font-semibold mb-5 mt-8">
             <span class="text-black">Top contributors </span>
           </div>
 
-          <lfx-code-review-table show-percentage :metric="activeTab" :code-review-item="codeReviewEngagement.data" />
+          <lfx-code-review-table
+            show-percentage
+            :metric="activeTab"
+            :code-review-item="codeReviewEngagement.data"
+          />
         </div>
       </lfx-project-load-state>
     </section>

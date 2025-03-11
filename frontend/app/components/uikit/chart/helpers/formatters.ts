@@ -34,8 +34,7 @@ const formatIsoDate = (value: string, format: string) => {
 
   return dt.toFormat(luxonFormat);
 };
-export const axisLabelFormatter = (format: string) => (value: string) =>
-  formatDate(value, format);
+export const axisLabelFormatter = (format: string) => (value: string) => formatDate(value, format);
 
 export const tooltipLabelFormatter = (params: LabelFormatterParams) => {
   if (params.axisDimension === 'x') {
@@ -60,8 +59,7 @@ const tooltipSingleValue = (params: SingleTooltipFormatterParams) => `
 export const tooltipFormatter = (
   paramsRaw: TopLevelFormatterParams // Tooltip hover box
 ): string | HTMLElement | HTMLElement[] => {
-  const params: MultipleTooltipFormatterParams =
-    paramsRaw as MultipleTooltipFormatterParams;
+  const params: MultipleTooltipFormatterParams = paramsRaw as MultipleTooltipFormatterParams;
   return `${formatDate(params[0]?.name || '', '{MMM} {yyyy}')}<br>${params
     .map(tooltipSingleValue)
     .join('')}`;
@@ -88,13 +86,10 @@ const formatDateRange = (
   }
 };
 
-export const tooltipFormatterWithData =
-  (data: ChartData[], granularity: string) =>
-  (
+export const tooltipFormatterWithData = (data: ChartData[], granularity: string) => (
     paramsRaw: TopLevelFormatterParams // Tooltip hover box
   ): string | HTMLElement | HTMLElement[] => {
-    const params: MultipleTooltipFormatterParams =
-      paramsRaw as MultipleTooltipFormatterParams;
+    const params: MultipleTooltipFormatterParams = paramsRaw as MultipleTooltipFormatterParams;
     const index = params[0]?.dataIndex || 0;
 
     const dateStr = formatDateRange(

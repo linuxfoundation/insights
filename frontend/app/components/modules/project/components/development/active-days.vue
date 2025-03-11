@@ -11,18 +11,33 @@
     <section class="mt-5">
       <div class="mb-6">
         <div class="flex flex-row justify-between items-center">
-          <lfx-skeleton-state :status="status" height="2rem" width="7.5rem">
+          <lfx-skeleton-state
+            :status="status"
+            height="2rem"
+            width="7.5rem"
+          >
             <div class="flex flex-row gap-4 items-center">
               <div class="text-data-display-1">{{ formatNumber(summary.current) }}</div>
-              <lfx-delta-display :summary="summary" icon="circle-arrow-up-right" icon-type="solid" />
+              <lfx-delta-display
+                :summary="summary"
+                icon="circle-arrow-up-right"
+                icon-type="solid"
+              />
             </div>
           </lfx-skeleton-state>
 
-          <div v-if="!isEmpty" class="flex flex-col items-end justify-center">
+          <div
+            v-if="!isEmpty"
+            class="flex flex-col items-end justify-center"
+          >
             <span class="text-neutral-400 text-xs flex flex-row gap-2 items-center">
               Avg. contributions per day
             </span>
-            <lfx-skeleton-state :status="status" height="1.25rem" width="4rem">
+            <lfx-skeleton-state
+              :status="status"
+              height="1.25rem"
+              width="4rem"
+            >
               <span class="text-xl">
                 {{ formatNumber(activeDays.avgContributions) }}
               </span>
@@ -32,8 +47,14 @@
       </div>
 
       <div class="mt-8 mb-6 text-neutral-900 font-medium">Contributions per day</div>
-      <lfx-project-load-state :status="status" :error="error" error-message="Error fetching forks" :is-empty="isEmpty"
-        use-min-height :height="100">
+      <lfx-project-load-state
+        :status="status"
+        :error="error"
+        error-message="Error fetching forks"
+        :is-empty="isEmpty"
+        use-min-height
+        :height="100"
+      >
         <div class="w-full h-[100px] mb-5">
           <lfx-chart :config="getHeatMapChartConfig(chartData, chartSeries, categoryData)" />
         </div>

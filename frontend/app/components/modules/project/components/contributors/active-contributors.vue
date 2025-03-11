@@ -8,17 +8,34 @@
     <hr>
     <section class="mt-5">
       <div class="mb-6">
-        <lfx-skeleton-state :status="status" height="2rem" width="7.5rem">
+        <lfx-skeleton-state
+          :status="status"
+          height="2rem"
+          width="7.5rem"
+        >
           <div class="flex flex-row gap-4 items-center">
             <div class="text-data-display-1">{{ formatNumber(summary.current) }}</div>
-            <lfx-delta-display :summary="summary" icon="circle-arrow-up-right" icon-type="solid" />
+            <lfx-delta-display
+              :summary="summary"
+              icon="circle-arrow-up-right"
+              icon-type="solid"
+            />
           </div>
         </lfx-skeleton-state>
       </div>
 
-      <lfx-tabs v-if="!isEmpty" :tabs="tabs" :model-value="activeTab" @update:model-value="activeTab = $event" />
-      <lfx-project-load-state :status="status" :error="error" error-message="Error fetching active contributors"
-        :is-empty="isEmpty">
+      <lfx-tabs
+        v-if="!isEmpty"
+        :tabs="tabs"
+        :model-value="activeTab"
+        @update:model-value="activeTab = $event"
+      />
+      <lfx-project-load-state
+        :status="status"
+        :error="error"
+        error-message="Error fetching active contributors"
+        :is-empty="isEmpty"
+      >
         <lfx-chart :config="barChartConfig" />
       </lfx-project-load-state>
     </section>
