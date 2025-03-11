@@ -9,7 +9,6 @@ export default {
       'AvatarGroup',
       'SelectButton',
       'Toast',
-      'Popover',
       'Select',
       'Skeleton',
       'DatePicker',

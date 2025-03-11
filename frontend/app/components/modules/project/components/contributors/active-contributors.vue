@@ -25,7 +25,7 @@
       </div>
 
       <lfx-tabs
-        v-if="!isEmpty"
+        v-if="!isEmpty && tabs.length > 1"
         :tabs="tabs"
         :model-value="activeTab"
         @update:model-value="activeTab = $event"
@@ -48,9 +48,9 @@ import { ref, computed, watch } from 'vue';
 import { storeToRefs } from "pinia";
 import LfxProjectLoadState from '../shared/load-state.vue';
 import LfxSkeletonState from '../shared/skeleton-state.vue';
-import type { ActiveContributors } from './types/contributors.types';
 import { granularityTabs } from './config/granularity-tabs';
-import type { Summary } from '~/components/shared/types/summary.types';
+import type { ActiveContributors } from '~~/types/contributors/responses.types';
+import type { Summary } from '~~/types/shared/summary.types';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
@@ -66,9 +66,10 @@ import { lfxColors } from '~/config/styles/colors';
 import { formatNumber } from '~/components/shared/utils/formatter';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
 import { isEmptyData } from '~/components/shared/utils/helper';
+import { dateOptKeys } from '~/components/modules/project/config/date-options';
 
 const {
-  startDate, endDate, selectedRepository, selectedTimeRangeKey
+  startDate, endDate, selectedRepository, selectedTimeRangeKey, customRangeGranularity
 } = storeToRefs(useProjectStore());
 
 const activeTab = ref(granularityTabs[0]?.value || 'weekly');
@@ -97,7 +98,13 @@ const chartData = computed<ChartData[]>(
 );
 const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
 
-const tabs = computed(() => granularityTabs.filter((tab) => tab.showForKeys.includes(selectedTimeRangeKey.value)));
+const tabs = computed(() => granularityTabs.filter((tab) => {
+  if (selectedTimeRangeKey.value === dateOptKeys.custom) {
+    return customRangeGranularity.value.includes(tab.value);
+  }
+
+  return tab.showForKeys.includes(selectedTimeRangeKey.value)
+}));
 
 const chartSeries = ref<ChartSeries[]>([
   {

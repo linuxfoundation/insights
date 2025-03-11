@@ -56,9 +56,9 @@ import { ref, computed } from 'vue';
 import { storeToRefs } from "pinia";
 import LfxProjectLoadState from '../shared/load-state.vue';
 import LfxSkeletonState from '../shared/skeleton-state.vue';
-import type { ForksData } from './types/popularity.types';
+import type { ForksData } from '~~/types/popularity/responses.types';
 import { lineGranularities, barGranularities } from '~/components/shared/types/granularity';
-import type { Summary } from '~/components/shared/types/summary.types';
+import type { Summary } from '~~/types/shared/summary.types';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
@@ -75,16 +75,22 @@ import { lfxColors } from '~/config/styles/colors';
 import { formatNumber } from '~/components/shared/utils/formatter';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
 import { isEmptyData } from '~/components/shared/utils/helper';
+import { dateOptKeys } from '~/components/modules/project/config/date-options';
+import type { Granularity } from '~~/types/shared/granularity';
 
 const {
-  startDate, endDate, selectedRepository, selectedTimeRangeKey
+  startDate, endDate, selectedRepository, selectedTimeRangeKey, customRangeGranularity
 } = storeToRefs(useProjectStore())
 
 const activeTab = ref('cumulative');
 const route = useRoute();
 
-const barGranularity = computed(() => barGranularities[selectedTimeRangeKey.value as keyof typeof barGranularities]);
-const lineGranularity = computed(() => lineGranularities[selectedTimeRangeKey.value as keyof typeof lineGranularities]);
+const barGranularity = computed(() => (selectedTimeRangeKey.value === dateOptKeys.custom
+  ? customRangeGranularity.value[0] as Granularity
+  : barGranularities[selectedTimeRangeKey.value as keyof typeof barGranularities]));
+const lineGranularity = computed(() => (selectedTimeRangeKey.value === dateOptKeys.custom
+  ? customRangeGranularity.value[0] as Granularity
+  : lineGranularities[selectedTimeRangeKey.value as keyof typeof lineGranularities]));
 const granularity = computed(() => (activeTab.value === 'cumulative'
   ? lineGranularity.value
   : barGranularity.value));

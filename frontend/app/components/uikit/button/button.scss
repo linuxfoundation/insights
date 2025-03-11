@@ -5,7 +5,7 @@
   &.p-button-pill {
     @apply rounded-full;
   }
-  
+
   &:hover {
     @apply bg-brand-600;
   }
@@ -35,7 +35,7 @@
   }
 
   &-tertiary {
-    @apply bg-white text-neutral-900 outline outline-neutral-200 font-medium;
+    @apply bg-white text-neutral-900 outline outline-1 outline-neutral-200 font-medium;
 
     &:hover {
       @apply bg-neutral-50;

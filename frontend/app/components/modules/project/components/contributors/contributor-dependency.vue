@@ -57,7 +57,7 @@ import { storeToRefs } from "pinia";
 import LfxProjectLoadState from '../shared/load-state.vue';
 import LfxDependencyDisplay from './fragments/dependency-display.vue';
 import LfxContributorsTable from './fragments/contributors-table.vue';
-import type { ContributorDependency } from './types/contributors.types';
+import type { ContributorDependency } from '~~/types/contributors/responses.types';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxMetricDropdown from '~/components/modules/project/components/contributors/fragments/metric-dropdown.vue';
 import LfxAvatarGroup from '~/components/uikit/avatar-group/avatar-group.vue';
@@ -81,9 +81,11 @@ const { data, status, error } = useFetch(
   }
 );
 
-const topContributors = computed(() => (data.value as ContributorDependency)?.topContributors);
-const otherContributors = computed(() => (data.value as ContributorDependency)?.otherContributors);
-const contributors = computed(() => (data.value as ContributorDependency)?.list);
+const contributorDependency = computed<ContributorDependency>(() => data.value as ContributorDependency);
+
+const topContributors = computed(() => contributorDependency.value?.topContributors);
+const otherContributors = computed(() => contributorDependency.value?.otherContributors);
+const contributors = computed(() => contributorDependency.value?.list);
 
 const contributorsAvatars = computed(() => (contributors.value?.length
   ? contributors.value.slice(0, Math.min(5, topContributors.value.count))

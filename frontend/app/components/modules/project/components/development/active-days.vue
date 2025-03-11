@@ -69,8 +69,8 @@ import { ref, computed } from 'vue';
 import { storeToRefs } from "pinia";
 import LfxProjectLoadState from '../shared/load-state.vue';
 import LfxSkeletonState from '../shared/skeleton-state.vue';
-import type { ActiveDays } from './types/active-days.types';
-import type { Summary } from '~/components/shared/types/summary.types';
+import type { ActiveDays } from '~~/types/development/responses.types';
+import type { Summary } from '~~/types/shared/summary.types';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
 import { convertToChartData, convertToCategoryData } from '~/components/uikit/chart/helpers/chart-helpers';
@@ -87,13 +87,18 @@ import { formatNumber } from '~/components/shared/utils/formatter';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
 import { isEmptyData } from '~/components/shared/utils/helper';
 import { lineGranularities } from '~/components/shared/types/granularity';
+import { dateOptKeys } from '~/components/modules/project/config/date-options';
+import type { Granularity } from '~~/types/shared/granularity';
 
 const {
-  startDate, endDate, selectedRepository, selectedTimeRangeKey
+  startDate, endDate, selectedRepository, selectedTimeRangeKey, customRangeGranularity
 } = storeToRefs(useProjectStore())
 
 const route = useRoute();
-const granularity = computed(() => lineGranularities[selectedTimeRangeKey.value as keyof typeof lineGranularities]);
+
+const granularity = computed(() => (selectedTimeRangeKey.value === dateOptKeys.custom
+  ? customRangeGranularity.value[0] as Granularity
+  : lineGranularities[selectedTimeRangeKey.value as keyof typeof lineGranularities]));
 const { data, status, error } = useFetch(
   () => `/api/project/${route.params.slug}/development/active-days`,
   {

@@ -16,12 +16,9 @@
           />
         </div>
         <div class="basis-1/2 flex justify-end">
-          <lfx-tabs
-            :tabs="chartTypes"
-            :model-value="chartType"
-            width-type="inline"
-            @update:model-value="chartType = $event"
-          />
+          <!-- TODO: Hiding for now since the final design is not decided yet -->
+          <!-- <lfx-tabs :tabs="chartTypes" :model-value="chartType" width-type="inline"
+            @update:model-value="chartType = $event" /> -->
         </div>
       </div>
       <lfx-project-load-state
@@ -60,17 +57,22 @@ import { getLineAreaChartConfig } from '~/components/uikit/chart/configs/line.ar
 import { useProjectStore } from "~/components/modules/project/store/project.store";
 import { isEmptyData } from '~/components/shared/utils/helper';
 import { lineGranularities } from '~/components/shared/types/granularity';
+import type { Retention } from '~~/types/contributors/responses.types';
+import { dateOptKeys } from '~/components/modules/project/config/date-options';
+import type { Granularity } from '~~/types/shared/granularity';
 
 const {
-  startDate, endDate, selectedRepository, selectedTimeRangeKey
+  startDate, endDate, selectedRepository, selectedTimeRangeKey, customRangeGranularity
 } = storeToRefs(useProjectStore())
 
 const route = useRoute();
 
 const activeTab = ref('contributors');
-const chartType = ref('line');
+// const chartType = ref('line');
 
-const granularity = computed(() => lineGranularities[selectedTimeRangeKey.value as keyof typeof lineGranularities]);
+const granularity = computed(() => (selectedTimeRangeKey.value === dateOptKeys.custom
+  ? customRangeGranularity.value[0] as Granularity
+  : lineGranularities[selectedTimeRangeKey.value as keyof typeof lineGranularities]));
 const { data, status, error } = useFetch(
   `/api/project/${route.params.slug}/contributors/retention`,
   {
@@ -84,9 +86,17 @@ const { data, status, error } = useFetch(
   }
 );
 
+const retention = computed<Retention[]>(() => data.value as Retention[]);
+
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
-  () => convertToChartData(data.value as RawChartData[], 'dateFrom', ['percentage'], undefined, 'dateTo')
+  () => convertToChartData(
+    retention.value as unknown as RawChartData[],
+    'startDate',
+    ['percentage'],
+    undefined,
+    'endDate'
+  )
 );
 const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
 
@@ -101,18 +111,18 @@ const tabs = [
   }
 ];
 
-const chartTypes = [
-  {
-    icon: 'fa-light fa-chart-line-down',
-    label: 'Line',
-    value: 'line'
-  },
-  {
-    icon: 'fa-light fa-bars-sort',
-    label: 'Bar',
-    value: 'bar'
-  }
-];
+// const chartTypes = [
+//   {
+//     icon: 'fa-light fa-chart-line-down',
+//     label: 'Line',
+//     value: 'line'
+//   },
+//   {
+//     icon: 'fa-light fa-bars-sort',
+//     label: 'Bar',
+//     value: 'bar'
+//   }
+// ];
 
 const chartSeries = ref<ChartSeries[]>([
   {

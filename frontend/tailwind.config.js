@@ -59,6 +59,7 @@ export default {
 
     extend: {
       height: {
+        '7.5': '1.875rem',
         17: '4.25rem',
         18: '4.5rem'
       },

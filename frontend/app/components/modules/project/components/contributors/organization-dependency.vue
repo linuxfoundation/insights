@@ -57,7 +57,7 @@ import { storeToRefs } from "pinia";
 import LfxProjectLoadState from '../shared/load-state.vue';
 import LfxDependencyDisplay from './fragments/dependency-display.vue';
 import LfxOrganizationsTable from './fragments/organizations-table.vue';
-import type { OrganizationDependency } from './types/contributors.types';
+import type { OrganizationDependency } from '~~/types/contributors/responses.types';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxMetricDropdown from '~/components/modules/project/components/contributors/fragments/metric-dropdown.vue';
 import LfxAvatarGroup from '~/components/uikit/avatar-group/avatar-group.vue';
@@ -81,11 +81,10 @@ const { data, status, error } = useFetch(
   }
 );
 
-const topOrganizations = computed(() => (data.value as OrganizationDependency)?.topOrganizations);
-const otherOrganizations = computed(
-  () => (data.value as OrganizationDependency)?.otherOrganizations
-);
-const organizations = computed(() => (data.value as OrganizationDependency)?.list);
+const organizationDependency = computed<OrganizationDependency>(() => data.value as OrganizationDependency);
+const topOrganizations = computed(() => organizationDependency.value?.topOrganizations);
+const otherOrganizations = computed(() => organizationDependency.value?.otherOrganizations);
+const organizations = computed(() => organizationDependency.value?.list);
 
 const topOrganizationsAvatars = computed(() => (organizations.value?.length
   ? organizations.value.slice(0, Math.min(3, organizations.value.length))

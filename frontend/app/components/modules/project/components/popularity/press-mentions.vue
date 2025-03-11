@@ -38,9 +38,9 @@
 import { useFetch, useRoute } from 'nuxt/app';
 import { ref, computed, watch } from 'vue';
 import { storeToRefs } from "pinia";
-import type { PressMentions, PressMention } from './types/mentions.types';
 import LfxProjectPressMentionLists from './fragments/press-mention-lists.vue';
-import type { Summary } from '~/components/shared/types/summary.types';
+import type { PressMentions, PressMention } from '~~/types/popularity/responses.types';
+import type { Summary } from '~~/types/shared/summary.types';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
 import { convertToChartData } from '~/components/uikit/chart/helpers/chart-helpers';

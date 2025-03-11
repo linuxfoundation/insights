@@ -48,7 +48,7 @@ import { useFetch, useRoute } from 'nuxt/app';
 import { computed } from 'vue';
 import { storeToRefs } from "pinia";
 import LfxProjectLoadState from '../shared/load-state.vue';
-import type { ReviewTimeByPrItem } from './types/review-time-by-pr.types';
+import type { ReviewTimeByPrItem } from '~~/types/development/responses.types';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxProgressBar from '~/components/uikit/progress-bar/progress-bar.vue';
 import { isEmptyData } from '~/components/shared/utils/helper';

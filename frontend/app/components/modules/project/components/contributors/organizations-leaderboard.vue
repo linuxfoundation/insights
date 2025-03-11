@@ -34,7 +34,7 @@ import { storeToRefs } from "pinia";
 import LfxProjectLoadState from '../shared/load-state.vue';
 import LfxMetricDropdown from './fragments/metric-dropdown.vue';
 import LfxOrganizationsTable from './fragments/organizations-table.vue';
-import type { OrganizationLeaderboard } from './types/contributors.types';
+import type { OrganizationLeaderboard } from '~~/types/contributors/responses.types';
 import LfxCard from '~/components/uikit/card/card.vue';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
 import { isEmptyData } from '~/components/shared/utils/helper';
