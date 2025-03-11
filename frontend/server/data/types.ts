@@ -74,9 +74,10 @@ export enum GeographicDistributionType {
 }
 
 export type GeographicDistributionFilter = {
-  project: string
-  repository?: string
-  type?: GeographicDistributionType
-  startDate?: DateTime
-  endDate?: DateTime
+  project: string;
+  metric?: FilterActivityMetric;
+  repository?: string;
+  type?: GeographicDistributionType;
+  startDate?: DateTime;
+  endDate?: DateTime;
 }
