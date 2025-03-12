@@ -51,7 +51,8 @@ export async function fetchOrganizationDependency(filter: OrganizationDependency
   ]);
 
   const topOrganizationsCount = tinybirdTopOrganizationsResponse.data.length;
-  const topOrganizationsPercentage = tinybirdTopOrganizationsResponse.data[topOrganizationsCount - 1].contributionPercentageRunningTotal;
+  const topOrganizationsPercentage = tinybirdTopOrganizationsResponse.data[topOrganizationsCount - 1]
+      .contributionPercentageRunningTotal;
   const {totalOrganizationCount} = tinybirdTopOrganizationsResponse.data[0];
 
   const response: OrganizationDependencyResponse = {
