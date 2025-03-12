@@ -30,9 +30,6 @@ export async function fetchFromTinybird<T>(
     const tinybirdBaseUrl = process.env.TINYBIRD_BASE_URL || config.tinybirdBaseUrl;
     const tinybirdToken = process.env.TINYBIRD_TOKEN || config.tinybirdToken;
 
-    console.log(tinybirdToken);
-    console.log(process.env);
-
     if (!tinybirdBaseUrl) {
         throw new Error('Tinybird base URL is not defined');
     }
