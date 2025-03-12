@@ -38,7 +38,8 @@ export async function fetchFromTinybird<T>(
     }
     const url = `${tinybirdBaseUrl}${path}`;
 
-    // We don't want o send undefined values to TinyBird, so we remove those from the query. We also format DateTime objects for TinyBird
+    // We don't want to send undefined values to TinyBird, so we remove those from the query.
+    // We also format DateTime objects so that TinyBird understands them.
     const processedQuery = Object.fromEntries(
       Object.entries(query)
         .filter(([_, value]) => (value !== undefined) && (value !== '') && (value !== null))
@@ -51,12 +52,9 @@ export async function fetchFromTinybird<T>(
     );
 
     return await $fetch(url, {
-        query: {
-            ...processedQuery,
-            token: tinybirdToken
-        },
+        query: processedQuery,
         headers: {
-            Authorization: `Bearer ${config.tinybirdToken}`,
+            Authorization: `Bearer ${tinybirdToken}`,
         }
     });
 }

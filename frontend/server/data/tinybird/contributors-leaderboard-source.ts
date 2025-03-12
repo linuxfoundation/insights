@@ -6,6 +6,7 @@ export type ContributorsLeaderboardDataPoint = {
   name: string; // Full name of the contributor
   contributions: number; // Total number of contributions
   contributionValue: number; // Value of the contribution
+  contributionPercentage: number;
 }
 export type ContributorsLeaderboardData = ContributorsLeaderboardDataPoint[];
 export type ContributorsLeaderboardResponse = {
@@ -32,6 +33,7 @@ export async function fetchContributorsLeaderboard(
 
   const contributorsLeaderboardQuery = {
     repository: filter.repository,
+    limit: filter.limit,
     startDate: filter.startDate,
     endDate: filter.endDate,
   };
@@ -48,7 +50,8 @@ export async function fetchContributorsLeaderboard(
         avatar: item.avatar,
         name: item.displayName,
         contributions: item.contributionCount,
-        contributionValue: 0
+        contributionValue: 0,
+        contributionPercentage: item.contributionPercentage
       })
     );
   }

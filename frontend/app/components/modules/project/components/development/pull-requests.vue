@@ -87,8 +87,8 @@ import { ref, computed } from 'vue';
 import { storeToRefs } from "pinia";
 import LfxSkeletonState from '../shared/skeleton-state.vue';
 import LfxProjectLoadState from '../shared/load-state.vue';
-import type { PullRequests } from './types/pull-requests.types';
 import LfxProjectPullRequestLegendItem from './fragments/pull-request-legend-item.vue';
+import type { PullRequests } from '~~/types/development/responses.types';
 import type { Summary } from '~~/types/shared/summary.types';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
@@ -106,20 +106,23 @@ import { useProjectStore } from "~/components/modules/project/store/project.stor
 import LfxIcon from "~/components/uikit/icon/icon.vue";
 import { isEmptyData } from '~/components/shared/utils/helper';
 import { barGranularities } from '~/components/shared/types/granularity';
+import { dateOptKeys } from '~/components/modules/project/config/date-options';
+import type { Granularity } from '~~/types/shared/granularity';
 
 const {
-  startDate, endDate, selectedRepository, selectedTimeRangeKey
+  startDate, endDate, selectedRepository, selectedTimeRangeKey, customRangeGranularity
 } = storeToRefs(useProjectStore())
 
 const route = useRoute();
 
-const granularity = computed(() => barGranularities[selectedTimeRangeKey.value as keyof typeof barGranularities]);
+const granularity = computed(() => (selectedTimeRangeKey.value === dateOptKeys.custom
+  ? customRangeGranularity.value[0] as Granularity
+  : barGranularities[selectedTimeRangeKey.value as keyof typeof barGranularities]));
 const { data, status, error } = useFetch(
   () => `/api/project/${route.params.slug}/development/pull-requests`,
   {
     params: {
       granularity,
-      project: route.params.slug,
       repository: selectedRepository,
       startDate,
       endDate,

@@ -39,7 +39,7 @@
         :height="330"
       >
         <div class="w-full h-[330px]">
-          <div class="font-semibold mb-5 mt-8">
+          <div class="font-semibold mb-5">
             <span class="text-black">Top contributors </span>
           </div>
 
@@ -60,8 +60,8 @@ import { ref, computed } from 'vue';
 import { storeToRefs } from "pinia";
 import LfxProjectLoadState from '../shared/load-state.vue';
 import LfxSkeletonState from '../shared/skeleton-state.vue';
-import type { CodeReviewEngagement } from './types/code-review-engagement.types';
 import LfxCodeReviewTable from './fragments/code-review-table.vue';
+import type { CodeReviewEngagement } from '~~/types/development/responses.types';
 import type { Summary } from '~~/types/shared/summary.types';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
@@ -79,7 +79,7 @@ const { data, status, error } = useFetch(
   () => `/api/project/${route.params.slug}/development/code-review-engagement`,
   {
     params: {
-      metric: activeTab.value,
+      metric: activeTab,
       repository: selectedRepository,
       startDate,
       endDate,

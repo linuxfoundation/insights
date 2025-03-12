@@ -1,4 +1,6 @@
-import { allMetrics, commits } from '~~/server/mocks/contributor-dependency.mock';
+import {DateTime} from "luxon";
+import {createDataSource} from "~~/server/data/data-sources";
+import {FilterActivityMetric} from "~~/server/data/types";
 
 /**
  * Frontend expects the data to be in the following format:
@@ -31,23 +33,15 @@ import { allMetrics, commits } from '~~/server/mocks/contributor-dependency.mock
  */
 export default defineEventHandler(async (event) => {
   const query = getQuery(event);
-  const { metric } = query;
-  const data = { ...(metric === 'all' ? allMetrics : commits) };
 
-  switch (metric) {
-    case 'all':
-      data.topContributors.count = 3;
-      break;
-    case 'commits':
-      data.topContributors.count = 5;
-      break;
-    case 'issues-opened':
-      data.topContributors.count = 1;
-      break;
-    default:
-      data.topContributors.count = 2;
-      break;
+  const filter = {
+    metric: (query.metric as FilterActivityMetric) || FilterActivityMetric.ALL,
+    project: query.project as string,
+    repository: query.repository as string,
+    startDate: query.startDate ? DateTime.fromISO(query.startDate as string) : undefined,
+    endDate: query.endDate ? DateTime.fromISO(query.endDate as string) : undefined,
   }
 
-  return data;
+  const dataSource = createDataSource();
+  return await dataSource.fetchContributorDependency(filter);
 });

@@ -1,7 +1,7 @@
-import {
-  contributorRetention,
-  organizationRetention
-} from '~~/server/mocks/retention.mock';
+import {DateTime} from "luxon";
+import type {FilterGranularity, RetentionFilter} from "~~/server/data/types";
+import {DemographicType, FilterActivityMetric} from "~~/server/data/types";
+import {createDataSource} from "~~/server/data/data-sources";
 
 /**
  * Frontend expects the data to be in the following format:
@@ -20,18 +20,28 @@ import {
  */
 export default defineEventHandler(async (event) => {
   const query = getQuery(event);
-  let data;
 
-  if (query.type === 'contributors') {
-    data = contributorRetention;
-  } else if (query.type === 'organizations') {
-    data = organizationRetention;
-  } else {
-    throw createError({
-      statusCode: 400,
-      statusMessage: 'Invalid type'
-    });
+  const project = (event.context.params as { slug: string }).slug;
+
+  const filter: RetentionFilter = {
+    project,
+    granularity: query.granularity as FilterGranularity,
+    metric: (query.metric as FilterActivityMetric) || FilterActivityMetric.ALL,
+    repository: query.repository as string,
+    demographicType: (query.type as DemographicType) || DemographicType.CONTRIBUTORS,
+    onlyContributions: false, // forks and stars are non-contribution activities, but we want to count them.
+    startDate: query.startDate ? DateTime.fromISO(query.startDate as string) : undefined,
+    endDate: query.endDate ? DateTime.fromISO(query.endDate as string) : undefined,
+  }
+  const dataSource = createDataSource();
+  const data = await dataSource.fetchRetention(filter);
+
+  if (data) {
+    return data;
   }
 
-  return data;
+  throw createError({
+    statusCode: 500,
+    statusMessage: 'Error fetching retention data.'
+  });
 });

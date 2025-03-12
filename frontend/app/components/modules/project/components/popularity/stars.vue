@@ -75,24 +75,31 @@ import { lfxColors } from '~/config/styles/colors';
 import { formatNumber } from '~/components/shared/utils/formatter';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
 import { isEmptyData } from '~/components/shared/utils/helper';
+import { dateOptKeys } from '~/components/modules/project/config/date-options';
+import type { Granularity } from '~~/types/shared/granularity';
 
 const {
-  startDate, endDate, selectedRepository, selectedTimeRangeKey
+  startDate, endDate, selectedRepository, selectedTimeRangeKey, customRangeGranularity
 } = storeToRefs(useProjectStore())
 
 const activeTab = ref('cumulative');
 const route = useRoute();
 
-const barGranularity = computed(() => barGranularities[selectedTimeRangeKey.value as keyof typeof barGranularities]);
-const lineGranularity = computed(() => lineGranularities[selectedTimeRangeKey.value as keyof typeof lineGranularities]);
+const barGranularity = computed(() => (selectedTimeRangeKey.value === dateOptKeys.custom
+  ? customRangeGranularity.value[0] as Granularity
+  : barGranularities[selectedTimeRangeKey.value as keyof typeof barGranularities]));
+const lineGranularity = computed(() => (selectedTimeRangeKey.value === dateOptKeys.custom
+  ? customRangeGranularity.value[0] as Granularity
+  : lineGranularities[selectedTimeRangeKey.value as keyof typeof lineGranularities]));
+const granularity = computed(() => (activeTab.value === 'cumulative'
+  ? lineGranularity.value
+  : barGranularity.value));
 const { data, status, error } = useFetch(
   `/api/project/${route.params.slug}/popularity/stars`,
   {
     params: {
-      granularity: activeTab.value === 'cumulative'
-        ? lineGranularity.value
-        : barGranularity.value,
-      type: activeTab.value,
+      granularity,
+      type: activeTab,
       repository: selectedRepository,
       startDate,
       endDate,

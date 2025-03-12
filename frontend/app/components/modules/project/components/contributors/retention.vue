@@ -58,9 +58,11 @@ import { useProjectStore } from "~/components/modules/project/store/project.stor
 import { isEmptyData } from '~/components/shared/utils/helper';
 import { lineGranularities } from '~/components/shared/types/granularity';
 import type { Retention } from '~~/types/contributors/responses.types';
+import { dateOptKeys } from '~/components/modules/project/config/date-options';
+import type { Granularity } from '~~/types/shared/granularity';
 
 const {
-  startDate, endDate, selectedRepository, selectedTimeRangeKey
+  startDate, endDate, selectedRepository, selectedTimeRangeKey, customRangeGranularity
 } = storeToRefs(useProjectStore())
 
 const route = useRoute();
@@ -68,13 +70,15 @@ const route = useRoute();
 const activeTab = ref('contributors');
 // const chartType = ref('line');
 
-const granularity = computed(() => lineGranularities[selectedTimeRangeKey.value as keyof typeof lineGranularities]);
+const granularity = computed(() => (selectedTimeRangeKey.value === dateOptKeys.custom
+  ? customRangeGranularity.value[0] as Granularity
+  : lineGranularities[selectedTimeRangeKey.value as keyof typeof lineGranularities]));
 const { data, status, error } = useFetch(
   `/api/project/${route.params.slug}/contributors/retention`,
   {
     params: {
       granularity,
-      type: activeTab.value,
+      type: activeTab,
       repository: selectedRepository,
       startDate,
       endDate,

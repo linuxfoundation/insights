@@ -1,4 +1,7 @@
-import { allMetrics, commits } from '~~/server/mocks/organization-leaderboard.mock';
+import {DateTime} from "luxon";
+import {createDataSource} from "~~/server/data/data-sources";
+import type {OrganizationsLeaderboardFilter} from "~~/server/data/types";
+import {FilterActivityMetric} from "~~/server/data/types";
 
 /**
  * Frontend expects the data to be in the following format:
@@ -30,22 +33,25 @@ import { allMetrics, commits } from '~~/server/mocks/organization-leaderboard.mo
  */
 export default defineEventHandler(async (event) => {
   const query = getQuery(event);
-  const { metric } = query;
+
   const meta = {
     offset: 0,
     limit: 10,
     total: 100
   };
 
-  if (metric === 'all') {
-    return {
-      meta,
-      data: allMetrics
-    };
-  }
+  const filter: OrganizationsLeaderboardFilter = {
+    metric: (query.metric as FilterActivityMetric) || FilterActivityMetric.ALL,
+    repository: query.repository as string,
+    startDate: query.startDate ? DateTime.fromISO(query.startDate as string) : undefined,
+    endDate: query.endDate ? DateTime.fromISO(query.endDate as string) : undefined,
+  };
+
+  const dataSource = createDataSource();
+  const result = await dataSource.fetchOrganizationsLeaderboard(filter);
 
   return {
     meta,
-    data: commits
+    data: result.data
   };
 });

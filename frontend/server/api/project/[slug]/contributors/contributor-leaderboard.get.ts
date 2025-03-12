@@ -1,7 +1,7 @@
 import {DateTime} from "luxon";
 import {createDataSource} from "~~/server/data/data-sources";
 import type {ContributorsLeaderboardFilter} from "~~/server/data/types";
-import { ContributorsLeaderboardFilterMetric} from "~~/server/data/types";
+import {FilterActivityMetric} from "~~/server/data/types";
 
 /**
  * Frontend expects the data to be in the following format:
@@ -31,24 +31,24 @@ import { ContributorsLeaderboardFilterMetric} from "~~/server/data/types";
  * - offset: number
  * - limit: number
  */
+
 export default defineEventHandler(async (event) => {
   const query = getQuery(event);
+
+  const filter: ContributorsLeaderboardFilter = {
+    metric: (query.metric as FilterActivityMetric) || FilterActivityMetric.ALL,
+    repository: query.repository as string,
+    startDate: query.startDate ? DateTime.fromISO(query.startDate as string) : undefined,
+    endDate: query.endDate ? DateTime.fromISO(query.endDate as string) : undefined,
+  };
+  const dataSource = createDataSource();
+  const result = await dataSource.fetchContributorsLeaderboard(filter);
 
   const meta = {
     offset: 0,
     limit: 10,
     total: 100
   };
-
-  const filter: ContributorsLeaderboardFilter = {
-    metric: (query.metric as ContributorsLeaderboardFilterMetric) || ContributorsLeaderboardFilterMetric.ALL,
-    repository: query.repository as string,
-    startDate: query.startDate ? DateTime.fromISO(query.startDate as string) : undefined,
-    endDate: query.endDate ? DateTime.fromISO(query.endDate as string) : undefined,
-  };
-
-  const dataSource = createDataSource();
-  const result = await dataSource.fetchContributorsLeaderboard(filter);
 
   return {
     meta,

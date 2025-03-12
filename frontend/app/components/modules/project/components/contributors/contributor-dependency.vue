@@ -73,7 +73,7 @@ const { data, status, error } = useFetch(
   `/api/project/${route.params.slug}/contributors/contributor-dependency`,
   {
     params: {
-      metric: metric.value,
+      metric,
       repository: selectedRepository,
       startDate,
       endDate,
@@ -83,9 +83,9 @@ const { data, status, error } = useFetch(
 
 const contributorDependency = computed<ContributorDependency>(() => data.value as ContributorDependency);
 
-const topContributors = computed(() => contributorDependency.value.topContributors);
-const otherContributors = computed(() => contributorDependency.value.otherContributors);
-const contributors = computed(() => contributorDependency.value.list);
+const topContributors = computed(() => contributorDependency.value?.topContributors);
+const otherContributors = computed(() => contributorDependency.value?.otherContributors);
+const contributors = computed(() => contributorDependency.value?.list);
 
 const contributorsAvatars = computed(() => (contributors.value?.length
   ? contributors.value.slice(0, Math.min(5, topContributors.value.count))
