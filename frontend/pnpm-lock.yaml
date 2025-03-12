@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@linuxfoundation/lfx-ui-core':
+        specifier: ^0.0.12
+        version: 0.0.12
       '@nuxt/eslint':
         specifier: ^0.7.5
         version: 0.7.5(@vue/compiler-sfc@3.5.13)(eslint@9.19.0(jiti@2.4.2))(magicast@0.3.5)(rollup@4.32.1)(typescript@5.7.3)(vite@6.0.11(@types/node@22.12.0)(jiti@2.4.2)(sass-embedded@1.83.4)(sass@1.83.4)(terser@5.37.0)(yaml@2.7.0))
@@ -754,6 +757,14 @@ packages:
 
   '@kwsites/promise-deferred@1.1.1':
     resolution: {integrity: sha512-GaHYm+c0O9MjZRu0ongGBRbinu8gVAMd2UZjji6jVmqKtZluZnptXGWhz1E8j8D2HJ3f/yMxKAUC0b+57wncIw==}
+
+  '@linuxfoundation/lfx-ui-core@0.0.12':
+    resolution: {integrity: sha512-yOGk9URri2/Ojp611cCloORO0PuMdjJD8Og6emhLV9+dMvArweTRzLTTOsTAJp7Y1ZtzZA81xMG24nwu/0fyag==}
+    peerDependencies:
+      prettier: '>=3.0.0'
+    peerDependenciesMeta:
+      prettier:
+        optional: true
 
   '@mapbox/node-pre-gyp@2.0.0':
     resolution: {integrity: sha512-llMXd39jtP0HpQLVI37Bf1m2ADlEb35GYSh1SDSLsBhR+5iCxiNGlT31yqbNtVHygHAtMy6dWFERpU2JgufhPg==}
@@ -6367,6 +6378,8 @@ snapshots:
       - supports-color
 
   '@kwsites/promise-deferred@1.1.1': {}
+
+  '@linuxfoundation/lfx-ui-core@0.0.12': {}
 
   '@mapbox/node-pre-gyp@2.0.0':
     dependencies:
