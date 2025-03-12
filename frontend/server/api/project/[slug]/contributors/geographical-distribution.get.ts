@@ -1,6 +1,6 @@
 import {DateTime} from "luxon";
 import type {GeographicDistributionFilter} from "~~/server/data/types";
-import {FilterActivityMetric, GeographicDistributionType} from "~~/server/data/types";
+import {FilterActivityMetric, DemographicType} from "~~/server/data/types";
 import {createDataSource} from "~~/server/data/data-sources";
 
 /**
@@ -36,7 +36,7 @@ export default defineEventHandler(async (event) => {
     project,
     metric: (query.metric as FilterActivityMetric) || FilterActivityMetric.ALL,
     repository: query.repository as string,
-    type: (query.type as GeographicDistributionType) || GeographicDistributionType.CONTRIBUTORS,
+    type: (query.type as DemographicType) || DemographicType.CONTRIBUTORS,
     startDate: query.startDate ? DateTime.fromISO(query.startDate as string) : undefined,
     endDate: query.endDate ? DateTime.fromISO(query.endDate as string) : undefined,
   }
