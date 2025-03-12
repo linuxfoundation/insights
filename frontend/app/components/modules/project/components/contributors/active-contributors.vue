@@ -72,7 +72,7 @@ const {
   startDate, endDate, selectedRepository, selectedTimeRangeKey, customRangeGranularity
 } = storeToRefs(useProjectStore());
 
-const activeTab = ref(granularityTabs[0]?.value || 'weekly');
+const activeTab = ref(granularityTabs[1]?.value || 'weekly');
 const route = useRoute();
 
 const { data, status, error } = useFetch(
@@ -121,6 +121,7 @@ const barChartConfig = computed(() => getBarChartConfig(chartData.value, chartSe
 
 watch(selectedTimeRangeKey, () => {
   activeTab.value = tabs.value[0]?.value || 'weekly';
+  console.log('activeTab', activeTab.value);
 });
 </script>
 
