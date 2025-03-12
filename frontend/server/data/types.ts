@@ -68,7 +68,7 @@ export type OrganizationDependencyFilter = {
   endDate?: DateTime;
 }
 
-export enum GeographicDistributionType {
+export enum DemographicType {
   CONTRIBUTORS = 'contributors',
   ORGANIZATIONS = 'organizations'
 }
@@ -77,7 +77,18 @@ export type GeographicDistributionFilter = {
   project: string;
   metric?: FilterActivityMetric;
   repository?: string;
-  type?: GeographicDistributionType;
+  type?: DemographicType;
+  startDate?: DateTime;
+  endDate?: DateTime;
+}
+
+export type RetentionFilter = {
+  project: string;
+  granularity: FilterGranularity;
+  metric?: FilterActivityMetric;
+  repository?: string;
+  demographicType?: DemographicType;
+  onlyContributions: boolean;
   startDate?: DateTime;
   endDate?: DateTime;
 }

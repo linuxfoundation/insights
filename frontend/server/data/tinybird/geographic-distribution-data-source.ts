@@ -1,5 +1,5 @@
 import type {GeographicDistributionFilter} from "../types";
-import { GeographicDistributionType} from "../types";
+import { DemographicType} from "../types";
 import {fetchFromTinybird, type TinybirdResponse} from './tinybird'
 
 // This is one data point in the response
@@ -36,11 +36,11 @@ export async function fetchGeographicDistribution(filter: GeographicDistribution
   // TODO: We're passing unchecked query parameters to TinyBird directly from the frontend.
   //  We need to ensure this doesn't pose a security risk.
 
-  const queryType = filter?.type as GeographicDistributionType || GeographicDistributionType.CONTRIBUTORS;
+  const queryType = filter?.type as DemographicType || DemographicType.CONTRIBUTORS;
 
-  // Default to contributors data and use organizations data if that type is set in the query.
+  // Default to contributor data and use organization data if that type is set in the query.
   let path = 'contributors_geo_distribution.json';
-  if (queryType === GeographicDistributionType.ORGANIZATIONS) {
+  if (queryType === DemographicType.ORGANIZATIONS) {
     path = 'organizations_geo_distribution.json';
   }
 
@@ -54,8 +54,8 @@ export async function fetchGeographicDistribution(filter: GeographicDistribution
       name: item.country,
       code: item.country_code,
       flag: item.flag,
-      count: (queryType === GeographicDistributionType.CONTRIBUTORS ? item.contributorCount : item.organizationCount) as number,
-      percentage: (queryType === GeographicDistributionType.CONTRIBUTORS ? item.contributorPercentage : item.organizationPercentage) as number,
+      count: (queryType === DemographicType.CONTRIBUTORS ? item.contributorCount : item.organizationCount) as number,
+      percentage: (queryType === DemographicType.CONTRIBUTORS ? item.contributorPercentage : item.organizationPercentage) as number,
     })
   );
 
