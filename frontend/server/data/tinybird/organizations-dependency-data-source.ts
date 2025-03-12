@@ -75,7 +75,7 @@ function convertLeaderboardData(leaderboard: OrganizationsLeaderboardDataPoint[]
     logo: item.logo,
     name: item.name,
     contributions: item.contributions,
-    percentage: item.contributionPercentage,
+    percentage: item.percentage,
     website: item.website || '' // We don't seem to have this at the moment
   }));
 }
