@@ -55,12 +55,10 @@ export async function fetchGeographicDistribution(filter: GeographicDistribution
     name: item.country,
     code: item.country_code,
     flag: item.flag,
-    count: (
-      queryType === DemographicType.CONTRIBUTORS ? item.contributorCount : item.organizationCount
-    ) as number,
-    percentage: (
-      queryType === DemographicType.CONTRIBUTORS ? item.contributorPercentage : item.organizationPercentage
-    ) as number,
+    count: (queryType === DemographicType.CONTRIBUTORS ? item.contributorCount : item.organizationCount) as number,
+    percentage: (queryType === DemographicType.CONTRIBUTORS
+      ? item.contributorPercentage
+      : item.organizationPercentage) as number,
   }));
 
   const response: GeographicDistributionResponse = {

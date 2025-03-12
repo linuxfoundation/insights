@@ -38,10 +38,8 @@ export async function fetchOrganizationsLeaderboard(
     endDate: filter.endDate,
   };
 
-  const data = await fetchFromTinybird<TinybirdOrganizationsLeaderboardData>(
-    '/v0/pipes/organizations_leaderboard.json',
-    organizationsLeaderboardQuery
-  );
+  const endpoint = '/v0/pipes/organizations_leaderboard.json';
+  const data = await fetchFromTinybird<TinybirdOrganizationsLeaderboardData>(endpoint, organizationsLeaderboardQuery);
 
   let processedData: OrganizationsLeaderboardData = [];
   if (data !== undefined) {
