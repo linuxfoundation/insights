@@ -32,7 +32,9 @@ export interface DataSource {
     fetchActiveContributors: (filter: ActiveContributorsFilter) => Promise<ActiveContributorsResponse>;
     fetchActiveOrganizations: (filter: ActiveOrganizationsFilter) => Promise<ActiveOrganizationsResponse>;
     fetchContributorsLeaderboard: (filter: ContributorsLeaderboardFilter) => Promise<ContributorsLeaderboardResponse>;
-    fetchOrganizationsLeaderboard: (filter: OrganizationsLeaderboardFilter) => Promise<OrganizationsLeaderboardResponse>;
+    fetchOrganizationsLeaderboard: (
+        filter: OrganizationsLeaderboardFilter
+    ) => Promise<OrganizationsLeaderboardResponse>;
     fetchContributorDependency: (filter: ContributorDependencyFilter) => Promise<ContributorDependencyResponse>;
     fetchOrganizationDependency: (filter: OrganizationDependencyFilter) => Promise<OrganizationDependencyResponse>;
     fetchGeographicDistribution: (filter: GeographicDistributionFilter) => Promise<GeographicDistributionResponse>;

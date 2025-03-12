@@ -1,5 +1,5 @@
 import type { MapSeriesOption } from 'echarts/types/dist/shared';
-import { merge } from 'lodash';
+import _ from 'lodash';
 import type { ChartData, ChartSeries, SeriesTypes } from '../types/ChartTypes';
 import { lfxColors } from '~/config/styles/colors';
 
@@ -76,7 +76,7 @@ export const getGeoMapChartConfig = (
   series: ChartSeries[],
   maxValue: number = 100000
 ): ECOption => {
-  const option = merge({}, defaultGeoOption, {
+  const option = _.merge({}, defaultGeoOption, {
     visualMap: {
       max: maxValue
     }

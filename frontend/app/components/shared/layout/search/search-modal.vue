@@ -53,7 +53,7 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref } from "vue";
-import { debounce } from "lodash";
+import _ from "lodash";
 import type {
   SearchCollection, SearchProject, SearchRepository, SearchResults
 } from "~~/types/search";
@@ -102,7 +102,7 @@ const fetchSearchResults = () => {
       });
 };
 
-const triggerSearch = debounce(fetchSearchResults, 300);
+const triggerSearch = _.debounce(fetchSearchResults, 300);
 
 onMounted(() => {
   searchInputRef.value?.focus();
