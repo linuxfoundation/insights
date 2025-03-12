@@ -2,7 +2,7 @@
   <div class="flex flex-row gap-4 items-center mb-6">
     <lfx-dropdown
       v-model="metric"
-      :split-lines="[0]"
+      :split-lines="[1]"
       icon="fa-light fa-display-code"
       :options="metricOptions"
       full-width
