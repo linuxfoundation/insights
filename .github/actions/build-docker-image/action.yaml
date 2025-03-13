@@ -1,0 +1,34 @@
+name: Insights docker image builder
+description: Builds and pushes insights docker image
+
+outputs:
+  image:
+    description: Image that was built
+    value: ${{ steps.tag-generator.outputs.IMAGE_TAG }}
+
+runs:
+  using: composite
+  steps:
+    - name: Get short commit sha hash
+      uses: benjlevesque/short-sha@v2.1
+      id: short-sha
+      with:
+        length: 6
+
+    - run: echo "IMAGE_VERSION=${{ steps.short-sha.outputs.sha }}.${{ github.run_attempt }}" >> $GITHUB_OUTPUT
+      shell: bash
+      id: version-generator
+
+    - run: echo "IMAGE_TAG=sjc.ocir.io/axbydjxa5zuh/insights-app:${{ steps.version-generator.outputs.IMAGE_VERSION }}" >> $GITHUB_OUTPUT
+      shell: bash
+      id: tag-generator
+
+    - name: Login to docker repository
+      shell: bash
+      run: echo '${{ env.ORACLE_DOCKER_PASSWORD }}' | docker login sjc.ocir.io -u '${{ env.ORACLE_DOCKER_USERNAME }}' --password-stdin
+
+    - name: Build and push docker image
+      shell: bash
+      run: |
+        docker build -t ${{ steps.tag-generator.outputs.IMAGE_TAG }}
+        docker push ${{ steps.tag-generator.outputs.IMAGE_TAG }}
