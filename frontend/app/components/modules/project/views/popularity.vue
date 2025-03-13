@@ -8,7 +8,7 @@
           @update:model-value="onSideNavUpdate"
         />
       </div>
-      <div class="max-md:w-full w-1/2 pb-10">
+      <div class="max-lg:w-full w-1/2 pb-10">
         <lfx-scroll-area
           class="flex flex-col gap-12"
           @scrolled-to-view="onScrolledToView"
@@ -35,7 +35,7 @@
         <lfx-project-package-downloads /> -->
       </div>
 
-      <div class="w-1/4 pl-10 max-md:hidden block" />
+      <div class="w-1/4 pl-10 max-lg:hidden block" />
     </div>
   </div>
 </template>
