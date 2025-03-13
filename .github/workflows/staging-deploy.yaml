@@ -12,6 +12,7 @@ env:
   ORACLE_REGION: ${{ secrets.ORACLE_REGION }}
   ORACLE_FINGERPRINT: ${{ secrets.ORACLE_FINGERPRINT }}
   ORACLE_KEY: ${{ secrets.ORACLE_KEY }}
+  ORACLE_KEY_PASSPHRASE: ${{ secrets.ORACLE_KEY_PASSPHRASE }}
   ORACLE_CLUSTER: ${{ secrets.ORACLE_STAGING_CLUSTER }}
   KUBECONFIG_PATH: /home/runner/.kube/config
 
@@ -38,21 +39,21 @@ jobs:
       - name: Configure Oracle Cloud CLI
         run: |
             mkdir -p ~/.oci
-            echo "${{ secrets.ORACLE_KEY }}" | base64 --decode > ~/.oci/oci_api_key.pem
+            echo "${{ env.ORACLE_KEY }}" | base64 --decode > ~/.oci/oci_api_key.pem
             chmod 600 ~/.oci/oci_api_key.pem
             echo "[DEFAULT]" > ~/.oci/config
-            echo "user=${{ secrets.ORACLE_USER }}" >> ~/.oci/config
-            echo "fingerprint=${{ secrets.ORACLE_FINGERPRINT }}" >> ~/.oci/config
+            echo "user=${{ env.ORACLE_USER }}" >> ~/.oci/config
+            echo "fingerprint=${{ env.ORACLE_FINGERPRINT }}" >> ~/.oci/config
             echo "key_file=~/.oci/oci_api_key.pem" >> ~/.oci/config
-            echo "tenancy=${{ secrets.ORACLE_TENANT }}" >> ~/.oci/config
-            echo "region=${{ secrets.ORACLE_REGION }}" >> ~/.oci/config
+            echo "tenancy=${{ env.ORACLE_TENANT }}" >> ~/.oci/config
+            echo "region=${{ env.ORACLE_REGION }}" >> ~/.oci/config
+            echo "pass_phrase=${{ env.ORACLE_KEY_PASSPHRASE }}" >> ~/.oci/config
             chmod 600 ~/.oci/config
 
       - name: Verify OCI CLI Configuration
         run: |
           oci os ns get --config-file ~/.oci/config || cat ~/.oci/config
 
-      - name: Get Kubeconfig
+      - name: Get Cluster Kubeconfig
         run: |
-          oci ce cluster create-kubeconfig --cluster-id ${{ env.ORACLE_CLUSTER }} --file ${{ env.KUBECONFIG_PATH }} --region ${{ secrets.ORACLE_REGION }} --overwrite
-          echo "KUBECONFIG=${{ env.KUBECONFIG_PATH }}" >> $GITHUB_ENV
+          oci ce cluster create-kubeconfig --cluster-id ${{ env.ORACLE_CLUSTER }} --file ${{ env.KUBECONFIG_PATH }} --region ${{ secrets.ORACLE_REGION }} --token-version 2.0.0  --kube-endpoint PUBLIC_ENDPOINT --overwrite
