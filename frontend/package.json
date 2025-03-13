@@ -16,7 +16,7 @@
     "storybook:build": "storybook build"
   },
   "dependencies": {
-    "@linuxfoundation/lfx-ui-core": "^0.0.12",
+    "@linuxfoundation/lfx-ui-core": "^0.0.14",
     "@nuxt/eslint": "^0.7.5",
     "@pinia/nuxt": "0.9.0",
     "@primevue/themes": "^4.2.5",
