@@ -60,6 +60,6 @@ export default {
     ],
     script: [
         // Using fontawesome like this instead of installing plugins
-        {src: 'https://kit.fontawesome.com/b5289aebdf.js'}
+        {src: 'https://kit.fontawesome.com/d65f54d9ea.js', crossorigin: 'anonymous'}
     ]
 }
