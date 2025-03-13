@@ -1,14 +1,14 @@
 <template>
   <div class="container">
     <div class="flex justify-between pt-12">
-      <div class="w-1/4 pr-10">
+      <div class="w-1/4 pr-10 max-md:hidden block">
         <lfx-side-nav
           :list="sideNavItems"
           :model-value="activeItem"
           @update:model-value="onSideNavUpdate"
         />
       </div>
-      <div class="w-1/2 pb-10">
+      <div class="max-md:w-full w-1/2 pb-10">
         <lfx-scroll-area
           class="flex flex-col gap-12"
           @scrolled-to-view="onScrolledToView"
@@ -72,7 +72,7 @@
         </lfx-scroll-area>
       </div>
 
-      <div class="w-1/4 pl-10" />
+      <div class="w-1/4 pl-10 max-md:hidden block" />
     </div>
   </div>
 </template>
