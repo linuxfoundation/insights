@@ -4,8 +4,12 @@
       Forks
     </h3>
     <p class="text-body-2 text-neutral-500 mb-6">
-      Active contributor is an individual performing tasks such as commits,
-      issues, or pull requests during the selected time period.
+      New forks (copies) of the project repositories during the selected time period.
+      <a
+        :href="links.learnMore"
+        class="text-brand-500"
+        target="_blank"
+      >Learn more</a>
     </p>
     <hr>
     <section class="mt-5">
@@ -77,6 +81,7 @@ import { useProjectStore } from "~/components/modules/project/store/project.stor
 import { isEmptyData } from '~/components/shared/utils/helper';
 import { dateOptKeys } from '~/components/modules/project/config/date-options';
 import type { Granularity } from '~~/types/shared/granularity';
+import { links } from '~/config/links';
 
 const {
   startDate, endDate, selectedRepository, selectedTimeRangeKey, customRangeGranularity

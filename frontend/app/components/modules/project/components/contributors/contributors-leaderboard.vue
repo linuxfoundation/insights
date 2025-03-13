@@ -2,8 +2,12 @@
   <lfx-card class="p-6">
     <h3 class="text-heading-3 font-semibold font-secondary pb-3">Contributors leaderboard</h3>
     <p class="text-body-2 text-neutral-500 mb-6">
-      It ranks contributors based on the number of code commits, pull requests, issues closed, and
-      other metrics representing their relative activity levels and impact on the project.
+      Contributor ranking based on the number of activities performed and the impact on the project.
+      <a
+        :href="links.learnMore"
+        class="text-brand-500"
+        target="_blank"
+      >Learn more</a>
     </p>
 
     <hr>
@@ -38,6 +42,7 @@ import type { ContributorLeaderboard } from '~~/types/contributors/responses.typ
 import LfxCard from '~/components/uikit/card/card.vue';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
 import { isEmptyData } from '~/components/shared/utils/helper';
+import { links } from '~/config/links';
 
 const { startDate, endDate, selectedRepository } = storeToRefs(useProjectStore())
 

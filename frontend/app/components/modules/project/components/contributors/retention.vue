@@ -2,7 +2,12 @@
   <lfx-card class="p-6">
     <h3 class="text-heading-3 font-semibold font-secondary pb-3">Retention</h3>
     <p class="text-body-2 text-neutral-500 mb-6">
-      Rate at which contributors join and remain active participants of the project.
+      Rate at which contributors and organizations continued contributing to the project during the selected period.
+      <a
+        :href="links.learnMore"
+        class="text-brand-500"
+        target="_blank"
+      >Learn more</a>
     </p>
     <hr>
     <section class="mt-5">
@@ -60,6 +65,7 @@ import { lineGranularities } from '~/components/shared/types/granularity';
 import type { Retention } from '~~/types/contributors/responses.types';
 import { dateOptKeys } from '~/components/modules/project/config/date-options';
 import type { Granularity } from '~~/types/shared/granularity';
+import { links } from '~/config/links';
 
 const {
   startDate, endDate, selectedRepository, selectedTimeRangeKey, customRangeGranularity

@@ -4,8 +4,12 @@
       Review time by pull request size
     </h3>
     <p class="text-body-2 text-neutral-500 mb-6">
-      Active contributor is an individual performing tasks such as commits,
-      issues, or pull requests during the selected time period.
+      Average time taken to review pull requests, sorted by number of code line changes during the selected period.
+      <a
+        :href="links.learnMore"
+        class="text-brand-500"
+        target="_blank"
+      >Learn more</a>
     </p>
     <hr>
     <section class="mt-5">
@@ -53,6 +57,7 @@ import LfxCard from '~/components/uikit/card/card.vue';
 import LfxProgressBar from '~/components/uikit/progress-bar/progress-bar.vue';
 import { isEmptyData } from '~/components/shared/utils/helper';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
+import { links } from '~/config/links';
 
 const route = useRoute();
 const { startDate, endDate, selectedRepository } = storeToRefs(useProjectStore());

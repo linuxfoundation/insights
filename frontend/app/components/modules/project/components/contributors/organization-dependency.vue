@@ -2,8 +2,13 @@
   <lfx-card class="p-6">
     <h3 class="text-heading-3 font-semibold font-secondary pb-3">Organization dependency</h3>
     <p class="text-body-2 text-neutral-500 mb-5">
-      Distribution of contributions by different organizations to the project. A project is at risk
-      if only a few organizations are responsible for a large portion of the total activities.
+      Distribution of contributions across different organizations, whose contributors were actively involved in the
+      project during the selected period.
+      <a
+        :href="links.learnMore"
+        class="text-brand-500"
+        target="_blank"
+      >Learn more</a>
     </p>
 
     <hr>
@@ -64,6 +69,7 @@ import LfxAvatarGroup from '~/components/uikit/avatar-group/avatar-group.vue';
 import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
 import { isEmptyData } from '~/components/shared/utils/helper';
+import { links } from '~/config/links';
 
 const { startDate, endDate, selectedRepository } = storeToRefs(useProjectStore())
 

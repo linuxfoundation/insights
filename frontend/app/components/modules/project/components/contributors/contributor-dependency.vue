@@ -2,8 +2,13 @@
   <lfx-card class="p-6">
     <h3 class="text-heading-3 font-semibold font-secondary pb-3">Contributor dependency</h3>
     <p class="text-body-2 text-neutral-500 mb-5">
-      Distribution of contributions among different contributors, highlighting key individuals who
-      are actively involved in the project.
+      Distribution of contributions among different contributors, highlighting key individuals who are actively
+      involved in the project during the selected time period.
+      <a
+        :href="links.learnMore"
+        class="text-brand-500"
+        target="_blank"
+      >Learn more</a>
     </p>
 
     <hr>
@@ -64,6 +69,7 @@ import LfxAvatarGroup from '~/components/uikit/avatar-group/avatar-group.vue';
 import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
 import { isEmptyData } from '~/components/shared/utils/helper';
+import { links } from '~/config/links';
 
 const { startDate, endDate, selectedRepository } = storeToRefs(useProjectStore())
 
