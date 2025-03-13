@@ -58,7 +58,9 @@ export default {
             href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Roboto+Slab:wght@400;600&display=swap'
         }
     ],
+
     script: [
+
         // Using fontawesome like this instead of installing plugins
         {src: 'https://kit.fontawesome.com/d65f54d9ea.js', crossorigin: 'anonymous'}
     ]
