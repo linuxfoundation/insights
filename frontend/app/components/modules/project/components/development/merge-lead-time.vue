@@ -4,8 +4,12 @@
       Merge lead time
     </h3>
     <p class="text-body-2 text-neutral-500 mb-6">
-      Active contributor is an individual performing tasks such as commits,
-      issues, or pull requests during the selected time period.
+      Average time taken for pull requests to be raised, reviewed, accepted and merged during the selected period.
+      <a
+        :href="links.learnMore"
+        class="text-brand-500"
+        target="_blank"
+      >Learn more</a>
     </p>
     <hr>
     <section class="mt-5">
@@ -82,6 +86,7 @@ import { formatNumber } from '~/components/shared/utils/formatter';
 import type { Summary } from '~~/types/shared/summary.types';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
 import { isEmptyData } from '~/components/shared/utils/helper';
+import { links } from '~/config/links';
 
 const { startDate, endDate, selectedRepository } = storeToRefs(useProjectStore())
 

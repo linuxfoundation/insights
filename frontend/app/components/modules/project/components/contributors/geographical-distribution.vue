@@ -3,7 +3,13 @@
     <div class="px-6">
       <h3 class="text-heading-3 font-semibold font-secondary pb-3">Geographical distribution</h3>
       <p class="text-body-2 text-neutral-500 mb-6">
-        Distribution of contributors based on geographical location.
+        Distribution of contributors and organizations based on geographical location at the time of their contributions
+        during the selected period.
+        <a
+          :href="links.learnMore"
+          class="text-brand-500"
+          target="_blank"
+        >Learn more</a>
       </p>
       <hr>
     </div>
@@ -89,6 +95,7 @@ import { getGeoMapChartConfig } from '~/components/uikit/chart/configs/geo-map.c
 import { formatNumber } from '~/components/shared/utils/formatter';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
 import { isEmptyData } from '~/components/shared/utils/helper';
+import { links } from '~/config/links';
 
 const metricOptions = metricsOptions;
 
