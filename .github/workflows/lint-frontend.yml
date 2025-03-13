@@ -1,0 +1,17 @@
+name: Lint & Typescript Check
+
+on:
+  pull_request:
+    paths:
+      - 'frontend/**'
+
+jobs:
+  lint-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Lint code
+        run: pnpm i && pnpm lint && pnpm tsc-check
+        working-directory: frontend
