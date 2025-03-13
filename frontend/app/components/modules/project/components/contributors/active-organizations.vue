@@ -72,7 +72,7 @@ const {
   startDate, endDate, selectedRepository, selectedTimeRangeKey, customRangeGranularity
 } = storeToRefs(useProjectStore())
 
-const activeTab = ref(granularityTabs[0]?.value || 'weekly');
+const activeTab = ref(granularityTabs[1]?.value || 'weekly');
 const route = useRoute();
 const { data, status, error } = useFetch(
   `/api/project/${route.params.slug}/contributors/active-organizations`,

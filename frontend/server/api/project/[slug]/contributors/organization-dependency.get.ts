@@ -1,5 +1,4 @@
 import {DateTime} from "luxon";
-// import { allMetrics, commits } from '~~/server/mocks/organization-dependency.mock';
 import {FilterActivityMetric} from "~~/server/data/types";
 import {createDataSource} from "~~/server/data/data-sources";
 
