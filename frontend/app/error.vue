@@ -36,6 +36,9 @@
           </nuxt-link>
         </div>
       </div>
+      <pre class="whitespace-pre-wrap">
+          {{error}}
+    </pre>
     </div>
   </main>
 </template>
