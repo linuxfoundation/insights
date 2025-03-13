@@ -7,6 +7,13 @@ env:
   CLOUD_ENV: lf-oracle-staging
   ORACLE_DOCKER_USERNAME: ${{ secrets.ORACLE_DOCKER_USERNAME }}
   ORACLE_DOCKER_PASSWORD: ${{ secrets.ORACLE_DOCKER_PASSWORD }}
+  ORACLE_USER: ${{ secrets.ORACLE_USER }}
+  ORACLE_TENANT: ${{ secrets.ORACLE_TENANT }}
+  ORACLE_REGION: ${{ secrets.ORACLE_REGION }}
+  ORACLE_FINGERPRINT: ${{ secrets.ORACLE_FINGERPRINT }}
+  ORACLE_KEY: ${{ secrets.ORACLE_KEY }}
+  ORACLE_CLUSTER: ${{ secrets.ORACLE_STAGING_CLUSTER }}
+  KUBECONFIG_PATH: /home/runner/.kube/config
 
 jobs:
   deploy:
@@ -24,4 +31,26 @@ jobs:
       - name: Update PATH
         run: echo "${{ env.OCI_CLI_DIR }}" >> $GITHUB_PATH
 
-      - uses: ./.github/actions/build-docker-image
+      - name: Build docker image
+        uses: ./.github/actions/build-docker-image
+        id: build-docker-image
+
+      - name: Configure Oracle Cloud CLI
+        run: |
+            mkdir -p ~/.oci
+            echo "${{ secrets.ORACLE_KEY }}" | base64 --decode > ~/.oci/oci_api_key.pem
+            chmod 600 ~/.oci/oci_api_key.pem
+            oci setup repair-file-permissions --file ~/.oci/oci_api_key.pem
+            oci os ns get --config-file ~/.oci/config
+            echo "[DEFAULT]" > ~/.oci/config
+            echo "user=${{ secrets.ORACLE_USER }}" >> ~/.oci/config
+            echo "fingerprint=${{ secrets.ORACLE_FINGERPRINT }}" >> ~/.oci/config
+            echo "key_file=~/.oci/oci_api_key.pem" >> ~/.oci/config
+            echo "tenancy=${{ secrets.ORACLE_TENANT }}" >> ~/.oci/config
+            echo "region=${{ secrets.ORACLE_REGION }}" >> ~/.oci/config
+            chmod 600 ~/.oci/config
+
+      - name: Get Kubeconfig
+        run: |
+          oci ce cluster create-kubeconfig --cluster-id ${{ env.ORACLE_CLUSTER }} --file ${{ env.KUBECONFIG_PATH }} --region ${{ secrets.ORACLE_REGION }} --overwrite
+          echo "KUBECONFIG=${{ env.KUBECONFIG_PATH }}" >> $GITHUB_ENV
