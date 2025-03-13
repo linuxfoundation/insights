@@ -105,6 +105,8 @@ const { data, status, error } = useFetch(
     params: {
       granularity,
       type: activeTab,
+      countType: activeTab,
+      activityType: 'fork',
       repository: selectedRepository,
       startDate,
       endDate,
@@ -117,9 +119,9 @@ const forks = computed<ForksData | undefined>(() => data.value as ForksData);
 const summary = computed<Summary | undefined>(() => forks.value?.summary);
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
-  () => convertToChartData(forks.value?.data as RawChartData[], 'dateFrom', [
+  () => convertToChartData(forks.value?.data as RawChartData[], 'startDate', [
     'forks'
-  ], undefined, 'dateTo')
+  ], undefined, 'endDate')
 );
 const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
 

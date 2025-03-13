@@ -33,6 +33,7 @@ export async function fetchOrganizationsLeaderboard(
   //  We need to ensure this doesn't pose a security risk.
 
   const organizationsLeaderboardQuery = {
+    project: filter.project,
     repository: filter.repository,
     startDate: filter.startDate,
     endDate: filter.endDate,

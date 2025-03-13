@@ -3,8 +3,8 @@ import type { Summary } from '../shared/summary.types';
 export interface StarsData {
   summary: Summary;
   data: {
-    dateFrom: string;
-    dateTo: string;
+    startDate: string;
+    endDate: string;
     stars: number;
   }[];
 }
@@ -12,8 +12,8 @@ export interface StarsData {
 export interface ForksData {
   summary: Summary;
   data: {
-    dateFrom: string;
-    dateTo: string;
+    startDate: string;
+    endDate: string;
     forks: number;
   }[];
 }
