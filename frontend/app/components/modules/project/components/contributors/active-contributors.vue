@@ -121,7 +121,6 @@ const barChartConfig = computed(() => getBarChartConfig(chartData.value, chartSe
 
 watch(selectedTimeRangeKey, () => {
   activeTab.value = tabs.value[0]?.value || 'weekly';
-  console.log('activeTab', activeTab.value);
 });
 </script>
 
