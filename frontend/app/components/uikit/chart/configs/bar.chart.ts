@@ -1,5 +1,5 @@
 import type { BarSeriesOption } from 'echarts/types/dist/shared';
-import { merge } from 'lodash';
+import _ from 'lodash';
 import { buildSeries, convertDateData } from '../helpers/chart-helpers';
 import {
   axisLabelFormatter,
@@ -113,12 +113,12 @@ export const getBarChartConfig = (
       formatter: axisLabelFormatter(axisLabelFormat)
     }
   };
-  const tooltip = merge({}, defaultBarOption.tooltip, {
+  const tooltip = _.merge({}, defaultBarOption.tooltip, {
     formatter: tooltipFormatterWithData(data, granularity)
   });
   const styledSeries = applySeriesStyle(series, buildSeries(series, data));
 
-  return merge({}, defaultBarOption, {
+  return _.merge({}, defaultBarOption, {
     xAxis,
     series: styledSeries,
     tooltip
@@ -177,7 +177,7 @@ export const getBarChartConfigCustom = (
       formatter: axisLabelFormatter(axisLabelFormat)
     }
   };
-  const tooltip = merge({}, defaultBarOption.tooltip, {
+  const tooltip = _.merge({}, defaultBarOption.tooltip, {
     formatter: tooltipFormatterWithData(data, granularity)
   });
 
@@ -188,7 +188,7 @@ export const getBarChartConfigCustom = (
       } as BarSeriesOption)
   );
 
-  return merge(
+  return _.merge(
     {},
     {
       ...defaultBarOption,

@@ -1,6 +1,6 @@
 import { graphic } from 'echarts';
 import type { LineSeriesOption } from 'echarts/types/dist/shared';
-import { merge } from 'lodash';
+import _ from 'lodash';
 import {
   buildSeries,
   convertDateData,
@@ -128,13 +128,13 @@ export const getLineAreaChartConfig = (
       formatter: yAxisFormatter
     }
   };
-  const tooltip = merge({}, defaultLineOption.tooltip, {
+  const tooltip = _.merge({}, defaultLineOption.tooltip, {
     formatter: tooltipFormatterWithData(data, granularity)
   });
 
   const styledSeries = applySeriesStyle(series, buildSeries(series, data));
 
-  return merge(
+  return _.merge(
     {},
     {
       ...defaultLineOption,

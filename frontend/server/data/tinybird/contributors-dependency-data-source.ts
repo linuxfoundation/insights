@@ -50,7 +50,8 @@ export async function fetchContributorDependency(filter: ContributorDependencyFi
   ]);
 
   const topContributorsCount = tinybirdTopContributorsResponse.data.length;
-  const topContributorsPercentage = tinybirdTopContributorsResponse.data[topContributorsCount - 1].contributionPercentageRunningTotal;
+  const lastContributor = tinybirdTopContributorsResponse.data[topContributorsCount - 1];
+  const topContributorsPercentage = lastContributor.contributionPercentageRunningTotal;
   const {totalContributorCount} = tinybirdTopContributorsResponse.data[0];
 
   const response: ContributorDependencyResponse = {

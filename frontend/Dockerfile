@@ -1,5 +1,4 @@
 ARG NODE_VERSION=20
-ARG NGINX_VERSION=1.25.3
 
 FROM node:$NODE_VERSION-slim AS base
 
@@ -26,14 +25,17 @@ COPY --from=deps /usr/src/app/node_modules ./node_modules
 COPY . .
 
 # Build the application
-FROM files as builder
+FROM files AS builder
 
 WORKDIR /usr/src/app
 
 RUN pnpm build
 
-# Serve the app with Nginx
-FROM nginx:$NGINX_VERSION-alpine-slim as production
+FROM node:${NODE_VERSION}-slim AS prod
 
-COPY --from=builder /usr/src/app/dist /usr/share/nginx/html
-# TODO: serve with nginx
+WORKDIR /usr/src/app
+
+COPY --from=builder /usr/src/app/.output ./.output
+
+EXPOSE 3000
+CMD ["node", ".output/server/index.mjs"]
