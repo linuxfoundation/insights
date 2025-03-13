@@ -32,9 +32,9 @@ jobs:
       - name: Update PATH
         run: echo "${{ env.OCI_CLI_DIR }}" >> $GITHUB_PATH
 
-#      - name: Build docker image
-#        uses: ./.github/actions/build-docker-image
-#        id: build-docker-image
+      - name: Build docker image
+        uses: ./.github/actions/build-docker-image
+        id: build-docker-image
 
       - name: Configure Oracle Cloud CLI
         run: |
@@ -57,3 +57,8 @@ jobs:
       - name: Get Cluster Kubeconfig
         run: |
           oci ce cluster create-kubeconfig --cluster-id ${{ env.ORACLE_CLUSTER }} --file ${{ env.KUBECONFIG_PATH }} --region ${{ secrets.ORACLE_REGION }} --token-version 2.0.0  --kube-endpoint PUBLIC_ENDPOINT --overwrite
+
+      - name: Update Deployment Image
+        run: |
+            kubectl set image deployment/insights-app-dpl frontend=${{ steps.build-docker-image.outputs.image }} -n insights
+            kubectl rollout status deployment/insights-app-dpl -n insights
