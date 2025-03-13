@@ -4,8 +4,7 @@
       Active days
     </h3>
     <p class="text-body-2 text-neutral-500 mb-6">
-      Active contributor is an individual performing tasks such as commits,
-      issues, or pull requests during the selected time period.
+      (TBD)
     </p>
     <hr>
     <section class="mt-5">
