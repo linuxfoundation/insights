@@ -1,5 +1,5 @@
 <template>
-  <lfx-card class="p-6">
+  <lfx-card class="p-4 sm:p-6">
     <h3 class="text-heading-3 font-semibold font-secondary pb-3">Active organizations</h3>
     <p class="text-body-2 text-neutral-500 mb-6">
       Organizations that had at least one activity during the selected period, carried out by contributors on their
