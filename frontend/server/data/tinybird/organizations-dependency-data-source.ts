@@ -38,6 +38,7 @@ export async function fetchOrganizationDependency(filter: OrganizationDependency
   //  We need to ensure this doesn't pose a security risk.
 
   const leaderboardFilter: OrganizationsLeaderboardFilter = {
+    project: filter.project,
     metric: (filter.metric as FilterActivityMetric) || FilterActivityMetric.ALL,
     repository: filter.repository,
     limit: 5,
@@ -51,9 +52,9 @@ export async function fetchOrganizationDependency(filter: OrganizationDependency
   ]);
 
   const topOrganizationsCount = tinybirdTopOrganizationsResponse.data.length;
-  const topOrganizationsPercentage = tinybirdTopOrganizationsResponse.data[topOrganizationsCount - 1]
-      .contributionPercentageRunningTotal;
-  const {totalOrganizationCount} = tinybirdTopOrganizationsResponse.data[0];
+  const lastOrganization = tinybirdTopOrganizationsResponse.data.at(-1);
+  const topOrganizationsPercentage = lastOrganization?.contributionPercentageRunningTotal || 0;
+  const totalOrganizationCount = tinybirdTopOrganizationsResponse.data[0]?.totalOrganizationCount || 0;
 
   const response: OrganizationDependencyResponse = {
     topOrganizations: {
@@ -61,7 +62,7 @@ export async function fetchOrganizationDependency(filter: OrganizationDependency
       percentage: topOrganizationsPercentage
     },
     otherOrganizations: {
-      count: totalOrganizationCount - topOrganizationsCount,
+      count: Math.max(0, (totalOrganizationCount || 0) - topOrganizationsCount),
       percentage: 100 - topOrganizationsPercentage
     },
     list: convertLeaderboardData(tinybirdLeaderboardResponse.data)
