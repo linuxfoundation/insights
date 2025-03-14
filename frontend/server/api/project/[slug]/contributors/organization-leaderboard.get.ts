@@ -34,6 +34,8 @@ import {FilterActivityMetric} from "~~/server/data/types";
 export default defineEventHandler(async (event) => {
   const query = getQuery(event);
 
+  const project = (event.context.params as { slug: string }).slug;
+
   const meta = {
     offset: 0,
     limit: 10,
@@ -41,6 +43,7 @@ export default defineEventHandler(async (event) => {
   };
 
   const filter: OrganizationsLeaderboardFilter = {
+    project,
     metric: (query.metric as FilterActivityMetric) || FilterActivityMetric.ALL,
     repository: query.repository as string,
     startDate: query.startDate ? DateTime.fromISO(query.startDate as string) : undefined,

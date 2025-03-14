@@ -37,6 +37,7 @@ export async function fetchContributorDependency(filter: ContributorDependencyFi
   //  We need to ensure this doesn't pose a security risk.
 
   const leaderboardFilter: ContributorsLeaderboardFilter = {
+    project: filter.project,
     metric: (filter.metric as FilterActivityMetric) || FilterActivityMetric.ALL,
     repository: filter.repository,
     limit: 5,
@@ -50,9 +51,9 @@ export async function fetchContributorDependency(filter: ContributorDependencyFi
   ]);
 
   const topContributorsCount = tinybirdTopContributorsResponse.data.length;
-  const lastContributor = tinybirdTopContributorsResponse.data[topContributorsCount - 1];
-  const topContributorsPercentage = lastContributor.contributionPercentageRunningTotal;
-  const {totalContributorCount} = tinybirdTopContributorsResponse.data[0];
+  const lastContributor = tinybirdTopContributorsResponse.data.at(-1);
+  const topContributorsPercentage = lastContributor?.contributionPercentageRunningTotal || 0;
+  const totalContributorCount = tinybirdTopContributorsResponse.data[0]?.totalContributorCount || 0;
 
   const response: ContributorDependencyResponse = {
     topContributors: {
@@ -60,7 +61,7 @@ export async function fetchContributorDependency(filter: ContributorDependencyFi
       percentage: topContributorsPercentage
     },
     otherContributors: {
-      count: totalContributorCount - topContributorsCount,
+      count: Math.max(0, (totalContributorCount || 0) - topContributorsCount),
       percentage: 100 - topContributorsPercentage
     },
     list: convertLeaderboardData(tinybirdLeaderboardResponse.data)

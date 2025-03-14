@@ -1,5 +1,5 @@
 import {DateTime} from "luxon";
-import {FilterActivityMetric} from "~~/server/data/types";
+import {FilterActivityMetric, FilterGranularity} from "~~/server/data/types";
 import {createDataSource} from "~~/server/data/data-sources";
 
 /**
@@ -34,9 +34,12 @@ import {createDataSource} from "~~/server/data/data-sources";
 export default defineEventHandler(async (event) => {
   const query = getQuery(event);
 
+  const project = (event.context.params as { slug: string }).slug;
+
   const filter = {
+    project,
+    granularity: (query.granularity as FilterGranularity) || FilterGranularity.QUARTERLY,
     metric: (query.metric as FilterActivityMetric) || FilterActivityMetric.ALL,
-    project: query.project as string,
     repository: query.repository as string,
     startDate: query.startDate ? DateTime.fromISO(query.startDate as string) : undefined,
     endDate: query.endDate ? DateTime.fromISO(query.endDate as string) : undefined,

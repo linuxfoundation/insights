@@ -105,6 +105,8 @@ const { data, status, error } = useFetch(
     params: {
       granularity,
       type: activeTab,
+      countType: activeTab,
+      activityType: 'star',
       repository: selectedRepository,
       startDate,
       endDate,
@@ -117,9 +119,9 @@ const stars = computed<StarsData | undefined>(() => data.value as StarsData);
 const summary = computed<Summary | undefined>(() => stars.value?.summary);
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
-  () => convertToChartData(stars.value?.data as RawChartData[], 'dateFrom', [
+  () => convertToChartData(stars.value?.data as RawChartData[], 'startDate', [
     'stars'
-  ], undefined, 'dateTo')
+  ], undefined, 'endDate')
 );
 const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
 

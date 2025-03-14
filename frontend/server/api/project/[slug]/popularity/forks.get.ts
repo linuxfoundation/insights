@@ -1,4 +1,7 @@
-import { cumulative, newStars } from '~~/server/mocks/forks.mock';
+import {DateTime} from "luxon";
+import type {ActivityCountFilter, FilterGranularity} from "~~/server/data/types";
+import {ActivityFilterActivityType, ActivityFilterCountType} from "~~/server/data/types";
+import {createDataSource} from "~~/server/data/data-sources";
 
 /**
  * Frontend expects the data to be in the following format:
@@ -27,13 +30,21 @@ import { cumulative, newStars } from '~~/server/mocks/forks.mock';
  */
 export default defineEventHandler(async (event) => {
   const query = getQuery(event);
-  let data;
 
-  if (query.type === 'cumulative') {
-    data = cumulative;
-  } else {
-    data = newStars;
+  const project = (event.context.params as { slug: string }).slug;
+
+  const filter: ActivityCountFilter = {
+    project,
+    granularity: query.granularity as FilterGranularity,
+    repository: query.repository as string,
+    countType: (query.countType as ActivityFilterCountType) || ActivityFilterCountType.NEW,
+    activityType: (query.activityType as ActivityFilterActivityType) || ActivityFilterActivityType.FORKS,
+    onlyContributions: false, // forks and stars are non-contribution activities, but we want to count them.
+    startDate: query.startDate ? DateTime.fromISO(query.startDate as string) : undefined,
+    endDate: query.endDate ? DateTime.fromISO(query.endDate as string) : undefined,
   }
 
-  return data;
+  const dataSource = createDataSource();
+
+  return await dataSource.fetchForksActivities(filter);
 });

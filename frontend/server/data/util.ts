@@ -34,3 +34,11 @@ export function getPreviousDates(currentStartDate?: DateTime, currentEndDate?: D
     }
   };
 }
+
+export function calculatePercentageChange(current: number, previous: number): number {
+  if (previous !== 0) {
+    return ((current * 100) / previous) - 100;
+  }
+
+  return 0;
+}
