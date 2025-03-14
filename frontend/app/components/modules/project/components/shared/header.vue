@@ -5,7 +5,7 @@
         <div
           v-if="props.project"
           class="ease-linear transition-all"
-          :class="scrollTop > 50 ? 'py-4' : 'py-6'"
+          :class="scrollTop > 50 ? 'py-3 md:py-4' : 'py-3 md:py-6'"
         >
 
           <div class="flex items-center justify-between ">
@@ -19,19 +19,18 @@
               </lfx-back>
               <lfx-avatar
                 type="organization"
-                :size="scrollTop > 50 ? 'normal' : 'large'"
+                :size="scrollTop > 50 ? 'normal' : (pageWidth < 768 ? 'normal' : 'large')"
                 class="mr-4"
                 :src="props.project.logo || ''"
               />
               <h1
-                class="font-bold mr-3 ease-linear transition-all font-secondary duration-200"
-                :class="scrollTop > 50 ? 'text-heading-3' : 'text-heading-2'"
+                class="font-bold mr-3 ease-linear transition-all font-secondary duration-200 text-heading-4"
+                :class="scrollTop > 50 ? 'md:text-heading-3' : 'md:text-heading-2'"
               >
                 {{ props.project.name }}
               </h1>
               <span
-                class="mr-1 text-neutral-400 font-secondary leading-8 ease-linear transition-all"
-                :class="scrollTop > 50 ? 'text-xl' : 'text-2xl'"
+                class="mr-1 text-neutral-400 font-secondary leading-8 ease-linear transition-all text-2xl"
               >/</span>
               <div
                 class="flex items-center gap-2 cursor-pointer px-2 py-0.5
@@ -39,8 +38,8 @@
                 @click="isSearchRepoModalOpen = true"
               >
                 <p
-                  class="text-neutral-400 leading-8 ease-linear transition-all"
-                  :class="scrollTop > 50 ? 'text-xl' : 'text-2xl'"
+                  class="text-neutral-400 leading-8 ease-linear transition-all text-base"
+                  :class="scrollTop > 50 ? 'md:text-xl' : 'md:text-2xl'"
                 >
                   <span
                     v-if="repoName"
@@ -58,20 +57,22 @@
                 />
               </div>
             </div>
-            <lfx-share>
-              <lfx-button
-                type="tertiary"
-                class="!rounded-full"
-              >
-                <lfx-icon name="link-simple" />
-                Share
-              </lfx-button>
-            </lfx-share>
+            <div class="hidden sm:block">
+              <lfx-share>
+                <lfx-button
+                  type="tertiary"
+                  class="!rounded-full"
+                >
+                  <lfx-icon name="link-simple" />
+                  Share
+                </lfx-button>
+              </lfx-share>
+            </div>
           </div>
         </div>
         <div
-          class="flex justify-between items-center transition-all"
-          :class="scrollTop > 50 ? 'py-4' : 'py-5'"
+          class="flex justify-between items-center transition-all overflow-auto gap-3 -mx-5 sm:mx-0 px-5 sm:px-0 py-3"
+          :class="scrollTop > 50 ? 'md:py-4' : 'md:py-5'"
         >
           <div class="flex items-center gap-3">
             <!--            <lfx-menu-button-->
@@ -140,6 +141,7 @@ import LfxProjectRepositorySwitch from "~/components/modules/project/components/
 import LfxBack from "~/components/uikit/back/back.vue";
 import LfxProjectDateRangePicker from "~/components/modules/project/components/shared/header/date-range-picker.vue";
 import LfxMaintainHeight from "~/components/uikit/maintain-height/maintain-height.vue";
+import useResponsive from "~/components/shared/utils/responsive";
 
 const props = defineProps<{
   project: Project
@@ -152,6 +154,7 @@ const repoName = computed<string>(() => route.params.name as string);
 const isSearchRepoModalOpen = ref(false);
 
 const {scrollTop} = useScroll();
+const {pageWidth} = useResponsive();
 </script>
 
 <script lang="ts">

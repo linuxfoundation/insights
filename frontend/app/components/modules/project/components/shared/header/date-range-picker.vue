@@ -6,7 +6,7 @@
     >
       <div
         class="flex items-center gap-2 cursor-pointer text-sm leading-5 font-medium
-    py-2 px-3 transition hover:bg-neutral-50 rounded-lg"
+    py-2 px-3 transition hover:bg-neutral-50 rounded-lg whitespace-nowrap"
         :class="isOpen ? 'bg-neutral-50' : ''"
       >
         <lfx-icon
