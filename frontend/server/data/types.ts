@@ -37,6 +37,7 @@ export type ActiveOrganizationsFilter = {
 };
 
 export type ContributorsLeaderboardFilter = {
+  project: string;
   metric: FilterActivityMetric;
   repository?: string;
   limit?: number;
@@ -45,6 +46,7 @@ export type ContributorsLeaderboardFilter = {
 }
 
 export type OrganizationsLeaderboardFilter = {
+  project: string;
   metric: FilterActivityMetric;
   repository?: string;
   limit?: number;
@@ -91,4 +93,23 @@ export type RetentionFilter = {
   onlyContributions: boolean;
   startDate?: DateTime;
   endDate?: DateTime;
+}
+
+export enum ActivityFilterCountType {
+  CUMULATIVE = 'cumulative',
+  NEW = 'new'
+}
+export enum ActivityFilterActivityType {
+  FORKS = 'fork',
+  STARS = 'star'
+}
+export type ActivityCountFilter = {
+  project: string;
+  granularity: FilterGranularity;
+  countType: ActivityFilterCountType;
+  activityType: ActivityFilterActivityType,
+  onlyContributions: boolean;
+  repository?: string,
+  startDate?: DateTime,
+  endDate?: DateTime,
 }

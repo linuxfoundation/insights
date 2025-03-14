@@ -10,6 +10,7 @@ import type {
   OrganizationDependencyFilter,
   GeographicDistributionFilter,
   RetentionFilter,
+  ActivityCountFilter,
 } from "~~/server/data/types";
 import type {ActiveContributorsResponse} from "~~/server/data/tinybird/active-contributors-data-source";
 import type {ActiveOrganizationsResponse} from "~~/server/data/tinybird/active-organizations-data-source";
@@ -27,6 +28,9 @@ import {fetchContributorDependency} from "~~/server/data/tinybird/contributors-d
 import {fetchOrganizationDependency} from "~~/server/data/tinybird/organizations-dependency-data-source";
 import {fetchGeographicDistribution} from "~~/server/data/tinybird/geographic-distribution-data-source";
 import {fetchRetention} from "~~/server/data/tinybird/retention-data-source";
+import {fetchForksActivities} from "~~/server/data/tinybird/forks-data-source";
+import {fetchStarsActivities} from "~~/server/data/tinybird/stars-data-source";
+import type {ForksData, StarsData} from "~~/types/popularity/responses.types";
 
 export interface DataSource {
     fetchActiveContributors: (filter: ActiveContributorsFilter) => Promise<ActiveContributorsResponse>;
@@ -39,6 +43,8 @@ export interface DataSource {
     fetchOrganizationDependency: (filter: OrganizationDependencyFilter) => Promise<OrganizationDependencyResponse>;
     fetchGeographicDistribution: (filter: GeographicDistributionFilter) => Promise<GeographicDistributionResponse>;
     fetchRetention: (filter: RetentionFilter) => Promise<RetentionResponse>;
+    fetchForksActivities: (filter: ActivityCountFilter) => Promise<ForksData>;
+    fetchStarsActivities: (filter: ActivityCountFilter) => Promise<StarsData>;
 }
 
 export function createDataSource(): DataSource {
@@ -51,5 +57,7 @@ export function createDataSource(): DataSource {
         fetchOrganizationDependency,
         fetchGeographicDistribution,
         fetchRetention,
+        fetchForksActivities,
+        fetchStarsActivities,
     };
 }

@@ -32,6 +32,7 @@ export async function fetchContributorsLeaderboard(
   //  We need to ensure this doesn't pose a security risk.
 
   const contributorsLeaderboardQuery = {
+    project: filter.project,
     repository: filter.repository,
     limit: filter.limit,
     startDate: filter.startDate,
@@ -60,7 +61,7 @@ export async function fetchContributorsLeaderboard(
     meta: {
       offset: 0,
       limit: 10,
-      total: data.rows
+      total: data?.rows || 0
     },
     data: processedData
   };
