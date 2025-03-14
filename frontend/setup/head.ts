@@ -34,7 +34,7 @@ export default {
             content: shortDescription
         },
         { hid: 'og:type', property: 'og:type', content: 'website' },
-        { hid: 'og:image', property: 'og:image', content: 'https://cdn.platform.linuxfoundation.org/assets/lf-favicon.png' },
+        { hid: 'og:image', property: 'og:image', content: '/og-image.png' },
         { hid: 'og:url', property: 'og:url', content: 'https://insights.lfx.org' },
         { hid: 'twitter:card', name: 'twitter:card', content: 'summary_large_image' },
         {
@@ -47,7 +47,7 @@ export default {
             name: 'twitter:description',
             content: shortDescription
         },
-        { hid: 'twitter:image', name: 'twitter:image', content: 'https://cdn.platform.linuxfoundation.org/assets/lf-favicon.png' }
+        { hid: 'twitter:image', name: 'twitter:image', content: '/og-image.png' }
     ],
     link: [
         { rel: 'icon', type: 'image/x-icon', href: 'https://cdn.platform.linuxfoundation.org/assets/lf-favicon.png' },
