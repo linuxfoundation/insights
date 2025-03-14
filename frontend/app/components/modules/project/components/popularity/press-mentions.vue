@@ -1,5 +1,5 @@
 <template>
-  <lfx-card class="p-6">
+  <lfx-card class="p-4 sm:p-6">
     <h3 class="text-heading-3 font-semibold font-secondary pb-3">
       Press mentions
     </h3>

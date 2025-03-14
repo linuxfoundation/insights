@@ -1,36 +1,32 @@
 <template>
-  <lfx-card class="py-6">
-    <div class="px-6">
-      <h3 class="text-heading-3 font-semibold font-secondary pb-3">Geographical distribution</h3>
-      <p class="text-body-2 text-neutral-500 mb-6">
-        Distribution of contributors and organizations based on geographical location at the time of their contributions
-        during the selected period.
-        <a
-          :href="links.learnMore"
-          class="text-brand-500"
-          target="_blank"
-        >Learn more</a>
-      </p>
-      <hr>
-    </div>
+  <lfx-card class="p-4 sm:p-6">
+    <h3 class="text-heading-3 font-semibold font-secondary pb-3">Geographical distribution</h3>
+    <p class="text-body-2 text-neutral-500 mb-6">
+      Distribution of contributors and organizations based on geographical location at the time of their contributions
+      during the selected period.
+      <a
+        :href="links.learnMore"
+        class="text-brand-500"
+        target="_blank"
+      >Learn more</a>
+    </p>
+    <hr>
     <section class="mt-5">
-      <div class="px-6">
-        <div class="flex flex-row gap-4 items-center mb-10">
-          <div class="basis-1/2">
-            <lfx-tabs
-              :tabs="tabs"
-              :model-value="activeTab"
-              width-type="inline"
-              @update:model-value="activeTab = $event"
-            />
-          </div>
-          <div class="basis-1/2 flex justify-end">
-            <lfx-dropdown
-              v-model="metric"
-              icon="fa-light fa-display-code"
-              :options="metricOptions"
-            />
-          </div>
+      <div class="flex flex-row gap-4 items-center mb-10">
+        <div class="basis-1/2">
+          <lfx-tabs
+            :tabs="tabs"
+            :model-value="activeTab"
+            width-type="inline"
+            @update:model-value="activeTab = $event"
+          />
+        </div>
+        <div class="basis-1/2 flex justify-end">
+          <lfx-dropdown
+            v-model="metric"
+            icon="fa-light fa-display-code"
+            :options="metricOptions"
+          />
         </div>
       </div>
       <lfx-project-load-state
@@ -44,7 +40,7 @@
         <div class="w-full h-[330px] border-solid border-neutral-100 border-x-0 border-y">
           <lfx-chart :config="getGeoMapChartConfig(chartData, chartSeries, getMaxValue(chartData))" />
         </div>
-        <div class="px-6 mt-5">
+        <div class="mt-5">
           <div
             v-if="status !== 'pending'"
             class="flex flex-col gap-5"
