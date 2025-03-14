@@ -72,7 +72,8 @@ export default {
         120: '30rem',
       },
       minWidth: {
-        29: '7.25rem'
+        29: '7.25rem',
+        50: '12.5rem',
       },
       spacing: {
         13: '3.25rem',
