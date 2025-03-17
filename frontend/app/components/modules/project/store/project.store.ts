@@ -45,8 +45,8 @@ export const useProjectStore = defineStore('project', () => {
   const endDate = ref<string | null>(lfxProjectDateOptions[0]?.endDate || null);
   const project = ref<Project | null>(null);
   const projectRepos = computed<ProjectRepository[]>(() => (project.value?.repositories || []).map((repo) => ({
-      ...repo,
-      name: getRepoNameFromUrl(repo.repo)
+      repo,
+      name: getRepoNameFromUrl(repo)
     })));
   const selectedRepository = computed<string>(
     () => projectRepos.value.find(
