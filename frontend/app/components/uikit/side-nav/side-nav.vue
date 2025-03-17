@@ -15,7 +15,7 @@
 
   <lfx-button
     v-if="scrollTopPercentage > 25"
-    class="fixed bottom-10 left-10"
+    class="fixed bottom-10"
     type="tertiary"
     button-style="pill"
     @click="onClick(props.list[0]?.key || '', $event)"
