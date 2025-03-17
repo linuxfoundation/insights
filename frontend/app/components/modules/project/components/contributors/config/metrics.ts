@@ -1,4 +1,5 @@
 import type { DropdownGroupOptions } from '~/components/uikit/dropdown/types/dropdown.types';
+import {ActivityTypes} from "~~/types/shared/activity-types";
 
 export const metricsOptions: DropdownGroupOptions[] = [
   { label: '', items: [{ label: 'All activities', value: 'all' }] },
@@ -6,52 +7,52 @@ export const metricsOptions: DropdownGroupOptions[] = [
     label: 'Github',
     items: [
       {
-        value: 'authored-commit',
+        value: ActivityTypes.AUTHORED_COMMIT.valueOf(),
         label: 'Authored a commit'
       },
       {
-        value: 'pull_request-closed',
+        value: ActivityTypes.PULL_REQUEST_CLOSED.valueOf(),
         label: 'Closed a pull request'
       },
       {
-        value: 'pull_request-opened',
+        value: ActivityTypes.PULL_REQUEST_OPENED.valueOf(),
         label: 'Opened a pull request'
       },
       {
-        value: 'pull_request-comment',
+        value: ActivityTypes.PULL_REQUEST_COMMENT.valueOf(),
         label: 'Commented on a pull request'
       },
       {
-        value: 'pull_request-merged',
+        value: ActivityTypes.PULL_REQUEST_MERGED.valueOf(),
         label: 'Merged a pull request'
       },
       {
-        value: 'pull_request-review-requested',
+        value: ActivityTypes.PULL_REQUEST_REVIEW_REQUESTED.valueOf(),
         label: 'Requested a review for a pull request'
       },
       {
-        value: 'pull_request-review-thread-comment',
+        value: ActivityTypes.PULL_REQUEST_REVIEW_THREAD_COMMENT.valueOf(),
         label: 'Commented on a pull request review thread'
       },
       {
-        value: 'issue-closed',
+        value: ActivityTypes.ISSUE_CLOSED.valueOf(),
         label: 'Closed an issue'
       },
       {
-        value: 'issue-opened',
+        value: ActivityTypes.ISSUE_OPENED.valueOf(),
         label: 'Opened an issue'
       },
       {
-        value: 'issue-comment',
+        value: ActivityTypes.ISSUE_COMMENT.valueOf(),
         label: 'Commented on an issue'
       },
 
       {
-        value: 'discussion-started',
+        value: ActivityTypes.DISCUSSION_STARTED.valueOf(),
         label: 'Started a discussion'
       },
       {
-        value: 'discussion-comment',
+        value: ActivityTypes.DISCUSSION_COMMENT.valueOf(),
         label: 'Commented on a discussion'
       }
     ]
@@ -60,47 +61,47 @@ export const metricsOptions: DropdownGroupOptions[] = [
     label: 'Git',
     items: [
       {
-        value: 'authored-commit',
+        value: ActivityTypes.AUTHORED_COMMIT.valueOf(),
         label: 'Authored a commit'
       },
       {
-        value: 'reviewed-commit',
+        value: ActivityTypes.REVIEWED_COMMIT.valueOf(),
         label: 'Reviewed a commit'
       },
       {
-        value: 'tested-commit',
+        value: ActivityTypes.TESTED_COMMIT.valueOf(),
         label: 'Tested a commit'
       },
       {
-        value: 'co-authored-commit',
+        value: ActivityTypes.COAUTHORED_COMMIT.valueOf(),
         label: 'Co-authored a commit'
       },
       {
-        value: 'informed-commit',
+        value: ActivityTypes.INFORMED_COMMIT.valueOf(),
         label: 'Informed a commit'
       },
       {
-        value: 'influenced-commit',
+        value: ActivityTypes.INFLUENCED_COMMIT.valueOf(),
         label: 'Influenced a commit'
       },
       {
-        value: 'approved-commit',
+        value: ActivityTypes.APPROVED_COMMIT.valueOf(),
         label: 'Approved a commit'
       },
       {
-        value: 'committed-commit',
+        value: ActivityTypes.COMMITTED_COMMIT.valueOf(),
         label: 'Committed a commit'
       },
       {
-        value: 'reported-commit',
+        value: ActivityTypes.REPORTED_COMMIT.valueOf(),
         label: 'Reported a commit'
       },
       {
-        value: 'resolved-commit',
+        value: ActivityTypes.RESOLVED_COMMIT.valueOf(),
         label: 'Resolved a commit'
       },
       {
-        value: 'signed-off-commit',
+        value: ActivityTypes.SIGNEDOFF_COMMIT.valueOf(),
         label: 'Signed off a commit'
       }
     ]
@@ -109,39 +110,39 @@ export const metricsOptions: DropdownGroupOptions[] = [
     label: 'Gerrit',
     items: [
       {
-        value: 'changeset-new',
+        value: ActivityTypes.CHANGESET_NEW.valueOf(),
         label: 'Created a changeset'
       },
       {
-        value: 'changeset-created',
+        value: ActivityTypes.CHAGESET_CREATED.valueOf(),
         label: 'Created a changeset'
       },
       {
-        value: 'changeset-merged',
+        value: ActivityTypes.CHANGESET_MERGED.valueOf(),
         label: 'Merged a changeset'
       },
       {
-        value: 'changeset-closed',
+        value: ActivityTypes.CHANGESET_CLOSED.valueOf(),
         label: 'Closed a changeset'
       },
       {
-        value: 'changeset-abandoned',
+        value: ActivityTypes.CHANGESET_ABANDONED.valueOf(),
         label: 'Abandoned a changeset'
       },
       {
-        value: 'changeset_comment-created',
+        value: ActivityTypes.CHANGESET_COMMENT_CREATED.valueOf(),
         label: 'Created a changeset comment'
       },
       {
-        value: 'patchset-created',
+        value: ActivityTypes.PATCHSET_CREATED.valueOf(),
         label: 'Created a patchset'
       },
       {
-        value: 'patchset_comment-created',
+        value: ActivityTypes.PATCHSET_COMMENT_CREATED.valueOf(),
         label: 'Created a patchset comment'
       },
       {
-        value: 'patchset_approval-created',
+        value: ActivityTypes.PATCHSET_APPROVAL_CREATED.valueOf(),
         label: 'Created a patchset approval'
       }
     ]
@@ -150,39 +151,39 @@ export const metricsOptions: DropdownGroupOptions[] = [
     label: 'Gitlab',
     items: [
       {
-        value: 'issue-opened',
+        value: ActivityTypes.ISSUE_OPENED.valueOf(),
         label: 'Opened an issue'
       },
       {
-        value: 'issue-closed',
+        value: ActivityTypes.ISSUE_CLOSED.valueOf(),
         label: 'Closed an issue'
       },
       {
-        value: 'merge_request-closed',
+        value: ActivityTypes.MERGE_REQUEST_CLOSED.valueOf(),
         label: 'Closed a merge request'
       },
       {
-        value: 'merge_request-opened',
+        value: ActivityTypes.MERGE_REQUEST_OPENED.valueOf(),
         label: 'Opened a merge request'
       },
       {
-        value: 'merge_request-review-thread-comment',
+        value: ActivityTypes.MERGE_REQUEST_REVIEW_THREAD_COMMENT.valueOf(),
         label: 'Commented on a merge request review thread'
       },
       {
-        value: 'merge_request-merged',
+        value: ActivityTypes.MERGE_REQUEST_MERGED.valueOf(),
         label: 'Merged a merge request'
       },
       {
-        value: 'merge_request-comment',
+        value: ActivityTypes.MERGE_REQUEST_COMMENT.valueOf(),
         label: 'Commented on a merge request'
       },
       {
-        value: 'issue-comment',
+        value: ActivityTypes.ISSUE_COMMENT.valueOf(),
         label: 'Commented on an issue'
       },
       {
-        value: 'authored-commit',
+        value: ActivityTypes.AUTHORED_COMMIT.valueOf(),
         label: 'Authored a commit'
       }
     ]
@@ -191,7 +192,7 @@ export const metricsOptions: DropdownGroupOptions[] = [
     label: 'GroupsIO',
     items: [
       {
-        value: 'message',
+        value: ActivityTypes.MESSAGE.valueOf(),
         label: 'Sent a message'
       }
     ]
@@ -200,35 +201,35 @@ export const metricsOptions: DropdownGroupOptions[] = [
     label: 'Confluence',
     items: [
       {
-        value: 'page-created',
+        value: ActivityTypes.PAGE_CREATED.valueOf(),
         label: 'Created a page'
       },
       {
-        value: 'page-updated',
+        value: ActivityTypes.PAGE_UPDATED.valueOf(),
         label: 'Updated a page'
       },
       {
-        value: 'comment-created',
+        value: ActivityTypes.COMMENT_CREATED.valueOf(),
         label: 'Created a comment'
       },
       {
-        value: 'attachment-created',
+        value: ActivityTypes.ATTACHMENT_CREATED.valueOf(),
         label: 'Created an attachment'
       },
       {
-        value: 'blogpost-created',
+        value: ActivityTypes.BLOGPOST_CREATED.valueOf(),
         label: 'Created a blog post'
       },
       {
-        value: 'blogpost-updated',
+        value: ActivityTypes.BLOGPOST_UPDATED.valueOf(),
         label: 'Updated a blog post'
       },
       {
-        value: 'attachment',
+        value: ActivityTypes.ATTACHMENT.valueOf(),
         label: 'Attached a file'
       },
       {
-        value: 'comment',
+        value: ActivityTypes.COMMENT.valueOf(),
         label: 'Commented on a page'
       }
     ]
@@ -237,31 +238,31 @@ export const metricsOptions: DropdownGroupOptions[] = [
     label: 'Jira',
     items: [
       {
-        value: 'issue-created',
+        value: ActivityTypes.ISSUE_CREATED.valueOf(),
         label: 'Created an issue'
       },
       {
-        value: 'issue-closed',
+        value: ActivityTypes.ISSUE_CLOSED.valueOf(),
         label: 'Closed an issue'
       },
       {
-        value: 'issue-assigned',
+        value: ActivityTypes.ISSUE_ASSIGNED.valueOf(),
         label: 'Assigned an issue'
       },
       {
-        value: 'issue-updated',
+        value: ActivityTypes.ISSUE_UPDATED.valueOf(),
         label: 'Updated an issue'
       },
       {
-        value: 'issue-comment-created',
+        value: ActivityTypes.ISSUE_COMMENT_CREATED.valueOf(),
         label: 'Created an issue comment'
       },
       {
-        value: 'issue-comment-updated',
+        value: ActivityTypes.ISSUE_COMMENT_UPDATED.valueOf(),
         label: 'Updated an issue comment'
       },
       {
-        value: 'issue-attachment-added',
+        value: ActivityTypes.ISSUE_ATTACHMENT_ADDED.valueOf(),
         label: 'Added an attachment to an issue'
       }
     ]
@@ -270,7 +271,7 @@ export const metricsOptions: DropdownGroupOptions[] = [
     label: 'Devto',
     items: [
       {
-        value: 'comment',
+        value: ActivityTypes.COMMENT.valueOf(),
         label: 'Commented on a post'
       }
     ]
@@ -279,15 +280,15 @@ export const metricsOptions: DropdownGroupOptions[] = [
     label: 'Discord',
     items: [
       {
-        value: 'message',
+        value: ActivityTypes.MESSAGE.valueOf(),
         label: 'Sent a message'
       },
       {
-        value: 'thread-started',
+        value: ActivityTypes.THREAD_STARTED.valueOf(),
         label: 'Started a thread'
       },
       {
-        value: 'thread-message',
+        value: ActivityTypes.THREAD_MESSAGE.valueOf(),
         label: 'Sent a message in a thread'
       }
     ]
@@ -296,11 +297,11 @@ export const metricsOptions: DropdownGroupOptions[] = [
     label: 'Discourse',
     items: [
       {
-        value: 'create-topic',
+        value: ActivityTypes.CREATE_TOPIC.valueOf(),
         label: 'Created a topic'
       },
       {
-        value: 'message-in-topic',
+        value: ActivityTypes.MESSAGE_IN_TOPIC.valueOf(),
         label: 'Sent a message in a topic'
       }
     ]
@@ -309,11 +310,11 @@ export const metricsOptions: DropdownGroupOptions[] = [
     label: 'Hackernews',
     items: [
       {
-        value: 'post',
+        value: ActivityTypes.POST.valueOf(),
         label: 'Posted a post'
       },
       {
-        value: 'comment',
+        value: ActivityTypes.COMMENT.valueOf(),
         label: 'Commented on a post'
       }
     ]
@@ -322,7 +323,7 @@ export const metricsOptions: DropdownGroupOptions[] = [
     label: 'Linkedin',
     items: [
       {
-        value: 'comment',
+        value: ActivityTypes.COMMENT.valueOf(),
         label: 'Commented on a post'
       }
     ]
@@ -331,11 +332,11 @@ export const metricsOptions: DropdownGroupOptions[] = [
     label: 'Reddit',
     items: [
       {
-        value: 'post',
+        value: ActivityTypes.POST.valueOf(),
         label: 'Posted a post'
       },
       {
-        value: 'comment',
+        value: ActivityTypes.COMMENT.valueOf(),
         label: 'Commented on a post'
       }
     ]
@@ -344,7 +345,7 @@ export const metricsOptions: DropdownGroupOptions[] = [
     label: 'Slack',
     items: [
       {
-        value: 'message',
+        value: ActivityTypes.MESSAGE.valueOf(),
         label: 'Sent a message'
       }
     ]
@@ -353,11 +354,11 @@ export const metricsOptions: DropdownGroupOptions[] = [
     label: 'Stackoverflow',
     items: [
       {
-        value: 'question',
+        value: ActivityTypes.QUESTION.valueOf(),
         label: 'Asked a question'
       },
       {
-        value: 'answer',
+        value: ActivityTypes.ANSWER.valueOf(),
         label: 'Answered a question'
       }
     ]
@@ -366,11 +367,11 @@ export const metricsOptions: DropdownGroupOptions[] = [
     label: 'Twitter',
     items: [
       {
-        value: 'hashtag',
+        value: ActivityTypes.HASHTAG.valueOf(),
         label: 'Used a hashtag'
       },
       {
-        value: 'mention',
+        value: ActivityTypes.MENTION.valueOf(),
         label: 'Mentioned a user'
       }
     ]
