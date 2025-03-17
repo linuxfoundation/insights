@@ -80,12 +80,12 @@
           :class="scrollTop > 50 ? 'md:py-4' : 'md:py-5'"
         >
           <div class="flex items-center gap-3">
-            <!--            <lfx-menu-button-->
-            <!--              :to="{ name: repoName ? LfxRoutes.REPOSITORY : LfxRoutes.PROJECT }"-->
-            <!--              exact>-->
-            <!--              <lfx-icon name="gauge-high" />-->
-            <!--              Overview-->
-            <!--            </lfx-menu-button>-->
+            <lfx-menu-button
+              :disabled="true"
+            >
+              <lfx-icon name="gauge-high" />
+              Overview
+            </lfx-menu-button>
             <lfx-menu-button
               :to="{
                 name: repoName ? LfxRoutes.REPOSITORY : LfxRoutes.PROJECT
@@ -103,19 +103,20 @@
               <lfx-icon name="fire" />
               Popularity
             </lfx-menu-button>
-            <!--            <lfx-menu-button-->
-            <!--              :to="{-->
-            <!--                name: repoName ? LfxRoutes.REPOSITORY_DEVELOPMENT : LfxRoutes.PROJECT_DEVELOPMENT-->
-            <!--              }"-->
-            <!--            >-->
-            <!--              <lfx-icon name="code" />-->
-            <!--              Development-->
-            <!--            </lfx-menu-button>-->
-            <!--            <lfx-menu-button-->
-            <!--              :to="{ name: repoName ? LfxRoutes.REPOSITORY_SECURITY : LfxRoutes.PROJECT_SECURITY }">-->
-            <!--              <lfx-icon name="shield-check" />-->
-            <!--              Security & Best Practices-->
-            <!--            </lfx-menu-button>-->
+            <lfx-menu-button
+              :to="{
+                name: repoName ? LfxRoutes.REPOSITORY_DEVELOPMENT : LfxRoutes.PROJECT_DEVELOPMENT
+              }"
+            >
+              <lfx-icon name="code" />
+              Development
+            </lfx-menu-button>
+            <lfx-menu-button
+              :disabled="true"
+            >
+              <lfx-icon name="shield-check" />
+              Security & Best Practices
+            </lfx-menu-button>
           </div>
           <lfx-project-date-range-picker />
         </div>

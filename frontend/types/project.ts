@@ -1,7 +1,4 @@
 export interface ProjectRepository {
-    projectId: string;
-    projectName: string;
-    projectSlug: string;
     repo: string;
     name: string;
 }
@@ -13,5 +10,5 @@ export interface Project{
     logo: string;
     contributorCount: number;
     organizationCount: number;
-    repositories: ProjectRepository[];
+    repositories: string[];
 }

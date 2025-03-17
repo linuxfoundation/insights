@@ -6,7 +6,10 @@
     class="c-menu-button"
     :active-class="!props.exact ? 'is-active' : undefined"
     :exact-active-class="props.exact ? 'is-active' : undefined"
-    :class="{ 'is-active': props.active }"
+    :class="{
+      'is-active': props.active,
+      'is-disabled': props.disabled,
+    }"
   >
     <slot />
   </nuxt-link>
@@ -14,7 +17,10 @@
     v-else
     v-bind="$attrs"
     class="c-menu-button"
-    :class="{ 'is-active': props.active }"
+    :class="{
+      'is-active': props.active,
+      'is-disabled': props.disabled,
+    }"
   >
     <slot />
   </div>
@@ -28,10 +34,12 @@
     active?: boolean;
     to?: RouteLocationRaw;
     exact?: boolean;
+    disabled?: boolean;
   }>(), {
     active: false,
     to: undefined,
     exact: false,
+    disabled: false,
   })
 </script>
 

@@ -116,10 +116,10 @@ const routeName = computed<{ project: LfxRoutes, repo: LfxRoutes }>(() => {
       project: LfxRoutes.PROJECT_DEVELOPMENT,
       repo: LfxRoutes.REPOSITORY_DEVELOPMENT,
     },
-    // security: {
-    //   project: LfxRoutes.PROJECT_SECURITY,
-    //   repo: LfxRoutes.REPOSITORY_SECURITY,
-    // },
+    security: {
+      project: LfxRoutes.PROJECT_SECURITY,
+      repo: LfxRoutes.REPOSITORY_SECURITY,
+    },
   };
 
   const type: string = route.name.split('-').at(-1);

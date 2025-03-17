@@ -8,10 +8,10 @@ export enum LfxRoutes {
     // PROJECT_CONTRIBUTORS = 'project-slug-contributors',
     PROJECT_POPULARITY = 'project-slug-popularity',
     PROJECT_DEVELOPMENT = 'project-slug-development',
-    // PROJECT_SECURITY = 'project-slug-security',
+    PROJECT_SECURITY = 'project-slug-security',
     REPOSITORY = 'project-slug-repository-name-contributors',
     // REPOSITORY_CONTRIBUTORS = 'project-slug-repository-name-contributors',
     REPOSITORY_POPULARITY = 'project-slug-repository-name-popularity',
     REPOSITORY_DEVELOPMENT = 'project-slug-repository-name-development',
-    // REPOSITORY_SECURITY = 'project-slug-repository-name-security',
+    REPOSITORY_SECURITY = 'project-slug-repository-name-security',
 }

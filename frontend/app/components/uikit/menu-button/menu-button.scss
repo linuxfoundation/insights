@@ -10,13 +10,21 @@
     @apply outline-brand-200
   }
 
-  &.is-active{
+  &.is-active:not(.is-disabled){
     // To maintain text width
     letter-spacing: -0.005em;
     @apply bg-brand-50 font-semibold text-neutral-900;
 
     .c-icon{
       @apply text-brand-500 font-black;
+    }
+  }
+
+  &.is-disabled{
+    @apply opacity-50 cursor-not-allowed bg-white;
+
+    &:active {
+        @apply outline-transparent;
     }
   }
 }
