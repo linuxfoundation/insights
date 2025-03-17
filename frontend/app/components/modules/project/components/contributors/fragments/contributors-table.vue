@@ -29,7 +29,7 @@
 import { computed } from 'vue';
 import { metricsOptions } from '../config/metrics';
 import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
-import type { Contributor } from '~/components/shared/types/contributors.types';
+import type { Contributor } from '~~/types/shared/contributor';
 import { formatNumber } from '~/components/shared/utils/formatter';
 
 const props = withDefaults(
@@ -47,7 +47,10 @@ const contributionColumnHeader = computed(() => {
   if (props.metric === 'all') {
     return 'Total Contributions';
   }
-  return `Total ${metricsOptions.find((option) => option.value === props.metric)?.label}`;
+
+  const flattenedMetricsOptions = metricsOptions.flatMap((option) => option.items);
+
+  return `Total ${flattenedMetricsOptions.find((option) => option.value === props.metric)?.label}`;
 });
 </script>
 
