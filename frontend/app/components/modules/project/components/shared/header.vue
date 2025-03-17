@@ -71,7 +71,10 @@
           </div>
         </div>
         <div
-          class="flex justify-between items-center transition-all overflow-auto gap-3 -mx-5 sm:mx-0 px-5 sm:px-0 py-3"
+          class="
+            flex justify-between items-center transition-all overflow-auto
+            gap-3 -mx-5 sm:-mx-0.5 px-5 sm:px-0.5 py-3
+          "
           :class="scrollTop > 50 ? 'md:py-4' : 'md:py-5'"
         >
           <div class="flex items-center gap-3">

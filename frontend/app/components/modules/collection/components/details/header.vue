@@ -108,7 +108,7 @@
               />
               <p
                 v-else
-                class="leading-6 transition-all"
+                class="leading-6 transition-all whitespace-nowrap"
                 :class="scrollTop > 50 ? 'text-xs md:text-sm' : 'text-xs md:text-base'"
               >
                 {{formatNumberShort(props.collection.projectCount)}} projects
