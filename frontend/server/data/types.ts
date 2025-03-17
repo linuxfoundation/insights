@@ -1,4 +1,6 @@
 import type {DateTime} from "luxon";
+import type {ActivityTypes} from "~~/types/shared/activity-types";
+import type {ActivityPlatforms} from "~~/types/shared/activity-platforms";
 
 export type FetchFunction = typeof $fetch;
 
@@ -57,7 +59,8 @@ export type OrganizationsLeaderboardFilter = {
 export type ContributorDependencyFilter = {
   project: string;
   repository?: string;
-  metric?: FilterActivityMetric;
+  platform?: ActivityPlatforms;
+  activity_type?: ActivityTypes;
   startDate?: DateTime;
   endDate?: DateTime;
 }
