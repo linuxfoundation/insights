@@ -44,13 +44,13 @@ const props = withDefaults(
 );
 
 const contributionColumnHeader = computed(() => {
-  if (props.metric === 'all') {
+  if (props.metric === 'all:all') {
     return 'Total contributions';
   }
 
   const flattenedMetricsOptions = metricsOptions.flatMap((option) => option.items);
 
-  return `Total ${flattenedMetricsOptions.find((option) => option.value === props.metric)?.label.toLowerCase()}`;
+  return `Total ${flattenedMetricsOptions.find((option) => option.value === props.metric.split(':')[1])?.label}`;
 });
 </script>
 

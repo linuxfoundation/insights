@@ -46,12 +46,15 @@ import { links } from '~/config/links';
 const { startDate, endDate, selectedRepository } = storeToRefs(useProjectStore())
 
 const route = useRoute();
-const metric = ref('all');
+const metric = ref('all:all');
+const platform = computed(() => metric.value.split(':')[0]);
+const activityType = computed(() => metric.value.split(':')[1]);
 const { data, status, error } = useFetch(
   `/api/project/${route.params.slug}/contributors/organization-leaderboard`,
   {
     params: {
-      metric,
+      platform,
+      activityType,
       repository: selectedRepository,
       startDate,
       endDate,
