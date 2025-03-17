@@ -80,12 +80,17 @@
           :class="scrollTop > 50 ? 'md:py-4' : 'md:py-5'"
         >
           <div class="flex items-center gap-3">
-            <lfx-menu-button
-              :disabled="true"
+            <lfx-tooltip
+              content="Coming soon"
+              placement="right"
             >
-              <lfx-icon name="gauge-high" />
-              Overview
-            </lfx-menu-button>
+              <lfx-menu-button
+                :disabled="true"
+              >
+                <lfx-icon name="gauge-high" />
+                Overview
+              </lfx-menu-button>
+            </lfx-tooltip>
             <lfx-menu-button
               :to="{
                 name: repoName ? LfxRoutes.REPOSITORY : LfxRoutes.PROJECT
@@ -103,18 +108,28 @@
               <lfx-icon name="fire" />
               Popularity
             </lfx-menu-button>
-            <lfx-menu-button
-              :disabled="true"
+            <lfx-tooltip
+              content="Coming soon"
+              placement="right"
             >
-              <lfx-icon name="code" />
-              Development
-            </lfx-menu-button>
-            <lfx-menu-button
-              :disabled="true"
+              <lfx-menu-button
+                :disabled="true"
+              >
+                <lfx-icon name="code" />
+                Development
+              </lfx-menu-button>
+            </lfx-tooltip>
+            <lfx-tooltip
+              content="Coming soon"
+              placement="right"
             >
-              <lfx-icon name="shield-check" />
-              Security & Best Practices
-            </lfx-menu-button>
+              <lfx-menu-button
+                :disabled="true"
+              >
+                <lfx-icon name="shield-check" />
+                Security & Best Practices
+              </lfx-menu-button>
+            </lfx-tooltip>
           </div>
           <lfx-project-date-range-picker />
         </div>
@@ -146,6 +161,7 @@ import LfxBack from "~/components/uikit/back/back.vue";
 import LfxProjectDateRangePicker from "~/components/modules/project/components/shared/header/date-range-picker.vue";
 import LfxMaintainHeight from "~/components/uikit/maintain-height/maintain-height.vue";
 import useResponsive from "~/components/shared/utils/responsive";
+import LfxTooltip from "~/components/uikit/tooltip/tooltip.vue";
 
 const props = defineProps<{
   project: Project

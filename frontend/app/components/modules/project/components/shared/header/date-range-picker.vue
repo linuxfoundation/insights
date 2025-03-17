@@ -106,7 +106,7 @@
 
           <article
             class="py-2 px-3 flex items-center rounded-md cursor-pointer hover:bg-neutral-50 transition"
-            @click="isCustomSelectorOpen = true; options.hide()"
+            @click="isCustomSelectorOpen = true"
           >
             <lfx-icon
               name="check"
@@ -154,12 +154,12 @@ const { selectedTimeRangeKey, startDate, endDate } = storeToRefs(useProjectStore
 const isOpen = ref(false);
 const isCustomSelectorOpen = ref(false);
 
-const selected = ref(lfxProjectDateOptions[0]?.key || dateOptKeys.past90days);
+const selected = ref(dateOptKeys.past365days);
 
 const selectedOption = computed(() => lfxProjectDateOptions.find((option) => option.key === selected.value));
 
 const changeSelected = (option: DateOptionConfig) => {
-  selected.value = option.key;
+  selected.value = option.key as dateOptKeys;
   selectedTimeRangeKey.value = option.key;
   startDate.value = option.startDate;
   endDate.value = option.endDate;
