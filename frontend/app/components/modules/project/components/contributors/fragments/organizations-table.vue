@@ -47,7 +47,10 @@ const organizationColumnHeader = computed(() => {
   if (props.metric === 'all') {
     return 'Total Contributions';
   }
-  return `Total ${metricsOptions.find((option) => option.value === props.metric)?.label}`;
+
+  const flattenedMetricsOptions = metricsOptions.flatMap((option) => option.items);
+
+  return `Total ${flattenedMetricsOptions.find((option) => option.value === props.metric)?.label}`;
 });
 </script>
 <script lang="ts">
