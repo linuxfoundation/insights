@@ -19,7 +19,7 @@
         :error="error"
         error-message="Error fetching organizations leaderboard"
         :is-empty="isEmpty"
-        :height="400"
+        :height="status === 'pending' ? 400 : 100"
         use-min-height
       >
         <lfx-organizations-table
