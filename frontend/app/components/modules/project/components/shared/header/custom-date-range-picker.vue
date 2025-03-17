@@ -14,6 +14,7 @@
           selection-mode="range"
           :manual-input="false"
           :number-of-months="2"
+          :max-date="new Date()"
         />
       </div>
       <div class="flex justify-end gap-4 pt-6">
@@ -27,7 +28,7 @@
           :disabled="!dateRange || !dateRange[0] || !dateRange[1]"
           @click="select()"
         >
-          Confirm
+          Apply
         </lfx-button>
       </div>
     </div>

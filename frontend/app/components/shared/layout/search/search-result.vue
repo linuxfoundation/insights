@@ -1,7 +1,10 @@
 <template>
   <div>
     <!-- Tabs -->
-    <div class="p-3 hidden sm:block">
+    <div
+      v-if="!noResult"
+      class="p-3 hidden sm:block"
+    >
       <lfx-tabs
         v-model="tab"
         :tabs="tabs"
@@ -133,8 +136,7 @@
 
       <!-- No results -->
       <section
-        v-if="tab === 'all' && props.projects.length === 0
-          && props.repositories.length === 0 && props.collections.length === 0"
+        v-if="tab === 'all' && noResult"
         class="px-3 py-12 flex flex-col items-center"
       >
         <lfx-icon
@@ -173,6 +175,8 @@ const repos = computed(() => props.repositories.map((repo) => ({
       ...repo,
       name: getRepoNameFromUrl(repo.slug),
     })))
+
+const noResult = computed(() => !props.projects.length && !props.repositories.length && !props.collections.length)
 
 const tabs = [
   {
