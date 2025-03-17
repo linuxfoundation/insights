@@ -26,6 +26,7 @@
             v-model="metric"
             icon="fa-light fa-display-code"
             :options="metricOptions"
+            dropdown-position="right"
           />
         </div>
       </div>

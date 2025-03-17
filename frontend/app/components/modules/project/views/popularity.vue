@@ -1,16 +1,17 @@
 <template>
-  <div class="container">
-    <div class="flex justify-between pt-12">
-      <div class="w-1/4 pr-10 max-md:hidden block">
+  <div class="container !px-5 lg:!px-10">
+    <div class="flex justify-between pt-5 md:pt-10">
+      <div class="w-1/4 pr-5 min-w-50 xl:pr-10 max-md:hidden block">
         <lfx-side-nav
           :list="sideNavItems"
           :model-value="activeItem"
           @update:model-value="onSideNavUpdate"
         />
       </div>
-      <div class="max-lg:w-full w-1/2 pb-10">
+
+      <div class="max-lg:w-full w-1/2 pb-6 md:pb-10">
         <lfx-scroll-area
-          class="flex flex-col gap-12"
+          class="flex flex-col gap-5 md:gap-8"
           @scrolled-to-view="onScrolledToView"
         >
           <template #default="{ observer }">
@@ -35,7 +36,7 @@
         <lfx-project-package-downloads /> -->
       </div>
 
-      <div class="w-1/4 pl-10 max-lg:hidden block" />
+      <div class="w-1/4 pl-5 xl:pl-10 max-lg:hidden block" />
     </div>
   </div>
 </template>

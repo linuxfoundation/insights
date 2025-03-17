@@ -98,14 +98,14 @@
               <lfx-icon name="fire" />
               Popularity
             </lfx-menu-button>
-            <lfx-menu-button
-              :to="{
-                name: repoName ? LfxRoutes.REPOSITORY_DEVELOPMENT : LfxRoutes.PROJECT_DEVELOPMENT
-              }"
-            >
-              <lfx-icon name="code" />
-              Development
-            </lfx-menu-button>
+            <!--            <lfx-menu-button-->
+            <!--              :to="{-->
+            <!--                name: repoName ? LfxRoutes.REPOSITORY_DEVELOPMENT : LfxRoutes.PROJECT_DEVELOPMENT-->
+            <!--              }"-->
+            <!--            >-->
+            <!--              <lfx-icon name="code" />-->
+            <!--              Development-->
+            <!--            </lfx-menu-button>-->
             <!--            <lfx-menu-button-->
             <!--              :to="{ name: repoName ? LfxRoutes.REPOSITORY_SECURITY : LfxRoutes.PROJECT_SECURITY }">-->
             <!--              <lfx-icon name="shield-check" />-->
