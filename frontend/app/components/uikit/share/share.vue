@@ -2,10 +2,10 @@
   <lfx-tooltip
     placement="top"
     content="Copy link"
-    :disabled="isSharable || !isCopyable"
+    :disabled="(isSharable && isMobile) || !isCopyable"
   >
     <div
-      v-if="isSharable || isCopyable"
+      v-if="(isSharable && isMobile) || isCopyable"
       class="w-min"
       @click="share()"
     >
@@ -19,6 +19,7 @@ import {computed} from "vue";
 import useToastService from "~/components/uikit/toast/toast.service";
 import {ToastTypesEnum} from "~/components/uikit/toast/types/toast.types";
 import LfxTooltip from "~/components/uikit/tooltip/tooltip.vue";
+import useResponsive from "~/components/shared/utils/responsive";
 
 const props = defineProps<{
     url?: string;
@@ -33,11 +34,15 @@ const sharableLink = computed(() => {
   return props.url;
 });
 
+const {pageWidth} = useResponsive();
+
 const isSharable = ref<boolean>(false);
 const isCopyable = ref<boolean>(false);
 
+const isMobile = computed(() => pageWidth.value < 768);
+
 const share = () => {
-  if (navigator?.share) {
+  if (navigator?.share && isMobile.value) {
     navigator?.share({
       title: document.title,
       url: sharableLink.value
@@ -45,7 +50,7 @@ const share = () => {
   }
   if(navigator?.clipboard){
     navigator?.clipboard.writeText(sharableLink.value);
-    if(!isSharable.value){
+    if(!(isSharable.value && isMobile.value)){
       showToast(
           `Link copied to clipboard`,
           ToastTypesEnum.positive,

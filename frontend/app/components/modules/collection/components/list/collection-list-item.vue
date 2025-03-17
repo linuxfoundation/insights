@@ -49,12 +49,12 @@
         </p>
         <div
           class="flex flex-wrap gap-3"
-          @click.prevent
         >
           <lfx-chip
             v-for="project of props.collection.featuredProjects"
             :key="project.slug"
             type="bordered"
+            @click.prevent="router.push({name: LfxRoutes.PROJECT, params: {slug: project.slug}})"
           >
             <lfx-avatar
               :src="project.logo"
@@ -71,6 +71,7 @@
 </template>
 
 <script setup lang="ts">
+import {useRouter} from "nuxt/app";
 import type {Collection} from "~~/types/collection";
 import LfxCard from "~/components/uikit/card/card.vue";
 import LfxChip from "~/components/uikit/chip/chip.vue";
@@ -82,6 +83,8 @@ import {formatNumberShort} from "~/components/shared/utils/formatter";
 const props = defineProps<{
   collection: Collection;
 }>()
+
+const router = useRouter();
 
 </script>
 

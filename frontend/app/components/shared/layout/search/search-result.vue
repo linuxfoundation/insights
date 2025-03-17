@@ -11,13 +11,13 @@
     <div class="flex flex-col gap-1">
       <!-- Projects -->
       <div
-        v-if="!tab && props.projects.length"
+        v-if="tab === 'all' && props.projects.length"
         class="pt-3 px-3 text-xs font-semibold leading-5 text-neutral-400"
       >
         Projects
       </div>
       <section
-        v-if="!tab || tab === 'projects' && props.projects.length > 0"
+        v-if="tab === 'all' || tab === 'projects' && props.projects.length > 0"
         class="flex flex-col gap-1"
       >
         <nuxt-link
@@ -53,13 +53,13 @@
 
       <!-- Repositories -->
       <div
-        v-if="!tab && props.repositories.length > 0"
+        v-if="tab === 'all' && props.repositories.length > 0"
         class="pt-3 px-3 text-xs font-semibold leading-5 text-neutral-400"
       >
         Repositories
       </div>
       <section
-        v-if="!tab || tab === 'repositories' && props.repositories.length > 0"
+        v-if="tab === 'all' || tab === 'repositories' && props.repositories.length > 0"
         class="flex flex-col gap-1"
       >
         <nuxt-link
@@ -93,13 +93,13 @@
 
       <!-- Collections -->
       <div
-        v-if="!tab && props.collections.length > 0"
+        v-if="tab === 'all' && props.collections.length > 0"
         class="pt-3 px-3 text-xs font-semibold leading-5 text-neutral-400"
       >
         Collections
       </div>
       <section
-        v-if="!tab || tab === 'collections' && props.collections.length > 0"
+        v-if="tab === 'all' || tab === 'collections' && props.collections.length > 0"
         class="flex flex-col gap-1"
       >
         <nuxt-link
@@ -133,7 +133,8 @@
 
       <!-- No results -->
       <section
-        v-if="!tab && props.projects.length === 0 && props.repositories.length === 0 && props.collections.length === 0"
+        v-if="tab === 'all' && props.projects.length === 0
+          && props.repositories.length === 0 && props.collections.length === 0"
         class="px-3 py-12 flex flex-col items-center"
       >
         <lfx-icon
@@ -166,7 +167,7 @@ const props = defineProps<{
 
 const route = useRoute();
 
-const tab = ref('');
+const tab = ref('all');
 
 const repos = computed(() => props.repositories.map((repo) => ({
       ...repo,
@@ -175,7 +176,7 @@ const repos = computed(() => props.repositories.map((repo) => ({
 
 const tabs = [
   {
-    value: '',
+    value: 'all',
     label: 'All',
   },
   {

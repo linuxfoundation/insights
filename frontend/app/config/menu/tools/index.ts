@@ -6,7 +6,6 @@ import easycla from "~/config/menu/tools/easy-cla";
 import mentorship from "~/config/menu/tools/mentorship";
 import crowdfunding from "~/config/menu/tools/crowdfunding";
 import communityManagement from "~/config/menu/tools/community-management";
-import documentManagement from "~/config/menu/tools/document-management";
 
 export interface ToolsItem {
     name: string;
@@ -24,5 +23,4 @@ export const lfxTools: Record<string, ToolsItem> = {
     mentorship,
     crowdfunding,
     communityManagement,
-    documentManagement,
 }
