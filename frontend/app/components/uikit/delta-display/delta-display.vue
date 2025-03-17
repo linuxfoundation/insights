@@ -32,7 +32,7 @@ const props = withDefaults(defineProps<DeltaDisplayProps>(), {
   iconType: 'light'
 });
 
-const percentage = computed(() => formatNumber(props.summary.percentageChange, 1));
+const percentage = computed(() => formatNumber(Math.abs(props.summary.percentageChange), 1));
 
 /**
  * This is used to determine the direction of the delta display
@@ -67,7 +67,7 @@ const deltaDisplay = computed(() => {
 });
 
 const deltaIcon = computed(() => (deltaDirection.value === 'negative'
-  ? 'circle-arrow-down-right' : 'circle-arrow-up-right'));
+  ? 'circle-arrow-down' : 'circle-arrow-up'));
 
 const previousDisplay = computed(() => {
   if (!props.hidePreviousValue) {
