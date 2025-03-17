@@ -66,7 +66,7 @@
                 {{ props.collection.name }}
               </h1>
               <div
-                :class="scrollTop > 50 ? 'h-0 opacity-0 invisible pt-0' : 'h-6 md:h-8 opacity-100 visible pt-2 md:pt-3'"
+                :class="scrollTop > 50 ? 'h-0 opacity-0 invisible pt-0' : 'h-auto opacity-100 visible pt-2 md:pt-3'"
                 class=" w-full transition-all ease-linear"
               >
                 <lfx-skeleton
@@ -77,7 +77,7 @@
                 />
                 <p
                   v-else-if="props.collection"
-                  class="text-body-2 md:text-body-1 text-neutral-500 line-clamp-1"
+                  class="text-body-2 md:text-body-1 text-neutral-500"
                 >
                   {{props.collection.description}}
                 </p>
