@@ -35,9 +35,17 @@ export function getPreviousDates(currentStartDate?: DateTime, currentEndDate?: D
   };
 }
 
-export function calculatePercentageChange(current: number, previous: number): number {
+export function calculatePercentageChange(current: number, previous: number): number | undefined {
+  if (current === 0 && previous === 0) {
+    return 0;
+  }
+
+  if (current > 0 && previous === 0) {
+    return undefined;
+  }
+
   if (previous !== 0) {
-    return ((current * 100) / previous) - 100;
+    return Math.abs(((current * 100) / previous) - 100);
   }
 
   return 0;
