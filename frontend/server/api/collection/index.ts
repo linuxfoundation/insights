@@ -41,16 +41,21 @@ export default defineEventHandler(async (event): Promise<Pagination<Collection> 
             orderByDirection,
         });
 
+        type CollectionCount = {'count(id)': number};
+        const collectionCountResult = await fetchFromTinybird<CollectionCount[]>('/v0/pipes/collections_list.json', {
+            count: true,
+        });
+
         const data: Pagination<Collection> = {
             page,
             pageSize,
-            total: res.rows,
+            total: collectionCountResult.data[0]?.['count(id)'] || 0,
             data: res.data,
         }
 
         return data
     } catch (error) {
-        console.error('Error collection list:', error);
+        console.error('Error fetching collection list from TinyBird:', error);
         throw createError({statusCode: 500, statusMessage: 'Internal Server Error'});
     }
 });
