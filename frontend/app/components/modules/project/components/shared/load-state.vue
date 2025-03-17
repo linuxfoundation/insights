@@ -1,6 +1,6 @@
 <template>
   <div
-    :class="`flex flex-col justify-evenly w-full`"
+    :class="`flex flex-col justify-start w-full`"
     :style="heightStyle"
   >
     <slot v-if="props.status === 'success' && !props.isEmpty" />
