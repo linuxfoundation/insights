@@ -4,7 +4,15 @@
       Active days
     </h3>
     <p class="text-body-2 text-neutral-500 mb-6">
-      (TBD)
+      Number of days contributors were actively involved in the project and the total contributions made during the
+      selected period.
+      <a
+        :href="links.learnMore"
+        target="_blank"
+        class="text-brand-500"
+      >
+        Learn more
+      </a>
     </p>
     <hr>
     <section class="mt-5">
@@ -88,6 +96,7 @@ import { isEmptyData } from '~/components/shared/utils/helper';
 import { lineGranularities } from '~/components/shared/types/granularity';
 import { dateOptKeys } from '~/components/modules/project/config/date-options';
 import type { Granularity } from '~~/types/shared/granularity';
+import { links } from '~/config/links';
 
 const {
   startDate, endDate, selectedRepository, selectedTimeRangeKey, customRangeGranularity
