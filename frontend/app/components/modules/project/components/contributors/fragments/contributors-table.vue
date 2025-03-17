@@ -45,12 +45,12 @@ const props = withDefaults(
 
 const contributionColumnHeader = computed(() => {
   if (props.metric === 'all') {
-    return 'Total Contributions';
+    return 'Total contributions';
   }
 
   const flattenedMetricsOptions = metricsOptions.flatMap((option) => option.items);
 
-  return `Total ${flattenedMetricsOptions.find((option) => option.value === props.metric)?.label}`;
+  return `Total ${flattenedMetricsOptions.find((option) => option.value === props.metric)?.label.toLowerCase()}`;
 });
 </script>
 
