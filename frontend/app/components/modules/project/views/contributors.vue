@@ -115,11 +115,11 @@ const { scrollToTarget, scrollToTop } = useScroll();
 
 const onSideNavUpdate = (value: string) => {
   if (value === sideNavItems[0]?.key) {
-    scrollToTop();
+    scrollToTop(undefined, 'instant');
   } else {
     const element = document.getElementById(value);
     if (element) {
-      scrollToTarget(element);
+      scrollToTarget(element, undefined, 'instant');
     }
   }
 };

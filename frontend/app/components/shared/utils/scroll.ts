@@ -15,18 +15,22 @@ const useScroll = () => {
     scrollTop.value = body?.scrollTop || 0;
   };
 
-  const scrollToTop = (value: number = 0) => {
+  const scrollToTop = (value: number = 0, behavior: 'smooth' | 'instant' = 'smooth') => {
     document.body.scrollTo({
       top: value,
-      behavior: 'smooth'
+      behavior
     });
   };
 
-  const scrollToTarget = (element: HTMLElement, headerOffset: number = 220) => {
+  const scrollToTarget = (
+    element: HTMLElement,
+    headerOffset: number = 220,
+    behavior: 'smooth' | 'instant' = 'smooth'
+  ) => {
     const elementPosition = element.getBoundingClientRect().top;
     const offsetPosition = elementPosition + document.body.scrollTop - headerOffset;
 
-    scrollToTop(offsetPosition);
+    scrollToTop(offsetPosition, behavior);
   };
 
   onMounted(() => {
