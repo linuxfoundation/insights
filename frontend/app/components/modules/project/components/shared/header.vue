@@ -104,9 +104,7 @@
               Popularity
             </lfx-menu-button>
             <lfx-menu-button
-              :to="{
-                name: repoName ? LfxRoutes.REPOSITORY_DEVELOPMENT : LfxRoutes.PROJECT_DEVELOPMENT
-              }"
+              :disabled="true"
             >
               <lfx-icon name="code" />
               Development
