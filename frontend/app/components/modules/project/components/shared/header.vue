@@ -30,9 +30,11 @@
                 {{ props.project.name }}
               </h1>
               <span
+                v-if="props.project.repositories?.length > 0"
                 class="mr-1 text-neutral-400 font-secondary leading-8 ease-linear transition-all text-2xl"
               >/</span>
               <div
+                v-if="props.project.repositories?.length > 0"
                 class="flex items-center gap-2 cursor-pointer px-2 py-0.5
               rounded-lg transition hover:bg-neutral-100"
                 @click="isSearchRepoModalOpen = true"
