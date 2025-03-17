@@ -56,16 +56,21 @@ export default defineEventHandler(async (event): Promise<Pagination<Project> | E
             orderByDirection,
         });
 
+        type ProjectCount = {'count(id)': number};
+        const projectCountResult = await fetchFromTinybird<ProjectCount[]>('/v0/pipes/projects_list.json', {
+            count: true,
+        });
+
         const data: Pagination<Project> = {
             page,
             pageSize,
-            total: res.rows,
+            total: projectCountResult.data[0]?.['count(id)'] || 0,
             data: res.data,
         }
 
         return data;
     } catch (error) {
-        console.error('Error fetching project list:', error);
+        console.error('Error fetching project list from TinyBird:', error);
         throw createError({statusCode: 500, statusMessage: 'Internal Server Error'});
     }
 });
