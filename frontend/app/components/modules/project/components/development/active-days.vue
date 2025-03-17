@@ -26,6 +26,7 @@
             <div class="flex flex-row gap-4 items-center">
               <div class="text-data-display-1">{{ formatNumber(summary.current) }}</div>
               <lfx-delta-display
+                v-if="selectedTimeRangeKey !== dateOptKeys.alltime"
                 :summary="summary"
                 icon="circle-arrow-up-right"
                 icon-type="solid"

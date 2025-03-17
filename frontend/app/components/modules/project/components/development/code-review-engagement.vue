@@ -27,6 +27,7 @@
           <div class="flex flex-row gap-4 items-center">
             <div class="text-data-display-1">{{ formatNumber(summary.current) }} contributors</div>
             <lfx-delta-display
+              v-if="selectedTimeRangeKey !== dateOptKeys.alltime"
               :summary="summary"
               icon="circle-arrow-up-right"
               icon-type="solid"
@@ -74,8 +75,11 @@ import { formatNumber } from '~/components/shared/utils/formatter';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
 import { isEmptyData } from '~/components/shared/utils/helper';
 import { links } from '~/config/links';
+import { dateOptKeys } from '~/components/modules/project/config/date-options';
 
-const { startDate, endDate, selectedRepository } = storeToRefs(useProjectStore());
+const {
+ startDate, endDate, selectedRepository, selectedTimeRangeKey
+} = storeToRefs(useProjectStore());
 
 const activeTab = ref('pr-participants');
 const route = useRoute();
