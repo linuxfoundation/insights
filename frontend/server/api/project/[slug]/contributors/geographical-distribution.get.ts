@@ -1,7 +1,9 @@
 import {DateTime} from "luxon";
 import type {GeographicDistributionFilter} from "~~/server/data/types";
-import {FilterActivityMetric, DemographicType} from "~~/server/data/types";
+import {DemographicType} from "~~/server/data/types";
 import {createDataSource} from "~~/server/data/data-sources";
+import {ActivityTypes} from "~~/types/shared/activity-types";
+import {ActivityPlatforms} from "~~/types/shared/activity-platforms";
 
 /**
  * Frontend expects the data to be in the following format:
@@ -31,10 +33,13 @@ export default defineEventHandler(async (event) => {
   const query = getQuery(event);
 
   const project = (event.context.params as { slug: string }).slug;
+  const activityPlatform = query.platform as ActivityPlatforms;
+  const activityType = query.activityType as ActivityTypes;
 
   const filter: GeographicDistributionFilter = {
     project,
-    metric: (query.metric as FilterActivityMetric) || FilterActivityMetric.ALL,
+    platform: activityPlatform !== ActivityPlatforms.ALL ? activityPlatform : undefined,
+    activity_type: activityType !== ActivityTypes.ALL ? activityType : undefined,
     repository: query.repository as string,
     type: (query.type as DemographicType) || DemographicType.CONTRIBUTORS,
     startDate: query.startDate ? DateTime.fromISO(query.startDate as string) : undefined,
