@@ -1,6 +1,6 @@
 <template>
   <lfx-maintain-height class="sticky top-14 lg:top-17 z-10">
-    <div class="bg-white outline outline-neutral-200">
+    <div class="bg-white outline outline-1 outline-neutral-200">
       <section class="container">
         <div
           v-if="props.project"
