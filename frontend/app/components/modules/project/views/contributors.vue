@@ -16,18 +16,6 @@
         >
           <template #default="{ observer }">
             <lfx-scroll-view
-              id="active-contributors"
-              :observer="observer"
-            >
-              <lfx-project-active-contributors />
-            </lfx-scroll-view>
-            <lfx-scroll-view
-              id="active-organizations"
-              :observer="observer"
-            >
-              <lfx-project-active-organizations />
-            </lfx-scroll-view>
-            <lfx-scroll-view
               id="contributors-leaderboard"
               :observer="observer"
             >
@@ -38,6 +26,18 @@
               :observer="observer"
             >
               <lfx-project-organizations-leaderboard />
+            </lfx-scroll-view>
+            <lfx-scroll-view
+              id="active-contributors"
+              :observer="observer"
+            >
+              <lfx-project-active-contributors />
+            </lfx-scroll-view>
+            <lfx-scroll-view
+              id="active-organizations"
+              :observer="observer"
+            >
+              <lfx-project-active-organizations />
             </lfx-scroll-view>
             <lfx-scroll-view
               id="contributor-dependency"
@@ -99,10 +99,10 @@ import LfxScrollArea from '~/components/uikit/scroll-view/scroll-area.vue';
 import useScroll from '~/components/shared/utils/scroll';
 
 const sideNavItems = [
-  { label: 'Active Contributors', key: 'active-contributors' },
-  { label: 'Active Organizations', key: 'active-organizations' },
   { label: 'Contributors Leaderboard', key: 'contributors-leaderboard' },
   { label: 'Organizations Leaderboard', key: 'organizations-leaderboard' },
+  { label: 'Active Contributors', key: 'active-contributors' },
+  { label: 'Active Organizations', key: 'active-organizations' },
   { label: 'Contributor Dependency', key: 'contributor-dependency' },
   { label: 'Organization Dependency', key: 'organization-dependency' },
   { label: 'Retention', key: 'retention' },
