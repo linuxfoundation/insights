@@ -14,7 +14,7 @@
     <section class="mt-5">
       <div class="mb-6">
         <lfx-skeleton-state
-          :status="status"
+          :status="summaryLoading ? status : 'success'"
           height="2rem"
           width="7.5rem"
         >
@@ -80,6 +80,15 @@ const {
 
 const activeTab = ref(granularityTabs[1]?.value || 'weekly');
 const route = useRoute();
+// just a stub var to watch if the only change was the granularity
+const paramWatch = computed(() => ({
+  granularity: activeTab.value,
+  repository: selectedRepository.value,
+  startDate: startDate.value,
+  endDate: endDate.value,
+}));
+const summaryLoading = ref(true);
+
 const { data, status, error } = useFetch(
   `/api/project/${route.params.slug}/contributors/active-organizations`,
   {
@@ -127,6 +136,18 @@ const barChartConfig = computed(() => getBarChartConfig(chartData.value, chartSe
 
 watch(selectedTimeRangeKey, () => {
   activeTab.value = tabs.value[0]?.value || 'weekly';
+});
+
+watch(paramWatch, (newParams, oldParams) => {
+  let onlyGranularityChanged = newParams.granularity !== oldParams.granularity;
+  // check if the only change was the granularity, if not, we need to reset the summary loading
+  if (newParams.startDate !== oldParams.startDate
+    || newParams.endDate !== oldParams.endDate
+    || newParams.repository !== oldParams.repository) {
+    onlyGranularityChanged = false;
+  }
+
+  summaryLoading.value = !onlyGranularityChanged;
 });
 </script>
 
