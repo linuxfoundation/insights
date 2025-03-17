@@ -35,19 +35,19 @@
         :error="error"
         error-message="Error fetching geographical distribution"
         :is-empty="isEmpty"
-        :height="400"
+        :height="330"
         use-min-height
       >
-        <div class="w-full h-[330px] border-solid border-neutral-100 border-x-0 border-y">
+        <div class="w-full h-[330px]">
           <lfx-chart :config="getGeoMapChartConfig(chartData, chartSeries, getMaxValue(chartData))" />
         </div>
-        <div class="mt-5">
+        <div>
           <div
             v-if="status !== 'pending'"
             class="flex flex-col gap-5"
           >
             <div
-              v-for="item in geoMapData"
+              v-for="item in geoMapDataCountries"
               :key="item.name"
               class="flex flex-row justify-between items-center text-sm"
             >
@@ -60,7 +60,24 @@
                 </span>
               </div>
               <span>
-                {{ formatNumber(item.count) }} {{ label.toLowerCase() }} ({{ item.percentage }}%)
+                {{ formatNumber(item.count) }} {{ label.toLowerCase() }} ・ {{ item.percentage }}%
+              </span>
+            </div>
+          </div>
+          <div
+            v-if="status !== 'pending'"
+            class="flex flex-col gap-5"
+          >
+            <div
+              v-for="item in unknownGeoMapData"
+              :key="item.name"
+              class="flex flex-row justify-between items-center text-sm border-neutral-100 border-t pt-5 mt-5"
+            >
+              <span class="text-neutral-500 font-medium">
+                Location not identified
+              </span>
+              <span class="text-neutral-500 font-medium">
+                {{ formatNumber(item.count) }} {{ label.toLowerCase() }} ・ {{ item.percentage }}%
               </span>
             </div>
           </div>
@@ -115,6 +132,11 @@ const { data, status, error } = useFetch(
 );
 
 const geoMapData = computed<GeoMapData[] | undefined>(() => (data.value as GeoMapResponse)?.data);
+const geoMapDataCountries = computed<GeoMapData[] | undefined>(() => (geoMapData.value
+  ? geoMapData.value.filter((item) => item.name !== 'Unknown') : undefined));
+const unknownGeoMapData = computed<GeoMapData[] | undefined>(() => (geoMapData.value
+  ? geoMapData.value.filter((item) => item.name === 'Unknown') : undefined));
+
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
   () => convertToChartData(geoMapData.value as unknown as RawChartData[], 'name', ['count'])
@@ -143,7 +165,6 @@ const chartSeries = computed<ChartSeries[]>(() => [
     dataIndex: 0
   }
 ]);
-
 </script>
 
 <script lang="ts">
