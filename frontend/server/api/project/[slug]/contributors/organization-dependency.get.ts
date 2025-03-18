@@ -1,6 +1,8 @@
 import {DateTime} from "luxon";
-import {FilterActivityMetric, FilterGranularity} from "~~/server/data/types";
+import {FilterGranularity} from "~~/server/data/types";
 import {createDataSource} from "~~/server/data/data-sources";
+import {ActivityTypes} from "~~/types/shared/activity-types";
+import {ActivityPlatforms} from "~~/types/shared/activity-platforms";
 
 /**
  * Frontend expects the data to be in the following format:
@@ -36,10 +38,14 @@ export default defineEventHandler(async (event) => {
 
   const project = (event.context.params as { slug: string }).slug;
 
+  const activityPlatform = query.platform as ActivityPlatforms;
+  const activityType = query.activityType as ActivityTypes;
+
   const filter = {
     project,
     granularity: (query.granularity as FilterGranularity) || FilterGranularity.QUARTERLY,
-    metric: (query.metric as FilterActivityMetric) || FilterActivityMetric.ALL,
+    platform: activityPlatform !== ActivityPlatforms.ALL ? activityPlatform : undefined,
+    activity_type: activityType !== ActivityTypes.ALL ? activityType : undefined,
     repository: query.repository as string,
     startDate: query.startDate ? DateTime.fromISO(query.startDate as string) : undefined,
     endDate: query.endDate ? DateTime.fromISO(query.endDate as string) : undefined,
