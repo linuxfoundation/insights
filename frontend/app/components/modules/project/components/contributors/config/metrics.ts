@@ -114,7 +114,7 @@ export const metricsOptions: DropdownGroupOptions[] = [
         label: 'Created a changeset'
       },
       {
-        value: ActivityTypes.CHAGESET_CREATED.valueOf(),
+        value: ActivityTypes.CHANGESET_CREATED.valueOf(),
         label: 'Created a changeset'
       },
       {

@@ -29,7 +29,7 @@ export enum ActivityTypes {
 
   // The ones below are for Gerrit
   CHANGESET_NEW = 'changeset-new',
-  CHAGESET_CREATED = 'changeset-created',
+  CHANGESET_CREATED = 'changeset-created',
   CHANGESET_MERGED = 'changeset-merged',
   CHANGESET_CLOSED = 'changeset-closed',
   CHANGESET_ABANDONED = 'changeset-abandoned',
