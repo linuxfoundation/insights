@@ -47,6 +47,7 @@ import { ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { useFetch } from 'nuxt/app';
 import { storeToRefs } from "pinia";
+import { DateTime } from 'luxon';
 import LfxProjectLoadState from '../shared/load-state.vue';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
@@ -61,24 +62,48 @@ import { lfxColors } from '~/config/styles/colors';
 import { getLineAreaChartConfig } from '~/components/uikit/chart/configs/line.area.chart';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
 import { isEmptyData } from '~/components/shared/utils/helper';
-import { lineGranularities } from '~/components/shared/types/granularity';
 import type { Retention } from '~~/types/contributors/responses.types';
-import { dateOptKeys } from '~/components/modules/project/config/date-options';
-import type { Granularity } from '~~/types/shared/granularity';
+import { Granularity } from '~~/types/shared/granularity';
 import { links } from '~/config/links';
 
 const {
-  startDate, endDate, selectedRepository, selectedTimeRangeKey, customRangeGranularity
+  startDate, endDate, selectedRepository, selectedTimeRangeKey
 } = storeToRefs(useProjectStore())
 
 const route = useRoute();
 
 const activeTab = ref('contributors');
-// const chartType = ref('line');
+// This is a special case for the retention chart
+const calculateGranularity = (start: string | null, end: string | null): string[] => {
+  // Return weekly if either date is null
+  if (!start || !end) {
+    return [Granularity.WEEKLY];
+  }
 
-const granularity = computed(() => (selectedTimeRangeKey.value === dateOptKeys.custom
-  ? customRangeGranularity.value[0] as Granularity
-  : lineGranularities[selectedTimeRangeKey.value as keyof typeof lineGranularities]));
+  const startDate = DateTime.fromISO(start);
+  const endDate = DateTime.fromISO(end);
+  const diffInDays = Math.ceil(endDate.diff(startDate, 'days').days);
+
+  switch (true) {
+    case diffInDays <= 13:
+      return [Granularity.DAILY];
+    case diffInDays <= 90:
+      return [Granularity.WEEKLY];
+    case diffInDays <= 365:
+      return [Granularity.MONTHLY];
+    case diffInDays <= 730:
+      return [Granularity.YEARLY];
+    default:
+      return [Granularity.YEARLY];
+  }
+};
+
+const customGranularity = computed(() => calculateGranularity(startDate.value, endDate.value));
+
+const granularity = computed(() => customGranularity.value[0] as Granularity);
+// (selectedTimeRangeKey.value === dateOptKeys.custom
+//   ? customGranularity.value[0] as Granularity
+//   : lineGranularities[selectedTimeRangeKey.value as keyof typeof lineGranularities]));
 const { data, status, error } = useFetch(
   `/api/project/${route.params.slug}/contributors/retention`,
   {
@@ -116,19 +141,6 @@ const tabs = [
     value: 'organizations'
   }
 ];
-
-// const chartTypes = [
-//   {
-//     icon: 'fa-light fa-chart-line-down',
-//     label: 'Line',
-//     value: 'line'
-//   },
-//   {
-//     icon: 'fa-light fa-bars-sort',
-//     label: 'Bar',
-//     value: 'bar'
-//   }
-// ];
 
 const chartSeries = ref<ChartSeries[]>([
   {
