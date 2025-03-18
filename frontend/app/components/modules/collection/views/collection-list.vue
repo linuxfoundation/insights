@@ -111,7 +111,7 @@ const {scrollTop} = useScroll();
 
 const page = ref(0);
 const pageSize = ref(10);
-const sort = ref('name_asc');
+const sort = ref('projectCount_desc');
 
 // const stack = ref('');
 // const industry = ref('');
