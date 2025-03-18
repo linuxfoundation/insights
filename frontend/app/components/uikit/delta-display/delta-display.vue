@@ -11,7 +11,9 @@
         :type="props.iconType"
         :size="12"
       />
-      {{ percentage }}%
+      <template v-if="!isHidePercentage">
+        {{ percentage }}%
+      </template>
       {{ deltaDisplay }}
     </span>
     <span class="text-neutral-400 text-xs">
@@ -32,7 +34,8 @@ const props = withDefaults(defineProps<DeltaDisplayProps>(), {
   iconType: 'light'
 });
 
-const percentage = computed(() => formatNumber(Math.abs(props.summary.percentageChange), 1));
+const isHidePercentage = computed(() => props.summary.percentageChange === undefined);
+const percentage = computed(() => formatNumber(Math.abs(props.summary.percentageChange || 0), 1));
 
 /**
  * This is used to determine the direction of the delta display
@@ -61,7 +64,7 @@ const deltaColor = computed(() => (deltaDirection.value === 'negative'
 
 const deltaDisplay = computed(() => {
   if (!props.percentageOnly) {
-    return `(${delta.value}${props.unit || ''})`;
+    return isHidePercentage.value ? `${delta.value}${props.unit || ''}` : `(${delta.value}${props.unit || ''})`;
   }
   return '';
 });
