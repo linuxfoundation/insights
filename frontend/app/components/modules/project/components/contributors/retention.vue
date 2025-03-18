@@ -67,7 +67,7 @@ import { Granularity } from '~~/types/shared/granularity';
 import { links } from '~/config/links';
 
 const {
-  startDate, endDate, selectedRepository, selectedTimeRangeKey
+  startDate, endDate, selectedRepository
 } = storeToRefs(useProjectStore())
 
 const route = useRoute();
