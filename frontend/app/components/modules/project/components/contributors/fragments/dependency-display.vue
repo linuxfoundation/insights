@@ -5,7 +5,9 @@
         <slot />
       </div>
       <div class="flex flex-col items-start">
-        <div class="text-sm font-semibold">{{ props.topDependency.count }} {{ props.label }}</div>
+        <div class="text-sm font-semibold">
+          {{ props.topDependency.count }} {{ pluralize(props.label, props.topDependency.count) }}
+        </div>
         <div :class="`text-body-1 text-${dependencyColor}-600`">
           {{ props.topDependency.percentage }}% of all contributions
         </div>
@@ -13,7 +15,7 @@
     </div>
     <div class="flex flex-col items-end">
       <div class="text-sm font-semibold">
-        Other {{ props.otherDependency.count }} {{ props.label }}
+        Other {{ props.otherDependency.count }} {{ pluralize(props.label, props.otherDependency.count) }}
       </div>
       <div class="text-body-1 text-neutral-500">
         {{ props.otherDependency.percentage }}% of all contributions
@@ -31,7 +33,8 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import type { Dependency, Contributor, Organization } from '../types/contributors.types';
+import pluralize from "pluralize";
+import type { Dependency, Contributor, Organization } from '~~/types/contributors/responses.types';
 import LfxProgressBar from '~/components/uikit/progress-bar/progress-bar.vue';
 import type { ProgressBarType } from '~/components/uikit/progress-bar/types/progress-bar.types';
 
