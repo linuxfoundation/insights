@@ -1,7 +1,8 @@
 import {DateTime} from "luxon";
 import type {FilterGranularity, RetentionFilter} from "~~/server/data/types";
-import {DemographicType, FilterActivityMetric} from "~~/server/data/types";
+import {DemographicType} from "~~/server/data/types";
 import {createDataSource} from "~~/server/data/data-sources";
+import {ActivityTypes} from "~~/types/shared/activity-types";
 
 /**
  * Frontend expects the data to be in the following format:
@@ -22,11 +23,12 @@ export default defineEventHandler(async (event) => {
   const query = getQuery(event);
 
   const project = (event.context.params as { slug: string }).slug;
+  const activityType = query.activityType as ActivityTypes;
 
   const filter: RetentionFilter = {
     project,
     granularity: query.granularity as FilterGranularity,
-    metric: (query.metric as FilterActivityMetric) || FilterActivityMetric.ALL,
+    activity_type: activityType !== ActivityTypes.ALL ? activityType : undefined,
     repository: query.repository as string,
     demographicType: (query.type as DemographicType) || DemographicType.CONTRIBUTORS,
     onlyContributions: false, // forks and stars are non-contribution activities, but we want to count them.
