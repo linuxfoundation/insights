@@ -72,7 +72,7 @@ const collectionSlug = route.params.slug as string;
 
 const {scrollTopPercentage} = useScroll();
 
-const sort = ref('name_asc');
+const sort = ref('contributorCount_desc');
 const tab = ref('all');
 
 const page = ref(0);
