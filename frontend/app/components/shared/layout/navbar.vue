@@ -1,5 +1,5 @@
 <template>
-  <header class="outline outline-neutral-100 bg-white sticky top-0 left-0 z-40">
+  <header class="outline outline-1 outline-neutral-100 bg-white sticky top-0 left-0 z-40">
     <div class="container">
       <div class="h-14 lg:h-17 flex justify-between items-center gap-4 lg:gap-5">
         <div class="flex items-center gap-6 flex-grow min-w-0">
