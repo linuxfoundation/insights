@@ -41,10 +41,5 @@ export default defineNuxtConfig({
     compilerOptions: {
       isCustomElement: (tag: string) => ['lfx-footer'].includes(tag),
     }
-  },
-  router: {
-    options: {
-      strict: false
-    }
   }
 });
