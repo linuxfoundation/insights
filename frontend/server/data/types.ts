@@ -40,7 +40,8 @@ export type ActiveOrganizationsFilter = {
 
 export type ContributorsLeaderboardFilter = {
   project: string;
-  metric: FilterActivityMetric;
+  platform?: ActivityPlatforms;
+  activity_type?: ActivityTypes;
   repository?: string;
   limit?: number;
   startDate?: DateTime;

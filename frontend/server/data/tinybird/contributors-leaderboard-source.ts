@@ -31,17 +31,9 @@ export async function fetchContributorsLeaderboard(
   // TODO: We're passing unchecked query parameters to TinyBird directly from the frontend.
   //  We need to ensure this doesn't pose a security risk.
 
-  const contributorsLeaderboardQuery = {
-    project: filter.project,
-    repository: filter.repository,
-    limit: filter.limit,
-    startDate: filter.startDate,
-    endDate: filter.endDate,
-  };
-
   const data = await fetchFromTinybird<TinybirdContributorsLeaderboardData>(
     '/v0/pipes/contributors_leaderboard.json',
-    contributorsLeaderboardQuery
+    filter
   );
 
   let processedData: ContributorsLeaderboardData = [];
