@@ -112,7 +112,6 @@ const { data, status } = await useFetch<Pagination<Project>>(
 watch(scrollTopPercentage, () => {
   if (scrollTopPercentage.value >= 100 && projects.value.length < data.value.total) {
     page.value += 1;
-    projects.value = [];
   }
 });
 
