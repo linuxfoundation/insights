@@ -26,7 +26,7 @@
           :top-dependency="topOrganizations"
           :other-dependency="otherOrganizations"
           :list="organizations"
-          label="organizations"
+          label="organization"
         >
           <lfx-avatar-group>
             <lfx-avatar

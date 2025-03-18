@@ -26,7 +26,7 @@
           :top-dependency="topContributors"
           :other-dependency="otherContributors"
           :list="contributors"
-          label="contributors"
+          label="contributor"
         >
           <lfx-avatar-group>
             <lfx-avatar
