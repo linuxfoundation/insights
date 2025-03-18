@@ -2,7 +2,6 @@ import type {
   ContributorDependencyFilter,
   ContributorsLeaderboardFilter,
 } from "../types";
-import {FilterActivityMetric} from "../types";
 import {fetchFromTinybird} from './tinybird'
 import type {ContributorsLeaderboardDataPoint} from "~~/server/data/tinybird/contributors-leaderboard-source";
 import {fetchContributorsLeaderboard} from "~~/server/data/tinybird/contributors-leaderboard-source";
