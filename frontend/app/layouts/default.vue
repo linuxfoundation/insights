@@ -1,10 +1,11 @@
 <template>
-  <main>
+  <main class="min-h-screen flex flex-col">
     <lfx-navbar />
     <slot />
     <lfx-toast theme="dark" />
+    <div class="flex-grow" />
     <client-only>
-      <lfx-footer class="px-10 mx-auto max-w-3xl pb-6 pt-6" />
+      <lfx-footer class="mx-auto pb-6 pt-6" />
     </client-only>
   </main>
 </template>

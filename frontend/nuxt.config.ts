@@ -36,5 +36,10 @@ export default defineNuxtConfig({
     public: {
       apiBase: '/api'
     }
+  },
+  vue: {
+    compilerOptions: {
+      isCustomElement: (tag: string) => ['lfx-footer'].includes(tag),
+    }
   }
 });
