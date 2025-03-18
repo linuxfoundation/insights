@@ -41,6 +41,9 @@ importers:
       pinia:
         specifier: ^2.3.0
         version: 2.3.1(typescript@5.8.2)(vue@3.5.13(typescript@5.8.2))
+      pluralize:
+        specifier: ^8.0.0
+        version: 8.0.0
       primevue:
         specifier: ^4.2.5
         version: 4.3.2(vue@3.5.13(typescript@5.8.2))
@@ -96,6 +99,9 @@ importers:
       '@types/luxon':
         specifier: ^3.4.2
         version: 3.4.2
+      '@types/pluralize':
+        specifier: ^0.0.33
+        version: 0.0.33
       '@typescript-eslint/eslint-plugin':
         specifier: ^8.21.0
         version: 8.26.1(@typescript-eslint/parser@8.26.1(eslint@9.22.0(jiti@2.4.2))(typescript@5.8.2))(eslint@9.22.0(jiti@2.4.2))(typescript@5.8.2)
@@ -1611,6 +1617,9 @@ packages:
 
   '@types/parse-path@7.0.3':
     resolution: {integrity: sha512-LriObC2+KYZD3FzCrgWGv/qufdUy4eXrxcLgQMfYXgPbLIecKIsVBaQgUPmxSSLcjmYbDTQbMgr6qr6l/eb7Bg==}
+
+  '@types/pluralize@0.0.33':
+    resolution: {integrity: sha512-JOqsl+ZoCpP4e8TDke9W79FDcSgPAR0l6pixx2JHkhnRjvShyYiAYw2LVsnA7K08Y6DeOnaU6ujmENO4os/cYg==}
 
   '@types/react@19.0.10':
     resolution: {integrity: sha512-JuRQ9KXLEjaUNjTWpzuR231Z2WpIwczOkBEIvbHNCzQefFIT0L8IqE6NV6ULLyC1SI/i234JnDoMkfg+RjQj2g==}
@@ -5630,6 +5639,9 @@ packages:
   vue-component-type-helpers@2.2.8:
     resolution: {integrity: sha512-4bjIsC284coDO9om4HPA62M7wfsTvcmZyzdfR0aUlFXqq4tXxM1APyXpNVxPC8QazKw9OhmZNHBVDA6ODaZsrA==}
 
+  vue-component-type-helpers@3.0.0-alpha.2:
+    resolution: {integrity: sha512-dv9YzsuJFLnpRNxKU0exwIlCIA/v+rXrgCsEtaENsFJLPFMw1Sr4IRctilwfjnjCzoJGgGACHRZfxo6ZwlH2fQ==}
+
   vue-demi@0.14.10:
     resolution: {integrity: sha512-nMZBOwuzabUO0nLgIcc6rycZEebF6eeUfaiQx9+WSk8e29IbLvPU9feI6tqW4kTo3hvoYAJkMh8n8D0fuISphg==}
     engines: {node: '>=12'}
@@ -7438,7 +7450,7 @@ snapshots:
       ts-dedent: 2.2.0
       type-fest: 2.19.0
       vue: 3.5.13(typescript@5.8.2)
-      vue-component-type-helpers: 2.2.8
+      vue-component-type-helpers: 3.0.0-alpha.2
 
   '@storybook/vue3@8.4.7(storybook@8.4.7)(vue@3.5.13(typescript@5.8.2))':
     dependencies:
@@ -7452,7 +7464,7 @@ snapshots:
       ts-dedent: 2.2.0
       type-fest: 2.19.0
       vue: 3.5.13(typescript@5.8.2)
-      vue-component-type-helpers: 2.2.8
+      vue-component-type-helpers: 3.0.0-alpha.2
 
   '@stylistic/eslint-plugin@3.1.0(eslint@9.22.0(jiti@2.4.2))(typescript@5.8.2)':
     dependencies:
@@ -7534,6 +7546,8 @@ snapshots:
   '@types/normalize-package-data@2.4.4': {}
 
   '@types/parse-path@7.0.3': {}
+
+  '@types/pluralize@0.0.33': {}
 
   '@types/react@19.0.10':
     dependencies:
@@ -12133,6 +12147,8 @@ snapshots:
       typescript: 5.8.2
 
   vue-component-type-helpers@2.2.8: {}
+
+  vue-component-type-helpers@3.0.0-alpha.2: {}
 
   vue-demi@0.14.10(vue@3.5.13(typescript@5.8.2)):
     dependencies:

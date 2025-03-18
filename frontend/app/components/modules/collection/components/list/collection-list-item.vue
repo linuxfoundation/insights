@@ -21,7 +21,8 @@
               />
             </div>
             <p class="leading-6 transition-all text-sm whitespace-nowrap">
-              {{formatNumberShort(props.collection.projectCount)}} projects
+              {{ formatNumberShort(props.collection.projectCount) }}
+              {{ pluralize('projects', props.collection.projectCount) }}
             </p>
           </article>
           <!--          <article class="flex items-center gap-2">-->
@@ -72,6 +73,7 @@
 
 <script setup lang="ts">
 import {useRouter} from "nuxt/app";
+import pluralize from "pluralize";
 import type {Collection} from "~~/types/collection";
 import LfxCard from "~/components/uikit/card/card.vue";
 import LfxChip from "~/components/uikit/chip/chip.vue";
