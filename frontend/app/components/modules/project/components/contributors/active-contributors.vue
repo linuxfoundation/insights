@@ -42,7 +42,9 @@
         error-message="Error fetching active contributors"
         :is-empty="isEmpty"
       >
-        <lfx-chart :config="barChartConfig" />
+        <div class="h-[330px]">
+          <lfx-chart :config="barChartConfig" />
+        </div>
       </lfx-project-load-state>
     </section>
   </lfx-card>

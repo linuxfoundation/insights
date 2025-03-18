@@ -45,7 +45,6 @@
         :error="error"
         error-message="Error fetching forks"
         :is-empty="isEmpty"
-        use-min-height
       >
         <div class="w-full h-[330px] mt-4">
           <lfx-chart :config="activeTab === 'cumulative' ? lineChartConfig : barChartConfig" />

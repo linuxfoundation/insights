@@ -18,8 +18,6 @@
         :error="error"
         error-message="Error fetching organization dependency"
         :is-empty="isEmpty"
-        :height="400"
-        use-min-height
       >
 
         <lfx-metric-dropdown v-model="metric" />

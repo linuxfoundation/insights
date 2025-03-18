@@ -6,7 +6,7 @@
     <slot v-if="props.status === 'success' && !props.isEmpty" />
     <div
       v-else-if="props.status === 'pending'"
-      class="flex flex-col items-center justify-center h-full"
+      class="flex flex-col items-center justify-center h-[240px]"
     >
       <div class="h-10 w-full">
         <lfx-spinner
@@ -21,7 +21,7 @@
     </div>
     <div
       v-else
-      class="flex flex-col items-center justify-center h-full"
+      class="flex flex-col items-center justify-center h-[240px]"
     >
       <lfx-icon
         name="eyes"
@@ -52,10 +52,10 @@ const props = withDefaults(defineProps<{
   error?: unknown;
   useMinHeight?: boolean;
 }>(), {
-  height: 330,
+  height: 100,
   errorMessage: 'Error fetching data',
   error: undefined,
-  useMinHeight: false
+  useMinHeight: true
 });
 
 const { showToast } = useToastService();
