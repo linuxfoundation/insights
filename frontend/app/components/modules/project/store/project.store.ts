@@ -38,9 +38,7 @@ const calculateGranularity = (start: string | null, end: string | null): string[
 export const useProjectStore = defineStore('project', () => {
   const route = useRoute();
 
-  const selectedTimeRangeKey = ref<string>(
-    lfxProjectDateOptions[0]?.key || dateOptKeys.past90days
-  );
+  const selectedTimeRangeKey = ref<string>(dateOptKeys.past365days);
   const startDate = ref<string | null>(lfxProjectDateOptions[0]?.startDate || null);
   const endDate = ref<string | null>(lfxProjectDateOptions[0]?.endDate || null);
   const project = ref<Project | null>(null);
