@@ -3,7 +3,7 @@ import {
 } from 'vitest';
 
 import {DateTime} from "luxon";
-import {earliestPossibleStartDate, getPreviousDates} from './util';
+import {calculatePercentageChange, earliestPossibleStartDate, getPreviousDates} from './util';
 
 describe('getPreviousDates', () => {
   test('should return the previous interval start and end dates, for the current start and end dates', () => {
@@ -76,5 +76,37 @@ describe('getPreviousDates', () => {
         to: expectedPreviousEndDate
       }
     });
+  });
+});
+
+describe('calculatePercentageChange', () => {
+  test('current 0, previous 0, returns 0', () => {
+    const result = calculatePercentageChange(0, 0);
+    expect(result).toEqual(0);
+  });
+
+  test('current 0, previous 100, returns 100', () => {
+    const result = calculatePercentageChange(0, 1);
+    expect(result).toEqual(100);
+  });
+
+  test('current 100, previous 100, returns 0', () => {
+    const result = calculatePercentageChange(100, 100);
+    expect(result).toEqual(0);
+  });
+
+  test('current 100, previous 0, returns undefined', () => {
+    const result = calculatePercentageChange(100, 0);
+    expect(result).toBeUndefined()
+  });
+
+  test('current 100, previous 50, returns 100', () => {
+    const result = calculatePercentageChange(100, 50);
+    expect(result).toEqual(100);
+  });
+
+  test('current 50, previous 100, returns 50', () => {
+    const result = calculatePercentageChange(50, 100);
+    expect(result).toEqual(50);
   });
 });
