@@ -32,15 +32,8 @@ export async function fetchOrganizationsLeaderboard(
   // TODO: We're passing unchecked query parameters to TinyBird directly from the frontend.
   //  We need to ensure this doesn't pose a security risk.
 
-  const organizationsLeaderboardQuery = {
-    project: filter.project,
-    repository: filter.repository,
-    startDate: filter.startDate,
-    endDate: filter.endDate,
-  };
-
   const endpoint = '/v0/pipes/organizations_leaderboard.json';
-  const data = await fetchFromTinybird<TinybirdOrganizationsLeaderboardData>(endpoint, organizationsLeaderboardQuery);
+  const data = await fetchFromTinybird<TinybirdOrganizationsLeaderboardData>(endpoint, filter);
 
   let processedData: OrganizationsLeaderboardData = [];
   if (data !== undefined) {
