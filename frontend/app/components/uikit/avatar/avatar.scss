@@ -1,5 +1,6 @@
 .p-avatar {
   @apply h-8 w-8 overflow-hidden rounded-md bg-neutral-100 inline-block text-neutral-300 transition-all ease-linear;
+  @apply flex items-center justify-center;
 
   &.type-member {
     @apply rounded-full;
@@ -15,6 +16,9 @@
   &.type-organization {
     &.has-image {
       @apply outline outline-1 outline-neutral-200 bg-transparent;
+      &.force-background {
+        @apply bg-neutral-100;
+      }
     }
   }
 
