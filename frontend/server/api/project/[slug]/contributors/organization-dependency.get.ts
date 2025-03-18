@@ -1,4 +1,5 @@
 import {DateTime} from "luxon";
+import type { OrganizationDependencyFilter} from "~~/server/data/types";
 import {FilterGranularity} from "~~/server/data/types";
 import {createDataSource} from "~~/server/data/data-sources";
 import {ActivityTypes} from "~~/types/shared/activity-types";
@@ -41,12 +42,12 @@ export default defineEventHandler(async (event) => {
   const activityPlatform = query.platform as ActivityPlatforms;
   const activityType = query.activityType as ActivityTypes;
 
-  const filter = {
+  const filter: OrganizationDependencyFilter = {
     project,
     granularity: (query.granularity as FilterGranularity) || FilterGranularity.QUARTERLY,
     platform: activityPlatform !== ActivityPlatforms.ALL ? activityPlatform : undefined,
     activity_type: activityType !== ActivityTypes.ALL ? activityType : undefined,
-    repository: query.repository as string,
+    repo: query.repository as string,
     startDate: query.startDate ? DateTime.fromISO(query.startDate as string) : undefined,
     endDate: query.endDate ? DateTime.fromISO(query.endDate as string) : undefined,
   }

@@ -29,7 +29,7 @@ export default defineEventHandler(async (event) => {
     project,
     granularity: query.granularity as FilterGranularity,
     activity_type: activityType !== ActivityTypes.ALL ? activityType : undefined,
-    repository: query.repository as string,
+    repo: query.repository as string,
     demographicType: (query.type as DemographicType) || DemographicType.CONTRIBUTORS,
     onlyContributions: false, // forks and stars are non-contribution activities, but we want to count them.
     startDate: query.startDate ? DateTime.fromISO(query.startDate as string) : undefined,

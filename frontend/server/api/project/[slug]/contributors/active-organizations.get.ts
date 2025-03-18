@@ -38,13 +38,13 @@ export default defineEventHandler(async (event) => {
   const filter: ActiveOrganizationsFilter = {
     granularity: (query.granularity as FilterGranularity) || FilterGranularity.QUARTERLY,
     project,
-    repository: undefined,
+    repo: undefined,
     startDate: undefined,
     endDate: undefined
   };
 
   if (query.repository && (query.repository as string).trim() !== '') {
-    filter.repository = query.repository as string;
+    filter.repo = query.repository as string;
   }
 
   if (query.startDate && (query.startDate as string).trim() !== '') {
