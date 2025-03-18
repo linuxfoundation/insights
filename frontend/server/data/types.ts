@@ -83,7 +83,8 @@ export enum DemographicType {
 
 export type GeographicDistributionFilter = {
   project: string;
-  metric?: FilterActivityMetric;
+  platform?: ActivityPlatforms;
+  activity_type?: ActivityTypes;
   repository?: string;
   type?: DemographicType;
   startDate?: DateTime;
