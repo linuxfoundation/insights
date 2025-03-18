@@ -17,7 +17,7 @@
     &.has-image {
       @apply outline outline-1 outline-neutral-200 bg-transparent;
       &.force-background {
-        @apply bg-neutral-100;
+        @apply bg-white;
       }
     }
   }
