@@ -111,9 +111,11 @@ const sideNavItems = [
 ];
 
 const activeItem = ref('active-contributors');
+const tmpClickedItem = ref('');
 const { scrollToTarget, scrollToTop } = useScroll();
 
 const onSideNavUpdate = (value: string) => {
+  tmpClickedItem.value = value;
   if (value === sideNavItems[0]?.key) {
     scrollToTop();
   } else {
@@ -122,10 +124,19 @@ const onSideNavUpdate = (value: string) => {
       scrollToTarget(element);
     }
   }
+
+  activeItem.value = value;
+
+  // wait for the scroll to complete
+  setTimeout(() => {
+    tmpClickedItem.value = '';
+  }, 1000);
 };
 
 const onScrolledToView = (value: string) => {
-  activeItem.value = value;
+  if (tmpClickedItem.value === '') {
+    activeItem.value = value;
+  }
 };
 
 </script>

@@ -100,6 +100,7 @@ import LfxScrollArea from '~/components/uikit/scroll-view/scroll-area.vue';
 import useScroll from '~/components/shared/utils/scroll';
 
 const activeItem = ref('stars');
+const tmpClickedItem = ref('');
 const { scrollToTarget, scrollToTop } = useScroll();
 
 const sideNavItems = [
@@ -123,10 +124,19 @@ const onSideNavUpdate = (value: string) => {
       scrollToTarget(element);
     }
   }
+
+  activeItem.value = value;
+
+  // wait for the scroll to complete
+  setTimeout(() => {
+    tmpClickedItem.value = '';
+  }, 1000);
 };
 
 const onScrolledToView = (value: string) => {
-  activeItem.value = value;
+  if (tmpClickedItem.value === '') {
+    activeItem.value = value;
+  }
 };
 
 </script>
