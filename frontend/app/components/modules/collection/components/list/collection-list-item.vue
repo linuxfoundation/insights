@@ -22,7 +22,7 @@
             </div>
             <p class="leading-6 transition-all text-sm whitespace-nowrap">
               {{ formatNumberShort(props.collection.projectCount) }}
-              {{ pluralize('projects', props.collection.projectCount) }}
+              {{ pluralize('project', props.collection.projectCount) }}
             </p>
           </article>
           <!--          <article class="flex items-center gap-2">-->
