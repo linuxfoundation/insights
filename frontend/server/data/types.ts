@@ -68,7 +68,8 @@ export type ContributorDependencyFilter = {
 export type OrganizationDependencyFilter = {
   project: string;
   repository?: string;
-  metric?: FilterActivityMetric;
+  platform?: ActivityPlatforms;
+  activity_type?: ActivityTypes;
   startDate?: DateTime;
   endDate?: DateTime;
 }

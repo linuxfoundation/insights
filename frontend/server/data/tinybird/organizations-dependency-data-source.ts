@@ -2,7 +2,6 @@ import type {
   OrganizationDependencyFilter,
   OrganizationsLeaderboardFilter,
 } from "../types";
-import {FilterActivityMetric} from "../types";
 import {fetchFromTinybird} from './tinybird'
 import type {OrganizationsLeaderboardDataPoint} from "~~/server/data/tinybird/organizations-leaderboard-source";
 import {fetchOrganizationsLeaderboard} from "~~/server/data/tinybird/organizations-leaderboard-source";
@@ -38,12 +37,8 @@ export async function fetchOrganizationDependency(filter: OrganizationDependency
   //  We need to ensure this doesn't pose a security risk.
 
   const leaderboardFilter: OrganizationsLeaderboardFilter = {
-    project: filter.project,
-    metric: (filter.metric as FilterActivityMetric) || FilterActivityMetric.ALL,
-    repository: filter.repository,
+    ...filter,
     limit: 5,
-    startDate: filter.startDate,
-    endDate: filter.endDate,
   };
 
   const [tinybirdTopOrganizationsResponse, tinybirdLeaderboardResponse] = await Promise.all([
