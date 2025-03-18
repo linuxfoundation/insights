@@ -133,7 +133,7 @@ const { data, status, error } = useFetch(
 
 const geoMapData = computed<GeoMapData[] | undefined>(() => (data.value as GeoMapResponse)?.data);
 const geoMapDataCountries = computed<GeoMapData[] | undefined>(() => (geoMapData.value
-  ? geoMapData.value.filter((item) => item.name !== 'Unknown') : undefined));
+  ? geoMapData.value.filter((item) => item.name !== 'Unknown').slice(0, 5) : undefined));
 const unknownGeoMapData = computed<GeoMapData[] | undefined>(() => (geoMapData.value
   ? geoMapData.value.filter((item) => item.name === 'Unknown') : undefined));
 
