@@ -58,7 +58,7 @@
                 </span>
               </div>
               <span>
-                {{ formatNumber(item.count) }} {{ label.toLowerCase() }} ・ {{ item.percentage }}%
+                {{ formatNumber(item.count) }} {{ pluralize(label.toLowerCase(), item.count) }} ・ {{ item.percentage }}%
               </span>
             </div>
           </div>
@@ -75,7 +75,7 @@
                 Location not identified
               </span>
               <span class="text-neutral-500 font-medium">
-                {{ formatNumber(item.count) }} {{ label.toLowerCase() }} ・ {{ item.percentage }}%
+                {{ formatNumber(item.count) }} {{ pluralize(label.toLowerCase(), item.count) }} ・ {{ item.percentage }}%
               </span>
             </div>
           </div>
@@ -90,6 +90,7 @@ import { ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { useFetch } from 'nuxt/app';
 import { storeToRefs } from "pinia";
+import pluralize from "pluralize";
 import LfxProjectLoadState from '../shared/load-state.vue';
 import { metricsOptions } from './config/metrics';
 import type { GeoMapResponse, GeoMapData } from './types/geo-map.types';
@@ -153,7 +154,7 @@ const tabs = [
   }
 ];
 
-const label = computed(() => (activeTab.value === 'contributors' ? 'Contributors' : 'Organizations'));
+const label = computed(() => (activeTab.value === 'contributors' ? 'Contributor' : 'Organization'));
 
 const chartSeries = computed<ChartSeries[]>(() => [
   {
