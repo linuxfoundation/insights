@@ -1,6 +1,6 @@
 <template>
   <lfx-tooltip
-    placement="top"
+    placement="left"
     content="Copy link"
     :disabled="(isSharable && isMobile) || !isCopyable"
   >

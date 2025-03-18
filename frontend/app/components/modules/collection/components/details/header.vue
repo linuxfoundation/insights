@@ -112,7 +112,7 @@
                 :class="scrollTop > 50 ? 'text-xs md:text-sm' : 'text-xs md:text-base'"
               >
                 {{formatNumberShort(props.collection.projectCount)}}
-                {{ pluralize('projects', props.collection.projectCount) }}
+                {{ pluralize('project', props.collection.projectCount) }}
               </p>
             </article>
             <!--<article class="flex items-center gap-2 h-min">-->
