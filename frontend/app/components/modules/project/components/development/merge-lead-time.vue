@@ -88,8 +88,11 @@ import type { Summary } from '~~/types/shared/summary.types';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
 import { isEmptyData } from '~/components/shared/utils/helper';
 import { links } from '~/config/links';
+import {dateOptKeys} from "~/components/modules/project/config/date-options";
 
-const { startDate, endDate, selectedRepository } = storeToRefs(useProjectStore())
+const {
+ startDate, endDate, selectedRepository, selectedTimeRangeKey
+} = storeToRefs(useProjectStore())
 
 const route = useRoute();
 
