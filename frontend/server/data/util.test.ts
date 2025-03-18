@@ -80,33 +80,33 @@ describe('getPreviousDates', () => {
 });
 
 describe('calculatePercentageChange', () => {
-  test('previous 0, current 0, returns 0', () => {
+  test('current 0, previous 0, returns 0', () => {
     const result = calculatePercentageChange(0, 0);
     expect(result).toEqual(0);
   });
 
-  test('previous 100, current 0, returns 100', () => {
+  test('current 0, previous 100, returns 100', () => {
     const result = calculatePercentageChange(0, 1);
     expect(result).toEqual(100);
   });
 
-  test('previous 100, current 100, returns 0', () => {
-    const result = calculatePercentageChange(1, 1);
+  test('current 100, previous 100, returns 0', () => {
+    const result = calculatePercentageChange(100, 100);
     expect(result).toEqual(0);
   });
 
-  test('previous 0, current 100, returns 0', () => {
-    const result = calculatePercentageChange(1, 0);
+  test('current 100, previous 0, returns undefined', () => {
+    const result = calculatePercentageChange(100, 0);
     expect(result).toBeUndefined()
   });
 
-  test('previous 50, current 100, returns 100', () => {
-    const result = calculatePercentageChange(2, 1);
+  test('current 100, previous 50, returns 100', () => {
+    const result = calculatePercentageChange(100, 50);
     expect(result).toEqual(100);
   });
 
-  test('previous 100, current 50, returns 50', () => {
-    const result = calculatePercentageChange(2, 1);
-    expect(result).toEqual(100);
+  test('current 50, previous 100, returns 50', () => {
+    const result = calculatePercentageChange(50, 100);
+    expect(result).toEqual(50);
   });
 });
