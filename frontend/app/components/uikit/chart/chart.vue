@@ -3,6 +3,7 @@
     <VChart
       id="chart"
       :option="props.config"
+      autoresize
     />
     <div>
       <slot name="legend" />
