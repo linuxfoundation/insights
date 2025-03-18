@@ -1,5 +1,5 @@
 <template>
-  <section class="bg-white">
+  <section class="bg-white bg-[url('~/assets/images/collections-header.png')] bg-contain bg-no-repeat bg-right">
     <div class="container py-5 md:py-8">
       <lfx-tag
         type="transparent"
