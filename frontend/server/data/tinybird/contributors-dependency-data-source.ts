@@ -37,12 +37,8 @@ export async function fetchContributorDependency(filter: ContributorDependencyFi
   //  We need to ensure this doesn't pose a security risk.
 
   const leaderboardFilter: ContributorsLeaderboardFilter = {
-    project: filter.project,
-    metric: (filter.metric as FilterActivityMetric) || FilterActivityMetric.ALL,
-    repository: filter.repository,
-    limit: 5,
-    startDate: filter.startDate,
-    endDate: filter.endDate,
+    ...filter,
+    limit: 5
   };
 
   const [tinybirdTopContributorsResponse, tinybirdLeaderboardResponse] = await Promise.all([
