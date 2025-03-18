@@ -9,6 +9,9 @@
 
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue';
+import useScroll from '~/components/shared/utils/scroll';
+
+const { scrollTop } = useScroll();
 
 const scrollAreaRef = ref<HTMLElement | null>(null);
 const observer = ref<IntersectionObserver | null>(null);
@@ -21,7 +24,15 @@ const handleIntersectCallback = (entries: IntersectionObserverEntry[]) => {
   entries.forEach((entry) => {
     if (entry.intersectionRatio >= 0.5) {
       entry.target.dispatchEvent(scrolledToView);
-      emit('scrolledToView', entry.target.id);
+      // prevent the trigger if the scroll is at the top of the page
+      if (scrollTop.value === 0) {
+        const scrollViews = document.querySelectorAll('.scroll-view');
+        if (scrollViews.length > 0) {
+          emit('scrolledToView', scrollViews[0]?.id || '');
+        }
+      } else {
+        emit('scrolledToView', entry.target.id);
+      }
     }
   });
 };
