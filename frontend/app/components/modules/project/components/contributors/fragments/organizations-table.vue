@@ -50,7 +50,9 @@ const organizationColumnHeader = computed(() => {
 
   const flattenedMetricsOptions = metricsOptions.flatMap((option) => option.items);
 
-  return `Total ${flattenedMetricsOptions.find((option) => option.value === props.metric.split(':')[1])?.label}`;
+  return `Total ${flattenedMetricsOptions.find(
+      (option) => option.value === props.metric.split(':')[1]
+  )?.label.toLowerCase()}`;
 });
 </script>
 <script lang="ts">
