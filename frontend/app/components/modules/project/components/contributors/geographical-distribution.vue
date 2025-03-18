@@ -109,13 +109,21 @@ import { formatNumber } from '~/components/shared/utils/formatter';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
 import { isEmptyData } from '~/components/shared/utils/helper';
 import { links } from '~/config/links';
+import type {DropdownGroupOptions, DropdownOption} from "~/components/uikit/dropdown/types/dropdown.types";
 
-const metricOptions = metricsOptions;
+const metricOptions = metricsOptions.map((option: DropdownGroupOptions) => ({
+  label: option.label,
+  items: option.items.map((item: DropdownOption) => ({
+    label: item.label,
+    value: option.label ? `${option.label.toLowerCase()}:${item.value}` : `all:${item.value}`
+  }))
+}));
 
 const route = useRoute();
-const metric = ref('all');
+const metric = ref('all:all');
 const activeTab = ref('contributors');
-
+const platform = computed(() => metric.value.split(':')[0]);
+const activityType = computed(() => metric.value.split(':')[1]);
 const { startDate, endDate, selectedRepository } = storeToRefs(useProjectStore())
 
 const { data, status, error } = useFetch(
@@ -123,6 +131,8 @@ const { data, status, error } = useFetch(
   {
     params: {
       type: activeTab,
+      platform,
+      activityType,
       repository: selectedRepository,
       startDate,
       endDate,
