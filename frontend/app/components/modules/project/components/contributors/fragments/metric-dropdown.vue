@@ -15,8 +15,15 @@
 import { computed } from 'vue';
 import { metricsOptions } from '../config/metrics';
 import LfxDropdown from '~/components/uikit/dropdown/dropdown.vue';
+import type {DropdownGroupOptions, DropdownOption} from '~/components/uikit/dropdown/types/dropdown.types';
 
-const metricOptions = metricsOptions;
+const metricOptions = metricsOptions.map((option: DropdownGroupOptions) => ({
+  label: option.label,
+  items: option.items.map((item: DropdownOption) => ({
+    label: item.label,
+    value: option.label ? `${option.label.toLowerCase()}:${item.value}` : `all:${item.value}`
+  }))
+}));
 
 const props = defineProps<{
   modelValue: string;
