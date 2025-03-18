@@ -111,7 +111,8 @@
                 class="leading-6 transition-all whitespace-nowrap"
                 :class="scrollTop > 50 ? 'text-xs md:text-sm' : 'text-xs md:text-base'"
               >
-                {{formatNumberShort(props.collection.projectCount)}} projects
+                {{formatNumberShort(props.collection.projectCount)}}
+                {{ pluralize('projects', props.collection.projectCount) }}
               </p>
             </article>
             <!--<article class="flex items-center gap-2 h-min">-->
@@ -144,6 +145,7 @@
 </template>
 
 <script lang="ts" setup>
+import pluralize from "pluralize";
 import type {Collection} from "~~/types/collection";
 import LfxIconButton from "~/components/uikit/icon-button/icon-button.vue";
 import LfxBack from "~/components/uikit/back/back.vue";
