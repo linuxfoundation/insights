@@ -94,7 +94,8 @@ export type GeographicDistributionFilter = {
 export type RetentionFilter = {
   project: string;
   granularity: FilterGranularity;
-  metric?: FilterActivityMetric;
+  platform?: ActivityPlatforms;
+  activity_type?: ActivityTypes;
   repository?: string;
   demographicType?: DemographicType;
   onlyContributions: boolean;
