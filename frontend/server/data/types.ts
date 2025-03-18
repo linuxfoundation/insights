@@ -1,6 +1,6 @@
 import type {DateTime} from "luxon";
-import type {ActivityTypes} from "~~/types/shared/activity-types";
 import type {ActivityPlatforms} from "~~/types/shared/activity-platforms";
+import type {ActivityTypes} from "~~/types/shared/activity-types";
 
 export type FetchFunction = typeof $fetch;
 
@@ -32,7 +32,7 @@ export type ActiveContributorsFilter = {
 
 export type ActiveOrganizationsFilter = {
   project: string;
-  repository?: string;
+  repo?: string;
   granularity?: FilterGranularity;
   startDate?: DateTime;
   endDate?: DateTime;
@@ -42,7 +42,7 @@ export type ContributorsLeaderboardFilter = {
   project: string;
   platform?: ActivityPlatforms;
   activity_type?: ActivityTypes;
-  repository?: string;
+  repo?: string;
   limit?: number;
   startDate?: DateTime;
   endDate?: DateTime;
@@ -52,7 +52,7 @@ export type OrganizationsLeaderboardFilter = {
   project: string;
   platform?: ActivityPlatforms;
   activity_type?: ActivityTypes;
-  repository?: string;
+  repo?: string;
   limit?: number;
   startDate?: DateTime;
   endDate?: DateTime;
@@ -60,7 +60,7 @@ export type OrganizationsLeaderboardFilter = {
 
 export type ContributorDependencyFilter = {
   project: string;
-  repository?: string;
+  repo?: string;
   platform?: ActivityPlatforms;
   activity_type?: ActivityTypes;
   startDate?: DateTime;
@@ -69,7 +69,7 @@ export type ContributorDependencyFilter = {
 
 export type OrganizationDependencyFilter = {
   project: string;
-  repository?: string;
+  repo?: string;
   platform?: ActivityPlatforms;
   activity_type?: ActivityTypes;
   startDate?: DateTime;
@@ -85,7 +85,7 @@ export type GeographicDistributionFilter = {
   project: string;
   platform?: ActivityPlatforms;
   activity_type?: ActivityTypes;
-  repository?: string;
+  repo?: string;
   type?: DemographicType;
   startDate?: DateTime;
   endDate?: DateTime;
@@ -96,7 +96,7 @@ export type RetentionFilter = {
   granularity: FilterGranularity;
   platform?: ActivityPlatforms;
   activity_type?: ActivityTypes;
-  repository?: string;
+  repo?: string;
   demographicType?: DemographicType;
   onlyContributions: boolean;
   startDate?: DateTime;
@@ -117,7 +117,7 @@ export type ActivityCountFilter = {
   countType: ActivityFilterCountType;
   activityType: ActivityFilterActivityType,
   onlyContributions: boolean;
-  repository?: string,
+  repo?: string,
   startDate?: DateTime,
   endDate?: DateTime,
 }
