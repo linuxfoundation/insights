@@ -65,11 +65,11 @@ const sideNavItems = [
 
 const onSideNavUpdate = (value: string) => {
   if (value === sideNavItems[0]?.key) {
-    scrollToTop(undefined, 'instant');
+    scrollToTop(undefined);
   } else {
     const element = document.getElementById(value);
     if (element) {
-      scrollToTarget(element, undefined, 'instant');
+      scrollToTarget(element);
     }
   }
 };
