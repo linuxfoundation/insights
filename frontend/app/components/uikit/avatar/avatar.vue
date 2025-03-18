@@ -8,8 +8,7 @@
       [`type-${props.type}`]: true,
       'p-avatar-sm': props.size === 'small',
       'p-avatar-xsmall': props.size === 'xsmall',
-      'has-image': props.src,
-      'force-background': props.forceBackground
+      'has-image': props.src
     }"
   />
 </template>
@@ -23,13 +22,11 @@ const props = withDefaults(
     type: AvatarType;
     size?: AvatarSize;
     src?: string;
-    forceBackground?: boolean;
   }>(),
   {
     size: 'normal',
     type: 'member',
-    src: undefined,
-    forceBackground: false
+    src: undefined
   }
 );
 

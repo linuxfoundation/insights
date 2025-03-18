@@ -15,10 +15,7 @@
 
   &.type-organization {
     &.has-image {
-      @apply outline outline-1 outline-neutral-200 bg-transparent;
-      &.force-background {
-        @apply bg-white;
-      }
+      @apply border border-solid border-neutral-200 bg-white;
     }
   }
 

@@ -2,7 +2,7 @@
   @apply flex items-center;
 
   .p-avatar:not(:first-child) {
-    @apply -ms-3 outline outline-1 outline-neutral-200;
+    @apply -ms-3 outline outline-3 outline-white;
     &.p-avatar-sm {
       @apply -ms-2;
     }

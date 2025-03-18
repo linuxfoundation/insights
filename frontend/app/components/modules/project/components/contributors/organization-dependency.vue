@@ -35,7 +35,6 @@
               :name="orgAvatar.name"
               :src="orgAvatar.logo"
               type="organization"
-              :force-background="true"
             />
           </lfx-avatar-group>
         </lfx-dependency-display>
