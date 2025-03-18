@@ -35,8 +35,6 @@
         :error="error"
         error-message="Error fetching geographical distribution"
         :is-empty="isEmpty"
-        :height="330"
-        use-min-height
       >
         <div class="w-full h-[330px]">
           <lfx-chart :config="getGeoMapChartConfig(chartData, chartSeries, getMaxValue(chartData))" />
