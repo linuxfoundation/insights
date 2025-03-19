@@ -52,6 +52,7 @@ const tooltipSingleValue = (params: SingleTooltipFormatterParams) => `
     justify-content: space-between;
     min-width: 150px;
     font-weight: 400;
+    font-size: 12px;
      color: ${lfxColors.neutral[900]}
   ">
     <span style="font-weight: 400;">${params.seriesName}</span>
@@ -66,6 +67,7 @@ const tooltipSingleValueWithBullet = (series: ChartSeries[]) => (params: SingleT
     justify-content: space-between;
     min-width: 180px;
     font-weight: 400;
+    font-size: 12px;
      color: ${lfxColors.neutral[900]}
   ">
     <span style="font-weight: 400;">
@@ -117,12 +119,13 @@ export const tooltipFormatterWithData = (data: ChartData[], granularity: string,
     const params: MultipleTooltipFormatterParams = paramsRaw as MultipleTooltipFormatterParams;
     const index = params[0]?.dataIndex || 0;
 
-    const dateStr = `<div style="color: ${lfxColors.neutral[400]};">${formatDateRange(
+    const dateStr = `<div style="font-size: 12px; color: ${
+      lfxColors.neutral[400]
+    };">${formatDateRange(
       params[0]?.name || '',
       data?.[index]?.xAxisKey2 || '',
       granularity
     )}</div>`;
-
     return `${dateStr}${params
       .map(
         series && series.length > 1
@@ -131,10 +134,25 @@ export const tooltipFormatterWithData = (data: ChartData[], granularity: string,
       )
       .join('')}`;
   };
-export const punchCardFormatter = (
-  paramsRaw: TopLevelFormatterParams // Tooltip hover box
-): string | HTMLElement | HTMLElement[] => {
-  const params: SingleTooltipFormatterParams = paramsRaw as SingleTooltipFormatterParams;
+export const punchCardFormatter = (granularity: string) => (
+    paramsRaw: TopLevelFormatterParams // Tooltip hover box
+  ): string | HTMLElement | HTMLElement[] => {
+    const params: SingleTooltipFormatterParams = paramsRaw as SingleTooltipFormatterParams;
+    const data = params.data as number[];
+    const dateStr = `<div style="font-size: 12px; color: ${lfxColors.neutral[400]};">${
+      granularity.charAt(0).toUpperCase() + granularity.slice(1)
+    } ${data[0]}</div>`;
 
-  return `${(params.data as number[])[2]} ${params.seriesName}`;
-};
+    const valueStr = `<div style="
+      color: ${lfxColors.neutral[900]}; 
+      font-size: 12px; 
+      min-width: 180px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;">
+    <span style="font-weight: 400;">${params.seriesName}</span>
+   <span style="font-weight: 500;"> ${data[2]}</span>
+   </div>`;
+    return `${dateStr} ${valueStr}`;
+  };

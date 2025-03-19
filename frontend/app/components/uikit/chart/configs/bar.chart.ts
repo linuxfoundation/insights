@@ -114,7 +114,7 @@ export const getBarChartConfig = (
     }
   };
   const tooltip = _.merge({}, defaultBarOption.tooltip, {
-    formatter: tooltipFormatterWithData(data, granularity)
+    formatter: tooltipFormatterWithData(data, granularity, series)
   });
   const styledSeries = applySeriesStyle(series, buildSeries(series, data));
 
@@ -178,7 +178,7 @@ export const getBarChartConfigCustom = (
     }
   };
   const tooltip = _.merge({}, defaultBarOption.tooltip, {
-    formatter: tooltipFormatterWithData(data, granularity)
+    formatter: tooltipFormatterWithData(data, granularity, series)
   });
 
   const styledSeries = applySeriesStyle(series, buildSeries(series, data)).map(

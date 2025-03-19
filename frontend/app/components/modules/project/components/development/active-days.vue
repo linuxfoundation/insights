@@ -64,7 +64,7 @@
         :height="100"
       >
         <div class="w-full h-[100px] mb-5">
-          <lfx-chart :config="getHeatMapChartConfig(chartData, chartSeries, categoryData)" />
+          <lfx-chart :config="getHeatMapChartConfig(chartData, chartSeries, categoryData, granularityDisplay)" />
         </div>
       </lfx-project-load-state>
     </section>
