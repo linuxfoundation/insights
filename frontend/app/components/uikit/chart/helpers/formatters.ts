@@ -50,7 +50,7 @@ const tooltipSingleValue = (params: SingleTooltipFormatterParams) => `
     flex-direction: row; 
     align-items: center; 
     justify-content: space-between;
-    min-width: 150px;
+    min-width: 180px;
     font-weight: 400;
     font-size: 12px;
      color: ${lfxColors.neutral[900]}
@@ -134,15 +134,33 @@ export const tooltipFormatterWithData = (data: ChartData[], granularity: string,
       )
       .join('')}`;
   };
-export const punchCardFormatter = (granularity: string) => (
+
+const convertToFullDayName = (day: string) => {
+  const dayMap = {
+    Mon: 'Monday',
+    Tue: 'Tuesday',
+    Wed: 'Wednesday',
+    Thu: 'Thursday',
+    Fri: 'Friday',
+    Sat: 'Saturday',
+    Sun: 'Sunday'
+  };
+  return dayMap[day as keyof typeof dayMap] || day;
+};
+
+export const punchCardFormatter = (granularity: string, isPunchCard: boolean = false, yAxisData?: string[]) => (
     paramsRaw: TopLevelFormatterParams // Tooltip hover box
   ): string | HTMLElement | HTMLElement[] => {
     const params: SingleTooltipFormatterParams = paramsRaw as SingleTooltipFormatterParams;
     const data = params.data as number[];
-    const dateStr = `<div style="font-size: 12px; color: ${lfxColors.neutral[400]};">${
-      granularity.charAt(0).toUpperCase() + granularity.slice(1)
-    } ${data[0]}</div>`;
-
+    const dateStr = isPunchCard
+      ? `<div style="font-size: 12px; color: ${
+          lfxColors.neutral[400]
+        };">${convertToFullDayName(params.name)}, ${yAxisData?.[data[1] || 0]}</div>`
+      : `<div style="font-size: 12px; color: ${lfxColors.neutral[400]};">${
+          granularity.charAt(0).toUpperCase() + granularity.slice(1)
+        } ${data[0]}</div>`;
+    console.log(params);
     const valueStr = `<div style="
       color: ${lfxColors.neutral[900]}; 
       font-size: 12px; 

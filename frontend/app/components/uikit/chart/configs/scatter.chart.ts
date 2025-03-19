@@ -3,7 +3,7 @@ import type {
   MarkLineOption,
   ScatterSeriesOption
 } from 'echarts/types/dist/shared';
-
+import _ from 'lodash';
 import { punchCardFormatter } from '../helpers/formatters';
 import type {
   CategoryData,
@@ -101,7 +101,7 @@ const defaultScatterOption: ECOption = {
     axisPointer: {
       type: 'none'
     },
-    formatter: punchCardFormatter
+    borderColor: 'transparent'
   }
 };
 
@@ -150,12 +150,15 @@ const defaultSeriesStyle: ScatterSeriesOption = {
       const value = params.value as number[];
       const x = value[0] || 0;
       const y = value[1] || 0;
-      return x >= 0 && x < 5 && y > 5 ? lfxColors.neutral[200] : lfxColors.brand[200];
-    }
+      return x >= 0 && x < 5 && y > 5 ? lfxColors.neutral[300] : lfxColors.brand[300];
+    },
+    opacity: 0.8
   },
   emphasis: {
+    scale: false,
     itemStyle: {
-      color: 'inherit'
+      color: 'inherit',
+      opacity: 1
     }
   }
 };
@@ -284,13 +287,14 @@ export const getScatterChartConfig = (
   data: ChartData[],
   series: ChartSeries[]
 ): ECOption => {
+  const yAxisData = categoryData.yAxis.map((item) => item.key).reverse();
   const xAxis = {
     ...defaultScatterOption.xAxis,
     data: categoryData.xAxis.map((item) => item.key)
   };
   const yAxis = {
     ...defaultScatterOption.yAxis,
-    data: categoryData.yAxis.map((item) => item.key).reverse()
+    data: yAxisData
   };
 
   const styledSeries = applySeriesStyle(
@@ -299,10 +303,14 @@ export const getScatterChartConfig = (
     categoryData
   );
 
-  return {
-    ...defaultScatterOption,
-    xAxis,
-    yAxis,
-    series: styledSeries
-  };
+  const tooltip = _.merge({}, defaultScatterOption.tooltip, {
+    formatter: punchCardFormatter('wut', true, yAxisData as string[])
+  });
+
+  return _.merge(
+    {},
+    {
+ ...defaultScatterOption, xAxis, yAxis, series: styledSeries, tooltip
+}
+  );
 };
