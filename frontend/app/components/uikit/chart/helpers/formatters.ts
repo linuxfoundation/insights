@@ -10,6 +10,7 @@ import type {
 import type { ChartData } from '../types/ChartTypes';
 import { Granularity } from '~~/types/shared/granularity';
 import { formatNumber } from '~/components/shared/utils/formatter';
+import { lfxColors } from '~/config/styles/colors';
 
 declare type LabelFormatterParams = {
   value: number | string | Date;
@@ -50,9 +51,10 @@ const tooltipSingleValue = (params: SingleTooltipFormatterParams) => `
     align-items: center; 
     justify-content: space-between;
     min-width: 150px;
+    font-weight: 400;
   ">
-    <span>${params.seriesName}</span>
-    <span>${formatNumber(Number(params.value))}</span>
+    <span style="font-weight: 400;">${params.seriesName}</span>
+    <span style="font-weight: 500;">${formatNumber(Number(params.value))}</span>
   </div>
   `;
 
@@ -60,9 +62,10 @@ export const tooltipFormatter = (
   paramsRaw: TopLevelFormatterParams // Tooltip hover box
 ): string | HTMLElement | HTMLElement[] => {
   const params: MultipleTooltipFormatterParams = paramsRaw as MultipleTooltipFormatterParams;
-  return `${formatDate(params[0]?.name || '', '{MMM} {yyyy}')}<br>${params
-    .map(tooltipSingleValue)
-    .join('')}`;
+  return `<div style="color: ${lfxColors.neutral[400]};">${formatDate(
+    params[0]?.name || '',
+    '{MMM} {yyyy}'
+  )}</div>${params.map(tooltipSingleValue).join('')}`;
 };
 
 const formatDateRange = (
@@ -92,13 +95,13 @@ export const tooltipFormatterWithData = (data: ChartData[], granularity: string)
     const params: MultipleTooltipFormatterParams = paramsRaw as MultipleTooltipFormatterParams;
     const index = params[0]?.dataIndex || 0;
 
-    const dateStr = formatDateRange(
+    const dateStr = `<div style="color: ${lfxColors.neutral[400]};">${formatDateRange(
       params[0]?.name || '',
       data?.[index]?.xAxisKey2 || '',
       granularity
-    );
+    )}</div>`;
 
-    return `${dateStr}<br>${params.map(tooltipSingleValue).join('')}`;
+    return `${dateStr}${params.map(tooltipSingleValue).join('')}`;
   };
 export const punchCardFormatter = (
   paramsRaw: TopLevelFormatterParams // Tooltip hover box
