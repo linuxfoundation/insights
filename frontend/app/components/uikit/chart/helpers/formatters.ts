@@ -52,6 +52,7 @@ const tooltipSingleValue = (params: SingleTooltipFormatterParams) => `
     justify-content: space-between;
     min-width: 150px;
     font-weight: 400;
+     color: ${lfxColors.neutral[900]}
   ">
     <span style="font-weight: 400;">${params.seriesName}</span>
     <span style="font-weight: 500;">${formatNumber(Number(params.value))}</span>
