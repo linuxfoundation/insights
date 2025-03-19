@@ -46,6 +46,7 @@ const defaultLineOption: ECOption = {
 const defaultSeriesStyle: LineSeriesOption = {
   smooth: true,
   showSymbol: false,
+  symbolSize: 6,
   lineStyle: {
     width: 1,
     type: 'solid'
@@ -55,7 +56,8 @@ const defaultSeriesStyle: LineSeriesOption = {
       { offset: 0, color: hexToRgba(lfxColors.brand[500], 0.1) },
       { offset: 0.8, color: hexToRgba(lfxColors.white, 0) }
     ])
-  }
+  },
+  silent: true
 };
 
 /**
@@ -74,7 +76,13 @@ const applySeriesStyle = (
   return series.map((seriesItem: SeriesTypes, index: number) => {
     const baseStyle: LineSeriesOption = {
       ...defaultSeriesStyle,
-      ...(seriesItem as LineSeriesOption)
+      ...(seriesItem as LineSeriesOption),
+      emphasis: {
+        scale: false,
+        itemStyle: {
+          borderColor: chartSeries[index]?.color || lfxColors.brand[500]
+        }
+      }
     };
     baseStyle.lineStyle = {
       ...baseStyle.lineStyle,
