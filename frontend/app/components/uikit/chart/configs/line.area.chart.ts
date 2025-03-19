@@ -137,7 +137,7 @@ export const getLineAreaChartConfig = (
     }
   };
   const tooltip = _.merge({}, defaultLineOption.tooltip, {
-    formatter: tooltipFormatterWithData(data, granularity)
+    formatter: tooltipFormatterWithData(data, granularity, series)
   });
 
   const styledSeries = applySeriesStyle(series, buildSeries(series, data));

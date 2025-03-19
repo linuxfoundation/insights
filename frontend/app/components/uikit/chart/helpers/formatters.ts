@@ -7,7 +7,7 @@ import type {
   MultipleTooltipFormatterParams,
   SingleTooltipFormatterParams
 } from '../types/EChartTypes';
-import type { ChartData } from '../types/ChartTypes';
+import type { ChartData, ChartSeries } from '../types/ChartTypes';
 import { Granularity } from '~~/types/shared/granularity';
 import { formatNumber } from '~/components/shared/utils/formatter';
 import { lfxColors } from '~/config/styles/colors';
@@ -59,6 +59,27 @@ const tooltipSingleValue = (params: SingleTooltipFormatterParams) => `
   </div>
   `;
 
+const tooltipSingleValueWithBullet = (series: ChartSeries[]) => (params: SingleTooltipFormatterParams, idx: number) => `
+  <div style="display: flex; 
+    flex-direction: row; 
+    align-items: center; 
+    justify-content: space-between;
+    min-width: 180px;
+    font-weight: 400;
+     color: ${lfxColors.neutral[900]}
+  ">
+    <span style="font-weight: 400;">
+      <span style="background-color: ${series[idx]?.color || lfxColors.brand[500]}; 
+        display: inline-block;
+        border-radius: 100%; 
+        height: 8px;
+        width: 8px;
+        margin-right: 4px;"></span>
+      ${params.seriesName}
+    </span>
+    <span style="font-weight: 500;">${formatNumber(Number(params.value))}</span>
+  </div>
+  `;
 export const tooltipFormatter = (
   paramsRaw: TopLevelFormatterParams // Tooltip hover box
 ): string | HTMLElement | HTMLElement[] => {
@@ -90,7 +111,7 @@ const formatDateRange = (
   }
 };
 
-export const tooltipFormatterWithData = (data: ChartData[], granularity: string) => (
+export const tooltipFormatterWithData = (data: ChartData[], granularity: string, series?: ChartSeries[]) => (
     paramsRaw: TopLevelFormatterParams // Tooltip hover box
   ): string | HTMLElement | HTMLElement[] => {
     const params: MultipleTooltipFormatterParams = paramsRaw as MultipleTooltipFormatterParams;
@@ -102,7 +123,13 @@ export const tooltipFormatterWithData = (data: ChartData[], granularity: string)
       granularity
     )}</div>`;
 
-    return `${dateStr}${params.map(tooltipSingleValue).join('')}`;
+    return `${dateStr}${params
+      .map(
+        series && series.length > 1
+          ? tooltipSingleValueWithBullet(series)
+          : tooltipSingleValue
+      )
+      .join('')}`;
   };
 export const punchCardFormatter = (
   paramsRaw: TopLevelFormatterParams // Tooltip hover box

@@ -40,7 +40,7 @@ const defaultGeoOption: ECOption = {
         <span style="font-weight: 400;">${params.seriesName}</span>
         <span style="font-weight: 500;">${
           Number.isNaN(params.value) ? 0 : params.value
-        }</span>
+        }%</span>
       </div>`;
     }
   }
@@ -58,6 +58,9 @@ const defaultSeriesStyle: MapSeriesOption = {
       areaColor: lfxColors.brand[600],
       borderColor: lfxColors.neutral[900]
     }
+  },
+  select: {
+    disabled: true
   },
   itemStyle: {
     areaColor: lfxColors.white
