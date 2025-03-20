@@ -1,5 +1,6 @@
 import {fetchFromTinybird} from "~~/server/data/tinybird/tinybird";
 import type {SearchCollection, SearchProject, SearchRepository} from "~~/types/search";
+import {getRepoNameFromUrl, getRepoSlugFromName} from "~~/server/helpers/repository.helpers";
 
 export interface SearchResponse {
     type: 'project' | 'repository' | 'collection';
@@ -58,8 +59,11 @@ export default defineEventHandler(async (event) => {
                         logo: item.logo,
                     })
                 } else if (item.type === 'repository') {
+                    const name = getRepoNameFromUrl(item.slug);
+                    const slug = getRepoSlugFromName(name);
                     repositories.push({
-                        slug: item.slug,
+                        slug,
+                        name,
                         projectSlug: item.projectSlug || '',
                     })
                 } else if (item.type === 'collection') {

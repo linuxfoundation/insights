@@ -25,7 +25,10 @@
               />
               <h1
                 class="font-bold mr-3 ease-linear transition-all font-secondary duration-200 text-heading-4"
-                :class="scrollTop > 50 ? 'md:text-heading-3' : 'md:text-heading-2'"
+                :class="[
+                  scrollTop > 50 ? 'md:text-heading-3' : 'md:text-heading-2',
+                  repoName ? 'w-[25ch] truncate' : ''
+                ]"
               >
                 {{ props.project.name }}
               </h1>
@@ -45,11 +48,11 @@
                 >
                   <span
                     v-if="repoName"
-                    class="font-secondary"
+                    class="font-secondary block text-neutral-900 max-w-[25ch] truncate"
                   >{{ repoName }}</span>
                   <span
                     v-else
-                    class="font-secondary"
+                    class="font-secondary text-neutral-500"
                   >All repositories</span>
                 </p>
                 <lfx-icon
@@ -136,7 +139,7 @@
   <lfx-project-repository-switch
     v-if="isSearchRepoModalOpen && props.project"
     v-model="isSearchRepoModalOpen"
-    :repo="repoName"
+    :repo="repoSlug"
     :project="props.project"
   />
 </template>
@@ -144,7 +147,8 @@
 <script lang="ts" setup>
 import {useRoute} from 'nuxt/app';
 import {computed} from 'vue';
-import type {Project} from "~~/types/project";
+import {storeToRefs} from "pinia";
+import type {Project, ProjectRepository} from "~~/types/project";
 import {LfxRoutes} from '~/components/shared/types/routes';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxMenuButton from '~/components/uikit/menu-button/menu-button.vue';
@@ -159,6 +163,7 @@ import LfxProjectDateRangePicker from "~/components/modules/project/components/s
 import LfxMaintainHeight from "~/components/uikit/maintain-height/maintain-height.vue";
 import useResponsive from "~/components/shared/utils/responsive";
 import LfxTooltip from "~/components/uikit/tooltip/tooltip.vue";
+import {useProjectStore} from "~/components/modules/project/store/project.store";
 
 const props = defineProps<{
   project: Project
@@ -166,7 +171,13 @@ const props = defineProps<{
 
 const route = useRoute();
 
-const repoName = computed<string>(() => route.params.name as string);
+const {projectRepos} = storeToRefs(useProjectStore())
+
+const repo = computed<ProjectRepository | undefined>(
+    () => projectRepos.value.find((repo) => repo.slug === route.params.name)
+);
+const repoName = computed<string>(() => (repo.value?.name || '').split('/').at(-1) || '');
+const repoSlug = computed<string>(() => route.params.name as string);
 
 const isSearchRepoModalOpen = ref(false);
 

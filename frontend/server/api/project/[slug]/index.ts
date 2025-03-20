@@ -1,5 +1,6 @@
 import {fetchFromTinybird} from "~~/server/data/tinybird/tinybird";
-import type {Project} from "~~/types/project";
+import type {Project, ProjectTinybird} from "~~/types/project";
+import {getRepoNameFromUrl, getRepoSlugFromName} from "~~/server/helpers/repository.helpers";
 
 /**
  * API Endpoint: /api/projects/{slug}
@@ -20,10 +21,9 @@ import type {Project} from "~~/types/project";
  * - repositories (Array<ProjectRepository>): List of associated repositories for the project.
  *
  * Repository Object (ProjectRepository):
- * - projectId (string): The unique identifier of the project associated with the repository.
- * - projectName (string): The name of the project associated with the repository.
- * - projectSlug (string): The slug of the project associated with the repository.
- * - repo (string): The name of the repository.
+ * - name (string): The name of the repository.
+ * - url (string): The url of the repository.
+ * - slug (string): The slug the repository.
  *
  * Errors:
  * - 404: Project not found.
@@ -32,13 +32,26 @@ import type {Project} from "~~/types/project";
 export default defineEventHandler(async (event): Promise<Project | Error> => {
     const {slug} = event.context.params as Record<string, string>;
     try {
-        const res = await fetchFromTinybird<Project[]>('/v0/pipes/projects_list.json', {
+        const res = await fetchFromTinybird<ProjectTinybird[]>('/v0/pipes/projects_list.json', {
             slug,
         });
         if (!res.data || res.data.length === 0) {
             return createError({statusCode: 404, statusMessage: 'Project not found'});
         }
-        return res.data[0];
+        const project: ProjectTinybird = res.data[0];
+        const repositories = project.repositories.map((repoUrl) => {
+            const name = getRepoNameFromUrl(repoUrl);
+            const slug = getRepoSlugFromName(name);
+            return {
+                url: repoUrl,
+                name,
+                slug,
+            }
+        })
+        return {
+            ...project,
+            repositories,
+        }
     } catch (err) {
         console.error('Error fetching project:', err);
         return createError({statusCode: 500, statusMessage: 'Internal server error'});

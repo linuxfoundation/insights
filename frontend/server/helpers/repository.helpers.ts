@@ -1,3 +1,5 @@
+import slugify from "slugify";
+
 export const getRepoNameFromUrl = (url: string): string => {
     try {
         const urlObj = new URL(url);
@@ -23,3 +25,5 @@ export const getRepoNameFromUrl = (url: string): string => {
         return url;
     }
 }
+
+export const getRepoSlugFromName = (name: string): string => slugify(name.replace(/\//g, '-'), {lower: true})

@@ -4,9 +4,11 @@
     <slot />
     <lfx-toast theme="dark" />
     <div class="flex-grow" />
-    <client-only>
-      <lfx-footer class="mx-auto pb-6 pt-6" />
-    </client-only>
+    <div class="container">
+      <client-only>
+        <lfx-footer class="pt-10 md:pt-16 pb-5 md:pb-8 px-0" />
+      </client-only>
+    </div>
   </main>
 </template>
 
