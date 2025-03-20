@@ -144,7 +144,7 @@ const tabs = [
 
 const chartSeries = ref<ChartSeries[]>([
   {
-    name: 'Percentage',
+    name: 'Retention',
     type: 'line',
     yAxisIndex: 0,
     dataIndex: 0,

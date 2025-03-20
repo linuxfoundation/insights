@@ -39,7 +39,7 @@
             class="flex flex-col items-end justify-center"
           >
             <span class="text-neutral-400 text-xs flex flex-row gap-2 items-center">
-              Avg. contributions per day
+              Avg. contributions per {{ granularityDisplay }}
             </span>
             <lfx-skeleton-state
               :status="status"
@@ -54,7 +54,7 @@
         </div>
       </div>
 
-      <div class="mt-8 mb-6 text-neutral-900 font-medium">Contributions per day</div>
+      <div class="mt-8 mb-6 text-neutral-900 font-medium">Contributions per {{ granularityDisplay }}</div>
       <lfx-project-load-state
         :status="status"
         :error="error"
@@ -64,7 +64,7 @@
         :height="100"
       >
         <div class="w-full h-[100px] mb-5">
-          <lfx-chart :config="getHeatMapChartConfig(chartData, chartSeries, categoryData)" />
+          <lfx-chart :config="getHeatMapChartConfig(chartData, chartSeries, categoryData, granularityDisplay)" />
         </div>
       </lfx-project-load-state>
     </section>
@@ -96,7 +96,7 @@ import { useProjectStore } from "~/components/modules/project/store/project.stor
 import { isEmptyData } from '~/components/shared/utils/helper';
 import { lineGranularities } from '~/components/shared/types/granularity';
 import { dateOptKeys } from '~/components/modules/project/config/date-options';
-import type { Granularity } from '~~/types/shared/granularity';
+import { Granularity } from '~~/types/shared/granularity';
 import { links } from '~/config/links';
 
 const {
@@ -108,6 +108,18 @@ const route = useRoute();
 const granularity = computed(() => (selectedTimeRangeKey.value === dateOptKeys.custom
   ? customRangeGranularity.value[0] as Granularity
   : lineGranularities[selectedTimeRangeKey.value as keyof typeof lineGranularities]));
+const granularityDisplay = computed(() => {
+  switch (granularity.value) {
+    case Granularity.WEEKLY:
+      return 'week';
+    case Granularity.MONTHLY:
+      return 'month';
+    case Granularity.YEARLY:
+      return 'year';
+    default:
+      return 'day';
+  }
+});
 const { data, status, error } = useFetch(
   () => `/api/project/${route.params.slug}/development/active-days`,
   {

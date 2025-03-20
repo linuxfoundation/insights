@@ -1,5 +1,5 @@
 import type { HeatmapSeriesOption } from 'echarts/types/dist/shared';
-
+import _ from 'lodash';
 import { punchCardFormatter } from '../helpers/formatters';
 import type {
   CategoryData,
@@ -87,7 +87,8 @@ const defaultHeatMapOption: ECOption = {
     axisPointer: {
       type: 'none'
     },
-    formatter: punchCardFormatter
+    borderColor: 'transparent'
+    // formatter: punchCardFormatter
   }
 };
 
@@ -154,7 +155,8 @@ const splitRange = (min: number, max: number): pieceRange[] => {
 export const getHeatMapChartConfig = (
   data: ChartData[],
   series: ChartSeries[],
-  categoryData: CategoryData
+  categoryData: CategoryData,
+  granularity: string
 ): ECOption => {
   const xAxis = {
     ...defaultHeatMapOption.xAxis,
@@ -169,20 +171,27 @@ export const getHeatMapChartConfig = (
   // Find the maximum value in the current dataset
   const maxValue = Math.max(...convertedData.map((item) => item[2] || 0));
   const splitRanges = splitRange(0, maxValue);
+  const tooltip = _.merge({}, defaultHeatMapOption.tooltip, {
+    formatter: punchCardFormatter(granularity)
+  });
 
-  return {
-    ...defaultHeatMapOption,
-    visualMap: {
-      ...defaultHeatMapOption.visualMap,
-      max: maxValue,
-      pieces: splitRanges.map((range: pieceRange, index: number) => ({
-        min: range.min,
-        max: range.max,
-        label: index === splitRanges.length - 1 ? `More` : ' '
-      }))
-    },
-    xAxis,
-    yAxis,
-    series: styledSeries
-  };
+  return _.merge(
+    {},
+    {
+      ...defaultHeatMapOption,
+      visualMap: {
+        ...defaultHeatMapOption.visualMap,
+        max: maxValue,
+        pieces: splitRanges.map((range: pieceRange, index: number) => ({
+          min: range.min,
+          max: range.max,
+          label: index === splitRanges.length - 1 ? `More` : ' '
+        }))
+      },
+      xAxis,
+      yAxis,
+      series: styledSeries,
+      tooltip
+    }
+  );
 };
