@@ -11,6 +11,9 @@ interface GeoMapData {
 }
 
 const defaultGeoOption: ECOption = {
+  layoutCenter: ['50%', '50%'],
+  layoutSize: '140%',
+  aspectScale: 0.7,
   visualMap: {
     show: false,
     min: 0,
@@ -21,7 +24,6 @@ const defaultGeoOption: ECOption = {
     text: ['High', 'Low'],
     calculable: true
   },
-
   tooltip: {
     trigger: 'item',
     showDelay: 0,
@@ -29,19 +31,22 @@ const defaultGeoOption: ECOption = {
     borderColor: lfxColors.neutral[100],
     formatter: (paramRaw: TopLevelFormatterParams) => {
       const params: SingleTooltipFormatterParams = paramRaw as SingleTooltipFormatterParams;
-      return `${countryNameFormatter(params?.name || '')}
+
+      return params.value && Number(params.value) > 0
+        ? `${countryNameFormatter(params?.name || '')}
       <div style="
         font-size: 12px; color: ${lfxColors.neutral[900]};
-        display: flex; 
-        flex-direction: row; 
-        align-items: center; 
+        display: flex;
+        flex-direction: row;
+        align-items: center;
         justify-content: space-between;
         min-width: 150px;">
         <span style="font-weight: 400;">${params.seriesName}</span>
         <span style="font-weight: 500;">${
           Number.isNaN(params.value) ? 0 : params.value
         }%</span>
-      </div>`;
+      </div>`
+        : null;
     }
   }
 };
@@ -55,8 +60,8 @@ const defaultSeriesStyle: MapSeriesOption = {
       show: false
     },
     itemStyle: {
-      areaColor: lfxColors.brand[600],
-      borderColor: lfxColors.neutral[900]
+      areaColor: 'inherit', // lfxColors.brand[600],
+      borderColor: 'inherit' // lfxColors.neutral[900]
     }
   },
   select: {
