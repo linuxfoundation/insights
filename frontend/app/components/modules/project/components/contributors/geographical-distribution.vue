@@ -22,12 +22,12 @@
           />
         </div>
         <div class="basis-1/2 flex justify-end">
-          <lfx-dropdown
-            v-model="metric"
-            icon="fa-light fa-display-code"
-            :options="metricOptions"
-            dropdown-position="right"
-          />
+          <div class="max-w-[160px]">
+            <lfx-metric-dropdown
+              v-model="metric"
+              max-width="160px"
+            />
+          </div>
         </div>
       </div>
       <lfx-project-load-state
@@ -92,12 +92,11 @@ import { useFetch } from 'nuxt/app';
 import { storeToRefs } from "pinia";
 import pluralize from "pluralize";
 import LfxProjectLoadState from '../shared/load-state.vue';
-import { metricsOptions } from './config/metrics';
 import type { GeoMapResponse, GeoMapData } from './types/geo-map.types';
+import LfxMetricDropdown from './fragments/metric-dropdown.vue';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
 import LfxChart from '~/components/uikit/chart/chart.vue';
-import LfxDropdown from "~/components/uikit/dropdown/dropdown.vue";
 import { convertToChartData, getMaxValue } from '~/components/uikit/chart/helpers/chart-helpers';
 import type {
   ChartData,
@@ -109,15 +108,6 @@ import { formatNumber } from '~/components/shared/utils/formatter';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
 import { isEmptyData } from '~/components/shared/utils/helper';
 import { links } from '~/config/links';
-import type { DropdownGroupOptions, DropdownOption } from "~/components/uikit/dropdown/types/dropdown.types";
-
-const metricOptions = metricsOptions.map((option: DropdownGroupOptions) => ({
-  label: option.label,
-  items: option.items.map((item: DropdownOption) => ({
-    label: item.label,
-    value: option.label ? `${option.label.toLowerCase()}:${item.value}` : `all:${item.value}`
-  }))
-}));
 
 const route = useRoute();
 const metric = ref('all:all');
