@@ -58,6 +58,8 @@ export default defineEventHandler(async (event): Promise<Pagination<Project> | E
 
         type ProjectCount = {'count(id)': number};
         const projectCountResult = await fetchFromTinybird<ProjectCount[]>('/v0/pipes/projects_list.json', {
+            collectionSlug,
+            isLf,
             count: true,
         });
 
