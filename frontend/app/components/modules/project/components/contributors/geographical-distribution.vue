@@ -109,7 +109,7 @@ import { formatNumber } from '~/components/shared/utils/formatter';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
 import { isEmptyData } from '~/components/shared/utils/helper';
 import { links } from '~/config/links';
-import type {DropdownGroupOptions, DropdownOption} from "~/components/uikit/dropdown/types/dropdown.types";
+import type { DropdownGroupOptions, DropdownOption } from "~/components/uikit/dropdown/types/dropdown.types";
 
 const metricOptions = metricsOptions.map((option: DropdownGroupOptions) => ({
   label: option.label,
@@ -168,7 +168,7 @@ const label = computed(() => (activeTab.value === 'contributors' ? 'Contributor'
 
 const chartSeries = computed<ChartSeries[]>(() => [
   {
-    name: `${label.value} by country`,
+    name: label.value,
     type: 'map',
     yAxisIndex: 0,
     dataIndex: 0

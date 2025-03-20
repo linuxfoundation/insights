@@ -70,7 +70,7 @@
                   <span class="text-xs text-neutral-900">Closed Issues</span>
                 </div>
                 <div class="flex flex-row items-center gap-2">
-                  <div class="w-5 border-neutral-600 border-b-2 border-dashed" />
+                  <div class="w-5 border-neutral-600 border-b-2 border-dotted" />
                   <span class="text-xs text-neutral-900">Total Issues</span>
                 </div>
               </div>
