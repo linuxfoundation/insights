@@ -123,7 +123,7 @@ const {pageWidth} = useResponsive();
 const {scrollTop} = useScroll();
 
 const page = ref(0);
-const pageSize = ref(50);
+const pageSize = 50;
 const sort = ref('projectCount_desc');
 
 // const stack = ref('');

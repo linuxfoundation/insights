@@ -86,7 +86,7 @@ const sort = ref('contributorCount_desc');
 const tab = ref('all');
 
 const page = ref(0);
-const pageSize = ref(60);
+const pageSize = 60;
 
 const projects = ref([]);
 
