@@ -72,7 +72,7 @@
               class="flex flex-row justify-between items-center text-sm border-neutral-100 border-t pt-5 mt-5"
             >
               <span class="text-neutral-500 font-medium">
-                Location not identified
+                Unknown location
               </span>
               <span class="text-neutral-500 font-medium">
                 {{ formatNumber(item.count) }} {{ pluralize(label.toLowerCase(), item.count) }} ・ {{ item.percentage }}%
