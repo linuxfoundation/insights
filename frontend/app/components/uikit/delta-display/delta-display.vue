@@ -60,7 +60,7 @@ const delta = computed(() => {
 });
 
 const deltaColor = computed(() => (deltaDirection.value === 'negative'
-  ? 'text-negative-500' : 'text-positive-500'));
+  ? 'text-negative-600' : 'text-positive-600'));
 
 const deltaDisplay = computed(() => {
   if (!props.percentageOnly) {
