@@ -86,6 +86,18 @@
       </div>
     </div>
   </section>
+  <div
+    v-if="collections.length < (data?.total || 0)"
+    class="py-5 lg:py-10 flex justify-center"
+  >
+    <lfx-button
+      size="large"
+      class="!rounded-full"
+      @click="loadMore"
+    >
+      Load more
+    </lfx-button>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -104,19 +116,18 @@ import useScroll from "~/components/shared/utils/scroll";
 import LfxCollectionListItemLoading
   from "~/components/modules/collection/components/list/collection-list-item-loading.vue";
 import LfxMaintainHeight from "~/components/uikit/maintain-height/maintain-height.vue";
+import LfxButton from "~/components/uikit/button/button.vue";
 
 const { showToast } = useToastService();
 const {pageWidth} = useResponsive();
 const {scrollTop} = useScroll();
 
 const page = ref(0);
-const pageSize = ref(10);
+const pageSize = 50;
 const sort = ref('projectCount_desc');
 
 // const stack = ref('');
 // const industry = ref('');
-
-const {scrollTopPercentage} = useScroll();
 
 const collections = ref([]);
 
@@ -147,11 +158,9 @@ const { data, status, error } = await useFetch<Pagination<Collection>>(
     }
 );
 
-watch(scrollTopPercentage, () => {
-  if (scrollTopPercentage.value >= 100 && collections.value.length < (data.value?.total || 0)) {
-    page.value += 1;
-  }
-});
+const loadMore = () => {
+  page.value += 1;
+};
 
 watch(error, (err) => {
   if (err) {

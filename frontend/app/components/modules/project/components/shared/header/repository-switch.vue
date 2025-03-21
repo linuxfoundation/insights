@@ -41,13 +41,13 @@
       <div class="flex flex-col gap-1 max-h-[29.5rem] overflow-y-auto">
         <nuxt-link
           v-for="repository of result"
-          :key="repository.repo"
-          :to="{ name: routeName.repo, params: {name: repository.name}}"
+          :key="repository.url"
+          :to="{ name: routeName.repo, params: {name: repository.slug}}"
         >
           <lfx-project-repository-switch-item
             :text="repository.name"
             icon="books"
-            :selected="props.repo === repository.name"
+            :selected="props.repo === repository.slug"
           />
         </nuxt-link>
         <section
