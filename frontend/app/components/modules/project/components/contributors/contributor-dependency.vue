@@ -20,7 +20,9 @@
         :is-empty="isEmpty"
         use-min-height
       >
-        <lfx-metric-dropdown v-model="metric" />
+        <div class="mb-6">
+          <lfx-metric-dropdown v-model="metric" />
+        </div>
 
         <lfx-dependency-display
           :top-dependency="topContributors"

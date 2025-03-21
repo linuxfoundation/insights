@@ -1,10 +1,11 @@
 import type { DropdownGroupOptions } from '~/components/uikit/dropdown/types/dropdown.types';
-import {ActivityTypes} from "~~/types/shared/activity-types";
+import { ActivityTypes } from '~~/types/shared/activity-types';
+import { ActivityPlatforms } from '~~/types/shared/activity-platforms';
 
 export const metricsOptions: DropdownGroupOptions[] = [
   { label: '', items: [{ label: 'All activities', value: 'all' }] },
   {
-    label: 'Github',
+    label: ActivityPlatforms.GITHUB.valueOf(),
     items: [
       {
         value: ActivityTypes.AUTHORED_COMMIT.valueOf(),
@@ -58,7 +59,7 @@ export const metricsOptions: DropdownGroupOptions[] = [
     ]
   },
   {
-    label: 'Git',
+    label: ActivityPlatforms.GIT.valueOf(),
     items: [
       {
         value: ActivityTypes.AUTHORED_COMMIT.valueOf(),
@@ -107,7 +108,7 @@ export const metricsOptions: DropdownGroupOptions[] = [
     ]
   },
   {
-    label: 'Gerrit',
+    label: ActivityPlatforms.GERRIT.valueOf(),
     items: [
       {
         value: ActivityTypes.CHANGESET_NEW.valueOf(),
@@ -148,7 +149,7 @@ export const metricsOptions: DropdownGroupOptions[] = [
     ]
   },
   {
-    label: 'Gitlab',
+    label: ActivityPlatforms.GITLAB.valueOf(),
     items: [
       {
         value: ActivityTypes.ISSUE_OPENED.valueOf(),
@@ -189,7 +190,7 @@ export const metricsOptions: DropdownGroupOptions[] = [
     ]
   },
   {
-    label: 'GroupsIO',
+    label: ActivityPlatforms.GROUPS_IO.valueOf(),
     items: [
       {
         value: ActivityTypes.MESSAGE.valueOf(),
@@ -198,7 +199,7 @@ export const metricsOptions: DropdownGroupOptions[] = [
     ]
   },
   {
-    label: 'Confluence',
+    label: ActivityPlatforms.CONFLUENCE.valueOf(),
     items: [
       {
         value: ActivityTypes.PAGE_CREATED.valueOf(),
@@ -235,7 +236,7 @@ export const metricsOptions: DropdownGroupOptions[] = [
     ]
   },
   {
-    label: 'Jira',
+    label: ActivityPlatforms.JIRA.valueOf(),
     items: [
       {
         value: ActivityTypes.ISSUE_CREATED.valueOf(),
@@ -268,7 +269,7 @@ export const metricsOptions: DropdownGroupOptions[] = [
     ]
   },
   {
-    label: 'Devto',
+    label: ActivityPlatforms.DEVTO.valueOf(),
     items: [
       {
         value: ActivityTypes.COMMENT.valueOf(),
@@ -277,7 +278,7 @@ export const metricsOptions: DropdownGroupOptions[] = [
     ]
   },
   {
-    label: 'Discord',
+    label: ActivityPlatforms.DISCORD.valueOf(),
     items: [
       {
         value: ActivityTypes.MESSAGE.valueOf(),
@@ -294,7 +295,7 @@ export const metricsOptions: DropdownGroupOptions[] = [
     ]
   },
   {
-    label: 'Discourse',
+    label: ActivityPlatforms.DISCOURSE.valueOf(),
     items: [
       {
         value: ActivityTypes.CREATE_TOPIC.valueOf(),
@@ -307,7 +308,7 @@ export const metricsOptions: DropdownGroupOptions[] = [
     ]
   },
   {
-    label: 'Hackernews',
+    label: ActivityPlatforms.HACKERNEWS.valueOf(),
     items: [
       {
         value: ActivityTypes.POST.valueOf(),
@@ -320,7 +321,7 @@ export const metricsOptions: DropdownGroupOptions[] = [
     ]
   },
   {
-    label: 'Linkedin',
+    label: ActivityPlatforms.LINKEDIN.valueOf(),
     items: [
       {
         value: ActivityTypes.COMMENT.valueOf(),
@@ -329,7 +330,7 @@ export const metricsOptions: DropdownGroupOptions[] = [
     ]
   },
   {
-    label: 'Reddit',
+    label: ActivityPlatforms.REDDIT.valueOf(),
     items: [
       {
         value: ActivityTypes.POST.valueOf(),
@@ -342,7 +343,7 @@ export const metricsOptions: DropdownGroupOptions[] = [
     ]
   },
   {
-    label: 'Slack',
+    label: ActivityPlatforms.SLACK.valueOf(),
     items: [
       {
         value: ActivityTypes.MESSAGE.valueOf(),
@@ -351,7 +352,7 @@ export const metricsOptions: DropdownGroupOptions[] = [
     ]
   },
   {
-    label: 'Stackoverflow',
+    label: ActivityPlatforms.STACKOVERFLOW.valueOf(),
     items: [
       {
         value: ActivityTypes.QUESTION.valueOf(),
@@ -364,7 +365,7 @@ export const metricsOptions: DropdownGroupOptions[] = [
     ]
   },
   {
-    label: 'Twitter',
+    label: ActivityPlatforms.TWITTER.valueOf(),
     items: [
       {
         value: ActivityTypes.HASHTAG.valueOf(),
@@ -377,3 +378,23 @@ export const metricsOptions: DropdownGroupOptions[] = [
     ]
   }
 ];
+
+export const activityPlatformsIcons: Record<string, string> = {
+  [ActivityPlatforms.GITHUB.toLowerCase()]: '/images/integrations/github.png',
+  [ActivityPlatforms.GIT.toLowerCase()]: '/images/integrations/git.png',
+  [ActivityPlatforms.GERRIT.toLowerCase()]: '/images/integrations/gerrit.png',
+  [ActivityPlatforms.GITLAB.toLowerCase()]: '/images/integrations/gitlab.png',
+  [ActivityPlatforms.GROUPS_IO.toLowerCase()]: '/images/integrations/groupsio.svg',
+  [ActivityPlatforms.CONFLUENCE.toLowerCase()]: '/images/integrations/confluence.svg',
+  [ActivityPlatforms.JIRA.toLowerCase()]: '/images/integrations/jira.png',
+  [ActivityPlatforms.DEVTO.toLowerCase()]: '/images/integrations/devto.png',
+  [ActivityPlatforms.DISCORD.toLowerCase()]: '/images/integrations/discord.png',
+  [ActivityPlatforms.DISCOURSE.toLowerCase()]: '/images/integrations/discourse.png',
+  [ActivityPlatforms.HACKERNEWS.toLowerCase()]: '/images/integrations/hackernews.svg',
+  [ActivityPlatforms.LINKEDIN.toLowerCase()]: '/images/integrations/linkedin.png',
+  [ActivityPlatforms.REDDIT.toLowerCase()]: '/images/integrations/reddit.svg',
+  [ActivityPlatforms.SLACK.toLowerCase()]: '/images/integrations/slack.png',
+  [ActivityPlatforms.STACKOVERFLOW.toLowerCase()]:
+    '/images/integrations/stackoverflow.png',
+  [ActivityPlatforms.TWITTER.toLowerCase()]: '/images/integrations/twitter.png'
+};

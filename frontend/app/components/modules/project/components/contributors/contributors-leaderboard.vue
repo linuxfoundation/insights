@@ -12,7 +12,9 @@
 
     <hr>
     <section class="mt-5">
-      <lfx-metric-dropdown v-model="metric" />
+      <div class="mb-6">
+        <lfx-metric-dropdown v-model="metric" />
+      </div>
 
       <lfx-project-load-state
         :status="status"
