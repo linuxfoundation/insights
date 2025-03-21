@@ -22,7 +22,7 @@
         :height="380"
       >
         <div class="w-full min-h-[380px] my-5">
-          <div class="flex flex-col gap-8 text-neutral-900 text-sm">
+          <div class="flex flex-col gap-5 text-neutral-900 text-sm">
             <div
               v-for="item in reviewTimeByPr"
               :key="item.sortId"
