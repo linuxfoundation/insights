@@ -16,7 +16,7 @@
       <div class="text-xs text-neutral-400">{{ description }}</div>
     </div>
     <div
-      class="flex gap-2 items-center text-sm h-6 px-2.5 py-1 rounded-full"
+      class="flex gap-2 items-center text-sm h-6 px-2.5 py-1 rounded-full font-semibold"
       :class="valueClass"
     >
       <lfx-icon
@@ -30,7 +30,7 @@
 </template>
 <script setup lang="ts">
 import { computed } from 'vue';
-import type { MergeLeadTimeItem } from '../types/merge-lead-time.types';
+import type { MergeLeadTimeItem } from '~~/types/development/responses.types';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 
 const props = withDefaults(
