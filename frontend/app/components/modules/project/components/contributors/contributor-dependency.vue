@@ -13,6 +13,9 @@
 
     <hr>
     <section class="mt-5">
+      <div class="mb-6">
+        <lfx-metric-dropdown v-model="metric" />
+      </div>
       <lfx-project-load-state
         :status="status"
         :error="error"
@@ -20,9 +23,6 @@
         :is-empty="isEmpty"
         use-min-height
       >
-        <div class="mb-6">
-          <lfx-metric-dropdown v-model="metric" />
-        </div>
 
         <lfx-dependency-display
           :top-dependency="topContributors"

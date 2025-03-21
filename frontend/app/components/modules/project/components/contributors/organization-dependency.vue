@@ -13,16 +13,15 @@
 
     <hr>
     <section class="mt-5">
+      <div class="mb-6">
+        <lfx-metric-dropdown v-model="metric" />
+      </div>
       <lfx-project-load-state
         :status="status"
         :error="error"
         error-message="Error fetching organization dependency"
         :is-empty="isEmpty"
       >
-
-        <div class="mb-6">
-          <lfx-metric-dropdown v-model="metric" />
-        </div>
 
         <lfx-dependency-display
           :top-dependency="topOrganizations"

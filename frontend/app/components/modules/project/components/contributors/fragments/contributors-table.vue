@@ -2,7 +2,7 @@
   <div class="lfx-table">
     <div class="lfx-table-header">
       <div>Contributor</div>
-      <div>{{ contributionColumnHeader }}</div>
+      <div>Total contributions</div>
     </div>
 
     <div
@@ -26,10 +26,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
-import { metricsOptions } from '../config/metrics';
 import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
-import type { Contributor } from '~~/types/shared/contributor';
+import type { Contributor } from '~~/types/contributors/responses.types';
 import { formatNumber } from '~/components/shared/utils/formatter';
 
 const props = withDefaults(
@@ -42,18 +40,6 @@ const props = withDefaults(
     showPercentage: false
   }
 );
-
-const contributionColumnHeader = computed(() => {
-  if (props.metric === 'all:all') {
-    return 'Total contributions';
-  }
-
-  const flattenedMetricsOptions = metricsOptions.flatMap((option) => option.items);
-
-  return `Total ${flattenedMetricsOptions.find(
-      (option) => option.value === props.metric.split(':')[1]
-  )?.label.toLowerCase()}`;
-});
 </script>
 
 <script lang="ts">
