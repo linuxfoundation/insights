@@ -64,7 +64,7 @@
           <lfx-chart :config="barChartConfig" />
         </div>
 
-        <div class="flex flex-col gap-5">
+        <div class="flex flex-col gap-4">
           <lfx-project-pull-request-legend-item
             title="Open"
             :delta="openSummary!"
@@ -167,7 +167,7 @@ const chartSeries = ref<ChartSeries[]>([
     yAxisIndex: 0,
     dataIndex: 1,
     position: 'left',
-    color: lfxColors.warning[500]
+    color: lfxColors.violet[500]
   },
   {
     name: 'Closed',
@@ -175,7 +175,7 @@ const chartSeries = ref<ChartSeries[]>([
     yAxisIndex: 0,
     dataIndex: 2,
     position: 'left',
-    color: lfxColors.negative[500]
+    color: lfxColors.neutral[300]
   }
 ]);
 
