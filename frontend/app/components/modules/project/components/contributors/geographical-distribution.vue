@@ -22,12 +22,14 @@
           />
         </div>
         <div class="basis-1/2 flex justify-end">
-          <lfx-dropdown
-            v-model="metric"
-            icon="fa-light fa-display-code"
-            :options="metricOptions"
-            dropdown-position="right"
-          />
+          <div class="max-w-[160px]">
+            <lfx-dropdown
+              v-model="metric"
+              icon="fa-light fa-display-code"
+              :options="metricOptions"
+              dropdown-position="right"
+            />
+          </div>
         </div>
       </div>
       <lfx-project-load-state
