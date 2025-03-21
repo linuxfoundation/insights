@@ -48,6 +48,18 @@
       />
     </div>
   </div>
+  <div
+    v-if="projects.length < (data?.total || 0)"
+    class="py-5 lg:py-10 flex justify-center"
+  >
+    <lfx-button
+      size="large"
+      class="!rounded-full"
+      @click="loadMore"
+    >
+      Load more
+    </lfx-button>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -59,9 +71,9 @@ import LfxCollectionHeader from "~/components/modules/collection/components/deta
 import LfxCollectionFilters from "~/components/modules/collection/components/details/filters.vue";
 import LfxProjectListItem from "~/components/modules/project/components/list/project-list-item.vue";
 import LfxProjectListItemLoading from "~/components/modules/project/components/list/project-list-item-loading.vue";
-import useScroll from "~/components/shared/utils/scroll";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
 import LfxMaintainHeight from "~/components/uikit/maintain-height/maintain-height.vue";
+import LfxButton from "~/components/uikit/button/button.vue";
 
 const props = defineProps<{
   collection: Collection
@@ -70,13 +82,11 @@ const props = defineProps<{
 const route = useRoute();
 const collectionSlug = route.params.slug as string;
 
-const {scrollTopPercentage} = useScroll();
-
 const sort = ref('contributorCount_desc');
 const tab = ref('all');
 
 const page = ref(0);
-const pageSize = ref(50);
+const pageSize = 60;
 
 const projects = ref([]);
 
@@ -109,11 +119,9 @@ const { data, status } = await useFetch<Pagination<Project>>(
     }
 );
 
-watch(scrollTopPercentage, () => {
-  if (scrollTopPercentage.value >= 100 && projects.value.length < data.value.total) {
-    page.value += 1;
-  }
-});
+const loadMore = () => {
+  page.value += 1;
+};
 
 onMounted(() => {
   projects.value = data.value?.data || [];

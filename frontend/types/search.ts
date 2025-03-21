@@ -10,6 +10,7 @@ export interface SearchProject {
 }
 
 export interface SearchRepository {
+    name: string;
     slug: string;
     projectSlug: string;
 }
