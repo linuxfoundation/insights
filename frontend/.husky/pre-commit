@@ -1,7 +1,9 @@
 #run husky pre-commit hook only if frontend changed
-if git diff --name-only --cached | grep 'frontend/';
+if git diff --diff-filter=d --name-only --cached | grep 'frontend/';
   then
     echo "FRONTEND FOLDER CHANGED --> starting husky..."
-    cd frontend && pnpm lint:fix && pnpm tsc-check
-    git add -u
+    cd frontend && \
+    pnpm exec eslint --fix $(git diff --diff-filter=d --name-only --cached --relative) && \
+    pnpm tsc-check
+    git add -u $(git diff --diff-filter=d --name-only --cached --relative)
 fi
