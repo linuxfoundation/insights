@@ -97,6 +97,11 @@ const calculateGranularity = (start: string | null, end: string | null): string[
       return [Granularity.YEARLY];
   }
 };
+const isSingleDay = computed(() => {
+  const start = DateTime.fromISO(startDate.value || '');
+  const end = DateTime.fromISO(endDate.value || '');
+  return start.hasSame(end, 'day');
+});
 
 const customGranularity = computed(() => calculateGranularity(startDate.value, endDate.value));
 
@@ -129,7 +134,7 @@ const chartData = computed<ChartData[]>(
     'endDate'
   )
 );
-const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
+const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]) || isSingleDay.value);
 
 const tabs = [
   {
