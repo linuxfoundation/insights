@@ -134,7 +134,8 @@ const chartData = computed<ChartData[]>(
     'endDate'
   )
 );
-const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]) || isSingleDay.value);
+const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[])
+  || isSingleDay.value);
 
 const tabs = [
   {
