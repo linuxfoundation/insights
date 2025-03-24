@@ -27,7 +27,7 @@
                 class="font-bold mr-3 ease-linear transition-all font-secondary duration-200 text-heading-4"
                 :class="[
                   scrollTop > 50 ? 'md:text-heading-3' : 'md:text-heading-2',
-                  repoName ? 'w-[25ch] truncate' : ''
+                  repoName ? 'max-w-[25ch] truncate' : ''
                 ]"
               >
                 {{ props.project.name }}

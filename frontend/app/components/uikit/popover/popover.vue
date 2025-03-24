@@ -1,126 +1,124 @@
 <template>
-  <div class="c-popover">
-    <div
-      ref="trigger"
-      class="c-popover__trigger"
-      @click.stop="props.triggerEvent === 'click' ? togglePopover() : null"
-      @mouseenter="props.triggerEvent === 'hover' ? showPopover() : null"
-      @mouseleave="props.triggerEvent === 'hover' ? hidePopover() : null"
-    >
-      <slot :close="hidePopover" />
-    </div>
-    <Teleport
-      v-if="!props.disabled && (props.persistent || isVisible)"
-      to="body"
-    >
-      <div
-        ref="popover"
-        :style="popoverStyle"
-        class="c-popover__content"
-        :class="[`is-placed-${props.placement}`, { 'is-hidden': props.persistent && !isVisible }]"
-      >
-        <slot
-          name="content"
-          :close="hidePopover"
-        />
-      </div>
-    </Teleport>
+  <div
+    ref="trigger"
+    class="c-popover__trigger"
+    @click="handleClick"
+  >
+    <slot />
+  </div>
+
+  <div
+    v-show="isVisible"
+    ref="popover"
+    class="c-popover__content"
+    :class="placement"
+  >
+    <slot
+      name="content"
+      :close="closePopover"
+    />
   </div>
 </template>
 
 <script lang="ts" setup>
 import {
-  computed, onBeforeUnmount, ref, watch,
+ ref, watch, onMounted, onBeforeUnmount
 } from 'vue';
-import type { PopoverPlacement } from '@/ui-kit/popover/types/PopoverPlacement';
-import type { PopoverTrigger } from '@/ui-kit/popover/types/PopoverTrigger';
-import useScroll from "~/components/shared/utils/scroll";
+import type { Instance, Placement } from '@popperjs/core';
+import { createPopper } from '@popperjs/core';
 
 const props = withDefaults(defineProps<{
-  placement?: PopoverPlacement,
-  disabled?: boolean,
-  spacing?: number,
+  placement?: Placement,
+  triggerEvent?: 'click' | 'hover',
   visibility?: boolean,
-  triggerEvent?: PopoverTrigger,
-  persistent?: boolean;
+  spacing?: number,
+  disabled?: boolean,
 }>(), {
   placement: 'bottom-start',
-  disabled: false,
-  spacing: 4,
-  visibility: false,
   triggerEvent: 'click',
-  persistent: false,
+  visibility: false,
+  spacing: 4,
+  disabled: false,
 });
 
-const emit = defineEmits<{(e: 'update:visibility', value: boolean): void }>();
+const emit = defineEmits(['update:visibility']);
 
-const {scrollTop} = useScroll();
-
-const trigger = ref(null);
-const popover = ref(null);
+const trigger = ref<HTMLElement | null>(null);
+const popover = ref<HTMLElement | null>(null);
+const popperInstance = ref<Instance | null>(null);
 const isVisible = ref(props.visibility);
 
-watch(() => props.visibility, (newValue) => {
-  isVisible.value = newValue;
-}, { immediate: true });
-
-watch(isVisible, (newValue) => {
-  emit('update:visibility', newValue);
+watch(() => props.visibility, (val) => {
+    isVisible.value = val;
 });
+watch(isVisible, (val) => emit('update:visibility', val));
 
-const togglePopover = () => {
-  isVisible.value = !isVisible.value;
-  if (isVisible.value) addOutsideClickListener();
-  else removeOutsideClickListener();
-};
-
-const showPopover = () => {
-  isVisible.value = true;
-  addOutsideClickListener();
-};
-
-const hidePopover = () => {
-  isVisible.value = false;
-  removeOutsideClickListener();
-};
-
-const handleClickOutside = (event: Event) => {
-  if (
-    !trigger.value?.contains(event.target)
-      && !popover.value?.contains(event.target)
-  ) {
-    isVisible.value = false;
-    removeOutsideClickListener();
+const createPopperInstance = () => {
+  if (trigger.value && popover.value) {
+    popperInstance.value = createPopper(trigger.value, popover.value, {
+      strategy: 'fixed',
+      placement: props.placement,
+      modifiers: [
+        {
+          name: 'offset',
+          options: {
+            offset: [0, props.spacing],
+          },
+        },
+      ],
+    });
   }
 };
 
-const addOutsideClickListener = () => {
-  document.addEventListener('click', handleClickOutside);
+const destroyPopperInstance = () => {
+  popperInstance.value?.destroy();
+  popperInstance.value = null;
 };
 
-const removeOutsideClickListener = () => {
+const openPopover = async () => {
+  isVisible.value = true;
+};
+
+const closePopover = () => {
+  isVisible.value = false;
   document.removeEventListener('click', handleClickOutside);
 };
 
-const popoverStyle = computed(() => {
-  if (!trigger.value || !popover.value) return {};
+const handleClick = (e: Event) => {
+  e.stopPropagation();
+  if (props.triggerEvent === 'click') {
+    if (isVisible.value) {
+        closePopover();
+    } else {
+        openPopover();
+    }
+  }
+};
 
-  const triggerRect = trigger.value.getBoundingClientRect();
-  return {
-    '--lfx-popover-trigger-top': `${(triggerRect.top + scrollTop.value) / 16}rem`,
-    '--lfx-popover-trigger-left': `${triggerRect.left / 16}rem`,
-    '--lfx-popover-trigger-right': `${triggerRect.right / 16}rem`,
-    '--lfx-popover-trigger-bottom': `${triggerRect.bottom / 16}rem`,
-    '--lfx-popover-trigger-width': `${trigger.value.offsetWidth / 16}rem`,
-    '--lfx-popover-trigger-height': `${trigger.value.offsetHeight / 16}rem`,
-    '--lfx-popover-content-width': `${popover.value.offsetWidth / 16}rem`,
-    '--lfx-popover-content-height': `${popover.value.offsetHeight / 16}rem`,
-    '--lfx-popover-spacing': `${props.spacing / 16}rem`,
-  };
+const handleClickOutside = (e: Event) => {
+  if (
+      popover.value
+      && !popover.value.contains(e.target as Node)
+      && !trigger.value?.contains(e.target as Node)
+  ) {
+    closePopover();
+  }
+};
+
+onMounted(() => {
+  createPopperInstance();
+  if (props.triggerEvent === 'hover') {
+    trigger.value?.addEventListener('mouseenter', openPopover);
+    trigger.value?.addEventListener('mouseleave', closePopover);
+  }
 });
 
 onBeforeUnmount(() => {
-  removeOutsideClickListener();
+  destroyPopperInstance();
+  if (props.triggerEvent === 'hover') {
+    trigger.value?.removeEventListener('mouseenter', openPopover);
+    trigger.value?.removeEventListener('mouseleave', closePopover);
+  }
 });
 </script>
 
