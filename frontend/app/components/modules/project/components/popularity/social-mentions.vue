@@ -76,8 +76,10 @@
 
 <script setup lang="ts">
 import { useFetch, useRoute } from 'nuxt/app';
-import { ref, computed, watch } from 'vue';
+import { ref, computed } from 'vue';
 import { storeToRefs } from "pinia";
+import LfxProjectLoadState from '../shared/load-state.vue';
+import LfxSkeletonState from '../shared/skeleton-state.vue';
 import type { SocialMentions } from '~~/types/popularity/responses.types';
 import type { Summary } from '~~/types/shared/summary.types';
 import LfxCard from '~/components/uikit/card/card.vue';
@@ -93,8 +95,6 @@ import LfxChart from '~/components/uikit/chart/chart.vue';
 import { getBarChartConfigStacked } from '~/components/uikit/chart/configs/bar.chart';
 import { getLineAreaChartConfig } from '~/components/uikit/chart/configs/line.area.chart';
 import { lfxColors } from '~/config/styles/colors';
-import useToastService from '~/components/uikit/toast/toast.service';
-import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 import { formatNumber } from '~/components/shared/utils/formatter';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
 import { links } from '~/config/links';
@@ -103,7 +103,6 @@ import { isEmptyData } from '~/components/shared/utils/helper';
 import type { Granularity } from '~~/types/shared/granularity';
 import { barGranularities, lineGranularities } from '~/components/shared/types/granularity';
 
-const { showToast } = useToastService();
 const {
   startDate,
   endDate,
@@ -204,17 +203,6 @@ const barChartConfig = computed(() => getBarChartConfigStacked(
   chartSeries.value,
   barGranularity.value
 ));
-
-watch(error, (err) => {
-  if (err) {
-    showToast(
-      `Error fetching social mentions: ${error.value?.statusMessage}`,
-      ToastTypesEnum.negative,
-      undefined,
-      10000
-    );
-  }
-});
 </script>
 
 <script lang="ts">

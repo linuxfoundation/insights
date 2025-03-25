@@ -4,21 +4,29 @@
       GitHub Mentions
     </h3>
     <p class="text-body-2 text-neutral-500 mb-6">
-      GitHub mentions are the number of times a project is mentioned on GitHub during the selected
-      time period.
+      Number of times that {{ keyword }} was mentioned on code, files, and paths across GitHub repositories. Learn more
     </p>
     <hr>
     <section class="mt-5">
-      <div
-        v-if="status === 'success'"
-        class="flex flex-row gap-4 items-center mb-6"
-      >
-        <div class="text-data-display-1">{{ formatNumber(summary.current) }}</div>
-        <lfx-delta-display
-          :summary="summary"
-          icon="circle-arrow-up-right"
-          icon-type="solid"
-        />
+      <div class="mb-5">
+        <lfx-skeleton-state
+          :status="status"
+          height="2rem"
+          width="7.5rem"
+        >
+          <div
+            v-if="summary"
+            class="flex flex-row gap-4 items-center"
+          >
+            <div class="text-data-display-1">{{ formatNumber(summary.current) }}</div>
+            <lfx-delta-display
+              v-if="selectedTimeRangeKey !== dateOptKeys.alltime"
+              :summary="summary"
+              icon="circle-arrow-up-right"
+              icon-type="solid"
+            />
+          </div>
+        </lfx-skeleton-state>
       </div>
 
       <lfx-tabs
@@ -26,21 +34,26 @@
         :model-value="activeTab"
         @update:model-value="activeTab = $event"
       />
-      <div class="w-full h-[330px] mt-5">
-        <lfx-chart
-          v-if="status !== 'pending'"
-          :config="lineAreaChartConfig"
-        />
-        <lfx-spinner v-else />
-      </div>
+      <lfx-project-load-state
+        :status="status"
+        :error="error"
+        error-message="Error fetching social mentions"
+        :is-empty="isEmpty"
+      >
+        <div class="w-full h-[320px] mt-5">
+          <lfx-chart :config="activeTab === 'cumulative' ? lineChartConfig : barChartConfig" />
+        </div>
+      </lfx-project-load-state>
     </section>
   </lfx-card>
 </template>
 
 <script setup lang="ts">
 import { useFetch, useRoute } from 'nuxt/app';
-import { ref, computed, watch } from 'vue';
+import { ref, computed } from 'vue';
 import { storeToRefs } from "pinia";
+import LfxProjectLoadState from '../shared/load-state.vue';
+import LfxSkeletonState from '../shared/skeleton-state.vue';
 import type { GithubMentions } from '~~/types/popularity/responses.types';
 import type { Summary } from '~~/types/shared/summary.types';
 import LfxCard from '~/components/uikit/card/card.vue';
@@ -55,23 +68,42 @@ import type {
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import { getLineAreaChartConfig } from '~/components/uikit/chart/configs/line.area.chart';
 import { lfxColors } from '~/config/styles/colors';
-import useToastService from '~/components/uikit/toast/toast.service';
-import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
-import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 import { formatNumber } from '~/components/shared/utils/formatter';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
+import { dateOptKeys } from '~/components/modules/project/config/date-options';
+import { isEmptyData } from '~/components/shared/utils/helper';
+import { getBarChartConfig } from '~/components/uikit/chart/configs/bar.chart';
+import { barGranularities, lineGranularities } from '~/components/shared/types/granularity';
+import type { Granularity } from '~~/types/shared/granularity';
 
-const { showToast } = useToastService();
-const { startDate, endDate, selectedRepository } = storeToRefs(useProjectStore())
+const {
+  startDate,
+  endDate,
+  selectedRepository,
+  project,
+  selectedTimeRangeKey,
+  customRangeGranularity
+} = storeToRefs(useProjectStore())
 
 const activeTab = ref('cumulative');
 const route = useRoute();
+const keyword = computed(() => project.value?.name);
+
+const barGranularity = computed(() => (selectedTimeRangeKey.value === dateOptKeys.custom
+  ? customRangeGranularity.value[0] as Granularity
+  : barGranularities[selectedTimeRangeKey.value as keyof typeof barGranularities]));
+const lineGranularity = computed(() => (selectedTimeRangeKey.value === dateOptKeys.custom
+  ? customRangeGranularity.value[0] as Granularity
+  : lineGranularities[selectedTimeRangeKey.value as keyof typeof lineGranularities]));
+const granularity = computed(() => (activeTab.value === 'cumulative'
+  ? lineGranularity.value
+  : barGranularity.value));
 
 const { data, status, error } = useFetch(
   `/api/project/${route.params.slug}/popularity/github-mentions`,
   {
     params: {
-      interval: activeTab.value,
+      granularity,
       repository: selectedRepository,
       startDate,
       endDate,
@@ -88,6 +120,7 @@ const chartData = computed<ChartData[]>(
     'mentions'
   ])
 );
+const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
 
 const tabs = [
   { label: 'Cumulative', value: 'cumulative' },
@@ -97,7 +130,7 @@ const tabs = [
 const chartSeries = ref<ChartSeries[]>([
   {
     name: 'Github Mentions',
-    type: 'line',
+    type: activeTab.value === 'cumulative' ? 'line' : 'bar',
     yAxisIndex: 0,
     dataIndex: 0,
     position: 'left',
@@ -105,22 +138,17 @@ const chartSeries = ref<ChartSeries[]>([
   }
 ]);
 
-const lineAreaChartConfig = computed(() => getLineAreaChartConfig(
+const lineChartConfig = computed(() => getLineAreaChartConfig(
   chartData.value,
   chartSeries.value,
-  'weekly'
+  lineGranularity.value
 ));
 
-watch(error, (err) => {
-  if (err) {
-    showToast(
-      `Error fetching github mentions: ${error.value?.statusMessage}`,
-      ToastTypesEnum.negative,
-      undefined,
-      10000
-    );
-  }
-});
+const barChartConfig = computed(() => getBarChartConfig(
+  chartData.value,
+  chartSeries.value,
+  barGranularity.value
+));
 </script>
 
 <script lang="ts">
