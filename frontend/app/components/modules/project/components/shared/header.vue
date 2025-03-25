@@ -7,7 +7,6 @@
           class="ease-linear transition-all"
           :class="scrollTop > 50 ? 'py-3 md:py-4' : 'py-3 md:py-6'"
         >
-
           <div class="flex items-center justify-between ">
             <div class="flex items-center">
               <lfx-back class="ease-linear transition-all pr-4">
@@ -19,7 +18,7 @@
               </lfx-back>
               <lfx-avatar
                 type="organization"
-                :size="scrollTop > 50 ? 'normal' : (pageWidth < 768 ? 'normal' : 'large')"
+                :size="scrollTop > 50 ? 'normal' : ((pageWidth < 768 && pageWidth > 0) ? 'normal' : 'large')"
                 class="mr-4"
                 :src="props.project.logo || ''"
               />
