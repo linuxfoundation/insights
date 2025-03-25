@@ -27,9 +27,15 @@
             >
               <lfx-project-forks />
             </lfx-scroll-view>
+            <lfx-scroll-view
+              id="social-mentions"
+              :observer="observer"
+            >
+              <lfx-project-social-mentions />
+            </lfx-scroll-view>
           </template>
         </lfx-scroll-area>
-        <!-- <lfx-project-social-mentions />
+        <!--
         <lfx-project-github-mentions />
         <lfx-project-press-mentions />
         <lfx-project-search-queries />
@@ -49,7 +55,7 @@ import LfxSideNav from '~/components/uikit/side-nav/side-nav.vue';
 import LfxScrollView from '~/components/uikit/scroll-view/scroll-view.vue';
 import LfxScrollArea from '~/components/uikit/scroll-view/scroll-area.vue';
 import useScroll from '~/components/shared/utils/scroll';
-// import LfxProjectSocialMentions from "~/components/modules/project/components/popularity/social-mentions.vue";
+import LfxProjectSocialMentions from "~/components/modules/project/components/popularity/social-mentions.vue";
 // import LfxProjectGithubMentions from "~/components/modules/project/components/popularity/github-mentions.vue";
 // import LfxProjectPressMentions from "~/components/modules/project/components/popularity/press-mentions.vue";
 // import LfxProjectSearchQueries from "~/components/modules/project/components/popularity/search-queries.vue";
@@ -62,6 +68,7 @@ const { scrollToTarget, scrollToTop } = useScroll();
 const sideNavItems = [
   { label: 'Stars', key: 'stars' },
   { label: 'Forks', key: 'forks' },
+  { label: 'Social Mentions', key: 'social-mentions' },
 ];
 
 const onSideNavUpdate = (value: string) => {
