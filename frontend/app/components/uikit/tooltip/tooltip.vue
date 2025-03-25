@@ -1,39 +1,38 @@
 <template>
-  <div
-    class="lfx-tooltip"
-    :class="[`lfx-tooltip--${placement}`, props.disabled ? 'lfx-tooltip--disabled' : '']"
+  <lfx-popover
+    :placement="props.placement"
+    :disabled="props.disabled"
+    trigger-event="hover"
   >
-    <div
-      class="lfx-tooltip__content"
-      :class="props.contentClass"
-    >
-      <slot name="content">
-        <div class="lfx-tooltip__content-default-title">
-          {{ props.content }}
-        </div>
-      </slot>
-    </div>
     <slot />
-  </div>
+
+    <template #content>
+      <div
+        class="c-tooltip"
+        :class="`c-tooltip--${props.placement}`"
+      >
+        <slot name="content">
+          {{ props.content }}
+        </slot>
+      </div>
+    </template>
+  </lfx-popover>
 </template>
 
 <script setup lang="ts">
-// Creating a custom component for tooltip instead of using PrimeVue Tooltip component
-// because PrimeVue Tooltip component is not very flexible and does not support all the features we need
-import type { TooltipPlacement } from './types/TooltipPlacement';
+import type {Placement} from "@popperjs/core";
+import LfxPopover from "~/components/uikit/popover/popover.vue";
 
 const props = withDefaults(
   defineProps<{
-    placement?: TooltipPlacement;
+    placement?: Placement,
     content?: string;
     disabled?: boolean;
-    contentClass?: string;
   }>(),
   {
     placement: 'top',
     content: '',
     disabled: false,
-    contentClass: ''
   }
 );
 </script>

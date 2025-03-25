@@ -84,7 +84,7 @@
           <div class="flex items-center gap-3">
             <lfx-tooltip
               content="Coming soon"
-              placement="right"
+              placement="top"
             >
               <lfx-menu-button
                 :disabled="true"
@@ -120,7 +120,7 @@
             </lfx-menu-button>
             <lfx-tooltip
               content="Coming soon"
-              placement="right"
+              placement="top"
             >
               <lfx-menu-button
                 :disabled="true"
