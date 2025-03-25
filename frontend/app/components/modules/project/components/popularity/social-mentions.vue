@@ -4,21 +4,34 @@
       Social mentions
     </h3>
     <p class="text-body-2 text-neutral-500 mb-6">
-      Social mentions are the number of times a project is mentioned on social media platforms
-      during the selected time period.
+      Number of times that {{ keyword }} was mentioned on social platforms during the selected period.
+      <a
+        :href="links.learnMore"
+        class="text-brand-500"
+        target="_blank"
+      >Learn more</a>
     </p>
     <hr>
     <section class="mt-5">
-      <div
-        v-if="status === 'success'"
-        class="flex flex-row gap-4 items-center mb-6"
-      >
-        <div class="text-data-display-1">{{ formatNumber(summary.current) }}</div>
-        <lfx-delta-display
-          :summary="summary"
-          icon="circle-arrow-up-right"
-          icon-type="solid"
-        />
+      <div class="mb-5">
+        <lfx-skeleton-state
+          :status="status"
+          height="2rem"
+          width="7.5rem"
+        >
+          <div
+            v-if="summary"
+            class="flex flex-row gap-4 items-center"
+          >
+            <div class="text-data-display-1">{{ formatNumber(summary.current) }}</div>
+            <lfx-delta-display
+              v-if="selectedTimeRangeKey !== dateOptKeys.alltime"
+              :summary="summary"
+              icon="circle-arrow-up-right"
+              icon-type="solid"
+            />
+          </div>
+        </lfx-skeleton-state>
       </div>
 
       <lfx-tabs
@@ -26,13 +39,37 @@
         :model-value="activeTab"
         @update:model-value="activeTab = $event"
       />
-      <div class="w-full h-[330px] mt-5">
-        <lfx-chart
-          v-if="status !== 'pending'"
-          :config="barChartConfig"
-        />
-        <lfx-spinner v-else />
-      </div>
+      <lfx-project-load-state
+        :status="status"
+        :error="error"
+        error-message="Error fetching forks"
+        :is-empty="isEmpty"
+      >
+        <div class="w-full h-[320px] mt-5">
+          <lfx-chart :config="activeTab === 'cumulative' ? lineChartConfig : barChartConfig">
+            <template #legend>
+              <div class="flex flex-row gap-5 items-center justify-center pt-2">
+                <div class="flex flex-row items-center gap-2">
+                  <div class="w-3 h-3 bg-brand-500 rounded-xs" />
+                  <span class="text-xs text-neutral-900">X/Twitter</span>
+                </div>
+                <div class="flex flex-row items-center gap-2">
+                  <div class="w-3 h-3 bg-negative-500 rounded-xs" />
+                  <span class="text-xs text-neutral-900">Reddit</span>
+                </div>
+                <div class="flex flex-row items-center gap-2">
+                  <div class="w-3 h-3 bg-warning-500 rounded-xs" />
+                  <span class="text-xs text-neutral-900">Hacker News</span>
+                </div>
+                <div class="flex flex-row items-center gap-2">
+                  <div class="w-3 h-3 bg-yellow rounded-xs" />
+                  <span class="text-xs text-neutral-900">Stack Overflow</span>
+                </div>
+              </div>
+            </template>
+          </lfx-chart>
+        </div>
+      </lfx-project-load-state>
     </section>
   </lfx-card>
 </template>
@@ -54,25 +91,48 @@ import type {
 } from '~/components/uikit/chart/types/ChartTypes';
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import { getBarChartConfigStacked } from '~/components/uikit/chart/configs/bar.chart';
+import { getLineAreaChartConfig } from '~/components/uikit/chart/configs/line.area.chart';
 import { lfxColors } from '~/config/styles/colors';
-import { axisLabelFormatter } from '~/components/uikit/chart/helpers/formatters';
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
-import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 import { formatNumber } from '~/components/shared/utils/formatter';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
+import { links } from '~/config/links';
+import { dateOptKeys } from '~/components/modules/project/config/date-options';
+import { isEmptyData } from '~/components/shared/utils/helper';
+import type { Granularity } from '~~/types/shared/granularity';
+import { barGranularities, lineGranularities } from '~/components/shared/types/granularity';
 
 const { showToast } = useToastService();
-const { startDate, endDate, selectedRepository } = storeToRefs(useProjectStore())
+const {
+  startDate,
+  endDate,
+  selectedRepository,
+  project,
+  selectedTimeRangeKey,
+  customRangeGranularity
+} = storeToRefs(useProjectStore())
+const keyword = computed(() => project.value?.name);
 
-const activeTab = ref('all-time');
+const activeTab = ref('cumulative');
 const route = useRoute();
+
+const barGranularity = computed(() => (selectedTimeRangeKey.value === dateOptKeys.custom
+  ? customRangeGranularity.value[0] as Granularity
+  : barGranularities[selectedTimeRangeKey.value as keyof typeof barGranularities]));
+const lineGranularity = computed(() => (selectedTimeRangeKey.value === dateOptKeys.custom
+  ? customRangeGranularity.value[0] as Granularity
+  : lineGranularities[selectedTimeRangeKey.value as keyof typeof lineGranularities]));
+const granularity = computed(() => (activeTab.value === 'cumulative'
+  ? lineGranularity.value
+  : barGranularity.value));
 
 const { data, status, error } = useFetch(
   `/api/project/${route.params.slug}/popularity/social-mentions`,
   {
     params: {
-      interval: activeTab.value,
+      granularity,
+      type: activeTab,
       repository: selectedRepository,
       startDate,
       endDate,
@@ -85,7 +145,7 @@ const socialMentions = computed<SocialMentions>(() => data.value as SocialMentio
 const summary = computed<Summary>(() => socialMentions.value.summary);
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
-  () => convertToChartData(socialMentions.value.data as RawChartData[], 'dateFrom', [
+  () => convertToChartData(socialMentions.value.data as RawChartData[], 'startDate', [
     'twitter',
     'reddit',
     'hackerNews',
@@ -93,15 +153,17 @@ const chartData = computed<ChartData[]>(
   ])
 );
 
+const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
+
 const tabs = [
-  { label: 'Mentions by platform', value: 'all-time' },
+  { label: 'Mentions by platform', value: 'cumulative' },
   { label: 'New mentions by platform', value: 'new-mentions' }
 ];
 
-const chartSeries = ref<ChartSeries[]>([
+const chartSeries = computed<ChartSeries[]>(() => [
   {
     name: 'Twitter',
-    type: 'bar',
+    type: activeTab.value === 'cumulative' ? 'line' : 'bar',
     yAxisIndex: 0,
     dataIndex: 0,
     position: 'left',
@@ -109,7 +171,7 @@ const chartSeries = ref<ChartSeries[]>([
   },
   {
     name: 'Reddit',
-    type: 'bar',
+    type: activeTab.value === 'cumulative' ? 'line' : 'bar',
     yAxisIndex: 0,
     dataIndex: 1,
     position: 'left',
@@ -117,7 +179,7 @@ const chartSeries = ref<ChartSeries[]>([
   },
   {
     name: 'Hacker News',
-    type: 'bar',
+    type: activeTab.value === 'cumulative' ? 'line' : 'bar',
     yAxisIndex: 0,
     dataIndex: 2,
     position: 'left',
@@ -125,31 +187,22 @@ const chartSeries = ref<ChartSeries[]>([
   },
   {
     name: 'Stack Overflow',
-    type: 'bar',
+    type: activeTab.value === 'cumulative' ? 'line' : 'bar',
     yAxisIndex: 0,
     dataIndex: 3,
     position: 'left',
     color: lfxColors.warning[200]
   }
 ]);
-const configOverride = computed(() => ({
-  xAxis: {
-    axisLabel: {
-      formatter: axisLabelFormatter('MMM dd')
-    }
-  },
-  legend: {
-    show: true
-  },
-  grid: {
-    top: '8%'
-  }
-}));
+const lineChartConfig = computed(() => getLineAreaChartConfig(
+  chartData.value,
+  chartSeries.value,
+  lineGranularity.value
+));
 const barChartConfig = computed(() => getBarChartConfigStacked(
   chartData.value,
   chartSeries.value,
-  'weekly',
-  configOverride.value
+  barGranularity.value
 ));
 
 watch(error, (err) => {

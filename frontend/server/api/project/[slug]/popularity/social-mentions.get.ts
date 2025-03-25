@@ -23,7 +23,8 @@ import { allTime, newMentions } from '~~/server/mocks/social-mentions.mock';
  */
 /**
  * Query params:
- * - interval: 'all-time' | 'new-mentions'
+ * - granularity: string
+ * - type: 'cumulative' | 'new'
  * - project: string
  * - repository: string
  * - time-period: string // This is isn't defined yet, but we'll add '90d', '1y', '5y' for now
@@ -32,7 +33,7 @@ export default defineEventHandler(async (event) => {
   const query = getQuery(event);
   let data;
 
-  if (query.interval === 'all-time') {
+  if (query.type === 'cumulative') {
     data = allTime;
   } else {
     data = newMentions;

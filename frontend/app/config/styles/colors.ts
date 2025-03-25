@@ -82,5 +82,7 @@ export const lfxColors = {
     200: '#ddd6fe',
     100: '#ede9fe',
     50: '#f5f3ff'
-  }
+  },
+  // TODO: Verify with Nuno what color alias we should use
+  yellow: '#FFD6A7'
 };
