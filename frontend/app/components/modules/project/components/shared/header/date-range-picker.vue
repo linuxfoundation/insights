@@ -32,7 +32,8 @@
             <article
               v-for="option of lfxProjectDateOptionsPast"
               :key="option.label"
-              class="py-2 px-3 flex justify-between items-center rounded-md cursor-pointer hover:bg-neutral-50 transition"
+              class="py-2 px-3 flex justify-between items-center
+              rounded-md cursor-pointer hover:bg-neutral-50 transition"
               @click="changeSelected(option)"
             >
               <div class="flex items-center">
@@ -60,7 +61,8 @@
             <article
               v-for="option of lfxProjectDateOptionsPrevious"
               :key="option.label"
-              class="py-2 px-3 flex justify-between items-center rounded-md cursor-pointer hover:bg-neutral-50 transition"
+              class="py-2 px-3 flex justify-between items-center
+              rounded-md cursor-pointer hover:bg-neutral-50 transition"
               @click="changeSelected(option)"
             >
               <div class="flex items-center">
