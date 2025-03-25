@@ -42,7 +42,7 @@
       <lfx-project-load-state
         :status="status"
         :error="error"
-        error-message="Error fetching forks"
+        error-message="Error fetching social mentions"
         :is-empty="isEmpty"
       >
         <div class="w-full h-[320px] mt-5">
