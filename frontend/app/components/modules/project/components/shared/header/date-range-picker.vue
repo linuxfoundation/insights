@@ -4,6 +4,7 @@
       v-model:visibility="isOpen"
       placement="bottom-end"
     >
+
       <div
         class="flex items-center gap-2 cursor-pointer text-sm leading-5 font-medium
     py-2 px-3 transition hover:bg-neutral-50 rounded-lg whitespace-nowrap"
@@ -26,14 +27,71 @@
       </div>
 
       <template #content>
-        <div class="flex flex-col p-1 gap-1 w-80">
-          <article
-            v-for="option of lfxProjectDateOptionsPast"
-            :key="option.label"
-            class="py-2 px-3 flex justify-between items-center rounded-md cursor-pointer hover:bg-neutral-50 transition"
-            @click="changeSelected(option)"
-          >
-            <div class="flex items-center">
+        <div class="bg-white shadow-lg rounded-lg border border-neutral-200">
+          <div class="flex flex-col p-1 gap-1 w-80">
+            <article
+              v-for="option of lfxProjectDateOptionsPast"
+              :key="option.label"
+              class="py-2 px-3 flex justify-between items-center rounded-md cursor-pointer hover:bg-neutral-50 transition"
+              @click="changeSelected(option)"
+            >
+              <div class="flex items-center">
+                <lfx-icon
+                  name="check"
+                  :size="16"
+                  class="text-brand-500"
+                  :class="selected === option.key ? 'visible' : 'invisible'"
+                />
+                <p
+                  class="text-sm leading-5  pl-3"
+                  :class="selected === option.key ? 'font-medium' : 'font-normal'"
+                >
+                  {{ option.label }}
+                </p>
+              </div>
+              <p
+                v-if="option.description"
+                class="text-xs leading-5 text-neutral-400"
+              >
+                {{ option.description }}
+              </p>
+            </article>
+            <div class="h-px bg-neutral-100 w-full" />
+            <article
+              v-for="option of lfxProjectDateOptionsPrevious"
+              :key="option.label"
+              class="py-2 px-3 flex justify-between items-center rounded-md cursor-pointer hover:bg-neutral-50 transition"
+              @click="changeSelected(option)"
+            >
+              <div class="flex items-center">
+                <lfx-icon
+                  name="check"
+                  :size="16"
+                  class="text-brand-500"
+                  :class="selected === option.key ? 'visible' : 'invisible'"
+                />
+                <p
+                  class="text-sm leading-5  pl-3"
+                  :class="selected === option.key ? 'font-medium' : 'font-normal'"
+                >
+                  {{ option.label }}
+                </p>
+              </div>
+              <p
+                v-if="option.description"
+                class="text-xs leading-5 text-neutral-400"
+              >
+                {{ option.description }}
+              </p>
+            </article>
+            <div class="h-px bg-neutral-100 w-full" />
+
+            <article
+              v-for="option of lfxProjectDateOptionsGeneral"
+              :key="option.label"
+              class="py-2 px-3 flex items-center rounded-md cursor-pointer hover:bg-neutral-50 transition"
+              @click="changeSelected(option)"
+            >
               <lfx-icon
                 name="check"
                 :size="16"
@@ -46,81 +104,26 @@
               >
                 {{ option.label }}
               </p>
-            </div>
-            <p
-              v-if="option.description"
-              class="text-xs leading-5 text-neutral-400"
+            </article>
+
+            <article
+              class="py-2 px-3 flex items-center rounded-md cursor-pointer hover:bg-neutral-50 transition"
+              @click="isCustomSelectorOpen = true"
             >
-              {{ option.description }}
-            </p>
-          </article>
-          <div class="h-px bg-neutral-100 w-full" />
-          <article
-            v-for="option of lfxProjectDateOptionsPrevious"
-            :key="option.label"
-            class="py-2 px-3 flex justify-between items-center rounded-md cursor-pointer hover:bg-neutral-50 transition"
-            @click="changeSelected(option)"
-          >
-            <div class="flex items-center">
               <lfx-icon
                 name="check"
                 :size="16"
                 class="text-brand-500"
-                :class="selected === option.key ? 'visible' : 'invisible'"
+                :class="selected === 'custom' ? 'visible' : 'invisible'"
               />
               <p
                 class="text-sm leading-5  pl-3"
-                :class="selected === option.key ? 'font-medium' : 'font-normal'"
+                :class="selected === 'custom' ? 'font-medium' : 'font-normal'"
               >
-                {{ option.label }}
+                Custom
               </p>
-            </div>
-            <p
-              v-if="option.description"
-              class="text-xs leading-5 text-neutral-400"
-            >
-              {{ option.description }}
-            </p>
-          </article>
-          <div class="h-px bg-neutral-100 w-full" />
-
-          <article
-            v-for="option of lfxProjectDateOptionsGeneral"
-            :key="option.label"
-            class="py-2 px-3 flex items-center rounded-md cursor-pointer hover:bg-neutral-50 transition"
-            @click="changeSelected(option)"
-          >
-            <lfx-icon
-              name="check"
-              :size="16"
-              class="text-brand-500"
-              :class="selected === option.key ? 'visible' : 'invisible'"
-            />
-            <p
-              class="text-sm leading-5  pl-3"
-              :class="selected === option.key ? 'font-medium' : 'font-normal'"
-            >
-              {{ option.label }}
-            </p>
-          </article>
-
-          <article
-            class="py-2 px-3 flex items-center rounded-md cursor-pointer hover:bg-neutral-50 transition"
-            @click="isCustomSelectorOpen = true"
-          >
-            <lfx-icon
-              name="check"
-              :size="16"
-              class="text-brand-500"
-              :class="selected === 'custom' ? 'visible' : 'invisible'"
-            />
-            <p
-              class="text-sm leading-5  pl-3"
-              :class="selected === 'custom' ? 'font-medium' : 'font-normal'"
-            >
-              Custom
-            </p>
-          </article>
+            </article>
+          </div>
         </div>
       </template>
     </lfx-popover>

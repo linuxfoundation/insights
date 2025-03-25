@@ -5,8 +5,6 @@
 
   &__content {
     @apply z-50 w-max transition overflow-visible;
-    @apply bg-white shadow-lg rounded-lg border border-neutral-200;
-    @apply outline-1 outline-transparent;
 
     &.is-hidden {
       @apply invisible opacity-0 pointer-events-none;
