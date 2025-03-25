@@ -20,7 +20,8 @@ import { cumulative, newMentions } from '~~/server/mocks/github-mentions.mock';
  */
 /**
  * Query params:
- * - interval: 'cumulative' | 'new-mentions'
+ * - granularity: string
+ * - type: 'cumulative' | 'new'
  * - project: string
  * - repository: string
  * - time-period: string // This is isn't defined yet, but we'll add '90d', '1y', '5y' for now
@@ -29,7 +30,7 @@ export default defineEventHandler(async (event) => {
   const query = getQuery(event);
   let data;
 
-  if (query.interval === 'cumulative') {
+  if (query.type === 'cumulative') {
     data = cumulative;
   } else {
     data = newMentions;

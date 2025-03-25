@@ -104,6 +104,7 @@ const { data, status, error } = useFetch(
   {
     params: {
       granularity,
+      type: activeTab,
       repository: selectedRepository,
       startDate,
       endDate,
@@ -127,7 +128,7 @@ const tabs = [
   { label: 'New Mentions', value: 'new-mentions' }
 ];
 
-const chartSeries = ref<ChartSeries[]>([
+const chartSeries = computed<ChartSeries[]>(() => [
   {
     name: 'Github Mentions',
     type: activeTab.value === 'cumulative' ? 'line' : 'bar',
