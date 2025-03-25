@@ -1,5 +1,5 @@
 import {
- onMounted, onUnmounted, ref
+  onMounted, onUnmounted, ref
 } from 'vue';
 
 const useResponsive = () => {
