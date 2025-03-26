@@ -73,7 +73,6 @@
 <script lang="ts" setup>
 import {computed} from "vue";
 import useScroll from "~/components/shared/utils/scroll";
-import LfxDropdown from "~/components/uikit/dropdown/dropdown.vue";
 import LfxDropdownSelector from "~/components/uikit/dropdown/dropdown-selector.vue";
 import LfxDropdownSelect from "~/components/uikit/dropdown/dropdown-select.vue";
 import LfxIcon from "~/components/uikit/icon/icon.vue";

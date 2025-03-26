@@ -124,7 +124,6 @@ import type {Pagination} from "~~/types/shared/pagination";
 import type {Collection} from "~~/types/collection";
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxTag from '~/components/uikit/tag/tag.vue';
-import LfxDropdown from '~/components/uikit/dropdown/dropdown.vue';
 import LfxCollectionListItem from '~/components/modules/collection/components/list/collection-list-item.vue';
 import {ToastTypesEnum} from "~/components/uikit/toast/types/toast.types";
 import useToastService from "~/components/uikit/toast/toast.service";
@@ -192,14 +191,6 @@ watch(error, (err) => {
     );
   }
 });
-
-const sortOptions = [
-
-  // {
-  //   label: 'Most valuable',
-  //   value: 'softwareValueCount_desc'
-  // },
-];
 
 onMounted(() => {
   collections.value = data.value?.data || [];
