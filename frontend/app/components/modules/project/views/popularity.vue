@@ -39,10 +39,15 @@
             >
               <lfx-project-github-mentions />
             </lfx-scroll-view>
+            <lfx-scroll-view
+              id="press-mentions"
+              :observer="observer"
+            >
+              <lfx-project-press-mentions />
+            </lfx-scroll-view>
           </template>
         </lfx-scroll-area>
         <!--
-        <lfx-project-press-mentions />
         <lfx-project-search-queries />
         <lfx-project-package-downloads /> -->
       </div>
@@ -62,7 +67,7 @@ import LfxScrollArea from '~/components/uikit/scroll-view/scroll-area.vue';
 import useScroll from '~/components/shared/utils/scroll';
 import LfxProjectSocialMentions from "~/components/modules/project/components/popularity/social-mentions.vue";
 import LfxProjectGithubMentions from "~/components/modules/project/components/popularity/github-mentions.vue";
-// import LfxProjectPressMentions from "~/components/modules/project/components/popularity/press-mentions.vue";
+import LfxProjectPressMentions from "~/components/modules/project/components/popularity/press-mentions.vue";
 // import LfxProjectSearchQueries from "~/components/modules/project/components/popularity/search-queries.vue";
 // import LfxProjectPackageDownloads from "~/components/modules/project/components/popularity/package-downloads.vue";
 
@@ -75,6 +80,7 @@ const sideNavItems = [
   { label: 'Forks', key: 'forks' },
   { label: 'Social Mentions', key: 'social-mentions' },
   { label: 'GitHub Mentions', key: 'github-mentions' },
+  { label: 'Press Mentions', key: 'press-mentions' },
 ];
 
 const onSideNavUpdate = (value: string) => {

@@ -1,4 +1,4 @@
-import { newMentions } from '~~/server/mocks/github-mentions.mock';
+import { cumulative } from '~~/server/mocks/github-mentions.mock';
 import { latesMentionDetails } from '~~/server/mocks/press-mentions.mock';
 
 /**
@@ -33,6 +33,6 @@ import { latesMentionDetails } from '~~/server/mocks/press-mentions.mock';
  * - time-period: string // This is isn't defined yet, but we'll add '90d', '1y', '5y' for now
  */
 export default defineEventHandler(async () => ({
-    ...newMentions,
-    list: latesMentionDetails
-  }));
+  ...cumulative,
+  list: latesMentionDetails
+}));

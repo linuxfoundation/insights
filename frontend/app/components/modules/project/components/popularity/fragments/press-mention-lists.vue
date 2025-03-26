@@ -7,7 +7,7 @@
       <div
         v-for="(mention, index) in list"
         :key="index"
-        class="flex flex-row gap-4 items-center"
+        class="flex flex-row gap-4 items-center rounded-md hover:bg-neutral-50 p-2 cursor-pointer"
       >
         <div
           class="min-w-[72px] h-14 rounded-md overflow-hidden bg-contain"
@@ -31,7 +31,7 @@
 
 <script setup lang="ts">
 import { DateTime } from 'luxon';
-import type { PressMention } from '../types/mentions.types';
+import type { PressMention } from '~~/types/popularity/responses.types';
 
 defineProps<{
   list: PressMention[];

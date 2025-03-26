@@ -21,8 +21,8 @@ export interface ForksData {
 export interface SocialMentions {
   summary: Summary;
   data: {
-    dateFrom: string;
-    dateTo: string;
+    startDate: string;
+    endDate: string;
     twitter: number;
     reddit: number;
     hackerNews: number;
@@ -33,8 +33,8 @@ export interface SocialMentions {
 export interface GithubMentions {
   summary: Summary;
   data: {
-    dateFrom: string;
-    dateTo: string;
+    startDate: string;
+    endDate: string;
     mentions: number;
   }[];
 }
@@ -51,8 +51,8 @@ export interface PressMention {
 export interface PressMentions {
   summary: Summary;
   data: {
-    dateFrom: string;
-    dateTo: string;
+    startDate: string;
+    endDate: string;
     mentions: number;
   }[];
   list: PressMention[];
