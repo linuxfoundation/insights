@@ -35,11 +35,13 @@ const props = defineProps<{
 const selectedValue = inject<ReturnType<typeof computed<string>>>('selectedValue');
 
 // Determine if the item is currently selected
-const isSelected = computed(() => selectedValue.value === props.value);
+const isSelected = computed(() => selectedValue && selectedValue.value === props.value);
 
 // Emit selection event upward
 const handleClick = () => {
-  selectedValue.value = props.value;
+  if(selectedValue){
+    selectedValue.value = props.value;
+  }
 };
 </script>
 

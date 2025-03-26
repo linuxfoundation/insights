@@ -7,15 +7,13 @@
     ]"
   >
     <slot />
-    <div class="flex justify-end flex-grow">
-      <slot name="append">
-        <lfx-icon
-          name="angle-down"
-          :size="12"
-          class="text-neutral-500"
-        />
-      </slot>
-    </div>
+    <slot name="append">
+      <lfx-icon
+        name="angle-down"
+        :size="12"
+        class="text-neutral-500"
+      />
+    </slot>
   </div>
 </template>
 

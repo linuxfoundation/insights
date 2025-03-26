@@ -3,7 +3,6 @@ import { ActivityTypes } from '~~/types/shared/activity-types';
 import { ActivityPlatforms } from '~~/types/shared/activity-platforms';
 
 export const metricsOptions: DropdownGroupOptions[] = [
-  { label: '', items: [{ label: 'All activities', value: 'all' }] },
   {
     label: ActivityPlatforms.GITHUB.valueOf(),
     items: [

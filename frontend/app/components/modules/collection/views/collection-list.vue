@@ -25,17 +25,6 @@
         :class="scrollTop > 50 ? 'py-3 md:py-4' : 'py-3 md:py-5'"
       >
         <div class="flex items-center gap-4">
-          <!--        <div-->
-          <!--          class="flex items-center gap-4 flex-grow"-->
-          <!--          style="max-width: calc(100% - 3.625rem)"-->
-          <!--        >-->
-          <!--          <div class="w-1/2 sm:w-auto">-->
-          <!--            <lfx-collection-filter-stack v-model="stack" />-->
-          <!--          </div>-->
-          <!--          <div class="w-1/2 sm:w-auto">-->
-          <!--            <lfx-collection-filter-industry v-model="industry" />-->
-          <!--          </div>-->
-          <!--        </div>-->
           <lfx-dropdown-select
             v-model="sort"
             width="20rem"

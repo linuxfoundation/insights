@@ -26,10 +26,10 @@
 
 <script lang="ts" setup>
 import {
- ref, watch, onMounted, onBeforeUnmount
+  ref, watch, onMounted, onBeforeUnmount
 } from 'vue';
-import type { Instance, Placement } from '@popperjs/core';
-import { createPopper } from '@popperjs/core';
+import type {Instance, Placement} from '@popperjs/core';
+import {createPopper} from '@popperjs/core';
 
 const props = withDefaults(defineProps<{
   placement?: Placement,
@@ -37,15 +37,17 @@ const props = withDefaults(defineProps<{
   visibility?: boolean,
   spacing?: number,
   disabled?: boolean,
+  matchWidth?: boolean,
 }>(), {
   placement: 'bottom-start',
   triggerEvent: 'click',
   visibility: false,
   spacing: 4,
   disabled: false,
+  matchWidth: false,
 });
 
-const emit = defineEmits<{(e:'update:visibility', value: boolean): void}>();
+const emit = defineEmits<{(e: 'update:visibility', value: boolean): void }>();
 
 const trigger = ref<HTMLElement | null>(null);
 const popover = ref<HTMLElement | null>(null);
@@ -53,7 +55,7 @@ const popperInstance = ref<Instance | null>(null);
 const isVisible = ref(props.visibility);
 
 watch(() => props.visibility, (val) => {
-    isVisible.value = val;
+  isVisible.value = val;
 });
 watch(isVisible, (val) => emit('update:visibility', val));
 
@@ -69,6 +71,19 @@ const createPopperInstance = () => {
             offset: [0, props.spacing],
           },
         },
+        ...(props.matchWidth ? [
+          {
+            name: "sameWidth",
+            enabled: true,
+            phase: "beforeWrite",
+            requires: ["computeStyles"],
+            fn: ({ state }) => {
+              Object.assign(state.styles.popper, {
+                width: `${state.rects.reference.width}px`,
+              });
+            },
+          },
+        ] : [])
       ],
     });
   }
@@ -93,9 +108,9 @@ const handleClick = (e: Event) => {
   e.stopPropagation();
   if (props.triggerEvent === 'click') {
     if (isVisible.value) {
-        closePopover();
+      closePopover();
     } else {
-        openPopover();
+      openPopover();
     }
   }
 };
