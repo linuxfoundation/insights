@@ -4,7 +4,12 @@
       GitHub Mentions
     </h3>
     <p class="text-body-2 text-neutral-500 mb-6">
-      Number of times that {{ keyword }} was mentioned on code, files, and paths across GitHub repositories. Learn more
+      Number of times that {{ keyword }} was mentioned on code, files, and paths across GitHub repositories.
+      <a
+        :href="links.learnMore"
+        class="text-brand-500"
+        target="_blank"
+      >Learn more</a>
     </p>
     <hr>
     <section class="mt-5">
@@ -75,6 +80,7 @@ import { isEmptyData } from '~/components/shared/utils/helper';
 import { getBarChartConfig } from '~/components/uikit/chart/configs/bar.chart';
 import { barGranularities, lineGranularities } from '~/components/shared/types/granularity';
 import type { Granularity } from '~~/types/shared/granularity';
+import { links } from '~/config/links';
 
 const {
   startDate,
@@ -117,9 +123,9 @@ const mentions = computed<GithubMentions>(() => data.value as GithubMentions);
 const summary = computed<Summary>(() => mentions.value.summary);
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
-  () => convertToChartData(mentions.value.data as RawChartData[], 'dateFrom', [
+  () => convertToChartData(mentions.value.data as RawChartData[], 'startDate', [
     'mentions'
-  ])
+  ], undefined, 'endDate')
 );
 const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
 

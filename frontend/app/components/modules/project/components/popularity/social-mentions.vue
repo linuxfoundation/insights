@@ -149,7 +149,7 @@ const chartData = computed<ChartData[]>(
     'reddit',
     'hackerNews',
     'stackOverflow'
-  ])
+  ], undefined, 'endDate')
 );
 
 const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
