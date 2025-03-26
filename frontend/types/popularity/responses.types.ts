@@ -39,6 +39,15 @@ export interface GithubMentions {
   }[];
 }
 
+export interface SearchQueries {
+  summary: Summary;
+  data: {
+    startDate: string;
+    endDate: string;
+    queryCount: number;
+  }[];
+}
+
 export interface PressMention {
   thumbnail: string;
   title: string;
