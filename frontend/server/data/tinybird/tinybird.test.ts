@@ -52,7 +52,6 @@ const { useRuntimeConfigMock } = vi.hoisted(() => ({
     tinybirdToken: mockTinybirdToken as string | null,
   }))
 }));
-mockNuxtImport('useRuntimeConfig', () => useRuntimeConfigMock)
 
 /**
  * This allows setting a different runtimeConfig for each test.
@@ -63,6 +62,8 @@ function setMockRuntimeConfig(tinybirdBaseUrl: string | null, tinybirdToken: str
     tinybirdBaseUrl,
     tinybirdToken,
   }));
+
+  mockNuxtImport('useRuntimeConfig', () => useRuntimeConfigMock);
 }
 
 describe('fetchFromTinybird', () => {
