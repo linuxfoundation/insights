@@ -1,5 +1,4 @@
-import { cumulative } from '~~/server/mocks/github-mentions.mock';
-import { latesMentionDetails } from '~~/server/mocks/press-mentions.mock';
+import { newMentions } from '~~/server/mocks/github-mentions.mock';
 
 /**
  * Frontend expects the data to be in the following format:
@@ -15,14 +14,7 @@ import { latesMentionDetails } from '~~/server/mocks/press-mentions.mock';
  *   data: {
  *     startDate: string; // start date
  *     endDate: string; // end date
- *     mentions: number; // count of mentions
- *   }[],
- *   list: {
- *     thumbnail: string; // thumbnail url
- *     title: string; // title
- *     url: string; // url
- *     date: string; // date
- *     description: string; // description
+ *     queryCount: number; // count of mentions
  *   }[];
  * }
  */
@@ -34,6 +26,9 @@ import { latesMentionDetails } from '~~/server/mocks/press-mentions.mock';
  * - time-period: string // This is isn't defined yet, but we'll add '90d', '1y', '5y' for now
  */
 export default defineEventHandler(async () => ({
-  ...cumulative,
-  list: latesMentionDetails
+  summary: newMentions.summary,
+  data: newMentions.data.map((item) => ({
+    ...item,
+    queryCount: item.mentions
+  }))
 }));
