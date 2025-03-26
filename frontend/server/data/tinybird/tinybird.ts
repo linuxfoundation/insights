@@ -23,7 +23,7 @@ function formatDateForTinyBird(date: DateTime): string {
 
 export async function fetchFromTinybird<T>(
     path: string,
-    query: Record<string, string | number | boolean | string[] | DateTime | undefined>
+    query: Record<string, string | number | boolean | string[] | DateTime | undefined | null>
 ): Promise<TinybirdResponse<T>> {
     const config = useRuntimeConfig();
 
@@ -38,7 +38,7 @@ export async function fetchFromTinybird<T>(
     }
     const url = `${tinybirdBaseUrl}${path}`;
 
-    // We don't want to send undefined values to TinyBird, so we remove those from the query.
+    // We don't want to send undefined, null, or empty values to TinyBird, so we remove those from the query.
     // We also format DateTime objects so that TinyBird understands them.
     const processedQuery = Object.fromEntries(
       Object.entries(query)
