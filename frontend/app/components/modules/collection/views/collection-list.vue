@@ -36,13 +36,30 @@
           <!--            <lfx-collection-filter-industry v-model="industry" />-->
           <!--          </div>-->
           <!--        </div>-->
-          <lfx-dropdown
+          <lfx-dropdown-select
             v-model="sort"
-            :options="sortOptions"
-            icon="fa-arrow-down-wide-short fa-light"
-            type="transparent"
-            dropdown-position="left"
-          />
+            width="20rem"
+          >
+            <template #trigger="{selectedOption}">
+              <lfx-dropdown-selector>
+                <lfx-icon
+                  name="arrow-down-wide-short"
+                  :size="16"
+                />
+                {{selectedOption.label}}
+              </lfx-dropdown-selector>
+            </template>
+
+            <lfx-dropdown-item
+              value="name_asc"
+              label="Alphabetically"
+            />
+            <lfx-dropdown-item
+              value="projectCount_desc"
+              label="Most projects"
+            />
+
+          </lfx-dropdown-select>
         </div>
       </div>
     </div>
@@ -117,6 +134,9 @@ import LfxCollectionListItemLoading
   from "~/components/modules/collection/components/list/collection-list-item-loading.vue";
 import LfxMaintainHeight from "~/components/uikit/maintain-height/maintain-height.vue";
 import LfxButton from "~/components/uikit/button/button.vue";
+import LfxDropdownSelector from "~/components/uikit/dropdown/dropdown-selector.vue";
+import LfxDropdownSelect from "~/components/uikit/dropdown/dropdown-select.vue";
+import LfxDropdownItem from "~/components/uikit/dropdown/dropdown-item.vue";
 
 const { showToast } = useToastService();
 const {pageWidth} = useResponsive();
@@ -174,14 +194,7 @@ watch(error, (err) => {
 });
 
 const sortOptions = [
-  {
-    label: 'Alphabetically',
-    value: 'name_asc'
-  },
-  {
-    label: 'Most projects',
-    value: 'projectCount_desc'
-  },
+
   // {
   //   label: 'Most valuable',
   //   value: 'softwareValueCount_desc'

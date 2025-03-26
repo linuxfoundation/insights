@@ -1,0 +1,50 @@
+<template>
+  <div
+    class="c-dropdown__item"
+    :class="{'is-selected': isSelected}"
+    @click="handleClick"
+  >
+    <slot>
+      {{props.label}}
+    </slot>
+    <div
+      v-if="isSelected || props.checkmarkBefore"
+      class="flex justify-end flex-grow"
+      :class="{'order-first min-w-4 w-4': props.checkmarkBefore}"
+    >
+      <lfx-icon
+        v-if="isSelected"
+        name="check"
+        :size="16"
+        class="!text-brand-500"
+      />
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import LfxIcon from "~/components/uikit/icon/icon.vue";
+
+const props = defineProps<{
+  value: string,
+  label: string,
+  checkmarkBefore?: boolean,
+}>();
+
+// Inject provided value from DropdownSelect
+const selectedValue = inject<ReturnType<typeof computed<string>>>('selectedValue');
+
+// Determine if the item is currently selected
+const isSelected = computed(() => selectedValue.value === props.value);
+
+// Emit selection event upward
+const handleClick = () => {
+  selectedValue.value = props.value;
+};
+</script>
+
+<script lang="ts">
+export default {
+  name: 'LfxDropdownItem'
+};
+</script>

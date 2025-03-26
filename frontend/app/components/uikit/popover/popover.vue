@@ -2,6 +2,8 @@
   <div
     ref="trigger"
     class="c-popover__trigger"
+    :class="{'is-open': isVisible}"
+    v-bind="$attrs"
     @click="handleClick"
   >
     <slot />
@@ -43,7 +45,7 @@ const props = withDefaults(defineProps<{
   disabled: false,
 });
 
-const emit = defineEmits(['update:visibility']);
+const emit = defineEmits<{(e:'update:visibility', value: boolean): void}>();
 
 const trigger = ref<HTMLElement | null>(null);
 const popover = ref<HTMLElement | null>(null);
@@ -123,6 +125,11 @@ onBeforeUnmount(() => {
     trigger.value?.removeEventListener('mouseleave', closePopover);
   }
 });
+
+defineExpose({
+  closePopover,
+  openPopover,
+})
 </script>
 
 <script lang="ts">
