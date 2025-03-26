@@ -7,17 +7,19 @@
     <slot />
   </div>
 
-  <div
-    v-show="isVisible"
-    ref="popover"
-    class="c-popover__content"
-    :class="placement"
-  >
-    <slot
-      name="content"
-      :close="closePopover"
-    />
-  </div>
+  <teleport to="body">
+    <div
+      v-show="isVisible"
+      ref="popover"
+      class="c-popover__content"
+      :class="placement"
+    >
+      <slot
+        name="content"
+        :close="closePopover"
+      />
+    </div>
+  </teleport>
 </template>
 
 <script lang="ts" setup>
