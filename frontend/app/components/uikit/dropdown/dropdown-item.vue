@@ -9,8 +9,8 @@
     </slot>
     <div
       v-if="isSelected || props.checkmarkBefore"
-      class="flex justify-end flex-grow"
-      :class="{'order-first min-w-4 w-4': props.checkmarkBefore}"
+      class="flex justify-end"
+      :class="props.checkmarkBefore ? 'order-first min-w-4 w-4': 'flex-grow'"
     >
       <lfx-icon
         v-if="isSelected"
