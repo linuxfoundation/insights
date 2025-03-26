@@ -125,7 +125,7 @@ const chartData = computed<ChartData[]>(
   // convert the data to chart data
   () => convertToChartData(mentions.value.data as RawChartData[], 'startDate', [
     'mentions'
-  ])
+  ], undefined, 'endDate')
 );
 const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
 
