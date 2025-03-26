@@ -12,23 +12,20 @@
     </p>
     <hr>
     <section class="mt-5">
-      <div class="flex flex-row gap-4 items-center mb-10">
-        <div class="basis-1/2">
-          <lfx-tabs
-            :tabs="tabs"
-            :model-value="activeTab"
-            width-type="inline"
-            @update:model-value="activeTab = $event"
-          />
-        </div>
-        <div class="basis-1/2 flex justify-end">
-          <div class="max-w-[160px]">
-            <lfx-metric-dropdown
-              v-model="metric"
-              max-width="160px"
-            />
-          </div>
-        </div>
+      <div class="flex flex-wrap flex-row justify-between gap-4 items-center mb-10">
+        <lfx-tabs
+          :tabs="tabs"
+          :model-value="activeTab"
+          width-type="inline"
+          @update:model-value="activeTab = $event"
+        />
+        <lfx-metric-dropdown
+          v-model="metric"
+          placement="bottom-end"
+          :full-width="false"
+          :match-width="false"
+          width="25rem"
+        />
       </div>
       <lfx-project-load-state
         :status="status"

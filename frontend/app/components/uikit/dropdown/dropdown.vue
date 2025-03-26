@@ -4,6 +4,7 @@
     v-model:visibility="isVisible"
     :placement="props.placement"
     v-bind="$attrs"
+    :is-modal="pageWidth < 640"
   >
     <slot name="trigger" />
 
@@ -23,6 +24,7 @@
 import type {Placement} from "@popperjs/core";
 import {computed} from "vue";
 import LfxPopover from "~/components/uikit/popover/popover.vue";
+import useResponsive from "~/components/shared/utils/responsive";
 
 const props = withDefaults(defineProps<{
   placement?: Placement,
@@ -42,6 +44,8 @@ const isVisible = computed({
 })
 
 const popover = ref<LfxPopover | null>(null);
+
+const {pageWidth} = useResponsive();
 </script>
 
 <script lang="ts">

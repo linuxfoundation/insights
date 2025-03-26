@@ -14,7 +14,8 @@
       v-show="isVisible"
       ref="popover"
       class="c-popover__content"
-      :class="placement"
+      :class="{ 'is-modal': props.isModal }"
+      @click="props.isModal ? closePopover() : null"
     >
       <slot
         name="content"
@@ -38,6 +39,7 @@ const props = withDefaults(defineProps<{
   spacing?: number,
   disabled?: boolean,
   matchWidth?: boolean,
+  isModal?: boolean,
 }>(), {
   placement: 'bottom-start',
   triggerEvent: 'click',
@@ -45,6 +47,7 @@ const props = withDefaults(defineProps<{
   spacing: 4,
   disabled: false,
   matchWidth: false,
+  isModal: false,
 });
 
 const emit = defineEmits<{(e: 'update:visibility', value: boolean): void }>();

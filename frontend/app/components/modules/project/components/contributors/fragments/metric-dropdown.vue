@@ -1,13 +1,15 @@
 <template>
   <lfx-dropdown-select
     v-model="metric"
-    class="!w-full"
+    :class="props.fullWidth ? '!w-full' : '!w-auto'"
     :match-width="true"
+    v-bind="$attrs"
   >
     <template #trigger="{selectedOption}">
       <lfx-dropdown-selector
         type="filled"
-        class="w-full justify-center"
+        class="justify-center"
+        :class="props.fullWidth ? '!w-full' : '!w-auto'"
       >
         <img
           v-if="selectedOption.platform"
@@ -66,10 +68,12 @@ import LfxDropdownItem from "~/components/uikit/dropdown/dropdown-item.vue";
 import LfxDropdownSelect from "~/components/uikit/dropdown/dropdown-select.vue";
 import LfxDropdownSeparator from "~/components/uikit/dropdown/dropdown-separator.vue";
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   modelValue: string;
-  maxWidth?: string;
-}>();
+  fullWidth: boolean
+}>(), {
+  fullWidth: true
+});
 
 const emit = defineEmits<{(e: 'update:modelValue', value: string): void }>();
 
