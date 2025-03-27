@@ -13,7 +13,7 @@
     <hr>
     <section class="mt-5">
       <div class="mb-6">
-        <lfx-metric-dropdown v-model="metric" />
+        <lfx-activities-dropdown v-model="metric" />
       </div>
 
       <lfx-project-load-state
@@ -37,7 +37,7 @@ import { useFetch, useRoute } from 'nuxt/app';
 import { ref, computed } from 'vue';
 import { storeToRefs } from "pinia";
 import LfxProjectLoadState from '../shared/load-state.vue';
-import LfxMetricDropdown from './fragments/metric-dropdown.vue';
+import LfxActivitiesDropdown from './fragments/activities-dropdown.vue';
 import LfxOrganizationsTable from './fragments/organizations-table.vue';
 import type { OrganizationLeaderboard } from '~~/types/contributors/responses.types';
 import LfxCard from '~/components/uikit/card/card.vue';

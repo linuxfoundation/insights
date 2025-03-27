@@ -1,134 +1,98 @@
 <template>
   <div>
-    <lfx-popover
-      v-model:visibility="isOpen"
+    <lfx-dropdown-select
+      v-model="selectedDateRange"
       placement="bottom-end"
+      width="22.5rem"
     >
+      <template #trigger="{selectedOption}">
+        <lfx-dropdown-selector>
+          <lfx-icon
+            name="calendar"
+            :size="16"
+          />
+          <span v-if="selectedOption.value !== 'custom'">{{ selectedOption?.label }}</span>
+          <span v-else-if="startDate && endDate">
+            {{ DateTime.fromFormat(startDate, 'yyyy-MM-dd').toFormat('MMM d, yyyy') }}
+            -> {{ DateTime.fromFormat(endDate, 'yyyy-MM-dd').toFormat('MMM d, yyyy') }}
+          </span>
+          <span v-else>Custom</span>
+        </lfx-dropdown-selector>
+      </template>
 
-      <div
-        class="flex items-center gap-2 cursor-pointer text-sm leading-5 font-medium
-    py-2 px-3 transition hover:bg-neutral-50 rounded-lg whitespace-nowrap"
-        :class="isOpen ? 'bg-neutral-50' : ''"
+      <lfx-dropdown-item
+        v-for="option of lfxProjectDateOptionsPast"
+        :key="option.key"
+        :value="option.key"
+        :label="option.label"
+        :checkmark-before="true"
       >
-        <lfx-icon
-          name="calendar"
-          :size="16"
-        />
-        <span v-if="selected !== 'custom'">{{ selectedOption?.label }}</span>
-        <span v-else-if="startDate && endDate">
-          {{ DateTime.fromFormat(startDate, 'yyyy-MM-dd').toFormat('MMM d, yyyy') }}
-          -> {{ DateTime.fromFormat(endDate, 'yyyy-MM-dd').toFormat('MMM d, yyyy') }}
-        </span>
-        <lfx-icon
-          name="angle-down"
-          :size="12"
-          class="text-neutral-500"
-        />
-      </div>
-
-      <template #content>
-        <div class="bg-white shadow-lg rounded-lg border border-neutral-200">
-          <div class="flex flex-col p-1 gap-1 w-80">
-            <article
-              v-for="option of lfxProjectDateOptionsPast"
-              :key="option.label"
-              class="py-2 px-3 flex justify-between items-center
-              rounded-md cursor-pointer hover:bg-neutral-50 transition"
-              @click="changeSelected(option)"
-            >
-              <div class="flex items-center">
-                <lfx-icon
-                  name="check"
-                  :size="16"
-                  class="text-brand-500"
-                  :class="selected === option.key ? 'visible' : 'invisible'"
-                />
-                <p
-                  class="text-sm leading-5  pl-3"
-                  :class="selected === option.key ? 'font-medium' : 'font-normal'"
-                >
-                  {{ option.label }}
-                </p>
-              </div>
-              <p
-                v-if="option.description"
-                class="text-xs leading-5 text-neutral-400"
-              >
-                {{ option.description }}
-              </p>
-            </article>
-            <div class="h-px bg-neutral-100 w-full" />
-            <article
-              v-for="option of lfxProjectDateOptionsPrevious"
-              :key="option.label"
-              class="py-2 px-3 flex justify-between items-center
-              rounded-md cursor-pointer hover:bg-neutral-50 transition"
-              @click="changeSelected(option)"
-            >
-              <div class="flex items-center">
-                <lfx-icon
-                  name="check"
-                  :size="16"
-                  class="text-brand-500"
-                  :class="selected === option.key ? 'visible' : 'invisible'"
-                />
-                <p
-                  class="text-sm leading-5  pl-3"
-                  :class="selected === option.key ? 'font-medium' : 'font-normal'"
-                >
-                  {{ option.label }}
-                </p>
-              </div>
-              <p
-                v-if="option.description"
-                class="text-xs leading-5 text-neutral-400"
-              >
-                {{ option.description }}
-              </p>
-            </article>
-            <div class="h-px bg-neutral-100 w-full" />
-
-            <article
-              v-for="option of lfxProjectDateOptionsGeneral"
-              :key="option.label"
-              class="py-2 px-3 flex items-center rounded-md cursor-pointer hover:bg-neutral-50 transition"
-              @click="changeSelected(option)"
-            >
-              <lfx-icon
-                name="check"
-                :size="16"
-                class="text-brand-500"
-                :class="selected === option.key ? 'visible' : 'invisible'"
-              />
-              <p
-                class="text-sm leading-5  pl-3"
-                :class="selected === option.key ? 'font-medium' : 'font-normal'"
-              >
-                {{ option.label }}
-              </p>
-            </article>
-
-            <article
-              class="py-2 px-3 flex items-center rounded-md cursor-pointer hover:bg-neutral-50 transition"
-              @click="isCustomSelectorOpen = true"
-            >
-              <lfx-icon
-                name="check"
-                :size="16"
-                class="text-brand-500"
-                :class="selected === 'custom' ? 'visible' : 'invisible'"
-              />
-              <p
-                class="text-sm leading-5  pl-3"
-                :class="selected === 'custom' ? 'font-medium' : 'font-normal'"
-              >
-                Custom
-              </p>
-            </article>
+        <div class="flex justify-between items-center w-full">
+          <p>
+            {{ option.label }}
+          </p>
+          <div
+            v-if="option.description"
+            class="text-xs leading-5 text-neutral-400"
+          >
+            {{ option.description }}
           </div>
         </div>
-      </template>
-    </lfx-popover>
+      </lfx-dropdown-item>
+
+      <lfx-dropdown-separator />
+
+      <lfx-dropdown-item
+        v-for="option of lfxProjectDateOptionsPrevious"
+        :key="option.key"
+        :value="option.key"
+        :label="option.label"
+        :checkmark-before="true"
+      >
+        <div class="flex justify-between items-center w-full">
+          <p>
+            {{ option.label }}
+          </p>
+          <div
+            v-if="option.description"
+            class="text-xs leading-5 text-neutral-400"
+          >
+            {{ option.description }}
+          </div>
+        </div>
+      </lfx-dropdown-item>
+
+      <lfx-dropdown-separator />
+      <lfx-dropdown-item
+        v-for="option of lfxProjectDateOptionsGeneral"
+        :key="option.key"
+        :value="option.key"
+        :label="option.label"
+        :checkmark-before="true"
+      >
+        <div class="flex justify-between items-center w-full">
+          <p>
+            {{ option.label }}
+          </p>
+          <div
+            v-if="option.description"
+            class="text-xs leading-5 text-neutral-400"
+          >
+            {{ option.description }}
+          </div>
+        </div>
+      </lfx-dropdown-item>
+
+      <lfx-dropdown-item
+        value="custom"
+        label="Custom"
+        :checkmark-before="true"
+        @click="isCustomSelectorOpen = true"
+      >
+        Custom
+      </lfx-dropdown-item>
+
+    </lfx-dropdown-select>
 
     <lfx-project-custom-date-range-picker
       v-model="isCustomSelectorOpen"
@@ -139,10 +103,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import {ref, watch} from "vue";
 import { storeToRefs } from "pinia";
 import { DateTime } from 'luxon';
-import LfxPopover from "~/components/uikit/popover/popover.vue";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
 import {
   type DateOptionConfig, lfxProjectDateOptions, lfxProjectDateOptionsGeneral,
@@ -153,23 +116,31 @@ import {
 import { useProjectStore } from "~/components/modules/project/store/project.store";
 import LfxProjectCustomDateRangePicker
   from "~/components/modules/project/components/shared/header/custom-date-range-picker.vue";
+import LfxDropdownSelect from "~/components/uikit/dropdown/dropdown-select.vue";
+import LfxDropdownItem from "~/components/uikit/dropdown/dropdown-item.vue";
+import LfxDropdownSeparator from "~/components/uikit/dropdown/dropdown-separator.vue";
+import LfxDropdownSelector from "~/components/uikit/dropdown/dropdown-selector.vue";
 
 const { selectedTimeRangeKey, startDate, endDate } = storeToRefs(useProjectStore())
 
 const isOpen = ref(false);
 const isCustomSelectorOpen = ref(false);
 
-const selected = ref(dateOptKeys.past365days);
-
-const selectedOption = computed(() => lfxProjectDateOptions.find((option) => option.key === selected.value));
+const selectedDateRange = ref(dateOptKeys.past365days);
 
 const changeSelected = (option: DateOptionConfig) => {
-  selected.value = option.key as dateOptKeys;
   selectedTimeRangeKey.value = option.key;
   startDate.value = option.startDate;
   endDate.value = option.endDate;
   isOpen.value = false;
 }
+
+watch(() => selectedDateRange.value, (value) => {
+  const option = lfxProjectDateOptions.find((option) => option.key === value) as DateOptionConfig;
+  if(option){
+    changeSelected(option);
+  }
+})
 </script>
 
 <script lang="ts">
