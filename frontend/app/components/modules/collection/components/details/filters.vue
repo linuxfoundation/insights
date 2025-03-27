@@ -38,14 +38,33 @@
         <!--            </template>-->
         <!--          </lfx-tabs>-->
         <!--        </div>-->
-        <lfx-dropdown
+        <lfx-dropdown-select
           v-model="sort"
-          :options="sortOptions"
-          icon="fa-arrow-down-wide-short fa-light"
-          type="transparent"
-          dropdown-position="left"
-          :icon-only-mobile="false"
-        />
+          width="20rem"
+        >
+          <template #trigger="{selectedOption}">
+            <lfx-dropdown-selector>
+              <lfx-icon
+                name="arrow-down-wide-short"
+                :size="16"
+              />
+              {{selectedOption.label}}
+            </lfx-dropdown-selector>
+          </template>
+
+          <lfx-dropdown-item
+            value="name_asc"
+            label="Alphabetically"
+          />
+          <lfx-dropdown-item
+            value="contributorCount_desc"
+            label="Most contributors"
+          />
+          <lfx-dropdown-item
+            value="organizationCount_desc"
+            label="Most organizations"
+          />
+        </lfx-dropdown-select>
       </div>
     </section>
   </div>
@@ -54,7 +73,10 @@
 <script lang="ts" setup>
 import {computed} from "vue";
 import useScroll from "~/components/shared/utils/scroll";
-import LfxDropdown from "~/components/uikit/dropdown/dropdown.vue";
+import LfxDropdownSelector from "~/components/uikit/dropdown/dropdown-selector.vue";
+import LfxDropdownSelect from "~/components/uikit/dropdown/dropdown-select.vue";
+import LfxIcon from "~/components/uikit/icon/icon.vue";
+import LfxDropdownItem from "~/components/uikit/dropdown/dropdown-item.vue";
 // import LfxTabs from "~/components/uikit/tabs/tabs.vue";
 // import useResponsive from "~/components/shared/utils/responsive";
 
@@ -83,24 +105,6 @@ const sort = computed({
 //   set: (value: string) => emit('update:tab', value)
 // });
 
-const sortOptions = [
-  {
-    label: 'Alphabeticly',
-    value: 'name_asc'
-  },
-  {
-    label: 'Most contributors',
-    value: 'contributorCount_desc'
-  },
-  {
-    label: 'Most organizations',
-    value: 'organizationCount_desc'
-  },
-  // {
-  //   label: 'Most valuable',
-  //   value: 'softwareValueCount_desc'
-  // },
-];
 </script>
 
 <script lang="ts">
