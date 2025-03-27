@@ -3,16 +3,16 @@ import { ActivityTypes } from '~~/types/shared/activity-types';
 import type { PlatformConfig } from '~~/types/shared/platforms.types';
 
 export const reddit: PlatformConfig = {
-  key: ActivityPlatforms.REDDIT.valueOf(),
+  key: ActivityPlatforms.REDDIT,
   label: 'Reddit',
   image: '/images/integrations/reddit.svg',
   activityTypes: [
     {
-      key: ActivityTypes.POST.valueOf(),
+      key: ActivityTypes.POST,
       label: 'Posted a post'
     },
     {
-      key: ActivityTypes.COMMENT.valueOf(),
+      key: ActivityTypes.COMMENT,
       label: 'Commented on a post'
     }
   ]

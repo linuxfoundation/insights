@@ -3,16 +3,16 @@ import { ActivityTypes } from '~~/types/shared/activity-types';
 import type { PlatformConfig } from '~~/types/shared/platforms.types';
 
 export const twitter: PlatformConfig = {
-  key: ActivityPlatforms.TWITTER.valueOf(),
+  key: ActivityPlatforms.TWITTER,
   label: 'X/Twitter',
   image: '/images/integrations/twitter.png',
   activityTypes: [
     {
-      key: ActivityTypes.HASHTAG.valueOf(),
+      key: ActivityTypes.HASHTAG,
       label: 'Used a hashtag'
     },
     {
-      key: ActivityTypes.MENTION.valueOf(),
+      key: ActivityTypes.MENTION,
       label: 'Mentioned a user'
     }
   ]
