@@ -27,8 +27,7 @@ export async function fetchFromTinybird<T>(
 ): Promise<TinybirdResponse<T>> {
     const config = useRuntimeConfig();
 
-    const tinybirdBaseUrl = process.env.TINYBIRD_BASE_URL || config.tinybirdBaseUrl;
-    const tinybirdToken = process.env.TINYBIRD_TOKEN || config.tinybirdToken;
+    const {tinybirdBaseUrl, tinybirdToken} = config;
 
     if (!tinybirdBaseUrl) {
         throw new Error('Tinybird base URL is not defined');
