@@ -51,10 +51,14 @@
             >
               <lfx-project-search-queries />
             </lfx-scroll-view>
+            <lfx-scroll-view
+              id="package-downloads"
+              :observer="observer"
+            >
+              <lfx-project-package-downloads />
+            </lfx-scroll-view>
           </template>
         </lfx-scroll-area>
-        <!--
-        <lfx-project-package-downloads /> -->
       </div>
 
       <div class="w-1/4 pl-5 xl:pl-10 max-lg:hidden block" />
@@ -74,7 +78,7 @@ import LfxProjectSocialMentions from "~/components/modules/project/components/po
 import LfxProjectGithubMentions from "~/components/modules/project/components/popularity/github-mentions.vue";
 import LfxProjectPressMentions from "~/components/modules/project/components/popularity/press-mentions.vue";
 import LfxProjectSearchQueries from "~/components/modules/project/components/popularity/search-queries.vue";
-// import LfxProjectPackageDownloads from "~/components/modules/project/components/popularity/package-downloads.vue";
+import LfxProjectPackageDownloads from "~/components/modules/project/components/popularity/package-downloads.vue";
 
 const activeItem = ref('stars');
 const tmpClickedItem = ref('');
@@ -87,6 +91,7 @@ const sideNavItems = [
   { label: 'GitHub Mentions', key: 'github-mentions' },
   { label: 'Press Mentions', key: 'press-mentions' },
   { label: 'Search Queries', key: 'search-queries' },
+  { label: 'Package Downloads', key: 'package-downloads' },
 ];
 
 const onSideNavUpdate = (value: string) => {
