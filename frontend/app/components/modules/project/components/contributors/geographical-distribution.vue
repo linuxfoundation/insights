@@ -20,7 +20,7 @@
           @update:model-value="activeTab = $event"
         />
         <div class="max-w-max">
-          <lfx-metric-dropdown
+          <lfx-activities-dropdown
             v-model="metric"
             placement="bottom-end"
             :full-width="false"
@@ -92,7 +92,7 @@ import { storeToRefs } from "pinia";
 import pluralize from "pluralize";
 import LfxProjectLoadState from '../shared/load-state.vue';
 import type { GeoMapResponse, GeoMapData } from './types/geo-map.types';
-import LfxMetricDropdown from './fragments/metric-dropdown.vue';
+import LfxActivitiesDropdown from './fragments/activities-dropdown.vue';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
 import LfxChart from '~/components/uikit/chart/chart.vue';
