@@ -1,11 +1,11 @@
 <template>
   <lfx-dropdown-select
-    v-model="metric"
+    v-model="activity"
     :class="props.fullWidth ? '!w-full' : '!w-auto'"
     :match-width="true"
     v-bind="$attrs"
   >
-    <template #trigger="{selectedOption}">
+    <template #trigger="{ selectedOption }">
       <lfx-dropdown-selector
         type="filled"
         class="justify-center"
@@ -33,26 +33,26 @@
     <lfx-dropdown-separator />
 
     <template
-      v-for="group of metricsOptions"
-      :key="group.label"
+      v-for="group of platforms"
+      :key="group.key"
     >
       <lfx-dropdown-group-title>
-        {{group.label}}
+        {{ group.label }}
       </lfx-dropdown-group-title>
 
       <lfx-dropdown-item
-        v-for="option of group.items"
-        :key="option.value"
-        :value="`${group.label.toLowerCase()}:${option.value}`"
+        v-for="option of group.activityTypes"
+        :key="option.key"
+        :value="`${group.key}:${option.key}`"
         :label="option.label"
-        :platform="group.label.toLowerCase()"
+        :platform="group.key"
       >
         <img
-          v-if="getIcon(group.label.toLowerCase())"
-          :src="getIcon(group.label.toLowerCase())"
+          v-if="group.image"
+          :src="group.image"
           class="w-4 h-4"
         >
-        {{option.label}}
+        {{ option.label }}
       </lfx-dropdown-item>
     </template>
   </lfx-dropdown-select>
@@ -60,13 +60,13 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { metricsOptions, activityPlatformsIcons } from '../config/metrics';
 import LfxDropdownSelector from "~/components/uikit/dropdown/dropdown-selector.vue";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
 import LfxDropdownGroupTitle from "~/components/uikit/dropdown/dropdown-group-title.vue";
 import LfxDropdownItem from "~/components/uikit/dropdown/dropdown-item.vue";
 import LfxDropdownSelect from "~/components/uikit/dropdown/dropdown-select.vue";
 import LfxDropdownSeparator from "~/components/uikit/dropdown/dropdown-separator.vue";
+import { platforms } from '~~/app/config/platforms';
 
 const props = withDefaults(defineProps<{
   modelValue: string;
@@ -77,7 +77,7 @@ const props = withDefaults(defineProps<{
 
 const emit = defineEmits<{(e: 'update:modelValue', value: string): void }>();
 
-const metric = computed({
+const activity = computed({
   get() {
     return props.modelValue;
   },
@@ -86,11 +86,14 @@ const metric = computed({
   }
 });
 
-const getIcon = (platform: string) => (platform !== 'all' ? activityPlatformsIcons[platform?.toString() ?? ''] : '');
+const getIcon = (platform: string) => {
+  const platformArr = Object.values(platforms);
+  return (platform !== 'all' ? platformArr.find((p) => p.key === platform)?.image : '')
+};
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxMetricDropdown'
+  name: 'LfxActivitiesDropdown'
 };
 </script>
