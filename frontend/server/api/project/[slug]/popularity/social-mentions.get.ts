@@ -8,12 +8,12 @@ import { allTime, newMentions } from '~~/server/mocks/social-mentions.mock';
  *     previous: number; // previous value
  *     percentageChange: number; // percentage change (return as actual percentage ex: 2.3 percent)
  *     changeValue: number; // change value
- *     periodFrom: string; // period from
- *     periodTo: string; // period to
+ *     startDate: string; // start date
+ *     endDate: string; // end date
  *   },
  *   data: {
- *     dateFrom: string; // ISO 8601 date string - start of the bucket. Based on the interval
- *     dateTo: string; // ISO 8601 date string - end of the bucket. Based on the interval
+ *     startDate: string; // start date
+ *     endDate: string; // end date
  *     twitter: number; // count of twitter mentions
  *     reddit: number; // count of reddit mentions
  *     hackerNews: number; // count of hackerNews mentions

@@ -16,8 +16,8 @@ import { formatByGranularity } from '~/components/shared/types/granularity';
 const defaultBarOption: ECOption = {
   ...defaultOption,
   grid: {
-    top: '12%',
-    bottom: '12%',
+    top: '10%',
+    bottom: '14%',
     right: 0
   },
   xAxis: {
