@@ -33,7 +33,7 @@
     <lfx-dropdown-separator />
 
     <template
-      v-for="group of platforms"
+      v-for="group in platforms"
       :key="group.key"
     >
       <lfx-dropdown-group-title>
@@ -86,10 +86,7 @@ const activity = computed({
   }
 });
 
-const getIcon = (platform: string) => {
-  const platformArr = Object.values(platforms);
-  return (platform !== 'all' ? platformArr.find((p) => p.key === platform)?.image : '')
-};
+const getIcon = (platform: string) => platforms[platform]?.image || '';
 </script>
 
 <script lang="ts">

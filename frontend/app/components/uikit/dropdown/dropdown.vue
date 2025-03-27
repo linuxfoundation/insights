@@ -5,6 +5,7 @@
     :placement="props.placement"
     v-bind="$attrs"
     :is-modal="pageWidth < 640"
+    :match-width="props.matchWidth"
   >
     <slot name="trigger" />
 
