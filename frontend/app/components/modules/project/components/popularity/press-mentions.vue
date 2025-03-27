@@ -111,7 +111,7 @@ const mentions = computed<PressMentions>(() => data.value as PressMentions);
 const summary = computed<Summary>(() => mentions.value.summary);
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
-  () => convertToChartData(mentions.value.data as RawChartData[], 'startDate', [
+  () => convertToChartData((mentions.value?.data || []) as RawChartData[], 'startDate', [
     'mentions'
   ], undefined, 'endDate')
 );
