@@ -35,7 +35,7 @@
 
   &__selector{
     @apply flex items-center gap-2 text-sm leading-5 font-medium transition-all;
-    @apply px-3 py-2 cursor-pointer transition-all rounded-lg;
+    @apply px-3 py-2 cursor-pointer transition-all rounded-lg select-none;
 
     &:hover{
       @apply bg-neutral-50;

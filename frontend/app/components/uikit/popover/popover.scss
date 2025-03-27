@@ -4,7 +4,7 @@
   }
 
   &__content {
-    @apply z-50 w-max transition overflow-visible;
+    @apply z-50 w-max overflow-visible;
 
     &.is-hidden {
       @apply invisible opacity-0 pointer-events-none;
