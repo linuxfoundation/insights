@@ -3,6 +3,7 @@
     v-model:visibility="isVisible"
     :placement="props.placement"
     :width="props.width"
+    :match-width="props.matchWidth"
     v-bind="$attrs"
   >
     <template #trigger>
@@ -25,12 +26,14 @@ import LfxDropdown from "~/components/uikit/dropdown/dropdown.vue";
 const props = withDefaults(defineProps<{
   modelValue: string,
   placement?: Placement,
-  width: string,
+  width?: string,
   visibility?: boolean,
+  matchWidth?: boolean,
 }>(), {
   placement: 'bottom-start',
   width: 'auto',
   visibility: false,
+  matchWidth: false,
 });
 
 const emit = defineEmits<{(e: 'update:modelValue', value: string): void;
