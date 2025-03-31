@@ -103,12 +103,12 @@ const { data, status, error } = useFetch(
   }
 );
 
-const mentions = computed<SearchQueries>(() => data.value as SearchQueries);
+const searchQueries = computed<SearchQueries>(() => data.value as SearchQueries);
 
-const summary = computed<Summary>(() => mentions.value.summary);
+const summary = computed<Summary>(() => searchQueries.value.summary);
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
-  () => convertToChartData(mentions.value.data as RawChartData[], 'startDate', [
+  () => convertToChartData((searchQueries.value?.data || []) as RawChartData[], 'startDate', [
     'queryCount'
   ], undefined, 'endDate')
 );
