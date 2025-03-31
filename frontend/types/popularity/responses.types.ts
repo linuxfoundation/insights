@@ -66,3 +66,12 @@ export interface PressMentions {
   }[];
   list: PressMention[];
 }
+
+export interface PackageDownloads {
+  summary: Summary;
+  data: {
+    startDate: string;
+    endDate: string;
+    downloadCount: number;
+  }[];
+}

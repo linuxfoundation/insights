@@ -144,7 +144,7 @@ const socialMentions = computed<SocialMentions>(() => data.value as SocialMentio
 const summary = computed<Summary>(() => socialMentions.value.summary);
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
-  () => convertToChartData(socialMentions.value.data as RawChartData[], 'startDate', [
+  () => convertToChartData((socialMentions.value?.data || []) as RawChartData[], 'startDate', [
     'twitter',
     'reddit',
     'hackerNews',
