@@ -6,18 +6,18 @@ import {
   mockMonthlyTimeseries,
   mockCurrentMonthlySummary,
   mockPreviousMonthlySummary
-} from '../../mocks/tinybird-active-contributors-response.mock';
+} from '../../mocks/tinybird-active-organizations-response.mock';
 import {FilterGranularity} from "../types";
-import type {ActiveContributorsResponse} from "~~/server/data/tinybird/active-contributors-data-source";
+import type {ActiveOrganizationsResponse} from "~~/server/data/tinybird/active-organizations-data-source";
 
 const mockFetchFromTinybird = vi.fn();
 
-describe('Active Contributors Data Source', () => {
+describe('Active Organizations Data Source', () => {
   beforeEach(() => {
     mockFetchFromTinybird.mockClear();
 
     // Here be dragons! vi.doMock is not hoisted, and thus it is executed after the original import statement.
-    // This means that the import for tinybird.ts inside active-contributors-data-source.ts would still be used,
+    // This means that the import for tinybird.ts inside active-organizations-data-source.ts would still be used,
     // and thus not mocked. This means we need to import the module again after the mock is set, whenever we want to
     // use it.
     vi.doMock(import("./tinybird"), () => ({
@@ -25,9 +25,9 @@ describe('Active Contributors Data Source', () => {
     }));
   })
 
-  test('should fetch active contributors data with correct parameters', async () => {
+  test('should fetch active organizations data with correct parameters', async () => {
     // We have to import this here again because vi.doMock is not hoisted. See the explanation in beforeEach().
-    const {fetchActiveContributors} = await import("~~/server/data/tinybird/active-contributors-data-source");
+    const {fetchActiveOrganizations} = await import("~~/server/data/tinybird/active-organizations-data-source");
 
     mockFetchFromTinybird.mockResolvedValueOnce(mockCurrentMonthlySummary)
       .mockResolvedValueOnce(mockPreviousMonthlySummary)
@@ -43,17 +43,17 @@ describe('Active Contributors Data Source', () => {
       endDate
     };
 
-    const result = await fetchActiveContributors(filter);
+    const result = await fetchActiveOrganizations(filter);
 
-    const currentContributorCount = mockCurrentMonthlySummary.data[0].contributorCount;
-    const previousContributorCount = mockPreviousMonthlySummary.data[0].contributorCount;
-    const percentageChange = ((currentContributorCount - previousContributorCount) / previousContributorCount) * 100;
-    const changeValue = currentContributorCount - previousContributorCount;
+    const currentOrganizationCount = mockCurrentMonthlySummary.data[0].organizationCount;
+    const previousOrganizationCount = mockPreviousMonthlySummary.data[0].organizationCount;
+    const percentageChange = ((currentOrganizationCount - previousOrganizationCount) / previousOrganizationCount) * 100;
+    const changeValue = currentOrganizationCount - previousOrganizationCount;
 
-    const expectedResult: ActiveContributorsResponse = {
+    const expectedResult: ActiveOrganizationsResponse = {
       summary: {
-        current: currentContributorCount,
-        previous: previousContributorCount,
+        current: currentOrganizationCount,
+        previous: previousOrganizationCount,
         percentageChange,
         changeValue,
         periodFrom: startDate,
@@ -62,7 +62,7 @@ describe('Active Contributors Data Source', () => {
       data: mockMonthlyTimeseries.data.map((item) => ({
         startDate: item.startDate,
         endDate: item.endDate,
-        contributors: item.contributorCount
+        organizations: item.organizationCount
       }))
     };
 

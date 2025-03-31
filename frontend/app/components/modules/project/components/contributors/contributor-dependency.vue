@@ -14,7 +14,7 @@
     <hr>
     <section class="mt-5">
       <div class="mb-6">
-        <lfx-metric-dropdown v-model="metric" />
+        <lfx-activities-dropdown v-model="metric" />
       </div>
       <lfx-project-load-state
         :status="status"
@@ -65,7 +65,8 @@ import LfxDependencyDisplay from './fragments/dependency-display.vue';
 import LfxContributorsTable from './fragments/contributors-table.vue';
 import type { ContributorDependency } from '~~/types/contributors/responses.types';
 import LfxCard from '~/components/uikit/card/card.vue';
-import LfxMetricDropdown from '~/components/modules/project/components/contributors/fragments/metric-dropdown.vue';
+import LfxActivitiesDropdown
+  from '~/components/modules/project/components/contributors/fragments/activities-dropdown.vue';
 import LfxAvatarGroup from '~/components/uikit/avatar-group/avatar-group.vue';
 import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
 import { useProjectStore } from "~/components/modules/project/store/project.store";

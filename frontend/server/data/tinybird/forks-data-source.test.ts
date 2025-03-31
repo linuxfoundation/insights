@@ -1,0 +1,120 @@
+import {
+  describe, test, expect, vi, beforeEach
+} from 'vitest';
+import {DateTime} from "luxon";
+import {
+  mockCurrentSummaryData,
+  mockPreviousSummaryData,
+  mockCurrentCumulativeTimeseries,
+  mockCurrentNewTimeseries,
+} from '../../mocks/tinybird-forks-response.mock';
+import {ActivityFilterActivityType, ActivityFilterCountType, FilterGranularity} from "../types";
+import type {ForksData} from "~~/types/popularity/responses.types";
+
+const mockFetchFromTinybird = vi.fn();
+
+describe('Forks Data Source', () => {
+  beforeEach(() => {
+    mockFetchFromTinybird.mockClear();
+
+    // Here be dragons! vi.doMock is not hoisted, and thus it is executed after the original import statement.
+    // This means that the import for tinybird.ts inside active-contributors-data-source.ts would still be used,
+    // and thus not mocked. This means we need to import the module again after the mock is set, whenever we want to
+    // use it.
+    vi.doMock(import("./tinybird"), () => ({
+      fetchFromTinybird: mockFetchFromTinybird,
+    }));
+  })
+
+  test('should fetch cumulative forks data with correct parameters', async () => {
+    // We have to import this here again because vi.doMock is not hoisted. See the explanation in beforeEach().
+    const {fetchForksActivities} = await import("~~/server/data/tinybird/forks-data-source");
+
+    mockFetchFromTinybird.mockResolvedValueOnce(mockCurrentSummaryData)
+      .mockResolvedValueOnce(mockPreviousSummaryData)
+      .mockResolvedValueOnce(mockCurrentCumulativeTimeseries);
+
+    const startDate = DateTime.utc(2024, 3, 20);
+    const endDate = DateTime.utc(2025, 3, 20);
+
+    const filter = {
+      granularity: FilterGranularity.WEEKLY,
+      project: 'the-linux-kernel-organization',
+      countType: ActivityFilterCountType.CUMULATIVE,
+      activityType: ActivityFilterActivityType.FORKS,
+      onlyContributions: false,
+      startDate,
+      endDate
+    };
+
+    const result = await fetchForksActivities(filter);
+
+    const currentCumulativeCount = mockCurrentSummaryData.data[0]?.activityCount || 0;
+    const previousCumulativeCount = mockPreviousSummaryData.data[0]?.activityCount || 0;
+
+    const expectedResult: ForksData = {
+      summary: {
+        current: currentCumulativeCount,
+        previous: previousCumulativeCount,
+        percentageChange: 100,
+        changeValue: currentCumulativeCount - previousCumulativeCount,
+        periodFrom: filter.startDate?.toString(),
+        periodTo: filter.endDate?.toString(),
+      },
+      data: mockCurrentCumulativeTimeseries.data.map((item) => ({
+        startDate: item.startDate,
+        endDate: item.endDate,
+        forks: item.cumulativeActivityCount,
+      }))
+    };
+
+    expect(result).toEqual(expectedResult);
+  });
+
+  test('should fetch new forks data with correct parameters', async () => {
+    // We have to import this here again because vi.doMock is not hoisted. See the explanation in beforeEach().
+    const {fetchForksActivities} = await import("~~/server/data/tinybird/forks-data-source");
+
+    mockFetchFromTinybird.mockResolvedValueOnce(mockCurrentSummaryData)
+      .mockResolvedValueOnce(mockPreviousSummaryData)
+      .mockResolvedValueOnce(mockCurrentNewTimeseries);
+
+    const startDate = DateTime.utc(2024, 3, 20);
+    const endDate = DateTime.utc(2025, 3, 20);
+
+    const filter = {
+      granularity: FilterGranularity.WEEKLY,
+      project: 'the-linux-kernel-organization',
+      countType: ActivityFilterCountType.NEW,
+      activityType: ActivityFilterActivityType.FORKS,
+      onlyContributions: false,
+      startDate,
+      endDate
+    };
+
+    const result = await fetchForksActivities(filter);
+
+    const currentCumulativeCount = mockCurrentSummaryData.data[0]?.activityCount || 0;
+    const previousCumulativeCount = mockPreviousSummaryData.data[0]?.activityCount || 0;
+
+    const expectedResult: ForksData = {
+      summary: {
+        current: currentCumulativeCount,
+        previous: previousCumulativeCount,
+        percentageChange: 100,
+        changeValue: currentCumulativeCount - previousCumulativeCount,
+        periodFrom: filter.startDate?.toString(),
+        periodTo: filter.endDate?.toString(),
+      },
+      data: mockCurrentNewTimeseries.data.map((item) => ({
+        startDate: item.startDate,
+        endDate: item.endDate,
+        forks: item.activityCount,
+      }))
+    };
+
+    expect(result).toEqual(expectedResult);
+  });
+
+  // TODO: Add checks for invalid dates, invalid data, sql injections, and other edge cases.
+});
