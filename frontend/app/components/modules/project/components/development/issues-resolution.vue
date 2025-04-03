@@ -88,7 +88,7 @@ import { ref, computed } from 'vue';
 import { storeToRefs } from "pinia";
 import LfxProjectLoadState from '../shared/load-state.vue';
 import LfxSkeletonState from '../shared/skeleton-state.vue';
-import type { IssuesResolution, ResolutionSummary } from '~~/types/development/responses.types';
+import type { IssuesResolution, IssuesResolutionSummary } from '~~/types/development/responses.types';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
 import { convertToChartData } from '~/components/uikit/chart/helpers/chart-helpers';
@@ -131,7 +131,7 @@ const { data, status, error } = useFetch(
 
 const issuesResolution = computed<IssuesResolution>(() => data.value as IssuesResolution);
 
-const summary = computed<ResolutionSummary>(() => issuesResolution.value.summary);
+const summary = computed<IssuesResolutionSummary>(() => issuesResolution.value.summary);
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
   () => convertToChartData((issuesResolution.value?.data || []) as RawChartData[], 'dateFrom', [
