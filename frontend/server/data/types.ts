@@ -114,11 +114,14 @@ export enum ActivityFilterActivityType {
   STARS = 'star',
   ISSUES_OPENED = 'issues-opened',
   ISSUES_CLOSED = 'issues-closed',
+  PULL_REQUESTS_OPENED = 'pull_request-opened',
+  PULL_REQUESTS_MERGED = 'pull_request-merged',
+  PULL_REQUESTS_CLOSED = 'pull_request-closed',
 }
 export type ActivityCountFilter = {
   project: string;
-  granularity: FilterGranularity;
-  countType: ActivityFilterCountType;
+  granularity?: FilterGranularity;
+  countType?: ActivityFilterCountType;
   activity_type: ActivityFilterActivityType,
   onlyContributions: boolean;
   repo?: string,

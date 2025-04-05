@@ -30,7 +30,9 @@ import {fetchGeographicDistribution} from "~~/server/data/tinybird/geographic-di
 import {fetchRetention} from "~~/server/data/tinybird/retention-data-source";
 import {fetchForksActivities} from "~~/server/data/tinybird/forks-data-source";
 import {fetchStarsActivities} from "~~/server/data/tinybird/stars-data-source";
+import {fetchPullRequests} from "~~/server/data/tinybird/pull-requests-data-source";
 import type {ForksData, StarsData} from "~~/types/popularity/responses.types";
+import type {PullRequests} from "~~/types/development/responses.types";
 
 export interface DataSource {
     fetchActiveContributors: (filter: ActiveContributorsFilter) => Promise<ActiveContributorsResponse>;
@@ -45,6 +47,7 @@ export interface DataSource {
     fetchRetention: (filter: RetentionFilter) => Promise<RetentionResponse>;
     fetchForksActivities: (filter: ActivityCountFilter) => Promise<ForksData>;
     fetchStarsActivities: (filter: ActivityCountFilter) => Promise<StarsData>;
+    fetchPullRequests: (filter: ActivityCountFilter) => Promise<PullRequests>;
 }
 
 export function createDataSource(): DataSource {
@@ -59,5 +62,6 @@ export function createDataSource(): DataSource {
         fetchRetention,
         fetchForksActivities,
         fetchStarsActivities,
+        fetchPullRequests,
     };
 }
