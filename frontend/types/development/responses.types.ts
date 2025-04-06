@@ -17,8 +17,8 @@ export interface ActiveDays {
 export interface AverageTimeMerge {
   summary: Summary;
   data: {
-    dateFrom: string;
-    dateTo: string;
+    startDate: string;
+    endDate: string;
     averageTime: number;
   }[];
 }
