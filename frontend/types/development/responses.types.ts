@@ -102,8 +102,8 @@ export interface ReviewTimeByPrItem {
 export interface WaitTime1stReview {
   summary: Summary;
   data: {
-    dateFrom: string;
-    dateTo: string;
+    startDate: string;
+    endDate: string;
     waitTime: number;
   }[];
 }

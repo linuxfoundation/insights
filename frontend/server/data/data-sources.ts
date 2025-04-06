@@ -11,6 +11,7 @@ import type {
   GeographicDistributionFilter,
   RetentionFilter,
   ActivityCountFilter,
+  WaitTimeFor1stReviewFilter,
 } from "~~/server/data/types";
 import type {ActiveContributorsResponse} from "~~/server/data/tinybird/active-contributors-data-source";
 import type {ActiveOrganizationsResponse} from "~~/server/data/tinybird/active-organizations-data-source";
@@ -33,7 +34,8 @@ import {fetchStarsActivities} from "~~/server/data/tinybird/stars-data-source";
 import {fetchIssuesResolution} from "~~/server/data/tinybird/issues-resolution-data-source";
 import {fetchPullRequests} from "~~/server/data/tinybird/pull-requests-data-source";
 import type {ForksData, StarsData} from "~~/types/popularity/responses.types";
-import type {IssuesResolution, PullRequests} from "~~/types/development/responses.types";
+import {fetchWaitTimeFor1stReview} from "~~/server/data/tinybird/wait-time-for-1st-review-data-source";
+import type {IssuesResolution, PullRequests, WaitTime1stReview} from "~~/types/development/responses.types";
 
 export interface DataSource {
     fetchActiveContributors: (filter: ActiveContributorsFilter) => Promise<ActiveContributorsResponse>;
@@ -50,6 +52,7 @@ export interface DataSource {
     fetchStarsActivities: (filter: ActivityCountFilter) => Promise<StarsData>;
     fetchIssuesResolution: (filter: ActivityCountFilter) => Promise<IssuesResolution>;
     fetchPullRequests: (filter: ActivityCountFilter) => Promise<PullRequests>;
+    fetchWaitTimeFor1stReview: (filter: WaitTimeFor1stReviewFilter) => Promise<WaitTime1stReview>;
 }
 
 export function createDataSource(): DataSource {
@@ -66,5 +69,6 @@ export function createDataSource(): DataSource {
         fetchStarsActivities,
         fetchIssuesResolution,
         fetchPullRequests,
+        fetchWaitTimeFor1stReview
     };
 }
