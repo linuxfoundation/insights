@@ -8,21 +8,21 @@
       :size="size"
       type="organization"
     />
-    <lfx-tooltip
-      content="This project is part of The Linux Foundation"
-      placement="top"
+    <div
+      v-if="props.isLF"
+      class="is-lf-icon"
     >
-
-      <span
-        v-if="props.isLF"
-        class="is-lf-icon"
+      <lfx-tooltip
+        content="This project is part of The Linux Foundation"
+        placement="top"
       >
+
         <img
           src="~/assets/images/icon.svg"
           alt="LFX icon"
         >
-      </span>
-    </lfx-tooltip>
+      </lfx-tooltip>
+    </div>
   </div>
 </template>
 
