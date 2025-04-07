@@ -141,7 +141,9 @@ const chartData = computed<ChartData[]>(
   ], undefined, 'dateTo')
 );
 
-const avgVelocityInDays = computed<string>(() => formatNumber(Duration.fromObject({ seconds: summary.value.avgVelocityInDays }).as('days')));
+const avgVelocityInDays = computed<string>(() => formatNumber(
+  Duration.fromObject({ seconds: summary.value.avgVelocityInDays }).as('days')
+));
 
 const chartSeries = ref<ChartSeries[]>([
   {
