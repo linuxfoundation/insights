@@ -113,7 +113,7 @@ const {
 } = storeToRefs(useProjectStore())
 const keyword = computed(() => project.value?.name);
 
-const activeTab = ref('cumulative');
+const activeTab = ref('new-mentions');
 const route = useRoute();
 
 const barGranularity = computed(() => (selectedTimeRangeKey.value === dateOptKeys.custom
@@ -155,8 +155,8 @@ const chartData = computed<ChartData[]>(
 const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
 
 const tabs = [
+  { label: 'New mentions by platform', value: 'new-mentions' },
   { label: 'Mentions by platform', value: 'cumulative' },
-  { label: 'New mentions by platform', value: 'new-mentions' }
 ];
 
 const chartSeries = computed<ChartSeries[]>(() => [

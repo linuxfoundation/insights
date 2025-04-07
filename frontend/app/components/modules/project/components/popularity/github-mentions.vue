@@ -91,7 +91,7 @@ const {
   customRangeGranularity
 } = storeToRefs(useProjectStore())
 
-const activeTab = ref('cumulative');
+const activeTab = ref('new-mentions');
 const route = useRoute();
 const keyword = computed(() => project.value?.name);
 
@@ -130,8 +130,8 @@ const chartData = computed<ChartData[]>(
 const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
 
 const tabs = [
+  { label: 'New Mentions', value: 'new-mentions' },
   { label: 'Cumulative', value: 'cumulative' },
-  { label: 'New Mentions', value: 'new-mentions' }
 ];
 
 const chartSeries = computed<ChartSeries[]>(() => [
