@@ -38,7 +38,7 @@ export default defineEventHandler(async (event) => {
     granularity: query.granularity as FilterGranularity,
     repo: query.repository as string,
     countType: (query.countType as ActivityFilterCountType) || ActivityFilterCountType.NEW,
-    activityType: (query.activityType as ActivityFilterActivityType) || ActivityFilterActivityType.FORKS,
+    activity_type: (query.activityType as ActivityFilterActivityType) || ActivityFilterActivityType.FORKS,
     onlyContributions: false, // forks and stars are non-contribution activities, but we want to count them.
     startDate: query.startDate ? DateTime.fromISO(query.startDate as string) : undefined,
     endDate: query.endDate ? DateTime.fromISO(query.endDate as string) : undefined,
