@@ -87,7 +87,7 @@ const {
   startDate, endDate, selectedRepository, selectedTimeRangeKey, customRangeGranularity
 } = storeToRefs(useProjectStore())
 
-const activeTab = ref('cumulative');
+const activeTab = ref('new');
 const route = useRoute();
 
 const barGranularity = computed(() => (selectedTimeRangeKey.value === dateOptKeys.custom
@@ -126,8 +126,8 @@ const chartData = computed<ChartData[]>(
 const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
 
 const tabs = [
+  { label: 'New', value: 'new' },
   { label: 'Cumulative', value: 'cumulative' },
-  { label: 'New', value: 'new' }
 ];
 
 const chartSeries = computed<ChartSeries[]>(() => [
