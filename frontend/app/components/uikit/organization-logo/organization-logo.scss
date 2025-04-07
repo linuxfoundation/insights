@@ -1,0 +1,40 @@
+.c-organization-logo {
+  @apply relative inline-block;
+
+  .is-lf-icon {
+    @apply absolute top-0 right-0 border border-solid border-neutral-200 bg-white rounded-sm;
+    @apply h-3 w-3 outline outline-2 outline-white p-0.5;
+    img {
+      @apply w-full h-full;
+    }
+  }
+
+  &.c-org-logo-xlarge {
+    @apply h-16 w-16;
+
+    .is-lf-icon {
+      @apply h-4 w-4;
+    }
+  }
+
+  &.c-org-logo-large {
+    @apply h-12 w-12;
+    .is-lf-icon {
+      @apply h-4 w-4;
+    }
+  }
+
+  &.c-org-logo-small {
+    @apply h-6 w-6;
+    .is-lf-icon {
+      @apply h-3 w-3;
+    }
+  }
+
+  &.c-org-logo-xsmall {
+    @apply h-4 w-4;
+    .is-lf-icon {
+      @apply h-3 w-3;
+    }
+  }
+}

@@ -4,11 +4,13 @@
     class="flex flex-col"
   >
     <lfx-card class="p-5 md:p-6 flex flex-col transition-all hover:shadow-sm h-full">
-      <lfx-avatar
+
+      <lfx-organization-logo
         :src="props.project.logo || ''"
         size="large"
         type="organization"
       />
+
       <h3 class="text-heading-3 font-bold font-secondary pt-4 line-clamp-1">
         {{ props.project.name }}
       </h3>
@@ -71,10 +73,10 @@
 import type {Project} from "~~/types/project";
 import {formatNumber} from "~/components/shared/utils/formatter";
 import LfxCard from "~/components/uikit/card/card.vue";
-import LfxAvatar from "~/components/uikit/avatar/avatar.vue";
 import LfxTag from "~/components/uikit/tag/tag.vue";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
 import {LfxRoutes} from "~/components/shared/types/routes";
+import LfxOrganizationLogo from "~/components/uikit/organization-logo/organization-logo.vue";
 
 const props = defineProps<{
   project: Project
