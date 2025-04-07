@@ -47,7 +47,7 @@
               height="1.25rem"
               width="4rem"
             >
-              <span class="text-xl">{{ formatNumber(summary.avgVelocityInDays) }} days</span>
+              <span class="text-xl">{{ avgVelocityInDays }} days</span>
             </lfx-skeleton-state>
           </div>
         </div>
@@ -56,7 +56,7 @@
       <lfx-project-load-state
         :status="status"
         :error="error"
-        error-message="Error fetching forks"
+        error-message="Error fetching issues resolution data"
         :is-empty="isEmpty"
         use-min-height
         :height="350"
@@ -86,6 +86,7 @@
 import { useFetch, useRoute } from 'nuxt/app';
 import { ref, computed } from 'vue';
 import { storeToRefs } from "pinia";
+import { Duration } from 'luxon';
 import LfxProjectLoadState from '../shared/load-state.vue';
 import LfxSkeletonState from '../shared/skeleton-state.vue';
 import type { IssuesResolution, IssuesResolutionSummary } from '~~/types/development/responses.types';
@@ -139,6 +140,8 @@ const chartData = computed<ChartData[]>(
     'totalIssues'
   ], undefined, 'dateTo')
 );
+
+const avgVelocityInDays = computed<string>(() => formatNumber(Duration.fromObject({ seconds: summary.value.avgVelocityInDays }).as('days')));
 
 const chartSeries = ref<ChartSeries[]>([
   {
