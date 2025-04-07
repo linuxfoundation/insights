@@ -16,7 +16,6 @@
         content="This project is part of The Linux Foundation"
         placement="top"
       >
-
         <img
           src="~/assets/images/icon.svg"
           alt="LFX icon"
@@ -40,7 +39,7 @@ const props = withDefaults(
   {
     size: 'normal',
     src: undefined,
-    isLF: true
+    isLF: false
   }
 );
 </script>

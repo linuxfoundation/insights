@@ -16,12 +16,13 @@
                   class=""
                 />
               </lfx-back>
-              <lfx-avatar
-                type="organization"
-                :size="scrollTop > 50 ? 'normal' : ((pageWidth < 768 && pageWidth > 0) ? 'normal' : 'large')"
+              <lfx-organization-logo
                 class="mr-4"
                 :src="props.project.logo || ''"
+                :size="scrollTop > 50 ? 'normal' : ((pageWidth < 768 && pageWidth > 0) ? 'normal' : 'large')"
+                :is-lf="props.project.isLF"
               />
+
               <h1
                 class="font-bold mr-3 ease-linear transition-all font-secondary duration-200 text-heading-4"
                 :class="[
@@ -151,7 +152,6 @@ import type {Project, ProjectRepository} from "~~/types/project";
 import {LfxRoutes} from '~/components/shared/types/routes';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxMenuButton from '~/components/uikit/menu-button/menu-button.vue';
-import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
 import LfxButton from '~/components/uikit/button/button.vue';
 import useScroll from "~/components/shared/utils/scroll";
 import LfxIconButton from "~/components/uikit/icon-button/icon-button.vue";
@@ -163,6 +163,7 @@ import LfxMaintainHeight from "~/components/uikit/maintain-height/maintain-heigh
 import useResponsive from "~/components/shared/utils/responsive";
 import LfxTooltip from "~/components/uikit/tooltip/tooltip.vue";
 import {useProjectStore} from "~/components/modules/project/store/project.store";
+import LfxOrganizationLogo from "~/components/uikit/organization-logo/organization-logo.vue";
 
 const props = defineProps<{
   project: Project

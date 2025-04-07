@@ -4,13 +4,11 @@
     class="flex flex-col"
   >
     <lfx-card class="p-5 md:p-6 flex flex-col transition-all hover:shadow-sm h-full">
-
       <lfx-organization-logo
         :src="props.project.logo || ''"
         size="large"
-        type="organization"
+        :is-lf="props.project.isLF"
       />
-
       <h3 class="text-heading-3 font-bold font-secondary pt-4 line-clamp-1">
         {{ props.project.name }}
       </h3>

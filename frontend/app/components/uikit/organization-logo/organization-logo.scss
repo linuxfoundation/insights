@@ -3,7 +3,7 @@
 
   .is-lf-icon {
     @apply absolute top-0 right-0 border border-solid border-neutral-200 bg-white rounded-sm;
-    @apply h-3 w-3 outline outline-2 outline-white p-0.5;
+    @apply h-3 w-3 outline outline-2 outline-white p-0.5 cursor-pointer;
     img {
       @apply w-full h-full;
     }
