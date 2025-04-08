@@ -128,3 +128,11 @@ export type ActivityCountFilter = {
   startDate?: DateTime,
   endDate?: DateTime,
 }
+
+export type WaitTimeFor1stReviewFilter = {
+  project: string;
+  granularity?: FilterGranularity;
+  repo?: string,
+  startDate?: DateTime,
+  endDate?: DateTime,
+};

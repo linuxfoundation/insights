@@ -1,4 +1,6 @@
-import { waitTime1stReview } from '~~/server/mocks/wait-time-1st-review.mock';
+import {DateTime} from "luxon";
+import type { FilterGranularity, WaitTimeFor1stReviewFilter } from "~~/server/data/types";
+import {createDataSource} from "~~/server/data/data-sources";
 
 /**
  * Frontend expects the data to be in the following format:
@@ -12,8 +14,8 @@ import { waitTime1stReview } from '~~/server/mocks/wait-time-1st-review.mock';
  *     periodTo: string; // period to
  *   },
  *   data: {
- *     dateFrom: string; // ISO 8601 date string - start of the bucket. Based on the interval
- *     dateTo: string; // ISO 8601 date string - end of the bucket. Based on the interval
+ *     startDate: string; // ISO 8601 date string - start of the bucket. Based on the interval
+ *     endDate: string; // ISO 8601 date string - end of the bucket. Based on the interval
  *     waitTime: number; // wait time in hours
  *   }[];
  * }
@@ -24,4 +26,20 @@ import { waitTime1stReview } from '~~/server/mocks/wait-time-1st-review.mock';
  * - repository: string
  * - time-period: string // This is isn't defined yet, but we'll add '90d', '1y', '5y' for now
  */
-export default defineEventHandler(async () => waitTime1stReview);
+export default defineEventHandler(async (event) => {
+  const query = getQuery(event);
+
+  const project = (event.context.params as { slug: string }).slug;
+
+  const filter: WaitTimeFor1stReviewFilter = {
+    project,
+    granularity: query.granularity as FilterGranularity,
+    repo: query.repository as string,
+    startDate: query.startDate ? DateTime.fromISO(query.startDate as string) : undefined,
+    endDate: query.endDate ? DateTime.fromISO(query.endDate as string) : undefined,
+  }
+
+  const dataSource = createDataSource();
+
+  return await dataSource.fetchWaitTimeFor1stReview(filter);
+});
