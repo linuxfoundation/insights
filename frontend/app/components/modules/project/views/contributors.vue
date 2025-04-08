@@ -19,7 +19,7 @@
               id="contributors-leaderboard"
               :observer="observer"
             >
-              <lfx-benchmarks-wrap :benchmark="contributorLeaderboardBenchmark">
+              <lfx-benchmarks-wrap>
                 <lfx-project-contributors-leaderboard />
               </lfx-benchmarks-wrap>
             </lfx-scroll-view>
@@ -51,8 +51,8 @@
               id="contributor-dependency"
               :observer="observer"
             >
-              <lfx-benchmarks-wrap :benchmark="organizationsLeaderboardBenchmark">
-                <lfx-project-contributor-dependency />
+              <lfx-benchmarks-wrap :benchmark="contributorDependencyBenchmark">
+                <lfx-project-contributor-dependency @update:benchmark-value="contributorDependencyBenchmark = $event" />
               </lfx-benchmarks-wrap>
             </lfx-scroll-view>
             <lfx-scroll-view
@@ -113,7 +113,7 @@ import LfxScrollView from '~/components/uikit/scroll-view/scroll-view.vue';
 import LfxScrollArea from '~/components/uikit/scroll-view/scroll-area.vue';
 import useScroll from '~/components/shared/utils/scroll';
 import LfxBenchmarksWrap from '~/components/uikit/benchmarks/benchmarks-wrap.vue';
-import { BenchmarkKeys } from '~~/types/shared/benchmark.types';
+import { BenchmarkKeys, type Benchmark } from '~~/types/shared/benchmark.types';
 
 const sideNavItems = [
   { label: 'Contributors Leaderboard', key: 'contributors-leaderboard' },
@@ -126,10 +126,11 @@ const sideNavItems = [
   { label: 'Geographical Distribution', key: 'geographical-distribution' },
   // { label: 'Industry Distribution', key: 'industry-distribution' }
 ];
-const contributorLeaderboardBenchmark = {
-  key: BenchmarkKeys.ContributorsLeaderboard,
-  value: 1
-};
+const contributorDependencyBenchmark = ref<Benchmark>({
+  key: BenchmarkKeys.ContributorDependency,
+  value: 0
+});
+
 const organizationsLeaderboardBenchmark = {
   key: BenchmarkKeys.OrganizationsLeaderboard,
   value: 100

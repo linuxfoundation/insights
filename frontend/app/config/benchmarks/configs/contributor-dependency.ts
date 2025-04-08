@@ -1,8 +1,8 @@
 import type { BenchmarkConfigs } from '~~/types/shared/benchmark.types';
 import { BenchmarkKeys } from '~~/types/shared/benchmark.types';
 
-export const contributorLeaderboard: BenchmarkConfigs = {
-  key: BenchmarkKeys.ContributorsLeaderboard,
+export const contributorDependency: BenchmarkConfigs = {
+  key: BenchmarkKeys.ContributorDependency,
   points: [
     {
       pointStart: 0,
@@ -50,7 +50,7 @@ export const contributorLeaderboard: BenchmarkConfigs = {
       type: 'positive',
       description: '10+ contributors account for 51%+ of contributions',
       text: `This project exhibits excellent contributor diversity, ensuring robust 
-        support and a highly resilient development process..`
+        support and a highly resilient development process.`
     }
   ],
   visibilityCheck: () => {

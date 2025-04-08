@@ -21,16 +21,19 @@ import LfxBenchmark from '~/components/uikit/benchmarks/benchmarks.vue';
 import { useProjectStore } from '~~/app/components/modules/project/store/project.store';
 import { benchmarkConfigs } from '~~/app/config/benchmarks';
 
-const props = defineProps<{
-  benchmark: Benchmark;
-}>();
+const props = withDefaults(defineProps<{
+  benchmark?: Benchmark;
+  additionalCheck?: boolean;
+}>(), {
+  additionalCheck: true
+});
 
 const { selectedTimeRangeKey, startDate, endDate } = useProjectStore();
 
-const benchmarkConfig = computed(() => benchmarkConfigs.find((config) => config.key === props.benchmark.key));
+const benchmarkConfig = computed(() => benchmarkConfigs.find((config) => config.key === props.benchmark?.key));
 const points = computed(() => benchmarkConfig.value?.points
-  .find((point) => props.benchmark.value >= point.pointStart
-  && (point.pointEnd === null || props.benchmark.value <= point.pointEnd)));
+  .find((point) => (props.benchmark?.value || 0) >= point.pointStart
+  && (point.pointEnd === null || (props.benchmark?.value || 0) <= point.pointEnd)));
 const type = computed(() => (points.value ? points.value.type : 'negative'));
 const benchmarkText = computed(() => (points.value ? points.value.text : ''));
 
