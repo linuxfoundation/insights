@@ -27,7 +27,7 @@
               id="organizations-leaderboard"
               :observer="observer"
             >
-              <lfx-benchmarks-wrap :benchmark="contributorLeaderboardBenchmark">
+              <lfx-benchmarks-wrap :benchmark="organizationsLeaderboardBenchmark">
                 <lfx-project-organizations-leaderboard />
               </lfx-benchmarks-wrap>
             </lfx-scroll-view>
@@ -35,7 +35,7 @@
               id="active-contributors"
               :observer="observer"
             >
-              <lfx-benchmarks-wrap :benchmark="contributorLeaderboardBenchmark">
+              <lfx-benchmarks-wrap :benchmark="organizationsLeaderboardBenchmark">
                 <lfx-project-active-contributors />
               </lfx-benchmarks-wrap>
             </lfx-scroll-view>
@@ -43,7 +43,7 @@
               id="active-organizations"
               :observer="observer"
             >
-              <lfx-benchmarks-wrap :benchmark="contributorLeaderboardBenchmark">
+              <lfx-benchmarks-wrap :benchmark="organizationsLeaderboardBenchmark">
                 <lfx-project-active-organizations />
               </lfx-benchmarks-wrap>
             </lfx-scroll-view>
@@ -51,7 +51,7 @@
               id="contributor-dependency"
               :observer="observer"
             >
-              <lfx-benchmarks-wrap :benchmark="contributorLeaderboardBenchmark">
+              <lfx-benchmarks-wrap :benchmark="organizationsLeaderboardBenchmark">
                 <lfx-project-contributor-dependency />
               </lfx-benchmarks-wrap>
             </lfx-scroll-view>
@@ -59,7 +59,7 @@
               id="organization-dependency"
               :observer="observer"
             >
-              <lfx-benchmarks-wrap :benchmark="contributorLeaderboardBenchmark">
+              <lfx-benchmarks-wrap :benchmark="organizationsLeaderboardBenchmark">
                 <lfx-project-organization-dependency />
               </lfx-benchmarks-wrap>
             </lfx-scroll-view>
@@ -67,7 +67,7 @@
               id="retention"
               :observer="observer"
             >
-              <lfx-benchmarks-wrap :benchmark="contributorLeaderboardBenchmark">
+              <lfx-benchmarks-wrap :benchmark="organizationsLeaderboardBenchmark">
                 <lfx-project-retention />
               </lfx-benchmarks-wrap>
             </lfx-scroll-view>
@@ -75,7 +75,7 @@
               id="geographical-distribution"
               :observer="observer"
             >
-              <lfx-benchmarks-wrap :benchmark="contributorLeaderboardBenchmark">
+              <lfx-benchmarks-wrap :benchmark="organizationsLeaderboardBenchmark">
                 <lfx-project-geographical-distribution :observer="observer" />
               </lfx-benchmarks-wrap>
             </lfx-scroll-view>
@@ -113,7 +113,7 @@ import LfxScrollView from '~/components/uikit/scroll-view/scroll-view.vue';
 import LfxScrollArea from '~/components/uikit/scroll-view/scroll-area.vue';
 import useScroll from '~/components/shared/utils/scroll';
 import LfxBenchmarksWrap from '~/components/uikit/benchmarks/benchmarks-wrap.vue';
-import { BenchmarkKeys } from '~/components/uikit/benchmarks/types/benchmark.types';
+import { BenchmarkKeys } from '~~/types/shared/benchmark.types';
 
 const sideNavItems = [
   { label: 'Contributors Leaderboard', key: 'contributors-leaderboard' },
@@ -128,6 +128,10 @@ const sideNavItems = [
 ];
 const contributorLeaderboardBenchmark = {
   key: BenchmarkKeys.ContributorsLeaderboard,
+  value: 1
+};
+const organizationsLeaderboardBenchmark = {
+  key: BenchmarkKeys.OrganizationsLeaderboard,
   value: 100
 };
 

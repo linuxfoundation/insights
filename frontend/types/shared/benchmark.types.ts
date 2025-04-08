@@ -17,3 +17,22 @@ export interface Benchmark {
   key: BenchmarkKeys;
   value: number;
 }
+
+export interface BenchmarkPoints {
+  pointStart: number;
+  pointEnd: number | null;
+  type: BenchmarkType;
+  description: string;
+  text: string;
+}
+
+export interface BenchmarkConfigs {
+  key: BenchmarkKeys;
+  points: BenchmarkPoints[];
+  visibilityCheck: (
+    selectedTimeRangeKey: string,
+    startDate: string,
+    endDate: string,
+    additionalCheck?: boolean
+  ) => boolean;
+}

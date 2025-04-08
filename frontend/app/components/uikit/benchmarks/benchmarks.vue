@@ -36,7 +36,7 @@
 </template>
 
 <script setup lang="ts">
-import type { BenchmarkType } from './types/benchmark.types';
+import type { BenchmarkType } from '~~/types/shared/benchmark.types';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 
 const props = defineProps<{
