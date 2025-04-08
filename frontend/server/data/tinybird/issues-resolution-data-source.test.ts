@@ -66,8 +66,8 @@ describe('Issues Resolution Data Source', () => {
         previous: previousCumulativeCount,
         percentageChange: 100,
         changeValue: currentCumulativeCount - previousCumulativeCount,
-        periodFrom: filter.startDate?.toString() || '',
-        periodTo: filter.endDate?.toString() || '',
+        periodFrom: filter.startDate?.toISO() || '',
+        periodTo: filter.endDate?.toISO() || '',
         avgVelocityInDays: mockIssueResolutionVelocity.data[0].averageIssueResolveVelocitySeconds,
       },
       data: mockIssuesClosed.data.map((item, index) => ({
