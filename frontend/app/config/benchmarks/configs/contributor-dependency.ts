@@ -53,8 +53,5 @@ export const contributorDependency: BenchmarkConfigs = {
         support and a highly resilient development process.`
     }
   ],
-  visibilityCheck: () => {
-    console.log('checking!!');
-    return true;
-  }
+  visibilityCheck: () => true
 };
