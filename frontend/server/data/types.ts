@@ -111,13 +111,15 @@ export enum ActivityFilterCountType {
 }
 export enum ActivityFilterActivityType {
   FORKS = 'fork',
-  STARS = 'star'
+  STARS = 'star',
+  ISSUES_OPENED = 'issues-opened',
+  ISSUES_CLOSED = 'issues-closed',
 }
 export type ActivityCountFilter = {
   project: string;
   granularity: FilterGranularity;
   countType: ActivityFilterCountType;
-  activityType: ActivityFilterActivityType,
+  activity_type: ActivityFilterActivityType,
   onlyContributions: boolean;
   repo?: string,
   startDate?: DateTime,
