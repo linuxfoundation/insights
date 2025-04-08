@@ -7,7 +7,7 @@ export const pullRequests = {
     periodFrom: '2024-11-11T00:00:00Z',
     periodTo: '2025-02-12T00:00:00Z'
   },
-  openSummary: {
+  openedSummary: {
     current: 120,
     previous: 60,
     percentageChange: 100,
