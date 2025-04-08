@@ -47,12 +47,12 @@ export interface ContributionOutsideHours {
   }[];
 }
 
-export interface ResolutionSummary extends Summary {
+export interface IssuesResolutionSummary extends Summary {
   avgVelocityInDays: number;
 }
 
 export interface IssuesResolution {
-  summary: ResolutionSummary;
+  summary: IssuesResolutionSummary;
   data: {
     dateFrom: string;
     dateTo: string;
