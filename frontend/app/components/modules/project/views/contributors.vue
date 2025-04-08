@@ -27,7 +27,7 @@
               id="organizations-leaderboard"
               :observer="observer"
             >
-              <lfx-benchmarks-wrap :benchmark="organizationsLeaderboardBenchmark">
+              <lfx-benchmarks-wrap>
                 <lfx-project-organizations-leaderboard />
               </lfx-benchmarks-wrap>
             </lfx-scroll-view>
@@ -35,7 +35,7 @@
               id="active-contributors"
               :observer="observer"
             >
-              <lfx-benchmarks-wrap :benchmark="organizationsLeaderboardBenchmark">
+              <lfx-benchmarks-wrap>
                 <lfx-project-active-contributors />
               </lfx-benchmarks-wrap>
             </lfx-scroll-view>
@@ -43,7 +43,7 @@
               id="active-organizations"
               :observer="observer"
             >
-              <lfx-benchmarks-wrap :benchmark="organizationsLeaderboardBenchmark">
+              <lfx-benchmarks-wrap>
                 <lfx-project-active-organizations />
               </lfx-benchmarks-wrap>
             </lfx-scroll-view>
@@ -59,7 +59,7 @@
               id="organization-dependency"
               :observer="observer"
             >
-              <lfx-benchmarks-wrap :benchmark="organizationsLeaderboardBenchmark">
+              <lfx-benchmarks-wrap>
                 <lfx-project-organization-dependency />
               </lfx-benchmarks-wrap>
             </lfx-scroll-view>
@@ -67,7 +67,7 @@
               id="retention"
               :observer="observer"
             >
-              <lfx-benchmarks-wrap :benchmark="organizationsLeaderboardBenchmark">
+              <lfx-benchmarks-wrap>
                 <lfx-project-retention />
               </lfx-benchmarks-wrap>
             </lfx-scroll-view>
@@ -75,7 +75,7 @@
               id="geographical-distribution"
               :observer="observer"
             >
-              <lfx-benchmarks-wrap :benchmark="organizationsLeaderboardBenchmark">
+              <lfx-benchmarks-wrap>
                 <lfx-project-geographical-distribution :observer="observer" />
               </lfx-benchmarks-wrap>
             </lfx-scroll-view>
@@ -130,11 +130,6 @@ const contributorDependencyBenchmark = ref<Benchmark>({
   key: BenchmarkKeys.ContributorDependency,
   value: 0
 });
-
-const organizationsLeaderboardBenchmark = {
-  key: BenchmarkKeys.OrganizationsLeaderboard,
-  value: 100
-};
 
 const activeItem = ref('active-contributors');
 const tmpClickedItem = ref('');
