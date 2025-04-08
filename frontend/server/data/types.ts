@@ -136,4 +136,3 @@ export type WaitTimeFor1stReviewFilter = {
   startDate?: DateTime,
   endDate?: DateTime,
 };
-
