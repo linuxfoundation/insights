@@ -47,7 +47,7 @@
               height="1.25rem"
               width="4rem"
             >
-              <span class="text-xl">{{ formatNumber(summary.avgVelocityInDays) }} days</span>
+              <span class="text-xl">{{ avgVelocityInDays }} days</span>
             </lfx-skeleton-state>
           </div>
         </div>
@@ -56,7 +56,7 @@
       <lfx-project-load-state
         :status="status"
         :error="error"
-        error-message="Error fetching forks"
+        error-message="Error fetching issues resolution data"
         :is-empty="isEmpty"
         use-min-height
         :height="350"
@@ -86,9 +86,10 @@
 import { useFetch, useRoute } from 'nuxt/app';
 import { ref, computed } from 'vue';
 import { storeToRefs } from "pinia";
+import { Duration } from 'luxon';
 import LfxProjectLoadState from '../shared/load-state.vue';
 import LfxSkeletonState from '../shared/skeleton-state.vue';
-import type { IssuesResolution, ResolutionSummary } from '~~/types/development/responses.types';
+import type { IssuesResolution, IssuesResolutionSummary } from '~~/types/development/responses.types';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
 import { convertToChartData } from '~/components/uikit/chart/helpers/chart-helpers';
@@ -131,7 +132,7 @@ const { data, status, error } = useFetch(
 
 const issuesResolution = computed<IssuesResolution>(() => data.value as IssuesResolution);
 
-const summary = computed<ResolutionSummary>(() => issuesResolution.value.summary);
+const summary = computed<IssuesResolutionSummary>(() => issuesResolution.value.summary);
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
   () => convertToChartData((issuesResolution.value?.data || []) as RawChartData[], 'dateFrom', [
@@ -139,6 +140,10 @@ const chartData = computed<ChartData[]>(
     'totalIssues'
   ], undefined, 'dateTo')
 );
+
+const avgVelocityInDays = computed<string>(() => formatNumber(
+  Duration.fromObject({ seconds: summary.value.avgVelocityInDays }).as('days')
+));
 
 const chartSeries = ref<ChartSeries[]>([
   {
