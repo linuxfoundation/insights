@@ -1,8 +1,6 @@
-import {DateTime} from "luxon";
-import { mergeLeadTime } from '~~/server/mocks/merge-lead-time.mock';
-import type {ActivityCountFilter, FilterGranularity, MergeLeadTimeFilter} from "~~/server/data/types";
-import {ActivityFilterActivityType, ActivityFilterCountType} from "~~/server/data/types";
-import {createDataSource} from "~~/server/data/data-sources";
+import { DateTime } from "luxon";
+import type { MergeLeadTimeFilter } from "~~/server/data/types";
+import { createDataSource } from "~~/server/data/data-sources";
 
 /**
  * Frontend expects the data to be in the following format:
