@@ -144,3 +144,10 @@ export type WaitTimeFor1stReviewFilter = {
   startDate?: DateTime,
   endDate?: DateTime,
 };
+
+export type MergeLeadTimeFilter = {
+  project: string;
+  repo?: string,
+  startDate?: DateTime,
+  endDate?: DateTime,
+};
