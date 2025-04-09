@@ -1,4 +1,4 @@
-import type { WaitTimeFor1stReviewFilter } from "../types";
+import type { MergeLeadTimeFilter } from "../types";
 import { fetchFromTinybird } from './tinybird'
 import { calculatePercentageChange, getPreviousDates } from "~~/server/data/util";
 import type { MergeLeadTime } from "~~/types/development/responses.types";
@@ -12,7 +12,7 @@ type TinybirdMergeLeadTimeData = {
   approvedToMergedSeconds: number
 };
 
-export async function fetchMergeLeadTime(filter: WaitTimeFor1stReviewFilter): Promise<MergeLeadTime> {
+export async function fetchMergeLeadTime(filter: MergeLeadTimeFilter): Promise<MergeLeadTime> {
   // TODO: We're passing unchecked query parameters to TinyBird directly from the frontend.
   //  We need to ensure this doesn't pose a security risk.
 
