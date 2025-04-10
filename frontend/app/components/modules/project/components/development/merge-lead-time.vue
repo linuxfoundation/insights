@@ -135,24 +135,24 @@ const formatDuration = (seconds: number): { value: number, unit: string } => {
   const value = duration.as('seconds');
 
   switch (true) {
-    case value >= 86400:
+    case seconds >= 86400:
       return {
-        value: duration.as('days'),
+        value: Number(duration.as('days').toFixed(2)),
         unit: 'days'
       };
-    case value >= 3600:
+    case seconds >= 3600:
       return {
-        value: duration.as('hours'),
+        value: Number(duration.as('hours').toFixed(2)),
         unit: 'hours'
       };
-    case value >= 60:
+    case seconds >= 60:
       return {
-        value: duration.as('minutes'),
+        value: Number(duration.as('minutes').toFixed(2)),
         unit: 'minutes'
       };
     default:
       return {
-        value,
+        value: Number(value.toFixed(2)),
         unit: 'seconds'
       };
   }
