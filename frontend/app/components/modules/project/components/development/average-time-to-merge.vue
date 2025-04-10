@@ -101,9 +101,9 @@ const averageTimeMerge = computed<AverageTimeMerge>(() => data.value as AverageT
 const summary = computed<Summary>(() => averageTimeMerge.value.summary);
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
-  () => convertToChartData((averageTimeMerge.value?.data || []) as RawChartData[], 'dateFrom', [
+  () => convertToChartData((averageTimeMerge.value?.data || []) as RawChartData[], 'startDate', [
     'averageTime'
-  ], undefined, 'dateTo')
+  ], undefined, 'endDate')
 );
 
 const chartSeries = ref<ChartSeries[]>([

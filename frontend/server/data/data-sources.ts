@@ -11,6 +11,8 @@ import type {
   GeographicDistributionFilter,
   RetentionFilter,
   ActivityCountFilter,
+  WaitTimeFor1stReviewFilter,
+  AverageTimeToMergeFilter,
 } from "~~/server/data/types";
 import type {ActiveContributorsResponse} from "~~/server/data/tinybird/active-contributors-data-source";
 import type {ActiveOrganizationsResponse} from "~~/server/data/tinybird/active-organizations-data-source";
@@ -30,7 +32,14 @@ import {fetchGeographicDistribution} from "~~/server/data/tinybird/geographic-di
 import {fetchRetention} from "~~/server/data/tinybird/retention-data-source";
 import {fetchForksActivities} from "~~/server/data/tinybird/forks-data-source";
 import {fetchStarsActivities} from "~~/server/data/tinybird/stars-data-source";
+import {fetchIssuesResolution} from "~~/server/data/tinybird/issues-resolution-data-source";
+import {fetchPullRequests} from "~~/server/data/tinybird/pull-requests-data-source";
+import {fetchAverageTimeToMerge} from "~~/server/data/tinybird/average-time-to-merge-data-source";
+import {fetchWaitTimeFor1stReview} from "~~/server/data/tinybird/wait-time-for-1st-review-data-source";
 import type {ForksData, StarsData} from "~~/types/popularity/responses.types";
+import type {
+  IssuesResolution, PullRequests, AverageTimeMerge, WaitTime1stReview
+} from "~~/types/development/responses.types";
 
 export interface DataSource {
     fetchActiveContributors: (filter: ActiveContributorsFilter) => Promise<ActiveContributorsResponse>;
@@ -45,6 +54,10 @@ export interface DataSource {
     fetchRetention: (filter: RetentionFilter) => Promise<RetentionResponse>;
     fetchForksActivities: (filter: ActivityCountFilter) => Promise<ForksData>;
     fetchStarsActivities: (filter: ActivityCountFilter) => Promise<StarsData>;
+    fetchIssuesResolution: (filter: ActivityCountFilter) => Promise<IssuesResolution>;
+    fetchPullRequests: (filter: ActivityCountFilter) => Promise<PullRequests>;
+    fetchAverageTimeToMerge: (filter: AverageTimeToMergeFilter) => Promise<AverageTimeMerge>;
+    fetchWaitTimeFor1stReview: (filter: WaitTimeFor1stReviewFilter) => Promise<WaitTime1stReview>;
 }
 
 export function createDataSource(): DataSource {
@@ -59,5 +72,9 @@ export function createDataSource(): DataSource {
         fetchRetention,
         fetchForksActivities,
         fetchStarsActivities,
+        fetchIssuesResolution,
+        fetchPullRequests,
+        fetchAverageTimeToMerge,
+        fetchWaitTimeFor1stReview
     };
 }

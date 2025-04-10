@@ -1,5 +1,16 @@
 import {DateTime} from "luxon";
 
+// We should use Luxon's Interval type for this, but that would require a lot of changes in the codebase, so for now
+// we'll just use a custom type, just so we can satisfy Typescript's strict typing.
+export type DateRange = {
+  from: DateTime;
+  to: DateTime;
+};
+export type DateRangeSet = {
+  current: DateRange,
+  previous: DateRange,
+};
+
 // This sets how far back we want to go when no start date is provided.
 // TODO: What should we set this to? Is this even how we want to address this problem?
 export const earliestPossibleStartDate = DateTime.utc(2010, 1, 1);
@@ -10,7 +21,7 @@ export const earliestPossibleStartDate = DateTime.utc(2010, 1, 1);
  * and then subtract that from the current dates to get the previous ones.
  * It provides correct defaults for the current dates if they are not provided.
  */
-export function getPreviousDates(currentStartDate?: DateTime, currentEndDate?: DateTime) {
+export function getPreviousDates(currentStartDate?: DateTime, currentEndDate?: DateTime): DateRangeSet {
   const safeStartDate = currentStartDate || earliestPossibleStartDate;
   const safeEndDate = currentEndDate || DateTime.utc();
 

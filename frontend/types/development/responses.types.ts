@@ -1,3 +1,7 @@
+/**
+These are the types for the responses the frontend expects from the API for the development tab in the project page.
+ */
+
 import type { Summary } from '../shared/summary.types';
 
 export interface ActiveDays {
@@ -13,8 +17,8 @@ export interface ActiveDays {
 export interface AverageTimeMerge {
   summary: Summary;
   data: {
-    dateFrom: string;
-    dateTo: string;
+    startDate: string;
+    endDate: string;
     averageTime: number;
   }[];
 }
@@ -43,12 +47,12 @@ export interface ContributionOutsideHours {
   }[];
 }
 
-export interface ResolutionSummary extends Summary {
+export interface IssuesResolutionSummary extends Summary {
   avgVelocityInDays: number;
 }
 
 export interface IssuesResolution {
-  summary: ResolutionSummary;
+  summary: IssuesResolutionSummary;
   data: {
     dateFrom: string;
     dateTo: string;
@@ -74,13 +78,13 @@ export interface MergeLeadTime {
 
 export interface PullRequests {
   summary: Summary;
-  openSummary: Summary;
+  openedSummary: Summary;
   mergedSummary: Summary;
   closedSummary: Summary;
   avgVelocityInDays: number;
   data: {
-    dateFrom: string;
-    dateTo: string;
+    startDate: string;
+    endDate: string;
     open: number;
     merged: number;
     closed: number;
@@ -98,8 +102,8 @@ export interface ReviewTimeByPrItem {
 export interface WaitTime1stReview {
   summary: Summary;
   data: {
-    dateFrom: string;
-    dateTo: string;
+    startDate: string;
+    endDate: string;
     waitTime: number;
   }[];
 }
