@@ -101,9 +101,9 @@ const waitTime1stReview = computed<WaitTime1stReview>(() => data.value as WaitTi
 const summary = computed<Summary>(() => waitTime1stReview.value.summary);
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
-  () => convertToChartData((waitTime1stReview.value?.data || []) as RawChartData[], 'dateFrom', [
+  () => convertToChartData((waitTime1stReview.value?.data || []) as RawChartData[], 'startDate', [
     'waitTime'
-  ], undefined, 'dateTo')
+  ], undefined, 'endDate')
 );
 
 const chartSeries = ref<ChartSeries[]>([

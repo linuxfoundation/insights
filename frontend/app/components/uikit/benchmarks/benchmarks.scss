@@ -1,0 +1,66 @@
+@tailwind components;
+@layer components {
+  .c-benchmarks-positive-gradient {
+    @apply bg-gradient-to-t from-positive-50 to-white;
+  }
+}
+
+.c-benchmarks {
+  @apply w-full flex gap-3 relative pl-4 rounded-lg;
+  @apply max-lg:flex-row flex-col max-lg:pr-5 pb-5;
+
+  &::before {
+    content: '';
+    @apply absolute top-0 left-0 w-1 h-full rounded-full max-lg:hidden block;
+  }
+
+  &__content {
+    @apply text-neutral-900 text-xs;
+  }
+
+  &__header {
+    @apply flex max-lg:items-start items-center gap-2;
+  }
+
+  &--positive {
+    .c-benchmarks-icon {
+      @apply text-positive-500;
+    }
+    &::before {
+      @apply bg-positive-200;
+    }
+
+    @apply max-lg:c-benchmarks-positive-gradient;
+  }
+
+  &--warning {
+    .c-benchmarks-icon {
+      @apply text-warning-500;
+    }
+    &::before {
+      @apply bg-warning-200;
+    }
+  }
+
+  &--negative {
+    .c-benchmarks-icon {
+      @apply text-negative-500;
+    }
+    &::before {
+      @apply bg-negative-200;
+    } 
+  }
+}
+
+.c-benchmarks-wrap {
+  @apply w-full flex max-lg:flex-col flex-row;
+  @apply max-lg:shadow-xs max-lg:rounded-lg max-lg:bg-white max-lg:border max-lg:border-neutral-100;
+
+  .c-card {
+    @apply max-lg:shadow-none max-lg:rounded-none max-lg:bg-transparent max-lg:border-none;
+  }
+
+  .c-benchmark-component {
+    @apply max-lg:w-full w-1/3 pl-5 xl:pl-10 max-lg:pl-0;
+  }
+}

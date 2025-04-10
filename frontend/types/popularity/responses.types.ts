@@ -1,3 +1,7 @@
+/**
+ These are the types for the responses the frontend expects from the API for the popularity tab in the project page.
+ */
+
 import type { Summary } from '../shared/summary.types';
 
 export interface StarsData {

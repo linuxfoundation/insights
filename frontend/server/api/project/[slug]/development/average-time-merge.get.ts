@@ -1,4 +1,6 @@
-import { averageTimeMerge } from '~~/server/mocks/average-time-merge.mock';
+import {DateTime} from "luxon";
+import type {FilterGranularity, AverageTimeToMergeFilter} from "~~/server/data/types";
+import {createDataSource} from "~~/server/data/data-sources";
 
 /**
  * Frontend expects the data to be in the following format:
@@ -12,8 +14,8 @@ import { averageTimeMerge } from '~~/server/mocks/average-time-merge.mock';
  *     periodTo: string; // period to
  *   },
  *   data: {
- *     dateFrom: string; // ISO 8601 date string - start of the bucket. Based on the interval
- *     dateTo: string; // ISO 8601 date string - end of the bucket. Based on the interval
+ *     startDate: string; // ISO 8601 date string - start of the bucket. Based on the interval
+ *     endDate: string; // ISO 8601 date string - end of the bucket. Based on the interval
  *     averageTime: number; // average time to merge in hours
  *   }[];
  * }
@@ -24,4 +26,20 @@ import { averageTimeMerge } from '~~/server/mocks/average-time-merge.mock';
  * - repository: string
  * - time-period: string // This is isn't defined yet, but we'll add '90d', '1y', '5y' for now
  */
-export default defineEventHandler(async () => averageTimeMerge);
+export default defineEventHandler(async (event) => {
+  const query = getQuery(event);
+
+  const project = (event.context.params as { slug: string }).slug;
+
+  const filter: AverageTimeToMergeFilter = {
+    project,
+    granularity: query.granularity as FilterGranularity,
+    repo: query.repository as string,
+    startDate: query.startDate ? DateTime.fromISO(query.startDate as string) : undefined,
+    endDate: query.endDate ? DateTime.fromISO(query.endDate as string) : undefined,
+  }
+
+  const dataSource = createDataSource();
+
+  return await dataSource.fetchAverageTimeToMerge(filter);
+});

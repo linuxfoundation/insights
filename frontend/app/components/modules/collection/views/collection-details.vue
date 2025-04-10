@@ -64,6 +64,7 @@
 
 <script setup lang="ts">
 import {useRoute} from 'vue-router';
+import {computed} from "vue";
 import type {Collection} from "~~/types/collection";
 import type {Project} from "~~/types/project";
 import type {Pagination} from "~~/types/shared/pagination";
@@ -94,6 +95,8 @@ watch([sort, tab], () => {
   page.value = 0;
 });
 
+const isLF = computed(() => tab.value === 'lfx');
+
 const { data, status } = await useFetch<Pagination<Project>>(
     () => `/api/project`,
     {
@@ -101,10 +104,10 @@ const { data, status } = await useFetch<Pagination<Project>>(
         sort,
         page,
         pageSize,
-        isLf: tab.value === 'lfx',
+        isLF,
         collectionSlug
       },
-      watch: [sort, tab, page],
+      watch: [sort, isLF, page],
       transform: (res: Pagination<Project>) => {
         if (res.page === 0) {
           projects.value = res.data;
