@@ -1,7 +1,7 @@
 export interface ProjectRepository {
-    url: string;
-    name: string;
-    slug: string;
+  url: string;
+  name: string;
+  slug: string;
 }
 
 export interface Project{
