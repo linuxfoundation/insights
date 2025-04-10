@@ -63,8 +63,8 @@ export interface IssuesResolution {
 
 export interface MergeLeadTimeItem {
   value: number;
-  unit: string;
-  changeType: string;
+  unit: 'seconds' | 'minutes' | 'hours' | 'days';
+  changeType: 'positive' | 'negative';
 }
 export interface MergeLeadTime {
   summary: Summary;

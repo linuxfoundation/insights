@@ -13,6 +13,7 @@ import type {
   ActivityCountFilter,
   WaitTimeFor1stReviewFilter,
   AverageTimeToMergeFilter,
+  MergeLeadTimeFilter,
 } from "~~/server/data/types";
 import type {ActiveContributorsResponse} from "~~/server/data/tinybird/active-contributors-data-source";
 import type {ActiveOrganizationsResponse} from "~~/server/data/tinybird/active-organizations-data-source";
@@ -36,9 +37,10 @@ import {fetchIssuesResolution} from "~~/server/data/tinybird/issues-resolution-d
 import {fetchPullRequests} from "~~/server/data/tinybird/pull-requests-data-source";
 import {fetchAverageTimeToMerge} from "~~/server/data/tinybird/average-time-to-merge-data-source";
 import {fetchWaitTimeFor1stReview} from "~~/server/data/tinybird/wait-time-for-1st-review-data-source";
+import {fetchMergeLeadTime} from "~~/server/data/tinybird/merge-lead-time-data-source";
 import type {ForksData, StarsData} from "~~/types/popularity/responses.types";
 import type {
-  IssuesResolution, PullRequests, AverageTimeMerge, WaitTime1stReview
+  IssuesResolution, PullRequests, AverageTimeMerge, WaitTime1stReview, MergeLeadTime
 } from "~~/types/development/responses.types";
 
 export interface DataSource {
@@ -58,6 +60,7 @@ export interface DataSource {
     fetchPullRequests: (filter: ActivityCountFilter) => Promise<PullRequests>;
     fetchAverageTimeToMerge: (filter: AverageTimeToMergeFilter) => Promise<AverageTimeMerge>;
     fetchWaitTimeFor1stReview: (filter: WaitTimeFor1stReviewFilter) => Promise<WaitTime1stReview>;
+    fetchMergeLeadTime: (filter: MergeLeadTimeFilter) => Promise<MergeLeadTime>;
 }
 
 export function createDataSource(): DataSource {
@@ -75,6 +78,7 @@ export function createDataSource(): DataSource {
         fetchIssuesResolution,
         fetchPullRequests,
         fetchAverageTimeToMerge,
-        fetchWaitTimeFor1stReview
+        fetchWaitTimeFor1stReview,
+        fetchMergeLeadTime
     };
 }
