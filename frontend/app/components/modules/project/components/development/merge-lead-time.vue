@@ -44,25 +44,25 @@
               title="Pickup"
               description="Pull request raised"
               icon="code-pull-request"
-              :item-value="mergeLeadTime.data.pickup"
+              :item-value="pickup"
             />
             <lfx-merge-lead-item
               title="Review"
               description="Review started"
               icon="eye"
-              :item-value="mergeLeadTime.data.review"
+              :item-value="review"
             />
             <lfx-merge-lead-item
               title="Accepted"
               description="Pull request accepted"
               icon="check-circle"
-              :item-value="mergeLeadTime.data.accepted"
+              :item-value="accepted"
             />
             <lfx-merge-lead-item
               title="Merged"
               description=""
               icon="thumbs-up"
-              :item-value="mergeLeadTime.data.pickup"
+              :item-value="prMerged"
               is-last
             />
           </div>
@@ -77,10 +77,11 @@
 import { useFetch, useRoute } from 'nuxt/app';
 import { computed } from 'vue';
 import { storeToRefs } from "pinia";
+import { Duration } from 'luxon';
 import LfxProjectLoadState from '../shared/load-state.vue';
 import LfxSkeletonState from '../shared/skeleton-state.vue';
 import LfxMergeLeadItem from './fragments/merge-lead-item.vue';
-import type { MergeLeadTime } from '~~/types/development/responses.types';
+import type { MergeLeadTime, MergeLeadTimeItem } from '~~/types/development/responses.types';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
 import { formatNumber } from '~/components/shared/utils/formatter';
@@ -108,10 +109,55 @@ const { data, status, error } = useFetch(
 );
 
 const mergeLeadTime = computed<MergeLeadTime>(() => data.value as MergeLeadTime);
+const pickup = computed<MergeLeadTimeItem>(() => ({
+  ...mergeLeadTime.value.data.pickup,
+  ...formatDuration(mergeLeadTime.value.data.pickup.value)
+} as MergeLeadTimeItem));
+const review = computed<MergeLeadTimeItem>(() => ({
+  ...mergeLeadTime.value.data.review,
+  ...formatDuration(mergeLeadTime.value.data.review.value)
+} as MergeLeadTimeItem));
+const accepted = computed<MergeLeadTimeItem>(() => ({
+  ...mergeLeadTime.value.data.accepted,
+  ...formatDuration(mergeLeadTime.value.data.accepted.value)
+} as MergeLeadTimeItem));
+const prMerged = computed<MergeLeadTimeItem>(() => ({
+  ...mergeLeadTime.value.data.prMerged,
+  ...formatDuration(mergeLeadTime.value.data.prMerged.value)
+} as MergeLeadTimeItem));
 
 const summary = computed<Summary>(() => mergeLeadTime.value.summary);
 
 const isEmpty = computed(() => isEmptyData((mergeLeadTime.value?.data || []) as unknown as Record<string, unknown>[]));
+
+const formatDuration = (seconds: number): { value: number, unit: string } => {
+  const duration = Duration.fromObject({ seconds });
+  const value = duration.as('seconds');
+
+  switch (true) {
+    case value >= 86400:
+      return {
+        value: duration.as('days'),
+        unit: 'days'
+      };
+    case value >= 3600:
+      return {
+        value: duration.as('hours'),
+        unit: 'hours'
+      };
+    case value >= 60:
+      return {
+        value: duration.as('minutes'),
+        unit: 'minutes'
+      };
+    default:
+      return {
+        value,
+        unit: 'seconds'
+      };
+  }
+};
+
 </script>
 
 <script lang="ts">
