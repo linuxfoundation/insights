@@ -1,6 +1,6 @@
 import {fetchFromTinybird} from "~~/server/data/tinybird/tinybird";
 import type {Pagination} from "~~/types/shared/pagination";
-import type {Project} from "~~/types/project";
+import type {ProjectList, ProjectTinybird} from "~~/types/project";
 
 /**
  * API Endpoint: /api/project
@@ -33,7 +33,7 @@ import type {Project} from "~~/types/project";
  * Errors:
  * - 500: Internal Server Error.
  */
-export default defineEventHandler(async (event): Promise<Pagination<Project> | Error> => {
+export default defineEventHandler(async (event): Promise<Pagination<ProjectList> | Error> => {
     const query = getQuery(event);
     const sort: string = (query?.sort as string) || 'name_asc';
     const [orderByField, orderByDirection] = sort.split('_');
@@ -43,15 +43,15 @@ export default defineEventHandler(async (event): Promise<Pagination<Project> | E
     const pageSize: number = +(query?.pageSize ?? 10);
     const count: boolean = !!query?.count;
     const collectionSlug: string | undefined = query?.collectionSlug as string || undefined;
-    const isLf: boolean = !!query?.isLf;
+    const isLF: boolean | undefined = query?.isLF === 'true' ? true : undefined;
 
     try {
-        const res = await fetchFromTinybird<Project[]>('/v0/pipes/projects_list.json', {
+        const res = await fetchFromTinybird<ProjectTinybird[]>('/v0/pipes/projects_list.json', {
             count,
             page,
             pageSize,
             collectionSlug,
-            isLf,
+            isLF,
             orderByField,
             orderByDirection,
         });
@@ -59,18 +59,19 @@ export default defineEventHandler(async (event): Promise<Pagination<Project> | E
         type ProjectCount = {'count(id)': number};
         const projectCountResult = await fetchFromTinybird<ProjectCount[]>('/v0/pipes/projects_list.json', {
             collectionSlug,
-            isLf,
+            isLF,
             count: true,
         });
 
-        const data: Pagination<Project> = {
+        return {
             page,
             pageSize,
             total: projectCountResult.data[0]?.['count(id)'] || 0,
-            data: res.data,
-        }
-
-        return data;
+            data: res.data.map((p: ProjectTinybird) => ({
+                ...p,
+                isLF: !!p.isLF,
+            })),
+        };
     } catch (error) {
         console.error('Error fetching project list from TinyBird:', error);
         throw createError({statusCode: 500, statusMessage: 'Internal Server Error'});
