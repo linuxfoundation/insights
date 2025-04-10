@@ -1,4 +1,7 @@
-import { issuesResolution } from '~~/server/mocks/issues-resolution.mock';
+import {DateTime} from "luxon";
+import type {ActivityCountFilter, FilterGranularity} from "~~/server/data/types";
+import {ActivityFilterActivityType, ActivityFilterCountType} from "~~/server/data/types";
+import {createDataSource} from "~~/server/data/data-sources";
 
 /**
  * Frontend expects the data to be in the following format:
@@ -27,4 +30,23 @@ import { issuesResolution } from '~~/server/mocks/issues-resolution.mock';
  * - repository: string
  * - time-period: string // This is isn't defined yet, but we'll add '90d', '1y', '5y' for now
  */
-export default defineEventHandler(async () => issuesResolution);
+export default defineEventHandler(async (event) => {
+  const query = getQuery(event);
+
+  const project = (event.context.params as { slug: string }).slug;
+
+  const filter: ActivityCountFilter = {
+    project,
+    granularity: query.granularity as FilterGranularity,
+    repo: query.repository as string,
+    countType: ActivityFilterCountType.NEW,
+    activity_type: ActivityFilterActivityType.ISSUES_CLOSED,
+    onlyContributions: false,
+    startDate: query.startDate ? DateTime.fromISO(query.startDate as string) : undefined,
+    endDate: query.endDate ? DateTime.fromISO(query.endDate as string) : undefined,
+  }
+
+  const dataSource = createDataSource();
+
+  return await dataSource.fetchIssuesResolution(filter);
+});

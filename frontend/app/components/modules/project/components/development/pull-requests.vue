@@ -67,7 +67,7 @@
         <div class="flex flex-col gap-4">
           <lfx-project-pull-request-legend-item
             title="Open"
-            :delta="openSummary!"
+            :delta="openedSummary!"
             :color="chartSeries[0]!.color!"
           />
           <lfx-project-pull-request-legend-item
@@ -141,14 +141,14 @@ const pullRequests = computed<PullRequests>(() => data.value as PullRequests);
 const summary = computed<Summary>(() => pullRequests.value.summary);
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
-  () => convertToChartData((pullRequests.value?.data || []) as RawChartData[], 'dateFrom', [
+  () => convertToChartData((pullRequests.value?.data || []) as RawChartData[], 'startDate', [
     'open',
     'merged',
     'closed'
-  ], undefined, 'dateTo')
+  ], undefined, 'endDate')
 );
 
-const openSummary = computed<Summary | undefined>(() => pullRequests.value?.openSummary);
+const openedSummary = computed<Summary | undefined>(() => pullRequests.value?.openedSummary);
 const mergedSummary = computed<Summary | undefined>(() => pullRequests.value?.mergedSummary);
 const closedSummary = computed<Summary | undefined>(() => pullRequests.value?.closedSummary);
 
