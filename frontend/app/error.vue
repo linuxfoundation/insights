@@ -1,7 +1,9 @@
 <template>
   <main>
     <lfx-navbar />
-    {{error}}
+    <div class="hidden">
+      {{error}}
+    </div>
     <div class="container py-30">
       <div class="flex flex-col items-center">
         <lfx-icon
