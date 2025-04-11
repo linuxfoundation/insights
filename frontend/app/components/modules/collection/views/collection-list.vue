@@ -24,10 +24,12 @@
         class="container transition-all"
         :class="scrollTop > 50 ? 'py-3 md:py-4' : 'py-3 md:py-5'"
       >
-        <div class="flex items-center gap-4">
+        <div class="flex items-center justify-between gap-4">
+          <lfx-collection-list-filters v-model:category="category" />
           <lfx-dropdown-select
             v-model="sort"
             width="20rem"
+            placement="bottom-end"
           >
             <template #trigger="{selectedOption}">
               <lfx-dropdown-selector>
@@ -35,7 +37,7 @@
                   name="arrow-down-wide-short"
                   :size="16"
                 />
-                {{selectedOption.label}}
+                <span class="hidden sm:inline">{{selectedOption.label}}</span>
               </lfx-dropdown-selector>
             </template>
 
@@ -108,7 +110,7 @@
 
 <script setup lang="ts">
 import {useFetch} from "nuxt/app";
-import {watch} from "vue";
+import { watch} from "vue";
 import type {Pagination} from "~~/types/shared/pagination";
 import type {Collection} from "~~/types/collection";
 import LfxIcon from '~/components/uikit/icon/icon.vue';
@@ -125,6 +127,7 @@ import LfxButton from "~/components/uikit/button/button.vue";
 import LfxDropdownSelector from "~/components/uikit/dropdown/dropdown-selector.vue";
 import LfxDropdownSelect from "~/components/uikit/dropdown/dropdown-select.vue";
 import LfxDropdownItem from "~/components/uikit/dropdown/dropdown-item.vue";
+import LfxCollectionListFilters from "~/components/modules/collection/components/list/collection-list-filters.vue";
 
 const { showToast } = useToastService();
 const {pageWidth} = useResponsive();
@@ -133,9 +136,7 @@ const {scrollTop} = useScroll();
 const page = ref(0);
 const pageSize = 50;
 const sort = ref('projectCount_desc');
-
-// const stack = ref('');
-// const industry = ref('');
+const category = ref('');
 
 const collections = ref([]);
 
@@ -150,6 +151,7 @@ const { data, status, error } = await useFetch<Pagination<Collection>>(
         sort,
         page,
         pageSize,
+        category
       },
       watch: [sort, page],
       transform: (res: Pagination<Collection>) => {

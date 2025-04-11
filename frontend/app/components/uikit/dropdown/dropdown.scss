@@ -1,5 +1,5 @@
 .c-dropdown{
-  @apply bg-white border border-neutral-200 rounded-lg p-1 flex flex-col gap-1 max-h-96 overflow-y-auto shadow-lg;
+  @apply bg-white border border-neutral-200 rounded-lg p-1 flex flex-col gap-1 max-h-96 shadow-lg;
 
   //@screen sm{
   //  @apply ;
@@ -47,6 +47,14 @@
 
     &--filled{
       @apply bg-white outline outline-1 outline-neutral-200 shadow-xs;
+    }
+  }
+
+  &__sub{
+    @apply relative;
+
+    &-menu{
+      @apply absolute left-full top-0 z-10 ml-3 overflow-auto;
     }
   }
 }

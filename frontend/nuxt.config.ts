@@ -32,6 +32,8 @@ export default defineNuxtConfig({
     // These are are only available on the server-side and can be overridden by the .env file
     tinybirdBaseUrl: process.env.TINYBIRD_BASE_URL || 'https://api.us-west-2.aws.tinybird.co',
     tinybirdToken: process.env.TINYBIRD_TOKEN || '',
+    cmApiUrl: process.env.CM_API_URL || '',
+    cmApiToken: process.env.CM_API_TOKEN || '',
     // These are also exposed on the client-side
     public: {
       apiBase: '/api'

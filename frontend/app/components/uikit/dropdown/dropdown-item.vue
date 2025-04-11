@@ -33,12 +33,18 @@ const props = defineProps<{
 
 // Inject provided value from DropdownSelect
 const selectedValue = inject<ReturnType<typeof computed<string>>>('selectedValue');
+const selectedOptionProps = inject('selectedOptionProps');
 
 // Determine if the item is currently selected
 const isSelected = computed(() => selectedValue && selectedValue.value === props.value);
 
 // Emit selection event upward
 const handleClick = () => {
+  if(selectedOptionProps){
+    selectedOptionProps.value = {
+      ...props,
+    };
+  }
   if(selectedValue){
     selectedValue.value = props.value;
   }
