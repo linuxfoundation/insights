@@ -8,8 +8,9 @@ export interface ActiveDays {
   summary: Summary;
   avgContributions: number;
   data: {
-    dateFrom: string;
-    dateTo: string;
+    day: number;
+    startDate: string;
+    endDate: string;
     contributions: number;
   }[];
 }

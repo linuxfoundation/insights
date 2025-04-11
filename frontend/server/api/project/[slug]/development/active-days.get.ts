@@ -1,4 +1,6 @@
-import { activeDays } from '~~/server/mocks/active-days.mock';
+import { DateTime } from "luxon";
+import type { ActiveDaysFilter, FilterGranularity } from "~~/server/data/types";
+import { createDataSource } from "~~/server/data/data-sources";
 
 /**
  * Frontend expects the data to be in the following format:
@@ -25,4 +27,20 @@ import { activeDays } from '~~/server/mocks/active-days.mock';
  * - repository: string
  * - time-period: string // This is isn't defined yet, but we'll add '90d', '1y', '5y' for now
  */
-export default defineEventHandler(async () => activeDays);
+export default defineEventHandler(async (event) => {
+  const query = getQuery(event);
+
+  const project = (event.context.params as { slug: string }).slug;
+
+  const filter: ActiveDaysFilter = {
+    project,
+    granularity: query.granularity as FilterGranularity,
+    repo: query.repository as string,
+    startDate: query.startDate ? DateTime.fromISO(query.startDate as string) : undefined,
+    endDate: query.endDate ? DateTime.fromISO(query.endDate as string) : undefined,
+  }
+
+  const dataSource = createDataSource();
+
+  return await dataSource.fetchActiveDays(filter);
+});

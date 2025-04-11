@@ -151,3 +151,11 @@ export type MergeLeadTimeFilter = {
   startDate?: DateTime,
   endDate?: DateTime,
 };
+
+export type ActiveDaysFilter = {
+  project: string;
+  granularity?: FilterGranularity;
+  repo?: string,
+  startDate?: DateTime,
+  endDate?: DateTime,
+};
