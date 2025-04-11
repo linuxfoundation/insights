@@ -27,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-import {debounce} from "lodash";
+import _ from "lodash";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
 
 const props = defineProps<{
@@ -40,7 +40,7 @@ const emit = defineEmits<{(e: 'update:modelValue', value: string): void;}>();
 
 const model = ref(props.modelValue);
 
-const debouncedEmit = debounce((value: string) => {
+const debouncedEmit = _.debounce((value: string) => {
   emit('update:modelValue', value);
 }, 300);
 
