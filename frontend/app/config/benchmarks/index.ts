@@ -10,6 +10,7 @@ import { forks } from './configs/forks';
 import { issuesResolution } from './configs/issues-resolution';
 import { activeDays } from './configs/active-days';
 import { mergeLeadTime } from './configs/merge-lead-time';
+import { pullRequests } from './configs/pull-requests';
 import type { BenchmarkConfigs } from '~~/types/shared/benchmark.types';
 
 export const benchmarkConfigs: BenchmarkConfigs[] = [
@@ -22,5 +23,6 @@ export const benchmarkConfigs: BenchmarkConfigs[] = [
   forks,
   issuesResolution,
   activeDays,
-  mergeLeadTime
+  mergeLeadTime,
+  pullRequests
 ];

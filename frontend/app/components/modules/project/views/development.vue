@@ -30,8 +30,13 @@
               id="pull-requests"
               :observer="observer"
             >
-              <lfx-benchmarks-wrap>
-                <lfx-project-pull-requests />
+              <lfx-benchmarks-wrap
+                :benchmark="pullRequestsBenchmark"
+                :additional-check="pullRequestsGranularity === Granularity.MONTHLY"
+              >
+                <lfx-project-pull-requests
+                  @update:benchmark-value="onPullRequestsUpdate"
+                />
               </lfx-benchmarks-wrap>
             </lfx-scroll-view>
             <lfx-scroll-view
@@ -147,6 +152,8 @@ const issuesResolutionGranularity = ref<string>('');
 const activeDaysBenchmark = ref<Benchmark | undefined>(undefined);
 const activeDaysGranularity = ref<string>('');
 const mergeLeadTimeBenchmark = ref<Benchmark | undefined>(undefined);
+const pullRequestsBenchmark = ref<Benchmark | undefined>(undefined);
+const pullRequestsGranularity = ref<string>('');
 
 const onSideNavUpdate = (value: string) => {
   if (value === sideNavItems[0]?.key) {
@@ -180,6 +187,11 @@ const onIssuesResolutionUpdate = (value: Benchmark, granularity: string) => {
 const onActiveDaysUpdate = (value: Benchmark, granularity: string) => {
   activeDaysBenchmark.value = value;
   activeDaysGranularity.value = granularity;
+};
+
+const onPullRequestsUpdate = (value: Benchmark, granularity: string) => {
+  pullRequestsBenchmark.value = value;
+  pullRequestsGranularity.value = granularity;
 };
 </script>
 

@@ -88,7 +88,7 @@
 
 <script setup lang="ts">
 import { useFetch, useRoute } from 'nuxt/app';
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { storeToRefs } from "pinia";
 import LfxSkeletonState from '../shared/skeleton-state.vue';
 import LfxProjectLoadState from '../shared/load-state.vue';
@@ -114,6 +114,10 @@ import { barGranularities } from '~/components/shared/types/granularity';
 import { dateOptKeys } from '~/components/modules/project/config/date-options';
 import type { Granularity } from '~~/types/shared/granularity';
 import { links } from '~/config/links';
+import { BenchmarkKeys, type Benchmark } from '~~/types/shared/benchmark.types';
+
+const emit = defineEmits<{(e: 'update:benchmarkValue', value: Benchmark, granularity: string): void;
+}>();
 
 const {
   startDate, endDate, selectedRepository, selectedTimeRangeKey, customRangeGranularity
@@ -138,7 +142,7 @@ const { data, status, error } = useFetch(
 
 const pullRequests = computed<PullRequests>(() => data.value as PullRequests);
 
-const summary = computed<Summary>(() => pullRequests.value.summary);
+const summary = computed<Summary>(() => pullRequests.value?.summary);
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
   () => convertToChartData((pullRequests.value?.data || []) as RawChartData[], 'startDate', [
@@ -186,6 +190,18 @@ const barChartConfig = computed(() => getBarChartConfigStacked(
 ));
 
 const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
+
+emit('update:benchmarkValue', {
+    key: BenchmarkKeys.PullRequests,
+    value: summary.value?.current || 0
+  }, granularity.value);
+
+watch(chartData, () => {
+  emit('update:benchmarkValue', {
+    key: BenchmarkKeys.PullRequests,
+    value: summary.value?.current || 0
+  }, granularity.value);
+});
 </script>
 
 <script lang="ts">
