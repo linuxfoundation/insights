@@ -35,8 +35,8 @@
               id="active-contributors"
               :observer="observer"
             >
-              <lfx-benchmarks-wrap>
-                <lfx-project-active-contributors />
+              <lfx-benchmarks-wrap :benchmark="activeContributorsBenchmark">
+                <lfx-project-active-contributors @update:benchmark-value="activeContributorsBenchmark = $event" />
               </lfx-benchmarks-wrap>
             </lfx-scroll-view>
             <lfx-scroll-view
@@ -59,24 +59,32 @@
               id="organization-dependency"
               :observer="observer"
             >
-              <lfx-benchmarks-wrap>
-                <lfx-project-organization-dependency />
+              <lfx-benchmarks-wrap :benchmark="organizationDependencyBenchmark">
+                <lfx-project-organization-dependency
+                  @update:benchmark-value="organizationDependencyBenchmark = $event"
+                />
               </lfx-benchmarks-wrap>
             </lfx-scroll-view>
             <lfx-scroll-view
               id="retention"
               :observer="observer"
             >
-              <lfx-benchmarks-wrap>
-                <lfx-project-retention />
+              <lfx-benchmarks-wrap
+                :benchmark="retentionBenchmark"
+                :additional-check="retentionActiveTab === 'contributors'"
+              >
+                <lfx-project-retention @update:benchmark-value="onRetentionUpdate" />
               </lfx-benchmarks-wrap>
             </lfx-scroll-view>
             <lfx-scroll-view
               id="geographical-distribution"
               :observer="observer"
             >
-              <lfx-benchmarks-wrap>
-                <lfx-project-geographical-distribution :observer="observer" />
+              <lfx-benchmarks-wrap :benchmark="geographicalDistributionBenchmark">
+                <lfx-project-geographical-distribution
+                  :observer="observer"
+                  @update:benchmark-value="geographicalDistributionBenchmark = $event"
+                />
               </lfx-benchmarks-wrap>
             </lfx-scroll-view>
             <!-- <lfx-scroll-view id="industry-distribution" :observer="observer">
@@ -126,10 +134,33 @@ const sideNavItems = [
   { label: 'Geographical Distribution', key: 'geographical-distribution' },
   // { label: 'Industry Distribution', key: 'industry-distribution' }
 ];
+
+const activeContributorsBenchmark = ref<Benchmark>({
+  key: BenchmarkKeys.ActiveContributors,
+  value: 0
+});
+
 const contributorDependencyBenchmark = ref<Benchmark>({
   key: BenchmarkKeys.ContributorDependency,
   value: 0
 });
+
+const organizationDependencyBenchmark = ref<Benchmark>({
+  key: BenchmarkKeys.OrganizationDependency,
+  value: 0
+});
+
+const retentionBenchmark = ref<Benchmark>({
+  key: BenchmarkKeys.Retention,
+  value: 0
+});
+
+const geographicalDistributionBenchmark = ref<Benchmark>({
+  key: BenchmarkKeys.GeographicalDistribution,
+  value: 0
+});
+
+const retentionActiveTab = ref('contributors');
 
 const activeItem = ref('active-contributors');
 const tmpClickedItem = ref('');
@@ -160,6 +191,10 @@ const onScrolledToView = (value: string) => {
   }
 };
 
+const onRetentionUpdate = (value: Benchmark, activeTab: string) => {
+  retentionBenchmark.value = value;
+  retentionActiveTab.value = activeTab;
+};
 </script>
 
 <script lang="ts">

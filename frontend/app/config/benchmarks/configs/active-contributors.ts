@@ -1,0 +1,63 @@
+import { dateOptKeys } from '~/components/modules/project/config/date-options';
+import type { BenchmarkConfigs } from '~~/types/shared/benchmark.types';
+import { BenchmarkKeys } from '~~/types/shared/benchmark.types';
+
+export const activeContributors: BenchmarkConfigs = {
+  key: BenchmarkKeys.ActiveContributors,
+  points: [
+    {
+      pointStart: 0,
+      pointEnd: 1,
+      type: 'negative',
+      description: '0–1 active contributors in the last quarter',
+      text: `This project shows little to no recent activity, 
+      indicating a high risk of stagnation or abandonment.`
+    },
+    {
+      pointStart: 2,
+      pointEnd: 3,
+      type: 'negative',
+      description: '2–3 active contributors in the last quarter',
+      text: `This project has minimal recent activity, 
+      suggesting limited engagement and a potential for slower development.`
+    },
+    {
+      pointStart: 4,
+      pointEnd: 6,
+      type: 'warning',
+      description: '4–6 active contributors in the last quarter',
+      text: `This project has a modest number of active contributors, 
+      reflecting a small but potentially growing community.`
+    },
+    {
+      pointStart: 7,
+      pointEnd: 10,
+      type: 'warning',
+      description: '7–10 active contributors in the last quarter',
+      text: `This project has a moderate level of activity, 
+      indicating steady development and maintenance efforts.`
+    },
+    {
+      pointStart: 11,
+      pointEnd: 20,
+      type: 'positive',
+      description: '11–20 active contributors in the last quarter',
+      text: `This project benefits from robust contributor engagement, 
+      signaling a healthy and active development cycle.`
+    },
+    {
+      pointStart: 21,
+      pointEnd: null,
+      type: 'positive',
+      description: '21 or more active contributors in the last quarter',
+      text: `This project demonstrates exceptional contributor activity, 
+      ensuring continuous improvement and a vibrant development community.`
+    }
+  ],
+  visibilityCheck: (selectedTimeRangeKey: string) => {
+    if (selectedTimeRangeKey === dateOptKeys.previousQuarter) {
+      return true;
+    }
+    return false;
+  }
+};

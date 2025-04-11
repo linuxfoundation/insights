@@ -58,7 +58,7 @@
       <lfx-project-load-state
         :status="status"
         :error="error"
-        error-message="Error fetching forks"
+        error-message="Error fetching active days"
         :is-empty="isEmpty"
         use-min-height
         :height="100"
@@ -73,7 +73,7 @@
 
 <script setup lang="ts">
 import { useFetch, useRoute } from 'nuxt/app';
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { storeToRefs } from "pinia";
 import LfxProjectLoadState from '../shared/load-state.vue';
 import LfxSkeletonState from '../shared/skeleton-state.vue';
@@ -98,6 +98,10 @@ import { lineGranularities } from '~/components/shared/types/granularity';
 import { dateOptKeys } from '~/components/modules/project/config/date-options';
 import { Granularity } from '~~/types/shared/granularity';
 import { links } from '~/config/links';
+import { BenchmarkKeys, type Benchmark } from '~~/types/shared/benchmark.types';
+
+const emit = defineEmits<{(e: 'update:benchmarkValue', value: Benchmark, granularity: string): void;
+}>();
 
 const {
   startDate, endDate, selectedRepository, selectedTimeRangeKey, customRangeGranularity
@@ -135,7 +139,7 @@ const { data, status, error } = useFetch(
 
 const activeDays = computed<ActiveDays>(() => data.value as ActiveDays);
 
-const summary = computed<Summary>(() => activeDays.value.summary);
+const summary = computed<Summary>(() => activeDays.value?.summary);
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
   () => convertToChartData((activeDays.value?.data || []) as RawChartData[], 'day', [
@@ -155,6 +159,18 @@ const chartSeries = ref<ChartSeries[]>([
   }
 ]);
 const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
+
+emit('update:benchmarkValue', {
+    key: BenchmarkKeys.ActiveDays,
+    value: summary.value?.current || 0
+  }, granularity.value);
+
+watch(chartData, () => {
+  emit('update:benchmarkValue', {
+    key: BenchmarkKeys.ActiveDays,
+    value: summary.value?.current || 0
+  }, granularity.value);
+});
 </script>
 
 <script lang="ts">

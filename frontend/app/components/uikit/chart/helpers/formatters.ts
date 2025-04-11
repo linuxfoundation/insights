@@ -160,7 +160,7 @@ export const punchCardFormatter = (granularity: string, isPunchCard: boolean = f
       : `<div style="font-size: 12px; color: ${lfxColors.neutral[400]};">${
           granularity.charAt(0).toUpperCase() + granularity.slice(1)
         } ${data[0]}</div>`;
-    console.log(params);
+
     const valueStr = `<div style="
       color: ${lfxColors.neutral[900]}; 
       font-size: 12px; 

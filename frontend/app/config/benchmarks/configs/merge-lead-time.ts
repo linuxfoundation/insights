@@ -1,0 +1,71 @@
+import { DateTime } from 'luxon';
+import type { BenchmarkConfigs } from '~~/types/shared/benchmark.types';
+import { BenchmarkKeys } from '~~/types/shared/benchmark.types';
+
+export const mergeLeadTime: BenchmarkConfigs = {
+  key: BenchmarkKeys.MergeLeadTime,
+  points: [
+    {
+      pointStart: 30,
+      pointEnd: null,
+      type: 'negative',
+      description: 'More than 30 days',
+      text: `This project has extremely slow pull request merging, indicating 
+      significant delays in review and integration processes.`
+    },
+    {
+      pointStart: 21,
+      pointEnd: 30,
+      type: 'negative',
+      description: '21–30 days',
+      text: `This project shows a very slow merge process, suggesting challenges 
+      in timely reviewing and merging of contributions.`
+    },
+    {
+      pointStart: 15,
+      pointEnd: 20,
+      type: 'warning',
+      description: '15–20 days',
+      text: `This project demonstrates a modest merge lead time, with noticeable 
+      delays that could impede development velocity.`
+    },
+    {
+      pointStart: 7,
+      pointEnd: 14,
+      type: 'warning',
+      description: '7–14 days',
+      text: `This project exhibits a reasonable merge lead time, reflecting a 
+      balanced and consistent review process.`
+    },
+    {
+      pointStart: 3,
+      pointEnd: 6,
+      type: 'positive',
+      description: '3–6 days',
+      text: `This project benefits from fast merging of pull requests, indicating 
+      an efficient and responsive review workflow.`
+    },
+    {
+      pointStart: 0,
+      pointEnd: 2,
+      type: 'positive',
+      description: 'Less than 3 days',
+      text: `This project showcases exceptional agility, with pull requests being 
+      reviewed, accepted, and merged almost immediately, reflecting a highly efficient development process.`
+    }
+  ],
+  visibilityCheck: (
+    _selectedTimeRangeKey: string,
+    startDate: string,
+    endDate: string
+  ) => {
+    const start = DateTime.fromISO(startDate);
+    const end = DateTime.fromISO(endDate);
+    const diffInDays = Math.ceil(end.diff(start, 'days').days);
+
+    if (diffInDays > 30) {
+      return true;
+    }
+    return false;
+  }
+};

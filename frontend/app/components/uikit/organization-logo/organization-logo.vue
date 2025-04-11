@@ -9,7 +9,7 @@
       type="organization"
     />
     <div
-      v-if="props.isLF"
+      v-if="props.isLf"
       class="is-lf-icon"
     >
       <lfx-tooltip
@@ -34,12 +34,12 @@ const props = withDefaults(
   defineProps<{
     size?: AvatarSize;
     src?: string;
-    isLF?: boolean;
+    isLf?: boolean;
   }>(),
   {
     size: 'normal',
     src: undefined,
-    isLF: false
+    isLf: false
   }
 );
 </script>

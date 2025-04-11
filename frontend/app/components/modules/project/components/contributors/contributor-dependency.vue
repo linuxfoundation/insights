@@ -108,6 +108,11 @@ const contributorsAvatars = computed(() => (contributors.value?.length
 
 const isEmpty = computed(() => isEmptyData(contributors.value as unknown as Record<string, unknown>[]));
 
+emit('update:benchmarkValue', {
+    key: BenchmarkKeys.ContributorDependency,
+    value: topContributors.value?.count || 0
+  });
+
 watch(topContributors, () => {
   emit('update:benchmarkValue', {
     key: BenchmarkKeys.ContributorDependency,

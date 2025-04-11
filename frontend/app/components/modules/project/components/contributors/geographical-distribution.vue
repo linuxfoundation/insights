@@ -85,7 +85,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { useFetch } from 'nuxt/app';
 import { storeToRefs } from "pinia";
@@ -107,6 +107,11 @@ import { formatNumber } from '~/components/shared/utils/formatter';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
 import { isEmptyData } from '~/components/shared/utils/helper';
 import { links } from '~/config/links';
+import { BenchmarkKeys, type Benchmark } from '~~/types/shared/benchmark.types';
+import { embargoedCountries } from '~/config/benchmarks/configs/geographical-distribution';
+
+const emit = defineEmits<{(e: 'update:benchmarkValue', value: Benchmark): void;
+}>();
 
 const route = useRoute();
 const metric = ref('all:all');
@@ -134,6 +139,7 @@ const geoMapDataCountries = computed<GeoMapData[] | undefined>(() => (geoMapData
   ? geoMapData.value.filter((item) => item.name !== 'Unknown').slice(0, 5) : undefined));
 const unknownGeoMapData = computed<GeoMapData[] | undefined>(() => (geoMapData.value
   ? geoMapData.value.filter((item) => item.name === 'Unknown') : undefined));
+const embargoCountries = computed(() => geoMapData.value?.filter((item) => embargoedCountries.includes(item.name)));
 
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
@@ -163,6 +169,18 @@ const chartSeries = computed<ChartSeries[]>(() => [
     dataIndex: 0
   }
 ]);
+
+emit('update:benchmarkValue', {
+    key: BenchmarkKeys.GeographicalDistribution,
+    value: embargoCountries.value?.length || 0
+  });
+
+watch(geoMapData, () => {
+  emit('update:benchmarkValue', {
+    key: BenchmarkKeys.GeographicalDistribution,
+    value: embargoCountries.value?.length || 0
+  });
+});
 </script>
 
 <script lang="ts">

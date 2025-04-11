@@ -33,7 +33,7 @@
       <lfx-project-load-state
         :status="status"
         :error="error"
-        error-message="Error fetching forks"
+        error-message="Error fetching merge lead time"
         :is-empty="isEmpty"
         use-min-height
         :height="250"
@@ -75,7 +75,7 @@
 
 <script setup lang="ts">
 import { useFetch, useRoute } from 'nuxt/app';
-import { computed } from 'vue';
+import { computed, watch } from 'vue';
 import { storeToRefs } from "pinia";
 import { Duration } from 'luxon';
 import LfxProjectLoadState from '../shared/load-state.vue';
@@ -90,6 +90,10 @@ import { useProjectStore } from "~/components/modules/project/store/project.stor
 import { isEmptyData } from '~/components/shared/utils/helper';
 import { links } from '~/config/links';
 import {dateOptKeys} from "~/components/modules/project/config/date-options";
+import { BenchmarkKeys, type Benchmark } from '~~/types/shared/benchmark.types';
+
+const emit = defineEmits<{(e: 'update:benchmarkValue', value: Benchmark): void;
+}>();
 
 const {
  startDate, endDate, selectedRepository, selectedTimeRangeKey
@@ -126,9 +130,21 @@ const prMerged = computed<MergeLeadTimeItem>(() => ({
   ...formatDuration(mergeLeadTime.value.data.prMerged.value)
 } as MergeLeadTimeItem));
 
-const summary = computed<Summary>(() => mergeLeadTime.value.summary);
+const summary = computed<Summary>(() => mergeLeadTime.value?.summary);
 
 const isEmpty = computed(() => isEmptyData((mergeLeadTime.value?.data || []) as unknown as Record<string, unknown>[]));
+
+emit('update:benchmarkValue', {
+    key: BenchmarkKeys.MergeLeadTime,
+    value: summary.value?.current || 0
+  });
+
+watch(mergeLeadTime, () => {
+  emit('update:benchmarkValue', {
+    key: BenchmarkKeys.MergeLeadTime,
+    value: summary.value?.current || 0
+  });
+});
 
 const formatDuration = (seconds: number): { value: number, unit: string } => {
   const duration = Duration.fromObject({ seconds });

@@ -15,7 +15,7 @@
     <section class="mt-5">
       <div class="mb-6">
         <lfx-skeleton-state
-          :status="status"
+          :status="activeTab === 'cumulative' ? cumulativeStatus : status"
           height="2rem"
           width="7.5rem"
         >
@@ -41,8 +41,8 @@
         @update:model-value="activeTab = $event"
       />
       <lfx-project-load-state
-        :status="status"
-        :error="error"
+        :status="activeTab === 'cumulative' ? cumulativeStatus : status"
+        :error="activeTab === 'cumulative' ? cumulativeError : error"
         error-message="Error fetching forks"
         :is-empty="isEmpty"
       >
@@ -56,7 +56,7 @@
 
 <script setup lang="ts">
 import { useFetch, useRoute } from 'nuxt/app';
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { storeToRefs } from "pinia";
 import LfxProjectLoadState from '../shared/load-state.vue';
 import LfxSkeletonState from '../shared/skeleton-state.vue';
@@ -82,6 +82,10 @@ import { isEmptyData } from '~/components/shared/utils/helper';
 import { dateOptKeys } from '~/components/modules/project/config/date-options';
 import type { Granularity } from '~~/types/shared/granularity';
 import { links } from '~/config/links';
+import { BenchmarkKeys, type Benchmark } from '~~/types/shared/benchmark.types';
+
+const emit = defineEmits<{(e: 'update:benchmarkValue', value: Benchmark): void;
+}>();
 
 const {
   startDate, endDate, selectedRepository, selectedTimeRangeKey, customRangeGranularity
@@ -96,16 +100,14 @@ const barGranularity = computed(() => (selectedTimeRangeKey.value === dateOptKey
 const lineGranularity = computed(() => (selectedTimeRangeKey.value === dateOptKeys.custom
   ? customRangeGranularity.value[0] as Granularity
   : lineGranularities[selectedTimeRangeKey.value as keyof typeof lineGranularities]));
-const granularity = computed(() => (activeTab.value === 'cumulative'
-  ? lineGranularity.value
-  : barGranularity.value));
+
 const { data, status, error } = useFetch(
   `/api/project/${route.params.slug}/popularity/forks`,
   {
     params: {
-      granularity,
-      type: activeTab,
-      countType: activeTab,
+      granularity: barGranularity,
+      type: 'new',
+      countType: 'new',
       activityType: 'fork',
       repository: selectedRepository,
       startDate,
@@ -114,8 +116,32 @@ const { data, status, error } = useFetch(
   }
 );
 
-const forks = computed<ForksData | undefined>(() => data.value as ForksData);
+// cumulative data - Fetching this right away to use it for the benchmark
+const { data: cumulativeData, status: cumulativeStatus, error: cumulativeError } = useFetch(
+  `/api/project/${route.params.slug}/popularity/forks`,
+  {
+    params: {
+      granularity: lineGranularity,
+      type: 'cumulative',
+      countType: 'cumulative',
+      activityType: 'fork',
+      repository: selectedRepository,
+      startDate,
+      endDate,
+    }
+  }
+);
 
+const forks = computed<ForksData | undefined>(() => (activeTab.value === 'cumulative'
+  ? cumulativeData.value as ForksData
+  : data.value as ForksData));
+
+const cumulativeForksCount = computed<number>(() => {
+  const cumulativeForks = (cumulativeData.value as ForksData)?.data;
+
+  return cumulativeForks && cumulativeForks.length > 0
+    ? cumulativeForks[cumulativeForks.length - 1]!.forks : 0;
+});
 const summary = computed<Summary | undefined>(() => forks.value?.summary);
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
@@ -151,6 +177,18 @@ const barChartConfig = computed(() => getBarChartConfig(
   chartSeries.value,
   barGranularity.value
 ));
+
+emit('update:benchmarkValue', {
+    key: BenchmarkKeys.Forks,
+    value: cumulativeForksCount.value
+  });
+
+watch(cumulativeStatus, () => {
+  emit('update:benchmarkValue', {
+    key: BenchmarkKeys.Forks,
+    value: cumulativeForksCount.value
+  });
+});
 </script>
 
 <script lang="ts">

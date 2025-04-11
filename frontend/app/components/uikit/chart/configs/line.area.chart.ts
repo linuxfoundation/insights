@@ -23,7 +23,7 @@ const defaultLineOption: ECOption = {
   ...defaultOption,
   grid: {
     top: '5%',
-    left: '8%',
+    left: '12%',
     right: '1%',
     bottom: '15%'
   },

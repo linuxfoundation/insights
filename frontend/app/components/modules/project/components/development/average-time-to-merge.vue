@@ -35,7 +35,7 @@
       <lfx-project-load-state
         :status="status"
         :error="error"
-        error-message="Error fetching forks"
+        error-message="Error fetching average time to merge"
         :is-empty="isEmpty"
         use-min-height
         :height="330"
