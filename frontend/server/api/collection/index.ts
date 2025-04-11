@@ -9,6 +9,7 @@ import type {Collection} from "~~/types/collection";
  *
  * Query Parameters:
  * - sort (string, optional): Field to sort the results by.
+ * - category (string, optional): Filter by category.
  * - page (number, optional): The page number to fetch (default is 0).
  * - pageSize (number, optional): The number of items per page (default is 10).
  * - count (boolean, optional): Whether to include the total count of items (default is false).
@@ -25,6 +26,7 @@ import type {Collection} from "~~/types/collection";
 export default defineEventHandler(async (event): Promise<Pagination<Collection> | Error> => {
     const query = getQuery(event);
     const sort: string = (query?.sort as string) || 'name_asc';
+    const category: string | undefined = (query?.category as string) || undefined;
     const [orderByField, orderByDirection] = sort.split('_');
 
     // Pagination parameters
@@ -37,23 +39,23 @@ export default defineEventHandler(async (event): Promise<Pagination<Collection> 
             count,
             page,
             pageSize,
+            categoryIds: category ? [category] : undefined,
             orderByField,
             orderByDirection,
         });
 
         type CollectionCount = {'count(id)': number};
         const collectionCountResult = await fetchFromTinybird<CollectionCount[]>('/v0/pipes/collections_list.json', {
+            categoryIds: category ? [category] : undefined,
             count: true,
         });
 
-        const data: Pagination<Collection> = {
+        return {
             page,
             pageSize,
             total: collectionCountResult.data[0]?.['count(id)'] || 0,
             data: res.data,
         }
-
-        return data
     } catch (error) {
         console.error('Error fetching collection list from TinyBird:', error);
         throw createError({statusCode: 500, statusMessage: 'Internal Server Error'});

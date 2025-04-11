@@ -47,8 +47,6 @@ const value = computed({
   set: (value: string) => emit('update:modelValue', value),
 })
 
-provide('selectedValue', value);
-
 const isVisible = computed({
   get: () => props.visibility,
   set: (value: boolean) => emit('update:visibility', value),
@@ -75,10 +73,18 @@ const dropdownItems = computed<VNode[]>(() => {
   return findDropdownItems(slotNodes as VNode[]);
 })
 
+const selectedOptionProps = ref<Record<string, string>>({});
+
 const selectedOption = computed(() => {
+  if(value.value === selectedOptionProps.value.value){
+    return selectedOptionProps.value;
+  }
   const selected = dropdownItems.value.find((item) => item.props?.value === value.value)
   return selected?.props || { value: value.value, label: value.value }
 })
+
+provide('selectedValue', value);
+provide('selectedOptionProps', selectedOptionProps);
 </script>
 
 <script lang="ts">

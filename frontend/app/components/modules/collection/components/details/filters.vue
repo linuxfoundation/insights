@@ -48,7 +48,9 @@
                 name="arrow-down-wide-short"
                 :size="16"
               />
-              {{selectedOption.label}}
+              <span class="hidden sm:inline">
+                {{selectedOption.label}}
+              </span>
             </lfx-dropdown-selector>
           </template>
 

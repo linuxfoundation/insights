@@ -1,6 +1,7 @@
 <template>
   <main>
     <lfx-navbar />
+    {{error}}
     <div class="container py-30">
       <div class="flex flex-col items-center">
         <lfx-icon
