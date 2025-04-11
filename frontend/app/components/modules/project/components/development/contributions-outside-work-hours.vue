@@ -72,7 +72,7 @@
       <lfx-project-load-state
         :status="status"
         :error="error"
-        error-message="Error fetching forks"
+        error-message="Error fetching contributions outside work hours"
         :is-empty="isEmpty"
         use-min-height
         :height="430"

@@ -16,6 +16,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import { storeToRefs } from 'pinia';
 import type { Benchmark } from '~~/types/shared/benchmark.types';
 import LfxBenchmark from '~/components/uikit/benchmarks/benchmarks.vue';
 import { useProjectStore } from '~~/app/components/modules/project/store/project.store';
@@ -25,10 +26,11 @@ const props = withDefaults(defineProps<{
   benchmark?: Benchmark;
   additionalCheck?: boolean;
 }>(), {
+  benchmark: undefined,
   additionalCheck: true
 });
 
-const { selectedTimeRangeKey, startDate, endDate } = useProjectStore();
+const { selectedTimeRangeKey, startDate, endDate } = storeToRefs(useProjectStore())
 
 const benchmarkConfig = computed(() => benchmarkConfigs.find((config) => config.key === props.benchmark?.key));
 const points = computed(() => benchmarkConfig.value?.points
@@ -38,9 +40,10 @@ const type = computed(() => (points.value ? points.value.type : 'negative'));
 const benchmarkText = computed(() => (points.value ? points.value.text : ''));
 
 const isVisible = computed(() => (benchmarkConfig.value ? benchmarkConfig.value.visibilityCheck(
-  selectedTimeRangeKey,
-  startDate || '',
-  endDate || ''
+  selectedTimeRangeKey.value,
+  startDate.value || '',
+  endDate.value || '',
+  props.additionalCheck
 ) : false));
 </script>
 

@@ -16,7 +16,7 @@
       <lfx-project-load-state
         :status="status"
         :error="error"
-        error-message="Error fetching forks"
+        error-message="Error fetching review time by pull request size"
         :is-empty="isEmpty"
         use-min-height
         :height="380"

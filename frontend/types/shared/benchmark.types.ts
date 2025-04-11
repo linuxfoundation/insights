@@ -10,7 +10,13 @@ export enum BenchmarkKeys {
   ContributorDependency = 'contributor-dependency',
   OrganizationDependency = 'organization-dependency',
   Retention = 'retention',
-  GeographicalDistribution = 'geographical-distribution'
+  GeographicalDistribution = 'geographical-distribution',
+  Stars = 'stars',
+  Forks = 'forks',
+  IssuesResolution = 'issues-resolution',
+  PullRequests = 'pull-requests',
+  ActiveDays = 'active-days',
+  MergeLeadTime = 'merge-lead-time'
 }
 
 export interface Benchmark {

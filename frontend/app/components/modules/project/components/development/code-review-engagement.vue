@@ -38,7 +38,7 @@
       <lfx-project-load-state
         :status="status"
         :error="error"
-        error-message="Error fetching forks"
+        error-message="Error fetching code review engagement"
         :is-empty="isEmpty"
         use-min-height
         :height="330"

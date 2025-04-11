@@ -9,7 +9,7 @@
         />
       </div>
 
-      <div class="max-lg:w-full w-1/2 pb-6 md:pb-10">
+      <div class="w-3/4 pb-6 md:pb-10">
         <lfx-scroll-area
           class="flex flex-col gap-5 md:gap-8"
           @scrolled-to-view="onScrolledToView"
@@ -19,49 +19,61 @@
               id="stars"
               :observer="observer"
             >
-              <lfx-project-stars />
+              <lfx-benchmarks-wrap :benchmark="starsBenchmark">
+                <lfx-project-stars @update:benchmark-value="starsBenchmark = $event" />
+              </lfx-benchmarks-wrap>
             </lfx-scroll-view>
             <lfx-scroll-view
               id="forks"
               :observer="observer"
             >
-              <lfx-project-forks />
+              <lfx-benchmarks-wrap :benchmark="forksBenchmark">
+                <lfx-project-forks @update:benchmark-value="forksBenchmark = $event" />
+              </lfx-benchmarks-wrap>
             </lfx-scroll-view>
             <lfx-scroll-view
               id="social-mentions"
               :observer="observer"
             >
-              <lfx-project-social-mentions />
+              <lfx-benchmarks-wrap>
+                <lfx-project-social-mentions />
+              </lfx-benchmarks-wrap>
             </lfx-scroll-view>
             <lfx-scroll-view
               id="github-mentions"
               :observer="observer"
             >
-              <lfx-project-github-mentions />
+              <lfx-benchmarks-wrap>
+                <lfx-project-github-mentions />
+              </lfx-benchmarks-wrap>
             </lfx-scroll-view>
             <lfx-scroll-view
               id="press-mentions"
               :observer="observer"
             >
-              <lfx-project-press-mentions />
+              <lfx-benchmarks-wrap>
+                <lfx-project-press-mentions />
+              </lfx-benchmarks-wrap>
             </lfx-scroll-view>
             <lfx-scroll-view
               id="search-queries"
               :observer="observer"
             >
-              <lfx-project-search-queries />
+              <lfx-benchmarks-wrap>
+                <lfx-project-search-queries />
+              </lfx-benchmarks-wrap>
             </lfx-scroll-view>
             <lfx-scroll-view
               id="package-downloads"
               :observer="observer"
             >
-              <lfx-project-package-downloads />
+              <lfx-benchmarks-wrap>
+                <lfx-project-package-downloads />
+              </lfx-benchmarks-wrap>
             </lfx-scroll-view>
           </template>
         </lfx-scroll-area>
       </div>
-
-      <div class="w-1/4 pl-5 xl:pl-10 max-lg:hidden block" />
     </div>
   </div>
 </template>
@@ -79,6 +91,8 @@ import LfxProjectGithubMentions from "~/components/modules/project/components/po
 import LfxProjectPressMentions from "~/components/modules/project/components/popularity/press-mentions.vue";
 import LfxProjectSearchQueries from "~/components/modules/project/components/popularity/search-queries.vue";
 import LfxProjectPackageDownloads from "~/components/modules/project/components/popularity/package-downloads.vue";
+import LfxBenchmarksWrap from '~/components/uikit/benchmarks/benchmarks-wrap.vue';
+import type { Benchmark } from '~~/types/shared/benchmark.types';
 
 const activeItem = ref('stars');
 const tmpClickedItem = ref('');
@@ -93,6 +107,9 @@ const sideNavItems = [
   { label: 'Search Queries', key: 'search-queries' },
   { label: 'Package Downloads', key: 'package-downloads' },
 ];
+
+const starsBenchmark = ref<Benchmark | undefined>(undefined);
+const forksBenchmark = ref<Benchmark | undefined>(undefined);
 
 const onSideNavUpdate = (value: string) => {
   tmpClickedItem.value = value;
@@ -117,7 +134,6 @@ const onScrolledToView = (value: string) => {
     activeItem.value = value;
   }
 };
-
 </script>
 
 <script lang="ts">

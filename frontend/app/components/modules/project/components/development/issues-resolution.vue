@@ -47,7 +47,7 @@
               height="1.25rem"
               width="4rem"
             >
-              <span class="text-xl">{{ avgVelocityInDays }} days</span>
+              <span class="text-xl">{{ formatNumber(avgVelocityInDays) }} days</span>
             </lfx-skeleton-state>
           </div>
         </div>
@@ -84,7 +84,7 @@
 
 <script setup lang="ts">
 import { useFetch, useRoute } from 'nuxt/app';
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { storeToRefs } from "pinia";
 import { Duration } from 'luxon';
 import LfxProjectLoadState from '../shared/load-state.vue';
@@ -109,6 +109,10 @@ import { lineGranularities } from '~/components/shared/types/granularity';
 import { dateOptKeys } from '~/components/modules/project/config/date-options';
 import type { Granularity } from '~~/types/shared/granularity';
 import { links } from '~/config/links';
+import { BenchmarkKeys, type Benchmark } from '~~/types/shared/benchmark.types';
+
+const emit = defineEmits<{(e: 'update:benchmarkValue', value: Benchmark, granularity: string): void;
+}>();
 
 const {
   startDate, endDate, selectedRepository, selectedTimeRangeKey, customRangeGranularity
@@ -132,7 +136,7 @@ const { data, status, error } = useFetch(
 
 const issuesResolution = computed<IssuesResolution>(() => data.value as IssuesResolution);
 
-const summary = computed<IssuesResolutionSummary>(() => issuesResolution.value.summary);
+const summary = computed<IssuesResolutionSummary>(() => issuesResolution.value?.summary);
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
   () => convertToChartData((issuesResolution.value?.data || []) as RawChartData[], 'dateFrom', [
@@ -141,9 +145,8 @@ const chartData = computed<ChartData[]>(
   ], undefined, 'dateTo')
 );
 
-const avgVelocityInDays = computed<string>(() => formatNumber(
-  Duration.fromObject({ seconds: summary.value.avgVelocityInDays }).as('days')
-));
+const avgVelocityInDays = computed<number>(() => Duration
+.fromObject({ seconds: summary.value?.avgVelocityInDays || 0 }).as('days'));
 
 const chartSeries = ref<ChartSeries[]>([
   {
@@ -173,6 +176,18 @@ const lineAreaChartConfig = computed(() => getLineAreaChartConfig(
   granularity.value,
 ));
 const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
+
+emit('update:benchmarkValue', {
+    key: BenchmarkKeys.IssuesResolution,
+    value: avgVelocityInDays.value || 0
+  }, granularity.value);
+
+watch(chartData, () => {
+  emit('update:benchmarkValue', {
+    key: BenchmarkKeys.IssuesResolution,
+    value: avgVelocityInDays.value || 0
+  }, granularity.value);
+});
 </script>
 
 <script lang="ts">

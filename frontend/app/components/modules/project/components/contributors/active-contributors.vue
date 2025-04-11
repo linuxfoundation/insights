@@ -76,6 +76,10 @@ import { useProjectStore } from "~/components/modules/project/store/project.stor
 import { isEmptyData } from '~/components/shared/utils/helper';
 import { dateOptKeys } from '~/components/modules/project/config/date-options';
 import { links } from '~/config/links';
+import { BenchmarkKeys, type Benchmark } from '~~/types/shared/benchmark.types';
+
+const emit = defineEmits<{(e: 'update:benchmarkValue', value: Benchmark): void;
+}>();
 
 const {
   startDate, endDate, selectedRepository, selectedTimeRangeKey, customRangeGranularity
@@ -106,7 +110,7 @@ const { data, status, error } = useFetch(
 
 const activeContributors = computed<ActiveContributors>(() => data.value as ActiveContributors);
 
-const summary = computed<Summary>(() => activeContributors.value.summary);
+const summary = computed<Summary>(() => activeContributors.value?.summary);
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
   () => convertToChartData(activeContributors.value?.data as RawChartData[], 'startDate', [
@@ -150,6 +154,18 @@ watch(paramWatch, (newParams, oldParams) => {
   }
 
   summaryLoading.value = !onlyGranularityChanged;
+});
+
+emit('update:benchmarkValue', {
+    key: BenchmarkKeys.ActiveContributors,
+    value: summary.value?.current || 0
+  });
+
+watch(activeContributors, () => {
+  emit('update:benchmarkValue', {
+    key: BenchmarkKeys.ActiveContributors,
+    value: summary.value.current
+  });
 });
 </script>
 

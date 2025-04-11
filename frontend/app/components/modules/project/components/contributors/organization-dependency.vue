@@ -55,7 +55,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { useRoute, useFetch } from 'nuxt/app';
 import { storeToRefs } from "pinia";
 import LfxProjectLoadState from '../shared/load-state.vue';
@@ -70,6 +70,10 @@ import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
 import { isEmptyData } from '~/components/shared/utils/helper';
 import { links } from '~/config/links';
+import { BenchmarkKeys, type Benchmark } from '~~/types/shared/benchmark.types';
+
+const emit = defineEmits<{(e: 'update:benchmarkValue', value: Benchmark): void;
+}>();
 
 const { startDate, endDate, selectedRepository } = storeToRefs(useProjectStore())
 
@@ -100,6 +104,18 @@ const topOrganizationsAvatars = computed(() => (organizations.value?.length
   : []));
 
 const isEmpty = computed(() => isEmptyData(organizations.value as unknown as Record<string, unknown>[]));
+
+emit('update:benchmarkValue', {
+    key: BenchmarkKeys.OrganizationDependency,
+    value: topOrganizations.value?.count || 0
+  });
+
+watch(topOrganizations, () => {
+  emit('update:benchmarkValue', {
+    key: BenchmarkKeys.OrganizationDependency,
+    value: topOrganizations.value.count
+  });
+});
 </script>
 
 <script lang="ts">

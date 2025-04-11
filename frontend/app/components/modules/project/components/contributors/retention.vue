@@ -43,7 +43,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { useFetch } from 'nuxt/app';
 import { storeToRefs } from "pinia";
@@ -65,6 +65,10 @@ import { isEmptyData } from '~/components/shared/utils/helper';
 import type { Retention } from '~~/types/contributors/responses.types';
 import { Granularity } from '~~/types/shared/granularity';
 import { links } from '~/config/links';
+import { BenchmarkKeys, type Benchmark } from '~~/types/shared/benchmark.types';
+
+const emit = defineEmits<{(e: 'update:benchmarkValue', value: Benchmark, activeTab: string): void;
+}>();
 
 const {
   startDate, endDate, selectedRepository
@@ -134,6 +138,9 @@ const chartData = computed<ChartData[]>(
     'endDate'
   )
 );
+const retentionValue = computed(() => (chartData.value && chartData.value.length > 0
+  ? chartData.value[chartData.value.length - 1]?.values[0] : 0));
+
 const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[])
   || isSingleDay.value);
 
@@ -165,6 +172,18 @@ const lineAreaChartConfig = computed(() => getLineAreaChartConfig(
   granularity.value,
   (value: number) => `${value === 0 ? '' : `${value}%`}`
 ));
+
+emit('update:benchmarkValue', {
+    key: BenchmarkKeys.Retention,
+    value: retentionValue.value || 0
+  }, activeTab.value);
+
+watch(chartData, () => {
+  emit('update:benchmarkValue', {
+    key: BenchmarkKeys.Retention,
+    value: retentionValue.value || 0
+  }, activeTab.value);
+});
 
 </script>
 
