@@ -129,6 +129,13 @@ export type ActivityCountFilter = {
   endDate?: DateTime,
 }
 
+export type ReviewTimeByPRSizeFilter = {
+  project: string;
+  repo?: string,
+  startDate?: DateTime,
+  endDate?: DateTime,
+};
+
 export type AverageTimeToMergeFilter = {
   project: string;
   granularity?: FilterGranularity;

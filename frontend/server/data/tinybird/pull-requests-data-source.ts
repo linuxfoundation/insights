@@ -87,8 +87,6 @@ export async function fetchPullRequests(filter: ActivityCountFilter): Promise<Pu
   // TODO: We're passing unchecked query parameters to TinyBird directly from the frontend.
   //  We need to ensure this doesn't pose a security risk.
 
-  console.log('filter.granularity', filter.granularity);
-
   const {
     currentOpenedPRsSummaryQuery,
     previousOpenedPRsSummaryQuery,
