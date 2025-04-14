@@ -1,8 +1,6 @@
-import {
-  prParticipants,
-  reviewComments,
-  codeReviews
-} from '~~/server/mocks/code-review-engagement.mock';
+import {DateTime} from "luxon";
+import {createDataSource} from "~~/server/data/data-sources";
+import type {CodeReviewEngagementFilter, CodeReviewEngagementMetric} from "~~/types/development/requests.types";
 
 /**
  * Frontend expects the data to be in the following format:
@@ -33,25 +31,18 @@ import {
  */
 export default defineEventHandler(async (event) => {
   const query = getQuery(event);
-  const { metric } = query;
-  let data;
 
-  switch (metric) {
-    case 'pr-participants':
-      data = { ...prParticipants };
-      break;
-    case 'review-comments':
-      data = { ...reviewComments };
-      break;
-    case 'code-reviews':
-      data = { ...codeReviews };
-      break;
-    default:
-      throw createError({
-        statusCode: 400,
-        statusMessage: 'Invalid metric'
-      });
+  const project = (event.context.params as { slug: string }).slug;
+
+  const filter: CodeReviewEngagementFilter = {
+    project,
+    repo: query?.repository as string,
+    metric: query.metric as CodeReviewEngagementMetric,
+    startDate: DateTime.fromISO(query.startDate as string),
+    endDate: DateTime.fromISO(query.endDate as string),
   }
 
-  return data;
+  const dataSource = createDataSource();
+
+  return await dataSource.fetchCodeReviewEngagement(filter);
 });

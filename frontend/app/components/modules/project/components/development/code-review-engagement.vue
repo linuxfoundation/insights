@@ -16,7 +16,7 @@
       <lfx-tabs
         :tabs="tabs"
         :model-value="activeTab"
-        @update:model-value="activeTab = $event"
+        @update:model-value="activeTab = $event as CodeReviewEngagementMetric"
       />
       <div class="mt-7 mb-8">
         <lfx-skeleton-state
@@ -76,12 +76,13 @@ import { useProjectStore } from "~/components/modules/project/store/project.stor
 import { isEmptyData } from '~/components/shared/utils/helper';
 import { links } from '~/config/links';
 import { dateOptKeys } from '~/components/modules/project/config/date-options';
+import {CodeReviewEngagementMetric} from "~~/types/development/requests.types";
 
 const {
  startDate, endDate, selectedRepository, selectedTimeRangeKey
 } = storeToRefs(useProjectStore());
 
-const activeTab = ref('pr-participants');
+const activeTab = ref(CodeReviewEngagementMetric.PR_PARTICIPANTS);
 const route = useRoute();
 
 const { data, status, error } = useFetch(
@@ -101,9 +102,9 @@ const codeReviewEngagement = computed<CodeReviewEngagement>(() => data.value as 
 const summary = computed<Summary>(() => codeReviewEngagement.value.summary);
 
 const tabs = [
-  { label: 'PR participants', value: 'pr-participants' },
-  { label: 'Review comments', value: 'review-comments' },
-  { label: 'Code reviews', value: 'code-reviews' }
+  { label: 'PR participants', value: CodeReviewEngagementMetric.PR_PARTICIPANTS },
+  { label: 'Review comments', value: CodeReviewEngagementMetric.REVIEW_COMMENTS },
+  { label: 'Code reviews', value: CodeReviewEngagementMetric.CODE_REVIEWS }
 ];
 
 const isEmpty = computed(() => isEmptyData(
