@@ -1,14 +1,22 @@
 export enum ActivityTypes {
   ALL = 'all',
 
+  FORKS = 'fork',
+  STARS = 'star',
+  ISSUES_OPENED = 'issues-opened',
+  ISSUES_CLOSED = 'issues-closed',
+
+  PULL_REQUEST_REVIEWED = 'pull_request-reviewed',
+  PULL_REQUEST_ASSIGNED = 'pull_request-assigned',
+  PULL_REQUEST_COMMENT = 'pull_request-comment',
+  PULL_REQUEST_REVIEW_THREAD_COMMENT = 'pull_request-review-thread-comment',
+  PULL_REQUEST_REVIEW_REQUESTED = 'pull_request-review-requested',
+
   // The ones below are for Github
   AUTHORED_COMMIT = 'authored-commit',
-  PULL_REQUEST_CLOSED = 'pull_request-closed',
   PULL_REQUEST_OPENED = 'pull_request-opened',
-  PULL_REQUEST_COMMENT = 'pull_request-comment',
   PULL_REQUEST_MERGED = 'pull_request-merged',
-  PULL_REQUEST_REVIEW_REQUESTED = 'pull_request-review-requested',
-  PULL_REQUEST_REVIEW_THREAD_COMMENT = 'pull_request-review-thread-comment',
+  PULL_REQUEST_CLOSED = 'pull_request-closed',
   ISSUE_CLOSED = 'issue-closed',
   ISSUE_OPENED = 'issue-opened',
   ISSUE_COMMENT = 'issue-comment',

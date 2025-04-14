@@ -1,7 +1,8 @@
 import {DateTime} from "luxon";
 import type {ActivityCountFilter, FilterGranularity} from "~~/server/data/types";
-import {ActivityFilterActivityType, ActivityFilterCountType} from "~~/server/data/types";
+import {ActivityFilterCountType} from "~~/server/data/types";
 import {createDataSource} from "~~/server/data/data-sources";
+import {ActivityTypes} from "~~/types/shared/activity-types";
 
 /**
  * Frontend expects the data to be in the following format:
@@ -40,7 +41,7 @@ export default defineEventHandler(async (event) => {
     granularity: query.granularity as FilterGranularity,
     repo: query.repository as string,
     countType: ActivityFilterCountType.NEW,
-    activity_type: ActivityFilterActivityType.ISSUES_CLOSED,
+    activity_type: ActivityTypes.ISSUES_CLOSED,
     onlyContributions: false,
     startDate: query.startDate ? DateTime.fromISO(query.startDate as string) : undefined,
     endDate: query.endDate ? DateTime.fromISO(query.endDate as string) : undefined,

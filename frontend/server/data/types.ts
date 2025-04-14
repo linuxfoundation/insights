@@ -10,18 +10,6 @@ export enum FilterGranularity {
   QUARTERLY = 'quarterly'
 }
 
-export enum FilterActivityMetric {
-  ALL = 'all',
-  COMMITS = 'commits',
-  ISSUES_OPENED = 'issues-opened',
-  ISSUES_CLOSED = 'issues-closed',
-  PRS_OPENED = 'pull-requests-opened',
-  PRS_CLOSED = 'pull-requests-closed',
-  PRS_MERGED = 'pull-requests-merged',
-  PRS_REVIEWS = 'pull-requests-reviews',
-  PRS_COMMENTS = 'pull-requests-comments'
-}
-
 export type ActiveContributorsFilter = {
   project: string;
   repo?: string;
@@ -109,20 +97,11 @@ export enum ActivityFilterCountType {
   CUMULATIVE = 'cumulative',
   NEW = 'new'
 }
-export enum ActivityFilterActivityType {
-  FORKS = 'fork',
-  STARS = 'star',
-  ISSUES_OPENED = 'issues-opened',
-  ISSUES_CLOSED = 'issues-closed',
-  PULL_REQUESTS_OPENED = 'pull_request-opened',
-  PULL_REQUESTS_MERGED = 'pull_request-merged',
-  PULL_REQUESTS_CLOSED = 'pull_request-closed',
-}
 export type ActivityCountFilter = {
   project: string;
   granularity?: FilterGranularity;
   countType?: ActivityFilterCountType;
-  activity_type: ActivityFilterActivityType,
+  activity_type: ActivityTypes,
   onlyContributions: boolean;
   repo?: string,
   startDate?: DateTime,

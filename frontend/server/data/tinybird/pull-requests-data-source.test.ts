@@ -16,9 +16,9 @@ import {
 } from '../../mocks/tinybird-pull-requests-response.mock';
 import {
   type ActivityCountFilter,
-  ActivityFilterActivityType,
   FilterGranularity
 } from "../types";
+import {ActivityTypes} from "~~/types/shared/activity-types";
 import type {PullRequests} from "~~/types/development/responses.types";
 import type { DateRange} from "~~/server/data/util";
 import {calculatePercentageChange, getPreviousDates} from "~~/server/data/util";
@@ -65,7 +65,7 @@ describe('Pull Requests Data Source', () => {
     const filter: ActivityCountFilter = {
       project: 'the-linux-kernel-organization',
       granularity: FilterGranularity.WEEKLY,
-      activity_type: ActivityFilterActivityType.PULL_REQUESTS_OPENED,
+      activity_type: ActivityTypes.PULL_REQUEST_OPENED,
       onlyContributions: false,
       startDate,
       endDate
@@ -76,7 +76,7 @@ describe('Pull Requests Data Source', () => {
     // The granularity should not be sent in the summary queries, so we remove it here and add it when necessary in
     // the generateQuery function.
     delete filter.granularity;
-    const generateQuery = (activityType: ActivityFilterActivityType, isSummary: boolean, dates: DateRange) => ({
+    const generateQuery = (activityType: ActivityTypes, isSummary: boolean, dates: DateRange) => ({
       ...filter,
       activity_type: activityType,
       startDate: dates.from,
@@ -87,17 +87,17 @@ describe('Pull Requests Data Source', () => {
     // These are the queries the data source should send to Tinybird, in this order.
     const expectedQueries = [
       // Summaries
-      generateQuery(ActivityFilterActivityType.PULL_REQUESTS_OPENED, true, dates.current),
-      generateQuery(ActivityFilterActivityType.PULL_REQUESTS_OPENED, true, dates.previous),
-      generateQuery(ActivityFilterActivityType.PULL_REQUESTS_MERGED, true, dates.current),
-      generateQuery(ActivityFilterActivityType.PULL_REQUESTS_MERGED, true, dates.previous),
-      generateQuery(ActivityFilterActivityType.PULL_REQUESTS_CLOSED, true, dates.current),
-      generateQuery(ActivityFilterActivityType.PULL_REQUESTS_CLOSED, true, dates.previous),
+      generateQuery(ActivityTypes.PULL_REQUEST_OPENED, true, dates.current),
+      generateQuery(ActivityTypes.PULL_REQUEST_OPENED, true, dates.previous),
+      generateQuery(ActivityTypes.PULL_REQUEST_MERGED, true, dates.current),
+      generateQuery(ActivityTypes.PULL_REQUEST_MERGED, true, dates.previous),
+      generateQuery(ActivityTypes.PULL_REQUEST_CLOSED, true, dates.current),
+      generateQuery(ActivityTypes.PULL_REQUEST_CLOSED, true, dates.previous),
 
       // Time series data
-      generateQuery(ActivityFilterActivityType.PULL_REQUESTS_OPENED, false, dates.current),
-      generateQuery(ActivityFilterActivityType.PULL_REQUESTS_MERGED, false, dates.current),
-      generateQuery(ActivityFilterActivityType.PULL_REQUESTS_CLOSED, false, dates.current),
+      generateQuery(ActivityTypes.PULL_REQUEST_OPENED, false, dates.current),
+      generateQuery(ActivityTypes.PULL_REQUEST_MERGED, false, dates.current),
+      generateQuery(ActivityTypes.PULL_REQUEST_CLOSED, false, dates.current),
 
       // Pull request resolution velocity
       {

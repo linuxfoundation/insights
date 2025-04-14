@@ -1,6 +1,6 @@
 import type {ActivityCountFilter} from "../types";
-import { ActivityFilterActivityType } from "../types";
 import {fetchFromTinybird} from './tinybird'
+import {ActivityTypes} from "~~/types/shared/activity-types";
 import {calculatePercentageChange, getPreviousDates} from "~~/server/data/util";
 import type {IssuesResolution} from "~~/types/development/responses.types";
 
@@ -26,23 +26,23 @@ function getTinybirdQueries(filter: ActivityCountFilter) {
   return {
     currentSummaryQuery: {
       ...filter,
-      activity_type: ActivityFilterActivityType.ISSUES_CLOSED,
+      activity_type: ActivityTypes.ISSUES_CLOSED,
       granularity: undefined, // This tells TinyBird to return a summary instead of time series
     },
     previousSummaryQuery: {
       ...filter,
-      activity_type: ActivityFilterActivityType.ISSUES_CLOSED,
+      activity_type: ActivityTypes.ISSUES_CLOSED,
       granularity: undefined, // This tells TinyBird to return a summary instead of time series
       startDate: dates.previous.from,
       endDate: dates.previous.to
     },
     issuesOpenedQuery: {
       ...filter,
-      activity_type: ActivityFilterActivityType.ISSUES_OPENED,
+      activity_type: ActivityTypes.ISSUES_OPENED,
     },
     issuesClosedQuery: {
       ...filter,
-      activity_type: ActivityFilterActivityType.ISSUES_CLOSED,
+      activity_type: ActivityTypes.ISSUES_CLOSED,
     },
     issueResolutionVelocityQuery: {
       ...filter,
