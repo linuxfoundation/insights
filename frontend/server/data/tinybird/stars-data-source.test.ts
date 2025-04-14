@@ -8,7 +8,8 @@ import {
   mockCurrentCumulativeTimeseries,
   mockCurrentNewTimeseries,
 } from '../../mocks/tinybird-stars-response.mock';
-import {ActivityFilterActivityType, ActivityFilterCountType, FilterGranularity} from "../types";
+import {ActivityFilterCountType, FilterGranularity} from "../types";
+import {ActivityTypes} from "~~/types/shared/activity-types";
 import type {StarsData} from "~~/types/popularity/responses.types";
 
 const mockFetchFromTinybird = vi.fn();
@@ -41,7 +42,7 @@ describe('Stars Data Source', () => {
       granularity: FilterGranularity.WEEKLY,
       project: 'the-linux-kernel-organization',
       countType: ActivityFilterCountType.CUMULATIVE,
-      activityType: ActivityFilterActivityType.FORKS,
+      activity_type: ActivityTypes.FORKS,
       onlyContributions: false,
       startDate,
       endDate
@@ -86,7 +87,7 @@ describe('Stars Data Source', () => {
       granularity: FilterGranularity.WEEKLY,
       project: 'the-linux-kernel-organization',
       countType: ActivityFilterCountType.NEW,
-      activityType: ActivityFilterActivityType.FORKS,
+      activity_type: ActivityTypes.FORKS,
       onlyContributions: false,
       startDate,
       endDate
