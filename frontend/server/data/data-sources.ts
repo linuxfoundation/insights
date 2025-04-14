@@ -15,7 +15,7 @@ import type {
   WaitTimeFor1stReviewFilter,
   AverageTimeToMergeFilter,
   MergeLeadTimeFilter,
-  ReviewTimeByPRSizeFilter
+  ReviewTimeByPRSizeFilter,
 } from "~~/server/data/types";
 import type {ActiveContributorsResponse} from "~~/server/data/tinybird/active-contributors-data-source";
 import type {ActiveOrganizationsResponse} from "~~/server/data/tinybird/active-organizations-data-source";
@@ -42,10 +42,19 @@ import {fetchAverageTimeToMerge} from "~~/server/data/tinybird/average-time-to-m
 import {fetchWaitTimeFor1stReview} from "~~/server/data/tinybird/wait-time-for-1st-review-data-source";
 import {fetchMergeLeadTime} from "~~/server/data/tinybird/merge-lead-time-data-source";
 import {fetchActiveDays} from "~~/server/data/tinybird/active-days-data-source";
+import {fetchCodeReviewEngagement} from "~~/server/data/tinybird/code-review-engagement-data-source";
 import type {ForksData, StarsData} from "~~/types/popularity/responses.types";
 import type {
-  ActiveDays, IssuesResolution, PullRequests, ReviewTimeByPrItem, AverageTimeMerge, WaitTime1stReview, MergeLeadTime
+  ActiveDays,
+  IssuesResolution,
+  PullRequests,
+  ReviewTimeByPrItem,
+  AverageTimeMerge,
+  WaitTime1stReview,
+  MergeLeadTime,
+  CodeReviewEngagement,
 } from "~~/types/development/responses.types";
+import type {CodeReviewEngagementFilter} from "~~/types/development/requests.types";
 
 export interface DataSource {
     fetchActiveContributors: (filter: ActiveContributorsFilter) => Promise<ActiveContributorsResponse>;
@@ -67,6 +76,7 @@ export interface DataSource {
     fetchWaitTimeFor1stReview: (filter: WaitTimeFor1stReviewFilter) => Promise<WaitTime1stReview>;
     fetchMergeLeadTime: (filter: MergeLeadTimeFilter) => Promise<MergeLeadTime>;
     fetchActiveDays: (filter: ActiveDaysFilter) => Promise<ActiveDays>;
+    fetchCodeReviewEngagement: (filter: CodeReviewEngagementFilter) => Promise<CodeReviewEngagement>;
 }
 
 export function createDataSource(): DataSource {
@@ -88,5 +98,6 @@ export function createDataSource(): DataSource {
         fetchMergeLeadTime,
         fetchActiveDays,
         fetchReviewTimeByPRSize,
+        fetchCodeReviewEngagement,
     };
 }

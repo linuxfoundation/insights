@@ -13,6 +13,7 @@ export enum FilterGranularity {
 export type ActiveContributorsFilter = {
   project: string;
   repo?: string;
+  activity_types?: ActivityTypes[];
   granularity?: FilterGranularity;
   startDate?: DateTime;
   endDate?: DateTime;
@@ -30,6 +31,7 @@ export type ContributorsLeaderboardFilter = {
   project: string;
   platform?: ActivityPlatforms;
   activity_type?: ActivityTypes;
+  activity_types?: ActivityTypes[];
   repo?: string;
   limit?: number;
   startDate?: DateTime;
@@ -145,3 +147,12 @@ export type ActiveDaysFilter = {
   startDate?: DateTime,
   endDate?: DateTime,
 };
+
+export type CodeReviewEngagementTBQuery = {
+  project: string;
+  repo?: string,
+  limit: number,
+  activity_types: ActivityTypes[];
+  startDate: DateTime,
+  endDate: DateTime,
+}

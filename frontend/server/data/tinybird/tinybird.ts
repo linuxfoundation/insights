@@ -48,6 +48,12 @@ export async function fetchFromTinybird<T>(
               ? formatDateForTinyBird(value)
               : value
         ])
+        .map(([key, value]) => [
+            key,
+            Array.isArray(value)
+              ? value.join(',')
+              : value
+        ])
     );
 
     return await $fetch(url, {
