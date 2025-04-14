@@ -1,5 +1,6 @@
 import type {ContributorsLeaderboardFilter} from "~~/server/data/types";
 import {fetchFromTinybird, type TinybirdResponse} from "~~/server/data/tinybird/tinybird";
+import type {TinybirdContributorsLeaderboardData} from "~~/server/data/tinybird/responses.types";
 
 export type ContributorsLeaderboardDataPoint = {
   avatar: string | undefined; // URL of the user's profile pic or avatar.
@@ -8,22 +9,14 @@ export type ContributorsLeaderboardDataPoint = {
   contributionValue: number; // Value of the contribution
   contributionPercentage: number;
 }
-export type ContributorsLeaderboardData = ContributorsLeaderboardDataPoint[];
 export type ContributorsLeaderboardResponse = {
   meta: {
     offset: number;
     limit: number;
     total: number;
   },
-  data: ContributorsLeaderboardData
+  data: ContributorsLeaderboardDataPoint[]
 }
-
-type TinybirdContributorsLeaderboardData = {
-  avatar: string,
-  displayName: string,
-  contributionCount: number,
-  contributionPercentage: number
-}[];
 
 export async function fetchContributorsLeaderboard(
   filter: ContributorsLeaderboardFilter
@@ -36,7 +29,7 @@ export async function fetchContributorsLeaderboard(
     filter
   );
 
-  let processedData: ContributorsLeaderboardData = [];
+  let processedData: ContributorsLeaderboardDataPoint[] = [];
   if (data !== undefined) {
     processedData = (data as TinybirdResponse<TinybirdContributorsLeaderboardData>)?.data.map(
       (item): ContributorsLeaderboardDataPoint => ({

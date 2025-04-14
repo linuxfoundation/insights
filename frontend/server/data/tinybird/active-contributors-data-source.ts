@@ -11,13 +11,13 @@ import type {ActiveContributorsFilter} from "../types";
 import {getPreviousDates} from "../util";
 import type {TinybirdResponse} from './tinybird';
 import {fetchFromTinybird} from './tinybird'
+import type {TinybirdActiveContributorsData, TinybirdActiveContributorsSummary} from './responses.types';
 
 export type ActiveContributorsDataPoint = {
   startDate: string;
   endDate: string;
   contributors: number;
 };
-export type ActiveContributorsResponseData = ActiveContributorsDataPoint[];
 export type ActiveContributorsResponse = {
   summary: {
     current: number; // Current number of active contributors
@@ -27,18 +27,8 @@ export type ActiveContributorsResponse = {
     periodFrom: DateTime; // Start of the period (e.g. last 90 days)
     periodTo: DateTime; // End of the period (e.g. last 90 days)
   };
-  data: ActiveContributorsResponseData
+  data: ActiveContributorsDataPoint[]
 };
-
-type TinybirdActiveContributorsSummary = {
-  contributorCount: number;
-}[];
-
-type TinybirdActiveContributorsData = {
-  startDate: string;
-  endDate: string;
-  contributorCount: number;
-}[];
 
 export async function fetchActiveContributors(filter: ActiveContributorsFilter) {
   const dates = getPreviousDates(filter.startDate, filter.endDate);
@@ -73,7 +63,7 @@ export async function fetchActiveContributors(filter: ActiveContributorsFilter) 
     fetchFromTinybird<TinybirdActiveContributorsData>('/v0/pipes/active_contributors.json', dataQuery)
   ]);
 
-  let processedData: ActiveContributorsResponseData = [];
+  let processedData: ActiveContributorsDataPoint[] = [];
   if (data !== undefined) {
     processedData = (data as TinybirdResponse<TinybirdActiveContributorsData>)?.data.map(
       (item): ActiveContributorsDataPoint => ({
