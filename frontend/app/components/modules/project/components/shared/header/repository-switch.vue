@@ -104,10 +104,10 @@ const result = computed<ProjectRepository[]>(() => projectRepos.value
 
 const routeName = computed<{ project: LfxRoutes, repo: LfxRoutes }>(() => {
   const mapping: Record<string, { project: LfxRoutes, repo: LfxRoutes }> = {
-    // contributors: {
-    //   project: LfxRoutes.PROJECT_CONTRIBUTORS,
-    //   repo: LfxRoutes.REPOSITORY_CONTRIBUTORS,
-    // },
+    contributors: {
+      project: LfxRoutes.PROJECT_CONTRIBUTORS,
+      repo: LfxRoutes.REPOSITORY_CONTRIBUTORS,
+    },
     popularity: {
       project: LfxRoutes.PROJECT_POPULARITY,
       repo: LfxRoutes.REPOSITORY_POPULARITY,

@@ -11,7 +11,7 @@
 
   <teleport to="body">
     <div
-      v-show="isVisible"
+      v-show="isVisible && !props.disabled"
       ref="popover"
       class="c-popover__content"
       :class="{ 'is-modal': props.isModal }"

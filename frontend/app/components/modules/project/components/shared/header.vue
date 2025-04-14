@@ -78,59 +78,11 @@
         <div
           class="
             flex justify-between items-center transition-all overflow-auto
-            gap-3 -mx-5 sm:-mx-0.5 px-5 sm:px-0.5 py-3
+            -mx-5 sm:-mx-0.5 px-5 sm:px-0.5 py-3
           "
           :class="scrollTop > 50 ? 'md:py-4' : 'md:py-5'"
         >
-          <div class="flex items-center gap-3">
-            <lfx-tooltip
-              content="Coming soon"
-              placement="top"
-            >
-              <lfx-menu-button
-                :disabled="true"
-              >
-                <lfx-icon name="gauge-high" />
-                Overview
-              </lfx-menu-button>
-            </lfx-tooltip>
-            <lfx-menu-button
-              :to="{
-                name: repoName ? LfxRoutes.REPOSITORY : LfxRoutes.PROJECT
-              }"
-              exact
-            >
-              <lfx-icon name="people-group" />
-              Contributors
-            </lfx-menu-button>
-            <lfx-menu-button
-              :to="{
-                name: repoName ? LfxRoutes.REPOSITORY_POPULARITY : LfxRoutes.PROJECT_POPULARITY
-              }"
-            >
-              <lfx-icon name="fire" />
-              Popularity
-            </lfx-menu-button>
-            <lfx-menu-button
-              :to="{
-                name: repoName ? LfxRoutes.REPOSITORY_DEVELOPMENT : LfxRoutes.PROJECT_DEVELOPMENT
-              }"
-            >
-              <lfx-icon name="code" />
-              Development
-            </lfx-menu-button>
-            <lfx-tooltip
-              content="Coming soon"
-              placement="top"
-            >
-              <lfx-menu-button
-                :disabled="true"
-              >
-                <lfx-icon name="shield-check" />
-                Security & Best Practices
-              </lfx-menu-button>
-            </lfx-tooltip>
-          </div>
+          <lfx-project-menu />
           <lfx-project-date-range-picker />
         </div>
       </section>
@@ -149,9 +101,7 @@ import {useRoute} from 'nuxt/app';
 import {computed} from 'vue';
 import {storeToRefs} from "pinia";
 import type {Project, ProjectRepository} from "~~/types/project";
-import {LfxRoutes} from '~/components/shared/types/routes';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
-import LfxMenuButton from '~/components/uikit/menu-button/menu-button.vue';
 import LfxButton from '~/components/uikit/button/button.vue';
 import useScroll from "~/components/shared/utils/scroll";
 import LfxIconButton from "~/components/uikit/icon-button/icon-button.vue";
@@ -161,9 +111,9 @@ import LfxBack from "~/components/uikit/back/back.vue";
 import LfxProjectDateRangePicker from "~/components/modules/project/components/shared/header/date-range-picker.vue";
 import LfxMaintainHeight from "~/components/uikit/maintain-height/maintain-height.vue";
 import useResponsive from "~/components/shared/utils/responsive";
-import LfxTooltip from "~/components/uikit/tooltip/tooltip.vue";
 import {useProjectStore} from "~/components/modules/project/store/project.store";
 import LfxOrganizationLogo from "~/components/uikit/organization-logo/organization-logo.vue";
+import LfxProjectMenu from "~/components/modules/project/components/shared/header/project-menu.vue";
 
 const props = defineProps<{
   project: Project
