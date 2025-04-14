@@ -1,12 +1,16 @@
 <template>
-  <div>
+  <div
+    class="fixed bottom-5 sm:bottom-0 left-1/2 sm:left-0 sm:relative
+      transform -translate-x-1/2 sm:translate-x-0 sm:shadow-none sm:border-none
+      bg-white border border-neutral-200 rounded-full shadow-md"
+  >
     <lfx-dropdown-select
       v-model="selectedDateRange"
       placement="bottom-end"
       width="22.5rem"
     >
       <template #trigger="{selectedOption}">
-        <lfx-dropdown-selector>
+        <lfx-dropdown-selector class="whitespace-nowrap">
           <lfx-icon
             name="calendar"
             :size="16"
