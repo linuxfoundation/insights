@@ -1,5 +1,5 @@
 <template>
-  <lfx-maintain-height class="sticky top-14 lg:top-17 z-10">
+  <lfx-maintain-height class="fixed top-14 lg:top-17 z-10 w-full">
     <div class="bg-white outline outline-1 outline-neutral-200">
       <section class="container">
         <div

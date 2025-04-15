@@ -4,22 +4,35 @@ import {
 
 const useScroll = () => {
   const scrollTop = ref(0);
-  let body = document?.querySelector('body');
+  let html: HTMLElement | null = null;
+
   const scrollTopPercentage = computed(() => {
-    const scrollHeight = body?.scrollHeight || 1;
-    const clientHeight = body?.clientHeight || 0;
+    const scrollHeight = html?.scrollHeight || 1;
+    const clientHeight = html?.clientHeight || 0;
     return (scrollTop.value / (scrollHeight - clientHeight)) * 100;
   });
 
   const updateScrollTop = () => {
-    scrollTop.value = body?.scrollTop || 0;
+    scrollTop.value = html?.scrollTop || 0;
   };
 
   const scrollToTop = (value: number = 0, behavior: 'smooth' | 'instant' = 'smooth') => {
-    document.body.scrollTo({
+    window?.scrollTo({
       top: value,
       behavior
     });
+
+    if (value === 0) {
+      /* adding a small delay to finish the header animation from "fixed" to "relative"
+      then scrolling to top again. The window really does go to scroll position 0
+      when the header is in the "fixed" position. */
+      setTimeout(() => {
+        window?.scrollTo({
+          top: value,
+          behavior
+        });
+      }, 100);
+    }
   };
 
   const scrollToTarget = (
@@ -28,26 +41,25 @@ const useScroll = () => {
     behavior: 'smooth' | 'instant' = 'smooth'
   ) => {
     const elementPosition = element.getBoundingClientRect().top;
-    const offsetPosition = elementPosition + document.body.scrollTop - headerOffset;
-
+    const offsetPosition = elementPosition + (html?.scrollTop || 0) - headerOffset;
     scrollToTop(offsetPosition, behavior);
   };
 
   onMounted(() => {
-    body = document?.querySelector('body');
-    body?.addEventListener('scroll', updateScrollTop);
+    html = document.documentElement;
+    document?.addEventListener('scroll', updateScrollTop);
     updateScrollTop();
   });
 
   onUnmounted(() => {
-    window.removeEventListener('scroll', updateScrollTop);
+    document?.removeEventListener('scroll', updateScrollTop);
   });
 
   return {
     scrollTop,
     scrollTopPercentage,
-    scrollToTarget,
-    scrollToTop
+    scrollToTop,
+    scrollToTarget
   };
 };
 

@@ -1,5 +1,5 @@
 <template>
-  <lfx-maintain-height class="sticky top-14 lg:top-17 z-10">
+  <lfx-maintain-height class="fixed z-10 top-14 lg:top-17 w-lvw ml-auto mr-0">
     <div class="bg-white outline outline-neutral-100">
       <lfx-collection-header
         :loading="!collection"
