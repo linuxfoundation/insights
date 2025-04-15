@@ -43,7 +43,7 @@
         use-min-height
         :height="330"
       >
-        <div class="w-full h-[330px]">
+        <div class="w-full min-h-[330px]">
           <div class="font-semibold mb-5">
             <span class="text-black">Top contributors </span>
           </div>
