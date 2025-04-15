@@ -14,8 +14,6 @@
       :flip-display="true"
       :hide-previous-value="true"
       :summary="delta"
-      icon="circle-arrow-up-right"
-      icon-type="solid"
       class="items-end basis-2/5"
     />
   </div>

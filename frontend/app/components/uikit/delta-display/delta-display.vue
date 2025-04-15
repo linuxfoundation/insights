@@ -8,7 +8,7 @@
     <span :class="['text-body-1 flex items-center gap-2', deltaColor]">
       <lfx-icon
         :name="deltaIcon"
-        :type="props.iconType"
+        :type="'light'"
         :size="12"
       />
       <template v-if="!isHidePercentage">
@@ -26,12 +26,10 @@
 import { computed } from 'vue';
 import type { DeltaDisplayProps } from './types/delta-display.types';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
-import { formatNumber, formatNumberToDuration } from '~/components/shared/utils/formatter';
+import { formatNumber, formatSecondsToDuration } from '~/components/shared/utils/formatter';
 
 const props = withDefaults(defineProps<DeltaDisplayProps>(), {
-  isReverse: false,
-  icon: '', // ignoring this property for now, it seems there are only 2 types
-  iconType: 'light'
+  isReverse: false
 });
 
 const isHidePercentage = computed(() => props.summary.percentageChange === undefined);
@@ -53,18 +51,25 @@ const deltaDirection = computed<'positive' | 'negative'>(() => {
   return value >= 0 ? 'positive' : 'negative';
 });
 
+// TODO: remove isDuration and use deltaUnit instead
 const delta = computed(() => {
   const value = props.summary.changeValue;
+  const changeValue = formatSecondsToDuration(
+    Math.abs(value),
+    'short'
+  );
+
   const sign = value >= 0 ? '+' : '';
-  return sign + (props.isDuration ? formatNumberToDuration(value) : formatNumber(value, 1));
+  return sign + (props.isDuration ? changeValue : formatNumber(value, 1));
 });
 
 const deltaColor = computed(() => (deltaDirection.value === 'negative'
   ? 'text-negative-600' : 'text-positive-600'));
 
 const deltaDisplay = computed(() => {
+  const unit = props.isDuration ? '' : props.unit;
   if (!props.percentageOnly) {
-    return isHidePercentage.value ? `${delta.value}${props.unit || ''}` : `(${delta.value}${props.unit || ''})`;
+    return isHidePercentage.value ? `${delta.value}${unit || ''}` : `(${delta.value}${unit || ''})`;
   }
   return '';
 });
@@ -74,10 +79,11 @@ const deltaIcon = computed(() => (deltaDirection.value === 'negative'
 
 const previousDisplay = computed(() => {
   if (!props.hidePreviousValue) {
+    const unit = props.isDuration ? '' : props.unit;
     const previousValue = props.isDuration
-      ? formatNumberToDuration(props.summary.previous)
+      ? formatSecondsToDuration(props.summary.previous || 0, 'short')
       : formatNumber(props.summary.previous, props.percentageOnly ? 1 : 0);
-    return `${previousValue}${props.unit || ''}`;
+    return `${previousValue}${unit || ''}`;
   }
   return '';
 });

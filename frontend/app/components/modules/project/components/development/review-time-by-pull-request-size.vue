@@ -35,7 +35,7 @@
               <div class="pr-4">
                 <lfx-progress-bar
                   :values="[item.averageReviewTime / maxValue * 100]"
-                  :label="`${item.averageReviewTime} ${item.averageReviewTimeUnit}`"
+                  :label="convertAverageReviewTime(item.averageReviewTime)"
                   hide-empty
                 />
               </div>
@@ -58,6 +58,7 @@ import LfxProgressBar from '~/components/uikit/progress-bar/progress-bar.vue';
 import { isEmptyData } from '~/components/shared/utils/helper';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
 import { links } from '~/config/links';
+import { formatSecondsToDuration } from '~/components/shared/utils/formatter';
 
 const route = useRoute();
 const { startDate, endDate, selectedRepository } = storeToRefs(useProjectStore());
@@ -75,6 +76,8 @@ const { data, status, error } = useFetch(
 const reviewTimeByPr = computed<ReviewTimeByPrItem[]>(() => data.value as ReviewTimeByPrItem[]);
 const maxValue = computed(() => Math.max(...reviewTimeByPr.value.map((item) => item.averageReviewTime)));
 const isEmpty = computed(() => isEmptyData(reviewTimeByPr.value as unknown as Record<string, unknown>[]));
+
+const convertAverageReviewTime = (value: number) => formatSecondsToDuration(value, 'long');
 </script>
 
 <script lang="ts">

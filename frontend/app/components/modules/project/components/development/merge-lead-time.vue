@@ -19,13 +19,12 @@
         width="7.5rem"
       >
         <div class="flex flex-row gap-4 items-center">
-          <div class="text-data-display-1">{{ formatNumber(summary.current) }} days</div>
+          <div class="text-data-display-1">{{ current }}</div>
           <lfx-delta-display
             v-if="selectedTimeRangeKey !== dateOptKeys.alltime"
             :summary="summary"
-            icon="circle-arrow-up-right"
-            icon-type="solid"
             unit="d"
+            is-duration
           />
         </div>
       </lfx-skeleton-state>
@@ -77,20 +76,20 @@
 import { useFetch, useRoute } from 'nuxt/app';
 import { computed, watch } from 'vue';
 import { storeToRefs } from "pinia";
-import { Duration } from 'luxon';
 import LfxProjectLoadState from '../shared/load-state.vue';
 import LfxSkeletonState from '../shared/skeleton-state.vue';
 import LfxMergeLeadItem from './fragments/merge-lead-item.vue';
 import type { MergeLeadTime, MergeLeadTimeItem } from '~~/types/development/responses.types';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
-import { formatNumber } from '~/components/shared/utils/formatter';
 import type { Summary } from '~~/types/shared/summary.types';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
 import { isEmptyData } from '~/components/shared/utils/helper';
 import { links } from '~/config/links';
 import {dateOptKeys} from "~/components/modules/project/config/date-options";
 import { BenchmarkKeys, type Benchmark } from '~~/types/shared/benchmark.types';
+import { formatSecondsToDuration } from '~/components/shared/utils/formatter';
+import { FormatterUnits } from '~/components/shared/types/formatter.types';
 
 const emit = defineEmits<{(e: 'update:benchmarkValue', value: Benchmark): void;
 }>();
@@ -131,47 +130,34 @@ const prMerged = computed<MergeLeadTimeItem>(() => ({
 } as MergeLeadTimeItem));
 
 const summary = computed<Summary>(() => mergeLeadTime.value?.summary);
+const current = computed<string>(() => formatSecondsToDuration(mergeLeadTime.value?.summary?.current || 0, 'long'));
+const currentInDays = computed<number>(() => {
+  const current = mergeLeadTime.value?.summary?.current || 0;
+  return Number(formatSecondsToDuration(current, 'no', FormatterUnits.DAYS));
+});
 
 const isEmpty = computed(() => isEmptyData((mergeLeadTime.value?.data || []) as unknown as Record<string, unknown>[]));
 
 emit('update:benchmarkValue', {
     key: BenchmarkKeys.MergeLeadTime,
-    value: summary.value?.current || 0
+    value: currentInDays.value
   });
 
 watch(mergeLeadTime, () => {
   emit('update:benchmarkValue', {
     key: BenchmarkKeys.MergeLeadTime,
-    value: summary.value?.current || 0
+    value: currentInDays.value
   });
 });
 
+// TODO: Await response from Joana regarding this
 const formatDuration = (seconds: number): { value: number, unit: string } => {
-  const duration = Duration.fromObject({ seconds });
-  const value = duration.as('seconds');
+  const formattedValue = formatSecondsToDuration(seconds, 'long', undefined, 2);
 
-  switch (true) {
-    case seconds >= 86400:
-      return {
-        value: Number(duration.as('days').toFixed(2)),
-        unit: 'days'
-      };
-    case seconds >= 3600:
-      return {
-        value: Number(duration.as('hours').toFixed(2)),
-        unit: 'hours'
-      };
-    case seconds >= 60:
-      return {
-        value: Number(duration.as('minutes').toFixed(2)),
-        unit: 'minutes'
-      };
-    default:
-      return {
-        value: Number(value.toFixed(2)),
-        unit: 'seconds'
-      };
-  }
+  return {
+    value: Number(formattedValue.replace(/[^0-9.]/g, '')),
+    unit: formattedValue.replace(/[^a-zA-Z]/g, '')
+  };
 };
 
 </script>

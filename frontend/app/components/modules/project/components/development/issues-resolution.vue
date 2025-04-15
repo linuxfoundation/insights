@@ -25,8 +25,6 @@
               <lfx-delta-display
                 v-if="selectedTimeRangeKey !== dateOptKeys.alltime"
                 :summary="summary"
-                icon="circle-arrow-up-right"
-                icon-type="solid"
               />
             </div>
           </lfx-skeleton-state>
@@ -47,7 +45,7 @@
               height="1.25rem"
               width="4rem"
             >
-              <span class="text-xl">{{ formatNumber(avgVelocityInDays) }} days</span>
+              <span class="text-xl">{{ avgVelocity }}</span>
             </lfx-skeleton-state>
           </div>
         </div>
@@ -86,7 +84,6 @@
 import { useFetch, useRoute } from 'nuxt/app';
 import { ref, computed, watch } from 'vue';
 import { storeToRefs } from "pinia";
-import { Duration } from 'luxon';
 import LfxProjectLoadState from '../shared/load-state.vue';
 import LfxSkeletonState from '../shared/skeleton-state.vue';
 import type { IssuesResolution, IssuesResolutionSummary } from '~~/types/development/responses.types';
@@ -101,7 +98,7 @@ import type {
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import { getLineAreaChartConfig } from '~/components/uikit/chart/configs/line.area.chart';
 import { lfxColors } from '~/config/styles/colors';
-import { formatNumber } from '~/components/shared/utils/formatter';
+import { formatNumber, formatSecondsToDuration } from '~/components/shared/utils/formatter';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
 import { isEmptyData } from '~/components/shared/utils/helper';
@@ -110,6 +107,7 @@ import { dateOptKeys } from '~/components/modules/project/config/date-options';
 import type { Granularity } from '~~/types/shared/granularity';
 import { links } from '~/config/links';
 import { BenchmarkKeys, type Benchmark } from '~~/types/shared/benchmark.types';
+import { FormatterUnits } from '~/components/shared/types/formatter.types';
 
 const emit = defineEmits<{(e: 'update:benchmarkValue', value: Benchmark, granularity: string): void;
 }>();
@@ -145,8 +143,14 @@ const chartData = computed<ChartData[]>(
   ], undefined, 'dateTo')
 );
 
-const avgVelocityInDays = computed<number>(() => Duration
-.fromObject({ seconds: summary.value?.avgVelocityInDays || 0 }).as('days'));
+const avgVelocity = computed<string>(() => formatSecondsToDuration(summary.value?.avgVelocityInDays || 0, 'long'));
+const avgVelocityInDays = computed<number>(() => Number(
+  formatSecondsToDuration(
+    summary.value?.avgVelocityInDays || 0,
+    'no',
+    FormatterUnits.DAYS
+  )
+));
 
 const chartSeries = ref<ChartSeries[]>([
   {
