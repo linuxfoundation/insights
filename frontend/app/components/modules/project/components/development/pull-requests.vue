@@ -25,8 +25,6 @@
               <lfx-delta-display
                 v-if="selectedTimeRangeKey !== dateOptKeys.alltime"
                 :summary="summary"
-                icon="circle-arrow-up-right"
-                icon-type="solid"
               />
             </div>
           </lfx-skeleton-state>
@@ -47,7 +45,7 @@
               height="1.25rem"
               width="4rem"
             >
-              <span class="text-xl">{{ formatNumber(pullRequests.avgVelocityInDays) }} days</span>
+              <span class="text-xl">{{ avgVelocity }}</span>
             </lfx-skeleton-state>
           </div>
         </div>
@@ -106,7 +104,7 @@ import type {
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import { getBarChartConfigStacked } from '~/components/uikit/chart/configs/bar.chart';
 import { lfxColors } from '~/config/styles/colors';
-import { formatNumber } from '~/components/shared/utils/formatter';
+import { formatNumber, formatSecondsToDuration } from '~/components/shared/utils/formatter';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
 import { isEmptyData } from '~/components/shared/utils/helper';
@@ -143,6 +141,7 @@ const { data, status, error } = useFetch(
 const pullRequests = computed<PullRequests>(() => data.value as PullRequests);
 
 const summary = computed<Summary>(() => pullRequests.value?.summary);
+const avgVelocity = computed<string>(() => formatSecondsToDuration(pullRequests.value?.avgVelocityInDays || 0, 'long'));
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
   () => convertToChartData((pullRequests.value?.data || []) as RawChartData[], 'startDate', [

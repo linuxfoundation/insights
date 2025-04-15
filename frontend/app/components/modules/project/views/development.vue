@@ -119,8 +119,8 @@ import LfxProjectForksReviewTimeByPullRequestSize
   from "~/components/modules/project/components/development/review-time-by-pull-request-size.vue";
 import LfxProjectAverageTimeToMerge
   from "~/components/modules/project/components/development/average-time-to-merge.vue";
-// import LfxProjectForksWaitTimeFirstReview
-//   from "~/components/modules/project/components/development/wait-time-first-review.vue";
+import LfxProjectWaitTimeFirstReview
+  from "~/components/modules/project/components/development/wait-time-first-review.vue";
 import LfxProjectCodeReviewEngagement
   from "~/components/modules/project/components/development/code-review-engagement.vue";
 import LfxSideNav from '~/components/uikit/side-nav/side-nav.vue';

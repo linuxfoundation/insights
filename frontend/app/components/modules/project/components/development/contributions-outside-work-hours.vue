@@ -25,8 +25,6 @@
             <lfx-delta-display
               v-if="selectedTimeRangeKey !== dateOptKeys.alltime"
               :summary="summary"
-              icon="circle-arrow-up-right"
-              icon-type="solid"
               percentage-only
               unit="%"
             />

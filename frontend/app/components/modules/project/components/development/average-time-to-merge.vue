@@ -20,12 +20,10 @@
           width="7.5rem"
         >
           <div class="flex flex-row gap-4 items-center">
-            <div class="text-data-display-1">{{ formatNumberToDuration(summary.current) }}</div>
+            <div class="text-data-display-1">{{ currentSummary }}</div>
             <lfx-delta-display
               v-if="selectedTimeRangeKey !== dateOptKeys.alltime"
               :summary="summary"
-              icon="circle-arrow-up-right"
-              icon-type="solid"
               is-duration
             />
           </div>
@@ -67,13 +65,13 @@ import type {
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import { getBarChartConfigCustom } from '~/components/uikit/chart/configs/bar.chart';
 import { lfxColors } from '~/config/styles/colors';
-import { formatNumberToDuration } from '~/components/shared/utils/formatter';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
 import { isEmptyData } from '~/components/shared/utils/helper';
 import { barGranularities } from '~/components/shared/types/granularity';
 import { dateOptKeys } from '~/components/modules/project/config/date-options';
 import type { Granularity } from '~~/types/shared/granularity';
 import { links } from '~/config/links';
+import { formatSecondsToDuration } from '~/components/shared/utils/formatter';
 
 const {
   startDate, endDate, selectedRepository, selectedTimeRangeKey, customRangeGranularity
@@ -99,11 +97,12 @@ const { data, status, error } = useFetch(
 const averageTimeMerge = computed<AverageTimeMerge>(() => data.value as AverageTimeMerge);
 
 const summary = computed<Summary>(() => averageTimeMerge.value.summary);
+const currentSummary = computed<string>(() => formatSecondsToDuration(summary.value?.current || 0, 'long'));
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
   () => convertToChartData((averageTimeMerge.value?.data || []) as RawChartData[], 'startDate', [
     'averageTime'
-  ], undefined, 'endDate')
+  ], undefined, 'endDate').map(chartDataMapper)
 );
 
 const chartSeries = ref<ChartSeries[]>([
@@ -121,8 +120,6 @@ const configOverride = computed(() => ({
     axisLabel: {
       formatter: (value: number) => `${value === 0 ? '' : `${value}h`}`
     },
-    max: (value: { min: number; max: number }) => Math.ceil(value.max / 20) * 20 + 20,
-
   }
 }));
 
@@ -137,6 +134,11 @@ const barChartConfig = computed(() => getBarChartConfigCustom(
 const isEmpty = computed(() => isEmptyData(
   (averageTimeMerge.value?.data || []) as unknown as Record<string, unknown>[]
 ));
+
+const chartDataMapper = (d: ChartData) => ({
+    ...d,
+    values: d.values.map((v) => Number(formatSecondsToDuration(v, 'no')))
+  })
 </script>
 
 <script lang="ts">
