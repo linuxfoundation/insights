@@ -18,7 +18,7 @@
       </div>
     </div>
   </section>
-  <lfx-maintain-height class="sticky top-14 lg:top-17 ">
+  <div class="sticky top-14 lg:top-17 h-[77px]">
     <div class="bg-white border-b border-neutral-100">
       <div
         class="container transition-all"
@@ -54,7 +54,7 @@
         </div>
       </div>
     </div>
-  </lfx-maintain-height>
+  </div>
   <section>
     <div class="container py-5 lg:py-10 flex flex-col  gap-5 lg:gap-8">
       <div
@@ -122,7 +122,6 @@ import useResponsive from "~/components/shared/utils/responsive";
 import useScroll from "~/components/shared/utils/scroll";
 import LfxCollectionListItemLoading
   from "~/components/modules/collection/components/list/collection-list-item-loading.vue";
-import LfxMaintainHeight from "~/components/uikit/maintain-height/maintain-height.vue";
 import LfxButton from "~/components/uikit/button/button.vue";
 import LfxDropdownSelector from "~/components/uikit/dropdown/dropdown-selector.vue";
 import LfxDropdownSelect from "~/components/uikit/dropdown/dropdown-select.vue";

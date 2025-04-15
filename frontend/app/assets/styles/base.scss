@@ -4,8 +4,6 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-tap-highlight-color: transparent;
-  height: 100%;
-  overflow-y: hidden;
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
   position: relative;
@@ -14,11 +12,9 @@ html {
 body {
   margin: 0;
   height: 100%;
-  overflow: auto;
   position: relative;
   color: var(--lfx-color-text);
   background: var(--lfx-color-background);
-  -webkit-overflow-scrolling: touch;
   // Base font size used for rem
   font-size: 16px;
 }

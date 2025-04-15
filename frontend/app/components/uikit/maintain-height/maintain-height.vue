@@ -1,19 +1,24 @@
 <template>
   <div
-    ref="maintainHeightRef"
+    class="block"
     :style="{ 'height': fixedHeight + 'px' }"
+  />
+  <div
+    ref="maintainHeightRef"
+    v-bind="$attrs"
   >
     <slot />
   </div>
 </template>
 
 <script setup lang="ts">
-import {ref, onMounted} from 'vue';
+import {ref, onMounted, nextTick} from 'vue';
 
 const fixedHeight = ref<number | null>(null);
 const maintainHeightRef = ref<HTMLDivElement | null>(null);
 
-onMounted(() => {
+onMounted(async () => {
+  await nextTick();
   if (maintainHeightRef.value) {
     fixedHeight.value = maintainHeightRef.value.offsetHeight;
   }
