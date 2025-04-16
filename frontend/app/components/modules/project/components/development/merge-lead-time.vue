@@ -73,9 +73,10 @@
 </template>
 
 <script setup lang="ts">
-import { useFetch, useRoute } from 'nuxt/app';
-import { computed, watch } from 'vue';
+import { useRoute } from 'nuxt/app';
+import { computed, watch, onServerPrefetch } from 'vue';
 import { storeToRefs } from "pinia";
+import {type QueryFunction, useQuery} from "@tanstack/vue-query";
 import LfxProjectLoadState from '../shared/load-state.vue';
 import LfxSkeletonState from '../shared/skeleton-state.vue';
 import LfxMergeLeadItem from './fragments/merge-lead-item.vue';
@@ -90,6 +91,7 @@ import {dateOptKeys} from "~/components/modules/project/config/date-options";
 import { BenchmarkKeys, type Benchmark } from '~~/types/shared/benchmark.types';
 import { formatSecondsToDuration } from '~/components/shared/utils/formatter';
 import { FormatterUnits } from '~/components/shared/types/formatter.types';
+import {TanstackKey} from "~/components/shared/types/tanstack";
 
 const emit = defineEmits<{(e: 'update:benchmarkValue', value: Benchmark): void;
 }>();
@@ -100,16 +102,35 @@ const {
 
 const route = useRoute();
 
-const { data, status, error } = useFetch(
-  `/api/project/${route.params.slug}/development/merge-lead-time`,
-  {
-    params: {
-      repository: selectedRepository,
-      startDate,
-      endDate,
-    }
+const queryKey = computed(() => [
+  TanstackKey.MERGE_LEAD_TIME,
+  route.params.slug,
+  selectedRepository.value,
+  startDate.value,
+  endDate.value,
+]);
+
+const fetchData: QueryFunction<MergeLeadTime> = async () => $fetch(
+    `/api/project/${route.params.slug}/development/merge-lead-time`,
+    {
+  params: {
+    repository: selectedRepository.value,
+    startDate: startDate.value,
+    endDate: endDate.value,
   }
+}
 );
+
+const {
+  data, status, error, suspense
+} = useQuery<MergeLeadTime>({
+  queryKey,
+  queryFn: fetchData,
+});
+
+onServerPrefetch(async () => {
+  await suspense()
+});
 
 const mergeLeadTime = computed<MergeLeadTime>(() => data.value as MergeLeadTime);
 const pickup = computed<MergeLeadTimeItem>(() => ({

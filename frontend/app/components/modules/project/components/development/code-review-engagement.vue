@@ -58,9 +58,10 @@
 </template>
 
 <script setup lang="ts">
-import { useFetch, useRoute } from 'nuxt/app';
-import { ref, computed } from 'vue';
+import { useRoute } from 'nuxt/app';
+import { ref, computed, onServerPrefetch } from 'vue';
 import { storeToRefs } from "pinia";
+import {type QueryFunction, useQuery} from "@tanstack/vue-query";
 import LfxProjectLoadState from '../shared/load-state.vue';
 import LfxSkeletonState from '../shared/skeleton-state.vue';
 import LfxCodeReviewTable from './fragments/code-review-table.vue';
@@ -75,6 +76,7 @@ import { isEmptyData } from '~/components/shared/utils/helper';
 import { links } from '~/config/links';
 import { dateOptKeys } from '~/components/modules/project/config/date-options';
 import {CodeReviewEngagementMetric} from "~~/types/development/requests.types";
+import {TanstackKey} from "~/components/shared/types/tanstack";
 
 const {
  startDate, endDate, selectedRepository, selectedTimeRangeKey
@@ -83,17 +85,37 @@ const {
 const activeTab = ref(CodeReviewEngagementMetric.PR_PARTICIPANTS);
 const route = useRoute();
 
-const { data, status, error } = useFetch(
-  () => `/api/project/${route.params.slug}/development/code-review-engagement`,
-  {
-    params: {
-      metric: activeTab,
-      repository: selectedRepository,
-      startDate,
-      endDate,
-    }
+const queryKey = computed(() => [
+  TanstackKey.CODE_REVIEW_ENGAGEMENT,
+  route.params.slug,
+  activeTab.value,
+  selectedRepository.value,
+  startDate.value,
+  endDate.value,
+]);
+
+const fetchData: QueryFunction<CodeReviewEngagement> = async () => $fetch(
+    `/api/project/${route.params.slug}/development/code-review-engagement`,
+    {
+  params: {
+    metric: activeTab.value,
+    repository: selectedRepository.value,
+    startDate: startDate.value,
+    endDate: endDate.value,
   }
+}
 );
+
+const {
+  data, status, error, suspense
+} = useQuery<CodeReviewEngagement>({
+  queryKey,
+  queryFn: fetchData,
+});
+
+onServerPrefetch(async () => {
+  await suspense();
+});
 
 const codeReviewEngagement = computed<CodeReviewEngagement>(() => data.value as CodeReviewEngagement);
 

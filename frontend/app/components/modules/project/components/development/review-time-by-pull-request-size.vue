@@ -48,9 +48,10 @@
 </template>
 
 <script setup lang="ts">
-import { useFetch, useRoute } from 'nuxt/app';
-import { computed } from 'vue';
+import { useRoute } from 'nuxt/app';
+import { computed, onServerPrefetch } from 'vue';
 import { storeToRefs } from "pinia";
+import {type QueryFunction, useQuery} from "@tanstack/vue-query";
 import LfxProjectLoadState from '../shared/load-state.vue';
 import type { ReviewTimeByPrItem } from '~~/types/development/responses.types';
 import LfxCard from '~/components/uikit/card/card.vue';
@@ -59,20 +60,40 @@ import { isEmptyData } from '~/components/shared/utils/helper';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
 import { links } from '~/config/links';
 import { formatSecondsToDuration } from '~/components/shared/utils/formatter';
+import {TanstackKey} from "~/components/shared/types/tanstack";
 
 const route = useRoute();
 const { startDate, endDate, selectedRepository } = storeToRefs(useProjectStore());
 
-const { data, status, error } = useFetch(
-  `/api/project/${route.params.slug}/development/review-time-by-pr-size`,
-  {
-    params: {
-      repository: selectedRepository,
-      startDate,
-      endDate,
-    }
+const queryKey = computed(() => [
+  TanstackKey.REVIEW_TIME_BY_PULL_REQUEST_SIZE,
+  route.params.slug,
+  selectedRepository.value,
+  startDate.value,
+  endDate.value,
+]);
+
+const fetchData: QueryFunction<ReviewTimeByPrItem[]> = async () => $fetch(
+    `/api/project/${route.params.slug}/development/review-time-by-pr-size`,
+    {
+  params: {
+    repository: selectedRepository.value,
+    startDate: startDate.value,
+    endDate: endDate.value,
   }
+}
 );
+
+const {
+  data, status, error, suspense
+} = useQuery<ReviewTimeByPrItem[]>({
+  queryKey,
+  queryFn: fetchData,
+});
+
+onServerPrefetch(async () => {
+  await suspense();
+});
 const reviewTimeByPr = computed<ReviewTimeByPrItem[]>(() => data.value as ReviewTimeByPrItem[]);
 const maxValue = computed(() => Math.max(...reviewTimeByPr.value.map((item) => item.averageReviewTime)));
 const isEmpty = computed(() => isEmptyData(reviewTimeByPr.value as unknown as Record<string, unknown>[]));

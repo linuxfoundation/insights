@@ -70,9 +70,12 @@
 </template>
 
 <script setup lang="ts">
-import { useFetch, useRoute } from 'nuxt/app';
-import { ref, computed, watch } from 'vue';
+import { useRoute } from 'nuxt/app';
+import {
+ ref, computed, watch, onServerPrefetch
+} from 'vue';
 import { storeToRefs } from "pinia";
+import {type QueryFunction, useQuery} from "@tanstack/vue-query";
 import LfxProjectLoadState from '../shared/load-state.vue';
 import LfxSkeletonState from '../shared/skeleton-state.vue';
 import type { ActiveDays } from '~~/types/development/responses.types';
@@ -97,6 +100,7 @@ import { dateOptKeys } from '~/components/modules/project/config/date-options';
 import { Granularity } from '~~/types/shared/granularity';
 import { links } from '~/config/links';
 import { BenchmarkKeys, type Benchmark } from '~~/types/shared/benchmark.types';
+import {TanstackKey} from "~/components/shared/types/tanstack";
 
 const emit = defineEmits<{(e: 'update:benchmarkValue', value: Benchmark, granularity: string): void;
 }>();
@@ -122,18 +126,37 @@ const granularityDisplay = computed(() => {
       return 'day';
   }
 });
-const { data, status, error } = useFetch(
-  () => `/api/project/${route.params.slug}/development/active-days`,
-  {
-    params: {
-      // Active days follow line chart granularities
-      granularity,
-      repository: selectedRepository,
-      startDate,
-      endDate,
+const queryKey = computed(() => [
+  TanstackKey.ACTIVE_DAYS,
+  route.params.slug,
+  granularity.value,
+  selectedRepository.value,
+  startDate.value,
+  endDate.value,
+]);
+
+const fetchData: QueryFunction<ActiveDays> = async () => $fetch(
+    `/api/project/${route.params.slug}/development/active-days`,
+    {
+      params: {
+        granularity: granularity.value,
+        repository: selectedRepository.value,
+        startDate: startDate.value,
+        endDate: endDate.value,
+      },
     }
-  }
 );
+
+const {
+data, status, error, suspense
+} = useQuery<ActiveDays>({
+  queryKey,
+  queryFn: fetchData,
+});
+
+onServerPrefetch(async () => {
+  await suspense();
+});
 
 const activeDays = computed<ActiveDays>(() => data.value as ActiveDays);
 

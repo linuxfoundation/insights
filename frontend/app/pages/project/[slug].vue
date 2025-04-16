@@ -15,18 +15,18 @@ import {
 } from "nuxt/app";
 import {storeToRefs} from "pinia";
 import {computed, onServerPrefetch} from "vue";
-import {type QueryFunction, useQuery} from "@tanstack/vue-query";
+import {useQuery} from "@tanstack/vue-query";
 import type {Project} from "~~/types/project";
 import LfxProjectHeader from "~/components/modules/project/components/shared/header.vue";
 import {useProjectStore} from "~/components/modules/project/store/project.store";
+import {TanstackKey} from "~/components/shared/types/tanstack";
+import {PROJECT_API_SERVICE} from "~/components/modules/project/services/project.api.service";
 
 const route = useRoute();
 const {slug} = route.params;
 const {project} = storeToRefs(useProjectStore());
 
-const queryKey = computed(() => ['project', slug]);
-
-const fetchProject: QueryFunction<Project> = async () => $fetch(`/api/project/${slug}`)
+const queryKey = computed(() => [TanstackKey.PROJECT, slug]);
 
 const {
   data,
@@ -35,7 +35,7 @@ const {
   error
 } = useQuery<Project>({
   queryKey,
-  queryFn: fetchProject,
+  queryFn: PROJECT_API_SERVICE.fetchProject(slug as string),
   retry: false,
 });
 

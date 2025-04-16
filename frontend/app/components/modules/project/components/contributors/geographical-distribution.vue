@@ -85,11 +85,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
+import {
+ref, computed, watch, onServerPrefetch
+} from 'vue';
 import { useRoute } from 'vue-router';
-import { useFetch } from 'nuxt/app';
 import { storeToRefs } from "pinia";
 import pluralize from "pluralize";
+import {useQuery} from "@tanstack/vue-query";
 import LfxProjectLoadState from '../shared/load-state.vue';
 import type { GeoMapResponse, GeoMapData } from './types/geo-map.types';
 import LfxActivitiesDropdown from './fragments/activities-dropdown.vue';
@@ -109,6 +111,7 @@ import { isEmptyData } from '~/components/shared/utils/helper';
 import { links } from '~/config/links';
 import { BenchmarkKeys, type Benchmark } from '~~/types/shared/benchmark.types';
 import { embargoedCountries } from '~/config/benchmarks/configs/geographical-distribution';
+import {TanstackKey} from "~/components/shared/types/tanstack";
 
 const emit = defineEmits<{(e: 'update:benchmarkValue', value: Benchmark): void;
 }>();
@@ -120,19 +123,38 @@ const platform = computed(() => metric.value.split(':')[0]);
 const activityType = computed(() => metric.value.split(':')[1]);
 const { startDate, endDate, selectedRepository } = storeToRefs(useProjectStore())
 
-const { data, status, error } = useFetch(
-  `/api/project/${route.params.slug}/contributors/geographical-distribution`,
-  {
-    params: {
-      type: activeTab,
-      platform,
-      activityType,
-      repository: selectedRepository,
-      startDate,
-      endDate,
-    }
+const queryKey = computed(() => [
+  TanstackKey.GEOGRAPHICAL_DISTRIBUTION,
+  route.params.slug,
+  activeTab.value,
+  platform.value,
+  activityType.value,
+  selectedRepository.value,
+  startDate.value,
+  endDate.value,
+]);
+
+const fetchData = async () => $fetch(`/api/project/${route.params.slug}/contributors/geographical-distribution`, {
+  params: {
+    type: activeTab.value,
+    platform: platform.value,
+    activityType: activityType.value,
+    repository: selectedRepository.value,
+    startDate: startDate.value,
+    endDate: endDate.value,
   }
-);
+});
+
+const {
+data, status, error, suspense
+} = useQuery({
+  queryKey,
+  queryFn: fetchData,
+});
+
+onServerPrefetch(async () => {
+  await suspense()
+})
 
 const geoMapData = computed<GeoMapData[] | undefined>(() => (data.value as GeoMapResponse)?.data);
 const geoMapDataCountries = computed<GeoMapData[] | undefined>(() => (geoMapData.value

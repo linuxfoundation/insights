@@ -47,9 +47,10 @@
 </template>
 
 <script setup lang="ts">
-import { useFetch, useRoute } from 'nuxt/app';
-import { computed } from 'vue';
+import { useRoute } from 'nuxt/app';
+import { computed, onServerPrefetch } from 'vue';
 import { storeToRefs } from "pinia";
+import {type QueryFunction, useQuery} from "@tanstack/vue-query";
 import LfxProjectLoadState from '../shared/load-state.vue';
 import LfxSkeletonState from '../shared/skeleton-state.vue';
 import type { SearchQueries } from '~~/types/popularity/responses.types';
@@ -72,6 +73,7 @@ import { getBarChartConfig } from '~/components/uikit/chart/configs/bar.chart';
 import { barGranularities } from '~/components/shared/types/granularity';
 import type { Granularity } from '~~/types/shared/granularity';
 import { links } from '~/config/links';
+import {TanstackKey} from "~/components/shared/types/tanstack";
 
 const {
   startDate,
@@ -89,17 +91,37 @@ const granularity = computed(() => (selectedTimeRangeKey.value === dateOptKeys.c
   ? customRangeGranularity.value[0] as Granularity
   : barGranularities[selectedTimeRangeKey.value as keyof typeof barGranularities]));
 
-const { data, status, error } = useFetch(
-  `/api/project/${route.params.slug}/popularity/search-queries`,
-  {
-    params: {
-      granularity,
-      repository: selectedRepository,
-      startDate,
-      endDate,
-    }
+const queryKey = computed(() => [
+  TanstackKey.SEARCH_QUERIES,
+  route.params.slug,
+  granularity.value,
+  selectedRepository.value,
+  startDate.value,
+  endDate.value,
+]);
+
+const fetchData: QueryFunction<SearchQueries> = async () => $fetch(
+    `/api/project/${route.params.slug}/popularity/search-queries`,
+    {
+  params: {
+    granularity: granularity.value,
+    repository: selectedRepository.value,
+    startDate: startDate.value,
+    endDate: endDate.value,
   }
+}
 );
+
+const {
+  data, status, error, suspense
+} = useQuery<SearchQueries>({
+  queryKey,
+  queryFn: fetchData,
+});
+
+onServerPrefetch(async () => {
+  await suspense();
+});
 
 const searchQueries = computed<SearchQueries>(() => data.value as SearchQueries);
 

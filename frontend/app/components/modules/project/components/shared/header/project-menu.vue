@@ -49,13 +49,13 @@
             :value="repoName ? link.repoRouteName : link.projectRouteName"
             :label="link.label"
           >
-            <lfx-icon
-              :name="link.icon"
-              :class="{'font-black !text-brand-500': activeLink?.key === link.key}"
-            />
-            <span :class="{'font-medium': activeLink?.key === link.key}">
-              {{ link.label }}
-            </span>
+            <!--            <lfx-icon-->
+            <!--              :name="link.icon"-->
+            <!--              :class="{'font-black !text-brand-500': activeLink?.key === link.key}"-->
+            <!--            />-->
+            <!--            <span :class="{'font-medium': activeLink?.key === link.key}">-->
+            <!--              {{ link.label }}-->
+            <!--            </span>-->
           </lfx-dropdown-item>
         </router-link>
 

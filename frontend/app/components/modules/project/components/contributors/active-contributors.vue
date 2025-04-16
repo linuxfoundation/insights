@@ -49,9 +49,12 @@
 </template>
 
 <script setup lang="ts">
-import { useFetch, useRoute } from 'nuxt/app';
-import { ref, computed, watch } from 'vue';
+import { useRoute } from 'nuxt/app';
+import {
+ref, computed, watch, onServerPrefetch
+} from 'vue';
 import { storeToRefs } from "pinia";
+import {type QueryFunction, useQuery} from "@tanstack/vue-query";
 import LfxProjectLoadState from '../shared/load-state.vue';
 import LfxSkeletonState from '../shared/skeleton-state.vue';
 import { granularityTabs } from './config/granularity-tabs';
@@ -75,6 +78,7 @@ import { isEmptyData } from '~/components/shared/utils/helper';
 import { dateOptKeys } from '~/components/modules/project/config/date-options';
 import { links } from '~/config/links';
 import { BenchmarkKeys, type Benchmark } from '~~/types/shared/benchmark.types';
+import {TanstackKey} from "~/components/shared/types/tanstack";
 
 const emit = defineEmits<{(e: 'update:benchmarkValue', value: Benchmark): void;
 }>();
@@ -94,17 +98,37 @@ const paramWatch = computed(() => ({
 }));
 const summaryLoading = ref(true);
 
-const { data, status, error } = useFetch(
-  () => `/api/project/${route.params.slug}/contributors/active-contributors`,
-  {
-    params: {
-      granularity: activeTab,
-      repository: selectedRepository,
-      startDate,
-      endDate,
-    }
+const queryKey = computed(() => [
+  TanstackKey.ACTIVE_CONTRIBUTORS,
+  route.params.slug,
+  activeTab,
+  selectedRepository,
+  startDate,
+  endDate,
+]);
+
+const fetchData: QueryFunction<ActiveContributors> = async () => $fetch(
+    `/api/project/${route.params.slug}/contributors/active-contributors`,
+    {
+  params: {
+    granularity: activeTab.value,
+    repository: selectedRepository.value,
+    startDate: startDate.value,
+    endDate: endDate.value,
   }
+}
 );
+
+const {
+data, status, error, suspense
+} = useQuery<ActiveContributors>({
+  queryKey,
+  queryFn: fetchData,
+});
+
+onServerPrefetch(async () => {
+  await suspense()
+})
 
 const activeContributors = computed<ActiveContributors>(() => data.value as ActiveContributors);
 

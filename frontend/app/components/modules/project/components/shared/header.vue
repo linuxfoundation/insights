@@ -19,7 +19,7 @@
                 class="mr-4"
                 :src="props.project?.logo || ''"
                 :size="scrollTop > 50 ? 'normal' : ((pageWidth < 768 && pageWidth > 0) ? 'normal' : 'large')"
-                :is-lf="props.project?.isLF"
+                :is-lf="!!props.project?.isLF"
               />
 
               <h1

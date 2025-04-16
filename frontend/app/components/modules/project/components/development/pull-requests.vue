@@ -85,9 +85,12 @@
 </template>
 
 <script setup lang="ts">
-import { useFetch, useRoute } from 'nuxt/app';
-import { ref, computed, watch } from 'vue';
+import { useRoute } from 'nuxt/app';
+import {
+ ref, computed, watch, onServerPrefetch
+} from 'vue';
 import { storeToRefs } from "pinia";
+import {type QueryFunction, useQuery} from "@tanstack/vue-query";
 import LfxSkeletonState from '../shared/skeleton-state.vue';
 import LfxProjectLoadState from '../shared/load-state.vue';
 import LfxProjectPullRequestLegendItem from './fragments/pull-request-legend-item.vue';
@@ -113,6 +116,7 @@ import { dateOptKeys } from '~/components/modules/project/config/date-options';
 import type { Granularity } from '~~/types/shared/granularity';
 import { links } from '~/config/links';
 import { BenchmarkKeys, type Benchmark } from '~~/types/shared/benchmark.types';
+import {TanstackKey} from "~/components/shared/types/tanstack";
 
 const emit = defineEmits<{(e: 'update:benchmarkValue', value: Benchmark, granularity: string): void;
 }>();
@@ -126,17 +130,37 @@ const route = useRoute();
 const granularity = computed(() => (selectedTimeRangeKey.value === dateOptKeys.custom
   ? customRangeGranularity.value[0] as Granularity
   : barGranularities[selectedTimeRangeKey.value as keyof typeof barGranularities]));
-const { data, status, error } = useFetch(
-  () => `/api/project/${route.params.slug}/development/pull-requests`,
-  {
-    params: {
-      granularity,
-      repository: selectedRepository,
-      startDate,
-      endDate,
-    }
+const queryKey = computed(() => [
+  TanstackKey.PULL_REQUESTS,
+  route.params.slug,
+  granularity.value,
+  selectedRepository.value,
+  startDate.value,
+  endDate.value,
+]);
+
+const fetchData: QueryFunction<PullRequests> = async () => $fetch(
+    `/api/project/${route.params.slug}/development/pull-requests`,
+    {
+  params: {
+    granularity: granularity.value,
+    repository: selectedRepository.value,
+    startDate: startDate.value,
+    endDate: endDate.value,
   }
+}
 );
+
+const {
+  data, status, error, suspense
+} = useQuery<PullRequests>({
+  queryKey,
+  queryFn: fetchData,
+});
+
+onServerPrefetch(async () => {
+  await suspense()
+});
 
 const pullRequests = computed<PullRequests>(() => data.value as PullRequests);
 

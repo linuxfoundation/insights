@@ -53,9 +53,12 @@
 </template>
 
 <script setup lang="ts">
-import { useFetch, useRoute } from 'nuxt/app';
-import { ref, computed, watch } from 'vue';
+import { useRoute } from 'nuxt/app';
+import {
+ ref, computed, watch, onServerPrefetch
+} from 'vue';
 import { storeToRefs } from "pinia";
+import {type QueryFunction, useQuery} from "@tanstack/vue-query";
 import LfxProjectLoadState from '../shared/load-state.vue';
 import LfxSkeletonState from '../shared/skeleton-state.vue';
 import type { ForksData } from '~~/types/popularity/responses.types';
@@ -81,6 +84,7 @@ import { dateOptKeys } from '~/components/modules/project/config/date-options';
 import type { Granularity } from '~~/types/shared/granularity';
 import { links } from '~/config/links';
 import { BenchmarkKeys, type Benchmark } from '~~/types/shared/benchmark.types';
+import {TanstackKey} from "~/components/shared/types/tanstack";
 
 const emit = defineEmits<{(e: 'update:benchmarkValue', value: Benchmark): void;
 }>();
@@ -99,36 +103,77 @@ const lineGranularity = computed(() => (selectedTimeRangeKey.value === dateOptKe
   ? customRangeGranularity.value[0] as Granularity
   : lineGranularities[selectedTimeRangeKey.value as keyof typeof lineGranularities]));
 
-const { data, status, error } = useFetch(
-  `/api/project/${route.params.slug}/popularity/forks`,
-  {
-    params: {
-      granularity: barGranularity,
-      type: 'new',
-      countType: 'new',
-      activityType: 'fork',
-      repository: selectedRepository,
-      startDate,
-      endDate,
-    }
+const barQueryKey = computed(() => [
+  TanstackKey.FORKS,
+  route.params.slug,
+  selectedRepository,
+  startDate,
+  endDate,
+  barGranularity,
+]);
+
+const fetchBarData: QueryFunction<ForksData> = async () => $fetch(
+    `/api/project/${route.params.slug}/popularity/forks`,
+    {
+  params: {
+    granularity: barGranularity.value,
+    type: 'new',
+    countType: 'new',
+    activityType: 'fork',
+    repository: selectedRepository.value,
+    startDate: startDate.value,
+    endDate: endDate.value,
   }
+}
 );
 
-// cumulative data - Fetching this right away to use it for the benchmark
-const { data: cumulativeData, status: cumulativeStatus, error: cumulativeError } = useFetch(
-  `/api/project/${route.params.slug}/popularity/forks`,
-  {
-    params: {
-      granularity: lineGranularity,
-      type: 'cumulative',
-      countType: 'cumulative',
-      activityType: 'fork',
-      repository: selectedRepository,
-      startDate,
-      endDate,
-    }
+const {
+  data,
+  status,
+  error,
+  suspense: barSuspense
+} = useQuery<ForksData>({
+  queryKey: barQueryKey,
+  queryFn: fetchBarData,
+});
+
+const lineQueryKey = computed(() => [
+  TanstackKey.FORKS_CUMULATIVE,
+  route.params.slug,
+  selectedRepository,
+  startDate,
+  endDate,
+  lineGranularity,
+]);
+
+const fetchLineData: QueryFunction<ForksData> = async () => $fetch(
+    `/api/project/${route.params.slug}/popularity/forks`,
+    {
+  params: {
+    granularity: lineGranularity.value,
+    type: 'cumulative',
+    countType: 'cumulative',
+    activityType: 'fork',
+    repository: selectedRepository.value,
+    startDate: startDate.value,
+    endDate: endDate.value,
   }
+}
 );
+
+const {
+  data: cumulativeData,
+  status: cumulativeStatus,
+  error: cumulativeError,
+  suspense: lineSuspense
+} = useQuery<ForksData>({
+  queryKey: lineQueryKey,
+  queryFn: fetchLineData,
+});
+
+onServerPrefetch(async () => {
+  await Promise.all([barSuspense(), lineSuspense()]);
+});
 
 const forks = computed<ForksData | undefined>(() => (activeTab.value === 'cumulative'
   ? cumulativeData.value as ForksData

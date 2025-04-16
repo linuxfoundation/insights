@@ -115,7 +115,7 @@
 
 <script setup lang="ts">
 import { watch, onServerPrefetch } from 'vue'
-import {type QueryFunction, useInfiniteQuery} from '@tanstack/vue-query'
+import {useInfiniteQuery} from '@tanstack/vue-query'
 import type { Pagination } from '~~/types/shared/pagination'
 import type { Collection } from '~~/types/collection'
 
@@ -134,6 +134,8 @@ import useToastService from '~/components/uikit/toast/toast.service'
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types'
 import useResponsive from '~/components/shared/utils/responsive'
 import useScroll from '~/components/shared/utils/scroll'
+import {TanstackKey} from "~/components/shared/types/tanstack";
+import {COLLECTIONS_API_SERVICE} from "~/components/modules/collection/services/collections.api.service";
 
 const { showToast } = useToastService();
 const {pageWidth} = useResponsive();
@@ -143,17 +145,7 @@ const pageSize = 50
 const sort = ref('projectCount_desc')
 const category = ref('')
 
-const queryKey = computed(() => ['collections', sort.value, category.value])
-
-const fetchCollections:
-    QueryFunction<Pagination<Collection>> = async ({ pageParam = 0 }) => $fetch('/api/collection', {
-    params: {
-      page: pageParam,
-      pageSize,
-      sort: sort.value,
-      category: category.value,
-    },
-  })
+const queryKey = computed(() => [TanstackKey.COLLECTIONS, sort.value, category.value])
 
 const {
   data,
@@ -164,9 +156,13 @@ const {
   isSuccess,
   error,
     suspense
-} = useInfiniteQuery<Pagination<Collection>>({
+} = useInfiniteQuery<Pagination<Collection>, Error>({
   queryKey,
-  queryFn: fetchCollections,
+  queryFn: COLLECTIONS_API_SERVICE.fetchCollections(() => ({
+    pageSize,
+    sort: sort.value,
+    category: category.value,
+  })),
   getNextPageParam: (lastPage) => {
     const nextPage = lastPage.page + 1
     const totalPages = Math.ceil(lastPage.total / lastPage.pageSize)

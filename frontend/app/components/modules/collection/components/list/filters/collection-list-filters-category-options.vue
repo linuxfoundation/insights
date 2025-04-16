@@ -25,13 +25,15 @@
 </template>
 
 <script setup lang="ts">
-import {useFetch} from "nuxt/app";
+import {useQuery} from "@tanstack/vue-query";
 import LfxDropdownSearch from "~/components/uikit/dropdown/dropdown-search.vue";
 import LfxDropdownGroupTitle from "~/components/uikit/dropdown/dropdown-group-title.vue";
 import LfxDropdownItem from "~/components/uikit/dropdown/dropdown-item.vue";
 import LfxDropdownSeparator from "~/components/uikit/dropdown/dropdown-separator.vue";
 import type {Pagination} from "~~/types/shared/pagination";
 import type {CategoryGroup} from "~~/types/category";
+import {TanstackKey} from "~/components/shared/types/tanstack";
+import {COLLECTIONS_API_SERVICE} from "~/components/modules/collection/services/collections.api.service";
 
 const props = defineProps<{
   type: 'vertical' | 'horizontal';
@@ -39,15 +41,26 @@ const props = defineProps<{
 
 const search = ref('');
 
-const { data } = await useFetch<Pagination<CategoryGroup>>(
-    () => `/api/category`,
-    {
-      params: {
-        search,
-        type: props.type,
-      },
-    }
-);
+const queryKey = computed(() => [
+  TanstackKey.CATEGORY_GROUPS,
+  props.type,
+  search.value,
+]);
+
+const {
+  data,
+  suspense
+} = useQuery<Pagination<CategoryGroup>>({
+  queryKey,
+  queryFn: COLLECTIONS_API_SERVICE.fetchCategoryGroups(() => ({
+    search: search.value,
+    type: props.type,
+  })),
+});
+
+onServerPrefetch(async () => {
+  await suspense();
+});
 </script>
 
 <script lang="ts">
