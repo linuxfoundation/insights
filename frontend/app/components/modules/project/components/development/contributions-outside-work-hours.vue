@@ -84,9 +84,10 @@
 </template>
 
 <script setup lang="ts">
-import { useFetch, useRoute } from 'nuxt/app';
-import { ref, computed } from 'vue';
+import { useRoute } from 'nuxt/app';
+import { ref, computed, onServerPrefetch } from 'vue';
 import { storeToRefs } from "pinia";
+import {useQuery} from "@tanstack/vue-query";
 import LfxProjectLoadState from '../shared/load-state.vue';
 import LfxSkeletonState from '../shared/skeleton-state.vue';
 import type { ContributionOutsideHours } from '~~/types/development/responses.types';
@@ -107,6 +108,7 @@ import { useProjectStore } from "~/components/modules/project/store/project.stor
 import { isEmptyData } from '~/components/shared/utils/helper';
 import { links } from '~/config/links';
 import { dateOptKeys } from '~/components/modules/project/config/date-options';
+import {TanstackKey} from "~/components/shared/types/tanstack";
 
 const {
  startDate, endDate, selectedRepository, selectedTimeRangeKey
@@ -114,16 +116,33 @@ const {
 
 const route = useRoute();
 
-const { data, status, error } = useFetch(
-  () => `/api/project/${route.params.slug}/development/contribution-outside`,
-  {
-    params: {
-      repository: selectedRepository,
-      startDate,
-      endDate,
-    }
-  }
-);
+const queryKey = computed(() => [
+  TanstackKey.CONTRIBUTIONS_OUTSIDE_WORK_HOURS,
+  route.params.slug,
+  selectedRepository.value,
+  startDate.value,
+  endDate.value,
+]);
+
+const fetchData = async () => $fetch(`/api/project/${route.params.slug}/development/contribution-outside`, {
+  params: {
+    repository: selectedRepository.value,
+    startDate: startDate.value,
+    endDate: endDate.value,
+  },
+});
+
+const {
+  data, status, error, suspense
+} = useQuery({
+  queryKey,
+  queryFn: fetchData,
+});
+
+onServerPrefetch(async () => {
+  await suspense();
+});
+
 const contributionOutsideHours = computed<ContributionOutsideHours>(() => data.value as ContributionOutsideHours);
 const summary = computed<Summary>(() => contributionOutsideHours.value.summary);
 const weekdayPercentage = computed<number>(() => contributionOutsideHours.value.weekdayOutsideHoursPercentage);

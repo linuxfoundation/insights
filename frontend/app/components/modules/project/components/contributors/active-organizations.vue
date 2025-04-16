@@ -49,9 +49,12 @@
 </template>
 
 <script setup lang="ts">
-import { useFetch, useRoute } from 'nuxt/app';
-import { ref, computed, watch } from 'vue';
+import { useRoute } from 'nuxt/app';
+import {
+ref, computed, watch, onServerPrefetch
+} from 'vue';
 import { storeToRefs } from "pinia";
+import {type QueryFunction, useQuery} from "@tanstack/vue-query";
 import LfxProjectLoadState from '../shared/load-state.vue';
 import LfxSkeletonState from '../shared/skeleton-state.vue';
 import { granularityTabs } from './config/granularity-tabs';
@@ -74,6 +77,7 @@ import { useProjectStore } from "~/components/modules/project/store/project.stor
 import { isEmptyData } from '~/components/shared/utils/helper';
 import { dateOptKeys } from '~/components/modules/project/config/date-options';
 import { links } from '~/config/links';
+import {TanstackKey} from "~/components/shared/types/tanstack";
 
 const {
   startDate, endDate, selectedRepository, selectedTimeRangeKey, customRangeGranularity
@@ -90,17 +94,37 @@ const paramWatch = computed(() => ({
 }));
 const summaryLoading = ref(true);
 
-const { data, status, error } = useFetch(
-  `/api/project/${route.params.slug}/contributors/active-organizations`,
-  {
-    params: {
-      granularity: activeTab,
-      repository: selectedRepository,
-      startDate,
-      endDate,
-    }
+const queryKey = computed(() => [
+  TanstackKey.ACTIVE_ORGANIZATIONS,
+  route.params.slug,
+  activeTab.value,
+  selectedRepository.value,
+  startDate.value,
+  endDate.value,
+]);
+
+const fetchData: QueryFunction<ActiveOrganizations> = async () => $fetch(
+    `/api/project/${route.params.slug}/contributors/active-organizations`,
+    {
+  params: {
+    granularity: activeTab.value,
+    repository: selectedRepository.value,
+    startDate: startDate.value,
+    endDate: endDate.value,
   }
+}
 );
+
+const {
+data, status, error, suspense
+} = useQuery<ActiveOrganizations>({
+  queryKey,
+  queryFn: fetchData,
+});
+
+onServerPrefetch(async () => {
+  await suspense()
+})
 
 const activeOrganizations = computed<ActiveOrganizations>(() => data.value as ActiveOrganizations);
 

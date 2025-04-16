@@ -52,9 +52,10 @@
 </template>
 
 <script setup lang="ts">
-import { useFetch, useRoute } from 'nuxt/app';
-import { ref, computed } from 'vue';
+import { useRoute } from 'nuxt/app';
+import { ref, computed, onServerPrefetch } from 'vue';
 import { storeToRefs } from "pinia";
+import {type QueryFunction, useQuery} from "@tanstack/vue-query";
 import LfxProjectLoadState from '../shared/load-state.vue';
 import LfxSkeletonState from '../shared/skeleton-state.vue';
 import type { GithubMentions } from '~~/types/popularity/responses.types';
@@ -79,6 +80,7 @@ import { getBarChartConfig } from '~/components/uikit/chart/configs/bar.chart';
 import { barGranularities, lineGranularities } from '~/components/shared/types/granularity';
 import type { Granularity } from '~~/types/shared/granularity';
 import { links } from '~/config/links';
+import {TanstackKey} from "~/components/shared/types/tanstack";
 
 const {
   startDate,
@@ -103,18 +105,39 @@ const granularity = computed(() => (activeTab.value === 'cumulative'
   ? lineGranularity.value
   : barGranularity.value));
 
-const { data, status, error } = useFetch(
-  `/api/project/${route.params.slug}/popularity/github-mentions`,
-  {
-    params: {
-      granularity,
-      type: activeTab,
-      repository: selectedRepository,
-      startDate,
-      endDate,
-    }
+const queryKey = computed(() => [
+  TanstackKey.GITHUB_MENTIONS,
+  route.params.slug,
+  granularity.value,
+  activeTab.value,
+  selectedRepository.value,
+  startDate.value,
+  endDate.value,
+]);
+
+const fetchData: QueryFunction<GithubMentions> = async () => $fetch(
+    `/api/project/${route.params.slug}/popularity/github-mentions`,
+    {
+  params: {
+    granularity: granularity.value,
+    type: activeTab.value,
+    repository: selectedRepository.value,
+    startDate: startDate.value,
+    endDate: endDate.value,
   }
+}
 );
+
+const {
+  data, status, error, suspense
+} = useQuery<GithubMentions>({
+  queryKey,
+  queryFn: fetchData,
+});
+
+onServerPrefetch(async () => {
+  await suspense();
+});
 
 const mentions = computed<GithubMentions>(() => data.value as GithubMentions);
 

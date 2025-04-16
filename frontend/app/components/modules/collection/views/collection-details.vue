@@ -73,7 +73,7 @@
 <script setup lang="ts">
 import {computed, onServerPrefetch} from 'vue'
 import { useRoute } from 'vue-router'
-import { useInfiniteQuery, type QueryFunction } from '@tanstack/vue-query'
+import { useInfiniteQuery } from '@tanstack/vue-query'
 import type { Project } from '~~/types/project'
 import type { Collection } from '~~/types/collection'
 import type { Pagination } from '~~/types/shared/pagination'
@@ -85,6 +85,8 @@ import LfxProjectListItemLoading from '~/components/modules/project/components/l
 import LfxIcon from '~/components/uikit/icon/icon.vue'
 import LfxButton from '~/components/uikit/button/button.vue'
 import LfxMaintainHeight from '~/components/uikit/maintain-height/maintain-height.vue'
+import {TanstackKey} from "~/components/shared/types/tanstack";
+import {PROJECT_API_SERVICE} from "~/components/modules/project/services/project.api.service";
 
 const props = defineProps<{
   collection?: Collection
@@ -99,17 +101,7 @@ const pageSize = 60
 
 const isLF = computed(() => tab.value === 'lfx')
 
-const queryKey = computed(() => ['projects', sort.value, tab.value, collectionSlug])
-
-const fetchProjects: QueryFunction<Pagination<Project>> = async ({ pageParam = 0 }) => $fetch('/api/project', {
-    params: {
-      sort: sort.value,
-      page: pageParam,
-      pageSize,
-      isLF: isLF.value,
-      collectionSlug,
-    },
-  })
+const queryKey = computed(() => [TanstackKey.PROJECTS, sort.value, tab.value, collectionSlug])
 
 const {
   data,
@@ -121,7 +113,12 @@ const {
     suspense,
 } = useInfiniteQuery<Pagination<Project>>({
   queryKey,
-  queryFn: fetchProjects,
+  queryFn: PROJECT_API_SERVICE.fetchProjects(() => ({
+    sort: sort.value,
+    pageSize,
+    isLF: isLF.value,
+    collectionSlug,
+  })),
   getNextPageParam: (lastPage) => {
     const nextPage = lastPage.page + 1
     const totalPages = Math.ceil(lastPage.total / lastPage.pageSize)

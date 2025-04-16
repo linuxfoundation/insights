@@ -70,7 +70,7 @@ import { platforms } from '~~/app/config/platforms';
 
 const props = withDefaults(defineProps<{
   modelValue: string;
-  fullWidth: boolean
+  fullWidth?: boolean
 }>(), {
   fullWidth: true
 });

@@ -73,9 +73,10 @@
 </template>
 
 <script setup lang="ts">
-import { useFetch, useRoute } from 'nuxt/app';
-import { ref, computed } from 'vue';
+import { useRoute } from 'nuxt/app';
+import { ref, computed, onServerPrefetch } from 'vue';
 import { storeToRefs } from "pinia";
+import {type QueryFunction, useQuery} from "@tanstack/vue-query";
 import LfxProjectLoadState from '../shared/load-state.vue';
 import LfxSkeletonState from '../shared/skeleton-state.vue';
 import type { SocialMentions } from '~~/types/popularity/responses.types';
@@ -100,6 +101,7 @@ import { dateOptKeys } from '~/components/modules/project/config/date-options';
 import { isEmptyData } from '~/components/shared/utils/helper';
 import type { Granularity } from '~~/types/shared/granularity';
 import { barGranularities, lineGranularities } from '~/components/shared/types/granularity';
+import {TanstackKey} from "~/components/shared/types/tanstack";
 
 const {
   startDate,
@@ -124,18 +126,39 @@ const granularity = computed(() => (activeTab.value === 'cumulative'
   ? lineGranularity.value
   : barGranularity.value));
 
-const { data, status, error } = useFetch(
-  `/api/project/${route.params.slug}/popularity/social-mentions`,
-  {
-    params: {
-      granularity,
-      type: activeTab,
-      repository: selectedRepository,
-      startDate,
-      endDate,
-    }
+const queryKey = computed(() => [
+  TanstackKey.SOCIAL_MENTIONS,
+  route.params.slug,
+  granularity.value,
+  activeTab.value,
+  selectedRepository.value,
+  startDate.value,
+  endDate.value,
+]);
+
+const fetchData: QueryFunction<SocialMentions> = async () => $fetch(
+    `/api/project/${route.params.slug}/popularity/social-mentions`,
+    {
+  params: {
+    granularity: granularity.value,
+    type: activeTab.value,
+    repository: selectedRepository.value,
+    startDate: startDate.value,
+    endDate: endDate.value,
   }
+}
 );
+
+const {
+  data, status, error, suspense
+} = useQuery<SocialMentions>({
+  queryKey,
+  queryFn: fetchData,
+});
+
+onServerPrefetch(async () => {
+  await suspense();
+});
 
 const socialMentions = computed<SocialMentions>(() => data.value as SocialMentions);
 

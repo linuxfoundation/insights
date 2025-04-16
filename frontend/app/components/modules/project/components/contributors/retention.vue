@@ -45,9 +45,9 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
 import { useRoute } from 'vue-router';
-import { useFetch } from 'nuxt/app';
 import { storeToRefs } from "pinia";
 import { DateTime } from 'luxon';
+import {type QueryFunction, useQuery} from "@tanstack/vue-query";
 import LfxProjectLoadState from '../shared/load-state.vue';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
@@ -66,6 +66,7 @@ import type { Retention } from '~~/types/contributors/responses.types';
 import { Granularity } from '~~/types/shared/granularity';
 import { links } from '~/config/links';
 import { BenchmarkKeys, type Benchmark } from '~~/types/shared/benchmark.types';
+import {TanstackKey} from "~/components/shared/types/tanstack";
 
 const emit = defineEmits<{(e: 'update:benchmarkValue', value: Benchmark, activeTab: string): void;
 }>();
@@ -113,18 +114,33 @@ const granularity = computed(() => customGranularity.value[0] as Granularity);
 // (selectedTimeRangeKey.value === dateOptKeys.custom
 //   ? customGranularity.value[0] as Granularity
 //   : lineGranularities[selectedTimeRangeKey.value as keyof typeof lineGranularities]));
-const { data, status, error } = useFetch(
-  `/api/project/${route.params.slug}/contributors/retention`,
-  {
-    params: {
-      granularity,
-      type: activeTab,
-      repository: selectedRepository,
-      startDate,
-      endDate,
-    }
+const queryKey = computed(() => [
+  TanstackKey.RETENTION,
+  route.params.slug,
+  granularity.value,
+  activeTab.value,
+  selectedRepository.value,
+  startDate.value,
+  endDate.value,
+]);
+
+const fetchData: QueryFunction<Retention[]> = async () => $fetch(
+    `/api/project/${route.params.slug}/contributors/retention`,
+    {
+  params: {
+    granularity: granularity.value,
+    type: activeTab.value,
+    repository: selectedRepository.value,
+    startDate: startDate.value,
+    endDate: endDate.value,
   }
+}
 );
+
+const {data, status, error} = useQuery<Retention[]>({
+  queryKey,
+  queryFn: fetchData,
+});
 
 const retention = computed<Retention[]>(() => data.value as Retention[]);
 

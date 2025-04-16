@@ -47,9 +47,10 @@
 </template>
 
 <script setup lang="ts">
-import { useFetch, useRoute } from 'nuxt/app';
-import { ref, computed } from 'vue';
+import { useRoute } from 'nuxt/app';
+import { ref, computed, onServerPrefetch } from 'vue';
 import { storeToRefs } from "pinia";
+import {type QueryFunction, useQuery} from "@tanstack/vue-query";
 import LfxProjectLoadState from '../shared/load-state.vue';
 import LfxSkeletonState from '../shared/skeleton-state.vue';
 import type { WaitTime1stReview } from '~~/types/development/responses.types';
@@ -72,6 +73,7 @@ import { dateOptKeys } from '~/components/modules/project/config/date-options';
 import type { Granularity } from '~~/types/shared/granularity';
 import { links } from '~/config/links';
 import { formatSecondsToDuration } from '~/components/shared/utils/formatter';
+import {TanstackKey} from "~/components/shared/types/tanstack";
 
 const {
   startDate, endDate, selectedRepository, selectedTimeRangeKey, customRangeGranularity
@@ -82,17 +84,37 @@ const route = useRoute();
 const granularity = computed(() => (selectedTimeRangeKey.value === dateOptKeys.custom
   ? customRangeGranularity.value[0] as Granularity
   : barGranularities[selectedTimeRangeKey.value as keyof typeof barGranularities]));
-const { data, status, error } = useFetch(
-  `/api/project/${route.params.slug}/development/wait-time-1st-review`,
-  {
-    params: {
-      granularity,
-      repository: selectedRepository,
-      startDate,
-      endDate,
-    }
+const queryKey = computed(() => [
+  TanstackKey.WAIT_TIME_FIRST_REVIEW,
+  route.params.slug,
+  granularity,
+  selectedRepository,
+  startDate,
+  endDate,
+]);
+
+const fetchData: QueryFunction<WaitTime1stReview> = async () => $fetch(
+    `/api/project/${route.params.slug}/development/wait-time-1st-review`,
+    {
+  params: {
+    granularity: granularity.value,
+    repository: selectedRepository.value,
+    startDate: startDate.value,
+    endDate: endDate.value,
   }
+}
 );
+
+const {
+  data, status, error, suspense
+} = useQuery<WaitTime1stReview>({
+  queryKey,
+  queryFn: fetchData,
+});
+
+onServerPrefetch(async () => {
+  await suspense();
+});
 
 const waitTime1stReview = computed<WaitTime1stReview>(() => data.value as WaitTime1stReview);
 

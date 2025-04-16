@@ -8,17 +8,17 @@
 import {
 useRoute, createError, showError
 } from "nuxt/app";
-import {type QueryFunction, useQuery} from "@tanstack/vue-query";
+import {useQuery} from "@tanstack/vue-query";
 import {computed, onServerPrefetch} from "vue";
 import type {Collection} from "~~/types/collection";
 import LfxCollectionDetailsView from "~/components/modules/collection/views/collection-details.vue";
+import {TanstackKey} from "~/components/shared/types/tanstack";
+import {COLLECTIONS_API_SERVICE} from "~/components/modules/collection/services/collections.api.service";
 
 const route = useRoute();
 const {slug} = route.params;
 
-const queryKey = computed(() => ['collection', slug]);
-
-const fetchCollection: QueryFunction<Collection> = async () => $fetch(`/api/collection/${slug}`)
+const queryKey = computed(() => [TanstackKey.COLLECTION, slug]);
 
 const {
   data,
@@ -27,7 +27,7 @@ const {
     error
 } = useQuery<Collection>({
   queryKey,
-  queryFn: fetchCollection,
+  queryFn: COLLECTIONS_API_SERVICE.fetchCollection(slug as string),
   retry: false,
 });
 

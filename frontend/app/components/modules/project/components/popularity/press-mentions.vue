@@ -49,9 +49,10 @@
 </template>
 
 <script setup lang="ts">
-import { useFetch, useRoute } from 'nuxt/app';
-import { ref, computed } from 'vue';
+import { useRoute } from 'nuxt/app';
+import { ref, computed, onServerPrefetch } from 'vue';
 import { storeToRefs } from "pinia";
+import {type QueryFunction, useQuery} from "@tanstack/vue-query";
 import LfxProjectLoadState from '../shared/load-state.vue';
 import LfxSkeletonState from '../shared/skeleton-state.vue';
 import LfxProjectPressMentionLists from './fragments/press-mention-lists.vue';
@@ -75,6 +76,7 @@ import { dateOptKeys } from '~/components/modules/project/config/date-options';
 import { isEmptyData } from '~/components/shared/utils/helper';
 import { lineGranularities } from '~/components/shared/types/granularity';
 import type { Granularity } from '~~/types/shared/granularity';
+import {TanstackKey} from "~/components/shared/types/tanstack";
 
 const {
   startDate,
@@ -92,17 +94,37 @@ const granularity = computed(() => (selectedTimeRangeKey.value === dateOptKeys.c
   ? customRangeGranularity.value[0] as Granularity
   : lineGranularities[selectedTimeRangeKey.value as keyof typeof lineGranularities]));
 
-const { data, status, error } = useFetch(
-  () => `/api/project/${route.params.slug}/popularity/press-mentions`,
-  {
-    params: {
-      granularity,
-      repository: selectedRepository,
-      startDate,
-      endDate,
-    }
+const queryKey = computed(() => [
+  TanstackKey.PRESS_MENTIONS,
+  route.params.slug,
+  granularity,
+  selectedRepository,
+  startDate,
+  endDate,
+]);
+
+const fetchData: QueryFunction<PressMentions> = async () => $fetch(
+    `/api/project/${route.params.slug}/popularity/press-mentions`,
+    {
+  params: {
+    granularity: granularity.value,
+    repository: selectedRepository.value,
+    startDate: startDate.value,
+    endDate: endDate.value,
   }
+}
 );
+
+const {
+  data, status, error, suspense
+} = useQuery<PressMentions>({
+  queryKey,
+  queryFn: fetchData,
+});
+
+onServerPrefetch(async () => {
+  await suspense();
+});
 
 const mentions = computed<PressMentions>(() => data.value as PressMentions);
 

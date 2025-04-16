@@ -47,9 +47,10 @@
 </template>
 
 <script setup lang="ts">
-import { useFetch, useRoute } from 'nuxt/app';
-import { ref, computed } from 'vue';
+import { useRoute } from 'nuxt/app';
+import { ref, computed, onServerPrefetch } from 'vue';
 import { storeToRefs } from "pinia";
+import {type QueryFunction, useQuery} from "@tanstack/vue-query";
 import LfxProjectLoadState from '../shared/load-state.vue';
 import LfxSkeletonState from '../shared/skeleton-state.vue';
 import type { PackageDownloads } from '~~/types/popularity/responses.types';
@@ -73,6 +74,7 @@ import { isEmptyData } from '~/components/shared/utils/helper';
 import { getBarChartConfig } from '~/components/uikit/chart/configs/bar.chart';
 import { barGranularities, lineGranularities } from '~/components/shared/types/granularity';
 import type { Granularity } from '~~/types/shared/granularity';
+import {TanstackKey} from "~/components/shared/types/tanstack";
 
 const {
   startDate,
@@ -95,18 +97,39 @@ const granularity = computed(() => (activeTab.value === 'cumulative'
   ? lineGranularity.value
   : barGranularity.value));
 
-const { data, status, error } = useFetch(
-  `/api/project/${route.params.slug}/popularity/package-downloads`,
-  {
-    params: {
-      granularity,
-      type: activeTab,
-      repository: selectedRepository,
-      startDate,
-      endDate,
-    }
+const queryKey = computed(() => [
+  TanstackKey.PACKAGE_DOWNLOADS,
+  route.params.slug,
+  activeTab.value,
+  granularity.value,
+  selectedRepository.value,
+  startDate.value,
+  endDate.value,
+]);
+
+const fetchData: QueryFunction<PackageDownloads> = async () => $fetch(
+    `/api/project/${route.params.slug}/popularity/package-downloads`,
+    {
+  params: {
+    granularity: granularity.value,
+    type: activeTab.value,
+    repository: selectedRepository.value,
+    startDate: startDate.value,
+    endDate: endDate.value,
   }
+}
 );
+
+const {
+  data, status, error, suspense
+} = useQuery<PackageDownloads>({
+  queryKey,
+  queryFn: fetchData,
+});
+
+onServerPrefetch(async () => {
+  await suspense();
+});
 
 const packageDownloads = computed<PackageDownloads>(() => data.value as PackageDownloads);
 

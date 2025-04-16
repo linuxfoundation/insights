@@ -57,9 +57,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
-import { useRoute, useFetch } from 'nuxt/app';
+import {
+ref, computed, watch, onServerPrefetch
+} from 'vue';
+import { useRoute } from 'nuxt/app';
 import { storeToRefs } from "pinia";
+import {type QueryFunction, useQuery} from "@tanstack/vue-query";
 import LfxProjectLoadState from '../shared/load-state.vue';
 import LfxDependencyDisplay from './fragments/dependency-display.vue';
 import LfxContributorsTable from './fragments/contributors-table.vue';
@@ -73,6 +76,7 @@ import { useProjectStore } from "~/components/modules/project/store/project.stor
 import { isEmptyData } from '~/components/shared/utils/helper';
 import { links } from '~/config/links';
 import { BenchmarkKeys, type Benchmark } from '~~/types/shared/benchmark.types';
+import {TanstackKey} from "~/components/shared/types/tanstack";
 
 const emit = defineEmits<{(e: 'update:benchmarkValue', value: Benchmark): void;
 }>();
@@ -83,18 +87,39 @@ const route = useRoute();
 const metric = ref('all:all');
 const platform = computed(() => metric.value.split(':')[0]);
 const activityType = computed(() => metric.value.split(':')[1]);
-const { data, status, error } = useFetch(
-  `/api/project/${route.params.slug}/contributors/contributor-dependency`,
-  {
-    params: {
-      platform,
-      activityType,
-      repository: selectedRepository,
-      startDate,
-      endDate,
-    }
+const queryKey = computed(() => [
+  TanstackKey.CONTRIBUTOR_DEPENDENCY,
+  route.params.slug,
+  platform,
+  activityType,
+  selectedRepository,
+  startDate,
+  endDate,
+]);
+
+const fetchData: QueryFunction<ContributorDependency> = async () => $fetch(
+    `/api/project/${route.params.slug}/contributors/contributor-dependency`,
+    {
+  params: {
+    platform: platform.value,
+    activityType: activityType.value,
+    repository: selectedRepository.value,
+    startDate: startDate.value,
+    endDate: endDate.value,
   }
+}
 );
+
+const {
+data, status, error, suspense
+} = useQuery<ContributorDependency>({
+  queryKey,
+  queryFn: fetchData,
+});
+
+onServerPrefetch(async () => {
+  await suspense()
+})
 
 const contributorDependency = computed<ContributorDependency>(() => data.value as ContributorDependency);
 
