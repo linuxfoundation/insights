@@ -16,24 +16,18 @@
       <div class="text-xs text-neutral-400">{{ description }}</div>
     </div>
     <div
-      class="flex gap-2 items-center text-sm h-6 px-2.5 py-1 rounded-full font-semibold"
-      :class="valueClass"
+      class="flex gap-2 items-center text-sm h-6 px-2.5 py-1 rounded-full font-semibold bg-neutral-50 text-neutral-600"
     >
-      <lfx-icon
-        :name="itemValue.changeType === 'positive' ? 'thumbs-up' : 'thumbs-down'"
-        :size="14"
-      />
       {{ itemValue.value }}
       {{ itemValue.unit }}
     </div>
   </div>
 </template>
 <script setup lang="ts">
-import { computed } from 'vue';
 import type { MergeLeadTimeItem } from '~~/types/development/responses.types';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 
-const props = withDefaults(
+withDefaults(
   defineProps<{
     title: string;
     description: string;
@@ -46,9 +40,4 @@ const props = withDefaults(
   }
 );
 
-const valueClass = computed(//
-  () => (props.itemValue.changeType === 'positive'
-    ? 'bg-positive-50 text-positive-600'
-    : 'bg-negative-50 text-negative-600')
-);
 </script>
