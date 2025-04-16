@@ -17,11 +17,23 @@ import {ref, onMounted, nextTick} from 'vue';
 const fixedHeight = ref<number | null>(null);
 const maintainHeightRef = ref<HTMLDivElement | null>(null);
 
-onMounted(async () => {
-  await nextTick();
+const props = defineProps<{
+  loaded?: boolean
+}>();
+
+const calculateHeight = () => {
   if (maintainHeightRef.value) {
     fixedHeight.value = maintainHeightRef.value.offsetHeight;
   }
+}
+
+onMounted(async () => {
+  await nextTick();
+  calculateHeight();
+});
+
+watch(props.loaded, () => {
+    calculateHeight();
 });
 </script>
 

@@ -1,6 +1,6 @@
 <template>
   <nuxt-link
-    :to="{name: LfxRoutes.PROJECT, params: {slug: props.project.slug}}"
+    :to="{name: LfxRoutes.PROJECT_CONTRIBUTORS, params: {slug: props.project.slug}}"
     class="flex flex-col"
   >
     <lfx-card class="p-5 md:p-6 flex flex-col transition-all hover:shadow-sm h-full">

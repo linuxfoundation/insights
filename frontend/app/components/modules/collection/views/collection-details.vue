@@ -1,8 +1,11 @@
 <template>
-  <lfx-maintain-height class="fixed z-10 top-14 lg:top-17 w-lvw ml-auto mr-0">
+  <lfx-maintain-height
+    :loaded="!!props.collection"
+    class="fixed z-10 top-14 lg:top-17 w-lvw ml-auto mr-0"
+  >
     <div class="bg-white outline outline-neutral-100">
       <lfx-collection-header
-        :loading="!collection"
+        :loading="!props.collection"
         :collection="props.collection"
       />
       <lfx-collection-filters
@@ -11,19 +14,21 @@
       />
     </div>
   </lfx-maintain-height>
+
   <div class="container py-5 lg:py-10 flex flex-col gap-5 lg:gap-8">
     <div
-      v-if="data && !(status === 'pending' && data?.page === 1)"
+      v-if="!isPending && data?.pages.flatMap(p => p.data).length"
       class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 lg:gap-8"
     >
       <lfx-project-list-item
-        v-for="project of data?.data"
+        v-for="project in data?.pages.flatMap(p => p.data)"
         :key="project.slug"
         :project="project"
       />
     </div>
+
     <div
-      v-if="data?.data.length === 0 && status == 'success'"
+      v-if="data?.pages[0]?.data.length === 0 && isSuccess"
       class="flex flex-col items-center py-20"
     >
       <lfx-icon
@@ -38,23 +43,26 @@
         Try adjusting your filters to find what you’re looking for.
       </p>
     </div>
+
     <div
-      v-if="status === 'pending'"
+      v-if="isPending"
       class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 lg:gap-8"
     >
       <lfx-project-list-item-loading
-        v-for="i of 6"
+        v-for="i in 6"
         :key="i"
       />
     </div>
   </div>
+
   <div
-    v-if="projects.length < (data?.total || 0)"
+    v-if="hasNextPage"
     class="py-5 lg:py-10 flex justify-center"
   >
     <lfx-button
       size="large"
       class="!rounded-full"
+      :loading="isFetchingNextPage"
       @click="loadMore"
     >
       Load more
@@ -63,76 +71,77 @@
 </template>
 
 <script setup lang="ts">
-import {useRoute} from 'vue-router';
-import {computed} from "vue";
-import type {Collection} from "~~/types/collection";
-import type {Project} from "~~/types/project";
-import type {Pagination} from "~~/types/shared/pagination";
-import LfxCollectionHeader from "~/components/modules/collection/components/details/header.vue";
-import LfxCollectionFilters from "~/components/modules/collection/components/details/filters.vue";
-import LfxProjectListItem from "~/components/modules/project/components/list/project-list-item.vue";
-import LfxProjectListItemLoading from "~/components/modules/project/components/list/project-list-item-loading.vue";
-import LfxIcon from "~/components/uikit/icon/icon.vue";
-import LfxMaintainHeight from "~/components/uikit/maintain-height/maintain-height.vue";
-import LfxButton from "~/components/uikit/button/button.vue";
+import {computed, onServerPrefetch} from 'vue'
+import { useRoute } from 'vue-router'
+import { useInfiniteQuery, type QueryFunction } from '@tanstack/vue-query'
+import type { Project } from '~~/types/project'
+import type { Collection } from '~~/types/collection'
+import type { Pagination } from '~~/types/shared/pagination'
+
+import LfxCollectionHeader from '~/components/modules/collection/components/details/header.vue'
+import LfxCollectionFilters from '~/components/modules/collection/components/details/filters.vue'
+import LfxProjectListItem from '~/components/modules/project/components/list/project-list-item.vue'
+import LfxProjectListItemLoading from '~/components/modules/project/components/list/project-list-item-loading.vue'
+import LfxIcon from '~/components/uikit/icon/icon.vue'
+import LfxButton from '~/components/uikit/button/button.vue'
+import LfxMaintainHeight from '~/components/uikit/maintain-height/maintain-height.vue'
 
 const props = defineProps<{
-  collection: Collection
+  collection?: Collection
 }>()
 
-const route = useRoute();
-const collectionSlug = route.params.slug as string;
+const route = useRoute()
+const collectionSlug = route.params.slug as string
 
-const sort = ref('contributorCount_desc');
-const tab = ref('all');
+const sort = ref('contributorCount_desc')
+const tab = ref('all')
+const pageSize = 60
 
-const page = ref(0);
-const pageSize = 60;
+const isLF = computed(() => tab.value === 'lfx')
 
-const projects = ref([]);
+const queryKey = computed(() => ['projects', sort.value, tab.value, collectionSlug])
 
-watch([sort, tab], () => {
-  page.value = 0;
-});
+const fetchProjects: QueryFunction<Pagination<Project>> = async ({ pageParam = 0 }) => $fetch('/api/project', {
+    params: {
+      sort: sort.value,
+      page: pageParam,
+      pageSize,
+      isLF: isLF.value,
+      collectionSlug,
+    },
+  })
 
-const isLF = computed(() => tab.value === 'lfx');
-
-const { data, status } = await useFetch<Pagination<Project>>(
-    () => `/api/project`,
-    {
-      params: {
-        sort,
-        page,
-        pageSize,
-        isLF,
-        collectionSlug
-      },
-      watch: [sort, isLF, page],
-      transform: (res: Pagination<Project>) => {
-        if (res.page === 0) {
-          projects.value = res.data;
-        } else {
-          projects.value = [...projects.value, ...res.data];
-        }
-        return {
-          ...res,
-          data: projects.value,
-        };
-      },
-    }
-);
+const {
+  data,
+  isPending,
+  isFetchingNextPage,
+  fetchNextPage,
+  hasNextPage,
+  isSuccess,
+    suspense,
+} = useInfiniteQuery<Pagination<Project>>({
+  queryKey,
+  queryFn: fetchProjects,
+  getNextPageParam: (lastPage) => {
+    const nextPage = lastPage.page + 1
+    const totalPages = Math.ceil(lastPage.total / lastPage.pageSize)
+    return nextPage < totalPages ? nextPage : undefined
+  },
+})
 
 const loadMore = () => {
-  page.value += 1;
-};
+  if (hasNextPage.value) {
+    fetchNextPage()
+  }
+}
 
-onMounted(() => {
-  projects.value = data.value?.data || [];
-});
+onServerPrefetch(async () => {
+  await suspense()
+})
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxCollectionDetailsView'
-};
+  name: 'LfxCollectionDetailsView',
+}
 </script>
