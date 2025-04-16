@@ -55,7 +55,7 @@
             v-for="project of props.collection.featuredProjects"
             :key="project.slug"
             type="bordered"
-            @click.prevent="router.push({name: LfxRoutes.PROJECT, params: {slug: project.slug}})"
+            @click.prevent="router.push({name: LfxRoutes.PROJECT_CONTRIBUTORS, params: {slug: project.slug}})"
           >
             <lfx-avatar
               :src="project.logo"

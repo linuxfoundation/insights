@@ -24,6 +24,9 @@ export default defineNuxtConfig({
     '@nuxtjs/storybook',
     '@nuxt/test-utils/module'
   ],
+  plugins: [
+    '~/plugins/vue-query.ts',
+  ],
   css: ['~/assets/styles/main.scss'],
   tailwindcss,
   primevue,

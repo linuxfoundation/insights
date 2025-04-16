@@ -125,8 +125,8 @@ const routeName = computed<{ project: LfxRoutes, repo: LfxRoutes }>(() => {
   const type: string = route.name.split('-').at(-1);
 
   return mapping[type] ?? {
-    project: LfxRoutes.PROJECT,
-    repo: LfxRoutes.REPOSITORY,
+    project: LfxRoutes.PROJECT_CONTRIBUTORS,
+    repo: LfxRoutes.REPOSITORY_CONTRIBUTORS,
   };
 });
 

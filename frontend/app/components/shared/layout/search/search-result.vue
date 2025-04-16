@@ -26,7 +26,7 @@
         <nuxt-link
           v-for="project of props.projects"
           :key="project.slug"
-          :to="{name: LfxRoutes.PROJECT, params: {slug: project.slug}}"
+          :to="{name: LfxRoutes.PROJECT_CONTRIBUTORS, params: {slug: project.slug}}"
           class="px-3 py-2 rounded-md transition-all
         hover:bg-neutral-50 flex items-center gap-2 cursor-pointer text-sm text-neutral-900"
           :external="(route.name as string || '').includes('repository')"
@@ -68,7 +68,7 @@
         <nuxt-link
           v-for="repository of props.repositories"
           :key="repository.slug"
-          :to="{name: LfxRoutes.REPOSITORY, params: {name: repository.slug, slug: repository.projectSlug}}"
+          :to="{name: LfxRoutes.REPOSITORY_CONTRIBUTORS, params: {name: repository.slug, slug: repository.projectSlug}}"
           class="px-3 py-2 rounded-md transition-all
         hover:bg-neutral-50 flex items-center gap-2 cursor-pointer text-sm text-neutral-900"
         >

@@ -3,7 +3,6 @@
     <div class="bg-white outline outline-1 outline-neutral-200">
       <section class="container">
         <div
-          v-if="props.project"
           class="ease-linear transition-all"
           :class="scrollTop > 50 ? 'py-3 md:py-4' : 'py-3 md:py-6'"
         >
@@ -18,9 +17,9 @@
               </lfx-back>
               <lfx-organization-logo
                 class="mr-4"
-                :src="props.project.logo || ''"
+                :src="props.project?.logo || ''"
                 :size="scrollTop > 50 ? 'normal' : ((pageWidth < 768 && pageWidth > 0) ? 'normal' : 'large')"
-                :is-lf="props.project.isLF"
+                :is-lf="props.project?.isLF"
               />
 
               <h1
@@ -30,14 +29,14 @@
                   repoName ? 'max-w-[25ch] truncate' : ''
                 ]"
               >
-                {{ props.project.name }}
+                {{ props.project?.name }}
               </h1>
               <span
-                v-if="props.project.repositories?.length > 0"
+                v-if="(props.project?.repositories?.length ?? 0) > 0"
                 class="mr-1 text-neutral-400 font-secondary leading-8 ease-linear transition-all text-2xl"
               >/</span>
               <div
-                v-if="props.project.repositories?.length > 0"
+                v-if="(props.project?.repositories?.length ?? 0) > 0"
                 class="flex items-center gap-2 cursor-pointer px-2 py-0.5
               rounded-lg transition hover:bg-neutral-100"
                 @click="isSearchRepoModalOpen = true"
@@ -116,7 +115,7 @@ import LfxOrganizationLogo from "~/components/uikit/organization-logo/organizati
 import LfxProjectMenu from "~/components/modules/project/components/shared/header/project-menu.vue";
 
 const props = defineProps<{
-  project: Project
+  project?: Project
 }>();
 
 const route = useRoute();

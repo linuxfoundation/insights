@@ -41,6 +41,7 @@
         <lfx-dropdown-select
           v-model="sort"
           width="20rem"
+          placement="bottom-end"
         >
           <template #trigger="{selectedOption}">
             <lfx-dropdown-selector>

@@ -1,40 +1,51 @@
 <template>
   <lfx-collection-details-view
-    v-if="data"
     :collection="data"
   />
 </template>
 
 <script setup lang="ts">
 import {
-useFetch, useRoute, createError, showError
+useRoute, createError, showError
 } from "nuxt/app";
+import {type QueryFunction, useQuery} from "@tanstack/vue-query";
+import {computed, onServerPrefetch} from "vue";
 import type {Collection} from "~~/types/collection";
 import LfxCollectionDetailsView from "~/components/modules/collection/views/collection-details.vue";
 
 const route = useRoute();
 const {slug} = route.params;
 
-const {data} = await useFetch<Collection>(
-    () => `/api/collection/${slug}`,
-);
+const queryKey = computed(() => ['collection', slug]);
 
-if (!data.value) {
-  if (import.meta.server) {
-    throw createError({
-      statusCode: 404,
-      statusMessage: 'Collection Not Found'
-    })
-  } else {
-    showError({
-      statusCode: 404,
-      statusMessage: 'Collection Not Found'
-    })
+const fetchCollection: QueryFunction<Collection> = async () => $fetch(`/api/collection/${slug}`)
+
+const {
+  data,
+    suspense,
+    isError,
+    error
+} = useQuery<Collection>({
+  queryKey,
+  queryFn: fetchCollection,
+  retry: false,
+});
+
+onServerPrefetch(async () => {
+  await suspense();
+  if (isError.value) {
+    const statusMessage = error.value?.message || 'Collection Not Found';
+
+    if (import.meta.server) {
+      throw createError({ statusCode: 404, statusMessage });
+    } else {
+      showError({ statusCode: 404, statusMessage });
+    }
   }
-}
+})
 
-const title = `${data.value?.name || 'Collection'} | LFX Insights`;
-const description = `${data.value?.description || ''}`;
+const title = computed(() => `${data.value?.name || 'Collection'} | LFX Insights`);
+const description = computed(() => `${data.value?.description || ''}`);
 
 useSeoMeta({
   title,

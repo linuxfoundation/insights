@@ -18,6 +18,7 @@
       </div>
     </div>
   </section>
+
   <div class="sticky top-14 lg:top-17 h-[77px]">
     <div class="bg-white border-b border-neutral-100">
       <div
@@ -31,13 +32,13 @@
             width="20rem"
             placement="bottom-end"
           >
-            <template #trigger="{selectedOption}">
+            <template #trigger="{ selectedOption }">
               <lfx-dropdown-selector>
                 <lfx-icon
                   name="arrow-down-wide-short"
                   :size="16"
                 />
-                <span class="hidden sm:inline">{{selectedOption.label}}</span>
+                <span class="hidden sm:inline">{{ selectedOption.label }}</span>
               </lfx-dropdown-selector>
             </template>
 
@@ -49,26 +50,37 @@
               value="projectCount_desc"
               label="Most projects"
             />
-
           </lfx-dropdown-select>
         </div>
       </div>
     </div>
   </div>
+
   <section>
-    <div class="container py-5 lg:py-10 flex flex-col  gap-5 lg:gap-8">
+    <div class="container py-5 lg:py-10 flex flex-col gap-5 lg:gap-8">
       <div
-        v-if="data && !(status === 'pending' && data?.page === 1)"
+        v-if="isPending"
+        class="flex flex-col gap-5 lg:gap-8"
+      >
+        <lfx-collection-list-item-loading
+          v-for="i in 3"
+          :key="i"
+        />
+      </div>
+
+      <div
+        v-else
         class="flex flex-col gap-5 lg:gap-8"
       >
         <lfx-collection-list-item
-          v-for="collection of data?.data"
+          v-for="collection in data?.pages.flatMap(p => p.data)"
           :key="collection.slug"
           :collection="collection"
         />
       </div>
+
       <div
-        v-if="data?.data.length === 0 && status == 'success'"
+        v-if="data?.pages[0]?.data.length === 0 && isSuccess"
         class="flex flex-col items-center py-20"
       >
         <lfx-icon
@@ -83,24 +95,17 @@
           Try adjusting your filters to find what you’re looking for.
         </p>
       </div>
-      <div
-        v-if="status === 'pending'"
-        class="flex flex-col gap-5 lg:gap-8"
-      >
-        <lfx-collection-list-item-loading
-          v-for="i of 3"
-          :key="i"
-        />
-      </div>
     </div>
   </section>
+
   <div
-    v-if="collections.length < (data?.total || 0)"
+    v-if="hasNextPage"
     class="py-5 lg:py-10 flex justify-center"
   >
     <lfx-button
       size="large"
       class="!rounded-full"
+      :loading="isFetchingNextPage"
       @click="loadMore"
     >
       Load more
@@ -109,82 +114,81 @@
 </template>
 
 <script setup lang="ts">
-import {useFetch} from "nuxt/app";
-import { watch} from "vue";
-import type {Pagination} from "~~/types/shared/pagination";
-import type {Collection} from "~~/types/collection";
-import LfxIcon from '~/components/uikit/icon/icon.vue';
-import LfxTag from '~/components/uikit/tag/tag.vue';
-import LfxCollectionListItem from '~/components/modules/collection/components/list/collection-list-item.vue';
-import {ToastTypesEnum} from "~/components/uikit/toast/types/toast.types";
-import useToastService from "~/components/uikit/toast/toast.service";
-import useResponsive from "~/components/shared/utils/responsive";
-import useScroll from "~/components/shared/utils/scroll";
-import LfxCollectionListItemLoading
-  from "~/components/modules/collection/components/list/collection-list-item-loading.vue";
-import LfxButton from "~/components/uikit/button/button.vue";
-import LfxDropdownSelector from "~/components/uikit/dropdown/dropdown-selector.vue";
-import LfxDropdownSelect from "~/components/uikit/dropdown/dropdown-select.vue";
-import LfxDropdownItem from "~/components/uikit/dropdown/dropdown-item.vue";
-import LfxCollectionListFilters from "~/components/modules/collection/components/list/collection-list-filters.vue";
+import { watch, onServerPrefetch } from 'vue'
+import {type QueryFunction, useInfiniteQuery} from '@tanstack/vue-query'
+import type { Pagination } from '~~/types/shared/pagination'
+import type { Collection } from '~~/types/collection'
+
+import LfxIcon from '~/components/uikit/icon/icon.vue'
+import LfxTag from '~/components/uikit/tag/tag.vue'
+import LfxButton from '~/components/uikit/button/button.vue'
+import LfxDropdownSelect from '~/components/uikit/dropdown/dropdown-select.vue'
+import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue'
+import LfxDropdownSelector from '~/components/uikit/dropdown/dropdown-selector.vue'
+import LfxCollectionListItem from '~/components/modules/collection/components/list/collection-list-item.vue'
+import LfxCollectionListFilters from '~/components/modules/collection/components/list/collection-list-filters.vue'
+import LfxCollectionListItemLoading from
+  '~/components/modules/collection/components/list/collection-list-item-loading.vue'
+
+import useToastService from '~/components/uikit/toast/toast.service'
+import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types'
+import useResponsive from '~/components/shared/utils/responsive'
+import useScroll from '~/components/shared/utils/scroll'
 
 const { showToast } = useToastService();
 const {pageWidth} = useResponsive();
 const {scrollTop} = useScroll();
 
-const page = ref(0);
-const pageSize = 50;
-const sort = ref('projectCount_desc');
-const category = ref('');
+const pageSize = 50
+const sort = ref('projectCount_desc')
+const category = ref('')
 
-const collections = ref([]);
+const queryKey = computed(() => ['collections', sort.value, category.value])
 
-watch([sort], () => {
-  page.value = 0;
-});
+const fetchCollections:
+    QueryFunction<Pagination<Collection>> = async ({ pageParam = 0 }) => $fetch('/api/collection', {
+    params: {
+      page: pageParam,
+      pageSize,
+      sort: sort.value,
+      category: category.value,
+    },
+  })
 
-const { data, status, error } = await useFetch<Pagination<Collection>>(
-    () => `/api/collection`,
-    {
-      params: {
-        sort,
-        page,
-        pageSize,
-        category
-      },
-      watch: [sort, page],
-      transform: (res: Pagination<Collection>) => {
-        if (res.page >0) {
-          collections.value = [...collections.value, ...res.data];
-        } else {
-          collections.value = res.data;
-        }
-        return {
-          ...res,
-          data: collections.value,
-        };
-      },
-    }
-);
-
-const loadMore = () => {
-  page.value += 1;
-};
+const {
+  data,
+  isPending,
+  isFetchingNextPage,
+  fetchNextPage,
+  hasNextPage,
+  isSuccess,
+  error,
+    suspense
+} = useInfiniteQuery<Pagination<Collection>>({
+  queryKey,
+  queryFn: fetchCollections,
+  getNextPageParam: (lastPage) => {
+    const nextPage = lastPage.page + 1
+    const totalPages = Math.ceil(lastPage.total / lastPage.pageSize)
+    return nextPage < totalPages ? nextPage : undefined
+  },
+})
 
 watch(error, (err) => {
   if (err) {
-    showToast(
-        `There was an error fetching collections`,
-        ToastTypesEnum.negative,
-        undefined,
-        5000
-    );
+    showToast('There was an error fetching collections', ToastTypesEnum.negative, undefined, 5000)
   }
-});
+})
 
-onMounted(() => {
-  collections.value = data.value?.data || [];
-});
+const loadMore = () => {
+  if (hasNextPage.value) {
+    fetchNextPage()
+  }
+}
+
+onServerPrefetch(async () => {
+  await suspense()
+})
 </script>
 
 <script lang="ts">
