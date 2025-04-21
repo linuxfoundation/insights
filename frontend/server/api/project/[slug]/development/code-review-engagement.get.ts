@@ -38,8 +38,8 @@ export default defineEventHandler(async (event) => {
     project,
     repo: query?.repository as string,
     metric: query.metric as CodeReviewEngagementMetric,
-    startDate: DateTime.fromISO(query.startDate as string),
-    endDate: DateTime.fromISO(query.endDate as string),
+    startDate: query.startDate ? DateTime.fromISO(query.startDate as string) : undefined,
+    endDate: query.endDate ? DateTime.fromISO(query.endDate as string) : undefined,
   }
 
   const dataSource = createDataSource();
