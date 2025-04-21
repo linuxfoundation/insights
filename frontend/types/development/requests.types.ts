@@ -9,8 +9,8 @@ export type CodeReviewEngagementFilter = {
   project: string,
   repo?: string,
   metric: CodeReviewEngagementMetric,
-  startDate: DateTime,
-  endDate: DateTime,
+  startDate?: DateTime,
+  endDate?: DateTime,
 };
 
 export type ContributionsOutsideWorkHoursFilter = {
