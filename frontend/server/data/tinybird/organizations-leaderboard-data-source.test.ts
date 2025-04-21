@@ -3,7 +3,7 @@ import {
 } from 'vitest';
 import {DateTime} from "luxon";
 import {mockTimeseries} from '../../mocks/tinybird-organizations-leaderboard-response.mock';
-import type {OrganizationsLeaderboardResponse} from "~~/server/data/tinybird/organizations-leaderboard-source";
+import type {OrganizationsLeaderboardResponse} from "~~/server/data/tinybird/organizations-leaderboard-data-source";
 
 const mockFetchFromTinybird = vi.fn();
 
@@ -22,7 +22,9 @@ describe('Organizations Leaderboard Data Source', () => {
 
   test('should fetch organizations leaderboard data with correct parameters', async () => {
     // We have to import this here again because vi.doMock is not hoisted. See the explanation in beforeEach().
-    const {fetchOrganizationsLeaderboard} = await import("~~/server/data/tinybird/organizations-leaderboard-source");
+    const {
+      fetchOrganizationsLeaderboard
+    } = await import("~~/server/data/tinybird/organizations-leaderboard-data-source");
 
     mockFetchFromTinybird.mockResolvedValue(mockTimeseries);
 

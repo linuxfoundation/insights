@@ -3,8 +3,8 @@ import type {
   OrganizationsLeaderboardFilter,
 } from "../types";
 import {fetchFromTinybird} from './tinybird'
-import type {OrganizationsLeaderboardDataPoint} from "~~/server/data/tinybird/organizations-leaderboard-source";
-import {fetchOrganizationsLeaderboard} from "~~/server/data/tinybird/organizations-leaderboard-source";
+import type {OrganizationsLeaderboardDataPoint} from "~~/server/data/tinybird/organizations-leaderboard-data-source";
+import {fetchOrganizationsLeaderboard} from "~~/server/data/tinybird/organizations-leaderboard-data-source";
 
 export type OrganizationDependencyDataPoint = {
   logo: string | undefined;
