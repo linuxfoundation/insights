@@ -4,7 +4,7 @@ import {
 import {DateTime} from "luxon";
 import {mockTimeseries} from '../../mocks/tinybird-contributors-dependency-response.mock';
 import {mockTimeseries as mockLeaderboardTimeseries} from '../../mocks/tinybird-contributors-leaderboard-response.mock';
-import type {ContributorDependencyResponse} from "~~/server/data/tinybird/contributors-dependency-data-source";
+import type {ContributorDependency} from "~~/types/contributors/responses.types";
 
 const mockFetchFromTinybird = vi.fn();
 
@@ -57,7 +57,7 @@ describe('Contributors Dependency Data Source', () => {
     const topContributorsPercentage = lastContributor?.contributionPercentageRunningTotal || 0;
     const totalContributorCount = mockTimeseries.data[0]?.totalContributorCount || 0;
 
-    const expectedResult: ContributorDependencyResponse = {
+    const expectedResult: ContributorDependency = {
       topContributors: {
         count: topContributorsCount,
         percentage: topContributorsPercentage

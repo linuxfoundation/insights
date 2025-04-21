@@ -23,7 +23,6 @@ export interface Contributor {
   name: string;
   contributions: number;
   percentage?: number;
-  email: string;
 }
 
 export interface Organization {

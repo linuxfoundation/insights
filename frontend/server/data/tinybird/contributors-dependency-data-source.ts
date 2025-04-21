@@ -1,37 +1,10 @@
-import type {
-  ContributorDependencyFilter,
-  ContributorsLeaderboardFilter,
-} from "../types";
+import type {ContributorDependencyFilter, ContributorsLeaderboardFilter,} from "../types";
 import {fetchFromTinybird} from './tinybird'
-import type {ContributorsLeaderboardDataPoint} from "~~/server/data/tinybird/contributors-leaderboard-data-source";
 import {fetchContributorsLeaderboard} from "~~/server/data/tinybird/contributors-leaderboard-data-source";
+import type {TinybirdContributorDependencyData} from "~~/server/data/tinybird/responses.types";
+import type {ContributorDependency} from "~~/types/contributors/responses.types";
 
-export type ContributorDependencyDataPoint = {
-  avatar: string | undefined;
-  name: string;
-  contributions: number;
-  percentage: number;
-};
-export type ContributorDependencyResponse = {
-  topContributors: {
-    count: number;
-    percentage: number;
-  },
-  otherContributors: {
-    count: number;
-    percentage: number;
-  },
-  list: ContributorDependencyDataPoint[]
-};
-
-type TinybirdContributorDependencyData = {
-  displayName: string,
-  contributionPercentage: number,
-  contributionPercentageRunningTotal: number,
-  totalContributorCount: number
-}[];
-
-export async function fetchContributorDependency(filter: ContributorDependencyFilter) {
+export async function fetchContributorDependency(filter: ContributorDependencyFilter): Promise<ContributorDependency> {
   // TODO: We're passing unchecked query parameters to TinyBird directly from the frontend.
   //  We need to ensure this doesn't pose a security risk.
 
@@ -41,7 +14,7 @@ export async function fetchContributorDependency(filter: ContributorDependencyFi
   };
 
   const [tinybirdTopContributorsResponse, tinybirdLeaderboardResponse] = await Promise.all([
-    fetchFromTinybird<TinybirdContributorDependencyData>('/v0/pipes/contributor_dependency.json', filter),
+    fetchFromTinybird<TinybirdContributorDependencyData[]>('/v0/pipes/contributor_dependency.json', filter),
     fetchContributorsLeaderboard(leaderboardFilter)
   ]);
 
@@ -50,7 +23,7 @@ export async function fetchContributorDependency(filter: ContributorDependencyFi
   const topContributorsPercentage = lastContributor?.contributionPercentageRunningTotal || 0;
   const totalContributorCount = tinybirdTopContributorsResponse.data[0]?.totalContributorCount || 0;
 
-  const response: ContributorDependencyResponse = {
+  return {
     topContributors: {
       count: topContributorsCount,
       percentage: topContributorsPercentage
@@ -59,17 +32,11 @@ export async function fetchContributorDependency(filter: ContributorDependencyFi
       count: Math.max(0, (totalContributorCount || 0) - topContributorsCount),
       percentage: 100 - topContributorsPercentage
     },
-    list: convertLeaderboardData(tinybirdLeaderboardResponse.data)
+    list: tinybirdLeaderboardResponse.data.map((item) => ({
+      avatar: item.avatar,
+      name: item.name,
+      contributions: item.contributions,
+      percentage: item.percentage
+    }))
   };
-
-  return response;
-}
-
-function convertLeaderboardData(leaderboard: ContributorsLeaderboardDataPoint[]): ContributorDependencyDataPoint[] {
-  return leaderboard.map((item) => ({
-    avatar: item.avatar,
-    name: item.name,
-    contributions: item.contributions,
-    percentage: item.contributionPercentage
-  }));
 }

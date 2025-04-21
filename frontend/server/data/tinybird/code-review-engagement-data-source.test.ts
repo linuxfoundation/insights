@@ -132,7 +132,6 @@ describe('Code Review Engagement Data Source', () => {
         name: item.displayName,
         activityCount: item.contributionCount,
         percentage: item.contributionPercentage,
-        email: '' // I'm pretty sure we don't want to expose this.
       }))
     };
 
