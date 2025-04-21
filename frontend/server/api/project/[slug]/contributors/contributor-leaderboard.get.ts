@@ -50,16 +50,5 @@ export default defineEventHandler(async (event) => {
   };
 
   const dataSource = createDataSource();
-  const result = await dataSource.fetchContributorsLeaderboard(filter);
-
-  const meta = {
-    offset: 0,
-    limit: 10,
-    total: 100
-  };
-
-  return {
-    meta,
-    data: result.data
-  };
+  return await dataSource.fetchContributorsLeaderboard(filter);
 });

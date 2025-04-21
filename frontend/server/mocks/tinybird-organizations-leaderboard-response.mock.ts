@@ -102,3 +102,23 @@ export const mockTimeseries = {
     bytes_read: 106430097
   }
 };
+
+export const mockOrganizationsLeaderboardCount = {
+  meta: [
+    {
+      name: "count",
+      type: "UInt64"
+    }
+  ],
+  data: [
+    {
+      count: 21
+    }
+  ],
+  rows: 1,
+  statistics: {
+    elapsed: 0.10671584,
+    rows_read: 12297,
+    bytes_read: 1180641
+  }
+};

@@ -34,6 +34,7 @@ export type ContributorsLeaderboardFilter = {
   activity_types?: ActivityTypes[];
   repo?: string;
   limit?: number;
+  offset?: number;
   startDate?: DateTime;
   endDate?: DateTime;
 }
@@ -44,6 +45,7 @@ export type OrganizationsLeaderboardFilter = {
   activity_type?: ActivityTypes;
   repo?: string;
   limit?: number;
+  offset?: number;
   startDate?: DateTime;
   endDate?: DateTime;
 }

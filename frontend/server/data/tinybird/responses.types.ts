@@ -17,6 +17,10 @@ export type TinybirdContributorsLeaderboardData = {
   contributionPercentage: number
 };
 
+export type TinybirdCountData = {
+  count: number
+};
+
 export type TinybirdContributorDependencyData = {
   displayName: string,
   contributionPercentage: number,
