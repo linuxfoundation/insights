@@ -3,16 +3,9 @@ import type {
   OrganizationsLeaderboardFilter,
 } from "../types";
 import {fetchFromTinybird} from './tinybird'
-import type {OrganizationsLeaderboardDataPoint} from "~~/server/data/tinybird/organizations-leaderboard-data-source";
 import {fetchOrganizationsLeaderboard} from "~~/server/data/tinybird/organizations-leaderboard-data-source";
+import type {Organization} from "~~/types/contributors/responses.types";
 
-export type OrganizationDependencyDataPoint = {
-  logo: string | undefined;
-  name: string;
-  contributions: number;
-  percentage: number;
-  website: string;
-};
 export type OrganizationDependencyResponse = {
   topOrganizations: {
     count: number;
@@ -22,7 +15,7 @@ export type OrganizationDependencyResponse = {
     count: number;
     percentage: number;
   },
-  list: OrganizationDependencyDataPoint[]
+  list: Organization[]
 };
 
 type TinybirdOrganizationDependencyData = {
@@ -60,18 +53,14 @@ export async function fetchOrganizationDependency(filter: OrganizationDependency
       count: Math.max(0, (totalOrganizationCount || 0) - topOrganizationsCount),
       percentage: 100 - topOrganizationsPercentage
     },
-    list: convertLeaderboardData(tinybirdLeaderboardResponse.data)
+    list: tinybirdLeaderboardResponse.data.map((item) => ({
+      logo: item.logo,
+      name: item.name,
+      contributions: item.contributions,
+      percentage: item.percentage,
+      website: item.website || '' // We don't seem to have this at the moment
+    }))
   };
 
   return response;
-}
-
-function convertLeaderboardData(leaderboard: OrganizationsLeaderboardDataPoint[]): OrganizationDependencyDataPoint[] {
-  return leaderboard.map((item) => ({
-    logo: item.logo,
-    name: item.name,
-    contributions: item.contributions,
-    percentage: item.percentage,
-    website: item.website || '' // We don't seem to have this at the moment
-  }));
 }

@@ -1,48 +1,24 @@
 import type {OrganizationsLeaderboardFilter} from "~~/server/data/types";
 import {fetchFromTinybird, type TinybirdResponse} from "~~/server/data/tinybird/tinybird";
-
-export type OrganizationsLeaderboardDataPoint = {
-  logo: string | undefined; // URL of the user's profile pic or avatar.
-  name: string; // Full name of the organization
-  contributions: number; // Total number of contributions
-  contributionValue: number; // Value of the contribution
-  percentage: number;
-  website: string; // We don't seem to have this at the moment
-}
-export type OrganizationsLeaderboardData = OrganizationsLeaderboardDataPoint[];
-export type OrganizationsLeaderboardResponse = {
-  meta: {
-    offset: number;
-    limit: number;
-    total: number;
-  },
-  data: OrganizationsLeaderboardData
-}
-
-type TinybirdOrganizationsLeaderboardData = {
-  logo: string,
-  displayName: string,
-  contributionCount: number,
-  contributionPercentage: number
-}[];
+import type {TinybirdOrganizationsLeaderboardData} from "~~/server/data/tinybird/responses.types";
+import type {Organization, OrganizationLeaderboard} from "~~/types/contributors/responses.types";
 
 export async function fetchOrganizationsLeaderboard(
   filter: OrganizationsLeaderboardFilter
-): Promise<OrganizationsLeaderboardResponse> {
+): Promise<OrganizationLeaderboard> {
   // TODO: We're passing unchecked query parameters to TinyBird directly from the frontend.
   //  We need to ensure this doesn't pose a security risk.
 
   const endpoint = '/v0/pipes/organizations_leaderboard.json';
-  const data = await fetchFromTinybird<TinybirdOrganizationsLeaderboardData>(endpoint, filter);
+  const data = await fetchFromTinybird<TinybirdOrganizationsLeaderboardData[]>(endpoint, filter);
 
-  let processedData: OrganizationsLeaderboardData = [];
+  let processedData: Organization[] = [];
   if (data !== undefined) {
-    processedData = (data as TinybirdResponse<TinybirdOrganizationsLeaderboardData>)?.data.map(
-      (item): OrganizationsLeaderboardDataPoint => ({
+    processedData = (data as TinybirdResponse<TinybirdOrganizationsLeaderboardData[]>)?.data.map(
+      (item): Organization => ({
         logo: item.logo,
         name: item.displayName,
         contributions: item.contributionCount,
-        contributionValue: 0,
         percentage: item.contributionPercentage,
         website: '' // We don't seem to have this at the moment
       })
