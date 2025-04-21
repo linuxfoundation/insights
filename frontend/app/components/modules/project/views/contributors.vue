@@ -20,7 +20,7 @@
               :observer="observer"
             >
               <lfx-benchmarks-wrap>
-                <lfx-project-contributors-leaderboard />
+                <lfx-project-contributors-leaderboard @show-full-list="onShowFullList" />
               </lfx-benchmarks-wrap>
             </lfx-scroll-view>
             <lfx-scroll-view
@@ -28,7 +28,7 @@
               :observer="observer"
             >
               <lfx-benchmarks-wrap>
-                <lfx-project-organizations-leaderboard />
+                <lfx-project-organizations-leaderboard @show-full-list="onShowFullList" />
               </lfx-benchmarks-wrap>
             </lfx-scroll-view>
             <lfx-scroll-view
@@ -94,6 +94,21 @@
         </lfx-scroll-area>
       </div>
 
+      <lfx-drawer
+        v-model="isDrawerOpened"
+        position="right"
+      >
+        <lfx-project-contributors-leaderboard
+          v-if="selectedComponent === 'contributors-leaderboard'"
+          :show-full-list="true"
+          :selected-metric="selectedMetric"
+        />
+        <lfx-project-organizations-leaderboard
+          v-if="selectedComponent === 'organizations-leaderboard'"
+          :show-full-list="true"
+          :selected-metric="selectedMetric"
+        />
+      </lfx-drawer>
     </div>
   </div>
 </template>
@@ -120,6 +135,7 @@ import LfxSideNav from '~/components/uikit/side-nav/side-nav.vue';
 import LfxScrollView from '~/components/uikit/scroll-view/scroll-view.vue';
 import LfxScrollArea from '~/components/uikit/scroll-view/scroll-area.vue';
 import useScroll from '~/components/shared/utils/scroll';
+import LfxDrawer from '~/components/uikit/drawer/drawer.vue';
 import LfxBenchmarksWrap from '~/components/uikit/benchmarks/benchmarks-wrap.vue';
 import { BenchmarkKeys, type Benchmark } from '~~/types/shared/benchmark.types';
 
@@ -164,6 +180,10 @@ const retentionActiveTab = ref('contributors');
 
 const activeItem = ref('active-contributors');
 const tmpClickedItem = ref('');
+const isDrawerOpened = ref(false);
+const selectedMetric = ref('all:all');
+const selectedComponent = ref('');
+
 const { scrollToTarget, scrollToTop } = useScroll();
 
 const onSideNavUpdate = (value: string) => {
@@ -190,6 +210,12 @@ const onScrolledToView = (value: string) => {
     activeItem.value = value;
   }
 };
+
+const onShowFullList = (componentName: string, metric: string) => {
+  selectedComponent.value = componentName;
+  selectedMetric.value = metric;
+  isDrawerOpened.value = true;
+}
 
 const onRetentionUpdate = (value: Benchmark, activeTab: string) => {
   retentionBenchmark.value = value;

@@ -1,8 +1,8 @@
-import {DateTime} from "luxon";
-import {createDataSource} from "~~/server/data/data-sources";
-import type {ContributorsLeaderboardFilter} from "~~/server/data/types";
-import {ActivityTypes} from "~~/types/shared/activity-types";
-import {ActivityPlatforms} from "~~/types/shared/activity-platforms";
+import { DateTime } from 'luxon';
+import { createDataSource } from '~~/server/data/data-sources';
+import type { ContributorsLeaderboardFilter } from '~~/server/data/types';
+import { ActivityTypes } from '~~/types/shared/activity-types';
+import { ActivityPlatforms } from '~~/types/shared/activity-platforms';
 
 /**
  * Frontend expects the data to be in the following format:
@@ -39,6 +39,8 @@ export default defineEventHandler(async (event) => {
   const project = (event.context.params as { slug: string }).slug;
   const activityPlatform = query.platform as ActivityPlatforms;
   const activityType = query.activityType as ActivityTypes;
+  const limit = query.limit ? parseInt(query.limit as string, 10) : 10;
+  const offset = query.offset ? parseInt(query.offset as string, 10) : 0;
 
   const filter: ContributorsLeaderboardFilter = {
     project,
@@ -47,6 +49,8 @@ export default defineEventHandler(async (event) => {
     repo: query.repository as string,
     startDate: query.startDate ? DateTime.fromISO(query.startDate as string) : undefined,
     endDate: query.endDate ? DateTime.fromISO(query.endDate as string) : undefined,
+    limit,
+    offset
   };
 
   const dataSource = createDataSource();

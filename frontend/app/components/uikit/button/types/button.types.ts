@@ -1,4 +1,4 @@
-export const buttonTypes = ['primary', 'secondary', 'tertiary'] as const;
+export const buttonTypes = ['primary', 'secondary', 'tertiary', 'transparent'] as const;
 export const buttonSizes = ['small', 'medium', 'large'] as const;
 export const iconPosition = ['left', 'right'] as const;
 
