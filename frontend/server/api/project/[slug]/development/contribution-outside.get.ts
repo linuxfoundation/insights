@@ -1,4 +1,6 @@
-import { contributionOutside } from '~~/server/mocks/contribution-outside.mock';
+import {DateTime} from "luxon";
+import {createDataSource} from "~~/server/data/data-sources";
+import type {ContributionsOutsideWorkHoursFilter} from "~~/types/development/requests.types";
 
 /**
  * Frontend expects the data to be in the following format:
@@ -26,4 +28,19 @@ import { contributionOutside } from '~~/server/mocks/contribution-outside.mock';
  * - repository: string
  * - time-period: string // This is isn't defined yet, but we'll add '90d', '1y', '5y' for now
  */
-export default defineEventHandler(async () => contributionOutside);
+export default defineEventHandler(async (event) => {
+  const query = getQuery(event);
+
+  const project = (event.context.params as { slug: string }).slug;
+
+  const filter: ContributionsOutsideWorkHoursFilter = {
+    project,
+    repo: query.repository as string,
+    startDate: DateTime.fromISO(query.startDate as string),
+    endDate: DateTime.fromISO(query.endDate as string),
+  }
+
+  const dataSource = createDataSource();
+
+  return await dataSource.fetchContributionsOutsideWorkHours(filter);
+});

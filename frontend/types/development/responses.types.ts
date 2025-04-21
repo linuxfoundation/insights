@@ -42,8 +42,8 @@ export interface ContributionOutsideHours {
   weekdayOutsideHoursPercentage: number;
   weekendOutsideHoursPercentage: number;
   data: {
-    day: string;
-    hour: string;
+    day: number; // day of the week, 0 is monday
+    hour: number;
     contributions: number;
   }[];
 }

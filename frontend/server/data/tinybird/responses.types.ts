@@ -16,3 +16,9 @@ export type TinybirdContributorsLeaderboardData = {
   contributionCount: number,
   contributionPercentage: number
 }[];
+
+export type TinybirdActivityHeatmapData = {
+  weekday: number,
+  twoHoursBlock: number,
+  activityCount: number
+};

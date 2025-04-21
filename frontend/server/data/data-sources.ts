@@ -43,6 +43,10 @@ import {fetchWaitTimeFor1stReview} from "~~/server/data/tinybird/wait-time-for-1
 import {fetchMergeLeadTime} from "~~/server/data/tinybird/merge-lead-time-data-source";
 import {fetchActiveDays} from "~~/server/data/tinybird/active-days-data-source";
 import {fetchCodeReviewEngagement} from "~~/server/data/tinybird/code-review-engagement-data-source";
+import {
+  fetchContributionsOutsideWorkHours
+} from "~~/server/data/tinybird/contributions-outside-work-hours-data-source";
+import type {ActivityHeatmapByWeekdayTBQuery} from "~~/server/data/tinybird/requests.types";
 import type {ForksData, StarsData} from "~~/types/popularity/responses.types";
 import type {
   ActiveDays,
@@ -53,6 +57,7 @@ import type {
   WaitTime1stReview,
   MergeLeadTime,
   CodeReviewEngagement,
+  ContributionOutsideHours
 } from "~~/types/development/responses.types";
 import type {CodeReviewEngagementFilter} from "~~/types/development/requests.types";
 
@@ -77,6 +82,8 @@ export interface DataSource {
     fetchMergeLeadTime: (filter: MergeLeadTimeFilter) => Promise<MergeLeadTime>;
     fetchActiveDays: (filter: ActiveDaysFilter) => Promise<ActiveDays>;
     fetchCodeReviewEngagement: (filter: CodeReviewEngagementFilter) => Promise<CodeReviewEngagement>;
+    fetchContributionsOutsideWorkHours: (filter: ActivityHeatmapByWeekdayTBQuery)
+      => Promise<ContributionOutsideHours>;
 }
 
 export function createDataSource(): DataSource {
@@ -99,5 +106,6 @@ export function createDataSource(): DataSource {
         fetchActiveDays,
         fetchReviewTimeByPRSize,
         fetchCodeReviewEngagement,
+        fetchContributionsOutsideWorkHours,
     };
 }
