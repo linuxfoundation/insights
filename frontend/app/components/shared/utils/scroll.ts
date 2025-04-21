@@ -17,22 +17,22 @@ const useScroll = () => {
   };
 
   const scrollToTop = (value: number = 0, behavior: 'smooth' | 'instant' = 'smooth') => {
-    window?.scrollTo({
-      top: value,
-      behavior
-    });
-
-    if (value === 0) {
-      /* adding a small delay to finish the header animation from "fixed" to "relative"
+    /* adding a small delay to finish the header animation from "fixed" to "relative"
       then scrolling to top again. The window really does go to scroll position 0
       when the header is in the "fixed" position. */
-      setTimeout(() => {
+    setTimeout(() => {
+      window?.scrollTo({
+        top: value,
+        behavior
+      });
+
+      if (value === 0) {
         window?.scrollTo({
           top: value,
           behavior
         });
-      }, 100);
-    }
+      }
+    }, 100);
   };
 
   const scrollToTarget = (
