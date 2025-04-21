@@ -19,7 +19,6 @@ import type {
 } from "~~/server/data/types";
 import type {ActiveContributorsResponse} from "~~/server/data/tinybird/active-contributors-data-source";
 import type {ActiveOrganizationsResponse} from "~~/server/data/tinybird/active-organizations-data-source";
-import type {OrganizationsLeaderboardResponse} from "~~/server/data/tinybird/organizations-leaderboard-data-source";
 import type {OrganizationDependencyResponse} from "~~/server/data/tinybird/organizations-dependency-data-source";
 import type {GeographicDistributionResponse} from "~~/server/data/tinybird/geographic-distribution-data-source";
 import type {RetentionResponse} from "~~/server/data/tinybird/retention-data-source";
@@ -45,7 +44,11 @@ import {
   fetchContributionsOutsideWorkHours
 } from "~~/server/data/tinybird/contributions-outside-work-hours-data-source";
 import type {ActivityHeatmapByWeekdayTBQuery} from "~~/server/data/tinybird/requests.types";
-import type {ContributorDependency, ContributorLeaderboard} from "~~/types/contributors/responses.types";
+import type {
+  ContributorDependency,
+  ContributorLeaderboard,
+  OrganizationLeaderboard
+} from "~~/types/contributors/responses.types";
 import type {ForksData, StarsData} from "~~/types/popularity/responses.types";
 import type {
   ActiveDays,
@@ -66,7 +69,7 @@ export interface DataSource {
     fetchContributorsLeaderboard: (filter: ContributorsLeaderboardFilter) => Promise<ContributorLeaderboard>;
     fetchOrganizationsLeaderboard: (
         filter: OrganizationsLeaderboardFilter
-    ) => Promise<OrganizationsLeaderboardResponse>;
+    ) => Promise<OrganizationLeaderboard>;
     fetchContributorDependency: (filter: ContributorDependencyFilter) => Promise<ContributorDependency>;
     fetchOrganizationDependency: (filter: OrganizationDependencyFilter) => Promise<OrganizationDependencyResponse>;
     fetchGeographicDistribution: (filter: GeographicDistributionFilter) => Promise<GeographicDistributionResponse>;

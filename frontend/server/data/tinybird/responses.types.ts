@@ -24,6 +24,13 @@ export type TinybirdContributorDependencyData = {
   totalContributorCount: number
 };
 
+export type TinybirdOrganizationsLeaderboardData = {
+  logo: string,
+  displayName: string,
+  contributionCount: number,
+  contributionPercentage: number
+};
+
 export type TinybirdActivityHeatmapData = {
   weekday: number,
   twoHoursBlock: number,
