@@ -1,5 +1,9 @@
 import type {DateTime} from "luxon";
 
+/*
+ * These are the types that the API expects to receive.
+ */
+
 export enum CodeReviewEngagementMetric {
   PR_PARTICIPANTS = 'pr-participants',
   REVIEW_COMMENTS = 'review-comments',

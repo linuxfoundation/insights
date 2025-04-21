@@ -3,7 +3,7 @@ import {
 } from 'vitest';
 import {DateTime} from "luxon";
 import {mockTimeseries} from '../../mocks/tinybird-contributors-leaderboard-response.mock';
-import type {ContributorsLeaderboardResponse} from "~~/server/data/tinybird/contributors-leaderboard-data-source";
+import type {ContributorLeaderboard} from "~~/types/contributors/responses.types";
 
 const mockFetchFromTinybird = vi.fn();
 
@@ -42,7 +42,7 @@ describe('Contributors Leaderboard Data Source', () => {
       filter
     );
 
-    const expectedResult: ContributorsLeaderboardResponse = {
+    const expectedResult: ContributorLeaderboard = {
       meta: {
         offset: 0,
         limit: 10,
@@ -52,8 +52,7 @@ describe('Contributors Leaderboard Data Source', () => {
         avatar: item.avatar,
         name: item.displayName,
         contributions: item.contributionCount,
-        contributionValue: 0,
-        contributionPercentage: item.contributionPercentage
+        percentage: item.contributionPercentage
       }))
     };
 

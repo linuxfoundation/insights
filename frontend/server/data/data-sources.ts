@@ -19,9 +19,7 @@ import type {
 } from "~~/server/data/types";
 import type {ActiveContributorsResponse} from "~~/server/data/tinybird/active-contributors-data-source";
 import type {ActiveOrganizationsResponse} from "~~/server/data/tinybird/active-organizations-data-source";
-import type {ContributorsLeaderboardResponse} from "~~/server/data/tinybird/contributors-leaderboard-data-source";
 import type {OrganizationsLeaderboardResponse} from "~~/server/data/tinybird/organizations-leaderboard-source";
-import type {ContributorDependencyResponse} from "~~/server/data/tinybird/contributors-dependency-data-source";
 import type {OrganizationDependencyResponse} from "~~/server/data/tinybird/organizations-dependency-data-source";
 import type {GeographicDistributionResponse} from "~~/server/data/tinybird/geographic-distribution-data-source";
 import type {RetentionResponse} from "~~/server/data/tinybird/retention-data-source";
@@ -43,6 +41,7 @@ import {fetchWaitTimeFor1stReview} from "~~/server/data/tinybird/wait-time-for-1
 import {fetchMergeLeadTime} from "~~/server/data/tinybird/merge-lead-time-data-source";
 import {fetchActiveDays} from "~~/server/data/tinybird/active-days-data-source";
 import {fetchCodeReviewEngagement} from "~~/server/data/tinybird/code-review-engagement-data-source";
+import type {ContributorDependency, ContributorLeaderboard} from "~~/types/contributors/responses.types";
 import {
   fetchContributionsOutsideWorkHours
 } from "~~/server/data/tinybird/contributions-outside-work-hours-data-source";
@@ -64,11 +63,11 @@ import type {CodeReviewEngagementFilter} from "~~/types/development/requests.typ
 export interface DataSource {
     fetchActiveContributors: (filter: ActiveContributorsFilter) => Promise<ActiveContributorsResponse>;
     fetchActiveOrganizations: (filter: ActiveOrganizationsFilter) => Promise<ActiveOrganizationsResponse>;
-    fetchContributorsLeaderboard: (filter: ContributorsLeaderboardFilter) => Promise<ContributorsLeaderboardResponse>;
+    fetchContributorsLeaderboard: (filter: ContributorsLeaderboardFilter) => Promise<ContributorLeaderboard>;
     fetchOrganizationsLeaderboard: (
         filter: OrganizationsLeaderboardFilter
     ) => Promise<OrganizationsLeaderboardResponse>;
-    fetchContributorDependency: (filter: ContributorDependencyFilter) => Promise<ContributorDependencyResponse>;
+    fetchContributorDependency: (filter: ContributorDependencyFilter) => Promise<ContributorDependency>;
     fetchOrganizationDependency: (filter: OrganizationDependencyFilter) => Promise<OrganizationDependencyResponse>;
     fetchGeographicDistribution: (filter: GeographicDistributionFilter) => Promise<GeographicDistributionResponse>;
     fetchRetention: (filter: RetentionFilter) => Promise<RetentionResponse>;

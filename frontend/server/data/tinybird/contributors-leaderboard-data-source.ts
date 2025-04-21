@@ -1,53 +1,32 @@
 import type {ContributorsLeaderboardFilter} from "~~/server/data/types";
-import {fetchFromTinybird, type TinybirdResponse} from "~~/server/data/tinybird/tinybird";
+import {fetchFromTinybird} from "~~/server/data/tinybird/tinybird";
 import type {TinybirdContributorsLeaderboardData} from "~~/server/data/tinybird/responses.types";
-
-export type ContributorsLeaderboardDataPoint = {
-  avatar: string | undefined; // URL of the user's profile pic or avatar.
-  name: string; // Full name of the contributor
-  contributions: number; // Total number of contributions
-  contributionValue: number; // Value of the contribution
-  contributionPercentage: number;
-}
-export type ContributorsLeaderboardResponse = {
-  meta: {
-    offset: number;
-    limit: number;
-    total: number;
-  },
-  data: ContributorsLeaderboardDataPoint[]
-}
+import type {Contributor, ContributorLeaderboard} from "~~/types/contributors/responses.types";
 
 export async function fetchContributorsLeaderboard(
   filter: ContributorsLeaderboardFilter
-): Promise<ContributorsLeaderboardResponse> {
+): Promise<ContributorLeaderboard> {
   // TODO: We're passing unchecked query parameters to TinyBird directly from the frontend.
   //  We need to ensure this doesn't pose a security risk.
 
-  const data = await fetchFromTinybird<TinybirdContributorsLeaderboardData>(
+  const tbResponse = await fetchFromTinybird<TinybirdContributorsLeaderboardData[]>(
     '/v0/pipes/contributors_leaderboard.json',
     filter
   );
-
-  let processedData: ContributorsLeaderboardDataPoint[] = [];
-  if (data !== undefined) {
-    processedData = (data as TinybirdResponse<TinybirdContributorsLeaderboardData>)?.data.map(
-      (item): ContributorsLeaderboardDataPoint => ({
-        avatar: item.avatar,
-        name: item.displayName,
-        contributions: item.contributionCount,
-        contributionValue: 0,
-        contributionPercentage: item.contributionPercentage
-      })
-    );
-  }
 
   return {
     meta: {
       offset: 0,
       limit: 10,
-      total: data?.rows || 0
+      total: tbResponse?.rows || 0
     },
-    data: processedData
+    data: tbResponse.data.map(
+      (item): Contributor => ({
+        avatar: item.avatar,
+        name: item.displayName,
+        contributions: item.contributionCount,
+        percentage: item.contributionPercentage,
+      })
+    )
   };
 }

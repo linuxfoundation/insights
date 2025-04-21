@@ -29,7 +29,6 @@ export interface CodeReviewItem {
   name: string;
   activityCount: number;
   percentage?: number;
-  email: string;
 }
 
 export interface CodeReviewEngagement {

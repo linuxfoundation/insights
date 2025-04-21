@@ -32,8 +32,6 @@ export async function fetchCodeReviewEngagement(filter: CodeReviewEngagementFilt
   // TODO: We're passing unchecked query parameters to TinyBird directly from the frontend.
   //  We need to ensure this doesn't pose a security risk.
 
-  console.debug('filter', filter);
-
   const dates = getPreviousDates(filter.startDate, filter.endDate);
 
   let activityTypes: ActivityTypes[];
@@ -85,7 +83,7 @@ export async function fetchCodeReviewEngagement(filter: CodeReviewEngagementFilt
   ] = await Promise.all([
     fetchFromTinybird<TinybirdActiveContributorsSummary>(summariesPath, currentSummaryQuery),
     fetchFromTinybird<TinybirdActiveContributorsSummary>(summariesPath, previousSummaryQuery),
-    fetchFromTinybird<TinybirdContributorsLeaderboardData>(dataPath, dataQuery),
+    fetchFromTinybird<TinybirdContributorsLeaderboardData[]>(dataPath, dataQuery),
   ]);
 
   const currentCount = currentSummary.data[0]?.contributorCount || 0;
@@ -105,7 +103,6 @@ export async function fetchCodeReviewEngagement(filter: CodeReviewEngagementFilt
       name: item.displayName,
       activityCount: item.contributionCount,
       percentage: item.contributionPercentage,
-      email: '' // I'm pretty sure we don't want to expose this.
     }))
   };
 }

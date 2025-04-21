@@ -37,7 +37,6 @@ export default defineEventHandler(async (event) => {
   const query = getQuery(event);
 
   const project = (event.context.params as { slug: string }).slug;
-
   const activityPlatform = query.platform as ActivityPlatforms;
   const activityType = query.activityType as ActivityTypes;
 
@@ -49,6 +48,7 @@ export default defineEventHandler(async (event) => {
     startDate: query.startDate ? DateTime.fromISO(query.startDate as string) : undefined,
     endDate: query.endDate ? DateTime.fromISO(query.endDate as string) : undefined,
   };
+
   const dataSource = createDataSource();
   const result = await dataSource.fetchContributorsLeaderboard(filter);
 
