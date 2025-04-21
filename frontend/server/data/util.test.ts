@@ -80,33 +80,19 @@ describe('getPreviousDates', () => {
 });
 
 describe('calculatePercentageChange', () => {
-  test('current 0, previous 0, returns 0', () => {
-    const result = calculatePercentageChange(0, 0);
-    expect(result).toEqual(0);
-  });
-
-  test('current 0, previous 100, returns 100', () => {
-    const result = calculatePercentageChange(0, 1);
-    expect(result).toEqual(100);
-  });
-
-  test('current 100, previous 100, returns 0', () => {
-    const result = calculatePercentageChange(100, 100);
-    expect(result).toEqual(0);
-  });
-
-  test('current 100, previous 0, returns undefined', () => {
-    const result = calculatePercentageChange(100, 0);
-    expect(result).toBeUndefined()
-  });
-
-  test('current 100, previous 50, returns 100', () => {
-    const result = calculatePercentageChange(100, 50);
-    expect(result).toEqual(100);
-  });
-
-  test('current 50, previous 100, returns 50', () => {
-    const result = calculatePercentageChange(50, 100);
-    expect(result).toEqual(50);
+  test.each([
+    [0, 0, 0],
+    [0, 1, 100],
+    [100, 100, 0],
+    [100, 0, undefined],
+    [100, 50, 100],
+    [50, 100, 50],
+  ])("current %i, previous %i, returns %i", (current, previous, expected) => {
+    const result = calculatePercentageChange(current, previous);
+    if (expected === undefined) {
+      expect(result).toBeUndefined();
+    } else {
+      expect(result).toEqual(expected);
+    }
   });
 });
