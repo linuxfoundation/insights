@@ -2,19 +2,25 @@ import {
   describe, test, expect, vi, beforeEach
 } from 'vitest';
 import {DateTime} from "luxon";
-import {mockTimeseries} from '../../mocks/tinybird-contributors-leaderboard-response.mock';
+import {
+  mockTimeseries,
+  mockContributorsLeaderboardCount
+} from '../../mocks/tinybird-contributors-leaderboard-response.mock';
 import type {ContributorLeaderboard} from "~~/types/contributors/responses.types";
-
-const mockFetchFromTinybird = vi.fn();
+import {ActivityTypes} from "~~/types/shared/activity-types";
+import {ActivityPlatforms} from "~~/types/shared/activity-platforms";
+import type {ContributorsLeaderboardFilter} from "~~/server/data/types";
+import type {ContributorsLeaderboardTinybirdQuery} from "~~/server/data/tinybird/requests.types";
 
 describe('Contributors Leaderboard Data Source', () => {
+  const mockFetchFromTinybird = vi.fn();
+
   beforeEach(() => {
     mockFetchFromTinybird.mockClear();
 
     // Here be dragons! vi.doMock is not hoisted, and thus it is executed after the original import statement.
-    // This means that the import for tinybird.ts inside active-contributors-data-source.ts would still be used,
-    // and thus not mocked. This means we need to import the module again after the mock is set, whenever we want to
-    // use it.
+    // This means that the import for tinybird.ts inside the data source would still be used, and thus not mocked.
+    // In turn, this means that we need to import the module again after the mock is set, whenever we want to use it.
     vi.doMock(import("./tinybird"), () => ({
       fetchFromTinybird: mockFetchFromTinybird,
     }));
@@ -24,29 +30,48 @@ describe('Contributors Leaderboard Data Source', () => {
     // We have to import this here again because vi.doMock is not hoisted. See the explanation in beforeEach().
     const {fetchContributorsLeaderboard} = await import("~~/server/data/tinybird/contributors-leaderboard-data-source");
 
-    mockFetchFromTinybird.mockResolvedValue(mockTimeseries);
+    mockFetchFromTinybird
+      .mockResolvedValueOnce(mockTimeseries)
+      .mockResolvedValueOnce(mockContributorsLeaderboardCount);
 
     const startDate = DateTime.utc(2024, 3, 20);
     const endDate = DateTime.utc(2025, 3, 20);
 
-    const filter = {
+    const filter: ContributorsLeaderboardFilter = {
       project: 'the-linux-kernel-organization',
+      platform: ActivityPlatforms.GITHUB,
+      activity_type: ActivityTypes.AUTHORED_COMMIT,
+      offset: 3,
+      limit: 12,
       startDate,
       endDate
     };
 
+    const expectedDataQuery: ContributorsLeaderboardTinybirdQuery = filter;
+
+    const expectedCountQuery = {
+      ...expectedDataQuery,
+      count: true,
+    };
+
     const result = await fetchContributorsLeaderboard(filter);
 
-    expect(mockFetchFromTinybird).toHaveBeenCalledWith(
+    expect(mockFetchFromTinybird).toHaveBeenNthCalledWith(
+      1,
       '/v0/pipes/contributors_leaderboard.json',
-      filter
+      expectedDataQuery
+    );
+    expect(mockFetchFromTinybird).toHaveBeenNthCalledWith(
+      2,
+      '/v0/pipes/contributors_leaderboard.json',
+      expectedCountQuery
     );
 
     const expectedResult: ContributorLeaderboard = {
       meta: {
-        offset: 0,
-        limit: 10,
-        total: 10
+        offset: filter.offset || 0,
+        limit: filter.limit || 10,
+        total: mockContributorsLeaderboardCount.data[0].count
       },
       data: mockTimeseries.data.map((item) => ({
         avatar: item.avatar,

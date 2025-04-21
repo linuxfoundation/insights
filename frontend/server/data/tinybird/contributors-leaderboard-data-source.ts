@@ -1,7 +1,8 @@
 import type {ContributorsLeaderboardFilter} from "~~/server/data/types";
 import {fetchFromTinybird} from "~~/server/data/tinybird/tinybird";
-import type {TinybirdContributorsLeaderboardData} from "~~/server/data/tinybird/responses.types";
+import type {TinybirdContributorsLeaderboardData, TinybirdCountData} from "~~/server/data/tinybird/responses.types";
 import type {Contributor, ContributorLeaderboard} from "~~/types/contributors/responses.types";
+import type {ContributorsLeaderboardTinybirdQuery} from "~~/server/data/tinybird/requests.types";
 
 export async function fetchContributorsLeaderboard(
   filter: ContributorsLeaderboardFilter
@@ -9,18 +10,34 @@ export async function fetchContributorsLeaderboard(
   // TODO: We're passing unchecked query parameters to TinyBird directly from the frontend.
   //  We need to ensure this doesn't pose a security risk.
 
-  const tbResponse = await fetchFromTinybird<TinybirdContributorsLeaderboardData[]>(
-    '/v0/pipes/contributors_leaderboard.json',
-    filter
-  );
+  const dataQuery: ContributorsLeaderboardTinybirdQuery = {
+    project: filter.project,
+    platform: filter.platform,
+    activity_type: filter.activity_type,
+    repo: filter.repo,
+    limit: filter.limit,
+    offset: filter.offset,
+    startDate: filter.startDate,
+    endDate: filter.endDate,
+  };
+
+  const countQuery = {
+    ...dataQuery,
+    count: true,
+  };
+
+  const [dataResponse, countResponse] = await Promise.all([
+    fetchFromTinybird<TinybirdContributorsLeaderboardData[]>('/v0/pipes/contributors_leaderboard.json', dataQuery),
+    fetchFromTinybird<TinybirdCountData[]>('/v0/pipes/contributors_leaderboard.json', countQuery)
+  ]);
 
   return {
     meta: {
-      offset: 0,
-      limit: 10,
-      total: tbResponse?.rows || 0
+      offset: filter.offset || 0,
+      limit: filter.limit || 10,
+      total: countResponse?.data?.[0]?.count || 0
     },
-    data: tbResponse.data.map(
+    data: dataResponse.data.map(
       (item): Contributor => ({
         avatar: item.avatar,
         name: item.displayName,

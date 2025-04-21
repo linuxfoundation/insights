@@ -2,8 +2,15 @@ import {
   describe, test, expect, vi, beforeEach
 } from 'vitest';
 import {DateTime} from "luxon";
-import {mockTimeseries} from '../../mocks/tinybird-organizations-leaderboard-response.mock';
+import {
+  mockTimeseries,
+  mockOrganizationsLeaderboardCount
+} from '../../mocks/tinybird-organizations-leaderboard-response.mock';
 import type {OrganizationLeaderboard} from "~~/types/contributors/responses.types";
+import {ActivityTypes} from "~~/types/shared/activity-types";
+import {ActivityPlatforms} from "~~/types/shared/activity-platforms";
+import type {OrganizationsLeaderboardFilter} from "~~/server/data/types";
+import type {OrganizationsLeaderboardTinybirdQuery} from "~~/server/data/tinybird/requests.types";
 
 const mockFetchFromTinybird = vi.fn();
 
@@ -26,29 +33,48 @@ describe('Organizations Leaderboard Data Source', () => {
       fetchOrganizationsLeaderboard
     } = await import("~~/server/data/tinybird/organizations-leaderboard-data-source");
 
-    mockFetchFromTinybird.mockResolvedValue(mockTimeseries);
+    mockFetchFromTinybird
+      .mockResolvedValueOnce(mockTimeseries)
+      .mockResolvedValueOnce(mockOrganizationsLeaderboardCount);
 
     const startDate = DateTime.utc(2024, 3, 20);
     const endDate = DateTime.utc(2025, 3, 20);
 
-    const filter = {
+    const filter: OrganizationsLeaderboardFilter = {
       project: 'the-linux-kernel-organization',
+      platform: ActivityPlatforms.GITHUB,
+      activity_type: ActivityTypes.AUTHORED_COMMIT,
+      offset: 2,
+      limit: 7,
       startDate,
       endDate
     };
 
+    const expectedDataQuery: OrganizationsLeaderboardTinybirdQuery = filter;
+
+    const expectedCountQuery = {
+      ...expectedDataQuery,
+      count: true,
+    };
+
     const result = await fetchOrganizationsLeaderboard(filter);
 
-    expect(mockFetchFromTinybird).toHaveBeenCalledWith(
+    expect(mockFetchFromTinybird).toHaveBeenNthCalledWith(
+      1,
       '/v0/pipes/organizations_leaderboard.json',
-      filter
+      expectedDataQuery
+    );
+    expect(mockFetchFromTinybird).toHaveBeenNthCalledWith(
+      2,
+      '/v0/pipes/organizations_leaderboard.json',
+      expectedCountQuery
     );
 
     const expectedResult: OrganizationLeaderboard = {
       meta: {
-        offset: 0,
-        limit: 10,
-        total: 10
+        offset: filter.offset || 0,
+        limit: filter.limit || 10,
+        total: mockOrganizationsLeaderboardCount.data[0].count
       },
       data: mockTimeseries.data.map((item) => ({
         logo: item.logo,
