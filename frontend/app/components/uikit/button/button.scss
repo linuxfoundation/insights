@@ -50,8 +50,20 @@
     }
   }
 
-  &-small {
-    @apply text-xs px-3 py-1.5;
+  &-transparent {
+    @apply bg-transparent text-brand-500 font-semibold;
+
+    &:hover {
+      @apply bg-brand-100;
+    }
+
+    &:active {
+      @apply bg-brand-50 outline-brand-200;
+    }
+
+    &:disabled {
+      @apply bg-brand-50 text-brand-300;
+    }
   }
 
   &-large {

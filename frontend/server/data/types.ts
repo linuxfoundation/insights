@@ -1,6 +1,6 @@
-import type {DateTime} from "luxon";
-import type {ActivityPlatforms} from "~~/types/shared/activity-platforms";
-import type {ActivityTypes} from "~~/types/shared/activity-types";
+import type { DateTime } from 'luxon';
+import type { ActivityPlatforms } from '~~/types/shared/activity-platforms';
+import type { ActivityTypes } from '~~/types/shared/activity-types';
 
 export type FetchFunction = typeof $fetch;
 
@@ -37,7 +37,7 @@ export type ContributorsLeaderboardFilter = {
   offset?: number;
   startDate?: DateTime;
   endDate?: DateTime;
-}
+};
 
 export type OrganizationsLeaderboardFilter = {
   project: string;
@@ -48,7 +48,7 @@ export type OrganizationsLeaderboardFilter = {
   offset?: number;
   startDate?: DateTime;
   endDate?: DateTime;
-}
+};
 
 export type ContributorDependencyFilter = {
   project: string;
@@ -58,7 +58,7 @@ export type ContributorDependencyFilter = {
   activity_type?: ActivityTypes;
   startDate?: DateTime;
   endDate?: DateTime;
-}
+};
 
 export type OrganizationDependencyFilter = {
   project: string;
@@ -68,7 +68,7 @@ export type OrganizationDependencyFilter = {
   activity_type?: ActivityTypes;
   startDate?: DateTime;
   endDate?: DateTime;
-}
+};
 
 export enum DemographicType {
   CONTRIBUTORS = 'contributors',
@@ -83,7 +83,7 @@ export type GeographicDistributionFilter = {
   type?: DemographicType;
   startDate?: DateTime;
   endDate?: DateTime;
-}
+};
 
 export type RetentionFilter = {
   project: string;
@@ -95,66 +95,75 @@ export type RetentionFilter = {
   onlyContributions: boolean;
   startDate?: DateTime;
   endDate?: DateTime;
-}
+};
 
 export enum ActivityFilterCountType {
   CUMULATIVE = 'cumulative',
   NEW = 'new'
 }
+export enum ActivityFilterActivityType {
+  FORKS = 'fork',
+  STARS = 'star',
+  ISSUES_OPENED = 'issues-opened',
+  ISSUES_CLOSED = 'issues-closed',
+  PULL_REQUESTS_OPENED = 'pull_request-opened',
+  PULL_REQUESTS_MERGED = 'pull_request-merged',
+  PULL_REQUESTS_CLOSED = 'pull_request-closed'
+}
 export type ActivityCountFilter = {
   project: string;
   granularity?: FilterGranularity;
   countType?: ActivityFilterCountType;
-  activity_type: ActivityTypes,
+  activity_type: ActivityFilterActivityType;
   onlyContributions: boolean;
-  repo?: string,
-  startDate?: DateTime,
-  endDate?: DateTime,
-}
+  repo?: string;
+  startDate?: DateTime;
+  endDate?: DateTime;
+};
 
 export type ReviewTimeByPRSizeFilter = {
   project: string;
-  repo?: string,
-  startDate?: DateTime,
-  endDate?: DateTime,
+  repo?: string;
+  startDate?: DateTime;
+  endDate?: DateTime;
 };
 
 export type AverageTimeToMergeFilter = {
   project: string;
   granularity?: FilterGranularity;
-  repo?: string,
-  startDate?: DateTime,
-  endDate?: DateTime,
+  repo?: string;
+  startDate?: DateTime;
+  endDate?: DateTime;
 };
 
 export type WaitTimeFor1stReviewFilter = {
   project: string;
   granularity?: FilterGranularity;
-  repo?: string,
-  startDate?: DateTime,
-  endDate?: DateTime,
+  repo?: string;
+  startDate?: DateTime;
+  endDate?: DateTime;
 };
 
 export type MergeLeadTimeFilter = {
   project: string;
-  repo?: string,
-  startDate?: DateTime,
-  endDate?: DateTime,
+  repo?: string;
+  startDate?: DateTime;
+  endDate?: DateTime;
 };
 
 export type ActiveDaysFilter = {
   project: string;
   granularity?: FilterGranularity;
-  repo?: string,
-  startDate?: DateTime,
-  endDate?: DateTime,
+  repo?: string;
+  startDate?: DateTime;
+  endDate?: DateTime;
 };
 
 export type CodeReviewEngagementTBQuery = {
   project: string;
-  repo?: string,
-  limit: number,
+  repo?: string;
+  limit: number;
   activity_types: ActivityTypes[];
-  startDate: DateTime,
-  endDate: DateTime,
-}
+  startDate: DateTime;
+  endDate: DateTime;
+};
