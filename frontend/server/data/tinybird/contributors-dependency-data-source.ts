@@ -3,8 +3,8 @@ import type {
   ContributorsLeaderboardFilter,
 } from "../types";
 import {fetchFromTinybird} from './tinybird'
-import type {ContributorsLeaderboardDataPoint} from "~~/server/data/tinybird/contributors-leaderboard-source";
-import {fetchContributorsLeaderboard} from "~~/server/data/tinybird/contributors-leaderboard-source";
+import type {ContributorsLeaderboardDataPoint} from "~~/server/data/tinybird/contributors-leaderboard-data-source";
+import {fetchContributorsLeaderboard} from "~~/server/data/tinybird/contributors-leaderboard-data-source";
 
 export type ContributorDependencyDataPoint = {
   avatar: string | undefined;
