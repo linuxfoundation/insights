@@ -14,56 +14,60 @@
     </p>
     <hr>
     <section class="mt-5">
-      <div class="flex flex-row justify-between items-center mb-6 gap-8">
-        <lfx-skeleton-state
-          :status="status"
-          height="2rem"
-          width="7.5rem"
-        >
-          <div class="flex flex-row gap-4 items-center grow">
-            <div class="text-data-display-1">{{ formatNumber(summary.current) }}%</div>
-            <lfx-delta-display
-              v-if="selectedTimeRangeKey !== dateOptKeys.alltime"
-              :summary="summary"
-              percentage-only
-              unit="%"
-            />
-          </div>
-        </lfx-skeleton-state>
-
-        <div class="flex flex-col items-end justify-center">
-          <span class="text-neutral-400 text-xs flex flex-row gap-2 items-center">
-            Mon-Fri (after 18:00)
-          </span>
+      <div class="flex flex-row justify-between items-center mb-6">
+        <div>
           <lfx-skeleton-state
             :status="status"
-            height="1.25rem"
-            width="4rem"
+            height="2rem"
+            width="7.5rem"
           >
-            <span
-              v-if="status === 'success'"
-              class="text-xl"
-            >
-              {{ formatNumber(weekdayPercentage, 1) }}%
-            </span>
+            <div class="flex flex-row gap-4 items-center grow">
+              <div class="text-data-display-1">{{ formatNumber(summary.current) }}%</div>
+              <lfx-delta-display
+                v-if="selectedTimeRangeKey !== dateOptKeys.alltime"
+                :summary="summary"
+                percentage-only
+                unit="%"
+              />
+            </div>
           </lfx-skeleton-state>
         </div>
-        <div class="flex flex-col items-end justify-center">
-          <span class="text-neutral-400 text-xs flex flex-row gap-2 items-center">
-            Weekends
-          </span>
-          <lfx-skeleton-state
-            :status="status"
-            height="1.25rem"
-            width="4rem"
-          >
-            <span
-              v-if="status === 'success'"
-              class="text-xl"
-            >
-              {{ formatNumber(weekendPercentage, 1) }}%
+
+        <div class="flex flex-row justify-between items-center mb-6 gap-10">
+          <div class="flex flex-col items-end justify-center">
+            <span class="text-neutral-400 text-xs flex flex-row gap-2 items-center">
+              Mon-Fri (after 18:00)
             </span>
-          </lfx-skeleton-state>
+            <lfx-skeleton-state
+              :status="status"
+              height="1.25rem"
+              width="4rem"
+            >
+              <span
+                v-if="status === 'success'"
+                class="text-xl"
+              >
+                {{ formatNumber(weekdayPercentage, 1) }}%
+              </span>
+            </lfx-skeleton-state>
+          </div>
+          <div class="flex flex-col items-end justify-center">
+            <span class="text-neutral-400 text-xs flex flex-row gap-2 items-center">
+              Weekends
+            </span>
+            <lfx-skeleton-state
+              :status="status"
+              height="1.25rem"
+              width="4rem"
+            >
+              <span
+                v-if="status === 'success'"
+                class="text-xl"
+              >
+                {{ formatNumber(weekendPercentage, 1) }}%
+              </span>
+            </lfx-skeleton-state>
+          </div>
         </div>
       </div>
 
@@ -77,6 +81,9 @@
       >
         <div class="w-full h-[430px] my-5">
           <lfx-chart :config="getScatterChartConfig(chartData, chartSeries)" />
+        </div>
+        <div class="text-neutral-400 text-xs text-center italic">
+          Only considering contributions from contributors with known timezones
         </div>
       </lfx-project-load-state>
     </section>
