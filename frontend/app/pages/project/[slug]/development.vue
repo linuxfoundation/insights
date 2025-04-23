@@ -1,10 +1,11 @@
 <template>
-  <lfx-project-development-view />
+  <lfx-widget-area :name="WidgetArea.DEVELOPMENT" />
 </template>
 
 <script setup lang="ts">
-import LfxProjectDevelopmentView from "~/components/modules/project/views/development.vue";
 import {useProjectStore} from "~/components/modules/project/store/project.store";
+import {WidgetArea} from "~/components/modules/widget/types/widget-area";
+import LfxWidgetArea from "~/components/modules/widget/components/shared/widget-area.vue";
 
 const {project} = useProjectStore();
 

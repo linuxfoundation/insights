@@ -1,0 +1,147 @@
+<template>
+  <section class="mt-5">
+    <div class="mb-5">
+      <lfx-skeleton-state
+        :status="status"
+        height="2rem"
+        width="7.5rem"
+      >
+        <div
+          v-if="summary"
+          class="flex flex-row gap-4 items-center"
+        >
+          <div class="text-data-display-1">{{ formatNumber(summary.current) }}</div>
+          <lfx-delta-display
+            v-if="selectedTimeRangeKey !== dateOptKeys.alltime"
+            :summary="summary"
+          />
+        </div>
+      </lfx-skeleton-state>
+    </div>
+
+    <lfx-project-load-state
+      :status="status"
+      :error="error"
+      error-message="Error fetching social mentions"
+      :is-empty="isEmpty"
+    >
+      <div class="w-full h-[320px] my-5">
+        <lfx-chart :config="lineAreaChartConfig" />
+      </div>
+      <lfx-project-press-mention-lists :list="list" />
+    </lfx-project-load-state>
+
+  </section>
+</template>
+
+<script setup lang="ts">
+import { useRoute } from 'nuxt/app';
+import { ref, computed, onServerPrefetch } from 'vue';
+import { storeToRefs } from "pinia";
+import {type QueryFunction, useQuery} from "@tanstack/vue-query";
+import type { PressMentions, PressMention } from '~~/types/popularity/responses.types';
+import type { Summary } from '~~/types/shared/summary.types';
+import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
+import { convertToChartData } from '~/components/uikit/chart/helpers/chart-helpers';
+import type {
+  ChartData,
+  RawChartData,
+  ChartSeries
+} from '~/components/uikit/chart/types/ChartTypes';
+import LfxChart from '~/components/uikit/chart/chart.vue';
+import { getLineAreaChartConfig } from '~/components/uikit/chart/configs/line.area.chart';
+import { lfxColors } from '~/config/styles/colors';
+import { formatNumber } from '~/components/shared/utils/formatter';
+import { useProjectStore } from "~/components/modules/project/store/project.store";
+import { dateOptKeys } from '~/components/modules/project/config/date-options';
+import { isEmptyData } from '~/components/shared/utils/helper';
+import { lineGranularities } from '~/components/shared/types/granularity';
+import type { Granularity } from '~~/types/shared/granularity';
+import {TanstackKey} from "~/components/shared/types/tanstack";
+import LfxSkeletonState from "~/components/modules/project/components/shared/skeleton-state.vue";
+import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
+import LfxProjectPressMentionLists
+  from "~/components/modules/widget/components/popularity/fragments/press-mention-lists.vue";
+
+const {
+  startDate,
+  endDate,
+  selectedRepository,
+  selectedTimeRangeKey,
+  customRangeGranularity
+} = storeToRefs(useProjectStore())
+
+const route = useRoute();
+
+const granularity = computed(() => (selectedTimeRangeKey.value === dateOptKeys.custom
+  ? customRangeGranularity.value[0] as Granularity
+  : lineGranularities[selectedTimeRangeKey.value as keyof typeof lineGranularities]));
+
+const queryKey = computed(() => [
+  TanstackKey.PRESS_MENTIONS,
+  route.params.slug,
+  granularity,
+  selectedRepository,
+  startDate,
+  endDate,
+]);
+
+const fetchData: QueryFunction<PressMentions> = async () => $fetch(
+    `/api/project/${route.params.slug}/popularity/press-mentions`,
+    {
+  params: {
+    granularity: granularity.value,
+    repository: selectedRepository.value,
+    startDate: startDate.value,
+    endDate: endDate.value,
+  }
+}
+);
+
+const {
+  data, status, error, suspense
+} = useQuery<PressMentions>({
+  queryKey,
+  queryFn: fetchData,
+});
+
+onServerPrefetch(async () => {
+  await suspense();
+});
+
+const mentions = computed<PressMentions>(() => data.value as PressMentions);
+
+const summary = computed<Summary>(() => mentions.value.summary);
+const chartData = computed<ChartData[]>(
+  // convert the data to chart data
+  () => convertToChartData((mentions.value?.data || []) as RawChartData[], 'startDate', [
+    'mentions'
+  ], undefined, 'endDate')
+);
+const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
+
+const list = computed<PressMention[]>(() => mentions.value.list);
+
+const chartSeries = ref<ChartSeries[]>([
+  {
+    name: 'Press Mentions',
+    type: 'line',
+    yAxisIndex: 0,
+    dataIndex: 0,
+    position: 'left',
+    color: lfxColors.brand[500]
+  }
+]);
+
+const lineAreaChartConfig = computed(() => getLineAreaChartConfig(
+  chartData.value,
+  chartSeries.value,
+  granularity.value
+));
+</script>
+
+<script lang="ts">
+export default {
+  name: 'LfxProjectPressMentions',
+}
+</script>

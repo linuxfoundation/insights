@@ -61,7 +61,7 @@
                 />
               </div>
             </div>
-            <div class="hidden sm:block">
+            <div class="hidden sm:flex items-center gap-4">
               <lfx-share>
                 <lfx-button
                   type="tertiary"
@@ -71,6 +71,24 @@
                   Share
                 </lfx-button>
               </lfx-share>
+              <!--              <lfx-dropdown-->
+              <!--                placement="bottom-end"-->
+              <!--                width="12.5rem"-->
+              <!--              >-->
+              <!--                <template #trigger>-->
+              <!--                  <lfx-icon-button-->
+              <!--                    icon="ellipsis"-->
+              <!--                    type="transparent"-->
+              <!--                  />-->
+              <!--                </template>-->
+              <!--                <lfx-dropdown-item @click="openReportModal()">-->
+              <!--                  <lfx-icon-->
+              <!--                    name="comment-exclamation"-->
+              <!--                    class="!text-neutral-900"-->
+              <!--                  />-->
+              <!--                  Report issue-->
+              <!--                </lfx-dropdown-item>-->
+              <!--              </lfx-dropdown>-->
             </div>
           </div>
         </div>
@@ -113,6 +131,9 @@ import useResponsive from "~/components/shared/utils/responsive";
 import {useProjectStore} from "~/components/modules/project/store/project.store";
 import LfxOrganizationLogo from "~/components/uikit/organization-logo/organization-logo.vue";
 import LfxProjectMenu from "~/components/modules/project/components/shared/header/project-menu.vue";
+// import LfxDropdown from "~/components/uikit/dropdown/dropdown.vue";
+// import LfxDropdownItem from "~/components/uikit/dropdown/dropdown-item.vue";
+// import {useReportStore} from "~/components/shared/modules/report/store/report.store";
 
 const props = defineProps<{
   project?: Project
@@ -121,6 +142,7 @@ const props = defineProps<{
 const route = useRoute();
 
 const {projectRepos} = storeToRefs(useProjectStore())
+// const { openReportModal } = useReportStore();
 
 const repo = computed<ProjectRepository | undefined>(
     () => projectRepos.value.find((repo) => repo.slug === route.params.name)

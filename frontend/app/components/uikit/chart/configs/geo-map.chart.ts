@@ -3,7 +3,7 @@ import _ from 'lodash';
 import type { ChartData, ChartSeries, SeriesTypes } from '../types/ChartTypes';
 import type { SingleTooltipFormatterParams } from '../types/EChartTypes';
 import { lfxColors } from '~/config/styles/colors';
-import { geoMapCountries } from '~/components/modules/project/components/contributors/config/geo-map-countries';
+import {geoMapCountries} from "~/components/modules/widget/components/contributors/config/geo-map-countries";
 
 interface GeoMapData {
   name: string;

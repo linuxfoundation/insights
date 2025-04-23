@@ -50,7 +50,7 @@ export default withNuxt({
       }
     }
   },
-  ignores: ['*.config.*js', '.tailwind/*'],
+  ignores: ['*.config.*js', '.tailwind/*', 'shims-vue.d.ts'],
   rules: {
     ...getRules(compat.extends('airbnb-base')),
     ...getRules(compat.extends('airbnb-typescript/base'), '@typescript-eslint/'),

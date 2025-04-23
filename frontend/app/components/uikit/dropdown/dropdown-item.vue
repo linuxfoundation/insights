@@ -26,8 +26,8 @@
 import LfxIcon from "~/components/uikit/icon/icon.vue";
 
 const props = defineProps<{
-  value: string,
-  label: string,
+  value?: string,
+  label?: string,
   checkmarkBefore?: boolean,
 }>();
 
@@ -36,10 +36,13 @@ const selectedValue = inject<ReturnType<typeof computed<string>>>('selectedValue
 const selectedOptionProps = inject('selectedOptionProps', ref(null));
 //
 // Determine if the item is currently selected
-const isSelected = computed(() => selectedValue && selectedValue.value === props.value);
+const isSelected = computed(() => selectedValue && props.value && selectedValue.value === props.value);
 
 // Emit selection event upward
 const handleClick = () => {
+  if(!props.value){
+    return
+  }
   if(selectedOptionProps){
     selectedOptionProps.value = {
       ...props,

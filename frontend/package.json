@@ -23,6 +23,8 @@
     "@popperjs/core": "^2.11.8",
     "@primevue/themes": "^4.2.5",
     "@tanstack/vue-query": "^5.74.3",
+    "@vuelidate/core": "^2.0.3",
+    "@vuelidate/validators": "^2.0.4",
     "echarts": "^5.6.0",
     "eslint": "^9.18.0",
     "lodash": "^4.17.21",

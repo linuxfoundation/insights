@@ -1,0 +1,35 @@
+.c-input {
+  @apply border px-1 flex items-center transition-all border-neutral-200 rounded-md shadow-xs text-sm;
+
+  &:focus-within {
+    @apply border-neutral-900
+  }
+
+  &.is-disabled{
+     @apply cursor-not-allowed border-neutral-400 bg-neutral-50;
+  }
+
+  &.is-invalid{
+    @apply border-negative-600;
+  }
+
+  input, textarea{
+    @apply text-sm text-neutral-900 leading-5 font-normal p-2 outline-none appearance-none flex-grow block w-full transition-all bg-transparent resize-none;
+
+    &::placeholder, &:-ms-input-placeholder, &::-ms-input-placeholder {
+      @apply opacity-100 text-neutral-400;
+    }
+
+    &:disabled{
+      @apply cursor-not-allowed text-neutral-400;
+    }
+  }
+
+  &__prefix {
+    @apply pl-2 text-sm leading-6 text-neutral-400;
+  }
+
+  &__suffix {
+    @apply pr-2 text-sm leading-6 text-neutral-400;
+  }
+}
