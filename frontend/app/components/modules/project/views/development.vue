@@ -50,14 +50,14 @@
                 />
               </lfx-benchmarks-wrap>
             </lfx-scroll-view>
-            <lfx-scroll-view
+            <!-- <lfx-scroll-view
               id="contributions-outside-work-hours"
               :observer="observer"
             >
               <lfx-benchmarks-wrap>
                 <lfx-project-contributions-outside-work-hours />
               </lfx-benchmarks-wrap>
-            </lfx-scroll-view>
+            </lfx-scroll-view> -->
             <lfx-scroll-view
               id="merge-lead-time"
               :observer="observer"
@@ -112,8 +112,8 @@ import { ref } from 'vue';
 import LfxProjectIssuesResolution from "~/components/modules/project/components/development/issues-resolution.vue";
 import LfxProjectPullRequests from "~/components/modules/project/components/development/pull-requests.vue";
 import LfxProjectActiveDays from "~/components/modules/project/components/development/active-days.vue";
-import LfxProjectContributionsOutsideWorkHours
-  from "~/components/modules/project/components/development/contributions-outside-work-hours.vue";
+// import LfxProjectContributionsOutsideWorkHours
+//   from "~/components/modules/project/components/development/contributions-outside-work-hours.vue";
 import LfxProjectMergeLeadTime from "~/components/modules/project/components/development/merge-lead-time.vue";
 import LfxProjectForksReviewTimeByPullRequestSize
   from "~/components/modules/project/components/development/review-time-by-pull-request-size.vue";
@@ -139,7 +139,7 @@ const sideNavItems = [
   { label: 'Issues Resolution', key: 'issues-resolution' },
   { label: 'Pull Requests', key: 'pull-requests' },
   { label: 'Active Days', key: 'active-days' },
-  { label: 'Contributions Outside Work Hours', key: 'contributions-outside-work-hours' },
+  // { label: 'Contributions Outside Work Hours', key: 'contributions-outside-work-hours' },
   { label: 'Merge Lead Time', key: 'merge-lead-time' },
   { label: 'Review Time by Pull Request Size', key: 'review-time-by-pull-request-size' },
   { label: 'Average Time to Merge', key: 'average-time-to-merge' },
