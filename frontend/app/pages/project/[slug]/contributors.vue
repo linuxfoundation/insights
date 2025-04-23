@@ -1,10 +1,11 @@
 <template>
-  <lfx-project-contributors-view />
+  <lfx-widget-area :name="WidgetArea.CONTRIBUTORS" />
 </template>
 
 <script setup lang="ts">
-import LfxProjectContributorsView from "~/components/modules/project/views/contributors.vue";
 import {useProjectStore} from "~/components/modules/project/store/project.store";
+import LfxWidgetArea from "~/components/modules/widget/components/shared/widget-area.vue";
+import {WidgetArea} from "~/components/modules/widget/types/widget-area";
 
 const {project} = useProjectStore();
 

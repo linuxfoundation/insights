@@ -16,7 +16,7 @@
           <lfx-icon-button
             type="transparent"
             icon="xmark"
-            class="absolute top-0 right-0 mr-5 mt-5"
+            class="absolute top-0 right-0 mr-5 mt-5 z-[999]"
             @click="clickOutsideClose()"
           />
           <slot :close="close" />

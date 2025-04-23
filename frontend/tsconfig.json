@@ -7,7 +7,8 @@
   ],
   "include": [
     "app/**/*.ts",
-    "app/**/*.vue"
+    "app/**/*.vue",
+    "shims-vue.d.ts"
   ],
   "compilerOptions": {
     "types": ["nuxt", "nuxt-echarts"],
