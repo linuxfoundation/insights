@@ -13,6 +13,9 @@
     </p>
     <hr>
     <section class="mt-5">
+      <div class="text-neutral-400 text-xs mb-1">
+        Average time to merge
+      </div>
       <lfx-skeleton-state
         :status="status"
         height="2rem"
@@ -37,30 +40,30 @@
         use-min-height
         :height="250"
       >
-        <div class="w-full min-h-[250px] mt-5">
-          <div class="flex flex-col gap-10 pt-6">
+        <div class="w-full min-h-[250px] mt-8">
+          <div class="flex flex-col gap-10">
             <lfx-merge-lead-item
               title="Pickup"
-              description="Pull request raised"
-              icon="code-pull-request"
+              description="Pull Request assigned"
+              icon="user-check"
               :item-value="pickup"
             />
             <lfx-merge-lead-item
               title="Review"
-              description="Review started"
+              description="Review Started"
               icon="eye"
               :item-value="review"
             />
             <lfx-merge-lead-item
               title="Accepted"
-              description="Pull request accepted"
+              description="Pull Request approved"
               icon="check-circle"
               :item-value="accepted"
             />
             <lfx-merge-lead-item
-              title="Merged"
+              title="Pull Request merged"
               description=""
-              icon="thumbs-up"
+              icon="code-merge"
               :item-value="prMerged"
               is-last
             />

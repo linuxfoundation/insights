@@ -14,20 +14,25 @@
     <hr>
     <section class="mt-5">
       <div class="mb-6">
-        <div class="flex flex-row justify-between items-center">
-          <lfx-skeleton-state
-            :status="status"
-            height="2rem"
-            width="7.5rem"
-          >
-            <div class="flex flex-row gap-4 items-center">
-              <div class="text-data-display-1">{{ formatNumber(summary.current) }}</div>
-              <lfx-delta-display
-                v-if="selectedTimeRangeKey !== dateOptKeys.alltime"
-                :summary="summary"
-              />
+        <div class="flex flex-row justify-between items-start">
+          <div>
+            <div class="text-neutral-400 text-xs mb-1">
+              Total pull requests performed
             </div>
-          </lfx-skeleton-state>
+            <lfx-skeleton-state
+              :status="status"
+              height="2rem"
+              width="7.5rem"
+            >
+              <div class="flex flex-row gap-4 items-center">
+                <div class="text-data-display-1">{{ formatNumber(summary.current) }}</div>
+                <lfx-delta-display
+                  v-if="selectedTimeRangeKey !== dateOptKeys.alltime"
+                  :summary="summary"
+                />
+              </div>
+            </lfx-skeleton-state>
+          </div>
 
           <div
             v-if="!isEmpty"
