@@ -2,12 +2,13 @@ import type {
   BarSeriesOption,
   LineSeriesOption,
   MapSeriesOption,
-  PieSeriesOption
+  PieSeriesOption,
+  RadarSeriesOption
 } from 'echarts/types/dist/shared';
 
 export interface ChartSeries {
   name: string;
-  type: 'line' | 'bar' | 'map' | 'scatter' | 'heatmap';
+  type: 'line' | 'bar' | 'map' | 'scatter' | 'heatmap' | 'radar';
   yAxisIndex: number;
   dataIndex: number;
   color?: string;
@@ -46,4 +47,5 @@ export type SeriesTypes =
   | BarSeriesOption
   | LineSeriesOption
   | PieSeriesOption
-  | MapSeriesOption;
+  | MapSeriesOption
+  | RadarSeriesOption;
