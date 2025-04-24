@@ -19,7 +19,9 @@
 
 <script setup lang="ts">
 import type {Placement} from "@popperjs/core";
-import {computed, type VNode, provide} from "vue";
+import {
+computed, type VNode, provide
+} from "vue";
 import {useSlots} from "vue";
 import LfxDropdown from "~/components/uikit/dropdown/dropdown.vue";
 
@@ -56,7 +58,7 @@ const isVisible = computed({
 const findDropdownItems = (nodes: VNode[], result: VNode[] = []) => {
   nodes.forEach((node: VNode) => {
     if (!node) return
-    if (node.type && node.type.name === 'LfxDropdownItem') {
+    if (node.type && ['LfxDropdownItem', 'LfxOption'].includes(node.type.name)) {
       result.push(node)
     }
     if (node.children && Array.isArray(node.children)) {
