@@ -1,15 +1,18 @@
-import { defineStore } from 'pinia';
-import { ref } from 'vue';
+import {defineStore} from 'pinia';
+import {ref} from 'vue';
+import type {ReportDataForm} from "~/components/shared/modules/report/types/report.types";
 
 export const useReportStore = defineStore('report', () => {
-  const isReportModalOpen = ref(false);
-    const openReportModal = () => {
-      console.log('openReportModal');
+    const isReportModalOpen = ref(false);
+    const reportDataDefaults = ref<Partial<ReportDataForm>>({});
+    const openReportModal = (defaults: Partial<ReportDataForm> = {}) => {
+        reportDataDefaults.value = defaults;
         isReportModalOpen.value = true;
     };
 
-  return {
-    isReportModalOpen,
-    openReportModal,
-  };
+    return {
+        isReportModalOpen,
+        reportDataDefaults,
+        openReportModal,
+    };
 });

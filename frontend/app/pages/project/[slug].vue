@@ -14,7 +14,9 @@ import {
   useRoute,
 } from "nuxt/app";
 import {storeToRefs} from "pinia";
-import {computed, onServerPrefetch} from "vue";
+import {
+computed, onServerPrefetch, watch
+} from "vue";
 import {useQuery} from "@tanstack/vue-query";
 import type {Project} from "~~/types/project";
 import LfxProjectHeader from "~/components/modules/project/components/shared/header.vue";
@@ -50,9 +52,14 @@ onServerPrefetch(async () => {
       showError({ statusCode: 404, statusMessage });
     }
   }
-  else {
+  if(data.value) {
     project.value = data.value;
   }
 })
 
+watch(() => data.value, (value) => {
+  if (value) {
+    project.value = value;
+  }
+}, { immediate: true });
 </script>

@@ -37,6 +37,11 @@ export default defineNuxtConfig({
     tinybirdToken: process.env.TINYBIRD_TOKEN || '',
     cmApiUrl: process.env.CM_API_URL || '',
     cmApiToken: process.env.CM_API_TOKEN || '',
+    jiraIssueReporterApiUrl: process.env.JIRA_ISSUE_REPORTER_API_URL || '',
+    jiraIssueReporterApiTokenEmail: process.env.JIRA_ISSUE_REPORTER_API_TOKEN_EMAIL || '',
+    jiraIssueReporterApiToken: process.env.JIRA_ISSUE_REPORTER_API_TOKEN || '',
+    jiraIssueReporterProjectKey: process.env.JIRA_ISSUE_REPORTER_PROJECT_KEY || '',
+
     // These are also exposed on the client-side
     public: {
       apiBase: '/api'

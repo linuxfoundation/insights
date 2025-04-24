@@ -51,7 +51,7 @@
           />
         </lfx-field>
       </article>
-      <article>
+      <article v-if="(lfxWidgetArea[form.area as WidgetArea]?.widgets || []).length > 0">
         <lfx-field
           label="Data insight"
           placeholder="Select option"
@@ -61,10 +61,10 @@
             placeholder="Select option"
           >
             <lfx-option
-              v-for="widget of (lfxWidgetArea[form.area]?.widgets || [])"
+              v-for="widget of (lfxWidgetArea[form.area as WidgetArea]?.widgets || [])"
               :key="widget"
               :value="widget"
-              :label="widget"
+              :label="lfxWidgets[widget]?.name"
             />
           </lfx-select>
         </lfx-field>
@@ -138,7 +138,7 @@
 </template>
 
 <script lang="ts" setup>
-import {computed} from "vue";
+import {computed, watch} from "vue";
 import { required, email } from '@vuelidate/validators'
 import useVuelidate from "@vuelidate/core";
 import {storeToRefs} from "pinia";
@@ -159,9 +159,13 @@ import {ToastTypesEnum} from "~/components/uikit/toast/types/toast.types";
 import LfxFieldMessages from "~/components/uikit/field/field-messages.vue";
 import {lfxWidgetArea} from "~/components/modules/widget/config/widget-area.config";
 import type {Widget} from "~/components/modules/widget/types/widget";
+import type {ReportDataForm} from "~/components/shared/modules/report/types/report.types";
+import {lfxWidgets} from "~/components/modules/widget/config/widget.config";
+import type {WidgetArea} from "~/components/modules/widget/types/widget-area";
 
 const props = defineProps<{
   modelValue: boolean;
+  defaults: Partial<ReportDataForm>
 }>()
 
 const emit = defineEmits<{(e: 'update:modelValue', value: boolean): void;
@@ -179,16 +183,12 @@ const isModalOpen = computed({
   },
 })
 
-const form = reactive<{
-  area: Widget;
-  widget: string;
-  description: string;
-  email: string;
-}>({
+const form = reactive<ReportDataForm>({
   area: '',
   widget: '',
   description: '',
   email: '',
+  ...props.defaults,
 })
 
 const rules = {
@@ -207,8 +207,8 @@ const $v = useVuelidate(rules, form);
 
 const submit = () => {
   const data: ReportRequest = {
-    area: form.area,
-    widget: form.widget,
+    area: lfxWidgetArea[form.area as WidgetArea]?.label || form.area,
+    widget: lfxWidgets[form.widget as Widget]?.name || form.widget,
     description: form.description,
     email: form.email,
     url: window?.location?.href,
@@ -239,6 +239,10 @@ const submit = () => {
         isSending.value = false;
       })
 }
+
+watch(() => form.area, () => {
+  form.widget = '';
+})
 </script>
 
 <script lang="ts">

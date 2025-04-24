@@ -1,10 +1,10 @@
 <template>
-  <lfx-card class="p-4 sm:p-6">
-    <!--    <lfx-widget-menu-->
-    <!--      title="Contributors leaderboard"-->
-    <!--      class="absolute -top-3 right-6"-->
-    <!--      :name="props.name"-->
-    <!--    />-->
+  <lfx-card class="p-4 sm:p-6 relative">
+    <lfx-widget-menu
+      title="Contributors leaderboard"
+      class="absolute -top-3 right-6"
+      :name="props.name"
+    />
     <h3 class="text-heading-3 font-semibold font-secondary pb-3">{{ config.name }}</h3>
     <p
       v-if="project"
@@ -30,6 +30,7 @@ import LfxCard from "~/components/uikit/card/card.vue";
 import type {Widget} from "~/components/modules/widget/types/widget";
 import {lfxWidgets, type WidgetConfig} from "~/components/modules/widget/config/widget.config";
 import {useProjectStore} from "~/components/modules/project/store/project.store";
+import LfxWidgetMenu from "~/components/modules/widget/components/shared/widget-menu.vue";
 
 const props = defineProps<{
   name: Widget
