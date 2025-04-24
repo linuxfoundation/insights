@@ -1,11 +1,12 @@
 <template>
-  <lfx-project-popularity-view />
+  <lfx-widget-area :name="WidgetArea.POPULARITY" />
 </template>
 
 <script setup lang="ts">
 import {useRoute} from "nuxt/app";
-import LfxProjectPopularityView from "~/components/modules/project/views/popularity.vue";
 import {useProjectStore} from "~/components/modules/project/store/project.store";
+import {WidgetArea} from "~/components/modules/widget/types/widget-area";
+import LfxWidgetArea from "~/components/modules/widget/components/shared/widget-area.vue";
 
 const route = useRoute();
 const name = route.params.name as string;

@@ -1,11 +1,12 @@
 <template>
-  <lfx-project-contributors-view />
+  <lfx-widget-area :name="WidgetArea.CONTRIBUTORS" />
 </template>
 
 <script setup lang="ts">
 import {useRoute} from "nuxt/app";
-import LfxProjectContributorsView from "~/components/modules/project/views/contributors.vue";
 import {useProjectStore} from "~/components/modules/project/store/project.store";
+import {WidgetArea} from "~/components/modules/widget/types/widget-area";
+import LfxWidgetArea from "~/components/modules/widget/components/shared/widget-area.vue";
 
 const route = useRoute();
 const name = route.params.name as string;
