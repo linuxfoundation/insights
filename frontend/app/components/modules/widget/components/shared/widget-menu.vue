@@ -1,6 +1,9 @@
 <template>
   <div class="border border-neutral-100 shadow-xs bg-white rounded-full p-1 flex items-center gap-2">
-    <lfx-tooltip content="Report issue">
+    <lfx-tooltip
+      content="Report issue"
+      placement="top"
+    >
       <lfx-widget-menu-item
         @click="openReportModal({
           area: widgetArea,
