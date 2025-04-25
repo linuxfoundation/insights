@@ -54,7 +54,7 @@ import { BenchmarkKeys, type Benchmark } from '~~/types/shared/benchmark.types';
 import {TanstackKey} from "~/components/shared/types/tanstack";
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
 
-const emit = defineEmits<{(e: 'update:benchmarkValue', value: Benchmark, activeTab: string): void;
+const emit = defineEmits<{(e: 'update:benchmarkValue', value: Benchmark | undefined): void;
 }>();
 
 const {
@@ -175,17 +175,17 @@ const lineAreaChartConfig = computed(() => getLineAreaChartConfig(
   (value: number) => `${value === 0 ? '' : `${value}%`}`
 ));
 
-emit('update:benchmarkValue', {
+const callEmit = () => {
+  emit('update:benchmarkValue', status.value === 'success' ? {
     key: BenchmarkKeys.Retention,
-    value: retentionValue.value || 0
-  }, activeTab.value);
+    value: retentionValue.value || 0,
+    additionalCheck: activeTab.value === 'contributors'
+  } : undefined);
+}
 
-watch(chartData, () => {
-  emit('update:benchmarkValue', {
-    key: BenchmarkKeys.Retention,
-    value: retentionValue.value || 0
-  }, activeTab.value);
-});
+callEmit();
+
+watch(chartData, callEmit);
 
 </script>
 

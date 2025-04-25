@@ -22,6 +22,7 @@ export enum BenchmarkKeys {
 export interface Benchmark {
   key: BenchmarkKeys;
   value: number;
+  additionalCheck?: boolean;
 }
 
 export interface BenchmarkPoints {
@@ -33,6 +34,7 @@ export interface BenchmarkPoints {
 }
 
 export interface BenchmarkConfigs {
+  title: string;
   key: BenchmarkKeys;
   points: BenchmarkPoints[];
   visibilityCheck: (
@@ -41,4 +43,14 @@ export interface BenchmarkConfigs {
     endDate: string,
     additionalCheck?: boolean
   ) => boolean;
+}
+
+export interface ScoreAggregate {
+  aggregateKey: 'contributors' | 'popularity' | 'development' | 'security';
+  value: number;
+}
+
+export interface ScoreData {
+  benchmarkKey: BenchmarkKeys;
+  value: number;
 }

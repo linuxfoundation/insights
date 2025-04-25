@@ -30,6 +30,13 @@
     }
   }
 
+  &--size-small {
+    @apply gap-0;
+    .c-progress-bar__value, .c-progress-bar__empty {
+      @apply h-1;
+    }
+  }
+
   .c-progress-bar__empty {
     @apply bg-neutral-200 grow;
   }

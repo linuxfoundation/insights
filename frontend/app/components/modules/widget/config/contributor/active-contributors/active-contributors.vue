@@ -65,7 +65,7 @@ import {granularityTabs} from "~/components/modules/widget/components/contributo
 import LfxSkeletonState from "~/components/modules/project/components/shared/skeleton-state.vue";
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
 
-const emit = defineEmits<{(e: 'update:benchmarkValue', value: Benchmark): void;
+const emit = defineEmits<{(e: 'update:benchmarkValue', value: Benchmark | undefined): void;
 }>();
 
 const {
@@ -163,16 +163,11 @@ watch(paramWatch, (newParams, oldParams) => {
   summaryLoading.value = !onlyGranularityChanged;
 });
 
-emit('update:benchmarkValue', {
-    key: BenchmarkKeys.ActiveContributors,
-    value: summary.value?.current || 0
-  });
-
 watch(activeContributors, () => {
-  emit('update:benchmarkValue', {
+  emit('update:benchmarkValue', status.value === 'success' ? {
     key: BenchmarkKeys.ActiveContributors,
     value: summary.value.current
-  });
+  } : undefined);
 });
 </script>
 

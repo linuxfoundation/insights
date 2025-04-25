@@ -62,7 +62,7 @@ import LfxProjectLoadState from "~/components/modules/project/components/shared/
 import LfxDependencyDisplay from "~/components/modules/widget/components/contributors/fragments/dependency-display.vue";
 import LfxContributorsTable from "~/components/modules/widget/components/contributors/fragments/contributors-table.vue";
 
-const emit = defineEmits<{(e: 'update:benchmarkValue', value: Benchmark): void;
+const emit = defineEmits<{(e: 'update:benchmarkValue', value: Benchmark | undefined): void;
 }>();
 
 const { startDate, endDate, selectedRepository } = storeToRefs(useProjectStore())
@@ -117,17 +117,17 @@ const contributorsAvatars = computed(() => (contributors.value?.length
 
 const isEmpty = computed(() => isEmptyData(contributors.value as unknown as Record<string, unknown>[]));
 
-emit('update:benchmarkValue', {
+const callEmit = () => {
+  emit('update:benchmarkValue', status.value === 'success' ? {
     key: BenchmarkKeys.ContributorDependency,
     value: topContributors.value?.count || 0
-  });
+  } : undefined);
+}
 
-watch(topContributors, () => {
-  emit('update:benchmarkValue', {
-    key: BenchmarkKeys.ContributorDependency,
-    value: topContributors.value.count
-  });
-});
+callEmit();
+
+watch(topContributors, callEmit);
+
 </script>
 
 <script lang="ts">

@@ -1,31 +1,26 @@
 <template>
-  <div class="container">
-    <div class="flex justify-between pt-12">
-      <div class="w-1/4 pr-10">
-        About
+  <div class="container !px-5 lg:!px-10">
+    <div class="flex justify-between pt-5 md:pt-10 gap-10 flex-col md:flex-row">
+      <div class="w-full md:w-3/4 pb-6 md:pb-10 flex flex-col gap-8">
+        <div>
+          <lfx-project-trust-score />
+        </div>
+        <div>
+          <lfx-project-score-tabs />
+        </div>
       </div>
-      <div class="flex-grow">
-        <lfx-card class="p-5">
-          <h3 class="text-heading-3 font-semibold font-secondary">
-            Criteria evaluation
-          </h3>
-        </lfx-card>
-      </div>
-      <div class="w-12 ml-10">
-        <lfx-card class="w-12 h-12 !rounded-full flex items-center justify-center">
-          <lfx-icon
-            name="link"
-            :size="20"
-          />
-        </lfx-card>
+      <div class="pr-5 min-w-50 xl:pr-10 max-md:w-full w-1/4">
+        <lfx-project-about-section />
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import LfxCard from "~/components/uikit/card/card.vue";
-import LfxIcon from "~/components/uikit/icon/icon.vue";
+import LfxProjectAboutSection from '~/components/modules/project/components/overview/about-section.vue';
+import LfxProjectScoreTabs from '~/components/modules/project/components/overview/score-tabs.vue';
+import LfxProjectTrustScore from '~/components/modules/project/components/overview/trust-score.vue';
+
 </script>
 
 <script lang="ts">

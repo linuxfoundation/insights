@@ -23,9 +23,6 @@
   }
 
   &--positive {
-    .c-benchmarks-icon {
-      @apply text-positive-500;
-    }
     &::before {
       @apply bg-positive-200;
     }
@@ -34,21 +31,29 @@
   }
 
   &--warning {
-    .c-benchmarks-icon {
-      @apply text-warning-500;
-    }
     &::before {
       @apply bg-warning-200;
     }
   }
 
   &--negative {
-    .c-benchmarks-icon {
-      @apply text-negative-500;
-    }
     &::before {
       @apply bg-negative-200;
     } 
+  }
+}
+
+.c-benchmarks-icon {
+  &--positive {
+    @apply text-positive-500;
+  }
+
+  &--warning {
+    @apply text-warning-500;
+  }
+
+  &--negative {
+    @apply text-negative-500;
   }
 }
 

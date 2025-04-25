@@ -3,6 +3,7 @@ import type { BenchmarkConfigs } from '~~/types/shared/benchmark.types';
 import { BenchmarkKeys } from '~~/types/shared/benchmark.types';
 
 export const retention: BenchmarkConfigs = {
+  title: 'Quarterly Contributor Retention Rate',
   key: BenchmarkKeys.Retention,
   points: [
     {

@@ -99,7 +99,7 @@ import LfxActivitiesDropdown
   from "~/components/modules/widget/components/contributors/fragments/activities-dropdown.vue";
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
 
-const emit = defineEmits<{(e: 'update:benchmarkValue', value: Benchmark): void;
+const emit = defineEmits<{(e: 'update:benchmarkValue', value: Benchmark | undefined): void;
 }>();
 
 const route = useRoute();
@@ -178,17 +178,16 @@ const chartSeries = computed<ChartSeries[]>(() => [
   }
 ]);
 
-emit('update:benchmarkValue', {
+const callEmit = () => {
+  emit('update:benchmarkValue', status.value === 'success' ? {
     key: BenchmarkKeys.GeographicalDistribution,
     value: embargoCountries.value?.length || 0
-  });
+  } : undefined);
+}
 
-watch(geoMapData, () => {
-  emit('update:benchmarkValue', {
-    key: BenchmarkKeys.GeographicalDistribution,
-    value: embargoCountries.value?.length || 0
-  });
-});
+callEmit();
+
+watch(geoMapData, callEmit);
 </script>
 
 <script lang="ts">

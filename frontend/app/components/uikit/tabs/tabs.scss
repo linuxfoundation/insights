@@ -1,3 +1,29 @@
+.p-tabs-panels {
+  @apply flex flex-col;
+
+  .p-selectbutton {
+    @apply gap-0 p-0 rounded-b-none overflow-hidden z-[2];
+    .p-togglebutton {
+      @apply border-r border-b border-neutral-200 max-h-fit py-4 px-5 justify-start;
+      &:last-child {
+        @apply border-r-0;
+      }
+      &:hover:not(.p-togglebutton-checked) {
+        @apply bg-neutral-100;
+      }
+      &.p-togglebutton-checked {
+        @apply rounded-none border-b-white;
+      }
+      &-content{
+        @apply w-full;
+      }
+    }
+  }
+  .p-panels {
+    /* @apply border-t border-neutral-100 z-[1] -mt-[1px]; */
+  }
+}
+
 .p-selectbutton {
   @apply flex bg-neutral-50 rounded-lg p-1 flex-row justify-evenly gap-1;
   .p-togglebutton {

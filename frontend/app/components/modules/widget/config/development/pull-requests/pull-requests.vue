@@ -100,7 +100,7 @@ import LfxIcon from "~/components/uikit/icon/icon.vue";
 import { isEmptyData } from '~/components/shared/utils/helper';
 import { barGranularities } from '~/components/shared/types/granularity';
 import { dateOptKeys } from '~/components/modules/project/config/date-options';
-import type { Granularity } from '~~/types/shared/granularity';
+import { Granularity } from '~~/types/shared/granularity';
 import { BenchmarkKeys, type Benchmark } from '~~/types/shared/benchmark.types';
 import {TanstackKey} from "~/components/shared/types/tanstack";
 import LfxSkeletonState from "~/components/modules/project/components/shared/skeleton-state.vue";
@@ -108,7 +108,7 @@ import LfxProjectLoadState from "~/components/modules/project/components/shared/
 import LfxProjectPullRequestLegendItem
   from "~/components/modules/widget/components/development/fragments/pull-request-legend-item.vue";
 
-const emit = defineEmits<{(e: 'update:benchmarkValue', value: Benchmark, granularity: string): void;
+const emit = defineEmits<{(e: 'update:benchmarkValue', value: Benchmark | undefined): void;
 }>();
 
 const {
@@ -204,17 +204,17 @@ const barChartConfig = computed(() => getBarChartConfigStacked(
 
 const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
 
-emit('update:benchmarkValue', {
+const callEmit = () => {
+  emit('update:benchmarkValue', status.value === 'success' ? {
     key: BenchmarkKeys.PullRequests,
-    value: summary.value?.current || 0
-  }, granularity.value);
+    value: summary.value?.current || 0,
+    additionalCheck: granularity.value === Granularity.MONTHLY
+  } : undefined);
+}
 
-watch(chartData, () => {
-  emit('update:benchmarkValue', {
-    key: BenchmarkKeys.PullRequests,
-    value: summary.value?.current || 0
-  }, granularity.value);
-});
+callEmit();
+
+watch(chartData, callEmit);
 </script>
 
 <script lang="ts">

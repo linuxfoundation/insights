@@ -61,7 +61,7 @@ import LfxDependencyDisplay from "~/components/modules/widget/components/contrib
 import LfxOrganizationsTable
   from "~/components/modules/widget/components/contributors/fragments/organizations-table.vue";
 
-const emit = defineEmits<{(e: 'update:benchmarkValue', value: Benchmark): void;
+const emit = defineEmits<{(e: 'update:benchmarkValue', value: Benchmark | undefined): void;
 }>();
 
 const { startDate, endDate, selectedRepository } = storeToRefs(useProjectStore())
@@ -115,17 +115,17 @@ const topOrganizationsAvatars = computed(() => (organizations.value?.length
 
 const isEmpty = computed(() => isEmptyData(organizations.value as unknown as Record<string, unknown>[]));
 
-emit('update:benchmarkValue', {
+const callEmit = () => {
+  emit('update:benchmarkValue', status.value === 'success' ? {
     key: BenchmarkKeys.OrganizationDependency,
     value: topOrganizations.value?.count || 0
-  });
+  } : undefined);
+}
 
-watch(topOrganizations, () => {
-  emit('update:benchmarkValue', {
-    key: BenchmarkKeys.OrganizationDependency,
-    value: topOrganizations.value.count
-  });
-});
+callEmit();
+
+watch(topOrganizations, callEmit);
+
 </script>
 
 <script lang="ts">

@@ -21,8 +21,11 @@
               :key="widget"
               :observer="observer"
             >
-              <lfx-benchmarks-wrap>
-                <lfx-widget :name="widget" />
+              <lfx-benchmarks-wrap :benchmark="getBenchmarks(widget)">
+                <lfx-widget
+                  :name="widget"
+                  @update:benchmark-value="onBenchmarkUpdate"
+                />
               </lfx-benchmarks-wrap>
             </lfx-scroll-view>
           </template>
@@ -44,12 +47,14 @@ import LfxBenchmarksWrap from "~/components/uikit/benchmarks/benchmarks-wrap.vue
 import LfxScrollArea from "~/components/uikit/scroll-view/scroll-area.vue";
 import useScroll from "~/components/shared/utils/scroll";
 import LfxWidget from "~/components/modules/widget/components/shared/widget.vue";
+import type { Benchmark } from '~~/types/shared/benchmark.types';
 
 const props = defineProps<{
   name: WidgetArea
 }>();
 
 const config = computed<WidgetAreaConfig>(() => lfxWidgetArea[props.name]);
+const benchmarks = ref<Record<string, Benchmark | undefined>>({});
 
 const activeItem = ref(config.value.widgets?.[0] || '');
 const tmpClickedItem = ref('');
@@ -60,6 +65,8 @@ const sideNavItems = computed(() => (config.value.widgets || []).map((widget: Wi
   key: widget,
   label: lfxWidgets[widget]?.name,
 })))
+
+const getBenchmarks = (widgetName: string): Benchmark | undefined => benchmarks.value[widgetName];
 
 const onSideNavUpdate = (value: string) => {
   tmpClickedItem.value = value;
@@ -85,6 +92,12 @@ const onScrolledToView = (value: string) => {
     activeItem.value = value;
   }
 };
+
+const onBenchmarkUpdate = (value: Benchmark | undefined) => {
+  if (value) {
+    benchmarks.value[value.key] = value;
+  }
+}
 
 </script>
 

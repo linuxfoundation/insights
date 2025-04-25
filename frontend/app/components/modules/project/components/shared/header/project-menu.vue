@@ -11,6 +11,7 @@
         :to="!link.comingSoon ? {
           name: repoName ? link.repoRouteName : link.projectRouteName
         } : undefined"
+        :exact="true"
         :disabled="link.comingSoon"
       >
         <lfx-icon :name="link.icon" />

@@ -3,6 +3,7 @@ import type { BenchmarkConfigs } from '~~/types/shared/benchmark.types';
 import { BenchmarkKeys } from '~~/types/shared/benchmark.types';
 
 export const activeDays: BenchmarkConfigs = {
+  title: 'Active Days Benchmarks',
   key: BenchmarkKeys.ActiveDays,
   points: [
     {

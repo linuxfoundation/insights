@@ -70,7 +70,7 @@ import {TanstackKey} from "~/components/shared/types/tanstack";
 import LfxSkeletonState from "~/components/modules/project/components/shared/skeleton-state.vue";
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
 
-const emit = defineEmits<{(e: 'update:benchmarkValue', value: Benchmark): void;
+const emit = defineEmits<{(e: 'update:benchmarkValue', value: Benchmark | undefined): void;
 }>();
 
 const {
@@ -205,17 +205,17 @@ const barChartConfig = computed(() => getBarChartConfig(
   barGranularity.value
 ));
 
-emit('update:benchmarkValue', {
+const callEmit = () => {
+  emit('update:benchmarkValue', status.value === 'success' ? {
     key: BenchmarkKeys.Forks,
     value: cumulativeForksCount.value
-  });
+  } : undefined);
+}
 
-watch(cumulativeStatus, () => {
-  emit('update:benchmarkValue', {
-    key: BenchmarkKeys.Forks,
-    value: cumulativeForksCount.value
-  });
-});
+callEmit();
+
+watch(cumulativeStatus, callEmit);
+
 </script>
 
 <script lang="ts">

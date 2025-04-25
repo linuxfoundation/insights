@@ -31,6 +31,10 @@ export interface Organization {
   contributions: number;
   percentage?: number;
   website: string;
+  description?: string;
+  address?: string;
+  employees?: string;
+  organizationType?: string;
 }
 
 export interface ContributorLeaderboard {

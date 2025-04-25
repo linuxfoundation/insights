@@ -35,4 +35,37 @@
   &--transparent{
     @apply bg-transparent text-neutral-500 px-0;
   }
+
+  /* Outline (same as solid but has border) */
+  &--outline{
+    @apply font-normal;
+    &.c-tag--default{
+      @apply border border-neutral-200 bg-white text-neutral-900;
+    }
+  
+    &.c-tag--info{
+      @apply border border-brand-100;
+    }
+  
+    &.c-tag--positive{
+      @apply border border-positive-100;
+    }
+  
+    &.c-tag--warning{
+      @apply border border-warning-100;
+    }
+  
+    &.c-tag--negative{
+      @apply border border-negative-100;
+    }
+
+    /* Sizes */
+    &.c-tag--medium{
+      @apply px-2.5 h-8;
+    }
+
+    &.c-tag--small{
+      @apply px-2.5 h-6;
+    }
+  }
 }

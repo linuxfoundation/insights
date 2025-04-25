@@ -3,6 +3,7 @@ import type { BenchmarkConfigs } from '~~/types/shared/benchmark.types';
 import { BenchmarkKeys } from '~~/types/shared/benchmark.types';
 
 export const issuesResolution: BenchmarkConfigs = {
+  title: 'Issue Resolution Time',
   key: BenchmarkKeys.IssuesResolution,
   points: [
     {
