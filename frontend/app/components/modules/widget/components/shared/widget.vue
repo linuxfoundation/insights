@@ -1,8 +1,8 @@
 <template>
-  <lfx-card class="p-4 sm:p-6 relative">
+  <lfx-card class="p-4 sm:p-6 relative group">
     <lfx-widget-menu
       title="Contributors leaderboard"
-      class="absolute -top-3 right-6"
+      class="absolute -top-3 right-6 opacity-0 invisible group-hover:opacity-100 group-hover:visible"
       :name="props.name"
     />
     <h3 class="text-heading-3 font-semibold font-secondary pb-3">{{ config.name }}</h3>

@@ -1,16 +1,18 @@
 <template>
   <div class="border border-neutral-100 shadow-xs bg-white rounded-full p-1 flex items-center gap-2">
-    <lfx-widget-menu-item
-      @click="openReportModal({
-        area: widgetArea,
-        widget: props.name,
-      })"
-    >
-      <lfx-icon
-        name="comment-exclamation"
-        :size="18"
-      />
-    </lfx-widget-menu-item>
+    <lfx-tooltip content="Report issue">
+      <lfx-widget-menu-item
+        @click="openReportModal({
+          area: widgetArea,
+          widget: props.name,
+        })"
+      >
+        <lfx-icon
+          name="comment-exclamation"
+          :size="18"
+        />
+      </lfx-widget-menu-item>
+    </lfx-tooltip>
   </div>
 </template>
 
@@ -23,6 +25,7 @@ import {useReportStore} from "~/components/shared/modules/report/store/report.st
 import type {Widget} from "~/components/modules/widget/types/widget";
 import {lfxWidgetArea} from "~/components/modules/widget/config/widget-area.config";
 import type {WidgetArea} from "~/components/modules/widget/types/widget-area";
+import LfxTooltip from "~/components/uikit/tooltip/tooltip.vue";
 
 const props = defineProps<{
   name: Widget;
