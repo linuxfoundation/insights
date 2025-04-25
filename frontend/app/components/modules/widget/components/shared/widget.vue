@@ -19,7 +19,10 @@
       >Learn more</a>
     </p>
     <hr>
-    <component :is="config.component" />
+    <component
+      :is="config.component"
+      @update:benchmark-value="emit('update:benchmark-value', $event)"
+    />
   </lfx-card>
 </template>
 
@@ -31,7 +34,10 @@ import type {Widget} from "~/components/modules/widget/types/widget";
 import {lfxWidgets, type WidgetConfig} from "~/components/modules/widget/config/widget.config";
 import {useProjectStore} from "~/components/modules/project/store/project.store";
 import LfxWidgetMenu from "~/components/modules/widget/components/shared/widget-menu.vue";
+import type { Benchmark } from '~~/types/shared/benchmark.types';
 
+const emit = defineEmits<{(e: 'update:benchmark-value', value: Benchmark): void
+}>();
 const props = defineProps<{
   name: Widget
 }>();

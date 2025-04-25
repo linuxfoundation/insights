@@ -1,6 +1,6 @@
 <template>
   <!-- This component might change based on Nuno's feedback -->
-  <div :class="`c-progress-bar c-progress-bar--${props.color}`">
+  <div :class="`c-progress-bar c-progress-bar--${props.color} c-progress-bar--size-${props.size}`">
     <div
       v-for="(value, index) in props.values"
       :key="index"
@@ -24,6 +24,7 @@ import type { ProgressBarType } from './types/progress-bar.types';
 const props = withDefaults(
   defineProps<{
     values: number[];
+    size?: 'small' | 'normal';
     // TODO: change this once we have the correct types
     color?: ProgressBarType;
     label?: string;
@@ -31,6 +32,7 @@ const props = withDefaults(
   }>(),
   {
     color: 'normal',
+    size: 'normal',
     hideEmpty: false,
     label: undefined
   }

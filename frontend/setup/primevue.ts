@@ -12,6 +12,10 @@ export default {
       'Select',
       'Skeleton',
       'DatePicker',
+      'Accordion',
+      'AccordionPanel',
+      'AccordionHeader',
+      'AccordionContent'
     ]
   },
   options: {

@@ -2,6 +2,7 @@ import type { BenchmarkConfigs } from '~~/types/shared/benchmark.types';
 import { BenchmarkKeys } from '~~/types/shared/benchmark.types';
 
 export const stars: BenchmarkConfigs = {
+  title: 'Github Stars',
   key: BenchmarkKeys.Stars,
   points: [
     {

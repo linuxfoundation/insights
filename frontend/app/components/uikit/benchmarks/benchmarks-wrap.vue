@@ -24,10 +24,8 @@ import { benchmarkConfigs } from '~~/app/config/benchmarks';
 
 const props = withDefaults(defineProps<{
   benchmark?: Benchmark;
-  additionalCheck?: boolean;
 }>(), {
-  benchmark: undefined,
-  additionalCheck: true
+  benchmark: undefined
 });
 
 const { selectedTimeRangeKey, startDate, endDate } = storeToRefs(useProjectStore())
@@ -43,7 +41,7 @@ const isVisible = computed(() => (benchmarkConfig.value ? benchmarkConfig.value.
   selectedTimeRangeKey.value,
   startDate.value || '',
   endDate.value || '',
-  props.additionalCheck
+  props.benchmark?.additionalCheck
 ) : false));
 </script>
 

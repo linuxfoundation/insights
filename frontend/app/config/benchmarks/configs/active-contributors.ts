@@ -3,6 +3,7 @@ import type { BenchmarkConfigs } from '~~/types/shared/benchmark.types';
 import { BenchmarkKeys } from '~~/types/shared/benchmark.types';
 
 export const activeContributors: BenchmarkConfigs = {
+  title: 'Quaterly Active Contributors',
   key: BenchmarkKeys.ActiveContributors,
   points: [
     {

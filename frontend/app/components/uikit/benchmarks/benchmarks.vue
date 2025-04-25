@@ -7,26 +7,7 @@
       'c-benchmarks--negative': props.type === 'negative' }"
   >
     <div class="c-benchmarks__header">
-      <div class="c-benchmarks-icon">
-        <lfx-icon
-          v-if="props.type === 'positive'"
-          name="thumbs-up"
-          type="solid"
-          :size="16"
-        />
-        <lfx-icon
-          v-else-if="props.type === 'warning'"
-          name="exclamation-circle"
-          type="solid"
-          :size="16"
-        />
-        <lfx-icon
-          v-else-if="props.type === 'negative'"
-          name="thumbs-down"
-          type="solid"
-          :size="16"
-        />
-      </div>
+      <lfx-benchmark-icon :type="props.type" />
     </div>
 
     <div class="c-benchmarks__content">
@@ -37,7 +18,7 @@
 
 <script setup lang="ts">
 import type { BenchmarkType } from '~~/types/shared/benchmark.types';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxBenchmarkIcon from '~/components/uikit/benchmarks/benchmark-icon.vue';
 
 const props = defineProps<{
   type: BenchmarkType;

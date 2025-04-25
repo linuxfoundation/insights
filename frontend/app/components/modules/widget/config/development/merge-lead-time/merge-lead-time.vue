@@ -79,7 +79,7 @@ import {TanstackKey} from "~/components/shared/types/tanstack";
 import LfxSkeletonState from "~/components/modules/project/components/shared/skeleton-state.vue";
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
 
-const emit = defineEmits<{(e: 'update:benchmarkValue', value: Benchmark): void;
+const emit = defineEmits<{(e: 'update:benchmarkValue', value: Benchmark | undefined): void;
 }>();
 
 const {
@@ -145,17 +145,16 @@ const currentInDays = computed<number>(() => {
 
 const isEmpty = computed(() => isEmptyData((mergeLeadTime.value?.data || []) as unknown as Record<string, unknown>[]));
 
-emit('update:benchmarkValue', {
+const callEmit = () => {
+  emit('update:benchmarkValue', status.value === 'success' ? {
     key: BenchmarkKeys.MergeLeadTime,
     value: currentInDays.value
-  });
+  } : undefined);
+}
 
-watch(mergeLeadTime, () => {
-  emit('update:benchmarkValue', {
-    key: BenchmarkKeys.MergeLeadTime,
-    value: currentInDays.value
-  });
-});
+callEmit();
+
+watch(mergeLeadTime, callEmit);
 
 // TODO: Await response from Joana regarding this
 const formatDuration = (seconds: number): { value: number, unit: string } => {
