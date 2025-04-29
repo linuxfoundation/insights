@@ -27,6 +27,7 @@ export enum Widget {
     PRESS_MENTIONS = 'press-mentions',
     SEARCH_QUERIES = 'search-queries',
     SOCIAL_MENTIONS = 'social-mentions',
-    STARS = 'stars'
+    STARS = 'stars',
+    MAILING_LISTS_MESSAGES = 'mailing-lists-messages'
 
 }

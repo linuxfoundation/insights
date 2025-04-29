@@ -22,6 +22,15 @@ export interface ForksData {
   }[];
 }
 
+export interface MailingListsMessages {
+  summary: Summary;
+  data: {
+    startDate: string;
+    endDate: string;
+    messages: number;
+  }[];
+}
+
 export interface SocialMentions {
   summary: Summary;
   data: {

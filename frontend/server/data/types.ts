@@ -102,6 +102,7 @@ export enum ActivityFilterCountType {
   NEW = 'new'
 }
 export enum ActivityFilterActivityType {
+  MESSAGE = 'message',
   FORKS = 'fork',
   STARS = 'star',
   ISSUES_OPENED = 'issues-opened',

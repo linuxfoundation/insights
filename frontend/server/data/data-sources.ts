@@ -49,7 +49,7 @@ import type {
   ContributorLeaderboard,
   OrganizationLeaderboard
 } from "~~/types/contributors/responses.types";
-import type {ForksData, StarsData} from "~~/types/popularity/responses.types";
+import type {ForksData, MailingListsMessages, StarsData} from "~~/types/popularity/responses.types";
 import type {
   ActiveDays,
   IssuesResolution,
@@ -62,6 +62,7 @@ import type {
   ContributionOutsideHours
 } from "~~/types/development/responses.types";
 import type {CodeReviewEngagementFilter} from "~~/types/development/requests.types";
+import {fetchMailingListsMessageActivities} from "~~/server/data/tinybird/mailing-lists-messages-data-source";
 
 export interface DataSource {
     fetchActiveContributors: (filter: ActiveContributorsFilter) => Promise<ActiveContributorsResponse>;
@@ -73,6 +74,7 @@ export interface DataSource {
     fetchGeographicDistribution: (filter: GeographicDistributionFilter) => Promise<GeographicDistributionResponse>;
     fetchRetention: (filter: RetentionFilter) => Promise<RetentionResponse>;
     fetchForksActivities: (filter: ActivityCountFilter) => Promise<ForksData>;
+    fetchMailingListsMessageActivities: (filter: ActivityCountFilter) => Promise<MailingListsMessages>;
     fetchStarsActivities: (filter: ActivityCountFilter) => Promise<StarsData>;
     fetchIssuesResolution: (filter: ActivityCountFilter) => Promise<IssuesResolution>;
     fetchPullRequests: (filter: ActivityCountFilter) => Promise<PullRequests>;
@@ -97,6 +99,7 @@ export function createDataSource(): DataSource {
         fetchGeographicDistribution,
         fetchRetention,
         fetchForksActivities,
+        fetchMailingListsMessageActivities,
         fetchStarsActivities,
         fetchIssuesResolution,
         fetchPullRequests,

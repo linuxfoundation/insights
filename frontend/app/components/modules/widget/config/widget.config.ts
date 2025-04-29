@@ -35,6 +35,8 @@ import codeReviewEngagement
     from "./development/code-review-engagement/code-review-engagement.config";
 import reviewTimeByPullRequestSize
     from "./development/review-time-by-pull-request-size/review-time-by-pull-request-size.config";
+import mailingListMessages
+    from "./popularity/mailing-list-messages/mailing-list-messages.config";
 import {Widget} from "~/components/modules/widget/types/widget";
 import type {Project} from "~~/types/project";
 
@@ -75,4 +77,5 @@ export const lfxWidgets: Record<Widget, WidgetConfig> = {
     [Widget.WAIT_TIME_FIRST_REVIEW]: waitTimeFirstReview,
     [Widget.CODE_REVIEW_ENGAGEMENT]: codeReviewEngagement,
     [Widget.REVIEW_TIME_BY_PULL_REQUEST_SIZE]: reviewTimeByPullRequestSize,
+    [Widget.MAILING_LISTS_MESSAGES]: mailingListMessages,
 }

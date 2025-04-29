@@ -36,4 +36,5 @@ export enum TanstackKey {
     SOCIAL_MENTIONS = 'social-mentions',
     STARS = 'stars',
     STARS_CUMULATIVE = 'stars-cumulative',
+    MAILING_LISTS_MESSAGES = 'mailing-lists-messages',
 }
