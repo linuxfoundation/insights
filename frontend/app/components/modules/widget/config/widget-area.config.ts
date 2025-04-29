@@ -32,7 +32,8 @@ export const lfxWidgetArea: Record<WidgetArea, WidgetAreaConfig> = {
             Widget.GITHUB_MENTIONS,
             Widget.PRESS_MENTIONS,
             Widget.SEARCH_QUERIES,
-            Widget.PACKAGE_DOWNLOADS
+            Widget.PACKAGE_DOWNLOADS,
+            Widget.MAILING_LISTS_MESSAGES
         ]
     },
     [WidgetArea.DEVELOPMENT]: {

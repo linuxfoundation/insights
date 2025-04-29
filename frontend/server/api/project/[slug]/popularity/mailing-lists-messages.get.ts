@@ -1,0 +1,26 @@
+import {DateTime} from "luxon";
+import type {ActivityCountFilter, FilterGranularity} from "~~/server/data/types";
+import {ActivityFilterCountType} from "~~/server/data/types";
+import {ActivityTypes} from "~~/types/shared/activity-types";
+import {createDataSource} from "~~/server/data/data-sources";
+
+export default defineEventHandler(async (event) => {
+  const query = getQuery(event);
+
+  const project = (event.context.params as { slug: string }).slug;
+
+  const filter: ActivityCountFilter = {
+    project,
+    granularity: query.granularity as FilterGranularity,
+    repo: query.repository as string,
+    countType: (query.countType as ActivityFilterCountType) || ActivityFilterCountType.NEW,
+    activity_type: (query.activityType as ActivityTypes) || ActivityTypes.MESSAGE,
+    onlyContributions: false, // forks and stars are non-contribution activities, but we want to count them.
+    startDate: query.startDate ? DateTime.fromISO(query.startDate as string) : undefined,
+    endDate: query.endDate ? DateTime.fromISO(query.endDate as string) : undefined,
+  }
+
+  const dataSource = createDataSource();
+
+  return await dataSource.fetchMailingListsMessageActivities(filter);
+});

@@ -16,7 +16,8 @@ export enum BenchmarkKeys {
   IssuesResolution = 'issues-resolution',
   PullRequests = 'pull-requests',
   ActiveDays = 'active-days',
-  MergeLeadTime = 'merge-lead-time'
+  MergeLeadTime = 'merge-lead-time',
+  MailingListsMessages = 'mailing-lists-messages',
 }
 
 export interface Benchmark {
