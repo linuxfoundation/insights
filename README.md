@@ -23,7 +23,7 @@ Insights is part of the [LFX platform](https://lfx.linuxfoundation.org/). Theref
 - Pinia 2+
 
 ## Maintainers
-LFX Insights is a project by [The Linux Foundation](https://www.linuxfoundation.org/). This is a list of the individual [maintainers](/maintainers.md).
+LFX Insights is a project by [The Linux Foundation](https://www.linuxfoundation.org/). You can find a list of the individual maintainers [here](/maintainers.md).
 
 ## Security
 tbd
