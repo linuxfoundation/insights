@@ -2,6 +2,7 @@ import ContributionsOutsideWorkHours from "./contributions-outside-work-hours.vu
 import type {WidgetConfig} from "~/components/modules/widget/config/widget.config";
 
 const contributionsOutsideWorkHours: WidgetConfig = {
+    key: 'contributionsOutsideWorkHours',
     name: 'Contributions outside work hours',
     description: () => 'Contributors’ activity patterns focused on contributions performed during non-business hours '
                  + 'and weekends during the selected period.',

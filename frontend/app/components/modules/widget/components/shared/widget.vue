@@ -28,8 +28,8 @@
 
 <script lang="ts" setup>
 import {computed} from "vue";
+import {storeToRefs} from "pinia";
 import LfxCard from "~/components/uikit/card/card.vue";
-// import LfxWidgetMenu from "~/components/modules/widget/components/shared/widget-menu.vue";
 import type {Widget} from "~/components/modules/widget/types/widget";
 import {lfxWidgets, type WidgetConfig} from "~/components/modules/widget/config/widget.config";
 import {useProjectStore} from "~/components/modules/project/store/project.store";
@@ -42,7 +42,7 @@ const props = defineProps<{
   name: Widget
 }>();
 
-const { project } = useProjectStore();
+const { project } = storeToRefs(useProjectStore());
 
 const config = computed<WidgetConfig>(() => lfxWidgets[props.name]);
 </script>

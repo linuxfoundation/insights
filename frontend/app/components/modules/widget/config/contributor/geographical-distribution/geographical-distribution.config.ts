@@ -2,6 +2,7 @@ import GeographicalDistribution from "./geographical-distribution.vue";
 import type {WidgetConfig} from "~/components/modules/widget/config/widget.config";
 
 const geographicalDistribution: WidgetConfig = {
+    key: 'geographicalDistribution',
     name: 'Geographical distribution',
     description: () => 'Distribution of contributors and organizations based on geographical'
         + ' location during contributions '

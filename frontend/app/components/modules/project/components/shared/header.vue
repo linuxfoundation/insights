@@ -99,7 +99,7 @@
           "
           :class="scrollTop > 50 ? 'md:py-4' : 'md:py-5'"
         >
-          <lfx-project-menu />
+          <lfx-project-menu :project="props.project" />
           <lfx-project-date-range-picker />
         </div>
       </section>

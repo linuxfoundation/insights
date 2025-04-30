@@ -1,4 +1,5 @@
-import { LfxRoutes } from '~/components/shared/types/routes';
+import {LfxRoutes} from '~/components/shared/types/routes';
+import {WidgetArea} from "~/components/modules/widget/types/widget-area";
 
 export interface ProjectLinkConfig {
   key: string;
@@ -6,6 +7,7 @@ export interface ProjectLinkConfig {
   label: string;
   projectRouteName: LfxRoutes;
   repoRouteName: LfxRoutes;
+  area: WidgetArea;
   comingSoon?: boolean;
 }
 
@@ -14,6 +16,7 @@ export const lfProjectLinks: ProjectLinkConfig[] = [
     key: 'overview',
     icon: 'gauge-high',
     label: 'Overview',
+    area: WidgetArea.OVERVIEW,
     projectRouteName: LfxRoutes.PROJECT,
     repoRouteName: LfxRoutes.REPOSITORY
   },
@@ -21,6 +24,7 @@ export const lfProjectLinks: ProjectLinkConfig[] = [
     key: 'contributors',
     icon: 'people-group',
     label: 'Contributors',
+    area: WidgetArea.CONTRIBUTORS,
     projectRouteName: LfxRoutes.PROJECT_CONTRIBUTORS,
     repoRouteName: LfxRoutes.REPOSITORY_CONTRIBUTORS
   },
@@ -28,6 +32,7 @@ export const lfProjectLinks: ProjectLinkConfig[] = [
     key: 'popularity',
     icon: 'fire',
     label: 'Popularity',
+    area: WidgetArea.POPULARITY,
     projectRouteName: LfxRoutes.PROJECT_POPULARITY,
     repoRouteName: LfxRoutes.REPOSITORY_POPULARITY
   },
@@ -35,6 +40,7 @@ export const lfProjectLinks: ProjectLinkConfig[] = [
     key: 'development',
     icon: 'code',
     label: 'Development',
+    area: WidgetArea.DEVELOPMENT,
     projectRouteName: LfxRoutes.PROJECT_DEVELOPMENT,
     repoRouteName: LfxRoutes.REPOSITORY_DEVELOPMENT
   },
@@ -42,6 +48,7 @@ export const lfProjectLinks: ProjectLinkConfig[] = [
     key: 'security',
     icon: 'shield-check',
     label: 'Security & Best Practices',
+    area: WidgetArea.SECURITY,
     projectRouteName: LfxRoutes.PROJECT_SECURITY,
     repoRouteName: LfxRoutes.REPOSITORY_SECURITY,
     comingSoon: true

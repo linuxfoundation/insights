@@ -14,6 +14,7 @@ export interface Project{
     contributorCount: number;
     organizationCount: number;
     repositories: ProjectRepository[];
+    widgets: string[];
 }
 
 export interface ProjectList{

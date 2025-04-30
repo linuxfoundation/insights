@@ -41,6 +41,7 @@ import {Widget} from "~/components/modules/widget/types/widget";
 import type {Project} from "~~/types/project";
 
 export interface WidgetConfig {
+    key: string;
     name: string;
     description: (project: Project) => string;
     learnMoreLink?: string;
@@ -66,6 +67,7 @@ export const lfxWidgets: Record<Widget, WidgetConfig> = {
     [Widget.PRESS_MENTIONS]: pressMentions,
     [Widget.SEARCH_QUERIES]: searchQueries,
     [Widget.PACKAGE_DOWNLOADS]: packageDownloads,
+    [Widget.MAILING_LISTS_MESSAGES]: mailingListMessages,
 
     // Development
     [Widget.ISSUES_RESOLUTION]: issuesResolution,
@@ -77,5 +79,4 @@ export const lfxWidgets: Record<Widget, WidgetConfig> = {
     [Widget.WAIT_TIME_FIRST_REVIEW]: waitTimeFirstReview,
     [Widget.CODE_REVIEW_ENGAGEMENT]: codeReviewEngagement,
     [Widget.REVIEW_TIME_BY_PULL_REQUEST_SIZE]: reviewTimeByPullRequestSize,
-    [Widget.MAILING_LISTS_MESSAGES]: mailingListMessages,
 }
