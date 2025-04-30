@@ -16,7 +16,7 @@
         >
           <template #default="{ observer }">
             <lfx-scroll-view
-              v-for="widget in config.widgets"
+              v-for="widget of widgets"
               :id="widget"
               :key="widget"
               :observer="observer"
@@ -37,6 +37,7 @@
 
 <script lang="ts" setup>
 import {computed, ref} from "vue";
+import {storeToRefs} from "pinia";
 import type {Widget} from "~/components/modules/widget/types/widget";
 import {lfxWidgets} from "~/components/modules/widget/config/widget.config";
 import type {WidgetArea} from "~/components/modules/widget/types/widget-area";
@@ -48,6 +49,7 @@ import LfxScrollArea from "~/components/uikit/scroll-view/scroll-area.vue";
 import useScroll from "~/components/shared/utils/scroll";
 import LfxWidget from "~/components/modules/widget/components/shared/widget.vue";
 import type { Benchmark } from '~~/types/shared/benchmark.types';
+import {useProjectStore} from "~/components/modules/project/store/project.store";
 
 const props = defineProps<{
   name: WidgetArea
@@ -60,8 +62,16 @@ const activeItem = ref(config.value.widgets?.[0] || '');
 const tmpClickedItem = ref('');
 
 const { scrollToTarget, scrollToTop } = useScroll();
+const { project } = storeToRefs(useProjectStore())
 
-const sideNavItems = computed(() => (config.value.widgets || []).map((widget: Widget) => ({
+const widgets = computed(() => (config.value.widgets || [])
+    .filter((widget) => {
+      console.log(project.value?.widgets)
+      const key = lfxWidgets[widget as Widget]?.key;
+      return project.value?.widgets.includes(key)
+    }));
+
+const sideNavItems = computed(() => widgets.value.map((widget: Widget) => ({
   key: widget,
   label: lfxWidgets[widget]?.name,
 })))

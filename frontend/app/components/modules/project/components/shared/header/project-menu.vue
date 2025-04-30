@@ -1,7 +1,7 @@
 <template>
   <div class="flex sm:hidden lg:flex items-center gap-3">
     <lfx-tooltip
-      v-for="link of lfProjectLinks"
+      v-for="link of links"
       :key="link.label"
       content="Coming soon"
       placement="top"
@@ -36,7 +36,7 @@
       </template>
 
       <template
-        v-for="link of lfProjectLinks"
+        v-for="link of links"
         :key="link.label"
       >
 
@@ -76,6 +76,14 @@ import LfxDropdown from "~/components/uikit/dropdown/dropdown.vue";
 import LfxDropdownSelector from "~/components/uikit/dropdown/dropdown-selector.vue";
 import LfxDropdownItem from "~/components/uikit/dropdown/dropdown-item.vue";
 import {lfProjectLinks} from "~/components/modules/project/config/links";
+import type {Project} from "~~/types/project";
+import type {WidgetArea} from "~/components/modules/widget/types/widget-area";
+import {lfxWidgetArea} from "~/components/modules/widget/config/widget-area.config";
+import {lfxWidgets} from "~/components/modules/widget/config/widget.config";
+
+const props = defineProps<{
+  project?: Project
+}>();
 
 const route = useRoute();
 const repoName = computed(() => route.params.name as string);
@@ -83,6 +91,13 @@ const repoName = computed(() => route.params.name as string);
 const activeLink = computed(() => lfProjectLinks.find((link) => (repoName.value
       ? link.repoRouteName === route.name
       : link.projectRouteName === route.name)));
+
+const isAreaEnabled = (area: WidgetArea) => {
+  const widgets = lfxWidgetArea[area].widgets || [];
+  return widgets.length === 0 || widgets.some((widget) => props.project?.widgets.includes(lfxWidgets[widget]?.key))
+}
+
+const links = computed(() => lfProjectLinks.filter((link) => isAreaEnabled(link.area)))
 </script>
 
 <script lang="ts">

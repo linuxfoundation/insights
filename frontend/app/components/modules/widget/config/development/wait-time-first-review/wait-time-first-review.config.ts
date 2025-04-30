@@ -2,6 +2,7 @@ import WaitTimeFirstReview from "./wait-time-first-review.vue";
 import type {WidgetConfig} from "~/components/modules/widget/config/widget.config";
 
 const waitTimeFirstReview: WidgetConfig = {
+    key: 'waitTimeFor1stReview',
     name: 'Wait time for 1st review',
     description: () => 'Average time taken between pull request submission and its first '
         + 'review during the selected period.',
