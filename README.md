@@ -21,6 +21,8 @@ This repository includes mainly the frontend code for Insights. Therefore, it's 
 - Create issues every time something goes wrong or you have a feature idea
 - Upvote issues with 👍 reaction so we know what's the demand for a particular issue to prioritize it within the roadmap
 
+If you would like to contribute to the development of the project, please refer to our [Contributing guide](https://github.com/linuxfoundation/insights/blob/main/CONTRIBUTING.md).
+
 ## Roadmap
 tbd
 
