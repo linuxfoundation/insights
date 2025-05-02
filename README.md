@@ -6,9 +6,17 @@
 ## What is LFX Insights?
 Insights evaluates the health and trustworthiness of the world's most critical open source software.
 
+At the core, Insights evaluates open source projects based on the following criteria:
+- <b>Contributors</b>: Who is contributing on behalf of which company? (Leaderboards, Contributor/Organization dependency, etc)
+- <b>Popularity</b>: How well is the project being adopted? (Package downloads, Search queries, Mailing list messages, etc)
+- <b>Development</b>: How actively is the project being maintained? (Issue resolution, PR lead time, Active days, etc)
+- <b>Security & Best Practices</b>: Is the project following security & best practices? (in coopoeration with [OSPS Baseline](https://baseline.openssf.org/))
+
+Insights is part of the [LFX platform](https://lfx.linuxfoundation.org/).
+
 ## Contributing
 
-Insights is part of the [LFX platform](https://lfx.linuxfoundation.org/). Today, it's not straight forward to run the application locally with relevant data to test. For this reason, outside code contributions are not yet intended. There are still ways to contribute and help us improving Insights:
+This repository includes mainly the frontend code for Insights. Therefore, it's not straight forward to run the application locally with relevant data to test. For this reason, outside code contributions are not yet intended. There are still ways to contribute and help us improving Insights:
 
 - Create issues every time something goes wrong or you have a feature idea
 - Upvote issues with 👍 reaction so we know what's the demand for a particular issue to prioritize it within the roadmap
