@@ -8,7 +8,7 @@ Insights evaluates the health and trustworthiness of the world's most critical o
 
 ## Contributing
 
-Insights is part of the [LFX platform](https://lfx.linuxfoundation.org/). Therefore, it's not straight forward to run the application locally with relevant data to test. For this reason, outside code contributions are not yet intended. Nevertheless, there are still ways to contribute and help us improving Insights:
+Insights is part of the [LFX platform](https://lfx.linuxfoundation.org/). Today, it's not straight forward to run the application locally with relevant data to test. For this reason, outside code contributions are not yet intended. There are still ways to contribute and help us improving Insights:
 
 - Create issues every time something goes wrong or you have a feature idea
 - Upvote issues with 👍 reaction so we know what's the demand for a particular issue to prioritize it within the roadmap
