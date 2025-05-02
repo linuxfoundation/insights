@@ -21,15 +21,6 @@ This repository includes mainly the frontend code for Insights. Therefore, it's 
 - Create issues every time something goes wrong or you have a feature idea
 - Upvote issues with 👍 reaction so we know what's the demand for a particular issue to prioritize it within the roadmap
 
-## Requirements
-
-- Node 18+
-- pnpm 9+
-- Husky 9+
-- Nuxt 3+
-- PrimeVue 4+
-- Pinia 2+
-
 ## Roadmap
 tbd
 
@@ -39,6 +30,14 @@ LFX Insights is a project by [The Linux Foundation](https://www.linuxfoundation.
 ## Code of Conduct
 tbd
 
+## Requirements
+
+- Node 18+
+- pnpm 9+
+- Husky 9+
+- Nuxt 3+
+- PrimeVue 4+
+- Pinia 2+
 
 
 
