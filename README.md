@@ -10,7 +10,7 @@ At the core, Insights evaluates open source projects based on the following vect
 - <b>Contributors</b>: Who is contributing on behalf of which company? (Leaderboards, Contributor/Organization dependency, etc)
 - <b>Popularity</b>: How well is the project being adopted? (Package downloads, Search queries, Mailing list messages, etc)
 - <b>Development</b>: How actively is the project being maintained? (Issue resolution, PR lead time, Active days, etc)
-- <b>Security & Best Practices</b>: Is the project following security & best practices? (in coopoeration with [OSPS Baseline](https://baseline.openssf.org/))
+- <b>Security & Best Practices</b>: Is the project following security & best practices? (powered by [OSPS Baseline](https://baseline.openssf.org/))
 
 Insights is part of the [LFX platform](https://lfx.linuxfoundation.org/).
 
