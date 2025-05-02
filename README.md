@@ -6,7 +6,7 @@
 ## What is LFX Insights?
 Insights evaluates the health and trustworthiness of the world's most critical open source software.
 
-At the core, Insights evaluates open source projects based on the following criteria:
+At the core, Insights evaluates open source projects based on the following vectors:
 - <b>Contributors</b>: Who is contributing on behalf of which company? (Leaderboards, Contributor/Organization dependency, etc)
 - <b>Popularity</b>: How well is the project being adopted? (Package downloads, Search queries, Mailing list messages, etc)
 - <b>Development</b>: How actively is the project being maintained? (Issue resolution, PR lead time, Active days, etc)
