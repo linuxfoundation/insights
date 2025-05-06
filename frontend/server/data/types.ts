@@ -101,21 +101,12 @@ export enum ActivityFilterCountType {
   CUMULATIVE = 'cumulative',
   NEW = 'new'
 }
-export enum ActivityFilterActivityType {
-  MESSAGE = 'message',
-  FORKS = 'fork',
-  STARS = 'star',
-  ISSUES_OPENED = 'issues-opened',
-  ISSUES_CLOSED = 'issues-closed',
-  PULL_REQUESTS_OPENED = 'pull_request-opened',
-  PULL_REQUESTS_MERGED = 'pull_request-merged',
-  PULL_REQUESTS_CLOSED = 'pull_request-closed'
-}
+
 export type ActivityCountFilter = {
   project: string;
   granularity?: FilterGranularity;
   countType?: ActivityFilterCountType;
-  activity_type: ActivityFilterActivityType;
+  activity_type: ActivityTypes;
   onlyContributions: boolean;
   repo?: string;
   startDate?: DateTime;
