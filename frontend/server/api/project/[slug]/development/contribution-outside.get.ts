@@ -36,8 +36,8 @@ export default defineEventHandler(async (event) => {
   const filter: ContributionsOutsideWorkHoursFilter = {
     project,
     repo: query.repository as string,
-    startDate: DateTime.fromISO(query.startDate as string),
-    endDate: DateTime.fromISO(query.endDate as string),
+    startDate: query.startDate ? DateTime.fromISO(query.startDate as string) : undefined,
+    endDate: query.endDate ? DateTime.fromISO(query.endDate as string) : undefined,
   }
 
   const dataSource = createDataSource();

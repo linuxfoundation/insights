@@ -31,6 +31,6 @@ export type OrganizationsLeaderboardTinybirdQuery = {
 export type ActivityHeatmapByWeekdayTBQuery = {
   project: string;
   repo?: string,
-  startDate: DateTime,
-  endDate: DateTime,
+  startDate?: DateTime,
+  endDate?: DateTime,
 };
