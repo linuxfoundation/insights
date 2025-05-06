@@ -20,6 +20,6 @@ export type CodeReviewEngagementFilter = {
 export type ContributionsOutsideWorkHoursFilter = {
   project: string,
   repo?: string,
-  startDate: DateTime,
-  endDate: DateTime,
+  startDate?: DateTime,
+  endDate?: DateTime,
 };

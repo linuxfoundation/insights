@@ -179,8 +179,8 @@ export async function fetchPullRequests(filter: ActivityCountFilter): Promise<Pu
       startDate: item.startDate,
       endDate: item.endDate,
       open: item.activityCount || 0,
-      merged: mergedPRs.data[index].activityCount || 0,
-      closed: closedPRs.data[index].activityCount || 0,
+      merged: mergedPRs.data[index]?.activityCount || 0,
+      closed: closedPRs.data[index]?.activityCount || 0,
     }))
   };
 }
