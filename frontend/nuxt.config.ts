@@ -5,7 +5,6 @@ import tailwindcss from './setup/tailwind';
 import primevue from './setup/primevue';
 import echarts from './setup/echarts';
 
-console.log(process.env)
 export default defineNuxtConfig({
   future: {
     compatibilityVersion: 4
