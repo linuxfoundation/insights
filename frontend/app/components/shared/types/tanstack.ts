@@ -37,4 +37,7 @@ export enum TanstackKey {
     STARS = 'stars',
     STARS_CUMULATIVE = 'stars-cumulative',
     MAILING_LISTS_MESSAGES = 'mailing-lists-messages',
+
+    // Security
+    SECURITY_ASSESSMENT = 'security-assessment'
 }

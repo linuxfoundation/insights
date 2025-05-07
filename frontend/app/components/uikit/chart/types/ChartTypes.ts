@@ -29,6 +29,8 @@ export interface GaugeData {
   name: string;
   maxValue?: number;
   color?: string;
+  textColor?: string;
+  lineColor?: string;
   gaugeType: 'half' | 'full';
 }
 

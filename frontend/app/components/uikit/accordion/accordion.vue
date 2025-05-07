@@ -1,12 +1,25 @@
 <template>
-  <lfx-card class="p-5">
-    <pv-accordion class="p-accordion">
-      <slot />
-    </pv-accordion>
-  </lfx-card>
+  <div class="c-accordion">
+    <slot />
+  </div>
 </template>
+
 <script setup lang="ts">
-import LfxCard from '../card/card.vue';
+import {provide} from "vue";
+
+const props = defineProps<{
+  modelValue: string;
+}>()
+
+const emit = defineEmits<{(e: 'update:modelValue', value: string): void;
+}>();
+
+const model = computed({
+  get: () => props.modelValue,
+  set: (value: string) => emit('update:modelValue', value),
+})
+
+provide('selectedItem', model);
 </script>
 
 <script lang="ts">
