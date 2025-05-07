@@ -9,7 +9,7 @@ import LfxProjectSecurityView from "~/components/modules/project/views/security.
 
 const route = useRoute();
 const name = route.params.name as string;
-const {project} = useProjectStore();
+const {project, repository} = useProjectStore();
 const config = useRuntimeConfig()
 const repoName = (repository?.name || name).split('/').at(-1);
 

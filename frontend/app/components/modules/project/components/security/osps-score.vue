@@ -57,6 +57,10 @@ const props = defineProps<{
 }>()
 
 const results = computed(() => {
+  if(props.data.length === 0) {
+    return 0;
+  }
+
   if(props.isRepository) {
     const assessments = (props.data || []).map((check) => check.assessments).flat();
     const passed = assessments.filter((assessment) => assessment.result === SecurityDataResult.PASSED);
