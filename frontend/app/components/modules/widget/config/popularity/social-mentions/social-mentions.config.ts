@@ -8,6 +8,9 @@ const socialMentions: WidgetConfig = {
         + ` the selected period.`,
     learnMoreLink: 'https://docs.linuxfoundation.org/lfx/insights',
     component: SocialMentions,
+    share: true,
+    embed: false,
+    snapshot: false,
 }
 
 export default socialMentions;

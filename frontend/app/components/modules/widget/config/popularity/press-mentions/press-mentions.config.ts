@@ -8,6 +8,9 @@ const pressMentions: WidgetConfig = {
         + ` the selected period.`,
     learnMoreLink: 'https://docs.linuxfoundation.org/lfx/insights',
     component: PressMentions,
+    share: true,
+    embed: false,
+    snapshot: false,
 }
 
 export default pressMentions;

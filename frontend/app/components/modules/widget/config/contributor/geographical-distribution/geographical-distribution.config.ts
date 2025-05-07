@@ -9,6 +9,9 @@ const geographicalDistribution: WidgetConfig = {
         + 'in the selected period.',
     learnMoreLink: 'https://docs.linuxfoundation.org/lfx/insights',
     component: GeographicalDistribution,
+    share: true,
+    embed: false,
+    snapshot: false,
 }
 
 export default geographicalDistribution;

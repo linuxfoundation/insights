@@ -10,6 +10,7 @@
       </client-only>
     </div>
     <lfx-report-global />
+    <lfx-share-global />
   </main>
 </template>
 
@@ -19,6 +20,7 @@ import {watch} from 'vue'
 import LfxNavbar from '~/components/shared/layout/navbar.vue';
 import LfxToast from '~/components/uikit/toast/toast.vue';
 import LfxReportGlobal from "~/components/shared/modules/report/components/report-global.vue";
+import LfxShareGlobal from "~/components/shared/modules/share/components/share-global.vue";
 // Only import the UI core library on the client side
 if (import.meta.client) {
   await import('@linuxfoundation/lfx-ui-core');

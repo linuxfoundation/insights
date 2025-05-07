@@ -62,15 +62,14 @@
               </div>
             </div>
             <div class="hidden sm:flex items-center gap-4">
-              <lfx-share>
-                <lfx-button
-                  type="tertiary"
-                  class="!rounded-full"
-                >
-                  <lfx-icon name="link-simple" />
-                  Share
-                </lfx-button>
-              </lfx-share>
+              <lfx-button
+                type="tertiary"
+                class="!rounded-full"
+                @click="share()"
+              >
+                <lfx-icon name="link-simple" />
+                Share
+              </lfx-button>
               <lfx-dropdown
                 placement="bottom-end"
                 width="12.5rem"
@@ -122,7 +121,6 @@ import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxButton from '~/components/uikit/button/button.vue';
 import useScroll from "~/components/shared/utils/scroll";
 import LfxIconButton from "~/components/uikit/icon-button/icon-button.vue";
-import LfxShare from "~/components/uikit/share/share.vue";
 import LfxProjectRepositorySwitch from "~/components/modules/project/components/shared/header/repository-switch.vue";
 import LfxBack from "~/components/uikit/back/back.vue";
 import LfxProjectDateRangePicker from "~/components/modules/project/components/shared/header/date-range-picker.vue";
@@ -134,6 +132,7 @@ import LfxProjectMenu from "~/components/modules/project/components/shared/heade
 import LfxDropdown from "~/components/uikit/dropdown/dropdown.vue";
 import LfxDropdownItem from "~/components/uikit/dropdown/dropdown-item.vue";
 import {useReportStore} from "~/components/shared/modules/report/store/report.store";
+import {useShareStore} from "~/components/shared/modules/share/store/share.store";
 
 const props = defineProps<{
   project?: Project
@@ -141,8 +140,9 @@ const props = defineProps<{
 
 const route = useRoute();
 
-const {projectRepos} = storeToRefs(useProjectStore())
+const {projectRepos, repository} = storeToRefs(useProjectStore());
 const { openReportModal } = useReportStore();
+const { openShareModal } = useShareStore();
 
 const repo = computed<ProjectRepository | undefined>(
     () => projectRepos.value.find((repo) => repo.slug === route.params.name)
@@ -154,6 +154,34 @@ const isSearchRepoModalOpen = ref(false);
 
 const {scrollTop} = useScroll();
 const {pageWidth} = useResponsive();
+
+const share = () => {
+  const title = [];
+  if (props.project?.name) {
+    title.push(props.project.name);
+    if(repository.value?.name){
+      title.push(repository.value.name);
+    }
+    const type = route.path.split('/').at(-1) || '';
+    if(['contributors', 'popularity', 'security', 'development'].includes(type)){
+      title.push(type);
+    }
+    title.push('insights | LFX Insights');
+  }
+  else {
+    title.push(document.title);
+  }
+
+  const finalTitle = `${title.join(' ')}`;
+
+  const url = new URL(window.location.href);
+  url.hash = '';
+
+  openShareModal({
+    url: url.toString(),
+    title: finalTitle,
+  })
+};
 </script>
 
 <script lang="ts">

@@ -10,17 +10,31 @@ import LfxProjectSecurityView from "~/components/modules/project/views/security.
 const route = useRoute();
 const name = route.params.name as string;
 const {project} = useProjectStore();
+const config = useRuntimeConfig()
+const repoName = (repository?.name || name).split('/').at(-1);
 
-const title = `${name || 'Repository'} security & best practices insights | ${project?.name} | LFX Insights`;
-const description = `Explore ${name || ''} security & best practices
-insights${project?.name ? ` under the ${project.name}` : ''}.`;
+const title = `LFX Insights | ${project?.name} ${repoName} security insights`;
+const imageAlt = `${project?.name} ${repoName} security insights`;
+const description = `Explore ${project?.name} ${repoName} security insights`;
+const url = `${config.public.appUrl}${route.fullPath}`;
+const image = `${config.public.appUrl}/api/seo/og-image?projectSlug=${project?.slug}&repositorySlug=${name}`;
 
 useSeoMeta({
   title,
   description,
+  ogType: 'article',
+  ogUrl: url,
   ogTitle: title,
   ogDescription: description,
+  ogImage: image,
+  ogImageAlt: imageAlt,
+  ogImageSecureUrl: '/og-image.png',
+  ogImageType: 'image/jpeg',
+  twitterCard: 'summary_large_image',
+  twitterUrl: url,
   twitterTitle: title,
-  twitterDescription: description
+  twitterDescription: description,
+  twitterImage: image,
+  twitterImageAlt: imageAlt,
 })
 </script>

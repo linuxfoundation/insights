@@ -38,6 +38,7 @@
 <script lang="ts" setup>
 import {computed, ref} from "vue";
 import {storeToRefs} from "pinia";
+import {useRoute} from "nuxt/app";
 import type {Widget} from "~/components/modules/widget/types/widget";
 import {lfxWidgets} from "~/components/modules/widget/config/widget.config";
 import type {WidgetArea} from "~/components/modules/widget/types/widget-area";
@@ -55,10 +56,11 @@ const props = defineProps<{
   name: WidgetArea
 }>();
 
+const route = useRoute();
 const config = computed<WidgetAreaConfig>(() => lfxWidgetArea[props.name]);
 const benchmarks = ref<Record<string, Benchmark | undefined>>({});
 
-const activeItem = ref(config.value.widgets?.[0] || '');
+const activeItem = ref(route.query?.widget || config.value.widgets?.[0] || '');
 const tmpClickedItem = ref('');
 
 const { scrollToTarget, scrollToTop } = useScroll();
@@ -66,7 +68,6 @@ const { project } = storeToRefs(useProjectStore())
 
 const widgets = computed(() => (config.value.widgets || [])
     .filter((widget) => {
-      console.log(project.value?.widgets)
       const key = lfxWidgets[widget as Widget]?.key;
       return project.value?.widgets.includes(key)
     }));
@@ -108,7 +109,6 @@ const onBenchmarkUpdate = (value: Benchmark | undefined) => {
     benchmarks.value[value.key] = value;
   }
 }
-
 </script>
 
 <script lang="ts">

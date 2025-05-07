@@ -8,6 +8,9 @@ const contributorDependency: WidgetConfig = {
         + 'who are actively involved in the project during the selected time period.',
     learnMoreLink: 'https://docs.linuxfoundation.org/lfx/insights',
     component: ContributorDependency,
+    share: true,
+    embed: false,
+    snapshot: false,
 }
 
 export default contributorDependency;

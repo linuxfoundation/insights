@@ -8,6 +8,9 @@ const waitTimeFirstReview: WidgetConfig = {
         + 'review during the selected period.',
     learnMoreLink: 'https://docs.linuxfoundation.org/lfx/insights',
     component: WaitTimeFirstReview,
+    share: true,
+    embed: false,
+    snapshot: false,
 }
 
 export default waitTimeFirstReview;

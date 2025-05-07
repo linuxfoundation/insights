@@ -8,6 +8,9 @@ const githubMentions: WidgetConfig = {
         + ` and paths across GitHub repositories.`,
     learnMoreLink: 'https://docs.linuxfoundation.org/lfx/insights',
     component: GithubMentions,
+    share: true,
+    embed: false,
+    snapshot: false,
 }
 
 export default githubMentions;

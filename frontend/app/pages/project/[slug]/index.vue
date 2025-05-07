@@ -3,21 +3,36 @@
 </template>
 
 <script setup lang="ts">
-import LfxProjectOverviewView from '~/components/modules/project/views/overview.vue';
+import {useRoute} from "nuxt/app";
 import {useProjectStore} from "~/components/modules/project/store/project.store";
+import LfxProjectOverviewView from "~/components/modules/project/views/overview.vue";
 
+const route = useRoute();
 const {project} = useProjectStore();
+const config = useRuntimeConfig()
 
-const title = `${project?.name || 'Project'} contributors insights | LFX Insights`;
-const description = `Explore ${project?.name ? `${project.name} ` : ''}contributors insights,
-highlighting their efforts and impact on the project.`;
+const title = `LFX Insights | ${project?.name} insights`;
+const imageAlt = `${project?.name} insights`;
+const description = `Explore ${project?.name} insights`;
+const url = `${config.public.appUrl}${route.fullPath}`;
+const image = `${config.public.appUrl}/api/seo/og-image?projectSlug=${project?.slug}`;
 
 useSeoMeta({
   title,
   description,
+  ogType: 'article',
+  ogUrl: url,
   ogTitle: title,
   ogDescription: description,
+  ogImage: image,
+  ogImageAlt: imageAlt,
+  ogImageSecureUrl: '/og-image.png',
+  ogImageType: 'image/jpeg',
+  twitterCard: 'summary_large_image',
+  twitterUrl: url,
   twitterTitle: title,
-  twitterDescription: description
+  twitterDescription: description,
+  twitterImage: image,
+  twitterImageAlt: imageAlt,
 })
 </script>

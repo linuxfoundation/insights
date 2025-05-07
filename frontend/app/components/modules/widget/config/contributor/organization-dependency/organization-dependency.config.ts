@@ -8,6 +8,9 @@ const organizationDependency: WidgetConfig = {
         + 'whose contributors were actively involved in the project during the selected period.',
     learnMoreLink: 'https://docs.linuxfoundation.org/lfx/insights',
     component: OrganizationsDependency,
+    share: true,
+    embed: false,
+    snapshot: false,
 }
 
 export default organizationDependency;

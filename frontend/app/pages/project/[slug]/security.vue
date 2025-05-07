@@ -3,20 +3,36 @@
 </template>
 
 <script setup lang="ts">
+import {useRoute} from "nuxt/app";
 import {useProjectStore} from "~/components/modules/project/store/project.store";
 import LfxProjectSecurityView from "~/components/modules/project/views/security.vue";
 
 const {project} = useProjectStore();
+const route = useRoute()
+const config = useRuntimeConfig()
 
-const title = `${project?.name || 'Project'} security & best practices insights | LFX Insights`;
-const description = `Explore ${project?.name ? `${project.name} ` : ''}security & best practices insights.`;
+const title = `LFX Insights | ${project?.name} security insights`;
+const imageAlt = `${project?.name} security insights`;
+const description = `Explore ${project?.name} security insights`;
+const url = `${config.public.appUrl}${route.fullPath}`;
+const image = `${config.public.appUrl}/api/seo/og-image?projectSlug=${project?.slug}`;
 
 useSeoMeta({
   title,
   description,
+  ogType: 'article',
+  ogUrl: url,
   ogTitle: title,
   ogDescription: description,
+  ogImage: image,
+  ogImageAlt: imageAlt,
+  ogImageSecureUrl: '/og-image.png',
+  ogImageType: 'image/jpeg',
+  twitterCard: 'summary_large_image',
+  twitterUrl: url,
   twitterTitle: title,
-  twitterDescription: description
+  twitterDescription: description,
+  twitterImage: image,
+  twitterImageAlt: imageAlt,
 })
 </script>

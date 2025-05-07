@@ -9,6 +9,9 @@ const activeDays: WidgetConfig = {
         + ' during the selected period. This includes commits, pull requests, and more.',
     learnMoreLink: 'https://docs.linuxfoundation.org/lfx/insights',
     component: ActiveDays,
+    share: true,
+    embed: false,
+    snapshot: false,
 }
 
 export default activeDays;

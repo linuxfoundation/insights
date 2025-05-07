@@ -7,6 +7,9 @@ const stars: WidgetConfig = {
     description: () => 'New stars added to the project repositories during the selected time period.',
     learnMoreLink: 'https://docs.linuxfoundation.org/lfx/insights',
     component: Stars,
+    share: true,
+    embed: false,
+    snapshot: false,
 }
 
 export default stars;

@@ -9,6 +9,8 @@ const useResponsive = () => {
     pageWidth.value = window.innerWidth;
   };
 
+  const isMobileOrTablet = () => /Mobi|Android|iPhone|iPad|iPod/i.test(navigator?.userAgent);
+
   onMounted(() => {
     updatePageWidth();
     window.addEventListener('resize', updatePageWidth);
@@ -19,6 +21,7 @@ const useResponsive = () => {
   });
 
   return {
+    isMobileOrTablet,
     pageWidth,
   };
 };

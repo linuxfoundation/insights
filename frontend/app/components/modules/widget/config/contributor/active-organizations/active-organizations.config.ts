@@ -8,6 +8,9 @@ const activeOrganizations: WidgetConfig = {
         + 'carried out by contributors on their behalf.',
     learnMoreLink: 'https://docs.linuxfoundation.org/lfx/insights',
     component: ActiveOrganizations,
+    share: true,
+    embed: false,
+    snapshot: false,
 }
 
 export default activeOrganizations;

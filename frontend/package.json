@@ -34,6 +34,7 @@
     "pinia": "^2.3.0",
     "pluralize": "^8.0.0",
     "primevue": "^4.2.5",
+    "sharp": "^0.34.1",
     "slugify": "^1.6.6",
     "vue": "latest",
     "vue-router": "latest"

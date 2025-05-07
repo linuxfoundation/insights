@@ -8,6 +8,9 @@ const mergeLeadTime: WidgetConfig = {
         + 'accepted, and merged in the selected period.',
     learnMoreLink: 'https://docs.linuxfoundation.org/lfx/insights',
     component: MergeLeadTime,
+    share: true,
+    embed: false,
+    snapshot: false,
 }
 
 export default mergeLeadTime;
