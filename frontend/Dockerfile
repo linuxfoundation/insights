@@ -24,12 +24,17 @@ WORKDIR /usr/src/app
 COPY --from=deps /usr/src/app/node_modules ./node_modules
 COPY . .
 
-# Build the application
+# Build the Nuxt app first
 FROM files AS builder
 
 WORKDIR /usr/src/app
 
+# Build vitepress docs
+RUN pnpm docs:build && mkdir -p public/docs && cp -r docs/.vitepress/dist/* public/docs/
+
+# Build the Nuxt app
 RUN pnpm build
+
 
 FROM node:${NODE_VERSION}-slim AS prod
 

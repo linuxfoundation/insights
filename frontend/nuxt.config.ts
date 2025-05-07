@@ -63,4 +63,15 @@ export default defineNuxtConfig({
     enabled: process.env.NODE_ENV === 'production',
     domain: 'insights.linuxfoundation.org',
   },
+  vite: {
+    server: {
+      proxy: {
+        '/docs': {
+          target: 'http://localhost:5173',
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/docs/, '/docs')
+        }
+      }
+    }
+  }
 });

@@ -3,7 +3,12 @@ import { lfxFontSizes } from './app/config/styles/font-size.ts';
 
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: [],
+  content: [
+    './docs/**/*.md',
+    './docs/.vitepress/**/*.{js,ts,vue}',
+    './docs/.vitepress/theme/**/*.{js,ts,vue}',
+    './docs/.vitepress/components/**/*.{js,ts,vue}'
+  ],
   theme: {
     screens: {
       sm: '640px',

@@ -1,15 +1,31 @@
 <template>
-  <lfx-menu-button
-    v-for="link of lfxMenu.links"
-    :key="link.label"
-    :to="{name: link.route}"
-  >
-    <lfx-icon
-      v-if="link.icon"
-      :name="link.icon"
-    />
-    {{ link.label }}
-  </lfx-menu-button>
+  <template v-for="link of lfxMenu.links">
+    <a
+      v-if="link.href"
+      :key="link.label"
+      :href="link.href"
+      class="c-menu-button"
+      target="_blank"
+    >
+      <lfx-icon
+        v-if="link.icon"
+        :name="link.icon"
+      />
+      {{ link.label }}
+    </a>
+    <lfx-menu-button
+      v-else
+      :key="link.label"
+      :to="{name: link.route}"
+    >
+      <lfx-icon
+        v-if="link.icon"
+        :name="link.icon"
+      />
+      {{ link.label }}
+    </lfx-menu-button>
+  </template>
+
 </template>
 
 <script setup lang="ts">

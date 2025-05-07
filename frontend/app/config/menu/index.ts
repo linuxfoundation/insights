@@ -14,6 +14,10 @@ interface MenuConfig{
 
 export const lfxMenu: MenuConfig = {
     links: [
+        {
+            label: 'Docs',
+            href: '/docs/'
+        },
     //     {
     //     label: 'Explore',
     //     icon: 'compass',

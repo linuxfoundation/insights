@@ -14,7 +14,10 @@
     "prepare": "cd .. && husky ./frontend/.husky",
     "storybook": "storybook dev -p 6006",
     "storybook:build": "storybook build",
-    "test": "vitest"
+    "test": "vitest",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs"
   },
   "dependencies": {
     "@linuxfoundation/lfx-ui-core": "^0.0.14",
@@ -38,6 +41,7 @@
     "primevue": "^4.2.5",
     "sharp": "^0.34.1",
     "slugify": "^1.6.6",
+    "vitepress": "^1.6.3",
     "vue": "latest",
     "vue-router": "latest"
   },
@@ -79,5 +83,11 @@
     "extends": [
       "plugin:storybook/recommended"
     ]
+  },
+  "postcss": {
+    "plugins": {
+      "tailwindcss": {},
+      "autoprefixer": {}
+    }
   }
 }
