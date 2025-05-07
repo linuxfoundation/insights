@@ -14,6 +14,9 @@ importers:
       '@nuxt/eslint':
         specifier: ^0.7.5
         version: 0.7.6(@vue/compiler-sfc@3.5.13)(eslint@9.22.0(jiti@2.4.2))(magicast@0.3.5)(typescript@5.8.2)(vite@6.2.1(@types/node@22.13.10)(jiti@2.4.2)(sass-embedded@1.85.1)(sass@1.85.1)(terser@5.39.0)(yaml@2.7.0))
+      '@nuxtjs/plausible':
+        specifier: ^1.2.0
+        version: 1.2.0(magicast@0.3.5)
       '@pinia/nuxt':
         specifier: 0.9.0
         version: 0.9.0(magicast@0.3.5)(pinia@2.3.1(typescript@5.8.2)(vue@3.5.13(typescript@5.8.2)))
@@ -47,6 +50,9 @@ importers:
       nuxt:
         specifier: ^3.15.3
         version: 3.16.0(@parcel/watcher@2.5.1)(@types/node@22.13.10)(db0@0.3.1)(eslint@9.22.0(jiti@2.4.2))(ioredis@5.6.0)(magicast@0.3.5)(optionator@0.9.4)(rollup@4.35.0)(sass-embedded@1.85.1)(sass@1.85.1)(terser@5.39.0)(typescript@5.8.2)(vite@6.2.1(@types/node@22.13.10)(jiti@2.4.2)(sass-embedded@1.85.1)(sass@1.85.1)(terser@5.39.0)(yaml@2.7.0))(yaml@2.7.0)
+      nuxt-gtag:
+        specifier: ^3.0.2
+        version: 3.0.2(magicast@0.3.5)
       ofetch:
         specifier: ^1.4.1
         version: 1.4.1
@@ -305,6 +311,9 @@ packages:
   '@babel/types@7.26.10':
     resolution: {integrity: sha512-emqcG3vHrpxUKTrxcblR36dcrcoRDvKmnL/dCL6ZsHaShW80qxCAcNhzQZrpeM765VzEos+xOi4s+r4IXzTwdQ==}
     engines: {node: '>=6.9.0'}
+
+  '@barbapapazes/plausible-tracker@0.5.6':
+    resolution: {integrity: sha512-GRZxn3ZngYQ1+QbdP8d66D/lQg+T2oEevG8kBGfNwVbt9VZB67sgMx/gkRo/Ww2lH7QelgjUNzvOeG+DsJX2HQ==}
 
   '@bufbuild/protobuf@2.2.3':
     resolution: {integrity: sha512-tFQoXHJdkEOSwj5tRIZSPNUuXK3RaR7T1nUrPgbYX1pUbvqqaaZAsfo+NXBPsz5rZMSKVFrgK1WL8Q/MSLvprg==}
@@ -1047,6 +1056,9 @@ packages:
     engines: {node: ^18.12.0 || ^20.9.0 || >=22.0.0}
     peerDependencies:
       vue: ^3.3.4
+
+  '@nuxtjs/plausible@1.2.0':
+    resolution: {integrity: sha512-pjfps32fFN77BhjqHmq2Jx4XCNso9TcYnB+S4IR2qH/c26WDfYB5mQxN5pOEiWRlMkiKq+Y45mBBFtSOVKClCA==}
 
   '@nuxtjs/storybook@8.3.3':
     resolution: {integrity: sha512-pyZsSB+rIzPaZlBIuYHQdZvd+6kFuCLfjNVtHzvmtejwv2dNQPwUw4fBqIIzShSlbTM/JLTGJrP7llt6CFYqbg==}
@@ -4140,6 +4152,9 @@ packages:
     peerDependencies:
       echarts: ^5.5.1
 
+  nuxt-gtag@3.0.2:
+    resolution: {integrity: sha512-0Spu/rffPxW7REebkjE22qQOuVZIQuyIuvd61InDdJU+d+gRIqWhrUuKBWdk43N/J1elj+cTK2kEdk5FQX7vdQ==}
+
   nuxt@3.16.0:
     resolution: {integrity: sha512-4j2tuHo+kcComQ1WrCD+i1w3UFOHrcnNH30cwiEY/WZZlBZOlC6DtUm6aBjhfpBFaMYsF4PbyKsNW+7FHwckHA==}
     engines: {node: ^18.12.0 || ^20.9.0 || >=22.0.0}
@@ -6266,6 +6281,8 @@ snapshots:
       '@babel/helper-string-parser': 7.25.9
       '@babel/helper-validator-identifier': 7.25.9
 
+  '@barbapapazes/plausible-tracker@0.5.6': {}
+
   '@bufbuild/protobuf@2.2.3': {}
 
   '@chromatic-com/storybook@3.2.5(react@18.3.1)(storybook@8.4.7)':
@@ -7084,6 +7101,15 @@ snapshots:
       - vti
       - vue-tsc
       - yaml
+
+  '@nuxtjs/plausible@1.2.0(magicast@0.3.5)':
+    dependencies:
+      '@barbapapazes/plausible-tracker': 0.5.6
+      '@nuxt/kit': 3.16.0(magicast@0.3.5)
+      defu: 6.1.4
+      ufo: 1.5.4
+    transitivePeerDependencies:
+      - magicast
 
   '@nuxtjs/storybook@8.3.3(@types/node@22.13.10)(eslint@9.22.0(jiti@2.4.2))(magicast@0.3.5)(nuxt@3.16.0(@parcel/watcher@2.5.1)(@types/node@22.13.10)(db0@0.3.1)(eslint@9.22.0(jiti@2.4.2))(ioredis@5.6.0)(magicast@0.3.5)(optionator@0.9.4)(rollup@4.35.0)(sass-embedded@1.85.1)(sass@1.85.1)(terser@5.39.0)(typescript@5.8.2)(vite@6.2.1(@types/node@22.13.10)(jiti@2.4.2)(sass-embedded@1.85.1)(sass@1.85.1)(terser@5.39.0)(yaml@2.7.0))(yaml@2.7.0))(optionator@0.9.4)(rollup@4.35.0)(sass-embedded@1.85.1)(sass@1.85.1)(terser@5.39.0)(typescript@5.8.2)(vite@6.2.1(@types/node@22.13.10)(jiti@2.4.2)(sass-embedded@1.85.1)(sass@1.85.1)(terser@5.39.0)(yaml@2.7.0))(vue@3.5.13(typescript@5.8.2))(yaml@2.7.0)':
     dependencies:
@@ -10610,6 +10636,15 @@ snapshots:
     dependencies:
       '@nuxt/kit': 3.16.0(magicast@0.3.5)
       echarts: 5.6.0
+    transitivePeerDependencies:
+      - magicast
+
+  nuxt-gtag@3.0.2(magicast@0.3.5):
+    dependencies:
+      '@nuxt/kit': 3.16.0(magicast@0.3.5)
+      defu: 6.1.4
+      pathe: 1.1.2
+      ufo: 1.5.4
     transitivePeerDependencies:
       - magicast
 
