@@ -24,3 +24,7 @@ logs
 !.env.example
 
 *storybook.log
+
+# VitePress
+docs/.vitepress/cache
+docs/.vitepress/dist
