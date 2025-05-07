@@ -8,6 +8,9 @@ const activeContributors: WidgetConfig = {
         + ' or pull requests during the selected time period.',
     learnMoreLink: 'https://docs.linuxfoundation.org/lfx/insights',
     component: ActiveContributors,
+    share: true,
+    embed: false,
+    snapshot: false,
 }
 
 export default activeContributors;

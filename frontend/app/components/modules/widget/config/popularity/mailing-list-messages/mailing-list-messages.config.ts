@@ -7,6 +7,9 @@ const mailingListMessages: WidgetConfig = {
     description: () => 'Messages sent on the project\'s public mailing lists during the selected time period.',
     learnMoreLink: 'https://docs.linuxfoundation.org/lfx/insights',
     component: MailingListMessages,
+    share: true,
+    embed: false,
+    snapshot: false,
 }
 
 export default mailingListMessages;

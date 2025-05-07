@@ -8,6 +8,9 @@ const organizationsLeaderboard: WidgetConfig = {
         + ' their behalf and the impact on the project.',
     learnMoreLink: 'https://docs.linuxfoundation.org/lfx/insights',
     component: OrganizationsLeaderboard,
+    share: true,
+    embed: false,
+    snapshot: false,
 }
 
 export default organizationsLeaderboard;

@@ -1,11 +1,13 @@
 <template>
   <lfx-card class="p-4 sm:p-6 relative group">
-    <lfx-widget-menu
-      title="Contributors leaderboard"
-      class="absolute -top-3 right-6 opacity-0 invisible group-hover:opacity-100 group-hover:visible"
-      :name="props.name"
-    />
-    <h3 class="text-heading-3 font-semibold font-secondary pb-3">{{ config.name }}</h3>
+    <div class="flex justify-between items-center pb-3">
+      <h3 class="text-heading-3 font-semibold font-secondary">{{ config.name }}</h3>
+      <lfx-widget-menu
+        class="relative md:absolute md:-top-3 md:right-6 md:opacity-0
+        md:invisible group-hover:opacity-100 group-hover:visible"
+        :name="props.name"
+      />
+    </div>
     <p
       v-if="project"
       class="text-body-2 text-neutral-500 mb-5"

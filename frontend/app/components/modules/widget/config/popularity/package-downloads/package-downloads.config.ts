@@ -7,6 +7,9 @@ const packageDownloads: WidgetConfig = {
     description: () => '(TBD)',
     learnMoreLink: 'https://docs.linuxfoundation.org/lfx/insights',
     component: PackageDownloads,
+    share: true,
+    embed: false,
+    snapshot: false,
 }
 
 export default packageDownloads;

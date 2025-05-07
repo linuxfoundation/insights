@@ -46,6 +46,9 @@ export interface WidgetConfig {
     description: (project: Project) => string;
     learnMoreLink?: string;
     component: Component;
+    share: boolean;
+    embed: boolean;
+    snapshot: boolean;
 }
 
 export const lfxWidgets: Record<Widget, WidgetConfig> = {

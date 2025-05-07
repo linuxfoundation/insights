@@ -8,6 +8,9 @@ const contributionsOutsideWorkHours: WidgetConfig = {
                  + 'and weekends during the selected period.',
     learnMoreLink: 'https://docs.linuxfoundation.org/lfx/insights',
     component: ContributionsOutsideWorkHours,
+    share: true,
+    embed: false,
+    snapshot: false,
 }
 
 export default contributionsOutsideWorkHours;

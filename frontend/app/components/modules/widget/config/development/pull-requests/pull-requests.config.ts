@@ -7,6 +7,9 @@ const pullRequests: WidgetConfig = {
     description: () => 'Comparison between opened and merged (or closed) pull requests during the selected period.',
     learnMoreLink: 'https://docs.linuxfoundation.org/lfx/insights',
     component: PullRequests,
+    share: true,
+    embed: false,
+    snapshot: false,
 }
 
 export default pullRequests;

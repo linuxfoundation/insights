@@ -8,6 +8,9 @@ const reviewTimeByPullRequestSize: WidgetConfig = {
         + ' during the selected period.',
     learnMoreLink: 'https://docs.linuxfoundation.org/lfx/insights',
     component: ReviewTimeByPullRequestSize,
+    share: true,
+    embed: false,
+    snapshot: false,
 }
 
 export default reviewTimeByPullRequestSize;

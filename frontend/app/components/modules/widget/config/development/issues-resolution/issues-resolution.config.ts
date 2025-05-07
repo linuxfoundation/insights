@@ -7,6 +7,9 @@ const issuesResolution: WidgetConfig = {
     description: () => 'Comparison between total number of issues vs. closed issues during the selected time period.',
     learnMoreLink: 'https://docs.linuxfoundation.org/lfx/insights',
     component: IssuesResolution,
+    share: true,
+    embed: false,
+    snapshot: false,
 }
 
 export default issuesResolution;

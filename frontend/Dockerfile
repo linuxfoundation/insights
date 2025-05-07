@@ -35,6 +35,13 @@ FROM node:${NODE_VERSION}-slim AS prod
 
 WORKDIR /usr/src/app
 
+# Install system packages needed by sharp and font rendering
+RUN apt-get update && apt-get install -y \
+    libvips-dev \
+    fontconfig \
+    fonts-dejavu-core \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
 COPY --from=builder /usr/src/app/.output ./.output
 
 EXPOSE 3000

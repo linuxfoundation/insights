@@ -57,7 +57,7 @@ const onClick = (value: string, e: Event) => {
   e.stopPropagation();
 
   router.replace({
-    hash: `#${value}`
+    query: {widget: value}
   });
 };
 </script>

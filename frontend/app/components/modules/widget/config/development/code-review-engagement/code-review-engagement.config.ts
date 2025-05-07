@@ -8,6 +8,9 @@ const codeReviewEngagement: WidgetConfig = {
         + ' selected period. Analyze trends to improve engagement.',
     learnMoreLink: 'https://docs.linuxfoundation.org/lfx/insights',
     component: CodeReviewEngagement,
+    share: true,
+    embed: false,
+    snapshot: false,
 }
 
 export default codeReviewEngagement;

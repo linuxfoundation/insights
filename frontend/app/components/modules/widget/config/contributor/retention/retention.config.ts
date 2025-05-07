@@ -8,6 +8,9 @@ const retention: WidgetConfig = {
                  + 'the project during the selected period.',
     learnMoreLink: 'https://docs.linuxfoundation.org/lfx/insights',
     component: Retention,
+    share: true,
+    embed: false,
+    snapshot: false,
 }
 
 export default retention;

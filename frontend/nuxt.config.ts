@@ -5,6 +5,7 @@ import tailwindcss from './setup/tailwind';
 import primevue from './setup/primevue';
 import echarts from './setup/echarts';
 
+console.log(process.env)
 export default defineNuxtConfig({
   future: {
     compatibilityVersion: 4
@@ -13,6 +14,7 @@ export default defineNuxtConfig({
     head,
     errorHandler: '~/app/error.vue'
   },
+  components: false,
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
   modules: [
@@ -44,7 +46,8 @@ export default defineNuxtConfig({
 
     // These are also exposed on the client-side
     public: {
-      apiBase: '/api'
+      apiBase: '/api',
+      appUrl: 'http://localhost:3000',
     }
   },
   vue: {
