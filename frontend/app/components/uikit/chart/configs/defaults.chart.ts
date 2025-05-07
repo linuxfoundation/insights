@@ -80,7 +80,7 @@ export const defaultGaugeSeriesStyle: GaugeSeriesOption = {
   },
   axisLine: {
     lineStyle: {
-      width: 10
+      width: 8,
     }
   },
   splitLine: {

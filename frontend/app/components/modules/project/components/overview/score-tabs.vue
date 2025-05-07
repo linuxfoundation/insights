@@ -44,31 +44,37 @@
     </lfx-tabs-panels>
   </div>
   <div class="sm:hidden block">
-    <lfx-accordion value="0">
-      <lfx-accordion-panel
-        v-for="(tab, index) in tabs"
-        :key="tab.value"
-        :value="index"
+    <lfx-card>
+      <lfx-accordion
+        v-model="selectedTab"
+        class="p-5 -my-6"
       >
-        <template #header>
-          {{ tab.label }}
-        </template>
-        <template #content>
-          <div class="mb-6">
-            <lfx-project-score-list
-              v-if="tab.value !== 'security'"
-              :score-data="tab.data"
-            />
-            <div
-              v-else
-              class="flex flex-col gap-6 p-6"
-            >
-              <h1>Comming Soon</h1>
-            </div>
+        <lfx-accordion-item
+          v-for="tab in tabs"
+          :key="tab.value"
+          :name="tab.value"
+          class="border-t border-neutral-100 pt-6"
+        >
+          <div class="text-sm leading-5 font-bold pb-6">
+            {{ tab.label }}
           </div>
-        </template>
-      </lfx-accordion-panel>
-    </lfx-accordion>
+          <template #content>
+            <div class="pb-6">
+              <lfx-project-score-list
+                v-if="tab.value !== 'security'"
+                :score-data="tab.data"
+              />
+              <div
+                v-else
+                class="flex flex-col gap-6 p-6"
+              >
+                <h1>Comming Soon</h1>
+              </div>
+            </div>
+          </template>
+        </lfx-accordion-item>
+      </lfx-accordion>
+    </lfx-card>
   </div>
 </template>
 
@@ -78,8 +84,8 @@ import LfxProjectScoreList from './score-details/score-list.vue';
 import LfxPanels from '~/components/uikit/tabs/panels.vue';
 import LfxTabsPanels from '~/components/uikit/tabs/tabs-panels.vue';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
-import LfxAccordion from '~/components/uikit/accordion/accordion.vue';
-import LfxAccordionPanel from '~/components/uikit/accordion/accordion-panel.vue';
+// import LfxAccordion from '~/components/uikit/accordion/accordion.vue';
+// import LfxAccordionPanel from '~/components/uikit/accordion/accordion-panel.vue';
 import LfxProgressBar from '~/components/uikit/progress-bar/progress-bar.vue';
 import type { ProgressBarType } from '~/components/uikit/progress-bar/types/progress-bar.types';
 import {
@@ -91,6 +97,9 @@ import {
 import type {
   ScoreData
 } from '~~/types/shared/benchmark.types';
+import LfxAccordion from "~/components/uikit/accordion/accordion.vue";
+import LfxAccordionItem from "~/components/uikit/accordion/accordion-item.vue";
+import LfxCard from "~/components/uikit/card/card.vue";
 
 const selectedTab = ref('contributors');
 

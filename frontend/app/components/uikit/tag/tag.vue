@@ -2,7 +2,7 @@
   <div
     class="c-tag"
     :class="[
-      `c-tag--${props.style}`,
+      `c-tag--${props.variation}`,
       `c-tag--${props.size}`,
       `c-tag--${props.type}`
     ]"
@@ -16,12 +16,12 @@ import type { TagType, TagSize, TagStyle } from './types/tag.types';
 
 const props = withDefaults(
   defineProps<{
-    style?: TagStyle;
+    variation?: TagStyle;
     size?: TagSize;
     type?: TagType;
   }>(),
   {
-    style: 'default',
+    variation: 'default',
     size: 'medium',
     type: 'solid',
   }

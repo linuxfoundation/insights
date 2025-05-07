@@ -33,7 +33,11 @@
 
   /* Type */
   &--transparent{
-    @apply bg-transparent text-neutral-500 px-0;
+    @apply bg-transparent px-0;
+
+    &.c-tag--default{
+        @apply text-neutral-500;
+    }
   }
 
   /* Outline (same as solid but has border) */

@@ -51,6 +51,5 @@ export const lfProjectLinks: ProjectLinkConfig[] = [
     area: WidgetArea.SECURITY,
     projectRouteName: LfxRoutes.PROJECT_SECURITY,
     repoRouteName: LfxRoutes.REPOSITORY_SECURITY,
-    comingSoon: true
   }
 ];
