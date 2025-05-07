@@ -60,25 +60,6 @@ export default {
     ],
     script: [
         // Using fontawesome like this instead of installing plugins
-        {src: 'https://kit.fontawesome.com/d65f54d9ea.js', crossorigin: 'anonymous'},
-        // Plausible Analytics
-        {
-            src: 'https://plausible.io/js/script.js',
-            defer: true,
-            'data-domain': 'insights.linuxfoundation.org'
-        },
-        // Google Tag Manager for Google Analytics
-        {
-            src: 'https://www.googletagmanager.com/gtag/js?id=G-EB92ZZFBNS',
-            async: true
-        },
-        {
-            children: `
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
-                gtag('js', new Date());
-                gtag('config', 'G-EB92ZZFBNS');
-            `
-        }
+        {src: 'https://kit.fontawesome.com/d65f54d9ea.js', crossorigin: 'anonymous'}
     ]
 }

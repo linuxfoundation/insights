@@ -23,7 +23,8 @@ export default defineNuxtConfig({
     '@primevue/nuxt-module',
     'nuxt-echarts',
     '@nuxtjs/storybook',
-    '@nuxt/test-utils/module'
+    'nuxt-gtag',
+    '@nuxtjs/plausible'
   ],
   plugins: [
     '~/plugins/vue-query.ts',
@@ -53,5 +54,13 @@ export default defineNuxtConfig({
     compilerOptions: {
       isCustomElement: (tag: string) => ['lfx-footer'].includes(tag),
     }
-  }
+  },
+  gtag: {
+    enabled: process.env.NODE_ENV === 'production',
+    id: 'G-EB92ZZFBNS'
+  },
+  plausible: { // Use as fallback if no runtime config is available at runtime
+    enabled: process.env.NODE_ENV === 'production',
+    domain: 'insights.linuxfoundation.org',
+  },
 });
