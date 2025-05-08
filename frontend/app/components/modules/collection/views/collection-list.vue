@@ -43,13 +43,18 @@
             </template>
 
             <lfx-dropdown-item
-              value="name_asc"
-              label="Alphabetically"
+              value="starred_asc"
+              label="Featured"
             />
             <lfx-dropdown-item
               value="projectCount_desc"
               label="Most projects"
             />
+            <lfx-dropdown-item
+              value="name_asc"
+              label="Alphabetically"
+            />
+
           </lfx-dropdown-select>
         </div>
       </div>
@@ -142,7 +147,7 @@ const {pageWidth} = useResponsive();
 const {scrollTop} = useScroll();
 
 const pageSize = 50
-const sort = ref('projectCount_desc')
+const sort = ref('starred_asc')
 const category = ref('')
 
 const queryKey = computed(() => [TanstackKey.COLLECTIONS, sort.value, category.value])
