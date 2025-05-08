@@ -4,8 +4,7 @@ Contributions are what make the open-source community such an amazing place to l
 
 ## Ways to contribute
 
-- Try the insights.linuxfoundation.org platform and give feedback by [creating new issues](https://github.com/linuxfoundation/insights/issues).
-- Help with [open issues](https://github.com/linuxfoundation/insights/issues).
+- Try [Insights](https://insights.linuxfoundation.org/) and give feedback by [creating new issues](https://github.com/linuxfoundation/insights/issues)
 - Participate on open discussions or share your ideas with us by checking the [Discussions](https://github.com/linuxfoundation/insights/discussions)
 
 Any contributions you make are **greatly appreciated**. ❤️
