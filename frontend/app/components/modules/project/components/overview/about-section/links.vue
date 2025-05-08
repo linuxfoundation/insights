@@ -32,9 +32,14 @@
 </template>
 
 <script setup lang="ts">
+import { storeToRefs } from 'pinia';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
+import { useProjectStore } from '~~/app/components/modules/project/store/project.store';
 
-const links = [
+const { project } = storeToRefs(useProjectStore())
+
+// TODO: remove this once we have the links from the API
+const links = project.value?.projectLinks || [
   {
     name: 'kubernetes.io',
     url: 'https://kubernetes.io/',

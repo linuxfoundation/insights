@@ -4,39 +4,62 @@ export interface ProjectRepository {
   slug: string;
 }
 
-export interface Project{
-    id: string;
-    name: string;
-    slug: string;
-    description: string;
-    logo: string;
-    isLF: boolean;
-    contributorCount: number;
-    organizationCount: number;
-    repositories: ProjectRepository[];
-    widgets: string[];
+export interface Project {
+  id: string;
+  name: string;
+  slug: string;
+  description: string;
+  logo: string;
+  isLF: boolean;
+  contributorCount: number;
+  organizationCount: number;
+  repositories: ProjectRepository[];
+  widgets: string[];
+  softwareValue?: number;
+  maturityStatus?: string;
+  tags?: string[];
+  languages?: ProjectLanguage[];
+
+  projectLinks?: ProjectLink[];
 }
 
-export interface ProjectList{
-    id: string;
-    name: string;
-    slug: string;
-    description: string;
-    logo: string;
-    isLF: boolean;
-    contributorCount: number;
-    organizationCount: number;
-    repositories: string[];
+export interface ProjectLanguage {
+  name: string;
+  percentage: number;
 }
 
-export interface ProjectTinybird{
-    id: string;
-    name: string;
-    slug: string;
-    description: string;
-    logo: string;
-    isLF: number;
-    contributorCount: number;
-    organizationCount: number;
-    repositories: string[];
+export interface ProjectLink {
+  name?: string;
+  url: string;
+  img?: string;
+  icon?: string;
+}
+
+export interface ProjectList {
+  id: string;
+  name: string;
+  slug: string;
+  description: string;
+  logo: string;
+  isLF: boolean;
+  contributorCount: number;
+  organizationCount: number;
+  repositories: string[];
+}
+
+export interface ProjectTinybird {
+  id: string;
+  name: string;
+  slug: string;
+  description: string;
+  logo: string;
+  isLF: number;
+  contributorCount: number;
+  organizationCount: number;
+  repositories: string[];
+  keywords?: string[];
+  website?: string;
+  linkedin?: string;
+  github?: string;
+  twitter?: string;
 }

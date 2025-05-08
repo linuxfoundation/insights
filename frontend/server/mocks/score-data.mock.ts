@@ -1,29 +1,14 @@
-import type {
-  ScoreAggregate,
-  ScoreData
-} from '~~/types/shared/benchmark.types';
-import {
-  BenchmarkKeys
-} from '~~/types/shared/benchmark.types';
+import type { ScoreData } from '~~/types/shared/benchmark.types';
+import { BenchmarkKeys } from '~~/types/shared/benchmark.types';
+import type { TrustScoreSummary } from '~~/types/overview/responses.types';
 
-export const scoreAggregates: ScoreAggregate[] = [
-  {
-    aggregateKey: 'contributors',
-    value: 100
-  },
-  {
-    aggregateKey: 'popularity',
-    value: 50
-  },
-  {
-    aggregateKey: 'development',
-    value: 25
-  },
-  {
-    aggregateKey: 'security',
-    value: 75
-  }
-];
+export const trustScoreSummary: TrustScoreSummary = {
+  overall: 76,
+  popularity: 50,
+  contributors: 100,
+  security: 75,
+  development: 25
+};
 
 export const contributorsScoreData: ScoreData[] = [
   {

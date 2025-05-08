@@ -48,9 +48,17 @@ export default defineEventHandler(async (event): Promise<Project | Error> => {
                 slug,
             }
         })
+        const projectLinks = [
+            ...(project.website ? [{ name: 'Website', url: project.website }] : []),
+            ...(project.linkedin ? [{ name: 'Linkedin', url: project.linkedin }] : []),
+            ...(project.github ? [{ name: 'Github', url: project.github }] : []),
+            ...(project.twitter ? [{ name: 'X', url: project.twitter }] : []),
+        ];
         return {
             ...project,
             repositories,
+            projectLinks,
+            tags: project?.keywords || [],
         }
     } catch (err) {
         console.error('Error fetching project:', err);

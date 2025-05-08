@@ -14,12 +14,24 @@
     @apply bg-positive-50 text-positive-600;
   }
 
+  &--positive-solid{
+    @apply bg-positive-500 text-white;
+  }
+
   &--warning{
     @apply bg-warning-50 text-warning-600;
   }
 
+  &--warning-solid{
+    @apply bg-warning-500 text-white;
+  }
+
   &--negative{
     @apply bg-negative-50 text-negative-600;
+  }
+
+  &--negative-solid{
+    @apply bg-negative-500 text-white;
   }
 
   /* Sizes */
