@@ -1,3 +1,7 @@
+<!--
+Copyright (c) 2025 The Linux Foundation and each contributor.
+SPDX-License-Identifier: MIT
+-->
 <template>
   <label
     class="flex items-center justify-between px-3 py-2 gap-2"

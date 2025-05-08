@@ -1,3 +1,7 @@
+<!--
+Copyright (c) 2025 The Linux Foundation and each contributor.
+SPDX-License-Identifier: MIT
+-->
 <template>
   <div class="container !px-5 lg:!px-10">
     <div class="flex justify-between pt-5 md:pt-10 gap-10 flex-col md:flex-row">

@@ -71,6 +71,7 @@
     "eslint-plugin-storybook": "^0.11.2",
     "happy-dom": "^17.1.8",
     "husky": "^9.1.7",
+    "lint-staged": "^15.5.2",
     "nuxt-echarts": "^0.2.4",
     "sass": "^1.83.4",
     "sass-embedded": "^1.83.4",
@@ -89,5 +90,10 @@
       "tailwindcss": {},
       "autoprefixer": {}
     }
+  },
+  "lint-staged": {
+    "*.{js,ts,jsx,tsx,vue}": [
+      "node ../scripts/add-license.js"
+    ]
   }
 }

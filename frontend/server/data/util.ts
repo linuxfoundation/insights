@@ -1,3 +1,5 @@
+// Copyright (c) 2025 The Linux Foundation and each contributor.
+// SPDX-License-Identifier: MIT
 import {DateTime} from "luxon";
 
 // We should use Luxon's Interval type for this, but that would require a lot of changes in the codebase, so for now

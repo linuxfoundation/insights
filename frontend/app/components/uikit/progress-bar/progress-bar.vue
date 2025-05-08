@@ -1,3 +1,7 @@
+<!--
+Copyright (c) 2025 The Linux Foundation and each contributor.
+SPDX-License-Identifier: MIT
+-->
 <template>
   <!-- This component might change based on Nuno's feedback -->
   <div :class="`c-progress-bar c-progress-bar--${props.color} c-progress-bar--size-${props.size}`">

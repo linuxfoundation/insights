@@ -1,3 +1,5 @@
+// Copyright (c) 2025 The Linux Foundation and each contributor.
+// SPDX-License-Identifier: MIT
 const title = 'LFX Insights – Data-Driven Collaboration for Open Source Projects';
 const description = 'LFX Insights helps open-source teams track contributor activity, analyze trends, and '
     + 'enhance collaboration. Get real-time insights into your project\'s development, security, and popularity.';

@@ -1,3 +1,5 @@
+// Copyright (c) 2025 The Linux Foundation and each contributor.
+// SPDX-License-Identifier: MIT
 import type { HeatmapSeriesOption } from 'echarts/types/dist/shared';
 import _ from 'lodash';
 import { punchCardFormatter } from '../helpers/formatters';

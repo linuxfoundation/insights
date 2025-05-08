@@ -1,3 +1,7 @@
+<!--
+Copyright (c) 2025 The Linux Foundation and each contributor.
+SPDX-License-Identifier: MIT
+-->
 <template>
   <section class="mt-5">
     <div class="flex flex-row gap-4 items-center mb-10">

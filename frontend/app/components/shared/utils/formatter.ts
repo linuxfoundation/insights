@@ -1,3 +1,5 @@
+// Copyright (c) 2025 The Linux Foundation and each contributor.
+// SPDX-License-Identifier: MIT
 /**
  * Formats a number with commas and configurable decimal places
  * @param value - The number to format

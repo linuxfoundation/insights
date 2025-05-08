@@ -1,3 +1,5 @@
+// Copyright (c) 2025 The Linux Foundation and each contributor.
+// SPDX-License-Identifier: MIT
 import type { MapSeriesOption, TopLevelFormatterParams } from 'echarts/types/dist/shared';
 import _ from 'lodash';
 import type { ChartData, ChartSeries, SeriesTypes } from '../types/ChartTypes';

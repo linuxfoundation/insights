@@ -1,3 +1,5 @@
+// Copyright (c) 2025 The Linux Foundation and each contributor.
+// SPDX-License-Identifier: MIT
 import LfxIconButton from './icon-button.vue';
 import { iconButtonSizes, iconButtonTypes } from './types/icon-button.types';
 

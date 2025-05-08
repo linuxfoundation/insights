@@ -1,3 +1,5 @@
+// Copyright (c) 2025 The Linux Foundation and each contributor.
+// SPDX-License-Identifier: MIT
 import type {ContributorDependencyFilter, ContributorsLeaderboardFilter,} from "../types";
 import {fetchFromTinybird} from './tinybird'
 import {fetchContributorsLeaderboard} from "~~/server/data/tinybird/contributors-leaderboard-data-source";

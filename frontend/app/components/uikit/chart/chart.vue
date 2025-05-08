@@ -1,3 +1,7 @@
+<!--
+Copyright (c) 2025 The Linux Foundation and each contributor.
+SPDX-License-Identifier: MIT
+-->
 <template>
   <div class="w-full h-full flex flex-col justify-between">
     <VChart

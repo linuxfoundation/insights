@@ -1,3 +1,7 @@
+<!--
+Copyright (c) 2025 The Linux Foundation and each contributor.
+SPDX-License-Identifier: MIT
+-->
 <template>
   <div
     class="sticky -top-1 z-10 bg-white flex flex-col gap-1 -mt-1 pt-1"

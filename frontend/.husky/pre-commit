@@ -7,3 +7,6 @@ if git diff --diff-filter=d --name-only --cached | grep 'frontend/';
     pnpm tsc-check
     git add -u $(git diff --diff-filter=d --name-only --cached --relative)
 fi
+
+#run lint-staged to add copyright license on top of all new files
+npx lint-staged

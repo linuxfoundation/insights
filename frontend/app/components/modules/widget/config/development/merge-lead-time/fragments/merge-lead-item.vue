@@ -1,3 +1,7 @@
+<!--
+Copyright (c) 2025 The Linux Foundation and each contributor.
+SPDX-License-Identifier: MIT
+-->
 <template>
   <div class="flex flex-col">
     <div class="flex flex-row gap-3 items-start justify-end">

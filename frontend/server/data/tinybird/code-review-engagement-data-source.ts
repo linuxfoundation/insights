@@ -1,3 +1,5 @@
+// Copyright (c) 2025 The Linux Foundation and each contributor.
+// SPDX-License-Identifier: MIT
 import type {ActiveContributorsFilter, ContributorsLeaderboardFilter} from "~~/server/data/types";
 import {ActivityTypes} from "~~/types/shared/activity-types";
 import type {CodeReviewEngagement} from "~~/types/development/responses.types";

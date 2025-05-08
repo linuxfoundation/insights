@@ -1,3 +1,5 @@
+// Copyright (c) 2025 The Linux Foundation and each contributor.
+// SPDX-License-Identifier: MIT
 import type {ReportRequest} from "~~/types/report/requests.types";
 import {createJiraIssue} from "~~/server/data/jira-issue/jira-issue-api";
 import {createParagraph, createHeading} from "~~/server/helpers/jira-issue.helpers";

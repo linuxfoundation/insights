@@ -1,3 +1,7 @@
+<!--
+Copyright (c) 2025 The Linux Foundation and each contributor.
+SPDX-License-Identifier: MIT
+-->
 <template>
   <!-- Mobile menu button -->
   <lfx-menu-tablet  class="hidden sm:block lg:!hidden" />

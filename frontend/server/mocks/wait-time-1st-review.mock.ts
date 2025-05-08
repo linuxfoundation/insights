@@ -1,3 +1,5 @@
+// Copyright (c) 2025 The Linux Foundation and each contributor.
+// SPDX-License-Identifier: MIT
 export const waitTime1stReview = {
   summary: {
     current: 3632, // in minutes

@@ -1,3 +1,5 @@
+// Copyright (c) 2025 The Linux Foundation and each contributor.
+// SPDX-License-Identifier: MIT
 import type { RetentionFilter } from "../types";
 import { DemographicType } from "../types";
 import { fetchFromTinybird, type TinybirdResponse } from './tinybird'

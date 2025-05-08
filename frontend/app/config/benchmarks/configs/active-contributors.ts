@@ -1,3 +1,5 @@
+// Copyright (c) 2025 The Linux Foundation and each contributor.
+// SPDX-License-Identifier: MIT
 import { dateOptKeys } from '~/components/modules/project/config/date-options';
 import type { BenchmarkConfigs } from '~~/types/shared/benchmark.types';
 import { BenchmarkKeys } from '~~/types/shared/benchmark.types';

@@ -1,3 +1,5 @@
+// Copyright (c) 2025 The Linux Foundation and each contributor.
+// SPDX-License-Identifier: MIT
 import PullRequests from "./pull-requests.vue";
 import type {WidgetConfig} from "~/components/modules/widget/config/widget.config";
 

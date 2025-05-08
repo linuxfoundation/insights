@@ -1,3 +1,5 @@
+// Copyright (c) 2025 The Linux Foundation and each contributor.
+// SPDX-License-Identifier: MIT
 import { github } from './configs/github.platform';
 import { git } from './configs/git.platform';
 import { gerrit } from './configs/gerrit.platform';

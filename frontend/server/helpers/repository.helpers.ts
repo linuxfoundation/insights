@@ -1,3 +1,5 @@
+// Copyright (c) 2025 The Linux Foundation and each contributor.
+// SPDX-License-Identifier: MIT
 import slugify from "slugify";
 
 export const getRepoNameFromUrl = (url: string): string => {

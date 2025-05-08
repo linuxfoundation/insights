@@ -1,3 +1,5 @@
+// Copyright (c) 2025 The Linux Foundation and each contributor.
+// SPDX-License-Identifier: MIT
 export const allMetrics = [
   {
     logo: 'https://banner2.cleanpng.com/20240110/flp/transparent-google-logo-colorful-google-logo-on-black-1710930944198.webp',

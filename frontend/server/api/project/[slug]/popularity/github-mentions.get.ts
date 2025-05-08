@@ -1,3 +1,5 @@
+// Copyright (c) 2025 The Linux Foundation and each contributor.
+// SPDX-License-Identifier: MIT
 import { cumulative, newMentions } from '~~/server/mocks/github-mentions.mock';
 
 /**

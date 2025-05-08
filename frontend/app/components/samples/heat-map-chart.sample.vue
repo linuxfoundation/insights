@@ -1,3 +1,7 @@
+<!--
+Copyright (c) 2025 The Linux Foundation and each contributor.
+SPDX-License-Identifier: MIT
+-->
 <template>
   <div style="width: 60%; height: 180px">
     <lfx-chart :config="getHeatMapChartConfig(props.chartData, chartSeries, categoryData)" />
