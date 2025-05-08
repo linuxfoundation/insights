@@ -46,11 +46,6 @@ export interface BenchmarkConfigs {
   ) => boolean;
 }
 
-export interface ScoreAggregate {
-  aggregateKey: 'contributors' | 'popularity' | 'development' | 'security';
-  value: number;
-}
-
 export interface ScoreData {
   benchmarkKey: BenchmarkKeys;
   value: number;

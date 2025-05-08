@@ -15,7 +15,7 @@
       </lfx-tag>
     </div>
   </div>
-  <div class="flex flex-col gap-3 text-xs">
+  <!-- <div class="flex flex-col gap-3 text-xs">
     <div class="text-neutral-400 font-semibold flex items-center gap-1">
       Programming languages
     </div>
@@ -35,29 +35,34 @@
       </lfx-tag>
     </div>
 
-  </div>
+  </div> -->
 </template>
 
 <script setup lang="ts">
+import { storeToRefs } from 'pinia';
 import LfxTag from '~/components/uikit/tag/tag.vue';
+import { useProjectStore } from '~~/app/components/modules/project/store/project.store';
 
-const tags = ['k8s-staging', 'k8s-production', 'k8s-dev', 'cncf', 'containers'];
-const languages = [{
-  name: 'JavaScript',
-  percentage: 24
-}, {
-  name: 'TypeScript',
-  percentage: 24
-}, {
-  name: 'Python',
-  percentage: 10
-}, {
-  name: 'Go',
-  percentage: 10
-}, {
-  name: 'Ruby',
-  percentage: 10
-}];
+const { project } = storeToRefs(useProjectStore())
+
+// TODO: remove this once we have the tags from the API
+const tags = project.value?.tags || ['k8s-staging', 'k8s-production', 'k8s-dev', 'cncf', 'containers'];
+// const languages = project.value?.languages || [{
+//   name: 'JavaScript',
+//   percentage: 24
+// }, {
+//   name: 'TypeScript',
+//   percentage: 24
+// }, {
+//   name: 'Python',
+//   percentage: 10
+// }, {
+//   name: 'Go',
+//   percentage: 10
+// }, {
+//   name: 'Ruby',
+//   percentage: 10
+// }];
 </script>
 
 <script lang="ts">
