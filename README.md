@@ -41,5 +41,8 @@ tbd
 - PrimeVue 4+
 - Pinia 2+
 
+## License
 
+Copyright The Linux Foundation and each contributor to LFX.
 
+This project’s source code is licensed under the MIT License. A copy of the license is available in LICENSE.

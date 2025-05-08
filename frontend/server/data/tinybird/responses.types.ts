@@ -1,3 +1,5 @@
+// Copyright (c) 2025 The Linux Foundation and each contributor.
+// SPDX-License-Identifier: MIT
 // These are the types of the responses from the Tinybird API
 
 export type TinybirdActiveContributorsSummary = {

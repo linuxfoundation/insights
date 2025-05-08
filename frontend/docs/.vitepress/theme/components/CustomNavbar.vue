@@ -1,3 +1,7 @@
+<!--
+Copyright (c) 2025 The Linux Foundation and each contributor.
+SPDX-License-Identifier: MIT
+-->
 <!-- .vitepress/theme/components/CustomNavbar.vue -->
 <template>
   <header class="outline outline-1 outline-neutral-100 bg-white sticky top-0 left-0 z-40">

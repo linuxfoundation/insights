@@ -1,3 +1,5 @@
+// Copyright (c) 2025 The Linux Foundation and each contributor.
+// SPDX-License-Identifier: MIT
 export const getRepoNameFromUrl = (url: string): string => {
     try {
         const urlObj = new URL(url);

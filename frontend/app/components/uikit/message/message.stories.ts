@@ -1,3 +1,5 @@
+// Copyright (c) 2025 The Linux Foundation and each contributor.
+// SPDX-License-Identifier: MIT
 import LfxMessage from './message.vue';
 import { messageSizes, messageStyles, messageTypes } from './types/message.types';
 

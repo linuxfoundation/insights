@@ -1,3 +1,5 @@
+// Copyright (c) 2025 The Linux Foundation and each contributor.
+// SPDX-License-Identifier: MIT
 import LfxButton from '@/components/uikit/button/button.vue';
 import LfxPopover from '@/components/uikit/popover/popover.vue';
 import { popoverPlacements } from '@/components/uikit/popover/types/PopoverPlacement';

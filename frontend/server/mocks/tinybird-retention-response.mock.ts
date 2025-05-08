@@ -1,3 +1,5 @@
+// Copyright (c) 2025 The Linux Foundation and each contributor.
+// SPDX-License-Identifier: MIT
 // https://api.us-west-2.aws.tinybird.co/v0/pipes/contributor_retention.json?startDate=2024-03-20 00:00:00&endDate=2025-03-20 00:00:00&project=the-linux-kernel-organization&granularity=monthly
 export const mockContributorRetentionData = {
   meta: [

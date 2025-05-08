@@ -1,3 +1,5 @@
+// Copyright (c) 2025 The Linux Foundation and each contributor.
+// SPDX-License-Identifier: MIT
 export const geoMapCountries = [
   { name: 'Afghanistan', value: 0, emoji: '🇦🇫' },
   { name: 'Angola', value: 0, emoji: '🇦🇴' },

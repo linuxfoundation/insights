@@ -1,3 +1,7 @@
+<!--
+Copyright (c) 2025 The Linux Foundation and each contributor.
+SPDX-License-Identifier: MIT
+-->
 <template>
   <div class="flex flex-row justify-between w-full items-center">
     <span class="text-neutral-900 text-sm grow">

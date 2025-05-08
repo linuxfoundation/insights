@@ -1,3 +1,5 @@
+// Copyright (c) 2025 The Linux Foundation and each contributor.
+// SPDX-License-Identifier: MIT
 export function createHeading(text: string, level = 3) {
     return {
         type: 'heading',

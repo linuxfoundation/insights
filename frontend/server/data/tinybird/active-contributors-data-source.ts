@@ -1,3 +1,5 @@
+// Copyright (c) 2025 The Linux Foundation and each contributor.
+// SPDX-License-Identifier: MIT
 /*
 This is responsible for fetching the active contributors data from Tinybird.
 The goal is to make the API endpoint oblivious to where the data comes from, since it's a separate service.

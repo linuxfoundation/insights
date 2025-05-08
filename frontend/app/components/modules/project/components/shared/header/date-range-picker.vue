@@ -1,3 +1,7 @@
+<!--
+Copyright (c) 2025 The Linux Foundation and each contributor.
+SPDX-License-Identifier: MIT
+-->
 <template>
   <div
     class="fixed bottom-5 sm:bottom-0 left-1/2 sm:left-0 sm:relative

@@ -1,3 +1,5 @@
+// Copyright (c) 2025 The Linux Foundation and each contributor.
+// SPDX-License-Identifier: MIT
 export const contributorRetention = [
   {
     startDate: '2024-11-11T00:00:00Z',

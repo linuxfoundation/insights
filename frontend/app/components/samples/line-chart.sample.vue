@@ -1,3 +1,7 @@
+<!--
+Copyright (c) 2025 The Linux Foundation and each contributor.
+SPDX-License-Identifier: MIT
+-->
 <template>
   <div style="width: 100%; height: 500px">
     <lfx-chart :config="getLineAreaChartConfig(props.chartData, chartSeries, 'weekly')" />

@@ -1,3 +1,5 @@
+// Copyright (c) 2025 The Linux Foundation and each contributor.
+// SPDX-License-Identifier: MIT
 import LfxButton from '../button/button.vue';
 import LfxTooltip from './tooltip.vue';
 import { tooltipPlacements } from './types/TooltipPlacement';

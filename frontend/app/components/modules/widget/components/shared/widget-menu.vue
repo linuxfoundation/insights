@@ -1,3 +1,7 @@
+<!--
+Copyright (c) 2025 The Linux Foundation and each contributor.
+SPDX-License-Identifier: MIT
+-->
 <template>
   <div>
     <div class="border border-neutral-100 shadow-xs bg-white rounded-full p-1 hidden md:flex items-center gap-2">

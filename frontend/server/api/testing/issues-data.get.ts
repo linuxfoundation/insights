@@ -1,3 +1,5 @@
+// Copyright (c) 2025 The Linux Foundation and each contributor.
+// SPDX-License-Identifier: MIT
 export default defineEventHandler(async () => [
   {
     BUCKET_DT_FROM: '2024-01-01 00:00:00.000 -0800',

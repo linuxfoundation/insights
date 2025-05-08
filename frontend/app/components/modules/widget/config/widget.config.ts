@@ -1,3 +1,5 @@
+// Copyright (c) 2025 The Linux Foundation and each contributor.
+// SPDX-License-Identifier: MIT
 import type {Component} from "vue";
 import contributorsLeaderboard from "./contributor/contributors-leaderboard/contributors-leaderboard.config";
 import organizationsLeaderboard

@@ -1,3 +1,5 @@
+// Copyright (c) 2025 The Linux Foundation and each contributor.
+// SPDX-License-Identifier: MIT
 import {DateTime} from "luxon";
 import type {FilterGranularity, RetentionFilter} from "~~/server/data/types";
 import {DemographicType} from "~~/server/data/types";

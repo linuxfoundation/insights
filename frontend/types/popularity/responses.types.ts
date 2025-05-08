@@ -1,3 +1,5 @@
+// Copyright (c) 2025 The Linux Foundation and each contributor.
+// SPDX-License-Identifier: MIT
 /**
  These are the types for the responses the frontend expects from the API for the popularity tab in the project page.
  */

@@ -1,3 +1,7 @@
+<!--
+Copyright (c) 2025 The Linux Foundation and each contributor.
+SPDX-License-Identifier: MIT
+-->
 <template>
   <article
     class="py-4 border-t first:border-0 border-neutral-100 flex items-center"

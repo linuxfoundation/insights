@@ -1,3 +1,5 @@
+// Copyright (c) 2025 The Linux Foundation and each contributor.
+// SPDX-License-Identifier: MIT
 export default defineEventHandler(async () => [
   { DAY: 0, HOUR: 1, COMMITS: 23 },
   { DAY: 0, HOUR: 2, COMMITS: 2 },

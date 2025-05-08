@@ -1,3 +1,7 @@
+<!--
+Copyright (c) 2025 The Linux Foundation and each contributor.
+SPDX-License-Identifier: MIT
+-->
 <template>
   <lfx-maintain-height class="fixed top-14 lg:top-17 z-10 w-full">
     <div class="bg-white outline outline-1 outline-neutral-200">

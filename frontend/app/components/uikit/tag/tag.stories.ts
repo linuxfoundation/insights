@@ -1,3 +1,5 @@
+// Copyright (c) 2025 The Linux Foundation and each contributor.
+// SPDX-License-Identifier: MIT
 import LfxTag from './tag.vue';
 import {tagSizes, tagStyles, tagTypes} from "./types/tag.types";
 

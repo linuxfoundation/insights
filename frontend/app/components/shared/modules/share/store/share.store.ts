@@ -1,3 +1,5 @@
+// Copyright (c) 2025 The Linux Foundation and each contributor.
+// SPDX-License-Identifier: MIT
 import {defineStore} from 'pinia';
 import {ref} from 'vue';
 import type {ShareData} from "~/components/shared/modules/share/types/share.types";

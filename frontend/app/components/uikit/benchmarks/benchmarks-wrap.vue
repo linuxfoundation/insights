@@ -1,3 +1,7 @@
+<!--
+Copyright (c) 2025 The Linux Foundation and each contributor.
+SPDX-License-Identifier: MIT
+-->
 <template>
   <div class="c-benchmarks-wrap max-lg:c-card">
     <div class="max-lg:w-full w-2/3">

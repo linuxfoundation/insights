@@ -1,3 +1,5 @@
+// Copyright (c) 2025 The Linux Foundation and each contributor.
+// SPDX-License-Identifier: MIT
 import organizationDashboard from "~/config/menu/tools/organization-dashboard";
 import individualDashboard from "~/config/menu/tools/individual-dashboard";
 import projectControlCenter from "~/config/menu/tools/project-control-center";
