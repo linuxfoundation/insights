@@ -18,9 +18,9 @@
           </div>
           <VPNavBarSearch />
         </div>
-
         <a
-          href="http://localhost:3000"
+          href="/"
+          target="_parent"
           class="text-sm font-medium text-neutral-500 hover:text-neutral-600"
         >
           Back to LFX Insights
