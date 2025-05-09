@@ -19,7 +19,7 @@ export enum BenchmarkKeys {
   PullRequests = 'pull-requests',
   ActiveDays = 'active-days',
   MergeLeadTime = 'merge-lead-time',
-  MailingListsMessages = 'mailing-lists-messages',
+  MailingListsMessages = 'mailing-lists-messages'
 }
 
 export interface Benchmark {
@@ -52,3 +52,5 @@ export interface ScoreData {
   benchmarkKey: BenchmarkKeys;
   value: number;
 }
+
+export type AggregateKey = 'contributors' | 'popularity' | 'development' | 'security';

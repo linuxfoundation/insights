@@ -27,7 +27,7 @@ SPDX-License-Identifier: MIT
             >
               <lfx-project-score-list
                 v-if="tab.value !== 'security'"
-                :score-data="props.scoreData || []"
+                :data="scoreData"
               />
               <div
                 v-else

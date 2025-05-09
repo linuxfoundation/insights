@@ -38,15 +38,14 @@ SPDX-License-Identifier: MIT
         >
           <lfx-project-score-list
             v-if="tab.value !== 'security'"
-            :score-data="props.scoreData || []"
+            :data="scoreData"
           />
-          <template
+          <div
             v-else
+            class="flex flex-col gap-6 p-6"
           >
-            <div class="flex flex-col gap-6 p-6">
-              <h1>Coming Soon</h1>
-            </div>
-          </template>
+            <h1>Coming Soon</h1>
+          </div>
         </lfx-project-load-state>
       </lfx-panels>
     </template>
