@@ -24,6 +24,7 @@ SPDX-License-Identifier: MIT
         <lfx-project-security-osps-score
           :data="data || []"
           :is-repository="isRepository"
+          :is-loading="isFetching"
         />
       </div>
       <div class="flex-grow">
@@ -40,36 +41,67 @@ SPDX-License-Identifier: MIT
               target="_blank"
             >Learn more</a>
           </p>
-
-          <lfx-accordion v-model="accordion">
-            <lfx-project-security-evaluation-section
-              v-for="(checks, title) in groupedData"
-              :key="title"
-              :name="title"
-              :checks="checks"
-            >
-              <template v-if="isRepository">
-                <template
-                  v-for="check in checks"
-                  :key="check.controlId"
-                >
-                  <lfx-project-security-evaluation-assesment
-                    v-for="assessment in check.assessments"
-                    :key="assessment.requirementId"
-                    :assessment="assessment"
+          <div
+            v-if="isFetching"
+            class="pt-5 border-t border-neutral-100"
+          >
+            <div class="flex flex-col items-center justify-center py-20">
+              <lfx-spinner
+                :size="40"
+                type="light"
+                class="text-neutral-300"
+              />
+              <p class="text-neutral-500 text-center text-body-1 pt-5">
+                Loading controls assessment...
+              </p>
+            </div>
+          </div>
+          <div
+            v-else-if="data?.length === 0 || error"
+            class="pt-5 border-t border-neutral-100"
+          >
+            <div class="flex flex-col items-center justify-center py-20">
+              <lfx-icon
+                name="eyes"
+                class="text-neutral-300"
+                :size="40"
+              />
+              <p class="text-neutral-500 text-center text-body-1 pt-5">
+                No data available to perform controls assessment
+              </p>
+            </div>
+          </div>
+          <div v-else>
+            <lfx-accordion v-model="accordion">
+              <lfx-project-security-evaluation-section
+                v-for="(checks, title) in groupedData"
+                :key="title"
+                :name="title"
+                :checks="checks"
+              >
+                <template v-if="isRepository">
+                  <template
+                    v-for="check in checks"
+                    :key="check.controlId"
+                  >
+                    <lfx-project-security-evaluation-assesment
+                      v-for="assessment in check.assessments"
+                      :key="assessment.requirementId"
+                      :assessment="assessment"
+                    />
+                  </template>
+                </template>
+                <template v-else>
+                  <lfx-project-security-evaluation-repository
+                    v-for="(repoChecks, repo) in groupChecksByRepository(checks || [])"
+                    :key="repo"
+                    :checks="repoChecks || []"
+                    :repository="repo"
                   />
                 </template>
-              </template>
-              <template v-else>
-                <lfx-project-security-evaluation-repository
-                  v-for="(repoChecks, repo) in groupChecksByRepository(checks || [])"
-                  :key="repo"
-                  :checks="repoChecks || []"
-                  :repository="repo"
-                />
-              </template>
-            </lfx-project-security-evaluation-section>
-          </lfx-accordion>
+              </lfx-project-security-evaluation-section>
+            </lfx-accordion>
+          </div>
         </lfx-card>
       </div>
     </div>
@@ -94,6 +126,7 @@ import {TanstackKey} from "~/components/shared/types/tanstack";
 import {useProjectStore} from "~/components/modules/project/store/project.store";
 import type {SecurityData} from "~~/types/security/responses.types";
 import {links} from "~/config/links";
+import LfxSpinner from "~/components/uikit/spinner/spinner.vue";
 
 const accordion = ref('');
 
@@ -120,7 +153,7 @@ const fetchData: QueryFunction<SecurityData[]> = async () => $fetch(
 );
 
 const {
-  data, suspense
+  data, suspense, error, isFetching
 } = useQuery<SecurityData[]>({
   queryKey,
   queryFn: fetchData,

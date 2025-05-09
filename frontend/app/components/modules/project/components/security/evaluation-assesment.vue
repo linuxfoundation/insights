@@ -10,10 +10,10 @@ SPDX-License-Identifier: MIT
       <p class="text-neutral-400 text-xs font-semibold mb-1">
         Requirement ID: {{props.assessment.requirementId}}
       </p>
-      <lfx-project-security-evaluation-result
+      <lfx-project-security-evaluation-result-tag
         size="small"
         type="transparent"
-        :results="[props.assessment.result]"
+        :result="props.assessment.result"
       />
     </div>
     <div class="w-2/3">
@@ -25,8 +25,9 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import LfxProjectSecurityEvaluationResult from "~/components/modules/project/components/security/evaluation-result.vue";
 import type {SecurityAssessmentData} from "~~/types/security/responses.types";
+import LfxProjectSecurityEvaluationResultTag
+  from "~/components/modules/project/components/security/evaluation-result-tag.vue";
 
 const props = defineProps<{
   assessment: SecurityAssessmentData

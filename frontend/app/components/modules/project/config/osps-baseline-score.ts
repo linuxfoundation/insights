@@ -10,6 +10,7 @@ export interface OspsBaselineScore {
     lineColor: string;
     badgeBgColor: string;
     badgeTextColor: string;
+    loading?: boolean;
 }
 
 export const lfxOspsBaselineScore: OspsBaselineScore[] = [

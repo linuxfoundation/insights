@@ -13,7 +13,7 @@ const halfSeriesStyle: GaugeSeriesOption = {
   radius: '140%',
   center: ['50%', '70%'],
   title: {
-    width: 66,
+    padding: [0, 6, 0, 6],
     height: 20,
     fontSize: '12px',
     borderColor: 'inherit',
@@ -50,21 +50,23 @@ const halfDetail: GaugeSeriesOption['detail'] = {
 };
 
 const fullDetail: GaugeSeriesOption['detail'] = {
-  formatter: '{a|{value}}{b|/100}',
+  formatter: '{a|{value}}{b|%}',
   rich: {
     a: {
-      fontSize: '24px',
+      fontSize: '16px',
       fontWeight: 600,
       fontFamily: 'Inter',
       align: 'center',
-      padding: [0, 5, 0, 0]
+      color: lfxColors.black,
+      padding: [0, 0, 0, 0]
     },
     b: {
-      fontSize: '8px',
-      fontWeight: 400,
+      fontSize: '10px',
+      fontWeight: 500,
       fontFamily: 'Inter',
       align: 'center',
-      padding: [25, 0, 20, 0]
+      color: lfxColors.black,
+      padding: [0, 0, 0, 0]
     }
   }
 };
@@ -73,13 +75,14 @@ const fullSeriesStyle: GaugeSeriesOption = {
   ...defaultGaugeSeriesStyle,
   startAngle: 90,
   endAngle: -270,
+  radius: '100%',
   axisLine: {
     lineStyle: {
-      width: 5
+      width: 2
     }
   },
   detail: {
-    fontSize: '24px',
+    fontSize: '16px',
     fontFamily: 'Inter',
     color: lfxColors.black
   }
@@ -100,7 +103,7 @@ const fullDataOpts = {
     offsetCenter: ['0%', '0%']
   },
   detail: {
-    valueAnimation: true,
+    valueAnimation: false,
     offsetCenter: ['0%', '0%']
   }
 };
@@ -112,14 +115,23 @@ const fullDataOpts = {
  */
 export const getGaugeChartConfig = (data: GaugeData): ECOption => {
   const gaugeSeries = { ...(data.gaugeType === 'half' ? halfSeriesStyle : fullSeriesStyle) };
-  gaugeSeries.detail = {
+  gaugeSeries.detail ={
     ...(data.gaugeType === 'half' ? halfDetail : fullDetail),
-    formatter: `{a|{value}}{b|/${data.maxValue || 100}}`
+    formatter: data.gaugeType === 'half' ? `{a|{value}}{b|/${data.maxValue || 100}}` : fullDetail.formatter,
+    show: !data.loading,
   };
-  gaugeSeries.title = {
+  if(data.noData){
+    gaugeSeries.detail.rich = undefined;
+    gaugeSeries.detail.formatter = '-';
+    gaugeSeries.detail.fontSize = '56px';
+    gaugeSeries.detail.fontWeight = 500;
+  }
+
+  gaugeSeries.title = data.loading ? undefined : {
     ...gaugeSeries.title,
     backgroundColor: data.color || lfxColors.positive[500],
     color: data.textColor || lfxColors.white
+
 };
   // data.name === '' ? undefined : ;
 
