@@ -37,30 +37,17 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
+import { computed } from 'vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import { useProjectStore } from '~~/app/components/modules/project/store/project.store';
 
 const { project } = storeToRefs(useProjectStore())
 
-// TODO: remove this once we have the links from the API
-const links = project.value?.projectLinks || [
-  {
-    name: 'kubernetes.io',
-    url: 'https://kubernetes.io/',
-    icon: 'link'
-  },
-  {
-    name: 'kubernetes.io',
-    url: 'https://twitter.com/kubernetes',
-    img: '/images/integrations/twitter.png'
-  },
-  {
-    name: '/kubernetes',
-    url: 'https://linkedin.com/company/kubernetes',
-    img: '/images/integrations/linkedin.png'
-  }
-
-];
+// add default icon if the backend didn't return them
+const links = computed(() => (project.value?.projectLinks || []).map((link) => {
+  const icon = link.icon || (link.img ? undefined : 'link')
+  return {...link, icon }
+}));
 </script>
 
 <script lang="ts">
