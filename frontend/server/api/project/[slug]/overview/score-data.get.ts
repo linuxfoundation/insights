@@ -9,11 +9,12 @@ import {
   popularityScoreData,
   developmentScoreData
 } from '~~/server/mocks/score-data.mock';
+
 /**
  * Query params:
  * - projectSlug: string
  * - repository?: string
- * - type: 'contributors' | 'popularity' | 'development' | 'security'
+ * - type: AggregateKey
  */
 export default defineEventHandler(async (event) => {
   const query = getQuery(event);
