@@ -33,6 +33,8 @@ export interface GaugeData {
   color?: string;
   textColor?: string;
   lineColor?: string;
+  loading?: boolean;
+  noData?: boolean;
   gaugeType: 'half' | 'full';
 }
 

@@ -6,14 +6,13 @@ SPDX-License-Identifier: MIT
   <article
     class="py-4 border-t first:border-0 border-neutral-100 flex items-center"
   >
-    <div class="w-1/5 pr-4">
+    <div class="w-32 pr-4">
       <lfx-project-security-evaluation-result
         size="small"
-        type="transparent"
         :results="assessmentsResults"
       />
     </div>
-    <div class="w-4/5">
+    <div class="flex-grow">
       <div class="flex items-center gap-2">
         <lfx-icon
           name="book"
