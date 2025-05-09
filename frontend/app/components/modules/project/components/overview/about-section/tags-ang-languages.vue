@@ -8,15 +8,23 @@ SPDX-License-Identifier: MIT
       Tags
     </div>
     <div>
-      <lfx-tag
-        v-for="tag of tags"
-        :key="tag"
-        :size="'small'"
-        type="outline"
-        class="justify-center mr-1.5 mb-1.5"
+      <template v-if="tags && tags.length > 0">
+        <lfx-tag
+          v-for="tag of tags"
+          :key="tag"
+          :size="'small'"
+          type="outline"
+          class="justify-center mr-1.5 mb-1.5"
+        >
+          {{ tag }}
+        </lfx-tag>
+      </template>
+      <span
+        v-else
+        class="text-neutral-900"
       >
-        {{ tag }}
-      </lfx-tag>
+        No Data
+      </span>
     </div>
   </div>
   <!-- <div class="flex flex-col gap-3 text-xs">
@@ -50,7 +58,7 @@ import { useProjectStore } from '~~/app/components/modules/project/store/project
 const { project } = storeToRefs(useProjectStore())
 
 // TODO: remove this once we have the tags from the API
-const tags = project.value?.tags || ['k8s-staging', 'k8s-production', 'k8s-dev', 'cncf', 'containers'];
+const tags = project.value?.tags || [];
 // const languages = project.value?.languages || [{
 //   name: 'JavaScript',
 //   percentage: 24
