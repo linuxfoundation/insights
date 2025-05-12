@@ -4,7 +4,6 @@ import type { GaugeSeriesOption } from 'echarts';
 import type { GaugeData } from '../types/ChartTypes';
 import { defaultGaugeSeriesStyle } from './defaults.chart';
 import { lfxColors } from '~/config/styles/colors';
-
 // Not inheriting the default chart options here
 const halfSeriesStyle: GaugeSeriesOption = {
   ...defaultGaugeSeriesStyle,
@@ -36,7 +35,7 @@ const halfDetail: GaugeSeriesOption['detail'] = {
       fontFamily: 'Inter',
       color: lfxColors.black,
       align: 'center',
-      padding: [0, 5, 0, 0]
+      padding: [15, 5, 0, 0]
     },
     b: {
       fontSize: '20px',
@@ -44,7 +43,7 @@ const halfDetail: GaugeSeriesOption['detail'] = {
       fontFamily: 'Inter',
       align: 'center',
       color: lfxColors.neutral[400],
-      padding: [40, 0, 20, 0]
+      padding: [55, 0, 20, 0]
     }
   }
 };

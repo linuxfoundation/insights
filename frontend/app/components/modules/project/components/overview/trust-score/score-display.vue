@@ -5,7 +5,7 @@ SPDX-License-Identifier: MIT
 <template>
   <div class="flex flex-col w-fit">
     <div>
-      <span class="text-[80px] text-neutral-900">{{ overallScore }}</span>
+      <span class="text-[80px] text-neutral-900">{{ Math.round(overallScore) }}</span>
       <span class="text-sm text-neutral-500">/ 100</span>
     </div>
     <lfx-tag

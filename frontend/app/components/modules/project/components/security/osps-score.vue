@@ -46,9 +46,9 @@ SPDX-License-Identifier: MIT
         class="pt-3 block"
       >
         <div class="flex items-center gap-1">
-          <a class="text-brand-500 text-xs font-semibold">
+          <p class="text-brand-500 text-xs font-semibold">
             Learn more
-          </a>
+          </p>
           <lfx-icon
             name="arrow-up-right"
             :size="12"
