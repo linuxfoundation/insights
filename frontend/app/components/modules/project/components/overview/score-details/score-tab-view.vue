@@ -35,14 +35,10 @@ SPDX-License-Identifier: MIT
           v-if="tab.value !== 'security'"
           :data="scoreData"
         />
-        <div
+        <lfx-project-security-score
           v-else
-          class="flex flex-col gap-6 p-6"
-        >
-          <lfx-project-security-score
-            :data="securityData"
-          />
-        </div>
+          :data="securityData"
+        />
       </lfx-panels>
     </template>
   </lfx-tabs-panels>

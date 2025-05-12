@@ -3,7 +3,7 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="-mb-6">
+  <div>
     <div class="flex  justify-center items-center pt-6 gap-8">
       <div class="aspect-[3/2] w-full relative max-w-50">
         <lfx-chart
