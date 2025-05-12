@@ -28,7 +28,9 @@ SPDX-License-Identifier: MIT
               v-else
               class="flex flex-col gap-6 p-6"
             >
-              <h1>Comming Soon</h1>
+              <lfx-project-security-score
+                :data="securityData"
+              />
             </div>
           </div>
         </template>
@@ -46,12 +48,15 @@ import LfxCard from "~/components/uikit/card/card.vue";
 import type { TrustScoreSummary } from '~~/types/overview/responses.types';
 import type { Tab } from '~/components/uikit/tabs/types/tab.types';
 import type { ScoreData } from '~~/types/shared/benchmark.types';
+import type { SecurityData } from '~~/types/security/responses.types';
+import LfxProjectSecurityScore from "~/components/modules/project/components/overview/security/security-score.vue";
 
 const props = defineProps<{
   trustScoreSummary: TrustScoreSummary | undefined;
   tabs: Tab[];
   modelValue: string;
   scoreData: ScoreData[] | undefined;
+  securityData: SecurityData[];
 }>();
 
 const emit = defineEmits<{(e: 'update:modelValue', value: string): void
