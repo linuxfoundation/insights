@@ -20,22 +20,16 @@ SPDX-License-Identifier: MIT
         </div>
         <template #content>
           <div class="pb-6">
-            <lfx-project-load-state
-              :status="status"
-              :error="error"
-              error-message="Error fetching score data"
+            <lfx-project-score-list
+              v-if="tab.value !== 'security'"
+              :data="scoreData"
+            />
+            <div
+              v-else
+              class="flex flex-col gap-6 p-6"
             >
-              <lfx-project-score-list
-                v-if="tab.value !== 'security'"
-                :data="scoreData"
-              />
-              <div
-                v-else
-                class="flex flex-col gap-6 p-6"
-              >
-                <h1>Comming Soon</h1>
-              </div>
-            </lfx-project-load-state>
+              <h1>Comming Soon</h1>
+            </div>
           </div>
         </template>
       </lfx-accordion-item>
@@ -45,7 +39,6 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import type { AsyncDataRequestStatus } from 'nuxt/app';
 import LfxProjectScoreList from './score-list.vue';
 import LfxAccordion from "~/components/uikit/accordion/accordion.vue";
 import LfxAccordionItem from "~/components/uikit/accordion/accordion-item.vue";
@@ -53,15 +46,12 @@ import LfxCard from "~/components/uikit/card/card.vue";
 import type { TrustScoreSummary } from '~~/types/overview/responses.types';
 import type { Tab } from '~/components/uikit/tabs/types/tab.types';
 import type { ScoreData } from '~~/types/shared/benchmark.types';
-import LfxProjectLoadState from '~~/app/components/modules/project/components/shared/load-state.vue';
 
 const props = defineProps<{
   trustScoreSummary: TrustScoreSummary | undefined;
   tabs: Tab[];
   modelValue: string;
   scoreData: ScoreData[] | undefined;
-  status: AsyncDataRequestStatus;
-  error: unknown;
 }>();
 
 const emit = defineEmits<{(e: 'update:modelValue', value: string): void

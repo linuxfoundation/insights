@@ -3,10 +3,11 @@
 import type { QueryFunction } from '@tanstack/vue-query';
 import { type ComputedRef, computed } from 'vue';
 import { useQuery } from '@tanstack/vue-query';
-import type { TrustScoreSummary } from '~~/types/overview/responses.types';
+import { aggregateData } from '../config/overview-aggregates';
+import type { HealthScore, TrustScoreSummary } from '~~/types/overview/responses.types';
 import { TanstackKey } from '~/components/shared/types/tanstack';
-import type { ScoreData } from '~~/types/shared/benchmark.types';
 import type { Organization } from '~~/types/contributors/responses.types';
+import { benchmarkConfigs } from '~~/app/config/benchmarks';
 
 export interface OverviewQueryParams {
   projectSlug: string;
@@ -19,66 +20,33 @@ export interface ScoreDataQueryParams extends OverviewQueryParams {
 
 // TODO: Refactor other services to follow this pattern
 class OverviewApiService {
-  fetchTrustScoreSummary(params: ComputedRef<OverviewQueryParams>) {
+  fetchHealthScore(params: ComputedRef<OverviewQueryParams>) {
     const queryKey = computed(() => [
-      TanstackKey.TRUST_SCORE_SUMMARY,
+      TanstackKey.HEALTH_SCORE,
       params.value.projectSlug,
       params.value.repository
     ]);
-    const queryFn = computed<QueryFunction<TrustScoreSummary>>(() => this.trustScoreSummaryQueryFn(() => ({
+    const queryFn = computed<QueryFunction<HealthScore[]>>(() => this.healthScoreQueryFn(() => ({
         projectSlug: params.value.projectSlug,
         repository: params.value.repository
       })));
 
-    return useQuery<TrustScoreSummary>({
+    return useQuery<HealthScore[]>({
       queryKey,
       queryFn
     });
   }
 
-  trustScoreSummaryQueryFn(
+  healthScoreQueryFn(
     query: () => Record<string, string | number | boolean | undefined | string[] | null>
-  ): QueryFunction<TrustScoreSummary> {
+  ): QueryFunction<HealthScore[]> {
     const { projectSlug, repository } = query();
-    return async () => await $fetch(`/api/project/${projectSlug}/overview/score-summary`, {
+    return async () => await $fetch(`/api/project/${projectSlug}/overview/health-score`, {
         params: {
           repository
         }
       });
   }
-
-  fetchScoreData(params: ComputedRef<ScoreDataQueryParams>) {
-    const queryKey = computed(() => [
-      TanstackKey.SCORE_DATA,
-      params.value.projectSlug,
-      params.value.repository,
-      params.value.type
-    ]);
-    const queryFn = computed<QueryFunction<ScoreData[]>>(() => this.scoreDataQueryFn(() => ({
-        projectSlug: params.value.projectSlug,
-        repository: params.value.repository,
-        type: params.value.type
-      })));
-
-    return useQuery<ScoreData[]>({
-      queryKey,
-      queryFn
-    });
-  }
-
-  scoreDataQueryFn(
-    query: () => Record<string, string | number | boolean | undefined | string[] | null>
-  ): QueryFunction<ScoreData[]> {
-    const { projectSlug, repository, type } = query();
-
-    return async () => await $fetch(`/api/project/${projectSlug}/overview/score-data`, {
-        params: {
-          repository,
-          type
-        }
-      });
-  }
-
   fetchAssociatedOrganization(params: ComputedRef<OverviewQueryParams>) {
     const queryKey = computed(() => [
       TanstackKey.ASSOCIATED_ORGANIZATION,
@@ -104,6 +72,55 @@ class OverviewApiService {
           projectSlug
         }
       });
+  }
+
+  convertRawValuesToHealthScore(rawValues: HealthScore[]): HealthScore[] {
+    return rawValues.map((value) => {
+      const benchmarkConfig = benchmarkConfigs.find((config) => config.key === value.key);
+
+      return {
+        ...value,
+        points: benchmarkConfig?.points.find(
+          (point) => point.pointStart <= value.value
+            && (point.pointEnd === null || point.pointEnd >= value.value)
+        )?.points
+      };
+    });
+  }
+
+  convertPointsToTrustSummary(points: HealthScore[]): TrustScoreSummary {
+    const trustSummary = {
+      overall: 0,
+      popularity: 0,
+      contributors: 0,
+      security: 0,
+      development: 0
+    };
+
+    points.forEach((point) => {
+      const aggData = aggregateData.find((aggregate) => aggregate.benchmarkKeys.includes(point.key));
+
+      if (aggData) {
+        switch (aggData.key) {
+          case 'contributors':
+            trustSummary.contributors += point.points || 0;
+            break;
+          case 'popularity':
+            trustSummary.popularity += point.points || 0;
+            break;
+          case 'development':
+            trustSummary.development += point.points || 0;
+            break;
+          default:
+            trustSummary.security += point.points || 0;
+            break;
+        }
+
+        trustSummary.overall += point.points || 0;
+      }
+    });
+
+    return trustSummary;
   }
 }
 

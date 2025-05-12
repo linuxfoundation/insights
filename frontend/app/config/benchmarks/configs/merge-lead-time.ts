@@ -14,7 +14,8 @@ export const mergeLeadTime: BenchmarkConfigs = {
       type: 'negative',
       description: 'More than 30 days',
       text: `This project has extremely slow pull request merging, indicating 
-      significant delays in review and integration processes.`
+      significant delays in review and integration processes.`,
+      points: 0
     },
     {
       pointStart: 21,
@@ -22,7 +23,8 @@ export const mergeLeadTime: BenchmarkConfigs = {
       type: 'negative',
       description: '21–30 days',
       text: `This project shows a very slow merge process, suggesting challenges 
-      in timely reviewing and merging of contributions.`
+      in timely reviewing and merging of contributions.`,
+      points: 1
     },
     {
       pointStart: 15,
@@ -30,7 +32,8 @@ export const mergeLeadTime: BenchmarkConfigs = {
       type: 'warning',
       description: '15–20 days',
       text: `This project demonstrates a modest merge lead time, with noticeable 
-      delays that could impede development velocity.`
+      delays that could impede development velocity.`,
+      points: 2
     },
     {
       pointStart: 7,
@@ -38,7 +41,8 @@ export const mergeLeadTime: BenchmarkConfigs = {
       type: 'warning',
       description: '7–14 days',
       text: `This project exhibits a reasonable merge lead time, reflecting a 
-      balanced and consistent review process.`
+      balanced and consistent review process.`,
+      points: 3
     },
     {
       pointStart: 3,
@@ -46,7 +50,8 @@ export const mergeLeadTime: BenchmarkConfigs = {
       type: 'positive',
       description: '3–6 days',
       text: `This project benefits from fast merging of pull requests, indicating 
-      an efficient and responsive review workflow.`
+      an efficient and responsive review workflow.`,
+      points: 4
     },
     {
       pointStart: 0,
@@ -54,7 +59,8 @@ export const mergeLeadTime: BenchmarkConfigs = {
       type: 'positive',
       description: 'Less than 3 days',
       text: `This project showcases exceptional agility, with pull requests being 
-      reviewed, accepted, and merged almost immediately, reflecting a highly efficient development process.`
+      reviewed, accepted, and merged almost immediately, reflecting a highly efficient development process.`,
+      points: 5
     }
   ],
   visibilityCheck: (

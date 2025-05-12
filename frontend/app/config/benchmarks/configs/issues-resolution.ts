@@ -14,7 +14,8 @@ export const issuesResolution: BenchmarkConfigs = {
       type: 'negative',
       description: 'Average issue resolution time is over 60 days',
       text: `This project has a slow issue resolution, indicating potential 
-      challenges in maintaining prompt fixes and overall responsiveness.`
+      challenges in maintaining prompt fixes and overall responsiveness.`,
+      points: 0
     },
     {
       pointStart: 45,
@@ -22,7 +23,8 @@ export const issuesResolution: BenchmarkConfigs = {
       type: 'negative',
       description: 'Average issue resolution time is 45–60 days',
       text: `This project takes a long time to resolve issues, suggesting a 
-      lag in responsiveness and possible maintenance delays.`
+      lag in responsiveness and possible maintenance delays.`,
+      points: 1
     },
     {
       pointStart: 30,
@@ -30,7 +32,8 @@ export const issuesResolution: BenchmarkConfigs = {
       type: 'warning',
       description: 'Average issue resolution time is 30–44 days',
       text: `This project shows modest responsiveness, though there is room for 
-      improvement in handling issues more efficiently.`
+      improvement in handling issues more efficiently.`,
+      points: 2
     },
     {
       pointStart: 15,
@@ -38,7 +41,8 @@ export const issuesResolution: BenchmarkConfigs = {
       type: 'warning',
       description: 'Average issue resolution time is 15–29 days',
       text: `This project demonstrates reasonable issue resolution times, 
-      reflecting a balanced approach to maintenance and responsiveness.`
+      reflecting a balanced approach to maintenance and responsiveness.`,
+      points: 3
     },
     {
       pointStart: 7,
@@ -46,7 +50,8 @@ export const issuesResolution: BenchmarkConfigs = {
       type: 'positive',
       description: 'Average issue resolution time is 7–14 days',
       text: `This project benefits from fast issue resolution, indicating 
-      effective maintenance and a proactive approach to addressing problems.`
+      effective maintenance and a proactive approach to addressing problems.`,
+      points: 4
     },
     {
       pointStart: 0,
@@ -54,7 +59,8 @@ export const issuesResolution: BenchmarkConfigs = {
       type: 'positive',
       description: 'Average issue resolution time is 0–6 days',
       text: `This project exhibits exceptional responsiveness, ensuring 
-      issues are resolved promptly and maintaining a high standard of quality.`
+      issues are resolved promptly and maintaining a high standard of quality.`,
+      points: 5
     }
   ],
   visibilityCheck: (
