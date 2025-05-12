@@ -13,7 +13,8 @@ export const pullRequests: BenchmarkConfigs = {
       type: 'negative',
       description: '0–1 new pull requests per month',
       text: `This project shows extremely low pull request activity, which may indicate 
-      a lack of ongoing development or community engagement.`
+      a lack of ongoing development or community engagement.`,
+      points: 0
     },
     {
       pointStart: 2,
@@ -21,7 +22,8 @@ export const pullRequests: BenchmarkConfigs = {
       type: 'negative',
       description: '2–3 new pull requests per month',
       text: `This project experiences minimal new pull request activity, suggesting 
-      limited development momentum and external contributions.`
+      limited development momentum and external contributions.`,
+      points: 1
     },
     {
       pointStart: 4,
@@ -29,7 +31,8 @@ export const pullRequests: BenchmarkConfigs = {
       type: 'warning',
       description: '4–7 new pull requests per month',
       text: `This project demonstrates modest development activity, with a small 
-      but growing number of contributions being proposed.`
+      but growing number of contributions being proposed.`,
+      points: 2
     },
     {
       pointStart: 8,
@@ -37,7 +40,8 @@ export const pullRequests: BenchmarkConfigs = {
       type: 'warning',
       description: '8–15 new pull requests per month',
       text: `This project sees a moderate volume of new pull requests, reflecting 
-      a consistent level of development and community participation.`
+      a consistent level of development and community participation.`,
+      points: 3
     },
     {
       pointStart: 16,
@@ -45,7 +49,8 @@ export const pullRequests: BenchmarkConfigs = {
       type: 'positive',
       description: '16–30 new pull requests per month',
       text: `This project benefits from strong development activity, with a healthy 
-      influx of contributions indicating robust ongoing improvements.`
+      influx of contributions indicating robust ongoing improvements.`,
+      points: 4
     },
     {
       pointStart: 31,
@@ -53,7 +58,8 @@ export const pullRequests: BenchmarkConfigs = {
       type: 'positive',
       description: '31 or more new pull requests per month',
       text: `This project exhibits exceptional pull request activity, signaling 
-      a vibrant development process and high community involvement.`
+      a vibrant development process and high community involvement.`,
+      points: 5
     }
   ],
   visibilityCheck: (

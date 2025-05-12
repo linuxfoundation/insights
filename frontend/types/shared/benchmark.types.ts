@@ -29,11 +29,12 @@ export interface Benchmark {
 }
 
 export interface BenchmarkPoints {
-  pointStart: number;
-  pointEnd: number | null;
+  pointStart: number; // start of the range of values that this point is valid for
+  pointEnd: number | null; // end of the range of values that this point is valid for
   type: BenchmarkType;
   description: string;
   text: string;
+  points: number;
 }
 
 export interface BenchmarkConfigs {

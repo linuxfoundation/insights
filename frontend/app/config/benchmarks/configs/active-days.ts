@@ -14,7 +14,8 @@ export const activeDays: BenchmarkConfigs = {
       type: 'negative',
       description: 'Active on 0–5 of the last 30 days',
       text: `This project shows extremely low activity, with contributions on only a few days, 
-      which may indicate stagnation or low engagement.`
+      which may indicate stagnation or low engagement.`,
+      points: 0
     },
     {
       pointStart: 6,
@@ -22,7 +23,8 @@ export const activeDays: BenchmarkConfigs = {
       type: 'negative',
       description: 'Active on 6–10 of the last 30 days',
       text: `This project has minimal activity, suggesting sporadic contributions 
-      and inconsistent engagement.`
+      and inconsistent engagement.`,
+      points: 1
     },
     {
       pointStart: 11,
@@ -30,7 +32,8 @@ export const activeDays: BenchmarkConfigs = {
       type: 'warning',
       description: 'Active on 11–15 of the last 30 days',
       text: `This project demonstrates modest activity, with contributions occurring on a fair number of days, 
-      but still with room for improvement.`
+      but still with room for improvement.`,
+      points: 2
     },
     {
       pointStart: 16,
@@ -38,7 +41,8 @@ export const activeDays: BenchmarkConfigs = {
       type: 'warning',
       description: 'Active on 16–20 of the last 30 days',
       text: `This project shows moderate activity, with regular contributions 
-      that reflect a steady pace of development.`
+      that reflect a steady pace of development.`,
+      points: 3
     },
     {
       pointStart: 21,
@@ -46,7 +50,8 @@ export const activeDays: BenchmarkConfigs = {
       type: 'positive',
       description: 'Active on 21–26 of the last 30 days',
       text: `This project benefits from strong activity, with contributions on most days, 
-      indicating a robust and engaged development process.`
+      indicating a robust and engaged development process.`,
+      points: 4
     },
     {
       pointStart: 27,
@@ -54,7 +59,8 @@ export const activeDays: BenchmarkConfigs = {
       type: 'positive',
       description: 'Active on 27–30 of the last 30 days',
       text: `This project exhibits exceptional consistency in activity, with contributions nearly every day, 
-      reflecting a highly dynamic and continuously evolving project.`
+      reflecting a highly dynamic and continuously evolving project.`,
+      points: 5
     }
   ],
   visibilityCheck: (

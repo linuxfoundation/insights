@@ -12,13 +12,17 @@ export enum FilterGranularity {
   QUARTERLY = 'quarterly'
 }
 
-export type ActiveContributorsFilter = {
+export type DefaultFilter = {
   project: string;
   repo?: string;
-  activity_types?: ActivityTypes[];
-  granularity?: FilterGranularity;
   startDate?: DateTime;
   endDate?: DateTime;
+};
+
+// TODO: refactor all filter types to "inherit" from DefaultFilter
+export type ActiveContributorsFilter = DefaultFilter & {
+  activity_types?: ActivityTypes[];
+  granularity?: FilterGranularity;
 };
 
 export type ActiveOrganizationsFilter = {
@@ -87,16 +91,13 @@ export type GeographicDistributionFilter = {
   endDate?: DateTime;
 };
 
-export type RetentionFilter = {
-  project: string;
-  granularity: FilterGranularity;
+export type RetentionFilter = DefaultFilter & {
   platform?: ActivityPlatforms;
   activity_type?: ActivityTypes;
   repo?: string;
   demographicType?: DemographicType;
+  granularity?: FilterGranularity;
   onlyContributions: boolean;
-  startDate?: DateTime;
-  endDate?: DateTime;
 };
 
 export enum ActivityFilterCountType {

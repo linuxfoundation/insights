@@ -31,22 +31,16 @@ SPDX-License-Identifier: MIT
         :class="tab.value === selectedTab ? 'block' : 'hidden'"
         class="p-6"
       >
-        <lfx-project-load-state
-          :status="status"
-          :error="error"
-          error-message="Error fetching score data"
+        <lfx-project-score-list
+          v-if="tab.value !== 'security'"
+          :data="scoreData"
+        />
+        <div
+          v-else
+          class="flex flex-col gap-6 p-6"
         >
-          <lfx-project-score-list
-            v-if="tab.value !== 'security'"
-            :data="scoreData"
-          />
-          <div
-            v-else
-            class="flex flex-col gap-6 p-6"
-          >
-            <h1>Coming Soon</h1>
-          </div>
-        </lfx-project-load-state>
+          <h1>Coming Soon</h1>
+        </div>
       </lfx-panels>
     </template>
   </lfx-tabs-panels>
@@ -54,7 +48,6 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import type { AsyncDataRequestStatus } from 'nuxt/app';
 import LfxProjectScoreList from './score-list.vue';
 import LfxPanels from '~/components/uikit/tabs/panels.vue';
 import LfxTabsPanels from '~/components/uikit/tabs/tabs-panels.vue';
@@ -64,15 +57,12 @@ import type { ProgressBarType } from '~/components/uikit/progress-bar/types/prog
 import type { TrustScoreSummary } from '~~/types/overview/responses.types';
 import type { ScoreData } from '~~/types/shared/benchmark.types';
 import type { Tab } from '~/components/uikit/tabs/types/tab.types';
-import LfxProjectLoadState from '~~/app/components/modules/project/components/shared/load-state.vue';
 
 const props = defineProps<{
   trustScoreSummary: TrustScoreSummary | undefined;
   tabs: Tab[];
   modelValue: string;
   scoreData: ScoreData[] | undefined;
-  status: AsyncDataRequestStatus;
-  error: unknown;
 }>();
 const emit = defineEmits<{(e: 'update:modelValue', value: string): void
 }>();
@@ -98,7 +88,8 @@ const getValues = (name: string): number => {
     return 0;
   }
 
-  return props.trustScoreSummary[name as keyof TrustScoreSummary] || 0;
+  const score = props.trustScoreSummary[name as keyof TrustScoreSummary] || 0;
+  return (score / 25) * 100;
 };
 </script>
 <script lang="ts">

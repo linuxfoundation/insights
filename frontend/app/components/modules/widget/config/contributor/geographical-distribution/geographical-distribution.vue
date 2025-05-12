@@ -96,12 +96,13 @@ import { formatNumber } from '~/components/shared/utils/formatter';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
 import { isEmptyData } from '~/components/shared/utils/helper';
 import { BenchmarkKeys, type Benchmark } from '~~/types/shared/benchmark.types';
-import { embargoedCountries } from '~/config/benchmarks/configs/geographical-distribution';
 import {TanstackKey} from "~/components/shared/types/tanstack";
-import type {GeoMapData} from "~/components/modules/widget/components/contributors/types/geo-map.types";
+import type {GeoMapData, GeoMapResponse }
+  from "~/components/modules/widget/components/contributors/types/geo-map.types";
 import LfxActivitiesDropdown
   from "~/components/modules/widget/components/contributors/fragments/activities-dropdown.vue";
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
+import { embargoedCountries } from '~~/types/shared/embargoed-countries';
 
 const emit = defineEmits<{(e: 'update:benchmarkValue', value: Benchmark | undefined): void;
 }>();

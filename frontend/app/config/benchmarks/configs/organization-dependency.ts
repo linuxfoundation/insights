@@ -13,7 +13,8 @@ export const organizationDependency: BenchmarkConfigs = {
       type: 'negative',
       description: '1 organization accounts for 51%+ of contributions',
       text: `This project is highly dependent on a single organization, 
-      indicating a lack of diverse organizational support.`
+      indicating a lack of diverse organizational support.`,
+      points: 0
     },
     {
       pointStart: 2,
@@ -21,7 +22,8 @@ export const organizationDependency: BenchmarkConfigs = {
       type: 'negative',
       description: '2 organizations account for 51%+ of contributions',
       text: `This project mainly relies on only two organizations, 
-      which suggests limited organizational diversity and potential risk if one withdraws.`
+      which suggests limited organizational diversity and potential risk if one withdraws.`,
+      points: 1
     },
     {
       pointStart: 3,
@@ -29,7 +31,8 @@ export const organizationDependency: BenchmarkConfigs = {
       type: 'warning',
       description: '3 organizations account for 51%+ of contributions',
       text: `This project shows modest organizational diversity, 
-      with a small number of organizations driving the majority of contributions.`
+      with a small number of organizations driving the majority of contributions.`,
+      points: 2
     },
     {
       pointStart: 4,
@@ -37,7 +40,8 @@ export const organizationDependency: BenchmarkConfigs = {
       type: 'warning',
       description: '4-5 organizations account for 51%+ of contributions',
       text: `This project has a moderate spread of contributions across several organizations, 
-      reducing dependency on any single entity.`
+      reducing dependency on any single entity.`,
+      points: 3
     },
     {
       pointStart: 6,
@@ -45,7 +49,8 @@ export const organizationDependency: BenchmarkConfigs = {
       type: 'positive',
       description: '6–7 organizations account for 51%+ of contributions',
       text: `This project benefits from strong organizational diversity, 
-      with contributions well-distributed across many organizations.`
+      with contributions well-distributed across many organizations.`,
+      points: 4
     },
     {
       pointStart: 8,
@@ -53,7 +58,8 @@ export const organizationDependency: BenchmarkConfigs = {
       type: 'positive',
       description: '8 or more organizations account for 51%+ of contributions',
       text: `This project exhibits excellent organizational diversity, 
-      ensuring robust support and resilience through a wide range of contributing organizations.`
+      ensuring robust support and resilience through a wide range of contributing organizations.`,
+      points: 5
     }
   ],
   visibilityCheck: () => true

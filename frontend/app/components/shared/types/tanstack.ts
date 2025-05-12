@@ -40,6 +40,7 @@ export enum TanstackKey {
   STARS_CUMULATIVE = 'stars-cumulative',
   MAILING_LISTS_MESSAGES = 'mailing-lists-messages',
   // Overview
+  HEALTH_SCORE = 'health-score',
   TRUST_SCORE_SUMMARY = 'trust-score-summary',
   SCORE_DATA = 'score-data',
   ASSOCIATED_ORGANIZATION = 'associated-organization',

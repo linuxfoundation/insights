@@ -95,20 +95,23 @@ export const formatSecondsToDuration = (
 } = duration;
 
   // Handle each case from largest to smallest unit
-  if ((years && years >= 1) || toUnit === FormatterUnits.YEARS) {
-    return convertToUnit(value, FormatterUnits.YEARS, showUnits, roundTo);
-  }
-  if ((months && months >= 1) || toUnit === FormatterUnits.MONTHS) {
-    return convertToUnit(value, FormatterUnits.MONTHS, showUnits, roundTo);
+  if (toUnit) {
+    return convertToUnit(value, toUnit, showUnits, roundTo);
   }
 
-  if ((weeks && weeks >= 1) || (days && days >= 1) || toUnit === FormatterUnits.DAYS) {
+  if (years && years >= 1) {
+    return convertToUnit(value, FormatterUnits.YEARS, showUnits, roundTo);
+  }
+  if (months && months >= 1) {
+    return convertToUnit(value, FormatterUnits.MONTHS, showUnits, roundTo);
+  }
+  if ((weeks && weeks >= 1) || (days && days >= 1)) {
     return convertToUnit(value, FormatterUnits.DAYS, showUnits, roundTo);
   }
-  if ((hours && hours >= 1) || toUnit === FormatterUnits.HOURS) {
+  if (hours && hours >= 1) {
     return convertToUnit(value, FormatterUnits.HOURS, showUnits, roundTo);
   }
-  if ((minutes && minutes >= 1) || toUnit === FormatterUnits.MINUTES) {
+  if (minutes && minutes >= 1) {
     return convertToUnit(value, FormatterUnits.MINUTES, showUnits, roundTo);
   }
 
