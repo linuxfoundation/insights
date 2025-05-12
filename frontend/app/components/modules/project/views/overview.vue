@@ -22,6 +22,7 @@ SPDX-License-Identifier: MIT
             :health-scores="healthScore"
             :status="status"
             :error="error"
+            :security-data="securityAssessmentData || []"
           />
         </div>
       </div>
@@ -48,11 +49,13 @@ import {
 } from 'vue';
 import { useRoute } from 'nuxt/app';
 import { storeToRefs } from 'pinia';
+import type { AsyncDataRequestStatus } from 'nuxt/app';
 import LfxProjectAboutSection from '~/components/modules/project/components/overview/about-section.vue';
 import LfxProjectScoreTabs from '~/components/modules/project/components/overview/score-tabs.vue';
 import LfxProjectTrustScore from '~/components/modules/project/components/overview/trust-score.vue';
 import { useProjectStore } from "~~/app/components/modules/project/store/project.store";
 import { OVERVIEW_API_SERVICE } from '~~/app/components/modules/project/services/overview.api.service';
+import {PROJECT_SECURITY_SERVICE} from "~/components/modules/project/services/security.service";
 import type { TrustScoreSummary } from '~~/types/overview/responses.types';
 import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 
@@ -66,14 +69,35 @@ const params = computed(() => ({
 }));
 
 const {
-  data, status, error, suspense
+  data, status: healthScoreStatus, error: healthScoreError, suspense
 } = OVERVIEW_API_SERVICE.fetchHealthScore(params);
+
+const {
+  data: securityAssessmentData,
+  status: securityAssessmentStatus,
+  error: securityAssessmentError, suspense: securityAssessmentSuspense
+} = OVERVIEW_API_SERVICE.fetchSecurityAssessment(params);
+
+const status = computed<AsyncDataRequestStatus>(() => {
+  if (healthScoreStatus.value === 'success' && securityAssessmentStatus.value === 'success') {
+    return 'success';
+  }
+  if (healthScoreStatus.value === 'error' || securityAssessmentStatus.value === 'error') {
+    return 'error';
+  }
+
+  return 'pending';
+});
+const error = computed(() => healthScoreError.value || securityAssessmentError.value);
 
 const healthScore = computed(() => (data.value
   ? OVERVIEW_API_SERVICE.convertRawValuesToHealthScore(data.value) : []));
 
+const ospsScore = computed(() => PROJECT_SECURITY_SERVICE
+  .calculateOSPSScore((securityAssessmentData.value || []), !!selectedRepository.value));
+
 const trustSummary = computed<TrustScoreSummary>(() => (healthScore.value
-  ? OVERVIEW_API_SERVICE.convertPointsToTrustSummary(healthScore.value) : {
+  ? OVERVIEW_API_SERVICE.convertPointsToTrustSummary(healthScore.value, ospsScore.value) : {
     overall: 0,
     popularity: 0,
     contributors: 0,
@@ -83,6 +107,7 @@ const trustSummary = computed<TrustScoreSummary>(() => (healthScore.value
 
 onServerPrefetch(async () => {
   await suspense();
+  await securityAssessmentSuspense();
 });
 
 onMounted(() => {

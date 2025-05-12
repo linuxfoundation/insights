@@ -8,6 +8,7 @@ import type { HealthScore, TrustScoreSummary } from '~~/types/overview/responses
 import { TanstackKey } from '~/components/shared/types/tanstack';
 import type { Organization } from '~~/types/contributors/responses.types';
 import { benchmarkConfigs } from '~~/app/config/benchmarks';
+import type { SecurityData } from '~~/types/security/responses.types';
 
 export interface OverviewQueryParams {
   projectSlug: string;
@@ -44,6 +45,35 @@ class OverviewApiService {
     return async () => await $fetch(`/api/project/${projectSlug}/overview/health-score`, {
         params: {
           repository
+        }
+      });
+  }
+
+  // TODO: refactor security page to use this instead
+  fetchSecurityAssessment(params: ComputedRef<OverviewQueryParams>) {
+    const queryKey = computed(() => [
+      TanstackKey.SECURITY_ASSESSMENT,
+      params.value.projectSlug,
+      params.value.repository
+    ]);
+    const queryFn = computed<QueryFunction<SecurityData[]>>(() => this.securityAssessmentQueryFn(() => ({
+        projectSlug: params.value.projectSlug,
+        repo: params.value.repository
+      })));
+
+    return useQuery<SecurityData[]>({
+      queryKey,
+      queryFn
+    });
+  }
+
+  securityAssessmentQueryFn(
+    query: () => Record<string, string | number | boolean | undefined | string[] | null>
+  ): QueryFunction<SecurityData[]> {
+    const { projectSlug, repo } = query();
+    return async () => await $fetch(`/api/project/${projectSlug}/security/assessment`, {
+        params: {
+          repo
         }
       });
   }
@@ -88,7 +118,10 @@ class OverviewApiService {
     });
   }
 
-  convertPointsToTrustSummary(points: HealthScore[]): TrustScoreSummary {
+  convertPointsToTrustSummary(
+    points: HealthScore[],
+    securityAssessment: number
+  ): TrustScoreSummary {
     const trustSummary = {
       overall: 0,
       popularity: 0,
@@ -119,6 +152,11 @@ class OverviewApiService {
         trustSummary.overall += point.points || 0;
       }
     });
+
+    if (securityAssessment) {
+      trustSummary.security = securityAssessment / 4;
+      trustSummary.overall += trustSummary.security;
+    }
 
     return trustSummary;
   }

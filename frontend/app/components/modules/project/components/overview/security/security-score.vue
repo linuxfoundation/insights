@@ -14,60 +14,48 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script lang="ts" setup>
-import {computed, onServerPrefetch} from "vue";
-import {type QueryFunction, useQuery} from "@tanstack/vue-query";
-import {useRoute} from "nuxt/app";
+import {computed} from "vue";
 import {storeToRefs} from "pinia";
-import {TanstackKey} from "~/components/shared/types/tanstack";
 import type {SecurityData} from "~~/types/security/responses.types";
 import {PROJECT_SECURITY_SERVICE} from "~/components/modules/project/services/security.service";
 import type {OspsBaselineScore} from "~/components/modules/project/config/osps-baseline-score";
 import {lfxColors} from "~/config/styles/colors";
 import {useProjectStore} from "~/components/modules/project/store/project.store";
 
-const route = useRoute();
 const { selectedRepository } = storeToRefs(useProjectStore());
 
-const queryKey = computed(() => [
-  TanstackKey.SECURITY_ASSESSMENT,
-  route.params.slug,
-  selectedRepository,
-]);
+const props = defineProps<{
+  data: SecurityData[];
+}>();
 
-const fetchData: QueryFunction<SecurityData[]> = async () => $fetch(
-    `/api/project/${route.params.slug}/security/assessment`,
-    {
-      query: {
-        repo: selectedRepository || undefined,
-      }
-    }
-);
+// const queryKey = computed(() => [
+//   TanstackKey.SECURITY_ASSESSMENT,
+//   route.params.slug,
+//   selectedRepository,
+// ]);
 
-const {
-  data, suspense, error, isFetching
-} = useQuery<SecurityData[]>({
-  queryKey,
-  queryFn: fetchData,
-});
+// const fetchData: QueryFunction<SecurityData[]> = async () => $fetch(
+//     `/api/project/${route.params.slug}/security/assessment`,
+//     {
+//       query: {
+//         repo: selectedRepository || undefined,
+//       }
+//     }
+// );
+
+// const {
+//   data, suspense, error, isFetching
+// } = useQuery<SecurityData[]>({
+//   queryKey,
+//   queryFn: fetchData,
+// });
 
 const results = computed(
-    () => PROJECT_SECURITY_SERVICE.calculateOSPSScore((data.value || []), !!selectedRepository.value)
+    () => PROJECT_SECURITY_SERVICE.calculateOSPSScore((props.data || []), !!selectedRepository.value)
 );
 
 const config = computed<OspsBaselineScore>(() => {
-  if(isFetching.value){
-    return {
-      minScore: 0,
-      maxScore: 100,
-      loading: true,
-      label: '',
-      description: '',
-      lineColor: lfxColors.neutral[200],
-      badgeBgColor: lfxColors.white,
-      badgeTextColor: lfxColors.white,
-    }
-  }
-  if((data.value || []).length === 0 || error.value){
+  if((props.data || []).length === 0){
     return {
       minScore: 0,
       maxScore: 100,
@@ -80,10 +68,6 @@ const config = computed<OspsBaselineScore>(() => {
   }
   return PROJECT_SECURITY_SERVICE.getOSPSconfig(results.value);
 })
-
-onServerPrefetch(async () => {
-  await suspense()
-});
 </script>
 
 <script lang="ts">

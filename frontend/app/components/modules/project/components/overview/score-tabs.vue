@@ -14,6 +14,7 @@ SPDX-License-Identifier: MIT
         :trust-score-summary="props.trustScoreSummary"
         :model-value="selectedTab"
         :score-data="scoreData"
+        :security-data="securityData"
         @update:model-value="selectedTab = $event"
       />
     </div>
@@ -23,6 +24,7 @@ SPDX-License-Identifier: MIT
         :trust-score-summary="props.trustScoreSummary"
         :model-value="selectedTab"
         :score-data="scoreData"
+        :security-data="securityData"
         @update:model-value="selectedTab = $event"
       />
     </div>
@@ -41,12 +43,14 @@ import LfxProjectLoadState from '~~/app/components/modules/project/components/sh
 import type { Tab } from '~/components/uikit/tabs/types/tab.types';
 import { aggregateData } from '~~/app/components/modules/project/config/overview-aggregates';
 import type { ScoreData } from '~~/types/shared/benchmark.types';
+import type { SecurityData } from '~~/types/security/responses.types';
 
 const props = defineProps<{
   trustScoreSummary: TrustScoreSummary | undefined;
   healthScores: HealthScore[] | undefined;
   status: AsyncDataRequestStatus;
   error: unknown;
+  securityData: SecurityData[];
 }>();
 
 const tabs = ref<Tab[]>([
