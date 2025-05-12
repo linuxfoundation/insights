@@ -60,6 +60,7 @@ const trigger = ref<HTMLElement | null>(null);
 const popover = ref<HTMLElement | null>(null);
 const popperInstance = ref<Instance | null>(null);
 const isVisible = ref(props.visibility);
+const closeTimeout = ref<number | null>(null);
 
 watch(() => props.visibility, (val) => {
   isVisible.value = val;
@@ -103,12 +104,16 @@ const destroyPopperInstance = () => {
 
 const openPopover = async () => {
   isVisible.value = true;
-  document.addEventListener('click', handleClickOutside);
+  if (props.triggerEvent === 'click') {
+    document.addEventListener('click', handleClickOutside);
+  }
 };
 
 const closePopover = () => {
   isVisible.value = false;
-  document.removeEventListener('click', handleClickOutside);
+  if (props.triggerEvent === 'click') {
+    document.removeEventListener('click', handleClickOutside);
+  }
 };
 
 const handleClick = (e: Event) => {
@@ -132,11 +137,26 @@ const handleClickOutside = (e: Event) => {
   }
 };
 
+const cancelClose = () => {
+  if (closeTimeout.value !== null) {
+    clearTimeout(closeTimeout.value);
+    closeTimeout.value = null;
+  }
+};
+
+const scheduleClose = () => {
+  closeTimeout.value = window.setTimeout(() => {
+    closePopover();
+  }, 150);
+};
+
 onMounted(() => {
   createPopperInstance();
   if (props.triggerEvent === 'hover') {
     trigger.value?.addEventListener('mouseenter', openPopover);
-    trigger.value?.addEventListener('mouseleave', closePopover);
+    trigger.value?.addEventListener('mouseleave', scheduleClose);
+    popover.value?.addEventListener('mouseenter', cancelClose);
+    popover.value?.addEventListener('mouseleave', scheduleClose);
   }
 });
 
@@ -144,7 +164,13 @@ onBeforeUnmount(() => {
   destroyPopperInstance();
   if (props.triggerEvent === 'hover') {
     trigger.value?.removeEventListener('mouseenter', openPopover);
-    trigger.value?.removeEventListener('mouseleave', closePopover);
+    trigger.value?.removeEventListener('mouseleave', scheduleClose);
+    popover.value?.removeEventListener('mouseenter', cancelClose);
+    popover.value?.removeEventListener('mouseleave', scheduleClose);
+  }
+
+  if (closeTimeout.value !== null) {
+    clearTimeout(closeTimeout.value);
   }
 });
 

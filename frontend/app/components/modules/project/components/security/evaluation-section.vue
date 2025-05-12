@@ -22,9 +22,14 @@ SPDX-License-Identifier: MIT
       </div>
       <lfx-project-security-evaluation-result :results="assessmentsResults">
         <template #default="{result}">
-          <div class="h-12 w-12">
-            <lfx-chart :config="chartConfig(result)" />
-          </div>
+          <lfx-tooltip
+            :content="props.tooltip"
+            :disabled="!props.tooltip"
+          >
+            <div class="h-12 w-12 min-w-12">
+              <lfx-chart :config="chartConfig(result)" />
+            </div>
+          </lfx-tooltip>
         </template>
       </lfx-project-security-evaluation-result>
     </div>
@@ -45,9 +50,11 @@ import LfxChart from "~/components/uikit/chart/chart.vue";
 import {getGaugeChartConfig} from "~/components/uikit/chart/configs/gauge.chart";
 import {lfxColors} from "~/config/styles/colors";
 import {lfxSecurityCategories} from "~/components/modules/project/config/security-category";
+import LfxTooltip from "~/components/uikit/tooltip/tooltip.vue";
 
 const props = defineProps<{
-  checks: SecurityData[]
+  checks: SecurityData[],
+  tooltip?: string;
 }>()
 
 const assessments = computed<SecurityAssessmentData[]>(() => props.checks.map((check) => check.assessments).flat());

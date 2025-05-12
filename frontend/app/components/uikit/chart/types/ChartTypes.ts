@@ -35,6 +35,7 @@ export interface GaugeData {
   lineColor?: string;
   loading?: boolean;
   noData?: boolean;
+  graphOnly?: boolean;
   gaugeType: 'half' | 'full';
 }
 
