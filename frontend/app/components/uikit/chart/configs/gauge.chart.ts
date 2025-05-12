@@ -118,7 +118,7 @@ export const getGaugeChartConfig = (data: GaugeData): ECOption => {
   gaugeSeries.detail ={
     ...(data.gaugeType === 'half' ? halfDetail : fullDetail),
     formatter: data.gaugeType === 'half' ? `{a|{value}}{b|/${data.maxValue || 100}}` : fullDetail.formatter,
-    show: !data.loading,
+    show: !data.loading && !data.graphOnly,
   };
   if(data.noData){
     gaugeSeries.detail.rich = undefined;
@@ -131,7 +131,6 @@ export const getGaugeChartConfig = (data: GaugeData): ECOption => {
     ...gaugeSeries.title,
     backgroundColor: data.color || lfxColors.positive[500],
     color: data.textColor || lfxColors.white
-
 };
   // data.name === '' ? undefined : ;
 

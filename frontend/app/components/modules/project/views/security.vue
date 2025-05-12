@@ -78,6 +78,7 @@ SPDX-License-Identifier: MIT
                 :key="title"
                 :name="title"
                 :checks="checks"
+                :tooltip="isRepository ? 'Category success rate' : 'Average category success rate of all repositories'"
               >
                 <template v-if="isRepository">
                   <template
