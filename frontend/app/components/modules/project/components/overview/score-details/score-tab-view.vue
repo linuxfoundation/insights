@@ -39,7 +39,7 @@ SPDX-License-Identifier: MIT
           v-else
           class="flex flex-col gap-6 p-6"
         >
-          <h1>Coming Soon</h1>
+          <lfx-project-security-score />
         </div>
       </lfx-panels>
     </template>
@@ -57,6 +57,7 @@ import type { ProgressBarType } from '~/components/uikit/progress-bar/types/prog
 import type { TrustScoreSummary } from '~~/types/overview/responses.types';
 import type { ScoreData } from '~~/types/shared/benchmark.types';
 import type { Tab } from '~/components/uikit/tabs/types/tab.types';
+import LfxProjectSecurityScore from "~/components/modules/project/components/overview/security/security-score.vue";
 
 const props = defineProps<{
   trustScoreSummary: TrustScoreSummary | undefined;

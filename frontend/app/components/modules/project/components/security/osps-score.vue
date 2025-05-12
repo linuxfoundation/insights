@@ -66,10 +66,11 @@ import LfxIcon from "~/components/uikit/icon/icon.vue";
 import {getGaugeChartConfig} from "~/components/uikit/chart/configs/gauge.chart";
 import LfxChart from "~/components/uikit/chart/chart.vue";
 import {lfxColors} from "~/config/styles/colors";
-import {type SecurityData, SecurityDataResult} from "~~/types/security/responses.types";
+import type {SecurityData} from "~~/types/security/responses.types";
 import {links} from "~/config/links";
-import {lfxOspsBaselineScore, type OspsBaselineScore} from "~/components/modules/project/config/osps-baseline-score";
+import type {OspsBaselineScore} from "~/components/modules/project/config/osps-baseline-score";
 import LfxSkeleton from "~/components/uikit/skeleton/skeleton.vue";
+import {PROJECT_SECURITY_SERVICE} from "~/components/modules/project/services/security.service";
 
 const props = defineProps<{
   isRepository: boolean,
@@ -77,43 +78,7 @@ const props = defineProps<{
   isLoading: boolean,
 }>()
 
-const results = computed(() => {
-  if(props.data.length === 0) {
-    return 0;
-  }
-
-  if(props.isRepository) {
-    const assessments = (props.data || []).map((check) => check.assessments).flat();
-    const passed = assessments.filter((assessment) => assessment.result === SecurityDataResult.PASSED);
-    const failed = assessments.filter((assessment) => assessment.result === SecurityDataResult.FAILED);
-    const total = passed.length + failed.length;
-    return Math.round((passed.length / total) * 100);
-  }
-
-  // Group checks by category
-  const grouppedByCategory = (props.data || []).reduce((mapping, check) => {
-    const obj = {...mapping};
-    if (!obj[check.category]) {
-      obj[check.category] = [];
-    }
-    obj[check.category]?.push(check);
-    return obj;
-  }, {} as Record<string, SecurityData[]>);
-
-  const percentageByCategory: Record<string, number> = {}
-
-  Object.keys(grouppedByCategory).forEach((category) => {
-    const assessments = (grouppedByCategory[category] || []).map((check) => check.assessments).flat();
-    const passed = assessments.filter((assessment) => assessment.result === SecurityDataResult.PASSED);
-    const failed = assessments.filter((assessment) => assessment.result === SecurityDataResult.FAILED);
-    const total = passed.length + failed.length;
-    percentageByCategory[category] = passed.length / total;
-  });
-
-  const passingRateSum = Object.values(percentageByCategory).reduce((sum, value) => sum + value, 0);
-
-  return Math.round((passingRateSum / Object.keys(percentageByCategory).length) * 100);
-})
+const results = computed(() => PROJECT_SECURITY_SERVICE.calculateOSPSScore(props.data, props.isRepository));
 
 const config = computed<OspsBaselineScore>(() => {
   if(props.isLoading){
@@ -139,19 +104,7 @@ const config = computed<OspsBaselineScore>(() => {
       badgeTextColor: lfxColors.neutral[500],
     }
   }
-  return (
-    lfxOspsBaselineScore.find(
-      (item) => results.value >= item.minScore && results.value <= item.maxScore
-    ) || {
-      minScore: 0,
-      maxScore: 100,
-      label: 'No matching score',
-      description: '',
-      lineColor: lfxColors.neutral[200],
-      badgeBgColor: lfxColors.neutral[100],
-      badgeTextColor: lfxColors.neutral[500],
-    }
-  );
+  return PROJECT_SECURITY_SERVICE.getOSPSconfig(results.value);
 })
 
 const chartConfig = computed(() => getGaugeChartConfig({
