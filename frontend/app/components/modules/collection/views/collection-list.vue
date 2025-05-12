@@ -46,10 +46,10 @@ SPDX-License-Identifier: MIT
               </lfx-dropdown-selector>
             </template>
 
-            <!--            <lfx-dropdown-item-->
-            <!--              value="starred_asc"-->
-            <!--              label="Featured"-->
-            <!--            />-->
+            <lfx-dropdown-item
+              value="starred_desc"
+              label="Featured"
+            />
             <lfx-dropdown-item
               value="projectCount_desc"
               label="Most projects"
@@ -151,7 +151,7 @@ const {pageWidth} = useResponsive();
 const {scrollTop} = useScroll();
 
 const pageSize = 50
-const sort = ref('projectCount_desc')
+const sort = ref('starred_desc')
 const category = ref('')
 
 const queryKey = computed(() => [TanstackKey.COLLECTIONS, sort.value, category.value])
