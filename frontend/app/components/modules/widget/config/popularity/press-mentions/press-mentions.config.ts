@@ -8,7 +8,7 @@ const pressMentions: WidgetConfig = {
     name: 'Press mentions',
     description: (project) => `Number of times that ${project.name} was mentioned in news and articles during`
         + ` the selected period.`,
-    learnMoreLink: 'https://docs.linuxfoundation.org/lfx/insights',
+    learnMoreLink: 'https://insights.linuxfoundation.org/docs/metrics/popularity.html#press-mentions',
     component: PressMentions,
     share: true,
     embed: false,

@@ -36,7 +36,7 @@ SPDX-License-Identifier: MIT
             Process of assessing a project's practices, policies, and technical measures against a set of predefined
             standards to determine its security posture, reliability, and maturity.
             <a
-              :href="links.learnMore"
+              :href="links.securityScore"
               class="text-brand-500"
               target="_blank"
             >Learn more</a>

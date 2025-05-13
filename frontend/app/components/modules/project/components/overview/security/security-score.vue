@@ -23,7 +23,7 @@ SPDX-License-Identifier: MIT
       The <b class="font-semibold">OSPS Baseline</b>
       is a set of security criteria that projects should meet to demonstrate a strong security posture.
       <a
-        :href="links.learnMore"
+        :href="links.securityScore"
         target="_blank"
         class="text-brand-500"
       >

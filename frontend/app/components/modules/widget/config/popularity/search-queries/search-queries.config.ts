@@ -7,7 +7,7 @@ const searchQueries: WidgetConfig = {
     key: 'searchQueries',
     name: 'Search queries',
     description: (project) => `Search interest volume of ${project.name} based on Google Trends.`,
-    learnMoreLink: 'https://docs.linuxfoundation.org/lfx/insights',
+    learnMoreLink: 'https://insights.linuxfoundation.org/docs/metrics/popularity.html#search-queries',
     component: SearchQueries,
     share: true,
     embed: false,

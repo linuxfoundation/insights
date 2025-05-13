@@ -7,6 +7,7 @@ interface MenuItem {
     icon?: string;
     route?: LfxRoutes;
     href?: string;
+    showOnToolsOnly?: boolean;
 }
 
 interface MenuConfig{
@@ -16,10 +17,6 @@ interface MenuConfig{
 
 export const lfxMenu: MenuConfig = {
     links: [
-        {
-            label: 'Docs',
-            href: '/docs/'
-        },
     //     {
     //     label: 'Explore',
     //     icon: 'compass',
@@ -35,6 +32,12 @@ export const lfxMenu: MenuConfig = {
     //     icon: 'globe',
     //     route: LfxRoutes.OPENSOURCEINDEX
     // }
+    {
+        label: 'Documentation',
+        icon: 'book-open',
+        href: '/docs',
+        showOnToolsOnly: true,
+    }
     ],
     footer: {
         label: 'Know more about LFX Platform',

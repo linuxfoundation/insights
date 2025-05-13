@@ -41,7 +41,7 @@ SPDX-License-Identifier: MIT
         is a set of security criteria that projects should meet to demonstrate a strong security posture.
       </p>
       <a
-        :href="links.learnMore"
+        :href="links.ospsScore"
         target="_blank"
         class="pt-3 block"
       >

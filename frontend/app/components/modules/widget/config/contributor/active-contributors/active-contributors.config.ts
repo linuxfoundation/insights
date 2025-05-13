@@ -8,7 +8,7 @@ const activeContributors: WidgetConfig = {
     name: 'Active contributors',
     description: () => 'Active contributor is an individual who performed activities such as commits, issues,'
         + ' or pull requests during the selected time period.',
-    learnMoreLink: 'https://docs.linuxfoundation.org/lfx/insights',
+    learnMoreLink: 'https://insights.linuxfoundation.org/docs/metrics/contributors.html#active-contributors',
     component: ActiveContributors,
     share: true,
     embed: false,

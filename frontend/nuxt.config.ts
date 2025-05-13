@@ -27,7 +27,8 @@ export default defineNuxtConfig({
     'nuxt-echarts',
     '@nuxtjs/storybook',
     'nuxt-gtag',
-    '@nuxtjs/plausible'
+    '@nuxtjs/plausible',
+    '@nuxtjs/robots'
   ],
   plugins: [
     '~/plugins/vue-query.ts',
@@ -76,5 +77,8 @@ export default defineNuxtConfig({
         }
       }
     }
+  },
+  robots: {
+    disallow: process.env.NODE_ENV === 'production' ? [] : ['/'],
   }
 });

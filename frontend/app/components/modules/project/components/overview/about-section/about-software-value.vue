@@ -8,7 +8,7 @@ SPDX-License-Identifier: MIT
       About
     </div>
     <div class="text-neutral-900">
-      {{ project?.description || '' }}
+      {{ project?.description || 'No description available' }}
     </div>
   </div>
   <div

@@ -8,7 +8,7 @@ const organizationsLeaderboard: WidgetConfig = {
     name: 'Organizations leaderboard',
     description: () => 'Organization ranking based on the number of activities performed by contributors on'
         + ' their behalf and the impact on the project.',
-    learnMoreLink: 'https://docs.linuxfoundation.org/lfx/insights',
+    learnMoreLink: 'https://insights.linuxfoundation.org/docs/metrics/contributors.html#organizations-leaderboard',
     component: OrganizationsLeaderboard,
     share: true,
     embed: false,

@@ -8,7 +8,7 @@ const waitTimeFirstReview: WidgetConfig = {
     name: 'Wait time for 1st review',
     description: () => 'Average time taken between pull request submission and its first '
         + 'review during the selected period.',
-    learnMoreLink: 'https://docs.linuxfoundation.org/lfx/insights',
+    learnMoreLink: 'https://insights.linuxfoundation.org/docs/metrics/development.html#wait-time-for-first-review',
     component: WaitTimeFirstReview,
     share: true,
     embed: false,

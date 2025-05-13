@@ -7,7 +7,7 @@ const packageDownloads: WidgetConfig = {
     key: 'packageDownloads',
     name: 'Package downloads',
     description: () => '(TBD)',
-    learnMoreLink: 'https://docs.linuxfoundation.org/lfx/insights',
+    learnMoreLink: 'https://insights.linuxfoundation.org/docs/metrics/popularity.html#package-downloads',
     component: PackageDownloads,
     share: true,
     embed: false,

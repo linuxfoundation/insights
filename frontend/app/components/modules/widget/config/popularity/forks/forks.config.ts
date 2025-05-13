@@ -7,7 +7,7 @@ const forks: WidgetConfig = {
     key: 'forks',
     name: 'Forks',
     description: () => 'New forks (copies) of the project repositories during the selected time period.',
-    learnMoreLink: 'https://docs.linuxfoundation.org/lfx/insights',
+    learnMoreLink: 'https://insights.linuxfoundation.org/docs/metrics/popularity.html#forks',
     component: Forks,
     share: true,
     embed: false,

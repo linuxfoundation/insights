@@ -8,7 +8,7 @@ const codeReviewEngagement: WidgetConfig = {
     name: 'Code review engagement',
     description: () => 'Level of contributors involvement and participation in code review activities during the'
         + ' selected period. Analyze trends to improve engagement.',
-    learnMoreLink: 'https://docs.linuxfoundation.org/lfx/insights',
+    learnMoreLink: 'https://insights.linuxfoundation.org/docs/metrics/development.html#code-review-engagement',
     component: CodeReviewEngagement,
     share: true,
     embed: false,

@@ -20,7 +20,7 @@ SPDX-License-Identifier: MIT
                   The Insights Trust Score combines the four key areas to measure an open source
                   project's overall trustworthiness.
                   <a
-                    :href="links.learnMore"
+                    :href="links.trustScore"
                     target="_blank"
                     class="text-brand-500"
                   >Learn more</a>

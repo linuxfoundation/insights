@@ -8,7 +8,7 @@ const retention: WidgetConfig = {
     name: 'Retention',
     description: () => 'Rate at which contributors and organizations continued contributing to '
                  + 'the project during the selected period.',
-    learnMoreLink: 'https://docs.linuxfoundation.org/lfx/insights',
+    learnMoreLink: 'https://insights.linuxfoundation.org/docs/metrics/contributors.html#retention',
     component: Retention,
     share: true,
     embed: false,

@@ -8,7 +8,7 @@ const mergeLeadTime: WidgetConfig = {
     name: 'Merge lead time',
     description: () => 'Average time taken for pull requests to be raised, reviewed, '
         + 'accepted, and merged in the selected period.',
-    learnMoreLink: 'https://docs.linuxfoundation.org/lfx/insights',
+    learnMoreLink: 'https://insights.linuxfoundation.org/docs/metrics/development.html#merge-lead-time',
     component: MergeLeadTime,
     share: true,
     embed: false,
