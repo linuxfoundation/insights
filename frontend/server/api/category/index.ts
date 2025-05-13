@@ -26,7 +26,7 @@ import {fetchFromCmApi} from "~~/server/data/cm/cm-api";
 export default defineEventHandler(async (event): Promise<Pagination<CategoryGroup> | Error> => {
     const query = getQuery(event);
     const search: string = (query?.search as string) || '';
-    const type: string = (query?.search as string) || '';
+    const type: string = (query?.type as string) || '';
     //
     // // Pagination parameters
     const limit: number = +(query?.limit ?? 30);
@@ -38,7 +38,7 @@ export default defineEventHandler(async (event): Promise<Pagination<CategoryGrou
             offset: number,
             rows: CategoryGroup[]
         }>('/category', {
-            type,
+            groupType: type,
             offset,
             limit,
             query: search,

@@ -8,18 +8,23 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import {useRoute} from "nuxt/app";
+import {storeToRefs} from "pinia";
 import {useProjectStore} from "~/components/modules/project/store/project.store";
 import LfxProjectOverviewView from "~/components/modules/project/views/overview.vue";
 
 const route = useRoute();
-const {project} = useProjectStore();
+const {project} = storeToRefs(useProjectStore());
 const config = useRuntimeConfig()
 
-const title = `LFX Insights | ${project?.name} insights`;
-const imageAlt = `${project?.name} insights`;
-const description = `Explore ${project?.name} insights`;
-const url = `${config.public.appUrl}${route.fullPath}`;
-const image = `${config.public.appUrl}/api/seo/og-image?projectSlug=${project?.slug}`;
+const title = computed(() => (project.value ? `LFX Insights | ${project.value.name} insights` : "LFX Insights"));
+const imageAlt = computed(() => (project.value ? `${project.value.name} insights` : "LFX Project insights"));
+const description = computed(() => (project.value
+    ? `Explore ${project.value.name} insights`
+    : "Explore LFX Project insights"));
+const url = computed(() => `${config.public.appUrl}${route.fullPath}`);
+const image = computed(() => (project.value
+        ? `${config.public.appUrl}/api/seo/og-image?projectSlug=${project.value.slug}`
+        : `${config.public.appUrl}/default-og-image.jpg`));
 
 useSeoMeta({
   title,
@@ -30,7 +35,7 @@ useSeoMeta({
   ogDescription: description,
   ogImage: image,
   ogImageAlt: imageAlt,
-  ogImageSecureUrl: '/og-image.png',
+  ogImageSecureUrl: image,
   ogImageType: 'image/jpeg',
   twitterCard: 'summary_large_image',
   twitterUrl: url,
@@ -38,5 +43,5 @@ useSeoMeta({
   twitterDescription: description,
   twitterImage: image,
   twitterImageAlt: imageAlt,
-})
+});
 </script>

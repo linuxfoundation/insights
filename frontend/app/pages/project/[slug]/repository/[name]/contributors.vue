@@ -8,6 +8,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import {useRoute} from "nuxt/app";
+import {storeToRefs} from "pinia";
 import {useProjectStore} from "~/components/modules/project/store/project.store";
 import {WidgetArea} from "~/components/modules/widget/types/widget-area";
 import LfxWidgetArea from "~/components/modules/widget/components/shared/widget-area.vue";
@@ -16,22 +17,25 @@ import type {Widget} from "~/components/modules/widget/types/widget";
 
 const route = useRoute();
 const name = route.params.name as string;
-const {project, repository} = useProjectStore();
+const slug = route.params.slug as string;
+const {project, repository} = storeToRefs(useProjectStore());
 const widget = route.query?.widget
 const config = useRuntimeConfig()
-const repoName = (repository?.name || name).split('/').at(-1);
+const repoName = computed(() => (repository?.value?.name || name).split('/').at(-1));
 
-const title = `LFX Insights | ${project?.name} ${repoName} ${
-  (widget && lfxWidgets[widget as Widget]?.name?.length)
-    ? lfxWidgets[widget as Widget]?.name
-    : 'contributor insights'}`;
-const imageAlt = `${project?.name} ${repoName} contributor insights${
-  (widget && lfxWidgets[widget as Widget]?.name?.length)
-    ? ` - ${lfxWidgets[widget as Widget]?.name}`
-    : ''}`;
-const description = `Explore ${project?.name} ${repoName} contributor insights`;
-const url = `${config.public.appUrl}${route.fullPath}`;
-const image = `${config.public.appUrl}/api/seo/og-image?projectSlug=${project?.slug}&repositorySlug=${name}`;
+const title = computed(() => `LFX Insights | ${project?.value?.name} ${repoName.value} ${
+    (widget && lfxWidgets[widget as Widget]?.name?.length)
+        ? lfxWidgets[widget as Widget]?.name
+        : 'contributor insights'}`);
+
+const imageAlt = computed(() => `${project?.value?.name} ${repoName.value} contributor insights${
+    (widget && lfxWidgets[widget as Widget]?.name?.length)
+        ? ` - ${lfxWidgets[widget as Widget]?.name}`
+        : ''}`);
+
+const description = computed(() => `Explore ${project?.value?.name} ${repoName.value} contributor insights`);
+const url = computed(() => `${config.public.appUrl}${route.fullPath}`);
+const image = computed(() => `${config.public.appUrl}/api/seo/og-image?projectSlug=${slug}&repositorySlug=${name}`);
 
 useSeoMeta({
   title,

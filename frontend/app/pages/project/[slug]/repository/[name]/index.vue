@@ -8,20 +8,23 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import {useRoute} from "nuxt/app";
+import {storeToRefs} from "pinia";
 import {useProjectStore} from "~/components/modules/project/store/project.store";
 import LfxProjectOverviewView from "~/components/modules/project/views/overview.vue";
 
 const route = useRoute();
 const name = route.params.name as string;
-const {project, repository} = useProjectStore();
+const slug = route.params.slug as string;
+const {project, repository} = storeToRefs(useProjectStore());
 const config = useRuntimeConfig()
-const repoName = (repository?.name || name).split('/').at(-1);
 
-const title = `LFX Insights | ${project?.name} ${repoName} insights`;
-const imageAlt = `${project?.name} ${repoName} insights`;
-const description = `Explore ${project?.name} ${repoName} insights`;
-const url = `${config.public.appUrl}${route.fullPath}`;
-const image = `${config.public.appUrl}/api/seo/og-image?projectSlug=${project?.slug}&repositorySlug=${name}`;
+const repoName = computed(() => (repository.value?.name || name).split('/').at(-1));
+
+const title = computed(() => `LFX Insights | ${project.value?.name} ${repoName.value} insights`);
+const imageAlt = computed(() => `${project.value?.name} ${repoName.value} insights`);
+const description = computed(() => `Explore ${project.value?.name} ${repoName.value} insights`);
+const url = computed(() => `${config.public.appUrl}${route.fullPath}`);
+const image = computed(() => `${config.public.appUrl}/api/seo/og-image?projectSlug=${slug}&repositorySlug=${name}`);
 
 useSeoMeta({
   title,

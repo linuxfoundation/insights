@@ -8,27 +8,33 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import {useRoute} from "nuxt/app";
+import {storeToRefs} from "pinia";
+import {computed} from "vue";
 import {useProjectStore} from "~/components/modules/project/store/project.store";
 import {WidgetArea} from "~/components/modules/widget/types/widget-area";
 import LfxWidgetArea from "~/components/modules/widget/components/shared/widget-area.vue";
 import {lfxWidgets} from "~/components/modules/widget/config/widget.config";
 import type {Widget} from "~/components/modules/widget/types/widget";
 
-const {project} = useProjectStore();
+const {project} = storeToRefs(useProjectStore());
 const route = useRoute()
 const config = useRuntimeConfig()
 
 const widget = route.query?.widget
 
-const title = `LFX Insights | ${project?.name} ${(widget && lfxWidgets[widget as Widget]?.name?.length)
+const title = computed(() => `LFX Insights | ${project.value?.name} ${
+  (widget && lfxWidgets[widget as Widget]?.name?.length)
     ? lfxWidgets[widget as Widget]?.name
-    : 'development insights'}`;
-const imageAlt = `${project?.name} development insights${(widget && lfxWidgets[widget as Widget]?.name?.length)
+    : 'development insights'}`);
+const imageAlt = computed(() => `${project.value?.name} development insights${
+  (widget && lfxWidgets[widget as Widget]?.name?.length)
     ? ` - ${lfxWidgets[widget as Widget]?.name}`
-    : ''}`;
-const description = `Explore ${project?.name} development insights`;
-const url = `${config.public.appUrl}${route.fullPath}`;
-const image = `${config.public.appUrl}/api/seo/og-image?projectSlug=${project?.slug}`;
+    : ''}`);
+const description = computed(() => `Explore ${project.value?.name} development insights`);
+const url = computed(() => `${config.public.appUrl}${route.fullPath}`);
+const image = computed(() => (project.value
+    ? `${config.public.appUrl}/api/seo/og-image?projectSlug=${project.value.slug}`
+    : `${config.public.appUrl}/default-og-image.jpg`));
 
 useSeoMeta({
   title,

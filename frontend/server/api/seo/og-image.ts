@@ -74,10 +74,17 @@ export default defineEventHandler(async (event) => {
 });
 
 function svgTemplate(project: ProjectTinybird, repository: ProjectRepository | undefined) {
-    const projectName: string = project.name;
+    let projectName: string = project.name;
     const projectLogo: string = project.logo;
     const projectDescription: string = project.description.length > 65 ? `${project.description.substring(0, 65)}...` : project.description;
-    const repositoryName: string | undefined = repository?.name?.split('/').at(-1);
+    let repositoryName: string | undefined = repository?.name?.split('/').at(-1);
+    if(projectName.length > 38) {
+        repositoryName = undefined;
+        projectName = `${projectName.substring(0, 38)}...`;
+    }
+    else if(`${projectName} / ${repositoryName}`.length > 38) {
+        repositoryName = `${repositoryName?.substring(0, 38 - projectName.length)}...`;
+    }
     return `<?xml version="1.0" encoding="UTF-8"?>
     <svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <style>

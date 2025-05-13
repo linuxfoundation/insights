@@ -19,7 +19,7 @@ SPDX-License-Identifier: MIT
     </template>
 
     <lfx-dropdown-item
-      value=""
+      value="all"
       label="All stacks & industries"
     />
     <lfx-dropdown-separator />
