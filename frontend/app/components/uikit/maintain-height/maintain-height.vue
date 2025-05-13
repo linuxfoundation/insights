@@ -4,7 +4,7 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <div
-    class="block"
+    class="block min-h-[204px]"
     :style="{ 'height': fixedHeight + 'px' }"
   />
   <div
@@ -16,7 +16,9 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import {ref, onMounted, nextTick} from 'vue';
+import {
+ref, onMounted, nextTick, watch
+} from 'vue';
 
 const fixedHeight = ref<number | null>(null);
 const maintainHeightRef = ref<HTMLDivElement | null>(null);
@@ -36,8 +38,8 @@ onMounted(async () => {
   calculateHeight();
 });
 
-watch(props.loaded, () => {
-    calculateHeight();
+watch(() => props.loaded, () => {
+  calculateHeight();
 });
 </script>
 

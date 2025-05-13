@@ -4,7 +4,8 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <div>
-    <div class="flex  justify-center items-center pt-6 gap-8">
+    <!-- NOTE: Disabling the OSPS score for now -->
+    <!-- <div class="flex  justify-center items-center pt-6 gap-8">
       <div class="aspect-[3/2] w-full relative max-w-50">
         <lfx-chart
           :config="ospsChartConfig"
@@ -29,7 +30,7 @@ SPDX-License-Identifier: MIT
       >
         Learn more
       </a>
-    </div>
+    </div> -->
     <div class="flex justify-between items-center pb-4">
       <h3 class="text-heading-3 font-secondary font-bold">
         Controls assessment
@@ -73,23 +74,23 @@ SPDX-License-Identifier: MIT
 
 <script lang="ts" setup>
 import {computed} from "vue";
-import {storeToRefs} from "pinia";
+// import {storeToRefs} from "pinia";
 import {useRoute} from "nuxt/app";
 import type {SecurityAssessmentData, SecurityData} from "~~/types/security/responses.types";
-import {PROJECT_SECURITY_SERVICE} from "~/components/modules/project/services/security.service";
-import type {OspsBaselineScore} from "~/components/modules/project/config/osps-baseline-score";
+// import {PROJECT_SECURITY_SERVICE} from "~/components/modules/project/services/security.service";
+// import type {OspsBaselineScore} from "~/components/modules/project/config/osps-baseline-score";
 import {lfxColors} from "~/config/styles/colors";
-import {useProjectStore} from "~/components/modules/project/store/project.store";
+// import {useProjectStore} from "~/components/modules/project/store/project.store";
 import LfxChart from "~/components/uikit/chart/chart.vue";
 import {getGaugeChartConfig} from "~/components/uikit/chart/configs/gauge.chart";
-import {links} from "~/config/links";
+// import {links} from "~/config/links";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
 import {LfxRoutes} from "~/components/shared/types/routes";
 import LfxButton from "~/components/uikit/button/button.vue";
 import {lfxSecurityCategories} from "~/components/modules/project/config/security-category";
 import LfxProjectSecurityEvaluationResult from "~/components/modules/project/components/security/evaluation-result.vue";
 
-const { selectedRepository } = storeToRefs(useProjectStore());
+// const { selectedRepository } = storeToRefs(useProjectStore());
 const route = useRoute();
 const {name} = route.params
 
@@ -97,35 +98,35 @@ const props = defineProps<{
   data: SecurityData[];
 }>();
 
-const results = computed(
-    () => PROJECT_SECURITY_SERVICE.calculateOSPSScore((props.data || []), !!selectedRepository.value)
-);
+// const results = computed(
+//     () => PROJECT_SECURITY_SERVICE.calculateOSPSScore((props.data || []), !!selectedRepository.value)
+// );
 
-const config = computed<OspsBaselineScore>(() => {
-  if((props.data || []).length === 0){
-    return {
-      minScore: 0,
-      maxScore: 100,
-      label: 'No data available',
-      description: '',
-      lineColor: lfxColors.neutral[200],
-      badgeBgColor: lfxColors.neutral[100],
-      badgeTextColor: lfxColors.neutral[500],
-    }
-  }
-  return PROJECT_SECURITY_SERVICE.getOSPSconfig(results.value);
-})
+// const config = computed<OspsBaselineScore>(() => {
+//   if((props.data || []).length === 0){
+//     return {
+//       minScore: 0,
+//       maxScore: 100,
+//       label: 'No data available',
+//       description: '',
+//       lineColor: lfxColors.neutral[200],
+//       badgeBgColor: lfxColors.neutral[100],
+//       badgeTextColor: lfxColors.neutral[500],
+//     }
+//   }
+//   return PROJECT_SECURITY_SERVICE.getOSPSconfig(results.value);
+// })
 
-const ospsChartConfig = computed(() => getGaugeChartConfig({
-  value: results.value, // 0-100
-  name: config.value.label,
-  gaugeType: 'half',
-  color: config.value.badgeBgColor,
-  textColor: config.value.badgeTextColor,
-  lineColor: config.value.lineColor,
-  loading: config.value.loading,
-  noData: props.data.length === 0,
-}));
+// const ospsChartConfig = computed(() => getGaugeChartConfig({
+//   value: results.value, // 0-100
+//   name: config.value.label,
+//   gaugeType: 'half',
+//   color: config.value.badgeBgColor,
+//   textColor: config.value.badgeTextColor,
+//   lineColor: config.value.lineColor,
+//   loading: config.value.loading,
+//   noData: props.data.length === 0,
+// }));
 
 const groupedData = computed(() => (props.data || []).reduce((mapping, check) => {
   const obj = {...mapping};
