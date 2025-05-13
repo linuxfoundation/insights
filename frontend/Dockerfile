@@ -1,4 +1,5 @@
 ARG NODE_VERSION=20
+ARG NODE_ENV=production
 
 FROM node:$NODE_VERSION-slim AS base
 
@@ -33,6 +34,7 @@ WORKDIR /usr/src/app
 RUN pnpm docs:build && mkdir -p public/docs && cp -r docs/.vitepress/dist/* public/docs/
 
 # Build the Nuxt app
+RUN echo "Building with NODE_ENV=$NODE_ENV"
 RUN pnpm build
 
 
