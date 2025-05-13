@@ -8,7 +8,7 @@ const githubMentions: WidgetConfig = {
     name: 'GitHub Mentions',
     description: (project) => `Number of times that ${project.name} was mentioned on code, files,`
         + ` and paths across GitHub repositories.`,
-    learnMoreLink: 'https://docs.linuxfoundation.org/lfx/insights',
+    learnMoreLink: 'https://insights.linuxfoundation.org/docs/metrics/popularity.html#github-mentions',
     component: GithubMentions,
     share: true,
     embed: false,

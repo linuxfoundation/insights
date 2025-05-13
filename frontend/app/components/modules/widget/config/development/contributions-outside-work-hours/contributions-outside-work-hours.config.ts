@@ -8,7 +8,7 @@ const contributionsOutsideWorkHours: WidgetConfig = {
     name: 'Contributions outside work hours',
     description: () => 'Contributors’ activity patterns focused on contributions performed during non-business hours '
                  + 'and weekends during the selected period.',
-    learnMoreLink: 'https://docs.linuxfoundation.org/lfx/insights',
+    learnMoreLink: 'https://insights.linuxfoundation.org/docs/metrics/development.html#contributions-outside-work-hours',
     component: ContributionsOutsideWorkHours,
     share: true,
     embed: false,

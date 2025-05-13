@@ -7,7 +7,7 @@ const averateTimeToMerge: WidgetConfig = {
     key: 'averageTimeToMerge',
     name: 'Average time to merge',
     description: () => 'Average time taken for pull requests to be merged during the selected period.',
-    learnMoreLink: 'https://docs.linuxfoundation.org/lfx/insights',
+    learnMoreLink: 'https://insights.linuxfoundation.org/docs/metrics/development.html#average-time-to-merge',
     component: AverageTimeToMerge,
     share: true,
     embed: false,

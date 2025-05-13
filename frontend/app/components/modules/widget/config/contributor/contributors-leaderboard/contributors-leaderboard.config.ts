@@ -7,7 +7,7 @@ const contributorsLeaderboard: WidgetConfig = {
     key: 'contributorsLeaderboard',
     name: 'Contributors leaderboard',
     description: () => 'Contributor ranking based on the number of activities performed and the impact on the project.',
-    learnMoreLink: 'https://docs.linuxfoundation.org/lfx/insights',
+    learnMoreLink: 'https://insights.linuxfoundation.org/docs/metrics/contributors.html#contributors-leaderboard',
     component: ContributorLeaderboard,
     share: true,
     embed: false,

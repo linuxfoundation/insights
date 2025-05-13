@@ -21,13 +21,16 @@ SPDX-License-Identifier: MIT
       <template #content>
         <div class="bg-white shadow-lg rounded-lg border border-neutral-200">
           <div class="p-3 w-80">
-            <div class="flex flex-col gap-3 items-start border-b border-neutral-100 pb-3">
+            <div class="flex flex-col gap-3 items-start">
               <lfx-menu-static-links />
             </div>
-            <div class="pt-4">
-              <p class="text-xs font-semibold text-neutral-400 pl-3 pb-3">
-                LFX tools
-              </p>
+            <div>
+              <div class="my-3 flex justify-center items-center relative">
+                <span class="absolute w-full h-[1px] bg-neutral-200" />
+                <p class="text-xs font-semibold text-neutral-400 z-10 bg-white px-4">
+                  LFX Platform
+                </p>
+              </div>
               <div class="flex flex-col gap-1">
                 <a
                   v-for="(tool, key) in lfxTools"

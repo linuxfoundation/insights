@@ -8,7 +8,7 @@ const socialMentions: WidgetConfig = {
     name: 'Social mentions',
     description: (project) => `Number of times that ${project.name} was mentioned on social platforms during`
         + ` the selected period.`,
-    learnMoreLink: 'https://docs.linuxfoundation.org/lfx/insights',
+    learnMoreLink: 'https://insights.linuxfoundation.org/docs/metrics/popularity.html#social-mentions',
     component: SocialMentions,
     share: true,
     embed: false,

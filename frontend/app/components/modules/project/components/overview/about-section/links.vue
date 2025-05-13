@@ -7,7 +7,10 @@ SPDX-License-Identifier: MIT
     <div class="text-neutral-400 font-semibold">
       Links
     </div>
-    <div class="text-neutral-900 flex flex-col gap-3">
+    <div
+      v-if="links.length"
+      class="text-neutral-900 flex flex-col gap-3"
+    >
       <div
         v-for="link of links"
         :key="link.name"
@@ -31,6 +34,10 @@ SPDX-License-Identifier: MIT
         </a>
       </div>
     </div>
+    <div
+      v-else
+      class="text-xs text-neutral-900"
+    >No links available</div>
   </div>
 
 </template>
@@ -47,15 +54,27 @@ const { project } = storeToRefs(useProjectStore())
 const links = computed(() => (project.value?.projectLinks || []).map((link) => {
   const icon = link.icon || (link.img ? undefined : 'link')
   if (link.url.includes('twitter')) {
-    return {...link, img: '/images/integrations/twitter.png'}
+    return {
+      ...link,
+      img: '/images/integrations/twitter.png',
+      name: link.url?.replace("https://x.com", "")
+    }
   }
 
   if (link.url.includes('linkedin')) {
-    return {...link, img: '/images/integrations/linkedin.png'}
+    return {
+      ...link,
+      img: '/images/integrations/linkedin.png',
+      name: link.url?.replace("https://www.linkedin.com", "")
+    }
   }
 
   if (link.url.includes('github')) {
-    return {...link, img: '/images/integrations/github.png'}
+    return {
+      ...link,
+      img: '/images/integrations/github.png',
+      name: link.url?.replace("https://github.com", "")
+    }
   }
 
   return {...link, icon }

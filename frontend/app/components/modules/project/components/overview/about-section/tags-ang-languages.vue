@@ -21,9 +21,9 @@ SPDX-License-Identifier: MIT
       </template>
       <span
         v-else
-        class="text-neutral-900"
+        class="text-xs text-neutral-900"
       >
-        No Data
+        No tags available
       </span>
     </div>
   </div>

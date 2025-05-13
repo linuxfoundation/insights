@@ -9,7 +9,7 @@ const activeDays: WidgetConfig = {
     description: () => 'Number of days contributors were actively involved in the project'
         + ' and the total contributions made'
         + ' during the selected period. This includes commits, pull requests, and more.',
-    learnMoreLink: 'https://docs.linuxfoundation.org/lfx/insights',
+    learnMoreLink: 'https://insights.linuxfoundation.org/docs/metrics/development.html#active-days',
     component: ActiveDays,
     share: true,
     embed: false,

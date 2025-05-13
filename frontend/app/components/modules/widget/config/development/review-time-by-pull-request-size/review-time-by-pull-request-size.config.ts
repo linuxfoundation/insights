@@ -8,7 +8,7 @@ const reviewTimeByPullRequestSize: WidgetConfig = {
     name: 'Review time by pull request size',
     description: () => 'Average time taken to review pull requests, sorted by number of code line changes'
         + ' during the selected period.',
-    learnMoreLink: 'https://docs.linuxfoundation.org/lfx/insights',
+    learnMoreLink: 'https://insights.linuxfoundation.org/docs/metrics/development.html#review-time-by-pull-request-size',
     component: ReviewTimeByPullRequestSize,
     share: true,
     embed: false,

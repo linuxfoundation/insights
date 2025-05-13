@@ -37,10 +37,13 @@ SPDX-License-Identifier: MIT
               <lfx-menu-static-links />
             </div>
           </div>
-          <div class="border-t border-neutral-100 pt-4">
-            <p class="text-xs font-semibold text-neutral-400 pl-3 pb-4">
-              LFX tools
-            </p>
+          <div>
+            <div class="my-3 flex justify-start items-center relative">
+              <span class="absolute w-full h-[1px] bg-neutral-200" />
+              <p class="text-xs font-semibold text-neutral-400 z-10 bg-white pr-4">
+                LFX Platform
+              </p>
+            </div>
             <div class="flex flex-wrap gap-3 pb-8">
               <a
                 v-for="(tool, key) in lfxTools"

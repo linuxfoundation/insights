@@ -8,7 +8,7 @@ const activeOrganizations: WidgetConfig = {
     name: 'Active organizations',
     description: () => 'Organizations that had at least one activity during the selected period, '
         + 'carried out by contributors on their behalf.',
-    learnMoreLink: 'https://docs.linuxfoundation.org/lfx/insights',
+    learnMoreLink: 'https://insights.linuxfoundation.org/docs/metrics/contributors.html#active-organizations',
     component: ActiveOrganizations,
     share: true,
     embed: false,

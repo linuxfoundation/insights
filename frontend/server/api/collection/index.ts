@@ -25,6 +25,10 @@ import type {Collection} from "~~/types/collection";
  * Errors:
  * - 500: Internal Server Error
  */
+
+// NOTE: This is a temporary workaround to highlight one of the featured collections
+const highlightId = '08c19065-41f5-4ba4-b4d8-5984c5725ff1';
+
 export default defineEventHandler(async (event): Promise<Pagination<Collection> | Error> => {
     const query = getQuery(event);
     const sort: string = (query?.sort as string) || 'name_asc';
@@ -45,6 +49,15 @@ export default defineEventHandler(async (event): Promise<Pagination<Collection> 
             orderByField,
             orderByDirection,
         });
+
+        // Move the highlighted item to the top if it exists
+    if (highlightId) {
+        const index = res.data.findIndex((item) => item.id === highlightId);
+        if (index > -1) {
+          const [highlightedItem] = res.data.splice(index, 1);
+          res.data.unshift(highlightedItem);
+        }
+      }
 
         type CollectionCount = {'count(id)': number};
         const collectionCountResult = await fetchFromTinybird<CollectionCount[]>('/v0/pipes/collections_list.json', {

@@ -7,7 +7,7 @@ const issuesResolution: WidgetConfig = {
     key: 'issuesResolution',
     name: 'Issues resolution',
     description: () => 'Comparison between total number of issues vs. closed issues during the selected time period.',
-    learnMoreLink: 'https://docs.linuxfoundation.org/lfx/insights',
+    learnMoreLink: 'https://insights.linuxfoundation.org/docs/metrics/development.html#issues-resolution',
     component: IssuesResolution,
     share: true,
     embed: false,

@@ -103,7 +103,7 @@ SPDX-License-Identifier: MIT
           :class="scrollTop > 50 ? 'md:py-4' : 'md:py-5'"
         >
           <lfx-project-menu :project="props.project" />
-          <lfx-project-date-range-picker />
+          <lfx-project-date-range-picker v-if="route.name !== LfxRoutes.PROJECT" />
         </div>
       </section>
     </div>
@@ -137,6 +137,7 @@ import LfxDropdown from "~/components/uikit/dropdown/dropdown.vue";
 import LfxDropdownItem from "~/components/uikit/dropdown/dropdown-item.vue";
 import {useReportStore} from "~/components/shared/modules/report/store/report.store";
 import {useShareStore} from "~/components/shared/modules/share/store/share.store";
+import { LfxRoutes } from '~/components/shared/types/routes';
 
 const props = defineProps<{
   project?: Project

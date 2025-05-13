@@ -8,7 +8,7 @@ const contributorDependency: WidgetConfig = {
     name: 'Contributor dependency',
     description: () => 'Distribution of contributions among different contributors, highlighting key individuals '
         + 'who are actively involved in the project during the selected time period.',
-    learnMoreLink: 'https://docs.linuxfoundation.org/lfx/insights',
+    learnMoreLink: 'https://insights.linuxfoundation.org/docs/metrics/contributors.html#contributor-dependency',
     component: ContributorDependency,
     share: true,
     embed: false,

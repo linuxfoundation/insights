@@ -8,7 +8,7 @@ const organizationDependency: WidgetConfig = {
     name: 'Organizations dependency',
     description: () => 'Distribution of contributions across different organizations, '
         + 'whose contributors were actively involved in the project during the selected period.',
-    learnMoreLink: 'https://docs.linuxfoundation.org/lfx/insights',
+    learnMoreLink: 'https://insights.linuxfoundation.org/docs/metrics/contributors.html#organizations-dependency',
     component: OrganizationsDependency,
     share: true,
     embed: false,

@@ -7,7 +7,15 @@ SPDX-License-Identifier: MIT
     :project="data"
   />
   <div>
-    <nuxt-page />
+    <div v-if="isLoading || projectIsOnboarded">
+      <nuxt-page />
+    </div>
+    <div
+      v-else-if="!isLoading && !projectIsOnboarded"
+      class="w-full flex justify-center py-20 text-neutral-500 text-sm"
+    >
+      There is no data available for this project yet.
+    </div>
   </div>
 </template>
 
@@ -35,6 +43,7 @@ const {project} = storeToRefs(useProjectStore());
 const queryKey = computed(() => [TanstackKey.PROJECT, slug]);
 
 const {
+  isLoading,
   data,
   suspense,
   isError,
@@ -44,6 +53,8 @@ const {
   queryFn: PROJECT_API_SERVICE.fetchProject(slug as string),
   retry: false,
 });
+
+const projectIsOnboarded = computed(() => !!project.value?.contributorCount || !!project.value?.organizationCount);
 
 onServerPrefetch(async () => {
   await suspense();

@@ -9,7 +9,7 @@ const geographicalDistribution: WidgetConfig = {
     description: () => 'Distribution of contributors and organizations based on geographical'
         + ' location during contributions '
         + 'in the selected period.',
-    learnMoreLink: 'https://docs.linuxfoundation.org/lfx/insights',
+    learnMoreLink: 'https://insights.linuxfoundation.org/docs/metrics/contributors.html#geographical-distribution',
     component: GeographicalDistribution,
     share: true,
     embed: false,

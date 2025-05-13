@@ -20,7 +20,19 @@ SPDX-License-Identifier: MIT
     <template #content>
 
       <div class="bg-white shadow-lg rounded-lg border border-neutral-200">
+
         <div class="p-3 w-149">
+          <div class="flex items-center gap-3">
+            <lfx-menu-static-links :show-tools-links="true" />
+          </div>
+
+          <div class="my-3 flex justify-center items-center relative">
+            <span class="absolute w-full h-[1px] bg-neutral-200" />
+            <p class="text-xs font-semibold text-neutral-400 z-10 bg-white px-4">
+              LFX Platform
+            </p>
+          </div>
+
           <div class="flex flex-wrap -m-1.5">
             <div
               v-for="(tool, key) in lfxTools"
@@ -78,6 +90,7 @@ SPDX-License-Identifier: MIT
   import LfxPopover from "~/components/uikit/popover/popover.vue";
   import {lfxTools} from "~/config/menu/tools";
   import {lfxMenu} from "~/config/menu";
+  import LfxMenuStaticLinks from "~/components/shared/layout/menu/static-links.vue";
 
   const isOpen = ref(false);
 </script>
