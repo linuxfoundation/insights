@@ -1,6 +1,12 @@
 name: Insights docker image builder
 description: Builds and pushes insights docker image
 
+inputs:
+  node-env:
+    description: The NODE_ENV to pass as a build argument
+    required: false
+    default: production
+
 outputs:
   image:
     description: Image that was built
@@ -30,5 +36,7 @@ runs:
     - name: Build and push docker image
       shell: bash
       run: |
-        docker build -t ${{ steps.tag-generator.outputs.IMAGE_TAG }} ./frontend
+        docker build \
+          --build-arg NODE_ENV=${{ inputs.node-env }} \
+          -t ${{ steps.tag-generator.outputs.IMAGE_TAG }} ./frontend
         docker push ${{ steps.tag-generator.outputs.IMAGE_TAG }}

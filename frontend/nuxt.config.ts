@@ -7,6 +7,7 @@ import tailwindcss from './setup/tailwind';
 import primevue from './setup/primevue';
 import echarts from './setup/echarts';
 
+const isProduction = process.env.NODE_ENV === 'production';
 export default defineNuxtConfig({
   future: {
     compatibilityVersion: 4
@@ -37,14 +38,14 @@ export default defineNuxtConfig({
   echarts,
   runtimeConfig: {
     // These are are only available on the server-side and can be overridden by the .env file
-    tinybirdBaseUrl: process.env.TINYBIRD_BASE_URL || 'https://api.us-west-2.aws.tinybird.co',
-    tinybirdToken: process.env.TINYBIRD_TOKEN || '',
-    cmApiUrl: process.env.CM_API_URL || '',
-    cmApiToken: process.env.CM_API_TOKEN || '',
-    jiraIssueReporterApiUrl: process.env.JIRA_ISSUE_REPORTER_API_URL || '',
-    jiraIssueReporterApiTokenEmail: process.env.JIRA_ISSUE_REPORTER_API_TOKEN_EMAIL || '',
-    jiraIssueReporterApiToken: process.env.JIRA_ISSUE_REPORTER_API_TOKEN || '',
-    jiraIssueReporterProjectKey: process.env.JIRA_ISSUE_REPORTER_PROJECT_KEY || '',
+    tinybirdBaseUrl: 'https://api.us-west-2.aws.tinybird.co',
+    tinybirdToken: '',
+    cmApiUrl: '',
+    cmApiToken: '',
+    jiraIssueReporterApiUrl: '',
+    jiraIssueReporterApiTokenEmail: '',
+    jiraIssueReporterApiToken: '',
+    jiraIssueReporterProjectKey: '',
 
     // These are also exposed on the client-side
     public: {
@@ -58,11 +59,11 @@ export default defineNuxtConfig({
     }
   },
   gtag: {
-    enabled: process.env.NODE_ENV === 'production',
+    enabled: isProduction,
     id: 'G-EB92ZZFBNS'
   },
   plausible: { // Use as fallback if no runtime config is available at runtime
-    enabled: process.env.NODE_ENV === 'production',
+    enabled: isProduction,
     domain: 'insights.linuxfoundation.org',
   },
   vite: {
