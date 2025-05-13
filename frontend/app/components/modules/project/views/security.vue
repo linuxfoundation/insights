@@ -20,13 +20,14 @@ SPDX-License-Identifier: MIT
       </p>
     </div>
     <div class="flex flex-col md:flex-row gap-5 lg:gap-10 pt-10">
-      <div class="max-w-full md:max-w-64 lg:max-w-80 w-full">
+      <!-- NOTE: Disabling the OSPS score for now -->
+      <!-- <div class="max-w-full md:max-w-64 lg:max-w-80 w-full">
         <lfx-project-security-osps-score
           :data="data || []"
           :is-repository="isRepository"
           :is-loading="isFetching"
         />
-      </div>
+      </div> -->
       <div class="flex-grow">
         <lfx-card class="p-6">
           <h3 class="text-heading-3 font-semibold font-secondary">
@@ -116,7 +117,7 @@ import {type QueryFunction, useQuery} from "@tanstack/vue-query";
 import LfxCard from "~/components/uikit/card/card.vue";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
 import LfxAccordion from "~/components/uikit/accordion/accordion.vue";
-import LfxProjectSecurityOspsScore from "~/components/modules/project/components/security/osps-score.vue";
+// import LfxProjectSecurityOspsScore from "~/components/modules/project/components/security/osps-score.vue";
 import LfxProjectSecurityEvaluationSection
   from "~/components/modules/project/components/security/evaluation-section.vue";
 import LfxProjectSecurityEvaluationAssesment

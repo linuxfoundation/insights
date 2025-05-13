@@ -14,7 +14,7 @@ SPDX-License-Identifier: MIT
       v-else-if="!isLoading && !projectIsOnboarded"
       class="w-full flex justify-center py-20 text-neutral-500 text-sm"
     >
-      There is no data available for this project yet.
+      This project hasn't been onboarded to LFX Insights.
     </div>
   </div>
 </template>

@@ -83,7 +83,7 @@ SPDX-License-Identifier: MIT
           v-else
           class="text-body-1 text-neutral-500"
         >
-          There is no data available for this project yet.
+          This project hasn't been onboarded to LFX Insights.
         </div>
       </div>
     </lfx-card>

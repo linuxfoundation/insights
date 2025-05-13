@@ -18,7 +18,7 @@ SPDX-License-Identifier: MIT
                 <h3 class="text-heading-3 font-bold font-secondary mb-2">Health score</h3>
                 <p class="text-xs text-neutral-500">
                   The Insights Trust Score combines the four key areas to measure an open source
-                  project's overall trustworthiness.
+                  project's overall health.
                   <a
                     :href="links.trustScore"
                     target="_blank"
