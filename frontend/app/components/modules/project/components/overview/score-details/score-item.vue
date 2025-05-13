@@ -42,9 +42,10 @@ const props = defineProps<{
 
 const benchmarkConfig = computed(() => benchmarkConfigs.find((config) => config.key === props.benchmarkKey));
 const title = computed(() => benchmarkConfig.value?.title);
+const benchmarkValue = computed(() => Math.ceil(props.value || 0));
 const pointDetails = computed(() => benchmarkConfig.value?.points
-  .find((point) => (props.value || 0) >= point.pointStart
-  && (point.pointEnd === null || (props.value || 0) <= point.pointEnd)));
+  .find((point) => benchmarkValue.value >= point.pointStart
+  && (point.pointEnd === null || benchmarkValue.value <= point.pointEnd)));
 const description = computed(() => `${pointDetails.value?.description} - ${pointDetails.value?.text}`);
 const iconBGColor = computed(() => `bg-${pointDetails.value?.type}-100`);
 

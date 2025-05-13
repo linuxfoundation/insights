@@ -69,23 +69,25 @@ const chartData = computed<ChartData[]>(
     return [
       {
         key: 'popularity',
-        values: [props.trustScoreSummary.popularity]
+        values: [normalizeChartValue(props.trustScoreSummary.popularity)]
       },
       {
         key: 'contributors',
-        values: [props.trustScoreSummary.contributors]
+        values: [normalizeChartValue(props.trustScoreSummary.contributors)]
       },
       {
         key: 'security',
-        values: [props.trustScoreSummary.security]
+        values: [normalizeChartValue(props.trustScoreSummary.security)]
       },
       {
         key: 'development',
-        values: [props.trustScoreSummary.development]
+        values: [normalizeChartValue(props.trustScoreSummary.development)]
       }
     ];
   }
 );
+
+const normalizeChartValue = (value: number) => (value / 25) * 100;
 
 const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
 </script>
