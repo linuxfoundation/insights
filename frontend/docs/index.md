@@ -4,22 +4,26 @@ layout: home
 
 hero:
   name: "LFX Insights"
-  text: "Evaluation of the world's most critical open source software."
-  tagline: Measure What Matters in Open Source
+  text: "Documentation"
+  tagline: "How to use LFX Insights to evaluate open source software."
   actions:
     - theme: brand
-      text: What is LFX Insights?
-      link: /lfx-insights
-    - theme: alt
-      text: Open Source Index
+      text: Go to Docs
       link: /features/open-source-index
+    - theme: alt
+      text: Go to LFX Insights
+      link: "https://insights.linuxfoundation.org"
 
 features:
-  - title: Open Source Index
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Collections
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Projects
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
----
-
+  - title: What is LFX Insights?
+    details: Lorem ipsum...
+    link: /what-is-insights
+    linkText: Learn more
+  - title: Health Score
+    details: Lorem ipsum...
+    link: /metrics/health-score
+    linkText: Learn more
+  - title: FAQ
+    details: Lorem ipsum...
+    link: /faq
+    linkText: Learn more

@@ -40,15 +40,26 @@ export default defineConfig({
       {
         text: 'Introduction',
         items: [
-          { text: 'What is LFX Insights?', link: '/lfx-insights' },
+          { text: 'What is Insights?', link: '/what-is-insights' },
+          { text: 'LF OSS Index', link: '/lf-oss-index' },
+          { text: 'The Data Behind Insights', link: '/data' },
         ]
       },
       {
-        text: 'Features',
+        text: 'Metrics',
         items: [
-          { text: 'Open Source Index', link: '/features/open-source-index' },
-          { text: 'Collections', link: '/features/collections' },
-          { text: 'Projects', link: '/features/projects' }
+          { text: 'Health Score', link: '/metrics/health-score' },
+          { text: 'Contributors', link: '/metrics/contributors' },
+          { text: 'Popularity', link: '/metrics/popularity' },
+          { text: 'Development', link: '/metrics/development' },
+          { text: 'Security & Best Practices', link: '/metrics/security' },
+        ]
+      },
+      {
+        text: 'More',
+        items: [
+          { text: 'Glossary', link: '/glossary' },
+          { text: 'FAQ', link: '/faq' }
         ]
       }
     ],
