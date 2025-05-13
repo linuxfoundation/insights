@@ -8,18 +8,21 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import {useRoute} from "nuxt/app";
+import {storeToRefs} from "pinia";
 import {useProjectStore} from "~/components/modules/project/store/project.store";
 import LfxProjectSecurityView from "~/components/modules/project/views/security.vue";
 
-const {project} = useProjectStore();
+const {project} = storeToRefs(useProjectStore());
 const route = useRoute()
 const config = useRuntimeConfig()
 
-const title = `LFX Insights | ${project?.name} security insights`;
-const imageAlt = `${project?.name} security insights`;
-const description = `Explore ${project?.name} security insights`;
-const url = `${config.public.appUrl}${route.fullPath}`;
-const image = `${config.public.appUrl}/api/seo/og-image?projectSlug=${project?.slug}`;
+const title = computed(() => `LFX Insights | ${project.value?.name} security insights`);
+const imageAlt = computed(() => `${project.value?.name} security insights`);
+const description = computed(() => `Explore ${project.value?.name} security insights`);
+const url = computed(() => `${config.public.appUrl}${route.fullPath}`);
+const image = computed(() => (project.value
+    ? `${config.public.appUrl}/api/seo/og-image?projectSlug=${project.value.slug}`
+    : `${config.public.appUrl}/default-og-image.jpg`));
 
 useSeoMeta({
   title,

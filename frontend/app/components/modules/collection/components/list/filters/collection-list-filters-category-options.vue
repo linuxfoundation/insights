@@ -59,6 +59,7 @@ const {
   queryFn: COLLECTIONS_API_SERVICE.fetchCategoryGroups(() => ({
     search: search.value,
     type: props.type,
+    limit: 1000
   })),
 });
 

@@ -152,7 +152,7 @@ const {scrollTop} = useScroll();
 
 const pageSize = 50
 const sort = ref('starred_desc')
-const category = ref('')
+const category = ref('all')
 
 const queryKey = computed(() => [TanstackKey.COLLECTIONS, sort.value, category.value])
 
@@ -170,7 +170,7 @@ const {
   queryFn: COLLECTIONS_API_SERVICE.fetchCollections(() => ({
     pageSize,
     sort: sort.value,
-    category: category.value,
+    category: category.value === 'all' ? undefined : category.value,
   })),
   getNextPageParam: (lastPage) => {
     const nextPage = lastPage.page + 1
