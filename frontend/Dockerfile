@@ -28,6 +28,9 @@ COPY . .
 # Build the Nuxt app first
 FROM files AS builder
 
+ARG NODE_ENV=production
+ENV NODE_ENV=$NODE_ENV
+
 WORKDIR /usr/src/app
 
 # Build vitepress docs
