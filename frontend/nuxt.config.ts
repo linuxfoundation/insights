@@ -79,6 +79,6 @@ export default defineNuxtConfig({
     }
   },
   robots: {
-    disallow: process.env.NODE_ENV === 'production' ? [] : ['/'],
+    disallow: isProduction ? [] : ['/'],
   }
 });

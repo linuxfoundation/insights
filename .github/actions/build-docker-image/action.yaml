@@ -2,8 +2,8 @@ name: Insights docker image builder
 description: Builds and pushes insights docker image
 
 inputs:
-  node-env:
-    description: The NODE_ENV to pass as a build argument
+  app-env:
+    description: The APP_ENV to pass as a build argument
     required: false
     default: production
 
@@ -37,6 +37,6 @@ runs:
       shell: bash
       run: |
         docker build \
-          --build-arg APP_ENV=${{ inputs.node-env }} \
+          --build-arg APP_ENV=${{ inputs.app-env }} \
           -t ${{ steps.tag-generator.outputs.IMAGE_TAG }} ./frontend
         docker push ${{ steps.tag-generator.outputs.IMAGE_TAG }}
