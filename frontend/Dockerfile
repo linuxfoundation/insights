@@ -1,5 +1,5 @@
 ARG NODE_VERSION=20
-ARG NODE_ENV=production
+ARG APP_ENV=production
 
 FROM node:$NODE_VERSION-slim AS base
 
@@ -28,8 +28,8 @@ COPY . .
 # Build the Nuxt app first
 FROM files AS builder
 
-ARG NODE_ENV=production
-ENV NODE_ENV=$NODE_ENV
+ARG APP_ENV=production
+ENV APP_ENV=$APP_ENV
 
 WORKDIR /usr/src/app
 
