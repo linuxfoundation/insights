@@ -37,7 +37,7 @@ WORKDIR /usr/src/app
 RUN pnpm docs:build && mkdir -p public/docs && cp -r docs/.vitepress/dist/* public/docs/
 
 # Build the Nuxt app
-RUN echo "Building with NODE_ENV=$NODE_ENV"
+RUN echo "Building with NODE_ENV=$APP_ENV"
 RUN pnpm build
 
 
