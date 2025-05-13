@@ -36,7 +36,7 @@ jobs:
         uses: ./.github/actions/build-docker-image
         id: build-docker-image
         with:
-          node-env: production
+          app-env: production
 
       - name: Configure Oracle Cloud CLI
         run: |
