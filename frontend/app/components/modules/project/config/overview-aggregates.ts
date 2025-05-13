@@ -29,7 +29,8 @@ export const aggregateData: AggregateData[] = [
       BenchmarkKeys.IssuesResolution,
       BenchmarkKeys.PullRequests,
       BenchmarkKeys.ActiveDays,
-      BenchmarkKeys.MergeLeadTime
+      BenchmarkKeys.MergeLeadTime,
+      BenchmarkKeys.ContributionsOutsideWorkHours
     ]
   },
   {

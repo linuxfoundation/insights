@@ -97,7 +97,8 @@ export default defineEventHandler(async (event) => {
         onlyContributions: false
       }),
       dataSource.fetchMergeLeadTime(filter),
-      dataSource.fetchActiveDays(filter)
+      dataSource.fetchActiveDays(filter),
+      dataSource.fetchContributionsOutsideWorkHours(filter)
     ]);
 
     const [
@@ -111,7 +112,8 @@ export default defineEventHandler(async (event) => {
       issuesResolution,
       pullRequests,
       mergeLeadTime,
-      activeDays
+      activeDays,
+      contributionsOutsideWorkHours
     ] = await allQuery;
 
     healthScore.push({
@@ -188,6 +190,13 @@ export default defineEventHandler(async (event) => {
     healthScore.push({
       key: BenchmarkKeys.ActiveDays,
       value: activeDays.summary.current
+    });
+
+    healthScore.push({
+      key: BenchmarkKeys.ContributionsOutsideWorkHours,
+      value:
+        contributionsOutsideWorkHours.weekdayOutsideHoursPercentage
+        + contributionsOutsideWorkHours.weekendOutsideHoursPercentage
     });
 
     return healthScore;

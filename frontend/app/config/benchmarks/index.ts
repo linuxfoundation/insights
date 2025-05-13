@@ -13,6 +13,7 @@ import { issuesResolution } from './configs/issues-resolution';
 import { activeDays } from './configs/active-days';
 import { mergeLeadTime } from './configs/merge-lead-time';
 import { pullRequests } from './configs/pull-requests';
+import { contributionOutsideWorkHours } from './configs/contribution-outside-work-hours';
 import type { BenchmarkConfigs } from '~~/types/shared/benchmark.types';
 
 export const benchmarkConfigs: BenchmarkConfigs[] = [
@@ -26,5 +27,6 @@ export const benchmarkConfigs: BenchmarkConfigs[] = [
   issuesResolution,
   activeDays,
   mergeLeadTime,
-  pullRequests
+  pullRequests,
+  contributionOutsideWorkHours
 ];

@@ -107,12 +107,13 @@ class OverviewApiService {
   convertRawValuesToHealthScore(rawValues: HealthScore[]): HealthScore[] {
     return rawValues.map((value) => {
       const benchmarkConfig = benchmarkConfigs.find((config) => config.key === value.key);
+      const valueRounded = Math.ceil(value.value);
 
       return {
         ...value,
         points: benchmarkConfig?.points.find(
-          (point) => point.pointStart <= value.value
-            && (point.pointEnd === null || point.pointEnd >= value.value)
+          (point) => point.pointStart <= valueRounded
+            && (point.pointEnd === null || point.pointEnd >= valueRounded)
         )?.points
       };
     });
@@ -134,22 +135,26 @@ class OverviewApiService {
       const aggData = aggregateData.find((aggregate) => aggregate.benchmarkKeys.includes(point.key));
 
       if (aggData) {
+        let pointValue = point.points || 0;
+
         switch (aggData.key) {
           case 'contributors':
-            trustSummary.contributors += point.points || 0;
+            trustSummary.contributors += pointValue;
             break;
           case 'popularity':
-            trustSummary.popularity += point.points || 0;
+            // TODO: Remove this once we have the other benchmarks available
+            pointValue *= 2.5;
+            trustSummary.popularity += pointValue;
             break;
           case 'development':
-            trustSummary.development += point.points || 0;
+            trustSummary.development += pointValue;
             break;
           default:
-            trustSummary.security += point.points || 0;
+            trustSummary.security += pointValue;
             break;
         }
 
-        trustSummary.overall += point.points || 0;
+        trustSummary.overall += pointValue;
       }
     });
 
