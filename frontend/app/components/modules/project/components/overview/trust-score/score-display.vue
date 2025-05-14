@@ -4,8 +4,19 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <div class="flex flex-col w-fit">
-    <div>
-      <span class="text-[80px] text-neutral-900">{{ hideOverallScore ? '-' : Math.round(overallScore) }}</span>
+    <div
+      :class="{
+        'my-4': hideOverallScore,
+      }"
+    >
+      <span
+        class="text-neutral-900"
+        :class="{
+          'text-[80px]': !hideOverallScore,
+          'text-2xl': hideOverallScore,
+        }"
+      >
+        {{ hideOverallScore ? '?' : Math.round(overallScore) }}</span>
       <span class="text-sm text-neutral-500">/ 100</span>
     </div>
     <lfx-tag
@@ -29,7 +40,7 @@ const props = defineProps<{
 const scoreTag = computed(() => {
   switch (true) {
     case props.hideOverallScore:
-      return 'Unavailable health score';
+      return 'Unavailable';
     case props.overallScore >= 80:
       return 'Rock solid';
     case props.overallScore >= 60:
