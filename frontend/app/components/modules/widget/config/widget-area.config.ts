@@ -6,6 +6,7 @@ import {WidgetArea} from "~/components/modules/widget/types/widget-area";
 export interface WidgetAreaConfig {
     label: string;
     widgets?: Widget[];
+    overviewWidgets?: Widget[];
 }
 
 export const lfxWidgetArea: Record<WidgetArea, WidgetAreaConfig> = {
@@ -23,6 +24,13 @@ export const lfxWidgetArea: Record<WidgetArea, WidgetAreaConfig> = {
             Widget.ORGANIZATION_DEPENDENCY,
             Widget.RETENTION,
             Widget.GEOGRAPHICAL_DISTRIBUTION
+        ],
+        overviewWidgets: [
+            Widget.RETENTION,
+            Widget.ACTIVE_CONTRIBUTORS,
+            Widget.CONTRIBUTOR_DEPENDENCY,
+            Widget.ORGANIZATION_DEPENDENCY,
+            Widget.GEOGRAPHICAL_DISTRIBUTION,
         ]
     },
     [WidgetArea.POPULARITY]: {
@@ -36,6 +44,10 @@ export const lfxWidgetArea: Record<WidgetArea, WidgetAreaConfig> = {
             Widget.SEARCH_QUERIES,
             Widget.PACKAGE_DOWNLOADS,
             Widget.MAILING_LISTS_MESSAGES
+        ],
+        overviewWidgets: [
+            Widget.STARS,
+            Widget.FORKS,
         ]
     },
     [WidgetArea.DEVELOPMENT]: {
@@ -50,6 +62,13 @@ export const lfxWidgetArea: Record<WidgetArea, WidgetAreaConfig> = {
             Widget.AVERAGE_TIME_TO_MERGE,
             Widget.WAIT_TIME_FIRST_REVIEW,
             Widget.CODE_REVIEW_ENGAGEMENT
+        ],
+        overviewWidgets: [
+            Widget.ACTIVE_DAYS,
+            Widget.CONTRIBUTIONS_OUTSIDE_WORK_HOURS,
+            Widget.ISSUES_RESOLUTION,
+            Widget.MERGE_LEAD_TIME,
+            Widget.PULL_REQUESTS,
         ]
     },
     [WidgetArea.SECURITY]: {

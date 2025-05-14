@@ -31,8 +31,14 @@ SPDX-License-Identifier: MIT
         :class="tab.value === selectedTab ? 'block' : 'hidden'"
         class="p-6"
       >
+        <div
+          v-if="!scoreDisplay[tab.value as keyof typeof scoreDisplay]"
+          class="text-sm text-neutral-500"
+        >
+          {{ tab.label }} metrics are unavailable because the required data isn't configured for this project.
+        </div>
         <lfx-project-score-list
-          v-if="tab.value !== 'security'"
+          v-else-if="tab.value !== 'security'"
           :data="scoreData"
         />
         <lfx-project-security-score
@@ -57,6 +63,7 @@ import type { ScoreData } from '~~/types/shared/benchmark.types';
 import type { Tab } from '~/components/uikit/tabs/types/tab.types';
 import LfxProjectSecurityScore from "~/components/modules/project/components/overview/security/security-score.vue";
 import type { SecurityData } from '~~/types/security/responses.types';
+import type { ScoreDisplay } from '~~/types/overview/score-display.types';
 
 const props = defineProps<{
   trustScoreSummary: TrustScoreSummary | undefined;
@@ -64,6 +71,7 @@ const props = defineProps<{
   modelValue: string;
   scoreData: ScoreData[] | undefined;
   securityData: SecurityData[];
+  scoreDisplay: ScoreDisplay;
 }>();
 const emit = defineEmits<{(e: 'update:modelValue', value: string): void
 }>();
@@ -89,8 +97,7 @@ const getValues = (name: string): number => {
     return 0;
   }
 
-  const score = props.trustScoreSummary[name as keyof TrustScoreSummary] || 0;
-  return (score / 25) * 100;
+  return props.trustScoreSummary[name as keyof TrustScoreSummary] || 0;
 };
 </script>
 <script lang="ts">

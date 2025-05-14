@@ -4,8 +4,9 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <div
-    class="block min-h-[204px]"
-    :style="{ 'height': fixedHeight + 'px' }"
+    class="block"
+    :class="{ 'min-h-[204px]': !fixedHeight }"
+    :style="{ 'height': fixedHeight ? fixedHeight + 'px' : 'auto' }"
   />
   <div
     ref="maintainHeightRef"
@@ -27,19 +28,27 @@ const props = defineProps<{
   loaded?: boolean
 }>();
 
-const calculateHeight = () => {
+const calculateHeight = async () => {
+  await nextTick();
   if (maintainHeightRef.value) {
-    fixedHeight.value = maintainHeightRef.value.offsetHeight;
+    const height = maintainHeightRef.value.offsetHeight;
+
+    if (height > 0) {
+      fixedHeight.value = height;
+    }
   }
 }
 
 onMounted(async () => {
-  await nextTick();
-  calculateHeight();
+  await calculateHeight();
 });
 
-watch(() => props.loaded, () => {
-  calculateHeight();
+watch(() => props.loaded, async () => {
+  if (props.loaded) {
+    await calculateHeight();
+  }
+}, {
+  immediate: true
 });
 </script>
 
