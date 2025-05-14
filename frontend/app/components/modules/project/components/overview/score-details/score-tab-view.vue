@@ -35,7 +35,7 @@ SPDX-License-Identifier: MIT
           v-if="!scoreDisplay[tab.value as keyof typeof scoreDisplay]"
           class="text-sm text-neutral-500"
         >
-          {{ tab.label }} metrics are unavailable because the required data isn't configured for this project.
+          {{ tab.label }} metrics are unavailable because the required data isn't available for this project.
         </div>
         <lfx-project-score-list
           v-else-if="tab.value !== 'security'"

@@ -10,14 +10,19 @@ SPDX-License-Identifier: MIT
       error-message="Error fetching trust score data"
       :is-empty="isEmpty"
     >
-      <div class="h-[280px]">
+      <div class="">
         <div class="flex flex-row justify-between">
-          <div class="pr-6 sm:basis-1/2 w-full">
+          <div
+            class="pr-6 w-full"
+            :class="{
+              'sm:basis-1/2': !hideOverallScore,
+            }"
+          >
             <div class="flex flex-col justify-between h-full">
               <div>
                 <h3 class="text-heading-3 font-bold font-secondary mb-2">Health score</h3>
                 <p class="text-xs text-neutral-500">
-                  The Insights Trust Score combines the four key areas to measure an open source
+                  The Health Score combines the four key areas to measure an open source
                   project's overall health.
                   <a
                     :href="links.trustScore"
@@ -32,15 +37,19 @@ SPDX-License-Identifier: MIT
                 :hide-overall-score="hideOverallScore"
               />
               <div
+                v-if="hideOverallScore"
                 class="block"
               >
-                <div class="text-xs text-neutral-500">
-                  Health Score is unavailable because the required metrics aren't configured for this project.
+                <div class="text-xs text-neutral-500 mt-4">
+                  The Health Score is unavailable because Insights does not have sufficiently meaningful metrics.
                 </div>
               </div>
             </div>
           </div>
-          <div class="sm:basis-1/2 hidden sm:block">
+          <div
+            v-if="!hideOverallScore"
+            class="sm:basis-1/2 hidden sm:block"
+          >
             <lfx-project-trust-score-chart :chart-data="chartData" />
           </div>
         </div>
