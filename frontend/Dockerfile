@@ -29,7 +29,7 @@ COPY . .
 FROM files AS builder
 
 ARG APP_ENV=production
-ENV APP_ENV=$APP_ENV
+ENV NUXT_APP_ENV=$APP_ENV
 
 WORKDIR /usr/src/app
 
@@ -37,8 +37,8 @@ WORKDIR /usr/src/app
 RUN pnpm docs:build && mkdir -p public/docs && cp -r docs/.vitepress/dist/* public/docs/
 
 # Build the Nuxt app
-RUN echo "Building with APP_ENV=$APP_ENV"
-RUN pnpm build
+RUN echo "Building with APP_ENV=$APP_ENV" && \
+    NUXT_APP_ENV=$APP_ENV pnpm build
 
 
 FROM node:${NODE_VERSION}-slim AS prod
