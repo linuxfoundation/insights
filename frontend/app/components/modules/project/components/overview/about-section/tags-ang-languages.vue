@@ -52,13 +52,14 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
+import { computed } from 'vue';
 import LfxTag from '~/components/uikit/tag/tag.vue';
 import { useProjectStore } from '~~/app/components/modules/project/store/project.store';
 
 const { project } = storeToRefs(useProjectStore())
 
 // TODO: remove this once we have the tags from the API
-const tags = project.value?.tags || [];
+const tags = computed(() => project.value?.tags || []);
 // const languages = project.value?.languages || [{
 //   name: 'JavaScript',
 //   percentage: 24

@@ -4,12 +4,12 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <lfx-maintain-height
-    :loaded="!!props.collection"
+    :loaded="!isPending"
     class="fixed z-10 top-14 lg:top-17 w-lvw ml-auto mr-0"
   >
     <div class="bg-white outline outline-neutral-100">
       <lfx-collection-header
-        :loading="!props.collection"
+        :loading="isPending"
         :collection="props.collection"
       />
       <lfx-collection-filters

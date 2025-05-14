@@ -14,6 +14,7 @@ SPDX-License-Identifier: MIT
             :trust-score-summary="trustSummary"
             :status="status"
             :error="error"
+            :score-display="scoreDisplay"
           />
         </div>
         <div>
@@ -23,6 +24,7 @@ SPDX-License-Identifier: MIT
             :status="status"
             :error="error"
             :security-data="securityAssessmentData || []"
+            :score-display="scoreDisplay"
           />
         </div>
       </div>
@@ -50,6 +52,8 @@ import {
 import { useRoute } from 'nuxt/app';
 import { storeToRefs } from 'pinia';
 import type { AsyncDataRequestStatus } from 'nuxt/app';
+import { lfxWidgetArea } from '../../widget/config/widget-area.config';
+import { lfxWidgets } from '../../widget/config/widget.config';
 import LfxProjectAboutSection from '~/components/modules/project/components/overview/about-section.vue';
 import LfxProjectScoreTabs from '~/components/modules/project/components/overview/score-tabs.vue';
 import LfxProjectTrustScore from '~/components/modules/project/components/overview/trust-score.vue';
@@ -61,12 +65,53 @@ import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 
 const fakeLoading = ref(true);
 const route = useRoute();
-const { selectedRepository } = storeToRefs(useProjectStore())
+const { selectedRepository, project } = storeToRefs(useProjectStore())
 
 const params = computed(() => ({
   projectSlug: route.params.slug as string,
   repository: selectedRepository.value
 }));
+
+// Contributors score is only displayed if all contributors widgets are enabled
+const displayContributorsScore = computed(() => {
+  const widgets = project.value?.widgets;
+
+  return (lfxWidgetArea.contributors.overviewWidgets || [])
+    .map((widget) => lfxWidgets[widget].key)
+    .every((widget) => widgets?.includes(widget));
+});
+
+// Development score is only displayed if all development widgets are enabled
+const displayDevelopmentScore = computed(() => {
+  const widgets = project.value?.widgets;
+
+  return (lfxWidgetArea.development.overviewWidgets || [])
+    .map((widget) => lfxWidgets[widget].key)
+    .every((widget) => widgets?.includes(widget));
+});
+
+// Popularity score is only displayed if all popularity widgets are enabled
+const displayPopularityScore = computed(() => {
+  const widgets = project.value?.widgets;
+
+  return (lfxWidgetArea.popularity.overviewWidgets || [])
+    .map((widget) => lfxWidgets[widget].key)
+    .every((widget) => widgets?.includes(widget));
+});
+
+// Security score is only displayed if security data is available
+const displaySecurityScore = computed(() => !!ospsScore.value);
+
+const scoreDisplay = computed(() => ({
+  overall: displayContributorsScore.value
+    && displayDevelopmentScore.value
+    && displayPopularityScore.value
+    && displaySecurityScore.value,
+  contributors: displayContributorsScore.value,
+  development: displayDevelopmentScore.value,
+  popularity: displayPopularityScore.value,
+  security: displaySecurityScore.value,
+}))
 
 const {
   data, status: healthScoreStatus, error: healthScoreError, suspense

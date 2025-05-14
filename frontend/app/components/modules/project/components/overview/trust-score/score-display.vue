@@ -5,7 +5,7 @@ SPDX-License-Identifier: MIT
 <template>
   <div class="flex flex-col w-fit">
     <div>
-      <span class="text-[80px] text-neutral-900">{{ Math.round(overallScore) }}</span>
+      <span class="text-[80px] text-neutral-900">{{ hideOverallScore ? '-' : Math.round(overallScore) }}</span>
       <span class="text-sm text-neutral-500">/ 100</span>
     </div>
     <lfx-tag
@@ -23,10 +23,13 @@ import LfxTag from '~/components/uikit/tag/tag.vue';
 
 const props = defineProps<{
   overallScore: number;
+  hideOverallScore?: boolean;
 }>();
 
 const scoreTag = computed(() => {
   switch (true) {
+    case props.hideOverallScore:
+      return 'Unavailable health score';
     case props.overallScore >= 80:
       return 'Rock solid';
     case props.overallScore >= 60:

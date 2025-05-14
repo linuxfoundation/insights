@@ -11,17 +11,18 @@ SPDX-License-Identifier: MIT
     <div class="sm:block hidden">
       <lfx-project-score-tab-view
         :tabs="tabs"
-        :trust-score-summary="props.trustScoreSummary"
+        :trust-score-summary="parsedTrustScoreSummary"
         :model-value="selectedTab"
         :score-data="scoreData"
         :security-data="securityData"
+        :score-display="scoreDisplay"
         @update:model-value="selectedTab = $event"
       />
     </div>
     <div class="sm:hidden block">
       <lfx-project-score-accordion-view
         :tabs="tabs"
-        :trust-score-summary="props.trustScoreSummary"
+        :trust-score-summary="parsedTrustScoreSummary"
         :model-value="selectedTab"
         :score-data="scoreData"
         :security-data="securityData"
@@ -44,6 +45,8 @@ import type { Tab } from '~/components/uikit/tabs/types/tab.types';
 import { aggregateData } from '~~/app/components/modules/project/config/overview-aggregates';
 import type { ScoreData } from '~~/types/shared/benchmark.types';
 import type { SecurityData } from '~~/types/security/responses.types';
+import type { ScoreDisplay } from '~~/types/overview/score-display.types';
+import { overviewScore } from '~~/app/components/shared/utils/overview-score';
 
 const props = defineProps<{
   trustScoreSummary: TrustScoreSummary | undefined;
@@ -51,6 +54,7 @@ const props = defineProps<{
   status: AsyncDataRequestStatus;
   error: unknown;
   securityData: SecurityData[];
+  scoreDisplay: ScoreDisplay;
 }>();
 
 const tabs = ref<Tab[]>([
@@ -82,6 +86,8 @@ const scoreData = computed<ScoreData[]>(() => {
     })
     .filter((score): score is ScoreData => score !== null);
 });
+
+const parsedTrustScoreSummary = computed(() => overviewScore(props.trustScoreSummary, props.scoreDisplay));
 
 </script>
 <script lang="ts">
