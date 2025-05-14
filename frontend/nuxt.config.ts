@@ -7,7 +7,7 @@ import tailwindcss from './setup/tailwind';
 import primevue from './setup/primevue';
 import echarts from './setup/echarts';
 
-const isProduction = process.env.APP_ENV === 'production';
+const isProduction = process.env.NUXT_APP_ENV === 'production';
 export default defineNuxtConfig({
   future: {
     compatibilityVersion: 4
@@ -39,6 +39,7 @@ export default defineNuxtConfig({
   echarts,
   runtimeConfig: {
     // These are are only available on the server-side and can be overridden by the .env file
+    appEnv: process.env.APP_ENV,
     tinybirdBaseUrl: 'https://api.us-west-2.aws.tinybird.co',
     tinybirdToken: '',
     cmApiUrl: '',
@@ -52,6 +53,7 @@ export default defineNuxtConfig({
     public: {
       apiBase: '/api',
       appUrl: 'http://localhost:3000',
+      appEnv: process.env.APP_ENV
     }
   },
   vue: {

@@ -11,5 +11,4 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-
 </script>
