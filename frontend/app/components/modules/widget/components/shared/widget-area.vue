@@ -13,7 +13,7 @@ SPDX-License-Identifier: MIT
         />
       </div>
 
-      <div class="w-3/4 pb-6 md:pb-10">
+      <div class="w-full md:w-3/4 pb-6 md:pb-10">
         <lfx-scroll-area
           class="flex flex-col gap-5 md:gap-8"
           @scrolled-to-view="onScrolledToView"

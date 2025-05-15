@@ -3,7 +3,10 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <lfx-maintain-height class="fixed top-14 lg:top-17 z-10 w-full">
+  <lfx-maintain-height
+    class="fixed top-14 lg:top-17 z-10 w-full"
+    :loaded="pageWidth > 0"
+  >
     <div class="bg-white outline outline-1 outline-neutral-200">
       <section class="container">
         <div
@@ -20,7 +23,7 @@ SPDX-License-Identifier: MIT
                 />
               </lfx-back>
               <lfx-organization-logo
-                class="mr-4"
+                class="mr-4 max-h-8 md:max-h-12"
                 :src="props.project?.logo || ''"
                 :size="scrollTop > 50 ? 'normal' : ((pageWidth < 768 && pageWidth > 0) ? 'normal' : 'large')"
                 :is-lf="!!props.project?.isLF"

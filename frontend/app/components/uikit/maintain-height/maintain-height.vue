@@ -5,7 +5,6 @@ SPDX-License-Identifier: MIT
 <template>
   <div
     class="block"
-    :class="{ 'min-h-[204px]': !fixedHeight }"
     :style="{ 'height': fixedHeight ? fixedHeight + 'px' : 'auto' }"
   />
   <div
