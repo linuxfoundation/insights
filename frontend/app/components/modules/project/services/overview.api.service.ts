@@ -9,6 +9,7 @@ import { TanstackKey } from '~/components/shared/types/tanstack';
 import type { Organization } from '~~/types/contributors/responses.types';
 import { benchmarkConfigs } from '~~/app/config/benchmarks';
 import type { SecurityData } from '~~/types/security/responses.types';
+import type { BenchmarkKeys } from '~~/types/shared/benchmark.types';
 
 export interface OverviewQueryParams {
   projectSlug: string;
@@ -106,15 +107,12 @@ class OverviewApiService {
 
   convertRawValuesToHealthScore(rawValues: HealthScore[]): HealthScore[] {
     return rawValues.map((value) => {
-      const benchmarkConfig = benchmarkConfigs.find((config) => config.key === value.key);
       const valueRounded = Math.ceil(value.value);
+      const pointDets = this.getPointDetails(valueRounded, value.key);
 
       return {
         ...value,
-        points: benchmarkConfig?.points.find(
-          (point) => point.pointStart <= valueRounded
-            && (point.pointEnd === null || point.pointEnd >= valueRounded)
-        )?.points
+        points: pointDets?.points
       };
     });
   }
@@ -164,6 +162,18 @@ class OverviewApiService {
     }
 
     return trustSummary;
+  }
+
+  getPointDetails(value: number, key: BenchmarkKeys) {
+    const benchmarkConfig = benchmarkConfigs.find((config) => config.key === key);
+    return benchmarkConfig?.points.find(
+      (point) => point.pointStart <= value && (point.pointEnd === null || point.pointEnd >= value)
+    );
+  }
+
+  getBenchmarkTitle(key: BenchmarkKeys) {
+    const benchmarkConfig = benchmarkConfigs.find((config) => config.key === key);
+    return benchmarkConfig?.title;
   }
 }
 

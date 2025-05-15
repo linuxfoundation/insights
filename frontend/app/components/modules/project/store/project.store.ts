@@ -36,13 +36,12 @@ const calculateGranularity = (start: string | null, end: string | null): string[
   }
 };
 
+export const defaultTimeRangeKey = dateOptKeys.past365days;
+export const defaultDateOption = lfxProjectDateOptions.find(
+  (option) => option.key === defaultTimeRangeKey
+);
 export const useProjectStore = defineStore('project', () => {
   const route = useRoute();
-
-  const defaultTimeRangeKey = dateOptKeys.past365days;
-  const defaultDateOption = lfxProjectDateOptions.find(
-    (option) => option.key === defaultTimeRangeKey
-  );
 
   const selectedTimeRangeKey = ref<string>(defaultTimeRangeKey);
   const startDate = ref<string | null>(
@@ -55,6 +54,7 @@ export const useProjectStore = defineStore('project', () => {
   const projectRepos = computed<ProjectRepository[]>(
     () => project.value?.repositories || []
   );
+
   const selectedRepository = computed<string>(
     () => projectRepos.value.find(
         (repo: ProjectRepository) => route.params.name === repo.slug

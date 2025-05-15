@@ -74,17 +74,27 @@ const scoreData = computed<ScoreData[]>(() => {
     return [];
   }
 
+  return props.healthScores
+    .filter((score) => selectedAggregate.benchmarkKeys.includes(score.key))
+    .sort((a, b) => (b.points || 0) - (a.points || 0))
+    .map((score) => ({
+      benchmarkKey: score.key,
+      value: score.value
+    }));
+
   // Filter scores that match benchmark keys in the same order as defined in aggregateData
-  return selectedAggregate.benchmarkKeys
-    .map((benchmarkKey) => {
-      const score = props.healthScores?.find((s) => s.key === benchmarkKey);
-      if (!score) return null;
-      return {
-        benchmarkKey: score.key,
-        value: score.value
-      };
-    })
-    .filter((score): score is ScoreData => score !== null);
+  // return selectedAggregate.benchmarkKeys
+  //   .map((benchmarkKey) => {
+  //     const score = props.healthScores?.find((s) => s.key === benchmarkKey);
+  //     console.log('score', score);
+  //     if (!score) return null;
+  //     return {
+  //       benchmarkKey: score.key,
+  //       value: score.value
+  //     };
+  //   })
+  //   .filter((score): score is ScoreData => score !== null)
+  //   .sort((a, b) => b.value - a.value);
 });
 
 const parsedTrustScoreSummary = computed(() => overviewScore(props.trustScoreSummary, props.scoreDisplay));

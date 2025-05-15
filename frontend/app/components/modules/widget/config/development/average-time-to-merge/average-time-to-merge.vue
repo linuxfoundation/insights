@@ -16,6 +16,7 @@ SPDX-License-Identifier: MIT
             v-if="selectedTimeRangeKey !== dateOptKeys.alltime"
             :summary="summary"
             is-duration
+            is-reverse
           />
         </div>
       </lfx-skeleton-state>

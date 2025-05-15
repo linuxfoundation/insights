@@ -32,20 +32,17 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { computed } from 'vue';
 import type { BenchmarkKeys } from '~~/types/shared/benchmark.types';
-import { benchmarkConfigs } from '~~/app/config/benchmarks';
 import LfxBenchmarkIcon from '~/components/uikit/benchmarks/benchmark-icon.vue';
+import { OVERVIEW_API_SERVICE } from '~~/app/components/modules/project/services/overview.api.service';
 
 const props = defineProps<{
   benchmarkKey: BenchmarkKeys;
   value: number;
 }>();
 
-const benchmarkConfig = computed(() => benchmarkConfigs.find((config) => config.key === props.benchmarkKey));
-const title = computed(() => benchmarkConfig.value?.title);
+const title = computed(() => OVERVIEW_API_SERVICE.getBenchmarkTitle(props.benchmarkKey));
 const benchmarkValue = computed(() => Math.ceil(props.value || 0));
-const pointDetails = computed(() => benchmarkConfig.value?.points
-  .find((point) => benchmarkValue.value >= point.pointStart
-  && (point.pointEnd === null || benchmarkValue.value <= point.pointEnd)));
+const pointDetails = computed(() => OVERVIEW_API_SERVICE.getPointDetails(benchmarkValue.value, props.benchmarkKey));
 const description = computed(() => `${pointDetails.value?.description} - ${pointDetails.value?.text}`);
 const iconBGColor = computed(() => `bg-${pointDetails.value?.type}-100`);
 

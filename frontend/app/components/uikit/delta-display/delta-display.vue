@@ -42,7 +42,6 @@ const percentage = computed(() => formatNumber(Math.abs(props.summary.percentage
 /**
  * This is used to determine the direction of the delta display
  * It is used to determine the color of the delta display
- * It is used to determine the icon of the delta display
  * If props.isReverse is true, the delta direction is reversed
  */
 const deltaDirection = computed<'positive' | 'negative'>(() => {
@@ -78,7 +77,8 @@ const deltaDisplay = computed(() => {
   return '';
 });
 
-const deltaIcon = computed(() => (deltaDirection.value === 'negative'
+// The up and down icons will only rely on the value instead of the deltaDirection
+const deltaIcon = computed(() => (props.summary.changeValue < 0
   ? 'circle-arrow-down' : 'circle-arrow-up'));
 
 const previousDisplay = computed(() => {
