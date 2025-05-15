@@ -21,7 +21,7 @@ SPDX-License-Identifier: MIT
     </div>
     <lfx-tag
       :size="'medium'"
-      :style="scoreTagStyle"
+      :variation="scoreTagStyle"
       type="solid"
       class="justify-center"
     >{{ scoreTag }}</lfx-tag>
