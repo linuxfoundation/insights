@@ -18,6 +18,7 @@ SPDX-License-Identifier: MIT
               :summary="summary"
               percentage-only
               unit="%"
+              is-reverse
             />
           </div>
         </lfx-skeleton-state>

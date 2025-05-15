@@ -19,6 +19,7 @@ SPDX-License-Identifier: MIT
           :summary="summary"
           unit="d"
           is-duration
+          is-reverse
         />
       </div>
     </lfx-skeleton-state>

@@ -32,13 +32,19 @@ computed, onServerPrefetch, watch
 import {useQuery} from "@tanstack/vue-query";
 import type {Project} from "~~/types/project";
 import LfxProjectHeader from "~/components/modules/project/components/shared/header.vue";
-import {useProjectStore} from "~/components/modules/project/store/project.store";
+import {
+  useProjectStore,
+  defaultTimeRangeKey,
+  defaultDateOption
+} from "~/components/modules/project/store/project.store";
 import {TanstackKey} from "~/components/shared/types/tanstack";
 import {PROJECT_API_SERVICE} from "~/components/modules/project/services/project.api.service";
 
 const route = useRoute();
 const {slug} = route.params;
-const {project} = storeToRefs(useProjectStore());
+const {
+project, selectedTimeRangeKey, startDate, endDate
+} = storeToRefs(useProjectStore());
 
 const queryKey = computed(() => [TanstackKey.PROJECT, slug]);
 
@@ -75,6 +81,9 @@ onServerPrefetch(async () => {
 watch(() => data.value, (value) => {
   if (value) {
     project.value = value;
+    selectedTimeRangeKey.value = defaultTimeRangeKey;
+    startDate.value = defaultDateOption?.startDate || null;
+    endDate.value = defaultDateOption?.endDate || null;
   }
 }, { immediate: true });
 </script>
