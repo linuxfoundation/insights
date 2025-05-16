@@ -1,5 +1,5 @@
 
-# ❤️ Popularity Metrics Explained
+# Popularity Metrics Explained
 
 This page explains the key popularity metrics tracked by LFX Insights. These indicators help you understand <b>how widely adopted and talked-about an open source project is</b> across the web and developer ecosystem.
 

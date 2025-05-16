@@ -1,4 +1,4 @@
-# 👥 Contributors Metrics Explained
+# Contributors Metrics Explained
 
 This page provides concise explanations of the metrics available on the Contributors page of LFX Insights. These metrics help you understand <b>who is contributing to an open source project on behalf of which organizations</b>.
 

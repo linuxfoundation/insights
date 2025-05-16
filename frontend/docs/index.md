@@ -9,9 +9,9 @@ hero:
   actions:
     - theme: brand
       text: Go to Docs
-      link: /features/open-source-index
+      link: /what-is-insights
     - theme: alt
-      text: Go to LFX Insights
+      text: "Back to LFX Insights"
       link: "https://insights.linuxfoundation.org"
 
 features:

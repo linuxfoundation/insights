@@ -41,8 +41,9 @@ export default defineConfig({
         text: 'Introduction',
         items: [
           { text: 'What is Insights?', link: '/what-is-insights' },
-          { text: 'LF OSS Index', link: '/lf-oss-index' },
-          { text: 'The Data Behind Insights', link: '/data' },
+          { text: 'LF Open Source Index', link: '/lf-oss-index' },
+          { text: 'Data Sources', link: '/data-sources' },
+          { text: 'Data Quality', link: '/data-quality' },
         ]
       },
       {
@@ -58,8 +59,8 @@ export default defineConfig({
       {
         text: 'More',
         items: [
-          { text: 'Glossary', link: '/glossary' },
-          { text: 'FAQ', link: '/faq' }
+          { text: 'FAQ', link: '/faq' },
+          { text: 'Glossary', link: '/glossary' }
         ]
       }
     ],
