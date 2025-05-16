@@ -1,4 +1,4 @@
-# 🛠️ Development Metrics Explained
+# Development Metrics Explained
 
 This section explains the development activity metrics tracked by LFX Insights. These metrics help assess <b>how actively and efficiently an open source project is being developed and maintained</b>.
 

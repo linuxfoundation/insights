@@ -1,7 +1,6 @@
+# Health Score Explained
 
-# 🩺 Health Score Explained
-
-The Health Score in LFX Insights is **a single, unified metric (0–100) that reflects the overall health and trustworthiness of an open source project**. It’s designed to give developers a quick, high-confidence signal about whether a project is actively maintained, widely used, secure, and well-governed.
+The Health Score in LFX Insights is **a single, unified metric (0–100) that reflects the overall health of an open source project**. It's designed to give developers a quick, high-confidence signal about whether a project is actively maintained, widely used, secure, and well-governed.
 
 ::: warning ⚠️ Please note
 While the Health Score provides a useful, data-driven snapshot of a project's overall state, no single score can capture all the nuance of an open source project. Different projects serve different goals—some are mature and stable, others are experimental or niche by design. This scoring model is meant to highlight potential signals and risks, not to make final judgments. Always consider context and use your own judgment alongside the score.
@@ -154,6 +153,11 @@ If Insights only has GitHub data availabe for a project, its popularity score wi
 
 ### 4. Security & Best Practices (0-25 pts)
 
-The score for Security & Best Practices is based [Open Source Project Security Baseline](https://baseline.openssf.org/) by OpenSSF. OSPS Baseline creates a score evaluating a project's security and best practices, which ranges from 0 to 100. To fit into the Health Score model, the score is divided by 4 to yield a maximum of 25 points.
+We run a set of control assessments for all available repositories of a project, powered by the [Open Source Project Security Baseline](https://baseline.openssf.org) by OpenSSF.
 
-**Example:** If a project has an OSPS Baseline result of 80: 80 ÷ 4 = 20 points
+The Security & Best Practices dimension is evaluated with an equally weighted score from all applicable control assessments. We only consider control assessments that worked without privileged access to the project's codebase and ignore those that are not applicable (e.g., controls that cannot be evaluated due to repository limitations or project structure).
+
+The formula used is:
+**Security & Best Practices Score = Passed Control Assessments / (Passed + Failed Control Assessments)**
+
+This percentage is then converted to a 0-25 point scale for the final Health Score.
