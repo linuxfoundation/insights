@@ -3,6 +3,7 @@
 import {fetchFromTinybird} from "~~/server/data/tinybird/tinybird";
 import type {Pagination} from "~~/types/shared/pagination";
 import type {Collection} from "~~/types/collection";
+import {useRuntimeConfig} from "#imports";
 
 /**
  * API Endpoint: /api/collection
@@ -26,9 +27,6 @@ import type {Collection} from "~~/types/collection";
  * - 500: Internal Server Error
  */
 
-// NOTE: This is a temporary workaround to highlight one of the featured collections
-const highlightId = '08c19065-41f5-4ba4-b4d8-5984c5725ff1';
-
 export default defineEventHandler(async (event): Promise<Pagination<Collection> | Error> => {
     const query = getQuery(event);
     const sort: string = (query?.sort as string) || 'name_asc';
@@ -50,14 +48,28 @@ export default defineEventHandler(async (event): Promise<Pagination<Collection> 
             orderByDirection,
         });
 
-        // Move the highlighted item to the top if it exists
-    if (highlightId) {
-        const index = res.data.findIndex((item) => item.id === highlightId);
-        if (index > -1) {
-          const [highlightedItem] = res.data.splice(index, 1);
-          res.data.unshift(highlightedItem);
+        // NOTE: This is a temporary workaround to highlight one of the featured collections
+        // TODO: Remove this once we have a more permanent solution
+        // First find which highlighted IDs exist in the current results
+        if(sort.includes('starred')) {
+            const config = useRuntimeConfig();
+            const { highlightedIds} = config;
+            const parsedIds: string[] = highlightedIds?.split(',') || [];
+            const existingHighlightedIds = parsedIds.filter((id: string) => res.data.some((item) => item.id === id));
+
+            // If we have any matches, reorder the results
+            if (existingHighlightedIds.length > 0) {
+                // Add highlighted items in their specified order
+                const highlightedItems = existingHighlightedIds
+                    .map((highlightId) => res.data.find((item) => item.id === highlightId))
+                    .filter((item): item is Collection => item !== undefined);
+
+                // Add remaining non-highlighted items
+                const nonHighlightedItems = res.data.filter((item) => !existingHighlightedIds.includes(item.id));
+
+                res.data = [...highlightedItems, ...nonHighlightedItems];
+            }
         }
-      }
 
         type CollectionCount = {'count(id)': number};
         const collectionCountResult = await fetchFromTinybird<CollectionCount[]>('/v0/pipes/collections_list.json', {

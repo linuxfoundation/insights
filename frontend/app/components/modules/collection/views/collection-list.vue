@@ -150,7 +150,8 @@ const { showToast } = useToastService();
 const {pageWidth} = useResponsive();
 const {scrollTop} = useScroll();
 
-const pageSize = 50
+// NOTE: This is a temporary workaround to highlight the most important collections within the LF featured collections
+const pageSize = 100
 const sort = ref('starred_desc')
 const category = ref('all')
 
