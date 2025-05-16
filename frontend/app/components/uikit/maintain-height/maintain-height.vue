@@ -29,14 +29,19 @@ const props = defineProps<{
 
 const calculateHeight = async () => {
   await nextTick();
-  if (maintainHeightRef.value) {
-    const height = maintainHeightRef.value.offsetHeight;
-
-    if (height > 0) {
-      fixedHeight.value = height;
+  // @Gasper, I've added this hack to fix the height calculation issue.
+  // When you navigate from 1 collection to another, the height is not calculated correctly.
+  // This is a hack to delay the height calculation to ensure the height is calculated correctly.
+  // Feel free to remove this if you find a better solution.
+  setTimeout(() => {
+    if (maintainHeightRef.value) {
+      const height = maintainHeightRef.value.offsetHeight;
+      if (height > 0) {
+        fixedHeight.value = height;
+      }
     }
-  }
-}
+  }, 800);
+};
 
 onMounted(async () => {
   await calculateHeight();

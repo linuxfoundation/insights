@@ -51,7 +51,12 @@ import type {
   ContributorLeaderboard,
   OrganizationLeaderboard
 } from "~~/types/contributors/responses.types";
-import type {ForksData, MailingListsMessages, StarsData} from "~~/types/popularity/responses.types";
+import type {
+  ForksData,
+  MailingListsMessages,
+  StarsData,
+  CommitActivities
+} from "~~/types/popularity/responses.types";
 import type {
   ActiveDays,
   IssuesResolution,
@@ -65,6 +70,7 @@ import type {
 } from "~~/types/development/responses.types";
 import type {CodeReviewEngagementFilter} from "~~/types/development/requests.types";
 import {fetchMailingListsMessageActivities} from "~~/server/data/tinybird/mailing-lists-messages-data-source";
+import {fetchCommitActivities} from "~~/server/data/tinybird/commit-activites-data-source";
 
 export interface DataSource {
     fetchActiveContributors: (filter: ActiveContributorsFilter) => Promise<ActiveContributorsResponse>;
@@ -79,6 +85,7 @@ export interface DataSource {
     fetchMailingListsMessageActivities: (filter: ActivityCountFilter) => Promise<MailingListsMessages>;
     fetchStarsActivities: (filter: ActivityCountFilter) => Promise<StarsData>;
     fetchIssuesResolution: (filter: ActivityCountFilter) => Promise<IssuesResolution>;
+    fetchCommitActivities: (filter: ActivityCountFilter) => Promise<CommitActivities>;
     fetchPullRequests: (filter: ActivityCountFilter) => Promise<PullRequests>;
     fetchReviewTimeByPRSize: (filter: ReviewTimeByPRSizeFilter) => Promise<ReviewTimeByPrItem[]>;
     fetchAverageTimeToMerge: (filter: AverageTimeToMergeFilter) => Promise<AverageTimeMerge>;
@@ -104,6 +111,7 @@ export function createDataSource(): DataSource {
         fetchMailingListsMessageActivities,
         fetchStarsActivities,
         fetchIssuesResolution,
+        fetchCommitActivities,
         fetchPullRequests,
         fetchAverageTimeToMerge,
         fetchWaitTimeFor1stReview,
