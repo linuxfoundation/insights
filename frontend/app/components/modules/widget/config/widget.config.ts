@@ -39,49 +39,51 @@ import reviewTimeByPullRequestSize
     from "./development/review-time-by-pull-request-size/review-time-by-pull-request-size.config";
 import mailingListMessages
     from "./popularity/mailing-list-messages/mailing-list-messages.config";
+import commitActivities from "./development/commit-activities/commit-activities.config";
 import {Widget} from "~/components/modules/widget/types/widget";
 import type {Project} from "~~/types/project";
 
 export interface WidgetConfig {
-    key: string;
-    name: string;
-    description: (project: Project) => string;
-    learnMoreLink?: string;
-    component: Component;
-    share: boolean;
-    embed: boolean;
-    snapshot: boolean;
+  key: string;
+  name: string;
+  description: (project: Project) => string;
+  learnMoreLink?: string;
+  component: Component;
+  share: boolean;
+  embed: boolean;
+  snapshot: boolean;
 }
 
 export const lfxWidgets: Record<Widget, WidgetConfig> = {
-    // Contributor
-    [Widget.CONTRIBUTORS_LEADERBOARD]: contributorsLeaderboard,
-    [Widget.ORGANIZATIONS_LEADERBOARD]: organizationsLeaderboard,
-    [Widget.ACTIVE_CONTRIBUTORS]: activeContributors,
-    [Widget.ACTIVE_ORGANIZATIONS]: activeOrganizations,
-    [Widget.CONTRIBUTOR_DEPENDENCY]: contributorDependency,
-    [Widget.ORGANIZATION_DEPENDENCY]: organizationDependency,
-    [Widget.RETENTION]: retention,
-    [Widget.GEOGRAPHICAL_DISTRIBUTION]: geographicalDistribution,
+  // Contributor
+  [Widget.CONTRIBUTORS_LEADERBOARD]: contributorsLeaderboard,
+  [Widget.ORGANIZATIONS_LEADERBOARD]: organizationsLeaderboard,
+  [Widget.ACTIVE_CONTRIBUTORS]: activeContributors,
+  [Widget.ACTIVE_ORGANIZATIONS]: activeOrganizations,
+  [Widget.CONTRIBUTOR_DEPENDENCY]: contributorDependency,
+  [Widget.ORGANIZATION_DEPENDENCY]: organizationDependency,
+  [Widget.RETENTION]: retention,
+  [Widget.GEOGRAPHICAL_DISTRIBUTION]: geographicalDistribution,
 
-    // Popularity
-    [Widget.STARS]: stars,
-    [Widget.FORKS]: forks,
-    [Widget.SOCIAL_MENTIONS]: socialMentions,
-    [Widget.GITHUB_MENTIONS]: githubMentions,
-    [Widget.PRESS_MENTIONS]: pressMentions,
-    [Widget.SEARCH_QUERIES]: searchQueries,
-    [Widget.PACKAGE_DOWNLOADS]: packageDownloads,
-    [Widget.MAILING_LISTS_MESSAGES]: mailingListMessages,
+  // Popularity
+  [Widget.STARS]: stars,
+  [Widget.FORKS]: forks,
+  [Widget.SOCIAL_MENTIONS]: socialMentions,
+  [Widget.GITHUB_MENTIONS]: githubMentions,
+  [Widget.PRESS_MENTIONS]: pressMentions,
+  [Widget.SEARCH_QUERIES]: searchQueries,
+  [Widget.PACKAGE_DOWNLOADS]: packageDownloads,
+  [Widget.MAILING_LISTS_MESSAGES]: mailingListMessages,
 
-    // Development
-    [Widget.ISSUES_RESOLUTION]: issuesResolution,
-    [Widget.PULL_REQUESTS]: pullRequests,
-    [Widget.ACTIVE_DAYS]: activeDays,
-    [Widget.CONTRIBUTIONS_OUTSIDE_WORK_HOURS]: contributionsOutsideWorkHours,
-    [Widget.MERGE_LEAD_TIME]: mergeLeadTime,
-    [Widget.AVERAGE_TIME_TO_MERGE]: averateTimeToMerge,
-    [Widget.WAIT_TIME_FIRST_REVIEW]: waitTimeFirstReview,
-    [Widget.CODE_REVIEW_ENGAGEMENT]: codeReviewEngagement,
-    [Widget.REVIEW_TIME_BY_PULL_REQUEST_SIZE]: reviewTimeByPullRequestSize,
-}
+  // Development
+  [Widget.ISSUES_RESOLUTION]: issuesResolution,
+  [Widget.COMMIT_ACTIVITIES]: commitActivities,
+  [Widget.PULL_REQUESTS]: pullRequests,
+  [Widget.ACTIVE_DAYS]: activeDays,
+  [Widget.CONTRIBUTIONS_OUTSIDE_WORK_HOURS]: contributionsOutsideWorkHours,
+  [Widget.MERGE_LEAD_TIME]: mergeLeadTime,
+  [Widget.AVERAGE_TIME_TO_MERGE]: averateTimeToMerge,
+  [Widget.WAIT_TIME_FIRST_REVIEW]: waitTimeFirstReview,
+  [Widget.CODE_REVIEW_ENGAGEMENT]: codeReviewEngagement,
+  [Widget.REVIEW_TIME_BY_PULL_REQUEST_SIZE]: reviewTimeByPullRequestSize
+};

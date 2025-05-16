@@ -8,7 +8,7 @@ SPDX-License-Identifier: MIT
       v-if="!fakeLoading"
       class="flex justify-between pt-5 md:pt-10 gap-10 flex-col md:flex-row"
     >
-      <div class="w-full md:w-3/4 pb-6 md:pb-10 flex flex-col gap-8">
+      <div class="w-full md:w-3/4 pb-6 md:pb-10 flex flex-col md:gap-8 gap-5">
         <div>
           <lfx-project-trust-score
             :trust-score-summary="trustSummary"

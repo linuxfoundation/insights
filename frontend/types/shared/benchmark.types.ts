@@ -16,6 +16,7 @@ export enum BenchmarkKeys {
   Stars = 'stars',
   Forks = 'forks',
   IssuesResolution = 'issues-resolution',
+  CommitActivities = 'commit-activities',
   PullRequests = 'pull-requests',
   ActiveDays = 'active-days',
   MergeLeadTime = 'merge-lead-time',

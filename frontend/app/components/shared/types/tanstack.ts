@@ -27,6 +27,7 @@ export enum TanstackKey {
   PULL_REQUESTS = 'pull-requests',
   REVIEW_TIME_BY_PULL_REQUEST_SIZE = 'review-time-by-pull-request-size',
   WAIT_TIME_FIRST_REVIEW = 'wait-time-first-review',
+  COMMIT_ACTIVITIES = 'commit-activities',
 
   // Popularity
   FORKS = 'forks',

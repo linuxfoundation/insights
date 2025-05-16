@@ -24,6 +24,15 @@ export interface ForksData {
   }[];
 }
 
+export interface CommitActivities {
+  summary: Summary;
+  data: {
+    startDate: string;
+    endDate: string;
+    commits: number;
+  }[];
+}
+
 export interface MailingListsMessages {
   summary: Summary;
   data: {
