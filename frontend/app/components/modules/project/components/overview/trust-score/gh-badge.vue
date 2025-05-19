@@ -86,7 +86,7 @@ const markdown = computed(() => {
 const copyBadge = () => {
   navigator?.clipboard.writeText(markdown.value);
     showToast(
-        `Link copied to clipboard`,
+        `Health score badge copied to clipboard`,
         ToastTypesEnum.positive,
     );
     isModalOpen.value = false;
