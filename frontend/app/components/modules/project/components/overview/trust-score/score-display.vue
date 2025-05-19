@@ -21,54 +21,34 @@ SPDX-License-Identifier: MIT
     </div>
     <lfx-tag
       :size="'medium'"
-      :variation="scoreTagStyle"
+      :variation="scoreConfig.tagStyle as TagStyle"
       type="solid"
       class="justify-center"
-    >{{ scoreTag }}</lfx-tag>
+    >{{ scoreConfig.label }}</lfx-tag>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import {computed} from 'vue';
 import LfxTag from '~/components/uikit/tag/tag.vue';
+import {lfxTrustScore} from "~/components/modules/project/config/trust-score";
+import type {TagStyle} from "~/components/uikit/tag/types/tag.types";
 
 const props = defineProps<{
   overallScore: number;
   hideOverallScore?: boolean;
 }>();
 
-const scoreTag = computed(() => {
-  switch (true) {
-    case props.hideOverallScore:
-      return 'Unavailable';
-    case props.overallScore >= 80:
-      return 'Rock solid';
-    case props.overallScore >= 60:
-      return 'Healthy';
-    case props.overallScore >= 40:
-      return 'Stable';
-    case props.overallScore >= 20:
-      return 'Unsteady';
-    default:
-      return 'Critical';
+const scoreConfig = computed(() => {
+  if (props.hideOverallScore) {
+    return {label: 'Unavailable', tagStyle: 'default'};
   }
-});
-
-const scoreTagStyle = computed(() => {
-  switch (true) {
-    case props.hideOverallScore:
-      return 'default';
-    case props.overallScore >= 80:
-      return 'positive-solid';
-    case props.overallScore >= 60:
-      return 'positive';
-    case props.overallScore >= 40:
-      return 'info';
-    case props.overallScore >= 20:
-      return 'warning';
-    default:
-      return 'negative-solid';
-  }
+  return lfxTrustScore.find(
+      (s) => props.overallScore <= s.maxScore && props.overallScore >= s.minScore
+  ) || {
+    label: 'Critical',
+    tagStyle: 'negative-solid'
+  };
 });
 </script>
 
