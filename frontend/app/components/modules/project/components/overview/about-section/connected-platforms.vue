@@ -40,27 +40,34 @@ SPDX-License-Identifier: MIT
           :alt="platform.label"
           class="w-3.5 h-3.5 object-contain"
         >
-        {{platform.label}}
+        {{ platform.label }}
       </lfx-tag>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { storeToRefs } from 'pinia';
+import {storeToRefs} from 'pinia';
 import {computed} from "vue";
-import { useProjectStore } from '~~/app/components/modules/project/store/project.store';
+import {useProjectStore} from '~~/app/components/modules/project/store/project.store';
 import {platforms} from "~/config/platforms";
 import LfxTooltip from "~/components/uikit/tooltip/tooltip.vue";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
 import LfxTag from "~/components/uikit/tag/tag.vue";
 
-const { project } = storeToRefs(useProjectStore())
+const {project} = storeToRefs(useProjectStore())
 
-const connected = computed(() => (project.value?.connectedPlatforms || []).map((platform) => ({
-  platform,
-  ...platforms[platform],
-})).filter((platform) => !!platform.label))
+const connected = computed(() => {
+  const platformList = (project.value?.connectedPlatforms || [])
+      .map((platform) => platform.split('-').at(0) || platform);
+  const uniquePlatforms = [...new Set(platformList)];
+  return uniquePlatforms
+      .map((platform) => ({
+        platform,
+        ...platforms[platform],
+      }))
+      .filter((platform) => !!platform.label)
+})
 </script>
 
 <script lang="ts">
