@@ -87,7 +87,11 @@ const emit = defineEmits<{(e: 'update:modelValue', value: string): void }>();
 
 const { project } = storeToRefs(useProjectStore());
 
-const connected = computed(() => project.value?.connectedPlatforms || []);
+const connected = computed(() => {
+  const platformList = (project.value?.connectedPlatforms || [])
+      .map((platform) => platform.split('-').at(0) || platform);
+  return [...new Set(platformList)];
+})
 
 const activity = computed({
   get() {
