@@ -53,11 +53,11 @@ const { project } = storeToRefs(useProjectStore())
 // add default icon if the backend didn't return them
 const links = computed(() => (project.value?.projectLinks || []).map((link) => {
   const icon = link.icon || (link.img ? undefined : 'link')
-  if (link.url.includes('twitter')) {
+  if (link.url.includes('x') || link.url.includes('twitter')) {
     return {
       ...link,
-      img: '/images/integrations/twitter.png',
-      name: link.url?.replace("https://x.com", "")
+      img: '/images/integrations/x.png',
+      name: link.url?.replace("https://x.com", "").replace("https://twitter.com", "")
     }
   }
 

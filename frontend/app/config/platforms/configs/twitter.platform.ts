@@ -7,7 +7,7 @@ import type { PlatformConfig } from '~~/types/shared/platforms.types';
 export const twitter: PlatformConfig = {
   key: ActivityPlatforms.TWITTER,
   label: 'X/Twitter',
-  image: '/images/integrations/twitter.png',
+  image: '/images/integrations/x.png',
   activityTypes: [
     {
       key: ActivityTypes.HASHTAG,
