@@ -43,7 +43,7 @@ import {PROJECT_API_SERVICE} from "~/components/modules/project/services/project
 const route = useRoute();
 const {slug} = route.params;
 const {
-project, selectedTimeRangeKey, startDate, endDate
+project, selectedTimeRangeKey, startDate, endDate, isProjectLoading
 } = storeToRefs(useProjectStore());
 
 const queryKey = computed(() => [TanstackKey.PROJECT, slug]);
@@ -86,4 +86,8 @@ watch(() => data.value, (value) => {
     endDate.value = defaultDateOption?.endDate || null;
   }
 }, { immediate: true });
+
+watch(() => isLoading.value, (value) => {
+  isProjectLoading.value = value;
+}, { immediate: true })
 </script>

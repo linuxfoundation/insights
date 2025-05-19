@@ -4,8 +4,10 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <lfx-maintain-height
+    :scroll-top="scrollTop"
     :loaded="!isPending"
-    class="fixed z-10 top-14 lg:top-17 w-lvw ml-auto mr-0"
+    :class="scrollTop > 0 ? 'fixed top-14 lg:top-17' : 'relative'"
+    class="z-10 w-lvw ml-auto mr-0"
   >
     <div class="bg-white outline outline-neutral-100">
       <lfx-collection-header
@@ -91,11 +93,13 @@ import LfxButton from '~/components/uikit/button/button.vue'
 import LfxMaintainHeight from '~/components/uikit/maintain-height/maintain-height.vue'
 import {TanstackKey} from "~/components/shared/types/tanstack";
 import {PROJECT_API_SERVICE} from "~/components/modules/project/services/project.api.service";
+import useScroll from "~/components/shared/utils/scroll";
 
 const props = defineProps<{
   collection?: Collection
 }>()
 
+const {scrollTop} = useScroll();
 const route = useRoute()
 const collectionSlug = route.params.slug as string
 

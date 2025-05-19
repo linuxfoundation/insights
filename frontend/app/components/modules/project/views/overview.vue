@@ -5,7 +5,6 @@ SPDX-License-Identifier: MIT
 <template>
   <div class="container !px-5 lg:!px-10">
     <div
-      v-if="!fakeLoading"
       class="flex justify-between pt-5 md:pt-10 gap-10 flex-col md:flex-row"
     >
       <div class="w-full md:w-3/4 pb-6 md:pb-10 flex flex-col md:gap-8 gap-5">
@@ -32,22 +31,12 @@ SPDX-License-Identifier: MIT
         <lfx-project-about-section />
       </div>
     </div>
-    <div
-      v-else
-      class="flex justify-center items-center h-[600px]"
-    >
-      <lfx-spinner
-        :size="40"
-        class="text-neutral-300"
-        :type="'light'"
-      />
-    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import {
- computed, onMounted, onServerPrefetch, ref
+ computed, onServerPrefetch
 } from 'vue';
 import { useRoute } from 'nuxt/app';
 import { storeToRefs } from 'pinia';
@@ -61,9 +50,7 @@ import { useProjectStore } from "~~/app/components/modules/project/store/project
 import { OVERVIEW_API_SERVICE } from '~~/app/components/modules/project/services/overview.api.service';
 import {PROJECT_SECURITY_SERVICE} from "~/components/modules/project/services/security.service";
 import type { TrustScoreSummary } from '~~/types/overview/responses.types';
-import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 
-const fakeLoading = ref(true);
 const route = useRoute();
 const { selectedRepository, project } = storeToRefs(useProjectStore())
 
@@ -153,12 +140,6 @@ const trustSummary = computed<TrustScoreSummary>(() => (healthScore.value
 onServerPrefetch(async () => {
   await suspense();
   await securityAssessmentSuspense();
-});
-
-onMounted(() => {
-  setTimeout(() => {
-    fakeLoading.value = false;
-  }, 200);
 });
 </script>
 

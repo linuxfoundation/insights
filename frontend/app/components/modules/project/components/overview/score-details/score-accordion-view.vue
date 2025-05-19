@@ -8,7 +8,6 @@ SPDX-License-Identifier: MIT
       v-model="selectedTab"
       class="p-5 -my-6"
     >
-      <!-- <lfx-accordion v-model:value="active"> -->
       <lfx-accordion-item
         v-for="tab in props.tabs"
         :key="tab.value"
@@ -19,20 +18,26 @@ SPDX-License-Identifier: MIT
           {{ tab.label }}
         </div>
         <template #content>
-          <div class="pb-6">
-            <lfx-project-score-list
-              v-if="tab.value !== 'security'"
-              :data="scoreData"
-            />
-            <div
-              v-else
-              class="flex flex-col gap-6 p-6"
-            >
-              <lfx-project-security-score
-                :data="securityData"
+          <lfx-project-load-state
+            :status="status"
+            :error="error"
+            error-message="Error fetching overview score data"
+          >
+            <div class="pb-6">
+              <lfx-project-score-list
+                v-if="tab.value !== 'security'"
+                :data="scoreData"
               />
+              <div
+                v-else
+                class="flex flex-col gap-6 p-6"
+              >
+                <lfx-project-security-score
+                  :data="securityData"
+                />
+              </div>
             </div>
-          </div>
+          </lfx-project-load-state>
         </template>
       </lfx-accordion-item>
     </lfx-accordion>
@@ -41,6 +46,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import type { AsyncDataRequestStatus } from 'nuxt/app';
 import LfxProjectScoreList from './score-list.vue';
 import LfxAccordion from "~/components/uikit/accordion/accordion.vue";
 import LfxAccordionItem from "~/components/uikit/accordion/accordion-item.vue";
@@ -50,6 +56,7 @@ import type { Tab } from '~/components/uikit/tabs/types/tab.types';
 import type { ScoreData } from '~~/types/shared/benchmark.types';
 import type { SecurityData } from '~~/types/security/responses.types';
 import LfxProjectSecurityScore from "~/components/modules/project/components/overview/security/security-score.vue";
+import LfxProjectLoadState from '~~/app/components/modules/project/components/shared/load-state.vue';
 
 const props = defineProps<{
   trustScoreSummary: TrustScoreSummary | undefined;
@@ -57,6 +64,8 @@ const props = defineProps<{
   modelValue: string;
   scoreData: ScoreData[] | undefined;
   securityData: SecurityData[];
+  status: AsyncDataRequestStatus;
+  error: unknown;
 }>();
 
 const emit = defineEmits<{(e: 'update:modelValue', value: string): void

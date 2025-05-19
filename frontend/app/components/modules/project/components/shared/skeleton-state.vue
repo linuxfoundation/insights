@@ -8,7 +8,7 @@ SPDX-License-Identifier: MIT
     v-else-if="props.status === 'pending'"
     :height="props.height"
     :width="props.width"
-    class="rounded-sm"
+    :class="props.roundedClass"
   />
 </template>
 
@@ -16,11 +16,14 @@ SPDX-License-Identifier: MIT
 import type { AsyncDataRequestStatus } from 'nuxt/app';
 import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   status: AsyncDataRequestStatus;
   height: string;
   width: string;
-}>();
+  roundedClass?: string;
+}>(), {
+  roundedClass: 'rounded-sm'
+});
 
 </script>
 

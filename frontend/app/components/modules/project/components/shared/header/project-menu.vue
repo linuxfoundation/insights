@@ -11,16 +11,23 @@ SPDX-License-Identifier: MIT
       placement="top"
       :disabled="!link.comingSoon"
     >
-      <lfx-menu-button
-        :to="!link.comingSoon ? {
-          name: repoName ? link.repoRouteName : link.projectRouteName
-        } : undefined"
-        :exact="true"
-        :disabled="link.comingSoon"
+      <lfx-skeleton-state
+        :status="isProjectLoading ? 'pending' : 'success'"
+        height="2rem"
+        width="7.5rem"
+        rounded-class="rounded-full"
       >
-        <lfx-icon :name="link.icon" />
-        {{ link.label }}
-      </lfx-menu-button>
+        <lfx-menu-button
+          :to="!link.comingSoon ? {
+            name: repoName ? link.repoRouteName : link.projectRouteName
+          } : undefined"
+          :exact="true"
+          :disabled="link.comingSoon"
+        >
+          <lfx-icon :name="link.icon" />
+          {{ link.label }}
+        </lfx-menu-button>
+      </lfx-skeleton-state>
     </lfx-tooltip>
   </div>
   <div class="hidden sm:block lg:hidden">
@@ -65,6 +72,7 @@ SPDX-License-Identifier: MIT
         </router-link>
 
       </template>
+
     </lfx-dropdown>
 
   </div>
@@ -73,6 +81,7 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import {useRoute} from "nuxt/app";
 import {computed} from "vue";
+import { storeToRefs } from 'pinia';
 import LfxIcon from "~/components/uikit/icon/icon.vue";
 import LfxTooltip from "~/components/uikit/tooltip/tooltip.vue";
 import LfxMenuButton from "~/components/uikit/menu-button/menu-button.vue";
@@ -84,6 +93,8 @@ import type {Project} from "~~/types/project";
 import type {WidgetArea} from "~/components/modules/widget/types/widget-area";
 import {lfxWidgetArea} from "~/components/modules/widget/config/widget-area.config";
 import {lfxWidgets} from "~/components/modules/widget/config/widget.config";
+import { useProjectStore } from '~~/app/components/modules/project/store/project.store';
+import LfxSkeletonState from "~/components/modules/project/components/shared/skeleton-state.vue";
 
 const props = defineProps<{
   project?: Project
@@ -91,6 +102,8 @@ const props = defineProps<{
 
 const route = useRoute();
 const repoName = computed(() => route.params.name as string);
+
+const { isProjectLoading } = storeToRefs(useProjectStore());
 
 const activeLink = computed(() => lfProjectLinks.find((link) => (repoName.value
       ? link.repoRouteName === route.name
