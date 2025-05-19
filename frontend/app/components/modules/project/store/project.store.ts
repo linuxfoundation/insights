@@ -50,6 +50,7 @@ export const useProjectStore = defineStore('project', () => {
   const endDate = ref<string | null>(
     defaultDateOption?.endDate || lfxProjectDateOptions[1]?.endDate || null
   );
+  const isProjectLoading = ref(false);
   const project = ref<Project | null>(null);
   const projectRepos = computed<ProjectRepository[]>(
     () => project.value?.repositories || []
@@ -60,11 +61,8 @@ export const useProjectStore = defineStore('project', () => {
         (repo: ProjectRepository) => route.params.name === repo.slug
       )?.url || ''
   );
-  const repository = computed<ProjectRepository | undefined>(
-    () => projectRepos.value.find(
-        (repo: ProjectRepository) => route.params.name === repo.slug
-      )
-  );
+  const repository = computed<ProjectRepository | undefined>(() => projectRepos
+    .value.find((repo: ProjectRepository) => route.params.name === repo.slug));
 
   const customRangeGranularity = computed<string[]>(() => (startDate.value === null || endDate.value === null
       ? [Granularity.WEEKLY]
@@ -74,6 +72,7 @@ export const useProjectStore = defineStore('project', () => {
     selectedTimeRangeKey,
     startDate,
     endDate,
+    isProjectLoading,
     project,
     projectRepos,
     selectedRepository,

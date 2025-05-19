@@ -21,6 +21,10 @@ body {
   font-size: 16px;
 }
 
+html, body {
+  overscroll-behavior-y: none;
+}
+
 *{
   font-family: var(--lfx-font-primary), sans-serif;
 }

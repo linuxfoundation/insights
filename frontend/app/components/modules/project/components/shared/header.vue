@@ -4,7 +4,9 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <lfx-maintain-height
-    class="fixed top-14 lg:top-17 z-10 w-full"
+    :scroll-top="scrollTop"
+    :class="scrollTop > 0 ? 'fixed top-14 lg:top-17' : 'relative'"
+    class="z-10 w-full"
     :loaded="pageWidth > 0"
   >
     <div class="bg-white outline outline-1 outline-neutral-200">

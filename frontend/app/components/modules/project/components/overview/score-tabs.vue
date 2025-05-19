@@ -3,33 +3,31 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <lfx-project-load-state
-    :status="status"
-    :error="error"
-    error-message="Error fetching overview score data"
-  >
-    <div class="sm:block hidden">
-      <lfx-project-score-tab-view
-        :tabs="tabs"
-        :trust-score-summary="parsedTrustScoreSummary"
-        :model-value="selectedTab"
-        :score-data="scoreData"
-        :security-data="securityData"
-        :score-display="scoreDisplay"
-        @update:model-value="selectedTab = $event"
-      />
-    </div>
-    <div class="sm:hidden block">
-      <lfx-project-score-accordion-view
-        :tabs="tabs"
-        :trust-score-summary="parsedTrustScoreSummary"
-        :model-value="selectedTab"
-        :score-data="scoreData"
-        :security-data="securityData"
-        @update:model-value="selectedTab = $event"
-      />
-    </div>
-  </lfx-project-load-state>
+  <div class="sm:block hidden">
+    <lfx-project-score-tab-view
+      :tabs="tabs"
+      :trust-score-summary="parsedTrustScoreSummary"
+      :model-value="selectedTab"
+      :score-data="scoreData"
+      :security-data="securityData"
+      :score-display="scoreDisplay"
+      :status="status"
+      :error="error"
+      @update:model-value="selectedTab = $event"
+    />
+  </div>
+  <div class="sm:hidden block">
+    <lfx-project-score-accordion-view
+      :tabs="tabs"
+      :trust-score-summary="parsedTrustScoreSummary"
+      :model-value="selectedTab"
+      :score-data="scoreData"
+      :security-data="securityData"
+      :status="status"
+      :error="error"
+      @update:model-value="selectedTab = $event"
+    />
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -40,7 +38,6 @@ import type { AsyncDataRequestStatus } from 'nuxt/app';
 import LfxProjectScoreTabView from './score-details/score-tab-view.vue';
 import LfxProjectScoreAccordionView from './score-details/score-accordion-view.vue';
 import type { TrustScoreSummary, HealthScore } from '~~/types/overview/responses.types';
-import LfxProjectLoadState from '~~/app/components/modules/project/components/shared/load-state.vue';
 import type { Tab } from '~/components/uikit/tabs/types/tab.types';
 import { aggregateData } from '~~/app/components/modules/project/config/overview-aggregates';
 import type { ScoreData } from '~~/types/shared/benchmark.types';

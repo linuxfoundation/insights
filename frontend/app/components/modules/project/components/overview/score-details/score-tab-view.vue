@@ -14,11 +14,17 @@ SPDX-License-Identifier: MIT
             {{ option.label }}
           </div>
           <div class="text-sm text-gray-500 w-full">
-            <lfx-progress-bar
-              size="small"
-              :values="[getValues(option.value)]"
-              :color="getColor(getValues(option.value))"
-            />
+            <lfx-skeleton-state
+              :status="status"
+              height=".25rem"
+              width="100%"
+            >
+              <lfx-progress-bar
+                size="small"
+                :values="[getValues(option.value)]"
+                :color="getColor(getValues(option.value))"
+              />
+            </lfx-skeleton-state>
           </div>
         </div>
       </template>
@@ -31,20 +37,26 @@ SPDX-License-Identifier: MIT
         :class="tab.value === selectedTab ? 'block' : 'hidden'"
         class="p-6"
       >
-        <div
-          v-if="!scoreDisplay[tab.value as keyof typeof scoreDisplay]"
-          class="text-sm text-neutral-500"
+        <lfx-project-load-state
+          :status="status"
+          :error="error"
+          error-message="Error fetching overview score data"
         >
-          {{ tab.label }} metrics are unavailable because the required data isn't available for this project.
-        </div>
-        <lfx-project-score-list
-          v-else-if="tab.value !== 'security'"
-          :data="scoreData"
-        />
-        <lfx-project-security-score
-          v-else
-          :data="securityData"
-        />
+          <div
+            v-if="!scoreDisplay[tab.value as keyof typeof scoreDisplay]"
+            class="text-sm text-neutral-500"
+          >
+            {{ tab.label }} metrics are unavailable because the required data isn't available for this project.
+          </div>
+          <lfx-project-score-list
+            v-else-if="tab.value !== 'security'"
+            :data="scoreData"
+          />
+          <lfx-project-security-score
+            v-else
+            :data="securityData"
+          />
+        </lfx-project-load-state>
       </lfx-panels>
     </template>
   </lfx-tabs-panels>
@@ -52,6 +64,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import type { AsyncDataRequestStatus } from 'nuxt/app';
 import LfxProjectScoreList from './score-list.vue';
 import LfxPanels from '~/components/uikit/tabs/panels.vue';
 import LfxTabsPanels from '~/components/uikit/tabs/tabs-panels.vue';
@@ -64,6 +77,8 @@ import type { Tab } from '~/components/uikit/tabs/types/tab.types';
 import LfxProjectSecurityScore from "~/components/modules/project/components/overview/security/security-score.vue";
 import type { SecurityData } from '~~/types/security/responses.types';
 import type { ScoreDisplay } from '~~/types/overview/score-display.types';
+import LfxProjectLoadState from '~~/app/components/modules/project/components/shared/load-state.vue';
+import LfxSkeletonState from "~/components/modules/project/components/shared/skeleton-state.vue";
 
 const props = defineProps<{
   trustScoreSummary: TrustScoreSummary | undefined;
@@ -72,6 +87,8 @@ const props = defineProps<{
   scoreData: ScoreData[] | undefined;
   securityData: SecurityData[];
   scoreDisplay: ScoreDisplay;
+  status: AsyncDataRequestStatus;
+  error: unknown;
 }>();
 const emit = defineEmits<{(e: 'update:modelValue', value: string): void
 }>();

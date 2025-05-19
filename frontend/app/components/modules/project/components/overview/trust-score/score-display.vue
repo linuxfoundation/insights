@@ -56,6 +56,8 @@ const scoreTag = computed(() => {
 
 const scoreTagStyle = computed(() => {
   switch (true) {
+    case props.hideOverallScore:
+      return 'default';
     case props.overallScore >= 80:
       return 'positive-solid';
     case props.overallScore >= 60:
