@@ -34,36 +34,39 @@ SPDX-License-Identifier: MIT
       label="All activities"
     />
 
-    <lfx-dropdown-separator />
+    <lfx-dropdown-separator v-if="connected.length > 0" />
 
     <template
       v-for="group in platforms"
       :key="group.key"
     >
-      <lfx-dropdown-group-title>
-        {{ group.label }}
-      </lfx-dropdown-group-title>
+      <template v-if="connected.includes(group.key)">
+        <lfx-dropdown-group-title>
+          {{ group.label }}
+        </lfx-dropdown-group-title>
 
-      <lfx-dropdown-item
-        v-for="option of group.activityTypes"
-        :key="option.key"
-        :value="`${group.key}:${option.key}`"
-        :label="option.label"
-        :platform="group.key"
-      >
-        <img
-          v-if="group.image"
-          :src="group.image"
-          class="w-4 h-4"
+        <lfx-dropdown-item
+          v-for="option of group.activityTypes"
+          :key="option.key"
+          :value="`${group.key}:${option.key}`"
+          :label="option.label"
+          :platform="group.key"
         >
-        {{ option.label }}
-      </lfx-dropdown-item>
+          <img
+            v-if="group.image"
+            :src="group.image"
+            class="w-4 h-4"
+          >
+          {{ option.label }}
+        </lfx-dropdown-item>
+      </template>
     </template>
   </lfx-dropdown-select>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import {storeToRefs} from "pinia";
 import LfxDropdownSelector from "~/components/uikit/dropdown/dropdown-selector.vue";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
 import LfxDropdownGroupTitle from "~/components/uikit/dropdown/dropdown-group-title.vue";
@@ -71,6 +74,7 @@ import LfxDropdownItem from "~/components/uikit/dropdown/dropdown-item.vue";
 import LfxDropdownSelect from "~/components/uikit/dropdown/dropdown-select.vue";
 import LfxDropdownSeparator from "~/components/uikit/dropdown/dropdown-separator.vue";
 import { platforms } from '~~/app/config/platforms';
+import {useProjectStore} from "~/components/modules/project/store/project.store";
 
 const props = withDefaults(defineProps<{
   modelValue: string;
@@ -80,6 +84,10 @@ const props = withDefaults(defineProps<{
 });
 
 const emit = defineEmits<{(e: 'update:modelValue', value: string): void }>();
+
+const { project } = storeToRefs(useProjectStore());
+
+const connected = computed(() => project.value?.connectedPlatforms || []);
 
 const activity = computed({
   get() {

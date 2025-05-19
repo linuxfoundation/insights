@@ -23,6 +23,7 @@ export interface Project {
   languages?: ProjectLanguage[];
 
   projectLinks?: ProjectLink[];
+  connectedPlatforms: string[];
 }
 
 export interface ProjectLanguage {
