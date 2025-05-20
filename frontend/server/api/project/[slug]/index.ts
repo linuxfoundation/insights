@@ -36,6 +36,7 @@ export default defineEventHandler(async (event): Promise<Project | Error> => {
     try {
         const res = await fetchFromTinybird<ProjectTinybird[]>('/v0/pipes/projects_list.json', {
             slug,
+            details: true
         });
         if (!res.data || res.data.length === 0) {
             return createError({statusCode: 404, statusMessage: 'Project not found'});
@@ -58,6 +59,7 @@ export default defineEventHandler(async (event): Promise<Project | Error> => {
         ];
         return {
             ...project,
+            isLF: !!project.isLF,
             repositories,
             projectLinks,
             tags: project?.keywords || [],

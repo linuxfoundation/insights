@@ -21,7 +21,7 @@ export interface Project {
   maturityStatus?: string;
   tags?: string[];
   languages?: ProjectLanguage[];
-
+  firstCommit?: string;
   projectLinks?: ProjectLink[];
   connectedPlatforms: string[];
 }
@@ -65,4 +65,7 @@ export interface ProjectTinybird {
   linkedin?: string;
   github?: string;
   twitter?: string;
+  widgets: string[];
+  firstCommit?: string;
+  connectedPlatforms: string[];
 }
