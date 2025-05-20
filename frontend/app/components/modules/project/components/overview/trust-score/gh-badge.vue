@@ -48,7 +48,7 @@ import LfxModal from "~/components/uikit/modal/modal.vue";
 import LfxIconButton from "~/components/uikit/icon-button/icon-button.vue";
 import LfxButton from "~/components/uikit/button/button.vue";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
-import {lfxTrustScore, type TrustScoreConfig} from "~/components/modules/project/config/trust-score";
+import {lfxTrustScore, type TrustScoreConfig, getBadgeUrl} from "~/components/modules/project/config/trust-score";
 import {ToastTypesEnum} from "~/components/uikit/toast/types/toast.types";
 import useToastService from "~/components/uikit/toast/toast.service";
 
@@ -71,12 +71,7 @@ const scoreConfig = computed<TrustScoreConfig>(() => lfxTrustScore.find(
       (s) => props.overallScore <= s.maxScore && props.overallScore >= s.minScore
   ) || lfxTrustScore.at(-1)!);
 
-const badgeUrl = computed(() => {
-  const label = 'Health Score';
-  const message = encodeURIComponent(scoreConfig.value.label);
-  const color = scoreConfig.value.ghBadgeColor.replace('#', '');
-  return `https://img.shields.io/static/v1?label=${encodeURIComponent(label)}&message=${message}&color=${color}&logo=linuxfoundation&logoColor=white&style=flat`;
-});
+const badgeUrl = computed(() => getBadgeUrl(scoreConfig.value));
 
 const markdown = computed(() => {
   const link = window?.location.href;

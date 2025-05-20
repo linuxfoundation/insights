@@ -7,25 +7,25 @@ SPDX-License-Identifier: MIT
     <div
       class="flex justify-between pt-5 md:pt-10 gap-10 flex-col md:flex-row"
     >
-      <div class="w-full md:w-3/4 pb-6 md:pb-10 flex flex-col md:gap-8 gap-5">
-        <div>
+      <div class="w-full md:w-3/4">
+        <lfx-card class="py-6 flex flex-col md:gap-10 gap-5">
           <lfx-project-trust-score
             :trust-score-summary="trustSummary"
             :status="status"
             :error="error"
             :score-display="scoreDisplay"
           />
-        </div>
-        <div>
-          <lfx-project-score-tabs
-            :trust-score-summary="trustSummary"
-            :health-scores="healthScore"
-            :status="status"
-            :error="error"
-            :security-data="securityAssessmentData || []"
-            :score-display="scoreDisplay"
-          />
-        </div>
+          <div class="px-6">
+            <lfx-project-score-tabs
+              :trust-score-summary="trustSummary"
+              :health-scores="healthScore"
+              :status="status"
+              :error="error"
+              :security-data="securityAssessmentData || []"
+              :score-display="scoreDisplay"
+            />
+          </div>
+        </lfx-card>
       </div>
       <div class="pr-5 min-w-50 xl:pr-10 max-md:w-full w-1/4">
         <lfx-project-about-section />
@@ -50,6 +50,7 @@ import { useProjectStore } from "~~/app/components/modules/project/store/project
 import { OVERVIEW_API_SERVICE } from '~~/app/components/modules/project/services/overview.api.service';
 import {PROJECT_SECURITY_SERVICE} from "~/components/modules/project/services/security.service";
 import type { TrustScoreSummary } from '~~/types/overview/responses.types';
+import LfxCard from '~/components/uikit/card/card.vue';
 
 const route = useRoute();
 const { selectedRepository, project } = storeToRefs(useProjectStore())

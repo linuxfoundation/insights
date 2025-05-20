@@ -4,14 +4,12 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <section class="p-tabs-panels">
-    <lfx-card>
-      <slot />
-    </lfx-card>
+    <slot />
   </section>
 </template>
 
 <script setup lang="ts">
-import LfxCard from '~/components/uikit/card/card.vue';
+
 </script>
 
 <script lang="ts">

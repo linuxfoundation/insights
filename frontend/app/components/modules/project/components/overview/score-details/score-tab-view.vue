@@ -10,13 +10,13 @@ SPDX-License-Identifier: MIT
     >
       <template #slotItem="{ option }">
         <div class="flex flex-col gap-2 items-start">
-          <div class="text-neutral-900 font-secondary font-bold text-sm">
+          <div class="text-neutral-900 font-secondary text-sm tab-label">
             {{ option.label }}
           </div>
           <div class="text-sm text-gray-500 w-full">
             <lfx-skeleton-state
               :status="status"
-              height=".25rem"
+              height=".188rem"
               width="100%"
             >
               <lfx-progress-bar
@@ -35,19 +35,18 @@ SPDX-License-Identifier: MIT
     >
       <lfx-panels
         :class="tab.value === selectedTab ? 'block' : 'hidden'"
-        class="p-6"
+        class="pt-8"
       >
         <lfx-project-load-state
           :status="status"
           :error="error"
           error-message="Error fetching overview score data"
+          loading-message="Loading Health score takeaways..."
         >
-          <div
+          <lfx-project-details-empty
             v-if="!scoreDisplay[tab.value as keyof typeof scoreDisplay]"
-            class="text-sm text-neutral-500"
-          >
-            {{ tab.label }} metrics are unavailable because the required data isn't available for this project.
-          </div>
+            :label="tab.label"
+          />
           <lfx-project-score-list
             v-else-if="tab.value !== 'security'"
             :data="scoreData"
@@ -66,6 +65,7 @@ SPDX-License-Identifier: MIT
 import { computed } from 'vue';
 import type { AsyncDataRequestStatus } from 'nuxt/app';
 import LfxProjectScoreList from './score-list.vue';
+import LfxProjectDetailsEmpty from './details-empty.vue';
 import LfxPanels from '~/components/uikit/tabs/panels.vue';
 import LfxTabsPanels from '~/components/uikit/tabs/tabs-panels.vue';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';

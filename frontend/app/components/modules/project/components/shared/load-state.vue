@@ -20,7 +20,7 @@ SPDX-License-Identifier: MIT
         />
       </div>
       <span class="text-sm text-neutral-500 mt-5">
-        Loading data...
+        {{ props.loadingMessage }}
       </span>
     </div>
     <div
@@ -55,11 +55,13 @@ const props = withDefaults(defineProps<{
   errorMessage?: string;
   error?: unknown;
   useMinHeight?: boolean;
+  loadingMessage?: string;
 }>(), {
   height: 100,
   errorMessage: 'Error fetching data',
   error: undefined,
-  useMinHeight: true
+  useMinHeight: true,
+  loadingMessage: 'Loading data...'
 });
 
 const { showToast } = useToastService();
