@@ -12,6 +12,17 @@ SPDX-License-Identifier: MIT
     </div>
   </div>
   <div
+    v-if="project?.firstCommit"
+    class="flex flex-col gap-2 text-xs"
+  >
+    <div class="text-neutral-400 font-semibold">
+      First commit
+    </div>
+    <div class="text-neutral-900">
+      {{ formatFirstCommit(project.firstCommit) }}
+    </div>
+  </div>
+  <div
     v-if="tmpShowFlag"
     class="flex flex-col gap-2 text-xs"
   >
@@ -64,6 +75,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
+import {DateTime} from 'luxon'
 import LfxTag from '~/components/uikit/tag/tag.vue';
 import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
@@ -72,6 +84,11 @@ import { formatNumberShort } from '~/components/shared/utils/formatter';
 
 const { project } = storeToRefs(useProjectStore())
 const tmpShowFlag = false;
+
+const formatFirstCommit = (date: string) => {
+  const dt = DateTime.fromSQL(date);
+  return dt.toFormat('LLLL yyyy');
+};
 </script>
 
 <script lang="ts">

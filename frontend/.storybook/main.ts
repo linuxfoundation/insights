@@ -15,5 +15,16 @@ const config: StorybookConfig = {
     name: "@storybook-vue/nuxt",
     options: {},
   },
+  viteFinal(config) {
+    // 🛠️ This filters out the crashing plugin
+    const filteredPlugins = config.plugins?.filter(
+        (plugin) => plugin?.name !== 'vite-plugin-inspect'
+    );
+    return {
+        ...config,
+        plugins: filteredPlugins,
+    };
+  },
 };
+
 export default config;
