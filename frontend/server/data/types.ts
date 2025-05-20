@@ -70,7 +70,6 @@ export type ContributorDependencyFilter = {
 export type OrganizationDependencyFilter = {
   project: string;
   repo?: string;
-  granularity?: FilterGranularity;
   platform?: ActivityPlatforms;
   activity_type?: ActivityTypes;
   startDate?: DateTime;
