@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: MIT
 import {DateTime} from "luxon";
 import type { OrganizationDependencyFilter} from "~~/server/data/types";
-import {FilterGranularity} from "~~/server/data/types";
 import {createDataSource} from "~~/server/data/data-sources";
 import {ActivityTypes} from "~~/types/shared/activity-types";
 import {ActivityPlatforms} from "~~/types/shared/activity-platforms";
@@ -46,7 +45,6 @@ export default defineEventHandler(async (event) => {
 
   const filter: OrganizationDependencyFilter = {
     project,
-    granularity: (query.granularity as FilterGranularity) || FilterGranularity.QUARTERLY,
     platform: activityPlatform !== ActivityPlatforms.ALL ? activityPlatform : undefined,
     activity_type: activityType !== ActivityTypes.ALL ? activityType : undefined,
     repo: query.repository as string,
