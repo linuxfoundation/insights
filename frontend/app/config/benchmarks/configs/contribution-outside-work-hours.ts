@@ -12,7 +12,7 @@ export const contributionOutsideWorkHours: BenchmarkConfigs = {
       pointStart: 80,
       pointEnd: null,
       type: 'negative',
-      description: '80%+ of contributions',
+      description: '{value}% of contributions',
       text: `80%+ of contributions occur outside regular working hours`,
       points: 0
     },
@@ -20,7 +20,7 @@ export const contributionOutsideWorkHours: BenchmarkConfigs = {
       pointStart: 60,
       pointEnd: 79,
       type: 'negative',
-      description: '60–79% of contributions',
+      description: '{value}% of contributions',
       text: `60–79% of contributions occur outside regular working hours`,
       points: 1
     },
@@ -28,7 +28,7 @@ export const contributionOutsideWorkHours: BenchmarkConfigs = {
       pointStart: 40,
       pointEnd: 59,
       type: 'warning',
-      description: '40–59% of contributions',
+      description: '{value}% of contributions',
       text: `40–59% of contributions occur outside regular working hours`,
       points: 2
     },
@@ -36,7 +36,7 @@ export const contributionOutsideWorkHours: BenchmarkConfigs = {
       pointStart: 25,
       pointEnd: 39,
       type: 'warning',
-      description: '25–39% of contributions',
+      description: '{value}% of contributions',
       text: `25–39% of contributions occur outside regular working hours`,
       points: 3
     },
@@ -44,7 +44,7 @@ export const contributionOutsideWorkHours: BenchmarkConfigs = {
       pointStart: 10,
       pointEnd: 24,
       type: 'positive',
-      description: '10–24% of contributions',
+      description: '{value}% of contributions',
       text: `10–24% of contributions occur outside regular working hours`,
       points: 4
     },
@@ -52,7 +52,7 @@ export const contributionOutsideWorkHours: BenchmarkConfigs = {
       pointStart: 0,
       pointEnd: 9,
       type: 'positive',
-      description: 'Less than 10%',
+      description: '{value}% of contributions',
       text: `Less than 10% outside working hours`,
       points: 5
     }

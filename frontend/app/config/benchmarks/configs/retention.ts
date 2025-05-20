@@ -12,7 +12,7 @@ export const retention: BenchmarkConfigs = {
       pointStart: 0,
       pointEnd: 9,
       type: 'negative',
-      description: 'Less than 10% of contributors are contributing quarter over quarter',
+      description: '{value}% of contributors are contributing quarter over quarter',
       text: `This project has extremely low contributor retention, 
       indicating that nearly all contributors disengage after a single quarter.`,
       points: 0
@@ -21,7 +21,7 @@ export const retention: BenchmarkConfigs = {
       pointStart: 10,
       pointEnd: 29,
       type: 'negative',
-      description: '10–29% of contributors are contributing quarter over quarter',
+      description: '{value}% of contributors are contributing quarter over quarter',
       text: `This project has very low retention, 
       suggesting difficulty in keeping contributors engaged over time.`,
       points: 1
@@ -30,7 +30,7 @@ export const retention: BenchmarkConfigs = {
       pointStart: 30,
       pointEnd: 49,
       type: 'warning',
-      description: '30–49% of contributors are contributing quarter over quarter',
+      description: '{value}% of contributors are contributing quarter over quarter',
       text: `This project demonstrates modest retention, 
       with fewer than half of contributors returning in subsequent quarters.`,
       points: 2
@@ -39,7 +39,7 @@ export const retention: BenchmarkConfigs = {
       pointStart: 50,
       pointEnd: 64,
       type: 'warning',
-      description: '50–64% of contributors are contributing quarter over quarter',
+      description: '{value}% of contributors are contributing quarter over quarter',
       text: `This project shows decent retention, 
       with a majority of contributors continuing their involvement.`,
       points: 3
@@ -48,7 +48,7 @@ export const retention: BenchmarkConfigs = {
       pointStart: 65,
       pointEnd: 79,
       type: 'positive',
-      description: '65–79% of contributors are contributing quarter over quarter',
+      description: '{value}% of contributors are contributing quarter over quarter',
       text: `This project benefits from strong retention, 
       reflecting an engaged and consistent contributor base.`,
       points: 4
@@ -57,7 +57,7 @@ export const retention: BenchmarkConfigs = {
       pointStart: 80,
       pointEnd: null,
       type: 'positive',
-      description: '80% or more of contributors are contributing quarter over quarter',
+      description: '{value}% of contributors are contributing quarter over quarter',
       text: `This project exhibits excellent retention, 
       with most contributors staying active across quarters, indicating a highly engaged and stable community.`,
       points: 5
