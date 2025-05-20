@@ -49,11 +49,11 @@ We know that the data is not perfect (and probably never will be). There are too
 
 1. **Click "Report issue"** on any data point in Insights
 
-![Report Data Issue](./images/report-data-issue.png)
+![Report Data Issue](../../images/report-data-issue.png)
 
 2. **Fill out the form** and click "Submit"
 
-![Report Data Issue Form](./images/report-data-issue-form.png)
+![Report Data Issue Form](../../images/report-data-issue-form.png)
 
 3. **We'll review the issue** and get back to you (if you left us an email address)
 

@@ -50,7 +50,7 @@ export default withNuxt({
       }
     }
   },
-  ignores: ['*.config.*js', '.tailwind/*', 'shims-vue.d.ts'],
+  ignores: ['*.config.*js', '.tailwind/*', 'shims-vue.d.ts', 'docs/.vitepress/theme/cssOverrides/*', 'pnpm-lock.yaml'],
   rules: {
     ...getRules(compat.extends('airbnb-base')),
     ...getRules(compat.extends('airbnb-typescript/base'), '@typescript-eslint/'),

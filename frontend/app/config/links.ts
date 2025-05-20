@@ -1,7 +1,11 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
+import { useRuntimeConfig } from "nuxt/app";
+
+const config = useRuntimeConfig()
+
 export const links = {
-  trustScore: 'https://insights.linuxfoundation.org/docs/metrics/health-score.html#%F0%9F%A9%BA-health-score-explained',
-  securityScore: 'https://insights.linuxfoundation.org/docs/metrics/security.html#%F0%9F%94%92-security-best-practices-metrics-explained',
+  trustScore: `${config.public.appUrl}/docs/metrics/health-score`,
+  securityScore: `${config.public.appUrl}/docs/metrics/security`,
   ospsScore: 'https://baseline.openssf.org/versions/2025-02-25',
 };

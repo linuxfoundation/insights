@@ -21,7 +21,7 @@ export default defineConfig({
           )
         }
       ]
-    }
+    },
   },
   themeConfig: {
     search: {
@@ -40,27 +40,27 @@ export default defineConfig({
       {
         text: 'Introduction',
         items: [
-          { text: 'What is Insights?', link: '/what-is-insights' },
-          { text: 'LF Open Source Index', link: '/lf-oss-index' },
-          { text: 'Data Sources', link: '/data-sources' },
-          { text: 'Data Quality', link: '/data-quality' },
+          { text: 'What is Insights?', link: '/introduction/what-is-insights/index.md' },
+          { text: 'LF Open Source Index', link: '/introduction/lf-oss-index/index.md' },
+          { text: 'Data Sources', link: '/introduction/data-sources/index.md' },
+          { text: 'Data Quality', link: '/introduction/data-quality/index.md' },
         ]
       },
       {
         text: 'Metrics',
         items: [
-          { text: 'Health Score', link: '/metrics/health-score' },
-          { text: 'Contributors', link: '/metrics/contributors' },
-          { text: 'Popularity', link: '/metrics/popularity' },
-          { text: 'Development', link: '/metrics/development' },
-          { text: 'Security & Best Practices', link: '/metrics/security' },
+          { text: 'Health Score', link: '/metrics/health-score/index.md' },
+          { text: 'Contributors', link: '/metrics/contributors/index.md' },
+          { text: 'Popularity', link: '/metrics/popularity/index.md' },
+          { text: 'Development', link: '/metrics/development/index.md' },
+          { text: 'Security & Best Practices', link: '/metrics/security/index.md' },
         ]
       },
       {
         text: 'More',
         items: [
-          { text: 'FAQ', link: '/faq' },
-          { text: 'Glossary', link: '/glossary' }
+          { text: 'FAQ', link: '/more/faq/index.md' },
+          { text: 'Glossary', link: '/more/glossary/index.md' }
         ]
       }
     ],

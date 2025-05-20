@@ -10,7 +10,7 @@ SPDX-License-Identifier: MIT
   <!-- Menu -->
   <div class="items-center gap-4 hidden lg:flex">
     <div class="flex items-center gap-3 ">
-      <lfx-menu-static-links :hide-tools-links="true" />
+      <lfx-menu-static-links />
     </div>
     <div class="border-r border-neutral-200 h-6" />
     <lfx-tools />
