@@ -31,44 +31,63 @@ SPDX-License-Identifier: MIT
         Learn more
       </a>
     </div> -->
-    <div class="flex justify-between items-center pb-4">
-      <h3 class="text-heading-3 font-secondary font-bold">
-        Controls assessment
-      </h3>
+    <div class="flex justify-between items-end pb-8 gap-10 sm:gap-20">
+      <div>
+        <h3 class="text-heading-3 font-secondary font-bold">
+          Controls assessment
+        </h3>
+        <p
+          class="text-xs text-neutral-500 mt-4"
+        >
+          Process of assessing a project's practices, policies, and technical measures against a set
+          of predefined standards to determine its security posture, reliability, and maturity.
+          <a
+            :href="links.securityScore"
+            target="_blank"
+            class="text-brand-500"
+          >Learn more</a>
+        </p>
+      </div>
+
       <nuxt-link :to="{name: name ? LfxRoutes.REPOSITORY_SECURITY : LfxRoutes.PROJECT_SECURITY}">
         <lfx-button
           type="tertiary"
           size="small"
+          class="w-[195px] !text-xs mb-1"
         >
           <lfx-icon name="arrow-up-right" />
           Assessment breakdown
         </lfx-button>
       </nuxt-link>
     </div>
-    <article
-      v-for="(checks, title) in groupedData"
-      :key="title"
-      class="flex items-center gap-8 py-4 border-t border-neutral-100"
-    >
-      <div class="flex-grow">
-        <h4 class="text-sm leading-5 font-semibold">
-          {{ title}}
-        </h4>
-        <p
-          v-if="categoryConfig(title)"
-          class="text-body-2 text-neutral-500 mt-1"
-        >
-          {{ categoryConfig(title)?.description }}
-        </p>
-      </div>
-      <lfx-project-security-evaluation-result :results="assessmentsResults(checks)">
-        <template #default="{result}">
-          <div class="h-12 w-12 min-w-12">
-            <lfx-chart :config="categoryChartConfig(result)" />
+    <section class="flex flex-col gap-4">
+      <article
+        v-for="(checks, title) in groupedData"
+        :key="title"
+        class="[&:not(:last-child)]:border-b border-neutral-100 [&:not(:last-child)]:pb-4"
+      >
+        <div class="flex flex-row items-start gap-4">
+          <lfx-project-security-evaluation-result :results="assessmentsResults(checks)">
+            <template #default="{result}">
+              <div class="h-12 w-12 min-w-12">
+                <lfx-chart :config="categoryChartConfig(result)" />
+              </div>
+            </template>
+          </lfx-project-security-evaluation-result>
+          <div class="flex-grow">
+            <h4 class="text-sm leading-5 font-semibold">
+              {{ title}}
+            </h4>
+            <p
+              v-if="categoryConfig(title)"
+              class="text-body-2 text-neutral-500 mt-1"
+            >
+              {{ categoryConfig(title)?.description }}
+            </p>
           </div>
-        </template>
-      </lfx-project-security-evaluation-result>
-    </article>
+        </div>
+      </article>
+    </section>
   </div>
 </template>
 
@@ -83,7 +102,7 @@ import {lfxColors} from "~/config/styles/colors";
 // import {useProjectStore} from "~/components/modules/project/store/project.store";
 import LfxChart from "~/components/uikit/chart/chart.vue";
 import {getGaugeChartConfig} from "~/components/uikit/chart/configs/gauge.chart";
-// import {links} from "~/config/links";
+import {links} from "~/config/links";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
 import {LfxRoutes} from "~/components/shared/types/routes";
 import LfxButton from "~/components/uikit/button/button.vue";

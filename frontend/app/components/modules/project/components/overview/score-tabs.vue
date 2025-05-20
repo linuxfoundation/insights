@@ -23,6 +23,7 @@ SPDX-License-Identifier: MIT
       :model-value="selectedTab"
       :score-data="scoreData"
       :security-data="securityData"
+      :score-display="scoreDisplay"
       :status="status"
       :error="error"
       @update:model-value="selectedTab = $event"

@@ -3,36 +3,48 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="flex flex-col w-fit">
+  <div class="flex text-3xl font-bold cursor-default">
     <div
-      :class="{
-        'my-4': hideOverallScore,
-      }"
+      v-if="scoreConfig.label === 'Unavailable'"
+      class="flex items-center gap-3"
+      :class="props.hideOverallScore ? 'text-neutral-300' : ''"
     >
-      <span
-        class="text-neutral-900"
-        :class="{
-          'text-[80px]': !hideOverallScore,
-          'text-2xl': hideOverallScore,
-        }"
-      >
-        {{ hideOverallScore ? '?' : Math.round(overallScore) }}</span>
-      <span class="text-sm text-neutral-500">/ 100</span>
+      <div
+        v-if="scoreConfig.color"
+        class="h-3 w-3 rounded-full mr-1"
+        :class="scoreConfig.color"
+      />
+      {{ scoreConfig.label }}
     </div>
-    <lfx-tag
-      :size="'medium'"
-      :variation="scoreConfig.tagStyle as TagStyle"
-      type="solid"
-      class="justify-center"
-    >{{ scoreConfig.label }}</lfx-tag>
+    <lfx-tooltip
+      v-else
+      placement="top"
+    >
+      <div
+        class="flex items-center gap-3"
+        :class="props.hideOverallScore ? 'text-neutral-300' : ''"
+      >
+        <div
+          v-if="scoreConfig.color"
+          class="h-3 w-3 rounded-full mr-1"
+          :class="scoreConfig.color"
+        />
+        {{ scoreConfig.label }}
+      </div>
+      <template #content>
+        <div class="text-xs flex gap-1">
+          <span class="font-bold">Health score: </span>
+          <span>{{ overallScore }}/100 points</span>
+        </div>
+      </template>
+    </lfx-tooltip>
   </div>
 </template>
 
 <script setup lang="ts">
 import {computed} from 'vue';
-import LfxTag from '~/components/uikit/tag/tag.vue';
 import {lfxTrustScore} from "~/components/modules/project/config/trust-score";
-import type {TagStyle} from "~/components/uikit/tag/types/tag.types";
+import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
 
 const props = defineProps<{
   overallScore: number;
@@ -41,13 +53,13 @@ const props = defineProps<{
 
 const scoreConfig = computed(() => {
   if (props.hideOverallScore) {
-    return {label: 'Unavailable', tagStyle: 'default'};
+    return {label: 'Unavailable', color: ''};
   }
   return lfxTrustScore.find(
       (s) => props.overallScore <= s.maxScore && props.overallScore >= s.minScore
   ) || {
     label: 'Critical',
-    tagStyle: 'negative-solid'
+    color: 'bg-negative-500'
   };
 });
 </script>

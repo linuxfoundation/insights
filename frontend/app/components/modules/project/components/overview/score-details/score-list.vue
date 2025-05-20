@@ -5,14 +5,18 @@ SPDX-License-Identifier: MIT
 <template>
   <div
     v-if="data"
-    class="flex flex-col gap-6"
+    class="flex flex-col gap-4"
   >
-    <lfx-score-item
+    <div
       v-for="item in data"
       :key="item.benchmarkKey"
-      :benchmark-key="item.benchmarkKey"
-      :value="item.value"
-    />
+      class="[&:not(:last-child)]:border-b border-neutral-100 [&:not(:last-child)]:pb-4"
+    >
+      <lfx-score-item
+        :benchmark-key="item.benchmarkKey"
+        :value="item.value"
+      />
+    </div>
   </div>
 </template>
 

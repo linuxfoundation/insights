@@ -4,17 +4,17 @@
   @apply flex flex-col;
 
   .p-selectbutton {
-    @apply gap-0 p-0 rounded-b-none overflow-hidden z-[2];
+    @apply gap-1 p-1 overflow-hidden z-[2];
     .p-togglebutton {
-      @apply border-r border-b border-neutral-200 max-h-fit py-4 px-5 justify-start;
-      &:last-child {
-        @apply border-r-0;
-      }
+      @apply max-h-fit py-2 px-3 justify-start rounded-md;
       &:hover:not(.p-togglebutton-checked) {
         @apply bg-neutral-100;
       }
       &.p-togglebutton-checked {
-        @apply rounded-none border-b-white;
+        @apply border-b-white;
+        .tab-label {
+          @apply font-bold;
+        }
       }
       &-content{
         @apply w-full;

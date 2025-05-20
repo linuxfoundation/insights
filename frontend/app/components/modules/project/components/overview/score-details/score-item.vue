@@ -3,7 +3,7 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="flex flex-row gap-2.5">
+  <div class="flex flex-row gap-4">
     <div>
       <div
         :class="iconBGColor"
