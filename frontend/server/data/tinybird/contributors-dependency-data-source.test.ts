@@ -34,6 +34,7 @@ describe('Contributors Dependency Data Source', () => {
 
     const filter = {
       project: 'the-linux-kernel-organization',
+      limit: 100,
       startDate,
       endDate
     };
