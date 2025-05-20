@@ -4,23 +4,17 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <div class="flex flex-col gap-6">
-    <template v-if="!isProjectLoading">
+    <lfx-project-about-section-loading :is-loading="isProjectLoading">
       <lfx-project-about-software-value />
+    </lfx-project-about-section-loading>
+    <lfx-project-about-section-loading :is-loading="isProjectLoading">
       <lfx-tags-and-languages />
+    </lfx-project-about-section-loading>
+    <lfx-project-about-section-loading :is-loading="isProjectLoading">
       <lfx-links />
-    </template>
-    <div
-      v-else
-      class="flex justify-center items-center h-[200px]"
-    >
-      <lfx-spinner
-        :size="40"
-        class="text-neutral-300"
-        :type="'light'"
-      />
-    </div>
+      <lfx-project-about-section-connected-platforms />
+    </lfx-project-about-section-loading>
     <!-- <lfx-associated-organization /> -->
-    <lfx-project-about-section-connected-platforms />
   </div>
 </template>
 
@@ -29,11 +23,10 @@ import { storeToRefs } from 'pinia';
 import LfxProjectAboutSoftwareValue from './about-section/about-software-value.vue';
 import LfxTagsAndLanguages from './about-section/tags-ang-languages.vue';
 import LfxLinks from './about-section/links.vue';
+import LfxProjectAboutSectionLoading from './about-section/about-section-loading.vue';
 import LfxProjectAboutSectionConnectedPlatforms
   from "~/components/modules/project/components/overview/about-section/connected-platforms.vue";
-// import LfxAssociatedOrganization from './about-section/associated-organization.vue';
 import { useProjectStore } from '~~/app/components/modules/project/store/project.store';
-import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 
 const { isProjectLoading } = storeToRefs(useProjectStore());
 </script>
