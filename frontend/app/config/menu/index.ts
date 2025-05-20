@@ -7,7 +7,6 @@ interface MenuItem {
     icon?: string;
     route?: LfxRoutes;
     href?: string;
-    showOnToolsOnly?: boolean;
 }
 
 interface MenuConfig{
@@ -35,8 +34,7 @@ export const lfxMenu: MenuConfig = {
     {
         label: 'Documentation',
         icon: 'book-open',
-        href: '/docs',
-        showOnToolsOnly: true,
+        href: '/docs/'
     }
     ],
     footer: {

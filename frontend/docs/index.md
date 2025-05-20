@@ -9,7 +9,7 @@ hero:
   actions:
     - theme: brand
       text: Go to Docs
-      link: /what-is-insights
+      link: /introduction/what-is-insights
     - theme: alt
       text: "Back to LFX Insights"
       link: "https://insights.linuxfoundation.org"
@@ -17,7 +17,7 @@ hero:
 features:
   - title: What is LFX Insights?
     details: Lorem ipsum...
-    link: /what-is-insights
+    link: /introduction/what-is-insights
     linkText: Learn more
   - title: Health Score
     details: Lorem ipsum...
@@ -25,5 +25,5 @@ features:
     linkText: Learn more
   - title: FAQ
     details: Lorem ipsum...
-    link: /faq
+    link: /more/faq
     linkText: Learn more

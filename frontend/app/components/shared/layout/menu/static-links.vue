@@ -3,7 +3,7 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <template v-for="link of links">
+  <template v-for="link of lfxMenu.links">
     <a
       v-if="link.href"
       :key="link.label"
@@ -33,34 +33,9 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
   import LfxMenuButton from "~/components/uikit/menu-button/menu-button.vue";
   import LfxIcon from "~/components/uikit/icon/icon.vue";
   import {lfxMenu} from "~/config/menu";
-
-  const props = defineProps({
-    hideToolsLinks: {
-      type: Boolean,
-      default: false,
-    },
-    showToolsLinks: {
-      type: Boolean,
-      default: false,
-    },
-  });
-
-  const links = computed(() => {
-    if(props.hideToolsLinks) {
-      return lfxMenu.links.filter((link) => !link.showOnToolsOnly);
-    }
-
-    if(props.showToolsLinks) {
-      return lfxMenu.links.filter((link) => link.showOnToolsOnly);
-    }
-
-    return lfxMenu.links;
-  });
-
 </script>
 
 <script lang="ts">

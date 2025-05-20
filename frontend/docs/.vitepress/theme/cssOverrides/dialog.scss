@@ -1,0 +1,56 @@
+.shell {
+    @apply p-1 !important;
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 var(--lfx-color-black)), var(--tw-ring-shadow, 0 0 var(--lfx-color-black)), var(--tw-shadow);
+    border: 1px solid var(--lfx-color-neutral-200);
+    border-radius: 12px !important;
+
+    .vpi-search.search-icon.local-search-icon {
+        @apply m-0;
+        color:var(--lfx-color-neutral-400);
+    }
+
+    .search-bar {
+        border-color: var(--lfx-color-neutral-100) !important;
+        border-width: 0 0 1px 0 !important;
+        @apply text-sm flex items-center justify-between px-3 py-2 gap-1 !important;
+
+        input {
+        @apply p-0;
+        }
+
+        .back-button {
+        @apply hidden;
+        }
+    }
+
+    .search-actions {
+        @apply flex items-center gap-4 !important;
+
+        button {
+        @apply p-0 !important;
+        }
+    }
+
+    .title-icon {
+        color: var(--lfx-color-neutral-900) !important;
+    }
+
+    .result {
+        @apply text-sm py-2 px-3;
+
+        > div {
+        @apply m-0 !important;
+        }
+
+        &.selected {
+        background-color:  var(--lfx-color-neutral-50);
+        .title, .title-icon {
+            color: var(--lfx-color-neutral-900) !important;
+        }
+        }
+    }
+
+    .search-keyboard-shortcuts {
+        @apply py-2 px-3;
+    }
+}
