@@ -7,7 +7,7 @@
 .p-skeleton:after {
   content: '';
   animation: p-skeleton-animation 1.2s infinite ease-in-out;
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0));
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.00) 25%, rgba(0, 0, 0, 0.04) 50%, rgba(0, 0, 0, 0.00) 75%), var(--lfx-color-neutral-100, #F8FAFC);
   @apply h-full left-0 absolute right-0 top-0 w-full;
 }
 
