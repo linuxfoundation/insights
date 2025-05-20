@@ -34,6 +34,7 @@ import { computed } from 'vue';
 import type { BenchmarkKeys } from '~~/types/shared/benchmark.types';
 import LfxBenchmarkIcon from '~/components/uikit/benchmarks/benchmark-icon.vue';
 import { OVERVIEW_API_SERVICE } from '~~/app/components/modules/project/services/overview.api.service';
+import { formatNumber } from '~/components/shared/utils/formatter';
 
 const props = defineProps<{
   benchmarkKey: BenchmarkKeys;
@@ -43,7 +44,9 @@ const props = defineProps<{
 const title = computed(() => OVERVIEW_API_SERVICE.getBenchmarkTitle(props.benchmarkKey));
 const benchmarkValue = computed(() => Math.ceil(props.value || 0));
 const pointDetails = computed(() => OVERVIEW_API_SERVICE.getPointDetails(benchmarkValue.value, props.benchmarkKey));
-const description = computed(() => `${pointDetails.value?.description} - ${pointDetails.value?.text}`);
+const description = computed(() => `
+  ${pointDetails.value?.description.replace('{value}', formatNumber(benchmarkValue.value || 0).toString())} 
+  - ${pointDetails.value?.text}`);
 const iconBGColor = computed(() => `bg-${pointDetails.value?.type}-100`);
 
 </script>

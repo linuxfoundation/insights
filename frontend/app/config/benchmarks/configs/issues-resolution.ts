@@ -12,7 +12,7 @@ export const issuesResolution: BenchmarkConfigs = {
       pointStart: 60,
       pointEnd: null,
       type: 'negative',
-      description: 'Average issue resolution time is over 60 days',
+      description: 'Average issue resolution time is over {value} days',
       text: `This project has a slow issue resolution, indicating potential 
       challenges in maintaining prompt fixes and overall responsiveness.`,
       points: 0
@@ -21,7 +21,7 @@ export const issuesResolution: BenchmarkConfigs = {
       pointStart: 45,
       pointEnd: 60,
       type: 'negative',
-      description: 'Average issue resolution time is 45–60 days',
+      description: 'Average issue resolution time is {value} days',
       text: `This project takes a long time to resolve issues, suggesting a 
       lag in responsiveness and possible maintenance delays.`,
       points: 1
@@ -30,7 +30,7 @@ export const issuesResolution: BenchmarkConfigs = {
       pointStart: 30,
       pointEnd: 44,
       type: 'warning',
-      description: 'Average issue resolution time is 30–44 days',
+      description: 'Average issue resolution time is {value} days',
       text: `This project shows modest responsiveness, though there is room for 
       improvement in handling issues more efficiently.`,
       points: 2
@@ -39,7 +39,7 @@ export const issuesResolution: BenchmarkConfigs = {
       pointStart: 15,
       pointEnd: 29,
       type: 'warning',
-      description: 'Average issue resolution time is 15–29 days',
+      description: 'Average issue resolution time is {value} days',
       text: `This project demonstrates reasonable issue resolution times, 
       reflecting a balanced approach to maintenance and responsiveness.`,
       points: 3
@@ -48,7 +48,7 @@ export const issuesResolution: BenchmarkConfigs = {
       pointStart: 7,
       pointEnd: 14,
       type: 'positive',
-      description: 'Average issue resolution time is 7–14 days',
+      description: 'Average issue resolution time is {value} days',
       text: `This project benefits from fast issue resolution, indicating 
       effective maintenance and a proactive approach to addressing problems.`,
       points: 4
@@ -57,7 +57,7 @@ export const issuesResolution: BenchmarkConfigs = {
       pointStart: 0,
       pointEnd: 6,
       type: 'positive',
-      description: 'Average issue resolution time is 0–6 days',
+      description: 'Average issue resolution time is {value} days',
       text: `This project exhibits exceptional responsiveness, ensuring 
       issues are resolved promptly and maintaining a high standard of quality.`,
       points: 5

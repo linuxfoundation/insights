@@ -12,7 +12,7 @@ export const activeDays: BenchmarkConfigs = {
       pointStart: 0,
       pointEnd: 5,
       type: 'negative',
-      description: 'Active on 0–5 of the last 30 days',
+      description: 'Active on {value} of the last 365 days',
       text: `This project shows extremely low activity, with contributions on only a few days, 
       which may indicate stagnation or low engagement.`,
       points: 0
@@ -21,7 +21,7 @@ export const activeDays: BenchmarkConfigs = {
       pointStart: 6,
       pointEnd: 10,
       type: 'negative',
-      description: 'Active on 6–10 of the last 30 days',
+      description: 'Active on {value} of the last 365 days',
       text: `This project has minimal activity, suggesting sporadic contributions 
       and inconsistent engagement.`,
       points: 1
@@ -30,7 +30,7 @@ export const activeDays: BenchmarkConfigs = {
       pointStart: 11,
       pointEnd: 15,
       type: 'warning',
-      description: 'Active on 11–15 of the last 30 days',
+      description: 'Active on {value} of the last 365 days',
       text: `This project demonstrates modest activity, with contributions occurring on a fair number of days, 
       but still with room for improvement.`,
       points: 2
@@ -39,7 +39,7 @@ export const activeDays: BenchmarkConfigs = {
       pointStart: 16,
       pointEnd: 20,
       type: 'warning',
-      description: 'Active on 16–20 of the last 30 days',
+      description: 'Active on {value} of the last 365 days',
       text: `This project shows moderate activity, with regular contributions 
       that reflect a steady pace of development.`,
       points: 3
@@ -48,7 +48,7 @@ export const activeDays: BenchmarkConfigs = {
       pointStart: 21,
       pointEnd: 26,
       type: 'positive',
-      description: 'Active on 21–26 of the last 30 days',
+      description: 'Active on {value} of the last 365 days',
       text: `This project benefits from strong activity, with contributions on most days, 
       indicating a robust and engaged development process.`,
       points: 4
@@ -57,7 +57,7 @@ export const activeDays: BenchmarkConfigs = {
       pointStart: 27,
       pointEnd: null,
       type: 'positive',
-      description: 'Active on 27–30 of the last 30 days',
+      description: 'Active on {value} of the last 365 days',
       text: `This project exhibits exceptional consistency in activity, with contributions nearly every day, 
       reflecting a highly dynamic and continuously evolving project.`,
       points: 5
