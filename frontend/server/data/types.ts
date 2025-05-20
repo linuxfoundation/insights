@@ -62,6 +62,7 @@ export type ContributorDependencyFilter = {
   granularity?: FilterGranularity;
   platform?: ActivityPlatforms;
   activity_type?: ActivityTypes;
+  limit?: number;
   startDate?: DateTime;
   endDate?: DateTime;
 };

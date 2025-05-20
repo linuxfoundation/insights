@@ -23,8 +23,13 @@ export async function fetchContributorsLeaderboard(
     endDate: filter.endDate,
   };
 
-  const countQuery = {
-    ...dataQuery,
+  const countQuery: ContributorsLeaderboardTinybirdQuery = {
+    project: filter.project,
+    platform: filter.platform,
+    activity_type: filter.activity_type,
+    repo: filter.repo,
+    startDate: filter.startDate,
+    endDate: filter.endDate,
     count: true,
   };
 

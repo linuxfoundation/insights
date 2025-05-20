@@ -3,7 +3,6 @@
 import {DateTime} from "luxon";
 import {createDataSource} from "~~/server/data/data-sources";
 import type {ContributorDependencyFilter} from "~~/server/data/types";
-import {FilterGranularity} from "~~/server/data/types";
 import {ActivityTypes} from "~~/types/shared/activity-types";
 import {ActivityPlatforms} from "~~/types/shared/activity-platforms";
 
@@ -46,7 +45,6 @@ export default defineEventHandler(async (event) => {
 
   const filter: ContributorDependencyFilter = {
     project,
-    granularity: (query.granularity as FilterGranularity) || FilterGranularity.QUARTERLY,
     platform: activityPlatform !== ActivityPlatforms.ALL ? activityPlatform : undefined,
     activity_type: activityType !== ActivityTypes.ALL ? activityType : undefined,
     repo: query.repository as string,
