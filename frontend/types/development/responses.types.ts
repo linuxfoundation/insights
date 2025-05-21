@@ -53,14 +53,16 @@ export interface IssuesResolutionSummary extends Summary {
   avgVelocityInDays: number;
 }
 
+export interface IssuesResolutionData {
+  dateFrom: string;
+  dateTo: string;
+  closedIssues: number;
+  totalIssues: number;
+}
+
 export interface IssuesResolution {
   summary: IssuesResolutionSummary;
-  data: {
-    dateFrom: string;
-    dateTo: string;
-    closedIssues: number;
-    totalIssues: number;
-  }[];
+  data: IssuesResolutionData[];
 }
 
 export interface MergeLeadTimeItem {
