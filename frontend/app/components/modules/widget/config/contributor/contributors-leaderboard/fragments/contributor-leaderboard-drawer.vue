@@ -11,7 +11,7 @@ SPDX-License-Identifier: MIT
       <div class="pt-4 sm:pt-6 px-4 sm:px-6">
         <h3 class="text-heading-3 font-semibold font-secondary pb-3">{{ contributorsLeaderboard.name }}</h3>
         <p class="text-body-2 text-neutral-500 mb-6">
-          {{ contributorsLeaderboard.description }}
+          {{ contributorsLeaderboard.description(project!) }}
           <a
             :href="contributorsLeaderboard.learnMoreLink"
             class="text-brand-500"
@@ -93,6 +93,8 @@ const route = useRoute();
 const metric = ref(props.selectedMetric);
 const platform = computed(() => metric.value.split(':')[0]);
 const activityType = computed(() => metric.value.split(':')[1]);
+
+const { project } = storeToRefs(useProjectStore())
 
 const queryKey = computed(() => [
   TanstackKey.CONTRIBUTORS_LEADERBOARD,
