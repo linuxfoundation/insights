@@ -13,8 +13,8 @@ export const activeContributors: BenchmarkConfigs = {
       pointEnd: 1,
       type: 'negative',
       description: '{value} active contributors in the last quarter',
-      text: `This project shows little to no recent activity, 
-      indicating a high risk of stagnation or abandonment.`,
+      text: `Project activity is critically low, indicating significant 
+      maintenance and sustainability risks.`,
       points: 0
     },
     {
@@ -22,8 +22,8 @@ export const activeContributors: BenchmarkConfigs = {
       pointEnd: 3,
       type: 'negative',
       description: '{value} active contributors in the last quarter',
-      text: `This project has minimal recent activity, 
-      suggesting limited engagement and a potential for slower development.`,
+      text: `Project has very limited contributor activity, 
+      which may impact development pace and maintenance coverage.`,
       points: 1
     },
     {
@@ -31,8 +31,8 @@ export const activeContributors: BenchmarkConfigs = {
       pointEnd: 6,
       type: 'warning',
       description: '{value} active contributors in the last quarter',
-      text: `This project has a modest number of active contributors, 
-      reflecting a small but potentially growing community.`,
+      text: `Project maintains basic activity levels with a small contributor base, 
+      suggesting limited development capacity.`,
       points: 2
     },
     {
@@ -40,8 +40,8 @@ export const activeContributors: BenchmarkConfigs = {
       pointEnd: 10,
       type: 'warning',
       description: '{value} active contributors in the last quarter',
-      text: `This project has a moderate level of activity, 
-      indicating steady development and maintenance efforts.`,
+      text: `Project sustains moderate activity levels, 
+      though additional contributors could help ensure consistent maintenance.`,
       points: 3
     },
     {
@@ -49,8 +49,8 @@ export const activeContributors: BenchmarkConfigs = {
       pointEnd: 20,
       type: 'positive',
       description: '{value} active contributors in the last quarter',
-      text: `This project benefits from robust contributor engagement, 
-      signaling a healthy and active development cycle.`,
+      text: `Project maintains consistent activity with a 
+      stable contributor base driving regular development.`,
       points: 4
     },
     {
@@ -58,8 +58,8 @@ export const activeContributors: BenchmarkConfigs = {
       pointEnd: null,
       type: 'positive',
       description: '{value} active contributors in the last quarter',
-      text: `This project demonstrates exceptional contributor activity, 
-      ensuring continuous improvement and a vibrant development community.`,
+      text: `Project benefits from a large contributor base, ensuring 
+      continuous improvement and a vibrant development community`,
       points: 5
     }
   ],

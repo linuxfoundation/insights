@@ -12,8 +12,9 @@ export const stars: BenchmarkConfigs = {
       pointEnd: 9,
       type: 'negative',
       description: '{value} GitHub stars',
-      text: `This project has very low visibility. Keep in mind, however, that star 
-      counts can be influenced by factors other than genuine community engagement.`,
+      text: `This project has very low visibility. Keep in mind, however, 
+      that star counts can be influenced by factors other than 
+      genuine community engagement.`,
       points: 0
     },
     {
@@ -21,8 +22,9 @@ export const stars: BenchmarkConfigs = {
       pointEnd: 49,
       type: 'negative',
       description: '{value} GitHub stars',
-      text: `This project has modest recognition, though star counts may not fully 
-      capture its actual usage or value and can be susceptible to targeted promotion.`,
+      text: `This project has low visibility, though star counts may not 
+      fully capture its actual usage or value and can be 
+      susceptible to targeted promotion.`,
       points: 1
     },
     {
@@ -30,8 +32,9 @@ export const stars: BenchmarkConfigs = {
       pointEnd: 199,
       type: 'warning',
       description: '{value} GitHub stars',
-      text: `This project demonstrates moderate popularity, but remember that stars can be 
-      affected by promotional efforts and may not represent sustained interest over time.`,
+      text: `This project has moderate visibility, but remember that stars 
+      can be affected by promotional efforts and may not represent sustained 
+      interest over time.`,
       points: 2
     },
     {
@@ -39,8 +42,9 @@ export const stars: BenchmarkConfigs = {
       pointEnd: 499,
       type: 'warning',
       description: '{value} GitHub stars',
-      text: `This project enjoys good community recognition. However, note that high star 
-      counts can sometimes be boosted by short-term trends or social media campaigns.`,
+      text: `This project has good visibility. However, note that high star 
+      counts can sometimes be boosted by short-term trends 
+      or social media campaigns.`,
       points: 3
     },
     {
@@ -48,8 +52,9 @@ export const stars: BenchmarkConfigs = {
       pointEnd: 999,
       type: 'positive',
       description: '{value} GitHub stars',
-      text: `This project is widely recognized and popular, though stars should be considered 
-      alongside other metrics to avoid potential gaming of the system.`,
+      text: `This project has great visibility, though stars should be 
+      considered alongside other metrics to avoid potential 
+      gaming of the system.`,
       points: 4
     },
     {
@@ -57,8 +62,8 @@ export const stars: BenchmarkConfigs = {
       pointEnd: null,
       type: 'positive',
       description: '{value} GitHub stars',
-      text: `This project exhibits high popularity and broad community endorsement. 
-      It's important to assess this in context, as star counts can be artificially inflated.`,
+      text: `This project has great visibility on GitHub. It's important 
+      to assess this in context, as star counts can be artificially inflated.`,
       points: 5
     }
   ],
