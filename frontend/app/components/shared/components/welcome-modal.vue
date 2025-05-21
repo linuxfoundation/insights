@@ -34,7 +34,7 @@ SPDX-License-Identifier: MIT
       </lfx-button>
 
       <a
-        href="/docs/"
+        href="/docs/introduction/what-is-insights/"
         target="_blank"
       >
         <lfx-button

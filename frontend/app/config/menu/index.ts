@@ -34,7 +34,7 @@ export const lfxMenu: MenuConfig = {
     {
         label: 'Documentation',
         icon: 'book-open',
-        href: '/docs/'
+        href: '/docs/introduction/what-is-insights/'
     }
     ],
     footer: {

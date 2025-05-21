@@ -72,7 +72,7 @@ const activeTab = ref('contributors');
 const calculateGranularity = (start: string | null, end: string | null): string[] => {
   // Return weekly if either date is null
   if (!start || !end) {
-    return [Granularity.WEEKLY];
+    return [Granularity.YEARLY];
   }
 
   const startDate = DateTime.fromISO(start);
