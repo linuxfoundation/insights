@@ -4,30 +4,34 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <div class="flex sm:hidden lg:flex items-center gap-3">
+    <template v-if="isProjectLoading">
+      <lfx-skeleton-state
+        v-for="link of lfProjectLinks"
+        :key="link.label"
+        :status="'pending'"
+        height="2rem"
+        width="7.5rem"
+        rounded-class="rounded-full"
+      />
+    </template>
     <lfx-tooltip
       v-for="link of links"
+      v-else
       :key="link.label"
       content="Coming soon"
       placement="top"
       :disabled="!link.comingSoon"
     >
-      <lfx-skeleton-state
-        :status="isProjectLoading ? 'pending' : 'success'"
-        height="2rem"
-        width="7.5rem"
-        rounded-class="rounded-full"
+      <lfx-menu-button
+        :to="!link.comingSoon ? {
+          name: repoName ? link.repoRouteName : link.projectRouteName
+        } : undefined"
+        :exact="true"
+        :disabled="link.comingSoon"
       >
-        <lfx-menu-button
-          :to="!link.comingSoon ? {
-            name: repoName ? link.repoRouteName : link.projectRouteName
-          } : undefined"
-          :exact="true"
-          :disabled="link.comingSoon"
-        >
-          <lfx-icon :name="link.icon" />
-          {{ link.label }}
-        </lfx-menu-button>
-      </lfx-skeleton-state>
+        <lfx-icon :name="link.icon" />
+        {{ link.label }}
+      </lfx-menu-button>
     </lfx-tooltip>
   </div>
   <div class="hidden sm:block lg:hidden">
@@ -90,7 +94,7 @@ import LfxDropdownSelector from "~/components/uikit/dropdown/dropdown-selector.v
 import LfxDropdownItem from "~/components/uikit/dropdown/dropdown-item.vue";
 import {lfProjectLinks} from "~/components/modules/project/config/links";
 import type {Project} from "~~/types/project";
-import type {WidgetArea} from "~/components/modules/widget/types/widget-area";
+import {WidgetArea} from "~/components/modules/widget/types/widget-area";
 import {lfxWidgetArea} from "~/components/modules/widget/config/widget-area.config";
 import {lfxWidgets} from "~/components/modules/widget/config/widget.config";
 import { useProjectStore } from '~~/app/components/modules/project/store/project.store';
@@ -111,6 +115,11 @@ const activeLink = computed(() => lfProjectLinks.find((link) => (repoName.value
 
 const isAreaEnabled = (area: WidgetArea) => {
   const widgets = lfxWidgetArea[area].widgets || [];
+
+  if (area === WidgetArea.SECURITY) {
+    return props.project?.connectedPlatforms.some((platform) => platform.toLowerCase().includes('github'));
+  }
+
   return widgets.length === 0 || widgets.some((widget) => props.project?.widgets.includes(lfxWidgets[widget]?.key))
 }
 
