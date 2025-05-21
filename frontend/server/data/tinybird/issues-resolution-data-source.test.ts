@@ -37,6 +37,7 @@ describe('Issues Resolution Data Source', () => {
   test('should fetch issues resolution data with correct parameters', async () => {
     // We have to import this here again because vi.doMock is not hoisted. See the explanation in beforeEach().
     const {fetchIssuesResolution} = await import("~~/server/data/tinybird/issues-resolution-data-source");
+    const { mergeRanges } = await import('~~/server/data/tinybird/issues-resolution-data-source');
 
     mockFetchFromTinybird.mockResolvedValueOnce(mockCurrentSummaryData)
       .mockResolvedValueOnce(mockPreviousSummaryData)
@@ -72,12 +73,7 @@ describe('Issues Resolution Data Source', () => {
         periodTo: filter.endDate?.toISO() || '',
         avgVelocityInDays: mockIssueResolutionVelocity.data[0].averageIssueResolveVelocitySeconds,
       },
-      data: mockIssuesClosed.data.map((item, index) => ({
-        dateFrom: item.startDate,
-        dateTo: item.endDate,
-        closedIssues: item?.activityCount || 0,
-        totalIssues: (item?.activityCount || 0) + (mockIssuesOpened.data[index]?.activityCount || 0)
-      }))
+      data: mergeRanges(mockIssuesOpened.data, mockIssuesClosed.data)
     };
 
     expect(result).toEqual(expectedResult);
