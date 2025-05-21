@@ -11,7 +11,7 @@ SPDX-License-Identifier: MIT
       <div class="pt-4 sm:pt-6 px-4 sm:px-6">
         <h3 class="text-heading-3 font-semibold font-secondary pb-3">{{ organizationsLeaderboard.name }}</h3>
         <p class="text-body-2 text-neutral-500 mb-6">
-          {{ organizationsLeaderboard.description }}
+          {{ organizationsLeaderboard.description(project!) }}
           <a
             :href="organizationsLeaderboard.learnMoreLink"
             class="text-brand-500"
@@ -89,6 +89,8 @@ const isDrawerOpen = computed({
   get: () => props.modelValue,
   set: (value: boolean) => emit('update:modelValue', value)
 });
+
+const { project } = storeToRefs(useProjectStore())
 
 const route = useRoute();
 const metric = ref(props.selectedMetric);
