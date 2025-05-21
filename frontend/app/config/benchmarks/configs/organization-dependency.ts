@@ -22,7 +22,7 @@ export const organizationDependency: BenchmarkConfigs = {
       type: 'negative',
       description: '{value} organizations account for 51%+ of contributions',
       text: `This project mainly relies on only two organizations, 
-      which suggests limited organizational diversity and potential risk if one withdraws.`,
+      which suggests risk if one withdraws.`,
       points: 1
     },
     {
@@ -39,8 +39,7 @@ export const organizationDependency: BenchmarkConfigs = {
       pointEnd: 5,
       type: 'warning',
       description: '{value} organizations account for 51%+ of contributions',
-      text: `This project has a moderate spread of contributions across several organizations, 
-      reducing dependency on any single entity.`,
+      text: `This project has a moderate spread of contributions across several organizations.`,
       points: 3
     },
     {
@@ -57,7 +56,7 @@ export const organizationDependency: BenchmarkConfigs = {
       pointEnd: null,
       type: 'positive',
       description: '{value} organizations account for 51%+ of contributions',
-      text: `This project exhibits excellent organizational diversity, 
+      text: `This project benefits from excellent organizational diversity, 
       ensuring robust support and resilience through a wide range of contributing organizations.`,
       points: 5
     }

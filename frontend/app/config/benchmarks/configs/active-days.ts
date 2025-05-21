@@ -13,8 +13,8 @@ export const activeDays: BenchmarkConfigs = {
       pointEnd: 5,
       type: 'negative',
       description: 'Active on {value} of the last 365 days',
-      text: `This project shows extremely low activity, with contributions on only a few days, 
-      which may indicate stagnation or low engagement.`,
+      text: `Project activity occurs on very few days, 
+      indicating significant gaps in development continuity.`,
       points: 0
     },
     {
@@ -22,8 +22,8 @@ export const activeDays: BenchmarkConfigs = {
       pointEnd: 10,
       type: 'negative',
       description: 'Active on {value} of the last 365 days',
-      text: `This project has minimal activity, suggesting sporadic contributions 
-      and inconsistent engagement.`,
+      text: `Project shows infrequent activity patterns, 
+      with notable gaps between development periods.`,
       points: 1
     },
     {
@@ -31,7 +31,8 @@ export const activeDays: BenchmarkConfigs = {
       pointEnd: 15,
       type: 'warning',
       description: 'Active on {value} of the last 365 days',
-      text: `This project demonstrates modest activity, with contributions occurring on a fair number of days, 
+      text: `This project demonstrates modest activity, 
+      with contributions occurring on a fair number of days, 
       but still with room for improvement.`,
       points: 2
     },
@@ -40,8 +41,8 @@ export const activeDays: BenchmarkConfigs = {
       pointEnd: 20,
       type: 'warning',
       description: 'Active on {value} of the last 365 days',
-      text: `This project shows moderate activity, with regular contributions 
-      that reflect a steady pace of development.`,
+      text: `This project shows moderate activity, 
+      with regular contributions that reflect a steady pace of development.`,
       points: 3
     },
     {
@@ -58,8 +59,8 @@ export const activeDays: BenchmarkConfigs = {
       pointEnd: null,
       type: 'positive',
       description: 'Active on {value} of the last 365 days',
-      text: `This project exhibits exceptional consistency in activity, with contributions nearly every day, 
-      reflecting a highly dynamic and continuously evolving project.`,
+      text: `Project demonstrates exceptionally consistent activity, 
+      with development occurring multiple times per week.`,
       points: 5
     }
   ],

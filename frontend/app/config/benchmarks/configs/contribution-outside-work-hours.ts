@@ -9,51 +9,53 @@ export const contributionOutsideWorkHours: BenchmarkConfigs = {
   key: BenchmarkKeys.ContributionsOutsideWorkHours,
   points: [
     {
-      pointStart: 80,
+      pointStart: 75,
       pointEnd: null,
       type: 'negative',
-      description: '{value}% of contributions',
-      text: `80%+ of contributions occur outside regular working hours`,
+      description: '{value}% of contributions occur outside regular working hours',
+      text: `This project mostly depends on contributors working outside of working hours.`,
       points: 0
     },
     {
-      pointStart: 60,
-      pointEnd: 79,
+      pointStart: 50,
+      pointEnd: 74,
       type: 'negative',
-      description: '{value}% of contributions',
-      text: `60–79% of contributions occur outside regular working hours`,
+      description: '{value}% of contributions occur outside regular working hours',
+      text: `This project highly depends on contributors working outside of working hours.`,
       points: 1
     },
     {
       pointStart: 40,
-      pointEnd: 59,
+      pointEnd: 49,
       type: 'warning',
-      description: '{value}% of contributions',
-      text: `40–59% of contributions occur outside regular working hours`,
+      description: '{value}% of contributions occur outside regular working hours',
+      text: `This project depends on contributors working outside of working hours.`,
       points: 2
     },
     {
-      pointStart: 25,
+      pointStart: 30,
       pointEnd: 39,
       type: 'warning',
-      description: '{value}% of contributions',
-      text: `25–39% of contributions occur outside regular working hours`,
+      description: '{value}% of contributions occur outside regular working hours',
+      text: `Contributions are mostly made during working hours.`,
       points: 3
     },
     {
-      pointStart: 10,
-      pointEnd: 24,
+      pointStart: 20,
+      pointEnd: 29,
       type: 'positive',
-      description: '{value}% of contributions',
-      text: `10–24% of contributions occur outside regular working hours`,
+      description: '{value}% of contributions occur outside regular working hours',
+      text: `Most of the contributions are made during working hours, 
+      indicating a healthy & sustainable development process.`,
       points: 4
     },
     {
       pointStart: 0,
-      pointEnd: 9,
+      pointEnd: 19,
       type: 'positive',
-      description: '{value}% of contributions',
-      text: `Less than 10% outside working hours`,
+      description: '{value}% of contributions occur outside regular working hours',
+      text: `Almost all contributions are made during working hours, 
+      indicating a very healthy & sustainable development process.`,
       points: 5
     }
   ],
