@@ -5,11 +5,12 @@ import _ from 'lodash';
 import type { ChartData, ChartSeries, SeriesTypes } from '../types/ChartTypes';
 import type { SingleTooltipFormatterParams } from '../types/EChartTypes';
 import { lfxColors } from '~/config/styles/colors';
-import {geoMapCountries} from "~/components/modules/widget/components/contributors/config/geo-map-countries";
+import { geoMapCountries } from '~/components/modules/widget/components/contributors/config/geo-map-countries';
 
 interface GeoMapData {
   name: string;
   value: number;
+  percentage: number;
 }
 
 const defaultGeoOption: ECOption = {
@@ -34,7 +35,9 @@ const defaultGeoOption: ECOption = {
     formatter: (paramRaw: TopLevelFormatterParams) => {
       const params: SingleTooltipFormatterParams = paramRaw as SingleTooltipFormatterParams;
 
-      return params.value && Number(params.value) > 0
+      const data = params.data as GeoMapData;
+
+      return data && Number(data.value) > 0
         ? `${countryNameFormatter(params?.name || '')}
       <div style="
         font-size: 12px; color: ${lfxColors.neutral[900]};
@@ -43,9 +46,12 @@ const defaultGeoOption: ECOption = {
         align-items: center;
         justify-content: space-between;
         min-width: 150px;">
-        <span style="font-weight: 400;">${params.seriesName}</span>
+        <span style="font-weight: 400;">
+          ${Number.isNaN(data.value) ? 0 : data.value}
+          ${params.seriesName}s
+        </span>
         <span style="font-weight: 500;">${
-          Number.isNaN(params.value) ? 0 : params.value
+          Number.isNaN(data.percentage) ? 0 : data.percentage
         }%</span>
       </div>`
         : null;
@@ -62,7 +68,7 @@ const defaultSeriesStyle: MapSeriesOption = {
       show: false
     },
     itemStyle: {
-      areaColor: 'inherit', // lfxColors.brand[600],
+      areaColor: lfxColors.brand[600],
       borderColor: 'inherit' // lfxColors.neutral[900]
     }
   },
@@ -96,7 +102,8 @@ const buildSeries = (
 
 const serializeDataForGeoMap = (data: ChartData[]): GeoMapData[] => data.map((item) => ({
     name: item.key,
-    value: item.values[0] ?? 0
+    value: item.values[0] ?? 0,
+    percentage: item.values[1] ?? 0
   }));
 
 const countryNameFormatter = (name: string) => {

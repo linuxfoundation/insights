@@ -109,7 +109,7 @@ const emit = defineEmits<{(e: 'update:benchmarkValue', value: Benchmark | undefi
 
 const route = useRoute();
 const metric = ref('all:all');
-const activeTab = ref('contributors');
+const activeTab = ref('organizations');
 const platform = computed(() => metric.value.split(':')[0]);
 const activityType = computed(() => metric.value.split(':')[1]);
 const { startDate, endDate, selectedRepository } = storeToRefs(useProjectStore())
@@ -156,19 +156,23 @@ const embargoCountries = computed(() => geoMapData.value?.filter((item) => embar
 
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
-  () => convertToChartData(geoMapData.value as unknown as RawChartData[], 'name', ['count'])
+  () => convertToChartData(geoMapData.value as unknown as RawChartData[], 'name', ['count', 'percentage'])
+  .map((item) => ({
+    ...item,
+    key: item.key === 'United States' ? 'United States of America' : item.key
+  }))
 );
 
 const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
 
 const tabs = [
   {
-    label: 'Contributors',
-    value: 'contributors'
-  },
-  {
     label: 'Organizations',
     value: 'organizations'
+  },
+  {
+    label: 'Contributors',
+    value: 'contributors'
   }
 ];
 
