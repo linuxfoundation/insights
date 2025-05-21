@@ -33,6 +33,7 @@ export const convertToChartData = (
   ) ?? [];
 
 export const getMaxValue = (data: ChartData[]): number => data //
+    .filter((item) => item.key !== 'Unknown')
     .reduce((max, item) => Math.max(max, item.values[0] ?? 0), 0);
 
 export const convertToCategoryData = (
