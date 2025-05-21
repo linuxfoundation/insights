@@ -16,23 +16,18 @@ Insights is part of the [LFX platform](https://lfx.linuxfoundation.org/).
 
 ## Contributing
 
-This repository includes mainly the frontend code for Insights. It's not straight forward to run the application locally with relevant data to test. For this reason, outside code contributions are not intended (yet).
+> [!WARNING]
+> This project is currently in beta and this repository includes mainly the frontend code. It's not straightforward to run the application locally with relevant data to test.
 
-There are still ways to contribute to Insights:
+For this reason, outside code contributions are not intended (yet). There are still ways to contribute to Insights:
 
 - Try [Insights](https://insights.linuxfoundation.org/) and give feedback by [creating new issues](https://github.com/linuxfoundation/insights/issues)
 - Participate on open discussions or share your ideas with us by checking the [Discussions](https://github.com/linuxfoundation/insights/discussions)
 
 Please also refer to our [Contributing guide](https://github.com/linuxfoundation/insights/blob/main/CONTRIBUTING.md).
 
-## Roadmap
-tbd
-
 ## Maintainers
 LFX Insights is a project by [The Linux Foundation](https://www.linuxfoundation.org/). You can find a list of the individual maintainers [here](MAINTAINERS.md).
-
-## Code of Conduct
-tbd
 
 ## Requirements
 
