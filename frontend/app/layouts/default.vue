@@ -15,6 +15,7 @@ SPDX-License-Identifier: MIT
     </div>
     <lfx-report-global />
     <lfx-share-global />
+    <lfx-welcome-modal />
   </main>
 </template>
 
@@ -25,6 +26,7 @@ import LfxNavbar from '~/components/shared/layout/navbar.vue';
 import LfxToast from '~/components/uikit/toast/toast.vue';
 import LfxReportGlobal from "~/components/shared/modules/report/components/report-global.vue";
 import LfxShareGlobal from "~/components/shared/modules/share/components/share-global.vue";
+import LfxWelcomeModal from "~/components/shared/components/welcome-modal.vue";
 // Only import the UI core library on the client side
 if (import.meta.client) {
   await import('@linuxfoundation/lfx-ui-core');
