@@ -16,14 +16,14 @@ hero:
 
 features:
   - title: What is LFX Insights?
-    details: Lorem ipsum...
+    details: Learn how LFX Insights helps you assess open source project health and make smarter dependency decisions.
     link: /introduction/what-is-insights
     linkText: Learn more
   - title: Health Score
-    details: Lorem ipsum...
+    details: A single, unified metric that reflects the overall health of an open source project, from activity to security.
     link: /metrics/health-score
     linkText: Learn more
   - title: FAQ
-    details: Lorem ipsum...
+    details: Get answers to common questions about using and understanding LFX Insights features and metrics.
     link: /more/faq
     linkText: Learn more
