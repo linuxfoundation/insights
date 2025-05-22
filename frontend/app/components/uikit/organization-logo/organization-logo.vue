@@ -23,6 +23,7 @@ SPDX-License-Identifier: MIT
         <img
           src="~/assets/images/icon.svg"
           alt="LFX icon"
+          class="block"
         >
       </lfx-tooltip>
     </div>
