@@ -8,7 +8,7 @@ SPDX-License-Identifier: MIT
     width="41.5rem"
   >
     <div class="p-6">
-      <div class="flex justify-between mb-8">
+      <div class="flex justify-between">
         <div>
           <p class="text-body-2 text-neutral-500">
             {{ widgetConfig.name }}
@@ -17,9 +17,25 @@ SPDX-License-Identifier: MIT
             Snapshot
           </h3>
         </div>
+        <lfx-icon-button
+          icon="close"
+          size="small"
+          @click="isModalOpen = false"
+        />
       </div>
-      <div class="bg-brand-50 border border-brand-100 rounded-lg">
-        <p class="text-brand-600 text-xs font-semibold leading-5 text-center mb-px">
+      <div class="py-8">
+        <lfx-button
+          type="primary"
+          button-style="pill"
+          class="w-full justify-center"
+          @click="download()"
+        >
+          <lfx-icon name="arrow-down-to-line" />
+          Download PNG
+        </lfx-button>
+      </div>
+      <div class="bg-neutral-100 border border-neutral-200 rounded-lg">
+        <p class="text-neutral-500 text-xs font-semibold leading-5 text-center mb-px">
           Preview
         </p>
         <div class="-m-px bg-white border border-neutral-200 rounded-lg">
@@ -33,23 +49,6 @@ SPDX-License-Identifier: MIT
             />
           </div>
         </div>
-      </div>
-      <div class="flex justify-end pt-8 items-center gap-4">
-        <lfx-button
-          type="tertiary"
-          button-style="pill"
-          @click="isModalOpen = false"
-        >
-          Cancel
-        </lfx-button>
-        <lfx-button
-          type="primary"
-          button-style="pill"
-          @click="download()"
-        >
-          <lfx-icon name="arrow-down-to-line" />
-          Download PNG
-        </lfx-button>
       </div>
     </div>
   </lfx-modal>
@@ -66,6 +65,7 @@ import LfxButton from "~/components/uikit/button/button.vue";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
 import LfxSnapshotPreview from "~/components/modules/widget/components/shared/snapshot/snapshot-preview.vue";
 import {useProjectStore} from "~/components/modules/project/store/project.store";
+import LfxIconButton from "~/components/uikit/icon-button/icon-button.vue";
 
 const props = defineProps<{
   modelValue: boolean;
