@@ -30,7 +30,7 @@ SPDX-License-Identifier: MIT
       v-if="props.snapshot"
       class="text-sm leading-4 font-semibold first-letter:uppercase pb-3 border-t border-neutral-100 pt-5"
     >
-      {{model.activeTab}} active contributors
+      {{model.activeTab}} active organizations
     </div>
     <lfx-project-load-state
       :status="status"
