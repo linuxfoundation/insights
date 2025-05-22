@@ -8,18 +8,17 @@ SPDX-License-Identifier: MIT
     <div class="absolute top-0 left-0 w-full h-full z-50" />
 
     <div class="flex justify-between items-center pb-5 border-b border-neutral-100">
-      <div class="flex items-center">
+      <div class="flex items-center gap-3">
         <lfx-avatar
           :src="project?.logo"
           type="organization"
           size="normal"
-          class="mr-3"
         />
         <p class="text-sm leading-5 font-semibold">
           {{ project?.name }}<span
             v-if="repoName"
             class="font-normal"
-          > / {{ repoName }}</span>
+          >&nbsp;/ {{ repoName }}</span>
         </p>
       </div>
       <div class="text-body-2 text-neutral-500 flex items-center gap-1">
