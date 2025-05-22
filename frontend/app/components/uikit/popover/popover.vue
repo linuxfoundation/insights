@@ -12,26 +12,29 @@ SPDX-License-Identifier: MIT
   >
     <slot />
   </div>
-
-  <teleport to="body">
-    <div
-      v-show="isVisible && !props.disabled"
-      ref="popover"
-      class="c-popover__content"
-      :class="{ 'is-modal': props.isModal }"
-      @click="props.isModal ? closePopover() : null"
+  <ClientOnly>
+    <teleport
+      v-if="isVisible && !props.disabled"
+      to="body"
     >
-      <slot
-        name="content"
-        :close="closePopover"
-      />
-    </div>
-  </teleport>
+      <div
+        ref="popover"
+        class="c-popover__content"
+        :class="{ 'is-modal': props.isModal }"
+        @click="props.isModal ? closePopover() : null"
+      >
+        <slot
+          name="content"
+          :close="closePopover"
+        />
+      </div>
+    </teleport>
+  </ClientOnly>
 </template>
 
 <script lang="ts" setup>
 import {
-  ref, watch, onMounted, onBeforeUnmount
+  ref, watch, onMounted, onBeforeUnmount, nextTick
 } from 'vue';
 import type {Instance, Placement} from '@popperjs/core';
 import {createPopper} from '@popperjs/core';
@@ -151,12 +154,35 @@ const scheduleClose = () => {
 };
 
 onMounted(() => {
-  createPopperInstance();
-  if (props.triggerEvent === 'hover') {
-    trigger.value?.addEventListener('mouseenter', openPopover);
-    trigger.value?.addEventListener('mouseleave', scheduleClose);
-    popover.value?.addEventListener('mouseenter', cancelClose);
-    popover.value?.addEventListener('mouseleave', scheduleClose);
+  if(import.meta.client) {
+    createPopperInstance();
+    if (props.triggerEvent === 'hover') {
+      trigger.value?.addEventListener('mouseenter', openPopover);
+      trigger.value?.addEventListener('mouseleave', scheduleClose);
+      popover.value?.addEventListener('mouseenter', cancelClose);
+      popover.value?.addEventListener('mouseleave', scheduleClose);
+    }
+  }
+});
+
+watch(isVisible, async (visible) => {
+  if (visible) {
+    await nextTick();
+    createPopperInstance();
+
+    if (props.triggerEvent === 'hover') {
+      // Safely add listeners now that popover is in DOM
+      popover.value?.addEventListener('mouseenter', cancelClose);
+      popover.value?.addEventListener('mouseleave', scheduleClose);
+    }
+  } else {
+    destroyPopperInstance();
+
+    if (props.triggerEvent === 'hover') {
+      // Clean up listeners when hiding
+      popover.value?.removeEventListener('mouseenter', cancelClose);
+      popover.value?.removeEventListener('mouseleave', scheduleClose);
+    }
   }
 });
 
