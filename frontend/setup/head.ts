@@ -1,6 +1,6 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-const title = "LFX Insights – Evaluate the World's Most Critical Open Source Projects";
+const title = "LFX Insights – Discover the world's most critical open source projects";
 const description = 'LFX Insights helps you evaluate the health of open source projects through trusted metrics. '
     + 'Backed by the Linux Foundation.';
 const keywords = 'LFX Insights, open source analytics, contributor tracking, software security, '
