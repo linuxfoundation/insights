@@ -10,9 +10,12 @@ const organizationsLeaderboard: WidgetConfig = {
         + ' their behalf and the impact on the project.',
     learnMoreLink: `/docs/metrics/contributors#organizations-leaderboard`,
     component: OrganizationsLeaderboard,
+    defaultValue: {
+        metric: 'all:all'
+    },
     share: true,
     embed: false,
-    snapshot: false,
+    snapshot: true,
 }
 
 export default organizationsLeaderboard;

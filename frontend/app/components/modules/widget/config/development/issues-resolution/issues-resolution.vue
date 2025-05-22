@@ -4,7 +4,7 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <section class="mt-5">
-    <div class="mb-6">
+    <div :class="props.snapshot ? 'mb-0' : 'mb-6'">
       <div class="flex flex-row justify-between items-start">
         <div>
           <div class="text-neutral-400 text-xs mb-1">
@@ -55,8 +55,11 @@ SPDX-License-Identifier: MIT
       use-min-height
       :height="350"
     >
-      <div class="w-full h-[350px] mt-5 pb-6">
-        <lfx-chart :config="lineAreaChartConfig">
+      <div class="w-full h-[350px] mt-5">
+        <lfx-chart
+          :config="lineAreaChartConfig"
+          :animation="!props.snapshot"
+        >
           <template #legend>
             <div class="flex flex-row gap-5 items-center justify-center pt-2">
               <div class="flex flex-row items-center gap-2">
@@ -105,6 +108,10 @@ import { FormatterUnits } from '~/components/shared/types/formatter.types';
 import {TanstackKey} from "~/components/shared/types/tanstack";
 import LfxSkeletonState from "~/components/modules/project/components/shared/skeleton-state.vue";
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
+
+const props = defineProps<{
+  snapshot?: boolean
+}>()
 
 const emit = defineEmits<{(e: 'update:benchmarkValue', value: Benchmark | undefined): void;
 }>();

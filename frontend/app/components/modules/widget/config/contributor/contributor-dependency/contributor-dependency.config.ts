@@ -10,9 +10,12 @@ const contributorDependency: WidgetConfig = {
         + 'who are actively involved in the project during the selected time period.',
     learnMoreLink: `/docs/metrics/contributors#contributor-dependency`,
     component: ContributorDependency,
+    defaultValue: {
+        metric: 'all:all'
+    },
     share: true,
     embed: false,
-    snapshot: false,
+    snapshot: true,
 }
 
 export default contributorDependency;

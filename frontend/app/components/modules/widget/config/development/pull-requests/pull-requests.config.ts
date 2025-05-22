@@ -11,7 +11,7 @@ const pullRequests: WidgetConfig = {
     component: PullRequests,
     share: true,
     embed: false,
-    snapshot: false,
+    snapshot: true,
 }
 
 export default pullRequests;

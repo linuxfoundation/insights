@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 import CodeReviewEngagement from "./code-review-engagement.vue";
 import type {WidgetConfig} from "~/components/modules/widget/config/widget.config";
+import {CodeReviewEngagementMetric} from "~~/types/development/requests.types";
 
 const codeReviewEngagement: WidgetConfig = {
     key: 'codeReviewEngagement',
@@ -10,9 +11,12 @@ const codeReviewEngagement: WidgetConfig = {
         + ' selected period. Analyze trends to improve engagement.',
     learnMoreLink: `/docs/metrics/development#code-review-engagement`,
     component: CodeReviewEngagement,
+    defaultValue: {
+        activeTab: CodeReviewEngagementMetric.PR_PARTICIPANTS,
+    },
     share: true,
     embed: false,
-    snapshot: false,
+    snapshot: true,
 }
 
 export default codeReviewEngagement;

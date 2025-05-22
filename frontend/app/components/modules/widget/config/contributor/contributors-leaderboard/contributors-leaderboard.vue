@@ -4,14 +4,15 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <section
-    class="mt-5"
+    :class="props.snapshot ? 'mt-2' : 'mt-5'"
   >
     <div
-      class="mb-6"
+      :class="props.snapshot ? 'mb-5' : 'mb-6'"
     >
       <lfx-activities-dropdown
-        v-model="metric"
+        v-model="model.metric"
         full-width
+        :snapshot="props.snapshot"
       />
     </div>
 
@@ -22,11 +23,12 @@ SPDX-License-Identifier: MIT
       :is-empty="isEmpty"
     >
       <lfx-contributors-table
-        :metric="metric"
+        :metric="model.metric"
         :contributors="contributors.data"
       />
 
       <div
+        v-if="!props.snapshot"
         class="mt-5 flex flex-row justify-center"
       >
         <lfx-button
@@ -40,7 +42,7 @@ SPDX-License-Identifier: MIT
   </section>
   <lfx-contributor-leaderboard-drawer
     v-model="isDrawerOpened"
-    :selected-metric="metric"
+    :selected-metric="model.metric"
   />
 </template>
 
@@ -62,12 +64,27 @@ import LfxContributorsTable from "~/components/modules/widget/components/contrib
 import {TanstackKey} from "~/components/shared/types/tanstack";
 import { CONTRIBUTORS_API_SERVICE } from '~~/app/components/modules/widget/services/contributors.api.service'
 
+interface ContributorLeaderboardModel {
+  metric: string;
+}
+
+const props = defineProps<{
+  modelValue: ContributorLeaderboardModel,
+  snapshot?: boolean
+}>()
+
+const emit = defineEmits<{(e: 'update:modelValue', value: ContributorLeaderboardModel): void}>()
+
+const model = computed<ContributorLeaderboardModel>({
+  get: () => props.modelValue,
+  set: (value) => emit('update:modelValue', value)
+})
+
 const { startDate, endDate, selectedRepository } = storeToRefs(useProjectStore())
 
 const route = useRoute();
-const metric = ref('all:all');
-const platform = computed(() => metric.value.split(':')[0]);
-const activityType = computed(() => metric.value.split(':')[1]);
+const platform = computed(() => model.value.metric?.split(':')[0]);
+const activityType = computed(() => model.value.metric?.split(':')[1]);
 const isDrawerOpened = ref(false);
 
 const queryKey = computed(() => [
@@ -78,7 +95,7 @@ const queryKey = computed(() => [
   selectedRepository,
   startDate,
   endDate,
-  metric
+  model.value.metric,
 ]);
 
 const queryFn = computed(() => CONTRIBUTORS_API_SERVICE.contributorLeaderboardQueryFn(() => ({
@@ -102,8 +119,9 @@ const contributors = computed<ContributorLeaderboard>(() => data.value?.pages[0]
 const isEmpty = computed(() => isEmptyData(contributors.value?.data as unknown as Record<string, unknown>[]));
 
 onServerPrefetch(async () => {
-  await suspense()
+  await suspense();
 })
+
 </script>
 
 <script lang="ts">

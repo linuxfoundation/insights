@@ -9,9 +9,12 @@ const mailingListMessages: WidgetConfig = {
     description: () => 'Messages sent on the project\'s public mailing lists during the selected time period.',
     learnMoreLink: `/docs/metrics/popularity#mailing-list-messages`,
     component: MailingListMessages,
+    defaultValue: {
+        activeTab: 'new',
+    },
     share: true,
     embed: false,
-    snapshot: false,
+    snapshot: true,
 }
 
 export default mailingListMessages;

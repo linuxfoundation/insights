@@ -12,7 +12,7 @@ const mergeLeadTime: WidgetConfig = {
     component: MergeLeadTime,
     share: true,
     embed: false,
-    snapshot: false,
+    snapshot: true,
 }
 
 export default mergeLeadTime;

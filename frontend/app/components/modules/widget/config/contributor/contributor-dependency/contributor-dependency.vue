@@ -3,9 +3,17 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <section class="mt-5">
-    <div class="mb-6">
-      <lfx-activities-dropdown v-model="metric" />
+  <section
+    :class="props.snapshot ? 'mt-2' : 'mt-5'"
+  >
+    <div
+      :class="props.snapshot ? 'mb-5' : 'mb-6'"
+    >
+      <lfx-activities-dropdown
+        v-model="model.metric"
+        full-width
+        :snapshot="props.snapshot"
+      />
     </div>
     <lfx-project-load-state
       :status="status"
@@ -38,7 +46,7 @@ SPDX-License-Identifier: MIT
 
       <lfx-contributors-table
         show-percentage
-        :metric="metric"
+        :metric="model.metric"
         :contributors="contributors"
       />
     </lfx-project-load-state>
@@ -48,7 +56,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import {
-ref, computed, watch, onServerPrefetch
+computed, watch, onServerPrefetch
 } from 'vue';
 import { useRoute } from 'nuxt/app';
 import { storeToRefs } from "pinia";
@@ -66,15 +74,28 @@ import LfxProjectLoadState from "~/components/modules/project/components/shared/
 import LfxDependencyDisplay from "~/components/modules/widget/components/contributors/fragments/dependency-display.vue";
 import LfxContributorsTable from "~/components/modules/widget/components/contributors/fragments/contributors-table.vue";
 
+interface ContributorDependencyModel {
+  metric: string;
+}
+
+const props = defineProps<{
+  modelValue: ContributorDependencyModel,
+  snapshot?: boolean
+}>()
+
 const emit = defineEmits<{(e: 'update:benchmarkValue', value: Benchmark | undefined): void;
-}>();
+  (e: 'update:modelValue', value: ContributorDependencyModel): void}>()
+
+const model = computed<ContributorDependencyModel>({
+  get: () => props.modelValue,
+  set: (value) => emit('update:modelValue', value)
+})
 
 const { startDate, endDate, selectedRepository } = storeToRefs(useProjectStore())
 
 const route = useRoute();
-const metric = ref('all:all');
-const platform = computed(() => metric.value.split(':')[0]);
-const activityType = computed(() => metric.value.split(':')[1]);
+const platform = computed(() => model.value.metric.split(':')[0]);
+const activityType = computed(() => model.value.metric.split(':')[1]);
 const queryKey = computed(() => [
   TanstackKey.CONTRIBUTOR_DEPENDENCY,
   route.params.slug,

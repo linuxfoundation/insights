@@ -60,6 +60,13 @@ SPDX-License-Identifier: MIT
         </template>
       </lfx-dropdown>
     </div>
+
+    <lfx-snapshot-modal
+      v-if="isSnapshotModalOpen"
+      v-model="isSnapshotModalOpen"
+      :widget-name="props.name"
+      :data="props.data"
+    />
   </div>
 </template>
 
@@ -80,15 +87,19 @@ import LfxDropdown from "~/components/uikit/dropdown/dropdown.vue";
 import LfxIconButton from "~/components/uikit/icon-button/icon-button.vue";
 import LfxDropdownSeparator from "~/components/uikit/dropdown/dropdown-separator.vue";
 import LfxDropdownItem from "~/components/uikit/dropdown/dropdown-item.vue";
+import LfxSnapshotModal from "~/components/modules/widget/components/shared/snapshot/snapshot-modal.vue";
 
 const props = defineProps<{
   name: Widget;
+  data: object
 }>()
+
+const config = computed(() => lfxWidgets[props.name]);
+
+const isSnapshotModalOpen = ref(false)
 
 const {openReportModal} = useReportStore()
 const {openShareModal} = useShareStore()
-
-const config = computed(() => lfxWidgets[props.name]);
 
 const {project, repository} = storeToRefs(useProjectStore());
 
@@ -151,6 +162,7 @@ const menu: {
     label: 'Snapshot',
     icon: 'screenshot',
     action: () => {
+      isSnapshotModalOpen.value = true;
     },
     enabled: config.value.snapshot,
     isSeparator: false

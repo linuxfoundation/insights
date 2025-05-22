@@ -4,7 +4,7 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <section class="mt-5">
-    <div class="flex flex-row justify-between items-center mb-6">
+    <div class="flex flex-row justify-between items-center">
       <div>
         <lfx-skeleton-state
           :status="status"
@@ -24,7 +24,7 @@ SPDX-License-Identifier: MIT
         </lfx-skeleton-state>
       </div>
 
-      <div class="flex flex-row justify-between items-center mb-6 gap-10">
+      <div class="flex flex-row justify-between items-center gap-10">
         <div class="flex flex-col items-end justify-center">
           <span class="text-neutral-400 text-xs flex flex-row gap-2 items-center">
             Mon-Fri (after 18:00)
@@ -71,7 +71,10 @@ SPDX-License-Identifier: MIT
       :height="430"
     >
       <div class="w-full h-[430px] my-5">
-        <lfx-chart :config="getScatterChartConfig(chartData, chartSeries)" />
+        <lfx-chart
+          :config="getScatterChartConfig(chartData, chartSeries)"
+          :animation="!props.snapshot"
+        />
       </div>
       <div class="text-neutral-400 text-xs text-center italic">
         Only considering contributions from contributors with known timezones
@@ -107,6 +110,10 @@ import {TanstackKey} from "~/components/shared/types/tanstack";
 import LfxSkeletonState from "~/components/modules/project/components/shared/skeleton-state.vue";
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
 import {BenchmarkKeys, type Benchmark} from '~~/types/shared/benchmark.types';
+
+const props = defineProps<{
+  snapshot?: boolean;
+}>()
 
 const emit = defineEmits<{(e: 'update:benchmarkValue', value: Benchmark | undefined): void;
 }>();

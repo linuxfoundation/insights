@@ -3,7 +3,7 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div v-if="isModalOpened">
+  <template v-if="isModalOpened">
     <teleport to="body">
       <div
         class="c-modal"
@@ -19,7 +19,7 @@ SPDX-License-Identifier: MIT
         </div>
       </div>
     </teleport>
-  </div>
+  </template>
 </template>
 
 <script setup lang="ts">

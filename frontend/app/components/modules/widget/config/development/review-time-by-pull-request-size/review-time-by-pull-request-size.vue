@@ -10,9 +10,9 @@ SPDX-License-Identifier: MIT
       error-message="Error fetching review time by pull request size"
       :is-empty="isEmpty"
       use-min-height
-      :height="380"
+      :height="330"
     >
-      <div class="w-full min-h-[380px] my-5">
+      <div class="w-full">
         <div class="flex flex-col gap-5 text-neutral-900 text-sm">
           <div
             v-for="item in reviewTimeByPr"

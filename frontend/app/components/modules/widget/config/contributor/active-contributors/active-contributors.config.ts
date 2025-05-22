@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 import ActiveContributors from "./active-contributors.vue";
 import type {WidgetConfig} from "~/components/modules/widget/config/widget.config";
+import {Granularity} from "~~/types/shared/granularity";
 
 const activeContributors: WidgetConfig = {
     key: 'activeContributors',
@@ -10,9 +11,12 @@ const activeContributors: WidgetConfig = {
         + ' or pull requests during the selected time period.',
     learnMoreLink: `/docs/metrics/contributors#active-contributors`,
     component: ActiveContributors,
+    defaultValue: {
+        activeTab: Granularity.WEEKLY
+    },
     share: true,
     embed: false,
-    snapshot: false,
+    snapshot: true,
 }
 
 export default activeContributors;

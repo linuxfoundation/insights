@@ -13,7 +13,7 @@ const activeDays: WidgetConfig = {
     component: ActiveDays,
     share: true,
     embed: false,
-    snapshot: false,
+    snapshot: true,
 }
 
 export default activeDays;

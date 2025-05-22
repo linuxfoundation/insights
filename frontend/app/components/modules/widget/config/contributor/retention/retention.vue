@@ -4,19 +4,27 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <section class="mt-5">
-    <div class="flex flex-row gap-4 items-center mb-10">
+    <div
+      v-if="!props.snapshot"
+      class="flex flex-row gap-4 items-center mb-10"
+    >
       <div class="basis-1/2">
         <lfx-tabs
           :tabs="tabs"
-          :model-value="activeTab"
+          :model-value="model.activeTab"
           width-type="inline"
-          @update:model-value="activeTab = $event"
+          @update:model-value="model.activeTab = $event"
         />
       </div>
       <div class="basis-1/2 flex justify-end">
         <!-- TODO: Hiding for now since the final design is not decided yet -->
         <!-- <lfx-tabs :tabs="chartTypes" :model-value="chartType" width-type="inline"
             @update:model-value="chartType = $event" /> -->
+      </div>
+    </div>
+    <div v-else>
+      <div class="text-sm leading-4 font-semibold first-letter:uppercase pb-5">
+        {{model.activeTab}} retention breakdown
       </div>
     </div>
     <lfx-project-load-state
@@ -28,7 +36,10 @@ SPDX-License-Identifier: MIT
       use-min-height
     >
       <div class="w-full h-[330px]">
-        <lfx-chart :config="lineAreaChartConfig" />
+        <lfx-chart
+          :config="lineAreaChartConfig"
+          :animation="!props.snapshot"
+        />
       </div>
     </lfx-project-load-state>
   </section>
@@ -58,8 +69,23 @@ import { BenchmarkKeys, type Benchmark } from '~~/types/shared/benchmark.types';
 import {TanstackKey} from "~/components/shared/types/tanstack";
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
 
+interface RetentionModel {
+  activeTab: string;
+}
+
+const props = defineProps<{
+  modelValue: RetentionModel,
+  snapshot?: boolean
+}>()
+
 const emit = defineEmits<{(e: 'update:benchmarkValue', value: Benchmark | undefined): void;
+  (e: 'update:modelValue', value: RetentionModel): void
 }>();
+
+const model = computed<RetentionModel>({
+  get: () => props.modelValue,
+  set: (value) => emit('update:modelValue', value)
+})
 
 const {
   startDate, endDate, selectedRepository
@@ -67,7 +93,6 @@ const {
 
 const route = useRoute();
 
-const activeTab = ref('contributors');
 // This is a special case for the retention chart
 const calculateGranularity = (start: string | null, end: string | null): string[] => {
   // Return weekly if either date is null
@@ -108,7 +133,7 @@ const queryKey = computed(() => [
   TanstackKey.RETENTION,
   route.params.slug,
   granularity.value,
-  activeTab.value,
+  model.value.activeTab,
   selectedRepository.value,
   startDate.value,
   endDate.value,
@@ -119,7 +144,7 @@ const fetchData: QueryFunction<Retention[]> = async () => $fetch(
     {
   params: {
     granularity: granularity.value,
-    type: activeTab.value,
+    type: model.value.activeTab,
     repository: selectedRepository.value,
     startDate: startDate.value,
     endDate: endDate.value,
@@ -183,7 +208,7 @@ const callEmit = () => {
   emit('update:benchmarkValue', status.value === 'success' ? {
     key: BenchmarkKeys.Retention,
     value: retentionValue.value || 0,
-    additionalCheck: activeTab.value === 'contributors'
+    additionalCheck: model.value.activeTab === 'contributors'
   } : undefined);
 }
 

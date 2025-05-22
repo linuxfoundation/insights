@@ -12,7 +12,7 @@ const waitTimeFirstReview: WidgetConfig = {
     component: WaitTimeFirstReview,
     share: true,
     embed: false,
-    snapshot: false,
+    snapshot: true,
 }
 
 export default waitTimeFirstReview;

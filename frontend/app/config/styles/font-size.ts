@@ -1,6 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 export const lfxFontSizes = {
+    '2xs': '0.625rem',
     xs: '0.75rem',
     sm: '0.875rem',
     base: '1rem',

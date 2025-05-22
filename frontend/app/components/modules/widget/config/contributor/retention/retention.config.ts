@@ -9,10 +9,13 @@ const retention: WidgetConfig = {
     description: () => 'Rate at which contributors and organizations continued contributing to '
                  + 'the project during the selected period.',
     learnMoreLink: `/docs/metrics/contributors#retention`,
+    defaultValue: {
+        activeTab: 'contributors',
+    },
     component: Retention,
     share: true,
     embed: false,
-    snapshot: false,
+    snapshot: true,
 }
 
 export default retention;

@@ -32,6 +32,7 @@
     "@vuelidate/validators": "^2.0.4",
     "echarts": "^5.6.0",
     "eslint": "^9.18.0",
+    "html-to-image": "^1.11.13",
     "lodash": "^4.17.21",
     "luxon": "^3.5.0",
     "nuxt": "^3.15.3",

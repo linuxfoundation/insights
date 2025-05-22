@@ -6,7 +6,7 @@ SPDX-License-Identifier: MIT
   <section class="mt-5">
     <div class="mb-6">
       <lfx-skeleton-state
-        :status="activeTab === 'cumulative' ? cumulativeStatus : status"
+        :status="model.activeTab === 'cumulative' ? cumulativeStatus : status"
         height="2rem"
         width="7.5rem"
       >
@@ -24,19 +24,29 @@ SPDX-License-Identifier: MIT
     </div>
 
     <lfx-tabs
-      v-if="!isEmpty"
+      v-if="!isEmpty && !props.snapshot"
       :tabs="tabs"
-      :model-value="activeTab"
-      @update:model-value="activeTab = $event"
+      :model-value="model.activeTab"
+      @update:model-value="model.activeTab = $event"
     />
+    <div
+      v-if="props.snapshot"
+      class="text-sm leading-4 font-semibold first-letter:uppercase pb-3 border-t border-neutral-100 pt-5"
+    >
+      <span v-if="model.activeTab === 'new'">{{barGranularity}} new stars</span>
+      <span v-else>{{lineGranularity}} stars growth</span>
+    </div>
     <lfx-project-load-state
-      :status="activeTab === 'cumulative' ? cumulativeStatus : status"
-      :error="activeTab === 'cumulative' ? cumulativeError : error"
+      :status="model.activeTab === 'cumulative' ? cumulativeStatus : status"
+      :error="model.activeTab === 'cumulative' ? cumulativeError : error"
       error-message="Error fetching stars"
       :is-empty="isEmpty"
     >
       <div class="w-full h-[330px] mt-4">
-        <lfx-chart :config="activeTab === 'cumulative' ? lineChartConfig : barChartConfig" />
+        <lfx-chart
+          :config="model.activeTab === 'cumulative' ? lineChartConfig : barChartConfig"
+          :animation="!props.snapshot"
+        />
       </div>
     </lfx-project-load-state>
   </section>
@@ -45,7 +55,7 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { useRoute } from 'nuxt/app';
 import {
- ref, computed, watch, onServerPrefetch
+ computed, watch, onServerPrefetch
 } from 'vue';
 import { storeToRefs } from "pinia";
 import {type QueryFunction, useQuery} from "@tanstack/vue-query";
@@ -74,14 +84,28 @@ import {TanstackKey} from "~/components/shared/types/tanstack";
 import LfxSkeletonState from "~/components/modules/project/components/shared/skeleton-state.vue";
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
 
-const emit = defineEmits<{(e: 'update:benchmarkValue', value: Benchmark | undefined): void;
+interface StarsModel {
+  activeTab: string;
+}
+
+const props = defineProps<{
+  modelValue: StarsModel,
+  snapshot?: boolean
+}>()
+
+const emit = defineEmits<{(e: 'update:modelValue', value: StarsModel): void;
+  (e: 'update:benchmarkValue', value: Benchmark | undefined): void;
 }>();
+
+const model = computed<StarsModel>({
+  get: () => props.modelValue,
+  set: (value) => emit('update:modelValue', value)
+})
 
 const {
   startDate, endDate, selectedRepository, selectedTimeRangeKey, customRangeGranularity
 } = storeToRefs(useProjectStore())
 
-const activeTab = ref('new');
 const route = useRoute();
 
 const barGranularity = computed(() => (selectedTimeRangeKey.value === dateOptKeys.custom
@@ -167,7 +191,7 @@ onServerPrefetch(async () => {
   await Promise.all([barSuspense(), lineSuspense()]);
 });
 
-const stars = computed<StarsData | undefined>(() => (activeTab.value === 'cumulative'
+const stars = computed<StarsData | undefined>(() => (model.value.activeTab === 'cumulative'
   ? cumulativeData.value as StarsData
   : data.value as StarsData));
 const cumulativeStarsCount = computed<number>(() => {
@@ -194,7 +218,7 @@ const tabs = [
 const chartSeries = computed<ChartSeries[]>(() => [
   {
     name: 'Stars',
-    type: activeTab.value === 'cumulative' ? 'line' : 'bar',
+    type: model.value.activeTab === 'cumulative' ? 'line' : 'bar',
     yAxisIndex: 0,
     dataIndex: 0,
     position: 'left',

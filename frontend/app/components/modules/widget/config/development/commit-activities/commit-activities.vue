@@ -24,19 +24,29 @@ SPDX-License-Identifier: MIT
     </div>
 
     <lfx-tabs
-      v-if="!isEmpty"
+      v-if="!isEmpty && !props.snapshot"
       :tabs="tabs"
-      :model-value="activeTab"
-      @update:model-value="activeTab = $event"
+      :model-value="model.activeTab"
+      @update:model-value="model.activeTab = $event"
     />
+    <div
+      v-if="props.snapshot"
+      class="text-sm leading-4 font-semibold first-letter:uppercase pb-3 border-t border-neutral-100 pt-5"
+    >
+      <span v-if="model.activeTab === 'new'">{{barGranularity}} new commits</span>
+      <span v-else>{{lineGranularity}} commit growth</span>
+    </div>
     <lfx-project-load-state
-      :status="activeTab === 'cumulative' ? cumulativeStatus : status"
-      :error="activeTab === 'cumulative' ? cumulativeError : error"
+      :status="model.activeTab === 'cumulative' ? cumulativeStatus : status"
+      :error="model.activeTab === 'cumulative' ? cumulativeError : error"
       error-message="Error fetching commit activities"
       :is-empty="isEmpty"
     >
       <div class="w-full h-[330px] mt-4">
-        <lfx-chart :config="activeTab === 'cumulative' ? lineChartConfig : barChartConfig" />
+        <lfx-chart
+          :config="model.activeTab === 'cumulative' ? lineChartConfig : barChartConfig"
+          :animation="!props.snapshot"
+        />
       </div>
     </lfx-project-load-state>
   </section>
@@ -45,7 +55,7 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { useRoute } from 'nuxt/app';
 import {
- ref, computed, watch, onServerPrefetch
+ computed, watch, onServerPrefetch
 } from 'vue';
 import { storeToRefs } from "pinia";
 import {type QueryFunction, useQuery} from "@tanstack/vue-query";
@@ -74,14 +84,28 @@ import {TanstackKey} from "~/components/shared/types/tanstack";
 import LfxSkeletonState from "~/components/modules/project/components/shared/skeleton-state.vue";
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
 
-const emit = defineEmits<{(e: 'update:benchmarkValue', value: Benchmark | undefined): void;
+interface CommitActivitiesModel {
+  activeTab: string;
+}
+
+const props = defineProps<{
+  modelValue: CommitActivitiesModel,
+  snapshot?: boolean
+}>()
+
+const emit = defineEmits<{(e: 'update:modelValue', value: CommitActivitiesModel): void;
+  (e: 'update:benchmarkValue', value: Benchmark | undefined): void;
 }>();
+
+const model = computed<CommitActivitiesModel>({
+  get: () => props.modelValue,
+  set: (value) => emit('update:modelValue', value)
+})
 
 const {
   startDate, endDate, selectedRepository, selectedTimeRangeKey, customRangeGranularity
 } = storeToRefs(useProjectStore())
 
-const activeTab = ref('new');
 const route = useRoute();
 
 const barGranularity = computed(() => (selectedTimeRangeKey.value === dateOptKeys.custom
@@ -167,7 +191,7 @@ onServerPrefetch(async () => {
   await Promise.all([barSuspense(), lineSuspense()]);
 });
 
-const commitActivities = computed<CommitActivities | undefined>(() => (activeTab.value === 'cumulative'
+const commitActivities = computed<CommitActivities | undefined>(() => (model.value.activeTab === 'cumulative'
   ? cumulativeData.value as CommitActivities
   : data.value as CommitActivities));
 const cumulativeCount = computed<number>(() => {
@@ -194,7 +218,7 @@ const tabs = [
 const chartSeries = computed<ChartSeries[]>(() => [
   {
     name: 'Commits',
-    type: activeTab.value === 'cumulative' ? 'line' : 'bar',
+    type: model.value.activeTab === 'cumulative' ? 'line' : 'bar',
     yAxisIndex: 0,
     dataIndex: 0,
     position: 'left',

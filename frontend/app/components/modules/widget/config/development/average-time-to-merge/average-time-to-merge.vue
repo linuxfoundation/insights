@@ -4,7 +4,7 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <section class="mt-5">
-    <div class="mb-6">
+    <div class="mb-5">
       <lfx-skeleton-state
         :status="status"
         height="2rem"
@@ -31,7 +31,10 @@ SPDX-License-Identifier: MIT
       :height="330"
     >
       <div class="w-full h-[330px]">
-        <lfx-chart :config="barChartConfig" />
+        <lfx-chart
+          :config="barChartConfig"
+          :animation="!props.snapshot"
+        />
       </div>
     </lfx-project-load-state>
   </section>
@@ -63,6 +66,10 @@ import { formatSecondsToDuration } from '~/components/shared/utils/formatter';
 import {TanstackKey} from "~/components/shared/types/tanstack";
 import LfxSkeletonState from "~/components/modules/project/components/shared/skeleton-state.vue";
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
+
+const props = defineProps<{
+  snapshot?: boolean;
+}>()
 
 const {
   startDate, endDate, selectedRepository, selectedTimeRangeKey, customRangeGranularity

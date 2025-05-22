@@ -10,9 +10,12 @@ const githubMentions: WidgetConfig = {
         + ` and paths across GitHub repositories.`,
     learnMoreLink: `/docs/metrics/popularity#github-mentions`,
     component: GithubMentions,
+    defaultValue: {
+        activeTab: 'new-mentions',
+    },
     share: true,
     embed: false,
-    snapshot: false,
+    snapshot: true,
 }
 
 export default githubMentions;

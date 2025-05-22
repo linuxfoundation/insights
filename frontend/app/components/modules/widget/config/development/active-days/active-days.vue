@@ -4,7 +4,7 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <section class="mt-5">
-    <div class="mb-6">
+    <div class="mb-5">
       <div class="flex flex-row justify-between items-start">
         <div>
           <div class="text-neutral-400 text-xs mb-1">
@@ -45,7 +45,7 @@ SPDX-License-Identifier: MIT
       </div>
     </div>
 
-    <div class="mt-8 mb-6 text-neutral-900 font-medium">Contributions per {{ granularityDisplay }}</div>
+    <div class="mb-5 text-neutral-900 font-medium">Contributions per {{ granularityDisplay }}</div>
     <lfx-project-load-state
       :status="status"
       :error="error"
@@ -54,8 +54,11 @@ SPDX-License-Identifier: MIT
       use-min-height
       :height="100"
     >
-      <div class="w-full h-[100px] mb-5">
-        <lfx-chart :config="getHeatMapChartConfig(chartData, chartSeries, categoryData, granularityDisplay)" />
+      <div class="w-full h-[100px]">
+        <lfx-chart
+          :config="getHeatMapChartConfig(chartData, chartSeries, categoryData, granularityDisplay)"
+          :animation="!props.snapshot"
+        />
       </div>
     </lfx-project-load-state>
   </section>
@@ -91,6 +94,10 @@ import { BenchmarkKeys, type Benchmark } from '~~/types/shared/benchmark.types';
 import {TanstackKey} from "~/components/shared/types/tanstack";
 import LfxSkeletonState from "~/components/modules/project/components/shared/skeleton-state.vue";
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
+
+const props = defineProps<{
+  snapshot?: boolean;
+}>()
 
 const emit = defineEmits<{(e: 'update:benchmarkValue', value: Benchmark | undefined): void;
 }>();
