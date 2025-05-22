@@ -24,8 +24,8 @@ SPDX-License-Identifier: MIT
         </p>
         <div class="-m-px bg-white border border-neutral-200 rounded-lg">
           <div
-            id="snapshot"
             ref="snapshot"
+            class="snapshot"
           >
             <lfx-snapshot-preview
               :widget-name="props.widgetName"
@@ -56,9 +56,9 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script lang="ts" setup>
-import { toPng } from 'html-to-image'
 import {storeToRefs} from "pinia";
-import {computed} from "vue";
+import {computed, nextTick} from "vue";
+import html2canvas from "html2canvas";
 import LfxModal from "~/components/uikit/modal/modal.vue";
 import type {Widget} from "~/components/modules/widget/types/widget";
 import {lfxWidgets} from "~/components/modules/widget/config/widget.config";
@@ -90,18 +90,24 @@ const widgetConfig = computed(() => lfxWidgets[props.widgetName]);
 const download = async () => {
   if (!snapshot.value) return
   try{
-    const dataUrl = await toPng(snapshot.value, {
-      pixelRatio: 2,
+    await document?.fonts.ready;
+    await nextTick();
+    const canvas = await html2canvas(snapshot.value, {
+      useCORS: true,
+      allowTaint: false,
+      imageTimeout: 5000,
       backgroundColor: 'white',
     })
+    const dataUrl = canvas.toDataURL('image/png')
     const link = document?.createElement('a')
     const fileName = `LFX Insights - ${project.value?.name || ''}${
         repoName.value ? ` / ${repoName.value}` : ''
     } - ${widgetConfig.value.name}`
     link.download = `${fileName}.png`
     link.href = dataUrl
+    document.body.appendChild(link);
     link.click()
-    link.remove()
+    document.body.removeChild(link);
   } catch (e) {
     console.error('Error while downloading snapshot', e)
   }
