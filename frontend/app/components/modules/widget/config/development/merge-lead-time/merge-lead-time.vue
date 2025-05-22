@@ -32,7 +32,7 @@ SPDX-License-Identifier: MIT
       use-min-height
       :height="250"
     >
-      <div class="w-full min-h-[250px] mt-8">
+      <div class="w-full min-h-[250px] mt-5">
         <div class="flex flex-col gap-10">
           <lfx-merge-lead-item
             title="Pickup"

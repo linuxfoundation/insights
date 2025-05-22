@@ -10,9 +10,12 @@ const socialMentions: WidgetConfig = {
         + ` the selected period.`,
     learnMoreLink: `/docs/metrics/popularity#social-mentions`,
     component: SocialMentions,
+    defaultValue: {
+        activeTab: 'new-mentions',
+    },
     share: true,
     embed: false,
-    snapshot: false,
+    snapshot: true,
 }
 
 export default socialMentions;

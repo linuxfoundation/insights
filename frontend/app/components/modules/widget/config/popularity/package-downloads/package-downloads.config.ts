@@ -9,9 +9,12 @@ const packageDownloads: WidgetConfig = {
     description: () => '(TBD)',
     learnMoreLink: `/docs/metrics/popularity#package-downloads`,
     component: PackageDownloads,
+    defaultValue: {
+        activeTab: 'new-downloads',
+    },
     share: true,
     embed: false,
-    snapshot: false,
+    snapshot: true,
 }
 
 export default packageDownloads;

@@ -7,6 +7,7 @@ SPDX-License-Identifier: MIT
     <div class="flex justify-between items-center pb-3">
       <h3 class="text-heading-3 font-semibold font-secondary">{{ config.name }}</h3>
       <lfx-widget-menu
+        :data="model"
         class="relative md:absolute md:-top-3 md:right-6 md:opacity-0
         md:invisible group-hover:opacity-100 group-hover:visible"
         :name="props.name"
@@ -27,6 +28,7 @@ SPDX-License-Identifier: MIT
     <hr>
     <component
       :is="config.component"
+      v-model="model"
       @update:benchmark-value="emit('update:benchmark-value', $event)"
     />
   </lfx-card>
@@ -48,9 +50,12 @@ const props = defineProps<{
   name: Widget
 }>();
 
+const config = computed<WidgetConfig>(() => lfxWidgets[props.name]);
+
+const model = ref(config.value.defaultValue || {})
+
 const { project } = storeToRefs(useProjectStore());
 
-const config = computed<WidgetConfig>(() => lfxWidgets[props.name]);
 </script>
 
 <script lang="ts">

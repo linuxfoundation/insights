@@ -11,7 +11,7 @@ const averateTimeToMerge: WidgetConfig = {
     component: AverageTimeToMerge,
     share: true,
     embed: false,
-    snapshot: false,
+    snapshot: true,
 }
 
 export default averateTimeToMerge;

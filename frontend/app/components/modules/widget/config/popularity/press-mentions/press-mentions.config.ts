@@ -12,7 +12,7 @@ const pressMentions: WidgetConfig = {
     component: PressMentions,
     share: true,
     embed: false,
-    snapshot: false,
+    snapshot: true,
 }
 
 export default pressMentions;

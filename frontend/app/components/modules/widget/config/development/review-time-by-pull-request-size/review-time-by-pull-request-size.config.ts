@@ -12,7 +12,7 @@ const reviewTimeByPullRequestSize: WidgetConfig = {
     component: ReviewTimeByPullRequestSize,
     share: true,
     embed: false,
-    snapshot: false,
+    snapshot: true,
 }
 
 export default reviewTimeByPullRequestSize;

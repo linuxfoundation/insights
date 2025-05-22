@@ -5,11 +5,12 @@ SPDX-License-Identifier: MIT
 <template>
   <section class="mt-5">
     <lfx-tabs
+      v-if="!props.snapshot"
       :tabs="tabs"
-      :model-value="activeTab"
-      @update:model-value="activeTab = $event as CodeReviewEngagementMetric"
+      :model-value="model.activeTab"
+      @update:model-value="model.activeTab = $event as CodeReviewEngagementMetric"
     />
-    <div class="mt-7 mb-8">
+    <div class="my-5">
       <lfx-skeleton-state
         :status="status"
         height="2rem"
@@ -39,7 +40,7 @@ SPDX-License-Identifier: MIT
 
         <lfx-code-review-table
           show-percentage
-          :metric="activeTab"
+          :metric="model.activeTab"
           :code-review-item="codeReviewEngagement.data"
         />
       </div>
@@ -49,7 +50,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { useRoute } from 'nuxt/app';
-import { ref, computed, onServerPrefetch } from 'vue';
+import { computed, onServerPrefetch } from 'vue';
 import { storeToRefs } from "pinia";
 import {type QueryFunction, useQuery} from "@tanstack/vue-query";
 import type { CodeReviewEngagement } from '~~/types/development/responses.types';
@@ -65,18 +66,36 @@ import {TanstackKey} from "~/components/shared/types/tanstack";
 import LfxCodeReviewTable from "~/components/modules/widget/components/development/fragments/code-review-table.vue";
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
 import LfxSkeletonState from "~/components/modules/project/components/shared/skeleton-state.vue";
+import type {Benchmark} from "~~/types/shared/benchmark.types";
+
+interface CodeReviewEngagementModel {
+  activeTab: string;
+}
+
+const props = defineProps<{
+  modelValue: CodeReviewEngagementModel,
+  snapshot?: boolean
+}>()
+
+const emit = defineEmits<{(e: 'update:modelValue', value: CodeReviewEngagementModel): void;
+  (e: 'update:benchmarkValue', value: Benchmark | undefined): void;
+}>();
+
+const model = computed<CodeReviewEngagementModel>({
+  get: () => props.modelValue,
+  set: (value) => emit('update:modelValue', value)
+})
 
 const {
  startDate, endDate, selectedRepository, selectedTimeRangeKey
 } = storeToRefs(useProjectStore());
 
-const activeTab = ref(CodeReviewEngagementMetric.PR_PARTICIPANTS);
 const route = useRoute();
 
 const queryKey = computed(() => [
   TanstackKey.CODE_REVIEW_ENGAGEMENT,
   route.params.slug,
-  activeTab.value,
+  model.value.activeTab,
   selectedRepository.value,
   startDate.value,
   endDate.value,
@@ -86,7 +105,7 @@ const fetchData: QueryFunction<CodeReviewEngagement> = async () => $fetch(
     `/api/project/${route.params.slug}/development/code-review-engagement`,
     {
   params: {
-    metric: activeTab.value,
+    metric: model.value.activeTab,
     repository: selectedRepository.value,
     startDate: startDate.value,
     endDate: endDate.value,

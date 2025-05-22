@@ -4,6 +4,7 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <lfx-dropdown-select
+    v-if="!props.snapshot"
     v-model="activity"
     :class="props.fullWidth ? '!w-full' : '!w-auto'"
     :match-width="true"
@@ -18,6 +19,7 @@ SPDX-License-Identifier: MIT
         <img
           v-if="selectedOption.platform"
           :src="getIcon(selectedOption.platform)"
+          :alt="selectedOption.platform"
           class="w-4 h-4"
         >
         <lfx-icon
@@ -62,6 +64,24 @@ SPDX-License-Identifier: MIT
       </template>
     </template>
   </lfx-dropdown-select>
+  <div
+    v-else
+    class="flex items-center gap-2"
+  >
+    <img
+      v-if="selected.platform !== 'all'"
+      :src="getIcon(selected?.platform)"
+      class="w-4 h-4"
+    >
+    <lfx-icon
+      v-else
+      name="display-code"
+      :size="16"
+    />
+    <p class="text-sm font-medium">
+      {{ selected.label || 'All activities' }}
+    </p>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -75,12 +95,15 @@ import LfxDropdownSelect from "~/components/uikit/dropdown/dropdown-select.vue";
 import LfxDropdownSeparator from "~/components/uikit/dropdown/dropdown-separator.vue";
 import { platforms } from '~~/app/config/platforms';
 import {useProjectStore} from "~/components/modules/project/store/project.store";
+import type {ActivityType} from "~~/types/shared/platforms.types";
 
 const props = withDefaults(defineProps<{
   modelValue: string;
   fullWidth?: boolean
+  snapshot?: boolean;
 }>(), {
-  fullWidth: true
+  fullWidth: true,
+  snapshot: false,
 });
 
 const emit = defineEmits<{(e: 'update:modelValue', value: string): void }>();
@@ -103,6 +126,17 @@ const activity = computed({
 });
 
 const getIcon = (platform: string) => platforms[platform]?.image || '';
+
+const options = computed<ActivityType[]>(() => Object.values(platforms).map((p) => p.activityTypes).flat());
+
+const selected = computed(() => {
+  const [platform, type] = activity.value.split(':');
+  const option = options.value.find((option) => option.key === type);
+  return {
+    platform,
+    label: option?.label || '',
+  }
+})
 </script>
 
 <script lang="ts">

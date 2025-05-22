@@ -3,22 +3,32 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <section class="mt-5">
-    <div class="flex flex-wrap md:flex-nowrap flex-row justify-between gap-4 items-center mb-10">
+  <section :class="props.snapshot ? 'mt-2' : 'mt-5'">
+    <div
+      class="flex flex-wrap md:flex-nowrap flex-row justify-between gap-4 items-center"
+      :class="props.snapshot ? 'mb-5' : 'mb-10'"
+    >
       <lfx-tabs
+        v-if="!props.snapshot"
         :tabs="tabs"
-        :model-value="activeTab"
+        :model-value="model.activeTab"
         width-type="inline"
-        @update:model-value="activeTab = $event"
+        @update:model-value="model.activeTab = $event"
       />
       <div class="max-w-max">
         <lfx-activities-dropdown
-          v-model="metric"
+          v-model="model.metric"
           placement="bottom-end"
           :full-width="false"
           :match-width="false"
           width="25rem"
+          :snapshot="props.snapshot"
         />
+      </div>
+    </div>
+    <div v-if="props.snapshot">
+      <div class="text-sm leading-4 font-semibold first-letter:uppercase pb-5">
+        {{model.activeTab}} distribution
       </div>
     </div>
     <lfx-project-load-state
@@ -28,7 +38,10 @@ SPDX-License-Identifier: MIT
       :is-empty="isEmpty"
     >
       <div class="w-full h-[330px]">
-        <lfx-chart :config="getGeoMapChartConfig(chartData, chartSeries, getMaxValue(chartData))" />
+        <lfx-chart
+          :config="getGeoMapChartConfig(chartData, chartSeries, getMaxValue(chartData))"
+          :animation="!props.snapshot"
+        />
       </div>
       <div>
         <div
@@ -77,7 +90,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import {
-ref, computed, watch, onServerPrefetch
+computed, watch, onServerPrefetch
 } from 'vue';
 import { useRoute } from 'vue-router';
 import { storeToRefs } from "pinia";
@@ -104,20 +117,34 @@ import LfxActivitiesDropdown
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
 import { embargoedCountries } from '~~/types/shared/embargoed-countries';
 
+interface GeographicalDistributionModel {
+  metric: string;
+  activeTab: string;
+}
+
+const props = defineProps<{
+  modelValue: GeographicalDistributionModel,
+  snapshot?: boolean
+}>()
+
 const emit = defineEmits<{(e: 'update:benchmarkValue', value: Benchmark | undefined): void;
+  (e: 'update:modelValue', value: GeographicalDistributionModel): void
 }>();
 
+const model = computed<GeographicalDistributionModel>({
+  get: () => props.modelValue,
+  set: (value) => emit('update:modelValue', value)
+})
+
 const route = useRoute();
-const metric = ref('all:all');
-const activeTab = ref('organizations');
-const platform = computed(() => metric.value.split(':')[0]);
-const activityType = computed(() => metric.value.split(':')[1]);
+const platform = computed(() => model.value.metric.split(':')[0]);
+const activityType = computed(() => model.value.metric.split(':')[1]);
 const { startDate, endDate, selectedRepository } = storeToRefs(useProjectStore())
 
 const queryKey = computed(() => [
   TanstackKey.GEOGRAPHICAL_DISTRIBUTION,
   route.params.slug,
-  activeTab.value,
+  model.value.activeTab,
   platform.value,
   activityType.value,
   selectedRepository.value,
@@ -127,7 +154,7 @@ const queryKey = computed(() => [
 
 const fetchData = async () => $fetch(`/api/project/${route.params.slug}/contributors/geographical-distribution`, {
   params: {
-    type: activeTab.value,
+    type: model.value.activeTab,
     platform: platform.value,
     activityType: activityType.value,
     repository: selectedRepository.value,
@@ -176,7 +203,7 @@ const tabs = [
   }
 ];
 
-const label = computed(() => (activeTab.value === 'contributors' ? 'Contributor' : 'Organization'));
+const label = computed(() => (model.value.activeTab === 'contributors' ? 'Contributor' : 'Organization'));
 
 const chartSeries = computed<ChartSeries[]>(() => [
   {

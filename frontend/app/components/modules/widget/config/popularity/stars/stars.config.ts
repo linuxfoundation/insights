@@ -9,9 +9,12 @@ const stars: WidgetConfig = {
     description: () => 'New stars added to the project repositories during the selected time period.',
     learnMoreLink: `/docs/metrics/popularity#stars`,
     component: Stars,
+    defaultValue: {
+        activeTab: 'new',
+    },
     share: true,
     embed: false,
-    snapshot: false,
+    snapshot: true,
 }
 
 export default stars;

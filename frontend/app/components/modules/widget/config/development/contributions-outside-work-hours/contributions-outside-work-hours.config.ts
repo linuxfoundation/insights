@@ -12,7 +12,7 @@ const contributionsOutsideWorkHours: WidgetConfig = {
     component: ContributionsOutsideWorkHours,
     share: true,
     embed: false,
-    snapshot: false,
+    snapshot: true,
 }
 
 export default contributionsOutsideWorkHours;

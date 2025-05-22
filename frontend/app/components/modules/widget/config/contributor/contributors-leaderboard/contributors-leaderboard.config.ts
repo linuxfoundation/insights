@@ -9,9 +9,12 @@ const contributorsLeaderboard: WidgetConfig = {
     description: () => 'Contributor ranking based on the number of activities performed and the impact on the project.',
     learnMoreLink: `/docs/metrics/contributors#contributors-leaderboard`,
     component: ContributorLeaderboard,
+    defaultValue: {
+        metric: 'all:all'
+    },
     share: true,
     embed: false,
-    snapshot: false,
+    snapshot: true,
 }
 
 export default contributorsLeaderboard;

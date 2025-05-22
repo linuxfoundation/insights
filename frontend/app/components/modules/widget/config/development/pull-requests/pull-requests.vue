@@ -4,7 +4,7 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <section class="mt-5">
-    <div class="mb-6">
+    <div>
       <div class="flex flex-row justify-between items-start">
         <div>
           <div class="text-neutral-400 text-xs mb-1">
@@ -55,7 +55,10 @@ SPDX-License-Identifier: MIT
       use-min-height
     >
       <div class="w-full h-[330px] my-5">
-        <lfx-chart :config="barChartConfig" />
+        <lfx-chart
+          :config="barChartConfig"
+          :animation="!props.snapshot"
+        />
       </div>
 
       <div class="flex flex-col gap-4">
@@ -111,6 +114,10 @@ import LfxSkeletonState from "~/components/modules/project/components/shared/ske
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
 import LfxProjectPullRequestLegendItem
   from "~/components/modules/widget/components/development/fragments/pull-request-legend-item.vue";
+
+const props = defineProps<{
+  snapshot?: boolean;
+}>()
 
 const emit = defineEmits<{(e: 'update:benchmarkValue', value: Benchmark | undefined): void;
 }>();

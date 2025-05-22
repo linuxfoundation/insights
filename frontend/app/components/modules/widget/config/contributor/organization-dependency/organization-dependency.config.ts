@@ -10,9 +10,12 @@ const organizationDependency: WidgetConfig = {
         + 'whose contributors were actively involved in the project during the selected period.',
     learnMoreLink: `/docs/metrics/contributors#organizations-dependency`,
     component: OrganizationsDependency,
+    defaultValue: {
+        metric: 'all:all'
+    },
     share: true,
     embed: false,
-    snapshot: false,
+    snapshot: true,
 }
 
 export default organizationDependency;

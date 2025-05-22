@@ -11,7 +11,7 @@ const searchQueries: WidgetConfig = {
     component: SearchQueries,
     share: true,
     embed: false,
-    snapshot: false,
+    snapshot: true,
 }
 
 export default searchQueries;

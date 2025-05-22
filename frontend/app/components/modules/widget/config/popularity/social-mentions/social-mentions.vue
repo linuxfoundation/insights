@@ -24,10 +24,19 @@ SPDX-License-Identifier: MIT
     </div>
 
     <lfx-tabs
+      v-if="!props.snapshot"
       :tabs="tabs"
-      :model-value="activeTab"
-      @update:model-value="activeTab = $event"
+      :model-value="model.activeTab"
+      @update:model-value="model.activeTab = $event"
     />
+
+    <div
+      v-else
+      class="text-sm leading-4 font-semibold first-letter:uppercase pb-3 border-t border-neutral-100 pt-5"
+    >
+      <span v-if="model.activeTab === 'new-mentions'">{{barGranularity}} new mentions by platform</span>
+      <span v-else>{{lineGranularity}} mentions by platform growth</span>
+    </div>
     <lfx-project-load-state
       :status="status"
       :error="error"
@@ -35,7 +44,10 @@ SPDX-License-Identifier: MIT
       :is-empty="isEmpty"
     >
       <div class="w-full h-[320px] mt-5">
-        <lfx-chart :config="activeTab === 'cumulative' ? lineChartConfig : barChartConfig">
+        <lfx-chart
+          :config="model.activeTab === 'cumulative' ? lineChartConfig : barChartConfig"
+          :animation="!props.snapshot"
+        >
           <template #legend>
             <div class="flex flex-row gap-5 items-center justify-center pt-2">
               <div class="flex flex-row items-center gap-2">
@@ -64,7 +76,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { useRoute } from 'nuxt/app';
-import { ref, computed, onServerPrefetch } from 'vue';
+import { computed, onServerPrefetch } from 'vue';
 import { storeToRefs } from "pinia";
 import {type QueryFunction, useQuery} from "@tanstack/vue-query";
 import type { SocialMentions } from '~~/types/popularity/responses.types';
@@ -91,6 +103,23 @@ import {TanstackKey} from "~/components/shared/types/tanstack";
 import LfxSkeletonState from "~/components/modules/project/components/shared/skeleton-state.vue";
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
 
+interface PackageDownloadsModel {
+  activeTab: string;
+}
+
+const props = defineProps<{
+  modelValue: PackageDownloadsModel,
+  snapshot?: boolean
+}>()
+
+const emit = defineEmits<{(e: 'update:modelValue', value: PackageDownloadsModel): void;
+}>();
+
+const model = computed<PackageDownloadsModel>({
+  get: () => props.modelValue,
+  set: (value) => emit('update:modelValue', value)
+})
+
 const {
   startDate,
   endDate,
@@ -99,7 +128,6 @@ const {
   customRangeGranularity
 } = storeToRefs(useProjectStore())
 
-const activeTab = ref('new-mentions');
 const route = useRoute();
 
 const barGranularity = computed(() => (selectedTimeRangeKey.value === dateOptKeys.custom
@@ -108,7 +136,7 @@ const barGranularity = computed(() => (selectedTimeRangeKey.value === dateOptKey
 const lineGranularity = computed(() => (selectedTimeRangeKey.value === dateOptKeys.custom
   ? customRangeGranularity.value[0] as Granularity
   : lineGranularities[selectedTimeRangeKey.value as keyof typeof lineGranularities]));
-const granularity = computed(() => (activeTab.value === 'cumulative'
+const granularity = computed(() => (model.value.activeTab === 'cumulative'
   ? lineGranularity.value
   : barGranularity.value));
 
@@ -116,7 +144,7 @@ const queryKey = computed(() => [
   TanstackKey.SOCIAL_MENTIONS,
   route.params.slug,
   granularity.value,
-  activeTab.value,
+  model.value.activeTab,
   selectedRepository.value,
   startDate.value,
   endDate.value,
@@ -127,7 +155,7 @@ const fetchData: QueryFunction<SocialMentions> = async () => $fetch(
     {
   params: {
     granularity: granularity.value,
-    type: activeTab.value,
+    type: model.value.activeTab,
     repository: selectedRepository.value,
     startDate: startDate.value,
     endDate: endDate.value,
@@ -169,7 +197,7 @@ const tabs = [
 const chartSeries = computed<ChartSeries[]>(() => [
   {
     name: 'Twitter',
-    type: activeTab.value === 'cumulative' ? 'line' : 'bar',
+    type: model.value.activeTab === 'cumulative' ? 'line' : 'bar',
     yAxisIndex: 0,
     dataIndex: 0,
     position: 'left',
@@ -177,7 +205,7 @@ const chartSeries = computed<ChartSeries[]>(() => [
   },
   {
     name: 'Reddit',
-    type: activeTab.value === 'cumulative' ? 'line' : 'bar',
+    type: model.value.activeTab === 'cumulative' ? 'line' : 'bar',
     yAxisIndex: 0,
     dataIndex: 1,
     position: 'left',
@@ -185,7 +213,7 @@ const chartSeries = computed<ChartSeries[]>(() => [
   },
   {
     name: 'Hacker News',
-    type: activeTab.value === 'cumulative' ? 'line' : 'bar',
+    type: model.value.activeTab === 'cumulative' ? 'line' : 'bar',
     yAxisIndex: 0,
     dataIndex: 2,
     position: 'left',
@@ -193,7 +221,7 @@ const chartSeries = computed<ChartSeries[]>(() => [
   },
   {
     name: 'Stack Overflow',
-    type: activeTab.value === 'cumulative' ? 'line' : 'bar',
+    type: model.value.activeTab === 'cumulative' ? 'line' : 'bar',
     yAxisIndex: 0,
     dataIndex: 3,
     position: 'left',

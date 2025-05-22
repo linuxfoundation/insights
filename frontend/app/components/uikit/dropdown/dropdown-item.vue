@@ -35,6 +35,7 @@ const props = defineProps<{
   checkmarkBefore?: boolean,
 }>();
 
+const attrs = useAttrs()
 // Inject provided value from DropdownSelect
 const selectedValue = inject<ReturnType<typeof computed<string>>>('selectedValue', ref<string>(''));
 const selectedOptionProps = inject('selectedOptionProps', ref(null));
@@ -50,6 +51,7 @@ const handleClick = () => {
   if(selectedOptionProps){
     selectedOptionProps.value = {
       ...props,
+      ...attrs,
     };
   }
   if(selectedValue){

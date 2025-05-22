@@ -23,16 +23,30 @@ SPDX-License-Identifier: MIT
       </lfx-skeleton-state>
     </div>
 
+    <div
+      v-if="props.snapshot"
+      class="text-sm leading-4 font-semibold first-letter:uppercase pb-3 border-t border-neutral-100 pt-5"
+    >
+      {{granularity}} mentions growth
+    </div>
+
     <lfx-project-load-state
       :status="status"
       :error="error"
       error-message="Error fetching social mentions"
       :is-empty="isEmpty"
     >
-      <div class="w-full h-[320px] my-5">
-        <lfx-chart :config="lineAreaChartConfig" />
+      <div class="w-full h-[320px] mt-5">
+        <lfx-chart
+          :config="lineAreaChartConfig"
+          :animation="!props.snapshot"
+        />
       </div>
-      <lfx-project-press-mention-lists :list="list" />
+      <lfx-project-press-mention-lists
+        v-if="!props.snapshot"
+        class="mt-5"
+        :list="list"
+      />
     </lfx-project-load-state>
 
   </section>
@@ -66,6 +80,10 @@ import LfxSkeletonState from "~/components/modules/project/components/shared/ske
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
 import LfxProjectPressMentionLists
   from "~/components/modules/widget/components/popularity/fragments/press-mention-lists.vue";
+
+const props = defineProps<{
+  snapshot?: boolean
+}>()
 
 const {
   startDate,

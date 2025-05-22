@@ -9,9 +9,12 @@ const commitActivities: WidgetConfig = {
   description: () => 'Number of commits performed during the selected period.',
   learnMoreLink: `/docs/metrics/development#commit-activities`,
   component: CommitActivities,
+  defaultValue: {
+    activeTab: 'new',
+  },
   share: true,
   embed: false,
-  snapshot: false
+  snapshot: true
 };
 
 export default commitActivities;

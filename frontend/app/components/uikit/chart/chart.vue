@@ -6,7 +6,10 @@ SPDX-License-Identifier: MIT
   <div class="w-full h-full flex flex-col justify-between">
     <VChart
       id="chart"
-      :option="props.config"
+      :option="{
+        ...props.config,
+        animation: props.animation,
+      }"
       autoresize
     />
     <div>
@@ -21,9 +24,12 @@ import world from './configs/world.json';
 import type { SeriesTypes } from '~/components/uikit/chart/types/ChartTypes';
 // import * as echarts from 'echarts';
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   config: ECOption;
-}>();
+  animation?: boolean;
+}>(), {
+  animation: true,
+});
 
 onBeforeMount(() => {
   const series = props.config.series as SeriesTypes[];

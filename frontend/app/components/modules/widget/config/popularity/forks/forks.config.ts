@@ -9,9 +9,12 @@ const forks: WidgetConfig = {
     description: () => 'New forks (copies) of the project repositories during the selected time period.',
     learnMoreLink: `/docs/metrics/popularity#forks`,
     component: Forks,
+    defaultValue: {
+        activeTab: 'new',
+    },
     share: true,
     embed: false,
-    snapshot: false,
+    snapshot: true,
 }
 
 export default forks;

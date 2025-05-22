@@ -11,7 +11,7 @@ const issuesResolution: WidgetConfig = {
     component: IssuesResolution,
     share: true,
     embed: false,
-    snapshot: false,
+    snapshot: true,
 }
 
 export default issuesResolution;
