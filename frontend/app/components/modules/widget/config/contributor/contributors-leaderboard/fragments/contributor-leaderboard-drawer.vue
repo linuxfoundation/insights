@@ -44,6 +44,7 @@ SPDX-License-Identifier: MIT
             :contributors="contributors"
             :show-full-list="true"
             :total="total"
+            :is-fetching-next-page="isFetchingNextPage"
             @load-more="loadMore"
           />
         </lfx-project-load-state>
@@ -121,6 +122,7 @@ const {
   isSuccess,
   isError,
   fetchNextPage,
+  isFetchingNextPage,
   suspense
 } = CONTRIBUTORS_API_SERVICE.fetchContributorLeaderboard(queryKey, queryFn);
 
