@@ -3,10 +3,9 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="container pt-8">
-    <h1 class="text-heading-1 font-semibold pb-4">Open Source Index</h1>
-  </div>
+  <lfx-open-source-index />
 </template>
 
 <script setup lang="ts">
+import LfxOpenSourceIndex from '~/components/modules/open-source-index/views/open-source-index.vue';
 </script>
