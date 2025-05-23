@@ -20,9 +20,9 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { registerMap } from 'echarts';
+// import * as echarts from 'echarts';
 import world from './configs/world.json';
 import type { SeriesTypes } from '~/components/uikit/chart/types/ChartTypes';
-// import * as echarts from 'echarts';
 
 const props = withDefaults(defineProps<{
   config: ECOption;
@@ -43,8 +43,11 @@ onBeforeMount(() => {
 });
 
 // onMounted(() => {
-//   const chart = echarts.getInstanceByDom(document.getElementById('chart'));
-//   console.log(chart?.ren);
+//   const chart = echarts.getInstanceByDom(document.getElementById('chart') as HTMLElement);
+
+//   chart?.on('click', (params: any) => {
+//     console.log(params);
+//   });
 // });
 </script>
 

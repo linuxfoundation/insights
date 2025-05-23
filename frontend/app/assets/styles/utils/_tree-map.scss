@@ -1,0 +1,43 @@
+.osi-tooltip {
+  .tooltip-group {
+    @apply text-neutral-500 text-xs;
+  }
+  .tooltip-title {
+    @apply text-base text-neutral-900 font-bold mb-2;
+  }
+
+  .tooltip-row {
+    @apply flex flex-row gap-5 items-center w-[360px];
+
+    .name-display {
+      @apply text-sm text-neutral-900 flex flex-row gap-2 items-center w-[180px];
+      .name-text {
+        @apply text-ellipsis overflow-hidden whitespace-nowrap;
+      }
+      .name-icon {
+        @apply w-4 h-4 min-w-4 min-h-4 flex;
+        img, i {
+          @apply w-full h-full object-contain;
+        }
+      }
+    }
+    .value-display {
+      @apply basis-1/5;
+    }
+  }
+
+  .value-display {
+    @apply flex flex-row gap-1 items-center text-xs text-neutral-500 justify-end;
+    .value-icon {
+      @apply w-4 h-4 mt-1;
+    }
+  }
+
+  .footer-display {
+    @apply flex flex-row items-center gap-1.5 text-neutral-400 justify-center mt-4;
+    .footer-icon {
+      @apply text-sm;
+    }
+    
+  }
+}
