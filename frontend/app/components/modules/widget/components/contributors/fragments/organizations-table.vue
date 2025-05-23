@@ -73,12 +73,15 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
+import {
+ ref, onMounted, computed, watch
+} from 'vue';
 import type { Organization } from '~~/types/contributors/responses.types';
 import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
 import { formatNumber } from '~/components/shared/utils/formatter';
 import LfxScrollableShadow from '~/components/uikit/scrollable-shadow/scrollable-shadow.vue';
 import LfxSpinner from "~/components/uikit/spinner/spinner.vue";
+import { isElementVisible } from '~/components/shared/utils/helper';
 
 const emit = defineEmits<{(e: 'loadMore'): void
 }>();
@@ -91,11 +94,13 @@ const props = withDefaults(
     showPercentage?: boolean;
     showFullList?: boolean;
     total?: number;
+    isFetchingNextPage?: boolean;
   }>(),
   {
     showPercentage: false,
     showFullList: false,
-    total: 0
+    total: 0,
+    isFetchingNextPage: false
   }
 );
 
@@ -115,10 +120,27 @@ const handleIntersectCallback = (entries: IntersectionObserverEntry[]) => {
   });
 }
 
+const isLoadMoreVisible = () => {
+  if (!loadMore.value) {
+    return false;
+  }
+
+  return isElementVisible(loadMore.value as HTMLElement);
+};
+
 onMounted(() => {
   if (loadMore.value) {
     const observer = new IntersectionObserver(handleIntersectCallback, options);
     observer.observe(loadMore.value);
+  }
+});
+
+watch(() => props.isFetchingNextPage, (newVal: boolean) => {
+  if (!newVal) {
+    // check if the load more is visible
+    if (isLoadMoreVisible()) {
+      emit('loadMore');
+    }
   }
 });
 </script>
