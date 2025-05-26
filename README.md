@@ -23,6 +23,7 @@ For this reason, outside code contributions are not intended (yet). There are st
 
 - Try [Insights](https://insights.linuxfoundation.org/) and give feedback by [creating new issues](https://github.com/linuxfoundation/insights/issues)
 - Participate on open discussions or share your ideas with us by checking the [Discussions](https://github.com/linuxfoundation/insights/discussions)
+- Noticed something missing in our documentation? Feel free to share your feedback — or contribute directly to help us improve it! Check our [Documentation Contribution Guide](https://github.com/linuxfoundation/insights/blob/main/CONTRIBUTING.md#documentation-contribution-guide).
 
 Please also refer to our [Contributing guide](https://github.com/linuxfoundation/insights/blob/main/CONTRIBUTING.md).
 
@@ -31,7 +32,7 @@ LFX Insights is a project by [The Linux Foundation](https://www.linuxfoundation.
 
 ## Requirements
 
-- Node 18+
+- Node 20+
 - pnpm 9+
 - Husky 9+
 - Nuxt 3+
