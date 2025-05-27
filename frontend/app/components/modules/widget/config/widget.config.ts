@@ -53,6 +53,7 @@ export interface WidgetConfig {
   embed: boolean;
   snapshot: boolean;
   defaultValue?: Record<string, unknown>;
+  additionalShare?: Component;
 }
 
 export const lfxWidgets: Record<Widget, WidgetConfig> = {

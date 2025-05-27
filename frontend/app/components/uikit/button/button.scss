@@ -72,5 +72,7 @@
     @apply text-base px-5 py-3;
   }
 
-
+  &-small {
+    @apply text-xs px-3 py-1.5 leading-4;
+  }
 }

@@ -190,6 +190,8 @@ const share = () => {
   openShareModal({
     url: url.toString(),
     title: finalTitle,
+    showGithubBadge: true,
+    activeTab: 'link'
   })
 };
 </script>

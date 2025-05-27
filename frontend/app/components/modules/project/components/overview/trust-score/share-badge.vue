@@ -18,22 +18,24 @@ SPDX-License-Identifier: MIT
       <br>
       <span
         class="text-brand-500 cursor-pointer"
-        @click="isGithubBadgeModalOpen = true"
+        @click="share"
       >Generate badge</span>
     </p>
   </div>
 
-  <lfx-trust-score-github-badge
-    v-if="isGithubBadgeModalOpen"
-    v-model="isGithubBadgeModalOpen"
-    :overall-score="overallScore"
-  />
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import LfxTrustScoreGithubBadge from "~/components/modules/project/components/overview/trust-score/gh-badge.vue";
-import { getBadgeUrl, lfxTrustScore, type TrustScoreConfig } from "~/components/modules/project/config/trust-score";
+import { computed } from 'vue';
+import { storeToRefs } from 'pinia';
+import {
+  getScoreBadgeUrl,
+  lfxTrustScore,
+  type TrustScoreConfig
+}
+  from "~/components/modules/project/config/trust-score";
+import {useShareStore} from "~/components/shared/modules/share/store/share.store";
+import { useProjectStore } from "~~/app/components/modules/project/store/project.store";
 
 const props = defineProps<{
   overallScore: number;
@@ -43,9 +45,37 @@ const scoreConfig = computed<TrustScoreConfig>(() => lfxTrustScore.find(
       (s) => props.overallScore <= s.maxScore && props.overallScore >= s.minScore
   ) || lfxTrustScore.at(-1)!);
 
-const isGithubBadgeModalOpen = ref(false);
-const badgeUrl = computed(() => getBadgeUrl(scoreConfig.value));
+const badgeUrl = computed(() => getScoreBadgeUrl(scoreConfig.value));
 
+const {openShareModal} = useShareStore();
+const { repository, project } = storeToRefs(useProjectStore())
+
+const share = () => {
+  const title = [];
+  if (project.value?.name) {
+    title.push(project.value.name);
+    if(repository.value?.name){
+      title.push(repository.value.name);
+    }
+
+    title.push('insights | LFX Insights');
+  }
+  else {
+    title.push(document.title);
+  }
+
+  const finalTitle = `${title.join(' ')}`;
+
+  const url = new URL(window.location.href);
+  url.hash = '';
+
+  openShareModal({
+    url: url.toString(),
+    title: finalTitle,
+    showGithubBadge: true,
+    activeTab: 'github-badge'
+  })
+};
 </script>
 
 <script lang="ts">
