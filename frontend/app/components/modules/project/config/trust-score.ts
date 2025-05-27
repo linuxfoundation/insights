@@ -47,11 +47,14 @@ export const lfxTrustScore: TrustScoreConfig[] = [
   }
 ];
 
-export const getBadgeUrl = (scoreConfig: TrustScoreConfig) => {
+export const getScoreBadgeUrl = (scoreConfig: TrustScoreConfig) => {
   const label = 'Health Score';
   const message = encodeURIComponent(scoreConfig.label);
   const color = scoreConfig.ghBadgeColor.replace('#', '');
-  return `https://img.shields.io/static/v1?label=${encodeURIComponent(
+
+  return getBadgeUrl(label, message, color);
+};
+
+export const getBadgeUrl = (label: string, message: string, color: string) => `https://img.shields.io/static/v1?label=${encodeURIComponent(
     label
   )}&message=${message}&color=${color}&logo=linuxfoundation&logoColor=white&style=flat`;
-};

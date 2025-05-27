@@ -125,6 +125,7 @@ const share = () => {
     url: url.toString(),
     area: config.value.name,
     title,
+    additionalShare: config.value.additionalShare
   });
 }
 
