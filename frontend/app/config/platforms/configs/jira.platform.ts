@@ -14,7 +14,7 @@ export const jira: PlatformConfig = {
       label: 'Created an issue'
     },
     {
-      key: ActivityTypes.ISSUE_CLOSED,
+      key: ActivityTypes.ISSUES_CLOSED,
       label: 'Closed an issue'
     },
     {

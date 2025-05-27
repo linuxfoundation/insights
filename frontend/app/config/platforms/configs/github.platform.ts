@@ -38,11 +38,11 @@ export const github: PlatformConfig = {
       label: 'Commented on a pull request review thread'
     },
     {
-      key: ActivityTypes.ISSUE_CLOSED,
+      key: ActivityTypes.ISSUES_CLOSED,
       label: 'Closed an issue'
     },
     {
-      key: ActivityTypes.ISSUE_OPENED,
+      key: ActivityTypes.ISSUES_OPENED,
       label: 'Opened an issue'
     },
     {

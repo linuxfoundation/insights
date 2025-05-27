@@ -10,11 +10,11 @@ export const gitlab: PlatformConfig = {
   image: '/images/integrations/gitlab.png',
   activityTypes: [
     {
-      key: ActivityTypes.ISSUE_OPENED,
+      key: ActivityTypes.ISSUES_OPENED,
       label: 'Opened an issue'
     },
     {
-      key: ActivityTypes.ISSUE_CLOSED,
+      key: ActivityTypes.ISSUES_CLOSED,
       label: 'Closed an issue'
     },
     {
