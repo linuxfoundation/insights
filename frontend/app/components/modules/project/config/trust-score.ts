@@ -13,7 +13,7 @@ export const lfxTrustScore: TrustScoreConfig[] = [
   {
     maxScore: 100,
     minScore: 80,
-    label: 'Rock solid',
+    label: 'Excellent',
     color: 'bg-positive-500',
     ghBadgeColor: '#10B981'
   },
