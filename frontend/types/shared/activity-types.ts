@@ -19,8 +19,6 @@ export enum ActivityTypes {
   PULL_REQUEST_OPENED = 'pull_request-opened',
   PULL_REQUEST_MERGED = 'pull_request-merged',
   PULL_REQUEST_CLOSED = 'pull_request-closed',
-  ISSUE_CLOSED = 'issue-closed',
-  ISSUE_OPENED = 'issue-opened',
   ISSUE_COMMENT = 'issue-comment',
   DISCUSSION_STARTED = 'discussion-started',
   DISCUSSION_COMMENT = 'discussion-comment',
