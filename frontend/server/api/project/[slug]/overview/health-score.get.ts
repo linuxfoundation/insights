@@ -18,7 +18,6 @@ import {
 import type { HealthScore } from '~~/types/overview/responses.types';
 import { ActivityTypes } from '~~/types/shared/activity-types';
 import { BenchmarkKeys } from '~~/types/shared/benchmark.types';
-import { embargoedCountries } from '~~/types/shared/embargoed-countries';
 import { formatSecondsToDuration } from '~/components/shared/utils/formatter';
 import { FormatterUnits } from '~/components/shared/types/formatter.types';
 
@@ -31,7 +30,6 @@ export default defineEventHandler(async (event) => {
    * Health score will have a default time period of 365 days for most of the data
    * except for the following:
    * - active contributors and retention = (Previous Quarter)
-   * - geographical distribution = (all time)
    */
   const filter: DefaultFilter = {
     project,
@@ -49,10 +47,6 @@ export default defineEventHandler(async (event) => {
     startDate: DateTime.now().minus({ quarters: 1 }).startOf('quarter'),
     endDate: DateTime.now().minus({ quarters: 1 }).endOf('quarter')
   };
-  const filterAllTime: DefaultFilter = {
-    project,
-    repo: undefined
-  };
 
   const dataSource = createDataSource();
 
@@ -62,7 +56,6 @@ export default defineEventHandler(async (event) => {
       dataSource.fetchActiveContributors(filterPreviousQuarter),
       dataSource.fetchContributorDependency(filter),
       dataSource.fetchOrganizationDependency(filter),
-      dataSource.fetchGeographicDistribution(filterAllTime),
       dataSource.fetchRetention({
         ...filterPreviousQuarter,
         demographicType: DemographicType.CONTRIBUTORS,
@@ -105,7 +98,6 @@ export default defineEventHandler(async (event) => {
       activeContributors,
       contributorDependency,
       organizationDependency,
-      geographicalDistribution,
       retention,
       stars,
       forks,
@@ -129,13 +121,6 @@ export default defineEventHandler(async (event) => {
     healthScore.push({
       key: BenchmarkKeys.OrganizationDependency,
       value: organizationDependency.topOrganizations.count
-    });
-
-    const embargoCountries = geographicalDistribution.data?.filter((item) => embargoedCountries.includes(item.name));
-
-    healthScore.push({
-      key: BenchmarkKeys.GeographicalDistribution,
-      value: embargoCountries?.length || 0
     });
 
     const retentionValue = retention && retention.length > 0 ? retention[retention.length - 1].percentage : 0;

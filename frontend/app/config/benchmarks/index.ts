@@ -6,7 +6,6 @@ import { contributorDependency } from './configs/contributor-dependency';
 import { activeContributors } from './configs/active-contributors';
 import { organizationDependency } from './configs/organization-dependency';
 import { retention } from './configs/retention';
-import { geographicalDistribution } from './configs/geographical-distribution';
 import { stars } from './configs/stars';
 import { forks } from './configs/forks';
 import { issuesResolution } from './configs/issues-resolution';
@@ -21,7 +20,6 @@ export const benchmarkConfigs: BenchmarkConfigs[] = [
   contributorDependency,
   organizationDependency,
   retention,
-  geographicalDistribution,
   stars,
   forks,
   issuesResolution,

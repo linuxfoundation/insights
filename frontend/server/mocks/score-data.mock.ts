@@ -28,10 +28,6 @@ export const contributorsScoreData: ScoreData[] = [
   {
     benchmarkKey: BenchmarkKeys.OrganizationDependency,
     value: 15
-  },
-  {
-    benchmarkKey: BenchmarkKeys.GeographicalDistribution,
-    value: 0
   }
 ];
 

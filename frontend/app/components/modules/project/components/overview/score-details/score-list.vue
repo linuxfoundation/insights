@@ -4,11 +4,11 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <div
-    v-if="parsedData"
+    v-if="data"
     class="flex flex-col gap-4"
   >
     <div
-      v-for="item in parsedData"
+      v-for="item in data"
       :key="item.benchmarkKey"
       class="[&:not(:last-child)]:border-b border-neutral-100 [&:not(:last-child)]:pb-4"
     >
@@ -21,18 +21,12 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
 import LfxScoreItem from './score-item.vue';
-import { BenchmarkKeys, type ScoreData } from '~~/types/shared/benchmark.types';
+import type { ScoreData } from '~~/types/shared/benchmark.types';
 
-const props = defineProps<{
+defineProps<{
   data: ScoreData[] | undefined;
 }>();
-
-// NOTE: TEMPORARY
-const parsedData = computed(() => props.data?.filter(
-  (item) => item.benchmarkKey !== BenchmarkKeys.GeographicalDistribution
-));
 
 </script>
 <script lang="ts">
