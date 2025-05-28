@@ -14,9 +14,9 @@ export const formatByGranularity = {
 export const lineGranularities = {
   [dateOptKeys.past90days]: Granularity.DAILY,
   [dateOptKeys.past180days]: Granularity.WEEKLY,
-  [dateOptKeys.past365days]: Granularity.WEEKLY,
+  [dateOptKeys.past365days]: Granularity.MONTHLY,
   [dateOptKeys.previousQuarter]: Granularity.DAILY,
-  [dateOptKeys.previousYear]: Granularity.WEEKLY,
+  [dateOptKeys.previousYear]: Granularity.MONTHLY,
   [dateOptKeys.previous5Year]: Granularity.MONTHLY,
   [dateOptKeys.previous10Year]: Granularity.YEARLY,
   [dateOptKeys.alltime]: Granularity.YEARLY,
@@ -26,9 +26,9 @@ export const lineGranularities = {
 export const barGranularities = {
   [dateOptKeys.past90days]: Granularity.WEEKLY,
   [dateOptKeys.past180days]: Granularity.WEEKLY,
-  [dateOptKeys.past365days]: Granularity.WEEKLY,
+  [dateOptKeys.past365days]: Granularity.MONTHLY,
   [dateOptKeys.previousQuarter]: Granularity.DAILY,
-  [dateOptKeys.previousYear]: Granularity.WEEKLY,
+  [dateOptKeys.previousYear]: Granularity.MONTHLY,
   [dateOptKeys.previous5Year]: Granularity.MONTHLY,
   [dateOptKeys.previous10Year]: Granularity.YEARLY,
   [dateOptKeys.alltime]: Granularity.YEARLY,
