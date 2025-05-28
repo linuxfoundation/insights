@@ -1,9 +1,38 @@
 # Glossary
+Important terms of LFX Insighs, alphabetically sorted
 
-**Active Contributor**: An individual who actively participates in the development, maintenance, and improvement of an open source project. These contributors typically engage in various activities such as writing code, fixing bugs, creating documentation, reviewing pull requests, suggesting new features, and providing support to other users.
+## Collection
+A curated group of projects organized around a common theme, organization, foundation, or purpose. Collections help users explore and compare related projects, such as all CNCF-hosted projects, critical non-Linux Foundation projects, or top-ranked initiatives by health score.
 
-**Unique Contributor**: An individual who has made at least one distinct contribution to an open source project. They are counted based on their unique contributions rather than the frequency of their involvement.
+## Commit
+A recorded change to a project's source code, typically including code additions, deletions, or updates. In LFX Insights, commits are used to measure development activity and contributor engagement. 
 
-**Organization**: ...
+## Contribution activity
+An activity, performed by an individual, that is counted as contribution. Relevant for leaderboards, contributor dependency, and a few other metrics. A list of all contribution activity can be found here.
 
-To be continued...
+## Contributor
+Any individual who actively participates in the development or maintenance of an open source project. This includes writing code, reviewing pull requests, reporting issues, or updating documentation. In LFX Insights, contributors are identified through activity in version control systems and other platforms, and can be analyzed by metrics such as activity level, organization affiliation, and contribution history.
+
+## Criticality
+Criticality reflects how essential an open source project is to the broader software ecosystem. In LFX Insights, we use the OpenSSF Criticality Score to estimate this, considering factors like usage, dependency reach, contributor activity, and project maturity. Projects with high criticality scores are widely relied upon and may pose greater risk if undermaintained or insecure.
+
+## Health Score
+The Health Score in LFX Insights summarizes the overall condition of an open source project across four key dimensions: contributor activity, development velocity, adoption signals, and security practices. Each dimension is scored individually, then combined into a single score from 0 to 100 to help identify projects that are actively maintained, widely used, and following best practices. The scoring logic is standardized across all projects to enable fair comparisons.
+
+## Issues
+Tracked tasks, bugs, feature requests, or discussions opened within a project's issue tracker, typically on platforms like GitHub or GitLab. In LFX Insights, we analyze issue activity to understand project responsiveness, community engagement, and maintenance health.
+
+## Merging
+Merging is the process of integrating changes from a pull request into the main branch of a project’s codebase. In LFX Insights, a successful merge indicates that the proposed code has passed any required reviews or checks and is now part of the official project history.
+
+## Organization
+A legal or corporate entity that is actively involved in open source development. This includes companies, foundations, academic institutions, and government agencies. We identify organizations based on contributor email domains, GitHub affiliation, and verified project ownership. Organizations are used to group activity, assess influence, and analyze ecosystem-level participation across projects.
+
+## Project
+A distinct open source initiative that delivers software, tools, or standards and is tracked as a single unit of analysis. A project may include one or multiple repositories and aggregates data across code, community, and ecosystem activity. In addition to Git-based data, each project can include metrics from external sources such as Twitter, Slack, mailing lists, or package downloads to provide a more complete view of its reach, engagement, and impact.
+
+## Pull Request
+A proposed code change submitted by a contributor for review before it can be merged into the main branch of a project. In LFX Insights, we track pull requests across three states: open (submitted but not yet merged or closed), reviewed (has received comments or approval), and closed (either merged into the codebase or explicitly rejected). These states help measure how collaborative and responsive a project is.
+
+## Repository
+A codebase managed through a version control system like Git. It contains the actual source code, issue tracker, and contribution history. Multiple repositories can belong to a single project if they are part of the same broader initiative.
