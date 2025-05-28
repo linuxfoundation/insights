@@ -16,7 +16,6 @@ export const aggregateData: AggregateData[] = [
       BenchmarkKeys.ActiveContributors,
       BenchmarkKeys.ContributorDependency,
       BenchmarkKeys.OrganizationDependency,
-      BenchmarkKeys.GeographicalDistribution
     ]
   },
   {

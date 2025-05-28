@@ -137,6 +137,8 @@ class OverviewApiService {
 
         switch (aggData.key) {
           case 'contributors':
+            // TODO: Remove this once we have 5 benchmarks available
+            pointValue *= 1.25;
             trustSummary.contributors += pointValue;
             break;
           case 'popularity':

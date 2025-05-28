@@ -12,7 +12,6 @@ export enum BenchmarkKeys {
   ContributorDependency = 'contributor-dependency',
   OrganizationDependency = 'organization-dependency',
   Retention = 'retention',
-  GeographicalDistribution = 'geographical-distribution',
   Stars = 'stars',
   Forks = 'forks',
   IssuesResolution = 'issues-resolution',

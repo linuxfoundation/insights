@@ -90,7 +90,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import {
-computed, watch, onServerPrefetch
+computed, onServerPrefetch
 } from 'vue';
 import { useRoute } from 'vue-router';
 import { storeToRefs } from "pinia";
@@ -108,14 +108,12 @@ import { getGeoMapChartConfig } from '~/components/uikit/chart/configs/geo-map.c
 import { formatNumber } from '~/components/shared/utils/formatter';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
 import { isEmptyData } from '~/components/shared/utils/helper';
-import { BenchmarkKeys, type Benchmark } from '~~/types/shared/benchmark.types';
 import {TanstackKey} from "~/components/shared/types/tanstack";
 import type {GeoMapData, GeoMapResponse }
   from "~/components/modules/widget/components/contributors/types/geo-map.types";
 import LfxActivitiesDropdown
   from "~/components/modules/widget/components/contributors/fragments/activities-dropdown.vue";
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
-import { embargoedCountries } from '~~/types/shared/embargoed-countries';
 
 interface GeographicalDistributionModel {
   metric: string;
@@ -127,9 +125,7 @@ const props = defineProps<{
   snapshot?: boolean
 }>()
 
-const emit = defineEmits<{(e: 'update:benchmarkValue', value: Benchmark | undefined): void;
-  (e: 'update:modelValue', value: GeographicalDistributionModel): void
-}>();
+const emit = defineEmits<{(e: 'update:modelValue', value: GeographicalDistributionModel): void}>();
 
 const model = computed<GeographicalDistributionModel>({
   get: () => props.modelValue,
@@ -179,7 +175,6 @@ const geoMapDataCountries = computed<GeoMapData[] | undefined>(() => (geoMapData
   ? geoMapData.value.filter((item) => item.name !== 'Unknown').slice(0, 5) : undefined));
 const unknownGeoMapData = computed<GeoMapData[] | undefined>(() => (geoMapData.value
   ? geoMapData.value.filter((item) => item.name === 'Unknown') : undefined));
-const embargoCountries = computed(() => geoMapData.value?.filter((item) => embargoedCountries.includes(item.name)));
 
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
@@ -213,17 +208,6 @@ const chartSeries = computed<ChartSeries[]>(() => [
     dataIndex: 0
   }
 ]);
-
-const callEmit = () => {
-  emit('update:benchmarkValue', status.value === 'success' ? {
-    key: BenchmarkKeys.GeographicalDistribution,
-    value: embargoCountries.value?.length || 0
-  } : undefined);
-}
-
-callEmit();
-
-watch(geoMapData, callEmit);
 </script>
 
 <script lang="ts">
