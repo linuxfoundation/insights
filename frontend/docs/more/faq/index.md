@@ -53,7 +53,7 @@ There’s no single source of truth, and most data comes from weak control data 
 We use a multi-step process involving AI enrichment, human curation, and direct user feedback. Our goal is 90%+ correctness in production data. Learn more about [Data Quality](../../introduction/data-quality/index.md).
 
 **Q: Can I suggest a correction or improvement?**  
-Yes — you can submit feedback via the Insights interface or by contacting us at [insights@lfprojects.org](mailto:insights@lfprojects.org). We welcome community-submitted improvements!
+Yes — you can submit feedback via the Insights interface or by contacting us at [insights@linuxfoundation.org](mailto:insights@linuxfoundation.org). We welcome community-submitted improvements!
 
 ## Using Insights
 
