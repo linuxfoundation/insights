@@ -13,7 +13,7 @@ const mailingListMessages: WidgetConfig = {
         activeTab: 'new',
     },
     share: true,
-    embed: false,
+    embed: true,
     snapshot: true,
 }
 

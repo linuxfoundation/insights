@@ -67,6 +67,13 @@ SPDX-License-Identifier: MIT
       :widget-name="props.name"
       :data="props.data"
     />
+
+    <lfx-widget-embed-modal
+      v-if="isEmbedModalOpen"
+      v-model="isEmbedModalOpen"
+      :widget-name="props.name"
+      :data="props.data"
+    />
   </div>
 </template>
 
@@ -88,6 +95,7 @@ import LfxIconButton from "~/components/uikit/icon-button/icon-button.vue";
 import LfxDropdownSeparator from "~/components/uikit/dropdown/dropdown-separator.vue";
 import LfxDropdownItem from "~/components/uikit/dropdown/dropdown-item.vue";
 import LfxSnapshotModal from "~/components/modules/widget/components/shared/snapshot/snapshot-modal.vue";
+import LfxWidgetEmbedModal from "~/components/modules/widget/components/shared/embed/embed-modal.vue";
 
 const props = defineProps<{
   name: Widget;
@@ -97,6 +105,7 @@ const props = defineProps<{
 const config = computed(() => lfxWidgets[props.name]);
 
 const isSnapshotModalOpen = ref(false)
+const isEmbedModalOpen = ref(false)
 
 const {openReportModal} = useReportStore()
 const {openShareModal} = useShareStore()
@@ -155,6 +164,7 @@ const menu: {
     label: 'Embed',
     icon: 'code',
     action: () => {
+      isEmbedModalOpen.value = true;
     },
     enabled: config.value.embed,
     isSeparator: false

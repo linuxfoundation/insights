@@ -15,7 +15,7 @@ const activeOrganizations: WidgetConfig = {
         activeTab: Granularity.WEEKLY
     },
     share: true,
-    embed: false,
+    embed: true,
     snapshot: true,
 }
 

@@ -14,7 +14,7 @@ const retention: WidgetConfig = {
     },
     component: Retention,
     share: true,
-    embed: false,
+    embed: true,
     snapshot: true,
 }
 

@@ -10,7 +10,7 @@ const searchQueries: WidgetConfig = {
     learnMoreLink: `/docs/metrics/popularity#search-queries`,
     component: SearchQueries,
     share: true,
-    embed: false,
+    embed: true,
     snapshot: true,
 }
 

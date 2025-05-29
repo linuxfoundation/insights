@@ -12,7 +12,7 @@ const activeDays: WidgetConfig = {
     learnMoreLink: `/docs/metrics/development#active-days`,
     component: ActiveDays,
     share: true,
-    embed: false,
+    embed: true,
     snapshot: true,
 }
 

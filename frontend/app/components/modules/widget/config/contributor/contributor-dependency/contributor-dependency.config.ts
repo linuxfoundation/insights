@@ -14,7 +14,7 @@ const contributorDependency: WidgetConfig = {
         metric: 'all:all'
     },
     share: true,
-    embed: false,
+    embed: true,
     snapshot: true,
 }
 

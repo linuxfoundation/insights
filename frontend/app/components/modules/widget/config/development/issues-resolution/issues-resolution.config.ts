@@ -10,7 +10,7 @@ const issuesResolution: WidgetConfig = {
     learnMoreLink: `/docs/metrics/development#issues-resolution`,
     component: IssuesResolution,
     share: true,
-    embed: false,
+    embed: true,
     snapshot: true,
 }
 

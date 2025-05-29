@@ -16,7 +16,7 @@ const activeContributors: WidgetConfig = {
     activeTab: Granularity.WEEKLY
   },
   share: true,
-  embed: false,
+  embed: true,
   snapshot: true,
   additionalShare: LfxShareActiveContributors
 };

@@ -11,7 +11,7 @@ const contributionsOutsideWorkHours: WidgetConfig = {
     learnMoreLink: `/docs/metrics/development#contributions-outside-work-hours`,
     component: ContributionsOutsideWorkHours,
     share: true,
-    embed: false,
+    embed: true,
     snapshot: true,
 }
 

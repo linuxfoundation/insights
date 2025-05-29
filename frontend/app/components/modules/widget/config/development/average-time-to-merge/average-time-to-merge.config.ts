@@ -10,7 +10,7 @@ const averateTimeToMerge: WidgetConfig = {
     learnMoreLink: `/docs/metrics/development#average-time-to-merge`,
     component: AverageTimeToMerge,
     share: true,
-    embed: false,
+    embed: true,
     snapshot: true,
 }
 

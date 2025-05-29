@@ -11,7 +11,7 @@ const waitTimeFirstReview: WidgetConfig = {
     learnMoreLink: `/docs/metrics/development#wait-time-for-first-review`,
     component: WaitTimeFirstReview,
     share: true,
-    embed: false,
+    embed: true,
     snapshot: true,
 }
 
