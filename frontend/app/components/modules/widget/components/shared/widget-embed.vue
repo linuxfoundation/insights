@@ -1,0 +1,115 @@
+<!--
+Copyright (c) 2025 The Linux Foundation and each contributor.
+SPDX-License-Identifier: MIT
+-->
+<template>
+  <lfx-card class="!bg-neutral-100 rounded-lg border !border-neutral-200">
+    <div class="-m-px border border-neutral-200 rounded-lg p-6 bg-white">
+      <div class="flex justify-between items-center pb-5 border-b border-neutral-100">
+        <div class="flex items-center gap-3">
+          <lfx-avatar
+            :src="data?.logo"
+            type="organization"
+            size="normal"
+          />
+          <p class="text-sm leading-5 font-semibold">
+            {{ data?.name }}
+            <span
+              v-if="repoName"
+              class="font-normal"
+            >&nbsp;/ {{ repoName }}</span>
+          </p>
+        </div>
+        <div class="text-body-2 text-neutral-500 flex items-center gap-1">
+          <lfx-icon
+            name="calendar"
+            :size="14"
+          />
+          <p v-if="startDate && endDate">
+            {{ DateTime.fromFormat(startDate, 'yyyy-MM-dd').toFormat('MMM d, yyyy') }}
+            → {{ DateTime.fromFormat(endDate, 'yyyy-MM-dd').toFormat('MMM d, yyyy') }}
+          </p>
+          <p v-else>All time</p>
+        </div>
+      </div>
+      <div class="pt-5">
+        <h2
+          v-if="config?.name"
+          class="text-heading-2 font-bold font-secondary"
+        >
+          {{config?.name}}
+        </h2>
+      </div>
+      <component
+        :is="config?.component"
+        v-if="config?.component"
+        :snapshot="true"
+        :model-value="params"
+      />
+    </div>
+    <div class="pt-2 pb-1 flex justify-center gap-3 items-center">
+      <p class="text-xs leading-5 text-neutral-500">Powered by</p>
+      <img
+        src="~/assets/images/logo.svg"
+        alt="LFX Insights"
+        class="h-3.5"
+      >
+    </div>
+  </lfx-card>
+</template>
+
+<script lang="ts" setup>
+import {computed, onServerPrefetch} from "vue";
+import {useQuery} from "@tanstack/vue-query";
+import {DateTime} from "luxon";
+import {storeToRefs} from "pinia";
+import {lfxWidgets, type WidgetConfig} from "~/components/modules/widget/config/widget.config";
+import type {Widget} from "~/components/modules/widget/types/widget";
+import LfxIcon from "~/components/uikit/icon/icon.vue";
+import LfxCard from "~/components/uikit/card/card.vue";
+import {TanstackKey} from "~/components/shared/types/tanstack";
+import type {Project} from "~~/types/project";
+import {PROJECT_API_SERVICE} from "~/components/modules/project/services/project.api.service";
+import LfxAvatar from "~/components/uikit/avatar/avatar.vue";
+import {useProjectStore} from "~/components/modules/project/store/project.store";
+
+const route = useRoute();
+const { slug, name } = route.params;
+const {
+ widget, startDate, endDate, ...params
+} = route.query;
+
+const { startDate: startDateStore, endDate: endDateStore } = storeToRefs(useProjectStore());
+
+const config: WidgetConfig = lfxWidgets[widget as Widget];
+
+// Fetch project
+const queryKey = computed(() => [TanstackKey.PROJECT, slug]);
+
+const {
+  data,
+  suspense,
+} = useQuery<Project>({
+  queryKey,
+  queryFn: PROJECT_API_SERVICE.fetchProject(slug as string),
+  retry: false,
+});
+
+const repoName = computed(() => {
+  const repo = data.value?.repositories.find((repo) => repo.slug === name);
+  return repo?.name?.split('/').at(-1) || '';
+});
+
+onServerPrefetch(async () => {
+  await suspense();
+});
+
+startDateStore.value = startDate as string;
+endDateStore.value = endDate as string;
+</script>
+
+<script lang="ts">
+export default {
+  name: 'LfxWidgetEmbed'
+};
+</script>

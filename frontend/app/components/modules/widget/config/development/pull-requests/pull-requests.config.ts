@@ -10,7 +10,7 @@ const pullRequests: WidgetConfig = {
     learnMoreLink: `/docs/metrics/development#pull-requests`,
     component: PullRequests,
     share: true,
-    embed: false,
+    embed: true,
     snapshot: true,
 }
 

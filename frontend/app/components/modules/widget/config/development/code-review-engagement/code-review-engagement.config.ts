@@ -15,7 +15,7 @@ const codeReviewEngagement: WidgetConfig = {
         activeTab: CodeReviewEngagementMetric.PR_PARTICIPANTS,
     },
     share: true,
-    embed: false,
+    embed: true,
     snapshot: true,
 }
 

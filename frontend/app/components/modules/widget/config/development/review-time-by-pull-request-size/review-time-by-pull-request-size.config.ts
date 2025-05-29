@@ -11,7 +11,7 @@ const reviewTimeByPullRequestSize: WidgetConfig = {
     learnMoreLink: `/docs/metrics/development#review-time-by-pull-request-size`,
     component: ReviewTimeByPullRequestSize,
     share: true,
-    embed: false,
+    embed: true,
     snapshot: true,
 }
 

@@ -11,7 +11,7 @@ const pressMentions: WidgetConfig = {
     learnMoreLink: `/docs/metrics/popularity#press-mentions`,
     component: PressMentions,
     share: true,
-    embed: false,
+    embed: true,
     snapshot: true,
 }
 

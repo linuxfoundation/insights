@@ -11,7 +11,7 @@ const mergeLeadTime: WidgetConfig = {
     learnMoreLink: `/docs/metrics/development#merge-lead-time`,
     component: MergeLeadTime,
     share: true,
-    embed: false,
+    embed: true,
     snapshot: true,
 }
 

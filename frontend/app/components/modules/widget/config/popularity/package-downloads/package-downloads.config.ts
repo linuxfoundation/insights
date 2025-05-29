@@ -13,7 +13,7 @@ const packageDownloads: WidgetConfig = {
         activeTab: 'new-downloads',
     },
     share: true,
-    embed: false,
+    embed: true,
     snapshot: true,
 }
 

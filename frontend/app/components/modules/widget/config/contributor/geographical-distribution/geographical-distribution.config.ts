@@ -15,7 +15,7 @@ const geographicalDistribution: WidgetConfig = {
         activeTab: 'organizations',
     },
     share: true,
-    embed: false,
+    embed: true,
     snapshot: true,
 }
 

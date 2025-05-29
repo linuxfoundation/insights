@@ -14,7 +14,7 @@ const githubMentions: WidgetConfig = {
         activeTab: 'new-mentions',
     },
     share: true,
-    embed: false,
+    embed: true,
     snapshot: true,
 }
 
