@@ -29,7 +29,7 @@ SPDX-License-Identifier: MIT
         :key="index"
         class="lfx-table-row"
       >
-        <div class="flex flex-row gap-3 items-center">
+        <div class="name-col">
           <div
             v-if="props.showFullList"
             class="mr-1 text-neutral-400"
@@ -40,9 +40,12 @@ SPDX-License-Identifier: MIT
             :src="organization.logo"
             type="organization"
           />
-          <div>{{ organization.name }}</div>
+          <div
+            class="text-ellipsis overflow-hidden"
+            :title="organization.name"
+          >{{ organization.name }}</div>
         </div>
-        <div>
+        <div class="value-col">
           {{ formatNumber(organization.contributions) }}
           <span v-if="props.showPercentage"> - {{ organization.percentage }}% </span>
         </div>

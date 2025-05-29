@@ -45,6 +45,7 @@ SPDX-License-Identifier: MIT
             :show-full-list="true"
             :total="total"
             :is-fetching-next-page="isFetchingNextPage"
+            :show-percentage="true"
             @load-more="loadMore"
           />
         </lfx-project-load-state>
