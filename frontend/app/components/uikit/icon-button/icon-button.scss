@@ -5,7 +5,7 @@
 
   // Types
   &--default{
-    @apply outline outline-neutral-200 bg-white text-neutral-900 cursor-pointer;
+    @apply outline outline-1 outline-neutral-200 bg-white text-neutral-900 cursor-pointer;
 
     &:hover{
       @apply bg-neutral-50;
@@ -21,7 +21,7 @@
   }
 
   &--transparent{
-    @apply outline outline-transparent bg-transparent text-neutral-900;
+    @apply outline outline-1 outline-transparent bg-transparent text-neutral-900;
 
     &:hover{
       @apply bg-neutral-100;
