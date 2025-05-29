@@ -78,14 +78,15 @@ import type {Project} from "~~/types/project";
 import {PROJECT_API_SERVICE} from "~/components/modules/project/services/project.api.service";
 import LfxAvatar from "~/components/uikit/avatar/avatar.vue";
 import {useProjectStore} from "~/components/modules/project/store/project.store";
+import {dateOptKeys} from "~/components/modules/project/config/date-options";
 
 const route = useRoute();
 const { slug, name } = route.params;
 const {
- widget, startDate, endDate, ...params
+ widget, startDate, endDate, timeRangeKey, ...params
 } = route.query;
 
-const { startDate: startDateStore, endDate: endDateStore } = storeToRefs(useProjectStore());
+const { startDate: startDateStore, endDate: endDateStore, selectedTimeRangeKey } = storeToRefs(useProjectStore());
 
 const config: WidgetConfig = lfxWidgets[widget as Widget];
 
@@ -112,6 +113,7 @@ onServerPrefetch(async () => {
 
 startDateStore.value = startDate as string;
 endDateStore.value = endDate as string;
+selectedTimeRangeKey.value = timeRangeKey as string || dateOptKeys.past365days;
 </script>
 
 <script lang="ts">
