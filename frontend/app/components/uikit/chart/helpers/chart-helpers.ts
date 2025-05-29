@@ -1,6 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { graphic } from 'echarts';
+import { DateTime } from 'luxon';
 import type {
   ChartData,
   ChartSeries,
@@ -53,7 +54,7 @@ export const convertToCategoryData = (
 // function to convert date data to timestamp since the chart needs the date in this format
 export const convertDateData = (
   chartData: ChartData[] //
-) => chartData.map((item: ChartData) => new Date(item.key).getTime()) || [];
+) => chartData.map((item: ChartData) => DateTime.fromISO(item.key).toUTC().endOf('day').toMillis()) || [];
 
 // TODO: check if we'll need multiple yAxis
 // export const buildYAxis = (series: ChartSeries[]): YAXisOption[] | undefined =>
