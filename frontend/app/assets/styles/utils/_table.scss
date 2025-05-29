@@ -10,6 +10,15 @@
 }
 
 .lfx-table-row {
-  @apply flex flex-row gap-4 justify-between text-neutral-900 py-1 text-sm;
+  @apply flex flex-row gap-4 justify-between text-neutral-900 py-1 text-sm items-center;
+  .name-col {
+    @apply flex flex-row gap-3 items-center basis-4/6 text-ellipsis whitespace-nowrap overflow-hidden;
+    .p-avatar {
+      @apply min-w-8;
+    }
+  }
+  .value-col {
+    @apply basis-2/6 text-right;
+  }
 }
 

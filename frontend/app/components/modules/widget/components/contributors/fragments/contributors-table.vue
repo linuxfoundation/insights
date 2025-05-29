@@ -29,7 +29,7 @@ SPDX-License-Identifier: MIT
         :key="index"
         class="lfx-table-row"
       >
-        <div class="flex flex-row gap-3 items-center">
+        <div class="name-col">
           <div
             v-if="props.showFullList"
             class="mr-1 text-neutral-400"
@@ -40,9 +40,10 @@ SPDX-License-Identifier: MIT
             :src="contributor.avatar"
             type="member"
           />
-          <div>
-            {{ contributor.name }}
-          </div>
+          <div
+            class="text-ellipsis overflow-hidden"
+            :title="contributor.name"
+          >{{ contributor.name }}</div>
         </div>
         <div>
           {{ formatNumber(contributor.contributions) }}

@@ -25,6 +25,7 @@ SPDX-License-Identifier: MIT
       <lfx-contributors-table
         :metric="model.metric"
         :contributors="contributors.data"
+        :show-percentage="true"
       />
 
       <div
