@@ -26,7 +26,7 @@ const defaultLineOption: ECOption = {
   grid: {
     top: '5%',
     left: '12%',
-    right: '1%',
+    right: '3%',
     bottom: '15%'
   },
   xAxis: {
