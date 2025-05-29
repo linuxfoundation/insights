@@ -74,17 +74,11 @@ export default defineEventHandler(async (event) => {
 });
 
 function svgTemplate(project: ProjectTinybird, repository: ProjectRepository | undefined) {
-    let projectName: string = project.name;
+    const projectName: string = project.name.length > 32 ? `${project.name.substring(0, 31)}...` : project.name;
     const projectLogo: string = project.logo;
     const projectDescription: string = project.description.length > 65 ? `${project.description.substring(0, 65)}...` : project.description;
-    let repositoryName: string | undefined = repository?.name?.split('/').at(-1);
-    if(projectName.length > 38) {
-        repositoryName = undefined;
-        projectName = `${projectName.substring(0, 38)}...`;
-    }
-    else if(`${projectName} / ${repositoryName}`.length > 38) {
-        repositoryName = `${repositoryName?.substring(0, 38 - projectName.length)}...`;
-    }
+    let repositoryName: string | undefined = repository?.name?.split('/').at(-1) || '';
+    repositoryName = repositoryName && repositoryName.length > 40 ? `${repositoryName.substring(0, 39)}...` : repositoryName;
     return `<?xml version="1.0" encoding="UTF-8"?>
     <svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <style>
@@ -145,15 +139,18 @@ function svgTemplate(project: ProjectTinybird, repository: ProjectRepository | u
                 font-size="48"
                 fill="black">
   <tspan class="text-bold">${projectName}</tspan>
-  <tspan class="text-regular">${repositoryName ? ' / ' : ''}${repositoryName ||''}</tspan>
           </text>
-          <text x="79" y="529"
+          ${repositoryName?.length > 0 ? `<text x="79" y="529"
+                font-size="40"
+                fill="black"
+                class="text-light">
+                / ${repositoryName}
+          </text>` : `<text x="79" y="529"
                 font-size="24"
                 fill="#64748B"
                 class="text-light">
                 ${projectDescription}
-          </text>
-
+          </text>`}
         <path d="M80 370L1120 370" stroke="#ADD6FF"/>
     </g>
     <defs>
@@ -166,8 +163,8 @@ function svgTemplate(project: ProjectTinybird, repository: ProjectRepository | u
         </radialGradient>
         <clipPath id="clip0_3832_17336">
             <rect width="1200" height="630" fill="white"/>
-        </clipPath>
-        <image id="image0_3832_17336" width="256" height="256" preserveAspectRatio="none" xlink:href="${projectLogo}"/>
+</clipPath>
+<image id="image0_3832_17336" width="256" height="256" preserveAspectRatio="xMidYMid meet" xlink:href="${projectLogo}"/>
     </defs>
 </svg>`
 }
