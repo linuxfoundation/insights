@@ -164,9 +164,17 @@ Once you’ve made your edits in frontend/docs and confirmed everything looks go
 
 ```bash
 # Make sure you're at the root of the repository
+# Go to main
+git checkout main
+# Get the latest changes from main
+git fetch
+git pull
+# Create a new branch to make your changes
+git checkout -b "docs/<meaningful-branch-name>"
+# After doing the changes, push your changes to the remote branch
 git status              # Review your changes
 git add .               # Stage all modified files
-git commit -S -m "docs: YOUR COMMIT MESSAGE"   # Sign and commit
+git commit -S -s -m "docs: YOUR COMMIT MESSAGE"   # Sign and commit
 git push                # Push changes to your remote branch
 ```
 
