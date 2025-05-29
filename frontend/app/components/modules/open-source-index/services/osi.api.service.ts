@@ -155,8 +155,16 @@ class OssIndexApiService {
         link = '/collection';
     }
 
+    const percentage = 0.015; // 1.5% of the total contributors for the software value
+    // Change this when we will sort by software value
+    const total = data.reduce((sum, group) => sum + group.totalContributors, 0);
+
+    const limit = total * percentage;
+
     return (
-      data.map((group) => {
+      data
+          .filter((group) => group.totalContributors >= limit)
+          .map((group) => {
         const rangeIndex = this.getRangeValue(minMax, group.totalContributors);
 
         return {
