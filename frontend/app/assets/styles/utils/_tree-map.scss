@@ -7,10 +7,16 @@
   }
 
   .tooltip-row {
-    @apply flex flex-row gap-5 items-center w-[360px];
+    @apply flex flex-row gap-5 items-center w-[360px] justify-between;
+
+    &.has-software-value {
+      .name-display {
+        @apply w-[180px];
+      }
+    }
 
     .name-display {
-      @apply text-sm text-neutral-900 flex flex-row gap-2 items-center w-[180px];
+      @apply text-sm text-neutral-900 flex flex-row gap-2 items-center w-[250px];
       .name-text {
         @apply text-ellipsis overflow-hidden whitespace-nowrap;
       }

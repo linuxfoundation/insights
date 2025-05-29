@@ -19,16 +19,19 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
+import { onBeforeMount, onMounted } from 'vue';
 import { registerMap } from 'echarts';
-// import * as echarts from 'echarts';
+import * as echarts from 'echarts';
 import world from './configs/world.json';
 import type { SeriesTypes } from '~/components/uikit/chart/types/ChartTypes';
 
 const props = withDefaults(defineProps<{
   config: ECOption;
   animation?: boolean;
+  onClick?:(params: echarts.ECElementEvent) => void;
 }>(), {
   animation: true,
+  onClick: undefined
 });
 
 onBeforeMount(() => {
@@ -42,13 +45,15 @@ onBeforeMount(() => {
   });
 });
 
-// onMounted(() => {
-//   const chart = echarts.getInstanceByDom(document.getElementById('chart') as HTMLElement);
+onMounted(() => {
+  if (props.onClick) {
+    const chart = echarts.getInstanceByDom(document.getElementById('chart') as HTMLElement);
 
-//   chart?.on('click', (params: any) => {
-//     console.log(params);
-//   });
-// });
+    chart?.on('click', (params: echarts.ECElementEvent) => {
+      props.onClick!(params);
+    });
+  }
+});
 </script>
 
 <script lang="ts">
