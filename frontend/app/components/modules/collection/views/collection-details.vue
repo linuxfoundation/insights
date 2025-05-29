@@ -5,13 +5,13 @@ SPDX-License-Identifier: MIT
 <template>
   <lfx-maintain-height
     :scroll-top="scrollTop"
-    :loaded="!isPending"
+    :loaded="!loading"
     :class="scrollTop > 0 ? 'fixed top-14 lg:top-17' : 'relative'"
     class="z-10 w-lvw ml-auto mr-0"
   >
     <div class="bg-white outline outline-neutral-100">
       <lfx-collection-header
-        :loading="isPending"
+        :loading="loading"
         :collection="props.collection"
       />
       <lfx-collection-filters
@@ -96,7 +96,8 @@ import {PROJECT_API_SERVICE} from "~/components/modules/project/services/project
 import useScroll from "~/components/shared/utils/scroll";
 
 const props = defineProps<{
-  collection?: Collection
+  collection?: Collection,
+  loading?: boolean
 }>()
 
 const {scrollTop} = useScroll();
