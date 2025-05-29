@@ -47,5 +47,10 @@ export enum TanstackKey {
   ASSOCIATED_ORGANIZATION = 'associated-organization',
 
   // Security
-  SECURITY_ASSESSMENT = 'security-assessment'
+  SECURITY_ASSESSMENT = 'security-assessment',
+
+  // Open Source Index
+  OSS_INDEX_GROUP = 'oss-index-group',
+  OSS_INDEX_CATEGORY = 'oss-index-category',
+  OSS_INDEX_COLLECTION = 'oss-index-collection'
 }

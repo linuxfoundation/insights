@@ -3,7 +3,7 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="w-full">
+  <div class="w-full lg:w-2/3">
     <div
       class="w-full lg:max-w-80 overflow-hidden bg-neutral-50 h-9 border
       border-neutral-200 rounded-full hidden sm:flex items-center gap-2 px-3 cursor-pointer"

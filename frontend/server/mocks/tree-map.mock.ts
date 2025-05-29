@@ -6,6 +6,7 @@ export const mockTreeMap: TreeMapData[] = [
   {
     value: [10000, 4],
     name: 'Sample Collection One',
+    slug: 'sample-collection-one',
     id: 'branch-8',
     link: '/open-source-index#1',
     target: '_self',
@@ -44,6 +45,7 @@ export const mockTreeMap: TreeMapData[] = [
   {
     value: [3000, 1],
     name: 'Sample Collection Two',
+    slug: 'sample-collection-two',
     id: 'leaf-125',
     link: '/open-source-index#2',
     target: '_self',
@@ -82,6 +84,7 @@ export const mockTreeMap: TreeMapData[] = [
   {
     value: [12000, 5],
     name: 'Sample Collection Three',
+    slug: 'sample-collection-three',
     id: 'leaf-135',
     link: '/open-source-index#3',
     target: '_self',
@@ -120,6 +123,7 @@ export const mockTreeMap: TreeMapData[] = [
   {
     value: [7000, 3],
     name: 'Sample Collection Four',
+    slug: 'sample-collection-four',
     id: 'leaf-136',
     link: '/open-source-index#4',
     target: '_self',
@@ -158,6 +162,7 @@ export const mockTreeMap: TreeMapData[] = [
   {
     value: [6000, 2],
     name: 'Sample Collection Five',
+    slug: 'sample-collection-five',
     id: 'leaf-137',
     link: '/open-source-index#5',
     target: '_self',
@@ -196,6 +201,7 @@ export const mockTreeMap: TreeMapData[] = [
   {
     value: [1000, 1],
     name: 'Sample Collection Six',
+    slug: 'sample-collection-six',
     id: 'branch-6',
     link: '/open-source-index#6',
     target: '_self',
@@ -234,6 +240,7 @@ export const mockTreeMap: TreeMapData[] = [
   {
     value: [2000, 1],
     name: 'Sample Collection Seven',
+    slug: 'sample-collection-seven',
     id: 'leaf-125',
     link: '/open-source-index#7',
     target: '_self',
@@ -272,6 +279,7 @@ export const mockTreeMap: TreeMapData[] = [
   {
     value: [11000, 5],
     name: 'Sample Collection Eight',
+    slug: 'sample-collection-eight',
     id: 'leaf-135',
     link: '/open-source-index#8',
     target: 'self',
@@ -310,6 +318,7 @@ export const mockTreeMap: TreeMapData[] = [
   {
     value: [5000, 3],
     name: 'Sample Collection Nine',
+    slug: 'sample-collection-nine',
     id: 'leaf-136',
     link: '/open-source-index#9',
     target: '_self',
@@ -348,6 +357,7 @@ export const mockTreeMap: TreeMapData[] = [
   {
     value: [4000, 2],
     name: 'Sample Collection Ten',
+    slug: 'sample-collection-ten',
     id: 'leaf-137',
     link: '/open-source-index#10',
     target: '_self',

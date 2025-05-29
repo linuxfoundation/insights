@@ -1,14 +1,20 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 
-import { merge } from 'lodash';
+import _ from 'lodash';
+import type { EChartsOption as ECOption } from 'echarts';
+import type {
+  TooltipOption,
+  TooltipFormatterCallback as TFCallback,
+  TopLevelFormatterParams as TLPParams
+} from 'echarts/types/dist/shared';
 import { lfxColors } from '~/config/styles/colors';
 import { formatNumber } from '~/components/shared/utils/formatter';
 
 const visualMin = 1;
 const visualMax = 5;
 
-export type TreeLabelFormatterParams = {
+export interface TreeLabelFormatterParams {
   seriesName: string;
   name: string;
   value: number[];
@@ -29,7 +35,7 @@ export type TreeLabelFormatterParams = {
   seriesIndex: number;
   seriesType: string;
   status: string;
-};
+}
 
 export interface TreeMapItem {
   id: string;
@@ -43,6 +49,8 @@ export interface TreeMapItem {
 export interface TreeMapData {
   id: string;
   name: string;
+  slug: string;
+  type: string;
   value: [number, number];
   softwareValue?: string;
   topProjects: TreeMapItem[];
@@ -111,7 +119,7 @@ const defaultTreeMapOption: ECOption = {
         disabled: true
       },
       roam: false, // prevents scrolling and zooming
-      nodeClick: 'link', // prevent focus on click
+      nodeClick: false, // 'link', // prevent focus on click
       visualMin, // minimum value for color mapping
       visualMax, // maximum value for color mapping
       visualDimension: 1, // dimension of the visual map (values should be in array)
@@ -136,7 +144,7 @@ const defaultTreeMapOption: ECOption = {
         }
       ]
     }
-  ]
+  ] as ECOption['series']
 };
 
 /**
@@ -151,8 +159,13 @@ export const getTreeMapConfig = (
   tooltipFormatter: (info: TreeLabelFormatterParams) => string,
   options?: ECOption
 ): ECOption => {
-  const config = merge(defaultTreeMapOption, options);
-  config.tooltip.formatter = tooltipFormatter;
-  config.series[0].data = data;
+  const config = _.merge({}, defaultTreeMapOption, options);
+  if (config.tooltip) {
+    const cfgTooltip = config.tooltip as TooltipOption;
+    cfgTooltip.formatter = tooltipFormatter as unknown as TFCallback<TLPParams>;
+  }
+  if (Array.isArray(config.series) && config.series.length > 0 && config.series[0]) {
+    config.series[0].data = data;
+  }
   return config;
 };
