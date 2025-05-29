@@ -5,6 +5,7 @@ SPDX-License-Identifier: MIT
 <template>
   <lfx-collection-details-view
     :collection="data"
+    :loading="isPending"
   />
 </template>
 
@@ -26,6 +27,7 @@ const queryKey = computed(() => [TanstackKey.COLLECTION, slug]);
 
 const {
   data,
+    isPending,
     suspense,
     isError,
     error

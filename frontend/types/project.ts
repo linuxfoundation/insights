@@ -24,6 +24,8 @@ export interface Project {
   firstCommit?: string;
   projectLinks?: ProjectLink[];
   connectedPlatforms: string[];
+  score: number;
+  rank: number;
 }
 
 export interface ProjectLanguage {
