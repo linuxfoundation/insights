@@ -5,7 +5,7 @@ SPDX-License-Identifier: MIT
 <template>
   <lfx-modal
     v-model="isModalOpen"
-    width="41.5rem"
+    width="40.625rem"
   >
     <div class="p-6">
       <div class="flex justify-between">
@@ -84,14 +84,13 @@ SPDX-License-Identifier: MIT
           <div
             class="-m-px bg-neutral-100 !rounded-lg"
           >
-            <div>
+            <div class="overflow-auto">
               <iframe
                 ref="preview"
                 :src="fullUrl"
                 width="600"
                 allowfullscreen
-                loading="lazy"
-                class="rounded-lg"
+                class="rounded-lg border-none"
                 @load="adjustIframeHeight"
               />
             </div>
@@ -174,10 +173,11 @@ const fullUrl = computed(() => `${baseUrl.value}?${queryParams.value}`);
 
 const iframe = computed(() => `<iframe
     src="${fullUrl.value}"
-    width="100%"
+    width="600"
     height="${height.value || 600}"
     allowfullscreen
-    loading="lazy">
+    loading="lazy"
+    style="border: none; border-radius: 8px">
 </iframe>
 `);
 

@@ -47,14 +47,20 @@ SPDX-License-Identifier: MIT
         :model-value="params"
       />
     </div>
-    <div class="pt-2 pb-1 flex justify-center gap-3 items-center">
-      <p class="text-xs leading-5 text-neutral-500">Powered by</p>
-      <img
-        src="~/assets/images/logo.svg"
-        alt="LFX Insights"
-        class="h-3.5"
-      >
-    </div>
+    <a
+      href="https://insights.linuxfoundation.org"
+      target="_blank"
+      class="block"
+    >
+      <div class="pt-2 pb-1 flex justify-center gap-3 items-center">
+        <p class="text-xs leading-5 text-neutral-500">Powered by</p>
+        <img
+          src="~/assets/images/logo.svg"
+          alt="LFX Insights"
+          class="h-3.5"
+        >
+      </div>
+    </a>
   </lfx-card>
 </template>
 
