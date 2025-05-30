@@ -90,7 +90,7 @@ SPDX-License-Identifier: MIT
           </div>
           <div
             v-if="props.collection"
-            class="flex flex-wrap sm:justify-end transition-all ease-linear gap-5 md:gap-6"
+            class="flex sm:justify-end transition-all ease-linear gap-5 md:gap-6"
             :class="
               scrollTop > 50
                 ? 'h-0 sm:h-auto opacity-0 sm:opacity-100 invisible sm:visible pt-0'
@@ -119,28 +119,31 @@ SPDX-License-Identifier: MIT
                 {{ pluralize('project', props.collection.projectCount) }}
               </p>
             </article>
-            <!--<article class="flex items-center gap-2 h-min">-->
-            <!--  <div class="h-6 w-6 md:h-8 md:w-8 rounded-full flex items-center justify-center bg-positive-50">-->
-            <!--    <lfx-icon-->
-            <!--      name="dollar-circle"-->
-            <!--      class="text-positive-600 md:!text-base !text-sm"-->
-            <!--    />-->
-            <!--  </div>-->
-            <!--  <lfx-skeleton-->
-            <!--    v-if="loading"-->
-            <!--    height="1.25rem"-->
-            <!--    width="5rem"-->
-            <!--    class="rounded-sm"-->
-            <!--  />-->
-            <!--  <p-->
-            <!--    v-else-->
-            <!--    class="leading-6 transition-all"-->
-            <!--    :class="scrollTop > 50 ? 'text-xs md:text-sm' : 'text-xs md:text-base'"-->
-            <!--  >-->
-            <!--    <span class="text-neutral-500">Software value:</span>-->
-            <!--    ${{ formatNumberShort(props.collection.softwareValueCount) }}-->
-            <!--  </p>-->
-            <!--</article>-->
+            <article
+              v-if="props.collection.softwareValue"
+              class="flex items-center gap-2 h-min"
+            >
+              <div class="h-6 w-6 md:h-8 md:w-8 rounded-full flex items-center justify-center bg-positive-50">
+                <lfx-icon
+                  name="dollar-circle"
+                  class="text-positive-600 md:!text-base !text-sm"
+                />
+              </div>
+              <lfx-skeleton
+                v-if="loading"
+                height="1.25rem"
+                width="5rem"
+                class="rounded-sm"
+              />
+              <p
+                v-else
+                class="leading-6 transition-all whitespace-nowrap"
+                :class="scrollTop > 50 ? 'text-xs md:text-sm' : 'text-xs md:text-base'"
+              >
+                <span class="text-neutral-500">Software value:</span>
+                ${{ formatNumberShort(props.collection.softwareValue) }}
+              </p>
+            </article>
           </div>
         </div>
       </div>

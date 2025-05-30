@@ -29,19 +29,22 @@ SPDX-License-Identifier: MIT
               {{ pluralize('project', props.collection.projectCount) }}
             </p>
           </article>
-          <!--          <article class="flex items-center gap-2">-->
-          <!--            <div class="h-8 w-8 rounded-full flex items-center justify-center bg-positive-50">-->
-          <!--              <lfx-icon-->
-          <!--                name="dollar-circle"-->
-          <!--                :size="16"-->
-          <!--                class="text-positive-600"-->
-          <!--              />-->
-          <!--            </div>-->
-          <!--            <p class="leading-6 transition-all text-sm whitespace-nowrap">-->
-          <!--              <span class="text-neutral-500">Software value:</span>-->
-          <!--              ${{ formatNumberShort(props.collection.softwareValueCount) }}-->
-          <!--            </p>-->
-          <!--          </article>-->
+          <article
+            v-if="props.collection.softwareValue"
+            class="flex items-center gap-2"
+          >
+            <div class="h-8 w-8 rounded-full flex items-center justify-center bg-positive-50">
+              <lfx-icon
+                name="dollar-circle"
+                :size="16"
+                class="text-positive-600"
+              />
+            </div>
+            <p class="leading-6 transition-all text-sm whitespace-nowrap">
+              <span class="text-neutral-500">Software value:</span>
+              ${{ formatNumberShort(props.collection.softwareValue) }}
+            </p>
+          </article>
         </div>
       </div>
 
