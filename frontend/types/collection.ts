@@ -14,4 +14,5 @@ export interface Collection {
     isLf: number;
     projectCount: number;
     featuredProjects: CollectionFeaturedProject[];
+    softwareValue?: number;
 }

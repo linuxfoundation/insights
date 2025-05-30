@@ -63,22 +63,25 @@ SPDX-License-Identifier: MIT
               {{formatNumber(props.project.organizationCount)}}
             </p>
           </article>
+          <article
+            v-if="props.project.softwareValue"
+            class="flex justify-between items-center"
+          >
+            <lfx-tag
+              type="transparent"
+              size="medium"
+            >
+              <lfx-icon
+                name="dollar-circle"
+                :size="14"
+              />
+              Software value
+            </lfx-tag>
+            <p class="text-body-1">
+              ${{formatNumberShort(props.project.softwareValue)}}
+            </p>
+          </article>
         </div>
-        <!--<article class="flex justify-between items-center">-->
-        <!--  <lfx-tag-->
-        <!--    type="transparent"-->
-        <!--    size="medium"-->
-        <!--  >-->
-        <!--    <lfx-icon-->
-        <!--      name="dollar-circle"-->
-        <!--      :size="14"-->
-        <!--    />-->
-        <!--    Software value-->
-        <!--  </lfx-tag>-->
-        <!--  <p class="text-body-1">-->
-        <!--    ${{formatNumberShort(props.project.softwareValueCount)}}-->
-        <!--  </p>-->
-        <!--</article>-->
         <div
           v-else
           class="text-body-1 text-neutral-500"
@@ -93,7 +96,7 @@ SPDX-License-Identifier: MIT
 <script lang="ts" setup>
 import { computed } from "vue";
 import type {Project} from "~~/types/project";
-import {formatNumber} from "~/components/shared/utils/formatter";
+import {formatNumber,formatNumberShort} from "~/components/shared/utils/formatter";
 import LfxCard from "~/components/uikit/card/card.vue";
 import LfxTag from "~/components/uikit/tag/tag.vue";
 import LfxIcon from "~/components/uikit/icon/icon.vue";

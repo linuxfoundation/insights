@@ -23,20 +23,20 @@ SPDX-License-Identifier: MIT
     </div>
   </div>
   <div
-    v-if="tmpShowFlag"
+    v-if="project?.softwareValue"
     class="flex flex-col gap-2 text-xs"
   >
     <div class="text-neutral-400 font-semibold flex items-center gap-1">
       Software value
       <lfx-tooltip
-        content="Software value"
+        content="Based on Constructive Cost Model (COCOMO)"
         placement="top"
       >
         <lfx-icon name="question-circle" />
       </lfx-tooltip>
     </div>
     <div class="text-neutral-900">
-      {{ project?.softwareValue ? `$${formatNumberShort(project?.softwareValue)}` : 'No Data' }}
+      ${{ formatNumberShort(project?.softwareValue) }}
     </div>
   </div>
   <div
@@ -83,7 +83,7 @@ import { useProjectStore } from '~~/app/components/modules/project/store/project
 import { formatNumberShort } from '~/components/shared/utils/formatter';
 
 const { project } = storeToRefs(useProjectStore())
-const tmpShowFlag = false;
+const tmpShowFlag = true;
 
 const formatFirstCommit = (date: string) => {
   const dt = DateTime.fromSQL(date);
