@@ -8,13 +8,13 @@ import type {
   OSSIndexCategoryGroup,
   OSSIndexCategoryGroupDetails
 } from '~~/types/ossindex/category-group';
-import type { TreeMapData } from '~/components/uikit/chart/configs/tree-map.chart';
 import { LfxRoutes } from '~/components/shared/types/routes';
 import type {
   OSSIndexCategory,
   OSSIndexCategoryDetails
 } from '~~/types/ossindex/category';
 import type { OSSIndexCollection } from '~~/types/ossindex/collection';
+import type { TreeMapData } from '~/components/uikit/chart/types/ChartTypes';
 
 export interface BreadcrumbData {
   group?: {
@@ -137,6 +137,20 @@ class OssIndexApiService {
     }));
   }
 
+  /**
+   * Filter data by limit. This removes the data that is less than 1.5% of the total contributors.
+   * @param data - Data
+   * @returns Filtered data
+   */
+  filterDataByLimit(data: OSSIndexCategoryGroup[]): OSSIndexCategoryGroup[] {
+    const percentage = 0.015; // 1.5% of the total contributors for the software value
+    // Change this when we will sort by software value
+    const total = data.reduce((sum, group) => sum + group.totalContributors, 0);
+    const limit = total * percentage;
+
+    return data.filter((group) => group.totalContributors >= limit);
+  }
+
   mapDataToTreeMapData(
     data: OSSIndexCategoryGroup[],
     type: 'group' | 'category' | 'collection'
@@ -155,16 +169,10 @@ class OssIndexApiService {
         link = '/collection';
     }
 
-    const percentage = 0.015; // 1.5% of the total contributors for the software value
-    // Change this when we will sort by software value
-    const total = data.reduce((sum, group) => sum + group.totalContributors, 0);
-
-    const limit = total * percentage;
+    const filteredData = this.filterDataByLimit(data);
 
     return (
-      data
-          .filter((group) => group.totalContributors >= limit)
-          .map((group) => {
+      filteredData.map((group) => {
         const rangeIndex = this.getRangeValue(minMax, group.totalContributors);
 
         return {
@@ -212,7 +220,7 @@ class OssIndexApiService {
     }));
 
     // Assign range index to each item
-    return ranges.findIndex((range) => value >= range.min && value <= range.max) + 1;
+    return ranges.findIndex((range) => value >= range.min && value <= range.max);
   }
 }
 

@@ -1,6 +1,6 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import type { TreeMapData } from '~/components/uikit/chart/configs/tree-map.chart';
+import type { TreeMapData } from '~/components/uikit/chart/types/ChartTypes';
 
 export const mockTreeMap: TreeMapData[] = [
   {
