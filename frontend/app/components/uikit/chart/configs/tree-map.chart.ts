@@ -8,56 +8,104 @@ import type {
   TooltipFormatterCallback as TFCallback,
   TopLevelFormatterParams as TLPParams
 } from 'echarts/types/dist/shared';
+import type { TreeMapData } from '../types/ChartTypes';
 import { lfxColors } from '~/config/styles/colors';
 import { formatNumber } from '~/components/shared/utils/formatter';
+import type { TreeLabelFormatterParams } from '~/components/uikit/chart/types/EChartTypes';
 
 const visualMin = 1;
 const visualMax = 5;
+const LABEL_OFFSET = [12, 12];
+const LABEL_PADDING = [0, 12, 10, 0];
+const LABEL_PADDING_SMALL = [0, 20, 10, 0];
 
-export interface TreeLabelFormatterParams {
-  seriesName: string;
-  name: string;
-  value: number[];
-  borderColor: string;
-  color: string;
-  componentIndex: number;
-  componentSubType: string;
-  componentType: string;
-  data: {
-    value: number[];
-    name: string;
-    id: string;
-  };
-  dataIndex: number;
-  dimensionNames: [];
-  encode: { value: number[] };
-  seriesId: string;
-  seriesIndex: number;
-  seriesType: string;
-  status: string;
-}
+export const LABEL_STYLE_DEFAULT = {
+  a: {
+    fontSize: '14px',
+    fontWeight: 600,
+    fontFamily: 'Inter',
+    color: lfxColors.neutral[900],
+    lineHeight: 24
+  },
+  b: {
+    fontSize: '24px',
+    fontWeight: 600,
+    fontFamily: 'Inter',
+    color: lfxColors.neutral[900],
+    lineHeight: 40
+  },
+  c: {
+    fontSize: '12px',
+    fontWeight: 400,
+    fontFamily: 'Inter',
+    color: lfxColors.neutral[900],
+    opacity: 0.5
+  }
+};
+export const LABEL_STYLE_MEDIUM = {
+  a: {
+    ...LABEL_STYLE_DEFAULT.a,
+    fontSize: '12px',
+    lineHeight: 18
+  },
+  b: {
+    ...LABEL_STYLE_DEFAULT.b,
+    fontSize: '20px',
+    lineHeight: 36
+  },
+  c: {
+    ...LABEL_STYLE_DEFAULT.c
+  }
+};
+export const LABEL_STYLE_SMALL = {
+  a: {
+    ...LABEL_STYLE_DEFAULT.a,
+    fontSize: '12px',
+    lineHeight: 18
+  },
+  b: {
+    ...LABEL_STYLE_DEFAULT.b,
+    fontSize: '16px',
+    lineHeight: 28
+  },
+  c: {
+    ...LABEL_STYLE_DEFAULT.c
+  }
+};
 
-export interface TreeMapItem {
-  id: string;
-  name: string;
-  count: number;
-  softwareValue?: string;
-  logoUrl?: string;
-  icon?: string;
-}
-
-export interface TreeMapData {
-  id: string;
-  name: string;
-  slug: string;
-  type: string;
-  value: [number, number];
-  softwareValue?: string;
-  topProjects: TreeMapItem[];
-  topCollections: TreeMapItem[];
-  link?: string;
-  target?: string;
-}
+const dataStyles = [
+  {
+    color: lfxColors.neutral[50],
+    hover: '#ECEDEF',
+    additionalStyles: {
+      borderColor: lfxColors.neutral[300],
+      borderWidth: 1
+    },
+    labelStyles: {
+      padding: LABEL_PADDING_SMALL,
+      rich: LABEL_STYLE_SMALL
+    }
+  },
+  {
+    color: lfxColors.brand[50],
+    hover: '#DFE9F2',
+    labelStyles: {
+      rich: LABEL_STYLE_MEDIUM
+    }
+  },
+  {
+    color: lfxColors.brand[100],
+    hover: '#CBDFF2'
+  },
+  {
+    color: lfxColors.brand[200],
+    hover: '#A4CBF2'
+  },
+  {
+    color: lfxColors.brand[300],
+    hover: '#7CB7F2'
+  }
+];
 
 const labelFormatter = (params: TreeLabelFormatterParams) => {
   const { name, value, seriesName } = params;
@@ -65,6 +113,16 @@ const labelFormatter = (params: TreeLabelFormatterParams) => {
   // const seriesNamePart = seriesNameParts[seriesNameParts.length - 1];
   return `{a|${name}}\n{b|${formatNumber(Number(value[0]))}}\n{c|${seriesName}}`;
 };
+
+const LABEL_DEFAULT = {
+  show: true,
+  formatter: labelFormatter,
+  offset: LABEL_OFFSET,
+  padding: LABEL_PADDING,
+  rich: LABEL_STYLE_DEFAULT,
+  color: lfxColors.neutral[900]
+};
+
 const defaultTreeMapOption: ECOption = {
   tooltip: {
     borderColor: lfxColors.neutral[100],
@@ -82,43 +140,13 @@ const defaultTreeMapOption: ECOption = {
       breadcrumb: {
         show: false
       },
-      label: {
-        show: true,
-        formatter: labelFormatter,
-        rich: {
-          a: {
-            fontSize: '14px',
-            fontWeight: 600,
-            fontFamily: 'Inter',
-            color: lfxColors.neutral[900],
-            lineHeight: 24
-          },
-          b: {
-            fontSize: '24px',
-            fontWeight: 600,
-            fontFamily: 'Inter',
-            color: lfxColors.neutral[900],
-            lineHeight: 36
-          },
-          c: {
-            fontSize: '12px',
-            fontWeight: 400,
-            fontFamily: 'Inter',
-            color: lfxColors.neutral[900],
-            position: ['12', '12']
-          }
-        },
-        color: lfxColors.neutral[900]
-      },
-      itemStyle: {
-        gapWidth: 0,
-        borderRadius: 4,
-        borderWidth: 4
-      },
-      emphasis: {
-        disabled: true
-      },
+      label: LABEL_DEFAULT,
       roam: false, // prevents scrolling and zooming
+      // roam: 'scale',
+      //   scaleLimit: {
+      //     min: 1,
+      //     max: 10
+      // },
       nodeClick: false, // 'link', // prevent focus on click
       visualMin, // minimum value for color mapping
       visualMax, // maximum value for color mapping
@@ -128,24 +156,37 @@ const defaultTreeMapOption: ECOption = {
       levels: [
         {
           colorMappingBy: 'value',
-          color: [
-            lfxColors.neutral[50],
-            lfxColors.brand[50],
-            lfxColors.brand[100],
-            lfxColors.brand[200],
-            lfxColors.brand[300]
-          ],
           itemStyle: {
-            borderColor: '#fff',
+            gapWidth: 4
+          }
+        },
+        {
+          itemStyle: {
             borderRadius: 4,
-            gapWidth: 1,
-            borderWidth: 4
+            gapWidth: 4
           }
         }
       ]
     }
   ] as ECOption['series']
 };
+
+const mapDataStyles = (data: TreeMapData[]) => data.map((item) => {
+    const style = dataStyles[item.value[1]];
+    return {
+      ...item,
+      itemStyle: {
+        color: style?.color,
+        ...style?.additionalStyles
+      },
+      emphasis: {
+        itemStyle: {
+          color: style?.hover
+        }
+      },
+      label: style?.labelStyles
+    };
+  });
 
 /**
  * Get tree map config. This function takes in the data and series and returns the chart config.
@@ -165,7 +206,7 @@ export const getTreeMapConfig = (
     cfgTooltip.formatter = tooltipFormatter as unknown as TFCallback<TLPParams>;
   }
   if (Array.isArray(config.series) && config.series.length > 0 && config.series[0]) {
-    config.series[0].data = data;
+    config.series[0].data = mapDataStyles(data);
   }
   return config;
 };

@@ -32,9 +32,7 @@ import LfxOSIHeader from '../components/osi-header.vue';
 import { OSS_INDEX_API_SERVICE } from '../services/osi.api.service';
 import LfxOSIChart from '../components/osi-chart.vue';
 import type { BreadcrumbData } from '../services/osi.api.service';
-import type {
-  TreeMapData
-} from '~/components/uikit/chart/configs/tree-map.chart';
+import type { TreeMapData } from '~/components/uikit/chart/types/ChartTypes';
 import LfxProjectLoadState from '~~/app/components/modules/project/components/shared/load-state.vue';
 
 const props = defineProps<{

@@ -72,10 +72,10 @@ SPDX-License-Identifier: MIT
             </p>
           </div>
         </div>
-        <div class="basis-1/3 flex items-center gap-4 justify-end">
+        <div class="basis-1/3 flex items-center gap-5 justify-end">
           <div
             v-if="isRoot"
-            class="border-r border-neutral-200 mr-4"
+            class="border-r border-neutral-200 pr-5"
           >
             <lfx-dropdown-select
               v-model="type"
@@ -92,7 +92,7 @@ SPDX-License-Identifier: MIT
                   <span class="text-neutral-900 font-medium text-sm text-nowrap">
                     Grouped by:
                   </span>
-                  <span class="hidden sm:inline font-normal text-sm text-nowrap">
+                  <span class="inline font-normal text-sm text-nowrap">
                     {{selectedOption.label}}
                   </span>
                 </lfx-dropdown-selector>
@@ -100,7 +100,7 @@ SPDX-License-Identifier: MIT
 
               <lfx-dropdown-item
                 value="horizontal"
-                label="Stacks"
+                label="Stack"
               />
               <lfx-dropdown-item
                 value="vertical"

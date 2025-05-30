@@ -56,3 +56,25 @@ export type SeriesTypes =
   | PieSeriesOption
   | MapSeriesOption
   | RadarSeriesOption;
+
+export interface TreeMapItem {
+  id: string;
+  name: string;
+  count: number;
+  softwareValue?: string;
+  logoUrl?: string;
+  icon?: string;
+}
+
+export interface TreeMapData {
+  id: string;
+  name: string;
+  slug: string;
+  type: string;
+  value: [number, number];
+  softwareValue?: string;
+  topProjects: TreeMapItem[];
+  topCollections: TreeMapItem[];
+  link?: string;
+  target?: string;
+}

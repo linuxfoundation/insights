@@ -4,7 +4,7 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <div
-    class="w-full h-[700px]"
+    class="aspect-[3/2] w-full shadow-sm rounded-lg overflow-hidden p-2 bg-white"
     @mousemove="handleMouseMove"
     @mouseleave="handleMouseLeave"
   >
@@ -31,9 +31,9 @@ import LfxOSITooltip from "./osi-tooltip.vue";
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import {
   getTreeMapConfig,
-  type TreeLabelFormatterParams,
-  type TreeMapData
 } from '~/components/uikit/chart/configs/tree-map.chart';
+import type { TreeLabelFormatterParams } from '~/components/uikit/chart/types/EChartTypes';
+import type { TreeMapData } from '~/components/uikit/chart/types/ChartTypes';
 
 const router = useRouter();
 

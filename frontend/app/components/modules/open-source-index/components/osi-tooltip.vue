@@ -84,7 +84,7 @@ const groupName = computed(() => {
   }
 
   if (props.group?.name === 'horizontal') {
-    return 'Stacks';
+    return 'Stack';
   }
   return 'Industry';
 });
