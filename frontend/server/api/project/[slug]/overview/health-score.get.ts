@@ -57,10 +57,10 @@ export default defineEventHandler(async (event) => {
       dataSource.fetchContributorDependency(filter),
       dataSource.fetchOrganizationDependency(filter),
       dataSource.fetchRetention({
-        ...filterPreviousQuarter,
+        ...filter,
         demographicType: DemographicType.CONTRIBUTORS,
         onlyContributions: false,
-        granularity: FilterGranularity.WEEKLY
+        granularity: FilterGranularity.QUARTERLY
       }),
       dataSource.fetchStarsActivities({
         ...filter,
