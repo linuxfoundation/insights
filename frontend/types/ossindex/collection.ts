@@ -7,6 +7,8 @@ export interface OSSIndexCollectionTinybird {
     name: string;
     slug: string;
     totalContributors: number;
+    softwareValue: number;
+    avgScore: number;
     topProjects: (string | number)[][];
 }
 
@@ -15,5 +17,7 @@ export interface OSSIndexCollection {
     name: string;
     slug: string;
     totalContributors: number;
+    softwareValue: number;
+    avgScore: number;
     topProjects: OSSIndexTopProject[];
 }

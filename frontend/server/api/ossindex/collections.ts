@@ -17,6 +17,7 @@ export default defineEventHandler(
   async (event): Promise<OSSIndexCategoryDetails | Error> => {
     const query = getQuery(event);
     const categorySlug: string = query?.categorySlug as string;
+    const sort: string = query?.sort as string;
 
     try {
       const resDetails = await fetchFromTinybird<Category[]>(
@@ -26,28 +27,31 @@ export default defineEventHandler(
         }
       );
 
-      const res = await fetchFromTinybird<OSSIndexCollectionTinybird[]>(
-        '/v0/pipes/collections_oss_index.json',
-        {
-          categorySlug
-        }
-      );
-
       const details: Category | undefined = resDetails.data.at(0);
 
       if (!details) {
         throw createError({ statusCode: 404, statusMessage: 'Category not found' });
       }
 
+      const res = await fetchFromTinybird<OSSIndexCollectionTinybird[]>(
+        '/v0/pipes/collections_oss_index.json',
+        {
+          categorySlug,
+          orderBy: sort,
+        }
+      );
+
       const collections = res.data.map((item) => ({
         ...item,
         topProjects: item.topProjects.map((collection) => {
-          const [id, count, name, logo] = collection;
+          const [id, count, name, logo, softwareValue, avgScore] = collection;
           return {
             id: id as string,
             count: count as number,
             name: name as string,
-            logo: logo as string
+            logo: logo as string,
+            softwareValue: softwareValue as number,
+            avgScore: avgScore as number
           };
         })
       }));

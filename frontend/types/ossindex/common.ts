@@ -4,6 +4,8 @@ export interface OSSIndexTopCollection {
     id: string;
     count: number;
     name: string;
+    softwareValue: number;
+    avgScore: number;
 }
 
 export interface OSSIndexTopProject {
@@ -11,4 +13,6 @@ export interface OSSIndexTopProject {
     count: number;
     name: string;
     logo: string;
+    softwareValue: number;
+    avgScore: number;
 }

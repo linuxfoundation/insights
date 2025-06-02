@@ -61,7 +61,8 @@ export interface TreeMapItem {
   id: string;
   name: string;
   count: number;
-  softwareValue?: string;
+  softwareValue: number;
+  avgScore: number;
   logoUrl?: string;
   icon?: string;
 }
@@ -72,7 +73,8 @@ export interface TreeMapData {
   slug: string;
   type: string;
   value: [number, number];
-  softwareValue?: string;
+  softwareValue: number;
+  avgScore: number;
   topProjects: TreeMapItem[];
   topCollections: TreeMapItem[];
   link?: string;

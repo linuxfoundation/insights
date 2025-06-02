@@ -180,13 +180,11 @@ class OssIndexApiService {
           name: group.name,
           value: [group.totalContributors, rangeIndex],
           slug: group.slug,
-          softwareValue: '',
+          softwareValue: group.softwareValue,
+          avgScore: group.avgScore,
           type: group.type,
           topProjects: group.topProjects.map((project) => ({
-            id: project.id,
-            name: project.name,
-            count: project.count,
-            softwareValue: '',
+            ...project,
             logoUrl: project.logo
           })),
           topCollections: group.topCollections,
