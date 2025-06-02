@@ -16,6 +16,7 @@ import type {OSSIndexCategoryGroupDetails} from "~~/types/ossindex/category-grou
 export default defineEventHandler(async (event): Promise<OSSIndexCategoryGroupDetails | Error> => {
     const query = getQuery(event);
     const categoryGroupSlug: string = (query?.categoryGroupSlug as string);
+    const sort: string = (query?.sort as string);
 
     try {
         const resDetails = await fetchFromTinybird<CategoryGroup[]>(
@@ -25,36 +26,41 @@ export default defineEventHandler(async (event): Promise<OSSIndexCategoryGroupDe
             }
         );
 
-        const res = await fetchFromTinybird<OSSIndexCategoryTinybird[]>(
-            '/v0/pipes/categories_oss_index.json',
-            {
-                categoryGroupSlug,
-            }
-        );
-
         const details: CategoryGroup | undefined = resDetails.data.at(0);
 
         if(!details){
             throw createError({statusCode: 404, statusMessage: 'Category group not found'});
         }
 
+        const res = await fetchFromTinybird<OSSIndexCategoryTinybird[]>(
+            '/v0/pipes/categories_oss_index.json',
+            {
+                categoryGroupSlug,
+                orderBy: sort,
+            }
+        );
+
         const categories = res.data.map((item) => ({
             ...item,
             topCollections: item.topCollections.map((collection) => {
-                const [id, count, name] = collection;
+                const [id, count, name, softwareValue, avgScore] = collection;
                 return {
                     id: id as string,
                     count: count as number,
                     name: name as string,
+                    softwareValue: softwareValue as number,
+                    avgScore: avgScore as number,
                 };
             }),
             topProjects: item.topProjects.map((collection) => {
-                const [id, count, name, logo] = collection;
+                const [id, count, name, logo, softwareValue, avgScore] = collection;
                 return {
                     id: id as string,
                     count: count as number,
                     name: name as string,
                     logo: logo as string,
+                    softwareValue: softwareValue as number,
+                    avgScore: avgScore as number,
                 };
             })
         }))
