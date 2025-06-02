@@ -119,31 +119,39 @@ SPDX-License-Identifier: MIT
                 {{ pluralize('project', props.collection.projectCount) }}
               </p>
             </article>
-            <article
+            <lfx-tooltip
               v-if="props.collection.softwareValue"
-              class="flex items-center gap-2 h-min"
+              :content="
+                `Aggregated software value of $${
+                  formatNumberShort(props.collection.softwareValue)
+                } according to COCOMO`"
             >
-              <div class="h-6 w-6 md:h-8 md:w-8 rounded-full flex items-center justify-center bg-positive-50">
-                <lfx-icon
-                  name="dollar-circle"
-                  class="text-positive-600 md:!text-base !text-sm"
-                />
-              </div>
-              <lfx-skeleton
-                v-if="loading"
-                height="1.25rem"
-                width="5rem"
-                class="rounded-sm"
-              />
-              <p
-                v-else
-                class="leading-6 transition-all whitespace-nowrap"
-                :class="scrollTop > 50 ? 'text-xs md:text-sm' : 'text-xs md:text-base'"
+              <article
+
+                class="flex items-center gap-2 h-min"
               >
-                <span class="text-neutral-500">Software value:</span>
-                ${{ formatNumberShort(props.collection.softwareValue) }}
-              </p>
-            </article>
+                <div class="h-6 w-6 md:h-8 md:w-8 rounded-full flex items-center justify-center bg-positive-50">
+                  <lfx-icon
+                    name="dollar-circle"
+                    class="text-positive-600 md:!text-base !text-sm"
+                  />
+                </div>
+                <lfx-skeleton
+                  v-if="loading"
+                  height="1.25rem"
+                  width="5rem"
+                  class="rounded-sm"
+                />
+
+                <p
+                  v-else
+                  class="leading-6 transition-all whitespace-nowrap"
+                  :class="scrollTop > 50 ? 'text-xs md:text-sm' : 'text-xs md:text-base'"
+                >
+                  ${{ formatNumberShort(props.collection.softwareValue) }}
+                </p>
+              </article>
+            </lfx-tooltip>
           </div>
         </div>
       </div>
@@ -162,6 +170,7 @@ import useScroll from "~/components/shared/utils/scroll";
 import LfxSkeleton from "~/components/uikit/skeleton/skeleton.vue";
 import {LfxRoutes} from "~/components/shared/types/routes";
 import LfxButton from "~/components/uikit/button/button.vue";
+import LfxTooltip from "~/components/uikit/tooltip/tooltip.vue";
 
 const props = defineProps<{
   collection?: Collection,
