@@ -31,7 +31,7 @@ SPDX-License-Identifier: MIT
       class="value-display"
     >
       <i class="value-icon fa-light fa-dollar-circle" />
-      {{ item.softwareValue }}
+      {{ item.softwareValue }}+
     </div>
   </div>
 

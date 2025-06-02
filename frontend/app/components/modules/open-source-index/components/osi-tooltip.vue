@@ -16,11 +16,10 @@ SPDX-License-Identifier: MIT
           {{ formatNumber(props.group?.count) }}
         </div>
         <div
-          v-if="props.group?.softwareValue"
           class="value-display"
         >
           <i class="value-icon fa-light fa-people-group" />
-          {{ props.group?.softwareValue }}
+          {{ props.group?.softwareValue ? `${props.group?.softwareValue}+` : 'N/A' }}
         </div>
       </div>
       <hr class="mt-4">
@@ -62,17 +61,18 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { computed } from 'vue';
 import type { OSIGroup } from '../services/osi.template.service';
+import type { SortType } from '../services/osi.api.service';
 import LfxOSITooltipItem from './osi-tooltip-item.vue';
 import { formatNumber } from '~/components/shared/utils/formatter';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 
 const props = defineProps<{
   group: OSIGroup | undefined;
-  sort: string;
+  sort: SortType;
 }>();
 
 const sortLabel = computed(() => {
-  if (props.sort === 'contributorCount') {
+  if (props.sort === 'totalContributors') {
     return 'most contributors';
   }
   return 'software value';
