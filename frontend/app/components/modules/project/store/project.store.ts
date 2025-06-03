@@ -6,10 +6,11 @@ import { useRoute } from 'nuxt/app';
 import { DateTime } from 'luxon';
 import {
   dateOptKeys,
-  lfxProjectDateOptions
+  lfxProjectDateOptions,
 } from '~/components/modules/project/config/date-options';
 import type { Project, ProjectRepository } from '~~/types/project';
 import { Granularity } from '~~/types/shared/granularity';
+import { useQueryParam } from '~/components/shared/utils/query-param';
 
 const calculateGranularity = (start: string | null, end: string | null): string[] => {
   // Return weekly if either date is null
@@ -40,21 +41,18 @@ export const defaultTimeRangeKey = dateOptKeys.past365days;
 export const defaultDateOption = lfxProjectDateOptions.find(
   (option) => option.key === defaultTimeRangeKey
 );
+
 export const useProjectStore = defineStore('project', () => {
   const route = useRoute();
 
-  const selectedTimeRangeKey = ref<string>(defaultTimeRangeKey);
-  const startDate = ref<string | null>(
-    defaultDateOption?.startDate || lfxProjectDateOptions[1]?.startDate || null
-  );
-  const endDate = ref<string | null>(
-    defaultDateOption?.endDate || lfxProjectDateOptions[1]?.endDate || null
-  );
+  const { queryParams } = useQueryParam();
+  const { timeRange, start, end } = queryParams.value;
+  const selectedTimeRangeKey = ref<string>(timeRange!);
+  const startDate = ref<string | null>(start!);
+  const endDate = ref<string | null>(end!);
   const isProjectLoading = ref(false);
   const project = ref<Project | null>(null);
-  const projectRepos = computed<ProjectRepository[]>(
-    () => project.value?.repositories || []
-  );
+  const projectRepos = computed<ProjectRepository[]>(() => project.value?.repositories || []);
 
   const selectedRepository = computed<string>(
     () => projectRepos.value.find(
@@ -77,6 +75,6 @@ export const useProjectStore = defineStore('project', () => {
     projectRepos,
     selectedRepository,
     repository,
-    customRangeGranularity
+    customRangeGranularity,
   };
 });

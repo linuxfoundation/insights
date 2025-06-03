@@ -57,6 +57,7 @@ import useScroll from "~/components/shared/utils/scroll";
 import LfxWidget from "~/components/modules/widget/components/shared/widget.vue";
 import type { Benchmark } from '~~/types/shared/benchmark.types';
 import {useProjectStore} from "~/components/modules/project/store/project.store";
+import { useQueryParam } from "~/components/shared/utils/query-param";
 
 const props = defineProps<{
   name: WidgetArea
@@ -66,7 +67,8 @@ const route = useRoute();
 const config = computed<WidgetAreaConfig>(() => lfxWidgetArea[props.name]);
 const benchmarks = ref<Record<string, Benchmark | undefined>>({});
 
-const activeItem = ref(route.query?.widget || config.value.widgets?.[0] || '');
+const { queryParams } = useQueryParam();
+const activeItem = ref(queryParams.value.widget || config.value.widgets?.[0] || '');
 const tmpClickedItem = ref('');
 
 const { scrollToTarget, scrollToTop } = useScroll();
