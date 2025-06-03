@@ -41,7 +41,7 @@ SPDX-License-Identifier: MIT
 
 <script lang="ts" setup>
 import {
-computed, ref, watch, nextTick
+computed, ref, watch
 } from "vue";
 import {storeToRefs} from "pinia";
 import {useRoute} from "nuxt/app";
@@ -116,16 +116,14 @@ const onBenchmarkUpdate = (value: Benchmark | undefined) => {
   }
 }
 
-watch(
-  () => route.query.widget,
-   (newWidget) => {
-    nextTick(() => {
-      const widget = newWidget || config.value.widgets?.[0] || '';
+watch(() => project, (newProject) => {
+  if (newProject) {
+    setTimeout(() => {
+      const widget = route.query?.widget || config.value.widgets?.[0] || '';
       onSideNavUpdate(widget as string);
-    });
-  },
-  { immediate: true }
-);
+    }, 100);
+  }
+}, {deep: true, immediate: true});
 </script>
 
 <script lang="ts">
