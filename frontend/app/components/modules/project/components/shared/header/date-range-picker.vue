@@ -121,7 +121,7 @@ import {
   lfxProjectDateOptionsPrevious,
   dateOptKeys
 } from "~/components/modules/project/config/date-options";
-import { useProjectStore } from "~/components/modules/project/store/project.store";
+import { useProjectStore, updateUrlParams } from "~/components/modules/project/store/project.store";
 import LfxProjectCustomDateRangePicker
   from "~/components/modules/project/components/shared/header/custom-date-range-picker.vue";
 import LfxDropdownSelect from "~/components/uikit/dropdown/dropdown-select.vue";
@@ -141,6 +141,8 @@ const changeSelected = (option: DateOptionConfig) => {
   startDate.value = option.startDate;
   endDate.value = option.endDate;
   isOpen.value = false;
+
+  updateUrlParams(option.key, startDate.value, endDate.value);
 }
 
 watch(() => selectedDateRange.value, (value) => {
