@@ -8,17 +8,22 @@ SPDX-License-Identifier: MIT
   >
     <lfx-dropdown-search
       v-model="search"
-      :lazy="true"
     />
     <lfx-dropdown-separator />
   </div>
+  <div
+    v-if="noResults"
+    class="py-8 text-center italic text-body-2 text-neutral-400"
+  >
+    No results found
+  </div>
   <template
-    v-for="group of (data?.data || [])"
+    v-for="group of categoryGroups"
     :key="group.id"
   >
     <lfx-dropdown-item
       v-if="group.categories.length"
-      :value="'group-' + group.categories.map((c) => c.id).join(',')"
+      :value="group.value"
       :label="group.name"
     >
       {{group.name}}
@@ -35,6 +40,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import {useQuery} from "@tanstack/vue-query";
+import {computed} from "vue";
 import LfxDropdownSearch from "~/components/uikit/dropdown/dropdown-search.vue";
 import LfxDropdownItem from "~/components/uikit/dropdown/dropdown-item.vue";
 import LfxDropdownSeparator from "~/components/uikit/dropdown/dropdown-separator.vue";
@@ -52,7 +58,6 @@ const search = ref('');
 const queryKey = computed(() => [
   TanstackKey.CATEGORY_GROUPS,
   props.type,
-  search.value,
 ]);
 
 const {
@@ -61,11 +66,18 @@ const {
 } = useQuery<Pagination<CategoryGroup>>({
   queryKey,
   queryFn: COLLECTIONS_API_SERVICE.fetchCategoryGroups(() => ({
-    search: search.value,
     type: props.type,
     limit: 1000
   })),
 });
+
+const categoryGroups = computed(() => (data.value?.data || []).map((cg) => ({
+      ...cg,
+      value: `group-${cg.categories.map((c) => c.id).join(',')}`,
+      categories: cg.categories.filter((c) => c.name.toLowerCase().includes(search.value.toLowerCase()))
+    })))
+
+const noResults = computed(() => search.value && categoryGroups.value.every((cg) => cg.categories.length === 0));
 
 onServerPrefetch(async () => {
   await suspense();
