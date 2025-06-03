@@ -141,7 +141,7 @@ const changeSelected = (option: DateOptionConfig) => {
   endDate.value = option.endDate;
   isOpen.value = false;
 
-  updateUrlParams(option.key, startDate.value, endDate.value);
+  updateUrlParams({timeRange: option.key, start: startDate.value || undefined, end: endDate.value || undefined});
 }
 
 watch(() => selectedDateRange.value, (value) => {

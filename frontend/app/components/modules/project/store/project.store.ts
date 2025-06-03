@@ -11,6 +11,8 @@ import {
 import type { Project, ProjectRepository } from '~~/types/project';
 import { Granularity } from '~~/types/shared/granularity';
 
+export type URLParams = Record<string, string | null | undefined>;
+
 const calculateGranularity = (start: string | null, end: string | null): string[] => {
   // Return weekly if either date is null
   if (!start || !end) {
@@ -41,15 +43,13 @@ export const defaultDateOption = lfxProjectDateOptions.find(
   (option) => option.key === defaultTimeRangeKey
 );
 
-export const updateUrlParams = (timeRange: string, start: string | null, end: string | null) => {
+export const updateUrlParams = (urlParams: URLParams) => {
   const route = useRoute();
   const router = useRouter();
 
-  const query: Record<string, string | null | undefined> = {
-    ...route.query,
-    timeRange,
-    start: start || undefined,
-    end: end || undefined,
+  const query: URLParams = {
+    ...(route.query as URLParams),
+    ...urlParams,
   };
 
   router.replace({ query });
