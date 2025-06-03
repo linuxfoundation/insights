@@ -92,32 +92,6 @@ const {
 } = storeToRefs(useProjectStore())
 
 const route = useRoute();
-
-// This is a special case for the retention chart
-// We might revisit this in the future
-// const calculateGranularity = (start: string | null, end: string | null): string[] => {
-//   // Return weekly if either date is null
-//   if (!start || !end) {
-//     return [Granularity.YEARLY];
-//   }
-
-//   const startDate = DateTime.fromISO(start);
-//   const endDate = DateTime.fromISO(end);
-//   const diffInDays = Math.ceil(endDate.diff(startDate, 'days').days);
-
-//   switch (true) {
-//     case diffInDays <= 13:
-//       return [Granularity.DAILY];
-//     case diffInDays <= 90:
-//       return [Granularity.WEEKLY];
-//     case diffInDays <= 365:
-//       return [Granularity.MONTHLY];
-//     case diffInDays <= 730:
-//       return [Granularity.YEARLY];
-//     default:
-//       return [Granularity.YEARLY];
-//   }
-// };
 /**
  * We're setting a threshold of 180 days for the retention chart
  * Anything below 180 days and we will display the empty state
