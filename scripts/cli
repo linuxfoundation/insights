@@ -1,0 +1,698 @@
+#!/usr/bin/env bash
+
+set -eo pipefail
+
+PROJECT_NAME="insights"
+DOCKER_NETWORK_SUBNET="${INSIGHTS_NETWORK_SUBNET:-10.92.0.0/24}"
+DOCKER_NETWORK_GATEWAY="${INSIGHTS_NETWORK_GATEWAY:-10.92.0.1}"
+DOCKET_TEST_NETWORK_SUBNET="${INSIGHTS_TEST_NETWORK_SUBNET:-10.93.0.0/24}"
+DOCKER_TEST_NETWORK_GATEWAY="${INSIGHTS_TEST_NETWORK_GATEWAY:-10.93.0.1}"
+
+CLI_HOME="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
+source $CLI_HOME/utils
+
+CONTAINERS=$(ls -p $CLI_HOME/services | grep -v / | sed 's/\.[^.]*$//')
+BUILDERS=$(ls -p $CLI_HOME/builders | grep -v / | sed 's/\.[^.]*$//')
+
+DOCKER_COMPOSE_PROFILE=''
+DOCKER_COMPOSE_SCAFFOLD_FILES="-f $CLI_HOME/scaffold.yaml"
+
+
+_DC="docker compose"
+
+arch=$(uname -m)
+
+if [ "$arch" == 'arm64' ]; then
+    DOCKER_PLATFORM_FLAGS="--platform=linux/arm64/v8"
+else
+    DOCKER_PLATFORM_FLAGS="--platform=linux/amd64"
+fi
+
+function prepare_dev_env() {
+    if [[ ! -f "$CLI_HOME/../.env.override.local" ]]; then
+        echo "# Here you can put environment variables that you would like to override when using local environment" >"$CLI_HOME/../.env.override.local"
+    fi
+    if [[ ! -f "$CLI_HOME/../.env.override.composed" ]]; then
+        echo "# Here you can put environment variables that you would like to override when using local environment" >"$CLI_HOME/../.env.override.composed"
+    fi
+
+    if [[ ! -f "$CLI_HOME/../frontend/.env.override.local" ]]; then
+        echo "# Here you can put environment variables that you would like to override when using local environment" >"$CLI_HOME/../frontend/.env.override.local"
+    fi
+
+    if [[ ! -f "$CLI_HOME/../frontend/.env.override.composed" ]]; then
+        echo "# Here you can put environment variables that you would like to override when using local environment" >"$CLI_HOME/../frontend/.env.override.composed"
+    fi
+
+    set +eo pipefail
+
+    $_DC >>/dev/null 2>&1
+
+    if [[ ! $? -eq 0 ]]; then
+        _DC="docker-compose"
+        $_DC >>/dev/null 2>&1
+
+        if [[ ! $? -eq 0 ]]; then
+            error "Docker compose not detected!"
+            exit 1
+        fi
+    fi
+
+    set -eo pipefail
+}
+
+prepare_dev_env
+
+function prepare_service_string() {
+    if [ $1 == "HELP" ]; then
+        delimiter1=" | "
+        delimiter2=" => | "
+    fi
+    if [ $1 == "LIST" ]; then
+        delimiter1="\|"
+        delimiter2="\|"
+    fi
+
+    for cmd in $SERVICE_CMD; do string+="$cmd$delimiter1"; done
+    for container in $2; do string+="$container$delimiter2"; done
+
+    echo ${string%??}
+}
+
+HELP_STRING=$(prepare_service_string HELP "$CONTAINERS")
+LIST_STRING=$(prepare_service_string LIST "$CONTAINERS")
+HELP_BUILD_STRING=$(prepare_service_string HELP "$BUILDERS")
+
+function multiselect {
+    # little helpers for terminal print control and key input
+    ESC=$(printf "\033")
+    cursor_blink_on() { printf "$ESC[?25h"; }
+    cursor_blink_off() { printf "$ESC[?25l"; }
+    cursor_to() { printf "$ESC[$1;${2:-1}H"; }
+    print_inactive() { printf "$2   $1 "; }
+    print_active() { printf "$2  $ESC[7m $1 $ESC[27m"; }
+    get_cursor_row() {
+        IFS=';' read -sdR -p $'\E[6n' ROW COL
+        echo ${ROW#*[}
+    }
+
+    local return_value=$1
+    local options=("${!2}")
+    local defaults=()
+
+    local selected=()
+    for ((i = 0; i < ${#options[@]}; i++)); do
+        if [[ ${defaults[i]} == "true" ]]; then
+            selected+=("true")
+        else
+            selected+=("false")
+        fi
+        printf "\n"
+    done
+
+    local lastrow=$(get_cursor_row)
+    local startrow=$(($lastrow - ${#options[@]}))
+
+    trap "cursor_blink_on; stty echo; printf '\n'; exit" 2
+    cursor_blink_off
+
+    key_input() {
+        local key
+        IFS= read -rsn1 key
+        if [[ -z $key ]]; then
+            echo enter
+            return
+        fi # Handle Enter key (when key is a newline)
+
+        case "$key" in
+        $'\x20') echo space ;; # Space key
+        k) echo up ;;          # 'k' for up
+        j) echo down ;;        # 'j' for down
+        $'\x1b')               # Handle arrow keys
+            read -rsn2 key
+            if [[ $key == "[A" ]]; then echo up; fi   # Up arrow
+            if [[ $key == "[B" ]]; then echo down; fi # Down arrow
+            ;;
+        *) echo "unknown" ;; # Handle other keys
+        esac
+    }
+
+    toggle_option() {
+        local option=$1
+        if [[ ${selected[option]} == true ]]; then
+            selected[option]=false
+        else
+            selected[option]=true
+        fi
+    }
+
+    print_options() {
+        local idx=0
+        for option in "${options[@]}"; do
+            local prefix="[ ]"
+            if [[ ${selected[idx]} == true ]]; then
+                prefix="[\e[38;5;46m✔\e[0m]"
+            fi
+
+            cursor_to $(($startrow + $idx))
+            if [ $idx -eq $1 ]; then
+                print_active "$option" "$prefix"
+            else
+                print_inactive "$option" "$prefix"
+            fi
+            ((idx++))
+        done
+    }
+
+    local active=0
+    while true; do
+        print_options $active
+
+        case $(key_input) in
+        space) toggle_option $active ;;
+        enter)
+            print_options -1
+            break
+            ;;
+        up)
+            ((active--))
+            if [ $active -lt 0 ]; then active=$((${#options[@]} - 1)); fi
+            ;;
+        down)
+            ((active++))
+            if [ $active -ge ${#options[@]} ]; then active=0; fi
+            ;;
+        esac
+    done
+
+    cursor_to $lastrow
+    printf "\n"
+    cursor_blink_on
+
+    # Construct the result array based on selections
+    local result=()
+    for i in "${!selected[@]}"; do
+        if [[ ${selected[i]} == true ]]; then
+            result+=(${options[$i]})
+        fi
+    done
+
+    # Return the result
+    eval $return_value='("${result[@]}")'
+}
+
+SELECTED_SERVICES=()
+
+function select_services() {
+    # Get all services
+    SERVICES=()
+    while IFS= read -r file; do
+        filename=$(basename "$file" .yaml)
+        SERVICES+=("$filename")
+    done < <(find "$CLI_HOME/services" -name '*.yaml')
+
+    # Show multiselect and store results in SELECTED_SERVICES
+    multiselect SELECTED_SERVICES SERVICES[@]
+
+    for service in "${SELECTED_SERVICES[@]}"; do
+        selected_services+="$service, "
+    done
+
+    selected_services=${selected_services%, }
+
+    echo "Selected services: $selected_services"
+}
+
+
+
+function reset_selected_services() {
+    for SERVICE in "${SELECTED_SERVICES[@]}"; do
+        echo "Restarting service $SERVICE."
+        kill_containers $SERVICE && start_service $SERVICE
+    done
+}
+
+function build() {
+    HELP="${RESET}\nUsage:\n ./cli build [ $HELP_BUILD_STRING ]\n"
+    [[ -z "$1" ]] && say "$HELP" && exit 1
+
+    if [[ $BUILDERS =~ (^|[[:space:]])"$1"($|[[:space:]]) ]]; then
+        build_and_publish "$@"
+    else
+        error "Invalid command '$1'" && say "$HELP"
+        exit 1
+    fi
+}
+
+function create_migration() {
+    MIG_NAME="$1"
+    MIG_VERSION=$(date +%s)
+    UP_MIG_FILE="${CLI_HOME}/../database/migrations/V${MIG_VERSION}__${MIG_NAME}.sql"
+    DOWN_MIG_FILE="${CLI_HOME}/../database/migrations/U${MIG_VERSION}__${MIG_NAME}.sql"
+    touch $UP_MIG_FILE
+    touch $DOWN_MIG_FILE
+    yell "Created ${MIG_FILE}"
+}
+
+
+function build_and_publish() {
+    VERSION="$2"
+
+    if [[ -z "${VERSION}" ]]; then
+        COMMIT_HASH=$(git rev-parse --short HEAD)
+        TS_VERSION=$(date +%s)
+        VERSION="$TS_VERSION.$COMMIT_HASH"
+    fi
+
+    source $CLI_HOME/builders/$1.env
+
+    if [[ ${BUILD} ]]; then
+        say "Building $REPO version $VERSION with dockerfile '$DOCKERFILE' and context '$CONTEXT' and pushing it to $REPO:$VERSION"
+        docker build --platform linux/amd64 --tag "$REPO:$VERSION" -f "$DOCKERFILE" "$CONTEXT"
+    fi
+
+    if [[ ${PUSH} ]]; then
+        say "Pushing image $REPO version $VERSION to $REPO:$VERSION"
+        docker push "$REPO:$VERSION"
+    fi
+}
+
+
+function scaffold() {
+    HELP="${RESET}\nUsage:\n ./cli scaffold [ up | down | destroy | reset ]\n"
+
+    [[ -z "$1" ]] && say "$HELP" && exit 1
+
+    while test $# -gt 0; do
+        case "$1" in
+        up)
+            up_scaffold
+            post_up_scaffold
+            exit
+            ;;
+        down)
+            down_scaffold
+            exit
+            ;;
+        destroy)
+            scaffold_destroy
+            exit
+            ;;
+        reset)
+            scaffold_reset
+            exit
+            ;;
+        create-migration)
+            create_migration $2
+            exit
+            ;;
+        migrate-up)
+            migrate_local
+            exit
+            ;;
+        *)
+            error "Invalid command '$1'" && say "$HELP"
+            exit 1
+            ;;
+        esac
+        shift
+    done
+}
+
+function service() {
+    HELP="${RESET}\nUsage:\n ./cli service [ $HELP_STRING ]\n"
+    [[ -z "$1" ]] && say "$HELP" && exit 1
+
+    while test $# -gt 0; do
+        case "$1" in
+        list)
+            docker container ls | grep $LIST_STRING
+            exit
+            ;;
+        up-all)
+            start_all_containers
+            exit
+            ;;
+        *)
+            if [[ $CONTAINERS =~ (^|[[:space:]])"$1"($|[[:space:]]) ]]; then
+                service_manipulator $1 $2 $3
+                exit
+            else
+                error "Invalid command '$1'" && say "$HELP"
+                exit 1
+            fi
+            ;;
+        esac
+        shift
+    done
+}
+
+function service_manipulator() {
+    HELP="${RESET}\nUsage:\n ./cli service $1 [ up | down | restart | status | logs | id ]\n"
+
+    [[ -z "$2" ]] && say "$HELP" && exit 1
+
+    while test $# -gt 0; do
+        case "$2" in
+        up)
+            start_service "$1"
+            exit
+            ;;
+        down)
+            kill_containers "$1"
+            exit
+            ;;
+        restart)
+            kill_containers "$1" && start_service "$1"
+            exit
+            ;;
+        status)
+            print_container_status "$1"
+            exit
+            ;;
+        logs)
+            get_logs "$1"
+            exit
+            ;;
+        id)
+            get_container_id "$1"
+            exit
+            ;;
+        *)
+            error "Invalid command '$2'" && say "$HELP"
+            exit 1
+            ;;
+        esac
+        shift
+    done
+}
+
+function start_service() {
+    export USER_ID=$(id -u)
+    export GROUP_ID=$(id -g)
+
+    if [[ ${DEV} ]]; then
+        $_DC --compatibility -p $PROJECT_NAME -f "$CLI_HOME/services/${1}.yaml" up --build -d ${1}-dev
+    else
+        $_DC --compatibility -p $PROJECT_NAME -f "$CLI_HOME/services/${1}.yaml" up --build -d ${1}
+    fi
+}
+
+function kill_containers() {
+    $_DC --compatibility -p $PROJECT_NAME -f "$CLI_HOME/services/${1}.yaml" rm -fs ${1} ${1}-dev
+}
+
+function get_logs() {
+    if [[ ${DEV} ]]; then
+        docker container logs -f $(get_container_id "$1-dev")
+    else
+        docker container logs -f $(get_container_id "$1")
+    fi
+}
+
+function print_container_status() {
+    CONTAINER_STATUS=$(check_container_status $1)
+
+    if [[ ${CONTAINER_STATUS} ]]; then
+        check_container_status "$1"
+    else
+        error "Down."
+        exit 1
+    fi
+}
+
+function get_container_id() {
+    docker container ls -a | grep "${PROJECT_NAME}_${1}_" | tr " " "\n" | head -n 1
+}
+
+function check_container_status() {
+    docker container ls -a | grep "${PROJECT_NAME}_${1}_"
+}
+
+# <network-name> <subnet> <gateway>
+function scaffold_set_up_network() {
+    NETWORK_NAME="$1"
+    NETWORK_SUBNET="$2"
+    NETWORK_GATEWAY="$3"
+
+    set +e pipefail
+    NETWORK_ID=$(docker network ls | grep -F -e "$NETWORK_NAME " | tr " " "\n" | head -n 1)
+    set -e pipefail
+
+    if [[ ${NETWORK_ID} ]]; then
+        say "The $NETWORK_NAME network is up and running."
+    else
+        docker network create -d bridge --subnet "$NETWORK_SUBNET" --gateway "$NETWORK_GATEWAY" "$NETWORK_NAME"
+    fi
+}
+
+function migrate_env() {
+    if [[ -z "$INSIGHTS_DB_WRITE_HOST" ]]; then
+        error "No INSIGHTS_DB_WRITE_HOST env variable set!"
+        exit 1
+    fi
+
+    say "Building flyway migration image..."
+    docker build $DOCKER_PLATFORM_FLAGS -t insights_flyway -f $CLI_HOME/../database/Dockerfile.flyway $CLI_HOME/../database --load
+    say "Applying PostgreSQL migrations to $INSIGHTS_DB_WRITE_HOST!"
+    docker run --rm \
+        -e PGHOST=$INSIGHTS_DB_WRITE_HOST \
+        -e PGPORT=$INSIGHTS_DB_PORT \
+        -e PGUSER=$INSIGHTS_DB_USERNAME \
+        -e PGPASSWORD=$INSIGHTS_DB_PASSWORD \
+        -e PGDATABASE=$INSIGHTS_DB_DATABASE \
+        insights_flyway
+}
+
+function migrate_postgres_local() {
+    say "Building insights flyway migration image..."
+    docker build $DOCKER_PLATFORM_FLAGS -t insights_flyway -f $CLI_HOME/../database/Dockerfile.flyway $CLI_HOME/../database --load
+    say "Applying PostgreSQL migrations!"
+    docker run --rm --network "${PROJECT_NAME}-bridge" \
+        -e PGHOST=db \
+        -e PGPORT=5432 \
+        -e PGUSER=postgres \
+        -e PGPASSWORD=example \
+        -e PGDATABASE=insights \
+        insights_flyway
+}
+
+
+
+function migrate_local() {
+    migrate_postgres_local
+}
+
+
+function install_libs() {
+    (cd $CLI_HOME/.. && pnpm i --frozen-lockfile)
+}
+
+
+function up_scaffold() {
+    scaffold_set_up_network "$PROJECT_NAME-bridge" $DOCKER_NETWORK_SUBNET $DOCKER_NETWORK_GATEWAY
+    $_DC --compatibility -p $PROJECT_NAME $DOCKER_COMPOSE_SCAFFOLD_FILES $DOCKER_COMPOSE_PROFILE up -d --build --no-recreate
+}
+
+function post_up_scaffold() {
+    migrate_local
+}
+
+function down_scaffold() {    
+    $_DC --compatibility -p $PROJECT_NAME $DOCKER_COMPOSE_SCAFFOLD_FILES $DOCKER_COMPOSE_PROFILE down
+}
+
+function scaffold_destroy() {
+    say "\nWill delete all local insights state data (docker volumes) if you have any. Are you sure?"
+    select reset_system_condition in "Yes" "No"; do
+        case $reset_system_condition in
+        'Yes')
+            scaffold_destroy_confirmed
+            break
+            ;;
+        'No')
+            yell "Canceled!"
+            break
+            ;;
+        esac
+    done
+}
+
+function scaffold_reset() {
+    scaffold_destroy
+    up_scaffold
+    post_up_scaffold
+}
+
+function kill_all_containers() {
+    for i in $CONTAINERS; do
+        say "Killing service $i."
+
+        if [[ $(check_container_status ${i}) ]]; then
+            docker rm -f $(get_container_id ${i})
+            yell "Service $i killed."
+        elif [[ $(check_container_status ${i}-dev) ]]; then
+            docker rm -f $(get_container_id ${i}-dev)
+            yell "Service $i-dev killed."
+        else
+            error "Service $i not running."
+        fi
+        nl
+    done
+}
+
+function service_start() {
+    for SERVICE in $CONTAINERS; do
+        if [[ ${#INGORED_SERVICES[@]} -ne 0 ]]; then
+            for IGNORED_SERVICE in "${INGORED_SERVICES[@]}"; do
+                if [[ "$SERVICE" == "${IGNORED_SERVICE}" ]]; then
+                    SKIP=1
+                    break
+                fi
+            done
+        fi
+
+        if [[ -z "$SKIP" ]]; then
+            say "Starting service $SERVICE."
+            start_service $SERVICE
+            nl
+        fi
+        unset SKIP
+    done
+}
+
+function scaffold_destroy_confirmed() {
+    kill_all_containers
+    $_DC --compatibility -p $PROJECT_NAME $DOCKER_COMPOSE_SCAFFOLD_FILES $DOCKER_COMPOSE_PROFILE down
+
+    # needed because if there are no volumes this might cause the script to exit
+    set +eo pipefail
+    VOLUMES=$(docker volume ls | tail -n +2 | tr -s " " | cut -d' ' -f2 | grep $PROJECT_NAME)
+    set -eo pipefail
+    if [[ ${VOLUMES} ]]; then
+        _IFS=$IFS
+        IFS=$' '
+        NAMES=$VOLUMES
+        IFS=$_IFS
+
+        for name in $NAMES; do
+            say "Destroying volume $name!"
+            docker volume rm -f $name
+        done
+    fi
+}
+
+function wait_for_db() {
+    say "Waiting for scaffold to start!"
+    sleep 3
+
+    while [[ ! $(docker container ls | grep $PROJECT_NAME | grep db | grep Up) ]]; do
+        sleep 1
+    done
+
+    say "Scaffold is up and running!"
+}
+
+function start() {
+    if [[ -z "$CLEAN_START" ]]; then
+        up_scaffold
+        post_up_scaffold
+    else
+        scaffold_reset
+    fi
+
+    service_start
+}
+
+SCRIPT_USAGE="${YELLOW}${PROJECT_NAME} CLI ${RESET}\n\nExample usage: ./cli [ scaffold =>, service =>, services =>, start, clean-start, clean-start-dev, service-restart, build =>, build-and-push ]"
+
+[[ -z "$1" ]] && say "$SCRIPT_USAGE" && exit 1
+while test $# -gt 0; do
+    case "$1" in
+    scaffold)
+        scaffold $2 $3 $4 $5
+        exit
+        ;;
+    service)
+        service $2 $3 $4 $5
+        exit
+        ;;
+    services)
+        service $2 $3 $4 $5
+        exit
+        ;;
+    start)
+        start
+        exit
+        ;;
+    clean-start)
+        CLEAN_START=1
+        start
+        exit
+        ;;
+    clean-start-dev)
+        CLEAN_START=1
+        DEV=1
+        start
+        exit
+        ;;
+    service-restart)
+        kill_all_containers
+        service_start
+        exit
+        ;;
+    reset-selected-services)
+        select_services
+        reset_selected_services
+        exit
+        ;;
+    reset-selected-services-dev)
+        DEV=1
+        select_services
+        reset_selected_services
+        exit
+        ;;
+    build)
+        BUILD=1
+        build $2 $3
+        exit
+        ;;
+    build-and-push)
+        BUILD=1
+        PUSH=1
+        build $2 $3
+        exit
+        ;;
+    build-and-push-multiple)
+        BUILD=1
+        PUSH=1
+
+        COMMIT_HASH=$(git rev-parse --short HEAD)
+        TS_VERSION=$(date +%s)
+        VERSION="$TS_VERSION.$COMMIT_HASH"
+
+        say "Building images with version tag $VERSION"
+
+        shift
+        for IMAGE in "$@"; do
+            build $IMAGE $VERSION
+        done
+
+        exit
+        ;;
+    push)
+        PUSH=1
+        build $2 $3
+        exit
+        ;;
+    migrate-env)
+        migrate_env
+        exit
+        ;;
+    *)
+        error "Invalid command '$1'" && say "$SCRIPT_USAGE"
+        exit 1
+        ;;
+    esac
+    shift
+done
