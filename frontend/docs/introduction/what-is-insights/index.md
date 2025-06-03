@@ -27,6 +27,16 @@ Insights acts as your early warning system. It helps you avoid risky dependencie
 
 Because software development is not just about what works today. It’s about what lasts.
 
+## How does Insights help you?
+- Want to track the performance of open source projects in real time
+- Need to analyze data quickly
+- Are looking for an online reporting tool
+- Want to download reports in CSV or other formats
+- Need to compare reports over selected periods
+- Want to measure project growth and team performance
+- Need to track historical data to identify trends and patterns
+- Want to detect potential issues early and take corrective action
+
 ## Outlook
 Insights was relaunched in May 2025 with a renewed focus on clarity, transparency, and usability for developers.
 
@@ -36,4 +46,4 @@ But this is just the beginning.
 
 Our vision is to make LFX Insights the go-to platform for evaluating all major open source projects, not just those under the Linux Foundation umbrella. Over the coming months, <b>Insights will expand and include all critical open source projects</b>.
 
-We’re building in the open. If you have feedback, questions, or ideas, we’d love to hear from you. Your input will help shape the future of LFX Insights as we work toward a more transparent and trustworthy open source ecosystem.
+We are building in the open. If you have any feedback, questions, or suggestions, we welcome you to share them with us. Your input will help shape the future of LFX Insights as we work toward a more transparent and trustworthy open source ecosystem.
