@@ -108,7 +108,9 @@ SPDX-License-Identifier: MIT
           :class="scrollTop > 50 ? 'md:py-4' : 'md:py-5'"
         >
           <lfx-project-menu :project="props.project" />
-          <lfx-project-date-range-picker v-if="route.name !== LfxRoutes.PROJECT" />
+          <lfx-project-date-range-picker
+            v-show="showDatepicker"
+          />
         </div>
       </section>
     </div>
@@ -194,6 +196,13 @@ const share = () => {
     activeTab: 'link'
   })
 };
+
+const showDatepicker = computed(() => ![
+    LfxRoutes.PROJECT,
+    LfxRoutes.REPOSITORY,
+    LfxRoutes.PROJECT_SECURITY,
+    LfxRoutes.REPOSITORY_SECURITY
+  ].includes(route.name as LfxRoutes));
 </script>
 
 <script lang="ts">
