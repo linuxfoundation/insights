@@ -109,12 +109,7 @@ SPDX-License-Identifier: MIT
         >
           <lfx-project-menu :project="props.project" />
           <lfx-project-date-range-picker
-            v-show="![
-              LfxRoutes.PROJECT,
-              LfxRoutes.REPOSITORY,
-              LfxRoutes.PROJECT_SECURITY,
-              LfxRoutes.REPOSITORY_SECURITY
-            ].includes(route.name as LfxRoutes)"
+            v-show="showDatepicker"
           />
         </div>
       </section>
@@ -201,6 +196,13 @@ const share = () => {
     activeTab: 'link'
   })
 };
+
+const showDatepicker = computed(() => ![
+    LfxRoutes.PROJECT,
+    LfxRoutes.REPOSITORY,
+    LfxRoutes.PROJECT_SECURITY,
+    LfxRoutes.REPOSITORY_SECURITY
+  ].includes(route.name as LfxRoutes));
 </script>
 
 <script lang="ts">
