@@ -40,7 +40,9 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script lang="ts" setup>
-import {computed, ref} from "vue";
+import {
+computed, ref, watch, nextTick
+} from "vue";
 import {storeToRefs} from "pinia";
 import {useRoute} from "nuxt/app";
 import type {Widget} from "~/components/modules/widget/types/widget";
@@ -114,13 +116,16 @@ const onBenchmarkUpdate = (value: Benchmark | undefined) => {
   }
 }
 
-onMounted(() => {
-  // add a pause to wait for the page to load then set the active item
-  setTimeout(() => {
-    const widget = route.query?.widget || config.value.widgets?.[0] || '';
-    onSideNavUpdate(widget);
-  }, 200);
-});
+watch(
+  () => route.query.widget,
+   (newWidget) => {
+    nextTick(() => {
+      const widget = newWidget || config.value.widgets?.[0] || '';
+      onSideNavUpdate(widget as string);
+    });
+  },
+  { immediate: true }
+);
 </script>
 
 <script lang="ts">
