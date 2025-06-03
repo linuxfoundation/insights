@@ -116,16 +116,14 @@ const onBenchmarkUpdate = (value: Benchmark | undefined) => {
   }
 }
 
-watch(
-  () => route.query.widget,
-   (newWidget) => {
-    nextTick(() => {
-      const widget = newWidget || config.value.widgets?.[0] || '';
+watch(() => project, (newProject) => {
+  if (newProject && newProject.value?.slug !== route.params.slug) {
+    nextTick().then(() => {
+      const widget = route.query?.widget || config.value.widgets?.[0] || '';
       onSideNavUpdate(widget as string);
     });
-  },
-  { immediate: true }
-);
+  }
+}, {deep: true, immediate: true});
 </script>
 
 <script lang="ts">
