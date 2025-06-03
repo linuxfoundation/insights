@@ -3,20 +3,20 @@
 import type { QueryFunction } from '@tanstack/vue-query';
 import { type Ref, computed } from 'vue';
 import { useQuery } from '@tanstack/vue-query';
+import _ from 'lodash';
 import { TanstackKey } from '~/components/shared/types/tanstack';
 import type {
   OSSIndexCategoryGroup,
-  OSSIndexCategoryGroupDetails
+  OSSIndexCategoryGroupDetails,
 } from '~~/types/ossindex/category-group';
 import { LfxRoutes } from '~/components/shared/types/routes';
-import type {
-  OSSIndexCategory,
-  OSSIndexCategoryDetails
-} from '~~/types/ossindex/category';
+import type { OSSIndexCategory, OSSIndexCategoryDetails } from '~~/types/ossindex/category';
 import type { OSSIndexCollection } from '~~/types/ossindex/collection';
 import type { TreeMapData } from '~/components/uikit/chart/types/ChartTypes';
 
+export type OSIType = 'vertical' | 'horizontal';
 export interface BreadcrumbData {
+  type: OSIType;
   group?: {
     name: string;
     slug: string;
@@ -27,102 +27,104 @@ export interface BreadcrumbData {
   };
 }
 
+export type SortType = 'totalContributors' | 'softwareValue';
+
 class OssIndexApiService {
-  fetchOSSGroup(type: Ref<string>, enabled: boolean) {
-    const queryKey = computed(() => [TanstackKey.OSS_INDEX_GROUP, type.value]);
+  fetchOSSGroup(type: Ref<string>, sort: Ref<string>, enabled: boolean) {
+    const queryKey = computed(() => [TanstackKey.OSS_INDEX_GROUP, type.value, sort.value]);
     const queryFn = computed<QueryFunction<OSSIndexCategoryGroup[]>>(() => this.ossGroupQueryFn(() => ({
-        type: type.value
+        type: type.value,
+        sort: sort.value,
       })));
 
     return useQuery<OSSIndexCategoryGroup[]>({
       queryKey,
       queryFn,
-      enabled
+      enabled,
     });
   }
 
   ossGroupQueryFn(
     query: () => Record<string, string | number | boolean | undefined | string[] | null>
   ): QueryFunction<OSSIndexCategoryGroup[]> {
-    const { type } = query();
+    const { type, sort } = query();
     return async () => await $fetch(`/api/ossindex/groups`, {
         params: {
-          type
-        }
+          type,
+          sort,
+        },
       });
   }
 
-  fetchOSSCategory(groupSlug: string | undefined) {
-    const queryKey = computed(() => [TanstackKey.OSS_INDEX_CATEGORY, groupSlug]);
+  fetchOSSCategory(groupSlug: string | undefined, sort: Ref<string>) {
+    const queryKey = computed(() => [TanstackKey.OSS_INDEX_CATEGORY, groupSlug, sort.value]);
     const queryFn = computed<QueryFunction<OSSIndexCategoryGroupDetails>>(() => this.ossCategoryQueryFn(() => ({
-        categoryGroupSlug: groupSlug
+        categoryGroupSlug: groupSlug,
+        sort: sort.value,
       })));
 
     return useQuery<OSSIndexCategoryGroupDetails>({
       queryKey,
       queryFn,
-      enabled: !!groupSlug
+      enabled: !!groupSlug,
     });
   }
 
   ossCategoryQueryFn(
     query: () => Record<string, string | number | boolean | undefined | string[] | null>
   ): QueryFunction<OSSIndexCategoryGroupDetails> {
-    const { categoryGroupSlug } = query();
+    const { categoryGroupSlug, sort } = query();
     return async () => await $fetch(`/api/ossindex/categories`, {
         params: {
-          categoryGroupSlug
-        }
+          categoryGroupSlug,
+          sort,
+        },
       });
   }
 
-  fetchOSSCollection(categorySlug: string | undefined) {
-    const queryKey = computed(() => [TanstackKey.OSS_INDEX_COLLECTION, categorySlug]);
+  fetchOSSCollection(categorySlug: string | undefined, sort: Ref<string>) {
+    const queryKey = computed(() => [TanstackKey.OSS_INDEX_COLLECTION, categorySlug, sort.value]);
     const queryFn = computed<QueryFunction<OSSIndexCategoryDetails>>(() => this.ossCollectionQueryFn(() => ({
-        categorySlug
+        categorySlug,
+        sort: sort.value,
       })));
 
     return useQuery<OSSIndexCategoryDetails>({
       queryKey,
       queryFn,
-      enabled: !!categorySlug
+      enabled: !!categorySlug,
     });
   }
 
   ossCollectionQueryFn(
     query: () => Record<string, string | number | boolean | undefined | string[] | null>
   ): QueryFunction<OSSIndexCategoryDetails> {
-    const { categorySlug } = query();
+    const { categorySlug, sort } = query();
     return async () => await $fetch(`/api/ossindex/collections`, {
         params: {
-          categorySlug
-        }
+          categorySlug,
+          sort,
+        },
       });
   }
 
-  mapCategoryDataToTreeMapData(data: OSSIndexCategoryGroupDetails): TreeMapData[] {
-    const categoryGroups = this.convertCategoryToCategoryGroup(
-      data.categories,
-      data.type
-    );
-    return this.mapDataToTreeMapData(categoryGroups, 'category');
+  mapCategoryDataToTreeMapData(data: OSSIndexCategoryGroupDetails, sort: SortType): TreeMapData[] {
+    const categoryGroups = this.convertCategoryToCategoryGroup(data.categories, data.type);
+    return this.mapDataToTreeMapData(categoryGroups, 'category', sort);
   }
 
-  mapCollectionDataToTreeMapData(data: OSSIndexCategoryDetails): TreeMapData[] {
+  mapCollectionDataToTreeMapData(data: OSSIndexCategoryDetails, sort: SortType): TreeMapData[] {
     const collectionGroups = this.convertCollectionToCategoryGroup(
       data.collections,
       data.categoryGroupType
     );
-    return this.mapDataToTreeMapData(collectionGroups, 'collection');
+    return this.mapDataToTreeMapData(collectionGroups, 'collection', sort);
   }
 
-  convertCategoryToCategoryGroup(
-    data: OSSIndexCategory[],
-    type: string
-  ): OSSIndexCategoryGroup[] {
+  convertCategoryToCategoryGroup(data: OSSIndexCategory[], type: string): OSSIndexCategoryGroup[] {
     return data.map((category) => ({
       ...category,
-      type
+      type,
     }));
   }
 
@@ -133,7 +135,7 @@ class OssIndexApiService {
     return data.map((collection) => ({
       ...collection,
       topCollections: [],
-      type
+      type,
     }));
   }
 
@@ -153,9 +155,10 @@ class OssIndexApiService {
 
   mapDataToTreeMapData(
     data: OSSIndexCategoryGroup[],
-    type: 'group' | 'category' | 'collection'
+    type: 'group' | 'category' | 'collection',
+    sort: SortType
   ): TreeMapData[] {
-    const minMax = this.getMinMaxValue(data, 'totalContributors');
+    const minMax = this.getMinMaxValue(data, sort);
     let link = '';
 
     switch (type) {
@@ -172,26 +175,36 @@ class OssIndexApiService {
     const filteredData = this.filterDataByLimit(data);
 
     return (
-      filteredData.map((group) => {
-        const rangeIndex = this.getRangeValue(minMax, group.totalContributors);
+      _.sortBy(
+        filteredData.map((group) => {
+          const rangeIndex = this.getRangeValue(
+            minMax,
+            sort === 'totalContributors' ? group.totalContributors : group.softwareValue
+          );
 
-        return {
-          id: group.id,
-          name: group.name,
-          value: [group.totalContributors, rangeIndex],
-          slug: group.slug,
-          softwareValue: group.softwareValue,
-          avgScore: group.avgScore,
-          type: group.type,
-          topProjects: group.topProjects.map((project) => ({
-            ...project,
-            logoUrl: project.logo
-          })),
-          topCollections: group.topCollections,
-          link: `${link}/${group.slug}`,
-          target: '_self'
-        };
-      }) || []
+          return {
+            id: group.id,
+            name: group.name,
+            value: [
+              sort === 'totalContributors' ? group.totalContributors : group.softwareValue,
+              rangeIndex,
+            ],
+            slug: group.slug,
+            totalContributors: group.totalContributors,
+            softwareValue: group.softwareValue,
+            avgScore: group.avgScore,
+            type: group.type,
+            topProjects: group.topProjects.map((project) => ({
+              ...project,
+              logoUrl: project.logo,
+            })),
+            topCollections: group.topCollections,
+            link: `${link}/${group.slug}`,
+            target: '_self',
+          };
+        }),
+        sort
+      ) || []
     );
   }
 
@@ -214,7 +227,7 @@ class OssIndexApiService {
     // Create ranges
     const ranges = Array.from({ length: rangeLength }, (_, i) => ({
       min: min + rangeSize * i,
-      max: min + rangeSize * (i + 1)
+      max: min + rangeSize * (i + 1),
     }));
 
     // Assign range index to each item

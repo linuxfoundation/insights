@@ -5,7 +5,7 @@ import type {
   LineSeriesOption,
   MapSeriesOption,
   PieSeriesOption,
-  RadarSeriesOption
+  RadarSeriesOption,
 } from 'echarts/types/dist/shared';
 
 export interface ChartSeries {
@@ -73,6 +73,7 @@ export interface TreeMapData {
   slug: string;
   type: string;
   value: [number, number];
+  totalContributors: number;
   softwareValue: number;
   avgScore: number;
   topProjects: TreeMapItem[];

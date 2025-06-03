@@ -27,6 +27,7 @@ import { ref, computed } from 'vue';
 import type { ECElementEvent } from 'echarts';
 import {useRouter} from "nuxt/app";
 import type { OSIGroup } from '../services/osi.template.service';
+import type { SortType } from '../services/osi.api.service';
 import LfxOSITooltip from "./osi-tooltip.vue";
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import {
@@ -34,6 +35,7 @@ import {
 } from '~/components/uikit/chart/configs/tree-map.chart';
 import type { TreeLabelFormatterParams } from '~/components/uikit/chart/types/EChartTypes';
 import type { TreeMapData } from '~/components/uikit/chart/types/ChartTypes';
+import { formatNumberCurrency } from '~/components/shared/utils/formatter';
 
 const router = useRouter();
 
@@ -41,12 +43,13 @@ const tooltipRef = ref<InstanceType<typeof LfxOSITooltip>>();
 const selectedGroup = ref<OSIGroup | undefined>(undefined);
 
 const props = defineProps<{
-  sort: string;
+  sort: SortType;
   data: TreeMapData[];
+  isCollection: boolean;
 }>();
 
 const tooltip = (info: TreeLabelFormatterParams): string => {
-  const { name, value } = info;
+  const { name } = info;
 
   const collection = props.data.find((item) => item.name === name);
   const projects = collection?.topProjects;
@@ -54,18 +57,18 @@ const tooltip = (info: TreeLabelFormatterParams): string => {
   const group: OSIGroup = {
     name: collection?.type || '',
     categoryName: collection?.name || '',
-    count: value[0] || 0,
-    softwareValue: collection?.softwareValue || '',
+    count: collection?.totalContributors || 0,
+    softwareValue: collection?.softwareValue ? formatNumberCurrency(collection?.softwareValue, 'USD') : undefined,
     projects: projects?.map((project) => ({
       name: project.name,
       count: project.count,
-      softwareValue: project.softwareValue || '',
+      softwareValue: project.softwareValue ? formatNumberCurrency(project.softwareValue, 'USD') : undefined,
       logoUrl: project.logoUrl
     })) || [],
     collections: collection?.topCollections?.map((collection) => ({
       name: collection.name,
       count: collection.count,
-      softwareValue: collection.softwareValue || '',
+      softwareValue: collection.softwareValue ? formatNumberCurrency(collection.softwareValue, 'USD') : undefined,
       icon: 'fa-light fa-people-group'
     })) || []
   }
@@ -83,7 +86,7 @@ const tooltip = (info: TreeLabelFormatterParams): string => {
   // We're returning empty so that the tooltip is not rendered
   return '';
 };
-const config = computed(() => getTreeMapConfig(props.data, tooltip));
+const config = computed(() => getTreeMapConfig(props.data, tooltip, props.sort === 'softwareValue'));
 
 /**
  * This is a hack to move the tooltip to the correct position
@@ -132,7 +135,12 @@ const handleChartClick = (params: ECElementEvent) => {
     const data = params.data as TreeMapData;
 
     if (data.id && data.link) {
-      router.push(data.link);
+      router.push({
+        path: data.link,
+        query: {
+          sort: props.isCollection ? undefined : props.sort
+        }
+      });
     }
   }
 }
