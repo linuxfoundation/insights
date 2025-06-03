@@ -34,8 +34,7 @@ import type {Project} from "~~/types/project";
 import LfxProjectHeader from "~/components/modules/project/components/shared/header.vue";
 import {
   useProjectStore,
-  defaultTimeRangeKey,
-  defaultDateOption
+  getUrlDateParams
 } from "~/components/modules/project/store/project.store";
 import {TanstackKey} from "~/components/shared/types/tanstack";
 import {PROJECT_API_SERVICE} from "~/components/modules/project/services/project.api.service";
@@ -81,9 +80,10 @@ onServerPrefetch(async () => {
 watch(() => data.value, (value) => {
   if (value) {
     project.value = value;
-    selectedTimeRangeKey.value = defaultTimeRangeKey;
-    startDate.value = defaultDateOption?.startDate || null;
-    endDate.value = defaultDateOption?.endDate || null;
+    const { timeRange, start, end } = getUrlDateParams();
+    selectedTimeRangeKey.value = timeRange;
+    startDate.value = start;
+    endDate.value = end;
   }
 }, { immediate: true });
 

@@ -118,8 +118,7 @@ import LfxIcon from "~/components/uikit/icon/icon.vue";
 import {
   type DateOptionConfig, lfxProjectDateOptions, lfxProjectDateOptionsGeneral,
   lfxProjectDateOptionsPast,
-  lfxProjectDateOptionsPrevious,
-  dateOptKeys
+  lfxProjectDateOptionsPrevious
 } from "~/components/modules/project/config/date-options";
 import { useProjectStore, updateUrlParams } from "~/components/modules/project/store/project.store";
 import LfxProjectCustomDateRangePicker
@@ -134,7 +133,7 @@ const { selectedTimeRangeKey, startDate, endDate } = storeToRefs(useProjectStore
 const isOpen = ref(false);
 const isCustomSelectorOpen = ref(false);
 
-const selectedDateRange = ref(dateOptKeys.past365days);
+const selectedDateRange = ref(selectedTimeRangeKey.value);
 
 const changeSelected = (option: DateOptionConfig) => {
   selectedTimeRangeKey.value = option.key;
@@ -147,6 +146,7 @@ const changeSelected = (option: DateOptionConfig) => {
 
 watch(() => selectedDateRange.value, (value) => {
   const option = lfxProjectDateOptions.find((option) => option.key === value) as DateOptionConfig;
+
   if(option){
     changeSelected(option);
   }

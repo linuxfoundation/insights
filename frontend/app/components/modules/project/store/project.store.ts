@@ -48,39 +48,54 @@ export const updateUrlParams = (timeRange: string, start: string | null, end: st
   const query: Record<string, string | null | undefined> = {
     ...route.query,
     timeRange,
+    start: start || undefined,
+    end: end || undefined,
+  };
+
+  router.replace({ query });
+};
+
+export const getUrlDateParams = () => {
+  const route = useRoute();
+  const {
+    timeRange: paramTimeRange,
+    start: paramStart,
+    end: paramEnd
+} = route.query;
+  const timeRange = paramTimeRange as string || defaultTimeRangeKey;
+  let start = paramStart as string || defaultDateOption?.startDate || lfxProjectDateOptions[1]?.startDate || null;
+  let end = paramEnd as string || defaultDateOption?.endDate || lfxProjectDateOptions[1]?.endDate || null;
+
+  if(timeRange === dateOptKeys.alltime){
+    start = null;
+    end = null;
+  }
+
+  return {
+    timeRange,
     start,
     end,
   };
-
-  // Remove null/undefined values
-  Object.keys(query).forEach((key) => {
-    if (query[key] === null || query[key] === undefined) {
-      delete query[key];
-    }
-  });
-
-  router.replace({ query });
 };
 
 export const useProjectStore = defineStore('project', () => {
   const route = useRoute();
 
-  const selectedTimeRangeKey = ref<string>(defaultTimeRangeKey);
-  const startDate = ref<string | null>(
-    defaultDateOption?.startDate || lfxProjectDateOptions[1]?.startDate || null
-  );
-  const endDate = ref<string | null>(
-    defaultDateOption?.endDate || lfxProjectDateOptions[1]?.endDate || null
-  );
+  const { timeRange, start, end } = getUrlDateParams();
+  const selectedTimeRangeKey = ref<string>(timeRange);
+  const startDate = ref<string | null>(start);
+  const endDate = ref<string | null>(end);
   const isProjectLoading = ref(false);
   const project = ref<Project | null>(null);
   const projectRepos = computed<ProjectRepository[]>(() => project.value?.repositories || []);
 
   const selectedRepository = computed<string>(
-    () => projectRepos.value.find((repo: ProjectRepository) => route.params.name === repo.slug)?.url
-      || ''
+    () => projectRepos.value.find(
+        (repo: ProjectRepository) => route.params.name === repo.slug
+      )?.url || ''
   );
-  const repository = computed<ProjectRepository | undefined>(() => projectRepos.value.find((repo: ProjectRepository) => route.params.name === repo.slug));
+  const repository = computed<ProjectRepository | undefined>(() => projectRepos
+    .value.find((repo: ProjectRepository) => route.params.name === repo.slug));
 
   const customRangeGranularity = computed<string[]>(() => (startDate.value === null || endDate.value === null
       ? [Granularity.WEEKLY]
