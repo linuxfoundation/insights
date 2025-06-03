@@ -19,12 +19,20 @@ SPDX-License-Identifier: MIT
     <lfx-dropdown-group-title v-if="group.categories.length">
       {{group.name}}
     </lfx-dropdown-group-title>
+    <!-- Reenable when we support selecting all sub-categories -->
+    <!--    <lfx-dropdown-item-->
+    <!--      :value="'group-' + group.categories.map((c) => c.id).join(',')"-->
+    <!--      :label="group.name"-->
+    <!--    >-->
+    <!--      All sub-categories-->
+    <!--    </lfx-dropdown-item>-->
     <lfx-dropdown-item
       v-for="category of group.categories"
       :key="category.id"
       :value="category.id"
       :label="category.name"
     />
+    <lfx-dropdown-separator />
   </template>
 </template>
 

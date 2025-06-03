@@ -42,8 +42,6 @@ export default defineNuxtConfig({
     appEnv: process.env.APP_ENV,
     tinybirdBaseUrl: 'https://api.us-west-2.aws.tinybird.co',
     tinybirdToken: '',
-    cmApiUrl: '',
-    cmApiToken: '',
     jiraIssueReporterApiUrl: '',
     jiraIssueReporterApiTokenEmail: '',
     jiraIssueReporterApiToken: '',
