@@ -94,45 +94,47 @@ const {
 const route = useRoute();
 
 // This is a special case for the retention chart
-const calculateGranularity = (start: string | null, end: string | null): string[] => {
-  // Return weekly if either date is null
-  if (!start || !end) {
-    return [Granularity.YEARLY];
-  }
+// We might revisit this in the future
+// const calculateGranularity = (start: string | null, end: string | null): string[] => {
+//   // Return weekly if either date is null
+//   if (!start || !end) {
+//     return [Granularity.YEARLY];
+//   }
 
-  const startDate = DateTime.fromISO(start);
-  const endDate = DateTime.fromISO(end);
-  const diffInDays = Math.ceil(endDate.diff(startDate, 'days').days);
+//   const startDate = DateTime.fromISO(start);
+//   const endDate = DateTime.fromISO(end);
+//   const diffInDays = Math.ceil(endDate.diff(startDate, 'days').days);
 
-  switch (true) {
-    case diffInDays <= 13:
-      return [Granularity.DAILY];
-    case diffInDays <= 90:
-      return [Granularity.WEEKLY];
-    case diffInDays <= 365:
-      return [Granularity.MONTHLY];
-    case diffInDays <= 730:
-      return [Granularity.YEARLY];
-    default:
-      return [Granularity.YEARLY];
-  }
-};
-const isSingleDay = computed(() => {
+//   switch (true) {
+//     case diffInDays <= 13:
+//       return [Granularity.DAILY];
+//     case diffInDays <= 90:
+//       return [Granularity.WEEKLY];
+//     case diffInDays <= 365:
+//       return [Granularity.MONTHLY];
+//     case diffInDays <= 730:
+//       return [Granularity.YEARLY];
+//     default:
+//       return [Granularity.YEARLY];
+//   }
+// };
+/**
+ * We're setting a threshold of 180 days for the retention chart
+ * Anything below 180 days and we will display the empty state
+ */
+const isBelowThreshold = computed(() => {
   const start = DateTime.fromISO(startDate.value || '');
   const end = DateTime.fromISO(endDate.value || '');
-  return start.hasSame(end, 'day');
+  const diffInDays = Math.ceil(end.diff(start, 'days').days);
+  return diffInDays < 180; // TODO: verify this with Joana and Jonathan
 });
 
-const customGranularity = computed(() => calculateGranularity(startDate.value, endDate.value));
+const granularity = Granularity.QUARTERLY;
 
-const granularity = computed(() => customGranularity.value[0] as Granularity);
-// (selectedTimeRangeKey.value === dateOptKeys.custom
-//   ? customGranularity.value[0] as Granularity
-//   : lineGranularities[selectedTimeRangeKey.value as keyof typeof lineGranularities]));
 const queryKey = computed(() => [
   TanstackKey.RETENTION,
   route.params.slug,
-  granularity.value,
+  granularity,
   model.value.activeTab,
   selectedRepository.value,
   startDate.value,
@@ -143,7 +145,7 @@ const fetchData: QueryFunction<Retention[]> = async () => $fetch(
     `/api/project/${route.params.slug}/contributors/retention`,
     {
   params: {
-    granularity: granularity.value,
+    granularity,
     type: model.value.activeTab,
     repository: selectedRepository.value,
     startDate: startDate.value,
@@ -172,8 +174,8 @@ const chartData = computed<ChartData[]>(
 const retentionValue = computed(() => (chartData.value && chartData.value.length > 0
   ? chartData.value[chartData.value.length - 1]?.values[0] : 0));
 
-const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[])
-  || isSingleDay.value);
+const isEmpty = computed(() => isBelowThreshold.value
+  || isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
 
 const tabs = [
   {
@@ -200,7 +202,7 @@ const chartSeries = ref<ChartSeries[]>([
 const lineAreaChartConfig = computed(() => getLineAreaChartConfig(
   chartData.value, //
   chartSeries.value, //
-  granularity.value,
+  granularity,
   (value: number) => `${value === 0 ? '' : `${value}%`}`
 ));
 
