@@ -22,30 +22,35 @@ SPDX-License-Identifier: MIT
         </p>
       </div>
       <div v-if="project?.rank">
-        <img
-          v-if="project?.rank <= 10"
-          src="~/assets/images/criticality/top-10.svg"
-          alt="Top 10 criticality"
-          class="min-w-14"
+        <lfx-tooltip
+          :content="
+            `${project?.name} belongs to the ${project?.rank} most critical open source projects on GitHub`"
         >
-        <img
-          v-else-if="project?.rank <= 100"
-          src="~/assets/images/criticality/top-100.svg"
-          alt="Top 100 criticality"
-          class="min-w-14"
-        >
-        <img
-          v-else-if="project?.rank <= 500"
-          src="~/assets/images/criticality/top-500.svg"
-          alt="Top 500 criticality"
-          class="min-w-14"
-        >
-        <img
-          v-else-if="project?.rank <= 1000"
-          src="~/assets/images/criticality/top-1000.svg"
-          alt="Top 1000 criticality"
-          class="min-w-14"
-        >
+          <img
+            v-if="project?.rank <= 10"
+            src="~/assets/images/criticality/top-10.svg"
+            alt="Top 10 criticality"
+            class="min-w-14"
+          >
+          <img
+            v-else-if="project?.rank <= 100"
+            src="~/assets/images/criticality/top-100.svg"
+            alt="Top 100 criticality"
+            class="min-w-14"
+          >
+          <img
+            v-else-if="project?.rank <= 500"
+            src="~/assets/images/criticality/top-500.svg"
+            alt="Top 500 criticality"
+            class="min-w-14"
+          >
+          <img
+            v-else-if="project?.rank <= 1000"
+            src="~/assets/images/criticality/top-1000.svg"
+            alt="Top 1000 criticality"
+            class="min-w-14"
+          >
+        </lfx-tooltip>
       </div>
     </div>
     <div class="py-1 relative">
