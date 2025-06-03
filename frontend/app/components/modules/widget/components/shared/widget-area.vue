@@ -41,7 +41,7 @@ SPDX-License-Identifier: MIT
 
 <script lang="ts" setup>
 import {
-computed, ref, watch, nextTick
+computed, ref, watch
 } from "vue";
 import {storeToRefs} from "pinia";
 import {useRoute} from "nuxt/app";
