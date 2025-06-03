@@ -2,7 +2,8 @@
 // SPDX-License-Identifier: MIT
 import type {Pagination} from "~~/types/shared/pagination";
 import type {CategoryGroup} from "~~/types/category";
-import {fetchFromCmApi} from "~~/server/data/cm/cm-api";
+import {fetchFromTinybird} from "~~/server/data/tinybird/tinybird";
+import type {Category} from "~~/types/category/category";
 
 /**
  * API Endpoint: /api/category
@@ -27,31 +28,45 @@ export default defineEventHandler(async (event): Promise<Pagination<CategoryGrou
     const query = getQuery(event);
     const search: string = (query?.search as string) || '';
     const type: string = (query?.type as string) || '';
-    //
-    // // Pagination parameters
-    const limit: number = +(query?.limit ?? 30);
-    const offset: number = +(query?.offset ?? 0);
+
+    // Pagination parameters
+    const page: number = +(query?.page ?? 0);
+    const pageSize: number = +(query?.pageSize ?? 30);
 
     try {
-        const res = await fetchFromCmApi<{
-            limit: number,
-            offset: number,
-            rows: CategoryGroup[]
-        }>('/category', {
-            groupType: type,
-            offset,
-            limit,
-            query: search,
+        const res = await fetchFromTinybird<Category[]>('/v0/pipes/category_list.json', {
+            search,
+            categoryGroupType: type,
+            page,
+            pageSize,
+            orderBy: 'categoryGroupName',
+            orderDirection: 'asc',
         });
 
+        const rows = res.data;
+        const groupedCategories = rows.reduce((acc: Record<string, CategoryGroup>, row: Category) => {
+            if (!acc[row.categoryGroupId]) {
+                acc[row.categoryGroupId] = {
+                    id: row.categoryGroupId,
+                    name: row.categoryGroupName,
+                    categories: [],
+                }
+            }
+            acc[row.categoryGroupId].categories.push({
+                id: row.id,
+                name: row.name,
+            })
+            return acc
+        }, {})
+
         return {
-            page: offset / limit + 1,
-            pageSize: limit,
-            total: res.rows.length,
-            data: res.rows,
+            data: Object.values(groupedCategories),
+            page: +page || 0,
+            pageSize: +pageSize || 30,
+            total: rows.length
         }
-    } catch (error) {
-        console.error('Error fetching collection list from TinyBird:', error);
-        throw createError({statusCode: 500, statusMessage: 'Internal Server Error'});
+    } catch (err) {
+        console.error('Error fetching category list:', err);
+        return createError({statusCode: 500, statusMessage: 'Internal server error'});
     }
 });
