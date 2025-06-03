@@ -11,7 +11,7 @@ SPDX-License-Identifier: MIT
   > -->
   <div class="bg-white outline outline-1 outline-neutral-200">
     <section class="container py-6">
-      <div class="flex flex-col lg:flex-row items-end gap-4 lg:gap-16">
+      <div class="flex flex-col lg:flex-row items-start lg:items-end gap-4 lg:gap-12">
         <div class="flex flex-row gap-5 basis-2/3 items-end">
           <div
             v-if="!isRoot"
@@ -35,7 +35,7 @@ SPDX-License-Identifier: MIT
               class="text-sm text-neutral-500"
             >
               <NuxtLink
-                :to="`/open-source-index`"
+                :to="`/open-source-index?sort=${sort}&type=${breadcrumbData.type}`"
                 class="hover:text-brand-600"
               >
                 Open Source Index
@@ -46,7 +46,7 @@ SPDX-License-Identifier: MIT
               >・</span>
               <NuxtLink
                 v-if="breadcrumbText"
-                :to="`/open-source-index/group/${props.breadcrumbData.group?.slug}`"
+                :to="breadcrumbLink"
                 class="hover:text-brand-600"
               >
                 {{ breadcrumbText }}
@@ -72,7 +72,9 @@ SPDX-License-Identifier: MIT
             </p>
           </div>
         </div>
-        <div class="basis-1/3 flex items-center gap-5 justify-end">
+        <div
+          class="md:basis-1/3 w-full flex flex-col md:flex-row items-end md:items-center gap-5 justify-end"
+        >
           <div
             v-if="isRoot"
             class="border-r border-neutral-200 pr-5"
@@ -108,11 +110,11 @@ SPDX-License-Identifier: MIT
               />
             </lfx-dropdown-select>
           </div>
-          <div class="hidden">
+          <div>
             <lfx-tabs
               :tabs="sortTabs"
               :model-value="sort"
-              @update:model-value="sort = $event"
+              @update:model-value="sort = ($event as SortType)"
             >
               <template #slotItem="{ option }">
                 <div class="flex items-center gap-2">
@@ -145,7 +147,7 @@ import { computed } from 'vue';
 // import useResponsive from "~/components/shared/utils/responsive";
 // import LfxMaintainHeight from "~/components/uikit/maintain-height/maintain-height.vue";
 import type { AsyncDataRequestStatus } from 'nuxt/app';
-import type { BreadcrumbData } from '../services/osi.api.service';
+import type { BreadcrumbData, SortType } from '../services/osi.api.service';
 import LfxDropdownSelector from "~/components/uikit/dropdown/dropdown-selector.vue";
 import LfxDropdownSelect from "~/components/uikit/dropdown/dropdown-select.vue";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
@@ -157,7 +159,7 @@ import LfxSkeletonState from "~/components/modules/project/components/shared/ske
 
 const props = defineProps<{
   type: string;
-  sort: string;
+  sort: SortType;
   breadcrumbData: BreadcrumbData;
   status: AsyncDataRequestStatus;
 }>();
@@ -191,19 +193,31 @@ const breadcrumbText = computed(() => {
   return null;
 });
 
+const breadcrumbLink = computed(() => {
+  const slug = props.breadcrumbData.group?.slug;
+  const {sort} = props;
+  const {type} = props.breadcrumbData;
+
+  return `/open-source-index/group/${slug}?sort=${sort}&type=${type}`;
+});
+
 const isRoot = computed(() => !props.breadcrumbData.category && !props.breadcrumbData.group);
 
 const backButtonLink = computed(() => {
+  const slug = props.breadcrumbData.group?.slug;
+  const {type} = props.breadcrumbData;
+  const sortParam = sort.value;
+
   if (props.breadcrumbData.category && props.breadcrumbData.group) {
-    return `/open-source-index/group/${props.breadcrumbData.group?.slug}`;
+    return `/open-source-index/group/${slug}?sort=${sortParam}&type=${type}`;
   }
-  return `/open-source-index`;
+  return `/open-source-index?sort=${sortParam}&type=${type}`;
 });
 
 const sortTabs = [
   {
     label: 'Most Contributors',
-    value: 'contributorCount',
+    value: 'totalContributors',
     icon: 'people-group',
   },
   {
