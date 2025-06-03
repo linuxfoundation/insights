@@ -171,7 +171,7 @@ const {
   queryFn: COLLECTIONS_API_SERVICE.fetchCollections(() => ({
     pageSize,
     sort: sort.value,
-    category: category.value === 'all' ? undefined : category.value,
+    categories: category.value === 'all' ? undefined : category.value.replace('group-', '').split(','),
   })),
   getNextPageParam: (lastPage) => {
     const nextPage = lastPage.page + 1

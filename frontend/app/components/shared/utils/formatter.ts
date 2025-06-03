@@ -14,7 +14,7 @@ import { FormatterUnits } from '~/components/shared/types/formatter.types';
 type ShowUnits = 'short' | 'long' | 'no';
 export const formatNumber = (value: number, decimals = 0): string => Intl.NumberFormat('en-US', {
     style: 'decimal',
-    maximumFractionDigits: decimals
+    maximumFractionDigits: decimals,
   }).format(value);
 
 /**
@@ -24,7 +24,19 @@ export const formatNumber = (value: number, decimals = 0): string => Intl.Number
  */
 export const formatNumberShort = (value: number): string => new Intl.NumberFormat('en', {
     notation: 'compact',
-    compactDisplay: 'short'
+    compactDisplay: 'short',
+  }).format(value);
+
+/**
+ * Formats a number with short notation (e.g. 1.5M)
+ * @param value - The number to format
+ * @returns Formatted string representation of the number
+ */
+export const formatNumberCurrency = (value: number, currency: string): string => new Intl.NumberFormat('en', {
+    style: 'currency',
+    notation: 'compact',
+    compactDisplay: 'short',
+    currency,
   }).format(value);
 
 const shiftToUnit = (value: number, unit: FormatterUnits): number => {

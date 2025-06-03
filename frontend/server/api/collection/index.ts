@@ -30,7 +30,7 @@ import {useRuntimeConfig} from "#imports";
 export default defineEventHandler(async (event): Promise<Pagination<Collection> | Error> => {
     const query = getQuery(event);
     const sort: string = (query?.sort as string) || 'name_asc';
-    const category: string | undefined = (query?.category as string) || undefined;
+    const categories: string | undefined = (query?.categories as string) || undefined;
     const [orderByField, orderByDirection] = sort.split('_');
 
     // Pagination parameters
@@ -43,7 +43,7 @@ export default defineEventHandler(async (event): Promise<Pagination<Collection> 
             count,
             page,
             pageSize,
-            categoryIds: category ? [category] : undefined,
+            categoryIds: categories?.length ? categories : undefined,
             orderByField,
             orderByDirection,
         });
@@ -73,7 +73,7 @@ export default defineEventHandler(async (event): Promise<Pagination<Collection> 
 
         type CollectionCount = {'count(id)': number};
         const collectionCountResult = await fetchFromTinybird<CollectionCount[]>('/v0/pipes/collections_list.json', {
-            categoryIds: category ? [category] : undefined,
+            categoryIds: categories?.length ? categories : undefined,
             count: true,
         });
 

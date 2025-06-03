@@ -14,7 +14,7 @@ SPDX-License-Identifier: MIT
           name="arrow-down-wide-short"
           :size="16"
         />
-        {{selectedOption.label}}
+        {{selectedOption.label}} {{selectedOption.value.startsWith('group-') ? '(all sub-stacks)' : ''}}
       </lfx-dropdown-selector>
     </template>
 
