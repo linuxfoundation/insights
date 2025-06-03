@@ -117,11 +117,11 @@ const onBenchmarkUpdate = (value: Benchmark | undefined) => {
 }
 
 watch(() => project, (newProject) => {
-  if (newProject && newProject.value?.slug !== route.params.slug) {
-    nextTick().then(() => {
+  if (newProject) {
+    setTimeout(() => {
       const widget = route.query?.widget || config.value.widgets?.[0] || '';
       onSideNavUpdate(widget as string);
-    });
+    }, 100);
   }
 }, {deep: true, immediate: true});
 </script>
