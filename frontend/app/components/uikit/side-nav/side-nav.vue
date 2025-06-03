@@ -31,18 +31,19 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { useRouter } from 'vue-router';
 import type { SideNavItem } from './types/side-nav.types';
 import LfxButton from '~/components/uikit/button/button.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import useScroll from '~/components/shared/utils/scroll';
+import { useQueryParam } from '~/components/shared/utils/query-param';
 
 const props = defineProps<{
   list: SideNavItem[];
   modelValue: string;
 }>();
-const router = useRouter();
+
 const { scrollTopPercentage } = useScroll();
+const { queryParams } = useQueryParam();
 
 const emit = defineEmits<{(e: 'update:modelValue', value: string): void }>();
 
@@ -60,9 +61,9 @@ const onClick = (value: string, e: Event) => {
   e.preventDefault();
   e.stopPropagation();
 
-  router.replace({
-    query: {widget: value}
-  });
+  queryParams.value = {
+    widget: value,
+  };
 };
 </script>
 
