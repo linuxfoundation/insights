@@ -113,6 +113,14 @@ const onBenchmarkUpdate = (value: Benchmark | undefined) => {
     benchmarks.value[value.key] = value;
   }
 }
+
+onMounted(() => {
+  // add a pause to wait for the page to load then set the active item
+  setTimeout(() => {
+    const widget = route.query?.widget || config.value.widgets?.[0] || '';
+    onSideNavUpdate(widget);
+  }, 200);
+});
 </script>
 
 <script lang="ts">
