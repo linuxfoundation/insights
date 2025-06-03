@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
-import { useRoute, useRouter } from 'nuxt/app';
+import { useRoute } from 'nuxt/app';
 import { DateTime } from 'luxon';
 import {
   dateOptKeys,
@@ -10,8 +10,7 @@ import {
 } from '~/components/modules/project/config/date-options';
 import type { Project, ProjectRepository } from '~~/types/project';
 import { Granularity } from '~~/types/shared/granularity';
-
-export type URLParams = Record<string, string | null | undefined>;
+import { useQueryParam } from '~/components/shared/utils/query-param';
 
 const calculateGranularity = (start: string | null, end: string | null): string[] => {
   // Return weekly if either date is null
@@ -43,48 +42,14 @@ export const defaultDateOption = lfxProjectDateOptions.find(
   (option) => option.key === defaultTimeRangeKey
 );
 
-export const updateUrlParams = (urlParams: URLParams) => {
-  const route = useRoute();
-  const router = useRouter();
-
-  const query: URLParams = {
-    ...(route.query as URLParams),
-    ...urlParams,
-  };
-
-  router.replace({ query });
-};
-
-export const getUrlDateParams = () => {
-  const route = useRoute();
-  const {
-    timeRange: paramTimeRange,
-    start: paramStart,
-    end: paramEnd
-} = route.query;
-  const timeRange = paramTimeRange as string || defaultTimeRangeKey;
-  let start = paramStart as string || defaultDateOption?.startDate || lfxProjectDateOptions[1]?.startDate || null;
-  let end = paramEnd as string || defaultDateOption?.endDate || lfxProjectDateOptions[1]?.endDate || null;
-
-  if(timeRange === dateOptKeys.alltime){
-    start = null;
-    end = null;
-  }
-
-  return {
-    timeRange,
-    start,
-    end,
-  };
-};
-
 export const useProjectStore = defineStore('project', () => {
   const route = useRoute();
 
-  const { timeRange, start, end } = getUrlDateParams();
-  const selectedTimeRangeKey = ref<string>(timeRange);
-  const startDate = ref<string | null>(start);
-  const endDate = ref<string | null>(end);
+  const { queryParams } = useQueryParam();
+  const { timeRange, start, end } = queryParams.value;
+  const selectedTimeRangeKey = ref<string>(timeRange!);
+  const startDate = ref<string | null>(start!);
+  const endDate = ref<string | null>(end!);
   const isProjectLoading = ref(false);
   const project = ref<Project | null>(null);
   const projectRepos = computed<ProjectRepository[]>(() => project.value?.repositories || []);

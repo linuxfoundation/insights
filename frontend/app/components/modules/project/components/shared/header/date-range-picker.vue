@@ -120,16 +120,17 @@ import {
   lfxProjectDateOptionsPast,
   lfxProjectDateOptionsPrevious
 } from "~/components/modules/project/config/date-options";
-import { useProjectStore, updateUrlParams } from "~/components/modules/project/store/project.store";
+import { useProjectStore } from "~/components/modules/project/store/project.store";
 import LfxProjectCustomDateRangePicker
   from "~/components/modules/project/components/shared/header/custom-date-range-picker.vue";
 import LfxDropdownSelect from "~/components/uikit/dropdown/dropdown-select.vue";
 import LfxDropdownItem from "~/components/uikit/dropdown/dropdown-item.vue";
 import LfxDropdownSeparator from "~/components/uikit/dropdown/dropdown-separator.vue";
 import LfxDropdownSelector from "~/components/uikit/dropdown/dropdown-selector.vue";
+import { useQueryParam } from "~/components/shared/utils/query-param";
 
 const { selectedTimeRangeKey, startDate, endDate } = storeToRefs(useProjectStore())
-
+const { queryParams } = useQueryParam();
 const isOpen = ref(false);
 const isCustomSelectorOpen = ref(false);
 
@@ -141,7 +142,11 @@ const changeSelected = (option: DateOptionConfig) => {
   endDate.value = option.endDate;
   isOpen.value = false;
 
-  updateUrlParams({timeRange: option.key, start: startDate.value || undefined, end: endDate.value || undefined});
+  queryParams.value = {
+    timeRange: option.key,
+    start: startDate.value || null,
+    end: endDate.value || null,
+  };
 }
 
 watch(() => selectedDateRange.value, (value) => {
