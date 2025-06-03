@@ -16,30 +16,26 @@ SPDX-License-Identifier: MIT
     v-for="group of (data?.data || [])"
     :key="group.id"
   >
-    <lfx-dropdown-group-title v-if="group.categories.length">
+    <lfx-dropdown-item
+      v-if="group.categories.length"
+      :value="'group-' + group.categories.map((c) => c.id).join(',')"
+      :label="group.name"
+    >
       {{group.name}}
-    </lfx-dropdown-group-title>
-    <!-- Reenable when we support selecting all sub-categories -->
-    <!--    <lfx-dropdown-item-->
-    <!--      :value="'group-' + group.categories.map((c) => c.id).join(',')"-->
-    <!--      :label="group.name"-->
-    <!--    >-->
-    <!--      All sub-categories-->
-    <!--    </lfx-dropdown-item>-->
+    </lfx-dropdown-item>
     <lfx-dropdown-item
       v-for="category of group.categories"
       :key="category.id"
       :value="category.id"
       :label="category.name"
+      class="!pl-10"
     />
-    <lfx-dropdown-separator />
   </template>
 </template>
 
 <script setup lang="ts">
 import {useQuery} from "@tanstack/vue-query";
 import LfxDropdownSearch from "~/components/uikit/dropdown/dropdown-search.vue";
-import LfxDropdownGroupTitle from "~/components/uikit/dropdown/dropdown-group-title.vue";
 import LfxDropdownItem from "~/components/uikit/dropdown/dropdown-item.vue";
 import LfxDropdownSeparator from "~/components/uikit/dropdown/dropdown-separator.vue";
 import type {Pagination} from "~~/types/shared/pagination";
