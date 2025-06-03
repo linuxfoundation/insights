@@ -18,7 +18,7 @@ SPDX-License-Identifier: MIT
         <div
           class="value-display"
         >
-          <i class="value-icon fa-light fa-people-group" />
+          <i class="value-icon fa-light fa-dollar-circle" />
           {{ props.group?.softwareValue ? `${props.group?.softwareValue}+` : 'N/A' }}
         </div>
       </div>

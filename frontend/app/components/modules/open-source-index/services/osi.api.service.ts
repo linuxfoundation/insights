@@ -3,6 +3,7 @@
 import type { QueryFunction } from '@tanstack/vue-query';
 import { type Ref, computed } from 'vue';
 import { useQuery } from '@tanstack/vue-query';
+import _ from 'lodash';
 import { TanstackKey } from '~/components/shared/types/tanstack';
 import type {
   OSSIndexCategoryGroup,
@@ -157,7 +158,7 @@ class OssIndexApiService {
     type: 'group' | 'category' | 'collection',
     sort: SortType
   ): TreeMapData[] {
-    const minMax = this.getMinMaxValue(data, 'totalContributors');
+    const minMax = this.getMinMaxValue(data, sort);
     let link = '';
 
     switch (type) {
@@ -174,30 +175,36 @@ class OssIndexApiService {
     const filteredData = this.filterDataByLimit(data);
 
     return (
-      filteredData.map((group) => {
-        const rangeIndex = this.getRangeValue(minMax, group.totalContributors);
+      _.sortBy(
+        filteredData.map((group) => {
+          const rangeIndex = this.getRangeValue(
+            minMax,
+            sort === 'totalContributors' ? group.totalContributors : group.softwareValue
+          );
 
-        return {
-          id: group.id,
-          name: group.name,
-          value: [
-            sort === 'totalContributors' ? group.totalContributors : group.softwareValue,
-            rangeIndex,
-          ],
-          slug: group.slug,
-          totalContributors: group.totalContributors,
-          softwareValue: group.softwareValue,
-          avgScore: group.avgScore,
-          type: group.type,
-          topProjects: group.topProjects.map((project) => ({
-            ...project,
-            logoUrl: project.logo,
-          })),
-          topCollections: group.topCollections,
-          link: `${link}/${group.slug}`,
-          target: '_self',
-        };
-      }) || []
+          return {
+            id: group.id,
+            name: group.name,
+            value: [
+              sort === 'totalContributors' ? group.totalContributors : group.softwareValue,
+              rangeIndex,
+            ],
+            slug: group.slug,
+            totalContributors: group.totalContributors,
+            softwareValue: group.softwareValue,
+            avgScore: group.avgScore,
+            type: group.type,
+            topProjects: group.topProjects.map((project) => ({
+              ...project,
+              logoUrl: project.logo,
+            })),
+            topCollections: group.topCollections,
+            link: `${link}/${group.slug}`,
+            target: '_self',
+          };
+        }),
+        sort
+      ) || []
     );
   }
 
