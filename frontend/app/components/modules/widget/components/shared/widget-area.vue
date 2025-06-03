@@ -40,7 +40,9 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script lang="ts" setup>
-import {computed, ref} from "vue";
+import {
+computed, ref, watch
+} from "vue";
 import {storeToRefs} from "pinia";
 import {useRoute} from "nuxt/app";
 import type {Widget} from "~/components/modules/widget/types/widget";
@@ -55,6 +57,7 @@ import useScroll from "~/components/shared/utils/scroll";
 import LfxWidget from "~/components/modules/widget/components/shared/widget.vue";
 import type { Benchmark } from '~~/types/shared/benchmark.types';
 import {useProjectStore} from "~/components/modules/project/store/project.store";
+import { useQueryParam } from "~/components/shared/utils/query-param";
 
 const props = defineProps<{
   name: WidgetArea
@@ -64,7 +67,8 @@ const route = useRoute();
 const config = computed<WidgetAreaConfig>(() => lfxWidgetArea[props.name]);
 const benchmarks = ref<Record<string, Benchmark | undefined>>({});
 
-const activeItem = ref(route.query?.widget || config.value.widgets?.[0] || '');
+const { queryParams } = useQueryParam();
+const activeItem = ref(queryParams.value.widget || config.value.widgets?.[0] || '');
 const tmpClickedItem = ref('');
 
 const { scrollToTarget, scrollToTop } = useScroll();
@@ -113,6 +117,15 @@ const onBenchmarkUpdate = (value: Benchmark | undefined) => {
     benchmarks.value[value.key] = value;
   }
 }
+
+watch(() => project, (newProject) => {
+  if (newProject) {
+    setTimeout(() => {
+      const widget = route.query?.widget || config.value.widgets?.[0] || '';
+      onSideNavUpdate(widget as string);
+    }, 100);
+  }
+}, {deep: true, immediate: true});
 </script>
 
 <script lang="ts">
