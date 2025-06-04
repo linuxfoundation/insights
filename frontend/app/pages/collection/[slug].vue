@@ -3,6 +3,7 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
+  <p class="hidden">Rendered at: {{ new Date().toISOString() }}</p>
   <lfx-collection-details-view
     :collection="data"
     :loading="isPending"
