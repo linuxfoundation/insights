@@ -108,12 +108,14 @@ import { FormatterUnits } from '~/components/shared/types/formatter.types';
 import {TanstackKey} from "~/components/shared/types/tanstack";
 import LfxSkeletonState from "~/components/modules/project/components/shared/skeleton-state.vue";
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
+import {Widget} from "~/components/modules/widget/types/widget";
 
 const props = defineProps<{
   snapshot?: boolean
 }>()
 
 const emit = defineEmits<{(e: 'update:benchmarkValue', value: Benchmark | undefined): void;
+(e: 'dataLoaded', value: string): void;
 }>();
 
 const {
@@ -161,10 +163,16 @@ const issuesResolution = computed<IssuesResolution>(() => data.value as IssuesRe
 const summary = computed<IssuesResolutionSummary>(() => issuesResolution.value?.summary);
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
-  () => convertToChartData((issuesResolution.value?.data || []) as RawChartData[], 'dateFrom', [
-    'closedIssues',
-    'totalIssues'
-  ], undefined, 'dateTo')
+  () => convertToChartData(
+    (issuesResolution.value?.data || []) as unknown as RawChartData[],
+    'dateFrom',
+    [
+      'closedIssues',
+      'totalIssues'
+    ],
+undefined,
+'dateTo'
+)
 );
 
 const avgVelocity = computed<string>(() => formatSecondsToDuration(summary.value?.avgVelocityInDays || 0, 'long'));
@@ -216,6 +224,14 @@ const callEmit = () => {
 callEmit();
 
 watch(chartData, callEmit);
+
+watch(status, (value) => {
+  if (value !== 'pending') {
+    emit('dataLoaded', Widget.ISSUES_RESOLUTION);
+  }
+}, {
+  immediate: true
+});
 </script>
 
 <script lang="ts">

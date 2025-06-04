@@ -54,7 +54,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { useRoute } from 'nuxt/app';
-import { computed, onServerPrefetch } from 'vue';
+import { computed, onServerPrefetch, watch } from 'vue';
 import { storeToRefs } from "pinia";
 import {type QueryFunction, useQuery} from "@tanstack/vue-query";
 import type { GithubMentions } from '~~/types/popularity/responses.types';
@@ -80,6 +80,7 @@ import type { Granularity } from '~~/types/shared/granularity';
 import {TanstackKey} from "~/components/shared/types/tanstack";
 import LfxSkeletonState from "~/components/modules/project/components/shared/skeleton-state.vue";
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
+import {Widget} from "~/components/modules/widget/types/widget";
 
 interface GithubMentionsModel {
   activeTab: string;
@@ -90,7 +91,8 @@ const props = defineProps<{
   snapshot?: boolean
 }>()
 
-const emit = defineEmits<{(e: 'update:modelValue', value: GithubMentionsModel): void;}>();
+const emit = defineEmits<{(e: 'dataLoaded', value: string): void;
+(e: 'update:modelValue', value: GithubMentionsModel): void;}>();
 
 const model = computed<GithubMentionsModel>({
   get: () => props.modelValue,
@@ -189,6 +191,14 @@ const barChartConfig = computed(() => getBarChartConfig(
   chartSeries.value,
   barGranularity.value
 ));
+
+watch(status, (value) => {
+  if (value !== 'pending') {
+    emit('dataLoaded', Widget.GITHUB_MENTIONS);
+  }
+}, {
+  immediate: true
+});
 </script>
 
 <script lang="ts">

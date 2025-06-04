@@ -83,6 +83,7 @@ import { BenchmarkKeys, type Benchmark } from '~~/types/shared/benchmark.types';
 import {TanstackKey} from "~/components/shared/types/tanstack";
 import LfxSkeletonState from "~/components/modules/project/components/shared/skeleton-state.vue";
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
+import {Widget} from "~/components/modules/widget/types/widget";
 
 interface StarsModel {
   activeTab: string;
@@ -95,6 +96,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{(e: 'update:modelValue', value: StarsModel): void;
   (e: 'update:benchmarkValue', value: Benchmark | undefined): void;
+  (e: 'dataLoaded', value: string): void;
 }>();
 
 const model = computed<StarsModel>({
@@ -250,6 +252,13 @@ watch(cumulativeStatus, () => {
   callEmit();
 });
 
+watch(status, (value) => {
+  if (value !== 'pending') {
+    emit('dataLoaded', Widget.STARS);
+  }
+}, {
+  immediate: true
+});
 </script>
 
 <script lang="ts">

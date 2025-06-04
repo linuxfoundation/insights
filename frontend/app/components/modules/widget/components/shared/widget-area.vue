@@ -29,6 +29,7 @@ SPDX-License-Identifier: MIT
                 <lfx-widget
                   :name="widget"
                   @update:benchmark-value="onBenchmarkUpdate"
+                  @data-loaded="onDataLoaded"
                 />
               </lfx-benchmarks-wrap>
             </lfx-scroll-view>
@@ -41,7 +42,7 @@ SPDX-License-Identifier: MIT
 
 <script lang="ts" setup>
 import {
-computed, ref, watch
+computed, ref
 } from "vue";
 import {storeToRefs} from "pinia";
 import {useRoute} from "nuxt/app";
@@ -70,6 +71,7 @@ const benchmarks = ref<Record<string, Benchmark | undefined>>({});
 const { queryParams } = useQueryParam();
 const activeItem = ref(queryParams.value.widget || config.value.widgets?.[0] || '');
 const tmpClickedItem = ref('');
+const loadedWidgets = ref<Record<string, boolean>>({});
 
 const { scrollToTarget, scrollToTop } = useScroll();
 const { project } = storeToRefs(useProjectStore())
@@ -117,15 +119,30 @@ const onBenchmarkUpdate = (value: Benchmark | undefined) => {
     benchmarks.value[value.key] = value;
   }
 }
+/**
+ * These functions
+ */
+const onDataLoaded = (value: string) => {
+  loadedWidgets.value[value] = true;
 
-watch(() => project, (newProject) => {
-  if (newProject) {
+  navigateToWidget();
+}
+
+const areWidgetsAboveLoaded = (currentWidget: string) => {
+  const currentWidgetIndex = widgets.value.indexOf(currentWidget as Widget);
+  const widgetsAbove = widgets.value.slice(0, currentWidgetIndex);
+
+  return widgetsAbove.every((widget) => loadedWidgets.value[widget]);
+};
+
+const navigateToWidget = () => {
+  const widget = route.query?.widget || config.value.widgets?.[0] || '';
+  if (widget && areWidgetsAboveLoaded(widget as string)) {
     setTimeout(() => {
-      const widget = route.query?.widget || config.value.widgets?.[0] || '';
       onSideNavUpdate(widget as string);
     }, 100);
   }
-}, {deep: true, immediate: true});
+}
 </script>
 
 <script lang="ts">
