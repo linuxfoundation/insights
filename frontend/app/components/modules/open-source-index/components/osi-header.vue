@@ -162,6 +162,7 @@ import LfxSkeletonState from "~/components/modules/project/components/shared/ske
 const props = defineProps<{
   type: string;
   sort: SortType;
+  isRoot?: boolean;
   breadcrumbData: BreadcrumbData;
   status: AsyncDataRequestStatus;
 }>();
@@ -203,7 +204,7 @@ const breadcrumbLink = computed(() => {
   return `/open-source-index/group/${slug}?sort=${sort}&type=${type}`;
 });
 
-const isRoot = computed(() => !props.breadcrumbData.category && !props.breadcrumbData.group);
+// const isRoot = computed(() => !props.breadcrumbData.category && !props.breadcrumbData.group);
 
 const backButtonLink = computed(() => {
   const slug = props.breadcrumbData.group?.slug;
