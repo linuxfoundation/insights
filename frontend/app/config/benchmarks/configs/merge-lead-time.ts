@@ -15,7 +15,7 @@ export const mergeLeadTime: BenchmarkConfigs = {
       description: 'Average lifespan of a PR is {value} days',
       text: `This project has extremely slow pull request merging, 
       indicating significant delays in review and integration processes.`,
-      points: 0
+      points: 0,
     },
     {
       pointStart: 21,
@@ -24,7 +24,7 @@ export const mergeLeadTime: BenchmarkConfigs = {
       description: 'Average lifespan of a PR is {value} days',
       text: `This project shows a very slow merge process, 
       suggesting challenges in timely reviewing and merging of contributions.`,
-      points: 1
+      points: 1,
     },
     {
       pointStart: 15,
@@ -33,16 +33,16 @@ export const mergeLeadTime: BenchmarkConfigs = {
       description: 'Average lifespan of a PR is {value} days',
       text: `This project demonstrates a modest merge lead time, 
       with noticeable delays that could impede development velocity.`,
-      points: 2
+      points: 2,
     },
     {
       pointStart: 7,
       pointEnd: 14,
       type: 'warning',
-      description: 'Average lifespan of a PR is{value} days',
+      description: 'Average lifespan of a PR is {value} days',
       text: `This project exhibits a reasonable merge lead time, 
       reflecting a balanced and consistent review process.`,
-      points: 3
+      points: 3,
     },
     {
       pointStart: 3,
@@ -51,7 +51,7 @@ export const mergeLeadTime: BenchmarkConfigs = {
       description: 'Average lifespan of a PR is {value} days',
       text: `This project benefits from fast merging of pull requests, 
       indicating an efficient and responsive review workflow.`,
-      points: 4
+      points: 4,
     },
     {
       pointStart: 0,
@@ -60,14 +60,10 @@ export const mergeLeadTime: BenchmarkConfigs = {
       description: 'Average lifespan of a PR is {value} days',
       text: `This project benefits from exceptionally fast merging of pull requests, 
       reflecting a highly efficient development process.`,
-      points: 5
-    }
+      points: 5,
+    },
   ],
-  visibilityCheck: (
-    _selectedTimeRangeKey: string,
-    startDate: string,
-    endDate: string
-  ) => {
+  visibilityCheck: (_selectedTimeRangeKey: string, startDate: string, endDate: string) => {
     const start = DateTime.fromISO(startDate);
     const end = DateTime.fromISO(endDate);
     const diffInDays = Math.ceil(end.diff(start, 'days').days);
@@ -76,5 +72,5 @@ export const mergeLeadTime: BenchmarkConfigs = {
       return true;
     }
     return false;
-  }
+  },
 };
