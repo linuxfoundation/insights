@@ -83,15 +83,15 @@ onServerPrefetch(async () => {
 watch(() => data.value, (value) => {
   if (value) {
     project.value = value;
-    selectedTimeRangeKey.value = defaultTimeRangeKey;
-    startDate.value = defaultDateOption?.startDate || null;
-    endDate.value = defaultDateOption?.endDate || null;
+    const { timeRange, start, end } = queryParams.value;
+    selectedTimeRangeKey.value = timeRange || defaultTimeRangeKey;
+    startDate.value = start || defaultDateOption?.startDate || null;
+    endDate.value = end || defaultDateOption?.endDate || null;
 
-    // reset the query params
     queryParams.value = {
-      timeRange: undefined,
-      start: undefined,
-      end: undefined,
+      timeRange: selectedTimeRangeKey.value,
+      start: startDate.value,
+      end: endDate.value,
     };
   }
 }, { immediate: true });
