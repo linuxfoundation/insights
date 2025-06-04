@@ -86,17 +86,19 @@ SPDX-License-Identifier: MIT
               class="min-w-[215px]"
             >
               <template #trigger="{selectedOption}">
-                <lfx-dropdown-selector>
-                  <lfx-icon
-                    name="chart-tree-map"
-                    :size="16"
-                  />
-                  <span class="text-neutral-900 font-medium text-sm text-nowrap">
-                    Grouped by:
-                  </span>
-                  <span class="inline font-normal text-sm text-nowrap">
-                    {{selectedOption.label}}
-                  </span>
+                <lfx-dropdown-selector class="justify-between">
+                  <div class="flex items-center gap-2">
+                    <lfx-icon
+                      name="chart-tree-map"
+                      :size="16"
+                    />
+                    <span class="text-neutral-900 font-medium text-sm text-nowrap">
+                      Grouped by:
+                    </span>
+                    <span class="inline font-normal text-sm text-nowrap">
+                      {{selectedOption.label}}
+                    </span>
+                  </div>
                 </lfx-dropdown-selector>
               </template>
 
