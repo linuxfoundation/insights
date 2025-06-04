@@ -17,7 +17,6 @@ With LFX Insights, you can:
 
 Built by the <a href="https://www.linuxfoundation.org">Linux Foundation</a>, LFX Insights leverages trusted, high-quality data to help you reduce risk and choose open source projects that are not just functional—but reliable.
 
-
 ## Why It Matters
 Today's world is built on open source software. But as our stack grows, so does the complexity—and with it, the risk. Incidents like the XZ backdoor, log4shell, or even the sudden removal of left-pad highlight how fragile the software supply chain can be.
 
@@ -26,16 +25,6 @@ And while metrics like GitHub stars may look reassuring, they often hide deeper 
 Insights acts as your early warning system. It helps you avoid risky dependencies before they impact your stack—and guides you toward open source you can build on with confidence.
 
 Because software development is not just about what works today. It’s about what lasts.
-
-## How does Insights help you?
-- Want to track the performance of open source projects in real time
-- Need to analyze data quickly
-- Are looking for an online reporting tool
-- Want to download reports in CSV or other formats
-- Need to compare reports over selected periods
-- Want to measure project growth and team performance
-- Need to track historical data to identify trends and patterns
-- Want to detect potential issues early and take corrective action
 
 ## Outlook
 Insights was relaunched in May 2025 with a renewed focus on clarity, transparency, and usability for developers.
