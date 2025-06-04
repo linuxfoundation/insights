@@ -83,8 +83,10 @@ import { FormatterUnits } from '~/components/shared/types/formatter.types';
 import {TanstackKey} from "~/components/shared/types/tanstack";
 import LfxSkeletonState from "~/components/modules/project/components/shared/skeleton-state.vue";
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
+import {Widget} from "~/components/modules/widget/types/widget";
 
 const emit = defineEmits<{(e: 'update:benchmarkValue', value: Benchmark | undefined): void;
+(e: 'dataLoaded', value: string): void;
 }>();
 
 const {
@@ -171,6 +173,13 @@ const formatDuration = (seconds: number): { value: number, unit: string } => {
   };
 };
 
+watch(status, (value) => {
+  if (value !== 'pending') {
+    emit('dataLoaded', Widget.MERGE_LEAD_TIME);
+  }
+}, {
+  immediate: true
+});
 </script>
 
 <script lang="ts">

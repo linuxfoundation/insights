@@ -28,7 +28,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { useRoute } from 'nuxt/app';
-import { computed, onServerPrefetch } from 'vue';
+import { computed, onServerPrefetch, watch } from 'vue';
 import { storeToRefs } from "pinia";
 import {type QueryFunction, useQuery} from "@tanstack/vue-query";
 import searchQueriesConfig from './search-queries.config'
@@ -49,10 +49,13 @@ import { barGranularities } from '~/components/shared/types/granularity';
 import type { Granularity } from '~~/types/shared/granularity';
 import {TanstackKey} from "~/components/shared/types/tanstack";
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
+import {Widget} from "~/components/modules/widget/types/widget";
 
 const props = defineProps<{
   snapshot?: boolean
 }>()
+
+const emit = defineEmits<{(e: 'dataLoaded', value: string): void}>();
 
 const {
   startDate,
@@ -127,6 +130,14 @@ const barChartConfig = computed(() => getBarChartConfig(
   chartSeries.value,
   granularity.value
 ));
+
+watch(status, (value) => {
+  if (value !== 'pending') {
+    emit('dataLoaded', Widget.SEARCH_QUERIES);
+  }
+}, {
+  immediate: true
+});
 </script>
 
 <script lang="ts">

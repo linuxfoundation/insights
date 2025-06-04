@@ -50,7 +50,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { useRoute } from 'nuxt/app';
-import { computed, onServerPrefetch } from 'vue';
+import { computed, onServerPrefetch, watch } from 'vue';
 import { storeToRefs } from "pinia";
 import {type QueryFunction, useQuery} from "@tanstack/vue-query";
 import type { CodeReviewEngagement } from '~~/types/development/responses.types';
@@ -67,6 +67,7 @@ import LfxCodeReviewTable from "~/components/modules/widget/components/developme
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
 import LfxSkeletonState from "~/components/modules/project/components/shared/skeleton-state.vue";
 import type {Benchmark} from "~~/types/shared/benchmark.types";
+import {Widget} from "~/components/modules/widget/types/widget";
 
 interface CodeReviewEngagementModel {
   activeTab: string;
@@ -79,6 +80,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{(e: 'update:modelValue', value: CodeReviewEngagementModel): void;
   (e: 'update:benchmarkValue', value: Benchmark | undefined): void;
+  (e: 'dataLoaded', value: string): void;
 }>();
 
 const model = computed<CodeReviewEngagementModel>({
@@ -137,6 +139,14 @@ const tabs = [
 const isEmpty = computed(() => isEmptyData(
   (codeReviewEngagement.value?.data || []) as unknown as Record<string, unknown>[]
 ));
+
+watch(status, (value) => {
+  if (value !== 'pending') {
+    emit('dataLoaded', Widget.CODE_REVIEW_ENGAGEMENT);
+  }
+}, {
+  immediate: true
+});
 </script>
 
 <script lang="ts">

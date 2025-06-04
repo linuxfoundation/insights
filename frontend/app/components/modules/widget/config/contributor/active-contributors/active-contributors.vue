@@ -78,6 +78,7 @@ import {granularityTabs} from "~/components/modules/widget/components/contributo
 import LfxSkeletonState from "~/components/modules/project/components/shared/skeleton-state.vue";
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
 import {Granularity} from "~~/types/shared/granularity";
+import {Widget} from "~/components/modules/widget/types/widget";
 
 interface ActiveContributorsModel {
   activeTab: Granularity;
@@ -88,7 +89,8 @@ const props = defineProps<{
   snapshot?: boolean
 }>()
 
-const emit = defineEmits<{(e: 'update:benchmarkValue', value: Benchmark | undefined): void;
+const emit = defineEmits<{(e: 'dataLoaded', value: string): void;
+  (e: 'update:benchmarkValue', value: Benchmark | undefined): void;
   (e: 'update:modelValue', value: ActiveContributorsModel): void
 }>();
 
@@ -196,6 +198,14 @@ watch(activeContributors, () => {
     key: BenchmarkKeys.ActiveContributors,
     value: summary.value.current
   } : undefined);
+});
+
+watch(status, (value) => {
+  if (value !== 'pending') {
+    emit('dataLoaded', Widget.ACTIVE_CONTRIBUTORS);
+  }
+}, {
+  immediate: true
 });
 </script>
 
