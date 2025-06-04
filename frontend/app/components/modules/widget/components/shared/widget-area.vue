@@ -120,7 +120,11 @@ const onBenchmarkUpdate = (value: Benchmark | undefined) => {
   }
 }
 /**
- * These functions
+ * These functions are used to navigate to the widget in the url params.
+ * It checks if the widgets above the current widget are loaded and if so, it navigates to the current widget.
+ * The reason for waiting is because widgets have different heights while loading.
+ * This causes the scroll to jump to the wrong position.
+ * This is a workaround to ensure the scroll is at the correct position.
  */
 const onDataLoaded = (value: string) => {
   loadedWidgets.value[value] = true;
