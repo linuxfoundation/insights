@@ -133,7 +133,7 @@ const { selectedTimeRangeKey, startDate, endDate } = storeToRefs(useProjectStore
 const { queryParams } = useQueryParam();
 const isOpen = ref(false);
 const isCustomSelectorOpen = ref(false);
-console.log("!!!selected", selectedTimeRangeKey.value);
+
 const selectedDateRange = ref(selectedTimeRangeKey.value);
 
 const changeSelected = (option: DateOptionConfig) => {
