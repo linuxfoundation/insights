@@ -8,6 +8,7 @@ SPDX-License-Identifier: MIT
     :sort="sort"
     :status="status"
     :breadcrumb-data="breadcrumbData"
+    :is-root="isRoot"
     @update:type="type = $event as OSIType"
     @update:sort="sort = $event as SortType"
   />
@@ -42,6 +43,7 @@ import LfxProjectLoadState from '~~/app/components/modules/project/components/sh
 const props = defineProps<{
   group?: string;
   category?: string;
+  isRoot?: boolean;
 }>();
 
 const route = useRoute();
