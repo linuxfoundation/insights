@@ -4,7 +4,7 @@
 # LFX Insights
 
 ## What is LFX Insights?
-Insights evaluates the health and trustworthiness of the world's most critical open source software.
+Insights evaluates the health of the world's most critical open source software.
 
 At the core, Insights analyzes the following vectors to define a project's health:
 - <b>Contributors</b>: Who is contributing on behalf of which company? (Leaderboards, Contributor/Organization dependency, etc)
@@ -17,7 +17,7 @@ Insights is part of the [LFX platform](https://lfx.linuxfoundation.org/).
 ## Contributing
 
 > [!WARNING]
-> This project is currently in beta and this repository includes mainly the frontend code. It's not straightforward to run the application locally with relevant data to test.
+> This project is currently in beta and this repository includes mainly the frontend code.
 
 For this reason, outside code contributions are not intended (yet). There are still ways to contribute to Insights:
 
