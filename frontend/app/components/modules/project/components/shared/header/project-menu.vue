@@ -23,9 +23,7 @@ SPDX-License-Identifier: MIT
       :disabled="!link.comingSoon"
     >
       <lfx-menu-button
-        :to="!link.comingSoon ? {
-          name: repoName ? link.repoRouteName : link.projectRouteName
-        } : undefined"
+        :to="linkUrl(link)"
         :exact="true"
         :disabled="link.comingSoon"
       >
@@ -124,6 +122,17 @@ const isAreaEnabled = (area: WidgetArea) => {
 }
 
 const links = computed(() => lfProjectLinks.filter((link) => isAreaEnabled(link.area)))
+
+const linkUrl = (link: typeof lfProjectLinks[number]) => {
+  if (link.comingSoon) {
+    return undefined;
+  }
+
+  return {
+    name: repoName.value ? link.repoRouteName : link.projectRouteName,
+    query: route.query
+  };
+}
 </script>
 
 <script lang="ts">
