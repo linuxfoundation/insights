@@ -50,7 +50,7 @@ const defaultOption: ECOption = {
       return Math.max(0, value.min - step);
     },
     max: (value: { min: number; max: number }) => {
-      const range = value.max;
+      const range = value.max - value.min;
       const step = roundOff(range / 5);
       const newMax = Math.ceil(value.max / step) * step;
 
