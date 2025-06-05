@@ -1,10 +1,12 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
+import { DateTime } from 'luxon';
 import { computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import {
   dateOptKeys,
   lfxProjectDateOptions,
+  type DateOptionConfig,
 } from '~/components/modules/project/config/date-options';
 import {
   defaultDateOption,
@@ -18,6 +20,23 @@ export type URLParams = {
   widget?: string;
 };
 
+const getStartAndEndDate = (rangeValue: string) => {
+  const option = lfxProjectDateOptions.find(
+    (option) => option.key === rangeValue
+  ) as DateOptionConfig;
+
+  if (option) {
+    return {
+      start: option.startDate,
+      end: option.endDate,
+    };
+  }
+
+  return {
+    start: null,
+    end: null,
+  };
+};
 export const useQueryParam = () => {
   const route = useRoute();
   const router = useRouter();
@@ -27,19 +46,36 @@ export const useQueryParam = () => {
       const {
  timeRange: paramTimeRange, start: paramStart, end: paramEnd, widget
 } = route.query;
-      const timeRange = (paramTimeRange as string) || defaultTimeRangeKey;
-      let start = (paramStart as string)
-        || defaultDateOption?.startDate
-        || lfxProjectDateOptions[1]?.startDate
-        || null;
-      let end = (paramEnd as string)
-        || defaultDateOption?.endDate
-        || lfxProjectDateOptions[1]?.endDate
-        || null;
 
-      if (timeRange === dateOptKeys.alltime) {
-        start = null;
-        end = null;
+      // Parse and validate date params
+      const isValidStartDate = DateTime.fromISO(paramStart as string).isValid;
+      const isValidEndDate = DateTime.fromISO(paramEnd as string).isValid;
+
+      // Get timeRange with fallback to default
+      const timeRange = (paramTimeRange as string) || defaultTimeRangeKey;
+
+      // Handle date params
+      let start = null;
+      let end = null;
+
+      // Check if timeRange is a valid dateOptKeys enum value
+      if (!Object.values(dateOptKeys).includes(timeRange as dateOptKeys)) {
+        return {
+          widget: widget as string,
+        };
+      }
+
+      if (timeRange !== dateOptKeys.alltime) {
+        // get the start and end date option from the time range
+        const { start: startOption, end: endOption } = getStartAndEndDate(timeRange);
+
+        start = isValidStartDate
+          ? startOption
+          : defaultDateOption?.startDate || lfxProjectDateOptions[1]?.startDate || null;
+
+        end = isValidEndDate
+          ? endOption
+          : defaultDateOption?.endDate || lfxProjectDateOptions[1]?.endDate || null;
       }
 
       return {

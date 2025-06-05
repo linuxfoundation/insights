@@ -90,7 +90,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import {
-computed, onServerPrefetch
+computed, onServerPrefetch, watch
 } from 'vue';
 import { useRoute } from 'vue-router';
 import { storeToRefs } from "pinia";
@@ -114,6 +114,7 @@ import type {GeoMapData, GeoMapResponse }
 import LfxActivitiesDropdown
   from "~/components/modules/widget/components/contributors/fragments/activities-dropdown.vue";
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
+import {Widget} from "~/components/modules/widget/types/widget";
 
 interface GeographicalDistributionModel {
   metric: string;
@@ -125,7 +126,8 @@ const props = defineProps<{
   snapshot?: boolean
 }>()
 
-const emit = defineEmits<{(e: 'update:modelValue', value: GeographicalDistributionModel): void}>();
+const emit = defineEmits<{(e: 'dataLoaded', value: string): void;
+(e: 'update:modelValue', value: GeographicalDistributionModel): void}>();
 
 const model = computed<GeographicalDistributionModel>({
   get: () => props.modelValue,
@@ -208,6 +210,14 @@ const chartSeries = computed<ChartSeries[]>(() => [
     dataIndex: 0
   }
 ]);
+
+watch(status, (value) => {
+  if (value !== 'pending') {
+    emit('dataLoaded', Widget.GEOGRAPHICAL_DISTRIBUTION);
+  }
+}, {
+  immediate: true
+});
 </script>
 
 <script lang="ts">

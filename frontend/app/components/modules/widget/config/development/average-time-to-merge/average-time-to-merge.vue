@@ -42,7 +42,9 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { useRoute } from 'nuxt/app';
-import { ref, computed, onServerPrefetch } from 'vue';
+import {
+ ref, computed, onServerPrefetch, watch
+} from 'vue';
 import { storeToRefs } from "pinia";
 import {type QueryFunction, useQuery} from "@tanstack/vue-query";
 import type { AverageTimeMerge } from '~~/types/development/responses.types';
@@ -66,10 +68,13 @@ import { formatSecondsToDuration } from '~/components/shared/utils/formatter';
 import {TanstackKey} from "~/components/shared/types/tanstack";
 import LfxSkeletonState from "~/components/modules/project/components/shared/skeleton-state.vue";
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
+import {Widget} from "~/components/modules/widget/types/widget";
 
 const props = defineProps<{
   snapshot?: boolean;
 }>()
+
+const emit = defineEmits<{(e: 'dataLoaded', value: string): void}>();
 
 const {
   startDate, endDate, selectedRepository, selectedTimeRangeKey, customRangeGranularity
@@ -157,6 +162,14 @@ const chartDataMapper = (d: ChartData) => ({
     ...d,
     values: d.values.map((v) => Number(formatSecondsToDuration(v, 'no')))
   })
+
+watch(status, (value) => {
+  if (value !== 'pending') {
+    emit('dataLoaded', Widget.AVERAGE_TIME_TO_MERGE);
+  }
+}, {
+  immediate: true
+});
 </script>
 
 <script lang="ts">

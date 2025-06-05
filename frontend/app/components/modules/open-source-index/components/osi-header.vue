@@ -86,17 +86,19 @@ SPDX-License-Identifier: MIT
               class="min-w-[215px]"
             >
               <template #trigger="{selectedOption}">
-                <lfx-dropdown-selector>
-                  <lfx-icon
-                    name="chart-tree-map"
-                    :size="16"
-                  />
-                  <span class="text-neutral-900 font-medium text-sm text-nowrap">
-                    Grouped by:
-                  </span>
-                  <span class="inline font-normal text-sm text-nowrap">
-                    {{selectedOption.label}}
-                  </span>
+                <lfx-dropdown-selector class="justify-between">
+                  <div class="flex items-center gap-2">
+                    <lfx-icon
+                      name="chart-tree-map"
+                      :size="16"
+                    />
+                    <span class="text-neutral-900 font-medium text-sm text-nowrap">
+                      Grouped by:
+                    </span>
+                    <span class="inline font-normal text-sm text-nowrap">
+                      {{selectedOption.label}}
+                    </span>
+                  </div>
                 </lfx-dropdown-selector>
               </template>
 
@@ -160,6 +162,7 @@ import LfxSkeletonState from "~/components/modules/project/components/shared/ske
 const props = defineProps<{
   type: string;
   sort: SortType;
+  isRoot?: boolean;
   breadcrumbData: BreadcrumbData;
   status: AsyncDataRequestStatus;
 }>();
@@ -201,7 +204,7 @@ const breadcrumbLink = computed(() => {
   return `/open-source-index/group/${slug}?sort=${sort}&type=${type}`;
 });
 
-const isRoot = computed(() => !props.breadcrumbData.category && !props.breadcrumbData.group);
+// const isRoot = computed(() => !props.breadcrumbData.category && !props.breadcrumbData.group);
 
 const backButtonLink = computed(() => {
   const slug = props.breadcrumbData.group?.slug;
