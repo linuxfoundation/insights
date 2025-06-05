@@ -5,7 +5,7 @@
 
 > 📣 Insights was relaunched and open sourced in June 2025.
 
-## What is LFX Insights?
+## What is Insights?
 [Insights](https://insights.linuxfoundation.org/) evaluates the health of the world's most critical open source software.
 
 At the core, Insights analyzes the following vectors to define a project's health:
@@ -25,9 +25,9 @@ If you want to get involved, here are the best ways:
 
 ## Contributing
 
-This repository is currently in beta and includes mainly frontend code.
+This repository is currently in beta and includes mainly frontend code. For this reason, outside code contributions are not intended (yet). 
 
-For this reason, outside code contributions are not intended (yet). If you find a typo or want to add something to our documentation, please check out our [Documentation Contribution Guide](https://github.com/linuxfoundation/insights/blob/main/CONTRIBUTING.md#documentation-contribution-guide).
+If you find a typo or want to add something to our documentation, please check out our [Documentation Contribution Guide](https://github.com/linuxfoundation/insights/blob/main/CONTRIBUTING.md#documentation-contribution-guide).
 
 ## Requirements
 
