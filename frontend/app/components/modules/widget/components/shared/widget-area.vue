@@ -75,6 +75,7 @@ const loadedWidgets = ref<Record<string, boolean>>({});
 
 const { scrollToTarget, scrollToTop } = useScroll();
 const { project } = storeToRefs(useProjectStore())
+const isFirstLoad = ref(true);
 
 const widgets = computed(() => (config.value.widgets || [])
     .filter((widget) => {
@@ -141,8 +142,9 @@ const areWidgetsAboveLoaded = (currentWidget: string) => {
 
 const navigateToWidget = () => {
   const widget = route.query?.widget || config.value.widgets?.[0] || '';
-  if (widget && areWidgetsAboveLoaded(widget as string)) {
+  if (widget && areWidgetsAboveLoaded(widget as string) && !isFirstLoad.value) {
     setTimeout(() => {
+      isFirstLoad.value = false;
       onSideNavUpdate(widget as string);
     }, 100);
   }

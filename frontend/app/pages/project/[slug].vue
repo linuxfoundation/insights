@@ -40,6 +40,7 @@ import {
 import {TanstackKey} from "~/components/shared/types/tanstack";
 import {PROJECT_API_SERVICE} from "~/components/modules/project/services/project.api.service";
 import { useQueryParam } from "~/components/shared/utils/query-param";
+import { dateOptKeys } from "~/components/modules/project/config/date-options";
 
 const route = useRoute();
 const {slug} = route.params;
@@ -85,8 +86,10 @@ watch(() => data.value, (value) => {
     project.value = value;
     const { timeRange, start, end } = queryParams.value;
     selectedTimeRangeKey.value = timeRange || defaultTimeRangeKey;
-    startDate.value = start || defaultDateOption?.startDate || null;
-    endDate.value = end || defaultDateOption?.endDate || null;
+    startDate.value = selectedTimeRangeKey.value === dateOptKeys.alltime
+      ? null : start || defaultDateOption?.startDate || null;
+    endDate.value = selectedTimeRangeKey.value === dateOptKeys.alltime
+      ? null : end || defaultDateOption?.endDate || null;
 
     queryParams.value = {
       timeRange: selectedTimeRangeKey.value,

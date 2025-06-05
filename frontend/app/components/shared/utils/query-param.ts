@@ -76,6 +76,9 @@ export const useQueryParam = () => {
         end = isValidEndDate
           ? endOption
           : defaultDateOption?.endDate || lfxProjectDateOptions[1]?.endDate || null;
+      } else {
+        start = undefined;
+        end = undefined;
       }
 
       return {
