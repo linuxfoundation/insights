@@ -179,7 +179,7 @@ const lineAreaChartConfig = computed(() => getLineAreaChartConfig(
   chartData.value, //
   chartSeries.value, //
   granularity,
-  (value: number) => `${value === 0 ? '' : `${value}%`}`
+  (value: number, index?: number) => `${index === 0 ? '' : `${value}%`}`
 ));
 
 const callEmit = () => {
