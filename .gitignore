@@ -1,4 +1,7 @@
 .idea
+**/scripts/cli*
+scripts/cli
+scripts/utils
 
 node_modules
 .prettierrc
