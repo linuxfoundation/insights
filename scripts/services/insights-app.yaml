@@ -1,0 +1,31 @@
+version: '3.1'
+
+x-env-args: &env-args
+  DOCKER_BUILDKIT: 1
+  NODE_ENV: docker
+  SERVICE: insights-app
+  SHELL: /bin/sh
+
+services:
+  insights-app:
+    build:
+      context: ../../
+      dockerfile: ./scripts/services/docker/Dockerfile.insights_app
+    command: 'npm run dev'
+    working_dir: /usr/insights/app
+    env_file:
+      - ../../.env.dist.local
+      - ../../.env.dist.composed
+      - ../../.env.override.local
+      - ../../.env.override.composed
+    environment:
+      <<: *env-args
+    ports:
+      - '8080:8080'
+    restart: always
+    networks:
+      - insights-bridge
+
+networks:
+  insights-bridge:
+    external: true

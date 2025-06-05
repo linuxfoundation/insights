@@ -1,0 +1,7 @@
+packages:
+  - 'submodules/crowd.dev/services/libs/*'
+  - 'submodules/crowd.dev/services/archetypes/*'
+  - 'workers'
+  - 'workers/*'
+  - 'frontend'
+  - 'services'

@@ -2,3 +2,5 @@
 
 node_modules
 .prettierrc
+**/.env*
+!.env.dist
