@@ -2,11 +2,46 @@
 
 set -eo pipefail
 
+# --------------------------------------------------------------
+# Insights CLI
+# 
+# Usage:
+#   ./cli [command] [subcommand] [options]
+# 
+# Commands:
+#   scaffold up                      Set up scaffold containers and network
+#   scaffold down                    Tear down scaffold containers
+#   scaffold reset                   Recreate scaffold with DB migration
+#   scaffold destroy                 Fully remove scaffold and volumes
+#   scaffold create-migration <name>
+#                                    Create a new migration (up/down SQL)
+#   scaffold migrate-up              Apply local PostgreSQL migrations
+# 
+#   service up-all                   Start all services
+#   service <name> [up|down|...]     Manage a specific service
+# 
+#   services                         Alias for service
+# 
+#   start                            Start scaffold and all services
+# 
+#   build <builder>                  Build Docker image
+#   build-and-push <builder>         Build and push image
+#   build-and-push-multiple <...>    Bulk build/push
+#   push <builder>                   Push existing image
+# 
+#   migrate-env                      Apply migrations to remote DB
+# 
+# Examples:
+#   ./cli scaffold up
+#   ./cli service api restart
+#   ./cli build-and-push backend
+#
+# --------------------------------------------------------------
+
+
 PROJECT_NAME="insights"
-DOCKER_NETWORK_SUBNET="${INSIGHTS_NETWORK_SUBNET:-10.92.0.0/24}"
-DOCKER_NETWORK_GATEWAY="${INSIGHTS_NETWORK_GATEWAY:-10.92.0.1}"
-DOCKET_TEST_NETWORK_SUBNET="${INSIGHTS_TEST_NETWORK_SUBNET:-10.93.0.0/24}"
-DOCKER_TEST_NETWORK_GATEWAY="${INSIGHTS_TEST_NETWORK_GATEWAY:-10.93.0.1}"
+DOCKER_NETWORK_SUBNET="${INSIGHTS_NETWORK_SUBNET:-}"
+DOCKER_NETWORK_GATEWAY="${INSIGHTS_NETWORK_GATEWAY:-}"
 
 CLI_HOME="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 source $CLI_HOME/utils
@@ -16,7 +51,6 @@ BUILDERS=$(ls -p $CLI_HOME/builders | grep -v / | sed 's/\.[^.]*$//')
 
 DOCKER_COMPOSE_PROFILE=''
 DOCKER_COMPOSE_SCAFFOLD_FILES="-f $CLI_HOME/scaffold.yaml"
-
 
 _DC="docker compose"
 
@@ -28,20 +62,52 @@ else
     DOCKER_PLATFORM_FLAGS="--platform=linux/amd64"
 fi
 
+function print_help() {
+    cat <<'EOF'
+Insights CLI
+
+Usage:
+  ./cli [command] [subcommand] [options]
+
+Commands:
+  scaffold up                      Set up scaffold containers and network
+  scaffold down                    Tear down scaffold containers
+  scaffold reset                   Recreate scaffold with DB migration
+  scaffold destroy                 Fully remove scaffold and volumes
+  scaffold create-migration <name>
+                                   Create a new migration (up/down SQL)
+  scaffold migrate-up              Apply local PostgreSQL migrations
+
+  service up-all                   Start all services
+  service <name> [up|down|...]     Manage a specific service
+
+  services                         Alias for service
+
+  start                            Start scaffold and all services
+
+  build <builder>                  Build Docker image
+  build-and-push <builder>         Build and push image
+  build-and-push-multiple <...>    Bulk build/push
+  push <builder>                   Push existing image
+
+  migrate-env                      Apply migrations to remote DB
+
+Examples:
+  ./cli scaffold up
+  ./cli service api restart
+  ./cli build-and-push backend
+
+EOF
+}
+
+
 function prepare_dev_env() {
-    if [[ ! -f "$CLI_HOME/../.env.override.local" ]]; then
-        echo "# Here you can put environment variables that you would like to override when using local environment" >"$CLI_HOME/../.env.override.local"
-    fi
-    if [[ ! -f "$CLI_HOME/../.env.override.composed" ]]; then
-        echo "# Here you can put environment variables that you would like to override when using local environment" >"$CLI_HOME/../.env.override.composed"
+    if [[ ! -f "$CLI_HOME/../.env" ]]; then
+        echo "# Here you can put environment variables that you would like to override when using local environment" >"$CLI_HOME/../.env"
     fi
 
-    if [[ ! -f "$CLI_HOME/../frontend/.env.override.local" ]]; then
-        echo "# Here you can put environment variables that you would like to override when using local environment" >"$CLI_HOME/../frontend/.env.override.local"
-    fi
-
-    if [[ ! -f "$CLI_HOME/../frontend/.env.override.composed" ]]; then
-        echo "# Here you can put environment variables that you would like to override when using local environment" >"$CLI_HOME/../frontend/.env.override.composed"
+    if [[ ! -f "$CLI_HOME/../frontend/.env" ]]; then
+        echo "# Here you can put environment variables that you would like to override when using local environment" >"$CLI_HOME/../frontend/.env"
     fi
 
     set +eo pipefail
@@ -223,15 +289,6 @@ function select_services() {
     echo "Selected services: $selected_services"
 }
 
-
-
-function reset_selected_services() {
-    for SERVICE in "${SELECTED_SERVICES[@]}"; do
-        echo "Restarting service $SERVICE."
-        kill_containers $SERVICE && start_service $SERVICE
-    done
-}
-
 function build() {
     HELP="${RESET}\nUsage:\n ./cli build [ $HELP_BUILD_STRING ]\n"
     [[ -z "$1" ]] && say "$HELP" && exit 1
@@ -254,7 +311,6 @@ function create_migration() {
     yell "Created ${MIG_FILE}"
 }
 
-
 function build_and_publish() {
     VERSION="$2"
 
@@ -276,7 +332,6 @@ function build_and_publish() {
         docker push "$REPO:$VERSION"
     fi
 }
-
 
 function scaffold() {
     HELP="${RESET}\nUsage:\n ./cli scaffold [ up | down | destroy | reset ]\n"
@@ -432,8 +487,6 @@ function check_container_status() {
 # <network-name> <subnet> <gateway>
 function scaffold_set_up_network() {
     NETWORK_NAME="$1"
-    NETWORK_SUBNET="$2"
-    NETWORK_GATEWAY="$3"
 
     set +e pipefail
     NETWORK_ID=$(docker network ls | grep -F -e "$NETWORK_NAME " | tr " " "\n" | head -n 1)
@@ -442,7 +495,12 @@ function scaffold_set_up_network() {
     if [[ ${NETWORK_ID} ]]; then
         say "The $NETWORK_NAME network is up and running."
     else
-        docker network create -d bridge --subnet "$NETWORK_SUBNET" --gateway "$NETWORK_GATEWAY" "$NETWORK_NAME"
+        CMD="docker network create -d bridge"
+        [[ -n "$DOCKER_NETWORK_SUBNET" ]] && CMD+=" --subnet $DOCKER_NETWORK_SUBNET"
+        [[ -n "$DOCKER_NETWORK_GATEWAY" ]] && CMD+=" --gateway $DOCKER_NETWORK_GATEWAY"
+        CMD+=" $NETWORK_NAME"
+
+        eval "$CMD"
     fi
 }
 
@@ -477,17 +535,13 @@ function migrate_postgres_local() {
         insights_flyway
 }
 
-
-
 function migrate_local() {
     migrate_postgres_local
 }
 
-
 function install_libs() {
     (cd $CLI_HOME/.. && pnpm i --frozen-lockfile)
 }
-
 
 function up_scaffold() {
     scaffold_set_up_network "$PROJECT_NAME-bridge" $DOCKER_NETWORK_SUBNET $DOCKER_NETWORK_GATEWAY
@@ -498,7 +552,7 @@ function post_up_scaffold() {
     migrate_local
 }
 
-function down_scaffold() {    
+function down_scaffold() {
     $_DC --compatibility -p $PROJECT_NAME $DOCKER_COMPOSE_SCAFFOLD_FILES $DOCKER_COMPOSE_PROFILE down
 }
 
@@ -604,9 +658,7 @@ function start() {
     service_start
 }
 
-SCRIPT_USAGE="${YELLOW}${PROJECT_NAME} CLI ${RESET}\n\nExample usage: ./cli [ scaffold =>, service =>, services =>, start, clean-start, clean-start-dev, service-restart, build =>, build-and-push ]"
-
-[[ -z "$1" ]] && say "$SCRIPT_USAGE" && exit 1
+[[ -z "$1" || "$1" == "--help" || "$1" == "-h" ]] && print_help && exit 0
 while test $# -gt 0; do
     case "$1" in
     scaffold)
@@ -623,33 +675,6 @@ while test $# -gt 0; do
         ;;
     start)
         start
-        exit
-        ;;
-    clean-start)
-        CLEAN_START=1
-        start
-        exit
-        ;;
-    clean-start-dev)
-        CLEAN_START=1
-        DEV=1
-        start
-        exit
-        ;;
-    service-restart)
-        kill_all_containers
-        service_start
-        exit
-        ;;
-    reset-selected-services)
-        select_services
-        reset_selected_services
-        exit
-        ;;
-    reset-selected-services-dev)
-        DEV=1
-        select_services
-        reset_selected_services
         exit
         ;;
     build)
@@ -690,9 +715,10 @@ while test $# -gt 0; do
         exit
         ;;
     *)
-        error "Invalid command '$1'" && say "$SCRIPT_USAGE"
+        error "Invalid command '$1'" && print_help
         exit 1
         ;;
     esac
     shift
 done
+

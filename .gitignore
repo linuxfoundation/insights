@@ -3,5 +3,4 @@
 node_modules
 .prettierrc
 **/.env*
-!.env.dist.local
-!.env.dist.composed
+!.env.dist
