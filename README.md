@@ -1,9 +1,9 @@
 
 <!-- BODY -->
 
-# LFX Insights
-
 > 📣 Insights was relaunched and open sourced in June 2025.
+
+# LFX Insights
 
 ## What is Insights?
 [Insights](https://insights.linuxfoundation.org/) evaluates the health of the world's most critical open source software.
