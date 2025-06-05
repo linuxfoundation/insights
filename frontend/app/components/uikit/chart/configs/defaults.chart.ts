@@ -9,7 +9,7 @@ import { lfxColors } from '~/config/styles/colors';
 const defaultOption: ECOption = {
   grid: {
     left: '8%',
-    right: 0
+    right: 0,
   },
   xAxis: {
     type: 'category',
@@ -19,14 +19,14 @@ const defaultOption: ECOption = {
       hideOverlap: true,
       fontSize: '12px',
       fontWeight: 'normal',
-      color: lfxColors.neutral[400] // TODO: change this when we have the correct color
+      color: lfxColors.neutral[400], // TODO: change this when we have the correct color
       // the designs are currently using a color hex not defined in the design system
     },
     axisLine: {
-      show: false
+      show: false,
     },
     splitLine: { show: false },
-    axisTick: { show: false }
+    axisTick: { show: false },
   },
   yAxis: {
     alignTicks: true,
@@ -34,21 +34,42 @@ const defaultOption: ECOption = {
       fontSize: '12px',
       fontWeight: 'normal',
       color: lfxColors.neutral[400],
-      formatter: (value: number) => `${value === 0 ? '' : formatNumber(value)}`
+      formatter: (value: number, index: number) => (index === 0 ? '' : formatNumber(value)),
     },
     splitLine: {
       lineStyle: {
         type: 'dashed',
-        color: lfxColors.neutral[200]
+        color: lfxColors.neutral[200],
       },
       showMinLine: false,
-      show: true
-    }
-    // max: (value: { min: number; max: number }) => {
-    //   console.log(value.max, value.min);
-    //   return value.max + value.min;
-    // } //(value.max - value.min)
+      show: true,
+    },
+    min: (value: { min: number; max: number }) => {
+      const range = value.max - value.min;
+      const step = roundOff(range / 5);
+      return Math.max(0, value.min - step);
+    },
+    max: (value: { min: number; max: number }) => {
+      const range = value.max - value.min;
+      const step = roundOff(range / 5);
+
+      return Math.ceil(value.max / step) * step;
+    },
+    splitNumber: 5,
+  },
+};
+
+// this is step
+const roundOff = (step: number) => {
+  if (step > 10 && step <= 50) {
+    return Math.ceil(step / 50) * 50;
   }
+
+  if (step > 50 && step <= 100) {
+    return Math.ceil(step / 100) * 100;
+  }
+
+  return Math.ceil(step / 10 ** Math.floor(Math.log10(step))) * 10 ** Math.floor(Math.log10(step)); // Round to nearest magnitude
 };
 
 export const defaultGraphOnlyOption: ECOption = {
@@ -56,47 +77,47 @@ export const defaultGraphOnlyOption: ECOption = {
     type: 'category',
     boundaryGap: false,
     axisLabel: {
-      show: false
+      show: false,
     },
     axisLine: {
-      show: false
+      show: false,
     },
     splitLine: { show: false },
-    axisTick: { show: false }
+    axisTick: { show: false },
   },
   yAxis: {
-    show: false
-  }
+    show: false,
+  },
 };
 
 export const defaultGaugeSeriesStyle: GaugeSeriesOption = {
   type: 'gauge',
   pointer: {
-    show: false
+    show: false,
   },
   progress: {
     show: true,
     overlap: false,
     roundCap: true,
-    clip: false
+    clip: false,
   },
   axisLine: {
     lineStyle: {
       width: 8,
-    }
+    },
   },
   splitLine: {
     show: false,
     distance: 0,
-    length: 10
+    length: 10,
   },
   axisTick: {
-    show: false
+    show: false,
   },
   axisLabel: {
     show: false,
-    distance: 50
-  }
+    distance: 50,
+  },
 };
 
 export const categoryData: CategoryData = {
@@ -107,7 +128,7 @@ export const categoryData: CategoryData = {
     { key: 'Thu', value: 3 },
     { key: 'Fri', value: 4 },
     { key: 'Sat', value: 5 },
-    { key: 'Sun', value: 6 }
+    { key: 'Sun', value: 6 },
   ],
   yAxis: [
     { key: '8:00', value: 8 },
@@ -121,8 +142,8 @@ export const categoryData: CategoryData = {
     { key: '0:00+1', value: 0 },
     { key: '2:00+1', value: 2 },
     { key: '4:00+1', value: 4 },
-    { key: '6:00+1', value: 6 }
-  ]
+    { key: '6:00+1', value: 6 },
+  ],
 };
 
 export default defaultOption;
