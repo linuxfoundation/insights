@@ -47,9 +47,10 @@ export const useProjectStore = defineStore('project', () => {
 
   const { queryParams } = useQueryParam();
   const { timeRange, start, end } = queryParams.value;
+
   const selectedTimeRangeKey = ref<string>(timeRange!);
-  const startDate = ref<string | null>(start!);
-  const endDate = ref<string | null>(end!);
+  const startDate = ref<string | null>(start || null);
+  const endDate = ref<string | null>(end || null);
   const isProjectLoading = ref(false);
   const project = ref<Project | null>(null);
   const projectRepos = computed<ProjectRepository[]>(() => project.value?.repositories || []);

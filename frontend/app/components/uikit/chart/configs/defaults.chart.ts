@@ -3,7 +3,7 @@
 import type { GaugeSeriesOption } from 'echarts';
 import { axisLabelFormatter } from '../helpers/formatters';
 import type { CategoryData } from '../types/ChartTypes';
-import { formatNumber } from '~/components/shared/utils/formatter';
+import { formatNumberShort } from '~/components/shared/utils/formatter';
 import { lfxColors } from '~/config/styles/colors';
 
 const defaultOption: ECOption = {
@@ -34,7 +34,7 @@ const defaultOption: ECOption = {
       fontSize: '12px',
       fontWeight: 'normal',
       color: lfxColors.neutral[400],
-      formatter: (value: number, index: number) => (index === 0 ? '' : formatNumber(value)),
+      formatter: (value: number, index: number) => (index === 0 ? '' : formatNumberShort(value)),
     },
     splitLine: {
       lineStyle: {
@@ -70,6 +70,38 @@ const roundOff = (step: number) => {
   }
 
   return Math.ceil(step / 10 ** Math.floor(Math.log10(step))) * 10 ** Math.floor(Math.log10(step)); // Round to nearest magnitude
+};
+
+export const minHours = (value: { min: number; max: number }) => {
+  // Convert hours to minutes for more granular calculation
+  const minMinutes = value.min * 60;
+  const maxMinutes = value.max * 60;
+  const rangeMinutes = maxMinutes - minMinutes;
+
+  // Calculate step size in minutes (divide range into 5 segments)
+  const stepMinutes = Math.ceil(rangeMinutes / 5);
+
+  // Round step to nearest hour if > 2 hours, otherwise keep in minutes
+  const roundedStepMinutes = stepMinutes > 120 ? Math.ceil(stepMinutes / 60) * 60 : Math.ceil(stepMinutes / 15) * 15;
+
+  // Convert back to hours
+  return Math.max(0, (minMinutes - roundedStepMinutes) / 60);
+};
+
+export const maxHours = (value: { min: number; max: number }) => {
+  // Convert hours to minutes
+  const minMinutes = value.min * 60;
+  const maxMinutes = value.max * 60;
+  const rangeMinutes = maxMinutes - minMinutes;
+
+  // Calculate step size in minutes
+  const stepMinutes = Math.ceil(rangeMinutes / 5);
+
+  // Round step to nearest hour if > 2 hours, otherwise keep in minutes
+  const roundedStepMinutes = stepMinutes > 120 ? Math.ceil(stepMinutes / 60) * 60 : Math.ceil(stepMinutes / 15) * 15;
+
+  // Convert back to hours and round up
+  return Math.ceil((maxMinutes + roundedStepMinutes) / 60);
 };
 
 export const defaultGraphOnlyOption: ECOption = {
