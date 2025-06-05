@@ -128,9 +128,14 @@ const linkUrl = (link: typeof lfProjectLinks[number]) => {
     return undefined;
   }
 
+  const query = {
+    ...route.query,
+    widget: undefined // remove the widget from the query
+  }
+
   return {
     name: repoName.value ? link.repoRouteName : link.projectRouteName,
-    query: route.query
+    query
   };
 }
 </script>
