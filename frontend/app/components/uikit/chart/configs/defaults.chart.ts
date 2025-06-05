@@ -50,10 +50,15 @@ const defaultOption: ECOption = {
       return Math.max(0, value.min - step);
     },
     max: (value: { min: number; max: number }) => {
-      const range = value.max - value.min;
+      const range = value.max;
       const step = roundOff(range / 5);
+      const newMax = Math.ceil(value.max / step) * step;
 
-      return Math.ceil(value.max / step) * step;
+      if (newMax % step !== 0) {
+        return newMax + step;
+      }
+
+      return newMax;
     },
     splitNumber: 5,
   },
@@ -61,15 +66,45 @@ const defaultOption: ECOption = {
 
 // this is step
 const roundOff = (step: number) => {
-  if (step > 10 && step <= 50) {
+  if (step <= 10) {
+    return (
+      Math.ceil(step / 10 ** Math.floor(Math.log10(step))) * 10 ** Math.floor(Math.log10(step))
+    );
+  }
+
+  if (step <= 50) {
+    return Math.ceil(step / 10) * 10;
+  }
+
+  if (step <= 100) {
     return Math.ceil(step / 50) * 50;
   }
 
-  if (step > 50 && step <= 100) {
+  if (step <= 500) {
     return Math.ceil(step / 100) * 100;
   }
 
-  return Math.ceil(step / 10 ** Math.floor(Math.log10(step))) * 10 ** Math.floor(Math.log10(step)); // Round to nearest magnitude
+  if (step <= 1000) {
+    return Math.ceil(step / 500) * 500;
+  }
+
+  if (step <= 5000) {
+    return Math.ceil(step / 1000) * 1000;
+  }
+
+  if (step <= 10000) {
+    return Math.ceil(step / 5000) * 5000;
+  }
+
+  if (step <= 50000) {
+    return Math.ceil(step / 10000) * 10000;
+  }
+
+  if (step <= 100000) {
+    return Math.ceil(step / 50000) * 50000;
+  }
+
+  return Math.ceil(step / 100000) * 100000;
 };
 
 export const minHours = (value: { min: number; max: number }) => {
