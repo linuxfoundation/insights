@@ -155,6 +155,8 @@ watch(() => selectedDateRange.value, (value) => {
   if(option){
     changeSelected(option);
   }
+}, {
+  immediate: true
 })
 </script>
 
