@@ -1,34 +1,33 @@
 
 <!-- BODY -->
 
+> 📣 Insights was relaunched and open sourced in June 2025.
+
 # LFX Insights
 
-## What is LFX Insights?
-Insights evaluates the health and trustworthiness of the world's most critical open source software.
+## What is Insights?
+[Insights](https://insights.linuxfoundation.org/) evaluates the health of the world's most critical open source software.
 
 At the core, Insights analyzes the following vectors to define a project's health:
 - <b>Contributors</b>: Who is contributing on behalf of which company? (Leaderboards, Contributor/Organization dependency, etc)
 - <b>Popularity</b>: How well is the project being adopted? (Package downloads, Search queries, Mailing list messages, etc)
 - <b>Development</b>: How actively is the project being maintained? (Issue resolution, PR lead time, Active days, etc)
-- <b>Security & Best Practices</b>: Is the project following security & best practices? (powered by [OSPS Baseline](https://baseline.openssf.org/))
+- <b>Security & Best Practices</b>: Is the project following security & best practices? (supported by [OSPS Baseline](https://baseline.openssf.org/))
 
-Insights is part of the [LFX platform](https://lfx.linuxfoundation.org/).
+Learn more about how Insights works in our [Documentation](https://insights.linuxfoundation.org/docs).
+
+## Help us to improve Insights
+We look forward to your feedback and are open for your ideas to further improve Insights.
+
+If you want to get involved, here are the best ways:
+- [Start or participate in discussions](https://github.com/linuxfoundation/insights/discussions)
+- [Create issues when you find bugs or have an idea](https://github.com/linuxfoundation/insights/issues)
 
 ## Contributing
 
-> [!WARNING]
-> This project is currently in beta and this repository includes mainly the frontend code. It's not straightforward to run the application locally with relevant data to test.
+This repository is currently in beta and includes mainly frontend code. For this reason, outside code contributions are not intended (yet). 
 
-For this reason, outside code contributions are not intended (yet). There are still ways to contribute to Insights:
-
-- Try [Insights](https://insights.linuxfoundation.org/) and give feedback by [creating new issues](https://github.com/linuxfoundation/insights/issues)
-- Participate on open discussions or share your ideas with us by checking the [Discussions](https://github.com/linuxfoundation/insights/discussions)
-- Noticed something missing in our documentation? Feel free to share your feedback — or contribute directly to help us improve it! Check our [Documentation Contribution Guide](https://github.com/linuxfoundation/insights/blob/main/CONTRIBUTING.md#documentation-contribution-guide).
-
-Please also refer to our [Contributing guide](https://github.com/linuxfoundation/insights/blob/main/CONTRIBUTING.md).
-
-## Maintainers
-LFX Insights is a project by [The Linux Foundation](https://www.linuxfoundation.org/). You can find a list of the individual maintainers [here](MAINTAINERS.md).
+If you find a typo or want to add something to our documentation, please check out our [Documentation Contribution Guide](https://github.com/linuxfoundation/insights/blob/main/CONTRIBUTING.md#documentation-contribution-guide).
 
 ## Requirements
 
@@ -38,6 +37,9 @@ LFX Insights is a project by [The Linux Foundation](https://www.linuxfoundation.
 - Nuxt 3+
 - PrimeVue 4+
 - Pinia 2+
+
+## Maintainers
+LFX Insights is a project by [The Linux Foundation](https://www.linuxfoundation.org/). You can find a list of the individual maintainers [here](MAINTAINERS.md).  
 
 ## License
 
