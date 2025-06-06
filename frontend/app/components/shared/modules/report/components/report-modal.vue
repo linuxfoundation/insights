@@ -221,6 +221,10 @@ const submit = () => {
     repositoryUrl: selectedRepository.value,
   }
 
+  if(isSending.value) {
+    return;
+  }
+
   isSending.value = true;
 
   $fetch('/api/report', {

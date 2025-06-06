@@ -74,7 +74,7 @@ export default defineEventHandler(async (event) => {
 });
 
 function svgTemplate(project: ProjectTinybird, repository: ProjectRepository | undefined) {
-    const projectName: string = project.name.length > 32 ? `${project.name.substring(0, 31)}...` : project.name;
+    const projectName: string = project.name.length > 30 ? `${project.name.substring(0, 29)}...` : project.name;
     const projectLogo: string = project.logo;
     const projectDescription: string = project.description.length > 65 ? `${project.description.substring(0, 65)}...` : project.description;
     let repositoryName: string | undefined = repository?.name?.split('/').at(-1) || '';
