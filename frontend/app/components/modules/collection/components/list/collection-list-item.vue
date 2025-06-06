@@ -69,6 +69,7 @@ SPDX-License-Identifier: MIT
             v-for="project of props.collection.featuredProjects"
             :key="project.slug"
             type="bordered"
+            class="transition hover:bg-neutral-100"
             @click.prevent="router.push({name: LfxRoutes.PROJECT, params: {slug: project.slug}})"
           >
             <lfx-avatar
