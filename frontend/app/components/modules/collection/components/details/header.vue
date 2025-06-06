@@ -124,7 +124,7 @@ SPDX-License-Identifier: MIT
               :content="
                 `Aggregated software value of $${
                   formatNumberShort(props.collection.softwareValue)
-                } according to COCOMO`"
+                } according to Constructive Cost Model (COCOMO)`"
             >
               <article
 
