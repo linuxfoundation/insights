@@ -7,47 +7,47 @@ SPDX-License-Identifier: MIT
     <lfx-skeleton
       width="3rem"
       height="3rem"
-      class="rounded-md"
+      class="rounded-md max-w-full"
     />
     <lfx-skeleton
       width="12.5rem"
       height="1.25rem"
-      class="rounded-sm mt-5"
+      class="rounded-sm mt-5 max-w-full"
     />
     <div class="flex items-center justify-between mt-5">
       <lfx-skeleton
         width="7.5rem"
         height="0.75rem"
-        class="rounded-sm"
+        class="rounded-sm max-w-full"
       />
       <lfx-skeleton
         width="5rem"
         height="0.75rem"
-        class="rounded-sm"
+        class="rounded-sm max-w-full"
       />
     </div>
     <div class="flex items-center justify-between mt-5 pt-0.5">
       <lfx-skeleton
         width="7.5rem"
         height="0.75rem"
-        class="rounded-sm"
+        class="rounded-sm max-w-full"
       />
       <lfx-skeleton
         width="5rem"
         height="0.75rem"
-        class="rounded-sm"
+        class="rounded-sm max-w-full"
       />
     </div>
     <div class="flex items-center justify-between mt-5 pt-0.5">
       <lfx-skeleton
         width="7.5rem"
         height="0.75rem"
-        class="rounded-sm"
+        class="rounded-sm max-w-full"
       />
       <lfx-skeleton
         width="5rem"
         height="0.75rem"
-        class="rounded-sm"
+        class="rounded-sm max-w-full"
       />
     </div>
   </lfx-card>
