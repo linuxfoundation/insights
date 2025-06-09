@@ -14,7 +14,7 @@ SPDX-License-Identifier: MIT
       width="22.5rem"
     >
       <template #trigger="{selectedOption}">
-        <lfx-dropdown-selector class="whitespace-nowrap">
+        <lfx-dropdown-selector class="whitespace-nowrap !bg-transparent">
           <lfx-icon
             name="calendar"
             :size="16"

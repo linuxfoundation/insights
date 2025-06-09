@@ -7,16 +7,17 @@ SPDX-License-Identifier: MIT
     <lfx-skeleton
       width="25rem"
       height="1.25rem"
+      class="max-w-full"
     />
     <lfx-skeleton
       width="37.25rem"
       height="0.75rem"
-      class="mt-5"
+      class="mt-5 max-w-full"
     />
     <lfx-skeleton
       width="31.25rem"
       height="0.75rem"
-      class="mt-5"
+      class="mt-5 max-w-full"
     />
   </lfx-card>
 </template>
