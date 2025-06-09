@@ -4,7 +4,7 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <div
-    class="fixed bottom-5 sm:bottom-0 left-1/2 sm:left-0 sm:relative
+    class="fixed bottom-5 z-50 sm:z-10 sm:bottom-0 left-1/2 sm:left-0 sm:relative
       transform -translate-x-1/2 sm:translate-x-0 sm:shadow-none sm:border-none
       bg-white border border-neutral-200 rounded-full shadow-md"
   >
@@ -14,7 +14,7 @@ SPDX-License-Identifier: MIT
       width="22.5rem"
     >
       <template #trigger="{selectedOption}">
-        <lfx-dropdown-selector class="whitespace-nowrap">
+        <lfx-dropdown-selector class="whitespace-nowrap !bg-transparent">
           <lfx-icon
             name="calendar"
             :size="16"
