@@ -108,7 +108,16 @@ SPDX-License-Identifier: MIT
           :class="scrollTop > 50 ? 'md:py-4' : 'md:py-5'"
         >
           <lfx-project-menu :project="props.project" />
+          <teleport
+            v-if="pageWidth < 768"
+            to="body"
+          >
+            <lfx-project-date-range-picker
+              v-show="showDatepicker"
+            />
+          </teleport>
           <lfx-project-date-range-picker
+            v-else
             v-show="showDatepicker"
           />
         </div>
