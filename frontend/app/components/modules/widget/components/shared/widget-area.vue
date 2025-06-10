@@ -142,7 +142,8 @@ const areWidgetsAboveLoaded = (currentWidget: string) => {
 
 const navigateToWidget = () => {
   const widget = route.query?.widget || config.value.widgets?.[0] || '';
-  if (widget && areWidgetsAboveLoaded(widget as string) && !isFirstLoad.value) {
+
+  if (widget && areWidgetsAboveLoaded(widget as string) && isFirstLoad.value) {
     setTimeout(() => {
       isFirstLoad.value = false;
       onSideNavUpdate(widget as string);
