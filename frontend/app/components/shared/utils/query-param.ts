@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 import { DateTime } from 'luxon';
 import { computed } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { type LocationQuery, useRoute, useRouter } from 'vue-router';
 import {
   dateOptKeys,
   lfxProjectDateOptions,
@@ -37,62 +37,67 @@ const getStartAndEndDate = (rangeValue: string) => {
     end: null,
   };
 };
+
+const processDateParams = (query: LocationQuery): URLParams => {
+  const { timeRange: paramTimeRange, start: paramStart, end: paramEnd } = query;
+  // Get timeRange with fallback to default
+  const timeRange = (paramTimeRange as string) || defaultTimeRangeKey;
+
+  // Handle date params
+  let start = null;
+  let end = null;
+
+  // Parse and validate date params
+  const isValidStartDate = DateTime.fromISO(paramStart as string).isValid;
+  const isValidEndDate = DateTime.fromISO(paramEnd as string).isValid;
+
+  if (timeRange !== dateOptKeys.alltime) {
+    // get the start and end date option from the time range
+    const { start: startOption, end: endOption } = getStartAndEndDate(timeRange);
+
+    if (timeRange === dateOptKeys.custom) {
+      start = paramStart as string;
+      end = paramEnd as string;
+    } else {
+      start = isValidStartDate
+        ? startOption
+        : defaultDateOption?.startDate || lfxProjectDateOptions[1]?.startDate || null;
+
+      end = isValidEndDate
+        ? endOption
+        : defaultDateOption?.endDate || lfxProjectDateOptions[1]?.endDate || null;
+    }
+  } else {
+    start = undefined;
+    end = undefined;
+  }
+
+  return {
+    timeRange,
+    start,
+    end,
+  };
+};
+
+const processQueryParams = (query: LocationQuery): URLParams => {
+  const { timeRange: paramTimeRange, widget } = query;
+
+  // Check if timeRange is a valid dateOptKeys enum value
+  if (!Object.values(dateOptKeys).includes(paramTimeRange as dateOptKeys)) {
+    return {
+      widget: widget as string,
+    };
+  }
+
+  return { ...processDateParams(query), widget: widget as string };
+};
+
 export const useQueryParam = () => {
   const route = useRoute();
   const router = useRouter();
 
   const queryParams = computed<URLParams>({
-    get: () => {
-      const {
- timeRange: paramTimeRange, start: paramStart, end: paramEnd, widget
-} = route.query;
-
-      // Parse and validate date params
-      const isValidStartDate = DateTime.fromISO(paramStart as string).isValid;
-      const isValidEndDate = DateTime.fromISO(paramEnd as string).isValid;
-
-      // Get timeRange with fallback to default
-      const timeRange = (paramTimeRange as string) || defaultTimeRangeKey;
-
-      // Handle date params
-      let start = null;
-      let end = null;
-
-      // Check if timeRange is a valid dateOptKeys enum value
-      if (!Object.values(dateOptKeys).includes(timeRange as dateOptKeys)) {
-        return {
-          widget: widget as string,
-        };
-      }
-
-      if (timeRange !== dateOptKeys.alltime) {
-        // get the start and end date option from the time range
-        const { start: startOption, end: endOption } = getStartAndEndDate(timeRange);
-
-        if (timeRange === dateOptKeys.custom) {
-          start = paramStart as string;
-          end = paramEnd as string;
-        } else {
-          start = isValidStartDate
-            ? startOption
-            : defaultDateOption?.startDate || lfxProjectDateOptions[1]?.startDate || null;
-
-          end = isValidEndDate
-            ? endOption
-            : defaultDateOption?.endDate || lfxProjectDateOptions[1]?.endDate || null;
-        }
-      } else {
-        start = undefined;
-        end = undefined;
-      }
-
-      return {
-        timeRange,
-        start,
-        end,
-        widget: widget as string,
-      };
-    },
+    get: () => processQueryParams(route.query),
     set: (value: URLParams) => {
       const query: URLParams = {
         ...(route.query as URLParams),
