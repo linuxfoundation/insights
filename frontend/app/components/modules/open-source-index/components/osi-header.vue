@@ -11,7 +11,7 @@ SPDX-License-Identifier: MIT
   > -->
   <div class="bg-white outline outline-1 outline-neutral-200">
     <section class="container py-6">
-      <div class="flex flex-col md:flex-row items-start md:items-end gap-4 md:gap-12">
+      <div class="flex flex-col lg:flex-row items-start lg:items-end gap-4 lg:gap-12">
         <div class="flex flex-row gap-5 basis-2/3 items-end">
           <div
             v-if="!isRoot"
@@ -80,7 +80,7 @@ SPDX-License-Identifier: MIT
           </div>
         </div>
         <div
-          class="basis-1/3 md:flex hidden flex-row items-center gap-4 justify-end"
+          class="lg:basis-1/3 w-full md:flex hidden items-end lg:items-center gap-4 justify-end"
         >
           <div
             v-if="isRoot"
