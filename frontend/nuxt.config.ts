@@ -83,7 +83,10 @@ export default defineNuxtConfig({
   },
   routeRules: {
     '/**': {
-      swr: 3600 // Shortcut for cache: { swr: true, maxAge: 3600 }
+      cache: false
+    },
+    '/api/**': {
+      swr: 3600
     }
   }
 });
