@@ -40,6 +40,10 @@ import {
 import {TanstackKey} from "~/components/shared/types/tanstack";
 import {PROJECT_API_SERVICE} from "~/components/modules/project/services/project.api.service";
 import { useQueryParam } from "~/components/shared/utils/query-param";
+import {
+  processTimeAndDateParams,
+  timeAndDateParamsSetter
+} from "~/components/modules/project/services/project.query.service";
 import { dateOptKeys } from "~/components/modules/project/config/date-options";
 
 const route = useRoute();
@@ -48,7 +52,7 @@ const {
 project, selectedTimeRangeKey, startDate, endDate, isProjectLoading
 } = storeToRefs(useProjectStore());
 
-const { queryParams } = useQueryParam();
+const { queryParams } = useQueryParam(processTimeAndDateParams, timeAndDateParamsSetter);
 const queryKey = computed(() => [TanstackKey.PROJECT, slug]);
 
 const {
