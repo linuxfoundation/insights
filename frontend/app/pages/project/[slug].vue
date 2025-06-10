@@ -39,11 +39,11 @@ import {
 } from "~/components/modules/project/store/project.store";
 import {TanstackKey} from "~/components/shared/types/tanstack";
 import {PROJECT_API_SERVICE} from "~/components/modules/project/services/project.api.service";
+import { useQueryParam } from "~/components/shared/utils/query-param";
 import {
   processTimeAndDateParams,
-  timeAndDateParamsSetter,
-  useQueryParam
-} from "~/components/shared/utils/query-param";
+  timeAndDateParamsSetter
+} from "~/components/modules/project/services/project.query.service";
 import { dateOptKeys } from "~/components/modules/project/config/date-options";
 
 const route = useRoute();

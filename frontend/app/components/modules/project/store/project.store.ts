@@ -10,11 +10,11 @@ import {
 } from '~/components/modules/project/config/date-options';
 import type { Project, ProjectRepository } from '~~/types/project';
 import { Granularity } from '~~/types/shared/granularity';
+import { useQueryParam } from '~/components/shared/utils/query-param';
 import {
   processTimeAndDateParams,
-  timeAndDateParamsSetter,
-  useQueryParam,
-} from '~/components/shared/utils/query-param';
+  timeAndDateParamsSetter
+} from '~/components/modules/project/services/project.query.service';
 
 const calculateGranularity = (start: string | null, end: string | null): string[] => {
   // Return weekly if either date is null
