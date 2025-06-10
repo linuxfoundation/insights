@@ -11,7 +11,7 @@ SPDX-License-Identifier: MIT
   > -->
   <div class="bg-white outline outline-1 outline-neutral-200">
     <section class="container py-6">
-      <div class="flex flex-col lg:flex-row items-start lg:items-end gap-4 lg:gap-12">
+      <div class="flex flex-col md:flex-row items-start md:items-end gap-4 md:gap-12">
         <div class="flex flex-row gap-5 basis-2/3 items-end">
           <div
             v-if="!isRoot"
@@ -73,17 +73,16 @@ SPDX-License-Identifier: MIT
           </div>
         </div>
         <div
-          class="md:basis-1/3 w-full flex flex-col md:flex-row items-end md:items-center gap-5 justify-end"
+          class="basis-1/3 md:flex hidden flex-row items-center gap-4 justify-end"
         >
           <div
             v-if="isRoot"
-            class="border-r border-neutral-200 pr-5"
           >
             <lfx-dropdown-select
               v-model="type"
               width="20rem"
               placement="bottom-end"
-              class="min-w-[215px]"
+              class="xl:min-w-[215px] min-w-[125px]"
             >
               <template #trigger="{selectedOption}">
                 <lfx-dropdown-selector class="justify-between">
@@ -92,7 +91,7 @@ SPDX-License-Identifier: MIT
                       name="chart-tree-map"
                       :size="16"
                     />
-                    <span class="text-neutral-900 font-medium text-sm text-nowrap">
+                    <span class="text-neutral-900 font-medium text-sm text-nowrap hidden xl:block">
                       Grouped by:
                     </span>
                     <span class="inline font-normal text-sm text-nowrap">
@@ -112,7 +111,7 @@ SPDX-License-Identifier: MIT
               />
             </lfx-dropdown-select>
           </div>
-          <div>
+          <div class="border-r border-neutral-200 pr-4">
             <lfx-tabs
               :tabs="sortTabs"
               :model-value="sort"
