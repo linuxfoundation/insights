@@ -79,7 +79,7 @@ const processDateParams = (query: LocationQuery): URLParams => {
   };
 };
 
-const processQueryParams = (query: LocationQuery): URLParams => {
+export const processTimeAndDateParams = (query: LocationQuery): URLParams => {
   const { timeRange: paramTimeRange, widget } = query;
 
   // Check if timeRange is a valid dateOptKeys enum value
@@ -92,22 +92,33 @@ const processQueryParams = (query: LocationQuery): URLParams => {
   return { ...processDateParams(query), widget: widget as string };
 };
 
-export const useQueryParam = () => {
+export const timeAndDateParamsSetter = (query: URLParams) => {
+  const tmpQuery = { ...query };
+
+  tmpQuery.start = tmpQuery.start || undefined;
+  tmpQuery.end = tmpQuery.end || undefined;
+
+  return tmpQuery;
+};
+
+export const useQueryParam = (
+  getterProcessor: (query: LocationQuery) => URLParams,
+  setterProcessor: (query: URLParams) => URLParams
+) => {
   const route = useRoute();
   const router = useRouter();
 
   const queryParams = computed<URLParams>({
-    get: () => processQueryParams(route.query),
+    get: () => getterProcessor(route.query),
     set: (value: URLParams) => {
       const query: URLParams = {
         ...(route.query as URLParams),
         ...value,
       };
 
-      query.start = query.start || undefined;
-      query.end = query.end || undefined;
+      const processedQuery = setterProcessor(query);
 
-      router.replace({ query });
+      router.replace({ query: processedQuery });
     },
   });
 

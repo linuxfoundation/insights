@@ -35,7 +35,7 @@ import type { SideNavItem } from './types/side-nav.types';
 import LfxButton from '~/components/uikit/button/button.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import useScroll from '~/components/shared/utils/scroll';
-import { useQueryParam } from '~/components/shared/utils/query-param';
+import { processTimeAndDateParams, timeAndDateParamsSetter, useQueryParam } from '~/components/shared/utils/query-param';
 
 const props = defineProps<{
   list: SideNavItem[];
@@ -43,7 +43,7 @@ const props = defineProps<{
 }>();
 
 const { scrollTopPercentage } = useScroll();
-const { queryParams } = useQueryParam();
+const { queryParams } = useQueryParam(processTimeAndDateParams, timeAndDateParamsSetter);
 
 const emit = defineEmits<{(e: 'update:modelValue', value: string): void }>();
 

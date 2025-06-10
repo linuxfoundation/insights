@@ -10,7 +10,11 @@ import {
 } from '~/components/modules/project/config/date-options';
 import type { Project, ProjectRepository } from '~~/types/project';
 import { Granularity } from '~~/types/shared/granularity';
-import { useQueryParam } from '~/components/shared/utils/query-param';
+import {
+  processTimeAndDateParams,
+  timeAndDateParamsSetter,
+  useQueryParam,
+} from '~/components/shared/utils/query-param';
 
 const calculateGranularity = (start: string | null, end: string | null): string[] => {
   // Return weekly if either date is null
@@ -45,7 +49,7 @@ export const defaultDateOption = lfxProjectDateOptions.find(
 export const useProjectStore = defineStore('project', () => {
   const route = useRoute();
 
-  const { queryParams } = useQueryParam();
+  const { queryParams } = useQueryParam(processTimeAndDateParams, timeAndDateParamsSetter);
   const { timeRange, start, end } = queryParams.value;
 
   const selectedTimeRangeKey = ref<string>(timeRange!);
@@ -56,12 +60,10 @@ export const useProjectStore = defineStore('project', () => {
   const projectRepos = computed<ProjectRepository[]>(() => project.value?.repositories || []);
 
   const selectedRepository = computed<string>(
-    () => projectRepos.value.find(
-        (repo: ProjectRepository) => route.params.name === repo.slug
-      )?.url || ''
+    () => projectRepos.value.find((repo: ProjectRepository) => route.params.name === repo.slug)?.url
+      || ''
   );
-  const repository = computed<ProjectRepository | undefined>(() => projectRepos
-    .value.find((repo: ProjectRepository) => route.params.name === repo.slug));
+  const repository = computed<ProjectRepository | undefined>(() => projectRepos.value.find((repo: ProjectRepository) => route.params.name === repo.slug));
 
   const customRangeGranularity = computed<string[]>(() => (startDate.value === null || endDate.value === null
       ? [Granularity.WEEKLY]
