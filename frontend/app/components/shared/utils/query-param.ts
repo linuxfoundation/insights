@@ -69,18 +69,24 @@ export const useQueryParam = () => {
         // get the start and end date option from the time range
         const { start: startOption, end: endOption } = getStartAndEndDate(timeRange);
 
-        start = isValidStartDate
-          ? startOption
-          : defaultDateOption?.startDate || lfxProjectDateOptions[1]?.startDate || null;
+        if (timeRange === dateOptKeys.custom) {
+          start = paramStart as string;
+          end = paramEnd as string;
+        } else {
+          start = isValidStartDate
+            ? startOption
+            : defaultDateOption?.startDate || lfxProjectDateOptions[1]?.startDate || null;
 
-        end = isValidEndDate
-          ? endOption
-          : defaultDateOption?.endDate || lfxProjectDateOptions[1]?.endDate || null;
+          end = isValidEndDate
+            ? endOption
+            : defaultDateOption?.endDate || lfxProjectDateOptions[1]?.endDate || null;
+        }
       } else {
         start = undefined;
         end = undefined;
       }
 
+      console.log('!!start-end', start, end);
       return {
         timeRange,
         start,
