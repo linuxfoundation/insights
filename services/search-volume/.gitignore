@@ -1,0 +1,5 @@
+.env
+dist/
+build/
+.claude
+CLAUDE.md
