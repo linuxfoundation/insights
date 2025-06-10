@@ -36,7 +36,7 @@ SPDX-License-Identifier: MIT
             >
               <NuxtLink
                 :to="`/open-source-index?sort=${sort}&type=${breadcrumbData.type}`"
-                class="hover:text-brand-600"
+                class="hover:text-brand-600 text-xs md:text-sm"
               >
                 Open Source Index
               </NuxtLink>
@@ -47,7 +47,7 @@ SPDX-License-Identifier: MIT
               <NuxtLink
                 v-if="breadcrumbText"
                 :to="breadcrumbLink"
-                class="hover:text-brand-600"
+                class="hover:text-brand-600 text-xs md:text-sm"
               >
                 {{ breadcrumbText }}
               </NuxtLink>
@@ -59,7 +59,14 @@ SPDX-License-Identifier: MIT
               width="30rem"
             >
               <h1
-                class="font-bold mr-3 ease-linear transition-all font-secondary duration-200 text-heading-2"
+                v-if="isRoot"
+                class="font-bold mr-3 font-secondary text-2xl lg:text-heading-2"
+              >
+                {{ title }}
+              </h1>
+              <h1
+                v-else
+                class="font-bold mr-3 font-secondary text-base md:text-heading-3 lg:text-2xl"
               >
                 {{ title }}
               </h1>
