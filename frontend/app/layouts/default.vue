@@ -5,17 +5,15 @@ SPDX-License-Identifier: MIT
 <template>
   <main class="min-h-screen flex flex-col pt-14 lg:pt-17">
     <lfx-navbar />
-    <slot />
+    <div class="pb-10">
+      <slot />
+    </div>
     <lfx-toast theme="dark" />
     <div class="flex-grow" />
-    <div class="container">
-      <client-only>
-        <lfx-footer class="pt-10 md:pt-16 pb-5 md:pb-8 px-0" />
-      </client-only>
-    </div>
     <lfx-report-global />
     <lfx-share-global />
     <lfx-welcome-modal />
+    <lfx-insights-footer />
   </main>
 </template>
 
@@ -27,10 +25,7 @@ import LfxToast from '~/components/uikit/toast/toast.vue';
 import LfxReportGlobal from "~/components/shared/modules/report/components/report-global.vue";
 import LfxShareGlobal from "~/components/shared/modules/share/components/share-global.vue";
 import LfxWelcomeModal from "~/components/shared/components/welcome-modal.vue";
-// Only import the UI core library on the client side
-if (import.meta.client) {
-  await import('@linuxfoundation/lfx-ui-core');
-}
+import LfxInsightsFooter from "~/components/shared/layout/footer.vue";
 
 const route = useRoute();
 
@@ -38,16 +33,3 @@ watch(() => route.path, () => {
   document.body.scrollTo(0, 0);
 });
 </script>
-
-<style lang="scss" scoped>
-.copyright {
-  color: #808b91;
-  a{
-    color: #5b6367;
-
-    &:hover{
-      @apply underline;
-    }
-  }
-}
-</style>

@@ -87,6 +87,7 @@ export default {
       },
       spacing: {
         13: '3.25rem',
+        15: '3.75rem',
         17: '4.25rem',
         25: '6.25rem',
         30: '7.5rem',
