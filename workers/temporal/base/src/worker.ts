@@ -329,16 +329,16 @@ export class InsightsServiceWorker extends Service {
 
   private setBackwardCompatibleEnvVars() {
     process.env["CROWD_TEMPORAL_ENCRYPTION_KEY_ID"] =
-      process.env["INSIGHTS_TEMPORAL_ENCRYPTION_KEY_ID"];
+      process.env["INSIGHTS_TEMPORAL_ENCRYPTION_KEY_ID"] || "";
     process.env["CROWD_TEMPORAL_ENCRYPTION_KEY"] =
-      process.env["INSIGHTS_TEMPORAL_ENCRYPTION_KEY"];
+      process.env["INSIGHTS_TEMPORAL_ENCRYPTION_KEY"] || "";
     process.env["CROWD_TEMPORAL_NAMESPACE"] =
-      process.env["INSIGHTS_TEMPORAL_NAMESPACE"];
+      process.env["INSIGHTS_TEMPORAL_NAMESPACE"] || "default";
     process.env["CROWD_TEMPORAL_SERVER_URL"] =
-      process.env["INSIGHTS_TEMPORAL_SERVER_URL"];
+      process.env["INSIGHTS_TEMPORAL_SERVER_URL"] || "";
     process.env["CROWD_TEMPORAL_CERTIFICATE"] =
-      process.env["INSIGHTS_TEMPORAL_CERTIFICATE"];
+      process.env["INSIGHTS_TEMPORAL_CERTIFICATE"] || "";
     process.env["CROWD_TEMPORAL_PRIVATE_KEY"] =
-      process.env["INSIGHTS_TEMPORAL_PRIVATE_KEY"];
+      process.env["INSIGHTS_TEMPORAL_PRIVATE_KEY"] || "";
   }
 }
