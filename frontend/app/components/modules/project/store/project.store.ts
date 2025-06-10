@@ -11,6 +11,10 @@ import {
 import type { Project, ProjectRepository } from '~~/types/project';
 import { Granularity } from '~~/types/shared/granularity';
 import { useQueryParam } from '~/components/shared/utils/query-param';
+import {
+  processTimeAndDateParams,
+  timeAndDateParamsSetter
+} from '~/components/modules/project/services/project.query.service';
 
 const calculateGranularity = (start: string | null, end: string | null): string[] => {
   // Return weekly if either date is null
@@ -45,7 +49,7 @@ export const defaultDateOption = lfxProjectDateOptions.find(
 export const useProjectStore = defineStore('project', () => {
   const route = useRoute();
 
-  const { queryParams } = useQueryParam();
+  const { queryParams } = useQueryParam(processTimeAndDateParams, timeAndDateParamsSetter);
   const { timeRange, start, end } = queryParams.value;
 
   const selectedTimeRangeKey = ref<string>(timeRange!);
