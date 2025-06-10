@@ -86,7 +86,6 @@ export const useQueryParam = () => {
         end = undefined;
       }
 
-      console.log('!!start-end', start, end);
       return {
         timeRange,
         start,
