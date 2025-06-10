@@ -1,0 +1,23 @@
+{
+  "name": "search-volume-service",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "dist/keywords-everywhere.js",
+  "scripts": {
+    "dev": "tsx watch --env-file=.env search-volume.ts",
+    "build": "tsc",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "@types/pg": "^8.15.4",
+    "ofetch": "^1.4.1",
+    "pg": "^8.16.0",
+    "vitest": "^3.2.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.30",
+    "tsx": "^4.19.4",
+    "typescript": "^5.7.3"
+  }
+}
