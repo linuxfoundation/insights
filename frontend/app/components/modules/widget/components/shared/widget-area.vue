@@ -58,7 +58,11 @@ import useScroll from "~/components/shared/utils/scroll";
 import LfxWidget from "~/components/modules/widget/components/shared/widget.vue";
 import type { Benchmark } from '~~/types/shared/benchmark.types';
 import {useProjectStore} from "~/components/modules/project/store/project.store";
-import { processTimeAndDateParams, timeAndDateParamsSetter, useQueryParam } from "~/components/shared/utils/query-param";
+import {
+  processTimeAndDateParams,
+  timeAndDateParamsSetter,
+  useQueryParam
+} from "~/components/shared/utils/query-param";
 
 const props = defineProps<{
   name: WidgetArea

@@ -35,7 +35,11 @@ import type { SideNavItem } from './types/side-nav.types';
 import LfxButton from '~/components/uikit/button/button.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import useScroll from '~/components/shared/utils/scroll';
-import { processTimeAndDateParams, timeAndDateParamsSetter, useQueryParam } from '~/components/shared/utils/query-param';
+import {
+  processTimeAndDateParams,
+  timeAndDateParamsSetter,
+  useQueryParam
+} from "~/components/shared/utils/query-param";
 
 const props = defineProps<{
   list: SideNavItem[];

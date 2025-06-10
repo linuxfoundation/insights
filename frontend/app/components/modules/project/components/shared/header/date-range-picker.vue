@@ -127,7 +127,11 @@ import LfxDropdownSelect from "~/components/uikit/dropdown/dropdown-select.vue";
 import LfxDropdownItem from "~/components/uikit/dropdown/dropdown-item.vue";
 import LfxDropdownSeparator from "~/components/uikit/dropdown/dropdown-separator.vue";
 import LfxDropdownSelector from "~/components/uikit/dropdown/dropdown-selector.vue";
-import { processTimeAndDateParams, timeAndDateParamsSetter, useQueryParam } from "~/components/shared/utils/query-param";
+import {
+  processTimeAndDateParams,
+  timeAndDateParamsSetter,
+  useQueryParam,
+} from "~/components/shared/utils/query-param";
 
 const { selectedTimeRangeKey, startDate, endDate } = storeToRefs(useProjectStore())
 const { queryParams } = useQueryParam(processTimeAndDateParams, timeAndDateParamsSetter);

@@ -60,10 +60,12 @@ export const useProjectStore = defineStore('project', () => {
   const projectRepos = computed<ProjectRepository[]>(() => project.value?.repositories || []);
 
   const selectedRepository = computed<string>(
-    () => projectRepos.value.find((repo: ProjectRepository) => route.params.name === repo.slug)?.url
-      || ''
+    () => projectRepos.value.find(
+        (repo: ProjectRepository) => route.params.name === repo.slug
+      )?.url || ''
   );
-  const repository = computed<ProjectRepository | undefined>(() => projectRepos.value.find((repo: ProjectRepository) => route.params.name === repo.slug));
+  const repository = computed<ProjectRepository | undefined>(() => projectRepos
+    .value.find((repo: ProjectRepository) => route.params.name === repo.slug));
 
   const customRangeGranularity = computed<string[]>(() => (startDate.value === null || endDate.value === null
       ? [Granularity.WEEKLY]
