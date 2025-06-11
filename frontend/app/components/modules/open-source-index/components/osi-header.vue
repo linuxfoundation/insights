@@ -36,7 +36,7 @@ SPDX-License-Identifier: MIT
             >
               <NuxtLink
                 :to="`/open-source-index?sort=${sort}&type=${breadcrumbData.type}`"
-                class="hover:text-brand-600"
+                class="hover:text-brand-600 text-xs md:text-sm"
               >
                 Open Source Index
               </NuxtLink>
@@ -47,7 +47,7 @@ SPDX-License-Identifier: MIT
               <NuxtLink
                 v-if="breadcrumbText"
                 :to="breadcrumbLink"
-                class="hover:text-brand-600"
+                class="hover:text-brand-600 text-xs md:text-sm"
               >
                 {{ breadcrumbText }}
               </NuxtLink>
@@ -59,31 +59,37 @@ SPDX-License-Identifier: MIT
               width="30rem"
             >
               <h1
-                class="font-bold mr-3 ease-linear transition-all font-secondary duration-200 text-heading-2"
+                v-if="isRoot"
+                class="font-bold mr-3 font-secondary text-2xl lg:text-heading-2"
+              >
+                {{ title }}
+              </h1>
+              <h1
+                v-else
+                class="font-bold mr-3 font-secondary text-base md:text-heading-3 lg:text-2xl"
               >
                 {{ title }}
               </h1>
             </lfx-skeleton-state>
             <p
               v-if="isRoot"
-              class="text-sm text-neutral-500"
+              class="lg:text-sm text-xs text-neutral-500"
             >
-              Curated view of the most critical open source projects powering our modern digital infrastructure.
+              Curated list of the most critical open source projects powering our modern digital
+              infrastructure, measured by contributor volume and software value
             </p>
           </div>
         </div>
         <div
-          class="md:basis-1/3 w-full flex flex-col md:flex-row items-end md:items-center gap-5 justify-end"
+          class="basis-1/3 lg:flex hidden items-end gap-4 justify-end"
         >
           <div
             v-if="isRoot"
-            class="border-r border-neutral-200 pr-5"
           >
             <lfx-dropdown-select
               v-model="type"
               width="20rem"
               placement="bottom-end"
-              class="min-w-[215px]"
             >
               <template #trigger="{selectedOption}">
                 <lfx-dropdown-selector class="justify-between">
@@ -92,7 +98,7 @@ SPDX-License-Identifier: MIT
                       name="chart-tree-map"
                       :size="16"
                     />
-                    <span class="text-neutral-900 font-medium text-sm text-nowrap">
+                    <span class="text-neutral-900 font-medium text-sm text-nowrap hidden xl:block">
                       Grouped by:
                     </span>
                     <span class="inline font-normal text-sm text-nowrap">
@@ -112,7 +118,7 @@ SPDX-License-Identifier: MIT
               />
             </lfx-dropdown-select>
           </div>
-          <div>
+          <div class="border-r border-neutral-200 pr-4">
             <lfx-tabs
               :tabs="sortTabs"
               :model-value="sort"
@@ -219,7 +225,7 @@ const backButtonLink = computed(() => {
 
 const sortTabs = [
   {
-    label: 'Most Contributors',
+    label: 'Contributors',
     value: 'totalContributors',
     icon: 'people-group',
   },

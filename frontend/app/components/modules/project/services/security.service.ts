@@ -1,9 +1,13 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { type SecurityData, SecurityDataResult } from '~~/types/security/responses.types';
+import {
+  type SecurityData,
+  SecurityDataCategory,
+  SecurityDataResult,
+} from '~~/types/security/responses.types';
 import {
   lfxOspsBaselineScore,
-  type OspsBaselineScore
+  type OspsBaselineScore,
 } from '~/components/modules/project/config/osps-baseline-score';
 import { lfxColors } from '~/config/styles/colors';
 
@@ -18,6 +22,19 @@ export interface ScoreDataQueryParams extends OverviewQueryParams {
 
 // TODO: Refactor other services to follow this pattern
 class ProjectSecurityService {
+  // TODO: Remove this when we have data for them
+  /**
+   * This function removes the "Documentation" and "Vulnerability Management" categories from the data
+   * @param data
+   * @returns
+   */
+  removeDocumentationAndVulnerability(data: SecurityData[]): SecurityData[] {
+    return data.filter(
+      (item) => item.category !== SecurityDataCategory.DOCUMENTATION
+        && item.category !== SecurityDataCategory.VULNERABILITY_MANAGEMENT
+    );
+  }
+
   calculateOSPSScore(data: SecurityData[], isRepository: boolean): number {
     if (data.length === 0) {
       return 0;
@@ -71,16 +88,14 @@ class ProjectSecurityService {
 
   getOSPSconfig(results: number): OspsBaselineScore {
     return (
-      lfxOspsBaselineScore.find(
-        (item) => results >= item.minScore && results <= item.maxScore
-      ) || {
+      lfxOspsBaselineScore.find((item) => results >= item.minScore && results <= item.maxScore) || {
         minScore: 0,
         maxScore: 100,
         label: 'No data available',
         description: '',
         lineColor: lfxColors.neutral[200],
         badgeBgColor: lfxColors.neutral[100],
-        badgeTextColor: lfxColors.neutral[500]
+        badgeTextColor: lfxColors.neutral[500],
       }
     );
   }

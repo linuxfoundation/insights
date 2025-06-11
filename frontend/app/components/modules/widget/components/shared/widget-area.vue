@@ -59,6 +59,10 @@ import LfxWidget from "~/components/modules/widget/components/shared/widget.vue"
 import type { Benchmark } from '~~/types/shared/benchmark.types';
 import {useProjectStore} from "~/components/modules/project/store/project.store";
 import { useQueryParam } from "~/components/shared/utils/query-param";
+import {
+  processTimeAndDateParams,
+  timeAndDateParamsSetter
+} from "~/components/modules/project/services/project.query.service";
 
 const props = defineProps<{
   name: WidgetArea
@@ -68,7 +72,7 @@ const route = useRoute();
 const config = computed<WidgetAreaConfig>(() => lfxWidgetArea[props.name]);
 const benchmarks = ref<Record<string, Benchmark | undefined>>({});
 
-const { queryParams } = useQueryParam();
+const { queryParams } = useQueryParam(processTimeAndDateParams, timeAndDateParamsSetter);
 const activeItem = ref(queryParams.value.widget || config.value.widgets?.[0] || '');
 const tmpClickedItem = ref('');
 const loadedWidgets = ref<Record<string, boolean>>({});
@@ -142,7 +146,8 @@ const areWidgetsAboveLoaded = (currentWidget: string) => {
 
 const navigateToWidget = () => {
   const widget = route.query?.widget || config.value.widgets?.[0] || '';
-  if (widget && areWidgetsAboveLoaded(widget as string) && !isFirstLoad.value) {
+
+  if (widget && areWidgetsAboveLoaded(widget as string) && isFirstLoad.value) {
     setTimeout(() => {
       isFirstLoad.value = false;
       onSideNavUpdate(widget as string);
