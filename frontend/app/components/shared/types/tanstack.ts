@@ -52,5 +52,10 @@ export enum TanstackKey {
   // Open Source Index
   OSS_INDEX_GROUP = 'oss-index-group',
   OSS_INDEX_CATEGORY = 'oss-index-category',
-  OSS_INDEX_COLLECTION = 'oss-index-collection'
+  OSS_INDEX_COLLECTION = 'oss-index-collection',
+
+  // Explore
+  TOP_CONTRIBUTORS = 'explore-top-contributors',
+  TOP_ORGANIZATIONS = 'explore-top-organizations',
+  TOP_PROJECTS = 'explore-top-projects',
 }
