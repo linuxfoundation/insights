@@ -1,3 +1,4 @@
+![insights-banner](https://github.com/user-attachments/assets/a0bad954-940d-4811-a183-5efa67b16b6a)
 # What is LFX Insights?
 
 LFX Insights helps developers and their organizations make smarter decisions about the open source projects they depend on.
