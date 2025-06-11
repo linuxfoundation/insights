@@ -4,6 +4,8 @@
 
 # LFX Insights [![LFX Health Score](https://img.shields.io/static/v1?label=Health%20Score&message=Stable&color=0094FF&logo=linuxfoundation&logoColor=white&style=flat)](https://insights.linuxfoundation.org/project/insights)
 
+![insights-banner](https://github.com/user-attachments/assets/a3cd85d7-0b48-4a83-a7b6-76e69ad4b635)
+
 ## What is Insights?
 [Insights](https://insights.linuxfoundation.org/) evaluates the health of the world's most critical open source software.
 
