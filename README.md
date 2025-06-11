@@ -1,9 +1,8 @@
-
 <!-- BODY -->
 
 > 📣 Insights was relaunched and open sourced in June 2025.
 
-# LFX Insights
+# LFX Insights [![LFX Health Score](https://img.shields.io/static/v1?label=Health%20Score&message=Stable&color=0094FF&logo=linuxfoundation&logoColor=white&style=flat)](https://insights.linuxfoundation.org/project/insights)
 
 ## What is Insights?
 [Insights](https://insights.linuxfoundation.org/) evaluates the health of the world's most critical open source software.
