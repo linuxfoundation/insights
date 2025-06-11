@@ -5,6 +5,7 @@ import type {WidgetArea} from "~/components/modules/widget/types/widget-area";
 export interface ReportDataForm {
     area: WidgetArea;
     widget: string;
+    hideArea: boolean;
     description: string;
     email: string;
 }

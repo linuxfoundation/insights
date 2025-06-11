@@ -17,8 +17,10 @@ export default defineEventHandler(async (event): Promise<boolean> => {
                 createHeading('Repository'),
                 createParagraph(body.repositoryUrl),
             ] : []),
-            createHeading('Issue Area'),
-            createParagraph(body.area),
+            ...(body.area ? [
+                createHeading('Issue Area'),
+                createParagraph(body.area),
+            ] : []),
             ...(body.widget ? [
                 createHeading('Widget'),
                 createParagraph(body.widget),
