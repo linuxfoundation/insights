@@ -1,6 +1,6 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { type ComputedRef, computed } from 'vue';
+import { computed } from 'vue';
 import type { QueryFunction } from '@tanstack/vue-query';
 import { useInfiniteQuery } from '@tanstack/vue-query';
 import type { ExploreContributors } from '~~/types/explore/contributors';

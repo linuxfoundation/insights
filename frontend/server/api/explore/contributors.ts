@@ -19,18 +19,18 @@ export default defineEventHandler(
         }
       );
 
-      type ContributorCount = { 'count(id)': number };
-      const contributorCountResult = await fetchFromTinybird<ContributorCount[]>(
-        '/v0/pipes/top_active_contributors.json',
-        {
-          count: true,
-        }
-      );
-
+      //   type ContributorCount = { 'count(id)': number };
+      //   const contributorCountResult = await fetchFromTinybird<ContributorCount[]>(
+      //     '/v0/pipes/top_active_contributors.json',
+      //     {
+      //       count: true,
+      //     }
+      //   );
+      //   TODO: implement total count
       return {
         page,
         pageSize,
-        total: contributorCountResult.data[0]?.['count(id)'] || 0,
+        total: 100, // contributorCountResult.data[0]?.['count(id)'] || 0,
         data: res.data,
       };
     } catch (err) {

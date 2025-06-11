@@ -42,6 +42,13 @@ SPDX-License-Identifier: MIT
         {{ formatNumber(row.activityCount) }} contributions
       </div>
     </div>
+
+    <lfx-load-more
+      v-if="showLoadMore"
+      text="Loading contributors"
+      :is-fetching-next-page="isFetchingNextPage"
+      @load-more="loadMore"
+    />
   </div>
 
 </template>
@@ -53,6 +60,7 @@ import type { Pagination } from '~~/types/shared/pagination';
 import type { ExploreContributors } from '~~/types/explore/contributors';
 import LfxAvatar from "~/components/uikit/avatar/avatar.vue";
 import { formatNumber } from '~/components/shared/utils/formatter';
+import LfxLoadMore from '~/components/modules/explore/components/load-more.vue';
 
 const props = defineProps<{
   isFullList: boolean;
@@ -60,8 +68,10 @@ const props = defineProps<{
 
 const {
   data,
-  // hasNextPage,
+  fetchNextPage,
+  hasNextPage,
   isPending,
+  isFetchingNextPage,
   // status,
   // error,
   suspense
@@ -73,6 +83,12 @@ const tableData = computed(() => {
   }
   return (data.value?.pages[0] as Pagination<ExploreContributors>).data;
 });
+
+const loadMore = () => {
+  fetchNextPage();
+};
+
+const showLoadMore = computed(() => hasNextPage.value && props.isFullList);
 
 onServerPrefetch(async () => {
   await suspense();
