@@ -29,4 +29,18 @@
         @apply outline-transparent;
     }
   }
+
+  &.dark {
+    &:hover{
+      @apply bg-brand-100;
+    }
+  
+    &:active{
+      @apply outline-transparent;
+    }
+
+    &.is-active:not(.is-disabled){
+      @apply bg-brand-100 font-semibold text-neutral-900;
+    }
+  }
 }
