@@ -16,20 +16,24 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { OSS_INDEX_API_SERVICE, type OSIType, type SortType } from '~/components/modules/open-source-index/services/osi.api.service';
+import {
+  OSS_INDEX_API_SERVICE,
+  type OSIType,
+  type SortType
+} from '~/components/modules/open-source-index/services/osi.api.service';
 
 const type = ref<OSIType>('horizontal');
 const sort = ref<SortType>('totalContributors');
 const {
   data,
-  status,
-  error,
-  suspense
+  // status,
+  // error,
+  // suspense
 } = OSS_INDEX_API_SERVICE.fetchOSSGroup(type, sort, true);
 
-const ossData = computed(() => data.value?.slice(0, 5));
-const totalValue = computed(() => ossData.value?.reduce((acc, curr) => acc
-  + (sort.value === 'totalContributors' ? curr.totalContributors : curr.softwareValue), 0));
+// const ossData = computed(() => data.value?.slice(0, 5));
+// const totalValue = computed(() => ossData.value?.reduce((acc, curr) => acc
+//   + (sort.value === 'totalContributors' ? curr.totalContributors : curr.softwareValue), 0));
 
 </script>
 
