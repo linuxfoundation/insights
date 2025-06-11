@@ -80,6 +80,7 @@ export default {
         50: '12.5rem',
         100: '25rem',
         120: '30rem',
+        190: '47.5rem',
       },
       minWidth: {
         29: '7.25rem',

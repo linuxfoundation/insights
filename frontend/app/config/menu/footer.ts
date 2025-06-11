@@ -6,10 +6,12 @@ import organizationDashboard from "~/config/menu/tools/organization-dashboard";
 import projectControlCenter from "~/config/menu/tools/project-control-center";
 import mentorship from "~/config/menu/tools/mentorship";
 import crowdfunding from "~/config/menu/tools/crowdfunding";
+import {useReportStore} from "~/components/shared/modules/report/store/report.store";
 
 export interface FooterMenuLink {
     link?: string;
     route?: LfxRoutes;
+    click?: () => void;
     name: string;
 }
 
@@ -36,7 +38,12 @@ export const lfxFooterMenu: FooterMenuSection[] = [
             },
             {
                 name: 'Report issue',
-                link: 'https://github.com/linuxfoundation/insights/issues',
+                click: () => {
+                    const {openReportModal} = useReportStore();
+                    openReportModal({
+                        hideArea: true,
+                    })
+                }
             },
             {
                 name: 'Join discussions',
