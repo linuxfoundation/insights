@@ -14,7 +14,7 @@ SPDX-License-Identifier: MIT
   />
 
   <div class="container pt-8">
-    <div class="md:block hidden">
+    <div class="lg:block hidden">
       <lfx-project-load-state
         :status="status"
         :error="error"
@@ -27,7 +27,7 @@ SPDX-License-Identifier: MIT
         />
       </lfx-project-load-state>
     </div>
-    <div class="md:hidden flex flex-col mx-auto py-20 justify-center items-center">
+    <div class="lg:hidden flex flex-col mx-auto py-20 justify-center items-center">
       <lfx-icon
         name="arrows-left-right-to-line"
         :size="80"

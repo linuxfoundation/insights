@@ -73,14 +73,15 @@ SPDX-License-Identifier: MIT
             </lfx-skeleton-state>
             <p
               v-if="isRoot"
-              class="text-sm text-neutral-500"
+              class="lg:text-sm text-xs text-neutral-500"
             >
-              Curated view of the most critical open source projects powering our modern digital infrastructure.
+              Curated list of the most critical open source projects powering our modern digital
+              infrastructure, measured by contributor volume and software value
             </p>
           </div>
         </div>
         <div
-          class="lg:basis-1/3 w-full md:flex hidden items-end lg:items-center gap-4 justify-end"
+          class="basis-1/3 lg:flex hidden items-end gap-4 justify-end"
         >
           <div
             v-if="isRoot"
@@ -89,7 +90,6 @@ SPDX-License-Identifier: MIT
               v-model="type"
               width="20rem"
               placement="bottom-end"
-              class="xl:min-w-[215px] min-w-[125px]"
             >
               <template #trigger="{selectedOption}">
                 <lfx-dropdown-selector class="justify-between">
@@ -225,7 +225,7 @@ const backButtonLink = computed(() => {
 
 const sortTabs = [
   {
-    label: 'Most Contributors',
+    label: 'Contributors',
     value: 'totalContributors',
     icon: 'people-group',
   },
