@@ -2,6 +2,9 @@
 **/scripts/cli*
 scripts/cli
 scripts/utils
+scripts/scaffold
+scripts/builders
+scripts/services
 
 node_modules
 .prettierrc
