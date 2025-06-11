@@ -19,7 +19,6 @@ class ExploreApiService {
       // @ts-expect-error - queryFn is a computed ref
       queryFn,
       getNextPageParam: (lastPage) => {
-        console.log(lastPage);
         const nextPage = lastPage.page + 1;
         const totalPages = Math.ceil(lastPage.total / lastPage.pageSize);
         return nextPage < totalPages ? nextPage : undefined;

@@ -3,54 +3,60 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div
-    v-if="!isPending && tableData?.length"
-    class="lfx-table"
+  <lfx-project-load-state
+    :status="status"
+    :error="error"
+    error-message="Error fetching top contributors"
+    :is-empty="isEmpty"
   >
     <div
-      v-for="(row, index) in tableData"
-      :key="index"
-      class="lfx-table-row"
+      v-if="!isPending && tableData?.length"
+      class="lfx-table"
     >
-      <div class="flex items-center gap-3">
-        <div
-          class="mr-1 text-neutral-400 text-xs"
-        >
-          #{{ index + 1 }}
-        </div>
-        <lfx-avatar
-          :src="row.avatar"
-          type="member"
-        />
-        <div
-          class="text-ellipsis overflow-hidden"
-          :title="row.displayName"
-        >
-          {{ row.displayName }}
-        </div>
-      </div>
       <div
-        v-if="isFullList"
-        class="basis-1/3 text-right text-xs text-neutral-500"
+        v-for="(row, index) in tableData"
+        :key="index"
+        class="lfx-table-row"
       >
-        {{ formatNumber(row.activityCount) }}
+        <div class="flex items-center gap-3">
+          <div
+            class="mr-1 text-neutral-400 text-xs"
+          >
+            #{{ index + 1 }}
+          </div>
+          <lfx-avatar
+            :src="row.avatar"
+            type="member"
+          />
+          <div
+            class="text-ellipsis overflow-hidden"
+            :title="row.displayName"
+          >
+            {{ row.displayName }}
+          </div>
+        </div>
+        <div
+          v-if="isFullList"
+          class="basis-1/3 text-right text-xs text-neutral-500"
+        >
+          {{ formatNumber(row.activityCount) }}
+        </div>
+        <div
+          v-if="!isFullList"
+          class="basis-1/3 text-right text-xs text-neutral-500 hidden xl:block"
+        >
+          {{ formatNumber(row.activityCount) }} contributions
+        </div>
       </div>
-      <div
-        v-if="!isFullList"
-        class="basis-1/3 text-right text-xs text-neutral-500 hidden xl:block"
-      >
-        {{ formatNumber(row.activityCount) }} contributions
-      </div>
+
+      <lfx-load-more
+        v-if="showLoadMore"
+        text="Loading contributors"
+        :is-fetching-next-page="isFetchingNextPage"
+        @load-more="loadMore"
+      />
     </div>
-
-    <lfx-load-more
-      v-if="showLoadMore"
-      text="Loading contributors"
-      :is-fetching-next-page="isFetchingNextPage"
-      @load-more="loadMore"
-    />
-  </div>
-
+  </lfx-project-load-state>
 </template>
 
 <script setup lang="ts">
@@ -61,6 +67,8 @@ import type { ExploreContributors } from '~~/types/explore/contributors';
 import LfxAvatar from "~/components/uikit/avatar/avatar.vue";
 import { formatNumber } from '~/components/shared/utils/formatter';
 import LfxLoadMore from '~/components/modules/explore/components/load-more.vue';
+import { isEmptyData } from '~/components/shared/utils/helper';
+import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
 
 const props = defineProps<{
   isFullList: boolean;
@@ -72,8 +80,8 @@ const {
   hasNextPage,
   isPending,
   isFetchingNextPage,
-  // status,
-  // error,
+  status,
+  error,
   suspense
 } = EXPLORE_API_SERVICE.fetchTopContributors();
 
@@ -89,6 +97,7 @@ const loadMore = () => {
 };
 
 const showLoadMore = computed(() => hasNextPage.value && props.isFullList);
+const isEmpty = computed(() => isEmptyData(tableData.value as unknown as Record<string, unknown>[]));
 
 onServerPrefetch(async () => {
   await suspense();

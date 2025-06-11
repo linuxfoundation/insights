@@ -4,7 +4,7 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <lfx-modal v-model="isModalOpen">
-    <section class="px-8 py-6 flex flex-col gap-5 sticky top-0 bg-white drop-shadow-sm">
+    <section class="px-8 pt-6 pb-8 flex flex-col gap-5 sticky top-0 bg-white drop-shadow-sm">
       <div class="flex gap-8">
         <div class="flex flex-col gap-2">
           <h3 class="text-heading-3 font-secondary font-bold text-neutral-900">
