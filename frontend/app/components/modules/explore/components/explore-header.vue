@@ -3,7 +3,7 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <section>
+  <section class="md:mt-16 mt-10">
     <div class="flex flex-col gap-5 items-center text-neutral-900">
       <h1 class="lg:text-4xl text-heading-1 font-secondary font-light text-center w-">
         Discover the world's <br> most critical open source projects

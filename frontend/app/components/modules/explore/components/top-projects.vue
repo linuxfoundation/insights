@@ -4,10 +4,15 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   explore top projects
+  <div v-if="isFullList">
+    show full list here
+  </div>
 </template>
 
 <script setup lang="ts">
-
+defineProps<{
+  isFullList?: boolean;
+}>();
 </script>
 
 <script lang="ts">
