@@ -737,32 +737,32 @@ importers:
         specifier: ^5.6.3
         version: 5.8.3
 
-  workers/base:
+  workers/temporal/base:
     dependencies:
       '@crowd/archetype-standard':
         specifier: workspace:*
-        version: link:../../submodules/crowd.dev/services/archetypes/standard
+        version: link:../../../submodules/crowd.dev/services/archetypes/standard
       '@crowd/common':
         specifier: workspace:*
-        version: link:../../submodules/crowd.dev/services/libs/common
+        version: link:../../../submodules/crowd.dev/services/libs/common
       '@crowd/database':
         specifier: workspace:*
-        version: link:../../submodules/crowd.dev/services/libs/database
+        version: link:../../../submodules/crowd.dev/services/libs/database
       '@crowd/logging':
         specifier: workspace:*
-        version: link:../../submodules/crowd.dev/services/libs/logging
+        version: link:../../../submodules/crowd.dev/services/libs/logging
       '@crowd/opensearch':
         specifier: workspace:*
-        version: link:../../submodules/crowd.dev/services/libs/opensearch
+        version: link:../../../submodules/crowd.dev/services/libs/opensearch
       '@crowd/queue':
         specifier: workspace:*
-        version: link:../../submodules/crowd.dev/services/libs/queue
+        version: link:../../../submodules/crowd.dev/services/libs/queue
       '@crowd/telemetry':
         specifier: workspace:*
-        version: link:../../submodules/crowd.dev/services/libs/telemetry
+        version: link:../../../submodules/crowd.dev/services/libs/telemetry
       '@crowd/temporal':
         specifier: workspace:*
-        version: link:../../submodules/crowd.dev/services/libs/temporal
+        version: link:../../../submodules/crowd.dev/services/libs/temporal
       '@temporalio/activity':
         specifier: ~1.11.1
         version: 1.11.8
@@ -783,29 +783,29 @@ importers:
         specifier: ^5.6.3
         version: 5.8.3
 
-  workers/package_downloads_worker:
+  workers/temporal/package_downloads_worker:
     dependencies:
       '@crowd/archetype-standard':
         specifier: workspace:*
-        version: link:../../submodules/crowd.dev/services/archetypes/standard
+        version: link:../../../submodules/crowd.dev/services/archetypes/standard
       '@crowd/common':
         specifier: workspace:*
-        version: link:../../submodules/crowd.dev/services/libs/common
-      '@crowd/data-access-layer':
+        version: link:../../../submodules/crowd.dev/services/libs/common
+      '@crowd/database':
         specifier: workspace:*
-        version: link:../../submodules/crowd.dev/services/libs/data-access-layer
+        version: link:../../../submodules/crowd.dev/services/libs/database
       '@crowd/logging':
         specifier: workspace:*
-        version: link:../../submodules/crowd.dev/services/libs/logging
+        version: link:../../../submodules/crowd.dev/services/libs/logging
       '@crowd/opensearch':
         specifier: workspace:*
-        version: link:../../submodules/crowd.dev/services/libs/opensearch
+        version: link:../../../submodules/crowd.dev/services/libs/opensearch
       '@crowd/redis':
         specifier: workspace:*
-        version: link:../../submodules/crowd.dev/services/libs/redis
+        version: link:../../../submodules/crowd.dev/services/libs/redis
       '@crowd/types':
         specifier: workspace:*
-        version: link:../../submodules/crowd.dev/services/libs/types
+        version: link:../../../submodules/crowd.dev/services/libs/types
       '@insights/temporal-worker':
         specifier: workspace:*
         version: link:../base
@@ -15830,7 +15830,7 @@ snapshots:
       read-pkg-up: 7.0.1
       regexp-tree: 0.1.27
       regjsparser: 0.10.0
-      semver: 7.7.1
+      semver: 7.7.2
       strip-indent: 3.0.0
 
   eslint-plugin-vue@9.33.0(eslint@9.28.0(jiti@2.4.2)):
@@ -15841,7 +15841,7 @@ snapshots:
       natural-compare: 1.4.0
       nth-check: 2.1.1
       postcss-selector-parser: 6.1.2
-      semver: 7.7.1
+      semver: 7.7.2
       vue-eslint-parser: 9.4.3(eslint@9.28.0(jiti@2.4.2))
       xml-name-validator: 4.0.0
     transitivePeerDependencies:
@@ -17604,7 +17604,7 @@ snapshots:
       ignore-by-default: 1.0.1
       minimatch: 3.1.2
       pstree.remy: 1.1.8
-      semver: 7.7.1
+      semver: 7.7.2
       simple-update-notifier: 2.0.0
       supports-color: 5.5.0
       touch: 3.1.1
@@ -19204,7 +19204,7 @@ snapshots:
 
   simple-update-notifier@2.0.0:
     dependencies:
-      semver: 7.7.1
+      semver: 7.7.2
 
   sirv@3.0.1:
     dependencies:
@@ -20357,7 +20357,7 @@ snapshots:
       espree: 9.6.1
       esquery: 1.6.0
       lodash: 4.17.21
-      semver: 7.7.1
+      semver: 7.7.2
     transitivePeerDependencies:
       - supports-color
 

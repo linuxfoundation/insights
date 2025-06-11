@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 import { Config } from "@crowd/archetype-standard";
 import { InsightsServiceWorker, Options } from "@insights/temporal-worker";
+import { scheduleTriggerPackageDownloadsForRepos } from "./schedules/scheduleTriggeringDailyPackageDownloads";
 
 const config: Config = {
   envvars: [],
@@ -25,7 +26,7 @@ const options: Options = {
       enabled: true,
     },
     cm: {
-      enabled: false,
+      enabled: true,
     },
   },
 };
@@ -34,6 +35,8 @@ export const svc = new InsightsServiceWorker(config, options);
 
 setImmediate(async () => {
   await svc.init();
+
+  await scheduleTriggerPackageDownloadsForRepos();
 
   await svc.start();
 });

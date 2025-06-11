@@ -103,15 +103,9 @@ export class InsightsServiceWorker extends Service {
   // We first need to ensure a standard service can be initialized given the config
   // and environment variables.
   override async init(initWorker = true) {
-    // Since we're using crowd libraries, environment variables should be backward compatible
-    process.env["CROWD_TEMPORAL_ENCRYPTION_KEY_ID"] =
-      process.env["INSIGHTS_TEMPORAL_ENCRYPTION_KEY_ID"];
-    process.env["CROWD_TEMPORAL_ENCRYPTION_KEY"] =
-      process.env["INSIGHTS_TEMPORAL_ENCRYPTION_KEY"];
-    process.env["CROWD_TEMPORAL_NAMESPACE"] =
-      process.env["INSIGHTS_TEMPORAL_NAMESPACE"];
-    process.env["CROWD_TEMPORAL_SERVER_URL"] =
-      process.env["INSIGHTS_TEMPORAL_SERVER_URL"];
+    // Since we're using crowd libraries, environment variables should be backwards compatible
+    // with the INSIGHTS_ prefixed envs.
+    this.setBackwardCompatibleEnvVars()
 
     try {
       await super.init();
@@ -256,8 +250,6 @@ export class InsightsServiceWorker extends Service {
               : undefined,
         });
 
-        console.log("WEEEEEEEEEEEEE");
-
         const workflowInterceptorModules = [
           path.join(__dirname, "workflowInterceptors"),
         ];
@@ -268,19 +260,12 @@ export class InsightsServiceWorker extends Service {
           workflowInterceptorModules.push(serviceInterceptorsPath);
         }
 
-        console.log("BUNDLING WORKFLOW CODE!");
-
-        console.log(workflowInterceptorModules);
         const workflowBundle = await bundleWorkflowCode({
           workflowsPath: path.resolve("./src/workflows"),
           workflowInterceptorModules,
         });
 
-        console.log("GETTING DATA CONVERTER!");
-
         const dataConverter = await getDataConverter();
-
-        console.log("CREATING TEMPORAL WORKER!");
 
         this._worker = await TemporalWorker.create({
           connection: connection,
@@ -340,5 +325,20 @@ export class InsightsServiceWorker extends Service {
     }
 
     await super.stop();
+  }
+
+  private setBackwardCompatibleEnvVars() {
+    process.env["CROWD_TEMPORAL_ENCRYPTION_KEY_ID"] =
+      process.env["INSIGHTS_TEMPORAL_ENCRYPTION_KEY_ID"];
+    process.env["CROWD_TEMPORAL_ENCRYPTION_KEY"] =
+      process.env["INSIGHTS_TEMPORAL_ENCRYPTION_KEY"];
+    process.env["CROWD_TEMPORAL_NAMESPACE"] =
+      process.env["INSIGHTS_TEMPORAL_NAMESPACE"];
+    process.env["CROWD_TEMPORAL_SERVER_URL"] =
+      process.env["INSIGHTS_TEMPORAL_SERVER_URL"];
+    process.env["CROWD_TEMPORAL_CERTIFICATE"] =
+      process.env["INSIGHTS_TEMPORAL_CERTIFICATE"];
+    process.env["CROWD_TEMPORAL_PRIVATE_KEY"] =
+      process.env["INSIGHTS_TEMPORAL_PRIVATE_KEY"];
   }
 }
