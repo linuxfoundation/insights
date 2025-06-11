@@ -101,7 +101,7 @@ class ExploreApiService {
         params: {
           page: pageParam,
           pageSize: 10,
-          sort: 'contributorCount_desc',
+          sort: 'score_desc',
         },
       });
     };

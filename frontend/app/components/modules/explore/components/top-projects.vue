@@ -18,7 +18,7 @@ SPDX-License-Identifier: MIT
         :key="index"
         class="lfx-table-row"
       >
-        <div class="flex items-center gap-3 grow">
+        <div class="name-col grow">
           <div
             class="mr-1 text-neutral-400 text-xs"
           >
