@@ -6,6 +6,36 @@ SPDX-License-Identifier: MIT
   explore top projects
   <div v-if="isFullList">
     show full list here
+    <br>
+    asdflkj
+    <br><br><br>
+    asdflkj
+    <br><br><br>
+    asdflkj
+    <br><br><br>
+    asdflkj
+    <br><br><br>
+    asdflkj
+    <br><br><br>
+    asdflkj
+    <br><br><br>
+    asdflkj
+    <br><br><br>
+    asdflkj
+    <br><br><br>
+    asdflkj
+    <br><br><br>
+    asdflkj
+    <br><br><br>
+    asdflkj
+    <br><br><br>
+    asdflkj
+    <br><br><br>
+    asdflkj
+    <br><br><br>
+    asdflkj
+    <br><br><br>
+    asdflkj
   </div>
 </template>
 

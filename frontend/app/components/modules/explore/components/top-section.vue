@@ -8,14 +8,15 @@ SPDX-License-Identifier: MIT
       <lfx-explore-list-card
         v-for="tab in tabs"
         :key="tab.title"
-        :component="tab.component"
-        :title="tab.title"
-        :description="tab.description"
+        :value="tab"
       />
     </div>
 
-    <div class="lg:hidden block">
-      <div class="flex gap-2 justify-start sm:justify-center w-full scroll-x-auto overflow-x-auto">
+    <div class="lg:hidden block -mt-1">
+      <div
+        class="flex gap-2 justify-start sm:justify-center
+        w-full scroll-x-auto overflow-x-auto overflow-y-visible py-1"
+      >
         <button
           v-for="(tab, index) in tabs"
           :key="index"
@@ -33,16 +34,14 @@ SPDX-License-Identifier: MIT
           {{ tab.title }}
         </button>
       </div>
-      <div class="mt-8">
+      <div class="mt-7">
         <template
           v-for="(tab, index) in tabs"
           :key="index"
         >
           <lfx-explore-list-card
             v-if="activeTab === index"
-            :component="tab.component"
-            :title="tab.title"
-            :description="tab.description"
+            :value="tab"
           />
         </template>
       </div>
@@ -57,29 +56,33 @@ import LfxExploreTopProjects from '~/components/modules/explore/components/top-p
 import LfxExploreTopContributors from '~/components/modules/explore/components/top-contributors.vue';
 import LfxExploreTopOrganizations from '~/components/modules/explore/components/top-organizations.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
+import type { ExploreTab } from '~/components/modules/explore/types/explore.types';
 
 const activeTab = ref(0);
-const tabs = [
+const tabs: ExploreTab[] = [
   {
     title: 'Top projects',
     description: `Projects ranked by Criticality Score — a metric that reflects their 
     importance, usage, and potential impact across the ecosystem.`,
     component: LfxExploreTopProjects,
-    icon: 'laptop-code'
+    icon: 'laptop-code',
+    type: 'project'
   },
   {
     title: 'Top active contributors',
     description: `Developers ranked by volume of contributions over the last 10 years, 
     highlighting the most active and influential individuals in the open source ecosystem.`,
     component: LfxExploreTopContributors,
-    icon: 'people-group'
+    icon: 'people-group',
+    type: 'contributor'
   },
   {
     title: 'Top active organizations',
     description: `Most influential organizations based on the total number of contributions 
     made across the most relevant open source projects over the last 10 years.`,
     component: LfxExploreTopOrganizations,
-    icon: 'buildings'
+    icon: 'buildings',
+    type: 'organization'
   }
 ];
 </script>

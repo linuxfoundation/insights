@@ -6,14 +6,14 @@ SPDX-License-Identifier: MIT
   <article class="p-6 border border-neutral-200 rounded-xl flex flex-col gap-6">
     <div class="flex flex-col gap-2">
       <h3 class="text-heading-3 font-secondary font-bold text-neutral-900">
-        {{ props.title }}
+        {{ props.value.title }}
       </h3>
       <p class="text-xs text-neutral-500">
-        {{ props.description }}
+        {{ props.value.description }}
       </p>
     </div>
     <component
-      :is="props.component"
+      :is="props.value.component"
     />
     <div
       class="flex flex-row justify-center"
@@ -26,23 +26,20 @@ SPDX-License-Identifier: MIT
       </lfx-button>
     </div>
   </article>
-  <lfx-modal v-model="isModalOpen">
-    <component
-      :is="props.component"
-      :is-full-list="true"
-    />
-  </lfx-modal>
+  <lfx-explore-list-modal
+    v-model="isModalOpen"
+    :value="props.value"
+  />
 </template>
 
 <script setup lang="ts">
-import { ref, type Component } from "vue";
+import { ref } from "vue";
 import LfxButton from "~/components/uikit/button/button.vue";
-import LfxModal from "~/components/uikit/modal/modal.vue";
+import LfxExploreListModal from "~/components/modules/explore/components/list-modal.vue";
+import type { ExploreTab } from '~/components/modules/explore/types/explore.types';
 
 const props = defineProps<{
-  title: string;
-  description: string;
-  component: Component;
+  value: ExploreTab;
 }>();
 
 const isModalOpen = ref(false);
