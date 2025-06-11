@@ -4,12 +4,47 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <section>
-    explore header
+    <div class="flex flex-col gap-5 items-center text-neutral-900">
+      <h1 class="lg:text-4xl text-heading-1 font-secondary font-light text-center w-">
+        Discover the world's <br> most critical open source projects
+      </h1>
+      <p class="text-sm">
+        LFX Insights helps developers and their organizations make smarter decisions
+        about the open source projects they depend on
+      </p>
+
+      <div class="w-full flex justify-center mt-5">
+        <div
+          class="w-full sm:max-w-120 overflow-hidden bg-neutral-50 h-9 border
+          border-neutral-200 rounded-full flex items-center gap-2 px-3 cursor-pointer"
+          @click="isModalOpen = true"
+        >
+          <lfx-icon
+            name="search"
+            class="text-neutral-400 font-normal"
+            :size="14"
+          />
+          <p class="text-body-1 text-neutral-400 truncate">
+            Search projects, repositories...
+          </p>
+          <div class="flex-grow" />
+        </div>
+      </div>
+    </div>
   </section>
+
+  <lfx-search-modal
+    v-if="isModalOpen"
+    v-model="isModalOpen"
+  />
 </template>
 
 <script setup lang="ts">
+import { ref } from "vue";
+import LfxIcon from "~/components/uikit/icon/icon.vue";
+import LfxSearchModal from "~/components/shared/layout/search/search-modal.vue";
 
+const isModalOpen = ref(false);
 </script>
 
 <script lang="ts">
