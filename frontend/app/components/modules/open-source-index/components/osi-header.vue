@@ -34,23 +34,14 @@ SPDX-License-Identifier: MIT
               v-if="!isRoot"
               class="text-sm text-neutral-500"
             >
-              <NuxtLink
-                :to="`/open-source-index?sort=${sort}&type=${breadcrumbData.type}`"
-                class="hover:text-brand-600 text-xs md:text-sm"
-              >
-                Open Source Index
-              </NuxtLink>
+              Open Source Index
               <span
                 v-if="breadcrumbText"
                 class="text-neutral-500"
               >・</span>
-              <NuxtLink
-                v-if="breadcrumbText"
-                :to="breadcrumbLink"
-                class="hover:text-brand-600 text-xs md:text-sm"
-              >
+              <span class="font-medium">
                 {{ breadcrumbText }}
-              </NuxtLink>
+              </span>
             </div>
 
             <lfx-skeleton-state
@@ -201,16 +192,6 @@ const breadcrumbText = computed(() => {
   }
   return null;
 });
-
-const breadcrumbLink = computed(() => {
-  const slug = props.breadcrumbData.group?.slug;
-  const {sort} = props;
-  const {type} = props.breadcrumbData;
-
-  return `/open-source-index/group/${slug}?sort=${sort}&type=${type}`;
-});
-
-// const isRoot = computed(() => !props.breadcrumbData.category && !props.breadcrumbData.group);
 
 const backButtonLink = computed(() => {
   const slug = props.breadcrumbData.group?.slug;
