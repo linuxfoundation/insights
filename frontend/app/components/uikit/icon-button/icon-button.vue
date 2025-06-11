@@ -11,7 +11,9 @@ SPDX-License-Identifier: MIT
       {'is-disabled': props.disabled}
     ]"
   >
-    <lfx-icon :name="props.icon" />
+    <slot>
+      <lfx-icon :name="props.icon" />
+    </slot>
   </div>
 </template>
 
