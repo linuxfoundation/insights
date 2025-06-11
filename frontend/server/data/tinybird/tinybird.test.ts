@@ -8,9 +8,7 @@ import {
   it,
   vi
 } from 'vitest';
-import { mockNuxtImport } from '@nuxt/test-utils/runtime'
-import {DateTime} from "luxon";
-import { fetchFromTinybird } from './tinybird';
+import { DateTime } from "luxon";
 
 const mockTinybirdBaseUrl = 'https://tb.lf.org';
 const mockTinybirdToken = 'mockToken';
@@ -40,46 +38,31 @@ const mockTinybirdResult = {
     bytes_read: 27822157
   }
 };
-const mockFetch = vi.fn().mockResolvedValue(mockTinybirdResult);
-vi.stubGlobal('$fetch', mockFetch);
 
-/** This is how we mock the useRuntimeConfig function in Nuxt,
- *  according to https://nuxt.com/docs/getting-started/testing#mocknuxtimport
- *  This is the second method described in the docs, which allows us to define different values for each test.
- *  See setMockRuntimeConfig() below for how to do that.
- */
-const { useRuntimeConfigMock } = vi.hoisted(() => ({
-    useRuntimeConfigMock: vi.fn(() => ({
-    tinybirdBaseUrl: mockTinybirdBaseUrl as string | null,
-    tinybirdToken: mockTinybirdToken as string | null,
-  }))
+const mockOfetch = vi.fn();
+
+vi.mock('ofetch', () => ({
+  ofetch: mockOfetch
 }));
-
-/**
- * This allows setting a different runtimeConfig for each test.
- * Call it with the desired values at the start of the test, or wherever it makes sense.
- */
-function setMockRuntimeConfig(tinybirdBaseUrl: string | null, tinybirdToken: string | null) {
-  useRuntimeConfigMock.mockImplementation(() => ({
-    tinybirdBaseUrl,
-    tinybirdToken,
-  }));
-
-  mockNuxtImport('useRuntimeConfig', () => useRuntimeConfigMock);
-}
 
 describe('fetchFromTinybird', () => {
   beforeEach(() => {
-    setMockRuntimeConfig(mockTinybirdBaseUrl, mockTinybirdToken);
+    process.env.NUXT_TINYBIRD_BASE_URL = mockTinybirdBaseUrl;
+    process.env.NUXT_TINYBIRD_TOKEN = mockTinybirdToken;
+
+    mockOfetch.mockClear();
+    mockOfetch.mockResolvedValue(mockTinybirdResult);
   });
 
   afterAll(async () => {
-    useRuntimeConfigMock.mockReset();
-    vi.unstubAllEnvs();
-    vi.unstubAllGlobals();
+    delete process.env.NUXT_TINYBIRD_BASE_URL;
+    delete process.env.NUXT_TINYBIRD_TOKEN;
+    vi.clearAllMocks();
   });
 
   it('should not send empty strings, undefined, or null values in the query', async () => {
+    const { fetchFromTinybird } = await import('./tinybird');
+
     const query = {
       param1: 'value1',
       param2: '',
@@ -89,53 +72,58 @@ describe('fetchFromTinybird', () => {
 
     await fetchFromTinybird('/mock-path', query);
 
-    expect(mockFetch).toHaveBeenCalledWith(
-      `${mockTinybirdBaseUrl}/mock-path`,
-      expect.objectContaining({
-        query: { param1: 'value1' },
-        headers: { Authorization: `Bearer ${mockTinybirdToken}` },
-      })
-    );
+    const calledUrl = mockOfetch.mock.calls[0][0];
+    expect(calledUrl).toMatch(`${mockTinybirdBaseUrl}/mock-path?param1=value1`);
+    const calledOptions = mockOfetch.mock.calls[0][1];
+    expect(calledOptions.headers).toEqual({ Authorization: `Bearer ${mockTinybirdToken}` });
   });
 
-  it('throws if tinybirdBaseUrl is not defined', async () => {
-    setMockRuntimeConfig(null, 'mockToken');
-    await expect(
-      fetchFromTinybird('/mock-path', {key: 'value'})
-    ).rejects.toThrowError('Tinybird base URL is not defined');
-  });
+it('uses the default base URL if tinybirdBaseUrl is not defined', async () => {
+  const { fetchFromTinybird } = await import('./tinybird');
+
+  delete process.env.NUXT_TINYBIRD_BASE_URL;
+  await fetchFromTinybird('/mock-path', { key: 'value' });
+  const calledUrl = mockOfetch.mock.calls[0][0];
+  expect(calledUrl).toBe('https://api.us-west-2.aws.tinybird.co/mock-path?key=value');
+  process.env.NUXT_TINYBIRD_BASE_URL = mockTinybirdBaseUrl; // restore for other tests
+});
 
   it('throws if tinybirdToken is not defined', async () => {
-    setMockRuntimeConfig(mockTinybirdBaseUrl, null);
+    const { fetchFromTinybird } = await import('./tinybird');
+
+    delete process.env.NUXT_TINYBIRD_TOKEN;
     await expect(
       fetchFromTinybird('/mock-path', {key: 'value'})
     ).rejects.toThrowError('Tinybird token is not defined');
+    process.env.NUXT_TINYBIRD_TOKEN = mockTinybirdToken; // restore for other tests
   });
 
   it('makes a request with the correct URL and query', async () => {
+    const { fetchFromTinybird } = await import('./tinybird');
+
     const result = await fetchFromTinybird<{ key: string }>('/mock-path', {
       key: 'value',
     });
 
-    expect($fetch).toHaveBeenCalledWith(`${mockTinybirdBaseUrl}/mock-path`, {
-      query: {key: 'value'}, headers: {Authorization: `Bearer ${mockTinybirdToken}`}
-    });
+    const calledUrl = mockOfetch.mock.calls[0][0];
+    expect(calledUrl).toBe(`${mockTinybirdBaseUrl}/mock-path?key=value`);
+    const calledOptions = mockOfetch.mock.calls[0][1];
+    expect(calledOptions.headers).toEqual({ Authorization: `Bearer ${mockTinybirdToken}` });
     expect(result).toEqual(mockTinybirdResult);
   });
 
     it('should correctly format DateTime objects in the query', async () => {
+      const { fetchFromTinybird } = await import('./tinybird');
+
       const query = {
         dateParam: DateTime.fromISO('2025-03-20T12:30:00'),
       };
 
       await fetchFromTinybird('/mock-path', query);
 
-      expect(mockFetch).toHaveBeenCalledWith(
-        `${mockTinybirdBaseUrl}/mock-path`,
-        expect.objectContaining({
-          query: { dateParam: '2025-03-20 00:00:00' },
-          headers: { Authorization: `Bearer ${mockTinybirdToken}` },
-        })
-      );
+      const calledUrl = mockOfetch.mock.calls[0][0];
+      expect(calledUrl).toEqual(`${mockTinybirdBaseUrl}/mock-path?dateParam=2025-03-20+00%3A00%3A00`);
+      const calledOptions = mockOfetch.mock.calls[0][1];
+      expect(calledOptions.headers).toEqual({ Authorization: `Bearer ${mockTinybirdToken}` });
     });
 });
