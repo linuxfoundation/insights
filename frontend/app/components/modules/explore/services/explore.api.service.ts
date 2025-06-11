@@ -8,8 +8,8 @@ import { TanstackKey } from '~/components/shared/types/tanstack';
 import type { Pagination } from '~~/types/shared/pagination';
 
 class ExploreApiService {
-  fetchTopContributors(isFullList: ComputedRef<boolean>) {
-    const queryKey = computed(() => [TanstackKey.TOP_CONTRIBUTORS, isFullList.value]);
+  fetchTopContributors() {
+    const queryKey = computed(() => [TanstackKey.TOP_CONTRIBUTORS]);
 
     const queryFn = computed<QueryFunction<Pagination<ExploreContributors>>>(() => this.topContributorsQueryFn());
 

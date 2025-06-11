@@ -5,13 +5,42 @@ SPDX-License-Identifier: MIT
 <template>
   <div
     v-if="!isPending && tableData?.length"
-    class="flex gap-4 flex-col"
+    class="lfx-table"
   >
     <div
       v-for="(row, index) in tableData"
       :key="index"
+      class="lfx-table-row"
     >
-      {{ row.displayName }}
+      <div class="flex items-center gap-3">
+        <div
+          class="mr-1 text-neutral-400 text-xs"
+        >
+          #{{ index + 1 }}
+        </div>
+        <lfx-avatar
+          :src="row.avatar"
+          type="member"
+        />
+        <div
+          class="text-ellipsis overflow-hidden"
+          :title="row.displayName"
+        >
+          {{ row.displayName }}
+        </div>
+      </div>
+      <div
+        v-if="isFullList"
+        class="basis-1/3 text-right text-xs text-neutral-500"
+      >
+        {{ formatNumber(row.activityCount) }}
+      </div>
+      <div
+        v-if="!isFullList"
+        class="basis-1/3 text-right text-xs text-neutral-500 hidden xl:block"
+      >
+        {{ formatNumber(row.activityCount) }} contributions
+      </div>
     </div>
   </div>
 
@@ -22,12 +51,13 @@ import { computed, onServerPrefetch } from 'vue';
 import { EXPLORE_API_SERVICE } from '~/components/modules/explore/services/explore.api.service';
 import type { Pagination } from '~~/types/shared/pagination';
 import type { ExploreContributors } from '~~/types/explore/contributors';
+import LfxAvatar from "~/components/uikit/avatar/avatar.vue";
+import { formatNumber } from '~/components/shared/utils/formatter';
 
 const props = defineProps<{
   isFullList: boolean;
 }>();
 
-const isFullListParam = computed(() => props.isFullList);
 const {
   data,
   // hasNextPage,
@@ -35,9 +65,14 @@ const {
   // status,
   // error,
   suspense
-} = EXPLORE_API_SERVICE.fetchTopContributors(isFullListParam);
+} = EXPLORE_API_SERVICE.fetchTopContributors();
 
-const tableData = computed(() => data.value?.pages.flatMap((p) => (p as Pagination<ExploreContributors>).data));
+const tableData = computed(() => {
+  if (props.isFullList) {
+    return data.value?.pages.flatMap((p) => (p as Pagination<ExploreContributors>).data);
+  }
+  return (data.value?.pages[0] as Pagination<ExploreContributors>).data;
+});
 
 onServerPrefetch(async () => {
   await suspense();
