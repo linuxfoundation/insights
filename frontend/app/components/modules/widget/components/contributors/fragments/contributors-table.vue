@@ -95,18 +95,18 @@ const props = withDefaults(
     contributors: Contributor[];
     showPercentage?: boolean;
     showFullList?: boolean;
-    total?: number;
+    hasNextPage?: boolean;
     isFetchingNextPage?: boolean;
   }>(),
   {
     showPercentage: false,
     showFullList: false,
-    total: 0,
+    hasNextPage: false,
     isFetchingNextPage: false
   }
 );
 
-const showLoadMore = computed(() => props.total && props.total > props.contributors.length && props.showFullList);
+const showLoadMore = computed(() => props.hasNextPage && props.showFullList);
 
 const options = {
   root: null,
