@@ -6,6 +6,7 @@ import { useInfiniteQuery } from '@tanstack/vue-query';
 import type { ExploreContributors } from '~~/types/explore/contributors';
 import { TanstackKey } from '~/components/shared/types/tanstack';
 import type { Pagination } from '~~/types/shared/pagination';
+import type { ExploreOrganizations } from '~~/types/explore/organizations';
 
 class ExploreApiService {
   fetchTopContributors() {
@@ -32,6 +33,37 @@ class ExploreApiService {
       const pageParam = (context.pageParam || 0) as number;
 
       return await $fetch(`/api/explore/contributors`, {
+        params: {
+          page: pageParam,
+          pageSize: 10,
+        },
+      });
+    };
+  }
+  fetchTopOrganizations() {
+    const queryKey = computed(() => [TanstackKey.TOP_ORGANIZATIONS]);
+
+    const queryFn = computed<QueryFunction<Pagination<ExploreOrganizations>>>(() => this.topOrganizationsQueryFn());
+
+    return useInfiniteQuery<Pagination<ExploreOrganizations>>({
+      queryKey,
+      // TODO: fix this type error
+      // @ts-expect-error - queryFn is a computed ref
+      queryFn,
+      getNextPageParam: (lastPage) => {
+        const nextPage = lastPage.page + 1;
+        const totalPages = Math.ceil(lastPage.total / lastPage.pageSize);
+        return nextPage < totalPages ? nextPage : undefined;
+      },
+    });
+  }
+
+  topOrganizationsQueryFn(): QueryFunction<Pagination<ExploreOrganizations>> {
+    // const { projectSlug, platform, activityType, repository, startDate, endDate } = query();
+    return async (context) => {
+      const pageParam = (context.pageParam || 0) as number;
+
+      return await $fetch(`/api/explore/organizations`, {
         params: {
           page: pageParam,
           pageSize: 10,
