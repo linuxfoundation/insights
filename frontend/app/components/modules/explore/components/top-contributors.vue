@@ -11,7 +11,7 @@ SPDX-License-Identifier: MIT
   >
     <div
       v-if="!isPending && tableData?.length"
-      class="lfx-table"
+      class="lfx-table has-hover"
     >
       <div
         v-for="(row, index) in tableData"
@@ -96,7 +96,10 @@ const loadMore = () => {
   fetchNextPage();
 };
 
-const showLoadMore = computed(() => hasNextPage.value && props.isFullList);
+const showLoadMore = computed(() => hasNextPage.value
+  && props.isFullList
+  && tableData.value?.length
+  && tableData.value.length < 100);
 const isEmpty = computed(() => isEmptyData(tableData.value as unknown as Record<string, unknown>[]));
 
 onServerPrefetch(async () => {
