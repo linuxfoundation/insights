@@ -49,8 +49,8 @@ SPDX-License-Identifier: MIT
         </div>
 
         <div
-          class="flex justify-between gap-x-5 md:gap-x-8 flex-grow flex-col sm:flex-row"
-          :class="scrollTop > 50 ? 'sm:items-center': ''"
+          class="flex justify-between gap-x-5 md:gap-x-8 flex-grow flex-col lg:flex-row"
+          :class="scrollTop > 50 ? 'lg:items-center': ''"
         >
           <div class="flex-grow flex">
             <div
@@ -90,17 +90,40 @@ SPDX-License-Identifier: MIT
           </div>
           <div
             v-if="props.collection"
-            class="flex sm:justify-end transition-all ease-linear gap-5 md:gap-6"
+            class="flex lg:justify-end transition-all ease-linear gap-4"
             :class="
               scrollTop > 50
-                ? 'h-0 sm:h-auto opacity-0 sm:opacity-100 invisible sm:visible pt-0'
-                : 'h-6 pt-5 sm:pt-0 opacity-100 visible'
+                ? 'h-0 lg:h-auto opacity-0 sm:opacity-100 invisible lg:visible pt-0'
+                : 'h-6 pt-5 lg:pt-0 opacity-100 visible'
             "
           >
             <article class="flex items-center gap-2 h-min">
-              <div class="h-6 w-6 md:h-8 md:w-8 rounded-full flex items-center justify-center bg-brand-50">
+              <div class="h-6 w-6 md:h-7 md:w-7 rounded-full flex items-center justify-center bg-neutral-100">
                 <lfx-icon
                   name="laptop-code"
+                  :size="14"
+                  class="text-neutral-500 md:!text-base !text-sm"
+                />
+              </div>
+              <lfx-skeleton
+                v-if="loading"
+                height="1.25rem"
+                width="5rem"
+                class="rounded-sm mt-2"
+              />
+              <p
+                v-else
+                class="leading-6 transition-all whitespace-nowrap text-xs md:text-sm"
+              >
+                {{formatNumberShort(props.collection.projectCount)}}
+                {{ pluralize('project', props.collection.projectCount) }}
+              </p>
+            </article>
+            <article class="flex items-center gap-2 h-min">
+              <div class="h-6 w-6 md:h-8 md:w-8 rounded-full flex items-center justify-center bg-brand-50">
+                <lfx-icon
+                  name="people-group"
+                  :size="14"
                   class="text-brand-600 md:!text-base !text-sm"
                 />
               </div>
@@ -112,11 +135,10 @@ SPDX-License-Identifier: MIT
               />
               <p
                 v-else
-                class="leading-6 transition-all whitespace-nowrap"
-                :class="scrollTop > 50 ? 'text-xs md:text-sm' : 'text-xs md:text-base'"
+                class="leading-6 transition-all whitespace-nowrap  text-xs md:text-sm"
               >
-                {{formatNumberShort(props.collection.projectCount)}}
-                {{ pluralize('project', props.collection.projectCount) }}
+                {{formatNumber(props.collection.contributorCount || 0)}}
+                {{ pluralize('contributors', props.collection.contributorCount) }}
               </p>
             </article>
             <lfx-tooltip
@@ -133,6 +155,7 @@ SPDX-License-Identifier: MIT
                 <div class="h-6 w-6 md:h-8 md:w-8 rounded-full flex items-center justify-center bg-positive-50">
                   <lfx-icon
                     name="dollar-circle"
+                    :size="14"
                     class="text-positive-600 md:!text-base !text-sm"
                   />
                 </div>
@@ -145,8 +168,7 @@ SPDX-License-Identifier: MIT
 
                 <p
                   v-else
-                  class="leading-6 transition-all whitespace-nowrap"
-                  :class="scrollTop > 50 ? 'text-xs md:text-sm' : 'text-xs md:text-base'"
+                  class="leading-6 transition-all whitespace-nowrap text-xs md:text-sm"
                 >
                   ${{ formatNumberShort(props.collection.softwareValue) }}
                 </p>
@@ -164,7 +186,7 @@ import pluralize from "pluralize";
 import type {Collection} from "~~/types/collection";
 import LfxIconButton from "~/components/uikit/icon-button/icon-button.vue";
 import LfxBack from "~/components/uikit/back/back.vue";
-import {formatNumberShort} from "~/components/shared/utils/formatter";
+import {formatNumber, formatNumberShort} from "~/components/shared/utils/formatter";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
 import useScroll from "~/components/shared/utils/scroll";
 import LfxSkeleton from "~/components/uikit/skeleton/skeleton.vue";
