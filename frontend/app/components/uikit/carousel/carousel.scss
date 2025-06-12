@@ -15,6 +15,9 @@
           @apply fill-neutral-900 ;
         }
       }
+      &.p-disabled{
+        @apply hidden;
+      }
       &.p-carousel-prev-button {
         @apply -left-6;
       }

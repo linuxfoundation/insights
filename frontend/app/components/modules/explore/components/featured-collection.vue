@@ -4,70 +4,143 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <section>
-    <lfx-carousel
-      :value="(carouselData as unknown as CarouselData[])"
+    <div class="flex flex-row justify-between items-center">
+      <div class="text-neutral-900">
+        <h2 class="text-2xl font-bold font-secondary">
+          Featured collections
+        </h2>
+        <p class="text-sm">
+          Curated sets of open source projects that belong to the same technology stack or industry domain.
+        </p>
+      </div>
+      <nuxt-link :to="{name: LfxRoutes.COLLECTIONS}">
+        <lfx-button
+          type="transparent"
+        >
+          <lfx-icon
+            name="rectangle-history"
+          />
+          All collections
+        </lfx-button>
+      </nuxt-link>
+    </div>
+    <lfx-project-load-state
+      :status="status"
+      :error="error"
+      error-message="Error fetching featured collections"
+      :is-empty="isEmpty"
     >
-      <template #item="{data}">
-        <div class="border border-neutral-200 rounded-lg p-4">
-          <h3>{{ data.title }}</h3>
-          <p>{{ data.description }}</p>
-        </div>
-      </template>
-    </lfx-carousel>
+      <lfx-carousel
+        :value="(carouselData as unknown as CarouselData[])"
+      >
+        <template #item="{data}">
+          <lfx-explore-collection-card
+            :collection="data"
+          />
+        </template>
+      </lfx-carousel>
+    </lfx-project-load-state>
   </section>
 </template>
 
 <script setup lang="ts">
+import { computed, onServerPrefetch } from 'vue';
+import { EXPLORE_API_SERVICE } from '../services/explore.api.service';
+import LfxExploreCollectionCard from './collection-card.vue';
 import LfxCarousel from '~/components/uikit/carousel/carousel.vue';
 import type { CarouselData } from '~/components/uikit/carousel/types/carousel.types';
+import LfxButton from '~/components/uikit/button/button.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
+import { isEmptyData } from '~/components/shared/utils/helper';
+import { LfxRoutes } from '~/components/shared/types/routes';
 
-const carouselData = [
-  {
-    id: 1,
-    title: 'Featured Collection 1',
-    description: 'Featured Collection 1 description',
-  },
-  {
-    id: 2,
-    title: 'Featured Collection 2',
-    description: 'Featured Collection 2 description',
-  },
-  {
-    id: 3,
-    title: 'Featured Collection 3',
-    description: 'Featured Collection 3 description',
-  },
-  {
-    id: 4,
-    title: 'Featured Collection 4',
-    description: 'Featured Collection 4 description',
-  },
-  {
-    id: 5,
-    title: 'Featured Collection 5',
-    description: 'Featured Collection 5 description',
-  },
-  {
-    id: 6,
-    title: 'Featured Collection 6',
-    description: 'Featured Collection 6 description',
-  },
-  {
-    id: 7,
-    title: 'Featured Collection 7',
-    description: 'Featured Collection 7 description',
-  },
-  {
-    id: 8,
-    title: 'Featured Collection 8',
-    description: 'Featured Collection 8 description',
-  },
-  {
-    id: 9,
-    title: 'Featured Collection 9',
-    description: 'Featured Collection 9 description',
-  }
-];
+const {
+  data: featuredCollectionsData,
+  status,
+  error,
+  suspense
+} = EXPLORE_API_SERVICE.fetchFeaturedCollections();
+
+const carouselData = computed(() => featuredCollectionsData.value?.data.slice(0, 9));
+
+const isEmpty = computed(() => isEmptyData(carouselData.value as unknown as Record<string, unknown>[]));
+
+onServerPrefetch(async () => {
+  await suspense();
+});
+//   {
+//     id: 1,
+//     name: 'Featured Collection 1',
+//     description: 'Featured Collection 1 description',
+//     slug: 'featured-collection-1',
+//     featuredProjects: [
+//       {
+//         name: 'Project 1',
+//         slug: 'project-1',
+//         logo: 'https://via.placeholder.com/150',
+//       },
+//       {
+//         name: 'Project 2',
+//         slug: 'project-2',
+//         logo: 'https://via.placeholder.com/150',
+//       },
+//       {
+//         name: 'Project 3',
+//         slug: 'project-3',
+//         logo: 'https://via.placeholder.com/150',
+//       },
+//     ],
+//   },
+//   {
+//     id: 2,
+//     name: 'Featured Collection 2',
+//     description: 'The Cloud Native Computing Foundation (CNCF) is an open-source organization under the Linux Foundation that promotes the development and adoption of cloud-native technologies. It serves as a hub for projects that enable scalable, resilient, and portable applications in modern cloud environments.',
+//     slug: 'featured-collection-2',
+//   },
+//   {
+//     id: 3,
+//     name: 'Featured Collection 3',
+//     description: 'Featured Collection 3 description',
+//     slug: 'featured-collection-3',
+//   },
+//   {
+//     id: 4,
+//     name: 'Featured Collection 4',
+//     description: 'Featured Collection 4 description',
+//     slug: 'featured-collection-4',
+//   },
+//   {
+//     id: 5,
+//     name: 'Featured Collection 5',
+//     description: 'Featured Collection 5 description',
+//     slug: 'featured-collection-5',
+//   },
+//   {
+//     id: 6,
+//     name: 'Featured Collection 6',
+//     description: 'Featured Collection 6 description',
+//     slug: 'featured-collection-6',
+//   },
+//   {
+//     id: 7,
+//     name: 'Featured Collection 7',
+//     description: 'Featured Collection 7 description',
+//     slug: 'featured-collection-7',
+//   },
+//   {
+//     id: 8,
+//     name: 'Featured Collection 8',
+//     description: 'Featured Collection 8 description',
+//     slug: 'featured-collection-8',
+//   },
+//   {
+//     id: 9,
+//     name: 'Featured Collection 9',
+//     description: 'Featured Collection 9 description',
+//     slug: 'featured-collection-9',
+//   }
+// ];
 </script>
 
 <script lang="ts">

@@ -8,6 +8,7 @@ import { TanstackKey } from '~/components/shared/types/tanstack';
 import type { Pagination } from '~~/types/shared/pagination';
 import type { ExploreOrganizations } from '~~/types/explore/organizations';
 import type { Project } from '~~/types/project';
+import type { Collection } from '~~/types/collection';
 
 class ExploreApiService {
   fetchTopContributors(pageSize: number) {
@@ -95,6 +96,34 @@ class ExploreApiService {
         },
       });
     };
+  }
+
+  fetchFeaturedCollections() {
+    const sort = 'starred_desc';
+    // TODO: clarify why setting this to 9 only returns a different set of collections
+    const pageSize = 100;
+    const queryKey = computed(() => [TanstackKey.COLLECTIONS, sort, pageSize]);
+
+    const queryFn = computed<QueryFunction<Pagination<Collection>>>(() => this.featuredCollectionsQueryFn(() => ({
+        pageSize,
+        sort,
+      })));
+
+    return useQuery<Pagination<Collection>>({
+      queryKey,
+      queryFn,
+    });
+  }
+
+  featuredCollectionsQueryFn(
+    query: () => Record<string, string | number | boolean | undefined | string[] | null>
+  ): QueryFunction<Pagination<Collection>> {
+    return async () => await $fetch('/api/collection', {
+        params: {
+          page: 0,
+          ...query(),
+        },
+      });
   }
 }
 
