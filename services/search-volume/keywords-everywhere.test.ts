@@ -1,3 +1,5 @@
+// Copyright (c) 2025 The Linux Foundation and each contributor.
+// SPDX-License-Identifier: MIT
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { getSearchVolume, DEFAULT_API_KEY, DEFAULT_API_URL } from './keywords-everywhere'; // Adjust the import path
 import { $fetch } from 'ofetch';
