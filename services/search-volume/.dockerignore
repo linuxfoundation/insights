@@ -1,0 +1,20 @@
+# Node modules and dependencies
+node_modules
+npm-debug.log
+yarn-error.log
+
+# Build output
+dist
+build
+
+# Local env files
+.env
+.env.*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# TypeScript cache
+*.tsbuildinfo
+
