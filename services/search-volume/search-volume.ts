@@ -1,3 +1,5 @@
+// Copyright (c) 2025 The Linux Foundation and each contributor.
+// SPDX-License-Identifier: MIT
 import {getSearchVolume} from './keywords-everywhere.js';
 import {closeDatabase, persistSearchVolume} from './database.js';
 // @ts-ignore This should be temporary until we have the monorepo structure set up.
