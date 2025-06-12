@@ -11,11 +11,13 @@
   },
   "dependencies": {
     "@types/pg": "^8.15.4",
+    "luxon": "^3.6.1",
     "ofetch": "^1.4.1",
     "pg": "^8.16.0",
     "vitest": "^3.2.3"
   },
   "devDependencies": {
+    "@types/luxon": "^3.6.2",
     "@types/node": "^22.15.30",
     "tsx": "^4.19.4",
     "typescript": "^5.7.3"
