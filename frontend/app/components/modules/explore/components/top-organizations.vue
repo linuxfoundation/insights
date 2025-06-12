@@ -62,7 +62,7 @@ import { isEmptyData } from '~/components/shared/utils/helper';
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
 
 const props = defineProps<{
-  isFullList: boolean;
+  isFullList?: boolean;
 }>();
 
 const {

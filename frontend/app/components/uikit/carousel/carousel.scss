@@ -1,0 +1,64 @@
+// Copyright (c) 2025 The Linux Foundation and each contributor.
+// SPDX-License-Identifier: MIT
+
+.p-carousel {
+  .p-carousel-content-container {
+    @apply flex flex-col relative;
+
+    .p-button {
+      @apply rounded-full bg-white border border-solid border-neutral-200 shadow-sm;
+      @apply h-11 w-11 p-0  flex items-center justify-center;
+      @apply absolute top-1/2 -translate-y-1/2  z-10;
+      .p-icon {
+        @apply w-4 h-6;
+        path {
+          @apply fill-neutral-900 ;
+        }
+      }
+      &.p-carousel-prev-button {
+        @apply -left-6;
+      }
+      &.p-carousel-next-button {
+        @apply -right-6;
+      }
+      .p-button-label {
+        @apply hidden;
+      }
+    }
+
+    .p-carousel-content {
+      @apply flex flex-row py-10 -mx-4;
+
+      .p-carousel-viewport {
+        @apply w-full overflow-hidden;
+        .p-carousel-item-list {
+          @apply flex flex-row;
+          .p-carousel-item {
+            @apply px-4;
+          }
+        }
+      }
+    }
+
+    .p-carousel-indicator-list {
+      @apply flex-row gap-3 justify-center sm:flex hidden;
+
+      .p-carousel-indicator {
+        @apply h-1 rounded-full w-20 bg-neutral-200;
+
+        &.p-carousel-indicator-active {
+          @apply bg-brand-500;
+        }
+      }
+    }
+
+    .p-carousel-wrapper {
+      overflow: hidden;
+      width: 100%;
+    }
+  }
+
+  .p-carousel-item {
+    @apply flex-1;
+  }
+}
