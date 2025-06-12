@@ -1,4 +1,3 @@
-// services/search-volume/tsconfig.json
 {
   "compilerOptions": {
     // Type Checking
