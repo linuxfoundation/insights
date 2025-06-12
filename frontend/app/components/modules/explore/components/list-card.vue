@@ -3,7 +3,10 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <article class="border border-neutral-200 rounded-xl flex flex-col gap-6 bg-white basis-1/3">
+  <article
+    class="border border-neutral-200 rounded-xl flex flex-col gap-6 bg-white
+    basis-1/3 lg:max-w-1/3 max-w-full"
+  >
     <div class="flex flex-col gap-2 px-6 pt-6">
       <h3 class="text-heading-3 font-secondary font-bold text-neutral-900">
         {{ props.value.title }}

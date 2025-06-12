@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 import { computed } from 'vue';
 import type { QueryFunction } from '@tanstack/vue-query';
-import { useInfiniteQuery } from '@tanstack/vue-query';
+import { useInfiniteQuery, useQuery } from '@tanstack/vue-query';
 import type { ExploreContributors } from '~~/types/explore/contributors';
 import { TanstackKey } from '~/components/shared/types/tanstack';
 import type { Pagination } from '~~/types/shared/pagination';
@@ -10,73 +10,61 @@ import type { ExploreOrganizations } from '~~/types/explore/organizations';
 import type { Project } from '~~/types/project';
 
 class ExploreApiService {
-  fetchTopContributors() {
-    const queryKey = computed(() => [TanstackKey.TOP_CONTRIBUTORS]);
+  fetchTopContributors(pageSize: number) {
+    const queryKey = computed(() => [TanstackKey.TOP_CONTRIBUTORS, pageSize]);
 
-    const queryFn = computed<QueryFunction<Pagination<ExploreContributors>>>(() => this.topContributorsQueryFn());
+    const queryFn = computed<QueryFunction<ExploreContributors[]>>(() => this.topContributorsQueryFn(() => ({
+        pageSize,
+      })));
 
-    return useInfiniteQuery<Pagination<ExploreContributors>>({
+    return useQuery<ExploreContributors[]>({
       queryKey,
-      // TODO: fix this type error
-      // @ts-expect-error - queryFn is a computed ref
       queryFn,
-      getNextPageParam: (lastPage) => {
-        const nextPage = lastPage.page + 1;
-        const totalPages = Math.ceil(lastPage.total / lastPage.pageSize);
-        return nextPage < totalPages ? nextPage : undefined;
-      },
     });
   }
 
-  topContributorsQueryFn(): QueryFunction<Pagination<ExploreContributors>> {
-    // const { projectSlug, platform, activityType, repository, startDate, endDate } = query();
-    return async (context) => {
-      const pageParam = (context.pageParam || 0) as number;
-
-      return await $fetch(`/api/explore/contributors`, {
+  topContributorsQueryFn(
+    query: () => Record<string, string | number | boolean | undefined | string[] | null>
+  ): QueryFunction<ExploreContributors[]> {
+    const { pageSize } = query();
+    return async () => await $fetch(`/api/explore/contributors`, {
         params: {
-          page: pageParam,
-          pageSize: 10,
+          page: 0,
+          pageSize,
         },
       });
-    };
   }
-  fetchTopOrganizations() {
-    const queryKey = computed(() => [TanstackKey.TOP_ORGANIZATIONS]);
+  fetchTopOrganizations(pageSize: number) {
+    const queryKey = computed(() => [TanstackKey.TOP_ORGANIZATIONS, pageSize]);
 
-    const queryFn = computed<QueryFunction<Pagination<ExploreOrganizations>>>(() => this.topOrganizationsQueryFn());
+    const queryFn = computed<QueryFunction<ExploreOrganizations[]>>(() => this.topOrganizationsQueryFn(() => ({
+        pageSize,
+      })));
 
-    return useInfiniteQuery<Pagination<ExploreOrganizations>>({
+    return useQuery<ExploreOrganizations[]>({
       queryKey,
-      // TODO: fix this type error
-      // @ts-expect-error - queryFn is a computed ref
       queryFn,
-      getNextPageParam: (lastPage) => {
-        const nextPage = lastPage.page + 1;
-        const totalPages = Math.ceil(lastPage.total / lastPage.pageSize);
-        return nextPage < totalPages ? nextPage : undefined;
-      },
     });
   }
 
-  topOrganizationsQueryFn(): QueryFunction<Pagination<ExploreOrganizations>> {
-    // const { projectSlug, platform, activityType, repository, startDate, endDate } = query();
-    return async (context) => {
-      const pageParam = (context.pageParam || 0) as number;
-
-      return await $fetch(`/api/explore/organizations`, {
+  topOrganizationsQueryFn(
+    query: () => Record<string, string | number | boolean | undefined | string[] | null>
+  ): QueryFunction<ExploreOrganizations[]> {
+    const { pageSize } = query();
+    return async () => await $fetch(`/api/explore/organizations`, {
         params: {
-          page: pageParam,
-          pageSize: 10,
+          page: 0,
+          pageSize,
         },
       });
-    };
   }
 
-  fetchTopProjects() {
-    const queryKey = computed(() => [TanstackKey.TOP_PROJECTS]);
+  fetchTopProjects(pageSize: number) {
+    const queryKey = computed(() => [TanstackKey.TOP_PROJECTS, pageSize]);
 
-    const queryFn = computed<QueryFunction<Pagination<Project>>>(() => this.topProjectsQueryFn());
+    const queryFn = computed<QueryFunction<Pagination<Project>>>(() => this.topProjectsQueryFn(() => ({
+        pageSize,
+      })));
 
     return useInfiniteQuery<Pagination<Project>>({
       queryKey,
@@ -91,8 +79,10 @@ class ExploreApiService {
     });
   }
 
-  topProjectsQueryFn(): QueryFunction<Pagination<Project>> {
-    // const { projectSlug, platform, activityType, repository, startDate, endDate } = query();
+  topProjectsQueryFn(
+    query: () => Record<string, string | number | boolean | undefined | string[] | null>
+  ): QueryFunction<Pagination<Project>> {
+    const { pageSize } = query();
     return async (context) => {
       const pageParam = (context.pageParam || 0) as number;
 
@@ -100,7 +90,7 @@ class ExploreApiService {
       return await $fetch(`/api/project`, {
         params: {
           page: pageParam,
-          pageSize: 10,
+          pageSize,
           sort: 'score_desc',
         },
       });

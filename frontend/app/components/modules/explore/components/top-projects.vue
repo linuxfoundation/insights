@@ -57,13 +57,6 @@ SPDX-License-Identifier: MIT
           />
         </div>
       </div>
-
-      <lfx-load-more
-        v-if="showLoadMore"
-        text="Loading contributors"
-        :is-fetching-next-page="isFetchingNextPage"
-        @load-more="loadMore"
-      />
     </div>
   </lfx-project-load-state>
 </template>
@@ -75,7 +68,6 @@ import type { Pagination } from '~~/types/shared/pagination';
 import type { Project } from '~~/types/project';
 import LfxAvatar from "~/components/uikit/avatar/avatar.vue";
 import { formatNumber, formatNumberCurrency } from '~/components/shared/utils/formatter';
-import LfxLoadMore from '~/components/modules/explore/components/load-more.vue';
 import { isEmptyData } from '~/components/shared/utils/helper';
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
 import LfxIcon from '~/components/uikit/icon/icon.vue';
@@ -86,30 +78,14 @@ const props = defineProps<{
 
 const {
   data,
-  fetchNextPage,
-  hasNextPage,
   isPending,
-  isFetchingNextPage,
   status,
   error,
   suspense
-} = EXPLORE_API_SERVICE.fetchTopProjects();
+} = EXPLORE_API_SERVICE.fetchTopProjects(props.isFullList ? 100 : 10);
 
-const tableData = computed(() => {
-  if (props.isFullList) {
-    return data.value?.pages.flatMap((p) => (p as Pagination<Project>).data);
-  }
-  return (data.value?.pages[0] as Pagination<Project>).data;
-});
+const tableData = computed(() => data.value?.pages.flatMap((p) => (p as Pagination<Project>).data));
 
-const loadMore = () => {
-  fetchNextPage();
-};
-
-const showLoadMore = computed(() => hasNextPage.value
-  && props.isFullList
-  && tableData.value?.length
-  && tableData.value.length < 100);
 const isEmpty = computed(() => isEmptyData(tableData.value as unknown as Record<string, unknown>[]));
 
 onServerPrefetch(async () => {

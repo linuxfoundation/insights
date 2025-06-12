@@ -48,13 +48,6 @@ SPDX-License-Identifier: MIT
           {{ formatNumber(row.activityCount) }} contributions
         </div>
       </div>
-
-      <lfx-load-more
-        v-if="showLoadMore"
-        text="Loading contributors"
-        :is-fetching-next-page="isFetchingNextPage"
-        @load-more="loadMore"
-      />
     </div>
   </lfx-project-load-state>
 </template>
@@ -62,11 +55,8 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { computed, onServerPrefetch } from 'vue';
 import { EXPLORE_API_SERVICE } from '~/components/modules/explore/services/explore.api.service';
-import type { Pagination } from '~~/types/shared/pagination';
-import type { ExploreContributors } from '~~/types/explore/contributors';
 import LfxAvatar from "~/components/uikit/avatar/avatar.vue";
 import { formatNumber } from '~/components/shared/utils/formatter';
-import LfxLoadMore from '~/components/modules/explore/components/load-more.vue';
 import { isEmptyData } from '~/components/shared/utils/helper';
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
 
@@ -76,30 +66,15 @@ const props = defineProps<{
 
 const {
   data,
-  fetchNextPage,
-  hasNextPage,
   isPending,
-  isFetchingNextPage,
   status,
   error,
   suspense
-} = EXPLORE_API_SERVICE.fetchTopContributors();
+} = EXPLORE_API_SERVICE.fetchTopContributors(props.isFullList ? 100 : 10);
 
-const tableData = computed(() => {
-  if (props.isFullList) {
-    return data.value?.pages.flatMap((p) => (p as Pagination<ExploreContributors>).data);
-  }
-  return (data.value?.pages[0] as Pagination<ExploreContributors>).data;
-});
+const tableData = computed(() => data.value);
 
-const loadMore = () => {
-  fetchNextPage();
-};
-
-const showLoadMore = computed(() => hasNextPage.value
-  && props.isFullList
-  && tableData.value?.length
-  && tableData.value.length < 100);
+// const showLoadMore = computed(() => props.isFullList && tableData.value?.length && tableData.value.length < 100);
 const isEmpty = computed(() => isEmptyData(tableData.value as unknown as Record<string, unknown>[]));
 
 onServerPrefetch(async () => {
