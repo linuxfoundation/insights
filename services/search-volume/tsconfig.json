@@ -35,8 +35,7 @@
     "forceConsistentCasingInFileNames": true
   },
   "include": [
-    "./**/*.ts",
-    "../frontend/server/data/tinybird/tinybird.ts"
+    "./**/*.ts"
   ],
   "exclude": [
     "node_modules",

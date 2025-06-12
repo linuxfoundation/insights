@@ -1,9 +1,8 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import {getSearchVolume} from './keywords-everywhere.js';
-import {closeDatabase, persistSearchVolume} from './database.js';
-// @ts-ignore This should be temporary until we have the monorepo structure set up.
-import {fetchFromTinybird} from '../../frontend/server/data/tinybird/tinybird.js';
+import { getSearchVolume } from './keywords-everywhere.js';
+import { closeDatabase, persistSearchVolume } from './database.js';
+import { fetchFromTinybird } from './tinybird.js';
 
 interface Project {
   id: string;
@@ -28,7 +27,7 @@ interface KEResults {
 interface GetSearchVolumeOptions {
   keyword?: string;
   limit?: number;
-  batchSize?: number; // Add batchSize option
+  batchSize?: number;
 }
 
 interface KeywordPreparationResult {
@@ -110,8 +109,6 @@ function prepareKeywords(projects: Project[]): KeywordPreparationResult {
       keywordToProjectMap[projectSlug] = [];
     }
     keywordToProjectMap[projectSlug].push(projectId);
-
-    // results[projectId] = { web_term: projectSlug, search_volume_trend: [] };
   }
 
   return { keywordsToFetch, keywordToProjectMap };
@@ -238,7 +235,5 @@ async function main() {
 
 export { main };
 
-// Uncomment to run the main function
 console.log("Starting main execution...");
 main().catch(console.error);
-

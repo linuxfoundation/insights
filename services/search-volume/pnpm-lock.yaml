@@ -11,6 +11,9 @@ importers:
       '@types/pg':
         specifier: ^8.15.4
         version: 8.15.4
+      luxon:
+        specifier: ^3.6.1
+        version: 3.6.1
       ofetch:
         specifier: ^1.4.1
         version: 1.4.1
@@ -21,6 +24,9 @@ importers:
         specifier: ^3.2.3
         version: 3.2.3(@types/node@22.15.30)(tsx@4.19.4)
     devDependencies:
+      '@types/luxon':
+        specifier: ^3.6.2
+        version: 3.6.2
       '@types/node':
         specifier: ^22.15.30
         version: 22.15.30
@@ -298,6 +304,9 @@ packages:
   '@types/estree@1.0.8':
     resolution: {integrity: sha512-dWHzHa2WqEXI/O1E9OjrocMTKJl2mSrEolh1Iomrv6U+JuNwaHXsXx9bLu5gG7BUWFIN0skIQJQ/L1rIex4X6w==}
 
+  '@types/luxon@3.6.2':
+    resolution: {integrity: sha512-R/BdP7OxEMc44l2Ex5lSXHoIXTB2JLNa3y2QISIbr58U/YcsffyQrYW//hZSdrfxrjRZj3GcUoxMPGdO8gSYuw==}
+
   '@types/node@22.15.30':
     resolution: {integrity: sha512-6Q7lr06bEHdlfplU6YRbgG1SFBdlsfNC4/lX+SkhiTs0cpJkOElmWls8PxDFv4yY/xKb8Y6SO0OmSX4wgqTZbA==}
 
@@ -401,6 +410,10 @@ packages:
 
   loupe@3.1.3:
     resolution: {integrity: sha512-kkIp7XSkP78ZxJEsSxW3712C6teJVoeHHwgo9zJ380de7IYyJ2ISlxojcH2pC5OFLewESmnRi/+XCDIEEVyoug==}
+
+  luxon@3.6.1:
+    resolution: {integrity: sha512-tJLxrKJhO2ukZ5z0gyjY1zPh3Rh88Ej9P7jNrZiHMUXHae1yvI2imgOZtL1TO8TW6biMMKfTtAOoEJANgtWBMQ==}
+    engines: {node: '>=12'}
 
   magic-string@0.30.17:
     resolution: {integrity: sha512-sNPKHvyjVf7gyjwS4xGTaW/mCnF8wnjtifKBEhxfZ7E/S8tQ0rssrwGNn6q8JH/ohItJfSQp9mBtQYuTlH5QnA==}
@@ -784,6 +797,8 @@ snapshots:
 
   '@types/estree@1.0.8': {}
 
+  '@types/luxon@3.6.2': {}
+
   '@types/node@22.15.30':
     dependencies:
       undici-types: 6.21.0
@@ -908,6 +923,8 @@ snapshots:
   js-tokens@9.0.1: {}
 
   loupe@3.1.3: {}
+
+  luxon@3.6.1: {}
 
   magic-string@0.30.17:
     dependencies:
