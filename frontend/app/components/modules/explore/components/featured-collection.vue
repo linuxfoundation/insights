@@ -62,7 +62,7 @@ const {
   suspense
 } = EXPLORE_API_SERVICE.fetchFeaturedCollections();
 
-const carouselData = computed(() => featuredCollectionsData.value?.data.slice(0, 9));
+const carouselData = computed(() => featuredCollectionsData.value?.data);
 
 const isEmpty = computed(() => isEmptyData(carouselData.value as unknown as Record<string, unknown>[]));
 

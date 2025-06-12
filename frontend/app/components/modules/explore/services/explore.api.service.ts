@@ -100,8 +100,7 @@ class ExploreApiService {
 
   fetchFeaturedCollections() {
     const sort = 'starred_desc';
-    // TODO: clarify why setting this to 9 only returns a different set of collections
-    const pageSize = 100;
+    const pageSize = 9;
     const queryKey = computed(() => [TanstackKey.COLLECTIONS, sort, pageSize]);
 
     const queryFn = computed<QueryFunction<Pagination<Collection>>>(() => this.featuredCollectionsQueryFn(() => ({
