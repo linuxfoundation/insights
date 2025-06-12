@@ -3,11 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "main": "dist/keywords-everywhere.js",
+  "main": "dist/search-volume.js",
   "scripts": {
     "dev": "tsx watch --env-file=.env search-volume.ts",
     "build": "tsc",
-    "test": "vitest"
+    "test": "vitest",
+    "start": "node --env-file=.env dist/search-volume.js"
   },
   "dependencies": {
     "@temporalio/client": "^1.11.8",
