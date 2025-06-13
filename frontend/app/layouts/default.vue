@@ -5,7 +5,7 @@ SPDX-License-Identifier: MIT
 <template>
   <main class="min-h-screen flex flex-col pt-14 lg:pt-17">
     <lfx-navbar />
-    <div class="pb-10">
+    <div :class="['pb-10', { 'bg-white': route.path === '/explore' }]">
       <slot />
     </div>
     <lfx-toast theme="dark" />

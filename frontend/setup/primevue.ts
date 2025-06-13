@@ -17,10 +17,12 @@ export default {
       'Accordion',
       'AccordionPanel',
       'AccordionHeader',
-      'AccordionContent'
-    ]
+      'AccordionContent',
+      'Carousel',
+      'CarouselItem',
+    ],
   },
   options: {
-    theme: 'none' // This setting means we have to manually add styles to all the components
-  }
+    theme: 'none', // This setting means we have to manually add styles to all the components
+  },
 };
