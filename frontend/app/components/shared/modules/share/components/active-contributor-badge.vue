@@ -77,7 +77,7 @@ const activeBadgeUrl = computed(() => getBadgeUrl(
 ));
 
 const markdown = (badgeUrl: string) => {
-  const link = window?.location.href;
+  const link = window?.location.href.split('?')[0];
   return `[![LFX Active Contributors](${badgeUrl})](${link})`;
 };
 
