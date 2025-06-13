@@ -7,9 +7,10 @@ SPDX-License-Identifier: MIT
     <div class="border border-neutral-200 rounded-lg p-5 flex flex-col gap-5">
       <lfx-icon
         name="rectangle-history"
+        class="text-neutral-400"
       />
       <div>
-        <h3 class="text-base leading-6 font-semibold text-neutral-900 mb4">
+        <h3 class="text-base leading-6 font-semibold text-neutral-900 mb-4">
           {{ props.collection.name }}
         </h3>
         <p class="text-xs leading-5 text-neutral-500 line-clamp-3">
@@ -18,7 +19,6 @@ SPDX-License-Identifier: MIT
       </div>
       <div
         v-if="props.collection.featuredProjects && props.collection.featuredProjects.length > 0"
-        class="pt-4 md:pt-6"
       >
         <p class="text-neutral-400 text-body-2 font-medium pb-2">
           Featured projects
