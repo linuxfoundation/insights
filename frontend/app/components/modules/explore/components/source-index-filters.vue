@@ -8,7 +8,7 @@ SPDX-License-Identifier: MIT
       v-for="tab in sortTabs"
       :key="tab.value"
       type="button"
-      class="c-menu-button dark"
+      class="c-menu-button c-menu-button--dark"
       :class="{
         'is-active': activeSort === tab.value,
       }"
@@ -26,7 +26,7 @@ SPDX-License-Identifier: MIT
       v-for="tab in typeTabs"
       :key="tab.value"
       type="button"
-      class="c-menu-button dark"
+      class="c-menu-button c-menu-button--dark"
       :class="{
         'is-active': activeType === tab.value,
       }"
