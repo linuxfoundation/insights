@@ -99,4 +99,4 @@ async function getSearchVolume(
     }
 }
 
-export {getSearchVolume};
+export { getSearchVolume };
