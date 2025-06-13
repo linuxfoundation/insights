@@ -13,18 +13,18 @@ SPDX-License-Identifier: MIT
         about the open source projects they depend on
       </p>
 
-      <div class="w-full flex justify-center mt-5">
+      <div class="w-full flex justify-center mt-5 pb-10">
         <div
-          class="w-full sm:max-w-120 overflow-hidden bg-neutral-50 h-9 border
-          border-neutral-200 rounded-full flex items-center gap-2 px-3 cursor-pointer"
+          class="w-full sm:max-w-120 overflow-hidden bg-neutral-50 h-[45px] border
+          border-neutral-200 rounded-full flex items-center gap-2 px-5 cursor-pointer"
           @click="isModalOpen = true"
         >
           <lfx-icon
             name="search"
             class="text-neutral-400 font-normal"
-            :size="14"
+            :size="20"
           />
-          <p class="text-body-1 text-neutral-400 truncate">
+          <p class="text-base text-neutral-400 truncate">
             Search projects, repositories...
           </p>
           <div class="flex-grow" />

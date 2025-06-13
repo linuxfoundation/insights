@@ -11,12 +11,13 @@ SPDX-License-Identifier: MIT
   >
     <div
       v-if="!isPending && tableData?.length"
-      class="lfx-table has-hover"
+      class="lfx-table has-hover mt-0.5"
     >
       <div
         v-for="(row, index) in tableData"
         :key="index"
         class="lfx-table-row"
+        @click.prevent="router.push({name: LfxRoutes.PROJECT, params: {slug: row.slug}})"
       >
         <div class="name-col grow">
           <div
@@ -63,6 +64,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed, onServerPrefetch } from 'vue';
+import { useRouter } from 'vue-router';
 import { EXPLORE_API_SERVICE } from '~/components/modules/explore/services/explore.api.service';
 import type { Pagination } from '~~/types/shared/pagination';
 import type { Project } from '~~/types/project';
@@ -71,6 +73,9 @@ import { formatNumber, formatNumberCurrency } from '~/components/shared/utils/fo
 import { isEmptyData } from '~/components/shared/utils/helper';
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
 import LfxIcon from '~/components/uikit/icon/icon.vue';
+import { LfxRoutes } from '~/components/shared/types/routes';
+
+const router = useRouter();
 
 const props = defineProps<{
   isFullList?: boolean;

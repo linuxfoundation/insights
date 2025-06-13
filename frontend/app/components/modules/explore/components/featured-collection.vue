@@ -40,16 +40,17 @@ SPDX-License-Identifier: MIT
       error-message="Error fetching featured collections"
       :is-empty="isEmpty"
     >
-      <lfx-carousel
-        :value="(carouselData as unknown as CarouselData[])"
-      >
-        <template #item="{data}">
-          <lfx-explore-collection-card
-            :collection="data"
-          />
-        </template>
-      </lfx-carousel>
-
+      <client-only>
+        <lfx-carousel
+          :value="(carouselData as unknown as CarouselData[])"
+        >
+          <template #item="{data}">
+            <lfx-explore-collection-card
+              :collection="data"
+            />
+          </template>
+        </lfx-carousel>
+      </client-only>
       <div class="sm:hidden block flex justify-center">
         <nuxt-link :to="{name: LfxRoutes.COLLECTIONS}">
           <lfx-button

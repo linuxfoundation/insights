@@ -4,7 +4,7 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <article
-    class="border border-neutral-200 rounded-xl flex flex-col gap-6 bg-white
+    class="border border-neutral-200 rounded-xl flex flex-col gap-4 bg-white
     basis-1/3 lg:max-w-1/3 max-w-full"
   >
     <div class="flex flex-col gap-2 px-6 pt-6">
@@ -20,7 +20,7 @@ SPDX-License-Identifier: MIT
         :is="props.value.component"
       />
       <div
-        class="flex flex-row justify-center"
+        class="flex flex-row justify-center mt-6"
       >
         <lfx-button
           type="transparent"

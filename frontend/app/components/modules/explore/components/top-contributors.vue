@@ -11,7 +11,7 @@ SPDX-License-Identifier: MIT
   >
     <div
       v-if="!isPending && tableData?.length"
-      class="lfx-table has-hover"
+      class="lfx-table explore-tables mt-0.5"
     >
       <div
         v-for="(row, index) in tableData"
@@ -43,7 +43,7 @@ SPDX-License-Identifier: MIT
         </div>
         <div
           v-if="!isFullList"
-          class="basis-1/3 text-right text-xs text-neutral-500 hidden xl:block"
+          class="basis-1/3 text-right text-xs text-neutral-500 hidden xl:block text-nowrap"
         >
           {{ formatNumber(row.activityCount) }} contributions
         </div>
