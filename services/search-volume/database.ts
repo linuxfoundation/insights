@@ -7,6 +7,7 @@ interface SearchVolumeRecord {
   keyword: string;
   data_timestamp: string; // YYYY-MM-DD
   volume: number;
+  updated_at?: string; // Optional since it will be set automatically
 }
 
 let pool: Pool | null = null;
