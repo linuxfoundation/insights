@@ -29,6 +29,7 @@ SPDX-License-Identifier: MIT
                 <lfx-widget
                   :name="widget"
                   @update:benchmark-value="onBenchmarkUpdate"
+                  @data-loaded="onDataLoaded"
                 />
               </lfx-benchmarks-wrap>
             </lfx-scroll-view>
@@ -41,7 +42,7 @@ SPDX-License-Identifier: MIT
 
 <script lang="ts" setup>
 import {
-computed, ref, watch
+computed, ref
 } from "vue";
 import {storeToRefs} from "pinia";
 import {useRoute} from "nuxt/app";
@@ -58,6 +59,10 @@ import LfxWidget from "~/components/modules/widget/components/shared/widget.vue"
 import type { Benchmark } from '~~/types/shared/benchmark.types';
 import {useProjectStore} from "~/components/modules/project/store/project.store";
 import { useQueryParam } from "~/components/shared/utils/query-param";
+import {
+  processTimeAndDateParams,
+  timeAndDateParamsSetter
+} from "~/components/modules/project/services/project.query.service";
 
 const props = defineProps<{
   name: WidgetArea
@@ -67,12 +72,14 @@ const route = useRoute();
 const config = computed<WidgetAreaConfig>(() => lfxWidgetArea[props.name]);
 const benchmarks = ref<Record<string, Benchmark | undefined>>({});
 
-const { queryParams } = useQueryParam();
+const { queryParams } = useQueryParam(processTimeAndDateParams, timeAndDateParamsSetter);
 const activeItem = ref(queryParams.value.widget || config.value.widgets?.[0] || '');
 const tmpClickedItem = ref('');
+const loadedWidgets = ref<Record<string, boolean>>({});
 
 const { scrollToTarget, scrollToTop } = useScroll();
 const { project } = storeToRefs(useProjectStore())
+const isFirstLoad = ref(true);
 
 const widgets = computed(() => (config.value.widgets || [])
     .filter((widget) => {
@@ -117,15 +124,36 @@ const onBenchmarkUpdate = (value: Benchmark | undefined) => {
     benchmarks.value[value.key] = value;
   }
 }
+/**
+ * These functions are used to navigate to the widget in the url params.
+ * It checks if the widgets above the current widget are loaded and if so, it navigates to the current widget.
+ * The reason for waiting is because widgets have different heights while loading.
+ * This causes the scroll to jump to the wrong position.
+ * This is a workaround to ensure the scroll is at the correct position.
+ */
+const onDataLoaded = (value: string) => {
+  loadedWidgets.value[value] = true;
 
-watch(() => project, (newProject) => {
-  if (newProject) {
+  navigateToWidget();
+}
+
+const areWidgetsAboveLoaded = (currentWidget: string) => {
+  const currentWidgetIndex = widgets.value.indexOf(currentWidget as Widget);
+  const widgetsAbove = widgets.value.slice(0, currentWidgetIndex);
+
+  return widgetsAbove.every((widget) => loadedWidgets.value[widget]);
+};
+
+const navigateToWidget = () => {
+  const widget = route.query?.widget || config.value.widgets?.[0] || '';
+
+  if (widget && areWidgetsAboveLoaded(widget as string) && isFirstLoad.value) {
     setTimeout(() => {
-      const widget = route.query?.widget || config.value.widgets?.[0] || '';
+      isFirstLoad.value = false;
       onSideNavUpdate(widget as string);
     }, 100);
   }
-}, {deep: true, immediate: true});
+}
 </script>
 
 <script lang="ts">

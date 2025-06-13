@@ -76,7 +76,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { useRoute } from 'nuxt/app';
-import { computed, onServerPrefetch } from 'vue';
+import { computed, onServerPrefetch, watch } from 'vue';
 import { storeToRefs } from "pinia";
 import {type QueryFunction, useQuery} from "@tanstack/vue-query";
 import type { SocialMentions } from '~~/types/popularity/responses.types';
@@ -102,6 +102,7 @@ import { barGranularities, lineGranularities } from '~/components/shared/types/g
 import {TanstackKey} from "~/components/shared/types/tanstack";
 import LfxSkeletonState from "~/components/modules/project/components/shared/skeleton-state.vue";
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
+import {Widget} from "~/components/modules/widget/types/widget";
 
 interface PackageDownloadsModel {
   activeTab: string;
@@ -112,7 +113,8 @@ const props = defineProps<{
   snapshot?: boolean
 }>()
 
-const emit = defineEmits<{(e: 'update:modelValue', value: PackageDownloadsModel): void;
+const emit = defineEmits<{(e: 'dataLoaded', value: string): void;
+(e: 'update:modelValue', value: PackageDownloadsModel): void;
 }>();
 
 const model = computed<PackageDownloadsModel>({
@@ -238,6 +240,14 @@ const barChartConfig = computed(() => getBarChartConfigStacked(
   chartSeries.value,
   barGranularity.value
 ));
+
+watch(status, (value) => {
+  if (value !== 'pending') {
+    emit('dataLoaded', Widget.ACTIVE_CONTRIBUTORS);
+  }
+}, {
+  immediate: true
+});
 </script>
 
 <script lang="ts">

@@ -73,6 +73,7 @@ import {granularityTabs} from "~/components/modules/widget/components/contributo
 import LfxSkeletonState from "~/components/modules/project/components/shared/skeleton-state.vue";
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
 import {Granularity} from "~~/types/shared/granularity";
+import {Widget} from "~/components/modules/widget/types/widget";
 
 interface ActiveOrganizationsModel {
   activeTab: Granularity;
@@ -83,7 +84,8 @@ const props = defineProps<{
   snapshot?: boolean
 }>()
 
-const emit = defineEmits<{(e: 'update:modelValue', value: ActiveOrganizationsModel): void}>();
+const emit = defineEmits<{(e: 'dataLoaded', value: string): void;
+(e: 'update:modelValue', value: ActiveOrganizationsModel): void}>();
 
 const model = computed<ActiveOrganizationsModel>({
   get: () => props.modelValue,
@@ -183,6 +185,14 @@ watch(paramWatch, (newParams, oldParams) => {
   }
 
   summaryLoading.value = !onlyGranularityChanged;
+});
+
+watch(status, (value) => {
+  if (value !== 'pending') {
+    emit('dataLoaded', Widget.ACTIVE_ORGANIZATIONS);
+  }
+}, {
+  immediate: true
 });
 </script>
 

@@ -5,7 +5,7 @@ import type { BenchmarkConfigs } from '~~/types/shared/benchmark.types';
 import { BenchmarkKeys } from '~~/types/shared/benchmark.types';
 
 export const activeDays: BenchmarkConfigs = {
-  title: 'Active Days Benchmarks',
+  title: 'Active Days',
   key: BenchmarkKeys.ActiveDays,
   points: [
     {

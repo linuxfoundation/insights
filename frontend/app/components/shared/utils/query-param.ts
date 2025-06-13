@@ -1,15 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { computed } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import {
-  dateOptKeys,
-  lfxProjectDateOptions,
-} from '~/components/modules/project/config/date-options';
-import {
-  defaultDateOption,
-  defaultTimeRangeKey,
-} from '~/components/modules/project/store/project.store';
+import { type LocationQuery, useRoute, useRouter } from 'vue-router';
 
 export type URLParams = {
   timeRange?: string;
@@ -18,47 +10,24 @@ export type URLParams = {
   widget?: string;
 };
 
-export const useQueryParam = () => {
+export const useQueryParam = (
+  getterProcessor: (query: LocationQuery) => URLParams,
+  setterProcessor: (query: URLParams) => URLParams
+) => {
   const route = useRoute();
   const router = useRouter();
 
   const queryParams = computed<URLParams>({
-    get: () => {
-      const {
- timeRange: paramTimeRange, start: paramStart, end: paramEnd, widget
-} = route.query;
-      const timeRange = (paramTimeRange as string) || defaultTimeRangeKey;
-      let start = (paramStart as string)
-        || defaultDateOption?.startDate
-        || lfxProjectDateOptions[1]?.startDate
-        || null;
-      let end = (paramEnd as string)
-        || defaultDateOption?.endDate
-        || lfxProjectDateOptions[1]?.endDate
-        || null;
-
-      if (timeRange === dateOptKeys.alltime) {
-        start = null;
-        end = null;
-      }
-
-      return {
-        timeRange,
-        start,
-        end,
-        widget: widget as string,
-      };
-    },
+    get: () => getterProcessor(route.query),
     set: (value: URLParams) => {
       const query: URLParams = {
         ...(route.query as URLParams),
         ...value,
       };
 
-      query.start = query.start || undefined;
-      query.end = query.end || undefined;
+      const processedQuery = setterProcessor(query);
 
-      router.replace({ query });
+      router.replace({ query: processedQuery });
     },
   });
 

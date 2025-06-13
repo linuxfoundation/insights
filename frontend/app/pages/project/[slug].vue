@@ -33,11 +33,18 @@ import {useQuery} from "@tanstack/vue-query";
 import type {Project} from "~~/types/project";
 import LfxProjectHeader from "~/components/modules/project/components/shared/header.vue";
 import {
-  useProjectStore
+  useProjectStore,
+  defaultTimeRangeKey,
+  defaultDateOption
 } from "~/components/modules/project/store/project.store";
 import {TanstackKey} from "~/components/shared/types/tanstack";
 import {PROJECT_API_SERVICE} from "~/components/modules/project/services/project.api.service";
 import { useQueryParam } from "~/components/shared/utils/query-param";
+import {
+  processTimeAndDateParams,
+  timeAndDateParamsSetter
+} from "~/components/modules/project/services/project.query.service";
+import { dateOptKeys } from "~/components/modules/project/config/date-options";
 
 const route = useRoute();
 const {slug} = route.params;
@@ -45,7 +52,7 @@ const {
 project, selectedTimeRangeKey, startDate, endDate, isProjectLoading
 } = storeToRefs(useProjectStore());
 
-const { queryParams } = useQueryParam();
+const { queryParams } = useQueryParam(processTimeAndDateParams, timeAndDateParamsSetter);
 const queryKey = computed(() => [TanstackKey.PROJECT, slug]);
 
 const {
@@ -82,9 +89,17 @@ watch(() => data.value, (value) => {
   if (value) {
     project.value = value;
     const { timeRange, start, end } = queryParams.value;
-    selectedTimeRangeKey.value = timeRange;
-    startDate.value = start;
-    endDate.value = end;
+    selectedTimeRangeKey.value = timeRange || defaultTimeRangeKey;
+    startDate.value = selectedTimeRangeKey.value === dateOptKeys.alltime
+      ? null : start || defaultDateOption?.startDate || null;
+    endDate.value = selectedTimeRangeKey.value === dateOptKeys.alltime
+      ? null : end || defaultDateOption?.endDate || null;
+
+    queryParams.value = {
+      timeRange: selectedTimeRangeKey.value,
+      start: startDate.value,
+      end: endDate.value,
+    };
   }
 }, { immediate: true });
 

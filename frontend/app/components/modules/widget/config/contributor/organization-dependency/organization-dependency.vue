@@ -72,6 +72,7 @@ import LfxProjectLoadState from "~/components/modules/project/components/shared/
 import LfxDependencyDisplay from "~/components/modules/widget/components/contributors/fragments/dependency-display.vue";
 import LfxOrganizationsTable
   from "~/components/modules/widget/components/contributors/fragments/organizations-table.vue";
+import {Widget} from "~/components/modules/widget/types/widget";
 
 interface OrganizationDependencyModel {
   metric: string;
@@ -83,6 +84,7 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{(e: 'update:benchmarkValue', value: Benchmark | undefined): void;
+  (e: 'dataLoaded', value: string): void;
   (e: 'update:modelValue', value: OrganizationDependencyModel): void}>()
 
 const model = computed<OrganizationDependencyModel>({
@@ -151,6 +153,13 @@ callEmit();
 
 watch(topOrganizations, callEmit);
 
+watch(status, (value) => {
+  if (value !== 'pending') {
+    emit('dataLoaded', Widget.ORGANIZATION_DEPENDENCY);
+  }
+}, {
+  immediate: true
+});
 </script>
 
 <script lang="ts">

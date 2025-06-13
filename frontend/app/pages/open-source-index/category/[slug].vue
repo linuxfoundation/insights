@@ -3,7 +3,10 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <lfx-open-source-index :category="slug as string" />
+  <lfx-open-source-index
+    :category="slug as string"
+    :is-root="false"
+  />
 </template>
 
 <script setup lang="ts">

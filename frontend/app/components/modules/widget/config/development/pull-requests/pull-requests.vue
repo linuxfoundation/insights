@@ -114,12 +114,14 @@ import LfxSkeletonState from "~/components/modules/project/components/shared/ske
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
 import LfxProjectPullRequestLegendItem
   from "~/components/modules/widget/components/development/fragments/pull-request-legend-item.vue";
+import {Widget} from "~/components/modules/widget/types/widget";
 
 const props = defineProps<{
   snapshot?: boolean;
 }>()
 
 const emit = defineEmits<{(e: 'update:benchmarkValue', value: Benchmark | undefined): void;
+(e: 'dataLoaded', value: string): void;
 }>();
 
 const {
@@ -226,6 +228,14 @@ const callEmit = () => {
 callEmit();
 
 watch(chartData, callEmit);
+
+watch(status, (value) => {
+  if (value !== 'pending') {
+    emit('dataLoaded', Widget.PULL_REQUESTS);
+  }
+}, {
+  immediate: true
+});
 </script>
 
 <script lang="ts">

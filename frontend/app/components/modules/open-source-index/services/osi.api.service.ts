@@ -231,7 +231,7 @@ class OssIndexApiService {
     }));
 
     // Assign range index to each item
-    return ranges.findIndex((range) => value >= range.min && value <= range.max);
+    return ranges.findLastIndex((range) => value >= range.min && value <= range.max);
   }
 }
 

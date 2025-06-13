@@ -50,7 +50,7 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { useRoute } from 'nuxt/app';
 import {
- ref, computed, onServerPrefetch
+ ref, computed, onServerPrefetch, watch
 } from 'vue';
 import { storeToRefs } from "pinia";
 import LfxOrganizationLeaderboardDrawer from './fragments/organization-leaderboard-drawer.vue';
@@ -65,6 +65,7 @@ import LfxOrganizationsTable
   from "~/components/modules/widget/components/contributors/fragments/organizations-table.vue";
 import {TanstackKey} from "~/components/shared/types/tanstack";
 import { CONTRIBUTORS_API_SERVICE } from '~~/app/components/modules/widget/services/contributors.api.service'
+import {Widget} from "~/components/modules/widget/types/widget";
 
 interface OrganizationsLeaderboardModel {
   metric: string;
@@ -75,7 +76,8 @@ const props = defineProps<{
   snapshot?: boolean
 }>()
 
-const emit = defineEmits<{(e: 'update:modelValue', value: OrganizationsLeaderboardModel): void}>()
+const emit = defineEmits<{(e: 'dataLoaded', value: string): void;
+(e: 'update:modelValue', value: OrganizationsLeaderboardModel): void}>()
 
 const model = computed<OrganizationsLeaderboardModel>({
   get: () => props.modelValue,
@@ -113,6 +115,7 @@ const {
   data,
   isSuccess,
   isError,
+  status,
   suspense,
 } = CONTRIBUTORS_API_SERVICE.fetchOrganizationLeaderboard(queryKey, queryFn);
 
@@ -125,6 +128,14 @@ const isEmpty = computed(() => isEmptyData(organizations.value?.data as unknown 
 onServerPrefetch(async () => {
   await suspense()
 })
+
+watch(status, (value) => {
+  if (value !== 'pending') {
+    emit('dataLoaded', Widget.ORGANIZATIONS_LEADERBOARD);
+  }
+}, {
+  immediate: true
+});
 </script>
 
 <script lang="ts">

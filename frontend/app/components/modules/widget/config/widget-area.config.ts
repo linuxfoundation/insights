@@ -42,7 +42,8 @@ export const lfxWidgetArea: Record<WidgetArea, WidgetAreaConfig> = {
       Widget.GITHUB_MENTIONS,
       Widget.PRESS_MENTIONS,
       Widget.SEARCH_QUERIES,
-      Widget.PACKAGE_DOWNLOADS,
+      // TODO: Uncomment this when the package downloads widget is ready
+      // Widget.PACKAGE_DOWNLOADS,
       Widget.MAILING_LISTS_MESSAGES
     ],
     overviewWidgets: [Widget.STARS, Widget.FORKS]
