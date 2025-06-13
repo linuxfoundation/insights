@@ -5,6 +5,7 @@ scripts/utils
 scripts/scaffold
 scripts/builders
 scripts/services
+scripts/scaffold.yaml
 
 node_modules
 .prettierrc
