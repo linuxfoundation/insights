@@ -4,23 +4,33 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <section>
-    <div class="flex flex-row justify-between items-center">
+    <div class="flex flex-row justify-between items-center gap-10">
       <div class="text-neutral-900">
-        <h2 class="text-2xl font-bold font-secondary">
+        <h2 class="text-2xl font-bold font-secondary mb-2 leading-8">
           Featured collections
         </h2>
         <p class="text-sm">
           Curated sets of open source projects that belong to the same technology stack or industry domain.
         </p>
       </div>
-      <nuxt-link :to="{name: LfxRoutes.COLLECTIONS}">
+      <nuxt-link
+        :to="{name: LfxRoutes.COLLECTIONS}"
+        class="sm:block hidden"
+      >
         <lfx-button
           type="transparent"
         >
           <lfx-icon
             name="rectangle-history"
+            :size="20"
+            class="md:!inline-block !hidden"
           />
-          All collections
+          <lfx-icon
+            name="rectangle-history"
+            :size="16"
+            class="md:!hidden !inline-block"
+          />
+          <span class="md:text-base text-sm text-nowrap">All collections</span>
         </lfx-button>
       </nuxt-link>
     </div>
@@ -39,6 +49,26 @@ SPDX-License-Identifier: MIT
           />
         </template>
       </lfx-carousel>
+
+      <div class="sm:hidden block flex justify-center">
+        <nuxt-link :to="{name: LfxRoutes.COLLECTIONS}">
+          <lfx-button
+            type="transparent"
+          >
+            <lfx-icon
+              name="rectangle-history"
+              :size="20"
+              class="md:!inline-block !hidden"
+            />
+            <lfx-icon
+              name="rectangle-history"
+              :size="16"
+              class="md:!hidden !inline-block"
+            />
+            <span class="md:text-base text-sm text-nowrap">All collections</span>
+          </lfx-button>
+        </nuxt-link>
+      </div>
     </lfx-project-load-state>
   </section>
 </template>

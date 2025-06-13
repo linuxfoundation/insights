@@ -30,7 +30,7 @@
     }
 
     .p-carousel-content {
-      @apply flex flex-row py-10 -mx-4;
+      @apply flex flex-row sm:py-10 py-5 -mx-4;
 
       .p-carousel-viewport {
         @apply w-full overflow-hidden;

@@ -31,12 +31,14 @@ SPDX-License-Identifier: MIT
         </div>
       </div>
     </div>
-    <nuxt-link
-      :to="exploreLink"
-      class="text-sm text-brand-500 font-semibold hover:underline"
-    >
-      {{ exploreLinkText }}
-    </nuxt-link>
+    <div class="flex justify-center sm:justify-start">
+      <nuxt-link
+        :to="exploreLink"
+        class="text-sm text-brand-500 font-semibold hover:underline"
+      >
+        {{ exploreLinkText }}
+      </nuxt-link>
+    </div>
   </div>
 </template>
 
