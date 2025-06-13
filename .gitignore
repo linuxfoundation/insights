@@ -1,4 +1,13 @@
 .idea
+**/scripts/cli*
+scripts/cli
+scripts/utils
+scripts/scaffold
+scripts/builders
+scripts/services
+scripts/scaffold.yaml
 
 node_modules
 .prettierrc
+**/.env*
+!.env.dist

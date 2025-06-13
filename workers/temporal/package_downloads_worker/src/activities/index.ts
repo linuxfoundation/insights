@@ -1,0 +1,67 @@
+// Copyright (c) 2025 The Linux Foundation and each contributor.
+// SPDX-License-Identifier: MIT
+import axios from "axios";
+import { svc } from "../main";
+import {
+  findReposToProcessForDate,
+  savePackagesDownloadForRepo,
+} from "../repo";
+import { IInsightsProjectRepo, IPackageDownload } from "../types";
+
+export async function testAct() {
+  return 1;
+}
+
+export async function fetchAndSavePackageDownloads(
+  date: string,
+  insightsProjectId: string,
+  repoUrl: string
+): Promise<any> {
+  console.log(`Getting package downloads for ${repoUrl}`);
+  let data: IPackageDownload[] = await fetchPackageDownloads(repoUrl);
+  console.log(`Got package downloads for ${repoUrl}`, data);
+
+  for (const packageDownload of data) {
+    // Save package downloads to the database
+    await savePackagesDownloadForRepo(svc.insightsPostgres.writer, {
+      ...packageDownload,
+      date,
+      insights_project_id: insightsProjectId,
+    });
+  }
+}
+
+async function fetchPackageDownloads(
+  repoUrl: string
+): Promise<IPackageDownload[]> {
+  console.log(`Getting package downloads for ${repoUrl}`);
+  const url = `https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=${repoUrl}`;
+  const requestOptions = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  try {
+    const result = await axios(url, requestOptions);
+    return result.data as IPackageDownload[];
+  } catch (error) {
+    console.log(`Failed getting package downloads!`);
+    throw error;
+  }
+}
+
+export async function fetchUnprocessedReposForDate(
+  date: string,
+  failedRepos: string[],
+  limit: number
+): Promise<IInsightsProjectRepo[]> {
+  return findReposToProcessForDate(
+    svc.insightsPostgres.reader,
+    svc.cmPostgres.reader,
+    date,
+    failedRepos,
+    limit
+  );
+}
