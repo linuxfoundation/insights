@@ -39,7 +39,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { useRoute } from 'nuxt/app';
-import { computed, onServerPrefetch } from 'vue';
+import { computed, onServerPrefetch, watch } from 'vue';
 import { storeToRefs } from "pinia";
 import {type QueryFunction, useQuery} from "@tanstack/vue-query";
 import type { ReviewTimeByPrItem } from '~~/types/development/responses.types';
@@ -49,6 +49,9 @@ import { useProjectStore } from "~/components/modules/project/store/project.stor
 import { formatSecondsToDuration } from '~/components/shared/utils/formatter';
 import {TanstackKey} from "~/components/shared/types/tanstack";
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
+import {Widget} from "~/components/modules/widget/types/widget";
+
+const emit = defineEmits<{(e: 'dataLoaded', value: string): void}>();
 
 const route = useRoute();
 const { startDate, endDate, selectedRepository } = storeToRefs(useProjectStore());
@@ -87,6 +90,14 @@ const maxValue = computed(() => Math.max(...reviewTimeByPr.value.map((item) => i
 const isEmpty = computed(() => isEmptyData(reviewTimeByPr.value as unknown as Record<string, unknown>[]));
 
 const convertAverageReviewTime = (value: number) => formatSecondsToDuration(value, 'long');
+
+watch(status, (value) => {
+  if (value !== 'pending') {
+    emit('dataLoaded', Widget.REVIEW_TIME_BY_PULL_REQUEST_SIZE);
+  }
+}, {
+  immediate: true
+});
 </script>
 
 <script lang="ts">

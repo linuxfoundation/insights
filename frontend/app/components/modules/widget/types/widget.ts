@@ -26,7 +26,8 @@ export enum Widget {
   // Popularity
   FORKS = 'forks',
   GITHUB_MENTIONS = 'github-mentions',
-  PACKAGE_DOWNLOADS = 'package-downloads',
+  // TODO: Uncomment this when the package downloads widget is ready
+  // PACKAGE_DOWNLOADS = 'package-downloads',
   PRESS_MENTIONS = 'press-mentions',
   SEARCH_QUERIES = 'search-queries',
   SOCIAL_MENTIONS = 'social-mentions',

@@ -30,6 +30,7 @@ SPDX-License-Identifier: MIT
       :is="config.component"
       v-model="model"
       @update:benchmark-value="emit('update:benchmark-value', $event)"
+      @data-loaded="emit('dataLoaded', $event)"
     />
   </lfx-card>
 </template>
@@ -44,7 +45,8 @@ import {useProjectStore} from "~/components/modules/project/store/project.store"
 import LfxWidgetMenu from "~/components/modules/widget/components/shared/widget-menu.vue";
 import type { Benchmark } from '~~/types/shared/benchmark.types';
 
-const emit = defineEmits<{(e: 'update:benchmark-value', value: Benchmark): void
+const emit = defineEmits<{(e: 'dataLoaded', value: string): void;
+  (e: 'update:benchmark-value', value: Benchmark): void
 }>();
 const props = defineProps<{
   name: Widget

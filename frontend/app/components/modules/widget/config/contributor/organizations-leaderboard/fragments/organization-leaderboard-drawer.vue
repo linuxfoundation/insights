@@ -43,7 +43,7 @@ SPDX-License-Identifier: MIT
             :metric="metric"
             :organizations="organizations"
             :show-full-list="true"
-            :total="total"
+            :has-next-page="hasNextPage"
             :is-fetching-next-page="isFetchingNextPage"
             @load-more="loadMore"
           />
@@ -122,6 +122,7 @@ const {
   data,
   isSuccess,
   isError,
+  hasNextPage,
   fetchNextPage,
   isFetchingNextPage,
   suspense
@@ -133,13 +134,13 @@ const organizations = computed<Organization[]>(() => {
   }
   return data.value?.pages.flatMap((page) => (page as OrganizationLeaderboard).data) || [];
 });
-const total = computed(() => (data.value?.pages[0]
-  ? (data.value?.pages[0] as unknown as OrganizationLeaderboard).meta.total || 0 : 0));
 
 const isEmpty = computed(() => isEmptyData(organizations.value as unknown as Record<string, unknown>[]));
 
 const loadMore = () => {
-  fetchNextPage();
+  if (hasNextPage.value) {
+    fetchNextPage();
+  }
 };
 
 watch(props, () => {

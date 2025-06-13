@@ -21,33 +21,14 @@ SPDX-License-Identifier: MIT
           >Learn more</a>
         </p>
       </div>
-      <div v-if="project?.rank">
+      <div v-if="topRank">
         <lfx-tooltip
           :content="
-            `${project?.name} belongs to the ${project?.rank} most critical open source projects on GitHub`"
+            `${project?.name} belongs to the ${topRank} most critical open source projects`"
         >
           <img
-            v-if="project?.rank <= 10"
-            src="~/assets/images/criticality/top-10.svg"
-            alt="Top 10 criticality"
-            class="min-w-14"
-          >
-          <img
-            v-else-if="project?.rank <= 100"
-            src="~/assets/images/criticality/top-100.svg"
-            alt="Top 100 criticality"
-            class="min-w-14"
-          >
-          <img
-            v-else-if="project?.rank <= 500"
-            src="~/assets/images/criticality/top-500.svg"
-            alt="Top 500 criticality"
-            class="min-w-14"
-          >
-          <img
-            v-else-if="project?.rank <= 1000"
-            src="~/assets/images/criticality/top-1000.svg"
-            alt="Top 1000 criticality"
+            :src="`/images/criticality/top-${topRank}.svg`"
+            :alt="`Top ${topRank} criticality`"
             class="min-w-14"
           >
         </lfx-tooltip>
@@ -88,6 +69,18 @@ import LfxCard from "~/components/uikit/card/card.vue";
 import LfxTooltip from "~/components/uikit/tooltip/tooltip.vue";
 
 const { project } = storeToRefs(useProjectStore())
+
+const topRank = computed(() => {
+  const rank = project.value?.rank;
+  if (!rank) return 0;
+  if (rank <= 10) return 10;
+  if (rank <= 100) return 100;
+  if (rank <= 500) return 500;
+  if (rank <= 1000) return 1000;
+  if (rank <= 5000) return 5000;
+  if (rank <= 10000) return 10000;
+  return 0;
+})
 </script>
 
 <script lang="ts">

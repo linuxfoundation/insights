@@ -4,7 +4,7 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <div
-    class="fixed bottom-5 sm:bottom-0 left-1/2 sm:left-0 sm:relative
+    class="fixed bottom-5 z-50 sm:z-10 sm:bottom-0 left-1/2 sm:left-0 sm:relative
       transform -translate-x-1/2 sm:translate-x-0 sm:shadow-none sm:border-none
       bg-white border border-neutral-200 rounded-full shadow-md"
   >
@@ -14,7 +14,7 @@ SPDX-License-Identifier: MIT
       width="22.5rem"
     >
       <template #trigger="{selectedOption}">
-        <lfx-dropdown-selector class="whitespace-nowrap">
+        <lfx-dropdown-selector class="whitespace-nowrap !bg-transparent">
           <lfx-icon
             name="calendar"
             :size="16"
@@ -120,7 +120,7 @@ import {
   lfxProjectDateOptionsPast,
   lfxProjectDateOptionsPrevious
 } from "~/components/modules/project/config/date-options";
-import { useProjectStore } from "~/components/modules/project/store/project.store";
+import { defaultTimeRangeKey, useProjectStore } from "~/components/modules/project/store/project.store";
 import LfxProjectCustomDateRangePicker
   from "~/components/modules/project/components/shared/header/custom-date-range-picker.vue";
 import LfxDropdownSelect from "~/components/uikit/dropdown/dropdown-select.vue";
@@ -128,13 +128,17 @@ import LfxDropdownItem from "~/components/uikit/dropdown/dropdown-item.vue";
 import LfxDropdownSeparator from "~/components/uikit/dropdown/dropdown-separator.vue";
 import LfxDropdownSelector from "~/components/uikit/dropdown/dropdown-selector.vue";
 import { useQueryParam } from "~/components/shared/utils/query-param";
+import {
+  processTimeAndDateParams,
+  timeAndDateParamsSetter
+} from "~/components/modules/project/services/project.query.service";
 
 const { selectedTimeRangeKey, startDate, endDate } = storeToRefs(useProjectStore())
-const { queryParams } = useQueryParam();
+const { queryParams } = useQueryParam(processTimeAndDateParams, timeAndDateParamsSetter);
 const isOpen = ref(false);
 const isCustomSelectorOpen = ref(false);
 
-const selectedDateRange = ref(selectedTimeRangeKey.value);
+const selectedDateRange = ref(selectedTimeRangeKey.value || defaultTimeRangeKey);
 
 const changeSelected = (option: DateOptionConfig) => {
   selectedTimeRangeKey.value = option.key;
@@ -155,6 +159,8 @@ watch(() => selectedDateRange.value, (value) => {
   if(option){
     changeSelected(option);
   }
+}, {
+  immediate: true
 })
 </script>
 

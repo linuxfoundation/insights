@@ -50,7 +50,7 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { useRoute } from 'nuxt/app';
 import {
- ref, computed, onServerPrefetch
+ ref, computed, onServerPrefetch, watch
 } from 'vue';
 import { storeToRefs } from "pinia";
 import LfxContributorLeaderboardDrawer from './fragments/contributor-leaderboard-drawer.vue';
@@ -64,6 +64,7 @@ import LfxProjectLoadState from "~/components/modules/project/components/shared/
 import LfxContributorsTable from "~/components/modules/widget/components/contributors/fragments/contributors-table.vue";
 import {TanstackKey} from "~/components/shared/types/tanstack";
 import { CONTRIBUTORS_API_SERVICE } from '~~/app/components/modules/widget/services/contributors.api.service'
+import {Widget} from "~/components/modules/widget/types/widget";
 
 interface ContributorLeaderboardModel {
   metric: string;
@@ -74,7 +75,8 @@ const props = defineProps<{
   snapshot?: boolean
 }>()
 
-const emit = defineEmits<{(e: 'update:modelValue', value: ContributorLeaderboardModel): void}>()
+const emit = defineEmits<{(e: 'dataLoaded', value: string): void;
+(e: 'update:modelValue', value: ContributorLeaderboardModel): void}>()
 
 const model = computed<ContributorLeaderboardModel>({
   get: () => props.modelValue,
@@ -112,6 +114,7 @@ const {
   data,
   isSuccess,
   isError,
+  status,
   suspense,
 } = CONTRIBUTORS_API_SERVICE.fetchContributorLeaderboard(queryKey, queryFn);
 
@@ -123,6 +126,13 @@ onServerPrefetch(async () => {
   await suspense();
 })
 
+watch(status, (value) => {
+  if (value !== 'pending') {
+    emit('dataLoaded', Widget.CONTRIBUTORS_LEADERBOARD);
+  }
+}, {
+  immediate: true
+});
 </script>
 
 <script lang="ts">

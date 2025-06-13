@@ -1,3 +1,4 @@
+![LFX Insights Banner](https://github.com/user-attachments/assets/a0bad954-940d-4811-a183-5efa67b16b6a)
 # What is LFX Insights?
 
 LFX Insights helps developers and their organizations make smarter decisions about the open source projects they depend on.
@@ -10,10 +11,10 @@ Think of Insights as <b>a health check for open source projects</b> - a platform
 
 With LFX Insights, you can:
 
-- <b>Quickly assess a project’s overall health</b> — with an at-a-glance summary of key activity, community, and security signals.
-- <b>Understand who is behind a project</b> — see contributor affiliations and organization-level insights, not just anonymous GitHub handles.
-- <b>See whether a project follows security best practices</b> — including vulnerability management, documentation quality, and governance signals.
-- <b>Track adoption and momentum</b> — through benchmarks, usage patterns, and trends across the open source ecosystem.
+- <b>Quickly assess a project’s overall health</b> - with an at-a-glance summary of key activity, community, and security signals.
+- <b>Understand who is behind a project</b> - see contributor affiliations and organization-level insights, not just anonymous GitHub handles.
+- <b>See whether a project follows security best practices</b> - including vulnerability management, documentation quality, and governance signals.
+- <b>Track adoption and momentum</b> - through benchmarks, usage patterns, and trends across the open source ecosystem.
 
 Built by the <a href="https://www.linuxfoundation.org">Linux Foundation</a>, LFX Insights leverages trusted, high-quality data to help you reduce risk and choose open source projects that are not just functional—but reliable.
 

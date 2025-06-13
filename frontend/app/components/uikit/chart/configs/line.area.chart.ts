@@ -7,14 +7,14 @@ import {
   buildSeries,
   convertDateData,
   convertToGradientColor,
-  hexToRgba
+  hexToRgba,
 } from '../helpers/chart-helpers';
 
 import {
   axisLabelFormatter,
   tooltipFormatter,
   tooltipFormatterWithData,
-  tooltipLabelFormatter
+  tooltipLabelFormatter,
 } from '../helpers/formatters';
 import type { ChartData, ChartSeries, SeriesTypes } from '../types/ChartTypes';
 import defaultOption, { defaultGraphOnlyOption } from './defaults.chart';
@@ -27,22 +27,22 @@ const defaultLineOption: ECOption = {
     top: '5%',
     left: '12%',
     right: '3%',
-    bottom: '15%'
+    bottom: '15%',
   },
   xAxis: {
     ...defaultOption.xAxis,
-    boundaryGap: false
+    boundaryGap: false,
   },
   tooltip: {
     trigger: 'axis',
     axisPointer: {
       type: 'none',
       label: {
-        formatter: tooltipLabelFormatter
-      }
+        formatter: tooltipLabelFormatter,
+      },
     },
-    formatter: tooltipFormatter
-  }
+    formatter: tooltipFormatter,
+  },
 };
 
 const defaultSeriesStyle: LineSeriesOption = {
@@ -51,15 +51,15 @@ const defaultSeriesStyle: LineSeriesOption = {
   symbolSize: 6,
   lineStyle: {
     width: 1,
-    type: 'solid'
+    type: 'solid',
   },
   areaStyle: {
     color: new graphic.LinearGradient(0, 0, 0, 1, [
       { offset: 0, color: hexToRgba(lfxColors.brand[500], 0.1) },
-      { offset: 0.8, color: hexToRgba(lfxColors.white, 0) }
-    ])
+      { offset: 0.8, color: hexToRgba(lfxColors.white, 0) },
+    ]),
   },
-  silent: true
+  silent: true,
 };
 
 /**
@@ -82,15 +82,15 @@ const applySeriesStyle = (
       emphasis: {
         scale: false,
         itemStyle: {
-          borderColor: chartSeries[index]?.color || lfxColors.brand[500]
-        }
-      }
+          borderColor: chartSeries[index]?.color || lfxColors.brand[500],
+        },
+      },
     };
     baseStyle.lineStyle = {
       ...baseStyle.lineStyle,
       color: chartSeries[index]?.color || lfxColors.brand[500],
       type: chartSeries[index]?.lineStyle || baseStyle.lineStyle?.type,
-      width: chartSeries[index]?.lineWidth || baseStyle.lineStyle?.width || 1
+      width: chartSeries[index]?.lineWidth || baseStyle.lineStyle?.width || 1,
     };
 
     // Only solid lines have an area
@@ -101,7 +101,7 @@ const applySeriesStyle = (
       ...baseStyle.areaStyle,
       color: convertToGradientColor(
         hexToRgba(chartSeries[index]?.color || lfxColors.brand[500], 0.1)
-      )
+      ),
     };
     // }
 
@@ -119,7 +119,7 @@ export const getLineAreaChartConfig = (
   data: ChartData[],
   series: ChartSeries[],
   granularity: string,
-  yAxisFormatter?: (value: number) => string
+  yAxisFormatter?: (value: number, index?: number) => string
 ): ECOption => {
   const axisLabelFormat = formatByGranularity[granularity as keyof typeof formatByGranularity] || 'MMM yyyy';
 
@@ -128,18 +128,18 @@ export const getLineAreaChartConfig = (
     data: convertDateData(data) ?? [],
     axisLabel: {
       ...defaultLineOption.xAxis.axisLabel,
-      formatter: axisLabelFormatter(axisLabelFormat)
-    }
+      formatter: axisLabelFormatter(axisLabelFormat),
+    },
   };
   const yAxis = {
     ...defaultLineOption.yAxis,
     axisLabel: {
       ...defaultLineOption.yAxis.axisLabel,
-      formatter: yAxisFormatter
-    }
+      formatter: yAxisFormatter,
+    },
   };
   const tooltip = _.merge({}, defaultLineOption.tooltip, {
-    formatter: tooltipFormatterWithData(data, granularity, series)
+    formatter: tooltipFormatterWithData(data, granularity, series),
   });
 
   const styledSeries = applySeriesStyle(series, buildSeries(series, data));
@@ -151,7 +151,7 @@ export const getLineAreaChartConfig = (
       xAxis,
       yAxis,
       series: styledSeries,
-      tooltip
+      tooltip,
     }
   );
 };
@@ -177,8 +177,8 @@ export const getLineAreChartConfigCustom = (
     data: convertDateData(data) ?? [],
     axisLabel: {
       ...defaultLineOption.xAxis.axisLabel,
-      formatter: axisLabelFormatter(axisLabelFormat)
-    }
+      formatter: axisLabelFormatter(axisLabelFormat),
+    },
   };
 
   const styledSeries = applySeriesStyle(series, buildSeries(series, data)).map(
@@ -187,18 +187,18 @@ export const getLineAreChartConfigCustom = (
         ...customStyle,
         lineStyle: {
           ...(seriesItem as LineSeriesOption).lineStyle,
-          ...(customStyle as LineSeriesOption)?.lineStyle
+          ...(customStyle as LineSeriesOption)?.lineStyle,
         },
         areaStyle: {
           ...(seriesItem as LineSeriesOption).areaStyle,
-          ...(customStyle as LineSeriesOption)?.areaStyle
-        }
+          ...(customStyle as LineSeriesOption)?.areaStyle,
+        },
       } as LineSeriesOption)
   );
 
   return merge({}, defaultLineOption, {
     xAxis,
-    series: styledSeries
+    series: styledSeries,
   });
 };
 
@@ -215,13 +215,13 @@ export const getLineAreaChartConfigGraphOnly = (
 ): ECOption => {
   const xAxis = {
     ...defaultGraphOnlyOption.xAxis,
-    data: convertDateData(data) ?? []
+    data: convertDateData(data) ?? [],
   };
   const styledSeries = applySeriesStyle(series, buildSeries(series, data));
 
   return {
     ...defaultGraphOnlyOption,
     xAxis,
-    series: styledSeries
+    series: styledSeries,
   };
 };
