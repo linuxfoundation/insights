@@ -83,7 +83,7 @@ export default defineNuxtConfig({
   },
   routeRules: {
     '/**': {
-      swr: 900
+      swr: 3600
     },
   }
 });
