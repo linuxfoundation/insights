@@ -23,13 +23,13 @@ SPDX-License-Identifier: MIT
     </div>
   </section>
 
-  <div class="sticky top-14 lg:top-17 h-[77px]">
+  <div class="sticky top-14 lg:top-17">
     <div class="bg-white border-b border-neutral-100">
       <div
         class="container transition-all"
         :class="scrollTop > 50 ? 'py-3 md:py-4' : 'py-3 md:py-5'"
       >
-        <div class="flex items-center justify-between gap-4">
+        <div class="flex items-center justify-between gap-4 w-full">
           <lfx-collection-list-filters v-model:category="category" />
           <lfx-dropdown-select
             v-model="sort"

@@ -96,18 +96,18 @@ const props = withDefaults(
     organizations: Organization[];
     showPercentage?: boolean;
     showFullList?: boolean;
-    total?: number;
+    hasNextPage?: boolean;
     isFetchingNextPage?: boolean;
   }>(),
   {
     showPercentage: false,
     showFullList: false,
-    total: 0,
+    hasNextPage: false,
     isFetchingNextPage: false
   }
 );
 
-const showLoadMore = computed(() => props.total && props.total > props.organizations.length && props.showFullList);
+const showLoadMore = computed(() => props.hasNextPage && props.showFullList);
 
 const options = {
   root: null,

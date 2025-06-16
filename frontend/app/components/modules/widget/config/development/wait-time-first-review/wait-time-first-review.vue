@@ -68,6 +68,7 @@ import {TanstackKey} from "~/components/shared/types/tanstack";
 import LfxSkeletonState from "~/components/modules/project/components/shared/skeleton-state.vue";
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
 import {Widget} from "~/components/modules/widget/types/widget";
+import { minHours, maxHours } from '~/components/uikit/chart/configs/defaults.chart';
 
 const props = defineProps<{
   snapshot?: boolean;
@@ -142,6 +143,8 @@ const configOverride = computed(() => ({
     axisLabel: {
       formatter: (value: number) => `${value === 0 ? '' : `${value}h`}`
     },
+    min: minHours,
+    max: maxHours,
   }
 }));
 

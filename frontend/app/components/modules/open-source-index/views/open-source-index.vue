@@ -8,22 +8,38 @@ SPDX-License-Identifier: MIT
     :sort="sort"
     :status="status"
     :breadcrumb-data="breadcrumbData"
+    :is-root="isRoot"
     @update:type="type = $event as OSIType"
     @update:sort="sort = $event as SortType"
   />
 
   <div class="container pt-8">
-    <lfx-project-load-state
-      :status="status"
-      :error="error"
-      error-message="Error fetching OSS Index data"
-    >
-      <LfxOSIChart
-        :data="chartData"
-        :sort="sort"
-        :is-collection="!!props.category"
+    <div class="lg:block hidden">
+      <lfx-project-load-state
+        :status="status"
+        :error="error"
+        error-message="Error fetching OSS Index data"
+      >
+        <LfxOSIChart
+          :data="chartData"
+          :sort="sort"
+          :is-collection="!!props.category"
+        />
+      </lfx-project-load-state>
+    </div>
+    <div class="lg:hidden flex flex-col mx-auto py-20 justify-center items-center">
+      <lfx-icon
+        name="arrows-left-right-to-line"
+        :size="80"
+        class="text-neutral-300"
       />
-    </lfx-project-load-state>
+      <div class="font-semibold text-sm text-neutral-500 mb-3">
+        Open Source Index requires a bit more room
+      </div>
+      <div class="text-xs text-neutral-500">
+        Please resize your browser window to explore this feature
+      </div>
+    </div>
   </div>
 </template>
 
@@ -38,10 +54,12 @@ import LfxOSIChart from '../components/osi-chart.vue';
 import type { BreadcrumbData, OSIType, SortType } from '../services/osi.api.service';
 import type { TreeMapData } from '~/components/uikit/chart/types/ChartTypes';
 import LfxProjectLoadState from '~~/app/components/modules/project/components/shared/load-state.vue';
+import LfxIcon from '~~/app/components/uikit/icon/icon.vue';
 
 const props = defineProps<{
   group?: string;
   category?: string;
+  isRoot?: boolean;
 }>();
 
 const route = useRoute();
@@ -162,6 +180,17 @@ watch(sort, (newVal) => {
       query: {
         ...route.query,
         sort: newVal
+      }
+    });
+  }
+});
+watch(type, (newVal) => {
+  if (newVal) {
+    router.replace({
+      ...route,
+      query: {
+        ...route.query,
+        type: newVal
       }
     });
   }

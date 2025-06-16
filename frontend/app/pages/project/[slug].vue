@@ -40,6 +40,11 @@ import {
 import {TanstackKey} from "~/components/shared/types/tanstack";
 import {PROJECT_API_SERVICE} from "~/components/modules/project/services/project.api.service";
 import { useQueryParam } from "~/components/shared/utils/query-param";
+import {
+  processTimeAndDateParams,
+  timeAndDateParamsSetter
+} from "~/components/modules/project/services/project.query.service";
+import { dateOptKeys } from "~/components/modules/project/config/date-options";
 
 const route = useRoute();
 const {slug} = route.params;
@@ -47,7 +52,7 @@ const {
 project, selectedTimeRangeKey, startDate, endDate, isProjectLoading
 } = storeToRefs(useProjectStore());
 
-const { queryParams } = useQueryParam();
+const { queryParams } = useQueryParam(processTimeAndDateParams, timeAndDateParamsSetter);
 const queryKey = computed(() => [TanstackKey.PROJECT, slug]);
 
 const {
@@ -83,15 +88,17 @@ onServerPrefetch(async () => {
 watch(() => data.value, (value) => {
   if (value) {
     project.value = value;
-    selectedTimeRangeKey.value = defaultTimeRangeKey;
-    startDate.value = defaultDateOption?.startDate || null;
-    endDate.value = defaultDateOption?.endDate || null;
+    const { timeRange, start, end } = queryParams.value;
+    selectedTimeRangeKey.value = timeRange || defaultTimeRangeKey;
+    startDate.value = selectedTimeRangeKey.value === dateOptKeys.alltime
+      ? null : start || defaultDateOption?.startDate || null;
+    endDate.value = selectedTimeRangeKey.value === dateOptKeys.alltime
+      ? null : end || defaultDateOption?.endDate || null;
 
-    // reset the query params
     queryParams.value = {
-      timeRange: undefined,
-      start: undefined,
-      end: undefined,
+      timeRange: selectedTimeRangeKey.value,
+      start: startDate.value,
+      end: endDate.value,
     };
   }
 }, { immediate: true });

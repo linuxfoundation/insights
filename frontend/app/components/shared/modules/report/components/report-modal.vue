@@ -31,7 +31,7 @@ SPDX-License-Identifier: MIT
     </section>
 
     <section class="flex flex-col gap-6 pb-8">
-      <article>
+      <article v-if="!form.hideArea">
         <lfx-field
           label="Select area"
           :required="true"
@@ -55,7 +55,7 @@ SPDX-License-Identifier: MIT
           />
         </lfx-field>
       </article>
-      <article v-if="(lfxWidgetArea[form.area as WidgetArea]?.widgets || []).length > 0">
+      <article v-if="(lfxWidgetArea[form.area as WidgetArea]?.widgets || []).length > 0 && !form.hideArea">
         <lfx-field
           label="Data insight"
           placeholder="Select option"
@@ -192,6 +192,7 @@ const form = reactive<ReportDataForm>({
   widget: '',
   description: '',
   email: '',
+  hideArea: false,
   ...props.defaults,
 })
 
@@ -219,6 +220,10 @@ const submit = () => {
     projectSlug: project.value?.slug,
     projectName: project.value?.name,
     repositoryUrl: selectedRepository.value,
+  }
+
+  if(isSending.value) {
+    return;
   }
 
   isSending.value = true;

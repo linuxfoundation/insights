@@ -129,6 +129,7 @@ import {useProjectStore} from "~/components/modules/project/store/project.store"
 import type {SecurityData} from "~~/types/security/responses.types";
 import {links} from "~/config/links";
 import LfxSpinner from "~/components/uikit/spinner/spinner.vue";
+import {PROJECT_SECURITY_SERVICE} from "~/components/modules/project/services/security.service";
 
 const accordion = ref('');
 
@@ -161,7 +162,11 @@ const {
   queryFn: fetchData,
 });
 
-const groupedData = computed(() => (data.value || []).reduce((mapping, check) => {
+// TODO: Remove this when we have data for them
+const securityAssessmentData = computed(() => PROJECT_SECURITY_SERVICE
+.removeDocumentationAndVulnerability(data.value || []));
+
+const groupedData = computed(() => (securityAssessmentData.value || []).reduce((mapping, check) => {
     const obj = {...mapping};
     if (!obj[check.category]) {
       obj[check.category] = [];
