@@ -88,8 +88,8 @@ const links = computed(() => {
 
   // Sort by platform
   return (processedLinks as DisplayLinkConfig[]).sort((a, b) => {
-    const aIndex = socialLinkOrder.indexOf(a.key);
-    const bIndex = socialLinkOrder.indexOf(b.key);
+    const aIndex = socialLinkOrder.indexOf(a.key) === -1 ? socialLinkOrder.length : socialLinkOrder.indexOf(a.key);
+    const bIndex = socialLinkOrder.indexOf(b.key) === -1 ? socialLinkOrder.length : socialLinkOrder.indexOf(b.key);
     return aIndex - bIndex;
   });
 });
