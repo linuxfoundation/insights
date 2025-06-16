@@ -37,7 +37,6 @@ SPDX-License-Identifier: MIT
           Copy markdown
         </lfx-button>
       </div>
-
       <div class="flex items-center justify-between">
         <lfx-skeleton-state
           :status="project?.contributorCount ? 'success' : 'pending'"
@@ -158,7 +157,8 @@ const contributorBadgeUrl = computed(() => getBadgeUrl(
 ));
 
 const markdown = (badgeUrl: string, title: string) => {
-  const link = window?.location.href;
+  const link = window?.location.href.split('?')[0];
+
   return `[![${title}](${badgeUrl})](${link})`;
 };
 
