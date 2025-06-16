@@ -86,6 +86,9 @@ importers:
       vue-router:
         specifier: latest
         version: 4.5.1(vue@3.5.14(typescript@5.8.3))
+      vue3-carousel:
+        specifier: ^0.16.0
+        version: 0.16.0(vue@3.5.14(typescript@5.8.3))
     devDependencies:
       '@chromatic-com/storybook':
         specifier: ^3.2.4
@@ -7122,6 +7125,11 @@ packages:
     resolution: {integrity: sha512-ogAF3P97NPm8fJsE4by9dwSYtDwXIY1nFY9T6DyQnGHd1E2Da94w9JIolpe42LJGIl0DwOHBi8TcRPlPGwbTtw==}
     peerDependencies:
       vue: ^3.2.0
+
+  vue3-carousel@0.16.0:
+    resolution: {integrity: sha512-IKRKtvHP8gNDRHSzINXwFbJ/Zy2HS+Gv2lXPnAEop6pxsvB17+fz2WQlNZ6ytilLkM5DOu/jXPoDQi/xy17bjg==}
+    peerDependencies:
+      vue: ^3.5.0
 
   vue@3.5.14:
     resolution: {integrity: sha512-LbOm50/vZFG6Mhy6KscQYXZMQ0LMCC/y40HDJPPvGFQ+i/lUH+PJHR6C3assgOQiXdl6tAfsXHbXYVBZZu65ew==}
@@ -15293,6 +15301,10 @@ snapshots:
   vue-router@4.5.1(vue@3.5.14(typescript@5.8.3)):
     dependencies:
       '@vue/devtools-api': 6.6.4
+      vue: 3.5.14(typescript@5.8.3)
+
+  vue3-carousel@0.16.0(vue@3.5.14(typescript@5.8.3)):
+    dependencies:
       vue: 3.5.14(typescript@5.8.3)
 
   vue@3.5.14(typescript@5.8.3):

@@ -45,7 +45,8 @@
     "slugify": "^1.6.6",
     "vitepress": "^1.6.3",
     "vue": "latest",
-    "vue-router": "latest"
+    "vue-router": "latest",
+    "vue3-carousel": "^0.16.0"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^3.2.4",

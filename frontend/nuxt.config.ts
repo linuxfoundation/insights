@@ -10,11 +10,11 @@ import echarts from './setup/echarts';
 const isProduction = process.env.NUXT_APP_ENV === 'production';
 export default defineNuxtConfig({
   future: {
-    compatibilityVersion: 4
+    compatibilityVersion: 4,
   },
   app: {
     head,
-    errorHandler: '~/app/error.vue'
+    errorHandler: '~/app/error.vue',
   },
   components: false,
   compatibilityDate: '2024-11-01',
@@ -28,12 +28,10 @@ export default defineNuxtConfig({
     '@nuxtjs/storybook',
     'nuxt-gtag',
     '@nuxtjs/plausible',
-    '@nuxtjs/robots'
+    '@nuxtjs/robots',
   ],
-  plugins: [
-    '~/plugins/vue-query.ts',
-  ],
-  css: ['~/assets/styles/main.scss'],
+  plugins: ['~/plugins/vue-query.ts'],
+  css: ['~/assets/styles/main.scss', 'vue3-carousel/carousel.css'],
   tailwindcss,
   primevue,
   echarts,
@@ -51,19 +49,20 @@ export default defineNuxtConfig({
     public: {
       apiBase: '/api',
       appUrl: 'http://localhost:3000',
-      appEnv: process.env.APP_ENV
-    }
+      appEnv: process.env.APP_ENV,
+    },
   },
   vue: {
     compilerOptions: {
       isCustomElement: (tag: string) => ['lfx-footer'].includes(tag),
-    }
+    },
   },
   gtag: {
     enabled: isProduction,
-    id: 'G-EB92ZZFBNS'
+    id: 'G-EB92ZZFBNS',
   },
-  plausible: { // Use as fallback if no runtime config is available at runtime
+  plausible: {
+    // Use as fallback if no runtime config is available at runtime
     enabled: isProduction,
     domain: 'insights.linuxfoundation.org',
   },
@@ -73,12 +72,12 @@ export default defineNuxtConfig({
         '/docs': {
           target: 'http://localhost:5173',
           changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/docs/, '/docs')
-        }
-      }
-    }
+          rewrite: (path) => path.replace(/^\/docs/, '/docs'),
+        },
+      },
+    },
   },
   robots: {
     disallow: isProduction ? [] : ['/'],
-  }
+  },
 });
