@@ -17,6 +17,7 @@ export type TinybirdContributorsLeaderboardData = {
   displayName: string,
   contributionCount: number,
   contributionPercentage: number
+  roles: string[]
 };
 
 export type TinybirdCountData = {

@@ -105,6 +105,7 @@ export async function fetchCodeReviewEngagement(filter: CodeReviewEngagementFilt
       name: item.displayName,
       activityCount: item.contributionCount,
       percentage: item.contributionPercentage,
+      roles: item.roles || [],
     }))
   };
 }
