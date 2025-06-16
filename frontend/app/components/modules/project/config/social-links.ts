@@ -30,7 +30,7 @@ export interface DisplayLinkConfig {
   icon: string;
 }
 
-export const socialLinkOrder = ['website', 'github', 'linkedin', 'twitter'];
+export const socialLinkOrder = ['website', 'github', 'linkedin', 'twitter', 'default'];
 
 export const socialLinkConfigs: Record<string, LinkConfig> = {
   twitter: {
