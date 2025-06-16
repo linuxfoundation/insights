@@ -31,6 +31,7 @@ export interface CodeReviewItem {
   name: string;
   activityCount: number;
   percentage?: number;
+  roles: string[];
 }
 
 export interface CodeReviewEngagement {

@@ -67,7 +67,8 @@ export async function fetchContributorDependency(filter: ContributorDependencyFi
       avatar: item.avatar,
       name: item.name,
       contributions: item.contributions,
-      percentage: item.percentage
+      percentage: item.percentage,
+      roles: item.roles || [],
     }))
   };
 }
