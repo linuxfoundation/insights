@@ -184,6 +184,17 @@ watch(sort, (newVal) => {
     });
   }
 });
+watch(type, (newVal) => {
+  if (newVal) {
+    router.replace({
+      ...route,
+      query: {
+        ...route.query,
+        type: newVal
+      }
+    });
+  }
+});
 
 </script>
 
