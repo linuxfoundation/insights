@@ -73,7 +73,8 @@ describe('Contributors Dependency Data Source', () => {
         avatar: item.avatar,
         name: item.displayName,
         contributions: item.contributionCount,
-        percentage: item.contributionPercentage
+        percentage: item.contributionPercentage,
+        roles: item.roles || [],
       }))
     };
 
