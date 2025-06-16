@@ -1,7 +1,10 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
+// warmup.js
 import http from 'k6/http';
-import { check, sleep } from 'k6';
+import { sleep, check } from 'k6';
+
+const paths = ['', '/collections', '/open-source-index'];
 
 const top200Projects = [
     'k8s', 'flutter', 'ojsf-nodejs', 'helm', 'korg', 'ptproject', 'project-eve', 'Next.js', 'definitelytyped',
@@ -32,31 +35,33 @@ const top200Projects = [
     'ojsf-intern', 'dronecode', 'agl', 'cobol-working-group', 'metallb',
 ];
 
-const paths = [
+const projectPaths = [
     '',
     '/contributors',
     '/popularity',
     '/development',
     '/security',
-]
+];
 
-const top30projects = top200Projects.slice(0, 30);
+top200Projects.forEach((project) => {
+    projectPaths.forEach((path) => {
+        paths.push(`/project/${project}${path}`);
+    });
+});
 
 export const options = {
-    stages: [
-        { duration: '10s', target: 5 },
-        { duration: '20s', target: 5 },
-        { duration: '20s', target: 0 },
-    ],
+    vus: 1,
+    iterations: paths.length,
 };
 
-export default function () {
-    const project = top30projects[Math.floor(Math.random() * top30projects.length)];
-    const path = paths[Math.floor(Math.random() * paths.length)];
+let i = 0;
 
-    const res = http.get(`https://insights.linuxfoundation.org/project/${project}${path}`, {tags: {page: path}});
+export default function () {
+    const path = paths[i];
+    const url = `https://insights.linuxfoundation.org/${path}`;
+    const res = http.get(url);
     check(res, {
         'status is 200': (r) => r.status === 200,
     });
-    sleep(1);
+    i += 1;
 }
