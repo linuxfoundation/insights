@@ -29,12 +29,13 @@ class ProjectSecurityService {
    * @returns
    */
   removeDocumentationAndVulnerability(data: SecurityData[]): SecurityData[] {
-    if(!data || data.length === 0) {
+    console.log(data);
+    if (!data || !Array.isArray(data) || data.length === 0) {
       return [];
     }
     return data.filter(
-      (item) => item.category !== SecurityDataCategory.DOCUMENTATION
-        && item.category !== SecurityDataCategory.VULNERABILITY_MANAGEMENT
+        (item) => item.category !== SecurityDataCategory.DOCUMENTATION
+            && item.category !== SecurityDataCategory.VULNERABILITY_MANAGEMENT
     );
   }
 
