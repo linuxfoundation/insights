@@ -57,9 +57,10 @@ import { socialLinkConfigs, socialLinkOrder } from '~~/app/components/modules/pr
 const { project } = storeToRefs(useProjectStore())
 
 const links = computed(() => {
+  const socialLinkEntries = Object.entries(socialLinkConfigs);
   const processedLinks = (project.value?.projectLinks || []).map((link) => {
     // Handle social media platforms
-    const platform = Object.entries(socialLinkConfigs).find(([key, config]) => {
+    const platform = socialLinkEntries.find(([key, config]) => {
       if (key === 'website') return link.name === (config as WebsiteLinkConfig).name;
       if (key === 'default') return false;
 
