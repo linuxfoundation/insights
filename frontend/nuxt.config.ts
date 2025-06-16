@@ -83,10 +83,7 @@ export default defineNuxtConfig({
   },
   routeRules: {
     '/**': {
-      cache: false
-    },
-    '/api/**': {
-      swr: 600
+      swr: 900
     },
   }
 });
