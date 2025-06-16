@@ -15,36 +15,36 @@ export const lfxTrustScore: TrustScoreConfig[] = [
     minScore: 80,
     label: 'Excellent',
     color: 'bg-positive-500',
-    ghBadgeColor: '#10B981'
+    ghBadgeColor: '#10B981',
   },
   {
     maxScore: 79,
     minScore: 60,
     label: 'Healthy',
     color: 'bg-positive-500',
-    ghBadgeColor: '#A7F3D0'
+    ghBadgeColor: '#A7F3D0',
   },
   {
     maxScore: 59,
     minScore: 40,
     label: 'Stable',
-    color: 'bg-info-500',
-    ghBadgeColor: '#0094FF'
+    color: 'bg-brand-500',
+    ghBadgeColor: '#0094FF',
   },
   {
     maxScore: 39,
     minScore: 20,
     label: 'Unsteady',
     color: 'bg-warning-500',
-    ghBadgeColor: '#F59E0B'
+    ghBadgeColor: '#F59E0B',
   },
   {
     maxScore: 19,
     minScore: 0,
     label: 'Critical',
     color: 'bg-negative-500',
-    ghBadgeColor: '#EF4444'
-  }
+    ghBadgeColor: '#EF4444',
+  },
 ];
 
 export const getScoreBadgeUrl = (scoreConfig: TrustScoreConfig) => {
