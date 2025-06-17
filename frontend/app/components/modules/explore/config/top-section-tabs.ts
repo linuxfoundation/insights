@@ -8,24 +8,24 @@ import LfxExploreTopOrganizations from '../components/top-organizations.vue';
 export const TOP_SECTION_TABS: ExploreTab[] = [
   {
     title: 'Top projects',
-    description: `Projects ranked by Criticality Score — a metric that reflects their 
-    importance, usage, and potential impact across the ecosystem.`,
+    description: `Projects ranked by Criticality Score, considering 
+    their importance, usage, and potential impact across the ecosystem.`,
     component: LfxExploreTopProjects,
     icon: 'laptop-code',
     type: 'project',
   },
   {
-    title: 'Top active contributors',
-    description: `Developers ranked by volume of contributions over the last 10 years, 
-    highlighting the most active and influential individuals in the open source ecosystem.`,
+    title: 'Top contributors',
+    description: `Contributors ranked by the number of contributions in all 
+    projects tracked by Insights over the last 10 years.`,
     component: LfxExploreTopContributors,
     icon: 'people-group',
     type: 'contributor',
   },
   {
-    title: 'Top active organizations',
-    description: `Most influential organizations based on the total number of contributions 
-    made across the most relevant open source projects over the last 10 years.`,
+    title: 'Top organizations',
+    description: `Organizations ranked by the number of affiliated contributions in 
+    all projects tracked by Insights over the last 10 years.`,
     component: LfxExploreTopOrganizations,
     icon: 'buildings',
     type: 'organization',
