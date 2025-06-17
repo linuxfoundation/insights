@@ -72,6 +72,7 @@ export default defineEventHandler(async (event): Promise<Pagination<ProjectList>
             data: res.data.map((p: ProjectTinybird) => ({
                 ...p,
                 isLF: !!p.isLF,
+                repoData: undefined,
             })),
         };
     } catch (error) {

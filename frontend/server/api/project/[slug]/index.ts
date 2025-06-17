@@ -1,7 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import {fetchFromTinybird} from "~~/server/data/tinybird/tinybird";
-import type {Project, ProjectTinybird} from "~~/types/project";
+import type {Project, ProjectRepository, ProjectTinybird} from "~~/types/project";
 import {getRepoNameFromUrl, getRepoSlugFromName} from "~~/server/helpers/repository.helpers";
 
 /**
@@ -42,13 +42,25 @@ export default defineEventHandler(async (event): Promise<Project | Error> => {
             return createError({statusCode: 404, statusMessage: 'Project not found'});
         }
         const project: ProjectTinybird = res.data[0];
+        const repoData: Record<string, Partial<ProjectRepository>> = project.repoData.reduce((acc, repo) => {
+            const [url, score, rank] = repo;
+            acc[url] = {
+                score: parseFloat(score as string),
+                rank: parseInt(rank as string, 10)
+            };
+            return acc;
+        }, {} as Record<string, Partial<ProjectRepository>>);
+
         const repositories = project.repositories.map((repoUrl) => {
             const name = getRepoNameFromUrl(repoUrl);
             const slug = getRepoSlugFromName(name);
+            const details = repoData[repoUrl] || {};
             return {
                 url: repoUrl,
                 name,
                 slug,
+                score: details.score || 0,
+                rank: details.rank || 0,
             }
         })
         const projectLinks = [
@@ -62,6 +74,7 @@ export default defineEventHandler(async (event): Promise<Project | Error> => {
             isLF: !!project.isLF,
             repositories,
             projectLinks,
+            repoData: undefined,
             tags: project?.keywords || [],
         }
     } catch (err) {
