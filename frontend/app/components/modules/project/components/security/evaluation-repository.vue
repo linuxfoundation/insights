@@ -4,7 +4,7 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <article
-    class="py-4 border-t first:border-0 border-neutral-100 flex items-center"
+    class="py-4 border-t first:border-0 border-neutral-100 flex sm:items-center flex-wrap gap-y-3 flex-col sm:flex-row"
   >
     <div class="w-20 pr-4">
       <lfx-project-security-evaluation-result
@@ -57,12 +57,12 @@ SPDX-License-Identifier: MIT
           :size="16"
           class="text-neutral-400"
         />
-        <p class="text-body-2">
+        <p class="text-body-2 whitespace-nowrap">
           {{getRepoNameFromUrl(repository)}}
         </p>
       </div>
     </div>
-    <div class="flex justify-end items-center">
+    <div class="flex sm:justify-end items-center">
       <nuxt-link
         v-if="repo"
         :to="{name: LfxRoutes.REPOSITORY_SECURITY, params: {name: repo.slug}}"
