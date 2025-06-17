@@ -46,7 +46,7 @@ SPDX-License-Identifier: MIT
           v-if="isFullList"
           class="basis-1/5 text-right text-xs text-neutral-500"
         >
-          {{ formatNumberCurrency(row.contributorCount, 'USD') }}
+          {{ formatNumberCurrency(row.softwareValue || 0, 'USD') }}
         </div>
         <div
           v-if="!isFullList"
