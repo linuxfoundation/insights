@@ -14,6 +14,8 @@ import type { HealthCheckResponse, PingResult } from "~~/types/health";
  * - detail (string): The error message if the endpoint throws an error
  */
 export default defineEventHandler(async (): Promise<HealthCheckResponse> => {
+  const config = useRuntimeConfig();
+  console.log(config);
   try {
     const pingTinybirdResult = await fetchFromTinybird<PingResult[]>(
       "/v0/pipes/ping.json",
