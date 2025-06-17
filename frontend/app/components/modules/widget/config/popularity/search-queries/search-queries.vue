@@ -31,6 +31,7 @@ import { useRoute } from 'nuxt/app';
 import { computed, onServerPrefetch, watch } from 'vue';
 import { storeToRefs } from "pinia";
 import {type QueryFunction, useQuery} from "@tanstack/vue-query";
+import { DateTime } from 'luxon';
 import searchQueriesConfig from './search-queries.config'
 import type { SearchQueries } from '~~/types/popularity/responses.types';
 import { convertToChartData } from '~/components/uikit/chart/helpers/chart-helpers';
@@ -42,11 +43,9 @@ import type {
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import { lfxColors } from '~/config/styles/colors';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
-import { dateOptKeys } from '~/components/modules/project/config/date-options';
 import { isEmptyData } from '~/components/shared/utils/helper';
 import { getBarChartConfig } from '~/components/uikit/chart/configs/bar.chart';
-import { barGranularities } from '~/components/shared/types/granularity';
-import type { Granularity } from '~~/types/shared/granularity';
+import { Granularity } from '~~/types/shared/granularity';
 import {TanstackKey} from "~/components/shared/types/tanstack";
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
 import {Widget} from "~/components/modules/widget/types/widget";
@@ -61,16 +60,12 @@ const {
   startDate,
   endDate,
   selectedRepository,
-  selectedTimeRangeKey,
-  customRangeGranularity,
     project,
 } = storeToRefs(useProjectStore())
 
 const route = useRoute();
 
-const granularity = computed(() => (selectedTimeRangeKey.value === dateOptKeys.custom
-  ? customRangeGranularity.value[0] as Granularity
-  : barGranularities[selectedTimeRangeKey.value as keyof typeof barGranularities]));
+const granularity = computed(() => Granularity.MONTHLY);
 
 const queryKey = computed(() => [
   TanstackKey.SEARCH_QUERIES,
@@ -112,7 +107,16 @@ const chartData = computed<ChartData[]>(
     'queryCount'
   ], undefined, 'endDate')
 );
-const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
+
+const dateDuration = computed(() => {
+  const start = DateTime.fromISO(startDate.value || '');
+  const end = DateTime.fromISO(endDate.value || '');
+  const duration = end.diff(start, 'days').days;
+
+  return duration;
+})
+const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[])
+|| dateDuration.value < 30);
 
 const chartSeries = computed<ChartSeries[]>(() => [
   {

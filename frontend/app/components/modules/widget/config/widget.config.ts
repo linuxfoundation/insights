@@ -55,6 +55,7 @@ export interface WidgetConfig {
   snapshot: boolean;
   defaultValue?: Record<string, unknown>;
   additionalShare?: Component;
+  hideOnRepoFilter?: boolean;
 }
 
 export const lfxWidgets: Record<Widget, WidgetConfig> = {
