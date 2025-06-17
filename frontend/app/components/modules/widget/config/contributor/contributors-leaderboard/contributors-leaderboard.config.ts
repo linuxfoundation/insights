@@ -6,7 +6,8 @@ import type {WidgetConfig} from "~/components/modules/widget/config/widget.confi
 const contributorsLeaderboard: WidgetConfig = {
     key: 'contributorsLeaderboard',
     name: 'Contributors leaderboard',
-    description: () => 'Contributor ranking based on the number of activities performed and the impact on the project.',
+    description: () => 'Contributors ranked by the number of contribution '
+        + 'activities performed during the selected time period.',
     learnMoreLink: `/docs/metrics/contributors#contributors-leaderboard`,
     component: ContributorLeaderboard,
     defaultValue: {

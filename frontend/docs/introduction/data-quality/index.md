@@ -30,7 +30,7 @@ To ensure data completeness and correctness, we follow a multi-step process that
 We collect raw data from third-party sources like GitHub via our Community Data Platform. At this stage, data correctness is sometimes as low as 20% due to duplication, mismatches, or outdated information.
 
 ### Step 2: Data Onboarding
-We ingest data into LFX systems and structure it for analysis. This includes linking identities, mapping contributers to organizations, and parsing contribution records.
+We ingest data into LFX systems and structure it for analysis. This includes linking identities, mapping contributors to organizations, and parsing contribution records.
 
 ### Step 3: AI-Powered Enrichment & Deduplication
 Our internal AI agents clean, enrich, and deduplicate the data. At this stage, we achieve ~90% data correctness.

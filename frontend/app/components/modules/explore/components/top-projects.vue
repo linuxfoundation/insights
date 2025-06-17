@@ -87,7 +87,7 @@ const {
   status,
   error,
   suspense
-} = EXPLORE_API_SERVICE.fetchTopProjects(props.isFullList ? 100 : 10);
+} = EXPLORE_API_SERVICE.fetchTopProjects(props.isFullList ? 50 : 10);
 
 const tableData = computed(() => data.value?.pages.flatMap((p) => (p as Pagination<Project>).data));
 
