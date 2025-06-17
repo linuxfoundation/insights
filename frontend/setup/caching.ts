@@ -1,7 +1,5 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-console.log(process.env.NUXT_REDIS_URL)
-console.log(process.env)
 
 export default {
     routeRules: {
@@ -14,7 +12,7 @@ export default {
         storage: {
             redis: {
                 driver: 'redis',
-                url: process.env.NUXT_REDIS_URL,
+                url: process.env.NUXT_REDIS_URL || '',
             },
         },
     },
