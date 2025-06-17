@@ -93,6 +93,7 @@ class ExploreApiService {
           page: pageParam,
           pageSize,
           sort: 'score_desc',
+          onboarded: true, // Only fetch onboarded projects
         },
       });
     };
