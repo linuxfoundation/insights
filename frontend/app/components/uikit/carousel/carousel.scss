@@ -15,6 +15,9 @@
   --vc-pgn-height: .25rem;
   --vc-png-bottom: -2.5rem;
   --vc-pgn-width: 5rem;
+  @media (max-width: 768px) {
+    --vc-pgn-width: 2rem;
+  }
 
   .carousel__slide {
     @apply items-start;
@@ -47,6 +50,9 @@
     @apply -right-6;
   }
 
+  .carousel__pagination {
+    @apply sm:flex hidden;
+  }
   /* .p-carousel-indicator-list {
     @apply flex-row gap-3 justify-center sm:flex hidden;
 

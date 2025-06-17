@@ -6,7 +6,7 @@ SPDX-License-Identifier: MIT
   <client-only>
     <Carousel v-bind="carouselConfig">
       <Slide
-        v-for="(slide, index) in props.value"
+        v-for="(slide, index) in items"
         :key="index"
       >
         <div class="carousel__item">
@@ -36,6 +36,7 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
 import {
  Carousel, Slide, Pagination, Navigation
 } from 'vue3-carousel'
@@ -43,6 +44,17 @@ import type { CarouselProps } from './types/carousel.types';
 import LfxIcon from '@/components/uikit/icon/icon.vue';
 
 const props = defineProps<CarouselProps>();
+
+const items = computed(() => {
+  const mappedItems = props.value.map((item) => ({
+      ...item,
+    }));
+  const firstItem = mappedItems.shift();
+  if (firstItem) {
+    mappedItems.push(firstItem);
+  }
+  return mappedItems;
+})
 
 const carouselConfig = {
   itemsToShow: 3,

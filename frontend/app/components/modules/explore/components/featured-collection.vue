@@ -40,17 +40,17 @@ SPDX-License-Identifier: MIT
       error-message="Error fetching featured collections"
       :is-empty="isEmpty"
     >
-      <!-- <client-only> -->
-      <lfx-carousel
-        :value="(carouselData as unknown as CarouselData[])"
-      >
-        <template #item="{data}">
-          <lfx-explore-collection-card
-            :collection="data"
-          />
-        </template>
-      </lfx-carousel>
-      <!-- </client-only> -->
+      <div class="sm:py-10 py-5">
+        <lfx-carousel
+          :value="(carouselData as unknown as CarouselData[])"
+        >
+          <template #item="{data}">
+            <lfx-explore-collection-card
+              :collection="(data as unknown as Collection)"
+            />
+          </template>
+        </lfx-carousel>
+      </div>
       <div class="sm:hidden block flex justify-center">
         <nuxt-link :to="{name: LfxRoutes.COLLECTIONS}">
           <lfx-button
@@ -85,6 +85,7 @@ import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
 import { isEmptyData } from '~/components/shared/utils/helper';
 import { LfxRoutes } from '~/components/shared/types/routes';
+import type { Collection } from '~~/types/collection';
 
 const {
   data: featuredCollectionsData,
