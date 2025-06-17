@@ -29,6 +29,9 @@ jobs:
           ./install.sh --accept-all-defaults
           echo "OCI_CLI_DIR=/home/runner/bin" >> $GITHUB_ENV
 
+      - name: Update PATH
+        run: echo "${{ env.OCI_CLI_DIR }}" >> $GITHUB_PATH
+
       - name: Configure Oracle Cloud CLI
         run: |
           mkdir -p ~/.oci
@@ -50,9 +53,6 @@ jobs:
       - name: Get Cluster Kubeconfig
         run: |
           oci ce cluster create-kubeconfig --cluster-id ${{ env.ORACLE_CLUSTER }} --file ${{ env.KUBECONFIG_PATH }} --region ${{ env.ORACLE_REGION }} --token-version 2.0.0  --kube-endpoint PUBLIC_ENDPOINT --overwrite
-
-      - name: Update PATH
-        run: echo "${{ env.OCI_CLI_DIR }}" >> $GITHUB_PATH
 
       - name: Load all envs from ConfigMap
         run: |
