@@ -1,67 +1,62 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 
-.p-carousel {
-  .p-carousel-content-container {
-    @apply flex flex-col relative;
+.carousel {
+  --vc-nav-background: var(--lfx-color-white);
+  --vc-nav-border-radius: 50%;
+  --vc-nav-color: var(--lfx-color-neutral-900);
+  --vc-nav-height: 2.75rem;
+  --vc-nav-width: 2.7rem;
 
-    .p-button {
-      @apply rounded-full bg-white border border-solid border-neutral-200 shadow-sm;
-      @apply h-11 w-11 p-0  flex items-center justify-center;
-      @apply absolute top-1/2 -translate-y-1/2  z-10;
-      .p-icon {
-        @apply w-4 h-6;
-        path {
-          @apply fill-neutral-900 ;
-        }
-      }
-      &.p-disabled{
-        @apply hidden;
-      }
-      &.p-carousel-prev-button {
-        @apply -left-6;
-      }
-      &.p-carousel-next-button {
-        @apply -right-6;
-      }
-      .p-button-label {
-        @apply hidden;
-      }
-    }
+  --vc-pgn-active-color: var(--lfx-color-brand-500);
+  --vc-pgn-background-color: var(--lfx-color-neutral-200);
+  --vc-pgn-border-radius: 1rem;
+  --vc-pgn-gap: .75rem;
+  --vc-pgn-height: .25rem;
+  --vc-png-bottom: -2.5rem;
+  --vc-pgn-width: 5rem;
 
-    .p-carousel-content {
-      @apply flex flex-row sm:py-10 py-5 -mx-4;
+  .carousel__slide {
+    @apply items-start;
 
-      .p-carousel-viewport {
-        @apply w-full overflow-hidden;
-        .p-carousel-item-list {
-          @apply flex flex-row;
-          .p-carousel-item {
-            @apply px-4;
-          }
-        }
-      }
-    }
-
-    .p-carousel-indicator-list {
-      @apply flex-row gap-3 justify-center sm:flex hidden;
-
-      .p-carousel-indicator {
-        @apply h-1 rounded-full w-20 bg-neutral-200;
-
-        &.p-carousel-indicator-active {
-          @apply bg-brand-500;
-        }
-      }
-    }
-
-    .p-carousel-wrapper {
-      overflow: hidden;
-      width: 100%;
+    .carousel__item {
+      @apply w-full;
     }
   }
-
-  .p-carousel-item {
-    @apply flex-1;
+  .carousel__track {
+    @apply transition-all duration-300;
   }
+
+  .carousel__prev,
+  .carousel__next {
+    @apply rounded-full bg-white border border-solid border-neutral-200 shadow-sm;
+    @apply hover:bg-neutral-50 hover:shadow-none;
+    .c-icon {
+      @apply text-neutral-900 text-2xl #{!important};
+    }
+
+    &.carousel__prev--disabled,
+    &.carousel__next--disabled {
+      @apply hidden;
+    }
+  }
+  .carousel__prev {
+    @apply -left-6;
+  }
+  .carousel__next {
+    @apply -right-6;
+  }
+
+  /* .p-carousel-indicator-list {
+    @apply flex-row gap-3 justify-center sm:flex hidden;
+
+    .p-carousel-indicator {
+      @apply h-1 rounded-full w-20 bg-neutral-200;
+
+      &.p-carousel-indicator-active {
+        @apply bg-brand-500;
+      }
+    }
+  } */
+
 }
