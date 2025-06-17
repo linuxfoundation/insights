@@ -26,7 +26,7 @@ export async function triggerDailyPackageDownloads(
 ): Promise<void> {
   const date = getYesterdayDate();
   const LIMIT_REPOS_TO_CHECK_PER_RUN = 50;
-  const WAIT_BETWEEN_PROCESSING_REPOS_MS = 2000;
+  const WAIT_BETWEEN_PROCESSING_REPOS_MS = 800;
 
   const info = workflowInfo();
   const failedRepoUrls = args?.failedRepoUrls || [];
@@ -43,7 +43,7 @@ export async function triggerDailyPackageDownloads(
 
   // process each repo one by one
   for (const repo of repos) {
-    await executeChild(savePackageDownloads, {
+    const result = await executeChild(savePackageDownloads, {
       workflowId: `${info.workflowId}->${repo.repoUrl}`,
       cancellationType: ChildWorkflowCancellationType.ABANDON,
       parentClosePolicy: ParentClosePolicy.PARENT_CLOSE_POLICY_ABANDON,
@@ -61,6 +61,11 @@ export async function triggerDailyPackageDownloads(
         },
       ],
     });
+    
+    if (!result) {
+      failedRepoUrls.push(repo.repoUrl);
+    }
+
     // wait for a short time to avoid overwhelming the API
     await new Promise((resolve) =>
       setTimeout(resolve, WAIT_BETWEEN_PROCESSING_REPOS_MS)

@@ -16,10 +16,12 @@ const { fetchAndSavePackageDownloads } = proxyActivities<typeof activities>({
 
 export async function savePackageDownloads(
   args: ISavePackageDownloadParams
-): Promise<void> {
-  await fetchAndSavePackageDownloads(
+): Promise<boolean> {
+  const result = await fetchAndSavePackageDownloads(
     args.date,
     args.insightsProjectId,
     args.repoUrl
   );
+
+  return result;
 }
