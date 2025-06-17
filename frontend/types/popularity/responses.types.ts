@@ -4,7 +4,7 @@
  These are the types for the responses the frontend expects from the API for the popularity tab in the project page.
  */
 
-import type { Summary } from '../shared/summary.types';
+import type { Summary } from "../shared/summary.types";
 
 export interface StarsData {
   summary: Summary;
@@ -98,4 +98,19 @@ export interface PackageDownloads {
     endDate: string;
     downloadCount: number;
   }[];
+}
+
+export interface Package {
+  name: string;
+  ecosystem: string;
+}
+
+export interface PackageMetrics {
+  startDate?: string;
+  endDate?: string;
+  downloadsCount: number;
+  dockerDownloadsCount: number;
+  dockerDependentsCount: number;
+  dependentPackagesCount: number;
+  dependentReposCount: number;
 }

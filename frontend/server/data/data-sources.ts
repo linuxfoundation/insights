@@ -18,6 +18,8 @@ import type {
   AverageTimeToMergeFilter,
   MergeLeadTimeFilter,
   ReviewTimeByPRSizeFilter,
+  PackageFilter,
+  PackageMetricsFilter,
 } from "~~/server/data/types";
 import type {ActiveContributorsResponse} from "~~/server/data/tinybird/active-contributors-data-source";
 import type {ActiveOrganizationsResponse} from "~~/server/data/tinybird/active-organizations-data-source";
@@ -55,7 +57,8 @@ import type {
   ForksData,
   MailingListsMessages,
   StarsData,
-  CommitActivities
+  CommitActivities,
+  Package,
 } from "~~/types/popularity/responses.types";
 import type {
   ActiveDays,
@@ -71,6 +74,9 @@ import type {
 import type {CodeReviewEngagementFilter} from "~~/types/development/requests.types";
 import {fetchMailingListsMessageActivities} from "~~/server/data/tinybird/mailing-lists-messages-data-source";
 import {fetchCommitActivities} from "~~/server/data/tinybird/commit-activites-data-source";
+import {fetchPackages} from "~~/server/data/tinybird/packages-data-source";
+import {fetchPackageMetrics} from "~~/server/data/tinybird/package-metrics-data-source";
+import type {PackageDownloadsResponse} from "~~/server/data/tinybird/package-metrics-data-source";
 
 export interface DataSource {
     fetchActiveContributors: (filter: ActiveContributorsFilter) => Promise<ActiveContributorsResponse>;
@@ -95,6 +101,8 @@ export interface DataSource {
     fetchCodeReviewEngagement: (filter: CodeReviewEngagementFilter) => Promise<CodeReviewEngagement>;
     fetchContributionsOutsideWorkHours: (filter: ActivityHeatmapByWeekdayTBQuery)
       => Promise<ContributionOutsideHours>;
+    fetchPackages(filter: PackageFilter): Promise<Package[]>;
+    fetchPackageMetrics(filter: PackageMetricsFilter): Promise<PackageDownloadsResponse>;
 }
 
 export function createDataSource(): DataSource {
@@ -120,5 +128,7 @@ export function createDataSource(): DataSource {
         fetchReviewTimeByPRSize,
         fetchCodeReviewEngagement,
         fetchContributionsOutsideWorkHours,
+        fetchPackages,
+        fetchPackageMetrics,
     };
 }

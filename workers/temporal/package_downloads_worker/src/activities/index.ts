@@ -16,10 +16,15 @@ export async function fetchAndSavePackageDownloads(
   date: string,
   insightsProjectId: string,
   repoUrl: string
-): Promise<any> {
+): Promise<boolean> {
   console.log(`Getting package downloads for ${repoUrl}`);
   let data: IPackageDownload[] = await fetchPackageDownloads(repoUrl);
   console.log(`Got package downloads for ${repoUrl}`, data);
+
+  if (!data || data.length === 0) {
+    console.log(`No package downloads found for ${repoUrl}`);
+    return false;
+  }
 
   for (const packageDownload of data) {
     // Save package downloads to the database
@@ -29,6 +34,8 @@ export async function fetchAndSavePackageDownloads(
       insights_project_id: insightsProjectId,
     });
   }
+
+  return true;
 }
 
 async function fetchPackageDownloads(
