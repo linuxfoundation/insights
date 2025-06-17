@@ -84,7 +84,7 @@ const isFirstLoad = ref(true);
 const widgets = computed(() => (config.value.widgets || [])
     .filter((widget) => {
       const key = lfxWidgets[widget as Widget]?.key;
-      return project.value?.widgets.includes(key)
+      return (project.value?.widgets.includes(key) && !lfxWidgets[widget as Widget]?.hideOnRepoFilter)
     }));
 
 const sideNavItems = computed(() => widgets.value.map((widget: Widget) => ({
