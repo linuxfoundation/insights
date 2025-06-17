@@ -171,11 +171,11 @@ async function saveResultsToDatabase(data: KEResults): Promise<void> {
       for (const trend of result.search_volume_trend) {
         // Convert month name and year to YYYY-MM-01 format
         const monthNumber = (new Date(`${trend.month} 1, 2000`).getMonth() + 1).toString().padStart(2, '0');
-        const data_timestamp = `${trend.year}-${monthNumber}-01`;
+        const dataTimestamp = `${trend.year}-${monthNumber}-01`;
         records.push({
-          project_id: projectId,
-          keyword: result.web_term,
-          data_timestamp,
+          insightsProjectId: projectId,
+          slug: result.web_term,
+          dataTimestamp,
           volume: trend.value
         });
       }
