@@ -41,12 +41,6 @@ SPDX-License-Identifier: MIT
         >
           {{ formatNumber(row.activityCount) }}
         </div>
-        <div
-          v-if="!isFullList"
-          class="basis-1/3 text-right text-xs text-neutral-500 hidden xl:block text-nowrap"
-        >
-          {{ formatNumber(row.activityCount) }} contributions
-        </div>
       </div>
 
     </div>

@@ -1,9 +1,9 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 export enum LfxRoutes {
-    // EXPLORE = 'index',
+    EXPLORE = 'index',
     OPENSOURCEINDEX = 'open-source-index',
-    COLLECTIONS = 'index',
+    COLLECTIONS = 'collection',
     COLLECTION = 'collection-slug',
     PROJECTS = 'project',
     PROJECT = 'project-slug',

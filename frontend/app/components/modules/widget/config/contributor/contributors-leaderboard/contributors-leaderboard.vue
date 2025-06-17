@@ -29,7 +29,7 @@ SPDX-License-Identifier: MIT
       />
 
       <div
-        v-if="!props.snapshot"
+        v-if="!props.snapshot && !hideAllContributorsButton"
         class="mt-5 flex flex-row justify-center"
       >
         <lfx-button
@@ -119,6 +119,7 @@ const {
 } = CONTRIBUTORS_API_SERVICE.fetchContributorLeaderboard(queryKey, queryFn);
 
 const contributors = computed<ContributorLeaderboard>(() => data.value?.pages[0] as ContributorLeaderboard);
+const hideAllContributorsButton = computed(() => contributors.value?.data.length < 10);
 
 const isEmpty = computed(() => isEmptyData(contributors.value?.data as unknown as Record<string, unknown>[]));
 

@@ -4,6 +4,8 @@ export interface ProjectRepository {
   url: string;
   name: string;
   slug: string;
+  score: number;
+  rank: number;
 }
 
 export interface Project {
@@ -70,4 +72,5 @@ export interface ProjectTinybird {
   widgets: string[];
   firstCommit?: string;
   connectedPlatforms: string[];
+  repoData: (string | number)[][];
 }

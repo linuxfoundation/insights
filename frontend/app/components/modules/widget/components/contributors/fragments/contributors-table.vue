@@ -44,10 +44,19 @@ SPDX-License-Identifier: MIT
             class="text-ellipsis overflow-hidden"
             :title="contributor.name"
           >{{ contributor.name }}</div>
+          <lfx-tag
+            v-if="contributor.roles?.includes('maintainer')"
+            size="small"
+            class="-ml-1"
+          >
+            Maintainer
+          </lfx-tag>
         </div>
         <div>
           {{ formatNumber(contributor.contributions) }}
-          <span v-if="props.showPercentage"> - {{ contributor.percentage }}% </span>
+          <span v-if="props.showPercentage">
+            - {{ (contributor.percentage || 0) > 0 ? contributor.percentage : '<1' }}%
+          </span>
         </div>
       </div>
       <div
@@ -84,6 +93,7 @@ import type { Contributor } from '~~/types/contributors/responses.types';
 import { formatNumber } from '~/components/shared/utils/formatter';
 import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 import { isElementVisible } from '~/components/shared/utils/helper';
+import LfxTag from "~/components/uikit/tag/tag.vue";
 
 const emit = defineEmits<{(e: 'loadMore'): void
 }>();
