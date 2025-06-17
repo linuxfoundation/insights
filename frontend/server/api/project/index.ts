@@ -44,6 +44,7 @@ export default defineEventHandler(async (event): Promise<Pagination<ProjectList>
     const page: number = +(query?.page ?? 0);
     const pageSize: number = +(query?.pageSize ?? 10);
     const count: boolean = !!query?.count;
+    const onboarded: boolean = !!query?.onboarded;
     const collectionSlug: string | undefined = query?.collectionSlug as string || undefined;
     const isLF: boolean | undefined = query?.isLF === 'true' ? true : undefined;
 
@@ -56,12 +57,14 @@ export default defineEventHandler(async (event): Promise<Pagination<ProjectList>
             isLF,
             orderByField,
             orderByDirection,
+            onboarded: onboarded ? 'true' : undefined,
         });
 
         type ProjectCount = {'count(id)': number};
         const projectCountResult = await fetchFromTinybird<ProjectCount[]>('/v0/pipes/projects_list.json', {
             collectionSlug,
             isLF,
+            onboarded: onboarded ? 'true' : undefined,
             count: true,
         });
 
