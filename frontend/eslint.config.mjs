@@ -1,19 +1,19 @@
 import path from 'path';
-import {fileURLToPath} from 'url';
-import {FlatCompat} from '@eslint/eslintrc';
+import { fileURLToPath } from 'url';
+import { FlatCompat } from '@eslint/eslintrc';
 import withNuxt from './.nuxt/eslint.config.mjs';
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 
 const compat = new FlatCompat({
-  baseDirectory: dirname
+  baseDirectory: dirname,
 });
 const getRules = (extendedRules, excludeKeys = null) => {
   const rules = extendedRules
-      .filter((rule) => rule.rules)
-      .map((rule) => rule.rules)
-      .reduce((r, c) => Object.assign(r, c), {});
+    .filter((rule) => rule.rules)
+    .map((rule) => rule.rules)
+    .reduce((r, c) => Object.assign(r, c), {});
 
   if (excludeKeys) {
     // remove all the properties from the rules object that matches the excludeKeys string
@@ -38,19 +38,26 @@ export default withNuxt({
         map: [
           ['@', './app'],
           ['~', './app'],
-          ['~~', '.']
-        ]
+          ['~~', '.'],
+        ],
       },
       typescript: {
         paths: {
           '~/*': ['./app/*'],
           '@/*': ['./app/*'],
-          '~~/*': ['./*']
-        }
-      }
-    }
+          '~~/*': ['./*'],
+        },
+      },
+    },
   },
-  ignores: ['*.config.*js', '.tailwind/*', 'shims-vue.d.ts', 'docs/.vitepress/theme/cssOverrides/*', 'pnpm-lock.yaml'],
+  ignores: [
+    '*.config.*js',
+    '.tailwind/*',
+    'shims-vue.d.ts',
+    'docs/.vitepress/theme/cssOverrides/*',
+    'pnpm-lock.yaml',
+    'vitest.config.ts',
+  ],
   rules: {
     ...getRules(compat.extends('airbnb-base')),
     ...getRules(compat.extends('airbnb-typescript/base'), '@typescript-eslint/'),
@@ -83,16 +90,16 @@ export default withNuxt({
       {
         code: 120,
         ignoreComments: true,
-        ignoreUrls: true
-      }
+        ignoreUrls: true,
+      },
     ],
     'max-len': [
       'error',
       {
         code: 120,
         ignoreComments: true,
-        ignoreUrls: true
-      }
+        ignoreUrls: true,
+      },
     ],
     'import/extensions': [
       'error',
@@ -102,8 +109,8 @@ export default withNuxt({
         jsx: 'never',
         ts: 'never',
         tsx: 'never',
-        '': 'never'
-      }
-    ]
-  }
+        '': 'never',
+      },
+    ],
+  },
 });
