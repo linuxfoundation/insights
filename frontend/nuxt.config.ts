@@ -6,6 +6,7 @@ import head from './setup/head';
 import tailwindcss from './setup/tailwind';
 import primevue from './setup/primevue';
 import echarts from './setup/echarts';
+import caching from './setup/caching';
 
 const isProduction = process.env.NUXT_APP_ENV === 'production';
 export default defineNuxtConfig({
@@ -80,5 +81,6 @@ export default defineNuxtConfig({
   },
   robots: {
     disallow: isProduction ? [] : ['/'],
-  }
+  },
+  ...caching
 });
