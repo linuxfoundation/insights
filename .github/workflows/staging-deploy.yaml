@@ -59,11 +59,16 @@ jobs:
           kubectl get configmap insights-config-map -n insights -o json \
           | jq -r '.data | to_entries[] | "\(.key)=\(.value)"' >> $GITHUB_ENV
 
+      - name: Verify NUXT_REDIS_URL is available
+        run: echo "NUXT_REDIS_URL=${{ env.NUXT_REDIS_URL }}"
+
       - name: Build docker image
         uses: ./.github/actions/build-docker-image
         id: build-docker-image
         with:
           app-env: staging
+        env:
+          NUXT_REDIS_URL: ${{ env.NUXT_REDIS_URL }}
 
       - name: Update Deployment Image
         run: |
