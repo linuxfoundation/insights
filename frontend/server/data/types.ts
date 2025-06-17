@@ -178,3 +178,9 @@ export type PackageMetricsFilter = {
   startDate?: DateTime;
   endDate?: DateTime;
 };
+
+export type SearchVolumeFilter = {
+  slug: string;
+  startDate?: DateTime;
+  endDate?: DateTime;
+}
