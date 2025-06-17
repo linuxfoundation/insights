@@ -86,7 +86,7 @@ const widgets = computed(() => (config.value.widgets || [])
       const key = lfxWidgets[widget as Widget]?.key;
       const widgetConfig = lfxWidgets[widget as Widget];
       return (
-        (project.value?.widgets.includes(key) || key === 'searchQueries')
+        project.value?.widgets.includes(key)
         && (!widgetConfig?.hideOnRepoFilter || !repository.value)
       );
     }));
