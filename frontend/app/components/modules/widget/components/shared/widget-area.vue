@@ -78,13 +78,17 @@ const tmpClickedItem = ref('');
 const loadedWidgets = ref<Record<string, boolean>>({});
 
 const { scrollToTarget, scrollToTop } = useScroll();
-const { project } = storeToRefs(useProjectStore())
+const { project, repository } = storeToRefs(useProjectStore())
 const isFirstLoad = ref(true);
 
 const widgets = computed(() => (config.value.widgets || [])
     .filter((widget) => {
       const key = lfxWidgets[widget as Widget]?.key;
-      return project.value?.widgets.includes(key)
+      const widgetConfig = lfxWidgets[widget as Widget];
+      return (
+        project.value?.widgets.includes(key)
+        && (!widgetConfig?.hideOnRepoFilter || !repository.value)
+      );
     }));
 
 const sideNavItems = computed(() => widgets.value.map((widget: Widget) => ({
