@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: MIT
 import { Pool } from 'pg';
 
-interface SearchVolumeRecord {
-  project_id: string;
-  keyword: string;
+export interface SearchVolumeDBRecord {
+  insights_project_id: string;
+  slug: string;
   data_timestamp: string; // YYYY-MM-DD
   volume: number;
   updated_at?: string; // Optional since it will be set automatically
@@ -27,7 +27,7 @@ function getPool(): Pool {
   return pool;
 }
 
-export async function persistSearchVolume(records: SearchVolumeRecord[]): Promise<void> {
+export async function persistSearchVolume(records: SearchVolumeDBRecord[]): Promise<void> {
   if (records.length === 0) {
     console.log('No records to save to database');
     return;
@@ -37,23 +37,18 @@ export async function persistSearchVolume(records: SearchVolumeRecord[]): Promis
   
   try {
     await client.query('BEGIN');
-    
-    // Clear existing records for these projects to ensure we don't have stale data.
-    const projectIds = [...new Set(records.map(r => r.project_id))];
-    await client.query(
-      'DELETE FROM search_volume WHERE project_id = ANY($1)',
-      [projectIds]
-    );
 
     const insertQuery = `
-      INSERT INTO search_volume (project_id, keyword, data_timestamp, volume)
+      INSERT INTO search_volume (insights_project_id, slug, data_timestamp, volume)
       VALUES ($1, $2, $3, $4)
+      ON CONFLICT (insights_project_id, slug, data_timestamp)
+      DO UPDATE SET volume = EXCLUDED.volume, updated_at = NOW()
     `;
     
     for (const record of records) {
       await client.query(insertQuery, [
-        record.project_id,
-        record.keyword,
+        record.insights_project_id,
+        record.slug,
         record.data_timestamp,
         record.volume
       ]);
