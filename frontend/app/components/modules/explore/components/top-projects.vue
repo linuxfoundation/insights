@@ -66,6 +66,7 @@ import LfxAvatar from "~/components/uikit/avatar/avatar.vue";
 import { isEmptyData } from '~/components/shared/utils/helper';
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
 import LfxIcon from '~/components/uikit/icon/icon.vue';
+import { LfxRoutes } from '~/components/shared/types/routes';
 
 const router = useRouter();
 
