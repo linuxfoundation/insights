@@ -80,10 +80,5 @@ export default defineNuxtConfig({
   },
   robots: {
     disallow: isProduction ? [] : ['/'],
-  },
-  routeRules: {
-    '/**': {
-      swr: 3600
-    },
   }
 });
