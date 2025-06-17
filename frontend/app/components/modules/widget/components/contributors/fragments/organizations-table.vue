@@ -47,7 +47,9 @@ SPDX-License-Identifier: MIT
         </div>
         <div class="value-col">
           {{ formatNumber(organization.contributions) }}
-          <span v-if="props.showPercentage"> - {{ organization.percentage }}% </span>
+          <span v-if="props.showPercentage">
+            - {{ (organization.percentage || 0) > 0 ? organization.percentage : '<1' }}%
+          </span>
         </div>
       </div>
       <div
