@@ -170,9 +170,6 @@ onServerPrefetch(async () => {
   }
 });
 
-// watch(groupData, (newVal) => {
-//   console.log(newVal);
-// });
 watch(sort, (newVal) => {
   if (newVal) {
     router.replace({

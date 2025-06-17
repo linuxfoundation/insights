@@ -9,7 +9,7 @@ import echarts from './setup/echarts';
 import caching from './setup/caching';
 
 const isProduction = process.env.NUXT_APP_ENV === 'production';
-console.log(process.env.NUXT_REDIS_URL);
+
 export default defineNuxtConfig({
   future: {
     compatibilityVersion: 4
