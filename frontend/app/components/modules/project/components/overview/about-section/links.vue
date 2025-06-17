@@ -47,38 +47,52 @@ import { storeToRefs } from 'pinia';
 import { computed } from 'vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import { useProjectStore } from '~~/app/components/modules/project/store/project.store';
+import type {
+  WebsiteLinkConfig,
+  SocialLinkConfig,
+  DisplayLinkConfig
+} from '~~/app/components/modules/project/config/social-links';
+import { socialLinkConfigs, socialLinkOrder } from '~~/app/components/modules/project/config/social-links';
 
 const { project } = storeToRefs(useProjectStore())
 
-// add default icon if the backend didn't return them
-const links = computed(() => (project.value?.projectLinks || []).map((link) => {
-  const icon = link.icon || (link.img ? undefined : 'link')
-  if (link.url.includes('x') || link.url.includes('twitter')) {
+const links = computed(() => {
+  const socialLinkEntries = Object.entries(socialLinkConfigs);
+  const processedLinks = (project.value?.projectLinks || []).map((link) => {
+    // Handle social media platforms
+    const platform = socialLinkEntries.find(([key, config]) => {
+      if (key === 'website') return link.name === (config as WebsiteLinkConfig).name;
+      if (key === 'default') return false;
+
+      return (config as SocialLinkConfig).domains?.some((domain) => link.url.includes(domain));
+    });
+
+    if (platform) {
+      const [_, config] = platform;
+      return {
+        ...link,
+        ...('img' in config && { img: config.img }),
+        ...('icon' in config && { icon: config.icon }),
+        name: config.transformName ? config.transformName(link.url) : link.url,
+        url: config.transformUrl ? config.transformUrl(link.url) : link.url,
+        key: config.key
+      };
+    }
+
+    // Default case
     return {
       ...link,
-      img: '/images/integrations/x.png',
-      name: link.url?.replace("https://x.com", "").replace("https://twitter.com", "")
-    }
-  }
+      ...socialLinkConfigs.default,
+    };
+  });
 
-  if (link.url.includes('linkedin')) {
-    return {
-      ...link,
-      img: '/images/integrations/linkedin.png',
-      name: link.url?.replace("https://www.linkedin.com", "")
-    }
-  }
-
-  if (link.url.includes('github')) {
-    return {
-      ...link,
-      img: '/images/integrations/github.png',
-      name: link.url?.replace("https://github.com", "")
-    }
-  }
-
-  return {...link, icon }
-}));
+  // Sort by platform
+  return (processedLinks as DisplayLinkConfig[]).sort((a, b) => {
+    const aIndex = socialLinkOrder.indexOf(a.key) === -1 ? socialLinkOrder.length : socialLinkOrder.indexOf(a.key);
+    const bIndex = socialLinkOrder.indexOf(b.key) === -1 ? socialLinkOrder.length : socialLinkOrder.indexOf(b.key);
+    return aIndex - bIndex;
+  });
+});
 </script>
 
 <script lang="ts">
