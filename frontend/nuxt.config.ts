@@ -48,6 +48,7 @@ export default defineNuxtConfig({
     jiraIssueReporterApiToken: '',
     jiraIssueReporterProjectKey: '',
     highlightedIds: '',
+    redisUrl: '',
     // These are also exposed on the client-side
     public: {
       apiBase: '/api',
