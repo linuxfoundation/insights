@@ -1,5 +1,6 @@
 ARG NODE_VERSION=20
 ARG APP_ENV=production
+ARG NUXT_REDIS_URL
 
 FROM node:$NODE_VERSION-slim AS base
 
@@ -29,7 +30,9 @@ COPY . .
 FROM files AS builder
 
 ARG APP_ENV=production
+ARG NUXT_REDIS_URL
 ENV NUXT_APP_ENV=$APP_ENV
+ENV NUXT_REDIS_URL=$NUXT_REDIS_URL
 
 WORKDIR /usr/src/app
 
