@@ -12,7 +12,7 @@ export default {
         storage: {
             redis: {
                 driver: 'redis',
-                url: process.env.NUXT_REDIS_URL || '',
+                url: '${redisUrl}',
             },
         },
     },
