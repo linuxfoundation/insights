@@ -1,8 +1,5 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-
-const config = useRuntimeConfig();
-
 export default {
     routeRules: {
         "/api/search": {cache: {maxAge: 86400, base: 'redis'}}, // Cache search results for 1 day
@@ -14,7 +11,7 @@ export default {
         storage: {
             redis: {
                 driver: 'redis',
-                url: config.redisUrl,
+                url: process.env.NUXT_REDIS_URL || '',
             },
         },
     },
