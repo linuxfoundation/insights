@@ -1,10 +1,8 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { defineNitroPlugin } from 'nitropack'
-import type { NitroApp } from 'nitropack'
 import { useRuntimeConfig } from '#imports'
 
-export default defineNitroPlugin((nitroApp: NitroApp) => {
+export default defineNitroPlugin((nitroApp) => {
     const config = useRuntimeConfig()
 
     nitroApp.storage.setItem('redis', {
