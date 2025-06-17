@@ -16,6 +16,7 @@ import LfxExploreHeader from '~/components/modules/explore/components/explore-he
 import LfxExploreTopSection from '~/components/modules/explore/components/top-section.vue';
 import LfxExploreSourceIndexSection from '~/components/modules/explore/components/source-index-section.vue';
 import LfxExploreFeaturedCollection from '~/components/modules/explore/components/featured-collection.vue';
+import LfxCarouselFlickity from "~/components/uikit/carousel-v2/carousel-flickity.vue";
 </script>
 
 <script lang="ts">

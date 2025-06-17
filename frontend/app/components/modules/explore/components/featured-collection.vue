@@ -41,15 +41,25 @@ SPDX-License-Identifier: MIT
       :is-empty="isEmpty"
     >
       <client-only>
-        <lfx-carousel
-          :value="(carouselData as unknown as CarouselData[])"
+        <lfx-carousel-flickity
+          :options="{
+            cellAlign: 'center',
+            contain: true,
+            pageDots: false,
+            wrapAround: true,
+            groupCells: 1,
+            selectedAttraction: 0.01,
+            friction: 0.15,
+            draggable: true,
+            freeScroll: false,
+          }"
         >
-          <template #item="{data}">
-            <lfx-explore-collection-card
-              :collection="data"
-            />
-          </template>
-        </lfx-carousel>
+          <lfx-explore-collection-card
+            v-for="data of featuredCollectionsData.data"
+            :key="data.id"
+            :collection="data"
+          />
+        </lfx-carousel-flickity>
       </client-only>
       <div class="sm:hidden block flex justify-center">
         <nuxt-link :to="{name: LfxRoutes.COLLECTIONS}">
@@ -85,6 +95,7 @@ import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
 import { isEmptyData } from '~/components/shared/utils/helper';
 import { LfxRoutes } from '~/components/shared/types/routes';
+import LfxCarouselFlickity from "~/components/uikit/carousel-v2/carousel-flickity.vue";
 
 const {
   data: featuredCollectionsData,

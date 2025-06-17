@@ -32,6 +32,7 @@
     "@vuelidate/validators": "^2.0.4",
     "echarts": "^5.6.0",
     "eslint": "^9.18.0",
+    "flickity": "^3.0.0",
     "html2canvas": "^1.4.1",
     "lodash": "^4.17.21",
     "luxon": "^3.5.0",
