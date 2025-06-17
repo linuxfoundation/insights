@@ -36,7 +36,6 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
 import {
  Carousel, Slide, Pagination, Navigation
 } from 'vue3-carousel'
