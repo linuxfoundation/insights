@@ -22,6 +22,7 @@ SPDX-License-Identifier: MIT
       :type="props.type"
       :disabled="props.disabled"
       v-bind="$attrs"
+      class="!outline-0 !shadow-none "
     >
     <div
       v-if="$slots.suffix"
