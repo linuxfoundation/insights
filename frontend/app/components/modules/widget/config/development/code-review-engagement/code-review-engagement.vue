@@ -4,20 +4,40 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <section class="mt-5">
-    <lfx-tabs
-      v-if="!props.snapshot"
-      :tabs="tabs"
-      :model-value="model.activeTab"
-      @update:model-value="model.activeTab = $event as CodeReviewEngagementMetric"
-    />
+    <template v-if="!props.snapshot">
+      <lfx-tabs
+        v-if="!props.snapshot"
+        :tabs="tabs"
+        :model-value="model.activeTab"
+        class="!hidden sm:!flex"
+        @update:model-value="model.activeTab = $event as CodeReviewEngagementMetric"
+      />
+      <lfx-dropdown-select
+        v-model="model.activeTab"
+        placement="bottom-start"
+        class="block sm:hidden"
+      >
+        <template  #trigger="{selectedOption}">
+          <lfx-dropdown-selector type="filled">
+            {{selectedOption.label}}
+          </lfx-dropdown-selector>
+        </template>
+        <lfx-dropdown-item
+          v-for="tab of tabs"
+          :key="tab.label"
+          :value="tab.value"
+          :label="tab.label"
+        />
+      </lfx-dropdown-select>
+    </template>
     <div class="my-5">
       <lfx-skeleton-state
         :status="status"
         height="2rem"
         width="7.5rem"
       >
-        <div class="flex flex-row gap-4 items-center">
-          <div class="text-data-display-1">{{ formatNumber(summary.current) }} contributors</div>
+        <div class="flex flex-wrap gap-y-3 flex-row gap-4 items-center">
+          <div class="text-heading-1 sm:text-data-display-1">{{ formatNumber(summary.current) }} contributors</div>
           <lfx-delta-display
             v-if="selectedTimeRangeKey !== dateOptKeys.alltime"
             :summary="summary"
@@ -68,6 +88,9 @@ import LfxProjectLoadState from "~/components/modules/project/components/shared/
 import LfxSkeletonState from "~/components/modules/project/components/shared/skeleton-state.vue";
 import type {Benchmark} from "~~/types/shared/benchmark.types";
 import {Widget} from "~/components/modules/widget/types/widget";
+import LfxDropdownSelector from "~/components/uikit/dropdown/dropdown-selector.vue";
+import LfxDropdownItem from "~/components/uikit/dropdown/dropdown-item.vue";
+import LfxDropdownSelect from "~/components/uikit/dropdown/dropdown-select.vue";
 
 interface CodeReviewEngagementModel {
   activeTab: string;
