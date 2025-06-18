@@ -3,7 +3,7 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="flex flex-row justify-between items-center mb-6">
+  <div class="flex flex-col gap-y-3 sm:flex-row justify-between sm:items-center mb-6">
     <div class="flex flex-row gap-3 items-center">
       <div>
         <slot />
@@ -17,12 +17,18 @@ SPDX-License-Identifier: MIT
         </div>
       </div>
     </div>
-    <div class="flex flex-col items-end">
-      <div class="text-sm font-semibold">
-        Other {{ props.otherDependency.count }} {{ pluralize(props.label, props.otherDependency.count) }}
+    <div class="flex sm:flex-col gap-x-3 sm:items-end">
+      <!-- this is used to keep same spacing on small screens -->
+      <div class="opacity-0 invisible sm:hidden">
+        <slot />
       </div>
-      <div class="text-body-1 text-neutral-500">
-        {{ props.otherDependency.percentage }}% of all contributions
+      <div>
+        <div class="text-sm font-semibold">
+          Other {{ props.otherDependency.count }} {{ pluralize(props.label, props.otherDependency.count) }}
+        </div>
+        <div class="text-body-1 text-neutral-500">
+          {{ props.otherDependency.percentage }}% of all contributions
+        </div>
       </div>
     </div>
   </div>
