@@ -7,8 +7,13 @@
 
     .p-button {
       @apply rounded-full bg-white border border-solid border-neutral-200 shadow-sm;
-      @apply h-11 w-11 p-0  flex items-center justify-center;
+      @apply h-9 w-9 p-0  flex items-center justify-center;
       @apply absolute top-1/2 -translate-y-1/2  z-10;
+
+      @media (min-width: theme('screens.md')) {
+        @apply h-11 w-11
+      }
+
       .p-icon {
         @apply w-4 h-6;
         path {
@@ -19,10 +24,16 @@
         @apply hidden;
       }
       &.p-carousel-prev-button {
-        @apply -left-6;
+        @apply -left-4;
+        @media (min-width: theme('screens.md')) {
+          @apply -left-6
+        }
       }
       &.p-carousel-next-button {
-        @apply -right-6;
+        @apply -right-4;
+        @media (min-width: theme('screens.md')) {
+          @apply -right-6
+        }
       }
       .p-button-label {
         @apply hidden;
