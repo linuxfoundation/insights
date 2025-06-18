@@ -9,6 +9,8 @@ html {
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
   position: relative;
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
 
 body {
