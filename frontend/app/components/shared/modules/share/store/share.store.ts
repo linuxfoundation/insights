@@ -23,12 +23,11 @@ export const useShareStore = defineStore('share', () => {
             navigator.share({
                 title: defaults.title,
                 url: defaults.url
-            }).catch(() => {
-                isShareModalOpen.value = true;
             });
-            return;
         }
-        isShareModalOpen.value = true;
+        else{
+            isShareModalOpen.value = true;
+        }
     };
 
     return {
