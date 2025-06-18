@@ -7,8 +7,7 @@ import {Granularity} from "~~/types/shared/granularity";
 const activeOrganizations: WidgetConfig = {
     key: 'activeOrganization',
     name: 'Active organizations',
-    description: () => 'Organizations that had at least one activity during the selected period, '
-        + 'carried out by contributors on their behalf.',
+    description: () => 'Organizations that had at least one active contributor during the selected period.',
     learnMoreLink: `/docs/metrics/contributors#active-organizations`,
     component: ActiveOrganizations,
     defaultValue: {

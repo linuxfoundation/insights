@@ -6,8 +6,8 @@ import type {WidgetConfig} from "~/components/modules/widget/config/widget.confi
 const contributorDependency: WidgetConfig = {
     key: 'contributorDependency',
     name: 'Contributor dependency',
-    description: () => 'Distribution of contributions among different contributors, highlighting key individuals '
-        + 'who are actively involved in the project during the selected time period.',
+    description: () => 'Distribution of contributions across individuals, highlighting the group of '
+        + 'individual who are responsible for 51%+ of all contributions in the selected time period.',
     learnMoreLink: `/docs/metrics/contributors#contributor-dependency`,
     component: ContributorDependency,
     defaultValue: {

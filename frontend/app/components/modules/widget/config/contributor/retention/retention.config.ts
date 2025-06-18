@@ -5,9 +5,9 @@ import type { WidgetConfig } from '~/components/modules/widget/config/widget.con
 
 const retention: WidgetConfig = {
   key: 'retention',
-  name: 'Quarterly Retention',
-  description: () => 'Rate at which contributors and organizations continued contributing to '
-    + 'the project during the selected period.',
+  name: 'Quarterly contributor retention',
+  description: () => 'Share of contributors and organizations that contributed continuously '
+    + 'in all consecutive quarters of the selected time period.',
   learnMoreLink: `/docs/metrics/contributors#retention`,
   defaultValue: {
     activeTab: 'contributors',

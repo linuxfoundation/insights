@@ -6,8 +6,8 @@ import type {WidgetConfig} from "~/components/modules/widget/config/widget.confi
 const geographicalDistribution: WidgetConfig = {
     key: 'geographicalDistribution',
     name: 'Geographical distribution',
-    description: () => 'Distribution of contributors and organizations based on geographical'
-        + ' location during contributions in the selected period.',
+    description: () => 'Distribution of the geographical location of contributors '
+        + 'and the headquarters of their organizations.',
     learnMoreLink: `/docs/metrics/contributors#geographical-distribution`,
     component: GeographicalDistribution,
     defaultValue: {
