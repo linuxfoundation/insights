@@ -33,7 +33,7 @@ SPDX-License-Identifier: MIT
     <lfx-project-load-state
       :status="status"
       :error="error"
-      error-message="Error fetching social mentions"
+      error-message="Error fetching package downloads"
       :is-empty="isEmpty"
     >
       <div class="w-full h-[320px] mt-5">
