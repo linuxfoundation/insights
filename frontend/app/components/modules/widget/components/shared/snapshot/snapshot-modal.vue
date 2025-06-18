@@ -38,10 +38,10 @@ SPDX-License-Identifier: MIT
         <p class="text-neutral-500 text-xs font-semibold leading-5 text-center mb-px">
           Preview
         </p>
-        <div class="-m-px bg-white border border-neutral-200 rounded-lg">
+        <div class="-m-px bg-white border border-neutral-200 rounded-lg overflow-auto">
           <div
             ref="snapshot"
-            class="snapshot"
+            class="snapshot min-w-150"
           >
             <lfx-snapshot-preview
               :widget-name="props.widgetName"
