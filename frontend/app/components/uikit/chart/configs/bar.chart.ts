@@ -7,7 +7,7 @@ import {
   axisLabelFormatter,
   tooltipFormatter,
   tooltipFormatterWithData,
-  tooltipLabelFormatter
+  tooltipLabelFormatter,
 } from '../helpers/formatters';
 
 import type { ChartData, ChartSeries, SeriesTypes } from '../types/ChartTypes';
@@ -20,23 +20,23 @@ const defaultBarOption: ECOption = {
   grid: {
     top: '10%',
     bottom: '14%',
-    right: 0
+    right: '5%',
   },
   xAxis: {
     ...defaultOption.xAxis,
     axisLabel: {
-      ...defaultOption.xAxis.axisLabel
-    }
+      ...defaultOption.xAxis.axisLabel,
+    },
   },
   tooltip: {
     trigger: 'axis',
     axisPointer: {
       type: 'shadow',
       label: {
-        formatter: tooltipLabelFormatter
-      }
+        formatter: tooltipLabelFormatter,
+      },
     },
-    formatter: tooltipFormatter
+    formatter: tooltipFormatter,
   },
   // hiding legend for now since there isn't any on the designs
   legend: {
@@ -51,9 +51,9 @@ const defaultBarOption: ECOption = {
       fontSize: 12,
       fontWeight: 'normal',
       color: lfxColors.black,
-      fontFamily: 'Inter'
-    }
-  }
+      fontFamily: 'Inter',
+    },
+  },
 };
 
 const defaultSeriesStyle: BarSeriesOption = {
@@ -64,9 +64,9 @@ const defaultSeriesStyle: BarSeriesOption = {
   barCategoryGap: '60%',
   itemStyle: {
     borderRadius: [2, 2, 2, 2],
-    borderWidth: 1
+    borderWidth: 1,
     // borderColor: '#fff'
-  }
+  },
 };
 
 /**
@@ -85,7 +85,7 @@ const applySeriesStyle = (
   return series.map((seriesItem: SeriesTypes, index: number) => {
     const baseStyle: BarSeriesOption = {
       ...defaultSeriesStyle,
-      ...(seriesItem as BarSeriesOption)
+      ...(seriesItem as BarSeriesOption),
     };
     // override the color with the color from the chart series if it exists
     baseStyle.color = chartSeries[index]?.color || lfxColors.brand[500];
@@ -112,18 +112,18 @@ export const getBarChartConfig = (
     data: convertDateData(data) ?? [],
     axisLabel: {
       ...defaultBarOption.xAxis.axisLabel,
-      formatter: axisLabelFormatter(axisLabelFormat)
-    }
+      formatter: axisLabelFormatter(axisLabelFormat),
+    },
   };
   const tooltip = _.merge({}, defaultBarOption.tooltip, {
-    formatter: tooltipFormatterWithData(data, granularity, series)
+    formatter: tooltipFormatterWithData(data, granularity, series),
   });
   const styledSeries = applySeriesStyle(series, buildSeries(series, data));
 
   return _.merge({}, defaultBarOption, {
     xAxis,
     series: styledSeries,
-    tooltip
+    tooltip,
   });
 };
 
@@ -147,8 +147,8 @@ export const getBarChartConfigStacked = (
       itemStyle: {
         borderRadius: [2, 2, 2, 2],
         borderWidth: 1,
-        borderColor: '#fff'
-      }
+        borderColor: '#fff',
+      },
     },
     granularity,
     overrideConfig
@@ -176,17 +176,17 @@ export const getBarChartConfigCustom = (
     data: convertDateData(data) ?? [],
     axisLabel: {
       ...defaultBarOption.xAxis.axisLabel,
-      formatter: axisLabelFormatter(axisLabelFormat)
-    }
+      formatter: axisLabelFormatter(axisLabelFormat),
+    },
   };
   const tooltip = _.merge({}, defaultBarOption.tooltip, {
-    formatter: tooltipFormatterWithData(data, granularity, series)
+    formatter: tooltipFormatterWithData(data, granularity, series),
   });
 
   const styledSeries = applySeriesStyle(series, buildSeries(series, data)).map(
     (seriesItem) => ({
         ...seriesItem,
-        ...customStyle
+        ...customStyle,
       } as BarSeriesOption)
   );
 
@@ -196,7 +196,7 @@ export const getBarChartConfigCustom = (
       ...defaultBarOption,
       xAxis,
       series: styledSeries,
-      tooltip
+      tooltip,
     },
     overrideConfig
   );

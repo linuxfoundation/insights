@@ -1,6 +1,12 @@
 {
 	"devDependencies": {
 		"@commitlint/cli": "^19.8.0",
-		"@commitlint/config-conventional": "^19.8.0"
+		"@commitlint/config-conventional": "^19.8.0",
+		"lint-staged": "^15.5.2"
+	},
+	"lint-staged": {
+		"*.{js,ts,jsx,tsx,vue}": [
+			"node ./scripts/add-license.js"
+		]
 	}
 }

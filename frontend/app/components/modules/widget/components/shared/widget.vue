@@ -17,11 +17,11 @@ SPDX-License-Identifier: MIT
       v-if="project"
       class="text-body-2 text-neutral-500 mb-5"
     >
-      {{config.description(project)}}
+      <span v-html="config.description(project)" />
       <a
         v-if="config.learnMoreLink"
         :href="config.learnMoreLink"
-        class="text-brand-500"
+        class="ml-1 text-brand-500"
         target="_blank"
       >Learn more</a>
     </p>
