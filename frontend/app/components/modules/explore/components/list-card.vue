@@ -34,6 +34,7 @@ SPDX-License-Identifier: MIT
   <lfx-explore-list-modal
     v-model="isModalOpen"
     :value="props.value"
+    width="27rem"
   />
 </template>
 
