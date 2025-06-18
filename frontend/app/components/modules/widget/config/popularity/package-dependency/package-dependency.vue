@@ -146,30 +146,63 @@ onServerPrefetch(async () => {
 
 const packageDownloads = computed<PackageDownloads>(() => data.value as PackageDownloads);
 
-const dependentReposSummary = computed<Summary | undefined>(() => ({
-  current: 0,
-  previous: 0,
-  percentageChange: 0,
-  changeValue: 0,
-  periodFrom: '',
-  periodTo: ''
-})); // packageDownloads.value?.dependentReposSummary);
-const dependentPackagesSummary = computed<Summary | undefined>(() => ({
-  current: 0,
-  previous: 0,
-  percentageChange: 0,
-  changeValue: 0,
-  periodFrom: '',
-  periodTo: ''
-})); // packageDownloads.value?.dependentPackagesSummary);
-const dockerDependentsSummary = computed<Summary | undefined>(() => ({
-  current: 0,
-  previous: 0,
-  percentageChange: 0,
-  changeValue: 0,
-  periodFrom: '',
-  periodTo: ''
-})); // packageDownloads.value?.dockerDependentsSummary);
+const dependentReposSummary = computed<Summary | undefined>(() => {
+  const {
+    periodFrom,
+    periodTo,
+    currentDependentRepos,
+    previousDependentRepos,
+    dependentReposPercentageChange,
+    dependentReposChangeValue
+  } = packageDownloads.value.summary;
+
+  return {
+    current: currentDependentRepos,
+    previous: previousDependentRepos,
+    percentageChange: dependentReposPercentageChange,
+    changeValue: dependentReposChangeValue,
+    periodFrom,
+    periodTo,
+  }
+});
+const dependentPackagesSummary = computed<Summary | undefined>(() => {
+  const {
+    periodFrom,
+    periodTo,
+    currentDependentPackages,
+    previousDependentPackages,
+    dependentPackagesPercentageChange,
+    dependentPackagesChangeValue
+  } = packageDownloads.value.summary;
+
+  return {
+    current: currentDependentPackages,
+    previous: previousDependentPackages,
+    percentageChange: dependentPackagesPercentageChange,
+    changeValue: dependentPackagesChangeValue,
+    periodFrom,
+    periodTo,
+  }
+});
+const dockerDependentsSummary = computed<Summary | undefined>(() => {
+  const {
+    periodFrom,
+    periodTo,
+    currentDockerDependents,
+    previousDockerDependents,
+    dockerDependentsPercentageChange,
+    dockerDependentsChangeValue
+  } = packageDownloads.value.summary;
+
+  return {
+    current: currentDockerDependents,
+    previous: previousDockerDependents,
+    percentageChange: dockerDependentsPercentageChange,
+    changeValue: dockerDependentsChangeValue,
+    periodFrom,
+    periodTo,
+  }
+});
 
 const chartData = computed<ChartData[]>(
   // convert the data to chart data

@@ -92,7 +92,35 @@ export interface PressMentions {
 }
 
 export interface PackageDownloads {
-  summary: Summary;
+  summary: {
+    currentDownloads: number;
+    previousDownloads: number;
+    downloadsChangeValue: number;
+    downloadsPercentageChange: number;
+
+    currentDockerDownloads: number;
+    previousDockerDownloads: number;
+    dockerDownloadsChangeValue: number;
+    dockerDownloadsPercentageChange: number;
+
+    currentDockerDependents: number;
+    previousDockerDependents: number;
+    dockerDependentsChangeValue: number;
+    dockerDependentsPercentageChange: number;
+
+    currentDependentPackages: number;
+    previousDependentPackages: number;
+    dependentPackagesChangeValue: number;
+    dependentPackagesPercentageChange: number;
+
+    currentDependentRepos: number;
+    previousDependentRepos: number;
+    dependentReposChangeValue: number;
+    dependentReposPercentageChange: number;
+
+    periodFrom: string;
+    periodTo: string;
+  };
   data: {
     startDate: string;
     endDate: string;

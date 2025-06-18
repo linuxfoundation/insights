@@ -8,7 +8,7 @@ import type {
 } from '../types/EChartTypes';
 import type { ChartData, ChartSeries } from '../types/ChartTypes';
 import { Granularity } from '~~/types/shared/granularity';
-import { formatNumber } from '~/components/shared/utils/formatter';
+import { formatNumber, formatNumberShort } from '~/components/shared/utils/formatter';
 import { lfxColors } from '~/config/styles/colors';
 
 declare type LabelFormatterParams = {
@@ -78,7 +78,13 @@ const tooltipSingleValueWithBullet = (series: ChartSeries[]) => (params: SingleT
         margin-right: 4px;"></span>
       ${params.seriesName}
     </span>
-    <span style="font-weight: 500; font-size: 12px;">${formatNumber(Number(params.value))}</span>
+    <span style="font-weight: 500; font-size: 12px;">
+      ${
+        Number(params.value) > 1000000
+          ? formatNumberShort(Number(params.value))
+          : formatNumber(Number(params.value))
+      }
+    </span>
   </div>
   `;
 export const tooltipFormatter = (

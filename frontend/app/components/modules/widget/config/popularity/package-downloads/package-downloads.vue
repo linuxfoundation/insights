@@ -156,7 +156,25 @@ onServerPrefetch(async () => {
 
 const packageDownloads = computed<PackageDownloads>(() => data.value as PackageDownloads);
 
-const summary = computed<Summary>(() => packageDownloads.value.summary);
+const summary = computed<Summary>(() => {
+  const {
+    periodFrom,
+    periodTo,
+    currentDownloads,
+    previousDownloads,
+    downloadsPercentageChange,
+    downloadsChangeValue
+  } = packageDownloads.value.summary;
+
+  return {
+    current: currentDownloads,
+    previous: previousDownloads,
+    percentageChange: downloadsPercentageChange,
+    changeValue: downloadsChangeValue,
+    periodFrom,
+    periodTo,
+  }
+});
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
   () => convertToChartData((packageDownloads.value?.data || []) as RawChartData[], 'startDate', [
