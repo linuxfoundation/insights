@@ -1,7 +1,9 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
+import { DateTime } from 'luxon';
+
 import { getSearchVolume } from './keywords-everywhere.js';
-import { closeDatabase, persistSearchVolume } from './database.js';
+import { closeDatabase, persistSearchVolume, SearchVolumeDBRecord } from './database.js';
 import { fetchFromTinybird } from './tinybird.js';
 
 interface Project {
@@ -164,18 +166,19 @@ async function getSearchVolumeFromKE(keywords: string[], keywordToProjectMap: { 
 }
 
 async function saveResultsToDatabase(data: KEResults): Promise<void> {
-  const records = [];
-  
+  const records: SearchVolumeDBRecord[] = [];
+
   for (const [projectId, result] of Object.entries(data)) {
     if (result.web_term && result.search_volume_trend.length > 0) {
       for (const trend of result.search_volume_trend) {
-        // Convert month name and year to YYYY-MM-01 format
-        const monthNumber = (new Date(`${trend.month} 1, 2000`).getMonth() + 1).toString().padStart(2, '0');
+        // Convert month name and year to YYYY-MM-01 format, so that it can be used as a timestamp
+        const monthNumber = DateTime.fromFormat(`${trend.month} ${trend.year}`, 'LLLL yyyy').toFormat('MM');
         const dataTimestamp = `${trend.year}-${monthNumber}-01`;
+
         records.push({
-          insightsProjectId: projectId,
+          insights_project_id: projectId,
           slug: result.web_term,
-          dataTimestamp,
+          data_timestamp: dataTimestamp,
           volume: trend.value
         });
       }

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 import { Pool } from 'pg';
 
-interface SearchVolumeRecord {
+export interface SearchVolumeDBRecord {
   insights_project_id: string;
   slug: string;
   data_timestamp: string; // YYYY-MM-DD
@@ -27,7 +27,7 @@ function getPool(): Pool {
   return pool;
 }
 
-export async function persistSearchVolume(records: SearchVolumeRecord[]): Promise<void> {
+export async function persistSearchVolume(records: SearchVolumeDBRecord[]): Promise<void> {
   if (records.length === 0) {
     console.log('No records to save to database');
     return;
