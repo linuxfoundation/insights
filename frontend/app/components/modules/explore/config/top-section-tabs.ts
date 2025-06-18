@@ -8,7 +8,7 @@ import LfxExploreTopOrganizations from '../components/top-organizations.vue';
 export const TOP_SECTION_TABS: ExploreTab[] = [
   {
     title: 'Top projects',
-    description: `Projects ranked by Criticality Score, considering 
+    description: `Linux Foundation projects ranked by Criticality Score, considering 
     their importance, usage, and potential impact across the ecosystem.`,
     component: LfxExploreTopProjects,
     icon: 'laptop-code',
@@ -16,7 +16,7 @@ export const TOP_SECTION_TABS: ExploreTab[] = [
   },
   {
     title: 'Top contributors',
-    description: `Contributors ranked by the number of contributions in all 
+    description: `Contributors ranked by the number of contributions in ALL 
     projects tracked by Insights over the last 10 years.`,
     component: LfxExploreTopContributors,
     icon: 'people-group',
@@ -25,7 +25,7 @@ export const TOP_SECTION_TABS: ExploreTab[] = [
   {
     title: 'Top organizations',
     description: `Organizations ranked by the number of affiliated contributions in 
-    all projects tracked by Insights over the last 10 years.`,
+    ALL projects tracked by Insights over the last 10 years.`,
     component: LfxExploreTopOrganizations,
     icon: 'buildings',
     type: 'organization',
