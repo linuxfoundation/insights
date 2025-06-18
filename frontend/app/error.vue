@@ -38,7 +38,7 @@ SPDX-License-Identifier: MIT
           </span>
         </h1>
         <div class="flex justify-center pt-10">
-          <nuxt-link :to="{name: LfxRoutes.COLLECTIONS}">
+          <nuxt-link :to="{name: LfxRoutes.EXPLORE}">
             <lfx-button size="large">Go back to Home</lfx-button>
           </nuxt-link>
         </div>

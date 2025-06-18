@@ -20,13 +20,20 @@ SPDX-License-Identifier: MIT
           :src="item.avatar"
           type="member"
         />
-        <div>{{ item.name }}</div>
+        <div class="text-ellipsis">{{ item.name }}</div>
+        <lfx-tag
+          v-if="item.roles?.includes('maintainer')"
+          size="small"
+          class="-ml-1"
+        >
+          Maintainer
+        </lfx-tag>
       </div>
       <div class="basis-1/4 text-right">
         {{ formatNumberShort(item.activityCount) }}
       </div>
       <div class="basis-1/4 text-right">
-        {{ item.percentage }}%
+        {{ (item.percentage || 0) > 0 ? item.percentage : '<1' }}%
       </div>
     </div>
   </div>
@@ -34,9 +41,10 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import type { CodeReviewItem } from '../types/code-review-engagement.types';
 import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
 import { formatNumberShort } from '~/components/shared/utils/formatter';
+import LfxTag from "~/components/uikit/tag/tag.vue";
+import type {CodeReviewItem} from "~~/types/development/responses.types";
 
 const props = defineProps<{
   metric: string;

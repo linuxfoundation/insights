@@ -25,6 +25,7 @@ export interface Contributor {
   name: string;
   contributions: number;
   percentage?: number;
+  roles?: string[];
 }
 
 export interface Organization {

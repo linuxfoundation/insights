@@ -29,7 +29,7 @@ SPDX-License-Identifier: MIT
       />
 
       <div
-        v-if="!props.snapshot"
+        v-if="!props.snapshot && !hideAllOrganizationsButton"
         class="mt-5 flex flex-row justify-center"
       >
         <lfx-button
@@ -122,6 +122,7 @@ const {
 const organizations = computed<OrganizationLeaderboard>(
   () => data.value?.pages[0] as OrganizationLeaderboard
 );
+const hideAllOrganizationsButton = computed(() => organizations.value?.data.length < 10);
 
 const isEmpty = computed(() => isEmptyData(organizations.value?.data as unknown as Record<string, unknown>[]));
 

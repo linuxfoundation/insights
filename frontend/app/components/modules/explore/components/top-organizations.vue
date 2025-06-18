@@ -35,18 +35,6 @@ SPDX-License-Identifier: MIT
             {{ row.displayName }}
           </div>
         </div>
-        <div
-          v-if="isFullList"
-          class="basis-1/3 text-right text-xs text-neutral-500"
-        >
-          {{ formatNumber(row.activityCount) }}
-        </div>
-        <div
-          v-if="!isFullList"
-          class="basis-1/3 text-right text-xs text-neutral-500 hidden xl:block text-nowrap"
-        >
-          {{ formatNumber(row.activityCount) }} contributions
-        </div>
       </div>
 
     </div>
@@ -57,7 +45,6 @@ SPDX-License-Identifier: MIT
 import { computed, onServerPrefetch } from 'vue';
 import { EXPLORE_API_SERVICE } from '~/components/modules/explore/services/explore.api.service';
 import LfxAvatar from "~/components/uikit/avatar/avatar.vue";
-import { formatNumber } from '~/components/shared/utils/formatter';
 import { isEmptyData } from '~/components/shared/utils/helper';
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
 

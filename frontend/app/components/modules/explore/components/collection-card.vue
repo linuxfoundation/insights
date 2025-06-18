@@ -4,7 +4,7 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <nuxt-link :to="{name: LfxRoutes.COLLECTION, params: {slug: props.collection.slug}}">
-    <div class="border border-neutral-200 rounded-lg p-5 flex flex-col gap-5">
+    <div class="border border-neutral-200 bg-white rounded-lg p-5 flex flex-col gap-5">
       <lfx-icon
         name="rectangle-history"
         class="text-neutral-400"

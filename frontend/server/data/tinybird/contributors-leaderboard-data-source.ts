@@ -50,6 +50,7 @@ export async function fetchContributorsLeaderboard(
         name: item.displayName,
         contributions: item.contributionCount,
         percentage: item.contributionPercentage,
+        roles: item.roles || [],
       })
     )
   };

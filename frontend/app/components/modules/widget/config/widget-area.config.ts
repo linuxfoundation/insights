@@ -11,7 +11,7 @@ export interface WidgetAreaConfig {
 
 export const lfxWidgetArea: Record<WidgetArea, WidgetAreaConfig> = {
   [WidgetArea.OVERVIEW]: {
-    label: 'Overview'
+    label: 'Overview',
   },
   [WidgetArea.CONTRIBUTORS]: {
     label: 'Contributors',
@@ -23,15 +23,15 @@ export const lfxWidgetArea: Record<WidgetArea, WidgetAreaConfig> = {
       Widget.CONTRIBUTOR_DEPENDENCY,
       Widget.ORGANIZATION_DEPENDENCY,
       Widget.RETENTION,
-      Widget.GEOGRAPHICAL_DISTRIBUTION
+      Widget.GEOGRAPHICAL_DISTRIBUTION,
     ],
     overviewWidgets: [
       Widget.RETENTION,
       Widget.ACTIVE_CONTRIBUTORS,
       Widget.CONTRIBUTOR_DEPENDENCY,
       Widget.ORGANIZATION_DEPENDENCY,
-      Widget.GEOGRAPHICAL_DISTRIBUTION
-    ]
+      Widget.GEOGRAPHICAL_DISTRIBUTION,
+    ],
   },
   [WidgetArea.POPULARITY]: {
     label: 'Popularity',
@@ -41,12 +41,13 @@ export const lfxWidgetArea: Record<WidgetArea, WidgetAreaConfig> = {
       Widget.SOCIAL_MENTIONS,
       Widget.GITHUB_MENTIONS,
       Widget.PRESS_MENTIONS,
-      Widget.SEARCH_QUERIES,
+      // TODO: Uncomment this when the search queries widget is ready
+      // Widget.SEARCH_QUERIES,
       // TODO: Uncomment this when the package downloads widget is ready
       // Widget.PACKAGE_DOWNLOADS,
-      Widget.MAILING_LISTS_MESSAGES
+      Widget.MAILING_LISTS_MESSAGES,
     ],
-    overviewWidgets: [Widget.STARS, Widget.FORKS]
+    overviewWidgets: [Widget.STARS, Widget.FORKS],
   },
   [WidgetArea.DEVELOPMENT]: {
     label: 'Development',
@@ -60,20 +61,20 @@ export const lfxWidgetArea: Record<WidgetArea, WidgetAreaConfig> = {
       Widget.REVIEW_TIME_BY_PULL_REQUEST_SIZE,
       Widget.AVERAGE_TIME_TO_MERGE,
       Widget.WAIT_TIME_FIRST_REVIEW,
-      Widget.CODE_REVIEW_ENGAGEMENT
+      Widget.CODE_REVIEW_ENGAGEMENT,
     ],
     overviewWidgets: [
       Widget.ACTIVE_DAYS,
       Widget.CONTRIBUTIONS_OUTSIDE_WORK_HOURS,
       Widget.ISSUES_RESOLUTION,
       Widget.MERGE_LEAD_TIME,
-      Widget.PULL_REQUESTS
-    ]
+      Widget.PULL_REQUESTS,
+    ],
   },
   [WidgetArea.SECURITY]: {
-    label: 'Security & Best practices'
+    label: 'Security & Best practices',
   },
   [WidgetArea.OTHER]: {
-    label: 'Other'
-  }
+    label: 'Other',
+  },
 };
