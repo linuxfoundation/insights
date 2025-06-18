@@ -4,7 +4,7 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <lfx-card
-    v-if="score && score > 0"
+    v-if="score && score > 0 && project?.isLF"
     class="p-5"
   >
     <div class="flex justify-between pb-8 gap-3">

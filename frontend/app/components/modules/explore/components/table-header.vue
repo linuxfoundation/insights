@@ -16,17 +16,9 @@ SPDX-License-Identifier: MIT
         {{ props.type.charAt(0).toUpperCase() + props.type.slice(1) }}
       </div>
       <div
-        v-if="props.type !== 'project'"
-        class="basis-1/3 text-right"
-      >Total contributions (10Y)</div>
-      <div
         v-if="props.type === 'project'"
-        class="basis-1/5 text-right"
-      >Contributors</div>
-      <div
-        v-if="props.type === 'project'"
-        class="basis-1/5 text-right"
-      >Software value</div>
+        class="text-right"
+      >Criticality score</div>
     </div>
   </div>
 </template>
