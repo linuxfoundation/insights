@@ -49,7 +49,7 @@ export type TinybirdActivityHeatmapData = {
 export type TinybirdSearchVolumeData = {
   projectId: string;
   keyword: string;
-  dataTimestamp: DateTime;
+  dataTimestamp: string;
   volume: number;
   updatedAt: DateTime;
 }

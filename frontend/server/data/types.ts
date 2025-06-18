@@ -163,24 +163,9 @@ export type CodeReviewEngagementTBQuery = {
   endDate: DateTime;
 };
 
-export type PackageFilter = {
-  project: string;
-  repo?: string;
-  search?: string;
-};
-
-export type PackageMetricsFilter = {
-  project: string;
-  granularity?: FilterGranularity;
-  repo?: string;
-  ecosystem?: string;
-  name?: string;
-  startDate?: DateTime;
-  endDate?: DateTime;
-};
-
-export type SearchVolumeFilter = {
-  slug: string;
+export interface SearchVolumeFilter {
+  projectId?: string;
+  keyword?: string;
   startDate?: DateTime;
   endDate?: DateTime;
 }

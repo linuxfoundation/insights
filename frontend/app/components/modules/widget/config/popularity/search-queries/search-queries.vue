@@ -80,8 +80,6 @@ const fetchData: QueryFunction<SearchQueries> = async () => $fetch(
     `/api/project/${route.params.slug}/popularity/search-queries`,
     {
   params: {
-    granularity: granularity.value,
-    repository: selectedRepository.value,
     startDate: startDate.value,
     endDate: endDate.value,
   }
