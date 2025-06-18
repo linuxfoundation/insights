@@ -4,7 +4,7 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <section>
-    <div class="lg:flex hidden flex-row gap-8 items-start">
+    <div class="lg:flex hidden flex-row gap-4 xl:gap-8 items-start">
       <lfx-explore-list-card
         v-for="tab in TOP_SECTION_TABS"
         :key="tab.title"
@@ -13,26 +13,25 @@ SPDX-License-Identifier: MIT
     </div>
 
     <div class="lg:hidden block -mt-1">
-      <div
-        class="flex gap-2 justify-start sm:justify-center
-        w-full scroll-x-auto overflow-x-auto overflow-y-visible py-1"
-      >
-        <button
-          v-for="(tab, index) in TOP_SECTION_TABS"
-          :key="index"
-          type="button"
-          class="c-menu-button !text-xs"
-          :class="{
-            'is-active': activeTab === index,
-          }"
-          @click="activeTab = index"
-        >
-          <lfx-icon
-            :name="tab.icon"
-            :size="14"
-          />
-          {{ tab.title }}
-        </button>
+      <div class="-mx-5 overflow-x-auto">
+        <div class="flex gap-2 justify-start sm:justify-center w-full py-1 px-5  min-w-max">
+          <button
+            v-for="(tab, index) in TOP_SECTION_TABS"
+            :key="index"
+            type="button"
+            class="c-menu-button !text-xs"
+            :class="{
+              'is-active': activeTab === index,
+            }"
+            @click="activeTab = index"
+          >
+            <lfx-icon
+              :name="tab.icon"
+              :size="14"
+            />
+            {{ tab.title }}
+          </button>
+        </div>
       </div>
       <div class="mt-7">
         <template
