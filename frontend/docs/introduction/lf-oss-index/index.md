@@ -22,7 +22,30 @@ To identify critical open source projects outside of the LF, we rely on the [Ope
 - Popularity indicators (e.g., stars, forks)
 - Community responsiveness and velocity
 
+### Criticality Score ###
+The **Criticality Score** is a metric presented in LFX Insights for the selected open source projects to indicate their relative importance and impact on the broader open source ecosystem.
+
+The **Criticality Score** quantifies how essential an open source project is by evaluating multiple dimensions of its usage, popularity, community engagement, and activity. It is displayed on the project overview page as a numeric indicator, but only for projects where relevant data is available.
+
 In the future, **we aim to cover the Top 10,000 projects by Criticality Score**. This roll-out will take place gradually.
+
+#### Availability
+
+The Criticality Score is **not available for every project** in LFX Insights. It is only shown for repositories where sufficient data exists to run the scoring model reliably.
+
+#### Why Project Criticality Matters
+
+Identifying a project as “critical” helps:
+
+- Prioritize resource allocation for security reviews and maintenance
+- Guide funding and community support to essential infrastructure
+- Highlight risks associated with unmaintained or under-resourced dependencies
+
+By surfacing this information, LFX Insights aims to help stakeholders make more informed decisions about which projects require additional attention or support.
+
+#### Learn More
+
+To explore the model, source code, and most up-to-date methodology, visit the [OpenSSF Criticality Score GitH](https://github.com/ossf/criticality_score).
 
 ### Manual curation
 
