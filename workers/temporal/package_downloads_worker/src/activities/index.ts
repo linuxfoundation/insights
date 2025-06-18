@@ -6,7 +6,7 @@ import {
   findReposToProcessForDate,
   savePackagesDownloadForRepo,
 } from "../repo";
-import { IInsightsProjectRepo, IPackageDownload } from "../types";
+import { IInsightsProjectRepo, IPackageDownload, IPackageDownloadEcosystemsResponse } from "../types";
 
 export async function testAct() {
   return 1;
@@ -18,7 +18,7 @@ export async function fetchAndSavePackageDownloads(
   repoUrl: string
 ): Promise<boolean> {
   console.log(`Getting package downloads for ${repoUrl}`);
-  let data: IPackageDownload[] = await fetchPackageDownloads(repoUrl);
+  let data: IPackageDownloadEcosystemsResponse[] = await fetchPackageDownloads(repoUrl);
   console.log(`Got package downloads for ${repoUrl}`, data);
 
   if (!data || data.length === 0) {
@@ -32,6 +32,7 @@ export async function fetchAndSavePackageDownloads(
       ...packageDownload,
       date,
       insights_project_id: insightsProjectId,
+      downloads_count: packageDownload.downloads,
     });
   }
 
@@ -40,7 +41,7 @@ export async function fetchAndSavePackageDownloads(
 
 async function fetchPackageDownloads(
   repoUrl: string
-): Promise<IPackageDownload[]> {
+): Promise<IPackageDownloadEcosystemsResponse[]> {
   console.log(`Getting package downloads for ${repoUrl}`);
   const url = `https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=${repoUrl}`;
   const requestOptions = {
@@ -52,7 +53,7 @@ async function fetchPackageDownloads(
 
   try {
     const result = await axios(url, requestOptions);
-    return result.data as IPackageDownload[];
+    return result.data as IPackageDownloadEcosystemsResponse[];
   } catch (error) {
     console.log(`Failed getting package downloads!`);
     throw error;

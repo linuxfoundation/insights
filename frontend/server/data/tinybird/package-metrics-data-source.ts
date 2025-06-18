@@ -12,12 +12,33 @@ import {
 
 export type PackageDownloadsResponse = {
   summary: {
-    current: number; // Current number of active contributors
-    previous: number; // Previous number of active contributors
-    percentageChange: number; // Percentage change in active contributors
-    changeValue: number; // Change in the number of active contributors
-    periodFrom: DateTime; // Start of the period (e.g. last 90 days)
-    periodTo: DateTime; // End of the period (e.g. last 90 days)
+    currentDownloads: number;
+    previousDownloads: number;
+    downloadsChangeValue: number;
+    downloadsPercentageChange: number;
+
+    currentDockerDownloads: number;
+    previousDockerDownloads: number;
+    dockerDownloadsChangeValue: number;
+    dockerDownloadsPercentageChange: number;
+
+    currentDockerDependents: number;
+    previousDockerDependents: number;
+    dockerDependentsChangeValue: number;
+    dockerDependentsPercentageChange: number;
+
+    currentDependentPackages: number;
+    previousDependentPackages: number;
+    dependentPackagesChangeValue: number;
+    dependentPackagesPercentageChange: number;
+
+    currentDependentRepos: number;
+    previousDependentRepos: number;
+    dependentReposChangeValue: number;
+    dependentReposPercentageChange: number;
+
+    periodFrom: DateTime;
+    periodTo: DateTime;
   };
   data: PackageMetrics[];
 };
@@ -70,25 +91,58 @@ export async function fetchPackageMetrics(filter: PackageMetricsFilter) {
     ),
   ]);
 
-  const currentDownloadsCount = currentSummary.data[0]?.downloadsCount || 0;
-  const previousDownloadsCount = previousSummary.data[0]?.downloadsCount || 0;
+  const currentDownloads = currentSummary.data[0]?.downloadsCount || 0;
+  const previousDownloads = previousSummary.data[0]?.downloadsCount || 0;
+  const downloadsChangeValue = currentDownloads - previousDownloads;
+  const downloadsPercentageChange = getPercentageChange(currentDownloads, previousDownloads)
 
-  const changeValue = currentDownloadsCount - previousDownloadsCount;
-  let percentageChange = 0;
-  if (previousDownloadsCount === 0 && currentDownloadsCount > 0) {
-    percentageChange = 100;
-  } else if (previousDownloadsCount === 0 && currentDownloadsCount === 0) {
-    percentageChange = 0;
-  } else if (previousDownloadsCount !== 0) {
-    percentageChange = ((currentDownloadsCount - previousDownloadsCount) / previousDownloadsCount) * 100;
-  }
+  const currentDockerDownloads = currentSummary.data[0]?.dockerDownloadsCount || 0;
+  const previousDockerDownloads = previousSummary.data[0]?.dockerDownloadsCount || 0;
+  const dockerDownloadsChangeValue = currentDockerDownloads - previousDockerDownloads;
+  const dockerDownloadsPercentageChange = getPercentageChange(currentDockerDownloads, previousDockerDownloads)
+
+  const currentDockerDependents = currentSummary.data[0]?.dockerDependentsCount || 0;
+  const previousDockerDependents = previousSummary.data[0]?.dockerDependentsCount || 0;
+  const dockerDependentsChangeValue = currentDockerDependents - previousDockerDependents;
+  const dockerDependentsPercentageChange = getPercentageChange(currentDockerDependents, previousDockerDependents)
+
+  const currentDependentPackages = currentSummary.data[0]?.dependentPackagesCount || 0;
+  const previousDependentPackages = previousSummary.data[0]?.dependentPackagesCount || 0;
+  const dependentPackagesChangeValue = currentDependentPackages - previousDependentPackages;
+  const dependentPackagesPercentageChange = getPercentageChange(currentDependentPackages, previousDependentPackages)
+
+  const currentDependentRepos = currentSummary.data[0]?.dependentReposCount || 0;
+  const previousDependentRepos = previousSummary.data[0]?.dependentReposCount || 0;
+  const dependentReposChangeValue = currentDependentRepos - previousDependentRepos;
+  const dependentReposPercentageChange = getPercentageChange(currentDependentRepos, previousDependentRepos)
 
   const response: PackageDownloadsResponse = {
     summary: {
-      current: currentDownloadsCount,
-      previous: previousDownloadsCount,
-      percentageChange,
-      changeValue,
+      currentDownloads,
+      previousDownloads,
+      downloadsChangeValue,
+      downloadsPercentageChange,
+
+      currentDockerDownloads,
+      previousDockerDownloads,
+      dockerDownloadsChangeValue,
+      dockerDownloadsPercentageChange,
+
+      currentDockerDependents,
+      previousDockerDependents,
+      dockerDependentsChangeValue,
+      dockerDependentsPercentageChange,
+
+      currentDependentPackages,
+      previousDependentPackages,
+      dependentPackagesChangeValue,
+      dependentPackagesPercentageChange,
+
+      currentDependentRepos,
+      previousDependentRepos,
+      dependentReposChangeValue,
+      dependentReposPercentageChange,
+
       periodFrom: dates.current.from,
       periodTo: dates.current.to,
     },
@@ -96,4 +150,21 @@ export async function fetchPackageMetrics(filter: PackageMetricsFilter) {
   };
 
   return response;
+}
+
+function getPercentageChange(
+  currentValue: number,
+  previousValue: number
+): number {
+    let percentageChange = 0;
+
+  if (previousValue === 0 && currentValue > 0) {
+    percentageChange = 100;
+  } else if (previousValue === 0 && currentValue === 0) {
+    percentageChange = 0;
+  } else if (previousValue !== 0) {
+    percentageChange = ((currentValue - previousValue) / previousValue) * 100;
+  }
+
+  return percentageChange;
 }
