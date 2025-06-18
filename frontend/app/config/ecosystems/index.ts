@@ -40,129 +40,129 @@ export const ecosystems: Record<string, Ecosystem> = {
     image: '/images/ecosystems/conda.png',
   },
   // TODO: Add images for the following ecosystems
-  actions: {
-    key: EcosystemKeys.ACTIONS,
-    label: 'Actions',
-    image: '/images/ecosystems/generic.png',
-  },
-  adelie: {
-    key: EcosystemKeys.ADELIE,
-    label: 'Adelie',
-    image: '/images/ecosystems/generic.png',
-  },
-  alpine: {
-    key: EcosystemKeys.ALPINE,
-    label: 'Alpine',
-    image: '/images/ecosystems/generic.png',
-  },
-  bower: {
-    key: EcosystemKeys.BOWER,
-    label: 'Bower',
-    image: '/images/ecosystems/generic.png',
-  },
-  cargo: {
-    key: EcosystemKeys.CARGO,
-    label: 'Cargo',
-    image: '/images/ecosystems/generic.png',
-  },
-  carthage: {
-    key: EcosystemKeys.CARTHAGE,
-    label: 'Carthage',
-    image: '/images/ecosystems/generic.png',
-  },
-  clojars: {
-    key: EcosystemKeys.CLOJARS,
-    label: 'Clojars',
-    image: '/images/ecosystems/generic.png',
-  },
-  cocoapods: {
-    key: EcosystemKeys.COCOAPODS,
-    label: 'CocoaPods',
-    image: '/images/ecosystems/generic.png',
-  },
-  cpan: {
-    key: EcosystemKeys.CPAN,
-    label: 'CPAN',
-    image: '/images/ecosystems/generic.png',
-  },
-  cran: {
-    key: EcosystemKeys.CRAN,
-    label: 'CRAN',
-    image: '/images/ecosystems/generic.png',
-  },
-  deno: {
-    key: EcosystemKeys.DENO,
-    label: 'Deno',
-    image: '/images/ecosystems/generic.png',
-  },
-  docker: {
-    key: EcosystemKeys.DOCKER,
-    label: 'Docker',
-    image: '/images/ecosystems/generic.png',
-  },
-  elm: {
-    key: EcosystemKeys.ELM,
-    label: 'Elm',
-    image: '/images/ecosystems/generic.png',
-  },
-  hackage: {
-    key: EcosystemKeys.HACKAGE,
-    label: 'Hackage',
-    image: '/images/ecosystems/generic.png',
-  },
-  hex: {
-    key: EcosystemKeys.HEX,
-    label: 'Hex',
-    image: '/images/ecosystems/generic.png',
-  },
-  homebrew: {
-    key: EcosystemKeys.HOMEBREW,
-    label: 'Homebrew',
-    image: '/images/ecosystems/generic.png',
-  },
-  julia: {
-    key: EcosystemKeys.JULIA,
-    label: 'Julia',
-    image: '/images/ecosystems/generic.png',
-  },
-  packagist: {
-    key: EcosystemKeys.PACKAGIST,
-    label: 'Packagist',
-    image: '/images/ecosystems/generic.png',
-  },
-  postmarketos: {
-    key: EcosystemKeys.POSTMARKETOS,
-    label: 'PostmarketOS',
-    image: '/images/ecosystems/generic.png',
-  },
-  pub: {
-    key: EcosystemKeys.PUB,
-    label: 'Pub',
-    image: '/images/ecosystems/generic.png',
-  },
-  puppet: {
-    key: EcosystemKeys.PUPPET,
-    label: 'Puppet',
-    image: '/images/ecosystems/generic.png',
-  },
-  racket: {
-    key: EcosystemKeys.RACKET,
-    label: 'Racket',
-    image: '/images/ecosystems/generic.png',
-  },
-  spack: {
-    key: EcosystemKeys.SPACK,
-    label: 'Spack',
-    image: '/images/ecosystems/generic.png',
-  },
-  swiftpm: {
-    key: EcosystemKeys.SWIFTPM,
-    label: 'SwiftPM',
-    image: '/images/ecosystems/generic.png',
-  },
-  vcpkg: {
-    key: EcosystemKeys.VCPKG,
-    label: 'vcpkg',
-    image: '/images/ecosystems/generic.png',
-  },
+  // actions: {
+  //   key: EcosystemKeys.ACTIONS,
+  //   label: 'Actions',
+  //   image: '/images/ecosystems/generic.png',
+  // },
+  // adelie: {
+  //   key: EcosystemKeys.ADELIE,
+  //   label: 'Adelie',
+  //   image: '/images/ecosystems/generic.png',
+  // },
+  // alpine: {
+  //   key: EcosystemKeys.ALPINE,
+  //   label: 'Alpine',
+  //   image: '/images/ecosystems/generic.png',
+  // },
+  // bower: {
+  //   key: EcosystemKeys.BOWER,
+  //   label: 'Bower',
+  //   image: '/images/ecosystems/generic.png',
+  // },
+  // cargo: {
+  //   key: EcosystemKeys.CARGO,
+  //   label: 'Cargo',
+  //   image: '/images/ecosystems/generic.png',
+  // },
+  // carthage: {
+  //   key: EcosystemKeys.CARTHAGE,
+  //   label: 'Carthage',
+  //   image: '/images/ecosystems/generic.png',
+  // },
+  // clojars: {
+  //   key: EcosystemKeys.CLOJARS,
+  //   label: 'Clojars',
+  //   image: '/images/ecosystems/generic.png',
+  // },
+  // cocoapods: {
+  //   key: EcosystemKeys.COCOAPODS,
+  //   label: 'CocoaPods',
+  //   image: '/images/ecosystems/generic.png',
+  // },
+  // cpan: {
+  //   key: EcosystemKeys.CPAN,
+  //   label: 'CPAN',
+  //   image: '/images/ecosystems/generic.png',
+  // },
+  // cran: {
+  //   key: EcosystemKeys.CRAN,
+  //   label: 'CRAN',
+  //   image: '/images/ecosystems/generic.png',
+  // },
+  // deno: {
+  //   key: EcosystemKeys.DENO,
+  //   label: 'Deno',
+  //   image: '/images/ecosystems/generic.png',
+  // },
+  // docker: {
+  //   key: EcosystemKeys.DOCKER,
+  //   label: 'Docker',
+  //   image: '/images/ecosystems/generic.png',
+  // },
+  // elm: {
+  //   key: EcosystemKeys.ELM,
+  //   label: 'Elm',
+  //   image: '/images/ecosystems/generic.png',
+  // },
+  // hackage: {
+  //   key: EcosystemKeys.HACKAGE,
+  //   label: 'Hackage',
+  //   image: '/images/ecosystems/generic.png',
+  // },
+  // hex: {
+  //   key: EcosystemKeys.HEX,
+  //   label: 'Hex',
+  //   image: '/images/ecosystems/generic.png',
+  // },
+  // homebrew: {
+  //   key: EcosystemKeys.HOMEBREW,
+  //   label: 'Homebrew',
+  //   image: '/images/ecosystems/generic.png',
+  // },
+  // julia: {
+  //   key: EcosystemKeys.JULIA,
+  //   label: 'Julia',
+  //   image: '/images/ecosystems/generic.png',
+  // },
+  // packagist: {
+  //   key: EcosystemKeys.PACKAGIST,
+  //   label: 'Packagist',
+  //   image: '/images/ecosystems/generic.png',
+  // },
+  // postmarketos: {
+  //   key: EcosystemKeys.POSTMARKETOS,
+  //   label: 'PostmarketOS',
+  //   image: '/images/ecosystems/generic.png',
+  // },
+  // pub: {
+  //   key: EcosystemKeys.PUB,
+  //   label: 'Pub',
+  //   image: '/images/ecosystems/generic.png',
+  // },
+  // puppet: {
+  //   key: EcosystemKeys.PUPPET,
+  //   label: 'Puppet',
+  //   image: '/images/ecosystems/generic.png',
+  // },
+  // racket: {
+  //   key: EcosystemKeys.RACKET,
+  //   label: 'Racket',
+  //   image: '/images/ecosystems/generic.png',
+  // },
+  // spack: {
+  //   key: EcosystemKeys.SPACK,
+  //   label: 'Spack',
+  //   image: '/images/ecosystems/generic.png',
+  // },
+  // swiftpm: {
+  //   key: EcosystemKeys.SWIFTPM,
+  //   label: 'SwiftPM',
+  //   image: '/images/ecosystems/generic.png',
+  // },
+  // vcpkg: {
+  //   key: EcosystemKeys.VCPKG,
+  //   label: 'vcpkg',
+  //   image: '/images/ecosystems/generic.png',
+  // },
 };

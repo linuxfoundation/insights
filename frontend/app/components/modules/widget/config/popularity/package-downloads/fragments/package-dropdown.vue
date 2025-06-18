@@ -15,7 +15,8 @@ SPDX-License-Identifier: MIT
         class="flex justify-center items-center"
       >
         <lfx-icon
-          v-if="selectedOption.value === `${allPackages.ecosystem}${EcosystemSeparator}${allPackages.name}`"
+          v-if="selectedOption.value === `${allPackages.ecosystem}${EcosystemSeparator}${allPackages.name}` ||
+            getIcon(selectedOption.value.split(EcosystemSeparator)[0]) === ''"
           name="cube"
           :size="16"
         />
@@ -62,7 +63,13 @@ SPDX-License-Identifier: MIT
           :value="`${ecosystem}${EcosystemSeparator}${option.name}`"
           :label="option.name"
         >
+          <lfx-icon
+            v-if="getIcon(ecosystem) === ''"
+            name="cube"
+            :size="16"
+          />
           <img
+            v-else
             :src="getIcon(ecosystem)"
             class="w-4 h-4"
           >
@@ -114,7 +121,7 @@ const model = computed({
 const search = ref('');
 
 // TODO: coordinate with Nuno regarding handling of icons not in the ecosystem list
-const getIcon = (ecosystem: string) => ecosystems[ecosystem]?.image || 'images/ecosystems/generic.png';
+const getIcon = (ecosystem: string) => ecosystems[ecosystem]?.image || '';
 
 const getEcosystemLabel = (ecosystem: string) => ecosystems[ecosystem]?.label || ecosystem;
 
