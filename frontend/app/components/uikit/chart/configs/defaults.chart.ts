@@ -104,7 +104,19 @@ const roundOff = (step: number) => {
     return Math.ceil(step / 50000) * 50000;
   }
 
-  return Math.ceil(step / 100000) * 100000;
+  if (step <= 1000000) {
+    return Math.ceil(step / 100000) * 100000;
+  }
+
+  if (step <= 10000000) {
+    return Math.ceil(step / 1000000) * 1000000;
+  }
+
+  if (step <= 100000000) {
+    return Math.ceil(step / 10000000) * 10000000;
+  }
+
+  return Math.ceil(step / 100000000) * 100000000;
 };
 
 export const minHours = (value: { min: number; max: number }) => {

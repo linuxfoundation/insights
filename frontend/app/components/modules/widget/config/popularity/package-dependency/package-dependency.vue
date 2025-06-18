@@ -11,35 +11,26 @@ SPDX-License-Identifier: MIT
       />
     </div>
 
-    <div class="mb-5">
-      <lfx-skeleton-state
-        :status="status"
-        height="2rem"
-        width="7.5rem"
-      >
-        <div
-          v-if="summary"
-          class="flex flex-row gap-4 items-center"
-        >
-          <div class="text-data-display-1">{{ formatNumber(summary.current) }}</div>
-          <lfx-delta-display
-            v-if="selectedTimeRangeKey !== dateOptKeys.alltime"
-            :summary="summary"
-          />
-        </div>
-      </lfx-skeleton-state>
-    </div>
-
     <lfx-project-load-state
       :status="status"
       :error="error"
-      error-message="Error fetching package downloads"
+      error-message="Error fetching package dependency"
       :is-empty="isEmpty"
     >
-      <div class="w-full h-[320px] mt-5">
+      <div class="w-full h-[320px] my-5">
         <lfx-chart
-          :config="lineChartConfig"
+          :config="barChartConfig"
           :animation="!props.snapshot"
+        />
+      </div>
+
+      <div class="flex flex-col gap-4">
+        <lfx-project-package-legend-item
+          v-for="(series, index) in chartSeries"
+          :key="index"
+          :title="series.name"
+          :delta="getSummary(index)!"
+          :color="series.color!"
         />
       </div>
     </lfx-project-load-state>
@@ -50,10 +41,10 @@ SPDX-License-Identifier: MIT
 import { useRoute } from 'nuxt/app';
 import { computed, onServerPrefetch, watch } from 'vue';
 import { storeToRefs } from "pinia";
-import LfxPackageDropdown from './fragments/package-dropdown.vue';
+import LfxPackageDropdown from '../package-downloads/fragments/package-dropdown.vue';
+import LfxProjectPackageLegendItem from './fragments/package-legend-item.vue';
 import type { Package, PackageDownloads } from '~~/types/popularity/responses.types';
 import type { Summary } from '~~/types/shared/summary.types';
-import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
 import { convertToChartData } from '~/components/uikit/chart/helpers/chart-helpers';
 import type {
   ChartData,
@@ -61,15 +52,14 @@ import type {
   ChartSeries
 } from '~/components/uikit/chart/types/ChartTypes';
 import LfxChart from '~/components/uikit/chart/chart.vue';
-import { getLineAreaChartConfig } from '~/components/uikit/chart/configs/line.area.chart';
+import { getBarChartConfigStacked } from '~/components/uikit/chart/configs/bar.chart';
 import { lfxColors } from '~/config/styles/colors';
-import { formatNumber, formatNumberShort } from '~/components/shared/utils/formatter';
+import { formatNumberShort } from '~/components/shared/utils/formatter';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
 import { dateOptKeys } from '~/components/modules/project/config/date-options';
 import { isEmptyData } from '~/components/shared/utils/helper';
-import { lineGranularities } from '~/components/shared/types/granularity';
+import { barGranularities } from '~/components/shared/types/granularity';
 import type { Granularity } from '~~/types/shared/granularity';
-import LfxSkeletonState from "~/components/modules/project/components/shared/skeleton-state.vue";
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
 import {Widget} from "~/components/modules/widget/types/widget";
 import { POPULARITY_API_SERVICE } from '~/components/modules/widget/services/popularity.api.service';
@@ -121,7 +111,7 @@ const route = useRoute();
 
 const granularity = computed(() => (selectedTimeRangeKey.value === dateOptKeys.custom
   ? customRangeGranularity.value[0] as Granularity
-  : lineGranularities[selectedTimeRangeKey.value as keyof typeof lineGranularities]));
+  : barGranularities[selectedTimeRangeKey.value as keyof typeof barGranularities]));
 
 const downloadsParams = computed(() => ({
   projectSlug: route.params.slug as string,
@@ -156,30 +146,70 @@ onServerPrefetch(async () => {
 
 const packageDownloads = computed<PackageDownloads>(() => data.value as PackageDownloads);
 
-const summary = computed<Summary>(() => {
+const dependentReposSummary = computed<Summary | undefined>(() => {
   const {
     periodFrom,
     periodTo,
-    currentDownloads,
-    previousDownloads,
-    downloadsPercentageChange,
-    downloadsChangeValue
+    currentDependentRepos,
+    previousDependentRepos,
+    dependentReposPercentageChange,
+    dependentReposChangeValue
   } = packageDownloads.value.summary;
 
   return {
-    current: currentDownloads,
-    previous: previousDownloads,
-    percentageChange: downloadsPercentageChange,
-    changeValue: downloadsChangeValue,
+    current: currentDependentRepos,
+    previous: previousDependentRepos,
+    percentageChange: dependentReposPercentageChange,
+    changeValue: dependentReposChangeValue,
     periodFrom,
     periodTo,
   }
 });
+const dependentPackagesSummary = computed<Summary | undefined>(() => {
+  const {
+    periodFrom,
+    periodTo,
+    currentDependentPackages,
+    previousDependentPackages,
+    dependentPackagesPercentageChange,
+    dependentPackagesChangeValue
+  } = packageDownloads.value.summary;
+
+  return {
+    current: currentDependentPackages,
+    previous: previousDependentPackages,
+    percentageChange: dependentPackagesPercentageChange,
+    changeValue: dependentPackagesChangeValue,
+    periodFrom,
+    periodTo,
+  }
+});
+const dockerDependentsSummary = computed<Summary | undefined>(() => {
+  const {
+    periodFrom,
+    periodTo,
+    currentDockerDependents,
+    previousDockerDependents,
+    dockerDependentsPercentageChange,
+    dockerDependentsChangeValue
+  } = packageDownloads.value.summary;
+
+  return {
+    current: currentDockerDependents,
+    previous: previousDockerDependents,
+    percentageChange: dockerDependentsPercentageChange,
+    changeValue: dockerDependentsChangeValue,
+    periodFrom,
+    periodTo,
+  }
+});
+
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
   () => convertToChartData((packageDownloads.value?.data || []) as RawChartData[], 'startDate', [
-    'downloadsCount',
-    'dockerDownloadsCount',
+    'dependentReposCount',
+    'dependentPackagesCount',
+    'dockerDependentsCount',
   ], undefined, 'endDate')
 );
 const isEmpty = computed(() => {
@@ -193,37 +223,59 @@ const isEmpty = computed(() => {
 
 const chartSeries = computed<ChartSeries[]>(() => [
   {
-    name: 'Total package downloads',
-    type: 'line',
+    name: 'Dependent repositories',
+    type: 'bar',
     yAxisIndex: 0,
     dataIndex: 0,
     position: 'left',
-    color: lfxColors.brand[500],
-    lineWidth: 2
+    color: lfxColors.brand[500]
   },
   {
-    name: 'Docker downloads',
-    type: 'line',
+    name: 'Dependent packages',
+    type: 'bar',
     yAxisIndex: 0,
     dataIndex: 1,
     position: 'left',
-    lineStyle: 'dotted',
-    color: lfxColors.neutral[500],
-    lineWidth: 2
+    color: lfxColors.brand[200]
+  },
+  {
+    name: 'Dependent Docker packages',
+    type: 'bar',
+    yAxisIndex: 0,
+    dataIndex: 2,
+    position: 'left',
+    color: lfxColors.brand[800]
   }
 ]);
 
-const lineChartConfig = computed(() => getLineAreaChartConfig(
+const barChartConfig = computed(() => getBarChartConfigStacked(
   chartData.value,
   chartSeries.value,
   granularity.value,
-  (value: number, index?: number) => {
-    if (index === 0) {
-      return '';
-    }
-    return formatNumberShort(value);
+  {
+    yAxis: {
+      axisLabel: {
+        formatter: (value: number, index?: number) => {
+          if (index === 0) {
+            return '';
+          }
+          return formatNumberShort(value);
+        }
+      }
+    },
   }
 ));
+
+const getSummary = (index: number) => {
+  switch (index) {
+    case 0:
+      return dependentReposSummary.value;
+    case 1:
+      return dependentPackagesSummary.value;
+    default:
+      return dockerDependentsSummary.value;
+  }
+};
 
 watch(status, (value) => {
   if (value !== 'pending') {
@@ -236,6 +288,6 @@ watch(status, (value) => {
 
 <script lang="ts">
 export default {
-  name: 'LfxProjectPackageDownloads',
+  name: 'LfxProjectPackageDependency',
 }
 </script>

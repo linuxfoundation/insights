@@ -1,17 +1,14 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import type {
-  CallbackDataParams,
-  TopLevelFormatterParams
-} from 'echarts/types/dist/shared';
+import type { CallbackDataParams, TopLevelFormatterParams } from 'echarts/types/dist/shared';
 import { DateTime } from 'luxon';
 import type {
   MultipleTooltipFormatterParams,
-  SingleTooltipFormatterParams
+  SingleTooltipFormatterParams,
 } from '../types/EChartTypes';
 import type { ChartData, ChartSeries } from '../types/ChartTypes';
 import { Granularity } from '~~/types/shared/granularity';
-import { formatNumber } from '~/components/shared/utils/formatter';
+import { formatNumber, formatNumberShort } from '~/components/shared/utils/formatter';
 import { lfxColors } from '~/config/styles/colors';
 
 declare type LabelFormatterParams = {
@@ -72,7 +69,7 @@ const tooltipSingleValueWithBullet = (series: ChartSeries[]) => (params: SingleT
     font-size: 12px;
      color: ${lfxColors.neutral[900]}
   ">
-    <span style="font-weight: 400;">
+    <span style="font-weight: 400; font-size: 12px; margin-right: 10px;">
       <span style="background-color: ${series[idx]?.color || lfxColors.brand[500]}; 
         display: inline-block;
         border-radius: 100%; 
@@ -81,7 +78,13 @@ const tooltipSingleValueWithBullet = (series: ChartSeries[]) => (params: SingleT
         margin-right: 4px;"></span>
       ${params.seriesName}
     </span>
-    <span style="font-weight: 500;">${formatNumber(Number(params.value))}</span>
+    <span style="font-weight: 500; font-size: 12px;">
+      ${
+        Number(params.value) > 1000000
+          ? formatNumberShort(Number(params.value))
+          : formatNumber(Number(params.value))
+      }
+    </span>
   </div>
   `;
 export const tooltipFormatter = (
@@ -94,18 +97,11 @@ export const tooltipFormatter = (
   )}</div>${params.map(tooltipSingleValue).join('')}`;
 };
 
-const formatDateRange = (
-  startDateMillis: string,
-  endDateIso: string,
-  granularity: string
-) => {
+const formatDateRange = (startDateMillis: string, endDateIso: string, granularity: string) => {
   switch (granularity) {
     case Granularity.WEEKLY:
     case Granularity.QUARTERLY:
-      return `${formatDate(startDateMillis, 'MMM d')} - ${formatIsoDate(
-        endDateIso,
-        'MMM d'
-      )}`;
+      return `${formatDate(startDateMillis, 'MMM d')} - ${formatIsoDate(endDateIso, 'MMM d')}`;
     case Granularity.MONTHLY:
       return `${formatDate(startDateMillis, 'MMM yyyy')}`;
     case Granularity.YEARLY:
@@ -129,11 +125,7 @@ export const tooltipFormatterWithData = (data: ChartData[], granularity: string,
       granularity
     )}</div>`;
     return `${dateStr}${params
-      .map(
-        series && series.length > 1
-          ? tooltipSingleValueWithBullet(series)
-          : tooltipSingleValue
-      )
+      .map(series && series.length > 1 ? tooltipSingleValueWithBullet(series) : tooltipSingleValue)
       .join('')}`;
   };
 
@@ -145,7 +137,7 @@ const convertToFullDayName = (day: string) => {
     Thu: 'Thursday',
     Fri: 'Friday',
     Sat: 'Saturday',
-    Sun: 'Sunday'
+    Sun: 'Sunday',
   };
   return dayMap[day as keyof typeof dayMap] || day;
 };
@@ -156,9 +148,9 @@ export const punchCardFormatter = (granularity: string, isPunchCard: boolean = f
     const params: SingleTooltipFormatterParams = paramsRaw as SingleTooltipFormatterParams;
     const data = params.data as number[];
     const dateStr = isPunchCard
-      ? `<div style="font-size: 12px; color: ${
-          lfxColors.neutral[400]
-        };">${convertToFullDayName(params.name)}, ${yAxisData?.[data[1] || 0]}</div>`
+      ? `<div style="font-size: 12px; color: ${lfxColors.neutral[400]};">${convertToFullDayName(
+          params.name
+        )}, ${yAxisData?.[data[1] || 0]}</div>`
       : `<div style="font-size: 12px; color: ${lfxColors.neutral[400]};">${
           granularity.charAt(0).toUpperCase() + granularity.slice(1)
         } ${data[0]}</div>`;
