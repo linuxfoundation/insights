@@ -32,13 +32,13 @@ This page provides concise explanations of the metrics available on the Contribu
 
 **Why it matters:** Highlights risk areas if key contributors leave. Useful for sustainability planning and succession strategy.    
 
-## Organizations Dependency
+## Organization Dependency
 
 **What it is:** Analyzes how much of the project’s contributions come from a small number of organizations.
 
 **Why it matters:** Reveals potential over-reliance on single entities. Projects with diverse organizational support are generally more robust. 
 
-## Retention
+## Quaterly Contributor Retention
 
 **What it is:** The percentage of contributors who stay active in the project across multiple time periods.
 
