@@ -41,7 +41,7 @@ SPDX-License-Identifier: MIT
             type="member"
           />
           <div
-            class="text-ellipsis overflow-hidden"
+            class="text-ellipsis overflow-hidden no-underline"
             :title="contributor.name"
           >{{ contributor.name }}</div>
           <lfx-tag
