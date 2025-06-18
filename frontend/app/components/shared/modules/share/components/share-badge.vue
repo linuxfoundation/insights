@@ -113,10 +113,14 @@ const {
 } = OVERVIEW_API_SERVICE.fetchHealthScore(params);
 
 const {
-  data: securityAssessmentData,
+  data: securityAssessmentDataRaw,
   status: securityAssessmentStatus,
   error: securityAssessmentError
 } = OVERVIEW_API_SERVICE.fetchSecurityAssessment(params);
+
+// TODO: Remove this when we have data for them
+const securityAssessmentData = computed(() => PROJECT_SECURITY_SERVICE
+.removeDocumentationAndVulnerability(securityAssessmentDataRaw.value || []));
 
 const statusHealthScore = computed<AsyncDataRequestStatus>(() => {
   if (healthScoreStatus.value === 'success' && securityAssessmentStatus.value === 'success') {

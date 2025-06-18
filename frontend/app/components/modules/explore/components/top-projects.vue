@@ -40,13 +40,7 @@ SPDX-License-Identifier: MIT
           v-if="isFullList"
           class="basis-1/5 text-right text-xs text-neutral-500"
         >
-          {{ formatNumber(row.contributorCount) }}
-        </div>
-        <div
-          v-if="isFullList"
-          class="basis-1/5 text-right text-xs text-neutral-500"
-        >
-          {{ formatNumberCurrency(row.softwareValue || 0, 'USD') }}
+          {{ row.score }}
         </div>
         <div
           v-if="!isFullList"
@@ -69,7 +63,6 @@ import { EXPLORE_API_SERVICE } from '~/components/modules/explore/services/explo
 import type { Pagination } from '~~/types/shared/pagination';
 import type { Project } from '~~/types/project';
 import LfxAvatar from "~/components/uikit/avatar/avatar.vue";
-import { formatNumber, formatNumberCurrency } from '~/components/shared/utils/formatter';
 import { isEmptyData } from '~/components/shared/utils/helper';
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
 import LfxIcon from '~/components/uikit/icon/icon.vue';
