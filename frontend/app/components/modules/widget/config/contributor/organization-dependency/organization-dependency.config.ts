@@ -5,9 +5,9 @@ import type {WidgetConfig} from "~/components/modules/widget/config/widget.confi
 
 const organizationDependency: WidgetConfig = {
     key: 'organizationDependency',
-    name: 'Organizations dependency',
-    description: () => 'Distribution of contributions across different organizations, '
-        + 'whose contributors were actively involved in the project during the selected period.',
+    name: 'Organization dependency',
+    description: () => 'Distribution of contributions across organizations, highlighting the group of '
+        + 'organizations whose contributors performed 51%+ of all contributions in the selected time period.',
     learnMoreLink: `/docs/metrics/contributors#organizations-dependency`,
     component: OrganizationsDependency,
     defaultValue: {

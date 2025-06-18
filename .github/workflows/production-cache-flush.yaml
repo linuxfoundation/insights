@@ -1,10 +1,10 @@
-name: Staging Deploy
+name: Production Cache Flush
 
 on:
   workflow_dispatch:
 
 env:
-  CLOUD_ENV: lf-oracle-staging
+  CLOUD_ENV: lf-oracle-production
   ORACLE_DOCKER_USERNAME: ${{ secrets.ORACLE_DOCKER_USERNAME }}
   ORACLE_DOCKER_PASSWORD: ${{ secrets.ORACLE_DOCKER_PASSWORD }}
   ORACLE_USER: ${{ secrets.ORACLE_USER }}
@@ -13,11 +13,11 @@ env:
   ORACLE_FINGERPRINT: ${{ secrets.ORACLE_FINGERPRINT }}
   ORACLE_KEY: ${{ secrets.ORACLE_KEY }}
   ORACLE_KEY_PASSPHRASE: ${{ secrets.ORACLE_KEY_PASSPHRASE }}
-  ORACLE_CLUSTER: ${{ secrets.ORACLE_STAGING_CLUSTER }}
+  ORACLE_CLUSTER: ${{ secrets.ORACLE_PRODUCTION_CLUSTER }}
   KUBECONFIG_PATH: /home/runner/.kube/config
 
 jobs:
-  deploy:
+  flush-cache:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -54,25 +54,6 @@ jobs:
         run: |
           oci ce cluster create-kubeconfig --cluster-id ${{ env.ORACLE_CLUSTER }} --file ${{ env.KUBECONFIG_PATH }} --region ${{ env.ORACLE_REGION }} --token-version 2.0.0  --kube-endpoint PUBLIC_ENDPOINT --overwrite
 
-      - name: Load all envs from ConfigMap
-        run: |
-          kubectl get configmap insights-config-map -n insights -o json \
-          | jq -r '.data | to_entries[] | "\(.key)=\(.value)"' >> $GITHUB_ENV
-
-      - name: Build docker image
-        uses: ./.github/actions/build-docker-image
-        id: build-docker-image
-        with:
-          app-env: staging
-        env:
-          NUXT_REDIS_URL: ${{ env.NUXT_REDIS_URL }}
-
-      - name: Update Deployment Image
-        run: |
-            kubectl set image deployment/insights-app-dpl frontend=${{ steps.build-docker-image.outputs.image }} -n insights
-            kubectl rollout status deployment/insights-app-dpl -n insights
-
       - name: Flush cache
         run: |
           kubectl exec -i redis-client -n insights -- redis-cli -h redis-master -a "$(kubectl get secret redis -n insights -o jsonpath="{.data.redis-password}" | base64 -d)" FLUSHALL
-

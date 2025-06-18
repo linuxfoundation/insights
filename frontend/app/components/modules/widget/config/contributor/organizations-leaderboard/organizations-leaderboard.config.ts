@@ -6,8 +6,8 @@ import type {WidgetConfig} from "~/components/modules/widget/config/widget.confi
 const organizationsLeaderboard: WidgetConfig = {
     key: 'organizationsLeaderboard',
     name: 'Organizations leaderboard',
-    description: () => 'Organization ranking based on the number of activities performed by contributors on'
-        + ' their behalf and the impact on the project.',
+    description: () => 'Organizations ranked by the number of contribution activities'
+    + 'performed by contributors on their behalf during the selected time period.',
     learnMoreLink: `/docs/metrics/contributors#organizations-leaderboard`,
     component: OrganizationsLeaderboard,
     defaultValue: {
