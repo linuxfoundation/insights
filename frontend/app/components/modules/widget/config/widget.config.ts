@@ -22,6 +22,7 @@ import socialMentions from "./popularity/social-mentions/social-mentions.config"
 import pressMentions from "./popularity/press-mentions/press-mentions.config";
 import searchQueries from "./popularity/search-queries/search-queries.config";
 import packageDownloads from "./popularity/package-downloads/package-downloads.config";
+import packageDependency from "./popularity/package-dependency/package-dependency.config";
 import issuesResolution
     from "./development/issues-resolution/issues-resolution.config";
 import pullRequests from "./development/pull-requests/pull-requests.config";
@@ -76,6 +77,7 @@ export const lfxWidgets: Record<Widget, WidgetConfig> = {
   [Widget.PRESS_MENTIONS]: pressMentions,
   [Widget.SEARCH_QUERIES]: searchQueries,
   [Widget.PACKAGE_DOWNLOADS]: packageDownloads,
+  [Widget.PACKAGE_DEPENDENCY]: packageDependency,
   [Widget.MAILING_LISTS_MESSAGES]: mailingListMessages,
 
   // Development
