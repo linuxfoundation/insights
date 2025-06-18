@@ -5,6 +5,8 @@ export default {
         ? {}
         : {
         "/api/health": {cache: false},
+        "/api/seo/og-image": {cache: false},
+        "/api/report": {cache: false},
         "/api/health/live": {cache: false},
         "/api/search": {cache: {maxAge: 86400, base: 'redis'}}, // Cache search results for 1 day
         "/api/**": {cache: {maxAge: 3600, base: 'redis'}}, // Cache API responses for 1 hour
