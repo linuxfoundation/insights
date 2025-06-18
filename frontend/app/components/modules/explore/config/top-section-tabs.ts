@@ -7,7 +7,7 @@ import LfxExploreTopOrganizations from '../components/top-organizations.vue';
 
 export const TOP_SECTION_TABS: ExploreTab[] = [
   {
-    title: 'Top projects',
+    title: 'Top Linux Foundation projects',
     description: `Projects ranked by Criticality Score, considering 
     their importance, usage, and potential impact across the ecosystem.`,
     component: LfxExploreTopProjects,

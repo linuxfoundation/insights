@@ -27,7 +27,7 @@ SPDX-License-Identifier: MIT
           ref="searchInputRef"
           v-model="search"
           type="text"
-          class="outline-0 flex-grow text-sm text-neutral-900 leading-5"
+          class="!outline-none !shadow-none  flex-grow text-sm text-neutral-900 leading-5"
           placeholder="Search repositories..."
           @keydown.esc="isModalOpen = false"
         >

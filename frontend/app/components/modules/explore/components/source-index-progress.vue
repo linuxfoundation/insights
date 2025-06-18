@@ -31,7 +31,7 @@ SPDX-License-Identifier: MIT
         </div>
       </div>
     </div>
-    <div class="flex justify-center sm:justify-start">
+    <div class="flex justify-center sm:justify-start py-2">
       <nuxt-link
         :to="exploreLink"
         class="text-sm text-brand-500 font-semibold hover:underline"
