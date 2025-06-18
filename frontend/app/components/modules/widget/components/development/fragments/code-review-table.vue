@@ -21,7 +21,7 @@ SPDX-License-Identifier: MIT
           type="member"
           class="min-w-8"
         />
-        <div class="flex-grow overflow-hidden whitespace-nowrap text-ellipsis">
+        <div class="flex-grow overflow-hidden whitespace-nowrap text-ellipsis no-underline">
           {{ item.name }}
         </div>
 
