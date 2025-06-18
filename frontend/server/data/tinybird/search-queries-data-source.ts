@@ -16,8 +16,6 @@ export async function fetchSearchVolume(filter: SearchVolumeFilter): Promise<Sea
 
   const data = await fetchFromTinybird<TinybirdSearchVolumeData[]>(`/v0/pipes/search_volume.json`, query);
 
-  console.log('data', data);
-
   return {
     data: data.data.map((item) => ({
       startDate: item.dataTimestamp,
