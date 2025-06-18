@@ -15,12 +15,16 @@ SPDX-License-Identifier: MIT
       :key="index"
       class="lfx-table-row"
     >
-      <div class="flex flex-row gap-3 items-center basis-2/4">
+      <div class="flex flex-row gap-3 items-center basis-2/4 overflow-hidden">
         <lfx-avatar
           :src="item.avatar"
           type="member"
+          class="min-w-8"
         />
-        <div class="text-ellipsis">{{ item.name }}</div>
+        <div class="flex-grow overflow-hidden whitespace-nowrap text-ellipsis">
+          {{ item.name }}
+        </div>
+
         <lfx-tag
           v-if="item.roles?.includes('maintainer')"
           size="small"
