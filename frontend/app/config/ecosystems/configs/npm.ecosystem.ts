@@ -1,0 +1,11 @@
+// Copyright (c) 2025 The Linux Foundation and each contributor.
+// SPDX-License-Identifier: MIT
+
+import { EcosystemKeys } from '~~/types/shared/ecosystems.types';
+import type { Ecosystem } from '~~/types/shared/ecosystems.types';
+
+export const npm: Ecosystem = {
+  key: EcosystemKeys.NPM,
+  label: 'NPM',
+  image: '/images/ecosystems/npm.png',
+};

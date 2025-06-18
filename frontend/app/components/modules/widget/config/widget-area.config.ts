@@ -43,8 +43,7 @@ export const lfxWidgetArea: Record<WidgetArea, WidgetAreaConfig> = {
       Widget.PRESS_MENTIONS,
       // TODO: Uncomment this when the search queries widget is ready
       // Widget.SEARCH_QUERIES,
-      // TODO: Uncomment this when the package downloads widget is ready
-      // Widget.PACKAGE_DOWNLOADS,
+      Widget.PACKAGE_DOWNLOADS,
       Widget.MAILING_LISTS_MESSAGES,
     ],
     overviewWidgets: [Widget.STARS, Widget.FORKS],

@@ -34,6 +34,7 @@ export enum TanstackKey {
   FORKS_CUMULATIVE = 'forks-cumulative',
   GITHUB_MENTIONS = 'github-mentions',
   PACKAGE_DOWNLOADS = 'package-downloads',
+  PACKAGES = 'packages',
   PRESS_MENTIONS = 'press-mentions',
   SEARCH_QUERIES = 'search-queries',
   SOCIAL_MENTIONS = 'social-mentions',
