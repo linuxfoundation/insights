@@ -14,9 +14,6 @@ export default defineNuxtConfig({
   future: {
     compatibilityVersion: 4
   },
-  experimental: {
-    payloadExtraction: false
-  },
   app: {
     head,
     errorHandler: '~/app/error.vue'

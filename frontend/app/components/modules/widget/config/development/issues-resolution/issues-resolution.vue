@@ -5,7 +5,7 @@ SPDX-License-Identifier: MIT
 <template>
   <section class="mt-5">
     <div :class="props.snapshot ? 'mb-0' : 'mb-6'">
-      <div class="flex flex-row justify-between items-start">
+      <div class="flex flex-row flex-wrap justify-between items-start gap-y-3">
         <div>
           <div class="text-neutral-400 text-xs mb-1">
             Total closed issues
@@ -15,8 +15,8 @@ SPDX-License-Identifier: MIT
             height="2rem"
             width="7.5rem"
           >
-            <div class="flex flex-row gap-4 items-center">
-              <div class="text-data-display-1">{{ formatNumber(summary.current) }}</div>
+            <div class="flex flex-row flex-wrap gap-4 items-center">
+              <div class="text-data-display-1 whitespace-nowrap">{{ formatNumber(summary.current * 1000) }}</div>
               <lfx-delta-display
                 v-if="selectedTimeRangeKey !== dateOptKeys.alltime"
                 :summary="summary"
