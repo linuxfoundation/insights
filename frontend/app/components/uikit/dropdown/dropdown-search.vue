@@ -15,7 +15,7 @@ SPDX-License-Identifier: MIT
     <input
       v-model="model"
       type="text"
-      class="outline-0 flex-grow text-sm text-neutral-900 leading-5"
+      class="!outline-0 !shadow-none  flex-grow text-sm text-neutral-900 leading-5"
       :placeholder="props.placeholder || 'Search...'"
       @input="changedValue"
     >
