@@ -3,13 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "main": "dist/keywords-everywhere.js",
+  "main": "dist/search-volume.js",
   "scripts": {
     "dev": "tsx watch --env-file=.env search-volume.ts",
     "build": "tsc",
-    "test": "vitest"
+    "test": "vitest",
+    "start": "node --env-file=.env dist/search-volume.js"
   },
   "dependencies": {
+    "@temporalio/client": "^1.11.8",
+    "@temporalio/worker": "^1.11.8",
+    "@temporalio/workflow": "^1.11.8",
     "@types/pg": "^8.15.4",
     "luxon": "^3.6.1",
     "ofetch": "^1.4.1",
@@ -20,6 +24,6 @@
     "@types/luxon": "^3.6.2",
     "@types/node": "^22.15.30",
     "tsx": "^4.19.4",
-    "typescript": "^5.7.3"
+    "typescript": "^5.8"
   }
 }
