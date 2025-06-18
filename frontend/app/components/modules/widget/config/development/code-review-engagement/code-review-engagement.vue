@@ -6,7 +6,6 @@ SPDX-License-Identifier: MIT
   <section class="mt-5">
     <template v-if="!props.snapshot">
       <lfx-tabs
-        v-if="!props.snapshot"
         :tabs="tabs"
         :model-value="model.activeTab"
         class="!hidden sm:!flex"
