@@ -15,17 +15,17 @@ interface GeoMapData {
 
 const defaultGeoOption: ECOption = {
   layoutCenter: ['50%', '50%'],
-  layoutSize: '140%',
+  layoutSize: '120%',
   aspectScale: 0.7,
   visualMap: {
     show: false,
     min: 0,
     max: 100000,
     inRange: {
-      color: [lfxColors.white, lfxColors.brand[500]] // Object.values(lfxColors.brand)
+      color: [lfxColors.white, lfxColors.brand[500]], // Object.values(lfxColors.brand)
     },
     text: ['High', 'Low'],
-    calculable: true
+    calculable: true,
   },
   tooltip: {
     trigger: 'item',
@@ -55,8 +55,8 @@ const defaultGeoOption: ECOption = {
         }%</span>
       </div>`
         : null;
-    }
-  }
+    },
+  },
 };
 
 const defaultSeriesStyle: MapSeriesOption = {
@@ -65,19 +65,19 @@ const defaultSeriesStyle: MapSeriesOption = {
   map: 'world',
   emphasis: {
     label: {
-      show: false
+      show: false,
     },
     itemStyle: {
       areaColor: lfxColors.brand[600],
-      borderColor: 'inherit' // lfxColors.neutral[900]
-    }
+      borderColor: 'inherit', // lfxColors.neutral[900]
+    },
   },
   select: {
-    disabled: true
+    disabled: true,
   },
   itemStyle: {
-    areaColor: lfxColors.white
-  }
+    areaColor: lfxColors.white,
+  },
 };
 
 /**
@@ -87,15 +87,12 @@ const defaultSeriesStyle: MapSeriesOption = {
  * @param data - Data
  * @returns Series
  */
-const buildSeries = (
-  series: ChartSeries[],
-  data: ChartData[]
-): SeriesTypes[] | undefined => (series.length > 0
+const buildSeries = (series: ChartSeries[], data: ChartData[]): SeriesTypes[] | undefined => (series.length > 0
     ? series.map(
         (series: ChartSeries) => ({
             name: series.name,
             ...defaultSeriesStyle,
-            data: serializeDataForGeoMap(data)
+            data: serializeDataForGeoMap(data),
           } as SeriesTypes)
       )
     : undefined);
@@ -103,7 +100,7 @@ const buildSeries = (
 const serializeDataForGeoMap = (data: ChartData[]): GeoMapData[] => data.map((item) => ({
     name: item.key,
     value: item.values[0] ?? 0,
-    percentage: item.values[1] ?? 0
+    percentage: item.values[1] ?? 0,
   }));
 
 const countryNameFormatter = (name: string) => {
@@ -115,6 +112,19 @@ const countryNameFormatter = (name: string) => {
   </div>`;
 };
 
+const getLayoutSize = () => {
+  const windowWidth = window.innerWidth;
+  if (windowWidth >= 1280) {
+    return '140%';
+  }
+
+  if (windowWidth >= 470) {
+    return '120%';
+  }
+
+  return '100%';
+};
+
 export const getGeoMapChartConfig = (
   data: ChartData[],
   series: ChartSeries[],
@@ -122,15 +132,14 @@ export const getGeoMapChartConfig = (
 ): ECOption => {
   const option = _.merge({}, defaultGeoOption, {
     visualMap: {
-      max: maxValue
-    }
+      max: maxValue,
+    },
   });
-  // const tooltip = merge({}, defaultGeoOption.tooltip, {
 
-  // });
+  option.layoutSize = getLayoutSize();
 
   return _.merge({}, option, {
-    series: buildSeries(series, data)
+    series: buildSeries(series, data),
     // tooltip
   });
 };
