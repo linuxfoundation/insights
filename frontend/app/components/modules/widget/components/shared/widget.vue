@@ -3,7 +3,7 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <lfx-card class="p-4 sm:p-6 relative group overflow-hidden">
+  <lfx-card class="p-4 sm:p-6 relative group">
     <div class="flex justify-between items-center pb-3">
       <h3 class="text-heading-3 font-semibold font-secondary">{{ config.name }}</h3>
       <lfx-widget-menu
