@@ -4,7 +4,7 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <section>
-    <div class="lg:flex hidden flex-row gap-4 xl:gap-8 items-start">
+    <div class="lg:grid hidden grid-cols-3 gap-4 xl:gap-8 items-start">
       <lfx-explore-list-card
         v-for="tab in TOP_SECTION_TABS"
         :key="tab.title"

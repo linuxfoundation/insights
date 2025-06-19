@@ -40,7 +40,7 @@ SPDX-License-Identifier: MIT
           v-if="isFullList"
           class="basis-1/5 text-right text-xs text-neutral-500"
         >
-          {{ row.score }}
+          {{ formatNumber(row.contributorCount) }}
         </div>
         <div
           v-if="!isFullList"
@@ -59,6 +59,7 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { computed, onServerPrefetch } from 'vue';
 import { useRouter } from 'vue-router';
+import {formatNumber} from "../../../shared/utils/formatter";
 import { EXPLORE_API_SERVICE } from '~/components/modules/explore/services/explore.api.service';
 import type { Pagination } from '~~/types/shared/pagination';
 import type { Project } from '~~/types/project';
