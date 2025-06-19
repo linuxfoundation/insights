@@ -8,8 +8,8 @@ SPDX-License-Identifier: MIT
       <h3 class="text-heading-3 font-semibold font-secondary">{{ config.name }}</h3>
       <lfx-widget-menu
         :data="model"
-        class="relative md:absolute md:-top-3 md:right-6 md:opacity-0
-        md:invisible group-hover:opacity-100 group-hover:visible"
+        class="relative lg:absolute lg:-top-3 lg:right-6 lg:opacity-0
+        lg:invisible group-hover:opacity-100 group-hover:visible"
         :name="props.name"
       />
     </div>
