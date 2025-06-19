@@ -5,12 +5,13 @@ import http from 'k6/http';
 import { sleep, check } from 'k6';
 
 const baseUrl = 'https://insights.linuxfoundation.org'
-const topProjectsCount = 200
-const topCollectionsCount = 100
+const topProjectsCount = 100
+const topProjectsPage = 1
+const topCollectionsCount = 200
 
-const cacheCollections = true;
+const cacheCollections = false;
 const cacheProjects = true;
-const cacheOssIndex = true;
+const cacheOssIndex = false;
 
 const basePaths = [
     '',
@@ -69,7 +70,8 @@ export function setup() {
     /* Project */
     if(cacheProjects){
         const projectRequest = http.get(
-            `${baseUrl}/api/project?page=0&pageSize=${topProjectsCount}&sort=score_desc&onboarded=true&isLF=true`
+            `${baseUrl}/api/project?page=${topProjectsPage}&pageSize=${
+                topProjectsCount}&sort=score_desc&onboarded=true&isLF=true`
         );
         const projects = JSON.parse(projectRequest.body)?.data || [];
         const projectSlugs = projects.map((project) => project.slug);
@@ -99,22 +101,29 @@ export function setup() {
 }
 
 export const options = {
-    vus: 5,
-    duration: '1h'
+    vus: 3,
+    duration: '10m'
 };
 
+let completed = false;
+
 export default function (paths) {
+    if(completed){
+        return;
+    }
+
     const vuIndex = __VU - 1;
-    const totalVUs = __ENV.VUS ? parseInt(__ENV.VUS, 10) : 5;
+    const totalVUs = __ENV.VUS ? parseInt(__ENV.VUS, 10) : options.vus;
     const chunkSize = Math.ceil(paths.length / totalVUs);
     const start = vuIndex * chunkSize;
     const end = Math.min(start + chunkSize, paths.length);
 
     const userPaths = paths.slice(start, end);
 
-    userPaths.forEach((path) => {
+    userPaths.forEach((path, index) => {
         const url = `${baseUrl}${path}`;
         const res = http.get(url);
+
         check(res, {
             'status is 200': (r) => r.status === 200,
         });
@@ -123,8 +132,9 @@ export default function (paths) {
             return;
         }
         console.log(
-            `VU ${__VU} - Warmed up: ${url}`
+            `VU ${__VU} - (${index +1}/${userPaths.length}) - Warmed up: ${url}`
         );
         sleep(0.1);
     });
+    completed = true;
 }
