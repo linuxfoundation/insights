@@ -8,17 +8,21 @@ export default {
         "/api/seo/og-image": {cache: false},
         "/api/report": {cache: false},
         "/api/health/live": {cache: false},
-        "/api/search": {cache: {maxAge: 86400, base: 'redis'}}, // Cache search results for 1 day
-        "/api/**": {cache: {maxAge: 3600, base: 'redis'}}, // Cache API responses for 1 hour
-        "/project/**": {cache: {maxAge: 3600, base: 'redis'}}, // Cache project details for 1 hour
-        "**": {cache: {maxAge: 86400, base: 'redis'}}, // Cache all other routes for 1 day
+        // "/api/search": {cache: {maxAge: 86400, base: 'redis'}}, // Cache search results for 1 day
+        // "/api/**": {cache: {maxAge: 3600, base: 'redis'}}, // Cache API responses for 1 hour
+        // "/project/**": {cache: {maxAge: 3600, base: 'redis'}}, // Cache project details for 1 hour
+        // "**": {cache: {maxAge: 86400, base: 'redis'}}, // Cache all other routes for 1 day
+        "/api/search": {swc: 86400}, // Cache search results for 1 day
+        "/api/**": {swc: 3600}, // Cache API responses for 1 hour
+        "/project/**": {swc: 3600}, // Cache project details for 1 hour
+        "**": {swc: 86400}, // Cache all other routes for 1 day
     },
-    nitro: {
-        storage: {
-            redis: {
-                driver: 'redis',
-                url: process.env.NUXT_REDIS_URL || '',
-            },
-        },
-    },
+    // nitro: {
+    //     storage: {
+    //         redis: {
+    //             driver: 'redis',
+    //             url: process.env.NUXT_REDIS_URL || '',
+    //         },
+    //     },
+    // },
 }
