@@ -23,7 +23,7 @@ SPDX-License-Identifier: MIT
     </div>
   </section>
 
-  <div class="sticky top-14 lg:top-17">
+  <div class="sticky top-14 lg:top-17 z-20">
     <div class="bg-white border-b border-neutral-100">
       <div
         class="container transition-all"
