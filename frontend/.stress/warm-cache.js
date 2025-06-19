@@ -5,12 +5,17 @@ import http from 'k6/http';
 import { sleep, check } from 'k6';
 
 const baseUrl = 'https://insights.linuxfoundation.org'
-const topProjectsCount = 3
+const topProjectsCount = 200
+const topCollectionsCount = 100
+
+const cacheCollections = true;
+const cacheProjects = true;
+const cacheOssIndex = true;
 
 const basePaths = [
     '',
-    '/collections',
-    '/open-source-index'
+    '/collection',
+    '/open-source-index',
 ];
 
 const projectPaths = [
@@ -35,25 +40,60 @@ const projectTimeRanges = [
     'alltime',
 ];
 
+const ossIndexSort = [
+    'totalContributors',
+    'softwareValue',
+]
+
+const ossIndexType = [
+    'horizontal',
+    'vertical',
+];
+
 export function setup() {
     const allPaths = [...basePaths];
-    // Fetch top projects before test starts
-    const projectRequest = http.get(
-        `${baseUrl}/api/project?page=0&pageSize=${topProjectsCount}&sort=score_desc&onboarded=true&isLF=true`
-    );
-    const projects = JSON.parse(projectRequest.body)?.data || [];
-    const projectSlugs = projects.map((project) => project.slug);
 
-    projectSlugs.forEach((slug) => {
-        projectPaths.forEach((path) => {
-            allPaths.push(`/project/${slug}${path}`);
+    /* Collection */
+    if(cacheCollections){
+        const collectionsRequest = http.get(
+            `${baseUrl}/api/collection?page=0&pageSize=${topCollectionsCount}&sort=starred_desc`
+        );
+        const collections = JSON.parse(collectionsRequest.body)?.data || [];
+        const collectionSlugs = collections.map((collection) => collection.slug);
+
+        collectionSlugs.forEach((slug) => {
+            allPaths.push(`/collection/${slug}`);
         })
-        projectPathsWithTimeRanges.forEach((path) => {
-            projectTimeRanges.forEach((timeRange) => {
-                allPaths.push(`/project/${slug}${path}?timeRange=${timeRange}`);
+    }
+
+    /* Project */
+    if(cacheProjects){
+        const projectRequest = http.get(
+            `${baseUrl}/api/project?page=0&pageSize=${topProjectsCount}&sort=score_desc&onboarded=true&isLF=true`
+        );
+        const projects = JSON.parse(projectRequest.body)?.data || [];
+        const projectSlugs = projects.map((project) => project.slug);
+
+        projectSlugs.forEach((slug) => {
+            projectPaths.forEach((path) => {
+                allPaths.push(`/project/${slug}${path}`);
+            })
+            projectPathsWithTimeRanges.forEach((path) => {
+                projectTimeRanges.forEach((timeRange) => {
+                    allPaths.push(`/project/${slug}${path}?timeRange=${timeRange}`);
+                })
             })
         })
-    })
+    }
+
+    /* Open Source Index */
+    if(cacheOssIndex){
+        ossIndexSort.forEach((sort) => {
+            ossIndexType.forEach((type) => {
+                allPaths.push(`/open-source-index?sort=${sort}&type=${type}`);
+            })
+        })
+    }
 
     return allPaths;
 }
@@ -61,16 +101,23 @@ export function setup() {
 export const options = {
     vus: 1,
     iterations: 1,
+    duration: '1h'
 };
 
 export default function (paths) {
-    paths.forEach((path) => {
+    paths.forEach((path, index) => {
         const url = `${baseUrl}${path}`;
         const res = http.get(url);
-        console.log(`Warmed up: ${url}`);
+        if(res.status !== 200) {
+            console.error(`Failed to warm up: ${url}`);
+            return;
+        }
+        console.log(
+            `${Math.round(((index + 1)/paths.length)*100)}% (${index + 1}/${paths.length})`,
+            `Warmed up: ${url}`
+        );
         check(res, {
             'status is 200': (r) => r.status === 200,
         });
-        sleep(0.5);
     })
 }
