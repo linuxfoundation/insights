@@ -74,8 +74,6 @@ export async function fetchPackageMetrics(filter: PackageMetricsFilter) {
     endDate: dates.current.to,
   };
 
-  console.log(dataQuery)
-
   const [currentSummary, previousSummary, timeseries] = await Promise.all([
     fetchFromTinybird<PackageMetrics[]>(
       "/v0/pipes/package_metrics.json",

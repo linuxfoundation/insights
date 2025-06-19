@@ -36,3 +36,9 @@ export type ActivityHeatmapByWeekdayTBQuery = {
   startDate?: DateTime,
   endDate?: DateTime,
 };
+
+export type SearchVolumeTinybirdQuery = {
+  slug: string;
+  startDate?: DateTime;
+  endDate?: DateTime;
+}

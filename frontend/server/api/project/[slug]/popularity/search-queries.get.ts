@@ -1,6 +1,8 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { newMentions } from '~~/server/mocks/github-mentions.mock';
+import { DateTime } from 'luxon';
+import { fetchSearchVolume } from '~~/server/data/tinybird/search-queries-data-source';
+import type { SearchVolumeFilter } from '~~/server/data/types';
 
 /**
  * Frontend expects the data to be in the following format:
@@ -25,12 +27,25 @@ import { newMentions } from '~~/server/mocks/github-mentions.mock';
  * - granularity: string
  * - project: string
  * - repository: string
- * - time-period: string // This is isn't defined yet, but we'll add '90d', '1y', '5y' for now
+ * - time-period: string // This isn't defined yet, but we'll add '90d', '1y', '5y' for now
  */
-export default defineEventHandler(async () => ({
-  summary: newMentions.summary,
-  data: newMentions.data.map((item) => ({
-    ...item,
-    queryCount: item.mentions
-  }))
-}));
+export default defineEventHandler(async (event) => {
+  const { slug } = getRouterParams(event);
+  const query = getQuery(event);
+
+  const filter: SearchVolumeFilter = {
+    slug,
+    startDate: query.startDate ? DateTime.fromISO(query.startDate as string) : undefined,
+    endDate: query.endDate ? DateTime.fromISO(query.endDate as string) : undefined,
+  };
+
+  const searchVolumeData = await fetchSearchVolume(filter);
+
+  return {
+    data: searchVolumeData.data.map((item) => ({
+      startDate: item.startDate,
+      endDate: item.endDate,
+      queryCount: item.queryCount
+    }))
+  };
+});
