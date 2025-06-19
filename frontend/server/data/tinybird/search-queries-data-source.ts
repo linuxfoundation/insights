@@ -19,10 +19,7 @@ export async function fetchSearchVolume(filter: SearchVolumeFilter): Promise<Sea
   return {
     data: data.data.map((item) => ({
       startDate: item.dataTimestamp,
-      endDate: DateTime.fromFormat(
-        item.dataTimestamp.toString(),
-        "yyyy-MM-dd HH:mm:ss.SSS"
-      ).endOf('month').toString(),
+      endDate: DateTime.fromISO(item.dataTimestamp).endOf('month').toFormat('yyyy-MM-dd'),
       queryCount: item.volume
     }))
   };
