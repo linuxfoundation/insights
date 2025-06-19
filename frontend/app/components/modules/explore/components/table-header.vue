@@ -18,7 +18,7 @@ SPDX-License-Identifier: MIT
       <div
         v-if="props.type === 'project'"
         class="text-right"
-      >Criticality score</div>
+      >Contributor Count</div>
     </div>
   </div>
 </template>
