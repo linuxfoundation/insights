@@ -9,7 +9,10 @@ SPDX-License-Identifier: MIT
   >
     <!-- TODO: These colors seems different from what is defined in the design system
      Waiting for verification from Nuno -->
-    <span :class="['text-body-1 flex items-center gap-2', deltaColor]">
+    <span
+      class="text-body-1 flex items-center gap-2"
+      :class="deltaColor"
+    >
       <lfx-icon
         :name="deltaIcon"
         :type="'light'"
