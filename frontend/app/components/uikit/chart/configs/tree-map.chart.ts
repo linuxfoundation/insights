@@ -215,9 +215,10 @@ export const getTreeMapConfig = (
   isValueCurrency: boolean,
   options?: ECOption
 ): ECOption => {
-  const treeMapOption = _.merge(defaultTreeMapOption, {
+  const treeMapOption = _.merge({}, defaultTreeMapOption, {
     series: [isValueCurrency ? SERIES_CURRENCY : SERIES_DEFAULT] as ECOption['series'],
   });
+  console.log('!!!treeMapOption', treeMapOption);
 
   const config = _.merge({}, treeMapOption, options);
   if (config.tooltip) {
