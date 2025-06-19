@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: MIT
 // These are the types of the responses from the Tinybird API
 
+import type {DateTime} from "luxon";
+
 export type TinybirdActiveContributorsSummary = {
   contributorCount: number;
 }[];
@@ -43,3 +45,11 @@ export type TinybirdActivityHeatmapData = {
   twoHoursBlock: number,
   activityCount: number
 };
+
+export type TinybirdSearchVolumeData = {
+  projectId: string;
+  keyword: string;
+  dataTimestamp: string;
+  volume: number;
+  updatedAt: DateTime;
+}

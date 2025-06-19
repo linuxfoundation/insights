@@ -17,7 +17,7 @@ SPDX-License-Identifier: MIT
       v-if="project"
       class="text-body-2 text-neutral-500 mb-5"
     >
-      <span v-html="config.description(project)" />
+      <span v-html="sanitize(config.description(project))" />
       <a
         v-if="config.learnMoreLink"
         :href="config.learnMoreLink"
@@ -44,6 +44,7 @@ import {lfxWidgets, type WidgetConfig} from "~/components/modules/widget/config/
 import {useProjectStore} from "~/components/modules/project/store/project.store";
 import LfxWidgetMenu from "~/components/modules/widget/components/shared/widget-menu.vue";
 import type { Benchmark } from '~~/types/shared/benchmark.types';
+import {useSanitize} from "~~/composables/useSanitize";
 
 const emit = defineEmits<{(e: 'dataLoaded', value: string): void;
   (e: 'update:benchmark-value', value: Benchmark): void
@@ -51,6 +52,8 @@ const emit = defineEmits<{(e: 'dataLoaded', value: string): void;
 const props = defineProps<{
   name: Widget
 }>();
+
+const {sanitize} = useSanitize();
 
 const config = computed<WidgetConfig>(() => lfxWidgets[props.name]);
 
