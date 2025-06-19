@@ -21,8 +21,8 @@ import githubMentions from "./popularity/github-mentions/github-mentions.config"
 import socialMentions from "./popularity/social-mentions/social-mentions.config";
 import pressMentions from "./popularity/press-mentions/press-mentions.config";
 import searchQueries from "./popularity/search-queries/search-queries.config";
-// TODO: Uncomment this when the package downloads widget is ready
-// import packageDownloads from "./popularity/package-downloads/package-downloads.config";
+import packageDownloads from "./popularity/package-downloads/package-downloads.config";
+import packageDependency from "./popularity/package-dependency/package-dependency.config";
 import issuesResolution
     from "./development/issues-resolution/issues-resolution.config";
 import pullRequests from "./development/pull-requests/pull-requests.config";
@@ -76,8 +76,8 @@ export const lfxWidgets: Record<Widget, WidgetConfig> = {
   [Widget.GITHUB_MENTIONS]: githubMentions,
   [Widget.PRESS_MENTIONS]: pressMentions,
   [Widget.SEARCH_QUERIES]: searchQueries,
-  // TODO: Uncomment this when the package downloads widget is ready
-  // [Widget.PACKAGE_DOWNLOADS]: packageDownloads,
+  [Widget.PACKAGE_DOWNLOADS]: packageDownloads,
+  [Widget.PACKAGE_DEPENDENCY]: packageDependency,
   [Widget.MAILING_LISTS_MESSAGES]: mailingListMessages,
 
   // Development

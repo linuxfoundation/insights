@@ -3,9 +3,9 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="container !px-5 lg:!px-10">
+  <div class="container">
     <div
-      class="flex justify-between pt-5 md:pt-10 gap-10 flex-col md:flex-row"
+      class="flex justify-between pt-5 md:pt-10 lg:gap-10 gap-5 flex-col md:flex-row"
     >
       <div class="w-full md:w-3/4">
         <lfx-card class="py-6 flex flex-col md:gap-10 gap-5">
@@ -27,7 +27,7 @@ SPDX-License-Identifier: MIT
           </div>
         </lfx-card>
       </div>
-      <div class="pr-5 min-w-50 xl:pr-10 max-md:w-full w-1/4">
+      <div class="min-w-50 max-md:w-full w-1/4">
         <lfx-project-about-section />
       </div>
     </div>

@@ -44,12 +44,11 @@ import {
   processTimeAndDateParams,
   timeAndDateParamsSetter
 } from "~/components/modules/project/services/project.query.service";
-import { dateOptKeys } from "~/components/modules/project/config/date-options";
 
 const route = useRoute();
 const {slug} = route.params;
 const {
-project, selectedTimeRangeKey, startDate, endDate, isProjectLoading
+project, isProjectLoading, selectedTimeRangeKey, startDate, endDate
 } = storeToRefs(useProjectStore());
 
 const { queryParams } = useQueryParam(processTimeAndDateParams, timeAndDateParamsSetter);
@@ -87,19 +86,20 @@ onServerPrefetch(async () => {
 
 watch(() => data.value, (value) => {
   if (value) {
-    project.value = value;
-    const { timeRange, start, end } = queryParams.value;
-    selectedTimeRangeKey.value = timeRange || defaultTimeRangeKey;
-    startDate.value = selectedTimeRangeKey.value === dateOptKeys.alltime
-      ? null : start || defaultDateOption?.startDate || null;
-    endDate.value = selectedTimeRangeKey.value === dateOptKeys.alltime
-      ? null : end || defaultDateOption?.endDate || null;
+    // reset time range if project changes
+    if (project.value?.id !== value.id) {
+      selectedTimeRangeKey.value = defaultTimeRangeKey;
+      startDate.value = defaultDateOption?.startDate || null;
+      endDate.value = defaultDateOption?.endDate || null;
 
-    queryParams.value = {
-      timeRange: selectedTimeRangeKey.value,
-      start: startDate.value,
-      end: endDate.value,
-    };
+      queryParams.value = {
+        timeRange: selectedTimeRangeKey.value,
+        start: startDate.value,
+        end: endDate.value,
+      };
+    }
+
+    project.value = value;
   }
 }, { immediate: true });
 
