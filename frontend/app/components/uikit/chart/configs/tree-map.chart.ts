@@ -215,7 +215,7 @@ export const getTreeMapConfig = (
   isValueCurrency: boolean,
   options?: ECOption
 ): ECOption => {
-  const treeMapOption = _.merge(defaultTreeMapOption, {
+  const treeMapOption = _.merge({}, defaultTreeMapOption, {
     series: [isValueCurrency ? SERIES_CURRENCY : SERIES_DEFAULT] as ECOption['series'],
   });
 
