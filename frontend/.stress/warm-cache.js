@@ -99,25 +99,32 @@ export function setup() {
 }
 
 export const options = {
-    vus: 1,
-    iterations: 1,
+    vus: 5,
     duration: '1h'
 };
 
 export default function (paths) {
-    paths.forEach((path, index) => {
+    const vuIndex = __VU - 1;
+    const totalVUs = __ENV.VUS ? parseInt(__ENV.VUS, 10) : 5;
+    const chunkSize = Math.ceil(paths.length / totalVUs);
+    const start = vuIndex * chunkSize;
+    const end = Math.min(start + chunkSize, paths.length);
+
+    const userPaths = paths.slice(start, end);
+
+    userPaths.forEach((path) => {
         const url = `${baseUrl}${path}`;
         const res = http.get(url);
-        if(res.status !== 200) {
-            console.error(`Failed to warm up: ${url}`);
-            return;
-        }
-        console.log(
-            `${Math.round(((index + 1)/paths.length)*100)}% (${index + 1}/${paths.length})`,
-            `Warmed up: ${url}`
-        );
         check(res, {
             'status is 200': (r) => r.status === 200,
         });
-    })
+        if(res.status !== 200) {
+            console.error(`VU ${__VU} - Error fetching ${url}: ${res.status} ${res.status_text}`);
+            return;
+        }
+        console.log(
+            `VU ${__VU} - Warmed up: ${url}`
+        );
+        sleep(0.1);
+    });
 }
