@@ -132,7 +132,7 @@ export const getGeoMapChartConfig = (
 ): ECOption => {
   const option = _.merge({}, defaultGeoOption, {
     visualMap: {
-      max: maxValue,
+      max: maxValue === 0 ? 100000 : maxValue,
     },
   });
 
