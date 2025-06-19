@@ -31,7 +31,7 @@ SPDX-License-Identifier: MIT
         Learn more
       </a>
     </div> -->
-    <div class="flex justify-between items-end pb-8 gap-10 sm:gap-20">
+    <div class="flex flex-col lg:flex-row justify-between lg:items-end pb-8 gap-5 lg:gap-20">
       <div>
         <h3 class="text-heading-3 font-secondary font-bold">
           Controls assessment
