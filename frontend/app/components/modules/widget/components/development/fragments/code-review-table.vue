@@ -13,25 +13,26 @@ SPDX-License-Identifier: MIT
     <div
       v-for="(item, index) in props.codeReviewItem"
       :key="index"
-      class="lfx-table-row"
+      class="lfx-table-row !gap-1 sm:!gap-4"
     >
-      <div class="flex flex-row gap-3 items-center basis-2/4 overflow-hidden">
+      <div class="flex flex-row gap-3 items-center basis-1/2 overflow-hidden">
         <lfx-avatar
           :src="item.avatar"
           type="member"
           class="min-w-8"
         />
-        <div class="flex-grow overflow-hidden whitespace-nowrap text-ellipsis no-underline">
-          {{ item.name }}
-        </div>
+        <div class="flex flex-col items-start sm:flex-row gap-2 overflow-hidden w-full">
+          <div class="overflow-hidden whitespace-nowrap text-ellipsis no-underline w-full">
+            {{ item.name }}
+          </div>
 
-        <lfx-tag
-          v-if="item.roles?.includes('maintainer')"
-          size="small"
-          class="-ml-1"
-        >
-          Maintainer
-        </lfx-tag>
+          <lfx-tag
+            v-if="item.roles?.includes('maintainer')"
+            size="small"
+          >
+            Maintainer
+          </lfx-tag>
+        </div>
       </div>
       <div class="basis-1/4 text-right">
         {{ formatNumberShort(item.activityCount) }}
