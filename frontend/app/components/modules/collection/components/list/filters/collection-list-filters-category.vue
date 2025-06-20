@@ -14,7 +14,8 @@ SPDX-License-Identifier: MIT
           name="arrow-down-wide-short"
           :size="16"
         />
-        {{selectedOption.label}} {{selectedOption.value.startsWith('group-') ? '(all sub-stacks)' : ''}}
+        {{ selectedOption.value === 'all' ? selectedOption.label : getSelectedLabel(selectedOption.value) }}
+        {{selectedOption.value.startsWith('group-') ? '(all sub-stacks)' : ''}}
       </lfx-dropdown-selector>
     </template>
 
@@ -36,7 +37,7 @@ SPDX-License-Identifier: MIT
         />
         Stacks
       </template>
-      <lfx-collection-list-category-options type="horizontal" />
+      <lfx-collection-list-category-options :options="categoryGroupsHorizontal" />
     </lfx-dropdown-submenu>
 
     <lfx-dropdown-submenu
@@ -52,7 +53,7 @@ SPDX-License-Identifier: MIT
         Industries
       </template>
 
-      <lfx-collection-list-category-options type="vertical" />
+      <lfx-collection-list-category-options :options="categoryGroupsVertical" />
     </lfx-dropdown-submenu>
   </lfx-dropdown-select>
 </template>
@@ -68,9 +69,12 @@ import LfxDropdownSeparator from "~/components/uikit/dropdown/dropdown-separator
 import LfxDropdownSubmenu from "~/components/uikit/dropdown/dropdown-submenu.vue";
 import LfxCollectionListCategoryOptions
   from "~/components/modules/collection/components/list/filters/collection-list-filters-category-options.vue";
+import type { CategoryGroupOptions} from "~/components/modules/collection/services/collections.api.service";
 
 const props = defineProps<{
   modelValue: string;
+  categoryGroupsVertical: CategoryGroupOptions[],
+  categoryGroupsHorizontal: CategoryGroupOptions[]
 }>();
 
 const emit = defineEmits<{(e: 'update:modelValue', value: string): void;
@@ -80,6 +84,19 @@ const model = computed({
   get: () => props.modelValue,
   set: (value: string) => emit('update:modelValue', value)
 })
+
+const allCategoryGroups = computed(() => [
+  ...props.categoryGroupsVertical,
+  ...props.categoryGroupsHorizontal,
+  ...props.categoryGroupsVertical.flatMap((cg) => cg.categories.map((c) => ({id: c.id, name: c.name, value: c.id}))),
+  ...props.categoryGroupsHorizontal.flatMap((cg) => cg.categories.map((c) => ({id: c.id, name: c.name, value: c.id})))
+]);
+
+const getSelectedLabel = (value: string) => {
+  const categoryGroup = allCategoryGroups.value.find((cg) => cg.value === value);
+  return categoryGroup?.name || '';
+};
+
 </script>
 
 <script lang="ts">
