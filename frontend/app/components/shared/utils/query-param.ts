@@ -8,6 +8,12 @@ export type URLParams = {
   start?: string | null;
   end?: string | null;
   widget?: string;
+  // collection list
+  listCategory?: string;
+  listSort?: string;
+  // collection details
+  collectionTab?: string;
+  collectionSort?: string;
 };
 
 export const useQueryParam = (
