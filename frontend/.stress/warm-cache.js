@@ -5,13 +5,13 @@ import http from 'k6/http';
 import { sleep, check } from 'k6';
 
 const baseUrl = 'https://insights.linuxfoundation.org'
-const topProjectsCount = 100
-const topProjectsPage = 1
+const topProjectsCount = 200
+const topProjectsPage = 0
 const topCollectionsCount = 200
 
-const cacheCollections = false;
+const cacheCollections = true;
 const cacheProjects = true;
-const cacheOssIndex = false;
+const cacheOssIndex = true;
 
 const basePaths = [
     '',
@@ -101,8 +101,8 @@ export function setup() {
 }
 
 export const options = {
-    vus: 3,
-    duration: '10m'
+    vus: 5,
+    duration: '1h'
 };
 
 let completed = false;
