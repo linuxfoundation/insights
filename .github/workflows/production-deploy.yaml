@@ -74,4 +74,7 @@ jobs:
 
       - name: Flush cache
         run: |
-          kubectl exec -i redis-client -n insights -- redis-cli -h redis-master -a "$(kubectl get secret redis -n insights -o jsonpath="{.data.redis-password}" | base64 -d)" FLUSHALL
+          REDIS_URL=$(kubectl get configmap insights-config-map -n insights -o jsonpath="{.data.NUXT_REDIS_URL}")
+          PASSWORD=$(echo "$REDIS_URL" | sed -n 's|.*://:\([^@]*\)@.*|\1|p')
+          kubectl exec -i redis-client -n insights -- \
+            redis-cli -h redis-svc -a "$PASSWORD" FLUSHALL
