@@ -19,9 +19,9 @@ SPDX-License-Identifier: MIT
       >
         <div
           v-if="summary"
-          class="flex flex-row gap-4 items-center"
+          class="flex flex-wrap flex-row gap-4 items-center"
         >
-          <div class="text-data-display-1">{{ formatNumber(summary.current) }}</div>
+          <div class="text-heading-1 sm:text-data-display-1">{{ formatNumber(summary.current) }}</div>
           <lfx-delta-display
             v-if="selectedTimeRangeKey !== dateOptKeys.alltime"
             :summary="summary"

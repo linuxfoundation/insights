@@ -17,6 +17,8 @@ SPDX-License-Identifier: MIT
       <lfx-collection-filters
         v-model:sort="sort"
         v-model:tab="tab"
+        @update:sort="updateSort"
+        @update:tab="updateTab"
       />
     </div>
   </lfx-maintain-height>
@@ -94,6 +96,12 @@ import LfxMaintainHeight from '~/components/uikit/maintain-height/maintain-heigh
 import {TanstackKey} from "~/components/shared/types/tanstack";
 import {PROJECT_API_SERVICE} from "~/components/modules/project/services/project.api.service";
 import useScroll from "~/components/shared/utils/scroll";
+import { useQueryParam } from '~/components/shared/utils/query-param';
+import {
+  collectionDetailsParamsGetter,
+  collectionListParamsSetter
+}
+from '~/components/modules/collection/services/collections.query.service';
 
 const props = defineProps<{
   collection?: Collection,
@@ -104,8 +112,11 @@ const {scrollTop} = useScroll();
 const route = useRoute()
 const collectionSlug = route.params.slug as string
 
-const sort = ref('contributorCount_desc')
-const tab = ref('all')
+const { queryParams } = useQueryParam(collectionDetailsParamsGetter, collectionListParamsSetter);
+const { collectionTab, collectionSort } = queryParams.value;
+
+const sort = ref(collectionSort || 'contributorCount_desc')
+const tab = ref(collectionTab || 'all')
 const pageSize = 60
 
 const isLF = computed(() => tab.value === 'lfx')
@@ -144,6 +155,21 @@ const loadMore = () => {
 onServerPrefetch(async () => {
   await suspense()
 })
+
+const updateSort = (value: string) => {
+  queryParams.value = {
+    collectionSort: value,
+    collectionTab: queryParams.value.collectionTab,
+  }
+}
+
+const updateTab = (value: string) => {
+  queryParams.value = {
+    collectionSort: queryParams.value.collectionSort,
+    collectionTab: value,
+  }
+}
+
 </script>
 
 <script lang="ts">

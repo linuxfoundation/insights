@@ -23,18 +23,24 @@ SPDX-License-Identifier: MIT
     </div>
   </section>
 
-  <div class="sticky top-14 lg:top-17">
+  <div class="sticky top-14 lg:top-17 z-20">
     <div class="bg-white border-b border-neutral-100">
       <div
         class="container transition-all"
         :class="scrollTop > 50 ? 'py-3 md:py-4' : 'py-3 md:py-5'"
       >
         <div class="flex items-center justify-between gap-4 w-full">
-          <lfx-collection-list-filters v-model:category="category" />
+          <lfx-collection-list-filters
+            v-model:category="category"
+            :category-groups-vertical="categoryGroupsVertical"
+            :category-groups-horizontal="categoryGroupsHorizontal"
+            @update:category="updateCategory"
+          />
           <lfx-dropdown-select
             v-model="sort"
             width="20rem"
             placement="bottom-end"
+            @update:model-value="updateSort"
           >
             <template #trigger="{ selectedOption }">
               <lfx-dropdown-selector>
@@ -123,8 +129,12 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { watch, onServerPrefetch } from 'vue'
-import {useInfiniteQuery} from '@tanstack/vue-query'
+import {
+ watch, onServerPrefetch, computed, ref
+} from 'vue'
+import {useInfiniteQuery, useQuery} from '@tanstack/vue-query'
+import { collectionListParamsGetter, collectionListParamsSetter } from
+  "../services/collections.query.service";
 import type { Pagination } from '~~/types/shared/pagination'
 import type { Collection } from '~~/types/collection'
 
@@ -145,15 +155,20 @@ import useResponsive from '~/components/shared/utils/responsive'
 import useScroll from '~/components/shared/utils/scroll'
 import {TanstackKey} from "~/components/shared/types/tanstack";
 import {COLLECTIONS_API_SERVICE} from "~/components/modules/collection/services/collections.api.service";
+import { useQueryParam } from '~/components/shared/utils/query-param';
+import type { CategoryGroup } from '~~/types/category'
 
+const { queryParams } = useQueryParam(collectionListParamsGetter, collectionListParamsSetter);
+const { listSort } = queryParams.value;
 const { showToast } = useToastService();
 const {pageWidth} = useResponsive();
 const {scrollTop} = useScroll();
 
 // NOTE: This is a temporary workaround to highlight the most important collections within the LF featured collections
 const pageSize = 100
-const sort = ref('starred_desc')
-const category = ref('all')
+const sort = ref(listSort || 'starred_desc')
+const category = ref('all');
+const isFirstLoad = ref(true);
 
 const queryKey = computed(() => [TanstackKey.COLLECTIONS, sort.value, category.value])
 
@@ -171,7 +186,7 @@ const {
   queryFn: COLLECTIONS_API_SERVICE.fetchCollections(() => ({
     pageSize,
     sort: sort.value,
-    categories: category.value === 'all' ? undefined : category.value.replace('group-', '').split(','),
+    categories: getCategoryIds(category.value),
   })),
   getNextPageParam: (lastPage) => {
     const nextPage = lastPage.page + 1
@@ -179,6 +194,60 @@ const {
     return nextPage < totalPages ? nextPage : undefined
   },
 })
+
+/* Moving the options fetch here on the main component
+The dropdown-select component for sub options sets the selected option label and value the same
+If the dropdown's value is set other than the default value, the selected option label is
+displayed as value.
+*/
+const queryKeyVertical = computed(() => [
+  TanstackKey.CATEGORY_GROUPS,
+  'vertical',
+]);
+const queryKeyHorizontal = computed(() => [
+  TanstackKey.CATEGORY_GROUPS,
+  'horizontal',
+]);
+
+const {
+  data: dataVertical,
+  suspense: suspenseVertical
+} = useQuery<Pagination<CategoryGroup>>({
+  queryKey: queryKeyVertical,
+  queryFn: COLLECTIONS_API_SERVICE.fetchCategoryGroups(() => ({
+    type: 'vertical',
+    limit: 1000
+  })),
+});
+const {
+  data: dataHorizontal,
+  suspense: suspenseHorizontal
+} = useQuery<Pagination<CategoryGroup>>({
+  queryKey: queryKeyHorizontal,
+  queryFn: COLLECTIONS_API_SERVICE.fetchCategoryGroups(() => ({
+    type: 'horizontal',
+    limit: 1000
+  })),
+});
+
+const categoryGroupsVertical = computed(() => (dataVertical.value?.data || []).map((cg) => ({
+  ...cg,
+  value: `group(${cg.id})-${cg.categories.map((c) => c.id).join(',')}`,
+  categories: cg.categories
+})))
+
+const categoryGroupsHorizontal = computed(() => (dataHorizontal.value?.data || []).map((cg) => ({
+  ...cg,
+  value: `group(${cg.id})-${cg.categories.map((c) => c.id).join(',')}`,
+  categories: cg.categories
+})))
+
+const allCategoryGroups = computed(() => [
+  ...categoryGroupsVertical.value,
+  ...categoryGroupsHorizontal.value,
+  ...categoryGroupsVertical.value.flatMap((cg) => cg.categories.map((c) => ({id: c.id, name: c.name, value: c.id}))),
+  ...categoryGroupsHorizontal.value.flatMap((cg) => cg.categories.map((c) => ({id: c.id, name: c.name, value: c.id})))
+]);
 
 watch(error, (err) => {
   if (err) {
@@ -192,9 +261,64 @@ const loadMore = () => {
   }
 }
 
+const updateCategory = (value: string) => {
+  let catValue = value;
+  if (value.startsWith('group(')) {
+    const match = value.match(/group\(([^)]+)\)/)
+    if (match) {
+      catValue = `group(${match[1]?.toString() || ''})`
+    }
+  }
+
+  queryParams.value = {
+    listSort: queryParams.value.listSort,
+    listCategory: catValue,
+  }
+}
+
+const updateSort = (value: string) => {
+  queryParams.value = {
+    listSort: value,
+    listCategory: queryParams.value.listCategory,
+  }
+}
+
+const getCategoryIds = (value: string): string[] | undefined => {
+  if (value === 'all') {
+    return undefined
+  }
+
+  return value.replace(/group\(([^)]+)\)-/, '').split(',')
+}
+
 onServerPrefetch(async () => {
-  await suspense()
+  await suspense();
+  await suspenseVertical();
+  await suspenseHorizontal();
 })
+
+/**
+ * Watch for query param changes on the first load only
+ * This also avoids the issue of the category ID not existing in the allCategoryGroups array
+ * When that happens, the category is set to 'all'
+ */
+watch(queryParams, (value) => {
+  if (value.listCategory && value.listCategory !== 'all' && isFirstLoad.value) {
+    let catId = value.listCategory;
+
+    if (value.listCategory.startsWith('group(')) {
+      const match = value.listCategory.match(/group\(([^)]+)\)/)
+      if (match) {
+        catId = match[1]?.toString() || '';
+      }
+    }
+
+    const foundGroup = allCategoryGroups.value.find((group) => group.id === catId)
+    category.value = foundGroup ? foundGroup.value : 'all';
+  }
+
+  isFirstLoad.value = false;
+}, { immediate: true })
 </script>
 
 <script lang="ts">

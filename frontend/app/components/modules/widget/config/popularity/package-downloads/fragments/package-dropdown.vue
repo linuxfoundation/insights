@@ -36,6 +36,7 @@ SPDX-License-Identifier: MIT
         :value="`${allPackages.ecosystem}${EcosystemSeparator}${allPackages.name}`"
         :label="allPackages.name"
       />
+      <lfx-dropdown-separator />
 
       <lfx-dropdown-search
         v-model="search"
