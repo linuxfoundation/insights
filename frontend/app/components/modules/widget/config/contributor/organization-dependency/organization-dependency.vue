@@ -137,7 +137,7 @@ const otherOrganizations = computed(() => organizationDependency.value?.otherOrg
 const organizations = computed(() => organizationDependency.value?.list);
 
 const topOrganizationsAvatars = computed(() => (organizations.value?.length
-  ? organizations.value.slice(0, Math.min(3, organizations.value.length))
+  ? organizations.value.slice(0, Math.min(3, topOrganizations.value?.count || 0))
   : []));
 
 const isEmpty = computed(() => isEmptyData(organizations.value as unknown as Record<string, unknown>[]));
