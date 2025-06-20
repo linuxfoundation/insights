@@ -1,60 +1,117 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import http from 'k6/http';
-import { check, sleep } from 'k6';
 
-const top200Projects = [
-    'k8s', 'flutter', 'ojsf-nodejs', 'helm', 'korg', 'ptproject', 'project-eve', 'Next.js', 'definitelytyped',
-    'ant-design-ant-design', 'python-cpython', 'opentelemetry', 'godotengine-godot', 'laravel-framework', 'argo',
-    'grpc', 'pandas-dev-pandas', 'angular', 'NixOS', 'prometheus', 'golang-website', 'react', 'dotnet', 'jupyter',
-    'keycloak', 'mui-material-ui', 'zep', 'odoo', 'vllm', 'opensearch-foundation', 'gql', 'ojsf-express', 'istio',
-    'cncf', 'fluentd', 'storybookjs-storybook', 'symfony-framework-bundle', 'lf-decentralized-trust',
-    'spring-projects-spring-boot', 'raspberrypi-linux', 'aws-constructs', 'easycla', 'islet', 'systemd', 'envoy',
-    'servo-llc', 'scipy', 'harbor', 'ipython', 'getsentry-sentry', 'jupyter-frontends', 'kubeflow', 'lfedge', 'px4',
-    'numpy', 'julialang-julia', 'etcd', 'fluxcd', 'lfai-onnx', 'matplotlib', 'backstage', 'cephfoundation', 'nats',
-    'cert-manager', 'osjf-fastify', 'platformio-platform-espressif32', 'jupyterhub', 'MLF', 'cilium', 'babel',
-    'ojsf-jquery', 'risc-v-international', 'homebrew-brew', 'spring-projects-spring-framework', 'cncf-distribution',
-    'model-context-protocol-mcp', 'dapr', 'test', 'quarkusio-quarkus', 'k3s', 'app-runtime-interfaces', 'opentf',
-    'spack', 'jaeger', 'expensify-app', 'containerd', 'netty', 'cdf-spinnaker', 'deepspeed', 'presto',
-    'multipath-tcp-mptcp_net-next', 'asyncapi', 'sonic-foundation', 'aswf', 'openpolicyagent', 'lfai-milvus', 'yocto',
-    'openapi', 'rook', 'fabric', 'ojsf-moment', 'onap-music', 'linkerd', 'foundational-infrastructure',
-    'cms-sw-cmssw', 'KEDA', 'onap', 'thanos', 'odl-plastic', 'mavlink', 'knative', 'deltalake', 'meshery', 'networkx',
-    'atlantis', 'connect', 'amd-rocm', 'strimzi', 'longhorn', 'typescript-eslint-typescript-eslint', 'oneapi',
-    'cdf-jenkins-x', 'perspective', 'score', 'gentoo', 'dolibarr', 'externalsecretsoperator', 'tekton', 'kyverno',
-    'kubevirt', 'exodus', 'odl-genius', 'grid', 'ojsf-electron', 'moon', 'tikv', 'coredns', 'o3de-project',
-    'scikit-image-scikit-image', 'falco', 'delta', 'opnfv-fuel', 'claude-code', 'jupyter-widgets', 'jenkins',
-    'deeprec', 'onap-holmes', 'odl-telemetry', 'admin-and-legacy-cff', 'fluid', 'notary', 'qgroundcontrol',
-    'ojsf-jqui', 'lf-decentralized-trust-labs', 'opencontainers', 'openebs', 'federatedai', 'webkit', 'cortex', 'c7n',
-    'hiero', 'Volcano', 'horovod', 'explorer', 'everest', 'hpc-toolkit', 'p4-fund', 'kubeedge', 'telepresence', 'd7y',
-    'zowe-binary-project', 'mscs', 'vitess', 'symphony-java-toolkit', 'sigstore', 'claimed', 'jupyter-server',
-    'opendaylight', 'dex', 'litmuschaos', 'kubescape', 'kserve', 'app-runtime-platform', 'valkey', 'curve', 'dpdk',
-    'openbao-2', 'emissary', 'fdio-llc', 'canon', 'flyte', 'xen', 'capsule', 'aether-project', 'crossplane',
-    'ojsf-intern', 'dronecode', 'agl', 'cobol-working-group', 'metallb',
+import http from 'k6/http';
+import { sleep, check } from 'k6';
+
+const baseUrl = 'https://insights.linuxfoundation.org'
+const topProjectsCount = 100
+const topProjectsPage = 1
+const topCollectionsCount = 200
+
+const cacheCollections = false;
+const cacheProjects = true;
+const cacheOssIndex = false;
+
+const basePaths = [
+    '',
+    '/collection',
+    '/open-source-index',
 ];
 
-const paths = [
+const projectPaths = [
     '',
+    '/security',
+];
+
+const projectPathsWithTimeRanges = [
     '/contributors',
     '/popularity',
     '/development',
-    '/security',
+];
+
+const projectTimeRanges = [
+    'past90days',
+    'past180days',
+    'past365days',
+    'previousQuarter',
+    'previousYear',
+    'previous5Year',
+    'previous10Year',
+    'alltime',
+];
+
+const ossIndexSort = [
+    'totalContributors',
+    'softwareValue',
 ]
 
-const top30projects = top200Projects.slice(0, 30);
+const ossIndexType = [
+    'horizontal',
+    'vertical',
+];
+
+export function setup() {
+    const allPaths = [...basePaths];
+
+    /* Collection */
+    if(cacheCollections){
+        const collectionsRequest = http.get(
+            `${baseUrl}/api/collection?page=0&pageSize=${topCollectionsCount}&sort=starred_desc`
+        );
+        const collections = JSON.parse(collectionsRequest.body)?.data || [];
+        const collectionSlugs = collections.map((collection) => collection.slug);
+
+        collectionSlugs.forEach((slug) => {
+            allPaths.push(`/collection/${slug}`);
+        })
+    }
+
+    /* Project */
+    if(cacheProjects){
+        const projectRequest = http.get(
+            `${baseUrl}/api/project?page=${topProjectsPage}&pageSize=${
+                topProjectsCount}&sort=score_desc&onboarded=true&isLF=true`
+        );
+        const projects = JSON.parse(projectRequest.body)?.data || [];
+        const projectSlugs = projects.map((project) => project.slug);
+
+        projectSlugs.forEach((slug) => {
+            projectPaths.forEach((path) => {
+                allPaths.push(`/project/${slug}${path}`);
+            })
+            projectPathsWithTimeRanges.forEach((path) => {
+                projectTimeRanges.forEach((timeRange) => {
+                    allPaths.push(`/project/${slug}${path}?timeRange=${timeRange}`);
+                })
+            })
+        })
+    }
+
+    /* Open Source Index */
+    if(cacheOssIndex){
+        ossIndexSort.forEach((sort) => {
+            ossIndexType.forEach((type) => {
+                allPaths.push(`/open-source-index?sort=${sort}&type=${type}`);
+            })
+        })
+    }
+
+    return allPaths;
+}
 
 export const options = {
     stages: [
-        { duration: '10s', target: 800 },
-        { duration: '20s', target: 800 },
+        { duration: '10s', target: 500 },
+        { duration: '20s', target: 500 },
         { duration: '20s', target: 0 },
     ],
 };
 
-export default function () {
-    const project = top30projects[Math.floor(Math.random() * top30projects.length)];
+export default function (paths) {
     const path = paths[Math.floor(Math.random() * paths.length)];
-
-    const res = http.get(`https://insights.linuxfoundation.org/project/${project}${path}`, {tags: {page: path}});
+    const url = `${baseUrl}${path}`;
+    const res = http.get(url);
     check(res, {
         'status is 200': (r) => r.status === 200,
     });

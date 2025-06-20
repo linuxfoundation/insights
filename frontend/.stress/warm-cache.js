@@ -101,8 +101,8 @@ export function setup() {
 }
 
 export const options = {
-    vus: 3,
-    duration: '10m'
+    vus: 5,
+    duration: '1h'
 };
 
 let completed = false;
