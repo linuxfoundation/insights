@@ -16,7 +16,7 @@ SPDX-License-Identifier: MIT
             width="7.5rem"
           >
             <div class="flex flex-row flex-wrap gap-4 items-center">
-              <div class="text-data-display-1 whitespace-nowrap">{{ formatNumber(summary.current * 1000) }}</div>
+              <div class="text-data-display-1 whitespace-nowrap">{{ formatNumber(summary.current) }}</div>
               <lfx-delta-display
                 v-if="selectedTimeRangeKey !== dateOptKeys.alltime"
                 :summary="summary"
