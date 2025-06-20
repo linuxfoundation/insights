@@ -92,7 +92,7 @@ class ExploreApiService {
         params: {
           page: pageParam,
           pageSize,
-          sort: 'score_desc',
+          sort: 'contributorCount_desc',
           onboarded: true, // Only fetch onboarded projects
           isLF: true, // Only fetch LF projects
         },
