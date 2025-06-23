@@ -6,10 +6,10 @@ const longCache = 86400; // 1 day in seconds
 export default {
     routeRules: process.env.NUXT_APP_ENV === 'production'
         ? {
-        // "/api/health": {cache: false},
-        // "/api/seo/og-image": {cache: false},
-        // "/api/report": {cache: false},
-        // "/api/health/live": {cache: false},
+        "/api/health": {cache: false},
+        "/api/health/live": {cache: false},
+        "/api/seo/og-image": {cache: false},
+        "/api/report": {cache: false},
         // "/api/search": {cache: {maxAge: longCache, base: 'redis'}},
         // "/api/category": {cache: {maxAge: longCache, base: 'redis'}},
         // "/api/collection": {cache: {maxAge: longCache, base: 'redis'}},
