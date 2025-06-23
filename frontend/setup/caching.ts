@@ -1,9 +1,8 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 export default {
-    routeRules: process.env.NODE_ENV === 'development'
-        ? {}
-        : {
+    routeRules: process.env.NUXT_APP_ENV === 'production'
+        ? {
         "/api/health": {cache: false},
         "/api/seo/og-image": {cache: false},
         "/api/report": {cache: false},
@@ -17,7 +16,7 @@ export default {
         // "/api/**": {swr: 3600}, // Cache API responses for 1 hour
         // "/project/**": {swr: 3600}, // Cache project details for 1 hour
         // "**": {swr: 86400}, // Cache all other routes for 1 day
-    },
+    } : {},
     nitro: {
         storage: {
             redis: {
