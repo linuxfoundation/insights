@@ -18,8 +18,6 @@ export default {
       'AccordionPanel',
       'AccordionHeader',
       'AccordionContent',
-      'Carousel',
-      'CarouselItem',
     ],
   },
   options: {
