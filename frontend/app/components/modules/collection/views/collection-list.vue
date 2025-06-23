@@ -216,7 +216,7 @@ const {
   queryKey: queryKeyVertical,
   queryFn: COLLECTIONS_API_SERVICE.fetchCategoryGroups(() => ({
     type: 'vertical',
-    limit: 1000
+    pageSize: 1000
   })),
 });
 const {
@@ -226,7 +226,7 @@ const {
   queryKey: queryKeyHorizontal,
   queryFn: COLLECTIONS_API_SERVICE.fetchCategoryGroups(() => ({
     type: 'horizontal',
-    limit: 1000
+    pageSize: 1000
   })),
 });
 

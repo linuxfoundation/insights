@@ -9,8 +9,8 @@ const topProjectsCount = 200
 const topProjectsPage = 0
 const topCollectionsCount = 200
 
-const cacheCollections = true;
-const cacheProjects = true;
+const cacheCollections = false;
+const cacheProjects = false;
 const cacheOssIndex = true;
 
 const basePaths = [
@@ -18,6 +18,24 @@ const basePaths = [
     '/collection',
     '/open-source-index',
 ];
+
+const collectionListSort = [
+    'starred_desc',
+    'projectCount_desc',
+    'name_asc',
+]
+
+const collectionDetailsTab = [
+    'all',
+    'lfx',
+]
+
+const collectionDetailsSort = [
+    'name_asc',
+    'contributorCount_desc',
+    'organizationCount_desc',
+    'score_desc',
+]
 
 const projectPaths = [
     '',
@@ -56,14 +74,52 @@ export function setup() {
 
     /* Collection */
     if(cacheCollections){
+        const categoryRequest = http.get(
+            `${baseUrl}/api/category?pageSize=1000`
+        );
+        const categories = JSON.parse(categoryRequest.body)?.data || [];
+        const categoryGroupIds = categories.map((categoryGroup) => categoryGroup.id);
+        const categoryIds = categories.map(
+            (categoryGroup) => categoryGroup.categories.map((category) => category.id)
+        ).flat();
+
         const collectionsRequest = http.get(
             `${baseUrl}/api/collection?page=0&pageSize=${topCollectionsCount}&sort=starred_desc`
         );
         const collections = JSON.parse(collectionsRequest.body)?.data || [];
         const collectionSlugs = collections.map((collection) => collection.slug);
 
+        collectionListSort.forEach((slug) => {
+            allPaths.push(`/collection?listSort=${slug}`);
+        })
+
+        categoryGroupIds.forEach((groupId) => {
+            allPaths.push(`/collection?listCategory=group(${groupId})`);
+            collectionListSort.forEach((slug) => {
+                allPaths.push(`/collection?listSort=${slug}&listCategory=group(${groupId})`);
+            })
+        })
+
+        categoryIds.forEach((id) => {
+            allPaths.push(`/collection?listCategory=${id}`);
+            collectionListSort.forEach((slug) => {
+                allPaths.push(`/collection?listSort=${slug}&listCategory=${id}`);
+            })
+        })
+
         collectionSlugs.forEach((slug) => {
             allPaths.push(`/collection/${slug}`);
+            collectionDetailsTab.forEach((tab) => {
+                allPaths.push(`/collection/${slug}?`);
+            })
+            collectionDetailsSort.forEach((sort) => {
+                allPaths.push(`/collection/${slug}?collectionSort=${sort}`);
+            })
+            collectionDetailsTab.forEach((tab) => {
+                collectionDetailsSort.forEach((sort) => {
+                    allPaths.push(`/collection/${slug}?collectionTab=${tab}&collectionSort=${sort}`);
+                })
+            })
         })
     }
 
@@ -71,7 +127,7 @@ export function setup() {
     if(cacheProjects){
         const projectRequest = http.get(
             `${baseUrl}/api/project?page=${topProjectsPage}&pageSize=${
-                topProjectsCount}&sort=score_desc&onboarded=true&isLF=true`
+                topProjectsCount}&sort=contributorCount_desc&onboarded=true`
         );
         const projects = JSON.parse(projectRequest.body)?.data || [];
         const projectSlugs = projects.map((project) => project.slug);
@@ -93,6 +149,34 @@ export function setup() {
         ossIndexSort.forEach((sort) => {
             ossIndexType.forEach((type) => {
                 allPaths.push(`/open-source-index?sort=${sort}&type=${type}`);
+            })
+        })
+
+        const ossGroupsRequestHorizontal = http.get(
+            `${baseUrl}/api/ossindex/groups?sort=totalContributors&type=horizontal`
+        );
+
+        const ossGroupsRequestVertical = http.get(
+            `${baseUrl}/api/ossindex/groups?sort=totalContributors&type=horizontal`
+        );
+        const ossGroupsHorizontal = JSON.parse(ossGroupsRequestHorizontal.body) || [];
+        const ossGroupsVertical = JSON.parse(ossGroupsRequestVertical.body) || [];
+        const ossGroups = [...ossGroupsHorizontal, ...ossGroupsVertical];
+        const ossGroupSlugs = ossGroups.map((group) => group.slug);
+        ossGroupSlugs.forEach((slug) => {
+            ossIndexSort.forEach((sort) => {
+                allPaths.push(`/open-source-index/group/${slug}?sort=${sort}`);
+            })
+
+            const ossCategoriesRequest = http.get(
+                `${baseUrl}/api/ossindex/categories?sort=totalContributors&categoryGroupSlug=${slug}`
+            );
+            const ossCategories = JSON.parse(ossCategoriesRequest.body)?.categories || [];
+            const ossCategorySlugs = ossCategories.map((category) => category.slug);
+            ossCategorySlugs.forEach((categorySlug) => {
+                ossIndexSort.forEach((sort) => {
+                    allPaths.push(`/open-source-index/category/${categorySlug}?sort=${sort}`);
+                })
             })
         })
     }
