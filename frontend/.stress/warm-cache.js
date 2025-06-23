@@ -9,8 +9,8 @@ const topProjectsCount = 200
 const topProjectsPage = 0
 const topCollectionsCount = 200
 
-const cacheCollections = false;
-const cacheProjects = false;
+const cacheCollections = true;
+const cacheProjects = true;
 const cacheOssIndex = true;
 
 const basePaths = [
