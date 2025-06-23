@@ -110,7 +110,7 @@ export function setup() {
         collectionSlugs.forEach((slug) => {
             allPaths.push(`/collection/${slug}`);
             collectionDetailsTab.forEach((tab) => {
-                allPaths.push(`/collection/${slug}?`);
+                allPaths.push(`/collection/${slug}?collectionTab=${tab}`);
             })
             collectionDetailsSort.forEach((sort) => {
                 allPaths.push(`/collection/${slug}?collectionSort=${sort}`);
@@ -157,7 +157,7 @@ export function setup() {
         );
 
         const ossGroupsRequestVertical = http.get(
-            `${baseUrl}/api/ossindex/groups?sort=totalContributors&type=horizontal`
+            `${baseUrl}/api/ossindex/groups?sort=totalContributors&type=vertical`
         );
         const ossGroupsHorizontal = JSON.parse(ossGroupsRequestHorizontal.body) || [];
         const ossGroupsVertical = JSON.parse(ossGroupsRequestVertical.body) || [];
