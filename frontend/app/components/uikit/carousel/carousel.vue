@@ -15,10 +15,6 @@ SPDX-License-Identifier: MIT
         @touchstart="handleTouchStart"
         @touchmove="handleTouchMove"
         @touchend="handleTouchEnd"
-        @mousedown="handleMouseDown"
-        @mousemove="handleMouseMove"
-        @mouseup="handleMouseUp"
-        @mouseleave="handleMouseUp"
       >
         <div
           v-for="(item, index) in displayItems"
