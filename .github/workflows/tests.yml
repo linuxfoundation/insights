@@ -19,5 +19,5 @@ jobs:
         env:
           TINYBIRD_BASE_URL: https://tb.lf.org/
           TINYBIRD_TOKEN: arandomtoken
-        run: pnpm i --ignore-workspace-root-check && pnpm vitest
+        run: pnpm i --ignore-workspace && pnpm vitest
         working-directory: frontend
