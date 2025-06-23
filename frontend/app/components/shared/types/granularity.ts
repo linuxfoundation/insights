@@ -7,8 +7,8 @@ export const formatByGranularity = {
   [Granularity.DAILY]: 'MMM d',
   [Granularity.WEEKLY]: 'MMM d',
   [Granularity.MONTHLY]: 'MMM, yyyy',
-  [Granularity.QUARTERLY]: 'MMM d',
-  [Granularity.YEARLY]: 'yyyy'
+  [Granularity.QUARTERLY]: 'Qq yyyy',
+  [Granularity.YEARLY]: 'yyyy',
 };
 
 export const lineGranularities = {
@@ -20,7 +20,7 @@ export const lineGranularities = {
   [dateOptKeys.previous5Year]: Granularity.MONTHLY,
   [dateOptKeys.previous10Year]: Granularity.YEARLY,
   [dateOptKeys.alltime]: Granularity.YEARLY,
-  [dateOptKeys.custom]: Granularity.YEARLY // TODO: this should be handled differently
+  [dateOptKeys.custom]: Granularity.YEARLY, // TODO: this should be handled differently
 };
 
 export const barGranularities = {
@@ -32,5 +32,5 @@ export const barGranularities = {
   [dateOptKeys.previous5Year]: Granularity.MONTHLY,
   [dateOptKeys.previous10Year]: Granularity.YEARLY,
   [dateOptKeys.alltime]: Granularity.YEARLY,
-  [dateOptKeys.custom]: Granularity.YEARLY // TODO: this should be handled differently
+  [dateOptKeys.custom]: Granularity.YEARLY, // TODO: this should be handled differently
 };
