@@ -39,6 +39,7 @@ SPDX-License-Identifier: MIT
     <lfx-carousel-navigation
       :can-go-prev="canGoPrev"
       :can-go-next="canGoNext"
+      :disabled="isDragging"
       @next="goToNext"
       @previous="goToPrev"
     />

@@ -6,7 +6,7 @@ SPDX-License-Identifier: MIT
   <button
     v-if="canGoPrev"
     class="carousel-nav carousel-nav-prev"
-    :disabled="!canGoPrev"
+    :disabled="!canGoPrev || disabled"
     aria-label="Previous"
     type="button"
     @click="goToPrev"
@@ -20,7 +20,7 @@ SPDX-License-Identifier: MIT
   <button
     v-if="canGoNext"
     class="carousel-nav carousel-nav-next"
-    :disabled="!canGoNext"
+    :disabled="!canGoNext || disabled"
     aria-label="Next"
     type="button"
     @click="goToNext"
@@ -38,6 +38,7 @@ import LfxIcon from '~/components/uikit/icon/icon.vue';
 defineProps<{
   canGoPrev: boolean;
   canGoNext: boolean;
+  disabled?: boolean;
 }>();
 
 const emit = defineEmits<{(e: 'next' | 'previous'): void;

@@ -19,17 +19,20 @@
 
   .carousel-nav {
     @apply absolute top-1/2 transform -translate-y-1/2 bg-white border border-neutral-200;
-    @apply rounded-full w-9 h-9 flex items-center justify-center cursor-pointer transition-all;
+    @apply rounded-full lg:w-11 lg:h-11 w-9 h-9 flex items-center justify-center cursor-pointer transition-all;
     @apply duration-200 z-10 text-neutral-900 shadow-sm;
 
     &:hover {
       @apply bg-neutral-50 shadow-none;
     }
+    &:disabled {
+      @apply opacity-50 cursor-not-allowed;
+    }
     &-prev {
-      @apply md:-left-3 left-0;
+      @apply xl:-left-16 md:-left-5 -left-3;
     }
     &-next {
-      @apply md:-right-3 right-0;
+      @apply xl:-right-16 md:-right-5 -right-3;
     }
   }
 
