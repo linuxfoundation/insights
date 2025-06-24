@@ -33,7 +33,7 @@ export const useQueryParam = (
 
       const processedQuery = setterProcessor(query);
 
-      router.replace({ query: processedQuery });
+      router.push({ query: processedQuery });
     },
   });
 
