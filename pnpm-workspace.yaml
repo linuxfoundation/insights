@@ -4,5 +4,4 @@ packages:
   - 'workers'
   - 'workers/*'
   - 'workers/temporal/*'
-  - 'frontend'
   - 'services'
