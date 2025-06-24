@@ -71,8 +71,3 @@ jobs:
         run: |
             kubectl set image deployment/insights-app-dpl frontend=${{ steps.build-docker-image.outputs.image }} -n insights
             kubectl rollout status deployment/insights-app-dpl -n insights
-
-      - name: Flush cache
-        run: |
-          kubectl exec -i redis-client -n insights -- redis-cli -h redis-master -a "$(kubectl get secret redis -n insights -o jsonpath="{.data.redis-password}" | base64 -d)" FLUSHALL
-

@@ -15,10 +15,6 @@ SPDX-License-Identifier: MIT
         @touchstart="handleTouchStart"
         @touchmove="handleTouchMove"
         @touchend="handleTouchEnd"
-        @mousedown="handleMouseDown"
-        @mousemove="handleMouseMove"
-        @mouseup="handleMouseUp"
-        @mouseleave="handleMouseUp"
       >
         <div
           v-for="(item, index) in displayItems"
@@ -229,34 +225,34 @@ const handleTouchEnd = () => {
   isDragging.value = false;
 };
 
-const handleMouseDown = (e: MouseEvent) => {
-  isDragging.value = true;
-  startX.value = e.clientX;
-  currentX.value = startX.value;
-  e.preventDefault();
-};
-
-const handleMouseMove = (e: MouseEvent) => {
-  if (!isDragging.value) return;
-  currentX.value = e.clientX;
-};
-
-const handleMouseUp = () => {
-  if (!isDragging.value) return;
-
-  const deltaX = currentX.value - startX.value;
-  const threshold = containerWidth.value * 0.1;
-
-  if (Math.abs(deltaX) > threshold) {
-    if (deltaX > 0) {
-      goToPrev();
-    } else {
-      goToNext();
-    }
-  }
-
-  isDragging.value = false;
-};
+// const handleMouseDown = (e: MouseEvent) => {
+//   isDragging.value = true;
+//   startX.value = e.clientX;
+//   currentX.value = startX.value;
+//   e.preventDefault();
+// };
+//
+// const handleMouseMove = (e: MouseEvent) => {
+//   if (!isDragging.value) return;
+//   currentX.value = e.clientX;
+// };
+//
+// const handleMouseUp = () => {
+//   if (!isDragging.value) return;
+//
+//   const deltaX = currentX.value - startX.value;
+//   const threshold = containerWidth.value * 0.1;
+//
+//   if (Math.abs(deltaX) > threshold) {
+//     if (deltaX > 0) {
+//       goToPrev();
+//     } else {
+//       goToNext();
+//     }
+//   }
+//
+//   isDragging.value = false;
+// };
 
 // Lifecycle hooks
 onMounted(() => {
