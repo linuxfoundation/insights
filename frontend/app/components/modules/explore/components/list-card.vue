@@ -4,8 +4,7 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <article
-    class="border border-neutral-200 rounded-xl flex flex-col gap-4 bg-white
-    basis-1/3 lg:max-w-1/3 max-w-full"
+    class="border border-neutral-200 rounded-xl flex flex-col gap-4 bg-white h-full"
   >
     <div class="flex flex-col gap-2 px-6 pt-6">
       <h3 class="text-heading-3 font-secondary font-bold text-neutral-900">
@@ -15,7 +14,7 @@ SPDX-License-Identifier: MIT
         {{ props.value.description }}
       </p>
     </div>
-    <div class="px-4 pb-6">
+    <div class="px-4 pb-6 grow flex flex-col justify-between">
       <component
         :is="props.value.component"
       />

@@ -1,78 +1,66 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 
-.p-carousel {
-  .p-carousel-content-container {
-    @apply flex flex-col relative;
+.lfx-carousel {
+  @apply relative w-full;
 
-    .p-button {
-      @apply rounded-full bg-white border border-solid border-neutral-200 shadow-sm;
-      @apply h-9 w-9 p-0  flex items-center justify-center;
-      @apply absolute top-1/2 -translate-y-1/2  z-10;
+  .carousel-container {
+    @apply overflow-hidden w-full md:py-10 py-5;
+  }
 
-      @media (min-width: theme('screens.md')) {
-        @apply h-11 w-11
-      }
+  .carousel-track {
+    @apply flex will-change-transform -ml-4;
+    width: calc(100% + 2rem);
+  }
 
-      .p-icon {
-        @apply w-4 h-6;
-        path {
-          @apply fill-neutral-900 ;
-        }
-      }
-      &.p-disabled{
-        @apply hidden;
-      }
-      &.p-carousel-prev-button {
-        @apply -left-4;
-        @media (min-width: theme('screens.md')) {
-          @apply -left-6
-        }
-      }
-      &.p-carousel-next-button {
-        @apply -right-4;
-        @media (min-width: theme('screens.md')) {
-          @apply -right-6
-        }
-      }
-      .p-button-label {
-        @apply hidden;
-      }
+  .carousel-item {
+    @apply box-border px-4;
+  }
+
+  .carousel-nav {
+    @apply absolute top-1/2 transform -translate-y-1/2 bg-white border border-neutral-200;
+    @apply rounded-full lg:w-11 lg:h-11 w-9 h-9 flex items-center justify-center cursor-pointer transition-all;
+    @apply duration-200 z-10 text-neutral-900 shadow-sm;
+
+    &:hover {
+      @apply bg-neutral-50 shadow-none;
     }
-
-    .p-carousel-content {
-      @apply flex flex-row sm:py-10 py-5 -mx-4;
-
-      .p-carousel-viewport {
-        @apply w-full overflow-hidden;
-        .p-carousel-item-list {
-          @apply flex flex-row;
-          .p-carousel-item {
-            @apply px-4;
-          }
-        }
-      }
+    &:disabled {
+      @apply opacity-50 cursor-not-allowed;
     }
-
-    .p-carousel-indicator-list {
-      @apply flex-row gap-3 justify-center sm:flex hidden;
-
-      .p-carousel-indicator {
-        @apply h-1 rounded-full w-20 bg-neutral-200;
-
-        &.p-carousel-indicator-active {
-          @apply bg-brand-500;
-        }
-      }
+    &-prev {
+      @apply xl:-left-16 md:-left-5 -left-3;
     }
-
-    .p-carousel-wrapper {
-      overflow: hidden;
-      width: 100%;
+    &-next {
+      @apply xl:-right-16 md:-right-5 -right-3;
     }
   }
 
-  .p-carousel-item {
-    @apply flex-1;
+  .carousel-dots {
+    @apply md:flex hidden justify-center gap-2;
   }
+  
+  .carousel-dot {
+    @apply w-20 h-1 rounded-full border-none bg-neutral-200 cursor-pointer transition-all duration-200;
+  }
+
+  .carousel-dot.active,
+  .carousel-dot:hover {
+    @apply bg-brand-500;
+  }
+}
+
+
+/* Responsive adjustments */
+@media (max-width: 1023px) {
+  .lfx-carousel {
+    .carousel-track {
+      @apply -ml-2.5;
+      width: calc(100% + 1.25rem);
+    }
+  
+    .carousel-item {
+      @apply box-border px-2.5;
+    }
+  } 
 }

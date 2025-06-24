@@ -3,13 +3,13 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <lfx-card class="p-4 sm:p-6 relative group overflow-hidden">
+  <lfx-card class="p-4 sm:p-6 relative group">
     <div class="flex justify-between items-center pb-3">
       <h3 class="text-heading-3 font-semibold font-secondary">{{ config.name }}</h3>
       <lfx-widget-menu
         :data="model"
-        class="relative md:absolute md:-top-3 md:right-6 md:opacity-0
-        md:invisible group-hover:opacity-100 group-hover:visible"
+        class="relative lg:absolute lg:-top-3 lg:right-6 lg:opacity-0
+        lg:invisible group-hover:opacity-100 group-hover:visible"
         :name="props.name"
       />
     </div>
@@ -17,7 +17,7 @@ SPDX-License-Identifier: MIT
       v-if="project"
       class="text-body-2 text-neutral-500 mb-5"
     >
-      <span v-html="config.description(project)" />
+      <span v-html="sanitize(config.description(project))" />
       <a
         v-if="config.learnMoreLink"
         :href="config.learnMoreLink"
@@ -44,6 +44,7 @@ import {lfxWidgets, type WidgetConfig} from "~/components/modules/widget/config/
 import {useProjectStore} from "~/components/modules/project/store/project.store";
 import LfxWidgetMenu from "~/components/modules/widget/components/shared/widget-menu.vue";
 import type { Benchmark } from '~~/types/shared/benchmark.types';
+import {useSanitize} from "~~/composables/useSanitize";
 
 const emit = defineEmits<{(e: 'dataLoaded', value: string): void;
   (e: 'update:benchmark-value', value: Benchmark): void
@@ -51,6 +52,8 @@ const emit = defineEmits<{(e: 'dataLoaded', value: string): void;
 const props = defineProps<{
   name: Widget
 }>();
+
+const {sanitize} = useSanitize();
 
 const config = computed<WidgetConfig>(() => lfxWidgets[props.name]);
 

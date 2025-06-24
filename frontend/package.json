@@ -20,7 +20,7 @@
     "docs:preview": "vitepress preview docs"
   },
   "dependencies": {
-    "@linuxfoundation/lfx-ui-core": "^0.0.14",
+    "@linuxfoundation/lfx-ui-core": "^0.0.18",
     "@nuxt/eslint": "^0.7.5",
     "@nuxtjs/plausible": "^1.2.0",
     "@nuxtjs/robots": "^5.2.10",
@@ -33,6 +33,7 @@
     "echarts": "^5.6.0",
     "eslint": "^9.18.0",
     "html2canvas": "^1.4.1",
+    "isomorphic-dompurify": "^2.25.0",
     "lodash": "^4.17.21",
     "luxon": "^3.5.0",
     "nuxt": "^3.15.3",

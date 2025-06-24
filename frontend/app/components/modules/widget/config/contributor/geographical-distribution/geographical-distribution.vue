@@ -38,10 +38,12 @@ SPDX-License-Identifier: MIT
       :is-empty="isEmpty"
     >
       <div class="w-full h-[330px]">
-        <lfx-chart
-          :config="getGeoMapChartConfig(chartData, chartSeries, getMaxValue(chartData))"
-          :animation="!props.snapshot"
-        />
+        <client-only>
+          <lfx-chart
+            :config="getGeoMapChartConfig(chartData, chartSeries, getMaxValue(chartData))"
+            :animation="!props.snapshot"
+          />
+        </client-only>
       </div>
       <div>
         <div

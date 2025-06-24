@@ -4,7 +4,7 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <div>
-    <div class="border border-neutral-100 shadow-xs bg-white rounded-full p-1 hidden md:flex items-center gap-2">
+    <div class="border border-neutral-100 shadow-xs bg-white rounded-full p-1 hidden lg:flex items-center gap-2">
       <template
         v-for="link of menu"
         :key="link.label"
@@ -31,7 +31,7 @@ SPDX-License-Identifier: MIT
 
     </div>
 
-    <div class="block md:hidden">
+    <div class="block lg:hidden">
       <lfx-dropdown
         width="15rem"
         placement="bottom-end"

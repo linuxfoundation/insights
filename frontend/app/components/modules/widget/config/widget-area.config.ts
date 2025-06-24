@@ -41,8 +41,7 @@ export const lfxWidgetArea: Record<WidgetArea, WidgetAreaConfig> = {
       Widget.SOCIAL_MENTIONS,
       Widget.GITHUB_MENTIONS,
       Widget.PRESS_MENTIONS,
-      // TODO: Uncomment this when the search queries widget is ready
-      // Widget.SEARCH_QUERIES,
+      Widget.SEARCH_QUERIES,
       Widget.PACKAGE_DOWNLOADS,
       Widget.PACKAGE_DEPENDENCY,
       Widget.MAILING_LISTS_MESSAGES,

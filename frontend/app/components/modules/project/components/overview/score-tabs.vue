@@ -3,7 +3,7 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="sm:block hidden">
+  <div class="lg:block hidden">
     <lfx-project-score-tab-view
       :tabs="tabs"
       :trust-score-summary="parsedTrustScoreSummary"
@@ -16,7 +16,7 @@ SPDX-License-Identifier: MIT
       @update:model-value="selectedTab = $event"
     />
   </div>
-  <div class="sm:hidden block">
+  <div class="lg:hidden block">
     <lfx-project-score-accordion-view
       :tabs="tabs"
       :trust-score-summary="parsedTrustScoreSummary"

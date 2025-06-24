@@ -15,9 +15,9 @@ SPDX-License-Identifier: MIT
           class="ease-linear transition-all"
           :class="scrollTop > 50 ? 'py-3 md:py-4' : 'py-3 md:py-6'"
         >
-          <div class="flex items-center justify-between ">
-            <div class="flex items-center">
-              <lfx-back class="ease-linear transition-all pr-4">
+          <div class="flex items-center justify-between gap-2">
+            <div class="flex items-center min-w-0">
+              <lfx-back class="ease-linear transition-all pr-1 sm:pr-4">
                 <lfx-icon-button
                   type="transparent"
                   icon="angle-left"
@@ -32,10 +32,11 @@ SPDX-License-Identifier: MIT
               />
 
               <h1
-                class="font-bold mr-3 ease-linear transition-all font-secondary duration-200 text-heading-4"
+                class="font-bold mr-3 ease-linear transition-all
+                 font-secondary duration-200 text-heading-4 line-clamp-1 sm:line-clamp-none"
                 :class="[
                   scrollTop > 50 ? 'md:text-heading-3' : 'md:text-heading-2',
-                  repoName ? 'max-w-[25ch] truncate' : ''
+                  repoName ? 'max-w-[25ch] truncate' : 'max-w-[25ch] sm:max-w-none'
                 ]"
               >
                 {{ props.project?.name }}
@@ -47,20 +48,20 @@ SPDX-License-Identifier: MIT
               <div
                 v-if="(props.project?.repositories?.length ?? 0) > 0"
                 class="flex items-center gap-2 cursor-pointer px-2 py-0.5
-              rounded-lg transition hover:bg-neutral-100"
+              rounded-lg transition hover:bg-neutral-100 min-w-0"
                 @click="isSearchRepoModalOpen = true"
               >
                 <p
-                  class="text-neutral-400 leading-8 ease-linear transition-all text-base"
+                  class="text-neutral-400 leading-8 ease-linear transition-all text-base w-full overflow-hidden"
                   :class="scrollTop > 50 ? 'md:text-xl' : 'md:text-2xl'"
                 >
                   <span
                     v-if="repoName"
-                    class="font-secondary block text-neutral-900 max-w-[25ch] truncate"
+                    class="font-secondary block text-neutral-900 sm:max-w-[25ch] truncate"
                   >{{ repoName }}</span>
                   <span
                     v-else
-                    class="font-secondary text-neutral-500"
+                    class="font-secondary text-neutral-500 w-full block overflow-hidden truncate"
                   >All repositories</span>
                 </p>
                 <lfx-icon

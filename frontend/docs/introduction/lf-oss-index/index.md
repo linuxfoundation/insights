@@ -88,18 +88,7 @@ Let's use the provided example of a `Sample project` to illustrate how the score
    For each parameter, we calculate `alpha_i * (log(1 + S_i) / log(1 + max(S_i, T_i)))`.
 >
 
-  >> - **created_since:** `1 * (log(1 + 90) / log(1 + max(90, 120)))` = `1 * (log(91) / log(121))` = `1 * (1.959 / 2.083)` = `0.940`
-  >> - **updated_since:** `-1 * (log(1 + 0) / log(1 + max(0, 120)))` = `-1 * (log(1) / log(121))` = `-1 * (0 / 2.083)` = `0`
-  >> - **contributor_count:** `2 * (log(1 + 4000) / log(1 + max(4000, 5000)))` = `2 * (log(4001) / log(5001))` = `2 * (3.602 / 3.699)` = `1.947`
-  >> - **org_count:** `1 * (log(1 + 5) / log(1 + max(5, 10)))` = `1 * (log(6) / log(11))` = `1 * (0.778 / 1.041)` = `0.747`
-  >> - **commit_frequency:** `1 * (log(1 + 97.5) / log(1 + max(97.5, 1000)))` = `1 * (log(98.5) / log(1001))` = `1 * (1.993 / 3.000)` = `0.664`
-  >> - **recent_releases_count:** `0.5 * (log(1 + 70) / log(1 + max(70, 26)))` = `0.5 * (log(71) / log(71))` = `0.5 * 1` = `0.5`
-  >> - **updated_issues_count:** `0.5 * (log(1 + 5395) / log(1 + max(5395, 5000)))` = `0.5 * (log(5396) / log(5396))` = `0.5 * 1` = `0.5`
-  >> - **closed_issues_count:** `0.5 * (log(1 + 3062) / log(1 + max(3062, 5000)))` = `0.5 * (log(3063) / log(5001))` = `0.5 * (3.486 / 3.699)` = `0.471`
- >>  - **comment_frequency:** `1 * (log(1 + 4.5) / log(1 + max(4.5, 15)))` = `1 * (log(5.5) / log(16))` = `1 * (0.740 / 1.204)` = `0.615`
-  >> - **dependents_count:** `2 * (log(1 + 39830) / log(1 + max(39830, 500000)))` = `2 * (log(39831) / log(500001))` = `2 * (4.600 / 5.700)` = `1.614`
-
->2. **Sum the weighted scores:**
+ >2. **Sum the weighted scores:**
    `0.940 + 0 + 1.947 + 0.747 + 0.664 + 0.5 + 0.5 + 0.471 + 0.615 + 1.614 = 7.998`
 
 >3. **Sum the weights:**
