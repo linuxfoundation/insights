@@ -32,6 +32,7 @@ export default [
       ".nuxt/**",
       "dist/**",
       "node_modules/**",
+      ".stress/**",
     ],
   },
 
@@ -156,8 +157,8 @@ export default [
       },
     },
     rules: {
-      "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
-      "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
+      "no-console": ["error", { allow: ["warn", "error"] }],
+      "no-debugger": "error",
       "vue/no-unused-components": "error",
       "vue/first-attribute-linebreak": "error",
       "vue/max-attributes-per-line": "error",
@@ -167,6 +168,7 @@ export default [
       "vue/html-self-closing": "warn",
       "vue/html-button-has-type": "warn",
       "vue/no-multiple-template-root": "off",
+      "vue/no-required-prop-with-default": "off",
       "import/order": "warn",
       "no-unused-vars": "off",
       "@typescript-eslint/no-unused-vars": [
