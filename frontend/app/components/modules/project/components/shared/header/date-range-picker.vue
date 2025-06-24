@@ -162,6 +162,17 @@ watch(() => selectedDateRange.value, (value) => {
 }, {
   immediate: true
 })
+
+watch(() => queryParams.value, (value) => {
+  if (selectedTimeRangeKey.value !== value.timeRange
+    || (startDate.value !== value.start || endDate.value !== value.end)) {
+      selectedDateRange.value = value.timeRange || defaultTimeRangeKey;
+      if (value.timeRange === 'custom') {
+        startDate.value = value.start || null;
+        endDate.value = value.end || null;
+      }
+  }
+});
 </script>
 
 <script lang="ts">
