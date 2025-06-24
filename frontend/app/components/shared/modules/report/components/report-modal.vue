@@ -196,8 +196,8 @@ const form = reactive<ReportDataForm>({
   ...props.defaults,
 })
 
-const rules = {
-  area: {
+const rules = computed(() => ({
+  area: form.hideArea ? {} : {
     required,
   },
   description: {
@@ -206,7 +206,7 @@ const rules = {
   email: {
     email,
   },
-}
+}))
 
 const $v = useVuelidate(rules, form);
 
