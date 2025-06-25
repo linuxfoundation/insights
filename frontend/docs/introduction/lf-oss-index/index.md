@@ -32,7 +32,7 @@ In the future, **we aim to cover the Top 10,000 projects by Criticality Score**.
 
 #### How is the Critical Score Calculated?
 The **Criticality Score** is a number between 0 (least-critical) and 1 (most-critical). It is for a project is calculated using the following formula:
-![Crticality Score](../../images/criticality-score.png)
+![Criticality Score](../../images/criticality-score.png)
 
 ```
 C_project = (1 / sum(alpha_i)) * sum(alpha_i * (log(1 + S_i) / log(1 + max(S_i, T_i))))
