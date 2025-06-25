@@ -7,7 +7,7 @@ import type {
   ChartSeries,
   RawChartData,
   SeriesTypes,
-  CategoryData
+  CategoryData,
 } from '../types/ChartTypes';
 
 /**
@@ -29,42 +29,48 @@ export const convertToChartData = (
         key: item[keyField], // usually the startDate
         yAxisKey: yAxisKey ? item[yAxisKey] : undefined,
         values: valuesKey.map((key: string) => item[key]),
-        xAxisKey2: xAxisKey2 ? item[xAxisKey2] : undefined
-      } as ChartData)
+        xAxisKey2: xAxisKey2 ? item[xAxisKey2] : undefined,
+      }) as ChartData
   ) ?? [];
 
 export const getMaxValue = (data: ChartData[]): number => data //
     .filter((item) => item.key !== 'Unknown')
     .reduce((max, item) => Math.max(max, item.values[0] ?? 0), 0);
 
-export const convertToCategoryData = (
-  xData: ChartData[],
-  yData: ChartData[]
-): CategoryData => ({
+export const convertToCategoryData = (xData: ChartData[], yData: ChartData[]): CategoryData => ({
   xAxis: xData.map((item: ChartData) => ({
     key: parseInt(item.key, 10),
-    value: item.values[0] || 0
+    value: item.values[0] || 0,
   })),
   yAxis: yData.map((item: ChartData) => ({
     key: parseInt(item.key, 10),
-    value: item.values[0] || 0
-  }))
+    value: item.values[0] || 0,
+  })),
 });
 
 // function to convert date data to timestamp since the chart needs the date in this format
 export const convertDateData = (
   chartData: ChartData[] //
-) => chartData.map((item: ChartData) => DateTime.fromISO(item.key).toUTC().endOf('day').toMillis()) || [];
+) => chartData.map((item: ChartData) => DateTime.fromISO(item.key).toUTC().endOf('day').toMillis())
+  || [];
 
-// TODO: check if we'll need multiple yAxis
-// export const buildYAxis = (series: ChartSeries[]): YAXisOption[] | undefined =>
-//   series.length > 0
-//     ? series.map((item: ChartSeries) => ({
-//         type: 'value',
-//         position: item.position || 'left',
-//         alignTicks: true
-//       }))
-//     : undefined;
+/**
+ * Function to remove the 0 values from the beginning of the chart data
+ */
+export const removeZeroValues = (data: ChartData[]): ChartData[] => {
+  let startIndex = 0;
+
+  // Find the first non-zero value
+  for (let i = 0; i < data.length; i += 1) {
+    if (data[i]?.values[0] !== 0) {
+      startIndex = i;
+      break;
+    }
+  }
+
+  // Return the array starting from the first non-zero value
+  return data.slice(startIndex);
+};
 
 /**
  * Build series for the chart. The series is where the data is added to the chart.
@@ -72,18 +78,15 @@ export const convertDateData = (
  * @param data - Data
  * @returns Series
  */
-export const buildSeries = (
-  series: ChartSeries[],
-  data: ChartData[]
-): SeriesTypes[] | undefined => (series.length > 0
+export const buildSeries = (series: ChartSeries[], data: ChartData[]): SeriesTypes[] | undefined => (series.length > 0
     ? series.map(
         (series: ChartSeries) => ({
             type: series.type,
             name: series.name,
             yAxisIndex: series.yAxisIndex,
             dataIndex: series.dataIndex,
-            data: data.map((item: ChartData) => item.values[series.dataIndex]) || []
-          } as SeriesTypes)
+            data: data.map((item: ChartData) => item.values[series.dataIndex]) || [],
+          }) as SeriesTypes
       )
     : undefined);
 
@@ -94,12 +97,12 @@ export const convertToGradientColor = (
 ) => new graphic.LinearGradient(0, 0, 0, 1, [
     {
       offset: offsetStart,
-      color // Start color
+      color, // Start color
     },
     {
       offset: offsetEnd,
-      color: 'rgba(255, 255, 255, 0)' // Transparent white for gradient fade
-    }
+      color: 'rgba(255, 255, 255, 0)', // Transparent white for gradient fade
+    },
   ]);
 
 // handy function to convert hex color to rgba used for gradient colors in charts
@@ -128,10 +131,7 @@ export const hexToRgba = (hex: string, alpha: number = 1): string => {
  * @param data - Array of ChartData objects
  * @returns Array of number arrays representing [x, y, value] coordinates
  */
-export const convertToScatterData = (
-  data: ChartData[],
-  categoryData: CategoryData
-): number[][] => {
+export const convertToScatterData = (data: ChartData[], categoryData: CategoryData): number[][] => {
   const { xAxis } = categoryData;
   const yAxis = [...categoryData.yAxis].reverse();
 
@@ -143,7 +143,7 @@ export const convertToScatterData = (
     ) => [
       xAxis.findIndex((x) => x.value === item.key),
       yAxis.findIndex((y) => y.value === item.yAxisKey),
-      item.values[0] || 0
+      item.values[0] || 0,
     ]
   );
 };

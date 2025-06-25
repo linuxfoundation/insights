@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@linuxfoundation/lfx-ui-core':
-        specifier: ^0.0.14
-        version: 0.0.14
+        specifier: ^0.0.18
+        version: 0.0.18
       '@nuxt/eslint':
         specifier: ^0.7.5
         version: 0.7.6(@typescript-eslint/utils@8.34.1(eslint@9.29.0(jiti@2.4.2))(typescript@5.8.3))(@vue/compiler-sfc@3.5.17)(eslint-import-resolver-node@0.3.9)(eslint@9.29.0(jiti@2.4.2))(magicast@0.3.5)(typescript@5.8.3)(vite@5.4.19(@types/node@24.0.3)(sass-embedded@1.89.2)(sass@1.89.2)(terser@5.43.1))
@@ -1204,8 +1204,8 @@ packages:
   '@kwsites/promise-deferred@1.1.1':
     resolution: {integrity: sha512-GaHYm+c0O9MjZRu0ongGBRbinu8gVAMd2UZjji6jVmqKtZluZnptXGWhz1E8j8D2HJ3f/yMxKAUC0b+57wncIw==}
 
-  '@linuxfoundation/lfx-ui-core@0.0.14':
-    resolution: {integrity: sha512-QoH0NJbula6mV8a6OX9cMN+d3IvWMrE/F0qbW5Abn+WWxUnAjdlYytouWwQtNz37720eF36QhfRzribT6ytDgw==}
+  '@linuxfoundation/lfx-ui-core@0.0.18':
+    resolution: {integrity: sha512-XizKlRk9DfZuI0RlOwqbo/i9qswTf8/PGmkHtnNQdtYJ5eo4eBdqpt+LwFzyHPO6f8qXJmhH9NYucCxXjsUJbw==}
     peerDependencies:
       prettier: '>=3.0.0'
     peerDependenciesMeta:
@@ -8218,7 +8218,7 @@ snapshots:
 
   '@kwsites/promise-deferred@1.1.1': {}
 
-  '@linuxfoundation/lfx-ui-core@0.0.14': {}
+  '@linuxfoundation/lfx-ui-core@0.0.18': {}
 
   '@mapbox/node-pre-gyp@2.0.0':
     dependencies:
