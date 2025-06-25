@@ -5,7 +5,7 @@ SPDX-License-Identifier: MIT
 <template>
   <div class="flex flex-col gap-y-3 sm:flex-row justify-between sm:items-center mb-6">
     <div class="flex flex-row gap-3 items-center">
-      <div>
+      <div class="dependency-display-avatars">
         <slot />
       </div>
       <div class="flex flex-col items-start">

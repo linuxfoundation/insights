@@ -1,0 +1,8 @@
+// Copyright (c) 2025 The Linux Foundation and each contributor.
+// SPDX-License-Identifier: MIT
+
+.dependency-display-avatars {
+  :nth-child(n+4 of div.p-avatar) {
+    @apply hidden lg:flex;
+  }
+}
