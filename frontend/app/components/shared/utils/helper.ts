@@ -1,6 +1,6 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-/* eslint-disable */
+ 
 
 export const isEmptyData = (value: Record<string, unknown>[] | null | undefined) =>
   // check if the value is null or undefined or the length of the value is 0
