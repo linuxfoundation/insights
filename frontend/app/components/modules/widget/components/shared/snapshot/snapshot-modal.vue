@@ -66,12 +66,16 @@ import LfxIcon from "~/components/uikit/icon/icon.vue";
 import LfxSnapshotPreview from "~/components/modules/widget/components/shared/snapshot/snapshot-preview.vue";
 import {useProjectStore} from "~/components/modules/project/store/project.store";
 import LfxIconButton from "~/components/uikit/icon-button/icon-button.vue";
+import useToastService from "~/components/uikit/toast/toast.service";
+import { ToastTypesEnum } from "~/components/uikit/toast/types/toast.types";
 
 const props = defineProps<{
   modelValue: boolean;
   widgetName: Widget,
   data: object
 }>();
+
+const { showToast } = useToastService();
 
 const emit = defineEmits<{(e: 'update:modelValue', value: boolean): void;
 }>();
@@ -109,7 +113,7 @@ const download = async () => {
     link.click()
     document.body.removeChild(link);
   } catch (e) {
-    console.error('Error while downloading snapshot', e)
+    showToast('Failed to download snapshot', ToastTypesEnum.negative)
   }
   isModalOpen.value = false;
 }
