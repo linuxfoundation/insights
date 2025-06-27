@@ -59,7 +59,7 @@ import type { ActiveContributors } from '~~/types/contributors/responses.types';
 import type { Summary } from '~~/types/shared/summary.types';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
-import {convertToChartData} from '~/components/uikit/chart/helpers/chart-helpers';
+import {convertToChartData, removeZeroValues} from '~/components/uikit/chart/helpers/chart-helpers';
 import type {
   ChartData,
   RawChartData,
@@ -150,9 +150,13 @@ const activeContributors = computed<ActiveContributors>(() => data.value as Acti
 const summary = computed<Summary>(() => activeContributors.value?.summary);
 const chartData = computed<ChartData[]>(
     // convert the data to chart data
-    () => convertToChartData(activeContributors.value?.data as RawChartData[], 'startDate', [
+    () => {
+      const tmpData = convertToChartData(activeContributors.value?.data as RawChartData[], 'startDate', [
       'contributors'
-    ], undefined, 'endDate')
+    ], undefined, 'endDate');
+
+    return selectedTimeRangeKey.value === dateOptKeys.alltime ? removeZeroValues(tmpData) : tmpData;
+  }
 );
 const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
 
@@ -176,6 +180,14 @@ const chartSeries = ref<ChartSeries[]>([
 ]);
 
 const barChartConfig = computed(() => getBarChartConfig(chartData.value, chartSeries.value, model.value.activeTab));
+
+watch(tabs, () => {
+  if (!tabs.value.some((tab) => tab.value === model.value.activeTab)) {
+    model.value.activeTab = (tabs.value[0]?.value || Granularity.WEEKLY) as Granularity;
+  }
+}, {
+  immediate: true
+});
 
 watch(selectedTimeRangeKey, () => {
   model.value.activeTab = (tabs.value[0]?.value || Granularity.WEEKLY) as Granularity;
