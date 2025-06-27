@@ -79,7 +79,7 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import {computed, onServerPrefetch} from 'vue'
+import {computed, onServerPrefetch, watch} from 'vue'
 import { useRoute } from 'vue-router'
 import { useInfiniteQuery } from '@tanstack/vue-query'
 import type { Project } from '~~/types/project'
@@ -169,6 +169,16 @@ const updateTab = (value: string) => {
     collectionTab: value,
   }
 }
+
+watch(() => queryParams.value, (value) => {
+  if (value.collectionSort && value.collectionSort !== sort.value) {
+    sort.value = value.collectionSort;
+  }
+
+  if (value.collectionTab && value.collectionTab !== tab.value) {
+    tab.value = value.collectionTab;
+  }
+});
 
 </script>
 
