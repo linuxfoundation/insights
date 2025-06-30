@@ -168,7 +168,6 @@ const {scrollTop} = useScroll();
 const pageSize = 100
 const sort = ref(listSort || 'starred_desc')
 const category = ref('all');
-const isFirstLoad = ref(true);
 
 const queryKey = computed(() => [TanstackKey.COLLECTIONS, sort.value, category.value])
 
@@ -303,7 +302,7 @@ onServerPrefetch(async () => {
  * When that happens, the category is set to 'all'
  */
 watch(queryParams, (value) => {
-  if (value.listCategory && value.listCategory !== 'all' && isFirstLoad.value) {
+  if (value.listCategory && value.listCategory !== 'all') {
     let catId = value.listCategory;
 
     if (value.listCategory.startsWith('group(')) {
@@ -315,9 +314,13 @@ watch(queryParams, (value) => {
 
     const foundGroup = allCategoryGroups.value.find((group) => group.id === catId)
     category.value = foundGroup ? foundGroup.value : 'all';
+  } else {
+    category.value = 'all';
   }
 
-  isFirstLoad.value = false;
+  if (value.listSort && value.listSort !== sort.value) {
+    sort.value = value.listSort;
+  }
 }, { immediate: true })
 </script>
 
