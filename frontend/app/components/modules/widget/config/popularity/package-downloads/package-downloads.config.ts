@@ -7,7 +7,7 @@ const packageDownloads: WidgetConfig = {
   key: 'packageDownloads',
   name: 'Package downloads',
   description: () => `Tracking of package downloads over time, providing insights into how widely 
-    the project is adopted and integrated within other software. 
+    the project is adopted and integrated within other software. <i>(Note: We don't have data before June 2025.)</i>
     <span class="font-semibold italic text-neutral-600">Powered by Ecosyste.ms.</span>`,
   learnMoreLink: `/docs/metrics/popularity#package-downloads`,
   component: PackageDownloads,

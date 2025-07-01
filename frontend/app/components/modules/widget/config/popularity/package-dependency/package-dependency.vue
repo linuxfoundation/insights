@@ -45,7 +45,7 @@ import LfxPackageDropdown from '../package-downloads/fragments/package-dropdown.
 import LfxProjectPackageLegendItem from './fragments/package-legend-item.vue';
 import type { Package, PackageDownloads } from '~~/types/popularity/responses.types';
 import type { Summary } from '~~/types/shared/summary.types';
-import { convertToChartData } from '~/components/uikit/chart/helpers/chart-helpers';
+import { convertToChartData, removeZeroValues } from '~/components/uikit/chart/helpers/chart-helpers';
 import type {
   ChartData,
   RawChartData,
@@ -204,13 +204,14 @@ const dockerDependentsSummary = computed<Summary | undefined>(() => {
   }
 });
 
-const chartData = computed<ChartData[]>(
-  // convert the data to chart data
-  () => convertToChartData((packageDownloads.value?.data || []) as RawChartData[], 'startDate', [
-    'dependentReposCount',
-    'dependentPackagesCount',
-    'dockerDependentsCount',
-  ], undefined, 'endDate')
+const chartData = computed<ChartData[]>(() => {
+    const tmpData = convertToChartData((packageDownloads.value?.data || []) as RawChartData[], 'startDate', [
+      'dependentReposCount',
+      'dependentPackagesCount',
+      'dockerDependentsCount',
+    ], undefined, 'endDate');
+    return removeZeroValues(tmpData);
+  }
 );
 const isEmpty = computed(() => {
   if (isEmptyData(chartData.value as unknown as Record<string, unknown>[])) {

@@ -54,7 +54,7 @@ import LfxPackageDropdown from './fragments/package-dropdown.vue';
 import type { Package, PackageDownloads } from '~~/types/popularity/responses.types';
 import type { Summary } from '~~/types/shared/summary.types';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
-import { convertToChartData } from '~/components/uikit/chart/helpers/chart-helpers';
+import { convertToChartData, removeZeroValues } from '~/components/uikit/chart/helpers/chart-helpers';
 import type {
   ChartData,
   RawChartData,
@@ -177,10 +177,13 @@ const summary = computed<Summary>(() => {
 });
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
-  () => convertToChartData((packageDownloads.value?.data || []) as RawChartData[], 'startDate', [
-    'downloadsCount',
-    'dockerDownloadsCount',
-  ], undefined, 'endDate')
+  () => {
+    const tmpData = convertToChartData((packageDownloads.value?.data || []) as RawChartData[], 'startDate', [
+      'downloadsCount',
+      'dockerDownloadsCount',
+    ], undefined, 'endDate');
+    return removeZeroValues(tmpData, true);
+  }
 );
 const isEmpty = computed(() => {
   if (isEmptyData(chartData.value as unknown as Record<string, unknown>[])) {
