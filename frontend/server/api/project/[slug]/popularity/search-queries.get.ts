@@ -48,6 +48,6 @@ export default defineEventHandler(async (event) => {
         endDate: item.endDate,
         queryCount: item.queryCount
       }))
-      .sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime())
+      .sort((a, b) => DateTime.fromISO(a.startDate).toMillis() - DateTime.fromISO(b.startDate).toMillis())
   };
 });
