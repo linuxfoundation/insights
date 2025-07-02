@@ -1,17 +1,24 @@
-# syntax=docker/dockerfile:1
-FROM node:22-alpine AS build
-WORKDIR /app
-COPY package.json pnpm-lock.yaml ./
-RUN npm install -g pnpm && pnpm install --frozen-lockfile
-COPY . .
-RUN pnpm run build
+FROM node:20-alpine AS builder
 
-FROM node:22-alpine AS runtime
-WORKDIR /app
-COPY package.json pnpm-lock.yaml ./
-RUN npm install -g pnpm && pnpm install --prod --frozen-lockfile
-COPY --from=build /app/dist ./dist
+RUN apk add --no-cache python3 make g++
 
-# Default command runs the main search-volume service
-# For Temporal worker: docker run ... node --env-file=.env dist/temporal/index.js
-CMD ["node", "--env-file=.env", "dist/search-volume.js"]
+WORKDIR /usr/insights/app
+RUN npm install -g corepack@latest && corepack enable pnpm && corepack prepare pnpm@9.15.0 --activate
+
+COPY ./pnpm-workspace.yaml ./pnpm-lock.yaml ./
+RUN pnpm fetch
+
+COPY ./submodules ./submodules
+COPY ./workers/temporal/base ./workers/temporal/base
+COPY ./workers/temporal/search_volume_worker ./workers/temporal/search_volume_worker
+
+RUN pnpm i --frozen-lockfile
+
+FROM node:20-bookworm-slim AS runner
+
+WORKDIR /usr/insights/app
+RUN npm install -g corepack@latest && corepack enable pnpm && corepack prepare pnpm@9.15.0 --activate && apt update && apt install -y ca-certificates --no-install-recommends && rm -rf /var/lib/apt/lists/*
+
+COPY --from=builder /usr/insights/app/node_modules ./node_modules
+COPY --from=builder /usr/insights/app/submodules ./submodules
+COPY --from=builder /usr/insights/app/workers ./workers
