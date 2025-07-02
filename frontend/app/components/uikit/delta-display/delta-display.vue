@@ -33,7 +33,7 @@ SPDX-License-Identifier: MIT
 import { computed } from 'vue';
 import type { DeltaDisplayProps } from './types/delta-display.types';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
-import { formatNumber, formatSecondsToDuration } from '~/components/shared/utils/formatter';
+import { formatNumber, formatNumberShort, formatSecondsToDuration } from '~/components/shared/utils/formatter';
 
 const props = withDefaults(defineProps<DeltaDisplayProps>(), {
   isReverse: false
@@ -60,13 +60,14 @@ const deltaDirection = computed<'positive' | 'negative'>(() => {
 // TODO: remove isDuration and use deltaUnit instead
 const delta = computed(() => {
   const value = props.summary.changeValue;
-  const changeValue = formatSecondsToDuration(
+  const changeDuration = formatSecondsToDuration(
     Math.abs(value),
     'short'
   );
+  const changeValue = props.isShort ? formatNumberShort(value) : formatNumber(value, 1);
 
   const sign = value >= 0 ? '+' : '';
-  return sign + (props.isDuration ? changeValue : formatNumber(value, 1));
+  return sign + (props.isDuration ? changeDuration : changeValue);
 });
 
 const deltaColor = computed(() => (deltaDirection.value === 'negative'

@@ -13,12 +13,13 @@ SPDX-License-Identifier: MIT
     <div class="flex gap-3 w-1/2">
       <div class="text-xs flex flex-col sm:items-end min-w-15 sm:min-w-auto sm:w-1/3">
         <span class="text-neutral-400">Total</span>
-        {{ formatNumber(delta.current) }}
+        {{ delta.current > 9999 ? formatNumberShort(delta.current) : formatNumber(delta.current) }}
       </div>
       <lfx-delta-display
         :flip-display="true"
         :hide-previous-value="true"
         :summary="delta"
+        :is-short="true"
         class="sm:items-end whitespace-nowrap sm:w-2/3"
       />
     </div>
@@ -26,7 +27,7 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { formatNumber } from '~/components/shared/utils/formatter';
+import { formatNumber, formatNumberShort } from '~/components/shared/utils/formatter';
 import type { Summary } from '~~/types/shared/summary.types';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
 
