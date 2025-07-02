@@ -40,7 +40,28 @@ SPDX-License-Identifier: MIT
         <lfx-chart
           :config="lineChartConfig"
           :animation="!props.snapshot"
+        >
+          <template #legend>
+            <div class="flex flex-row gap-5 items-center justify-center pt-2">
+              <div class="flex flex-row items-center gap-2">
+                <div class="w-5 border-brand-500 border-b-2 border-solid" />
+                <span class="text-xs text-neutral-900">Total package downloads</span>
+              </div>
+              <div class="flex flex-row items-center gap-2">
+                <div class="w-5 border-neutral-600 border-b-2 border-dotted" />
+                <span class="text-xs text-neutral-900">Docker downloads</span>
+              </div>
+            </div>
+          </template>
+        </lfx-chart>
+      </div>
+      <div class="flex justify-center items-center gap-2 text-xs text-neutral-400 mt-5">
+        <lfx-icon
+          name="info-circle"
+          type="regular"
+          :size="12"
         />
+        Data available from June 2025 onward
       </div>
     </lfx-project-load-state>
   </section>
@@ -74,6 +95,7 @@ import LfxProjectLoadState from "~/components/modules/project/components/shared/
 import {Widget} from "~/components/modules/widget/types/widget";
 import { POPULARITY_API_SERVICE } from '~/components/modules/widget/services/popularity.api.service';
 import { EcosystemSeparator } from '~~/types/shared/ecosystems.types';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 
 interface PackageDownloadsModel {
   package: string;
