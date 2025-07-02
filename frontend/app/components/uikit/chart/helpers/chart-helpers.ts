@@ -57,13 +57,13 @@ export const convertDateData = (
 /**
  * Function to remove the 0 values from the beginning of the chart data
  */
-export const removeZeroValues = (data: ChartData[]): ChartData[] => {
+export const removeZeroValues = (data: ChartData[], padLeft?: boolean): ChartData[] => {
   let startIndex = 0;
 
   // Find the first non-zero value
   for (let i = 0; i < data.length; i += 1) {
     if (data[i]?.values[0] !== 0) {
-      startIndex = i;
+      startIndex = (padLeft && i > 0) ? i - 1 : i;
       break;
     }
   }
