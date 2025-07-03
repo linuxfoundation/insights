@@ -22,6 +22,14 @@ SPDX-License-Identifier: MIT
           :animation="!props.snapshot"
         />
       </div>
+      <div class="flex justify-center items-center gap-2 text-xs text-neutral-400 mt-5">
+        <lfx-icon
+          name="info-circle"
+          type="regular"
+          :size="12"
+        />
+        Data available from June 2024 onward
+      </div>
     </lfx-project-load-state>
   </section>
 </template>
@@ -49,6 +57,7 @@ import { Granularity } from '~~/types/shared/granularity';
 import {TanstackKey} from "~/components/shared/types/tanstack";
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
 import {Widget} from "~/components/modules/widget/types/widget";
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 
 const props = defineProps<{
   snapshot?: boolean

@@ -42,10 +42,12 @@ export default defineEventHandler(async (event) => {
   const searchVolumeData = await fetchSearchVolume(filter);
 
   return {
-    data: searchVolumeData.data.map((item) => ({
-      startDate: item.startDate,
-      endDate: item.endDate,
-      queryCount: item.queryCount
-    }))
+    data: searchVolumeData.data
+      .map((item) => ({
+        startDate: item.startDate,
+        endDate: item.endDate,
+        queryCount: item.queryCount
+      }))
+      .sort((a, b) => DateTime.fromISO(a.startDate).toMillis() - DateTime.fromISO(b.startDate).toMillis())
   };
 });
