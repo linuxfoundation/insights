@@ -14,7 +14,10 @@ SPDX-License-Identifier: MIT
       }"
     >
       <client-only>
-        <lfx-footer class="pt-10 md:pt-16 pb-5 md:pb-8 px-0" />
+        <lfx-footer
+          cookie-tracking
+          class="pt-10 md:pt-16 pb-5 md:pb-8 px-0"
+        />
       </client-only>
     </div>
   </div>
