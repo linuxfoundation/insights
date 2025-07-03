@@ -37,6 +37,7 @@ import {fetchRetention} from "~~/server/data/tinybird/retention-data-source";
 import {fetchForksActivities} from "~~/server/data/tinybird/forks-data-source";
 import {fetchStarsActivities} from "~~/server/data/tinybird/stars-data-source";
 import {fetchIssuesResolution} from "~~/server/data/tinybird/issues-resolution-data-source";
+import {fetchIssuesOpened} from "~~/server/data/tinybird/issues-opened-data-source";
 import {fetchPullRequests} from "~~/server/data/tinybird/pull-requests-data-source";
 import {fetchReviewTimeByPRSize} from "~~/server/data/tinybird/review-time-by-pr-size-data-source";
 import {fetchAverageTimeToMerge} from "~~/server/data/tinybird/average-time-to-merge-data-source";
@@ -62,6 +63,7 @@ import type {
 } from "~~/types/popularity/responses.types";
 import type {
   ActiveDays,
+  IssuesOpened,
   IssuesResolution,
   PullRequests,
   ReviewTimeByPrItem,
@@ -90,6 +92,7 @@ export interface DataSource {
     fetchForksActivities: (filter: ActivityCountFilter) => Promise<ForksData>;
     fetchMailingListsMessageActivities: (filter: ActivityCountFilter) => Promise<MailingListsMessages>;
     fetchStarsActivities: (filter: ActivityCountFilter) => Promise<StarsData>;
+    fetchIssuesOpened: (filter: ActivityCountFilter) => Promise<IssuesOpened>;
     fetchIssuesResolution: (filter: ActivityCountFilter) => Promise<IssuesResolution>;
     fetchCommitActivities: (filter: ActivityCountFilter) => Promise<CommitActivities>;
     fetchPullRequests: (filter: ActivityCountFilter) => Promise<PullRequests>;
@@ -118,6 +121,7 @@ export function createDataSource(): DataSource {
         fetchForksActivities,
         fetchMailingListsMessageActivities,
         fetchStarsActivities,
+        fetchIssuesOpened,
         fetchIssuesResolution,
         fetchCommitActivities,
         fetchPullRequests,

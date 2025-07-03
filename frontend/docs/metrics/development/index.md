@@ -7,6 +7,11 @@ This section explains the development activity metrics tracked by LFX Insights. 
 
 **Why it matters:** Helps gauge how responsive and attentive maintainers are to user-reported problems and feature requests.
 
+## Issues Opened  
+**What it is:** The number of issues opened during the selected time period.  
+
+**Why it matters:** Indicates user interest and engagement with the project. A steady flow of issues suggests active usage and community involvement, while sudden spikes might indicate bugs or feature requests from increased adoption.
+
 ## Pull Requests  
 **What it is:** Metrics related to pull requests (PRs), including how many are opened, closed, merged, and rejected.  
 

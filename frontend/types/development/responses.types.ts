@@ -66,6 +66,17 @@ export interface IssuesResolution {
   data: IssuesResolutionData[];
 }
 
+export interface IssuesOpenedData {
+  dateFrom: string;
+  dateTo: string;
+  openedIssues: number;
+}
+
+export interface IssuesOpened {
+  summary: Summary;
+  data: IssuesOpenedData[];
+}
+
 export interface MergeLeadTimeItem {
   value: number;
   unit: 'seconds' | 'minutes' | 'hours' | 'days';
