@@ -94,11 +94,8 @@ SPDX-License-Identifier: MIT
                   </template>
                 </template>
                 <template v-else>
-                  <lfx-project-security-evaluation-repository
-                    v-for="(repoChecks, repo) in groupChecksByRepository(checks || [])"
-                    :key="repo"
-                    :checks="repoChecks || []"
-                    :repository="repo"
+                  <lfx-project-security-paginated-eval-repos
+                    :group-checks="groupChecksByRepository(checks || [])"
                   />
                 </template>
               </lfx-project-security-evaluation-section>
@@ -122,8 +119,8 @@ import LfxProjectSecurityEvaluationSection
   from "~/components/modules/project/components/security/evaluation-section.vue";
 import LfxProjectSecurityEvaluationAssesment
   from "~/components/modules/project/components/security/evaluation-assesment.vue";
-import LfxProjectSecurityEvaluationRepository
-  from "~/components/modules/project/components/security/evaluation-repository.vue";
+import LfxProjectSecurityPaginatedEvalRepos
+  from "~/components/modules/project/components/security/paginated-eval-repos.vue";
 import {TanstackKey} from "~/components/shared/types/tanstack";
 import {useProjectStore} from "~/components/modules/project/store/project.store";
 import type {SecurityData} from "~~/types/security/responses.types";

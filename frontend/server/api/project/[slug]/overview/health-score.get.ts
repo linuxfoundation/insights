@@ -48,6 +48,13 @@ export default defineEventHandler(async (event) => {
     endDate: DateTime.now().minus({ quarters: 1 }).endOf('quarter')
   };
 
+  const endOfLastQuarter = DateTime.now().minus({ quarters: 1 }).endOf('quarter');
+  const filterPrevious2Quarters: DefaultFilter = {
+    ...filter,
+    startDate: endOfLastQuarter.minus({ quarters: 2 }),
+    endDate: endOfLastQuarter
+  };
+
   const dataSource = createDataSource();
 
   try {
@@ -57,7 +64,7 @@ export default defineEventHandler(async (event) => {
       dataSource.fetchContributorDependency(filter),
       dataSource.fetchOrganizationDependency(filter),
       dataSource.fetchRetention({
-        ...filter,
+        ...filterPrevious2Quarters,
         demographicType: DemographicType.CONTRIBUTORS,
         onlyContributions: false,
         granularity: FilterGranularity.QUARTERLY
@@ -85,6 +92,7 @@ export default defineEventHandler(async (event) => {
       }),
       dataSource.fetchPullRequests({
         ...filter,
+        granularity: FilterGranularity.MONTHLY,
         countType: ActivityFilterCountType.NEW, // This isn't used but required the interface
         activity_type: ActivityTypes.ISSUES_CLOSED, // This isn't used but required the interface
         onlyContributions: false
@@ -156,7 +164,7 @@ export default defineEventHandler(async (event) => {
 
     healthScore.push({
       key: BenchmarkKeys.PullRequests,
-      value: pullRequests.summary.current
+      value: pullRequests.openedSummary.current
     });
 
     const mergeLeadTimeValue = Number(

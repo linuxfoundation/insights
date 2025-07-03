@@ -220,7 +220,7 @@ const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<
 const callEmit = () => {
   emit('update:benchmarkValue', status.value === 'success' ? {
     key: BenchmarkKeys.PullRequests,
-    value: summary.value?.current || 0,
+    value: openedSummary.value?.current || 0,
     additionalCheck: granularity.value === Granularity.MONTHLY
   } : undefined);
 }
