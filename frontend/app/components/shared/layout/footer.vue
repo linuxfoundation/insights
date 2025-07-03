@@ -87,7 +87,10 @@ SPDX-License-Identifier: MIT
         </div>
       </div>
       <client-only>
-        <lfx-footer class="footer !p-0 !text-left max-w-190" />
+        <lfx-footer
+          cookie-tracking
+          class="footer !p-0 !text-left max-w-190"
+        />
       </client-only>
     </div>
   </footer>
