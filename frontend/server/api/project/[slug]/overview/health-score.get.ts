@@ -92,6 +92,7 @@ export default defineEventHandler(async (event) => {
       }),
       dataSource.fetchPullRequests({
         ...filter,
+        granularity: FilterGranularity.MONTHLY,
         countType: ActivityFilterCountType.NEW, // This isn't used but required the interface
         activity_type: ActivityTypes.ISSUES_CLOSED, // This isn't used but required the interface
         onlyContributions: false
@@ -163,7 +164,7 @@ export default defineEventHandler(async (event) => {
 
     healthScore.push({
       key: BenchmarkKeys.PullRequests,
-      value: pullRequests.summary.current
+      value: pullRequests.openedSummary.current
     });
 
     const mergeLeadTimeValue = Number(
