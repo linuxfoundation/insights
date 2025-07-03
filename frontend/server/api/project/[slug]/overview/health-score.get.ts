@@ -48,6 +48,13 @@ export default defineEventHandler(async (event) => {
     endDate: DateTime.now().minus({ quarters: 1 }).endOf('quarter')
   };
 
+  const endOfLastQuarter = DateTime.now().minus({ quarters: 1 }).endOf('quarter');
+  const filterPreviousQuarterYear: DefaultFilter = {
+    ...filter,
+    startDate: endOfLastQuarter.minus({ years: 1 }),
+    endDate: endOfLastQuarter
+  };
+
   const dataSource = createDataSource();
 
   try {
@@ -57,7 +64,7 @@ export default defineEventHandler(async (event) => {
       dataSource.fetchContributorDependency(filter),
       dataSource.fetchOrganizationDependency(filter),
       dataSource.fetchRetention({
-        ...filter,
+        ...filterPreviousQuarterYear,
         demographicType: DemographicType.CONTRIBUTORS,
         onlyContributions: false,
         granularity: FilterGranularity.QUARTERLY
