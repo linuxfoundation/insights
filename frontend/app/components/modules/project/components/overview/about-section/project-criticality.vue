@@ -15,7 +15,7 @@ SPDX-License-Identifier: MIT
         <p class="text-xs leading-4 text-neutral-400">
           Based on OpenSSF Criticality Score project.
           <a
-            href="/docs/"
+            :href="links.criticality"
             target="_blank"
             class="text-brand-500"
           >Learn more</a>
@@ -70,6 +70,7 @@ import { storeToRefs } from 'pinia';
 import { useProjectStore } from '~~/app/components/modules/project/store/project.store';
 import LfxCard from "~/components/uikit/card/card.vue";
 import LfxTooltip from "~/components/uikit/tooltip/tooltip.vue";
+import { links } from '~/config/links';
 
 const { project, repository } = storeToRefs(useProjectStore())
 
