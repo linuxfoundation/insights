@@ -14,7 +14,6 @@
     "@crowd/common": "workspace:*",
     "@crowd/database": "workspace:*",
     "@crowd/logging": "workspace:*",
-    "@crowd/redis": "workspace:*",
     "@crowd/types": "workspace:*",
     "@insights/temporal-worker": "workspace:*",
     "@temporalio/client": "~1.11.8",

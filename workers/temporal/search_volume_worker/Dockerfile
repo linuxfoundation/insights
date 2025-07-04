@@ -1,6 +1,6 @@
 ARG NODE_VERSION=24
 ARG PNPM_VERSION=10.12.4
-ARG PNPM_CACHE_DIR=/tmp/insights-search-worker-pnpm-cache
+ARG PNPM_CACHE_DIR=/tmp/insights-search-volume-worker-pnpm-cache
 
 
 ## Builder stage
@@ -10,7 +10,7 @@ ARG PNPM_CACHE_DIR
 
 RUN apk add --no-cache python3 make g++
 
-WORKDIR /usr/insights/app
+WORKDIR /insights-search-volume-app
 RUN npm install -g corepack@latest && \
     corepack enable pnpm && \
     corepack prepare pnpm@${PNPM_VERSION} --activate
@@ -21,8 +21,7 @@ COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY ./workers/temporal/search_volume_worker/package.json ./workers/temporal/search_volume_worker/
 
 # Pre-fetch dependencies and use a Docker cache mount for pnpm to speed up subsequent builds
-RUN --mount=type=cache,id=pnpm,target=${PNPM_CACHE_DIR} \
-    pnpm config set store-dir ${PNPM_CACHE_DIR} && \
+RUN --mount=type=cache,id=pnpm,target=${PNPM_CACHE_DIR} pnpm config set store-dir ${PNPM_CACHE_DIR} && \
     pnpm fetch --frozen-lockfile
 
 COPY ./submodules ./submodules
@@ -37,7 +36,7 @@ RUN --mount=type=cache,id=pnpm,target=${PNPM_CACHE_DIR} pnpm config set store-di
 FROM node:${NODE_VERSION}-bookworm-slim AS runner
 ARG PNPM_VERSION
 
-WORKDIR /usr/insights/app/workers/temporal/search_volume_worker
+WORKDIR /insights-search-volume-app/workers/temporal/search_volume_worker
 
 RUN npm install -g corepack@latest && corepack enable pnpm && \
     corepack prepare pnpm@${PNPM_VERSION} --activate && \
@@ -46,8 +45,8 @@ RUN npm install -g corepack@latest && corepack enable pnpm && \
     rm -rf /var/lib/apt/lists/*
 
 COPY ./workers/temporal/search_volume_worker/package.json ./package.json
-COPY --from=builder /usr/insights/app/node_modules /usr/insights/app/node_modules
-COPY --from=builder /usr/insights/app/submodules /usr/insights/app/submodules
-COPY --from=builder /usr/insights/app/workers /usr/insights/app/workers
+COPY --from=builder /insights-search-volume-app/node_modules /insights-search-volume-app/node_modules
+COPY --from=builder /insights-search-volume-app/submodules /insights-search-volume-app/submodules
+COPY --from=builder /insights-search-volume-app/workers /insights-search-volume-app/workers
 
-ENV PATH=/usr/insights/app/node_modules/.bin:$PATH
+ENV PATH=/insights-search-volume-app/node_modules/.bin:$PATH

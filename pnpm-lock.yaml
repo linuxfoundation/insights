@@ -935,9 +935,6 @@ importers:
       '@crowd/logging':
         specifier: workspace:*
         version: link:../../../submodules/crowd.dev/services/libs/logging
-      '@crowd/redis':
-        specifier: workspace:*
-        version: link:../../../submodules/crowd.dev/services/libs/redis
       '@crowd/types':
         specifier: workspace:*
         version: link:../../../submodules/crowd.dev/services/libs/types
