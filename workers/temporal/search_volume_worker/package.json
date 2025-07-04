@@ -1,0 +1,31 @@
+{
+  "name": "@insights/search-volume-worker",
+  "scripts": {
+    "start": "INSIGHTS_TEMPORAL_TASKQUEUE=search-volume SERVICE=search-volume-worker tsx src/main.ts",
+    "start:debug": "INSIGHTS_TEMPORAL_TASKQUEUE=search-volume SERVICE=search-volume-worker LOG_LEVEL=info tsx --inspect=0.0.0.0:9232 src/main.ts",
+    "dev": "nodemon --watch src --watch ../../libs --ext ts --exec pnpm run start:debug",
+    "lint": "npx eslint --ext .ts src --max-warnings=0",
+    "format": "npx prettier --write \"src/**/*.ts\"",
+    "format-check": "npx prettier --check .",
+    "tsc-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@crowd/archetype-standard": "workspace:*",
+    "@crowd/common": "workspace:*",
+    "@crowd/database": "workspace:*",
+    "@crowd/logging": "workspace:*",
+    "@crowd/types": "workspace:*",
+    "@insights/temporal-worker": "workspace:*",
+    "@temporalio/client": "~1.11.8",
+    "@temporalio/workflow": "~1.11.8",
+    "luxon": "^3.6.1",
+    "ofetch": "^1.4.1",
+    "tsx": "^4.20.3",
+    "typescript": "^5.8"
+  },
+  "devDependencies": {
+    "@types/luxon": "^3.6.2",
+    "@types/node": "^22.15.30",
+    "nodemon": "^3.1.10"
+  }
+}
