@@ -32,10 +32,21 @@ class ProjectSecurityService {
     if (!data || !Array.isArray(data) || data.length === 0) {
       return [];
     }
-    return data.filter(
+
+    return this.removeUnavailableChecks(data.filter(
         (item) => item.category !== SecurityDataCategory.DOCUMENTATION
-            && item.category !== SecurityDataCategory.VULNERABILITY_MANAGEMENT
+            && item.category !== SecurityDataCategory.VULNERABILITY_MANAGEMENT)
     );
+  }
+
+  removeUnavailableChecks(data: SecurityData[]): SecurityData[] {
+    if (!data || !Array.isArray(data) || data.length === 0) {
+      return [];
+    }
+
+    const filteredCheck = ['OSPS-AC-01'];
+
+    return data.filter((item) => !filteredCheck.includes(item.controlId));
   }
 
   calculateOSPSScore(data: SecurityData[], isRepository: boolean): number {
