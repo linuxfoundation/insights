@@ -25,6 +25,8 @@ import packageDownloads from "./popularity/package-downloads/package-downloads.c
 import packageDependency from "./popularity/package-dependency/package-dependency.config";
 import issuesResolution
     from "./development/issues-resolution/issues-resolution.config";
+import issuesOpened
+    from "./development/issues-opened/issues-opened.config";
 import pullRequests from "./development/pull-requests/pull-requests.config";
 import activeDays from "./development/active-days/active-days.config";
 import contributionsOutsideWorkHours
@@ -81,6 +83,7 @@ export const lfxWidgets: Record<Widget, WidgetConfig> = {
   [Widget.MAILING_LISTS_MESSAGES]: mailingListMessages,
 
   // Development
+  [Widget.ISSUES_OPENED]: issuesOpened,
   [Widget.ISSUES_RESOLUTION]: issuesResolution,
   [Widget.COMMIT_ACTIVITIES]: commitActivities,
   [Widget.PULL_REQUESTS]: pullRequests,

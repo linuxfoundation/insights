@@ -22,6 +22,7 @@ export enum TanstackKey {
   AVERAGE_TIME_TO_MERGE = 'average-time-to-merge',
   CODE_REVIEW_ENGAGEMENT = 'code-review-engagement',
   CONTRIBUTIONS_OUTSIDE_WORK_HOURS = 'contributions-outside-work-hours',
+  ISSUES_OPENED = 'issues-opened',
   ISSUES_RESOLUTION = 'issues-resolution',
   MERGE_LEAD_TIME = 'merge-lead-time',
   PULL_REQUESTS = 'pull-requests',
