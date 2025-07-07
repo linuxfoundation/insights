@@ -6,7 +6,7 @@ import type { WidgetConfig } from '~/components/modules/widget/config/widget.con
 const searchQueries: WidgetConfig = {
   key: 'searchQueries',
   name: 'Search queries volume',
-  description: (project) => `Search interest volume of ${project.name} based on Keywords Everywhere.`,
+  description: (project) => `Search volume for "${project.name}" on Google Search.`,
   learnMoreLink: `/docs/metrics/popularity#search-queries`,
   component: SearchQueries,
   share: true,
