@@ -46,11 +46,11 @@ This page explains the key popularity metrics tracked by LFX Insights. These ind
 **Why it matters:** Search trends indicate public interest and awareness. A rising number of queries often correlates with growing adoption.
 
 #### How the Data Is Collected
-To estimate search volume, we use [Keywords Everywhere](https://keywordseverywhere.com/), a third-party API that provides monthly search trends based on aggregated data from platforms like Google Trends and Keyword Planner.
+To estimate search volume, we use a third-party API that provides monthly search trends for Google Search.
 
 For each project:
 - The project's slug (e.g., linux, datahub) is used as the query term. This assumes the slug most accurately reflects the name users would search for.
-- Query the Keywords Everywhere /v1/get_keyword_data endpoint to return the monthly search volume estimates for the last 12 months.
+- Query the API endpoint to return the monthly search volume estimates for the last 12 months.
 - The historical aggregation is designed to be run monthly. Each run captures a rolling 12-month window.
 
 *Note: Historical data before June 2024 is unavailable, as we initiated data collection in June 2025.*
