@@ -132,6 +132,31 @@ const breadcrumbData = computed<BreadcrumbData>(() => {
   };
 });
 
+const title = computed(() => {
+  const defaultTitle = 'Open Source Index | LFX Insights';
+  if (breadcrumbData.value.category) {
+    return `${breadcrumbData.value.category.name} | ${defaultTitle}`;
+  }
+
+  if (breadcrumbData.value.group) {
+    return `${breadcrumbData.value.group.name} | ${defaultTitle}`;
+  }
+
+  return defaultTitle;
+});
+
+const description =  `Curated list of the most critical open source projects powering our modern 
+digital infrastructure, measured by contributor volume and software value`;
+
+useSeoMeta({
+  title,
+  description,
+  ogTitle: title,
+  ogDescription: description,
+  twitterTitle: title,
+  twitterDescription: description
+})
+
 const status = computed(() => {
   if (props.group) {
     return categoryStatus.value;

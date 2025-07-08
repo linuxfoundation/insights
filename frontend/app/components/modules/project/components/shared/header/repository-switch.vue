@@ -3,8 +3,11 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <lfx-modal v-model="isModalOpen">
-    <div class="p-1 flex flex-col gap-1">
+  <lfx-modal
+    v-model="isModalOpen"
+    content-class="flex w-full justify-stretch items-stretch"
+  >
+    <div class="p-1 flex flex-col gap-1 w-full">
 
       <nuxt-link
         :to="{ name: routeName.project }"

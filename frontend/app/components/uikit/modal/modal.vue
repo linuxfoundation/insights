@@ -11,6 +11,7 @@ SPDX-License-Identifier: MIT
       >
         <div
           class="c-modal__content"
+          :class="props.contentClass"
           :style="{ 'max-width': props.width }"
           v-bind="$attrs"
           @click.stop
@@ -27,6 +28,7 @@ import { computed, watch } from 'vue';
 
 const props = withDefaults(defineProps<{
   modelValue: boolean,
+  contentClass?: string,
   width?: string,
   closeFunction?:() => boolean,
 }>(), {

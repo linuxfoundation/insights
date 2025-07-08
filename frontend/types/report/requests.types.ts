@@ -9,4 +9,5 @@ export interface ReportRequest {
     repositoryUrl?: string;
     url: string;
     widget?: string;
+    pageTitle: string;
 }
