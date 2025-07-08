@@ -220,6 +220,7 @@ const submit = () => {
     projectSlug: project.value?.slug,
     projectName: project.value?.name,
     repositoryUrl: selectedRepository.value,
+    pageTitle: document.title,
   }
 
   if(isSending.value) {
