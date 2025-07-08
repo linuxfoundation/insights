@@ -55,6 +55,7 @@ import type { BreadcrumbData, OSIType, SortType } from '../services/osi.api.serv
 import type { TreeMapData } from '~/components/uikit/chart/types/ChartTypes';
 import LfxProjectLoadState from '~~/app/components/modules/project/components/shared/load-state.vue';
 import LfxIcon from '~~/app/components/uikit/icon/icon.vue';
+import { pageTitlesDescriptions } from '~/config/pageTitles';
 
 const props = defineProps<{
   group?: string;
@@ -131,6 +132,29 @@ const breadcrumbData = computed<BreadcrumbData>(() => {
     type: 'horizontal'
   };
 });
+
+const title = computed(() => {
+  if (breadcrumbData.value.category) {
+    return `${breadcrumbData.value.category.name} | ${pageTitlesDescriptions.openSourceIndex.title}`;
+  }
+
+  if (breadcrumbData.value.group) {
+    return `${breadcrumbData.value.group.name} | ${pageTitlesDescriptions.openSourceIndex.title}`;
+  }
+
+  return pageTitlesDescriptions.openSourceIndex.title;
+});
+
+const description = pageTitlesDescriptions.openSourceIndex.description;
+
+useSeoMeta({
+  title,
+  description,
+  ogTitle: title,
+  ogDescription: description,
+  twitterTitle: title,
+  twitterDescription: description
+})
 
 const status = computed(() => {
   if (props.group) {
