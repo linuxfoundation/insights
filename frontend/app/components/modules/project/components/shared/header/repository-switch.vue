@@ -86,12 +86,13 @@ import {
 computed, onMounted, ref, watch
 } from "vue";
 import {storeToRefs} from "pinia";
+import { useRouter, useRoute } from "vue-router";
 import type {ProjectRepository} from "~~/types/project";
 import LfxModal from "~/components/uikit/modal/modal.vue";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
 import LfxProjectRepositorySwitchItem
   from "~/components/modules/project/components/shared/header/repository-switch-item.vue";
-// import {LfxRoutes} from "~/components/shared/types/routes";
+import {LfxRoutes} from "~/components/shared/types/routes";
 import {useProjectStore} from "~/components/modules/project/store/project.store";
 
 const props = defineProps<{
@@ -103,6 +104,7 @@ const emit = defineEmits<{
   (e: 'update:selectedRepoSlugs', value: string[]): void}>();
 
 const route = useRoute();
+const router = useRouter();
 
 const isModalOpen = computed({
   get: () => props.modelValue,
@@ -121,37 +123,44 @@ const {projectRepos} = storeToRefs(useProjectStore());
 const result = computed<ProjectRepository[]>(() => projectRepos.value
     .filter((repository: ProjectRepository) => repository.name.toLowerCase().includes(search.value.toLowerCase())));
 
-// const routeName = computed<{ project: LfxRoutes, repo: LfxRoutes }>(() => {
-//   const mapping: Record<string, { project: LfxRoutes, repo: LfxRoutes }> = {
-//     contributors: {
-//       project: LfxRoutes.PROJECT_CONTRIBUTORS,
-//       repo: LfxRoutes.REPOSITORY_CONTRIBUTORS,
-//     },
-//     popularity: {
-//       project: LfxRoutes.PROJECT_POPULARITY,
-//       repo: LfxRoutes.REPOSITORY_POPULARITY,
-//     },
-//     development: {
-//       project: LfxRoutes.PROJECT_DEVELOPMENT,
-//       repo: LfxRoutes.REPOSITORY_DEVELOPMENT,
-//     },
-//     security: {
-//       project: LfxRoutes.PROJECT_SECURITY,
-//       repo: LfxRoutes.REPOSITORY_SECURITY,
-//     },
-//   };
+const routeName = computed<{ project: LfxRoutes, repo: LfxRoutes }>(() => {
+  const mapping: Record<string, { project: LfxRoutes, repo: LfxRoutes }> = {
+    contributors: {
+      project: LfxRoutes.PROJECT_CONTRIBUTORS,
+      repo: LfxRoutes.REPOSITORY_CONTRIBUTORS,
+    },
+    popularity: {
+      project: LfxRoutes.PROJECT_POPULARITY,
+      repo: LfxRoutes.REPOSITORY_POPULARITY,
+    },
+    development: {
+      project: LfxRoutes.PROJECT_DEVELOPMENT,
+      repo: LfxRoutes.REPOSITORY_DEVELOPMENT,
+    },
+    security: {
+      project: LfxRoutes.PROJECT_SECURITY,
+      repo: LfxRoutes.REPOSITORY_SECURITY,
+    },
+  };
 
-//   const type: string = route.name.split('-').at(-1);
+  const type: string = route.name.split('-').at(-1);
 
-//   return mapping[type] ?? {
-//     project: LfxRoutes.PROJECT,
-//     repo: LfxRoutes.REPOSITORY,
-//   };
-// });
-
-watch(() => route.path, () => {
-  isModalOpen.value = false;
+  return mapping[type] ?? {
+    project: LfxRoutes.PROJECT,
+    repo: LfxRoutes.REPOSITORY,
+  };
 });
+
+// watch(() => route.path, () => {
+//   isModalOpen.value = false;
+// });
+watch(() => selectedRepos.value, (value) => {
+  if (value.length === 1) {
+    router.push({name: routeName.value.repo, params: {name: value[0]}});
+  } else {
+    router.push({name: routeName.value.project, query: value.length > 0 ? {repos: value.join('|')} : undefined});
+  }
+}, {deep: true});
 
 onMounted(() => {
   searchInputRef.value?.focus();
