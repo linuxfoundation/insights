@@ -2,6 +2,10 @@
 // SPDX-License-Identifier: MIT
 
 export const pageTitlesDescriptions = {
+  explore: {
+    title: 'Explore | LFX Insights',
+    description: `Discover the world'smost critical open source projects.`,
+  },
   openSourceIndex: {
     title: 'Open Source Index | LFX Insights',
     description: `Curated list of the most critical open source projects powering our modern 
