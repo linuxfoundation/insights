@@ -5,19 +5,21 @@ SPDX-License-Identifier: MIT
 <template>
   <lfx-modal
     v-model="isModalOpen"
-    content-class="flex w-full justify-stretch items-stretch"
+    content-class="flex w-full justify-stretch items-stretch relative"
+    show-close-button
   >
     <div class="p-1 flex flex-col gap-1 w-full">
 
-      <nuxt-link
+      <!-- <nuxt-link
         :to="{ name: routeName.project }"
-      >
-        <lfx-project-repository-switch-item
-          text="All repositories"
-          icon="books"
-          :selected="!props.repo"
-        />
-      </nuxt-link>
+      > -->
+      <lfx-project-repository-switch-item
+        text="All repositories"
+        icon="books"
+        :selected="props.selectedRepoSlugs.length === 0"
+        @click="handleSelected('all', true)"
+      />
+      <!-- </nuxt-link> -->
       <!-- Search input -->
       <hr>
       <label class="flex items-center justify-between px-3 py-2 gap-2">
@@ -89,14 +91,16 @@ import LfxModal from "~/components/uikit/modal/modal.vue";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
 import LfxProjectRepositorySwitchItem
   from "~/components/modules/project/components/shared/header/repository-switch-item.vue";
-import {LfxRoutes} from "~/components/shared/types/routes";
+// import {LfxRoutes} from "~/components/shared/types/routes";
 import {useProjectStore} from "~/components/modules/project/store/project.store";
 
 const props = defineProps<{
   modelValue: boolean;
-  repo: string;
+  selectedRepoSlugs: string[];
 }>();
-const emit = defineEmits<{(e: 'update:modelValue', value: boolean): void }>();
+const emit = defineEmits<{
+  (e: 'update:modelValue', value: boolean): void, 
+  (e: 'update:selectedRepoSlugs', value: string[]): void}>();
 
 const route = useRoute();
 
@@ -107,40 +111,43 @@ const isModalOpen = computed({
 
 const searchInputRef = ref(null);
 const search = ref('');
-const selectedRepos = ref<string[]>([]);
+const selectedRepos = computed<string[]>({
+  get: () => props.selectedRepoSlugs,
+  set: (value: string[]) => emit('update:selectedRepoSlugs', value)
+});
 
 const {projectRepos} = storeToRefs(useProjectStore());
 
 const result = computed<ProjectRepository[]>(() => projectRepos.value
     .filter((repository: ProjectRepository) => repository.name.toLowerCase().includes(search.value.toLowerCase())));
 
-const routeName = computed<{ project: LfxRoutes, repo: LfxRoutes }>(() => {
-  const mapping: Record<string, { project: LfxRoutes, repo: LfxRoutes }> = {
-    contributors: {
-      project: LfxRoutes.PROJECT_CONTRIBUTORS,
-      repo: LfxRoutes.REPOSITORY_CONTRIBUTORS,
-    },
-    popularity: {
-      project: LfxRoutes.PROJECT_POPULARITY,
-      repo: LfxRoutes.REPOSITORY_POPULARITY,
-    },
-    development: {
-      project: LfxRoutes.PROJECT_DEVELOPMENT,
-      repo: LfxRoutes.REPOSITORY_DEVELOPMENT,
-    },
-    security: {
-      project: LfxRoutes.PROJECT_SECURITY,
-      repo: LfxRoutes.REPOSITORY_SECURITY,
-    },
-  };
+// const routeName = computed<{ project: LfxRoutes, repo: LfxRoutes }>(() => {
+//   const mapping: Record<string, { project: LfxRoutes, repo: LfxRoutes }> = {
+//     contributors: {
+//       project: LfxRoutes.PROJECT_CONTRIBUTORS,
+//       repo: LfxRoutes.REPOSITORY_CONTRIBUTORS,
+//     },
+//     popularity: {
+//       project: LfxRoutes.PROJECT_POPULARITY,
+//       repo: LfxRoutes.REPOSITORY_POPULARITY,
+//     },
+//     development: {
+//       project: LfxRoutes.PROJECT_DEVELOPMENT,
+//       repo: LfxRoutes.REPOSITORY_DEVELOPMENT,
+//     },
+//     security: {
+//       project: LfxRoutes.PROJECT_SECURITY,
+//       repo: LfxRoutes.REPOSITORY_SECURITY,
+//     },
+//   };
 
-  const type: string = route.name.split('-').at(-1);
+//   const type: string = route.name.split('-').at(-1);
 
-  return mapping[type] ?? {
-    project: LfxRoutes.PROJECT,
-    repo: LfxRoutes.REPOSITORY,
-  };
-});
+//   return mapping[type] ?? {
+//     project: LfxRoutes.PROJECT,
+//     repo: LfxRoutes.REPOSITORY,
+//   };
+// });
 
 watch(() => route.path, () => {
   isModalOpen.value = false;
@@ -151,6 +158,11 @@ onMounted(() => {
 });
 
 const handleSelected = (slug: string, selected: boolean) => {
+  if (slug === 'all' && selected) {
+    selectedRepos.value = [];
+    return;
+  }
+
   if (selected) {
     selectedRepos.value.push(slug);
   } else {

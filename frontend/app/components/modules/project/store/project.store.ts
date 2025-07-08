@@ -58,12 +58,15 @@ export const useProjectStore = defineStore('project', () => {
   const isProjectLoading = ref(false);
   const project = ref<Project | null>(null);
   const projectRepos = computed<ProjectRepository[]>(() => project.value?.repositories || []);
+  const selectedRepoSlugs = ref<string[]>([]);
 
+  // TODO: remove this after the multi-select is implemented
   const selectedRepository = computed<string>(
     () => projectRepos.value.find(
         (repo: ProjectRepository) => route.params.name === repo.slug
       )?.url || ''
   );
+  // TODO: remove this after the multi-select is implemented
   const repository = computed<ProjectRepository | undefined>(() => projectRepos
     .value.find((repo: ProjectRepository) => route.params.name === repo.slug));
 
@@ -81,5 +84,6 @@ export const useProjectStore = defineStore('project', () => {
     selectedRepository,
     repository,
     customRangeGranularity,
+    selectedRepoSlugs
   };
 });

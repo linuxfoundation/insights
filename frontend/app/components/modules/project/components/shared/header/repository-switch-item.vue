@@ -6,6 +6,7 @@ SPDX-License-Identifier: MIT
   <article
     class="py-2 px-3 rounded-md transition hover:bg-neutral-50
           cursor-pointer flex items-center justify-between text-sm leading-5 gap-2"
+    @click="handleClick"
   >
     <div class="flex items-center gap-3">
       <lf-checkbox
@@ -50,6 +51,12 @@ const checked = computed<boolean>({
     emit('update:selected', val);
   },
 });
+
+const handleClick = () => {
+  if (props.isMultiSelect) {
+    checked.value = !checked.value;
+  }
+};
 
 </script>
 
