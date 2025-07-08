@@ -7,11 +7,11 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { pageTitlesDescriptions } from '~/config/pageTitles';
 import LfxCollectionListView from "~/components/modules/collection/views/collection-list.vue";
 
-const title = pageTitlesDescriptions.collections.title;
-const description = pageTitlesDescriptions.collections.description;
+const title = 'Collections | LFX Insights';
+const description = 'Explore a curated list of collections to gain valuable insights'
+    + ' and stay informed with the latest trends and data on LFX Insights.';
 
 useSeoMeta({
   title,

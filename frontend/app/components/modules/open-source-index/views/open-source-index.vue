@@ -55,7 +55,6 @@ import type { BreadcrumbData, OSIType, SortType } from '../services/osi.api.serv
 import type { TreeMapData } from '~/components/uikit/chart/types/ChartTypes';
 import LfxProjectLoadState from '~~/app/components/modules/project/components/shared/load-state.vue';
 import LfxIcon from '~~/app/components/uikit/icon/icon.vue';
-import { pageTitlesDescriptions } from '~/config/pageTitles';
 
 const props = defineProps<{
   group?: string;
@@ -134,18 +133,20 @@ const breadcrumbData = computed<BreadcrumbData>(() => {
 });
 
 const title = computed(() => {
+  const defaultTitle = 'Open Source Index | LFX Insights';
   if (breadcrumbData.value.category) {
-    return `${breadcrumbData.value.category.name} | ${pageTitlesDescriptions.openSourceIndex.title}`;
+    return `${breadcrumbData.value.category.name} | ${defaultTitle}`;
   }
 
   if (breadcrumbData.value.group) {
-    return `${breadcrumbData.value.group.name} | ${pageTitlesDescriptions.openSourceIndex.title}`;
+    return `${breadcrumbData.value.group.name} | ${defaultTitle}`;
   }
 
-  return pageTitlesDescriptions.openSourceIndex.title;
+  return defaultTitle;
 });
 
-const description = pageTitlesDescriptions.openSourceIndex.description;
+const description =  `Curated list of the most critical open source projects powering our modern 
+digital infrastructure, measured by contributor volume and software value`;
 
 useSeoMeta({
   title,
