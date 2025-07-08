@@ -46,17 +46,21 @@ SPDX-License-Identifier: MIT
       <hr>
       <!-- Result -->
       <div class="flex flex-col gap-1 max-h-[29.5rem] overflow-y-auto">
-        <nuxt-link
+        <!-- <nuxt-link
           v-for="repository of result"
           :key="repository.url"
           :to="{ name: routeName.repo, params: {name: repository.slug}}"
-        >
-          <lfx-project-repository-switch-item
-            :text="repository.name"
-            icon="books"
-            :selected="props.repo === repository.slug"
-          />
-        </nuxt-link>
+        > -->
+        <lfx-project-repository-switch-item
+          v-for="repository of result"
+          :key="repository.url"
+          :text="repository.name"
+          icon="book"
+          :selected="selectedRepos.includes(repository.slug)"
+          is-multi-select
+          @update:selected="handleSelected(repository.slug, $event)"
+        />
+        <!-- </nuxt-link> -->
         <section
           v-if="result.length === 0"
           class="px-3 py-12 flex flex-col items-center"
@@ -103,6 +107,7 @@ const isModalOpen = computed({
 
 const searchInputRef = ref(null);
 const search = ref('');
+const selectedRepos = ref<string[]>([]);
 
 const {projectRepos} = storeToRefs(useProjectStore());
 
@@ -144,6 +149,14 @@ watch(() => route.path, () => {
 onMounted(() => {
   searchInputRef.value?.focus();
 });
+
+const handleSelected = (slug: string, selected: boolean) => {
+  if (selected) {
+    selectedRepos.value.push(slug);
+  } else {
+    selectedRepos.value = selectedRepos.value.filter((repo) => repo !== slug);
+  }
+};
 </script>
 
 <script lang="ts">
