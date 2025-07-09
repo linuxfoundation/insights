@@ -100,16 +100,17 @@ const model = computed<ActiveContributorsModel>({
 })
 
 const {
-  startDate, endDate, selectedRepository, selectedTimeRangeKey, customRangeGranularity
+  startDate, endDate, selectedTimeRangeKey, customRangeGranularity, selectedRepoSlugs
 } = storeToRefs(useProjectStore());
 
+const reposParam = computed(() => selectedRepoSlugs.value.join(','));
 const route = useRoute();
 // just a stub var to watch if the only change was the granularity
 const paramWatch = computed(() => ({
   granularity: model.value.activeTab,
-  repository: selectedRepository.value,
   startDate: startDate.value,
   endDate: endDate.value,
+  repos: reposParam
 }));
 const summaryLoading = ref(true);
 
@@ -117,9 +118,9 @@ const queryKey = computed(() => [
   TanstackKey.ACTIVE_CONTRIBUTORS,
   route.params.slug,
   model.value.activeTab,
-  selectedRepository,
   startDate,
   endDate,
+  reposParam
 ]);
 
 const fetchData: QueryFunction<ActiveContributors> = async () => $fetch(
@@ -127,9 +128,9 @@ const fetchData: QueryFunction<ActiveContributors> = async () => $fetch(
     {
   params: {
     granularity: model.value.activeTab,
-    repository: selectedRepository.value,
     startDate: startDate.value,
     endDate: endDate.value,
+    repos: reposParam.value
   }
 }
 );
@@ -198,7 +199,7 @@ watch(paramWatch, (newParams, oldParams) => {
   // check if the only change was the granularity, if not, we need to reset the summary loading
   if (newParams.startDate !== oldParams.startDate
     || newParams.endDate !== oldParams.endDate
-    || newParams.repository !== oldParams.repository) {
+    || newParams.repos !== oldParams.repos) {
     onlyGranularityChanged = false;
   }
 
