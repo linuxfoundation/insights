@@ -121,7 +121,7 @@ const emit = defineEmits<{(e: 'update:benchmarkValue', value: Benchmark | undefi
 }>();
 
 const {
- startDate, endDate, selectedRepository, selectedTimeRangeKey
+ startDate, endDate, selectedRepoSlugs, selectedTimeRangeKey
 } = storeToRefs(useProjectStore())
 
 const route = useRoute();
@@ -129,14 +129,14 @@ const route = useRoute();
 const queryKey = computed(() => [
   TanstackKey.CONTRIBUTIONS_OUTSIDE_WORK_HOURS,
   route.params.slug,
-  selectedRepository.value,
+  selectedRepoSlugs.value,
   startDate.value,
   endDate.value,
 ]);
 
 const fetchData = async () => $fetch(`/api/project/${route.params.slug}/development/contribution-outside`, {
   params: {
-    repository: selectedRepository.value,
+    repos: selectedRepoSlugs.value,
     startDate: startDate.value,
     endDate: endDate.value,
   },
