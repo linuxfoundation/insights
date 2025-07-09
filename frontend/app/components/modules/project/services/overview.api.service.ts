@@ -13,7 +13,7 @@ import type { BenchmarkKeys } from '~~/types/shared/benchmark.types';
 
 export interface OverviewQueryParams {
   projectSlug: string;
-  repository?: string;
+  repos?: string[];
 }
 
 export interface ScoreDataQueryParams extends OverviewQueryParams {
@@ -26,11 +26,11 @@ class OverviewApiService {
     const queryKey = computed(() => [
       TanstackKey.HEALTH_SCORE,
       params.value.projectSlug,
-      params.value.repository
+      params.value.repos
     ]);
     const queryFn = computed<QueryFunction<HealthScore[]>>(() => this.healthScoreQueryFn(() => ({
         projectSlug: params.value.projectSlug,
-        repository: params.value.repository
+        repos: params.value.repos
       })));
 
     return useQuery<HealthScore[]>({
@@ -42,10 +42,10 @@ class OverviewApiService {
   healthScoreQueryFn(
     query: () => Record<string, string | number | boolean | undefined | string[] | null>
   ): QueryFunction<HealthScore[]> {
-    const { projectSlug, repository } = query();
+    const { projectSlug, repos } = query();
     return async () => await $fetch(`/api/project/${projectSlug}/overview/health-score`, {
         params: {
-          repository
+          repos
         }
       });
   }
@@ -55,11 +55,11 @@ class OverviewApiService {
     const queryKey = computed(() => [
       TanstackKey.SECURITY_ASSESSMENT,
       params.value.projectSlug,
-      params.value.repository
+      params.value.repos
     ]);
     const queryFn = computed<QueryFunction<SecurityData[]>>(() => this.securityAssessmentQueryFn(() => ({
         projectSlug: params.value.projectSlug,
-        repo: params.value.repository
+        repos: params.value.repos
       })));
 
     return useQuery<SecurityData[]>({
@@ -71,10 +71,10 @@ class OverviewApiService {
   securityAssessmentQueryFn(
     query: () => Record<string, string | number | boolean | undefined | string[] | null>
   ): QueryFunction<SecurityData[]> {
-    const { projectSlug, repo } = query();
+    const { projectSlug, repos } = query();
     return async () => await $fetch(`/api/project/${projectSlug}/security/assessment`, {
         params: {
-          repo
+          repos
         }
       });
   }

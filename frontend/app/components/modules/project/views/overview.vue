@@ -53,11 +53,11 @@ import type { TrustScoreSummary } from '~~/types/overview/responses.types';
 import LfxCard from '~/components/uikit/card/card.vue';
 
 const route = useRoute();
-const { selectedRepository, project } = storeToRefs(useProjectStore())
+const { selectedRepoSlugs, project } = storeToRefs(useProjectStore())
 
 const params = computed(() => ({
   projectSlug: route.params.slug as string,
-  repository: selectedRepository.value
+  repos: selectedRepoSlugs.value
 }));
 
 // Contributors score is only displayed if all contributors widgets are enabled
@@ -131,7 +131,7 @@ const healthScore = computed(() => (data.value
   ? OVERVIEW_API_SERVICE.convertRawValuesToHealthScore(data.value) : []));
 
 const ospsScore = computed(() => PROJECT_SECURITY_SERVICE
-  .calculateOSPSScore((securityAssessmentData.value || []), !!selectedRepository.value));
+  .calculateOSPSScore((securityAssessmentData.value || []), !!selectedRepoSlugs.value.length));
 
 const trustSummary = computed<TrustScoreSummary>(() => (healthScore.value
   ? OVERVIEW_API_SERVICE.convertPointsToTrustSummary(healthScore.value, ospsScore.value) : {

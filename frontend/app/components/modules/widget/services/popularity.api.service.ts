@@ -10,7 +10,7 @@ import type { Package, PackageDownloads } from '~~/types/popularity/responses.ty
 export interface PopularityQueryParams {
   projectSlug: string;
   granularity: string;
-  repos?: string;
+  repos?: string[];
   startDate: string | null;
   endDate: string | null;
   ecosystem?: string;
@@ -19,7 +19,7 @@ export interface PopularityQueryParams {
 
 export interface PackagesQueryParams {
   projectSlug: string;
-  repos?: string;
+  repos?: string[];
   search?: string;
 }
 class PopularityApiService {

@@ -53,11 +53,11 @@ const emit = defineEmits<{(e: 'copied'): void;}>();
 const {showToast} = useToastService();
 
 const route = useRoute();
-const { selectedRepository } = storeToRefs(useProjectStore())
+const { selectedRepoSlugs } = storeToRefs(useProjectStore())
 
 const activeContributorsParams = computed(() => ({
   projectSlug: route.params.slug as string,
-  repository: selectedRepository.value,
+  repos: selectedRepoSlugs.value,
   startDate: startDate.value,
   endDate: endDate.value
 }));

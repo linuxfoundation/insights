@@ -175,7 +175,7 @@ const props = defineProps<{
 const emit = defineEmits<{(e: 'update:modelValue', value: boolean): void;
 }>();
 
-const {project, selectedRepository} = storeToRefs(useProjectStore());
+const {project, selectedRepoSlugs} = storeToRefs(useProjectStore());
 const {showToast} = useToastService();
 
 const isSending = ref(false);
@@ -219,7 +219,7 @@ const submit = () => {
     url: window?.location?.href,
     projectSlug: project.value?.slug,
     projectName: project.value?.name,
-    repositoryUrl: selectedRepository.value,
+    repositoryUrl: selectedRepoSlugs.value.join(','),
     pageTitle: document.title,
   }
 

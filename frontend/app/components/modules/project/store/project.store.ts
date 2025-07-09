@@ -60,16 +60,6 @@ export const useProjectStore = defineStore('project', () => {
   const projectRepos = computed<ProjectRepository[]>(() => project.value?.repositories || []);
   const selectedRepoSlugs = ref<string[]>(route.params.name ? [route.params.name as string] : repos?.split('|') || []);
 
-  // TODO: remove this after the multi-select is implemented
-  const selectedRepository = computed<string>(
-    () => projectRepos.value.find(
-        (repo: ProjectRepository) => route.params.name === repo.slug
-      )?.url || ''
-  );
-  // TODO: remove this after the multi-select is implemented
-  const repository = computed<ProjectRepository | undefined>(() => projectRepos
-    .value.find((repo: ProjectRepository) => route.params.name === repo.slug));
-
   const selectedRepositories = computed<ProjectRepository[]>(() => projectRepos
     .value.filter((repo: ProjectRepository) => selectedRepoSlugs.value.includes(repo.slug) || 
       route.params.name === repo.slug));
@@ -85,8 +75,6 @@ export const useProjectStore = defineStore('project', () => {
     isProjectLoading,
     project,
     projectRepos,
-    selectedRepository,
-    repository,
     customRangeGranularity,
     selectedRepoSlugs,
     selectedRepositories
