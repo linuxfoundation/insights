@@ -68,7 +68,7 @@ const emit = defineEmits<{(e: 'dataLoaded', value: string): void}>();
 const {
   startDate,
   endDate,
-  selectedRepository,
+  selectedRepoSlugs,
     project,
 } = storeToRefs(useProjectStore())
 
@@ -80,7 +80,7 @@ const queryKey = computed(() => [
   TanstackKey.SEARCH_QUERIES,
   route.params.slug,
   granularity.value,
-  selectedRepository.value,
+  selectedRepoSlugs.value,
   startDate.value,
   endDate.value,
 ]);
@@ -91,6 +91,7 @@ const fetchData: QueryFunction<SearchQueries> = async () => $fetch(
   params: {
     startDate: startDate.value,
     endDate: endDate.value,
+    repos: selectedRepoSlugs.value,
   }
 }
 );

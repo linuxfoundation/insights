@@ -134,7 +134,7 @@ const selectedEcosystem = computed<string | undefined>(() => {
 const {
   startDate,
   endDate,
-  selectedRepository,
+  selectedRepoSlugs,
   selectedTimeRangeKey,
   customRangeGranularity
 } = storeToRefs(useProjectStore())
@@ -147,7 +147,7 @@ const granularity = computed(() => (selectedTimeRangeKey.value === dateOptKeys.c
 
 const downloadsParams = computed(() => ({
   projectSlug: route.params.slug as string,
-  repository: selectedRepository.value,
+  repos: selectedRepoSlugs.value,
   granularity: granularity.value,
   startDate: startDate.value,
   endDate: endDate.value,
@@ -157,7 +157,7 @@ const downloadsParams = computed(() => ({
 
 const packagesParams = computed(() => ({
   projectSlug: route.params.slug as string,
-  repository: selectedRepository.value,
+  repos: selectedRepoSlugs.value,
   search: '',
 }));
 

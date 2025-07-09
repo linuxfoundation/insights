@@ -105,7 +105,7 @@ const model = computed<StarsModel>({
 })
 
 const {
-  startDate, endDate, selectedRepository, selectedTimeRangeKey, customRangeGranularity
+  startDate, endDate, selectedRepoSlugs, selectedTimeRangeKey, customRangeGranularity
 } = storeToRefs(useProjectStore())
 
 const route = useRoute();
@@ -123,7 +123,7 @@ const barQueryKey = computed(() => [
   barGranularity.value,
   'new',
   'star',
-  selectedRepository.value,
+  selectedRepoSlugs.value,
   startDate.value,
   endDate.value,
 ]);
@@ -136,7 +136,7 @@ const fetchBarData: QueryFunction<StarsData> = async () => $fetch(
       type: 'new',
       countType: 'new',
       activityType: 'star',
-      repository: selectedRepository.value,
+      repos: selectedRepoSlugs.value,
       startDate: startDate.value,
       endDate: endDate.value,
     },
@@ -159,7 +159,7 @@ const lineQueryKey = computed(() => [
   lineGranularity.value,
   'cumulative',
   'star',
-  selectedRepository.value,
+  selectedRepoSlugs.value,
   startDate.value,
   endDate.value,
 ]);
@@ -172,7 +172,7 @@ const fetchLineData: QueryFunction<StarsData> = async () => $fetch(
     type: 'cumulative',
     countType: 'cumulative',
     activityType: 'star',
-    repository: selectedRepository.value,
+    repos: selectedRepoSlugs.value,
     startDate: startDate.value,
     endDate: endDate.value,
   }
