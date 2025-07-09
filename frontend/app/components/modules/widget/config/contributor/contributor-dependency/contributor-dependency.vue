@@ -93,7 +93,7 @@ const model = computed<ContributorDependencyModel>({
   set: (value) => emit('update:modelValue', value)
 })
 
-const { startDate, endDate, selectedRepository } = storeToRefs(useProjectStore())
+const { startDate, endDate, selectedRepoSlugs } = storeToRefs(useProjectStore())
 
 const route = useRoute();
 const platform = computed(() => model.value.metric.split(':')[0]);
@@ -103,9 +103,9 @@ const queryKey = computed(() => [
   route.params.slug,
   platform,
   activityType,
-  selectedRepository,
+  selectedRepoSlugs,
   startDate,
-  endDate,
+  endDate
 ]);
 
 const fetchData: QueryFunction<ContributorDependency> = async () => $fetch(
@@ -114,9 +114,9 @@ const fetchData: QueryFunction<ContributorDependency> = async () => $fetch(
   params: {
     platform: platform.value,
     activityType: activityType.value,
-    repository: selectedRepository.value,
+    repos: selectedRepoSlugs.value,
     startDate: startDate.value,
-    endDate: endDate.value,
+    endDate: endDate.value
   }
 }
 );

@@ -103,14 +103,13 @@ const {
   startDate, endDate, selectedTimeRangeKey, customRangeGranularity, selectedRepoSlugs
 } = storeToRefs(useProjectStore());
 
-const reposParam = computed(() => selectedRepoSlugs.value.join(','));
 const route = useRoute();
 // just a stub var to watch if the only change was the granularity
 const paramWatch = computed(() => ({
   granularity: model.value.activeTab,
   startDate: startDate.value,
   endDate: endDate.value,
-  repos: reposParam
+  repos: selectedRepoSlugs
 }));
 const summaryLoading = ref(true);
 
@@ -120,7 +119,7 @@ const queryKey = computed(() => [
   model.value.activeTab,
   startDate,
   endDate,
-  reposParam
+  selectedRepoSlugs
 ]);
 
 const fetchData: QueryFunction<ActiveContributors> = async () => $fetch(
@@ -130,7 +129,7 @@ const fetchData: QueryFunction<ActiveContributors> = async () => $fetch(
     granularity: model.value.activeTab,
     startDate: startDate.value,
     endDate: endDate.value,
-    repos: reposParam.value
+    repos: selectedRepoSlugs.value
   }
 }
 );
