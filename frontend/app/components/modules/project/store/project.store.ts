@@ -12,8 +12,8 @@ import type { Project, ProjectRepository } from '~~/types/project';
 import { Granularity } from '~~/types/shared/granularity';
 import { useQueryParam } from '~/components/shared/utils/query-param';
 import {
-  processTimeAndDateParams,
-  timeAndDateParamsSetter
+  processProjectParams,
+  projectParamsSetter
 } from '~/components/modules/project/services/project.query.service';
 
 const calculateGranularity = (start: string | null, end: string | null): string[] => {
@@ -49,8 +49,8 @@ export const defaultDateOption = lfxProjectDateOptions.find(
 export const useProjectStore = defineStore('project', () => {
   const route = useRoute();
 
-  const { queryParams } = useQueryParam(processTimeAndDateParams, timeAndDateParamsSetter);
-  const { timeRange, start, end } = queryParams.value;
+  const { queryParams } = useQueryParam(processProjectParams, projectParamsSetter);
+  const { timeRange, start, end, repos } = queryParams.value;
 
   const selectedTimeRangeKey = ref<string>(timeRange!);
   const startDate = ref<string | null>(start || null);
@@ -58,7 +58,7 @@ export const useProjectStore = defineStore('project', () => {
   const isProjectLoading = ref(false);
   const project = ref<Project | null>(null);
   const projectRepos = computed<ProjectRepository[]>(() => project.value?.repositories || []);
-  const selectedRepoSlugs = ref<string[]>([]);
+  const selectedRepoSlugs = ref<string[]>(repos?.split('|') || []);
 
   // TODO: remove this after the multi-select is implemented
   const selectedRepository = computed<string>(

@@ -9,17 +9,12 @@ SPDX-License-Identifier: MIT
     show-close-button
   >
     <div class="p-1 flex flex-col gap-1 w-full">
-
-      <!-- <nuxt-link
-        :to="{ name: routeName.project }"
-      > -->
       <lfx-project-repository-switch-item
         text="All repositories"
         icon="books"
         :selected="props.selectedRepoSlugs.length === 0"
         @click="handleSelected('all', true)"
       />
-      <!-- </nuxt-link> -->
       <!-- Search input -->
       <hr>
       <label class="flex items-center justify-between px-3 py-2 gap-2">
@@ -48,11 +43,6 @@ SPDX-License-Identifier: MIT
       <hr>
       <!-- Result -->
       <div class="flex flex-col gap-1 max-h-[29.5rem] overflow-y-auto">
-        <!-- <nuxt-link
-          v-for="repository of result"
-          :key="repository.url"
-          :to="{ name: routeName.repo, params: {name: repository.slug}}"
-        > -->
         <lfx-project-repository-switch-item
           v-for="repository of result"
           :key="repository.url"
@@ -62,7 +52,6 @@ SPDX-License-Identifier: MIT
           is-multi-select
           @update:selected="handleSelected(repository.slug, $event)"
         />
-        <!-- </nuxt-link> -->
         <section
           v-if="result.length === 0"
           class="px-3 py-12 flex flex-col items-center"
@@ -115,7 +104,10 @@ const searchInputRef = ref(null);
 const search = ref('');
 const selectedRepos = computed<string[]>({
   get: () => props.selectedRepoSlugs,
-  set: (value: string[]) => emit('update:selectedRepoSlugs', value)
+  set: (value: string[]) => {
+    handleReposChange(value);
+    emit('update:selectedRepoSlugs', value);
+  }
 });
 
 const {projectRepos} = storeToRefs(useProjectStore());
@@ -151,16 +143,23 @@ const routeName = computed<{ project: LfxRoutes, repo: LfxRoutes }>(() => {
   };
 });
 
-// watch(() => route.path, () => {
-//   isModalOpen.value = false;
-// });
-watch(() => selectedRepos.value, (value) => {
+const handleReposChange = (value: string[]) => {
+  const routeQuery = route.query;
   if (value.length === 1) {
-    router.push({name: routeName.value.repo, params: {name: value[0]}});
+    router.push({
+      name: routeName.value.repo,
+      params: { name: value[0] },
+      query: { ...routeQuery, repos: undefined }
+    });
   } else {
-    router.push({name: routeName.value.project, query: value.length > 0 ? {repos: value.join('|')} : undefined});
+    router.push({
+      name: routeName.value.project,
+      query: value.length > 0
+        ? { ...routeQuery, repos: value.join('|') }
+        : { ...routeQuery, repos: undefined }
+    });
   }
-}, {deep: true});
+};
 
 onMounted(() => {
   searchInputRef.value?.focus();
@@ -169,11 +168,12 @@ onMounted(() => {
 const handleSelected = (slug: string, selected: boolean) => {
   if (slug === 'all' && selected) {
     selectedRepos.value = [];
+    isModalOpen.value = false;
     return;
   }
 
   if (selected) {
-    selectedRepos.value.push(slug);
+    selectedRepos.value = [...selectedRepos.value, slug];
   } else {
     selectedRepos.value = selectedRepos.value.filter((repo) => repo !== slug);
   }

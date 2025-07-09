@@ -129,12 +129,12 @@ import LfxDropdownSeparator from "~/components/uikit/dropdown/dropdown-separator
 import LfxDropdownSelector from "~/components/uikit/dropdown/dropdown-selector.vue";
 import { useQueryParam } from "~/components/shared/utils/query-param";
 import {
-  processTimeAndDateParams,
-  timeAndDateParamsSetter
+  processProjectParams,
+  projectParamsSetter
 } from "~/components/modules/project/services/project.query.service";
 
 const { selectedTimeRangeKey, startDate, endDate } = storeToRefs(useProjectStore())
-const { queryParams } = useQueryParam(processTimeAndDateParams, timeAndDateParamsSetter);
+const { queryParams } = useQueryParam(processProjectParams, projectParamsSetter);
 const isOpen = ref(false);
 const isCustomSelectorOpen = ref(false);
 
