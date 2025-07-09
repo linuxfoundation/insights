@@ -58,7 +58,7 @@ export const useProjectStore = defineStore('project', () => {
   const isProjectLoading = ref(false);
   const project = ref<Project | null>(null);
   const projectRepos = computed<ProjectRepository[]>(() => project.value?.repositories || []);
-  const selectedRepoSlugs = ref<string[]>(repos?.split('|') || []);
+  const selectedRepoSlugs = ref<string[]>(route.params.name ? [route.params.name as string] : repos?.split('|') || []);
 
   // TODO: remove this after the multi-select is implemented
   const selectedRepository = computed<string>(
@@ -69,6 +69,10 @@ export const useProjectStore = defineStore('project', () => {
   // TODO: remove this after the multi-select is implemented
   const repository = computed<ProjectRepository | undefined>(() => projectRepos
     .value.find((repo: ProjectRepository) => route.params.name === repo.slug));
+
+  const selectedRepositories = computed<ProjectRepository[]>(() => projectRepos
+    .value.filter((repo: ProjectRepository) => selectedRepoSlugs.value.includes(repo.slug) || 
+      route.params.name === repo.slug));
 
   const customRangeGranularity = computed<string[]>(() => (startDate.value === null || endDate.value === null
       ? [Granularity.WEEKLY]
@@ -84,6 +88,7 @@ export const useProjectStore = defineStore('project', () => {
     selectedRepository,
     repository,
     customRangeGranularity,
-    selectedRepoSlugs
+    selectedRepoSlugs,
+    selectedRepositories
   };
 });

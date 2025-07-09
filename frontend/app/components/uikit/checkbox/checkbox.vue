@@ -18,6 +18,7 @@ SPDX-License-Identifier: MIT
       type="regular"
       :size="10"
       class="text-white"
+      @click.stop
     />
     <span class="flex flex-col">
       <slot />

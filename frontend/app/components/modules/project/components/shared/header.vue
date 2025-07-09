@@ -163,7 +163,7 @@ const props = defineProps<{
 
 const route = useRoute();
 
-const {projectRepos, repository, selectedRepoSlugs} = storeToRefs(useProjectStore());
+const {projectRepos, selectedRepoSlugs, selectedRepositories} = storeToRefs(useProjectStore());
 const { openReportModal } = useReportStore();
 const { openShareModal } = useShareStore();
 
@@ -189,9 +189,12 @@ const share = () => {
   const title = [];
   if (props.project?.name) {
     title.push(props.project.name);
-    if(repository.value?.name){
-      title.push(repository.value.name);
+    if(selectedRepositories.value.length > 1){
+      title.push(`${selectedRepositories.value.length} repositories`);
+    } else if(selectedRepositories.value.length === 1){
+      title.push(selectedRepositories.value[0]!.name);
     }
+    
     const type = route.path.split('/').at(-1) || '';
     if(['contributors', 'popularity', 'security', 'development'].includes(type)){
       title.push(type);

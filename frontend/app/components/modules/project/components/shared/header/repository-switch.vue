@@ -72,7 +72,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import {
-computed, onMounted, ref, watch
+computed, onMounted, ref
 } from "vue";
 import {storeToRefs} from "pinia";
 import { useRouter, useRoute } from "vue-router";
