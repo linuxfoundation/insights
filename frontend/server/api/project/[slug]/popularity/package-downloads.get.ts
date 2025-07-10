@@ -8,11 +8,12 @@ export default defineEventHandler(async (event) => {
   const query = getQuery(event);
 
   const project = (event.context.params as { slug: string }).slug;
+  const repos = Array.isArray(query.repos) ? query.repos : query.repos ? [query.repos] : undefined;
 
   const filter: PackageMetricsFilter = {
     project,
     granularity: query.granularity as FilterGranularity,
-    repo: query.repo as string,
+    repos,
     ecosystem: query.ecosystem as string,
     startDate: query.startDate
       ? DateTime.fromISO(query.startDate as string)

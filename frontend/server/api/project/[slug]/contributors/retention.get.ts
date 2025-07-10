@@ -27,11 +27,13 @@ export default defineEventHandler(async (event) => {
   const project = (event.context.params as { slug: string }).slug;
   const activityType = query.activityType as ActivityTypes;
 
+  const repos = Array.isArray(query.repos) ? query.repos : query.repos ? [query.repos] : undefined;
+
   const filter: RetentionFilter = {
     project,
     granularity: query.granularity as FilterGranularity,
     activity_type: activityType !== ActivityTypes.ALL ? activityType : undefined,
-    repo: query.repository as string,
+    repos,
     demographicType: (query.type as DemographicType) || DemographicType.CONTRIBUTORS,
     onlyContributions: false, // forks and stars are non-contribution activities, but we want to count them.
     startDate: query.startDate ? DateTime.fromISO(query.startDate as string) : undefined,

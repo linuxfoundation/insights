@@ -7,10 +7,11 @@ export default defineEventHandler(async (event) => {
   const query = getQuery(event);
 
   const project = (event.context.params as { slug: string }).slug;
+  const repos = Array.isArray(query.repos) ? query.repos : query.repos ? [query.repos] : undefined;
 
   const filter: PackageFilter = {
     project,
-    repo: query.repo as string,
+    repos,
     search: query.search as string,
   };
 

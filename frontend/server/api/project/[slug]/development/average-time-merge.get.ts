@@ -33,10 +33,12 @@ export default defineEventHandler(async (event) => {
 
   const project = (event.context.params as { slug: string }).slug;
 
+  const repos = Array.isArray(query.repos) ? query.repos : query.repos ? [query.repos] : undefined;
+
   const filter: AverageTimeToMergeFilter = {
     project,
     granularity: query.granularity as FilterGranularity,
-    repo: query.repository as string,
+    repos,
     startDate: query.startDate ? DateTime.fromISO(query.startDate as string) : undefined,
     endDate: query.endDate ? DateTime.fromISO(query.endDate as string) : undefined,
   }

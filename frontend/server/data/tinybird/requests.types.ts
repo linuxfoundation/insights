@@ -9,7 +9,7 @@ export type ContributorsLeaderboardTinybirdQuery = {
   platform?: ActivityPlatforms;
   activity_type?: ActivityTypes;
   activity_types?: ActivityTypes[];
-  repo?: string;
+  repos?: string[];
   limit?: number;
   offset?: number;
   count?: boolean;
@@ -22,7 +22,7 @@ export type OrganizationsLeaderboardTinybirdQuery = {
   platform?: ActivityPlatforms;
   activity_type?: ActivityTypes;
   activity_types?: ActivityTypes[];
-  repo?: string;
+  repos?: string[];
   limit?: number;
   offset?: number;
   count?: boolean;

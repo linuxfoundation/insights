@@ -37,18 +37,16 @@ export default defineEventHandler(async (event) => {
 
   const project = (event.context.params as { slug: string }).slug;
 
+  const repos = Array.isArray(query.repos) ? query.repos : query.repos ? [query.repos] : undefined;
+
   // TODO: Validate the query params
   const filter: ActiveContributorsFilter = {
     granularity: (query.granularity as FilterGranularity) || FilterGranularity.QUARTERLY,
     project,
-    repo: undefined,
+    repos,
     startDate: undefined,
     endDate: undefined
   };
-
-  if (query.repository && (query.repository as string).trim() !== '') {
-    filter.repo = query.repository as string;
-  }
 
   if (query.startDate && (query.startDate as string).trim() !== '') {
     filter.startDate = DateTime.fromISO(query.startDate as string);

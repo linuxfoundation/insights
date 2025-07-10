@@ -42,7 +42,7 @@ describe('Active Days Data Source', () => {
     const filter: ActiveDaysFilter = {
       granularity: FilterGranularity.WEEKLY,
       project: 'the-linux-kernel-organization',
-      repo: 'some-repo',
+      repos: ['some-repo'],
       startDate,
       endDate
     };
@@ -51,19 +51,19 @@ describe('Active Days Data Source', () => {
 
     const expectedCurrentSummaryQuery = {
       project: filter.project,
-      repo: 'some-repo',
+      repos: ['some-repo'],
       startDate: filter.startDate,
       endDate: filter.endDate,
     };
     const expectedPreviousSummaryQuery = {
       project: filter.project,
-      repo: 'some-repo',
+      repos: ['some-repo'],
       startDate: DateTime.utc(2023, 3, 19),
       endDate: DateTime.utc(2024, 3, 19),
     };
     const expectedActiveDaysQuery = {
       project: filter.project,
-      repo: 'some-repo',
+      repos: ['some-repo'],
       granularity: FilterGranularity.WEEKLY,
       startDate: filter.startDate,
       endDate: filter.endDate,
