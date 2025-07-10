@@ -33,10 +33,9 @@ SPDX-License-Identifier: MIT
 
               <h1
                 class="font-bold mr-3 ease-linear transition-all
-                 font-secondary duration-200 text-heading-4 line-clamp-1 sm:line-clamp-none"
+                 font-secondary duration-200 text-heading-4 line-clamp-1 max-w-[25ch] truncate"
                 :class="[
-                  scrollTop > 50 ? 'md:text-heading-3' : 'md:text-heading-2',
-                  repoName ? 'max-w-[25ch] truncate' : 'max-w-[25ch] sm:max-w-none'
+                  scrollTop > 50 ? 'md:text-heading-3' : 'md:text-heading-2'
                 ]"
               >
                 {{ props.project?.name }}
