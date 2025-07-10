@@ -29,7 +29,7 @@ import { DateTime } from 'luxon';
 
 import { createDataSource } from '~~/server/data/data-sources';
 import type { ActiveContributorsFilter } from '~~/server/data/types';
-import { FilterGranularity } from '~~/server/data/types';
+import { Granularity } from "~~/types/shared/granularity";
 
 export default defineEventHandler(async (event) => {
   // TODO: Check the project configuration to determine whether to show the data.
@@ -39,7 +39,7 @@ export default defineEventHandler(async (event) => {
 
   // TODO: Validate the query params
   const filter: ActiveContributorsFilter = {
-    granularity: (query.granularity as FilterGranularity) || FilterGranularity.QUARTERLY,
+    granularity: (query.granularity as Granularity) || Granularity.QUARTERLY,
     project,
     repo: undefined,
     startDate: undefined,

@@ -9,7 +9,7 @@ import {
   mockCurrentMonthlySummary,
   mockPreviousMonthlySummary
 } from '../../mocks/tinybird-active-organizations-response.mock';
-import {FilterGranularity} from "../types";
+import {Granularity} from "~~/types/shared/granularity";
 import type {ActiveOrganizationsResponse} from "~~/server/data/tinybird/active-organizations-data-source";
 
 const mockFetchFromTinybird = vi.fn();
@@ -39,7 +39,7 @@ describe('Active Organizations Data Source', () => {
     const endDate = DateTime.utc(2025, 3, 20);
 
     const filter = {
-      granularity: FilterGranularity.WEEKLY,
+      granularity: Granularity.WEEKLY,
       project: 'the-linux-kernel-organization',
       startDate,
       endDate

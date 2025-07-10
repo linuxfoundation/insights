@@ -12,11 +12,11 @@ import { createDataSource } from '~~/server/data/data-sources';
 import {
   type DefaultFilter,
   DemographicType,
-  FilterGranularity,
   ActivityFilterCountType
 } from '~~/server/data/types';
 import type { HealthScore } from '~~/types/overview/responses.types';
 import { ActivityTypes } from '~~/types/shared/activity-types';
+import { Granularity } from "~~/types/shared/granularity";
 import { BenchmarkKeys } from '~~/types/shared/benchmark.types';
 import { formatSecondsToDuration } from '~/components/shared/utils/formatter';
 import { FormatterUnits } from '~/components/shared/types/formatter.types';
@@ -67,32 +67,32 @@ export default defineEventHandler(async (event) => {
         ...filterPrevious2Quarters,
         demographicType: DemographicType.CONTRIBUTORS,
         onlyContributions: false,
-        granularity: FilterGranularity.QUARTERLY
+        granularity: Granularity.QUARTERLY
       }),
       dataSource.fetchStarsActivities({
         ...filter,
-        granularity: FilterGranularity.WEEKLY,
+        granularity: Granularity.WEEKLY,
         activity_type: ActivityTypes.STARS,
         countType: ActivityFilterCountType.CUMULATIVE,
         onlyContributions: false
       }),
       dataSource.fetchForksActivities({
         ...filter,
-        granularity: FilterGranularity.WEEKLY,
+        granularity: Granularity.WEEKLY,
         activity_type: ActivityTypes.FORKS,
         countType: ActivityFilterCountType.CUMULATIVE,
         onlyContributions: false
       }),
       dataSource.fetchIssuesResolution({
         ...filter,
-        granularity: FilterGranularity.WEEKLY,
+        granularity: Granularity.WEEKLY,
         countType: ActivityFilterCountType.NEW,
         activity_type: ActivityTypes.ISSUES_CLOSED,
         onlyContributions: false
       }),
       dataSource.fetchPullRequests({
         ...filter,
-        granularity: FilterGranularity.MONTHLY,
+        granularity: Granularity.MONTHLY,
         countType: ActivityFilterCountType.NEW, // This isn't used but required the interface
         activity_type: ActivityTypes.ISSUES_CLOSED, // This isn't used but required the interface
         onlyContributions: false

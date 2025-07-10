@@ -13,10 +13,10 @@ import {
 } from '../../mocks/tinybird-issues-response.mock';
 import {
   type ActivityCountFilter,
-  ActivityFilterCountType,
-  FilterGranularity
+  ActivityFilterCountType
 } from "../types";
 import {ActivityTypes} from "~~/types/shared/activity-types";
+import {Granularity} from "~~/types/shared/granularity";
 import type {IssuesResolution} from "~~/types/development/responses.types";
 
 const mockFetchFromTinybird = vi.fn();
@@ -49,7 +49,7 @@ describe('Issues Resolution Data Source', () => {
     const endDate = DateTime.utc(2025, 3, 20);
 
     const filter: ActivityCountFilter = {
-      granularity: FilterGranularity.WEEKLY,
+      granularity: Granularity.WEEKLY,
       project: 'the-linux-kernel-organization',
       countType: ActivityFilterCountType.CUMULATIVE,
       activity_type: ActivityTypes.FORKS,
