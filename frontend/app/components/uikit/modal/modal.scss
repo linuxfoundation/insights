@@ -8,6 +8,10 @@
     @apply pt-25;
   }
 
+  &__content-wrapper{
+    @apply relative;
+  }
+
   &__content{
     @apply w-full bg-white shadow-xl border border-neutral-200 rounded-xl max-h-full overflow-auto;
   }

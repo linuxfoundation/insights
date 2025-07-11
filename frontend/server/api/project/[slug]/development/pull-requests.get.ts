@@ -62,10 +62,12 @@ export default defineEventHandler(async (event) => {
 
   const project = (event.context.params as { slug: string }).slug;
 
+  const repos = Array.isArray(query.repos) ? query.repos : query.repos ? [query.repos] : undefined;
+
   const filter: ActivityCountFilter = {
     project,
     granularity: query.granularity as Granularity,
-    repo: query.repository as string,
+    repos,
     countType: ActivityFilterCountType.NEW, // TODO: This isn't used but I'm keeping it here for now to satisfy the interface
     activity_type: ActivityTypes.ISSUES_CLOSED, // TODO: This isn't used but I'm keeping it here for now to satisfy the interface
     onlyContributions: false,

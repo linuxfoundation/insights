@@ -41,7 +41,7 @@ describe('Contributors Leaderboard Data Source', () => {
 
     const filter: ContributorsLeaderboardFilter = {
       project: 'the-linux-kernel-organization',
-      repo: 'linux',
+      repos: ['linux'],
       platform: ActivityPlatforms.GITHUB,
       activity_type: ActivityTypes.AUTHORED_COMMIT,
       startDate,

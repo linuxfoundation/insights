@@ -15,9 +15,10 @@ import LfxProjectOverviewView from "~/components/modules/project/views/overview.
 const route = useRoute();
 const name = route.params.name as string;
 const slug = route.params.slug as string;
-const {project, repository} = storeToRefs(useProjectStore());
+const {project, selectedRepositories} = storeToRefs(useProjectStore());
 const config = useRuntimeConfig()
 
+const repository = computed(() => selectedRepositories.value.find((repo) => repo.slug === name));
 const repoName = computed(() => (repository.value?.name || name).split('/').at(-1));
 
 const title = computed(() => `LFX Insights | ${project.value?.name} ${repoName.value} insights`);

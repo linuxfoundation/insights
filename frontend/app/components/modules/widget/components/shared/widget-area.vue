@@ -60,8 +60,8 @@ import type { Benchmark } from '~~/types/shared/benchmark.types';
 import {useProjectStore} from "~/components/modules/project/store/project.store";
 import { useQueryParam } from "~/components/shared/utils/query-param";
 import {
-  processTimeAndDateParams,
-  timeAndDateParamsSetter
+  processProjectParams,
+  projectParamsSetter
 } from "~/components/modules/project/services/project.query.service";
 
 const props = defineProps<{
@@ -72,13 +72,13 @@ const route = useRoute();
 const config = computed<WidgetAreaConfig>(() => lfxWidgetArea[props.name]);
 const benchmarks = ref<Record<string, Benchmark | undefined>>({});
 
-const { queryParams } = useQueryParam(processTimeAndDateParams, timeAndDateParamsSetter);
+const { queryParams } = useQueryParam(processProjectParams, projectParamsSetter);
 const activeItem = ref(queryParams.value.widget || config.value.widgets?.[0] || '');
 const tmpClickedItem = ref('');
 const loadedWidgets = ref<Record<string, boolean>>({});
 
 const { scrollToTarget, scrollToTop } = useScroll();
-const { project, repository } = storeToRefs(useProjectStore())
+const { project, selectedRepoSlugs } = storeToRefs(useProjectStore())
 const isFirstLoad = ref(true);
 
 const widgets = computed(() => (config.value.widgets || [])
@@ -87,7 +87,7 @@ const widgets = computed(() => (config.value.widgets || [])
       const widgetConfig = lfxWidgets[widget as Widget];
       return (
         project.value?.widgets.includes(key)
-        && (!widgetConfig?.hideOnRepoFilter || !repository.value)
+        && (!widgetConfig?.hideOnRepoFilter || !selectedRepoSlugs.value.length)
       );
     }));
 

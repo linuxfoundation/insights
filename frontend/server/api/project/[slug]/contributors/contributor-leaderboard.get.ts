@@ -43,12 +43,13 @@ export default defineEventHandler(async (event) => {
   const activityType = query.activityType as ActivityTypes;
   const limit = query.limit ? parseInt(query.limit as string, 10) : 10;
   const offset = query.offset ? parseInt(query.offset as string, 10) : 0;
+  const repos = Array.isArray(query.repos) ? query.repos : query.repos ? [query.repos] : undefined;
 
   const filter: ContributorsLeaderboardFilter = {
     project,
     platform: activityPlatform !== ActivityPlatforms.ALL ? activityPlatform : undefined,
     activity_type: activityType !== ActivityTypes.ALL ? activityType : undefined,
-    repo: query.repository as string,
+    repos,
     startDate: query.startDate ? DateTime.fromISO(query.startDate as string) : undefined,
     endDate: query.endDate ? DateTime.fromISO(query.endDate as string) : undefined,
     limit,

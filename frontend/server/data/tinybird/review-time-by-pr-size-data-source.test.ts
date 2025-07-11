@@ -34,7 +34,7 @@ describe('Review Time By PR Size Data Source', () => {
 
     const filter: ReviewTimeByPRSizeFilter = {
       project: 'the-linux-kernel-organization',
-      repo: 'some-random-repo',
+      repos: ['some-random-repo'],
       startDate,
       endDate
     };

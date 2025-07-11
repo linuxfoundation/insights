@@ -127,8 +127,9 @@ SPDX-License-Identifier: MIT
   <lfx-project-repository-switch
     v-if="isSearchRepoModalOpen && props.project"
     v-model="isSearchRepoModalOpen"
-    :repo="repoSlug"
+    :selected-repo-slugs="selectedRepoSlugs"
     :project="props.project"
+    @update:selected-repo-slugs="handleSelectedRepoSlugs"
   />
 </template>
 
@@ -161,15 +162,22 @@ const props = defineProps<{
 
 const route = useRoute();
 
-const {projectRepos, repository} = storeToRefs(useProjectStore());
+const {projectRepos, selectedRepoSlugs, selectedRepositories} = storeToRefs(useProjectStore());
 const { openReportModal } = useReportStore();
 const { openShareModal } = useShareStore();
 
-const repo = computed<ProjectRepository | undefined>(
-    () => projectRepos.value.find((repo) => repo.slug === route.params.name)
+const repos = computed<ProjectRepository[]>(
+    () => projectRepos.value.filter((repo) => selectedRepoSlugs.value.includes(repo.slug))
 );
-const repoName = computed<string>(() => (repo.value?.name || '').split('/').at(-1) || '');
-const repoSlug = computed<string>(() => route.params.name as string);
+const repoName = computed<string>(() => {
+  if (repos.value.length === 0) {
+    return '';
+  }
+  if (repos.value.length === 1) {
+    return repos.value[0]!.name.split('/').at(-1) || '';
+  }
+  return `${repos.value.length} repositories`;
+})
 
 const isSearchRepoModalOpen = ref(false);
 
@@ -180,9 +188,12 @@ const share = () => {
   const title = [];
   if (props.project?.name) {
     title.push(props.project.name);
-    if(repository.value?.name){
-      title.push(repository.value.name);
+    if(selectedRepositories.value.length > 1){
+      title.push(`${selectedRepositories.value.length} repositories`);
+    } else if(selectedRepositories.value.length === 1){
+      title.push(selectedRepositories.value[0]!.name);
     }
+    
     const type = route.path.split('/').at(-1) || '';
     if(['contributors', 'popularity', 'security', 'development'].includes(type)){
       title.push(type);
@@ -212,6 +223,10 @@ const showDatepicker = computed(() => ![
     LfxRoutes.PROJECT_SECURITY,
     LfxRoutes.REPOSITORY_SECURITY
   ].includes(route.name as LfxRoutes));
+
+const handleSelectedRepoSlugs = (value: string[]) => {
+  selectedRepoSlugs.value = value;
+};
 </script>
 
 <script lang="ts">

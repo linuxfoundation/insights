@@ -30,7 +30,7 @@ class ContributorsApiService {
     query: () => Record<string, string | number | boolean | undefined | string[] | null>
   ): QueryFunction<ContributorLeaderboard> {
     const {
- projectSlug, platform, activityType, repository, startDate, endDate
+ projectSlug, platform, activityType, repos, startDate, endDate
 } = query();
     return async (context) => {
       const pageParam = (context.pageParam || 0) as number;
@@ -41,7 +41,7 @@ class ContributorsApiService {
           params: {
             platform,
             activityType,
-            repository,
+            repos,
             startDate,
             endDate,
             offset: pageParam,
@@ -73,7 +73,7 @@ class ContributorsApiService {
     query: () => Record<string, string | number | boolean | undefined | string[] | null>
   ): QueryFunction<OrganizationLeaderboard> {
     const {
- projectSlug, platform, activityType, repository, startDate, endDate
+ projectSlug, platform, activityType, repos, startDate, endDate
 } = query();
     return async (context) => {
       const pageParam = (context.pageParam || 0) as number;
@@ -84,7 +84,7 @@ class ContributorsApiService {
           params: {
             platform,
             activityType,
-            repository,
+            repos,
             startDate,
             endDate,
             offset: pageParam,

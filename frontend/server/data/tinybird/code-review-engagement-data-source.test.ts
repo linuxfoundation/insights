@@ -68,7 +68,7 @@ describe('Code Review Engagement Data Source', () => {
 
     const filter: CodeReviewEngagementFilter = {
       project: 'the-linux-kernel-organization',
-      repo: 'some-repo',
+      repos: ['some-repo'],
       metric,
       startDate,
       endDate
@@ -78,7 +78,7 @@ describe('Code Review Engagement Data Source', () => {
 
     const expectedCurrentSummaryQuery: ActiveContributorsFilter = {
       project: filter.project,
-      repo: filter.repo,
+      repos: filter.repos,
       activity_types: expectedActivityTypes,
       startDate: filter.startDate,
       endDate: filter.endDate,
@@ -86,7 +86,7 @@ describe('Code Review Engagement Data Source', () => {
 
     const expectedPreviousSummaryQuery: ActiveContributorsFilter = {
       project: filter.project,
-      repo: filter.repo,
+      repos: filter.repos,
       activity_types: expectedActivityTypes,
       startDate: DateTime.utc(2023, 3, 19),
       endDate: DateTime.utc(2024, 3, 19),
@@ -94,7 +94,7 @@ describe('Code Review Engagement Data Source', () => {
 
     const expectedDataQuery: ContributorsLeaderboardFilter = {
       project: filter.project,
-      repo: filter.repo,
+      repos: filter.repos,
       activity_types: expectedActivityTypes,
       limit: 5,
       startDate: filter.startDate,

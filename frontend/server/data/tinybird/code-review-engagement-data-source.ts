@@ -53,7 +53,7 @@ export async function fetchCodeReviewEngagement(filter: CodeReviewEngagementFilt
 
   const currentSummaryQuery: ActiveContributorsFilter = {
     project: filter.project,
-    repo: filter.repo,
+    repos: filter.repos,
     activity_types: activityTypes,
     startDate: filter.startDate,
     endDate: filter.endDate,
@@ -61,7 +61,7 @@ export async function fetchCodeReviewEngagement(filter: CodeReviewEngagementFilt
 
   const previousSummaryQuery: ActiveContributorsFilter = {
     project: filter.project,
-    repo: filter.repo,
+    repos: filter.repos,
     activity_types: activityTypes,
     startDate: dates.previous.from,
     endDate: dates.previous.to,
@@ -69,7 +69,7 @@ export async function fetchCodeReviewEngagement(filter: CodeReviewEngagementFilt
 
   const dataQuery: ContributorsLeaderboardFilter = {
     project: filter.project,
-    repo: filter.repo,
+    repos: filter.repos,
     limit: 5,
     activity_types: activityTypes,
     startDate: filter.startDate,

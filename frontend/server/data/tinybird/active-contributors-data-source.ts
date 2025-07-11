@@ -39,14 +39,14 @@ export async function fetchActiveContributors(filter: ActiveContributorsFilter) 
   //  We need to ensure this doesn't pose a security risk.
   const currentSummaryQuery = {
     project: filter.project,
-    repo: filter.repo,
+    repos: filter.repos,
     startDate: dates.current.from,
     endDate: dates.current.to
   };
 
   const previousSummaryQuery = {
     project: filter.project,
-    repo: filter.repo,
+    repos: filter.repos,
     startDate: dates.previous.from,
     endDate: dates.previous.to
   };
@@ -54,7 +54,7 @@ export async function fetchActiveContributors(filter: ActiveContributorsFilter) 
   const dataQuery = {
     project: filter.project,
     granularity: filter.granularity,
-    repo: filter.repo,
+    repos: filter.repos,
     startDate: dates.current.from,
     endDate: dates.current.to
   };

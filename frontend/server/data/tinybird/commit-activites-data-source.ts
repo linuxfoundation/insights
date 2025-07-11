@@ -26,20 +26,20 @@ function getTinybirdQueries(filter: ActivityCountFilter) {
       ...filter,
       activity_type: filter.activity_type, // We need this due to a discrepancy between variable names in Tinybird and the frontend
       granularity: undefined, // This tells TinyBird to return a summary instead of time series
-      repo: filter.repo, // We need this due to a discrepancy between variable names in Tinybird and the frontend
+      repos: filter.repos, // We need this due to a discrepancy between variable names in Tinybird and the frontend
     },
     previousSummaryQuery: {
       ...filter,
       activity_type: filter.activity_type, // We need this due to a discrepancy between variable names in Tinybird and the frontend
       granularity: undefined, // This tells TinyBird to return a summary instead of time series
-      repo: filter.repo, // We need this due to a discrepancy between variable names in Tinybird and the frontend
+      repos: filter.repos, // We need this due to a discrepancy between variable names in Tinybird and the frontend
       startDate: dates.previous.from,
       endDate: dates.previous.to
     },
     dataQuery: {
       ...filter,
       activity_type: filter.activity_type, // We need this due to a discrepancy between variable names in Tinybird and the frontend
-      repo: filter.repo,
+      repos: filter.repos,
     }
   }
 }

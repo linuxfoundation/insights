@@ -133,21 +133,21 @@ const accordion = ref('');
 const route = useRoute();
 const {name} = route.params;
 
-const {selectedRepository} = useProjectStore()
+const {selectedRepoSlugs} = useProjectStore()
 
 const isRepository = computed(() => !!name)
 
 const queryKey = computed(() => [
   TanstackKey.SECURITY_ASSESSMENT,
   route.params.slug,
-  selectedRepository,
+  selectedRepoSlugs,
 ]);
 
 const fetchData: QueryFunction<SecurityData[]> = async () => $fetch(
     `/api/project/${route.params.slug}/security/assessment`,
     {
       query: {
-        repo: selectedRepository || undefined,
+        repos: selectedRepoSlugs || undefined,
       }
     }
 );

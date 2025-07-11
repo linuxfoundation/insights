@@ -36,11 +36,12 @@ export default defineEventHandler(async (event) => {
   const query = getQuery(event);
 
   const project = (event.context.params as { slug: string }).slug;
+  const repos = Array.isArray(query.repos) ? query.repos : query.repos ? [query.repos] : undefined;
 
   const filter: ActivityCountFilter = {
     project,
     granularity: query.granularity as Granularity,
-    repo: query.repository as string,
+    repos,
     countType: (query.countType as ActivityFilterCountType) || ActivityFilterCountType.NEW,
     activity_type: (query.activityType as ActivityTypes) || ActivityTypes.STARS,
     onlyContributions: false, // forks and stars are non-contribution activities, but we want to count them.

@@ -90,7 +90,7 @@ const model = computed<RetentionModel>({
 })
 
 const {
-  startDate, endDate, selectedRepository
+  startDate, endDate, selectedReposValues
 } = storeToRefs(useProjectStore())
 
 const route = useRoute();
@@ -112,7 +112,7 @@ const queryKey = computed(() => [
   route.params.slug,
   granularity,
   model.value.activeTab,
-  selectedRepository.value,
+  selectedReposValues,
   startDate.value,
   endDate.value,
 ]);
@@ -123,7 +123,7 @@ const fetchData: QueryFunction<Retention[]> = async () => $fetch(
   params: {
     granularity,
     type: model.value.activeTab,
-    repository: selectedRepository.value,
+    repos: selectedReposValues.value,
     startDate: startDate.value,
     endDate: endDate.value,
   }
