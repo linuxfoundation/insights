@@ -93,7 +93,7 @@ const model = computed<ActiveOrganizationsModel>({
 })
 
 const {
-  startDate, endDate, selectedRepoSlugs, selectedTimeRangeKey, customRangeGranularity
+  startDate, endDate, selectedReposValues, selectedTimeRangeKey, customRangeGranularity
 } = storeToRefs(useProjectStore())
 
 const route = useRoute();
@@ -102,7 +102,7 @@ const paramWatch = computed(() => ({
   granularity: model.value.activeTab,
   startDate: startDate.value,
   endDate: endDate.value,
-  repos: selectedRepoSlugs
+  repos: selectedReposValues
 }));
 const summaryLoading = ref(true);
 
@@ -112,7 +112,7 @@ const queryKey = computed(() => [
   model.value.activeTab,
   startDate.value,
   endDate.value,
-  selectedRepoSlugs
+  selectedReposValues
 ]);
 
 const fetchData: QueryFunction<ActiveOrganizations> = async () => $fetch(
@@ -122,7 +122,7 @@ const fetchData: QueryFunction<ActiveOrganizations> = async () => $fetch(
     granularity: model.value.activeTab,
     startDate: startDate.value,
     endDate: endDate.value,
-    repos: selectedRepoSlugs.value
+    repos: selectedReposValues.value
   }
 }
 );

@@ -105,7 +105,7 @@ const model = computed<MailingListMessagesModel>({
 })
 
 const {
-  startDate, endDate, selectedRepoSlugs, selectedTimeRangeKey, customRangeGranularity
+  startDate, endDate, selectedReposValues, selectedTimeRangeKey, customRangeGranularity
 } = storeToRefs(useProjectStore())
 
 const route = useRoute();
@@ -120,7 +120,7 @@ const lineGranularity = computed(() => (selectedTimeRangeKey.value === dateOptKe
 const barQueryKey = computed(() => [
   TanstackKey.MAILING_LISTS_MESSAGES,
   route.params.slug,
-  selectedRepoSlugs,
+  selectedReposValues,
   startDate,
   endDate,
   barGranularity,
@@ -134,7 +134,7 @@ const fetchBarData: QueryFunction<MailingListsMessages> = async () => $fetch(
     type: 'new',
     countType: 'new',
     activityType: 'message',
-    repos: selectedRepoSlugs.value,
+    repos: selectedReposValues.value,
     startDate: startDate.value,
     endDate: endDate.value,
   }
@@ -154,7 +154,7 @@ const {
 const lineQueryKey = computed(() => [
   TanstackKey.MAILING_LISTS_MESSAGES,
   route.params.slug,
-  selectedRepoSlugs,
+  selectedReposValues,
   startDate,
   endDate,
   lineGranularity,
@@ -168,7 +168,7 @@ const fetchLineData: QueryFunction<MailingListsMessages> = async () => $fetch(
     type: 'cumulative',
     countType: 'cumulative',
     activityType: 'message',
-    repos: selectedRepoSlugs.value,
+    repos: selectedReposValues.value,
     startDate: startDate.value,
     endDate: endDate.value,
   }

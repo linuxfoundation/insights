@@ -83,7 +83,7 @@ const model = computed<ContributorLeaderboardModel>({
   set: (value) => emit('update:modelValue', value)
 })
 
-const { startDate, endDate, selectedRepoSlugs } = storeToRefs(useProjectStore())
+const { startDate, endDate, selectedReposValues } = storeToRefs(useProjectStore())
 
 const route = useRoute();
 const platform = computed(() => model.value.metric?.split(':')[0]);
@@ -95,7 +95,7 @@ const queryKey = computed(() => [
   route.params.slug,
   platform,
   activityType,
-  selectedRepoSlugs,
+  selectedReposValues,
   startDate,
   endDate,
   model.value.metric,
@@ -105,7 +105,7 @@ const queryFn = computed(() => CONTRIBUTORS_API_SERVICE.contributorLeaderboardQu
   projectSlug: route.params.slug,
   platform: platform.value,
   activityType: activityType.value,
-  repos: selectedRepoSlugs.value,
+  repos: selectedReposValues.value,
   startDate: startDate.value,
   endDate: endDate.value,
 })));

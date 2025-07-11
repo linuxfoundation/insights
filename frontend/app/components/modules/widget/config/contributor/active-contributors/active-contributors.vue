@@ -100,7 +100,7 @@ const model = computed<ActiveContributorsModel>({
 })
 
 const {
-  startDate, endDate, selectedTimeRangeKey, customRangeGranularity, selectedRepoSlugs
+  startDate, endDate, selectedTimeRangeKey, customRangeGranularity, selectedReposValues
 } = storeToRefs(useProjectStore());
 
 const route = useRoute();
@@ -109,7 +109,7 @@ const paramWatch = computed(() => ({
   granularity: model.value.activeTab,
   startDate: startDate.value,
   endDate: endDate.value,
-  repos: selectedRepoSlugs
+  repos: selectedReposValues
 }));
 const summaryLoading = ref(true);
 
@@ -119,7 +119,7 @@ const queryKey = computed(() => [
   model.value.activeTab,
   startDate,
   endDate,
-  selectedRepoSlugs
+  selectedReposValues
 ]);
 
 const fetchData: QueryFunction<ActiveContributors> = async () => $fetch(
@@ -129,7 +129,7 @@ const fetchData: QueryFunction<ActiveContributors> = async () => $fetch(
     granularity: model.value.activeTab,
     startDate: startDate.value,
     endDate: endDate.value,
-    repos: selectedRepoSlugs.value
+    repos: selectedReposValues.value
   }
 }
 );

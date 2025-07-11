@@ -105,7 +105,7 @@ const model = computed<ForksModel>({
 })
 
 const {
-  startDate, endDate, selectedRepoSlugs, selectedTimeRangeKey, customRangeGranularity
+  startDate, endDate, selectedReposValues, selectedTimeRangeKey, customRangeGranularity
 } = storeToRefs(useProjectStore())
 
 const route = useRoute();
@@ -120,7 +120,7 @@ const lineGranularity = computed(() => (selectedTimeRangeKey.value === dateOptKe
 const barQueryKey = computed(() => [
   TanstackKey.FORKS,
   route.params.slug,
-  selectedRepoSlugs,
+  selectedReposValues,
   startDate,
   endDate,
   barGranularity,
@@ -134,7 +134,7 @@ const fetchBarData: QueryFunction<ForksData> = async () => $fetch(
     type: 'new',
     countType: 'new',
     activityType: 'fork',
-    repos: selectedRepoSlugs.value,
+    repos: selectedReposValues.value,
     startDate: startDate.value,
     endDate: endDate.value,
   }
@@ -154,7 +154,7 @@ const {
 const lineQueryKey = computed(() => [
   TanstackKey.FORKS_CUMULATIVE,
   route.params.slug,
-  selectedRepoSlugs,
+  selectedReposValues,
   startDate,
   endDate,
   lineGranularity,
@@ -168,7 +168,7 @@ const fetchLineData: QueryFunction<ForksData> = async () => $fetch(
     type: 'cumulative',
     countType: 'cumulative',
     activityType: 'fork',
-    repos: selectedRepoSlugs.value,
+    repos: selectedReposValues.value,
     startDate: startDate.value,
     endDate: endDate.value,
   }

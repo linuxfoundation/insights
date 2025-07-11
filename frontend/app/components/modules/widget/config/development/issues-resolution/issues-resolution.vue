@@ -119,7 +119,7 @@ const emit = defineEmits<{(e: 'update:benchmarkValue', value: Benchmark | undefi
 }>();
 
 const {
-  startDate, endDate, selectedRepoSlugs, selectedTimeRangeKey, customRangeGranularity
+  startDate, endDate, selectedReposValues, selectedTimeRangeKey, customRangeGranularity
 } = storeToRefs(useProjectStore())
 
 const route = useRoute();
@@ -130,7 +130,7 @@ const queryKey = computed(() => [
   TanstackKey.ISSUES_RESOLUTION,
   route.params.slug,
   granularity.value,
-  selectedRepoSlugs.value,
+  selectedReposValues.value,
   startDate.value,
   endDate.value,
 ]);
@@ -140,7 +140,7 @@ const fetchData: QueryFunction<IssuesResolution> = async () => $fetch(
     {
   params: {
     granularity: granularity.value,
-    repos: selectedRepoSlugs.value,
+    repos: selectedReposValues.value,
     startDate: startDate.value,
     endDate: endDate.value,
   }

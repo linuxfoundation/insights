@@ -105,7 +105,7 @@ const model = computed<CommitActivitiesModel>({
 })
 
 const {
-  startDate, endDate, selectedRepoSlugs, selectedTimeRangeKey, customRangeGranularity
+  startDate, endDate, selectedReposValues, selectedTimeRangeKey, customRangeGranularity
 } = storeToRefs(useProjectStore())
 
 const route = useRoute();
@@ -123,7 +123,7 @@ const barQueryKey = computed(() => [
   barGranularity.value,
   'new',
   'authored-commit',
-  selectedRepoSlugs.value,
+  selectedReposValues.value,
   startDate.value,
   endDate.value,
 ]);
@@ -136,7 +136,7 @@ const fetchBarData: QueryFunction<CommitActivities> = async () => $fetch(
       type: 'new',
       countType: 'new',
       activityType: 'authored-commit',
-      repos: selectedRepoSlugs.value,
+      repos: selectedReposValues.value,
       startDate: startDate.value,
       endDate: endDate.value,
     },
@@ -159,7 +159,7 @@ const lineQueryKey = computed(() => [
   lineGranularity.value,
   'cumulative',
   'authored-commit',
-  selectedRepoSlugs.value,
+  selectedReposValues.value,
   startDate.value,
   endDate.value,
 ]);
@@ -172,7 +172,7 @@ const fetchLineData: QueryFunction<CommitActivities> = async () => $fetch(
     type: 'cumulative',
     countType: 'cumulative',
     activityType: 'authored-commit',
-    repos: selectedRepoSlugs.value,
+    repos: selectedReposValues.value,
     startDate: startDate.value,
     endDate: endDate.value,
   }

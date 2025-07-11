@@ -77,7 +77,7 @@ const props = defineProps<{
 const emit = defineEmits<{(e: 'dataLoaded', value: string): void}>();
 
 const {
-  startDate, endDate, selectedRepoSlugs, selectedTimeRangeKey, customRangeGranularity
+  startDate, endDate, selectedReposValues, selectedTimeRangeKey, customRangeGranularity
 } = storeToRefs(useProjectStore())
 
 const route = useRoute();
@@ -89,7 +89,7 @@ const queryKey = computed(() => [
   TanstackKey.WAIT_TIME_FIRST_REVIEW,
   route.params.slug,
   granularity,
-  selectedRepoSlugs,
+  selectedReposValues,
   startDate,
   endDate,
 ]);
@@ -99,7 +99,7 @@ const fetchData: QueryFunction<WaitTime1stReview> = async () => $fetch(
     {
   params: {
     granularity: granularity.value,
-    repos: selectedRepoSlugs.value,
+    repos: selectedReposValues.value,
     startDate: startDate.value,
     endDate: endDate.value,
   }

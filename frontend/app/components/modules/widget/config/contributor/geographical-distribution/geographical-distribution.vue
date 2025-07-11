@@ -139,7 +139,7 @@ const model = computed<GeographicalDistributionModel>({
 const route = useRoute();
 const platform = computed(() => model.value.metric.split(':')[0]);
 const activityType = computed(() => model.value.metric.split(':')[1]);
-const { startDate, endDate, selectedRepoSlugs } = storeToRefs(useProjectStore())
+const { startDate, endDate, selectedReposValues } = storeToRefs(useProjectStore())
 
 const queryKey = computed(() => [
   TanstackKey.GEOGRAPHICAL_DISTRIBUTION,
@@ -147,7 +147,7 @@ const queryKey = computed(() => [
   model.value.activeTab,
   platform.value,
   activityType.value,
-  selectedRepoSlugs,
+  selectedReposValues,
   startDate.value,
   endDate.value,
 ]);
@@ -157,7 +157,7 @@ const fetchData = async () => $fetch(`/api/project/${route.params.slug}/contribu
     type: model.value.activeTab,
     platform: platform.value,
     activityType: activityType.value,
-    repos: selectedRepoSlugs.value,
+    repos: selectedReposValues.value,
     startDate: startDate.value,
     endDate: endDate.value,
   }

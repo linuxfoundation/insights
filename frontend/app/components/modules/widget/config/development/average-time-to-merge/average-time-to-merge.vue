@@ -78,7 +78,7 @@ const props = defineProps<{
 const emit = defineEmits<{(e: 'dataLoaded', value: string): void}>();
 
 const {
-  startDate, endDate, selectedRepoSlugs, selectedTimeRangeKey, customRangeGranularity
+  startDate, endDate, selectedReposValues, selectedTimeRangeKey, customRangeGranularity
 } = storeToRefs(useProjectStore())
 
 const route = useRoute();
@@ -90,7 +90,7 @@ const queryKey = computed(() => [
   TanstackKey.AVERAGE_TIME_TO_MERGE,
   route.params.slug,
   granularity,
-  selectedRepoSlugs,
+  selectedReposValues,
   startDate,
   endDate,
 ]);
@@ -100,7 +100,7 @@ const fetchData: QueryFunction<AverageTimeMerge> = async () => $fetch(
     {
   params: {
     granularity: granularity.value,
-    repos: selectedRepoSlugs.value,
+    repos: selectedReposValues.value,
     startDate: startDate.value,
     endDate: endDate.value,
   }

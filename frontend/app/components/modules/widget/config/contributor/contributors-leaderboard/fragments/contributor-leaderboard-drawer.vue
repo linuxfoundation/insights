@@ -73,7 +73,7 @@ import LfxDrawer from '~/components/uikit/drawer/drawer.vue';
 import {TanstackKey} from "~/components/shared/types/tanstack";
 import { CONTRIBUTORS_API_SERVICE } from '~~/app/components/modules/widget/services/contributors.api.service'
 
-const { startDate, endDate, selectedRepoSlugs } = storeToRefs(useProjectStore())
+const { startDate, endDate, selectedReposValues } = storeToRefs(useProjectStore())
 
 const props = withDefaults(defineProps<{
   modelValue: boolean,
@@ -103,7 +103,7 @@ const queryKey = computed(() => [
   route.params.slug,
   platform,
   activityType,
-  selectedRepoSlugs,
+  selectedReposValues,
   startDate,
   endDate,
   metric
@@ -113,7 +113,7 @@ const queryFn = computed(() => CONTRIBUTORS_API_SERVICE.contributorLeaderboardQu
   projectSlug: route.params.slug,
   platform: platform.value,
   activityType: activityType.value,
-  repos: selectedRepoSlugs.value,
+  repos: selectedReposValues.value,
   startDate: startDate.value,
   endDate: endDate.value,
 })));

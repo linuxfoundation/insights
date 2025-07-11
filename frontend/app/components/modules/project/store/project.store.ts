@@ -63,6 +63,7 @@ export const useProjectStore = defineStore('project', () => {
   const selectedRepositories = computed<ProjectRepository[]>(() => projectRepos
     .value.filter((repo: ProjectRepository) => selectedRepoSlugs.value.includes(repo.slug) || 
       route.params.name === repo.slug));
+  const selectedReposValues = computed<string[]>(() => selectedRepositories.value.map((repo: ProjectRepository) => repo.url));
 
   const customRangeGranularity = computed<string[]>(() => (startDate.value === null || endDate.value === null
       ? [Granularity.WEEKLY]
@@ -77,6 +78,7 @@ export const useProjectStore = defineStore('project', () => {
     projectRepos,
     customRangeGranularity,
     selectedRepoSlugs,
-    selectedRepositories
+    selectedRepositories,
+    selectedReposValues
   };
 });

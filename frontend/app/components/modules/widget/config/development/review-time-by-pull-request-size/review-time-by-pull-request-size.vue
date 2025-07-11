@@ -54,12 +54,12 @@ import {Widget} from "~/components/modules/widget/types/widget";
 const emit = defineEmits<{(e: 'dataLoaded', value: string): void}>();
 
 const route = useRoute();
-const { startDate, endDate, selectedRepoSlugs } = storeToRefs(useProjectStore());
+const { startDate, endDate, selectedReposValues } = storeToRefs(useProjectStore());
 
 const queryKey = computed(() => [
   TanstackKey.REVIEW_TIME_BY_PULL_REQUEST_SIZE,
   route.params.slug,
-  selectedRepoSlugs.value,
+  selectedReposValues.value,
   startDate.value,
   endDate.value,
 ]);
@@ -68,7 +68,7 @@ const fetchData: QueryFunction<ReviewTimeByPrItem[]> = async () => $fetch(
     `/api/project/${route.params.slug}/development/review-time-by-pr-size`,
     {
   params: {
-    repos: selectedRepoSlugs.value,
+    repos: selectedReposValues.value,
     startDate: startDate.value,
     endDate: endDate.value,
   }

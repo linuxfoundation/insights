@@ -102,7 +102,7 @@ const model = computed<GithubMentionsModel>({
 const {
   startDate,
   endDate,
-  selectedRepoSlugs,
+  selectedReposValues,
   selectedTimeRangeKey,
   customRangeGranularity
 } = storeToRefs(useProjectStore())
@@ -124,7 +124,7 @@ const queryKey = computed(() => [
   route.params.slug,
   granularity.value,
   model.value.activeTab,
-  selectedRepoSlugs.value,
+  selectedReposValues.value,
   startDate.value,
   endDate.value,
 ]);
@@ -135,7 +135,7 @@ const fetchData: QueryFunction<GithubMentions> = async () => $fetch(
   params: {
     granularity: granularity.value,
     type: model.value.activeTab,
-    repos: selectedRepoSlugs.value,
+    repos: selectedReposValues.value,
     startDate: startDate.value,
     endDate: endDate.value,
   }

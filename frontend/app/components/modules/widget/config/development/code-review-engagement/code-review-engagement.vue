@@ -111,7 +111,7 @@ const model = computed<CodeReviewEngagementModel>({
 })
 
 const {
- startDate, endDate, selectedRepoSlugs, selectedTimeRangeKey
+ startDate, endDate, selectedReposValues, selectedTimeRangeKey
 } = storeToRefs(useProjectStore());
 
 const route = useRoute();
@@ -120,7 +120,7 @@ const queryKey = computed(() => [
   TanstackKey.CODE_REVIEW_ENGAGEMENT,
   route.params.slug,
   model.value.activeTab,
-  selectedRepoSlugs.value,
+  selectedReposValues.value,
   startDate.value,
   endDate.value,
 ]);
@@ -130,7 +130,7 @@ const fetchData: QueryFunction<CodeReviewEngagement> = async () => $fetch(
     {
   params: {
     metric: model.value.activeTab,
-    repos: selectedRepoSlugs.value,
+    repos: selectedReposValues.value,
     startDate: startDate.value,
     endDate: endDate.value,
   }

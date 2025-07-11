@@ -93,7 +93,7 @@ const emit = defineEmits<{(e: 'dataLoaded', value: string): void}>();
 const {
   startDate,
   endDate,
-  selectedRepoSlugs,
+  selectedReposValues,
   selectedTimeRangeKey,
   customRangeGranularity
 } = storeToRefs(useProjectStore())
@@ -108,7 +108,7 @@ const queryKey = computed(() => [
   TanstackKey.PRESS_MENTIONS,
   route.params.slug,
   granularity,
-  selectedRepoSlugs,
+  selectedReposValues,
   startDate,
   endDate,
 ]);
@@ -118,7 +118,7 @@ const fetchData: QueryFunction<PressMentions> = async () => $fetch(
     {
   params: {
     granularity: granularity.value,
-    repos: selectedRepoSlugs.value,
+    repos: selectedReposValues.value,
     startDate: startDate.value,
     endDate: endDate.value,
   }
