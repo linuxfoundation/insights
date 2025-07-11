@@ -20,8 +20,8 @@
  */
 import {DateTime} from "luxon";
 import type {ActiveOrganizationsFilter} from "~~/server/data/types";
-import {FilterGranularity} from "~~/server/data/types";
 import {createDataSource} from "~~/server/data/data-sources";
+import {Granularity} from "~~/types/shared/granularity";
 
 /**
  * Query params:
@@ -40,7 +40,7 @@ export default defineEventHandler(async (event) => {
 
   // TODO: Validate the query params
   const filter: ActiveOrganizationsFilter = {
-    granularity: (query.granularity as FilterGranularity) || FilterGranularity.QUARTERLY,
+    granularity: (query.granularity as Granularity) || Granularity.QUARTERLY,
     project,
     repos,
     startDate: undefined,

@@ -1,10 +1,11 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import {DateTime} from "luxon";
-import type {FilterGranularity, RetentionFilter} from "~~/server/data/types";
+import type {RetentionFilter} from "~~/server/data/types";
 import {DemographicType} from "~~/server/data/types";
 import {createDataSource} from "~~/server/data/data-sources";
 import {ActivityTypes} from "~~/types/shared/activity-types";
+import {Granularity} from "~~/types/shared/granularity";
 
 /**
  * Frontend expects the data to be in the following format:
@@ -31,7 +32,7 @@ export default defineEventHandler(async (event) => {
 
   const filter: RetentionFilter = {
     project,
-    granularity: query.granularity as FilterGranularity,
+    granularity: query.granularity as Granularity,
     activity_type: activityType !== ActivityTypes.ALL ? activityType : undefined,
     repos,
     demographicType: (query.type as DemographicType) || DemographicType.CONTRIBUTORS,

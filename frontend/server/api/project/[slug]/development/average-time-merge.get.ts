@@ -1,8 +1,9 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import {DateTime} from "luxon";
-import type {FilterGranularity, AverageTimeToMergeFilter} from "~~/server/data/types";
+import type {AverageTimeToMergeFilter} from "~~/server/data/types";
 import {createDataSource} from "~~/server/data/data-sources";
+import {Granularity} from "~~/types/shared/granularity";
 
 /**
  * Frontend expects the data to be in the following format:
@@ -37,7 +38,7 @@ export default defineEventHandler(async (event) => {
 
   const filter: AverageTimeToMergeFilter = {
     project,
-    granularity: query.granularity as FilterGranularity,
+    granularity: query.granularity as Granularity,
     repos,
     startDate: query.startDate ? DateTime.fromISO(query.startDate as string) : undefined,
     endDate: query.endDate ? DateTime.fromISO(query.endDate as string) : undefined,

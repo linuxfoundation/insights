@@ -11,7 +11,7 @@ import {
 } from '../../mocks/tinybird-wait-time-for-1st-review-response.mock';
 import type { WaitTime1stReview } from "~~/types/development/responses.types";
 import type { WaitTimeFor1stReviewFilter} from "~~/server/data/types";
-import {FilterGranularity} from "~~/server/data/types";
+import { Granularity } from "~~/types/shared/granularity";
 
 const mockFetchFromTinybird = vi.fn();
 
@@ -40,7 +40,7 @@ describe('Wait Time For 1st Review Data Source', () => {
     const endDate = DateTime.utc(2025, 3, 20);
 
     const filter: WaitTimeFor1stReviewFilter = {
-      granularity: FilterGranularity.WEEKLY,
+      granularity: Granularity.WEEKLY,
       project: 'the-linux-kernel-organization',
       startDate,
       endDate

@@ -1,10 +1,11 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import {DateTime} from "luxon";
-import type {ActivityCountFilter, FilterGranularity} from "~~/server/data/types";
+import type {ActivityCountFilter} from "~~/server/data/types";
 import {ActivityFilterCountType} from "~~/server/data/types";
 import {createDataSource} from "~~/server/data/data-sources";
 import {ActivityTypes} from "~~/types/shared/activity-types";
+import {Granularity} from "~~/types/shared/granularity";
 
 /**
  * Frontend expects the data to be in the following format:
@@ -42,7 +43,7 @@ export default defineEventHandler(async (event) => {
 
   const filter: ActivityCountFilter = {
     project,
-    granularity: query.granularity as FilterGranularity,
+    granularity: query.granularity as Granularity,
     repos,
     countType: ActivityFilterCountType.NEW,
     activity_type: ActivityTypes.ISSUES_CLOSED,

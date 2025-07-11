@@ -10,7 +10,7 @@ import {
   mockActiveDaysData
 } from '../../mocks/tinybird-active-days-response.mock';
 import type { ActiveDaysFilter } from "../types";
-import { FilterGranularity } from "../types";
+import { Granularity } from "~~/types/shared/granularity";
 import type { ActiveDays } from "~~/types/development/responses.types";
 
 const mockFetchFromTinybird = vi.fn();
@@ -40,7 +40,7 @@ describe('Active Days Data Source', () => {
     const endDate = DateTime.utc(2025, 3, 20);
 
     const filter: ActiveDaysFilter = {
-      granularity: FilterGranularity.WEEKLY,
+      granularity: Granularity.WEEKLY,
       project: 'the-linux-kernel-organization',
       repos: ['some-repo'],
       startDate,
@@ -64,7 +64,7 @@ describe('Active Days Data Source', () => {
     const expectedActiveDaysQuery = {
       project: filter.project,
       repos: ['some-repo'],
-      granularity: FilterGranularity.WEEKLY,
+      granularity: Granularity.WEEKLY,
       startDate: filter.startDate,
       endDate: filter.endDate,
     };

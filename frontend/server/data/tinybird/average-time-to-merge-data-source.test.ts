@@ -10,8 +10,8 @@ import {
   mockAverageTimeToMerge
 } from '../../mocks/tinybird-average-time-to-merge-response.mock';
 import type { AverageTimeMerge } from "~~/types/development/responses.types";
-import type {AverageTimeToMergeFilter} from "~~/server/data/types";
-import {FilterGranularity} from "~~/server/data/types";
+import type { AverageTimeToMergeFilter } from "~~/server/data/types";
+import { Granularity } from "~~/types/shared/granularity";
 
 const mockFetchFromTinybird = vi.fn();
 
@@ -40,7 +40,7 @@ describe('Average Time to Merge Data Source', () => {
     const endDate = DateTime.utc(2025, 3, 20);
 
     const filter: AverageTimeToMergeFilter = {
-      granularity: FilterGranularity.WEEKLY,
+      granularity: Granularity.WEEKLY,
       project: 'the-linux-kernel-organization',
       startDate,
       endDate
