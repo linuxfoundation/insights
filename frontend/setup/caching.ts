@@ -19,6 +19,8 @@ export default {
         "/api/ossindex": {cache: {maxAge: longCache, base: 'redis'}},
         "/api/**": {cache: {maxAge: shortCache, base: 'redis'}},
         "/project/**": {cache: {maxAge: shortCache, base: 'redis'}},
+        "/collection/**": {cache: {maxAge: shortCache, base: 'redis'}},
+        "/collection": {cache: {maxAge: shortCache, base: 'redis'}},
         "**": {cache: {maxAge: longCache, base: 'redis'}},
     } : {},
     nitro: {

@@ -33,6 +33,7 @@ const props = withDefaults(defineProps<{
   closeFunction?:() => boolean,
 }>(), {
   width: '37.5rem',
+  contentClass: '',
   closeFunction: () => true,
 });
 
