@@ -53,13 +53,8 @@ export type OrganizationsLeaderboardFilter = {
 
 export type ContributorDependencyFilter = {
   project: string;
-<<<<<<< HEAD
   repos?: string[];
-  granularity?: FilterGranularity;
-=======
-  repo?: string;
   granularity?: Granularity;
->>>>>>> main
   platform?: ActivityPlatforms;
   activity_type?: ActivityTypes;
   limit?: number;
@@ -125,26 +120,16 @@ export type ReviewTimeByPRSizeFilter = {
 
 export type AverageTimeToMergeFilter = {
   project: string;
-<<<<<<< HEAD
-  granularity?: FilterGranularity;
-  repos?: string[];
-=======
   granularity?: Granularity;
-  repo?: string;
->>>>>>> main
+  repos?: string[];
   startDate?: DateTime;
   endDate?: DateTime;
 };
 
 export type WaitTimeFor1stReviewFilter = {
   project: string;
-<<<<<<< HEAD
-  granularity?: FilterGranularity;
-  repos?: string[];
-=======
   granularity?: Granularity;
-  repo?: string;
->>>>>>> main
+  repos?: string[];
   startDate?: DateTime;
   endDate?: DateTime;
 };
@@ -158,13 +143,8 @@ export type MergeLeadTimeFilter = {
 
 export type ActiveDaysFilter = {
   project: string;
-<<<<<<< HEAD
-  granularity?: FilterGranularity;
-  repos?: string[];
-=======
   granularity?: Granularity;
-  repo?: string;
->>>>>>> main
+  repos?: string[];
   startDate?: DateTime;
   endDate?: DateTime;
 };
@@ -186,13 +166,8 @@ export type PackageFilter = {
 
 export type PackageMetricsFilter = {
   project: string;
-<<<<<<< HEAD
-  granularity?: FilterGranularity;
-  repos?: string[];
-=======
   granularity?: Granularity;
-  repo?: string;
->>>>>>> main
+  repos?: string[];
   ecosystem?: string;
   name?: string;
   startDate?: DateTime;
