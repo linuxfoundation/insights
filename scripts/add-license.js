@@ -8,8 +8,10 @@ const headerMap = {
   ".ts": path.join(__dirname, "..", "COPYRIGHT_HEADER.txt"),
   ".js": path.join(__dirname, "..", "COPYRIGHT_HEADER.txt"),
   ".scss": path.join(__dirname, "..", "COPYRIGHT_HEADER.txt"),
+  ".jsx": path.join(__dirname, "..", "COPYRIGHT_HEADER.txt"),
   ".css": path.join(__dirname, "..", "COPYRIGHT_HEADER.txt"),
   ".vue": path.join(__dirname, "..", "COPYRIGHT_HEADER_vue.txt"),
+  ".tsx": path.join(__dirname, "..", "COPYRIGHT_HEADER.txt"),
 };
 
 function addHeader(filePath) {
