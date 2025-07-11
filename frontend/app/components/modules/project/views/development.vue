@@ -31,6 +31,14 @@ SPDX-License-Identifier: MIT
               </lfx-benchmarks-wrap>
             </lfx-scroll-view>
             <lfx-scroll-view
+              id="issues-opened"
+              :observer="observer"
+            >
+              <lfx-benchmarks-wrap>
+                <lfx-project-issues-opened />
+              </lfx-benchmarks-wrap>
+            </lfx-scroll-view>
+            <lfx-scroll-view
               id="pull-requests"
               :observer="observer"
             >
@@ -114,6 +122,7 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { ref } from 'vue';
 import LfxProjectIssuesResolution from "~/components/modules/project/components/development/issues-resolution.vue";
+import LfxProjectIssuesOpened from "~/components/modules/project/components/development/issues-opened.vue";
 import LfxProjectPullRequests from "~/components/modules/project/components/development/pull-requests.vue";
 import LfxProjectActiveDays from "~/components/modules/project/components/development/active-days.vue";
 import LfxProjectContributionsOutsideWorkHours
@@ -135,12 +144,13 @@ import LfxBenchmarksWrap from '~/components/uikit/benchmarks/benchmarks-wrap.vue
 import type { Benchmark } from '~~/types/shared/benchmark.types';
 import { Granularity } from '~~/types/shared/granularity';
 
-const activeItem = ref('stars');
+const activeItem = ref('issues-resolution');
 const tmpClickedItem = ref('');
 const { scrollToTarget, scrollToTop } = useScroll();
 
 const sideNavItems = [
   { label: 'Issues Resolution', key: 'issues-resolution' },
+  { label: 'Issues Opened', key: 'issues-opened' },
   { label: 'Pull Requests', key: 'pull-requests' },
   { label: 'Active Days', key: 'active-days' },
   { label: 'Contributions Outside Work Hours', key: 'contributions-outside-work-hours' },
