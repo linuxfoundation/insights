@@ -10,6 +10,7 @@ import type {Granularity} from "~~/types/shared/granularity";
  * They don't necessarily match the types that the frontend uses because they are only meant to be used with TinyBird.
  */
 
+
 export type ContributorsLeaderboardTinybirdQuery = {
   project: string;
   platform?: ActivityPlatforms;
@@ -77,4 +78,9 @@ export type ActivitiesCountTinybirdQuery = {
   includeCollaborations?: boolean;
   startDate?: DateTime;
   endDate?: DateTime;
+}
+
+export type ActivityTypesTinybirdQuery = {
+  project: string;
+  repo?: string;
 }
