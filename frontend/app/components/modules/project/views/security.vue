@@ -140,8 +140,7 @@ const isRepository = computed(() => !!name)
 const queryKey = computed(() => [
   TanstackKey.SECURITY_ASSESSMENT,
   route.params.slug,
-  selectedReposValues,
-  'blah'
+  selectedReposValues
 ]);
 
 const fetchData: QueryFunction<SecurityData[]> = async () => $fetch(
