@@ -1,13 +1,11 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 
-import { isArray } from "lodash";
-
- 
+import _ from "lodash";
 
 export const isEmptyData = (value: Record<string, unknown>[] | null | undefined) => {
   // check if the value is null or undefined or the length of the value is 0
-  if (value === null || value === undefined || value.length === 0 || !isArray(value)) {
+  if (value === null || value === undefined || value.length === 0 || !_.isArray(value)) {
     return true;
   }
   
