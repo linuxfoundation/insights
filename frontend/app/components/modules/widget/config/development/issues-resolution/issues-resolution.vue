@@ -7,7 +7,10 @@ SPDX-License-Identifier: MIT
     <div :class="props.snapshot ? 'mb-0' : 'mb-6'">
       <div class="flex flex-row flex-wrap justify-between items-start gap-y-3">
         <div>
-          <div class="text-neutral-400 text-xs mb-1">
+          <div
+            v-if="!isEmpty"
+            class="text-neutral-400 text-xs mb-1"
+          >
             Total closed issues
           </div>
           <lfx-skeleton-state
@@ -15,7 +18,10 @@ SPDX-License-Identifier: MIT
             height="2rem"
             width="7.5rem"
           >
-            <div class="flex flex-row flex-wrap gap-4 items-center">
+            <div
+              v-if="summary && !isEmpty"
+              class="flex flex-row flex-wrap gap-4 items-center"
+            >
               <div class="text-data-display-1 whitespace-nowrap">{{ formatNumber(summary.current) }}</div>
               <lfx-delta-display
                 v-if="selectedTimeRangeKey !== dateOptKeys.alltime"

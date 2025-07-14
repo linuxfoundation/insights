@@ -35,7 +35,10 @@ SPDX-License-Identifier: MIT
         height="2rem"
         width="7.5rem"
       >
-        <div class="flex flex-wrap gap-y-3 flex-row gap-4 items-center">
+        <div
+          v-if="summary && !isEmpty"
+          class="flex flex-wrap gap-y-3 flex-row gap-4 items-center"
+        >
           <div class="text-heading-1 sm:text-data-display-1">{{ formatNumber(summary.current) }} contributors</div>
           <lfx-delta-display
             v-if="selectedTimeRangeKey !== dateOptKeys.alltime"

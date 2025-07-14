@@ -11,7 +11,10 @@ SPDX-License-Identifier: MIT
           height="2rem"
           width="7.5rem"
         >
-          <div class="flex flex-row gap-4 items-center grow">
+          <div
+            v-if="summary && !isEmpty"
+            class="flex flex-row gap-4 items-center grow"
+          >
             <div class="text-data-display-1">{{ formatNumber(summary.current) }}%</div>
             <lfx-delta-display
               v-if="selectedTimeRangeKey !== dateOptKeys.alltime"
@@ -24,7 +27,10 @@ SPDX-License-Identifier: MIT
         </lfx-skeleton-state>
       </div>
 
-      <div class="flex flex-row justify-between items-center gap-10">
+      <div
+        v-if="!isEmpty"
+        class="flex flex-row justify-between items-center gap-10"
+      >
         <div class="flex flex-col items-end justify-center">
           <span class="text-neutral-400 text-xs flex flex-row gap-2 items-center">
             Mon-Fri (after 18:00)

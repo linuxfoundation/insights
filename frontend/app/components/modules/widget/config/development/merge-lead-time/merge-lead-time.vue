@@ -4,7 +4,10 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <section class="mt-5">
-    <div class="text-neutral-400 text-xs mb-1">
+    <div
+      v-if="!isEmpty"
+      class="text-neutral-400 text-xs mb-1"
+    >
       Average time to merge
     </div>
     <lfx-skeleton-state
@@ -12,7 +15,10 @@ SPDX-License-Identifier: MIT
       height="2rem"
       width="7.5rem"
     >
-      <div class="flex flex-row gap-4 items-center">
+      <div
+        v-if="summary && !isEmpty"
+        class="flex flex-row gap-4 items-center"
+      >
         <div class="text-data-display-1">{{ current }}</div>
         <lfx-delta-display
           v-if="selectedTimeRangeKey !== dateOptKeys.alltime"

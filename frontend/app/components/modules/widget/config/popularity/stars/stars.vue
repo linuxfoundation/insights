@@ -11,7 +11,7 @@ SPDX-License-Identifier: MIT
         width="7.5rem"
       >
         <div
-          v-if="summary"
+          v-if="summary && !isEmpty"
           class="flex flex-row gap-4 items-center"
         >
           <div class="text-data-display-1">{{ formatNumber(summary.current) }}</div>
