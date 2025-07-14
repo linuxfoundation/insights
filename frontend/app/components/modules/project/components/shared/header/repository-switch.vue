@@ -8,7 +8,7 @@ SPDX-License-Identifier: MIT
     content-class="flex w-full justify-stretch items-stretch relative"
     show-close-button
   >
-    <div class="p-1 flex flex-col gap-1 w-full">
+    <div class="p-1 flex flex-col gap-1 w-full min-w-[30rem]">
       <lfx-project-repository-switch-item
         text="All repositories"
         icon="books"
