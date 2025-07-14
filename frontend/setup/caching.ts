@@ -13,7 +13,7 @@ export default {
         "/api/search": {cache: {maxAge: longCache, base: 'redis'}},
         "/api/category": {cache: {maxAge: longCache, base: 'redis'}},
         "/api/collection": {cache: {maxAge: longCache, base: 'redis'}},
-        "/api/collection/**": {cache: {maxAge: longCache, base: 'redis'}},
+        "/api/collection/**": {cache: {maxAge: shortCache, base: 'redis'}},
         "/api/explore/**": {cache: {maxAge: longCache, base: 'redis'}},
         "/api/project": {cache: {maxAge: longCache, base: 'redis'}},
         "/api/ossindex": {cache: {maxAge: longCache, base: 'redis'}},
