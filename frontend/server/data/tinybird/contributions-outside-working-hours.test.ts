@@ -42,7 +42,7 @@ describe('Code Review Engagement Data Source', () => {
 
     const filter: ContributionsOutsideWorkHoursFilter = {
       project: 'the-linux-kernel-organization',
-      repo: 'some-repo',
+      repos: ['some-repo'],
       startDate,
       endDate
     };
@@ -51,14 +51,14 @@ describe('Code Review Engagement Data Source', () => {
 
     const expectedCurrentDataQuery: ActivityHeatmapByWeekdayTBQuery = {
       project: filter.project,
-      repo: filter.repo,
+      repos: filter.repos,
       startDate: filter.startDate,
       endDate: filter.endDate,
     };
 
     const expectedPreviousDataQuery: ActivityHeatmapByWeekdayTBQuery = {
       project: filter.project,
-      repo: filter.repo,
+      repos: filter.repos,
       startDate: DateTime.utc(2023, 3, 19),
       endDate: DateTime.utc(2024, 3, 19),
     };

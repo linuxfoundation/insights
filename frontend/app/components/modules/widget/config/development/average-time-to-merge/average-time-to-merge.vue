@@ -10,7 +10,10 @@ SPDX-License-Identifier: MIT
         height="2rem"
         width="7.5rem"
       >
-        <div class="flex flex-row gap-4 items-center">
+        <div
+          v-if="summary && !isEmpty"
+          class="flex flex-row gap-4 items-center"
+        >
           <div class="text-data-display-1">{{ currentSummary }}</div>
           <lfx-delta-display
             v-if="selectedTimeRangeKey !== dateOptKeys.alltime"
@@ -78,7 +81,7 @@ const props = defineProps<{
 const emit = defineEmits<{(e: 'dataLoaded', value: string): void}>();
 
 const {
-  startDate, endDate, selectedRepository, selectedTimeRangeKey, customRangeGranularity
+  startDate, endDate, selectedReposValues, selectedTimeRangeKey, customRangeGranularity
 } = storeToRefs(useProjectStore())
 
 const route = useRoute();
@@ -90,7 +93,7 @@ const queryKey = computed(() => [
   TanstackKey.AVERAGE_TIME_TO_MERGE,
   route.params.slug,
   granularity,
-  selectedRepository,
+  selectedReposValues,
   startDate,
   endDate,
 ]);
@@ -100,7 +103,7 @@ const fetchData: QueryFunction<AverageTimeMerge> = async () => $fetch(
     {
   params: {
     granularity: granularity.value,
-    repository: selectedRepository.value,
+    repos: selectedReposValues.value,
     startDate: startDate.value,
     endDate: endDate.value,
   }

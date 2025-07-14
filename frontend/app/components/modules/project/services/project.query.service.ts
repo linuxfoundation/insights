@@ -72,8 +72,8 @@ const processDateParams = (query: LocationQuery): URLParams => {
   };
 };
 
-export const processTimeAndDateParams = (query: LocationQuery): URLParams => {
-  const { timeRange: paramTimeRange, widget } = query;
+export const processProjectParams = (query: LocationQuery): URLParams => {
+  const { timeRange: paramTimeRange, widget, repos } = query;
 
   // Check if timeRange is a valid dateOptKeys enum value
   if (!Object.values(dateOptKeys).includes(paramTimeRange as dateOptKeys)) {
@@ -82,10 +82,10 @@ export const processTimeAndDateParams = (query: LocationQuery): URLParams => {
     };
   }
 
-  return { ...processDateParams(query), widget: widget as string };
+  return { ...processDateParams(query), widget: widget as string, repos: repos as string };
 };
 
-export const timeAndDateParamsSetter = (query: URLParams) => {
+export const projectParamsSetter = (query: URLParams) => {
   const tmpQuery = { ...query };
 
   tmpQuery.start = tmpQuery.start || undefined;

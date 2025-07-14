@@ -11,7 +11,7 @@ SPDX-License-Identifier: MIT
         width="7.5rem"
       >
         <div
-          v-if="summary"
+          v-if="summary && !isEmpty"
           class="flex flex-row gap-4 items-center"
         >
           <div class="text-data-display-1">{{ formatNumber(summary.current) }}</div>
@@ -102,7 +102,7 @@ const model = computed<GithubMentionsModel>({
 const {
   startDate,
   endDate,
-  selectedRepository,
+  selectedReposValues,
   selectedTimeRangeKey,
   customRangeGranularity
 } = storeToRefs(useProjectStore())
@@ -124,7 +124,7 @@ const queryKey = computed(() => [
   route.params.slug,
   granularity.value,
   model.value.activeTab,
-  selectedRepository.value,
+  selectedReposValues.value,
   startDate.value,
   endDate.value,
 ]);
@@ -135,7 +135,7 @@ const fetchData: QueryFunction<GithubMentions> = async () => $fetch(
   params: {
     granularity: granularity.value,
     type: model.value.activeTab,
-    repository: selectedRepository.value,
+    repos: selectedReposValues.value,
     startDate: startDate.value,
     endDate: endDate.value,
   }

@@ -10,7 +10,7 @@ import type { Package, PackageDownloads } from '~~/types/popularity/responses.ty
 export interface PopularityQueryParams {
   projectSlug: string;
   granularity: string;
-  repository?: string;
+  repos?: string[];
   startDate: string | null;
   endDate: string | null;
   ecosystem?: string;
@@ -19,7 +19,7 @@ export interface PopularityQueryParams {
 
 export interface PackagesQueryParams {
   projectSlug: string;
-  repository?: string;
+  repos?: string[];
   search?: string;
 }
 class PopularityApiService {
@@ -28,7 +28,7 @@ class PopularityApiService {
       TanstackKey.PACKAGE_DOWNLOADS,
       params.value.projectSlug,
       params.value.granularity,
-      params.value.repository,
+      params.value.repos,
       params.value.startDate,
       params.value.endDate,
       params.value.ecosystem,
@@ -36,7 +36,7 @@ class PopularityApiService {
     ]);
     const queryFn = computed<QueryFunction<PackageDownloads>>(() => this.packageDownloadsQueryFn(() => ({
         projectSlug: params.value.projectSlug,
-        repository: params.value.repository,
+        repos: params.value.repos,
         granularity: params.value.granularity,
         startDate: params.value.startDate,
         endDate: params.value.endDate,
@@ -54,11 +54,11 @@ class PopularityApiService {
     query: () => Record<string, string | number | boolean | undefined | string[] | null>
   ): QueryFunction<PackageDownloads> {
     const {
- projectSlug, repository, granularity, startDate, endDate, ecosystem, name
+ projectSlug, repos, granularity, startDate, endDate, ecosystem, name
 } = query();
     return async () => await $fetch(`/api/project/${projectSlug}/popularity/package-downloads`, {
         params: {
-          repo: repository,
+          repos,
           granularity,
           startDate,
           endDate,
@@ -72,12 +72,12 @@ class PopularityApiService {
     const queryKey = computed(() => [
       TanstackKey.PACKAGES,
       params.value.projectSlug,
-      params.value.repository,
+      params.value.repos,
       params.value.search,
     ]);
     const queryFn = computed<QueryFunction<Package[]>>(() => this.packagesQueryFn(() => ({
         projectSlug: params.value.projectSlug,
-        repository: params.value.repository,
+        repos: params.value.repos,
         search: params.value.search,
       })));
 
@@ -90,10 +90,10 @@ class PopularityApiService {
   packagesQueryFn(
     query: () => Record<string, string | number | boolean | undefined | string[] | null>
   ): QueryFunction<Package[]> {
-    const { projectSlug, repository, search } = query();
+    const { projectSlug, repos, search } = query();
     return async () => await $fetch(`/api/project/${projectSlug}/popularity/packages`, {
         params: {
-          repo: repository,
+          repos,
           search,
         },
       });

@@ -18,7 +18,7 @@ SPDX-License-Identifier: MIT
         width="7.5rem"
       >
         <div
-          v-if="summary"
+          v-if="summary && !isEmpty"
           class="flex flex-wrap flex-row gap-4 items-center"
         >
           <div class="text-heading-1 sm:text-data-display-1">{{ formatNumber(summary.current) }}</div>
@@ -134,7 +134,7 @@ const selectedEcosystem = computed<string | undefined>(() => {
 const {
   startDate,
   endDate,
-  selectedRepository,
+  selectedReposValues,
   selectedTimeRangeKey,
   customRangeGranularity
 } = storeToRefs(useProjectStore())
@@ -147,7 +147,7 @@ const granularity = computed(() => (selectedTimeRangeKey.value === dateOptKeys.c
 
 const downloadsParams = computed(() => ({
   projectSlug: route.params.slug as string,
-  repository: selectedRepository.value,
+  repos: selectedReposValues.value,
   granularity: granularity.value,
   startDate: startDate.value,
   endDate: endDate.value,
@@ -157,7 +157,7 @@ const downloadsParams = computed(() => ({
 
 const packagesParams = computed(() => ({
   projectSlug: route.params.slug as string,
-  repository: selectedRepository.value,
+  repos: selectedReposValues.value,
   search: '',
 }));
 

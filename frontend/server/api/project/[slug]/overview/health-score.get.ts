@@ -25,7 +25,7 @@ export default defineEventHandler(async (event) => {
   const query = getQuery(event);
 
   const project = (event.context.params as { slug: string }).slug;
-
+  const repos = Array.isArray(query.repos) ? query.repos : query.repos ? [query.repos] : undefined;
   /*
    * Health score will have a default time period of 365 days for most of the data
    * except for the following:
@@ -33,14 +33,10 @@ export default defineEventHandler(async (event) => {
    */
   const filter: DefaultFilter = {
     project,
-    repo: undefined,
+    repos,
     startDate: DateTime.now().minus({ days: 365 }).startOf('day'),
     endDate: DateTime.now().endOf('day')
   };
-
-  if (query.repository && (query.repository as string).trim() !== '') {
-    filter.repo = query.repository as string;
-  }
 
   const filterPreviousQuarter: DefaultFilter = {
     ...filter,

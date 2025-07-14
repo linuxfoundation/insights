@@ -7,7 +7,10 @@ SPDX-License-Identifier: MIT
     <div class="mb-5">
       <div class="flex flex-row justify-between items-start">
         <div>
-          <div class="text-neutral-400 text-xs mb-1">
+          <div
+            v-if="!isEmpty"
+            class="text-neutral-400 text-xs mb-1"
+          >
             Total active days
           </div>
           <lfx-skeleton-state
@@ -15,7 +18,10 @@ SPDX-License-Identifier: MIT
             height="2rem"
             width="7.5rem"
           >
-            <div class="flex flex-row gap-4 items-center">
+            <div
+              v-if="summary && !isEmpty"
+              class="flex flex-row gap-4 items-center"
+            >
               <div class="text-data-display-1">{{ formatNumber(summary.current) }}</div>
               <lfx-delta-display
                 v-if="selectedTimeRangeKey !== dateOptKeys.alltime"
@@ -45,7 +51,10 @@ SPDX-License-Identifier: MIT
       </div>
     </div>
 
-    <div class="mb-5 text-neutral-900 font-medium">Contributions per {{ granularityDisplay }}</div>
+    <div
+      v-if="!isEmpty"
+      class="mb-5 text-neutral-900 font-medium"
+    >Contributions per {{ granularityDisplay }}</div>
     <lfx-project-load-state
       :status="status"
       :error="error"
@@ -105,7 +114,7 @@ const emit = defineEmits<{(e: 'update:benchmarkValue', value: Benchmark | undefi
 }>();
 
 const {
-  startDate, endDate, selectedRepository, selectedTimeRangeKey, customRangeGranularity
+  startDate, endDate, selectedReposValues, selectedTimeRangeKey, customRangeGranularity
 } = storeToRefs(useProjectStore())
 
 const route = useRoute();
@@ -129,7 +138,7 @@ const queryKey = computed(() => [
   TanstackKey.ACTIVE_DAYS,
   route.params.slug,
   granularity.value,
-  selectedRepository.value,
+  selectedReposValues.value,
   startDate.value,
   endDate.value,
 ]);
@@ -139,7 +148,7 @@ const fetchData: QueryFunction<ActiveDays> = async () => $fetch(
     {
       params: {
         granularity: granularity.value,
-        repository: selectedRepository.value,
+        repos: selectedReposValues.value,
         startDate: startDate.value,
         endDate: endDate.value,
       },

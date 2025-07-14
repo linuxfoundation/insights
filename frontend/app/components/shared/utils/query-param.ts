@@ -14,6 +14,7 @@ export type URLParams = {
   // collection details
   collectionTab?: string;
   collectionSort?: string;
+  repos?: string;
 };
 
 export const useQueryParam = (

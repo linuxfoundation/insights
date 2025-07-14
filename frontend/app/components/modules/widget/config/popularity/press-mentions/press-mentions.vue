@@ -11,7 +11,7 @@ SPDX-License-Identifier: MIT
         width="7.5rem"
       >
         <div
-          v-if="summary"
+          v-if="summary && !isEmpty"
           class="flex flex-row gap-4 items-center"
         >
           <div class="text-data-display-1">{{ formatNumber(summary.current) }}</div>
@@ -93,7 +93,7 @@ const emit = defineEmits<{(e: 'dataLoaded', value: string): void}>();
 const {
   startDate,
   endDate,
-  selectedRepository,
+  selectedReposValues,
   selectedTimeRangeKey,
   customRangeGranularity
 } = storeToRefs(useProjectStore())
@@ -108,7 +108,7 @@ const queryKey = computed(() => [
   TanstackKey.PRESS_MENTIONS,
   route.params.slug,
   granularity,
-  selectedRepository,
+  selectedReposValues,
   startDate,
   endDate,
 ]);
@@ -118,7 +118,7 @@ const fetchData: QueryFunction<PressMentions> = async () => $fetch(
     {
   params: {
     granularity: granularity.value,
-    repository: selectedRepository.value,
+    repos: selectedReposValues.value,
     startDate: startDate.value,
     endDate: endDate.value,
   }

@@ -48,7 +48,7 @@ export async function fetchPackageMetrics(filter: PackageMetricsFilter) {
 
   const currentSummaryQuery = {
     project: filter.project,
-    repo: filter.repo,
+    repos: filter.repos,
     ecosystem: filter.ecosystem,
     name: filter.name,
     startDate: dates.current.from,
@@ -57,7 +57,7 @@ export async function fetchPackageMetrics(filter: PackageMetricsFilter) {
 
   const previousSummaryQuery = {
     project: filter.project,
-    repo: filter.repo,
+    repos: filter.repos,
     ecosystem: filter.ecosystem,
     name: filter.name,
     startDate: dates.previous.from,
@@ -69,7 +69,7 @@ export async function fetchPackageMetrics(filter: PackageMetricsFilter) {
     granularity: filter.granularity,
     ecosystem: filter.ecosystem,
     name: filter.name,
-    repo: filter.repo,
+    repos: filter.repos,
     startDate: dates.current.from,
     endDate: dates.current.to,
   };

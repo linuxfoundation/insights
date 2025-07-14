@@ -5,19 +5,16 @@ SPDX-License-Identifier: MIT
 <template>
   <lfx-modal
     v-model="isModalOpen"
-    content-class="flex w-full justify-stretch items-stretch"
+    content-class="flex w-full justify-stretch items-stretch relative"
+    show-close-button
   >
-    <div class="p-1 flex flex-col gap-1 w-full">
-
-      <nuxt-link
-        :to="{ name: routeName.project }"
-      >
-        <lfx-project-repository-switch-item
-          text="All repositories"
-          icon="books"
-          :selected="!props.repo"
-        />
-      </nuxt-link>
+    <div class="p-1 flex flex-col gap-1 w-full min-w-[30rem]">
+      <lfx-project-repository-switch-item
+        text="All repositories"
+        icon="books"
+        :selected="props.selectedRepoSlugs.length === 0"
+        @click="handleSelected('all', true)"
+      />
       <!-- Search input -->
       <hr>
       <label class="flex items-center justify-between px-3 py-2 gap-2">
@@ -46,17 +43,15 @@ SPDX-License-Identifier: MIT
       <hr>
       <!-- Result -->
       <div class="flex flex-col gap-1 max-h-[29.5rem] overflow-y-auto">
-        <nuxt-link
+        <lfx-project-repository-switch-item
           v-for="repository of result"
           :key="repository.url"
-          :to="{ name: routeName.repo, params: {name: repository.slug}}"
-        >
-          <lfx-project-repository-switch-item
-            :text="repository.name"
-            icon="books"
-            :selected="props.repo === repository.slug"
-          />
-        </nuxt-link>
+          :text="repository.name"
+          icon="book"
+          :selected="selectedRepos.includes(repository.slug)"
+          is-multi-select
+          @update:selected="handleSelected(repository.slug, $event)"
+        />
         <section
           v-if="result.length === 0"
           class="px-3 py-12 flex flex-col items-center"
@@ -77,9 +72,10 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import {
-computed, onMounted, ref, watch
+computed, onMounted, ref
 } from "vue";
 import {storeToRefs} from "pinia";
+import { useRouter, useRoute } from "vue-router";
 import type {ProjectRepository} from "~~/types/project";
 import LfxModal from "~/components/uikit/modal/modal.vue";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
@@ -90,11 +86,14 @@ import {useProjectStore} from "~/components/modules/project/store/project.store"
 
 const props = defineProps<{
   modelValue: boolean;
-  repo: string;
+  selectedRepoSlugs: string[];
 }>();
-const emit = defineEmits<{(e: 'update:modelValue', value: boolean): void }>();
+const emit = defineEmits<{
+  (e: 'update:modelValue', value: boolean): void, 
+  (e: 'update:selectedRepoSlugs', value: string[]): void}>();
 
 const route = useRoute();
+const router = useRouter();
 
 const isModalOpen = computed({
   get: () => props.modelValue,
@@ -103,6 +102,13 @@ const isModalOpen = computed({
 
 const searchInputRef = ref(null);
 const search = ref('');
+const selectedRepos = computed<string[]>({
+  get: () => props.selectedRepoSlugs,
+  set: (value: string[]) => {
+    handleReposChange(value);
+    emit('update:selectedRepoSlugs', value);
+  }
+});
 
 const {projectRepos} = storeToRefs(useProjectStore());
 
@@ -137,13 +143,41 @@ const routeName = computed<{ project: LfxRoutes, repo: LfxRoutes }>(() => {
   };
 });
 
-watch(() => route.path, () => {
-  isModalOpen.value = false;
-});
+const handleReposChange = (value: string[]) => {
+  const routeQuery = route.query;
+  if (value.length === 1) {
+    router.push({
+      name: routeName.value.repo,
+      params: { name: value[0] },
+      query: { ...routeQuery, repos: undefined }
+    });
+  } else {
+    router.push({
+      name: routeName.value.project,
+      query: value.length > 0
+        ? { ...routeQuery, repos: value.join('|') }
+        : { ...routeQuery, repos: undefined }
+    });
+  }
+};
 
 onMounted(() => {
   searchInputRef.value?.focus();
 });
+
+const handleSelected = (slug: string, selected: boolean) => {
+  if (slug === 'all' && selected) {
+    selectedRepos.value = [];
+    isModalOpen.value = false;
+    return;
+  }
+
+  if (selected) {
+    selectedRepos.value = [...selectedRepos.value, slug];
+  } else {
+    selectedRepos.value = selectedRepos.value.filter((repo) => repo !== slug);
+  }
+};
 </script>
 
 <script lang="ts">

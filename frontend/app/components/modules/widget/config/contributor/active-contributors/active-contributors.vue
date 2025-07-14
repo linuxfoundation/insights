@@ -10,7 +10,10 @@ SPDX-License-Identifier: MIT
         height="2rem"
         width="7.5rem"
       >
-        <div class="flex flex-row gap-4 items-center">
+        <div
+          v-if="summary && !isEmpty"
+          class="flex flex-row gap-4 items-center"
+        >
           <div class="text-data-display-1">{{ formatNumber(summary.current) }}</div>
           <lfx-delta-display
             v-if="selectedTimeRangeKey !== dateOptKeys.alltime"
@@ -100,16 +103,16 @@ const model = computed<ActiveContributorsModel>({
 })
 
 const {
-  startDate, endDate, selectedRepository, selectedTimeRangeKey, customRangeGranularity
+  startDate, endDate, selectedTimeRangeKey, customRangeGranularity, selectedReposValues
 } = storeToRefs(useProjectStore());
 
 const route = useRoute();
 // just a stub var to watch if the only change was the granularity
 const paramWatch = computed(() => ({
   granularity: model.value.activeTab,
-  repository: selectedRepository.value,
   startDate: startDate.value,
   endDate: endDate.value,
+  repos: selectedReposValues
 }));
 const summaryLoading = ref(true);
 
@@ -117,9 +120,9 @@ const queryKey = computed(() => [
   TanstackKey.ACTIVE_CONTRIBUTORS,
   route.params.slug,
   model.value.activeTab,
-  selectedRepository,
   startDate,
   endDate,
+  selectedReposValues
 ]);
 
 const fetchData: QueryFunction<ActiveContributors> = async () => $fetch(
@@ -127,9 +130,9 @@ const fetchData: QueryFunction<ActiveContributors> = async () => $fetch(
     {
   params: {
     granularity: model.value.activeTab,
-    repository: selectedRepository.value,
     startDate: startDate.value,
     endDate: endDate.value,
+    repos: selectedReposValues.value
   }
 }
 );
@@ -198,7 +201,7 @@ watch(paramWatch, (newParams, oldParams) => {
   // check if the only change was the granularity, if not, we need to reset the summary loading
   if (newParams.startDate !== oldParams.startDate
     || newParams.endDate !== oldParams.endDate
-    || newParams.repository !== oldParams.repository) {
+    || newParams.repos !== oldParams.repos) {
     onlyGranularityChanged = false;
   }
 

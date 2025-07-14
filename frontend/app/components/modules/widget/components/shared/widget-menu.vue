@@ -110,7 +110,7 @@ const isEmbedModalOpen = ref(false)
 const {openReportModal} = useReportStore()
 const {openShareModal} = useShareStore()
 
-const {project, repository} = storeToRefs(useProjectStore());
+const {project, selectedRepositories} = storeToRefs(useProjectStore());
 
 const widgetArea = computed(
     () => Object.keys(lfxWidgetArea).find(
@@ -128,7 +128,8 @@ const report = () => {
 const share = () => {
   const url = new URL(window.location.href);
   url.searchParams.set('widget', props.name);
-  const repoTitle = repository.value?.name ? ` - ${repository.value?.name.split('/').at(-1)}` : '';
+  const repoTitle = selectedRepositories.value.length > 0 ? 
+    ` - ${selectedRepositories.value.map((repo) => repo.name).join(', ')}` : '';
   const title = `${project.value?.name}${repoTitle} - ${config.value.name} | LFX Insights`
   openShareModal({
     url: url.toString(),

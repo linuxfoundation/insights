@@ -48,15 +48,15 @@ const scoreConfig = computed<TrustScoreConfig>(() => lfxTrustScore.find(
 const badgeUrl = computed(() => getScoreBadgeUrl(scoreConfig.value));
 
 const {openShareModal} = useShareStore();
-const { repository, project } = storeToRefs(useProjectStore())
+const { selectedRepositories, project } = storeToRefs(useProjectStore())
 
 const share = () => {
   const title = [];
   if (project.value?.name) {
     title.push(project.value.name);
-    if(repository.value?.name){
-      title.push(repository.value.name);
-    }
+    selectedRepositories.value.forEach((repository) => {
+      title.push(repository.name);
+    });
 
     title.push('insights | LFX Insights');
   }

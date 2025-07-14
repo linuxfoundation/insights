@@ -10,7 +10,7 @@ SPDX-License-Identifier: MIT
     <div class="flex justify-between pb-8 gap-3">
       <div class="max-w-50">
         <h3 class="text-sm leading-5 font-semibold mb-1">
-          {{ repository ? 'Repository' : 'Project' }} criticality
+          {{ repoWithHighestScore ? 'Repository' : 'Project' }} criticality
         </h3>
         <p class="text-xs leading-4 text-neutral-400">
           Based on OpenSSF Criticality Score project.
@@ -25,7 +25,7 @@ SPDX-License-Identifier: MIT
         <lfx-tooltip>
           <template #content>
             <span class="text-center">
-              {{ repository ? repository?.name : project?.name }} belongs
+              {{ repoWithHighestScore ? repoWithHighestScore.name : project?.name }} belongs
               to the {{ topRank }} most critical open source projects
             </span>
           </template>
@@ -72,11 +72,21 @@ import LfxCard from "~/components/uikit/card/card.vue";
 import LfxTooltip from "~/components/uikit/tooltip/tooltip.vue";
 import { links } from '~/config/links';
 
-const { project, repository } = storeToRefs(useProjectStore())
+const { project, selectedRepositories } = storeToRefs(useProjectStore())
 
-const score = computed(() => (repository.value ? repository.value?.score : project.value?.score) || 0)
+const repoWithHighestScore = computed(() => {
+  if (selectedRepositories.value && selectedRepositories.value.length > 0) {
+    return selectedRepositories.value.reduce(
+      (max, repo) => (repo.score > (max?.score ?? -Infinity) ? repo : max),
+      selectedRepositories.value[0]
+    );
+  }
+  return undefined;
+});
 
-const rank = computed(() => (repository.value ? repository.value?.rank : project.value?.rank) || 0)
+const score = computed(() => repoWithHighestScore.value ? repoWithHighestScore.value.score : project.value?.score || 0)
+
+const rank = computed(() => repoWithHighestScore.value ? repoWithHighestScore.value.rank : project.value?.rank || 0)
 
 const topRank = computed(() => {
   if (!rank.value) return 0;
