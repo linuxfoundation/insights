@@ -175,7 +175,7 @@ export type PackageMetricsFilter = {
 };
 
 export type SearchVolumeFilter = {
-  slug: string;
+  project: string;
   startDate?: DateTime;
   endDate?: DateTime;
 }

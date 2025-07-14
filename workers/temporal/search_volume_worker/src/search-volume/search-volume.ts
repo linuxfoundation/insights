@@ -174,7 +174,7 @@ async function saveResultsToDatabase(db: DbStore, data: KEResults): Promise<void
 
         records.push({
           insights_project_id: projectId,
-          slug: result.web_term,
+          project: result.web_term,
           data_timestamp: DateTime.fromISO(dataTimestamp, { zone: 'utc' }),
           volume: trend.value
         });

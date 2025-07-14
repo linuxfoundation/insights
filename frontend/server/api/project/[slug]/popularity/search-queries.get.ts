@@ -30,11 +30,12 @@ import type { SearchVolumeFilter } from '~~/server/data/types';
  * - time-period: string // This isn't defined yet, but we'll add '90d', '1y', '5y' for now
  */
 export default defineEventHandler(async (event) => {
-  const { slug } = getRouterParams(event);
   const query = getQuery(event);
 
+  const project = (event.context.params as { slug: string }).slug;
+
   const filter: SearchVolumeFilter = {
-    slug,
+    project,
     startDate: query.startDate ? DateTime.fromISO(query.startDate as string) : undefined,
     endDate: query.endDate ? DateTime.fromISO(query.endDate as string) : undefined,
   };
