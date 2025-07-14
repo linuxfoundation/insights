@@ -2,7 +2,14 @@
 set -ex
 set +o history
 
-echo "Migrating jdbc:postgresql://${PGHOST}:${PGPORT}/${PGDATABASE}"
+# Grab all command line arguments to pass them into Docker, or default to "migrate".
+if [ $# -eq 0 ]; then
+    FLYWAY_COMMAND=("migrate")
+else
+    FLYWAY_COMMAND=("$@")
+fi
+
+echo "Running Flyway command: ${FLYWAY_COMMAND[@]} on jdbc:postgresql://${PGHOST}:${PGPORT}/${PGDATABASE}"
 
 docker run --rm \
   -v "$(pwd)/migrations:/tmp/migrations" \
@@ -17,6 +24,6 @@ docker run --rm \
   -schemas=public \
   -baselineOnMigrate="true" \
   -X \
-  migrate
+  "${FLYWAY_COMMAND[@]}"
 
 set -o history
