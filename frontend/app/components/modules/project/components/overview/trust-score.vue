@@ -27,7 +27,7 @@ SPDX-License-Identifier: MIT
             </lfx-skeleton-state>
 
             <div
-              v-if="hideOverallScore || isEmpty"
+              v-if="(hideOverallScore || isEmpty) && status !== 'pending'"
               class="block"
             >
               <div class="text-xs text-neutral-500 mt-4">
@@ -62,7 +62,7 @@ SPDX-License-Identifier: MIT
     </div>
 
     <div
-      v-if="isEmpty"
+      v-if="isEmpty && status !== 'pending'"
       class="flex flex-col items-center justify-center h-[240px]"
     >
       <lfx-icon
