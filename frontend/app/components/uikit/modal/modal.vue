@@ -57,8 +57,7 @@ const props = withDefaults(defineProps<{
   closeFunction?:() => boolean,
 }>(), {
   width: '37.5rem',
-  closeFunction: () => true,
-  contentClass: '',
+  closeFunction: () => true
 });
 
 const emit = defineEmits<{(e: 'update:modelValue', value: boolean): void }>();
