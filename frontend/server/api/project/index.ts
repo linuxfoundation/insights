@@ -38,6 +38,7 @@ import type {ProjectList, ProjectTinybird} from "~~/types/project";
 export default defineEventHandler(async (event): Promise<Pagination<ProjectList> | Error> => {
     const query = getQuery(event);
     const sort: string = (query?.sort as string) || 'name_asc';
+    const search: string = (query?.search as string) || undefined;
     const [orderByField, orderByDirection] = sort.split('_');
 
     // Pagination parameters
@@ -61,6 +62,7 @@ export default defineEventHandler(async (event): Promise<Pagination<ProjectList>
             isLF,
             orderByField,
             orderByDirection,
+            search,
             onboarded: onboarded ? 'true' : undefined,
         });
 
