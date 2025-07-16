@@ -50,6 +50,7 @@ SPDX-License-Identifier: MIT
           <lfx-project-score-list
             v-else-if="tab.value !== 'security'"
             :data="scoreData"
+            :name="tab.value as WidgetArea"
           />
           <lfx-project-security-score
             v-else
@@ -79,6 +80,7 @@ import type { SecurityData } from '~~/types/security/responses.types';
 import type { ScoreDisplay } from '~~/types/overview/score-display.types';
 import LfxProjectLoadState from '~~/app/components/modules/project/components/shared/load-state.vue';
 import LfxSkeletonState from "~/components/modules/project/components/shared/skeleton-state.vue";
+import type { WidgetArea } from '~/components/modules/widget/types/widget-area';
 
 const props = defineProps<{
   trustScoreSummary: TrustScoreSummary | undefined;

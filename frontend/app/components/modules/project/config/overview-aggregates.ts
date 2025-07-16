@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 
 import { BenchmarkKeys, type AggregateKey } from '~~/types/shared/benchmark.types';
+import { WidgetArea } from '~/components/modules/widget/types/widget-area';
 
 export interface AggregateData {
   key: AggregateKey;
@@ -10,7 +11,7 @@ export interface AggregateData {
 
 export const aggregateData: AggregateData[] = [
   {
-    key: 'contributors',
+    key: WidgetArea.CONTRIBUTORS,
     benchmarkKeys: [
       BenchmarkKeys.Retention,
       BenchmarkKeys.ActiveContributors,
@@ -19,11 +20,15 @@ export const aggregateData: AggregateData[] = [
     ]
   },
   {
-    key: 'popularity',
-    benchmarkKeys: [BenchmarkKeys.Stars, BenchmarkKeys.Forks]
+    key: WidgetArea.POPULARITY,
+    benchmarkKeys: [
+      BenchmarkKeys.Stars, 
+      BenchmarkKeys.Forks, 
+      BenchmarkKeys.SearchQueries
+    ]
   },
   {
-    key: 'development',
+    key: WidgetArea.DEVELOPMENT,
     benchmarkKeys: [
       BenchmarkKeys.IssuesResolution,
       BenchmarkKeys.PullRequests,
@@ -33,7 +38,7 @@ export const aggregateData: AggregateData[] = [
     ]
   },
   {
-    key: 'security',
+    key: WidgetArea.SECURITY,
     benchmarkKeys: []
   }
 ];

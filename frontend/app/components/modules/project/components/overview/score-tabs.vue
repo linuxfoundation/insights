@@ -38,7 +38,7 @@ import {
 import type { AsyncDataRequestStatus } from 'nuxt/app';
 import LfxProjectScoreTabView from './score-details/score-tab-view.vue';
 import LfxProjectScoreAccordionView from './score-details/score-accordion-view.vue';
-import type { TrustScoreSummary, HealthScore } from '~~/types/overview/responses.types';
+import type { TrustScoreSummary, HealthScore, HealthScoreResults } from '~~/types/overview/responses.types';
 import type { Tab } from '~/components/uikit/tabs/types/tab.types';
 import { aggregateData } from '~~/app/components/modules/project/config/overview-aggregates';
 import type { ScoreData } from '~~/types/shared/benchmark.types';
@@ -79,24 +79,9 @@ const scoreData = computed<ScoreData[]>(() => {
       benchmarkKey: score.key,
       value: score.value
     }));
-
-  // Filter scores that match benchmark keys in the same order as defined in aggregateData
-  // return selectedAggregate.benchmarkKeys
-  //   .map((benchmarkKey) => {
-  //     const score = props.healthScores?.find((s) => s.key === benchmarkKey);
-  //     console.log('score', score);
-  //     if (!score) return null;
-  //     return {
-  //       benchmarkKey: score.key,
-  //       value: score.value
-  //     };
-  //   })
-  //   .filter((score): score is ScoreData => score !== null)
-  //   .sort((a, b) => b.value - a.value);
 });
 
 const parsedTrustScoreSummary = computed(() => overviewScore(props.trustScoreSummary, props.scoreDisplay));
-
 </script>
 <script lang="ts">
 export default {
