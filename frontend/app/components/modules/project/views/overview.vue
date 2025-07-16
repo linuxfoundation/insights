@@ -58,7 +58,7 @@ const params = computed(() => ({
   repos: selectedReposValues.value
 }));
 
-// Contributors score is only displayed if all contributors widgets are enabled
+// Contributors score is only displayed if some contributors widgets are enabled
 const displayContributorsScore = computed(() => {
   const widgets = project.value?.widgets;
 
@@ -67,7 +67,7 @@ const displayContributorsScore = computed(() => {
     .some((widget) => widgets?.includes(widget));
 });
 
-// Development score is only displayed if all development widgets are enabled
+// Development score is only displayed if some development widgets are enabled
 const displayDevelopmentScore = computed(() => {
   const widgets = project.value?.widgets;
 
@@ -76,7 +76,7 @@ const displayDevelopmentScore = computed(() => {
     .some((widget) => widgets?.includes(widget));
 });
 
-// Popularity score is only displayed if all popularity widgets are enabled
+// Popularity score is only displayed if some popularity widgets are enabled
 const displayPopularityScore = computed(() => {
   const widgets = project.value?.widgets;
 
