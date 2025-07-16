@@ -12,7 +12,7 @@ SPDX-License-Identifier: MIT
     <div class="flex flex-col gap-6">
       <div class="flex items-center justify-between">
         <lfx-skeleton-state
-          :status="errorHealthScore ? 'error' : statusHealthScore"
+          :status="error ? 'error' : status"
           height="1.25rem"
           width="12rem"
         >
@@ -27,7 +27,7 @@ SPDX-License-Identifier: MIT
           type="tertiary"
           size="small"
           button-style="pill"
-          :disabled="statusHealthScore === 'pending'"
+          :disabled="status === 'pending'"
           @click="copyBadge(markdown(healthBadgeUrl, 'LFX Health Score'))"
         >
           <lfx-icon
@@ -78,7 +78,6 @@ SPDX-License-Identifier: MIT
 import {computed} from "vue";
 import { useRoute } from 'nuxt/app';
 import { storeToRefs } from 'pinia';
-import type { AsyncDataRequestStatus } from 'nuxt/app';
 import { useProjectStore } from "~~/app/components/modules/project/store/project.store";
 import LfxButton from "~/components/uikit/button/button.vue";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
@@ -88,7 +87,6 @@ lfxTrustScore, type TrustScoreConfig, getScoreBadgeUrl, getBadgeUrl
 import {ToastTypesEnum} from "~/components/uikit/toast/types/toast.types";
 import useToastService from "~/components/uikit/toast/toast.service";
 import { OVERVIEW_API_SERVICE } from '~~/app/components/modules/project/services/overview.api.service';
-import {PROJECT_SECURITY_SERVICE} from "~/components/modules/project/services/security.service";
 import type { TrustScoreSummary } from '~~/types/overview/responses.types';
 import { lfxColors } from '~/config/styles/colors';
 import { formatNumberShort } from '~/components/shared/utils/formatter';
@@ -109,44 +107,17 @@ const params = computed(() => ({
 
 // Fetch the badge data
 const {
-  data: healthScoreData, status: healthScoreStatus, error: healthScoreError
-} = OVERVIEW_API_SERVICE.fetchHealthScore(params);
+  data, 
+  status, 
+  error
+} = OVERVIEW_API_SERVICE.fetchHealthScoreOverview(params);
 
-const {
-  data: securityAssessmentDataRaw,
-  status: securityAssessmentStatus,
-  error: securityAssessmentError
-} = OVERVIEW_API_SERVICE.fetchSecurityAssessment(params);
-
-// TODO: Remove this when we have data for them
-const securityAssessmentData = computed(() => PROJECT_SECURITY_SERVICE
-.removeDocumentationAndVulnerability(securityAssessmentDataRaw.value || []));
-
-const statusHealthScore = computed<AsyncDataRequestStatus>(() => {
-  if (healthScoreStatus.value === 'success' && securityAssessmentStatus.value === 'success') {
-    return 'success';
-  }
-  if (healthScoreStatus.value === 'error' || securityAssessmentStatus.value === 'error') {
-    return 'error';
-  }
-
-  return 'pending';
-});
-const errorHealthScore = computed(() => healthScoreError.value || securityAssessmentError.value);
-
-const healthScore = computed(() => (healthScoreData.value
-  ? OVERVIEW_API_SERVICE.convertRawValuesToHealthScore(healthScoreData.value) : []));
-
-const ospsScore = computed(() => PROJECT_SECURITY_SERVICE
-  .calculateOSPSScore((securityAssessmentData.value || []), !!selectedReposValues.value.length));
-
-const trustSummary = computed<TrustScoreSummary>(() => (healthScore.value
-  ? OVERVIEW_API_SERVICE.convertPointsToTrustSummary(healthScore.value, ospsScore.value) : {
-    overall: 0,
-    popularity: 0,
-    contributors: 0,
-    security: 0,
-    development: 0
+const trustSummary = computed<TrustScoreSummary>(() => ({
+    overall: data.value?.overallScore || 0,
+    popularity: data.value?.popularityPercentage || 0,
+    contributors: data.value?.contributorPercentage || 0,
+    security: data.value?.securityPercentage || 0,
+    development: data.value?.developmentPercentage || 0
   }));
 
 const scoreConfig = computed<TrustScoreConfig>(() => lfxTrustScore.find(
