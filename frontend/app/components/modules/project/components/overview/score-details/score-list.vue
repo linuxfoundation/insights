@@ -8,7 +8,7 @@ SPDX-License-Identifier: MIT
     class="flex flex-col gap-4"
   >
     <div
-      v-for="item in data"
+      v-for="item in visibleData"
       :key="item.benchmarkKey"
       class="[&:not(:last-child)]:border-b border-neutral-100 [&:not(:last-child)]:pb-4"
     >
@@ -21,13 +21,35 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
+import { storeToRefs } from 'pinia';
 import LfxScoreItem from './score-item.vue';
 import type { ScoreData } from '~~/types/shared/benchmark.types';
+import {lfxWidgetArea, type WidgetAreaConfig} from "~/components/modules/widget/config/widget-area.config";
+import { lfxWidgets } from '~/components/modules/widget/config/widget.config';
+import type { WidgetArea } from '~/components/modules/widget/types/widget-area';
+import type {Widget} from "~/components/modules/widget/types/widget";
+import { useProjectStore } from '~/components/modules/project/store/project.store';
 
-defineProps<{
+const props = defineProps<{
   data: ScoreData[] | undefined;
+  name: WidgetArea;
 }>();
+const { project, selectedRepoSlugs } = storeToRefs(useProjectStore())
 
+const config = computed<WidgetAreaConfig>(() => lfxWidgetArea[props.name]);
+
+const widgets = computed(() => (config.value.widgets || [])
+  .filter((widget) => {
+    const key = lfxWidgets[widget as Widget]?.key;
+    const widgetConfig = lfxWidgets[widget as Widget];
+    return (
+      project.value?.widgets.includes(key)
+      && (!widgetConfig?.hideOnRepoFilter || !selectedRepoSlugs.value.length)
+    );
+  }));
+
+const visibleData = computed(() => props.data?.filter((item) => widgets.value.includes(item.benchmarkKey as unknown as Widget)));
 </script>
 <script lang="ts">
 export default {

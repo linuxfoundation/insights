@@ -4,13 +4,6 @@ import type { TrustScoreSummary } from "~~/types/overview/responses.types";
 import type { ScoreDisplay } from "~~/types/overview/score-display.types";
 
 /**
- * Normalize the value to a range of 0-100
- * @param value - The value to normalize
- * @returns The normalized value
- */
-const normalizeChartValue = (value: number) => (value / 25) * 100;
-
-/**
  * Calculate the overall score based on the score display
  * @param summary - The summary of the trust score
  * @param scoreDisplay - The score display
@@ -30,17 +23,9 @@ export const overviewScore = (summary: TrustScoreSummary | undefined, scoreDispl
 
     return {
         overall: scoreDisplay.overall ? summary.overall : 0,
-        popularity: normalizeChartValue(
-            scoreDisplay.popularity ? summary.popularity : 0
-        ),
-        contributors: normalizeChartValue(
-            scoreDisplay.contributors ? summary.contributors: 0
-        ),
-        security: normalizeChartValue(
-            scoreDisplay.security ? summary.security : 0
-        ),
-        development: normalizeChartValue(
-            scoreDisplay.development ? summary.development : 0
-        ),
+        popularity: scoreDisplay.popularity ? summary.popularity : 0,
+        contributors: scoreDisplay.contributors ? summary.contributors: 0,
+        security: scoreDisplay.security ? summary.security : 0,
+        development: scoreDisplay.development ? summary.development : 0,
     }
 };

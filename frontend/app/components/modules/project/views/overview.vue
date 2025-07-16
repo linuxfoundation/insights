@@ -11,8 +11,8 @@ SPDX-License-Identifier: MIT
         <lfx-card class="py-6 flex flex-col md:gap-10 gap-5">
           <lfx-project-trust-score
             :trust-score-summary="trustSummary"
-            :status="status"
-            :error="error"
+            :status="healthScoreOverviewStatus"
+            :error="healthScoreOverviewError"
             :score-display="scoreDisplay"
           />
           <div class="px-6">
@@ -106,9 +106,17 @@ const {
 } = OVERVIEW_API_SERVICE.fetchHealthScore(params);
 
 const {
+  data: healthScoreOverviewData, 
+  status: healthScoreOverviewStatus, 
+  error: healthScoreOverviewError, 
+  suspense: healthScoreOverviewSuspense
+} = OVERVIEW_API_SERVICE.fetchHealthScoreOverview(params);
+
+const {
   data: securityAssessmentDataRaw,
   status: securityAssessmentStatus,
-  error: securityAssessmentError, suspense: securityAssessmentSuspense
+  error: securityAssessmentError, 
+  suspense: securityAssessmentSuspense
 } = OVERVIEW_API_SERVICE.fetchSecurityAssessment(params);
 
 // TODO: Remove this when we have data for them
@@ -127,24 +135,26 @@ const status = computed<AsyncDataRequestStatus>(() => {
 });
 const error = computed(() => healthScoreError.value || securityAssessmentError.value);
 
-const healthScore = computed(() => (data.value
-  ? OVERVIEW_API_SERVICE.convertRawValuesToHealthScore(data.value) : []));
+const healthScore = computed(() => (healthScoreOverviewData.value
+  ? OVERVIEW_API_SERVICE.convertRawResultsToHealthScore(healthScoreOverviewData.value) : []));
+// const healthScore = computed(() => (data.value
+//   ? OVERVIEW_API_SERVICE.convertRawValuesToHealthScore(data.value) : []));
 
 const ospsScore = computed(() => PROJECT_SECURITY_SERVICE
   .calculateOSPSScore((securityAssessmentData.value || []), !!selectedReposValues.value.length));
 
-const trustSummary = computed<TrustScoreSummary>(() => (healthScore.value
-  ? OVERVIEW_API_SERVICE.convertPointsToTrustSummary(healthScore.value, ospsScore.value) : {
-    overall: 0,
-    popularity: 0,
-    contributors: 0,
-    security: 0,
-    development: 0
+const trustSummary = computed<TrustScoreSummary>(() => ({
+    overall: healthScoreOverviewData.value?.overallScore || 0,
+    popularity: healthScoreOverviewData.value?.popularityPercentage || 0,
+    contributors: healthScoreOverviewData.value?.contributorPercentage || 0,
+    security: healthScoreOverviewData.value?.securityPercentage || 0,
+    development: healthScoreOverviewData.value?.developmentPercentage || 0
   }));
 
 onServerPrefetch(async () => {
   await suspense();
   await securityAssessmentSuspense();
+  await healthScoreOverviewSuspense();
 });
 </script>
 
