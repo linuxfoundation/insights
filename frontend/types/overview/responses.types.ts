@@ -11,6 +11,7 @@ export interface TrustScoreSummary {
   development: number;
 }
 
+// TODO: move this to overview-api.service.ts after the clean up
 export interface HealthScore {
   key: BenchmarkKeys;
   value: number; // this contains the actual value, not the calculated score
@@ -57,6 +58,11 @@ export interface HealthScoreTinybird extends HealthScoreBase{
   securityCategoryPercentage: [string, number][];
 }
 
+export interface SecurityScore {
+  category: string;
+  percentage: number;
+}
+
 export interface HealthScoreResults extends HealthScoreBase{
-  securityCategoryPercentage: { category: string, percentage: number }[];
+  securityCategoryPercentage: SecurityScore[];
 }

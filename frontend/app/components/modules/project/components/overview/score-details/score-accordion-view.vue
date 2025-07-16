@@ -38,7 +38,7 @@ SPDX-License-Identifier: MIT
               class="pb-6"
             >
               <lfx-project-security-score
-                :data="securityData"
+                :data="securityScore"
               />
             </div>
           </div>
@@ -55,10 +55,9 @@ import LfxProjectScoreList from './score-list.vue';
 import LfxProjectDetailsEmpty from './details-empty.vue';
 import LfxAccordion from "~/components/uikit/accordion/accordion.vue";
 import LfxAccordionItem from "~/components/uikit/accordion/accordion-item.vue";
-import type { TrustScoreSummary } from '~~/types/overview/responses.types';
+import type { TrustScoreSummary, SecurityScore } from '~~/types/overview/responses.types';
 import type { Tab } from '~/components/uikit/tabs/types/tab.types';
 import type { ScoreData } from '~~/types/shared/benchmark.types';
-import type { SecurityData } from '~~/types/security/responses.types';
 import LfxProjectSecurityScore from "~/components/modules/project/components/overview/security/security-score.vue";
 import LfxProjectLoadState from '~~/app/components/modules/project/components/shared/load-state.vue';
 import type { ScoreDisplay } from '~~/types/overview/score-display.types';
@@ -69,8 +68,8 @@ const props = defineProps<{
   tabs: Tab[];
   modelValue: string;
   scoreData: ScoreData[] | undefined;
-  securityData: SecurityData[];
   scoreDisplay: ScoreDisplay;
+  securityScore: SecurityScore[];
   status: AsyncDataRequestStatus;
   error: unknown;
 }>();

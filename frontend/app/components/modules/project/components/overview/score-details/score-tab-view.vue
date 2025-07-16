@@ -54,7 +54,7 @@ SPDX-License-Identifier: MIT
           />
           <lfx-project-security-score
             v-else
-            :data="securityData"
+            :data="securityScore"
           />
         </lfx-project-load-state>
       </lfx-panels>
@@ -72,11 +72,10 @@ import LfxTabsPanels from '~/components/uikit/tabs/tabs-panels.vue';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
 import LfxProgressBar from '~/components/uikit/progress-bar/progress-bar.vue';
 import type { ProgressBarType } from '~/components/uikit/progress-bar/types/progress-bar.types';
-import type { TrustScoreSummary } from '~~/types/overview/responses.types';
+import type { TrustScoreSummary, SecurityScore } from '~~/types/overview/responses.types';
 import type { ScoreData } from '~~/types/shared/benchmark.types';
 import type { Tab } from '~/components/uikit/tabs/types/tab.types';
 import LfxProjectSecurityScore from "~/components/modules/project/components/overview/security/security-score.vue";
-import type { SecurityData } from '~~/types/security/responses.types';
 import type { ScoreDisplay } from '~~/types/overview/score-display.types';
 import LfxProjectLoadState from '~~/app/components/modules/project/components/shared/load-state.vue';
 import LfxSkeletonState from "~/components/modules/project/components/shared/skeleton-state.vue";
@@ -87,8 +86,8 @@ const props = defineProps<{
   tabs: Tab[];
   modelValue: string;
   scoreData: ScoreData[] | undefined;
-  securityData: SecurityData[];
   scoreDisplay: ScoreDisplay;
+  securityScore: SecurityScore[];
   status: AsyncDataRequestStatus;
   error: unknown;
 }>();

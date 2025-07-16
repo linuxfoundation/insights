@@ -209,7 +209,6 @@ class OverviewApiService {
       }
     ]
   }
-
   convertPointsToTrustSummary(
     points: HealthScore[],
     securityAssessment: number

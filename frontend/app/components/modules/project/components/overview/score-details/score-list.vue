@@ -49,7 +49,8 @@ const widgets = computed(() => (config.value.widgets || [])
     );
   }));
 
-const visibleData = computed(() => props.data?.filter((item) => widgets.value.includes(item.benchmarkKey as unknown as Widget)));
+const visibleData = computed(() => props.data?.filter((item) => widgets
+  .value.includes(item.benchmarkKey as unknown as Widget)));
 </script>
 <script lang="ts">
 export default {

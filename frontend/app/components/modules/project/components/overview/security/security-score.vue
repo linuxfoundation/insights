@@ -4,33 +4,6 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <div>
-    <!-- NOTE: Disabling the OSPS score for now -->
-    <!-- <div class="flex  justify-center items-center pt-6 gap-8">
-      <div class="aspect-[3/2] w-full relative max-w-50">
-        <lfx-chart
-          :config="ospsChartConfig"
-        />
-      </div>
-      <div class="max-w-80">
-        <h3 class="text-h3 font-bold font-secondary pb-3">
-          OSPS Baseline score
-        </h3>
-        <p class="text-sm leading-5">
-          {{config.description}}
-        </p>
-      </div>
-    </div>
-    <div class="bg-neutral-50 my-8 rounded-lg p-3 text-neutral-500 text-xs leading-4.5 text-center">
-      The <b class="font-semibold">OSPS Baseline</b>
-      is a set of security criteria that projects should meet to demonstrate a strong security posture.
-      <a
-        :href="links.securityScore"
-        target="_blank"
-        class="text-brand-500"
-      >
-        Learn more
-      </a>
-    </div> -->
     <div class="flex flex-col lg:flex-row justify-between lg:items-end pb-8 gap-5 lg:gap-20">
       <div>
         <h3 class="text-heading-3 font-secondary font-bold">
@@ -62,27 +35,24 @@ SPDX-License-Identifier: MIT
     </div>
     <section class="flex flex-col gap-4">
       <article
-        v-for="(checks, title) in groupedData"
-        :key="title"
+        v-for="(score) in data"
+        :key="score.category"
         class="[&:not(:last-child)]:border-b border-neutral-100 [&:not(:last-child)]:pb-4"
       >
         <div class="flex flex-row items-start gap-4">
-          <lfx-project-security-evaluation-result :results="assessmentsResults(checks)">
-            <template #default="{result}">
-              <div class="h-12 w-12 min-w-12">
-                <lfx-chart :config="categoryChartConfig(result)" />
-              </div>
-            </template>
-          </lfx-project-security-evaluation-result>
+        
+          <div class="h-12 w-12 min-w-12">
+            <lfx-chart :config="categoryChartConfig(score.percentage)" />
+          </div>
           <div class="flex-grow">
             <h4 class="text-sm leading-5 font-semibold">
-              {{ title}}
+              {{ score.category}}
             </h4>
             <p
-              v-if="categoryConfig(title)"
+              v-if="categoryConfig(score.category)"
               class="text-body-2 text-neutral-500 mt-1"
             >
-              {{ categoryConfig(title)?.description }}
+              {{ categoryConfig(score.category)?.description }}
             </p>
           </div>
         </div>
@@ -92,71 +62,31 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script lang="ts" setup>
-import {computed} from "vue";
-// import {storeToRefs} from "pinia";
 import {useRoute} from "nuxt/app";
-import type {SecurityAssessmentData, SecurityData} from "~~/types/security/responses.types";
-// import {PROJECT_SECURITY_SERVICE} from "~/components/modules/project/services/security.service";
-// import type {OspsBaselineScore} from "~/components/modules/project/config/osps-baseline-score";
+import type {SecurityDataCategory} from "~~/types/security/responses.types";
 import {lfxColors} from "~/config/styles/colors";
-// import {useProjectStore} from "~/components/modules/project/store/project.store";
 import LfxChart from "~/components/uikit/chart/chart.vue";
 import {getGaugeChartConfig} from "~/components/uikit/chart/configs/gauge.chart";
 import {links} from "~/config/links";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
 import {LfxRoutes} from "~/components/shared/types/routes";
 import LfxButton from "~/components/uikit/button/button.vue";
-import {lfxSecurityCategories} from "~/components/modules/project/config/security-category";
-import LfxProjectSecurityEvaluationResult from "~/components/modules/project/components/security/evaluation-result.vue";
+import {
+  lfxSecurityCategories, 
+  type SecurityCategoryConfig
+} from "~/components/modules/project/config/security-category";
+import type { SecurityScore } from '~~/types/overview/responses.types';
 
-// const { selectedRepository } = storeToRefs(useProjectStore());
 const route = useRoute();
 const {name} = route.params
 
-const props = defineProps<{
-  data: SecurityData[];
+defineProps<{
+  data: SecurityScore[];
 }>();
 
-// const results = computed(
-//     () => PROJECT_SECURITY_SERVICE.calculateOSPSScore((props.data || []), !!selectedRepository.value)
-// );
-
-// const config = computed<OspsBaselineScore>(() => {
-//   if((props.data || []).length === 0){
-//     return {
-//       minScore: 0,
-//       maxScore: 100,
-//       label: 'No data available',
-//       description: '',
-//       lineColor: lfxColors.neutral[200],
-//       badgeBgColor: lfxColors.neutral[100],
-//       badgeTextColor: lfxColors.neutral[500],
-//     }
-//   }
-//   return PROJECT_SECURITY_SERVICE.getOSPSconfig(results.value);
-// })
-
-// const ospsChartConfig = computed(() => getGaugeChartConfig({
-//   value: results.value, // 0-100
-//   name: config.value.label,
-//   gaugeType: 'half',
-//   color: config.value.badgeBgColor,
-//   textColor: config.value.badgeTextColor,
-//   lineColor: config.value.lineColor,
-//   loading: config.value.loading,
-//   noData: props.data.length === 0,
-// }));
-
-const groupedData = computed(() => (props.data || []).reduce((mapping, check) => {
-  const obj = {...mapping};
-  if (!obj[check.category]) {
-    obj[check.category] = [];
-  }
-  obj[check.category]?.push(check);
-  return obj;
-}, {} as Record<string, SecurityData[]>))
-
-const categoryConfig = (category: string) => category && lfxSecurityCategories[category]
+const categoryConfig = (category: string) => (
+  category && lfxSecurityCategories[category as SecurityDataCategory]
+) as SecurityCategoryConfig
 
 const categoryChartConfig = (result: number) => getGaugeChartConfig({
   value: result,
@@ -164,11 +94,6 @@ const categoryChartConfig = (result: number) => getGaugeChartConfig({
   name: '',
   lineColor: lfxColors.brand[500],
 })
-
-const assessmentsResults = (checks: SecurityData[]) => {
-  const assessments = checks.map((check) => check.assessments).flat();
-  return assessments.map((assessment: SecurityAssessmentData) => assessment.result);
-};
 </script>
 
 <script lang="ts">
