@@ -63,6 +63,64 @@ export interface SecurityScore {
   percentage: number;
 }
 
-export interface HealthScoreResults extends HealthScoreBase{
-  securityCategoryPercentage: SecurityScore[];
+export interface HealthScoreResults {
+    activeContributors: {
+        benchmark: number;
+        value: number;
+    };
+  contributorDependency: {
+    value: number;
+    percentage: number;
+    benchmark: number;
+  };
+  organizationDependency: {
+    value: number;
+    percentage: number;
+    benchmark: number;
+  };
+  retention: {
+    value: number;
+    benchmark: number;
+  };
+  stars: {
+    value: number;
+    benchmark: number;
+  };
+  forks: {
+    value: number;
+    benchmark: number;
+  };
+  issuesResolution: {
+    value: number;
+    benchmark: number;
+  };
+  pullRequests: {
+    value: number;
+    benchmark: number;
+  };
+  mergeLeadTime: {
+    value: number;
+    benchmark: number;
+  };
+  activeDays: {
+    value: number;
+    benchmark: number;
+  };
+  contributionsOutsideWorkHours: {
+    value: number;
+    benchmark: number;
+  };
+  searchQueries: {
+    value: number;
+    benchmark: number;
+  };
+  securityCategoryPercentage: {
+    category: string;
+    percentage: number;
+  }[];
+  contributorPercentage: number;
+  popularityPercentage: number;
+  developmentPercentage: number;
+  securityPercentage: number;
+  overallScore: number;
 }

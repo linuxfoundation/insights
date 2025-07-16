@@ -29,7 +29,11 @@ export type ActiveContributorsResponse = {
     periodFrom: DateTime; // Start of the period (e.g. last 90 days)
     periodTo: DateTime; // End of the period (e.g. last 90 days)
   };
-  data: ActiveContributorsDataPoint[]
+  data: ActiveContributorsDataPoint[],
+  benchmark: {
+    value: number;
+    benchmark: number;
+  }
 };
 
 export async function fetchActiveContributors(filter: ActiveContributorsFilter) {
@@ -98,6 +102,10 @@ export async function fetchActiveContributors(filter: ActiveContributorsFilter) 
       periodTo: dates.current.to,
     },
     data: processedData,
+    benchmark: {
+      value: currentContributorCount,
+      benchmark: 5
+    }
   };
 
   return response;

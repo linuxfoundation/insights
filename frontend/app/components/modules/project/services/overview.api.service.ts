@@ -36,7 +36,7 @@ class OverviewApiService {
       queryFn
     });
   }
-  
+
   healthScoreOverviewQueryFn(
     query: () => Record<string, string | number | boolean | undefined | string[] | null>
   ): QueryFunction<HealthScoreResults> {
@@ -75,68 +75,9 @@ class OverviewApiService {
       });
   }
 
-  convertRawResultsToHealthScore(rawValues: HealthScoreResults): HealthScore[] {
+  convertRawResultsToHealthScore(_: HealthScoreResults): HealthScore[] {
     return [
-      {
-        key: BenchmarkKeys.Retention,
-        value: rawValues.retentionRate,
-        points: rawValues.retentionBenchmark
-      },
-      {
-        key: BenchmarkKeys.ActiveContributors,
-        value: rawValues.activeContributors,
-        points: rawValues.activeContributorsBenchmark
-      },
-      {
-        key: BenchmarkKeys.ContributorDependency,
-        value: rawValues.contributorDependencyCount,
-        points: rawValues.contributorDependencyBenchmark
-      },
-      {
-        key: BenchmarkKeys.OrganizationDependency,
-        value: rawValues.organizationDependencyCount,
-        points: rawValues.organizationDependencyBenchmark
-      },
-      {
-        key: BenchmarkKeys.Stars,
-        value: rawValues.stars,
-        points: rawValues.starsBenchmark
-      },
-      {
-        key: BenchmarkKeys.Forks,
-        value: rawValues.forks,
-        points: rawValues.forksBenchmark
-      },
-      {
-        key: BenchmarkKeys.SearchQueries,
-        value: rawValues.searchVolumeAverage,
-        points: rawValues.searchVolumeBenchmark
-      },
-      {
-        key: BenchmarkKeys.IssuesResolution,
-        value: rawValues.issueResolution,
-        points: rawValues.issueResolutionBenchmark
-      },
-      {
-        key: BenchmarkKeys.PullRequests,
-        value: rawValues.pullRequests,
-        points: rawValues.pullRequestsBenchmark
-      },
-      {
-        key: BenchmarkKeys.ActiveDays,
-        value: rawValues.activeDaysCount,
-        points: rawValues.activeDaysBenchmark
-      },
-      {
-        key: BenchmarkKeys.MergeLeadTime,
-        value: rawValues.mergeLeadTime,
-        points: rawValues.mergeLeadTimeBenchmark
-      },
-      {
-        key: BenchmarkKeys.ContributionsOutsideWorkHours,
-        value: rawValues.contributionsOutsideWorkHours,
-        points: rawValues.contributionsOutsideWorkHoursBenchmark
-      }
+        // Dont do this and use benchmark configs
     ]
   }
 
