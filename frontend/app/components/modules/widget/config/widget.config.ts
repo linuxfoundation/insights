@@ -43,6 +43,18 @@ import mailingListMessages
 import commitActivities from "./development/commit-activities/commit-activities.config";
 import {Widget} from "~/components/modules/widget/types/widget";
 import type {Project} from "~~/types/project";
+import {dateOptKeys} from "~/components/modules/project/config/date-options";
+
+export interface WidgetBenchmarkConfig {
+    title: string;
+    showOnOverview: boolean;
+    isVisible: (model: Record<string, number | boolean | string>, selectedTimeRangeKey: dateOptKeys) => boolean;
+    points: Record<number, {
+        text: string;
+        type: 'positive' | 'warning' | 'negative';
+        description: string;
+    }>
+}
 
 export interface WidgetConfig {
   key: string;
@@ -56,6 +68,7 @@ export interface WidgetConfig {
   defaultValue?: Record<string, unknown>;
   additionalShare?: Component;
   hideOnRepoFilter?: boolean;
+  benchmark?: WidgetBenchmarkConfig
 }
 
 export const lfxWidgets: Record<Widget, WidgetConfig> = {
