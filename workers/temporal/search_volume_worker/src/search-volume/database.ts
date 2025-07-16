@@ -5,7 +5,7 @@ import {DateTime} from "luxon";
 
 export interface SearchVolumeDBRecord {
   insights_project_id: string;
-  slug: string;
+  project: string;
   data_timestamp: DateTime; // Should be in YYYY-MM-DD format
   volume: number;
   updated_at?: string; // Optional since it will be set automatically
@@ -18,9 +18,9 @@ export async function persistSearchVolume(store: DbStore, records: SearchVolumeD
   }
 
   const insertQuery = `
-    INSERT INTO search_volume (insights_project_id, slug, data_timestamp, volume, updated_at)
+    INSERT INTO search_volume (insights_project_id, project, data_timestamp, volume, updated_at)
     VALUES ($1, $2, $3, $4, NOW())
-    ON CONFLICT (insights_project_id, slug, data_timestamp)
+    ON CONFLICT (insights_project_id, project, data_timestamp)
     DO UPDATE SET volume = EXCLUDED.volume, updated_at = EXCLUDED."updated_at"
   `;
 
@@ -33,7 +33,7 @@ export async function persistSearchVolume(store: DbStore, records: SearchVolumeD
         insertQuery,
         [
           record.insights_project_id,
-          record.slug,
+          record.project,
           record.data_timestamp,
           record.volume
         ]
