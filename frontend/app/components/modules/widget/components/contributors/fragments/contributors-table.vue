@@ -55,7 +55,7 @@ SPDX-License-Identifier: MIT
         <div>
           {{ formatNumber(contributor.contributions) }}
           <span v-if="props.showPercentage">
-            - {{ (contributor.percentage || 0) > 0 ? contributor.percentage : '<1' }}%
+            - {{ (contributor.percentage || 0) > 0 ? Math.round(contributor.percentage) : '<1' }}%
           </span>
         </div>
       </div>
