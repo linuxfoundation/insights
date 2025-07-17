@@ -33,7 +33,6 @@ export default defineEventHandler(async (event) => {
     if (query.endDate && (query.endDate as string).trim() !== '') {
         filter.endDate = DateTime.fromISO(query.endDate as string);
     }
-
     try {
 
         const healthScore = await fetchHealthScoreMetrics(filter);
@@ -44,7 +43,7 @@ export default defineEventHandler(async (event) => {
         console.error('Error fetching active contributors:', error);
         throw createError({
             statusCode: 500,
-            statusMessage: 'Failed to fetch active contributors data',
+            statusMessage: 'Failed to fetch health score',
             data: {message: error.message}
         });
     }

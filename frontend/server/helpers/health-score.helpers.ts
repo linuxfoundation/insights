@@ -30,10 +30,7 @@ const healthScores: string[] = [
 
 const fetchHealthScore = async (name: string, filter: HealthScoreFilters) => {
     const res = await fetchFromTinybird<HealthScoreTinybird[]>(`/v0/pipes/health_score_${name}.json`, filter);
-    if (!res.data || res.data.length === 0) {
-        throw createError({statusCode: 404, statusMessage: 'Not found'});
-    }
-    return res.data[0];
+    return res.data?.[0];
 }
 
 export const fetchHealthScoreMetrics = async (filter: HealthScoreFilters): Promise<HealthScoreTinybird> => {
@@ -50,54 +47,54 @@ export const fetchHealthScoreMetrics = async (filter: HealthScoreFilters): Promi
 export function createHealthScoreSchema(healthScore: HealthScoreTinybird): HealthScoreResults {
     return {
         activeContributors: {
-            benchmark: healthScore.activeContributorsBenchmark,
-            value: healthScore.activeContributors,
+            benchmark: healthScore.activeContributorsBenchmark || 0,
+            value: healthScore.activeContributors || 0,
         },
         contributorDependency: {
-            value: healthScore.contributorDependencyCount,
-            percentage: healthScore.contributorDependencyPercentage,
-            benchmark: healthScore.contributorDependencyBenchmark,
+            value: healthScore.contributorDependencyCount || 0,
+            percentage: healthScore.contributorDependencyPercentage || 0,
+            benchmark: healthScore.contributorDependencyBenchmark || 0,
         },
         organizationDependency: {
-            value: healthScore.organizationDependencyCount,
-            percentage: healthScore.organizationDependencyPercentage,
-            benchmark: healthScore.organizationDependencyBenchmark,
+            value: healthScore.organizationDependencyCount || 0,
+            percentage: healthScore.organizationDependencyPercentage || 0,
+            benchmark: healthScore.organizationDependencyBenchmark || 0,
         },
         retention: {
-            value: healthScore.retentionRate,
-            benchmark: healthScore.retentionBenchmark,
+            value: healthScore.retentionRate || 0,
+            benchmark: healthScore.retentionBenchmark || 0,
         },
         stars: {
-            value: healthScore.stars,
-            benchmark: healthScore.starsBenchmark,
+            value: healthScore.stars || 0,
+            benchmark: healthScore.starsBenchmark || 0,
         },
         forks: {
-            value: healthScore.forks,
-            benchmark: healthScore.forksBenchmark,
+            value: healthScore.forks || 0,
+            benchmark: healthScore.forksBenchmark || 0,
         },
         issuesResolution: {
-            value: healthScore.issueResolution,
-            benchmark: healthScore.issueResolutionBenchmark,
+            value: healthScore.issueResolution || 0,
+            benchmark: healthScore.issueResolutionBenchmark || 0,
         },
         pullRequests: {
-            value: healthScore.pullRequests,
-            benchmark: healthScore.pullRequestsBenchmark,
+            value: healthScore.pullRequests || 0,
+            benchmark: healthScore.pullRequestsBenchmark || 0,
         },
         mergeLeadTime: {
-            value: healthScore.mergeLeadTime,
-            benchmark: healthScore.mergeLeadTimeBenchmark,
+            value: healthScore.mergeLeadTime || 0,
+            benchmark: healthScore.mergeLeadTimeBenchmark || 0,
         },
         activeDays: {
-            value: healthScore.activeDaysCount,
-            benchmark: healthScore.activeDaysBenchmark,
+            value: healthScore.activeDaysCount || 0,
+            benchmark: healthScore.activeDaysBenchmark || 0,
         },
         contributionsOutsideWorkHours: {
-            value: healthScore.contributionsOutsideWorkHours,
-            benchmark: healthScore.contributionsOutsideWorkHoursBenchmark,
+            value: healthScore.contributionsOutsideWorkHours || 0,
+            benchmark: healthScore.contributionsOutsideWorkHoursBenchmark || 0,
         },
         searchQueries: {
-            value: healthScore.searchVolumeAverage,
-            benchmark: healthScore.searchVolumeBenchmark,
+            value: healthScore.searchVolumeAverage || 0,
+            benchmark: healthScore.searchVolumeBenchmark || 0,
         },
         securityCategoryPercentage: (healthScore.securityCategoryPercentage || []).map(score => {
             const [category, percentage] = score;
