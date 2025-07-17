@@ -13,6 +13,9 @@ An activity, performed by an individual, that is counted as contribution. Releva
 ## Contributor
 Any individual who actively participates in the development or maintenance of an open source project. This includes writing code, reviewing pull requests, reporting issues, or updating documentation. In LFX Insights, contributors are identified through activity in version control systems and other platforms, and can be analyzed by metrics such as activity level, organization affiliation, and contribution history.
 
+## Maintainer
+An open-source maintainer is someone who leads and stewards an open-source project, making decisions about code, community, and direction. They often handle tasks like reviewing pull requests, releasing new versions, triaging issues, and fostering community engagement. Essentially, they are responsible for the overall health and development of the project.
+
 ## Criticality
 Criticality reflects how essential an open source project is to the broader software ecosystem. In LFX Insights, we use the OpenSSF Criticality Score to estimate this, considering factors like usage, dependency reach, contributor activity, and project maturity. Projects with high criticality scores are widely relied upon and may pose greater risk if undermaintained or insecure.
 

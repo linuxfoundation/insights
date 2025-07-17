@@ -45,6 +45,7 @@ export default defineConfig({
           { text: 'Data Sources', link: '/introduction/data-sources/index.md' },
           { text: 'Data Quality', link: '/introduction/data-quality/index.md' },
           { text: 'Contributions', link: '/introduction/contributions/index.md' },
+          { text: 'Maintainers', link: '/introduction/maintainers/index.md' },
         ]
       },
       {
