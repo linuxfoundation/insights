@@ -12,8 +12,8 @@ import type { Project, ProjectRepository } from '~~/types/project';
 import { Granularity } from '~~/types/shared/granularity';
 import { useQueryParam } from '~/components/shared/utils/query-param';
 import {
-  processTimeAndDateParams,
-  timeAndDateParamsSetter
+  processProjectParams,
+  projectParamsSetter
 } from '~/components/modules/project/services/project.query.service';
 
 const calculateGranularity = (start: string | null, end: string | null): string[] => {
@@ -49,8 +49,8 @@ export const defaultDateOption = lfxProjectDateOptions.find(
 export const useProjectStore = defineStore('project', () => {
   const route = useRoute();
 
-  const { queryParams } = useQueryParam(processTimeAndDateParams, timeAndDateParamsSetter);
-  const { timeRange, start, end } = queryParams.value;
+  const { queryParams } = useQueryParam(processProjectParams, projectParamsSetter);
+  const { timeRange, start, end, repos } = queryParams.value;
 
   const selectedTimeRangeKey = ref<string>(timeRange!);
   const startDate = ref<string | null>(start || null);
@@ -58,14 +58,13 @@ export const useProjectStore = defineStore('project', () => {
   const isProjectLoading = ref(false);
   const project = ref<Project | null>(null);
   const projectRepos = computed<ProjectRepository[]>(() => project.value?.repositories || []);
+  const selectedRepoSlugs = ref<string[]>(route.params.name ? [route.params.name as string] : repos?.split('|') || []);
 
-  const selectedRepository = computed<string>(
-    () => projectRepos.value.find(
-        (repo: ProjectRepository) => route.params.name === repo.slug
-      )?.url || ''
-  );
-  const repository = computed<ProjectRepository | undefined>(() => projectRepos
-    .value.find((repo: ProjectRepository) => route.params.name === repo.slug));
+  const selectedRepositories = computed<ProjectRepository[]>(() => projectRepos
+    .value.filter((repo: ProjectRepository) => selectedRepoSlugs.value.includes(repo.slug) || 
+      route.params.name === repo.slug));
+  const selectedReposValues = computed<string[]>(() => selectedRepositories
+    .value.map((repo: ProjectRepository) => repo.url));
 
   const customRangeGranularity = computed<string[]>(() => (startDate.value === null || endDate.value === null
       ? [Granularity.WEEKLY]
@@ -78,8 +77,9 @@ export const useProjectStore = defineStore('project', () => {
     isProjectLoading,
     project,
     projectRepos,
-    selectedRepository,
-    repository,
     customRangeGranularity,
+    selectedRepoSlugs,
+    selectedRepositories,
+    selectedReposValues
   };
 });

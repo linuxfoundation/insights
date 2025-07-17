@@ -38,6 +38,7 @@ import type {ProjectList, ProjectTinybird} from "~~/types/project";
 export default defineEventHandler(async (event): Promise<Pagination<ProjectList> | Error> => {
     const query = getQuery(event);
     const sort: string = (query?.sort as string) || 'name_asc';
+    const search: string = (query?.search as string) || undefined;
     const [orderByField, orderByDirection] = sort.split('_');
 
     // Pagination parameters
@@ -48,22 +49,51 @@ export default defineEventHandler(async (event): Promise<Pagination<ProjectList>
     const collectionSlug: string | undefined = query?.collectionSlug as string || undefined;
     const isLF: boolean | undefined = query?.isLF === 'true' ? true : undefined;
 
+    const slugs = Array.isArray(query.slugs) ? query.slugs : query.slugs ? [query.slugs] : undefined;
+    const healthScore: boolean | undefined = query?.healthScore === 'true' ? true : undefined;
+
     try {
         const res = await fetchFromTinybird<ProjectTinybird[]>('/v0/pipes/projects_list.json', {
             count,
             page,
             pageSize,
             collectionSlug,
+            slugs,
             isLF,
             orderByField,
             orderByDirection,
+            search,
             onboarded: onboarded ? 'true' : undefined,
         });
+
+        let projects = res.data.map((p: ProjectTinybird) => ({
+            ...p,
+            isLF: !!p.isLF,
+            repoData: undefined,
+        }))
+
+        if(res.data?.length > 0 && healthScore){
+            const projectSlugs = res.data.map((p: ProjectTinybird) => p.slug);
+            const healthScore = await fetchFromTinybird<ProjectTinybird[]>('/v0/pipes/health_score_overview.json', {
+                slugs: projectSlugs,
+            });
+            projects = projects.map((p) => ({
+                ...p,
+                healthScore: {
+                    ...(healthScore.data.find((hs) => hs.slug === p.slug) || undefined),
+                    widgets: undefined,
+                    id: undefined,
+                    segmentId: undefined,
+                    slug: undefined,
+                }
+            }))
+        }
 
         type ProjectCount = {'count(id)': number};
         const projectCountResult = await fetchFromTinybird<ProjectCount[]>('/v0/pipes/projects_list.json', {
             collectionSlug,
             isLF,
+            slugs,
             onboarded: onboarded ? 'true' : undefined,
             count: true,
         });
@@ -72,11 +102,7 @@ export default defineEventHandler(async (event): Promise<Pagination<ProjectList>
             page,
             pageSize,
             total: projectCountResult.data[0]?.['count(id)'] || 0,
-            data: res.data.map((p: ProjectTinybird) => ({
-                ...p,
-                isLF: !!p.isLF,
-                repoData: undefined,
-            })),
+            data: projects
         };
     } catch (error) {
         console.error('Error fetching project list from TinyBird:', error);

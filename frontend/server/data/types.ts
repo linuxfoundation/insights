@@ -3,18 +3,13 @@
 import type { DateTime } from 'luxon';
 import type { ActivityPlatforms } from '~~/types/shared/activity-platforms';
 import type { ActivityTypes } from '~~/types/shared/activity-types';
+import { Granularity } from "~~/types/shared/granularity";
 
 export type FetchFunction = typeof $fetch;
 
-export enum FilterGranularity {
-  WEEKLY = 'weekly',
-  MONTHLY = 'monthly',
-  QUARTERLY = 'quarterly'
-}
-
 export type DefaultFilter = {
   project: string;
-  repo?: string;
+  repos?: string[];
   startDate?: DateTime;
   endDate?: DateTime;
 };
@@ -22,13 +17,13 @@ export type DefaultFilter = {
 // TODO: refactor all filter types to "inherit" from DefaultFilter
 export type ActiveContributorsFilter = DefaultFilter & {
   activity_types?: ActivityTypes[];
-  granularity?: FilterGranularity;
+  granularity?: Granularity;
 };
 
 export type ActiveOrganizationsFilter = {
   project: string;
-  repo?: string;
-  granularity?: FilterGranularity;
+  repos?: string[];
+  granularity?: Granularity;
   startDate?: DateTime;
   endDate?: DateTime;
 };
@@ -38,7 +33,7 @@ export type ContributorsLeaderboardFilter = {
   platform?: ActivityPlatforms;
   activity_type?: ActivityTypes;
   activity_types?: ActivityTypes[];
-  repo?: string;
+  repos?: string[];
   limit?: number;
   offset?: number;
   startDate?: DateTime;
@@ -49,7 +44,7 @@ export type OrganizationsLeaderboardFilter = {
   project: string;
   platform?: ActivityPlatforms;
   activity_type?: ActivityTypes;
-  repo?: string;
+  repos?: string[];
   limit?: number;
   offset?: number;
   startDate?: DateTime;
@@ -58,8 +53,8 @@ export type OrganizationsLeaderboardFilter = {
 
 export type ContributorDependencyFilter = {
   project: string;
-  repo?: string;
-  granularity?: FilterGranularity;
+  repos?: string[];
+  granularity?: Granularity;
   platform?: ActivityPlatforms;
   activity_type?: ActivityTypes;
   limit?: number;
@@ -69,7 +64,7 @@ export type ContributorDependencyFilter = {
 
 export type OrganizationDependencyFilter = {
   project: string;
-  repo?: string;
+  repos?: string[];
   platform?: ActivityPlatforms;
   activity_type?: ActivityTypes;
   startDate?: DateTime;
@@ -85,7 +80,7 @@ export type GeographicDistributionFilter = {
   project: string;
   platform?: ActivityPlatforms;
   activity_type?: ActivityTypes;
-  repo?: string;
+  repos?: string[];
   type?: DemographicType;
   startDate?: DateTime;
   endDate?: DateTime;
@@ -94,9 +89,9 @@ export type GeographicDistributionFilter = {
 export type RetentionFilter = DefaultFilter & {
   platform?: ActivityPlatforms;
   activity_type?: ActivityTypes;
-  repo?: string;
+  repos?: string[];
   demographicType?: DemographicType;
-  granularity?: FilterGranularity;
+  granularity?: Granularity;
   onlyContributions: boolean;
 };
 
@@ -107,56 +102,56 @@ export enum ActivityFilterCountType {
 
 export type ActivityCountFilter = {
   project: string;
-  granularity?: FilterGranularity;
+  granularity?: Granularity;
   countType?: ActivityFilterCountType;
   activity_type: ActivityTypes;
   onlyContributions: boolean;
-  repo?: string;
+  repos?: string[];
   startDate?: DateTime;
   endDate?: DateTime;
 };
 
 export type ReviewTimeByPRSizeFilter = {
   project: string;
-  repo?: string;
+  repos?: string[];
   startDate?: DateTime;
   endDate?: DateTime;
 };
 
 export type AverageTimeToMergeFilter = {
   project: string;
-  granularity?: FilterGranularity;
-  repo?: string;
+  granularity?: Granularity;
+  repos?: string[];
   startDate?: DateTime;
   endDate?: DateTime;
 };
 
 export type WaitTimeFor1stReviewFilter = {
   project: string;
-  granularity?: FilterGranularity;
-  repo?: string;
+  granularity?: Granularity;
+  repos?: string[];
   startDate?: DateTime;
   endDate?: DateTime;
 };
 
 export type MergeLeadTimeFilter = {
   project: string;
-  repo?: string;
+  repos?: string[];
   startDate?: DateTime;
   endDate?: DateTime;
 };
 
 export type ActiveDaysFilter = {
   project: string;
-  granularity?: FilterGranularity;
-  repo?: string;
+  granularity?: Granularity;
+  repos?: string[];
   startDate?: DateTime;
   endDate?: DateTime;
 };
 
 export type CodeReviewEngagementTBQuery = {
   project: string;
-  repo?: string;
+  repos?: string[];
   limit: number;
   activity_types: ActivityTypes[];
   startDate: DateTime;
@@ -165,14 +160,14 @@ export type CodeReviewEngagementTBQuery = {
 
 export type PackageFilter = {
   project: string;
-  repo?: string;
+  repos?: string[];
   search?: string;
 };
 
 export type PackageMetricsFilter = {
   project: string;
-  granularity?: FilterGranularity;
-  repo?: string;
+  granularity?: Granularity;
+  repos?: string[];
   ecosystem?: string;
   name?: string;
   startDate?: DateTime;
@@ -180,7 +175,7 @@ export type PackageMetricsFilter = {
 };
 
 export type SearchVolumeFilter = {
-  slug: string;
+  project: string;
   startDate?: DateTime;
   endDate?: DateTime;
 }

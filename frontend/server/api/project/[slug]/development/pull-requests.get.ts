@@ -1,10 +1,10 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import {DateTime} from "luxon";
-import type {ActivityCountFilter, FilterGranularity} from "~~/server/data/types";
+import type {ActivityCountFilter} from "~~/server/data/types";
 import {ActivityFilterCountType} from "~~/server/data/types";
 import {ActivityTypes} from "~~/types/shared/activity-types";
-
+import {Granularity} from "~~/types/shared/granularity";
 import {createDataSource} from "~~/server/data/data-sources";
 /**
  * Frontend expects the data to be in the following format:
@@ -62,10 +62,12 @@ export default defineEventHandler(async (event) => {
 
   const project = (event.context.params as { slug: string }).slug;
 
+  const repos = Array.isArray(query.repos) ? query.repos : query.repos ? [query.repos] : undefined;
+
   const filter: ActivityCountFilter = {
     project,
-    granularity: query.granularity as FilterGranularity,
-    repo: query.repository as string,
+    granularity: query.granularity as Granularity,
+    repos,
     countType: ActivityFilterCountType.NEW, // TODO: This isn't used but I'm keeping it here for now to satisfy the interface
     activity_type: ActivityTypes.ISSUES_CLOSED, // TODO: This isn't used but I'm keeping it here for now to satisfy the interface
     onlyContributions: false,

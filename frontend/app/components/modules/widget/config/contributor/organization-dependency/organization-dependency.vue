@@ -92,7 +92,7 @@ const model = computed<OrganizationDependencyModel>({
   set: (value) => emit('update:modelValue', value)
 })
 
-const { startDate, endDate, selectedRepository } = storeToRefs(useProjectStore())
+const { startDate, endDate, selectedReposValues } = storeToRefs(useProjectStore())
 
 const route = useRoute();
 const platform = computed(() => model.value.metric.split(':')[0]);
@@ -102,7 +102,7 @@ const queryKey = computed(() => [
   route.params.slug,
   platform,
   activityType,
-  selectedRepository,
+  selectedReposValues,
   startDate,
   endDate,
 ]);
@@ -113,7 +113,7 @@ const fetchData: QueryFunction<OrganizationDependency> = async () => $fetch(
   params: {
     platform: platform.value,
     activityType: activityType.value,
-    repository: selectedRepository.value,
+    repos: selectedReposValues.value,
     startDate: startDate.value,
     endDate: endDate.value,
   }

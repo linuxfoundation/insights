@@ -11,7 +11,7 @@ SPDX-License-Identifier: MIT
         width="7.5rem"
       >
         <div
-          v-if="summary"
+          v-if="summary && !isEmpty"
           class="flex flex-row gap-4 items-center"
         >
           <div class="text-data-display-1">{{ formatNumber(summary.current) }}</div>
@@ -105,7 +105,7 @@ const model = computed<CommitActivitiesModel>({
 })
 
 const {
-  startDate, endDate, selectedRepository, selectedTimeRangeKey, customRangeGranularity
+  startDate, endDate, selectedReposValues, selectedTimeRangeKey, customRangeGranularity
 } = storeToRefs(useProjectStore())
 
 const route = useRoute();
@@ -123,7 +123,7 @@ const barQueryKey = computed(() => [
   barGranularity.value,
   'new',
   'authored-commit',
-  selectedRepository.value,
+  selectedReposValues.value,
   startDate.value,
   endDate.value,
 ]);
@@ -136,7 +136,7 @@ const fetchBarData: QueryFunction<CommitActivities> = async () => $fetch(
       type: 'new',
       countType: 'new',
       activityType: 'authored-commit',
-      repository: selectedRepository.value,
+      repos: selectedReposValues.value,
       startDate: startDate.value,
       endDate: endDate.value,
     },
@@ -159,7 +159,7 @@ const lineQueryKey = computed(() => [
   lineGranularity.value,
   'cumulative',
   'authored-commit',
-  selectedRepository.value,
+  selectedReposValues.value,
   startDate.value,
   endDate.value,
 ]);
@@ -172,7 +172,7 @@ const fetchLineData: QueryFunction<CommitActivities> = async () => $fetch(
     type: 'cumulative',
     countType: 'cumulative',
     activityType: 'authored-commit',
-    repository: selectedRepository.value,
+    repos: selectedReposValues.value,
     startDate: startDate.value,
     endDate: endDate.value,
   }

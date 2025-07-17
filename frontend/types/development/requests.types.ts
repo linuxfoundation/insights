@@ -13,7 +13,7 @@ export enum CodeReviewEngagementMetric {
 }
 export type CodeReviewEngagementFilter = {
   project: string,
-  repo?: string,
+  repos?: string[],
   metric: CodeReviewEngagementMetric,
   startDate?: DateTime,
   endDate?: DateTime,
@@ -21,7 +21,7 @@ export type CodeReviewEngagementFilter = {
 
 export type ContributionsOutsideWorkHoursFilter = {
   project: string,
-  repo?: string,
+  repos?: string[],
   startDate?: DateTime,
   endDate?: DateTime,
 };

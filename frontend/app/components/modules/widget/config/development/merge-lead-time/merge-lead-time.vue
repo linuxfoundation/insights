@@ -4,7 +4,10 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <section class="mt-5">
-    <div class="text-neutral-400 text-xs mb-1">
+    <div
+      v-if="!isEmpty"
+      class="text-neutral-400 text-xs mb-1"
+    >
       Average time to merge
     </div>
     <lfx-skeleton-state
@@ -12,7 +15,10 @@ SPDX-License-Identifier: MIT
       height="2rem"
       width="7.5rem"
     >
-      <div class="flex flex-row gap-4 items-center">
+      <div
+        v-if="summary && !isEmpty"
+        class="flex flex-row gap-4 items-center"
+      >
         <div class="text-data-display-1">{{ current }}</div>
         <lfx-delta-display
           v-if="selectedTimeRangeKey !== dateOptKeys.alltime"
@@ -75,7 +81,6 @@ import type { MergeLeadTime, MergeLeadTimeItem } from '~~/types/development/resp
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
 import type { Summary } from '~~/types/shared/summary.types';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
-import { isEmptyData } from '~/components/shared/utils/helper';
 import {dateOptKeys} from "~/components/modules/project/config/date-options";
 import { BenchmarkKeys, type Benchmark } from '~~/types/shared/benchmark.types';
 import { formatSecondsToDuration } from '~/components/shared/utils/formatter';
@@ -90,7 +95,7 @@ const emit = defineEmits<{(e: 'update:benchmarkValue', value: Benchmark | undefi
 }>();
 
 const {
- startDate, endDate, selectedRepository, selectedTimeRangeKey
+ startDate, endDate, selectedReposValues, selectedTimeRangeKey
 } = storeToRefs(useProjectStore())
 
 const route = useRoute();
@@ -98,7 +103,7 @@ const route = useRoute();
 const queryKey = computed(() => [
   TanstackKey.MERGE_LEAD_TIME,
   route.params.slug,
-  selectedRepository.value,
+  selectedReposValues.value,
   startDate.value,
   endDate.value,
 ]);
@@ -107,7 +112,7 @@ const fetchData: QueryFunction<MergeLeadTime> = async () => $fetch(
     `/api/project/${route.params.slug}/development/merge-lead-time`,
     {
   params: {
-    repository: selectedRepository.value,
+    repos: selectedReposValues.value,
     startDate: startDate.value,
     endDate: endDate.value,
   }
@@ -150,7 +155,11 @@ const currentInDays = computed<number>(() => {
   return Number(formatSecondsToDuration(current, 'no', FormatterUnits.DAYS));
 });
 
-const isEmpty = computed(() => isEmptyData((mergeLeadTime.value?.data || []) as unknown as Record<string, unknown>[]));
+const isEmpty = computed(() => pickup.value.value === 0 &&
+  review.value.value === 0 &&
+  accepted.value.value === 0 &&
+  prMerged.value.value === 0
+);
 
 const callEmit = () => {
   emit('update:benchmarkValue', status.value === 'success' ? {

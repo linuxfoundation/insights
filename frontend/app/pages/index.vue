@@ -8,4 +8,14 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import LfxExplore from '~/components/modules/explore/views/explore.vue';
+
+const title = 'Explore | LFX Insights';
+const description = `Discover the world'smost critical open source projects.`;
+
+useSeoMeta({
+  title,
+  description,
+  ogTitle: title,
+  twitterDescription: description
+})
 </script>

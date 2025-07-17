@@ -32,8 +32,9 @@ export default defineEventHandler(async (event): Promise<boolean> => {
                 createParagraph(body.email),
             ] : []),
     ];
+    
     await createJiraIssue(
-        `[Insights] ${body.projectName} ${body.widget}`,
+        `[Insights] ${body.projectName ? `${body.projectName} ${body.widget}` : body.pageTitle}`,
         description,
         ['insights-issue'],
         'Bug',

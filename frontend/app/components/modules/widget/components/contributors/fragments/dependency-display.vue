@@ -13,7 +13,7 @@ SPDX-License-Identifier: MIT
           {{ props.topDependency.count }} {{ pluralize(props.label, props.topDependency.count) }}
         </div>
         <div :class="`text-body-1 text-${dependencyColor}-600`">
-          {{ props.topDependency.percentage }}% of all contributions
+          {{ Math.round(props.topDependency.percentage) }}% of all contributions
         </div>
       </div>
     </div>
@@ -27,7 +27,7 @@ SPDX-License-Identifier: MIT
           Other {{ props.otherDependency.count }} {{ pluralize(props.label, props.otherDependency.count) }}
         </div>
         <div class="text-body-1 text-neutral-500">
-          {{ props.otherDependency.percentage }}% of all contributions
+          {{ Math.round(props.otherDependency.percentage) }}% of all contributions
         </div>
       </div>
     </div>

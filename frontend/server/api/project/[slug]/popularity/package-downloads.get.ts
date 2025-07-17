@@ -2,17 +2,19 @@
 // SPDX-License-Identifier: MIT
 import { DateTime } from "luxon";
 import { createDataSource } from "~~/server/data/data-sources";
-import type {FilterGranularity, PackageMetricsFilter} from "~~/server/data/types";
+import type {PackageMetricsFilter} from "~~/server/data/types";
+import {Granularity} from "~~/types/shared/granularity";
 
 export default defineEventHandler(async (event) => {
   const query = getQuery(event);
 
   const project = (event.context.params as { slug: string }).slug;
+  const repos = Array.isArray(query.repos) ? query.repos : query.repos ? [query.repos] : undefined;
 
   const filter: PackageMetricsFilter = {
     project,
-    granularity: query.granularity as FilterGranularity,
-    repo: query.repo as string,
+    granularity: query.granularity as Granularity,
+    repos,
     ecosystem: query.ecosystem as string,
     startDate: query.startDate
       ? DateTime.fromISO(query.startDate as string)

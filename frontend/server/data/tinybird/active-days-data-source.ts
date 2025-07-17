@@ -23,13 +23,13 @@ function getTinybirdQueries(filter: ActiveDaysFilter) {
   return {
     currentSummaryQuery: {
       project: filter.project,
-      repo: filter.repo,
+      repos: filter.repos,
       startDate: filter.startDate,
       endDate: filter.endDate,
     },
     previousSummaryQuery: {
       project: filter.project,
-      repo: filter.repo,
+      repos: filter.repos,
       startDate: dates.previous.from,
       endDate: dates.previous.to
     },

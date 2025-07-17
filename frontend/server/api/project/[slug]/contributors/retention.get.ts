@@ -1,10 +1,11 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import {DateTime} from "luxon";
-import type {FilterGranularity, RetentionFilter} from "~~/server/data/types";
+import type {RetentionFilter} from "~~/server/data/types";
 import {DemographicType} from "~~/server/data/types";
 import {createDataSource} from "~~/server/data/data-sources";
 import {ActivityTypes} from "~~/types/shared/activity-types";
+import {Granularity} from "~~/types/shared/granularity";
 
 /**
  * Frontend expects the data to be in the following format:
@@ -27,11 +28,13 @@ export default defineEventHandler(async (event) => {
   const project = (event.context.params as { slug: string }).slug;
   const activityType = query.activityType as ActivityTypes;
 
+  const repos = Array.isArray(query.repos) ? query.repos : query.repos ? [query.repos] : undefined;
+
   const filter: RetentionFilter = {
     project,
-    granularity: query.granularity as FilterGranularity,
+    granularity: query.granularity as Granularity,
     activity_type: activityType !== ActivityTypes.ALL ? activityType : undefined,
-    repo: query.repository as string,
+    repos,
     demographicType: (query.type as DemographicType) || DemographicType.CONTRIBUTORS,
     onlyContributions: false, // forks and stars are non-contribution activities, but we want to count them.
     startDate: query.startDate ? DateTime.fromISO(query.startDate as string) : undefined,

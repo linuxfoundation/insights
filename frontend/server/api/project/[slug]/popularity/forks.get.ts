@@ -1,10 +1,11 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import {DateTime} from "luxon";
-import type {ActivityCountFilter, FilterGranularity} from "~~/server/data/types";
+import type {ActivityCountFilter} from "~~/server/data/types";
 import {ActivityFilterCountType} from "~~/server/data/types";
 import {ActivityTypes} from "~~/types/shared/activity-types";
 import {createDataSource} from "~~/server/data/data-sources";
+import {Granularity} from "~~/types/shared/granularity";
 
 /**
  * Frontend expects the data to be in the following format:
@@ -35,11 +36,12 @@ export default defineEventHandler(async (event) => {
   const query = getQuery(event);
 
   const project = (event.context.params as { slug: string }).slug;
+  const repos = Array.isArray(query.repos) ? query.repos : query.repos ? [query.repos] : undefined;
 
   const filter: ActivityCountFilter = {
     project,
-    granularity: query.granularity as FilterGranularity,
-    repo: query.repository as string,
+    granularity: query.granularity as Granularity,
+    repos,
     countType: (query.countType as ActivityFilterCountType) || ActivityFilterCountType.NEW,
     activity_type: (query.activityType as ActivityTypes) || ActivityTypes.FORKS,
     onlyContributions: false, // forks and stars are non-contribution activities, but we want to count them.

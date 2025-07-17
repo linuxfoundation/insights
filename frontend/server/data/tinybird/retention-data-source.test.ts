@@ -8,7 +8,8 @@ import {
   mockContributorRetentionData,
   mockOrganizationRetentionData
 } from '../../mocks/tinybird-retention-response.mock';
-import {DemographicType, FilterGranularity} from "~~/server/data/types";
+import {DemographicType} from "~~/server/data/types";
+import {Granularity} from "~~/types/shared/granularity";
 import type {RetentionDataPoint, RetentionResponse} from "~~/server/data/tinybird/retention-data-source";
 
 const mockFetchFromTinybird = vi.fn();
@@ -37,7 +38,7 @@ describe('Retention Data Source', () => {
 
     const filter = {
       project: 'the-linux-kernel-organization',
-      granularity: FilterGranularity.MONTHLY,
+      granularity: Granularity.MONTHLY,
       onlyContributions: false,
       demographicType: DemographicType.CONTRIBUTORS,
       startDate,
@@ -76,7 +77,7 @@ describe('Retention Data Source', () => {
 
     const filter = {
       project: 'the-linux-kernel-organization',
-      granularity: FilterGranularity.MONTHLY,
+      granularity: Granularity.MONTHLY,
       onlyContributions: false,
       demographicType: DemographicType.ORGANIZATIONS,
       startDate,

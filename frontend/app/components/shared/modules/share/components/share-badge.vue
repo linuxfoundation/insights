@@ -100,11 +100,11 @@ const emit = defineEmits<{(e: 'copied'): void;}>();
 const {showToast} = useToastService();
 
 const route = useRoute();
-const { selectedRepository, project } = storeToRefs(useProjectStore())
+const { selectedReposValues, project } = storeToRefs(useProjectStore())
 
 const params = computed(() => ({
   projectSlug: route.params.slug as string,
-  repository: selectedRepository.value
+  repos: selectedReposValues.value
 }));
 
 // Fetch the badge data
@@ -138,7 +138,7 @@ const healthScore = computed(() => (healthScoreData.value
   ? OVERVIEW_API_SERVICE.convertRawValuesToHealthScore(healthScoreData.value) : []));
 
 const ospsScore = computed(() => PROJECT_SECURITY_SERVICE
-  .calculateOSPSScore((securityAssessmentData.value || []), !!selectedRepository.value));
+  .calculateOSPSScore((securityAssessmentData.value || []), !!selectedReposValues.value.length));
 
 const trustSummary = computed<TrustScoreSummary>(() => (healthScore.value
   ? OVERVIEW_API_SERVICE.convertPointsToTrustSummary(healthScore.value, ospsScore.value) : {

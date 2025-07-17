@@ -1,0 +1,47 @@
+.c-checkbox {
+  @apply inline-flex items-center flex-wrap relative;
+
+  input {
+    @apply h-3.5 w-3.5 border border-solid border-neutral-300 rounded-sm bg-white;
+    @apply transition-all appearance-none p-0 my-0 ml-0 inline-block cursor-pointer;
+
+    // Checked
+    &:checked {
+      @apply bg-brand-500 border-brand-500;
+      /* --lf-checkbox-border: var(--lf-checkbox-checked-border);
+      --lf-checkbox-background: var(--lf-checkbox-checked-background);
+      --lf-checkbox-icon: var(--lf-checkbox-checked-icon);  */
+    }
+
+    &:checked::after {
+      transform: rotate(45deg) scaleY(1);
+    }
+    
+    // Disabled
+    &:disabled {
+      /* --lf-checkbox-border: var(--lf-checkbox-disabled-unchecked-border);
+      --lf-checkbox-background: var(
+        --lf-checkbox-disabled-unchecked-background
+      );
+      --lf-checkbox-icon: var(--lf-checkbox-disabled-unchecked-icon);
+      @apply cursor-not-allowed;
+
+      &:checked {
+        --lf-checkbox-border: var(--lf-checkbox-disabled-checked-border);
+        --lf-checkbox-background: var(
+          --lf-checkbox-disabled-checked-background
+        );
+        --lf-checkbox-icon: var(--lf-checkbox-disabled-checked-icon);
+      }
+
+      & + span {
+        @apply cursor-not-allowed;
+      } */
+    }
+  }
+
+  // Icon
+  i.c-icon {
+    @apply absolute top-0.5 left-0.5;
+  }
+}

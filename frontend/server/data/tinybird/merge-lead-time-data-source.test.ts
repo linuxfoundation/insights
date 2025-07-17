@@ -39,7 +39,7 @@ describe('Merge Lead Time Data Source', () => {
 
     const filter: MergeLeadTimeFilter = {
       project: 'the-linux-kernel-organization',
-      repo: 'some-repo',
+      repos: ['some-repo'],
       startDate,
       endDate
     };

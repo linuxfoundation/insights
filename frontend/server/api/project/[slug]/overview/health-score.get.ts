@@ -12,11 +12,11 @@ import { createDataSource } from '~~/server/data/data-sources';
 import {
   type DefaultFilter,
   DemographicType,
-  FilterGranularity,
   ActivityFilterCountType
 } from '~~/server/data/types';
 import type { HealthScore } from '~~/types/overview/responses.types';
 import { ActivityTypes } from '~~/types/shared/activity-types';
+import { Granularity } from "~~/types/shared/granularity";
 import { BenchmarkKeys } from '~~/types/shared/benchmark.types';
 import { formatSecondsToDuration } from '~/components/shared/utils/formatter';
 import { FormatterUnits } from '~/components/shared/types/formatter.types';
@@ -25,7 +25,7 @@ export default defineEventHandler(async (event) => {
   const query = getQuery(event);
 
   const project = (event.context.params as { slug: string }).slug;
-
+  const repos = Array.isArray(query.repos) ? query.repos : query.repos ? [query.repos] : undefined;
   /*
    * Health score will have a default time period of 365 days for most of the data
    * except for the following:
@@ -33,14 +33,10 @@ export default defineEventHandler(async (event) => {
    */
   const filter: DefaultFilter = {
     project,
-    repo: undefined,
+    repos,
     startDate: DateTime.now().minus({ days: 365 }).startOf('day'),
     endDate: DateTime.now().endOf('day')
   };
-
-  if (query.repository && (query.repository as string).trim() !== '') {
-    filter.repo = query.repository as string;
-  }
 
   const filterPreviousQuarter: DefaultFilter = {
     ...filter,
@@ -67,32 +63,32 @@ export default defineEventHandler(async (event) => {
         ...filterPrevious2Quarters,
         demographicType: DemographicType.CONTRIBUTORS,
         onlyContributions: false,
-        granularity: FilterGranularity.QUARTERLY
+        granularity: Granularity.QUARTERLY
       }),
       dataSource.fetchStarsActivities({
         ...filter,
-        granularity: FilterGranularity.WEEKLY,
+        granularity: Granularity.WEEKLY,
         activity_type: ActivityTypes.STARS,
         countType: ActivityFilterCountType.CUMULATIVE,
         onlyContributions: false
       }),
       dataSource.fetchForksActivities({
         ...filter,
-        granularity: FilterGranularity.WEEKLY,
+        granularity: Granularity.WEEKLY,
         activity_type: ActivityTypes.FORKS,
         countType: ActivityFilterCountType.CUMULATIVE,
         onlyContributions: false
       }),
       dataSource.fetchIssuesResolution({
         ...filter,
-        granularity: FilterGranularity.WEEKLY,
+        granularity: Granularity.WEEKLY,
         countType: ActivityFilterCountType.NEW,
         activity_type: ActivityTypes.ISSUES_CLOSED,
         onlyContributions: false
       }),
       dataSource.fetchPullRequests({
         ...filter,
-        granularity: FilterGranularity.MONTHLY,
+        granularity: Granularity.MONTHLY,
         countType: ActivityFilterCountType.NEW, // This isn't used but required the interface
         activity_type: ActivityTypes.ISSUES_CLOSED, // This isn't used but required the interface
         onlyContributions: false

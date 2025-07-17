@@ -42,12 +42,13 @@ export default defineEventHandler(async (event) => {
 
   const activityPlatform = query.platform as ActivityPlatforms;
   const activityType = query.activityType as ActivityTypes;
+  const repos = Array.isArray(query.repos) ? query.repos : query.repos ? [query.repos] : undefined;
 
   const filter: ContributorDependencyFilter = {
     project,
     platform: activityPlatform !== ActivityPlatforms.ALL ? activityPlatform : undefined,
     activity_type: activityType !== ActivityTypes.ALL ? activityType : undefined,
-    repo: query.repository as string,
+    repos,
     startDate: query.startDate ? DateTime.fromISO(query.startDate as string) : undefined,
     endDate: query.endDate ? DateTime.fromISO(query.endDate as string) : undefined,
   }

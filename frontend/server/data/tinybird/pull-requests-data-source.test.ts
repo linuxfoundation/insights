@@ -16,13 +16,11 @@ import {
   mockClosedPullRequests,
   mockPullRequestsVelocity
 } from '../../mocks/tinybird-pull-requests-response.mock';
-import {
-  type ActivityCountFilter,
-  FilterGranularity
-} from "../types";
+import type {ActivityCountFilter} from "../types";
 import {ActivityTypes} from "~~/types/shared/activity-types";
+import {Granularity} from "~~/types/shared/granularity";
 import type {PullRequests} from "~~/types/development/responses.types";
-import type { DateRange} from "~~/server/data/util";
+import type {DateRange} from "~~/server/data/util";
 import {calculatePercentageChange, getPreviousDates} from "~~/server/data/util";
 
 const mockFetchFromTinybird = vi.fn();
@@ -66,7 +64,7 @@ describe('Pull Requests Data Source', () => {
 
     const filter: ActivityCountFilter = {
       project: 'the-linux-kernel-organization',
-      granularity: FilterGranularity.WEEKLY,
+      granularity: Granularity.WEEKLY,
       activity_type: ActivityTypes.PULL_REQUEST_OPENED,
       onlyContributions: false,
       startDate,
@@ -83,7 +81,7 @@ describe('Pull Requests Data Source', () => {
       activity_type: activityType,
       startDate: dates.from,
       endDate: dates.to,
-      ...(!isSummary && {granularity: FilterGranularity.WEEKLY})
+      ...(!isSummary && {granularity: Granularity.WEEKLY})
     });
 
     // These are the queries the data source should send to Tinybird, in this order.

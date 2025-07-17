@@ -18,10 +18,11 @@ import type {Widget} from "~/components/modules/widget/types/widget";
 const route = useRoute();
 const name = route.params.name as string;
 const slug = route.params.slug as string;
-const {project, repository} = storeToRefs(useProjectStore());
+const {project, selectedRepositories} = storeToRefs(useProjectStore());
 const widget = route.query?.widget
 const config = useRuntimeConfig()
-const repoName = computed(() => (repository?.value?.name || name).split('/').at(-1));
+const repository = computed(() => selectedRepositories.value.find((repo) => repo.slug === name));
+const repoName = computed(() => (repository.value?.name || name).split('/').at(-1));
 
 const title = computed(() => `LFX Insights | ${project?.value?.name} ${repoName.value} ${
     (widget && lfxWidgets[widget as Widget]?.name?.length)

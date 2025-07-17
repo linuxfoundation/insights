@@ -6,8 +6,14 @@ SPDX-License-Identifier: MIT
   <article
     class="py-2 px-3 rounded-md transition hover:bg-neutral-50
           cursor-pointer flex items-center justify-between text-sm leading-5 gap-2"
+    @click="handleClick"
   >
-    <div class="flex items-center gap-2">
+    <div class="flex items-center gap-3">
+      <lf-checkbox
+        v-if="props.isMultiSelect"
+        v-model="checked"
+        :value="props.text"
+      />
       <lfx-icon
         :name="props.icon"
         :size="16"
@@ -16,7 +22,7 @@ SPDX-License-Identifier: MIT
       <span :class="props.selected ? 'font-medium' : 'font-normal'">{{ props.text }}</span>
     </div>
     <lfx-icon
-      v-if="props.selected"
+      v-if="props.selected && !props.isMultiSelect"
       name="check"
       :size="16"
       class="text-brand-500"
@@ -26,12 +32,32 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import LfxIcon from "~/components/uikit/icon/icon.vue";
+import LfCheckbox from "~/components/uikit/checkbox/checkbox.vue";
 
 const props = defineProps<{
   text: string;
   icon: string;
   selected: boolean;
+  isMultiSelect?: boolean;
 }>();
+
+const emit = defineEmits<{(e: 'update:selected', value: boolean): void}>();
+
+const checked = computed<boolean>({
+  get() {
+    return props.selected;
+  },
+  set(val: boolean) {
+    emit('update:selected', val);
+  },
+});
+
+const handleClick = () => {
+  if (props.isMultiSelect) {
+    checked.value = !checked.value;
+  }
+};
+
 </script>
 
 <script lang="ts">

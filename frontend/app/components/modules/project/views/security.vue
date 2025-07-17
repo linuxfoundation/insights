@@ -110,6 +110,7 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import {useRoute} from "nuxt/app";
 import {computed, onServerPrefetch, ref} from "vue";
+import {storeToRefs} from "pinia";
 import {type QueryFunction, useQuery} from "@tanstack/vue-query";
 import LfxCard from "~/components/uikit/card/card.vue";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
@@ -133,21 +134,21 @@ const accordion = ref('');
 const route = useRoute();
 const {name} = route.params;
 
-const {selectedRepository} = useProjectStore()
+const {selectedReposValues} = storeToRefs(useProjectStore())
 
 const isRepository = computed(() => !!name)
 
 const queryKey = computed(() => [
   TanstackKey.SECURITY_ASSESSMENT,
   route.params.slug,
-  selectedRepository,
+  selectedReposValues.value
 ]);
 
 const fetchData: QueryFunction<SecurityData[]> = async () => $fetch(
     `/api/project/${route.params.slug}/security/assessment`,
     {
-      query: {
-        repo: selectedRepository || undefined,
+      params: {
+        repos: selectedReposValues.value || undefined,
       }
     }
 );
