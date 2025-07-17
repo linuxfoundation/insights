@@ -4,7 +4,6 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <div class="container !px-5 lg:!px-10">
-    {{ data }}
     <div class="flex justify-between pt-5 md:pt-10">
       <div class="w-1/4 pr-5 min-w-50 xl:pr-10 max-md:hidden block">
         <lfx-side-nav
@@ -26,13 +25,14 @@ SPDX-License-Identifier: MIT
               :key="widget"
               :observer="observer"
             >
-              <lfx-benchmarks-wrap :benchmark="getBenchmarks(widget)">
-                <lfx-widget
-                  :name="widget"
-                  @update:benchmark-value="onBenchmarkUpdate"
-                  @data-loaded="onDataLoaded"
-                />
-              </lfx-benchmarks-wrap>
+              <!-- <lfx-benchmarks-wrap :benchmark="getBenchmarks(widget)"> -->
+              <lfx-widget
+                :name="widget"
+                :benchmark-scores="data"
+                @update:benchmark-value="onBenchmarkUpdate"
+                @data-loaded="onDataLoaded"
+              />
+              <!-- </lfx-benchmarks-wrap> -->
             </lfx-scroll-view>
           </template>
         </lfx-scroll-area>
@@ -43,7 +43,7 @@ SPDX-License-Identifier: MIT
 
 <script lang="ts" setup>
 import {
-computed, ref
+computed, ref, onServerPrefetch, watch
 } from "vue";
 import {storeToRefs} from "pinia";
 import {useRoute} from "nuxt/app";
@@ -54,7 +54,6 @@ import type {WidgetArea} from "~/components/modules/widget/types/widget-area";
 import {lfxWidgetArea, type WidgetAreaConfig} from "~/components/modules/widget/config/widget-area.config";
 import LfxSideNav from "~/components/uikit/side-nav/side-nav.vue";
 import LfxScrollView from "~/components/uikit/scroll-view/scroll-view.vue";
-import LfxBenchmarksWrap from "~/components/uikit/benchmarks/benchmarks-wrap.vue";
 import LfxScrollArea from "~/components/uikit/scroll-view/scroll-area.vue";
 import useScroll from "~/components/shared/utils/scroll";
 import LfxWidget from "~/components/modules/widget/components/shared/widget.vue";
@@ -65,10 +64,14 @@ import {
   processProjectParams,
   projectParamsSetter
 } from "~/components/modules/project/services/project.query.service";
+import useToastService from '~/components/uikit/toast/toast.service';
+import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 
 const props = defineProps<{
   name: WidgetArea
 }>();
+
+const { showToast } = useToastService();
 
 const route = useRoute();
 const config = computed<WidgetAreaConfig>(() => lfxWidgetArea[props.name]);
@@ -92,9 +95,8 @@ const params = computed(() => ({
 
 const {
   data, 
-  // status, 
-  // error, 
-  // suspense
+  error,
+  suspense
 } = BENCHMARKS_API_SERVICE.fetchWidgetBenchmarks(params);
 
 const widgets = computed(() => (config.value.widgets || [])
@@ -111,8 +113,6 @@ const sideNavItems = computed(() => widgets.value.map((widget: Widget) => ({
   key: widget,
   label: lfxWidgets[widget]?.name,
 })))
-
-const getBenchmarks = (widgetName: string): Benchmark | undefined => benchmarks.value[widgetName];
 
 const onSideNavUpdate = (value: string) => {
   tmpClickedItem.value = value;
@@ -175,9 +175,22 @@ const navigateToWidget = () => {
   }
 }
 
-// watch(data, (newData) => {
-//   console.log('!!!benchmarks', newData);
-// })
+onServerPrefetch(async () => {
+  await suspense();
+})
+
+watch(error, (err) => {
+  if (err) {
+    setTimeout(() => {
+      showToast(
+        `Error fetching benchmarks`,
+        ToastTypesEnum.negative,
+        undefined,
+        10000
+      );
+    }, 500);
+  }
+}, { immediate: true });
 </script>
 
 <script lang="ts">

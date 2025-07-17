@@ -21,32 +21,35 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { computed } from 'vue';
 import { storeToRefs } from 'pinia';
-import type { Benchmark } from '~~/types/shared/benchmark.types';
+import type { WidgetBenchmarkConfig } from '~~/app/components/modules/widget/config/widget.config';
 import LfxBenchmark from '~/components/uikit/benchmarks/benchmarks.vue';
 import { useProjectStore } from '~~/app/components/modules/project/store/project.store';
-import { benchmarkConfigs } from '~~/app/config/benchmarks';
+import { dateOptKeys } from '~/components/modules/project/config/date-options';
 
 const props = withDefaults(defineProps<{
-  benchmark?: Benchmark;
+  benchmarkConfig?: WidgetBenchmarkConfig | undefined;
+  point: number;
+  widgetModel: Record<string, number | boolean | string>;
 }>(), {
-  benchmark: undefined
+  benchmarkConfig: undefined
 });
 
 const { selectedTimeRangeKey, startDate, endDate } = storeToRefs(useProjectStore())
 
-const benchmarkConfig = computed(() => benchmarkConfigs.find((config) => config.key === props.benchmark?.key));
-const benchmarkValue = computed(() => Math.ceil(props.benchmark?.value || 0));
-const points = computed(() => benchmarkConfig.value?.points
-  .find((point) => benchmarkValue.value >= point.pointStart
-  && (point.pointEnd === null || benchmarkValue.value <= point.pointEnd)));
-const type = computed(() => (points.value ? points.value.type : 'negative'));
-const benchmarkText = computed(() => (points.value ? points.value.text : ''));
+// const benchmarkConfig = computed(() => benchmarkConfigs.find((config) => config.key === props.benchmark?.key));
+// const benchmarkValue = computed(() => Math.ceil(props.benchmark?.value || 0));
+// const points = computed(() => benchmarkConfig.value?.points
+//   .find((point) => benchmarkValue.value >= point.pointStart
+//   && (point.pointEnd === null || benchmarkValue.value <= point.pointEnd)));
+const pointDetails = computed(() => props.benchmarkConfig?.points[props.point]);
+const type = computed(() => (pointDetails.value ? pointDetails.value.type : 'negative'));
+const benchmarkText = computed(() => (pointDetails.value ? pointDetails.value.text : ''));
 
-const isVisible = computed(() => (benchmarkConfig.value ? benchmarkConfig.value.visibilityCheck(
-  selectedTimeRangeKey.value,
+const isVisible = computed(() => (props.benchmarkConfig ? props.benchmarkConfig.isVisible(
+  props.widgetModel,
+  selectedTimeRangeKey.value as dateOptKeys,
   startDate.value || '',
-  endDate.value || '',
-  props.benchmark?.additionalCheck
+  endDate.value || ''
 ) : false));
 </script>
 
