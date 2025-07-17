@@ -16,6 +16,7 @@ SPDX-License-Identifier: MIT
         v-if="item"
         :widget-key="item.key"
         :value="item.value"
+        :benchmark="item.benchmark"
       />
     </div>
   </div>
@@ -55,13 +56,12 @@ const scoresData = computed(() => widgetConfigs.value.map((widget) => {
     const scoreData = score as BenchmarkScoreData;
     return {
       key: widget.key,
-      point: OVERVIEW_API_SERVICE.getPointDetails(scoreData.value, widget.key),
       value: scoreData.value,
       benchmark: scoreData.benchmark,
     };
   }
   return null;
-}).sort((a, b) => (b?.point?.points || 0) - (a?.point?.points || 0)));
+}).sort((a, b) => (b?.benchmark || 0) - (a?.benchmark || 0)));
 </script>
 <script lang="ts">
 export default {

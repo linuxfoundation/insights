@@ -41,7 +41,6 @@ import LfxProjectScoreTabView from './score-details/score-tab-view.vue';
 import LfxProjectScoreAccordionView from './score-details/score-accordion-view.vue';
 import type {
   TrustScoreSummary,
-  HealthScore,
   SecurityScore,
   HealthScoreResults,
 } from '~~/types/overview/responses.types';
@@ -52,7 +51,6 @@ import { overviewScore } from '~~/app/components/shared/utils/overview-score';
 const props = defineProps<{
   trustScoreSummary: TrustScoreSummary | undefined;
   data: HealthScoreResults | undefined;
-  healthScores: HealthScore[] | undefined;
   status: AsyncDataRequestStatus;
   error: unknown;
   securityScore: SecurityScore[];

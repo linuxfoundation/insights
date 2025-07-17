@@ -8,10 +8,9 @@ import type { WidgetArea } from '../../widget/types/widget-area'
 import type { Widget } from '../../widget/types/widget'
 import type { WidgetConfig } from '../../widget/config/widget.config'
 import { lfxWidgets } from '../../widget/config/widget.config'
-import type { HealthScore, HealthScoreResults } from '~~/types/overview/responses.types'
+import type { HealthScoreResults } from '~~/types/overview/responses.types'
 import { TanstackKey } from '~/components/shared/types/tanstack'
 import type { Organization } from '~~/types/contributors/responses.types'
-import { benchmarkConfigs } from '~~/app/config/benchmarks'
 
 export interface OverviewQueryParams {
   projectSlug: string
@@ -78,31 +77,13 @@ class OverviewApiService {
       })
   }
 
-  convertRawResultsToHealthScore(_: HealthScoreResults): HealthScore[] {
-    return [
-      // Dont do this and use benchmark configs
-    ]
-  }
-
-  getOverviewWidgets(widgetArea: WidgetArea): Widget[] {
-    return (lfxWidgetArea[widgetArea].widgets || []).filter((widget) => {
-      const widgetConfig = lfxWidgets[widget as Widget]
-      return widgetConfig.benchmark
-    })
-  }
-
   getOverviewWidgetConfigs(widgetArea: WidgetArea): WidgetConfig[] {
-    return this.getOverviewWidgets(widgetArea).map((widget) => lfxWidgets[widget as Widget])
-  }
-
-  // TODO: refactor this, this is a temporary solution to get the point details
-  // The health score overview endpoint should return the actual point
-  getPointDetails(value: number, key: string) {
-    const dashedKey = key.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase()
-    const benchmarkConfig = benchmarkConfigs.find((config) => config.key === dashedKey)
-    return benchmarkConfig?.points.find(
-      (point) => point.pointStart <= value && (point.pointEnd === null || point.pointEnd >= value)
-    )
+    return (lfxWidgetArea[widgetArea].widgets || [])
+      .filter((widget) => {
+        const widgetConfig = lfxWidgets[widget as Widget]
+        return widgetConfig.benchmark
+      })
+      .map((widget) => lfxWidgets[widget as Widget])
   }
 }
 

@@ -19,7 +19,6 @@ SPDX-License-Identifier: MIT
             <lfx-project-score-tabs
               :trust-score-summary="trustSummary"
               :data="data"
-              :health-scores="healthScore"
               :status="status"
               :error="error"
               :score-display="scoreDisplay"
@@ -88,8 +87,6 @@ const {
   suspense
 } = OVERVIEW_API_SERVICE.fetchHealthScoreOverview(params);
 
-const healthScore = computed(() => (data.value
-  ? OVERVIEW_API_SERVICE.convertRawResultsToHealthScore(data.value) : []));
 
 const securityScore = computed(() => (data.value?.securityCategoryPercentage || []));
 
