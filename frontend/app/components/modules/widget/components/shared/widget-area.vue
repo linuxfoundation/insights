@@ -4,6 +4,7 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <div class="container !px-5 lg:!px-10">
+    {{ data }}
     <div class="flex justify-between pt-5 md:pt-10">
       <div class="w-1/4 pr-5 min-w-50 xl:pr-10 max-md:hidden block">
         <lfx-side-nav
@@ -46,6 +47,7 @@ computed, ref
 } from "vue";
 import {storeToRefs} from "pinia";
 import {useRoute} from "nuxt/app";
+import { BENCHMARKS_API_SERVICE } from '../../services/benchmarks.api.service';
 import type {Widget} from "~/components/modules/widget/types/widget";
 import {lfxWidgets} from "~/components/modules/widget/config/widget.config";
 import type {WidgetArea} from "~/components/modules/widget/types/widget-area";
@@ -78,8 +80,22 @@ const tmpClickedItem = ref('');
 const loadedWidgets = ref<Record<string, boolean>>({});
 
 const { scrollToTarget, scrollToTop } = useScroll();
-const { project, selectedRepoSlugs } = storeToRefs(useProjectStore())
+const { project, selectedRepoSlugs, startDate, endDate, selectedReposValues } = storeToRefs(useProjectStore())
 const isFirstLoad = ref(true);
+
+const params = computed(() => ({
+  projectSlug: route.params.slug as string,
+  repos: selectedReposValues.value,
+  startDate: startDate.value,
+  endDate: endDate.value,
+}))
+
+const {
+  data, 
+  // status, 
+  // error, 
+  // suspense
+} = BENCHMARKS_API_SERVICE.fetchWidgetBenchmarks(params);
 
 const widgets = computed(() => (config.value.widgets || [])
     .filter((widget) => {
@@ -158,6 +174,10 @@ const navigateToWidget = () => {
     }, 100);
   }
 }
+
+// watch(data, (newData) => {
+//   console.log('!!!benchmarks', newData);
+// })
 </script>
 
 <script lang="ts">
