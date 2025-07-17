@@ -81,7 +81,6 @@ import type { MergeLeadTime, MergeLeadTimeItem } from '~~/types/development/resp
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
 import type { Summary } from '~~/types/shared/summary.types';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
-import { isEmptyData } from '~/components/shared/utils/helper';
 import {dateOptKeys} from "~/components/modules/project/config/date-options";
 import { BenchmarkKeys, type Benchmark } from '~~/types/shared/benchmark.types';
 import { formatSecondsToDuration } from '~/components/shared/utils/formatter';
@@ -156,7 +155,11 @@ const currentInDays = computed<number>(() => {
   return Number(formatSecondsToDuration(current, 'no', FormatterUnits.DAYS));
 });
 
-const isEmpty = computed(() => isEmptyData((mergeLeadTime.value?.data || []) as unknown as Record<string, unknown>[]));
+const isEmpty = computed(() => pickup.value.value === 0 &&
+  review.value.value === 0 &&
+  accepted.value.value === 0 &&
+  prMerged.value.value === 0
+);
 
 const callEmit = () => {
   emit('update:benchmarkValue', status.value === 'success' ? {
