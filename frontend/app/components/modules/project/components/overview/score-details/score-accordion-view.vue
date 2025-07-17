@@ -30,7 +30,7 @@ SPDX-License-Identifier: MIT
             />
             <lfx-project-score-list
               v-else-if="tab.value !== 'security'"
-              :data="scoreData"
+              :data="data"
               :name="tab.value as WidgetArea"
             />
             <div
@@ -55,9 +55,8 @@ import LfxProjectScoreList from './score-list.vue';
 import LfxProjectDetailsEmpty from './details-empty.vue';
 import LfxAccordion from "~/components/uikit/accordion/accordion.vue";
 import LfxAccordionItem from "~/components/uikit/accordion/accordion-item.vue";
-import type { TrustScoreSummary, SecurityScore } from '~~/types/overview/responses.types';
+import type { TrustScoreSummary, SecurityScore, HealthScoreResults } from '~~/types/overview/responses.types';
 import type { Tab } from '~/components/uikit/tabs/types/tab.types';
-import type { ScoreData } from '~~/types/shared/benchmark.types';
 import LfxProjectSecurityScore from "~/components/modules/project/components/overview/security/security-score.vue";
 import LfxProjectLoadState from '~~/app/components/modules/project/components/shared/load-state.vue';
 import type { ScoreDisplay } from '~~/types/overview/score-display.types';
@@ -66,8 +65,8 @@ import type { WidgetArea } from '~/components/modules/widget/types/widget-area';
 const props = defineProps<{
   trustScoreSummary: TrustScoreSummary | undefined;
   tabs: Tab[];
+  data: HealthScoreResults | undefined;
   modelValue: string;
-  scoreData: ScoreData[] | undefined;
   scoreDisplay: ScoreDisplay;
   securityScore: SecurityScore[];
   status: AsyncDataRequestStatus;

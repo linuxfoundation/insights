@@ -44,11 +44,18 @@ import commitActivities from "./development/commit-activities/commit-activities.
 import {Widget} from "~/components/modules/widget/types/widget";
 import type {Project} from "~~/types/project";
 import {dateOptKeys} from "~/components/modules/project/config/date-options";
+import {Granularity} from "~~/types/shared/granularity";
 
 export interface WidgetBenchmarkConfig {
     title: string;
     showOnOverview: boolean;
-    isVisible: (model: Record<string, number | boolean | string>, selectedTimeRangeKey: dateOptKeys) => boolean;
+    isVisible: (
+        model: Record<string, number | boolean | string>, 
+        selectedTimeRangeKey: dateOptKeys,
+        startDate: string,
+        endDate: string,
+        granularity?: Granularity
+    ) => boolean;
     points: Record<number, {
         text: string;
         type: 'positive' | 'warning' | 'negative';

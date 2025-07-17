@@ -49,7 +49,7 @@ SPDX-License-Identifier: MIT
           />
           <lfx-project-score-list
             v-else-if="tab.value !== 'security'"
-            :data="scoreData"
+            :data="data"
             :name="tab.value as WidgetArea"
           />
           <lfx-project-security-score
@@ -72,8 +72,7 @@ import LfxTabsPanels from '~/components/uikit/tabs/tabs-panels.vue';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
 import LfxProgressBar from '~/components/uikit/progress-bar/progress-bar.vue';
 import type { ProgressBarType } from '~/components/uikit/progress-bar/types/progress-bar.types';
-import type { TrustScoreSummary, SecurityScore } from '~~/types/overview/responses.types';
-import type { ScoreData } from '~~/types/shared/benchmark.types';
+import type { TrustScoreSummary, SecurityScore, HealthScoreResults } from '~~/types/overview/responses.types';
 import type { Tab } from '~/components/uikit/tabs/types/tab.types';
 import LfxProjectSecurityScore from "~/components/modules/project/components/overview/security/security-score.vue";
 import type { ScoreDisplay } from '~~/types/overview/score-display.types';
@@ -84,8 +83,8 @@ import type { WidgetArea } from '~/components/modules/widget/types/widget-area';
 const props = defineProps<{
   trustScoreSummary: TrustScoreSummary | undefined;
   tabs: Tab[];
+  data: HealthScoreResults | undefined;
   modelValue: string;
-  scoreData: ScoreData[] | undefined;
   scoreDisplay: ScoreDisplay;
   securityScore: SecurityScore[];
   status: AsyncDataRequestStatus;

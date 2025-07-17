@@ -18,6 +18,7 @@ SPDX-License-Identifier: MIT
           <div class="px-6">
             <lfx-project-score-tabs
               :trust-score-summary="trustSummary"
+              :data="data"
               :health-scores="healthScore"
               :status="status"
               :error="error"
@@ -40,8 +41,7 @@ import {
 } from 'vue';
 import { useRoute } from 'nuxt/app';
 import { storeToRefs } from 'pinia';
-import { lfxWidgetArea } from '../../widget/config/widget-area.config';
-import { lfxWidgets } from '../../widget/config/widget.config';
+import { WidgetArea } from '../../widget/types/widget-area';
 import LfxProjectAboutSection from '~/components/modules/project/components/overview/about-section.vue';
 import LfxProjectScoreTabs from '~/components/modules/project/components/overview/score-tabs.vue';
 import LfxProjectTrustScore from '~/components/modules/project/components/overview/trust-score.vue';
@@ -59,31 +59,13 @@ const params = computed(() => ({
 }));
 
 // Contributors score is only displayed if some contributors widgets are enabled
-const displayContributorsScore = computed(() => {
-  const widgets = project.value?.widgets;
-
-  return (lfxWidgetArea.contributors.overviewWidgets || [])
-    .map((widget) => lfxWidgets[widget].key)
-    .some((widget) => widgets?.includes(widget));
-});
+const displayContributorsScore = computed(() => isScoreVisible(WidgetArea.CONTRIBUTORS));
 
 // Development score is only displayed if some development widgets are enabled
-const displayDevelopmentScore = computed(() => {
-  const widgets = project.value?.widgets;
-
-  return (lfxWidgetArea.development.overviewWidgets || [])
-    .map((widget) => lfxWidgets[widget].key)
-    .some((widget) => widgets?.includes(widget));
-});
+const displayDevelopmentScore = computed(() => isScoreVisible(WidgetArea.DEVELOPMENT));
 
 // Popularity score is only displayed if some popularity widgets are enabled
-const displayPopularityScore = computed(() => {
-  const widgets = project.value?.widgets;
-
-  return (lfxWidgetArea.popularity.overviewWidgets || [])
-    .map((widget) => lfxWidgets[widget].key)
-    .some((widget) => widgets?.includes(widget));
-});
+const displayPopularityScore = computed(() => isScoreVisible(WidgetArea.POPULARITY));
 
 // Security score is only displayed if security data is available
 const displaySecurityScore = computed(() => !!securityScore.value);
@@ -119,9 +101,15 @@ const trustSummary = computed<TrustScoreSummary>(() => ({
     development: data.value?.developmentPercentage || 0
   }));
 
+const isScoreVisible = (widgetArea: WidgetArea) => {
+  const widgetKeys = OVERVIEW_API_SERVICE.getOverviewWidgetConfigs(widgetArea);
+  return widgetKeys.some((widget) => project.value?.widgets?.includes(widget.key));
+};
+
 onServerPrefetch(async () => {
   await suspense();
 });
+
 </script>
 
 <script lang="ts">

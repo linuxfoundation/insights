@@ -8,7 +8,7 @@ SPDX-License-Identifier: MIT
       :tabs="tabs"
       :trust-score-summary="parsedTrustScoreSummary"
       :model-value="selectedTab"
-      :score-data="scoreData"
+      :data="data"
       :score-display="scoreDisplay"
       :security-score="securityScore"
       :status="status"
@@ -20,8 +20,8 @@ SPDX-License-Identifier: MIT
     <lfx-project-score-accordion-view
       :tabs="tabs"
       :trust-score-summary="parsedTrustScoreSummary"
+      :data="data"
       :model-value="selectedTab"
-      :score-data="scoreData"
       :score-display="scoreDisplay"
       :security-score="securityScore"
       :status="status"
@@ -36,17 +36,22 @@ import {
  ref, computed
 } from 'vue';
 import type { AsyncDataRequestStatus } from 'nuxt/app';
+import { WidgetArea } from '../../../widget/types/widget-area';
 import LfxProjectScoreTabView from './score-details/score-tab-view.vue';
 import LfxProjectScoreAccordionView from './score-details/score-accordion-view.vue';
-import type { TrustScoreSummary, HealthScore, SecurityScore } from '~~/types/overview/responses.types';
+import type {
+  TrustScoreSummary,
+  HealthScore,
+  SecurityScore,
+  HealthScoreResults,
+} from '~~/types/overview/responses.types';
 import type { Tab } from '~/components/uikit/tabs/types/tab.types';
-import { aggregateData } from '~~/app/components/modules/project/config/overview-aggregates';
-import type { ScoreData } from '~~/types/shared/benchmark.types';
 import type { ScoreDisplay } from '~~/types/overview/score-display.types';
 import { overviewScore } from '~~/app/components/shared/utils/overview-score';
 
 const props = defineProps<{
   trustScoreSummary: TrustScoreSummary | undefined;
+  data: HealthScoreResults | undefined;
   healthScores: HealthScore[] | undefined;
   status: AsyncDataRequestStatus;
   error: unknown;
@@ -55,30 +60,12 @@ const props = defineProps<{
 }>();
 
 const tabs = ref<Tab[]>([
-  { label: 'Contributors', value: 'contributors' },
-  { label: 'Popularity', value: 'popularity' },
-  { label: 'Development', value: 'development' },
-  { label: 'Security & Best practices', value: 'security' }
+  { label: 'Contributors', value: WidgetArea.CONTRIBUTORS },
+  { label: 'Popularity', value: WidgetArea.POPULARITY },
+  { label: 'Development', value: WidgetArea.DEVELOPMENT },
+  { label: 'Security & Best practices', value: WidgetArea.SECURITY }
 ]);
-const selectedTab = ref(tabs.value[0]?.value || 'contributors');
-
-const scoreData = computed<ScoreData[]>(() => {
-  // Find the aggregate data for the selected tab
-  const selectedAggregate = aggregateData.find((aggregate) => aggregate.key === selectedTab.value);
-
-  // If no health scores or no aggregate found, return empty array
-  if (!props.healthScores || !selectedAggregate) {
-    return [];
-  }
-
-  return props.healthScores
-    .filter((score) => selectedAggregate.benchmarkKeys.includes(score.key))
-    .sort((a, b) => (b.points || 0) - (a.points || 0))
-    .map((score) => ({
-      benchmarkKey: score.key,
-      value: score.value
-    }));
-});
+const selectedTab = ref(tabs.value[0]?.value || WidgetArea.CONTRIBUTORS);
 
 const parsedTrustScoreSummary = computed(() => overviewScore(props.trustScoreSummary, props.scoreDisplay));
 </script>
