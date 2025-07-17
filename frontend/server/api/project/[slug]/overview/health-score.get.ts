@@ -8,39 +8,12 @@
  */
 import {DateTime} from 'luxon';
 
-import type {HealthScoreTinybird} from '~~/types/overview/responses.types';
-import {fetchFromTinybird} from "~~/server/data/tinybird/tinybird";
-import {createHealthScoreSchema} from "~~/server/helpers/health-score.helpers";
+import {
+    createHealthScoreSchema,
+    fetchHealthScoreMetrics,
+    HealthScoreFilters
+} from "~~/server/helpers/health-score.helpers";
 
-interface HealthScoreFilters {
-    project: string;
-    repos?: string[];
-    startDate?: DateTime;
-    endDate?: DateTime;
-}
-
-const healthScores: string[] = [
-    'active_contributors',
-    'contributor_dependency',
-    'organization_dependency',
-    'retention',
-    'stars',
-    'forks',
-    'issues_resolution',
-    'pull_requests',
-    'merge_lead_time',
-    'active_days',
-    'contributions_outside_work_hours',
-    'search_volume',
-]
-
-const fetchHealthScore = async (name: string, filter: HealthScoreFilters) => {
-    const res = await fetchFromTinybird<HealthScoreTinybird[]>(`/v0/pipes/health_score_${name}.json`, filter);
-    if (!res.data || res.data.length === 0) {
-        throw createError({statusCode: 404, statusMessage: 'Not found'});
-    }
-    return res.data[0];
-}
 
 export default defineEventHandler(async (event) => {
     const query = getQuery(event);
@@ -63,13 +36,7 @@ export default defineEventHandler(async (event) => {
 
     try {
 
-        const data = await Promise.all(
-            healthScores.map(name => fetchHealthScore(name, filter))
-        );
-        const healthScore: HealthScoreTinybird = data.reduce((mapped, scores) => ({
-            ...mapped,
-            ...scores,
-        }), {} as HealthScoreTinybird)
+        const healthScore = await fetchHealthScoreMetrics(filter);
 
         return createHealthScoreSchema(healthScore);
 
