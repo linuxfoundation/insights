@@ -14,6 +14,7 @@ SPDX-License-Identifier: MIT
             :status="status"
             :error="error"
             :score-display="scoreDisplay"
+            :is-repo-selected="isRepoSelected"
           />
           <div class="px-6">
             <lfx-project-score-tabs
@@ -23,6 +24,7 @@ SPDX-License-Identifier: MIT
               :error="error"
               :score-display="scoreDisplay"
               :security-score="securityScore"
+              :is-repo-selected="isRepoSelected"
             />
           </div>
         </lfx-card>
@@ -102,6 +104,8 @@ const isScoreVisible = (widgetArea: WidgetArea) => {
   const widgetKeys = OVERVIEW_API_SERVICE.getOverviewWidgetConfigs(widgetArea);
   return widgetKeys.some((widget) => project.value?.widgets?.includes(widget.key));
 };
+
+const isRepoSelected = computed(() => selectedReposValues.value.length > 0);
 
 onServerPrefetch(async () => {
   await suspense();
