@@ -36,11 +36,6 @@ const props = withDefaults(defineProps<{
 
 const { selectedTimeRangeKey, startDate, endDate } = storeToRefs(useProjectStore())
 
-// const benchmarkConfig = computed(() => benchmarkConfigs.find((config) => config.key === props.benchmark?.key));
-// const benchmarkValue = computed(() => Math.ceil(props.benchmark?.value || 0));
-// const points = computed(() => benchmarkConfig.value?.points
-//   .find((point) => benchmarkValue.value >= point.pointStart
-//   && (point.pointEnd === null || benchmarkValue.value <= point.pointEnd)));
 const pointDetails = computed(() => props.benchmarkConfig?.points[props.point]);
 const type = computed(() => (pointDetails.value ? pointDetails.value.type : 'negative'));
 const benchmarkText = computed(() => (pointDetails.value ? pointDetails.value.text : ''));

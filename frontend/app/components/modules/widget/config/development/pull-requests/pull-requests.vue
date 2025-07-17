@@ -111,7 +111,6 @@ import { isEmptyData } from '~/components/shared/utils/helper';
 import { barGranularities } from '~/components/shared/types/granularity';
 import { dateOptKeys } from '~/components/modules/project/config/date-options';
 import { Granularity } from '~~/types/shared/granularity';
-import { BenchmarkKeys, type Benchmark } from '~~/types/shared/benchmark.types';
 import {TanstackKey} from "~/components/shared/types/tanstack";
 import LfxSkeletonState from "~/components/modules/project/components/shared/skeleton-state.vue";
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
@@ -127,7 +126,7 @@ const props = defineProps<{
   snapshot?: boolean;
 }>()
 
-const emit = defineEmits<{(e: 'update:benchmarkValue', value: Benchmark | undefined): void;
+const emit = defineEmits<{
 (e: 'dataLoaded', value: string): void;
 (e: 'update:modelValue', value: PullRequestsModel): void
 }>();
@@ -224,18 +223,6 @@ const barChartConfig = computed(() => getBarChartConfigStacked(
 ));
 
 const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
-
-const callEmit = () => {
-  emit('update:benchmarkValue', status.value === 'success' ? {
-    key: BenchmarkKeys.PullRequests,
-    value: openedSummary.value?.current || 0,
-    additionalCheck: granularity.value === Granularity.MONTHLY
-  } : undefined);
-}
-
-callEmit();
-
-watch(chartData, callEmit);
 
 watch(status, (value) => {
   if (value !== 'pending') {

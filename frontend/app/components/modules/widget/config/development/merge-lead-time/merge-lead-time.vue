@@ -82,15 +82,13 @@ import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue'
 import type { Summary } from '~~/types/shared/summary.types';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
 import {dateOptKeys} from "~/components/modules/project/config/date-options";
-import { BenchmarkKeys, type Benchmark } from '~~/types/shared/benchmark.types';
 import { formatSecondsToDuration } from '~/components/shared/utils/formatter';
-import { FormatterUnits } from '~/components/shared/types/formatter.types';
 import {TanstackKey} from "~/components/shared/types/tanstack";
 import LfxSkeletonState from "~/components/modules/project/components/shared/skeleton-state.vue";
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
 import {Widget} from "~/components/modules/widget/types/widget";
 
-const emit = defineEmits<{(e: 'update:benchmarkValue', value: Benchmark | undefined): void;
+const emit = defineEmits<{
 (e: 'dataLoaded', value: string): void;
 }>();
 
@@ -150,27 +148,12 @@ const prMerged = computed<MergeLeadTimeItem>(() => ({
 
 const summary = computed<Summary>(() => mergeLeadTime.value?.summary);
 const current = computed<string>(() => formatSecondsToDuration(mergeLeadTime.value?.summary?.current || 0, 'long'));
-const currentInDays = computed<number>(() => {
-  const current = mergeLeadTime.value?.summary?.current || 0;
-  return Number(formatSecondsToDuration(current, 'no', FormatterUnits.DAYS));
-});
 
 const isEmpty = computed(() => pickup.value.value === 0 &&
   review.value.value === 0 &&
   accepted.value.value === 0 &&
   prMerged.value.value === 0
 );
-
-const callEmit = () => {
-  emit('update:benchmarkValue', status.value === 'success' ? {
-    key: BenchmarkKeys.MergeLeadTime,
-    value: currentInDays.value
-  } : undefined);
-}
-
-callEmit();
-
-watch(mergeLeadTime, callEmit);
 
 // TODO: Await response from Joana regarding this
 const formatDuration = (seconds: number): { value: number, unit: string } => {

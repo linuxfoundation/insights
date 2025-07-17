@@ -79,7 +79,6 @@ import { useProjectStore } from "~/components/modules/project/store/project.stor
 import { isEmptyData } from '~/components/shared/utils/helper';
 import { dateOptKeys } from '~/components/modules/project/config/date-options';
 import type { Granularity } from '~~/types/shared/granularity';
-import { BenchmarkKeys, type Benchmark } from '~~/types/shared/benchmark.types';
 import {TanstackKey} from "~/components/shared/types/tanstack";
 import LfxSkeletonState from "~/components/modules/project/components/shared/skeleton-state.vue";
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
@@ -95,7 +94,6 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{(e: 'update:modelValue', value: StarsModel): void;
-  (e: 'update:benchmarkValue', value: Benchmark | undefined): void;
   (e: 'dataLoaded', value: string): void;
 }>();
 
@@ -196,12 +194,6 @@ onServerPrefetch(async () => {
 const stars = computed<StarsData | undefined>(() => (model.value.activeTab === 'cumulative'
   ? cumulativeData.value as StarsData
   : data.value as StarsData));
-const cumulativeStarsCount = computed<number>(() => {
-  const cumulativeStars = (cumulativeData.value as StarsData)?.data;
-
-  return cumulativeStars && cumulativeStars.length > 0
-    ? cumulativeStars[cumulativeStars.length - 1]!.stars : 0;
-});
 
 const summary = computed<Summary | undefined>(() => stars.value?.summary);
 const chartData = computed<ChartData[]>(
@@ -238,19 +230,6 @@ const barChartConfig = computed(() => getBarChartConfig(
   chartSeries.value,
   barGranularity.value
 ));
-
-const callEmit = () => {
-  emit('update:benchmarkValue', status.value === 'success' ? {
-    key: BenchmarkKeys.Stars,
-    value: cumulativeStarsCount.value
-  } : undefined);
-}
-
-callEmit();
-
-watch(cumulativeStatus, () => {
-  callEmit();
-});
 
 watch(status, (value) => {
   if (value !== 'pending') {

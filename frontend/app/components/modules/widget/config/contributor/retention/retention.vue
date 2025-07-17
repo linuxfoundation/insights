@@ -65,7 +65,6 @@ import { useProjectStore } from "~/components/modules/project/store/project.stor
 import { isEmptyData } from '~/components/shared/utils/helper';
 import type { Retention } from '~~/types/contributors/responses.types';
 import { Granularity } from '~~/types/shared/granularity';
-import { BenchmarkKeys, type Benchmark } from '~~/types/shared/benchmark.types';
 import {TanstackKey} from "~/components/shared/types/tanstack";
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
 import {Widget} from "~/components/modules/widget/types/widget";
@@ -79,7 +78,7 @@ const props = defineProps<{
   snapshot?: boolean
 }>()
 
-const emit = defineEmits<{(e: 'update:benchmarkValue', value: Benchmark | undefined): void;
+const emit = defineEmits<{
   (e: 'dataLoaded', value: string): void;
   (e: 'update:modelValue', value: RetentionModel): void
 }>();
@@ -147,8 +146,6 @@ const chartData = computed<ChartData[]>(
     'endDate'
   )
 );
-const retentionValue = computed(() => (chartData.value && chartData.value.length > 0
-  ? chartData.value[chartData.value.length - 1]?.values[0] : 0));
 
 const isEmpty = computed(() => isBelowThreshold.value
   || isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
@@ -181,18 +178,6 @@ const lineAreaChartConfig = computed(() => getLineAreaChartConfig(
   granularity,
   (value: number, index?: number) => `${index === 0 ? '' : `${value}%`}`
 ));
-
-const callEmit = () => {
-  emit('update:benchmarkValue', status.value === 'success' ? {
-    key: BenchmarkKeys.Retention,
-    value: retentionValue.value || 0,
-    additionalCheck: model.value.activeTab === 'contributors'
-  } : undefined);
-}
-
-callEmit();
-
-watch(chartData, callEmit);
 
 watch(status, (value) => {
   if (value !== 'pending') {

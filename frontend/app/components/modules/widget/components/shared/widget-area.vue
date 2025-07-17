@@ -25,14 +25,11 @@ SPDX-License-Identifier: MIT
               :key="widget"
               :observer="observer"
             >
-              <!-- <lfx-benchmarks-wrap :benchmark="getBenchmarks(widget)"> -->
               <lfx-widget
                 :name="widget"
                 :benchmark-scores="data"
-                @update:benchmark-value="onBenchmarkUpdate"
                 @data-loaded="onDataLoaded"
               />
-              <!-- </lfx-benchmarks-wrap> -->
             </lfx-scroll-view>
           </template>
         </lfx-scroll-area>
@@ -57,7 +54,6 @@ import LfxScrollView from "~/components/uikit/scroll-view/scroll-view.vue";
 import LfxScrollArea from "~/components/uikit/scroll-view/scroll-area.vue";
 import useScroll from "~/components/shared/utils/scroll";
 import LfxWidget from "~/components/modules/widget/components/shared/widget.vue";
-import type { Benchmark } from '~~/types/shared/benchmark.types';
 import {useProjectStore} from "~/components/modules/project/store/project.store";
 import { useQueryParam } from "~/components/shared/utils/query-param";
 import {
@@ -75,7 +71,6 @@ const { showToast } = useToastService();
 
 const route = useRoute();
 const config = computed<WidgetAreaConfig>(() => lfxWidgetArea[props.name]);
-const benchmarks = ref<Record<string, Benchmark | undefined>>({});
 
 const { queryParams } = useQueryParam(processProjectParams, projectParamsSetter);
 const activeItem = ref(queryParams.value.widget || config.value.widgets?.[0] || '');
@@ -139,11 +134,6 @@ const onScrolledToView = (value: string) => {
   }
 };
 
-const onBenchmarkUpdate = (value: Benchmark | undefined) => {
-  if (value) {
-    benchmarks.value[value.key] = value;
-  }
-}
 /**
  * These functions are used to navigate to the widget in the url params.
  * It checks if the widgets above the current widget are loaded and if so, it navigates to the current widget.
