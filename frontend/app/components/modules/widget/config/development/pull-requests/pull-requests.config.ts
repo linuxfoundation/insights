@@ -16,13 +16,7 @@ const pullRequests: WidgetConfig = {
   benchmark: {
     title: 'New Pull Requests per Month',
     showOnOverview: true,
-    isVisible: (
-      _model: Record<string, number | boolean | string>,
-      _selectedTimeRangeKey: string,
-      _startDate: string,
-      _endDate: string,
-      granularity?: Granularity
-    ) => granularity === Granularity.MONTHLY,
+    isVisible: (model: Record<string, number | boolean | string>) => model.granularity === Granularity.MONTHLY,
     points: {
       0: {
         type: 'negative',

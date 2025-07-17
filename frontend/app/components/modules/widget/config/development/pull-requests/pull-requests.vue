@@ -119,12 +119,17 @@ import LfxProjectPullRequestLegendItem
   from "~/components/modules/widget/components/development/fragments/pull-request-legend-item.vue";
 import {Widget} from "~/components/modules/widget/types/widget";
 
+interface PullRequestsModel {
+  granularity: Granularity;
+}
+
 const props = defineProps<{
   snapshot?: boolean;
 }>()
 
 const emit = defineEmits<{(e: 'update:benchmarkValue', value: Benchmark | undefined): void;
 (e: 'dataLoaded', value: string): void;
+(e: 'update:modelValue', value: PullRequestsModel): void
 }>();
 
 const {
@@ -239,6 +244,10 @@ watch(status, (value) => {
 }, {
   immediate: true
 });
+
+watch(granularity, (value) => {
+  emit('update:modelValue', { granularity: value });
+}, { immediate: true });
 </script>
 
 <script lang="ts">

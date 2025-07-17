@@ -18,17 +18,16 @@ const issuesResolution: WidgetConfig = {
     title: 'Issues Resolution',
     showOnOverview: true,
     isVisible: (
-      _model: Record<string, number | boolean | string>,
+      model: Record<string, number | boolean | string>,
       _selectedTimeRangeKey: string,
       startDate: string,
-      endDate: string,
-      granularity?: Granularity
+      endDate: string
     ) => {
       const start = DateTime.fromISO(startDate)
       const end = DateTime.fromISO(endDate)
       const diffInDays = Math.ceil(end.diff(start, 'days').days)
 
-      return diffInDays > 60 && granularity === Granularity.WEEKLY
+      return diffInDays > 60 && model.granularity === Granularity.WEEKLY
     },
     points: {
       0: {

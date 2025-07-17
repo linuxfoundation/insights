@@ -61,6 +61,7 @@ const model = ref(config.value.defaultValue || {})
 
 const { project } = storeToRefs(useProjectStore());
 
+// TODO: move the benchmark component here
 </script>
 
 <script lang="ts">

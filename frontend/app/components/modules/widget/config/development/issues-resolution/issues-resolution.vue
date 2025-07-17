@@ -116,12 +116,17 @@ import LfxSkeletonState from "~/components/modules/project/components/shared/ske
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
 import {Widget} from "~/components/modules/widget/types/widget";
 
+interface IssuesResolutionModel {
+  granularity: Granularity;
+}
+
 const props = defineProps<{
   snapshot?: boolean
 }>()
 
 const emit = defineEmits<{(e: 'update:benchmarkValue', value: Benchmark | undefined): void;
 (e: 'dataLoaded', value: string): void;
+(e: 'update:modelValue', value: IssuesResolutionModel): void
 }>();
 
 const {
@@ -238,6 +243,10 @@ watch(status, (value) => {
 }, {
   immediate: true
 });
+
+watch(granularity, (value) => {
+  emit('update:modelValue', { granularity: value });
+}, { immediate: true });
 </script>
 
 <script lang="ts">
