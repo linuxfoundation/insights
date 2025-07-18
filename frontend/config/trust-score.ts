@@ -1,6 +1,8 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 
+import {useRuntimeConfig} from "#imports";
+
 export interface TrustScoreConfig {
   maxScore: number;
   minScore: number;
@@ -47,14 +49,12 @@ export const lfxTrustScore: TrustScoreConfig[] = [
   },
 ];
 
-export const getScoreBadgeUrl = (scoreConfig: TrustScoreConfig) => {
-  const label = 'Health Score';
-  const message = encodeURIComponent(scoreConfig.label);
-  const color = scoreConfig.ghBadgeColor.replace('#', '');
-
-  return getBadgeUrl(label, message, color);
+export const getBadgeUrl = (type: string, projectSlug: string) => {
+  const config = useRuntimeConfig();
+  return `${config.public.appUrl}/api/badge/${type}?project=${projectSlug}`;
 };
-
-export const getBadgeUrl = (label: string, message: string, color: string) => `https://img.shields.io/static/v1?label=${encodeURIComponent(
-    label
-  )}&message=${message}&color=${color}&logo=linuxfoundation&logoColor=white&style=flat`;
+export const getHealthScoreConfig = (score: number) => {
+  return lfxTrustScore.find(
+      (s) => score <= s.maxScore && score >= s.minScore
+  ) || lfxTrustScore.at(-1)!
+};
