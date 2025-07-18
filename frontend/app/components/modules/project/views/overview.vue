@@ -69,7 +69,7 @@ const displayDevelopmentScore = computed(() => isScoreVisible(WidgetArea.DEVELOP
 const displayPopularityScore = computed(() => isScoreVisible(WidgetArea.POPULARITY));
 
 // Security score is only displayed if security data is available
-const displaySecurityScore = computed(() => !!securityScore.value);
+const displaySecurityScore = computed(() => securityScore.value && securityScore.value.length > 0);
 
 const scoreDisplay = computed(() => ({
   overall: displayContributorsScore.value

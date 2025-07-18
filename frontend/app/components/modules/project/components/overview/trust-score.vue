@@ -98,11 +98,8 @@ import type { AsyncDataRequestStatus } from 'nuxt/app';
 import LfxProjectTrustScoreDisplay from './trust-score/score-display.vue';
 import LfxProjectTrustScoreShareBadge from './trust-score/share-badge.vue';
 import { links } from '~/config/links';
-import { isEmptyData } from '~~/app/components/shared/utils/helper';
-import type { ChartData } from '~~/app/components/uikit/chart/types/ChartTypes';
 import type { TrustScoreSummary } from '~~/types/overview/responses.types';
 import type { ScoreDisplay } from '~~/types/overview/score-display.types';
-import { overviewScore } from '~~/app/components/shared/utils/overview-score';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxSkeletonState from "~/components/modules/project/components/shared/skeleton-state.vue";
 
@@ -117,37 +114,13 @@ const props = defineProps<{
 const overallScore = computed(() => Math.round((props.trustScoreSummary ? (props.trustScoreSummary).overall : 0)));
 const hideOverallScore = computed(() => Object.values(props.scoreDisplay).some((score) => !score));
 
-const chartData = computed<ChartData[]>(
-  // convert the data to chart data
-  () => {
-    const score = overviewScore(props.trustScoreSummary, props.scoreDisplay);
-
-    if (!score) {
-      return [];
-    }
-
-    return [
-      {
-        key: 'popularity',
-        values: [score.popularity]
-      },
-      {
-        key: 'contributors',
-        values: [score.contributors]
-      },
-      {
-        key: 'security',
-        values: [score.security]
-      },
-      {
-        key: 'development',
-        values: [score.development]
-      }
-    ];
-  }
-);
-
-const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
+const isEmpty = computed(() => [
+  props.trustScoreSummary?.overall, 
+  props.trustScoreSummary?.contributors, 
+  props.trustScoreSummary?.popularity, 
+  props.trustScoreSummary?.development,
+  props.trustScoreSummary?.security,
+].every((score) => score === 0));
 
 </script>
 <script lang="ts">
