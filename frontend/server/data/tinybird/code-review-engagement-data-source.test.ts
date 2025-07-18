@@ -9,13 +9,85 @@ import {
   mockPRParticipantsPreviousSummary,
   mockPRParticipantsData,
 } from '../../mocks/tinybird-code-review-engagement-response.mock';
-import type {ActiveContributorsFilter, ContributorsLeaderboardFilter} from "~~/server/data/types";
+import {
+  mockActivitiesCountCurrentSummary,
+  mockActivitiesCountPreviousSummary,
+  mockQuarterlyActivitiesCountData,
+} from "~~/server/mocks/tinybird-activities-count.mock";
 import type {CodeReviewEngagement} from "~~/types/development/responses.types";
 import type {CodeReviewEngagementFilter} from "~~/types/development/requests.types";
 import {CodeReviewEngagementMetric} from "~~/types/development/requests.types";
 import {ActivityTypes} from "~~/types/shared/activity-types";
+import {
+  ActiveContributorsTinybirdQuery, ActivitiesCountTinybirdQuery,
+  ContributorsLeaderboardTinybirdQuery
+} from "~~/server/data/tinybird/requests.types";
+import {Granularity} from "~~/types/shared/granularity";
 
 const mockFetchFromTinybird = vi.fn();
+
+/**
+ * returns the expected Tinybird queries based on the provided filter and activity types.
+ */
+function getTinybirdQueries(filter: CodeReviewEngagementFilter, expectedActivityTypes: ActivityTypes[]) {
+  const participantsCurrentSummaryQuery: ActiveContributorsTinybirdQuery = {
+    project: filter.project,
+    repos: filter.repos,
+    activity_types: expectedActivityTypes,
+    startDate: filter.startDate,
+    endDate: filter.endDate,
+  };
+
+  const participantsPreviousSummaryQuery: ActiveContributorsTinybirdQuery = {
+    ...participantsCurrentSummaryQuery,
+    startDate: DateTime.utc(2023, 3, 19),
+    endDate: DateTime.utc(2024, 3, 19),
+  };
+
+  const participantsDataQuery: ContributorsLeaderboardTinybirdQuery = {
+    ...participantsCurrentSummaryQuery,
+    limit: 5,
+  };
+
+  const commentsCurrentSummaryQuery: ActivitiesCountTinybirdQuery = participantsCurrentSummaryQuery;
+  const commentsPreviousSummaryQuery: ActivitiesCountTinybirdQuery = participantsPreviousSummaryQuery;
+  const commentsDataQuery: ActivitiesCountTinybirdQuery = {
+    ...commentsCurrentSummaryQuery,
+    granularity: filter.granularity,
+  };
+
+  const reviewsCurrentSummaryQuery: ActivitiesCountTinybirdQuery = commentsCurrentSummaryQuery;
+  const reviewsPreviousSummaryQuery: ActivitiesCountTinybirdQuery = participantsPreviousSummaryQuery;
+  const reviewsDataQuery: ActivitiesCountTinybirdQuery = commentsDataQuery;
+
+  let expectedCurrentSummaryQuery, expectedPreviousSummaryQuery, expectedDataQuery;
+
+  switch (filter.metric) {
+    case CodeReviewEngagementMetric.PR_PARTICIPANTS:
+      expectedCurrentSummaryQuery = participantsCurrentSummaryQuery;
+      expectedPreviousSummaryQuery = participantsPreviousSummaryQuery;
+      expectedDataQuery = participantsDataQuery;
+      break;
+    case CodeReviewEngagementMetric.REVIEW_COMMENTS:
+      expectedCurrentSummaryQuery = commentsCurrentSummaryQuery;
+      expectedPreviousSummaryQuery = commentsPreviousSummaryQuery;
+      expectedDataQuery = commentsDataQuery;
+      break;
+    case CodeReviewEngagementMetric.CODE_REVIEWS:
+      expectedCurrentSummaryQuery = reviewsCurrentSummaryQuery;
+      expectedPreviousSummaryQuery = reviewsPreviousSummaryQuery;
+      expectedDataQuery = reviewsDataQuery;
+      break;
+    default:
+      throw new Error('Invalid metric');
+  }
+
+  return {
+    expectedCurrentSummaryQuery,
+    expectedPreviousSummaryQuery,
+    expectedDataQuery
+  }
+}
 
 describe('Code Review Engagement Data Source', () => {
   beforeEach(() => {
@@ -48,20 +120,30 @@ describe('Code Review Engagement Data Source', () => {
     ActivityTypes.PULL_REQUEST_REVIEWED,
   ];
 
-  test.each([
-    [CodeReviewEngagementMetric.PR_PARTICIPANTS, expectedPRParticipantsActivityTypes],
-    [CodeReviewEngagementMetric.REVIEW_COMMENTS, expectedReviewCommentsActivityTypes],
-    [CodeReviewEngagementMetric.CODE_REVIEWS, expectedCodeReviewsActivityTypes],
-  ])(
-    'should fetch code review engagement data with correct parameters',
-    async (metric: CodeReviewEngagementMetric, expectedActivityTypes: ActivityTypes[]) => {
+  type MockResponse =
+    | typeof mockPRParticipantsCurrentSummary
+    | typeof mockPRParticipantsPreviousSummary
+    | typeof mockPRParticipantsData
+    | typeof mockActivitiesCountCurrentSummary
+    | typeof mockActivitiesCountPreviousSummary
+    | typeof mockQuarterlyActivitiesCountData;
+
+  async function testCodeReviewEngagement(
+    metric: CodeReviewEngagementMetric,
+    expectedActivityTypes: ActivityTypes[],
+    expectedSummariesPath: string,
+    expectedDataPath: string,
+    currentSummaryMock: MockResponse,
+    previousSummaryMock: MockResponse,
+    dataMock: MockResponse
+  ) {
     // We have to import this here again because vi.doMock is not hoisted. See the explanation in beforeEach().
     const {fetchCodeReviewEngagement} = await import("~~/server/data/tinybird/code-review-engagement-data-source");
 
     mockFetchFromTinybird
-      .mockResolvedValueOnce(mockPRParticipantsCurrentSummary)
-      .mockResolvedValueOnce(mockPRParticipantsPreviousSummary)
-      .mockResolvedValueOnce(mockPRParticipantsData);
+      .mockResolvedValueOnce(currentSummaryMock)
+      .mockResolvedValueOnce(previousSummaryMock)
+      .mockResolvedValueOnce(dataMock);
 
     const startDate = DateTime.utc(2024, 3, 20);
     const endDate = DateTime.utc(2025, 3, 20);
@@ -69,6 +151,7 @@ describe('Code Review Engagement Data Source', () => {
     const filter: CodeReviewEngagementFilter = {
       project: 'the-linux-kernel-organization',
       repos: ['some-repo'],
+      granularity: Granularity.QUARTERLY,
       metric,
       startDate,
       endDate
@@ -76,49 +159,65 @@ describe('Code Review Engagement Data Source', () => {
 
     const result = await fetchCodeReviewEngagement(filter);
 
-    const expectedCurrentSummaryQuery: ActiveContributorsFilter = {
-      project: filter.project,
-      repos: filter.repos,
-      activity_types: expectedActivityTypes,
-      startDate: filter.startDate,
-      endDate: filter.endDate,
-    };
-
-    const expectedPreviousSummaryQuery: ActiveContributorsFilter = {
-      project: filter.project,
-      repos: filter.repos,
-      activity_types: expectedActivityTypes,
-      startDate: DateTime.utc(2023, 3, 19),
-      endDate: DateTime.utc(2024, 3, 19),
-    };
-
-    const expectedDataQuery: ContributorsLeaderboardFilter = {
-      project: filter.project,
-      repos: filter.repos,
-      activity_types: expectedActivityTypes,
-      limit: 5,
-      startDate: filter.startDate,
-      endDate: filter.endDate,
-    };
+    const {
+      expectedCurrentSummaryQuery,
+      expectedPreviousSummaryQuery,
+      expectedDataQuery
+    } = getTinybirdQueries(filter, expectedActivityTypes);
 
     expect(mockFetchFromTinybird).toHaveBeenNthCalledWith(
       1,
-      '/v0/pipes/active_contributors.json',
+      expectedSummariesPath,
       expectedCurrentSummaryQuery
     );
     expect(mockFetchFromTinybird).toHaveBeenNthCalledWith(
       2,
-      '/v0/pipes/active_contributors.json',
+      expectedSummariesPath,
       expectedPreviousSummaryQuery
     );
     expect(mockFetchFromTinybird).toHaveBeenNthCalledWith(
       3,
-      '/v0/pipes/contributors_leaderboard.json',
+      expectedDataPath,
       expectedDataQuery
     );
 
-    const currentCount = mockPRParticipantsCurrentSummary.data[0]?.contributorCount || 0;
-    const previousCount = mockPRParticipantsPreviousSummary.data[0]?.contributorCount || 0;
+    let currentCount = 0;
+    let previousCount =  0;
+    let resultData;
+
+    switch (filter.metric) {
+      case CodeReviewEngagementMetric.PR_PARTICIPANTS:
+        currentCount = mockPRParticipantsCurrentSummary.data[0].contributorCount;
+        previousCount = mockPRParticipantsPreviousSummary.data[0].contributorCount;
+        resultData = mockPRParticipantsData.data.map((item) => ({
+          avatar: item.avatar,
+          name: item.displayName,
+          activityCount: item.contributionCount,
+          percentage: item.contributionPercentage,
+          roles: item.roles || [],
+        }));
+        break;
+      case CodeReviewEngagementMetric.REVIEW_COMMENTS:
+        currentCount = mockActivitiesCountCurrentSummary.data[0].activityCount;
+        previousCount = mockActivitiesCountPreviousSummary.data[0].activityCount;
+        resultData = mockQuarterlyActivitiesCountData.data.map((item) => ({
+          startDate: item.startDate,
+          endDate: item.endDate,
+          comments: item.activityCount,
+        }));
+        break;
+      case CodeReviewEngagementMetric.CODE_REVIEWS:
+        currentCount = mockActivitiesCountCurrentSummary.data[0].activityCount;
+        previousCount = mockActivitiesCountPreviousSummary.data[0].activityCount;
+        resultData = mockQuarterlyActivitiesCountData.data.map((item) => ({
+          startDate: item.startDate,
+          endDate: item.endDate,
+          reviews: item.activityCount,
+        }));
+        break;
+      default:
+        throw new Error('Invalid metric');
+    }
 
     const expectedResult: CodeReviewEngagement = {
       summary: {
@@ -129,18 +228,39 @@ describe('Code Review Engagement Data Source', () => {
         periodFrom: filter.startDate?.toISO() || '',
         periodTo: filter.endDate?.toISO() || '',
       },
-      data: mockPRParticipantsData.data.map((item) => ({
-        avatar: item.avatar,
-        name: item.displayName,
-        activityCount: item.contributionCount,
-        percentage: item.contributionPercentage,
-        roles: item.roles || [],
-      }))
+      data: resultData
     };
 
     expect(result).toEqual(expectedResult);
   }
-);
 
-  // TODO: Add checks for invalid dates, invalid data, sql injections, and other edge cases.
+  test.each([
+    [
+      CodeReviewEngagementMetric.PR_PARTICIPANTS,
+      expectedPRParticipantsActivityTypes,
+      '/v0/pipes/active_contributors.json',
+      '/v0/pipes/contributors_leaderboard.json',
+      mockPRParticipantsCurrentSummary,
+      mockPRParticipantsPreviousSummary,
+      mockPRParticipantsData
+    ],
+    [
+      CodeReviewEngagementMetric.REVIEW_COMMENTS,
+      expectedReviewCommentsActivityTypes,
+      '/v0/pipes/activities_count.json',
+      '/v0/pipes/activities_count.json',
+      mockActivitiesCountCurrentSummary,
+      mockActivitiesCountPreviousSummary,
+      mockQuarterlyActivitiesCountData
+    ],
+    [
+      CodeReviewEngagementMetric.CODE_REVIEWS,
+      expectedCodeReviewsActivityTypes,
+      '/v0/pipes/activities_count.json',
+      '/v0/pipes/activities_count.json',
+      mockActivitiesCountCurrentSummary,
+      mockActivitiesCountPreviousSummary,
+      mockQuarterlyActivitiesCountData
+    ],
+  ])('should fetch code review engagement data with correct parameters', testCodeReviewEngagement);
 });

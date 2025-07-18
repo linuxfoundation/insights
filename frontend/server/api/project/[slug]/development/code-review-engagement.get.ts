@@ -3,6 +3,7 @@
 import {DateTime} from "luxon";
 import {createDataSource} from "~~/server/data/data-sources";
 import type {CodeReviewEngagementFilter, CodeReviewEngagementMetric} from "~~/types/development/requests.types";
+import {Granularity} from "~~/types/shared/granularity";
 
 /**
  * Frontend expects the data to be in the following format:
@@ -41,6 +42,7 @@ export default defineEventHandler(async (event) => {
   const filter: CodeReviewEngagementFilter = {
     project,
     repos,
+    granularity: (query?.granularity as Granularity) || Granularity.QUARTERLY,
     metric: query.metric as CodeReviewEngagementMetric,
     startDate: query.startDate ? DateTime.fromISO(query.startDate as string) : undefined,
     endDate: query.endDate ? DateTime.fromISO(query.endDate as string) : undefined,
