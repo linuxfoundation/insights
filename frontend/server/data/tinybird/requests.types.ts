@@ -3,6 +3,7 @@
 import type {DateTime} from "luxon";
 import type {ActivityPlatforms} from "~~/types/shared/activity-platforms";
 import type {ActivityTypes} from "~~/types/shared/activity-types";
+import {Granularity} from "~~/types/shared/granularity";
 
 export type ContributorsLeaderboardTinybirdQuery = {
   project: string;
@@ -41,4 +42,9 @@ export type SearchVolumeTinybirdQuery = {
   project: string;
   startDate?: DateTime;
   endDate?: DateTime;
+}
+
+export type ActivityTypesTinybirdQuery = {
+  project: string;
+  repo?: string;
 }

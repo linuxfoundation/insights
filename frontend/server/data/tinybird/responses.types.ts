@@ -53,3 +53,7 @@ export type TinybirdSearchVolumeData = {
   volume: number;
   updatedAt: DateTime;
 }
+
+export type TinybirdActivityTypesResponse = {
+  [platform: string]: string[];
+};
