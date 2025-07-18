@@ -8,26 +8,60 @@ SPDX-License-Identifier: MIT
     class="flex flex-col gap-4"
   >
     <div
-      v-for="item in data"
-      :key="item.benchmarkKey"
+      v-for="item in scoresData"
+      :key="item?.key"
       class="[&:not(:last-child)]:border-b border-neutral-100 [&:not(:last-child)]:pb-4"
     >
       <lfx-score-item
-        :benchmark-key="item.benchmarkKey"
+        v-if="item"
+        :widget-key="item.key"
         :value="item.value"
+        :benchmark="item.benchmark"
       />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
+import { storeToRefs } from 'pinia';
+import { OVERVIEW_API_SERVICE } from '../../../services/overview.api.service';
 import LfxScoreItem from './score-item.vue';
-import type { ScoreData } from '~~/types/shared/benchmark.types';
+import type { BenchmarkScoreData, HealthScoreResults } from '~~/types/overview/responses.types';
+import type { WidgetArea } from '~/components/modules/widget/types/widget-area';
+import { useProjectStore } from '~/components/modules/project/store/project.store';
 
-defineProps<{
-  data: ScoreData[] | undefined;
+const props = defineProps<{
+  data: HealthScoreResults | undefined;
+  name: WidgetArea;
 }>();
+const { project, selectedRepoSlugs } = storeToRefs(useProjectStore())
 
+const widgetConfigs = computed(() => OVERVIEW_API_SERVICE.getOverviewWidgetConfigs(props.name)
+  .filter((widget) => {
+    return (
+      project.value?.widgets.includes(widget.key)
+      && (!widget?.hideOnRepoFilter || !selectedRepoSlugs.value.length)
+    );
+  }));
+
+/**
+ * Widget keys stored in the DB are camelCase, but the widget in the widget 
+ * area configs are kebab-case, so is the enum that we use to match the widget
+ */
+const scoresData = computed(() => widgetConfigs.value.map((widget) => {
+  const score = props.data?.[widget.key as keyof HealthScoreResults];
+
+  if (score) {
+    const scoreData = score as BenchmarkScoreData;
+    return {
+      key: widget.key,
+      value: scoreData.value,
+      benchmark: scoreData.benchmark,
+    };
+  }
+  return null;
+}).sort((a, b) => (b?.benchmark || 0) - (a?.benchmark || 0)));
 </script>
 <script lang="ts">
 export default {

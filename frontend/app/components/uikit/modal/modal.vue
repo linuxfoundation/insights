@@ -9,8 +9,8 @@ SPDX-License-Identifier: MIT
         class="c-modal"
         @click="clickOutsideClose()"
       >
-        <div 
-          v-if="props.showCloseButton" 
+        <div
+          v-if="props.showCloseButton"
           class="c-modal__content-wrapper"
           :style="{ 'max-width': props.width }"
         >
@@ -57,7 +57,8 @@ const props = withDefaults(defineProps<{
   closeFunction?:() => boolean,
 }>(), {
   width: '37.5rem',
-  closeFunction: () => true
+  closeFunction: () => true,
+  contentClass: undefined,
 });
 
 const emit = defineEmits<{(e: 'update:modelValue', value: boolean): void }>();

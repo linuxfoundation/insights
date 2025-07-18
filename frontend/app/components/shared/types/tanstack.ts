@@ -43,6 +43,7 @@ export enum TanstackKey {
   MAILING_LISTS_MESSAGES = 'mailing-lists-messages',
   // Overview
   HEALTH_SCORE = 'health-score',
+  HEALTH_SCORE_OVERVIEW = 'health-score-overview',
   TRUST_SCORE_SUMMARY = 'trust-score-summary',
   SCORE_DATA = 'score-data',
   ASSOCIATED_ORGANIZATION = 'associated-organization',

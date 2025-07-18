@@ -14,15 +14,17 @@ SPDX-License-Identifier: MIT
             :status="status"
             :error="error"
             :score-display="scoreDisplay"
+            :is-repo-selected="isRepoSelected"
           />
           <div class="px-6">
             <lfx-project-score-tabs
               :trust-score-summary="trustSummary"
-              :health-scores="healthScore"
+              :data="data"
               :status="status"
               :error="error"
-              :security-data="securityAssessmentData || []"
               :score-display="scoreDisplay"
+              :security-score="securityScore"
+              :is-repo-selected="isRepoSelected"
             />
           </div>
         </lfx-card>
@@ -40,15 +42,12 @@ import {
 } from 'vue';
 import { useRoute } from 'nuxt/app';
 import { storeToRefs } from 'pinia';
-import type { AsyncDataRequestStatus } from 'nuxt/app';
-import { lfxWidgetArea } from '../../widget/config/widget-area.config';
-import { lfxWidgets } from '../../widget/config/widget.config';
+import { WidgetArea } from '../../widget/types/widget-area';
 import LfxProjectAboutSection from '~/components/modules/project/components/overview/about-section.vue';
 import LfxProjectScoreTabs from '~/components/modules/project/components/overview/score-tabs.vue';
 import LfxProjectTrustScore from '~/components/modules/project/components/overview/trust-score.vue';
 import { useProjectStore } from "~~/app/components/modules/project/store/project.store";
 import { OVERVIEW_API_SERVICE } from '~~/app/components/modules/project/services/overview.api.service';
-import {PROJECT_SECURITY_SERVICE} from "~/components/modules/project/services/security.service";
 import type { TrustScoreSummary } from '~~/types/overview/responses.types';
 import LfxCard from '~/components/uikit/card/card.vue';
 
@@ -60,35 +59,17 @@ const params = computed(() => ({
   repos: selectedReposValues.value
 }));
 
-// Contributors score is only displayed if all contributors widgets are enabled
-const displayContributorsScore = computed(() => {
-  const widgets = project.value?.widgets;
+// Contributors score is only displayed if some contributors widgets are enabled
+const displayContributorsScore = computed(() => isScoreVisible(WidgetArea.CONTRIBUTORS));
 
-  return (lfxWidgetArea.contributors.overviewWidgets || [])
-    .map((widget) => lfxWidgets[widget].key)
-    .every((widget) => widgets?.includes(widget));
-});
+// Development score is only displayed if some development widgets are enabled
+const displayDevelopmentScore = computed(() => isScoreVisible(WidgetArea.DEVELOPMENT));
 
-// Development score is only displayed if all development widgets are enabled
-const displayDevelopmentScore = computed(() => {
-  const widgets = project.value?.widgets;
-
-  return (lfxWidgetArea.development.overviewWidgets || [])
-    .map((widget) => lfxWidgets[widget].key)
-    .every((widget) => widgets?.includes(widget));
-});
-
-// Popularity score is only displayed if all popularity widgets are enabled
-const displayPopularityScore = computed(() => {
-  const widgets = project.value?.widgets;
-
-  return (lfxWidgetArea.popularity.overviewWidgets || [])
-    .map((widget) => lfxWidgets[widget].key)
-    .every((widget) => widgets?.includes(widget));
-});
+// Popularity score is only displayed if some popularity widgets are enabled
+const displayPopularityScore = computed(() => isScoreVisible(WidgetArea.POPULARITY));
 
 // Security score is only displayed if security data is available
-const displaySecurityScore = computed(() => !!ospsScore.value);
+const displaySecurityScore = computed(() => securityScore.value && securityScore.value.length > 0);
 
 const scoreDisplay = computed(() => ({
   overall: displayContributorsScore.value
@@ -102,50 +83,34 @@ const scoreDisplay = computed(() => ({
 }))
 
 const {
-  data, status: healthScoreStatus, error: healthScoreError, suspense
-} = OVERVIEW_API_SERVICE.fetchHealthScore(params);
+  data, 
+  status, 
+  error, 
+  suspense
+} = OVERVIEW_API_SERVICE.fetchHealthScoreOverview(params);
 
-const {
-  data: securityAssessmentDataRaw,
-  status: securityAssessmentStatus,
-  error: securityAssessmentError, suspense: securityAssessmentSuspense
-} = OVERVIEW_API_SERVICE.fetchSecurityAssessment(params);
 
-// TODO: Remove this when we have data for them
-const securityAssessmentData = computed(() => PROJECT_SECURITY_SERVICE
-.removeDocumentationAndVulnerability(securityAssessmentDataRaw.value || []));
+const securityScore = computed(() => (data.value?.securityCategoryPercentage || []));
 
-const status = computed<AsyncDataRequestStatus>(() => {
-  if (healthScoreStatus.value === 'success' && securityAssessmentStatus.value === 'success') {
-    return 'success';
-  }
-  if (healthScoreStatus.value === 'error' || securityAssessmentStatus.value === 'error') {
-    return 'error';
-  }
-
-  return 'pending';
-});
-const error = computed(() => healthScoreError.value || securityAssessmentError.value);
-
-const healthScore = computed(() => (data.value
-  ? OVERVIEW_API_SERVICE.convertRawValuesToHealthScore(data.value) : []));
-
-const ospsScore = computed(() => PROJECT_SECURITY_SERVICE
-  .calculateOSPSScore((securityAssessmentData.value || []), !!selectedReposValues.value.length));
-
-const trustSummary = computed<TrustScoreSummary>(() => (healthScore.value
-  ? OVERVIEW_API_SERVICE.convertPointsToTrustSummary(healthScore.value, ospsScore.value) : {
-    overall: 0,
-    popularity: 0,
-    contributors: 0,
-    security: 0,
-    development: 0
+const trustSummary = computed<TrustScoreSummary>(() => ({
+    overall: data.value?.overallScore || 0,
+    popularity: data.value?.popularityPercentage || 0,
+    contributors: data.value?.contributorPercentage || 0,
+    security: data.value?.securityPercentage || 0,
+    development: data.value?.developmentPercentage || 0
   }));
+
+const isScoreVisible = (widgetArea: WidgetArea) => {
+  const widgetKeys = OVERVIEW_API_SERVICE.getOverviewWidgetConfigs(widgetArea);
+  return widgetKeys.some((widget) => project.value?.widgets?.includes(widget.key));
+};
+
+const isRepoSelected = computed(() => selectedReposValues.value.length > 0);
 
 onServerPrefetch(async () => {
   await suspense();
-  await securityAssessmentSuspense();
 });
+
 </script>
 
 <script lang="ts">

@@ -6,8 +6,10 @@
  * - project: string
  * - repos: string[]
  */
+import {DateTime} from "luxon";
 import {fetchFromTinybird} from "~~/server/data/tinybird/tinybird";
 import type {HealthScoreTinybird, HealthScoreResults} from "~~/types/overview/responses.types";
+import {createHealthScoreSchema, fetchHealthScoreMetrics} from "~~/server/helpers/health-score.helpers";
 
 export default defineEventHandler(async (event): Promise<HealthScoreResults | unknown> => {
     const query = getQuery(event);
@@ -22,21 +24,24 @@ export default defineEventHandler(async (event): Promise<HealthScoreResults | un
     };
 
     try {
-        const res = await fetchFromTinybird<HealthScoreTinybird[]>('/v0/pipes/health_score_overview.json', filter);
-        if (!res.data || res.data.length === 0) {
-            return createError({statusCode: 404, statusMessage: 'Not found'});
+        let healthScore;
+        if(!repos || repos.length === 0) {
+            const res = await fetchFromTinybird<HealthScoreTinybird[]>('/v0/pipes/health_score_overview.json', filter);
+            if (!res.data || res.data.length === 0) {
+                return createError({statusCode: 404, statusMessage: 'Not found'});
+            }
+            healthScore = res.data[0];
         }
-        const healthScore = res.data[0];
-        return {
-            ...healthScore,
-            securityCategoryPercentage: healthScore.securityCategoryPercentage.map(score => {
-                const [category, percentage] = score;
-                return {
-                    category,
-                    percentage
-                };
+        else {
+            healthScore = await fetchHealthScoreMetrics({
+                project,
+                repos,
+                startDate: DateTime.now().minus({days: 365}).startOf('day'),
+                endDate: DateTime.now().endOf('day')
             })
         }
+
+        return createHealthScoreSchema(healthScore);
     } catch (error) {
         console.error('Error fetching health score:', error);
         throw createError({

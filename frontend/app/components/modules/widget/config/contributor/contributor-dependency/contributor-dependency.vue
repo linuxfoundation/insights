@@ -66,7 +66,6 @@ import LfxAvatarGroup from '~/components/uikit/avatar-group/avatar-group.vue';
 import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
 import { isEmptyData } from '~/components/shared/utils/helper';
-import { BenchmarkKeys, type Benchmark } from '~~/types/shared/benchmark.types';
 import {TanstackKey} from "~/components/shared/types/tanstack";
 import LfxActivitiesDropdown
   from "~/components/modules/widget/components/contributors/fragments/activities-dropdown.vue";
@@ -84,7 +83,7 @@ const props = defineProps<{
   snapshot?: boolean
 }>()
 
-const emit = defineEmits<{(e: 'update:benchmarkValue', value: Benchmark | undefined): void;
+const emit = defineEmits<{
   (e: 'dataLoaded', value: string): void;
   (e: 'update:modelValue', value: ContributorDependencyModel): void}>()
 
@@ -143,17 +142,6 @@ const contributorsAvatars = computed(() => (contributors.value?.length
   : []));
 
 const isEmpty = computed(() => isEmptyData(contributors.value as unknown as Record<string, unknown>[]));
-
-const callEmit = () => {
-  emit('update:benchmarkValue', status.value === 'success' ? {
-    key: BenchmarkKeys.ContributorDependency,
-    value: topContributors.value?.count || 0
-  } : undefined);
-}
-
-callEmit();
-
-watch(topContributors, callEmit);
 
 watch(status, (value) => {
   if (value !== 'pending') {

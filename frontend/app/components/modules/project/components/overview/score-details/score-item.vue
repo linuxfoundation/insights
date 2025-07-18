@@ -31,19 +31,20 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import type { BenchmarkKeys } from '~~/types/shared/benchmark.types';
 import LfxBenchmarkIcon from '~/components/uikit/benchmarks/benchmark-icon.vue';
-import { OVERVIEW_API_SERVICE } from '~~/app/components/modules/project/services/overview.api.service';
 import { formatNumber } from '~/components/shared/utils/formatter';
+import { lfxWidgets } from '~/components/modules/widget/config/widget.config';
 
 const props = defineProps<{
-  benchmarkKey: BenchmarkKeys;
+  widgetKey: string;
   value: number;
+  benchmark: number;
 }>();
 
-const title = computed(() => OVERVIEW_API_SERVICE.getBenchmarkTitle(props.benchmarkKey));
+const widget = computed(() => Object.values(lfxWidgets).find(w => w.key === props.widgetKey));
+const title = computed(() => widget.value?.benchmark?.title);
 const benchmarkValue = computed(() => Math.ceil(props.value || 0));
-const pointDetails = computed(() => OVERVIEW_API_SERVICE.getPointDetails(benchmarkValue.value, props.benchmarkKey));
+const pointDetails = computed(() => widget.value?.benchmark?.points[props.benchmark]);
 const description = computed(() => `
   ${pointDetails.value?.description.replace('{value}', formatNumber(benchmarkValue.value || 0).toString())} 
   - ${pointDetails.value?.text}`);
