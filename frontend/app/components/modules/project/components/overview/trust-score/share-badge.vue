@@ -28,24 +28,15 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { computed } from 'vue';
 import { storeToRefs } from 'pinia';
-import {
-  getScoreBadgeUrl,
-  lfxTrustScore,
-  type TrustScoreConfig
-}
-  from "~/components/modules/project/config/trust-score";
+import {useRoute} from "nuxt/app";
 import {useShareStore} from "~/components/shared/modules/share/store/share.store";
 import { useProjectStore } from "~~/app/components/modules/project/store/project.store";
+import {getBadgeUrl} from "~~/config/trust-score";
 
-const props = defineProps<{
-  overallScore: number;
-}>();
 
-const scoreConfig = computed<TrustScoreConfig>(() => lfxTrustScore.find(
-      (s) => props.overallScore <= s.maxScore && props.overallScore >= s.minScore
-  ) || lfxTrustScore.at(-1)!);
+const route = useRoute();
 
-const badgeUrl = computed(() => getScoreBadgeUrl(scoreConfig.value));
+const badgeUrl = computed(() => getBadgeUrl('health-score', route.params.slug as string));
 
 const {openShareModal} = useShareStore();
 const { selectedRepositories, project } = storeToRefs(useProjectStore())
