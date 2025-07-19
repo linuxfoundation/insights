@@ -12,15 +12,18 @@ SPDX-License-Identifier: MIT
     <div class="flex flex-col gap-6">
       <lfx-share-badge-item
         type="health-score"
+        title="LFX Health Score"
         @copied="emit('copied')"
       />
       <lfx-share-badge-item
         type="contributors"
+        title="LFX Contributors"
         @copied="emit('copied')"
       />
       <div class="flex flex-col gap-1.5">
         <lfx-share-badge-item
           type="active-contributors"
+          title="LFX Active Contributors"
           @copied="emit('copied')"
         />
         <span class="text-xs text-neutral-400 italic">*Active contributors over the past 365 days</span>

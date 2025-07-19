@@ -14,7 +14,7 @@ SPDX-License-Identifier: MIT
       type="tertiary"
       size="small"
       button-style="pill"
-      @click="copyBadge(markdown(badgeUrl, 'LFX Health Score'))"
+      @click="copyBadge(markdown(badgeUrl))"
     >
       <lfx-icon
         name="clone"
@@ -38,6 +38,7 @@ import useToastService from "~/components/uikit/toast/toast.service";
 
 const props = defineProps<{
   type: string;
+  title?: string;
 }>();
 
 const emit = defineEmits<{(e: 'copied'): void;}>();
@@ -48,10 +49,10 @@ const route = useRoute();
 
 const badgeUrl = computed(() => getBadgeUrl(props.type, route.params.slug as string));
 
-const markdown = (badgeUrl: string, title: string) => {
+const markdown = (badgeUrl: string) => {
   const link = window?.location.href.split('?')[0];
 
-  return `[![${title}](${badgeUrl})](${link})`;
+  return `[![${props.title || 'LFX Health Score'}](${badgeUrl})](${link})`;
 };
 
 const copyBadge = (markdown: string) => {
