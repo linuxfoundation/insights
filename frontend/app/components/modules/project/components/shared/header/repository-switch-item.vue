@@ -9,7 +9,7 @@ SPDX-License-Identifier: MIT
     @click="handleClick"
   >
     <div class="flex items-center gap-3">
-      <lf-checkbox
+      <lfx-checkbox
         v-if="props.isMultiSelect"
         v-model="checked"
         :value="props.text"
@@ -32,7 +32,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import LfxIcon from "~/components/uikit/icon/icon.vue";
-import LfCheckbox from "~/components/uikit/checkbox/checkbox.vue";
+import LfxCheckbox from "~/components/uikit/checkbox/checkbox.vue";
 
 const props = defineProps<{
   text: string;
