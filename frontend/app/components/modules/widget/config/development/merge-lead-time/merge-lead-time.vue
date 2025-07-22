@@ -41,24 +41,28 @@ SPDX-License-Identifier: MIT
       <div class="w-full min-h-[250px] mt-5">
         <div class="flex flex-col gap-10">
           <lfx-merge-lead-item
+            v-if="pickup"
             title="Pickup"
             description="Pull Request assigned"
             icon="user-check"
             :item-value="pickup"
           />
           <lfx-merge-lead-item
+            v-if="review"
             title="Review"
             description="Review Started"
             icon="eye"
             :item-value="review"
           />
           <lfx-merge-lead-item
+            v-if="accepted"
             title="Accepted"
             description="Pull Request approved"
             icon="check-circle"
             :item-value="accepted"
           />
           <lfx-merge-lead-item
+            v-if="prMerged"
             title="Pull Request merged"
             description=""
             icon="code-merge"
@@ -77,7 +81,7 @@ import { computed, watch, onServerPrefetch } from 'vue';
 import { storeToRefs } from "pinia";
 import {type QueryFunction, useQuery} from "@tanstack/vue-query";
 import LfxMergeLeadItem from "./fragments/merge-lead-item.vue";
-import type { MergeLeadTime, MergeLeadTimeItem } from '~~/types/development/responses.types';
+import type { MergeLeadTime, MergeLeadTimeItem, MergeLeadTimeUnit } from '~~/types/development/responses.types';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
 import type { Summary } from '~~/types/shared/summary.types';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
@@ -129,40 +133,46 @@ onServerPrefetch(async () => {
 });
 
 const mergeLeadTime = computed<MergeLeadTime>(() => data.value as MergeLeadTime);
-const pickup = computed<MergeLeadTimeItem>(() => ({
-  ...mergeLeadTime.value.data.pickup,
-  ...formatDuration(mergeLeadTime.value.data.pickup.value)
-} as MergeLeadTimeItem));
-const review = computed<MergeLeadTimeItem>(() => ({
-  ...mergeLeadTime.value.data.review,
-  ...formatDuration(mergeLeadTime.value.data.review.value)
-} as MergeLeadTimeItem));
-const accepted = computed<MergeLeadTimeItem>(() => ({
-  ...mergeLeadTime.value.data.accepted,
-  ...formatDuration(mergeLeadTime.value.data.accepted.value)
-} as MergeLeadTimeItem));
-const prMerged = computed<MergeLeadTimeItem>(() => ({
-  ...mergeLeadTime.value.data.prMerged,
-  ...formatDuration(mergeLeadTime.value.data.prMerged.value)
-} as MergeLeadTimeItem));
+const pickup = computed<MergeLeadTimeItem | undefined>(() => getMergeLeadTimeItem(mergeLeadTime.value, 'pickup'));
+const review = computed<MergeLeadTimeItem | undefined>(() => getMergeLeadTimeItem(mergeLeadTime.value, 'review'));
+const accepted = computed<MergeLeadTimeItem | undefined>(() => getMergeLeadTimeItem(mergeLeadTime.value, 'accepted'));
+const prMerged = computed<MergeLeadTimeItem | undefined>(() => getMergeLeadTimeItem(mergeLeadTime.value, 'prMerged'));
 
 const summary = computed<Summary>(() => mergeLeadTime.value?.summary);
 const current = computed<string>(() => formatSecondsToDuration(mergeLeadTime.value?.summary?.current || 0, 'long'));
 
-const isEmpty = computed(() => pickup.value.value === 0 &&
-  review.value.value === 0 &&
-  accepted.value.value === 0 &&
-  prMerged.value.value === 0
-);
+const isEmpty = computed(() => [pickup.value, review.value, accepted.value, prMerged.value].every((item) => 
+  item?.value === 0 || item === undefined));
 
 // TODO: Await response from Joana regarding this
-const formatDuration = (seconds: number): { value: number, unit: string } => {
+const formatDuration = (seconds: number): { 
+  value: number, 
+  unit: MergeLeadTimeUnit } => {
   const formattedValue = formatSecondsToDuration(seconds, 'long', undefined, 2);
 
   return {
     value: Number(formattedValue.replace(/[^0-9.]/g, '')),
-    unit: formattedValue.replace(/[^a-zA-Z]/g, '')
+    unit: formattedValue.replace(/[^a-zA-Z]/g, '') as MergeLeadTimeUnit
   };
+};
+
+const getMergeLeadTimeItem = (
+  data: MergeLeadTime | undefined,
+  key: string
+): MergeLeadTimeItem | undefined => {
+  if (!data) {
+    return undefined;
+  }
+  const item = data.data[key as keyof MergeLeadTime['data']];
+
+  if (item) {
+    return {
+      ...item,
+      ...formatDuration(item.value)
+    };
+  }
+
+  return undefined;
 };
 
 watch(status, (value) => {
