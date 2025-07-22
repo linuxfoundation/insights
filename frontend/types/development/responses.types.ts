@@ -81,9 +81,11 @@ export interface IssuesResolution {
   data: IssuesResolutionData[];
 }
 
+export type MergeLeadTimeUnit = 'seconds' | 'minutes' | 'hours' | 'days';
+
 export interface MergeLeadTimeItem {
   value: number;
-  unit: 'seconds' | 'minutes' | 'hours' | 'days';
+  unit: MergeLeadTimeUnit;
   changeType: 'positive' | 'negative';
 }
 export interface MergeLeadTime {

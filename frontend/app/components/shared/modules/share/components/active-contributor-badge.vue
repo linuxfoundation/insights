@@ -40,13 +40,13 @@ import { DateTime } from 'luxon';
 import { useProjectStore } from "~~/app/components/modules/project/store/project.store";
 import LfxButton from "~/components/uikit/button/button.vue";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
-import { getBadgeUrl } from "~/components/modules/project/config/trust-score";
 import {ToastTypesEnum} from "~/components/uikit/toast/types/toast.types";
 import useToastService from "~/components/uikit/toast/toast.service";
 import { SHARE_API_SERVICE } from '~~/app/components/shared/modules/share/store/share.api.service';
 import { lfxColors } from '~/config/styles/colors';
 import { formatNumberShort } from '~/components/shared/utils/formatter';
 import LfxSkeletonState from "~/components/modules/project/components/shared/skeleton-state.vue";
+import {getBadgeUrl} from "~~/config/trust-score";
 
 const emit = defineEmits<{(e: 'copied'): void;}>();
 

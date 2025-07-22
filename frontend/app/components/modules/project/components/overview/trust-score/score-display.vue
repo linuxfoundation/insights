@@ -11,7 +11,7 @@ SPDX-License-Identifier: MIT
     >
       <div
         v-if="scoreConfig.color"
-        class="h-3 w-3 rounded-full mr-1"
+        class="h-3 w-3 rounded-full mr-1 bg-positive-500"
         :class="scoreConfig.color"
       />
       {{ scoreConfig.label }}
@@ -43,8 +43,8 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import {computed} from 'vue';
-import {lfxTrustScore} from "~/components/modules/project/config/trust-score";
 import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
+import {lfxTrustScore} from "~~/config/trust-score";
 
 const props = defineProps<{
   overallScore: number;

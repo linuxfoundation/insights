@@ -7,13 +7,18 @@ SPDX-License-Identifier: MIT
     class="border-solid border border-neutral-200 rounded-md p-3 flex flex-col items-start gap-2"
   >
     <img
-      :src="badgeUrl"
+      :src="props.isRepoSelected ? repoBadgeUrl : badgeUrl"
       alt="Health Score Badge"
       class="w-auto h-4"
     >
 
     <p class="text-xs leading-4.5 text-neutral-500">
-      Share your project Health Score in your GitHub page.
+      <span v-if="!props.isRepoSelected">
+        Share your project Health Score in your GitHub page.
+      </span>
+      <span v-else>
+        Share your repository's number of active contributors on your GitHub page.
+      </span>
       <br>
       <br>
       <span
@@ -28,27 +33,26 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { computed } from 'vue';
 import { storeToRefs } from 'pinia';
-import {
-  getScoreBadgeUrl,
-  lfxTrustScore,
-  type TrustScoreConfig
-}
-  from "~/components/modules/project/config/trust-score";
+import {useRoute} from "nuxt/app";
 import {useShareStore} from "~/components/shared/modules/share/store/share.store";
 import { useProjectStore } from "~~/app/components/modules/project/store/project.store";
+import {getBadgeUrl} from "~~/config/trust-score";
 
 const props = defineProps<{
-  overallScore: number;
+  isRepoSelected?: boolean;
 }>();
 
-const scoreConfig = computed<TrustScoreConfig>(() => lfxTrustScore.find(
-      (s) => props.overallScore <= s.maxScore && props.overallScore >= s.minScore
-  ) || lfxTrustScore.at(-1)!);
-
-const badgeUrl = computed(() => getScoreBadgeUrl(scoreConfig.value));
+const route = useRoute();
 
 const {openShareModal} = useShareStore();
-const { selectedRepositories, project } = storeToRefs(useProjectStore())
+const { selectedReposValues, selectedRepositories, project } = storeToRefs(useProjectStore())
+
+const badgeUrl = computed(() => getBadgeUrl('health-score', route.params.slug as string));
+const repoBadgeUrl = computed(() => getBadgeUrl(
+    'active-contributors',
+    route.params.slug as string,
+    selectedReposValues.value
+));
 
 const share = () => {
   const title = [];

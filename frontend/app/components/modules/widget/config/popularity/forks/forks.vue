@@ -79,7 +79,6 @@ import { useProjectStore } from "~/components/modules/project/store/project.stor
 import { isEmptyData } from '~/components/shared/utils/helper';
 import { dateOptKeys } from '~/components/modules/project/config/date-options';
 import type { Granularity } from '~~/types/shared/granularity';
-import { BenchmarkKeys, type Benchmark } from '~~/types/shared/benchmark.types';
 import {TanstackKey} from "~/components/shared/types/tanstack";
 import LfxSkeletonState from "~/components/modules/project/components/shared/skeleton-state.vue";
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
@@ -95,7 +94,6 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{(e: 'update:modelValue', value: ForksModel): void;
-  (e: 'update:benchmarkValue', value: Benchmark | undefined): void;
   (e: 'dataLoaded', value: string): void;
 }>();
 
@@ -193,12 +191,6 @@ const forks = computed<ForksData | undefined>(() => (model.value.activeTab === '
   ? cumulativeData.value as ForksData
   : data.value as ForksData));
 
-const cumulativeForksCount = computed<number>(() => {
-  const cumulativeForks = (cumulativeData.value as ForksData)?.data;
-
-  return cumulativeForks && cumulativeForks.length > 0
-    ? cumulativeForks[cumulativeForks.length - 1]!.forks : 0;
-});
 const summary = computed<Summary | undefined>(() => forks.value?.summary);
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
@@ -234,17 +226,6 @@ const barChartConfig = computed(() => getBarChartConfig(
   chartSeries.value,
   barGranularity.value
 ));
-
-const callEmit = () => {
-  emit('update:benchmarkValue', status.value === 'success' ? {
-    key: BenchmarkKeys.Forks,
-    value: cumulativeForksCount.value
-  } : undefined);
-}
-
-callEmit();
-
-watch(cumulativeStatus, callEmit);
 
 watch(status, (value) => {
   if (value !== 'pending') {

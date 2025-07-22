@@ -6,195 +6,45 @@
  * - project: string
  * - repository: string
  */
-import { DateTime } from 'luxon';
+import {DateTime} from 'luxon';
 
-import { createDataSource } from '~~/server/data/data-sources';
 import {
-  type DefaultFilter,
-  DemographicType,
-  ActivityFilterCountType
-} from '~~/server/data/types';
-import type { HealthScore } from '~~/types/overview/responses.types';
-import { ActivityTypes } from '~~/types/shared/activity-types';
-import { Granularity } from "~~/types/shared/granularity";
-import { BenchmarkKeys } from '~~/types/shared/benchmark.types';
-import { formatSecondsToDuration } from '~/components/shared/utils/formatter';
-import { FormatterUnits } from '~/components/shared/types/formatter.types';
+    createHealthScoreSchema,
+    fetchHealthScoreMetrics,
+    HealthScoreFilters
+} from "~~/server/helpers/health-score.helpers";
+
 
 export default defineEventHandler(async (event) => {
-  const query = getQuery(event);
+    const query = getQuery(event);
 
-  const project = (event.context.params as { slug: string }).slug;
-  const repos = Array.isArray(query.repos) ? query.repos : query.repos ? [query.repos] : undefined;
-  /*
-   * Health score will have a default time period of 365 days for most of the data
-   * except for the following:
-   * - active contributors and retention = (Previous Quarter)
-   */
-  const filter: DefaultFilter = {
-    project,
-    repos,
-    startDate: DateTime.now().minus({ days: 365 }).startOf('day'),
-    endDate: DateTime.now().endOf('day')
-  };
+    const project = (event.context.params as { slug: string }).slug;
+    const repos = Array.isArray(query.repos) ? query.repos : query.repos ? [query.repos] : undefined;
 
-  const filterPreviousQuarter: DefaultFilter = {
-    ...filter,
-    startDate: DateTime.now().minus({ quarters: 1 }).startOf('quarter'),
-    endDate: DateTime.now().minus({ quarters: 1 }).endOf('quarter')
-  };
+    const filter: HealthScoreFilters = {
+        project,
+        repos,
+    };
 
-  const endOfLastQuarter = DateTime.now().minus({ quarters: 1 }).endOf('quarter');
-  const filterPrevious2Quarters: DefaultFilter = {
-    ...filter,
-    startDate: endOfLastQuarter.minus({ quarters: 2 }),
-    endDate: endOfLastQuarter
-  };
+    if (query.startDate && (query.startDate as string).trim() !== '') {
+        filter.startDate = DateTime.fromISO(query.startDate as string);
+    }
 
-  const dataSource = createDataSource();
+    if (query.endDate && (query.endDate as string).trim() !== '') {
+        filter.endDate = DateTime.fromISO(query.endDate as string);
+    }
+    try {
 
-  try {
-    const healthScore: HealthScore[] = [];
-    const allQuery = Promise.all([
-      dataSource.fetchActiveContributors(filterPreviousQuarter),
-      dataSource.fetchContributorDependency(filter),
-      dataSource.fetchOrganizationDependency(filter),
-      dataSource.fetchRetention({
-        ...filterPrevious2Quarters,
-        demographicType: DemographicType.CONTRIBUTORS,
-        onlyContributions: false,
-        granularity: Granularity.QUARTERLY
-      }),
-      dataSource.fetchStarsActivities({
-        ...filter,
-        granularity: Granularity.WEEKLY,
-        activity_type: ActivityTypes.STARS,
-        countType: ActivityFilterCountType.CUMULATIVE,
-        onlyContributions: false
-      }),
-      dataSource.fetchForksActivities({
-        ...filter,
-        granularity: Granularity.WEEKLY,
-        activity_type: ActivityTypes.FORKS,
-        countType: ActivityFilterCountType.CUMULATIVE,
-        onlyContributions: false
-      }),
-      dataSource.fetchIssuesResolution({
-        ...filter,
-        granularity: Granularity.WEEKLY,
-        countType: ActivityFilterCountType.NEW,
-        activity_type: ActivityTypes.ISSUES_CLOSED,
-        onlyContributions: false
-      }),
-      dataSource.fetchPullRequests({
-        ...filter,
-        granularity: Granularity.MONTHLY,
-        countType: ActivityFilterCountType.NEW, // This isn't used but required the interface
-        activity_type: ActivityTypes.ISSUES_CLOSED, // This isn't used but required the interface
-        onlyContributions: false
-      }),
-      dataSource.fetchMergeLeadTime(filter),
-      dataSource.fetchActiveDays(filter),
-      dataSource.fetchContributionsOutsideWorkHours(filter)
-    ]);
+        const healthScore = await fetchHealthScoreMetrics(filter);
 
-    const [
-      activeContributors,
-      contributorDependency,
-      organizationDependency,
-      retention,
-      stars,
-      forks,
-      issuesResolution,
-      pullRequests,
-      mergeLeadTime,
-      activeDays,
-      contributionsOutsideWorkHours
-    ] = await allQuery;
+        return createHealthScoreSchema(healthScore);
 
-    healthScore.push({
-      key: BenchmarkKeys.ActiveContributors,
-      value: activeContributors.summary.current
-    });
-
-    healthScore.push({
-      key: BenchmarkKeys.ContributorDependency,
-      value: contributorDependency.topContributors.count
-    });
-
-    healthScore.push({
-      key: BenchmarkKeys.OrganizationDependency,
-      value: organizationDependency.topOrganizations.count
-    });
-
-    const retentionValue = retention && retention.length > 0 ? retention[retention.length - 1].percentage : 0;
-    healthScore.push({
-      key: BenchmarkKeys.Retention,
-      value: retentionValue
-    });
-
-    const starsValue = stars && stars.data.length > 0 ? stars.data[stars.data.length - 1].stars : 0;
-    healthScore.push({
-      key: BenchmarkKeys.Stars,
-      value: starsValue
-    });
-
-    const forksValue = forks && forks.data.length > 0 ? forks.data[forks.data.length - 1].forks : 0;
-    healthScore.push({
-      key: BenchmarkKeys.Forks,
-      value: forksValue
-    });
-
-    const issuesResolutionValue = Number(
-      formatSecondsToDuration(
-        issuesResolution.summary.avgVelocityInDays || 0,
-        'no',
-        FormatterUnits.DAYS
-      )
-    );
-
-    healthScore.push({
-      key: BenchmarkKeys.IssuesResolution,
-      value: issuesResolutionValue
-    });
-
-    healthScore.push({
-      key: BenchmarkKeys.PullRequests,
-      value: pullRequests.openedSummary.current
-    });
-
-    const mergeLeadTimeValue = Number(
-      formatSecondsToDuration(
-        mergeLeadTime.summary.current || 0,
-        'no',
-        FormatterUnits.DAYS
-      )
-    );
-
-    healthScore.push({
-      key: BenchmarkKeys.MergeLeadTime,
-      value: mergeLeadTimeValue
-    });
-
-    healthScore.push({
-      key: BenchmarkKeys.ActiveDays,
-      value: activeDays.summary.current
-    });
-
-    healthScore.push({
-      key: BenchmarkKeys.ContributionsOutsideWorkHours,
-      value:
-        contributionsOutsideWorkHours.weekdayOutsideHoursPercentage
-        + contributionsOutsideWorkHours.weekendOutsideHoursPercentage
-    });
-
-    return healthScore;
-  } catch (error) {
-    console.error('Error fetching active contributors:', error);
-    throw createError({
-      statusCode: 500,
-      statusMessage: 'Failed to fetch active contributors data',
-      data: { message: error.message }
-    });
-  }
+    } catch (error) {
+        console.error('Error fetching active contributors:', error);
+        throw createError({
+            statusCode: 500,
+            statusMessage: 'Failed to fetch health score',
+            data: {message: error.message}
+        });
+    }
 });

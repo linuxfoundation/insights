@@ -115,14 +115,13 @@ import { dateOptKeys } from '~/components/modules/project/config/date-options';
 import {TanstackKey} from "~/components/shared/types/tanstack";
 import LfxSkeletonState from "~/components/modules/project/components/shared/skeleton-state.vue";
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
-import {BenchmarkKeys, type Benchmark} from '~~/types/shared/benchmark.types';
 import {Widget} from "~/components/modules/widget/types/widget";
 
 const props = defineProps<{
   snapshot?: boolean;
 }>()
 
-const emit = defineEmits<{(e: 'update:benchmarkValue', value: Benchmark | undefined): void;
+const emit = defineEmits<{
 (e: 'dataLoaded', value: string): void;
 }>();
 
@@ -185,17 +184,6 @@ const chartSeries = ref<ChartSeries[]>([
 ]);
 
 const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
-
-const callEmit = () => {
-  emit('update:benchmarkValue', status.value === 'success' ? {
-    key: BenchmarkKeys.ContributionsOutsideWorkHours,
-    value: weekdayPercentage.value + weekendPercentage.value,
-  } : undefined);
-}
-
-callEmit();
-
-watch(chartData, callEmit);
 
 watch(status, (value) => {
   if (value !== 'pending') {

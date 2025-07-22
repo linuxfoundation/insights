@@ -25,13 +25,11 @@ SPDX-License-Identifier: MIT
               :key="widget"
               :observer="observer"
             >
-              <lfx-benchmarks-wrap :benchmark="getBenchmarks(widget)">
-                <lfx-widget
-                  :name="widget"
-                  @update:benchmark-value="onBenchmarkUpdate"
-                  @data-loaded="onDataLoaded"
-                />
-              </lfx-benchmarks-wrap>
+              <lfx-widget
+                :name="widget"
+                :benchmark-scores="data"
+                @data-loaded="onDataLoaded"
+              />
             </lfx-scroll-view>
           </template>
         </lfx-scroll-area>
@@ -42,35 +40,37 @@ SPDX-License-Identifier: MIT
 
 <script lang="ts" setup>
 import {
-computed, ref
+computed, ref, onServerPrefetch, watch
 } from "vue";
 import {storeToRefs} from "pinia";
 import {useRoute} from "nuxt/app";
+import { BENCHMARKS_API_SERVICE } from '../../services/benchmarks.api.service';
 import type {Widget} from "~/components/modules/widget/types/widget";
 import {lfxWidgets} from "~/components/modules/widget/config/widget.config";
 import type {WidgetArea} from "~/components/modules/widget/types/widget-area";
 import {lfxWidgetArea, type WidgetAreaConfig} from "~/components/modules/widget/config/widget-area.config";
 import LfxSideNav from "~/components/uikit/side-nav/side-nav.vue";
 import LfxScrollView from "~/components/uikit/scroll-view/scroll-view.vue";
-import LfxBenchmarksWrap from "~/components/uikit/benchmarks/benchmarks-wrap.vue";
 import LfxScrollArea from "~/components/uikit/scroll-view/scroll-area.vue";
 import useScroll from "~/components/shared/utils/scroll";
 import LfxWidget from "~/components/modules/widget/components/shared/widget.vue";
-import type { Benchmark } from '~~/types/shared/benchmark.types';
 import {useProjectStore} from "~/components/modules/project/store/project.store";
 import { useQueryParam } from "~/components/shared/utils/query-param";
 import {
   processProjectParams,
   projectParamsSetter
 } from "~/components/modules/project/services/project.query.service";
+import useToastService from '~/components/uikit/toast/toast.service';
+import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 
 const props = defineProps<{
   name: WidgetArea
 }>();
 
+const { showToast } = useToastService();
+
 const route = useRoute();
 const config = computed<WidgetAreaConfig>(() => lfxWidgetArea[props.name]);
-const benchmarks = ref<Record<string, Benchmark | undefined>>({});
 
 const { queryParams } = useQueryParam(processProjectParams, projectParamsSetter);
 const activeItem = ref(queryParams.value.widget || config.value.widgets?.[0] || '');
@@ -78,8 +78,21 @@ const tmpClickedItem = ref('');
 const loadedWidgets = ref<Record<string, boolean>>({});
 
 const { scrollToTarget, scrollToTop } = useScroll();
-const { project, selectedRepoSlugs } = storeToRefs(useProjectStore())
+const { project, selectedRepoSlugs, startDate, endDate, selectedReposValues } = storeToRefs(useProjectStore())
 const isFirstLoad = ref(true);
+
+const params = computed(() => ({
+  projectSlug: route.params.slug as string,
+  repos: selectedReposValues.value,
+  startDate: startDate.value,
+  endDate: endDate.value,
+}))
+
+const {
+  data, 
+  error,
+  suspense
+} = BENCHMARKS_API_SERVICE.fetchWidgetBenchmarks(params);
 
 const widgets = computed(() => (config.value.widgets || [])
     .filter((widget) => {
@@ -95,8 +108,6 @@ const sideNavItems = computed(() => widgets.value.map((widget: Widget) => ({
   key: widget,
   label: lfxWidgets[widget]?.name,
 })))
-
-const getBenchmarks = (widgetName: string): Benchmark | undefined => benchmarks.value[widgetName];
 
 const onSideNavUpdate = (value: string) => {
   tmpClickedItem.value = value;
@@ -123,11 +134,6 @@ const onScrolledToView = (value: string) => {
   }
 };
 
-const onBenchmarkUpdate = (value: Benchmark | undefined) => {
-  if (value) {
-    benchmarks.value[value.key] = value;
-  }
-}
 /**
  * These functions are used to navigate to the widget in the url params.
  * It checks if the widgets above the current widget are loaded and if so, it navigates to the current widget.
@@ -158,6 +164,23 @@ const navigateToWidget = () => {
     }, 100);
   }
 }
+
+onServerPrefetch(async () => {
+  await suspense();
+})
+
+watch(error, (err) => {
+  if (err) {
+    setTimeout(() => {
+      showToast(
+        `Error fetching benchmarks`,
+        ToastTypesEnum.negative,
+        undefined,
+        10000
+      );
+    }, 500);
+  }
+}, { immediate: true });
 </script>
 
 <script lang="ts">

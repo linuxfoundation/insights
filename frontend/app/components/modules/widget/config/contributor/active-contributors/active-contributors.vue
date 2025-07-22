@@ -75,7 +75,6 @@ import {formatNumber} from '~/components/shared/utils/formatter';
 import {useProjectStore} from "~/components/modules/project/store/project.store";
 import {isEmptyData} from '~/components/shared/utils/helper';
 import {dateOptKeys} from '~/components/modules/project/config/date-options';
-import {BenchmarkKeys, type Benchmark} from '~~/types/shared/benchmark.types';
 import {TanstackKey} from "~/components/shared/types/tanstack";
 import {granularityTabs} from "~/components/modules/widget/components/contributors/config/granularity-tabs";
 import LfxSkeletonState from "~/components/modules/project/components/shared/skeleton-state.vue";
@@ -93,7 +92,6 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{(e: 'dataLoaded', value: string): void;
-  (e: 'update:benchmarkValue', value: Benchmark | undefined): void;
   (e: 'update:modelValue', value: ActiveContributorsModel): void
 }>();
 
@@ -206,13 +204,6 @@ watch(paramWatch, (newParams, oldParams) => {
   }
 
   summaryLoading.value = !onlyGranularityChanged;
-});
-
-watch(activeContributors, () => {
-  emit('update:benchmarkValue', status.value === 'success' ? {
-    key: BenchmarkKeys.ActiveContributors,
-    value: summary.value.current
-  } : undefined);
 });
 
 watch(status, (value) => {

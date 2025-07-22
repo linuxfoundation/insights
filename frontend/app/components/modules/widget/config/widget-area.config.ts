@@ -1,12 +1,11 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { Widget } from '~/components/modules/widget/types/widget';
-import { WidgetArea } from '~/components/modules/widget/types/widget-area';
+import { Widget } from '~/components/modules/widget/types/widget'
+import { WidgetArea } from '~/components/modules/widget/types/widget-area'
 
 export interface WidgetAreaConfig {
-  label: string;
-  widgets?: Widget[];
-  overviewWidgets?: Widget[];
+  label: string
+  widgets?: Widget[]
 }
 
 export const lfxWidgetArea: Record<WidgetArea, WidgetAreaConfig> = {
@@ -25,13 +24,6 @@ export const lfxWidgetArea: Record<WidgetArea, WidgetAreaConfig> = {
       Widget.RETENTION,
       Widget.GEOGRAPHICAL_DISTRIBUTION,
     ],
-    overviewWidgets: [
-      Widget.RETENTION,
-      Widget.ACTIVE_CONTRIBUTORS,
-      Widget.CONTRIBUTOR_DEPENDENCY,
-      Widget.ORGANIZATION_DEPENDENCY,
-      Widget.GEOGRAPHICAL_DISTRIBUTION,
-    ],
   },
   [WidgetArea.POPULARITY]: {
     label: 'Popularity',
@@ -46,7 +38,6 @@ export const lfxWidgetArea: Record<WidgetArea, WidgetAreaConfig> = {
       Widget.PACKAGE_DEPENDENCY,
       Widget.MAILING_LISTS_MESSAGES,
     ],
-    overviewWidgets: [Widget.STARS, Widget.FORKS],
   },
   [WidgetArea.DEVELOPMENT]: {
     label: 'Development',
@@ -62,13 +53,6 @@ export const lfxWidgetArea: Record<WidgetArea, WidgetAreaConfig> = {
       Widget.WAIT_TIME_FIRST_REVIEW,
       Widget.CODE_REVIEW_ENGAGEMENT,
     ],
-    overviewWidgets: [
-      Widget.ACTIVE_DAYS,
-      Widget.CONTRIBUTIONS_OUTSIDE_WORK_HOURS,
-      Widget.ISSUES_RESOLUTION,
-      Widget.MERGE_LEAD_TIME,
-      Widget.PULL_REQUESTS,
-    ],
   },
   [WidgetArea.SECURITY]: {
     label: 'Security & Best practices',
@@ -76,4 +60,4 @@ export const lfxWidgetArea: Record<WidgetArea, WidgetAreaConfig> = {
   [WidgetArea.OTHER]: {
     label: 'Other',
   },
-};
+}
