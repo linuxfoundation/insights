@@ -49,9 +49,11 @@ export const lfxTrustScore: TrustScoreConfig[] = [
   },
 ];
 
-export const getBadgeUrl = (type: string, projectSlug: string) => {
+export const getBadgeUrl = (type: string, projectSlug: string, selectedRepos: string[] = []) => {
   const config = useRuntimeConfig();
-  return `${config.public.appUrl}/api/badge/${type}?project=${projectSlug}`;
+  return `${config.public.appUrl}/api/badge/${type}?project=${projectSlug}${
+    selectedRepos.length ? `&repos=${selectedRepos.join(',')}` : ''
+  }`;
 };
 export const getHealthScoreConfig = (score: number) => {
   return lfxTrustScore.find(
