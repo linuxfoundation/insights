@@ -15,19 +15,6 @@ SPDX-License-Identifier: MIT
     <div class="border-r border-neutral-200 h-6" />
     <lfx-tools />
   </div>
-  <!-- <client-only> -->
-  <!-- <keep-alive>
-      <a 
-      class="github-button" 
-      href="https://github.com/linuxfoundation/insights" 
-      data-show-count="true" 
-      aria-label="Star linuxfoundation/insights on GitHub"
-      target="_blank"
-    >
-      Star
-    </a>
-    </keep-alive> -->
-  <!-- </client-only> -->
 </template>
 
 <script setup lang="ts">
