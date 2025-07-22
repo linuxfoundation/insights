@@ -8,10 +8,14 @@ export default defineEventHandler(
     async (event): Promise<void> => {
         const query = getQuery(event);
         const project: string = query?.project as string;
+        const repos: string[] = (query?.repos as string)?.split(',') || undefined;
 
         try {
             const res =
-                await fetchFromTinybird<HealthScoreTinybird[]>('/v0/pipes/health_score_overview.json', {project});
+                await fetchFromTinybird<HealthScoreTinybird[]>('/v0/pipes/health_score_active_contributors.json', {
+                    project,
+                    repos,
+                });
             if (!res.data || res.data.length === 0) {
                 return;
             }

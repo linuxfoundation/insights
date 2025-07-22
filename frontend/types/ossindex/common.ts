@@ -13,6 +13,8 @@ export interface OSSIndexTopProject {
     count: number;
     name: string;
     logo: string;
+    description: string;
     softwareValue: number;
     avgScore: number;
+    healthScore: number;
 }

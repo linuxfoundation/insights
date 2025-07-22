@@ -37,9 +37,9 @@ SPDX-License-Identifier: MIT
             </div>
 
             <template v-else>
-              <div 
-                v-if="isRepoSelected" 
-                class="text-xs text-brand-600 font-semibold inline-flex 
+              <div
+                v-if="isRepoSelected"
+                class="text-xs text-brand-600 font-semibold inline-flex
                 items-center gap-1 mt-2 bg-brand-50 rounded-full px-1.5"
               >
                 <lfx-icon
@@ -66,12 +66,13 @@ SPDX-License-Identifier: MIT
         </div>
       </div>
       <div
-        v-if="!hideOverallScore && status === 'success' && !isRepoSelected"
+        v-if="!hideOverallScore && status === 'success' && selectedRepositories.length <= 1"
         class="w-[200px] hidden sm:block"
       >
         <lfx-project-trust-score-share-badge
           v-if="!hideOverallScore"
           :overall-score="overallScore"
+          :is-repo-selected="isRepoSelected"
         />
       </div>
     </div>
@@ -95,6 +96,7 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { computed } from 'vue';
 import type { AsyncDataRequestStatus } from 'nuxt/app';
+import {storeToRefs} from "pinia";
 import LfxProjectTrustScoreDisplay from './trust-score/score-display.vue';
 import LfxProjectTrustScoreShareBadge from './trust-score/share-badge.vue';
 import { links } from '~/config/links';
@@ -102,6 +104,7 @@ import type { TrustScoreSummary } from '~~/types/overview/responses.types';
 import type { ScoreDisplay } from '~~/types/overview/score-display.types';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxSkeletonState from "~/components/modules/project/components/shared/skeleton-state.vue";
+import {useProjectStore} from "~/components/modules/project/store/project.store";
 
 const props = defineProps<{
   trustScoreSummary: TrustScoreSummary | undefined;
@@ -113,11 +116,12 @@ const props = defineProps<{
 
 const overallScore = computed(() => Math.round((props.trustScoreSummary ? (props.trustScoreSummary).overall : 0)));
 const hideOverallScore = computed(() => Object.values(props.scoreDisplay).some((score) => !score));
+const { selectedRepositories } = storeToRefs(useProjectStore());
 
 const isEmpty = computed(() => [
-  props.trustScoreSummary?.overall, 
-  props.trustScoreSummary?.contributors, 
-  props.trustScoreSummary?.popularity, 
+  props.trustScoreSummary?.overall,
+  props.trustScoreSummary?.contributors,
+  props.trustScoreSummary?.popularity,
   props.trustScoreSummary?.development,
   props.trustScoreSummary?.security,
 ].every((score) => score === 0));

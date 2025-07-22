@@ -11,11 +11,13 @@ SPDX-License-Identifier: MIT
 
     <div class="flex flex-col gap-6">
       <lfx-share-badge-item
+        v-if="!isRepoSelected"
         type="health-score"
         title="LFX Health Score"
         @copied="emit('copied')"
       />
       <lfx-share-badge-item
+        v-if="!isRepoSelected"
         type="contributors"
         title="LFX Contributors"
         @copied="emit('copied')"
@@ -33,9 +35,14 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
+import {storeToRefs} from "pinia";
 import LfxShareBadgeItem from "~/components/shared/modules/share/components/share-badge-item.vue";
+import {useProjectStore} from "~/components/modules/project/store/project.store";
 
 const emit = defineEmits<{(e: 'copied'): void;}>();
+
+const { selectedRepositories } = storeToRefs(useProjectStore());
+const isRepoSelected = computed(() => selectedRepositories.value.length > 0);
 </script>
 
 <script lang="ts">
