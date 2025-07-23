@@ -4,9 +4,8 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <div
-    class="fixed bottom-5 z-50 sm:z-10 sm:bottom-0 left-1/2 sm:left-0 sm:relative
-      transform -translate-x-1/2 sm:translate-x-0 sm:shadow-none sm:border-none
-      bg-white border border-neutral-200 rounded-full shadow-md"
+    class="z-10 bottom-0 left-0 relative shadow-none border-none
+      bg-white border border-neutral-200 rounded-full"
   >
     <lfx-dropdown-select
       v-model="selectedDateRange"
@@ -14,10 +13,16 @@ SPDX-License-Identifier: MIT
       width="22.5rem"
     >
       <template #trigger="{selectedOption}">
-        <lfx-dropdown-selector class="whitespace-nowrap !bg-transparent">
+        <lfx-dropdown-selector class="whitespace-nowrap !bg-transparent !text-xs sm:!text-sm !py-1 sm:py-2">
           <lfx-icon
             name="calendar"
             :size="16"
+            class="!hidden sm:!inline-block"
+          />
+          <lfx-icon
+            name="calendar"
+            :size="14"
+            class="!inline-block sm:!hidden"
           />
           <span v-if="selectedOption.value !== 'custom'">{{ selectedOption?.label }}</span>
           <span v-else-if="startDate && endDate">
@@ -25,6 +30,12 @@ SPDX-License-Identifier: MIT
             -> {{ DateTime.fromFormat(endDate, 'yyyy-MM-dd').toFormat('MMM d, yyyy') }}
           </span>
           <span v-else>Custom</span>
+          <template
+            v-if="pageWidth < 640"
+            #append
+          >
+            <span class="hidden" />
+          </template>
         </lfx-dropdown-selector>
       </template>
 
@@ -132,11 +143,13 @@ import {
   processProjectParams,
   projectParamsSetter
 } from "~/components/modules/project/services/project.query.service";
+import useResponsive from "~/components/shared/utils/responsive";
 
 const { selectedTimeRangeKey, startDate, endDate } = storeToRefs(useProjectStore())
 const { queryParams } = useQueryParam(processProjectParams, projectParamsSetter);
 const isOpen = ref(false);
 const isCustomSelectorOpen = ref(false);
+const { pageWidth } = useResponsive();
 
 const selectedDateRange = ref(selectedTimeRangeKey.value || defaultTimeRangeKey);
 
