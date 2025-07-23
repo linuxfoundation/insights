@@ -57,14 +57,24 @@ SPDX-License-Identifier: MIT
     >
       <div class="w-full min-h-[330px]">
         <div class="font-semibold mb-5">
-          <span class="text-black">Top contributors </span>
+          <span class="text-black">{{ title }}</span>
         </div>
 
         <lfx-code-review-table
+          v-if="model.activeTab === CodeReviewEngagementMetric.PR_PARTICIPANTS"
           show-percentage
           :metric="model.activeTab"
-          :code-review-item="codeReviewEngagement.data"
+          :code-review-item="prParticipantsData"
         />
+        <div
+          v-else
+          class="w-full h-[330px] mt-4"
+        >
+          <lfx-chart
+            :config="barChartConfig"
+            :animation="!props.snapshot"
+          />
+        </div>
       </div>
     </lfx-project-load-state>
   </section>
@@ -75,7 +85,12 @@ import { useRoute } from 'nuxt/app';
 import { computed, onServerPrefetch, watch } from 'vue';
 import { storeToRefs } from "pinia";
 import {type QueryFunction, useQuery} from "@tanstack/vue-query";
-import type { CodeReviewEngagement } from '~~/types/development/responses.types';
+import type { 
+  CodeReviewEngagement, 
+  CodeReviewEngagementPRParticipantsItem, 
+  CodeReviewEngagementCommentsItem, 
+  CodeReviewEngagementReviewsItem } 
+from '~~/types/development/responses.types';
 import type { Summary } from '~~/types/shared/summary.types';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
@@ -92,6 +107,17 @@ import {Widget} from "~/components/modules/widget/types/widget";
 import LfxDropdownSelector from "~/components/uikit/dropdown/dropdown-selector.vue";
 import LfxDropdownItem from "~/components/uikit/dropdown/dropdown-item.vue";
 import LfxDropdownSelect from "~/components/uikit/dropdown/dropdown-select.vue";
+import LfxChart from '~/components/uikit/chart/chart.vue';
+import { getBarChartConfig } from '~/components/uikit/chart/configs/bar.chart';
+import { convertToChartData } from '~/components/uikit/chart/helpers/chart-helpers';
+import type {
+  ChartData,
+  RawChartData,
+  ChartSeries
+} from '~/components/uikit/chart/types/ChartTypes';
+import { lfxColors } from '~/config/styles/colors';
+import type { Granularity } from '~~/types/shared/granularity';
+import { barGranularities } from '~/components/shared/types/granularity';
 
 interface CodeReviewEngagementModel {
   activeTab: string;
@@ -112,7 +138,7 @@ const model = computed<CodeReviewEngagementModel>({
 })
 
 const {
- startDate, endDate, selectedReposValues, selectedTimeRangeKey
+ startDate, endDate, selectedReposValues, selectedTimeRangeKey, customRangeGranularity
 } = storeToRefs(useProjectStore());
 
 const route = useRoute();
@@ -150,6 +176,55 @@ onServerPrefetch(async () => {
 });
 
 const codeReviewEngagement = computed<CodeReviewEngagement>(() => data.value as CodeReviewEngagement);
+const prParticipantsData = computed<CodeReviewEngagementPRParticipantsItem[]>(() =>
+  model.value.activeTab === CodeReviewEngagementMetric.PR_PARTICIPANTS ?
+    codeReviewEngagement.value.data as CodeReviewEngagementPRParticipantsItem[] :
+    []);
+
+const reviewCommentsData = computed<CodeReviewEngagementCommentsItem[]>(() =>
+  model.value.activeTab === CodeReviewEngagementMetric.REVIEW_COMMENTS ?
+    codeReviewEngagement.value.data as CodeReviewEngagementCommentsItem[] :
+    []);
+
+const codeReviewsData = computed<CodeReviewEngagementReviewsItem[]>(() =>
+  model.value.activeTab === CodeReviewEngagementMetric.CODE_REVIEWS ?
+    codeReviewEngagement.value.data as CodeReviewEngagementReviewsItem[] :
+    []);
+
+const barGranularity = computed(() => (selectedTimeRangeKey.value === dateOptKeys.custom
+  ? customRangeGranularity.value[0] as Granularity
+  : barGranularities[selectedTimeRangeKey.value as keyof typeof barGranularities]));
+
+const chartSeries = computed<ChartSeries[]>(() => [
+  {
+    name: model.value.activeTab === CodeReviewEngagementMetric.REVIEW_COMMENTS ? 'Review Comments' : 'Code Reviews',
+    type: 'bar',
+    yAxisIndex: 0,
+    dataIndex: 0,
+    position: 'left',
+    color: lfxColors.brand[500]
+  }
+]);
+
+const chartData = computed<ChartData[]>(() => {
+  if (model.value.activeTab === CodeReviewEngagementMetric.REVIEW_COMMENTS) {
+    return convertToChartData(reviewCommentsData.value as unknown as RawChartData[], 'startDate', ['comments']);
+  } else if (model.value.activeTab === CodeReviewEngagementMetric.CODE_REVIEWS) {
+    return convertToChartData(codeReviewsData.value as unknown as RawChartData[], 'startDate', ['reviews']);
+  }
+  return [];
+});
+
+const title = computed(() => {
+  switch (model.value.activeTab) {
+    case CodeReviewEngagementMetric.PR_PARTICIPANTS:
+      return 'Top contributors';
+    case CodeReviewEngagementMetric.REVIEW_COMMENTS:
+      return 'Review comments on pull requests';
+    default:
+      return 'Code reviews on pull requests';
+  }
+});
 
 const summary = computed<Summary>(() => codeReviewEngagement.value.summary);
 
@@ -161,6 +236,12 @@ const tabs = [
 
 const isEmpty = computed(() => isEmptyData(
   (codeReviewEngagement.value?.data || []) as unknown as Record<string, unknown>[]
+));
+
+const barChartConfig = computed(() => getBarChartConfig(
+  chartData.value,
+  chartSeries.value,
+  barGranularity.value
 ));
 
 watch(status, (value) => {
