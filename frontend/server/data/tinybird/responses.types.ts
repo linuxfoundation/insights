@@ -53,3 +53,13 @@ export type TinybirdSearchVolumeData = {
   volume: number;
   updatedAt: DateTime;
 }
+
+export type TinyBirdActivitiesCountSummaryData = {
+  activityCount?: number
+};
+
+export type TinyBirdActivitiesCountDataItem = {
+  startDate: string,
+  endDate: string,
+  activityCount?: number
+};

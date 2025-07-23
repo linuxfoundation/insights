@@ -26,7 +26,7 @@ export interface AverageTimeMerge {
   }[];
 }
 
-export interface CodeReviewItem {
+export interface CodeReviewEngagementPRParticipantsItem {
   avatar: string;
   name: string;
   activityCount: number;
@@ -34,9 +34,24 @@ export interface CodeReviewItem {
   roles: string[];
 }
 
+export interface CodeReviewEngagementCommentsItem {
+  startDate: string;
+  endDate: string;
+  comments: number;
+}
+
+export interface CodeReviewEngagementReviewsItem {
+  startDate: string;
+  endDate: string;
+  reviews: number;
+}
+
 export interface CodeReviewEngagement {
   summary: Summary;
-  data: CodeReviewItem[];
+  data:
+    CodeReviewEngagementPRParticipantsItem[] |
+    CodeReviewEngagementCommentsItem[] |
+    CodeReviewEngagementReviewsItem[];
 }
 
 export interface ContributionOutsideHours {

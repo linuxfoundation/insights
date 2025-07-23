@@ -49,11 +49,11 @@ import { computed } from 'vue';
 import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
 import { formatNumberShort } from '~/components/shared/utils/formatter';
 import LfxTag from "~/components/uikit/tag/tag.vue";
-import type {CodeReviewItem} from "~~/types/development/responses.types";
+import type {CodeReviewEngagementPRParticipantsItem} from "~~/types/development/responses.types";
 
 const props = defineProps<{
   metric: string;
-  codeReviewItem: CodeReviewItem[];
+  codeReviewItem: CodeReviewEngagementPRParticipantsItem[];
 }>();
 
 const activityColumnHeader = computed(() => {
