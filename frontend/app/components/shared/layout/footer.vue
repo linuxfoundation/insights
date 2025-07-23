@@ -43,6 +43,7 @@ SPDX-License-Identifier: MIT
                 Join discussions
               </lfx-button>
             </a>
+            <lfx-onboarding-link />
           </div>
         </div>
         <div class="flex gap-x-10 gap-y-10 lg:gap-x-20 flex-col sm:flex-row">
@@ -102,7 +103,8 @@ SPDX-License-Identifier: MIT
   import LfxButton from "~/components/uikit/button/button.vue";
   import LfxIcon from "~/components/uikit/icon/icon.vue";
   import {lfxFooterMenu} from "~/config/menu/footer";
-
+  import LfxOnboardingLink from "~/components/shared/components/onboarding-link.vue";
+  
   if (import.meta.client) {
     await import('@linuxfoundation/lfx-ui-core');
   }

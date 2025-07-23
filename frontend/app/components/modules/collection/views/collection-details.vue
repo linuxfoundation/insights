@@ -71,10 +71,22 @@ SPDX-License-Identifier: MIT
       size="large"
       class="!rounded-full"
       :loading="isFetchingNextPage"
+      :disabled="isFetchingNextPage"
       @click="loadMore"
     >
       Load more
+      <lfx-icon
+        v-if="isFetchingNextPage"
+        name="spinner-third"
+        :size="16"
+        class="animate-spin"
+      />
     </lfx-button>
+  </div>
+  <div class="flex justify-center">
+    <lfx-onboarding-link
+      show-message
+    />
   </div>
 </template>
 
@@ -102,6 +114,7 @@ import {
   collectionListParamsSetter
 }
 from '~/components/modules/collection/services/collections.query.service';
+import LfxOnboardingLink from '~/components/shared/components/onboarding-link.vue';
 
 const props = defineProps<{
   collection?: Collection,
