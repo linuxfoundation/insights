@@ -30,9 +30,11 @@ SPDX-License-Identifier: MIT
     </lfx-menu-button>
   </template>
 
+  <lfx-menu-github-button />
 </template>
 
 <script setup lang="ts">
+  import LfxMenuGithubButton from './github-button.vue';
   import LfxMenuButton from "~/components/uikit/menu-button/menu-button.vue";
   import LfxIcon from "~/components/uikit/icon/icon.vue";
   import {lfxMenu} from "~/config/menu";
