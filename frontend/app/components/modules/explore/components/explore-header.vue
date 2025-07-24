@@ -5,6 +5,11 @@ SPDX-License-Identifier: MIT
 <template>
   <section class="md:mt-16 mt-10">
     <div class="flex flex-col gap-5 items-center text-neutral-900">
+      <div class="pb-5">
+        <lfx-onboarding-link
+          show-message
+        />
+      </div>
       <h1 class="lg:text-4xl text-heading-1 font-secondary font-light text-center w-">
         Discover the world's <br> most critical open source projects
       </h1>
@@ -43,6 +48,7 @@ SPDX-License-Identifier: MIT
 import { ref } from "vue";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
 import LfxSearchModal from "~/components/shared/layout/search/search-modal.vue";
+import LfxOnboardingLink from "~/components/shared/components/onboarding-link.vue";
 
 const isModalOpen = ref(false);
 </script>
