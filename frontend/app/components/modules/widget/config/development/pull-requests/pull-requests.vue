@@ -71,10 +71,14 @@ SPDX-License-Identifier: MIT
       >
         <span class="text-neutral-400 text-xs flex flex-row gap-2 items-center">
           Avg. velocity
-          <lfx-icon
-            name="gauge-high"
-            :size="16"
-          />
+          <lfx-tooltip
+            :content="`Average duration between opening of a pull request and its resolution.`"
+          >
+            <lfx-icon
+              name="question-circle"
+              :size="16"
+            />
+          </lfx-tooltip>
         </span>
 
         <span class="text-xl">{{ avgVelocity }}</span>
@@ -116,6 +120,7 @@ import LfxProjectLoadState from "~/components/modules/project/components/shared/
 import LfxProjectPullRequestLegendItem
   from "~/components/modules/widget/components/development/fragments/pull-request-legend-item.vue";
 import {Widget} from "~/components/modules/widget/types/widget";
+import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
 
 interface PullRequestsModel {
   granularity: Granularity;
