@@ -136,8 +136,8 @@ export async function fetchPullRequests(filter: ActivityCountFilter): Promise<Pu
   const previousMergedCount = previousMergedPRsSummary.data[0]?.activityCount || 0;
   const currentClosedCount = currentClosedPRsSummary.data[0]?.activityCount || 0;
   const previousClosedCount = previousClosedPRsSummary.data[0]?.activityCount || 0;
-  const currentTotalCount = currentOpenedCount + currentMergedCount + currentClosedCount;
-  const previousTotalCount = previousOpenedCount + previousMergedCount + previousClosedCount;
+  const currentTotalCount = currentOpenedCount;
+  const previousTotalCount = previousOpenedCount;
   const totalPercentageChange = calculatePercentageChange(currentTotalCount, previousTotalCount);
   const openedPercentageChange = calculatePercentageChange(currentOpenedCount, previousOpenedCount);
   const mergedPercentageChange = calculatePercentageChange(currentMergedCount, previousMergedCount);
