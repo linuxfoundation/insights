@@ -4,6 +4,23 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <section class="mt-5">
+    <lfx-tabs
+      v-if="!isEmpty && !props.snapshot"
+      class="mb-5"
+      :tabs="tabs"
+      :model-value="model.activeTab"
+      @update:model-value="model.activeTab = $event"
+    >
+      <template #slotItem="{option}">
+        <lfx-tooltip
+          :content="option.value === 'packageDownloads' ? 
+            'Primary Registry Package downloads' : 'Docker Package downloads'"
+        >
+          <span @click="model.activeTab = option.value">{{option.label}}</span>
+        </lfx-tooltip>
+      </template>
+    </lfx-tabs>
+
     <div class="mb-5">
       <lfx-package-dropdown
         v-model="model.package"
@@ -40,20 +57,7 @@ SPDX-License-Identifier: MIT
         <lfx-chart
           :config="lineChartConfig"
           :animation="!props.snapshot"
-        >
-          <template #legend>
-            <div class="flex flex-row gap-5 items-center justify-center pt-2">
-              <div class="flex flex-row items-center gap-2">
-                <div class="w-5 border-brand-500 border-b-2 border-solid" />
-                <span class="text-xs text-neutral-900">Total package downloads</span>
-              </div>
-              <div class="flex flex-row items-center gap-2">
-                <div class="w-5 border-neutral-600 border-b-2 border-dotted" />
-                <span class="text-xs text-neutral-900">Docker downloads</span>
-              </div>
-            </div>
-          </template>
-        </lfx-chart>
+        />
       </div>
       <div class="flex justify-center items-center gap-2 text-xs text-neutral-400 mt-5">
         <lfx-icon
@@ -96,9 +100,12 @@ import {Widget} from "~/components/modules/widget/types/widget";
 import { POPULARITY_API_SERVICE } from '~/components/modules/widget/services/popularity.api.service';
 import { EcosystemSeparator } from '~~/types/shared/ecosystems.types';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxTabs from '~/components/uikit/tabs/tabs.vue';
+import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
 
 interface PackageDownloadsModel {
   package: string;
+  activeTab: string;
 }
 
 const props = defineProps<{
@@ -114,6 +121,11 @@ const model = computed<PackageDownloadsModel>({
   get: () => props.modelValue,
   set: (value) => emit('update:modelValue', value)
 })
+
+const tabs = [
+  { label: 'Package downloads', value: 'packageDownloads' },
+  { label: 'Docker downloads', value: 'dockerDownloads' },
+];
 
 const selectedPackage = computed<Package | undefined>(() => {
   const [ecosystem, name] = model.value.package.split(EcosystemSeparator);
@@ -216,24 +228,24 @@ const isEmpty = computed(() => {
   return chartData.value.every((dataPoint) => dataPoint.values[0] === 0 && dataPoint.values[1] === 0);
 });
 
-const chartSeries = computed<ChartSeries[]>(() => [
+const chartSeries = computed<ChartSeries[]>(() => model.value.activeTab === 'packageDownloads' ? [
   {
-    name: 'Total package downloads',
+    name: 'Primary Registry Package downloads',
     type: 'line',
     yAxisIndex: 0,
     dataIndex: 0,
     position: 'left',
     color: lfxColors.brand[500],
     lineWidth: 2
-  },
+  }
+] : [
   {
-    name: 'Docker downloads',
+    name: 'Docker Package downloads',
     type: 'line',
     yAxisIndex: 0,
     dataIndex: 1,
     position: 'left',
-    lineStyle: 'dotted',
-    color: lfxColors.neutral[500],
+    color: lfxColors.brand[500],
     lineWidth: 2
   }
 ]);
