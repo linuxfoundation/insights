@@ -65,7 +65,7 @@ SPDX-License-Identifier: MIT
 
   <div
     v-if="hasNextPage"
-    class="py-5 lg:py-10 flex justify-center"
+    class="pt-5 lg:pt-10 flex justify-center"
   >
     <lfx-button
       size="large"
@@ -83,7 +83,7 @@ SPDX-License-Identifier: MIT
       />
     </lfx-button>
   </div>
-  <div class="flex justify-center">
+  <div class="flex justify-center mt-5 mb-10 lg:mb-20 lg:mt-10">
     <lfx-onboarding-link
       show-message
     />
