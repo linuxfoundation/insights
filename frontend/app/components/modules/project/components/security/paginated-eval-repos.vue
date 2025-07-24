@@ -31,7 +31,7 @@ import type {SecurityData} from "~~/types/security/responses.types";
 import LfxProjectSecurityEvaluationRepository
   from "~/components/modules/project/components/security/evaluation-repository.vue";
 import LfxButton from "~/components/uikit/button/button.vue";
-  
+
 type PaginatedChecks = {
   repo: string;
   checks: SecurityData[];
@@ -47,7 +47,7 @@ const itemsPerPage = ref(20);
 const paginatedChecks = computed<PaginatedChecks[]>(() => {
   const end = offset.value + itemsPerPage.value;
   const checksArr = Object.entries(props.groupChecks);
-  return checksArr.slice(0, end > checksArr.length ? (checksArr.length - 1) : end).map(([repo, checks]) => ({
+  return checksArr.slice(0, end > checksArr.length ? checksArr.length : end).map(([repo, checks]) => ({
     repo,
     checks,
   }));
