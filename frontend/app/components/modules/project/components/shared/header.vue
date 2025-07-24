@@ -112,9 +112,38 @@ SPDX-License-Identifier: MIT
             v-if="pageWidth < 768"
             to="body"
           >
-            <lfx-project-date-range-picker
-              v-show="showDatepicker"
-            />
+            <div
+              class="fixed bottom-5 z-50 left-1/2 transform -translate-x-1/2
+           bg-white border border-neutral-200 rounded-full shadow-md px-1 py-px gap-2 flex"
+            >
+              <lfx-project-date-range-picker  v-show="showDatepicker" />
+              <div
+                v-if="showDatepicker"
+                class="border-l border-neutral-200 my-1"
+              />
+              <div
+                class="flex items-center py-1.5 px-3 gap-1.5 cursor-pointer"
+                @click="share()"
+              >
+                <lfx-icon
+                  name="share-nodes"
+                  :size="14"
+                />
+                <p class="text-xs whitespace-nowrap">Share</p>
+              </div>
+              <div class="border-l border-neutral-200 my-1" />
+              <div
+                class="flex items-center py-1.5 px-3 gap-1.5 cursor-pointer"
+                @click="openReportModal()"
+              >
+                <lfx-icon
+                  name="comment-exclamation"
+                  :size="14"
+                  class="text-warning-600"
+                />
+                <p class="text-xs whitespace-nowrap">Report issue</p>
+              </div>
+            </div>
           </teleport>
           <lfx-project-date-range-picker
             v-else
@@ -193,7 +222,7 @@ const share = () => {
     } else if(selectedRepositories.value.length === 1){
       title.push(selectedRepositories.value[0]!.name);
     }
-    
+
     const type = route.path.split('/').at(-1) || '';
     if(['contributors', 'popularity', 'security', 'development'].includes(type)){
       title.push(type);
