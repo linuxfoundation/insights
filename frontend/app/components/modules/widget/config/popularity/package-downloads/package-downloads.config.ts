@@ -13,6 +13,7 @@ const packageDownloads: WidgetConfig = {
   component: PackageDownloads,
   defaultValue: {
     package: 'all::All packages',
+    activeTab: 'packageDownloads'
   },
   share: true,
   embed: true,
