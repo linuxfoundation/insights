@@ -27,26 +27,6 @@ SPDX-License-Identifier: MIT
             </div>
           </lfx-skeleton-state>
         </div>
-
-        <div
-          v-if="!isEmpty"
-          class="flex flex-col items-end justify-center"
-        >
-          <span class="text-neutral-400 text-xs flex flex-row gap-2 items-center">
-            <lfx-icon
-              name="gauge-high"
-              :size="16"
-            />
-            Avg. velocity
-          </span>
-          <lfx-skeleton-state
-            :status="status"
-            height="1.25rem"
-            width="4rem"
-          >
-            <span class="text-xl">{{ avgVelocity }}</span>
-          </lfx-skeleton-state>
-        </div>
       </div>
     </div>
 
@@ -81,6 +61,29 @@ SPDX-License-Identifier: MIT
           :color="chartSeries[2]!.color!"
         />
       </div>
+      <hr
+        v-if="!isEmpty"
+        class="my-5"
+      >
+      <div
+        v-if="!isEmpty"
+        class="flex flex-row items-center justify-between"
+      >
+        <span class="text-neutral-400 text-xs flex flex-row gap-2 items-center">
+          Avg. velocity
+          <lfx-tooltip
+            :content="`Average duration between opening of a pull request and its resolution.`"
+          >
+            <lfx-icon
+              name="question-circle"
+              :size="16"
+            />
+          </lfx-tooltip>
+        </span>
+
+        <span class="text-xl">{{ avgVelocity }}</span>
+
+      </div>
     </lfx-project-load-state>
   </section>
 </template>
@@ -102,7 +105,7 @@ import type {
   ChartSeries
 } from '~/components/uikit/chart/types/ChartTypes';
 import LfxChart from '~/components/uikit/chart/chart.vue';
-import { getBarChartConfigStacked } from '~/components/uikit/chart/configs/bar.chart';
+import { getBarChartConfigStackAndLine } from '~/components/uikit/chart/configs/bar.chart';
 import { lfxColors } from '~/config/styles/colors';
 import { formatNumber, formatSecondsToDuration } from '~/components/shared/utils/formatter';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
@@ -117,6 +120,7 @@ import LfxProjectLoadState from "~/components/modules/project/components/shared/
 import LfxProjectPullRequestLegendItem
   from "~/components/modules/widget/components/development/fragments/pull-request-legend-item.vue";
 import {Widget} from "~/components/modules/widget/types/widget";
+import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
 
 interface PullRequestsModel {
   granularity: Granularity;
@@ -192,7 +196,7 @@ const closedSummary = computed<Summary | undefined>(() => pullRequests.value?.cl
 const chartSeries = ref<ChartSeries[]>([
   {
     name: 'Open',
-    type: 'bar',
+    type: 'line',
     yAxisIndex: 0,
     dataIndex: 0,
     position: 'left',
@@ -216,10 +220,10 @@ const chartSeries = ref<ChartSeries[]>([
   }
 ]);
 
-const barChartConfig = computed(() => getBarChartConfigStacked(
+const barChartConfig = computed(() => getBarChartConfigStackAndLine(
   chartData.value,
   chartSeries.value,
-  granularity.value,
+  granularity.value
 ));
 
 const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));

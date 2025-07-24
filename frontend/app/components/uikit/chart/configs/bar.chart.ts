@@ -154,12 +154,38 @@ export const getBarChartConfigStacked = (
     overrideConfig
   );
 
+export const getBarChartConfigStackAndLine = (
+  data: ChartData[],
+  series: ChartSeries[],
+  granularity: string,
+  overrideConfig?: Partial<ECOption>
+  // reuse the same function as the custom config but with the stack option
+): ECOption => getBarChartConfigCustom(
+    data,
+    series,
+    {
+      stack: 'stack',
+      itemStyle: {
+        borderRadius: [2, 2, 2, 2],
+        borderWidth: 1,
+        borderColor: '#fff',
+      },
+    },
+    granularity,
+    overrideConfig,
+    {
+      smooth: true,
+      showSymbol: false
+    }
+  );
+
 /**
  * Get bar chart config custom. This can be used to add custom styles to the chart.
  * or override the default styles.
  * @param data - Data
  * @param series - Series
- * @param customStyle - Custom style
+ * @param customStyle - Custom series style (bar chart)
+ * @param lineStyle - Custom line style (line chart)
  * @returns Chart config
  */
 export const getBarChartConfigCustom = (
@@ -167,7 +193,8 @@ export const getBarChartConfigCustom = (
   series: ChartSeries[],
   customStyle: Partial<SeriesTypes>,
   granularity: string,
-  overrideConfig?: Partial<ECOption>
+  overrideConfig?: Partial<ECOption>,
+  lineStyle?: Partial<SeriesTypes>
 ): ECOption => {
   const axisLabelFormat = formatByGranularity[granularity as keyof typeof formatByGranularity] || 'MMM yyyy';
 
@@ -186,7 +213,7 @@ export const getBarChartConfigCustom = (
   const styledSeries = applySeriesStyle(series, buildSeries(series, data)).map(
     (seriesItem) => ({
         ...seriesItem,
-        ...customStyle,
+        ...(seriesItem.type === 'bar' ? customStyle : lineStyle),
       } as BarSeriesOption)
   );
 
