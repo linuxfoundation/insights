@@ -290,6 +290,32 @@ class PopularityApiService {
         },
       });
   }
+
+  isPackageDownloadsEmpty(data: PackageDownloads | undefined) {
+    if (!data) {
+      return true;
+    }
+    return data.data.every((item) => item.downloadsCount === 0 && item.dockerDownloadsCount === 0);
+  }
+  isPackageDependencyEmpty(data: PackageDownloads | undefined) {
+    if (!data) {
+      return true;
+    }
+    return data.data.every((item) => item.dependentReposCount === 0 && 
+      item.dependentPackagesCount === 0 && item.dockerDependentsCount === 0);
+  }
+  isSearchQueriesEmpty(data: SearchQueries | undefined) {
+    if (!data) {
+      return true;
+    }
+    return data.data.every((item) => item.queryCount === 0);
+  }
+  isMailingListMessagesEmpty(data: MailingListsMessages | undefined) {
+    if (!data) {
+      return true;
+    }
+    return data.data.every((item) => item.messages === 0);
+  }
 }
 
 export const POPULARITY_API_SERVICE = new PopularityApiService();
