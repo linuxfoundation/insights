@@ -100,8 +100,8 @@ const popularityParams = computed(() => ({
 
 const downloadsParams = computed(() => ({
   ...popularityParams.value,
-  ecosystem: 'all',
-  name: 'All packages',
+  ecosystem: undefined,
+  name: undefined,
 }));
 
 const mailingListMessagesParams = computed(() => ({
