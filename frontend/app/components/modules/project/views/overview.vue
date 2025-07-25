@@ -43,8 +43,6 @@ import {
 import { useRoute } from 'nuxt/app';
 import { storeToRefs } from 'pinia';
 import { WidgetArea } from '../../widget/types/widget-area';
-import { lfxProjectDateOptions } from '../config/date-options';
-import { POPULARITY_API_SERVICE } from '../../widget/services/popularity.api.service';
 import LfxProjectAboutSection from '~/components/modules/project/components/overview/about-section.vue';
 import LfxProjectScoreTabs from '~/components/modules/project/components/overview/score-tabs.vue';
 import LfxProjectTrustScore from '~/components/modules/project/components/overview/trust-score.vue';
@@ -52,7 +50,6 @@ import { useProjectStore } from "~~/app/components/modules/project/store/project
 import { OVERVIEW_API_SERVICE } from '~~/app/components/modules/project/services/overview.api.service';
 import type { TrustScoreSummary } from '~~/types/overview/responses.types';
 import LfxCard from '~/components/uikit/card/card.vue';
-import { Granularity } from '~~/types/shared/granularity';
 import type { HealthScoreResults } from '~~/types/overview/responses.types';
 
 const route = useRoute();
@@ -100,33 +97,12 @@ const {
  * This is a workaround to show/hide the Search Queries from the score.
  * ===============================
  */
- const popularityParams = computed(() => ({
-  projectSlug: route.params.slug as string,
-  repos: selectedReposValues.value,
-  granularity: Granularity.MONTHLY,
-  startDate: lfxProjectDateOptions[1]?.startDate || null,
-  endDate: lfxProjectDateOptions[1]?.endDate || null,
-}));
-
-const {
-  data: searchQueriesData, status: searchQueriesStatus, suspense: searchQueriesSuspense
-} = POPULARITY_API_SERVICE.fetchSearchQueries(popularityParams);
-
-const isSearchQueriesEmpty = computed(() => POPULARITY_API_SERVICE
-  .isSearchQueriesEmpty(searchQueriesStatus.value === 'success' ? searchQueriesData.value : undefined));
-
+ 
 // delete the search queries from the overview data
 const data = computed(() => {
   const data = {...overviewData.value};
-  if (isSearchQueriesEmpty.value) {
+  if (overviewData.value?.searchQueries.value === 0) {
     delete data.searchQueries;
-
-    // recompute the scores
-    data.popularityPercentage = ((((data.forks?.benchmark || 0) + (data.stars?.benchmark || 0)) / 2) * 5) / 25 * 100;
-    data.overallScore = (data.popularityPercentage + 
-      (data.contributorPercentage || 0) + 
-      (data.developmentPercentage|| 0) + 
-      (data.securityPercentage || 0)) / 4;
   }
   return data as HealthScoreResults;
 });
@@ -154,7 +130,6 @@ const isRepoSelected = computed(() => selectedReposValues.value.length > 0);
 
 onServerPrefetch(async () => {
   await suspense();
-  await searchQueriesSuspense();
 });
 </script>
 
