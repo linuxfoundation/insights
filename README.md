@@ -2,7 +2,10 @@
 
 > 📣 Insights was relaunched and open sourced in June 2025.
 
-# LFX Insights ![LFX Health Score](https://insights.production.lfx.dev/api/badge/health-score?project=insights) ![LFX Contributors](https://insights.production.lfx.dev/api/badge/contributors?project=insights) ![LFX Active Contributors](https://insights.production.lfx.dev/api/badge/active-contributors?project=insights)
+# LFX Insights 
+[![LFX Health Score](https://insights.production.lfx.dev/api/badge/health-score?project=insights)](https://insights.linuxfoundation.org/project/insights)
+[![LFX Contributors](https://insights.production.lfx.dev/api/badge/contributors?project=insights)](https://insights.linuxfoundation.org/project/insights)
+[![LFX Active Contributors](https://insights.production.lfx.dev/api/badge/active-contributors?project=insights)](https://insights.linuxfoundation.org/project/insights)
 
 ![Banner image for LFX Insights, showcasing project branding](https://github.com/user-attachments/assets/a3cd85d7-0b48-4a83-a7b6-76e69ad4b635)
 
