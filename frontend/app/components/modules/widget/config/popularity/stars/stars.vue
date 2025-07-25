@@ -6,7 +6,7 @@ SPDX-License-Identifier: MIT
   <section class="mt-5">
     <div class="mb-6">
       <lfx-skeleton-state
-        :status="model.activeTab === 'cumulative' ? cumulativeStatus : status"
+        :status="status"
         height="2rem"
         width="7.5rem"
       >
@@ -37,8 +37,8 @@ SPDX-License-Identifier: MIT
       <span v-else>{{lineGranularity}} stars growth</span>
     </div>
     <lfx-project-load-state
-      :status="model.activeTab === 'cumulative' ? cumulativeStatus : status"
-      :error="model.activeTab === 'cumulative' ? cumulativeError : error"
+      :status="status"
+      :error="error"
       error-message="Error fetching stars"
       :is-empty="isEmpty"
     >
@@ -58,7 +58,6 @@ import {
  computed, watch, onServerPrefetch
 } from 'vue';
 import { storeToRefs } from "pinia";
-import {type QueryFunction, useQuery} from "@tanstack/vue-query";
 import type { StarsData } from '~~/types/popularity/responses.types';
 import { lineGranularities, barGranularities } from '~/components/shared/types/granularity';
 import type { Summary } from '~~/types/shared/summary.types';
@@ -79,10 +78,10 @@ import { useProjectStore } from "~/components/modules/project/store/project.stor
 import { isEmptyData } from '~/components/shared/utils/helper';
 import { dateOptKeys } from '~/components/modules/project/config/date-options';
 import type { Granularity } from '~~/types/shared/granularity';
-import {TanstackKey} from "~/components/shared/types/tanstack";
 import LfxSkeletonState from "~/components/modules/project/components/shared/skeleton-state.vue";
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
 import {Widget} from "~/components/modules/widget/types/widget";
+import { POPULARITY_API_SERVICE } from '~/components/modules/widget/services/popularity.api.service';
 
 interface StarsModel {
   activeTab: string;
@@ -115,85 +114,30 @@ const lineGranularity = computed(() => (selectedTimeRangeKey.value === dateOptKe
   ? customRangeGranularity.value[0] as Granularity
   : lineGranularities[selectedTimeRangeKey.value as keyof typeof lineGranularities]));
 
-const barQueryKey = computed(() => [
-  TanstackKey.STARS,
-  route.params.slug,
-  barGranularity.value,
-  'new',
-  'star',
-  selectedReposValues.value,
-  startDate.value,
-  endDate.value,
-]);
+const queryParams = computed(() => ({
+  projectSlug: route.params.slug as string,
+  granularity: model.value.activeTab === 'cumulative' ? lineGranularity.value : barGranularity.value,
+  repos: selectedReposValues.value,
+  startDate: startDate.value,
+  endDate: endDate.value,
+  type: model.value.activeTab === 'cumulative' ? 'cumulative' : 'new',
+  countType: model.value.activeTab === 'cumulative' ? 'cumulative' : 'new',
+}));
 
-const fetchBarData: QueryFunction<StarsData> = async () => $fetch(
-`/api/project/${route.params.slug}/popularity/stars`,
-    {
-    params: {
-      granularity: barGranularity.value,
-      type: 'new',
-      countType: 'new',
-      activityType: 'star',
-      repos: selectedReposValues.value,
-      startDate: startDate.value,
-      endDate: endDate.value,
-    },
-  }
-);
 
 const {
   data,
   status,
   error,
-  suspense: barSuspense
-} = useQuery<StarsData>({
-  queryKey: barQueryKey,
-  queryFn: fetchBarData,
-});
+  suspense
+} = POPULARITY_API_SERVICE.fetchStars(queryParams);
 
-const lineQueryKey = computed(() => [
-  TanstackKey.STARS_CUMULATIVE,
-  route.params.slug,
-  lineGranularity.value,
-  'cumulative',
-  'star',
-  selectedReposValues.value,
-  startDate.value,
-  endDate.value,
-]);
-
-const fetchLineData: QueryFunction<StarsData> = async () => $fetch(
-    `/api/project/${route.params.slug}/popularity/stars`,
-    {
-  params: {
-    granularity: lineGranularity.value,
-    type: 'cumulative',
-    countType: 'cumulative',
-    activityType: 'star',
-    repos: selectedReposValues.value,
-    startDate: startDate.value,
-    endDate: endDate.value,
-  }
-}
-);
-
-const {
-  data: cumulativeData,
-  status: cumulativeStatus,
-  error: cumulativeError,
-  suspense: lineSuspense
-} = useQuery<StarsData>({
-  queryKey: lineQueryKey,
-  queryFn: fetchLineData,
-});
 
 onServerPrefetch(async () => {
-  await Promise.all([barSuspense(), lineSuspense()]);
+  await suspense();
 });
 
-const stars = computed<StarsData | undefined>(() => (model.value.activeTab === 'cumulative'
-  ? cumulativeData.value as StarsData
-  : data.value as StarsData));
+const stars = computed<StarsData | undefined>(() => (data.value as StarsData));
 
 const summary = computed<Summary | undefined>(() => stars.value?.summary);
 const chartData = computed<ChartData[]>(

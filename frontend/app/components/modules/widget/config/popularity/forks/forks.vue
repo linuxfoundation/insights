@@ -6,7 +6,7 @@ SPDX-License-Identifier: MIT
   <section class="mt-5">
     <div class="mb-6">
       <lfx-skeleton-state
-        :status="model.activeTab === 'cumulative' ? cumulativeStatus : status"
+        :status="status"
         height="2rem"
         width="7.5rem"
       >
@@ -37,8 +37,8 @@ SPDX-License-Identifier: MIT
       <span v-else>{{lineGranularity}} forks growth</span>
     </div>
     <lfx-project-load-state
-      :status="model.activeTab === 'cumulative' ? cumulativeStatus : status"
-      :error="model.activeTab === 'cumulative' ? cumulativeError : error"
+      :status="status"
+      :error="error"
       error-message="Error fetching forks"
       :is-empty="isEmpty"
     >
@@ -58,7 +58,6 @@ import {
  computed, watch, onServerPrefetch
 } from 'vue';
 import { storeToRefs } from "pinia";
-import {type QueryFunction, useQuery} from "@tanstack/vue-query";
 import type { ForksData } from '~~/types/popularity/responses.types';
 import { lineGranularities, barGranularities } from '~/components/shared/types/granularity';
 import type { Summary } from '~~/types/shared/summary.types';
@@ -79,10 +78,10 @@ import { useProjectStore } from "~/components/modules/project/store/project.stor
 import { isEmptyData } from '~/components/shared/utils/helper';
 import { dateOptKeys } from '~/components/modules/project/config/date-options';
 import type { Granularity } from '~~/types/shared/granularity';
-import {TanstackKey} from "~/components/shared/types/tanstack";
 import LfxSkeletonState from "~/components/modules/project/components/shared/skeleton-state.vue";
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
 import {Widget} from "~/components/modules/widget/types/widget";
+import { POPULARITY_API_SERVICE } from '~/components/modules/widget/services/popularity.api.service';
 
 interface ForksModel {
   activeTab: string;
@@ -115,81 +114,29 @@ const lineGranularity = computed(() => (selectedTimeRangeKey.value === dateOptKe
   ? customRangeGranularity.value[0] as Granularity
   : lineGranularities[selectedTimeRangeKey.value as keyof typeof lineGranularities]));
 
-const barQueryKey = computed(() => [
-  TanstackKey.FORKS,
-  route.params.slug,
-  selectedReposValues,
-  startDate,
-  endDate,
-  barGranularity,
-]);
+const queryParams = computed(() => ({
+  projectSlug: route.params.slug as string,
+  granularity: model.value.activeTab === 'cumulative' ? lineGranularity.value : barGranularity.value,
+  repos: selectedReposValues.value,
+  startDate: startDate.value,
+  endDate: endDate.value,
+  type: model.value.activeTab === 'cumulative' ? 'cumulative' : 'new',
+  countType: model.value.activeTab === 'cumulative' ? 'cumulative' : 'new',
+}));
 
-const fetchBarData: QueryFunction<ForksData> = async () => $fetch(
-    `/api/project/${route.params.slug}/popularity/forks`,
-    {
-  params: {
-    granularity: barGranularity.value,
-    type: 'new',
-    countType: 'new',
-    activityType: 'fork',
-    repos: selectedReposValues.value,
-    startDate: startDate.value,
-    endDate: endDate.value,
-  }
-}
-);
 
 const {
   data,
   status,
   error,
-  suspense: barSuspense
-} = useQuery<ForksData>({
-  queryKey: barQueryKey,
-  queryFn: fetchBarData,
-});
-
-const lineQueryKey = computed(() => [
-  TanstackKey.FORKS_CUMULATIVE,
-  route.params.slug,
-  selectedReposValues,
-  startDate,
-  endDate,
-  lineGranularity,
-]);
-
-const fetchLineData: QueryFunction<ForksData> = async () => $fetch(
-    `/api/project/${route.params.slug}/popularity/forks`,
-    {
-  params: {
-    granularity: lineGranularity.value,
-    type: 'cumulative',
-    countType: 'cumulative',
-    activityType: 'fork',
-    repos: selectedReposValues.value,
-    startDate: startDate.value,
-    endDate: endDate.value,
-  }
-}
-);
-
-const {
-  data: cumulativeData,
-  status: cumulativeStatus,
-  error: cumulativeError,
-  suspense: lineSuspense
-} = useQuery<ForksData>({
-  queryKey: lineQueryKey,
-  queryFn: fetchLineData,
-});
+  suspense
+} = POPULARITY_API_SERVICE.fetchForks(queryParams);
 
 onServerPrefetch(async () => {
-  await Promise.all([barSuspense(), lineSuspense()]);
+  await suspense();
 });
 
-const forks = computed<ForksData | undefined>(() => (model.value.activeTab === 'cumulative'
-  ? cumulativeData.value as ForksData
-  : data.value as ForksData));
+const forks = computed<ForksData | undefined>(() => (data.value as ForksData));
 
 const summary = computed<Summary | undefined>(() => forks.value?.summary);
 const chartData = computed<ChartData[]>(
