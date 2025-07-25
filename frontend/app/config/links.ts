@@ -6,4 +6,6 @@ export const links = {
   securityScore: `/docs/metrics/security`,
   ospsScore: 'https://baseline.openssf.org/versions/2025-02-25',
   criticality: '/docs/introduction/lf-oss-index/#criticality-score',
+  issues: 'https://github.com/linuxfoundation/insights/issues',
+  discussions: 'https://github.com/linuxfoundation/insights/discussions'
 };

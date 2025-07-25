@@ -17,14 +17,22 @@ SPDX-License-Identifier: MIT
           v-else-if="link.enabled"
           :content="link.label"
           placement="top"
+          :disabled="link.showLabel"
         >
           <lfx-widget-menu-item
+            class="flex gap-2 items-center"
+            :class="link.showLabel ? '!w-auto !px-4' : ''"
             @click="link.action()"
           >
             <lfx-icon
               :name="link.icon"
               :size="18"
+              :class="link.iconClass"
             />
+            <span
+              v-if="link.showLabel"
+              class="text-sm font-medium"
+            >{{link.label}}</span>
           </lfx-widget-menu-item>
         </lfx-tooltip>
       </template>
@@ -55,7 +63,10 @@ SPDX-License-Identifier: MIT
             v-else-if="link.enabled"
             @click="link.action()"
           >
-            <lfx-icon :name="link.icon" /> {{link.label}}
+            <lfx-icon
+              :name="link.icon"
+              :class="link.iconClass"
+            /> {{link.label}}
           </lfx-dropdown-item>
         </template>
       </lfx-dropdown>
@@ -128,7 +139,7 @@ const report = () => {
 const share = () => {
   const url = new URL(window.location.href);
   url.searchParams.set('widget', props.name);
-  const repoTitle = selectedRepositories.value.length > 0 ? 
+  const repoTitle = selectedRepositories.value.length > 0 ?
     ` - ${selectedRepositories.value.map((repo) => repo.name).join(', ')}` : '';
   const title = `${project.value?.name}${repoTitle} - ${config.value.name} | LFX Insights`
   openShareModal({
@@ -144,13 +155,17 @@ const menu: {
   icon: string;
   action: () => void;
   enabled: boolean;
+  showLabel?: boolean;
+  iconClass?: string;
   isSeparator: boolean
 }[] = [
   {
     label: 'Report issue',
     icon: 'comment-exclamation',
+    iconClass: '!text-warning-600',
     action: report,
     enabled: true,
+    showLabel: true,
     isSeparator: false
   },
   {

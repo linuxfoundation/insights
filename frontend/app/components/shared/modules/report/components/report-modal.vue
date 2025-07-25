@@ -26,7 +26,13 @@ SPDX-License-Identifier: MIT
         Report issue
       </h3>
       <p class="text-body-2 text-neutral-500">
-        Help is improve our data by reporting any issues or bugs you’ve encountered.
+        Help is improve our data by reporting any issues or bugs you’ve encountered. Check the currently open
+        <a
+          :href="links.issues"
+          target="_blank"
+          rel="noreferrer"
+          class="text-brand-500"
+        >Insights GitHub Issues</a>.
       </p>
     </section>
 
@@ -79,12 +85,12 @@ SPDX-License-Identifier: MIT
           :required="true"
         >
           <p class="text-xs text-neutral-500 leading-4">
-            Help us troubleshoot by providing a clear and detailed explanation of the issue you found.
+            Clear and concise description of the issue.
           </p>
           <lfx-textarea
             v-model="form.description"
             placeholder="Enter description..."
-            class="min-h-25"
+            class="min-h-17"
             :invalid="$v.description.$invalid && $v.description.$dirty"
             @blur="$v.description.$touch()"
             @change="$v.description.$touch()"
@@ -95,34 +101,49 @@ SPDX-License-Identifier: MIT
           />
         </lfx-field>
       </article>
-
-      <article class="flex items-center gap-4">
-        <div class="h-px flex grow bg-neutral-200" />
-        <div>
-          <p class="text-xs leading-5 font-medium mb-1">
-            Want to be notified once the issue is resolved?
-          </p>
-          <p class="text-xs leading-4 text-neutral-500">
-            Provide your contact and we’ll keep you updated
-          </p>
-
-        </div>
-        <div class="h-px flex grow bg-neutral-200" />
-      </article>
-
       <article>
-        <lfx-input
-          v-model="form.email"
-          placeholder="Enter email address"
-          type="email"
-          autocomplete="email"
-          :invalid="$v.email.$invalid && $v.email.$dirty"
-          @blur="$v.email.$touch()"
-        />
-        <lfx-field-messages
-          :validation="$v.email"
-          :error-messages="{ email: 'Invalid email' }"
-        />
+        <lfx-field
+          label="Steps to reproduce"
+          :required="true"
+        >
+          <p class="text-xs text-neutral-500 leading-4">
+            Step-by-step instructions to replicate the issue.
+          </p>
+          <lfx-textarea
+            v-model="form.steps"
+            placeholder="Enter description..."
+            class="min-h-17"
+            :invalid="$v.steps.$invalid && $v.steps.$dirty"
+            @blur="$v.steps.$touch()"
+            @change="$v.steps.$touch()"
+          />
+          <lfx-field-messages
+            :validation="$v.steps"
+            :error-messages="{ required: 'This field is required' }"
+          />
+        </lfx-field>
+      </article>
+      <article>
+        <lfx-field
+          label="Expected behaviour"
+          :required="true"
+        >
+          <p class="text-xs text-neutral-500 leading-4">
+            Describe the expected functionality or outcome.
+          </p>
+          <lfx-textarea
+            v-model="form.expectations"
+            placeholder="Enter description..."
+            class="min-h-17"
+            :invalid="$v.expectations.$invalid && $v.expectations.$dirty"
+            @blur="$v.expectations.$touch()"
+            @change="$v.expectations.$touch()"
+          />
+          <lfx-field-messages
+            :validation="$v.expectations"
+            :error-messages="{ required: 'This field is required' }"
+          />
+        </lfx-field>
       </article>
     </section>
 
@@ -143,7 +164,7 @@ SPDX-License-Identifier: MIT
 
 <script lang="ts" setup>
 import {computed, watch} from "vue";
-import { required, email } from '@vuelidate/validators'
+import { required } from '@vuelidate/validators'
 import useVuelidate from "@vuelidate/core";
 import {storeToRefs} from "pinia";
 import LfxModal from "~/components/uikit/modal/modal.vue";
@@ -154,7 +175,6 @@ import LfxChip from "~/components/uikit/chip/chip.vue";
 import LfxSelect from "~/components/uikit/select/select.vue";
 import LfxOption from "~/components/uikit/select/option.vue";
 import LfxTextarea from "~/components/uikit/textarea/textarea.vue";
-import LfxInput from "~/components/uikit/input/input.vue";
 import LfxButton from "~/components/uikit/button/button.vue";
 import {useProjectStore} from "~/components/modules/project/store/project.store";
 import type {ReportRequest} from "~~/types/report/requests.types";
@@ -166,6 +186,7 @@ import type {Widget} from "~/components/modules/widget/types/widget";
 import type {ReportDataForm} from "~/components/shared/modules/report/types/report.types";
 import {lfxWidgets} from "~/components/modules/widget/config/widget.config";
 import type {WidgetArea} from "~/components/modules/widget/types/widget-area";
+import {links} from "~/config/links";
 
 const props = defineProps<{
   modelValue: boolean;
@@ -191,7 +212,8 @@ const form = reactive<ReportDataForm>({
   area: '',
   widget: '',
   description: '',
-  email: '',
+  steps: '',
+  expectations: '',
   hideArea: false,
   ...props.defaults,
 })
@@ -203,8 +225,11 @@ const rules = computed(() => ({
   description: {
     required
   },
-  email: {
-    email,
+  steps: {
+    required
+  },
+  expectations: {
+    required
   },
 }))
 
@@ -215,7 +240,8 @@ const submit = () => {
     area: lfxWidgetArea[form.area as WidgetArea]?.label || form.area,
     widget: lfxWidgets[form.widget as Widget]?.name || form.widget,
     description: form.description,
-    email: form.email,
+    steps: form.steps,
+    expectations: form.expectations,
     url: window?.location?.href,
     projectSlug: project.value?.slug,
     projectName: project.value?.name,
