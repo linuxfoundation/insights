@@ -13,7 +13,7 @@ SPDX-License-Identifier: MIT
     <lfx-project-load-state
       :status="status"
       :error="error"
-      error-message="Error fetching social mentions"
+      error-message="Error fetching search queries volume"
       :is-empty="isEmpty"
     >
       <div class="w-full h-[320px]">
@@ -38,7 +38,6 @@ SPDX-License-Identifier: MIT
 import { useRoute } from 'nuxt/app';
 import { computed, onServerPrefetch, watch } from 'vue';
 import { storeToRefs } from "pinia";
-import {type QueryFunction, useQuery} from "@tanstack/vue-query";
 import { DateTime } from 'luxon';
 import searchQueriesConfig from './search-queries.config'
 import type { SearchQueries } from '~~/types/popularity/responses.types';
@@ -54,10 +53,10 @@ import { useProjectStore } from "~/components/modules/project/store/project.stor
 import { isEmptyData } from '~/components/shared/utils/helper';
 import { getBarChartConfig } from '~/components/uikit/chart/configs/bar.chart';
 import { Granularity } from '~~/types/shared/granularity';
-import {TanstackKey} from "~/components/shared/types/tanstack";
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
 import {Widget} from "~/components/modules/widget/types/widget";
 import LfxIcon from '~/components/uikit/icon/icon.vue';
+import { POPULARITY_API_SERVICE } from '~/components/modules/widget/services/popularity.api.service';
 
 const props = defineProps<{
   snapshot?: boolean
@@ -76,32 +75,17 @@ const route = useRoute();
 
 const granularity = computed(() => Granularity.MONTHLY);
 
-const queryKey = computed(() => [
-  TanstackKey.SEARCH_QUERIES,
-  route.params.slug,
-  granularity.value,
-  selectedReposValues.value,
-  startDate.value,
-  endDate.value,
-]);
-
-const fetchData: QueryFunction<SearchQueries> = async () => $fetch(
-    `/api/project/${route.params.slug}/popularity/search-queries`,
-    {
-  params: {
-    startDate: startDate.value,
-    endDate: endDate.value,
-    repos: selectedReposValues.value,
-  }
-}
-);
+const queryParams = computed(() => ({
+  projectSlug: route.params.slug as string,
+  granularity: granularity.value,
+  repos: selectedReposValues.value,
+  startDate: startDate.value,
+  endDate: endDate.value,
+}));
 
 const {
   data, status, error, suspense
-} = useQuery<SearchQueries>({
-  queryKey,
-  queryFn: fetchData,
-});
+} = POPULARITY_API_SERVICE.fetchSearchQueries(queryParams);
 
 onServerPrefetch(async () => {
   await suspense();

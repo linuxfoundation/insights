@@ -5,16 +5,30 @@ import type { QueryFunction } from '@tanstack/vue-query';
 import { type ComputedRef, computed } from 'vue';
 import { useQuery } from '@tanstack/vue-query';
 import { TanstackKey } from '~/components/shared/types/tanstack';
-import type { Package, PackageDownloads } from '~~/types/popularity/responses.types';
+import type { 
+  ForksData, 
+  MailingListsMessages, 
+  Package, 
+  PackageDownloads, 
+  SearchQueries, 
+  StarsData 
+} from '~~/types/popularity/responses.types';
 
-export interface PopularityQueryParams {
+export interface QueryParams {
   projectSlug: string;
   granularity: string;
   repos?: string[];
   startDate: string | null;
   endDate: string | null;
+}
+export interface PopularityQueryParams extends QueryParams {
   ecosystem?: string;
   name?: string;
+}
+
+export interface ActivityTypeQueryParams extends QueryParams {
+  type: string;
+  countType: string;
 }
 
 export interface PackagesQueryParams {
@@ -22,6 +36,8 @@ export interface PackagesQueryParams {
   repos?: string[];
   search?: string;
 }
+
+
 class PopularityApiService {
   fetchPackageDownloads(params: ComputedRef<PopularityQueryParams>) {
     const queryKey = computed(() => [
@@ -97,6 +113,208 @@ class PopularityApiService {
           search,
         },
       });
+  }
+
+  fetchSearchQueries(params: ComputedRef<QueryParams>) {
+    const queryKey = computed(() => [
+      TanstackKey.SEARCH_QUERIES,
+      params.value.projectSlug,
+      params.value.granularity,
+      params.value.repos,
+      params.value.startDate,
+      params.value.endDate
+    ]);
+    const queryFn = computed<QueryFunction<SearchQueries>>(() => this.searchQueriesQueryFn(() => ({
+        projectSlug: params.value.projectSlug,
+        repos: params.value.repos,
+        granularity: params.value.granularity,
+        startDate: params.value.startDate,
+        endDate: params.value.endDate,
+      })));
+
+    return useQuery<SearchQueries>({
+      queryKey,
+      queryFn,
+    });
+  }
+
+  searchQueriesQueryFn(
+    query: () => Record<string, string | number | boolean | undefined | string[] | null>
+  ): QueryFunction<SearchQueries> {
+    const {
+      projectSlug, repos, startDate, endDate
+    } = query();
+    return async () => await $fetch(`/api/project/${projectSlug}/popularity/search-queries`, {
+        params: {
+          repos,
+          startDate,
+          endDate,
+        },
+      });
+  }
+
+  fetchMailingListsMessages(params: ComputedRef<ActivityTypeQueryParams>) {
+    const queryKey = computed(() => [
+      TanstackKey.MAILING_LISTS_MESSAGES,
+      params.value.projectSlug,
+      params.value.granularity,
+      params.value.repos,
+      params.value.startDate,
+      params.value.endDate,
+      params.value.type,
+      params.value.countType,
+    ]);
+    const queryFn = computed<QueryFunction<MailingListsMessages>>(() => this.mailingListsMessagesQueryFn(() => ({
+        projectSlug: params.value.projectSlug,
+        repos: params.value.repos,
+        granularity: params.value.granularity,
+        startDate: params.value.startDate,
+        endDate: params.value.endDate,
+        type: params.value.type,
+        countType: params.value.countType,
+      })));
+
+    return useQuery<MailingListsMessages>({
+      queryKey,
+      queryFn,
+    });
+  }
+
+  mailingListsMessagesQueryFn(
+    query: () => Record<string, string | number | boolean | undefined | string[] | null>
+  ): QueryFunction<MailingListsMessages> {
+    const {
+      projectSlug, repos, startDate, endDate, granularity, type, countType
+    } = query();
+    return async () => await $fetch(`/api/project/${projectSlug}/popularity/mailing-lists-messages`, {
+        params: {
+          granularity,
+          type,
+          countType,
+          activityType: 'message',
+          repos,
+          startDate,
+          endDate,
+        },
+      });
+  }
+
+  fetchForks(params: ComputedRef<ActivityTypeQueryParams>) {
+    const queryKey = computed(() => [
+      TanstackKey.FORKS,
+      params.value.projectSlug,
+      params.value.granularity,
+      params.value.repos,
+      params.value.startDate,
+      params.value.endDate,
+      params.value.type,
+      params.value.countType,
+    ]);
+    const queryFn = computed<QueryFunction<ForksData>>(() => this.forksQueryFn(() => ({
+        projectSlug: params.value.projectSlug,
+        repos: params.value.repos,
+        granularity: params.value.granularity,
+        startDate: params.value.startDate,
+        endDate: params.value.endDate,
+        type: params.value.type,
+        countType: params.value.countType,
+      })));
+
+    return useQuery<ForksData>({
+      queryKey,
+      queryFn,
+    });
+  }
+
+  forksQueryFn(
+    query: () => Record<string, string | number | boolean | undefined | string[] | null>
+  ): QueryFunction<ForksData> {
+    const {
+      projectSlug, repos, startDate, endDate, granularity, type, countType
+    } = query();
+    return async () => await $fetch(`/api/project/${projectSlug}/popularity/forks`, {
+        params: {
+          granularity,
+          type,
+          countType,
+          activityType: 'fork',
+          repos,
+          startDate,
+          endDate,
+        },
+      });
+  }
+
+  fetchStars(params: ComputedRef<ActivityTypeQueryParams>) {
+    const queryKey = computed(() => [
+      TanstackKey.STARS,
+      params.value.projectSlug,
+      params.value.granularity,
+      params.value.repos,
+      params.value.startDate,
+      params.value.endDate,
+      params.value.type,
+      params.value.countType,
+    ]);
+    const queryFn = computed<QueryFunction<StarsData>>(() => this.starsQueryFn(() => ({
+        projectSlug: params.value.projectSlug,
+        repos: params.value.repos,
+        granularity: params.value.granularity,
+        startDate: params.value.startDate,
+        endDate: params.value.endDate,
+        type: params.value.type,
+        countType: params.value.countType,
+      })));
+
+    return useQuery<StarsData>({
+      queryKey,
+      queryFn,
+    });
+  }
+
+  starsQueryFn(
+    query: () => Record<string, string | number | boolean | undefined | string[] | null>
+  ): QueryFunction<StarsData> {
+    const {
+      projectSlug, repos, startDate, endDate, granularity, type, countType
+    } = query();
+    return async () => await $fetch(`/api/project/${projectSlug}/popularity/stars`, {
+        params: {
+          granularity,
+          type,
+          countType,
+          activityType: 'star',
+          repos,
+          startDate,
+          endDate,
+        },
+      });
+  }
+
+  isPackageDownloadsEmpty(data: PackageDownloads | undefined) {
+    if (!data) {
+      return true;
+    }
+    return data.data.every((item) => item.downloadsCount === 0 && item.dockerDownloadsCount === 0);
+  }
+  isPackageDependencyEmpty(data: PackageDownloads | undefined) {
+    if (!data) {
+      return true;
+    }
+    return data.data.every((item) => item.dependentReposCount === 0 && 
+      item.dependentPackagesCount === 0 && item.dockerDependentsCount === 0);
+  }
+  isSearchQueriesEmpty(data: SearchQueries | undefined) {
+    if (!data) {
+      return true;
+    }
+    return data.data.every((item) => item.queryCount === 0);
+  }
+  isMailingListMessagesEmpty(data: MailingListsMessages | undefined) {
+    if (!data) {
+      return true;
+    }
+    return data.data.every((item) => item.messages === 0);
   }
 }
 

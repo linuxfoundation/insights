@@ -50,6 +50,7 @@ import { useProjectStore } from "~~/app/components/modules/project/store/project
 import { OVERVIEW_API_SERVICE } from '~~/app/components/modules/project/services/overview.api.service';
 import type { TrustScoreSummary } from '~~/types/overview/responses.types';
 import LfxCard from '~/components/uikit/card/card.vue';
+import type { HealthScoreResults } from '~~/types/overview/responses.types';
 
 const route = useRoute();
 const { selectedReposValues, project } = storeToRefs(useProjectStore())
@@ -83,12 +84,32 @@ const scoreDisplay = computed(() => ({
 }))
 
 const {
-  data, 
+  data: overviewData, 
   status, 
   error, 
   suspense
 } = OVERVIEW_API_SERVICE.fetchHealthScoreOverview(params);
 
+/**
+ * TODO: remove this after https://linear.app/lfx/issue/INS-822/periodicly-check-for-widgets-data-and-enabledisable-them
+ * is implemented
+ *
+ * This is a workaround to show/hide the Search Queries from the score.
+ * ===============================
+ */
+ 
+// delete the search queries from the overview data
+const data = computed(() => {
+  const data = {...overviewData.value};
+  if (overviewData.value?.searchQueries.value === 0) {
+    delete data.searchQueries;
+  }
+  return data as HealthScoreResults;
+});
+
+ /**
+  * ===============================
+  */
 
 const securityScore = computed(() => (data.value?.securityCategoryPercentage || []));
 
@@ -110,7 +131,6 @@ const isRepoSelected = computed(() => selectedReposValues.value.length > 0);
 onServerPrefetch(async () => {
   await suspense();
 });
-
 </script>
 
 <script lang="ts">
