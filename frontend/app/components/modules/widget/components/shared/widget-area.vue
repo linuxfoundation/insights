@@ -45,9 +45,10 @@ computed, ref, onServerPrefetch, watch
 import {storeToRefs} from "pinia";
 import {useRoute} from "nuxt/app";
 import { BENCHMARKS_API_SERVICE } from '../../services/benchmarks.api.service';
-import type {Widget} from "~/components/modules/widget/types/widget";
+import { POPULARITY_API_SERVICE } from '../../services/popularity.api.service';
+import {Widget} from "~/components/modules/widget/types/widget";
 import {lfxWidgets} from "~/components/modules/widget/config/widget.config";
-import type {WidgetArea} from "~/components/modules/widget/types/widget-area";
+import {WidgetArea} from "~/components/modules/widget/types/widget-area";
 import {lfxWidgetArea, type WidgetAreaConfig} from "~/components/modules/widget/config/widget-area.config";
 import LfxSideNav from "~/components/uikit/side-nav/side-nav.vue";
 import LfxScrollView from "~/components/uikit/scroll-view/scroll-view.vue";
@@ -62,6 +63,7 @@ import {
 } from "~/components/modules/project/services/project.query.service";
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
+import { Granularity } from '~~/types/shared/granularity';
 
 const props = defineProps<{
   name: WidgetArea
@@ -80,6 +82,86 @@ const loadedWidgets = ref<Record<string, boolean>>({});
 const { scrollToTarget, scrollToTop } = useScroll();
 const { project, selectedRepoSlugs, startDate, endDate, selectedReposValues } = storeToRefs(useProjectStore())
 const isFirstLoad = ref(true);
+
+/**
+ * TODO: remove this after https://linear.app/lfx/issue/INS-822/periodicly-check-for-widgets-data-and-enabledisable-them
+ * is implemented
+ *
+ * This is a workaround to show/hide widgets in the popularity for projects that have no data.
+ * ===============================
+ */
+const popularityParams = computed(() => ({
+  projectSlug: route.params.slug as string,
+  repos: selectedReposValues.value,
+  granularity: Granularity.MONTHLY,
+  startDate: startDate.value,
+  endDate: endDate.value,
+}));
+
+const downloadsParams = computed(() => ({
+  ...popularityParams.value,
+  ecosystem: undefined,
+  name: undefined,
+}));
+
+const mailingListMessagesParams = computed(() => ({
+  ...popularityParams.value,
+  type: 'new',
+  countType: 'new',
+}));
+
+// package downloads and dependency share the same endpoint
+const {
+  data: downloadsData, status: downloadsStatus, suspense: downloadsSuspense
+} = POPULARITY_API_SERVICE.fetchPackageDownloads(downloadsParams);
+
+const isPackageDownloadsEmpty = computed(() => POPULARITY_API_SERVICE
+  .isPackageDownloadsEmpty(downloadsStatus.value === 'success' ? downloadsData.value : undefined));
+
+const isPackageDependencyEmpty = computed(() => POPULARITY_API_SERVICE
+  .isPackageDependencyEmpty(downloadsStatus.value === 'success' ? downloadsData.value : undefined));
+
+// search queries
+const {
+  data: searchQueriesData, status: searchQueriesStatus, suspense: searchQueriesSuspense
+} = POPULARITY_API_SERVICE.fetchSearchQueries(popularityParams);
+
+const isSearchQueriesEmpty = computed(() => POPULARITY_API_SERVICE
+  .isSearchQueriesEmpty(searchQueriesStatus.value === 'success' ? searchQueriesData.value : undefined));
+
+// mailing list messages
+const {
+  data: mailingListMessagesData, status: mailingListMessagesStatus, suspense: mailingListMessagesSuspense
+} = POPULARITY_API_SERVICE.fetchMailingListsMessages(mailingListMessagesParams);
+
+const isMailingListMessagesEmpty = computed(() => POPULARITY_API_SERVICE
+  .isMailingListMessagesEmpty(
+    mailingListMessagesStatus.value === 'success' ? mailingListMessagesData.value : undefined
+  ));
+
+const excludedWidgets = computed(() => {
+  const excludedWidgets = [];
+  if (props.name === WidgetArea.POPULARITY) {
+    if (isPackageDownloadsEmpty.value) {
+    excludedWidgets.push(Widget.PACKAGE_DOWNLOADS);
+    }
+    if (isPackageDependencyEmpty.value) {
+      excludedWidgets.push(Widget.PACKAGE_DEPENDENCY);
+    }
+    if (isSearchQueriesEmpty.value) {
+      excludedWidgets.push(Widget.SEARCH_QUERIES);
+    }
+    if (isMailingListMessagesEmpty.value) {
+      excludedWidgets.push(Widget.MAILING_LISTS_MESSAGES);
+    }
+  }
+  return excludedWidgets;
+});
+
+ /**
+  * ===============================
+  */
+
 
 const params = computed(() => ({
   projectSlug: route.params.slug as string,
@@ -101,6 +183,7 @@ const widgets = computed(() => (config.value.widgets || [])
       return (
         project.value?.widgets.includes(key)
         && (!widgetConfig?.hideOnRepoFilter || !selectedRepoSlugs.value.length)
+        && !excludedWidgets.value.includes(widget as Widget)
       );
     }));
 
@@ -167,6 +250,10 @@ const navigateToWidget = () => {
 
 onServerPrefetch(async () => {
   await suspense();
+
+  await downloadsSuspense();
+  await searchQueriesSuspense();
+  await mailingListMessagesSuspense();
 })
 
 watch(error, (err) => {
