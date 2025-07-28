@@ -5,7 +5,9 @@ import {useRuntimeConfig} from "#imports";
 export async function createGitHubIssue(
     title: string,
     body: string,
-) {
+    labels: string[] = [],
+    assignees: string[] = []
+): Promise<{ html_url: string }> {
     const config = useRuntimeConfig();
 
     const {
@@ -29,6 +31,8 @@ export async function createGitHubIssue(
         body: {
             title,
             body,
+            labels,
+            assignees
         }
     });
 }

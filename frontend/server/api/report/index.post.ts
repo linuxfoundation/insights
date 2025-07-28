@@ -3,7 +3,7 @@
 import type {ReportRequest} from "~~/types/report/requests.types";
 import {createGitHubIssue} from "~~/server/data/github/github.api";
 
-export default defineEventHandler(async (event): Promise<boolean> => {
+export default defineEventHandler(async (event): Promise<string> => {
     const body: ReportRequest = await readBody(event);
     const description: string[] = [
         '### Page',
@@ -30,9 +30,10 @@ export default defineEventHandler(async (event): Promise<boolean> => {
 
     const issueBody: string = description.join('\n');
 
-    await createGitHubIssue(
-        `${body.projectName ? `${body.projectName} ${body.widget}` : body.pageTitle}`,
+    const issueData = await createGitHubIssue(
+        `[Report issue] ${body.projectName ? `${body.projectName} ${body.widget}` : body.pageTitle}`,
         issueBody,
+        ['needs-triage']
     )
-    return true;
+    return issueData?.html_url;
 });

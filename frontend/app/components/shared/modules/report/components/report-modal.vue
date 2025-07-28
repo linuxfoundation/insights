@@ -7,155 +7,196 @@ SPDX-License-Identifier: MIT
     v-model="isModalOpen"
     class="p-6"
   >
-    <section class="pb-8">
-      <div class="flex justify-between pb-3">
-        <div class="bg-warning-50 h-12 w-12 rounded-full flex items-center justify-center">
-          <lfx-icon
-            name="comment-exclamation"
-            class="text-warning-600"
-            :size="24"
+    <div v-if="!issueUrl">
+      <section class="pb-8">
+        <div class="flex justify-between pb-3">
+          <div class="bg-warning-50 h-12 w-12 rounded-full flex items-center justify-center">
+            <lfx-icon
+              name="comment-exclamation"
+              class="text-warning-600"
+              :size="24"
+            />
+          </div>
+          <lfx-icon-button
+            icon="close"
+            size="small"
+            @click="isModalOpen = false"
           />
         </div>
-        <lfx-icon-button
-          icon="close"
-          size="small"
-          @click="isModalOpen = false"
-        />
-      </div>
-      <h3 class="text-heading-3 font-secondary font-bold pb-1">
-        Report issue
-      </h3>
-      <p class="text-body-2 text-neutral-500">
-        Help is improve our data by reporting any issues or bugs you’ve encountered. Check the currently open
-        <a
-          :href="links.issues"
-          target="_blank"
-          rel="noreferrer"
-          class="text-brand-500"
-        >Insights GitHub Issues</a>.
-      </p>
-    </section>
+        <h3 class="text-heading-3 font-secondary font-bold pb-1">
+          Report issue
+        </h3>
+        <p class="text-body-2 text-neutral-500">
+          Help is improve our data by reporting any issues or bugs you’ve encountered. Check the currently open
+          <a
+            :href="links.issues"
+            target="_blank"
+            rel="noreferrer"
+            class="text-brand-500"
+          >Insights GitHub Issues</a>.
+        </p>
+      </section>
 
-    <section class="flex flex-col gap-6 pb-8">
-      <article v-if="!form.hideArea">
-        <lfx-field
-          label="Select area"
-          :required="true"
-        >
-          <div class="flex flex-wrap gap-3">
-            <lfx-chip
-              v-for="(area, areaKey) in lfxWidgetArea"
-              :key="areaKey"
-              type="bordered"
-              class="cursor-pointer transition-all"
-              :class="{'!bg-brand-50 !border-brand-200': form.area === areaKey}"
-              @click="form.area = areaKey"
-            >
-              {{area.label}}
-            </lfx-chip>
-          </div>
+      <section class="flex flex-col gap-6 pb-8">
+        <article v-if="!form.hideArea">
+          <lfx-field
+            label="Select area"
+            :required="true"
+          >
+            <div class="flex flex-wrap gap-3">
+              <lfx-chip
+                v-for="(area, areaKey) in lfxWidgetArea"
+                :key="areaKey"
+                type="bordered"
+                class="cursor-pointer transition-all"
+                :class="{'!bg-brand-50 !border-brand-200': form.area === areaKey}"
+                @click="form.area = areaKey"
+              >
+                {{area.label}}
+              </lfx-chip>
+            </div>
 
-          <lfx-field-messages
-            :validation="$v.area"
-            :error-messages="{ required: 'This field is required' }"
-          />
-        </lfx-field>
-      </article>
-      <article v-if="(lfxWidgetArea[form.area as WidgetArea]?.widgets || []).length > 0 && !form.hideArea">
-        <lfx-field
-          label="Data insight"
-          placeholder="Select option"
-        >
-          <lfx-select
-            v-model="form.widget"
+            <lfx-field-messages
+              :validation="$v.area"
+              :error-messages="{ required: 'This field is required' }"
+            />
+          </lfx-field>
+        </article>
+        <article v-if="(lfxWidgetArea[form.area as WidgetArea]?.widgets || []).length > 0 && !form.hideArea">
+          <lfx-field
+            label="Data insight"
             placeholder="Select option"
           >
-            <lfx-option
-              v-for="widget of (lfxWidgetArea[form.area as WidgetArea]?.widgets || [])"
-              :key="widget"
-              :value="widget"
-              :label="lfxWidgets[widget]?.name"
+            <lfx-select
+              v-model="form.widget"
+              placeholder="Select option"
+            >
+              <lfx-option
+                v-for="widget of (lfxWidgetArea[form.area as WidgetArea]?.widgets || [])"
+                :key="widget"
+                :value="widget"
+                :label="lfxWidgets[widget]?.name"
+              />
+            </lfx-select>
+          </lfx-field>
+        </article>
+        <article>
+          <lfx-field
+            label="Description"
+            :required="true"
+          >
+            <p class="text-xs text-neutral-500 leading-4">
+              Clear and concise description of the issue.
+            </p>
+            <lfx-textarea
+              v-model="form.description"
+              class="min-h-17"
+              :invalid="$v.description.$invalid && $v.description.$dirty"
+              @blur="$v.description.$touch()"
+              @change="$v.description.$touch()"
             />
-          </lfx-select>
-        </lfx-field>
-      </article>
-      <article>
-        <lfx-field
-          label="Description"
-          :required="true"
-        >
-          <p class="text-xs text-neutral-500 leading-4">
-            Clear and concise description of the issue.
-          </p>
-          <lfx-textarea
-            v-model="form.description"
-            class="min-h-17"
-            :invalid="$v.description.$invalid && $v.description.$dirty"
-            @blur="$v.description.$touch()"
-            @change="$v.description.$touch()"
-          />
-          <lfx-field-messages
-            :validation="$v.description"
-            :error-messages="{ required: 'This field is required' }"
-          />
-        </lfx-field>
-      </article>
-      <article>
-        <lfx-field
-          label="Steps to reproduce"
-          :required="true"
-        >
-          <p class="text-xs text-neutral-500 leading-4">
-            Step-by-step instructions to replicate the issue.
-          </p>
-          <lfx-textarea
-            v-model="form.steps"
-            class="min-h-17"
-            :invalid="$v.steps.$invalid && $v.steps.$dirty"
-            @blur="$v.steps.$touch()"
-            @change="$v.steps.$touch()"
-          />
-          <lfx-field-messages
-            :validation="$v.steps"
-            :error-messages="{ required: 'This field is required' }"
-          />
-        </lfx-field>
-      </article>
-      <article>
-        <lfx-field
-          label="Expected behaviour"
-          :required="true"
-        >
-          <p class="text-xs text-neutral-500 leading-4">
-            Describe the expected functionality or outcome.
-          </p>
-          <lfx-textarea
-            v-model="form.expectations"
-            class="min-h-17"
-            :invalid="$v.expectations.$invalid && $v.expectations.$dirty"
-            @blur="$v.expectations.$touch()"
-            @change="$v.expectations.$touch()"
-          />
-          <lfx-field-messages
-            :validation="$v.expectations"
-            :error-messages="{ required: 'This field is required' }"
-          />
-        </lfx-field>
-      </article>
-    </section>
+            <lfx-field-messages
+              :validation="$v.description"
+              :error-messages="{ required: 'This field is required' }"
+            />
+          </lfx-field>
+        </article>
+        <article>
+          <lfx-field
+            label="Steps to reproduce"
+            :required="true"
+          >
+            <p class="text-xs text-neutral-500 leading-4">
+              Step-by-step instructions to replicate the issue.
+            </p>
+            <lfx-textarea
+              v-model="form.steps"
+              class="min-h-17"
+              :invalid="$v.steps.$invalid && $v.steps.$dirty"
+              @blur="$v.steps.$touch()"
+              @change="$v.steps.$touch()"
+            />
+            <lfx-field-messages
+              :validation="$v.steps"
+              :error-messages="{ required: 'This field is required' }"
+            />
+          </lfx-field>
+        </article>
+        <article>
+          <lfx-field
+            label="Expected behaviour"
+            :required="true"
+          >
+            <p class="text-xs text-neutral-500 leading-4">
+              Describe the expected functionality or outcome.
+            </p>
+            <lfx-textarea
+              v-model="form.expectations"
+              class="min-h-17"
+              :invalid="$v.expectations.$invalid && $v.expectations.$dirty"
+              @blur="$v.expectations.$touch()"
+              @change="$v.expectations.$touch()"
+            />
+            <lfx-field-messages
+              :validation="$v.expectations"
+              :error-messages="{ required: 'This field is required' }"
+            />
+          </lfx-field>
+        </article>
+      </section>
 
-    <section class="flex justify-end">
-      <lfx-button
-        variant="primary"
-        size="large"
-        class="!rounded-full"
-        :disabled="$v.$invalid"
-        :loading="isSending"
-        @click="submit()"
-      >
-        Report issue
-      </lfx-button>
-    </section>
+      <section class="flex justify-end">
+        <lfx-button
+          variant="primary"
+          size="large"
+          class="!rounded-full"
+          :disabled="$v.$invalid"
+          :loading="isSending"
+          @click="submit()"
+        >
+          Report issue
+        </lfx-button>
+      </section>
+    </div>
+    <div v-else>
+      <section class="pb-8">
+        <div class="flex justify-between pb-3">
+          <div class="bg-positive-50 h-12 w-12 rounded-full flex items-center justify-center">
+            <lfx-icon
+              name="check"
+              class="text-positive-600"
+              :size="24"
+            />
+          </div>
+          <lfx-icon-button
+            icon="close"
+            size="small"
+            @click="isModalOpen = false"
+          />
+        </div>
+        <h3 class="text-heading-3 font-secondary font-bold pb-1">
+          Issue successfully reported
+        </h3>
+        <p class="text-body-2 text-neutral-500">
+          Thanks for your feedback! We’ll look into the issue shortly.
+        </p>
+      </section>
+      <section class="flex">
+        <a
+          :href="issueUrl"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <lfx-button
+            variant="tertiary"
+            size="large"
+            class="!rounded-full mr-4"
+          >
+            View issue
+          </lfx-button>
+        </a>
+      </section>
+    </div>
   </lfx-modal>
 </template>
 
@@ -197,6 +238,7 @@ const {project, selectedRepoSlugs} = storeToRefs(useProjectStore());
 const {showToast} = useToastService();
 
 const isSending = ref(false);
+const issueUrl = ref<string | null>(null);
 
 const isModalOpen = computed({
   get: () => props.modelValue,
@@ -257,8 +299,9 @@ const submit = () => {
     body: data,
   })
       .then((res) => {
-        isModalOpen.value = false;
-        showToast('Issue successfully reported', ToastTypesEnum.positive, undefined, 3000)
+        issueUrl.value = res;
+        // isModalOpen.value = false;
+        // showToast('Issue successfully reported', ToastTypesEnum.positive, undefined, 3000)
       })
       .catch(() => {
         showToast(
