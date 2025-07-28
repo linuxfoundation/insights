@@ -21,6 +21,6 @@ export interface ToastOptions extends ToastMessageOptions {
   icon?: string;
   title?: string;
   actionLabel?: string;
-    action?: () => void;
-    actionUrl?: string;
+  action?: () => void;
+  actionUrl?: string;
 }
