@@ -8,11 +8,46 @@ SPDX-License-Identifier: MIT
     position="bottom-center"
   >
     <template #message="slotProps">
-      <i
-        class="p-toast-icon"
-        :class="getToastIcon(slotProps.message)"
-      />
-      {{ slotProps.message.detail }}
+      <div class="flex items-center gap-3">
+        <i
+          class="p-toast-icon"
+          :class="getToastIcon(slotProps.message)"
+        />
+        <div>
+          <p
+            v-if="slotProps.message.title"
+            class="text-sm font-semibold leading-5"
+          >{{ slotProps.message.title }}</p>
+          <p class="text-xs leading-5">
+            {{slotProps.message.detail }}
+          </p>
+        </div>
+        <div v-if="slotProps.message.actionLabel">
+          <a
+            v-if="slotProps.message.actionUrl"
+            :href="slotProps.message.actionUrl"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <lfx-button
+              type="tertiary"
+              size="small"
+            >
+              {{slotProps.message.actionLabel}}
+            </lfx-button>
+          </a>
+          <lfx-button
+            v-else-if="slotProps.message.action"
+            type="tertiary"
+            size="small"
+            @click="slotProps.message.action()"
+          >
+            {{slotProps.message.actionLabel}}
+          </lfx-button>
+
+        </div>
+      </div>
+
     </template>
   </pv-toast>
 </template>
@@ -20,6 +55,7 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import type { ToastOptions, ToastTheme } from './types/toast.types';
 import { ToastTypesEnum } from './types/toast.types';
+import LfxButton from "~/components/uikit/button/button.vue";
 
 const props = withDefaults(
   defineProps<{
