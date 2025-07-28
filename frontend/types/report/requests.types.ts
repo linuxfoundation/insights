@@ -3,7 +3,8 @@
 export interface ReportRequest {
     area?: string;
     description: string;
-    email?: string;
+    steps: string;
+    expectations: string;
     projectName?: string;
     projectSlug?: string;
     repositoryUrl?: string;
