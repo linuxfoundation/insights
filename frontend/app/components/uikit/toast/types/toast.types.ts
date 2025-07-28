@@ -19,4 +19,8 @@ export type ToastTheme = (typeof toastThemes)[number];
 
 export interface ToastOptions extends ToastMessageOptions {
   icon?: string;
+  title?: string;
+  actionLabel?: string;
+    action?: () => void;
+    actionUrl?: string;
 }
