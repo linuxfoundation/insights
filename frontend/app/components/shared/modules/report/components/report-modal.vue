@@ -89,7 +89,6 @@ SPDX-License-Identifier: MIT
           </p>
           <lfx-textarea
             v-model="form.description"
-            placeholder="Enter description..."
             class="min-h-17"
             :invalid="$v.description.$invalid && $v.description.$dirty"
             @blur="$v.description.$touch()"
@@ -111,7 +110,6 @@ SPDX-License-Identifier: MIT
           </p>
           <lfx-textarea
             v-model="form.steps"
-            placeholder="Enter description..."
             class="min-h-17"
             :invalid="$v.steps.$invalid && $v.steps.$dirty"
             @blur="$v.steps.$touch()"
@@ -133,7 +131,6 @@ SPDX-License-Identifier: MIT
           </p>
           <lfx-textarea
             v-model="form.expectations"
-            placeholder="Enter description..."
             class="min-h-17"
             :invalid="$v.expectations.$invalid && $v.expectations.$dirty"
             @blur="$v.expectations.$touch()"
