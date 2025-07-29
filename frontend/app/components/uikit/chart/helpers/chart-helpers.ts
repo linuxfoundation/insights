@@ -1,7 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { graphic } from 'echarts';
-import { DateTime } from 'luxon';
+import { DateTime, Interval } from 'luxon';
 import type {
   ChartData,
   ChartSeries,
@@ -9,6 +9,7 @@ import type {
   SeriesTypes,
   CategoryData,
 } from '../types/ChartTypes';
+import { Granularity } from '~~/types/shared/granularity';
 
 /**
  * Convert raw data to chart data. Since data coming from the backend is not in
@@ -89,6 +90,62 @@ export const buildSeries = (series: ChartSeries[], data: ChartData[]): SeriesTyp
           }) as SeriesTypes
       )
     : undefined);
+
+/**
+ * Mark the last data item as incomplete based on the granularity.
+ * For example, if the granularity is 'quarterly', the last data item will be marked as incomplete
+ * if the last item's date false on the current quarter that is not yet ended.
+ * @param data - Data
+ * @param granularity - Granularity
+ * @returns Data with the last item marked as incomplete
+ */
+export const markLastDataItem = (data: ChartData[], granularity: Granularity): ChartData[] => {
+  // apply the logic only for monthly, quarterly, and yearly granularity
+  if ([Granularity.WEEKLY, Granularity.MONTHLY, Granularity.QUARTERLY, Granularity.YEARLY].includes(granularity) &&
+    data.length > 0) {
+    const now = DateTime.now().endOf('day').toUTC();
+    let startOfPeriod, endOfPeriod;
+    
+    if (granularity === Granularity.WEEKLY) {
+      // Calculate current week starting on Sunday
+      const dayOfWeek = now.weekday; // Monday = 1, Sunday = 7
+      const daysFromSunday = dayOfWeek === 7 ? 0 : dayOfWeek;
+      startOfPeriod = now.minus({ days: daysFromSunday }).startOf('day');
+      endOfPeriod = startOfPeriod.plus({ days: 6 }).endOf('day');
+    } else {
+      startOfPeriod = now.startOf(convertToLuxonPeriod(granularity));
+      endOfPeriod = now.endOf(convertToLuxonPeriod(granularity));
+    }
+    
+    const interval = Interval.fromDateTimes(startOfPeriod, endOfPeriod);
+
+    return data.map((item: ChartData, idx: number) => {
+      if (idx === data.length - 1) {
+        // Ensure lastItemDate is in UTC and at start of day for consistent comparison
+        const lastItemDate = DateTime.fromISO(item.key).endOf('day');
+        if (interval.contains(lastItemDate)) {
+          return { ...item, isIncomplete: true };
+        }
+        return item;
+      }
+      return item;
+    });
+  }
+  return data;
+};
+
+const convertToLuxonPeriod = (granularity: Granularity): 'week' | 'month' | 'quarter' | 'year' => {
+  switch (granularity) {
+    case Granularity.WEEKLY:
+      return 'week';
+    case Granularity.MONTHLY:
+      return 'month';
+    case Granularity.QUARTERLY:
+      return 'quarter';
+    default:
+      return 'year';
+  }
+};
 
 export const convertToGradientColor = (
   color: string,

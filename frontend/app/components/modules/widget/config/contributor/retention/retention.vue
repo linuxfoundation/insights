@@ -138,13 +138,15 @@ const retention = computed<Retention[]>(() => data.value as Retention[]);
 
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
-  () => convertToChartData(
-    retention.value as unknown as RawChartData[],
-    'startDate',
-    ['percentage'],
-    undefined,
-    'endDate'
-  )
+  () => {
+    return convertToChartData(
+      retention.value as unknown as RawChartData[],
+      'startDate',
+      ['percentage'],
+      undefined,
+      'endDate'
+    )
+  }
 );
 
 const isEmpty = computed(() => isBelowThreshold.value
@@ -168,7 +170,25 @@ const chartSeries = ref<ChartSeries[]>([
     yAxisIndex: 0,
     dataIndex: 0,
     position: 'left',
-    color: lfxColors.brand[500]
+    color: lfxColors.brand[500],
+    markLine: {
+      symbol: 'none',
+      // animation: false,
+      data: [
+        {
+          xAxis: '1743465599999'
+        }
+      ],
+      z: -1,
+      label: {
+        show: false
+      }, 
+      lineStyle: {
+        color: lfxColors.neutral[300],
+        type: 'solid',
+        width: 1
+      }
+    }
   }
 ]);
 
@@ -176,7 +196,26 @@ const lineAreaChartConfig = computed(() => getLineAreaChartConfig(
   chartData.value, //
   chartSeries.value, //
   granularity,
-  (value: number, index?: number) => `${index === 0 ? '' : `${value}%`}`
+  (value: number, index?: number) => `${index === 0 ? '' : `${value}%`}`,
+  {
+    visualMap: {
+      type: 'piecewise',
+      show: false,
+      dimension: 0,
+      pieces: [
+        {
+          lt: 2.9,
+          color: lfxColors.brand[500],
+          colorAlpha: 1
+        },
+        {
+          gte: 3,
+          color: lfxColors.neutral[500],
+          colorAlpha: .5
+        },
+      ]
+    }
+  }
 ));
 
 watch(status, (value) => {
