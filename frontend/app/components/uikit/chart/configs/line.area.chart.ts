@@ -231,3 +231,45 @@ export const getLineAreaChartConfigGraphOnly = (
     series: styledSeries,
   };
 };
+
+export const getMarkLine = (xAxisMarker: string): Record<string, unknown> => {
+  return {
+    symbol: 'none',
+    // animation: false,
+    data: [
+      {
+        xAxis: xAxisMarker
+      }
+    ],
+    z: -1,
+    label: {
+      show: false
+    }, 
+    lineStyle: {
+      color: lfxColors.neutral[300],
+      type: 'solid',
+      width: 1
+    }
+  };
+};
+
+export const getVisualMap = (columnLength: number, series: ChartSeries[]): Record<string, unknown>[] => {
+  return series.map((seriesItem: ChartSeries, idx: number) => ({
+    type: 'piecewise',
+    show: false,
+    seriesIndex: idx,
+    dimension: 0,
+    pieces: [
+      {
+        lt: columnLength - 2.1,
+        color: seriesItem.color,
+        colorAlpha: 1
+      },
+      {
+        gte: columnLength - 2,
+        color: lfxColors.neutral[500],
+        colorAlpha: .5
+      },
+    ]
+  }));
+};

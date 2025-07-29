@@ -103,22 +103,8 @@ export const markLastDataItem = (data: ChartData[], granularity: Granularity): C
   // apply the logic only for monthly, quarterly, and yearly granularity
   if ([Granularity.WEEKLY, Granularity.MONTHLY, Granularity.QUARTERLY, Granularity.YEARLY].includes(granularity) &&
     data.length > 0) {
-    const now = DateTime.now().endOf('day').toUTC();
-    let startOfPeriod, endOfPeriod;
+    const interval = currentInterval(granularity);
     
-    if (granularity === Granularity.WEEKLY) {
-      // Calculate current week starting on Sunday
-      const dayOfWeek = now.weekday; // Monday = 1, Sunday = 7
-      const daysFromSunday = dayOfWeek === 7 ? 0 : dayOfWeek;
-      startOfPeriod = now.minus({ days: daysFromSunday }).startOf('day');
-      endOfPeriod = startOfPeriod.plus({ days: 6 }).endOf('day');
-    } else {
-      startOfPeriod = now.startOf(convertToLuxonPeriod(granularity));
-      endOfPeriod = now.endOf(convertToLuxonPeriod(granularity));
-    }
-    
-    const interval = Interval.fromDateTimes(startOfPeriod, endOfPeriod);
-
     return data.map((item: ChartData, idx: number) => {
       if (idx === data.length - 1) {
         // Ensure lastItemDate is in UTC and at start of day for consistent comparison
@@ -132,6 +118,24 @@ export const markLastDataItem = (data: ChartData[], granularity: Granularity): C
     });
   }
   return data;
+};
+
+export const currentInterval = (granularity: Granularity): Interval => {
+  const now = DateTime.now().endOf('day').toUTC();
+  let startOfPeriod, endOfPeriod;
+
+  if (granularity === Granularity.WEEKLY) {
+    // Calculate current week starting on Sunday
+    const dayOfWeek = now.weekday; // Monday = 1, Sunday = 7
+    const daysFromSunday = dayOfWeek === 7 ? 0 : dayOfWeek;
+    startOfPeriod = now.minus({ days: daysFromSunday }).startOf('day');
+    endOfPeriod = startOfPeriod.plus({ days: 6 }).endOf('day');
+  } else {
+    startOfPeriod = now.startOf(convertToLuxonPeriod(granularity));
+    endOfPeriod = now.endOf(convertToLuxonPeriod(granularity));
+  }
+  
+  return Interval.fromDateTimes(startOfPeriod, endOfPeriod);
 };
 
 const convertToLuxonPeriod = (granularity: Granularity): 'week' | 'month' | 'quarter' | 'year' => {

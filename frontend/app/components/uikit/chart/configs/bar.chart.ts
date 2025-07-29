@@ -139,7 +139,7 @@ export const buildSeriesWithStyle = (
           yAxisIndex: series.yAxisIndex,
           dataIndex: series.dataIndex,
           data: data.map((item: ChartData) => {
-            return { value: item.values[series.dataIndex], ...getDataItemStyle(item.isIncomplete) };
+            return { value: item.values[series.dataIndex], ...getDataItemStyle(item.isIncomplete, series.color) };
           }) || [],
         }) as SeriesTypes
     )
@@ -158,9 +158,11 @@ const getDefaultSeriesStyle = (useStripedPattern: boolean = false): BarSeriesOpt
   },
 });
 
-const getDataItemStyle = (useStripedPattern: boolean = false): BarSeriesOption => ({
+const getDataItemStyle = (
+  useStripedPattern: boolean = false,
+  color: string = lfxColors.brand[500]): BarSeriesOption => ({
   itemStyle: {
-    color: useStripedPattern ? createStripedPatterns.fine(lfxColors.brand[500]) : lfxColors.brand[500],
+    color: useStripedPattern ? createStripedPatterns.fine(color) : color,
     borderRadius: [2, 2, 2, 2],
     borderWidth: 1
   },

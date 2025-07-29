@@ -98,7 +98,7 @@ import {type QueryFunction, useQuery} from "@tanstack/vue-query";
 import type { PullRequests } from '~~/types/development/responses.types';
 import type { Summary } from '~~/types/shared/summary.types';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
-import { convertToChartData } from '~/components/uikit/chart/helpers/chart-helpers';
+import { convertToChartData, markLastDataItem } from '~/components/uikit/chart/helpers/chart-helpers';
 import type {
   ChartData,
   RawChartData,
@@ -182,11 +182,14 @@ const summary = computed<Summary>(() => pullRequests.value?.summary);
 const avgVelocity = computed<string>(() => formatSecondsToDuration(pullRequests.value?.avgVelocityInDays || 0, 'long'));
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
-  () => convertToChartData((pullRequests.value?.data || []) as RawChartData[], 'startDate', [
-    'open',
-    'merged',
-    'closed'
-  ], undefined, 'endDate')
+  () => {
+    const tmpData = convertToChartData((pullRequests.value?.data || []) as RawChartData[], 'startDate', [
+      'open',
+      'merged',
+      'closed'
+    ], undefined, 'endDate');
+    return markLastDataItem(tmpData, granularity.value);
+  }
 );
 
 const openedSummary = computed<Summary | undefined>(() => pullRequests.value?.openedSummary);

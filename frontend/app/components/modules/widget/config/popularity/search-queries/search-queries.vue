@@ -41,7 +41,7 @@ import { storeToRefs } from "pinia";
 import { DateTime } from 'luxon';
 import searchQueriesConfig from './search-queries.config'
 import type { SearchQueries } from '~~/types/popularity/responses.types';
-import { convertToChartData } from '~/components/uikit/chart/helpers/chart-helpers';
+import { convertToChartData, markLastDataItem } from '~/components/uikit/chart/helpers/chart-helpers';
 import type {
   ChartData,
   RawChartData,
@@ -95,9 +95,13 @@ const searchQueries = computed<SearchQueries>(() => data.value as SearchQueries)
 
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
-  () => convertToChartData((searchQueries.value?.data || []) as RawChartData[], 'startDate', [
+  () => {
+    let tmpData = convertToChartData((searchQueries.value?.data || []) as RawChartData[], 'startDate', [
     'queryCount'
-  ], undefined, 'endDate')
+  ], undefined, 'endDate');
+
+  return markLastDataItem(tmpData, granularity.value);
+  }
 );
 
 const dateDuration = computed(() => {

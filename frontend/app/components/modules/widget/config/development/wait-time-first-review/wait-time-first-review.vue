@@ -52,7 +52,7 @@ import {type QueryFunction, useQuery} from "@tanstack/vue-query";
 import type { WaitTime1stReview } from '~~/types/development/responses.types';
 import type { Summary } from '~~/types/shared/summary.types';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
-import { convertToChartData } from '~/components/uikit/chart/helpers/chart-helpers';
+import { convertToChartData, markLastDataItem } from '~/components/uikit/chart/helpers/chart-helpers';
 import type {
   ChartData,
   RawChartData,
@@ -126,9 +126,12 @@ const summary = computed<Summary>(() => waitTime1stReview.value.summary);
 const currentSummary = computed<string>(() => formatSecondsToDuration(summary.value?.current || 0, 'long'));
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
-  () => convertToChartData((waitTime1stReview.value?.data || []) as RawChartData[], 'startDate', [
-    'waitTime'
-  ], undefined, 'endDate').map(chartDataMapper)
+  () => {
+    const tmpData = convertToChartData((waitTime1stReview.value?.data || []) as RawChartData[], 'startDate', [
+      'waitTime'
+    ], undefined, 'endDate');
+    return markLastDataItem(tmpData, granularity.value).map(chartDataMapper);
+  }
 );
 
 const chartSeries = ref<ChartSeries[]>([

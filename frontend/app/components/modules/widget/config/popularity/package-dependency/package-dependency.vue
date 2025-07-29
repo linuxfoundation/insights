@@ -53,7 +53,7 @@ import LfxPackageDropdown from '../package-downloads/fragments/package-dropdown.
 import LfxProjectPackageLegendItem from './fragments/package-legend-item.vue';
 import type { Package, PackageDownloads } from '~~/types/popularity/responses.types';
 import type { Summary } from '~~/types/shared/summary.types';
-import { convertToChartData, removeZeroValues } from '~/components/uikit/chart/helpers/chart-helpers';
+import { convertToChartData, markLastDataItem, removeZeroValues } from '~/components/uikit/chart/helpers/chart-helpers';
 import type {
   ChartData,
   RawChartData,
@@ -219,7 +219,7 @@ const chartData = computed<ChartData[]>(() => {
       'dependentPackagesCount',
       'dockerDependentsCount',
     ], undefined, 'endDate');
-    return removeZeroValues(tmpData);
+    return markLastDataItem(removeZeroValues(tmpData), granularity.value);
   }
 );
 const isEmpty = computed(() => {
