@@ -7,5 +7,6 @@ export interface ReportDataForm {
     widget: string;
     hideArea: boolean;
     description: string;
-    email: string;
+    steps: string;
+    expectations: string;
 }

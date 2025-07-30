@@ -1,44 +1,39 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import type {ReportRequest} from "~~/types/report/requests.types";
-import {createJiraIssue} from "~~/server/data/jira-issue/jira-issue-api";
-import {createParagraph, createHeading} from "~~/server/helpers/jira-issue.helpers";
+import {createGitHubIssue} from "~~/server/data/github/github.api";
 
-export default defineEventHandler(async (event): Promise<boolean> => {
+export default defineEventHandler(async (event): Promise<string> => {
     const body: ReportRequest = await readBody(event);
-    const description = [
-            createHeading('Page'),
-            createParagraph(body.url, true),
-            ...(body.projectName ? [
-                createHeading('Project'),
-                createParagraph(body.projectName),
-            ] : []),
-            ...(body.repositoryUrl ? [
-                createHeading('Repository'),
-                createParagraph(body.repositoryUrl),
-            ] : []),
-            ...(body.area ? [
-                createHeading('Issue Area'),
-                createParagraph(body.area),
-            ] : []),
-            ...(body.widget ? [
-                createHeading('Widget'),
-                createParagraph(body.widget),
-            ] : []),
-            createHeading('Description'),
-            createParagraph(body.description),
-            ...(body.email ? [
-                createHeading('Reported by'),
-                createParagraph(body.email),
-            ] : []),
+    const description: string[] = [
+        '### Page',
+        `[${body.url}](${body.url})`,
+        ...(body.projectName ? [
+            '### Project',
+            body.projectName,
+        ] : []),
+        ...(body.area ? [
+            '### Issue Area',
+            body.area,
+        ] : []),
+        ...(body.widget ? [
+            '### Widget',
+            body.widget,
+        ] : []),
+        '### Describe the issue',
+        body.description,
+        '### Steps to reproduce',
+        body.steps,
+        '### Expected vs. actual behavior',
+        body.expectations,
     ];
-    
-    await createJiraIssue(
-        `[Insights] ${body.projectName ? `${body.projectName} ${body.widget}` : body.pageTitle}`,
-        description,
-        ['insights-issue'],
-        'Bug',
-        'Medium',
+
+    const issueBody: string = description.join('\n');
+
+    const issueData = await createGitHubIssue(
+        `[Report issue] ${body.projectName ? `${body.projectName} ${body.widget}` : body.pageTitle}`,
+        issueBody,
+        ['needs-triage']
     )
-    return true;
+    return issueData?.html_url;
 });
