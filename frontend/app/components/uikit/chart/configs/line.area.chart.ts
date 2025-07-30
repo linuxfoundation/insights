@@ -267,7 +267,7 @@ export const getVisualMap = (columnLength: number, series: ChartSeries[]): Recor
       },
       {
         gte: columnLength - 2,
-        color: lfxColors.neutral[500],
+        color: seriesItem.color,
         colorAlpha: .5
       },
     ]
