@@ -62,7 +62,7 @@ import type { ActiveOrganizations } from '~~/types/contributors/responses.types'
 import type { Summary } from '~~/types/shared/summary.types';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
-import {convertToChartData, removeZeroValues} from '~/components/uikit/chart/helpers/chart-helpers';
+import {convertToChartData, markLastDataItem, removeZeroValues} from '~/components/uikit/chart/helpers/chart-helpers';
 import type {ChartData, ChartSeries, RawChartData} from '~/components/uikit/chart/types/ChartTypes';
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import {getBarChartConfig} from '~/components/uikit/chart/configs/bar.chart';
@@ -148,10 +148,12 @@ const summary = computed<Summary>(() => activeOrganizations.value.summary);
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
   () => {
-    const tmpData = convertToChartData((activeOrganizations.value?.data || []) as RawChartData[], 'startDate', [
+    let tmpData = convertToChartData((activeOrganizations.value?.data || []) as RawChartData[], 'startDate', [
       'organizations'
     ], undefined, 'endDate');
-    return selectedTimeRangeKey.value === dateOptKeys.alltime ? removeZeroValues(tmpData) : tmpData;
+    tmpData = selectedTimeRangeKey.value === dateOptKeys.alltime ? removeZeroValues(tmpData) : tmpData;
+
+    return markLastDataItem(tmpData, model.value.activeTab);
   }
 );
 const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));

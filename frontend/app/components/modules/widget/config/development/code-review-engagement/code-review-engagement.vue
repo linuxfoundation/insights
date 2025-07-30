@@ -109,7 +109,7 @@ import LfxDropdownItem from "~/components/uikit/dropdown/dropdown-item.vue";
 import LfxDropdownSelect from "~/components/uikit/dropdown/dropdown-select.vue";
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import { getBarChartConfig } from '~/components/uikit/chart/configs/bar.chart';
-import { convertToChartData } from '~/components/uikit/chart/helpers/chart-helpers';
+import { convertToChartData, markLastDataItem } from '~/components/uikit/chart/helpers/chart-helpers';
 import type {
   ChartData,
   RawChartData,
@@ -208,9 +208,19 @@ const chartSeries = computed<ChartSeries[]>(() => [
 
 const chartData = computed<ChartData[]>(() => {
   if (model.value.activeTab === CodeReviewEngagementMetric.REVIEW_COMMENTS) {
-    return convertToChartData(reviewCommentsData.value as unknown as RawChartData[], 'startDate', ['comments']);
+    return markLastDataItem(
+      convertToChartData(
+        reviewCommentsData.value as unknown as RawChartData[], 
+        'startDate', 
+        ['comments']
+      ), barGranularity.value);
   } else if (model.value.activeTab === CodeReviewEngagementMetric.CODE_REVIEWS) {
-    return convertToChartData(codeReviewsData.value as unknown as RawChartData[], 'startDate', ['reviews']);
+    return markLastDataItem(
+      convertToChartData(
+        codeReviewsData.value as unknown as RawChartData[], 
+        'startDate', 
+        ['reviews']
+      ), barGranularity.value);
   }
   return [];
 });

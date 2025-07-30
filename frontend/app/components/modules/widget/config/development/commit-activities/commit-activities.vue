@@ -64,7 +64,7 @@ import { lineGranularities, barGranularities } from '~/components/shared/types/g
 import type { Summary } from '~~/types/shared/summary.types';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
-import { convertToChartData } from '~/components/uikit/chart/helpers/chart-helpers';
+import { convertToChartData, markLastDataItem } from '~/components/uikit/chart/helpers/chart-helpers';
 import type {
   ChartData,
   RawChartData,
@@ -198,9 +198,13 @@ const commitActivities = computed<CommitActivities | undefined>(() => (model.val
 const summary = computed<Summary | undefined>(() => commitActivities.value?.summary);
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
-  () => convertToChartData(commitActivities.value?.data as RawChartData[], 'startDate', [
-    'commits'
-  ], undefined, 'endDate')
+  () => {
+    let tmpData = convertToChartData(commitActivities.value?.data as RawChartData[], 'startDate', [
+      'commits'
+    ], undefined, 'endDate');
+
+    return markLastDataItem(tmpData, barGranularity.value);
+  }
 );
 const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
 

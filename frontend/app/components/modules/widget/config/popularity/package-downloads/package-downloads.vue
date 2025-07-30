@@ -75,18 +75,19 @@ SPDX-License-Identifier: MIT
 import { useRoute } from 'nuxt/app';
 import { computed, onServerPrefetch, watch } from 'vue';
 import { storeToRefs } from "pinia";
+import { DateTime } from 'luxon';
 import LfxPackageDropdown from './fragments/package-dropdown.vue';
 import type { Package, PackageDownloads } from '~~/types/popularity/responses.types';
 import type { Summary } from '~~/types/shared/summary.types';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
-import { convertToChartData, removeZeroValues } from '~/components/uikit/chart/helpers/chart-helpers';
+import { convertToChartData, currentInterval, removeZeroValues } from '~/components/uikit/chart/helpers/chart-helpers';
 import type {
   ChartData,
   RawChartData,
   ChartSeries
 } from '~/components/uikit/chart/types/ChartTypes';
 import LfxChart from '~/components/uikit/chart/chart.vue';
-import { getLineAreaChartConfig } from '~/components/uikit/chart/configs/line.area.chart';
+import { getLineAreaChartConfig, getMarkLine, getVisualMap } from '~/components/uikit/chart/configs/line.area.chart';
 import { lfxColors } from '~/config/styles/colors';
 import { formatNumber, formatNumberShort } from '~/components/shared/utils/formatter';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
@@ -219,6 +220,26 @@ const chartData = computed<ChartData[]>(
     return removeZeroValues(tmpData, true);
   }
 );
+
+const isLastDataItemIncomplete = computed(() => {
+  if (chartData.value.length > 0) {
+    const lastItem = chartData.value[chartData.value.length - 1];
+    const interval = currentInterval(granularity.value);
+
+    return interval.contains(DateTime.fromISO(lastItem?.key || '').endOf('day'));
+  }
+
+  return false;
+});
+
+const columnBeforeLastItem = computed<string>(() => {
+  if (chartData.value.length > 1) {
+    const columnBeforeLastItem = chartData.value[chartData.value.length - 2];
+    return DateTime.fromISO(columnBeforeLastItem?.key || '').toUTC().endOf('day').toMillis().toString();
+  }
+  return '';
+});
+
 const isEmpty = computed(() => {
   if (isEmptyData(chartData.value as unknown as Record<string, unknown>[])) {
     return true;
@@ -236,7 +257,8 @@ const chartSeries = computed<ChartSeries[]>(() => model.value.activeTab === 'pac
     dataIndex: 0,
     position: 'left',
     color: lfxColors.brand[500],
-    lineWidth: 2
+    lineWidth: 2,
+    markLine: isLastDataItemIncomplete.value ? getMarkLine(columnBeforeLastItem.value) : undefined
   }
 ] : [
   {
@@ -246,7 +268,8 @@ const chartSeries = computed<ChartSeries[]>(() => model.value.activeTab === 'pac
     dataIndex: 1,
     position: 'left',
     color: lfxColors.brand[500],
-    lineWidth: 2
+    lineWidth: 2,
+    markLine: isLastDataItemIncomplete.value ? getMarkLine(columnBeforeLastItem.value) : undefined
   }
 ]);
 
@@ -259,7 +282,10 @@ const lineChartConfig = computed(() => getLineAreaChartConfig(
       return '';
     }
     return formatNumberShort(value);
-  }
+  },
+  isLastDataItemIncomplete.value ? {
+    visualMap: getVisualMap(chartData.value.length, chartSeries.value)
+  } : undefined
 ));
 
 watch(status, (value) => {

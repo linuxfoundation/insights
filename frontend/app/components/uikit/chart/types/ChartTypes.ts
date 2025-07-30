@@ -17,6 +17,8 @@ export interface ChartSeries {
   lineStyle?: 'solid' | 'dashed' | 'dotted';
   lineWidth?: number;
   position?: 'left' | 'right';
+
+  [key: string]: string | number | boolean | null | undefined | Record<string, unknown>;
 }
 
 export interface ChartData {
@@ -24,6 +26,7 @@ export interface ChartData {
   yAxisKey?: string;
   values: number[];
   xAxisKey2?: string;
+  isIncomplete?: boolean;
 }
 
 export interface GaugeData {

@@ -87,20 +87,21 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { useRoute } from 'nuxt/app';
 import {
- ref, computed, watch, onServerPrefetch
+ computed, watch, onServerPrefetch
 } from 'vue';
 import { storeToRefs } from "pinia";
 import {type QueryFunction, useQuery} from "@tanstack/vue-query";
+import { DateTime } from 'luxon';
 import type { IssuesResolution, IssuesResolutionSummary } from '~~/types/development/responses.types';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
-import { convertToChartData } from '~/components/uikit/chart/helpers/chart-helpers';
+import { convertToChartData, currentInterval } from '~/components/uikit/chart/helpers/chart-helpers';
 import type {
   ChartData,
   RawChartData,
   ChartSeries
 } from '~/components/uikit/chart/types/ChartTypes';
 import LfxChart from '~/components/uikit/chart/chart.vue';
-import { getLineAreaChartConfig } from '~/components/uikit/chart/configs/line.area.chart';
+import { getLineAreaChartConfig, getMarkLine, getVisualMap } from '~/components/uikit/chart/configs/line.area.chart';
 import { lfxColors } from '~/config/styles/colors';
 import { formatNumber, formatSecondsToDuration } from '~/components/shared/utils/formatter';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
@@ -184,9 +185,28 @@ undefined,
 )
 );
 
+const columnBeforeLastItem = computed<string>(() => {
+  if (chartData.value.length > 1) {
+    const columnBeforeLastItem = chartData.value[chartData.value.length - 2];
+    return DateTime.fromISO(columnBeforeLastItem?.key || '').toUTC().endOf('day').toMillis().toString();
+  }
+  return '';
+});
+
+const isLastDataItemIncomplete = computed(() => {
+  if (chartData.value.length > 0) {
+    const lastItem = chartData.value[chartData.value.length - 1];
+    const interval = currentInterval(granularity.value);
+
+    return interval.contains(DateTime.fromISO(lastItem?.key || '').endOf('day'));
+  }
+
+  return false;
+});
+
 const avgVelocity = computed<string>(() => formatSecondsToDuration(summary.value?.avgVelocityInDays || 0, 'long'));
 
-const chartSeries = ref<ChartSeries[]>([
+const chartSeries = computed<ChartSeries[]>(() => [
   {
     name: 'Closed Issues',
     type: 'line',
@@ -194,7 +214,8 @@ const chartSeries = ref<ChartSeries[]>([
     dataIndex: 0,
     position: 'left',
     color: lfxColors.brand[500],
-    lineWidth: 2
+    lineWidth: 2,
+    markLine: isLastDataItemIncomplete.value ? getMarkLine(columnBeforeLastItem.value) : undefined
   },
   {
     name: 'Total Issues',
@@ -212,6 +233,10 @@ const lineAreaChartConfig = computed(() => getLineAreaChartConfig(
   chartData.value,
   chartSeries.value,
   granularity.value,
+  undefined,
+  isLastDataItemIncomplete.value ? {
+    visualMap: getVisualMap(chartData.value.length, chartSeries.value)
+  } : undefined
 ));
 const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
 

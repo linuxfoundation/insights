@@ -46,21 +46,21 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
+import { computed, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { storeToRefs } from "pinia";
 import { DateTime } from 'luxon';
 import {type QueryFunction, useQuery} from "@tanstack/vue-query";
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
 import LfxChart from '~/components/uikit/chart/chart.vue';
-import { convertToChartData } from '~/components/uikit/chart/helpers/chart-helpers';
+import { convertToChartData, currentInterval } from '~/components/uikit/chart/helpers/chart-helpers';
 import type {
   ChartData,
   RawChartData,
   ChartSeries
 } from '~/components/uikit/chart/types/ChartTypes';
 import { lfxColors } from '~/config/styles/colors';
-import { getLineAreaChartConfig } from '~/components/uikit/chart/configs/line.area.chart';
+import { getLineAreaChartConfig, getMarkLine, getVisualMap } from '~/components/uikit/chart/configs/line.area.chart';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
 import { isEmptyData } from '~/components/shared/utils/helper';
 import type { Retention } from '~~/types/contributors/responses.types';
@@ -138,14 +138,34 @@ const retention = computed<Retention[]>(() => data.value as Retention[]);
 
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
-  () => convertToChartData(
-    retention.value as unknown as RawChartData[],
-    'startDate',
-    ['percentage'],
-    undefined,
-    'endDate'
-  )
+  () => {
+    return convertToChartData(
+      retention.value as unknown as RawChartData[],
+      'startDate',
+      ['percentage'],
+      undefined,
+      'endDate'
+    )
+  }
 );
+const isLastDataItemIncomplete = computed(() => {
+  if (chartData.value.length > 0) {
+    const lastItem = chartData.value[chartData.value.length - 1];
+    const interval = currentInterval(granularity);
+
+    return interval.contains(DateTime.fromISO(lastItem?.key || '').endOf('day'));
+  }
+
+  return false;
+});
+
+const columnBeforeLastItem = computed<string>(() => {
+  if (chartData.value.length > 1) {
+    const columnBeforeLastItem = chartData.value[chartData.value.length - 2];
+    return DateTime.fromISO(columnBeforeLastItem?.key || '').toUTC().endOf('day').toMillis().toString();
+  }
+  return '';
+});
 
 const isEmpty = computed(() => isBelowThreshold.value
   || isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
@@ -161,14 +181,15 @@ const tabs = [
   }
 ];
 
-const chartSeries = ref<ChartSeries[]>([
+const chartSeries = computed<ChartSeries[]>(() => [
   {
     name: 'Retention',
     type: 'line',
     yAxisIndex: 0,
     dataIndex: 0,
     position: 'left',
-    color: lfxColors.brand[500]
+    color: lfxColors.brand[500],
+    markLine: isLastDataItemIncomplete.value ? getMarkLine(columnBeforeLastItem.value) : undefined
   }
 ]);
 
@@ -176,7 +197,10 @@ const lineAreaChartConfig = computed(() => getLineAreaChartConfig(
   chartData.value, //
   chartSeries.value, //
   granularity,
-  (value: number, index?: number) => `${index === 0 ? '' : `${value}%`}`
+  (value: number, index?: number) => `${index === 0 ? '' : `${value}%`}`,
+  isLastDataItemIncomplete.value ? {
+    visualMap: getVisualMap(chartData.value.length, chartSeries.value)
+  } : undefined
 ));
 
 watch(status, (value) => {
