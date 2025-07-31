@@ -1,29 +1,33 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
+import {DateTime} from "luxon";
 import {fetchFromTinybird} from "~~/server/data/tinybird/tinybird";
+import { OrgDashAvgMergeTime} from "~~/types/organization-dashboard";
 
-interface OrgAvgMergeTime {
-    date: string,
-    avgMergeTimeSeconds: number,
-    orgAvgMergeTimeSeconds: number
-}
-
-export default defineEventHandler(async (event): Promise<OrgAvgMergeTime[]> => {
+export default defineEventHandler(async (event): Promise<OrgDashAvgMergeTime[]> => {
     const query = getQuery(event);
     const project: string = query?.project as string;
-    if(!project){
+
+    if (!project) {
         throw createError({statusCode: 422, statusMessage: 'Project is required'});
     }
 
-    const organizationId: string = query?.organizationId as string;
-    if(!organizationId){
-        throw createError({statusCode: 422, statusMessage: 'Organization ID is required'});
+    const organizationIds: string[] = (query?.organizationIds as string || '').split(',');
+    if (!organizationIds) {
+        throw createError({statusCode: 422, statusMessage: 'Organization IDs are required'});
     }
 
+    const startDate = query.startDate ? DateTime.fromISO(query.startDate as string) : undefined;
+    const endDate = query.endDate ? DateTime.fromISO(query.endDate as string) : undefined;
+    const granularity: string = query.granularity as string || 'monthly';
+
     try {
-        const res = await fetchFromTinybird<OrgAvgMergeTime[]>('/v0/pipes/org_dash_avg_merge_time.json', {
+        const res = await fetchFromTinybird<OrgDashAvgMergeTime[]>('/v0/pipes/org_dash_avg_merge_time.json', {
             project,
-            organizationId,
+            organizationIds,
+            startDate,
+            endDate,
+            granularity
         });
 
         return res.data;
