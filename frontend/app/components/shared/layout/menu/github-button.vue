@@ -33,12 +33,16 @@ SPDX-License-Identifier: MIT
 import { onMounted } from 'vue';
 
 onMounted(() => {
+  const scriptSrc = 'https://buttons.github.io/buttons.js'
   // GitHub buttons script adds the functionality
-  const script = document.createElement('script')
-  script.setAttribute('src', 'https://buttons.github.io/buttons.js')
-  script.setAttribute('async', '')
-  script.setAttribute('defer', '')
-  document.body.appendChild(script)
+  // Adding check to prevent adding the script twice that causes the error
+  if (!document.querySelector(`script[src="${scriptSrc}"]`)) {
+    const script = document.createElement('script')
+    script.setAttribute('src', scriptSrc)
+    script.setAttribute('async', '')
+    script.setAttribute('defer', '')
+    document.body.appendChild(script)
+  }
 })
 </script>
 
