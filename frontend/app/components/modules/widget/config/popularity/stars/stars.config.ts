@@ -16,7 +16,7 @@ const stars: WidgetConfig = {
   embed: true,
   snapshot: true,
   benchmark: {
-    title: 'Github Stars',
+    title: 'GitHub Stars',
     showOnOverview: true,
     isVisible: () => true,
     points: {
