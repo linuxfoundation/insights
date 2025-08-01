@@ -1,7 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import type { MapSeriesOption, TopLevelFormatterParams } from 'echarts/types/dist/shared';
-import _ from 'lodash';
+import { merge } from 'lodash-es';
 import type { ChartData, ChartSeries, SeriesTypes } from '../types/ChartTypes';
 import type { SingleTooltipFormatterParams } from '../types/EChartTypes';
 import { lfxColors } from '~/config/styles/colors';
@@ -130,7 +130,7 @@ export const getGeoMapChartConfig = (
   series: ChartSeries[],
   maxValue: number = 100000
 ): ECOption => {
-  const option = _.merge({}, defaultGeoOption, {
+  const option = merge({}, defaultGeoOption, {
     visualMap: {
       max: maxValue === 0 ? 100000 : maxValue,
     },
@@ -138,7 +138,7 @@ export const getGeoMapChartConfig = (
 
   option.layoutSize = getLayoutSize();
 
-  return _.merge({}, option, {
+  return merge({}, option, {
     series: buildSeries(series, data),
     // tooltip
   });

@@ -31,7 +31,7 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import _ from "lodash";
+import { debounce } from "lodash-es";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
 
 const props = defineProps<{
@@ -44,7 +44,7 @@ const emit = defineEmits<{(e: 'update:modelValue', value: string): void;}>();
 
 const model = ref(props.modelValue);
 
-const debouncedEmit = _.debounce((value: string) => {
+const debouncedEmit = debounce((value: string) => {
   emit('update:modelValue', value);
 }, 300);
 
