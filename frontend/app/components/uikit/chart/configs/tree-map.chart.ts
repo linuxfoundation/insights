@@ -1,7 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 
-import _ from 'lodash';
+import { merge } from 'lodash-es';
 import type { EChartsOption as ECOption } from 'echarts';
 import type {
   TooltipOption,
@@ -215,11 +215,11 @@ export const getTreeMapConfig = (
   isValueCurrency: boolean,
   options?: ECOption
 ): ECOption => {
-  const treeMapOption = _.merge({}, defaultTreeMapOption, {
+  const treeMapOption = merge({}, defaultTreeMapOption, {
     series: [isValueCurrency ? SERIES_CURRENCY : SERIES_DEFAULT] as ECOption['series'],
   });
 
-  const config = _.merge({}, treeMapOption, options);
+  const config = merge({}, treeMapOption, options);
   if (config.tooltip) {
     const cfgTooltip = config.tooltip as TooltipOption;
     cfgTooltip.formatter = tooltipFormatter as unknown as TFCallback<TLPParams>;

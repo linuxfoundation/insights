@@ -5,7 +5,7 @@ import type {
   MarkLineOption,
   ScatterSeriesOption
 } from 'echarts/types/dist/shared';
-import _ from 'lodash';
+import { merge } from 'lodash-es';
 import { punchCardFormatter } from '../helpers/formatters';
 import type {
   CategoryData,
@@ -305,11 +305,11 @@ export const getScatterChartConfig = (
     categoryData
   );
 
-  const tooltip = _.merge({}, defaultScatterOption.tooltip, {
+  const tooltip = merge({}, defaultScatterOption.tooltip, {
     formatter: punchCardFormatter('wut', true, yAxisData as string[])
   });
 
-  return _.merge(
+  return merge(
     {},
     {
  ...defaultScatterOption, xAxis, yAxis, series: styledSeries, tooltip

@@ -1,7 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import type { RadarSeriesOption } from 'echarts/types/dist/shared';
-import _ from 'lodash';
+import { merge } from 'lodash-es';
 
 import type { ChartData, ChartSeries, SeriesTypes } from '../types/ChartTypes';
 // import defaultOption from './defaults.chart';
@@ -103,7 +103,7 @@ export const getRadarChartConfig = (
 ): ECOption => {
   const styledSeries = applySeriesStyle(series, buildSeriesData(series, data));
 
-  return _.merge({}, defaultRadarOption, {
+  return merge({}, defaultRadarOption, {
     series: styledSeries,
     radar: {
       indicator: indicators.map((indicator) => ({

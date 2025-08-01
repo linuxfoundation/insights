@@ -1,7 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import type { HeatmapSeriesOption } from 'echarts/types/dist/shared';
-import _ from 'lodash';
+import { merge } from 'lodash-es';
 import { punchCardFormatter } from '../helpers/formatters';
 import type {
   CategoryData,
@@ -173,11 +173,11 @@ export const getHeatMapChartConfig = (
   // Find the maximum value in the current dataset
   const maxValue = Math.max(...convertedData.map((item) => item[2] || 0));
   const splitRanges = splitRange(0, maxValue);
-  const tooltip = _.merge({}, defaultHeatMapOption.tooltip, {
+  const tooltip = merge({}, defaultHeatMapOption.tooltip, {
     formatter: punchCardFormatter(granularity)
   });
 
-  return _.merge(
+  return merge(
     {},
     {
       ...defaultHeatMapOption,
