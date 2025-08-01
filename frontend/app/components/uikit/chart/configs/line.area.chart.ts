@@ -71,7 +71,8 @@ const defaultSeriesStyle: LineSeriesOption = {
  */
 const applySeriesStyle = (
   chartSeries: ChartSeries[],
-  series: SeriesTypes[] | undefined
+  series: SeriesTypes[] | undefined,
+  useVisualMapColor: boolean
 ): SeriesTypes[] => {
   if (!series) return [];
 
@@ -91,7 +92,7 @@ const applySeriesStyle = (
     // adding the color here will override the color in the visualMap
     baseStyle.lineStyle = {
       ...baseStyle.lineStyle,
-    //   color: chartSeries[index]?.color || lfxColors.brand[500],
+      color: useVisualMapColor ? undefined : chartSeries[index]?.color || lfxColors.brand[500],
       type: chartSeries[index]?.lineStyle || baseStyle.lineStyle?.type,
       width: chartSeries[index]?.lineWidth || baseStyle.lineStyle?.width || 1,
     };
@@ -146,7 +147,7 @@ export const getLineAreaChartConfig = (
     formatter: tooltipFormatterWithData(data, granularity, series),
   });
 
-  const styledSeries = applySeriesStyle(series, buildSeries(series, data));
+  const styledSeries = applySeriesStyle(series, buildSeries(series, data), !!overrideConfig?.visualMap);
   
   return _.merge(
     {},
@@ -187,7 +188,7 @@ export const getLineAreChartConfigCustom = (
     },
   };
 
-  const styledSeries = applySeriesStyle(series, buildSeries(series, data)).map(
+  const styledSeries = applySeriesStyle(series, buildSeries(series, data), false).map(
     (seriesItem) => ({
         ...seriesItem,
         ...customStyle,
@@ -223,7 +224,7 @@ export const getLineAreaChartConfigGraphOnly = (
     ...defaultGraphOnlyOption.xAxis,
     data: convertDateData(data) ?? [],
   };
-  const styledSeries = applySeriesStyle(series, buildSeries(series, data));
+  const styledSeries = applySeriesStyle(series, buildSeries(series, data), false);
 
   return {
     ...defaultGraphOnlyOption,
