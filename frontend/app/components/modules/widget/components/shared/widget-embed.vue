@@ -86,7 +86,12 @@ const {
  widget, startDate, endDate, timeRangeKey, repos, ...params
 } = route.query;
 
-const { startDate: startDateStore, endDate: endDateStore, selectedTimeRangeKey, project } = storeToRefs(useProjectStore());
+const {
+  startDate: startDateStore,
+  endDate: endDateStore,
+  selectedTimeRangeKey,
+  project
+} = storeToRefs(useProjectStore());
 
 const config: WidgetConfig = lfxWidgets[widget as Widget];
 
