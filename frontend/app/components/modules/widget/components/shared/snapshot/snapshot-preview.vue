@@ -77,10 +77,19 @@ const props = defineProps<{
 const widgetConfig = computed(() => lfxWidgets[props.widgetName]);
 
 const {
-project, repository, startDate, endDate
+project, selectedRepositories, startDate, endDate
 } = storeToRefs(useProjectStore());
 
-const repoName = computed(() => (repository?.value?.name || '').split('/').at(-1));
+const repoName = computed(() => {
+  if(selectedRepositories.value.length === 1){
+    const repository = selectedRepositories.value[0];
+    return (repository?.name || '').split('/').at(-1);
+  }
+  if(selectedRepositories.value.length > 1){
+    return `${selectedRepositories.value.length} repositories`;
+  }
+  return '';
+})
 
 const config = computed<WidgetConfig>(() => lfxWidgets[props.widgetName]);
 </script>
