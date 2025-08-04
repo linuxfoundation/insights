@@ -79,6 +79,7 @@ export const processProjectParams = (query: LocationQuery): URLParams => {
   if (!Object.values(dateOptKeys).includes(paramTimeRange as dateOptKeys)) {
     return {
       widget: widget as string,
+      repos: repos as string,
     };
   }
 

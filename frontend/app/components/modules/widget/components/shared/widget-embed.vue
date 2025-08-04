@@ -81,12 +81,12 @@ import {useProjectStore} from "~/components/modules/project/store/project.store"
 import {dateOptKeys} from "~/components/modules/project/config/date-options";
 
 const route = useRoute();
-const { slug, name } = route.params;
+const { slug } = route.params;
 const {
- widget, startDate, endDate, timeRangeKey, ...params
+ widget, startDate, endDate, timeRangeKey, repos, ...params
 } = route.query;
 
-const { startDate: startDateStore, endDate: endDateStore, selectedTimeRangeKey } = storeToRefs(useProjectStore());
+const { startDate: startDateStore, endDate: endDateStore, selectedTimeRangeKey, project } = storeToRefs(useProjectStore());
 
 const config: WidgetConfig = lfxWidgets[widget as Widget];
 
@@ -102,13 +102,23 @@ const {
   retry: false,
 });
 
+const repositories = computed(() => repos.split('|'));
+
 const repoName = computed(() => {
-  const repo = data.value?.repositories.find((repo) => repo.slug === name);
-  return repo?.name?.split('/').at(-1) || '';
+  if(repositories.value?.length === 1){
+    const [repoSlug] = repositories.value
+    const repo = data.value?.repositories.find((repo) => repo.slug === repoSlug);
+    return repo?.name?.split('/').at(-1) || '';
+  }
+  if(repositories.value?.length > 1){
+    return `${repositories.value.length} repositories`;
+  }
+  return ''
 });
 
 onServerPrefetch(async () => {
   await suspense();
+  project.value = data.value as Project
 });
 
 startDateStore.value = startDate as string;
