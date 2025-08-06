@@ -57,7 +57,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed, onMounted, ref } from "vue";
-import _ from "lodash";
+import { debounce } from "lodash-es";
 import type {
   SearchCollection, SearchProject, SearchRepository, SearchResults
 } from "~~/types/search";
@@ -106,7 +106,7 @@ const fetchSearchResults = () => {
       });
 };
 
-const triggerSearch = _.debounce(fetchSearchResults, 300);
+const triggerSearch = debounce(fetchSearchResults, 300);
 
 onMounted(() => {
   searchInputRef.value?.focus();

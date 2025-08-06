@@ -3,7 +3,7 @@
 import type { QueryFunction } from '@tanstack/vue-query';
 import { type Ref, computed } from 'vue';
 import { useQuery } from '@tanstack/vue-query';
-import _ from 'lodash';
+import { sortBy } from 'lodash-es';
 import { TanstackKey } from '~/components/shared/types/tanstack';
 import type {
   OSSIndexCategoryGroup,
@@ -175,7 +175,7 @@ class OssIndexApiService {
     const filteredData = this.filterDataByLimit(data);
 
     return (
-      _.sortBy(
+      sortBy(
         filteredData.map((group) => {
           const rangeIndex = this.getRangeValue(
             minMax,

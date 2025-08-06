@@ -50,7 +50,7 @@ importers:
       isomorphic-dompurify:
         specifier: ^2.25.0
         version: 2.25.0
-      lodash:
+      lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
       luxon:
@@ -144,6 +144,9 @@ importers:
       '@types/lodash':
         specifier: ^4.17.15
         version: 4.17.18
+      '@types/lodash-es':
+        specifier: ^4.17.12
+        version: 4.17.12
       '@types/luxon':
         specifier: ^3.4.2
         version: 3.6.2
@@ -2232,6 +2235,9 @@ packages:
 
   '@types/linkify-it@5.0.0':
     resolution: {integrity: sha512-sVDA58zAw4eWAffKOaQH5/5j3XeayukzDk+ewSsnv3p4yJEZHCCzMDiZM8e0OUrRvmpGZ85jf4yDHkHsgBNr9Q==}
+
+  '@types/lodash-es@4.17.12':
+    resolution: {integrity: sha512-0NgftHUcV4v34VhXm8QBSftKVXtbkBG3ViCjs6+eJ5a6y6Mi/jiFGPc1sC7QK+9BFhWrURE3EOggmWaSxL9OzQ==}
 
   '@types/lodash@4.17.18':
     resolution: {integrity: sha512-KJ65INaxqxmU6EoCiJmRPZC9H9RVWCRd349tXM2M3O5NA7cY6YL7c0bHAHQ93NOfTObEQ004kd2QVHs/r0+m4g==}
@@ -7589,6 +7595,9 @@ packages:
   vue-component-type-helpers@2.2.10:
     resolution: {integrity: sha512-iDUO7uQK+Sab2tYuiP9D1oLujCWlhHELHMgV/cB13cuGbG4qwkLHvtfWb6FzvxrIOPDnU0oHsz2MlQjhYDeaHA==}
 
+  vue-component-type-helpers@3.0.5:
+    resolution: {integrity: sha512-uoNZaJ+a1/zppa/Vgmi8zIOP2PHXDN2rT8NyF+zQRK6ZG94lNB9prcV0GdLJbY9i9lrD47JOVIH92SaiA7oJ1A==}
+
   vue-demi@0.13.11:
     resolution: {integrity: sha512-IR8HoEEGM65YY3ZJYAjMlKygDQn25D5ajNFNoKh9RSDMQtlzCxtfQjdQgv9jjK+m3377SsJXY8ysq8kLCZL25A==}
     engines: {node: '>=12'}
@@ -10037,7 +10046,7 @@ snapshots:
       ts-dedent: 2.2.0
       type-fest: 2.19.0
       vue: 3.5.17(typescript@5.8.3)
-      vue-component-type-helpers: 2.2.10
+      vue-component-type-helpers: 3.0.5
 
   '@storybook/vue3@8.4.7(storybook@8.4.7(prettier@3.6.0))(vue@3.5.17(typescript@5.8.3))':
     dependencies:
@@ -10051,7 +10060,7 @@ snapshots:
       ts-dedent: 2.2.0
       type-fest: 2.19.0
       vue: 3.5.17(typescript@5.8.3)
-      vue-component-type-helpers: 2.2.10
+      vue-component-type-helpers: 3.0.5
 
   '@stylistic/eslint-plugin@3.1.0(eslint@9.29.0(jiti@2.4.2))(typescript@5.8.3)':
     dependencies:
@@ -10159,6 +10168,10 @@ snapshots:
   '@types/json5@0.0.29': {}
 
   '@types/linkify-it@5.0.0': {}
+
+  '@types/lodash-es@4.17.12':
+    dependencies:
+      '@types/lodash': 4.17.18
 
   '@types/lodash@4.17.18': {}
 
@@ -16400,6 +16413,8 @@ snapshots:
       typescript: 5.8.3
 
   vue-component-type-helpers@2.2.10: {}
+
+  vue-component-type-helpers@3.0.5: {}
 
   vue-demi@0.13.11(vue@3.5.17(typescript@5.8.3)):
     dependencies:

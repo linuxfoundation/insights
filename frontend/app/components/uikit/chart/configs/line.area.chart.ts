@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 import { graphic } from 'echarts';
 import type { LineSeriesOption, MarkAreaOption, MarkLineOption } from 'echarts/types/dist/shared';
-import _ from 'lodash';
+import { merge } from 'lodash-es';
 import {
   buildSeries,
   convertDateData,
@@ -143,13 +143,13 @@ export const getLineAreaChartConfig = (
       formatter: yAxisFormatter,
     },
   };
-  const tooltip = _.merge({}, defaultLineOption.tooltip, {
+  const tooltip = merge({}, defaultLineOption.tooltip, {
     formatter: tooltipFormatterWithData(data, granularity, series),
   });
 
   const styledSeries = applySeriesStyle(series, buildSeries(series, data), !!overrideConfig?.visualMap);
   
-  return _.merge(
+  return merge(
     {},
     {
       ...defaultLineOption,

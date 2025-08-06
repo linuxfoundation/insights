@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 import { graphic } from 'echarts';
 import type { BarSeriesOption } from 'echarts/types/dist/shared';
-import _ from 'lodash';
+import { merge } from 'lodash-es';
 import { convertDateData } from '../helpers/chart-helpers';
 import {
   axisLabelFormatter,
@@ -217,7 +217,7 @@ export const getBarChartConfig = (
       formatter: axisLabelFormatter(axisLabelFormat),
     },
   };
-  const tooltip = _.merge({}, defaultBarOption.tooltip, {
+  const tooltip = merge({}, defaultBarOption.tooltip, {
     formatter: tooltipFormatterWithData(data, granularity, series),
   });
   
@@ -227,7 +227,7 @@ export const getBarChartConfig = (
     useStripedPattern
   );
 
-  return _.merge({}, defaultBarOption, {
+  return merge({}, defaultBarOption, {
     xAxis,
     series: styledSeries,
     tooltip,
@@ -322,7 +322,7 @@ export const getBarChartConfigCustom = (
       formatter: axisLabelFormatter(axisLabelFormat),
     },
   };
-  const tooltip = _.merge({}, defaultBarOption.tooltip, {
+  const tooltip = merge({}, defaultBarOption.tooltip, {
     formatter: tooltipFormatterWithData(data, granularity, series),
   });
 
@@ -335,7 +335,7 @@ export const getBarChartConfigCustom = (
       } as BarSeriesOption)
   );
 
-  return _.merge(
+  return merge(
     {},
     {
       ...defaultBarOption,
