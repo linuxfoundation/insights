@@ -89,7 +89,7 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script lang="ts" setup>
-import {computed} from "vue";
+import {computed, ref} from "vue";
 import {storeToRefs} from "pinia";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
 import LfxWidgetMenuItem from "~/components/modules/widget/components/shared/widget-menu-item.vue";
@@ -107,6 +107,7 @@ import LfxDropdownSeparator from "~/components/uikit/dropdown/dropdown-separator
 import LfxDropdownItem from "~/components/uikit/dropdown/dropdown-item.vue";
 import LfxSnapshotModal from "~/components/modules/widget/components/shared/snapshot/snapshot-modal.vue";
 import LfxWidgetEmbedModal from "~/components/modules/widget/components/shared/embed/embed-modal.vue";
+import {useCopilotStore} from "~/components/shared/modules/copilot/store/copilot.store";
 
 const props = defineProps<{
   name: Widget;
@@ -120,6 +121,7 @@ const isEmbedModalOpen = ref(false)
 
 const {openReportModal} = useReportStore()
 const {openShareModal} = useShareStore()
+const {openCopilotModal} = useCopilotStore()
 
 const {project, selectedRepositories} = storeToRefs(useProjectStore());
 
@@ -147,6 +149,14 @@ const share = () => {
     area: config.value.name,
     title,
     additionalShare: config.value.additionalShare
+  });
+}
+
+const askCopilot = () => {
+  openCopilotModal({
+    widget: props.name,
+    icon: 'users',
+    suggestions: ''
   });
 }
 
@@ -199,6 +209,23 @@ const menu: {
     icon: 'share-nodes',
     action: share,
     enabled: config.value.share,
+    isSeparator: false
+  },
+  {
+    label: '',
+    icon: '',
+    action: () => {
+    },
+    enabled: config.value.embed || config.value.snapshot || config.value.share,
+    isSeparator: true
+  },
+  {
+    label: 'Ask Copilot',
+    icon: 'sparkles',
+    iconClass: '!text-brand-500',
+    action: askCopilot,
+    enabled: !!config.value.copilot,
+    showLabel: true,
     isSeparator: false
   }
 ]

@@ -7,6 +7,7 @@ SPDX-License-Identifier: MIT
     <teleport to="body">
       <div
         class="c-modal"
+        :class="props.type === 'floating' ? 'c-modal--floating' : ''"
         @click="clickOutsideClose()"
       >
         <div
@@ -24,7 +25,7 @@ SPDX-License-Identifier: MIT
             <slot :close="close" />
           </div>
           <lfx-icon-button
-            class="absolute top-2 -right-10 z-100"
+            class="c-modal__close-button"
             size="small"
             icon="fa fa-xmark fa-light"
             @click="clickOutsideClose()"
@@ -51,11 +52,13 @@ import LfxIconButton from "~/components/uikit/icon-button/icon-button.vue";
 
 const props = withDefaults(defineProps<{
   modelValue: boolean,
+  type?: 'default' | 'floating',
   contentClass?: string,
   width?: string,
   showCloseButton?: boolean,
   closeFunction?:() => boolean,
 }>(), {
+  type: 'default',
   width: '37.5rem',
   closeFunction: () => true,
   contentClass: undefined,

@@ -16,6 +16,10 @@ const contributorsLeaderboard: WidgetConfig = {
     share: true,
     embed: true,
     snapshot: true,
+    copilot: {
+        icon: 'people-group',
+        suggestions: 'How many contributors are there in the leaderboard?'
+    },
 }
 
 export default contributorsLeaderboard;

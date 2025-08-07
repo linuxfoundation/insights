@@ -15,4 +15,15 @@
   &__content{
     @apply w-full bg-white shadow-xl border border-neutral-200 rounded-xl max-h-full overflow-auto;
   }
+
+  &__close-button{
+    @apply absolute top-2 -right-10;
+  }
+
+  &--floating{
+    background: none;
+    .c-modal__close-button{
+      @apply right-2;
+    }
+  }
 }
