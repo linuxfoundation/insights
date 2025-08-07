@@ -3,6 +3,13 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
+  <lfx-copilot-widget-modal
+    v-if="isCopilotWidgetModalOpen"
+    v-model="isCopilotWidgetModalOpen"
+    :widget-name="copilotDefaults.widget"
+    @ask-copilot="handleAskCopilot"
+  />
+
   <lfx-copilot-modal
     v-if="isCopilotModalOpen"
     v-model="isCopilotModalOpen"
@@ -14,13 +21,19 @@ SPDX-License-Identifier: MIT
 <script lang="ts" setup>
 import {storeToRefs} from "pinia";
 import {useCopilotStore} from "~/components/shared/modules/copilot/store/copilot.store";
+import LfxCopilotWidgetModal from "~/components/shared/modules/copilot/components/copilot-widget-modal.vue";
 import LfxCopilotModal from "~/components/shared/modules/copilot/components/copilot-modal.vue";
 
-const {isCopilotModalOpen, copilotDefaults } = storeToRefs(useCopilotStore())
+const {isCopilotWidgetModalOpen, isCopilotModalOpen, copilotDefaults } = storeToRefs(useCopilotStore())
+const {openCopilotModal} = useCopilotStore()
 
 const handleAskCopilot = (question: string) => {
-  // TODO: Implement copilot functionality
-  console.warn('Copilot question:', question, 'for widget:', copilotDefaults.value.widget);
+  openCopilotModal({
+    widget: copilotDefaults.value.widget,
+    icon: copilotDefaults.value.icon,
+    suggestions: copilotDefaults.value.suggestions,
+    question,
+  });
 }
 </script>
 

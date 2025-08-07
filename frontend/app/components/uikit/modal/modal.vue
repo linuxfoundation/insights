@@ -7,7 +7,7 @@ SPDX-License-Identifier: MIT
     <teleport to="body">
       <div
         class="c-modal"
-        :class="props.type === 'floating' ? 'c-modal--floating' : ''"
+        :class="modalClass"
         @click="clickOutsideClose()"
       >
         <div
@@ -52,7 +52,7 @@ import LfxIconButton from "~/components/uikit/icon-button/icon-button.vue";
 
 const props = withDefaults(defineProps<{
   modelValue: boolean,
-  type?: 'default' | 'floating',
+  type?: 'default' | 'floating' | 'cover',
   contentClass?: string,
   width?: string,
   showCloseButton?: boolean,
@@ -91,6 +91,13 @@ const onEscapeKeyUp = (event: KeyboardEvent) => {
     clickOutsideClose();
   }
 };
+
+const modalClass = computed(() => {
+  return {
+    'c-modal--floating': props.type === 'floating',
+    'c-modal--cover': props.type === 'cover',
+  };
+});
 
 watch(() => isModalOpened.value, (show: boolean) => {
   if (!show) {

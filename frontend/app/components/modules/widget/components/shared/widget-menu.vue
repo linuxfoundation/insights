@@ -121,7 +121,7 @@ const isEmbedModalOpen = ref(false)
 
 const {openReportModal} = useReportStore()
 const {openShareModal} = useShareStore()
-const {openCopilotModal} = useCopilotStore()
+const {openCopilotWidgetModal} = useCopilotStore()
 
 const {project, selectedRepositories} = storeToRefs(useProjectStore());
 
@@ -153,7 +153,7 @@ const share = () => {
 }
 
 const askCopilot = () => {
-  openCopilotModal({
+  openCopilotWidgetModal({
     widget: props.name,
     icon: 'users',
     suggestions: ''
