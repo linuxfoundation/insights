@@ -12,6 +12,7 @@ SPDX-License-Identifier: MIT
     <div class="flex-grow" />
     <lfx-report-global />
     <lfx-share-global />
+    <lfx-copilot-global />
     <lfx-welcome-modal />
     <lfx-insights-footer />
   </main>
@@ -24,6 +25,7 @@ import LfxNavbar from '~/components/shared/layout/navbar.vue';
 import LfxToast from '~/components/uikit/toast/toast.vue';
 import LfxReportGlobal from "~/components/shared/modules/report/components/report-global.vue";
 import LfxShareGlobal from "~/components/shared/modules/share/components/share-global.vue";
+import LfxCopilotGlobal from "~/components/shared/modules/copilot/components/copilot-global.vue";
 import LfxWelcomeModal from "~/components/shared/components/welcome-modal.vue";
 import LfxInsightsFooter from "~/components/shared/layout/footer.vue";
 
