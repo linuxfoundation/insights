@@ -6,4 +6,17 @@ export interface CopilotData {
   widget: Widget;
   icon: string;
   suggestions: string;
+
+  question?: string;
+}
+
+export interface CopilotMessage {
+  role: 'user' | 'assistant';
+  parts: Array<CopilotMessagePart>;
+}
+
+export interface CopilotMessagePart {
+  type: 'text' | 'image';
+  text?: string;
+  image?: string;
 }

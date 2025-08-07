@@ -13,17 +13,26 @@ const defaultData: CopilotData = {
 
 export const useCopilotStore = defineStore('copilot', () => {
     const isCopilotModalOpen = ref(false);
+    const isCopilotWidgetModalOpen = ref(false);
     const copilotDefaults = ref<CopilotData>(defaultData);
 
 
     const openCopilotModal = (defaults: CopilotData = defaultData) => {
+        // TODO: Implement copilot functionality
+        console.warn('Copilot question:', defaults.question, 'for widget:', defaults.widget);
         copilotDefaults.value = defaults;
         isCopilotModalOpen.value = true;
+    };
+    const openCopilotWidgetModal = (defaults: CopilotData = defaultData) => {
+        copilotDefaults.value = defaults;
+        isCopilotWidgetModalOpen.value = true;
     };
 
     return {
         isCopilotModalOpen,
+        isCopilotWidgetModalOpen,
         copilotDefaults,
         openCopilotModal,
+        openCopilotWidgetModal,
     };
 });
