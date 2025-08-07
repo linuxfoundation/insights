@@ -32,7 +32,7 @@ export const lfxMenu: MenuConfig = {
       route: LfxRoutes.OPENSOURCEINDEX
     },
     {
-      label: 'Documentation',
+      label: 'Docs',
       icon: 'book-open',
       href: '/docs/introduction/what-is-insights/'
     }
