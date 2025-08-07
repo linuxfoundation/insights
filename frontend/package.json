@@ -45,7 +45,11 @@
     "slugify": "^1.6.6",
     "vitepress": "^1.6.3",
     "vue": "^3.5.17",
-    "vue-router": "latest"
+    "vue-router": "latest",
+    "@ai-sdk/amazon-bedrock": "^2.2.12",
+    "@modelcontextprotocol/sdk": "^1.16.0",
+    "ai": "^4.3.19",
+    "zod": "^3.25.76"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^3.2.4",
