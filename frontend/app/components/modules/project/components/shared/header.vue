@@ -73,30 +73,23 @@ SPDX-License-Identifier: MIT
             <div class="hidden sm:flex items-center gap-4">
               <lfx-button
                 type="tertiary"
+                class="!rounded-full text-nowrap"
+                @click="openReportModal()"
+              >
+                <lfx-icon
+                  name="comment-exclamation"
+                  class="text-warning-600"
+                />
+                Report issue
+              </lfx-button>
+              <lfx-button
+                type="tertiary"
                 class="!rounded-full"
                 @click="share()"
               >
                 <lfx-icon name="link-simple" />
                 Share
               </lfx-button>
-              <lfx-dropdown
-                placement="bottom-end"
-                width="12.5rem"
-              >
-                <template #trigger>
-                  <lfx-icon-button
-                    icon="ellipsis"
-                    type="transparent"
-                  />
-                </template>
-                <lfx-dropdown-item @click="openReportModal()">
-                  <lfx-icon
-                    name="comment-exclamation"
-                    class="!text-neutral-900"
-                  />
-                  Report issue
-                </lfx-dropdown-item>
-              </lfx-dropdown>
             </div>
           </div>
         </div>
@@ -179,8 +172,6 @@ import useResponsive from "~/components/shared/utils/responsive";
 import {useProjectStore} from "~/components/modules/project/store/project.store";
 import LfxOrganizationLogo from "~/components/uikit/organization-logo/organization-logo.vue";
 import LfxProjectMenu from "~/components/modules/project/components/shared/header/project-menu.vue";
-import LfxDropdown from "~/components/uikit/dropdown/dropdown.vue";
-import LfxDropdownItem from "~/components/uikit/dropdown/dropdown-item.vue";
 import {useReportStore} from "~/components/shared/modules/report/store/report.store";
 import {useShareStore} from "~/components/shared/modules/share/store/share.store";
 import { LfxRoutes } from '~/components/shared/types/routes';
