@@ -56,7 +56,7 @@ const { project } = storeToRefs(useProjectStore())
 // Initialize the chat with ai-sdk/vue Chat class
 const chat = new Chat({
   onFinish: (message) => {
-    console.error('Chat response finished:', message)
+    console.log('Chat response finished:', message)
     isLoading.value = false
   },
   onError: (error) => {
