@@ -14,35 +14,101 @@ SPDX-License-Identifier: MIT
     </div>
 
     <!-- Message history -->
-    <lfx-copilot-chat-history :messages="messages" />
+    <lfx-copilot-chat-history :messages="formattedMessages" />
+    {{ chat.status }}
 
     <!-- Chat box -->
+    <div class="mb-2">
+      <textarea
+        v-model="input"
+        :placeholder="`e.g. What are the top contributors to this project?`"
+        class="w-full p-3 bg-neutral-100 rounded-sm text-xs resize-none focus:outline-none"
+        rows="2"
+        style="word-break: break-word; white-space: pre-wrap;"
+        :disabled="isLoading"
+        @keydown.enter.prevent="handleSubmit"
+      />
+      <div
+        v-if="isLoading"
+        class="text-xs text-neutral-500 mt-1"
+      >
+        Analyzing your question...
+      </div>
+    </div>
   </div>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
+import { Chat } from '@ai-sdk/vue'
+
+import { storeToRefs } from 'pinia'
 import type { CopilotMessage } from '../types/copilot.types'
 import LfxCopilotChatHistory from './copilot-chat-history.vue'
 import LfxIcon from '~/components/uikit/icon/icon.vue'
+import { useProjectStore } from '~/components/modules/project/store/project.store'
 
-const messages = ref<Array<CopilotMessage>>([
-  {
-    role: 'user',
-    parts: [{ type: 'text', text: 'Hello, how are you?' }]
+// Initialize input for manual handling
+const input = ref('')
+const isLoading = ref(false)
+
+const { project } = storeToRefs(useProjectStore())
+
+// Initialize the chat with ai-sdk/vue Chat class
+const chat = new Chat({
+  onFinish: (message) => {
+    console.error('Chat response finished:', message)
+    isLoading.value = false
   },
-  {
-    role: 'assistant',
-    parts: [{ type: 'text', text: 'I am fine, thank you!' }]
-  },
-  {
-    role: 'user',
-    parts: [{ type: 'text', text: 'What is the capital of France?' }]
-  },
-  {
-    role: 'assistant',
-    parts: [{ type: 'text', text: 'The capital of France is Paris.' }]
+  onError: (error) => {
+    console.error('Chat error:', error)
+    isLoading.value = false
   }
-])
+})
+
+// const { completion, error } = useCompletion({
+//   api: '/api/chat/stream'
+// });
+
+// Convert ai-sdk messages to CopilotMessage format
+const formattedMessages = computed<Array<CopilotMessage>>(() => {
+  return chat.messages.map(message => ({
+    role: message.role as 'user' | 'assistant',
+    parts: message.parts.map(part => {
+      if (part.type === 'text') {
+        return { type: 'text' as const, text: part.text }
+      }
+      // Handle other part types by converting to text
+      return { type: 'text' as const, text: JSON.stringify(part) }
+    })
+  }))
+})
+
+// Handle form submission  
+const handleSubmit = () => {
+  if (input.value.trim() && !isLoading.value) {
+    isLoading.value = true
+    chat.sendMessage(
+      { text: input.value },
+      {
+        body: {
+          pipe: 'active-contributors', // TODO: make this dynamic
+          segmentId: project.value?.id,
+          projectName: project.value?.name,
+          parameters: {
+            startDate: "2024-07-23 23:59:59",
+            endDate: "2025-07-23 23:59:59",
+            granularity: "monthly",
+            project: project.value?.slug
+          }
+        },
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+    )
+    input.value = ''
+  }
+}
 </script>
 
 <script lang="ts">
