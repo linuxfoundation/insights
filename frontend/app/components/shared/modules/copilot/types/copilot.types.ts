@@ -16,7 +16,7 @@ export interface CopilotMessage {
 }
 
 export interface CopilotMessagePart {
-  type: 'text' | 'image';
+  type: string;
   text?: string;
   image?: string;
 }
