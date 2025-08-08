@@ -10,13 +10,22 @@ export interface CopilotData {
   question?: string;
 }
 
+export type MessagePartType = 'router-status' | 'sql-result' | 'text' | 'pipe-result';
+
+export interface AIMessage {
+  id: string; 
+  role: 'user' | 'assistant'; 
+  content: string; 
+  timestamp: number;
+}
+
 export interface CopilotMessage {
   role: 'user' | 'assistant';
   parts: Array<CopilotMessagePart>;
 }
 
 export interface CopilotMessagePart {
-  type: string;
+  type: MessagePartType;
   text?: string;
   image?: string;
 }

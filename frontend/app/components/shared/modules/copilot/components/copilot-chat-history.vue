@@ -3,7 +3,7 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="overflow-y-auto flex flex-col gap-7">
+  <div class="overflow-y-auto h-full flex flex-col gap-7 chat-messages">
     <lfx-copilot-chat-item
       v-for="(message, index) in messages"
       :key="index"
