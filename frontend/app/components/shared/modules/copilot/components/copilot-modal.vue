@@ -12,17 +12,56 @@ SPDX-License-Identifier: MIT
   >
     <div class="bg-white flex h-full">
       <div class="w-1/3">
-        <lfx-copilot-sidebar />
+        <lfx-copilot-sidebar @update:data="handleDataUpdate" />
       </div>
       <div class="w-2/3">
-        results here
+        <div
+          v-if="resultData && resultData.length > 0"
+          class="overflow-x-auto p-6"
+        >
+          <table class="min-w-full border border-neutral-200 rounded text-xs">
+            <thead>
+              <tr class="bg-neutral-50">
+                <th
+                  v-for="(col, colIdx) in Object.keys(resultData[0] || {})"
+                  :key="colIdx"
+                  class="px-3 py-2 border-b border-neutral-200 text-left font-semibold text-neutral-700"
+                >
+                  {{ col }}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                v-for="(row, rowIdx) in resultData"
+                :key="rowIdx"
+                class="hover:bg-neutral-50"
+              >
+                <td
+                  v-for="(col, colIdx) in Object.keys(resultData[0] || {})"
+                  :key="colIdx"
+                  class="px-3 py-2 border-b border-neutral-100"
+                >
+                  {{ row[col] }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div
+          v-else
+          class="p-6 text-neutral-400 text-sm"
+        >
+          No data to display.
+        </div>
       </div>
     </div>
   </lfx-modal>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
+import type { MessageData } from '../types/copilot.types'
 import LfxModal from '~/components/uikit/modal/modal.vue'
 import LfxCopilotSidebar from "~/components/shared/modules/copilot/components/copilot-sidebar.vue"
 
@@ -30,6 +69,8 @@ const props = defineProps<{
   modelValue: boolean
   widgetName: string
 }>()
+
+const resultData = ref<MessageData[]>([])
 
 const emit = defineEmits<{
   'update:modelValue': [value: boolean]
@@ -44,6 +85,10 @@ const isModalOpen = computed({
     emit('update:modelValue', value)
   }
 })
+
+const handleDataUpdate = (id: string, data: MessageData[]) => {
+  resultData.value = data;
+}
 </script>
 
 <script lang="ts">

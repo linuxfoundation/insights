@@ -11,12 +11,15 @@ export interface CopilotData {
 }
 
 export type MessagePartType = 'router-status' | 'sql-result' | 'text' | 'pipe-result';
+export type MessageData = Record<string, string | number | null | string[]>;
 
 export interface AIMessage {
   id: string; 
   role: 'user' | 'assistant'; 
   content: string; 
   timestamp: number;
+  sql?: string;
+  data?: Array<MessageData>;
 }
 
 export interface CopilotMessage {
