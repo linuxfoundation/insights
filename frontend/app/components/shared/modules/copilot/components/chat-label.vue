@@ -1,0 +1,44 @@
+<!--
+Copyright (c) 2025 The Linux Foundation and each contributor.
+SPDX-License-Identifier: MIT
+-->
+<template>
+  <span
+    v-if="status === 'complete'"
+    class="text-xs text-neutral-500 flex items-center gap-1"
+  >
+    <lfx-icon
+      name="brain"
+      :size="12"
+    />
+    Reasoning
+    <lfx-icon
+      name="angle-down"
+      :size="12"
+    />
+  </span>
+  <span
+    v-if="status === 'error'"
+    class="text-xs text-negative-500 flex items-center gap-1"
+  >
+    <lfx-icon
+      name="alert-circle"
+      :size="12"
+    />
+    Error
+  </span>
+</template>
+<script setup lang="ts">
+import LfxIcon from '~/components/uikit/icon/icon.vue'
+
+defineProps<{
+  status: string
+}>()
+
+</script>
+
+<script lang="ts">
+export default {
+  name: 'LfxChatLabel'
+}
+</script>

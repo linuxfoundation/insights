@@ -11,24 +11,27 @@ export interface CopilotData {
 }
 
 export type MessagePartType = 'router-status' | 'sql-result' | 'text' | 'pipe-result';
+export type MessageStatus = 'analyzing' | 'complete' | 'error';
 export type MessageData = Record<string, string | number | null | string[]>;
 
 export interface AIMessage {
   id: string; 
   role: 'user' | 'assistant'; 
+  type: MessagePartType;
+  status: MessageStatus;
   content: string; 
   timestamp: number;
   sql?: string;
   data?: Array<MessageData>;
 }
 
-export interface CopilotMessage {
-  role: 'user' | 'assistant';
-  parts: Array<CopilotMessagePart>;
-}
+// export interface CopilotMessage {
+//   role: 'user' | 'assistant';
+//   parts: Array<CopilotMessagePart>;
+// }
 
-export interface CopilotMessagePart {
-  type: MessagePartType;
-  text?: string;
-  image?: string;
-}
+// export interface CopilotMessagePart {
+//   type: MessagePartType;
+//   text?: string;
+//   image?: string;
+// }
