@@ -12,7 +12,10 @@ SPDX-License-Identifier: MIT
   >
     <div class="bg-white flex h-full">
       <div class="w-1/3">
-        <lfx-copilot-sidebar @update:data="handleDataUpdate" />
+        <lfx-copilot-sidebar
+          :widget-name="widgetName"
+          @update:data="handleDataUpdate"
+        />
       </div>
       <div class="w-2/3">
         <div

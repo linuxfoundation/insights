@@ -3,9 +3,10 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 
 import type { AIMessage } from "../types/copilot.types"
+import testData from './test.json'
 import type { Project } from '~~/types/project'
 
-// SPDX-License-Identifier: MIT
+export const tempData = testData as AIMessage[];
 class CopilotApiService {
   generateId() {
     return Date.now().toString(36) + Math.random().toString(36).substr(2)
@@ -91,13 +92,15 @@ class CopilotApiService {
 
                 statusCallBack(statusText);
 
-                if(data.type === 'router-status' && data.status === 'complete') {
+                if(data.type === 'router-status' && (data.status === 'complete' || data.status === 'error')) {
                   if (!assistantMessageId) {
                     assistantMessageId = this.generateId();
                   
                     messageCallBack({
                       id: assistantMessageId,
                       role: 'assistant',
+                      type: 'router-status',
+                      status: data.status,
                       content: data.reasoning,
                       timestamp: Date.now()
                     }, -1);
@@ -111,6 +114,8 @@ class CopilotApiService {
                     messageCallBack({
                       id: assistantMessageId,
                       role: 'assistant',
+                      type: 'sql-result',
+                      status: data.status,
                       content: '',
                       timestamp: Date.now()
                     }, -1);
@@ -136,6 +141,8 @@ class CopilotApiService {
                     messageCallBack({
                       id: assistantMessageId,
                       role: 'assistant',
+                      type: 'pipe-result',
+                      status: data.status,
                       content: '',
                       timestamp: Date.now()
                     }, -1);
@@ -164,6 +171,8 @@ class CopilotApiService {
                 messageCallBack({
                   id: assistantMessageId,
                   role: 'assistant',
+                  type: 'text',
+                  status: 'analyzing',
                   content: '',
                   timestamp: Date.now()
                 }, -1);
