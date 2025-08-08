@@ -51,7 +51,7 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { storeToRefs } from 'pinia'
-import type { CopilotMessage, AIMessage } from '../types/copilot.types'
+import type { CopilotMessage, AIMessage, MessageData } from '../types/copilot.types'
 import { copilotApiService } from '../store/copilot.api.service'
 import LfxCopilotChatHistory from './copilot-chat-history.vue'
 import LfxIcon from '~/components/uikit/icon/icon.vue'
@@ -63,6 +63,15 @@ const isLoading = ref(false)
 const streamingStatus = ref('')
 const error = ref('')
 const messages = ref<Array<AIMessage>>([])
+
+const emit = defineEmits<{
+  (e: 'update:input', value: string): void;
+  (e: 'update:isLoading', value: boolean): void;
+  (e: 'update:streamingStatus', value: string): void;
+  (e: 'update:error', value: string): void;
+  (e: 'update:messages', value: Array<AIMessage>): void;
+  (e: 'update:data', id: string, value: MessageData[]): void;
+}>();
 
 const { project } = storeToRefs(useProjectStore())
 
@@ -104,38 +113,14 @@ const handleSubmit = async (e?: Event) => {
     input.value = ''
     
     try {
-      // Prepare the request body with the correct format
-      const requestBody = {
-        messages: messages.value.map(m => ({
-          role: m.role,
-          content: m.content
-        })),
-        pipe: 'active-contributors', // TODO: make this dynamic
-        segmentId: project.value?.id,
-        projectName: project.value?.name,
-        parameters: {
-          startDate: "2024-07-23 23:59:59",
-          endDate: "2025-07-23 23:59:59",
-          granularity: "monthly",
-          project: project.value?.slug
-        }
-      }
-      
-      // Send streaming request
-      const response = await fetch('/api/chat/stream', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(requestBody)
+      const response = await copilotApiService.callChatStream(messages.value, project.value!, 'active-contributors', {
+        startDate: "2024-07-23 23:59:59",
+        endDate: "2025-07-23 23:59:59",
+        granularity: "monthly",
+        project: project.value?.slug || ''
       })
-      
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`)
-      }
-      
+
       // Handle the streaming response
-      // await handleStreamingResponse(response)
       await copilotApiService.handleStreamingResponse(response, messages.value, (status) => {
         streamingStatus.value = status;
       }, (message, index) => {
@@ -144,6 +129,11 @@ const handleSubmit = async (e?: Event) => {
         } else {
           messages.value[index] = message;
         }
+
+        if (message.data) {
+          emit('update:data', message.id, message.data);
+        }
+
         scrollToEnd();
       }, () => {
         isLoading.value = false;

@@ -3,11 +3,41 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 
 import type { AIMessage } from "../types/copilot.types"
+import type { Project } from '~~/types/project'
 
 // SPDX-License-Identifier: MIT
 class CopilotApiService {
   generateId() {
     return Date.now().toString(36) + Math.random().toString(36).substr(2)
+  }
+
+  async callChatStream(messages: Array<AIMessage>, project: Project, pipe: string, parameters: Record<string, string | number | null>): Promise<Response> {
+    // Prepare the request body with the correct format
+    const requestBody = {
+      messages: messages.map(m => ({
+        role: m.role,
+        content: m.content
+      })),
+      pipe,
+      segmentId: project?.id,
+      projectName: project?.name,
+      parameters
+    }
+
+    // Send streaming request
+    const response = await fetch('/api/chat/stream', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(requestBody)
+    })
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+
+    return response;
   }
   
   async handleStreamingResponse(
@@ -87,15 +117,15 @@ class CopilotApiService {
                   }
                   
                   // Format SQL results nicely
-                  const sqlSection = `## SQL Query\n\`\`\`sql\n${data.sql}\n\`\`\`\n\n`
-                  const explanationSection = `## Explanation\n${data.explanation}\n\n`
-                  const dataSection = `## Results\n\`\`\`json\n${JSON.stringify(data.data, null, 2)}\n\`\`\`\n\n`
+                  // const sqlSection = `## SQL Query\n\`\`\`sql\n${data.sql}\n\`\`\`\n\n`
+                  // const explanationSection = `## Explanation\n${data.explanation}\n\n`
+                  // const dataSection = `## Results\n\`\`\`json\n${JSON.stringify(data.data, null, 2)}\n\`\`\`\n\n`
                   
-                  assistantContent += sqlSection + explanationSection + dataSection
+                  // assistantContent += sqlSection + explanationSection + dataSection
                   
                   const messageIndex = messages.findIndex(m => m.id === assistantMessageId)
                   if (messageIndex !== -1 && messages[messageIndex]) {
-                    messageCallBack({...messages[messageIndex], content: assistantContent}, messageIndex);
+                    messageCallBack({...messages[messageIndex], content: data.explanation, sql: data.sql, data: data.data}, messageIndex);
                   }
                 } else if (data.type === 'pipe-result') {
                   statusCallBack('Tool execution completed');
