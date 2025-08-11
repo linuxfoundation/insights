@@ -22,6 +22,7 @@ SPDX-License-Identifier: MIT
       <lfx-copilot-chat-history 
         :messages="messages" 
         :selected-result-id="selectedResultId" 
+        :is-loading="isLoading"
         @select-result="selectResult"
       />
     </div>
@@ -73,18 +74,6 @@ SPDX-License-Identifier: MIT
             />
           </div>
         </div>
-        <div
-          v-if="isLoading"
-          class="text-xs text-neutral-500 mt-1"
-        >
-          Analyzing your question...
-        </div>
-        <div
-          v-if="error"
-          class="text-xs text-red-500 mt-1"
-        >
-          Error: {{ error }}
-        </div>
       </form>
     </div>
   </div>
@@ -112,7 +101,7 @@ const input = ref('')
 const isLoading = ref(false)
 const streamingStatus = ref('')
 const error = ref('')
-const messages = ref<Array<AIMessage>>(tempData as AIMessage[]) //
+const messages = ref<Array<AIMessage>>([]) // tempData as AIMessage
 const selectedResultId = computed<string | null>({
   get: () => props.selectedResultId,
   set: (value) => {
@@ -152,6 +141,8 @@ const callChatApi = async (userMessage: string) => {
   messages.value.push(
     copilotApiService.generateTextMessage(userMessage, 'user' as MessageRole, 'complete' as MessageStatus)
   )
+
+  scrollToEnd();
   
   input.value = ''
   
@@ -221,8 +212,12 @@ if (messages.value.length > 0) {
 watch(copilotDefaults, (newDefaults) => {
   if (newDefaults.question) {
     // TODO: enable this again after testing
-    // callChatApi(newDefaults.question);
+    callChatApi(newDefaults.question);
   }
+}, { immediate: true });
+
+watch(isLoading, (newVal) => {
+  emit('update:isLoading', newVal);
 }, { immediate: true });
 </script>
 
