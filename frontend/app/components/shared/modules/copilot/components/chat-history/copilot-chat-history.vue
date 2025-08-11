@@ -16,7 +16,7 @@ SPDX-License-Identifier: MIT
 </template>
 <script setup lang="ts">
 import { computed } from 'vue';
-import type { AIMessage } from '../types/copilot.types';
+import type { AIMessage } from '../../types/copilot.types';
 import LfxCopilotChatItem from './copilot-chat-item.vue';
 
 const emit = defineEmits<{

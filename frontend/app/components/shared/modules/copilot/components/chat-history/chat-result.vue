@@ -37,7 +37,7 @@ import LfxIcon from '~/components/uikit/icon/icon.vue'
 
 defineProps<{
   version: number,
-  isSelected: boolean
+  isSelected: boolean | undefined
 }>()
 
 const emit = defineEmits<{
