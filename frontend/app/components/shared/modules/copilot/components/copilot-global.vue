@@ -29,9 +29,7 @@ const {openCopilotModal} = useCopilotStore()
 
 const handleAskCopilot = (question: string) => {
   openCopilotModal({
-    widget: copilotDefaults.value.widget,
-    icon: copilotDefaults.value.icon,
-    suggestions: copilotDefaults.value.suggestions,
+    ...copilotDefaults.value,
     question,
   });
 }

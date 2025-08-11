@@ -45,11 +45,11 @@ SPDX-License-Identifier: MIT
                   rounded-full px-2.5 py-1"
               >
                 <img
-                  :src="project.logo"
+                  :src="copilotDefaults.project?.logo"
                   class="w-4 h-4"
-                  :alt="project.name"
+                  :alt="copilotDefaults.project?.name"
                 ></img> 
-                {{project.name}}
+                {{ copilotDefaults.project?.name }}
               </span>
               <span
                 class="text-xs text-neutral-900 flex gap-1 items-center bg-white 
@@ -90,12 +90,12 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { ref, watch, computed } from 'vue'
 import { storeToRefs } from 'pinia'
-import type { AIMessage, MessageData } from '../types/copilot.types'
+import type { AIMessage, MessageData, MessageRole, MessageStatus } from '../types/copilot.types'
 import { copilotApiService } from '../store/copilot.api.service'
 import { tempData } from '../store/copilot.api.service'
+import { useCopilotStore } from '../store/copilot.store'
 import LfxCopilotChatHistory from './copilot-chat-history.vue'
 import LfxIcon from '~/components/uikit/icon/icon.vue'
-import { useProjectStore } from '~/components/modules/project/store/project.store'
 import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue'
 import { lfxWidgets } from '~/components/modules/widget/config/widget.config'
 import type {Widget} from "~/components/modules/widget/types/widget";
@@ -109,7 +109,7 @@ const input = ref('')
 const isLoading = ref(false)
 const streamingStatus = ref('')
 const error = ref('')
-const messages = ref<Array<AIMessage>>(tempData as AIMessage[]) //
+const messages = ref<Array<AIMessage>>([]) //tempData as AIMessage
 const selectedResultId = ref<string | null>(messages.value[messages.value.length - 1]?.id || null)
 
 const widgetDisplayName = computed(() => {
@@ -118,51 +118,43 @@ const widgetDisplayName = computed(() => {
 })
 
 const emit = defineEmits<{
-  (e: 'update:input', value: string): void;
+  (e: 'update:selectedResult', value: string): void;
   (e: 'update:isLoading', value: boolean): void;
-  (e: 'update:streamingStatus', value: string): void;
   (e: 'update:error', value: string): void;
-  (e: 'update:messages', value: Array<AIMessage>): void;
   (e: 'update:data', id: string, value: MessageData[]): void;
 }>();
 
-const { project } = storeToRefs(useProjectStore())
-
-// Generate unique ID for messages
-const generateId = () => {
-  return Date.now().toString(36) + Math.random().toString(36).substr(2)
-}
+const { copilotDefaults } = storeToRefs(useCopilotStore());
 
 // Handle form submission
 const handleSubmit = async (e?: Event) => {
   e?.preventDefault()
   
   if (input.value.trim() && !isLoading.value) {
-    const userMessage = input.value.trim()
-    isLoading.value = true
-    streamingStatus.value = 'Analyzing your question...'
-    error.value = ''
-    
-    // Add user message to chat
-    const userMessageId = generateId()
-    messages.value.push({
-      id: userMessageId,
-      role: 'user',
-      type: 'text',
-      status: 'complete',
-      content: userMessage,
-      timestamp: Date.now()
-    })
-    
-    input.value = ''
-    
-    try {
-      const response = await copilotApiService.callChatStream(messages.value, project.value!, 'active-contributors', {
-        startDate: "2024-07-23 23:59:59",
-        endDate: "2025-07-23 23:59:59",
-        granularity: "monthly",
-        project: project.value?.slug || ''
-      })
+    callChatApi(input.value.trim())
+  }
+}
+
+const callChatApi = async (userMessage: string) => {
+  isLoading.value = true
+  streamingStatus.value = 'Analyzing your question...'
+  error.value = ''
+  
+  // Add user message to chat
+  messages.value.push(
+    copilotApiService.generateTextMessage(userMessage, 'user' as MessageRole, 'complete' as MessageStatus)
+  )
+  
+  input.value = ''
+  
+  try {
+    // TODO: update the params here
+    if (copilotDefaults.value.project) {
+      const response = await copilotApiService.callChatStream(
+        messages.value, 
+        copilotDefaults.value.project, 
+        copilotDefaults.value.widget, 
+        copilotDefaults.value.params)
 
       // Handle the streaming response
       await copilotApiService.handleStreamingResponse(response, messages.value, (status) => {
@@ -175,6 +167,7 @@ const handleSubmit = async (e?: Event) => {
         }
 
         if (message.data) {
+          emit('update:data', message.id, message.data);
           selectedResultId.value = message.id;
         }
 
@@ -183,24 +176,19 @@ const handleSubmit = async (e?: Event) => {
         isLoading.value = false;
         streamingStatus.value = '';
       });
-    } catch (err) {
-      console.error('Failed to send message:', err)
-      error.value = err instanceof Error ? err.message : 'Failed to send message'
-      
-      // Add error message as assistant response
-      const errorMessageId = generateId()
-      messages.value.push({
-        id: errorMessageId,
-        role: 'assistant',
-        type: 'text',
-        status: 'error',
-        content: 'Sorry, there was an error processing your request.',
-        timestamp: Date.now()
-      })
-    } finally {
-      isLoading.value = false
-      streamingStatus.value = ''
     }
+  } catch (err) {
+    console.error('Failed to send message:', err)
+    error.value = err instanceof Error ? err.message : 'Failed to send message'
+    messages.value.push(
+      copilotApiService.generateTextMessage(
+        'Sorry, there was an error processing your request.', 
+        'assistant' as MessageRole, 
+        'error' as MessageStatus)
+    )
+  } finally {
+    isLoading.value = false
+    streamingStatus.value = ''
   }
 }
 
@@ -215,14 +203,25 @@ const selectResult = (id: string) => {
   selectedResultId.value = id;
 }
 
+// TODO: REMOVE THIS AFTER TESTING
+if (messages.value.length > 0) {
+  messages.value.forEach((msg) => {
+    emit('update:data', msg.id, msg.data || []);
+  })
+}
+
 watch(selectedResultId, (newId) => {
   if (newId) {
-    const result = messages.value.find(m => m.id === newId);
-    if (result && result.data) {
-      emit('update:data', newId, result.data);
-    }
+    emit('update:selectedResult', newId);
   }
-}, { immediate: true })
+}, { immediate: true });
+
+watch(copilotDefaults, (newDefaults) => {
+  if (newDefaults.question) {
+    console.log('calling from small widget')
+    callChatApi(newDefaults.question);
+  }
+}, { immediate: true });
 </script>
 
 <script lang="ts">

@@ -108,6 +108,10 @@ import LfxDropdownItem from "~/components/uikit/dropdown/dropdown-item.vue";
 import LfxSnapshotModal from "~/components/modules/widget/components/shared/snapshot/snapshot-modal.vue";
 import LfxWidgetEmbedModal from "~/components/modules/widget/components/shared/embed/embed-modal.vue";
 import {useCopilotStore} from "~/components/shared/modules/copilot/store/copilot.store";
+import { dateOptKeys } from '~/components/modules/project/config/date-options';
+import type { Granularity } from '~~/types/shared/granularity';
+import { barGranularities } from '~/components/shared/types/granularity';
+import type { Project } from '~~/types/project';
 
 const props = defineProps<{
   name: Widget;
@@ -123,7 +127,11 @@ const {openReportModal} = useReportStore()
 const {openShareModal} = useShareStore()
 const {openCopilotWidgetModal} = useCopilotStore()
 
-const {project, selectedRepositories} = storeToRefs(useProjectStore());
+const {project, selectedRepositories, startDate, endDate, selectedTimeRangeKey, customRangeGranularity} = storeToRefs(useProjectStore());
+
+const granularity = computed(() => (selectedTimeRangeKey.value === dateOptKeys.custom
+  ? customRangeGranularity.value[0] as Granularity
+  : barGranularities[selectedTimeRangeKey.value as keyof typeof barGranularities]));
 
 const widgetArea = computed(
     () => Object.keys(lfxWidgetArea).find(
@@ -156,7 +164,14 @@ const askCopilot = () => {
   openCopilotWidgetModal({
     widget: props.name,
     icon: 'users',
-    suggestions: ''
+    suggestions: '',
+    project: project.value || undefined,
+    params: {
+      startDate: startDate.value || '',
+      endDate: endDate.value || '',
+      granularity: granularity.value,
+      project: project.value?.slug || ''
+    }
   });
 }
 
