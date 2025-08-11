@@ -5,7 +5,9 @@ SPDX-License-Identifier: MIT
 <template>
   <div class="py-6 px-0 bg-gradient-to-t from-neutral-100 to-white h-full border-r border-neutral-200 flex flex-col">
     <!-- Header -->
-    <div class="px-5 text-xl font-secondary font-bold leading-7 flex gap-3 text-neutral-900 items-center mb-6 flex-none">
+    <div 
+      class="px-5 text-xl font-secondary font-bold leading-7 flex gap-3 text-neutral-900 items-center mb-6 flex-none"
+    >
       <lfx-icon
         name="sparkles"
         :size="20"
@@ -92,7 +94,7 @@ import { ref, watch, computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import type { AIMessage, MessageData, MessageRole, MessageStatus } from '../types/copilot.types'
 import { copilotApiService } from '../store/copilot.api.service'
-import { tempData } from '../store/copilot.api.service'
+// import { tempData } from '../store/copilot.api.service'
 import { useCopilotStore } from '../store/copilot.store'
 import LfxCopilotChatHistory from './copilot-chat-history.vue'
 import LfxIcon from '~/components/uikit/icon/icon.vue'
@@ -218,7 +220,6 @@ watch(selectedResultId, (newId) => {
 
 watch(copilotDefaults, (newDefaults) => {
   if (newDefaults.question) {
-    console.log('calling from small widget')
     callChatApi(newDefaults.question);
   }
 }, { immediate: true });

@@ -25,7 +25,11 @@ class CopilotApiService {
     }
   }
 
-  async callChatStream(messages: Array<AIMessage>, project: Project, pipe: string, parameters?: CopilotParams): Promise<Response> {
+  async callChatStream(
+    messages: Array<AIMessage>, 
+    project: Project, 
+    pipe: string, 
+    parameters?: CopilotParams): Promise<Response> {
     // Prepare the request body with the correct format
     const requestBody = {
       messages: messages.map(m => ({
@@ -143,7 +147,13 @@ class CopilotApiService {
                   
                   const messageIndex = messages.findIndex(m => m.id === assistantMessageId)
                   if (messageIndex !== -1 && messages[messageIndex]) {
-                    messageCallBack({...messages[messageIndex], content: data.explanation, sql: data.sql, data: data.data}, messageIndex);
+                    messageCallBack({
+                      ...messages[messageIndex], 
+                      content: data.explanation, 
+                      sql: data.sql, 
+                      data: data.data,
+                      timestamp: Date.now()
+                    }, messageIndex);
                   }
                 } else if (data.type === 'pipe-result') {
                   statusCallBack('Tool execution completed');
@@ -199,19 +209,19 @@ class CopilotApiService {
               if (messageIndex !== -1 && messages[messageIndex]) {
                 messageCallBack({...messages[messageIndex], content: assistantContent}, messageIndex);
               }
-            } else if (prefix === 'f') {
-              // Final message metadata (message ID, etc.)
-              const metadata = JSON.parse(dataString)
-              console.log('Message metadata:', metadata)
+            // } else if (prefix === 'f') {
+            //   // Final message metadata (message ID, etc.)
+            //   const metadata = JSON.parse(dataString)
+            //   console.log('Message metadata:', metadata)
             } else if (prefix === 'e') {
               // Stream end with completion info
-              const endData = JSON.parse(dataString)
-              console.log('Stream completed:', endData)
+              // const endData = JSON.parse(dataString)
+              // console.log('Stream completed:', endData)
               statusCallBack('');
-            } else if (prefix === 'd') {
-              // Final completion data
-              const completionData = JSON.parse(dataString)
-              console.log('Completion data:', completionData)
+            // } else if (prefix === 'd') {
+            //   // Final completion data
+            //   const completionData = JSON.parse(dataString)
+            //   console.log('Completion data:', completionData)
             }
           } catch (e) {
             console.warn('Failed to parse streaming line:', line, e)
