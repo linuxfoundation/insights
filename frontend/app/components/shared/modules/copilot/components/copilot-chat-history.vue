@@ -25,7 +25,7 @@ const emit = defineEmits<{
 
 const props = defineProps<{
   messages: Array<AIMessage>,
-  selectedResultId: string
+  selectedResultId: string | null
 }>()
 
 const allResults = computed(() => props.messages.filter(m => m.type === 'sql-result'));

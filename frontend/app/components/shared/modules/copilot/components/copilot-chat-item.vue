@@ -26,7 +26,10 @@ SPDX-License-Identifier: MIT
           class="flex flex-col gap-3"
         >
           <lfx-chat-label :status="message.status" />
-          <span>{{ message.content }}</span>
+          <span v-if="message.status === 'error'">
+            There was an error processing your request. Please try again.
+          </span>
+          <span v-else>{{ message.content }}</span>
         </div>
         <lfx-chat-result 
           v-if="message.type === 'sql-result'" 
@@ -50,7 +53,7 @@ const emit = defineEmits<{
 const props = defineProps<{
   message: AIMessage,
   allResults: Array<AIMessage>,
-  selectedResultId: string
+  selectedResultId: string | null
 }>()
 
 const resultVersion = (message: AIMessage) => {

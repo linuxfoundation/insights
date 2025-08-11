@@ -22,7 +22,7 @@ SPDX-License-Identifier: MIT
     class="text-xs text-negative-500 flex items-center gap-1"
   >
     <lfx-icon
-      name="alert-circle"
+      name="circle-exclamation"
       :size="12"
     />
     Error

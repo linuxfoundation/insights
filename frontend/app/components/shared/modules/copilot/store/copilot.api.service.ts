@@ -2,17 +2,30 @@
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 
-import type { AIMessage } from "../types/copilot.types"
+import type { AIMessage, MessagePartType, MessageRole, MessageStatus } from "../types/copilot.types"
+import type { CopilotParams } from '../types/copilot.types'
 import testData from './test.json'
 import type { Project } from '~~/types/project'
 
 export const tempData = testData as AIMessage[];
 class CopilotApiService {
-  generateId() {
-    return Date.now().toString(36) + Math.random().toString(36).substr(2)
+  // Generate unique ID for messages
+  generateId = () => Date.now().toString(36) + Math.random().toString(36).substr(2);
+
+  generateTextMessage = (message: string, role: MessageRole, status: MessageStatus) => {
+    const userMessageId = this.generateId();
+     
+    return {
+      id: userMessageId,
+      role,
+      type: 'text' as MessagePartType,
+      status,
+      content: message,
+      timestamp: Date.now()
+    }
   }
 
-  async callChatStream(messages: Array<AIMessage>, project: Project, pipe: string, parameters: Record<string, string | number | null>): Promise<Response> {
+  async callChatStream(messages: Array<AIMessage>, project: Project, pipe: string, parameters?: CopilotParams): Promise<Response> {
     // Prepare the request body with the correct format
     const requestBody = {
       messages: messages.map(m => ({

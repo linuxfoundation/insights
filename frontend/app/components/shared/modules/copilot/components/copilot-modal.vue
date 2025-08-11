@@ -15,18 +15,19 @@ SPDX-License-Identifier: MIT
         <lfx-copilot-sidebar
           :widget-name="widgetName"
           @update:data="handleDataUpdate"
+          @update:selected-result="handleSelectedResult"
         />
       </div>
       <div class="w-2/3">
         <div
-          v-if="resultData && resultData.length > 0"
+          v-if="selectedResultData && selectedResultData.length > 0"
           class="overflow-x-auto p-6"
         >
           <table class="min-w-full border border-neutral-200 rounded text-xs">
             <thead>
               <tr class="bg-neutral-50">
                 <th
-                  v-for="(col, colIdx) in Object.keys(resultData[0] || {})"
+                  v-for="(col, colIdx) in Object.keys(selectedResultData[0] || {})"
                   :key="colIdx"
                   class="px-3 py-2 border-b border-neutral-200 text-left font-semibold text-neutral-700"
                 >
@@ -36,12 +37,12 @@ SPDX-License-Identifier: MIT
             </thead>
             <tbody>
               <tr
-                v-for="(row, rowIdx) in resultData"
+                v-for="(row, rowIdx) in selectedResultData"
                 :key="rowIdx"
                 class="hover:bg-neutral-50"
               >
                 <td
-                  v-for="(col, colIdx) in Object.keys(resultData[0] || {})"
+                  v-for="(col, colIdx) in Object.keys(selectedResultData[0] || {})"
                   :key="colIdx"
                   class="px-3 py-2 border-b border-neutral-100"
                 >
@@ -64,7 +65,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import type { MessageData } from '../types/copilot.types'
+import type { MessageData, ResultsHistory } from '../types/copilot.types'
 import LfxModal from '~/components/uikit/modal/modal.vue'
 import LfxCopilotSidebar from "~/components/shared/modules/copilot/components/copilot-sidebar.vue"
 
@@ -73,7 +74,11 @@ const props = defineProps<{
   widgetName: string
 }>()
 
-const resultData = ref<MessageData[]>([])
+const resultData = ref<ResultsHistory[]>([]);
+const selectedResultId = ref<string | null>(null);
+const selectedResultData = computed(() => {
+  return resultData.value.find(result => result.id === selectedResultId.value)?.data;
+});
 
 const emit = defineEmits<{
   'update:modelValue': [value: boolean]
@@ -90,7 +95,14 @@ const isModalOpen = computed({
 })
 
 const handleDataUpdate = (id: string, data: MessageData[]) => {
-  resultData.value = data;
+  resultData.value.push({
+    id,
+    data
+  });
+}
+
+const handleSelectedResult = (id: string) => {
+  selectedResultId.value = id;
 }
 </script>
 

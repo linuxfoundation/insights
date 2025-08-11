@@ -18,8 +18,6 @@ export const useCopilotStore = defineStore('copilot', () => {
 
 
     const openCopilotModal = (defaults: CopilotData = defaultData) => {
-        // TODO: Implement copilot functionality
-        console.warn('Copilot question:', defaults.question, 'for widget:', defaults.widget);
         copilotDefaults.value = defaults;
         isCopilotModalOpen.value = true;
     };
