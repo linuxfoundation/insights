@@ -94,16 +94,17 @@ import { ref, watch, computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import type { AIMessage, MessageData, MessageRole, MessageStatus } from '../types/copilot.types'
 import { copilotApiService } from '../store/copilot.api.service'
-// import { tempData } from '../store/copilot.api.service'
+import { tempData } from '../store/copilot.api.service'
 import { useCopilotStore } from '../store/copilot.store'
-import LfxCopilotChatHistory from './copilot-chat-history.vue'
+import LfxCopilotChatHistory from './chat-history/copilot-chat-history.vue'
 import LfxIcon from '~/components/uikit/icon/icon.vue'
 import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue'
 import { lfxWidgets } from '~/components/modules/widget/config/widget.config'
 import type {Widget} from "~/components/modules/widget/types/widget";
 
 const props = defineProps<{
-  widgetName: string
+  widgetName: string;
+  selectedResultId: string | null;
 }>()
 
 // Initialize state
@@ -111,8 +112,13 @@ const input = ref('')
 const isLoading = ref(false)
 const streamingStatus = ref('')
 const error = ref('')
-const messages = ref<Array<AIMessage>>([]) //tempData as AIMessage
-const selectedResultId = ref<string | null>(messages.value[messages.value.length - 1]?.id || null)
+const messages = ref<Array<AIMessage>>(tempData as AIMessage[]) //
+const selectedResultId = computed<string | null>({
+  get: () => props.selectedResultId,
+  set: (value) => {
+    emit('update:selectedResult', value || '');
+  }
+})
 
 const widgetDisplayName = computed(() => {
   const widget = lfxWidgets[props.widgetName as Widget];
@@ -212,15 +218,10 @@ if (messages.value.length > 0) {
   })
 }
 
-watch(selectedResultId, (newId) => {
-  if (newId) {
-    emit('update:selectedResult', newId);
-  }
-}, { immediate: true });
-
 watch(copilotDefaults, (newDefaults) => {
   if (newDefaults.question) {
-    callChatApi(newDefaults.question);
+    // TODO: enable this again after testing
+    // callChatApi(newDefaults.question);
   }
 }, { immediate: true });
 </script>

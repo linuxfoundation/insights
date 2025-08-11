@@ -34,7 +34,7 @@ SPDX-License-Identifier: MIT
         <lfx-chat-result 
           v-if="message.type === 'sql-result'" 
           :version="resultVersion(message)" 
-          :is-selected="message.id === selectedResultId"
+          :is-selected="selectedResultId && message.id === selectedResultId"
           @select="selectResult(message.id)"
         />
       </div>
@@ -42,7 +42,7 @@ SPDX-License-Identifier: MIT
   </div>
 </template>
 <script setup lang="ts">
-import type { AIMessage } from '../types/copilot.types';
+import type { AIMessage } from '../../types/copilot.types';
 import LfxChatLabel from './chat-label.vue'
 import LfxChatResult from './chat-result.vue'
 

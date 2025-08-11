@@ -14,50 +14,17 @@ SPDX-License-Identifier: MIT
       <div class="w-1/3">
         <lfx-copilot-sidebar
           :widget-name="widgetName"
+          :selected-result-id="selectedResultId"
           @update:data="handleDataUpdate"
           @update:selected-result="handleSelectedResult"
         />
       </div>
       <div class="w-2/3">
-        <div
-          v-if="selectedResultData && selectedResultData.length > 0"
-          class="overflow-x-auto p-6"
-        >
-          <table class="min-w-full border border-neutral-200 rounded text-xs">
-            <thead>
-              <tr class="bg-neutral-50">
-                <th
-                  v-for="(col, colIdx) in Object.keys(selectedResultData[0] || {})"
-                  :key="colIdx"
-                  class="px-3 py-2 border-b border-neutral-200 text-left font-semibold text-neutral-700"
-                >
-                  {{ col }}
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                v-for="(row, rowIdx) in selectedResultData"
-                :key="rowIdx"
-                class="hover:bg-neutral-50"
-              >
-                <td
-                  v-for="(col, colIdx) in Object.keys(selectedResultData[0] || {})"
-                  :key="colIdx"
-                  class="px-3 py-2 border-b border-neutral-100"
-                >
-                  {{ row[col] }}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div
-          v-else
-          class="p-6 text-neutral-400 text-sm"
-        >
-          No data to display.
-        </div>
+        <lfx-copilot-results-section
+          :results="resultData"
+          :selected-result-id="selectedResultId"
+          @update:selected-result="handleSelectedResult"
+        />
       </div>
     </div>
   </lfx-modal>
@@ -68,6 +35,7 @@ import { computed, ref } from 'vue'
 import type { MessageData, ResultsHistory } from '../types/copilot.types'
 import LfxModal from '~/components/uikit/modal/modal.vue'
 import LfxCopilotSidebar from "~/components/shared/modules/copilot/components/copilot-sidebar.vue"
+import LfxCopilotResultsSection from "~/components/shared/modules/copilot/components/results/results-section.vue"
 
 const props = defineProps<{
   modelValue: boolean
@@ -99,6 +67,12 @@ const handleDataUpdate = (id: string, data: MessageData[]) => {
     id,
     data
   });
+
+  // TODO: REMOVE THIS AFTER TESTING
+  if (selectedResultId.value === null) {
+    const withData = resultData.value.find(result => result.data.length > 0);
+    selectedResultId.value = withData?.id || null;
+  }
 }
 
 const handleSelectedResult = (id: string) => {
