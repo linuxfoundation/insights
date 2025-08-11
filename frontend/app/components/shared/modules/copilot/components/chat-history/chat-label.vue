@@ -4,21 +4,17 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <span
-    v-if="status === 'complete'"
+    v-if="status !== 'error'"
     class="text-xs text-neutral-500 flex items-center gap-1"
   >
     <lfx-icon
       name="brain"
       :size="12"
     />
-    Reasoning
-    <lfx-icon
-      name="angle-down"
-      :size="12"
-    />
+    {{ label }}
   </span>
   <span
-    v-if="status === 'error'"
+    v-else
     class="text-xs text-negative-500 flex items-center gap-1"
   >
     <lfx-icon
@@ -32,7 +28,8 @@ SPDX-License-Identifier: MIT
 import LfxIcon from '~/components/uikit/icon/icon.vue'
 
 defineProps<{
-  status: string
+  label: string;
+  status: string;
 }>()
 
 </script>

@@ -25,14 +25,20 @@ SPDX-License-Identifier: MIT
           v-if="message.type === 'router-status'"
           class="flex flex-col gap-3"
         >
-          <lfx-chat-label :status="message.status" />
-          <span v-if="message.status === 'error'">
-            There was an error processing your request. Please try again.
-          </span>
+          <template v-if="message.status === 'error'">
+            <lfx-chat-label
+              :status="message.status"
+              label="Error"
+            />
+            <span>
+              There was an error processing your request. Please try again.
+            </span>
+          </template>
           <span v-else>{{ message.content }}</span>
         </div>
         <lfx-chat-result 
           v-if="message.type === 'sql-result'" 
+          :message="message"
           :version="resultVersion(message)" 
           :is-selected="selectedResultId && message.id === selectedResultId"
           @select="selectResult(message.id)"

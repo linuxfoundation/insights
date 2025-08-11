@@ -17,6 +17,7 @@ SPDX-License-Identifier: MIT
           :selected-result-id="selectedResultId"
           @update:data="handleDataUpdate"
           @update:selected-result="handleSelectedResult"
+          @update:is-loading="handleIsLoading"
         />
       </div>
       <div class="w-2/3">
@@ -44,9 +45,7 @@ const props = defineProps<{
 
 const resultData = ref<ResultsHistory[]>([]);
 const selectedResultId = ref<string | null>(null);
-const selectedResultData = computed(() => {
-  return resultData.value.find(result => result.id === selectedResultId.value)?.data;
-});
+const isLoading = ref(false);
 
 const emit = defineEmits<{
   'update:modelValue': [value: boolean]
@@ -77,6 +76,10 @@ const handleDataUpdate = (id: string, data: MessageData[]) => {
 
 const handleSelectedResult = (id: string) => {
   selectedResultId.value = id;
+}
+
+const handleIsLoading = (value: boolean) => {
+  isLoading.value = value;
 }
 </script>
 
