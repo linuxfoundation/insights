@@ -8,8 +8,11 @@ import { experimental_createMCPClient as createMCPClient, createDataStreamRespon
 import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
 
 import { runRouterAgent } from './agents/router';
-import { runTextToSqlAgent } from './agents/text-to-sql';
+// TODO: Uncomment once we support text-to-sql
+// import { runTextToSqlAgent } from './agents/text-to-sql';
 import { runPipeAgent } from './agents/pipe';
+// TODO: Uncomment once we support text-to-sql
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { executePipeInstructions, executeTextToSqlInstructions } from './instructions';
 
 const bedrock = createAmazonBedrock({
@@ -100,6 +103,19 @@ export async function streamingAgentRequestHandler({
           return;
         }
 
+        // TODO: Remove this once we support text-to-sql
+        else if (routerOutput.next_action === "create_query") {
+          dataStream.writeData({
+            type: "router-status",
+            status: "complete",
+            reasoning: `I'm unable to answer this question with the widgets I have access...
+            But soon I will be able to construct my own queries for these questions.`
+          });
+          return;
+        }
+
+
+
         dataStream.writeData({
           type: "router-status",
           status: "complete",
@@ -108,41 +124,45 @@ export async function streamingAgentRequestHandler({
         });
 
         const followUpTools: Record<string, any> = {};
-        if (routerOutput.next_action === "create_query") {
+        // TODO: Uncomment once we support text-to-sql
+        // if (routerOutput.next_action === "create_query") {
           followUpTools["execute_query"] = tbTools["execute_query"];
           followUpTools["list_datasources"] = tbTools["list_datasources"];
-        }
-        else {
+        // TODO: Uncomment once we support text-to-sql
+        // }
+        // else {
           for (const toolName of routerOutput.tools) {
             if (tbTools[toolName]) {
               followUpTools[toolName] = tbTools[toolName];
             }
           }
-        }
+        // TODO: Uncomment once we support text-to-sql
+        // }
 
-        if (routerOutput.next_action === "create_query") {
-          const textToSqlOutput = await runTextToSqlAgent({
-            model,
-            messages,
-            tools: followUpTools,
-            date: dateString as string,
-            projectName: projectName as string,
-            pipe,
-            parametersString,
-            segmentId: segmentId as string,
-            reformulatedQuestion: routerOutput.reformulated_question,
-          });
+        // if (routerOutput.next_action === "create_query") {
+        //   const textToSqlOutput = await runTextToSqlAgent({
+        //     model,
+        //     messages,
+        //     tools: followUpTools,
+        //     date: dateString as string,
+        //     projectName: projectName as string,
+        //     pipe,
+        //     parametersString,
+        //     segmentId: segmentId as string,
+        //     reformulatedQuestion: routerOutput.reformulated_question,
+        //   });
 
-          // Execute the SQL query according to the instructions
-          const queryData = await executeTextToSqlInstructions(textToSqlOutput.instructions);
+        //   // Execute the SQL query according to the instructions
+        //   const queryData = await executeTextToSqlInstructions(textToSqlOutput.instructions);
 
-          dataStream.writeData({
-            type: "sql-result",
-            explanation: textToSqlOutput.explanation,
-            instructions: textToSqlOutput.instructions,
-            data: queryData
-          });
-        } else if (routerOutput.next_action === "pipes") {
+        //   dataStream.writeData({
+        //     type: "sql-result",
+        //     explanation: textToSqlOutput.explanation,
+        //     instructions: textToSqlOutput.instructions,
+        //     data: queryData
+        //   });
+        // } else 
+        if (routerOutput.next_action === "pipes") {
           const pipeOutput = await runPipeAgent({
             model,
             messages,

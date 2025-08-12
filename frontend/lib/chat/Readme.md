@@ -4,7 +4,7 @@
 
 ### Joan
 - [x] Handle better queries like "What is love?"
-- [ ] Remove textToSql from the router for now.
+- [x] Remove textToSql from the router for now.
 
 ### Team
 - [ ] Improve Graph Generation
