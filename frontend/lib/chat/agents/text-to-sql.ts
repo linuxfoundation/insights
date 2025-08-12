@@ -78,7 +78,6 @@ export class TextToSqlAgent extends BaseAgent<TextToSqlAgentInput, SqlOutput> {
   }
 }
 
-// Convenience function to maintain backward compatibility
 export async function runTextToSqlAgent(params: TextToSqlAgentInput): Promise<SqlOutput> {
   const agent = new TextToSqlAgent();
   return agent.execute(params);
