@@ -5,10 +5,10 @@
 import type { AIMessage, MessageData, MessagePartType, MessageRole, MessageStatus } from "../types/copilot.types"
 import type { CopilotParams } from '../types/copilot.types'
 // import testData from './test.json'
-import testData2 from './test2.json'
+import testData3 from './test3.json'
 import type { Project } from '~~/types/project'
 
-export const tempData = testData2 as AIMessage[];
+export const tempData = testData3 as AIMessage[];
 class CopilotApiService {
   // Generate unique ID for messages
   generateId = () => Date.now().toString(36) + Math.random().toString(36).substr(2);
@@ -156,7 +156,7 @@ class CopilotApiService {
                     messageCallBack({
                       id: assistantMessageId,
                       role: 'assistant',
-                      type: 'sql-result',
+                      type: data.type,
                       status: data.status,
                       content: '',
                       timestamp: Date.now()
@@ -191,6 +191,8 @@ class CopilotApiService {
                       role: 'assistant',
                       type: 'pipe-result',
                       status: data.status,
+                      sql: data.sql, 
+                      data: data.data,
                       content: '',
                       timestamp: Date.now()
                     }, -1);
@@ -199,13 +201,14 @@ class CopilotApiService {
                   // Format pipe results nicely
                   const toolsSection = `## Tools Used\n${data.tools.join(', ')}\n\n`
                   const explanationSection = `## Explanation\n${data.explanation}\n\n`
-                  const dataSection = `## Results\n\`\`\`json\n${JSON.stringify(data.data, null, 2)}\n\`\`\`\n\n`
-                  
-                  assistantContent += toolsSection + explanationSection + dataSection
                   
                   const messageIndex = messages.findIndex(m => m.id === assistantMessageId)
                   if (messageIndex !== -1 && messages[messageIndex]) {
-                    messageCallBack({...messages[messageIndex], content: assistantContent}, messageIndex);
+                    messageCallBack({
+                      ...messages[messageIndex], 
+                      content: explanationSection, 
+                      sql: toolsSection, 
+                      data: data.data}, messageIndex);
                   }
                 }
               }

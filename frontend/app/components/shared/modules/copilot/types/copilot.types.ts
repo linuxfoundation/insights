@@ -16,7 +16,7 @@ export type CopilotParams = Record<string, string | number | null>;
 
 export type MessagePartType = 'router-status' | 'sql-result' | 'text' | 'pipe-result';
 export type MessageStatus = 'analyzing' | 'complete' | 'error';
-export type MessageData = Record<string, string | number | null | string[]>;
+export type MessageData = Record<string, string | number | null | string[] | object>;
 export type MessageRole = 'user' | 'assistant';
 
 export interface ResultsHistory {
