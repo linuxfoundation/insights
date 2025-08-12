@@ -24,6 +24,7 @@ SPDX-License-Identifier: MIT
         <lfx-copilot-results-section
           :results="resultData"
           :selected-result-id="selectedResultId"
+          :is-loading="isLoading"
           @update:selected-result="handleSelectedResult"
         />
       </div>

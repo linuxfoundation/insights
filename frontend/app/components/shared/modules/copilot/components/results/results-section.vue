@@ -5,53 +5,61 @@ SPDX-License-Identifier: MIT
 <template>
   <div class="w-full h-full min-h-0 flex flex-col">
     <div
-      v-if="selectedResultData && selectedResultData.length > 0"
-      class="py-4 px-6 w-full h-full min-h-0 flex flex-col"
+      v-if="isLoading"
+      class="flex items-center justify-center h-[240px]"
     >
-      <div>
-        <lfx-copilot-results-header
-          :results="resultsWithData"
-          :selected-result-id="selectedId"
-          @update:selected-result="selectedId = $event"
-        />
-      </div>
-      <div class="border border-neutral-200 rounded-lg p-4 w-full h-full min-h-0 flex flex-col">
-        <lfx-copilot-results-toggle
-          :model-value="selectedTab"
-          :data="selectedResultData"
-          @update:model-value="selectedTab = $event"
-        />
-        <div
-          v-if="selectedTab === 'data'"
-          class="w-full h-full min-h-0 flex flex-col overflow-auto"
-        >
-          <lfx-copilot-table-results
-            :data="selectedResultData"
+      <lfx-spinner />
+    </div>
+    <template v-else>
+      <div
+        v-if="selectedResultData && selectedResultData.length > 0 && !isLoading"
+        class="py-4 px-6 w-full h-full min-h-0 flex flex-col"
+      >
+        <div>
+          <lfx-copilot-results-header
+            :results="resultsWithData"
+            :selected-result-id="selectedId"
+            @update:selected-result="selectedId = $event"
           />
         </div>
-        <div
-          v-else
-          class="w-full h-full min-h-0 flex flex-col overflow-auto"
-        >
-          <lfx-copilot-chart-results
+        <div class="border border-neutral-200 rounded-lg p-4 w-full h-full min-h-0 flex flex-col">
+          <lfx-copilot-results-toggle
+            :model-value="selectedTab"
             :data="selectedResultData"
+            @update:model-value="selectedTab = $event"
           />
+          <div
+            v-if="selectedTab === 'data'"
+            class="w-full h-full min-h-0 flex flex-col overflow-auto"
+          >
+            <lfx-copilot-table-results
+              :data="selectedResultData"
+            />
+          </div>
+          <div
+            v-else
+            class="w-full h-full min-h-0 flex flex-col overflow-auto"
+          >
+            <lfx-copilot-chart-results
+              :data="selectedResultData"
+            />
+          </div>
         </div>
       </div>
-    </div>
-    <div
-      v-else
-      class="flex flex-col items-center justify-center h-[240px]"
-    >
-      <lfx-icon
-        name="eyes"
-        :size="40"
-        class="text-neutral-300"
-      />
-      <p class="text-sm text-neutral-500 mt-5">
-        No data available
-      </p>
-    </div>
+      <div
+        v-else
+        class="flex flex-col items-center justify-center h-[240px]"
+      >
+        <lfx-icon
+          name="eyes"
+          :size="40"
+          class="text-neutral-300"
+        />
+        <p class="text-sm text-neutral-500 mt-5">
+          No data available
+        </p>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -63,6 +71,7 @@ import LfxCopilotResultsHeader from './results-header.vue';
 import LfxCopilotResultsToggle from './results-toggle.vue';
 import LfxCopilotChartResults from './chart-results.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 
 const emit = defineEmits<{
   (e: 'update:selectedResult', value: string): void;
@@ -71,6 +80,7 @@ const emit = defineEmits<{
 const props = defineProps<{
   results: ResultsHistory[];
   selectedResultId: string | null;
+  isLoading: boolean;
 }>()
 
 const selectedId = computed<string | null>({

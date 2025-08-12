@@ -62,7 +62,7 @@ export class TextToSqlAgent extends BaseAgent<TextToSqlAgentInput, SqlOutput> {
     return new Error(`SQL agent error: ${String(error)}`);
   }
 
-  protected getProviderOptions(_input: TextToSqlAgentInput): any {
+  protected override getProviderOptions(_input: TextToSqlAgentInput): any {
     return {
       bedrock: {
         reasoningConfig: { type: "enabled", budgetTokens: 3000 },
