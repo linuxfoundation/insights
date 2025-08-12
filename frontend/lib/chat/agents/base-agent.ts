@@ -114,7 +114,6 @@ export abstract class BaseAgent<TInput, TOutput> {
         generateConfig.prompt = userPrompt;
       }
 
-
       const response = await generateText(generateConfig);
 
       // Log tool calls if monitoring is enabled
@@ -133,9 +132,21 @@ export abstract class BaseAgent<TInput, TOutput> {
    * Extract and validate JSON from the response text
    */
   protected getJson(text: string): TOutput {
-    // Use extract-first-json to clean and parse the JSON
-
-    const parsedOutput = extractJSON(text);
+    // First, try simple JSON.parse since the text usually contains valid JSON
+    let parsedOutput;
+    try {
+      parsedOutput = JSON.parse(text);
+    } catch {
+      // Fall back to extractJSON if direct parsing fails
+      try {
+        parsedOutput = extractJSON(text);
+      } catch (error) {
+        console.error(`${this.name} agent failed to parse JSON:`, error);
+        console.error(`Response text:`, text);
+        throw new Error(`${this.name} agent did not return valid JSON`);
+      }
+    }
+    
     if (!parsedOutput) {
       console.error("No JSON found in the response");
       console.error(text);
@@ -145,7 +156,6 @@ export abstract class BaseAgent<TInput, TOutput> {
     // Validate against schema
     try {
       const validatedOutput = this.outputSchema.parse(parsedOutput);
-      console.warn(`${this.name} Agent Output:\n${JSON.stringify(validatedOutput, null, 2)}`);
       return validatedOutput;
     } catch (error) {
       console.error(`Failed to validate ${this.name} JSON`, error);
