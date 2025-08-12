@@ -41,6 +41,31 @@ export async function streamingAgentRequestHandler({
   });
 
   const tbTools = await mcpClient.tools({});
+  // Build a human-readable overview of all tools for the router's prompt (read-only catalog)
+  const excludedFromOverview = new Set([
+    "explore_data",
+    "text_to_sql",
+    "list_endpoints",
+    "list_service_datasources",
+  ]);
+  const toolsOverview = Object.entries(tbTools)
+    .filter(([name]) => !excludedFromOverview.has(name))
+    .map(([name, def]: [string, any]) => {
+      try {
+        const description = def?.description || def?.meta?.description || "";
+        const inputSchema = def?.inputSchema || def?.parameters || def?.schema || undefined;
+        const params = inputSchema ? JSON.stringify(inputSchema, null, 2) : undefined;
+        return [
+          `- ${name}: ${description}`,
+          params ? `  params: ${params}` : undefined,
+        ]
+          .filter(Boolean)
+          .join("\n");
+      } catch {
+        return `- ${name}`;
+      }
+    })
+    .join("\n");
   const parametersString = JSON.stringify(parameters || {});
   const dateString = new Date().toISOString().split("T")[0];
   const model = bedrock("us.anthropic.claude-sonnet-4-20250514-v1:0");
@@ -57,6 +82,7 @@ export async function streamingAgentRequestHandler({
           model,
           messages,
           tools: tbTools,
+          toolsOverview,
           date: dateString as string,
           projectName: projectName as string,
           pipe,

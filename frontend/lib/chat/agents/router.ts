@@ -20,7 +20,8 @@ export type RouterOutput = z.infer<typeof routerOutputSchema>;
 interface RouterAgentInput {
   model: any; // Bedrock model instance
   messages: any[];
-  tools: Record<string, any>; // Only list_datasources
+  tools: Record<string, any>;
+  toolsOverview: string;
   date: string;
   projectName: string;
   pipe: string;
@@ -44,7 +45,8 @@ export class RouterAgent extends BaseAgent<RouterAgentInput, RouterOutput> {
       input.projectName,
       input.pipe,
       input.parametersString,
-      input.segmentId
+      input.segmentId,
+      input.toolsOverview
     );
   }
 
@@ -54,7 +56,12 @@ export class RouterAgent extends BaseAgent<RouterAgentInput, RouterOutput> {
   }
 
   protected getTools(input: RouterAgentInput): Record<string, any> {
-    return input.tools;
+    // Only allow calling list_datasources; all other tools remain visible in prompt via toolsOverview
+    const allowed: Record<string, any> = {};
+    if (input.tools && input.tools["list_datasources"]) {
+      allowed["list_datasources"] = input.tools["list_datasources"];
+    }
+    return allowed;
   }
 
   protected createError(error: unknown): Error {

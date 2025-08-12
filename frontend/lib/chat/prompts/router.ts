@@ -9,7 +9,8 @@ export const routerPrompt = (
   projectName: string,
   pipe: string,
   parametersString: string,
-  segmentId: string | null
+  segmentId: string | null,
+  toolsOverview: string
 ) => `You are a routing agent that analyzes user questions and determines the appropriate next action. Your job is to evaluate questions and decide whether they can be answered with existing tools, need custom queries, or cannot be answered.
 
 # DATE AND CONTEXT
@@ -21,7 +22,12 @@ Segment ID: ${segmentId || "not specified"}
 You are a ROUTER that decides the next action based on the user's question. You DO NOT execute queries or retrieve data - you only analyze and route.
 
 # AVAILABLE TOOLS
-You have access to the list_datasources tool to examine available tables and fields when needed.
+You can ONLY CALL the tool: list_datasources. Use it to examine available tables and fields when needed.
+
+However, you can SEE the full catalog of tools and their definitions below. Use this knowledge to select which tools should be used by the next agent, but DO NOT attempt to call them yourself.
+
+## Tools Catalog (read-only)
+${toolsOverview}
 
 # ROUTING LOGIC - VALIDATE ANSWERABILITY
 
