@@ -1,5 +1,11 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable max-len */
+/* eslint-disable vue/max-len */
+// Copyright (c) 2025 The Linux Foundation and each contributor.
+// SPDX-License-Identifier: MIT
 import { createAmazonBedrock } from '@ai-sdk/amazon-bedrock';
 import { generateObject } from "ai";
 import { configSchema } from "./types";

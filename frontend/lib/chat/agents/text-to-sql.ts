@@ -1,5 +1,8 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
+/* eslint-disable @typescript-eslint/no-explicit-any */
+// Copyright (c) 2025 The Linux Foundation and each contributor.
+// SPDX-License-Identifier: MIT
 import { z } from 'zod';
 import { textToSqlPrompt } from '../prompts/text-to-sql';
 import { BaseAgent } from './base-agent';
@@ -62,7 +65,7 @@ export class TextToSqlAgent extends BaseAgent<TextToSqlAgentInput, SqlOutput> {
     return new Error(`SQL agent error: ${String(error)}`);
   }
 
-  protected getProviderOptions(_input: TextToSqlAgentInput): any {
+  protected override getProviderOptions(_input: TextToSqlAgentInput): any {
     return {
       bedrock: {
         reasoningConfig: { type: "enabled", budgetTokens: 3000 },
