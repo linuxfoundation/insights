@@ -4,7 +4,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { createAmazonBedrock } from '@ai-sdk/amazon-bedrock';
-import { streamText, experimental_createMCPClient as createMCPClient, createDataStreamResponse } from 'ai';
+import { experimental_createMCPClient as createMCPClient, createDataStreamResponse } from 'ai';
 import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
 
 import { runRouterAgent } from './agents/router';
@@ -97,19 +97,6 @@ export async function streamingAgentRequestHandler({
             status: "complete",
             reasoning: routerOutput.reasoning,
           });
-
-          const result = streamText({
-            model,
-            messages: [
-              ...messages,
-              {
-                role: "assistant",
-                content: routerOutput.reasoning || "I cannot answer this question based on the available data.",
-              },
-            ],
-          });
-
-          result.mergeIntoDataStream(dataStream);
           return;
         }
 
