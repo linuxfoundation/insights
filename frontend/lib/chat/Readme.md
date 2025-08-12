@@ -3,7 +3,7 @@
 ## To Do
 
 ### Joan
-- [ ] Handle better queries like "What is love?"
+- [x] Handle better queries like "What is love?"
 - [ ] Remove textToSql from the router for now.
 
 ### Team
