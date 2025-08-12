@@ -32,7 +32,7 @@ export default defineNuxtConfig({
     "@nuxtjs/plausible",
     "@nuxtjs/robots",
   ],
-  plugins: ["~/plugins/vue-query.ts"],
+  plugins: ["~/plugins/vue-query.ts", "~/plugins/auth0.client.ts"],
   css: ["~/assets/styles/main.scss"],
   tailwindcss,
   primevue,
@@ -48,8 +48,11 @@ export default defineNuxtConfig({
     // These are also exposed on the client-side
     public: {
       apiBase: "/api",
-      appUrl: "http://localhost:3000",
+      appUrl: "http://localhost:8081",
       appEnv: process.env.APP_ENV,
+      auth0Domain: process.env.CROWD_LFX_AUTH0_DOMAIN || "",
+      auth0ClientId: process.env.CROWD_LFX_AUTH0_CLIENT_ID || "",
+      auth0RedirectUri: process.env.CROWD_LFX_AUTH0_REDIRECT_URI || "http://localhost:8081/callback",
     },
   },
   vue: {
