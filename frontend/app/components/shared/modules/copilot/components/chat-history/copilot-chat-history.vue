@@ -36,7 +36,7 @@ const props = defineProps<{
   isLoading: boolean
 }>()
 
-const allResults = computed(() => props.messages.filter(m => m.type === 'sql-result'));
+const allResults = computed(() => props.messages.filter(m => m.type === 'sql-result' || m.type === 'pipe-result'));
 
 const selectResult = (id: string) => {
   emit('selectResult', id)

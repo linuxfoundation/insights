@@ -17,6 +17,10 @@ const geographicalDistribution: WidgetConfig = {
     share: true,
     embed: true,
     snapshot: true,
+    copilot: {
+        icon: 'people-group',
+        suggestions: 'Show me the geographical distribution of contributors'
+      }
 }
 
 export default geographicalDistribution;

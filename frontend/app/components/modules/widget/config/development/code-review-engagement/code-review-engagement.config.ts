@@ -17,6 +17,10 @@ const codeReviewEngagement: WidgetConfig = {
     share: true,
     embed: true,
     snapshot: true,
+    copilot: {
+        icon: 'people-group',
+        suggestions: 'Show me the code review engagement'
+      }
 }
 
 export default codeReviewEngagement;

@@ -11,7 +11,7 @@ SPDX-License-Identifier: MIT
       class="max-w-[90%] rounded-full break-words"
       :class="[
         message.role === 'user' ? 'bg-neutral-100 text-right' : 'bg-transparent text-left',
-        message.type === 'sql-result' ? 'w-full' : ''
+        message.type === 'sql-result' || message.type === 'pipe-result' ? 'w-full' : ''
       ]"
     >
       <div
@@ -37,10 +37,10 @@ SPDX-License-Identifier: MIT
           <span v-else>{{ message.content }}</span>
         </div>
         <lfx-chat-result 
-          v-if="message.type === 'sql-result'" 
+          v-if="message.type === 'sql-result' || message.type === 'pipe-result'" 
           :message="message"
           :version="resultVersion(message)" 
-          :is-selected="selectedResultId && message.id === selectedResultId"
+          :is-selected="!!(selectedResultId && message.id === selectedResultId)"
           @select="selectResult(message.id)"
         />
       </div>
@@ -63,8 +63,9 @@ const props = defineProps<{
 }>()
 
 const resultVersion = (message: AIMessage) => {
-  if (message.type === 'sql-result') {
-    return props.allResults.findIndex(m => m.id === message.id) + 1;
+  if (message.type === 'sql-result' || message.type === 'pipe-result') {
+    const idx = props.allResults.findIndex(m => m.id === message.id);
+    return idx === -1 ? 1 : idx + 1;
   }
   return 1;
 }

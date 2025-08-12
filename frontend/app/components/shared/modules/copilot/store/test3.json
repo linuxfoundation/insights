@@ -1,0 +1,46 @@
+[
+  {
+    "id": "me8e2kpeie2ibs49upn",
+    "role": "user",
+    "type": "text",
+    "status": "complete",
+    "content": "Show me the comparison of active contributors between the current and previous quarters",
+    "timestamp": 1754993926994
+  },
+  {
+    "id": "me8e2sr4aiw2mauwmgi",
+    "role": "assistant",
+    "type": "router-status",
+    "status": "complete",
+    "content": "I'll use the active_contributors widget to get quarterly data for both the current quarter (Q3 2025: July-September) and the previous quarter (Q2 2025: April-June) for the Kubernetes project, allowing for a direct comparison of active contributor counts.",
+    "timestamp": 1754993937424
+  },
+  {
+    "id": "me8e2zypgc2ryf33ehl",
+    "role": "assistant",
+    "type": "pipe-result",
+    "sql": "## Tools Used\nactive_contributors, active_contributors\n\n",
+    "data": {
+      "comparison_summary": "Q2 2025 vs Q3 2025 Active Contributors",
+      "quarters": [
+        {
+          "quarter": "Q2 2025",
+          "period": "April 1 - June 30, 2025",
+          "contributorCount": 6029
+        },
+        {
+          "quarter": "Q3 2025",
+          "period": "July 1 - September 30, 2025",
+          "contributorCount": 2805
+        }
+      ],
+      "analysis": {
+        "difference": -3224,
+        "percent_change": "-53.5%",
+        "trend": "Significant decrease in active contributors from Q2 to Q3 2025"
+      }
+    },
+    "content": "## Explanation\nUsed active_contributors twice with quarterly granularity to compare Q3 2025 (current quarter: July-September) and Q2 2025 (previous quarter: April-June) for the Kubernetes project\n\n",
+    "timestamp": 1754993946769
+  }
+]

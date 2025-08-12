@@ -72,6 +72,10 @@ const activeDays: WidgetConfig = {
       },
     },
   },
+  copilot: {
+    icon: 'people-group',
+    suggestions: 'Show me the active days'
+  }
 }
 
 export default activeDays

@@ -68,6 +68,10 @@ const mergeLeadTime: WidgetConfig = {
       },
     },
   },
+  copilot: {
+    icon: 'people-group',
+    suggestions: 'Show me the merge lead time'
+  }
 }
 
 export default mergeLeadTime
