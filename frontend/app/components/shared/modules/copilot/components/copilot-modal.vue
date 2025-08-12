@@ -20,7 +20,7 @@ SPDX-License-Identifier: MIT
           @update:is-loading="handleIsLoading"
         />
       </div>
-      <div class="w-2/3">
+      <div class="w-2/3 flex justify-stretch items-stretch">
         <lfx-copilot-results-section
           :results="resultData"
           :selected-result-id="selectedResultId"

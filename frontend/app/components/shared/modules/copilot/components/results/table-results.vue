@@ -3,15 +3,15 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <table class="min-w-full border border-neutral-200 rounded text-xs">
-    <thead>
-      <tr class="bg-neutral-50">
+  <table class="min-w-full text-xs">
+    <thead class="border-y border-neutral-200">
+      <tr class="">
         <th
-          v-for="(col, colIdx) in Object.keys(data[0] || {})"
+          v-for="(col, colIdx) in Object.keys(data![0] || {})"
           :key="colIdx"
-          class="px-3 py-2 border-b border-neutral-200 text-left font-semibold text-neutral-700"
+          class="px-3 py-4 text-left font-medium text-neutral-500"
         >
-          {{ col }}
+          {{ normalizedColumnHeader(col) }}
         </th>
       </tr>
     </thead>
@@ -22,9 +22,9 @@ SPDX-License-Identifier: MIT
         class="hover:bg-neutral-50"
       >
         <td
-          v-for="(col, colIdx) in Object.keys(data[0] || {})"
+          v-for="(col, colIdx) in Object.keys(data![0] || {})"
           :key="colIdx"
-          class="px-3 py-2 border-b border-neutral-100"
+          class="px-3 py-4"
         >
           {{ row[col] }}
         </td>
@@ -39,6 +39,16 @@ import type { MessageData } from '../../types/copilot.types';
 defineProps<{
   data: MessageData[] | null
 }>()
+
+const normalizedColumnHeader = (header: string) => {
+  // Replace underscores and camelCase with spaces, then capitalize only the first character
+  const formatted = header
+    .replace(/([a-z])([A-Z])/g, '$1 $2') // camelCase to space
+    .replace(/_/g, ' ') // snake_case to space
+    .replace(/\s+/g, ' ') // collapse multiple spaces
+    .trim();
+  return formatted.charAt(0).toUpperCase() + formatted.slice(1);
+}
 </script>
 
 <script lang="ts">

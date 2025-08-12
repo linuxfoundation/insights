@@ -14,7 +14,10 @@ SPDX-License-Identifier: MIT
           type="filled"
           class="!w-auto flex justify-between"
         >
-          {{ selectedOption.label }}
+          <lfx-chat-result-label
+            :version="Number(selectedOption.label)"
+            label="Result"
+          />
         </lfx-dropdown-selector>
       </template>
 
@@ -22,9 +25,12 @@ SPDX-License-Identifier: MIT
         v-for="(option, index) of props.results"
         :key="option.id"
         :value="option.id"
-        :label="getOptionLabel(option.id)"
+        :label="getVersion(option.id)"
       >
-        <span>V{{ index + 1 }} Result</span>
+        <lfx-chat-result-label
+          :version="index + 1"
+          label="Result"
+        />
       </lfx-dropdown-item>
 
     </lfx-dropdown-select>
@@ -34,6 +40,7 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { computed } from 'vue';
 import type { ResultsHistory } from '../../types/copilot.types';
+import LfxChatResultLabel from '../chat-history/result-label.vue'
 import LfxDropdownSelector from "~/components/uikit/dropdown/dropdown-selector.vue";
 import LfxDropdownItem from "~/components/uikit/dropdown/dropdown-item.vue";
 import LfxDropdownSelect from "~/components/uikit/dropdown/dropdown-select.vue";
@@ -47,17 +54,17 @@ const props = defineProps<{
   selectedResultId: string | null;
 }>()
 
-const selectedId = computed<string | null>({
-  get: () => props.selectedResultId,
+const selectedId = computed<string>({
+  get: () => props.selectedResultId || '',
   set: (value) => {
     emit('update:selectedResult', value || '');
   }
 })
 
-const getOptionLabel = (id: string) => {
+const getVersion = (id: string) => {
   const idx = props.results.findIndex(r => String(r.id) === String(id));
 
-  return `V${idx + 1} Result`; 
+  return `${idx + 1}`; 
 }
 </script>
 

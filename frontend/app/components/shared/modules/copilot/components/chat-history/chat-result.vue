@@ -31,14 +31,10 @@ SPDX-License-Identifier: MIT
       rounded-xl shadow-sm bg-white justify-between cursor-pointer"
       @click="emit('select')"
     >
-      <span class="flex items-center gap-2">
-        <span 
-          class="rounded-full bg-neutral-200 px-1 py-0.5 text-xs font-semibold text-neutral-600"
-        >
-          {{ `V${version}` }}
-        </span>
-        Results
-      </span>
+      <lfx-chat-result-label
+        :version="version"
+        label="Results"
+      />
       <lfx-icon
         v-if="!isSelected"
         name="arrow-rotate-left"
@@ -63,6 +59,7 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import type { AIMessage } from '../../types/copilot.types'
 import LfxChatLabel from './chat-label.vue'
+import LfxChatResultLabel from './result-label.vue'
 import LfxIcon from '~/components/uikit/icon/icon.vue'
 
 defineProps<{

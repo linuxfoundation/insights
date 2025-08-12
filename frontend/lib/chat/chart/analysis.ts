@@ -6,12 +6,6 @@ export interface DataProfile {
   rowCount: number;
   columns: ColumnProfile[];
   dataShape: 'single-value' | 'time-series' | 'categorical' | 'multi-dimensional';
-  pivotNeeded: boolean;
-  pivotConfig?: {
-    groupBy: string;
-    categories: string;
-    values: string;
-  };
 }
 
 export interface ColumnProfile {
@@ -20,7 +14,7 @@ export interface ColumnProfile {
   uniqueCount: number;
   isGroupable: boolean;
   sample: any[];
-  role?: 'dimension' | 'measure' | 'time';
+  role?: 'xAxis' | 'yAxis' | 'series';
 }
 
 export function analyzeDataForChart(
@@ -29,18 +23,14 @@ export function analyzeDataForChart(
 ): DataProfile | null {
   if (!results.length) return null;
   
-  const columns = Object.keys(results[0]);
+  const columns = Object.keys(results[0] || {});
   const columnProfiles = analyzeColumns(results, columns);
   const dataShape = detectDataShape(results, columnProfiles);
-  
-  const pivotAnalysis = detectPivotNeeds(results, columnProfiles);
   
   return {
     rowCount: results.length,
     columns: columnProfiles,
-    dataShape,
-    pivotNeeded: pivotAnalysis.needed,
-    pivotConfig: pivotAnalysis.config,
+    dataShape
   };
 }
 
@@ -56,23 +46,23 @@ function analyzeColumns(results: Result[], columns: string[]): ColumnProfile[] {
     
     if (numericValues.length > values.length * 0.8) {
       type = 'numeric';
-      role = 'measure';
+      role = 'yAxis';
     } else if (isDateColumn(values)) {
       type = 'date';
-      role = 'time';
+      role = 'xAxis';
     } else if (uniqueValues.size <= 20 && uniqueValues.size < values.length * 2) {
       // Consider as category if:
       // - Has 20 or fewer unique values AND
       // - Not every row has a different value (allows some duplicates)
-      type = 'category';
-      role = 'dimension';
+      type = 'text';
+      role = 'series';
     }
     
     return {
       name: col,
       type,
       uniqueCount: uniqueValues.size,
-      isGroupable: type === 'category' && uniqueValues.size < 20,
+      isGroupable: type === 'text' && uniqueValues.size < 20,
       sample: Array.from(uniqueValues).slice(0, 3),
       role,
     };

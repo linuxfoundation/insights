@@ -2,12 +2,13 @@
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 
-import type { AIMessage, MessagePartType, MessageRole, MessageStatus } from "../types/copilot.types"
+import type { AIMessage, MessageData, MessagePartType, MessageRole, MessageStatus } from "../types/copilot.types"
 import type { CopilotParams } from '../types/copilot.types'
-import testData from './test.json'
+// import testData from './test.json'
+import testData2 from './test2.json'
 import type { Project } from '~~/types/project'
 
-export const tempData = testData as AIMessage[];
+export const tempData = testData2 as AIMessage[];
 class CopilotApiService {
   // Generate unique ID for messages
   generateId = () => Date.now().toString(36) + Math.random().toString(36).substr(2);
@@ -44,6 +45,30 @@ class CopilotApiService {
 
     // Send streaming request
     const response = await fetch('/api/chat/stream', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(requestBody)
+    })
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+
+    return response;
+  }
+
+  async callChartApi(
+    sampleData: MessageData[]): Promise<Response> {
+    // Prepare the request body with the correct format
+    const requestBody = {
+      results: sampleData,
+      userQuery: 'Generate a chart for this data',
+    }
+
+    // Send streaming request
+    const response = await fetch('/api/chat/chart', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
