@@ -3,31 +3,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { z } from 'zod';
+import type { RouterOutput, RouterAgentInput } from '../types';
+import { routerOutputSchema } from '../types';
 import { routerPrompt } from '../prompts/router';
 import { BaseAgent } from './base-agent';
-
-// Output schema for router decisions
-export const routerOutputSchema = z.object({
-  next_action: z.enum(["stop", "create_query", "pipes"]),
-  reasoning: z.string().describe("Maximum 2 sentences explaining the decision"),
-  reformulated_question: z.string().describe("Enhanced query with all parameters"),
-  tools: z.array(z.string()).describe("Tools needed for next agent")
-});
-
-export type RouterOutput = z.infer<typeof routerOutputSchema>;
-
-interface RouterAgentInput {
-  model: any; // Bedrock model instance
-  messages: any[];
-  tools: Record<string, any>;
-  toolsOverview: string;
-  date: string;
-  projectName: string;
-  pipe: string;
-  parametersString: string;
-  segmentId: string | null;
-}
 
 export class RouterAgent extends BaseAgent<RouterAgentInput, RouterOutput> {
   readonly name = "Router";

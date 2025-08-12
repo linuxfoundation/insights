@@ -10,6 +10,7 @@ import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/
 import { runRouterAgent } from './agents/router';
 import { runTextToSqlAgent } from './agents/text-to-sql';
 import { runPipeAgent } from './agents/pipe';
+import { executePipeInstructions } from './instructions';
 
 const bedrock = createAmazonBedrock({
   accessKeyId: process.env.NUXT_AWS_BEDROCK_ACCESS_KEY_ID,
@@ -159,11 +160,14 @@ export async function streamingAgentRequestHandler({
             toolNames: routerOutput.tools,
           });
 
+          // Execute the pipes according to the instructions and combine results
+          const combinedData = await executePipeInstructions(pipeOutput.instructions);
+
           dataStream.writeData({
             type: "pipe-result",
-            tools: pipeOutput.tools,
             explanation: pipeOutput.explanation,
-            data: pipeOutput.data
+            instructions: pipeOutput.instructions,
+            data: combinedData
           });
         }
       } catch (error) {

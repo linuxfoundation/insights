@@ -149,7 +149,7 @@ export abstract class BaseAgent<TInput, TOutput> {
     // Validate against schema
     try {
       const validatedOutput = this.outputSchema.parse(parsedOutput);
-      console.warn(`${this.name} Agent Output:`, validatedOutput);
+      console.warn(`${this.name} Agent Output:\n${JSON.stringify(validatedOutput, null, 2)}`);
       return validatedOutput;
     } catch (error) {
       console.error(`Failed to validate ${this.name} JSON`, error);

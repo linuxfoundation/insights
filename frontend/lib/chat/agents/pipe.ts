@@ -3,31 +3,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { z } from 'zod';
+import type { PipeOutput, PipeAgentInput } from '../types';
+import { pipeOutputSchema } from '../types';
 import { pipePrompt } from '../prompts/pipe';
 import { BaseAgent } from './base-agent';
-
-// Output schema for pipe agent
-export const pipeOutputSchema = z.object({
-  tools: z.array(z.string()).describe("Ordered array of tools used to fetch the data"),
-  explanation: z.string().describe("Brief explanation of why these tools answer the question"),
-  data: z.any().describe("The actual data returned from executing the tools")
-});
-
-export type PipeOutput = z.infer<typeof pipeOutputSchema>;
-
-interface PipeAgentInput {
-  model: any; // Bedrock model instance
-  messages: any[];
-  tools: Record<string, any>; // Filtered pipe tools based on router decision
-  date: string;
-  projectName: string;
-  pipe: string;
-  parametersString: string;
-  segmentId: string | null;
-  reformulatedQuestion: string;
-  toolNames: string[]; // Array of tool names from router
-}
 
 export class PipeAgent extends BaseAgent<PipeAgentInput, PipeOutput> {
   readonly name = "Pipe";
