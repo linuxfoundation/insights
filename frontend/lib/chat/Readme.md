@@ -1,6 +1,22 @@
+# Insights Copilot - Multi-Agent Architecture Documentation
 
+## To Do
 
-# Insights Chat - Multi-Agent Architecture Documentation
+### Joan
+- [x] Handle better queries like "What is love?"
+- [x] Remove textToSql from the router for now.
+
+### Team
+#### v0
+- [ ] Improve Graph Generation
+    - [ ] From Nuno: we will need to generate a title when we generate a graph
+    - [ ] Make sure it's reliable
+#### Later
+- [ ] Split the chat into 3 endpoints:
+  - One to do the agentic stuff and return instructions
+  - One to execute the instructions and return data
+  - One to generate the chart (already done)
+- [ ] Re-enable Text-to-SQL Agent when ready
 
 ## Overview
 
@@ -255,20 +271,6 @@ Currently using: `us.anthropic.claude-sonnet-4-20250514-v1:0` via AWS Bedrock
    ```
 
 4. **Execution & Response**: Combined data table streamed to client
-
-## To Do
-
-### Joan
-- [x] Handle better queries like "What is love?"
-- [x] Remove textToSql from the router for now.
-
-### Team
-- [ ] Improve Graph Generation
-- [ ] Split the chat into 3 endpoints:
-  - One to do the agentic stuff and return instructions
-  - One to execute the instructions and return data
-  - One to generate the chart (already done)
-- [ ] Re-enable Text-to-SQL Agent when ready
 
 
 
