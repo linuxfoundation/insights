@@ -10,7 +10,7 @@ import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/
 import { runRouterAgent } from './agents/router';
 import { runTextToSqlAgent } from './agents/text-to-sql';
 import { runPipeAgent } from './agents/pipe';
-import { executePipeInstructions } from './instructions';
+import { executePipeInstructions, executeTextToSqlInstructions } from './instructions';
 
 const bedrock = createAmazonBedrock({
   accessKeyId: process.env.NUXT_AWS_BEDROCK_ACCESS_KEY_ID,
@@ -121,14 +121,20 @@ export async function streamingAgentRequestHandler({
         });
 
         const followUpTools: Record<string, any> = {};
-        for (const toolName of routerOutput.tools) {
-          if (tbTools[toolName]) {
-            followUpTools[toolName] = tbTools[toolName];
+        if (routerOutput.next_action === "create_query") {
+          followUpTools["execute_query"] = tbTools["execute_query"];
+          followUpTools["list_datasources"] = tbTools["list_datasources"];
+        }
+        else {
+          for (const toolName of routerOutput.tools) {
+            if (tbTools[toolName]) {
+              followUpTools[toolName] = tbTools[toolName];
+            }
           }
         }
 
         if (routerOutput.next_action === "create_query") {
-          const sqlOutput = await runTextToSqlAgent({
+          const textToSqlOutput = await runTextToSqlAgent({
             model,
             messages,
             tools: followUpTools,
@@ -140,11 +146,14 @@ export async function streamingAgentRequestHandler({
             reformulatedQuestion: routerOutput.reformulated_question,
           });
 
+          // Execute the SQL query according to the instructions
+          const queryData = await executeTextToSqlInstructions(textToSqlOutput.instructions);
+
           dataStream.writeData({
             type: "sql-result",
-            sql: sqlOutput.sql,
-            explanation: sqlOutput.explanation,
-            data: sqlOutput.data
+            explanation: textToSqlOutput.explanation,
+            instructions: textToSqlOutput.instructions,
+            data: queryData
           });
         } else if (routerOutput.next_action === "pipes") {
           const pipeOutput = await runPipeAgent({

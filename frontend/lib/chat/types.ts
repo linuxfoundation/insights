@@ -48,6 +48,35 @@ export type OutputColumn = z.infer<typeof outputColumnSchema>;
 export type PipeInstructions = z.infer<typeof pipeInstructionsSchema>;
 
 // ============================================
+// Text-to-SQL Instruction Types
+// ============================================
+
+// Schema for text-to-SQL instructions
+export const textToSqlInstructionsSchema = z.string();
+
+// TypeScript type for text-to-SQL instructions
+export type TextToSqlInstructions = z.infer<typeof textToSqlInstructionsSchema>;
+
+// ============================================
+// Unified Instructions Type
+// ============================================
+
+// Discriminated union for all instruction types
+export const instructionsSchema = z.discriminatedUnion("type", [
+  z.object({
+    type: z.literal("query"),
+    instructions: textToSqlInstructionsSchema
+  }),
+  z.object({
+    type: z.literal("pipes"),
+    instructions: pipeInstructionsSchema
+  })
+]);
+
+// TypeScript type for unified instructions
+export type Instructions = z.infer<typeof instructionsSchema>;
+
+// ============================================
 // Agent Output Types
 // ============================================
 

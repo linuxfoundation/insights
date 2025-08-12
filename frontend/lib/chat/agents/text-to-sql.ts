@@ -4,14 +4,14 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { z } from 'zod';
+import { textToSqlInstructionsSchema } from '../types';
 import { textToSqlPrompt } from '../prompts/text-to-sql';
 import { BaseAgent } from './base-agent';
 
 // Output schema for SQL agent
 export const sqlOutputSchema = z.object({
-  sql: z.string().describe("The SQL query used to fetch the data"),
   explanation: z.string().describe("Brief explanation of why this query answers the question"),
-  data: z.any().describe("The actual data returned from executing the query")
+  instructions: textToSqlInstructionsSchema.describe("Instructions containing the SQL query to execute")
 });
 
 export type SqlOutput = z.infer<typeof sqlOutputSchema>;
@@ -71,6 +71,10 @@ export class TextToSqlAgent extends BaseAgent<TextToSqlAgentInput, SqlOutput> {
         reasoningConfig: { type: "enabled", budgetTokens: 3000 },
       },
     };
+  }
+
+  protected override shouldMonitorToolCalls(_input: TextToSqlAgentInput): boolean {
+    return true; // Enable tool call monitoring for SQL agent
   }
 }
 

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ofetch } from 'ofetch';
-import type { PipeInstructions } from './types';
+import type { PipeInstructions, TextToSqlInstructions } from './types';
 
 // Function to execute a TinyBird pipe
 async function executeTinybirdPipe(pipeName: string, parameters: Record<string, any>): Promise<any[]> {
@@ -113,4 +113,43 @@ export async function executePipeInstructions(instructions: PipeInstructions): P
   }
 
   return combinedData;
+}
+
+// Function to execute a SQL query via TinyBird's Query API
+export async function executeTextToSqlInstructions(query: TextToSqlInstructions): Promise<any[]> {
+  const tinybirdBaseUrl = process.env.NUXT_TINYBIRD_BASE_URL
+  const tinybirdToken = process.env.NUXT_INSIGHTS_TINYBIRD_TOKEN
+
+  if (!tinybirdToken) {
+    throw new Error('Tinybird token is not defined');
+  }
+
+  try {
+    // Execute the SQL query via TinyBird's Query API
+    // TinyBird expects the query as URL-encoded form data
+    const params = new URLSearchParams();
+    params.append('q', `${query} FORMAT JSON`);
+    
+    const response = await ofetch(`${tinybirdBaseUrl}/v0/sql`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${tinybirdToken}`,
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: params.toString()
+    });
+
+    // TinyBird SQL API response format has data array
+    return response.data || [];
+  } catch (error: any) {
+    console.error('Error executing SQL query:', error);
+    // Log more details about the error
+    if (error.data) {
+      console.error('Error response data:', error.data);
+    }
+    if (error.response) {
+      console.error('Error response:', error.response);
+    }
+    throw error;
+  }
 }

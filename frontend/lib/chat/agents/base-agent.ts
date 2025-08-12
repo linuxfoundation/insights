@@ -1,11 +1,11 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { z } from "zod";
 import { generateText } from "ai";
+import { extractJSON } from "extract-first-json";
 
 export abstract class BaseAgent<TInput, TOutput> {
   abstract readonly name: string;
@@ -19,12 +19,16 @@ export abstract class BaseAgent<TInput, TOutput> {
   protected generateJSONInstructions(): string {
     try {
       const schemaShape = this.getSchemaShape(this.outputSchema);
-      return `\n\nReturn your response as a JSON object with this exact structure:\n${JSON.stringify(
+      return `\n\n## OUTPUT FORMAT\nReturn your response as a JSON object with this exact structure:\n${JSON.stringify(
         schemaShape,
         null,
         2
-      )}\n\nDo not include any other text in your response, only the JSON object.`;
+      )}\n\nDo not include any other text in your response, only the JSON object.
+      DO NOT make any other comments.
+      The response MUST be directly parseable with JSON.parse() without any additional parsing.
+      DO NOT add explanations around the JSON object. No text before or after the JSON object.`;
     } catch (error) {
+      console.error('Error generating JSON instructions', error);
       return "\n\nReturn your response as a valid JSON object.";
     }
   }
@@ -113,9 +117,13 @@ export abstract class BaseAgent<TInput, TOutput> {
 
       const response = await generateText(generateConfig);
 
+      // Log tool calls if monitoring is enabled
+      if (this.shouldMonitorToolCalls(input)) {
+        this.logToolCalls(response);
+      }
 
       // Extract and validate JSON from response
-      return this.extractJSON(response.text);
+      return this.getJson(response.text);
     } catch (error) {
       throw this.createError(error);
     }
@@ -124,26 +132,14 @@ export abstract class BaseAgent<TInput, TOutput> {
   /**
    * Extract and validate JSON from the response text
    */
-  protected extractJSON(text: string): TOutput {
-    // Remove markdown code block wrappers if present
-    let cleanText = text.replaceAll(/```json\s*\n?/g, "");
-    cleanText = cleanText.replaceAll(/\n?```/g, "");
+  protected getJson(text: string): TOutput {
+    // Use extract-first-json to clean and parse the JSON
 
-    // Try to find JSON in the response
-    const jsonMatch = cleanText.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) {
+    const parsedOutput = extractJSON(text);
+    if (!parsedOutput) {
       console.error("No JSON found in the response");
       console.error(text);
       throw new Error(`${this.name} agent did not return valid JSON`);
-    }
-
-    const jsonStr = jsonMatch[0];
-    let parsedOutput: any;
-
-    try {
-      parsedOutput = JSON.parse(jsonStr);
-    } catch (error) {
-      throw new Error(`Failed to parse ${this.name} JSON: ${error}`);
     }
 
     // Validate against schema
@@ -168,5 +164,36 @@ export abstract class BaseAgent<TInput, TOutput> {
    */
   protected getProviderOptions(_input: TInput): any {
     return undefined;
+  }
+
+  /**
+   * Override this method to enable tool call monitoring
+   */
+  protected shouldMonitorToolCalls(_input: TInput): boolean {
+    return false;
+  }
+
+  /**
+   * Log all tool calls with inputs and outputs from the response
+   */
+  protected logToolCalls(response: any): void {
+    // The response from generateText contains steps array with tool calls
+    if (!response.steps || response.steps.length === 0) return;
+    
+    for (const step of response.steps) {
+      if (step.toolCalls && step.toolCalls.length > 0) {
+        for (const call of step.toolCalls) {
+          const result = step.toolResults?.find((r: any) => r.toolCallId === call.toolCallId);
+          console.warn(
+            [
+              '🛠️ Tool Call:',
+              `  - Name: ${call.toolName}`,
+              `  - Input: ${JSON.stringify(call.args, null, 2)}`,
+              result ? `  - Output: ${JSON.stringify(result.result, null, 2)}` : undefined,
+            ].filter(Boolean).join('\n')
+          );
+        }
+      }
+    }
   }
 }

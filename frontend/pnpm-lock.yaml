@@ -62,6 +62,9 @@ importers:
       echarts:
         specifier: ^5.6.0
         version: 5.6.0
+      extract-first-json:
+        specifier: ^2.0.2
+        version: 2.0.2
       html2canvas:
         specifier: ^1.4.1
         version: 1.4.1
@@ -4487,6 +4490,10 @@ packages:
   externality@1.0.2:
     resolution: {integrity: sha512-LyExtJWKxtgVzmgtEHyQtLFpw1KFhQphF9nTG8TpAIVkiI/xQ3FJh75tRFLYl4hkn7BNIIdLJInuDAavX35pMw==}
 
+  extract-first-json@2.0.2:
+    resolution: {integrity: sha512-QApuPo1dfpndAkUgD6co4VVM9lQczlzHPEBE6afDA4BwXvqSRqp/vYRBEo1yLJ91cOa0Z566+UDpCo+6Gq52LQ==}
+    engines: {node: ^14.13.1 || >=16.0.0}
+
   extract-zip@2.0.1:
     resolution: {integrity: sha512-GDhU9ntwuKyGXdZBUgTIe+vXnWj0fppUEtMDL0+idd5Sta8TGpHssn/eusA9mrPr9qNDym6SxAYZjNvCn/9RBg==}
     engines: {node: '>= 10.17.0'}
@@ -5167,6 +5174,10 @@ packages:
   is-wsl@3.1.0:
     resolution: {integrity: sha512-UcVfVfaK4Sc4m7X3dUSoHoozQGBEFeDC+zVo06t98xe8CzHSZZBekNXH+tu0NalHolcJ/QAGqS46Hef7QXBIMw==}
     engines: {node: '>=16'}
+
+  is-zod@1.0.0:
+    resolution: {integrity: sha512-4oD+C0gj1bQN7fhc4NNELdnIUSzpHQfQiwWjl3V42/J7JZMhRyzKzvbjl+EyWm5Khj+KfsNw9hhQDPLoZBWJIg==}
+    engines: {node: ^14.13.1 || >=16.0.0}
 
   is64bit@2.0.0:
     resolution: {integrity: sha512-jv+8jaWCl0g2lSBkNSVXdzfBA0npK1HGC2KtWM9FumFRoGS94g3NbCCLVnCYHLjp4GrW2KZeeSTMo5ddtznmGw==}
@@ -5988,6 +5999,10 @@ packages:
   parse-imports-exports@0.2.4:
     resolution: {integrity: sha512-4s6vd6dx1AotCx/RCI2m7t7GCh5bDRUtGNvRfHSP2wbBQdMi67pPe7mtzmgwcaQ8VKK/6IB7Glfyu3qdZJPybQ==}
 
+  parse-json-object@3.0.1:
+    resolution: {integrity: sha512-AmlodydoVEwH8XYRh42HTbNhz5L2JsswSC0hIsRK5TTpaBQuKw81hy+Qg7EvADaVOBNs29AySV2RWEl/6HDGqw==}
+    engines: {node: ^14.13.1 || >=16.0.0}
+
   parse-json@5.2.0:
     resolution: {integrity: sha512-ayCKvm/phCGxOkYRSCM82iDwct8/EonSEgCSxWxD7ve6jHggsFl4fZVQBPRNgQoKiuV/odhFrGzQXZwbifC8Rg==}
     engines: {node: '>=8'}
@@ -6565,6 +6580,10 @@ packages:
   redis-parser@3.0.0:
     resolution: {integrity: sha512-DJnGAeenTdpMEH6uAJRK/uiyEIH9WVsUmoLwzudwGJUwZPp80PDBWPHXSAGNPwNvIXAbe7MSUB1zQFugFml66A==}
     engines: {node: '>=4'}
+
+  reduce-first@2.0.0:
+    resolution: {integrity: sha512-Z2QkpBmbXCUFXTuNVJqMK0IVAiakhT5lcaq3CEyxcZPQTMRPAAvPuS4RTbavaVmR5OO7GFEzpsuFMvPqU4wlIg==}
+    engines: {node: ^14.13.1 || >=16.0.0}
 
   refa@0.12.1:
     resolution: {integrity: sha512-J8rn6v4DBb2nnFqkqwy6/NnTYMcgLA+sLr0iIO41qpv0n+ngb7ksag2tMRl0inb1bbO/esUwzW1vbJi7K0sI0g==}
@@ -7455,6 +7474,10 @@ packages:
   typed-array-length@1.0.7:
     resolution: {integrity: sha512-3KS2b+kL7fsuk/eJZ7EQdnEmQoaho/r6KUef7hxvltNA5DR8NAUM+8wJMbJyZ4G9/7i3v5zPBIMN5aybAh2/Jg==}
     engines: {node: '>= 0.4'}
+
+  types-json@4.0.1:
+    resolution: {integrity: sha512-9+AppL1qvC55sW478UnNxTzoaB4m7atMQ5jTNih35BWrNcdNtBZELfferS0ON8jypALgTVeVehaFsVJCPM4dgw==}
+    engines: {node: ^14.13.1 || >=16.0.0}
 
   typescript-eslint@8.34.1:
     resolution: {integrity: sha512-XjS+b6Vg9oT1BaIUfkW3M3LvqZE++rbzAMEHuccCfO/YkP43ha6w3jTEMilQxMF92nVOYCcdjv1ZUhAa1D/0ow==}
@@ -13186,6 +13209,11 @@ snapshots:
       pathe: 1.1.2
       ufo: 1.6.1
 
+  extract-first-json@2.0.2:
+    dependencies:
+      parse-json-object: 3.0.1
+      reduce-first: 2.0.0
+
   extract-zip@2.0.1:
     dependencies:
       debug: 4.4.1
@@ -13882,6 +13910,10 @@ snapshots:
   is-wsl@3.1.0:
     dependencies:
       is-inside-container: 1.0.0
+
+  is-zod@1.0.0:
+    dependencies:
+      zod: 3.25.76
 
   is64bit@2.0.0:
     dependencies:
@@ -14971,6 +15003,11 @@ snapshots:
     dependencies:
       parse-statements: 1.0.11
 
+  parse-json-object@3.0.1:
+    dependencies:
+      is-zod: 1.0.0
+      types-json: 4.0.1
+
   parse-json@5.2.0:
     dependencies:
       '@babel/code-frame': 7.27.1
@@ -15572,6 +15609,8 @@ snapshots:
   redis-parser@3.0.0:
     dependencies:
       redis-errors: 1.2.0
+
+  reduce-first@2.0.0: {}
 
   refa@0.12.1:
     dependencies:
@@ -16536,6 +16575,11 @@ snapshots:
       is-typed-array: 1.1.15
       possible-typed-array-names: 1.1.0
       reflect.getprototypeof: 1.0.10
+
+  types-json@4.0.1:
+    dependencies:
+      is-zod: 1.0.0
+      zod: 3.25.76
 
   typescript-eslint@8.34.1(eslint@9.29.0(jiti@2.4.2))(typescript@5.8.3):
     dependencies:

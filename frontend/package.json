@@ -37,6 +37,7 @@
     "@vuelidate/validators": "^2.0.4",
     "ai": "^4.3.19",
     "echarts": "^5.6.0",
+    "extract-first-json": "^2.0.2",
     "html2canvas": "^1.4.1",
     "isomorphic-dompurify": "^2.25.0",
     "lodash-es": "^4.17.21",
