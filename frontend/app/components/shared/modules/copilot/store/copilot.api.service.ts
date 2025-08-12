@@ -149,7 +149,11 @@ class CopilotApiService {
                   }
                 }
                 
-                if (data.type === 'sql-result') {                  
+                if (data.type === 'sql-result' || data.type === 'pipe-result') {            
+                  if (data.type === 'pipe-result') {
+                    statusCallBack('Tool execution completed');
+                  }
+
                   // Create assistant message if it doesn't exist yet
                   if (!assistantMessageId) {
                     assistantMessageId = this.generateId();
@@ -158,59 +162,26 @@ class CopilotApiService {
                       role: 'assistant',
                       type: data.type,
                       status: data.status,
+                      sql: data.sql, 
+                      data: data.data,
                       content: '',
                       timestamp: Date.now()
                     }, -1);
                   }
                   
-                  // Format SQL results nicely
-                  // const sqlSection = `## SQL Query\n\`\`\`sql\n${data.sql}\n\`\`\`\n\n`
-                  // const explanationSection = `## Explanation\n${data.explanation}\n\n`
-                  // const dataSection = `## Results\n\`\`\`json\n${JSON.stringify(data.data, null, 2)}\n\`\`\`\n\n`
-                  
-                  // assistantContent += sqlSection + explanationSection + dataSection
+                  const content = data.type === 'sql-result' ? data.explanation : `Tools Used\n${data.tools.join(', ')}\n`;
                   
                   const messageIndex = messages.findIndex(m => m.id === assistantMessageId)
                   if (messageIndex !== -1 && messages[messageIndex]) {
                     messageCallBack({
                       ...messages[messageIndex], 
-                      content: data.explanation, 
+                      content, 
                       sql: data.sql, 
                       data: data.data,
                       timestamp: Date.now()
                     }, messageIndex);
                   }
-                } else if (data.type === 'pipe-result') {
-                  statusCallBack('Tool execution completed');
-                  
-                  // Create assistant message if it doesn't exist yet
-                  if (!assistantMessageId) {
-                    assistantMessageId = this.generateId()
-                    messageCallBack({
-                      id: assistantMessageId,
-                      role: 'assistant',
-                      type: 'pipe-result',
-                      status: data.status,
-                      sql: data.sql, 
-                      data: data.data,
-                      content: '',
-                      timestamp: Date.now()
-                    }, -1);
-                  }
-                  
-                  // Format pipe results nicely
-                  const toolsSection = `## Tools Used\n${data.tools.join(', ')}\n\n`
-                  const explanationSection = `## Explanation\n${data.explanation}\n\n`
-                  
-                  const messageIndex = messages.findIndex(m => m.id === assistantMessageId)
-                  if (messageIndex !== -1 && messages[messageIndex]) {
-                    messageCallBack({
-                      ...messages[messageIndex], 
-                      content: explanationSection, 
-                      sql: toolsSection, 
-                      data: data.data}, messageIndex);
-                  }
-                }
+                } 
               }
             } else if (prefix === '0') {
               // Text delta from streamText (streaming text content)
