@@ -20,6 +20,9 @@ importers:
       '@ai-sdk/vue':
         specifier: ^2.0.5
         version: 2.0.5(vue@3.5.17(typescript@5.8.3))(zod@3.25.76)
+      '@auth0/auth0-vue':
+        specifier: ^2.4.0
+        version: 2.4.0(typescript@5.8.3)(vue-router@4.5.1(vue@3.5.17(typescript@5.8.3)))
       '@linuxfoundation/lfx-ui-core':
         specifier: ^0.0.18
         version: 0.0.18(prettier@3.6.0)
@@ -401,6 +404,17 @@ packages:
 
   '@asamuzakjp/css-color@3.2.0':
     resolution: {integrity: sha512-K1A6z8tS3XsmCMM86xoWdn7Fkdn9m6RSVtocUrJYIwZnFVkng/PvkEoWtOWmP+Scc6saYWHWZYbndEEXxl24jw==}
+
+  '@auth0/auth0-spa-js@2.3.0':
+    resolution: {integrity: sha512-zAW6w79UO+G1+3AxboVQIUIZy05xluSOb1ymGg2dqG0pIi0JxEtZGec05BOf2LJ9SehzW4WeCYUQsYD9BjrVpQ==}
+
+  '@auth0/auth0-vue@2.4.0':
+    resolution: {integrity: sha512-12iLvojP8Pvxqu2Abxzksp0HqlSovGiAUhWrppnOaJP02MZEBQo+c/IwM6VbM0edNk+eqqjX5u96iw5peaCPSg==}
+    peerDependencies:
+      vue-router: ^4.0.12
+    peerDependenciesMeta:
+      vue-router:
+        optional: true
 
   '@aws-crypto/crc32@5.2.0':
     resolution: {integrity: sha512-nLbCWqQNgUiwwtFsen1AdzAtvuLRsQS8rYgMuxCrdKf9kOssamGLuPwyTY9wyYblNr9+1XM8v6zoDTPPSIeANg==}
@@ -8367,6 +8381,17 @@ snapshots:
       '@csstools/css-parser-algorithms': 3.0.5(@csstools/css-tokenizer@3.0.4)
       '@csstools/css-tokenizer': 3.0.4
       lru-cache: 10.4.3
+
+  '@auth0/auth0-spa-js@2.3.0': {}
+
+  '@auth0/auth0-vue@2.4.0(typescript@5.8.3)(vue-router@4.5.1(vue@3.5.17(typescript@5.8.3)))':
+    dependencies:
+      '@auth0/auth0-spa-js': 2.3.0
+      vue: 3.5.17(typescript@5.8.3)
+    optionalDependencies:
+      vue-router: 4.5.1(vue@3.5.17(typescript@5.8.3))
+    transitivePeerDependencies:
+      - typescript
 
   '@aws-crypto/crc32@5.2.0':
     dependencies:

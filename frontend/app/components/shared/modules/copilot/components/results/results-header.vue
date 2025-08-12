@@ -32,7 +32,7 @@ SPDX-License-Identifier: MIT
 </template>
   
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 import type { ResultsHistory } from '../../types/copilot.types';
 import LfxDropdownSelector from "~/components/uikit/dropdown/dropdown-selector.vue";
 import LfxDropdownItem from "~/components/uikit/dropdown/dropdown-item.vue";

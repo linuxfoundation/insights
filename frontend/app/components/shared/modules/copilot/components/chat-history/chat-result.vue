@@ -32,7 +32,11 @@ SPDX-License-Identifier: MIT
       @click="emit('select')"
     >
       <span class="flex items-center gap-2">
-        <span class="rounded-full bg-neutral-200 px-1 py-0.5 text-xs font-semibold text-neutral-600">{{ `V${version}` }}</span>
+        <span 
+          class="rounded-full bg-neutral-200 px-1 py-0.5 text-xs font-semibold text-neutral-600"
+        >
+          {{ `V${version}` }}
+        </span>
         Results
       </span>
       <lfx-icon

@@ -14,6 +14,9 @@ SPDX-License-Identifier: MIT
     </div>
     <div class="border-r border-neutral-200 h-6" />
     <lfx-tools />
+    <client-only>
+      <lfx-login />
+    </client-only>
   </div>
 </template>
 
@@ -22,6 +25,7 @@ SPDX-License-Identifier: MIT
   import LfxMenuMobile from "~/components/shared/layout/menu/menu-mobile.vue";
   import LfxMenuTablet from "~/components/shared/layout/menu/menu-tablet.vue";
   import LfxMenuStaticLinks from "~/components/shared/layout/menu/static-links.vue";
+  import LfxLogin from "~/components/modules/auth/components/login.vue";
 </script>
 
 <script lang="ts">
