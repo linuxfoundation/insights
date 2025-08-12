@@ -53,7 +53,6 @@ const generateChart = async () => {
   
   if (data.config && data.success) {
     chartConfig.value = data.config;// patchChartData(data.config);
-    console.log(chartConfig.value, data.config);
   } else {
     error.value = data.error || 'Failed to generate chart';
   }

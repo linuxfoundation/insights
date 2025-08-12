@@ -48,11 +48,11 @@ export default defineNuxtConfig({
     // These are also exposed on the client-side
     public: {
       apiBase: "/api",
-      appUrl: "http://localhost:8081",
+      appUrl: "http://localhost:3000",
       appEnv: process.env.APP_ENV,
       auth0Domain: process.env.CROWD_LFX_AUTH0_DOMAIN || "",
       auth0ClientId: process.env.CROWD_LFX_AUTH0_CLIENT_ID || "",
-      auth0RedirectUri: process.env.CROWD_LFX_AUTH0_REDIRECT_URI || "http://localhost:8081/callback",
+      auth0RedirectUri: process.env.CROWD_LFX_AUTH0_REDIRECT_URI || "http://localhost:3000/callback",
     },
   },
   vue: {
