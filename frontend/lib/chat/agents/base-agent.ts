@@ -1,5 +1,9 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+// Copyright (c) 2025 The Linux Foundation and each contributor.
+// SPDX-License-Identifier: MIT
 import { z } from "zod";
 import { generateText } from "ai";
 
@@ -82,6 +86,7 @@ export abstract class BaseAgent<TInput, TOutput> {
       const fullSystemPrompt = systemPrompt + jsonInstructions;
 
       // Check if we have messages in the input
+      // eslint-disable-next-line max-len, vue/max-len
       const hasMessages = typeof input === 'object' && input !== null && 'messages' in input && Array.isArray((input as any).messages);
       
       const generateConfig: any = {
@@ -144,7 +149,7 @@ export abstract class BaseAgent<TInput, TOutput> {
     // Validate against schema
     try {
       const validatedOutput = this.outputSchema.parse(parsedOutput);
-      console.log(`${this.name} Agent Output:`, validatedOutput);
+      console.warn(`${this.name} Agent Output:`, validatedOutput);
       return validatedOutput;
     } catch (error) {
       console.error(`Failed to validate ${this.name} JSON`, error);

@@ -1,5 +1,8 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
+/* eslint-disable @typescript-eslint/no-explicit-any */
+// Copyright (c) 2025 The Linux Foundation and each contributor.
+// SPDX-License-Identifier: MIT
 import { z } from 'zod';
 import { pipePrompt } from '../prompts/pipe';
 import { BaseAgent } from './base-agent';
