@@ -72,11 +72,40 @@ export async function executePipeInstructions(instructions: PipeInstructions): P
     const row: Record<string, any> = {};
     
     for (const outputColumn of instructions.output) {
-      const pipeData = pipeResults[outputColumn.pipeId];
-      if (pipeData && pipeData[i]) {
-        row[outputColumn.name] = pipeData[i][outputColumn.sourceColumn];
-      } else {
-        row[outputColumn.name] = null;
+      if (outputColumn.type === 'direct') {
+        // Direct column mapping
+        const pipeData = pipeResults[outputColumn.pipeId];
+        if (pipeData && pipeData[i]) {
+          row[outputColumn.name] = pipeData[i][outputColumn.sourceColumn];
+        } else {
+          row[outputColumn.name] = null;
+        }
+      } else if (outputColumn.type === 'formula') {
+        // Formula column - compute value from dependencies
+        const variables: Record<string, any> = {};
+        
+        // Gather all dependency values
+        for (const dep of outputColumn.dependencies) {
+          const pipeData = pipeResults[dep.pipeId];
+          if (pipeData && pipeData[i]) {
+            variables[dep.variable] = pipeData[i][dep.sourceColumn];
+          } else {
+            variables[dep.variable] = null;
+          }
+        }
+        
+        // Evaluate the formula safely
+        try {
+          // Create a function that has access only to the variables we provide
+          const formulaFunction = new Function(
+            ...Object.keys(variables),
+            `return ${outputColumn.formula}`
+          );
+          row[outputColumn.name] = formulaFunction(...Object.values(variables));
+        } catch (error) {
+          console.error(`Error evaluating formula for column ${outputColumn.name}:`, error);
+          row[outputColumn.name] = null;
+        }
       }
     }
     

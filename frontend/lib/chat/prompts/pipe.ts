@@ -36,10 +36,22 @@ Your response must include an "instructions" field with this structure:
     }
   ],
   "output": [
+    // Direct column mapping
     {
+      "type": "direct",
       "name": "Output Column Name",  // Name for the column in final table
       "pipeId": "pipe_id",           // Which pipe this comes from
       "sourceColumn": "original_col"  // Original column name from that pipe
+    },
+    // Formula column for calculations (e.g., percentage growth)
+    {
+      "type": "formula",
+      "name": "Growth %",            // Name for the calculated column
+      "formula": "((b - a) / a) * 100",  // JavaScript expression
+      "dependencies": [
+        { "variable": "a", "pipeId": "pipe1", "sourceColumn": "last_year_count" },
+        { "variable": "b", "pipeId": "pipe2", "sourceColumn": "this_year_count" }
+      ]
     }
   ]
 }
@@ -48,11 +60,22 @@ Your response must include an "instructions" field with this structure:
 - Identify which pipes need to be executed
 - Determine the correct input parameters for each pipe
 - Execute the pipes and examine what columns are returned, and which columns are needed to answer the question.
-- Map the columns from pipe results to the final output structure.
+- Map the columns from pipe results to the final output structure using "type": "direct"
+- Add formula columns when calculations are needed (e.g., growth rates, percentages, differences)
 - Use ${pipe} with different parameters if needed
 - Use other available tools if they're more appropriate
 - Call multiple tools if needed to answer the question
 - Combine columns from multiple pipes if needed for comprehensive answers
+
+**WHEN TO USE FORMULAS**
+Use formula columns when the user asks for:
+- Percentage growth or change: formula: "((current - previous) / previous) * 100"
+- Differences between values: formula: "a - b"
+- Ratios: formula: "a / b"
+- Averages: formula: "(a + b) / 2"
+- Any other calculations between columns
+
+Always ensure variables in formulas match the dependency variable names.
 
 **RESPONSE GUIDELINES**
 - Create a clear execution plan in the instructions

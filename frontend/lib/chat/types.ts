@@ -14,12 +14,27 @@ export const pipeExecutionSchema = z.object({
   inputs: z.record(z.any()).describe("Input parameters for the pipe")
 });
 
-// Schema for output column mapping
-export const outputColumnSchema = z.object({
-  name: z.string().describe("Column name in final output"),
-  pipeId: z.string().describe("Which pipe this column comes from"),
-  sourceColumn: z.string().describe("Original column name from that pipe")
-});
+// Schema for output column mapping - either direct mapping or formula
+export const outputColumnSchema = z.discriminatedUnion("type", [
+  // Direct column mapping from a pipe
+  z.object({
+    type: z.literal("direct"),
+    name: z.string().describe("Column name in final output"),
+    pipeId: z.string().describe("Which pipe this column comes from"),
+    sourceColumn: z.string().describe("Original column name from that pipe")
+  }),
+  // Formula column that computes a value from other columns
+  z.object({
+    type: z.literal("formula"),
+    name: z.string().describe("Column name in final output"),
+    formula: z.string().describe("JavaScript expression to compute the value"),
+    dependencies: z.array(z.object({
+      variable: z.string().describe("Variable name to use in formula (e.g., 'a', 'b')"),
+      pipeId: z.string().describe("Which pipe this value comes from"),
+      sourceColumn: z.string().describe("Original column name from that pipe")
+    })).describe("Variables that the formula depends on")
+  })
+]);
 
 // Schema for pipe instructions
 export const pipeInstructionsSchema = z.object({
