@@ -19,6 +19,7 @@ SPDX-License-Identifier: MIT
       class="cursor-pointer"
     >
       <lfx-avatar
+        type="member"
         :src="'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlOLBRK-3wEFFeCojWlHou4nooggl5iI2PJQ&s'"
         size="small"
       />
@@ -52,8 +53,8 @@ const { loginWithRedirect, logout, isAuthenticated } = useAuth0();
 
 const isOpen = ref(false);
 
-const login = () => {
-  loginWithRedirect();
+const login = async () => {
+  loginWithRedirect()
 };
 
 const logoutHandler = () => {

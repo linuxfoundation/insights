@@ -4,38 +4,28 @@ SPDX-License-Identifier: MIT
 -->
 
 <template>
-  <div class="min-h-screen flex items-center justify-center">
-    <div class="text-center">
-      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4" />
-      <h2 class="text-xl font-semibold text-gray-900 mb-2">
-        Completing authentication...
-      </h2>
-      <p class="text-gray-600">
-        Please wait while we redirect you back to the application.
-      </p>
-    </div>
-  </div>
+  <div class="min-h-screen flex items-center justify-center" />
 </template>
 
 <script setup lang="ts">
+
 // This page handles the Auth0 callback
-// The Auth0 plugin will automatically handle the callback process
-// and redirect the user back to the application
+// Process the authorization code and redirect the user
 
 // Set page metadata
+// Note: definePageMeta is auto-imported in Nuxt 3
+// @ts-ignore
 definePageMeta({
-  layout: false
+  layout: false,
+  ssr: false // Disable SSR for this page (Auth0 callback needs client-side processing)
 })
 
-// Handle the callback on client-side
-onMounted(async () => {
-  // The Auth0 plugin handles the callback automatically
-  // After successful authentication, redirect to home
-  await nextTick()
+// const { handleRedirectCallback, isAuthenticated, error } = useAuth0()
+// const errorMessage = ref<string | null>(null)
+// const isProcessing = ref(true)
+
+// // Handle the callback on client-side
+// onMounted(async () => {
   
-  // Small delay to ensure Auth0 processing is complete
-  setTimeout(() => {
-    navigateTo('/')
-  }, 1000)
-})
+// })
 </script> 
