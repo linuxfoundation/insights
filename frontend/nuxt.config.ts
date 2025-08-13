@@ -53,6 +53,7 @@ export default defineNuxtConfig({
       auth0Domain: process.env.CROWD_LFX_AUTH0_DOMAIN || "",
       auth0ClientId: process.env.CROWD_LFX_AUTH0_CLIENT_ID || "",
       auth0RedirectUri: process.env.CROWD_LFX_AUTH0_REDIRECT_URI || "http://localhost:3000/callback",
+      auth0Audience: process.env.CROWD_LFX_AUTH0_AUDIENCE || "",
     },
   },
   vue: {

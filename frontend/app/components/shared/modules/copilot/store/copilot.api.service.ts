@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 
+import { useAuth0 } from '@auth0/auth0-vue';
 import type { AIMessage, MessageData, MessagePartType, MessageRole, MessageStatus } from "../types/copilot.types"
 import type { CopilotParams } from '../types/copilot.types'
 // import testData from './test.json'
@@ -43,11 +44,16 @@ class CopilotApiService {
       parameters
     }
 
+    const { getAccessTokenSilently } = useAuth0();
+
+    const token = await getAccessTokenSilently();
+
     // Send streaming request
     const response = await fetch('/api/chat/stream', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token
       },
       body: JSON.stringify(requestBody)
     })
@@ -67,11 +73,16 @@ class CopilotApiService {
       userQuery: 'Generate a chart for this data',
     }
 
+    const { getAccessTokenSilently } = useAuth0();
+
+    const token = await getAccessTokenSilently();
+
     // Send streaming request
     const response = await fetch('/api/chat/chart', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token
       },
       body: JSON.stringify(requestBody)
     })
