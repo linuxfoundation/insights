@@ -41,7 +41,7 @@ SPDX-License-Identifier: MIT
             <lfx-copilot-chart-results
               :data="selectedResultData"
               :config="selectedResultConfig"
-              @update:config="selectedResultConfig = $event"
+              @update:config="handleConfigUpdate"
             />
           </div>
         </template>
@@ -84,6 +84,7 @@ import type { Config } from '~~/lib/chat/chart/types';
 
 const emit = defineEmits<{
   (e: 'update:selectedResult', value: string): void;
+  (e: 'update:config', value: Config | null, id: string): void;
 }>();
 
 const props = defineProps<{
@@ -99,7 +100,9 @@ const selectedId = computed<string | null>({
   }
 })
 const selectedTab = ref('chart');
-const selectedResultConfig = ref<Config | null>(null);
+const selectedResultConfig = computed<Config | null>(() => {
+  return props.results.find(result => result.id === selectedId.value)?.chartConfig || null;
+});
 
 const resultsWithData = computed(() => {
   return props.results.filter(result => result.data.length > 0);
@@ -112,6 +115,12 @@ const selectedResultData = computed(() => {
 const isEmpty = computed(() => {
   return !props.isLoading && (!selectedResultData.value || selectedResultData.value.length === 0);
 })
+
+const handleConfigUpdate = (config: Config | null) => {
+  if (selectedId.value) {
+    emit('update:config', config, selectedId.value);
+  }
+}
 
 // Reset selectedResultConfig when selectedResultId changes
 watch(() => props.selectedResultId, () => {

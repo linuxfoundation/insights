@@ -26,6 +26,7 @@ SPDX-License-Identifier: MIT
           :selected-result-id="selectedResultId"
           :is-loading="isLoading"
           @update:selected-result="handleSelectedResult"
+          @update:config="handleConfigUpdate"
         />
       </div>
     </div>
@@ -38,6 +39,7 @@ import type { MessageData, ResultsHistory } from '../types/copilot.types'
 import LfxModal from '~/components/uikit/modal/modal.vue'
 import LfxCopilotSidebar from "~/components/shared/modules/copilot/components/copilot-sidebar.vue"
 import LfxCopilotResultsSection from "~/components/shared/modules/copilot/components/results/results-section.vue"
+import type { Config } from '~~/lib/chat/chart/types';
 
 const props = defineProps<{
   modelValue: boolean
@@ -81,6 +83,13 @@ const handleSelectedResult = (id: string) => {
 
 const handleIsLoading = (value: boolean) => {
   isLoading.value = value;
+}
+
+const handleConfigUpdate = (config: Config | null, id: string) => {
+  const result = resultData.value.find(result => result.id === id);
+  if (result) {
+    result.chartConfig = config || undefined;
+  }
 }
 </script>
 
