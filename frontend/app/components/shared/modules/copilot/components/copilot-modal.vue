@@ -15,9 +15,11 @@ SPDX-License-Identifier: MIT
         <lfx-copilot-sidebar
           :widget-name="widgetName"
           :selected-result-id="selectedResultId"
+          :is-loading="isLoading"
+          :is-chart-loading="isChartLoading"
           @update:data="handleDataUpdate"
           @update:selected-result="handleSelectedResult"
-          @update:is-loading="handleIsLoading"
+          @update:is-loading="isLoading = $event"
         />
       </div>
       <div class="w-2/3 flex justify-stretch items-stretch">
@@ -27,6 +29,7 @@ SPDX-License-Identifier: MIT
           :is-loading="isLoading"
           @update:selected-result="handleSelectedResult"
           @update:config="handleConfigUpdate"
+          @update:is-chart-loading="isChartLoading = $event"
         />
       </div>
     </div>
@@ -49,6 +52,7 @@ const props = defineProps<{
 const resultData = ref<ResultsHistory[]>([]);
 const selectedResultId = ref<string | null>(null);
 const isLoading = ref(false);
+const isChartLoading = ref(false);
 
 const emit = defineEmits<{
   'update:modelValue': [value: boolean]
@@ -79,10 +83,6 @@ const handleDataUpdate = (id: string, data: MessageData[]) => {
 
 const handleSelectedResult = (id: string) => {
   selectedResultId.value = id;
-}
-
-const handleIsLoading = (value: boolean) => {
-  isLoading.value = value;
 }
 
 const handleConfigUpdate = (config: Config | null, id: string) => {

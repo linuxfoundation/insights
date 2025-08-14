@@ -38,6 +38,7 @@ import { useAuthStore } from '~/components/modules/auth/store/auth.store';
 
 const emit = defineEmits<{
   (e: 'update:config', value: Config | null): void;
+  (e: 'update:isLoading', value: boolean): void;
 }>();
 
 const props = defineProps<{
@@ -166,7 +167,9 @@ watch(() => props.data, () => {
   }
 }, { immediate: true });
 
-
+watch(isLoading, (newVal) => {
+  emit('update:isLoading', newVal);
+}, { immediate: true });
 </script>
 
 <script lang="ts">

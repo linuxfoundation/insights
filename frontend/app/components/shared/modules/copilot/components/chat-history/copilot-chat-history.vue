@@ -13,11 +13,12 @@ SPDX-License-Identifier: MIT
       @select-result="selectResult"
     />
 
-    <lfx-chat-label
-      v-if="isLoading"
-      :status="'thinking'"
-      label="Thinking..."
-    />
+    <div v-if="isLoading">
+      <lfx-chat-label
+        :status="'thinking'"
+        label="Thinking..."
+      />
+    </div>
   </div>
 </template>
 <script setup lang="ts">

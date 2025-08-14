@@ -38,7 +38,7 @@ SPDX-License-Identifier: MIT
               text-xs resize-none focus:outline-none"
             rows="2"
             style="word-break: break-word; white-space: pre-wrap;"
-            :disabled="isLoading"
+            :disabled="isLoading || isChartLoading"
             @keydown.enter.prevent="handleSubmit"
           />
           <div class="flex justify-between pb-4 px-4 items-center">
@@ -66,7 +66,7 @@ SPDX-License-Identifier: MIT
               </span>
             </div>
             <lfx-icon-button
-              :disabled="!input.trim() || isLoading"
+              :disabled="!input.trim() || isLoading || isChartLoading"
               icon="arrow-up"
               size="small"
               type="primary"
@@ -95,11 +95,12 @@ import { useAuthStore } from '~/components/modules/auth/store/auth.store';
 const props = defineProps<{
   widgetName: string;
   selectedResultId: string | null;
+  isLoading: boolean;
+  isChartLoading: boolean;
 }>()
 
 // Initialize state
 const input = ref('')
-const isLoading = ref(false)
 const streamingStatus = ref('')
 const error = ref('')
 const messages = ref<Array<AIMessage>>([]) // tempData as AIMessage
@@ -107,6 +108,13 @@ const selectedResultId = computed<string | null>({
   get: () => props.selectedResultId,
   set: (value) => {
     emit('update:selectedResult', value || '');
+  }
+})
+
+const isLoading = computed<boolean>({
+  get: () => props.isLoading,
+  set: (value) => {
+    emit('update:isLoading', value);
   }
 })
 
@@ -143,10 +151,9 @@ const callChatApi = async (userMessage: string) => {
   messages.value.push(
     copilotApiService.generateTextMessage(userMessage, 'user' as MessageRole, 'complete' as MessageStatus)
   )
-
-  scrollToEnd();
   
-  input.value = ''
+  input.value = '';
+  scrollToEnd();
   
   try {
     // TODO: update the params here
@@ -172,7 +179,6 @@ const callChatApi = async (userMessage: string) => {
           emit('update:data', message.id, message.data);
           selectedResultId.value = message.id;
         }
-
         scrollToEnd();
       }, () => {
         isLoading.value = false;
@@ -198,7 +204,7 @@ const scrollToEnd = () => {
   setTimeout(() => {
     const chatMessages = document.querySelector('.chat-messages > div:last-child');
     chatMessages?.scrollIntoView({ behavior: 'smooth', block: 'end' });
-  }, 100);
+  }, 200);
 };
 
 const selectResult = (id: string) => {
@@ -219,9 +225,9 @@ watch(copilotDefaults, (newDefaults) => {
   }
 }, { immediate: true });
 
-watch(isLoading, (newVal) => {
-  emit('update:isLoading', newVal);
-}, { immediate: true });
+watch(messages, () => {
+  scrollToEnd();
+}, { immediate: true, deep: true });
 </script>
 
 <script lang="ts">

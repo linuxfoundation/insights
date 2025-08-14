@@ -42,6 +42,7 @@ SPDX-License-Identifier: MIT
               :data="selectedResultData"
               :config="selectedResultConfig"
               @update:config="handleConfigUpdate"
+              @update:is-loading="emit('update:isChartLoading', $event)"
             />
           </div>
         </template>
@@ -72,7 +73,7 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { computed, ref } from 'vue';
 import type { ResultsHistory } from '../../types/copilot.types';
 import LfxCopilotLoadingState from '../loading-state.vue';
 import LfxCopilotTableResults from './table-results.vue';
@@ -85,6 +86,7 @@ import type { Config } from '~~/lib/chat/chart/types';
 const emit = defineEmits<{
   (e: 'update:selectedResult', value: string): void;
   (e: 'update:config', value: Config | null, id: string): void;
+  (e: 'update:isChartLoading', value: boolean): void;
 }>();
 
 const props = defineProps<{
@@ -121,11 +123,6 @@ const handleConfigUpdate = (config: Config | null) => {
     emit('update:config', config, selectedId.value);
   }
 }
-
-// Reset selectedResultConfig when selectedResultId changes
-watch(() => props.selectedResultId, () => {
-  selectedResultConfig.value = null;
-});
 
 </script>
 
