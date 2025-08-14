@@ -27,12 +27,14 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { ref, watch, computed } from 'vue';
+import { storeToRefs } from 'pinia';
 import { DateTime } from 'luxon';
 import type { MessageData } from '../../types/copilot.types';
 import { copilotApiService } from '../../store/copilot.api.service';
 import LfxCopilotLoadingState from '../loading-state.vue';
 import type { Config, DataMapping } from '~~/lib/chat/chart/types';
 import LfxChart from '~/components/uikit/chart/chart.vue';
+import { useAuthStore } from '~/components/modules/auth/store/auth.store';
 
 const emit = defineEmits<{
   (e: 'update:config', value: Config | null): void;
@@ -42,6 +44,8 @@ const props = defineProps<{
   data: MessageData[] | null,
   config: Config | null
 }>()
+
+const { token } = storeToRefs(useAuthStore());
 
 const isLoading = ref(false);
 const error = ref(null);
@@ -60,7 +64,7 @@ const generateChart = async () => {
 
   isLoading.value = true;
   
-  const response = await copilotApiService.callChartApi(props.data);
+  const response = await copilotApiService.callChartApi(props.data, token.value);
   const data = await response.json();
   
   if (data.config && data.success) {

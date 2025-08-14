@@ -116,6 +116,7 @@ const isEmpty = computed(() => {
 // Reset selectedResultConfig when selectedResultId changes
 watch(() => props.selectedResultId, () => {
   selectedResultConfig.value = null;
+  console.log('selectedResultId changed:', props.selectedResultId, selectedResultConfig.value)
 });
 
 </script>

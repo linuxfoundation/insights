@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 
-import { useAuth0 } from '@auth0/auth0-vue';
 import type { AIMessage, MessageData, MessagePartType, MessageRole, MessageStatus } from "../types/copilot.types"
 import type { CopilotParams } from '../types/copilot.types'
 // import testData from './test.json'
@@ -62,16 +61,14 @@ class CopilotApiService {
   }
 
   async callChartApi(
-    sampleData: MessageData[]): Promise<Response> {
+    sampleData: MessageData[],
+    token: string,
+  ): Promise<Response> {
     // Prepare the request body with the correct format
     const requestBody = {
       results: sampleData,
       userQuery: 'Generate a chart for this data',
     }
-
-    const { getAccessTokenSilently } = useAuth0();
-
-    const token = await getAccessTokenSilently();
 
     // Send streaming request
     const response = await fetch('/api/chat/chart', {
