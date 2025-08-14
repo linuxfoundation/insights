@@ -6,11 +6,10 @@ SPDX-License-Identifier: MIT
   <div
     class="flex flex-col gap-5"
   >
-    <div class="relative">
+    <div class="relative text-center">
       <img
         src="/images/misc/loading-state-bg.svg"
         alt="Loading state background"
-        class="w-full h-full"
       >
       <lfx-icon
         name="chart-column"

@@ -5,11 +5,11 @@ SPDX-License-Identifier: MIT
 <template>
   <div class="w-full h-full min-h-0 flex flex-col">
     <div
-      v-if="selectedResultData && selectedResultData.length > 0"
       class="py-4 px-6 w-full h-full min-h-0 flex flex-col"
     >
       <div>
         <lfx-copilot-results-header
+          v-if="!isEmpty"
           :results="resultsWithData"
           :selected-result-id="selectedId"
           :is-loading="isLoading"
@@ -22,45 +22,52 @@ SPDX-License-Identifier: MIT
       >
         <lfx-copilot-results-toggle
           :model-value="selectedTab"
-          :data="selectedResultData"
+          :data="selectedResultData || []"
           @update:model-value="selectedTab = $event"
         />
-        <div
-          v-if="selectedTab === 'data'"
-          class="w-full h-full min-h-0 flex flex-col overflow-auto"
-        >
-          <lfx-copilot-table-results
-            :data="selectedResultData"
-          />
-        </div>
+        <template v-if="!isEmpty">
+          <div
+            v-if="selectedTab === 'data'"
+            class="w-full h-full min-h-0 flex flex-col overflow-auto"
+          >
+            <lfx-copilot-table-results
+              :data="selectedResultData"
+            />
+          </div>
+          <div
+            v-else
+            class="w-full h-full min-h-0 flex flex-col overflow-auto"
+          >
+            <lfx-copilot-chart-results
+              :data="selectedResultData"
+              :config="selectedResultConfig"
+              @update:config="selectedResultConfig = $event"
+            />
+          </div>
+        </template>
+
         <div
           v-else
-          class="w-full h-full min-h-0 flex flex-col overflow-auto"
+          class="flex flex-col items-center justify-center h-[450px]"
         >
-          <lfx-copilot-chart-results
-            :data="selectedResultData"
-            :config="selectedResultConfig"
-            @update:config="selectedResultConfig = $event"
+          <lfx-icon
+            name="eyes"
+            :size="40"
+            class="text-neutral-300"
           />
+          <p class="text-sm text-neutral-500 mt-5">
+            No data available
+          </p>
         </div>
       </div>
-      <lfx-copilot-loading-state
+      <div
         v-else
-      />
+        class="h-full flex flex-col justify-center"
+      >
+        <lfx-copilot-loading-state />
+      </div>
     </div>
-    <div
-      v-else
-      class="flex flex-col items-center justify-center h-[240px]"
-    >
-      <lfx-icon
-        name="eyes"
-        :size="40"
-        class="text-neutral-300"
-      />
-      <p class="text-sm text-neutral-500 mt-5">
-        No data available
-      </p>
-    </div>
+    
   </div>
 </template>
 
@@ -74,7 +81,6 @@ import LfxCopilotResultsToggle from './results-toggle.vue';
 import LfxCopilotChartResults from './chart-results.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import type { Config } from '~~/lib/chat/chart/types';
-
 
 const emit = defineEmits<{
   (e: 'update:selectedResult', value: string): void;
@@ -101,6 +107,10 @@ const resultsWithData = computed(() => {
 
 const selectedResultData = computed(() => {
   return props.results.find(result => result.id === selectedId.value)?.data || null;
+})
+
+const isEmpty = computed(() => {
+  return !props.isLoading && (!selectedResultData.value || selectedResultData.value.length === 0);
 })
 
 // Reset selectedResultConfig when selectedResultId changes
