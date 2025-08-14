@@ -33,6 +33,20 @@ export interface AIMessage {
   timestamp: number;
   sql?: string;
   data?: Array<MessageData>;
+  explanation?: string;
+  instructions?: {
+    pipes: Array<{
+      id: string;
+      name: string;
+      inputs: Record<string, string>;
+    }>;
+    output: Array<{
+      type: string;
+      name: string;
+      pipeId: string;
+      sourceColumn: string;
+    }>;
+  };
 }
 
 // export interface CopilotMessage {

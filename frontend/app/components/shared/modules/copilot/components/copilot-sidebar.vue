@@ -90,6 +90,7 @@ import LfxIcon from '~/components/uikit/icon/icon.vue'
 import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue'
 import { lfxWidgets } from '~/components/modules/widget/config/widget.config'
 import type {Widget} from "~/components/modules/widget/types/widget";
+import { useAuthStore } from '~/components/modules/auth/store/auth.store';
 
 const props = defineProps<{
   widgetName: string;
@@ -122,6 +123,7 @@ const emit = defineEmits<{
 }>();
 
 const { copilotDefaults } = storeToRefs(useCopilotStore());
+const { token } = storeToRefs(useAuthStore());
 
 // Handle form submission
 const handleSubmit = async (e?: Event) => {
@@ -153,6 +155,7 @@ const callChatApi = async (userMessage: string) => {
         messages.value, 
         copilotDefaults.value.project, 
         copilotDefaults.value.widget, 
+        token.value,
         copilotDefaults.value.params)
 
       // Handle the streaming response

@@ -31,6 +31,7 @@ class CopilotApiService {
     messages: Array<AIMessage>, 
     project: Project, 
     pipe: string, 
+    token: string,
     parameters?: CopilotParams): Promise<Response> {
     // Prepare the request body with the correct format
     const requestBody = {
@@ -43,11 +44,6 @@ class CopilotApiService {
       projectName: project?.name,
       parameters
     }
-
-    const { getAccessTokenSilently } = useAuth0();
-
-    const token = await getAccessTokenSilently();
-
     // Send streaming request
     const response = await fetch('/api/chat/stream', {
       method: 'POST',
@@ -165,33 +161,25 @@ class CopilotApiService {
                     statusCallBack('Tool execution completed');
                   }
 
+                  const content = data.explanation
+
                   // Create assistant message if it doesn't exist yet
                   if (!assistantMessageId) {
                     assistantMessageId = this.generateId();
-                    messageCallBack({
-                      id: assistantMessageId,
-                      role: 'assistant',
-                      type: data.type,
-                      status: data.status,
-                      sql: data.sql, 
-                      data: data.data,
-                      content: '',
-                      timestamp: Date.now()
-                    }, -1);
                   }
-                  
-                  const content = data.type === 'sql-result' ? data.explanation : `Tools Used\n${data.tools.join(', ')}\n`;
-                  
-                  const messageIndex = messages.findIndex(m => m.id === assistantMessageId)
-                  if (messageIndex !== -1 && messages[messageIndex]) {
-                    messageCallBack({
-                      ...messages[messageIndex], 
-                      content, 
-                      sql: data.sql, 
-                      data: data.data,
-                      timestamp: Date.now()
-                    }, messageIndex);
-                  }
+
+                  messageCallBack({
+                    id: assistantMessageId,
+                    role: 'assistant',
+                    type: data.type,
+                    status: data.status,
+                    sql: data.sql, 
+                    data: data.data,
+                    content,
+                    explanation: data.explanation,
+                    instructions: data.instructions,
+                    timestamp: Date.now()
+                  }, -1);
                 } 
               }
             } else if (prefix === '0') {

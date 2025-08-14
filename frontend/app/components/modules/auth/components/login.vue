@@ -43,13 +43,16 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { storeToRefs } from 'pinia';
+import { ref, watch } from 'vue';
 import { useAuth0 } from '@auth0/auth0-vue';
+import { useAuthStore } from '../store/auth.store';
 import LfxButton from '~/components/uikit/button/button.vue';
 import LfxAvatar from "~/components/uikit/avatar/avatar.vue";
 import LfxPopover from "~/components/uikit/popover/popover.vue";
 
-const { loginWithRedirect, logout, isAuthenticated } = useAuth0();
+const { loginWithRedirect, logout, isAuthenticated, getAccessTokenSilently } = useAuth0();
+const { token } = storeToRefs(useAuthStore());
 
 const isOpen = ref(false);
 
@@ -60,6 +63,15 @@ const login = async () => {
 const logoutHandler = () => {
   logout();
 };
+
+watch(isAuthenticated, async (newVal) => {
+  if (newVal) {
+    const tokenTmp = await getAccessTokenSilently();
+    token.value = tokenTmp;
+  } else {
+    token.value = '';
+  }
+});
 </script>
 
 <script lang="ts">
