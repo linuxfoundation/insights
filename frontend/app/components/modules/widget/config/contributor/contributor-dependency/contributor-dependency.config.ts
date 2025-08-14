@@ -57,10 +57,6 @@ const contributorDependency: WidgetConfig = {
               ensuring robust support and a highly resilient development process.`,
             }
         }
-    },
-    copilot: {
-      icon: 'people-group',
-      suggestions: 'Show me the contributor dependency'
     }
 }
 

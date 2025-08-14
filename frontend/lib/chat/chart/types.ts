@@ -7,11 +7,14 @@ export type Result = Record<string, string | number>;
 // ECharts series type schema
 const echartsSeriesSchema = z.object({
   type: z.enum(['bar', 'line', 'pie']),
+  seriesLayoutBy: z.enum(['row', 'column']).optional(),
+  xAxisIndex: z.number().optional(),
+  yAxisIndex: z.number().optional(),
   name: z.string().optional(),
   data: z.array(z.union([z.number(), z.object({
     name: z.string(),
     value: z.number(),
-  })])),
+  })])).optional(),
   stack: z.string().optional(),
   areaStyle: z.object({}).optional(), // For area charts (line with areaStyle)
   color: z.string().optional(),
@@ -31,6 +34,9 @@ export const configSchema = z.object({
       fontWeight: z.string().optional(),
       color: z.string().optional(),
     }).optional(),
+  }).optional(),
+  dataset: z.object({
+    source: z.array(z.array(z.union([z.string(), z.number()]))).optional(),
   }).optional(),
   tooltip: z.object({
     trigger: z.enum(['item', 'axis']),
@@ -56,16 +62,41 @@ export const configSchema = z.object({
     type: z.enum(['category', 'value', 'time', 'log']),
     data: z.array(z.union([z.string(), z.number()])).optional(),
     name: z.string().optional(),
+    axisLine: z.object({
+      show: z.boolean().optional(),
+    }).optional(),
+    splitLine: z.object({
+      show: z.boolean().optional(),
+    }).optional(),
+    axisTick: z.object({
+      show: z.boolean().optional(),
+    }).optional(),
     axisLabel: z.object({
+      fontSize: z.string().optional(),
+      fontWeight: z.string().optional(),
       rotate: z.number().optional(),
       formatter: z.string().optional(),
     }).optional(),
   }).optional(),
   yAxis: z.object({
-    type: z.enum(['category', 'value', 'time', 'log']),
+    alignTicks: z.boolean().optional(),
     name: z.string().optional(),
+    type: z.enum(['value', 'log']).optional(),
     axisLabel: z.object({
+      fontSize: z.string().optional(),
+      fontWeight: z.string().optional(),
       formatter: z.string().optional(),
+    }).optional(),
+    splitLine: z.object({
+      lineStyle: z.object({
+        type: z.enum(['dashed', 'solid']).optional(),
+        color: z.string().optional(),
+      }).optional(),
+      showMinLine: z.boolean().optional(),
+      show: z.boolean().optional(),
+    }).optional(),
+    axisTick: z.object({
+      show: z.boolean().optional(),
     }).optional(),
   }).optional(),
   series: z.array(echartsSeriesSchema),
@@ -75,5 +106,18 @@ export const configSchema = z.object({
   animationDuration: z.number().optional(),
 });
 
+const dataMappingSchema = z.object({
+  originalFieldName: z.string(),
+  indexInDataset: z.number(),
+  convertedFieldName: z.string(),
+  dateConversion: z.string().optional(),
+});
+
+export const outputSchema = z.object({
+  chartConfig: configSchema,
+  dataMapping: dataMappingSchema.array(),
+});
+
 export type Config = z.infer<typeof configSchema>;
 export type EChartsSeriesConfig = z.infer<typeof echartsSeriesSchema>;
+export type DataMapping = z.infer<typeof dataMappingSchema>;

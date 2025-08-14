@@ -1,46 +1,62 @@
 [
   {
-    "id": "me8e2kpeie2ibs49upn",
+    "id": "meaxf2cpnygggk6wwdo",
     "role": "user",
     "type": "text",
     "status": "complete",
-    "content": "Show me the comparison of active contributors between the current and previous quarters",
-    "timestamp": 1754993926994
+    "content": "Active contributors per month in the past 6 months",
+    "timestamp": 1755147354793
   },
   {
-    "id": "me8e2sr4aiw2mauwmgi",
+    "id": "meaxf9uqo533oi5ai7a",
     "role": "assistant",
     "type": "router-status",
     "status": "complete",
-    "content": "I'll use the active_contributors widget to get quarterly data for both the current quarter (Q3 2025: July-September) and the previous quarter (Q2 2025: April-June) for the Kubernetes project, allowing for a direct comparison of active contributor counts.",
-    "timestamp": 1754993937424
+    "content": "I'll use the active_contributors tool to show monthly active contributor counts for the Kubernetes project over the past 6 months (February 2025 to August 2025).",
+    "timestamp": 1755147364514
   },
   {
-    "id": "me8e2zypgc2ryf33ehl",
+    "id": "meaxffdwfkitwrknss",
     "role": "assistant",
     "type": "pipe-result",
-    "sql": "## Tools Used\nactive_contributors, active_contributors\n\n",
-    "data": {
-      "comparison_summary": "Q2 2025 vs Q3 2025 Active Contributors",
-      "quarters": [
-        {
-          "quarter": "Q2 2025",
-          "period": "April 1 - June 30, 2025",
-          "contributorCount": 6029
-        },
-        {
-          "quarter": "Q3 2025",
-          "period": "July 1 - September 30, 2025",
-          "contributorCount": 2805
-        }
-      ],
-      "analysis": {
-        "difference": -3224,
-        "percent_change": "-53.5%",
-        "trend": "Significant decrease in active contributors from Q2 to Q3 2025"
+    "data": [
+      {
+        "Month Start": "2025-02-01",
+        "Month End": "2025-02-28",
+        "Active Contributors": 1928
+      },
+      {
+        "Month Start": "2025-03-01",
+        "Month End": "2025-03-31",
+        "Active Contributors": 3047
+      },
+      {
+        "Month Start": "2025-04-01",
+        "Month End": "2025-04-30",
+        "Active Contributors": 2830
+      },
+      {
+        "Month Start": "2025-05-01",
+        "Month End": "2025-05-31",
+        "Active Contributors": 2987
+      },
+      {
+        "Month Start": "2025-06-01",
+        "Month End": "2025-06-30",
+        "Active Contributors": 2835
+      },
+      {
+        "Month Start": "2025-07-01",
+        "Month End": "2025-07-31",
+        "Active Contributors": 2826
+      },
+      {
+        "Month Start": "2025-08-01",
+        "Month End": "2025-08-31",
+        "Active Contributors": 1432
       }
-    },
-    "content": "## Explanation\nUsed active_contributors twice with quarterly granularity to compare Q3 2025 (current quarter: July-September) and Q2 2025 (previous quarter: April-June) for the Kubernetes project\n\n",
-    "timestamp": 1754993946769
+    ],
+    "content": "",
+    "timestamp": 1755147371684
   }
 ]

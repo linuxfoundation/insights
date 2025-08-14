@@ -50,6 +50,7 @@ try {
       success: true,
       isMetric: chartGeneration.isMetric,
       config: chartGeneration.config,
+      dataMapping: chartGeneration.dataMapping,
       isModification: false,
     };
   } catch (error: any) {

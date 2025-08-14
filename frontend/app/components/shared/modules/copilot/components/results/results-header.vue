@@ -4,7 +4,14 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <div class="flex justify-between w-full mb-8">
+    <lfx-skeleton
+      v-if="isLoading"
+      height="2.25rem"
+      width="15rem"
+      class="rounded-sm"
+    />
     <lfx-dropdown-select
+      v-else
       v-model="selectedId"
       class="!w-auto min-w-[200px]"
       :match-width="true"
@@ -34,6 +41,18 @@ SPDX-License-Identifier: MIT
       </lfx-dropdown-item>
 
     </lfx-dropdown-select>
+
+    <div class="flex items-center gap-2 mr-13">
+      <lfx-menu-button
+        :to="docsLink"
+        class="!text-neutral-900"
+      >
+        <lfx-icon
+          name="book-open"
+        />
+        Docs
+      </lfx-menu-button>
+    </div>
   </div>
 </template>
   
@@ -44,6 +63,10 @@ import LfxChatResultLabel from '../chat-history/result-label.vue'
 import LfxDropdownSelector from "~/components/uikit/dropdown/dropdown-selector.vue";
 import LfxDropdownItem from "~/components/uikit/dropdown/dropdown-item.vue";
 import LfxDropdownSelect from "~/components/uikit/dropdown/dropdown-select.vue";
+import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
+import { links } from '~/config/links';
+import LfxMenuButton from "~/components/uikit/menu-button/menu-button.vue";
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 
 const emit = defineEmits<{
   (e: 'update:selectedResult', value: string): void;
@@ -52,7 +75,11 @@ const emit = defineEmits<{
 const props = defineProps<{
   results: ResultsHistory[];
   selectedResultId: string | null;
-}>()
+  isLoading: boolean;
+}>();
+
+// TODO: Check if this is the correct link
+const docsLink = links.copilotDocs;
 
 const selectedId = computed<string>({
   get: () => props.selectedResultId || '',

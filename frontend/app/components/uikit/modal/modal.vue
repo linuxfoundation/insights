@@ -26,7 +26,7 @@ SPDX-License-Identifier: MIT
           </div>
           <lfx-icon-button
             class="c-modal__close-button"
-            size="small"
+            :size="props.type === 'cover' ? 'medium' : 'small'"
             icon="fa fa-xmark fa-light"
             @click="clickOutsideClose()"
           />

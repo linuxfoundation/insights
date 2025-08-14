@@ -8,9 +8,10 @@
 // SPDX-License-Identifier: MIT
 import { createAmazonBedrock } from '@ai-sdk/amazon-bedrock';
 import { generateObject } from "ai";
-import { configSchema } from "./types";
-import type { Config, Result } from "./types";
+import { outputSchema } from "./types";
+import type { Config, DataMapping, Result } from "./types";
 import { analyzeDataForChart, shouldStackBars } from "./analysis";
+import sampleConfig from './base-config';
 import { lfxColors } from '~/config/styles/colors';
 
 const bedrock = createAmazonBedrock({
@@ -37,38 +38,40 @@ const model = bedrock("us.anthropic.claude-sonnet-4-20250514-v1:0");
 export async function generateChartConfig(
   results: Result[],
   userQuery: string
-): Promise<{ config: Config | null; isMetric?: boolean }> {
+): Promise<{ config: Config | null, dataMapping: DataMapping[] | null, isMetric?: boolean }> {
   const dataProfile = analyzeDataForChart(results, userQuery);
 
   // Skip chart for single values - show as metric
   if (!dataProfile || dataProfile.dataShape === "single-value") {
-    return { config: null, isMetric: true };
+    return { config: null, dataMapping: null, isMetric: true };
   }
 
   try {
-    const { object: config } = await generateObject({
+    const { object } = await generateObject({
       model,
       output: "object" as const,
-      schema: configSchema,
+      schema: outputSchema,
       system: "You are a data visualization expert. Create simple, effective chart configurations using the apache echarts configuration schema.",
       prompt: createChartGenerationPrompt(dataProfile, results, userQuery),
       temperature: 0.3,
     });
 
+    const { chartConfig, dataMapping } = object;
+
     // Apply default colors if not already set
-    if (!config.color) {
-      const colors = generateDefaultColors(config.series.map((s: any) => s.name));
-      config.color = colors;
+    if (!chartConfig.color) {
+      const colors = generateDefaultColors(chartConfig.series.map((s: any) => s.name));
+      chartConfig.color = colors;
     }
 
-    const finalConfig = config;
+    const finalConfig = chartConfig;
 
-    return { config: finalConfig };
+    return { config: finalConfig, dataMapping };
   } catch (e) {
     console.error("Chart generation failed, using fallback", e);
     // Smart fallback
     const fallbackConfig = generateFallbackConfig(dataProfile);
-    return { config: fallbackConfig };
+    return { config: fallbackConfig, dataMapping: null };
   }
 }
 
@@ -76,25 +79,26 @@ export async function modifyChartConfig(
   currentConfig: Config,
   currentData: Result[],
   userRequest: string
-): Promise<Config> {
+): Promise<{ config: Config, dataMapping: DataMapping[] | null }> {
   const dataProfile = analyzeDataForChart(currentData, userRequest);
 
   try {
     const { object: newConfig } = await generateObject({
       model,
       output: "object" as const,
-      schema: configSchema,
+      schema: outputSchema,
       system: "You are a chart modification expert. Make minimal changes based on user requests.",
       prompt: createChartModificationPrompt(currentConfig, dataProfile, currentData, userRequest),
       temperature: 0.3,
     });
 
+    const { chartConfig, dataMapping } = newConfig;
     // Preserve colors if not updated
-    if (!newConfig.color) {
-      newConfig.color = currentConfig.color;
+    if (!chartConfig.color) {
+      chartConfig.color = currentConfig.color;
     }
     
-    return newConfig;
+    return { config: chartConfig, dataMapping };
   } catch (e) {
     console.error("Failed to modify chart config", e);
     throw new Error("Failed to modify chart configuration");
@@ -136,7 +140,6 @@ function generateFallbackConfig(profile: any): Config {
   const series = yKeys.map((yKey: string, index: number) => ({
     type,
     name: yKey,
-    data: [], // Will be populated by the chart rendering component
     ...(stackName && { stack: stackName }),
     ...(type === "line" && profile.dataShape === "time-series" && { 
       areaStyle: {} // Enable area style for time-series line charts
@@ -144,7 +147,7 @@ function generateFallbackConfig(profile: any): Config {
   }));
 
   // Generate default colors array
-  const colors = yKeys.map((_: string, index: number) => `hsl(var(--chart-${index + 1}))`);
+  const colors = yKeys.map((_: string, index: number) => defaultColors[index] || lfxColors.brand[500]);
 
   const config: Config = {
     title: {
@@ -189,7 +192,7 @@ function generateFallbackConfig(profile: any): Config {
 
 function createChartGenerationPrompt(dataProfile: any, results: Result[], userQuery: string): string {
   const columns = dataProfile.columns.map((c: any) => `${c.name} (${c.type})`).join(", ");
-  const sampleData = JSON.stringify(results, null, 2); // JSON.stringify(results.slice(0, 15), null, 2);
+  const sampleData = JSON.stringify(JSON.stringify(results.slice(0, 3), null, 2), null, 2);
   
   return `Based on this data analysis and user query, generate an optimal apache echarts chart configuration.
 
@@ -198,16 +201,31 @@ Data Shape: ${dataProfile.dataShape}
 Row Count: ${dataProfile.rowCount}
 Columns: ${columns}
 Sample Data: ${sampleData}
+Sample Config: ${JSON.stringify(sampleConfig, null, 2)} 
 
 Create a chart configuration that:
 1. Uses the appropriate chart type (bar, line, area, or pie)
 2. Strictly follows the apache echarts configuration schema
-3. Selects the right columns for x and y axes
-4. Includes a clear, descriptive title
-5. Enables features like stacking or legends when beneficial
-6. Considers data pivoting if needed for better visualization
+3. Use the sample config as a reference for the chart configuration, replace the sample data with the actual data
+4. Use 'dataset' to store the data, do not use 'data' in the series
+5. Selects the right columns for x and y axes
+6. Includes a clear, descriptive title
+7. Enables features like stacking or legends when beneficial
+8. Considers data pivoting if needed for better visualization
+9. Do not show X and Y axes labels
 
-Return a valid chart configuration object.`;
+Return a valid chart configuration object and how the data was mapped to the chart in the following format:
+{
+  "chartConfig": <chart configuration object>,
+  "dataMapping": [
+    {
+      "originalFieldName": "originalFieldName",
+      "indexInDataset": 0,
+      "convertedFieldName": "convertedFieldName",
+      "dateConversion": "converted date format"
+    }
+  ]
+}`;
 }
 
 function createChartModificationPrompt(currentConfig: Config, dataProfile: any, currentData: Result[], userRequest: string): string {
@@ -228,5 +246,16 @@ Make minimal changes to satisfy the user's request. Common modifications:
 - Update the title
 - Toggle legend visibility
 
-Return a complete, valid chart configuration object.`;
+Return a complete, valid chart configuration object and how the data was mapped to the chart in the following format:
+{
+  "chartConfig": <chart configuration object>,
+  "dataMapping": [
+    {
+      "originalFieldName": "originalFieldName",
+      "indexInDataset": 0,
+      "convertedFieldName": "convertedFieldName",
+      "dateConversion": "converted date format"
+    }
+  ]
+}`;
 }

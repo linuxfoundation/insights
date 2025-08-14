@@ -188,7 +188,6 @@ const callChatApi = async (userMessage: string) => {
   } finally {
     isLoading.value = false
     streamingStatus.value = ''
-    console.log('!!messages', JSON.stringify(messages.value));
   }
 }
 
