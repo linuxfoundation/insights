@@ -23,6 +23,22 @@ SPDX-License-Identifier: MIT
   >
     <lfx-chart :config="chartConfig" />
   </div>
+
+  <lfx-snapshot-modal
+    v-if="isSnapshotModalOpen"
+    v-model="isSnapshotModalOpen"
+    :widget-name="'chart' as Widget"
+    :use-slot="true"
+    :data="chartConfig || {}"
+    :snapshot-name="chartConfig?.title?.text || 'Insights Chart'"
+  >
+    <div
+      if="chartConfig"
+      class="h-[450px]"
+    >
+      <lfx-chart :config="chartConfig" />
+    </div>
+  </lfx-snapshot-modal>
 </template>
 
 <script setup lang="ts">
@@ -35,16 +51,27 @@ import LfxCopilotLoadingState from '../loading-state.vue';
 import type { Config, DataMapping } from '~~/lib/chat/chart/types';
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import { useAuthStore } from '~/components/modules/auth/store/auth.store';
+import LfxSnapshotModal from '~/components/modules/widget/components/shared/snapshot/snapshot-modal.vue';
+import type { Widget } from '~/components/modules/widget/types/widget';
 
 const emit = defineEmits<{
   (e: 'update:config', value: Config | null): void;
   (e: 'update:isLoading', value: boolean): void;
+  (e: 'update:isSnapshotModalOpen', value: boolean): void;
 }>();
 
 const props = defineProps<{
   data: MessageData[] | null,
-  config: Config | null
+  config: Config | null,
+  isSnapshotModalOpen: boolean
 }>()
+
+const isSnapshotModalOpen = computed({
+  get: () => props.isSnapshotModalOpen,
+  set: (value) => {
+    emit('update:isSnapshotModalOpen', value);
+  }
+})
 
 const { token } = storeToRefs(useAuthStore());
 

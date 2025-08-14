@@ -41,6 +41,7 @@ import LfxButton from '~/components/uikit/button/button.vue';
 
 const emit = defineEmits<{
   (e: 'update:modelValue', value: string): void;
+  (e: 'openSnapshotModal', value: boolean): void;
 }>();
 
 const props = defineProps<{
@@ -57,6 +58,7 @@ const exportData = () => {
   if (props.modelValue === 'data') {
     exportCsv();
   } else {
+    emit('openSnapshotModal', true);
     // call screenshot function
   }
 }

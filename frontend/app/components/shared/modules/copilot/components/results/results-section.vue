@@ -24,6 +24,7 @@ SPDX-License-Identifier: MIT
           :model-value="selectedTab"
           :data="selectedResultData || []"
           @update:model-value="selectedTab = $event"
+          @open-snapshot-modal="isSnapshotModalOpen = true"
         />
         <template v-if="!isEmpty">
           <div
@@ -41,8 +42,10 @@ SPDX-License-Identifier: MIT
             <lfx-copilot-chart-results
               :data="selectedResultData"
               :config="selectedResultConfig"
+              :is-snapshot-modal-open="isSnapshotModalOpen"
               @update:config="handleConfigUpdate"
               @update:is-loading="emit('update:isChartLoading', $event)"
+              @update:is-snapshot-modal-open="isSnapshotModalOpen = $event"
             />
           </div>
         </template>
@@ -102,6 +105,7 @@ const selectedId = computed<string | null>({
   }
 })
 const selectedTab = ref('chart');
+const isSnapshotModalOpen = ref(false);
 const selectedResultConfig = computed<Config | null>(() => {
   return props.results.find(result => result.id === selectedId.value)?.chartConfig || null;
 });

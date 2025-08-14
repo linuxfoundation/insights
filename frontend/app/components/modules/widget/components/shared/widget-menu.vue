@@ -12,6 +12,7 @@ SPDX-License-Identifier: MIT
         <div
           v-if="link.isSeparator && link.enabled"
           class="h-6 border-r border-r-neutral-200"
+          :class="link.buttonClass"
         />
         <lfx-tooltip
           v-else-if="link.enabled"
@@ -21,7 +22,7 @@ SPDX-License-Identifier: MIT
         >
           <lfx-widget-menu-item
             class="flex gap-2 items-center"
-            :class="link.showLabel ? '!w-auto !px-4' : ''"
+            :class="`${link.showLabel ? '!w-auto !px-4' : ''} ${link.buttonClass}`"
             @click="link.action()"
           >
             <lfx-icon
@@ -57,10 +58,10 @@ SPDX-License-Identifier: MIT
           :key="link.label"
         >
           <lfx-dropdown-separator
-            v-if="link.isSeparator && link.enabled"
+            v-if="link.isSeparator && link.enabled && !link.hideOnMobile"
           />
           <lfx-dropdown-item
-            v-else-if="link.enabled"
+            v-else-if="link.enabled && !link.hideOnMobile"
             @click="link.action()"
           >
             <lfx-icon
@@ -111,7 +112,19 @@ import {useCopilotStore} from "~/components/shared/modules/copilot/store/copilot
 import { dateOptKeys } from '~/components/modules/project/config/date-options';
 import type { Granularity } from '~~/types/shared/granularity';
 import { barGranularities } from '~/components/shared/types/granularity';
+import { useAuthStore } from "~/components/modules/auth/store/auth.store";
 
+interface MenuItem {
+  label: string;
+  icon: string;
+  action: () => void;
+  enabled: boolean;
+  showLabel?: boolean;
+  iconClass?: string;
+  buttonClass?: string;
+  isSeparator: boolean;
+  hideOnMobile?: boolean;
+}
 const props = defineProps<{
   name: Widget;
   data: object
@@ -133,6 +146,8 @@ const {
   endDate, 
   selectedTimeRangeKey, 
   customRangeGranularity} = storeToRefs(useProjectStore());
+const {token} = storeToRefs(useAuthStore())
+const isCopilotEnabled = computed(() => !!config.value.copilot && !!token.value)
 
 const granularity = computed(() => (selectedTimeRangeKey.value === dateOptKeys.custom
   ? customRangeGranularity.value[0] as Granularity
@@ -180,15 +195,7 @@ const askCopilot = () => {
   });
 }
 
-const menu: {
-  label: string;
-  icon: string;
-  action: () => void;
-  enabled: boolean;
-  showLabel?: boolean;
-  iconClass?: string;
-  isSeparator: boolean
-}[] = [
+const menu = computed<MenuItem[]>(() => [
   {
     label: 'Report issue',
     icon: 'comment-exclamation',
@@ -236,19 +243,23 @@ const menu: {
     icon: '',
     action: () => {
     },
-    enabled: config.value.embed || config.value.snapshot || config.value.share,
-    isSeparator: true
+    enabled: config.value.embed || config.value.snapshot || config.value.share || isCopilotEnabled.value,
+    buttonClass: '!hidden xl:!block',
+    isSeparator: true,
+    hideOnMobile: true
   },
   {
     label: 'Ask Copilot',
     icon: 'sparkles',
     iconClass: '!text-brand-500',
+    buttonClass: '!hidden xl:!flex',
     action: askCopilot,
-    enabled: !!config.value.copilot,
+    enabled: isCopilotEnabled.value,
     showLabel: true,
-    isSeparator: false
+    isSeparator: false,
+    hideOnMobile: true
   }
-]
+])
 </script>
 
 <script lang="ts">
