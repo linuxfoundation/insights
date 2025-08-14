@@ -80,7 +80,6 @@ const handleSelectedResult = (id: string) => {
 }
 
 const handleIsLoading = (value: boolean) => {
-  console.log('handleIsLoading', value);
   isLoading.value = value;
 }
 </script>
