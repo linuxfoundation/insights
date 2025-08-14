@@ -92,7 +92,9 @@ const isModalOpen = computed<boolean>({
   set: (value: boolean) => emit('update:modelValue', value)
 });
 const {project, selectedRepositories} = storeToRefs(useProjectStore())
-const repoName = computed(() => (selectedRepositories?.value?.map((repo) => repo.name).join(', ') || '').split('/').at(-1));
+const repoName = computed(() => (
+  selectedRepositories?.value?.map((repo) => repo.name.split('/').at(-1)).join(', ') || '')
+);
 
 const widgetConfig = computed(() => lfxWidgets[props.widgetName]);
 

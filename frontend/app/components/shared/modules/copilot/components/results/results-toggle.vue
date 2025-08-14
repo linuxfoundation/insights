@@ -83,7 +83,7 @@ const exportCsv = () => {
   ];
   const csvContent = csvRows.join('\r\n');
   // Create a Blob and trigger download
-  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const blob = new window.Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a');
   link.href = url;
