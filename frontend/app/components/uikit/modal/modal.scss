@@ -29,10 +29,10 @@
   }
 
   &--cover{
-    @apply justify-stretch items-stretch p-4;
+    @apply 2xl:justify-center justify-stretch 2xl:items-center items-stretch p-4;
     
     .c-modal__content-wrapper{
-      @apply h-full w-full;
+      @apply h-full w-full max-w-[1600px] max-h-[1024px];
     }
 
     .c-modal__content{

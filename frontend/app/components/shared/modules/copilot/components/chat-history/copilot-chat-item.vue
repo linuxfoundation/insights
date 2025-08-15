@@ -35,15 +35,10 @@ SPDX-License-Identifier: MIT
           v-if="message.type === 'router-status'"
           class="flex flex-col gap-3"
         >
-          <template v-if="message.status === 'error'">
-            <lfx-chat-label
-              :status="message.status"
-              label="Error"
-            />
-            <span>
-              There was an error processing your request. Please try again.
-            </span>
-          </template>
+          <lfx-chat-error
+            v-if="message.status === 'error'"
+            :message="message"
+          />
           <span v-else>{{ message.content }}</span>
         </div>
         <lfx-chat-result 
@@ -60,8 +55,8 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import type { AIMessage } from '../../types/copilot.types';
 import LfxContextDisplay from '../shared/context-display.vue';
-import LfxChatLabel from './chat-label.vue'
 import LfxChatResult from './chat-result.vue'
+import LfxChatError from './chat-error.vue'
 
 const emit = defineEmits<{
   (e: 'selectResult', id: string): void

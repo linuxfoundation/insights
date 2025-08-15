@@ -10,7 +10,7 @@ SPDX-License-Identifier: MIT
     width="30"
     content-class="!p-0 !overflow-hidden"
   >
-    <div class="bg-white flex h-full">
+    <div class="bg-white xl:flex hidden h-full">
       <div class="w-1/3">
         <lfx-copilot-sidebar
           :widget-name="widgetName"
@@ -33,6 +33,21 @@ SPDX-License-Identifier: MIT
         />
       </div>
     </div>
+    <div class="bg-white xl:hidden flex h-full items-center justify-center">
+      <div class="flex flex-col items-center justify-center gap-3">
+        <lfx-icon
+          name="arrows-left-right-to-line"
+          :size="80"
+          class="text-neutral-300"
+        />
+        <div class="text-sm font-semibold text-neutral-900">
+          Data Copilot requires a bit more room
+        </div>
+        <div class="text-xs text-neutral-400">
+          Please resize your browser window to explore this feature
+        </div>
+      </div>
+    </div>
   </lfx-modal>
 </template>
 
@@ -43,6 +58,7 @@ import LfxModal from '~/components/uikit/modal/modal.vue'
 import LfxCopilotSidebar from "~/components/shared/modules/copilot/components/copilot-sidebar.vue"
 import LfxCopilotResultsSection from "~/components/shared/modules/copilot/components/results/results-section.vue"
 import type { Config } from '~~/lib/chat/chart/types';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 
 const props = defineProps<{
   modelValue: boolean

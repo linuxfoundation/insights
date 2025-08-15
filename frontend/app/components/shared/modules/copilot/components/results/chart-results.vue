@@ -11,11 +11,9 @@ SPDX-License-Identifier: MIT
   </div>
   <div
     v-else-if="error"
-    class="h-full"
+    class="h-full flex items-center justify-center"
   >
-    <div class="text-sm text-neutral-500">
-      {{ error }}
-    </div>
+    <lfx-copilot-error-state :is-chart-error="true" />
   </div>
   <div
     v-else-if="chartConfig"
@@ -47,7 +45,8 @@ import { storeToRefs } from 'pinia';
 import { DateTime } from 'luxon';
 import type { MessageData } from '../../types/copilot.types';
 import { copilotApiService } from '../../store/copilot.api.service';
-import LfxCopilotLoadingState from '../loading-state.vue';
+import LfxCopilotLoadingState from '../shared/loading-state.vue';
+import LfxCopilotErrorState from '../shared/error-state.vue';
 import type { Config, DataMapping } from '~~/lib/chat/chart/types';
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import { useAuthStore } from '~/components/modules/auth/store/auth.store';
@@ -100,7 +99,7 @@ const generateChart = async () => {
   const response = await copilotApiService.callChartApi(props.data, token.value);
   const data = await response.json();
   
-  if (data.config && data.success) {
+  if (data.config && data.success && data.dataMapping) {
     chartConfig.value = applySeriesStyle(patchChartData(data.config, data.dataMapping)) as Config;
   } else {
     error.value = data.error || 'Failed to generate chart';

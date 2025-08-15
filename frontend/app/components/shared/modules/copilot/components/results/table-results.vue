@@ -3,34 +3,36 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <table class="min-w-full text-xs">
-    <thead class="border-y border-neutral-200">
-      <tr class="">
-        <th
-          v-for="(col, colIdx) in Object.keys(data![0] || {})"
-          :key="colIdx"
-          class="px-3 py-4 text-left font-medium text-neutral-500"
+  <div class="h-full overflow-auto border border-neutral-200 rounded">
+    <table class="min-w-full text-xs">
+      <thead class="border-b border-neutral-200 bg-white sticky top-0 z-10">
+        <tr class="">
+          <th
+            v-for="(col, colIdx) in Object.keys(data![0] || {})"
+            :key="colIdx"
+            class="px-3 py-4 text-left font-medium text-neutral-500"
+          >
+            {{ normalizedColumnHeader(col) }}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          v-for="(row, rowIdx) in data"
+          :key="rowIdx"
+          class="hover:bg-neutral-50"
         >
-          {{ normalizedColumnHeader(col) }}
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr
-        v-for="(row, rowIdx) in data"
-        :key="rowIdx"
-        class="hover:bg-neutral-50"
-      >
-        <td
-          v-for="(col, colIdx) in Object.keys(data![0] || {})"
-          :key="colIdx"
-          class="px-3 py-4"
-        >
-          {{ row[col] }}
-        </td>
-      </tr>
-    </tbody>
-  </table>
+          <td
+            v-for="(col, colIdx) in Object.keys(data![0] || {})"
+            :key="colIdx"
+            class="px-3 py-4"
+          >
+            {{ row[col] }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </template>
 
 <script setup lang="ts">
