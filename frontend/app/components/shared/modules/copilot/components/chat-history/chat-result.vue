@@ -22,7 +22,7 @@ SPDX-License-Identifier: MIT
       v-if="isReasonExpanded"
       class="my-4 text-xs text-neutral-400"
     >
-      {{ message.sql }}
+      {{ reasoning }}
     </div>
     <div class="my-4">{{ message.content }}</div>
 
@@ -42,37 +42,49 @@ SPDX-License-Identifier: MIT
         class="text-neutral-400"
       />
     </span>
-    <div class="flex gap-2 mt-3">
-      <lfx-icon
-        name="thumbs-up"
-        :size="16"
-        class="text-neutral-400 cursor-pointer"
-      />
-      <lfx-icon
-        name="thumbs-down"
-        :size="16"
-        class="text-neutral-400 cursor-pointer"
-      />
+    <div class="flex gap-2 mt-4">
+      <lfx-tooltip content="Good response">
+        <lfx-feedback-button
+          type="good"
+          :is-selected="feedback === 'good'"
+          @click="feedback = 'good'"
+        />
+      </lfx-tooltip>
+      <lfx-tooltip content="Bad response">
+        <lfx-feedback-button
+          type="bad"
+          :is-selected="feedback === 'bad'"
+          @click="feedback = 'bad'"
+        />
+      </lfx-tooltip>
     </div>
   </div>
 </template>
 <script setup lang="ts">
+import { computed, ref } from 'vue';
 import type { AIMessage } from '../../types/copilot.types'
+import LfxChatResultLabel from '../shared/result-label.vue'
 import LfxChatLabel from './chat-label.vue'
-import LfxChatResultLabel from './result-label.vue'
+import LfxFeedbackButton from './feedback-button.vue'
 import LfxIcon from '~/components/uikit/icon/icon.vue'
+import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue'
 
-defineProps<{
+const props = defineProps<{
   message: AIMessage,
   version: number,
   isSelected: boolean | undefined
 }>()
 
 const isReasonExpanded = ref(false);
+// TODO: Implement feedback backend
+const feedback = ref<'good' | 'bad' | null>(null);
 const emit = defineEmits<{
   (e: 'select'): void
 }>()
 
+const reasoning = computed(() => {
+  return props.message.explanation || props.message.sql;
+})
 </script>
 
 <script lang="ts">

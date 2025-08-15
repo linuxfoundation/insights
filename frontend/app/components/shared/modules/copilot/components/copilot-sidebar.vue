@@ -3,10 +3,11 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="py-6 px-0 bg-gradient-to-t from-neutral-100 to-white h-full border-r border-neutral-200 flex flex-col">
+  <div class="pb-6 px-0 bg-white h-full border-r border-neutral-200 flex flex-col">
     <!-- Header -->
     <div 
-      class="px-5 text-xl font-secondary font-bold leading-7 flex gap-3 text-neutral-900 items-center mb-6 flex-none"
+      class="px-4 text-xl font-secondary font-bold leading-7 flex gap-3 text-neutral-900 items-center mb-4 flex-none
+      h-16 flex items-center"
     >
       <lfx-icon
         name="sparkles"
@@ -17,18 +18,36 @@ SPDX-License-Identifier: MIT
     </div>
 
     <!-- Main content: grows and scrolls -->
-    <div class="flex-1 min-h-0 overflow-y-auto overflow-x-hidden px-5">
+    <div
+      ref="scrollable"
+      class="flex-1 min-h-0 overflow-y-auto overflow-x-hidden px-5 relative"
+      @scroll="handleScroll"
+    >
+      <!-- Top gradient -->
+      <div
+        v-show="showTopGradient"
+        class="pointer-events-none sticky left-0 right-0 top-0 h-8 z-10"
+        style="background: linear-gradient(to bottom, rgba(255,255,255,1), rgba(255,255,255,0));"
+      />
+      <!-- Bottom gradient -->
+      <div
+        v-show="showBottomGradient"
+        class="pointer-events-none sticky left-0 right-0 h-8 z-10"
+        style="background: linear-gradient(to top, rgba(255,255,255,1), rgba(255,255,255,0));
+        top: calc(100% - 32px);"
+      />
       <!-- Message history -->
       <lfx-copilot-chat-history 
         :messages="messages" 
         :selected-result-id="selectedResultId" 
         :is-loading="isLoading"
+        :widget-name="widgetName"
         @select-result="selectResult"
       />
     </div>
 
     <!-- Chat box -->
-    <div class="mt-6 flex-none px-5">
+    <div class="flex-none px-5">
       <form @submit="handleSubmit">
         <div class="relative border border-solid border-neutral-200 rounded-xl bg-white">
           <textarea
@@ -44,7 +63,7 @@ SPDX-License-Identifier: MIT
           <div class="flex justify-between pb-4 px-4 items-center">
             <div class="flex gap-3 text-sm">
               <span
-                class="text-xs text-neutral-500 flex gap-1 items-center bg-brand-100 
+                class="text-xs text-neutral-900 flex gap-1 items-center bg-brand-100 
                   rounded-full px-2.5 py-1"
               >
                 <img
@@ -54,16 +73,10 @@ SPDX-License-Identifier: MIT
                 ></img> 
                 {{ copilotDefaults.project?.name }}
               </span>
-              <span
-                class="text-xs text-neutral-900 flex gap-1 items-center bg-white 
-                  rounded-full px-2.5 py-1 border border-solid border-neutral-200"
-              >
-                <lfx-icon
-                  name="people-group"
-                  :size="12"
-                />
-                {{ widgetDisplayName }}
-              </span>
+              <lfx-context-display
+                :widget-name="widgetName"
+                type="transparent"
+              />
             </div>
             <lfx-icon-button
               :disabled="!input.trim() || isLoading || isChartLoading"
@@ -83,13 +96,12 @@ import { ref, watch, computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import type { AIMessage, MessageData, MessageRole, MessageStatus } from '../types/copilot.types'
 import { copilotApiService } from '../store/copilot.api.service'
-// import { tempData } from '../store/copilot.api.service'
+import { tempData } from '../store/copilot.api.service'
 import { useCopilotStore } from '../store/copilot.store'
 import LfxCopilotChatHistory from './chat-history/copilot-chat-history.vue'
+import LfxContextDisplay from './shared/context-display.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue'
 import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue'
-import { lfxWidgets } from '~/components/modules/widget/config/widget.config'
-import type {Widget} from "~/components/modules/widget/types/widget";
 import { useAuthStore } from '~/components/modules/auth/store/auth.store';
 
 const props = defineProps<{
@@ -99,11 +111,15 @@ const props = defineProps<{
   isChartLoading: boolean;
 }>()
 
+const scrollable = ref<HTMLElement | null>(null)
+const showTopGradient = ref(false)
+const showBottomGradient = ref(false)
+
 // Initialize state
 const input = ref('')
 const streamingStatus = ref('')
 const error = ref('')
-const messages = ref<Array<AIMessage>>([]) // tempData as AIMessage
+const messages = ref<Array<AIMessage>>(tempData as AIMessage[])
 const selectedResultId = computed<string | null>({
   get: () => props.selectedResultId,
   set: (value) => {
@@ -116,11 +132,6 @@ const isLoading = computed<boolean>({
   set: (value) => {
     emit('update:isLoading', value);
   }
-})
-
-const widgetDisplayName = computed(() => {
-  const widget = lfxWidgets[props.widgetName as Widget];
-  return widget?.name || '';
 })
 
 const emit = defineEmits<{
@@ -221,13 +232,21 @@ if (messages.value.length > 0) {
 watch(copilotDefaults, (newDefaults) => {
   if (newDefaults.question) {
     // TODO: enable this again after testing
-    callChatApi(newDefaults.question);
+    // callChatApi(newDefaults.question);
   }
 }, { immediate: true });
 
 watch(messages, () => {
   scrollToEnd();
 }, { immediate: true, deep: true });
+
+const handleScroll = () => {
+  if (scrollable.value) {
+    const { scrollTop, scrollHeight, clientHeight } = scrollable.value
+    showTopGradient.value = scrollTop > 10
+    showBottomGradient.value = scrollTop + clientHeight < scrollHeight - 10
+  }
+}
 </script>
 
 <script lang="ts">

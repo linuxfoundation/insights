@@ -7,3 +7,31 @@
 hr {
   @apply border-neutral-100;
 }
+
+/* CSS */
+.scrollable-gradient {
+  position: relative;
+  overflow: auto; /* Or overflow: scroll */
+}
+
+.scrollable-gradient::before,
+.scrollable-gradient::after {
+  content: '';
+  display: block;
+  position: sticky;
+  left: 0;
+  right: 0;
+  height: 20px; /* Adjust shadow height */
+  pointer-events: none; /* Allows clicks through the shadow */
+  z-index: 1; /* Ensure shadow is above content */
+}
+
+.scrollable-gradient::before {
+  top: 0;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), transparent);
+}
+
+.scrollable-gradient::after {
+  bottom: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.1), transparent);
+}

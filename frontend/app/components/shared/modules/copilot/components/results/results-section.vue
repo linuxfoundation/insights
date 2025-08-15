@@ -3,7 +3,7 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="w-full h-full min-h-0 flex flex-col">
+  <div class="w-full h-full min-h-0 flex flex-col bg-gradient-to-t from-neutral-100 to-white">
     <div
       class="py-4 px-6 w-full h-full min-h-0 flex flex-col"
     >
@@ -18,7 +18,7 @@ SPDX-License-Identifier: MIT
       </div>
       <div 
         v-if="!isLoading"
-        class="border border-neutral-200 rounded-lg p-4 w-full h-full min-h-0 flex flex-col"
+        class="c-card p-4 w-full h-full min-h-0 flex flex-col"
       >
         <lfx-copilot-results-toggle
           :model-value="selectedTab"
