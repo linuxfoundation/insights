@@ -53,6 +53,11 @@ import LfxChart from '~/components/uikit/chart/chart.vue';
 import { useAuthStore } from '~/components/modules/auth/store/auth.store';
 import LfxSnapshotModal from '~/components/modules/widget/components/shared/snapshot/snapshot-modal.vue';
 import type { Widget } from '~/components/modules/widget/types/widget';
+import { defaultSeriesBarStyle } from '~/components/uikit/chart/configs/bar.chart';
+import { defaultSeriesLineStyle } from '~/components/uikit/chart/configs/line.area.chart';
+import { convertToGradientColor } from '~/components/uikit/chart/helpers/chart-helpers';
+import { hexToRgba } from '~/components/uikit/chart/helpers/chart-helpers';
+import { lfxColors } from '~/config/styles/colors';
 
 const emit = defineEmits<{
   (e: 'update:config', value: Config | null): void;
@@ -96,7 +101,7 @@ const generateChart = async () => {
   const data = await response.json();
   
   if (data.config && data.success) {
-    chartConfig.value = patchChartData(data.config, data.dataMapping);
+    chartConfig.value = applySeriesStyle(patchChartData(data.config, data.dataMapping)) as Config;
   } else {
     error.value = data.error || 'Failed to generate chart';
   }
@@ -152,6 +157,37 @@ const patchChartData = (config: Config, dataMapping: DataMapping[] | null) => {
   }
 
   return { ...config, dataset: { source } };
+}
+
+const applySeriesStyle = (config: Config) => {
+  if (!config.series) return config;
+  const configColors = config.color;
+  const series = config.series.map((series, index) => {
+    if (series.type === 'bar') {
+      return { 
+        ...series, 
+        ...defaultSeriesBarStyle,
+        name: typeof series.name === 'string' ? series.name : String(series.name || '')
+      };
+    }
+    if (series.type === 'line') {
+      return { 
+        ...series, 
+        ...defaultSeriesLineStyle, 
+        name: typeof series.name === 'string' ? series.name : String(series.name || ''),
+        areaStyle: {
+          color: convertToGradientColor(
+            hexToRgba(configColors?.[index] || lfxColors.brand[500], 0.1)
+          ),
+        } 
+      };
+    }
+    return {
+      ...series,
+      name: typeof series.name === 'string' ? series.name : String(series.name || '')
+    };
+  });
+  return { ...config, series };
 }
 
 const fallbackSource = (data: MessageData[]) => {

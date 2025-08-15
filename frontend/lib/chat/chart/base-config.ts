@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 
 import type { Config } from "./types";
+import { lfxColors } from "~/config/styles/colors";
 
 const sampleConfig: Config = {
   grid: {
@@ -15,6 +16,20 @@ const sampleConfig: Config = {
       ['Milk Tea', 86.5, 92.1, 85.7, 83.1],
       ['Cheese Cocoa', 24.1, 67.2, 79.5, 86.4]
     ]
+  },
+  legend: {
+    orient: 'horizontal',
+    left: 'center',
+    bottom: 0,
+    itemWidth: 15,
+    itemHeight: 15,
+    itemGap: 40,
+    textStyle: {
+      fontSize: 12,
+      fontWeight: 'normal',
+      color: lfxColors.black,
+      fontFamily: 'Inter',
+    },
   },
   xAxis: {
     type: 'category',
