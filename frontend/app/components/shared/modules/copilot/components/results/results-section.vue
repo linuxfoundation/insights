@@ -3,7 +3,7 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="w-full h-full min-h-0 flex flex-col">
+  <div class="w-full h-full min-h-0 flex flex-col bg-gradient-to-t from-neutral-100 to-white">
     <div
       class="py-4 px-6 w-full h-full min-h-0 flex flex-col"
     >
@@ -18,17 +18,18 @@ SPDX-License-Identifier: MIT
       </div>
       <div 
         v-if="!isLoading"
-        class="border border-neutral-200 rounded-lg p-4 w-full h-full min-h-0 flex flex-col"
+        class="c-card p-4 w-full h-full min-h-0 flex flex-col"
       >
         <lfx-copilot-results-toggle
           :model-value="selectedTab"
           :data="selectedResultData || []"
           @update:model-value="selectedTab = $event"
+          @open-snapshot-modal="isSnapshotModalOpen = true"
         />
         <template v-if="!isEmpty">
           <div
             v-if="selectedTab === 'data'"
-            class="w-full h-full min-h-0 flex flex-col overflow-auto"
+            class="w-full h-full min-h-0 flex flex-col"
           >
             <lfx-copilot-table-results
               :data="selectedResultData"
@@ -41,28 +42,24 @@ SPDX-License-Identifier: MIT
             <lfx-copilot-chart-results
               :data="selectedResultData"
               :config="selectedResultConfig"
-              @update:config="selectedResultConfig = $event"
+              :is-snapshot-modal-open="isSnapshotModalOpen"
+              @update:config="handleConfigUpdate"
+              @update:is-loading="emit('update:isChartLoading', $event)"
+              @update:is-snapshot-modal-open="isSnapshotModalOpen = $event"
             />
           </div>
         </template>
 
         <div
           v-else
-          class="flex flex-col items-center justify-center h-[450px]"
+          class="flex flex-col items-center justify-center h-full min-h-0"
         >
-          <lfx-icon
-            name="eyes"
-            :size="40"
-            class="text-neutral-300"
-          />
-          <p class="text-sm text-neutral-500 mt-5">
-            No data available
-          </p>
+          <lfx-copilot-error-state :is-chart-error="false" />
         </div>
       </div>
       <div
         v-else
-        class="h-full flex flex-col justify-center"
+        class="h-full flex flex-col justify-center min-h-0"
       >
         <lfx-copilot-loading-state />
       </div>
@@ -72,18 +69,20 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { computed, ref } from 'vue';
 import type { ResultsHistory } from '../../types/copilot.types';
-import LfxCopilotLoadingState from '../loading-state.vue';
+import LfxCopilotLoadingState from '../shared/loading-state.vue';
+import LfxCopilotErrorState from '../shared/error-state.vue';
 import LfxCopilotTableResults from './table-results.vue';
 import LfxCopilotResultsHeader from './results-header.vue';
 import LfxCopilotResultsToggle from './results-toggle.vue';
 import LfxCopilotChartResults from './chart-results.vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
 import type { Config } from '~~/lib/chat/chart/types';
 
 const emit = defineEmits<{
   (e: 'update:selectedResult', value: string): void;
+  (e: 'update:config', value: Config | null, id: string): void;
+  (e: 'update:isChartLoading', value: boolean): void;
 }>();
 
 const props = defineProps<{
@@ -99,7 +98,10 @@ const selectedId = computed<string | null>({
   }
 })
 const selectedTab = ref('chart');
-const selectedResultConfig = ref<Config | null>(null);
+const isSnapshotModalOpen = ref(false);
+const selectedResultConfig = computed<Config | null>(() => {
+  return props.results.find(result => result.id === selectedId.value)?.chartConfig || null;
+});
 
 const resultsWithData = computed(() => {
   return props.results.filter(result => result.data.length > 0);
@@ -113,10 +115,11 @@ const isEmpty = computed(() => {
   return !props.isLoading && (!selectedResultData.value || selectedResultData.value.length === 0);
 })
 
-// Reset selectedResultConfig when selectedResultId changes
-watch(() => props.selectedResultId, () => {
-  selectedResultConfig.value = null;
-});
+const handleConfigUpdate = (config: Config | null) => {
+  if (selectedId.value) {
+    emit('update:config', config, selectedId.value);
+  }
+}
 
 </script>
 

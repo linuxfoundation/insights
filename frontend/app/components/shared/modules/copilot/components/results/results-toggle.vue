@@ -41,6 +41,7 @@ import LfxButton from '~/components/uikit/button/button.vue';
 
 const emit = defineEmits<{
   (e: 'update:modelValue', value: string): void;
+  (e: 'openSnapshotModal', value: boolean): void;
 }>();
 
 const props = defineProps<{
@@ -57,6 +58,7 @@ const exportData = () => {
   if (props.modelValue === 'data') {
     exportCsv();
   } else {
+    emit('openSnapshotModal', true);
     // call screenshot function
   }
 }
@@ -81,7 +83,7 @@ const exportCsv = () => {
   ];
   const csvContent = csvRows.join('\r\n');
   // Create a Blob and trigger download
-  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const blob = new window.Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a');
   link.href = url;

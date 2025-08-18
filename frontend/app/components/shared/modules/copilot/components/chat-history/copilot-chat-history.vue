@@ -3,21 +3,23 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="h-full flex flex-col gap-7 chat-messages">
+  <div class="h-full flex flex-col gap-6 chat-messages">
     <lfx-copilot-chat-item
       v-for="(message, index) in messages"
       :key="index"
       :message="message"
       :all-results="allResults"
       :selected-result-id="selectedResultId"
+      :widget-name="widgetName"
       @select-result="selectResult"
     />
 
-    <lfx-chat-label
-      v-if="isLoading"
-      :status="'thinking'"
-      label="Thinking..."
-    />
+    <div v-if="isLoading">
+      <lfx-chat-label
+        :status="'thinking'"
+        label="Thinking..."
+      />
+    </div>
   </div>
 </template>
 <script setup lang="ts">
@@ -33,7 +35,8 @@ const emit = defineEmits<{
 const props = defineProps<{
   messages: Array<AIMessage>,
   selectedResultId: string | null,
-  isLoading: boolean
+  isLoading: boolean,
+  widgetName: string;
 }>()
 
 const allResults = computed(() => props.messages.filter(m => m.type === 'sql-result' || m.type === 'pipe-result'));

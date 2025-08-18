@@ -3,14 +3,24 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
+
   <div
-    class="flex items-start gap-3"
+    class="flex flex-col items-start gap-2"
     :class="message.role === 'user' ? 'justify-end' : 'justify-start'"
   >
     <div
-      class="max-w-[90%] rounded-full break-words"
+      v-if="message.role === 'user'"
+      class="flex justify-end w-full"
+    >
+      <lfx-context-display
+        :widget-name="widgetName"
+        type="solid"
+      />
+    </div>
+    <div
+      class="rounded-full break-words"
       :class="[
-        message.role === 'user' ? 'bg-neutral-100 text-right' : 'bg-transparent text-left',
+        message.role === 'user' ? 'bg-neutral-100 text-right ml-16' : 'bg-transparent text-left',
         message.type === 'sql-result' || message.type === 'pipe-result' ? 'w-full' : ''
       ]"
     >
@@ -19,21 +29,16 @@ SPDX-License-Identifier: MIT
       >
         <span
           v-if="message.type === 'text'"
-          class="px-4 py-2 inline-block"
+          class="px-4 py-3 inline-block"
         >{{ message.content }}</span>
         <div
           v-if="message.type === 'router-status'"
           class="flex flex-col gap-3"
         >
-          <template v-if="message.status === 'error'">
-            <lfx-chat-label
-              :status="message.status"
-              label="Error"
-            />
-            <span>
-              There was an error processing your request. Please try again.
-            </span>
-          </template>
+          <lfx-chat-error
+            v-if="message.status === 'error'"
+            :message="message"
+          />
           <span v-else>{{ message.content }}</span>
         </div>
         <lfx-chat-result 
@@ -49,8 +54,9 @@ SPDX-License-Identifier: MIT
 </template>
 <script setup lang="ts">
 import type { AIMessage } from '../../types/copilot.types';
-import LfxChatLabel from './chat-label.vue'
+import LfxContextDisplay from '../shared/context-display.vue';
 import LfxChatResult from './chat-result.vue'
+import LfxChatError from './chat-error.vue'
 
 const emit = defineEmits<{
   (e: 'selectResult', id: string): void
@@ -59,7 +65,8 @@ const emit = defineEmits<{
 const props = defineProps<{
   message: AIMessage,
   allResults: Array<AIMessage>,
-  selectedResultId: string | null
+  selectedResultId: string | null,
+  widgetName: string;
 }>()
 
 const resultVersion = (message: AIMessage) => {

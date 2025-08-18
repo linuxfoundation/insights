@@ -59,7 +59,7 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { computed } from 'vue';
 import type { ResultsHistory } from '../../types/copilot.types';
-import LfxChatResultLabel from '../chat-history/result-label.vue'
+import LfxChatResultLabel from '../shared/result-label.vue'
 import LfxDropdownSelector from "~/components/uikit/dropdown/dropdown-selector.vue";
 import LfxDropdownItem from "~/components/uikit/dropdown/dropdown-item.vue";
 import LfxDropdownSelect from "~/components/uikit/dropdown/dropdown-select.vue";

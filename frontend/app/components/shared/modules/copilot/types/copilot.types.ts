@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 import type { Widget } from '~/components/modules/widget/types/widget';
 import type { Project } from '~~/types/project';
+import type { Config } from '~~/lib/chat/chart/types';
 
 export interface CopilotData {
   widget: Widget;
@@ -22,6 +23,7 @@ export type MessageRole = 'user' | 'assistant';
 export interface ResultsHistory {
   id: string;
   data: MessageData[];
+  chartConfig?: Config;
 }
 
 export interface AIMessage {

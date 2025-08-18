@@ -14,7 +14,6 @@ SPDX-License-Identifier: MIT
 
 // Set page metadata
 // Note: definePageMeta is auto-imported in Nuxt 3
-// @ts-ignore
 definePageMeta({
   layout: false,
   ssr: false // Disable SSR for this page (Auth0 callback needs client-side processing)

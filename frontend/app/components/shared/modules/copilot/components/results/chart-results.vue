@@ -11,11 +11,9 @@ SPDX-License-Identifier: MIT
   </div>
   <div
     v-else-if="error"
-    class="h-full"
+    class="h-full flex items-center justify-center"
   >
-    <div class="text-sm text-neutral-500">
-      {{ error }}
-    </div>
+    <lfx-copilot-error-state :is-chart-error="true" />
   </div>
   <div
     v-else-if="chartConfig"
@@ -23,6 +21,22 @@ SPDX-License-Identifier: MIT
   >
     <lfx-chart :config="chartConfig" />
   </div>
+
+  <lfx-snapshot-modal
+    v-if="isSnapshotModalOpen"
+    v-model="isSnapshotModalOpen"
+    :widget-name="'chart' as Widget"
+    :use-slot="true"
+    :data="chartConfig || {}"
+    :snapshot-name="chartConfig?.title?.text || 'Insights Chart'"
+  >
+    <div
+      if="chartConfig"
+      class="h-[450px]"
+    >
+      <lfx-chart :config="chartConfig" />
+    </div>
+  </lfx-snapshot-modal>
 </template>
 
 <script setup lang="ts">
@@ -31,19 +45,37 @@ import { storeToRefs } from 'pinia';
 import { DateTime } from 'luxon';
 import type { MessageData } from '../../types/copilot.types';
 import { copilotApiService } from '../../store/copilot.api.service';
-import LfxCopilotLoadingState from '../loading-state.vue';
+import LfxCopilotLoadingState from '../shared/loading-state.vue';
+import LfxCopilotErrorState from '../shared/error-state.vue';
 import type { Config, DataMapping } from '~~/lib/chat/chart/types';
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import { useAuthStore } from '~/components/modules/auth/store/auth.store';
+import LfxSnapshotModal from '~/components/modules/widget/components/shared/snapshot/snapshot-modal.vue';
+import type { Widget } from '~/components/modules/widget/types/widget';
+import { defaultSeriesBarStyle } from '~/components/uikit/chart/configs/bar.chart';
+import { defaultSeriesLineStyle } from '~/components/uikit/chart/configs/line.area.chart';
+import { convertToGradientColor } from '~/components/uikit/chart/helpers/chart-helpers';
+import { hexToRgba } from '~/components/uikit/chart/helpers/chart-helpers';
+import { lfxColors } from '~/config/styles/colors';
 
 const emit = defineEmits<{
   (e: 'update:config', value: Config | null): void;
+  (e: 'update:isLoading', value: boolean): void;
+  (e: 'update:isSnapshotModalOpen', value: boolean): void;
 }>();
 
 const props = defineProps<{
   data: MessageData[] | null,
-  config: Config | null
+  config: Config | null,
+  isSnapshotModalOpen: boolean
 }>()
+
+const isSnapshotModalOpen = computed({
+  get: () => props.isSnapshotModalOpen,
+  set: (value) => {
+    emit('update:isSnapshotModalOpen', value);
+  }
+})
 
 const { token } = storeToRefs(useAuthStore());
 
@@ -67,8 +99,8 @@ const generateChart = async () => {
   const response = await copilotApiService.callChartApi(props.data, token.value);
   const data = await response.json();
   
-  if (data.config && data.success) {
-    chartConfig.value = patchChartData(data.config, data.dataMapping);
+  if (data.config && data.success && data.dataMapping) {
+    chartConfig.value = applySeriesStyle(patchChartData(data.config, data.dataMapping)) as Config;
   } else {
     error.value = data.error || 'Failed to generate chart';
   }
@@ -126,6 +158,37 @@ const patchChartData = (config: Config, dataMapping: DataMapping[] | null) => {
   return { ...config, dataset: { source } };
 }
 
+const applySeriesStyle = (config: Config) => {
+  if (!config.series) return config;
+  const configColors = config.color;
+  const series = config.series.map((series, index) => {
+    if (series.type === 'bar') {
+      return { 
+        ...series, 
+        ...defaultSeriesBarStyle,
+        name: typeof series.name === 'string' ? series.name : String(series.name || '')
+      };
+    }
+    if (series.type === 'line') {
+      return { 
+        ...series, 
+        ...defaultSeriesLineStyle, 
+        name: typeof series.name === 'string' ? series.name : String(series.name || ''),
+        areaStyle: {
+          color: convertToGradientColor(
+            hexToRgba(configColors?.[index] || lfxColors.brand[500], 0.1)
+          ),
+        } 
+      };
+    }
+    return {
+      ...series,
+      name: typeof series.name === 'string' ? series.name : String(series.name || '')
+    };
+  });
+  return { ...config, series };
+}
+
 const fallbackSource = (data: MessageData[]) => {
   if (!data || data.length === 0) return [];
 
@@ -166,7 +229,9 @@ watch(() => props.data, () => {
   }
 }, { immediate: true });
 
-
+watch(isLoading, (newVal) => {
+  emit('update:isLoading', newVal);
+}, { immediate: true });
 </script>
 
 <script lang="ts">

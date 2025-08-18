@@ -169,7 +169,6 @@ function generateFallbackConfig(profile: any): Config {
       xAxis: {
         type: "category",
         name: xKey,
-        data: [], // Will be populated by the chart rendering component
       },
       yAxis: {
         type: "value",
