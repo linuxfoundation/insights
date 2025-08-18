@@ -8,5 +8,6 @@ export const links = {
   criticality: '/docs/introduction/lf-oss-index/#criticality-score',
   issues: 'https://github.com/linuxfoundation/insights/issues',
   discussions: 'https://github.com/linuxfoundation/insights/discussions',
-  copilotDocs: '/docs/introduction/what-is-insights/'
+  copilotDocs: '/docs/introduction/what-is-insights/',
+  profileLink: 'https://openprofile.dev/'
 };

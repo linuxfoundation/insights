@@ -167,7 +167,6 @@ const callChatApi = async (userMessage: string) => {
   scrollToEnd();
   
   try {
-    // TODO: update the params here
     if (copilotDefaults.value.project) {
       const response = await copilotApiService.callChatStream(
         messages.value, 
@@ -231,7 +230,6 @@ if (messages.value.length > 0) {
 
 watch(copilotDefaults, (newDefaults) => {
   if (newDefaults.question) {
-    // TODO: enable this again after testing
     callChatApi(newDefaults.question);
   }
 }, { immediate: true });

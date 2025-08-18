@@ -72,7 +72,6 @@ const isChartLoading = ref(false);
 
 const emit = defineEmits<{
   'update:modelValue': [value: boolean]
-  'ask-copilot': [question: string]
 }>()
 
 const isModalOpen = computed({

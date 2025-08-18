@@ -20,7 +20,15 @@ SPDX-License-Identifier: MIT
           placement="top"
           :disabled="link.showLabel"
         >
+          <lfx-widget-menu-popover
+            v-if="link.popOverComponent"
+            :link="link"
+            :widget-name="props.name"
+            @update:is-popover-menu-clicked="isMenuOpen = $event"
+          />
+
           <lfx-widget-menu-item
+            v-else
             class="flex gap-2 items-center"
             :class="`${link.showLabel ? '!w-auto !px-4' : ''} ${link.buttonClass}`"
             @click="link.action()"
@@ -90,8 +98,9 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script lang="ts" setup>
-import {computed, ref} from "vue";
+import {computed, ref, type Component} from "vue";
 import {storeToRefs} from "pinia";
+import LfxWidgetMenuPopover from "./widget-menu-popover.vue";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
 import LfxWidgetMenuItem from "~/components/modules/widget/components/shared/widget-menu-item.vue";
 import {useReportStore} from "~/components/shared/modules/report/store/report.store";
@@ -108,13 +117,10 @@ import LfxDropdownSeparator from "~/components/uikit/dropdown/dropdown-separator
 import LfxDropdownItem from "~/components/uikit/dropdown/dropdown-item.vue";
 import LfxSnapshotModal from "~/components/modules/widget/components/shared/snapshot/snapshot-modal.vue";
 import LfxWidgetEmbedModal from "~/components/modules/widget/components/shared/embed/embed-modal.vue";
-import {useCopilotStore} from "~/components/shared/modules/copilot/store/copilot.store";
-import { dateOptKeys } from '~/components/modules/project/config/date-options';
-import type { Granularity } from '~~/types/shared/granularity';
-import { barGranularities } from '~/components/shared/types/granularity';
 import { useAuthStore } from "~/components/modules/auth/store/auth.store";
+import LfxCopilotWidgetModal from "~/components/shared/modules/copilot/components/copilot-widget-modal.vue";
 
-interface MenuItem {
+export interface MenuItem {
   label: string;
   icon: string;
   action: () => void;
@@ -124,11 +130,22 @@ interface MenuItem {
   buttonClass?: string;
   isSeparator: boolean;
   hideOnMobile?: boolean;
+  popOverComponent?: Component;
 }
+
+const emit = defineEmits<{
+  (e: 'update:isMenuOpen', value: boolean): void
+}>();
 const props = defineProps<{
   name: Widget;
   data: object
+  isMenuOpen: boolean
 }>()
+
+const isMenuOpen = computed({
+  get: () => props.isMenuOpen,
+  set: (value) => emit('update:isMenuOpen', value)
+});
 
 const config = computed(() => lfxWidgets[props.name]);
 
@@ -137,21 +154,12 @@ const isEmbedModalOpen = ref(false)
 
 const {openReportModal} = useReportStore()
 const {openShareModal} = useShareStore()
-const {openCopilotWidgetModal} = useCopilotStore()
 
 const {
   project, 
-  selectedRepositories, 
-  startDate, 
-  endDate, 
-  selectedTimeRangeKey, 
-  customRangeGranularity} = storeToRefs(useProjectStore());
+  selectedRepositories} = storeToRefs(useProjectStore());
 const {token} = storeToRefs(useAuthStore())
 const isCopilotEnabled = computed(() => !!config.value.copilot && !!token.value)
-
-const granularity = computed(() => (selectedTimeRangeKey.value === dateOptKeys.custom
-  ? customRangeGranularity.value[0] as Granularity
-  : barGranularities[selectedTimeRangeKey.value as keyof typeof barGranularities]));
 
 const widgetArea = computed(
     () => Object.keys(lfxWidgetArea).find(
@@ -177,21 +185,6 @@ const share = () => {
     area: config.value.name,
     title,
     additionalShare: config.value.additionalShare
-  });
-}
-
-const askCopilot = () => {
-  openCopilotWidgetModal({
-    widget: props.name,
-    icon: 'users',
-    suggestions: '',
-    project: project.value || undefined,
-    params: {
-      startDate: startDate.value || '',
-      endDate: endDate.value || '',
-      granularity: granularity.value,
-      project: project.value?.slug || ''
-    }
   });
 }
 
@@ -253,11 +246,14 @@ const menu = computed<MenuItem[]>(() => [
     icon: 'sparkles',
     iconClass: '!text-brand-500',
     buttonClass: '!hidden xl:!flex',
-    action: askCopilot,
+    // action: askCopilot,
+    action: () => {
+    },
     enabled: isCopilotEnabled.value,
     showLabel: true,
     isSeparator: false,
-    hideOnMobile: true
+    hideOnMobile: true,
+    popOverComponent: LfxCopilotWidgetModal
   }
 ])
 </script>

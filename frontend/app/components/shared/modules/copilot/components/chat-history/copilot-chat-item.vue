@@ -5,8 +5,8 @@ SPDX-License-Identifier: MIT
 <template>
 
   <div
-    class="flex flex-col items-start gap-2"
-    :class="message.role === 'user' ? 'justify-end' : 'justify-start'"
+    class="flex flex-col gap-2"
+    :class="message.role === 'user' ? 'justify-end items-end' : 'justify-start items-start'"
   >
     <div
       v-if="message.role === 'user'"

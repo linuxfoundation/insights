@@ -11,11 +11,15 @@ SPDX-License-Identifier: MIT
     <lfx-card class="p-4 sm:p-6 relative group">
       <div class="flex justify-between items-center pb-3">
         <h3 class="text-heading-3 font-semibold font-secondary">{{ config.name }}</h3>
+        
         <lfx-widget-menu
           :data="model"
           class="relative lg:absolute lg:-top-3 lg:right-6 lg:opacity-0
           lg:invisible group-hover:opacity-100 group-hover:visible"
+          :class="{'!opacity-100 !visible': isMenuOpen}"
           :name="props.name"
+          :is-menu-open="isMenuOpen"
+          @update:is-menu-open="isMenuOpen = $event"
         />
       </div>
       <p
@@ -64,6 +68,7 @@ const {sanitize} = useSanitize();
 const config = computed<WidgetConfig>(() => lfxWidgets[props.name]);
 
 const model = ref(config.value.defaultValue || {})
+const isMenuOpen = ref(false);
 
 const { project } = storeToRefs(useProjectStore());
 

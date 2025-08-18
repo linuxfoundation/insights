@@ -8,9 +8,10 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
+import { useAuth0 } from '@auth0/auth0-vue'
+import { onMounted } from 'vue'
+import { useRouter } from "vue-router";
 
-// This page handles the Auth0 callback
-// Process the authorization code and redirect the user
 
 // Set page metadata
 // Note: definePageMeta is auto-imported in Nuxt 3
@@ -19,12 +20,18 @@ definePageMeta({
   ssr: false // Disable SSR for this page (Auth0 callback needs client-side processing)
 })
 
-// const { handleRedirectCallback, isAuthenticated, error } = useAuth0()
-// const errorMessage = ref<string | null>(null)
-// const isProcessing = ref(true)
+const { isAuthenticated, user } = useAuth0()
+const router = useRouter()
 
 // // Handle the callback on client-side
-// onMounted(async () => {
-  
-// })
+onMounted(async () => {
+  if (isAuthenticated.value) {
+    const appState = user.value?.app_metadata?.appState; // Access appState from user metadata
+    if (appState && appState.redirectTo) {
+        router.push(appState.redirectTo); // Or use window.location.href for full page reload
+    } else {
+        router.push("/"); // Default redirect if no target is found
+    }
+  }
+})
 </script> 
