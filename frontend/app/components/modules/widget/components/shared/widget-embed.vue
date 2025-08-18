@@ -107,7 +107,7 @@ const {
   retry: false,
 });
 
-const repositories = computed(() => repos.split('|'));
+const repositories = computed(() => repos?.split('|') || []);
 
 const repoName = computed(() => {
   if(repositories.value?.length === 1){
