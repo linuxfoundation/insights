@@ -6,7 +6,7 @@ SPDX-License-Identifier: MIT
   <div>
     <lfx-button
       v-if="!isAuthenticated"
-      type="tertiary"
+      type="transparent"
       class="!rounded-full text-nowrap !text-brand-500"
       @click="login()"
     >
@@ -26,16 +26,40 @@ SPDX-License-Identifier: MIT
 
       <template #content>
 
-        <div class="bg-white shadow-lg rounded-lg border border-neutral-200">
-          <div class="p-3">
-            <lfx-button
-              type="transparent"
-              class="text-nowrap !text-brand-500"
-              @click="logoutHandler()"
+        <div 
+          class="bg-white shadow-lg rounded-lg border border-neutral-200 w-56 p-1
+          flex flex-col gap-1"
+        >
+          <!-- <lfx-button
+            type="transparent"
+            class="text-nowrap !text-neutral-900"
+            size="small"
+            @click="logoutHandler()"
+          >
+            Log Out
+          </lfx-button>  -->
+          <a
+            :href="links.profileLink"
+            target="_blank"
+          >
+            <lfx-menu-button
+              class="!text-neutral-900 !rounded-md flex items-center gap-2"
             >
-              Log Out
-            </lfx-button> 
-          </div>
+              <lfx-icon
+                name="circle-user"
+              />
+              Manage profile
+            </lfx-menu-button>
+          </a>
+          <lfx-menu-button
+            class="!text-neutral-900 !rounded-md flex items-center gap-2"
+            @click="logoutHandler()"
+          >
+            <lfx-icon
+              name="arrow-right-from-bracket"
+            />
+            Log Out
+          </lfx-menu-button>
         </div>
       </template>
     </lfx-popover>
@@ -46,10 +70,14 @@ SPDX-License-Identifier: MIT
 import { storeToRefs } from 'pinia';
 import { ref, watch } from 'vue';
 import { useAuth0 } from '@auth0/auth0-vue';
+import { useRuntimeConfig } from 'nuxt/app';
 import { useAuthStore } from '../store/auth.store';
 import LfxButton from '~/components/uikit/button/button.vue';
 import LfxAvatar from "~/components/uikit/avatar/avatar.vue";
 import LfxPopover from "~/components/uikit/popover/popover.vue";
+import LfxMenuButton from "~/components/uikit/menu-button/menu-button.vue";
+import LfxIcon from "~/components/uikit/icon/icon.vue";
+import { links } from '~/config/links';
 
 const { loginWithRedirect, logout, isAuthenticated, getAccessTokenSilently } = useAuth0();
 const { token } = storeToRefs(useAuthStore());
@@ -57,11 +85,20 @@ const { token } = storeToRefs(useAuthStore());
 const isOpen = ref(false);
 
 const login = async () => {
-  loginWithRedirect()
+  loginWithRedirect({
+    appState: {
+      redirectTo: window.location.href,
+    },
+  })
 };
 
 const logoutHandler = () => {
-  logout();
+  const config = useRuntimeConfig();
+  logout({ 
+    logoutParams: { 
+      returnTo: (config.public.appUrl as string) || window.location.origin 
+    } 
+  });
 };
 
 watch(isAuthenticated, async (newVal) => {
