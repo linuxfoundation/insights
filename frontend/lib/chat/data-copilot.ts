@@ -27,12 +27,14 @@ export async function streamingAgentRequestHandler({
   projectName,
   pipe,
   parameters,
+  onResponseComplete,
 }: {
   messages: any[];
   segmentId?: string;
   projectName?: string;
   pipe: string;
   parameters?: Record<string, any>;
+  onResponseComplete?: (response: { question: string; answer: string; reasoning?: string; createdBy: string; data?: any; segmentId?: string; projectName?: string; pipe: string; inputTokens?: number; outputTokens?: number }) => Promise<string>;
 }) {
   const url = new URL(
     `https://mcp.tinybird.co?token=${process.env.NUXT_INSIGHTS_TINYBIRD_TOKEN}&host=${process.env.NUXT_TINYBIRD_BASE_URL}`
@@ -76,6 +78,16 @@ export async function streamingAgentRequestHandler({
 
   return createDataStreamResponse({
     execute: async (dataStream) => {
+      const responseData = {
+        question: messages[messages.length - 1]?.content || '',
+        answer: '',
+        reasoning: '',
+        explanation: '',
+        data: null as any,
+        inputTokens: 0,
+        outputTokens: 0
+      };
+
       try {
         dataStream.writeData({
           type: "router-status",
@@ -93,24 +105,78 @@ export async function streamingAgentRequestHandler({
           parametersString,
           segmentId: segmentId as string,
         });
+        // Accumulate token usage from router
+        if (routerOutput.usage) {
+          responseData.inputTokens += routerOutput.usage.promptTokens || 0;
+          responseData.outputTokens += routerOutput.usage.completionTokens || 0;
+        }
 
         if (routerOutput.next_action === "stop") {
+          responseData.reasoning = `Router Decision: ${routerOutput.next_action}\nReasoning: ${routerOutput.reasoning}`;
+          responseData.answer = routerOutput.reasoning;
           dataStream.writeData({
             type: "router-status",
             status: "complete",
             reasoning: routerOutput.reasoning,
           });
+          
+          // Call the callback if provided
+          if (onResponseComplete) {
+            const chatResponseId = await onResponseComplete({
+              question: responseData.question,
+              answer: responseData.answer,
+              reasoning: responseData.reasoning,
+              createdBy: 'system', // TODO: get actual user from JWT
+              data: responseData.data,
+              segmentId,
+              projectName,
+              pipe,
+              inputTokens: responseData.inputTokens,
+              outputTokens: responseData.outputTokens
+            });
+            
+            // Stream the chat response ID
+            dataStream.writeData({
+              type: "chat-response-id",
+              id: chatResponseId
+            });
+          }
           return;
         }
 
         // TODO: Remove this once we support text-to-sql
         else if (routerOutput.next_action === "create_query") {
+          const fallbackMessage = `I'm unable to answer this question with the widgets I have access...
+            But soon I will be able to construct my own queries for these questions.`;
+          responseData.answer = fallbackMessage;
+          responseData.reasoning = `Router Decision: ${routerOutput.next_action}\nReasoning: ${routerOutput.reasoning}\nFallback: Text-to-SQL not yet supported`;
           dataStream.writeData({
             type: "router-status",
             status: "complete",
-            reasoning: `I'm unable to answer this question with the widgets I have access...
-            But soon I will be able to construct my own queries for these questions.`
+            reasoning: fallbackMessage
           });
+          
+          // Call the callback if provided
+          if (onResponseComplete) {
+            const chatResponseId = await onResponseComplete({
+              question: responseData.question,
+              answer: responseData.answer,
+              reasoning: responseData.reasoning,
+              createdBy: 'system', // TODO: get actual user from JWT
+              data: responseData.data,
+              segmentId,
+              projectName,
+              pipe,
+              inputTokens: responseData.inputTokens,
+              outputTokens: responseData.outputTokens
+            });
+            
+            // Stream the chat response ID
+            dataStream.writeData({
+              type: "chat-response-id",
+              id: chatResponseId
+            });
+          }
           return;
         }
 
@@ -176,8 +242,19 @@ export async function streamingAgentRequestHandler({
             toolNames: routerOutput.tools,
           });
 
+          // Accumulate token usage from pipe agent
+          if (pipeOutput.usage) {
+            responseData.inputTokens += pipeOutput.usage.promptTokens || 0;
+            responseData.outputTokens += pipeOutput.usage.completionTokens || 0;
+          }
+
           // Execute the pipes according to the instructions and combine results
           const combinedData = await executePipeInstructions(pipeOutput.instructions);
+
+          responseData.explanation = pipeOutput.explanation;
+          responseData.answer = pipeOutput.explanation;
+          responseData.reasoning = `Router Decision: ${routerOutput.next_action}\nRouter Reasoning: ${routerOutput.reasoning}\nTools Selected: ${routerOutput.tools ? routerOutput.tools.join(', ') : 'none'}\nReformulated Question: ${routerOutput.reformulated_question}\nPipe Agent Explanation: ${pipeOutput.explanation}`;
+          responseData.data = combinedData;
 
           dataStream.writeData({
             type: "pipe-result",
@@ -185,6 +262,28 @@ export async function streamingAgentRequestHandler({
             instructions: pipeOutput.instructions,
             data: combinedData
           });
+
+          // Call the callback if provided
+          if (onResponseComplete) {
+            const chatResponseId = await onResponseComplete({
+              question: responseData.question,
+              answer: responseData.answer,
+              reasoning: responseData.reasoning,
+              createdBy: 'system', // TODO: get actual user from JWT
+              data: responseData.data,
+              segmentId,
+              projectName,
+              pipe,
+              inputTokens: responseData.inputTokens,
+              outputTokens: responseData.outputTokens
+            });
+
+            // Stream the chat response ID
+            dataStream.writeData({
+              type: "chat-response-id",
+              id: chatResponseId
+            });
+          }
         }
       } catch (error) {
         dataStream.writeData({

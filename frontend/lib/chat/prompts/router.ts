@@ -31,13 +31,19 @@ ${toolsOverview}
 
 # ROUTING LOGIC - VALIDATE ANSWERABILITY
 
-**Step 1: Check Existing Tools**
+**PRIORITY ORDER: Always prefer pipes over custom queries when possible**
+
+**Step 1: Check Existing Tools (HIGHEST PRIORITY)**
 - Can ${pipe} tool answer this with different parameters?
 - IMPORTANT: Only the parameters listed in the tool's parameters are valid. You cannot add extra parameters.
   - For example, adding a country code parameter to a tool that doesn't support it is invalid.
 - Can other available tools answer this question?
 - Can a combination of tools provide the answer?
-- If YES to any → Question is VALID, route to "pipes" action
+- **CRITICAL: For comparative questions (e.g., "this week vs last week", "current vs previous period"):**
+  - Check if the same tool can be called multiple times with different time parameters
+  - Even if the question asks for a comparison, if the underlying data can be fetched using existing tools with different time ranges, choose "pipes"
+  - Example: "active contributors this week vs last week" can use the same contributor tool twice with different date ranges
+- **If ANY existing tool can provide the data → ALWAYS choose "pipes" action**
 
 **Step 2: Check Data Sources (only if Step 1 is NO)**
 - Use list_datasources to examine available tables and fields

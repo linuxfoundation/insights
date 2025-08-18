@@ -10,7 +10,7 @@ import { createAmazonBedrock } from '@ai-sdk/amazon-bedrock';
 import { generateObject } from "ai";
 import { outputSchema } from "./types";
 import type { Config, DataMapping, Result } from "./types";
-import { analyzeDataForChart, shouldStackBars } from "./analysis";
+import { analyzeDataForChart, shouldStackBars, normalizeDataForChart } from "./analysis";
 import sampleConfig from './base-config';
 import { lfxColors } from '~/config/styles/colors';
 
@@ -39,7 +39,9 @@ export async function generateChartConfig(
   results: Result[],
   userQuery: string
 ): Promise<{ config: Config | null, dataMapping: DataMapping[] | null, isMetric?: boolean }> {
-  const dataProfile = analyzeDataForChart(results, userQuery);
+  // Re-enable normalization to fix date formatting
+  const normalizedResults = normalizeDataForChart(results);
+  const dataProfile = analyzeDataForChart(normalizedResults, userQuery);
 
   // Skip chart for single values - show as metric
   if (!dataProfile || dataProfile.dataShape === "single-value") {
@@ -52,7 +54,7 @@ export async function generateChartConfig(
       output: "object" as const,
       schema: outputSchema,
       system: "You are a data visualization expert. Create simple, effective chart configurations using the apache echarts configuration schema.",
-      prompt: createChartGenerationPrompt(dataProfile, results, userQuery),
+      prompt: createChartGenerationPrompt(dataProfile, normalizedResults, userQuery),
       temperature: 0.3,
     });
 
@@ -80,7 +82,8 @@ export async function modifyChartConfig(
   currentData: Result[],
   userRequest: string
 ): Promise<{ config: Config, dataMapping: DataMapping[] | null }> {
-  const dataProfile = analyzeDataForChart(currentData, userRequest);
+  const normalizedData = normalizeDataForChart(currentData);
+  const dataProfile = analyzeDataForChart(normalizedData, userRequest);
 
   try {
     const { object: newConfig } = await generateObject({
@@ -88,7 +91,7 @@ export async function modifyChartConfig(
       output: "object" as const,
       schema: outputSchema,
       system: "You are a chart modification expert. Make minimal changes based on user requests.",
-      prompt: createChartModificationPrompt(currentConfig, dataProfile, currentData, userRequest),
+      prompt: createChartModificationPrompt(currentConfig, dataProfile, normalizedData, userRequest),
       temperature: 0.3,
     });
 
@@ -124,27 +127,47 @@ function generateFallbackConfig(profile: any): Config {
   const numericCols = profile.columns.filter((c: any) => c.type === "numeric");
 
   const xKey = dateCol?.name || categoryCol?.name || profile.columns[0].name;
-  const yKeys =
-    numericCols.length > 0
+  
+  // Handle comparison scenarios differently
+  let yKeys: string[];
+  let useDualAxis = false;
+  let primaryKeys: string[] = [];
+  let secondaryKeys: string[] = [];
+  
+  if (profile.recommendedVisualization?.type === 'dual-axis') {
+    primaryKeys = profile.recommendedVisualization.primaryColumns;
+    secondaryKeys = profile.recommendedVisualization.secondaryColumns;
+    yKeys = [...primaryKeys, ...secondaryKeys];
+    useDualAxis = true;
+  } else if (profile.recommendedVisualization?.type === 'grouped-bar') {
+    // For grouped bar, focus on primary comparison columns
+    yKeys = profile.recommendedVisualization.primaryColumns;
+  } else {
+    yKeys = numericCols.length > 0
       ? numericCols.map((c: any) => c.name)
       : [
           profile.columns.find((c: any) => c.name !== xKey)?.name ||
             profile.columns[1]?.name,
         ].filter(Boolean);
+  }
 
   // Auto-detect stacking for multi-series bar charts
-  const shouldStack = type === "bar" && yKeys.length > 1 && shouldStackBars(profile);
+  const shouldStack = type === "bar" && yKeys.length > 1 && shouldStackBars(profile) && !useDualAxis;
   const stackName = shouldStack ? "total" : undefined;
 
   // Generate series configuration
-  const series = yKeys.map((yKey: string, index: number) => ({
-    type,
-    name: yKey,
-    ...(stackName && { stack: stackName }),
-    ...(type === "line" && profile.dataShape === "time-series" && { 
-      areaStyle: {} // Enable area style for time-series line charts
-    }),
-  }));
+  const series = yKeys.map((yKey: string, index: number) => {
+    const isSecondary = useDualAxis && secondaryKeys.includes(yKey);
+    return {
+      type: isSecondary ? "line" : type,
+      name: yKey,
+      yAxisIndex: isSecondary ? 1 : 0,
+      ...(stackName && !isSecondary && { stack: stackName }),
+      ...(type === "line" && profile.dataShape === "time-series" && { 
+        areaStyle: {} // Enable area style for time-series line charts
+      }),
+    };
+  });
 
   // Generate default colors array
   const colors = yKeys.map((_: string, index: number) => defaultColors[index] || lfxColors.brand[500]);
@@ -170,13 +193,24 @@ function generateFallbackConfig(profile: any): Config {
         type: "category",
         name: xKey,
       },
-      yAxis: {
+      yAxis: useDualAxis ? [
+        {
+          type: "value",
+          name: primaryKeys.join(" / "),
+          position: "left",
+        },
+        {
+          type: "value", 
+          name: secondaryKeys.join(" / "),
+          position: "right",
+        }
+      ] : {
         type: "value",
         name: yKeys.length === 1 ? yKeys[0] : "Value",
       },
       grid: {
         left: "8%",
-        right: "8%",
+        right: useDualAxis ? "15%" : "8%",
         bottom: "15%",
         top: "15%",
         containLabel: true,
@@ -193,6 +227,31 @@ function createChartGenerationPrompt(dataProfile: any, results: Result[], userQu
   const columns = dataProfile.columns.map((c: any) => `${c.name} (${c.type})`).join(", ");
   const sampleData = JSON.stringify(JSON.stringify(results.slice(0, 3), null, 2), null, 2);
   
+  // Add comparison-specific guidance
+  let comparisonGuidance = "";
+  if (dataProfile.comparisonType && dataProfile.recommendedVisualization) {
+    const rec = dataProfile.recommendedVisualization;
+    if (rec.type === 'dual-axis') {
+      comparisonGuidance = `
+
+SPECIAL CHART TYPE DETECTED: ${dataProfile.comparisonType.toUpperCase()} COMPARISON
+- Primary metrics (left axis): ${rec.primaryColumns.join(', ')}
+- Secondary metrics (right axis): ${rec.secondaryColumns.join(', ')}
+- Use dual Y-axis configuration with different scales
+- Primary axis: Use bar charts for the main comparison values
+- Secondary axis: Use line charts for change/percentage values
+- Configure yAxis as an array with two objects for dual scales`;
+    } else if (rec.type === 'grouped-bar') {
+      comparisonGuidance = `
+
+SPECIAL CHART TYPE DETECTED: ${dataProfile.comparisonType.toUpperCase()} COMPARISON  
+- Show main comparison values: ${rec.primaryColumns.join(', ')}
+- Display change values separately or as tooltip info
+- Use grouped bar chart to clearly show the comparison
+- Consider filtering out percentage columns if they make the chart hard to read`;
+    }
+  }
+  
   return `Based on this data analysis and user query, generate an optimal apache echarts chart configuration.
 
 User Query: ${userQuery}
@@ -200,7 +259,7 @@ Data Shape: ${dataProfile.dataShape}
 Row Count: ${dataProfile.rowCount}
 Columns: ${columns}
 Sample Data: ${sampleData}
-Sample Config: ${JSON.stringify(sampleConfig, null, 2)} 
+Sample Config: ${JSON.stringify(sampleConfig, null, 2)}${comparisonGuidance}
 
 Create a chart configuration that:
 1. Uses the appropriate chart type (bar, line, area, or pie)
@@ -211,7 +270,9 @@ Create a chart configuration that:
 6. Includes a clear, descriptive title
 7. Enables features like stacking or legends when beneficial
 8. Considers data pivoting if needed for better visualization
-9. Do not show X and Y axes labels
+9. Do not show X and Y axes titles (axis names), do not show the data values/labels on the X axis, but do show the data value/labels on the Y axis
+10. For comparison data with mixed scales, prioritize the most important metrics for visualization
+11. IMPORTANT: Convert ALL data rows - do not truncate or skip any data points from the source
 
 Return a valid chart configuration object and how the data was mapped to the chart in the following format:
 {

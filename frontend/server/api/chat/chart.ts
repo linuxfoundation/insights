@@ -1,24 +1,54 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import {  generateChartConfig, modifyChartConfig  } from '../../../lib/chat/chart/generator';
+import { normalizeDataForChart } from '../../../lib/chat/chart/analysis';
 import {  Result, Config  } from '../../../lib/chat/chart/types';
 
 export const maxDuration = 30;
 
 interface IChartRequestBody { 
-    results: Result[];
+    results?: Result[];
     userQuery?: string;
     currentConfig?: Config;
-    instructions: string;
+    instructions?: string;
+    pipeInstructions?: any; // For handling pipe execution instructions
 }
 
 export default defineEventHandler(async (event): Promise<any | Error> => {
 try {
-    const { results, userQuery, currentConfig, instructions } = await readBody<IChartRequestBody>(event);
+    const { results, userQuery, currentConfig, instructions, pipeInstructions } = await readBody<IChartRequestBody>(event);
+
+    // If pipe instructions are provided, execute them first to get results
+    if (pipeInstructions && !results) {
+      const { executePipeInstructions } = await import('../../../lib/chat/instructions');
+      
+      try {
+        const executedResults = await executePipeInstructions(pipeInstructions);
+        
+        if (!userQuery) {
+          return createError({statusCode: 400, statusMessage: 'User query is required for chart generation'});
+        }
+
+        const chartGeneration = await generateChartConfig(
+          executedResults as Result[],
+          userQuery
+        );
+
+        return {
+          success: true,
+          isMetric: chartGeneration.isMetric,
+          config: chartGeneration.config,
+          dataMapping: chartGeneration.dataMapping,
+          isModification: false,
+        };
+      } catch (pipeError) {
+        console.error("Pipe execution error:", pipeError);
+        return createError({statusCode: 500, statusMessage: 'Failed to execute pipe instructions'});
+      }
+    }
 
     if (!results || !Array.isArray(results)) {
-      return createError({statusCode: 400, statusMessage: 'Results array is required'});
-
+      return createError({statusCode: 400, statusMessage: 'Results array or pipe instructions are required'});
     }
 
     // If we have a current config and instructions, this is a modification request
