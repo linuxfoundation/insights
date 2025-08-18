@@ -16,7 +16,6 @@ export default defineEventHandler(async (event): Promise<any | Error> => {
     try {
     const { messages, segmentId, projectName, pipe, parameters } = await readBody<IStreamRequestBody>(event);
 
-
     if (!pipe) {
       return createError({statusCode: 400, statusMessage: 'Pipe is required'});
     }
