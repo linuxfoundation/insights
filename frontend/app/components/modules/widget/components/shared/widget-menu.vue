@@ -188,21 +188,6 @@ const share = () => {
   });
 }
 
-// const askCopilot = () => {
-//   openCopilotWidgetModal({
-//     widget: props.name,
-//     icon: 'users',
-//     suggestions: '',
-//     project: project.value || undefined,
-//     params: {
-//       startDate: startDate.value || '',
-//       endDate: endDate.value || '',
-//       granularity: granularity.value,
-//       project: project.value?.slug || ''
-//     }
-//   });
-// }
-
 const menu = computed<MenuItem[]>(() => [
   {
     label: 'Report issue',
