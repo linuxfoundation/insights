@@ -33,7 +33,7 @@ onMounted(async () => {
     } else {
       router.push("/");
     }
-  } catch (_e) {
+  } catch {
     // Redirect to home page on error
     router.push("/")
   }
