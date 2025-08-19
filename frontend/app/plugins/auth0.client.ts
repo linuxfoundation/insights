@@ -6,7 +6,10 @@ import { defineNuxtPlugin, useRuntimeConfig } from 'nuxt/app'
 
 export default defineNuxtPlugin((nuxt) => {
   const config = useRuntimeConfig()
-  
+  console.log("audience: ", config.public.auth0Audience)
+  console.log("domain: ", config.public.auth0Domain)
+  console.log("clientId: ", config.public.auth0ClientId)
+
   const auth0 = createAuth0({
     domain: config.public.auth0Domain as string,
     clientId: config.public.auth0ClientId as string,
