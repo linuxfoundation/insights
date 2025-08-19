@@ -6,16 +6,18 @@
 // SPDX-License-Identifier: MIT
 import type { Result } from "./types";
 
+interface RecommendedVisualization {
+  type: 'dual-axis' | 'grouped-bar' | 'separate-charts' | 'standard';
+  primaryColumns: string[];
+  secondaryColumns: string[];
+}
+
 export interface DataProfile {
   rowCount: number;
   columns: ColumnProfile[];
   dataShape: 'single-value' | 'time-series' | 'categorical' | 'multi-dimensional';
   comparisonType?: 'week-over-week' | 'period-comparison' | 'none';
-  recommendedVisualization?: {
-    type: 'dual-axis' | 'grouped-bar' | 'separate-charts' | 'standard';
-    primaryColumns: string[];
-    secondaryColumns: string[];
-  };
+  recommendedVisualization?: RecommendedVisualization;
 }
 
 export interface ColumnProfile {
@@ -195,8 +197,8 @@ function detectComparisonScenario(columns: ColumnProfile[], userQuestion: string
   const hasMultiScale = numericColumns.length >= 3 && numericValues.length > 0;
   
   let type: 'week-over-week' | 'period-comparison' | 'none' = 'none';
-  let recommendation = {
-    type: 'standard' as const,
+  let recommendation: RecommendedVisualization = {
+    type: 'standard',
     primaryColumns: [] as string[],
     secondaryColumns: [] as string[]
   };

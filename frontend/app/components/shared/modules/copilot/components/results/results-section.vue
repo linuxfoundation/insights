@@ -10,14 +10,18 @@ SPDX-License-Identifier: MIT
       <div>
         <lfx-copilot-results-header
           v-if="!isEmpty"
-          :is-loading="isLoading"
+          :is-loading="isLoading || isChartLoading"
         />
       </div>
       <div 
         v-if="!isLoading"
-        class="c-card p-4 w-full h-full min-h-0 flex flex-col"
+        :class="{
+          'h-full flex flex-col justify-center min-h-0': isChartLoading,
+          'c-card p-4 w-full h-full min-h-0 flex flex-col': !isChartLoading
+        }"
       >
         <lfx-copilot-results-toggle
+          v-if="!isChartLoading"
           :model-value="selectedTab"
           :data="selectedResultData || []"
           @update:model-value="selectedTab = $event"
@@ -41,7 +45,7 @@ SPDX-License-Identifier: MIT
               :config="selectedResultConfig"
               :is-snapshot-modal-open="isSnapshotModalOpen"
               @update:config="handleConfigUpdate"
-              @update:is-loading="emit('update:isChartLoading', $event)"
+              @update:is-loading="handleChartLoading"
               @update:is-snapshot-modal-open="isSnapshotModalOpen = $event"
             />
           </div>
@@ -66,7 +70,7 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 import LfxCopilotLoadingState from '../shared/loading-state.vue';
 import LfxCopilotErrorState from '../shared/error-state.vue';
@@ -89,6 +93,7 @@ const { resultData, selectedResultId } = storeToRefs(useCopilotStore());
 
 const selectedTab = ref('chart');
 const isSnapshotModalOpen = ref(false);
+const isChartLoading = ref(true);
 const selectedResultConfig = computed<Config | null>(() => {
   return resultData.value.find(result => result.id === selectedResultId.value)?.chartConfig || null;
 });
@@ -111,6 +116,17 @@ const handleConfigUpdate = (config: Config | null) => {
     }
   }
 }
+
+const handleChartLoading = (value: boolean) => {
+  isChartLoading.value = value;
+  emit('update:isChartLoading', value);
+}
+
+watch(isChartLoading, (value) => {
+  if (value) {
+    selectedTab.value = 'chart';
+  } 
+})
 </script>
 
 <script lang="ts">

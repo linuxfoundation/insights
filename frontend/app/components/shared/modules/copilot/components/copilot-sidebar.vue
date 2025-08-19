@@ -196,7 +196,9 @@ const callChatApi = async (userMessage: string) => {
       copilotApiService.generateTextMessage(
         'Sorry, there was an error processing your request.', 
         'assistant' as MessageRole, 
-        'error' as MessageStatus)
+        'error' as MessageStatus,
+        'router-status'
+      )
     )
   } finally {
     isLoading.value = false

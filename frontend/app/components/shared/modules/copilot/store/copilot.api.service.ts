@@ -13,13 +13,13 @@ class CopilotApiService {
   // Generate unique ID for messages
   generateId = () => Date.now().toString(36) + Math.random().toString(36).substr(2);
 
-  generateTextMessage = (message: string, role: MessageRole, status: MessageStatus) => {
+  generateTextMessage = (message: string, role: MessageRole, status: MessageStatus, type: MessagePartType = 'text') => {
     const userMessageId = this.generateId();
      
     return {
       id: userMessageId,
       role,
-      type: 'text' as MessagePartType,
+      type,
       status,
       content: message,
       timestamp: Date.now()

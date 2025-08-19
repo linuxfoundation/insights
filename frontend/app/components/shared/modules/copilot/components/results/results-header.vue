@@ -101,7 +101,7 @@ const getVersion = (id: string) => {
 
 const getTitle = (id: string) => {
   const result = resultData.value.find(r => String(r.id) === String(id));
-  return result?.title || 'Result';
+  return result?.title || 'Results';
 }
 </script>
 

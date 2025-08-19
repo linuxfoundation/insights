@@ -7,7 +7,7 @@ SPDX-License-Identifier: MIT
     v-if="isLoading"
     class="h-full flex items-center justify-center"
   >
-    <lfx-copilot-loading-state title="Generating your chart..." />
+    <lfx-copilot-loading-state />
   </div>
   <div
     v-else-if="error"
