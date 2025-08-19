@@ -86,6 +86,33 @@ class CopilotApiService {
 
     return response;
   }
+
+  async saveFeedback(
+    id: string,
+    feedback: number | null,
+    token: string,
+  ): Promise<Response> {
+    // Prepare the request body with the correct format
+    const requestBody = {
+      feedback
+    }
+
+    // Send streaming request
+    const response = await fetch(`/api/chat/feedback/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token
+      },
+      body: JSON.stringify(requestBody)
+    })
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+
+    return response;
+  }
   
   async handleStreamingResponse(
     response: Response, 
@@ -148,17 +175,18 @@ class CopilotApiService {
                       type: 'router-status',
                       status: data.status,
                       content: data.reasoning,
+                      explanation: data.status === 'error' ? data.error : undefined,
                       timestamp: Date.now()
                     }, -1);
                   }
                 }
                 
-                if (data.type === 'sql-result' || data.type === 'pipe-result') {            
+                if (['sql-result', 'pipe-result', 'chat-response-id'].includes(data.type)) {            
                   if (data.type === 'pipe-result') {
                     statusCallBack('Tool execution completed');
                   }
 
-                  const content = data.explanation
+                  const content = data.type === 'chat-response-id' ? data.id : data.explanation
 
                   // Create assistant message if it doesn't exist yet
                   if (!assistantMessageId) {

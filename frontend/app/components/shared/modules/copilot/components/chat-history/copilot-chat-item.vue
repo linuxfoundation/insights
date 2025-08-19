@@ -48,6 +48,10 @@ SPDX-License-Identifier: MIT
           :is-selected="!!(selectedResultId && message.id === selectedResultId)"
           @select="selectResult(message.id)"
         />
+        <lfx-chat-feedback
+          v-if="message.type === 'chat-response-id'"
+          :id="message.content"
+        />
       </div>
     </div>
   </div>
@@ -57,6 +61,7 @@ import type { AIMessage } from '../../types/copilot.types';
 import LfxContextDisplay from '../shared/context-display.vue';
 import LfxChatResult from './chat-result.vue'
 import LfxChatError from './chat-error.vue'
+import LfxChatFeedback from './chat-feedback.vue'
 
 const emit = defineEmits<{
   (e: 'selectResult', id: string): void

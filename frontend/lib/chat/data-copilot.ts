@@ -21,6 +21,24 @@ const bedrock = createAmazonBedrock({
   region: process.env.NUXT_AWS_BEDROCK_REGION,
 });
 
+interface RouterResponse { 
+  question: string;
+  answer: string;
+  reasoning?: string;
+  createdBy: string;
+  data?: any;
+  segmentId?: string;
+  projectName?: string;
+  pipe: string;
+  inputTokens?: number;
+  outputTokens?: number;
+  routerResponse: 'pipes' | 'text-to-sql' | 'stop';
+  routerReason: string;
+  pipeInstructions?: any; // JSONB for pipe instructions
+  sqlQuery?: string; // SQL query for text-to-sql
+  model: string;
+}
+
 export async function streamingAgentRequestHandler({
   messages,
   segmentId,
@@ -34,7 +52,7 @@ export async function streamingAgentRequestHandler({
   projectName?: string;
   pipe: string;
   parameters?: Record<string, any>;
-  onResponseComplete?: (response: { question: string; answer: string; reasoning?: string; createdBy: string; data?: any; segmentId?: string; projectName?: string; pipe: string; inputTokens?: number; outputTokens?: number }) => Promise<string>;
+  onResponseComplete?: (response: RouterResponse) => Promise<string>;
 }) {
   const url = new URL(
     `https://mcp.tinybird.co?token=${process.env.NUXT_INSIGHTS_TINYBIRD_TOKEN}&host=${process.env.NUXT_TINYBIRD_BASE_URL}`
@@ -132,7 +150,12 @@ export async function streamingAgentRequestHandler({
               projectName,
               pipe,
               inputTokens: responseData.inputTokens,
-              outputTokens: responseData.outputTokens
+              outputTokens: responseData.outputTokens,
+              routerResponse: 'stop',
+              routerReason: routerOutput.reasoning,
+              pipeInstructions: undefined,
+              sqlQuery: undefined,
+              model: 'Fill-with-actual-model'
             });
             
             // Stream the chat response ID
@@ -168,7 +191,12 @@ export async function streamingAgentRequestHandler({
               projectName,
               pipe,
               inputTokens: responseData.inputTokens,
-              outputTokens: responseData.outputTokens
+              outputTokens: responseData.outputTokens,
+              routerResponse: 'text-to-sql',
+              routerReason: routerOutput.reasoning,
+              pipeInstructions: undefined,
+              sqlQuery: undefined,
+              model: 'Fill-with-actual-model'
             });
             
             // Stream the chat response ID
@@ -265,6 +293,7 @@ export async function streamingAgentRequestHandler({
 
           // Call the callback if provided
           if (onResponseComplete) {
+            console.log('!!!responseData from pipes: ', JSON.stringify(responseData))
             const chatResponseId = await onResponseComplete({
               question: responseData.question,
               answer: responseData.answer,
@@ -275,7 +304,12 @@ export async function streamingAgentRequestHandler({
               projectName,
               pipe,
               inputTokens: responseData.inputTokens,
-              outputTokens: responseData.outputTokens
+              outputTokens: responseData.outputTokens,
+              routerResponse: 'pipes',
+              routerReason: routerOutput.reasoning,
+              pipeInstructions: pipeOutput.instructions,
+              sqlQuery: undefined, // where to get this?
+              model: 'Fill-with-actual-model'
             });
 
             // Stream the chat response ID
