@@ -51,7 +51,8 @@ export default defineEventHandler(async (event) => {
       });
       
       event.context.user = payload;
-      
+      console.log('User authenticated:', payload);
+
     } else {
       throw createError({
         statusCode: 401,
