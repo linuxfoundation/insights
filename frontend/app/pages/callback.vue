@@ -12,7 +12,6 @@ import { onMounted } from 'vue'
 import { useRouter } from "vue-router"
 
 
-// @ts-ignore - definePageMeta is auto-imported by Nuxt
 definePageMeta({
   layout: false,
   ssr: false // Disable SSR for this page (Auth0 callback needs client-side processing)
@@ -31,11 +30,10 @@ onMounted(async () => {
 
     if (redirectTo) {
       window.location.href = redirectTo;
-      alert(redirectTo);
     } else {
       router.push("/");
     }
-  } catch (error: any) {
+  } catch (_e) {
     // Redirect to home page on error
     router.push("/")
   }
