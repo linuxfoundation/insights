@@ -11,8 +11,7 @@ export default defineNuxtPlugin((nuxt) => {
     domain: config.public.auth0Domain as string,
     clientId: config.public.auth0ClientId as string,
     authorizationParams: {
-      // redirect_uri: config.public.auth0RedirectUri as string,
-      redirect_uri: window.location.origin,
+      redirect_uri: config.public.auth0RedirectUri as string,
       audience: config.public.auth0Audience as string,
     },
   })
