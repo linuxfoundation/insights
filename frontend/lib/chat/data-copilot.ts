@@ -293,7 +293,6 @@ export async function streamingAgentRequestHandler({
 
           // Call the callback if provided
           if (onResponseComplete) {
-            console.log('!!!responseData from pipes: ', JSON.stringify(responseData))
             const chatResponseId = await onResponseComplete({
               question: responseData.question,
               answer: responseData.answer,

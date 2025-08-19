@@ -37,7 +37,8 @@ const { token } = storeToRefs(useAuthStore());
 const feedback = ref<number | null>(null);
 
 const saveFeedback = async (value: number) => {
-  feedback.value = value;
+  feedback.value = feedback.value === value ? null : value;
+
   await copilotApiService.saveFeedback(props.id, feedback.value, token.value);
 }
 
