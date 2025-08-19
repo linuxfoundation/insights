@@ -23,7 +23,8 @@ export type MessageRole = 'user' | 'assistant';
 export interface ResultsHistory {
   id: string;
   data: MessageData[];
-  chartConfig?: Config;
+  title?: string;
+  chartConfig?: Config | null;
 }
 
 export interface AIMessage {

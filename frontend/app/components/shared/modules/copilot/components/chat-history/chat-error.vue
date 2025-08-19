@@ -21,7 +21,7 @@ SPDX-License-Identifier: MIT
       v-if="isReasonExpanded"
       class="my-4 text-xs text-neutral-400"
     >
-      {{ message.content }}
+      {{ message.explanation }}
     </div>
     <span class="text-sm text-neutral-900">
       There was an error processing your request. Please try again.

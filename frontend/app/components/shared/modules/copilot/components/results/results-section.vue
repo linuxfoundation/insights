@@ -10,10 +10,7 @@ SPDX-License-Identifier: MIT
       <div>
         <lfx-copilot-results-header
           v-if="!isEmpty"
-          :results="resultsWithData"
-          :selected-result-id="selectedId"
           :is-loading="isLoading"
-          @update:selected-result="selectedId = $event"
         />
       </div>
       <div 
@@ -70,9 +67,10 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import type { ResultsHistory } from '../../types/copilot.types';
+import { storeToRefs } from 'pinia';
 import LfxCopilotLoadingState from '../shared/loading-state.vue';
 import LfxCopilotErrorState from '../shared/error-state.vue';
+import { useCopilotStore } from '../../store/copilot.store';
 import LfxCopilotTableResults from './table-results.vue';
 import LfxCopilotResultsHeader from './results-header.vue';
 import LfxCopilotResultsToggle from './results-toggle.vue';
@@ -80,35 +78,24 @@ import LfxCopilotChartResults from './chart-results.vue';
 import type { Config } from '~~/lib/chat/chart/types';
 
 const emit = defineEmits<{
-  (e: 'update:selectedResult', value: string): void;
-  (e: 'update:config', value: Config | null, id: string): void;
   (e: 'update:isChartLoading', value: boolean): void;
 }>();
 
 const props = defineProps<{
-  results: ResultsHistory[];
-  selectedResultId: string | null;
   isLoading: boolean;
 }>()
 
-const selectedId = computed<string | null>({
-  get: () => props.selectedResultId,
-  set: (value) => {
-    emit('update:selectedResult', value || '');
-  }
-})
+const { resultData, selectedResultId } = storeToRefs(useCopilotStore());
+
 const selectedTab = ref('chart');
 const isSnapshotModalOpen = ref(false);
 const selectedResultConfig = computed<Config | null>(() => {
-  return props.results.find(result => result.id === selectedId.value)?.chartConfig || null;
+  return resultData.value.find(result => result.id === selectedResultId.value)?.chartConfig || null;
 });
 
-const resultsWithData = computed(() => {
-  return props.results.filter(result => result.data.length > 0);
-})
 
 const selectedResultData = computed(() => {
-  return props.results.find(result => result.id === selectedId.value)?.data || null;
+  return resultData.value.find(result => result.id === selectedResultId.value)?.data || null;
 })
 
 const isEmpty = computed(() => {
@@ -116,11 +103,14 @@ const isEmpty = computed(() => {
 })
 
 const handleConfigUpdate = (config: Config | null) => {
-  if (selectedId.value) {
-    emit('update:config', config, selectedId.value);
+  if (selectedResultId.value) {
+    const result = resultData.value.find(result => result.id === selectedResultId.value);
+    if (result) {
+      result.chartConfig = config;
+      result.title = config?.title?.text || 'Results';
+    }
   }
 }
-
 </script>
 
 <script lang="ts">

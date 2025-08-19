@@ -33,7 +33,7 @@ SPDX-License-Identifier: MIT
     >
       <lfx-chat-result-label
         :version="version"
-        label="Results"
+        :label="getTitle(message.id)"
       />
       <lfx-icon
         v-if="!isSelected"
@@ -47,8 +47,10 @@ SPDX-License-Identifier: MIT
 </template>
 <script setup lang="ts">
 import { computed, ref } from 'vue';
+import { storeToRefs } from 'pinia';
 import type { AIMessage } from '../../types/copilot.types'
 import LfxChatResultLabel from '../shared/result-label.vue'
+import { useCopilotStore } from '../../store/copilot.store';
 import LfxChatLabel from './chat-label.vue'
 import LfxIcon from '~/components/uikit/icon/icon.vue'
 
@@ -57,6 +59,8 @@ const props = defineProps<{
   version: number,
   isSelected: boolean | undefined
 }>()
+
+const { resultData } = storeToRefs(useCopilotStore());
 
 const isReasonExpanded = ref(false);
 // TODO: Implement feedback backend
@@ -68,6 +72,11 @@ const emit = defineEmits<{
 const reasoning = computed(() => {
   return props.message.explanation || props.message.sql;
 })
+
+const getTitle = (id: string) => {
+  const result = resultData.value.find(r => String(r.id) === String(id));
+  return result?.title || 'Loading...';
+}
 </script>
 
 <script lang="ts">

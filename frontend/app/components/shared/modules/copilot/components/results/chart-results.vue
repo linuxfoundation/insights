@@ -103,6 +103,7 @@ const generateChart = async () => {
     chartConfig.value = applySeriesStyle(patchChartData(data.config, data.dataMapping)) as Config;
   } else {
     error.value = data.error || 'Failed to generate chart';
+    chartConfig.value = null;
   }
   isLoading.value = false;
 }
