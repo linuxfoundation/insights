@@ -7,7 +7,7 @@ import type { PipeInstructions, TextToSqlInstructions } from './types';
 // Function to execute a TinyBird pipe
 async function executeTinybirdPipe(pipeName: string, parameters: Record<string, any>): Promise<any[]> {
   const tinybirdBaseUrl = process.env.NUXT_TINYBIRD_BASE_URL || 'https://api.us-west-2.aws.tinybird.co';
-  const tinybirdToken = process.env.NUXT_INSIGHTS_TINYBIRD_TOKEN || process.env.NUXT_TINYBIRD_TOKEN;
+  const tinybirdToken = process.env.NUXT_INSIGHTS_DATA_COPILOT_TINYBIRD_TOKEN;
 
   if (!tinybirdToken) {
     throw new Error('Tinybird token is not defined');
@@ -193,7 +193,7 @@ export async function executePipeInstructions(instructions: PipeInstructions): P
 // Function to execute a SQL query via TinyBird's Query API
 export async function executeTextToSqlInstructions(query: TextToSqlInstructions): Promise<any[]> {
   const tinybirdBaseUrl = process.env.NUXT_TINYBIRD_BASE_URL
-  const tinybirdToken = process.env.NUXT_INSIGHTS_TINYBIRD_TOKEN
+  const tinybirdToken = process.env.NUXT_INSIGHTS_DATA_COPILOT_TINYBIRD_TOKEN
 
   if (!tinybirdToken) {
     throw new Error('Tinybird token is not defined');

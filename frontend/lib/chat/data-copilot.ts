@@ -55,7 +55,7 @@ export async function streamingAgentRequestHandler({
   onResponseComplete?: (response: RouterResponse) => Promise<string>;
 }) {
   const url = new URL(
-    `https://mcp.tinybird.co?token=${process.env.NUXT_INSIGHTS_TINYBIRD_TOKEN}&host=${process.env.NUXT_TINYBIRD_BASE_URL}`
+    `https://mcp.tinybird.co?token=${process.env.NUXT_INSIGHTS_DATA_COPILOT_TINYBIRD_TOKEN}&host=${process.env.NUXT_TINYBIRD_BASE_URL}`
   );
 
   const mcpClient = await createMCPClient({
@@ -63,6 +63,8 @@ export async function streamingAgentRequestHandler({
       sessionId: `session_${Date.now()}`,
     }),
   });
+
+  const MODEL = "us.anthropic.claude-sonnet-4-20250514-v1:0"
 
   const tbTools = await mcpClient.tools({});
   // Build a human-readable overview of all tools for the router's prompt (read-only catalog)
@@ -92,7 +94,7 @@ export async function streamingAgentRequestHandler({
     .join("\n");
   const parametersString = JSON.stringify(parameters || {});
   const dateString = new Date().toISOString().split("T")[0];
-  const model = bedrock("us.anthropic.claude-sonnet-4-20250514-v1:0");
+  const model = bedrock(MODEL);
 
   return createDataStreamResponse({
     execute: async (dataStream) => {
@@ -155,7 +157,7 @@ export async function streamingAgentRequestHandler({
               routerReason: routerOutput.reasoning,
               pipeInstructions: undefined,
               sqlQuery: undefined,
-              model: 'Fill-with-actual-model'
+              model: MODEL
             });
             
             // Stream the chat response ID
@@ -196,7 +198,7 @@ export async function streamingAgentRequestHandler({
               routerReason: routerOutput.reasoning,
               pipeInstructions: undefined,
               sqlQuery: undefined,
-              model: 'Fill-with-actual-model'
+              model: MODEL
             });
             
             // Stream the chat response ID
@@ -308,8 +310,8 @@ export async function streamingAgentRequestHandler({
               routerResponse: 'pipes',
               routerReason: routerOutput.reasoning,
               pipeInstructions: pipeOutput.instructions,
-              sqlQuery: undefined, // where to get this?
-              model: 'Fill-with-actual-model'
+              sqlQuery: undefined,
+              model: MODEL
             });
 
             // Stream the chat response ID
