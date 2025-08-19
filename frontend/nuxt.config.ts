@@ -45,15 +45,16 @@ export default defineNuxtConfig({
     highlightedIds: "",
     redisUrl: "",
     githubApiToken: "",
+    lfxAuth0JwtSecret: "",
     // These are also exposed on the client-side
     public: {
       apiBase: "/api",
       appUrl: "http://localhost:3000",
       appEnv: process.env.APP_ENV,
-      auth0Domain: process.env.NUXT_CROWD_LFX_AUTH0_DOMAIN || "",
-      auth0ClientId: process.env.NUXT_CROWD_LFX_AUTH0_CLIENT_ID || "",
-      auth0RedirectUri: process.env.NUXT_CROWD_LFX_AUTH0_REDIRECT_URI || "http://localhost:3000/callback",
-      auth0Audience: process.env.NUXT_CROWD_LFX_AUTH0_AUDIENCE || "",
+      auth0Domain: "",
+      auth0ClientId: "",
+      auth0RedirectUri: "http://localhost:3000/callback",
+      auth0Audience: "",
     },
   },
   vue: {

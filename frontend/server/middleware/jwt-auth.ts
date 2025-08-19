@@ -30,8 +30,8 @@ export default defineEventHandler(async (event) => {
   }
 
   const token = authHeader.substring(7);
-  const auth0Domain = process.env.NUXT_CROWD_LFX_AUTH0_DOMAIN;
-  const auth0Audience = process.env.NUXT_CROWD_LFX_AUTH0_AUDIENCE;
+  const auth0Domain = process.env.NUXT_PUBLIC_AUTH0_DOMAIN;
+  const auth0Audience = process.env.NUXT_PUBLIC_AUTH0_AUDIENCE;
 
   if (!auth0Domain || !auth0Audience) {
     throw createError({

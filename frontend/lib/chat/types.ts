@@ -95,8 +95,8 @@ export const pipeOutputSchema = z.object({
 });
 
 // TypeScript types for agent outputs
-export type RouterOutput = z.infer<typeof routerOutputSchema>;
-export type PipeOutput = z.infer<typeof pipeOutputSchema>;
+export type RouterOutput = z.infer<typeof routerOutputSchema> & { usage?: any };
+export type PipeOutput = z.infer<typeof pipeOutputSchema> & { usage?: any };
 
 // ============================================
 // Agent Input Types

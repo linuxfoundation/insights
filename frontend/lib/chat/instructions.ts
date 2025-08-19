@@ -84,7 +84,8 @@ export async function executePipeInstructions(instructions: PipeInstructions): P
         const primaryRow = primaryData[i];
         
         // Get the date from primary row for alignment
-        const primaryDate = primaryRow[instructions.output.find(col => col.type === 'direct' && col.sourceColumn.toLowerCase().includes('date'))?.sourceColumn || 'startDate'];
+        const dateColumn = instructions.output.find(col => col.type === 'direct' && col.sourceColumn.toLowerCase().includes('date')) as { type: 'direct'; sourceColumn: string } | undefined;
+        const primaryDate = primaryRow[dateColumn?.sourceColumn || 'startDate'];
         const primaryDateObj = new Date(primaryDate);
         
         for (const outputColumn of instructions.output) {
