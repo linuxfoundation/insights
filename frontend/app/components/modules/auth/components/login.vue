@@ -90,6 +90,8 @@ const login = async () => {
       redirectTo: window.location.href,
     },
   })
+
+  localStorage.setItem('lfx-login-redirect', window.location.href);
 };
 
 const logoutHandler = () => {
@@ -108,7 +110,7 @@ watch(isAuthenticated, async (newVal) => {
   } else {
     token.value = '';
   }
-});
+}, { immediate: true });
 </script>
 
 <script lang="ts">
