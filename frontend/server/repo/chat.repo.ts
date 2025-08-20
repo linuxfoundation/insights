@@ -34,7 +34,6 @@ export class ChatRepository {
       response.outputTokens,
       null // feedback starts as null
     ]);
-    
     return result.rows[0].id;
   }
 

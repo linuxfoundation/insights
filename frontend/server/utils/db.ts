@@ -5,13 +5,14 @@ import { Pool } from 'pg';
 let pool: Pool | null = null;
 
 export function getDbPool(): Pool {
+    const config = useRuntimeConfig()
   if (!pool) {
     pool = new Pool({
-      host: process.env.NUXT_INSIGHTS_DB_WRITE_HOST,
-      port: parseInt(process.env.NUXT_INSIGHTS_DB_PORT || '5432', 10),
-      database: process.env.NUXT_INSIGHTS_DB_DATABASE,
-      user: process.env.NUXT_INSIGHTS_DB_USERNAME,
-      password: process.env.NUXT_INSIGHTS_DB_PASSWORD,
+      host: config.insightsDbWriteHost,
+      port: config.insightsDbPort,
+      database: config.insightsDbDatabase,
+      user: config.insightsDbUsername,
+      password: config.insightsDbPassword,
       max: 20,
       idleTimeoutMillis: 30000,
       connectionTimeoutMillis: 2000,
