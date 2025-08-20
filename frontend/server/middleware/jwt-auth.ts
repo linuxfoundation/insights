@@ -1,6 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { jwtVerify, createRemoteJWKSet } from 'jose';
+import { isLocal } from '../utils/common';
 
 const isJWT = (token: string) => {
   const parts = token.split('.');
@@ -58,7 +59,7 @@ export default defineEventHandler(async (event) => {
       const GROUP_CLAIM_KEY = 'https://sso.linuxfoundation.org/claims/groups'
       const GROUP_NAME = 'lfproducts-lfx-insights'
 
-      if (!auth0Audience.includes('localhost') && !(payload[GROUP_CLAIM_KEY] as string[]).includes(GROUP_NAME)) {
+      if (!isLocal && !(payload[GROUP_CLAIM_KEY] as string[]).includes(GROUP_NAME)) {
         throw createError({
           statusCode: 401,
           statusMessage: `User does not belong to ${GROUP_NAME}`

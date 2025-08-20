@@ -1,6 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { Pool } from 'pg';
+import { isLocal } from './common';
 
 let pool: Pool | null = null;
 
@@ -16,6 +17,7 @@ export function getDbPool(): Pool {
       max: 20,
       idleTimeoutMillis: 30000,
       connectionTimeoutMillis: 2000,
+      ssl: isLocal ? false : { rejectUnauthorized: false },
     });
   }
   return pool;
