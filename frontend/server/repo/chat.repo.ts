@@ -16,17 +16,26 @@ export interface ChatResponse {
 export class ChatRepository {
   constructor(private pool: Pool) {}
 
-  async saveChatResponse(response: ChatResponse): Promise<string> {
-    console.log("Saving chat response:", response);
+  async saveChatResponse(response: ChatResponse, userEmail: string): Promise<string> {
     try {
       const query = `
-      INSERT INTO chat_responses (created_by, router_response, router_reason, pipe_instructions, sql_query, model, input_tokens, output_tokens, feedback)
+      INSERT INTO chat_responses 
+      ( 
+        created_by, 
+        router_response, 
+        router_reason, 
+        pipe_instructions, 
+        sql_query, model, 
+        input_tokens, 
+        output_tokens, 
+        feedback
+      )
       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
       RETURNING id
     `;
     
     const result = await this.pool.query(query, [
-      response.createdBy,
+      userEmail,
       response.routerResponse,
       response.routerReason,
       response.pipeInstructions ? JSON.stringify(response.pipeInstructions) : null,
@@ -36,7 +45,6 @@ export class ChatRepository {
       response.outputTokens,
       null // feedback starts as null
     ]);
-    console.log("Chat response saved with ID:", result.rows[0].id);
 
     return result.rows[0].id;
     }

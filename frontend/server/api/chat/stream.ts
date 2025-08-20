@@ -32,11 +32,16 @@ export default defineEventHandler(async (event): Promise<any | Error> => {
       parameters,
       onResponseComplete: dbPool ? async (response) => {
         const chatRepo = new ChatRepository(dbPool);
-        return await chatRepo.saveChatResponse(response);
+        return await chatRepo.saveChatResponse(response, event.context.user.email);
       } : undefined,
     });
   } catch (error) {
-    return createError({statusCode: 500, statusMessage:  error instanceof Error ? error.message : 'An error occurred processing your request'});
+    return createError(
+        {
+          statusCode: 500,
+          statusMessage:  error instanceof Error ? error.message : 'An error occurred processing your request'
+        }
+    );
   }
 
 });
