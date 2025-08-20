@@ -20,12 +20,14 @@ export type MessageStatus = 'analyzing' | 'complete' | 'error';
 export type MessageData = Record<string, string | number | null | string[] | object>;
 export type MessageRole = 'user' | 'assistant';
 
+export type ChartErrorType = 'default' | 'chart-empty' | 'chart-error';
+
 export interface ResultsHistory {
   id: string;
   data: MessageData[];
   title?: string;
   chartConfig?: Config | null;
-  isChartError?: boolean;
+  chartErrorType?: ChartErrorType;
 }
 
 export interface AIMessage {

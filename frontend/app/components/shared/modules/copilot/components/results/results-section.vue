@@ -44,9 +44,11 @@ SPDX-License-Identifier: MIT
               :data="selectedResultData"
               :config="selectedResultConfig"
               :is-snapshot-modal-open="isSnapshotModalOpen"
+              :chart-error-type="selectedResultChartErrorType"
               @update:config="handleConfigUpdate"
               @update:is-loading="handleChartLoading"
               @update:is-snapshot-modal-open="isSnapshotModalOpen = $event"
+              @on-check-data-click="selectedTab = 'data'"
             />
           </div>
         </template>
@@ -55,7 +57,7 @@ SPDX-License-Identifier: MIT
           v-else
           class="flex flex-col items-center justify-center h-full min-h-0"
         >
-          <lfx-copilot-error-state :is-chart-error="false" />
+          <lfx-copilot-error-state error-type="default" />
         </div>
       </div>
       <div
@@ -80,6 +82,7 @@ import LfxCopilotResultsHeader from './results-header.vue';
 import LfxCopilotResultsToggle from './results-toggle.vue';
 import LfxCopilotChartResults from './chart-results.vue';
 import type { Config } from '~~/lib/chat/chart/types';
+import type { ChartErrorType } from '~/components/shared/modules/copilot/types/copilot.types';
 
 const emit = defineEmits<{
   (e: 'update:isChartLoading', value: boolean): void;
@@ -98,26 +101,25 @@ const selectedResultConfig = computed<Config | null>(() => {
   return resultData.value.find(result => result.id === selectedResultId.value)?.chartConfig || null;
 });
 
-
 const selectedResultData = computed(() => {
   return resultData.value.find(result => result.id === selectedResultId.value)?.data || null;
+})
+
+const selectedResultChartErrorType = computed(() => {
+  return resultData.value.find(result => result.id === selectedResultId.value)?.chartErrorType;
 })
 
 const isEmpty = computed(() => {
   return !props.isLoading && (!selectedResultData.value || selectedResultData.value.length === 0);
 })
 
-const handleConfigUpdate = (config: Config | null, isChartError: boolean) => {
+const handleConfigUpdate = (config: Config | null, chartErrorType?: ChartErrorType) => {
   if (selectedResultId.value) {
     const result = resultData.value.find(result => result.id === selectedResultId.value);
     if (result) {
       result.chartConfig = config;
       result.title = config?.title?.text || 'Results';
-      result.isChartError = isChartError;
-
-      if (isChartError) {
-        selectedTab.value = 'data';
-      }
+      result.chartErrorType = chartErrorType;
     }
   }
 }

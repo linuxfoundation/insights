@@ -282,7 +282,7 @@ Return a valid chart configuration object and how the data was mapped to the cha
       "originalFieldName": "originalFieldName",
       "indexInDataset": 0,
       "convertedFieldName": "convertedFieldName",
-      "dateConversion": "converted date format"
+      "dateConversion": "valid Luxon date format"
     }
   ]
 }`;
@@ -314,7 +314,7 @@ Return a complete, valid chart configuration object and how the data was mapped 
       "originalFieldName": "originalFieldName",
       "indexInDataset": 0,
       "convertedFieldName": "convertedFieldName",
-      "dateConversion": "converted date format"
+      "dateConversion": "valid Luxon date format"
     }
   ]
 }`;
