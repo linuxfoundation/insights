@@ -1,0 +1,32 @@
+.VPHomeFeatures .items {
+    @apply flex-col w-full;
+    
+    .item {
+        @apply w-full;
+    }
+    
+    @media (min-width: 768px) {
+        .item.grid-3[data-v-f5090ebe], .item.grid-6[data-v-f5090ebe] {
+            @apply w-full;
+        }
+    }
+
+}
+
+.VPHome {
+    .tagline {
+        max-width: 70%;
+    }
+    
+    @media (min-width: 960px) {
+        .tagline {
+            max-width: 70%;
+        }
+    }
+    
+    @media (min-width: 640px) {
+        .tagline {
+            max-width: 70%;
+        }
+    }
+}

@@ -28,8 +28,8 @@ export default defineConfig({
       options: {
         translations: {
           button: {
-            buttonText: 'Search the docs...',
-            buttonAriaLabel: 'Search the docs...'
+            buttonText: 'Search...',
+            buttonAriaLabel: 'Search...'
           }
         }
       }
