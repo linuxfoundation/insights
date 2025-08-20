@@ -53,7 +53,16 @@ export default defineEventHandler(async (event) => {
       });
       
       event.context.user = payload;
-      console.log('User authenticated:', payload);
+
+      const GROUP_CLAIM_KEY = 'https://sso.linuxfoundation.org/claims/groups'
+      const GROUP_NAME = 'lfproducts-lfx-insights'
+
+      if (auth0Domain != 'localhost' && !(payload[GROUP_CLAIM_KEY] as string[]).includes(GROUP_NAME)) {
+        throw createError({
+          statusCode: 401,
+          statusMessage: `User does not belong to ${GROUP_NAME}`
+        });
+      }
 
     } else {
       throw createError({
