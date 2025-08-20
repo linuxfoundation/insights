@@ -12,6 +12,7 @@ export default defineNuxtPlugin((nuxt) => {
     authorizationParams: {
       redirect_uri: config.public.auth0RedirectUri as string,
       audience: config.public.auth0Audience as string,
+      scope: 'openid profile email',
     },
   })
 

@@ -79,7 +79,7 @@ import LfxMenuButton from "~/components/uikit/menu-button/menu-button.vue";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
 import { links } from '~/config/links';
 
-const { loginWithRedirect, logout, isAuthenticated, getAccessTokenSilently } = useAuth0();
+const { loginWithRedirect, logout, isAuthenticated, idTokenClaims } = useAuth0();
 const { token } = storeToRefs(useAuthStore());
 
 const isOpen = ref(false);
@@ -103,10 +103,16 @@ const logoutHandler = () => {
   });
 };
 
-watch(isAuthenticated, async (newVal) => {
-  if (newVal) {
-    const tokenTmp = await getAccessTokenSilently();
-    token.value = tokenTmp;
+watch([isAuthenticated, idTokenClaims], ([newAuthVal, newIdTokenClaims]) => {
+  if (newAuthVal && newIdTokenClaims) {
+    try {
+      // The __raw property contains the actual JWT token
+      const idToken = newIdTokenClaims?.__raw;
+      token.value = idToken || '';
+    } catch (error) {
+      console.error('Error getting ID token:', error);
+      token.value = '';
+    }
   } else {
     token.value = '';
   }
