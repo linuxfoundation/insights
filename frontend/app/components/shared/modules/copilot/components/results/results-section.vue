@@ -107,12 +107,17 @@ const isEmpty = computed(() => {
   return !props.isLoading && (!selectedResultData.value || selectedResultData.value.length === 0);
 })
 
-const handleConfigUpdate = (config: Config | null) => {
+const handleConfigUpdate = (config: Config | null, isChartError: boolean) => {
   if (selectedResultId.value) {
     const result = resultData.value.find(result => result.id === selectedResultId.value);
     if (result) {
       result.chartConfig = config;
       result.title = config?.title?.text || 'Results';
+      result.isChartError = isChartError;
+
+      if (isChartError) {
+        selectedTab.value = 'data';
+      }
     }
   }
 }

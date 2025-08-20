@@ -4,8 +4,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
+import { DateTime } from "luxon";
 import type { Result } from "./types";
-
 interface RecommendedVisualization {
   type: 'dual-axis' | 'grouped-bar' | 'separate-charts' | 'standard';
   primaryColumns: string[];
@@ -246,16 +246,27 @@ function detectComparisonScenario(columns: ColumnProfile[], userQuestion: string
 
 export function formatDateForChart(dateValue: any): string {
   if (!dateValue) return String(dateValue);
-  
-  const date = new Date(dateValue);
-  if (isNaN(date.getTime())) return String(dateValue);
-  
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-  
-  // Return as string to prevent ECharts date auto-detection
-  return `${year}.${month}.${day}`;
+
+  // Try to parse with Luxon
+  let dt: DateTime;
+  if (typeof dateValue === "string") {
+    dt = DateTime.fromISO(dateValue);
+    if (!dt.isValid) {
+      dt = DateTime.fromFormat(dateValue, "MM/dd/yyyy");
+    }
+    if (!dt.isValid) {
+      dt = DateTime.fromJSDate(new Date(dateValue));
+    }
+  } else if (dateValue instanceof Date) {
+    dt = DateTime.fromJSDate(dateValue);
+  } else {
+    dt = DateTime.fromJSDate(new Date(dateValue));
+  }
+
+  if (!dt.isValid) return String(dateValue);
+
+  // Output as 'yyyy-MM-dd'
+  return dt.toFormat("yyyy-MM-dd");
 }
 
 export function normalizeDataForChart(results: Result[]): Result[] {

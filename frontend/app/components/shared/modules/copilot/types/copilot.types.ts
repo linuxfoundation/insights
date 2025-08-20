@@ -25,6 +25,7 @@ export interface ResultsHistory {
   data: MessageData[];
   title?: string;
   chartConfig?: Config | null;
+  isChartError?: boolean;
 }
 
 export interface AIMessage {

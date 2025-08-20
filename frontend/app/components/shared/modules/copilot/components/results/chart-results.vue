@@ -59,7 +59,7 @@ import { hexToRgba } from '~/components/uikit/chart/helpers/chart-helpers';
 import { lfxColors } from '~/config/styles/colors';
 
 const emit = defineEmits<{
-  (e: 'update:config', value: Config | null): void;
+  (e: 'update:config', value: Config | null, isChartError: boolean): void;
   (e: 'update:isLoading', value: boolean): void;
   (e: 'update:isSnapshotModalOpen', value: boolean): void;
 }>();
@@ -85,7 +85,7 @@ const error = ref(null);
 const chartConfig = computed({
   get: () => props.config,
   set: (value) => {
-    emit('update:config', value);
+    emit('update:config', value, false);
   }
 });
 
@@ -103,7 +103,7 @@ const generateChart = async () => {
     chartConfig.value = applySeriesStyle(patchChartData(data.config, data.dataMapping)) as Config;
   } else {
     error.value = data.error || 'Failed to generate chart';
-    chartConfig.value = null;
+    emit('update:config', null, true);
   }
   isLoading.value = false;
 }
