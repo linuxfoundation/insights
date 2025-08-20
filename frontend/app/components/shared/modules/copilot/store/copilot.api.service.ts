@@ -139,7 +139,13 @@ class CopilotApiService {
         if (done) {
           // Process any remaining data in the buffer
           if (lineBuffer.trim()) {
-            this.processCompleteLine(lineBuffer, assistantMessageId, assistantContent, messages, statusCallBack, messageCallBack)
+            this.processCompleteLine(
+              lineBuffer, 
+              assistantMessageId, 
+              assistantContent, 
+              messages,
+              statusCallBack, 
+              messageCallBack)
           }
           break
         }
@@ -157,7 +163,14 @@ class CopilotApiService {
         for (const line of lines) {
           if (line.trim() === '') continue
           
-          const result = this.processCompleteLine(line, assistantMessageId, assistantContent, messages, statusCallBack, messageCallBack)
+          const result = this.processCompleteLine(
+            line, 
+            assistantMessageId, 
+            assistantContent, 
+            messages, 
+            statusCallBack, 
+            messageCallBack
+          )
           if (result) {
             assistantContent = result.assistantContent
             assistantMessageId = result.assistantMessageId
