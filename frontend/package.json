@@ -17,7 +17,10 @@
     "test": "vitest",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
-    "docs:preview": "vitepress preview docs"
+    "docs:preview": "vitepress preview docs",
+    "blog:dev": "vitepress dev blog",
+    "blog:build": "vitepress build blog",
+    "blog:preview": "vitepress preview blog"
   },
   "dependencies": {
     "@linuxfoundation/lfx-ui-core": "^0.0.18",

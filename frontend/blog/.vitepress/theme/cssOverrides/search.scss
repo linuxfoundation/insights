@@ -1,0 +1,41 @@
+// Menu search bar override
+.VPNavBarSearch {
+    @apply pl-0;
+    }
+
+    #local-search {
+    @apply flex flex-grow;
+    }
+
+    .DocSearch-Button {
+    justify-content: space-between !important;
+    }
+
+    #local-search button {
+    @apply w-full lg:max-w-80 overflow-hidden h-9 border rounded-full hidden sm:flex items-center gap-2 px-3 cursor-pointer !important;
+    background-color: var(--lfx-color-neutral-50) !important;
+    border-color: var(--lfx-color-neutral-200) !important;
+
+    .DocSearch-Button-Container {
+        @apply flex gap-2 items-center;
+    }
+
+    .DocSearch-Button-Keys {
+        @apply inline-flex items-center justify-between text-sm rounded-full px-2.5 h-6 border border-solid;
+        background-color: var(--lfx-color-white);
+        border-color: var(--lfx-color-neutral-200);
+        color: var(--lfx-color-neutral-900);
+
+        .DocSearch-Button-Key {
+        @apply m-0 p-0 border-none h-5;
+        &:nth-child(2):before {
+            content: '+'
+        }
+        }
+    }
+
+    span {
+        color: var(--lfx-color-neutral-400);
+        @apply text-sm truncate font-normal m-0;
+    }
+}

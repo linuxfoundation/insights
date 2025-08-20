@@ -1,0 +1,13 @@
+.c-menu-button {
+    @apply flex items-center gap-2 px-3 py-2 rounded-full text-sm font-medium leading-5;
+    @apply cursor-pointer outline outline-3 outline-transparent transition select-none whitespace-nowrap;
+    color: var(--lfx-color-neutral-500);
+
+    &:hover{
+      background-color: var(--lfx-color-neutral-50);
+    }
+}
+
+button, a {
+  @apply font-medium !important;
+}
