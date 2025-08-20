@@ -20,6 +20,8 @@ export default defineEventHandler(async (event) => {
     return;
   }
 
+  const config = useRuntimeConfig()
+  
   // Read authorization header
   const authHeader = getHeader(event, 'authorization');
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -30,8 +32,8 @@ export default defineEventHandler(async (event) => {
   }
 
   const token = authHeader.substring(7);
-  const auth0Domain = process.env.NUXT_PUBLIC_AUTH0_DOMAIN;
-  const auth0Audience = process.env.NUXT_PUBLIC_AUTH0_AUDIENCE;
+  const auth0Domain = config.public.auth0Domain;
+  const auth0Audience = config.public.auth0ClientId;
 
   if (!auth0Domain || !auth0Audience) {
     throw createError({
