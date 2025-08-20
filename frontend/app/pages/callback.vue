@@ -29,7 +29,7 @@ onMounted(async () => {
     const redirectTo = localStorage.getItem('lfx-login-redirect');
 
     if (redirectTo) {
-      window.location.href = redirectTo;
+      // window.location.href = redirectTo;
     } else {
       router.push("/");
     }
