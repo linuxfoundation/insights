@@ -17,7 +17,9 @@ export class ChatRepository {
   constructor(private pool: Pool) {}
 
   async saveChatResponse(response: ChatResponse): Promise<string> {
-    const query = `
+    console.log("Saving chat response:", response);
+    try {
+      const query = `
       INSERT INTO chat_responses (created_by, router_response, router_reason, pipe_instructions, sql_query, model, input_tokens, output_tokens, feedback)
       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
       RETURNING id
@@ -34,7 +36,14 @@ export class ChatRepository {
       response.outputTokens,
       null // feedback starts as null
     ]);
+    console.log("Chat response saved with ID:", result.rows[0].id);
+
     return result.rows[0].id;
+    }
+    catch (error) {
+      console.error("Error saving chat response:", error);
+      throw new Error("Could not save chat response");
+    }
   }
 
   async updateChatFeedback(chatResponseId: string, feedback: number | null): Promise<boolean> {
