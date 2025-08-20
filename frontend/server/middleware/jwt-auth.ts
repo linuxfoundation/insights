@@ -35,7 +35,6 @@ export default defineEventHandler(async (event) => {
   const token = authHeader.substring(7);
   const auth0Domain = config.public.auth0Domain;
   const auth0ClientId = config.public.auth0ClientId;
-  const auth0Audience = config.public.auth0Audience;
 
   if (!auth0Domain || !auth0ClientId) {
     throw createError({
