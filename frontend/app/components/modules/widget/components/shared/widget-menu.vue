@@ -30,7 +30,7 @@ SPDX-License-Identifier: MIT
           <lfx-widget-menu-item
             v-else
             class="flex gap-2 items-center"
-            :class="`${link.showLabel ? '!w-auto !px-4' : ''} ${link.buttonClass}`"
+            :class="`${link.showLabel ? '!w-auto !px-3' : ''} ${link.buttonClass}`"
             @click="link.action()"
           >
             <lfx-icon
@@ -246,10 +246,8 @@ const menu = computed<MenuItem[]>(() => [
     label: 'Ask Copilot',
     icon: 'sparkles',
     iconClass: '!text-brand-500',
-    buttonClass: '!hidden xl:!flex',
-    // action: askCopilot,
-    action: () => {
-    },
+    buttonClass: `py-1.5 !hidden xl:!flex rounded-full ${isMenuOpen.value ? 'bg-neutral-50' : ''}`,
+    action: () => {},
     enabled: isCopilotEnabled.value,
     showLabel: true,
     isSeparator: false,
