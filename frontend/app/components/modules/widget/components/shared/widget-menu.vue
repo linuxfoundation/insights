@@ -119,6 +119,7 @@ import LfxSnapshotModal from "~/components/modules/widget/components/shared/snap
 import LfxWidgetEmbedModal from "~/components/modules/widget/components/shared/embed/embed-modal.vue";
 import { useAuthStore } from "~/components/modules/auth/store/auth.store";
 import LfxCopilotWidgetModal from "~/components/shared/modules/copilot/components/copilot-widget-modal.vue";
+import { hasLfxInsightsPermission } from "~/components/shared/utils/jwt-permissions";
 
 export interface MenuItem {
   label: string;
@@ -159,7 +160,7 @@ const {
   project, 
   selectedRepositories} = storeToRefs(useProjectStore());
 const {token} = storeToRefs(useAuthStore())
-const isCopilotEnabled = computed(() => !!config.value.copilot && !!token.value)
+const isCopilotEnabled = computed(() => !!config.value.copilot && hasLfxInsightsPermission(token.value))
 
 const widgetArea = computed(
     () => Object.keys(lfxWidgetArea).find(
