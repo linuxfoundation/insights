@@ -2,11 +2,39 @@
 // SPDX-License-Identifier: MIT
 import type { Pool } from 'pg';
 
+export interface PipeInput {
+  endDate?: string;
+  project?: string;
+  startDate?: string;
+  granularity?: string;
+  [key: string]: unknown;
+}
+
+export interface Pipe {
+  id: string;
+  name: string;
+  inputs: PipeInput;
+}
+
+export interface OutputColumn {
+  name: string;
+  type: string;
+  pipeId: string;
+  sourceColumn: string;
+}
+
+export interface PipeInstructions {
+  pipes: Pipe[];
+  output: OutputColumn[];
+}
+
 export interface ChatResponse {
+  id?: string;
   createdBy: string;
+  userPrompt: string;
   routerResponse: 'pipes' | 'text-to-sql' | 'stop';
   routerReason: string;
-  pipeInstructions?: any; // JSONB for pipe instructions
+  pipeInstructions?: PipeInstructions;
   sqlQuery?: string; // SQL query for text-to-sql
   model: string;
   inputTokens?: number;
@@ -22,6 +50,7 @@ export class ChatRepository {
       INSERT INTO chat_responses 
       ( 
         created_by, 
+        user_prompt,
         router_response, 
         router_reason, 
         pipe_instructions, 
@@ -30,12 +59,13 @@ export class ChatRepository {
         output_tokens, 
         feedback
       )
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
       RETURNING id
     `;
     
     const result = await this.pool.query(query, [
       userEmail,
+      response.userPrompt,
       response.routerResponse,
       response.routerReason,
       response.pipeInstructions ? JSON.stringify(response.pipeInstructions) : null,
@@ -65,7 +95,7 @@ export class ChatRepository {
     return result.rowCount > 0;
   }
 
-  async getChatResponse(chatResponseId: string): Promise<any | null> {
+  async getChatResponse(chatResponseId: string): Promise<ChatResponse | null> {
     const query = `
       SELECT * FROM chat_responses WHERE id = $1
     `;

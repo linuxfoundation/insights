@@ -25,7 +25,7 @@ interface RouterResponse {
   question: string;
   answer: string;
   reasoning?: string;
-  createdBy: string;
+  userPrompt: string;
   data?: any;
   segmentId?: string;
   projectName?: string;
@@ -146,7 +146,7 @@ export async function streamingAgentRequestHandler({
               question: responseData.question,
               answer: responseData.answer,
               reasoning: responseData.reasoning,
-              createdBy: 'system', // TODO: get actual user from JWT
+              userPrompt: responseData.question,
               data: responseData.data,
               segmentId,
               projectName,
@@ -174,7 +174,9 @@ export async function streamingAgentRequestHandler({
           const fallbackMessage = `I'm unable to answer this question with the widgets I have access...
             But soon I will be able to construct my own queries for these questions.`;
           responseData.answer = fallbackMessage;
-          responseData.reasoning = `Router Decision: ${routerOutput.next_action}\nReasoning: ${routerOutput.reasoning}\nFallback: Text-to-SQL not yet supported`;
+          responseData.reasoning = `Router Decision: ${routerOutput.next_action}\n
+                                    Reasoning: ${routerOutput.reasoning}\n
+                                    Fallback: Text-to-SQL not yet supported`;
           dataStream.writeData({
             type: "router-status",
             status: "complete",
@@ -187,7 +189,7 @@ export async function streamingAgentRequestHandler({
               question: responseData.question,
               answer: responseData.answer,
               reasoning: responseData.reasoning,
-              createdBy: 'system', // TODO: get actual user from JWT
+              userPrompt: responseData.question,
               data: responseData.data,
               segmentId,
               projectName,
@@ -283,7 +285,12 @@ export async function streamingAgentRequestHandler({
 
           responseData.explanation = pipeOutput.explanation;
           responseData.answer = pipeOutput.explanation;
-          responseData.reasoning = `Router Decision: ${routerOutput.next_action}\nRouter Reasoning: ${routerOutput.reasoning}\nTools Selected: ${routerOutput.tools ? routerOutput.tools.join(', ') : 'none'}\nReformulated Question: ${routerOutput.reformulated_question}\nPipe Agent Explanation: ${pipeOutput.explanation}`;
+          responseData.reasoning = `Router Decision: ${routerOutput.next_action}\n
+                                    Router Reasoning: ${routerOutput.reasoning}\n
+                                    Tools Selected: ${routerOutput.tools ? routerOutput.tools.join(', ') : 'none'}\n
+                                    Reformulated Question: ${routerOutput.reformulated_question}\n
+                                    Pipe Agent Explanation: ${pipeOutput.explanation}`;
+                                    
           responseData.data = combinedData;
 
           dataStream.writeData({
@@ -299,7 +306,7 @@ export async function streamingAgentRequestHandler({
               question: responseData.question,
               answer: responseData.answer,
               reasoning: responseData.reasoning,
-              createdBy: 'system', // TODO: get actual user from JWT
+              userPrompt: responseData.question,
               data: responseData.data,
               segmentId,
               projectName,
