@@ -54,6 +54,10 @@ const pullRequests: WidgetConfig = {
       },
     },
   },
+  copilot: {
+    icon: 'code-pull-request',
+    suggestions: 'How many pull requests are there?'
+  },
 }
 
 export default pullRequests

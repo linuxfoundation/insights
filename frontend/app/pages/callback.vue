@@ -10,6 +10,7 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { useRouter } from "vue-router"
+import { LfxRoutes } from '~/components/shared/types/routes'
 
 
 definePageMeta({
@@ -31,11 +32,11 @@ onMounted(async () => {
     if (redirectTo) {
       // window.location.href = redirectTo;
     } else {
-      router.push("/");
+      router.push(LfxRoutes.HOME);
     }
   } catch {
     // Redirect to home page on error
-    router.push("/")
+    router.push(LfxRoutes.HOME)
   }
 })
 </script> 
