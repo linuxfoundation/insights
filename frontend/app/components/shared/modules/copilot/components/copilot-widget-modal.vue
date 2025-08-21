@@ -13,7 +13,7 @@ SPDX-License-Identifier: MIT
           v-model="userQuestion"
           autofocus
           :placeholder="`e.g. ${widgetConfig.copilot?.suggestions}`"
-          class="w-full p-3 bg-neutral-100 rounded-lg text-xs resize-none focus:outline-none h-[75px]"
+          class="w-full p-3 bg-neutral-100 rounded-lg text-sm resize-none focus:outline-none h-[75px]"
           rows="2"
           style="word-break: break-word; white-space: pre-wrap;"
           @keydown.enter="handleAskCopilot"
@@ -33,16 +33,17 @@ SPDX-License-Identifier: MIT
 
         <!-- Ask Copilot button -->
         <div class="flex justify-end">
-          <lfx-button
-            :disabled="!userQuestion.trim()"
-            type="primary"
-            size="medium"
-            icon="fa fa-light fa-arrow-up"
-            button-style="pill"
-            class="w-[28px] h-[28px] !max-w-[28px] !max-h-[28px] flex items-center
-            justify-center !p-0 !text-base"
-            @click="handleAskCopilot"
-          />
+          <div
+            class="w-[28px] h-[28px] flex items-center justify-center
+              rounded-full transition-all text-base text-white"
+            :class="{
+              'bg-brand-500 opacity-50 cursor-not-allowed': !userQuestion.trim(),
+              'bg-brand-500 hover:bg-brand-600 cursor-pointer': userQuestion.trim()
+            }"
+            @click="userQuestion.trim() && handleAskCopilot()"
+          >
+            <i class="fa fa-light fa-arrow-up" />
+          </div>
         </div>
       </div>
     </div>
@@ -53,7 +54,6 @@ SPDX-License-Identifier: MIT
 import { ref, computed, nextTick } from 'vue'
 import {storeToRefs} from "pinia";
 // import LfxIcon from '~/components/uikit/icon/icon.vue'
-import LfxButton from '~/components/uikit/button/button.vue'
 import {lfxWidgets} from "~/components/modules/widget/config/widget.config"
 import type {Widget} from "~/components/modules/widget/types/widget"
 import {useCopilotStore} from "~/components/shared/modules/copilot/store/copilot.store";
