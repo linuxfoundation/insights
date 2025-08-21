@@ -5,7 +5,7 @@ SPDX-License-Identifier: MIT
 <template>
   <div>
     <div
-      class="cursor-pointer flex items-center gap-1"
+      class="cursor-pointer flex items-center gap-1 mb-4"
       @click="isReasonExpanded = !isReasonExpanded"
     >
       <lfx-chat-label
@@ -15,11 +15,12 @@ SPDX-License-Identifier: MIT
       <lfx-icon
         :name="isReasonExpanded ? 'angle-up' : 'angle-down'"
         :size="12"
+        class="text-negative-600"
       />
     </div>
     <div
       v-if="isReasonExpanded"
-      class="my-4 text-xs text-neutral-400"
+      class="mb-4 text-xs text-neutral-500 pl-3 border-l border-neutral-300"
     >
       {{ message.explanation }}
     </div>
