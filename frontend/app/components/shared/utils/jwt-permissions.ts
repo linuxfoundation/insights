@@ -1,8 +1,14 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { decodeJwt } from 'jose'
+import { useRuntimeConfig } from 'nuxt/app';
 
-const isLocal = process.env.NUXT_APP_ENV != 'staging' && process.env.NUXT_APP_ENV != 'production';
+const isLocal = (): boolean => {
+  const config = useRuntimeConfig()
+  const appEnv = config.public.appEnv
+
+  return appEnv !== 'staging' && appEnv !== 'production'
+}
 
 const GROUP_CLAIM_KEY = 'https://sso.linuxfoundation.org/claims/groups'
 const GROUP_NAME = 'lfproducts-lfx-insights'
@@ -18,7 +24,7 @@ export const hasLfxInsightsPermission = (token: string): boolean => {
   }
 
   // In local we don't have SSO Groups so we should always allow to use the feature
-  if (isLocal) {
+  if (isLocal()) {
     return true
   }
 
