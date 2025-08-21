@@ -193,19 +193,9 @@ const menu = computed<MenuItem[]>(() => [
   {
     label: 'Report issue',
     icon: 'comment-exclamation',
-    iconClass: '!text-warning-600',
     action: report,
     enabled: true,
-    showLabel: true,
     isSeparator: false
-  },
-  {
-    label: '',
-    icon: '',
-    action: () => {
-    },
-    enabled: config.value.embed || config.value.snapshot || config.value.share,
-    isSeparator: true
   },
   {
     label: 'Embed',
@@ -237,7 +227,7 @@ const menu = computed<MenuItem[]>(() => [
     icon: '',
     action: () => {
     },
-    enabled: config.value.embed || config.value.snapshot || config.value.share || isCopilotEnabled.value,
+    enabled: (config.value.embed || config.value.snapshot || config.value.share) && isCopilotEnabled.value,
     buttonClass: '!hidden xl:!block',
     isSeparator: true,
     hideOnMobile: true
@@ -246,7 +236,7 @@ const menu = computed<MenuItem[]>(() => [
     label: 'Ask Copilot',
     icon: 'sparkles',
     iconClass: '!text-brand-500',
-    buttonClass: `py-1.5 !hidden xl:!flex rounded-full ${isMenuOpen.value ? 'bg-neutral-50' : ''}`,
+    buttonClass: `py-1.5 !hidden xl:!flex rounded-full hover:bg-neutral-50 ${isMenuOpen.value ? 'bg-neutral-50' : ''}`,
     action: () => {},
     enabled: isCopilotEnabled.value,
     showLabel: true,
