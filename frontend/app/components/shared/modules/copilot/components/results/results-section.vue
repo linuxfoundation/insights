@@ -24,6 +24,7 @@ SPDX-License-Identifier: MIT
           v-if="!isChartLoading"
           :model-value="selectedTab"
           :data="selectedResultData || []"
+          :is-error="isChartError"
           @update:model-value="selectedTab = $event"
           @open-snapshot-modal="isSnapshotModalOpen = true"
         />
@@ -47,6 +48,7 @@ SPDX-License-Identifier: MIT
               :chart-error-type="selectedResultChartErrorType"
               @update:config="handleConfigUpdate"
               @update:is-loading="handleChartLoading"
+              @update:is-error="handleChartError"
               @update:is-snapshot-modal-open="isSnapshotModalOpen = $event"
               @on-check-data-click="selectedTab = 'data'"
             />
@@ -94,6 +96,7 @@ const props = defineProps<{
 
 const { resultData, selectedResultId } = storeToRefs(useCopilotStore());
 
+const isChartError = ref(false);
 const selectedTab = ref('chart');
 const isSnapshotModalOpen = ref(false);
 const isChartLoading = ref(true);
@@ -127,6 +130,10 @@ const handleConfigUpdate = (config: Config | null, chartErrorType?: ChartErrorTy
 const handleChartLoading = (value: boolean) => {
   isChartLoading.value = value;
   emit('update:isChartLoading', value);
+}
+
+const handleChartError = (value: boolean) => {
+  isChartError.value = value;
 }
 
 watch(isChartLoading, (value) => {

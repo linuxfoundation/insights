@@ -3,7 +3,9 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="flex justify-between pb-4 mb-4 border-b border-neutral-200">
+  <div
+    class="flex justify-between pb-4 mb-4 border-b border-neutral-200"
+  >
     <div class="flex-row gap-3 flex">
       <button
         v-for="tab in resultsTabs"
@@ -24,6 +26,7 @@ SPDX-License-Identifier: MIT
     </div>
 
     <lfx-button
+      v-if="!isError || modelValue === 'data'"
       type="tertiary"
       button-style="pill"
       @click="exportData()"
@@ -47,6 +50,7 @@ const emit = defineEmits<{
 const props = defineProps<{
   modelValue: string;
   data: MessageData[];
+  isError: boolean;
 }>()
 
 const resultsTabs = [
