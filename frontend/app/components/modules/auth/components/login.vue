@@ -83,13 +83,12 @@ const { token } = storeToRefs(useAuthStore());
 const isOpen = ref(false);
 
 const login = async () => {
+  const redirectTo = window.location.pathname + window.location.search + window.location.hash;
   loginWithRedirect({
     appState: {
-      redirectTo: window.location.href,
+      target: redirectTo
     },
   })
-
-  localStorage.setItem('lfx-login-redirect', window.location.href);
 };
 
 const logoutHandler = () => {
