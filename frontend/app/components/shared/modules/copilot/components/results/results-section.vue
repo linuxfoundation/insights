@@ -40,7 +40,7 @@ SPDX-License-Identifier: MIT
           </div>
           <div
             v-else
-            class="w-full h-full min-h-0 flex flex-col overflow-auto"
+            class="w-full h-full min-h-0 flex flex-col overflow-auto py-4"
           >
             <lfx-copilot-chart-results
               :data="selectedResultData"

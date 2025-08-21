@@ -33,6 +33,7 @@ export const configSchema = z.object({
       fontSize: z.number().optional(),
       fontWeight: z.string().optional(),
       color: z.string().optional(),
+      fontFamily: z.string().optional(),
     }).optional(),
   }).optional(),
   dataset: z.object({

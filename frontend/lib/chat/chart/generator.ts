@@ -20,18 +20,29 @@ const bedrock = createAmazonBedrock({
   region: process.env.NUXT_AWS_BEDROCK_REGION,
 });
 
-const defaultColors = [
-  lfxColors.brand[500],
-  lfxColors.neutral[300],
-  lfxColors.violet[500],
-  lfxColors.positive[500],
-  lfxColors.negative[500],
-  lfxColors.brand[300],
-  lfxColors.neutral[400],
-  lfxColors.violet[400],
-  lfxColors.positive[400],
-  lfxColors.negative[400]
-];
+// Color arrays for different chart types and data point counts
+const chartColors = {
+  // Single chart type colors (line or bar)
+  single: [
+    lfxColors.brand[500],      // Color A (1 data point)
+    lfxColors.violet[500],     // Color B (2 data points) 
+    lfxColors.neutral[400],    // Color C (3 data points)
+    lfxColors.positive[500],   // Color D (4+ data points)
+    lfxColors.negative[500],
+    lfxColors.brand[300],
+    lfxColors.violet[400],
+    lfxColors.positive[400],
+    lfxColors.negative[400]
+  ],
+  // Mixed chart colors (bars first, then lines)
+  mixed: {
+    bars: [lfxColors.brand[500], lfxColors.violet[500], lfxColors.neutral[400]],
+    lines: [lfxColors.positive[500], lfxColors.negative[500], lfxColors.brand[300]]
+  }
+};
+
+// Legacy defaultColors for backward compatibility (if needed elsewhere)
+// const defaultColors = chartColors.single;
 
 const model = bedrock("us.anthropic.claude-sonnet-4-20250514-v1:0");
 
@@ -62,8 +73,17 @@ export async function generateChartConfig(
 
     // Apply default colors if not already set
     if (!chartConfig.color) {
-      const colors = generateDefaultColors(chartConfig.series.map((s: any) => s.name));
+      const colors = generateDefaultColors(
+        chartConfig.series.map((s: any) => s.name), 
+        chartConfig.series
+      );
       chartConfig.color = colors;
+      
+      // Remove individual series colors to let the global color array take precedence
+      chartConfig.series = chartConfig.series.map((series: any) => {
+        const { color, ...seriesWithoutColor } = series;
+        return seriesWithoutColor;
+      });
     }
 
     const finalConfig = chartConfig;
@@ -108,8 +128,39 @@ export async function modifyChartConfig(
   }
 }
 
-function generateDefaultColors(yKeys: string[]): string[] {
-  return yKeys.map((_, index) => defaultColors[index] || lfxColors.brand[500]);
+function generateDefaultColors(yKeys: string[], series?: Array<{ type: string; name?: string }>): string[] {
+  if (!series) {
+    // Simple case: just pick colors from the single array
+    return yKeys.map((_, index) => chartColors.single[index] ?? chartColors.single[0]!);
+  }
+
+  // Analyze series types
+  const barSeries = series.filter(s => s.type === 'bar');
+  const lineSeries = series.filter(s => s.type === 'line');
+  const isMixed = barSeries.length > 0 && lineSeries.length > 0;
+
+  if (isMixed) {
+    // Mixed chart: assign colors based on series type and order
+    let barColorIndex = 0;
+    let lineColorIndex = 0;
+    
+    return series.map(s => {
+      if (s.type === 'bar') {
+        const color = chartColors.mixed.bars[barColorIndex];
+        barColorIndex++;
+        return color ?? chartColors.mixed.bars[0]!;
+      } else if (s.type === 'line') {
+        const color = chartColors.mixed.lines[lineColorIndex];
+        lineColorIndex++;
+        return color ?? chartColors.mixed.lines[0]!;
+      } else {
+        return chartColors.single[0]!; // fallback
+      }
+    });
+  } else {
+    // Single chart type: use the single array
+    return yKeys.map((_, index) => chartColors.single[index] ?? chartColors.single[0]!);
+  }
 }
 
 function generateFallbackConfig(profile: any): Config {
@@ -169,12 +220,18 @@ function generateFallbackConfig(profile: any): Config {
     };
   });
 
-  // Generate default colors array
-  const colors = yKeys.map((_: string, index: number) => defaultColors[index] || lfxColors.brand[500]);
+  // Generate default colors array using the smart color system
+  const colors = generateDefaultColors(yKeys, series);
 
   const config: Config = {
     title: {
       text: "Data Visualization",
+      left: 'center',
+      textStyle: {
+        fontFamily: 'Roboto Slab',
+        fontWeight: '700',
+        fontSize: 16,
+      },
     },
     tooltip: {
       trigger: type === "pie" ? "item" : "axis",
@@ -192,21 +249,50 @@ function generateFallbackConfig(profile: any): Config {
       xAxis: {
         type: "category",
         name: xKey,
+        axisLabel: {
+          fontSize: 12,
+          fontWeight: 'normal',
+          color: lfxColors.neutral[400],
+          fontFamily: 'Inter',
+        },
+        axisLine: {
+          show: false,
+        },
+        splitLine: { show: false },
+        axisTick: { show: false },
       },
       yAxis: useDualAxis ? [
         {
           type: "value",
           name: primaryKeys.join(" / "),
           position: "left",
+          axisLabel: {
+            fontSize: 12,
+            fontWeight: 'normal',
+            color: lfxColors.neutral[400],
+            fontFamily: 'Inter',
+          },
         },
         {
           type: "value", 
           name: secondaryKeys.join(" / "),
           position: "right",
+          axisLabel: {
+            fontSize: 12,
+            fontWeight: 'normal',
+            color: lfxColors.neutral[400],
+            fontFamily: 'Inter',
+          },
         }
       ] : {
         type: "value",
         name: yKeys.length === 1 ? yKeys[0] : "Value",
+        axisLabel: {
+          fontSize: 12,
+          fontWeight: 'normal',
+          color: lfxColors.neutral[400],
+          fontFamily: 'Inter',
+        },
       },
       grid: {
         left: "8%",

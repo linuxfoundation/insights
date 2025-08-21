@@ -21,7 +21,7 @@ SPDX-License-Identifier: MIT
   </div>
   <div
     v-else-if="chartConfig"
-    class="h-[450px]"
+    class="h-full"
   >
     <lfx-chart :config="chartConfig" />
   </div>

@@ -46,7 +46,7 @@ SPDX-License-Identifier: MIT
 
     </lfx-dropdown-select>
 
-    <div class="flex items-center gap-2 mr-13">
+    <!-- <div class="flex items-center gap-2 mr-13">
       <lfx-menu-button
         :to="docsLink"
         class="!text-neutral-900"
@@ -56,7 +56,7 @@ SPDX-License-Identifier: MIT
         />
         Docs
       </lfx-menu-button>
-    </div>
+    </div> -->
   </div>
 </template>
   
@@ -69,9 +69,9 @@ import LfxDropdownSelector from "~/components/uikit/dropdown/dropdown-selector.v
 import LfxDropdownItem from "~/components/uikit/dropdown/dropdown-item.vue";
 import LfxDropdownSelect from "~/components/uikit/dropdown/dropdown-select.vue";
 import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
-import { links } from '~/config/links';
-import LfxMenuButton from "~/components/uikit/menu-button/menu-button.vue";
-import LfxIcon from '~/components/uikit/icon/icon.vue';
+// import { links } from '~/config/links';
+// import LfxMenuButton from "~/components/uikit/menu-button/menu-button.vue";
+// import LfxIcon from '~/components/uikit/icon/icon.vue';
 
 defineProps<{
   isLoading: boolean;
@@ -80,7 +80,7 @@ defineProps<{
 const { resultData, selectedResultId } = storeToRefs(useCopilotStore());
 
 // TODO: Check if this is the correct link
-const docsLink = links.copilotDocs;
+// const docsLink = links.copilotDocs;
 
 const selectedId = computed<string>({
   get: () => selectedResultId.value || '',

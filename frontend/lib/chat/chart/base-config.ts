@@ -5,6 +5,16 @@ import type { Config } from "./types";
 import { lfxColors } from "~/config/styles/colors";
 
 const sampleConfig: Config = {
+  title: {
+    text: 'Chart Title',
+    left: 'center',
+    textStyle: {
+      fontFamily: 'Roboto Slab',
+      fontWeight: '700',
+      fontSize: 16,
+      color: lfxColors.black,
+    },
+  },
   grid: {
     left: '8%',
     right: '0%',
@@ -34,8 +44,10 @@ const sampleConfig: Config = {
   xAxis: {
     type: 'category',
     axisLabel: {
-      fontSize: '12px',
+      fontSize: 12,
       fontWeight: 'normal',
+      color: lfxColors.neutral[400],
+      fontFamily: 'Inter',
       rotate: 0
     },
     axisLine: {
@@ -47,8 +59,10 @@ const sampleConfig: Config = {
   yAxis: {
     alignTicks: true,
     axisLabel: {
-      fontSize: '12px',
-      fontWeight: 'normal'
+      fontSize: 12,
+      fontWeight: 'normal',
+      color: lfxColors.neutral[400],
+      fontFamily: 'Inter',
     },
     splitLine: {
       lineStyle: {
