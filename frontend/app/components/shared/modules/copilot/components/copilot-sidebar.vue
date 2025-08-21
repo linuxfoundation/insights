@@ -52,7 +52,7 @@ SPDX-License-Identifier: MIT
         <div class="relative border border-solid border-neutral-200 rounded-xl bg-white">
           <textarea
             v-model="input"
-            placeholder="Ask a question..."
+            placeholder="Ask a follow-up question..."
             class="w-full p-4 bg-transparent
               text-xs resize-none focus:outline-none"
             rows="2"

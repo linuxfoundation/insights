@@ -25,6 +25,7 @@ SPDX-License-Identifier: MIT
           :model-value="selectedTab"
           :data="selectedResultData || []"
           :is-error="isChartError"
+          :chart-version="chartVersion"
           @update:model-value="selectedTab = $event"
           @open-snapshot-modal="isSnapshotModalOpen = true"
         />
@@ -103,6 +104,10 @@ const isChartLoading = ref(true);
 const selectedResultConfig = computed<Config | null>(() => {
   return resultData.value.find(result => result.id === selectedResultId.value)?.chartConfig || null;
 });
+
+const chartVersion = computed(() => {
+  return resultData.value.length;
+})
 
 const selectedResultData = computed(() => {
   return resultData.value.find(result => result.id === selectedResultId.value)?.data || null;
