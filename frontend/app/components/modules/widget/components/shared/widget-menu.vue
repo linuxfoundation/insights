@@ -30,7 +30,7 @@ SPDX-License-Identifier: MIT
           <lfx-widget-menu-item
             v-else
             class="flex gap-2 items-center"
-            :class="`${link.showLabel ? '!w-auto !px-4' : ''} ${link.buttonClass}`"
+            :class="`${link.showLabel ? '!w-auto !px-3' : ''} ${link.buttonClass}`"
             @click="link.action()"
           >
             <lfx-icon
@@ -119,6 +119,7 @@ import LfxSnapshotModal from "~/components/modules/widget/components/shared/snap
 import LfxWidgetEmbedModal from "~/components/modules/widget/components/shared/embed/embed-modal.vue";
 import { useAuthStore } from "~/components/modules/auth/store/auth.store";
 import LfxCopilotWidgetModal from "~/components/shared/modules/copilot/components/copilot-widget-modal.vue";
+import { hasLfxInsightsPermission } from "~/components/shared/utils/jwt-permissions";
 
 export interface MenuItem {
   label: string;
@@ -159,7 +160,7 @@ const {
   project, 
   selectedRepositories} = storeToRefs(useProjectStore());
 const {token} = storeToRefs(useAuthStore())
-const isCopilotEnabled = computed(() => !!config.value.copilot && !!token.value)
+const isCopilotEnabled = computed(() => !!config.value.copilot && hasLfxInsightsPermission(token.value))
 
 const widgetArea = computed(
     () => Object.keys(lfxWidgetArea).find(
@@ -192,19 +193,9 @@ const menu = computed<MenuItem[]>(() => [
   {
     label: 'Report issue',
     icon: 'comment-exclamation',
-    iconClass: '!text-warning-600',
     action: report,
     enabled: true,
-    showLabel: true,
     isSeparator: false
-  },
-  {
-    label: '',
-    icon: '',
-    action: () => {
-    },
-    enabled: config.value.embed || config.value.snapshot || config.value.share,
-    isSeparator: true
   },
   {
     label: 'Embed',
@@ -236,7 +227,7 @@ const menu = computed<MenuItem[]>(() => [
     icon: '',
     action: () => {
     },
-    enabled: config.value.embed || config.value.snapshot || config.value.share || isCopilotEnabled.value,
+    enabled: (config.value.embed || config.value.snapshot || config.value.share) && isCopilotEnabled.value,
     buttonClass: '!hidden xl:!block',
     isSeparator: true,
     hideOnMobile: true
@@ -245,10 +236,8 @@ const menu = computed<MenuItem[]>(() => [
     label: 'Ask Copilot',
     icon: 'sparkles',
     iconClass: '!text-brand-500',
-    buttonClass: '!hidden xl:!flex',
-    // action: askCopilot,
-    action: () => {
-    },
+    buttonClass: `py-1.5 !hidden xl:!flex rounded-full hover:bg-neutral-50 ${isMenuOpen.value ? 'bg-neutral-50' : ''}`,
+    action: () => {},
     enabled: isCopilotEnabled.value,
     showLabel: true,
     isSeparator: false,

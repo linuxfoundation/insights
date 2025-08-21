@@ -6,7 +6,7 @@ SPDX-License-Identifier: MIT
   <div class="pb-6 px-0 bg-white h-full border-r border-neutral-200 flex flex-col">
     <!-- Header -->
     <div 
-      class="px-4 text-xl font-secondary font-bold leading-7 flex gap-3 text-neutral-900 items-center mb-4 flex-none
+      class="px-4 text-xl font-secondary font-bold leading-7 gap-3 text-neutral-900 mb-4 flex-none
       h-16 flex items-center"
     >
       <lfx-icon
@@ -52,7 +52,7 @@ SPDX-License-Identifier: MIT
         <div class="relative border border-solid border-neutral-200 rounded-xl bg-white">
           <textarea
             v-model="input"
-            placeholder="Ask a question..."
+            placeholder="Ask a follow-up question..."
             class="w-full p-4 bg-transparent
               text-xs resize-none focus:outline-none"
             rows="2"
@@ -106,10 +106,20 @@ import { useAuthStore } from '~/components/modules/auth/store/auth.store';
 
 const props = defineProps<{
   widgetName: string;
-  selectedResultId: string | null;
   isLoading: boolean;
   isChartLoading: boolean;
 }>()
+
+
+const emit = defineEmits<{
+  (e: 'update:selectedResult', value: string): void;
+  (e: 'update:isLoading', value: boolean): void;
+  (e: 'update:error', value: string): void;
+  (e: 'update:data', id: string, value: MessageData[]): void;
+}>();
+
+const { copilotDefaults, selectedResultId } = storeToRefs(useCopilotStore());
+const { token } = storeToRefs(useAuthStore());
 
 const scrollable = ref<HTMLElement | null>(null)
 const showTopGradient = ref(false)
@@ -120,12 +130,6 @@ const input = ref('')
 const streamingStatus = ref('')
 const error = ref('')
 const messages = ref<Array<AIMessage>>([]) // tempData as AIMessage
-const selectedResultId = computed<string | null>({
-  get: () => props.selectedResultId,
-  set: (value) => {
-    emit('update:selectedResult', value || '');
-  }
-})
 
 const isLoading = computed<boolean>({
   get: () => props.isLoading,
@@ -133,16 +137,6 @@ const isLoading = computed<boolean>({
     emit('update:isLoading', value);
   }
 })
-
-const emit = defineEmits<{
-  (e: 'update:selectedResult', value: string): void;
-  (e: 'update:isLoading', value: boolean): void;
-  (e: 'update:error', value: string): void;
-  (e: 'update:data', id: string, value: MessageData[]): void;
-}>();
-
-const { copilotDefaults } = storeToRefs(useCopilotStore());
-const { token } = storeToRefs(useAuthStore());
 
 // Handle form submission
 const handleSubmit = async (e?: Event) => {
@@ -202,7 +196,9 @@ const callChatApi = async (userMessage: string) => {
       copilotApiService.generateTextMessage(
         'Sorry, there was an error processing your request.', 
         'assistant' as MessageRole, 
-        'error' as MessageStatus)
+        'error' as MessageStatus,
+        'router-status'
+      )
     )
   } finally {
     isLoading.value = false
@@ -219,13 +215,6 @@ const scrollToEnd = () => {
 
 const selectResult = (id: string) => {
   selectedResultId.value = id;
-}
-
-// TODO: REMOVE THIS AFTER TESTING
-if (messages.value.length > 0) {
-  messages.value.forEach((msg) => {
-    emit('update:data', msg.id, msg.data || []);
-  })
 }
 
 watch(copilotDefaults, (newDefaults) => {

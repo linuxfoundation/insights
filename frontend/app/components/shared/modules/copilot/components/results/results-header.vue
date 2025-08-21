@@ -13,7 +13,7 @@ SPDX-License-Identifier: MIT
     <lfx-dropdown-select
       v-else
       v-model="selectedId"
-      class="!w-auto min-w-[200px]"
+      class="!w-auto min-w-[200px] !max-w-[300px]"
       :match-width="true"
     >
       <template #trigger="{ selectedOption }">
@@ -21,28 +21,32 @@ SPDX-License-Identifier: MIT
           type="filled"
           class="!w-auto flex justify-between"
         >
-          <lfx-chat-result-label
-            :version="Number(selectedOption.label)"
-            label="Result"
-          />
+          <div class="w-[88%]">
+            <lfx-chat-result-label
+              :version="Number(selectedOption.label)"
+              :label="getTitle(selectedOption.value)"
+            />
+          </div>
         </lfx-dropdown-selector>
       </template>
 
       <lfx-dropdown-item
-        v-for="(option, index) of props.results"
+        v-for="(option, index) of resultsWithData"
         :key="option.id"
         :value="option.id"
         :label="getVersion(option.id)"
       >
-        <lfx-chat-result-label
-          :version="index + 1"
-          label="Result"
-        />
+        <div class="w-[88%]">
+          <lfx-chat-result-label
+            :version="index + 1"
+            :label="getTitle(option.id)"
+          />
+        </div>
       </lfx-dropdown-item>
 
     </lfx-dropdown-select>
 
-    <div class="flex items-center gap-2 mr-13">
+    <!-- <div class="flex items-center gap-2 mr-13">
       <lfx-menu-button
         :to="docsLink"
         class="!text-neutral-900"
@@ -52,46 +56,52 @@ SPDX-License-Identifier: MIT
         />
         Docs
       </lfx-menu-button>
-    </div>
+    </div> -->
   </div>
 </template>
   
 <script setup lang="ts">
 import { computed } from 'vue';
-import type { ResultsHistory } from '../../types/copilot.types';
+import { storeToRefs } from 'pinia';
 import LfxChatResultLabel from '../shared/result-label.vue'
+import { useCopilotStore } from '../../store/copilot.store';
 import LfxDropdownSelector from "~/components/uikit/dropdown/dropdown-selector.vue";
 import LfxDropdownItem from "~/components/uikit/dropdown/dropdown-item.vue";
 import LfxDropdownSelect from "~/components/uikit/dropdown/dropdown-select.vue";
 import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
-import { links } from '~/config/links';
-import LfxMenuButton from "~/components/uikit/menu-button/menu-button.vue";
-import LfxIcon from '~/components/uikit/icon/icon.vue';
+// import { links } from '~/config/links';
+// import LfxMenuButton from "~/components/uikit/menu-button/menu-button.vue";
+// import LfxIcon from '~/components/uikit/icon/icon.vue';
 
-const emit = defineEmits<{
-  (e: 'update:selectedResult', value: string): void;
-}>();
-
-const props = defineProps<{
-  results: ResultsHistory[];
-  selectedResultId: string | null;
+defineProps<{
   isLoading: boolean;
 }>();
 
+const { resultData, selectedResultId } = storeToRefs(useCopilotStore());
+
 // TODO: Check if this is the correct link
-const docsLink = links.copilotDocs;
+// const docsLink = links.copilotDocs;
 
 const selectedId = computed<string>({
-  get: () => props.selectedResultId || '',
+  get: () => selectedResultId.value || '',
   set: (value) => {
-    emit('update:selectedResult', value || '');
+    selectedResultId.value = value || '';
   }
 })
 
+const resultsWithData = computed(() => {
+  return resultData.value.filter(r => r.data.length > 0);
+})
+
 const getVersion = (id: string) => {
-  const idx = props.results.findIndex(r => String(r.id) === String(id));
+  const idx = resultsWithData.value.findIndex(r => String(r.id) === String(id));
 
   return `${idx + 1}`; 
+}
+
+const getTitle = (id: string) => {
+  const result = resultData.value.find(r => String(r.id) === String(id));
+  return result?.title || 'Results';
 }
 </script>
 

@@ -13,13 +13,13 @@ class CopilotApiService {
   // Generate unique ID for messages
   generateId = () => Date.now().toString(36) + Math.random().toString(36).substr(2);
 
-  generateTextMessage = (message: string, role: MessageRole, status: MessageStatus) => {
+  generateTextMessage = (message: string, role: MessageRole, status: MessageStatus, type: MessagePartType = 'text') => {
     const userMessageId = this.generateId();
      
     return {
       id: userMessageId,
       role,
-      type: 'text' as MessagePartType,
+      type,
       status,
       content: message,
       timestamp: Date.now()
@@ -86,6 +86,33 @@ class CopilotApiService {
 
     return response;
   }
+
+  async saveFeedback(
+    id: string,
+    feedback: number | null,
+    token: string,
+  ): Promise<Response> {
+    // Prepare the request body with the correct format
+    const requestBody = {
+      feedback
+    }
+
+    // Send streaming request
+    const response = await fetch(`/api/chat/feedback/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token
+      },
+      body: JSON.stringify(requestBody)
+    })
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+
+    return response;
+  }
   
   async handleStreamingResponse(
     response: Response, 
@@ -103,129 +130,174 @@ class CopilotApiService {
 
     let assistantContent = ''
     let assistantMessageId: string | null = null
+    let lineBuffer = '' // Buffer to accumulate partial lines
     
     try {
       while (true) {
         const { done, value } = await reader.read()
         
         if (done) {
+          // Process any remaining data in the buffer
+          if (lineBuffer.trim()) {
+            this.processCompleteLine(
+              lineBuffer, 
+              assistantMessageId, 
+              assistantContent, 
+              messages,
+              statusCallBack, 
+              messageCallBack)
+          }
           break
         }
         
         const chunk = decoder.decode(value, { stream: true })
-        const lines = chunk.split('\n')
+        lineBuffer += chunk
         
+        // Split by newlines and process complete lines
+        const lines = lineBuffer.split('\n')
+        
+        // Keep the last line in the buffer (it might be incomplete)
+        lineBuffer = lines.pop() || ''
+        
+        // Process all complete lines
         for (const line of lines) {
           if (line.trim() === '') continue
           
-          try {
-            // Parse AI SDK data stream format: "prefix:data"
-            const colonIndex = line.indexOf(':')
-            if (colonIndex === -1) continue
-            
-            const prefix = line.slice(0, colonIndex)
-            const dataString = line.slice(colonIndex + 1)
-            
-            if (!dataString.trim()) continue
-            
-            // Handle different stream prefixes
-            if (prefix === '2') {
-              assistantMessageId = null;
-              // Custom data events from your backend (like router-status)
-              const dataArray = JSON.parse(dataString)
-              for (const data of dataArray) {
-                const statusText = this.getStatusText(data.type, data.status, data.reasoning, data.error);
-
-                statusCallBack(statusText);
-
-                if(data.type === 'router-status' && (data.status === 'complete' || data.status === 'error')) {
-                  if (!assistantMessageId) {
-                    assistantMessageId = this.generateId();
-                  
-                    messageCallBack({
-                      id: assistantMessageId,
-                      role: 'assistant',
-                      type: 'router-status',
-                      status: data.status,
-                      content: data.reasoning,
-                      timestamp: Date.now()
-                    }, -1);
-                  }
-                }
-                
-                if (data.type === 'sql-result' || data.type === 'pipe-result') {            
-                  if (data.type === 'pipe-result') {
-                    statusCallBack('Tool execution completed');
-                  }
-
-                  const content = data.explanation
-
-                  // Create assistant message if it doesn't exist yet
-                  if (!assistantMessageId) {
-                    assistantMessageId = this.generateId();
-                  }
-
-                  messageCallBack({
-                    id: assistantMessageId,
-                    role: 'assistant',
-                    type: data.type,
-                    status: data.status,
-                    sql: data.sql, 
-                    data: data.data,
-                    content,
-                    explanation: data.explanation,
-                    instructions: data.instructions,
-                    timestamp: Date.now()
-                  }, -1);
-                } 
-              }
-            } else if (prefix === '0') {
-              // Text delta from streamText (streaming text content)
-              const textDelta = JSON.parse(dataString)
-              
-              // Create assistant message if it doesn't exist yet
-              if (!assistantMessageId) {
-                assistantMessageId = this.generateId()
-                messageCallBack({
-                  id: assistantMessageId,
-                  role: 'assistant',
-                  type: 'text',
-                  status: 'analyzing',
-                  content: '',
-                  timestamp: Date.now()
-                }, -1);
-              }
-              
-              // Accumulate the streaming text
-              assistantContent += textDelta
-              
-              // Update the assistant message in real-time
-              const messageIndex = messages.findIndex(m => m.id === assistantMessageId)
-              if (messageIndex !== -1 && messages[messageIndex]) {
-                messageCallBack({...messages[messageIndex], content: assistantContent}, messageIndex);
-              }
-            // } else if (prefix === 'f') {
-            //   // Final message metadata (message ID, etc.)
-            //   const metadata = JSON.parse(dataString)
-            //   console.log('Message metadata:', metadata)
-            } else if (prefix === 'e') {
-              // Stream end with completion info
-              // const endData = JSON.parse(dataString)
-              // console.log('Stream completed:', endData)
-              statusCallBack('');
-            // } else if (prefix === 'd') {
-            //   // Final completion data
-            //   const completionData = JSON.parse(dataString)
-            //   console.log('Completion data:', completionData)
-            }
-          } catch (e) {
-            console.warn('Failed to parse streaming line:', line, e)
+          const result = this.processCompleteLine(
+            line, 
+            assistantMessageId, 
+            assistantContent, 
+            messages, 
+            statusCallBack, 
+            messageCallBack
+          )
+          if (result) {
+            assistantContent = result.assistantContent
+            assistantMessageId = result.assistantMessageId
           }
         }
       }
     } finally {
       reader.releaseLock()
       completionCallBack();
+    }
+  }
+
+  private processCompleteLine(
+    line: string, 
+    assistantMessageId: string | null, 
+    assistantContent: string, 
+    messages: Array<AIMessage>,
+    statusCallBack: (status: string) => void,
+    messageCallBack: (message: AIMessage, index: number) => void
+  ): { assistantMessageId: string | null; assistantContent: string } | null {
+    try {
+      // Parse AI SDK data stream format: "prefix:data"
+      const colonIndex = line.indexOf(':')
+      if (colonIndex === -1) return null
+      
+      const prefix = line.slice(0, colonIndex)
+      const dataString = line.slice(colonIndex + 1)
+      
+      if (!dataString.trim()) return null
+      
+      // Handle different stream prefixes
+      if (prefix === '2') {
+        assistantMessageId = null;
+        // Custom data events from your backend (like router-status)
+        const dataArray = JSON.parse(dataString)
+        for (const data of dataArray) {
+          const statusText = this.getStatusText(data.type, data.status, data.reasoning, data.error);
+
+          statusCallBack(statusText);
+
+          if(data.type === 'router-status' && (data.status === 'complete' || data.status === 'error')) {
+            if (!assistantMessageId) {
+              assistantMessageId = this.generateId();
+            
+              messageCallBack({
+                id: assistantMessageId,
+                role: 'assistant',
+                type: 'router-status',
+                status: data.status,
+                content: data.reasoning,
+                explanation: data.status === 'error' ? data.error : undefined,
+                timestamp: Date.now()
+              }, -1);
+            }
+          }
+          
+          if (['sql-result', 'pipe-result', 'chat-response-id'].includes(data.type)) { 
+
+            if (data.type === 'pipe-result') {
+              statusCallBack('Tool execution completed');
+            }
+
+            const content = data.type === 'chat-response-id' ? data.id : data.explanation
+
+            // Create assistant message if it doesn't exist yet
+            if (!assistantMessageId) {
+              assistantMessageId = this.generateId();
+            }
+
+            messageCallBack({
+              id: assistantMessageId,
+              role: 'assistant',
+              type: data.type,
+              status: data.status,
+              sql: data.sql, 
+              data: data.data,
+              content,
+              explanation: data.explanation,
+              instructions: data.instructions,
+              timestamp: Date.now()
+            }, -1);
+          } 
+        }
+      } else if (prefix === '0') {
+        // Text delta from streamText (streaming text content)
+        const textDelta = JSON.parse(dataString)
+        
+        // Create assistant message if it doesn't exist yet
+        if (!assistantMessageId) {
+          assistantMessageId = this.generateId()
+          messageCallBack({
+            id: assistantMessageId,
+            role: 'assistant',
+            type: 'text',
+            status: 'analyzing',
+            content: '',
+            timestamp: Date.now()
+          }, -1);
+        }
+        
+        // Accumulate the streaming text
+        assistantContent += textDelta
+        
+        // Update the assistant message in real-time
+        const messageIndex = messages.findIndex(m => m.id === assistantMessageId)
+        if (messageIndex !== -1 && messages[messageIndex]) {
+          messageCallBack({...messages[messageIndex], content: assistantContent}, messageIndex);
+        }
+      // } else if (prefix === 'f') {
+      //   // Final message metadata (message ID, etc.)
+      //   const metadata = JSON.parse(dataString)
+      //   console.log('Message metadata:', metadata)
+      } else if (prefix === 'e') {
+        // Stream end with completion info
+        // const endData = JSON.parse(dataString)
+        // console.log('Stream completed:', endData)
+        statusCallBack('');
+      // } else if (prefix === 'd') {
+      //   // Final completion data
+      //   const completionData = JSON.parse(dataString)
+      //   console.log('Completion data:', completionData)
+      }
+
+      return { assistantMessageId, assistantContent }
+    } catch (e) {
+      console.warn('Failed to parse streaming line:', line, e)
+      return null
     }
   }
 

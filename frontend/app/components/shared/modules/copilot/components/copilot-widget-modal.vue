@@ -4,26 +4,16 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <div class="bg-white border border-neutral-200 rounded-lg shadow-lg mt-4">
-    <!-- Header with widget info -->
-    <div class="p-2 flex">
-      <div class="flex items-center gap-1 bg-neutral-600 px-3 py-1 rounded-full">
-        <lfx-icon
-          :name="widgetConfig.copilot?.icon || 'users'"
-          :size="12"
-          class="text-white"
-        />
-        <span class="text-xs font-semibold text-white">{{ widgetTitle }}</span>
-      </div>
-    </div>
-
     <!-- Main content -->
-    <div class="px-2 pb-2 xl:w-[30rem] w-96">
+    <div class="p-2 xl:w-[30rem] w-96">
       <!-- Input field -->
-      <div class="mb-2">
+      <div class="mb-2 h-[75px]">
         <textarea
+          ref="textareaRef"
           v-model="userQuestion"
+          autofocus
           :placeholder="`e.g. ${widgetConfig.copilot?.suggestions}`"
-          class="w-full p-3 bg-neutral-100 rounded-sm text-xs resize-none focus:outline-none"
+          class="w-full p-3 bg-neutral-100 rounded-lg text-sm resize-none focus:outline-none h-[75px]"
           rows="2"
           style="word-break: break-word; white-space: pre-wrap;"
           @keydown.enter="handleAskCopilot"
@@ -31,26 +21,29 @@ SPDX-License-Identifier: MIT
       </div>
 
       <!-- Suggestions section -->
-      <div class="flex justify-between">
-        <div class="flex items-center gap-1">
+      <div class="flex justify-end">
+        <!-- <div class="flex items-center gap-1">
           <lfx-icon
             name="lightbulb"
             :size="12"
             class="text-neutral-500"
           />
           <span class="text-xs font-medium text-neutral-500">Suggestions</span>
-        </div>
+        </div> -->
 
         <!-- Ask Copilot button -->
         <div class="flex justify-end">
-          <lfx-button
-            :disabled="!userQuestion.trim()"
-            type="primary"
-            size="medium"
-            icon="fa fa-sparkles"
-            label="Ask Copilot"
-            @click="handleAskCopilot"
-          />
+          <div
+            class="w-[28px] h-[28px] flex items-center justify-center
+              rounded-full transition-all text-base text-white"
+            :class="{
+              'bg-brand-500 opacity-50 cursor-not-allowed': !userQuestion.trim(),
+              'bg-brand-500 hover:bg-brand-600 cursor-pointer': userQuestion.trim()
+            }"
+            @click="userQuestion.trim() && handleAskCopilot()"
+          >
+            <i class="fa fa-light fa-arrow-up" />
+          </div>
         </div>
       </div>
     </div>
@@ -58,10 +51,9 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, nextTick } from 'vue'
 import {storeToRefs} from "pinia";
-import LfxIcon from '~/components/uikit/icon/icon.vue'
-import LfxButton from '~/components/uikit/button/button.vue'
+// import LfxIcon from '~/components/uikit/icon/icon.vue'
 import {lfxWidgets} from "~/components/modules/widget/config/widget.config"
 import type {Widget} from "~/components/modules/widget/types/widget"
 import {useCopilotStore} from "~/components/shared/modules/copilot/store/copilot.store";
@@ -73,16 +65,18 @@ import { barGranularities } from '~/components/shared/types/granularity';
 const props = defineProps<{
   modelValue: boolean
   widgetName: string
+  isOpen: boolean
 }>()
 
 const emit = defineEmits<{
   (e: 'action-done'): void
 }>()
 
+const textareaRef = ref(null)
 const userQuestion = ref('')
 
 const widgetConfig = computed(() => lfxWidgets[props.widgetName as Widget])
-const widgetTitle = computed(() => widgetConfig.value?.name || 'Widget')
+// const widgetTitle = computed(() => widgetConfig.value?.name || 'Widget')
 
 const {openCopilotModal} = useCopilotStore()
 
@@ -120,6 +114,13 @@ const handleAskCopilot = () => {
     emit('action-done')
   }
 }
+
+watch(() => props.isOpen, async (newVal: boolean) => {
+  if (newVal) {
+    await nextTick()
+    textareaRef.value?.focus()
+  }
+}, { immediate: true })
 </script>
 
 <script lang="ts">

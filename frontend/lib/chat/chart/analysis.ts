@@ -4,12 +4,20 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
+import { DateTime } from "luxon";
 import type { Result } from "./types";
+interface RecommendedVisualization {
+  type: 'dual-axis' | 'grouped-bar' | 'separate-charts' | 'standard';
+  primaryColumns: string[];
+  secondaryColumns: string[];
+}
 
 export interface DataProfile {
   rowCount: number;
   columns: ColumnProfile[];
   dataShape: 'single-value' | 'time-series' | 'categorical' | 'multi-dimensional';
+  comparisonType?: 'week-over-week' | 'period-comparison' | 'none';
+  recommendedVisualization?: RecommendedVisualization;
 }
 
 export interface ColumnProfile {
@@ -28,17 +36,20 @@ export function analyzeDataForChart(
   if (!results.length) return null;
   
   const columns = Object.keys(results[0] || {});
-  const columnProfiles = analyzeColumns(results, columns);
+  const columnProfiles = analyzeColumns(results, columns, userQuestion);
   const dataShape = detectDataShape(results, columnProfiles);
+  const comparisonAnalysis = detectComparisonScenario(columnProfiles, userQuestion);
   
   return {
     rowCount: results.length,
     columns: columnProfiles,
-    dataShape
+    dataShape,
+    comparisonType: comparisonAnalysis.type,
+    recommendedVisualization: comparisonAnalysis.recommendation
   };
 }
 
-function analyzeColumns(results: Result[], columns: string[]): ColumnProfile[] {
+function analyzeColumns(results: Result[], columns: string[], userQuestion: string = ""): ColumnProfile[] {
   return columns.map(col => {
     const values = results.map(row => row[col]);
     const uniqueValues = new Set(values.map(v => String(v)));
@@ -166,6 +177,125 @@ export function pivotLongToWide(
     });
     return result;
   });
+}
+
+function detectComparisonScenario(columns: ColumnProfile[], userQuestion: string) {
+  const numericColumns = columns.filter(c => c.type === 'numeric');
+  const columnNames = columns.map(c => c.name.toLowerCase());
+  
+  // Detect week-over-week or period comparisons
+  const hasWeekComparison = columnNames.some(name => 
+    name.includes('week') && (name.includes('this') || name.includes('last') || name.includes('current') || name.includes('previous'))
+  );
+  
+  const hasPeriodComparison = userQuestion.toLowerCase().includes('vs') || 
+    userQuestion.toLowerCase().includes('compared') ||
+    columnNames.some(name => name.includes('change') || name.includes('difference'));
+  
+  // Check for mixed scale numeric data
+  const numericValues = numericColumns.map(col => col.sample.map(v => Number(v)).filter(v => !isNaN(v))).flat();
+  const hasMultiScale = numericColumns.length >= 3 && numericValues.length > 0;
+  
+  let type: 'week-over-week' | 'period-comparison' | 'none' = 'none';
+  let recommendation: RecommendedVisualization = {
+    type: 'standard',
+    primaryColumns: [] as string[],
+    secondaryColumns: [] as string[]
+  };
+  
+  if (hasWeekComparison) {
+    type = 'week-over-week';
+    
+    // Separate base metrics from change metrics
+    const baseColumns = numericColumns.filter(col => 
+      !col.name.toLowerCase().includes('change') && 
+      !col.name.toLowerCase().includes('%') &&
+      !col.name.toLowerCase().includes('percent')
+    );
+    
+    const changeColumns = numericColumns.filter(col => 
+      col.name.toLowerCase().includes('change') || 
+      col.name.toLowerCase().includes('%') ||
+      col.name.toLowerCase().includes('percent')
+    );
+    
+    if (baseColumns.length >= 2 && changeColumns.length >= 1 && hasMultiScale) {
+      recommendation = {
+        type: 'dual-axis',
+        primaryColumns: baseColumns.map(c => c.name),
+        secondaryColumns: changeColumns.map(c => c.name)
+      };
+    } else if (numericColumns.length >= 3) {
+      recommendation = {
+        type: 'grouped-bar',
+        primaryColumns: baseColumns.slice(0, 2).map(c => c.name),
+        secondaryColumns: changeColumns.map(c => c.name)
+      };
+    }
+  } else if (hasPeriodComparison && hasMultiScale) {
+    type = 'period-comparison';
+    recommendation = {
+      type: 'dual-axis',
+      primaryColumns: numericColumns.slice(0, 2).map(c => c.name),
+      secondaryColumns: numericColumns.slice(2).map(c => c.name)
+    };
+  }
+  
+  return { type, recommendation };
+}
+
+export function formatDateForChart(dateValue: any): string {
+  if (!dateValue) return String(dateValue);
+
+  // Try to parse with Luxon
+  let dt: DateTime;
+  if (typeof dateValue === "string") {
+    dt = DateTime.fromISO(dateValue);
+    if (!dt.isValid) {
+      dt = DateTime.fromFormat(dateValue, "MM/dd/yyyy");
+    }
+    if (!dt.isValid) {
+      dt = DateTime.fromJSDate(new Date(dateValue));
+    }
+  } else if (dateValue instanceof Date) {
+    dt = DateTime.fromJSDate(dateValue);
+  } else {
+    dt = DateTime.fromJSDate(new Date(dateValue));
+  }
+
+  if (!dt.isValid) return String(dateValue);
+
+  // Output as 'yyyy-MM-dd'
+  return dt.toFormat("yyyy-MM-dd");
+}
+
+export function normalizeDataForChart(results: Result[]): Result[] {
+  if (!results.length) return results;
+  
+  return results.map(row => {
+    const normalizedRow: Result = {};
+    
+    for (const [key, value] of Object.entries(row)) {
+      // Check if this looks like a date value
+      if (typeof value === 'string' && isDateLikeString(value)) {
+        normalizedRow[key] = formatDateForChart(value);
+      } else {
+        normalizedRow[key] = value;
+      }
+    }
+    
+    return normalizedRow;
+  });
+}
+
+function isDateLikeString(value: string): boolean {
+  const dateFormats = [
+    /^\d{4}-\d{2}-\d{2}/, // YYYY-MM-DD
+    /^\d{4}-\d{2}/, // YYYY-MM
+    /^\d{2}\/\d{2}\/\d{4}/, // MM/DD/YYYY
+  ];
+  
+  return dateFormats.some(format => format.test(value)) || !isNaN(Date.parse(value));
 }
 
 export function shouldStackBars(profile: DataProfile): boolean {

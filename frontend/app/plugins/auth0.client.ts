@@ -6,13 +6,13 @@ import { defineNuxtPlugin, useRuntimeConfig } from 'nuxt/app'
 
 export default defineNuxtPlugin((nuxt) => {
   const config = useRuntimeConfig()
-  
   const auth0 = createAuth0({
     domain: config.public.auth0Domain as string,
     clientId: config.public.auth0ClientId as string,
     authorizationParams: {
-      redirect_uri: window.location.origin,
+      redirect_uri: config.public.auth0RedirectUri as string,
       audience: config.public.auth0Audience as string,
+      scope: 'openid profile email',
     },
   })
 

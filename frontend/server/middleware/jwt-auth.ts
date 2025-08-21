@@ -1,6 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { jwtVerify, createRemoteJWKSet } from 'jose';
+import { isLocal } from '../utils/common';
 
 const isJWT = (token: string) => {
   const parts = token.split('.');
@@ -20,6 +21,8 @@ export default defineEventHandler(async (event) => {
     return;
   }
 
+  const config = useRuntimeConfig()
+  
   // Read authorization header
   const authHeader = getHeader(event, 'authorization');
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -30,10 +33,10 @@ export default defineEventHandler(async (event) => {
   }
 
   const token = authHeader.substring(7);
-  const auth0Domain = process.env.CROWD_LFX_AUTH0_DOMAIN;
-  const auth0Audience = process.env.CROWD_LFX_AUTH0_AUDIENCE;
+  const auth0Domain = config.public.auth0Domain;
+  const auth0ClientId = config.public.auth0ClientId;
 
-  if (!auth0Domain || !auth0Audience) {
+  if (!auth0Domain || !auth0ClientId) {
     throw createError({
       statusCode: 500, 
       statusMessage: 'Auth0 configuration missing'
@@ -47,11 +50,21 @@ export default defineEventHandler(async (event) => {
       
       const { payload } = await jwtVerify(token, jwks, {
         issuer: `https://${auth0Domain}/`,
-        audience: auth0Audience,
+        audience: auth0ClientId,
       });
       
       event.context.user = payload;
-      
+
+      const GROUP_CLAIM_KEY = 'https://sso.linuxfoundation.org/claims/groups'
+      const GROUP_NAME = 'lfproducts-lfx-insights'
+
+      if (!isLocal && !(payload[GROUP_CLAIM_KEY] as string[]).includes(GROUP_NAME)) {
+        throw createError({
+          statusCode: 401,
+          statusMessage: `User does not belong to ${GROUP_NAME}`
+        });
+      }
+
     } else {
       throw createError({
         statusCode: 401,

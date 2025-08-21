@@ -107,6 +107,9 @@ importers:
       ofetch:
         specifier: ^1.4.1
         version: 1.4.1
+      pg:
+        specifier: ^8.16.3
+        version: 8.16.3
       pinia:
         specifier: ^3.0.1
         version: 3.0.2(typescript@5.8.3)(vue@3.5.17(typescript@5.8.3))
@@ -327,7 +330,7 @@ importers:
         version: 2.2.4
       pg-promise:
         specifier: ^11.4.3
-        version: 11.13.0(pg-query-stream@4.8.1(pg@8.14.1))
+        version: 11.13.0(pg-query-stream@4.8.1(pg@8.16.3))
     devDependencies:
       '@types/config':
         specifier: ^3.3.1
@@ -496,10 +499,10 @@ importers:
         version: 2.29.4
       pg-promise:
         specifier: ^11.4.3
-        version: 11.13.0(pg-query-stream@4.8.1(pg@8.14.1))
+        version: 11.13.0(pg-query-stream@4.8.1(pg@8.16.3))
       pg-query-stream:
         specifier: ^4.7.0
-        version: 4.8.1(pg@8.14.1)
+        version: 4.8.1(pg@8.16.3)
       uuid:
         specifier: ^9.0.1
         version: 9.0.1
@@ -512,7 +515,7 @@ importers:
         version: 18.19.110
       sequelize:
         specifier: 6.21.2
-        version: 6.21.2(pg@8.14.1)
+        version: 6.21.2(pg@8.16.3)
       typescript:
         specifier: ^5.6.3
         version: 5.8.3
@@ -684,7 +687,7 @@ importers:
         version: 1.9.0
       pg-promise:
         specifier: ^11.4.3
-        version: 11.13.0(pg-query-stream@4.8.1(pg@8.14.1))
+        version: 11.13.0(pg-query-stream@4.8.1(pg@8.16.3))
     devDependencies:
       '@types/node':
         specifier: ^18.16.3
@@ -8499,8 +8502,14 @@ packages:
   pg-cloudflare@1.2.5:
     resolution: {integrity: sha512-OOX22Vt0vOSRrdoUPKJ8Wi2OpE/o/h9T8X1s4qSkCedbNah9ei2W2765be8iMVxQUsvgT7zIAT2eIa9fs5+vtg==}
 
+  pg-cloudflare@1.2.7:
+    resolution: {integrity: sha512-YgCtzMH0ptvZJslLM1ffsY4EuGaU0cx4XSdXLRFae8bPP4dS5xL1tNB3k2o/N64cHJpwU7dxKli/nZ2lUa5fLg==}
+
   pg-connection-string@2.9.0:
     resolution: {integrity: sha512-P2DEBKuvh5RClafLngkAuGe9OUlFV7ebu8w1kmaaOgPcpJd1RIFh7otETfI6hAR8YupOLFTY7nuvvIn7PLciUQ==}
+
+  pg-connection-string@2.9.1:
+    resolution: {integrity: sha512-nkc6NpDcvPVpZXxrreI/FOtX3XemeLl8E0qFr6F2Lrm/I8WOnaWNhIPK2Z7OHpw7gh5XJThi6j6ppgNoaT1w4w==}
 
   pg-cursor@2.15.0:
     resolution: {integrity: sha512-sO3SQP9seXoaV7sddeKrPQk3zhnrMchCr71cYjkyNHCC6n3mA5AAyhK5foxy+yBtnBZuPqxzoiVxz3jKyV7D3g==}
@@ -8520,6 +8529,11 @@ packages:
     peerDependencies:
       pg: '>=8.0'
 
+  pg-pool@3.10.1:
+    resolution: {integrity: sha512-Tu8jMlcX+9d8+QVzKIvM/uJtp07PKr82IUOYEphaWcoBhIYkoHpLXN3qO59nAI11ripznDsEzEv8nUxBVWajGg==}
+    peerDependencies:
+      pg: '>=8.0'
+
   pg-promise@11.13.0:
     resolution: {integrity: sha512-NWCsh1gnELfYRF5hNhfXPcSxuCk9C3FyM9MhmGkVTmepczAC2aXuBkyXhipVlHzp0V/IVzyCZOrlH48Ma3i7YQ==}
     engines: {node: '>=14.0'}
@@ -8528,6 +8542,9 @@ packages:
 
   pg-protocol@1.10.0:
     resolution: {integrity: sha512-IpdytjudNuLv8nhlHs/UrVBhU0e78J0oIS/0AVdTbWxSOkFUVdsHC/NrorO6nXsQNDTT1kzDSOMJubBQviX18Q==}
+
+  pg-protocol@1.10.3:
+    resolution: {integrity: sha512-6DIBgBQaTKDJyxnXaLiLR8wBpQQcGWuAESkRBX/t6OwA8YsqP+iVSiond2EDy6Y/dsGk8rh/jtax3js5NeV7JQ==}
 
   pg-query-stream@4.8.1:
     resolution: {integrity: sha512-kZo6C6HSzYFF6mlwl+etDk5QZD9CMdlHUXpof6PkK9+CHHaBLvOd2lZMwErOOpC/ldg4thrAojS8sG1B8PZ9Yw==}
@@ -8541,6 +8558,15 @@ packages:
   pg@8.14.1:
     resolution: {integrity: sha512-0TdbqfjwIun9Fm/r89oB7RFQ0bLgduAhiIqIXOsyKoiC/L54DbuAAzIEN/9Op0f1Po9X7iCPXGoa/Ah+2aI8Xw==}
     engines: {node: '>= 8.0.0'}
+    peerDependencies:
+      pg-native: '>=3.0.1'
+    peerDependenciesMeta:
+      pg-native:
+        optional: true
+
+  pg@8.16.3:
+    resolution: {integrity: sha512-enxc1h0jA/aq5oSDMvqyW3q89ra6XIIDZgCX9vkMrnz5DFTw/Ny3Li2lFQ+pt3L6MCgm/5o2o8HW9hiJji+xvw==}
+    engines: {node: '>= 16.0.0'}
     peerDependencies:
       pg-native: '>=3.0.1'
     peerDependenciesMeta:
@@ -20162,11 +20188,20 @@ snapshots:
   pg-cloudflare@1.2.5:
     optional: true
 
+  pg-cloudflare@1.2.7:
+    optional: true
+
   pg-connection-string@2.9.0: {}
+
+  pg-connection-string@2.9.1: {}
 
   pg-cursor@2.15.0(pg@8.14.1):
     dependencies:
       pg: 8.14.1
+
+  pg-cursor@2.15.0(pg@8.16.3):
+    dependencies:
+      pg: 8.16.3
 
   pg-int8@1.0.1: {}
 
@@ -20175,6 +20210,10 @@ snapshots:
   pg-pool@3.10.0(pg@8.14.1):
     dependencies:
       pg: 8.14.1
+
+  pg-pool@3.10.1(pg@8.16.3):
+    dependencies:
+      pg: 8.16.3
 
   pg-promise@11.13.0(pg-query-stream@4.8.1(pg@8.14.1)):
     dependencies:
@@ -20186,12 +20225,29 @@ snapshots:
     transitivePeerDependencies:
       - pg-native
 
+  pg-promise@11.13.0(pg-query-stream@4.8.1(pg@8.16.3)):
+    dependencies:
+      assert-options: 0.8.2
+      pg: 8.14.1
+      pg-minify: 1.7.0
+      pg-query-stream: 4.8.1(pg@8.16.3)
+      spex: 3.4.0
+    transitivePeerDependencies:
+      - pg-native
+
   pg-protocol@1.10.0: {}
+
+  pg-protocol@1.10.3: {}
 
   pg-query-stream@4.8.1(pg@8.14.1):
     dependencies:
       pg: 8.14.1
       pg-cursor: 2.15.0(pg@8.14.1)
+
+  pg-query-stream@4.8.1(pg@8.16.3):
+    dependencies:
+      pg: 8.16.3
+      pg-cursor: 2.15.0(pg@8.16.3)
 
   pg-types@2.2.0:
     dependencies:
@@ -20210,6 +20266,16 @@ snapshots:
       pgpass: 1.0.5
     optionalDependencies:
       pg-cloudflare: 1.2.5
+
+  pg@8.16.3:
+    dependencies:
+      pg-connection-string: 2.9.1
+      pg-pool: 3.10.1(pg@8.16.3)
+      pg-protocol: 1.10.3
+      pg-types: 2.2.0
+      pgpass: 1.0.5
+    optionalDependencies:
+      pg-cloudflare: 1.2.7
 
   pgpass@1.0.5:
     dependencies:
@@ -21168,7 +21234,7 @@ snapshots:
 
   sequelize-pool@7.1.0: {}
 
-  sequelize@6.21.2(pg@8.14.1):
+  sequelize@6.21.2(pg@8.16.3):
     dependencies:
       '@types/debug': 4.1.12
       '@types/validator': 13.15.1
@@ -21187,7 +21253,7 @@ snapshots:
       validator: 13.15.15
       wkx: 0.5.0
     optionalDependencies:
-      pg: 8.14.1
+      pg: 8.16.3
     transitivePeerDependencies:
       - supports-color
 

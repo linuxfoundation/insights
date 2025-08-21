@@ -79,7 +79,7 @@ export abstract class BaseAgent<TInput, TOutput> {
     return "value";
   }
 
-  async execute(input: TInput): Promise<TOutput> {
+  async execute(input: TInput): Promise<TOutput & { usage?: any }> {
     try {
       const systemPrompt = await this.getSystemPrompt(input);
       const userPrompt = this.getUserPrompt(input);
@@ -122,7 +122,13 @@ export abstract class BaseAgent<TInput, TOutput> {
       }
 
       // Extract and validate JSON from response
-      return this.getJson(response.text);
+      const result = this.getJson(response.text);
+      
+      // Add usage information to the result
+      return {
+        ...result,
+        usage: response.usage
+      };
     } catch (error) {
       throw this.createError(error);
     }

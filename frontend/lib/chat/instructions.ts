@@ -7,7 +7,7 @@ import type { PipeInstructions, TextToSqlInstructions } from './types';
 // Function to execute a TinyBird pipe
 async function executeTinybirdPipe(pipeName: string, parameters: Record<string, any>): Promise<any[]> {
   const tinybirdBaseUrl = process.env.NUXT_TINYBIRD_BASE_URL || 'https://api.us-west-2.aws.tinybird.co';
-  const tinybirdToken = process.env.NUXT_INSIGHTS_TINYBIRD_TOKEN || process.env.NUXT_TINYBIRD_TOKEN;
+  const tinybirdToken = process.env.NUXT_INSIGHTS_DATA_COPILOT_TINYBIRD_TOKEN;
 
   if (!tinybirdToken) {
     throw new Error('Tinybird token is not defined');
@@ -67,49 +67,125 @@ export async function executePipeInstructions(instructions: PipeInstructions): P
     maxRows = Math.max(maxRows, pipeResults[pipeId]?.length || 0);
   }
 
-  // Build combined rows
-  for (let i = 0; i < maxRows; i++) {
-    const row: Record<string, any> = {};
-    
-    for (const outputColumn of instructions.output) {
-      if (outputColumn.type === 'direct') {
-        // Direct column mapping
-        const pipeData = pipeResults[outputColumn.pipeId];
-        if (pipeData && pipeData[i]) {
-          row[outputColumn.name] = pipeData[i][outputColumn.sourceColumn];
-        } else {
-          row[outputColumn.name] = null;
-        }
-      } else if (outputColumn.type === 'formula') {
-        // Formula column - compute value from dependencies
-        const variables: Record<string, any> = {};
+  // Check if this is a date-based join (for time comparisons)
+  const hasDateBasedJoin = instructions.output.some(col => 
+    col.type === 'formula' && col.dependencies.length > 1 && 
+    col.dependencies.some(dep => dep.sourceColumn.toLowerCase().includes('date') || dep.sourceColumn.toLowerCase().includes('time'))
+  );
+
+  if (hasDateBasedJoin) {
+    // Handle date-based joins for time comparisons (e.g., week-over-week)
+    const primaryPipeId = instructions.output.find(col => col.type === 'direct')?.pipeId;
+    if (primaryPipeId) {
+      const primaryData = pipeResults[primaryPipeId] || [];
+      
+      for (let i = 0; i < primaryData.length; i++) {
+        const row: Record<string, any> = {};
+        const primaryRow = primaryData[i];
         
-        // Gather all dependency values
-        for (const dep of outputColumn.dependencies) {
-          const pipeData = pipeResults[dep.pipeId];
-          if (pipeData && pipeData[i]) {
-            variables[dep.variable] = pipeData[i][dep.sourceColumn];
-          } else {
-            variables[dep.variable] = null;
+        // Get the date from primary row for alignment
+        const dateColumn = instructions.output.find(col => col.type === 'direct' && col.sourceColumn.toLowerCase().includes('date')) as { type: 'direct'; sourceColumn: string } | undefined;
+        const primaryDate = primaryRow[dateColumn?.sourceColumn || 'startDate'];
+        const primaryDateObj = new Date(primaryDate);
+        
+        for (const outputColumn of instructions.output) {
+          if (outputColumn.type === 'direct') {
+            // Direct column mapping from primary pipe
+            if (outputColumn.pipeId === primaryPipeId) {
+              row[outputColumn.name] = primaryRow[outputColumn.sourceColumn];
+            } else {
+              // For other pipes, find matching date
+              const otherPipeData = pipeResults[outputColumn.pipeId] || [];
+              const matchingRow = otherPipeData.find(otherRow => {
+                const otherDate = otherRow[outputColumn.sourceColumn.toLowerCase().includes('date') ? outputColumn.sourceColumn : 'startDate'];
+                const otherDateObj = new Date(otherDate);
+                return otherDateObj.getDay() === primaryDateObj.getDay(); // Match by day of week
+              });
+              row[outputColumn.name] = matchingRow ? matchingRow[outputColumn.sourceColumn] : null;
+            }
+          } else if (outputColumn.type === 'formula') {
+            // Formula column - compute value from dependencies with date alignment
+            const variables: Record<string, any> = {};
+            
+            // Gather all dependency values with date alignment
+            for (const dep of outputColumn.dependencies) {
+              if (dep.pipeId === primaryPipeId) {
+                // Use primary row data
+                variables[dep.variable] = primaryRow[dep.sourceColumn];
+              } else {
+                // Find matching date in other pipe
+                const otherPipeData = pipeResults[dep.pipeId] || [];
+                const matchingRow = otherPipeData.find(otherRow => {
+                  const otherDate = otherRow['startDate'] || otherRow['date'] || Object.values(otherRow)[0];
+                  const otherDateObj = new Date(otherDate);
+                  return otherDateObj.getDay() === primaryDateObj.getDay(); // Match by day of week
+                });
+                variables[dep.variable] = matchingRow ? matchingRow[dep.sourceColumn] : null;
+              }
+            }
+            
+            // Evaluate the formula safely
+            try {
+              const formulaFunction = new Function(
+                ...Object.keys(variables),
+                `return ${outputColumn.formula}`
+              );
+              row[outputColumn.name] = formulaFunction(...Object.values(variables));
+            } catch (error) {
+              console.error(`Error evaluating formula for column ${outputColumn.name}:`, error);
+              row[outputColumn.name] = null;
+            }
           }
         }
         
-        // Evaluate the formula safely
-        try {
-          // Create a function that has access only to the variables we provide
-          const formulaFunction = new Function(
-            ...Object.keys(variables),
-            `return ${outputColumn.formula}`
-          );
-          row[outputColumn.name] = formulaFunction(...Object.values(variables));
-        } catch (error) {
-          console.error(`Error evaluating formula for column ${outputColumn.name}:`, error);
-          row[outputColumn.name] = null;
-        }
+        combinedData.push(row);
       }
     }
-    
-    combinedData.push(row);
+  } else {
+    // Original row-by-row logic for non-date-based joins
+    for (let i = 0; i < maxRows; i++) {
+      const row: Record<string, any> = {};
+      
+      for (const outputColumn of instructions.output) {
+        if (outputColumn.type === 'direct') {
+          // Direct column mapping
+          const pipeData = pipeResults[outputColumn.pipeId];
+          if (pipeData && pipeData[i]) {
+            row[outputColumn.name] = pipeData[i][outputColumn.sourceColumn];
+          } else {
+            row[outputColumn.name] = null;
+          }
+        } else if (outputColumn.type === 'formula') {
+          // Formula column - compute value from dependencies
+          const variables: Record<string, any> = {};
+          
+          // Gather all dependency values
+          for (const dep of outputColumn.dependencies) {
+            const pipeData = pipeResults[dep.pipeId];
+            if (pipeData && pipeData[i]) {
+              variables[dep.variable] = pipeData[i][dep.sourceColumn];
+            } else {
+              variables[dep.variable] = null;
+            }
+          }
+          
+          // Evaluate the formula safely
+          try {
+            // Create a function that has access only to the variables we provide
+            const formulaFunction = new Function(
+              ...Object.keys(variables),
+              `return ${outputColumn.formula}`
+            );
+            row[outputColumn.name] = formulaFunction(...Object.values(variables));
+          } catch (error) {
+            console.error(`Error evaluating formula for column ${outputColumn.name}:`, error);
+            row[outputColumn.name] = null;
+          }
+        }
+      }
+      
+      combinedData.push(row);
+    }
   }
 
   return combinedData;
@@ -118,7 +194,7 @@ export async function executePipeInstructions(instructions: PipeInstructions): P
 // Function to execute a SQL query via TinyBird's Query API
 export async function executeTextToSqlInstructions(query: TextToSqlInstructions): Promise<any[]> {
   const tinybirdBaseUrl = process.env.NUXT_TINYBIRD_BASE_URL
-  const tinybirdToken = process.env.NUXT_INSIGHTS_TINYBIRD_TOKEN
+  const tinybirdToken = process.env.NUXT_INSIGHTS_DATA_COPILOT_TINYBIRD_TOKEN
 
   if (!tinybirdToken) {
     throw new Error('Tinybird token is not defined');

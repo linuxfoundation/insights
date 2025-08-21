@@ -15,14 +15,14 @@ SPDX-License-Identifier: MIT
   </span>
   <span
     v-else
-    class="text-xs text-negative-600 flex items-center gap-1"
+    class="text-xs text-negative-600 flex items-center gap-1 font-medium"
   >
     <lfx-icon
       name="circle-exclamation"
       type="solid"
       :size="12"
     />
-    Error
+    {{ label }}
   </span>
 </template>
 <script setup lang="ts">

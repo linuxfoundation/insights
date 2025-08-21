@@ -9,9 +9,4 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 
-definePageMeta({
-  layout: false,
-  ssr: false // Disable SSR for this page (Auth0 callback needs client-side processing)
-})
-
 </script> 

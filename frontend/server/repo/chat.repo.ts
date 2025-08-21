@@ -1,0 +1,106 @@
+// Copyright (c) 2025 The Linux Foundation and each contributor.
+// SPDX-License-Identifier: MIT
+import type { Pool } from 'pg';
+
+export interface PipeInput {
+  endDate?: string;
+  project?: string;
+  startDate?: string;
+  granularity?: string;
+  [key: string]: unknown;
+}
+
+export interface Pipe {
+  id: string;
+  name: string;
+  inputs: PipeInput;
+}
+
+export interface OutputColumn {
+  name: string;
+  type: string;
+  pipeId: string;
+  sourceColumn: string;
+}
+
+export interface PipeInstructions {
+  pipes: Pipe[];
+  output: OutputColumn[];
+}
+
+export interface ChatResponse {
+  id?: string;
+  createdBy: string;
+  userPrompt: string;
+  routerResponse: 'pipes' | 'text-to-sql' | 'stop';
+  routerReason: string;
+  pipeInstructions?: PipeInstructions;
+  sqlQuery?: string; // SQL query for text-to-sql
+  model: string;
+  inputTokens?: number;
+  outputTokens?: number;
+}
+
+export class ChatRepository {
+  constructor(private pool: Pool) {}
+
+  async saveChatResponse(response: ChatResponse, userEmail: string): Promise<string> {
+    try {
+      const query = `
+      INSERT INTO chat_responses 
+      ( 
+        created_by, 
+        user_prompt,
+        router_response, 
+        router_reason, 
+        pipe_instructions, 
+        sql_query, model, 
+        input_tokens, 
+        output_tokens, 
+        feedback
+      )
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+      RETURNING id
+    `;
+    
+    const result = await this.pool.query(query, [
+      userEmail,
+      response.userPrompt,
+      response.routerResponse,
+      response.routerReason,
+      response.pipeInstructions ? JSON.stringify(response.pipeInstructions) : null,
+      response.sqlQuery,
+      response.model,
+      response.inputTokens,
+      response.outputTokens,
+      null // feedback starts as null
+    ]);
+
+    return result.rows[0].id;
+    }
+    catch (error) {
+      console.error("Error saving chat response:", error);
+      throw new Error("Could not save chat response");
+    }
+  }
+
+  async updateChatFeedback(chatResponseId: string, feedback: number | null): Promise<boolean> {
+    const query = `
+      UPDATE chat_responses 
+      SET feedback = $1 
+      WHERE id = $2
+    `;
+    
+    const result = await this.pool.query(query, [feedback, chatResponseId]);
+    return result.rowCount > 0;
+  }
+
+  async getChatResponse(chatResponseId: string): Promise<ChatResponse | null> {
+    const query = `
+      SELECT * FROM chat_responses WHERE id = $1
+    `;
+    
+    const result = await this.pool.query(query, [chatResponseId]);
+    return result.rows.length > 0 ? result.rows[0] : null;
+  }
+}

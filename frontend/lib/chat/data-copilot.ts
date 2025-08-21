@@ -21,21 +21,41 @@ const bedrock = createAmazonBedrock({
   region: process.env.NUXT_AWS_BEDROCK_REGION,
 });
 
+interface RouterResponse { 
+  question: string;
+  answer: string;
+  reasoning?: string;
+  userPrompt: string;
+  data?: any;
+  segmentId?: string;
+  projectName?: string;
+  pipe: string;
+  inputTokens?: number;
+  outputTokens?: number;
+  routerResponse: 'pipes' | 'text-to-sql' | 'stop';
+  routerReason: string;
+  pipeInstructions?: any; // JSONB for pipe instructions
+  sqlQuery?: string; // SQL query for text-to-sql
+  model: string;
+}
+
 export async function streamingAgentRequestHandler({
   messages,
   segmentId,
   projectName,
   pipe,
   parameters,
+  onResponseComplete,
 }: {
   messages: any[];
   segmentId?: string;
   projectName?: string;
   pipe: string;
   parameters?: Record<string, any>;
+  onResponseComplete?: (response: RouterResponse) => Promise<string>;
 }) {
   const url = new URL(
-    `https://mcp.tinybird.co?token=${process.env.NUXT_INSIGHTS_TINYBIRD_TOKEN}&host=${process.env.NUXT_TINYBIRD_BASE_URL}`
+    `https://mcp.tinybird.co?token=${process.env.NUXT_INSIGHTS_DATA_COPILOT_TINYBIRD_TOKEN}&host=${process.env.NUXT_TINYBIRD_BASE_URL}`
   );
 
   const mcpClient = await createMCPClient({
@@ -43,6 +63,8 @@ export async function streamingAgentRequestHandler({
       sessionId: `session_${Date.now()}`,
     }),
   });
+
+  const MODEL = "us.anthropic.claude-sonnet-4-20250514-v1:0"
 
   const tbTools = await mcpClient.tools({});
   // Build a human-readable overview of all tools for the router's prompt (read-only catalog)
@@ -72,10 +94,20 @@ export async function streamingAgentRequestHandler({
     .join("\n");
   const parametersString = JSON.stringify(parameters || {});
   const dateString = new Date().toISOString().split("T")[0];
-  const model = bedrock("us.anthropic.claude-sonnet-4-20250514-v1:0");
+  const model = bedrock(MODEL);
 
   return createDataStreamResponse({
     execute: async (dataStream) => {
+      const responseData = {
+        question: messages[messages.length - 1]?.content || '',
+        answer: '',
+        reasoning: '',
+        explanation: '',
+        data: null as any,
+        inputTokens: 0,
+        outputTokens: 0
+      };
+
       try {
         dataStream.writeData({
           type: "router-status",
@@ -93,24 +125,90 @@ export async function streamingAgentRequestHandler({
           parametersString,
           segmentId: segmentId as string,
         });
+        // Accumulate token usage from router
+        if (routerOutput.usage) {
+          responseData.inputTokens += routerOutput.usage.promptTokens || 0;
+          responseData.outputTokens += routerOutput.usage.completionTokens || 0;
+        }
 
         if (routerOutput.next_action === "stop") {
+          responseData.reasoning = `Router Decision: ${routerOutput.next_action}\nReasoning: ${routerOutput.reasoning}`;
+          responseData.answer = routerOutput.reasoning;
           dataStream.writeData({
             type: "router-status",
             status: "complete",
             reasoning: routerOutput.reasoning,
           });
+          
+          // Call the callback if provided
+          if (onResponseComplete) {
+            const chatResponseId = await onResponseComplete({
+              question: responseData.question,
+              answer: responseData.answer,
+              reasoning: responseData.reasoning,
+              userPrompt: responseData.question,
+              data: responseData.data,
+              segmentId,
+              projectName,
+              pipe,
+              inputTokens: responseData.inputTokens,
+              outputTokens: responseData.outputTokens,
+              routerResponse: 'stop',
+              routerReason: routerOutput.reasoning,
+              pipeInstructions: undefined,
+              sqlQuery: undefined,
+              model: MODEL
+            });
+            
+            // Stream the chat response ID
+            dataStream.writeData({
+              type: "chat-response-id",
+              id: chatResponseId
+            });
+          }
           return;
         }
 
         // TODO: Remove this once we support text-to-sql
         else if (routerOutput.next_action === "create_query") {
+          const fallbackMessage = `I'm unable to answer this question with the widgets I have access...
+            But soon I will be able to construct my own queries for these questions.`;
+          responseData.answer = fallbackMessage;
+          responseData.reasoning = `Router Decision: ${routerOutput.next_action}\n
+                                    Reasoning: ${routerOutput.reasoning}\n
+                                    Fallback: Text-to-SQL not yet supported`;
           dataStream.writeData({
             type: "router-status",
             status: "complete",
-            reasoning: `I'm unable to answer this question with the widgets I have access...
-            But soon I will be able to construct my own queries for these questions.`
+            reasoning: fallbackMessage
           });
+          
+          // Call the callback if provided
+          if (onResponseComplete) {
+            const chatResponseId = await onResponseComplete({
+              question: responseData.question,
+              answer: responseData.answer,
+              reasoning: responseData.reasoning,
+              userPrompt: responseData.question,
+              data: responseData.data,
+              segmentId,
+              projectName,
+              pipe,
+              inputTokens: responseData.inputTokens,
+              outputTokens: responseData.outputTokens,
+              routerResponse: 'text-to-sql',
+              routerReason: routerOutput.reasoning,
+              pipeInstructions: undefined,
+              sqlQuery: undefined,
+              model: MODEL
+            });
+            
+            // Stream the chat response ID
+            dataStream.writeData({
+              type: "chat-response-id",
+              id: chatResponseId
+            });
+          }
           return;
         }
 
@@ -176,8 +274,24 @@ export async function streamingAgentRequestHandler({
             toolNames: routerOutput.tools,
           });
 
+          // Accumulate token usage from pipe agent
+          if (pipeOutput.usage) {
+            responseData.inputTokens += pipeOutput.usage.promptTokens || 0;
+            responseData.outputTokens += pipeOutput.usage.completionTokens || 0;
+          }
+
           // Execute the pipes according to the instructions and combine results
           const combinedData = await executePipeInstructions(pipeOutput.instructions);
+
+          responseData.explanation = pipeOutput.explanation;
+          responseData.answer = pipeOutput.explanation;
+          responseData.reasoning = `Router Decision: ${routerOutput.next_action}\n
+                                    Router Reasoning: ${routerOutput.reasoning}\n
+                                    Tools Selected: ${routerOutput.tools ? routerOutput.tools.join(', ') : 'none'}\n
+                                    Reformulated Question: ${routerOutput.reformulated_question}\n
+                                    Pipe Agent Explanation: ${pipeOutput.explanation}`;
+                                    
+          responseData.data = combinedData;
 
           dataStream.writeData({
             type: "pipe-result",
@@ -185,6 +299,33 @@ export async function streamingAgentRequestHandler({
             instructions: pipeOutput.instructions,
             data: combinedData
           });
+
+          // Call the callback if provided
+          if (onResponseComplete) {
+            const chatResponseId = await onResponseComplete({
+              question: responseData.question,
+              answer: responseData.answer,
+              reasoning: responseData.reasoning,
+              userPrompt: responseData.question,
+              data: responseData.data,
+              segmentId,
+              projectName,
+              pipe,
+              inputTokens: responseData.inputTokens,
+              outputTokens: responseData.outputTokens,
+              routerResponse: 'pipes',
+              routerReason: routerOutput.reasoning,
+              pipeInstructions: pipeOutput.instructions,
+              sqlQuery: undefined,
+              model: MODEL
+            });
+
+            // Stream the chat response ID
+            dataStream.writeData({
+              type: "chat-response-id",
+              id: chatResponseId
+            });
+          }
         }
       } catch (error) {
         dataStream.writeData({

@@ -33,6 +33,7 @@ export const configSchema = z.object({
       fontSize: z.number().optional(),
       fontWeight: z.string().optional(),
       color: z.string().optional(),
+      fontFamily: z.string().optional(),
     }).optional(),
   }).optional(),
   dataset: z.object({
@@ -69,47 +70,8 @@ export const configSchema = z.object({
     top: z.string().optional(),
     containLabel: z.boolean().optional(),
   }).optional(),
-  xAxis: z.object({
-    type: z.enum(['category', 'value', 'time', 'log']),
-    data: z.array(z.union([z.string(), z.number()])).optional(),
-    name: z.string().optional(),
-    axisLine: z.object({
-      show: z.boolean().optional(),
-    }).optional(),
-    splitLine: z.object({
-      show: z.boolean().optional(),
-    }).optional(),
-    axisTick: z.object({
-      show: z.boolean().optional(),
-    }).optional(),
-    axisLabel: z.object({
-      fontSize: z.string().optional(),
-      fontWeight: z.string().optional(),
-      rotate: z.number().optional(),
-      formatter: z.string().optional(),
-    }).optional(),
-  }).optional(),
-  yAxis: z.object({
-    alignTicks: z.boolean().optional(),
-    name: z.string().optional(),
-    type: z.enum(['value', 'log']).optional(),
-    axisLabel: z.object({
-      fontSize: z.string().optional(),
-      fontWeight: z.string().optional(),
-      formatter: z.string().optional(),
-    }).optional(),
-    splitLine: z.object({
-      lineStyle: z.object({
-        type: z.enum(['dashed', 'solid']).optional(),
-        color: z.string().optional(),
-      }).optional(),
-      showMinLine: z.boolean().optional(),
-      show: z.boolean().optional(),
-    }).optional(),
-    axisTick: z.object({
-      show: z.boolean().optional(),
-    }).optional(),
-  }).optional(),
+  xAxis: z.any().optional(),
+  yAxis: z.any().optional(),
   series: z.array(echartsSeriesSchema),
   color: z.array(z.string()).optional(),
   backgroundColor: z.string().optional(),

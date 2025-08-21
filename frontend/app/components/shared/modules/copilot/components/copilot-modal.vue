@@ -14,21 +14,15 @@ SPDX-License-Identifier: MIT
       <div class="w-1/3">
         <lfx-copilot-sidebar
           :widget-name="widgetName"
-          :selected-result-id="selectedResultId"
           :is-loading="isLoading"
           :is-chart-loading="isChartLoading"
           @update:data="handleDataUpdate"
-          @update:selected-result="handleSelectedResult"
           @update:is-loading="isLoading = $event"
         />
       </div>
       <div class="w-2/3 flex justify-stretch items-stretch">
         <lfx-copilot-results-section
-          :results="resultData"
-          :selected-result-id="selectedResultId"
           :is-loading="isLoading"
-          @update:selected-result="handleSelectedResult"
-          @update:config="handleConfigUpdate"
           @update:is-chart-loading="isChartLoading = $event"
         />
       </div>
@@ -52,12 +46,13 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
-import type { MessageData, ResultsHistory } from '../types/copilot.types'
+import { computed, ref, watch } from 'vue'
+import { storeToRefs } from 'pinia';
+import type { MessageData } from '../types/copilot.types'
+import { useCopilotStore } from '../store/copilot.store';
 import LfxModal from '~/components/uikit/modal/modal.vue'
 import LfxCopilotSidebar from "~/components/shared/modules/copilot/components/copilot-sidebar.vue"
 import LfxCopilotResultsSection from "~/components/shared/modules/copilot/components/results/results-section.vue"
-import type { Config } from '~~/lib/chat/chart/types';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 
 const props = defineProps<{
@@ -65,8 +60,10 @@ const props = defineProps<{
   widgetName: string
 }>()
 
-const resultData = ref<ResultsHistory[]>([]);
-const selectedResultId = ref<string | null>(null);
+const { resultData, selectedResultId } = storeToRefs(useCopilotStore());
+const { resetResultData } = useCopilotStore();
+
+
 const isLoading = ref(false);
 const isChartLoading = ref(false);
 
@@ -89,23 +86,18 @@ const handleDataUpdate = (id: string, data: MessageData[]) => {
     data
   });
 
-  // TODO: REMOVE THIS AFTER TESTING
+
   if (selectedResultId.value === null) {
     const withData = resultData.value.find(result => result.data.length > 0);
     selectedResultId.value = withData?.id || null;
   }
 }
 
-const handleSelectedResult = (id: string) => {
-  selectedResultId.value = id;
-}
-
-const handleConfigUpdate = (config: Config | null, id: string) => {
-  const result = resultData.value.find(result => result.id === id);
-  if (result) {
-    result.chartConfig = config || undefined;
+watch(isModalOpen, (value) => {
+  if (value) {
+    resetResultData();
   }
-}
+}, { immediate: true })
 </script>
 
 <script lang="ts">

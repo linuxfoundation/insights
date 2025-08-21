@@ -7,17 +7,21 @@ SPDX-License-Identifier: MIT
     v-if="isLoading"
     class="h-full flex items-center justify-center"
   >
-    <lfx-copilot-loading-state title="Generating your chart..." />
+    <lfx-copilot-loading-state />
   </div>
   <div
-    v-else-if="error"
+    v-else-if="isError"
     class="h-full flex items-center justify-center"
   >
-    <lfx-copilot-error-state :is-chart-error="true" />
+    <lfx-copilot-error-state 
+      :error-type="errorType"
+      @retry="handleRetry"
+      @check-data="emit('onCheckDataClick')"
+    />
   </div>
   <div
     v-else-if="chartConfig"
-    class="h-[450px]"
+    class="h-full"
   >
     <lfx-chart :config="chartConfig" />
   </div>
@@ -43,7 +47,7 @@ SPDX-License-Identifier: MIT
 import { ref, watch, computed } from 'vue';
 import { storeToRefs } from 'pinia';
 import { DateTime } from 'luxon';
-import type { MessageData } from '../../types/copilot.types';
+import type { ChartErrorType, MessageData } from '../../types/copilot.types';
 import { copilotApiService } from '../../store/copilot.api.service';
 import LfxCopilotLoadingState from '../shared/loading-state.vue';
 import LfxCopilotErrorState from '../shared/error-state.vue';
@@ -59,15 +63,18 @@ import { hexToRgba } from '~/components/uikit/chart/helpers/chart-helpers';
 import { lfxColors } from '~/config/styles/colors';
 
 const emit = defineEmits<{
-  (e: 'update:config', value: Config | null): void;
+  (e: 'update:config', value: Config | null, chartErrorType?: ChartErrorType): void;
   (e: 'update:isLoading', value: boolean): void;
+  (e: 'update:isError', value: boolean): void;
   (e: 'update:isSnapshotModalOpen', value: boolean): void;
+  (e: 'onCheckDataClick'): void;
 }>();
 
 const props = defineProps<{
   data: MessageData[] | null,
   config: Config | null,
-  isSnapshotModalOpen: boolean
+  isSnapshotModalOpen: boolean,
+  chartErrorType?: ChartErrorType
 }>()
 
 const isSnapshotModalOpen = computed({
@@ -80,7 +87,8 @@ const isSnapshotModalOpen = computed({
 const { token } = storeToRefs(useAuthStore());
 
 const isLoading = ref(false);
-const error = ref(null);
+const isError = ref<boolean>(false);
+const errorType = ref<ChartErrorType>('chart-error');
 
 const chartConfig = computed({
   get: () => props.config,
@@ -90,6 +98,12 @@ const chartConfig = computed({
 });
 
 const generateChart = async () => {
+  if (props.chartErrorType) {
+    isError.value = true;
+    errorType.value = props.chartErrorType;
+    return;
+  }
+
   if (!props.data) {
     return;
   }
@@ -102,9 +116,21 @@ const generateChart = async () => {
   if (data.config && data.success && data.dataMapping) {
     chartConfig.value = applySeriesStyle(patchChartData(data.config, data.dataMapping)) as Config;
   } else {
-    error.value = data.error || 'Failed to generate chart';
+    isError.value = true;
+    errorType.value = data.isMetric ? 'chart-empty' : 'chart-error';
+
+    emit('update:config', null, errorType.value);
   }
   isLoading.value = false;
+}
+
+const handleRetry = () => {
+  emit('update:config', null, undefined);
+  setTimeout(() => {
+    isError.value = false;
+    errorType.value = 'default';
+    generateChart();
+  }, 200);
 }
 
 // Helper function to convert date strings to a specified format using Luxon
@@ -231,6 +257,10 @@ watch(() => props.data, () => {
 
 watch(isLoading, (newVal) => {
   emit('update:isLoading', newVal);
+}, { immediate: true });
+
+watch(isError, (newVal) => {
+  emit('update:isError', newVal);
 }, { immediate: true });
 </script>
 

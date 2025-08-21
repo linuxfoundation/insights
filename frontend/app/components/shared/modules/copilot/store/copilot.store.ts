@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 import {defineStore} from 'pinia';
 import {ref} from 'vue';
-import type { CopilotData } from '../types/copilot.types';
+import type { CopilotData, ResultsHistory } from '../types/copilot.types';
 import { Widget } from '~/components/modules/widget/types/widget';
 
 const defaultData: CopilotData = {
@@ -14,15 +14,25 @@ const defaultData: CopilotData = {
 export const useCopilotStore = defineStore('copilot', () => {
     const isCopilotModalOpen = ref(false);
     const copilotDefaults = ref<CopilotData>(defaultData);
+    const resultData = ref<ResultsHistory[]>([]);
+    const selectedResultId = ref<string | null>(null);
 
     const openCopilotModal = (defaults: CopilotData = defaultData) => {
         copilotDefaults.value = defaults;
         isCopilotModalOpen.value = true;
     };
 
+    const resetResultData = () => {
+        resultData.value = [];
+        selectedResultId.value = null;
+    }
+
     return {
         isCopilotModalOpen,
         copilotDefaults,
         openCopilotModal,
+        resultData,
+        selectedResultId,
+        resetResultData,
     };
 });
