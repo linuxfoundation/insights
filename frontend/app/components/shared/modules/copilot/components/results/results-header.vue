@@ -13,15 +13,16 @@ SPDX-License-Identifier: MIT
     <lfx-dropdown-select
       v-else
       v-model="selectedId"
-      class="!w-auto min-w-[200px] !max-w-[300px]"
+      width="fit-content"
       :match-width="true"
     >
       <template #trigger="{ selectedOption }">
         <lfx-dropdown-selector
           type="filled"
-          class="!w-auto flex justify-between"
+          class="flex justify-between"
+          width="fit-content"
         >
-          <div class="w-[88%]">
+          <div>
             <lfx-chat-result-label
               :version="Number(selectedOption.label)"
               :label="getTitle(selectedOption.value)"
@@ -35,8 +36,9 @@ SPDX-License-Identifier: MIT
         :key="option.id"
         :value="option.id"
         :label="getVersion(option.id)"
+        class="!gap-12"
       >
-        <div class="w-[88%]">
+        <div>
           <lfx-chat-result-label
             :version="index + 1"
             :label="getTitle(option.id)"
