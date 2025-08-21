@@ -8,9 +8,15 @@ SPDX-License-Identifier: MIT
       v-if="!isAuthenticated"
       type="transparent"
       class="!rounded-full text-nowrap !text-brand-500"
+      :disabled="isLoading"
       @click="login()"
     >
       My account
+      <lfx-icon
+        v-if="isLoading"
+        name="spinner-third"
+        class="animate-spin mr-2"
+      />
     </lfx-button>
     <lfx-popover
       v-else
@@ -30,14 +36,6 @@ SPDX-License-Identifier: MIT
           class="bg-white shadow-lg rounded-lg border border-neutral-200 w-56 p-1
           flex flex-col gap-1"
         >
-          <!-- <lfx-button
-            type="transparent"
-            class="text-nowrap !text-neutral-900"
-            size="small"
-            @click="logoutHandler()"
-          >
-            Log Out
-          </lfx-button>  -->
           <a
             :href="links.profileLink"
             target="_blank"
@@ -79,7 +77,7 @@ import LfxMenuButton from "~/components/uikit/menu-button/menu-button.vue";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
 import { links } from '~/config/links';
 
-const { loginWithRedirect, logout, isAuthenticated, idTokenClaims } = useAuth0();
+const { loginWithRedirect, logout, isAuthenticated, idTokenClaims, isLoading } = useAuth0();
 const { token } = storeToRefs(useAuthStore());
 
 const isOpen = ref(false);
