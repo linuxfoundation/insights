@@ -15,9 +15,5 @@ CREATE TABLE IF NOT EXISTS chat_responses (
     CONSTRAINT check_pipe_instructions CHECK (
         (router_response = 'pipes' AND pipe_instructions IS NOT NULL) OR 
         (router_response != 'pipes' AND pipe_instructions IS NULL)
-    ),
-    CONSTRAINT check_sql_query CHECK (
-        (router_response = 'text-to-sql' AND sql_query IS NOT NULL) OR 
-        (router_response != 'text-to-sql' AND sql_query IS NULL)
     )
 );
