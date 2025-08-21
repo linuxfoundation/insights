@@ -49,21 +49,21 @@ SPDX-License-Identifier: MIT
     <!-- Chat box -->
     <div class="flex-none px-5">
       <form @submit="handleSubmit">
-        <div class="relative border border-solid border-neutral-200 rounded-xl bg-white">
+        <div class="relative border border-solid border-neutral-200 rounded-xl bg-white shadow-sm">
           <textarea
             v-model="input"
             placeholder="Ask a follow-up question..."
             class="w-full p-4 bg-transparent
-              text-xs resize-none focus:outline-none"
+              text-sm resize-none focus:outline-none"
             rows="2"
             style="word-break: break-word; white-space: pre-wrap;"
             :disabled="isLoading || isChartLoading"
             @keydown.enter.prevent="handleSubmit"
           />
-          <div class="flex justify-between pb-4 px-4 items-center">
+          <div class="flex justify-between pb-4 px-4 items-center gap-4">
             <div class="flex gap-3 text-sm">
               <span
-                class="text-xs text-neutral-900 flex gap-1 items-center bg-brand-100 
+                class="text-sm text-neutral-900 flex gap-1 items-center bg-brand-50 
                   rounded-full px-2.5 py-1"
               >
                 <img
@@ -71,7 +71,9 @@ SPDX-License-Identifier: MIT
                   class="w-4 h-4"
                   :alt="copilotDefaults.project?.name"
                 ></img> 
-                {{ copilotDefaults.project?.name }}
+                <span class="truncate">
+                  {{ copilotDefaults.project?.name }}
+                </span>
               </span>
               <lfx-context-display
                 :widget-name="widgetName"
@@ -83,6 +85,7 @@ SPDX-License-Identifier: MIT
               icon="arrow-up"
               size="small"
               type="primary"
+              class="!outline-none"
               @click="handleSubmit"
             />
           </div>

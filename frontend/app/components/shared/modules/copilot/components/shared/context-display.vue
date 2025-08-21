@@ -32,7 +32,7 @@ const widgetIcon = computed(() => widget.value?.copilot?.icon || 'people-group')
 
 const displayClass = computed(() => props.type === 'transparent' ? 
   `text-sm text-neutral-900 bg-transparent px-2.5 py-1 border border-solid border-neutral-200` : 
-  `text-xs text-brand-500 font-semibold bg-brand-100 px-1.5 py-0.5`);
+  `text-xs text-brand-500 font-semibold bg-brand-50 px-1.5 py-0.5`);
 </script>
 
 <script lang="ts">

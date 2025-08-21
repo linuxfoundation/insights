@@ -32,7 +32,7 @@
 
   &--dark {
     &:hover{
-      @apply bg-brand-100;
+      @apply bg-brand-50;
     }
   
     &:active{
@@ -40,7 +40,7 @@
     }
 
     &.is-active:not(.is-disabled){
-      @apply bg-brand-100 font-semibold text-neutral-900;
+      @apply bg-brand-50 font-semibold text-neutral-900;
     }
   }
 }
