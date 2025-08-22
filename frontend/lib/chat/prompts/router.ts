@@ -33,16 +33,26 @@ ${toolsOverview}
 
 **PRIORITY ORDER: Always prefer pipes over custom queries when possible**
 
+**MANDATORY: Before checking data sources, you MUST first verify if existing pipes can handle the query**
+
 **Step 1: Check Existing Tools (HIGHEST PRIORITY)**
+- **FIRST: For activity-count-related queries (stars count, forks count, commits count, etc.) → ALWAYS use activities_count or activities_cumulative_count pipes**
 - Can ${pipe} tool answer this with different parameters?
 - IMPORTANT: Only the parameters listed in the tool's parameters are valid. You cannot add extra parameters.
   - For example, adding a country code parameter to a tool that doesn't support it is invalid.
 - Can other available tools answer this question?
 - Can a combination of tools provide the answer?
-- **CRITICAL: For comparative questions (e.g., "this week vs last week", "current vs previous period"):**
-  - Check if the same tool can be called multiple times with different time parameters
-  - Even if the question asks for a comparison, if the underlying data can be fetched using existing tools with different time ranges, choose "pipes"
-  - Example: "active contributors this week vs last week" can use the same contributor tool twice with different date ranges
+- **Can the SAME tool be used multiple times with different parameters to create comparisons?**
+  - Example: activity tools can be called once for forks, once for stars to compare them
+- **When user refers to activities by their types, you can use activities_count or activities_cumulative_count pipes**
+  - Activity types include: stars, forks, commits, pull requests, issues, etc.
+- **CRITICAL: For comparative questions (e.g., "this week vs last week", "forks vs stars", "current vs previous period"):**
+  - Check if the same tool can be called multiple times with different parameters (time ranges, activity types, etc.)
+  - Even if the question asks for a comparison, if the underlying data can be fetched using existing tools, choose "pipes"
+  - Examples:
+    * "active contributors this week vs last week" → use contributor tool twice with different date ranges
+    * "cumulative forks vs stars last month" → use activity tools twice with different activity types
+    * "active contributors vs organization this year" → active_contributors AND active_organization pipes
 - **If ANY existing tool can provide the data → ALWAYS choose "pipes" action**
 
 **Step 2: Check Data Sources (only if Step 1 is NO)**

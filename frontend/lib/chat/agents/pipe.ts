@@ -19,7 +19,7 @@ export class PipeAgent extends BaseAgent<PipeAgentInput, PipeOutput> {
   }
 
   protected getSystemPrompt(input: PipeAgentInput): string {
-    return pipePrompt(
+  const prompt =  pipePrompt(
       input.date,
       input.projectName,
       input.pipe,
@@ -27,7 +27,8 @@ export class PipeAgent extends BaseAgent<PipeAgentInput, PipeOutput> {
       input.segmentId,
       input.reformulatedQuestion,
       input.toolNames
-    );
+    )
+    return prompt
   }
 
   protected getUserPrompt(_input: PipeAgentInput): string {

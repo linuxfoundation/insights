@@ -70,6 +70,7 @@ export async function streamingAgentRequestHandler({
   // Build a human-readable overview of all tools for the router's prompt (read-only catalog)
   const excludedFromOverview = new Set([
     "explore_data",
+    "execute_query",
     "text_to_sql",
     "list_endpoints",
     "list_service_datasources",
@@ -224,7 +225,6 @@ export async function streamingAgentRequestHandler({
         const followUpTools: Record<string, any> = {};
         // TODO: Uncomment once we support text-to-sql
         // if (routerOutput.next_action === "create_query") {
-          followUpTools["execute_query"] = tbTools["execute_query"];
           followUpTools["list_datasources"] = tbTools["list_datasources"];
         // TODO: Uncomment once we support text-to-sql
         // }
