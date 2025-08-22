@@ -47,6 +47,8 @@ export default defineEventHandler(async (event): Promise<any | Error> => {
       } : undefined,
     });
   } catch (error) {
+    console.error('Chat stream error:', error);
+    console.error('Error stack:', error instanceof Error ? error.stack : 'No stack trace');
     return createError(
         {
           statusCode: 500,
