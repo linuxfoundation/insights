@@ -17,8 +17,23 @@ interface IStreamRequestBody {
 export default defineEventHandler(async (event): Promise<any | Error> => {
     try {
       console.log('Chat stream endpoint called');
-      const body = await readBody<IStreamRequestBody>(event);
-      console.log('Request body:', body);
+      console.log('Request method:', event.node.req.method);
+      console.log('Request headers:', event.node.req.headers);
+      console.log('Content-Type:', event.node.req.headers['content-type']);
+      console.log('Content-Length:', event.node.req.headers['content-length']);
+      
+      let body;
+      try {
+        body = await readBody<IStreamRequestBody>(event);
+        console.log('Request body:', body);
+        console.log('Body type:', typeof body);
+        console.log('Body keys:', body ? Object.keys(body) : 'No keys');
+      } catch (readBodyError) {
+        console.error('Error reading body:', readBodyError);
+        console.error('ReadBody error type:', typeof readBodyError);
+        console.error('ReadBody error message:', readBodyError instanceof Error ? readBodyError.message : readBodyError);
+        throw readBodyError;
+      }
       
       if (!body) {
         console.error('Request body is undefined or null');
