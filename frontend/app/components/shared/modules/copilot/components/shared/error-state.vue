@@ -70,7 +70,7 @@ SPDX-License-Identifier: MIT
             <lfx-icon
               name="table-layout"
               :size="16"
-              class="text-neutral-500"
+              class="text-brand-500"
             />
             Check data
           </lfx-button>

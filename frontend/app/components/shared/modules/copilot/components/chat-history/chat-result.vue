@@ -27,8 +27,8 @@ SPDX-License-Identifier: MIT
     <div class="my-4">{{ message.content }}</div>
 
     <span 
-      class="flex items-center px-3 py-2 border border-solid border-neutral-200 
-      rounded-xl shadow-sm bg-white justify-between cursor-pointer"
+      class="flex items-center p-3 border border-solid border-neutral-200 
+      rounded-xl bg-white justify-between cursor-pointer hover:bg-neutral-50"
       @click="emit('select')"
     >
       <lfx-chat-result-label

@@ -19,7 +19,7 @@
     }
 
     &.is-selected{
-      @apply font-medium;
+      @apply font-semibold;
 
       .c-icon{
         @apply text-neutral-900;

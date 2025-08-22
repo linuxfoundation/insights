@@ -18,7 +18,7 @@ SPDX-License-Identifier: MIT
       />
     </div>
     <div
-      class="rounded-full break-words"
+      class="rounded-3xl break-words"
       :class="[
         message.role === 'user' ? 'bg-neutral-100 text-right ml-16' : 'bg-transparent text-left',
         message.type === 'sql-result' || message.type === 'pipe-result' ? 'w-full' : ''
@@ -42,7 +42,7 @@ SPDX-License-Identifier: MIT
           <span v-else>{{ message.content }}</span>
         </div>
         <lfx-chat-result 
-          v-if="message.type === 'sql-result' || message.type === 'pipe-result'" 
+          v-if="message.type === 'sql-result' || message.type === 'pipe-result'"
           :message="message"
           :version="resultVersion(message)" 
           :is-selected="!!(selectedResultId && message.id === selectedResultId)"

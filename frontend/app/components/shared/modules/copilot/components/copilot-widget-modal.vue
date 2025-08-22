@@ -34,7 +34,7 @@ SPDX-License-Identifier: MIT
         <!-- Ask Copilot button -->
         <div class="flex justify-end">
           <div
-            class="w-[28px] h-[28px] flex items-center justify-center
+            class="w-7 h-7 flex items-center justify-center
               rounded-full transition-all text-base text-white"
             :class="{
               'bg-brand-500 opacity-50 cursor-not-allowed': !userQuestion.trim(),
