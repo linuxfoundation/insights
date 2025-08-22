@@ -113,6 +113,7 @@ Always ensure variables in formulas match the dependency variable names.
 
 2. **Parameter Inclusion Rules:**
    - **MANDATORY: Examine each tool's parameter schema thoroughly**
+   - Always include the "project" parameter - almost every pipe requires it
    - Include ALL parameters that are:
      * Required by the tool schema
      * Conditionally required based on documentation (e.g., "when filtering for non-contribution types, set to 0")
