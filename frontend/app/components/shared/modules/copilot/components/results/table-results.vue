@@ -3,10 +3,10 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="h-full overflow-auto border border-neutral-200 rounded">
+  <div class="h-full overflow-auto rounded">
     <table class="min-w-full text-xs">
-      <thead class="border-b border-neutral-200 bg-white sticky top-0 z-10">
-        <tr class="">
+      <thead class="bg-white sticky top-0 z-10 after:absolute after:bottom-0 after:left-0 after:w-full after:h-[1px] after:bg-neutral-200">
+        <tr>
           <th
             v-for="(col, colIdx) in Object.keys(data![0] || {})"
             :key="colIdx"

@@ -32,13 +32,16 @@ SPDX-License-Identifier: MIT
     :widget-name="'chart' as Widget"
     :use-slot="true"
     :data="chartConfig || {}"
-    :snapshot-name="chartConfig?.title?.text || 'Insights Chart'"
+    :snapshot-name="chartTitle"
   >
     <div
       if="chartConfig"
       class="h-[450px]"
     >
-      <lfx-chart :config="chartConfig" />
+      <h3 class="text-heading-3 font-semibold font-secondary">
+        {{ chartTitle }}
+      </h3>
+      <lfx-chart :config="configNoTitle" />
     </div>
   </lfx-snapshot-modal>
 </template>
@@ -96,6 +99,14 @@ const chartConfig = computed({
     emit('update:config', value);
   }
 });
+
+const chartTitle = computed(() => {
+  return chartConfig.value?.title?.text || 'Insights Chart';
+})
+
+const configNoTitle = computed(() => {
+  return { ...chartConfig.value, title: undefined };
+})
 
 const generateChart = async () => {
   if (props.chartErrorType) {

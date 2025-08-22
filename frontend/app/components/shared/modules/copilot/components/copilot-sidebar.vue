@@ -6,8 +6,8 @@ SPDX-License-Identifier: MIT
   <div class="pb-6 px-0 bg-white h-full border-r border-neutral-200 flex flex-col">
     <!-- Header -->
     <div 
-      class="px-4 text-xl font-secondary font-bold leading-7 gap-3 text-neutral-900 mb-4 flex-none
-      h-16 flex items-center"
+      class="p-4 text-xl font-secondary font-bold leading-7 gap-3 text-neutral-900 flex-none
+       flex items-center"
     >
       <lfx-icon
         name="sparkles"
