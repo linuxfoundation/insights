@@ -5,7 +5,10 @@ SPDX-License-Identifier: MIT
 <template>
   <div class="h-full overflow-auto rounded">
     <table class="min-w-full text-xs">
-      <thead class="bg-white sticky top-0 z-10 after:absolute after:bottom-0 after:left-0 after:w-full after:h-[1px] after:bg-neutral-200">
+      <thead
+        class="bg-white sticky top-0 z-10 after:absolute 
+        after:bottom-0 after:left-0 after:w-full after:h-[1px] after:bg-neutral-200"
+      >
         <tr>
           <th
             v-for="(col, colIdx) in Object.keys(data![0] || {})"
