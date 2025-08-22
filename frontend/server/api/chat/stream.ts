@@ -16,9 +16,20 @@ interface IStreamRequestBody {
 
 export default defineEventHandler(async (event): Promise<any | Error> => {
     try {
-    const { messages, segmentId, projectName, pipe, parameters } = await readBody<IStreamRequestBody>(event);
+      console.log('Chat stream endpoint called');
+      const body = await readBody<IStreamRequestBody>(event);
+      console.log('Request body:', body);
+      
+      if (!body) {
+        console.error('Request body is undefined or null');
+        return createError({statusCode: 400, statusMessage: 'Request body is required'});
+      }
+      
+      const { messages, segmentId, projectName, pipe, parameters } = body;
+      console.log('Destructured values:', { messages: messages?.length, segmentId, projectName, pipe, parameters });
 
     if (!pipe) {
+      console.error('Pipe parameter is missing');
       return createError({statusCode: 400, statusMessage: 'Pipe is required'});
     }
 
