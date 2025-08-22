@@ -8,6 +8,7 @@ export default {
         ? {
         "/auth/callback": {ssr: false, cache: false}, // Disable SSR for Auth0 callback page
         "/api/health": {cache: false},
+        "/api/chat/**": {cache: false},
         "/api/health/live": {cache: false},
         "/api/seo/og-image": {cache: false},
         "/api/report": {cache: false},
