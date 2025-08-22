@@ -172,8 +172,9 @@ export async function streamingAgentRequestHandler({
 
         // TODO: Remove this once we support text-to-sql
         else if (routerOutput.next_action === "create_query") {
-          const fallbackMessage = `I'm unable to answer this question with the widgets I have access...
-            But soon I will be able to construct my own queries for these questions.`;
+          const fallbackMessage = `I'm unable to answer this question with the widgets I have access.
+      But soon I will be able to construct my own queries for these questions if I have access to the necessary data.`;
+
           responseData.answer = fallbackMessage;
           responseData.reasoning = `Router Decision: ${routerOutput.next_action}\n
                                     Reasoning: ${routerOutput.reasoning}\n
