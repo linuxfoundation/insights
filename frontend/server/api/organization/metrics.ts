@@ -5,14 +5,15 @@ import { OrgDashContributors} from "~~/types/organization-dashboard";
 
 export default defineEventHandler(async (event): Promise<OrgDashContributors[]> => {
     const query = getQuery(event);
-    const accountName: string = query?.accountName as string;
-    const slugs = Array.isArray(query.slugs) ? query.slugs : query.slugs ? [query.slugs] : undefined;
+    const slugs = Array.isArray(query.slugs) ? query.slugs : (query.slugs ? [query.slugs] : undefined);
+    const organizationIds = Array.isArray(query.organizationIds)
+        ? query.organizationIds : (query.organizationIds ? [query.organizationIds] : undefined);
     const page: number = query.page as number || 0;
     const pageSize: number = query.pageSize as number || 20;
 
     try {
         const res = await fetchFromTinybird<OrgDashContributors[]>('/v0/pipes/org_dash_metrics.json', {
-            accountName,
+            organizationIds,
             slugs,
             page,
             pageSize,
