@@ -52,4 +52,8 @@ import { VPNavBarSearch, VPSocialLinks } from 'vitepress/theme'
 .wrapper-content {
   max-width: calc(var(--vp-layout-max-width) - 64px);
 }
+
+.c-menu-button{
+  @apply text-neutral-500
+}
 </style>
