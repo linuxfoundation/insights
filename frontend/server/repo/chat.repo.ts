@@ -43,12 +43,11 @@ export interface PipeInstructions {
 
 export interface ChatResponse {
   id?: string;
-  // createdBy: string;
   userPrompt: string;
   routerResponse: 'pipes' | 'text-to-sql' | 'stop';
   routerReason: string;
   pipeInstructions?: PipeInstructions;
-  sqlQuery?: string; // SQL query for text-to-sql
+  sqlQuery?: string;
   model: string;
   inputTokens?: number;
   outputTokens?: number;
@@ -86,7 +85,7 @@ export class ChatRepository {
       response.model,
       response.inputTokens,
       response.outputTokens,
-      null // feedback starts as null
+      null
     ]);
 
     return result.rows[0].id;
