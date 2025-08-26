@@ -70,6 +70,10 @@ const forks: WidgetConfig = {
       },
     },
   },
+  copilot: {
+    icon: 'code-fork',
+    suggestions: 'How many forks does this project have?'
+  },
 }
 
 export default forks

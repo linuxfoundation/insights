@@ -145,17 +145,20 @@ export const buildSeriesWithStyle = (
     )
   : undefined);
 
-const getDefaultSeriesStyle = (useStripedPattern: boolean = false): BarSeriesOption => ({
-  color: useStripedPattern ? createStripedPatterns.fine(lfxColors.brand[500]) : lfxColors.brand[500],
-  // barWidth: '60%',
+export const defaultSeriesBarStyle = {
   barMaxWidth: 32,
   barGap: '30%',
   barCategoryGap: '60%',
   itemStyle: {
     borderRadius: [2, 2, 2, 2],
-    borderWidth: 1,
-    // borderColor: '#fff'
+    borderWidth: 1
   },
+}
+
+const getDefaultSeriesStyle = (useStripedPattern: boolean = false): BarSeriesOption => ({
+  color: useStripedPattern ? createStripedPatterns.fine(lfxColors.brand[500]) : lfxColors.brand[500],
+  // barWidth: '60%',
+  ...defaultSeriesBarStyle,
 });
 
 const getDataItemStyle = (

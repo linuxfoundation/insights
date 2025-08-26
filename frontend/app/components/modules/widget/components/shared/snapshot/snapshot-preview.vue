@@ -41,12 +41,15 @@ SPDX-License-Identifier: MIT
         {{config?.name}}
       </h2>
     </div>
-    <component
-      :is="widgetConfig.component"
-      v-if="widgetConfig.component"
-      :model-value="props.data"
-      :snapshot="true"
-    />
+    <slot v-if="props.useSlot" />
+    <template v-else>
+      <component
+        :is="widgetConfig?.component"
+        v-if="widgetConfig?.component"
+        :model-value="props.data"
+        :snapshot="true"
+      />
+    </template>
     <div class="mt-5 border-t border-neutral-100 pt-8">
       <img
         src="~/assets/images/logo.svg"
@@ -71,7 +74,8 @@ import LfxIcon from "~/components/uikit/icon/icon.vue";
 
 const props = defineProps<{
   widgetName: Widget,
-  data: object
+  data: object,
+  useSlot?: boolean
 }>();
 
 const widgetConfig = computed(() => lfxWidgets[props.widgetName]);

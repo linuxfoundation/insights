@@ -70,6 +70,10 @@ const retention: WidgetConfig = {
         indicating a highly engaged and stable community.`,
       }
     }
+  },
+  copilot: {
+    icon: 'people-group',
+    suggestions: 'Show me the retention rate for the last 3 quarters'
   }
 };
 

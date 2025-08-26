@@ -11,7 +11,7 @@ SPDX-License-Identifier: MIT
       <div class="flex justify-between">
         <div>
           <p class="text-body-2 text-neutral-500">
-            {{ widgetConfig.name }}
+            {{ widgetConfig?.name }}
           </p>
           <h3 class="text-heading-3 font-secondary font-bold">
             Snapshot
@@ -46,7 +46,10 @@ SPDX-License-Identifier: MIT
             <lfx-snapshot-preview
               :widget-name="props.widgetName"
               :data="props.data"
-            />
+              :use-slot="props.useSlot"
+            >
+              <slot />
+            </lfx-snapshot-preview>
           </div>
         </div>
       </div>
@@ -72,7 +75,9 @@ import { ToastTypesEnum } from "~/components/uikit/toast/types/toast.types";
 const props = defineProps<{
   modelValue: boolean;
   widgetName: Widget,
-  data: object
+  data: object,
+  useSlot?: boolean,
+  snapshotName?: string
 }>();
 
 const { showToast } = useToastService();
@@ -86,8 +91,10 @@ const isModalOpen = computed<boolean>({
   get: () => props.modelValue,
   set: (value: boolean) => emit('update:modelValue', value)
 });
-const {project, repository} = storeToRefs(useProjectStore())
-const repoName = computed(() => (repository?.value?.name || '').split('/').at(-1));
+const {project, selectedRepositories} = storeToRefs(useProjectStore())
+const repoName = computed(() => (
+  selectedRepositories?.value?.map((repo) => repo.name.split('/').at(-1)).join(', ') || '')
+);
 
 const widgetConfig = computed(() => lfxWidgets[props.widgetName]);
 
@@ -106,7 +113,7 @@ const download = async () => {
     const link = document?.createElement('a')
     const fileName = `LFX Insights - ${project.value?.name || ''}${
         repoName.value ? ` / ${repoName.value}` : ''
-    } - ${widgetConfig.value.name}`
+    } - ${props.snapshotName || widgetConfig.value?.name}`
     link.download = `${fileName}.png`
     link.href = dataUrl
     document.body.appendChild(link);

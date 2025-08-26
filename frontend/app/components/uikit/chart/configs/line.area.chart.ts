@@ -45,7 +45,7 @@ const defaultLineOption: ECOption = {
   },
 };
 
-const defaultSeriesStyle: LineSeriesOption = {
+export const defaultSeriesLineStyle: LineSeriesOption = {
   smooth: true,
   showSymbol: false,
   symbolSize: 6,
@@ -78,7 +78,7 @@ const applySeriesStyle = (
 
   return series.map((seriesItem: SeriesTypes, index: number) => {
     const baseStyle: LineSeriesOption = {
-      ...defaultSeriesStyle,
+      ...defaultSeriesLineStyle,
       ...(seriesItem as LineSeriesOption),
       emphasis: {
         scale: false,

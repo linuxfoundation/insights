@@ -8,6 +8,7 @@
   "include": [
     "app/**/*.ts",
     "app/**/*.vue",
+    "lib/**/*.ts",
     "shims-vue.d.ts"
   ],
   "compilerOptions": {

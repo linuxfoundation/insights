@@ -16,6 +16,10 @@ const activeOrganizations: WidgetConfig = {
     share: true,
     embed: true,
     snapshot: true,
+    copilot: {
+        icon: 'people-group',
+        suggestions: 'How many active organizations are there?'
+    },
 }
 
 export default activeOrganizations;

@@ -12,6 +12,10 @@ const averateTimeToMerge: WidgetConfig = {
     share: true,
     embed: true,
     snapshot: true,
+    copilot: {
+        icon: 'people-group',
+        suggestions: 'Show me the average time to merge'
+      }
 }
 
 export default averateTimeToMerge;

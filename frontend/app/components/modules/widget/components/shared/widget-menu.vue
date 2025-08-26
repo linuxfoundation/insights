@@ -12,6 +12,7 @@ SPDX-License-Identifier: MIT
         <div
           v-if="link.isSeparator && link.enabled"
           class="h-6 border-r border-r-neutral-200"
+          :class="link.buttonClass"
         />
         <lfx-tooltip
           v-else-if="link.enabled"
@@ -19,9 +20,17 @@ SPDX-License-Identifier: MIT
           placement="top"
           :disabled="link.showLabel"
         >
+          <lfx-widget-menu-popover
+            v-if="link.popOverComponent"
+            :link="link"
+            :widget-name="props.name"
+            @update:is-popover-menu-clicked="isMenuOpen = $event"
+          />
+
           <lfx-widget-menu-item
+            v-else
             class="flex gap-2 items-center"
-            :class="link.showLabel ? '!w-auto !px-4' : ''"
+            :class="`${link.showLabel ? '!w-auto !px-3' : ''} ${link.buttonClass}`"
             @click="link.action()"
           >
             <lfx-icon
@@ -57,10 +66,10 @@ SPDX-License-Identifier: MIT
           :key="link.label"
         >
           <lfx-dropdown-separator
-            v-if="link.isSeparator && link.enabled"
+            v-if="link.isSeparator && link.enabled && !link.hideOnMobile"
           />
           <lfx-dropdown-item
-            v-else-if="link.enabled"
+            v-else-if="link.enabled && !link.hideOnMobile"
             @click="link.action()"
           >
             <lfx-icon
@@ -89,8 +98,9 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script lang="ts" setup>
-import {computed} from "vue";
+import {computed, ref, type Component} from "vue";
 import {storeToRefs} from "pinia";
+import LfxWidgetMenuPopover from "./widget-menu-popover.vue";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
 import LfxWidgetMenuItem from "~/components/modules/widget/components/shared/widget-menu-item.vue";
 import {useReportStore} from "~/components/shared/modules/report/store/report.store";
@@ -107,11 +117,36 @@ import LfxDropdownSeparator from "~/components/uikit/dropdown/dropdown-separator
 import LfxDropdownItem from "~/components/uikit/dropdown/dropdown-item.vue";
 import LfxSnapshotModal from "~/components/modules/widget/components/shared/snapshot/snapshot-modal.vue";
 import LfxWidgetEmbedModal from "~/components/modules/widget/components/shared/embed/embed-modal.vue";
+import { useAuthStore } from "~/components/modules/auth/store/auth.store";
+import LfxCopilotWidgetModal from "~/components/shared/modules/copilot/components/copilot-widget-modal.vue";
+import { hasLfxInsightsPermission } from "~/components/shared/utils/jwt-permissions";
 
+export interface MenuItem {
+  label: string;
+  icon: string;
+  action: () => void;
+  enabled: boolean;
+  showLabel?: boolean;
+  iconClass?: string;
+  buttonClass?: string;
+  isSeparator: boolean;
+  hideOnMobile?: boolean;
+  popOverComponent?: Component;
+}
+
+const emit = defineEmits<{
+  (e: 'update:isMenuOpen', value: boolean): void
+}>();
 const props = defineProps<{
   name: Widget;
   data: object
+  isMenuOpen: boolean
 }>()
+
+const isMenuOpen = computed({
+  get: () => props.isMenuOpen,
+  set: (value) => emit('update:isMenuOpen', value)
+});
 
 const config = computed(() => lfxWidgets[props.name]);
 
@@ -121,7 +156,11 @@ const isEmbedModalOpen = ref(false)
 const {openReportModal} = useReportStore()
 const {openShareModal} = useShareStore()
 
-const {project, selectedRepositories} = storeToRefs(useProjectStore());
+const {
+  project, 
+  selectedRepositories} = storeToRefs(useProjectStore());
+const {token} = storeToRefs(useAuthStore())
+const isCopilotEnabled = computed(() => !!config.value.copilot && hasLfxInsightsPermission(token.value))
 
 const widgetArea = computed(
     () => Object.keys(lfxWidgetArea).find(
@@ -150,31 +189,13 @@ const share = () => {
   });
 }
 
-const menu: {
-  label: string;
-  icon: string;
-  action: () => void;
-  enabled: boolean;
-  showLabel?: boolean;
-  iconClass?: string;
-  isSeparator: boolean
-}[] = [
+const menu = computed<MenuItem[]>(() => [
   {
     label: 'Report issue',
     icon: 'comment-exclamation',
-    iconClass: '!text-warning-600',
     action: report,
     enabled: true,
-    showLabel: true,
     isSeparator: false
-  },
-  {
-    label: '',
-    icon: '',
-    action: () => {
-    },
-    enabled: config.value.embed || config.value.snapshot || config.value.share,
-    isSeparator: true
   },
   {
     label: 'Embed',
@@ -200,8 +221,30 @@ const menu: {
     action: share,
     enabled: config.value.share,
     isSeparator: false
+  },
+  {
+    label: '',
+    icon: '',
+    action: () => {
+    },
+    enabled: (config.value.embed || config.value.snapshot || config.value.share) && isCopilotEnabled.value,
+    buttonClass: '!hidden xl:!block',
+    isSeparator: true,
+    hideOnMobile: true
+  },
+  {
+    label: 'Ask Copilot',
+    icon: 'sparkles',
+    iconClass: '!text-brand-500',
+    buttonClass: `py-1.5 !hidden xl:!flex rounded-full hover:bg-neutral-50 ${isMenuOpen.value ? 'bg-neutral-50' : ''}`,
+    action: () => {},
+    enabled: isCopilotEnabled.value,
+    showLabel: true,
+    isSeparator: false,
+    hideOnMobile: true,
+    popOverComponent: LfxCopilotWidgetModal
   }
-]
+])
 </script>
 
 <script lang="ts">
