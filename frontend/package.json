@@ -10,6 +10,8 @@
     "postinstall": "nuxt prepare",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "tsc-check": "tsc --noEmit",
     "prepare": "cd .. && husky ./frontend/.husky",
     "storybook": "storybook dev -p 6006",
