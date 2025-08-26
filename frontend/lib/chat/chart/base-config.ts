@@ -1,8 +1,8 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 
-import type { Config } from "./types";
-import { lfxColors } from "~/config/styles/colors";
+import type { Config } from './types'
+import { lfxColors } from '~/config/styles/colors'
 
 const sampleConfig: Config = {
   title: {
@@ -24,8 +24,8 @@ const sampleConfig: Config = {
       ['product', '2012', '2013', '2014', '2015'],
       ['Matcha Latte', 41.1, 30.4, 65.1, 53.3],
       ['Milk Tea', 86.5, 92.1, 85.7, 83.1],
-      ['Cheese Cocoa', 24.1, 67.2, 79.5, 86.4]
-    ]
+      ['Cheese Cocoa', 24.1, 67.2, 79.5, 86.4],
+    ],
   },
   legend: {
     orient: 'horizontal',
@@ -48,7 +48,7 @@ const sampleConfig: Config = {
       fontWeight: 'normal',
       color: lfxColors.neutral[400],
       fontFamily: 'Inter',
-      rotate: 0
+      rotate: 0,
     },
     axisLine: {
       show: false,
@@ -66,7 +66,7 @@ const sampleConfig: Config = {
     },
     splitLine: {
       lineStyle: {
-        type: 'dashed'
+        type: 'dashed',
       },
       showMinLine: false,
       show: true,
@@ -77,6 +77,6 @@ const sampleConfig: Config = {
     { type: 'bar', seriesLayoutBy: 'row', xAxisIndex: 0, yAxisIndex: 0 },
     { type: 'bar', seriesLayoutBy: 'row', xAxisIndex: 0, yAxisIndex: 0 },
   ],
-};
+}
 
-export default sampleConfig;
+export default sampleConfig

@@ -7,17 +7,17 @@ export const pipePrompt = (
   parametersString: string,
   segmentId: string | null,
   reformulatedQuestion: string,
-  tools: string[]
+  tools: string[],
 ) => `
 You are a pipe tool specialist that creates an execution plan to answer: "${reformulatedQuestion}"
 
 # DATE AND CONTEXT
 Today's date: ${date}
 Current dashboard: Project "${projectName}" using ${pipe} tool with parameters: ${parametersString}
-Segment ID: ${segmentId || "not specified"}
+Segment ID: ${segmentId || 'not specified'}
 
 # AVAILABLE TOOLS
-${tools.join(", ")}
+${tools.join(', ')}
 
 # YOUR TASK
 
@@ -129,4 +129,4 @@ Always ensure variables in formulas match the dependency variable names.
 3. **Focus on the Task:**
    - Answer the reformulated question directly
    - Use the tools specified by the router
-   - Be concise and accurate in your response`;
+   - Be concise and accurate in your response`

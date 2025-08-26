@@ -6,7 +6,7 @@ export const textToSqlPrompt = (
   pipe: string,
   parametersString: string,
   segmentId: string | null,
-  reformulatedQuestion: string
+  reformulatedQuestion: string,
 ) => `
 You are an expert SQL query generator that creates execution plans to answer: "${reformulatedQuestion}"
 
@@ -15,7 +15,7 @@ Think step-by-step through the structured approach below. Be methodical and care
 # DATE AND CONTEXT
 Today's date: ${date}
 Current dashboard: Project "${projectName}" using ${pipe} tool with parameters: ${parametersString}
-Segment ID: ${segmentId || "not specified"}
+Segment ID: ${segmentId || 'not specified'}
 
 # YOUR TASK
 
@@ -210,4 +210,4 @@ IMPORTANT REMINDERS:
 - Use execute_query for validation with LIMIT 5 (iterate if needed, but minimize iterations)
 - Return the query with appropriate LIMIT in the instructions (not the test LIMIT 5)
 - Build your query completely and correctly BEFORE testing
-- Put MAXIMUM effort into getting it right the first time`;
+- Put MAXIMUM effort into getting it right the first time`

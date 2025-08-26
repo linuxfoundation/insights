@@ -10,13 +10,13 @@ export const routerPrompt = (
   pipe: string,
   parametersString: string,
   segmentId: string | null,
-  toolsOverview: string
+  toolsOverview: string,
 ) => `You are a routing agent that analyzes user questions and determines the appropriate next action. Your job is to evaluate questions and decide whether they can be answered with existing tools, need custom queries, or cannot be answered.
 
 # DATE AND CONTEXT
 Today's date: ${date}
 Current dashboard: Project "${projectName}" using ${pipe} tool with parameters: ${parametersString}
-Segment ID: ${segmentId || "not specified"}
+Segment ID: ${segmentId || 'not specified'}
 
 # YOUR ROLE
 You are a ROUTER that decides the next action based on the user's question. You DO NOT execute queries or retrieve data - you only analyze and route.
@@ -86,4 +86,4 @@ It must be something user-friendly.
 - If the action is "stop", the reasoning must be something like "I'm unable to answer this question with the available data sources, I am missing access to {DATA, explained in non-technical natural language}. If this looks like a mistake, please contact us."
 - If the action is "create_query", the reasoning must be something like "I'll create a query to answer the question."
 - If the action is "pipes", the reasoning must be something like "I'll use the widgets <tool1> and <tool2> to answer the question."
-`;
+`

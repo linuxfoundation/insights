@@ -6,226 +6,236 @@
 /* eslint-disable vue/max-len */
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { createAmazonBedrock } from '@ai-sdk/amazon-bedrock';
-import { generateObject } from "ai";
-import { outputSchema } from "./types";
-import type { Config, DataMapping, Result } from "./types";
-import { analyzeDataForChart, shouldStackBars, normalizeDataForChart } from "./analysis";
-import sampleConfig from './base-config';
-import { lfxColors } from '~/config/styles/colors';
+import { createAmazonBedrock } from '@ai-sdk/amazon-bedrock'
+import { generateObject } from 'ai'
+import { outputSchema } from './types'
+import type { Config, DataMapping, Result } from './types'
+import { analyzeDataForChart, shouldStackBars, normalizeDataForChart } from './analysis'
+import sampleConfig from './base-config'
+import { lfxColors } from '~/config/styles/colors'
 
 const bedrock = createAmazonBedrock({
   accessKeyId: process.env.NUXT_AWS_BEDROCK_ACCESS_KEY_ID,
   secretAccessKey: process.env.NUXT_AWS_BEDROCK_SECRET_ACCESS_KEY,
   region: process.env.NUXT_AWS_BEDROCK_REGION,
-});
+})
 
 // Color arrays for different chart types and data point counts
 const chartColors = {
   // Single chart type colors (line or bar)
   single: [
-    lfxColors.brand[500],      // Color A (1 data point)
-    lfxColors.violet[500],     // Color B (2 data points) 
-    lfxColors.neutral[400],    // Color C (3 data points)
-    lfxColors.positive[500],   // Color D (4+ data points)
+    lfxColors.brand[500], // Color A (1 data point)
+    lfxColors.violet[500], // Color B (2 data points)
+    lfxColors.neutral[400], // Color C (3 data points)
+    lfxColors.positive[500], // Color D (4+ data points)
     lfxColors.negative[500],
     lfxColors.brand[300],
     lfxColors.violet[400],
     lfxColors.positive[400],
-    lfxColors.negative[400]
+    lfxColors.negative[400],
   ],
   // Mixed chart colors (bars first, then lines)
   mixed: {
     bars: [lfxColors.brand[500], lfxColors.violet[500], lfxColors.neutral[400]],
-    lines: [lfxColors.positive[500], lfxColors.negative[500], lfxColors.brand[300]]
-  }
-};
+    lines: [lfxColors.positive[500], lfxColors.negative[500], lfxColors.brand[300]],
+  },
+}
 
 // Legacy defaultColors for backward compatibility (if needed elsewhere)
 // const defaultColors = chartColors.single;
 
-const model = bedrock("us.anthropic.claude-sonnet-4-20250514-v1:0");
+const model = bedrock('us.anthropic.claude-sonnet-4-20250514-v1:0')
 
 export async function generateChartConfig(
   results: Result[],
-  userQuery: string
-): Promise<{ config: Config | null, dataMapping: DataMapping[] | null, isMetric?: boolean }> {
+  userQuery: string,
+): Promise<{ config: Config | null; dataMapping: DataMapping[] | null; isMetric?: boolean }> {
   // Re-enable normalization to fix date formatting
-  const normalizedResults = normalizeDataForChart(results);
-  const dataProfile = analyzeDataForChart(normalizedResults, userQuery);
+  const normalizedResults = normalizeDataForChart(results)
+  const dataProfile = analyzeDataForChart(normalizedResults, userQuery)
 
   // Skip chart for single values - show as metric
-  if (!dataProfile || dataProfile.dataShape === "single-value") {
-    return { config: null, dataMapping: null, isMetric: true };
+  if (!dataProfile || dataProfile.dataShape === 'single-value') {
+    return { config: null, dataMapping: null, isMetric: true }
   }
 
   try {
     const { object } = await generateObject({
       model,
-      output: "object" as const,
+      output: 'object' as const,
       schema: outputSchema,
-      system: "You are a data visualization expert. Create simple, effective chart configurations using the apache echarts configuration schema.",
+      system:
+        'You are a data visualization expert. Create simple, effective chart configurations using the apache echarts configuration schema.',
       prompt: createChartGenerationPrompt(dataProfile, normalizedResults, userQuery),
       temperature: 0.3,
-    });
+    })
 
-    const { chartConfig, dataMapping } = object;
+    const { chartConfig, dataMapping } = object
 
     // Apply default colors if not already set
     if (!chartConfig.color) {
       const colors = generateDefaultColors(
-        chartConfig.series.map((s: any) => s.name), 
-        chartConfig.series
-      );
-      chartConfig.color = colors;
-      
+        chartConfig.series.map((s: any) => s.name),
+        chartConfig.series,
+      )
+      chartConfig.color = colors
+
       // Remove individual series colors to let the global color array take precedence
       chartConfig.series = chartConfig.series.map((series: any) => {
-        const { color, ...seriesWithoutColor } = series;
-        return seriesWithoutColor;
-      });
+        const { color, ...seriesWithoutColor } = series
+        return seriesWithoutColor
+      })
     }
 
-    const finalConfig = chartConfig;
+    const finalConfig = chartConfig
 
-    return { config: finalConfig, dataMapping };
+    return { config: finalConfig, dataMapping }
   } catch (e) {
-    console.error("Chart generation failed, using fallback", e);
+    console.error('Chart generation failed, using fallback', e)
     // Smart fallback
-    const fallbackConfig = generateFallbackConfig(dataProfile);
-    return { config: fallbackConfig, dataMapping: null };
+    const fallbackConfig = generateFallbackConfig(dataProfile)
+    return { config: fallbackConfig, dataMapping: null }
   }
 }
 
 export async function modifyChartConfig(
   currentConfig: Config,
   currentData: Result[],
-  userRequest: string
-): Promise<{ config: Config, dataMapping: DataMapping[] | null }> {
-  const normalizedData = normalizeDataForChart(currentData);
-  const dataProfile = analyzeDataForChart(normalizedData, userRequest);
+  userRequest: string,
+): Promise<{ config: Config; dataMapping: DataMapping[] | null }> {
+  const normalizedData = normalizeDataForChart(currentData)
+  const dataProfile = analyzeDataForChart(normalizedData, userRequest)
 
   try {
     const { object: newConfig } = await generateObject({
       model,
-      output: "object" as const,
+      output: 'object' as const,
       schema: outputSchema,
-      system: "You are a chart modification expert. Make minimal changes based on user requests.",
-      prompt: createChartModificationPrompt(currentConfig, dataProfile, normalizedData, userRequest),
+      system: 'You are a chart modification expert. Make minimal changes based on user requests.',
+      prompt: createChartModificationPrompt(
+        currentConfig,
+        dataProfile,
+        normalizedData,
+        userRequest,
+      ),
       temperature: 0.3,
-    });
+    })
 
-    const { chartConfig, dataMapping } = newConfig;
+    const { chartConfig, dataMapping } = newConfig
     // Preserve colors if not updated
     if (!chartConfig.color) {
-      chartConfig.color = currentConfig.color;
+      chartConfig.color = currentConfig.color
     }
-    
-    return { config: chartConfig, dataMapping };
+
+    return { config: chartConfig, dataMapping }
   } catch (e) {
-    console.error("Failed to modify chart config", e);
-    throw new Error("Failed to modify chart configuration");
+    console.error('Failed to modify chart config', e)
+    throw new Error('Failed to modify chart configuration')
   }
 }
 
-function generateDefaultColors(yKeys: string[], series?: Array<{ type: string; name?: string }>): string[] {
+function generateDefaultColors(
+  yKeys: string[],
+  series?: Array<{ type: string; name?: string }>,
+): string[] {
   if (!series) {
     // Simple case: just pick colors from the single array
-    return yKeys.map((_, index) => chartColors.single[index] ?? chartColors.single[0]!);
+    return yKeys.map((_, index) => chartColors.single[index] ?? chartColors.single[0]!)
   }
 
   // Analyze series types
-  const barSeries = series.filter(s => s.type === 'bar');
-  const lineSeries = series.filter(s => s.type === 'line');
-  const isMixed = barSeries.length > 0 && lineSeries.length > 0;
+  const barSeries = series.filter((s) => s.type === 'bar')
+  const lineSeries = series.filter((s) => s.type === 'line')
+  const isMixed = barSeries.length > 0 && lineSeries.length > 0
 
   if (isMixed) {
     // Mixed chart: assign colors based on series type and order
-    let barColorIndex = 0;
-    let lineColorIndex = 0;
-    
-    return series.map(s => {
+    let barColorIndex = 0
+    let lineColorIndex = 0
+
+    return series.map((s) => {
       if (s.type === 'bar') {
-        const color = chartColors.mixed.bars[barColorIndex];
-        barColorIndex++;
-        return color ?? chartColors.mixed.bars[0]!;
+        const color = chartColors.mixed.bars[barColorIndex]
+        barColorIndex++
+        return color ?? chartColors.mixed.bars[0]!
       } else if (s.type === 'line') {
-        const color = chartColors.mixed.lines[lineColorIndex];
-        lineColorIndex++;
-        return color ?? chartColors.mixed.lines[0]!;
+        const color = chartColors.mixed.lines[lineColorIndex]
+        lineColorIndex++
+        return color ?? chartColors.mixed.lines[0]!
       } else {
-        return chartColors.single[0]!; // fallback
+        return chartColors.single[0]! // fallback
       }
-    });
+    })
   } else {
     // Single chart type: use the single array
-    return yKeys.map((_, index) => chartColors.single[index] ?? chartColors.single[0]!);
+    return yKeys.map((_, index) => chartColors.single[index] ?? chartColors.single[0]!)
   }
 }
 
 function generateFallbackConfig(profile: any): Config {
   // Choose appropriate chart type based on data shape
-  let type: "bar" | "line" | "pie" = "bar";
-  if (profile.dataShape === "time-series") {
-    type = "line";
-  } else if (profile.dataShape === "categorical" && profile.rowCount <= 6) {
-    type = "pie";
+  let type: 'bar' | 'line' | 'pie' = 'bar'
+  if (profile.dataShape === 'time-series') {
+    type = 'line'
+  } else if (profile.dataShape === 'categorical' && profile.rowCount <= 6) {
+    type = 'pie'
   }
 
   // Find best columns for axes
-  const dateCol = profile.columns.find((c: any) => c.type === "date");
-  const categoryCol = profile.columns.find((c: any) => c.type === "category");
-  const numericCols = profile.columns.filter((c: any) => c.type === "numeric");
+  const dateCol = profile.columns.find((c: any) => c.type === 'date')
+  const categoryCol = profile.columns.find((c: any) => c.type === 'category')
+  const numericCols = profile.columns.filter((c: any) => c.type === 'numeric')
 
-  const xKey = dateCol?.name || categoryCol?.name || profile.columns[0].name;
-  
+  const xKey = dateCol?.name || categoryCol?.name || profile.columns[0].name
+
   // Handle comparison scenarios differently
-  let yKeys: string[];
-  let useDualAxis = false;
-  let primaryKeys: string[] = [];
-  let secondaryKeys: string[] = [];
-  
+  let yKeys: string[]
+  let useDualAxis = false
+  let primaryKeys: string[] = []
+  let secondaryKeys: string[] = []
+
   if (profile.recommendedVisualization?.type === 'dual-axis') {
-    primaryKeys = profile.recommendedVisualization.primaryColumns;
-    secondaryKeys = profile.recommendedVisualization.secondaryColumns;
-    yKeys = [...primaryKeys, ...secondaryKeys];
-    useDualAxis = true;
+    primaryKeys = profile.recommendedVisualization.primaryColumns
+    secondaryKeys = profile.recommendedVisualization.secondaryColumns
+    yKeys = [...primaryKeys, ...secondaryKeys]
+    useDualAxis = true
   } else if (profile.recommendedVisualization?.type === 'grouped-bar') {
     // For grouped bar, focus on primary comparison columns
-    yKeys = profile.recommendedVisualization.primaryColumns;
+    yKeys = profile.recommendedVisualization.primaryColumns
   } else {
-    yKeys = numericCols.length > 0
-      ? numericCols.map((c: any) => c.name)
-      : [
-          profile.columns.find((c: any) => c.name !== xKey)?.name ||
-            profile.columns[1]?.name,
-        ].filter(Boolean);
+    yKeys =
+      numericCols.length > 0
+        ? numericCols.map((c: any) => c.name)
+        : [
+            profile.columns.find((c: any) => c.name !== xKey)?.name || profile.columns[1]?.name,
+          ].filter(Boolean)
   }
 
   // Auto-detect stacking for multi-series bar charts
-  const shouldStack = type === "bar" && yKeys.length > 1 && shouldStackBars(profile) && !useDualAxis;
-  const stackName = shouldStack ? "total" : undefined;
+  const shouldStack = type === 'bar' && yKeys.length > 1 && shouldStackBars(profile) && !useDualAxis
+  const stackName = shouldStack ? 'total' : undefined
 
   // Generate series configuration
   const series = yKeys.map((yKey: string, index: number) => {
-    const isSecondary = useDualAxis && secondaryKeys.includes(yKey);
+    const isSecondary = useDualAxis && secondaryKeys.includes(yKey)
     return {
-      type: isSecondary ? "line" : type,
+      type: isSecondary ? 'line' : type,
       name: yKey,
       yAxisIndex: isSecondary ? 1 : 0,
       ...(stackName && !isSecondary && { stack: stackName }),
-      ...(type === "line" && profile.dataShape === "time-series" && { 
-        areaStyle: {} // Enable area style for time-series line charts
-      }),
-    };
-  });
+      ...(type === 'line' &&
+        profile.dataShape === 'time-series' && {
+          areaStyle: {}, // Enable area style for time-series line charts
+        }),
+    }
+  })
 
   // Generate default colors array using the smart color system
-  const colors = generateDefaultColors(yKeys, series);
+  const colors = generateDefaultColors(yKeys, series)
 
   const config: Config = {
     title: {
-      text: "Data Visualization",
+      text: 'Data Visualization',
       left: 'center',
       textStyle: {
         fontFamily: 'Roboto Slab',
@@ -234,10 +244,10 @@ function generateFallbackConfig(profile: any): Config {
       },
     },
     tooltip: {
-      trigger: type === "pie" ? "item" : "axis",
-      ...(type !== "pie" && {
+      trigger: type === 'pie' ? 'item' : 'axis',
+      ...(type !== 'pie' && {
         axisPointer: {
-          type: "shadow",
+          type: 'shadow',
         },
       }),
     },
@@ -245,9 +255,9 @@ function generateFallbackConfig(profile: any): Config {
       show: yKeys.length > 1,
       data: yKeys,
     },
-    ...(type !== "pie" && {
+    ...(type !== 'pie' && {
       xAxis: {
-        type: "category",
+        type: 'category',
         name: xKey,
         axisLabel: {
           fontSize: 12,
@@ -261,62 +271,68 @@ function generateFallbackConfig(profile: any): Config {
         splitLine: { show: false },
         axisTick: { show: false },
       },
-      yAxis: useDualAxis ? [
-        {
-          type: "value",
-          name: primaryKeys.join(" / "),
-          position: "left",
-          axisLabel: {
-            fontSize: 12,
-            fontWeight: 'normal',
-            color: lfxColors.neutral[400],
-            fontFamily: 'Inter',
+      yAxis: useDualAxis
+        ? [
+            {
+              type: 'value',
+              name: primaryKeys.join(' / '),
+              position: 'left',
+              axisLabel: {
+                fontSize: 12,
+                fontWeight: 'normal',
+                color: lfxColors.neutral[400],
+                fontFamily: 'Inter',
+              },
+            },
+            {
+              type: 'value',
+              name: secondaryKeys.join(' / '),
+              position: 'right',
+              axisLabel: {
+                fontSize: 12,
+                fontWeight: 'normal',
+                color: lfxColors.neutral[400],
+                fontFamily: 'Inter',
+              },
+            },
+          ]
+        : {
+            type: 'value',
+            name: yKeys.length === 1 ? yKeys[0] : 'Value',
+            axisLabel: {
+              fontSize: 12,
+              fontWeight: 'normal',
+              color: lfxColors.neutral[400],
+              fontFamily: 'Inter',
+            },
           },
-        },
-        {
-          type: "value", 
-          name: secondaryKeys.join(" / "),
-          position: "right",
-          axisLabel: {
-            fontSize: 12,
-            fontWeight: 'normal',
-            color: lfxColors.neutral[400],
-            fontFamily: 'Inter',
-          },
-        }
-      ] : {
-        type: "value",
-        name: yKeys.length === 1 ? yKeys[0] : "Value",
-        axisLabel: {
-          fontSize: 12,
-          fontWeight: 'normal',
-          color: lfxColors.neutral[400],
-          fontFamily: 'Inter',
-        },
-      },
       grid: {
-        left: "8%",
-        right: useDualAxis ? "15%" : "8%",
-        bottom: "15%",
-        top: "15%",
+        left: '8%',
+        right: useDualAxis ? '15%' : '8%',
+        bottom: '15%',
+        top: '15%',
         containLabel: true,
       },
     }),
     series,
     color: colors,
-  };
+  }
 
-  return config;
+  return config
 }
 
-function createChartGenerationPrompt(dataProfile: any, results: Result[], userQuery: string): string {
-  const columns = dataProfile.columns.map((c: any) => `${c.name} (${c.type})`).join(", ");
-  const sampleData = JSON.stringify(JSON.stringify(results.slice(0, 3), null, 2), null, 2);
-  
+function createChartGenerationPrompt(
+  dataProfile: any,
+  results: Result[],
+  userQuery: string,
+): string {
+  const columns = dataProfile.columns.map((c: any) => `${c.name} (${c.type})`).join(', ')
+  const sampleData = JSON.stringify(JSON.stringify(results.slice(0, 3), null, 2), null, 2)
+
   // Add comparison-specific guidance
-  let comparisonGuidance = "";
+  let comparisonGuidance = ''
   if (dataProfile.comparisonType && dataProfile.recommendedVisualization) {
-    const rec = dataProfile.recommendedVisualization;
+    const rec = dataProfile.recommendedVisualization
     if (rec.type === 'dual-axis') {
       comparisonGuidance = `
 
@@ -326,7 +342,7 @@ SPECIAL CHART TYPE DETECTED: ${dataProfile.comparisonType.toUpperCase()} COMPARI
 - Use dual Y-axis configuration with different scales
 - Primary axis: Use bar charts for the main comparison values
 - Secondary axis: Use line charts for change/percentage values
-- Configure yAxis as an array with two objects for dual scales`;
+- Configure yAxis as an array with two objects for dual scales`
     } else if (rec.type === 'grouped-bar') {
       comparisonGuidance = `
 
@@ -334,10 +350,10 @@ SPECIAL CHART TYPE DETECTED: ${dataProfile.comparisonType.toUpperCase()} COMPARI
 - Show main comparison values: ${rec.primaryColumns.join(', ')}
 - Display change values separately or as tooltip info
 - Use grouped bar chart to clearly show the comparison
-- Consider filtering out percentage columns if they make the chart hard to read`;
+- Consider filtering out percentage columns if they make the chart hard to read`
     }
   }
-  
+
   return `Based on this data analysis and user query, generate an optimal apache echarts chart configuration.
 
 User Query: ${userQuery}
@@ -371,10 +387,15 @@ Return a valid chart configuration object and how the data was mapped to the cha
       "dateConversion": "valid Luxon date format"
     }
   ]
-}`;
+}`
 }
 
-function createChartModificationPrompt(currentConfig: Config, dataProfile: any, currentData: Result[], userRequest: string): string {
+function createChartModificationPrompt(
+  currentConfig: Config,
+  dataProfile: any,
+  currentData: Result[],
+  userRequest: string,
+): string {
   return `Modify the existing chart configuration based on the user's request.
 
 Current Configuration:
@@ -403,5 +424,5 @@ Return a complete, valid chart configuration object and how the data was mapped 
       "dateConversion": "valid Luxon date format"
     }
   ]
-}`;
+}`
 }
