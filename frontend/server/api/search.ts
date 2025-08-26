@@ -10,6 +10,8 @@ export interface SearchResponse {
     logo: string | null;
     projectSlug: string | null;
     name: string | null;
+    archived: boolean | null;
+    excluded: boolean | null;
 }
 
 /**
@@ -66,6 +68,8 @@ export default defineEventHandler(async (event) => {
                     repositories.push({
                         slug,
                         name,
+                        archived: item.archived || false,
+                        excluded: item.excluded || false,
                         projectSlug: item.projectSlug || '',
                     })
                 } else if (item.type === 'collection') {

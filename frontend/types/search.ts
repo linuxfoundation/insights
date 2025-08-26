@@ -15,6 +15,8 @@ export interface SearchRepository {
     name: string;
     slug: string;
     projectSlug: string;
+    archived: boolean;
+    excluded: boolean;
 }
 
 export interface SearchResults {
