@@ -8,7 +8,7 @@ import type { H3Event } from 'h3';
  * @param event - H3 event object
  * @returns Promise that resolves to decoded token or throws error
  */
-export async function verifyJWT(event: H3Event): Promise<any> {
+export async function verifyJWT(event: H3Event): Promise<void> {
   // Read authorization header
   const authHeader = getHeader(event, 'authorization');
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -29,11 +29,11 @@ export async function verifyJWT(event: H3Event): Promise<any> {
   }
 
   try {
-    return jwt.verify(token, jwtSecret);
-  } catch (jwtError) {
+    jwt.verify(token, jwtSecret);
+  } catch {
     throw createError({
       statusCode: 401, 
-      statusMessage: 'Invalid JWT token'
+      statusMessage: 'Invalid JWT token',
     });
   }
 }

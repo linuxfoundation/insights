@@ -6,6 +6,7 @@
 import { createAmazonBedrock } from '@ai-sdk/amazon-bedrock'
 import { experimental_createMCPClient as createMCPClient, createDataStreamResponse } from 'ai'
 import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js'
+import type { ChatResponse } from '../../server/repo/chat.repo'
 
 import { runRouterAgent } from './agents/router'
 // TODO: Uncomment once we support text-to-sql
@@ -14,30 +15,13 @@ import { runPipeAgent } from './agents/pipe'
 // TODO: Uncomment once we support text-to-sql
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { executePipeInstructions, executeTextToSqlInstructions } from './instructions'
+import type { ChatMessage } from './types'
 
 const bedrock = createAmazonBedrock({
   accessKeyId: process.env.NUXT_AWS_BEDROCK_ACCESS_KEY_ID,
   secretAccessKey: process.env.NUXT_AWS_BEDROCK_SECRET_ACCESS_KEY,
   region: process.env.NUXT_AWS_BEDROCK_REGION,
 })
-
-interface RouterResponse {
-  question: string
-  answer: string
-  reasoning?: string
-  userPrompt: string
-  data?: any
-  segmentId?: string
-  projectName?: string
-  pipe: string
-  inputTokens?: number
-  outputTokens?: number
-  routerResponse: 'pipes' | 'text-to-sql' | 'stop'
-  routerReason: string
-  pipeInstructions?: any // JSONB for pipe instructions
-  sqlQuery?: string // SQL query for text-to-sql
-  model: string
-}
 
 export async function streamingAgentRequestHandler({
   messages,
@@ -47,13 +31,13 @@ export async function streamingAgentRequestHandler({
   parameters,
   onResponseComplete,
 }: {
-  messages: any[]
+  messages: ChatMessage[]
   segmentId?: string
   projectName?: string
   pipe: string
-  parameters?: Record<string, any>
-  onResponseComplete?: (response: RouterResponse) => Promise<string>
-}) {
+  parameters?: Record<string, unknown>
+  onResponseComplete?: (response: ChatResponse) => Promise<string>
+}): Promise<Response> {
   const url = new URL(
     `https://mcp.tinybird.co?token=${process.env.NUXT_INSIGHTS_DATA_COPILOT_TINYBIRD_TOKEN}&host=${process.env.NUXT_TINYBIRD_BASE_URL}`,
   )
@@ -138,17 +122,9 @@ export async function streamingAgentRequestHandler({
             reasoning: routerOutput.reasoning,
           })
 
-          // Call the callback if provided
           if (onResponseComplete) {
             const chatResponseId = await onResponseComplete({
-              question: responseData.question,
-              answer: responseData.answer,
-              reasoning: responseData.reasoning,
               userPrompt: responseData.question,
-              data: responseData.data,
-              segmentId,
-              projectName,
-              pipe,
               inputTokens: responseData.inputTokens,
               outputTokens: responseData.outputTokens,
               routerResponse: 'stop',
@@ -182,17 +158,9 @@ export async function streamingAgentRequestHandler({
             reasoning: fallbackMessage,
           })
 
-          // Call the callback if provided
           if (onResponseComplete) {
             const chatResponseId = await onResponseComplete({
-              question: responseData.question,
-              answer: responseData.answer,
-              reasoning: responseData.reasoning,
               userPrompt: responseData.question,
-              data: responseData.data,
-              segmentId,
-              projectName,
-              pipe,
               inputTokens: responseData.inputTokens,
               outputTokens: responseData.outputTokens,
               routerResponse: 'text-to-sql',
@@ -296,17 +264,9 @@ export async function streamingAgentRequestHandler({
             data: combinedData,
           })
 
-          // Call the callback if provided
           if (onResponseComplete) {
             const chatResponseId = await onResponseComplete({
-              question: responseData.question,
-              answer: responseData.answer,
-              reasoning: responseData.reasoning,
               userPrompt: responseData.question,
-              data: responseData.data,
-              segmentId,
-              projectName,
-              pipe,
               inputTokens: responseData.inputTokens,
               outputTokens: responseData.outputTokens,
               routerResponse: 'pipes',

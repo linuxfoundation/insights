@@ -16,12 +16,25 @@ export interface Pipe {
   inputs: PipeInput;
 }
 
-export interface OutputColumn {
+export interface DirectColumn {
   name: string;
-  type: string;
+  type: "direct";
   pipeId: string;
   sourceColumn: string;
 }
+
+export interface Formula {
+  type: "formula";
+  name: string;
+  formula: string;
+  dependencies: {
+    pipeId: string;
+    sourceColumn: string;
+    variable: string;
+  }[];
+}
+
+export type OutputColumn = DirectColumn | Formula;
 
 export interface PipeInstructions {
   pipes: Pipe[];
@@ -30,7 +43,7 @@ export interface PipeInstructions {
 
 export interface ChatResponse {
   id?: string;
-  createdBy: string;
+  // createdBy: string;
   userPrompt: string;
   routerResponse: 'pipes' | 'text-to-sql' | 'stop';
   routerReason: string;
@@ -92,7 +105,7 @@ export class ChatRepository {
     `;
     
     const result = await this.pool.query(query, [feedback, chatResponseId]);
-    return result.rowCount > 0;
+    return (result?.rowCount || 0 ) > 0;
   }
 
   async getChatResponse(chatResponseId: string): Promise<ChatResponse | null> {

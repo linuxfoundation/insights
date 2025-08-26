@@ -4,7 +4,7 @@
  * See responses.types.ts for the response format.
  */
 
-import type { Organization } from '~~/types/contributors/responses.types';
+import type { Organization } from '~~/types/contributors/responses.types'
 
 /**
  * Query params:
@@ -20,8 +20,8 @@ export default defineEventHandler(async () => {
       'Open-source organization under the Linux Foundation that promotes the adoption of cloud-native technologies',
     address: 'California, United States',
     employees: '1000+',
-    organizationType: 'Public'
-  };
+    organizationType: 'Public',
+  }
 
-  return organization;
-});
+  return organization
+})

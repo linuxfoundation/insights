@@ -1,10 +1,10 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { DateTime } from 'luxon';
-import { createDataSource } from '~~/server/data/data-sources';
-import type { ContributorsLeaderboardFilter } from '~~/server/data/types';
-import { ActivityTypes } from '~~/types/shared/activity-types';
-import { ActivityPlatforms } from '~~/types/shared/activity-platforms';
+import { DateTime } from 'luxon'
+import { createDataSource } from '~~/server/data/data-sources'
+import type { ContributorsLeaderboardFilter } from '~~/server/data/types'
+import { ActivityTypes } from '~~/types/shared/activity-types'
+import { ActivityPlatforms } from '~~/types/shared/activity-platforms'
 
 /**
  * Frontend expects the data to be in the following format:
@@ -36,14 +36,14 @@ import { ActivityPlatforms } from '~~/types/shared/activity-platforms';
  */
 
 export default defineEventHandler(async (event) => {
-  const query = getQuery(event);
+  const query = getQuery(event)
 
-  const project = (event.context.params as { slug: string }).slug;
-  const activityPlatform = query.platform as ActivityPlatforms;
-  const activityType = query.activityType as ActivityTypes;
-  const limit = query.limit ? parseInt(query.limit as string, 10) : 10;
-  const offset = query.offset ? parseInt(query.offset as string, 10) : 0;
-  const repos = Array.isArray(query.repos) ? query.repos : query.repos ? [query.repos] : undefined;
+  const project = (event.context.params as { slug: string }).slug
+  const activityPlatform = query.platform as ActivityPlatforms
+  const activityType = query.activityType as ActivityTypes
+  const limit = query.limit ? parseInt(query.limit as string, 10) : 10
+  const offset = query.offset ? parseInt(query.offset as string, 10) : 0
+  const repos = Array.isArray(query.repos) ? query.repos : query.repos ? [query.repos] : undefined
 
   const filter: ContributorsLeaderboardFilter = {
     project,
@@ -53,9 +53,9 @@ export default defineEventHandler(async (event) => {
     startDate: query.startDate ? DateTime.fromISO(query.startDate as string) : undefined,
     endDate: query.endDate ? DateTime.fromISO(query.endDate as string) : undefined,
     limit,
-    offset
-  };
+    offset,
+  }
 
-  const dataSource = createDataSource();
-  return await dataSource.fetchContributorsLeaderboard(filter);
-});
+  const dataSource = createDataSource()
+  return await dataSource.fetchContributorsLeaderboard(filter)
+})

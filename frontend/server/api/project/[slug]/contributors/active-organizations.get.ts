@@ -18,10 +18,10 @@
  *   }[];
  * }
  */
-import {DateTime} from "luxon";
-import type {ActiveOrganizationsFilter} from "~~/server/data/types";
-import {createDataSource} from "~~/server/data/data-sources";
-import {Granularity} from "~~/types/shared/granularity";
+import { DateTime } from 'luxon'
+import type { ActiveOrganizationsFilter } from '~~/server/data/types'
+import { createDataSource } from '~~/server/data/data-sources'
+import { Granularity } from '~~/types/shared/granularity'
 
 /**
  * Query params:
@@ -32,11 +32,11 @@ import {Granularity} from "~~/types/shared/granularity";
  */
 export default defineEventHandler(async (event) => {
   // TODO: Check the project configuration to determine whether to show the data.
-  const query = getQuery(event);
+  const query = getQuery(event)
 
-  const project = (event.context.params as { slug: string }).slug;
+  const project = (event.context.params as { slug: string }).slug
 
-  const repos = Array.isArray(query.repos) ? query.repos : query.repos ? [query.repos] : undefined;
+  const repos = Array.isArray(query.repos) ? query.repos : query.repos ? [query.repos] : undefined
 
   // TODO: Validate the query params
   const filter: ActiveOrganizationsFilter = {
@@ -44,27 +44,27 @@ export default defineEventHandler(async (event) => {
     project,
     repos,
     startDate: undefined,
-    endDate: undefined
-  };
+    endDate: undefined,
+  }
 
   if (query.startDate && (query.startDate as string).trim() !== '') {
-    filter.startDate = DateTime.fromISO(query.startDate as string);
+    filter.startDate = DateTime.fromISO(query.startDate as string)
   }
 
   if (query.endDate && (query.endDate as string).trim() !== '') {
-    filter.endDate = DateTime.fromISO(query.endDate as string);
+    filter.endDate = DateTime.fromISO(query.endDate as string)
   }
 
-  const dataSource = createDataSource();
+  const dataSource = createDataSource()
 
   try {
-    return await dataSource.fetchActiveOrganizations(filter);
+    return await dataSource.fetchActiveOrganizations(filter)
   } catch (error) {
-    console.error('Error fetching active organizations:', error);
+    console.error('Error fetching active organizations:', error)
     throw createError({
       statusCode: 500,
       statusMessage: 'Failed to fetch active organizations data',
-      data: { message: error.message }
-    });
+      data: { message: error.message },
+    })
   }
-});
+})

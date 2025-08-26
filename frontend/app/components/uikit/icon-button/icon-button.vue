@@ -38,6 +38,8 @@ const props = withDefaults(
   {
     type: 'default',
     size: 'medium',
+    iconType: 'outline',
+    iconSize: 16,
     disabled: false
   }
 );

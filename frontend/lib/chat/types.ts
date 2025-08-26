@@ -108,9 +108,14 @@ export type PipeOutput = z.infer<typeof pipeOutputSchema> & { usage?: any }
 // Agent Input Types
 // ============================================
 
+export interface ChatMessage {
+  content: string,
+  role: string
+}
+
 export interface RouterAgentInput {
   model: any // Bedrock model instance
-  messages: any[]
+  messages: ChatMessage[]
   tools: Record<string, any>
   toolsOverview: string
   date: string
@@ -122,7 +127,7 @@ export interface RouterAgentInput {
 
 export interface PipeAgentInput {
   model: any // Bedrock model instance
-  messages: any[]
+  messages: ChatMessage[]
   tools: Record<string, any> // Filtered pipe tools based on router decision
   date: string
   projectName: string

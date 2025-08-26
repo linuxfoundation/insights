@@ -20,6 +20,8 @@ const bedrock = createAmazonBedrock({
   region: process.env.NUXT_AWS_BEDROCK_REGION,
 })
 
+export type ChartConfig = { config: Config | null; dataMapping: DataMapping[] | null; isMetric?: boolean }
+
 // Color arrays for different chart types and data point counts
 const chartColors = {
   // Single chart type colors (line or bar)
@@ -49,7 +51,7 @@ const model = bedrock('us.anthropic.claude-sonnet-4-20250514-v1:0')
 export async function generateChartConfig(
   results: Result[],
   userQuery: string,
-): Promise<{ config: Config | null; dataMapping: DataMapping[] | null; isMetric?: boolean }> {
+): Promise<ChartConfig> {
   // Re-enable normalization to fix date formatting
   const normalizedResults = normalizeDataForChart(results)
   const dataProfile = analyzeDataForChart(normalizedResults, userQuery)
@@ -102,7 +104,7 @@ export async function modifyChartConfig(
   currentConfig: Config,
   currentData: Result[],
   userRequest: string,
-): Promise<{ config: Config; dataMapping: DataMapping[] | null }> {
+): Promise<ChartConfig> {
   const normalizedData = normalizeDataForChart(currentData)
   const dataProfile = analyzeDataForChart(normalizedData, userRequest)
 

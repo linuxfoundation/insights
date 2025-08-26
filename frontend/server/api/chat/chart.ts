@@ -1,38 +1,47 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import {  generateChartConfig, modifyChartConfig  } from '../../../lib/chat/chart/generator';
-import { normalizeDataForChart } from '../../../lib/chat/chart/analysis';
-import {  Result, Config  } from '../../../lib/chat/chart/types';
+import { generateChartConfig, modifyChartConfig } from '../../../lib/chat/chart/generator'
+import { Result, Config, DataMapping } from '../../../lib/chat/chart/types'
+import { PipeInstructions } from '~~/lib/chat/types'
 
-export const maxDuration = 30;
+export const maxDuration = 30
 
-interface IChartRequestBody { 
-    results?: Result[];
-    userQuery?: string;
-    currentConfig?: Config;
-    instructions?: string;
-    pipeInstructions?: any; // For handling pipe execution instructions
+interface IChartRequestBody {
+  results?: Result[]
+  userQuery?: string
+  currentConfig?: Config
+  instructions?: string
+  pipeInstructions?: PipeInstructions
 }
 
-export default defineEventHandler(async (event): Promise<any | Error> => {
-try {
-    const { results, userQuery, currentConfig, instructions, pipeInstructions } = await readBody<IChartRequestBody>(event);
+interface ChartConfigResponse {
+  success: boolean
+  isModification: boolean
+  config?: Config | null
+  dataMapping?: DataMapping[] | null
+  isMetric?: boolean
+}
+
+export default defineEventHandler(async (event): Promise<ChartConfigResponse | Error> => {
+  try {
+    const { results, userQuery, currentConfig, instructions, pipeInstructions } =
+      await readBody<IChartRequestBody>(event)
 
     // If pipe instructions are provided, execute them first to get results
     if (pipeInstructions && !results) {
-      const { executePipeInstructions } = await import('../../../lib/chat/instructions');
-      
+      const { executePipeInstructions } = await import('../../../lib/chat/instructions')
+
       try {
-        const executedResults = await executePipeInstructions(pipeInstructions);
-        
+        const executedResults = await executePipeInstructions(pipeInstructions)
+
         if (!userQuery) {
-          return createError({statusCode: 400, statusMessage: 'User query is required for chart generation'});
+          return createError({
+            statusCode: 400,
+            statusMessage: 'User query is required for chart generation',
+          })
         }
 
-        const chartGeneration = await generateChartConfig(
-          executedResults as Result[],
-          userQuery
-        );
+        const chartGeneration = await generateChartConfig(executedResults as Result[], userQuery)
 
         return {
           success: true,
@@ -40,15 +49,21 @@ try {
           config: chartGeneration.config,
           dataMapping: chartGeneration.dataMapping,
           isModification: false,
-        };
+        }
       } catch (pipeError) {
-        console.error("Pipe execution error:", pipeError);
-        return createError({statusCode: 500, statusMessage: 'Failed to execute pipe instructions'});
+        console.error('Pipe execution error:', pipeError)
+        return createError({
+          statusCode: 500,
+          statusMessage: 'Failed to execute pipe instructions',
+        })
       }
     }
 
     if (!results || !Array.isArray(results)) {
-      return createError({statusCode: 400, statusMessage: 'Results array or pipe instructions are required'});
+      return createError({
+        statusCode: 400,
+        statusMessage: 'Results array or pipe instructions are required',
+      })
     }
 
     // If we have a current config and instructions, this is a modification request
@@ -56,25 +71,25 @@ try {
       const updatedConfig = await modifyChartConfig(
         currentConfig as Config,
         results as Result[],
-        instructions
-      );
+        instructions,
+      )
 
       return {
         success: true,
-        config: updatedConfig,
+        config: updatedConfig.config,
         isModification: true,
-      };
+      }
     }
 
     // Otherwise, generate a new chart config
     if (!userQuery) {
-      return createError({statusCode: 400, statusMessage: 'User query is required for chart generation'});
+      return createError({
+        statusCode: 400,
+        statusMessage: 'User query is required for chart generation',
+      })
     }
 
-    const chartGeneration = await generateChartConfig(
-      results as Result[],
-      userQuery
-    );
+    const chartGeneration = await generateChartConfig(results as Result[], userQuery)
 
     return {
       success: true,
@@ -82,11 +97,9 @@ try {
       config: chartGeneration.config,
       dataMapping: chartGeneration.dataMapping,
       isModification: false,
-    };
-  } catch (error: any) {
-    console.error("Chart generation/modification error:", error);
-      return createError({statusCode: 500, statusMessage: 'Failed to process chart request'});
+    }
+  } catch (error) {
+    console.error('Chart generation/modification error:', error)
+    return createError({ statusCode: 500, statusMessage: 'Failed to process chart request' })
   }
-});
-
-
+})
