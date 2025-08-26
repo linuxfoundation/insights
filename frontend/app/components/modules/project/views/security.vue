@@ -4,6 +4,18 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <div class="container">
+    <!-- Alpha version disclaimer -->
+    <lfx-card class="flex items-center gap-2 !bg-warning-50 p-4 rounded-lg mt-8">
+      <lfx-icon
+        name="circle-exclamation"
+        :size="14"
+        type="solid"
+        class="text-warning-700"
+      />
+      <p class="text-sm text-warning-700">
+        The Security & Best Practices controls are in alpha version.
+      </p>
+    </lfx-card>
     <!-- Disclaimer -->
     <div
       v-if="!isRepository"
