@@ -1,56 +1,56 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import type { Pool } from 'pg';
+import type { Pool } from 'pg'
 
 export interface PipeInput {
-  endDate?: string;
-  project?: string;
-  startDate?: string;
-  granularity?: string;
-  [key: string]: unknown;
+  endDate?: string
+  project?: string
+  startDate?: string
+  granularity?: string
+  [key: string]: unknown
 }
 
 export interface Pipe {
-  id: string;
-  name: string;
-  inputs: PipeInput;
+  id: string
+  name: string
+  inputs: PipeInput
 }
 
 export interface DirectColumn {
-  name: string;
-  type: "direct";
-  pipeId: string;
-  sourceColumn: string;
+  name: string
+  type: 'direct'
+  pipeId: string
+  sourceColumn: string
 }
 
 export interface Formula {
-  type: "formula";
-  name: string;
-  formula: string;
+  type: 'formula'
+  name: string
+  formula: string
   dependencies: {
-    pipeId: string;
-    sourceColumn: string;
-    variable: string;
-  }[];
+    pipeId: string
+    sourceColumn: string
+    variable: string
+  }[]
 }
 
-export type OutputColumn = DirectColumn | Formula;
+export type OutputColumn = DirectColumn | Formula
 
 export interface PipeInstructions {
-  pipes: Pipe[];
-  output: OutputColumn[];
+  pipes: Pipe[]
+  output: OutputColumn[]
 }
 
 export interface ChatResponse {
-  id?: string;
-  userPrompt: string;
-  routerResponse: 'pipes' | 'text-to-sql' | 'stop';
-  routerReason: string;
-  pipeInstructions?: PipeInstructions;
-  sqlQuery?: string;
-  model: string;
-  inputTokens?: number;
-  outputTokens?: number;
+  id?: string
+  userPrompt: string
+  routerResponse: 'pipes' | 'text-to-sql' | 'stop'
+  routerReason: string
+  pipeInstructions?: PipeInstructions
+  sqlQuery?: string
+  model: string
+  inputTokens?: number
+  outputTokens?: number
 }
 
 export class ChatRepository {
@@ -73,26 +73,25 @@ export class ChatRepository {
       )
       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
       RETURNING id
-    `;
-    
-    const result = await this.pool.query(query, [
-      userEmail,
-      response.userPrompt,
-      response.routerResponse,
-      response.routerReason,
-      response.pipeInstructions ? JSON.stringify(response.pipeInstructions) : null,
-      response.sqlQuery,
-      response.model,
-      response.inputTokens,
-      response.outputTokens,
-      null
-    ]);
+    `
 
-    return result.rows[0].id;
-    }
-    catch (error) {
-      console.error("Error saving chat response:", error);
-      throw new Error("Could not save chat response");
+      const result = await this.pool.query(query, [
+        userEmail,
+        response.userPrompt,
+        response.routerResponse,
+        response.routerReason,
+        response.pipeInstructions ? JSON.stringify(response.pipeInstructions) : null,
+        response.sqlQuery,
+        response.model,
+        response.inputTokens,
+        response.outputTokens,
+        null,
+      ])
+
+      return result.rows[0].id
+    } catch (error) {
+      console.error('Error saving chat response:', error)
+      throw new Error('Could not save chat response')
     }
   }
 
@@ -101,18 +100,18 @@ export class ChatRepository {
       UPDATE chat_responses 
       SET feedback = $1 
       WHERE id = $2
-    `;
-    
-    const result = await this.pool.query(query, [feedback, chatResponseId]);
-    return (result?.rowCount || 0 ) > 0;
+    `
+
+    const result = await this.pool.query(query, [feedback, chatResponseId])
+    return (result?.rowCount || 0) > 0
   }
 
   async getChatResponse(chatResponseId: string): Promise<ChatResponse | null> {
     const query = `
       SELECT * FROM chat_responses WHERE id = $1
-    `;
-    
-    const result = await this.pool.query(query, [chatResponseId]);
-    return result.rows.length > 0 ? result.rows[0] : null;
+    `
+
+    const result = await this.pool.query(query, [chatResponseId])
+    return result.rows.length > 0 ? result.rows[0] : null
   }
 }
