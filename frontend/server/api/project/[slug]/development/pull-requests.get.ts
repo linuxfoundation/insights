@@ -1,11 +1,11 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import {DateTime} from "luxon";
-import type {ActivityCountFilter} from "~~/server/data/types";
-import {ActivityFilterCountType} from "~~/server/data/types";
-import {ActivityTypes} from "~~/types/shared/activity-types";
-import {Granularity} from "~~/types/shared/granularity";
-import {createDataSource} from "~~/server/data/data-sources";
+import { DateTime } from 'luxon'
+import type { ActivityCountFilter } from '~~/server/data/types'
+import { ActivityFilterCountType } from '~~/server/data/types'
+import { ActivityTypes } from '~~/types/shared/activity-types'
+import { Granularity } from '~~/types/shared/granularity'
+import { createDataSource } from '~~/server/data/data-sources'
 /**
  * Frontend expects the data to be in the following format:
  * {
@@ -58,11 +58,11 @@ import {createDataSource} from "~~/server/data/data-sources";
  * - time-period: string // This is isn't defined yet, but we'll add '90d', '1y', '5y' for now
  */
 export default defineEventHandler(async (event) => {
-  const query = getQuery(event);
+  const query = getQuery(event)
 
-  const project = (event.context.params as { slug: string }).slug;
+  const project = (event.context.params as { slug: string }).slug
 
-  const repos = Array.isArray(query.repos) ? query.repos : query.repos ? [query.repos] : undefined;
+  const repos = Array.isArray(query.repos) ? query.repos : query.repos ? [query.repos] : undefined
 
   const filter: ActivityCountFilter = {
     project,
@@ -75,7 +75,7 @@ export default defineEventHandler(async (event) => {
     endDate: query.endDate ? DateTime.fromISO(query.endDate as string) : undefined,
   }
 
-  const dataSource = createDataSource();
+  const dataSource = createDataSource()
 
-  return await dataSource.fetchPullRequests(filter);
-});
+  return await dataSource.fetchPullRequests(filter)
+})

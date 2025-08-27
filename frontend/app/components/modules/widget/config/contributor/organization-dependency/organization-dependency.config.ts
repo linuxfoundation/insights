@@ -57,6 +57,10 @@ const organizationDependency: WidgetConfig = {
                 ensuring robust support and resilience through a wide range of contributing organizations.`,
               }
         }
+    },
+    copilot: {
+      icon: 'people-group',
+      suggestions: 'Show me the organization dependency'
     }
 }
 

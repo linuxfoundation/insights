@@ -54,6 +54,11 @@ export interface WidgetBenchmarkConfig {
   >
 }
 
+export interface WidgetCopilotConfig {
+  icon: string
+  suggestions: string
+}
+
 export interface WidgetConfig {
   key: string
   name: string
@@ -63,6 +68,7 @@ export interface WidgetConfig {
   share: boolean
   embed: boolean
   snapshot: boolean
+  copilot?: WidgetCopilotConfig
   defaultValue?: Record<string, unknown>
   additionalShare?: Component
   hideOnRepoFilter?: boolean

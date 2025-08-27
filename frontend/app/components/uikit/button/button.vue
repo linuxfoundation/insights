@@ -37,7 +37,7 @@ const props = withDefaults(
     size: 'medium',
     iconPosition: 'left',
     disabled: false,
-    label: '',
+    label: undefined,
     icon: undefined,
     buttonStyle: 'rounded'
   }

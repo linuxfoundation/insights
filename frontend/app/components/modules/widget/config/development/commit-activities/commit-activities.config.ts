@@ -14,7 +14,11 @@ const commitActivities: WidgetConfig = {
   },
   share: true,
   embed: true,
-  snapshot: true
+  snapshot: true,
+  copilot: {
+    icon: 'people-group',
+    suggestions: 'Show me the commit activities'
+  }
 };
 
 export default commitActivities;

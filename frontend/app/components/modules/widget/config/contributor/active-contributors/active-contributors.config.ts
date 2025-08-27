@@ -62,7 +62,11 @@ const activeContributors: WidgetConfig = {
                     continuous improvement and a vibrant development community`,
             }
         }
-    }
+    },
+    copilot: {
+        icon: 'people-group',
+        suggestions: 'How many active contributors are there?'
+    },
 };
 
 export default activeContributors;

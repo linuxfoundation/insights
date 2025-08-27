@@ -13,6 +13,10 @@ const waitTimeFirstReview: WidgetConfig = {
     share: true,
     embed: true,
     snapshot: true,
+    copilot: {
+        icon: 'code-pull-request',
+        suggestions: 'How long does it take to get the first review?'
+    },
 }
 
 export default waitTimeFirstReview;
