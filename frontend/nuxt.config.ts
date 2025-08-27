@@ -46,6 +46,8 @@ export default defineNuxtConfig({
     redisUrl: "",
     githubApiToken: "",
     lfxAuth0JwtSecret: "",
+    lfxAuth0TokenClaimGroupKey: "",
+    lfxAuth0TokenClaimGroupName: "",
     insightsDbWriteHost: "localhost",
     insightsDbReadHost: "localhost",
     insightsDbPort: 5432,
