@@ -4,13 +4,12 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <LfxOSIHeader
-    :type="type"
-    :sort="sort"
+    v-model:type="type"
+    v-model:sort="sort"
+    v-model:view="view"
     :status="status"
     :breadcrumb-data="breadcrumbData"
     :is-root="isRoot"
-    @update:type="type = $event as OSIType"
-    @update:sort="sort = $event as SortType"
   />
 
   <div class="container pt-8">
@@ -67,6 +66,7 @@ const router = useRouter();
 
 const type = ref<OSIType>(route.query.type as OSIType || 'horizontal');
 const sort = ref<SortType>(route.query.sort as SortType || 'totalContributors');
+const view = ref<string>(route.query.view || 'list');
 
 const {
   data: groupData,
@@ -145,7 +145,7 @@ const title = computed(() => {
   return defaultTitle;
 });
 
-const description =  `Curated list of the most critical open source projects powering our modern 
+const description =  `Curated list of the most critical open source projects powering our modern
 digital infrastructure, measured by contributor volume and software value`;
 
 useSeoMeta({

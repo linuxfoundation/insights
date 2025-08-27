@@ -74,49 +74,14 @@ SPDX-License-Identifier: MIT
         <div
           class="basis-1/3 lg:flex hidden items-end gap-4 justify-end"
         >
-          <div
-            v-if="isRoot"
-          >
-            <lfx-dropdown-select
-              v-model="type"
-              width="20rem"
-              placement="bottom-end"
-            >
-              <template #trigger="{selectedOption}">
-                <lfx-dropdown-selector class="justify-between">
-                  <div class="flex items-center gap-2">
-                    <lfx-icon
-                      name="chart-tree-map"
-                      :size="16"
-                    />
-                    <span class="text-neutral-900 font-medium text-sm text-nowrap hidden xl:block">
-                      Grouped by:
-                    </span>
-                    <span class="inline font-normal text-sm text-nowrap">
-                      {{selectedOption.label}}
-                    </span>
-                  </div>
-                </lfx-dropdown-selector>
-              </template>
-
-              <lfx-dropdown-item
-                value="horizontal"
-                label="Stack"
-              />
-              <lfx-dropdown-item
-                value="vertical"
-                label="Industry"
-              />
-            </lfx-dropdown-select>
-          </div>
           <div class="border-r border-neutral-200 pr-4">
             <lfx-tabs
-              :tabs="sortTabs"
-              :model-value="sort"
-              @update:model-value="sort = ($event as SortType)"
+              :tabs="viewTabs"
+              :model-value="view"
+              @update:model-value="view = $event"
             >
               <template #slotItem="{ option }">
-                <div class="flex items-center gap-2">
+                <div class="flex items-center gap-2 -mx-1">
                   <lfx-icon
                     :name="option.icon"
                     :size="14"
@@ -127,13 +92,76 @@ SPDX-License-Identifier: MIT
             </lfx-tabs>
           </div>
 
-          <lfx-icon-button
-            icon="share-nodes"
-            class=""
+          <lfx-button
+            type="tertiary"
+            button-style="pill"
             @click="share()"
-          />
+          >
+            <lfx-icon name="share-nodes" />
+            Share
+          </lfx-button>
         </div>
       </div>
+    </section>
+    <section class="container border-t border-t-neutral-100 py-4 flex justify-between items-center">
+      <div class="flex items-center gap-4">
+        <lfx-menu-button
+          v-if="view == 'list'"
+          :active="type === 'projects'"
+          @click="type = 'projects'"
+        >
+          All projects
+        </lfx-menu-button>
+        <lfx-menu-button
+          v-if="view == 'list'"
+          :active="type === 'collections'"
+          @click="type = 'collections'"
+        >
+          <lfx-icon name="rectangle-history" />
+          Collections
+        </lfx-menu-button>
+        <lfx-menu-button
+          :active="type === 'horizontal'"
+          @click="type = 'horizontal'"
+        >
+          <lfx-icon name="layer-group" />
+          Stacks
+        </lfx-menu-button>
+        <lfx-menu-button
+          :active="type === 'vertical'"
+          @click="type = 'vertical'"
+        >
+          <lfx-icon name="buildings" />
+          Industries
+        </lfx-menu-button>
+      </div>
+
+      <lfx-dropdown-select
+        v-model="sort"
+        width="12.5rem"
+        placement="bottom-end"
+      >
+        <template #trigger="{selectedOption}">
+          <lfx-dropdown-selector class="justify-between">
+            <div class="flex items-center gap-2">
+              <lfx-icon
+                name="arrow-down-wide-short"
+                :size="16"
+              />
+              {{selectedOption.label}}
+            </div>
+          </lfx-dropdown-selector>
+        </template>
+
+        <lfx-dropdown-item
+          value="totalContributors"
+          label="Most contributors"
+        />
+        <lfx-dropdown-item
+          value="softwareValue"
+          label="Most valuable"
+        />
+      </lfx-dropdown-select>
     </section>
   </div>
   <!-- </lfx-maintain-height> -->
@@ -141,7 +169,7 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import {computed} from 'vue';
 // import useScroll from "~/components/shared/utils/scroll";
 // import useResponsive from "~/components/shared/utils/responsive";
 // import LfxMaintainHeight from "~/components/uikit/maintain-height/maintain-height.vue";
@@ -155,17 +183,21 @@ import LfxTabs from "~/components/uikit/tabs/tabs.vue";
 import LfxIconButton from "~/components/uikit/icon-button/icon-button.vue";
 import {useShareStore} from "~/components/shared/modules/share/store/share.store";
 import LfxSkeletonState from "~/components/modules/project/components/shared/skeleton-state.vue";
+import LfxMenuButton from "~/components/uikit/menu-button/menu-button.vue";
+import LfxButton from "~/components/uikit/button/button.vue";
 
 const props = defineProps<{
   type: string;
+  view: string;
   sort: SortType;
   isRoot?: boolean;
   breadcrumbData: BreadcrumbData;
   status: AsyncDataRequestStatus;
 }>();
 
-const emit = defineEmits<{(e: 'update:type' | 'update:sort', type: string): void
+const emit = defineEmits<{(e: 'update:type' | 'update:sort' | 'update:view', type: string): void
 }>();
+
 
 const sort = computed({
   get: () => props.sort,
@@ -176,6 +208,12 @@ const type = computed({
   get: () => props.type,
   set: (value) => emit('update:type', value)
 });
+
+const view = computed({
+  get: () => props.view,
+  set: (value) => emit('update:view', value)
+});
+
 const title = computed(() => {
   if (props.breadcrumbData.category) {
     return props.breadcrumbData.category.name;
@@ -204,16 +242,16 @@ const backButtonLink = computed(() => {
   return `/open-source-index?sort=${sortParam}&type=${type}`;
 });
 
-const sortTabs = [
+const viewTabs = [
   {
-    label: 'Contributors',
-    value: 'totalContributors',
-    icon: 'people-group',
+    label: 'List',
+    value: 'list',
+    icon: 'list-ul',
   },
   {
-    label: 'Software Value',
-    value: 'softwareValue',
-    icon: 'circle-dollar',
+    label: 'Distribution',
+    value: 'distribution',
+    icon: 'chart-tree-map',
   },
 ];
 // const {scrollTop} = useScroll();
@@ -234,6 +272,6 @@ const share = () => {
 </script>
 <script lang="ts">
 export default {
-  name: 'LfxOSIHeader'
+  name: 'LfxOsiHeader'
 };
 </script>
