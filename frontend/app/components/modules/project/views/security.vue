@@ -13,7 +13,7 @@ SPDX-License-Identifier: MIT
         class="text-warning-700"
       />
       <p class="text-sm text-warning-700">
-        The Security & Best Practices controls are in alpha version.
+        The Security & Best Practices assessments are in alpha version.
       </p>
     </lfx-card>
     <!-- Disclaimer -->
