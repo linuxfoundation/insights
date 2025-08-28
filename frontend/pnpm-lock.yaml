@@ -24,8 +24,8 @@ importers:
         specifier: ^2.3.0
         version: 2.4.0(typescript@5.8.3)(vue-router@4.5.1(vue@3.5.17(typescript@5.8.3)))
       '@linuxfoundation/lfx-ui-core':
-        specifier: ^0.0.18
-        version: 0.0.18(prettier@3.6.0)
+        specifier: ^0.0.20
+        version: 0.0.20(prettier@3.6.0)
       '@modelcontextprotocol/sdk':
         specifier: ^1.16.0
         version: 1.17.1
@@ -1375,8 +1375,8 @@ packages:
   '@kwsites/promise-deferred@1.1.1':
     resolution: {integrity: sha512-GaHYm+c0O9MjZRu0ongGBRbinu8gVAMd2UZjji6jVmqKtZluZnptXGWhz1E8j8D2HJ3f/yMxKAUC0b+57wncIw==}
 
-  '@linuxfoundation/lfx-ui-core@0.0.18':
-    resolution: {integrity: sha512-XizKlRk9DfZuI0RlOwqbo/i9qswTf8/PGmkHtnNQdtYJ5eo4eBdqpt+LwFzyHPO6f8qXJmhH9NYucCxXjsUJbw==}
+  '@linuxfoundation/lfx-ui-core@0.0.20':
+    resolution: {integrity: sha512-zrUz61ZWIH6z8cY7C7RG3ob1FRIVMcS7toge8uTtxIa3se4ZzMHwWuyQpNsHTINZa2mZ9sIJBVvQxNvut042gA==}
     peerDependencies:
       prettier: '>=3.0.0'
     peerDependenciesMeta:
@@ -9374,7 +9374,7 @@ snapshots:
 
   '@kwsites/promise-deferred@1.1.1': {}
 
-  '@linuxfoundation/lfx-ui-core@0.0.18(prettier@3.6.0)':
+  '@linuxfoundation/lfx-ui-core@0.0.20(prettier@3.6.0)':
     optionalDependencies:
       prettier: 3.6.0
 
