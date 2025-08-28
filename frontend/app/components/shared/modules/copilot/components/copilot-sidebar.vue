@@ -16,7 +16,8 @@ SPDX-License-Identifier: MIT
       />
       <span>Data Copilot</span>
       <div
-        class="flex gap-1 items-center rounded-full text-nowrap text-xs text-white font-semibold bg-neutral-600 px-1.5 py-0.5 h-5"
+        class="flex gap-1 items-center rounded-full text-nowrap
+          text-xs text-white font-semibold bg-neutral-600 px-1.5 py-0.5 h-5"
       >
         Experimental
       </div> 
