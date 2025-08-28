@@ -3,12 +3,6 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <!-- <lfx-maintain-height
-    :scroll-top="scrollTop"
-    :class="scrollTop > 0 ? 'fixed top-14 lg:top-17' : 'relative'"
-    class="z-10 w-full"
-    :loaded="pageWidth > 0"
-  > -->
   <div class="bg-white outline outline-1 outline-neutral-200">
     <section class="container py-6">
       <div class="flex flex-col lg:flex-row items-start lg:items-end gap-4 lg:gap-12">
@@ -113,9 +107,9 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import {computed} from 'vue';
-import type { AsyncDataRequestStatus } from 'nuxt/app';
-import type { BreadcrumbData, SortType } from '../services/osi.api.service';
+import {computed, watch} from 'vue';
+import {type AsyncDataRequestStatus, useRoute, useRouter} from 'nuxt/app';
+import type { SortType } from '../services/osi.api.service';
 import LfxDropdownSelector from "~/components/uikit/dropdown/dropdown-selector.vue";
 import LfxDropdownSelect from "~/components/uikit/dropdown/dropdown-select.vue";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
@@ -130,12 +124,27 @@ const props = defineProps<{
   view: string;
   sort: SortType;
   isRoot?: boolean;
-  status: AsyncDataRequestStatus;
 }>();
 
 const emit = defineEmits<{(e: 'update:type' | 'update:sort' | 'update:view', type: string): void
 }>();
 
+const router = useRouter();
+const route = useRoute();
+const { openShareModal } = useShareStore();
+
+const viewTabs = [
+  {
+    label: 'List',
+    value: 'list',
+    icon: 'list-ul',
+  },
+  {
+    label: 'Distribution',
+    value: 'distribution',
+    icon: 'chart-tree-map',
+  },
+];
 
 const sort = computed({
   get: () => props.sort,
@@ -152,49 +161,6 @@ const view = computed({
   set: (value) => emit('update:view', value)
 });
 
-// const title = computed(() => {
-//   if (props.breadcrumbData.category) {
-//     return props.breadcrumbData.category.name;
-//   }
-//   if (props.breadcrumbData.group) {
-//     return props.breadcrumbData.group.name;
-//   }
-//   return `Open Source Index`;
-// });
-//
-// const breadcrumbText = computed(() => {
-//   if (props.breadcrumbData.category && props.breadcrumbData.group) {
-//     return props.breadcrumbData.group.name;
-//   }
-//   return null;
-// });
-//
-// const backButtonLink = computed(() => {
-//   const slug = props.breadcrumbData.group?.slug;
-//   const {type} = props.breadcrumbData;
-//   const sortParam = sort.value;
-//
-//   if (props.breadcrumbData.category && props.breadcrumbData.group) {
-//     return `/open-source-index/group/${slug}?sort=${sortParam}&type=${type}`;
-//   }
-//   return `/open-source-index?sort=${sortParam}&type=${type}`;
-// });
-
-const viewTabs = [
-  {
-    label: 'List',
-    value: 'list',
-    icon: 'list-ul',
-  },
-  {
-    label: 'Distribution',
-    value: 'distribution',
-    icon: 'chart-tree-map',
-  },
-];
-
-const { openShareModal } = useShareStore();
-
 const share = () => {
   const title = `Open Source Index | LFX Insights`;
 
@@ -206,6 +172,43 @@ const share = () => {
     title
   })
 };
+
+watch(sort, (newVal) => {
+  if (newVal) {
+    router.replace({
+      ...route,
+      query: {
+        ...route.query,
+        sort: newVal
+      }
+    });
+  }
+});
+
+watch(type, (newVal) => {
+  if (newVal) {
+    router.replace({
+      ...route,
+      query: {
+        ...route.query,
+        type: newVal
+      }
+    });
+  }
+});
+
+watch(view, (newVal) => {
+  if (newVal) {
+    router.replace({
+      ...route,
+      query: {
+        ...route.query,
+        view: newVal
+      }
+    });
+  }
+});
+
 
 watch(() => props.view, (val: string) => {
   if (val === 'distribution' && !['vertical', 'horizontal'].includes(type.value)) {
