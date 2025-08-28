@@ -3,7 +3,7 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <main class="min-h-screen flex flex-col pt-14 lg:pt-17">
+  <main class="min-h-screen flex flex-col pt-28 sm:pt-21 lg:pt-24">
     <lfx-navbar />
     <div :class="['pb-10']">
       <slot />
