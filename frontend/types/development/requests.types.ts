@@ -27,3 +27,8 @@ export type ContributionsOutsideWorkHoursFilter = {
   startDate?: DateTime,
   endDate?: DateTime,
 };
+
+export type ActivityTypesFilter = {
+  project: string,
+  repository?: string,
+};
