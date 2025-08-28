@@ -14,7 +14,7 @@ import type { OSSIndexCategory, OSSIndexCategoryDetails } from '~~/types/ossinde
 import type { OSSIndexCollection } from '~~/types/ossindex/collection';
 import type { TreeMapData } from '~/components/uikit/chart/types/ChartTypes';
 
-export type OSIType = 'vertical' | 'horizontal';
+export type OSIType = 'vertical' | 'horizontal' | 'projects' | 'collections';
 export interface BreadcrumbData {
   type: OSIType;
   group?: {

@@ -1,0 +1,50 @@
+.c-table {
+  -webkit-overflow-scrolling: touch;
+  @apply h-full overflow-y-hidden overflow-x-auto;
+  @apply bg-white shadow-sm rounded-lg;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  th, td{
+    @apply pl-6;
+
+    &:last-child{
+      @apply pr-5;
+    }
+  }
+
+  table {
+    @apply w-full;
+
+    thead {
+      @apply border-b border-neutral-100;
+      tr {
+        @apply bg-white;
+      }
+      th {
+        @apply text-xs py-3 leading-4 font-semibold text-neutral-500 text-left whitespace-nowrap;
+      }
+    }
+
+    tbody {
+      tr,
+      .tr {
+        @apply bg-white;
+
+        &:not(:last-child) {
+          @apply border-b border-neutral-100;
+        }
+      }
+
+      td {
+        @apply py-5 text-sm;
+      }
+    }
+
+    tfoot {
+      @apply border-t border-neutral-100;
+    }
+  }
+}

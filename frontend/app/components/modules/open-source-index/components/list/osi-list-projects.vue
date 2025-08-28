@@ -1,0 +1,138 @@
+<!--
+Copyright (c) 2025 The Linux Foundation and each contributor.
+SPDX-License-Identifier: MIT
+-->
+<template>
+  <div
+    class="container pt-10"
+  >
+    <lfx-table v-if="data">
+
+      <!-- Head -->
+      <thead>
+        <tr>
+          <th>Project</th>
+          <th>
+            <div class="flex items-center gap-1.5">
+              <lfx-icon
+                name="people-group"
+                :size="14"
+              />
+              Contributors
+            </div>
+          </th>
+          <th>
+            <div class="flex items-center gap-1.5">
+              <lfx-icon
+                name="dollar-circle"
+                :size="14"
+              />
+              Software value
+            </div>
+          </th>
+          <th>
+            <div class="flex items-center gap-1.5">
+              <lfx-icon
+                name="heart"
+                :size="14"
+              />
+              Health score
+            </div>
+          </th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr
+          v-for="project of data?.data || []"
+          :key="project.id"
+          class="hover:bg-neutral-100 transition cursor-pointer"
+        >
+          <td class="w-7/12">
+            <div class="flex items-center gap-4">
+              <lfx-avatar
+                type="organization"
+                size="large"
+                class="min-w-12"
+                :src="project.logo"
+              />
+              <div>
+                <h6 class="text-sm font-semibold">
+                  {{project.name}}
+                </h6>
+                <p
+                  v-if="project.description"
+                  class="text-xs text-neutral-500 mt-0.5 line-clamp-2"
+                >
+                  {{ project.description }}
+                </p>
+              </div>
+            </div>
+          </td>
+          <td>
+            {{formatNumber(project.contributorCount)}}
+          </td>
+          <td>
+            ${{formatNumberShort(project.softwareValue)}}
+          </td>
+          <td>
+            <lfx-health-score :score="project.healthScore" />
+          </td>
+        </tr>
+      </tbody>
+    </lfx-table>
+  </div>
+</template>
+
+<script setup lang="ts">
+import {
+  computed, onServerPrefetch
+} from 'vue';
+import {useQuery} from "@tanstack/vue-query";
+import LfxTable from "~/components/uikit/table/table.vue";
+import LfxIcon from "~/components/uikit/icon/icon.vue";
+import LfxAvatar from "~/components/uikit/avatar/avatar.vue";
+import LfxTag from "~/components/uikit/tag/tag.vue";
+import type {Pagination} from "~~/types/shared/pagination";
+import type {Project} from "~~/types/project";
+import {PROJECT_API_SERVICE} from "~/components/modules/project/services/project.api.service";
+import {TanstackKey} from "~/components/shared/types/tanstack";
+import {formatNumber, formatNumberShort} from "~/components/shared/utils/formatter";
+import LfxHealthScore from "~/components/shared/components/health-score.vue";
+
+const props = defineProps<{
+  sort: string;
+}>()
+
+const sort = computed(() => props.sort || 'totalContributors');
+
+const sortMapping: Record<string, string> = {
+  totalContributors: 'contributorCount_desc',
+  softwareValue: 'softwareValue_desc',
+  alphabetical: 'name_asc',
+}
+
+const queryKey = computed(() => [TanstackKey.PROJECTS, sort.value])
+
+const {
+  data,
+  suspense,
+} = useQuery<Pagination<Project>>({
+  queryKey,
+  queryFn: PROJECT_API_SERVICE.fetchProjects(() => ({
+    sort: sortMapping[sort.value] || 'contributorCount_desc',
+    pageSize: 20,
+  })),
+})
+
+
+onServerPrefetch(async () => {
+  await suspense();
+});
+</script>
+
+<script lang="ts">
+export default {
+  name: 'LfxOsiListProjects'
+};
+</script>
