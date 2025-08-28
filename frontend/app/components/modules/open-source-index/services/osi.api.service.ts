@@ -30,7 +30,7 @@ export interface BreadcrumbData {
 export type SortType = 'totalContributors' | 'softwareValue';
 
 class OssIndexApiService {
-  fetchOSSGroup(type: Ref<string>, sort: Ref<string>, enabled: boolean) {
+  fetchOSSGroup(type: Ref<string>, sort: Ref<string>) {
     const queryKey = computed(() => [TanstackKey.OSS_INDEX_GROUP, type.value, sort.value]);
     const queryFn = computed<QueryFunction<OSSIndexCategoryGroup[]>>(() => this.ossGroupQueryFn(() => ({
         type: type.value,
@@ -40,7 +40,6 @@ class OssIndexApiService {
     return useQuery<OSSIndexCategoryGroup[]>({
       queryKey,
       queryFn,
-      enabled,
     });
   }
 
@@ -66,7 +65,6 @@ class OssIndexApiService {
     return useQuery<OSSIndexCategoryGroupDetails>({
       queryKey,
       queryFn,
-      enabled: !!groupSlug,
     });
   }
 
@@ -92,7 +90,6 @@ class OssIndexApiService {
     return useQuery<OSSIndexCategoryDetails>({
       queryKey,
       queryFn,
-      enabled: !!categorySlug,
     });
   }
 

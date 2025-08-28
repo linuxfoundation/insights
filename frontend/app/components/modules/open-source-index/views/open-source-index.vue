@@ -8,11 +8,24 @@ SPDX-License-Identifier: MIT
     v-model:sort="sort"
     v-model:view="view"
     :status="status"
-    :breadcrumb-data="breadcrumbData"
     :is-root="isRoot"
-  />
+  >
+    <div>
+      <h1 class="text-heading-1 font-bold pb-2 font-secondary">
+        Open Source Index
+      </h1>
+      <p class="text-body-1 text-neutral-500">
+        Curated list of the most critical open source projects powering our modern digital
+        infrastructure, measured by contributor volume and software value
+      </p>
+    </div>
+  </LfxOSIHeader>
 
-  <div class="container pt-8">
+  <!-- Distribution -->
+  <div
+    v-if="view === 'distribution'"
+    class="container pt-10"
+  >
     <div class="lg:block hidden">
       <lfx-project-load-state
         :status="status"
@@ -40,6 +53,9 @@ SPDX-License-Identifier: MIT
       </div>
     </div>
   </div>
+
+  <!-- List View -->
+  <div class="pt-10" />
 </template>
 
 <script setup lang="ts">
@@ -66,133 +82,30 @@ const router = useRouter();
 
 const type = ref<OSIType>(route.query.type as OSIType || 'horizontal');
 const sort = ref<SortType>(route.query.sort as SortType || 'totalContributors');
-const view = ref<string>(route.query.view || 'list');
+const view = ref<string>(route.query.view as string || 'list');
 
 const {
-  data: groupData,
-  status: groupStatus,
-  error: groupError,
-  suspense: groupSuspense
-} = OSS_INDEX_API_SERVICE.fetchOSSGroup(type, sort, !props.group && !props.category);
-const {
-  data: categoryData,
-  status: categoryStatus,
-  error: categoryError,
-  suspense: categorySuspense
-} = OSS_INDEX_API_SERVICE.fetchOSSCategory(props.group, sort);
-const {
-  data: collectionData,
-  status: collectionStatus,
-  error: collectionError,
-  suspense: collectionSuspense
-} = OSS_INDEX_API_SERVICE.fetchOSSCollection(props.category, sort);
+  data,
+  status,
+  error,
+  suspense
+} = OSS_INDEX_API_SERVICE.fetchOSSGroup(type, sort);
 
 const chartData = computed<TreeMapData[]>(() => {
-  if (props.group && categoryData.value) {
-    return OSS_INDEX_API_SERVICE.mapCategoryDataToTreeMapData(categoryData.value, sort.value);
-  }
-
-  if (props.category && collectionData.value) {
-    return OSS_INDEX_API_SERVICE.mapCollectionDataToTreeMapData(collectionData.value, sort.value);
-  }
-
-  return OSS_INDEX_API_SERVICE.mapDataToTreeMapData(groupData.value || [], 'group', sort.value);
+  return OSS_INDEX_API_SERVICE.mapDataToTreeMapData(data.value || [], 'group', sort.value);
 });
 
 const breadcrumbData = computed<BreadcrumbData>(() => {
-  const isCategory = props.category && collectionData.value;
-  const isGroup = props.group && categoryData.value;
-
-  if (isCategory) {
-    return {
-      type: collectionData.value.categoryGroupType as OSIType,
-      group: {
-        name: collectionData.value.categoryGroupName,
-        slug: collectionData.value.categoryGroupSlug
-      },
-      category: {
-        name: collectionData.value.name,
-        slug: collectionData.value.slug
-      }
-    };
-  }
-
-  if (isGroup) {
-    return {
-      type: categoryData.value.type as OSIType,
-      group: {
-        name: categoryData.value.name,
-        slug: categoryData.value.slug
-      }
-    };
-  }
 
   return {
     type: 'horizontal'
   };
 });
 
-const title = computed(() => {
-  const defaultTitle = 'Open Source Index | LFX Insights';
-  if (breadcrumbData.value.category) {
-    return `${breadcrumbData.value.category.name} | ${defaultTitle}`;
-  }
 
-  if (breadcrumbData.value.group) {
-    return `${breadcrumbData.value.group.name} | ${defaultTitle}`;
-  }
-
-  return defaultTitle;
-});
-
-const description =  `Curated list of the most critical open source projects powering our modern
-digital infrastructure, measured by contributor volume and software value`;
-
-useSeoMeta({
-  title,
-  description,
-  ogTitle: title,
-  ogDescription: description,
-  twitterTitle: title,
-  twitterDescription: description
-})
-
-const status = computed(() => {
-  if (props.group) {
-    return categoryStatus.value;
-  }
-
-  if (props.category) {
-    return collectionStatus.value;
-  }
-
-  return groupStatus.value;
-});
-
-const error = computed(() => {
-  if (props.group) {
-    return categoryError.value;
-  }
-
-  if (props.category) {
-    return collectionError.value;
-  }
-
-  return groupError.value;
-});
 
 onServerPrefetch(async () => {
-  if (props.group && !props.category) {
-    await categorySuspense();
-  }
-
-  if (props.category && !props.group) {
-    await collectionSuspense();
-  }
-
-  if (!props.group && !props.category) {
-    await groupSuspense();
-  }
+    await suspense();
 });
 
 watch(sort, (newVal) => {
@@ -218,6 +131,19 @@ watch(type, (newVal) => {
   }
 });
 
+const title = 'Open Source Index | LFX Insights'
+
+const description =  `Curated list of the most critical open source projects powering our modern
+digital infrastructure, measured by contributor volume and software value`;
+
+useSeoMeta({
+  title,
+  description,
+  ogTitle: title,
+  ogDescription: description,
+  twitterTitle: title,
+  twitterDescription: description
+})
 </script>
 
 <script lang="ts">
