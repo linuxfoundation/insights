@@ -14,7 +14,13 @@ SPDX-License-Identifier: MIT
         :size="20"
         class="text-brand-500"
       />
-      Data Copilot
+      <span>Data Copilot</span>
+      <div
+        class="flex gap-1 items-center rounded-full text-nowrap
+      text-xs text-white font-semibold bg-neutral-600 px-1.5 py-0.5 h-5"
+      >
+        Experimental
+      </div> 
     </div>
 
     <!-- Main content: grows and scrolls -->
