@@ -108,7 +108,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import {computed, watch} from 'vue';
-import {type AsyncDataRequestStatus, useRoute, useRouter} from 'nuxt/app';
+import {useRoute, useRouter} from 'nuxt/app';
 import type { SortType } from '../services/osi.api.service';
 import LfxDropdownSelector from "~/components/uikit/dropdown/dropdown-selector.vue";
 import LfxDropdownSelect from "~/components/uikit/dropdown/dropdown-select.vue";

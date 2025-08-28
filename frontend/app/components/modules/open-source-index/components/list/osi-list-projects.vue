@@ -92,7 +92,6 @@ import {useQuery} from "@tanstack/vue-query";
 import LfxTable from "~/components/uikit/table/table.vue";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
 import LfxAvatar from "~/components/uikit/avatar/avatar.vue";
-import LfxTag from "~/components/uikit/tag/tag.vue";
 import type {Pagination} from "~~/types/shared/pagination";
 import type {Project} from "~~/types/project";
 import {PROJECT_API_SERVICE} from "~/components/modules/project/services/project.api.service";
