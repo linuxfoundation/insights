@@ -16,7 +16,7 @@ SPDX-License-Identifier: MIT
             <h3 class="text-heading-3 font-bold font-secondary mb-2">Health score</h3>
 
             <lfx-skeleton-state
-              v-if="!isRepoSelected"
+              v-if="!isRepoSelected && !allArchived"
               :status="status"
               height="1.75rem"
               width="11.5rem"
@@ -38,7 +38,7 @@ SPDX-License-Identifier: MIT
 
             <template v-else>
               <div
-                v-if="isRepoSelected"
+                v-if="isRepoSelected && !allArchived"
                 class="text-xs text-brand-600 font-semibold inline-flex
                 items-center gap-1 mt-2 bg-brand-50 rounded-full px-1.5"
               >
@@ -66,7 +66,7 @@ SPDX-License-Identifier: MIT
         </div>
       </div>
       <div
-        v-if="!hideOverallScore && status === 'success' && selectedRepositories.length <= 1"
+        v-if="!hideOverallScore && status === 'success' && selectedRepositories.length <= 1 && !allArchived"
         class="w-[200px] hidden sm:block"
       >
         <lfx-project-trust-score-share-badge
@@ -77,8 +77,16 @@ SPDX-License-Identifier: MIT
       </div>
     </div>
 
+    <lfx-empty-state
+      v-if="allArchived"
+      icon="archive"
+      :title="pluralize('Archived Repository', archivedRepos.length)"
+      description="Archived repositories are excluded from Health Score and Security & Best practices.
+      You can still access historical data of Contributors, Popularity, or Development metrics."
+    />
+
     <div
-      v-if="isEmpty && status !== 'pending'"
+      v-else-if="isEmpty && status !== 'pending'"
       class="flex flex-col items-center justify-center h-[240px]"
     >
       <lfx-icon
@@ -96,7 +104,8 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { computed } from 'vue';
 import type { AsyncDataRequestStatus } from 'nuxt/app';
-import {storeToRefs} from "pinia";
+import { storeToRefs } from "pinia";
+import pluralize from 'pluralize';
 import LfxProjectTrustScoreDisplay from './trust-score/score-display.vue';
 import LfxProjectTrustScoreShareBadge from './trust-score/share-badge.vue';
 import { links } from '~/config/links';
@@ -104,7 +113,8 @@ import type { TrustScoreSummary } from '~~/types/overview/responses.types';
 import type { ScoreDisplay } from '~~/types/overview/score-display.types';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxSkeletonState from "~/components/modules/project/components/shared/skeleton-state.vue";
-import {useProjectStore} from "~/components/modules/project/store/project.store";
+import { useProjectStore } from "~/components/modules/project/store/project.store";
+import LfxEmptyState from "~/components/shared/components/empty-state.vue";
 
 const props = defineProps<{
   trustScoreSummary: TrustScoreSummary | undefined;
@@ -116,7 +126,11 @@ const props = defineProps<{
 
 const overallScore = computed(() => Math.round((props.trustScoreSummary ? (props.trustScoreSummary).overall : 0)));
 const hideOverallScore = computed(() => Object.values(props.scoreDisplay).some((score) => !score));
-const { selectedRepositories } = storeToRefs(useProjectStore());
+const {
+  selectedRepositories,
+  allArchived,
+  archivedRepos
+} = storeToRefs(useProjectStore());
 
 const isEmpty = computed(() => [
   props.trustScoreSummary?.overall,

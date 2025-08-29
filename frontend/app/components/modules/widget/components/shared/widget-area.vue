@@ -19,6 +19,11 @@ SPDX-License-Identifier: MIT
           @scrolled-to-view="onScrolledToView"
         >
           <template #default="{ observer }">
+            
+            <lfx-repos-inclusion-note
+              :all-archived="allArchived"            
+            />
+
             <lfx-scroll-view
               v-for="widget of widgets"
               :id="widget"
@@ -64,6 +69,7 @@ import {
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 import { Granularity } from '~~/types/shared/granularity';
+import LfxReposInclusionNote from '~/components/shared/components/repos-inclusion-note.vue';
 
 const props = defineProps<{
   name: WidgetArea
@@ -80,7 +86,14 @@ const tmpClickedItem = ref('');
 const loadedWidgets = ref<Record<string, boolean>>({});
 
 const { scrollToTarget, scrollToTop } = useScroll();
-const { project, selectedRepoSlugs, startDate, endDate, selectedReposValues } = storeToRefs(useProjectStore())
+const {
+  project,
+  selectedRepoSlugs,
+  startDate,
+  endDate,
+  selectedReposValues,
+  allArchived,
+} = storeToRefs(useProjectStore())
 const isFirstLoad = ref(true);
 
 /**

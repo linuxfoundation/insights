@@ -47,8 +47,10 @@ SPDX-License-Identifier: MIT
           v-for="repository of result"
           :key="repository.url"
           :text="repository.name"
-          icon="book"
           :selected="selectedRepos.includes(repository.slug)"
+          :archived="archivedRepos.includes(repository.url)"
+          :excluded="excludedRepos.includes(repository.url)"
+          icon="book"
           is-multi-select
           @update:selected="handleSelected(repository.slug, $event)"
         />
@@ -110,7 +112,11 @@ const selectedRepos = computed<string[]>({
   }
 });
 
-const {projectRepos} = storeToRefs(useProjectStore());
+const {
+  projectRepos,
+  archivedRepos,
+  excludedRepos
+} = storeToRefs(useProjectStore());
 
 const result = computed<ProjectRepository[]>(() => projectRepos.value
     .filter((repository: ProjectRepository) => repository.name.toLowerCase().includes(search.value.toLowerCase())));
