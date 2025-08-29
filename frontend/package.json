@@ -21,7 +21,7 @@
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs",
     "blog:dev": "vitepress dev blog --port 5174",
-    "blog:build": "vitepress build blog --port 5174",
+    "blog:build": "vitepress build blog",
     "blog:preview": "vitepress preview blog --port 5174"
   },
   "dependencies": {
