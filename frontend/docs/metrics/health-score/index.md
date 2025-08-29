@@ -14,11 +14,11 @@ The Insights Health Score is calculated as the sum of four equally weighted cate
 
 The aggregated score is evaluated as follows:
 
-- **> 90 pts**: Excellent
-- **76 - 90 pts**: Healthy
-- **51 - 75 pts**: Stable
-- **25 - 50 pts**: Unsteady
-- **< 25 pts**: Critical
+- **> 80 pts**: Excellent
+- **60 - 79 pts**: Healthy
+- **40 - 59 pts**: Stable
+- **20 - 39 pts**: Unsteady
+- **< 20 pts**: Critical
 
 ## Scoring Criteria
 
@@ -60,7 +60,7 @@ Each of the following metrics is scored on a 0–5 point scale, and grouped into
 
 ### 2. Popularity (0–25 pts)
 
-::: warning ⚠️ If Insights has only GitHub data available for a project, its popularity score will be based solely on GitHub stars and forks. In this case, each of these two metrics will contribute up to 12.5 points, for a combined total of 25 points.
+::: warning ⚠️ If a project does not have data for all popularity metrics, Insights will calculate the popularity score using only the available metrics.
 :::
 
 #### 2.1 GitHub Stars
@@ -79,7 +79,15 @@ Each of the following metrics is scored on a 0–5 point scale, and grouped into
 - **4 pts:** 40–79 forks  
 - **5 pts:** 80+ forks  
 
-#### 2.3 Social Mentions per Month
+#### 2.3 Google Search Queries per Month
+- **0 pts:** <10 queries  
+- **1 pt:** 10–49 queries  
+- **2 pts:** 50–199 queries  
+- **3 pts:** 200–499 queries  
+- **4 pts:** 500–999 queries  
+- **5 pts:** 1,000+ queries  
+
+#### 2.4 Social Mentions per Month (Coming Soon)
 - **0 pts:** 0–4 social mentions  
 - **1 pt:** 5–9 social mentions  
 - **2 pts:** 10–24 social mentions  
@@ -87,21 +95,13 @@ Each of the following metrics is scored on a 0–5 point scale, and grouped into
 - **4 pts:** 50–99 social mentions  
 - **5 pts:** 100+ social mentions  
 
-#### 2.4 GitHub Mentions
+#### 2.5 GitHub Mentions (Coming Soon)
 - **0 pts:** 0–9 GitHub mentions  
 - **1 pt:** 10–29 GitHub mentions  
 - **2 pts:** 30–99 GitHub mentions  
 - **3 pts:** 100–249 GitHub mentions  
 - **4 pts:** 250–499 GitHub mentions  
 - **5 pts:** 500+ GitHub mentions  
-
-#### 2.5 Google Search Queries per Month
-- **0 pts:** <10 queries  
-- **1 pt:** 10–49 queries  
-- **2 pts:** 50–199 queries  
-- **3 pts:** 200–499 queries  
-- **4 pts:** 500–999 queries  
-- **5 pts:** 1,000+ queries  
 
 
 ### 3. Development (0-25 pts)
