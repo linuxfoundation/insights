@@ -63,6 +63,10 @@ const stars: WidgetConfig = {
       },
     },
   },
+  copilot: {
+    icon: 'star',
+    suggestions: 'How many stars does this project have?'
+  },
 }
 
 export default stars

@@ -33,3 +33,7 @@ blog/.vitepress/dist
 
 # Robots
 robots.txt
+
+# SSL
+certs/
+certs/*

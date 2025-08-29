@@ -1,7 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { cumulative } from '~~/server/mocks/github-mentions.mock';
-import { latesMentionDetails } from '~~/server/mocks/press-mentions.mock';
+import { cumulative } from '~~/server/mocks/github-mentions.mock'
+import { latesMentionDetails } from '~~/server/mocks/press-mentions.mock'
 
 /**
  * Frontend expects the data to be in the following format:
@@ -37,5 +37,5 @@ import { latesMentionDetails } from '~~/server/mocks/press-mentions.mock';
  */
 export default defineEventHandler(async () => ({
   ...cumulative,
-  list: latesMentionDetails
-}));
+  list: latesMentionDetails,
+}))

@@ -1,8 +1,8 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { DateTime } from 'luxon';
-import { fetchSearchVolume } from '~~/server/data/tinybird/search-queries-data-source';
-import type { SearchVolumeFilter } from '~~/server/data/types';
+import { DateTime } from 'luxon'
+import { fetchSearchVolume } from '~~/server/data/tinybird/search-queries-data-source'
+import type { SearchVolumeFilter } from '~~/server/data/types'
 
 /**
  * Frontend expects the data to be in the following format:
@@ -30,25 +30,28 @@ import type { SearchVolumeFilter } from '~~/server/data/types';
  * - time-period: string // This isn't defined yet, but we'll add '90d', '1y', '5y' for now
  */
 export default defineEventHandler(async (event) => {
-  const query = getQuery(event);
+  const query = getQuery(event)
 
-  const project = (event.context.params as { slug: string }).slug;
+  const project = (event.context.params as { slug: string }).slug
 
   const filter: SearchVolumeFilter = {
     project,
     startDate: query.startDate ? DateTime.fromISO(query.startDate as string) : undefined,
     endDate: query.endDate ? DateTime.fromISO(query.endDate as string) : undefined,
-  };
+  }
 
-  const searchVolumeData = await fetchSearchVolume(filter);
+  const searchVolumeData = await fetchSearchVolume(filter)
 
   return {
     data: searchVolumeData.data
       .map((item) => ({
         startDate: item.startDate,
         endDate: item.endDate,
-        queryCount: item.queryCount
+        queryCount: item.queryCount,
       }))
-      .sort((a, b) => DateTime.fromISO(a.startDate).toMillis() - DateTime.fromISO(b.startDate).toMillis())
-  };
-});
+      .sort(
+        (a, b) =>
+          DateTime.fromISO(a.startDate).toMillis() - DateTime.fromISO(b.startDate).toMillis(),
+      ),
+  }
+})

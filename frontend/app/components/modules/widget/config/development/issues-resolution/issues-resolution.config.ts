@@ -68,6 +68,10 @@ const issuesResolution: WidgetConfig = {
       },
     },
   },
+  copilot: {
+    icon: 'people-group',
+    suggestions: 'Show me the issues resolution'
+  }
 }
 
 export default issuesResolution
