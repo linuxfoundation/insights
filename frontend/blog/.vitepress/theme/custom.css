@@ -1,0 +1,47 @@
+:root {
+  /* LFX Colors */
+  --lfx-color-black: #000000;
+  --lfx-color-white: #FFFFFF;
+
+  --lfx-color-brand-600: #006DBE;
+  --lfx-color-brand-500: #0094FF;
+  --lfx-color-brand-400: #54ABFF;
+  --lfx-color-brand-300: #83C1FF;
+  --lfx-color-brand-200: #ADD6FF;
+  --lfx-color-brand-50: #EBF5FF;
+
+  --lfx-color-neutral-900: #0F172A;
+  --lfx-color-neutral-400: #94A3B8;
+  --lfx-color-neutral-200: #E2E8F0;
+  --lfx-color-neutral-100: #F1F5F9;
+  --lfx-color-neutral-50: #F8FAFC;
+
+  /* Brand color override */
+  --vp-c-brand-1: var(--lfx-color-brand-500);
+  --vp-c-brand-2: var(--lfx-color-brand-400);
+  --vp-c-brand-3: var(--lfx-color-brand-300);
+  --vp-c-brand-600: var(--lfx-color-brand-600);
+
+  /* Search override */
+  --vp-backdrop-bg-color: linear-gradient(to bottom, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.25));
+  --vp-local-search-bg: var(--lfx-color-white);
+  --vp-local-search-result-border: var(--lfx-color-white);
+  --vp-local-search-result-selected-border: transparent;
+  --vp-local-search-highlight-bg: var(--lfx-color-brand-50);
+  --vp-local-search-highlight-text: var(--lfx-color-neutral-900);
+
+  /* Buttons override */
+  --vp-button-brand-border: transparent;
+  --vp-button-brand-bg: var(--vp-c-brand-1);
+  --vp-button-brand-hover-bg: var(--vp-c-brand-600);
+
+  --vp-button-alt-border: var(--lfx-color-neutral-200);
+  --vp-button-alt-text: var(--lfx-color-neutral-900);
+  --vp-button-alt-bg: var(--lfx-color-white);
+  --vp-button-alt-hover-border: var(--lfx-color-neutral-200);
+  --vp-button-alt-hover-text: var(--lfx-color-neutral-900);
+  --vp-button-alt-hover-bg: var(--lfx-color-neutral-50);
+  --vp-button-alt-active-border: var(--lfx-color-neutral-200);
+  --vp-button-alt-active-text: var(--lfx-color-neutral-900);
+  --vp-button-alt-active-bg: var(--lfx-color-neutral-50);
+}

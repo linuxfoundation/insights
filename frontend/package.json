@@ -19,7 +19,10 @@
     "test": "vitest",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
-    "docs:preview": "vitepress preview docs"
+    "docs:preview": "vitepress preview docs",
+    "blog:dev": "vitepress dev blog --port 5174",
+    "blog:build": "vitepress build blog",
+    "blog:preview": "vitepress preview blog --port 5174"
   },
   "dependencies": {
     "@ai-sdk/amazon-bedrock": "^2.2.12",

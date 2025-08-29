@@ -28,6 +28,8 @@ logs
 # VitePress
 docs/.vitepress/cache
 docs/.vitepress/dist
+blog/.vitepress/cache
+blog/.vitepress/dist
 
 # Robots
 robots.txt
