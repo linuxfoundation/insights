@@ -18,9 +18,9 @@
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs",
-    "blog:dev": "vitepress dev blog",
-    "blog:build": "vitepress build blog",
-    "blog:preview": "vitepress preview blog"
+    "blog:dev": "vitepress dev blog --port 5174",
+    "blog:build": "vitepress build blog --port 5174",
+    "blog:preview": "vitepress preview blog --port 5174"
   },
   "dependencies": {
     "@linuxfoundation/lfx-ui-core": "^0.0.18",

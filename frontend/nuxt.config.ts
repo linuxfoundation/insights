@@ -75,7 +75,7 @@ export default defineNuxtConfig({
           rewrite: (path) => path.replace(/^\/docs/, "/docs"),
         },
         "/blog": {
-          target: "http://localhost:5173",
+          target: "http://localhost:5174",
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/blog/, "/blog"),
         },

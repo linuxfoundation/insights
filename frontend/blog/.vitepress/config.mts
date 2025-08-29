@@ -36,9 +36,9 @@ export default defineConfig({
     },
     sidebar: [
       {
-        text: 'Posts',
+        text: 'Blog',
         items: [
-          { text: 'Tinybird', link: '/posts/tinybird/index.md' },
+          { text: 'Introducing Insights', link: '/introducing-insights/index.md' },
         ]
       },
     ],

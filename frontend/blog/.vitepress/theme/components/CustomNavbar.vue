@@ -9,7 +9,7 @@ SPDX-License-Identifier: MIT
       <div class="h-14 lg:h-17 flex justify-between items-center gap-4 lg:gap-5">
         <div class="flex items-center gap-6 flex-grow min-w-0">
           <a
-            href="/blog/"
+            href="/blog/introducing-insights"
             target="_parent"
           >
             <img
