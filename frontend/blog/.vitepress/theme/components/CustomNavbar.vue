@@ -32,9 +32,9 @@ SPDX-License-Identifier: MIT
             target="_parent"
             class="c-menu-button"
           >
-            <i
+            <!-- <i
               class="fa-book-open fa-light text-base w-4 h-4"
-            />
+            /> -->
             Docs
           </a>
           <a
