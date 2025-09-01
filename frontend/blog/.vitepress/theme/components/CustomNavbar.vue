@@ -9,11 +9,11 @@ SPDX-License-Identifier: MIT
       <div class="h-14 lg:h-17 flex justify-between items-center gap-4 lg:gap-5">
         <div class="flex items-center gap-6 flex-grow min-w-0">
           <a
-            href="/docs/introduction/what-is-insights/"
+            href="/blog/introducing-insights"
             target="_parent"
           >
             <img
-              src="/images/logo-docs.svg"
+              src="/images/logo-blog.svg"
               alt="LFX Insights"
               class="h-6 min-w-44 hidden xl:block"
             >
@@ -25,17 +25,17 @@ SPDX-License-Identifier: MIT
           </a>
           <VPNavBarSearch />
         </div>
-        
+
         <div class="flex items-center gap-2">
           <a
-            href="/blog/introducing-insights"
+            href="/docs/introduction/what-is-insights/"
             target="_parent"
             class="c-menu-button"
           >
             <!-- <i
-              class="fa-newspaper fa-light text-base w-4 h-4"
+              class="fa-book-open fa-light text-base w-4 h-4"
             /> -->
-            Blog
+            Docs
           </a>
           <a
             href="/"
@@ -45,7 +45,7 @@ SPDX-License-Identifier: MIT
             Back to LFX Insights
           </a>
         </div>
-        
+
         <div>
           <div class="pt-2 xl:block lg:hidden block">
             <client-only>
@@ -79,7 +79,6 @@ SPDX-License-Identifier: MIT
 
 <script setup>
 import { VPNavBarSearch } from 'vitepress/theme'
-
 import { onMounted } from 'vue';
 
 onMounted(() => {
@@ -105,9 +104,5 @@ onMounted(() => {
 
 .wrapper-content {
   max-width: calc(var(--vp-layout-max-width) - 64px);
-}
-
-.c-menu-button{
-  @apply text-neutral-500
 }
 </style>

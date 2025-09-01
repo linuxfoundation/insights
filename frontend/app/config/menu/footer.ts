@@ -37,6 +37,10 @@ export const lfxFooterMenu: FooterMenuSection[] = [
                 link: '/docs/',
             },
             {
+                name: 'Blog',
+                link: '/blog/introducing-insights',
+            },
+            {
                 name: 'Report issue',
                 click: () => {
                     const {openReportModal} = useReportStore();
