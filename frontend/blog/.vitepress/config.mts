@@ -8,7 +8,8 @@ export default defineConfig({
   description: `Read the latest news about all that's new with LFX Insights, 
     from new features to how we are building our solutions. `,
   head: [
-    ['link', { rel: 'icon', href: 'https://cdn.platform.linuxfoundation.org/assets/lf-favicon.png' }] // Adjust the path if you use a different favicon format
+    ['link', { rel: 'icon', href: 'https://cdn.platform.linuxfoundation.org/assets/lf-favicon.png' }], // Adjust the path if you use a different favicon format
+    ['script', { src: 'https://kit.fontawesome.com/b5289aebdf.js' }]
   ],
   vite: {
     resolve: {

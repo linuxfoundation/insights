@@ -104,13 +104,13 @@ export default {
 
 @media (width > 1024px) {
   .search-container {
-    @apply w-[40px];
+    @apply w-1/2;
   }
 }
 
 @media (width > 1300px) {
   .search-container {
-    @apply w-1/2;
+    @apply w-2/3;
   }
 }
 </style>
