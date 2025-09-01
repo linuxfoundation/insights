@@ -33,6 +33,11 @@ SPDX-License-Identifier: MIT
     v-else-if="type == 'collections'"
     :sort="sort"
   />
+  <lfx-osi-list-groups
+    v-else
+    :sort="sort"
+    :type="type"
+  />
 </template>
 
 <script setup lang="ts">
@@ -45,6 +50,7 @@ import type { OSIType, SortType } from '../services/osi.api.service';
 import LfxOsiDistribution from "~/components/modules/open-source-index/components/osi-distribution.vue";
 import LfxOsiListProjects from "~/components/modules/open-source-index/components/list/osi-list-projects.vue";
 import LfxOsiListCollections from "~/components/modules/open-source-index/components/list/osi-list-collections.vue";
+import LfxOsiListGroups from "~/components/modules/open-source-index/components/list/osi-list-groups.vue";
 
 const route = useRoute();
 

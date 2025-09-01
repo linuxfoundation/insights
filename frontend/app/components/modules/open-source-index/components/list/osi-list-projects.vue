@@ -46,7 +46,8 @@ SPDX-License-Identifier: MIT
         <tr
           v-for="project of data?.data || []"
           :key="project.id"
-          class="hover:bg-neutral-100 transition cursor-pointer"
+          class="tr hover:!bg-neutral-100 transition cursor-pointer"
+          @click="router.push({name: LfxRoutes.PROJECT, params: {slug: project.slug}})"
         >
           <td class="w-7/12">
             <div class="flex items-center gap-4">
@@ -89,6 +90,7 @@ import {
   computed, onServerPrefetch
 } from 'vue';
 import {useQuery} from "@tanstack/vue-query";
+import {useRouter} from "nuxt/app";
 import LfxTable from "~/components/uikit/table/table.vue";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
 import LfxAvatar from "~/components/uikit/avatar/avatar.vue";
@@ -98,10 +100,13 @@ import {PROJECT_API_SERVICE} from "~/components/modules/project/services/project
 import {TanstackKey} from "~/components/shared/types/tanstack";
 import {formatNumber, formatNumberShort} from "~/components/shared/utils/formatter";
 import LfxHealthScore from "~/components/shared/components/health-score.vue";
+import {LfxRoutes} from "~/components/shared/types/routes";
 
 const props = defineProps<{
   sort: string;
 }>()
+
+const router = useRouter()
 
 const sort = computed(() => props.sort || 'totalContributors');
 
@@ -111,7 +116,7 @@ const sortMapping: Record<string, string> = {
   alphabetical: 'name_asc',
 }
 
-const queryKey = computed(() => [TanstackKey.PROJECTS, sort.value])
+const queryKey = computed(() => [TanstackKey.OSS_INDEX_PROJECTS, sort.value])
 
 const {
   data,

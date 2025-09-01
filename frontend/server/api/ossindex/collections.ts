@@ -17,26 +17,31 @@ export default defineEventHandler(
   async (event): Promise<OSSIndexCategoryDetails | Error> => {
     const query = getQuery(event);
     const categorySlug: string = query?.categorySlug as string;
+    const categoryGroupId: string = query?.categoryGroupId as string;
     const sort: string = query?.sort as string;
 
     try {
-      const resDetails = await fetchFromTinybird<Category[]>(
-        '/v0/pipes/category_list.json',
-        {
-          slug: categorySlug
+        let details: Category | undefined = undefined;
+        if(categorySlug){
+            const resDetails = await fetchFromTinybird<Category[]>(
+                '/v0/pipes/category_list.json',
+                {
+                    slug: categorySlug
+                }
+            );
+
+            details = resDetails.data.at(0);
+
+            if (!details) {
+                throw createError({ statusCode: 404, statusMessage: 'Category not found' });
+            }
         }
-      );
-
-      const details: Category | undefined = resDetails.data.at(0);
-
-      if (!details) {
-        throw createError({ statusCode: 404, statusMessage: 'Category not found' });
-      }
 
       const res = await fetchFromTinybird<OSSIndexCollectionTinybird[]>(
         '/v0/pipes/collections_oss_index.json',
         {
           categorySlug,
+            categoryGroupId,
           orderBy: sort,
         }
       );
@@ -44,11 +49,12 @@ export default defineEventHandler(
       const collections = res.data.map((item) => ({
         ...item,
         topProjects: item.topProjects.map((project) => {
-          const [id, count, name, logo, softwareValue, avgScore, healthScore, description] = project;
+          const [id, count, name, logo, softwareValue, avgScore, healthScore, description, slug] = project;
           return {
             id: id as string,
             count: count as number,
             name: name as string,
+            slug: slug as string,
             logo: logo as string,
             description: description as string,
             softwareValue: softwareValue as number,
@@ -59,7 +65,7 @@ export default defineEventHandler(
       }));
 
       return {
-        ...details,
+        ...(details || {}),
         collections
       };
     } catch (error) {

@@ -31,7 +31,7 @@
     tbody {
       tr,
       .tr {
-        @apply bg-white;
+        @apply bg-white table-row align-middle;
 
         &:not(:last-child) {
           @apply border-b border-neutral-100;
@@ -39,7 +39,7 @@
       }
 
       td {
-        @apply py-5 text-sm;
+        @apply py-5 text-sm table-cell;
       }
     }
 
