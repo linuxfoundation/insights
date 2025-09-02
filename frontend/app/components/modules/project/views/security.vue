@@ -125,6 +125,7 @@ SPDX-License-Identifier: MIT
             </div>
           </div>
           <lfx-repos-exclusion-footer
+            v-if="hasSelectedArchivedRepos && !isFetching"
             class="mt-3"
             page-content="security"
           />
@@ -167,7 +168,8 @@ const { name } = route.params;
 const {
   selectedReposValues,
   allArchived,
-  archivedRepos
+  archivedRepos,
+  hasSelectedArchivedRepos
 } = storeToRefs(useProjectStore())
 
 const isRepository = computed(() => !!name)

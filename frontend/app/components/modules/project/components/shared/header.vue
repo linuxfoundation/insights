@@ -64,7 +64,7 @@ SPDX-License-Identifier: MIT
                   >All repositories</span>
                 </p>
                 <lfx-archived-tag
-                  v-if="!!archivedRepos.length"
+                  v-if="hasSelectedArchivedRepos"
                   :archived="true"
                   :label="archivedRepoLabel"
                   @click="isSearchRepoModalOpen = true"
@@ -193,8 +193,8 @@ const {
   projectRepos,
   selectedRepoSlugs,
   selectedRepositories,
-  archivedRepos,
-  allArchived
+  allArchived,
+  hasSelectedArchivedRepos
 } = storeToRefs(useProjectStore());
 const { openReportModal } = useReportStore();
 const { openShareModal } = useShareStore();

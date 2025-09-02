@@ -36,7 +36,7 @@ SPDX-License-Identifier: MIT
             />
           </div>
           <lfx-repos-exclusion-footer
-            v-if="status !== 'pending'"
+            v-if="hasSelectedArchivedRepos && status !== 'pending'"
             page-content="health-score"
           />
         </lfx-card>
@@ -71,6 +71,7 @@ const {
   project,
   archivedRepos,
   allArchived,
+  hasSelectedArchivedRepos
 } = storeToRefs(useProjectStore())
 
 const params = computed(() => ({
