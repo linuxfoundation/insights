@@ -129,7 +129,6 @@ SPDX-License-Identifier: MIT
 
           <lfx-icon-button
             icon="share-nodes"
-            class=""
             @click="share()"
           />
         </div>
