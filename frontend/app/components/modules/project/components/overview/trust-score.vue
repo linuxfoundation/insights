@@ -78,7 +78,7 @@ SPDX-License-Identifier: MIT
     </div>
 
     <lfx-empty-state
-      v-if="allArchived"
+      v-if="allArchived && status !== 'pending'"
       icon="archive"
       :title="pluralize('Archived Repository', archivedRepos.length)"
       description="Archived repositories are excluded from Health Score and Security & Best practices.

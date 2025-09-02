@@ -36,6 +36,7 @@ SPDX-License-Identifier: MIT
             />
           </div>
           <lfx-repos-exclusion-footer
+            v-if="status !== 'pending'"
             page-content="health-score"
           />
         </lfx-card>
