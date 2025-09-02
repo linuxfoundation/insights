@@ -9,12 +9,12 @@ SPDX-License-Identifier: MIT
     <div class="lg:block hidden">
       <lfx-project-load-state
         :status="status"
-        :error="error"
+        :error="props.hasError"
         error-message="Error fetching OSS Index data"
       >
         <LfxOSIChart
-          :data="chartData"
-          :sort="sort"
+          :data="props.data"
+          :sort="props.sort"
           :is-collection="false"
         />
       </lfx-project-load-state>
@@ -36,37 +36,18 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import {
-  computed, onServerPrefetch
-} from 'vue';
-import { OSS_INDEX_API_SERVICE } from '../services/osi.api.service';
 import LfxOSIChart from '../components/distribution/osi-chart.vue';
 import type { TreeMapData } from '~/components/uikit/chart/types/ChartTypes';
 import LfxProjectLoadState from '~~/app/components/modules/project/components/shared/load-state.vue';
 import LfxIcon from '~~/app/components/uikit/icon/icon.vue';
 
 const props = defineProps<{
-  type: string;
+  type?: string;
   sort: string;
+  hasError?: boolean;
+  status?: string;
+  data: TreeMapData[]
 }>()
-
-const type = computed(() => props.type || 'projects');
-const sort = computed(() => props.sort || 'totalContributors');
-
-const {
-  data,
-  status,
-  error,
-  suspense
-} = OSS_INDEX_API_SERVICE.fetchOSSGroup(type, sort);
-
-const chartData = computed<TreeMapData[]>(() => {
-  return OSS_INDEX_API_SERVICE.mapDataToTreeMapData(data.value || [], 'group', props.sort);
-});
-
-onServerPrefetch(async () => {
-    await suspense();
-});
 </script>
 
 <script lang="ts">

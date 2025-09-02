@@ -71,13 +71,19 @@ SPDX-License-Identifier: MIT
             </div>
           </td>
           <td>
-            {{formatNumber(project.contributorCount)}}
+            <span v-if="project.contributorCount > 0">{{formatNumber(project.contributorCount)}}</span>
+            <span v-else>-</span>
           </td>
           <td>
-            ${{formatNumberShort(project.softwareValue)}}
+            <span v-if="project.softwareValue">${{formatNumberShort(project.softwareValue)}}</span>
+            <span v-else>-</span>
           </td>
           <td>
-            <lfx-health-score :score="project.healthScore" />
+            <lfx-health-score
+              v-if="project.healthScore > 0"
+              :score="project.healthScore"
+            />
+            <span v-else>-</span>
           </td>
         </tr>
       </tbody>
@@ -114,6 +120,7 @@ const sortMapping: Record<string, string> = {
   totalContributors: 'contributorCount_desc',
   softwareValue: 'softwareValue_desc',
   alphabetical: 'name_asc',
+  healthScore: 'healthScore_desc',
 }
 
 const queryKey = computed(() => [TanstackKey.OSS_INDEX_PROJECTS, sort.value])

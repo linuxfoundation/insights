@@ -99,6 +99,16 @@ SPDX-License-Identifier: MIT
           value="softwareValue"
           label="Most valuable"
         />
+        <lfx-dropdown-item
+          v-if="type == 'projects'"
+          value="healthScore"
+          label="Healthiest"
+        />
+        <lfx-dropdown-item
+          v-if="type == 'projects'"
+          value="alphabetical"
+          label="Alphabetically"
+        />
       </lfx-dropdown-select>
     </section>
   </div>
@@ -120,8 +130,8 @@ import LfxMenuButton from "~/components/uikit/menu-button/menu-button.vue";
 import LfxButton from "~/components/uikit/button/button.vue";
 
 const props = defineProps<{
-  type: string;
-  view: string;
+  type?: string;
+  view?: string;
   sort: SortType;
   isRoot?: boolean;
 }>();
@@ -209,6 +219,11 @@ watch(view, (newVal) => {
   }
 });
 
+watch(() => props.type, (newVal) => {
+  if(newVal !== 'projects'){
+    sort.value = 'totalContributors';
+  }
+})
 
 watch(() => props.view, (val: string) => {
   if (val === 'distribution' && !['vertical', 'horizontal'].includes(type.value)) {

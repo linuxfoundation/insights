@@ -38,6 +38,7 @@ class OssIndexApiService {
       })));
 
     return useQuery<OSSIndexCategoryGroup[]>({
+      enabled: ['totalContributors', 'softwareValue'].includes(sort.value),
       queryKey,
       queryFn,
     });

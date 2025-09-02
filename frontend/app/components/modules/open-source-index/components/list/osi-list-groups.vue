@@ -25,16 +25,6 @@ SPDX-License-Identifier: MIT
           </p>
           <div class="flex items-center gap-4">
             <article class="flex items-center gap-1.5">
-              <div class="h-5 w-5 rounded-full flex items-center justify-center bg-neutral-100">
-                <lfx-icon
-                  name="laptop-code"
-                  :size="10"
-                  class="text-neutral-500"
-                />
-              </div>
-              <p class="text-xs">{{ pluralize('project', group.projectCount, true) }}</p>
-            </article>
-            <article class="flex items-center gap-1.5">
               <div class="h-5 w-5 rounded-full flex items-center justify-center bg-brand-50">
                 <lfx-icon
                   name="people-group"
@@ -71,8 +61,6 @@ SPDX-License-Identifier: MIT
         </template>
       </lfx-accordion-item>
     </lfx-accordion>
-
-    <pre>{{data}}</pre>
   </div>
 </template>
 
