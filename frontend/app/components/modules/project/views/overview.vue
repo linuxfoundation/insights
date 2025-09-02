@@ -11,7 +11,7 @@ SPDX-License-Identifier: MIT
         <lfx-card
           class="pt-6 flex flex-col md:gap-10 gap-5"
           :class="{
-            'pb-6': !displayArchivedReposNote
+            'pb-6': !(hasSelectedArchivedRepos && status !== 'pending')
           }"
         >
           <lfx-project-trust-score
@@ -69,7 +69,6 @@ const route = useRoute();
 const {
   selectedReposValues,
   project,
-  archivedRepos,
   allArchived,
   hasSelectedArchivedRepos
 } = storeToRefs(useProjectStore())
@@ -90,8 +89,6 @@ const displayPopularityScore = computed(() => isScoreVisible(WidgetArea.POPULARI
 
 // Security score is only displayed if security data is available
 const displaySecurityScore = computed(() => securityScore.value && securityScore.value.length > 0);
-
-const displayArchivedReposNote = computed(() => !!archivedRepos.value.length && !allArchived.value)
 
 const scoreDisplay = computed(() => ({
   overall: displayContributorsScore.value
