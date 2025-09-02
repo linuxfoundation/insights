@@ -20,6 +20,14 @@
     }
   }
 
+  &--primary{
+    @apply outline outline-1 outline-transparent bg-brand-500 text-white;
+
+    &.is-disabled{
+      @apply outline-neutral-100 outline-3 bg-brand-300 cursor-default;
+    }
+  }
+
   &--transparent{
     @apply outline outline-1 outline-transparent bg-transparent text-neutral-900;
 

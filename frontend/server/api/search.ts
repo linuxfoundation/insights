@@ -1,17 +1,17 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import {fetchFromTinybird} from "~~/server/data/tinybird/tinybird";
-import type {SearchCollection, SearchProject, SearchRepository} from "~~/types/search";
-import {getRepoNameFromUrl, getRepoSlugFromName} from "~~/server/helpers/repository.helpers";
+import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird'
+import type { SearchCollection, SearchProject, SearchRepository } from '~~/types/search'
+import { getRepoNameFromUrl, getRepoSlugFromName } from '~~/server/helpers/repository.helpers'
 
 export interface SearchResponse {
-    type: 'project' | 'repository' | 'collection';
-    slug: string;
-    logo: string | null;
-    projectSlug: string | null;
-    name: string | null;
-    archived: boolean | null;
-    excluded: boolean | null;
+  type: 'project' | 'repository' | 'collection'
+  slug: string
+  logo: string | null
+  projectSlug: string | null
+  name: string | null
+  archived: boolean | null
+  excluded: boolean | null
 }
 
 /**
@@ -39,59 +39,62 @@ export interface SearchResponse {
  * - 500: Internal Server Error.
  */
 export default defineEventHandler(async (event) => {
-    const query: Record<string, string | number> = getQuery(event);
-    const searchQuery = query?.query || '';
+  const query: Record<string, string | number> = getQuery(event)
+  const searchQuery = query?.query || ''
 
-    const projects: SearchProject[] = [];
-    const repositories: SearchRepository[] = [];
-    const collections: SearchCollection[] = [];
+  const projects: SearchProject[] = []
+  const repositories: SearchRepository[] = []
+  const collections: SearchCollection[] = []
 
-    const limit: number = 10;
+  const limit: number = 10
 
-    try {
-        const res = await fetchFromTinybird<SearchResponse[]>('/v0/pipes/search_collections_projects_repos.json', {
-            limit,
-            search: searchQuery,
-        })
+  try {
+    const res = await fetchFromTinybird<SearchResponse[]>(
+      '/v0/pipes/search_collections_projects_repos.json',
+      {
+        limit,
+        search: searchQuery,
+      },
+    )
 
-        if (res.data?.length > 0) {
-            res.data.forEach((item) => {
-                if (item.type === 'project') {
-                    projects.push({
-                        name: item.name as string,
-                        slug: item.slug,
-                        logo: item.logo,
-                    })
-                } else if (item.type === 'repository') {
-                    const name = getRepoNameFromUrl(item.slug);
-                    const slug = getRepoSlugFromName(name);
-                    repositories.push({
-                        slug,
-                        name,
-                        archived: item.archived || false,
-                        excluded: item.excluded || false,
-                        projectSlug: item.projectSlug || '',
-                    })
-                } else if (item.type === 'collection') {
-                    collections.push({
-                        slug: item.slug,
-                        name: item.name || '',
-                    })
-                }
-            })
+    if (res.data?.length > 0) {
+      res.data.forEach((item) => {
+        if (item.type === 'project') {
+          projects.push({
+            name: item.name as string,
+            slug: item.slug,
+            logo: item.logo,
+          })
+        } else if (item.type === 'repository') {
+          const name = getRepoNameFromUrl(item.slug)
+          const slug = getRepoSlugFromName(name)
+          repositories.push({
+            slug,
+            name,
+            archived: item.archived || false,
+            excluded: item.excluded || false,
+            projectSlug: item.projectSlug || '',
+          })
+        } else if (item.type === 'collection') {
+          collections.push({
+            slug: item.slug,
+            name: item.name || '',
+          })
         }
-
-        return {
-            projects,
-            repositories,
-            collections
-        };
-    } catch (error) {
-        console.error('Error fetching search results:', error);
-        return {
-            projects,
-            repositories,
-            collections
-        };
+      })
     }
-});
+
+    return {
+      projects,
+      repositories,
+      collections,
+    }
+  } catch (error) {
+    console.error('Error fetching search results:', error)
+    return {
+      projects,
+      repositories,
+      collections,
+    }
+  }
+})

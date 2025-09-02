@@ -3,7 +3,7 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="w-full lg:w-2/3">
+  <div class="search-container">
     <div
       class="w-full lg:max-w-80 overflow-hidden bg-neutral-50 h-9 border
       border-neutral-200 rounded-full hidden sm:flex items-center gap-2 px-3 cursor-pointer"
@@ -96,3 +96,21 @@ export default {
   name: 'LfxSearch'
 }
 </script>
+
+<style lang="scss" scoped>
+.search-container {
+  @apply w-full;
+}
+
+@media (width > 1024px) {
+  .search-container {
+    @apply w-1/2;
+  }
+}
+
+@media (width > 1300px) {
+  .search-container {
+    @apply w-2/3;
+  }
+}
+</style>

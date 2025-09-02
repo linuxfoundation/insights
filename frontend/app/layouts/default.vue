@@ -3,7 +3,7 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <main class="min-h-screen flex flex-col pt-14 lg:pt-17">
+  <main class="min-h-screen flex flex-col pt-28 sm:pt-21 lg:pt-24">
     <lfx-navbar />
     <div :class="['pb-10']">
       <slot />
@@ -12,6 +12,7 @@ SPDX-License-Identifier: MIT
     <div class="flex-grow" />
     <lfx-report-global />
     <lfx-share-global />
+    <lfx-copilot-global />
     <lfx-welcome-modal />
     <lfx-insights-footer />
   </main>
@@ -24,6 +25,7 @@ import LfxNavbar from '~/components/shared/layout/navbar.vue';
 import LfxToast from '~/components/uikit/toast/toast.vue';
 import LfxReportGlobal from "~/components/shared/modules/report/components/report-global.vue";
 import LfxShareGlobal from "~/components/shared/modules/share/components/share-global.vue";
+import LfxCopilotGlobal from "~/components/shared/modules/copilot/components/copilot-global.vue";
 import LfxWelcomeModal from "~/components/shared/components/welcome-modal.vue";
 import LfxInsightsFooter from "~/components/shared/layout/footer.vue";
 
