@@ -45,7 +45,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import {
-  computed, onServerPrefetch,
+  computed,
   ref,
 } from 'vue';
 import { useRoute } from 'vue-router';

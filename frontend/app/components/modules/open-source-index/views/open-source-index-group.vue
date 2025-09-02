@@ -29,7 +29,7 @@ import {
 } from 'vue';
 import { useRoute } from 'vue-router';
 import LfxOSIHeader from '../components/osi-header.vue';
-import {type OSIType, OSS_INDEX_API_SERVICE, type SortType} from '../services/osi.api.service';
+import { OSS_INDEX_API_SERVICE, type SortType} from '../services/osi.api.service';
 import LfxOsiDistribution from "~/components/modules/open-source-index/components/osi-distribution.vue";
 import type {TreeMapData} from "~/components/uikit/chart/types/ChartTypes";
 
