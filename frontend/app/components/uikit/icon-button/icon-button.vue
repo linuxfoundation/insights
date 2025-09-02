@@ -38,7 +38,7 @@ const props = withDefaults(
   {
     type: 'default',
     size: 'medium',
-    iconType: 'outline',
+    iconType: 'light',
     iconSize: 16,
     disabled: false
   }
