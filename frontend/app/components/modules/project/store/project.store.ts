@@ -81,6 +81,11 @@ export const useProjectStore = defineStore('project', () => {
     )
   );
 
+  const hasSelectedArchivedRepos = computed(() =>
+    !!archivedRepos.value.length && !selectedReposValues.value.length
+    || selectedReposValues.value.some((repo) => archivedRepos.value.includes(repo))
+  );
+
   return {
     selectedTimeRangeKey,
     startDate,
@@ -94,6 +99,7 @@ export const useProjectStore = defineStore('project', () => {
     selectedRepoSlugs,
     selectedRepositories,
     selectedReposValues,
-    allArchived
+    allArchived,
+    hasSelectedArchivedRepos
   };
 });
