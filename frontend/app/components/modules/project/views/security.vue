@@ -41,78 +41,93 @@ SPDX-License-Identifier: MIT
         />
       </div> -->
       <div class="flex-grow">
-        <lfx-card class="p-6">
-          <h3 class="text-heading-3 font-semibold font-secondary">
-            Controls assessment
-          </h3>
-          <p class="pt-2 text-xs text-neutral-500 pb-5">
-            Process of assessing a project's practices, policies, and technical measures against a set of predefined
-            standards to determine its security posture, reliability, and maturity.
-            <a
-              :href="links.securityScore"
-              class="text-brand-500"
-              target="_blank"
-            >Learn more</a>
-          </p>
-          <div
-            v-if="isFetching"
-            class="pt-5 border-t border-neutral-100"
-          >
-            <div class="flex flex-col items-center justify-center py-20">
-              <lfx-spinner
-                :size="40"
-                type="light"
-                class="text-neutral-300"
-              />
-              <p class="text-neutral-500 text-center text-body-1 pt-5">
-                Loading controls assessment...
-              </p>
+        <lfx-card class="pt-6">
+          <div class="px-6">
+            <h3 class="text-heading-3 font-semibold font-secondary">
+              Controls assessment
+            </h3>
+            <p class="pt-2 text-xs text-neutral-500 pb-5">
+              Process of assessing a project's practices, policies, and technical measures against a set of predefined
+              standards to determine its security posture, reliability, and maturity.
+              <a
+                :href="links.securityScore"
+                class="text-brand-500"
+                target="_blank"
+              >Learn more</a>
+            </p>
+            <div
+              v-if="isFetching"
+              class="pt-5 border-t border-neutral-100"
+            >
+              <div class="flex flex-col items-center justify-center py-20">
+                <lfx-spinner
+                  :size="40"
+                  type="light"
+                  class="text-neutral-300"
+                />
+                <p class="text-neutral-500 text-center text-body-1 pt-5">
+                  Loading controls assessment...
+                </p>
+              </div>
             </div>
-          </div>
-          <div
-            v-else-if="data?.length === 0 || error"
-            class="pt-5 border-t border-neutral-100"
-          >
-            <div class="flex flex-col items-center justify-center py-20">
-              <lfx-icon
-                name="eyes"
-                class="text-neutral-300"
-                :size="40"
-              />
-              <p class="text-neutral-500 text-center text-body-1 pt-5">
-                No data available to perform controls assessment
-              </p>
+            <lfx-empty-state
+              v-else-if="allArchived"
+              icon="archive"
+              :title="pluralize('Archived Repository', archivedRepos.length)"
+              description="Archived repositories are excluded from Health Score and Security & Best practices. 
+              You can still access historical data of Contributors, Popularity, or Development metrics."
+            />
+            <div
+              v-else-if="data?.length === 0 || error"
+              class="pt-5 border-t border-neutral-100"
+            >
+              <div class="flex flex-col items-center justify-center py-20">
+                <lfx-icon
+                  name="eyes"
+                  class="text-neutral-300"
+                  :size="40"
+                />
+                <p class="text-neutral-500 text-center text-body-1 pt-5">
+                  No data available to perform controls assessment
+                </p>
+              </div>
             </div>
-          </div>
-          <div v-else>
-            <lfx-accordion v-model="accordion">
-              <lfx-project-security-evaluation-section
-                v-for="(checks, title) in groupedData"
-                :key="title"
-                :name="title"
-                :checks="checks"
-                :tooltip="isRepository ? 'Category success rate' : 'Average category success rate of all repositories'"
-              >
-                <template v-if="isRepository">
-                  <template
-                    v-for="check in checks"
-                    :key="check.controlId"
-                  >
-                    <lfx-project-security-evaluation-assesment
-                      v-for="assessment in check.assessments"
-                      :key="assessment.requirementId"
-                      :assessment="assessment"
+            <div v-else>
+              <lfx-accordion v-model="accordion">
+                <lfx-project-security-evaluation-section
+                  v-for="(checks, title) in groupedData"
+                  :key="title"
+                  :name="title"
+                  :checks="checks"
+                  :tooltip="isRepository
+                    ? 'Category success rate'
+                    : 'Average category success rate of all repositories'"
+                >
+                  <template v-if="isRepository">
+                    <template
+                      v-for="check in checks"
+                      :key="check.controlId"
+                    >
+                      <lfx-project-security-evaluation-assesment
+                        v-for="assessment in check.assessments"
+                        :key="assessment.requirementId"
+                        :assessment="assessment"
+                      />
+                    </template>
+                  </template>
+                  <template v-else>
+                    <lfx-project-security-paginated-eval-repos
+                      :group-checks="groupChecksByRepository(checks || [])"
                     />
                   </template>
-                </template>
-                <template v-else>
-                  <lfx-project-security-paginated-eval-repos
-                    :group-checks="groupChecksByRepository(checks || [])"
-                  />
-                </template>
-              </lfx-project-security-evaluation-section>
-            </lfx-accordion>
+                </lfx-project-security-evaluation-section>
+              </lfx-accordion>
+            </div>
           </div>
+          <lfx-repos-exclusion-footer
+            class="mt-3"
+            page-content="security"
+          />
         </lfx-card>
       </div>
     </div>
@@ -120,9 +135,10 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import {useRoute} from "nuxt/app";
-import {computed, onServerPrefetch, ref} from "vue";
-import {storeToRefs} from "pinia";
+import { useRoute } from "nuxt/app";
+import { computed, onServerPrefetch, ref } from "vue";
+import pluralize from 'pluralize';
+import { storeToRefs } from "pinia";
 import {type QueryFunction, useQuery} from "@tanstack/vue-query";
 import LfxCard from "~/components/uikit/card/card.vue";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
@@ -134,19 +150,25 @@ import LfxProjectSecurityEvaluationAssesment
   from "~/components/modules/project/components/security/evaluation-assesment.vue";
 import LfxProjectSecurityPaginatedEvalRepos
   from "~/components/modules/project/components/security/paginated-eval-repos.vue";
-import {TanstackKey} from "~/components/shared/types/tanstack";
-import {useProjectStore} from "~/components/modules/project/store/project.store";
-import type {SecurityData} from "~~/types/security/responses.types";
-import {links} from "~/config/links";
+import { TanstackKey } from "~/components/shared/types/tanstack";
+import { useProjectStore } from "~/components/modules/project/store/project.store";
+import type { SecurityData } from "~~/types/security/responses.types";
+import { links } from "~/config/links";
 import LfxSpinner from "~/components/uikit/spinner/spinner.vue";
-import {PROJECT_SECURITY_SERVICE} from "~/components/modules/project/services/security.service";
+import { PROJECT_SECURITY_SERVICE } from "~/components/modules/project/services/security.service";
+import LfxReposExclusionFooter from '~/components/shared/components/repos-exclusion-footer.vue';
+import LfxEmptyState from '~/components/shared/components/empty-state.vue';
 
 const accordion = ref('');
 
 const route = useRoute();
-const {name} = route.params;
+const { name } = route.params;
 
-const {selectedReposValues} = storeToRefs(useProjectStore())
+const {
+  selectedReposValues,
+  allArchived,
+  archivedRepos
+} = storeToRefs(useProjectStore())
 
 const isRepository = computed(() => !!name)
 

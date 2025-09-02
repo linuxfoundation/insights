@@ -74,14 +74,22 @@ SPDX-License-Identifier: MIT
           :key="repository.slug"
           :to="{name: LfxRoutes.REPOSITORY, params: {name: repository.slug, slug: repository.projectSlug}}"
           class="px-3 py-2 rounded-md transition-all
-        hover:bg-neutral-50 flex items-center gap-2 cursor-pointer text-sm text-neutral-900"
+        hover:bg-neutral-50 flex items-center gap-2 cursor-pointer text-sm text-neutral-900 justify-between"
         >
-          <lfx-icon
-            name="book"
-            :size="16"
-            class="text-neutral-400"
+          <div class="flex items-center gap-2">
+            <lfx-icon
+              name="book"
+              :size="16"
+              class="text-neutral-400"
+            />
+            <span>{{repository.name}}</span>
+          </div>
+
+          <lfx-archived-tag
+            v-if="repository.archived || repository.excluded"
+            :archived="repository.archived"
+            :label="repository.archived ? 'Archived' : 'Excluded'"
           />
-          {{repository.name}}
         </nuxt-link>
       </section>
       <section
@@ -163,6 +171,7 @@ import LfxTabs from "~/components/uikit/tabs/tabs.vue";
 import LfxAvatar from "~/components/uikit/avatar/avatar.vue";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
 import {LfxRoutes} from "~/components/shared/types/routes";
+import LfxArchivedTag from "~/components/shared/components/archived-tag.vue";
 
 const props = defineProps<{
   projects: SearchProject[];

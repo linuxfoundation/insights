@@ -46,7 +46,7 @@ SPDX-License-Identifier: MIT
               >/</span>
               <div
                 v-if="(props.project?.repositories?.length ?? 0) > 0"
-                class="flex items-center gap-2 cursor-pointer px-2 py-0.5
+                class="flex items-center gap-3 cursor-pointer px-2 py-0.5
               rounded-lg transition hover:bg-neutral-100 min-w-0"
                 @click="isSearchRepoModalOpen = true"
               >
@@ -63,6 +63,12 @@ SPDX-License-Identifier: MIT
                     class="font-secondary text-neutral-500 w-full block overflow-hidden truncate"
                   >All repositories</span>
                 </p>
+                <lfx-archived-tag
+                  v-if="!!archivedRepos.length"
+                  :archived="true"
+                  :label="archivedRepoLabel"
+                  @click="isSearchRepoModalOpen = true"
+                />
                 <lfx-icon
                   name="angles-up-down"
                   :size="12"
@@ -175,6 +181,7 @@ import LfxProjectMenu from "~/components/modules/project/components/shared/heade
 import {useReportStore} from "~/components/shared/modules/report/store/report.store";
 import {useShareStore} from "~/components/shared/modules/share/store/share.store";
 import { LfxRoutes } from '~/components/shared/types/routes';
+import LfxArchivedTag from '~/components/shared/components/archived-tag.vue';
 
 const props = defineProps<{
   project?: Project
@@ -182,7 +189,13 @@ const props = defineProps<{
 
 const route = useRoute();
 
-const {projectRepos, selectedRepoSlugs, selectedRepositories} = storeToRefs(useProjectStore());
+const {
+  projectRepos,
+  selectedRepoSlugs,
+  selectedRepositories,
+  archivedRepos,
+  allArchived
+} = storeToRefs(useProjectStore());
 const { openReportModal } = useReportStore();
 const { openShareModal } = useShareStore();
 
@@ -197,6 +210,14 @@ const repoName = computed<string>(() => {
     return repos.value[0]!.name.split('/').at(-1) || '';
   }
   return `${repos.value.length} repositories`;
+})
+
+const archivedRepoLabel = computed<string>(() => {
+  if (allArchived.value) {
+    return "Archived";
+  }
+
+  return "Inc. archived repositories";
 })
 
 const isSearchRepoModalOpen = ref(false);

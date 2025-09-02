@@ -58,6 +58,8 @@ export const useProjectStore = defineStore('project', () => {
   const isProjectLoading = ref(false);
   const project = ref<Project | null>(null);
   const projectRepos = computed<ProjectRepository[]>(() => project.value?.repositories || []);
+  const archivedRepos = computed<string[]>(() => project.value?.archivedRepositories || []);
+  const excludedRepos = computed<string[]>(() => project.value?.excludedRepositories || []);
   const selectedRepoSlugs = ref<string[]>(route.params.name ? [route.params.name as string] : repos?.split('|') || []);
 
   const selectedRepositories = computed<ProjectRepository[]>(() => projectRepos
@@ -70,6 +72,15 @@ export const useProjectStore = defineStore('project', () => {
       ? [Granularity.WEEKLY]
       : calculateGranularity(startDate.value, endDate.value)));
 
+  // If all repos are archived or all selected repos are archived
+  const allArchived = computed(() => 
+    archivedRepos.value.length === projectRepos.value.length ||
+    (
+      !!selectedReposValues.value.length
+      && selectedReposValues.value.every((repo) => archivedRepos.value.includes(repo))
+    )
+  );
+
   return {
     selectedTimeRangeKey,
     startDate,
@@ -77,9 +88,12 @@ export const useProjectStore = defineStore('project', () => {
     isProjectLoading,
     project,
     projectRepos,
+    archivedRepos,
+    excludedRepos,
     customRangeGranularity,
     selectedRepoSlugs,
     selectedRepositories,
-    selectedReposValues
+    selectedReposValues,
+    allArchived
   };
 });
