@@ -24,16 +24,35 @@ type TinybirdPullRequestResolutionVelocityData = {
 
 function getTinybirdQueries(filter: ActivityCountFilter) {
   const dates = getPreviousDates(filter.startDate, filter.endDate);
+  
+  const openedPRsActivities = [
+    ActivityTypes.PULL_REQUEST_OPENED,
+    ActivityTypes.MERGE_REQUEST_OPENED,
+    ActivityTypes.CHANGESET_CREATED
+  ];
+
+  const mergedPRsActivities = [
+    ActivityTypes.PULL_REQUEST_MERGED,
+    ActivityTypes.MERGE_REQUEST_MERGED,
+    ActivityTypes.CHANGESET_MERGED
+  ];
+
+  const closedPRsActivities = [
+    ActivityTypes.PULL_REQUEST_CLOSED,
+    ActivityTypes.MERGE_REQUEST_CLOSED,
+    ActivityTypes.CHANGESET_CLOSED,
+    ActivityTypes.CHANGESET_ABANDONED
+  ];
 
   return {
     currentOpenedPRsSummaryQuery: {
       ...filter,
-      activity_type: ActivityTypes.PULL_REQUEST_OPENED,
+      activity_types: openedPRsActivities,
       granularity: undefined, // This tells TinyBird to return a summary instead of time series
     },
     previousOpenedPRsSummaryQuery: {
       ...filter,
-      activity_type: ActivityTypes.PULL_REQUEST_OPENED,
+      activity_types: openedPRsActivities,
       granularity: undefined, // This tells TinyBird to return a summary instead of time series
       startDate: dates.previous.from,
       endDate: dates.previous.to
@@ -41,12 +60,12 @@ function getTinybirdQueries(filter: ActivityCountFilter) {
 
     currentMergedPRsSummaryQuery: {
       ...filter,
-      activity_type: ActivityTypes.PULL_REQUEST_MERGED,
+      activity_types: mergedPRsActivities,
       granularity: undefined, // This tells TinyBird to return a summary instead of time series
     },
     previousMergedPRsSummaryQuery: {
       ...filter,
-      activity_type: ActivityTypes.PULL_REQUEST_MERGED,
+      activity_types: mergedPRsActivities,
       granularity: undefined, // This tells TinyBird to return a summary instead of time series
       startDate: dates.previous.from,
       endDate: dates.previous.to
@@ -54,12 +73,12 @@ function getTinybirdQueries(filter: ActivityCountFilter) {
 
     currentClosedPRsSummaryQuery: {
       ...filter,
-      activity_type: ActivityTypes.PULL_REQUEST_CLOSED,
+      activity_types: closedPRsActivities,
       granularity: undefined, // This tells TinyBird to return a summary instead of time series
     },
     previousClosedPRsSummaryQuery: {
       ...filter,
-      activity_type: ActivityTypes.PULL_REQUEST_CLOSED,
+      activity_types: closedPRsActivities,
       granularity: undefined, // This tells TinyBird to return a summary instead of time series
       startDate: dates.previous.from,
       endDate: dates.previous.to
@@ -67,15 +86,15 @@ function getTinybirdQueries(filter: ActivityCountFilter) {
 
     openedPRsQuery: {
       ...filter,
-      activity_type: ActivityTypes.PULL_REQUEST_OPENED,
+      activity_types: openedPRsActivities,
     },
     mergedPRsQuery: {
       ...filter,
-      activity_type: ActivityTypes.PULL_REQUEST_MERGED,
+      activity_types: mergedPRsActivities,
     },
     closedPRsQuery: {
       ...filter,
-      activity_type: ActivityTypes.PULL_REQUEST_CLOSED,
+      activity_types: closedPRsActivities,
     },
     prResolutionVelocityQuery: {
       ...filter,
