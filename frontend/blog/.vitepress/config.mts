@@ -9,7 +9,8 @@ export default defineConfig({
     from new features to how we are building our solutions. `,
   head: [
     ['link', { rel: 'icon', href: 'https://cdn.platform.linuxfoundation.org/assets/lf-favicon.png' }], // Adjust the path if you use a different favicon format
-    ['script', { src: 'https://kit.fontawesome.com/b5289aebdf.js' }]
+    ['script', { src: 'https://kit.fontawesome.com/b5289aebdf.js' }],
+    ['script', { defer: '', 'data-domain': 'insights.linuxfoundation.org', src: 'https://plausible.io/js/script.js' }]
   ],
   vite: {
     resolve: {

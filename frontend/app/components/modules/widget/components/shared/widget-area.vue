@@ -21,6 +21,7 @@ SPDX-License-Identifier: MIT
           <template #default="{ observer }">
             
             <lfx-repos-inclusion-note
+              v-if="hasSelectedArchivedRepos"
               :all-archived="allArchived"            
             />
 
@@ -93,6 +94,7 @@ const {
   endDate,
   selectedReposValues,
   allArchived,
+  hasSelectedArchivedRepos
 } = storeToRefs(useProjectStore())
 const isFirstLoad = ref(true);
 
