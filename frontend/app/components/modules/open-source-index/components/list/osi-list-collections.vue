@@ -11,13 +11,13 @@ SPDX-License-Identifier: MIT
       v-model="accordion"
     >
       <lfx-accordion-item
-        v-for="collection of data?.collections"
+        v-for="collection of data?.pages.flatMap(p => p.collections)"
         :key="collection.id"
         :reverse="true"
         :name="collection.id"
-        class="bg-white px-6 py-4 hover:bg-neutral-50 border-b border-neutral-100"
+        class="bg-white px-6 hover:bg-neutral-50 border-b border-neutral-100"
       >
-        <div class="flex justify-between">
+        <div class="flex justify-between py-4">
           <p class="text-base font-semibold">
             {{collection.name}}
           </p>
@@ -58,7 +58,7 @@ SPDX-License-Identifier: MIT
           </div>
         </div>
         <template #content>
-          <div class="mt-4 border-t border-neutral-100 bg-white -mr-6 -mb-4 -ml-14">
+          <div class="border-t border-neutral-100 bg-white -mr-6 -ml-14">
             <lfx-table class="!shadow-none !rounded-none">
               <!-- Head -->
               <thead>
@@ -138,13 +138,26 @@ SPDX-License-Identifier: MIT
         </template>
       </lfx-accordion-item>
     </lfx-accordion>
+    <div
+      v-if="hasNextPage && !props.hidePagination"
+      class="py-5 lg:py-10 flex justify-center"
+    >
+      <lfx-button
+        size="large"
+        class="!rounded-full"
+        :loading="isFetchingNextPage"
+        @click="loadMore"
+      >
+        Load more
+      </lfx-button>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import {computed, onServerPrefetch} from "vue";
-import {useQuery} from "@tanstack/vue-query";
 import pluralize from "pluralize";
+import {useInfiniteQuery} from "@tanstack/vue-query";
 import LfxAccordion from "~/components/uikit/accordion/accordion.vue";
 import LfxAccordionItem from "~/components/uikit/accordion/accordion-item.vue";
 import {LfxRoutes} from "~/components/shared/types/routes";
@@ -155,12 +168,19 @@ import LfxAvatar from "~/components/uikit/avatar/avatar.vue";
 import LfxTable from "~/components/uikit/table/table.vue";
 import {TanstackKey} from "~/components/shared/types/tanstack";
 import {OSS_INDEX_API_SERVICE} from "~/components/modules/open-source-index/services/osi.api.service";
+import LfxButton from "~/components/uikit/button/button.vue";
 import type {OSSIndexCategoryDetails} from "~~/types/ossindex/category";
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   sort: string;
   categoryGroupId?: string;
-}>()
+  hidePagination?: boolean;
+  pageSize?: number
+}>(), {
+  hidePagination: false,
+  categoryGroupId: undefined,
+  pageSize: 20
+})
 
 
 const sort = computed(() => props.sort || 'totalContributors');
@@ -169,19 +189,32 @@ const accordion = ref<string>('');
 
 const router = useRouter()
 
-const queryKey = computed(() => [TanstackKey.OSS_INDEX_COLLECTIONS_LIST, sort.value])
+const queryKey = computed(() => [TanstackKey.OSS_INDEX_COLLECTIONS_LIST, sort.value, props.pageSize])
 
 const {
   data,
+  isFetchingNextPage,
+  fetchNextPage,
+  hasNextPage,
   suspense,
-} = useQuery<OSSIndexCategoryDetails>({
+} = useInfiniteQuery<OSSIndexCategoryDetails>({
   queryKey,
   queryFn: OSS_INDEX_API_SERVICE.ossCollectionQueryFn(() => ({
     sort: sort.value || 'totalContributors',
     categoryGroupId: props.categoryGroupId,
+    pageSize: props.pageSize,
   })),
+  getNextPageParam: (lastPage) => {
+    const nextPage = lastPage.page + 1
+    return lastPage.collections.length >= props.pageSize ? nextPage : undefined
+  },
 })
 
+const loadMore = () => {
+  if (hasNextPage.value) {
+    fetchNextPage()
+  }
+}
 
 onServerPrefetch(async () => {
   await suspense();

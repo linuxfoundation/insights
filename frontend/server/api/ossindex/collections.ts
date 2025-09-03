@@ -17,7 +17,10 @@ export default defineEventHandler(async (event): Promise<OSSIndexCategoryDetails
     const query = getQuery(event)
     const categorySlug: string = query?.categorySlug as string
     const categoryGroupId: string = query?.categoryGroupId as string;
-    const sort: string = query?.sort as string
+    const page: number = query?.page ? (+query.page || 0) : undefined
+    const pageSize: number = query?.pageSize ? (+query.pageSize || 10) : undefined
+    let sort: string = query?.sort as string
+    sort = ['totalContributors', 'softwareValue'].includes(sort) ? sort : 'totalContributors'
 
     try {
         let details: Category | undefined = undefined;
@@ -39,6 +42,8 @@ export default defineEventHandler(async (event): Promise<OSSIndexCategoryDetails
                 categorySlug,
                 categoryGroupId,
                 orderBy: sort,
+                page,
+                pageSize,
             },
         )
 
@@ -63,6 +68,8 @@ export default defineEventHandler(async (event): Promise<OSSIndexCategoryDetails
         return {
             ...(details || {}),
             collections,
+            page,
+            pageSize,
         }
     } catch (error) {
         console.error('Error fetching oss index collection list from TinyBird:', error)

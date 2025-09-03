@@ -97,12 +97,14 @@ class OssIndexApiService {
   ossCollectionQueryFn(
     query: () => Record<string, string | number | boolean | undefined | string[] | null>
   ): QueryFunction<OSSIndexCategoryDetails> {
-    const { categorySlug, sort, categoryGroupId } = query();
-    return async () => await $fetch(`/api/ossindex/collections`, {
+    const { categorySlug, sort, categoryGroupId, pageSize } = query();
+    return async ({ pageParam = 0 }) => await $fetch(`/api/ossindex/collections`, {
         params: {
           categorySlug,
           categoryGroupId,
           sort,
+          page: pageParam,
+          pageSize
         },
       });
   }

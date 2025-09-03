@@ -16,10 +16,10 @@ SPDX-License-Identifier: MIT
         :key="group.id"
         :reverse="true"
         :name="group.id"
-        class="bg-white px-6 py-4 hover:bg-neutral-50 shadow-sm rounded-lg"
+        class="bg-white px-6 hover:bg-neutral-50 shadow-sm rounded-lg"
         :class="group.id === groups ? '!bg-white' : ''"
       >
-        <div class="flex justify-between">
+        <div class="flex justify-between py-4">
           <p class="font-secondary font-bold text-heading-3">
             {{group.name}}
           </p>
@@ -51,11 +51,13 @@ SPDX-License-Identifier: MIT
         </div>
 
         <template #content>
-          <div class="-ml-14 -mb-4 rounded-md">
+          <div class="-ml-14 rounded-xl">
             <lfx-osi-list-collections
               :sort="props.sort"
               :category-group-id="group.id"
-              class="!pt-4 !px-0 !pb-0"
+              class="!pt-0 !px-0 !pb-0"
+              :hide-pagination="true"
+              :page-size="5"
             />
           </div>
         </template>

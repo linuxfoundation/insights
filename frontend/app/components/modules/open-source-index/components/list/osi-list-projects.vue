@@ -44,7 +44,7 @@ SPDX-License-Identifier: MIT
 
       <tbody>
         <tr
-          v-for="project of data?.data || []"
+          v-for="project of data?.pages.flatMap(p => p.data)"
           :key="project.id"
           class="tr hover:!bg-neutral-100 transition cursor-pointer"
           @click="router.push({name: LfxRoutes.PROJECT, params: {slug: project.slug}})"
@@ -88,6 +88,19 @@ SPDX-License-Identifier: MIT
         </tr>
       </tbody>
     </lfx-table>
+    <div
+      v-if="hasNextPage"
+      class="py-5 lg:py-10 flex justify-center"
+    >
+      <lfx-button
+        size="large"
+        class="!rounded-full"
+        :loading="isFetchingNextPage"
+        @click="loadMore"
+      >
+        Load more
+      </lfx-button>
+    </div>
   </div>
 </template>
 
@@ -95,8 +108,8 @@ SPDX-License-Identifier: MIT
 import {
   computed, onServerPrefetch
 } from 'vue';
-import {useQuery} from "@tanstack/vue-query";
 import {useRouter} from "nuxt/app";
+import {useInfiniteQuery} from "@tanstack/vue-query";
 import LfxTable from "~/components/uikit/table/table.vue";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
 import LfxAvatar from "~/components/uikit/avatar/avatar.vue";
@@ -107,6 +120,7 @@ import {TanstackKey} from "~/components/shared/types/tanstack";
 import {formatNumber, formatNumberShort} from "~/components/shared/utils/formatter";
 import LfxHealthScore from "~/components/shared/components/health-score.vue";
 import {LfxRoutes} from "~/components/shared/types/routes";
+import LfxButton from "~/components/uikit/button/button.vue";
 
 const props = defineProps<{
   sort: string;
@@ -123,19 +137,34 @@ const sortMapping: Record<string, string> = {
   healthScore: 'healthScore_desc',
 }
 
+const pageSize = 20
+
 const queryKey = computed(() => [TanstackKey.OSS_INDEX_PROJECTS, sort.value])
 
 const {
   data,
+  isFetchingNextPage,
+  fetchNextPage,
+  hasNextPage,
   suspense,
-} = useQuery<Pagination<Project>>({
+} = useInfiniteQuery<Pagination<Project>>({
   queryKey,
   queryFn: PROJECT_API_SERVICE.fetchProjects(() => ({
     sort: sortMapping[sort.value] || 'contributorCount_desc',
-    pageSize: 20,
+    pageSize,
   })),
+  getNextPageParam: (lastPage) => {
+    const nextPage = lastPage.page + 1
+    const totalPages = Math.ceil(lastPage.total / lastPage.pageSize)
+    return nextPage < totalPages ? nextPage : undefined
+  },
 })
 
+const loadMore = () => {
+  if (hasNextPage.value) {
+    fetchNextPage()
+  }
+}
 
 onServerPrefetch(async () => {
   await suspense();

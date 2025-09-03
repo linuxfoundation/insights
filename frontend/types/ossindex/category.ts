@@ -29,4 +29,6 @@ export interface OSSIndexCategory {
 
 export interface OSSIndexCategoryDetails extends Category {
     collections: OSSIndexCollection[];
+    page: number
+    pageSize: number
 }
