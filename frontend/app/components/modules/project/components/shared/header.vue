@@ -5,7 +5,7 @@ SPDX-License-Identifier: MIT
 <template>
   <lfx-maintain-height
     :scroll-top="scrollTop"
-    :class="scrollTop > 0 ? 'fixed top-14 lg:top-17' : 'relative'"
+    :class="scrollTop > 0 ? 'fixed top-28 sm:top-21 lg:top-24' : 'relative'"
     class="z-10 w-full"
     :loaded="pageWidth > 0"
   >

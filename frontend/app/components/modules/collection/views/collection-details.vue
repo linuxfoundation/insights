@@ -6,7 +6,7 @@ SPDX-License-Identifier: MIT
   <lfx-maintain-height
     :scroll-top="scrollTop"
     :loaded="!loading"
-    :class="scrollTop > 0 ? 'fixed top-14 lg:top-17' : 'relative'"
+    :class="scrollTop > 0 ? 'fixed top-28 sm:top-21 lg:top-24' : 'relative'"
     class="z-10 w-lvw ml-auto mr-0"
   >
     <div class="bg-white outline outline-neutral-100">
