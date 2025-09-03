@@ -1,4 +1,3 @@
-// docs/tsconfig.json
 {
   "compilerOptions": {
     "target": "ESNext",
@@ -9,7 +8,11 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "lib": ["ESNext", "DOM"]
+    "lib": ["ESNext", "DOM"],
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
+    "types": ["vue/macros-global"]
   },
-  "include": ["."]
+  "include": ["./**/*", ".vitepress/**/*"],
+  "exclude": ["node_modules", "dist"]
 }
