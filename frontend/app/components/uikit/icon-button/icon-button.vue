@@ -12,7 +12,11 @@ SPDX-License-Identifier: MIT
     ]"
   >
     <slot>
-      <lfx-icon :name="props.icon" />
+      <lfx-icon
+        :name="props.icon"
+        :type="props.iconType"
+        :size="props.iconSize"
+      />
     </slot>
   </div>
 </template>
@@ -20,17 +24,22 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import LfxIcon from "~/components/uikit/icon/icon.vue";
 import type {IconButtonSize, IconButtonType} from "~/components/uikit/icon-button/types/icon-button.types";
+import type { IconType } from '~/components/uikit/icon/types/icon.types';
 
 const props = withDefaults(
   defineProps<{
     icon: string;
     type?: IconButtonType;
     size?: IconButtonSize;
+    iconType?: IconType;
+    iconSize?: number;
     disabled?: boolean;
   }>(),
   {
     type: 'default',
     size: 'medium',
+    iconType: 'light',
+    iconSize: 16,
     disabled: false
   }
 );

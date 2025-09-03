@@ -8,7 +8,12 @@ SPDX-License-Identifier: MIT
       class="flex justify-between pt-5 md:pt-10 lg:gap-10 gap-5 flex-col md:flex-row"
     >
       <div class="w-full md:w-3/4">
-        <lfx-card class="py-6 flex flex-col md:gap-10 gap-5">
+        <lfx-card
+          class="pt-6 flex flex-col md:gap-10 gap-5"
+          :class="{
+            'pb-6': !(hasSelectedArchivedRepos && status !== 'pending')
+          }"
+        >
           <lfx-project-trust-score
             :trust-score-summary="trustSummary"
             :status="status"
@@ -16,7 +21,10 @@ SPDX-License-Identifier: MIT
             :score-display="scoreDisplay"
             :is-repo-selected="isRepoSelected"
           />
-          <div class="px-6">
+          <div
+            v-if="!allArchived"
+            class="px-6"
+          >
             <lfx-project-score-tabs
               :trust-score-summary="trustSummary"
               :data="data"
@@ -27,6 +35,10 @@ SPDX-License-Identifier: MIT
               :is-repo-selected="isRepoSelected"
             />
           </div>
+          <lfx-repos-exclusion-footer
+            v-if="hasSelectedArchivedRepos && status !== 'pending'"
+            page-content="health-score"
+          />
         </lfx-card>
       </div>
       <div class="min-w-50 max-md:w-full w-1/4">
@@ -51,9 +63,15 @@ import { OVERVIEW_API_SERVICE } from '~~/app/components/modules/project/services
 import type { TrustScoreSummary } from '~~/types/overview/responses.types';
 import LfxCard from '~/components/uikit/card/card.vue';
 import type { HealthScoreResults } from '~~/types/overview/responses.types';
+import LfxReposExclusionFooter from '~/components/shared/components/repos-exclusion-footer.vue';
 
 const route = useRoute();
-const { selectedReposValues, project } = storeToRefs(useProjectStore())
+const {
+  selectedReposValues,
+  project,
+  allArchived,
+  hasSelectedArchivedRepos
+} = storeToRefs(useProjectStore())
 
 const params = computed(() => ({
   projectSlug: route.params.slug as string,

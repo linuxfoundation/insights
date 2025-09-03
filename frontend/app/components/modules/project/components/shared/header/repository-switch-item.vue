@@ -8,18 +8,26 @@ SPDX-License-Identifier: MIT
           cursor-pointer flex items-center justify-between text-sm leading-5 gap-2"
     @click="handleClick"
   >
-    <div class="flex items-center gap-3">
-      <lfx-checkbox
-        v-if="props.isMultiSelect"
-        v-model="checked"
-        :value="props.text"
+    <div class="w-full flex items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <lfx-checkbox
+          v-if="props.isMultiSelect"
+          v-model="checked"
+          :value="props.text"
+        />
+        <lfx-icon
+          :name="props.icon"
+          :size="16"
+          class="text-neutral-400"
+        />
+        <span :class="props.selected ? 'font-medium' : 'font-normal'">{{ props.text }}</span>
+      </div>
+
+      <lfx-archived-tag
+        v-if="archived || excluded"
+        :archived="archived"
+        :label="archived ? 'Archived' : 'Excluded'"
       />
-      <lfx-icon
-        :name="props.icon"
-        :size="16"
-        class="text-neutral-400"
-      />
-      <span :class="props.selected ? 'font-medium' : 'font-normal'">{{ props.text }}</span>
     </div>
     <lfx-icon
       v-if="props.selected && !props.isMultiSelect"
@@ -33,12 +41,15 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import LfxIcon from "~/components/uikit/icon/icon.vue";
 import LfxCheckbox from "~/components/uikit/checkbox/checkbox.vue";
+import LfxArchivedTag from "~/components/shared/components/archived-tag.vue";
 
 const props = defineProps<{
   text: string;
   icon: string;
   selected: boolean;
   isMultiSelect?: boolean;
+  archived: boolean;
+  excluded: boolean;
 }>();
 
 const emit = defineEmits<{(e: 'update:selected', value: boolean): void}>();

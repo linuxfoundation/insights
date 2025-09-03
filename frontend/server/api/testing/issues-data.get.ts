@@ -7,7 +7,7 @@ export default defineEventHandler(async () => [
     IS_SUMMARY: false,
     CUMULATIVE_ISSUES: 8934,
     ISSUES_OPENED: 146,
-    ISSUES_CLOSED: 253
+    ISSUES_CLOSED: 253,
   },
   {
     BUCKET_DT_FROM: '2024-02-01 00:00:00.000 -0800',
@@ -15,7 +15,7 @@ export default defineEventHandler(async () => [
     IS_SUMMARY: false,
     CUMULATIVE_ISSUES: 9019,
     ISSUES_OPENED: 81,
-    ISSUES_CLOSED: 82
+    ISSUES_CLOSED: 82,
   },
   {
     BUCKET_DT_FROM: '2024-03-01 00:00:00.000 -0800',
@@ -23,7 +23,7 @@ export default defineEventHandler(async () => [
     IS_SUMMARY: false,
     CUMULATIVE_ISSUES: 9110,
     ISSUES_OPENED: 88,
-    ISSUES_CLOSED: 85
+    ISSUES_CLOSED: 85,
   },
   {
     BUCKET_DT_FROM: '2024-04-01 00:00:00.000 -0700',
@@ -31,7 +31,7 @@ export default defineEventHandler(async () => [
     IS_SUMMARY: false,
     CUMULATIVE_ISSUES: 9244,
     ISSUES_OPENED: 128,
-    ISSUES_CLOSED: 119
+    ISSUES_CLOSED: 119,
   },
   {
     BUCKET_DT_FROM: '2024-05-01 00:00:00.000 -0700',
@@ -39,7 +39,7 @@ export default defineEventHandler(async () => [
     IS_SUMMARY: false,
     CUMULATIVE_ISSUES: 9425,
     ISSUES_OPENED: 179,
-    ISSUES_CLOSED: 131
+    ISSUES_CLOSED: 131,
   },
   {
     BUCKET_DT_FROM: '2024-06-01 00:00:00.000 -0700',
@@ -47,7 +47,7 @@ export default defineEventHandler(async () => [
     IS_SUMMARY: false,
     CUMULATIVE_ISSUES: 9554,
     ISSUES_OPENED: 125,
-    ISSUES_CLOSED: 134
+    ISSUES_CLOSED: 134,
   },
   {
     BUCKET_DT_FROM: '2024-07-01 00:00:00.000 -0700',
@@ -55,7 +55,7 @@ export default defineEventHandler(async () => [
     IS_SUMMARY: false,
     CUMULATIVE_ISSUES: 9711,
     ISSUES_OPENED: 153,
-    ISSUES_CLOSED: 133
+    ISSUES_CLOSED: 133,
   },
   {
     BUCKET_DT_FROM: '2024-08-01 00:00:00.000 -0700',
@@ -63,7 +63,7 @@ export default defineEventHandler(async () => [
     IS_SUMMARY: false,
     CUMULATIVE_ISSUES: 9869,
     ISSUES_OPENED: 157,
-    ISSUES_CLOSED: 140
+    ISSUES_CLOSED: 140,
   },
   {
     BUCKET_DT_FROM: '2024-09-01 00:00:00.000 -0700',
@@ -71,7 +71,7 @@ export default defineEventHandler(async () => [
     IS_SUMMARY: false,
     CUMULATIVE_ISSUES: 9961,
     ISSUES_OPENED: 91,
-    ISSUES_CLOSED: 74
+    ISSUES_CLOSED: 74,
   },
   {
     BUCKET_DT_FROM: '2024-10-01 00:00:00.000 -0700',
@@ -79,7 +79,7 @@ export default defineEventHandler(async () => [
     IS_SUMMARY: false,
     CUMULATIVE_ISSUES: 10100,
     ISSUES_OPENED: 132,
-    ISSUES_CLOSED: 142
+    ISSUES_CLOSED: 142,
   },
   {
     BUCKET_DT_FROM: '2024-11-01 00:00:00.000 -0700',
@@ -87,7 +87,7 @@ export default defineEventHandler(async () => [
     IS_SUMMARY: false,
     CUMULATIVE_ISSUES: 10207,
     ISSUES_OPENED: 102,
-    ISSUES_CLOSED: 88
+    ISSUES_CLOSED: 88,
   },
   {
     BUCKET_DT_FROM: '2024-12-01 00:00:00.000 -0800',
@@ -95,7 +95,7 @@ export default defineEventHandler(async () => [
     IS_SUMMARY: false,
     CUMULATIVE_ISSUES: 10277,
     ISSUES_OPENED: 68,
-    ISSUES_CLOSED: 46
+    ISSUES_CLOSED: 46,
   },
   {
     BUCKET_DT_FROM: '2025-01-01 00:00:00.000 -0800',
@@ -103,6 +103,6 @@ export default defineEventHandler(async () => [
     IS_SUMMARY: false,
     CUMULATIVE_ISSUES: 10277,
     ISSUES_OPENED: 0,
-    ISSUES_CLOSED: 0
-  }
-]);
+    ISSUES_CLOSED: 0,
+  },
+])

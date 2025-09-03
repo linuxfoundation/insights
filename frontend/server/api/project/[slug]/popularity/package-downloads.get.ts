@@ -1,30 +1,26 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { DateTime } from "luxon";
-import { createDataSource } from "~~/server/data/data-sources";
-import type {PackageMetricsFilter} from "~~/server/data/types";
-import {Granularity} from "~~/types/shared/granularity";
+import { DateTime } from 'luxon'
+import { createDataSource } from '~~/server/data/data-sources'
+import type { PackageMetricsFilter } from '~~/server/data/types'
+import { Granularity } from '~~/types/shared/granularity'
 
 export default defineEventHandler(async (event) => {
-  const query = getQuery(event);
+  const query = getQuery(event)
 
-  const project = (event.context.params as { slug: string }).slug;
-  const repos = Array.isArray(query.repos) ? query.repos : query.repos ? [query.repos] : undefined;
+  const project = (event.context.params as { slug: string }).slug
+  const repos = Array.isArray(query.repos) ? query.repos : query.repos ? [query.repos] : undefined
 
   const filter: PackageMetricsFilter = {
     project,
     granularity: query.granularity as Granularity,
     repos,
     ecosystem: query.ecosystem as string,
-    startDate: query.startDate
-      ? DateTime.fromISO(query.startDate as string)
-      : undefined,
-    endDate: query.endDate
-      ? DateTime.fromISO(query.endDate as string)
-      : undefined,
+    startDate: query.startDate ? DateTime.fromISO(query.startDate as string) : undefined,
+    endDate: query.endDate ? DateTime.fromISO(query.endDate as string) : undefined,
     name: query.name as string,
-  };
+  }
 
-  const dataSource = createDataSource();
-  return dataSource.fetchPackageMetrics(filter);
-});
+  const dataSource = createDataSource()
+  return dataSource.fetchPackageMetrics(filter)
+})

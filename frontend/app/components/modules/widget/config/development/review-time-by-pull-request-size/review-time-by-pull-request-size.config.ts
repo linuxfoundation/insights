@@ -13,6 +13,10 @@ const reviewTimeByPullRequestSize: WidgetConfig = {
     share: true,
     embed: true,
     snapshot: true,
+    copilot: {
+        icon: 'code-pull-request',
+        suggestions: 'How long does it take to review a pull request?'
+    },
 }
 
 export default reviewTimeByPullRequestSize;

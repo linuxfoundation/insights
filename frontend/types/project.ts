@@ -18,6 +18,8 @@ export interface Project {
   contributorCount: number;
   organizationCount: number;
   repositories: ProjectRepository[];
+  archivedRepositories: string[];
+  excludedRepositories: string[];
   widgets: string[];
   softwareValue?: number;
   maturityStatus?: string;
@@ -55,6 +57,8 @@ export interface ProjectList {
   repositories: string[];
 }
 
+export type ProjectRepoData = [url: string, score: number, rank: number];
+
 export interface ProjectTinybird {
   id: string;
   name: string;
@@ -65,6 +69,8 @@ export interface ProjectTinybird {
   contributorCount: number;
   organizationCount: number;
   repositories: string[];
+  archivedRepositories: string[];
+  excludedRepositories: string[];
   keywords?: string[];
   website?: string;
   linkedin?: string;
@@ -73,5 +79,5 @@ export interface ProjectTinybird {
   widgets: string[];
   firstCommit?: string;
   connectedPlatforms: string[];
-  repoData: (string | number)[][];
+  repoData: ProjectRepoData[];
 }

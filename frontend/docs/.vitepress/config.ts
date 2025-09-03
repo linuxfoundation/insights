@@ -9,7 +9,9 @@ export default defineConfig({
   title: "LFX Insights Documentation",
   description: "Insights evaluates the health and trustworthiness of the world's most critical open source software.",
   head: [
-    ['link', { rel: 'icon', href: 'https://cdn.platform.linuxfoundation.org/assets/lf-favicon.png' }] // Adjust the path if you use a different favicon format
+    ['link', { rel: 'icon', href: 'https://cdn.platform.linuxfoundation.org/assets/lf-favicon.png' }], // Adjust the path if you use a different favicon format
+    ['script', { src: 'https://kit.fontawesome.com/b5289aebdf.js' }],
+    ['script', { defer: '', 'data-domain': 'insights.linuxfoundation.org', src: 'https://plausible.io/js/script.js' }]
   ],
   vite: {
     resolve: {

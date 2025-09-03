@@ -34,5 +34,5 @@ export default defineEventHandler(async () => [
   { DAY: 0, HOUR: 27, COMMITS: 62 },
   { DAY: 0, HOUR: 28, COMMITS: 47 },
   { DAY: 0, HOUR: 29, COMMITS: 42 },
-  { DAY: 0, HOUR: 30, COMMITS: 48 }
-]);
+  { DAY: 0, HOUR: 30, COMMITS: 48 },
+])

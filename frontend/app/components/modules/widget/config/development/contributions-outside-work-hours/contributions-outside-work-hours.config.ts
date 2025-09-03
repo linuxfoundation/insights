@@ -53,6 +53,10 @@ const contributionsOutsideWorkHours: WidgetConfig = {
       },
     },
   },
+  copilot: {
+    icon: 'people-group',
+    suggestions: 'Show me the contributions outside work hours'
+  }
 }
 
 export default contributionsOutsideWorkHours
