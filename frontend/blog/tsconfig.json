@@ -11,8 +11,13 @@
     "lib": ["ESNext", "DOM"],
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,
-    "types": ["vue/macros-global"]
+    "noEmit": true,
+    "types": ["node"]
   },
-  "include": ["./**/*", ".vitepress/**/*"],
-  "exclude": ["node_modules", "dist"]
+  "include": [
+    ".vitepress/**/*",
+    "**/*.md",
+    "**/*.vue"
+  ],
+  "exclude": ["node_modules", "dist", ".vitepress/dist"]
 }
