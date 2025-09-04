@@ -7,9 +7,9 @@ export default {
   routeRules:
     process.env.NUXT_APP_ENV === 'production'
       ? {
-          '/callback': { redirect: '/' }, // Redirect legacy callback to OIDC callback
-          '/auth/callback': { redirect: '/' }, // Redirect legacy callback to OIDC callback
-          '/auth/auth0/callback': { ssr: true, cache: false }, // Disable SSR for OIDC callback page
+          '/callback': { redirect: '/auth/auth0/callback' }, // Redirect legacy callback to OIDC callback
+          '/auth/callback': { redirect: '/auth/auth0/callback' }, // Redirect legacy callback to OIDC callback
+          '/auth/auth0/callback': { ssr: false, cache: false }, // Disable SSR for OIDC callback page
           '/api/health': { cache: false },
           '/api/chat/**': { cache: false },
           '/api/health/live': { cache: false },
@@ -28,9 +28,9 @@ export default {
           '**': { cache: { maxAge: longCache, base: 'redis' } },
         }
       : {
-          '/callback': { redirect: '/' }, // Redirect legacy callback to OIDC callback
-          '/auth/callback': { redirect: '/' }, // Redirect legacy callback to OIDC callback
-          '/auth/auth0/callback': { ssr: true, cache: false }, // Disable SSR for OIDC callback page in development too
+          '/callback': { redirect: '/auth/auth0/callback' }, // Redirect legacy callback to OIDC callback
+          '/auth/callback': { redirect: '/auth/auth0/callback' }, // Redirect legacy callback to OIDC callback
+          '/auth/auth0/callback': { ssr: false, cache: false }, // Disable SSR for OIDC callback page in development too
         },
   nitro: {
     storage: {
