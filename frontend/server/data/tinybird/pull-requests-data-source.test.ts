@@ -76,28 +76,45 @@ describe('Pull Requests Data Source', () => {
     // The granularity should not be sent in the summary queries, so we remove it here and add it when necessary in
     // the generateQuery function.
     delete filter.granularity;
-    const generateQuery = (activityType: ActivityTypes, isSummary: boolean, dates: DateRange) => ({
+    const generateQuery = (activityTypes: ActivityTypes[], isSummary: boolean, dates: DateRange) => ({
       ...filter,
-      activity_type: activityType,
+      activity_types: activityTypes,
       startDate: dates.from,
       endDate: dates.to,
       ...(!isSummary && {granularity: Granularity.WEEKLY})
     });
 
     // These are the queries the data source should send to Tinybird, in this order.
+    const openedPRsActivities = [
+      ActivityTypes.PULL_REQUEST_OPENED,
+      ActivityTypes.MERGE_REQUEST_OPENED,
+      ActivityTypes.CHANGESET_CREATED
+    ];
+    const mergedPRsActivities = [
+      ActivityTypes.PULL_REQUEST_MERGED,
+      ActivityTypes.MERGE_REQUEST_MERGED,
+      ActivityTypes.CHANGESET_MERGED
+    ];
+    const closedPRsActivities = [
+      ActivityTypes.PULL_REQUEST_CLOSED,
+      ActivityTypes.MERGE_REQUEST_CLOSED,
+      ActivityTypes.CHANGESET_CLOSED,
+      ActivityTypes.CHANGESET_ABANDONED
+    ];
+
     const expectedQueries = [
       // Summaries
-      generateQuery(ActivityTypes.PULL_REQUEST_OPENED, true, dates.current),
-      generateQuery(ActivityTypes.PULL_REQUEST_OPENED, true, dates.previous),
-      generateQuery(ActivityTypes.PULL_REQUEST_MERGED, true, dates.current),
-      generateQuery(ActivityTypes.PULL_REQUEST_MERGED, true, dates.previous),
-      generateQuery(ActivityTypes.PULL_REQUEST_CLOSED, true, dates.current),
-      generateQuery(ActivityTypes.PULL_REQUEST_CLOSED, true, dates.previous),
+      generateQuery(openedPRsActivities, true, dates.current),
+      generateQuery(openedPRsActivities, true, dates.previous),
+      generateQuery(mergedPRsActivities, true, dates.current),
+      generateQuery(mergedPRsActivities, true, dates.previous),
+      generateQuery(closedPRsActivities, true, dates.current),
+      generateQuery(closedPRsActivities, true, dates.previous),
 
       // Time series data
-      generateQuery(ActivityTypes.PULL_REQUEST_OPENED, false, dates.current),
-      generateQuery(ActivityTypes.PULL_REQUEST_MERGED, false, dates.current),
-      generateQuery(ActivityTypes.PULL_REQUEST_CLOSED, false, dates.current),
+      generateQuery(openedPRsActivities, false, dates.current),
+      generateQuery(mergedPRsActivities, false, dates.current),
+      generateQuery(closedPRsActivities, false, dates.current),
 
       // Pull request resolution velocity
       {

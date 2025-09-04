@@ -52,6 +52,10 @@ export enum ActivityTypes {
   MERGE_REQUEST_REVIEW_THREAD_COMMENT = 'merge_request-review-thread-comment',
   MERGE_REQUEST_MERGED = 'merge_request-merged',
   MERGE_REQUEST_COMMENT = 'merge_request-comment',
+  MERGE_REQUEST_REVIEW_REQUESTED = 'merge_request-review-requested',
+  MERGE_REQUEST_REVIEW_APPROVED = 'merge_request-review-approved',
+  MERGE_REQUEST_REVIEW_CHANGES_REQUESTED = 'merge_request-review-changes-requested',
+  MERGE_REQUEST_ASSIGNED = 'merge_request-assigned',
 
   // The ones below are for GroupsIO
   MESSAGE = 'message',
