@@ -40,7 +40,8 @@ export default defineConfig({
       {
         text: 'Blog',
         items: [
-          { text: 'Introducing Insights', link: '/introducing-insights/index.md' },
+          { text: 'The First 3 Months of Insights', link: '/posts/tinybird/first-3-months.md' },
+          { text: 'Introducing Insights', link: '/introducing-insights/index.md' }       
         ]
       },
     ],
