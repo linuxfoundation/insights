@@ -6,6 +6,7 @@
 import { z } from 'zod'
 import { generateText } from 'ai'
 import { extractJSON } from 'extract-first-json'
+import type { ChatMessage } from '../types'
 
 export abstract class BaseAgent<TInput, TOutput> {
   abstract readonly name: string
@@ -13,28 +14,15 @@ export abstract class BaseAgent<TInput, TOutput> {
   abstract readonly temperature: number
   abstract readonly maxSteps: number
 
-  protected generateConversationHistoryReceipt(input: TInput): string {
-    try {
-      const conversationHistory = this.getConversationHistory(input)
-      
-      if (!conversationHistory || conversationHistory.trim() === '') {
-        return ''
-      }
-
-      return `
-      
-      ## CONVERSATION HISTORY (FOR CONTEXT ONLY)
-
-      The following is the conversation history leading up to the current question. \n\n
-      Use this ONLY for context and understanding. Do NOT attempt to answer previous questions.
-
-      ${conversationHistory}
-
-      ## END OF CONVERSATION HISTORY`
-    } catch (error) {
-      console.error('Error generating conversation history context', error)
-      return ''
+  protected getConversationHistory<T extends object>(
+    input: { messages: ChatMessage[] } & T,
+  ): string {
+    const userMessages = input.messages.filter((m) => m.role === 'user')
+    if (userMessages.length > 1) {
+      return JSON.stringify(userMessages.slice(0, -1), null, 2)
     }
+
+    return ''
   }
 
   /**
@@ -116,7 +104,7 @@ export abstract class BaseAgent<TInput, TOutput> {
       const fullSystemPrompt = conversationHistoryReceipt + systemPrompt + jsonInstructions
 
       // Check if we have messages in the input
-       
+
       const hasMessages =
         typeof input === 'object' &&
         input !== null &&
@@ -139,12 +127,9 @@ export abstract class BaseAgent<TInput, TOutput> {
 
       // Use messages if available, otherwise use prompt
       if (hasMessages) {
-        generateConfig.messages = (input as any).messages
-                                                .filter((msg: any) => 
-                                                  msg.content && 
-                                                  msg.content.trim() !== '' && 
-                                                  msg.role === 'user'
-                                                )
+        generateConfig.messages = (input as any).messages.filter(
+          (msg: any) => msg.content && msg.content.trim() !== '' && msg.role === 'user',
+        )
         generateConfig.messages = generateConfig.messages.slice(-1)
       } else {
         generateConfig.prompt = userPrompt
@@ -208,7 +193,7 @@ export abstract class BaseAgent<TInput, TOutput> {
   protected abstract getModel(input: TInput): any
   protected abstract getSystemPrompt(input: TInput): string | Promise<string>
   protected abstract getUserPrompt(input: TInput): string
-  protected abstract getConversationHistory(input: TInput): string
+  protected abstract generateConversationHistoryReceipt(input: TInput): string
   protected abstract getTools(input: TInput): Record<string, any>
   protected abstract createError(error: unknown): Error
 

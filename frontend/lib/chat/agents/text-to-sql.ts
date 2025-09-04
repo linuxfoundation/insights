@@ -75,12 +75,7 @@ export class TextToSqlAgent extends BaseAgent<TextToSqlAgentInput, SqlOutput> {
     }
   }
 
-  protected override getConversationHistory(input: TextToSqlAgentInput) {
-    const userMessages = input.messages.filter((m) => m.role === 'user')
-    if (userMessages.length > 1) {
-      return JSON.stringify(userMessages.slice(0, -1), null, 2)
-    }
-
+  protected generateConversationHistoryReceipt(_input: TextToSqlAgentInput): string {
     return ''
   }
 

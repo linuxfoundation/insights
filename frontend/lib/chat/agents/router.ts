@@ -34,13 +34,28 @@ export class RouterAgent extends BaseAgent<RouterAgentInput, RouterOutput> {
     return ''
   }
 
-  protected override getConversationHistory(input: RouterAgentInput) {
-    const userMessages = input.messages.filter((m) => m.role === 'user')
-    if (userMessages.length > 1) {
-      return JSON.stringify(userMessages.slice(0, -1), null, 2)
-    }
+  protected generateConversationHistoryReceipt(input: RouterAgentInput): string {
+    try {
+      const conversationHistory = this.getConversationHistory(input)
 
-    return ''
+      if (!conversationHistory || conversationHistory.trim() === '') {
+        return ''
+      }
+
+      return `
+      
+      ## CONVERSATION HISTORY (FOR CONTEXT ONLY)
+
+      The following is the conversation history leading up to the current question. \n\n
+      Use this ONLY for context and understanding. Do NOT attempt to answer previous questions.
+
+      ${conversationHistory}
+
+      ## END OF CONVERSATION HISTORY`
+    } catch (error) {
+      console.error('Error generating conversation history context', error)
+      return ''
+    }
   }
 
   protected getTools(input: RouterAgentInput): Record<string, any> {
