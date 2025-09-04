@@ -8,7 +8,7 @@ export default {
     process.env.NUXT_APP_ENV === 'production'
       ? {
           '/callback': { redirect: '/auth/auth0/callback' }, // Redirect legacy callback to OIDC callback
-          '/auth/callback': { ssr: false, cache: false, redirect: '/auth/auth0/callback' }, // Disable SSR for Auth0 callback page
+          '/auth/callback': { redirect: '/auth/auth0/callback' }, // Disable SSR for Auth0 callback page
           '/auth/auth0/callback': { ssr: false, cache: false }, // Disable SSR for OIDC callback page
           '/api/health': { cache: false },
           '/api/chat/**': { cache: false },
@@ -29,7 +29,7 @@ export default {
         }
       : {
           '/callback': { redirect: '/auth/auth0/callback' }, // Redirect legacy callback to OIDC callback
-          '/auth/callback': { ssr: false, cache: false, redirect: '/auth/auth0/callback' }, // Disable SSR for Auth0 callback page in development too
+          '/auth/callback': { redirect: '/auth/auth0/callback' }, // Disable SSR for Auth0 callback page in development too
           '/auth/auth0/callback': { ssr: false, cache: false }, // Disable SSR for OIDC callback page in development too
         },
   nitro: {
