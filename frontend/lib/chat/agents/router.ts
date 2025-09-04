@@ -34,6 +34,15 @@ export class RouterAgent extends BaseAgent<RouterAgentInput, RouterOutput> {
     return ''
   }
 
+  protected override getConversationHistory(input: RouterAgentInput) {
+    const userMessages = input.messages.filter((m) => m.role === 'user')
+    if (userMessages.length > 1) {
+      return JSON.stringify(userMessages.slice(0, -1), null, 2)
+    }
+
+    return ''
+  }
+
   protected getTools(input: RouterAgentInput): Record<string, any> {
     // Only allow calling list_datasources; all other tools remain visible in prompt via toolsOverview
     const allowed: Record<string, any> = {}

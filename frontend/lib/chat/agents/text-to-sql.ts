@@ -75,6 +75,15 @@ export class TextToSqlAgent extends BaseAgent<TextToSqlAgentInput, SqlOutput> {
     }
   }
 
+  protected override getConversationHistory(input: TextToSqlAgentInput) {
+    const userMessages = input.messages.filter((m) => m.role === 'user')
+    if (userMessages.length > 1) {
+      return JSON.stringify(userMessages.slice(0, -1), null, 2)
+    }
+
+    return ''
+  }
+
   protected override shouldMonitorToolCalls(_input: TextToSqlAgentInput): boolean {
     return true // Enable tool call monitoring for SQL agent
   }

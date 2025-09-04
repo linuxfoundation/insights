@@ -220,7 +220,7 @@ class CopilotApiService {
                 role: 'assistant',
                 type: 'router-status',
                 status: data.status,
-                content: data.reasoning,
+                content: data.reasoning || '',
                 explanation: data.status === 'error' ? data.error : undefined,
                 timestamp: Date.now()
               }, -1);

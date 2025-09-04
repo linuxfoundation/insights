@@ -39,6 +39,15 @@ export class PipeAgent extends BaseAgent<PipeAgentInput, PipeOutput> {
   protected getTools(input: PipeAgentInput): Record<string, any> {
     return input.tools
   }
+  
+  protected override getConversationHistory(input: PipeAgentInput) {
+    const userMessages = input.messages.filter((m) => m.role === 'user')
+    if (userMessages.length > 1) {
+      return JSON.stringify(userMessages.slice(0, -1), null, 2)
+    }
+
+    return ''
+  }
 
   protected createError(error: unknown): Error {
     if (error instanceof Error) {
