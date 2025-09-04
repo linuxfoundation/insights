@@ -7,7 +7,6 @@ SPDX-License-Identifier: MIT
     class="container pt-10"
   >
     <lfx-accordion
-      v-if="data"
       v-model="accordion"
       class="shadow-sm rounded-lg overflow-hidden bg-white"
     >

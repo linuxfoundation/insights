@@ -7,7 +7,6 @@ SPDX-License-Identifier: MIT
     class="container pt-10"
   >
     <lfx-accordion
-      v-if="data"
       v-model="groups"
       class="flex flex-col gap-5"
     >
@@ -63,6 +62,13 @@ SPDX-License-Identifier: MIT
           </div>
         </template>
       </lfx-accordion-item>
+      <template v-if="isFetching">
+        <lfx-skeleton
+          v-for="i in 10"
+          :key="i"
+          class="!w-full !h-16 rounded-lg"
+        />
+      </template>
     </lfx-accordion>
   </div>
 </template>
@@ -76,6 +82,7 @@ import LfxAccordionItem from "~/components/uikit/accordion/accordion-item.vue";
 import {formatNumber, formatNumberShort} from "~/components/shared/utils/formatter";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
 import LfxOsiListCollections from "~/components/modules/open-source-index/components/list/osi-list-collections.vue";
+import LfxSkeleton from "~/components/uikit/skeleton/skeleton.vue";
 
 const props = defineProps<{
   type: string;
@@ -89,6 +96,7 @@ const groups = ref('');
 
 const {
   data,
+    isFetching,
   suspense
 } = OSS_INDEX_API_SERVICE.fetchOSSGroup(type, sort);
 
