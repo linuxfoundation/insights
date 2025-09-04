@@ -7,8 +7,8 @@ export default {
   routeRules:
     process.env.NUXT_APP_ENV === 'production'
       ? {
-          '/callback': { redirect: '/auth/auth0/callback' }, // Redirect legacy callback to OIDC callback
-          '/auth/callback': { redirect: '/auth/auth0/callback' }, // Redirect legacy callback to OIDC callback
+          // '/callback': { redirect: '/auth/auth0/callback' }, // Redirect legacy callback to OIDC callback
+          // '/auth/callback': { redirect: '/auth/auth0/callback' }, // Redirect legacy callback to OIDC callback
           // '/auth/callback': { ssr: false, cache: false }, // Disable SSR for Auth0 callback page
           // '/auth/auth0/callback': { ssr: false, cache: false }, // Disable SSR for OIDC callback page
           '/api/health': { cache: false },
@@ -29,8 +29,8 @@ export default {
           '**': { cache: { maxAge: longCache, base: 'redis' } },
         }
       : {
-          '/callback': { redirect: '/auth/auth0/callback' }, // Redirect legacy callback to OIDC callback
-          '/auth/callback': { redirect: '/auth/auth0/callback' }, // Redirect legacy callback to OIDC callback
+          // '/callback': { redirect: '/auth/auth0/callback' }, // Redirect legacy callback to OIDC callback
+          // '/auth/callback': { redirect: '/auth/auth0/callback' }, // Redirect legacy callback to OIDC callback
           // '/auth/callback': { ssr: false, cache: false }, // Disable SSR for Auth0 callback page in development too
           // '/auth/auth0/callback': { ssr: false, cache: false }, // Disable SSR for OIDC callback page in development too
         },
