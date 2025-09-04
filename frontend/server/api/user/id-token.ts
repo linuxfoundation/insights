@@ -2,17 +2,7 @@
 // SPDX-License-Identifier: MIT
 
 import { getUserSession } from 'nuxt-oidc-auth/runtime/server/utils/session.js'
-
-// interface OidcSession {
-//   loggedIn: boolean
-//   idToken?: string
-//   user?: {
-//     sub?: string
-//     email?: string
-//     name?: string
-//     picture?: string
-//   }
-// }
+import { OidcSession } from '~~/types/session'
 
 export default defineEventHandler(async (event) => {
   try {
@@ -28,13 +18,13 @@ export default defineEventHandler(async (event) => {
     }
 
     // Check if idToken is available
-    // if (!session.idToken) {
-    //   throw createError({
-    //     statusCode: 404,
-    //     statusMessage:
-    //       'ID token not available. Make sure exposeIdToken is enabled in OIDC configuration.',
-    //   })
-    // }
+    if (!session.idToken) {
+      throw createError({
+        statusCode: 404,
+        statusMessage:
+          'ID token not available. Make sure exposeIdToken is enabled in OIDC configuration.',
+      })
+    }
 
     // Return the ID token and available session info
     return {
@@ -42,7 +32,7 @@ export default defineEventHandler(async (event) => {
       loggedInAt: session.loggedInAt,
       // Include any additional user info that might be in the session
       sessionInfo: Object.keys(session).filter((key) => !['idToken', 'loggedInAt'].includes(key)),
-    }
+    } as OidcSession
   } catch (error: unknown) {
     console.error('Error fetching ID token:', error)
 
