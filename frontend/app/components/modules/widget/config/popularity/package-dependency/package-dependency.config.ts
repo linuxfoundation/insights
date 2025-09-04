@@ -8,7 +8,7 @@ const packageDependency: WidgetConfig = {
   name: 'Package dependency',
   description: () => `Amount of packages, repositories, and Docker packages that rely on the 
     selected package(s) during the selected period. 
-    <span class="font-semibold italic text-neutral-600">Powered by Ecosyste.ms.</span>`,
+    <span class="font-semibold italic text-neutral-600">Data source: ecosyste.ms (<a href="https://creativecommons.org/licenses/by-sa/4.0/">CC-BY-SA</a>)</span>`,
   learnMoreLink: `/docs/metrics/popularity#package-dependency`,
   component: PackageDependency,
   defaultValue: {
