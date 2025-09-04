@@ -14,7 +14,7 @@ At the end of May 2025, we relaunched **LFX Insights** with a focus on measuring
 While Insights isn’t entirely new, the relaunch marked a major step forward. We introduced:  
 
 - A [completely revamped app](https://insights.linuxfoundation.org/)  
-- An [open source codebase](github.com/linuxfoundation/insights)
+- An [open source codebase](https://github.com/linuxfoundation/insights)
 - Support for projects outside of the Linux Foundation (“non-LF projects”)  
 
 ## Insights' Growth in Numbers  
@@ -34,17 +34,17 @@ The feedback we have received is overwhelmingy positive. And we can also see the
 
 These engagement numbers show that people don't just visit Insights, they dive deep.  
 
-![Stats for of Insights users](/blog/images/plausible-analytics-stats.png)  
+![Stats for of Insights users](/images/plausible-analytics-stats.png)  
 
 Geographically, most users come from the **United States, India, and Germany**.
 
-![Geographic distribution of Insights users](/blog/images/plausible-analytics-countries.png)  
+![Geographic distribution of Insights users](/images/plausible-analytics-countries.png)  
 
 ## Adoption Across Communities  
 
 A big milestone was the adoption of our new **Health Score**. Communities are already adding the Health Score badge to their repositories. Among them are well-known projects such as [Helm](https://github.com/helm/helm), [Laravel](https://github.com/laravel/framework), [Matplotlib](https://github.com/matplotlib/matplotlib), [OpenSearch](https://github.com/opensearch-project/OpenSearch), and [Bazzite](https://github.com/ublue-os/bazzite).  
 
-![Health score in Readme's](/blog/images/health-score-readmes.png)  
+![Health score in Readme's](/images/health-score-readmes.png)  
 
 These projects are helping set a standard for transparent health metrics in open source.
 

@@ -1,10 +1,10 @@
 ---
+title: "Introducing Insights"
+description: "The Linux Foundation's platform for understanding open source project health"
 authorName: "Jonathan Reimer"
 authorImage: "/blog/images/jonathan-headshot-2025.png"
 authorCompany: "The Linux Foundation"
 datePublished: "2025-06-01"
-title: "Introducing Insights"
-description: "The Linux Foundation's platform for understanding open source project health"
 ---
 
 # Introducing Insights
@@ -33,7 +33,6 @@ Insights was relaunched in May 2025 with a focus on clarity, transparency, and u
 - Expand coverage to the Top 10,000 most critical projects across ecosystems.
 - Improve metrics with input from maintainers, contributors, and end users.
 - Add more features that make Insights more actionable — from maintainer recommendations to side-by-side project comparisons.
-
 
 Our vision is to make Insights the go-to platform for evaluating open source health - not just for Linux Foundation projects, but for the ecosystem as a whole.
 
