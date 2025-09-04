@@ -5,11 +5,36 @@ SPDX-License-Identifier: MIT
 <template>
   <LfxOSIHeader
     v-model:sort="sort"
+    v-model:view="view"
+    v-model:type="type"
   >
-    <div>
-      <h1 class="text-heading-1 font-bold pb-2 font-secondary">
-        {{ data?.name }}
-      </h1>
+    <div class="flex items-center">
+      <router-link
+        :to="{
+          name: LfxRoutes.OPENSOURCEINDEX,
+          query: {
+            sort,
+            view: 'distribution',
+            type: data?.type
+          }
+        }"
+      >
+        <lfx-icon-button
+          icon="angle-left"
+          type="transparent"
+        />
+      </router-link>
+      <div
+        v-if="data"
+        class="pl-5"
+      >
+        <p class="text-xs text-neutral-500">
+          {{ data?.type === 'horizontal' ? 'Stack' : 'Industry' }}
+        </p>
+        <h3 class="text-heading-3 font-bold font-secondary">
+          {{ data?.name }}
+        </h3>
+      </div>
     </div>
   </LfxOSIHeader>
 
@@ -29,15 +54,19 @@ import {
 } from 'vue';
 import { useRoute } from 'vue-router';
 import LfxOSIHeader from '../components/osi-header.vue';
-import { OSS_INDEX_API_SERVICE, type SortType} from '../services/osi.api.service';
+import {type OSIType, OSS_INDEX_API_SERVICE, type SortType} from '../services/osi.api.service';
 import LfxOsiDistribution from "~/components/modules/open-source-index/components/osi-distribution.vue";
 import type {TreeMapData} from "~/components/uikit/chart/types/ChartTypes";
+import LfxIconButton from "~/components/uikit/icon-button/icon-button.vue";
+import {LfxRoutes} from "~/components/shared/types/routes";
 
 const route = useRoute();
 
 const slug = ref<string>(route.params.slug as string || '');
 
 const sort = ref<SortType>(route.query.sort as SortType || 'totalContributors');
+const view = ref<string>(route.query.view as string || 'distribution');
+const type = ref<OSIType>(route.query.type as OSIType || 'horizontal');
 
 const {
   data,

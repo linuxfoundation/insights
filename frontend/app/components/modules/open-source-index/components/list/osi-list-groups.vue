@@ -58,6 +58,7 @@ SPDX-License-Identifier: MIT
               class="!pt-0 !px-0 !pb-0"
               :hide-pagination="true"
               :page-size="5"
+              :is-sub="true"
             />
           </div>
         </template>

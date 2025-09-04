@@ -7,17 +7,7 @@ SPDX-License-Identifier: MIT
     v-model:type="type"
     v-model:sort="sort"
     v-model:view="view"
-  >
-    <div>
-      <h1 class="text-heading-1 font-bold pb-2 font-secondary">
-        Open Source Index
-      </h1>
-      <p class="text-body-1 text-neutral-500">
-        Curated list of the most critical open source projects powering our modern digital
-        infrastructure, measured by contributor volume and software value
-      </p>
-    </div>
-  </LfxOSIHeader>
+  />
 
   <!-- Distribution -->
   <lfx-osi-distribution

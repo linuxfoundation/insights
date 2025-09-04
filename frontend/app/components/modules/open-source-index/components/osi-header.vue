@@ -7,7 +7,15 @@ SPDX-License-Identifier: MIT
     <section class="container py-6">
       <div class="flex flex-col lg:flex-row items-start lg:items-end gap-4 lg:gap-12">
         <div class="flex flex-row gap-5 flex-grow items-end">
-          <slot />
+          <div>
+            <h1 class="text-heading-1 font-bold pb-2 font-secondary">
+              Open Source Index
+            </h1>
+            <p class="text-body-1 text-neutral-500">
+              Curated list of the most critical open source projects powering our modern digital
+              infrastructure, measured by contributor volume and software value
+            </p>
+          </div>
         </div>
         <div
           class="lg:flex hidden items-end gap-4 justify-end"
@@ -42,37 +50,39 @@ SPDX-License-Identifier: MIT
       </div>
     </section>
     <section class="container border-t border-t-neutral-100 py-4 flex justify-between items-center">
-      <div class="flex items-center gap-4">
-        <lfx-menu-button
-          v-if="view == 'list'"
-          :active="type === 'projects'"
-          @click="type = 'projects'"
-        >
-          All projects
-        </lfx-menu-button>
-        <lfx-menu-button
-          v-if="view == 'list'"
-          :active="type === 'collections'"
-          @click="type = 'collections'"
-        >
-          <lfx-icon name="rectangle-history" />
-          Collections
-        </lfx-menu-button>
-        <lfx-menu-button
-          :active="type === 'horizontal'"
-          @click="type = 'horizontal'"
-        >
-          <lfx-icon name="layer-group" />
-          Stacks
-        </lfx-menu-button>
-        <lfx-menu-button
-          :active="type === 'vertical'"
-          @click="type = 'vertical'"
-        >
-          <lfx-icon name="buildings" />
-          Industries
-        </lfx-menu-button>
-      </div>
+      <slot>
+        <div class="flex items-center gap-4">
+          <lfx-menu-button
+            v-if="view == 'list'"
+            :active="type === 'projects'"
+            @click="type = 'projects'"
+          >
+            All projects
+          </lfx-menu-button>
+          <lfx-menu-button
+            v-if="view == 'list'"
+            :active="type === 'collections'"
+            @click="type = 'collections'"
+          >
+            <lfx-icon name="rectangle-history" />
+            Collections
+          </lfx-menu-button>
+          <lfx-menu-button
+            :active="type === 'horizontal'"
+            @click="type = 'horizontal'"
+          >
+            <lfx-icon name="layer-group" />
+            Stacks
+          </lfx-menu-button>
+          <lfx-menu-button
+            :active="type === 'vertical'"
+            @click="type = 'vertical'"
+          >
+            <lfx-icon name="buildings" />
+            Industries
+          </lfx-menu-button>
+        </div>
+      </slot>
 
       <lfx-dropdown-select
         v-model="sort"
@@ -128,6 +138,7 @@ import LfxTabs from "~/components/uikit/tabs/tabs.vue";
 import {useShareStore} from "~/components/shared/modules/share/store/share.store";
 import LfxMenuButton from "~/components/uikit/menu-button/menu-button.vue";
 import LfxButton from "~/components/uikit/button/button.vue";
+import {LfxRoutes} from "~/components/shared/types/routes";
 
 const props = defineProps<{
   type?: string;
@@ -211,6 +222,7 @@ watch(view, (newVal) => {
   if (newVal) {
     router.replace({
       ...route,
+      name: LfxRoutes.OPENSOURCEINDEX,
       query: {
         ...route.query,
         view: newVal

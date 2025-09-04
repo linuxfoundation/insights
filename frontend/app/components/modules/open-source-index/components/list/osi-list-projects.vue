@@ -6,7 +6,7 @@ SPDX-License-Identifier: MIT
   <div
     class="container pt-10"
   >
-    <lfx-table v-if="data">
+    <lfx-table>
 
       <!-- Head -->
       <thead>
@@ -86,21 +86,45 @@ SPDX-License-Identifier: MIT
             <span v-else>-</span>
           </td>
         </tr>
+        <template v-if="isFetching">
+          <tr
+            v-for="i in pageSize"
+            :key="i"
+          >
+            <td class="w-7/12">
+              <div class="flex items-center gap-4">
+                <lfx-skeleton class="!w-12 !min-w-12 !h-12 rounded-sm" />
+                <lfx-skeleton class="!h-6 !w-10/12" />
+              </div>
+            </td>
+            <td>
+              <lfx-skeleton class="!h-6 !w-25" />
+            </td>
+            <td>
+              <lfx-skeleton class="!h-6 !w-25" />
+            </td>
+            <td>
+              <lfx-skeleton class="!h-6 !w-25" />
+            </td>
+          </tr>
+        </template>
+        <tr v-if="hasNextPage">
+          <td colspan="4">
+            <div class="flex justify-center py-8">
+              <lfx-button
+                size="large"
+                class="!rounded-full"
+                type="transparent"
+                :loading="isFetchingNextPage"
+                @click="loadMore"
+              >
+                Load more
+              </lfx-button>
+            </div>
+          </td>
+        </tr>
       </tbody>
     </lfx-table>
-    <div
-      v-if="hasNextPage"
-      class="py-5 lg:py-10 flex justify-center"
-    >
-      <lfx-button
-        size="large"
-        class="!rounded-full"
-        :loading="isFetchingNextPage"
-        @click="loadMore"
-      >
-        Load more
-      </lfx-button>
-    </div>
   </div>
 </template>
 
@@ -121,6 +145,7 @@ import {formatNumber, formatNumberShort} from "~/components/shared/utils/formatt
 import LfxHealthScore from "~/components/shared/components/health-score.vue";
 import {LfxRoutes} from "~/components/shared/types/routes";
 import LfxButton from "~/components/uikit/button/button.vue";
+import LfxSkeleton from "~/components/uikit/skeleton/skeleton.vue";
 
 const props = defineProps<{
   sort: string;
@@ -147,6 +172,7 @@ const {
   fetchNextPage,
   hasNextPage,
   suspense,
+  isFetching
 } = useInfiniteQuery<Pagination<Project>>({
   queryKey,
   queryFn: PROJECT_API_SERVICE.fetchProjects(() => ({

@@ -9,13 +9,15 @@ SPDX-License-Identifier: MIT
     <lfx-accordion
       v-if="data"
       v-model="accordion"
+      class="shadow-sm rounded-lg overflow-hidden bg-white"
     >
       <lfx-accordion-item
         v-for="collection of data?.pages.flatMap(p => p.collections)"
         :key="collection.id"
         :reverse="true"
         :name="collection.id"
-        class="bg-white px-6 hover:bg-neutral-50 border-b border-neutral-100"
+        class="bg-white pr-6 hover:bg-neutral-50 border-b border-neutral-100"
+        :class="props.isSub ? 'pl-14' : 'pl-6'"
       >
         <div class="flex justify-between py-4">
           <p class="text-base font-semibold">
@@ -58,7 +60,10 @@ SPDX-License-Identifier: MIT
           </div>
         </div>
         <template #content>
-          <div class="border-t border-neutral-100 bg-white -mr-6 -ml-14">
+          <div
+            class="border-t border-neutral-100 bg-white -mr-6"
+            :class="props.isSub ? '-ml-22' : '-ml-14'"
+          >
             <lfx-table class="!shadow-none !rounded-none">
               <!-- Head -->
               <thead>
@@ -137,20 +142,36 @@ SPDX-License-Identifier: MIT
           </div>
         </template>
       </lfx-accordion-item>
-    </lfx-accordion>
-    <div
-      v-if="hasNextPage && !props.hidePagination"
-      class="py-5 lg:py-10 flex justify-center"
-    >
-      <lfx-button
-        size="large"
-        class="!rounded-full"
-        :loading="isFetchingNextPage"
-        @click="loadMore"
+      <template v-if="isFetching">
+        <div
+          v-for="i in pageSize"
+          :key="i"
+          class="flex justify-between bg-white border-b border-neutral-100 p-6"
+        >
+          <lfx-skeleton class="!h-4 !w-4/12 rounded-sm" />
+          <div class="flex items-center gap-4">
+
+            <lfx-skeleton class="!h-4 !w-25 rounded-sm" />
+            <lfx-skeleton class="!h-4 !w-25 rounded-sm" />
+            <lfx-skeleton class="!h-4 !w-25 rounded-sm" />
+          </div>
+        </div>
+      </template>
+      <div
+        v-if="hasNextPage && !props.hidePagination"
+        class="py-8 flex justify-center"
       >
-        Load more
-      </lfx-button>
-    </div>
+        <lfx-button
+          size="large"
+          type="transparent"
+          class="!rounded-full"
+          :loading="isFetchingNextPage"
+          @click="loadMore"
+        >
+          Load more
+        </lfx-button>
+      </div>
+    </lfx-accordion>
   </div>
 </template>
 
@@ -170,18 +191,20 @@ import {TanstackKey} from "~/components/shared/types/tanstack";
 import {OSS_INDEX_API_SERVICE} from "~/components/modules/open-source-index/services/osi.api.service";
 import LfxButton from "~/components/uikit/button/button.vue";
 import type {OSSIndexCategoryDetails} from "~~/types/ossindex/category";
+import LfxSkeleton from "~/components/uikit/skeleton/skeleton.vue";
 
 const props = withDefaults(defineProps<{
   sort: string;
   categoryGroupId?: string;
   hidePagination?: boolean;
   pageSize?: number
+  isSub?: boolean
 }>(), {
   hidePagination: false,
   categoryGroupId: undefined,
-  pageSize: 20
+  pageSize: 20,
+  isSub: false,
 })
-
 
 const sort = computed(() => props.sort || 'totalContributors');
 
@@ -189,7 +212,8 @@ const accordion = ref<string>('');
 
 const router = useRouter()
 
-const queryKey = computed(() => [TanstackKey.OSS_INDEX_COLLECTIONS_LIST, sort.value, props.pageSize])
+const queryKey = computed(() => [TanstackKey.OSS_INDEX_COLLECTIONS_LIST, sort.value, props.pageSize,
+  props.categoryGroupId])
 
 const {
   data,
@@ -197,6 +221,7 @@ const {
   fetchNextPage,
   hasNextPage,
   suspense,
+    isFetching,
 } = useInfiniteQuery<OSSIndexCategoryDetails>({
   queryKey,
   queryFn: OSS_INDEX_API_SERVICE.ossCollectionQueryFn(() => ({
