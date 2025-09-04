@@ -116,18 +116,11 @@ export default defineNuxtConfig({
         authenticationScheme: 'body',
         pkce: false, // Try without PKCE first
         skipAccessTokenParsing: true, // Skip parsing to avoid errors
-        validateAccessToken: false, // Disable validation temporarily
-        validateIdToken: false, // Disable validation temporarily
+        validateAccessToken: false,
+        validateIdToken: false,
+        exposeIdToken: true, // Enable ID token exposure for server-side access
       },
     },
-  },
-  auth0: {
-    audience: '', // In case you need access to an API registered in Auth0
-    redirectUri: '',
-    baseUrl: '', // For example https://dev-xyz.eu.auth0.com or leave blank for environment
-    clientId: '', // Leave blank to use environment variable
-    clientSecret: '', // Leave blank to use environment variable
-    scope: ['openid', 'offline_access', 'profile', 'email'],
   },
   ...caching,
 })

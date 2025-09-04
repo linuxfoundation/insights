@@ -11,14 +11,8 @@ SPDX-License-Identifier: MIT
       <lfx-button
         type="transparent"
         class="!rounded-full text-nowrap !text-brand-500"
-        :disabled="isLoading"
       >
         My account
-        <lfx-icon
-          v-if="isLoading"
-          name="spinner-third"
-          class="animate-spin mr-2"
-        />
       </lfx-button>
     </a>
     <lfx-popover
@@ -68,12 +62,9 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { storeToRefs } from 'pinia';
+// import { storeToRefs } from 'pinia';
 import { ref, computed, watch } from 'vue';
-
-import { useRuntimeConfig } from 'nuxt/app';
-// @ts-ignore - useOidcAuth should be auto-imported by nuxt-oidc-auth module
-import { useAuthStore } from '../store/auth.store';
+// import { useAuthStore } from '../store/auth.store';
 import LfxButton from '~/components/uikit/button/button.vue';
 import LfxAvatar from "~/components/uikit/avatar/avatar.vue";
 import LfxPopover from "~/components/uikit/popover/popover.vue";
@@ -81,31 +72,30 @@ import LfxMenuButton from "~/components/uikit/menu-button/menu-button.vue";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
 import { links } from '~/config/links';
 
-// const { loginWithRedirect, logout, isAuthenticated, idTokenClaims, isLoading } = useAuth0();
-const { token } = storeToRefs(useAuthStore());
+// const { token } = storeToRefs(useAuthStore());
 
-// @ts-ignore - useOidcAuth is auto-imported by nuxt-oidc-auth module
-const { loggedIn, user, login, logout } = useOidcAuth()
+const { loggedIn, logout } = useOidcAuth()
 
 // Use OIDC auth state instead of hardcoded values
-const isLoading = ref(false);
 const isAuthenticated = computed(() => loggedIn.value);
 
 const isOpen = ref(false);
-
-// const login = async () => {
-//   const redirectTo = window.location.pathname + window.location.search + window.location.hash;
-//   // loginWithRedirect({
-//   //   appState: {
-//   //     target: redirectTo
-//   //   },
-//   // })
-// };
 
 const logoutHandler = async () => {
   await logout();
 };
 
+const asyncToken = async () => {
+  const idToken = await $fetch('/api/user/id-token');
+  console.log('idToken', idToken);
+}
+
+watch(loggedIn, (newVal) => {
+  // console.log('newVal', newVal);
+  if (newVal) {
+    asyncToken();
+  }
+}, { immediate: true });
 // watch([isAuthenticated, idTokenClaims], ([newAuthVal, newIdTokenClaims]) => {
 //   if (newAuthVal && newIdTokenClaims) {
 //     try {
