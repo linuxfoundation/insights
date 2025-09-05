@@ -9,11 +9,6 @@ import echarts from './setup/echarts'
 import caching from './setup/caching'
 
 const isProduction = process.env.NUXT_APP_ENV === 'production'
-
-console.log(
-  'process.env.NUXT_OIDC_PROVIDERS_AUTH0_BASE_URL',
-  process.env.NUXT_OIDC_PROVIDERS_AUTH0_BASE_URL,
-)
 export default defineNuxtConfig({
   future: {
     compatibilityVersion: 4,
