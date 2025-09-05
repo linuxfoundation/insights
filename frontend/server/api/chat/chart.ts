@@ -12,6 +12,7 @@ interface IChartRequestBody {
   currentConfig?: Config
   instructions?: string
   pipeInstructions?: PipeInstructions
+  routerReasoning?: string
 }
 
 interface ChartConfigResponse {
@@ -24,7 +25,7 @@ interface ChartConfigResponse {
 
 export default defineEventHandler(async (event): Promise<ChartConfigResponse | Error> => {
   try {
-    const { results, userQuery, currentConfig, instructions, pipeInstructions } =
+    const { results, userQuery, currentConfig, instructions, pipeInstructions, routerReasoning } =
       await readBody<IChartRequestBody>(event)
 
     // If pipe instructions are provided, execute them first to get results
@@ -41,7 +42,7 @@ export default defineEventHandler(async (event): Promise<ChartConfigResponse | E
           })
         }
 
-        const chartGeneration = await generateChartConfig(executedResults as Result[], userQuery)
+        const chartGeneration = await generateChartConfig(executedResults as Result[], userQuery, routerReasoning)
 
         return {
           success: true,
@@ -89,7 +90,7 @@ export default defineEventHandler(async (event): Promise<ChartConfigResponse | E
       })
     }
 
-    const chartGeneration = await generateChartConfig(results as Result[], userQuery)
+    const chartGeneration = await generateChartConfig(results as Result[], userQuery, routerReasoning)
 
     return {
       success: true,

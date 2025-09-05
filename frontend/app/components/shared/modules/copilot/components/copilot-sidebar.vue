@@ -124,7 +124,7 @@ const emit = defineEmits<{
   (e: 'update:selectedResult', value: string): void;
   (e: 'update:isLoading', value: boolean): void;
   (e: 'update:error', value: string): void;
-  (e: 'update:data', id: string, value: MessageData[]): void;
+  (e: 'update:data', id: string, value: MessageData[], routerReasoning?: string): void;
 }>();
 
 const { copilotDefaults, selectedResultId } = storeToRefs(useCopilotStore());
@@ -189,7 +189,14 @@ const callChatApi = async (userMessage: string) => {
         }
 
         if (message.data) {
-          emit('update:data', message.id, message.data);
+          // Find router reasoning from the latest router-status message in the conversation
+          const routerReasoning = messages.value
+            .slice()
+            .reverse()
+            .find(msg => msg.type === 'router-status' && msg.routerReasoning)
+            ?.routerReasoning;
+          
+          emit('update:data', message.id, message.data, routerReasoning);
           selectedResultId.value = message.id;
         }
         scrollToEnd();
