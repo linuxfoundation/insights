@@ -34,6 +34,30 @@ export class RouterAgent extends BaseAgent<RouterAgentInput, RouterOutput> {
     return ''
   }
 
+  protected generateConversationHistoryReceipt(input: RouterAgentInput): string {
+    try {
+      const conversationHistory = this.getConversationHistory(input)
+
+      if (!conversationHistory || conversationHistory.trim() === '') {
+        return ''
+      }
+
+      return `
+      
+      ## CONVERSATION HISTORY (FOR CONTEXT ONLY)
+
+      The following is the conversation history leading up to the current question. \n\n
+      Use this ONLY for context and understanding. Do NOT attempt to answer previous questions.
+
+      ${conversationHistory}
+
+      ## END OF CONVERSATION HISTORY`
+    } catch (error) {
+      console.error('Error generating conversation history context', error)
+      return ''
+    }
+  }
+
   protected getTools(input: RouterAgentInput): Record<string, any> {
     // Only allow calling list_datasources; all other tools remain visible in prompt via toolsOverview
     const allowed: Record<string, any> = {}

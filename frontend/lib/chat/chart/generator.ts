@@ -51,10 +51,11 @@ const model = bedrock('us.anthropic.claude-sonnet-4-20250514-v1:0')
 export async function generateChartConfig(
   results: Result[],
   userQuery: string,
+  routerReasoning?: string,
 ): Promise<ChartConfig> {
   // Re-enable normalization to fix date formatting
   const normalizedResults = normalizeDataForChart(results)
-  const dataProfile = analyzeDataForChart(normalizedResults, userQuery)
+  const dataProfile = analyzeDataForChart(normalizedResults, userQuery, routerReasoning)
 
   // Skip chart for single values - show as metric
   if (!dataProfile || dataProfile.dataShape === 'single-value') {
@@ -69,10 +70,33 @@ export async function generateChartConfig(
       system:
         'You are a data visualization expert. Create simple, effective chart configurations using the apache echarts configuration schema.',
       prompt: createChartGenerationPrompt(dataProfile, normalizedResults, userQuery),
-      temperature: 0.3,
+      temperature: 0.1,
     })
 
     const { chartConfig, dataMapping } = object
+
+    // Force horizontal bars for leaderboard scenarios
+    if (dataProfile?.recommendedVisualization?.type === 'leaderboard') {
+      // Swap axes to create horizontal bars
+      const tempXAxis = chartConfig.xAxis
+      chartConfig.xAxis = {
+        ...chartConfig.yAxis,
+        type: 'value',
+        inverse: false,
+      }
+
+      chartConfig.yAxis = {
+        ...tempXAxis,
+        type: 'category',
+      }
+
+      chartConfig.yAxis.inverse = true
+
+      if (chartConfig.grid) {
+        chartConfig.grid.left = "0.2%"
+      }
+      chartConfig.series.map((s) => s.seriesLayoutBy = 'column')
+    }
 
     // Apply default colors if not already set
     if (!chartConfig.color) {
@@ -120,7 +144,7 @@ export async function modifyChartConfig(
         normalizedData,
         userRequest,
       ),
-      temperature: 0.3,
+      temperature: 0.1,
     })
 
     const { chartConfig, dataMapping } = newConfig
@@ -195,6 +219,7 @@ function generateFallbackConfig(profile: any): Config {
   let useDualAxis = false
   let primaryKeys: string[] = []
   let secondaryKeys: string[] = []
+  let isLeaderboard = false
 
   if (profile.recommendedVisualization?.type === 'dual-axis') {
     primaryKeys = profile.recommendedVisualization.primaryColumns
@@ -204,6 +229,10 @@ function generateFallbackConfig(profile: any): Config {
   } else if (profile.recommendedVisualization?.type === 'grouped-bar') {
     // For grouped bar, focus on primary comparison columns
     yKeys = profile.recommendedVisualization.primaryColumns
+  } else if (profile.recommendedVisualization?.type === 'leaderboard') {
+    // For leaderboard, use only the primary metric
+    yKeys = profile.recommendedVisualization.primaryColumns
+    isLeaderboard = true
   } else {
     yKeys =
       numericCols.length > 0
@@ -258,22 +287,55 @@ function generateFallbackConfig(profile: any): Config {
       data: yKeys,
     },
     ...(type !== 'pie' && {
-      xAxis: {
-        type: 'category',
-        name: xKey,
-        axisLabel: {
-          fontSize: 12,
-          fontWeight: 'normal',
-          color: lfxColors.neutral[400],
-          fontFamily: 'Inter',
-        },
-        axisLine: {
-          show: false,
-        },
-        splitLine: { show: false },
-        axisTick: { show: false },
-      },
-      yAxis: useDualAxis
+      // For leaderboard, swap axes to create horizontal bars
+      xAxis: isLeaderboard 
+        ? {
+            type: 'value',
+            name: yKeys.length === 1 ? yKeys[0] : 'Value',
+            axisLabel: {
+              fontSize: 12,
+              fontWeight: 'normal',
+              color: lfxColors.neutral[400],
+              fontFamily: 'Inter',
+            },
+            axisLine: {
+              show: false,
+            },
+            splitLine: { show: false },
+            axisTick: { show: false },
+          }
+        : {
+            type: 'category',
+            name: xKey,
+            axisLabel: {
+              fontSize: 12,
+              fontWeight: 'normal',
+              color: lfxColors.neutral[400],
+              fontFamily: 'Inter',
+            },
+            axisLine: {
+              show: false,
+            },
+            splitLine: { show: false },
+            axisTick: { show: false },
+          },
+      yAxis: isLeaderboard
+        ? {
+            type: 'category',
+            name: xKey,
+            axisLabel: {
+              fontSize: 12,
+              fontWeight: 'normal',
+              color: lfxColors.neutral[400],
+              fontFamily: 'Inter',
+            },
+            axisLine: {
+              show: false,
+            },
+            splitLine: { show: false },
+            axisTick: { show: false },
+          }
+        : useDualAxis
         ? [
             {
               type: 'value',
@@ -353,6 +415,17 @@ SPECIAL CHART TYPE DETECTED: ${dataProfile.comparisonType.toUpperCase()} COMPARI
 - Display change values separately or as tooltip info
 - Use grouped bar chart to clearly show the comparison
 - Consider filtering out percentage columns if they make the chart hard to read`
+    } else if (rec.type === 'leaderboard') {
+      comparisonGuidance = `
+
+SPECIAL CHART TYPE DETECTED: LEADERBOARD VISUALIZATION
+- Primary ranking metric: ${rec.primaryColumns.join(', ')}
+- Secondary metrics (for tooltips only): ${rec.secondaryColumns.join(', ')}
+- Use ONLY the primary metric (${rec.primaryColumns.join(', ')}) for the bar chart visualization - DO NOT include secondary metrics as separate series
+- Only include the primary ranking metric in the series configuration
+- Include secondary metrics in tooltips for additional context, but not as separate chart elements
+- Focus on creating a clean, readable horizontal leaderboard chart with category labels on the left
+`
     }
   }
 

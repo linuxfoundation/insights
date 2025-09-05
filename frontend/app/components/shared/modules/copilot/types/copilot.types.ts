@@ -28,6 +28,7 @@ export interface ResultsHistory {
   title?: string;
   chartConfig?: Config | null;
   chartErrorType?: ChartErrorType;
+  routerReasoning?: string;
 }
 
 export interface AIMessage {
@@ -40,6 +41,7 @@ export interface AIMessage {
   sql?: string;
   data?: Array<MessageData>;
   explanation?: string;
+  routerReasoning?: string;
   instructions?: {
     pipes: Array<{
       id: string;
