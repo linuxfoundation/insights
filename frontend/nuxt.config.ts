@@ -10,6 +10,10 @@ import caching from './setup/caching'
 
 const isProduction = process.env.NUXT_APP_ENV === 'production'
 
+console.log(
+  'process.env.NUXT_OIDC_PROVIDERS_AUTH0_BASE_URL',
+  process.env.NUXT_OIDC_PROVIDERS_AUTH0_BASE_URL,
+)
 export default defineNuxtConfig({
   future: {
     compatibilityVersion: 4,
@@ -106,7 +110,8 @@ export default defineNuxtConfig({
     },
     providers: {
       auth0: {
-        baseUrl: 'linuxfoundation-staging.auth0.com',
+        // Use environment variables with fallback empty strings for local development
+        baseUrl: process.env.NUXT_OIDC_PROVIDERS_AUTH0_BASE_URL || '',
         wellKnown: '',
         clientId: '',
         clientSecret: '',
