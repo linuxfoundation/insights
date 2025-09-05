@@ -13,16 +13,20 @@ interface IStreamRequestBody {
   projectName?: string
   pipe: string
   parameters?: Record<string, unknown>
+  conversationId?: string
 }
 
 export default defineEventHandler(async (event): Promise<Response | Error> => {
   try {
-    const { messages, segmentId, projectName, pipe, parameters } =
+    const { messages, segmentId, projectName, pipe, parameters, conversationId } =
       await readBody<IStreamRequestBody>(event)
 
     if (!pipe) {
       return createError({ statusCode: 400, statusMessage: 'Pipe is required' })
     }
+
+    // Generate conversationId if not provided
+    const finalConversationId = conversationId || crypto.randomUUID()
 
     const dbPool = event.context.dbPool as Pool
 
@@ -32,6 +36,7 @@ export default defineEventHandler(async (event): Promise<Response | Error> => {
       projectName,
       pipe,
       parameters,
+      conversationId: finalConversationId,
       onResponseComplete: dbPool
         ? async (response) => {
             const chatRepo = new ChatRepository(dbPool)

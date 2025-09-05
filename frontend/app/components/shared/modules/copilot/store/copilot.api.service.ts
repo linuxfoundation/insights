@@ -11,7 +11,7 @@ import type { Project } from '~~/types/project'
 export const tempData = testData3 as AIMessage[];
 class CopilotApiService {
   // Generate unique ID for messages
-  generateId = () => Date.now().toString(36) + Math.random().toString(36).substr(2);
+  generateId = () => Date.now().toString(36) + Math.random().toString(36).substring(2);
 
   generateTextMessage = (message: string, role: MessageRole, status: MessageStatus, type: MessagePartType = 'text') => {
     const userMessageId = this.generateId();
@@ -31,7 +31,8 @@ class CopilotApiService {
     project: Project, 
     pipe: string, 
     token: string,
-    parameters?: CopilotParams): Promise<Response> {
+    parameters?: CopilotParams,
+    conversationId?: string): Promise<Response> {
     // Prepare the request body with the correct format
     const requestBody = {
       messages: messages.map(m => ({
@@ -41,7 +42,8 @@ class CopilotApiService {
       pipe,
       segmentId: project?.id,
       projectName: project?.name,
-      parameters
+      parameters,
+      conversationId
     }
     // Send streaming request
     const response = await fetch('/api/chat/stream', {
@@ -121,8 +123,8 @@ class CopilotApiService {
     messages: Array<AIMessage>,
     statusCallBack: (status: string) => void,
     messageCallBack: (message: AIMessage, index: number) => void,
-    completionCallBack: () => void
-  ) {
+    completionCallBack: (conversationId?: string) => void
+  ): Promise<string | undefined> {
     const reader = response.body?.getReader()
     const decoder = new TextDecoder()
     
@@ -132,6 +134,7 @@ class CopilotApiService {
 
     let assistantContent = ''
     let assistantMessageId: string | null = null
+    let conversationId: string | undefined = undefined
     let lineBuffer = '' // Buffer to accumulate partial lines
     
     try {
@@ -176,13 +179,18 @@ class CopilotApiService {
           if (result) {
             assistantContent = result.assistantContent
             assistantMessageId = result.assistantMessageId
+            if (result.conversationId) {
+              conversationId = result.conversationId
+            }
           }
         }
       }
     } finally {
       reader.releaseLock()
-      completionCallBack();
+      completionCallBack(conversationId);
     }
+    
+    return conversationId
   }
 
   private processCompleteLine(
@@ -192,7 +200,7 @@ class CopilotApiService {
     messages: Array<AIMessage>,
     statusCallBack: (status: string) => void,
     messageCallBack: (message: AIMessage, index: number) => void
-  ): { assistantMessageId: string | null; assistantContent: string } | null {
+  ): { assistantMessageId: string | null; assistantContent: string; conversationId?: string } | null {
     try {
       // Parse AI SDK data stream format: "prefix:data"
       const colonIndex = line.indexOf(':')
@@ -206,6 +214,8 @@ class CopilotApiService {
       // Handle different stream prefixes
       if (prefix === '2') {
         assistantMessageId = null;
+        let capturedConversationId: string | undefined = undefined;
+        
         // Custom data events from your backend (like router-status)
         const dataArray = JSON.parse(dataString)
         for (const data of dataArray) {
@@ -236,6 +246,11 @@ class CopilotApiService {
               statusCallBack('Tool execution completed');
             }
 
+            // Capture conversationId from chat-response-id for return
+            if (data.type === 'chat-response-id' && data.conversationId) {
+              capturedConversationId = data.conversationId;
+            }
+
             const content = data.type === 'chat-response-id' ? data.id : data.explanation
 
             // Create assistant message if it doesn't exist yet
@@ -253,10 +268,13 @@ class CopilotApiService {
               content,
               explanation: data.explanation,
               instructions: data.instructions,
+              conversationId: data.conversationId,
               timestamp: Date.now()
             }, -1);
           } 
         }
+        
+        return { assistantMessageId, assistantContent, conversationId: capturedConversationId }
       } else if (prefix === '0') {
         // Text delta from streamText (streaming text content)
         const textDelta = JSON.parse(dataString)

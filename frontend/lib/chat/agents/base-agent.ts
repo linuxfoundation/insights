@@ -104,7 +104,6 @@ export abstract class BaseAgent<TInput, TOutput> {
       const fullSystemPrompt = conversationHistoryReceipt + systemPrompt + jsonInstructions
 
       // Check if we have messages in the input
-
       const hasMessages =
         typeof input === 'object' &&
         input !== null &&

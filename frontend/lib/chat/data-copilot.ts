@@ -9,11 +9,8 @@ import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/
 import type { ChatResponse } from '../../server/repo/chat.repo'
 
 import { runRouterAgent } from './agents/router'
-// TODO: Uncomment once we support text-to-sql
-// import { runTextToSqlAgent } from './agents/text-to-sql';
+import { runTextToSqlAgent } from './agents/text-to-sql';
 import { runPipeAgent } from './agents/pipe'
-// TODO: Uncomment once we support text-to-sql
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { executePipeInstructions, executeTextToSqlInstructions } from './instructions'
 import type { ChatMessage } from './types'
 
@@ -29,6 +26,7 @@ export async function streamingAgentRequestHandler({
   projectName,
   pipe,
   parameters,
+  conversationId,
   onResponseComplete,
 }: {
   messages: ChatMessage[]
@@ -36,6 +34,7 @@ export async function streamingAgentRequestHandler({
   projectName?: string
   pipe: string
   parameters?: Record<string, unknown>
+  conversationId?: string
   onResponseComplete?: (response: ChatResponse) => Promise<string>
 }): Promise<Response> {
   const url = new URL(
@@ -132,12 +131,14 @@ export async function streamingAgentRequestHandler({
               pipeInstructions: undefined,
               sqlQuery: undefined,
               model: MODEL,
+              conversationId: conversationId,
             })
 
-            // Stream the chat response ID
+            // Stream the chat response ID and conversation ID
             dataStream.writeData({
               type: 'chat-response-id',
               id: chatResponseId,
+              conversationId: conversationId || '',
             })
           }
           return
@@ -168,12 +169,14 @@ export async function streamingAgentRequestHandler({
               pipeInstructions: undefined,
               sqlQuery: undefined,
               model: MODEL,
+              conversationId: conversationId,
             })
 
-            // Stream the chat response ID
+            // Stream the chat response ID and conversation ID
             dataStream.writeData({
               type: 'chat-response-id',
               id: chatResponseId,
+              conversationId: conversationId || '',
             })
           }
           return
@@ -187,44 +190,38 @@ export async function streamingAgentRequestHandler({
         })
 
         const followUpTools: Record<string, any> = {}
-        // TODO: Uncomment once we support text-to-sql
-        // if (routerOutput.next_action === "create_query") {
-        followUpTools['list_datasources'] = tbTools['list_datasources']
-        // TODO: Uncomment once we support text-to-sql
-        // }
-        // else {
-        for (const toolName of routerOutput.tools) {
+        if (routerOutput.next_action === "create_query") {
+          followUpTools['text_to_sql'] = tbTools['text_to_sql']
+        } else {
+          for (const toolName of routerOutput.tools) {
           if (tbTools[toolName]) {
             followUpTools[toolName] = tbTools[toolName]
           }
         }
-        // TODO: Uncomment once we support text-to-sql
-        // }
 
-        // if (routerOutput.next_action === "create_query") {
-        //   const textToSqlOutput = await runTextToSqlAgent({
-        //     model,
-        //     messages,
-        //     tools: followUpTools,
-        //     date: dateString as string,
-        //     projectName: projectName as string,
-        //     pipe,
-        //     parametersString,
-        //     segmentId: segmentId as string,
-        //     reformulatedQuestion: routerOutput.reformulated_question,
-        //   });
+        if (routerOutput.next_action === "create_query") {
+          const textToSqlOutput = await runTextToSqlAgent({
+            model,
+            messages,
+            tools: followUpTools,
+            date: dateString as string,
+            projectName: projectName as string,
+            pipe,
+            parametersString,
+            segmentId: segmentId as string,
+            reformulatedQuestion: routerOutput.reformulated_question,
+          })          
+          // Execute the SQL query according to the instructions
+          const queryData = await executeTextToSqlInstructions(textToSqlOutput.instructions)          
+          
+          dataStream.writeData({
+            type: "sql-result",
+            explanation: textToSqlOutput.explanation,
+            instructions: textToSqlOutput.instructions,
+            data: queryData
+          })
 
-        //   // Execute the SQL query according to the instructions
-        //   const queryData = await executeTextToSqlInstructions(textToSqlOutput.instructions);
-
-        //   dataStream.writeData({
-        //     type: "sql-result",
-        //     explanation: textToSqlOutput.explanation,
-        //     instructions: textToSqlOutput.instructions,
-        //     data: queryData
-        //   });
-        // } else
-        if (routerOutput.next_action === 'pipes') {
+        } else if (routerOutput.next_action === 'pipes') {
           const pipeOutput = await runPipeAgent({
             model,
             messages,
@@ -274,15 +271,18 @@ export async function streamingAgentRequestHandler({
               pipeInstructions: pipeOutput.instructions,
               sqlQuery: undefined,
               model: MODEL,
+              conversationId: conversationId,
             })
 
-            // Stream the chat response ID
+            // Stream the chat response ID and conversation ID
             dataStream.writeData({
               type: 'chat-response-id',
               id: chatResponseId,
+              conversationId: conversationId || '',
             })
           }
         }
+      } 
       } catch (error) {
         dataStream.writeData({
           type: 'router-status',

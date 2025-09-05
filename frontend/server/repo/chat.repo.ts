@@ -43,6 +43,7 @@ export interface PipeInstructions {
 
 export interface ChatResponse {
   id?: string
+  conversationId?: string
   userPrompt: string
   routerResponse: 'pipes' | 'text-to-sql' | 'stop'
   routerReason: string
@@ -66,12 +67,14 @@ export class ChatRepository {
         router_response, 
         router_reason, 
         pipe_instructions, 
-        sql_query, model, 
+        sql_query, 
+        model, 
         input_tokens, 
         output_tokens, 
-        feedback
+        feedback,
+        conversation_id
       )
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
       RETURNING id
     `
 
@@ -86,6 +89,7 @@ export class ChatRepository {
         response.inputTokens,
         response.outputTokens,
         null,
+        response.conversationId,
       ])
 
       return result.rows[0].id
