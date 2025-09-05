@@ -4,20 +4,17 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <div>
-    <lfx-button
+    <a
       v-if="!isAuthenticated"
-      type="transparent"
-      class="!rounded-full text-nowrap !text-brand-500"
-      :disabled="isLoading"
-      @click="login()"
+      href="/auth/auth0/login"
     >
-      My account
-      <lfx-icon
-        v-if="isLoading"
-        name="spinner-third"
-        class="animate-spin mr-2"
-      />
-    </lfx-button>
+      <lfx-button
+        type="transparent"
+        class="!rounded-full text-nowrap !text-brand-500"
+      >
+        My account
+      </lfx-button>
+    </a>
     <lfx-popover
       v-else
       v-model:visibility="isOpen"
@@ -66,9 +63,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import { ref, watch } from 'vue';
-import { useAuth0 } from '@auth0/auth0-vue';
-import { useRuntimeConfig } from 'nuxt/app';
+import { ref, computed, watch } from 'vue';
 import { useAuthStore } from '../store/auth.store';
 import LfxButton from '~/components/uikit/button/button.vue';
 import LfxAvatar from "~/components/uikit/avatar/avatar.vue";
@@ -76,44 +71,48 @@ import LfxPopover from "~/components/uikit/popover/popover.vue";
 import LfxMenuButton from "~/components/uikit/menu-button/menu-button.vue";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
 import { links } from '~/config/links';
+import type { OidcSession } from '~~/types/session';
 
-const { loginWithRedirect, logout, isAuthenticated, idTokenClaims, isLoading } = useAuth0();
 const { token } = storeToRefs(useAuthStore());
+
+const { loggedIn, logout } = useOidcAuth();
+
+// Use OIDC auth state instead of hardcoded values
+const isAuthenticated = computed(() => loggedIn.value);
 
 const isOpen = ref(false);
 
-const login = async () => {
-  const redirectTo = window.location.pathname + window.location.search + window.location.hash;
-  loginWithRedirect({
-    appState: {
-      target: redirectTo
-    },
-  })
+const logoutHandler = async () => {
+  await logout();
 };
 
-const logoutHandler = () => {
-  const config = useRuntimeConfig();
-  logout({ 
-    logoutParams: { 
-      returnTo: (config.public.appUrl as string) || window.location.origin 
-    } 
-  });
-};
+const asyncToken = async () => {
+  const response = await $fetch<OidcSession>('/api/user/id-token');
 
-watch([isAuthenticated, idTokenClaims], ([newAuthVal, newIdTokenClaims]) => {
-  if (newAuthVal && newIdTokenClaims) {
-    try {
-      // The __raw property contains the actual JWT token
-      const idToken = newIdTokenClaims?.__raw;
-      token.value = idToken || '';
-    } catch (error) {
-      console.error('Error getting ID token:', error);
-      token.value = '';
-    }
-  } else {
-    token.value = '';
+  if (response && response.idToken) {
+    token.value = response.idToken;
+  }
+}
+
+watch(loggedIn, (newVal) => {
+  if (newVal) {
+    asyncToken();
   }
 }, { immediate: true });
+// watch([isAuthenticated, idTokenClaims], ([newAuthVal, newIdTokenClaims]) => {
+//   if (newAuthVal && newIdTokenClaims) {
+//     try {
+//       // The __raw property contains the actual JWT token
+//       const idToken = newIdTokenClaims?.__raw;
+//       token.value = idToken || '';
+//     } catch (error) {
+//       console.error('Error getting ID token:', error);
+//       token.value = '';
+//     }
+//   } else {
+//     token.value = '';
+//   }
+// }, { immediate: true });
 </script>
 
 <script lang="ts">
