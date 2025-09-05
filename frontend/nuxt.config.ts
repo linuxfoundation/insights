@@ -111,6 +111,7 @@ export default defineNuxtConfig({
     providers: {
       auth0: {
         // This is a workaround for staging as the env var cannot be read there
+        // ENV variables will override this value if it's available
         baseUrl: isProduction ? '' : 'linuxfoundation-staging.auth0.com',
         wellKnown: '',
         clientId: '',

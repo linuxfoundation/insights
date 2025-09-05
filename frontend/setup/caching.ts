@@ -38,10 +38,6 @@ export default {
         driver: 'redis',
         url: process.env.NUXT_REDIS_URL || '',
       },
-      // oidc: {
-      //   driver: 'redis',
-      //   url: process.env.NUXT_REDIS_URL || '',
-      // },
     },
   },
 }
