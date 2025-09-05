@@ -152,6 +152,10 @@ We run a set of control assessments for all available repositories of a project,
 
 The Security & Best Practices dimension is evaluated with an equally weighted score from all applicable control assessments. We only consider control assessments that worked without privileged access to the project's codebase and ignore those that are not applicable (e.g., controls that cannot be evaluated due to repository limitations or project structure).
 
+Where supported (currently, only GitHub and Gitlab), we also ignore repositories that are archived, meaning they won't affect the final score.
+
+Additionally, some repositories may be marked as excluded, even if they are not archived. One example of this are `.github` repositories, which are automatically marked as excluded, but not archived. Repositories marked as excluded are also ignored in the health score calculations.
+
 The formula used is:
 **Security & Best Practices Score = Passed Control Assessments / (Passed + Failed Control Assessments)**
 
