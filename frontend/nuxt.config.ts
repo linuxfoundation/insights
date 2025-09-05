@@ -106,7 +106,7 @@ export default defineNuxtConfig({
     },
     providers: {
       auth0: {
-        baseUrl: '',
+        baseUrl: 'linuxfoundation-staging.auth0.com',
         wellKnown: '',
         clientId: '',
         clientSecret: '',
