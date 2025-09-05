@@ -110,8 +110,8 @@ export default defineNuxtConfig({
     },
     providers: {
       auth0: {
-        // Use environment variables with fallback empty strings for local development
-        baseUrl: process.env.NUXT_OIDC_PROVIDERS_AUTH0_BASE_URL || '',
+        // This is a workaround for staging as the env var cannot be read there
+        baseUrl: isProduction ? '' : 'linuxfoundation-staging.auth0.com',
         wellKnown: '',
         clientId: '',
         clientSecret: '',
