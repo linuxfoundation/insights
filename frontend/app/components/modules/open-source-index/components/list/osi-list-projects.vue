@@ -4,7 +4,7 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <div
-    class="container pt-10"
+    class="container pt-6 md:pt-10"
   >
     <lfx-table>
 
@@ -49,7 +49,7 @@ SPDX-License-Identifier: MIT
           class="tr hover:!bg-neutral-100 transition cursor-pointer"
           @click="router.push({name: LfxRoutes.PROJECT, params: {slug: project.slug}})"
         >
-          <td class="w-7/12">
+          <td class="w-7/12 min-w-80">
             <div class="flex items-center gap-4">
               <lfx-avatar
                 type="organization"
@@ -110,7 +110,7 @@ SPDX-License-Identifier: MIT
         </template>
         <tr v-if="hasNextPage">
           <td colspan="4">
-            <div class="flex justify-center py-8">
+            <div class="flex justify-center py-4 sm:py-8">
               <lfx-button
                 size="large"
                 class="!rounded-full"

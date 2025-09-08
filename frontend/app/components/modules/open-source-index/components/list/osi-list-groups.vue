@@ -4,7 +4,7 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <div
-    class="container pt-10"
+    class="container pt-6 md:pt-10"
   >
     <lfx-accordion
       v-model="groups"
@@ -18,7 +18,7 @@ SPDX-License-Identifier: MIT
         class="bg-white px-6 hover:bg-neutral-50 shadow-sm rounded-lg"
         :class="group.id === groups ? '!bg-white' : ''"
       >
-        <div class="flex justify-between py-4">
+        <div class="flex flex-col md:flex-row justify-between py-4">
           <p class="font-secondary font-bold text-heading-3">
             {{group.name}}
           </p>
@@ -31,7 +31,7 @@ SPDX-License-Identifier: MIT
                   class="text-brand-600"
                 />
               </div>
-              <p class="text-xs">
+              <p class="text-xs whitespace-nowrap">
                 {{formatNumber(group.totalContributors)}}
                 {{ pluralize('contributors', group.totalContributors) }}
               </p>
@@ -44,7 +44,7 @@ SPDX-License-Identifier: MIT
                   class="text-positive-600"
                 />
               </div>
-              <p class="text-xs">${{ formatNumberShort(group.softwareValue) }}</p>
+              <p class="text-xs whitespace-nowrap">${{ formatNumberShort(group.softwareValue) }}</p>
             </article>
           </div>
         </div>

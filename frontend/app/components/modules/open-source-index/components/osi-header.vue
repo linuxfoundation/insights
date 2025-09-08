@@ -4,14 +4,14 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <div class="bg-white outline outline-1 outline-neutral-200">
-    <section class="container py-6">
+    <section class="container py-4 sm:py-6">
       <div class="flex flex-col lg:flex-row items-start lg:items-end gap-4 lg:gap-12">
         <div class="flex flex-row gap-5 flex-grow items-end">
           <div>
-            <h1 class="text-heading-1 font-bold pb-2 font-secondary">
+            <h1 class="text-xl md:text-heading-1 font-bold pb-2 font-secondary">
               Open Source Index
             </h1>
-            <p class="text-body-1 text-neutral-500">
+            <p class="text-body-2 sm:text-body-1 text-neutral-500">
               Curated list of the most critical open source projects powering our modern digital
               infrastructure, measured by contributor volume and software value
             </p>
@@ -49,9 +49,9 @@ SPDX-License-Identifier: MIT
         </div>
       </div>
     </section>
-    <section class="container border-t border-t-neutral-100 py-4 flex justify-between items-center">
+    <section class="container border-t border-t-neutral-100 py-2 sm:py-4 flex justify-between items-center">
       <slot>
-        <div class="flex items-center gap-4">
+        <div class="hidden items-center gap-4 md:flex">
           <lfx-menu-button
             v-if="view == 'list'"
             :active="type === 'projects'"
@@ -81,6 +81,35 @@ SPDX-License-Identifier: MIT
             <lfx-icon name="buildings" />
             Industries
           </lfx-menu-button>
+        </div>
+        <div class="flex md:hidden">
+          <lfx-dropdown-select
+            v-model="type"
+            width="12.5rem"
+            placement="bottom-start"
+          >
+            <template #trigger="{selectedOption}">
+              <lfx-dropdown-selector class="justify-between">
+                {{selectedOption.label}}
+              </lfx-dropdown-selector>
+            </template>
+            <lfx-dropdown-item
+              value="projects"
+              label="All projects"
+            />
+            <lfx-dropdown-item
+              value="collections"
+              label="Collections"
+            />
+            <lfx-dropdown-item
+              value="horizontal"
+              label="Stacks"
+            />
+            <lfx-dropdown-item
+              value="vertical"
+              label="Industries"
+            />
+          </lfx-dropdown-select>
         </div>
       </slot>
 

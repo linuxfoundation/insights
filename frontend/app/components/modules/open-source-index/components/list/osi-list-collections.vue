@@ -4,7 +4,7 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <div
-    class="container pt-10"
+    class="container pt-6 md:pt-10"
   >
     <lfx-accordion
       v-model="accordion"
@@ -16,9 +16,9 @@ SPDX-License-Identifier: MIT
         :reverse="true"
         :name="collection.id"
         class="bg-white pr-6 hover:bg-neutral-50 border-b border-neutral-100"
-        :class="props.isSub ? 'pl-14' : 'pl-6'"
+        :class="props.isSub ? 'pl-6 sm:pl-14' : 'pl-6'"
       >
-        <div class="flex justify-between py-4">
+        <div class="flex flex-col lg:flex-row justify-between py-4">
           <p class="text-base font-semibold">
             {{collection.name}}
           </p>
@@ -31,7 +31,7 @@ SPDX-License-Identifier: MIT
                   class="text-neutral-500"
                 />
               </div>
-              <p class="text-xs">{{ pluralize('project', collection.projectCount, true) }}</p>
+              <p class="text-xs whitespace-nowrap">{{ pluralize('project', collection.projectCount, true) }}</p>
             </article>
             <article class="flex items-center gap-1.5">
               <div class="h-5 w-5 rounded-full flex items-center justify-center bg-brand-50">
@@ -41,7 +41,7 @@ SPDX-License-Identifier: MIT
                   class="text-brand-600"
                 />
               </div>
-              <p class="text-xs">
+              <p class="text-xs whitespace-nowrap">
                 {{formatNumber(collection.totalContributors)}}
                 {{ pluralize('contributors', collection.totalContributors) }}
               </p>
@@ -54,20 +54,20 @@ SPDX-License-Identifier: MIT
                   class="text-positive-600"
                 />
               </div>
-              <p class="text-xs">${{ formatNumberShort(collection.softwareValue) }}</p>
+              <p class="text-xs whitespace-nowrap">${{ formatNumberShort(collection.softwareValue) }}</p>
             </article>
           </div>
         </div>
         <template #content>
           <div
             class="border-t border-neutral-100 bg-white -mr-6"
-            :class="props.isSub ? '-ml-22' : '-ml-14'"
+            :class="props.isSub ? '-ml-14 sm:-ml-22' : '-ml-14'"
           >
             <lfx-table class="!shadow-none !rounded-none">
               <!-- Head -->
               <thead>
                 <tr class="!bg-neutral-100">
-                  <th class="!pl-14">Project</th>
+                  <th class="!pl-6 sm:!pl-14">Project</th>
                   <th>
                     <div class="flex items-center gap-1.5">
                       <lfx-icon
@@ -105,7 +105,7 @@ SPDX-License-Identifier: MIT
                   class="tr hover:!bg-neutral-100 transition cursor-pointer"
                   @click="router.push({name: LfxRoutes.PROJECT, params: {slug: project.slug}})"
                 >
-                  <td class="w-7/12 !pl-14">
+                  <td class="w-7/12 min-w-80 !pl-6 sm:!pl-14">
                     <div class="flex items-center gap-4">
                       <lfx-avatar
                         type="organization"
