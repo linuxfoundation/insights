@@ -24,15 +24,32 @@ const prParticipantsActivityTypes = [
   ActivityTypes.PULL_REQUEST_REVIEW_THREAD_COMMENT,
   ActivityTypes.PULL_REQUEST_OPENED,
   ActivityTypes.PULL_REQUEST_REVIEW_REQUESTED,
+  ActivityTypes.MERGE_REQUEST_REVIEW_CHANGES_REQUESTED,
+  ActivityTypes.MERGE_REQUEST_REVIEW_APPROVED,
+  ActivityTypes.MERGE_REQUEST_ASSIGNED,
+  ActivityTypes.MERGE_REQUEST_COMMENT,
+  ActivityTypes.MERGE_REQUEST_REVIEW_REQUESTED,
+  ActivityTypes.MERGE_REQUEST_OPENED,
+  ActivityTypes.CHANGESET_CREATED,
+  ActivityTypes.CHANGESET_COMMENT_CREATED,
+  ActivityTypes.PATCHSET_COMMENT_CREATED,
+  ActivityTypes.PATCHSET_APPROVAL_CREATED,
 ];
 
 const reviewCommentsActivityTypes = [
   ActivityTypes.PULL_REQUEST_COMMENT,
   ActivityTypes.PULL_REQUEST_REVIEW_THREAD_COMMENT,
+  ActivityTypes.MERGE_REQUEST_COMMENT,
+  ActivityTypes.CHANGESET_COMMENT_CREATED,
+  ActivityTypes.PATCHSET_COMMENT_CREATED,
 ];
 
 const codeReviewsActivityTypes = [
   ActivityTypes.PULL_REQUEST_REVIEWED,
+  ActivityTypes.MERGE_REQUEST_REVIEW_CHANGES_REQUESTED,
+  ActivityTypes.MERGE_REQUEST_REVIEW_APPROVED,
+  ActivityTypes.CHANGESET_COMMENT_CREATED,
+  ActivityTypes.PATCHSET_COMMENT_CREATED,
 ];
 
 export async function fetchCodeReviewEngagement(filter: CodeReviewEngagementFilter): Promise<CodeReviewEngagement> {

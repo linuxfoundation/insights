@@ -8,7 +8,7 @@ const packageDownloads: WidgetConfig = {
   name: 'Package downloads',
   description: () => `Tracking of package downloads over time, providing insights into how widely 
     the project is adopted and integrated within other software.
-    <span class="font-semibold italic text-neutral-600">Powered by Ecosyste.ms.</span>`,
+    <span class="font-semibold italic text-neutral-600">Data source: ecosyste.ms (<a href="https://creativecommons.org/licenses/by-sa/4.0/">CC-BY-SA</a>)</span>`,
   learnMoreLink: `/docs/metrics/popularity#package-downloads`,
   component: PackageDownloads,
   defaultValue: {

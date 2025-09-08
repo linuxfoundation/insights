@@ -2,8 +2,6 @@
 // SPDX-License-Identifier: MIT
 import { DateTime } from 'luxon'
 import type { ActivityCountFilter } from '~~/server/data/types'
-import { ActivityFilterCountType } from '~~/server/data/types'
-import { ActivityTypes } from '~~/types/shared/activity-types'
 import { Granularity } from '~~/types/shared/granularity'
 import { createDataSource } from '~~/server/data/data-sources'
 /**
@@ -68,8 +66,6 @@ export default defineEventHandler(async (event) => {
     project,
     granularity: query.granularity as Granularity,
     repos,
-    countType: ActivityFilterCountType.NEW, // TODO: This isn't used but I'm keeping it here for now to satisfy the interface
-    activity_type: ActivityTypes.ISSUES_CLOSED, // TODO: This isn't used but I'm keeping it here for now to satisfy the interface
     onlyContributions: false,
     startDate: query.startDate ? DateTime.fromISO(query.startDate as string) : undefined,
     endDate: query.endDate ? DateTime.fromISO(query.endDate as string) : undefined,

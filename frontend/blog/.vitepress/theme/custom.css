@@ -46,3 +46,81 @@
   --vp-button-alt-active-text: var(--lfx-color-neutral-900);
   --vp-button-alt-active-bg: var(--lfx-color-neutral-50);
 }
+
+/* Remove ALL horizontal lines from blog content */
+hr {
+  display: none !important;
+}
+
+.vp-doc hr,
+.vp-doc .divider,
+.divider {
+  display: none !important;
+}
+
+/* Remove heading underlines */
+h1, h2, h3, h4, h5, h6,
+.vp-doc h1,
+.vp-doc h2,
+.vp-doc h3,
+.vp-doc h4,
+.vp-doc h5,
+.vp-doc h6 {
+  border-bottom: none !important;
+  border-top: none !important;
+}
+
+/* Remove borders from all elements */
+.vp-doc *,
+.VPContent *,
+.content * {
+  border-bottom: none !important;
+  border-top: none !important;
+}
+
+/* Target specific VitePress elements */
+.vp-doc .content-container,
+.vp-doc .content,
+.vp-doc .VPContent,
+.VPDoc,
+.VPContent {
+  border: none !important;
+}
+
+/* Remove pseudo-element borders */
+*:before,
+*:after {
+  border-bottom: none !important;
+  border-top: none !important;
+}
+
+/* Remove any box-shadows that might look like lines */
+.vp-doc *,
+* {
+  box-shadow: none !important;
+}
+
+/* Remove outline and background that might create lines */
+.vp-doc *,
+* {
+  outline: none !important;
+  background-image: none !important;
+}
+
+/* Target any remaining horizontal visual elements */
+.vp-doc > *,
+.VPContent > *,
+.content > * {
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+/* Completely remove all HR elements and similar */
+hr, .hr, [role="separator"] {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}

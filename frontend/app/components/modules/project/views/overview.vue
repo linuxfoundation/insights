@@ -18,11 +18,12 @@ SPDX-License-Identifier: MIT
             :trust-score-summary="trustSummary"
             :status="status"
             :error="error"
+            :is-empty="isEmpty"
             :score-display="scoreDisplay"
             :is-repo-selected="isRepoSelected"
           />
           <div
-            v-if="!allArchived"
+            v-if="!allArchived && !isEmpty"
             class="px-6"
           >
             <lfx-project-score-tabs
@@ -145,6 +146,14 @@ const isScoreVisible = (widgetArea: WidgetArea) => {
 };
 
 const isRepoSelected = computed(() => selectedReposValues.value.length > 0);
+
+const isEmpty = computed(() => [
+  trustSummary.value?.overall,
+  trustSummary.value?.contributors,
+  trustSummary.value?.popularity,
+  trustSummary.value?.development,
+  trustSummary.value?.security,
+].every((score) => score === 0));
 
 onServerPrefetch(async () => {
   await suspense();

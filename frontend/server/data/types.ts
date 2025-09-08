@@ -104,7 +104,8 @@ export type ActivityCountFilter = {
   project: string;
   granularity?: Granularity;
   countType?: ActivityFilterCountType;
-  activity_type: ActivityTypes;
+  activity_type?: ActivityTypes;
+  activity_types?: ActivityTypes[];
   onlyContributions: boolean;
   repos?: string[];
   startDate?: DateTime;

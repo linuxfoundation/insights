@@ -16,7 +16,7 @@ SPDX-License-Identifier: MIT
             <h3 class="text-heading-3 font-bold font-secondary mb-2">Health score</h3>
 
             <lfx-skeleton-state
-              v-if="!isRepoSelected && !allArchived"
+              v-if="!isRepoSelected && !allArchived && !isEmpty"
               :status="status"
               height="1.75rem"
               width="11.5rem"
@@ -122,6 +122,7 @@ const props = defineProps<{
   error: unknown;
   scoreDisplay: ScoreDisplay;
   isRepoSelected: boolean;
+  isEmpty: boolean;
 }>();
 
 const overallScore = computed(() => Math.round((props.trustScoreSummary ? (props.trustScoreSummary).overall : 0)));
@@ -131,14 +132,6 @@ const {
   allArchived,
   archivedRepos
 } = storeToRefs(useProjectStore());
-
-const isEmpty = computed(() => [
-  props.trustScoreSummary?.overall,
-  props.trustScoreSummary?.contributors,
-  props.trustScoreSummary?.popularity,
-  props.trustScoreSummary?.development,
-  props.trustScoreSummary?.security,
-].every((score) => score === 0));
 
 </script>
 <script lang="ts">
