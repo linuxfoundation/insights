@@ -10,4 +10,5 @@ export interface OidcSession {
     name?: string
     picture?: string
   }
+  sessionInfo?: string[]
 }
