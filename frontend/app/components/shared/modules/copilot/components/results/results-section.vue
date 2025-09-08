@@ -47,7 +47,7 @@ SPDX-License-Identifier: MIT
               :config="selectedResultConfig"
               :is-snapshot-modal-open="isSnapshotModalOpen"
               :chart-error-type="selectedResultChartErrorType"
-              :router-reasoning="selectedResultRouterReasoning"
+              :conversation-id="selectedResultConversationId"
               @update:config="handleConfigUpdate"
               @update:is-loading="handleChartLoading"
               @update:is-error="handleChartError"
@@ -118,8 +118,8 @@ const selectedResultChartErrorType = computed(() => {
   return resultData.value.find(result => result.id === selectedResultId.value)?.chartErrorType;
 })
 
-const selectedResultRouterReasoning = computed(() => {
-  return resultData.value.find(result => result.id === selectedResultId.value)?.routerReasoning;
+const selectedResultConversationId = computed(() => {
+  return resultData.value.find(result => result.id === selectedResultId.value)?.conversationId;
 })
 
 const isEmpty = computed(() => {

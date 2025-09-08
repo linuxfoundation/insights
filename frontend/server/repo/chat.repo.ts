@@ -118,4 +118,16 @@ export class ChatRepository {
     const result = await this.pool.query(query, [chatResponseId])
     return result.rows.length > 0 ? result.rows[0] : null
   }
+
+  async getLatestChatResponseByConversation(conversationId: string): Promise<ChatResponse | null> {
+    const query = `
+      SELECT * FROM chat_responses 
+      WHERE conversation_id = $1 
+      ORDER BY created_at DESC 
+      LIMIT 1
+    `
+
+    const result = await this.pool.query(query, [conversationId])
+    return result.rows.length > 0 ? result.rows[0] : null
+  }
 }

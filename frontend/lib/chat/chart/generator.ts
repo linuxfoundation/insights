@@ -68,7 +68,11 @@ export async function generateChartConfig(
       output: 'object' as const,
       schema: outputSchema,
       system:
-        'You are a data visualization expert. Create simple, effective chart configurations using the apache echarts configuration schema.',
+        `You are a data visualization expert. Create simple, effective chart configurations using the apache echarts configuration schema.
+          Make sure the generated chart configuration answers the user's question and fits the data shape.
+          ### USER QUESTION 
+              ${routerReasoning} 
+          ### END USER QUESTION`,
       prompt: createChartGenerationPrompt(dataProfile, normalizedResults, userQuery),
       temperature: 0.1,
     })

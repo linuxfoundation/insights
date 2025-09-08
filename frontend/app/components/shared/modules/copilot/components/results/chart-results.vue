@@ -78,7 +78,7 @@ const props = defineProps<{
   config: Config | null,
   isSnapshotModalOpen: boolean,
   chartErrorType?: ChartErrorType,
-  routerReasoning?: string
+  conversationId?: string
 }>()
 
 const isSnapshotModalOpen = computed({
@@ -122,7 +122,7 @@ const generateChart = async () => {
 
   isLoading.value = true;
   
-  const response = await copilotApiService.callChartApi(props.data, token.value, props.routerReasoning);
+  const response = await copilotApiService.callChartApi(props.data, token.value, props.conversationId);
   const data = await response.json();
   
   if (data.config && data.success && data.dataMapping) {

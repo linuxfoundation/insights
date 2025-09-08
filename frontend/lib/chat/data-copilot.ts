@@ -143,8 +143,8 @@ export async function streamingAgentRequestHandler({
           }
           return
         }
-
         // TODO: Remove this once we support text-to-sql
+        /*
         else if (routerOutput.next_action === 'create_query') {
           const fallbackMessage = `I'm unable to answer this question with the widgets I have access.
       But soon I will be able to construct my own queries for these questions if I have access to the necessary data.`
@@ -181,6 +181,7 @@ export async function streamingAgentRequestHandler({
           }
           return
         }
+          */
 
         dataStream.writeData({
           type: 'router-status',
@@ -190,16 +191,10 @@ export async function streamingAgentRequestHandler({
         })
 
         const followUpTools: Record<string, any> = {}
-        if (routerOutput.next_action === "create_query") {
-          followUpTools['text_to_sql'] = tbTools['text_to_sql']
-        } else {
-          for (const toolName of routerOutput.tools) {
-          if (tbTools[toolName]) {
-            followUpTools[toolName] = tbTools[toolName]
-          }
-        }
 
         if (routerOutput.next_action === "create_query") {
+          followUpTools['text_to_sql'] = tbTools['text_to_sql']
+
           const textToSqlOutput = await runTextToSqlAgent({
             model,
             messages,
@@ -222,6 +217,10 @@ export async function streamingAgentRequestHandler({
           })
 
         } else if (routerOutput.next_action === 'pipes') {
+          for (const toolName of routerOutput.tools) {
+          if (tbTools[toolName]) {
+            followUpTools[toolName] = tbTools[toolName]
+          }
           const pipeOutput = await runPipeAgent({
             model,
             messages,

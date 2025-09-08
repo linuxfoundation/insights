@@ -1,10 +1,34 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
+import pg from 'pg'
 import { generateChartConfig, modifyChartConfig } from '../../../lib/chat/chart/generator'
+import { ChatRepository } from '../../repo/chat.repo'
 import { Result, Config, DataMapping } from '../../../lib/chat/chart/types'
 import { PipeInstructions } from '~~/lib/chat/types'
 
+
 export const maxDuration = 30
+
+// Helper function to get router reasoning from conversation
+async function getRouterReasoningFromConversation(conversationId?: string): Promise<string | undefined> {
+  if (!conversationId) return undefined
+  
+  try {
+    const pool = new pg.Pool({
+      connectionString: process.env.DATABASE_URL,
+    })
+    
+    const chatRepo = new ChatRepository(pool)
+    const latestResponse = await chatRepo.getLatestChatResponseByConversation(conversationId)
+    
+    await pool.end()
+    
+    return latestResponse?.routerReason || undefined
+  } catch (error) {
+    console.error('Error fetching router reasoning from conversation:', error)
+    return undefined
+  }
+}
 
 interface IChartRequestBody {
   results?: Result[]
@@ -12,7 +36,7 @@ interface IChartRequestBody {
   currentConfig?: Config
   instructions?: string
   pipeInstructions?: PipeInstructions
-  routerReasoning?: string
+  conversationId?: string
 }
 
 interface ChartConfigResponse {
@@ -25,8 +49,11 @@ interface ChartConfigResponse {
 
 export default defineEventHandler(async (event): Promise<ChartConfigResponse | Error> => {
   try {
-    const { results, userQuery, currentConfig, instructions, pipeInstructions, routerReasoning } =
+    const { results, userQuery, currentConfig, instructions, pipeInstructions, conversationId } =
       await readBody<IChartRequestBody>(event)
+
+    // Get router reasoning from conversation
+    const routerReasoning = await getRouterReasoningFromConversation(conversationId)
 
     // If pipe instructions are provided, execute them first to get results
     if (pipeInstructions && !results) {

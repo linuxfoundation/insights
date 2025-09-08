@@ -65,13 +65,13 @@ class CopilotApiService {
   async callChartApi(
     sampleData: MessageData[],
     token: string,
-    routerReasoning?: string,
+    conversationId?: string,
   ): Promise<Response> {
     // Prepare the request body with the correct format
     const requestBody = {
       results: sampleData,
       userQuery: 'Generate a chart for this data',
-      routerReasoning,
+      conversationId,
     }
 
     // Send streaming request
