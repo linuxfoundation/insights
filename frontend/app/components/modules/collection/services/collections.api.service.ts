@@ -12,6 +12,14 @@ export interface CategoryGroupOptions {
   name: string;
 }
 class CollectionsApiService {
+  fetchCollectionList(
+      query: Record<string, string | number | string[] | undefined>
+  ): Promise<Pagination<Collection>> {
+    return $fetch('/api/collection', {
+      params: query,
+    });
+  }
+
   fetchCollections(
     query: () => Record<string, string | number | string[] | undefined>
   ): QueryFunction<Pagination<Collection>> {

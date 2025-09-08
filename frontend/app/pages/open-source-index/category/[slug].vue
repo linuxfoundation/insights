@@ -3,16 +3,9 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <lfx-open-source-index
-    :category="slug as string"
-    :is-root="false"
-  />
+  <lfx-open-source-index-category />
 </template>
 
 <script setup lang="ts">
-import { useRoute } from 'vue-router';
-import LfxOpenSourceIndex from '~/components/modules/open-source-index/views/open-source-index.vue';
-
-const route = useRoute();
-const {slug} = route.params;
+import LfxOpenSourceIndexCategory from "~/components/modules/open-source-index/views/open-source-index-category.vue";
 </script>

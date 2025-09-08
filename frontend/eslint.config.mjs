@@ -36,6 +36,7 @@ export default [
       ".stress/**",
       ".output/**",
       "storybook-static/**",
+      "docs/**",
     ],
   },
 

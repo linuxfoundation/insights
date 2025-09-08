@@ -24,6 +24,7 @@ export interface OSSIndexCategoryGroup {
     totalContributors: number;
     softwareValue: number;
     avgScore: number;
+    projectCount: number;
     topCollections: OSSIndexTopCollection[];
     topProjects: OSSIndexTopProject[];
 }

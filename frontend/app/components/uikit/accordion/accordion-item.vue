@@ -5,7 +5,7 @@ SPDX-License-Identifier: MIT
 <template>
   <article class="c-accordion__item">
     <div
-      class="flex cursor-pointer select-none gap-4"
+      class="flex cursor-pointer select-none gap-4 items-center"
       :class="{'flex-row-reverse': props.reverse }"
       @click="toggle()"
     >
@@ -16,7 +16,7 @@ SPDX-License-Identifier: MIT
       <lfx-icon
         name="angle-down"
         :size="16"
-        class="mt-1 transition-all"
+        class="transition-all"
         :class="{'rotate-180': isOpen }"
       />
     </div>
