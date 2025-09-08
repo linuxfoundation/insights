@@ -80,10 +80,11 @@ const isModalOpen = computed({
   }
 })
 
-const handleDataUpdate = (id: string, data: MessageData[]) => {
+const handleDataUpdate = (id: string, data: MessageData[], routerReasoning?: string) => {
   resultData.value.push({
     id,
-    data
+    data,
+    routerReasoning
   });
 
 

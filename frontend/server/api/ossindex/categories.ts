@@ -16,7 +16,8 @@ import type { OSSIndexCategoryGroupDetails } from '~~/types/ossindex/category-gr
 export default defineEventHandler(async (event): Promise<OSSIndexCategoryGroupDetails | Error> => {
   const query = getQuery(event)
   const categoryGroupSlug: string = query?.categoryGroupSlug as string
-  const sort: string = query?.sort as string
+  let sort: string = query?.sort as string
+  sort = ['totalContributors', 'softwareValue'].includes(sort) ? sort : 'totalContributors'
 
   try {
     const resDetails = await fetchFromTinybird<CategoryGroup[]>(

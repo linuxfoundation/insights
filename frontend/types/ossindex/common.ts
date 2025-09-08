@@ -12,6 +12,7 @@ export interface OSSIndexTopProject {
     id: string;
     count: number;
     name: string;
+    slug: string;
     logo: string;
     description: string;
     softwareValue: number;

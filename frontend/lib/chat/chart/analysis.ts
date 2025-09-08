@@ -7,7 +7,7 @@
 import { DateTime } from 'luxon'
 import type { Result } from './types'
 interface RecommendedVisualization {
-  type: 'dual-axis' | 'grouped-bar' | 'separate-charts' | 'standard'
+  type: 'dual-axis' | 'grouped-bar' | 'separate-charts' | 'leaderboard' | 'standard'
   primaryColumns: string[]
   secondaryColumns: string[]
 }
@@ -32,13 +32,14 @@ export interface ColumnProfile {
 export function analyzeDataForChart(
   results: Result[],
   userQuestion: string = '',
+  routerReasoning?: string,
 ): DataProfile | null {
   if (!results.length) return null
 
   const columns = Object.keys(results[0] || {})
   const columnProfiles = analyzeColumns(results, columns, userQuestion)
   const dataShape = detectDataShape(results, columnProfiles)
-  const comparisonAnalysis = detectComparisonScenario(columnProfiles, userQuestion)
+  const comparisonAnalysis = detectComparisonScenario(columnProfiles, userQuestion, routerReasoning)
 
   return {
     rowCount: results.length,
@@ -185,9 +186,64 @@ export function pivotLongToWide(
   })
 }
 
-function detectComparisonScenario(columns: ColumnProfile[], userQuestion: string) {
+function detectLeaderboardFromReasoning(routerReasoning?: string): boolean {
+  if (!routerReasoning) return false
+  
+  const leaderboardKeywords = [
+    'leaderboard', 'ranking', 'rank', 'top', 'leading', 'highest', 'lowest', 
+    'leaders', 'ranked', 'ranking', 'position', 'standings', 'table', 'best', 'worst'
+  ]
+  
+  const reasoningText = routerReasoning.toLowerCase()
+  return leaderboardKeywords.some((keyword) => reasoningText.includes(keyword))
+}
+
+function prioritizeMetricForLeaderboard(numericColumns: ColumnProfile[]): string | null {
+  if (numericColumns.length === 0) return null
+  if (numericColumns.length === 1) return numericColumns[0]?.name || null
+
+  // Priority 1: Count/total fields (highest priority)
+  const countColumns = numericColumns.filter((col) => {
+    const name = col.name.toLowerCase()
+    return name.includes('count') || name.includes('total') || name.includes('number')
+  })
+  if (countColumns.length > 0) return countColumns[0]?.name || null
+
+  // Priority 2: Non-percentage columns
+  const nonPercentageColumns = numericColumns.filter((col) => {
+    const name = col.name.toLowerCase()
+    return !name.includes('percent') && !name.includes('%') && !name.includes('ratio')
+  })
+  if (nonPercentageColumns.length > 0) return nonPercentageColumns[0]?.name || null
+
+  // Fallback: First numeric column
+  return numericColumns[0]?.name || null
+}
+
+function detectComparisonScenario(columns: ColumnProfile[], userQuestion: string, routerReasoning?: string) {
   const numericColumns = columns.filter((c) => c.type === 'numeric')
   const columnNames = columns.map((c) => c.name.toLowerCase())
+
+  // Detect leaderboard scenarios from router reasoning
+  const isLeaderboardQuery = detectLeaderboardFromReasoning(routerReasoning)
+
+  if (isLeaderboardQuery && numericColumns.length > 0) {
+    const primaryMetric = prioritizeMetricForLeaderboard(numericColumns)
+    if (primaryMetric) {
+      const secondaryMetrics = numericColumns
+        .filter((col) => col.name !== primaryMetric)
+        .map((col) => col.name)
+
+      return {
+        type: 'none' as const,
+        recommendation: {
+          type: 'leaderboard' as const,
+          primaryColumns: [primaryMetric],
+          secondaryColumns: secondaryMetrics,
+        }
+      }
+    }
+  }
 
   // Detect week-over-week or period comparisons
   const hasWeekComparison = columnNames.some(

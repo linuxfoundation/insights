@@ -40,6 +40,10 @@ export class PipeAgent extends BaseAgent<PipeAgentInput, PipeOutput> {
     return input.tools
   }
 
+  protected generateConversationHistoryReceipt(_input: PipeAgentInput): string {
+    return ''
+  }
+
   protected createError(error: unknown): Error {
     if (error instanceof Error) {
       return new Error(`Pipe agent error: ${error.message}`)

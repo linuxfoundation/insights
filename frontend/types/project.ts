@@ -30,6 +30,7 @@ export interface Project {
   connectedPlatforms: string[];
   score: number;
   rank: number;
+  healthScore: number;
 }
 
 export interface ProjectLanguage {
