@@ -9,7 +9,7 @@ SPDX-License-Identifier: MIT
       type="transparent"
       class="!rounded-full text-nowrap !text-brand-500"
       :disabled="isLoading"
-      @click="login()"
+      @click="loginHandler()"
     >
       My account
       <lfx-icon
@@ -26,7 +26,7 @@ SPDX-License-Identifier: MIT
     >
       <lfx-avatar
         type="member"
-        :src="'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlOLBRK-3wEFFeCojWlHou4nooggl5iI2PJQ&s'"
+        :src="user?.picture || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlOLBRK-3wEFFeCojWlHou4nooggl5iI2PJQ&s'"
         size="small"
       />
 
@@ -65,11 +65,9 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { storeToRefs } from 'pinia';
 import { ref, watch } from 'vue';
-import { useAuth0 } from '@auth0/auth0-vue';
-import { useRuntimeConfig } from 'nuxt/app';
 import { useAuthStore } from '../store/auth.store';
+import { useAuth } from '~~/composables/useAuth';
 import LfxButton from '~/components/uikit/button/button.vue';
 import LfxAvatar from "~/components/uikit/avatar/avatar.vue";
 import LfxPopover from "~/components/uikit/popover/popover.vue";
@@ -77,42 +75,24 @@ import LfxMenuButton from "~/components/uikit/menu-button/menu-button.vue";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
 import { links } from '~/config/links';
 
-const { loginWithRedirect, logout, isAuthenticated, idTokenClaims, isLoading } = useAuth0();
-const { token } = storeToRefs(useAuthStore());
+const { isAuthenticated, user, token, isLoading, login, logout } = useAuth();
+const authStore = useAuthStore();
 
 const isOpen = ref(false);
 
-const login = async () => {
+const loginHandler = async () => {
   const redirectTo = window.location.pathname + window.location.search + window.location.hash;
-  loginWithRedirect({
-    appState: {
-      target: redirectTo
-    },
-  })
+  await login(redirectTo);
 };
 
-const logoutHandler = () => {
-  const config = useRuntimeConfig();
-  logout({ 
-    logoutParams: { 
-      returnTo: (config.public.appUrl as string) || window.location.origin 
-    } 
-  });
+const logoutHandler = async () => {
+  await logout();
 };
 
-watch([isAuthenticated, idTokenClaims], ([newAuthVal, newIdTokenClaims]) => {
-  if (newAuthVal && newIdTokenClaims) {
-    try {
-      // The __raw property contains the actual JWT token
-      const idToken = newIdTokenClaims?.__raw;
-      token.value = idToken || '';
-    } catch (error) {
-      console.error('Error getting ID token:', error);
-      token.value = '';
-    }
-  } else {
-    token.value = '';
-  }
+// Update auth store when authentication state changes
+watch([isAuthenticated, token], ([newAuthVal, newToken]) => {
+  authStore.isAuthenticated = newAuthVal;
+  authStore.token = newToken || '';
 }, { immediate: true });
 </script>
 
