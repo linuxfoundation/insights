@@ -21,6 +21,8 @@ export default defineEventHandler(async (event) => {
       config.public.auth0ClientId,
     )
 
+    console.log('Auth config:', authConfig)
+
     // Generate state and code verifier for PKCE
     const state = randomState()
     const codeVerifier = randomPKCECodeVerifier()
