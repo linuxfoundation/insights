@@ -17,6 +17,22 @@ SPDX-License-Identifier: MIT
         class="text-neutral-200 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
       />
     </div>
+    <div
+      v-if="isDataReady"
+      class="flex items-center justify-center gap-1.5 text-neutral-900"
+    >
+      <span>
+        <lfx-icon
+          name="check-circle"
+          :type="'solid'"
+          :size="20"
+          class="text-positive-500"
+        />
+      </span>
+      <p class="text-sm font-medium">
+        Data successfully processed
+      </p>
+    </div>
     <div class="flex items-center justify-center gap-1.5 text-neutral-500">
       <span>
         <lfx-spinner type="light" />
@@ -34,9 +50,12 @@ import LfxIcon from '~/components/uikit/icon/icon.vue'
 
 withDefaults(defineProps<{
   title?: string;
+  isDataReady?: boolean;
 }>(), {
-  title: 'Fetching data and generating your chart...'
+  title: 'Getting your data ready...',
+  isDataReady: false
 });
+
 </script>
 
 <script lang="ts">
