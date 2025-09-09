@@ -99,20 +99,6 @@ watch(loggedIn, (newVal) => {
     asyncToken();
   }
 }, { immediate: true });
-// watch([isAuthenticated, idTokenClaims], ([newAuthVal, newIdTokenClaims]) => {
-//   if (newAuthVal && newIdTokenClaims) {
-//     try {
-//       // The __raw property contains the actual JWT token
-//       const idToken = newIdTokenClaims?.__raw;
-//       token.value = idToken || '';
-//     } catch (error) {
-//       console.error('Error getting ID token:', error);
-//       token.value = '';
-//     }
-//   } else {
-//     token.value = '';
-//   }
-// }, { immediate: true });
 </script>
 
 <script lang="ts">
