@@ -59,12 +59,10 @@ export default defineNuxtConfig({
       apiBase: '/api',
       appUrl: 'http://localhost:3000',
       appEnv: process.env.APP_ENV,
-      auth0Domain: isProduction
-        ? 'https://sso.linuxfoundation.org'
-        : 'https://linuxfoundation-staging.auth0.com',
+      auth0Domain: '',
       auth0ClientId: '',
-      auth0RedirectUri: '',
-      auth0Audience: '',
+      auth0RedirectUri: 'http://localhost:3000/callback',
+      auth0Audience: 'http://localhost:3000/api/',
     },
   },
   vue: {

@@ -5,6 +5,7 @@ import { ref, computed, watchEffect, watch, nextTick } from 'vue'
 import { useAsyncData, navigateTo, useRoute } from 'nuxt/app'
 
 // Fix for window access in Nuxt
+declare const window: Window & typeof globalThis
 
 interface User {
   sub: string
@@ -92,7 +93,13 @@ export const useAuth = () => {
       }
 
       const loginUrl = `/api/auth/login${currentPath !== '/' ? `?redirectTo=${encodeURIComponent(currentPath)}` : ''}`
-      await navigateTo(loginUrl, { external: true })
+
+      // Use window.location.href for server-side redirect
+      if (process.client) {
+        window.location.href = loginUrl
+      } else {
+        await navigateTo(loginUrl, { external: true })
+      }
     } catch (error) {
       console.error('Login error:', error)
       isLoading.value = false
@@ -115,7 +122,11 @@ export const useAuth = () => {
         }
 
         // Redirect to Auth0 logout or home
-        await navigateTo(response.logoutUrl, { external: true })
+        if (process.client) {
+          window.location.href = response.logoutUrl
+        } else {
+          await navigateTo(response.logoutUrl, { external: true })
+        }
       }
     } catch (error) {
       console.error('Logout error:', error)
