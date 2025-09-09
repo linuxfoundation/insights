@@ -32,7 +32,11 @@ export default defineNuxtConfig({
     '@nuxtjs/robots',
     'nuxt-oidc-auth',
   ],
-  plugins: ['~/plugins/vue-query.ts'],
+  plugins: [
+    '~/plugins/vue-query.ts',
+    // Note: auth0.client.ts plugin is disabled to prevent conflicts with nuxt-oidc-auth
+    // '~/plugins/auth0.client.ts',
+  ],
   css: ['~/assets/styles/main.scss'],
   tailwindcss,
   primevue,
@@ -56,6 +60,9 @@ export default defineNuxtConfig({
     insightsDbDatabase: 'insights',
     // OIDC session configuration
     oidcSessionSecret: '',
+    // Additional OIDC configuration for production stability
+    oidcTokenKey: '',
+    oidcAuthSessionSecret: '',
     // These are also exposed on the client-side
     public: {
       apiBase: '/api',
@@ -106,13 +113,14 @@ export default defineNuxtConfig({
       globalMiddlewareEnabled: false, // Disable automatic redirect to login
     },
     session: {
-      // Configure session storage for state management
-      automaticRefresh: true,
-      maxAge: 60 * 60 * 24, // 24 hours
+      // Fixed session configuration for production stability
+      automaticRefresh: true, // Enable automatic refresh for better UX
+      maxAge: 60 * 60 * 24, // 24 hours for better user experience
       cookie: {
-        secure: isProduction, // Use secure cookies in production
-        sameSite: 'lax', // Allow cross-site requests for auth callbacks
-        httpOnly: true, // Prevent XSS attacks
+        secure: isProduction, // Secure in production
+        sameSite: isProduction ? 'none' : 'lax', // 'none' required for cross-site in production
+        httpOnly: true, // Always true for security
+        domain: isProduction ? '.linuxfoundation.org' : undefined, // Set domain for production
       },
     },
     providers: {
@@ -134,6 +142,9 @@ export default defineNuxtConfig({
         validateAccessToken: false,
         validateIdToken: false,
         exposeIdToken: true, // Enable ID token exposure for server-side access
+        // Add state and nonce configuration for better security
+        state: true,
+        nonce: true,
       },
     },
   },
