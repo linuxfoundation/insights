@@ -115,7 +115,7 @@ export default defineNuxtConfig({
         scope: ['openid', 'profile', 'email'],
         responseType: 'code',
         authenticationScheme: 'body',
-        pkce: false, // Try without PKCE first
+        pkce: true, // Enable PKCE for secure authentication
         skipAccessTokenParsing: true, // Skip parsing to avoid errors
         validateAccessToken: false,
         validateIdToken: false,
