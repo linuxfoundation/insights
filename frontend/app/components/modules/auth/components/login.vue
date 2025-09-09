@@ -23,10 +23,9 @@ SPDX-License-Identifier: MIT
     >
       <lfx-avatar
         type="member"
-        :src="'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlOLBRK-3wEFFeCojWlHou4nooggl5iI2PJQ&s'"
+        :src="avatar"
         size="small"
       />
-
       <template #content>
 
         <div 
@@ -75,7 +74,7 @@ import type { OidcSession } from '~~/types/session';
 
 const { token } = storeToRefs(useAuthStore());
 
-const { loggedIn, logout } = useOidcAuth();
+const { user, loggedIn, logout } = useOidcAuth();
 
 // Use OIDC auth state instead of hardcoded values
 const isAuthenticated = computed(() => loggedIn.value);
@@ -93,6 +92,10 @@ const asyncToken = async () => {
     token.value = response.idToken;
   }
 }
+
+const avatar = computed(() => {
+  return user.value?.userInfo?.picture;
+})
 
 watch(loggedIn, (newVal) => {
   if (newVal) {
