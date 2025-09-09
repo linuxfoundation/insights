@@ -54,6 +54,8 @@ export default defineNuxtConfig({
     insightsDbUsername: 'postgres',
     insightsDbPassword: 'example',
     insightsDbDatabase: 'insights',
+    // OIDC session configuration
+    oidcSessionSecret: '',
     // These are also exposed on the client-side
     public: {
       apiBase: '/api',
@@ -103,11 +105,23 @@ export default defineNuxtConfig({
     middleware: {
       globalMiddlewareEnabled: false, // Disable automatic redirect to login
     },
+    session: {
+      // Configure session storage for state management
+      automaticRefresh: true,
+      maxAge: 60 * 60 * 24, // 24 hours
+      cookie: {
+        secure: isProduction, // Use secure cookies in production
+        sameSite: 'lax', // Allow cross-site requests for auth callbacks
+        httpOnly: true, // Prevent XSS attacks
+      },
+    },
     providers: {
       auth0: {
         // This is a workaround for staging as the env var cannot be read there
         // ENV variables will override this value if it's available
-        baseUrl: isProduction ? 'sso.linuxfoundation.org' : 'linuxfoundation-staging.auth0.com',
+        baseUrl: isProduction
+          ? 'https://sso.linuxfoundation.org'
+          : 'https://linuxfoundation-staging.auth0.com',
         wellKnown: '',
         clientId: '',
         clientSecret: '',
