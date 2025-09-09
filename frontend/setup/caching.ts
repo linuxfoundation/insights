@@ -6,7 +6,8 @@ const shortCache = 3600; // 1 hour in seconds
 export default {
     routeRules: process.env.NUXT_APP_ENV === 'production'
         ? {
-        "/auth/callback": {ssr: false, cache: false}, // Disable SSR for Auth0 callback page
+        "/auth/callback": {redirect: '/api/auth/callback'}, 
+        "/api/auth/callback": {prerender: false, index: false, cache: false},
         "/api/health": {cache: false},
         "/api/chat/**": {cache: false},
         "/api/health/live": {cache: false},
@@ -24,7 +25,8 @@ export default {
         "/collection": {cache: {maxAge: shortCache, base: 'redis'}},
         "**": {cache: {maxAge: longCache, base: 'redis'}},
     } : {
-        "/auth/callback": {ssr: false, cache: false}, // Disable SSR for Auth0 callback page in development too
+        "/auth/callback": {redirect: '/api/auth/callback'}, 
+        "/api/auth/callback": {prerender: false, index: false, cache: false}
     },
     nitro: {
         storage: {

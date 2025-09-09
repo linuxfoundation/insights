@@ -15,7 +15,6 @@ export default defineEventHandler(async (event) => {
   const query = getQuery(event)
 
   try {
-    console.log('!!!config:', config.public)
     // Discover Auth0 configuration
     const authConfig = await discovery(
       new URL(`https://${config.public.auth0Domain}`),
