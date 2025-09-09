@@ -33,5 +33,11 @@ export default {
                 url: process.env.NUXT_REDIS_URL || '',
             },
         },
+        routeRules: {
+          '/api/**': {
+            headers: { 'cache-control': 's-maxage=0' },
+            prerender: false,
+          },
+        },
     },
 }

@@ -92,14 +92,9 @@ export const useAuth = () => {
         }
       }
 
-      const loginUrl = `/api/auth/login${currentPath !== '/' ? `?redirectTo=${encodeURIComponent(currentPath)}` : ''}`
-
-      // Use window.location.href for server-side redirect
-      if (process.client) {
-        window.location.href = loginUrl
-      } else {
-        await navigateTo(loginUrl, { external: true })
-      }
+      // Navigate to login page which will handle the API redirect
+      const loginPageUrl = `/login${currentPath !== '/' ? `?redirectTo=${encodeURIComponent(currentPath)}` : ''}`
+      await navigateTo(loginPageUrl)
     } catch (error) {
       console.error('Login error:', error)
       isLoading.value = false
