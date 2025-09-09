@@ -67,8 +67,20 @@ export default defineEventHandler(async (event) => {
       redirect_uri: redirectUri,
     })
 
-    // Redirect to Auth0
-    await sendRedirect(event, authorizationUrl.toString())
+    // Return the authorization URL for client-side redirect
+    const userAgent = getHeader(event, 'user-agent') || ''
+    const acceptHeader = getHeader(event, 'accept') || ''
+
+    // If this is a browser request (not API call), redirect directly
+    if (userAgent.includes('Mozilla') && acceptHeader.includes('text/html')) {
+      await sendRedirect(event, authorizationUrl.toString())
+    } else {
+      // If this is an API call, return JSON
+      return {
+        success: true,
+        authorizationUrl: authorizationUrl.toString(),
+      }
+    }
   } catch (error) {
     console.error('Auth login error:', error)
     throw createError({

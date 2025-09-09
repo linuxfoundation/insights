@@ -92,9 +92,23 @@ export const useAuth = () => {
         }
       }
 
-      // Navigate to login page which will handle the API redirect
-      const loginPageUrl = `/login${currentPath !== '/' ? `?redirectTo=${encodeURIComponent(currentPath)}` : ''}`
-      await navigateTo(loginPageUrl)
+      // Call the login API endpoint to get the Auth0 authorization URL
+      const response = await $fetch<{ success: boolean; authorizationUrl: string }>(
+        '/api/auth/login',
+        {
+          method: 'GET',
+          query: currentPath !== '/' ? { redirectTo: currentPath } : {},
+        },
+      )
+
+      if (response.success && response.authorizationUrl) {
+        // Redirect to Auth0 using the returned URL
+        if (process.client) {
+          window.location.href = response.authorizationUrl
+        } else {
+          await navigateTo(response.authorizationUrl, { external: true })
+        }
+      }
     } catch (error) {
       console.error('Login error:', error)
       isLoading.value = false
