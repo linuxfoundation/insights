@@ -26,16 +26,6 @@ export default defineEventHandler(async (event) => {
     const codeVerifier = randomPKCECodeVerifier()
     const codeChallenge = await calculatePKCECodeChallenge(codeVerifier)
 
-    // Store state and code verifier in secure cookies
-    console.log('Setting auth cookies:', {
-      state: state.substring(0, 8) + '...',
-      codeVerifier: codeVerifier.substring(0, 8) + '...',
-      isProduction: isProduction,
-      requestUrl: getRequestURL(event).toString(),
-      host: getHeader(event, 'host'),
-      userAgent: getHeader(event, 'user-agent'),
-    })
-
     const cookieOptions = {
       httpOnly: true,
       secure: isProduction,
