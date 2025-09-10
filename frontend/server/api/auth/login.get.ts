@@ -12,6 +12,7 @@ import {
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
   const query = getQuery(event)
+  const isProduction = process.env.NUXT_APP_ENV === 'production'
 
   try {
     // Discover Auth0 configuration
@@ -29,7 +30,7 @@ export default defineEventHandler(async (event) => {
     console.log('Setting auth cookies:', {
       state: state.substring(0, 8) + '...',
       codeVerifier: codeVerifier.substring(0, 8) + '...',
-      isProduction: process.env.NODE_ENV === 'production',
+      isProduction: isProduction,
       requestUrl: getRequestURL(event).toString(),
       host: getHeader(event, 'host'),
       userAgent: getHeader(event, 'user-agent'),
@@ -37,13 +38,13 @@ export default defineEventHandler(async (event) => {
 
     const cookieOptions = {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      secure: isProduction,
       sameSite: 'lax' as const,
       path: '/',
       maxAge: 60 * 10, // 10 minutes
       // Don't set domain for production - let browser handle it automatically
       // This ensures cookies work with the actual domain (insights.linuxfoundation.org)
-      ...(process.env.NODE_ENV !== 'production' && { domain: 'localhost' }),
+      ...(!isProduction && { domain: 'localhost' }),
     }
 
     setCookie(event, 'auth_state', state, cookieOptions)

@@ -7,6 +7,8 @@ export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
   const query = getQuery(event)
 
+  const isProduction = process.env.NUXT_APP_ENV === 'production'
+
   try {
     // Get stored state and code verifier
     const storedState = query.state as string
@@ -23,7 +25,7 @@ export default defineEventHandler(async (event) => {
       cookies: getHeader(event, 'cookie') || '[NO COOKIES]',
       userAgent: getHeader(event, 'user-agent'),
       referer: getHeader(event, 'referer'),
-      isProduction: process.env.NODE_ENV === 'production',
+      isProduction: isProduction,
     })
 
     // Validate state parameter
@@ -76,12 +78,12 @@ export default defineEventHandler(async (event) => {
     // Define consistent cookie options for tokens
     const tokenCookieOptions = {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      secure: isProduction,
       // Use 'none' for production to ensure cross-site compatibility with Auth0 redirects
-      sameSite: (process.env.NODE_ENV === 'production' ? 'none' : 'lax') as const,
+      sameSite: (isProduction ? 'none' : 'lax') as const,
       path: '/',
       // Don't set domain for production - let browser handle it automatically
-      ...(process.env.NODE_ENV !== 'production' && { domain: 'localhost' }),
+      ...(!isProduction && { domain: 'localhost' }),
     }
 
     // Store tokens in secure cookies

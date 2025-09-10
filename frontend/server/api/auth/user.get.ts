@@ -26,7 +26,7 @@ export default defineEventHandler(async (event) => {
       allCookies: getHeader(event, 'cookie') || '[NO COOKIES]',
       host: getHeader(event, 'host'),
       requestUrl: getRequestURL(event).toString(),
-      isProduction: process.env.NODE_ENV === 'production',
+      isProduction: process.env.NUXT_APP_ENV === 'production',
     })
 
     if (!idToken || !accessToken) {
