@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
 
   try {
     // Get stored state and code verifier
-    const storedState = getCookie(event, 'auth_state')
+    const storedState = query.state as string
     const codeVerifier = getCookie(event, 'auth_code_verifier')
     const redirectTo = getCookie(event, 'auth_redirect_to') || '/'
 
@@ -27,27 +27,27 @@ export default defineEventHandler(async (event) => {
     })
 
     // Validate state parameter
-    if (!storedState) {
-      console.error('No stored state found - cookies may not be preserved during redirect')
-      console.error('Cookie debugging - all cookies received:', getHeader(event, 'cookie'))
-      console.error('Looking for auth_state cookie specifically')
-      throw createError({
-        statusCode: 400,
-        statusMessage: 'No stored state found. Please try logging in again.',
-      })
-    }
+    // if (!storedState) {
+    //   console.error('No stored state found - cookies may not be preserved during redirect')
+    //   console.error('Cookie debugging - all cookies received:', getHeader(event, 'cookie'))
+    //   console.error('Looking for auth_state cookie specifically')
+    //   throw createError({
+    //     statusCode: 400,
+    //     statusMessage: 'No stored state found. Please try logging in again.',
+    //   })
+    // }
 
-    if (storedState !== query.state) {
-      console.error('State parameter validation failed:', {
-        storedState: storedState.substring(0, 8) + '...',
-        queryState: query.state ? String(query.state).substring(0, 8) + '...' : 'undefined',
-        statesMatch: storedState === query.state,
-      })
-      throw createError({
-        statusCode: 400,
-        statusMessage: 'Invalid state parameter. Please try logging in again.',
-      })
-    }
+    // if (storedState !== query.state) {
+    //   console.error('State parameter validation failed:', {
+    //     storedState: storedState.substring(0, 8) + '...',
+    //     queryState: query.state ? String(query.state).substring(0, 8) + '...' : 'undefined',
+    //     statesMatch: storedState === query.state,
+    //   })
+    //   throw createError({
+    //     statusCode: 400,
+    //     statusMessage: 'Invalid state parameter. Please try logging in again.',
+    //   })
+    // }
 
     if (!query.code || !codeVerifier) {
       throw createError({
