@@ -1,7 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 
-import { getCookie, getHeader, getRequestURL } from 'h3'
+import { getCookie } from 'h3'
 import { jwtDecode, JwtPayload } from 'jwt-decode'
 
 interface DecodedToken extends JwtPayload {
