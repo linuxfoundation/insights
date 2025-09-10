@@ -57,14 +57,18 @@ export default defineNuxtConfig({
     // These are also exposed on the client-side
     public: {
       apiBase: '/api',
-      appUrl: 'http://localhost:3000',
+      appUrl: isProduction ? 'https://insights.linuxfoundation.org' : 'http://localhost:3000',
       appEnv: process.env.APP_ENV,
       auth0Domain: isProduction
         ? 'https://sso.linuxfoundation.org'
         : 'https://linuxfoundation-staging.auth0.com',
       auth0ClientId: '',
-      auth0RedirectUri: 'http://localhost:3000/auth/callback',
-      auth0Audience: 'http://localhost:3000/api/',
+      auth0RedirectUri: isProduction
+        ? 'https://insights.linuxfoundation.org/auth/callback'
+        : 'http://localhost:3000/auth/callback',
+      auth0Audience: isProduction
+        ? 'https://insights.linuxfoundation.org/api/'
+        : 'http://localhost:3000/api/',
     },
   },
   vue: {

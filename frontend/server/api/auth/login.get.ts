@@ -31,6 +31,8 @@ export default defineEventHandler(async (event) => {
       codeVerifier: codeVerifier.substring(0, 8) + '...',
       isProduction: process.env.NODE_ENV === 'production',
       requestUrl: getRequestURL(event).toString(),
+      host: getHeader(event, 'host'),
+      userAgent: getHeader(event, 'user-agent'),
     })
 
     const cookieOptions = {
@@ -39,7 +41,9 @@ export default defineEventHandler(async (event) => {
       sameSite: 'lax' as const,
       path: '/',
       maxAge: 60 * 10, // 10 minutes
-      domain: process.env.NODE_ENV === 'production' ? undefined : 'localhost',
+      // Don't set domain for production - let browser handle it automatically
+      // This ensures cookies work with the actual domain (insights.linuxfoundation.org)
+      ...(process.env.NODE_ENV !== 'production' && { domain: 'localhost' }),
     }
 
     setCookie(event, 'auth_state', state, cookieOptions)

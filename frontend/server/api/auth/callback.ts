@@ -19,14 +19,18 @@ export default defineEventHandler(async (event) => {
       storedState,
       codeVerifier: codeVerifier ? '[PRESENT]' : '[MISSING]',
       requestUrl: getRequestURL(event).toString(),
+      host: getHeader(event, 'host'),
       cookies: getHeader(event, 'cookie') || '[NO COOKIES]',
       userAgent: getHeader(event, 'user-agent'),
       referer: getHeader(event, 'referer'),
+      isProduction: process.env.NODE_ENV === 'production',
     })
 
     // Validate state parameter
     if (!storedState) {
       console.error('No stored state found - cookies may not be preserved during redirect')
+      console.error('Cookie debugging - all cookies received:', getHeader(event, 'cookie'))
+      console.error('Looking for auth_state cookie specifically')
       throw createError({
         statusCode: 400,
         statusMessage: 'No stored state found. Please try logging in again.',
@@ -69,33 +73,34 @@ export default defineEventHandler(async (event) => {
     deleteCookie(event, 'auth_code_verifier')
     deleteCookie(event, 'auth_redirect_to')
 
+    // Define consistent cookie options for tokens
+    const tokenCookieOptions = {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax' as const,
+      path: '/',
+      // Don't set domain for production - let browser handle it automatically
+      ...(process.env.NODE_ENV !== 'production' && { domain: 'localhost' }),
+    }
+
     // Store tokens in secure cookies
     if (tokenResponse.access_token) {
       setCookie(event, 'auth_access_token', tokenResponse.access_token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
-        path: '/',
+        ...tokenCookieOptions,
         maxAge: tokenResponse.expires_in || 86400, // Default to 24 hours
       })
     }
 
     if (tokenResponse.id_token) {
       setCookie(event, 'auth_id_token', tokenResponse.id_token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
-        path: '/',
+        ...tokenCookieOptions,
         maxAge: tokenResponse.expires_in || 86400, // Default to 24 hours
       })
     }
 
     if (tokenResponse.refresh_token) {
       setCookie(event, 'auth_refresh_token', tokenResponse.refresh_token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
-        path: '/',
+        ...tokenCookieOptions,
         maxAge: 60 * 60 * 24 * 30, // 30 days
       })
     }
