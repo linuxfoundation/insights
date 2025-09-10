@@ -2,22 +2,29 @@
 // SPDX-License-Identifier: MIT
 
 import { getCookie } from 'h3'
-import { jwtDecode, JwtPayload } from 'jwt-decode'
+import jwt from 'jsonwebtoken'
 
-interface DecodedToken extends JwtPayload {
+interface DecodedOidcToken {
   sub: string
-  name: string
-  email: string
-  picture: string
-  email_verified: boolean
-  updated_at: string
+  name?: string
+  email?: string
+  picture?: string
+  email_verified?: boolean
+  updated_at?: string
+  iss: string
+  aud: string
+  iat: number
+  exp: number
+  original_access_token?: string
+  original_id_token?: string
 }
+
 export default defineEventHandler(async (event) => {
   try {
-    const idToken = getCookie(event, 'auth_id_token')
-    const accessToken = getCookie(event, 'auth_access_token')
+    const config = useRuntimeConfig()
+    const oidcToken = getCookie(event, 'auth_oidc_token')
 
-    if (!idToken || !accessToken) {
+    if (!oidcToken) {
       return {
         isAuthenticated: false,
         user: null,
@@ -25,8 +32,20 @@ export default defineEventHandler(async (event) => {
       }
     }
 
-    // Decode the ID token to get user information
-    const decodedToken = jwtDecode(idToken) as DecodedToken
+    // Validate client secret
+    if (!config.auth0ClientSecret) {
+      console.error('Auth0 client secret not configured')
+      return {
+        isAuthenticated: false,
+        user: null,
+        token: null,
+      }
+    }
+
+    // Verify and decode the OIDC token using the client secret
+    const decodedToken = jwt.verify(oidcToken, config.auth0ClientSecret, {
+      algorithms: ['HS256'],
+    }) as DecodedOidcToken
 
     return {
       isAuthenticated: true,
@@ -38,7 +57,7 @@ export default defineEventHandler(async (event) => {
         email_verified: decodedToken.email_verified,
         updated_at: decodedToken.updated_at,
       },
-      token: idToken,
+      token: decodedToken.original_id_token,
     }
   } catch (error) {
     console.error('Auth user error:', error)

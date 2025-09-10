@@ -2,6 +2,17 @@
 // SPDX-License-Identifier: MIT
 
 import { discovery, authorizationCodeGrant } from 'openid-client'
+import jwt from 'jsonwebtoken'
+import { jwtDecode, JwtPayload } from 'jwt-decode'
+
+interface DecodedIdToken extends JwtPayload {
+  sub: string
+  name?: string
+  email?: string
+  picture?: string
+  email_verified?: boolean
+  updated_at?: string
+}
 
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
@@ -39,7 +50,47 @@ export default defineEventHandler(async (event) => {
     deleteCookie(event, 'auth_code_verifier')
     deleteCookie(event, 'auth_redirect_to')
 
-    // Define consistent cookie options for tokens
+    // Validate client secret
+    if (!config.auth0ClientSecret) {
+      throw createError({
+        statusCode: 500,
+        statusMessage: 'Auth0 client secret not configured',
+      })
+    }
+
+    // Validate and decode the ID token to extract user information
+    if (!tokenResponse.id_token) {
+      throw createError({
+        statusCode: 500,
+        statusMessage: 'No ID token received from Auth0',
+      })
+    }
+
+    const decodedIdToken = jwtDecode(tokenResponse.id_token) as DecodedIdToken
+
+    // Create custom OpenID Connect token payload
+    const oidcTokenPayload = {
+      sub: decodedIdToken.sub,
+      name: decodedIdToken.name,
+      email: decodedIdToken.email,
+      picture: decodedIdToken.picture,
+      email_verified: decodedIdToken.email_verified,
+      updated_at: decodedIdToken.updated_at,
+      iss: config.public.auth0Domain,
+      aud: config.public.auth0ClientId,
+      iat: Math.floor(Date.now() / 1000),
+      exp: Math.floor(Date.now() / 1000) + (tokenResponse.expires_in || 86400),
+      // Include original tokens for reference if needed
+      original_access_token: tokenResponse.access_token,
+      original_id_token: tokenResponse.id_token,
+    }
+
+    // Sign the custom OpenID Connect token with client secret
+    const oidcToken = jwt.sign(oidcTokenPayload, config.auth0ClientSecret, {
+      algorithm: 'HS256',
+    })
+
+    // Define consistent cookie options for the OIDC token
     const tokenCookieOptions = {
       httpOnly: true,
       secure: isProduction,
@@ -48,22 +99,13 @@ export default defineEventHandler(async (event) => {
       path: '/',
       // Force domain for production to ensure cookies work across proxy inconsistencies
       ...(isProduction ? { domain: '.linuxfoundation.org' } : { domain: 'localhost' }),
+      maxAge: tokenResponse.expires_in || 86400, // Default to 24 hours
     }
 
-    if (tokenResponse.access_token) {
-      setCookie(event, 'auth_access_token', tokenResponse.access_token, {
-        ...tokenCookieOptions,
-        maxAge: tokenResponse.expires_in || 86400, // Default to 24 hours
-      })
-    }
+    // Store the single OpenID Connect token
+    setCookie(event, 'auth_oidc_token', oidcToken, tokenCookieOptions)
 
-    if (tokenResponse.id_token) {
-      setCookie(event, 'auth_id_token', tokenResponse.id_token, {
-        ...tokenCookieOptions,
-        maxAge: tokenResponse.expires_in || 86400, // Default to 24 hours
-      })
-    }
-
+    // Store refresh token separately if available
     if (tokenResponse.refresh_token) {
       setCookie(event, 'auth_refresh_token', tokenResponse.refresh_token, {
         ...tokenCookieOptions,
@@ -85,6 +127,8 @@ export default defineEventHandler(async (event) => {
     deleteCookie(event, 'auth_state')
     deleteCookie(event, 'auth_code_verifier')
     deleteCookie(event, 'auth_redirect_to')
+    deleteCookie(event, 'auth_oidc_token')
+    deleteCookie(event, 'auth_refresh_token')
 
     throw createError({
       statusCode: 500,

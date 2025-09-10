@@ -80,6 +80,9 @@ importers:
       jwks-rsa:
         specifier: ^3.2.0
         version: 3.2.0
+      jwt-decode:
+        specifier: ^4.0.0
+        version: 4.0.0
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21

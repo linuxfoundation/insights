@@ -48,6 +48,7 @@ export default defineNuxtConfig({
     lfxAuth0JwtSecret: '',
     lfxAuth0TokenClaimGroupKey: '',
     lfxAuth0TokenClaimGroupName: '',
+    auth0ClientSecret: '',
     insightsDbWriteHost: 'localhost',
     insightsDbReadHost: 'localhost',
     insightsDbPort: 5432,
