@@ -108,3 +108,5 @@ The authentication flow in this application uses Auth0 and follows the OAuth 2.0
 ---
 
 **Summary Diagram:**
+
+<img width="3802" height="3840" alt="insights auth mermaid chart" src="https://github.com/user-attachments/assets/16369652-e504-4688-af43-1db086255c2e" />
