@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: MIT
 
 import { discovery, authorizationCodeGrant } from 'openid-client'
-import { setCookie, getCookie, deleteCookie } from 'h3'
 
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
@@ -14,11 +13,35 @@ export default defineEventHandler(async (event) => {
     const codeVerifier = getCookie(event, 'auth_code_verifier')
     const redirectTo = getCookie(event, 'auth_redirect_to') || '/'
 
+    // Debug logging for state parameter validation
+    console.log('Auth callback debug info:', {
+      queryState: query.state,
+      storedState,
+      codeVerifier: codeVerifier ? '[PRESENT]' : '[MISSING]',
+      requestUrl: getRequestURL(event).toString(),
+      cookies: getHeader(event, 'cookie') || '[NO COOKIES]',
+      userAgent: getHeader(event, 'user-agent'),
+      referer: getHeader(event, 'referer'),
+    })
+
     // Validate state parameter
-    if (!storedState || storedState !== query.state) {
+    if (!storedState) {
+      console.error('No stored state found - cookies may not be preserved during redirect')
       throw createError({
         statusCode: 400,
-        statusMessage: 'Invalid state parameter',
+        statusMessage: 'No stored state found. Please try logging in again.',
+      })
+    }
+
+    if (storedState !== query.state) {
+      console.error('State parameter validation failed:', {
+        storedState: storedState.substring(0, 8) + '...',
+        queryState: query.state ? String(query.state).substring(0, 8) + '...' : 'undefined',
+        statesMatch: storedState === query.state,
+      })
+      throw createError({
+        statusCode: 400,
+        statusMessage: 'Invalid state parameter. Please try logging in again.',
       })
     }
 
@@ -82,6 +105,7 @@ export default defineEventHandler(async (event) => {
       redirectTo === '/'
         ? '/?auth=success'
         : `${redirectTo}${redirectTo.includes('?') ? '&' : '?'}auth=success`
+
     await sendRedirect(event, finalRedirect)
   } catch (error) {
     console.error('Auth callback error:', error)

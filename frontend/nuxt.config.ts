@@ -63,7 +63,7 @@ export default defineNuxtConfig({
         ? 'https://sso.linuxfoundation.org'
         : 'https://linuxfoundation-staging.auth0.com',
       auth0ClientId: '',
-      auth0RedirectUri: 'http://localhost:3000/callback',
+      auth0RedirectUri: 'http://localhost:3000/auth/callback',
       auth0Audience: 'http://localhost:3000/api/',
     },
   },
