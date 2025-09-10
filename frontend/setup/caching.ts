@@ -9,7 +9,7 @@ export default {
       ? {
           '/callback': { redirect: '/auth/auth0/callback' }, // Redirect legacy callback to OIDC callback
           '/auth/callback': { redirect: '/auth/auth0/callback' }, // Redirect legacy callback to OIDC callback
-          '/auth/auth0/callback': { ssr: false, cache: false }, // Disable SSR for OIDC callback page
+          '/auth/auth0/callback': { prerender: false, index: false, cache: false }, // Disable SSR for OIDC callback page
           '/api/health': { cache: false },
           '/api/chat/**': { cache: false },
           '/api/health/live': { cache: false },
