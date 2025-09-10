@@ -80,10 +80,10 @@ export default defineEventHandler(async (event) => {
       httpOnly: true,
       secure: isProduction,
       // Use 'none' for production to ensure cross-site compatibility with Auth0 redirects
-      sameSite: (isProduction ? 'none' : 'lax') as const,
+      sameSite: isProduction ? ('none' as const) : ('lax' as const),
       path: '/',
-      // Don't set domain for production - let browser handle it automatically
-      ...(!isProduction && { domain: 'localhost' }),
+      // Force domain for production to ensure cookies work across proxy inconsistencies
+      ...(isProduction ? { domain: '.linuxfoundation.org' } : { domain: 'localhost' }),
     }
 
     // Store tokens in secure cookies
