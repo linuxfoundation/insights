@@ -77,18 +77,30 @@ export default defineEventHandler(async (event) => {
     const tokenCookieOptions = {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax' as const,
+      // Use 'none' for production to ensure cross-site compatibility with Auth0 redirects
+      sameSite: (process.env.NODE_ENV === 'production' ? 'none' : 'lax') as const,
       path: '/',
       // Don't set domain for production - let browser handle it automatically
       ...(process.env.NODE_ENV !== 'production' && { domain: 'localhost' }),
     }
 
     // Store tokens in secure cookies
+    console.log('Setting token cookies:', {
+      hasAccessToken: !!tokenResponse.access_token,
+      hasIdToken: !!tokenResponse.id_token,
+      hasRefreshToken: !!tokenResponse.refresh_token,
+      accessTokenLength: tokenResponse.access_token?.length || 0,
+      idTokenLength: tokenResponse.id_token?.length || 0,
+      tokenCookieOptions,
+      host: getHeader(event, 'host'),
+    })
+
     if (tokenResponse.access_token) {
       setCookie(event, 'auth_access_token', tokenResponse.access_token, {
         ...tokenCookieOptions,
         maxAge: tokenResponse.expires_in || 86400, // Default to 24 hours
       })
+      console.log('Set auth_access_token cookie')
     }
 
     if (tokenResponse.id_token) {
@@ -96,6 +108,7 @@ export default defineEventHandler(async (event) => {
         ...tokenCookieOptions,
         maxAge: tokenResponse.expires_in || 86400, // Default to 24 hours
       })
+      console.log('Set auth_id_token cookie')
     }
 
     if (tokenResponse.refresh_token) {
@@ -103,6 +116,7 @@ export default defineEventHandler(async (event) => {
         ...tokenCookieOptions,
         maxAge: 60 * 60 * 24 * 30, // 30 days
       })
+      console.log('Set auth_refresh_token cookie')
     }
 
     // Redirect to the original page or home with auth success flag
