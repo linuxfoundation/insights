@@ -32,7 +32,7 @@ export const useAuth = () => {
   // Fetch user data from server
   const { data: userData, refresh: refreshAuth } = useAsyncData<AuthData>(
     'auth-user',
-    () => $fetch('/api/auth/user'),
+    () => $fetch('/api/auth/user', { credentials: 'include' }),
     {
       default: () => ({
         isAuthenticated: false,
@@ -98,6 +98,7 @@ export const useAuth = () => {
         {
           method: 'GET',
           query: currentPath !== '/' ? { redirectTo: currentPath } : {},
+          credentials: 'include',
         },
       )
 
