@@ -30,6 +30,9 @@ export default {
         }
       : {
           '/auth/callback': { ssr: true, cache: false }, // Enable SSR for Auth0 callback page to handle server-side processing
+          '/api/auth/callback': { prerender: false, index: false, cache: false },
+          '/api/auth/login': { prerender: false, index: false, cache: false },
+          '/api/auth/user': { prerender: false, index: false, cache: false },
         },
   nitro: {
     storage: {
