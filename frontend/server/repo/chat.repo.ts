@@ -1,6 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import type { Pool } from 'pg'
+import { RouterDecisionAction } from '~~/lib/chat/enums'
 
 export interface PipeInput {
   endDate?: string
@@ -45,7 +46,7 @@ export interface ChatResponse {
   id?: string
   conversationId?: string
   userPrompt: string
-  routerResponse: 'pipes' | 'text-to-sql' | 'stop'
+  routerResponse: RouterDecisionAction
   routerReason: string
   pipeInstructions?: PipeInstructions
   sqlQuery?: string

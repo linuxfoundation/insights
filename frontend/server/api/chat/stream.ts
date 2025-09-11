@@ -1,15 +1,15 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import type { Pool } from 'pg'
-import { streamingAgentRequestHandler } from '../../../lib/chat/data-copilot'
-import { ChatRepository } from '../../repo/chat.repo'
+import { DataCopilot } from '~~/lib/chat/data-copilot'
+import { InsightsProjectsRepository } from '~~/server/repo/insightsProjects.repo'
 import { ChatMessage } from '~~/lib/chat/types'
 
 export const maxDuration = 30
 
 interface IStreamRequestBody {
   messages: ChatMessage[]
-  segmentId?: string
+  projectSlug?: string
   projectName?: string
   pipe: string
   parameters?: Record<string, unknown>
@@ -18,31 +18,44 @@ interface IStreamRequestBody {
 
 export default defineEventHandler(async (event): Promise<Response | Error> => {
   try {
-    const { messages, segmentId, projectName, pipe, parameters, conversationId } =
+    const { messages, projectName, pipe, parameters, conversationId, projectSlug } =
       await readBody<IStreamRequestBody>(event)
 
     if (!pipe) {
       return createError({ statusCode: 400, statusMessage: 'Pipe is required' })
     }
 
+    if (!projectSlug) {
+      return createError({ statusCode: 400, statusMessage: 'Project slug is required' })
+    }
+
     // Generate conversationId if not provided
     const finalConversationId = conversationId || crypto.randomUUID()
 
-    const dbPool = event.context.dbPool as Pool
+    const insightsDbPool = event.context.insightsDbPool as Pool
+    const cmDbPool = event.context.cmDbPool as Pool
 
-    return await streamingAgentRequestHandler({
+    // find project by slug to get the segmentId
+    const insightsProjectsRepo = new InsightsProjectsRepository(cmDbPool)
+
+    const insightsProjects = await insightsProjectsRepo.findInsightsProjectsBySlug(projectSlug)
+
+    if (!insightsProjects) {
+      return createError({ statusCode: 404, statusMessage: 'Project not found' })
+    }
+
+    const dataCopilot = new DataCopilot()
+    await dataCopilot.initialize()
+
+    return dataCopilot.streamingAgentRequestHandler({
       messages,
-      segmentId,
+      segmentId: insightsProjects.segmentId,
       projectName,
       pipe,
       parameters,
       conversationId: finalConversationId,
-      onResponseComplete: dbPool
-        ? async (response) => {
-            const chatRepo = new ChatRepository(dbPool)
-            return await chatRepo.saveChatResponse(response, event.context.user.email)
-          }
-        : undefined,
+      insightsDbPool,
+      userEmail: event.context.user.email,
     })
   } catch (error) {
     return createError({

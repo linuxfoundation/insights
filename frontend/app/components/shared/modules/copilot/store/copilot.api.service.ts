@@ -40,7 +40,7 @@ class CopilotApiService {
         content: m.content
       })),
       pipe,
-      segmentId: project?.id,
+      projectSlug: project?.slug,
       projectName: project?.name,
       parameters,
       conversationId

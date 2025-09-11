@@ -20,7 +20,11 @@ const bedrock = createAmazonBedrock({
   region: process.env.NUXT_AWS_BEDROCK_REGION,
 })
 
-export type ChartConfig = { config: Config | null; dataMapping: DataMapping[] | null; isMetric?: boolean }
+export type ChartConfig = {
+  config: Config | null
+  dataMapping: DataMapping[] | null
+  isMetric?: boolean
+}
 
 // Color arrays for different chart types and data point counts
 const chartColors = {
@@ -67,8 +71,7 @@ export async function generateChartConfig(
       model,
       output: 'object' as const,
       schema: outputSchema,
-      system:
-        `You are a data visualization expert. Create simple, effective chart configurations using the apache echarts configuration schema.
+      system: `You are a data visualization expert. Create simple, effective chart configurations using the apache echarts configuration schema.
           Make sure the generated chart configuration answers the user's question and fits the data shape.
           ### USER QUESTION 
               ${routerReasoning} 
@@ -97,9 +100,9 @@ export async function generateChartConfig(
       chartConfig.yAxis.inverse = true
 
       if (chartConfig.grid) {
-        chartConfig.grid.left = "0.2%"
+        chartConfig.grid.left = '0.2%'
       }
-      chartConfig.series.map((s) => s.seriesLayoutBy = 'column')
+      chartConfig.series.map((s) => (s.seriesLayoutBy = 'column'))
     }
 
     // Apply default colors if not already set
@@ -292,7 +295,7 @@ function generateFallbackConfig(profile: any): Config {
     },
     ...(type !== 'pie' && {
       // For leaderboard, swap axes to create horizontal bars
-      xAxis: isLeaderboard 
+      xAxis: isLeaderboard
         ? {
             type: 'value',
             name: yKeys.length === 1 ? yKeys[0] : 'Value',
@@ -340,11 +343,33 @@ function generateFallbackConfig(profile: any): Config {
             axisTick: { show: false },
           }
         : useDualAxis
-        ? [
-            {
+          ? [
+              {
+                type: 'value',
+                name: primaryKeys.join(' / '),
+                position: 'left',
+                axisLabel: {
+                  fontSize: 12,
+                  fontWeight: 'normal',
+                  color: lfxColors.neutral[400],
+                  fontFamily: 'Inter',
+                },
+              },
+              {
+                type: 'value',
+                name: secondaryKeys.join(' / '),
+                position: 'right',
+                axisLabel: {
+                  fontSize: 12,
+                  fontWeight: 'normal',
+                  color: lfxColors.neutral[400],
+                  fontFamily: 'Inter',
+                },
+              },
+            ]
+          : {
               type: 'value',
-              name: primaryKeys.join(' / '),
-              position: 'left',
+              name: yKeys.length === 1 ? yKeys[0] : 'Value',
               axisLabel: {
                 fontSize: 12,
                 fontWeight: 'normal',
@@ -352,28 +377,6 @@ function generateFallbackConfig(profile: any): Config {
                 fontFamily: 'Inter',
               },
             },
-            {
-              type: 'value',
-              name: secondaryKeys.join(' / '),
-              position: 'right',
-              axisLabel: {
-                fontSize: 12,
-                fontWeight: 'normal',
-                color: lfxColors.neutral[400],
-                fontFamily: 'Inter',
-              },
-            },
-          ]
-        : {
-            type: 'value',
-            name: yKeys.length === 1 ? yKeys[0] : 'Value',
-            axisLabel: {
-              fontSize: 12,
-              fontWeight: 'normal',
-              color: lfxColors.neutral[400],
-              fontFamily: 'Inter',
-            },
-          },
       grid: {
         left: '8%',
         right: useDualAxis ? '15%' : '8%',

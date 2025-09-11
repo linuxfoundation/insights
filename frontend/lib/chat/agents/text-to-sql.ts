@@ -75,16 +75,7 @@ export class TextToSqlAgent extends BaseAgent<TextToSqlAgentInput, SqlOutput> {
     }
   }
 
-  protected generateConversationHistoryReceipt(_input: TextToSqlAgentInput): string {
-    return ''
-  }
-
   protected override shouldMonitorToolCalls(_input: TextToSqlAgentInput): boolean {
     return true // Enable tool call monitoring for SQL agent
   }
-}
-
-export async function runTextToSqlAgent(params: TextToSqlAgentInput): Promise<SqlOutput> {
-  const agent = new TextToSqlAgent()
-  return agent.execute(params)
 }

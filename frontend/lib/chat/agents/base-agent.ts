@@ -14,10 +14,8 @@ export abstract class BaseAgent<TInput, TOutput> {
   abstract readonly temperature: number
   abstract readonly maxSteps: number
 
-  protected getConversationHistory<T extends object>(
-    input: { messages: ChatMessage[] } & T,
-  ): string {
-    const userMessages = input.messages.filter((m) => m.role === 'user')
+  protected getConversationHistory(messages: ChatMessage[]): string {
+    const userMessages = messages.filter((m) => m.role === 'user')
     if (userMessages.length > 1) {
       return JSON.stringify(userMessages.slice(0, -1), null, 2)
     }
@@ -91,7 +89,7 @@ export abstract class BaseAgent<TInput, TOutput> {
     return 'value'
   }
 
-  async execute(input: TInput): Promise<TOutput & { usage?: any }> {
+  async execute(input: TInput & { messages: ChatMessage[] }): Promise<TOutput & { usage?: any }> {
     try {
       const systemPrompt = await this.getSystemPrompt(input)
       const userPrompt = this.getUserPrompt(input)
@@ -99,7 +97,7 @@ export abstract class BaseAgent<TInput, TOutput> {
 
       // Append JSON format instructions to system prompt
       const jsonInstructions = this.generateJSONInstructions()
-      const conversationHistoryReceipt = this.generateConversationHistoryReceipt(input)
+      const conversationHistoryReceipt = this.generateConversationHistoryReceipt(input.messages)
 
       const fullSystemPrompt = conversationHistoryReceipt + systemPrompt + jsonInstructions
 
@@ -150,6 +148,7 @@ export abstract class BaseAgent<TInput, TOutput> {
         usage: response.usage,
       }
     } catch (error) {
+      // TODO:: Potentially a good place to catch zod validation errors and retryinh
       throw this.createError(error)
     }
   }
@@ -189,10 +188,33 @@ export abstract class BaseAgent<TInput, TOutput> {
     }
   }
 
+  protected generateConversationHistoryReceipt(messages: ChatMessage[]): string {
+    try {
+      const conversationHistory = this.getConversationHistory(messages)
+
+      if (!conversationHistory || conversationHistory.trim() === '') {
+        return ''
+      }
+
+      return `
+      
+      ## CONVERSATION HISTORY (FOR CONTEXT ONLY)
+
+      The following is the conversation history leading up to the current question. \n\n
+      Use this ONLY for context and understanding. Do NOT attempt to answer previous questions.
+
+      ${conversationHistory}
+
+      ## END OF CONVERSATION HISTORY`
+    } catch (error) {
+      console.error('Error generating conversation history context', error)
+      return ''
+    }
+  }
+
   protected abstract getModel(input: TInput): any
   protected abstract getSystemPrompt(input: TInput): string | Promise<string>
   protected abstract getUserPrompt(input: TInput): string
-  protected abstract generateConversationHistoryReceipt(input: TInput): string
   protected abstract getTools(input: TInput): Record<string, any>
   protected abstract createError(error: unknown): Error
 

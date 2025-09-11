@@ -1,7 +1,10 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import type { DataStreamWriter } from 'ai'
+import type { Pool } from 'pg'
 import { z } from 'zod'
+import type { ChatResponse } from '~~/server/repo/chat.repo'
 
 // ============================================
 // Pipe Instruction Types
@@ -109,7 +112,7 @@ export type PipeOutput = z.infer<typeof pipeOutputSchema> & { usage?: any }
 // ============================================
 
 export interface ChatMessage {
-  content: string,
+  content: string
   role: string
 }
 
@@ -125,6 +128,13 @@ export interface RouterAgentInput {
   segmentId: string | null
 }
 
+export interface PipeAgentStreamInput extends Omit<PipeAgentInput, 'model' | 'tools' | 'date'> {
+  dataStream: DataStreamWriter
+  date: string
+  responseData: ChatResponse
+  routerOutput: RouterOutput
+}
+
 export interface PipeAgentInput {
   model: any // Bedrock model instance
   messages: ChatMessage[]
@@ -136,4 +146,36 @@ export interface PipeAgentInput {
   segmentId: string | null
   reformulatedQuestion: string
   toolNames: string[] // Array of tool names from router
+}
+
+export interface DataCopilotQueryInput {
+  messages: ChatMessage[]
+  segmentId?: string
+  projectName?: string
+  pipe: string
+  parameters?: Record<string, unknown>
+  conversationId?: string
+  insightsDbPool: Pool
+  userEmail: string
+}
+
+export interface TextToSqlAgentInput {
+  messages: ChatMessage[]
+  date: string
+  projectName: string
+  pipe: string
+  parametersString: string
+  segmentId: string
+  reformulatedQuestion: string
+}
+
+export interface TextToSqlAgentStreamInput {
+  messages: ChatMessage[]
+  date: string
+  projectName: string
+  pipe: string
+  parametersString: string
+  segmentId: string
+  reformulatedQuestion: string
+  dataStream: any
 }

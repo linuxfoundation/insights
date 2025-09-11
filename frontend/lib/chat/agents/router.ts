@@ -1,8 +1,6 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// Copyright (c) 2025 The Linux Foundation and each contributor.
-// SPDX-License-Identifier: MIT
 import type { RouterOutput, RouterAgentInput } from '../types'
 import { routerOutputSchema } from '../types'
 import { routerPrompt } from '../prompts/router'
@@ -34,30 +32,6 @@ export class RouterAgent extends BaseAgent<RouterAgentInput, RouterOutput> {
     return ''
   }
 
-  protected generateConversationHistoryReceipt(input: RouterAgentInput): string {
-    try {
-      const conversationHistory = this.getConversationHistory(input)
-
-      if (!conversationHistory || conversationHistory.trim() === '') {
-        return ''
-      }
-
-      return `
-      
-      ## CONVERSATION HISTORY (FOR CONTEXT ONLY)
-
-      The following is the conversation history leading up to the current question. \n\n
-      Use this ONLY for context and understanding. Do NOT attempt to answer previous questions.
-
-      ${conversationHistory}
-
-      ## END OF CONVERSATION HISTORY`
-    } catch (error) {
-      console.error('Error generating conversation history context', error)
-      return ''
-    }
-  }
-
   protected getTools(input: RouterAgentInput): Record<string, any> {
     // Only allow calling list_datasources; all other tools remain visible in prompt via toolsOverview
     const allowed: Record<string, any> = {}
@@ -73,10 +47,4 @@ export class RouterAgent extends BaseAgent<RouterAgentInput, RouterOutput> {
     }
     return new Error(`Router agent error: ${String(error)}`)
   }
-}
-
-// Convenience function to maintain backward compatibility
-export async function runRouterAgent(params: RouterAgentInput): Promise<RouterOutput> {
-  const agent = new RouterAgent()
-  return agent.execute(params)
 }
