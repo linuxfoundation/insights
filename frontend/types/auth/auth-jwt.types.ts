@@ -3,8 +3,6 @@
 
 import { JwtPayload } from 'jsonwebtoken'
 
-export const GROUP_CLAIM_KEY = 'https://sso.linuxfoundation.org/claims/groups'
-export const CLAIM_GROUP_NAME = 'lfproducts-lfx-insights'
 export interface DecodedOidcToken {
   sub: string
   name?: string
@@ -27,5 +25,6 @@ export interface DecodedIdToken extends JwtPayload {
   picture?: string
   email_verified?: boolean
   updated_at?: string
-  [GROUP_CLAIM_KEY]?: string[]
+
+  [key: string]: string[] | string | number | boolean | undefined
 }

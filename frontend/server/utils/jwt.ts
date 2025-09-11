@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: MIT
 import jwt from 'jsonwebtoken'
 import type { H3Event } from 'h3'
-import { CLAIM_GROUP_NAME } from '~~/types/auth/auth-jwt.types'
 
 /**
  * Verifies JWT token from Authorization header
@@ -68,5 +67,5 @@ export const hasLfxInsightsPermission = (claims?: string[]): boolean => {
     return false
   }
 
-  return claims.includes(CLAIM_GROUP_NAME)
+  return claims.includes(config.lfxAuth0TokenClaimGroupName)
 }
