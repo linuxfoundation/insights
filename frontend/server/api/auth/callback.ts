@@ -71,7 +71,7 @@ export default defineEventHandler(async (event) => {
       email_verified: decodedIdToken.email_verified,
       updated_at: decodedIdToken.updated_at,
       iss: config.public.auth0Domain,
-      aud: config.public.auth0ClientId,
+      // aud: config.public.auth0ClientId,
       iat: Math.floor(Date.now() / 1000),
       exp: Math.floor(Date.now() / 1000) + (tokenResponse.expires_in || 86400),
       claims,
