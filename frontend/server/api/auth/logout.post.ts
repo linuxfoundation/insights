@@ -10,12 +10,8 @@ export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
 
   try {
-    // Get the OIDC token for logout
+    // Get the OIDC token for logout (don't delete yet - we need it for proper logout)
     const oidcToken = getCookie(event, 'auth_oidc_token')
-
-    // Clear all auth cookies
-    deleteCookie(event, 'auth_oidc_token')
-    deleteCookie(event, 'auth_refresh_token')
 
     // If we have an OIDC token, extract the original ID token for proper Auth0 logout
     if (oidcToken && config.auth0ClientSecret) {
@@ -41,6 +37,13 @@ export default defineEventHandler(async (event) => {
               id_token_hint: originalIdToken,
               post_logout_redirect_uri: config.public.appUrl,
             })
+
+            // Clear all auth cookies after successful logout URL generation
+            deleteCookie(event, 'auth_oidc_token')
+            deleteCookie(event, 'auth_refresh_token')
+            deleteCookie(event, 'auth_state')
+            deleteCookie(event, 'auth_code_verifier')
+            deleteCookie(event, 'auth_redirect_to')
 
             return {
               success: true,
@@ -70,12 +73,32 @@ export default defineEventHandler(async (event) => {
             }
 
             if (isProduction && parsedAuth0Domain.hostname === 'sso.linuxfoundation.org') {
-              // For Linux Foundation SSO, use their logout endpoint
-              logoutUrl = `https://sso.linuxfoundation.org/v2/logout?returnTo=${encodeURIComponent(config.public.appUrl)}&client_id=${config.public.auth0ClientId}`
+              // For Linux Foundation SSO, use their logout endpoint with ID token hint
+              const logoutParams = new URLSearchParams({
+                returnTo: config.public.appUrl,
+                client_id: config.public.auth0ClientId,
+              })
+
+              // Add ID token hint if available for proper SSO logout
+              if (originalIdToken) {
+                logoutParams.set('id_token_hint', originalIdToken)
+              }
+
+              logoutUrl = `https://sso.linuxfoundation.org/v2/logout?${logoutParams.toString()}`
             } else {
               // For standard Auth0 domains, use the standard logout endpoint
               const auth0Domain = config.public.auth0Domain.replace('https://', '')
-              logoutUrl = `https://${auth0Domain}/v2/logout?returnTo=${encodeURIComponent(config.public.appUrl)}&client_id=${config.public.auth0ClientId}`
+              const logoutParams = new URLSearchParams({
+                returnTo: config.public.appUrl,
+                client_id: config.public.auth0ClientId,
+              })
+
+              // Add ID token hint if available
+              if (originalIdToken) {
+                logoutParams.set('id_token_hint', originalIdToken)
+              }
+
+              logoutUrl = `https://${auth0Domain}/v2/logout?${logoutParams.toString()}`
             }
 
             deleteCookie(event, 'auth_state')
@@ -95,6 +118,13 @@ export default defineEventHandler(async (event) => {
         // Continue with fallback logout
       }
     }
+
+    // Clear all auth cookies for fallback case
+    deleteCookie(event, 'auth_oidc_token')
+    deleteCookie(event, 'auth_refresh_token')
+    deleteCookie(event, 'auth_state')
+    deleteCookie(event, 'auth_code_verifier')
+    deleteCookie(event, 'auth_redirect_to')
 
     return {
       success: true,
