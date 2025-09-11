@@ -4,8 +4,26 @@
 // Auth0 logout endpoint - no longer using OIDC discovery since Auth0 uses proprietary /v2/logout
 import { getCookie, deleteCookie } from 'h3'
 import jwt from 'jsonwebtoken'
+import type { H3Event } from 'h3'
 import type { DecodedOidcToken } from '~~/types/auth/auth-jwt.types'
 
+const isProduction = process.env.NUXT_APP_ENV === 'production'
+
+const setOIDCCookie = (event: H3Event) => {
+  const tokenCookieOptions = {
+    httpOnly: true,
+    secure: isProduction,
+    // Use 'none' for production to ensure cross-site compatibility with Auth0 redirects
+    sameSite: 'lax' as const,
+    path: '/',
+    // Force domain for production to ensure cookies work across proxy inconsistencies
+    ...(isProduction ? { domain: '.linuxfoundation.org' } : { domain: 'localhost' }),
+    maxAge: 0,
+  }
+
+  // auth_oidc_token doesn't clear on prod, so forcing it to set as empty cookie
+  setCookie(event, 'auth_oidc_token', '', tokenCookieOptions)
+}
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
 
@@ -72,7 +90,11 @@ export default defineEventHandler(async (event) => {
           }
 
           // Clear all auth cookies after successful logout URL generation
-          deleteCookie(event, 'auth_oidc_token')
+          if (isProduction) {
+            setOIDCCookie(event)
+          } else {
+            deleteCookie(event, 'auth_oidc_token')
+          }
           deleteCookie(event, 'auth_refresh_token')
           deleteCookie(event, 'auth_state')
           deleteCookie(event, 'auth_code_verifier')
@@ -90,7 +112,11 @@ export default defineEventHandler(async (event) => {
     }
 
     // Clear all auth cookies for fallback case
-    deleteCookie(event, 'auth_oidc_token')
+    if (isProduction) {
+      setOIDCCookie(event)
+    } else {
+      deleteCookie(event, 'auth_oidc_token')
+    }
     deleteCookie(event, 'auth_refresh_token')
     deleteCookie(event, 'auth_state')
     deleteCookie(event, 'auth_code_verifier')
