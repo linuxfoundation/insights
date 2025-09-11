@@ -10,6 +10,7 @@ export default {
           '/auth/callback': { ssr: false, cache: false }, // Disable SSR for Auth0 callback page
           '/api/auth/callback': { prerender: false, index: false, cache: false },
           '/api/auth/login': { prerender: false, index: false, cache: false },
+          '/api/auth/logout': { prerender: false, index: false, cache: false },
           '/api/auth/user': { prerender: false, index: false, cache: false },
           '/api/health': { cache: false },
           '/api/chat/**': { cache: false },
@@ -32,6 +33,7 @@ export default {
           '/auth/callback': { ssr: true, cache: false }, // Enable SSR for Auth0 callback page to handle server-side processing
           '/api/auth/callback': { prerender: false, index: false, cache: false },
           '/api/auth/login': { prerender: false, index: false, cache: false },
+          '/api/auth/logout': { prerender: false, index: false, cache: false },
           '/api/auth/user': { prerender: false, index: false, cache: false },
         },
   nitro: {
