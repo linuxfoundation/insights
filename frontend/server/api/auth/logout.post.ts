@@ -47,9 +47,9 @@ export default defineEventHandler(async (event) => {
               logoutUrl: logoutUrl.toString(),
             }
           } catch (discoveryError) {
-            console.error(
-              'OIDC discovery failed, falling back to manual logout URL:',
-              discoveryError,
+            console.info(
+              'OIDC discovery not supported by auth provider, using manual logout URL for:',
+              config.public.auth0Domain,
             )
 
             // Fallback: Construct logout URL manually for Auth0/SSO
@@ -57,7 +57,19 @@ export default defineEventHandler(async (event) => {
             const isProduction = process.env.NUXT_APP_ENV === 'production'
             let logoutUrl: string
 
-            if (isProduction && config.public.auth0Domain.includes('sso.linuxfoundation.org')) {
+            // Strictly check the hostname using the URL API
+            let parsedAuth0Domain: URL
+            try {
+              parsedAuth0Domain = new URL(
+                config.public.auth0Domain.startsWith('http')
+                  ? config.public.auth0Domain
+                  : `https://${config.public.auth0Domain}`,
+              )
+            } catch (e) {
+              parsedAuth0Domain = { hostname: '' } as URL // fallback in case parsing fails
+            }
+
+            if (isProduction && parsedAuth0Domain.hostname === 'sso.linuxfoundation.org') {
               // For Linux Foundation SSO, use their logout endpoint
               logoutUrl = `https://sso.linuxfoundation.org/v2/logout?returnTo=${encodeURIComponent(config.public.appUrl)}&client_id=${config.public.auth0ClientId}`
             } else {
@@ -65,6 +77,12 @@ export default defineEventHandler(async (event) => {
               const auth0Domain = config.public.auth0Domain.replace('https://', '')
               logoutUrl = `https://${auth0Domain}/v2/logout?returnTo=${encodeURIComponent(config.public.appUrl)}&client_id=${config.public.auth0ClientId}`
             }
+
+            deleteCookie(event, 'auth_state')
+            deleteCookie(event, 'auth_code_verifier')
+            deleteCookie(event, 'auth_redirect_to')
+            deleteCookie(event, 'auth_oidc_token')
+            deleteCookie(event, 'auth_refresh_token')
 
             return {
               success: true,
