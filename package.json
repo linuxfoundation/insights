@@ -8,5 +8,8 @@
 		"*.{js,ts,vue}": [
 			"node ./scripts/add-license.js"
 		]
+	},
+	"dependencies": {
+		"jwt-decode": "^4.0.0"
 	}
 }

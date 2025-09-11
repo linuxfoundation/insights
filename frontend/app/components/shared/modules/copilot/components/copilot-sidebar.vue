@@ -111,7 +111,6 @@ import LfxCopilotChatHistory from './chat-history/copilot-chat-history.vue'
 import LfxContextDisplay from './shared/context-display.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue'
 import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue'
-import { useAuthStore } from '~/components/modules/auth/store/auth.store';
 
 const props = defineProps<{
   widgetName: string;
@@ -128,7 +127,6 @@ const emit = defineEmits<{
 }>();
 
 const { copilotDefaults, selectedResultId } = storeToRefs(useCopilotStore());
-const { token } = storeToRefs(useAuthStore());
 
 const scrollable = ref<HTMLElement | null>(null)
 const showTopGradient = ref(false)
@@ -176,7 +174,6 @@ const callChatApi = async (userMessage: string) => {
         messages.value, 
         copilotDefaults.value.project, 
         copilotDefaults.value.widget, 
-        token.value,
         copilotDefaults.value.params,
         conversationId.value)
 

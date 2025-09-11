@@ -1,7 +1,9 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { jwtVerify, createRemoteJWKSet } from 'jose'
+import { getCookie } from 'h3'
+import jwt from 'jsonwebtoken'
 import { isLocal } from '../utils/common'
+import { DecodedOidcToken } from '~~/types/auth/auth-jwt.types'
 
 const isJWT = (token: string) => {
   const parts = token.split('.')
@@ -20,44 +22,27 @@ export default defineEventHandler(async (event) => {
   }
 
   const config = useRuntimeConfig()
+  const oidcToken = getCookie(event, 'auth_oidc_token')
 
   // Read authorization header
-  const authHeader = getHeader(event, 'authorization')
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+  // const authHeader = getHeader(event, 'authorization')
+  if (!oidcToken) {
     throw createError({
       statusCode: 401,
       statusMessage: 'Authorization header required',
     })
   }
 
-  const token = authHeader.substring(7)
-  const auth0Domain = config.public.auth0Domain
-  const auth0ClientId = config.public.auth0ClientId
-
-  if (!auth0Domain || !auth0ClientId) {
-    throw createError({
-      statusCode: 500,
-      statusMessage: 'Auth0 configuration missing',
-    })
-  }
-
   try {
-    if (isJWT(token)) {
-      const jwks = createRemoteJWKSet(new URL(`https://${auth0Domain}/.well-known/jwks.json`))
+    // Verify and decode the OIDC token using the client secret
+    const decodedToken = jwt.verify(oidcToken, config.auth0ClientSecret, {
+      algorithms: ['HS256'],
+    }) as DecodedOidcToken
 
-      const { payload } = await jwtVerify(token, jwks, {
-        issuer: `https://${auth0Domain}/`,
-        audience: auth0ClientId,
-      })
+    if (decodedToken.original_id_token && isJWT(decodedToken.original_id_token)) {
+      event.context.user = decodedToken
 
-      event.context.user = payload
-
-      if (
-        !isLocal &&
-        !(payload[config.lfxAuth0TokenClaimGroupKey] as string[]).includes(
-          config.lfxAuth0TokenClaimGroupName,
-        )
-      ) {
+      if (!isLocal && !decodedToken.hasLfxInsightsPermission) {
         throw createError({
           statusCode: 401,
           statusMessage: `User does not belong to ${config.lfxAuth0TokenClaimGroupName}`,
