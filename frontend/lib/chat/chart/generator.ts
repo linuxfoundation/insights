@@ -4,8 +4,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable max-len */
 /* eslint-disable vue/max-len */
-// Copyright (c) 2025 The Linux Foundation and each contributor.
-// SPDX-License-Identifier: MIT
 import { createAmazonBedrock } from '@ai-sdk/amazon-bedrock'
 import { generateObject } from 'ai'
 import { outputSchema } from './types'
@@ -46,10 +44,6 @@ const chartColors = {
     lines: [lfxColors.positive[500], lfxColors.negative[500], lfxColors.brand[300]],
   },
 }
-
-// Legacy defaultColors for backward compatibility (if needed elsewhere)
-// const defaultColors = chartColors.single;
-
 const model = bedrock('us.anthropic.claude-sonnet-4-20250514-v1:0')
 
 export async function generateChartConfig(

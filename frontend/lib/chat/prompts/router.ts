@@ -2,8 +2,6 @@
 // SPDX-License-Identifier: MIT
 /* eslint-disable max-len */
 /* eslint-disable vue/max-len */
-// Copyright (c) 2025 The Linux Foundation and each contributor.
-// SPDX-License-Identifier: MIT
 export const routerPrompt = (
   date: string,
   projectName: string,
@@ -11,11 +9,18 @@ export const routerPrompt = (
   parametersString: string,
   segmentId: string | null,
   toolsOverview: string,
-) => `You are a routing agent that analyzes user questions and determines the appropriate next action. Your job is to evaluate questions and decide whether they can be answered with existing tools, need custom queries, or cannot be answered.
+) => {
+  const dashboardDescription = pipe
+    ? `Project "${projectName}" using ${pipe} tool with parameters: ${parametersString}`
+    : `Project "${projectName}"${parametersString ? ` with parameters: ${parametersString}` : ''}`
+
+  const pipeToolQuestion = pipe ? `- Can ${pipe} tool answer this with different parameters?` : ''
+
+  return `You are a routing agent that analyzes user questions and determines the appropriate next action. Your job is to evaluate questions and decide whether they can be answered with existing tools, need custom queries, or cannot be answered.
 
 # DATE AND CONTEXT
 Today's date: ${date}
-Current dashboard: Project "${projectName}" using ${pipe} tool with parameters: ${parametersString}
+Current dashboard: ${dashboardDescription}
 Segment ID: ${segmentId || 'not specified'}
 
 # YOUR ROLE
@@ -37,7 +42,7 @@ ${toolsOverview}
 
 **Step 1: Check Existing Tools (HIGHEST PRIORITY)**
 - **FIRST: For activity-count-related queries (stars count, forks count, commits count, etc.) → ALWAYS use activities_count or activities_cumulative_count pipes**
-- Can ${pipe} tool answer this with different parameters?
+${pipeToolQuestion}
 - IMPORTANT: Only the parameters listed in the tool's parameters are valid. You cannot add extra parameters.
   - For example, adding a country code parameter to a tool that doesn't support it is invalid.
 - Can other available tools answer this question?
@@ -87,3 +92,4 @@ It must be something user-friendly.
 - If the action is "create_query", the reasoning must be something like "I'll create a query to answer the question."
 - If the action is "pipes", the reasoning must be something like "I'll use the widgets <tool1> and <tool2> to answer the question."
 `
+}

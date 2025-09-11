@@ -1,11 +1,11 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createAmazonBedrock } from '@ai-sdk/amazon-bedrock'
 import {
   experimental_createMCPClient as createMCPClient,
   createDataStreamResponse,
   type LanguageModelV1,
+  type DataStreamWriter,
 } from 'ai'
 import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js'
 import type { Pool } from 'pg'
@@ -15,11 +15,13 @@ import { ChatRepository } from '../../server/repo/chat.repo'
 import { TextToSqlAgent, PipeAgent, RouterAgent } from './agents'
 import { executePipeInstructions, executeTextToSqlInstructions } from './instructions'
 import type {
+  AgentResponseCompleteParams,
   DataCopilotQueryInput,
   PipeAgentInput,
   PipeAgentStreamInput,
   PipeInstructions,
   RouterAgentInput,
+  RouterOutput,
   TextToSqlAgentInput,
   TextToSqlAgentStreamInput,
 } from './types'
@@ -31,12 +33,26 @@ const bedrock = createAmazonBedrock({
   region: process.env.NUXT_AWS_BEDROCK_REGION,
 })
 
+type MCPClient = Awaited<ReturnType<typeof createMCPClient>>
+
+type TbTools = Record<
+  string,
+  {
+    description?: string
+    meta?: { description?: string }
+    inputSchema?: unknown
+    parameters?: unknown
+    schema?: unknown
+    [key: string]: unknown // Allow additional properties
+  }
+>
+
 export class DataCopilot {
   /** MCP client for communicating with Tinybird services */
-  private mcpClient: any
+  private mcpClient!: MCPClient
 
   /** Available Tinybird tools loaded from MCP server */
-  private tbTools: Record<string, any> = {}
+  private tbTools: TbTools = {}
 
   /** Human-readable overview of tools for router agent decision making */
   private toolsOverview: string = ''
@@ -85,7 +101,7 @@ export class DataCopilot {
 
     this.toolsOverview = Object.entries(this.tbTools)
       .filter(([name]) => !excludedFromOverview.has(name))
-      .map(([name, def]: [string, any]) => {
+      .map(([name, def]: [string, TbTools[string]]) => {
         try {
           const description = def?.description || def?.meta?.description || ''
           const inputSchema = def?.inputSchema || def?.parameters || def?.schema || undefined
@@ -170,7 +186,7 @@ export class DataCopilot {
     segmentId,
     reformulatedQuestion,
   }: TextToSqlAgentInput) {
-    const followUpTools: Record<string, any> = {}
+    const followUpTools: Record<string, unknown> = {}
     followUpTools['text_to_sql'] = this.tbTools['text_to_sql']
     followUpTools['list_datasources'] = this.tbTools['list_datasources']
 
@@ -213,7 +229,7 @@ export class DataCopilot {
     reformulatedQuestion,
     toolNames,
   }: Omit<PipeAgentInput, 'model' | 'tools'>) {
-    const followUpTools: Record<string, any> = {}
+    const followUpTools: Record<string, unknown> = {}
     for (const toolName of toolNames) {
       if (this.tbTools[toolName]) {
         followUpTools[toolName] = this.tbTools[toolName]
@@ -365,16 +381,13 @@ export class DataCopilot {
    */
   private async handleStopAction(
     userPrompt: string,
-    routerOutput: any,
-    responseData: any,
-    dataStream: any,
+    routerOutput: RouterOutput,
+    responseData: ChatResponse,
+    dataStream: DataStreamWriter,
     insightsDbPool: Pool,
     userEmail: string,
     conversationId?: string,
   ): Promise<void> {
-    responseData.reasoning = `Router Decision: ${routerOutput.next_action}\nReasoning: ${routerOutput.reasoning}`
-    responseData.answer = routerOutput.reasoning
-
     dataStream.writeData({
       type: StreamDataType.ROUTER_STATUS,
       status: StreamDataStatus.COMPLETE,
@@ -497,17 +510,7 @@ export class DataCopilot {
     insightsDbPool,
     userEmail,
     dataStream,
-  }: {
-    userPrompt: string
-    responseData: ChatResponse
-    routerOutput: any
-    pipeInstructions?: PipeInstructions
-    sqlQuery?: string
-    conversationId?: string
-    insightsDbPool: Pool
-    userEmail: string
-    dataStream: any
-  }): Promise<void> {
+  }: AgentResponseCompleteParams): Promise<void> {
     const chatResponseId = await this.saveChatResponse(
       {
         userPrompt,

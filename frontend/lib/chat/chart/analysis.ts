@@ -2,8 +2,6 @@
 // SPDX-License-Identifier: MIT
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-// Copyright (c) 2025 The Linux Foundation and each contributor.
-// SPDX-License-Identifier: MIT
 import { DateTime } from 'luxon'
 import type { Result } from './types'
 interface RecommendedVisualization {

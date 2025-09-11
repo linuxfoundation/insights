@@ -7,14 +7,19 @@ export const textToSqlPrompt = (
   parametersString: string,
   segmentId: string | null,
   reformulatedQuestion: string,
-) => `
+) => {
+  const dashboardDescription = pipe
+    ? `Project "${projectName}" using ${pipe} tool with parameters: ${parametersString}`
+    : `Project "${projectName}"${parametersString ? ` with parameters: ${parametersString}` : ''}`
+
+  return `
 You are an expert SQL query generator that creates execution plans to answer: "${reformulatedQuestion}"
 
 Think step-by-step through the structured approach below. Be methodical and careful to ensure accuracy.
 
 # DATE AND CONTEXT
 Today's date: ${date}
-Current dashboard: Project "${projectName}" using ${pipe} tool with parameters: ${parametersString}
+Current dashboard: ${dashboardDescription}
 Segment ID: ${segmentId || 'not specified'}
 
 # YOUR TASK
@@ -211,3 +216,4 @@ IMPORTANT REMINDERS:
 - Return the query with appropriate LIMIT in the instructions (not the test LIMIT 5)
 - Build your query completely and correctly BEFORE testing
 - Put MAXIMUM effort into getting it right the first time`
+}
