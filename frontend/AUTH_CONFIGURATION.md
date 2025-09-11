@@ -16,22 +16,14 @@ The Auth0 implementation supports the following environment variables:
 
 ## Callback Path Configuration
 
-### Using `auth/callback` (Page Route)
-
-- Creates a page at `http://localhost:3000/auth/callback`
-- Shows a loading screen while processing
-- Redirects to API endpoint for token exchange
-- Good for single-page applications
-
 ### Using `/api/auth/callback` (API Route)
 
-- Currently only works on local
-- In the staging and prod this throws an error page not found
+Note: There is an entry on the caching file that redirects the designated callback url to the `/api/auth/callback` endpoint
 
-* Direct API endpoint handling
-* No intermediate loading page
-* More secure (no client-side processing)
-* Default and recommended approach
+- Direct API endpoint handling
+- No intermediate loading page
+- More secure (no client-side processing)
+- Default and recommended approach
 
 ## Auth0 Application Configuration
 
