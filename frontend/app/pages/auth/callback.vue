@@ -5,11 +5,20 @@ SPDX-License-Identifier: MIT
 <template>
   <div class="min-h-screen flex items-center justify-center">
     <div class="text-center">
-      <div v-if="!error" class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto" />
-      <div v-else class="text-red-600">
+      <div
+        v-if="!error"
+        class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"
+      />
+      <div
+        v-else
+        class="text-red-600"
+      >
         <p class="mb-2">Authentication failed</p>
         <p class="text-sm">{{ error }}</p>
-        <NuxtLink to="/" class="mt-4 inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+        <NuxtLink
+          to="/"
+          class="mt-4 inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+        >
           Return Home
         </NuxtLink>
       </div>

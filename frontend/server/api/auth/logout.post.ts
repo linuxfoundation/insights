@@ -4,21 +4,7 @@
 import { discovery, buildEndSessionUrl } from 'openid-client'
 import { getCookie, deleteCookie } from 'h3'
 import jwt from 'jsonwebtoken'
-
-interface DecodedOidcToken {
-  sub: string
-  name?: string
-  email?: string
-  picture?: string
-  email_verified?: boolean
-  updated_at?: string
-  iss: string
-  aud: string
-  iat: number
-  exp: number
-  original_access_token?: string
-  original_id_token?: string
-}
+import type { DecodedOidcToken } from '~~/types/auth/auth-jwt.types'
 
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()

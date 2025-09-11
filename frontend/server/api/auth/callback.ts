@@ -3,17 +3,9 @@
 
 import { discovery, authorizationCodeGrant } from 'openid-client'
 import jwt from 'jsonwebtoken'
-import { jwtDecode, JwtPayload } from 'jwt-decode'
-
-interface DecodedIdToken extends JwtPayload {
-  sub: string
-  name?: string
-  email?: string
-  picture?: string
-  email_verified?: boolean
-  updated_at?: string
-}
-
+import { jwtDecode } from 'jwt-decode'
+import { hasLfxInsightsPermission } from '../../utils/jwt'
+import { GROUP_CLAIM_KEY, type DecodedIdToken } from '~~/types/auth/auth-jwt.types'
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
   const query = getQuery(event)
@@ -68,6 +60,8 @@ export default defineEventHandler(async (event) => {
 
     const decodedIdToken = jwtDecode(tokenResponse.id_token) as DecodedIdToken
 
+    const claims = decodedIdToken[GROUP_CLAIM_KEY]
+
     // Create custom OpenID Connect token payload
     const oidcTokenPayload = {
       sub: decodedIdToken.sub,
@@ -80,8 +74,10 @@ export default defineEventHandler(async (event) => {
       aud: config.public.auth0ClientId,
       iat: Math.floor(Date.now() / 1000),
       exp: Math.floor(Date.now() / 1000) + (tokenResponse.expires_in || 86400),
+      claims,
+      hasLfxInsightsPermission: hasLfxInsightsPermission(claims),
       // Include original tokens for reference if needed
-      original_access_token: tokenResponse.access_token,
+      // original_access_token: tokenResponse.access_token,
       original_id_token: tokenResponse.id_token,
     }
 

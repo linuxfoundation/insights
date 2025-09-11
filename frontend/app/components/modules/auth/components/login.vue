@@ -93,6 +93,7 @@ const logoutHandler = async () => {
 watch([isAuthenticated, token], ([newAuthVal, newToken]) => {
   authStore.isAuthenticated = newAuthVal;
   authStore.token = newToken || '';
+  authStore.user = user.value;
 }, { immediate: true });
 </script>
 

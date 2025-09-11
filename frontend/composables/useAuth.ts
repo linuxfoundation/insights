@@ -3,24 +3,10 @@
 
 import { ref, computed, watchEffect, watch, nextTick } from 'vue'
 import { useAsyncData, navigateTo, useRoute } from 'nuxt/app'
+import type { AuthData } from '~~/types/auth/auth-user.types'
 
 // Fix for window access in Nuxt
 declare const window: Window & typeof globalThis
-
-interface User {
-  sub: string
-  name?: string
-  email?: string
-  picture?: string
-  email_verified?: boolean
-  updated_at?: string
-}
-
-interface AuthData {
-  isAuthenticated: boolean
-  user: User | null
-  token: string | null
-}
 
 const authState = ref<AuthData>({
   isAuthenticated: false,
