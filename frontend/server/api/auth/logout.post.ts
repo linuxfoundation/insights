@@ -29,21 +29,47 @@ export default defineEventHandler(async (event) => {
         const originalIdToken = decodedToken.original_id_token
 
         if (originalIdToken) {
-          // Discover Auth0 configuration
-          const authConfig = await discovery(
-            new URL(`https://${config.public.auth0Domain}`),
-            config.public.auth0ClientId,
-          )
+          try {
+            // Discover Auth0 configuration
+            const authConfig = await discovery(
+              new URL(`https://${config.public.auth0Domain}`),
+              config.public.auth0ClientId,
+            )
 
-          // Build logout URL with original ID token
-          const logoutUrl = buildEndSessionUrl(authConfig, {
-            id_token_hint: originalIdToken,
-            post_logout_redirect_uri: config.public.appUrl,
-          })
+            // Build logout URL with original ID token
+            const logoutUrl = buildEndSessionUrl(authConfig, {
+              id_token_hint: originalIdToken,
+              post_logout_redirect_uri: config.public.appUrl,
+            })
 
-          return {
-            success: true,
-            logoutUrl: logoutUrl.toString(),
+            return {
+              success: true,
+              logoutUrl: logoutUrl.toString(),
+            }
+          } catch (discoveryError) {
+            console.error(
+              'OIDC discovery failed, falling back to manual logout URL:',
+              discoveryError,
+            )
+
+            // Fallback: Construct logout URL manually for Auth0/SSO
+            // For production SSO or when discovery fails, use a manual logout URL
+            const isProduction = process.env.NUXT_APP_ENV === 'production'
+            let logoutUrl: string
+
+            if (isProduction && config.public.auth0Domain.includes('sso.linuxfoundation.org')) {
+              // For Linux Foundation SSO, use their logout endpoint
+              logoutUrl = `https://sso.linuxfoundation.org/v2/logout?returnTo=${encodeURIComponent(config.public.appUrl)}&client_id=${config.public.auth0ClientId}`
+            } else {
+              // For standard Auth0 domains, use the standard logout endpoint
+              const auth0Domain = config.public.auth0Domain.replace('https://', '')
+              logoutUrl = `https://${auth0Domain}/v2/logout?returnTo=${encodeURIComponent(config.public.appUrl)}&client_id=${config.public.auth0ClientId}`
+            }
+
+            return {
+              success: true,
+              logoutUrl,
+            }
           }
         }
       } catch (tokenError) {
