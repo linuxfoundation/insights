@@ -22,10 +22,13 @@ export interface OSSIndexCategory {
     totalContributors: number;
     softwareValue: number;
     avgScore: number;
+    projectCount: number;
     topCollections: OSSIndexTopCollection[];
     topProjects: OSSIndexTopProject[];
 }
 
 export interface OSSIndexCategoryDetails extends Category {
     collections: OSSIndexCollection[];
+    page: number
+    pageSize: number
 }

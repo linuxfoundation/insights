@@ -41,28 +41,24 @@ SPDX-License-Identifier: MIT
       <div class="w-full min-h-[250px] mt-5">
         <div class="flex flex-col gap-10">
           <lfx-merge-lead-item
-            v-if="pickup"
             title="Pickup"
             description="Pull Request assigned"
             icon="user-check"
             :item-value="pickup"
           />
           <lfx-merge-lead-item
-            v-if="review"
             title="Review"
             description="Review Started"
             icon="eye"
             :item-value="review"
           />
           <lfx-merge-lead-item
-            v-if="accepted"
             title="Accepted"
             description="Pull Request approved"
             icon="check-circle"
             :item-value="accepted"
           />
           <lfx-merge-lead-item
-            v-if="prMerged"
             title="Pull Request merged"
             description=""
             icon="code-merge"
@@ -165,7 +161,7 @@ const getMergeLeadTimeItem = (
   }
   const item = data.data[key as keyof MergeLeadTime['data']];
 
-  if (item) {
+  if (item && item.value >= 0) {
     return {
       ...item,
       ...formatDuration(item.value)
