@@ -47,9 +47,9 @@ export default defineEventHandler(async (event) => {
               logoutUrl: logoutUrl.toString(),
             }
           } catch (discoveryError) {
-            console.info(
+            console.error(
               'OIDC discovery not supported by auth provider, using manual logout URL for:',
-              config.public.auth0Domain,
+              discoveryError,
             )
 
             // Fallback: Construct logout URL manually for Auth0/SSO
@@ -65,7 +65,7 @@ export default defineEventHandler(async (event) => {
                   ? config.public.auth0Domain
                   : `https://${config.public.auth0Domain}`,
               )
-            } catch (e) {
+            } catch {
               parsedAuth0Domain = { hostname: '' } as URL // fallback in case parsing fails
             }
 
