@@ -14,7 +14,7 @@ import type { OSSIndexCategory, OSSIndexCategoryDetails } from '~~/types/ossinde
 import type { OSSIndexCollection } from '~~/types/ossindex/collection';
 import type { TreeMapData } from '~/components/uikit/chart/types/ChartTypes';
 
-export type OSIType = 'vertical' | 'horizontal';
+export type OSIType = 'vertical' | 'horizontal' | 'projects' | 'collections';
 export interface BreadcrumbData {
   type: OSIType;
   group?: {
@@ -30,7 +30,7 @@ export interface BreadcrumbData {
 export type SortType = 'totalContributors' | 'softwareValue';
 
 class OssIndexApiService {
-  fetchOSSGroup(type: Ref<string>, sort: Ref<string>, enabled: boolean) {
+  fetchOSSGroup(type: Ref<string>, sort: Ref<string>) {
     const queryKey = computed(() => [TanstackKey.OSS_INDEX_GROUP, type.value, sort.value]);
     const queryFn = computed<QueryFunction<OSSIndexCategoryGroup[]>>(() => this.ossGroupQueryFn(() => ({
         type: type.value,
@@ -38,9 +38,9 @@ class OssIndexApiService {
       })));
 
     return useQuery<OSSIndexCategoryGroup[]>({
+      enabled: ['totalContributors', 'softwareValue'].includes(sort.value),
       queryKey,
       queryFn,
-      enabled,
     });
   }
 
@@ -66,7 +66,6 @@ class OssIndexApiService {
     return useQuery<OSSIndexCategoryGroupDetails>({
       queryKey,
       queryFn,
-      enabled: !!groupSlug,
     });
   }
 
@@ -92,20 +91,18 @@ class OssIndexApiService {
     return useQuery<OSSIndexCategoryDetails>({
       queryKey,
       queryFn,
-      enabled: !!categorySlug,
     });
   }
 
   ossCollectionQueryFn(
-    query: () => Record<string, string | number | boolean | undefined | string[] | null>
+      query: () => Record<string, string | number | boolean | undefined | string[] | null>
   ): QueryFunction<OSSIndexCategoryDetails> {
-    const { categorySlug, sort } = query();
-    return async () => await $fetch(`/api/ossindex/collections`, {
-        params: {
-          categorySlug,
-          sort,
-        },
-      });
+    return async ({ pageParam = 0 }) => await $fetch(`/api/ossindex/collections`, {
+      params: {
+        ...query(),
+        page: pageParam,
+      },
+    });
   }
 
   mapCategoryDataToTreeMapData(data: OSSIndexCategoryGroupDetails, sort: SortType): TreeMapData[] {

@@ -17,7 +17,8 @@ import type {
 export default defineEventHandler(async (event): Promise<OSSIndexCategoryGroup[] | Error> => {
   const query = getQuery(event)
   const type: string = query?.type as string
-  const sort: string = query?.sort as string
+  let sort: string = query?.sort as string
+  sort = ['totalContributors', 'softwareValue'].includes(sort) ? sort : 'totalContributors'
 
   try {
     const res = await fetchFromTinybird<OSSIndexCategoryGroupTinybird[]>(

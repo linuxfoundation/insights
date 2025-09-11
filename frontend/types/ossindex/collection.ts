@@ -18,6 +18,7 @@ export interface OSSIndexCollection {
     slug: string;
     totalContributors: number;
     softwareValue: number;
+    projectCount: number;
     avgScore: number;
     topProjects: OSSIndexTopProject[];
 }

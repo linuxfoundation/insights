@@ -43,7 +43,7 @@ async function fetchPackageDownloads(
   repoUrl: string
 ): Promise<IPackageDownloadEcosystemsResponse[]> {
   console.log(`Getting package downloads for ${repoUrl}`);
-  const url = `https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=${repoUrl}`;
+  const url = `https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=${repoUrl}&mailto=insights@linuxfoundation.org`;
   const requestOptions = {
     method: "GET",
     headers: {

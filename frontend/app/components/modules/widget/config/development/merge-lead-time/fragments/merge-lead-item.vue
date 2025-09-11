@@ -6,14 +6,27 @@ SPDX-License-Identifier: MIT
   <div class="flex flex-col">
     <div class="flex flex-row gap-3 items-start justify-end">
       <div
+        v-if="!!props.itemValue"
         class="flex gap-2 items-center text-sm h-6 px-2.5 py-1 rounded-full
           font-semibold bg-neutral-50 text-neutral-600"
       >
-        {{ itemValue.value }}
-        {{ itemValue.unit }}
+        {{ itemDisplay }}
       </div>
+      <lfx-tooltip 
+        v-else
+        :content="itemDisplay === '-' ? 'Merge time could not be calculated for this stage.' : ''"
+      >
+        <div
+          class="flex gap-2 items-center text-sm h-6 px-2.5 py-1 rounded-full
+            font-semibold bg-neutral-50 text-neutral-600"
+        >
+          {{ itemDisplay }}
+        </div>
+      </lfx-tooltip>
+
       <div>
         <lfx-icon
+          v-if="!!props.itemValue"
           name="arrow-down"
           class="text-neutral-300"
           :size="24"
@@ -35,20 +48,24 @@ SPDX-License-Identifier: MIT
   </div>
 </template>
 <script setup lang="ts">
+import { computed } from 'vue';
 import type { MergeLeadTimeItem } from '~~/types/development/responses.types';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
     title: string;
     description: string;
     icon: string;
-    itemValue: MergeLeadTimeItem;
+    itemValue: MergeLeadTimeItem | undefined;
     isLast?: boolean;
   }>(),
   {
     isLast: false
   }
 );
+
+const itemDisplay= computed(() => props.itemValue ? `${props.itemValue?.value} ${props.itemValue?.unit}` : '-');
 
 </script>
