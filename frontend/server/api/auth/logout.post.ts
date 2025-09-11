@@ -1,7 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 
-import { discovery, buildEndSessionUrl } from 'openid-client'
+// Auth0 logout endpoint - no longer using OIDC discovery since Auth0 uses proprietary /v2/logout
 import { getCookie, deleteCookie } from 'h3'
 import jwt from 'jsonwebtoken'
 import type { DecodedOidcToken } from '~~/types/auth/auth-jwt.types'
@@ -25,92 +25,62 @@ export default defineEventHandler(async (event) => {
         const originalIdToken = decodedToken.original_id_token
 
         if (originalIdToken) {
-          try {
-            // Discover Auth0 configuration
-            const authConfig = await discovery(
-              new URL(`https://${config.public.auth0Domain}`),
-              config.public.auth0ClientId,
-            )
+          // Skip OIDC discovery for Auth0 and construct logout URL manually
+          // Auth0 uses /v2/logout, not the standard OIDC /oidc/logout endpoint
+          const isProduction = process.env.NUXT_APP_ENV === 'production'
+          let logoutUrl: string
 
-            // Build logout URL with original ID token
-            const logoutUrl = buildEndSessionUrl(authConfig, {
-              id_token_hint: originalIdToken,
-              post_logout_redirect_uri: `${config.public.appUrl}?auth=logout`,
+          // Strictly check the hostname using the URL API
+          let parsedAuth0Domain: URL
+          try {
+            parsedAuth0Domain = new URL(
+              config.public.auth0Domain.startsWith('http')
+                ? config.public.auth0Domain
+                : `https://${config.public.auth0Domain}`,
+            )
+          } catch {
+            parsedAuth0Domain = { hostname: '' } as URL // fallback in case parsing fails
+          }
+
+          if (isProduction && parsedAuth0Domain.hostname === 'sso.linuxfoundation.org') {
+            // For Linux Foundation SSO, use their logout endpoint with ID token hint
+            const logoutParams = new URLSearchParams({
+              returnTo: `${config.public.appUrl}?auth=logout`,
+              client_id: config.public.auth0ClientId,
             })
 
-            // Clear all auth cookies after successful logout URL generation
-            deleteCookie(event, 'auth_oidc_token')
-            deleteCookie(event, 'auth_refresh_token')
-            deleteCookie(event, 'auth_state')
-            deleteCookie(event, 'auth_code_verifier')
-            deleteCookie(event, 'auth_redirect_to')
-
-            return {
-              success: true,
-              logoutUrl: logoutUrl.toString(),
-            }
-          } catch (discoveryError) {
-            console.error(
-              'OIDC discovery not supported by auth provider, using manual logout URL for:',
-              discoveryError,
-            )
-
-            // Fallback: Construct logout URL manually for Auth0/SSO
-            // For production SSO or when discovery fails, use a manual logout URL
-            const isProduction = process.env.NUXT_APP_ENV === 'production'
-            let logoutUrl: string
-
-            // Strictly check the hostname using the URL API
-            let parsedAuth0Domain: URL
-            try {
-              parsedAuth0Domain = new URL(
-                config.public.auth0Domain.startsWith('http')
-                  ? config.public.auth0Domain
-                  : `https://${config.public.auth0Domain}`,
-              )
-            } catch {
-              parsedAuth0Domain = { hostname: '' } as URL // fallback in case parsing fails
+            // Add ID token hint if available for proper SSO logout
+            if (originalIdToken) {
+              logoutParams.set('id_token_hint', originalIdToken)
             }
 
-            if (isProduction && parsedAuth0Domain.hostname === 'sso.linuxfoundation.org') {
-              // For Linux Foundation SSO, use their logout endpoint with ID token hint
-              const logoutParams = new URLSearchParams({
-                returnTo: `${config.public.appUrl}?auth=logout`,
-                client_id: config.public.auth0ClientId,
-              })
+            logoutUrl = `https://sso.linuxfoundation.org/v2/logout?${logoutParams.toString()}`
+          } else {
+            // For standard Auth0 domains, use the standard logout endpoint
+            const auth0Domain = config.public.auth0Domain.replace('https://', '')
+            const logoutParams = new URLSearchParams({
+              returnTo: `${config.public.appUrl}?auth=logout`,
+              client_id: config.public.auth0ClientId,
+            })
 
-              // Add ID token hint if available for proper SSO logout
-              if (originalIdToken) {
-                logoutParams.set('id_token_hint', originalIdToken)
-              }
-
-              logoutUrl = `https://sso.linuxfoundation.org/v2/logout?${logoutParams.toString()}`
-            } else {
-              // For standard Auth0 domains, use the standard logout endpoint
-              const auth0Domain = config.public.auth0Domain.replace('https://', '')
-              const logoutParams = new URLSearchParams({
-                returnTo: `${config.public.appUrl}?auth=logout`,
-                client_id: config.public.auth0ClientId,
-              })
-
-              // Add ID token hint if available
-              if (originalIdToken) {
-                logoutParams.set('id_token_hint', originalIdToken)
-              }
-
-              logoutUrl = `https://${auth0Domain}/v2/logout?${logoutParams.toString()}`
+            // Add ID token hint if available
+            if (originalIdToken) {
+              logoutParams.set('id_token_hint', originalIdToken)
             }
 
-            deleteCookie(event, 'auth_state')
-            deleteCookie(event, 'auth_code_verifier')
-            deleteCookie(event, 'auth_redirect_to')
-            deleteCookie(event, 'auth_oidc_token')
-            deleteCookie(event, 'auth_refresh_token')
+            logoutUrl = `https://${auth0Domain}/v2/logout?${logoutParams.toString()}`
+          }
 
-            return {
-              success: true,
-              logoutUrl,
-            }
+          // Clear all auth cookies after successful logout URL generation
+          deleteCookie(event, 'auth_oidc_token')
+          deleteCookie(event, 'auth_refresh_token')
+          deleteCookie(event, 'auth_state')
+          deleteCookie(event, 'auth_code_verifier')
+          deleteCookie(event, 'auth_redirect_to')
+
+          return {
+            success: true,
+            logoutUrl,
           }
         }
       } catch (tokenError) {
