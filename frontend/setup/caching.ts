@@ -7,7 +7,7 @@ export default {
   routeRules:
     process.env.NUXT_APP_ENV === 'production'
       ? {
-          '/auth/callback': { ssr: false, cache: false }, // Disable SSR for Auth0 callback page
+          '/auth/callback': { redirect: '/api/auth/callback' },
           '/api/auth/callback': { prerender: false, index: false, cache: false },
           '/api/auth/login': { prerender: false, index: false, cache: false },
           '/api/auth/logout': { prerender: false, index: false, cache: false },
@@ -30,7 +30,8 @@ export default {
           '**': { cache: { maxAge: longCache, base: 'redis' } },
         }
       : {
-          '/auth/callback': { ssr: true, cache: false }, // Enable SSR for Auth0 callback page to handle server-side processing
+          '/auth/callback': { redirect: '/api/auth/callback' },
+          '/callback': { redirect: '/api/auth/callback' },
           '/api/auth/callback': { prerender: false, index: false, cache: false },
           '/api/auth/login': { prerender: false, index: false, cache: false },
           '/api/auth/logout': { prerender: false, index: false, cache: false },
