@@ -86,6 +86,7 @@ const loginHandler = async () => {
 };
 
 const logoutHandler = async () => {
+  document.cookie = 'auth_oidc_token=; Path=/; Max-Age=0; SameSite=None; Secure';
   await logout();
 };
 
