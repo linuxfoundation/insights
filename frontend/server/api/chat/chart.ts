@@ -19,8 +19,6 @@ async function getRouterReasoningFromConversation(
     const chatRepo = new ChatRepository(pool)
     const latestResponse = await chatRepo.getLatestChatResponseByConversation(conversationId)
 
-    await pool.end()
-
     return latestResponse?.routerReason || undefined
   } catch (error) {
     console.error('Error fetching router reasoning from conversation:', error)
