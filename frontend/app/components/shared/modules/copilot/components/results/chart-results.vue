@@ -51,7 +51,6 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { ref, watch, computed } from 'vue';
-import { storeToRefs } from 'pinia';
 import { DateTime } from 'luxon';
 import type { ChartErrorType, MessageData } from '../../types/copilot.types';
 import { copilotApiService } from '../../store/copilot.api.service';
@@ -59,7 +58,6 @@ import LfxCopilotLoadingState from '../shared/loading-state.vue';
 import LfxCopilotErrorState from '../shared/error-state.vue';
 import type { Config, DataMapping } from '~~/lib/chat/chart/types';
 import LfxChart from '~/components/uikit/chart/chart.vue';
-import { useAuthStore } from '~/components/modules/auth/store/auth.store';
 import LfxSnapshotModal from '~/components/modules/widget/components/shared/snapshot/snapshot-modal.vue';
 import type { Widget } from '~/components/modules/widget/types/widget';
 import { defaultSeriesBarStyle } from '~/components/uikit/chart/configs/bar.chart';
@@ -89,8 +87,6 @@ const isSnapshotModalOpen = computed({
     emit('update:isSnapshotModalOpen', value);
   }
 })
-
-const { token } = storeToRefs(useAuthStore());
 
 const isLoading = ref(false);
 const isError = ref<boolean>(false);
@@ -124,7 +120,7 @@ const generateChart = async () => {
 
   isLoading.value = true;
   
-  const response = await copilotApiService.callChartApi(props.data, token.value, props.routerReasoning);
+  const response = await copilotApiService.callChartApi(props.data, props.routerReasoning);
   const data = await response.json();
   
   if (data.config && data.success && data.dataMapping) {
