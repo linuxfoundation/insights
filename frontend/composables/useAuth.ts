@@ -57,6 +57,29 @@ export const useAuth = () => {
         }
       },
     )
+
+    // Check for logout success parameter and refresh state
+    if (route.query.auth === 'logout') {
+      nextTick(async () => {
+        await refreshAuth()
+        console.info('Detected return from logout, auth state refreshed')
+        // Clean up the URL by removing the auth parameter
+        await navigateTo('/', { replace: true })
+      })
+    }
+
+    // Watch for logout success parameter
+    watch(
+      () => route.query.auth,
+      async (authParam) => {
+        if (authParam === 'logout') {
+          await refreshAuth()
+          console.info('Detected return from logout, auth state refreshed')
+          // Clean up the URL by removing the auth parameter
+          await navigateTo('/', { replace: true })
+        }
+      },
+    )
   }
 
   const isAuthenticated = computed(() => authState.value.isAuthenticated)

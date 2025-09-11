@@ -35,7 +35,7 @@ export default defineEventHandler(async (event) => {
             // Build logout URL with original ID token
             const logoutUrl = buildEndSessionUrl(authConfig, {
               id_token_hint: originalIdToken,
-              post_logout_redirect_uri: config.public.appUrl,
+              post_logout_redirect_uri: `${config.public.appUrl}?auth=logout`,
             })
 
             // Clear all auth cookies after successful logout URL generation
@@ -75,7 +75,7 @@ export default defineEventHandler(async (event) => {
             if (isProduction && parsedAuth0Domain.hostname === 'sso.linuxfoundation.org') {
               // For Linux Foundation SSO, use their logout endpoint with ID token hint
               const logoutParams = new URLSearchParams({
-                returnTo: config.public.appUrl,
+                returnTo: `${config.public.appUrl}?auth=logout`,
                 client_id: config.public.auth0ClientId,
               })
 
@@ -89,7 +89,7 @@ export default defineEventHandler(async (event) => {
               // For standard Auth0 domains, use the standard logout endpoint
               const auth0Domain = config.public.auth0Domain.replace('https://', '')
               const logoutParams = new URLSearchParams({
-                returnTo: config.public.appUrl,
+                returnTo: `${config.public.appUrl}?auth=logout`,
                 client_id: config.public.auth0ClientId,
               })
 
@@ -128,7 +128,7 @@ export default defineEventHandler(async (event) => {
 
     return {
       success: true,
-      logoutUrl: config.public.appUrl,
+      logoutUrl: `${config.public.appUrl}?auth=logout`,
     }
   } catch (error) {
     console.error('Auth logout error:', error)
@@ -139,7 +139,7 @@ export default defineEventHandler(async (event) => {
 
     return {
       success: true,
-      logoutUrl: config.public.appUrl,
+      logoutUrl: `${config.public.appUrl}?auth=logout`,
     }
   }
 })
