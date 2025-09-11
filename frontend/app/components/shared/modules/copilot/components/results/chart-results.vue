@@ -7,7 +7,10 @@ SPDX-License-Identifier: MIT
     v-if="isLoading"
     class="h-full flex items-center justify-center"
   >
-    <lfx-copilot-loading-state />
+    <lfx-copilot-loading-state
+      :is-data-ready="!!data"
+      title="Preparing your chart...we’re almost there"
+    />
   </div>
   <div
     v-else-if="isError"
@@ -68,7 +71,6 @@ import { lfxColors } from '~/config/styles/colors';
 const emit = defineEmits<{
   (e: 'update:config', value: Config | null, chartErrorType?: ChartErrorType): void;
   (e: 'update:isLoading', value: boolean): void;
-  (e: 'update:isError', value: boolean): void;
   (e: 'update:isSnapshotModalOpen', value: boolean): void;
   (e: 'onCheckDataClick'): void;
 }>();
@@ -269,10 +271,6 @@ watch(() => props.data, () => {
 
 watch(isLoading, (newVal) => {
   emit('update:isLoading', newVal);
-}, { immediate: true });
-
-watch(isError, (newVal) => {
-  emit('update:isError', newVal);
 }, { immediate: true });
 </script>
 
