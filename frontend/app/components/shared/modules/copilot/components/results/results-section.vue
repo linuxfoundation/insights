@@ -50,7 +50,6 @@ SPDX-License-Identifier: MIT
               :router-reasoning="selectedResultRouterReasoning"
               @update:config="handleConfigUpdate"
               @update:is-loading="handleChartLoading"
-              @update:is-error="handleChartError"
               @update:is-snapshot-modal-open="isSnapshotModalOpen = $event"
               @on-check-data-click="selectedTab = 'data'"
             />
@@ -133,6 +132,12 @@ const handleConfigUpdate = (config: Config | null, chartErrorType?: ChartErrorTy
       result.chartConfig = config;
       result.title = config?.title?.text || 'Results';
       result.chartErrorType = chartErrorType;
+      if (chartErrorType) {
+        isChartError.value = true;
+        setTimeout(() => {
+          selectedTab.value = 'data';
+        }, 200);
+      }
     }
   }
 }
@@ -140,10 +145,6 @@ const handleConfigUpdate = (config: Config | null, chartErrorType?: ChartErrorTy
 const handleChartLoading = (value: boolean) => {
   isChartLoading.value = value;
   emit('update:isChartLoading', value);
-}
-
-const handleChartError = (value: boolean) => {
-  isChartError.value = value;
 }
 
 watch(isChartLoading, (value) => {
