@@ -40,7 +40,7 @@ class CopilotApiService {
   async callChatStream(
     messages: Array<AIMessage>,
     project: Project,
-    pipe: string,
+    pipe?: string,
     parameters?: CopilotParams,
   ): Promise<Response> {
     // Prepare the request body with the correct format

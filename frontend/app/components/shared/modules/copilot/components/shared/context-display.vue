@@ -27,12 +27,21 @@ const props = defineProps<{
 }>()
 
 const widget = computed(() => lfxWidgets[props.widgetName as Widget]);
-const widgetDisplayName = computed(() => widget.value?.name || '');
-const widgetIcon = computed(() => widget.value?.copilot?.icon || 'people-group');
+const widgetDisplayName = computed(() => widget.value?.name || 'Point metric');
+const widgetIcon = computed(() => widget.value?.copilot?.icon || 'bullseye-pointer');
 
-const displayClass = computed(() => props.type === 'transparent' ? 
-  `text-sm text-neutral-900 bg-transparent px-2.5 py-1 border border-solid border-neutral-200` : 
-  `text-xs text-brand-500 font-semibold bg-brand-50 px-1.5 py-0.5`);
+const displayClass = computed(() => {
+  const transparent = `text-sm text-neutral-900 bg-transparent px-2.5 py-1 border border-solid border-neutral-200`;
+  const solid = `text-xs text-brand-500 font-semibold bg-brand-50 px-1.5 py-0.5`;
+  const dashed = `text-sm text-neutral-500 bg-transparent px-2.5 py-1 border border-dashed border-neutral-400`;
+
+  // TODO: need clarification on this part, for now setting default to dashed if there is no widget passed
+  if (!props.widgetName) {
+    return dashed;
+  }
+
+  return props.type === 'transparent' ? transparent : solid;
+});
 </script>
 
 <script lang="ts">

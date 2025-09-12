@@ -44,11 +44,17 @@ SPDX-License-Identifier: MIT
       />
       <!-- Message history -->
       <lfx-copilot-chat-history 
+        v-if="!isEmptyMessages"
         :messages="messages" 
         :selected-result-id="selectedResultId" 
         :is-loading="isLoading"
         :widget-name="widgetName"
         @select-result="selectResult"
+      />
+      <lfx-empty-chat
+        v-else
+        :project-name="copilotDefaults.project?.name || ''"
+        @suggestion-click="handleSuggestionClick"
       />
     </div>
 
@@ -109,6 +115,7 @@ import { copilotApiService } from '../store/copilot.api.service'
 import { useCopilotStore } from '../store/copilot.store'
 import LfxCopilotChatHistory from './chat-history/copilot-chat-history.vue'
 import LfxContextDisplay from './shared/context-display.vue';
+import LfxEmptyChat from './info/empty-chat.vue'
 import LfxIcon from '~/components/uikit/icon/icon.vue'
 import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue'
 
@@ -137,6 +144,7 @@ const input = ref('')
 const streamingStatus = ref('')
 const error = ref('')
 const messages = ref<Array<AIMessage>>([]) // tempData as AIMessage
+const isEmptyMessages = computed(() => messages.value.length === 0)
 
 const isLoading = computed<boolean>({
   get: () => props.isLoading,
@@ -246,6 +254,10 @@ const handleScroll = () => {
     showTopGradient.value = scrollTop > 10
     showBottomGradient.value = scrollTop + clientHeight < scrollHeight - 10
   }
+}
+
+const handleSuggestionClick = (suggestion: string) => {
+  input.value = suggestion;
 }
 </script>
 
