@@ -112,11 +112,16 @@ export class TextToSqlAgent extends BaseAgent<TextToSqlAgentInput, SqlOutput> {
    * Basic heuristic to detect if a string looks like SQL code
    */
   private looksLikeSQL(text: string): boolean {
-    const sqlKeywords = ['SELECT', 'FROM', 'WHERE', 'JOIN', 'GROUP BY', 'ORDER BY', 'LIMIT', 'WITH']
-    const upperText = text.toUpperCase()
+    // More specific SQL patterns that indicate actual SQL code, not natural language
+    const sqlPatterns = [
+      /^\s*SELECT\s+/i,           // Starts with SELECT
+      /\bFROM\s+\w+\s*$/i,        // Ends with FROM table
+      /\bSELECT\s+.*\s+FROM\s+/i, // Contains SELECT ... FROM pattern
+      /\bWITH\s+\w+\s+AS\s*\(/i,  // CTE pattern WITH name AS (
+      /\bUNION\s+(ALL\s+)?SELECT/i, // UNION SELECT pattern
+    ]
     
-    // If it contains multiple SQL keywords, it's likely SQL code
-    const keywordCount = sqlKeywords.filter(keyword => upperText.includes(keyword)).length
-    return keywordCount >= 2
+    // Check for actual SQL structure patterns
+    return sqlPatterns.some(pattern => pattern.test(text))
   }
 }
