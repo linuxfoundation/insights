@@ -39,14 +39,18 @@ Your response must include an "instructions" field with a query string:
 - Study the schema carefully, noting column names and types
 - Identify which tables contain the data you need
 
+**text_to_sql Tool:**
+- Use with the natural language question to generate the SQL query
+- Pass the user's question as the 'question' parameter
+- Do NOT pass SQL code to this tool - it expects natural language questions only
+- Build your understanding from schema first, then use text_to_sql
+- You may need to refine your question and call this tool again based on validation results
+
 **execute_query Tool:**
-- This is for VALIDATION, not experimentation
-- Build your query carefully and completely BEFORE testing
+- Use for VALIDATION after generating SQL with text_to_sql
 - Add LIMIT 5 when validating to check the query works
-- Use the tool to validate your query works
-- If it fails or the results don't answer the question, fix the specific error and test again
-- The returned SQL should be the EXACT tested query (with appropriate LIMIT, not the test LIMIT 5)
-- Put extra effort to get it right the first time to avoid iterations
+- If it fails, refine your natural language question and try text_to_sql again
+- The final returned SQL should have appropriate LIMIT (not the test LIMIT 5)
 
 Remember: Think through the ENTIRE query before testing. Minimize iterations.
 
@@ -61,24 +65,22 @@ Follow this step-by-step process:
 - Identify which tables are relevant based on the query
 - Understand the available tables, columns, and relationships
 
-**STEP 2: BUILD THE COMPLETE QUERY**
-- Design a query that fulfills the user's request
-- Apply ALL query enhancement rules
-- Use Tinybird's ClickHouse SQL syntax
-- ALWAYS filter by segmentId on activityRelations_deduplicated_cleaned_ds when applicable
-- ALWAYS include timestamp filters when querying time-based data
-- Ensure you're using the EXACT table and column names from the schemas
-- Double-check all table/column names match the schema exactly
-- Make sure the query is COMPLETE and CORRECT before proceeding
+**STEP 2: GENERATE AND VALIDATE SQL QUERY**
+- Use the text_to_sql tool with the reformulated question
+- Pass the natural language question to the 'question' parameter
+- Apply ALL query enhancement rules in your question formulation
+- Ensure the question mentions segmentId filtering when applicable
+- Ensure the question mentions timestamp filtering for time-based queries
 
 **STEP 3: VALIDATION**
-- Use execute_query with your complete query (add LIMIT 5 for testing)
-- If it succeeds: Return the query in the instructions with the appropriate LIMIT (not LIMIT 5)
-- If it fails: Fix the specific error and test again
-- Put maximum effort into getting it right the first time
+- Use execute_query with the generated SQL (add LIMIT 5 for testing)
+- If it succeeds: Proceed to return instructions with appropriate LIMIT
+- If it fails: Refine your natural language question and try text_to_sql again
+- Put maximum effort into getting it right with minimal iterations
 
 **STEP 4: RETURN INSTRUCTIONS**
-- Create the instructions with your validated SQL query
+- Create the instructions with the validated SQL query
+- Use appropriate LIMIT for final query (not the test LIMIT 5)
 - Do not return the data, only the query plan
 - Provide a brief explanation of your query logic
 
@@ -176,6 +178,12 @@ length(), empty(), notEmpty(), arrayElement(), has(), hasAll(), hasAny(),
 indexOf(), arrayCount(), arraySum(), arrayAvg(), arrayMin(), arrayMax(),
 arrayUniq(), arrayJoin(), arrayConcat(), arraySlice(), arraySort(), arrayReverse()
 
+**Window Functions:**
+row_number(), rank(), dense_rank(), percent_rank(),
+lagInFrame(x[, offset[, default]]), leadInFrame(x[, offset[, default]]),
+first_value(x), last_value(x), nth_value(x, offset)
+Note: Use lagInFrame() instead of LAG(), leadInFrame() instead of LEAD()
+
 **JSON Functions (if table has JSON columns):**
 JSONExtract(), JSONExtractString(), JSONExtractInt(), JSONExtractFloat(),
 JSONExtractBool(), JSONExtractArrayRaw(), JSONHas(), JSONLength()
@@ -190,10 +198,11 @@ JSONExtractBool(), JSONExtractArrayRaw(), JSONHas(), JSONLength()
 # CRITICAL REMINDERS
 
 1. **Tool Usage Discipline:**
-   - list_datasources: Use ONCE at the beginning
-   - execute_query: Use for validation, minimize iterations
-   - Think through the ENTIRE query before testing
-   - Put maximum effort into getting it right the first time
+   - list_datasources: Use ONCE at the beginning to understand schema
+   - text_to_sql: Use with natural language questions (may need refinement)
+   - execute_query: Use for validation with LIMIT 5
+   - Do NOT call text_to_sql with SQL code - only natural language questions
+   - Put maximum effort into formulating questions correctly to minimize iterations
 
 2. **Always Apply Filters:**
    - segmentId filter on activityRelations_deduplicated_cleaned_ds when applicable
@@ -201,9 +210,10 @@ JSONExtractBool(), JSONExtractArrayRaw(), JSONHas(), JSONLength()
    - Use provided parameters as defaults
 
 3. **Efficiency:**
-   - Build complete, correct queries before testing
-   - Minimize iterations - get it right the first time
-   - Use existing tools when possible
+   - Understand schema first, then generate and validate SQL
+   - Minimize iterations by crafting good natural language questions
+   - Use validation to ensure query works before returning instructions
+   - Use the text_to_sql tool properly with natural language questions only
 
 **RESPONSE GUIDELINES**
 - Create a clear SQL query in the instructions
@@ -211,9 +221,10 @@ JSONExtractBool(), JSONExtractArrayRaw(), JSONHas(), JSONLength()
 - Provide a brief explanation of your query selection and how it answers the question
 
 IMPORTANT REMINDERS:
-- Use list_datasources ONCE at the beginning
-- Use execute_query for validation with LIMIT 5 (iterate if needed, but minimize iterations)
-- Return the query with appropriate LIMIT in the instructions (not the test LIMIT 5)
-- Build your query completely and correctly BEFORE testing
-- Put MAXIMUM effort into getting it right the first time`
+- Use list_datasources ONCE at the beginning to understand available tables
+- Use text_to_sql with natural language questions (NOT SQL code)
+- Use execute_query with LIMIT 5 to validate the generated SQL works
+- Return the validated query in the instructions field (with appropriate LIMIT)
+- Formulate questions to text_to_sql correctly to minimize validation iterations
+- Put MAXIMUM effort into getting the question right with minimal iterations`
 }

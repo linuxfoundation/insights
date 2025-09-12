@@ -78,4 +78,45 @@ export class TextToSqlAgent extends BaseAgent<TextToSqlAgentInput, SqlOutput> {
   protected override shouldMonitorToolCalls(_input: TextToSqlAgentInput): boolean {
     return true // Enable tool call monitoring for SQL agent
   }
+
+  /**
+   * Override to add validation for text_to_sql tool calls
+   */
+  protected override logToolCalls(response: any): void {
+    // Call parent method first to get normal logging
+    super.logToolCalls(response)
+
+    // Add validation for text_to_sql tool calls
+    if (!response.steps || response.steps.length === 0) return
+
+    for (const step of response.steps) {
+      if (step.toolCalls && step.toolCalls.length > 0) {
+        for (const call of step.toolCalls) {
+          if (call.toolName === 'text_to_sql') {
+            const question = call.args?.question || ''
+            
+            // Check if the question looks like SQL code (basic heuristic)
+            if (this.looksLikeSQL(question)) {
+              console.error(`❌ WARNING: text_to_sql tool called with SQL code instead of natural language question:`)
+              console.error(`Question: ${question}`)
+              console.error('text_to_sql tool should receive natural language questions, not SQL code')
+              // Don't throw error, just warn - allow the process to continue
+            }
+          }
+        }
+      }
+    }
+  }
+
+  /**
+   * Basic heuristic to detect if a string looks like SQL code
+   */
+  private looksLikeSQL(text: string): boolean {
+    const sqlKeywords = ['SELECT', 'FROM', 'WHERE', 'JOIN', 'GROUP BY', 'ORDER BY', 'LIMIT', 'WITH']
+    const upperText = text.toUpperCase()
+    
+    // If it contains multiple SQL keywords, it's likely SQL code
+    const keywordCount = sqlKeywords.filter(keyword => upperText.includes(keyword)).length
+    return keywordCount >= 2
+  }
 }

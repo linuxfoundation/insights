@@ -189,6 +189,7 @@ export class DataCopilot {
     const followUpTools: Record<string, unknown> = {}
     followUpTools['text_to_sql'] = this.tbTools['text_to_sql']
     followUpTools['list_datasources'] = this.tbTools['list_datasources']
+    followUpTools['execute_query'] = this.tbTools['execute_query']
 
     const agent = new TextToSqlAgent()
     return agent.execute({
