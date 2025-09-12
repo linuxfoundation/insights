@@ -162,6 +162,7 @@ export interface DataCopilotQueryInput {
   conversationId?: string
   insightsDbPool: Pool
   userEmail: string
+  dataStream: DataStreamWriter // DataStreamWriter from AI SDK
 }
 
 export interface TextToSqlAgentInput {

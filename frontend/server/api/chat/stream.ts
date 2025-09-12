@@ -1,6 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import type { Pool } from 'pg'
+import { createDataStreamResponse } from 'ai'
 import { DataCopilot } from '~~/lib/chat/data-copilot'
 import { InsightsProjectsRepository } from '~~/server/repo/insightsProjects.repo'
 import { ChatMessage } from '~~/lib/chat/types'
@@ -54,15 +55,20 @@ export default defineEventHandler(async (event): Promise<Response | Error> => {
     const dataCopilot = new DataCopilot()
     await dataCopilot.initialize()
 
-    return dataCopilot.streamingAgentRequestHandler({
-      messages,
-      segmentId: insightsProjects.segmentId,
-      projectName,
-      pipe,
-      parameters,
-      conversationId: finalConversationId,
-      insightsDbPool,
-      userEmail: event.context.user.email,
+    return createDataStreamResponse({
+      execute: async (dataStream) => {
+        await dataCopilot.streamingAgentRequestHandler({
+          messages,
+          segmentId: insightsProjects.segmentId,
+          projectName,
+          pipe,
+          parameters,
+          conversationId: finalConversationId,
+          insightsDbPool,
+          userEmail: event.context.user.email,
+          dataStream, // Pass the dataStream to the class
+        })
+      }
     })
   } catch (error) {
     return createError({

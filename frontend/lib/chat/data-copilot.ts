@@ -3,9 +3,7 @@
 import { createAmazonBedrock } from '@ai-sdk/amazon-bedrock'
 import {
   experimental_createMCPClient as createMCPClient,
-  createDataStreamResponse,
   type LanguageModelV1,
-  type DataStreamWriter,
 } from 'ai'
 import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js'
 import type { Pool } from 'pg'
@@ -263,13 +261,12 @@ export class DataCopilot {
     conversationId,
     insightsDbPool,
     userEmail,
-  }: DataCopilotQueryInput): Promise<Response> {
+    dataStream,
+  }: DataCopilotQueryInput): Promise<void> {
     const parametersString = JSON.stringify(parameters || {})
     const date = new Date().toISOString().slice(0, 10)
 
-    return createDataStreamResponse({
-      execute: async (dataStream) => {
-        const responseData: ChatResponse = {
+    const responseData: ChatResponse = {
           userPrompt: messages[messages.length - 1]?.content || '',
           inputTokens: 0,
           outputTokens: 0,
@@ -380,8 +377,6 @@ export class DataCopilot {
           console.warn('✅ ERROR status written to stream')
           throw error
         }
-      },
-    })
   }
 
   /**
@@ -391,7 +386,7 @@ export class DataCopilot {
     userPrompt: string,
     routerOutput: RouterOutput,
     responseData: ChatResponse,
-    dataStream: DataStreamWriter,
+    dataStream: any,
     insightsDbPool: Pool,
     userEmail: string,
     conversationId?: string,
