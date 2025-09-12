@@ -268,13 +268,6 @@ export class DataCopilot {
     const date = new Date().toISOString().slice(0, 10)
 
     return createDataStreamResponse({
-      headers: {
-        'Cache-Control': 'no-cache, no-store, must-revalidate',
-        'Pragma': 'no-cache',
-        'Expires': '0',
-        'Connection': 'keep-alive',
-        'X-Accel-Buffering': 'no', // Disable Nginx buffering if present
-      },
       execute: async (dataStream) => {
         const responseData: ChatResponse = {
           userPrompt: messages[messages.length - 1]?.content || '',

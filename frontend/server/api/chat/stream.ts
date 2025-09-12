@@ -17,6 +17,13 @@ interface IStreamRequestBody {
 }
 
 export default defineEventHandler(async (event): Promise<Response | Error> => {
+  // Set streaming headers immediately
+  setHeader(event, 'Cache-Control', 'no-cache, no-store, must-revalidate')
+  setHeader(event, 'Pragma', 'no-cache')
+  setHeader(event, 'Expires', '0')
+  setHeader(event, 'Connection', 'keep-alive')
+  setHeader(event, 'X-Accel-Buffering', 'no')
+  
   try {
     const { messages, projectName, pipe, parameters, conversationId, projectSlug } =
       await readBody<IStreamRequestBody>(event)
