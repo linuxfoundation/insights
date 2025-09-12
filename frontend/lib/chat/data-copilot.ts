@@ -431,6 +431,12 @@ export class DataCopilot {
     reformulatedQuestion,
     dataStream,
   }: TextToSqlAgentStreamInput): Promise<{ sqlQuery: string }> {
+    console.warn('🚀 handleCreateQueryAction called with:', {
+      reformulatedQuestion: reformulatedQuestion?.substring(0, 100) + '...',
+      projectName,
+      pipe,
+    })
+
     const textToSqlOutput = await this.runTextToSqlAgent({
       messages,
       date,
@@ -441,7 +447,23 @@ export class DataCopilot {
       reformulatedQuestion,
     })
 
+    console.warn('🤖 TextToSqlAgent output:', {
+      hasExplanation: !!textToSqlOutput.explanation,
+      explanationLength: textToSqlOutput.explanation?.length || 0,
+      hasInstructions: !!textToSqlOutput.instructions,
+      instructionsType: typeof textToSqlOutput.instructions,
+      instructionsLength: textToSqlOutput.instructions?.length || 0,
+      instructionsPreview: textToSqlOutput.instructions?.substring(0, 150) + '...',
+    })
+
     const queryData = await executeTextToSqlInstructions(textToSqlOutput.instructions)
+
+    console.warn('📊 Query execution result:', {
+      queryDataType: typeof queryData,
+      queryDataLength: queryData?.length || 0,
+      isArray: Array.isArray(queryData),
+      firstItemKeys: queryData?.[0] ? Object.keys(queryData[0]) : null,
+    })
 
     dataStream.writeData({
       type: StreamDataType.SQL_RESULT,
@@ -449,6 +471,8 @@ export class DataCopilot {
       instructions: textToSqlOutput.instructions,
       data: queryData,
     })
+
+    console.warn('📤 Streamed data to client with type:', StreamDataType.SQL_RESULT)
 
     return { sqlQuery: textToSqlOutput.instructions }
   }
