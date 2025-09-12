@@ -15,7 +15,12 @@ export interface CopilotData {
 
 export type CopilotParams = Record<string, string | number | null>;
 
-export type MessagePartType = 'router-status' | 'sql-result' | 'text' | 'pipe-result' | 'chat-response-id';
+export type MessagePartType = 'router-status' | 
+                              'sql-result' | 
+                              'text' | 
+                              'pipe-result' | 
+                              'chat-response-id' | 
+                              'conversation-id';
 export type MessageStatus = 'analyzing' | 'complete' | 'error';
 export type MessageData = Record<string, string | number | null | string[] | object>;
 export type MessageRole = 'user' | 'assistant';
@@ -29,6 +34,7 @@ export interface ResultsHistory {
   chartConfig?: Config | null;
   chartErrorType?: ChartErrorType;
   routerReasoning?: string;
+  conversationId?: string;
 }
 
 export interface AIMessage {
@@ -38,6 +44,7 @@ export interface AIMessage {
   status: MessageStatus;
   content: string; 
   timestamp: number;
+  conversationId?: string;
   sql?: string;
   data?: Array<MessageData>;
   explanation?: string;

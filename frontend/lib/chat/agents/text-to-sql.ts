@@ -75,16 +75,53 @@ export class TextToSqlAgent extends BaseAgent<TextToSqlAgentInput, SqlOutput> {
     }
   }
 
-  protected generateConversationHistoryReceipt(_input: TextToSqlAgentInput): string {
-    return ''
-  }
-
   protected override shouldMonitorToolCalls(_input: TextToSqlAgentInput): boolean {
     return true // Enable tool call monitoring for SQL agent
   }
-}
 
-export async function runTextToSqlAgent(params: TextToSqlAgentInput): Promise<SqlOutput> {
-  const agent = new TextToSqlAgent()
-  return agent.execute(params)
+  /**
+   * Override to add validation for text_to_sql tool calls
+   */
+  protected override logToolCalls(response: any): void {
+    // Call parent method first to get normal logging
+    super.logToolCalls(response)
+
+    // Add validation for text_to_sql tool calls
+    if (!response.steps || response.steps.length === 0) return
+
+    for (const step of response.steps) {
+      if (step.toolCalls && step.toolCalls.length > 0) {
+        for (const call of step.toolCalls) {
+          if (call.toolName === 'text_to_sql') {
+            const question = call.args?.question || ''
+            
+            // Check if the question looks like SQL code (basic heuristic)
+            if (this.looksLikeSQL(question)) {
+              console.error(`❌ WARNING: text_to_sql tool called with SQL code instead of natural language question:`)
+              console.error(`Question: ${question}`)
+              console.error('text_to_sql tool should receive natural language questions, not SQL code')
+              // Don't throw error, just warn - allow the process to continue
+            }
+          }
+        }
+      }
+    }
+  }
+
+  /**
+   * Basic heuristic to detect if a string looks like SQL code
+   */
+  private looksLikeSQL(text: string): boolean {
+    // More specific SQL patterns that indicate actual SQL code, not natural language
+    const sqlPatterns = [
+      /^\s*SELECT\s+/i,           // Starts with SELECT
+      /\bFROM\s+\w+\s*$/i,        // Ends with FROM table
+      /\bSELECT\s+.*\s+FROM\s+/i, // Contains SELECT ... FROM pattern
+      /\bWITH\s+\w+\s+AS\s*\(/i,  // CTE pattern WITH name AS (
+      /\bUNION\s+(ALL\s+)?SELECT/i, // UNION SELECT pattern
+    ]
+    
+    // Check for actual SQL structure patterns
+    return sqlPatterns.some(pattern => pattern.test(text))
+  }
 }

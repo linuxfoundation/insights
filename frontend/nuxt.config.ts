@@ -52,9 +52,15 @@ export default defineNuxtConfig({
     insightsDbWriteHost: 'localhost',
     insightsDbReadHost: 'localhost',
     insightsDbPort: 5432,
-    insightsDbUsername: 'postgres',
-    insightsDbPassword: 'example',
-    insightsDbDatabase: 'insights',
+    insightsDbUsername: "postgres",
+    insightsDbPassword: "example",
+    insightsDbDatabase: "insights",
+    cmDbWriteHost: "localhost",
+    cmDbReadHost: "localhost",
+    cmDbPort: 5432,
+    cmDbUsername: "postgres",
+    cmDbPassword: "example",
+    cmDbDatabase: "crowd-web",
     // These are also exposed on the client-side
     public: {
       apiBase: '/api',

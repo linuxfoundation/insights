@@ -8,12 +8,19 @@ export const pipePrompt = (
   segmentId: string | null,
   reformulatedQuestion: string,
   tools: string[],
-) => `
+) => {
+  const dashboardDescription = pipe
+    ? `Project "${projectName}" using ${pipe} tool with parameters: ${parametersString}`
+    : `Project "${projectName}"${parametersString ? ` with parameters: ${parametersString}` : ''}`
+
+  const usePipeInstruction = pipe ? `- Use ${pipe} with different parameters if needed` : ''
+
+  return `
 You are a pipe tool specialist that creates an execution plan to answer: "${reformulatedQuestion}"
 
 # DATE AND CONTEXT
 Today's date: ${date}
-Current dashboard: Project "${projectName}" using ${pipe} tool with parameters: ${parametersString}
+Current dashboard: ${dashboardDescription}
 Segment ID: ${segmentId || 'not specified'}
 
 # AVAILABLE TOOLS
@@ -67,7 +74,7 @@ Your response must include an "instructions" field with this structure:
 - Execute the pipes and examine what columns are returned, and which columns are needed to answer the question
 - Map the columns from pipe results to the final output structure using "type": "direct"
 - Add formula columns when calculations are needed (e.g., growth rates, percentages, differences)
-- Use ${pipe} with different parameters if needed
+${usePipeInstruction}
 - Use other available tools if they're more appropriate
 - Call multiple tools if needed to answer the question
 - Combine columns from multiple pipes if needed for comprehensive answers
@@ -130,3 +137,4 @@ Always ensure variables in formulas match the dependency variable names.
    - Answer the reformulated question directly
    - Use the tools specified by the router
    - Be concise and accurate in your response`
+}
