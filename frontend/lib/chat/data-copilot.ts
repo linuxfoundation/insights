@@ -268,6 +268,13 @@ export class DataCopilot {
     const date = new Date().toISOString().slice(0, 10)
 
     return createDataStreamResponse({
+      headers: {
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0',
+        'Connection': 'keep-alive',
+        'X-Accel-Buffering': 'no', // Disable Nginx buffering if present
+      },
       execute: async (dataStream) => {
         const responseData: ChatResponse = {
           userPrompt: messages[messages.length - 1]?.content || '',
@@ -282,10 +289,12 @@ export class DataCopilot {
         }
 
         try {
+          console.warn('📤 Writing ANALYZING status to stream at:', new Date().toISOString())
           dataStream.writeData({
             type: StreamDataType.ROUTER_STATUS,
             status: StreamDataStatus.ANALYZING,
           })
+          console.warn('✅ ANALYZING status written to stream')
 
           const routerOutput = await this.runRouterAgent({
             messages,
@@ -315,12 +324,14 @@ export class DataCopilot {
             return
           }
 
+          console.warn('📤 Writing COMPLETE status to stream at:', new Date().toISOString())
           dataStream.writeData({
             type: StreamDataType.ROUTER_STATUS,
             status: StreamDataStatus.COMPLETE,
             reasoning: routerOutput.reasoning,
             reformulatedQuestion: routerOutput.reformulated_question,
           })
+          console.warn('✅ COMPLETE status written to stream')
 
           let sqlQuery: string | undefined = undefined
           let pipeInstructions: PipeInstructions | undefined = undefined
@@ -366,11 +377,14 @@ export class DataCopilot {
             dataStream,
           })
         } catch (error) {
+          console.error('❌ Error in streamingAgentRequestHandler:', error)
+          console.warn('📤 Writing ERROR status to stream at:', new Date().toISOString())
           dataStream.writeData({
             type: 'router-status',
             status: 'error',
             error: error instanceof Error ? error.message : 'An error occurred',
           })
+          console.warn('✅ ERROR status written to stream')
           throw error
         }
       },
