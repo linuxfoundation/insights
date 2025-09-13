@@ -18,12 +18,13 @@ interface IStreamRequestBody {
 }
 
 export default defineEventHandler(async (event): Promise<Response | Error> => {
-  // Set streaming headers immediately
-  setHeader(event, 'Cache-Control', 'no-cache, no-store, must-revalidate')
+  // Set streaming headers for Cloudflare compatibility
+  setHeader(event, 'Cache-Control', 'no-cache, no-store, must-revalidate, no-transform')
   setHeader(event, 'Pragma', 'no-cache')
   setHeader(event, 'Expires', '0')
-  setHeader(event, 'Connection', 'keep-alive')
   setHeader(event, 'X-Accel-Buffering', 'no')
+  setHeader(event, 'Content-Type', 'text/plain; charset=utf-8')
+  setHeader(event, 'Connection', 'close')
   
   try {
     const { messages, projectName, pipe, parameters, conversationId, projectSlug } =

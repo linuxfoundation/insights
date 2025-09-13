@@ -1,5 +1,6 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createAmazonBedrock } from '@ai-sdk/amazon-bedrock'
 import {
   experimental_createMCPClient as createMCPClient,
@@ -283,6 +284,11 @@ export class DataCopilot {
           dataStream.writeData({
             type: StreamDataType.ROUTER_STATUS,
             status: StreamDataStatus.ANALYZING,
+          })
+          // Add padding for Cloudflare streaming threshold
+          dataStream.writeData({
+            type: 'padding',
+            data: ' '.repeat(2048),
           })
           console.warn('✅ ANALYZING status written to stream')
 
