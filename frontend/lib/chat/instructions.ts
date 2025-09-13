@@ -208,12 +208,6 @@ export async function executePipeInstructions(instructions: PipeInstructions): P
 
 // Function to execute a SQL query via TinyBird's Query API
 export async function executeTextToSqlInstructions(query: TextToSqlInstructions): Promise<any[]> {
-  console.warn('🔍 executeTextToSqlInstructions called with query:', {
-    queryType: typeof query,
-    queryLength: query?.length || 0,
-    queryPreview: query?.substring(0, 100) + (query?.length > 100 ? '...' : ''),
-  })
-
   const tinybirdBaseUrl = process.env.NUXT_TINYBIRD_BASE_URL
   const tinybirdToken = process.env.NUXT_INSIGHTS_DATA_COPILOT_TINYBIRD_TOKEN
 
@@ -228,11 +222,6 @@ export async function executeTextToSqlInstructions(query: TextToSqlInstructions)
     const finalQuery = `${query} FORMAT JSON`
     params.append('q', finalQuery)
     
-    console.warn('📤 Executing TinyBird query:', {
-      url: `${tinybirdBaseUrl}/v0/sql`,
-      query: finalQuery.substring(0, 200) + (finalQuery.length > 200 ? '...' : ''),
-    })
-
     const response = await ofetch(`${tinybirdBaseUrl}/v0/sql`, {
       method: 'POST',
       headers: {
@@ -240,12 +229,6 @@ export async function executeTextToSqlInstructions(query: TextToSqlInstructions)
         'Content-Type': 'application/x-www-form-urlencoded',
       },
       body: params.toString(),
-    })
-
-    console.warn('📥 TinyBird response:', {
-      hasData: !!response.data,
-      dataLength: response.data?.length || 0,
-      responseKeys: Object.keys(response || {}),
     })
 
     // TinyBird SQL API response format has data array

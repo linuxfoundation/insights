@@ -157,33 +157,43 @@ export abstract class BaseAgent<TInput, TOutput> {
    * Extract and validate JSON from the response text
    */
   protected getJson(text: string): TOutput {
+    // Debug logging to see what the agent actually returned
+    console.warn(`🔍 ${this.name} agent raw response:`, text.substring(0, 500) + (text.length > 500 ? '...' : ''))
+
     // First, try simple JSON.parse since the text usually contains valid JSON
     let parsedOutput
     try {
       parsedOutput = JSON.parse(text)
+      console.warn(`✅ ${this.name} agent JSON.parse succeeded`)
     } catch {
       // Fall back to extractJSON if direct parsing fails
       try {
         parsedOutput = extractJSON(text)
+        console.warn(`✅ ${this.name} agent extractJSON succeeded`)
       } catch (error) {
-        console.error(`${this.name} agent failed to parse JSON:`, error)
-        console.error(`Response text:`, text)
+        console.error(`❌ ${this.name} agent failed to parse JSON:`, error)
+        console.error(`❌ Response text:`, text)
         throw new Error(`${this.name} agent did not return valid JSON`)
       }
     }
 
     if (!parsedOutput) {
-      console.error('No JSON found in the response')
+      console.error('❌ No JSON found in the response')
       console.error(text)
       throw new Error(`${this.name} agent did not return valid JSON`)
     }
 
+    // Debug logging for parsed output
+    console.warn(`🔍 ${this.name} agent parsed output:`, JSON.stringify(parsedOutput, null, 2))
+
     // Validate against schema
     try {
       const validatedOutput = this.outputSchema.parse(parsedOutput)
+      console.warn(`✅ ${this.name} agent schema validation succeeded`)
       return validatedOutput
     } catch (error) {
-      console.error(`Failed to validate ${this.name} JSON`, error)
+      console.error(`❌ Failed to validate ${this.name} JSON`, error)
+      console.error(`❌ Parsed output was:`, JSON.stringify(parsedOutput, null, 2))
       throw new Error(`Failed to validate ${this.name} JSON: ${error}`)
     }
   }

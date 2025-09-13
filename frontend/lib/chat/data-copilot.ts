@@ -280,17 +280,11 @@ export class DataCopilot {
         }
 
         try {
-          console.warn('📤 Writing ANALYZING status to stream at:', new Date().toISOString())
           dataStream.writeData({
             type: StreamDataType.ROUTER_STATUS,
             status: StreamDataStatus.ANALYZING,
           })
           // Add padding for Cloudflare streaming threshold
-          dataStream.writeData({
-            type: 'padding',
-            data: ' '.repeat(2048),
-          })
-          console.warn('✅ ANALYZING status written to stream')
 
           const routerOutput = await this.runRouterAgent({
             messages,
@@ -320,14 +314,12 @@ export class DataCopilot {
             return
           }
 
-          console.warn('📤 Writing COMPLETE status to stream at:', new Date().toISOString())
           dataStream.writeData({
             type: StreamDataType.ROUTER_STATUS,
             status: StreamDataStatus.COMPLETE,
             reasoning: routerOutput.reasoning,
             reformulatedQuestion: routerOutput.reformulated_question,
           })
-          console.warn('✅ COMPLETE status written to stream')
 
           let sqlQuery: string | undefined = undefined
           let pipeInstructions: PipeInstructions | undefined = undefined
@@ -373,14 +365,11 @@ export class DataCopilot {
             dataStream,
           })
         } catch (error) {
-          console.error('❌ Error in streamingAgentRequestHandler:', error)
-          console.warn('📤 Writing ERROR status to stream at:', new Date().toISOString())
           dataStream.writeData({
             type: 'router-status',
             status: 'error',
             error: error instanceof Error ? error.message : 'An error occurred',
           })
-          console.warn('✅ ERROR status written to stream')
           throw error
         }
   }
@@ -439,12 +428,6 @@ export class DataCopilot {
     reformulatedQuestion,
     dataStream,
   }: TextToSqlAgentStreamInput): Promise<{ sqlQuery: string }> {
-    console.warn('🚀 handleCreateQueryAction called with:', {
-      reformulatedQuestion: reformulatedQuestion?.substring(0, 100) + '...',
-      projectName,
-      pipe,
-    })
-
     const textToSqlOutput = await this.runTextToSqlAgent({
       messages,
       date,
@@ -455,23 +438,7 @@ export class DataCopilot {
       reformulatedQuestion,
     })
 
-    console.warn('🤖 TextToSqlAgent output:', {
-      hasExplanation: !!textToSqlOutput.explanation,
-      explanationLength: textToSqlOutput.explanation?.length || 0,
-      hasInstructions: !!textToSqlOutput.instructions,
-      instructionsType: typeof textToSqlOutput.instructions,
-      instructionsLength: textToSqlOutput.instructions?.length || 0,
-      instructionsPreview: textToSqlOutput.instructions?.substring(0, 150) + '...',
-    })
-
     const queryData = await executeTextToSqlInstructions(textToSqlOutput.instructions)
-
-    console.warn('📊 Query execution result:', {
-      queryDataType: typeof queryData,
-      queryDataLength: queryData?.length || 0,
-      isArray: Array.isArray(queryData),
-      firstItemKeys: queryData?.[0] ? Object.keys(queryData[0]) : null,
-    })
 
     dataStream.writeData({
       type: StreamDataType.SQL_RESULT,
@@ -479,8 +446,6 @@ export class DataCopilot {
       instructions: textToSqlOutput.instructions,
       data: queryData,
     })
-
-    console.warn('📤 Streamed data to client with type:', StreamDataType.SQL_RESULT)
 
     return { sqlQuery: textToSqlOutput.instructions }
   }
