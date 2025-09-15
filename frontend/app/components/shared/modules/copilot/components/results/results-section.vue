@@ -60,7 +60,7 @@ SPDX-License-Identifier: MIT
           v-else
           class="flex flex-col items-center justify-center h-full min-h-0"
         >
-          <lfx-copilot-error-state error-type="default" />
+          <lfx-copilot-empty-result />
         </div>
       </div>
       <div
@@ -78,7 +78,7 @@ SPDX-License-Identifier: MIT
 import { computed, ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 import LfxCopilotLoadingState from '../shared/loading-state.vue';
-import LfxCopilotErrorState from '../shared/error-state.vue';
+import LfxCopilotEmptyResult from '../info/empty-result.vue';
 import { useCopilotStore } from '../../store/copilot.store';
 import LfxCopilotTableResults from './table-results.vue';
 import LfxCopilotResultsHeader from './results-header.vue';

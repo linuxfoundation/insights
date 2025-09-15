@@ -20,10 +20,6 @@ export default defineEventHandler(async (event): Promise<Response | Error> => {
     const { messages, segmentId, projectName, pipe, parameters } =
       await readBody<IStreamRequestBody>(event)
 
-    if (!pipe) {
-      return createError({ statusCode: 400, statusMessage: 'Pipe is required' })
-    }
-
     const dbPool = event.context.dbPool as Pool
 
     return await streamingAgentRequestHandler({

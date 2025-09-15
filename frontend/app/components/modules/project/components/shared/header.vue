@@ -77,24 +77,27 @@ SPDX-License-Identifier: MIT
               </div>
             </div>
             <div class="hidden sm:flex items-center gap-4">
-              <lfx-button
-                type="tertiary"
-                class="!rounded-full text-nowrap"
+              <lfx-icon-button
+                icon="comment-exclamation"
+                size="medium"
+                class="!text-warning-600"
+                title="Report issue"
                 @click="openReportModal()"
-              >
-                <lfx-icon
-                  name="comment-exclamation"
-                  class="text-warning-600"
-                />
-                Report issue
-              </lfx-button>
+              />
+              <lfx-icon-button
+                icon="link-simple"
+                size="medium"
+                title="Share"
+                @click="share()"
+              />
               <lfx-button
+                v-if="hasLfxInsightsPermission"
                 type="tertiary"
                 class="!rounded-full"
-                @click="share()"
+                @click="openCopilotHandler()"
               >
-                <lfx-icon name="link-simple" />
-                Share
+                <lfx-icon name="sparkles" />
+                Ask Copilot
               </lfx-button>
             </div>
           </div>
@@ -142,6 +145,18 @@ SPDX-License-Identifier: MIT
                 />
                 <p class="text-xs whitespace-nowrap">Report issue</p>
               </div>
+              <div
+                v-if="hasLfxInsightsPermission"
+                class="flex items-center py-1.5 px-3 gap-1.5 cursor-pointer"
+                @click="openCopilotHandler()"
+              >
+                <lfx-icon
+                  name="sparkles"
+                  :size="14"
+                  class="text-brand-500"
+                />
+                <p class="text-xs whitespace-nowrap">Ask Copilot</p>
+              </div>
             </div>
           </teleport>
           <lfx-project-date-range-picker
@@ -182,6 +197,8 @@ import {useReportStore} from "~/components/shared/modules/report/store/report.st
 import {useShareStore} from "~/components/shared/modules/share/store/share.store";
 import { LfxRoutes } from '~/components/shared/types/routes';
 import LfxArchivedTag from '~/components/shared/components/archived-tag.vue';
+import {useAuthStore} from "~/components/modules/auth/store/auth.store";
+import {useCopilotStore} from "~/components/shared/modules/copilot/store/copilot.store";
 
 const props = defineProps<{
   project?: Project
@@ -198,6 +215,9 @@ const {
 } = storeToRefs(useProjectStore());
 const { openReportModal } = useReportStore();
 const { openShareModal } = useShareStore();
+const { openCopilotModal } = useCopilotStore();
+
+const {hasLfxInsightsPermission} = storeToRefs(useAuthStore())
 
 const repos = computed<ProjectRepository[]>(
     () => projectRepos.value.filter((repo) => selectedRepoSlugs.value.includes(repo.slug))
@@ -268,6 +288,13 @@ const showDatepicker = computed(() => ![
 const handleSelectedRepoSlugs = (value: string[]) => {
   selectedRepoSlugs.value = value;
 };
+
+const openCopilotHandler = () => {
+  openCopilotModal({
+    suggestions: '',
+    project: props.project || undefined
+  });
+}
 </script>
 
 <script lang="ts">

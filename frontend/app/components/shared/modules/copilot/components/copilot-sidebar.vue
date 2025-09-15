@@ -44,11 +44,17 @@ SPDX-License-Identifier: MIT
       />
       <!-- Message history -->
       <lfx-copilot-chat-history 
+        v-if="!isEmptyMessages"
         :messages="messages" 
         :selected-result-id="selectedResultId" 
         :is-loading="isLoading"
-        :widget-name="widgetName"
+        :widget-name="selectedWidgetKey"
         @select-result="selectResult"
+      />
+      <lfx-empty-chat
+        v-else
+        :project-name="copilotDefaults.project?.name || ''"
+        @suggestion-click="handleSuggestionClick"
       />
     </div>
 
@@ -82,8 +88,10 @@ SPDX-License-Identifier: MIT
                 </span>
               </span>
               <lfx-context-display
-                :widget-name="widgetName"
+                :widget-name="selectedWidgetKey"
                 type="transparent"
+                allow-all-widgets
+                @value-selected="handleWidgetClick"
               />
             </div>
             <lfx-icon-button
@@ -109,11 +117,12 @@ import { copilotApiService } from '../store/copilot.api.service'
 import { useCopilotStore } from '../store/copilot.store'
 import LfxCopilotChatHistory from './chat-history/copilot-chat-history.vue'
 import LfxContextDisplay from './shared/context-display.vue';
+import LfxEmptyChat from './info/empty-chat.vue'
 import LfxIcon from '~/components/uikit/icon/icon.vue'
 import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue'
+import type { Widget } from '~/components/modules/widget/types/widget'
 
 const props = defineProps<{
-  widgetName: string;
   isLoading: boolean;
   isChartLoading: boolean;
 }>()
@@ -126,7 +135,7 @@ const emit = defineEmits<{
   (e: 'update:data', id: string, value: MessageData[], routerReasoning?: string): void;
 }>();
 
-const { copilotDefaults, selectedResultId } = storeToRefs(useCopilotStore());
+const { copilotDefaults, selectedResultId, selectedWidgetKey } = storeToRefs(useCopilotStore());
 
 const scrollable = ref<HTMLElement | null>(null)
 const showTopGradient = ref(false)
@@ -137,6 +146,7 @@ const input = ref('')
 const streamingStatus = ref('')
 const error = ref('')
 const messages = ref<Array<AIMessage>>([]) // tempData as AIMessage
+const isEmptyMessages = computed(() => messages.value.length === 0)
 
 const isLoading = computed<boolean>({
   get: () => props.isLoading,
@@ -172,7 +182,7 @@ const callChatApi = async (userMessage: string) => {
       const response = await copilotApiService.callChatStream(
         messages.value, 
         copilotDefaults.value.project, 
-        copilotDefaults.value.widget, 
+        selectedWidgetKey.value, 
         copilotDefaults.value.params)
 
       // Handle the streaming response
@@ -246,6 +256,14 @@ const handleScroll = () => {
     showTopGradient.value = scrollTop > 10
     showBottomGradient.value = scrollTop + clientHeight < scrollHeight - 10
   }
+}
+
+const handleSuggestionClick = (suggestion: string) => {
+  input.value = suggestion;
+}
+
+const handleWidgetClick = (widgetKey: Widget) => {
+  selectedWidgetKey.value = widgetKey;
 }
 </script>
 
