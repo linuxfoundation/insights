@@ -160,20 +160,28 @@ export abstract class BaseAgent<TInput, TOutput> {
     // Debug logging to see what the agent actually returned
     console.warn(`🔍 ${this.name} agent raw response:`, text.substring(0, 500) + (text.length > 500 ? '...' : ''))
 
-    // First, try simple JSON.parse since the text usually contains valid JSON
+    // Try multiple parsing strategies for speed and reliability
     let parsedOutput
     try {
+      // Strategy 1: Direct JSON.parse (fastest)
       parsedOutput = JSON.parse(text)
       console.warn(`✅ ${this.name} agent JSON.parse succeeded`)
     } catch {
-      // Fall back to extractJSON if direct parsing fails
       try {
-        parsedOutput = extractJSON(text)
-        console.warn(`✅ ${this.name} agent extractJSON succeeded`)
-      } catch (error) {
-        console.error(`❌ ${this.name} agent failed to parse JSON:`, error)
-        console.error(`❌ Response text:`, text)
-        throw new Error(`${this.name} agent did not return valid JSON`)
+        // Strategy 2: Try parsing after trimming and cleaning
+        const cleanedText = text.trim().replace(/^```json\s*|\s*```$/g, '')
+        parsedOutput = JSON.parse(cleanedText)
+        console.warn(`✅ ${this.name} agent cleaned JSON.parse succeeded`)
+      } catch {
+        // Strategy 3: Fall back to extractJSON (slower but more robust)
+        try {
+          parsedOutput = extractJSON(text)
+          console.warn(`✅ ${this.name} agent extractJSON succeeded`)
+        } catch (error) {
+          console.error(`❌ ${this.name} agent failed to parse JSON:`, error)
+          console.error(`❌ Response text:`, text)
+          throw new Error(`${this.name} agent did not return valid JSON`)
+        }
       }
     }
 

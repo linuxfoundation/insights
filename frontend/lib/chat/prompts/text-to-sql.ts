@@ -8,106 +8,62 @@ export const textToSqlPrompt = (
   segmentId: string | null,
   reformulatedQuestion: string,
 ) => {
-  const dashboardDescription = pipe
-    ? `Project "${projectName}" using ${pipe} tool with parameters: ${parametersString}`
-    : `Project "${projectName}"${parametersString ? ` with parameters: ${parametersString}` : ''}`
-
   return `
-You are an expert SQL query generator that creates execution plans to answer: "${reformulatedQuestion}"
+You need to generate a SQL query to answer: "${reformulatedQuestion}"
 
-Think step-by-step through the structured approach below. Be methodical and careful to ensure accuracy.
+Context:
+- Date: ${date}
+- Project: ${projectName}
+- Segment ID: ${segmentId || 'not specified'}
 
-# DATE AND CONTEXT
-Today's date: ${date}
-Current dashboard: ${dashboardDescription}
-Segment ID: ${segmentId || 'not specified'}
+Instructions:
+1. BRIEFLY use list_datasources to understand available tables
+2. Optionally use 1-2 other tools for quick data exploration
+3. THEN IMMEDIATELY write a SQL query that answers the question
+4. You have maximum 3 steps - use them wisely
+5. Your final response MUST contain the SQL query in markdown code block
 
-# YOUR TASK
+CRITICAL: After understanding the schema, stop using tools and write the SQL query!
 
-You must return instructions that describe the SQL query to execute.
+## CRITICAL ANTI-JOIN RULE
+**For anti-join patterns (finding rows in A that don't exist in B), use LEFT JOIN with empty string check.**
 
-**INSTRUCTIONS STRUCTURE**
-Your response must include an "instructions" field with a query string:
-{
-  "instructions": "SELECT ... FROM ... WHERE ..."  // The complete SQL query to execute
-}
+**IMPORTANT**: Tinybird has two key limitations:
+1. NOT EXISTS with correlated subqueries is NOT supported
+2. LEFT JOIN fills unmatched columns with default values (like '') instead of NULL
 
-# CRITICAL TOOL USAGE RULES
+Example - CORRECT (use LEFT JOIN + empty string check):
+\`\`\`sql
+WITH table_a_data AS (
+  SELECT id, name FROM table_a WHERE condition
+),
+table_b_ids AS (
+  SELECT DISTINCT a_id FROM table_b WHERE condition
+)
+SELECT a.id, a.name
+FROM table_a_data a
+LEFT JOIN table_b_ids b ON b.a_id = a.id
+WHERE b.a_id = ''
+\`\`\`
 
-**list_datasources Tool:**
-- Use ONCE at the beginning to understand available tables and schemas
-- Study the schema carefully, noting column names and types
-- Identify which tables contain the data you need
+Example - AVOID (NOT EXISTS - will fail in Tinybird):
+\`\`\`sql
+WHERE NOT EXISTS (SELECT 1 FROM table_b b WHERE b.a_id = a.id)
+\`\`\`
 
-**text_to_sql Tool:**
-- Use with the natural language question to generate the SQL query
-- Pass the user's question as the 'question' parameter
-- Do NOT pass SQL code to this tool - it expects natural language questions only
-- Build your understanding from schema first, then use text_to_sql
-- You may need to refine your question and call this tool again based on validation results
-
-**execute_query Tool:**
-- Use ONLY for VALIDATION after generating SQL with text_to_sql
-- Add LIMIT 5 when validating to check the query works
-- If it fails, refine your natural language question and try text_to_sql again
-- The final returned SQL should have appropriate LIMIT (not the test LIMIT 5)
-- CRITICAL: Do NOT include query results in your final JSON response - only the query string
-
-Remember: Think through the ENTIRE query before testing. Minimize iterations.
-
-# YOUR TASK - STRUCTURED APPROACH
-
-Follow this step-by-step process:
-
-**STEP 1: UNDERSTAND THE QUESTION AND READ SCHEMAS**
-- Analyze what the user is asking for
-- Use list_datasources to see available tables and schemas
-- Study the schema carefully, noting column names and types
-- Identify which tables are relevant based on the query
-- Understand the available tables, columns, and relationships
-
-**STEP 2: GENERATE AND VALIDATE SQL QUERY**
-- Use the text_to_sql tool with the reformulated question
-- Pass the natural language question to the 'question' parameter
-- Apply ALL query enhancement rules in your question formulation
-- Ensure the question mentions segmentId filtering when applicable
-- Ensure the question mentions timestamp filtering for time-based queries
-
-**STEP 3: VALIDATION**
-- Use execute_query with the generated SQL (add LIMIT 5 for testing)
-- If it succeeds: Proceed to return instructions with appropriate LIMIT
-- If it fails: Refine your natural language question and try text_to_sql again
-- Put maximum effort into getting it right with minimal iterations
-- IMPORTANT: Validation results are NOT part of your final response - only use for verification
-
-**STEP 4: RETURN INSTRUCTIONS**
-- Create the instructions with the validated SQL query
-- Use appropriate LIMIT for final query (not the test LIMIT 5)
-- CRITICAL: Return ONLY the SQL query string in "instructions" field - NO query results/data
-- Your JSON response must contain ONLY: explanation and instructions (SQL query string)
-- Provide a brief explanation of your query logic
-
-# QUERY ENHANCEMENT RULES
-
-**CORE PRINCIPLES:**
-- For non-timeseries data, cap results at 20 unless explicitly specified
-- Choose the sorting metric that makes the most sense based on the user's question
-- Never return just IDs - always include names or human-readable identifiers
-- Stay as close as possible to the user's request
-- Single value queries should return a single row and skip null or 0 values
-
-**TIMESERIES DATA RULES:**
-- If no time range specified: use year-to-date (YTD) as the default range
-- If user asks for "YTD" or "year-to-date": use the date range from January 1st of the current year to today
-- If time range specified: use appropriate granularity
-- Always sort chronologically (oldest to newest)
-- For trends/evolution queries: likely want cumulative data
-
-**FOLLOW-UP REQUEST CONSISTENCY:**
-- Maintain the same time granularity as previous queries unless explicitly changed
-- Preserve context from earlier queries (e.g., filters, groupings)
+Example - AVOID (IS NULL check - will fail because Tinybird uses default values):
+\`\`\`sql
+LEFT JOIN table_b b ON b.a_id = a.id WHERE b.a_id IS NULL
+\`\`\`
 
 # TINYBIRD SQL COMPLETE REFERENCE
+
+## TINYBIRD LIMITATIONS
+- **NOT EXISTS with correlated subqueries is completely unsupported**
+- **LEFT JOIN fills unmatched columns with default values (like '') instead of NULL**
+- **Use LEFT JOIN + empty string check (= '') for anti-join patterns, not IS NULL**
+- **No semicolons allowed** - Queries must not end with semicolon
+- **Multi-statements not allowed** - One query per request
 
 ## ALLOWED SQL STATEMENTS
 - **ONLY SELECT statements are supported**
@@ -191,45 +147,5 @@ Note: Use lagInFrame() instead of LAG(), leadInFrame() instead of LEAD()
 JSONExtract(), JSONExtractString(), JSONExtractInt(), JSONExtractFloat(),
 JSONExtractBool(), JSONExtractArrayRaw(), JSONHas(), JSONLength()
 
-## CRITICAL CONSTRAINTS
-1. **NO subqueries in FROM clause** - Use JOINs instead
-2. **LIMIT is recommended** - Always include LIMIT unless you need all results
-3. **Aggregations require GROUP BY** - Include all non-aggregate columns
-4. **SETTINGS clause** - Goes at the very end: SETTINGS join_use_nulls = 1
-5. **Table references** - Use database.schema.table format when available
-
-# CRITICAL REMINDERS
-
-1. **Tool Usage Discipline:**
-   - list_datasources: Use ONCE at the beginning to understand schema
-   - text_to_sql: Use with natural language questions (may need refinement)
-   - execute_query: Use for validation with LIMIT 5
-   - Do NOT call text_to_sql with SQL code - only natural language questions
-   - Put maximum effort into formulating questions correctly to minimize iterations
-
-2. **Always Apply Filters:**
-   - segmentId filter on activityRelations_deduplicated_cleaned_ds when applicable
-   - timestamp filters for time-based queries
-   - Use provided parameters as defaults
-
-3. **Efficiency:**
-   - Understand schema first, then generate and validate SQL
-   - Minimize iterations by crafting good natural language questions
-   - Use validation to ensure query works before returning instructions
-   - Use the text_to_sql tool properly with natural language questions only
-
-**RESPONSE GUIDELINES - CRITICAL**
-- Your JSON response must contain ONLY two fields: "explanation" and "instructions"
-- "instructions" field must contain ONLY the SQL query string (no results, no data)
-- "explanation" field must contain a brief explanation of your query selection
-- NEVER include query results, validation data, or tool outputs in your JSON response
-- The query will be executed separately - you only provide the query string
-
-IMPORTANT REMINDERS:
-- Use list_datasources ONCE at the beginning to understand available tables
-- Use text_to_sql with natural language questions (NOT SQL code)
-- Use execute_query with LIMIT 5 to validate the generated SQL works
-- Return the validated query in the instructions field (with appropriate LIMIT)
-- Formulate questions to text_to_sql correctly to minimize validation iterations
-- Put MAXIMUM effort into getting the question right with minimal iterations`
+Focus on understanding the data schema first, then writing an effective SQL query.`
 }

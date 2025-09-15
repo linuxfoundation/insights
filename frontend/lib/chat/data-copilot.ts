@@ -185,10 +185,9 @@ export class DataCopilot {
     segmentId,
     reformulatedQuestion,
   }: TextToSqlAgentInput) {
-    const followUpTools: Record<string, unknown> = {}
-    followUpTools['text_to_sql'] = this.tbTools['text_to_sql']
-    followUpTools['list_datasources'] = this.tbTools['list_datasources']
-    followUpTools['execute_query'] = this.tbTools['execute_query']
+    const followUpTools = this.tbTools
+    delete followUpTools['execute_query']
+
 
     const agent = new TextToSqlAgent()
     return agent.execute({
@@ -247,6 +246,29 @@ export class DataCopilot {
       segmentId,
       reformulatedQuestion,
       toolNames,
+    })
+  }
+
+  /**
+   * Send keepalive message to prevent Cloudflare timeout
+   */
+  private sendKeepalive(dataStream: any, message: string): void {
+    dataStream.writeData({
+      type: 'keepalive',
+      message,
+      timestamp: new Date().toISOString(),
+    })
+  }
+
+  /**
+   * Send progress update message
+   */
+  private sendProgress(dataStream: any, status: string, message: string): void {
+    dataStream.writeData({
+      type: StreamDataType.ROUTER_STATUS,
+      status: 'progress',
+      message,
+      timestamp: new Date().toISOString(),
     })
   }
 
@@ -428,26 +450,42 @@ export class DataCopilot {
     reformulatedQuestion,
     dataStream,
   }: TextToSqlAgentStreamInput): Promise<{ sqlQuery: string }> {
-    const textToSqlOutput = await this.runTextToSqlAgent({
-      messages,
-      date,
-      projectName,
-      pipe,
-      parametersString,
-      segmentId,
-      reformulatedQuestion,
-    })
+    // Send progress update before starting TextToSql agent
+    this.sendProgress(dataStream, 'progress', 'Analyzing database schema...')
 
-    const queryData = await executeTextToSqlInstructions(textToSqlOutput.instructions)
+    // Set up keepalive interval during long operation
+    const keepaliveInterval = setInterval(() => {
+      this.sendKeepalive(dataStream, 'Processing SQL query generation...')
+    }, 15000) // Send keepalive every 15 seconds
 
-    dataStream.writeData({
-      type: StreamDataType.SQL_RESULT,
-      explanation: textToSqlOutput.explanation,
-      instructions: textToSqlOutput.instructions,
-      data: queryData,
-    })
+    try {
+      const textToSqlOutput = await this.runTextToSqlAgent({
+          messages,
+          date,
+          projectName,
+          pipe,
+          parametersString,
+          segmentId,
+          reformulatedQuestion,
+        })
 
-    return { sqlQuery: textToSqlOutput.instructions }
+      clearInterval(keepaliveInterval)
+      this.sendProgress(dataStream, 'progress', `SQL query generated! Executing [${textToSqlOutput.instructions}]...`)
+
+      const queryData = await executeTextToSqlInstructions(textToSqlOutput.instructions)
+
+      dataStream.writeData({
+        type: StreamDataType.SQL_RESULT,
+        explanation: textToSqlOutput.explanation,
+        instructions: textToSqlOutput.instructions,
+        data: queryData,
+      })
+
+      return { sqlQuery: textToSqlOutput.instructions }
+    } catch (error) {
+      clearInterval(keepaliveInterval)
+      throw error
+    }
   }
 
   /**

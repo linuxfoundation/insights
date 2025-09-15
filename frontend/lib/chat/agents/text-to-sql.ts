@@ -1,8 +1,6 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// Copyright (c) 2025 The Linux Foundation and each contributor.
-// SPDX-License-Identifier: MIT
 import { z } from 'zod'
 import { textToSqlInstructionsSchema } from '../types'
 import { textToSqlPrompt } from '../prompts/text-to-sql'
@@ -31,10 +29,134 @@ interface TextToSqlAgentInput {
 }
 
 export class TextToSqlAgent extends BaseAgent<TextToSqlAgentInput, SqlOutput> {
+  /**
+   * Generate SQL query using tools and text extraction
+   */
+  override async execute(
+    input: TextToSqlAgentInput & { messages: any[] }
+  ): Promise<SqlOutput & { usage?: any }> {
+    try {
+      const { generateText } = await import('ai')
+      const systemPrompt = this.getSystemPrompt(input)
+      const tools = this.getTools(input)
+      const conversationHistoryReceipt = this.generateConversationHistoryReceipt(input.messages)
+
+      // Remove broken text_to_sql tool, keep working ones
+      const workingTools = { ...tools }
+      delete workingTools['text_to_sql']
+
+      const fullSystemPrompt = conversationHistoryReceipt + systemPrompt + `
+
+## CRITICAL INSTRUCTIONS
+1. Use tools BRIEFLY to understand schema (max 2 tool calls)
+2. Then STOP calling tools and write the SQL query
+3. Put your SQL in a markdown code block: \`\`\`sql ... \`\`\`
+4. You MUST conclude with a final SQL query - do not keep exploring!`
+
+      const generateConfig: any = {
+        model: this.getModel(input),
+        system: fullSystemPrompt,
+        tools: workingTools,
+        maxSteps: this.maxSteps,
+        temperature: this.temperature,
+      }
+
+      const providerOptions = this.getProviderOptions(input)
+      if (providerOptions) {
+        generateConfig.providerOptions = providerOptions
+      }
+
+      generateConfig.messages = input.messages.filter(
+        (msg: any) => msg.content && msg.content.trim() !== '' && msg.role === 'user',
+      ).slice(-1)
+
+      const response = await generateText(generateConfig)
+
+      if (this.shouldMonitorToolCalls(input)) {
+        this.logToolCalls(response)
+      }
+
+      // Extract SQL from text response
+      const result = this.extractSqlFromTextResponse(response)
+      console.warn("🔍 Extracted SQL:", result.instructions)
+
+      return {
+        ...result,
+        usage: response.usage,
+      }
+    } catch (error) {
+      throw this.createError(error)
+    }
+  }
+
+
+  /**
+   * Extract SQL query from text response when tools fail
+   */
+  private extractSqlFromTextResponse(response: any): SqlOutput {
+    const text = response.text || ''
+
+    // Look for SQL code blocks
+    const sqlBlockMatch = text.match(/```sql\n([\s\S]*?)\n```/i)
+    if (sqlBlockMatch && sqlBlockMatch[1]) {
+      const sqlQuery = this.cleanSqlQuery(sqlBlockMatch[1].trim())
+      return {
+        explanation: "Generated SQL query based on database schema analysis",
+        instructions: sqlQuery,
+      }
+    }
+
+    // Look for WITH or SELECT statements in the text
+    const withMatch = text.match(/\b(WITH[\s\S]*?ORDER BY[^;]*;?)/i)
+    const selectMatch = text.match(/\b(SELECT[\s\S]*?ORDER BY[^;]*;?)/i)
+
+    if (withMatch && withMatch[1]) {
+      return {
+        explanation: "Extracted SQL query from agent response",
+        instructions: this.cleanSqlQuery(withMatch[1].trim()),
+      }
+    }
+
+    if (selectMatch && selectMatch[1]) {
+      return {
+        explanation: "Extracted SQL query from agent response",
+        instructions: this.cleanSqlQuery(selectMatch[1].trim()),
+      }
+    }
+
+    // Fallback: look for any SQL-like content
+    const generalSqlMatch = text.match(/\b((?:WITH|SELECT)[\s\S]*?)(?=\n\n|\n(?![A-Z\s,()])|$)/i)
+    if (generalSqlMatch && generalSqlMatch[1]) {
+      return {
+        explanation: "Extracted SQL query from agent response",
+        instructions: this.cleanSqlQuery(generalSqlMatch[1].trim()),
+      }
+    }
+
+    throw new Error('Could not extract SQL query from response text')
+  }
+
+  /**
+   * Clean SQL query for Tinybird compatibility
+   */
+  private cleanSqlQuery(sql: string): string {
+    // Remove SQL comments (both line and block comments)
+    sql = sql.replace(/--.*$/gm, '') // Remove line comments
+    sql = sql.replace(/\/\*[\s\S]*?\*\//g, '') // Remove block comments
+
+    // Remove trailing semicolon (Tinybird doesn't allow it)
+    sql = sql.replace(/;\s*$/, '')
+
+    // Clean up extra whitespace
+    sql = sql.replace(/\s+/g, ' ').trim()
+
+    return sql
+  }
+
   readonly name = 'SQL'
   readonly outputSchema = sqlOutputSchema
   readonly temperature = 0
-  readonly maxSteps = 10 // Allow multiple steps for SQL generation and execution
+  readonly maxSteps = 3
 
   protected getModel(input: TextToSqlAgentInput): any {
     return input.model
@@ -70,58 +192,12 @@ export class TextToSqlAgent extends BaseAgent<TextToSqlAgentInput, SqlOutput> {
   protected override getProviderOptions(_input: TextToSqlAgentInput): any {
     return {
       bedrock: {
-        reasoningConfig: { type: 'enabled', budgetTokens: 3000 },
+        reasoningConfig: { type: 'enabled', budgetTokens: 1500 }, // Reduced from 3000 for faster responses
       },
     }
   }
 
   protected override shouldMonitorToolCalls(_input: TextToSqlAgentInput): boolean {
-    return true // Enable tool call monitoring for SQL agent
-  }
-
-  /**
-   * Override to add validation for text_to_sql tool calls
-   */
-  protected override logToolCalls(response: any): void {
-    // Call parent method first to get normal logging
-    super.logToolCalls(response)
-
-    // Add validation for text_to_sql tool calls
-    if (!response.steps || response.steps.length === 0) return
-
-    for (const step of response.steps) {
-      if (step.toolCalls && step.toolCalls.length > 0) {
-        for (const call of step.toolCalls) {
-          if (call.toolName === 'text_to_sql') {
-            const question = call.args?.question || ''
-            
-            // Check if the question looks like SQL code (basic heuristic)
-            if (this.looksLikeSQL(question)) {
-              console.error(`❌ WARNING: text_to_sql tool called with SQL code instead of natural language question:`)
-              console.error(`Question: ${question}`)
-              console.error('text_to_sql tool should receive natural language questions, not SQL code')
-              // Don't throw error, just warn - allow the process to continue
-            }
-          }
-        }
-      }
-    }
-  }
-
-  /**
-   * Basic heuristic to detect if a string looks like SQL code
-   */
-  private looksLikeSQL(text: string): boolean {
-    // More specific SQL patterns that indicate actual SQL code, not natural language
-    const sqlPatterns = [
-      /^\s*SELECT\s+/i,           // Starts with SELECT
-      /\bFROM\s+\w+\s*$/i,        // Ends with FROM table
-      /\bSELECT\s+.*\s+FROM\s+/i, // Contains SELECT ... FROM pattern
-      /\bWITH\s+\w+\s+AS\s*\(/i,  // CTE pattern WITH name AS (
-      /\bUNION\s+(ALL\s+)?SELECT/i, // UNION SELECT pattern
-    ]
-    
-    // Check for actual SQL structure patterns
-    return sqlPatterns.some(pattern => pattern.test(text))
+    return false // Enable tool call monitoring for SQL agent
   }
 }
