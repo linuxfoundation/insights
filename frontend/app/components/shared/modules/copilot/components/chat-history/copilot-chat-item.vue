@@ -13,8 +13,10 @@ SPDX-License-Identifier: MIT
       class="flex justify-end w-full"
     >
       <lfx-context-display
+        v-if="widgetName"
         :widget-name="widgetName"
         type="solid"
+        :allow-all-widgets="false"
       />
     </div>
     <div
@@ -62,6 +64,7 @@ import LfxContextDisplay from '../shared/context-display.vue';
 import LfxChatResult from './chat-result.vue'
 import LfxChatError from './chat-error.vue'
 import LfxChatFeedback from './chat-feedback.vue'
+import type { Widget } from '~/components/modules/widget/types/widget';
 
 const emit = defineEmits<{
   (e: 'selectResult', id: string): void
@@ -71,7 +74,7 @@ const props = defineProps<{
   message: AIMessage,
   allResults: Array<AIMessage>,
   selectedResultId: string | null,
-  widgetName: string;
+  widgetName: Widget | undefined;
 }>()
 
 const resultVersion = (message: AIMessage) => {

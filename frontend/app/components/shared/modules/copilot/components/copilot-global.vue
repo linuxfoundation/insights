@@ -6,7 +6,6 @@ SPDX-License-Identifier: MIT
   <lfx-copilot-modal
     v-if="isCopilotModalOpen"
     v-model="isCopilotModalOpen"
-    :widget-name="copilotDefaults.widget"
   />
 </template>
 
@@ -15,7 +14,7 @@ import {storeToRefs} from "pinia";
 import {useCopilotStore} from "~/components/shared/modules/copilot/store/copilot.store";
 import LfxCopilotModal from "~/components/shared/modules/copilot/components/copilot-modal.vue";
 
-const {isCopilotModalOpen, copilotDefaults } = storeToRefs(useCopilotStore())
+const {isCopilotModalOpen } = storeToRefs(useCopilotStore())
 
 </script>
 

@@ -48,7 +48,7 @@ SPDX-License-Identifier: MIT
         :messages="messages" 
         :selected-result-id="selectedResultId" 
         :is-loading="isLoading"
-        :widget-name="widgetName"
+        :widget-name="selectedWidgetKey"
         @select-result="selectResult"
       />
       <lfx-empty-chat
@@ -88,8 +88,10 @@ SPDX-License-Identifier: MIT
                 </span>
               </span>
               <lfx-context-display
-                :widget-name="widgetName"
+                :widget-name="selectedWidgetKey"
                 type="transparent"
+                allow-all-widgets
+                @value-selected="handleWidgetClick"
               />
             </div>
             <lfx-icon-button
@@ -118,9 +120,9 @@ import LfxContextDisplay from './shared/context-display.vue';
 import LfxEmptyChat from './info/empty-chat.vue'
 import LfxIcon from '~/components/uikit/icon/icon.vue'
 import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue'
+import type { Widget } from '~/components/modules/widget/types/widget'
 
 const props = defineProps<{
-  widgetName: string;
   isLoading: boolean;
   isChartLoading: boolean;
 }>()
@@ -133,7 +135,7 @@ const emit = defineEmits<{
   (e: 'update:data', id: string, value: MessageData[], routerReasoning?: string): void;
 }>();
 
-const { copilotDefaults, selectedResultId } = storeToRefs(useCopilotStore());
+const { copilotDefaults, selectedResultId, selectedWidgetKey } = storeToRefs(useCopilotStore());
 
 const scrollable = ref<HTMLElement | null>(null)
 const showTopGradient = ref(false)
@@ -180,7 +182,7 @@ const callChatApi = async (userMessage: string) => {
       const response = await copilotApiService.callChatStream(
         messages.value, 
         copilotDefaults.value.project, 
-        copilotDefaults.value.widget, 
+        selectedWidgetKey.value, 
         copilotDefaults.value.params)
 
       // Handle the streaming response
@@ -258,6 +260,10 @@ const handleScroll = () => {
 
 const handleSuggestionClick = (suggestion: string) => {
   input.value = suggestion;
+}
+
+const handleWidgetClick = (widgetKey: Widget) => {
+  selectedWidgetKey.value = widgetKey;
 }
 </script>
 

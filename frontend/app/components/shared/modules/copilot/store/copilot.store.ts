@@ -16,9 +16,11 @@ export const useCopilotStore = defineStore('copilot', () => {
   const copilotDefaults = ref<CopilotData>(defaultData)
   const resultData = ref<ResultsHistory[]>([])
   const selectedResultId = ref<string | null>(null)
+  const selectedWidgetKey = ref<Widget | undefined>(undefined)
 
   const openCopilotModal = (defaults: CopilotData = defaultData) => {
     copilotDefaults.value = defaults
+    selectedWidgetKey.value = defaults.widget
     isCopilotModalOpen.value = true
   }
 
@@ -34,5 +36,6 @@ export const useCopilotStore = defineStore('copilot', () => {
     resultData,
     selectedResultId,
     resetResultData,
+    selectedWidgetKey,
   }
 })

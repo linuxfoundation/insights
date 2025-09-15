@@ -91,6 +91,7 @@ SPDX-License-Identifier: MIT
                 @click="share()"
               />
               <lfx-button
+                v-if="hasLfxInsightsPermission"
                 type="tertiary"
                 class="!rounded-full"
                 @click="openCopilotHandler()"
