@@ -50,7 +50,7 @@ export const useProjectStore = defineStore('project', () => {
   const route = useRoute();
 
   const { queryParams } = useQueryParam(processProjectParams, projectParamsSetter);
-  const { timeRange, start, end, repos } = queryParams.value;
+  const { timeRange, start, end } = queryParams.value;
 
   const selectedTimeRangeKey = ref<string>(timeRange!);
   const startDate = ref<string | null>(start || null);
@@ -69,7 +69,9 @@ export const useProjectStore = defineStore('project', () => {
   const excludedRepos = computed<string[]>(() => project.value?.excludedRepositories || []);
 
     // Selected repositories from URL param 'repos' or single repo from route param 'name'
-  const selectedRepoSlugs = ref<string[]>(route.params.name ? [route.params.name as string] : repos?.split('|') || []);
+  const selectedRepoSlugs = computed(() => route.params.name
+      ? [route.params.name as string]
+      : (route.query.repos as string)?.split(',') || []);
 
   // Selected repository Group
   const selectedRepositoryGroup = computed<ProjectRepositoryGroup | null>(() => {

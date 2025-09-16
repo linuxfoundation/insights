@@ -130,23 +130,24 @@ const { list, containerProps, wrapperProps } = useVirtualList(
 )
 
 const handleReposChange = (slug: string) => {
+  let repos = [];
   if(selectedRepoSlugs.value.includes(slug)) {
-    selectedRepoSlugs.value = selectedRepoSlugs.value.filter((s) => s !== slug);
+    repos = selectedRepoSlugs.value.filter((s) => s !== slug);
   } else {
-    selectedRepoSlugs.value = [...selectedRepoSlugs.value, slug];
+    repos = [...selectedRepoSlugs.value, slug];
   }
   const routeQuery = route.query;
-  if (selectedRepoSlugs.value.length === 1) {
+  if (repos.length === 1) {
     router.push({
       name: props.link.repoRouteName,
-      params: { name: selectedRepoSlugs.value[0] },
+      params: { name: repos[0] },
       query: { ...routeQuery, repos: undefined }
     });
   } else {
     router.push({
       name: props.link.projectRouteName,
-      query: selectedRepoSlugs.value.length > 0
-          ? { ...routeQuery, repos: selectedRepoSlugs.value.join('|') }
+      query: repos.length > 0
+          ? { ...routeQuery, repos: repos.join(',') }
           : { ...routeQuery, repos: undefined }
     });
   }

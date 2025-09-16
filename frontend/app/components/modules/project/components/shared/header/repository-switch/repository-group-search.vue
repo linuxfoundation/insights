@@ -71,7 +71,7 @@ SPDX-License-Identifier: MIT
 import {computed, onMounted, ref} from "vue";
 import {storeToRefs} from "pinia";
 import pluralize from "pluralize";
-import {useRouter} from "nuxt/app";
+import {useRoute, useRouter} from "nuxt/app";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
 import {useProjectStore} from "~/components/modules/project/store/project.store";
 import type {ProjectRepositoryGroup} from "~~/types/project";
@@ -87,10 +87,11 @@ const emit = defineEmits<{
   (e: 'close'): void
 }>()
 
+const route = useRoute();
+const router = useRouter();
+
 const searchInputRef = ref(null);
 const search = ref('');
-
-const router = useRouter();
 
 const {
   projectRepositoryGroups,
@@ -102,11 +103,13 @@ const result = computed<ProjectRepositoryGroup[]>(() => projectRepositoryGroups.
     .filter((rg: ProjectRepositoryGroup) => rg.name.toLowerCase().includes(search.value.toLowerCase())));
 
 const handleSelectRepositoryGroup = (rg: ProjectRepositoryGroup) => {
+  const routeQuery = route.query;
   router.push({
     name: props.link.repoGroupRouteName,
     params: {
       groupSlug: rg.slug
-    }
+    },
+    query: {...routeQuery, repos: undefined}
   })
   emit('close');
 }

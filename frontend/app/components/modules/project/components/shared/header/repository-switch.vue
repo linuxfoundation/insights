@@ -128,7 +128,6 @@ const routeName = computed<ProjectLinkConfig>(() => {
 
 
 const allRepositories = () => {
-  selectedRepoSlugs.value = [];
   isModalOpen.value = false;
   const routeQuery = route.query;
 

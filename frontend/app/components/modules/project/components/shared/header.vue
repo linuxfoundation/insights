@@ -17,8 +17,8 @@ SPDX-License-Identifier: MIT
         >
           <div class="flex items-center flex-row justify-between gap-2 flex-wrap">
             <div
-              class="flex sm:items-center items-stretch min-w-0 max-w-full 
-              sm:flex-nowrap flex-wrap sm:w-auto w-full"
+              class="flex sm:items-center items-stretch min-w-0 max-w-full
+              sm:flex-nowrap flex-wrap sm:w-auto"
             >
               <div class="flex items-center grow sm:max-w-none max-w-full">
                 <lfx-back class="ease-linear transition-all pr-1 sm:pr-4">
@@ -76,13 +76,14 @@ SPDX-License-Identifier: MIT
                   v-if="!selectedRepositoryGroup && hasSelectedArchivedRepos"
                   :archived="true"
                   :label="archivedRepoLabel"
+                  class="hidden md:block"
                   @click="isSearchRepoModalOpen = true"
                 />
                 <lfx-tag
                   v-if="selectedRepositoryGroup"
                   type="outline"
                   size="small"
-                  class="whitespace-nowrap"
+                  class="whitespace-nowrap !hidden md:!flex"
                 >
                   <lfx-icon
                     name="book"
@@ -179,7 +180,6 @@ SPDX-License-Identifier: MIT
   <lfx-project-repository-switch
     v-if="isSearchRepoModalOpen && props.project"
     v-model="isSearchRepoModalOpen"
-    @update:selected-repo-slugs="handleSelectedRepoSlugs"
   />
 </template>
 
@@ -297,9 +297,6 @@ const showDatepicker = computed(() => ![
     LfxRoutes.REPOSITORY_GROUP_SECURITY,
   ].includes(route.name as LfxRoutes));
 
-const handleSelectedRepoSlugs = (value: string[]) => {
-  selectedRepoSlugs.value = value;
-};
 
 const openCopilotHandler = () => {
   openCopilotModal({

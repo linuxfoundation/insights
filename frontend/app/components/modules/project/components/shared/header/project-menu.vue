@@ -96,9 +96,15 @@ const repoName = computed(() => route.params.name as string);
 
 const { isProjectLoading, selectedRepositoryGroup } = storeToRefs(useProjectStore());
 
-const activeLink = computed(() => lfProjectLinks.find((link) => (repoName.value
-      ? link.repoRouteName === route.name
-      : link.projectRouteName === route.name)));
+const activeLink = computed(() => lfProjectLinks.find((link) => {
+  if(selectedRepositoryGroup.value){
+    return link.repoGroupRouteName === route.name;
+  }
+  if(repoName.value){
+    return link.repoRouteName === route.name;
+  }
+  return (link.projectRouteName === route.name);
+}));
 
 const isAreaEnabled = (area: WidgetArea) => {
   const widgets = lfxWidgetArea[area].widgets || [];
