@@ -8,7 +8,7 @@ import {
   dateOptKeys,
   lfxProjectDateOptions,
 } from '~/components/modules/project/config/date-options';
-import type { Project, ProjectRepository } from '~~/types/project';
+import type {Project, ProjectRepository, ProjectRepositoryGroup} from '~~/types/project';
 import { Granularity } from '~~/types/shared/granularity';
 import { useQueryParam } from '~/components/shared/utils/query-param';
 import {
@@ -57,23 +57,49 @@ export const useProjectStore = defineStore('project', () => {
   const endDate = ref<string | null>(end || null);
   const isProjectLoading = ref(false);
   const project = ref<Project | null>(null);
+
+  // List of all project repositories
   const projectRepos = computed<ProjectRepository[]>(() => project.value?.repositories || []);
+
+  // List of all project repository groups
+  const projectRepositoryGroups = computed<ProjectRepositoryGroup[]>(() => project.value?.repositoryGroups || []);
+    // List of archived repositories
   const archivedRepos = computed<string[]>(() => project.value?.archivedRepositories || []);
+    // List of excluded repositories
   const excludedRepos = computed<string[]>(() => project.value?.excludedRepositories || []);
+
+    // Selected repositories from URL param 'repos' or single repo from route param 'name'
   const selectedRepoSlugs = ref<string[]>(route.params.name ? [route.params.name as string] : repos?.split('|') || []);
 
-  const selectedRepositories = computed<ProjectRepository[]>(() => projectRepos
-    .value.filter((repo: ProjectRepository) => selectedRepoSlugs.value.includes(repo.slug) || 
-      route.params.name === repo.slug));
+  // Selected repository Group
+  const selectedRepositoryGroup = computed<ProjectRepositoryGroup | null>(() => {
+    const groupSlug = route.params.groupSlug as string | undefined;
+    if (!groupSlug || !projectRepositoryGroups.value.length) {
+      return null;
+    }
+    return projectRepositoryGroups.value.find((group) => group.slug === groupSlug) || null;
+  })
+
+  // If a repository group is selected, filter repos by that group, otherwise use selectedRepoSlugs
+  const selectedRepositories = computed<ProjectRepository[]>(() => {
+    if (selectedRepositoryGroup.value) {
+        return projectRepos.value.filter((repo) => selectedRepositoryGroup.value?.repositories.includes(repo.url));
+    }
+    return projectRepos.value.filter((repo: ProjectRepository) => selectedRepoSlugs.value.includes(repo.slug) ||
+            route.params.name === repo.slug)
+  });
+
+    // Selected repository URLs
   const selectedReposValues = computed<string[]>(() => selectedRepositories
     .value.map((repo: ProjectRepository) => repo.url));
 
+    // Determine granularity options based on selected date range
   const customRangeGranularity = computed<string[]>(() => (startDate.value === null || endDate.value === null
       ? [Granularity.WEEKLY]
       : calculateGranularity(startDate.value, endDate.value)));
 
   // If all repos are archived or all selected repos are archived
-  const allArchived = computed(() => 
+  const allArchived = computed(() =>
     archivedRepos.value.length === projectRepos.value.length ||
     (
       !!selectedReposValues.value.length
@@ -81,6 +107,7 @@ export const useProjectStore = defineStore('project', () => {
     )
   );
 
+    // If any selected repo is archived
   const hasSelectedArchivedRepos = computed(() =>
     !!archivedRepos.value.length && !selectedReposValues.value.length
     || selectedReposValues.value.some((repo) => archivedRepos.value.includes(repo))
@@ -93,6 +120,8 @@ export const useProjectStore = defineStore('project', () => {
     isProjectLoading,
     project,
     projectRepos,
+    projectRepositoryGroups,
+    selectedRepositoryGroup,
     archivedRepos,
     excludedRepos,
     customRangeGranularity,

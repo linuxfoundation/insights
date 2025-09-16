@@ -55,7 +55,11 @@ SPDX-License-Identifier: MIT
                   :class="scrollTop > 50 ? 'md:text-xl' : 'md:text-2xl'"
                 >
                   <span
-                    v-if="repoName"
+                    v-if="selectedRepositoryGroup"
+                    class="font-secondary block text-neutral-900 sm:max-w-[25ch] truncate"
+                  >{{ selectedRepositoryGroup.name }}</span>
+                  <span
+                    v-else-if="repoName"
                     class="font-secondary block text-neutral-900 sm:max-w-[25ch] truncate"
                   >{{ repoName }}</span>
                   <span
@@ -64,11 +68,23 @@ SPDX-License-Identifier: MIT
                   >All repositories</span>
                 </p>
                 <lfx-archived-tag
-                  v-if="hasSelectedArchivedRepos"
+                  v-if="!selectedRepositoryGroup && hasSelectedArchivedRepos"
                   :archived="true"
                   :label="archivedRepoLabel"
                   @click="isSearchRepoModalOpen = true"
                 />
+                <lfx-tag
+                  v-if="selectedRepositoryGroup"
+                  type="outline"
+                  size="small"
+                  class="whitespace-nowrap"
+                >
+                  <lfx-icon
+                    name="book"
+                    :size="12"
+                  />
+                  {{pluralize('repository', selectedRepositoryGroup.repositories.length, true)}}
+                </lfx-tag>
                 <lfx-icon
                   name="angles-up-down"
                   :size="12"
@@ -170,8 +186,6 @@ SPDX-License-Identifier: MIT
   <lfx-project-repository-switch
     v-if="isSearchRepoModalOpen && props.project"
     v-model="isSearchRepoModalOpen"
-    :selected-repo-slugs="selectedRepoSlugs"
-    :project="props.project"
     @update:selected-repo-slugs="handleSelectedRepoSlugs"
   />
 </template>
@@ -180,6 +194,7 @@ SPDX-License-Identifier: MIT
 import {useRoute} from 'nuxt/app';
 import {computed} from 'vue';
 import {storeToRefs} from "pinia";
+import pluralize from "pluralize";
 import type {Project, ProjectRepository} from "~~/types/project";
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxButton from '~/components/uikit/button/button.vue';
@@ -199,6 +214,7 @@ import { LfxRoutes } from '~/components/shared/types/routes';
 import LfxArchivedTag from '~/components/shared/components/archived-tag.vue';
 import {useAuthStore} from "~/components/modules/auth/store/auth.store";
 import {useCopilotStore} from "~/components/shared/modules/copilot/store/copilot.store";
+import LfxTag from "~/components/uikit/tag/tag.vue";
 
 const props = defineProps<{
   project?: Project
@@ -211,7 +227,8 @@ const {
   selectedRepoSlugs,
   selectedRepositories,
   allArchived,
-  hasSelectedArchivedRepos
+  hasSelectedArchivedRepos,
+    selectedRepositoryGroup,
 } = storeToRefs(useProjectStore());
 const { openReportModal } = useReportStore();
 const { openShareModal } = useShareStore();
@@ -282,7 +299,9 @@ const showDatepicker = computed(() => ![
     LfxRoutes.PROJECT,
     LfxRoutes.REPOSITORY,
     LfxRoutes.PROJECT_SECURITY,
-    LfxRoutes.REPOSITORY_SECURITY
+    LfxRoutes.REPOSITORY_SECURITY,
+    LfxRoutes.REPOSITORY_GROUP,
+    LfxRoutes.REPOSITORY_GROUP_SECURITY,
   ].includes(route.name as LfxRoutes));
 
 const handleSelectedRepoSlugs = (value: string[]) => {

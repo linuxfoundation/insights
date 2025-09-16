@@ -19,4 +19,9 @@ export enum LfxRoutes {
     REPOSITORY_POPULARITY = 'project-slug-repository-name-popularity',
     REPOSITORY_DEVELOPMENT = 'project-slug-repository-name-development',
     REPOSITORY_SECURITY = 'project-slug-repository-name-security',
+    REPOSITORY_GROUP = 'project-slug-repository-group-groupSlug',
+    REPOSITORY_GROUP_CONTRIBUTORS = 'project-slug-repository-group-groupSlug-contributors',
+    REPOSITORY_GROUP_POPULARITY = 'project-slug-repository-group-groupSlug-popularity',
+    REPOSITORY_GROUP_DEVELOPMENT = 'project-slug-repository-group-groupSlug-development',
+    REPOSITORY_GROUP_SECURITY = 'project-slug-repository-group-groupSlug-security',
 }

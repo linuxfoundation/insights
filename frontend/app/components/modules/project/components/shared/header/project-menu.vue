@@ -52,15 +52,12 @@ SPDX-License-Identifier: MIT
         v-for="link of links"
         :key="link.label"
       >
-
         <router-link
           v-if="!link.comingSoon"
-          :to="{
-            name: repoName ? link.repoRouteName : link.projectRouteName
-          }"
+          :to="linkUrl(link)"
         >
           <lfx-dropdown-item
-            :value="repoName ? link.repoRouteName : link.projectRouteName"
+            :value="linkUrl(link)"
             :label="link.label"
           >
             <!--            <lfx-icon-->
@@ -105,7 +102,7 @@ const props = defineProps<{
 const route = useRoute();
 const repoName = computed(() => route.params.name as string);
 
-const { isProjectLoading } = storeToRefs(useProjectStore());
+const { isProjectLoading, selectedRepositoryGroup } = storeToRefs(useProjectStore());
 
 const activeLink = computed(() => lfProjectLinks.find((link) => (repoName.value
       ? link.repoRouteName === route.name
@@ -132,9 +129,16 @@ const linkUrl = (link: typeof lfProjectLinks[number]) => {
     ...route.query,
     widget: undefined // remove the widget from the query
   }
+  let name = link.projectRouteName;
+  if (selectedRepositoryGroup.value) {
+    name = link.repoGroupRouteName;
+  }
+  else if(repoName.value) {
+    name = link.repoRouteName;
+  }
 
   return {
-    name: repoName.value ? link.repoRouteName : link.projectRouteName,
+    name,
     query
   };
 }
