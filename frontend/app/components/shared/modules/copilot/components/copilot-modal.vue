@@ -13,7 +13,6 @@ SPDX-License-Identifier: MIT
     <div class="bg-white xl:flex hidden h-full">
       <div class="w-1/3">
         <lfx-copilot-sidebar
-          :widget-name="widgetName"
           :is-loading="isLoading"
           :is-chart-loading="isChartLoading"
           @update:data="handleDataUpdate"
@@ -57,7 +56,6 @@ import LfxIcon from '~/components/uikit/icon/icon.vue';
 
 const props = defineProps<{
   modelValue: boolean
-  widgetName: string
 }>()
 
 const { resultData, selectedResultId } = storeToRefs(useCopilotStore());

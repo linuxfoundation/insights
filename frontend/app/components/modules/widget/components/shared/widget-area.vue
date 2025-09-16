@@ -3,7 +3,7 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="container !px-5 lg:!px-10">
+  <div class="container">
     <div class="flex justify-between pt-5 md:pt-10">
       <div class="w-1/4 pr-5 min-w-50 xl:pr-10 max-md:hidden block">
         <lfx-side-nav

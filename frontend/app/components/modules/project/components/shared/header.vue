@@ -15,35 +15,40 @@ SPDX-License-Identifier: MIT
           class="ease-linear transition-all"
           :class="scrollTop > 50 ? 'py-3 md:py-4' : 'py-3 md:py-6'"
         >
-          <div class="flex items-center justify-between gap-2">
-            <div class="flex items-center min-w-0">
-              <lfx-back class="ease-linear transition-all pr-1 sm:pr-4">
-                <lfx-icon-button
-                  type="transparent"
-                  icon="angle-left"
-                  class=""
+          <div class="flex items-center flex-row justify-between gap-2 flex-wrap">
+            <div
+              class="flex sm:items-center items-stretch min-w-0 max-w-full 
+              sm:flex-nowrap flex-wrap sm:w-auto w-full"
+            >
+              <div class="flex items-center grow sm:max-w-none max-w-full">
+                <lfx-back class="ease-linear transition-all pr-1 sm:pr-4">
+                  <lfx-icon-button
+                    type="transparent"
+                    icon="angle-left"
+                    class=""
+                  />
+                </lfx-back>
+                <lfx-organization-logo
+                  class="mr-4 max-h-8 md:max-h-12"
+                  :src="props.project?.logo || ''"
+                  :size="scrollTop > 50 ? 'normal' : ((pageWidth < 768 && pageWidth > 0) ? 'normal' : 'large')"
+                  :is-lf="!!props.project?.isLF"
                 />
-              </lfx-back>
-              <lfx-organization-logo
-                class="mr-4 max-h-8 md:max-h-12"
-                :src="props.project?.logo || ''"
-                :size="scrollTop > 50 ? 'normal' : ((pageWidth < 768 && pageWidth > 0) ? 'normal' : 'large')"
-                :is-lf="!!props.project?.isLF"
-              />
 
-              <h1
-                class="font-bold mr-3 ease-linear transition-all
-                 font-secondary duration-200 text-heading-4 line-clamp-1 max-w-[25ch] truncate"
-                :class="[
-                  scrollTop > 50 ? 'md:text-heading-3' : 'md:text-heading-2'
-                ]"
-              >
-                {{ props.project?.name }}
-              </h1>
-              <span
-                v-if="(props.project?.repositories?.length ?? 0) > 0"
-                class="mr-1 text-neutral-400 font-secondary leading-8 ease-linear transition-all text-2xl"
-              >/</span>
+                <h1
+                  class="font-bold mr-3 ease-linear transition-all
+                  font-secondary duration-200 text-heading-4 line-clamp-1 sm:max-w-[25ch] truncate"
+                  :class="[
+                    scrollTop > 50 ? 'md:text-heading-3' : 'md:text-heading-2'
+                  ]"
+                >
+                  {{ props.project?.name }}
+                </h1>
+                <span
+                  v-if="(props.project?.repositories?.length ?? 0) > 0"
+                  class="mr-1 text-neutral-400 font-secondary leading-8 ease-linear transition-all text-2xl"
+                >/</span>
+              </div>
               <div
                 v-if="(props.project?.repositories?.length ?? 0) > 0"
                 class="flex items-center gap-3 cursor-pointer px-2 py-0.5
@@ -76,25 +81,28 @@ SPDX-License-Identifier: MIT
                 />
               </div>
             </div>
-            <div class="hidden sm:flex items-center gap-4">
-              <lfx-button
-                type="tertiary"
-                class="!rounded-full text-nowrap"
+            <div class="hidden sm:flex items-center gap-4 flex-grow justify-end">
+              <lfx-icon-button
+                icon="comment-exclamation"
+                size="medium"
+                class="!text-warning-600"
+                title="Report issue"
                 @click="openReportModal()"
-              >
-                <lfx-icon
-                  name="comment-exclamation"
-                  class="text-warning-600"
-                />
-                Report issue
-              </lfx-button>
-              <lfx-button
-                type="tertiary"
-                class="!rounded-full"
+              />
+              <lfx-icon-button
+                icon="link-simple"
+                size="medium"
+                title="Share"
                 @click="share()"
+              />
+              <lfx-button
+                v-if="hasLfxInsightsPermission"
+                type="tertiary"
+                class="!rounded-full !text-nowrap"
+                @click="openCopilotHandler()"
               >
-                <lfx-icon name="link-simple" />
-                Share
+                <lfx-icon name="sparkles" />
+                Ask Copilot
               </lfx-button>
             </div>
           </div>
@@ -182,6 +190,8 @@ import {useReportStore} from "~/components/shared/modules/report/store/report.st
 import {useShareStore} from "~/components/shared/modules/share/store/share.store";
 import { LfxRoutes } from '~/components/shared/types/routes';
 import LfxArchivedTag from '~/components/shared/components/archived-tag.vue';
+import {useAuthStore} from "~/components/modules/auth/store/auth.store";
+import {useCopilotStore} from "~/components/shared/modules/copilot/store/copilot.store";
 
 const props = defineProps<{
   project?: Project
@@ -198,6 +208,9 @@ const {
 } = storeToRefs(useProjectStore());
 const { openReportModal } = useReportStore();
 const { openShareModal } = useShareStore();
+const { openCopilotModal } = useCopilotStore();
+
+const {hasLfxInsightsPermission} = storeToRefs(useAuthStore())
 
 const repos = computed<ProjectRepository[]>(
     () => projectRepos.value.filter((repo) => selectedRepoSlugs.value.includes(repo.slug))
@@ -268,6 +281,13 @@ const showDatepicker = computed(() => ![
 const handleSelectedRepoSlugs = (value: string[]) => {
   selectedRepoSlugs.value = value;
 };
+
+const openCopilotHandler = () => {
+  openCopilotModal({
+    suggestions: '',
+    project: props.project || undefined
+  });
+}
 </script>
 
 <script lang="ts">

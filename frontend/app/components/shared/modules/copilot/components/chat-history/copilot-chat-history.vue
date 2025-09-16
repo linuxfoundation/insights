@@ -27,6 +27,7 @@ import { computed } from 'vue';
 import type { AIMessage } from '../../types/copilot.types';
 import LfxCopilotChatItem from './copilot-chat-item.vue';
 import LfxChatLabel from './chat-label.vue';
+import type { Widget } from '~/components/modules/widget/types/widget';
 
 const emit = defineEmits<{
   (e: 'selectResult', id: string): void
@@ -36,7 +37,7 @@ const props = defineProps<{
   messages: Array<AIMessage>,
   selectedResultId: string | null,
   isLoading: boolean,
-  widgetName: string;
+  widgetName: Widget | undefined;
 }>()
 
 const allResults = computed(() => props.messages.filter(m => m.type === 'sql-result' || m.type === 'pipe-result'));
