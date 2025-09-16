@@ -150,18 +150,6 @@ SPDX-License-Identifier: MIT
                 />
                 <p class="text-xs whitespace-nowrap">Report issue</p>
               </div>
-              <div
-                v-if="hasLfxInsightsPermission"
-                class="flex items-center py-1.5 px-3 gap-1.5 cursor-pointer"
-                @click="openCopilotHandler()"
-              >
-                <lfx-icon
-                  name="sparkles"
-                  :size="14"
-                  class="text-brand-500"
-                />
-                <p class="text-xs whitespace-nowrap">Ask Copilot</p>
-              </div>
             </div>
           </teleport>
           <lfx-project-date-range-picker
