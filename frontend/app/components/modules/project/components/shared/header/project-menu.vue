@@ -3,7 +3,7 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="flex sm:hidden lg:flex items-center gap-3">
+  <div class="lg:flex hidden items-center gap-3">
     <template v-if="isProjectLoading">
       <lfx-skeleton-state
         v-for="link of lfProjectLinks"
@@ -32,7 +32,7 @@ SPDX-License-Identifier: MIT
       </lfx-menu-button>
     </lfx-tooltip>
   </div>
-  <div class="hidden sm:block lg:hidden">
+  <div class="lg:hidden block">
     <lfx-dropdown
       placement="bottom-start"
       width="15rem"
@@ -59,15 +59,7 @@ SPDX-License-Identifier: MIT
           <lfx-dropdown-item
             :value="linkUrl(link)"
             :label="link.label"
-          >
-            <!--            <lfx-icon-->
-            <!--              :name="link.icon"-->
-            <!--              :class="{'font-black !text-brand-500': activeLink?.key === link.key}"-->
-            <!--            />-->
-            <!--            <span :class="{'font-medium': activeLink?.key === link.key}">-->
-            <!--              {{ link.label }}-->
-            <!--            </span>-->
-          </lfx-dropdown-item>
+          />
         </router-link>
 
       </template>
