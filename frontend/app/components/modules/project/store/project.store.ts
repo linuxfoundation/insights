@@ -73,7 +73,7 @@ export const useProjectStore = defineStore('project', () => {
 
   // Selected repository Group
   const selectedRepositoryGroup = computed<ProjectRepositoryGroup | null>(() => {
-    const groupSlug = route.params.groupSlug as string | undefined;
+    const groupSlug = route.params.groupSlug as string | undefined || route.query.repositoryGroup;
     if (!groupSlug || !projectRepositoryGroups.value.length) {
       return null;
     }

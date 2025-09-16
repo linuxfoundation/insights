@@ -140,24 +140,6 @@ const allRepositories = () => {
     query: { ...routeQuery, repos: undefined }
   })
 }
-
-// const handleReposChange = (value: string[]) => {
-//   const routeQuery = route.query;
-//   if (value.length === 1) {
-//     router.push({
-//       name: routeName.value.repo,
-//       params: { name: value[0] },
-//       query: { ...routeQuery, repos: undefined }
-//     });
-//   } else {
-//     router.push({
-//       name: routeName.value.project,
-//       query: value.length > 0
-//           ? { ...routeQuery, repos: value.join('|') }
-//           : { ...routeQuery, repos: undefined }
-//     });
-//   }
-// };
 </script>
 
 <script lang="ts">

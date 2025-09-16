@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 import sharp from 'sharp'
 import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird'
-import type { ProjectRepository, ProjectTinybird } from '~~/types/project'
+import type {ProjectRepository, ProjectRepositoryGroup, ProjectTinybird} from '~~/types/project'
 import { getRepoNameFromUrl, getRepoSlugFromName } from '~~/server/helpers/repository.helpers'
 import { INTER_REGULAR_FONT } from '~~/server/constants/inter-regular-font'
 import { INTER_BOLD_FONT } from '~~/server/constants/inter-bold-font'
@@ -25,7 +25,7 @@ const imageUrlToBase64 = async (url: string) => {
 }
 
 export default defineEventHandler(async (event) => {
-  const { projectSlug, repositorySlug } = getQuery(event) as Record<string, string>
+  const { projectSlug, repositorySlug, repositoryGroupSlug } = getQuery(event) as Record<string, string>
   const config = useRuntimeConfig()
   try {
     const res = await fetchFromTinybird<ProjectTinybird[]>('/v0/pipes/projects_list.json', {
@@ -35,6 +35,13 @@ export default defineEventHandler(async (event) => {
       setHeader(event, 'Content-Type', 'image/png')
       const buff = await getImageBuffer(`${config.public.appUrl}/og-image.png`)
       return Buffer.from(buff)
+    }
+    let repositoryGroup = null;
+    if(repositoryGroupSlug) {
+      const repositoryGroups = await fetchFromTinybird<ProjectRepositoryGroup[]>('/v0/pipes/repository_groups_list.json', {
+        project: projectSlug,
+      })
+      repositoryGroup = repositoryGroups.data.filter((rg) => rg.slug === repositoryGroupSlug).at(0);
     }
     const project: ProjectTinybird = res.data[0]
     const repository = project.repositories
@@ -61,7 +68,7 @@ export default defineEventHandler(async (event) => {
         ...project,
         logo: base64Logo,
       },
-      repository,
+      repository, repositoryGroup,
     )
     const pngBuffer = await sharp(Buffer.from(svg)).resize(1200, 630).jpeg().toBuffer()
 
@@ -75,7 +82,7 @@ export default defineEventHandler(async (event) => {
   }
 })
 
-function svgTemplate(project: ProjectTinybird, repository: ProjectRepository | undefined) {
+function svgTemplate(project: ProjectTinybird, repository: ProjectRepository | undefined, repositoryGroup?: ProjectRepositoryGroup) {
   const projectName: string =
     project.name.length > 30 ? `${project.name.substring(0, 29)}...` : project.name
   const projectLogo: string = project.logo
@@ -88,6 +95,9 @@ function svgTemplate(project: ProjectTinybird, repository: ProjectRepository | u
     repositoryName && repositoryName.length > 40
       ? `${repositoryName.substring(0, 39)}...`
       : repositoryName
+  if(repositoryGroup) {
+    repositoryName = repositoryGroup.name.length > 40 ? `${repositoryGroup.name.substring(0, 39)}...` : repositoryGroup.name;
+  }
   return `<?xml version="1.0" encoding="UTF-8"?>
     <svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <style>
