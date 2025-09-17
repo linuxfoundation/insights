@@ -25,6 +25,7 @@ export interface SecurityAssessmentData {
   requirementId: string;
   description: string;
   result: SecurityDataResult;
+  recommendation?: string;
 }
 
 export interface SecurityData {
