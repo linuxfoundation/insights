@@ -15,7 +15,11 @@ SPDX-License-Identifier: MIT
           <p class="text-sm leading-5 font-semibold">
             {{ data?.name }}
             <span
-              v-if="repoName"
+              v-if="repositoryGroup && selectedRepositoryGroup"
+              class="font-normal"
+            >&nbsp;/ {{ selectedRepositoryGroup?.name }}</span>
+            <span
+              v-else-if="repoName"
               class="font-normal"
             >&nbsp;/ {{ repoName }}</span>
           </p>
@@ -83,13 +87,14 @@ import {dateOptKeys} from "~/components/modules/project/config/date-options";
 const route = useRoute();
 const { slug } = route.params;
 const {
- widget, startDate, endDate, timeRangeKey, repos, ...params
+ widget, startDate, endDate, timeRangeKey, repos, repositoryGroup, ...params
 } = route.query;
 
 const {
   startDate: startDateStore,
   endDate: endDateStore,
   selectedTimeRangeKey,
+    selectedRepositoryGroup,
   project
 } = storeToRefs(useProjectStore());
 
