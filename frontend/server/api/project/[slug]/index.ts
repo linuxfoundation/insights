@@ -90,6 +90,6 @@ export default defineEventHandler(async (event): Promise<Project | Error> => {
     }
   } catch (err) {
     console.error('Error fetching project:', err)
-    return createError({ statusCode: 500, statusMessage: err.message || 'Internal Server Error' })
+    return createError({ statusCode: 500, statusMessage: err || 'Internal Server Error' })
   }
 })
