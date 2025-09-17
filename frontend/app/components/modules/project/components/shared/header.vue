@@ -13,9 +13,9 @@ SPDX-License-Identifier: MIT
       <section class="container">
         <div
           class="ease-linear transition-all"
-          :class="scrollTop > 50 ? 'py-3 md:py-4' : 'py-3 md:py-6'"
+          :class="scrollTop > 50 ? 'py-3 lg:py-4' : 'py-3 lg:py-6'"
         >
-          <div class="flex items-center flex-row justify-between gap-2 flex-wrap">
+          <div class="flex items-center flex-row justify-between gap-1">
             <div
               class="flex sm:items-center items-stretch min-w-0 max-w-full
               sm:flex-nowrap flex-wrap sm:w-auto"
@@ -98,7 +98,7 @@ SPDX-License-Identifier: MIT
                 />
               </div>
             </div>
-            <div class="hidden sm:flex items-center gap-4 flex-grow justify-end">
+            <div class="hidden md:flex items-center gap-4 flex-grow justify-end">
               <lfx-icon-button
                 icon="comment-exclamation"
                 size="medium"
@@ -129,7 +129,7 @@ SPDX-License-Identifier: MIT
             flex justify-between items-center transition-all overflow-auto
             -mx-5 sm:-mx-0.5 px-5 sm:px-0.5 py-3
           "
-          :class="scrollTop > 50 ? 'md:py-4' : 'md:py-5'"
+          :class="scrollTop > 50 ? 'lg:py-4' : 'lg:py-5'"
         >
           <lfx-project-menu :project="props.project" />
           <teleport

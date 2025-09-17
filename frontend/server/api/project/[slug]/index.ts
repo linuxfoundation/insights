@@ -1,7 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird'
-import type { Project, ProjectRepository, ProjectTinybird } from '~~/types/project'
+import type {Project, ProjectRepository, ProjectRepositoryGroup, ProjectTinybird} from '~~/types/project'
 import { getRepoNameFromUrl, getRepoSlugFromName } from '~~/server/helpers/repository.helpers'
 
 /**
@@ -39,7 +39,7 @@ export default defineEventHandler(async (event): Promise<Project | Error> => {
         slug,
         details: true,
       }),
-      fetchFromTinybird<ProjectTinybird[]>('/v0/pipes/repository_groups_list.json', {
+      fetchFromTinybird<ProjectRepositoryGroup[]>('/v0/pipes/repository_groups_list.json', {
         project: slug,
       })
     ]);

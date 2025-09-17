@@ -1,104 +1,104 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import sharp from 'sharp'
-import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird'
+import {fetchFromTinybird} from '~~/server/data/tinybird/tinybird'
 import type {ProjectRepository, ProjectRepositoryGroup, ProjectTinybird} from '~~/types/project'
-import { getRepoNameFromUrl, getRepoSlugFromName } from '~~/server/helpers/repository.helpers'
-import { INTER_REGULAR_FONT } from '~~/server/constants/inter-regular-font'
-import { INTER_BOLD_FONT } from '~~/server/constants/inter-bold-font'
-import { INTER_LIGHT_FONT } from '~~/server/constants/inter-light-font'
+import {getRepoNameFromUrl, getRepoSlugFromName} from '~~/server/helpers/repository.helpers'
+import {INTER_REGULAR_FONT} from '~~/server/constants/inter-regular-font'
+import {INTER_BOLD_FONT} from '~~/server/constants/inter-bold-font'
+import {INTER_LIGHT_FONT} from '~~/server/constants/inter-light-font'
 /* eslint-disable max-len, vue/max-len */
 
 const getImageBuffer = async (url: string) =>
-  $fetch<ArrayBuffer>(url, {
-    responseType: 'arrayBuffer',
-  })
+    $fetch<ArrayBuffer>(url, {
+        responseType: 'arrayBuffer',
+    })
 
 const imageUrlToBase64 = async (url: string) => {
-  const headRes = await $fetch.raw(url, { method: 'HEAD' })
-  const contentType = headRes.headers.get('content-type') || 'application/octet-stream'
+    const headRes = await $fetch.raw(url, {method: 'HEAD'})
+    const contentType = headRes.headers.get('content-type') || 'application/octet-stream'
 
-  const imageBuffer = await getImageBuffer(url)
+    const imageBuffer = await getImageBuffer(url)
 
-  const base64 = Buffer.from(imageBuffer).toString('base64')
-  return `data:${contentType};base64,${base64}`
+    const base64 = Buffer.from(imageBuffer).toString('base64')
+    return `data:${contentType};base64,${base64}`
 }
 
 export default defineEventHandler(async (event) => {
-  const { projectSlug, repositorySlug, repositoryGroupSlug } = getQuery(event) as Record<string, string>
-  const config = useRuntimeConfig()
-  try {
-    const res = await fetchFromTinybird<ProjectTinybird[]>('/v0/pipes/projects_list.json', {
-      slug: projectSlug,
-    })
-    if (!res.data || res.data.length === 0) {
-      setHeader(event, 'Content-Type', 'image/png')
-      const buff = await getImageBuffer(`${config.public.appUrl}/og-image.png`)
-      return Buffer.from(buff)
-    }
-    let repositoryGroup = null;
-    if(repositoryGroupSlug) {
-      const repositoryGroups = await fetchFromTinybird<ProjectRepositoryGroup[]>('/v0/pipes/repository_groups_list.json', {
-        project: projectSlug,
-      })
-      repositoryGroup = repositoryGroups.data.filter((rg) => rg.slug === repositoryGroupSlug).at(0);
-    }
-    const project: ProjectTinybird = res.data[0]
-    const repository = project.repositories
-      .map((repoUrl) => {
-        const name = getRepoNameFromUrl(repoUrl)
-        const slug = getRepoSlugFromName(name)
-        return {
-          url: repoUrl,
-          name,
-          slug,
+    const {projectSlug, repositorySlug, repositoryGroupSlug} = getQuery(event) as Record<string, string>
+    const config = useRuntimeConfig()
+    try {
+        const res = await fetchFromTinybird<ProjectTinybird[]>('/v0/pipes/projects_list.json', {
+            slug: projectSlug,
+        })
+        if (!res.data || res.data.length === 0) {
+            setHeader(event, 'Content-Type', 'image/png')
+            const buff = await getImageBuffer(`${config.public.appUrl}/og-image.png`)
+            return Buffer.from(buff)
         }
-      })
-      .find((repo) => repo.slug === repositorySlug)
+        let repositoryGroup = null;
+        if (repositoryGroupSlug) {
+            const repositoryGroups = await fetchFromTinybird<ProjectRepositoryGroup[]>('/v0/pipes/repository_groups_list.json', {
+                project: projectSlug,
+            })
+            repositoryGroup = repositoryGroups.data.filter((rg) => rg.slug === repositoryGroupSlug).at(0);
+        }
+        const project: ProjectTinybird = res.data[0]
+        const repository = project.repositories
+            .map((repoUrl) => {
+                const name = getRepoNameFromUrl(repoUrl)
+                const slug = getRepoSlugFromName(name)
+                return {
+                    url: repoUrl,
+                    name,
+                    slug,
+                }
+            })
+            .find((repo) => repo.slug === repositorySlug)
 
-    let base64Logo = ''
-    if (project.logo?.length > 0) {
-      base64Logo = await imageUrlToBase64(project.logo)
-    } else {
-      base64Logo = await imageUrlToBase64(`${config.public.appUrl}/images/fallback-logo.png`)
+        let base64Logo = ''
+        if (project.logo?.length > 0) {
+            base64Logo = await imageUrlToBase64(project.logo)
+        } else {
+            base64Logo = await imageUrlToBase64(`${config.public.appUrl}/images/fallback-logo.png`)
+        }
+
+        const svg = svgTemplate(
+            {
+                ...project,
+                logo: base64Logo,
+            },
+            repository, repositoryGroup,
+        )
+        const pngBuffer = await sharp(Buffer.from(svg)).resize(1200, 630).jpeg().toBuffer()
+
+        setHeader(event, 'Content-Type', 'image/jpeg')
+        return pngBuffer
+    } catch (err) {
+        console.error(err)
+        setHeader(event, 'Content-Type', 'image/png')
+        const buff = await getImageBuffer(`${config.public.appUrl}/og-image.png`)
+        return Buffer.from(buff)
     }
-
-    const svg = svgTemplate(
-      {
-        ...project,
-        logo: base64Logo,
-      },
-      repository, repositoryGroup,
-    )
-    const pngBuffer = await sharp(Buffer.from(svg)).resize(1200, 630).jpeg().toBuffer()
-
-    setHeader(event, 'Content-Type', 'image/jpeg')
-    return pngBuffer
-  } catch (err) {
-    console.error(err)
-    setHeader(event, 'Content-Type', 'image/png')
-    const buff = await getImageBuffer(`${config.public.appUrl}/og-image.png`)
-    return Buffer.from(buff)
-  }
 })
 
 function svgTemplate(project: ProjectTinybird, repository: ProjectRepository | undefined, repositoryGroup?: ProjectRepositoryGroup) {
-  const projectName: string =
-    project.name.length > 30 ? `${project.name.substring(0, 29)}...` : project.name
-  const projectLogo: string = project.logo
-  const projectDescription: string =
-    project.description.length > 65
-      ? `${project.description.substring(0, 65)}...`
-      : project.description
-  let repositoryName: string | undefined = repository?.name?.split('/').at(-1) || ''
-  repositoryName =
-    repositoryName && repositoryName.length > 40
-      ? `${repositoryName.substring(0, 39)}...`
-      : repositoryName
-  if(repositoryGroup) {
-    repositoryName = repositoryGroup.name.length > 40 ? `${repositoryGroup.name.substring(0, 39)}...` : repositoryGroup.name;
-  }
-  return `<?xml version="1.0" encoding="UTF-8"?>
+    const projectName: string =
+        project.name.length > 30 ? `${project.name.substring(0, 29)}...` : project.name
+    const projectLogo: string = project.logo
+    const projectDescription: string =
+        project.description.length > 65
+            ? `${project.description.substring(0, 65)}...`
+            : project.description
+    let repositoryName: string | undefined = repository?.name?.split('/').at(-1) || ''
+    repositoryName =
+        repositoryName && repositoryName.length > 40
+            ? `${repositoryName.substring(0, 39)}...`
+            : repositoryName
+    if (repositoryGroup) {
+        repositoryName = repositoryGroup.name.length > 40 ? `${repositoryGroup.name.substring(0, 39)}...` : repositoryGroup.name;
+    }
+    return `<?xml version="1.0" encoding="UTF-8"?>
     <svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <style>
     @font-face {
@@ -160,20 +160,20 @@ function svgTemplate(project: ProjectTinybird, repository: ProjectRepository | u
   <tspan class="text-bold">${projectName}</tspan>
           </text>
           ${
-            repositoryName?.length > 0
-              ? `<text x="79" y="529"
+        repositoryName?.length > 0
+            ? `<text x="79" y="529"
                 font-size="40"
                 fill="black"
                 class="text-light">
                 / ${repositoryName}
           </text>`
-              : `<text x="79" y="529"
+            : `<text x="79" y="529"
                 font-size="24"
                 fill="#64748B"
                 class="text-light">
                 ${projectDescription}
           </text>`
-          }
+    }
         <path d="M80 370L1120 370" stroke="#ADD6FF"/>
     </g>
     <defs>
