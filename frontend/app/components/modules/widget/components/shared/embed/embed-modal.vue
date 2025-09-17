@@ -142,7 +142,7 @@ const isModalOpen = computed<boolean>({
   set: (value: boolean) => emit('update:modelValue', value)
 });
 const {
-project, selectedRepositories, startDate, endDate, selectedTimeRangeKey
+project, selectedRepositories, selectedRepositoryGroup, startDate, endDate, selectedTimeRangeKey
 } = storeToRefs(useProjectStore())
 
 const widgetConfig = computed(() => lfxWidgets[props.widgetName]);
@@ -158,7 +158,10 @@ const queryParams = computed(() => {
   params.set('startDate', startDate.value || '');
   params.set('endDate', endDate.value || '');
   params.set('timeRangeKey', selectedTimeRangeKey.value || '');
-  if(selectedRepositories.value?.length > 0) {
+  if(selectedRepositoryGroup.value) {
+    params.set('repositoryGroup', selectedRepositoryGroup.value.slug);
+  }
+  else if(selectedRepositories.value?.length > 0) {
     params.set('repos', selectedRepositories.value.map((repo) => repo.slug).join('|'));
   }
   Object.entries(props.data).forEach(([key, value]) => {

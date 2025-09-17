@@ -1,7 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird'
-import type { Project, ProjectRepository, ProjectTinybird } from '~~/types/project'
+import type {Project, ProjectRepository, ProjectRepositoryGroup, ProjectTinybird} from '~~/types/project'
 import { getRepoNameFromUrl, getRepoSlugFromName } from '~~/server/helpers/repository.helpers'
 
 /**
@@ -34,10 +34,15 @@ import { getRepoNameFromUrl, getRepoSlugFromName } from '~~/server/helpers/repos
 export default defineEventHandler(async (event): Promise<Project | Error> => {
   const { slug } = event.context.params as Record<string, string>
   try {
-    const res = await fetchFromTinybird<ProjectTinybird[]>('/v0/pipes/projects_list.json', {
-      slug,
-      details: true,
-    })
+    const [res, repositoryGroups] = await Promise.all([
+      fetchFromTinybird<ProjectTinybird[]>('/v0/pipes/projects_list.json', {
+        slug,
+        details: true,
+      }),
+      fetchFromTinybird<ProjectRepositoryGroup[]>('/v0/pipes/repository_groups_list.json', {
+        project: slug,
+      })
+    ]);
     if (!res.data || res.data.length === 0) {
       return createError({ statusCode: 404, statusMessage: 'Project not found' })
     }
@@ -46,8 +51,8 @@ export default defineEventHandler(async (event): Promise<Project | Error> => {
       (acc, repo) => {
         const [url, score, rank] = repo
         acc[url] = {
-          score: parseFloat(score as string),
-          rank: parseInt(rank as string, 10),
+          score: parseFloat(score),
+          rank: parseInt(rank, 10),
         }
         return acc
       },
@@ -76,6 +81,7 @@ export default defineEventHandler(async (event): Promise<Project | Error> => {
       ...project,
       isLF: !!project.isLF,
       repositories,
+      repositoryGroups: repositoryGroups.data || [],
       archivedRepositories: project.archivedRepositories || [],
       excludedRepositories: project.excludedRepositories || [],
       projectLinks,
