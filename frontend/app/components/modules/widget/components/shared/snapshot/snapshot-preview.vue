@@ -15,8 +15,13 @@ SPDX-License-Identifier: MIT
           size="normal"
         />
         <p class="text-sm leading-5 font-semibold">
-          {{ project?.name }}<span
-            v-if="repoName"
+          {{ project?.name }}
+          <span
+            v-if="selectedRepositoryGroup"
+            class="font-normal"
+          >&nbsp;/ {{ selectedRepositoryGroup.name }}</span>
+          <span
+            v-else-if="repoName"
             class="font-normal"
           >&nbsp;/ {{ repoName }}</span>
         </p>
@@ -81,7 +86,7 @@ const props = defineProps<{
 const widgetConfig = computed(() => lfxWidgets[props.widgetName]);
 
 const {
-project, selectedRepositories, startDate, endDate
+project, selectedRepositories, startDate, endDate, selectedRepositoryGroup
 } = storeToRefs(useProjectStore());
 
 const repoName = computed(() => {

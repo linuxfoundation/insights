@@ -9,6 +9,7 @@ export interface ProjectLinkConfig {
   label: string;
   projectRouteName: LfxRoutes;
   repoRouteName: LfxRoutes;
+  repoGroupRouteName: LfxRoutes;
   area: WidgetArea;
   comingSoon?: boolean;
 }
@@ -20,7 +21,8 @@ export const lfProjectLinks: ProjectLinkConfig[] = [
     label: 'Overview',
     area: WidgetArea.OVERVIEW,
     projectRouteName: LfxRoutes.PROJECT,
-    repoRouteName: LfxRoutes.REPOSITORY
+    repoRouteName: LfxRoutes.REPOSITORY,
+    repoGroupRouteName: LfxRoutes.REPOSITORY_GROUP
   },
   {
     key: 'contributors',
@@ -28,7 +30,8 @@ export const lfProjectLinks: ProjectLinkConfig[] = [
     label: 'Contributors',
     area: WidgetArea.CONTRIBUTORS,
     projectRouteName: LfxRoutes.PROJECT_CONTRIBUTORS,
-    repoRouteName: LfxRoutes.REPOSITORY_CONTRIBUTORS
+    repoRouteName: LfxRoutes.REPOSITORY_CONTRIBUTORS,
+    repoGroupRouteName: LfxRoutes.REPOSITORY_GROUP_CONTRIBUTORS
   },
   {
     key: 'popularity',
@@ -36,7 +39,8 @@ export const lfProjectLinks: ProjectLinkConfig[] = [
     label: 'Popularity',
     area: WidgetArea.POPULARITY,
     projectRouteName: LfxRoutes.PROJECT_POPULARITY,
-    repoRouteName: LfxRoutes.REPOSITORY_POPULARITY
+    repoRouteName: LfxRoutes.REPOSITORY_POPULARITY,
+    repoGroupRouteName: LfxRoutes.REPOSITORY_GROUP_POPULARITY
   },
   {
     key: 'development',
@@ -44,7 +48,8 @@ export const lfProjectLinks: ProjectLinkConfig[] = [
     label: 'Development',
     area: WidgetArea.DEVELOPMENT,
     projectRouteName: LfxRoutes.PROJECT_DEVELOPMENT,
-    repoRouteName: LfxRoutes.REPOSITORY_DEVELOPMENT
+    repoRouteName: LfxRoutes.REPOSITORY_DEVELOPMENT,
+    repoGroupRouteName: LfxRoutes.REPOSITORY_GROUP_DEVELOPMENT
   },
   {
     key: 'security',
@@ -53,5 +58,6 @@ export const lfProjectLinks: ProjectLinkConfig[] = [
     area: WidgetArea.SECURITY,
     projectRouteName: LfxRoutes.PROJECT_SECURITY,
     repoRouteName: LfxRoutes.REPOSITORY_SECURITY,
+    repoGroupRouteName: LfxRoutes.REPOSITORY_GROUP_SECURITY
   }
 ];

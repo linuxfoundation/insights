@@ -8,6 +8,12 @@ export interface ProjectRepository {
   rank: number;
 }
 
+export interface ProjectRepositoryGroup {
+  name: string;
+  slug: string;
+  repositories: string[];
+}
+
 export interface Project {
   id: string;
   name: string;
@@ -18,6 +24,7 @@ export interface Project {
   contributorCount: number;
   organizationCount: number;
   repositories: ProjectRepository[];
+  repositoryGroups: ProjectRepositoryGroup[];
   archivedRepositories: string[];
   excludedRepositories: string[];
   widgets: string[];

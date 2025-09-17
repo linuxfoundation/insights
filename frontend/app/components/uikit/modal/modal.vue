@@ -11,28 +11,6 @@ SPDX-License-Identifier: MIT
         @click="clickOutsideClose()"
       >
         <div
-          v-if="props.showCloseButton"
-          class="c-modal__content-wrapper"
-          :style="{ 'max-width': props.width }"
-        >
-          <div
-            class="c-modal__content"
-            :class="props.contentClass"
-            :style="{ 'max-width': props.width }"
-            v-bind="$attrs"
-            @click.stop
-          >
-            <slot :close="close" />
-          </div>
-          <lfx-icon-button
-            class="c-modal__close-button"
-            :size="props.type === 'cover' ? 'medium' : 'small'"
-            icon="fa fa-xmark fa-light"
-            @click="clickOutsideClose()"
-          />
-        </div>
-        <div
-          v-else
           class="c-modal__content"
           :class="props.contentClass"
           :style="{ 'max-width': props.width }"
@@ -48,14 +26,12 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed, watch } from 'vue';
-import LfxIconButton from "~/components/uikit/icon-button/icon-button.vue";
 
 const props = withDefaults(defineProps<{
   modelValue: boolean,
   type?: 'default' | 'floating' | 'cover',
   contentClass?: string,
   width?: string,
-  showCloseButton?: boolean,
   closeFunction?:() => boolean,
 }>(), {
   type: 'default',
