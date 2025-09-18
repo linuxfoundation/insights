@@ -25,14 +25,10 @@ export default defineEventHandler(async (event): Promise<Response | Error> => {
   setHeader(event, 'X-Accel-Buffering', 'no')
   setHeader(event, 'Content-Type', 'text/plain; charset=utf-8')
   setHeader(event, 'Connection', 'close')
-  
+
   try {
     const { messages, projectName, pipe, parameters, conversationId, projectSlug } =
       await readBody<IStreamRequestBody>(event)
-
-    if (!pipe) {
-      return createError({ statusCode: 400, statusMessage: 'Pipe is required' })
-    }
 
     if (!projectSlug) {
       return createError({ statusCode: 400, statusMessage: 'Project slug is required' })
@@ -69,7 +65,7 @@ export default defineEventHandler(async (event): Promise<Response | Error> => {
           userEmail: event.context.user.email,
           dataStream, // Pass the dataStream to the class
         })
-      }
+      },
     })
   } catch (error) {
     return createError({
