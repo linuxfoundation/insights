@@ -73,10 +73,11 @@ SPDX-License-Identifier: MIT
             @keydown.enter.prevent="handleSubmit"
           />
           <div class="flex justify-between pb-4 px-4 items-center gap-4">
-            <div class="flex gap-3 text-sm">
+            <div class="flex gap-3 text-sm w-auto max-w-[80%]">
               <span
                 class="text-sm text-neutral-900 flex gap-1 items-center bg-brand-50 
-                  rounded-full px-2.5 py-1"
+                  rounded-full px-2.5 py-1 max-w-[65%]"
+                :title="copilotDefaults.project?.name"
               >
                 <img
                   :src="copilotDefaults.project?.logo"
@@ -99,7 +100,7 @@ SPDX-License-Identifier: MIT
               icon="arrow-up"
               size="small"
               type="primary"
-              class="!outline-none"
+              class="!outline-none min-w-7"
               @click="handleSubmit"
             />
           </div>
