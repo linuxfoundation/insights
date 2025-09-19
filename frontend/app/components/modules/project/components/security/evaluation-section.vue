@@ -5,21 +5,9 @@ SPDX-License-Identifier: MIT
 <template>
   <lfx-accordion-item
     name="access-control"
-    class="py-5 border-t border-neutral-100"
-    :reverse="true"
+    class="py-5 border-t first:border-t-0 border-neutral-100"
   >
-    <div class="flex justify-between gap-4 w-full">
-      <div v-if="props.checks.length">
-        <h4 class="text-heading-4 font-bold font-secondary">
-          {{ category}}
-        </h4>
-        <p
-          v-if="config"
-          class="text-body-2 text-neutral-500 mt-1"
-        >
-          {{ config.description }}
-        </p>
-      </div>
+    <div class="flex gap-4 w-full">
       <lfx-project-security-evaluation-result :results="assessmentsResults">
         <template #default="{result}">
           <lfx-tooltip
@@ -32,10 +20,21 @@ SPDX-License-Identifier: MIT
           </lfx-tooltip>
         </template>
       </lfx-project-security-evaluation-result>
+      <div v-if="props.checks.length">
+        <h4 class="text-heading-4 font-bold font-secondary">
+          {{ category}}
+        </h4>
+        <p
+          v-if="config"
+          class="text-body-2 text-neutral-500 mt-1"
+        >
+          {{ config.description }}
+        </p>
+      </div>
     </div>
 
     <template #content>
-      <div class="border border-neutral-200 rounded-md px-4 mt-4">
+      <div class="border border-neutral-200 rounded-md px-5 mt-4">
         <slot />
       </div>
     </template>

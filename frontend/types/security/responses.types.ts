@@ -24,6 +24,7 @@ export enum SecurityDataResult {
 export interface SecurityAssessmentData {
   requirementId: string;
   description: string;
+  recommendation: string;
   result: SecurityDataResult;
 }
 

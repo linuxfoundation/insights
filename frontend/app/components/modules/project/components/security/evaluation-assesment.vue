@@ -4,22 +4,42 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <article
-    class="py-4 border-t first:border-0 border-neutral-100 flex"
+    class="py-5 border-t first:border-0 border-neutral-100 flex gap-6"
   >
-    <div class="w-1/3 pr-4">
-      <p class="text-neutral-400 text-xs font-semibold mb-1">
-        Requirement ID: {{props.assessment.requirementId}}
-      </p>
+    <div class="min-w-27">
       <lfx-project-security-evaluation-result-tag
         size="small"
-        type="transparent"
         :result="props.assessment.result"
+        class="whitespace-nowrap"
       />
     </div>
-    <div class="w-2/3">
-      <p class="text-body-2">
-        {{props.assessment.description}}
-      </p>
+    <div class="flex flex-grow gap-10">
+      <div class="w-1/2">
+        <p class="text-xs font-semibold mb-2">
+          Requirement ID: {{props.assessment.requirementId}}
+        </p>
+        <p class="text-body-2 text-neutral-600">
+          {{props.assessment.description}}
+        </p>
+      </div>
+      <div class="w-1/2">
+        <article v-if="props.assessment.recommendation && props.assessment.result !== 'Passed'">
+          <div class="flex items-center gap-2 mb-2">
+            <lfx-icon
+              name="lightbulb"
+              :size="14"
+            />
+            <p class="text-xs font-semibold">
+              Recommendation
+            </p>
+          </div>
+          <p class="text-body-2 text-neutral-600">
+            {{props.assessment.recommendation}}
+
+          </p>
+
+        </article>
+      </div>
     </div>
   </article>
 </template>
@@ -28,6 +48,7 @@ SPDX-License-Identifier: MIT
 import type {SecurityAssessmentData} from "~~/types/security/responses.types";
 import LfxProjectSecurityEvaluationResultTag
   from "~/components/modules/project/components/security/evaluation-result-tag.vue";
+import LfxIcon from "~/components/uikit/icon/icon.vue";
 
 const props = defineProps<{
   assessment: SecurityAssessmentData
