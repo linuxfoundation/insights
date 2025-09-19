@@ -3,7 +3,6 @@
 import type { NuxtApp } from 'nuxt/app'
 import {defineNuxtPlugin, useRuntimeConfig} from 'nuxt/app'
 export default defineNuxtPlugin(async (nuxtApp: NuxtApp) => {
-  console.log('[LFX Segment] init')
   if (process.server) return
 
   const config = useRuntimeConfig()
@@ -25,8 +24,8 @@ export default defineNuxtPlugin(async (nuxtApp: NuxtApp) => {
     await loadScript(cdnUrl)
 
     // 2) Grab the singleton
-    const analytics =
-      (window as unknown)?.LfxAnalytics?.LfxSegmentsAnalytics?.getInstance?.()
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const analytics = (window as any)?.LfxAnalytics?.LfxSegmentsAnalytics?.getInstance?.()
 
     if (!analytics) {
       console.warn('[LFX Segment] LfxSegmentsAnalytics not found on window.')
