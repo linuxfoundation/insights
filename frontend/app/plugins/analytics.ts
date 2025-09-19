@@ -1,0 +1,69 @@
+// Copyright (c) 2025 The Linux Foundation and each contributor.
+// SPDX-License-Identifier: MIT
+import type { NuxtApp } from 'nuxt/app'
+import {defineNuxtPlugin, useRuntimeConfig} from 'nuxt/app'
+export default defineNuxtPlugin(async (nuxtApp: NuxtApp) => {
+  console.log('[LFX Segment] init')
+  if (process.server) return
+
+  const config = useRuntimeConfig()
+  const cdnUrl = config.public.lfxSegmentCdnUrl as string
+
+  // Small helper to load external scripts with a Promise
+  const loadScript = (src: string) =>
+    new Promise<void>((resolve, reject) => {
+      const s = document.createElement('script')
+      s.src = src
+      s.async = true
+      s.onload = () => resolve()
+      s.onerror = () => reject(new Error(`Failed to load ${src}`))
+      document.head.appendChild(s)
+    })
+
+  try {
+    // 1) Load the LFX wrapper script from the CDN
+    await loadScript(cdnUrl)
+
+    // 2) Grab the singleton
+    const analytics =
+      (window as unknown)?.LfxAnalytics?.LfxSegmentsAnalytics?.getInstance?.()
+
+    if (!analytics) {
+      console.warn('[LFX Segment] LfxSegmentsAnalytics not found on window.')
+      return
+    }
+
+    // 3) Initialize
+    await analytics.init()
+
+    // 4) First page load
+    analytics.page(document.title, {
+      path: location.pathname + location.search + location.hash,
+      referrer: document.referrer || undefined,
+    })
+
+    // 5) Track subsequent route navigations (Nuxt 3)
+    nuxtApp.hook('page:finish', () => {
+      analytics.page(document.title, {
+        path: location.pathname + location.search + location.hash,
+        referrer: document.referrer || undefined,
+      })
+    })
+
+    // Optional: expose a tiny helper for custom events anywhere in app
+    nuxtApp.provide('track', (event: string, props?: Record<string, unknown>) => {
+      analytics.track(event, props)
+    })
+
+    // Optional: expose identify for signed-in users (e.g., Auth0)
+    nuxtApp.provide('identify', (id: string, traits?: Record<string, unknown>) => {
+      analytics.identify(id, traits)
+    })
+
+    // Optional: expose anonymous ID helpers if needed
+    nuxtApp.provide('getAnonymousId', () => analytics.getAnonymousId())
+    nuxtApp.provide('resetAnalytics', () => analytics.reset())
+  } catch (err) {
+    console.error('[LFX Segment] init failed:', err)
+  }
+})
