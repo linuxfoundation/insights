@@ -2,7 +2,14 @@
 set -ex
 set +o history
 
-# Grab all command line arguments to pass them into Docker, or default to "migrate".
+# Check if first argument is --host-network
+DOCKER_NETWORK=""
+if [ "$1" = "--host-network" ]; then
+    DOCKER_NETWORK="--network host"
+    shift  # Remove --host-network from arguments
+fi
+
+# Grab remaining command line arguments to pass them into Docker, or default to "migrate".
 if [ $# -eq 0 ]; then
     FLYWAY_COMMAND=("migrate")
 else
@@ -11,7 +18,7 @@ fi
 
 echo "Running Flyway command: ${FLYWAY_COMMAND[@]} on jdbc:postgresql://${PGHOST}:${PGPORT}/${PGDATABASE}"
 
-docker run --rm \
+docker run --rm ${DOCKER_NETWORK} \
   -v "$(pwd)/migrations:/tmp/migrations" \
   flyway/flyway:latest-alpine \
   -locations="filesystem:/tmp/migrations" \
