@@ -37,10 +37,6 @@ export const lfxFooterMenu: FooterMenuSection[] = [
                 link: '/docs/',
             },
             {
-                name: 'Blog',
-                link: '/blog/introducing-insights',
-            },
-            {
                 name: 'Report issue',
                 click: () => {
                     const {openReportModal} = useReportStore();
@@ -52,6 +48,19 @@ export const lfxFooterMenu: FooterMenuSection[] = [
             {
                 name: 'Join discussions',
                 link: 'https://github.com/linuxfoundation/insights/discussions',
+            },
+        ]
+    },
+    {
+        title: 'Latest blog posts',
+        links: [
+            {
+                name: 'The First 3 Months of Insights',
+                link: '/blog/first-3-months',
+            },
+            {
+                name: 'Introducing Insights',
+                link: '/blog/introducing-insights',
             },
         ]
     },
