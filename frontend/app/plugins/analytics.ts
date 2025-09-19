@@ -2,11 +2,16 @@
 // SPDX-License-Identifier: MIT
 import type { NuxtApp } from 'nuxt/app'
 import {defineNuxtPlugin, useRuntimeConfig} from 'nuxt/app'
+
+const isProduction = process.env.NUXT_APP_ENV === 'production'
 export default defineNuxtPlugin(async (nuxtApp: NuxtApp) => {
   if (process.server) return
+  if (process.env.NODE_ENV !== 'production' || !isProduction) return
 
   const config = useRuntimeConfig()
   const cdnUrl = config.public.lfxSegmentCdnUrl as string
+
+  if(!cdnUrl) return;
 
   // Small helper to load external scripts with a Promise
   const loadScript = (src: string) =>
@@ -18,6 +23,8 @@ export default defineNuxtPlugin(async (nuxtApp: NuxtApp) => {
       s.onerror = () => reject(new Error(`Failed to load ${src}`))
       document.head.appendChild(s)
     })
+
+
 
   try {
     // 1) Load the LFX wrapper script from the CDN
@@ -35,18 +42,19 @@ export default defineNuxtPlugin(async (nuxtApp: NuxtApp) => {
     // 3) Initialize
     await analytics.init()
 
-    // 4) First page load
-    analytics.page(document.title, {
-      path: location.pathname + location.search + location.hash,
-      referrer: document.referrer || undefined,
-    })
-
-    // 5) Track subsequent route navigations (Nuxt 3)
-    nuxtApp.hook('page:finish', () => {
+    const trackPage = () => {
       analytics.page(document.title, {
         path: location.pathname + location.search + location.hash,
         referrer: document.referrer || undefined,
       })
+    }
+
+    // 4) First page load
+    trackPage();
+
+    // 5) Track subsequent route navigations (Nuxt 3)
+    nuxtApp.hook('page:finish', () => {
+      trackPage();
     })
 
     // Optional: expose a tiny helper for custom events anywhere in app
