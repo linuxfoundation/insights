@@ -32,7 +32,7 @@ export default defineNuxtConfig({
     '@nuxtjs/plausible',
     '@nuxtjs/robots',
   ],
-  plugins: ['~/plugins/vue-query.ts'],
+  plugins: ['~/plugins/vue-query.ts', "~/plugins/analytics.ts"],
   css: ['~/assets/styles/main.scss'],
   tailwindcss,
   primevue,
@@ -70,6 +70,7 @@ export default defineNuxtConfig({
       auth0Audience: isProduction
         ? 'https://insights.linuxfoundation.org/api/'
         : 'http://localhost:3000/api/',
+      lfxSegmentCdnUrl: process.env.LFX_SEGMENT_CDN_URL || '',
     },
   },
   vue: {

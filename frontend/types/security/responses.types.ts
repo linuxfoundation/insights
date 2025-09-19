@@ -27,7 +27,6 @@ export interface SecurityAssessmentData {
   message: string;
   recommendation?: string;
   result: SecurityDataResult;
-  recommendation?: string;
 }
 
 export interface SecurityData {
