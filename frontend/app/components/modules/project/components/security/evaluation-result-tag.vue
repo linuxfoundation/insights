@@ -34,17 +34,17 @@ interface TypeData {
 
 const typeData: Record<SecurityDataResult, TypeData> = {
   [SecurityDataResult.FAILED]: {
-    variation: 'negative',
+    variation: 'negative-solid',
     icon: 'exclamation-circle',
     text: 'Failed',
   },
   [SecurityDataResult.PASSED]: {
-    variation: 'positive',
-    icon: 'check-circle',
+    variation: 'positive-solid',
+    icon: 'check',
     text: 'Passed',
   },
   [SecurityDataResult.NEEDS_REVIEW]: {
-    variation: 'warning',
+    variation: 'warning-solid',
     icon: 'exclamation-triangle',
     text: 'Needs review',
   },
