@@ -14,7 +14,7 @@ SPDX-License-Identifier: MIT
       />
     </div>
     <div class="flex flex-col sm:flex-row flex-grow gap-4 sm:gap-10 items-start">
-      <div class="w-full sm:w-1/2">
+      <div class="w-full sm:w-1/3">
         <p class="text-xs font-semibold mb-2">
           Requirement ID: {{props.assessment.requirementId}}
         </p>
@@ -23,8 +23,19 @@ SPDX-License-Identifier: MIT
         </p>
       </div>
       <div
+        v-if="props.assessment.message && props.assessment.result !== 'Passed'"
+        class="w-full sm:w-1/3"
+      >
+        <p class="text-xs font-semibold mb-2">
+          Reason
+        </p>
+        <p class="text-body-2 text-neutral-600">
+          {{props.assessment.message}}
+        </p>
+      </div>
+      <div
         v-if="props.assessment.recommendation && props.assessment.result !== 'Passed'"
-        class="w-full sm:w-1/2"
+        class="w-full sm:w-1/3"
       >
         <div class="flex items-center gap-1 mb-2">
           <lfx-icon
