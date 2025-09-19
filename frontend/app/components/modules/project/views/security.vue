@@ -3,12 +3,12 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="container pt-12">
-    <lfx-card class="pt-6">
-      <div class="px-6 flex justify-between items-start pb-5">
+  <div class="container pt-4 md:pt-12">
+    <lfx-card class="pt-4 sm:pt-6">
+      <div class="px-4 sm:px-6 flex justify-between items-start pb-4 sm:pb-5">
         <div>
           <!-- Title -->
-          <div class="flex items-center gap-4 pb-2">
+          <div class="flex flex-col-reverse sm:flex-row items-start sm:items-center gap-2 sm:gap-4 pb-2">
             <h3 class="text-heading-3 font-secondary font-bold">
               Controls assessment
             </h3>
@@ -63,7 +63,7 @@ SPDX-License-Identifier: MIT
           For a detailed analysis, choose a specific repository.
         </p>
       </div>
-      <div class="px-6 pt-1">
+      <div class="px-4 sm:px-6 pt-1">
 
         <!-- Show spinner when loading -->
         <div

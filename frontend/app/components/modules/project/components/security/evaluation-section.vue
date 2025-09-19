@@ -5,7 +5,7 @@ SPDX-License-Identifier: MIT
 <template>
   <lfx-accordion-item
     name="access-control"
-    class="py-5 border-t first:border-t-0 border-neutral-100"
+    class="py-4 sm:py-5 border-t first:border-t-0 border-neutral-100"
   >
     <div class="flex gap-4 w-full">
       <lfx-project-security-evaluation-result :results="assessmentsResults">
@@ -34,7 +34,7 @@ SPDX-License-Identifier: MIT
     </div>
 
     <template #content>
-      <div class="border border-neutral-200 rounded-md px-5 mt-4">
+      <div class="border border-neutral-200 rounded-md px-4 sm:px-5 mt-4">
         <slot />
       </div>
     </template>
