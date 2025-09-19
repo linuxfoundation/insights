@@ -23,7 +23,7 @@ SPDX-License-Identifier: MIT
         </p>
       </div>
       <div
-        v-if="props.assessment.message && props.assessment.result !== 'Passed'"
+        v-if="props.assessment.message && props.assessment.result !== SecurityDataResult.PASSED"
         class="w-full sm:w-1/3"
       >
         <p class="text-xs font-semibold mb-2">
@@ -34,7 +34,7 @@ SPDX-License-Identifier: MIT
         </p>
       </div>
       <div
-        v-if="props.assessment.recommendation && props.assessment.result !== 'Passed'"
+        v-if="props.assessment.recommendation && props.assessment.result !== SecurityDataResult.PASSED"
         class="w-full sm:w-1/3"
       >
         <div class="flex items-center gap-1 mb-2">
@@ -55,7 +55,7 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import type {SecurityAssessmentData} from "~~/types/security/responses.types";
+import {type SecurityAssessmentData, SecurityDataResult} from "~~/types/security/responses.types";
 import LfxProjectSecurityEvaluationResultTag
   from "~/components/modules/project/components/security/evaluation-result-tag.vue";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
