@@ -3,10 +3,9 @@
 import type { NuxtApp } from 'nuxt/app'
 import {defineNuxtPlugin, useRuntimeConfig} from 'nuxt/app'
 
-const isProduction = process.env.NUXT_APP_ENV === 'production'
 export default defineNuxtPlugin(async (nuxtApp: NuxtApp) => {
   if (process.server) return
-  if (process.env.NODE_ENV !== 'production' || !isProduction) return
+  if (process.env.NODE_ENV !== 'production') return
 
   const config = useRuntimeConfig()
   const cdnUrl = config.public.lfxSegmentCdnUrl as string
