@@ -4,7 +4,7 @@ import type {ToolsItem} from "~/config/menu/tools";
 
 const communityManagement: ToolsItem = {
     name: 'Community Management',
-    description: 'Customer Data Platform',
+    description: 'Community data management platform',
     icon: 'users',
     link: 'https://cm.lfx.dev'
 }
