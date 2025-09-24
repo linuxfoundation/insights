@@ -7,9 +7,10 @@ import tailwindcss from './setup/tailwind'
 import primevue from './setup/primevue'
 import echarts from './setup/echarts'
 import caching from './setup/caching'
+import sitemap from './setup/sitemap'
 
 const isProduction = process.env.NUXT_APP_ENV === 'production'
-
+const isDevelopment = process.env.NODE_ENV === 'development'
 export default defineNuxtConfig({
   future: {
     compatibilityVersion: 4,
@@ -31,6 +32,7 @@ export default defineNuxtConfig({
     'nuxt-gtag',
     '@nuxtjs/plausible',
     '@nuxtjs/robots',
+    '@nuxtjs/sitemap',
   ],
   plugins: ['~/plugins/vue-query.ts', "~/plugins/analytics.ts"],
   css: ['~/assets/styles/main.scss'],
@@ -104,7 +106,8 @@ export default defineNuxtConfig({
     },
   },
   robots: {
-    disallow: isProduction ? [] : ['/'],
+    disallow: isProduction || isDevelopment ? [] : ['/'],
   },
+  ...sitemap,
   ...caching,
 })
