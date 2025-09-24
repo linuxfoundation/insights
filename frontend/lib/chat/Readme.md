@@ -46,6 +46,13 @@ flowchart TD
     E --> K[Error Message]
 ```
 
+```mermaid
+flowchart TD
+A[Data from query] --> B[Chart Generation Agent]
+B --> C[Chart Configuration]
+C --> D[Frontend]
+```
+
 ### Orchestration Layer
 
 The entire system is orchestrated through **`frontend/lib/chat/data-copilot.ts`**, which:
