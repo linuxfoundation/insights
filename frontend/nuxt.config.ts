@@ -10,7 +10,7 @@ import caching from './setup/caching'
 import sitemap from './setup/sitemap'
 
 const isProduction = process.env.NUXT_APP_ENV === 'production'
-
+const isDevelopment = process.env.NODE_ENV === 'development'
 export default defineNuxtConfig({
   future: {
     compatibilityVersion: 4,
@@ -106,7 +106,7 @@ export default defineNuxtConfig({
     },
   },
   robots: {
-    disallow: isProduction ? [] : [],
+    disallow: isProduction || isDevelopment ? [] : ['/'],
   },
   ...sitemap,
   ...caching,
