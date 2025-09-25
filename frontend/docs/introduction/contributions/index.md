@@ -78,7 +78,7 @@ Contributions are used to understand individual impact, engagement patterns, and
 - `issues-opened` – Opened a new issue.
 - `issues-closed` – Closed an existing issue.
 - `issue-comment` – Commented on an issue.
-- `authored-commit` – Authored a commit in a pull request to a GitLab repo.
+- `authored-commit` – Authored a commit in a merge request to a GitLab repo.
 
 ### **Groups.io**
 - `message` – Sent a message to a mailing group or list.
