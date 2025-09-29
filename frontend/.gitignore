@@ -5,6 +5,7 @@
 .nuxt
 .nitro
 .cache
+CLAUDE.md
 dist
 
 # Node dependencies

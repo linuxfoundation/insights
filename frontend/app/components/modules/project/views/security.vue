@@ -31,21 +31,45 @@ SPDX-License-Identifier: MIT
             >Learn more</a>
           </p>
         </div>
-        <!-- Update button and last updated -->
-        <!--        <div class="flex items-center gap-2">-->
-        <!--          <p class="text-body-2 text-neutral-500 italic whitespace-nowrap">-->
-        <!--            Last updated 1 day ago-->
-        <!--          </p>-->
-        <!--          <lfx-button-->
-        <!--            type="tertiary"-->
-        <!--            size="small"-->
-        <!--            button-style="pill"-->
-        <!--            class="whitespace-nowrap"-->
-        <!--          >-->
-        <!--            <lfx-icon name="arrows-rotate-reverse" />-->
-        <!--            Update results-->
-        <!--          </lfx-button>-->
-        <!--        </div>-->
+        <!-- Generate YAML and Update buttons -->
+        <div
+          v-if="!isFetching && data?.length && !allArchived"
+          class="flex items-center gap-2"
+        >
+          <lfx-tooltip placement="top">
+            <lfx-button
+              type="secondary"
+              size="small"
+              button-style="pill"
+              class="whitespace-nowrap"
+              @click="isGenerateYamlModalOpen = true"
+            >
+              <lfx-icon name="file-code" />
+              Generate YAML file
+            </lfx-button>
+
+            <template #content>
+              <div class="flex flex-col gap-1 max-w-72">
+                <div class="font-semibold text-white text-xs">
+                  It looks like this repository is missing a YAML file.
+                </div>
+                <div class="text-neutral-300 text-xs">
+                  Please generate the file and upload it so we can run all the security assessments.
+                </div>
+              </div>
+            </template>
+          </lfx-tooltip>
+          <!-- TODO: Enable when backend is ready -->
+          <!--          <lfx-button-->
+          <!--            type="tertiary"-->
+          <!--            size="small"-->
+          <!--            button-style="pill"-->
+          <!--            class="whitespace-nowrap"-->
+          <!--          >-->
+          <!--            <lfx-icon name="arrows-rotate-reverse" />-->
+          <!--            Update results-->
+          <!--          </lfx-button>-->
+        </div>
       </div>
 
       <!-- Disclaimer for aggregated view -->
@@ -147,6 +171,10 @@ SPDX-License-Identifier: MIT
       />
     </lfx-card>
   </div>
+  <lf-security-generate-yaml-modal
+    v-if="isGenerateYamlModalOpen"
+    v-model="isGenerateYamlModalOpen"
+  />
 </template>
 
 <script setup lang="ts">
@@ -174,11 +202,16 @@ import { PROJECT_SECURITY_SERVICE } from "~/components/modules/project/services/
 import LfxReposExclusionFooter from '~/components/shared/components/repos-exclusion-footer.vue';
 import LfxEmptyState from '~/components/shared/components/empty-state.vue';
 import LfxTag from "~/components/uikit/tag/tag.vue";
+import LfxButton from "~/components/uikit/button/button.vue";
+import LfxTooltip from "~/components/uikit/tooltip/tooltip.vue";
+import LfSecurityGenerateYamlModal from "~/components/modules/project/components/security/yaml/generate-yaml-modal.vue";
 
 const accordion = ref('');
 
 const route = useRoute();
 const { name } = route.params;
+
+const isGenerateYamlModalOpen = ref(false);
 
 const {
   selectedReposValues,
