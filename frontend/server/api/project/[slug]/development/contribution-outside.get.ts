@@ -3,6 +3,7 @@
 import { DateTime } from 'luxon'
 import { createDataSource } from '~~/server/data/data-sources'
 import type { ContributionsOutsideWorkHoursFilter } from '~~/types/development/requests.types'
+import { getBooleanQueryParam } from '~~/server/utils/common'
 
 /**
  * Frontend expects the data to be in the following format:
@@ -37,9 +38,14 @@ export default defineEventHandler(async (event) => {
 
   const repos = Array.isArray(query.repos) ? query.repos : query.repos ? [query.repos] : undefined
 
+  const includeCodeContributions = getBooleanQueryParam(query, 'includeCodeContributions', true)
+  const includeCollaborations = getBooleanQueryParam(query, 'includeCollaborations', false)
+
   const filter: ContributionsOutsideWorkHoursFilter = {
     project,
     repos,
+    includeCodeContributions,
+    includeCollaborations,
     startDate: query.startDate ? DateTime.fromISO(query.startDate as string) : undefined,
     endDate: query.endDate ? DateTime.fromISO(query.endDate as string) : undefined,
   }

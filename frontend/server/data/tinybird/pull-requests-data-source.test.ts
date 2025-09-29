@@ -67,6 +67,8 @@ describe('Pull Requests Data Source', () => {
       granularity: Granularity.WEEKLY,
       activity_type: ActivityTypes.PULL_REQUEST_OPENED,
       onlyContributions: false,
+      includeCodeContributions: true,
+      includeCollaborations: true,
       startDate,
       endDate
     };
@@ -120,6 +122,8 @@ describe('Pull Requests Data Source', () => {
       {
         project: 'the-linux-kernel-organization',
         onlyContributions: false,
+        includeCodeContributions: true,
+        includeCollaborations: true,
         startDate,
         endDate
       },
