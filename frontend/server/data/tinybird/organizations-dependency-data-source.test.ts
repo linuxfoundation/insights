@@ -36,6 +36,8 @@ describe('Organizations Dependency Data Source', () => {
 
     const filter = {
       project: 'the-linux-kernel-organization',
+      includeCodeContributions: true,
+      includeCollaborations: false,
       startDate,
       endDate
     };

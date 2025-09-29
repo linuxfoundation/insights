@@ -15,6 +15,8 @@ export type ContributorsLeaderboardTinybirdQuery = {
   platform?: ActivityPlatforms;
   activity_type?: ActivityTypes;
   activity_types?: ActivityTypes[];
+  includeCodeContributions?: boolean,
+  includeCollaborations?: boolean,
   repos?: string[];
   limit?: number;
   offset?: number;
@@ -28,6 +30,8 @@ export type OrganizationsLeaderboardTinybirdQuery = {
   platform?: ActivityPlatforms;
   activity_type?: ActivityTypes;
   activity_types?: ActivityTypes[];
+  includeCodeContributions?: boolean;
+  includeCollaborations?: boolean;
   repos?: string[];
   limit?: number;
   offset?: number;
@@ -38,7 +42,9 @@ export type OrganizationsLeaderboardTinybirdQuery = {
 
 export type ActivityHeatmapByWeekdayTBQuery = {
   project: string;
-  repo?: string,
+  repos?: string[],
+  includeCodeContributions?: boolean,
+  includeCollaborations?: boolean,
   startDate?: DateTime,
   endDate?: DateTime,
 };
@@ -67,6 +73,8 @@ export type ActivitiesCountTinybirdQuery = {
   activity_types?: ActivityTypes[];
   granularity?: Granularity;
   onlyContributions?: boolean;
+  includeCodeContributions?: boolean;
+  includeCollaborations?: boolean;
   startDate?: DateTime;
   endDate?: DateTime;
 }

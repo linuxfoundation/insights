@@ -40,6 +40,8 @@ describe('Retention Data Source', () => {
       project: 'the-linux-kernel-organization',
       granularity: Granularity.MONTHLY,
       onlyContributions: false,
+      includeCodeContributions: true,
+      includeCollaborations: false,
       demographicType: DemographicType.CONTRIBUTORS,
       startDate,
       endDate
@@ -79,6 +81,8 @@ describe('Retention Data Source', () => {
       project: 'the-linux-kernel-organization',
       granularity: Granularity.MONTHLY,
       onlyContributions: false,
+      includeCodeContributions: true,
+      includeCollaborations: false,
       demographicType: DemographicType.ORGANIZATIONS,
       startDate,
       endDate
