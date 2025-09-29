@@ -52,6 +52,8 @@ describe('Code Review Engagement Data Source', () => {
     const expectedCurrentDataQuery: ActivityHeatmapByWeekdayTBQuery = {
       project: filter.project,
       repos: filter.repos,
+      includeCodeContributions: filter.includeCodeContributions,
+      includeCollaborations: filter.includeCollaborations,
       startDate: filter.startDate,
       endDate: filter.endDate,
     };

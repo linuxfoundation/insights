@@ -40,6 +40,8 @@ describe('Active Contributors Data Source', () => {
 
     const filter = {
       granularity: Granularity.WEEKLY,
+      includeCodeContributions: true,
+      includeCollaborations: false,
       project: 'the-linux-kernel-organization',
       startDate,
       endDate

@@ -6,6 +6,7 @@ import { DemographicType } from '~~/server/data/types'
 import { createDataSource } from '~~/server/data/data-sources'
 import { ActivityTypes } from '~~/types/shared/activity-types'
 import { Granularity } from '~~/types/shared/granularity'
+import { getBooleanQueryParam } from '~~/server/utils/common'
 
 /**
  * Frontend expects the data to be in the following format:
@@ -28,12 +29,17 @@ export default defineEventHandler(async (event) => {
   const project = (event.context.params as { slug: string }).slug
   const activityType = query.activityType as ActivityTypes
 
+  const includeCodeContributions = getBooleanQueryParam(query, 'includeCodeContributions', true)
+  const includeCollaborations = getBooleanQueryParam(query, 'includeCollaborations', false)
+
   const repos = Array.isArray(query.repos) ? query.repos : query.repos ? [query.repos] : undefined
 
   const filter: RetentionFilter = {
     project,
     granularity: query.granularity as Granularity,
     activity_type: activityType !== ActivityTypes.ALL ? activityType : undefined,
+    includeCodeContributions,
+    includeCollaborations,
     repos,
     demographicType: (query.type as DemographicType) || DemographicType.CONTRIBUTORS,
     onlyContributions: false, // forks and stars are non-contribution activities, but we want to count them.

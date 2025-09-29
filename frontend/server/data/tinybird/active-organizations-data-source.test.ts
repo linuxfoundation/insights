@@ -39,8 +39,10 @@ describe('Active Organizations Data Source', () => {
     const endDate = DateTime.utc(2025, 3, 20);
 
     const filter = {
-      granularity: Granularity.WEEKLY,
       project: 'the-linux-kernel-organization',
+      granularity: Granularity.WEEKLY,
+      includeCodeContributions: true,
+      includeCollaborations: false,
       startDate,
       endDate
     };

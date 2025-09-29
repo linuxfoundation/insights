@@ -5,6 +5,7 @@ import type { OrganizationDependencyFilter } from '~~/server/data/types'
 import { createDataSource } from '~~/server/data/data-sources'
 import { ActivityTypes } from '~~/types/shared/activity-types'
 import { ActivityPlatforms } from '~~/types/shared/activity-platforms'
+import { getBooleanQueryParam } from '~~/server/utils/common'
 
 /**
  * Frontend expects the data to be in the following format:
@@ -43,12 +44,17 @@ export default defineEventHandler(async (event) => {
   const activityPlatform = query.platform as ActivityPlatforms
   const activityType = query.activityType as ActivityTypes
 
+  const includeCodeContributions = getBooleanQueryParam(query, 'includeCodeContributions', true)
+  const includeCollaborations = getBooleanQueryParam(query, 'includeCollaborations', false)
+
   const repos = Array.isArray(query.repos) ? query.repos : query.repos ? [query.repos] : undefined
 
   const filter: OrganizationDependencyFilter = {
     project,
     platform: activityPlatform !== ActivityPlatforms.ALL ? activityPlatform : undefined,
     activity_type: activityType !== ActivityTypes.ALL ? activityType : undefined,
+    includeCodeContributions,
+    includeCollaborations,
     repos,
     startDate: query.startDate ? DateTime.fromISO(query.startDate as string) : undefined,
     endDate: query.endDate ? DateTime.fromISO(query.endDate as string) : undefined,

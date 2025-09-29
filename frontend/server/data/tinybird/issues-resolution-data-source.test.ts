@@ -54,6 +54,8 @@ describe('Issues Resolution Data Source', () => {
       countType: ActivityFilterCountType.CUMULATIVE,
       activity_type: ActivityTypes.FORKS,
       onlyContributions: false,
+      includeCodeContributions: true,
+      includeCollaborations: true,
       startDate,
       endDate
     };
