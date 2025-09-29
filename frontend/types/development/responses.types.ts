@@ -129,3 +129,7 @@ export interface WaitTime1stReview {
     waitTime: number;
   }[];
 }
+
+export type ActivityTypesResponse = {
+  [platform: string]: string[];
+};
