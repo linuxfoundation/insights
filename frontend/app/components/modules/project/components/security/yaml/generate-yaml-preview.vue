@@ -13,14 +13,19 @@ SPDX-License-Identifier: MIT
     <pre
       lang="yaml"
       class="mt-6 p-4 bg-white border border-neutral-200 rounded-xl overflow-auto text-sm font-mono"
-    >{{ props.data }}</pre>
+    >{{ yaml }}</pre>
   </div>
 </template>
 
 <script lang="ts" setup>
+import {computed} from "vue";
+import {getYaml} from "~/components/modules/project/services/js-yaml";
+
 const props = defineProps<{
-  data: string
+  data: object
 }>();
+
+const yaml = computed(() => getYaml(props.data))
 </script>
 
 <script lang="ts">
