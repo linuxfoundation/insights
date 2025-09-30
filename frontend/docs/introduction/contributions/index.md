@@ -42,17 +42,17 @@ Contributions are used to understand individual impact, engagement patterns, and
 - `patchset_approval-created` – Approved a patchset during review.
 
 ### **Git**
-- `authored-commit` – Authored a Git commit.
-- `reviewed-commit` – Reviewed a commit.
-- `tested-commit` – Tested changes and marked them accordingly.
-- `co-authored-commit` – Co-authored a commit with another user.
-- `informed-commit` – Contributed ideas or guidance that led to a commit.
-- `influenced-commit` – Indirectly influenced a commit’s creation.
-- `approved-commit` – Approved a commit during code review.
-- `committed-commit` – Committed changes to a repository.
-- `reported-commit` – Reported an issue fixed by a commit.
-- `resolved-commit` – Resolved an issue with a commit.
-- `signed-off-commit` – Signed off on a commit for compliance/review.
+- `authored-commit` – Authored a Git commit in the default branch.
+- `reviewed-commit` – Reviewed a commit in the default branch.
+- `tested-commit` – Tested changes and marked them accordingly in the default branch.
+- `co-authored-commit` – Co-authored a commit with another user in the default branch.
+- `informed-commit` – Contributed ideas or guidance that led to a commit in the default branch.
+- `influenced-commit` – Indirectly influenced a commit’s creation in the default branch.
+- `approved-commit` – Approved a commit during code review in the default branch.
+- `committed-commit` – Committed changes to a repository in the default branch.
+- `reported-commit` – Reported an issue fixed by a commit in the default branch.
+- `resolved-commit` – Resolved an issue with a commit in the default branch.
+- `signed-off-commit` – Signed off on a commit for compliance/review in the default branch.
 
 ### **GitHub**
 - `discussion-started` – Started a new GitHub Discussion.
@@ -66,7 +66,7 @@ Contributions are used to understand individual impact, engagement patterns, and
 - `pull_request-comment` – Commented on a pull request.
 - `issue-comment` – Commented on an issue.
 - `discussion-comment` – Commented on a discussion.
-- `authored-commit` – Authored and pushed a commit.
+- `authored-commit` – Authored and pushed a commit in a pull request.
 
 ### **GitLab**
 - `merge_request-opened` – Opened a new merge request.
@@ -78,7 +78,7 @@ Contributions are used to understand individual impact, engagement patterns, and
 - `issues-opened` – Opened a new issue.
 - `issues-closed` – Closed an existing issue.
 - `issue-comment` – Commented on an issue.
-- `authored-commit` – Authored a commit to a GitLab repo.
+- `authored-commit` – Authored a commit in a merge request to a GitLab repo.
 
 ### **Groups.io**
 - `message` – Sent a message to a mailing group or list.
