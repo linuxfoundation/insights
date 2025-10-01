@@ -1,21 +1,58 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import type { QueryFunction } from '@tanstack/vue-query'
-import type { ComputedRef } from 'vue'
-import { useInfiniteQuery } from '@tanstack/vue-query'
+import { type ComputedRef, computed } from 'vue'
+import { useInfiniteQuery, useQuery } from '@tanstack/vue-query'
+import { TanstackKey } from '~/components/shared/types/tanstack'
 import type {
   ContributorLeaderboard,
   OrganizationLeaderboard,
+  ActiveContributors,
 } from '~~/types/contributors/responses.types'
 
+export interface ContributorQueryParams {
+  projectSlug: string
+  platform?: string
+  repos?: string[]
+  startDate?: string | null
+  endDate?: string | null
+  includeCollaborations?: boolean
+}
+
+export interface LeaderboardQueryParams extends ContributorQueryParams {
+  activityType?: string
+}
+
+export interface ActiveContributorsQueryParams extends ContributorQueryParams {
+  granularity?: string
+}
+
 class ContributorsApiService {
-  fetchContributorLeaderboard(
-    queryKey: ComputedRef,
-    queryFn: ComputedRef<QueryFunction<ContributorLeaderboard>>,
-  ) {
+  fetchContributorLeaderboard(params: ComputedRef<LeaderboardQueryParams>) {
+    const queryKey = computed(() => [
+      TanstackKey.CONTRIBUTORS_LEADERBOARD,
+      params.value.projectSlug,
+      params.value.platform,
+      params.value.activityType,
+      params.value.repos,
+      params.value.startDate,
+      params.value.endDate,
+      params.value.includeCollaborations,
+    ])
+    const queryFn = computed<QueryFunction<ContributorLeaderboard>>(() =>
+      this.contributorLeaderboardQueryFn(() => ({
+        projectSlug: params.value.projectSlug,
+        platform: params.value.platform,
+        activityType: params.value.activityType,
+        repos: params.value.repos,
+        startDate: params.value.startDate,
+        endDate: params.value.endDate,
+        includeCollaborations: params.value.includeCollaborations,
+      })),
+    )
+
     return useInfiniteQuery<ContributorLeaderboard>({
       queryKey,
-      // TODO: fix this type error
       // @ts-expect-error - queryFn is a computed ref
       queryFn,
       getNextPageParam: (lastPage) => {
@@ -56,13 +93,31 @@ class ContributorsApiService {
     }
   }
 
-  fetchOrganizationLeaderboard(
-    queryKey: ComputedRef,
-    queryFn: ComputedRef<QueryFunction<OrganizationLeaderboard>>,
-  ) {
+  fetchOrganizationLeaderboard(params: ComputedRef<LeaderboardQueryParams>) {
+    const queryKey = computed(() => [
+      TanstackKey.ORGANIZATIONS_LEADERBOARD,
+      params.value.projectSlug,
+      params.value.platform,
+      params.value.activityType,
+      params.value.repos,
+      params.value.startDate,
+      params.value.endDate,
+      params.value.includeCollaborations,
+    ])
+    const queryFn = computed<QueryFunction<OrganizationLeaderboard>>(() =>
+      this.organizationLeaderboardQueryFn(() => ({
+        projectSlug: params.value.projectSlug,
+        platform: params.value.platform,
+        activityType: params.value.activityType,
+        repos: params.value.repos,
+        startDate: params.value.startDate,
+        endDate: params.value.endDate,
+        includeCollaborations: params.value.includeCollaborations,
+      })),
+    )
+
     return useInfiniteQuery<OrganizationLeaderboard>({
       queryKey,
-      // TODO: fix this type error
       // @ts-expect-error - queryFn is a computed ref
       queryFn,
       getNextPageParam: (lastPage) => {
@@ -97,6 +152,50 @@ class ContributorsApiService {
           endDate,
           offset: pageParam,
           limit: 10,
+          includeCollaborations,
+        },
+      })
+    }
+  }
+
+  fetchActiveContributors(params: ComputedRef<ActiveContributorsQueryParams>) {
+    const queryKey = computed(() => [
+      TanstackKey.ACTIVE_CONTRIBUTORS,
+      params.value.projectSlug,
+      params.value.repos,
+      params.value.startDate,
+      params.value.endDate,
+      params.value.granularity,
+      params.value.includeCollaborations,
+    ])
+    const queryFn = computed<QueryFunction<ActiveContributors>>(() =>
+      this.activeContributorsQueryFn(() => ({
+        projectSlug: params.value.projectSlug,
+        repos: params.value.repos,
+        startDate: params.value.startDate,
+        endDate: params.value.endDate,
+        granularity: params.value.granularity,
+        includeCollaborations: params.value.includeCollaborations,
+      })),
+    )
+
+    return useQuery<ActiveContributors>({
+      queryKey,
+      queryFn,
+    })
+  }
+
+  activeContributorsQueryFn(
+    query: () => Record<string, string | number | boolean | undefined | string[] | null>,
+  ): QueryFunction<ActiveContributors> {
+    const { projectSlug, repos, startDate, endDate, granularity, includeCollaborations } = query()
+    return async () => {
+      return await $fetch(`/api/project/${projectSlug}/contributors/active-contributors`, {
+        params: {
+          granularity,
+          repos,
+          startDate,
+          endDate,
           includeCollaborations,
         },
       })

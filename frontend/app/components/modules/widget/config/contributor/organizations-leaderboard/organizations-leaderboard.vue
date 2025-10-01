@@ -63,11 +63,11 @@ import LfxActivitiesDropdown
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
 import LfxOrganizationsTable
   from "~/components/modules/widget/components/contributors/fragments/organizations-table.vue";
-import {TanstackKey} from "~/components/shared/types/tanstack";
 import { CONTRIBUTORS_API_SERVICE } from '~~/app/components/modules/widget/services/contributors.api.service'
 import {Widget} from "~/components/modules/widget/types/widget";
+import type { WidgetModel } from '~/components/modules/widget/config/widget.config';
 
-interface OrganizationsLeaderboardModel {
+interface OrganizationsLeaderboardModel extends WidgetModel {
   metric: string;
 }
 
@@ -91,25 +91,15 @@ const platform = computed(() => model.value?.metric?.split(':')[0]);
 const activityType = computed(() => model.value?.metric?.split(':')[1]);
 const isDrawerOpened = ref(false);
 
-const queryKey = computed(() => [
-  TanstackKey.ORGANIZATIONS_LEADERBOARD,
-  route.params.slug,
-  platform,
-  activityType,
-  selectedReposValues,
-  startDate,
-  endDate,
-  model.value.metric
-]);
-
-const queryFn = computed(() => CONTRIBUTORS_API_SERVICE.organizationLeaderboardQueryFn(() => ({
-  projectSlug: route.params.slug,
+const params = computed(() => ({
+  projectSlug: route.params.slug as string,
   platform: platform.value,
   activityType: activityType.value,
   repos: selectedReposValues.value,
   startDate: startDate.value,
   endDate: endDate.value,
-})));
+  includeCollaborations: model.value.includeCollaborations,
+}));
 
 const {
   data,
@@ -117,7 +107,7 @@ const {
   isError,
   status,
   suspense,
-} = CONTRIBUTORS_API_SERVICE.fetchOrganizationLeaderboard(queryKey, queryFn);
+} = CONTRIBUTORS_API_SERVICE.fetchOrganizationLeaderboard(params);
 
 const organizations = computed<OrganizationLeaderboard>(
   () => data.value?.pages[0] as OrganizationLeaderboard

@@ -70,7 +70,6 @@ import LfxContributorsTable from "~/components/modules/widget/components/contrib
 import contributorsLeaderboard
   from '~/components/modules/widget/config/contributor/contributors-leaderboard/contributors-leaderboard.config';
 import LfxDrawer from '~/components/uikit/drawer/drawer.vue';
-import {TanstackKey} from "~/components/shared/types/tanstack";
 import { CONTRIBUTORS_API_SERVICE } from '~~/app/components/modules/widget/services/contributors.api.service'
 
 const { startDate, endDate, selectedReposValues } = storeToRefs(useProjectStore())
@@ -98,25 +97,14 @@ const activityType = computed(() => metric.value.split(':')[1]);
 
 const { project } = storeToRefs(useProjectStore())
 
-const queryKey = computed(() => [
-  TanstackKey.CONTRIBUTORS_LEADERBOARD,
-  route.params.slug,
-  platform,
-  activityType,
-  selectedReposValues,
-  startDate,
-  endDate,
-  metric
-]);
-
-const queryFn = computed(() => CONTRIBUTORS_API_SERVICE.contributorLeaderboardQueryFn(() => ({
-  projectSlug: route.params.slug,
+const params = computed(() => ({
+  projectSlug: route.params.slug as string,
   platform: platform.value,
   activityType: activityType.value,
   repos: selectedReposValues.value,
   startDate: startDate.value,
   endDate: endDate.value,
-})));
+}));
 
 const {
   data,
@@ -126,7 +114,7 @@ const {
   fetchNextPage,
   isFetchingNextPage,
   suspense
-} = CONTRIBUTORS_API_SERVICE.fetchContributorLeaderboard(queryKey, queryFn);
+} = CONTRIBUTORS_API_SERVICE.fetchContributorLeaderboard(params);
 
 const contributors = computed<Contributor[]>(() => {
   if (!data.value) {
