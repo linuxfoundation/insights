@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 import { DateTime } from 'luxon'
 import ActiveDays from './active-days.vue'
-import type { WidgetConfig } from '~/components/modules/widget/config/widget.config'
+import type { WidgetConfig, WidgetModel } from '~/components/modules/widget/config/widget.config'
 import { Granularity } from '~~/types/shared/granularity'
 
 const activeDays: WidgetConfig = {
@@ -21,10 +21,10 @@ const activeDays: WidgetConfig = {
     title: 'Active Days',
     showOnOverview: true,
     isVisible: (
-      model: Record<string, number | boolean | string>,
+      model: WidgetModel,
       _selectedTimeRangeKey: string,
       startDate: string,
-      endDate: string
+      endDate: string,
     ) => {
       const start = DateTime.fromISO(startDate)
       const end = DateTime.fromISO(endDate)
@@ -74,8 +74,8 @@ const activeDays: WidgetConfig = {
   },
   copilot: {
     icon: 'people-group',
-    suggestions: 'Show me the active days'
-  }
+    suggestions: 'Show me the active days',
+  },
 }
 
 export default activeDays

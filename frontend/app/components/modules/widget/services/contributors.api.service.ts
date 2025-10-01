@@ -1,17 +1,17 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import type { QueryFunction } from '@tanstack/vue-query';
-import type { ComputedRef } from 'vue';
-import { useInfiniteQuery } from '@tanstack/vue-query';
+import type { QueryFunction } from '@tanstack/vue-query'
+import type { ComputedRef } from 'vue'
+import { useInfiniteQuery } from '@tanstack/vue-query'
 import type {
   ContributorLeaderboard,
-  OrganizationLeaderboard
-} from '~~/types/contributors/responses.types';
+  OrganizationLeaderboard,
+} from '~~/types/contributors/responses.types'
 
 class ContributorsApiService {
   fetchContributorLeaderboard(
     queryKey: ComputedRef,
-    queryFn: ComputedRef<QueryFunction<ContributorLeaderboard>>
+    queryFn: ComputedRef<QueryFunction<ContributorLeaderboard>>,
   ) {
     return useInfiniteQuery<ContributorLeaderboard>({
       queryKey,
@@ -19,42 +19,46 @@ class ContributorsApiService {
       // @ts-expect-error - queryFn is a computed ref
       queryFn,
       getNextPageParam: (lastPage) => {
-        const nextPage = lastPage.meta.offset + lastPage.meta.limit;
-        const totalRows = lastPage.meta.total;
-        return nextPage < totalRows ? nextPage : undefined;
-      }
-    });
+        const nextPage = lastPage.meta.offset + lastPage.meta.limit
+        const totalRows = lastPage.meta.total
+        return nextPage < totalRows ? nextPage : undefined
+      },
+    })
   }
 
   contributorLeaderboardQueryFn(
-    query: () => Record<string, string | number | boolean | undefined | string[] | null>
+    query: () => Record<string, string | number | boolean | undefined | string[] | null>,
   ): QueryFunction<ContributorLeaderboard> {
     const {
- projectSlug, platform, activityType, repos, startDate, endDate
-} = query();
+      projectSlug,
+      platform,
+      activityType,
+      repos,
+      startDate,
+      endDate,
+      includeCollaborations,
+    } = query()
     return async (context) => {
-      const pageParam = (context.pageParam || 0) as number;
+      const pageParam = (context.pageParam || 0) as number
 
-      return await $fetch(
-        `/api/project/${projectSlug}/contributors/contributor-leaderboard`,
-        {
-          params: {
-            platform,
-            activityType,
-            repos,
-            startDate,
-            endDate,
-            offset: pageParam,
-            limit: 10
-          }
-        }
-      );
-    };
+      return await $fetch(`/api/project/${projectSlug}/contributors/contributor-leaderboard`, {
+        params: {
+          platform,
+          activityType,
+          repos,
+          startDate,
+          endDate,
+          offset: pageParam,
+          limit: 10,
+          includeCollaborations,
+        },
+      })
+    }
   }
 
   fetchOrganizationLeaderboard(
     queryKey: ComputedRef,
-    queryFn: ComputedRef<QueryFunction<OrganizationLeaderboard>>
+    queryFn: ComputedRef<QueryFunction<OrganizationLeaderboard>>,
   ) {
     return useInfiniteQuery<OrganizationLeaderboard>({
       queryKey,
@@ -62,38 +66,42 @@ class ContributorsApiService {
       // @ts-expect-error - queryFn is a computed ref
       queryFn,
       getNextPageParam: (lastPage) => {
-        const nextPage = lastPage.meta.offset + lastPage.meta.limit;
-        const totalRows = lastPage.meta.total;
-        return nextPage < totalRows ? nextPage : undefined;
-      }
-    });
+        const nextPage = lastPage.meta.offset + lastPage.meta.limit
+        const totalRows = lastPage.meta.total
+        return nextPage < totalRows ? nextPage : undefined
+      },
+    })
   }
 
   organizationLeaderboardQueryFn(
-    query: () => Record<string, string | number | boolean | undefined | string[] | null>
+    query: () => Record<string, string | number | boolean | undefined | string[] | null>,
   ): QueryFunction<OrganizationLeaderboard> {
     const {
- projectSlug, platform, activityType, repos, startDate, endDate
-} = query();
+      projectSlug,
+      platform,
+      activityType,
+      repos,
+      startDate,
+      endDate,
+      includeCollaborations,
+    } = query()
     return async (context) => {
-      const pageParam = (context.pageParam || 0) as number;
+      const pageParam = (context.pageParam || 0) as number
 
-      return await $fetch(
-        `/api/project/${projectSlug}/contributors/organization-leaderboard`,
-        {
-          params: {
-            platform,
-            activityType,
-            repos,
-            startDate,
-            endDate,
-            offset: pageParam,
-            limit: 10
-          }
-        }
-      );
-    };
+      return await $fetch(`/api/project/${projectSlug}/contributors/organization-leaderboard`, {
+        params: {
+          platform,
+          activityType,
+          repos,
+          startDate,
+          endDate,
+          offset: pageParam,
+          limit: 10,
+          includeCollaborations,
+        },
+      })
+    }
   }
 }
 
-export const CONTRIBUTORS_API_SERVICE = new ContributorsApiService();
+export const CONTRIBUTORS_API_SERVICE = new ContributorsApiService()

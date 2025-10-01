@@ -65,8 +65,9 @@ import LfxContributorsTable from "~/components/modules/widget/components/contrib
 import {TanstackKey} from "~/components/shared/types/tanstack";
 import { CONTRIBUTORS_API_SERVICE } from '~~/app/components/modules/widget/services/contributors.api.service'
 import {Widget} from "~/components/modules/widget/types/widget";
+import type { WidgetModel } from '~/components/modules/widget/config/widget.config';
 
-interface ContributorLeaderboardModel {
+interface ContributorLeaderboardModel extends WidgetModel {
   metric: string;
 }
 
@@ -99,6 +100,7 @@ const queryKey = computed(() => [
   startDate,
   endDate,
   model.value.metric,
+  model.value.includeCollaborations,
 ]);
 
 const queryFn = computed(() => CONTRIBUTORS_API_SERVICE.contributorLeaderboardQueryFn(() => ({
@@ -108,6 +110,7 @@ const queryFn = computed(() => CONTRIBUTORS_API_SERVICE.contributorLeaderboardQu
   repos: selectedReposValues.value,
   startDate: startDate.value,
   endDate: endDate.value,
+  includeCollaborations: model.value.includeCollaborations,
 })));
 
 const {

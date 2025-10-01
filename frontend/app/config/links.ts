@@ -9,5 +9,6 @@ export const links = {
   issues: 'https://github.com/linuxfoundation/insights/issues',
   discussions: 'https://github.com/linuxfoundation/insights/discussions',
   copilotDocs: '/docs/introduction/what-is-insights/',
-  profileLink: 'https://openprofile.dev/'
-};
+  collaborationDocs: '/docs/introduction/contributions/',
+  profileLink: 'https://openprofile.dev/',
+}
