@@ -76,6 +76,7 @@ const activeDays: WidgetConfig = {
     icon: 'people-group',
     suggestions: 'Show me the active days',
   },
+  showCollabToggle: true,
 }
 
 export default activeDays
