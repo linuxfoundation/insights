@@ -17,8 +17,9 @@ SPDX-License-Identifier: MIT
             Purpose
           </h3>
           <p class="text-sm text-neutral-600 leading-5">
-            YAML security file provides a standardised way to document, assess, and share a project’s security practices,
-            ensuring consistency and alignment with the specification across repositories.
+            YAML security file provides a standardised way to document, assess, and share a
+            project's security practices, ensuring consistency and alignment with the
+            specification across repositories.
             <a
               href="https://github.com/ossf/security-insights"
               rel="noopener noreferrer"

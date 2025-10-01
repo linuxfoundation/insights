@@ -53,7 +53,6 @@ import {required, url} from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
 import LfxInput from "~/components/uikit/input/input.vue";
 import LfxField from "~/components/uikit/field/field.vue";
-import LfxTextarea from "~/components/uikit/textarea/textarea.vue";
 import LfxFieldMessages from "~/components/uikit/field/field-messages.vue";
 import LfxTag from "~/components/uikit/tag/tag.vue";
 
