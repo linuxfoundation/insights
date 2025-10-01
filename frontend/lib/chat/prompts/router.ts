@@ -41,16 +41,24 @@ ${toolsOverview}
 **MANDATORY: Before checking data sources, you MUST first verify if existing pipes can handle the query**
 
 **Step 1: Check Existing Tools (HIGHEST PRIORITY)**
-- **FIRST: For activity-count-related queries (stars count, forks count, commits count, etc.) → ALWAYS use activities_count or activities_cumulative_count pipes**
+- **FIRST: For activity-count-related queries (stars count, forks count, commits count, etc.) → Consider activities_count or activities_cumulative_count pipes**
 ${pipeToolQuestion}
-- IMPORTANT: Only the parameters listed in the tool's parameters are valid. You cannot add extra parameters.
-  - For example, adding a country code parameter to a tool that doesn't support it is invalid.
+- **MANDATORY VALIDATION: Before routing to pipes, verify the pipe can FULLY answer the question:**
+  - **Check dimensions/groupings:** Does the query ask for breakdowns the pipe doesn't support?
+    * Example: "commits by company" → activities_count cannot group by company → USE create_query
+    * Example: "stars by country" → activities_count cannot group by country → USE create_query
+  - **Check parameters:** Does the pipe accept all required parameters?
+    * IMPORTANT: Only the parameters listed in the tool's parameters are valid. You cannot add extra parameters.
+    * For example, adding a country code parameter to a tool that doesn't support it is invalid.
+  - **Check drilldowns:** Does the query need custom aggregations or drilldowns the pipe doesn't provide?
+  - **If a pipe EXISTS but CANNOT answer the specific question → route to "create_query" instead**
 - Can other available tools answer this question?
 - Can a combination of tools provide the answer?
 - **Can the SAME tool be used multiple times with different parameters to create comparisons?**
   - Example: activity tools can be called once for forks, once for stars to compare them
 - **When user refers to activities by their types, you can use activities_count or activities_cumulative_count pipes**
   - Activity types include: stars, forks, commits, pull requests, issues, etc.
+  - BUT only if the query doesn't require custom dimensions/groupings (see validation above)
 - **CRITICAL: For comparative questions (e.g., "this week vs last week", "forks vs stars", "current vs previous period"):**
   - Check if the same tool can be called multiple times with different parameters (time ranges, activity types, etc.)
   - Even if the question asks for a comparison, if the underlying data can be fetched using existing tools, choose "pipes"
@@ -58,7 +66,8 @@ ${pipeToolQuestion}
     * "active contributors this week vs last week" → use contributor tool twice with different date ranges
     * "cumulative forks vs stars last month" → use activity tools twice with different activity types
     * "active contributors vs organization this year" → active_contributors AND active_organization pipes
-- **If ANY existing tool can provide the data → ALWAYS choose "pipes" action**
+- **If existing tools can FULLY provide the data (including all dimensions and groupings) → choose "pipes" action**
+- **If tools exist but cannot provide required dimensions/groupings/drilldowns → choose "create_query" action**
 
 **Step 2: Check Data Sources (only if Step 1 is NO)**
 - Use list_datasources to examine available tables and fields
@@ -70,7 +79,7 @@ ${pipeToolQuestion}
 
 # ROUTING DECISIONS
 - "stop": The question cannot be answered with available data
-- "create_query": Custom SQL query needed using available data sources
+- "create_query": Custom SQL query needed using available data sources (tools can be empty)
 - "pipes": Existing tools can answer the question (specify which tools in the tools array)
 
 # IMPORTANT
