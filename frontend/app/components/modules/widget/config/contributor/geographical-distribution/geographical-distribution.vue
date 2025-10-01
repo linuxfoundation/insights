@@ -97,7 +97,6 @@ computed, onServerPrefetch, watch
 import { useRoute } from 'vue-router';
 import { storeToRefs } from "pinia";
 import pluralize from "pluralize";
-import {useQuery} from "@tanstack/vue-query";
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import { convertToChartData, getMaxValue } from '~/components/uikit/chart/helpers/chart-helpers';
@@ -110,17 +109,20 @@ import { getGeoMapChartConfig } from '~/components/uikit/chart/configs/geo-map.c
 import { formatNumber } from '~/components/shared/utils/formatter';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
 import { isEmptyData } from '~/components/shared/utils/helper';
-import {TanstackKey} from "~/components/shared/types/tanstack";
 import type {GeoMapData, GeoMapResponse }
   from "~/components/modules/widget/components/contributors/types/geo-map.types";
 import LfxActivitiesDropdown
   from "~/components/modules/widget/components/contributors/fragments/activities-dropdown.vue";
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
 import {Widget} from "~/components/modules/widget/types/widget";
+import { CONTRIBUTORS_API_SERVICE, type GeographicalDistributionQueryParams } 
+from '~~/app/components/modules/widget/services/contributors.api.service';
+  import type { WidgetModel } from '~/components/modules/widget/config/widget.config';
 
-interface GeographicalDistributionModel {
+interface GeographicalDistributionModel extends WidgetModel {
   metric: string;
   activeTab: string;
+  includeCollaborations?: boolean;
 }
 
 const props = defineProps<{
@@ -141,34 +143,20 @@ const platform = computed(() => model.value.metric.split(':')[0]);
 const activityType = computed(() => model.value.metric.split(':')[1]);
 const { startDate, endDate, selectedReposValues } = storeToRefs(useProjectStore())
 
-const queryKey = computed(() => [
-  TanstackKey.GEOGRAPHICAL_DISTRIBUTION,
-  route.params.slug,
-  model.value.activeTab,
-  platform.value,
-  activityType.value,
-  selectedReposValues,
-  startDate.value,
-  endDate.value,
-]);
-
-const fetchData = async () => $fetch(`/api/project/${route.params.slug}/contributors/geographical-distribution`, {
-  params: {
-    type: model.value.activeTab,
-    platform: platform.value,
-    activityType: activityType.value,
-    repos: selectedReposValues.value,
-    startDate: startDate.value,
-    endDate: endDate.value,
-  }
-});
+const params = computed<GeographicalDistributionQueryParams>(() => ({
+  projectSlug: route.params.slug as string,
+  type: model.value.activeTab,
+  platform: platform.value,
+  activityType: activityType.value,
+  repos: selectedReposValues.value,
+  startDate: startDate.value,
+  endDate: endDate.value,
+  includeCollaborations: model.value.includeCollaborations,
+}));
 
 const {
 data, status, error, suspense
-} = useQuery({
-  queryKey,
-  queryFn: fetchData,
-});
+} = CONTRIBUTORS_API_SERVICE.fetchGeographicalDistribution(params);
 
 onServerPrefetch(async () => {
   await suspense()

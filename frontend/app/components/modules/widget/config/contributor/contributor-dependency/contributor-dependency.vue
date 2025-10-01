@@ -60,21 +60,22 @@ computed, watch, onServerPrefetch
 } from 'vue';
 import { useRoute } from 'nuxt/app';
 import { storeToRefs } from "pinia";
-import {type QueryFunction, useQuery} from "@tanstack/vue-query";
 import type { ContributorDependency } from '~~/types/contributors/responses.types';
 import LfxAvatarGroup from '~/components/uikit/avatar-group/avatar-group.vue';
 import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
 import { isEmptyData } from '~/components/shared/utils/helper';
-import {TanstackKey} from "~/components/shared/types/tanstack";
 import LfxActivitiesDropdown
   from "~/components/modules/widget/components/contributors/fragments/activities-dropdown.vue";
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
 import LfxDependencyDisplay from "~/components/modules/widget/components/contributors/fragments/dependency-display.vue";
 import LfxContributorsTable from "~/components/modules/widget/components/contributors/fragments/contributors-table.vue";
 import {Widget} from "~/components/modules/widget/types/widget";
+import { CONTRIBUTORS_API_SERVICE, type LeaderboardQueryParams } 
+  from '~~/app/components/modules/widget/services/contributors.api.service';
+import type { WidgetModel } from '~/components/modules/widget/config/widget.config';
 
-interface ContributorDependencyModel {
+interface ContributorDependencyModel extends WidgetModel {
   metric: string;
 }
 
@@ -97,35 +98,20 @@ const { startDate, endDate, selectedReposValues } = storeToRefs(useProjectStore(
 const route = useRoute();
 const platform = computed(() => model.value.metric.split(':')[0]);
 const activityType = computed(() => model.value.metric.split(':')[1]);
-const queryKey = computed(() => [
-  TanstackKey.CONTRIBUTOR_DEPENDENCY,
-  route.params.slug,
-  platform,
-  activityType,
-  selectedReposValues,
-  startDate,
-  endDate
-]);
 
-const fetchData: QueryFunction<ContributorDependency> = async () => $fetch(
-    `/api/project/${route.params.slug}/contributors/contributor-dependency`,
-    {
-  params: {
-    platform: platform.value,
-    activityType: activityType.value,
-    repos: selectedReposValues.value,
-    startDate: startDate.value,
-    endDate: endDate.value
-  }
-}
-);
+const params = computed<LeaderboardQueryParams>(() => ({
+  projectSlug: route.params.slug as string,
+  platform: platform.value,
+  activityType: activityType.value,
+  repos: selectedReposValues.value,
+  startDate: startDate.value,
+  endDate: endDate.value,
+  includeCollaborations: model.value.includeCollaborations,
+}));
 
 const {
-data, status, error, suspense
-} = useQuery<ContributorDependency>({
-  queryKey,
-  queryFn: fetchData,
-});
+  data, status, error, suspense
+} = CONTRIBUTORS_API_SERVICE.fetchContributorDependency(params);
 
 onServerPrefetch(async () => {
   await suspense()
