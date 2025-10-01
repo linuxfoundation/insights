@@ -7,6 +7,12 @@ SPDX-License-Identifier: MIT
 <template>
   <div class="space-y-6">
     <div class="space-y-2">
+      <lfx-tag
+        size="small"
+        variation="neutral"
+      >
+        Project settings
+      </lfx-tag>
       <h2 class="text-lg font-semibold text-neutral-900 leading-7">
         Header Information
       </h2>
@@ -20,7 +26,17 @@ SPDX-License-Identifier: MIT
         label="Project URL"
         required
       >
-        <lfx-input v-model="model.header.url" />
+        <lfx-input
+          v-model="model.header.url"
+          :invalid="$v.header.url.$invalid && $v.header.url.$dirty"
+          @blur="$v.header.url.$touch()"
+          @change="$v.header.url.$touch()"
+        />
+
+        <lfx-field-messages
+          :validation="$v.header.url"
+          :error-messages="{ required: 'This field is required', url: 'Invalid URL' }"
+        />
         <template #description>
           The name of your project as you want it to appear in the YAML file.
         </template>
@@ -33,8 +49,13 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
+import {required, url} from "@vuelidate/validators";
+import useVuelidate from "@vuelidate/core";
 import LfxInput from "~/components/uikit/input/input.vue";
 import LfxField from "~/components/uikit/field/field.vue";
+import LfxTextarea from "~/components/uikit/textarea/textarea.vue";
+import LfxFieldMessages from "~/components/uikit/field/field-messages.vue";
+import LfxTag from "~/components/uikit/tag/tag.vue";
 
 const props = defineProps<{
   modelValue: object;
@@ -46,4 +67,15 @@ const model = computed<object>({
   get: () => props.modelValue,
   set: (value: object) => emit('update:modelValue', value)
 })
+
+const rules = {
+  header: {
+    url: {
+      required,
+      url,
+    }
+  }
+}
+
+const $v = useVuelidate(rules, model)
 </script>

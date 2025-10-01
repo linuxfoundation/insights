@@ -5,8 +5,15 @@ import type {YamlGenerationConfig} from "~/components/modules/project/config/yam
 import YamlHeaderInformation
     from "~/components/modules/project/config/yaml-generation/shared/yaml-header-information.vue";
 
-const repositoryProjectYamlGenerationConfig: YamlGenerationConfig = {
-    label: 'Multi-repository projects with centralized security policies',
+const childRepositoryYamlGenerationConfig: YamlGenerationConfig = {
+    label: 'Child repository',
+    icon: 'book',
+    description: 'Individual repositories in a multi-repository project.',
+    features: [
+        'Use in secondary repositories that inherit from a centralized configuration',
+        'Must include header.project-si-source URL pointing to the parent file',
+        'Reduces duplication while maintaining consistency across repositories'
+    ],
     steps: [
         {
             label: 'Header information',
@@ -19,19 +26,7 @@ const repositoryProjectYamlGenerationConfig: YamlGenerationConfig = {
             'last-updated': DateTime.now().toISODate(),
             'last-reviewed': DateTime.now().toISODate(),
             url: '',
-            comment:
-                'This file contains the minimum information for both project and repository.\n' +
-                'It not required to include both a project and repository section if the project\n' +
-                'section is intended to be inherited by repositories via header.project-si-source'
-        },
-        project: {
-            name: '',
-            administrators: [],
-            repositories: [],
-            'vulnerability-reporting': {
-                'reports-accepted': true,
-                'bug-bounty-available': true
-            }
+            'project-si-source': ''
         },
         repository: {
             url: '',
@@ -54,4 +49,4 @@ const repositoryProjectYamlGenerationConfig: YamlGenerationConfig = {
     }
 }
 
-export default repositoryProjectYamlGenerationConfig;
+export default childRepositoryYamlGenerationConfig;

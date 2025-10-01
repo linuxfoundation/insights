@@ -5,8 +5,16 @@ import type {YamlGenerationConfig} from "~/components/modules/project/config/yam
 import YamlHeaderInformation
     from "~/components/modules/project/config/yaml-generation/shared/yaml-header-information.vue";
 
-const fullYamlGenerationConfig: YamlGenerationConfig = {
-    label: 'Comprehensive security documentation and planning',
+const comprehensiveYamlGenerationConfig: YamlGenerationConfig = {
+    label: 'Comprehensive',
+    icon: 'file-shield',
+    recommended: true,
+    description: 'Comprehensive security documentation and planning.',
+    features: [
+        'Use as a reference for all possible specification sections',
+        'Ideal for identifying areas for future improvement',
+        'Helps plan long-term security investments and prioritization'
+    ],
     steps: [
         {
             label: 'Header information',
@@ -105,4 +113,4 @@ const fullYamlGenerationConfig: YamlGenerationConfig = {
     }
 }
 
-export default fullYamlGenerationConfig;
+export default comprehensiveYamlGenerationConfig;

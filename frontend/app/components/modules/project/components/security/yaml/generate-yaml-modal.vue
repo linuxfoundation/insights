@@ -17,7 +17,7 @@ SPDX-License-Identifier: MIT
       <div class="w-2/3 flex flex-col">
         <!-- Header -->
         <div class="border-b border-neutral-200 px-6 pt-4 pb-5">
-          <div class="flex justify-between items-center mb-3">
+          <div class="flex justify-between items-center">
             <h1 class="text-2xl font-secondary font-bold text-neutral-900 leading-8">
               Generate YAML security file
             </h1>
@@ -26,13 +26,24 @@ SPDX-License-Identifier: MIT
               @click="isModalOpen = false"
             />
           </div>
-          <div class="flex flex-col gap-2">
-            <p class="text-sm text-neutral-600 leading-5">
-              <span v-if="type && step >= 0">Step {{step + 1}}/{{steps.length + 1}} -</span>
-              <span v-if="!type || step < 0">Select a type</span>
-              <span v-else-if="step < steps.length">{{ currentStep?.label }}</span>
-              <span v-else>Preview & Download</span>
-            </p>
+          <div
+            v-if="type && step >= 0"
+            class="flex flex-col gap-2 mt-3"
+          >
+            <div class="flex items-center gap-3">
+              <lfx-tag
+                size="small"
+                class="bg-neutral-200 text-neutral-600"
+              >
+                {{ config.label }}
+              </lfx-tag>
+              <p class="text-sm text-neutral-600 leading-5">
+                <span v-if="type && step >= 0">Step {{step + 1}}/{{steps.length + 1}} - </span>
+                <span v-if="!type || step < 0">Choose YAML file template</span>
+                <span v-else-if="step < steps.length">{{ currentStep?.label }}</span>
+                <span v-else>Preview & Download</span>
+              </p>
+            </div>
             <div class="relative">
               <div class="bg-brand-50 h-1.5 rounded-full w-full" />
               <div
@@ -65,7 +76,6 @@ SPDX-License-Identifier: MIT
 
         <!-- Footer -->
         <div
-          v-if="type"
           class="border-t border-neutral-200 px-6 py-4"
         >
           <div class="flex items-center justify-between">
@@ -80,10 +90,11 @@ SPDX-License-Identifier: MIT
             </lfx-button>
             <div class="flex-grow" />
             <div class="flex items-center gap-3">
-              <template v-if="type && step < steps.length">
+              <template v-if="step < steps.length">
                 <lfx-button
                   button-style="pill"
                   type="primary"
+                  :disabled="!type || $v.$invalid"
                   @click="step += 1"
                 >
                   Next
@@ -117,6 +128,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import {computed, onMounted, watch} from 'vue'
+import useVuelidate from "@vuelidate/core";
 import LfxModal from '~/components/uikit/modal/modal.vue'
 import LfxButton from '~/components/uikit/button/button.vue'
 import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue'
@@ -131,6 +143,7 @@ import {
   yamlGenerationConfig, type YamlGenerationStep
 } from "~/components/modules/project/config/yaml-generation/yaml-generation.config";
 import {getYaml} from "~/components/modules/project/services/js-yaml";
+import LfxTag from "~/components/uikit/tag/tag.vue";
 
 const props = withDefaults(defineProps<{
   modelValue: boolean
@@ -148,7 +161,7 @@ const isModalOpen = computed({
 })
 
 const type = ref('');
-const step = ref(0);
+const step = ref(-1);
 const form = ref({});
 
 const copyToClipboard = async () => {
@@ -176,6 +189,8 @@ const downloadYamlFile = () => {
   }
 }
 
+const $v = useVuelidate({}, form);
+
 const config = computed<YamlGenerationConfig | null>(() => {
   return yamlGenerationConfig[type.value] || null;
 })
@@ -191,7 +206,6 @@ const currentStep = computed<YamlGenerationStep | null>(() => {
 
 watch(type, (newType: string) => {
   form.value = {...(yamlGenerationConfig[newType]?.template || {})};
-  step.value = 0;
 })
 
 onMounted(() => {

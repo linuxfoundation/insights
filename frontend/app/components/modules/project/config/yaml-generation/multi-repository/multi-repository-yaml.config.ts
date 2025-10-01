@@ -5,8 +5,15 @@ import type {YamlGenerationConfig} from "~/components/modules/project/config/yam
 import YamlHeaderInformation
     from "~/components/modules/project/config/yaml-generation/shared/yaml-header-information.vue";
 
-const minimumYamlGenerationConfig: YamlGenerationConfig = {
-    label: 'Starting out with a single repository project',
+const multiRepositoryYamlGenerationConfig: YamlGenerationConfig = {
+    label: 'Multi-repository',
+    icon: 'folder-tree',
+    description: 'Multi-repository projects with centralized security policies.',
+    features: [
+        'Use as the master security insights file in your main repository',
+        'Define detailed, reusable project security configurations',
+        'Must be accessible via unauthenticated GET request returning text/plain or application/yaml'
+    ],
     steps: [
         {
             label: 'Header information',
@@ -28,7 +35,10 @@ const minimumYamlGenerationConfig: YamlGenerationConfig = {
             name: '',
             administrators: [],
             repositories: [],
-            'vulnerability-reporting': {}
+            'vulnerability-reporting': {
+                'reports-accepted': true,
+                'bug-bounty-available': true
+            }
         },
         repository: {
             url: '',
@@ -36,7 +46,10 @@ const minimumYamlGenerationConfig: YamlGenerationConfig = {
             'accepts-change-request': true,
             'accepts-automated-change-request': true,
             'core-team': [],
-            license: {},
+            license: {
+                url: '',
+                expression: ''
+            },
             security: {
                 assessments: {
                     self: {
@@ -48,4 +61,4 @@ const minimumYamlGenerationConfig: YamlGenerationConfig = {
     }
 }
 
-export default minimumYamlGenerationConfig;
+export default multiRepositoryYamlGenerationConfig;

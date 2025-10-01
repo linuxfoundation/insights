@@ -17,8 +17,16 @@ SPDX-License-Identifier: MIT
             Purpose
           </h3>
           <p class="text-sm text-neutral-600 leading-5">
-            Generate a security metadata file to enable automated security assessments
-            and provide clear contact information of your GitHub repository.
+            YAML security file provides a standardised way to document, assess, and share a project’s security practices,
+            ensuring consistency and alignment with the specification across repositories.
+            <a
+              href="https://github.com/ossf/security-insights"
+              rel="noopener noreferrer"
+              target="_blank"
+              class="text-brand-500"
+            >
+              Learn more
+            </a>
           </p>
         </div>
 

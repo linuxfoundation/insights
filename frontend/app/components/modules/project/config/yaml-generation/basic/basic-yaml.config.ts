@@ -5,8 +5,15 @@ import type {YamlGenerationConfig} from "~/components/modules/project/config/yam
 import YamlHeaderInformation
     from "~/components/modules/project/config/yaml-generation/shared/yaml-header-information.vue";
 
-const repositoryProjectReuseYamlGenerationConfig: YamlGenerationConfig = {
-    label: 'Individual repositories in a multi-repo project',
+const basicYamlGenerationConfig: YamlGenerationConfig = {
+    label: 'Basic',
+    icon: 'file-circle-check',
+    description: 'Starting out with a single repository project.',
+    features: [
+        'Use when you want to get up and running quickly',
+        'Best for projects just beginning to adopt the specification',
+        'Provides basic security insights coverage',
+    ],
     steps: [
         {
             label: 'Header information',
@@ -19,7 +26,16 @@ const repositoryProjectReuseYamlGenerationConfig: YamlGenerationConfig = {
             'last-updated': DateTime.now().toISODate(),
             'last-reviewed': DateTime.now().toISODate(),
             url: '',
-            'project-si-source': ''
+            comment:
+                'This file contains the minimum information for both project and repository.\n' +
+                'It not required to include both a project and repository section if the project\n' +
+                'section is intended to be inherited by repositories via header.project-si-source'
+        },
+        project: {
+            name: '',
+            administrators: [],
+            repositories: [],
+            'vulnerability-reporting': {}
         },
         repository: {
             url: '',
@@ -27,10 +43,7 @@ const repositoryProjectReuseYamlGenerationConfig: YamlGenerationConfig = {
             'accepts-change-request': true,
             'accepts-automated-change-request': true,
             'core-team': [],
-            license: {
-                url: '',
-                expression: ''
-            },
+            license: {},
             security: {
                 assessments: {
                     self: {
@@ -42,4 +55,4 @@ const repositoryProjectReuseYamlGenerationConfig: YamlGenerationConfig = {
     }
 }
 
-export default repositoryProjectReuseYamlGenerationConfig;
+export default basicYamlGenerationConfig;

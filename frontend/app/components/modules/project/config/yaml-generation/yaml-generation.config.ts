@@ -1,10 +1,10 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import type {Component} from "vue";
-import minimum from './minimum/minimum-yaml.config'
-import full from './full/full-yaml.config'
-import repositoryProject from './repository-project/repository-project-yaml.config'
-import repositoryProjectReuse from './repository-project-reuse/repository-project-reuse-yaml.config'
+import basic from './basic/basic-yaml.config'
+import comprehensive from './comprehensive/comprehensive-yaml.config'
+import multiRepository from './multi-repository/multi-repository-yaml.config'
+import childRepository from './child-repository/child-repository-yaml.config'
 
 export interface YamlGenerationStep {
     label: string; // Name of the step
@@ -12,13 +12,17 @@ export interface YamlGenerationStep {
 }
 export interface YamlGenerationConfig {
     label: string; // Name of the configuration displayed in the first selector
+    icon: string; // Icon to display for the yaml file type
+    recommended?: boolean;
+    description?: string; // Description of the configuration
+    features?: string[]; // List of features/benefits
     steps: YamlGenerationStep[]; // list of steps
     template: object; // starting template with all the defaults
 }
 
 export const yamlGenerationConfig: Record<string, YamlGenerationConfig> = {
-    minimum,
-    full,
-    repositoryProject,
-    repositoryProjectReuse,
+    basic,
+    comprehensive,
+    multiRepository,
+    childRepository,
 }
