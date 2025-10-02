@@ -31,7 +31,6 @@ Contributions are used to understand individual impact, engagement patterns, and
 - `message_in_topic` – Posted a message in an existing topic.
 
 ### **Gerrit**
-- `changeset-new` – Started a new code review change.
 - `changeset-created` – Submitted a new changeset.
 - `changeset-merged` – Merged a code change into the main branch.
 - `changeset-closed` – Closed a code review.

@@ -10,10 +10,6 @@ export const gerrit: PlatformConfig = {
   image: '/images/integrations/gerrit.png',
   activityTypes: [
     {
-      key: ActivityTypes.CHANGESET_NEW,
-      label: 'Created a changeset'
-    },
-    {
       key: ActivityTypes.CHANGESET_CREATED,
       label: 'Created a changeset'
     },
