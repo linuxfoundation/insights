@@ -30,6 +30,7 @@ SPDX-License-Identifier: MIT
           <lfx-activities-dropdown
             v-model="metric"
             full-width
+            :include-collaborations="model.includeCollaborations"
           />
         </div>
 

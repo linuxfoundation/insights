@@ -13,6 +13,7 @@ SPDX-License-Identifier: MIT
         v-model="model.metric"
         full-width
         :snapshot="props.snapshot"
+        :include-collaborations="model.includeCollaborations"
       />
     </div>
     <lfx-project-load-state

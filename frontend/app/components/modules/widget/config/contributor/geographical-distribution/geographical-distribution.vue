@@ -23,6 +23,7 @@ SPDX-License-Identifier: MIT
           :match-width="false"
           width="25rem"
           :snapshot="props.snapshot"
+          :include-collaborations="model.includeCollaborations"
         />
       </div>
     </div>
