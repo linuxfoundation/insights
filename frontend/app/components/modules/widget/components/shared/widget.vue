@@ -22,18 +22,49 @@ SPDX-License-Identifier: MIT
           @update:is-menu-open="isMenuOpen = $event"
         />
       </div>
-      <p
-        v-if="project"
-        class="text-body-2 text-neutral-500 mb-5"
-      >
-        <span v-html="sanitize(config.description(project))" />
-        <a
-          v-if="config.learnMoreLink"
-          :href="config.learnMoreLink"
-          class="ml-1 text-brand-500"
-          target="_blank"
-        >Learn more</a>
-      </p>
+      <div class="mb-5 flex sm:items-end items-start justify-between sm:gap-8 gap-5 sm:flex-row flex-col">
+        <p
+          v-if="project"
+          class="text-body-2 text-neutral-500"
+        >
+          <span v-html="sanitize(config.description(project))" />
+          <a
+            v-if="config.learnMoreLink"
+            :href="config.learnMoreLink"
+            class="ml-1 text-brand-500"
+            target="_blank"
+          >Learn more</a>
+        </p>
+        <div
+          v-if="config.showCollabToggle"
+          class="flex items-center gap-1"
+        >
+          <lfx-toggle
+            v-model="includeCollaborations"
+            size="small"
+          >
+            Include collaborations
+          </lfx-toggle>
+          <lfx-tooltip>
+            <template #content>
+              <p>
+                Collaborations refer to activities associated with engagement or<br>coordination with others, 
+                and don’t reflect technical-driven<br>impact. 
+                <a
+                  :href="links.collaborationDocs"
+                  target="_blank"
+                  class="text-brand-500"
+                >Learn more</a>
+              </p>
+            </template>
+            <lfx-icon
+              name="question-circle"
+              :size="13"
+              class="text-neutral-400"
+            />
+          </lfx-tooltip>
+        </div>
+      </div>
       <hr>
       <component
         :is="config.component"
@@ -45,7 +76,7 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script lang="ts" setup>
-import {computed} from "vue";
+import {computed, ref} from "vue";
 import {storeToRefs} from "pinia";
 import LfxCard from "~/components/uikit/card/card.vue";
 import type {Widget} from "~/components/modules/widget/types/widget";
@@ -55,6 +86,10 @@ import LfxWidgetMenu from "~/components/modules/widget/components/shared/widget-
 import {useSanitize} from "~~/composables/useSanitize";
 import type { BenchmarkScoreData, HealthScoreResults } from '~~/types/overview/responses.types';
 import LfxBenchmarksWrap from "~/components/uikit/benchmarks/benchmarks-wrap.vue";
+import LfxToggle from "~/components/uikit/toggle/toggle.vue";
+import LfxTooltip from "~/components/uikit/tooltip/tooltip.vue";
+import LfxIcon from "~/components/uikit/icon/icon.vue";
+import { links } from '~/config/links';
 
 const emit = defineEmits<{(e: 'dataLoaded', value: string): void;
 }>();
@@ -67,7 +102,13 @@ const {sanitize} = useSanitize();
 
 const config = computed<WidgetConfig>(() => lfxWidgets[props.name]);
 
-const model = ref(config.value.defaultValue || {})
+const model = ref(config.value.defaultValue || {});
+const includeCollaborations = computed({
+  get: () => model.value.includeCollaborations || false,
+  set: (value) => {
+    model.value.includeCollaborations = value;
+  }
+});
 const isMenuOpen = ref(false);
 
 const { project } = storeToRefs(useProjectStore());

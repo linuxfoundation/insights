@@ -11,7 +11,8 @@ const activeOrganizations: WidgetConfig = {
     learnMoreLink: `/docs/metrics/contributors#active-organizations`,
     component: ActiveOrganizations,
     defaultValue: {
-        activeTab: Granularity.WEEKLY
+        activeTab: Granularity.WEEKLY,
+        includeCollaborations: false,
     },
     share: true,
     embed: true,
@@ -20,6 +21,7 @@ const activeOrganizations: WidgetConfig = {
         icon: 'people-group',
         suggestions: 'How many active organizations are there?'
     },
+    showCollabToggle: true,
 }
 
 export default activeOrganizations;

@@ -13,6 +13,7 @@ SPDX-License-Identifier: MIT
         v-model="model.metric"
         full-width
         :snapshot="props.snapshot"
+        :include-collaborations="model.includeCollaborations"
       />
     </div>
     <lfx-project-load-state
@@ -20,6 +21,7 @@ SPDX-License-Identifier: MIT
       :error="error"
       error-message="Error fetching organization dependency"
       :is-empty="isEmpty"
+      use-min-height
     >
 
       <lfx-dependency-display
@@ -54,17 +56,15 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import {
- computed, watch, onServerPrefetch
+computed, watch, onServerPrefetch
 } from 'vue';
 import { useRoute } from 'nuxt/app';
 import { storeToRefs } from "pinia";
-import {type QueryFunction, useQuery} from "@tanstack/vue-query";
 import type { OrganizationDependency } from '~~/types/contributors/responses.types';
 import LfxAvatarGroup from '~/components/uikit/avatar-group/avatar-group.vue';
 import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
 import { isEmptyData } from '~/components/shared/utils/helper';
-import {TanstackKey} from "~/components/shared/types/tanstack";
 import LfxActivitiesDropdown
   from "~/components/modules/widget/components/contributors/fragments/activities-dropdown.vue";
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
@@ -72,8 +72,11 @@ import LfxDependencyDisplay from "~/components/modules/widget/components/contrib
 import LfxOrganizationsTable
   from "~/components/modules/widget/components/contributors/fragments/organizations-table.vue";
 import {Widget} from "~/components/modules/widget/types/widget";
+import { CONTRIBUTORS_API_SERVICE, type LeaderboardQueryParams } 
+    from '~~/app/components/modules/widget/services/contributors.api.service';
+import type { WidgetModel } from '~/components/modules/widget/config/widget.config';
 
-interface OrganizationDependencyModel {
+interface OrganizationDependencyModel extends WidgetModel {
   metric: string;
 }
 
@@ -96,35 +99,20 @@ const { startDate, endDate, selectedReposValues } = storeToRefs(useProjectStore(
 const route = useRoute();
 const platform = computed(() => model.value.metric.split(':')[0]);
 const activityType = computed(() => model.value.metric.split(':')[1]);
-const queryKey = computed(() => [
-  TanstackKey.ORGANIZATION_DEPENDENCY,
-  route.params.slug,
-  platform,
-  activityType,
-  selectedReposValues,
-  startDate,
-  endDate,
-]);
 
-const fetchData: QueryFunction<OrganizationDependency> = async () => $fetch(
-    `/api/project/${route.params.slug}/contributors/organization-dependency`,
-    {
-  params: {
-    platform: platform.value,
-    activityType: activityType.value,
-    repos: selectedReposValues.value,
-    startDate: startDate.value,
-    endDate: endDate.value,
-  }
-}
-);
+const params = computed<LeaderboardQueryParams>(() => ({
+  projectSlug: route.params.slug as string,
+  platform: platform.value,
+  activityType: activityType.value,
+  repos: selectedReposValues.value,
+  startDate: startDate.value,
+  endDate: endDate.value,
+  includeCollaborations: model.value.includeCollaborations,
+}));
 
 const {
-data, status, error, suspense
-} = useQuery<OrganizationDependency>({
-  queryKey,
-  queryFn: fetchData,
-});
+  data, status, error, suspense
+} = CONTRIBUTORS_API_SERVICE.fetchOrganizationDependency(params);
 
 onServerPrefetch(async () => {
   await suspense()

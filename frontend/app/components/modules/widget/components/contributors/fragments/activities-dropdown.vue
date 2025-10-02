@@ -70,7 +70,7 @@ SPDX-License-Identifier: MIT
   >
     <img
       v-if="selected.platform !== 'all'"
-      :src="getIcon(selected?.platform)"
+      :src="getIcon(selected?.platform!)"
       class="w-4 h-4"
     >
     <lfx-icon
@@ -80,6 +80,7 @@ SPDX-License-Identifier: MIT
     />
     <p class="text-sm font-medium">
       {{ selected.label || 'All activities' }}
+      {{ includeCollaborations ? ' and collaborations' : '' }}
     </p>
   </div>
 </template>
@@ -101,6 +102,7 @@ const props = withDefaults(defineProps<{
   modelValue: string;
   fullWidth?: boolean
   snapshot?: boolean;
+  includeCollaborations?: boolean;
 }>(), {
   fullWidth: true,
   snapshot: false,

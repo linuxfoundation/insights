@@ -1,0 +1,94 @@
+.c-toggle {
+  @apply inline-flex items-center gap-1.5 cursor-pointer select-none;
+
+  &__input {
+    @apply sr-only;
+  }
+
+  &__slider {
+    @apply relative inline-block transition-all duration-200 ease-in-out;
+    @apply bg-neutral-200;
+    @apply flex items-center;
+
+    // Default medium size
+    @apply w-11 h-6 rounded-full;
+
+    // Small size
+    .c-toggle--small & {
+      @apply w-5 h-3;
+    }
+
+    // Large size
+    .c-toggle--large & {
+      @apply w-14 h-7;
+    }
+  }
+
+  &__thumb {
+    @apply absolute bg-white rounded-full transition-all duration-200 ease-in-out;
+    @apply shadow-sm;
+
+    // Default medium size
+    @apply w-5 h-5 left-0.5;
+
+    // Small size
+    .c-toggle--small & {
+      @apply w-2 h-2 left-0.5;
+    }
+
+    // Large size
+    .c-toggle--large & {
+      @apply w-6 h-6 left-0.5;
+    }
+  }
+
+  &__label {
+    @apply text-xs text-neutral-900 text-nowrap;
+  }
+
+  // Checked state
+  &__input:checked + &__slider {
+    @apply bg-brand-500;
+
+    .c-toggle__thumb {
+      // Default medium size
+      @apply translate-x-5;
+
+      // Small size
+      .c-toggle--small & {
+        @apply translate-x-2;
+      }
+
+      // Large size
+      .c-toggle--large & {
+        @apply translate-x-7;
+      }
+    }
+  }
+
+
+  // Disabled state
+  &--disabled {
+    @apply cursor-not-allowed opacity-50;
+
+    .c-toggle__slider {
+      @apply bg-neutral-100;
+    }
+
+    .c-toggle__thumb {
+      @apply bg-neutral-200;
+    }
+
+    .c-toggle__label {
+      @apply text-neutral-400;
+    }
+
+    .c-toggle__input:checked + .c-toggle__slider {
+      @apply bg-neutral-300;
+
+      .c-toggle__thumb {
+        @apply bg-neutral-100;
+      }
+    }
+  }
+}

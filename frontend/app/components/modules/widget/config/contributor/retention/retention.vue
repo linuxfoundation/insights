@@ -46,11 +46,10 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed, watch } from 'vue';
+import { computed, watch, onServerPrefetch } from 'vue';
 import { useRoute } from 'vue-router';
 import { storeToRefs } from "pinia";
 import { DateTime } from 'luxon';
-import {type QueryFunction, useQuery} from "@tanstack/vue-query";
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import { convertToChartData, currentInterval } from '~/components/uikit/chart/helpers/chart-helpers';
@@ -65,11 +64,13 @@ import { useProjectStore } from "~/components/modules/project/store/project.stor
 import { isEmptyData } from '~/components/shared/utils/helper';
 import type { Retention } from '~~/types/contributors/responses.types';
 import { Granularity } from '~~/types/shared/granularity';
-import {TanstackKey} from "~/components/shared/types/tanstack";
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
 import {Widget} from "~/components/modules/widget/types/widget";
+import { CONTRIBUTORS_API_SERVICE, type RetentionQueryParams } 
+  from '~~/app/components/modules/widget/services/contributors.api.service';
+import type { WidgetModel } from '~/components/modules/widget/config/widget.config';
 
-interface RetentionModel {
+interface RetentionModel extends WidgetModel {
   activeTab: string;
 }
 
@@ -106,33 +107,23 @@ const isBelowThreshold = computed(() => {
 
 const granularity = Granularity.QUARTERLY;
 
-const queryKey = computed(() => [
-  TanstackKey.RETENTION,
-  route.params.slug,
+const params = computed<RetentionQueryParams>(() => ({
+  projectSlug: route.params.slug as string,
   granularity,
-  model.value.activeTab,
-  selectedReposValues,
-  startDate.value,
-  endDate.value,
-]);
+  type: model.value.activeTab,
+  repos: selectedReposValues.value,
+  startDate: startDate.value,
+  endDate: endDate.value,
+  includeCollaborations: model.value.includeCollaborations,
+}));
 
-const fetchData: QueryFunction<Retention[]> = async () => $fetch(
-    `/api/project/${route.params.slug}/contributors/retention`,
-    {
-  params: {
-    granularity,
-    type: model.value.activeTab,
-    repos: selectedReposValues.value,
-    startDate: startDate.value,
-    endDate: endDate.value,
-  }
-}
-);
+const {
+  data, status, error, suspense
+} = CONTRIBUTORS_API_SERVICE.fetchRetention(params);
 
-const {data, status, error} = useQuery<Retention[]>({
-  queryKey,
-  queryFn: fetchData,
-});
+onServerPrefetch(async () => {
+  await suspense()
+})
 
 const retention = computed<Retention[]>(() => data.value as Retention[]);
 

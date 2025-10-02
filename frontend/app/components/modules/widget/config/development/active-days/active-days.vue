@@ -79,7 +79,6 @@ import {
  ref, computed, watch, onServerPrefetch
 } from 'vue';
 import { storeToRefs } from "pinia";
-import {type QueryFunction, useQuery} from "@tanstack/vue-query";
 import type { ActiveDays } from '~~/types/development/responses.types';
 import type { Summary } from '~~/types/shared/summary.types';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
@@ -99,16 +98,20 @@ import { isEmptyData } from '~/components/shared/utils/helper';
 import { lineGranularities } from '~/components/shared/types/granularity';
 import { dateOptKeys } from '~/components/modules/project/config/date-options';
 import { Granularity } from '~~/types/shared/granularity';
-import {TanstackKey} from "~/components/shared/types/tanstack";
 import LfxSkeletonState from "~/components/modules/project/components/shared/skeleton-state.vue";
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
 import {Widget} from "~/components/modules/widget/types/widget";
+import { DEVELOPMENT_API_SERVICE, type QueryParams } 
+  from '~/components/modules/widget/services/development.api.service';
+import type { WidgetModel } from '~/components/modules/widget/config/widget.config';
 
-interface ActiveDaysModel {
+interface ActiveDaysModel extends WidgetModel  {
   granularity: Granularity;
+  includeCollaborations?: boolean;
 }
 
 const props = defineProps<{
+  modelValue?: ActiveDaysModel,
   snapshot?: boolean;
 }>()
 
@@ -116,6 +119,11 @@ const emit = defineEmits<{
 (e: 'dataLoaded', value: string): void;
 (e: 'update:modelValue', value: ActiveDaysModel): void
 }>();
+
+const model = computed<ActiveDaysModel>({
+  get: () => props.modelValue || { granularity: Granularity.DAILY },
+  set: (value) => emit('update:modelValue', value)
+})
 
 const {
   startDate, endDate, selectedReposValues, selectedTimeRangeKey, customRangeGranularity
@@ -139,33 +147,19 @@ const granularityDisplay = computed(() => {
       return 'day';
   }
 });
-const queryKey = computed(() => [
-  TanstackKey.ACTIVE_DAYS,
-  route.params.slug,
-  granularity.value,
-  selectedReposValues.value,
-  startDate.value,
-  endDate.value,
-]);
 
-const fetchData: QueryFunction<ActiveDays> = async () => $fetch(
-    `/api/project/${route.params.slug}/development/active-days`,
-    {
-      params: {
-        granularity: granularity.value,
-        repos: selectedReposValues.value,
-        startDate: startDate.value,
-        endDate: endDate.value,
-      },
-    }
-);
+const params = computed<QueryParams>(() => ({
+  projectSlug: route.params.slug as string,
+  granularity: granularity.value,
+  repos: selectedReposValues.value,
+  startDate: startDate.value,
+  endDate: endDate.value,
+  includeCollaborations: model.value.includeCollaborations,
+}));
 
 const {
-data, status, error, suspense
-} = useQuery<ActiveDays>({
-  queryKey,
-  queryFn: fetchData,
-});
+  data, status, error, suspense
+} = DEVELOPMENT_API_SERVICE.fetchActiveDays(params);
 
 onServerPrefetch(async () => {
   await suspense();
@@ -204,7 +198,7 @@ watch(status, (value) => {
 });
 
 watch(granularity, (value) => {
-  emit('update:modelValue', { granularity: value });
+  emit('update:modelValue', { granularity: value, includeCollaborations: model.value.includeCollaborations });
 }, { immediate: true });
 </script>
 

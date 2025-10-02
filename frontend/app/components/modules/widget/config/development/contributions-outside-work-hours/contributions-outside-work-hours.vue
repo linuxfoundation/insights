@@ -95,7 +95,6 @@ import {
  ref, computed, onServerPrefetch, watch
 } from 'vue';
 import { storeToRefs } from "pinia";
-import {useQuery} from "@tanstack/vue-query";
 import type { ContributionOutsideHours } from '~~/types/development/responses.types';
 import type { Summary } from '~~/types/shared/summary.types';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
@@ -112,12 +111,15 @@ import { formatNumber } from '~/components/shared/utils/formatter';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
 import { isEmptyData } from '~/components/shared/utils/helper';
 import { dateOptKeys } from '~/components/modules/project/config/date-options';
-import {TanstackKey} from "~/components/shared/types/tanstack";
 import LfxSkeletonState from "~/components/modules/project/components/shared/skeleton-state.vue";
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
 import {Widget} from "~/components/modules/widget/types/widget";
+import { DEVELOPMENT_API_SERVICE, type QueryParams } 
+  from '~/components/modules/widget/services/development.api.service';
+import type { WidgetModel } from '~/components/modules/widget/config/widget.config';
 
 const props = defineProps<{
+  modelValue?: WidgetModel,
   snapshot?: boolean;
 }>()
 
@@ -131,28 +133,18 @@ const {
 
 const route = useRoute();
 
-const queryKey = computed(() => [
-  TanstackKey.CONTRIBUTIONS_OUTSIDE_WORK_HOURS,
-  route.params.slug,
-  selectedReposValues.value,
-  startDate.value,
-  endDate.value,
-]);
-
-const fetchData = async () => $fetch(`/api/project/${route.params.slug}/development/contribution-outside`, {
-  params: {
-    repos: selectedReposValues.value,
-    startDate: startDate.value,
-    endDate: endDate.value,
-  },
-});
+const params = computed<QueryParams>(() => ({
+  projectSlug: route.params.slug as string,
+  granularity: '', // Not needed for contributions outside work hours
+  repos: selectedReposValues.value,
+  startDate: startDate.value,
+  endDate: endDate.value,
+  includeCollaborations: props.modelValue?.includeCollaborations,
+}));
 
 const {
   data, status, error, suspense
-} = useQuery({
-  queryKey,
-  queryFn: fetchData,
-});
+} = DEVELOPMENT_API_SERVICE.fetchContributionsOutsideWorkHours(params);
 
 onServerPrefetch(async () => {
   await suspense();

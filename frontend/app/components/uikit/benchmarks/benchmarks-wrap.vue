@@ -21,7 +21,7 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { computed } from 'vue';
 import { storeToRefs } from 'pinia';
-import type { WidgetBenchmarkConfig } from '~~/app/components/modules/widget/config/widget.config';
+import type { WidgetBenchmarkConfig, WidgetModel } from '~~/app/components/modules/widget/config/widget.config';
 import LfxBenchmark from '~/components/uikit/benchmarks/benchmarks.vue';
 import { useProjectStore } from '~~/app/components/modules/project/store/project.store';
 import { dateOptKeys } from '~/components/modules/project/config/date-options';
@@ -29,7 +29,7 @@ import { dateOptKeys } from '~/components/modules/project/config/date-options';
 const props = withDefaults(defineProps<{
   benchmarkConfig?: WidgetBenchmarkConfig | undefined;
   point: number;
-  widgetModel: Record<string, number | boolean | string>;
+  widgetModel: WidgetModel;
 }>(), {
   benchmarkConfig: undefined
 });

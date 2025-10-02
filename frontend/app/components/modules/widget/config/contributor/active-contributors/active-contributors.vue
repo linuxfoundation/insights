@@ -57,7 +57,6 @@ import {
   ref, computed, watch, onServerPrefetch
 } from 'vue';
 import {storeToRefs} from "pinia";
-import {type QueryFunction, useQuery} from "@tanstack/vue-query";
 import type { ActiveContributors } from '~~/types/contributors/responses.types';
 import type { Summary } from '~~/types/shared/summary.types';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
@@ -75,14 +74,15 @@ import {formatNumber} from '~/components/shared/utils/formatter';
 import {useProjectStore} from "~/components/modules/project/store/project.store";
 import {isEmptyData} from '~/components/shared/utils/helper';
 import {dateOptKeys} from '~/components/modules/project/config/date-options';
-import {TanstackKey} from "~/components/shared/types/tanstack";
 import {granularityTabs} from "~/components/modules/widget/components/contributors/config/granularity-tabs";
 import LfxSkeletonState from "~/components/modules/project/components/shared/skeleton-state.vue";
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
 import {Granularity} from "~~/types/shared/granularity";
 import {Widget} from "~/components/modules/widget/types/widget";
+import { CONTRIBUTORS_API_SERVICE } from '~~/app/components/modules/widget/services/contributors.api.service';
+import type { WidgetModel } from '~/components/modules/widget/config/widget.config';
 
-interface ActiveContributorsModel {
+interface ActiveContributorsModel extends WidgetModel {
   activeTab: Granularity;
 }
 
@@ -105,42 +105,21 @@ const {
 } = storeToRefs(useProjectStore());
 
 const route = useRoute();
-// just a stub var to watch if the only change was the granularity
-const paramWatch = computed(() => ({
+
+const summaryLoading = ref(true);
+
+const params = computed(() => ({
+  projectSlug: route.params.slug as string,
   granularity: model.value.activeTab,
   startDate: startDate.value,
   endDate: endDate.value,
-  repos: selectedReposValues
+  repos: selectedReposValues.value,
+  includeCollaborations: model.value.includeCollaborations,
 }));
-const summaryLoading = ref(true);
-
-const queryKey = computed(() => [
-  TanstackKey.ACTIVE_CONTRIBUTORS,
-  route.params.slug,
-  model.value.activeTab,
-  startDate,
-  endDate,
-  selectedReposValues
-]);
-
-const fetchData: QueryFunction<ActiveContributors> = async () => $fetch(
-    `/api/project/${route.params.slug}/contributors/active-contributors`,
-    {
-  params: {
-    granularity: model.value.activeTab,
-    startDate: startDate.value,
-    endDate: endDate.value,
-    repos: selectedReposValues.value
-  }
-}
-);
 
 const {
   data, status, error, suspense
-} = useQuery<ActiveContributors>({
-  queryKey,
-  queryFn: fetchData,
-});
+} = CONTRIBUTORS_API_SERVICE.fetchActiveContributors(params);
 
 onServerPrefetch(async () => {
   await suspense()
@@ -195,7 +174,7 @@ watch(selectedTimeRangeKey, () => {
   model.value.activeTab = (tabs.value[0]?.value || Granularity.WEEKLY) as Granularity;
 });
 
-watch(paramWatch, (newParams, oldParams) => {
+watch(params, (newParams, oldParams) => {
   let onlyGranularityChanged = newParams.granularity !== oldParams.granularity;
   // check if the only change was the granularity, if not, we need to reset the summary loading
   if (newParams.startDate !== oldParams.startDate

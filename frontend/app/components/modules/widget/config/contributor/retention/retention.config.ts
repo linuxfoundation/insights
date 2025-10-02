@@ -1,17 +1,19 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { DateTime } from 'luxon';
-import Retention from './retention.vue';
-import type { WidgetConfig } from '~/components/modules/widget/config/widget.config';
+import { DateTime } from 'luxon'
+import Retention from './retention.vue'
+import type { WidgetConfig, WidgetModel } from '~/components/modules/widget/config/widget.config'
 
 const retention: WidgetConfig = {
   key: 'retention',
   name: 'Quarterly contributor retention',
-  description: () => 'Share of contributors and organizations that contributed continuously '
-    + 'in all consecutive quarters of the selected time period.',
+  description: () =>
+    'Share of contributors and organizations that contributed continuously ' +
+    'in all consecutive quarters of the selected time period.',
   learnMoreLink: `/docs/metrics/contributors#retention`,
   defaultValue: {
     activeTab: 'contributors',
+    includeCollaborations: false,
   },
   component: Retention,
   share: true,
@@ -21,17 +23,18 @@ const retention: WidgetConfig = {
     title: 'Quarterly Contributor Retention Rate',
     showOnOverview: true,
     isVisible: (
-      model: Record<string, number | boolean | string>, 
+      model: WidgetModel,
       _selectedTimeRangeKey: string,
       startDate: string,
-      endDate: string) => {
-        const start = DateTime.fromISO(startDate || '');
-        const end = DateTime.fromISO(endDate || '');
-        
-        const isAboveThreshold = Math.ceil(end.diff(start, 'days').days) >= 180;
+      endDate: string,
+    ) => {
+      const start = DateTime.fromISO(startDate || '')
+      const end = DateTime.fromISO(endDate || '')
 
-        return isAboveThreshold && model.activeTab === 'contributors';
-      },
+      const isAboveThreshold = Math.ceil(end.diff(start, 'days').days) >= 180
+
+      return isAboveThreshold && model.activeTab === 'contributors'
+    },
     points: {
       0: {
         type: 'negative',
@@ -68,13 +71,14 @@ const retention: WidgetConfig = {
         description: '{value}% of contributors are contributing quarter over quarter',
         text: `This project has excellent contributor retention, 
         indicating a highly engaged and stable community.`,
-      }
-    }
+      },
+    },
   },
   copilot: {
     icon: 'people-group',
-    suggestions: 'Show me the retention rate for the last 3 quarters'
-  }
-};
+    suggestions: 'Show me the retention rate for the last 3 quarters',
+  },
+  showCollabToggle: true,
+}
 
-export default retention;
+export default retention

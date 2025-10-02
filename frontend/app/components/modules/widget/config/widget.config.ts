@@ -28,8 +28,7 @@ import waitTimeFirstReview from './development/wait-time-first-review/wait-time-
 import codeReviewEngagement from './development/code-review-engagement/code-review-engagement.config'
 import reviewTimeByPullRequestSize 
   from './development/review-time-by-pull-request-size/review-time-by-pull-request-size.config'
-import mailingListMessages 
-  from './popularity/mailing-list-messages/mailing-list-messages.config'
+import mailingListMessages from './popularity/mailing-list-messages/mailing-list-messages.config'
 import commitActivities from './development/commit-activities/commit-activities.config'
 import { Widget } from '~/components/modules/widget/types/widget'
 import type { Project } from '~~/types/project'
@@ -39,10 +38,10 @@ export interface WidgetBenchmarkConfig {
   title: string
   showOnOverview: boolean
   isVisible: (
-    model: Record<string, number | boolean | string>,
+    model: WidgetModel,
     selectedTimeRangeKey: dateOptKeys,
     startDate: string,
-    endDate: string
+    endDate: string,
   ) => boolean
   points: Record<
     number,
@@ -52,6 +51,11 @@ export interface WidgetBenchmarkConfig {
       description: string
     }
   >
+}
+
+export interface WidgetModel {
+  includeCollaborations?: boolean
+  [key: string]: number | boolean | string | unknown
 }
 
 export interface WidgetCopilotConfig {
@@ -69,10 +73,11 @@ export interface WidgetConfig {
   embed: boolean
   snapshot: boolean
   copilot?: WidgetCopilotConfig
-  defaultValue?: Record<string, unknown>
+  defaultValue?: WidgetModel
   additionalShare?: Component
   hideOnRepoFilter?: boolean
   benchmark?: WidgetBenchmarkConfig
+  showCollabToggle?: boolean
 }
 
 export const lfxWidgets: Record<Widget, WidgetConfig> = {
