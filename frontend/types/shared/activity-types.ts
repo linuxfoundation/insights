@@ -36,7 +36,6 @@ export enum ActivityTypes {
   SIGNEDOFF_COMMIT = 'signed-off-commit',
 
   // The ones below are for Gerrit
-  CHANGESET_NEW = 'changeset-new',
   CHANGESET_CREATED = 'changeset-created',
   CHANGESET_MERGED = 'changeset-merged',
   CHANGESET_CLOSED = 'changeset-closed',
