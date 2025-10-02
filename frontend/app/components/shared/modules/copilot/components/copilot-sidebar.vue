@@ -133,7 +133,7 @@ const emit = defineEmits<{
   (e: 'update:selectedResult', value: string): void;
   (e: 'update:isLoading', value: boolean): void;
   (e: 'update:error', value: string): void;
-  (e: 'update:data', id: string, value: MessageData[], routerReasoning?: string): void;
+  (e: 'update:data', id: string, value: MessageData[], conversationId?: string): void;
 }>();
 
 const { copilotDefaults, selectedResultId, selectedWidgetKey } = storeToRefs(useCopilotStore());
@@ -147,6 +147,7 @@ const input = ref('')
 const streamingStatus = ref('')
 const error = ref('')
 const messages = ref<Array<AIMessage>>([]) // tempData as AIMessage
+const conversationId = ref<string | undefined>(undefined)
 const isEmptyMessages = computed(() => messages.value.length === 0)
 
 const isLoading = computed<boolean>({
@@ -183,35 +184,40 @@ const callChatApi = async (userMessage: string) => {
       const response = await copilotApiService.callChatStream(
         messages.value, 
         copilotDefaults.value.project, 
-        selectedWidgetKey.value, 
-        copilotDefaults.value.params)
+        selectedWidgetKey.value,
+        copilotDefaults.value.params,
+        conversationId.value)
 
       // Handle the streaming response
-      await copilotApiService.handleStreamingResponse(response, messages.value, (status) => {
-        streamingStatus.value = status;
-      }, (message, index) => {
-        if (index === -1) {
-          messages.value.push(message);
-        } else {
+      const returnedConversationId = await copilotApiService.handleStreamingResponse(
+        response, messages.value, (status) => {
+          streamingStatus.value = status;
+        }, (message, index) => {
+          if (index === -1) {
+            messages.value.push(message);
+          } else {
           messages.value[index] = message;
         }
 
         if (message.data) {
-          // Find router reasoning from the latest router-status message in the conversation
-          const routerReasoning = messages.value
-            .slice()
-            .reverse()
-            .find(msg => msg.type === 'router-status' && msg.routerReasoning)
-            ?.routerReasoning;
-          
-          emit('update:data', message.id, message.data, routerReasoning);
+          // Pass the current conversation ID instead of extracting routerReasoning
+          emit('update:data', message.id, message.data, conversationId.value);
           selectedResultId.value = message.id;
         }
         scrollToEnd();
-      }, () => {
+      }, (receivedConversationId) => {
         isLoading.value = false;
         streamingStatus.value = '';
+        // Store the conversationId for subsequent calls
+        if (receivedConversationId) {
+          conversationId.value = receivedConversationId;
+        }
       });
+      
+      // Also capture conversationId from the return value as backup
+      if (returnedConversationId && !conversationId.value) {
+        conversationId.value = returnedConversationId;
+      }
     }
   } catch (err) {
     console.error('Failed to send message:', err)
@@ -241,7 +247,13 @@ const selectResult = (id: string) => {
   selectedResultId.value = id;
 }
 
-watch(copilotDefaults, (newDefaults) => {
+watch(copilotDefaults, (newDefaults, oldDefaults) => {
+  // Clear conversation when widget changes
+  if (oldDefaults && newDefaults.widget !== oldDefaults.widget) {
+    conversationId.value = undefined;
+    messages.value = [];
+  }
+  
   if (newDefaults.question) {
     callChatApi(newDefaults.question);
   }

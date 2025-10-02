@@ -1,6 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import type { Pool } from 'pg'
+import { RouterDecisionAction } from '~~/lib/chat/enums'
 
 export interface PipeInput {
   endDate?: string
@@ -43,8 +44,9 @@ export interface PipeInstructions {
 
 export interface ChatResponse {
   id?: string
+  conversationId?: string
   userPrompt: string
-  routerResponse: 'pipes' | 'text-to-sql' | 'stop'
+  routerResponse: RouterDecisionAction
   routerReason: string
   pipeInstructions?: PipeInstructions
   sqlQuery?: string
@@ -66,12 +68,14 @@ export class ChatRepository {
         router_response, 
         router_reason, 
         pipe_instructions, 
-        sql_query, model, 
+        sql_query, 
+        model, 
         input_tokens, 
         output_tokens, 
-        feedback
+        feedback,
+        conversation_id
       )
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
       RETURNING id
     `
 
@@ -86,6 +90,7 @@ export class ChatRepository {
         response.inputTokens,
         response.outputTokens,
         null,
+        response.conversationId,
       ])
 
       return result.rows[0].id
@@ -112,6 +117,18 @@ export class ChatRepository {
     `
 
     const result = await this.pool.query(query, [chatResponseId])
+    return result.rows.length > 0 ? result.rows[0] : null
+  }
+
+  async getLatestChatResponseByConversation(conversationId: string): Promise<ChatResponse | null> {
+    const query = `
+      SELECT * FROM chat_responses 
+      WHERE conversation_id = $1 
+      ORDER BY created_at DESC 
+      LIMIT 1
+    `
+
+    const result = await this.pool.query(query, [conversationId])
     return result.rows.length > 0 ? result.rows[0] : null
   }
 }
