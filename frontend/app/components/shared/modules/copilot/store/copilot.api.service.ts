@@ -229,7 +229,7 @@ class CopilotApiService {
 
           if (
             data.type === 'router-status' &&
-            (data.status === 'complete' || data.status === 'error')
+            (data.status === 'complete' || data.status === 'error' || data.status === 'ask_clarification')
           ) {
             if (!assistantMessageId) {
               assistantMessageId = this.generateId()
@@ -240,9 +240,10 @@ class CopilotApiService {
                   role: 'assistant',
                   type: 'router-status',
                   status: data.status,
-                  content: data.reasoning || '',
+                  content: data.status === 'ask_clarification' ? (data.question || '') : (data.reasoning || ''),
                   explanation: data.status === 'error' ? data.error : undefined,
                   routerReasoning: data.reasoning,
+                  question: data.question, // Include the clarification question
                   timestamp: Date.now(),
                 },
                 -1,
@@ -353,6 +354,8 @@ class CopilotApiService {
         return 'Analyzing your question...'
       case 'complete':
         return reasoning ? `Analysis: ${reasoning}` : 'Analysis complete'
+      case 'ask_clarification':
+        return reasoning || 'I need more information to answer your question.'
       default:
         return `Error: ${error || 'An error occurred'}`
     }

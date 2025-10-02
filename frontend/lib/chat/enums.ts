@@ -10,10 +10,12 @@ export enum StreamDataType {
 export enum StreamDataStatus {
   ANALYZING = 'analyzing',
   COMPLETE = 'complete',
+  ASK_CLARIFICATION = 'ask_clarification',
 }
 
 export enum RouterDecisionAction {
   STOP = 'stop',
   CREATE_QUERY = 'create_query',
   PIPES = 'pipes',
+  ASK_CLARIFICATION = 'ask_clarification',
 }

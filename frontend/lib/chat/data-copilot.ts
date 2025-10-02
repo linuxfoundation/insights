@@ -15,6 +15,7 @@ import { TextToSqlAgent, PipeAgent, RouterAgent } from './agents'
 import { executePipeInstructions, executeTextToSqlInstructions } from './instructions'
 import type {
   AgentResponseCompleteParams,
+  ChatMessage,
   DataCopilotQueryInput,
   PipeAgentInput,
   PipeAgentStreamInput,
@@ -147,6 +148,7 @@ export class DataCopilot {
     pipe,
     parametersString,
     segmentId,
+    previousWasClarification,
   }: Omit<RouterAgentInput, 'toolsOverview' | 'model' | 'tools'>) {
     const agent = new RouterAgent()
     return agent.execute({
@@ -159,6 +161,7 @@ export class DataCopilot {
       pipe,
       parametersString,
       segmentId,
+      previousWasClarification,
     })
   }
 
@@ -273,10 +276,78 @@ export class DataCopilot {
   }
 
   /**
+   * Build messages array from conversation history
+   * Handles clarification merging if the previous response was ASK_CLARIFICATION
+   */
+  private async buildMessagesFromConversation(
+    currentQuestion: string,
+    conversationId: string | undefined,
+    insightsDbPool: Pool,
+  ): Promise<{ messages: ChatMessage[]; previousWasClarification: boolean }> {
+    const chatRepo = new ChatRepository(insightsDbPool)
+
+    if (!conversationId) {
+      // No conversation history, just return the current question
+      return {
+        messages: [{ role: 'user', content: currentQuestion }],
+        previousWasClarification: false,
+      }
+    }
+
+    const previousChatResponses = await chatRepo.getChatResponsesByConversation(conversationId)
+
+    if (previousChatResponses.length === 0) {
+      // No previous responses in this conversation
+      return {
+        messages: [{ role: 'user', content: currentQuestion }],
+        previousWasClarification: false,
+      }
+    }
+
+    // Check if the latest response was ASK_CLARIFICATION
+    const latestResponse = previousChatResponses[previousChatResponses.length - 1] as ChatResponse
+    const previousWasClarification = latestResponse.routerResponse === RouterDecisionAction.ASK_CLARIFICATION
+
+    if (previousWasClarification) {
+      // Merge the clarification: combine the ambiguous question with the clarification answer
+      const ambiguousQuestion = latestResponse.userPrompt
+      const mergedQuestion = `Original question: ${ambiguousQuestion}\n\nClarification provided: ${currentQuestion}`
+
+      // Build messages: [older history before clarification] + [merged question]
+      const messages = previousChatResponses.slice(0, -1).map((response) => ({
+        role: 'user' as const,
+        content: response.userPrompt,
+      }))
+
+      // Add the merged question as the current message
+      messages.push({
+        role: 'user',
+        content: mergedQuestion,
+      })
+
+      return { messages, previousWasClarification: true }
+    }
+
+    // Normal case: build messages from all previous responses + current question
+    const messages = previousChatResponses.map((response) => ({
+      role: 'user' as const,
+      content: response.userPrompt,
+    }))
+
+    // Add the current question
+    messages.push({
+      role: 'user',
+      content: currentQuestion,
+    })
+
+    return { messages, previousWasClarification: false }
+  }
+
+  /**
    * Main streaming handler that orchestrates the entire AI agent workflow
    */
   async streamingAgentRequestHandler({
-    messages,
+    currentQuestion,
     segmentId,
     projectName,
     pipe,
@@ -289,8 +360,15 @@ export class DataCopilot {
     const parametersString = JSON.stringify(parameters || {})
     const date = new Date().toISOString().slice(0, 10)
 
+    // Build messages from conversation history
+    const { messages, previousWasClarification } = await this.buildMessagesFromConversation(
+      currentQuestion,
+      conversationId,
+      insightsDbPool,
+    )
+
     const responseData: ChatResponse = {
-          userPrompt: messages[messages.length - 1]?.content || '',
+          userPrompt: currentQuestion,
           inputTokens: 0,
           outputTokens: 0,
           model: this.BEDROCK_MODEL_ID,
@@ -315,6 +393,7 @@ export class DataCopilot {
             pipe,
             parametersString,
             segmentId: segmentId as string,
+            previousWasClarification,
           })
 
           // Accumulate token usage from router
@@ -325,6 +404,19 @@ export class DataCopilot {
 
           if (routerOutput.next_action === RouterDecisionAction.STOP) {
             await this.handleStopAction(
+              messages[messages.length - 1]?.content || '',
+              routerOutput,
+              responseData,
+              dataStream,
+              insightsDbPool,
+              userEmail,
+              conversationId,
+            )
+            return
+          }
+
+          if (routerOutput.next_action === RouterDecisionAction.ASK_CLARIFICATION) {
+            await this.handleAskClarificationAction(
               messages[messages.length - 1]?.content || '',
               routerOutput,
               responseData,
@@ -421,6 +513,49 @@ export class DataCopilot {
         outputTokens: responseData.outputTokens,
         routerResponse: RouterDecisionAction.STOP,
         routerReason: routerOutput.reasoning,
+        pipeInstructions: undefined,
+        sqlQuery: undefined,
+        model: this.BEDROCK_MODEL_ID,
+        conversationId: conversationId,
+      },
+      insightsDbPool,
+      userEmail,
+    )
+
+    dataStream.writeData({
+      type: StreamDataType.CHAT_RESPONSE_ID,
+      id: chatResponseId,
+      conversationId: conversationId || '',
+    })
+  }
+
+  /**
+   * Handle router 'ask_clarification' action - ask user for clarification
+   */
+  private async handleAskClarificationAction(
+    userPrompt: string,
+    routerOutput: RouterOutput,
+    responseData: ChatResponse,
+    dataStream: any,
+    insightsDbPool: Pool,
+    userEmail: string,
+    conversationId?: string,
+  ): Promise<void> {
+    dataStream.writeData({
+      type: StreamDataType.ROUTER_STATUS,
+      status: StreamDataStatus.ASK_CLARIFICATION,
+      question: routerOutput.clarification_question,
+      reasoning: routerOutput.reasoning,
+    })
+
+    const chatResponseId = await this.saveChatResponse(
+      {
+        userPrompt,
+        inputTokens: responseData.inputTokens,
+        outputTokens: responseData.outputTokens,
+        routerResponse: RouterDecisionAction.ASK_CLARIFICATION,
+        routerReason: routerOutput.reasoning,
+        clarificationQuestion: routerOutput.clarification_question || undefined,
         pipeInstructions: undefined,
         sqlQuery: undefined,
         model: this.BEDROCK_MODEL_ID,

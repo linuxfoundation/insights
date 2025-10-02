@@ -21,7 +21,7 @@ export type MessagePartType = 'router-status' |
                               'pipe-result' | 
                               'chat-response-id' | 
                               'conversation-id';
-export type MessageStatus = 'analyzing' | 'complete' | 'error';
+export type MessageStatus = 'analyzing' | 'complete' | 'error' | 'ask_clarification';
 export type MessageData = Record<string, string | number | null | string[] | object>;
 export type MessageRole = 'user' | 'assistant';
 
@@ -38,17 +38,18 @@ export interface ResultsHistory {
 }
 
 export interface AIMessage {
-  id: string; 
-  role: MessageRole; 
+  id: string;
+  role: MessageRole;
   type: MessagePartType;
   status: MessageStatus;
-  content: string; 
+  content: string;
   timestamp: number;
   conversationId?: string;
   sql?: string;
   data?: Array<MessageData>;
   explanation?: string;
   routerReasoning?: string;
+  question?: string; // Clarification question when status is 'ask_clarification'
   instructions?: {
     pipes: Array<{
       id: string

@@ -9,6 +9,7 @@ export const routerPrompt = (
   parametersString: string,
   segmentId: string | null,
   toolsOverview: string,
+  previousWasClarification?: boolean,
 ) => {
   const dashboardDescription = pipe
     ? `Project "${projectName}" using ${pipe} tool with parameters: ${parametersString}`
@@ -16,7 +17,21 @@ export const routerPrompt = (
 
   const pipeToolQuestion = pipe ? `- Can ${pipe} tool answer this with different parameters?` : ''
 
-  return `You are a routing agent that analyzes user questions and determines the appropriate next action. Your job is to evaluate questions and decide whether they can be answered with existing tools, need custom queries, or cannot be answered.
+  const clarificationWarning = previousWasClarification
+    ? `\n\n## ⚠️ IMPORTANT: CLARIFICATION LOOP PREVENTION
+**The previous response was ASK_CLARIFICATION. You have already asked the user for clarification once.**
+
+CRITICAL RULES:
+- **STRONGLY PREFER** answering the question with available data or tools over asking for another clarification
+- **ONLY** ask for clarification again if the question is still completely impossible to interpret
+- Make reasonable assumptions based on the context and user's clarification
+- If you can answer the question with ANY interpretation, choose "pipes" or "create_query" instead of "ask_clarification"
+- **NEVER** create a clarification loop by repeatedly asking for clarification
+
+The user has already provided clarification. Work with what you have.`
+    : ''
+
+  return `You are a routing agent that analyzes user questions and determines the appropriate next action. Your job is to evaluate questions and decide whether they can be answered with existing tools, need custom queries, or cannot be answered.${clarificationWarning}
 
 # DATE AND CONTEXT
 Today's date: ${date}
@@ -72,7 +87,8 @@ ${pipeToolQuestion}
 **Step 2: Check Data Sources (only if Step 1 is NO)**
 - Use list_datasources to examine available tables and fields
 - Check if the required fields exist in any data source
-- Pay special attention to the activityRelations_deduplicated_cleaned_ds table
+- Pay special attention to the pull_requests_analyzed, issues_analyzed, activityRelations_deduplicated_cleaned_ds tables
+- If something can be answered by avoiding using activityRelations_deduplicated_cleaned_ds, prefer that (e.g., use pull_requests_analyzed for PR counts, issues_analyzed for issue counts, etc.)
 - If the needed fields exist → Question is VALID, route to "create_query" action
 - If fields don't exist → Question is INVALID, route to "stop" action
 - If the question is referencing a field about contributors/people that we have only for organizations, the question is INVALID
@@ -81,6 +97,10 @@ ${pipeToolQuestion}
 - "stop": The question cannot be answered with available data
 - "create_query": Custom SQL query needed using available data sources (tools can be empty)
 - "pipes": Existing tools can answer the question (specify which tools in the tools array)
+- "ask_clarification": The question is ambiguous or missing critical information. Ask user for clarification before proceeding.
+  * Use this when: timeframe is unclear, metrics are ambiguous, grouping/dimension is not specified, or multiple interpretations exist
+  * The clarification_question must be specific, user-friendly, and guide the user toward providing the missing information
+  * Example: "I need to know the time period for this analysis. Should I show data for the last week, month, or year?"
 
 # IMPORTANT
 - Always check data availability before routing
@@ -105,9 +125,15 @@ You can include things you learned/know, like country codes, timeframes, granula
 - Example: "Show me commit activity by company" → reformulate as "Show me commit count grouped by company"
 
 ## Reasoning:
-It must be something user-friendly. 
+It must be something user-friendly.
 - If the action is "stop", the reasoning must be something like "I'm unable to answer this question with the available data sources, I am missing access to {DATA, explained in non-technical natural language}. If this looks like a mistake, please contact us."
 - If the action is "create_query", the reasoning must be something like "I'll create a query to answer the question."
 - If the action is "pipes", the reasoning must be something like "I'll use the widgets <tool1> and <tool2> to answer the question."
+- If the action is "ask_clarification", the reasoning must explain what information is missing or ambiguous.
+
+## Clarification Question (only for ask_clarification action):
+- Must be a clear, specific question that helps the user provide the missing information
+- Should offer options or examples when appropriate
+- Must be conversational and friendly
 `
 }

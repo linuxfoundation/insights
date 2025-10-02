@@ -94,10 +94,16 @@ export const routerOutputSchema = z.object({
     RouterDecisionAction.STOP,
     RouterDecisionAction.CREATE_QUERY,
     RouterDecisionAction.PIPES,
+    RouterDecisionAction.ASK_CLARIFICATION,
   ]),
   reasoning: z.string().describe('Maximum 2 sentences explaining the decision'),
   reformulated_question: z.string().describe('Enhanced query with all parameters'),
   tools: z.array(z.string()).describe('Tools needed for next agent'),
+  clarification_question: z
+    .string()
+    .optional()
+    .nullable()
+    .describe('Question to ask user when next_action is ASK_CLARIFICATION'),
 })
 
 // Pipe agent output schema
@@ -131,6 +137,7 @@ export interface RouterAgentInput {
   pipe: string
   parametersString: string
   segmentId: string | null
+  previousWasClarification?: boolean
 }
 
 export interface PipeAgentStreamInput extends Omit<PipeAgentInput, 'model' | 'tools' | 'date'> {
@@ -154,7 +161,7 @@ export interface PipeAgentInput {
 }
 
 export interface DataCopilotQueryInput {
-  messages: ChatMessage[]
+  currentQuestion: string // The current user question
   segmentId?: string
   projectName?: string
   pipe: string

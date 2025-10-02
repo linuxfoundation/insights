@@ -50,6 +50,7 @@ export interface ChatResponse {
   routerReason: string
   pipeInstructions?: PipeInstructions
   sqlQuery?: string
+  clarificationQuestion?: string
   model: string
   inputTokens?: number
   outputTokens?: number
@@ -61,21 +62,22 @@ export class ChatRepository {
   async saveChatResponse(response: ChatResponse, userEmail: string): Promise<string> {
     try {
       const query = `
-      INSERT INTO chat_responses 
-      ( 
-        created_by, 
+      INSERT INTO chat_responses
+      (
+        created_by,
         user_prompt,
-        router_response, 
-        router_reason, 
-        pipe_instructions, 
-        sql_query, 
-        model, 
-        input_tokens, 
-        output_tokens, 
+        router_response,
+        router_reason,
+        pipe_instructions,
+        sql_query,
+        clarification_question,
+        model,
+        input_tokens,
+        output_tokens,
         feedback,
         conversation_id
       )
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
       RETURNING id
     `
 
@@ -86,6 +88,7 @@ export class ChatRepository {
         response.routerReason,
         response.pipeInstructions ? JSON.stringify(response.pipeInstructions) : null,
         response.sqlQuery,
+        response.clarificationQuestion,
         response.model,
         response.inputTokens,
         response.outputTokens,
@@ -122,13 +125,24 @@ export class ChatRepository {
 
   async getLatestChatResponseByConversation(conversationId: string): Promise<ChatResponse | null> {
     const query = `
-      SELECT * FROM chat_responses 
-      WHERE conversation_id = $1 
-      ORDER BY created_at DESC 
+      SELECT * FROM chat_responses
+      WHERE conversation_id = $1
+      ORDER BY created_at DESC
       LIMIT 1
     `
 
     const result = await this.pool.query(query, [conversationId])
     return result.rows.length > 0 ? result.rows[0] : null
+  }
+
+  async getChatResponsesByConversation(conversationId: string): Promise<ChatResponse[]> {
+    const query = `
+      SELECT * FROM chat_responses
+      WHERE conversation_id = $1
+      ORDER BY created_at ASC
+    `
+
+    const result = await this.pool.query(query, [conversationId])
+    return result.rows
   }
 }

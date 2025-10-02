@@ -251,5 +251,32 @@ describe('Router Agent', () => {
         15000,
       )
     })
+
+    describe('ASK_CLARIFICATION routing', () => {
+      test.each([
+        "Show me the activity",
+        "Give me stats for last period",
+        "Show me metrics",
+      ])(
+        'should route "%s" to ASK_CLARIFICATION',
+        async (query) => {
+          if (skipIfNoCredentials()) return
+
+          console.warn(`🤖 Testing query: "${query}"`)
+          const router = new RouterAgent()
+          const input = createTestInput(query)
+          const result = await router.execute(input)
+
+          expect(result.next_action).toBe(RouterDecisionAction.ASK_CLARIFICATION)
+          expect(result.reasoning).toBeTruthy()
+          expect(result.clarification_question).toBeTruthy()
+
+          console.warn(`✅ "${query}" → ${result.next_action}`)
+          console.warn(`🔍 Reasoning: ${result.reasoning}`)
+          console.warn(`❓ Clarification: ${result.clarification_question}`)
+        },
+        15000,
+      )
+    })
   })
 })

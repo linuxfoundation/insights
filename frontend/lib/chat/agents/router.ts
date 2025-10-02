@@ -24,6 +24,7 @@ export class RouterAgent extends BaseAgent<RouterAgentInput, RouterOutput> {
       input.parametersString,
       input.segmentId,
       input.toolsOverview,
+      input.previousWasClarification,
     )
   }
 

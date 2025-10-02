@@ -4,12 +4,11 @@ import type { Pool } from 'pg'
 import { createDataStreamResponse } from 'ai'
 import { DataCopilot } from '~~/lib/chat/data-copilot'
 import { InsightsProjectsRepository } from '~~/server/repo/insightsProjects.repo'
-import { ChatMessage } from '~~/lib/chat/types'
 
 export const maxDuration = 30
 
 interface IStreamRequestBody {
-  messages: ChatMessage[]
+  messages: Array<{ role: 'user' | 'assistant'; content: string }>
   projectSlug?: string
   projectName?: string
   pipe: string
@@ -34,6 +33,12 @@ export default defineEventHandler(async (event): Promise<Response | Error> => {
       return createError({ statusCode: 400, statusMessage: 'Project slug is required' })
     }
 
+    const question = messages?.filter((m) => m.role === 'user').pop()?.content
+
+    if (!question) {
+      return createError({ statusCode: 400, statusMessage: 'Question is required' })
+    }
+
     // Generate conversationId if not provided
     const finalConversationId = conversationId || crypto.randomUUID()
 
@@ -55,7 +60,7 @@ export default defineEventHandler(async (event): Promise<Response | Error> => {
     return createDataStreamResponse({
       execute: async (dataStream) => {
         await dataCopilot.streamingAgentRequestHandler({
-          messages,
+          currentQuestion: question,
           segmentId: insightsProjects.segmentId,
           projectName,
           pipe,
@@ -63,7 +68,7 @@ export default defineEventHandler(async (event): Promise<Response | Error> => {
           conversationId: finalConversationId,
           insightsDbPool,
           userEmail: event.context.user.email,
-          dataStream, // Pass the dataStream to the class
+          dataStream,
         })
       },
     })
