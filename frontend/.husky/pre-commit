@@ -3,7 +3,7 @@ if git diff --diff-filter=d --name-only --cached | grep 'frontend/';
   then
     echo "FRONTEND FOLDER CHANGED --> starting husky..."
     cd frontend && \
-    pnpm exec eslint --fix $(git diff --diff-filter=d --name-only --cached --relative) && \
+    pnpm exec eslint --fix --no-warn-ignored $(git diff --diff-filter=d --name-only --cached --relative) && \
     pnpm tsc-check
     git add -u $(git diff --diff-filter=d --name-only --cached --relative)
 fi

@@ -1,0 +1,82 @@
+#!/bin/bash
+# frontend/.husky/prepare-commit-msg
+
+COMMIT_MSG_FILE=$1
+COMMIT_SOURCE=$2
+
+# Skip if this is an amend, merge, or squash
+if [ "$COMMIT_SOURCE" = "merge" ] || [ "$COMMIT_SOURCE" = "squash" ]; then
+    exit 0
+fi
+
+# Get the commit message for suggestions
+commit_msg=$(head -n 1 "$COMMIT_MSG_FILE")
+
+# Step 1: Check if user has GPG signing enabled
+gpg_sign=$(git config --get commit.gpgsign)
+
+if [ "$gpg_sign" != "true" ]; then
+    # Step 2: Ask user if they want to enable GPG signing
+    echo ""
+    echo "🔐 GPG signing is not enabled."
+    echo "Do you want to enable GPG signing for this repo? (y/n)"
+    
+    # Read from terminal directly (Husky compatibility)
+    exec < /dev/tty
+    read -r gpg_response
+    
+    if [ "$gpg_response" != "y" ] && [ "$gpg_response" != "Y" ]; then
+        echo "❌ Commit aborted - GPG signing is required."
+        exit 1
+    fi
+    
+    # Step 3: Enable GPG signing
+    git config commit.gpgsign true
+    echo "✅ GPG signing enabled for future commits"
+fi
+
+# Step 4: Check if the commit message contains sign-off
+# Since format.signoff config doesn't actually auto-add signoffs, we need to check
+# if the user manually added a sign-off or used the -s flag
+
+has_signoff=false
+if grep -q "^Signed-off-by: " "$COMMIT_MSG_FILE" 2>/dev/null; then
+    has_signoff=true
+fi
+
+if [ "$has_signoff" = false ]; then
+    # Step 5: Ask user if they want to rerun with sign-off flag
+    echo ""
+    echo "✍️🔐 This commit is missing a sign-off-by trailer."
+    echo "Do you want to rerun with 'git commit -s -m \"$commit_msg\"'? (y/n)"
+    
+    exec < /dev/tty
+    read -r signoff_response
+    
+    if [ "$signoff_response" != "y" ] && [ "$signoff_response" != "Y" ]; then
+        # Step 6: If no, abort the commit
+        echo "❌ Commit aborted - sign-off trailer is required."
+        exit 1
+    fi
+    
+    # Step 7: If yes, execute the commit with sign-off flag
+    echo ""
+    echo "Running: git commit -s -m \"$commit_msg\""
+    
+    # Reset this commit attempt and run with proper flags
+    git reset --soft HEAD~1 2>/dev/null || true
+    
+    # Execute the commit with sign-off
+    git commit -s -m "$commit_msg"
+    
+    if [ $? -eq 0 ]; then
+        echo "✅ Commit is signed-off!"
+        exit 0
+    else
+        echo "❌ Commit failed. Please check your configuration."
+        exit 1
+    fi
+fi
+
+# If we get here, everything is properly configured
+exit 0
