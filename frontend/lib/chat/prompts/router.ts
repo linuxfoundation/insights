@@ -95,6 +95,15 @@ ${pipeToolQuestion}
 It must help the following agent to answer the question. You must capture the intent and leave no room for ambiguity.
 You can include things you learned/know, like country codes, timeframes, granularity, etc.
 
+**CRITICAL: Disambiguate vague terms to prevent over-complicated queries:**
+- "activity" or "commit activity" → reformulate as "commit count" (single metric, not lines changed/added/deleted)
+- "fork activity" → reformulate as "fork count"
+- "star activity" → reformulate as "star count"
+- "PR activity" or "pull request activity" → reformulate as "pull request count"
+- "issue activity" → reformulate as "issue count"
+- **Default to COUNT as the metric unless user explicitly asks for detailed metrics like "lines changed", "lines added", "lines deleted", "files modified", etc.**
+- Example: "Show me commit activity by company" → reformulate as "Show me commit count grouped by company"
+
 ## Reasoning:
 It must be something user-friendly. 
 - If the action is "stop", the reasoning must be something like "I'm unable to answer this question with the available data sources, I am missing access to {DATA, explained in non-technical natural language}. If this looks like a mistake, please contact us."

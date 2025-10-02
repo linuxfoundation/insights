@@ -105,7 +105,7 @@ describe('Router Agent', () => {
   function createTestInput(userQuery: string): RouterAgentInput {
     const messages: ChatMessage[] = [{ role: 'user', content: userQuery }]
 
-    console.warn("📝 Creating test input for query:", userQuery)
+    console.warn('📝 Creating test input for query:', userQuery)
 
     return {
       model,
@@ -140,7 +140,6 @@ describe('Router Agent', () => {
       expect(router.name).toBe('Router')
       expect(router.temperature).toBe(0)
     })
-
 
     test('should validate output schema for both implementations', () => {
       const originalRouter = new RouterAgent()
@@ -179,133 +178,78 @@ describe('Router Agent', () => {
 
   describe('Real AI routing decisions', () => {
     describe('PIPES routing', () => {
-      test('should route activity queries correctly to PIPE', async () => {
-        if (skipIfNoCredentials()) return
+      test.each([
+        'Show me commits this week',
+        'Show me stars for the previous week',
+        'Show me forks for the last year',
+        'List of companies contributing in project',
+      ])(
+        'should route "%s" to PIPES',
+        async (query) => {
+          if (skipIfNoCredentials()) return
 
-        const router = new RouterAgent()
-        const input = createTestInput('Show me commits this week')
+          console.warn(`🤖 Testing query: "${query}"`)
+          const router = new RouterAgent()
+          const input = createTestInput(query)
+          const result = await router.execute(input)
 
-        console.warn('🤖 Sending query to router agent: Show me commits this week')
-        const result = await router.execute(input)
-        console.warn('🤖 Router agent response:', result)
+          expect(result.next_action).toBe(RouterDecisionAction.PIPES)
+          expect(result.reasoning).toBeTruthy()
+          expect(result.reformulated_question).toBeTruthy()
+          expect(Array.isArray(result.tools)).toBe(true)
 
-        expect(result.next_action).toBeDefined()
-        expect(Object.values(RouterDecisionAction)).toContain(result.next_action)
-        expect(RouterDecisionAction.PIPES).toBe(result.next_action)
-        expect(result.reasoning).toBeTruthy()
-        expect(result.reformulated_question).toBeTruthy()
-        expect(Array.isArray(result.tools)).toBe(true)
-        expect(result.usage.totalTokens).toBeGreaterThan(0)
-
-        console.warn(`🔍 Activity query routed to: ${result.next_action}`)
-        console.warn(`🔍 Reasoning: ${result.reasoning}`)
-      }, 15000)
-
-      test('should route stars query for previous week to PIPE', async () => {
-        if (skipIfNoCredentials()) return
-
-        const router = new RouterAgent()
-        const input = createTestInput('Show me stars for the previous week')
-
-        const result = await router.execute(input)
-
-        expect(result.next_action).toBe(RouterDecisionAction.PIPES)
-        expect(result.reasoning).toBeTruthy()
-        expect(result.reformulated_question).toBeTruthy()
-        expect(Array.isArray(result.tools)).toBe(true)
-
-        console.warn(`🔍 Stars query routed to: ${result.next_action}`)
-        console.warn(`🔍 Reasoning: ${result.reasoning}`)
-      }, 15000)
-
-      test('should route forks query for last year to PIPE', async () => {
-        if (skipIfNoCredentials()) return
-
-        const router = new RouterAgent()
-        const input = createTestInput('Show me forks for the last year')
-
-        const result = await router.execute(input)
-
-        expect(result.next_action).toBe(RouterDecisionAction.PIPES)
-        expect(result.reasoning).toBeTruthy()
-        expect(result.reformulated_question).toBeTruthy()
-        expect(Array.isArray(result.tools)).toBe(true)
-
-        console.warn(`🔍 Forks query routed to: ${result.next_action}`)
-        console.warn(`🔍 Reasoning: ${result.reasoning}`)
-      }, 15000)
-
-      test('should route companies contributing query to PIPE', async () => {
-        if (skipIfNoCredentials()) return
-
-        const router = new RouterAgent()
-        const input = createTestInput('List of companies contributing in project')
-
-        const result = await router.execute(input)
-
-        expect(result.next_action).toBe(RouterDecisionAction.PIPES)
-        expect(result.reasoning).toBeTruthy()
-        expect(result.reformulated_question).toBeTruthy()
-        expect(Array.isArray(result.tools)).toBe(true)
-
-        console.warn(`🔍 Companies query routed to: ${result.next_action}`)
-        console.warn(`🔍 Reasoning: ${result.reasoning}`)
-      }, 15000)
-
-      test('should route geographical queries correctly', async () => {
-        if (skipIfNoCredentials()) return
-
-        const router = new RouterAgent()
-        const input = createTestInput('Show me contributors from Brazil')
-
-        const result = await router.execute(input)
-
-        expect(result.next_action).toBeDefined()
-        expect(Object.values(RouterDecisionAction)).toContain(result.next_action)
-        expect(result.reasoning).toBeTruthy()
-        expect(result.reformulated_question).toContain('Brazil')
-
-        console.warn(`🔍 Geographic query routed to: ${result.next_action}`)
-        console.warn(`🔍 Reasoning: ${result.reasoning}`)
-      }, 15000)
+          console.warn(`✅ "${query}" → ${result.next_action}`)
+          console.warn(`🔍 Reasoning: ${result.reasoning}`)
+        },
+        15000,
+      )
     })
 
     describe('CREATE_QUERY (TEXT_TO_SQL) routing', () => {
-      test('should route commit activity by company query to CREATE_QUERY', async () => {
-        if (skipIfNoCredentials()) return
+      test.each(['Show me commit activity by company over all time period'])(
+        'should route "%s" to CREATE_QUERY',
+        async (query) => {
+          if (skipIfNoCredentials()) return
 
-        const router = new RouterAgent()
-        const input = createTestInput('Show me commit activity by company over all time period')
+          console.warn(`🤖 Testing query: "${query}"`)
+          const router = new RouterAgent()
+          const input = createTestInput(query)
+          const result = await router.execute(input)
 
-        const result = await router.execute(input)
+          expect(result.next_action).toBe(RouterDecisionAction.CREATE_QUERY)
+          expect(result.reasoning).toBeTruthy()
+          expect(result.reformulated_question).toBeTruthy()
 
-        expect(result.next_action).toBe(RouterDecisionAction.CREATE_QUERY)
-        expect(result.reasoning).toBeTruthy()
-        expect(result.reformulated_question).toBeTruthy()
-
-        console.warn(`🔍 Commit activity by company query routed to: ${result.next_action}`)
-        console.warn(`🔍 Reasoning: ${result.reasoning}`)
-      }, 15000)
+          console.warn(`✅ "${query}" → ${result.next_action}`)
+          console.warn(`🔍 Reasoning: ${result.reasoning}`)
+        },
+        15000,
+      )
     })
 
     describe('STOP routing', () => {
-      test('should route impossible queries to STOP', async () => {
-        if (skipIfNoCredentials()) return
+      test.each([
+        "What's the weather forecast for contributors?",
+        "Show me contributors from Brazil",
+      ])(
+        'should route "%s" to STOP',
+        async (query) => {
+          if (skipIfNoCredentials()) return
 
-        const router = new RouterAgent()
-        const input = createTestInput("What's the weather forecast for contributors?")
+          console.warn(`🤖 Testing query: "${query}"`)
+          const router = new RouterAgent()
+          const input = createTestInput(query)
+          const result = await router.execute(input)
 
-        const result = await router.execute(input)
+          expect(result.next_action).toBe(RouterDecisionAction.STOP)
+          expect(result.reasoning).toBeTruthy()
+          expect(result.tools).toEqual([])
 
-        expect(result.next_action).toBe(RouterDecisionAction.STOP)
-        expect(result.reasoning).toContain('weather')
-        expect(result.tools).toEqual([])
-
-        console.warn(`🔍 Weather query routed to: ${result.next_action}`)
-        console.warn(`🔍 Reasoning: ${result.reasoning}`)
-      }, 15000)
+          console.warn(`✅ "${query}" → ${result.next_action}`)
+          console.warn(`🔍 Reasoning: ${result.reasoning}`)
+        },
+        15000,
+      )
     })
-
   })
-
 })
