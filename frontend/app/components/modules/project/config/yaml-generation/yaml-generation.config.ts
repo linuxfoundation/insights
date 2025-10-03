@@ -3,7 +3,6 @@
 import type {Component} from "vue";
 import basic from './basic/basic-yaml.config'
 import comprehensive from './comprehensive/comprehensive-yaml.config'
-import multiRepository from './multi-repository/multi-repository-yaml.config'
 import childRepository from './child-repository/child-repository-yaml.config'
 
 export interface YamlGenerationStep {
@@ -23,6 +22,5 @@ export interface YamlGenerationConfig {
 export const yamlGenerationConfig: Record<string, YamlGenerationConfig> = {
     basic,
     comprehensive,
-    multiRepository,
     childRepository,
 }

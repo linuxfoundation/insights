@@ -5,7 +5,6 @@
 .nuxt
 .nitro
 .cache
-CLAUDE.md
 dist
 
 # Node dependencies
@@ -38,3 +37,7 @@ robots.txt
 # SSL
 certs/
 certs/*
+
+# Claude
+CLAUDE.md
+.claude

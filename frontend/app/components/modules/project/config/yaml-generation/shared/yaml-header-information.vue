@@ -28,14 +28,6 @@ SPDX-License-Identifier: MIT
       >
         <lfx-input
           v-model="model.header.url"
-          :invalid="$v.header.url.$invalid && $v.header.url.$dirty"
-          @blur="$v.header.url.$touch()"
-          @change="$v.header.url.$touch()"
-        />
-
-        <lfx-field-messages
-          :validation="$v.header.url"
-          :error-messages="{ required: 'This field is required', url: 'Invalid URL' }"
         />
         <template #description>
           The name of your project as you want it to appear in the YAML file.
@@ -49,11 +41,8 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import {required, url} from "@vuelidate/validators";
-import useVuelidate from "@vuelidate/core";
 import LfxInput from "~/components/uikit/input/input.vue";
 import LfxField from "~/components/uikit/field/field.vue";
-import LfxFieldMessages from "~/components/uikit/field/field-messages.vue";
 import LfxTag from "~/components/uikit/tag/tag.vue";
 
 const props = defineProps<{
@@ -66,15 +55,4 @@ const model = computed<object>({
   get: () => props.modelValue,
   set: (value: object) => emit('update:modelValue', value)
 })
-
-const rules = {
-  header: {
-    url: {
-      required,
-      url,
-    }
-  }
-}
-
-const $v = useVuelidate(rules, model)
 </script>

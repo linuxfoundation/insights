@@ -1,6 +1,8 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import {DateTime} from 'luxon';
+import YamlBasicProjectDetails
+    from "./yaml-basic-project-details.vue";
 import type {YamlGenerationConfig} from "~/components/modules/project/config/yaml-generation/yaml-generation.config";
 import YamlHeaderInformation
     from "~/components/modules/project/config/yaml-generation/shared/yaml-header-information.vue";
@@ -18,6 +20,10 @@ const basicYamlGenerationConfig: YamlGenerationConfig = {
         {
             label: 'Header information',
             component: YamlHeaderInformation,
+        },
+        {
+            label: 'Project details',
+            component: YamlBasicProjectDetails,
         }
     ],
     template: {
