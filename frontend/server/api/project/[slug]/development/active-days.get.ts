@@ -40,6 +40,8 @@ export default defineEventHandler(async (event) => {
   const filter: ActiveDaysFilter = {
     project,
     granularity: query.granularity as Granularity,
+    includeCodeContributions: true,
+    includeCollaborations: false,
     repos,
     startDate: query.startDate ? DateTime.fromISO(query.startDate as string) : undefined,
     endDate: query.endDate ? DateTime.fromISO(query.endDate as string) : undefined,

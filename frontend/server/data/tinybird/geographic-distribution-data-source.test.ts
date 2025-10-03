@@ -40,6 +40,8 @@ describe('Geographic Distribution Data Source', () => {
     const filter = {
       project: 'the-linux-kernel-organization',
       type: DemographicType.CONTRIBUTORS,
+      includeCodeContributions: true,
+      includeCollaborations: false,
       startDate,
       endDate
     };

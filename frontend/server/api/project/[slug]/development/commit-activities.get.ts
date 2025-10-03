@@ -46,6 +46,8 @@ export default defineEventHandler(async (event) => {
     countType: (query.countType as ActivityFilterCountType) || ActivityFilterCountType.NEW,
     activity_type: (query.activityType as ActivityTypes) || ActivityTypes.AUTHORED_COMMIT,
     onlyContributions: true, // only count contributions
+    includeCodeContributions: true,
+    includeCollaborations: false,
     startDate: query.startDate ? DateTime.fromISO(query.startDate as string) : undefined,
     endDate: query.endDate ? DateTime.fromISO(query.endDate as string) : undefined,
   }

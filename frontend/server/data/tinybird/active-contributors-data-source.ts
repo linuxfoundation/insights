@@ -40,6 +40,8 @@ export async function fetchActiveContributors(filter: ActiveContributorsFilter) 
   const currentSummaryQuery = {
     project: filter.project,
     repos: filter.repos,
+    includeCodeContributions: filter.includeCodeContributions,
+    includeCollaborations: filter.includeCollaborations,
     startDate: dates.current.from,
     endDate: dates.current.to
   };
@@ -47,6 +49,8 @@ export async function fetchActiveContributors(filter: ActiveContributorsFilter) 
   const previousSummaryQuery = {
     project: filter.project,
     repos: filter.repos,
+    includeCodeContributions: filter.includeCodeContributions,
+    includeCollaborations: filter.includeCollaborations,
     startDate: dates.previous.from,
     endDate: dates.previous.to
   };
@@ -55,6 +59,8 @@ export async function fetchActiveContributors(filter: ActiveContributorsFilter) 
     project: filter.project,
     granularity: filter.granularity,
     repos: filter.repos,
+    includeCodeContributions: filter.includeCodeContributions,
+    includeCollaborations: filter.includeCollaborations,
     startDate: dates.current.from,
     endDate: dates.current.to
   };

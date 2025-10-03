@@ -46,6 +46,8 @@ describe('Organizations Leaderboard Data Source', () => {
       project: 'the-linux-kernel-organization',
       platform: ActivityPlatforms.GITHUB,
       activity_type: ActivityTypes.AUTHORED_COMMIT,
+      includeCodeContributions: true,
+      includeCollaborations: false,
       offset: 2,
       limit: 7,
       startDate,

@@ -30,6 +30,7 @@ import { DateTime } from 'luxon'
 import { createDataSource } from '~~/server/data/data-sources'
 import type { ActiveContributorsFilter } from '~~/server/data/types'
 import { Granularity } from '~~/types/shared/granularity'
+import { getBooleanQueryParam } from '~~/server/utils/common'
 
 export default defineEventHandler(async (event) => {
   // TODO: Check the project configuration to determine whether to show the data.
@@ -39,11 +40,16 @@ export default defineEventHandler(async (event) => {
 
   const repos = Array.isArray(query.repos) ? query.repos : query.repos ? [query.repos] : undefined
 
+  const includeCodeContributions = getBooleanQueryParam(query, 'includeCodeContributions', true)
+  const includeCollaborations = getBooleanQueryParam(query, 'includeCollaborations', false)
+
   // TODO: Validate the query params
   const filter: ActiveContributorsFilter = {
     granularity: (query.granularity as Granularity) || Granularity.QUARTERLY,
     project,
     repos,
+    includeCodeContributions,
+    includeCollaborations,
     startDate: undefined,
     endDate: undefined,
   }
