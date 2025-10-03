@@ -7,7 +7,7 @@ const organizationsLeaderboard: WidgetConfig = {
     key: 'organizationsLeaderboard',
     name: 'Organizations leaderboard',
     description: () => 'Organizations ranked by the number of contribution activities'
-    + 'performed by contributors on their behalf during the selected time period.',
+    + ' performed by contributors on their behalf during the selected time period.',
     learnMoreLink: `/docs/metrics/contributors#organizations-leaderboard`,
     component: OrganizationsLeaderboard,
     defaultValue: {
