@@ -32,9 +32,9 @@ SPDX-License-Identifier: MIT
             target="_parent"
             class="c-menu-button"
           >
-            <!-- <i
+            <i
               class="fa-newspaper fa-light text-base w-4 h-4"
-            /> -->
+            />
             Blog
           </a>
           <a
@@ -42,7 +42,10 @@ SPDX-License-Identifier: MIT
             target="_parent"
             class="c-menu-button"
           >
-            Back to LFX Insights
+            <i
+              class="fa-arrow-turn-left fa-light text-base w-4 h-4"
+            />
+            Back to LF Insights
           </a>
         </div>
         
