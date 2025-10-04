@@ -4,10 +4,10 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <div class="relative w-full">
-    <h2 class="text-lg font-semibold text-slate-900 leading-7 mb-2">
+    <h2 class="text-lg font-semibold text-slate-900 leading-7 mb-1">
       Choose YAML file template
     </h2>
-    <p class="text-xs font-normal text-neutral-500 leading-4 mb-4">
+    <p class="text-xs font-normal text-neutral-500 leading-4">
       Please select the YAML template file that better aligns with your project repository and security requirements.
     </p>
 
@@ -15,27 +15,25 @@ SPDX-License-Identifier: MIT
       <div
         v-for="(option, key) in yamlGenerationConfig"
         :key="key"
-        class="w-1/2 px-1.5"
+        class="w-1/3 px-1.5"
       >
         <div
           class="p-4 rounded-lg border border-neutral-200 h-full transition hover:bg-neutral-50 cursor-pointer"
           :class="model === key ? 'border-neutral-900 bg-neutral-100' : ''"
           @click="model = key"
         >
-          <div class="flex justify-between items-center pb-6">
+          <div class="flex justify-between pb-6">
             <lfx-icon
               :size="24"
               :name="option.icon || 'file'"
               class="text-neutral-400"
             />
-            <lfx-tag
-              v-if="option.recommended"
-              type="solid"
-              variation="neutral"
-              size="small"
-            >
-              Recommended
-            </lfx-tag>
+            <lfx-icon
+              v-if="model === key"
+              name="check-circle"
+              class="font-black"
+              :size="16"
+            />
           </div>
 
           <div class="flex flex-col gap-3">

@@ -12,7 +12,6 @@ export interface YamlGenerationStep {
 export interface YamlGenerationConfig {
     label: string; // Name of the configuration displayed in the first selector
     icon: string; // Icon to display for the yaml file type
-    recommended?: boolean;
     description?: string; // Description of the configuration
     features?: string[]; // List of features/benefits
     steps: YamlGenerationStep[]; // list of steps

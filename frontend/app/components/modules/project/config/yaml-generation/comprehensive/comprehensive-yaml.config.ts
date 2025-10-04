@@ -8,12 +8,11 @@ import YamlHeaderInformation
 const comprehensiveYamlGenerationConfig: YamlGenerationConfig = {
     label: 'Comprehensive',
     icon: 'file-shield',
-    recommended: true,
     description: 'Comprehensive security documentation and planning.',
     features: [
-        'Use as a reference for all possible specification sections',
-        'Ideal for identifying areas for future improvement',
-        'Helps plan long-term security investments and prioritization'
+        'Use as a reference for all possible specification sections.',
+        'Ideal for identifying areas for future improvement.',
+        'Helps plan long-term security investments and prioritisation.'
     ],
     steps: [
         {

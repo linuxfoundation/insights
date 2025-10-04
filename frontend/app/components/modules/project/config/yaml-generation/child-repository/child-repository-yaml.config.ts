@@ -10,9 +10,9 @@ const childRepositoryYamlGenerationConfig: YamlGenerationConfig = {
     icon: 'book',
     description: 'Individual repositories in a multi-repository project.',
     features: [
-        'Use in secondary repositories that inherit from a centralized configuration',
-        'Must include header.project-si-source URL pointing to the parent file',
-        'Reduces duplication while maintaining consistency across repositories'
+        'Use in secondary repositories to inherit configuration from a centralized parent repository',
+        'Must include header.project-si-source URL that points to the parent configuration file',
+        'Reduces configuration duplication while ensuring consistency across multiple repositories'
     ],
     steps: [
         {

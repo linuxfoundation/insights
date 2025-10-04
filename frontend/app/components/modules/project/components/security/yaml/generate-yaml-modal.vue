@@ -37,7 +37,7 @@ SPDX-License-Identifier: MIT
               >
                 {{ config.label }}
               </lfx-tag>
-              <p class="text-sm text-neutral-600 leading-5">
+              <p class="text-xs text-neutral-600 leading-5">
                 <span v-if="type && step >= 0">Step {{step + 1}}/{{steps.length + 1}} - </span>
                 <span v-if="!type || step < 0">Choose YAML file template</span>
                 <span v-else-if="step < steps.length">{{ currentStep?.label }}</span>

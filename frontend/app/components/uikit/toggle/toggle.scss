@@ -1,0 +1,63 @@
+// Copyright (c) 2025 The Linux Foundation and each contributor.
+// SPDX-License-Identifier: MIT
+.c-toggle {
+  @apply inline-flex items-center gap-1.5 relative cursor-pointer;
+
+  input {
+    @apply sr-only;
+
+    &:checked + .c-toggle__switch {
+      @apply bg-brand-500;
+
+      .c-toggle__handle {
+        @apply translate-x-[14px];
+      }
+    }
+
+    &:disabled + .c-toggle__switch {
+      @apply bg-neutral-300 cursor-not-allowed;
+    }
+
+    &:checked:disabled + .c-toggle__switch {
+      @apply bg-neutral-300;
+    }
+  }
+
+  &__switch {
+    @apply relative inline-block w-[30px] h-4 bg-neutral-200 rounded-full transition-all;
+  }
+
+  &__handle {
+    @apply absolute top-[2px] left-[2px] w-3 h-3 bg-white rounded-full transition-transform shadow-sm;
+  }
+
+  &__label {
+    @apply text-sm text-neutral-900 leading-5;
+  }
+
+  &.is-disabled {
+    @apply cursor-not-allowed;
+
+    .c-toggle__label {
+      @apply text-neutral-500;
+    }
+  }
+
+  &--small {
+    input:checked + .c-toggle__switch .c-toggle__handle {
+      @apply translate-x-2;
+    }
+
+    .c-toggle__switch {
+      @apply w-5 h-3;
+    }
+
+    .c-toggle__handle {
+      @apply w-2 h-2;
+    }
+
+    .c-toggle__label {
+      @apply text-xs leading-4;
+    }
+  }
+}
