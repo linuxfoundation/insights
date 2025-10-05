@@ -88,7 +88,7 @@ class ExploreApiService {
       const pageParam = (context.pageParam || 0) as number;
 
       // TODO: verify what the sort should be here
-      return await $fetch(`/api/project`, {
+      return await $fetch(`/api/explore/top_lf_projects`, {
         params: {
           page: pageParam,
           pageSize,
