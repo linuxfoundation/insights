@@ -66,7 +66,6 @@ SPDX-License-Identifier: MIT
 <script lang="ts" setup>
 import {yamlGenerationConfig} from "~/components/modules/project/config/yaml-generation/yaml-generation.config";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
-import LfxTag from "~/components/uikit/tag/tag.vue";
 
 const props = defineProps<{
   modelValue: string

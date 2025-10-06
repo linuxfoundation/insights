@@ -89,10 +89,8 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
 import LfxField from '~/components/uikit/field/field.vue';
 import LfxInput from '~/components/uikit/input/input.vue';
-import LfxCheckbox from '~/components/uikit/checkbox/checkbox.vue';
 import LfxButton from "~/components/uikit/button/button.vue";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
 import LfxToggle from "~/components/uikit/toggle/toggle.vue";

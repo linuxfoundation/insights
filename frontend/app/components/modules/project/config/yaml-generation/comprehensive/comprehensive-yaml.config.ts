@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: MIT
 import {DateTime} from 'luxon';
 import type {YamlGenerationConfig} from "~/components/modules/project/config/yaml-generation/yaml-generation.config";
-import YamlHeaderInformation
-    from "~/components/modules/project/config/yaml-generation/shared/yaml-header-information.vue";
+import YamlComprehensiveRepository
+    from "~/components/modules/project/config/yaml-generation/comprehensive/yaml-comprehensive-repository.vue";
 
 const comprehensiveYamlGenerationConfig: YamlGenerationConfig = {
     label: 'Comprehensive',
@@ -15,10 +15,50 @@ const comprehensiveYamlGenerationConfig: YamlGenerationConfig = {
         'Helps plan long-term security investments and prioritisation.'
     ],
     steps: [
+        // {
+        //     label: 'Header information',
+        //     component: YamlHeaderInformation,
+        // },
+        // {
+        //     label: 'Project details',
+        //     component: YamlComprehensiveProject,
+        // },
+        // {
+        //     label: 'Project details | Steward',
+        //     component: YamlComprehensiveProjectSteward,
+        // },
+        // {
+        //     label: 'Project details | Administrators',
+        //     component: YamlComprehensiveProjectAdministrators,
+        // },
+        // {
+        //     label: 'Project details | Documentation',
+        //     component: YamlComprehensiveProjectDocumentation,
+        // },
+        // {
+        //     label: 'Project details | Repositories',
+        //     component: YamlComprehensiveProjectRepositories,
+        // },
+        // {
+        //     label: 'Project details | Vulnerability reporting',
+        //     component: YamlComprehensiveProjectVulnerability,
+        // },
         {
-            label: 'Header information',
-            component: YamlHeaderInformation,
-        }
+            label: 'Repository details',
+            component: YamlComprehensiveRepository,
+        },
+        // {
+        //     label: 'Repository details | Core team members',
+        //     component: YamlComprehensiveRepositoryTeamMembers,
+        // },
+        // {
+        //     label: 'Repository details | License information',
+        //     component: YamlComprehensiveRepositoryLicence,
+        // },
+        // {
+        //     label: 'Repository details | Security self-assessment',
+        //     component: YamlComprehensiveRepositorySecurity,
+        // },
     ],
     template: {
         header: {
@@ -41,7 +81,15 @@ const comprehensiveYamlGenerationConfig: YamlGenerationConfig = {
                 uri: '',
                 comment: ''
             },
-            administrators: [],
+            administrators: [
+                {
+                    name: '',
+                    affiliation: '',
+                    email: '',
+                    social: '',
+                    primary: false
+                }
+            ],
             documentation: {
                 'quickstart-guide': '',
                 'detailed-guide': '',
@@ -50,19 +98,25 @@ const comprehensiveYamlGenerationConfig: YamlGenerationConfig = {
                 'support-policy': '',
                 'signature-verification': ''
             },
-            repositories: [],
+            repositories: [
+                {
+                    name: '',
+                    url: '',
+                    comment: '',
+                }
+            ],
             'vulnerability-reporting': {
-                'reports-accepted': true,
-                'bug-bounty-available': true,
+                'reports-accepted': false,
+                'bug-bounty-available': false,
                 'bug-bounty-program': '',
                 contact: {
                     name: '',
                     email: '',
-                    primary: true
+                    primary: false
                 },
                 'security-policy': '',
-                'in-scope': [],
-                'out-of-scope': [],
+                'in-scope': [''],
+                'out-of-scope': [''],
                 'pgp-key': '',
                 comment: ''
             }
@@ -71,8 +125,8 @@ const comprehensiveYamlGenerationConfig: YamlGenerationConfig = {
             url: '',
             status: '',
             'bug-fixes-only': false,
-            'accepts-change-request': true,
-            'accepts-automated-change-request': true,
+            'accepts-change-request': false,
+            'accepts-automated-change-request': false,
             'no-third-party-packages': false,
             'core-team': [],
             documentation: {

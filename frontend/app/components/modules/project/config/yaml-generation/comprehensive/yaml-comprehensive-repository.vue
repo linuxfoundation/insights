@@ -16,14 +16,14 @@ SPDX-License-Identifier: MIT
     <div class="flex flex-col gap-6">
       <lfx-field label="Repository URL">
         <lfx-input
-          v-model="repositoryUrl"
+          v-model="model.repository.url"
           placeholder="https://github.com/your-project/your-repository"
         />
       </lfx-field>
 
       <lfx-field label="Repository status">
         <lfx-select
-          v-model="repositoryStatus"
+          v-model="model.repository.status"
           placeholder="Select status"
           class="!w-60"
         >
@@ -43,12 +43,29 @@ SPDX-License-Identifier: MIT
       </lfx-field>
 
       <div class="flex flex-col gap-4">
-        <lfx-checkbox v-model="acceptsChangeRequests">
-          Accepts change requests
+        <lfx-checkbox
+          v-model="model.repository['bug-fixes-only']"
+          class="!items-start"
+        >
+          <span class="text-sm pl-1.5 -mt-0.5">Bug fixes only</span>
         </lfx-checkbox>
-
-        <lfx-checkbox v-model="acceptsAutomatedChangeRequests">
-          Accepts automated change requests
+        <lfx-checkbox
+          v-model="model.repository['accepts-change-request']"
+          class="!items-start"
+        >
+          <span class="text-sm pl-1.5 -mt-0.5">Accepts change requests</span>
+        </lfx-checkbox>
+        <lfx-checkbox
+          v-model="model.repository['accepts-automated-change-request']"
+          class="!items-start"
+        >
+          <span class="text-sm pl-1.5 -mt-0.5">Accepts automated change requests</span>
+        </lfx-checkbox>
+        <lfx-checkbox
+          v-model="model.repository['no-third-party-packages']"
+          class="!items-start"
+        >
+          <span class="text-sm pl-1.5 -mt-0.5">No third-party packages</span>
         </lfx-checkbox>
       </div>
     </div>
@@ -62,8 +79,14 @@ import LfxSelect from '~/components/uikit/select/select.vue';
 import LfxOption from '~/components/uikit/select/option.vue';
 import LfxCheckbox from '~/components/uikit/checkbox/checkbox.vue';
 
-const repositoryUrl = ref('');
-const repositoryStatus = ref('active');
-const acceptsChangeRequests = ref(false);
-const acceptsAutomatedChangeRequests = ref(false);
+const props = defineProps<{
+  modelValue: object;
+}>();
+
+const emit = defineEmits<{(e: 'update:modelValue', value: object): void }>();
+
+const model = computed<object>({
+  get: () => props.modelValue,
+  set: (value: object) => emit('update:modelValue', value)
+})
 </script>

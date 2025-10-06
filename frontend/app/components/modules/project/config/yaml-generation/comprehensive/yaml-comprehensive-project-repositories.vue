@@ -3,35 +3,42 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="flex flex-col gap-6 items-center">
-    <!-- Header Section -->
-    <div class="flex flex-col gap-1">
-      <p class="text-sm font-semibold leading-5 text-brand-600">
-        Project details
-      </p>
-      <h2 class="text-lg font-semibold leading-7 text-neutral-900">
-        Repositories
-      </h2>
-      <p class="text-xs font-normal leading-4 text-neutral-500">
-        Soluta perferendis laudantium temporibus neque consectetur ipsam delectus sit debitis corrupti soluta
-        debitis quos.
-      </p>
-    </div>
+  <div class="flex flex-col gap-1 pb-6">
+    <p class="text-sm font-semibold text-brand-600">
+      Project details
+    </p>
+    <p class="text-lg font-semibold text-neutral-900">
+      Repositories
+    </p>
+    <p class="text-xs font-normal text-neutral-500">
+      List all the project's related repositories to ensure that security policies, reporting processes,
+      and documentation are applied consistently across the entire project.
+    </p>
+  </div>
 
-    <!-- Repository Cards -->
-    <div
-      v-for="(repository, index) in repositories"
+  <div class="flex flex-col gap-4">
+    <article
+      v-for="(repository, index) of model.project.repositories"
       :key="index"
-      class="bg-white border border-neutral-200 rounded-xl p-4 flex flex-col gap-4 w-full"
+      class="bg-white border border-neutral-200 rounded-xl p-4 flex flex-col gap-4"
     >
-      <p class="text-sm font-semibold leading-5 text-neutral-900">
-        Repository #{{ index + 1 }}
-      </p>
+      <div class="flex justify-between items-center min-h-7">
+        <p class="text-sm font-semibold text-neutral-900">
+          Repository #{{index + 1}}
+        </p>
 
+        <lfx-icon-button
+          v-if="model.project.repositories.length > 1"
+          type="default"
+          icon="trash-can"
+          size="small"
+          @click="model.project.repositories.splice(index, 1)"
+        />
+      </div>
       <lfx-field label="Repository name">
         <lfx-input
           v-model="repository.name"
-          placeholder=""
+          placeholder=" "
         />
       </lfx-field>
 
@@ -46,55 +53,50 @@ SPDX-License-Identifier: MIT
         <lfx-textarea
           v-model="repository.comment"
           placeholder="Brief description of the repository purpose and scope"
-          class="h-18"
+          class="min-h-18"
         />
       </lfx-field>
-    </div>
+    </article>
+  </div>
 
-    <!-- Add Repository Button -->
-    <button
-      type="button"
-      class="flex items-center justify-center gap-1.5 px-3 py-1 h-9 rounded-full"
+  <!-- Add repository button -->
+  <div class="flex items-center justify-center pt-4">
+    <lfx-button
+      type="transparent"
+      button-style="pill"
       @click="addRepository"
     >
-      <lfx-icon
-        name="plus"
-        :size="20"
-        class="text-[#009aff]"
-      />
-      <span class="text-sm font-semibold leading-5 text-[#009aff]">
-        Add repository
-      </span>
-    </button>
+      <lfx-icon name="plus" />
+      Add repository
+    </lfx-button>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import LfxField from '~/components/uikit/field/field.vue';
+import {computed} from "vue";
 import LfxInput from '~/components/uikit/input/input.vue';
+import LfxField from '~/components/uikit/field/field.vue';
 import LfxTextarea from '~/components/uikit/textarea/textarea.vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxButton from "~/components/uikit/button/button.vue";
+import LfxIcon from "~/components/uikit/icon/icon.vue";
+import LfxIconButton from "~/components/uikit/icon-button/icon-button.vue";
 
-interface Repository {
-  name: string;
-  url: string;
-  comment: string;
-}
+const props = defineProps<{
+  modelValue: object;
+}>();
 
-const repositories = ref<Repository[]>([
-  {
-    name: '',
-    url: '',
-    comment: '',
-  },
-]);
+const emit = defineEmits<{(e: 'update:modelValue', value: object): void }>();
+
+const model = computed<object>({
+  get: () => props.modelValue,
+  set: (value: object) => emit('update:modelValue', value)
+})
 
 const addRepository = () => {
-  repositories.value.push({
+  model.value.project.repositories.push({
     name: '',
     url: '',
     comment: '',
-  });
-};
+  })
+}
 </script>

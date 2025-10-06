@@ -10,14 +10,14 @@ SPDX-License-Identifier: MIT
         Project details
       </h2>
       <p class="text-body-2 text-neutral-500">
-        Basic project information...
+        Basic project information and online references on how it is supported and developed over time.
       </p>
     </div>
 
     <!-- Project name -->
     <lfx-field label="Project name">
       <lfx-input
-        v-model="formData.projectName"
+        v-model="model.project.name"
         placeholder=""
       />
     </lfx-field>
@@ -25,53 +25,56 @@ SPDX-License-Identifier: MIT
     <!-- Project homepage -->
     <div class="flex flex-col gap-1">
       <lfx-field label="Project homepage">
+        <p class="text-body-2 text-neutral-500 mb-1">
+          Project or repository main website
+        </p>
         <lfx-input
-          v-model="formData.projectHomepage"
+          v-model="model.project.homepage"
           placeholder=""
         />
       </lfx-field>
-      <p class="text-body-2 text-neutral-500">
-        Lorem ipsum
-      </p>
     </div>
 
     <!-- Funding URL -->
     <div class="flex flex-col gap-1">
       <lfx-field label="Funding URL">
+        <p class="text-body-2 text-neutral-500 mb-1">
+          Project sponsorship website
+        </p>
         <lfx-input
-          v-model="formData.fundingUrl"
+          v-model="model.project.funding"
           placeholder=""
         />
       </lfx-field>
-      <p class="text-body-2 text-neutral-500">
-        Lorem ipsum
-      </p>
     </div>
 
     <!-- Roadmap URL -->
     <div class="flex flex-col gap-1">
       <lfx-field label="Roadmap URL">
+        <p class="text-body-2 text-neutral-500 mb-1">
+          Website containing future plans, milestones, or feature goals.
+        </p>
         <lfx-input
-          v-model="formData.roadmapUrl"
+          v-model="model.project.roadmap"
           placeholder=""
         />
       </lfx-field>
-      <p class="text-body-2 text-neutral-500">
-        Lorem ipsum
-      </p>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { reactive } from 'vue';
 import LfxField from '~/components/uikit/field/field.vue';
 import LfxInput from '~/components/uikit/input/input.vue';
 
-const formData = reactive({
-  projectName: '',
-  projectHomepage: '',
-  fundingUrl: '',
-  roadmapUrl: '',
-});
+const props = defineProps<{
+  modelValue: object;
+}>();
+
+const emit = defineEmits<{(e: 'update:modelValue', value: object): void }>();
+
+const model = computed<object>({
+  get: () => props.modelValue,
+  set: (value: object) => emit('update:modelValue', value)
+})
 </script>

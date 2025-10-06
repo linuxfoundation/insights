@@ -13,104 +13,85 @@ SPDX-License-Identifier: MIT
         Documentation
       </h2>
       <p class="text-xs font-normal leading-4 text-neutral-500">
-        Soluta perferendis laudantium temporibus neque consectetur ipsam delectus sit debitis corrupti soluta
-        debitis quos.
+        Project resources regarding set up, policies, and processes that support proper usage and contribution.
       </p>
     </div>
 
     <!-- Form Fields -->
     <lfx-field label="Quickstart guide URL">
+      <p class="text-xs font-normal leading-4 text-neutral-500 mb-1">
+        Beginner-friendly setup or installation guide
+      </p>
       <lfx-input
-        v-model="formData.quickstartGuideUrl"
+        v-model="model.documentation['quickstart-guide']"
         placeholder=""
       />
-      <lfx-field-message
-        type="info"
-        :hide-icon="true"
-      >
-        Lorem ipsum
-      </lfx-field-message>
     </lfx-field>
 
     <lfx-field label="Detailed guide URL">
+      <p class="text-xs font-normal leading-4 text-neutral-500 mb-1">
+        Full project documentation or reference manual
+      </p>
       <lfx-input
-        v-model="formData.detailedGuideUrl"
+        v-model="model.documentation['detailed-guide']"
         placeholder=""
       />
-      <lfx-field-message
-        type="info"
-        :hide-icon="true"
-      >
-        Lorem ipsum
-      </lfx-field-message>
     </lfx-field>
 
     <lfx-field label="Code of conduct URL">
+      <p class="text-xs font-normal leading-4 text-neutral-500 mb-1">
+        Rules on behavior and community participation
+      </p>
       <lfx-input
-        v-model="formData.codeOfConductUrl"
+        v-model="model.documentation['code-of-conduct']"
         placeholder=""
       />
-      <lfx-field-message
-        type="info"
-        :hide-icon="true"
-      >
-        Lorem ipsum
-      </lfx-field-message>
     </lfx-field>
 
     <lfx-field label="Release process URL">
+      <p class="text-xs font-normal leading-4 text-neutral-500 mb-1">
+        Releases planning, approval, and publishing processes
+      </p>
       <lfx-input
-        v-model="formData.releaseProcessUrl"
+        v-model="model.documentation['release-process']"
         placeholder=""
       />
-      <lfx-field-message
-        type="info"
-        :hide-icon="true"
-      >
-        Lorem ipsum
-      </lfx-field-message>
     </lfx-field>
 
     <lfx-field label="Support policy URL">
+      <p class="text-xs font-normal leading-4 text-neutral-500 mb-1">
+        Project support guidelines and assistance
+      </p>
       <lfx-input
-        v-model="formData.supportPolicyUrl"
+        v-model="model.documentation['support-policy']"
         placeholder=""
       />
-      <lfx-field-message
-        type="info"
-        :hide-icon="true"
-      >
-        Lorem ipsum
-      </lfx-field-message>
     </lfx-field>
 
     <lfx-field label="Signature verification URL">
+      <p class="text-xs font-normal leading-4 text-neutral-500 mb-1">
+        Instructions for verifying signed releases or artifacts
+      </p>
       <lfx-input
-        v-model="formData.signatureVerificationUrl"
+        v-model="model.documentation['signature-verification']"
         placeholder=""
       />
-      <lfx-field-message
-        type="info"
-        :hide-icon="true"
-      >
-        Lorem ipsum
-      </lfx-field-message>
     </lfx-field>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
 import LfxField from '~/components/uikit/field/field.vue';
 import LfxInput from '~/components/uikit/input/input.vue';
-import LfxFieldMessage from '~/components/uikit/field/field-message.vue';
 
-const formData = ref({
-  quickstartGuideUrl: '',
-  detailedGuideUrl: '',
-  codeOfConductUrl: '',
-  releaseProcessUrl: '',
-  supportPolicyUrl: '',
-  signatureVerificationUrl: '',
-});
+const props = defineProps<{
+  modelValue: object;
+}>();
+
+const emit = defineEmits<{(e: 'update:modelValue', value: object): void }>();
+
+const model = computed<object>({
+  get: () => props.modelValue,
+  set: (value: object) => emit('update:modelValue', value)
+})
 </script>

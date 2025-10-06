@@ -12,38 +12,47 @@ SPDX-License-Identifier: MIT
         Steward
       </p>
       <p class="text-xs font-normal leading-4 text-neutral-500">
-        Lorem ipsum
+        Information about the individual responsible for overseeing the project, ensuring its proper management.
       </p>
     </div>
 
     <div class="flex flex-col gap-1">
       <lfx-field label="URI">
+        <p class="text-xs font-normal leading-4 text-neutral-500 mb-1">
+          Project’s primary steward or maintainer identifier (URL or contact reference)
+        </p>
         <lfx-input
-          v-model="uri"
+          v-model="model.project.steward.uri"
           placeholder=" "
         />
       </lfx-field>
-      <p class="text-xs font-normal leading-4 text-neutral-500">
-        Lorem ipsum
-      </p>
     </div>
 
     <lfx-field label="Comment">
+      <p class="text-xs font-normal leading-4 text-neutral-500 mb-1">
+        Notes about the steward’s role or responsibilities
+      </p>
       <lfx-textarea
-        v-model="comment"
-        placeholder="Lorem ipsum"
-        class="h-[72px]"
+        v-model="model.project.steward.comment"
+        class="min-h-18"
       />
     </lfx-field>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
 import LfxInput from '~/components/uikit/input/input.vue';
 import LfxField from '~/components/uikit/field/field.vue';
 import LfxTextarea from '~/components/uikit/textarea/textarea.vue';
 
-const uri = ref('');
-const comment = ref('');
+const props = defineProps<{
+  modelValue: object;
+}>();
+
+const emit = defineEmits<{(e: 'update:modelValue', value: object): void }>();
+
+const model = computed<object>({
+  get: () => props.modelValue,
+  set: (value: object) => emit('update:modelValue', value)
+})
 </script>

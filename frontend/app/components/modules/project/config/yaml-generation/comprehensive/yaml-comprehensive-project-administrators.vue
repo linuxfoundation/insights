@@ -13,118 +13,116 @@ SPDX-License-Identifier: MIT
         Administrators
       </p>
       <p class="text-xs font-normal leading-4 text-neutral-500">
-        People who have administrative access to the project. At least one administrator is required.
+        People who have administrative access to the project.
       </p>
     </div>
 
-    <!-- Administrator Card -->
-    <div class="relative">
-      <!-- Add Administrator Button (positioned absolute) -->
-      <button
-        type="button"
-        class="absolute left-1/2 -translate-x-1/2 bottom-[-18px] z-10 flex items-center justify-center gap-1.5 px-3
-          py-1 text-sm font-semibold leading-5 text-brand-500 hover:text-brand-600 transition-colors"
-        @click="addAdministrator"
-      >
-        <lfx-icon
-          name="plus"
-          class="text-base"
-        />
-        Add administrator
-      </button>
 
-      <!-- Card -->
-      <div class="bg-white border border-neutral-200 rounded-xl p-4 flex flex-col gap-4 w-full max-w-[752px]">
+    <!-- Administrator cards -->
+    <article
+      v-for="(admin, index) of model.project.administrators"
+      :key="index"
+      class="flex flex-col gap-4 border border-solid border-neutral-200 rounded-xl bg-white p-4"
+    >
+      <div class="flex justify-between items-center min-h-7">
         <p class="text-sm font-semibold leading-5 text-neutral-900">
-          Administrator #1
+          Administrator #{{ index + 1 }}
         </p>
 
-        <!-- Form Fields Grid -->
-        <div class="flex gap-4">
-          <!-- Left Column -->
-          <div class="flex-1 flex flex-col gap-4">
-            <lfx-field label="Name">
-              <lfx-input
-                v-model="administrator.name"
-                placeholder=" "
-              />
-            </lfx-field>
+        <lfx-icon-button
+          v-if="model.project.administrators.length > 1"
+          type="default"
+          icon="trash-can"
+          size="small"
+          @click="model.project.administrators.splice(index, 1)"
+        />
+      </div>
 
-            <lfx-field label="Email">
-              <lfx-input
-                v-model="administrator.email"
-                type="email"
-                placeholder=" "
-              />
-            </lfx-field>
-          </div>
+      <div class="flex gap-4">
+        <!-- Left column -->
+        <div class="flex flex-col gap-4 flex-1">
+          <lfx-field label="Name">
+            <lfx-input
+              v-model="admin.name"
+              placeholder=""
+            />
+          </lfx-field>
 
-          <!-- Right Column -->
-          <div class="flex-1 flex flex-col gap-4">
-            <lfx-field label="Affiliation">
-              <lfx-input
-                v-model="administrator.affiliation"
-                placeholder="Company or Organization"
-              />
-            </lfx-field>
-
-            <lfx-field label="GitHub profile URL">
-              <lfx-input
-                v-model="administrator.githubUrl"
-                placeholder="https://github.com/..."
-              />
-            </lfx-field>
-          </div>
+          <lfx-field label="Email">
+            <lfx-input
+              v-model="admin.email"
+              placeholder=""
+              type="email"
+            />
+          </lfx-field>
         </div>
 
-        <!-- Toggle Switch -->
-        <div class="flex items-center gap-1.5">
-          <button
-            type="button"
-            role="switch"
-            :aria-checked="administrator.primaryContact"
-            :class="[
-              'relative inline-flex h-4 w-[30px] rounded-full p-0.5 transition-colors',
-              administrator.primaryContact ? 'bg-brand-500' : 'bg-neutral-200'
-            ]"
-            @click="administrator.primaryContact = !administrator.primaryContact"
-          >
-            <span
-              :class="[
-                'inline-block h-3 w-3 rounded-full bg-white transition-transform',
-                administrator.primaryContact ? 'translate-x-[14px]' : 'translate-x-0'
-              ]"
+        <!-- Right column -->
+        <div class="flex flex-col gap-4 flex-1">
+          <lfx-field label="Affiliation">
+            <lfx-input
+              v-model="admin.affiliation"
+              placeholder="Company or Organization"
             />
-          </button>
-          <span class="text-sm font-normal leading-5 text-neutral-900">
-            Primary contact
-          </span>
+          </lfx-field>
+
+          <lfx-field label="GitHub profile URL">
+            <lfx-input
+              v-model="admin.social"
+              placeholder="https://github.com/..."
+              type="url"
+            />
+          </lfx-field>
         </div>
       </div>
+
+      <!-- Primary contact toggle -->
+      <lfx-toggle v-model="admin.primary">
+        Primary contact
+      </lfx-toggle>
+    </article>
+
+    <!-- Add administrator button -->
+    <div class="flex items-center justify-center">
+      <lfx-button
+        type="transparent"
+        button-style="pill"
+        @click="addAdministrator"
+      >
+        <lfx-icon name="plus" />
+        Add administrator
+      </lfx-button>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed } from 'vue';
+import LfxIconButton from "~/components/uikit/icon-button/icon-button.vue";
+import LfxField from "~/components/uikit/field/field.vue";
+import LfxInput from "~/components/uikit/input/input.vue";
+import LfxButton from "~/components/uikit/button/button.vue";
+import LfxIcon from "~/components/uikit/icon/icon.vue";
+import LfxToggle from "~/components/uikit/toggle/toggle.vue";
 
-interface Administrator {
-  name: string;
-  email: string;
-  affiliation: string;
-  githubUrl: string;
-  primaryContact: boolean;
-}
+const props = defineProps<{
+  modelValue: object;
+}>();
 
-const administrator = ref<Administrator>({
-  name: '',
-  email: '',
-  affiliation: '',
-  githubUrl: '',
-  primaryContact: false
+const emit = defineEmits<{(e: 'update:modelValue', value: object): void }>();
+
+const model = computed<object>({
+  get: () => props.modelValue,
+  set: (value: object) => emit('update:modelValue', value)
 });
 
 const addAdministrator = () => {
-  // Add administrator logic
-};
+  model.value.project.administrators.push({
+    name: '',
+    affiliation: '',
+    email: '',
+    social: '',
+    primary: false,
+  })
+}
 </script>
