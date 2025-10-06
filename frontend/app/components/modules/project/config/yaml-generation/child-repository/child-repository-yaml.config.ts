@@ -2,8 +2,6 @@
 // SPDX-License-Identifier: MIT
 import {DateTime} from 'luxon';
 import type {YamlGenerationConfig} from "~/components/modules/project/config/yaml-generation/yaml-generation.config";
-import YamlHeaderInformation
-    from "~/components/modules/project/config/yaml-generation/shared/yaml-header-information.vue";
 
 const childRepositoryYamlGenerationConfig: YamlGenerationConfig = {
     label: 'Child repository',

@@ -50,11 +50,8 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import LfxField from '~/components/uikit/field/field.vue';
-import LfxInput from '~/components/uikit/input/input.vue';
 import LfxButton from "~/components/uikit/button/button.vue";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
-import LfxToggle from "~/components/uikit/toggle/toggle.vue";
 import LfxIconButton from "~/components/uikit/icon-button/icon-button.vue";
 import LfxYamlCoreMemberItem
   from "~/components/modules/project/config/yaml-generation/shared/components/yaml-core-member-item.vue";
