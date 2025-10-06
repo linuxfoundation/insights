@@ -6,9 +6,7 @@ SPDX-License-Identifier: MIT
   <header class="outline outline-1 outline-neutral-100 bg-white fixed top-0 left-0 z-40 w-full">
 
     <!-- Banner -->
-    <client-only>
-      <lfx-banner />
-    </client-only>
+    <lfx-banner />
 
     <div class="container">
       <div class="h-14 lg:h-17 flex justify-between items-center gap-4 lg:gap-5">
