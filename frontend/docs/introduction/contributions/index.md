@@ -67,17 +67,10 @@ Learn more about the [data sources](https://insights.linuxfoundation.org/docs/i
 - `blogpost-updated` – Updated an existing blog post.
 - `attachment` – Attached a file to a page or blog post.
 
-#### **Dev.to**
-- `comment` – Commented on a Dev.to post.
-
 #### **Discord**
 - `message` – Sent a message in a channel or thread.
 - `thread_started` – Started a new thread in a channel.
 - `thread_message` – Replied within a thread.
-
-#### **Discourse**
-- `create_topic` – Started a new discussion topic.
-- `message_in_topic` – Posted a message in an existing topic.
 
 #### **GitHub**
 - `discussion-started` – Started a new GitHub Discussion.
@@ -94,10 +87,6 @@ Learn more about the [data sources](https://insights.linuxfoundation.org/docs/i
 #### **Groups.io**
 - `message` – Sent a message to a mailing group or list.
 
-#### **Hacker News**
-- `post` – Created a post or shared a link.
-- `comment` – Commented on a post or another comment.
-
 #### **Jira**
 - `issue-created` – Created a new Jira issue or ticket.
 - `issue-closed` – Closed or resolved an issue.
@@ -107,20 +96,9 @@ Learn more about the [data sources](https://insights.linuxfoundation.org/docs/i
 - `issue-comment-updated` – Edited an existing comment.
 - `issue-attachment-added` – Added a file attachment to an issue.
 
-#### **LinkedIn**
-- `comment` – Commented on a post or article.
-
-#### **Reddit**
-- `post` – Created a new post in a subreddit.
-- `comment` – Replied to a post or another comment.
-
 #### **Slack**
 - `message` – Sent a message in a public or private Slack channel.
 
 #### **Stack Overflow**
 - `question` – Asked a technical question.
 - `answer` – Provided an answer to someone else's question.
-
-#### **Twitter**
-- `hashtag` – Tweeted using a tracked hashtag.
-- `mention` – Mentioned a relevant handle or keyword in a tweet.
