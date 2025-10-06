@@ -1,36 +1,20 @@
-# Contributions
+# Contributions & collaborations
 
-## What is a Contribution?
+Insights tracks activity across platforms to capture the diverse ways individuals support open source projects. This activity is used to understand individual impact, engagement patterns, and participation across projects, communities, and platforms. 
+Activities are grouped into two categories: **contributions** and **collaborations**, highlighting both technical work and broader engagement.
 
-A **contribution** is any meaningful activity performed by a contributor that adds value to a software project, community, or ecosystem. This includes both code and non-code efforts, tracked across platforms like GitHub or Groups.io. Learn more about the [data sources](../data-sources/index.md) we currently track.
+**1. Contributions**\
+Contributions reflect meaningful technical and community-driven impact. They represent direct work that adds code or technical value to a project. This includes commits, pull requests, code reviews, and related technical activities.
 
-Contributions are used to understand individual impact, engagement patterns, and participation across projects, communities, and platforms.
+**2. Collaborations**\
+Collaborations signal engagement or coordination rather than direct contributions, they capture non-code activities that support the project, including discussions, documentation, planning, and community engagement.
+
+Learn more about the [data sources](https://insights.linuxfoundation.org/docs/introduction/data-sources/) we currently track.
 
 
-## Tracked contribution types by platform
+## Tracked **contribution** types by platform
 
-### **Confluence**
-- `page-created` – Created a new Confluence page.
-- `page-updated` – Edited or updated a Confluence page.
-- `attachment-created` – Uploaded a file or asset to a page.
-- `blogpost-created` – Published a new blog post.
-- `blogpost-updated` – Updated an existing blog post.
-- `attachment` – Attached a file to a page or blog post.
-- `comment` – Posted a comment on a page or blog post.
-
-### **Dev.to**
-- `comment` – Commented on a Dev.to post.
-
-### **Discord**
-- `message` – Sent a message in a channel or thread.
-- `thread_started` – Started a new thread in a channel.
-- `thread_message` – Replied within a thread.
-
-### **Discourse**
-- `create_topic` – Started a new discussion topic.
-- `message_in_topic` – Posted a message in an existing topic.
-
-### **Gerrit**
+#### **Gerrit**
 - `changeset-created` – Submitted a new changeset.
 - `changeset-merged` – Merged a code change into the main branch.
 - `changeset-closed` – Closed a code review.
@@ -40,7 +24,7 @@ Contributions are used to understand individual impact, engagement patterns, and
 - `patchset_comment-created` – Commented on a patchset.
 - `patchset_approval-created` – Approved a patchset during review.
 
-### **Git**
+#### **Git**
 - `authored-commit` – Authored a Git commit in the default branch.
 - `reviewed-commit` – Reviewed a commit in the default branch.
 - `tested-commit` – Tested changes and marked them accordingly in the default branch.
@@ -53,40 +37,68 @@ Contributions are used to understand individual impact, engagement patterns, and
 - `resolved-commit` – Resolved an issue with a commit in the default branch.
 - `signed-off-commit` – Signed off on a commit for compliance/review in the default branch.
 
-### **GitHub**
-- `discussion-started` – Started a new GitHub Discussion.
+#### **GitHub**
 - `pull_request-opened` – Opened a new pull request.
 - `pull_request-closed` – Closed an existing pull request.
 - `pull_request-review-requested` – Requested a code review.
 - `pull_request-reviewed` – Reviewed a pull request.
 - `pull_request-merged` – Merged a pull request into the main branch.
-- `issues-opened` – Opened a new issue.
-- `issues-closed` – Closed a previously opened issue.
 - `pull_request-comment` – Commented on a pull request.
-- `issue-comment` – Commented on an issue.
-- `discussion-comment` – Commented on a discussion.
 - `authored-commit` – Authored and pushed a commit in a pull request.
 
-### **GitLab**
+#### **GitLab**
 - `merge_request-opened` – Opened a new merge request.
 - `merge_request-closed` – Closed a merge request.
+- `merge_request-review-requested` – Requested a merge request review.
 - `merge_request-review-approved` – Approved a merge request.
 - `merge_request-review-changes-requested` – Requested changes on a merge request.
 - `merge_request-merged` – Merged a merge request.
 - `merge_request-comment` – Commented on a merge request.
+- `authored-commit` – Authored a commit in a merge request to a GitLab repo.
+
+## Tracked **collaboration** types by platform
+
+#### **Confluence**
+- `page-created` – Created a new Confluence page.
+- `page-updated` – Edited or updated a Confluence page.
+- `comment-created` – Posted a comment on a page or blog post.
+- `attachment-created` – Uploaded a file or asset to a page.
+- `blogpost-created` – Published a new blog post.
+- `blogpost-updated` – Updated an existing blog post.
+- `attachment` – Attached a file to a page or blog post.
+
+#### **Dev.to**
+- `comment` – Commented on a Dev.to post.
+
+#### **Discord**
+- `message` – Sent a message in a channel or thread.
+- `thread_started` – Started a new thread in a channel.
+- `thread_message` – Replied within a thread.
+
+#### **Discourse**
+- `create_topic` – Started a new discussion topic.
+- `message_in_topic` – Posted a message in an existing topic.
+
+#### **GitHub**
+- `discussion-started` – Started a new GitHub Discussion.
+- `issues-opened` – Opened a new issue.
+- `issues-closed` – Closed a previously opened issue.
+- `issue-comment` – Commented on an issue.
+- `discussion-comment` – Commented on a discussion.
+
+#### **GitLab**
 - `issues-opened` – Opened a new issue.
 - `issues-closed` – Closed an existing issue.
 - `issue-comment` – Commented on an issue.
-- `authored-commit` – Authored a commit in a merge request to a GitLab repo.
 
-### **Groups.io**
+#### **Groups.io**
 - `message` – Sent a message to a mailing group or list.
 
-### **Hacker News**
+#### **Hacker News**
 - `post` – Created a post or shared a link.
 - `comment` – Commented on a post or another comment.
 
-### **Jira**
+#### **Jira**
 - `issue-created` – Created a new Jira issue or ticket.
 - `issue-closed` – Closed or resolved an issue.
 - `issue-assigned` – Assigned an issue to a user.
@@ -95,20 +107,20 @@ Contributions are used to understand individual impact, engagement patterns, and
 - `issue-comment-updated` – Edited an existing comment.
 - `issue-attachment-added` – Added a file attachment to an issue.
 
-### **LinkedIn**
+#### **LinkedIn**
 - `comment` – Commented on a post or article.
 
-### **Reddit**
+#### **Reddit**
 - `post` – Created a new post in a subreddit.
 - `comment` – Replied to a post or another comment.
 
-### **Slack**
+#### **Slack**
 - `message` – Sent a message in a public or private Slack channel.
 
-### **Stack Overflow**
+#### **Stack Overflow**
 - `question` – Asked a technical question.
 - `answer` – Provided an answer to someone else's question.
 
-### **Twitter**
+#### **Twitter**
 - `hashtag` – Tweeted using a tracked hashtag.
 - `mention` – Mentioned a relevant handle or keyword in a tweet.
