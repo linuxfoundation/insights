@@ -114,9 +114,21 @@ export const pipeOutputSchema = z.object({
   ),
 })
 
+// Auditor agent output schema
+export const auditorOutputSchema = z.object({
+  is_valid: z.boolean().describe('true = data answers question, false = needs retry'),
+  reasoning: z.string().describe('2-3 sentences explaining the validation decision'),
+  feedback_to_router: z
+    .string()
+    .optional()
+    .describe('If invalid, specific guidance for router to fix the issue'),
+  summary: z.string().optional().describe('If valid, user-friendly summary of findings'),
+})
+
 // TypeScript types for agent outputs
 export type RouterOutput = z.infer<typeof routerOutputSchema> & { usage?: any }
 export type PipeOutput = z.infer<typeof pipeOutputSchema> & { usage?: any }
+export type AuditorOutput = z.infer<typeof auditorOutputSchema> & { usage?: any }
 
 // ============================================
 // Agent Input Types
@@ -166,7 +178,7 @@ export interface DataCopilotQueryInput {
   projectName?: string
   pipe: string
   parameters?: Record<string, unknown>
-  conversationId?: string
+  conversationId: string
   insightsDbPool: Pool
   userEmail: string
   dataStream: DataStreamWriter // DataStreamWriter from AI SDK
@@ -191,6 +203,16 @@ export interface TextToSqlAgentStreamInput {
   segmentId: string
   reformulatedQuestion: string
   dataStream: any
+}
+
+export interface AuditorAgentInput {
+  model: any
+  messages: ChatMessage[]
+  originalQuestion: string
+  reformulatedQuestion: string
+  dataSummary: import('./utils/data-summary').DataSummary
+  attemptNumber: number
+  previousFeedback?: string
 }
 
 export interface AgentResponseCompleteParams {

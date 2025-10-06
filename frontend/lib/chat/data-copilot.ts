@@ -2,19 +2,17 @@
 // SPDX-License-Identifier: MIT
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createAmazonBedrock } from '@ai-sdk/amazon-bedrock'
-import {
-  experimental_createMCPClient as createMCPClient,
-  type LanguageModelV1,
-} from 'ai'
+import { experimental_createMCPClient as createMCPClient, type LanguageModelV1 } from 'ai'
 import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js'
 import type { Pool } from 'pg'
-import type { ChatResponse } from '../../server/repo/chat.repo'
+import type { ChatResponse, IChatResponseDb } from '../../server/repo/chat.repo'
 import { ChatRepository } from '../../server/repo/chat.repo'
 
-import { TextToSqlAgent, PipeAgent, RouterAgent } from './agents'
+import { TextToSqlAgent, PipeAgent, RouterAgent, AuditorAgent } from './agents'
 import { executePipeInstructions, executeTextToSqlInstructions } from './instructions'
 import type {
   AgentResponseCompleteParams,
+  AuditorAgentInput,
   ChatMessage,
   DataCopilotQueryInput,
   PipeAgentInput,
@@ -26,6 +24,7 @@ import type {
   TextToSqlAgentStreamInput,
 } from './types'
 import { RouterDecisionAction, StreamDataStatus, StreamDataType } from './enums'
+import { generateDataSummary } from './utils/data-summary'
 
 const bedrock = createAmazonBedrock({
   accessKeyId: process.env.NUXT_AWS_BEDROCK_ACCESS_KEY_ID,
@@ -65,6 +64,9 @@ export class DataCopilot {
 
   /** Bedrock model identifier */
   private readonly BEDROCK_MODEL_ID = 'us.anthropic.claude-sonnet-4-20250514-v1:0'
+
+  /** Maximum number of auditor retry attempts */
+  private readonly MAX_AUDITOR_RETRIES = 1
 
   constructor() {
     this.model = bedrock(this.BEDROCK_MODEL_ID)
@@ -191,7 +193,6 @@ export class DataCopilot {
     const followUpTools = this.tbTools
     delete followUpTools['execute_query']
 
-
     const agent = new TextToSqlAgent()
     return agent.execute({
       model: this.model,
@@ -253,6 +254,226 @@ export class DataCopilot {
   }
 
   /**
+   * Executes the auditor agent to validate whether retrieved data actually answers the user's question.
+   * Uses statistical analysis of data structure and content without requiring full dataset transmission.
+   *
+   * @param messages - Conversation history for context
+   * @param originalQuestion - The user's original question
+   * @param reformulatedQuestion - Router's enhanced interpretation of the question
+   * @param data - Retrieved data to validate
+   * @param attemptNumber - Current retry attempt (0 for first attempt)
+   * @param previousFeedback - Feedback from previous auditor run if this is a retry
+   * @returns Validation result with summary or feedback for router
+   */
+  private async runAuditorAgent({
+    messages,
+    originalQuestion,
+    reformulatedQuestion,
+    data,
+    attemptNumber,
+    previousFeedback,
+  }: Omit<AuditorAgentInput, 'model' | 'dataSummary'> & { data: any[] }) {
+    const dataSummary = generateDataSummary(data)
+    const agent = new AuditorAgent()
+    return agent.execute({
+      model: this.model,
+      messages,
+      originalQuestion,
+      reformulatedQuestion,
+      dataSummary,
+      attemptNumber,
+      previousFeedback,
+    })
+  }
+
+  /**
+   * Run execution and validation loop with auditor feedback
+   * Handles router execution, query/pipes execution, validation, and retries
+   *
+   * @returns Router action and results after validation
+   */
+  private async runExecutionWithAuditorLoop({
+    messages,
+    currentQuestion,
+    date,
+    projectName,
+    pipe,
+    parametersString,
+    segmentId,
+    previousWasClarification,
+    dataStream,
+    responseData,
+  }: {
+    messages: ChatMessage[]
+    currentQuestion: string
+    date: string
+    projectName: string
+    pipe: string
+    parametersString: string
+    segmentId: string
+    previousWasClarification: boolean
+    dataStream: any
+    responseData: ChatResponse
+  }): Promise<{
+    action: RouterDecisionAction
+    routerOutput: RouterOutput
+    sqlQuery?: string
+    pipeInstructions?: PipeInstructions
+  }> {
+    let attemptNumber = 0
+    let previousFeedback: string | undefined = undefined
+    let currentMessages = messages
+    let routerOutput: RouterOutput
+    let sqlQuery: string | undefined = undefined
+    let pipeInstructions: PipeInstructions | undefined = undefined
+
+    while (attemptNumber <= this.MAX_AUDITOR_RETRIES) {
+      // Run router agent
+      dataStream.writeData({
+        type: StreamDataType.ROUTER_STATUS,
+        status: StreamDataStatus.ANALYZING,
+      })
+
+      routerOutput = await this.runRouterAgent({
+        messages: currentMessages,
+        date,
+        projectName,
+        pipe,
+        parametersString,
+        segmentId,
+        previousWasClarification: attemptNumber === 0 ? previousWasClarification : false,
+      })
+
+      // Accumulate router token usage
+      if (routerOutput.usage) {
+        responseData.inputTokens += routerOutput.usage.promptTokens || 0
+        responseData.outputTokens += routerOutput.usage.completionTokens || 0
+      }
+
+      // Handle STOP and ASK_CLARIFICATION - no auditor needed
+      if (
+        routerOutput.next_action === RouterDecisionAction.STOP ||
+        routerOutput.next_action === RouterDecisionAction.ASK_CLARIFICATION
+      ) {
+        return { action: routerOutput.next_action, routerOutput }
+      }
+
+      // Router decided on CREATE_QUERY or PIPES - continue with execution
+      dataStream.writeData({
+        type: StreamDataType.ROUTER_STATUS,
+        status: StreamDataStatus.COMPLETE,
+        reasoning: routerOutput.reasoning,
+        reformulatedQuestion: routerOutput.reformulated_question,
+      })
+
+      let data: any[] = []
+
+      // Execute based on router decision
+      if (routerOutput.next_action === RouterDecisionAction.CREATE_QUERY) {
+        const result = await this.handleCreateQueryAction({
+          messages: currentMessages,
+          date,
+          projectName,
+          pipe,
+          parametersString,
+          segmentId,
+          reformulatedQuestion: routerOutput.reformulated_question,
+          dataStream,
+        })
+        sqlQuery = result.sqlQuery
+        data = result.data
+      } else if (routerOutput.next_action === RouterDecisionAction.PIPES) {
+        const result = await this.handlePipesAction({
+          messages: currentMessages,
+          date,
+          projectName,
+          pipe,
+          parametersString,
+          segmentId,
+          reformulatedQuestion: routerOutput.reformulated_question,
+          toolNames: routerOutput.tools,
+          dataStream,
+          responseData,
+          routerOutput,
+        })
+        pipeInstructions = result.pipeInstructions
+        data = result.data
+      }
+
+      // Stream auditor status
+      dataStream.writeData({
+        type: StreamDataType.AUDITOR_STATUS,
+        status: attemptNumber === 0 ? StreamDataStatus.VALIDATING : StreamDataStatus.RETRYING,
+        attempt: attemptNumber + 1,
+        maxAttempts: this.MAX_AUDITOR_RETRIES + 1,
+      })
+
+      // Run auditor validation
+      const auditorResult = await this.runAuditorAgent({
+        messages: currentMessages,
+        originalQuestion: currentQuestion,
+        reformulatedQuestion: routerOutput.reformulated_question,
+        data,
+        attemptNumber,
+        previousFeedback,
+      })
+
+      // Accumulate auditor token usage
+      if (auditorResult.usage) {
+        responseData.inputTokens += auditorResult.usage.promptTokens || 0
+        responseData.outputTokens += auditorResult.usage.completionTokens || 0
+      }
+
+      if (auditorResult.is_valid) {
+        // Data is valid, stream summary and exit loop
+        dataStream.writeData({
+          type: StreamDataType.AUDITOR_STATUS,
+          status: StreamDataStatus.VALIDATED,
+          summary: auditorResult.summary,
+          reasoning: auditorResult.reasoning,
+        })
+        return { action: routerOutput.next_action, routerOutput, sqlQuery, pipeInstructions }
+      }
+
+      // Data is invalid
+      if (attemptNumber >= this.MAX_AUDITOR_RETRIES) {
+        // Max retries reached, send final status
+        dataStream.writeData({
+          type: StreamDataType.AUDITOR_STATUS,
+          status: StreamDataStatus.MAX_RETRIES,
+          feedback: auditorResult.feedback_to_router,
+          reasoning: auditorResult.reasoning,
+        })
+        return { action: routerOutput.next_action, routerOutput, sqlQuery, pipeInstructions }
+      }
+
+      // Prepare for retry - add feedback to messages and loop
+      previousFeedback = auditorResult.feedback_to_router
+      attemptNumber++
+
+      dataStream.writeData({
+        type: StreamDataType.AUDITOR_STATUS,
+        status: StreamDataStatus.RETRYING,
+        feedback: previousFeedback,
+        attempt: attemptNumber + 1,
+      })
+
+      // Add feedback to conversation context for next iteration
+      currentMessages = [
+        ...currentMessages,
+        {
+          role: 'system',
+          content: `Previous attempt did not produce valid results. Auditor feedback: ${previousFeedback}. \n
+                    Please adjust your approach based on this feedback.`,
+        },
+      ]
+    }
+
+    // This should never be reached, but TypeScript needs it
+    throw new Error('Auditor loop completed without returning a result')
+  }
+
+  /**
    * Send keepalive message to prevent Cloudflare timeout
    */
   private sendKeepalive(dataStream: any, message: string): void {
@@ -305,18 +526,19 @@ export class DataCopilot {
     }
 
     // Check if the latest response was ASK_CLARIFICATION
-    const latestResponse = previousChatResponses[previousChatResponses.length - 1] as ChatResponse
-    const previousWasClarification = latestResponse.routerResponse === RouterDecisionAction.ASK_CLARIFICATION
+    const latestResponse = previousChatResponses[previousChatResponses.length - 1] as IChatResponseDb
+    const previousWasClarification =
+      latestResponse.router_response === RouterDecisionAction.ASK_CLARIFICATION
 
     if (previousWasClarification) {
       // Merge the clarification: combine the ambiguous question with the clarification answer
-      const ambiguousQuestion = latestResponse.userPrompt
+      const ambiguousQuestion = latestResponse.user_prompt
       const mergedQuestion = `Original question: ${ambiguousQuestion}\n\nClarification provided: ${currentQuestion}`
 
       // Build messages: [older history before clarification] + [merged question]
       const messages = previousChatResponses.slice(0, -1).map((response) => ({
         role: 'user' as const,
-        content: response.userPrompt,
+        content: response.user_prompt,
       }))
 
       // Add the merged question as the current message
@@ -331,7 +553,7 @@ export class DataCopilot {
     // Normal case: build messages from all previous responses + current question
     const messages = previousChatResponses.map((response) => ({
       role: 'user' as const,
-      content: response.userPrompt,
+      content: response.user_prompt,
     }))
 
     // Add the current question
@@ -368,124 +590,80 @@ export class DataCopilot {
     )
 
     const responseData: ChatResponse = {
-          userPrompt: currentQuestion,
-          inputTokens: 0,
-          outputTokens: 0,
-          model: this.BEDROCK_MODEL_ID,
-          conversationId: conversationId || '',
-          routerResponse: RouterDecisionAction.STOP,
-          routerReason: '',
-          pipeInstructions: undefined as PipeInstructions | undefined,
-          sqlQuery: undefined as string | undefined,
-        }
+      userPrompt: currentQuestion,
+      inputTokens: 0,
+      outputTokens: 0,
+      model: this.BEDROCK_MODEL_ID,
+      conversationId: conversationId || '',
+      routerResponse: RouterDecisionAction.STOP,
+      routerReason: '',
+      pipeInstructions: undefined as PipeInstructions | undefined,
+      sqlQuery: undefined as string | undefined,
+    }
 
-        try {
-          dataStream.writeData({
-            type: StreamDataType.ROUTER_STATUS,
-            status: StreamDataStatus.ANALYZING,
-          })
-          // Add padding for Cloudflare streaming threshold
+    try {
+      // Run execution with auditor loop (handles router, execution, validation, retries)
+      const { action, routerOutput, sqlQuery, pipeInstructions } =
+        await this.runExecutionWithAuditorLoop({
+          messages,
+          currentQuestion,
+          date,
+          projectName: projectName as string,
+          pipe,
+          parametersString,
+          segmentId: segmentId as string,
+          previousWasClarification,
+          dataStream,
+          responseData,
+        })
 
-          const routerOutput = await this.runRouterAgent({
-            messages,
-            date,
-            projectName: projectName as string,
-            pipe,
-            parametersString,
-            segmentId: segmentId as string,
-            previousWasClarification,
-          })
+      // Handle STOP and ASK_CLARIFICATION actions
+      if (action === RouterDecisionAction.STOP) {
+        await this.handleStopAction(
+          messages[messages.length - 1]?.content || '',
+          routerOutput,
+          responseData,
+          dataStream,
+          insightsDbPool,
+          userEmail,
+          conversationId,
+        )
+        return
+      }
 
-          // Accumulate token usage from router
-          if (routerOutput.usage) {
-            responseData.inputTokens += routerOutput.usage.promptTokens || 0
-            responseData.outputTokens += routerOutput.usage.completionTokens || 0
-          }
+      if (action === RouterDecisionAction.ASK_CLARIFICATION) {
+        await this.handleAskClarificationAction(
+          messages[messages.length - 1]?.content || '',
+          routerOutput,
+          responseData,
+          dataStream,
+          insightsDbPool,
+          userEmail,
+          conversationId,
+        )
+        return
+      }
 
-          if (routerOutput.next_action === RouterDecisionAction.STOP) {
-            await this.handleStopAction(
-              messages[messages.length - 1]?.content || '',
-              routerOutput,
-              responseData,
-              dataStream,
-              insightsDbPool,
-              userEmail,
-              conversationId,
-            )
-            return
-          }
-
-          if (routerOutput.next_action === RouterDecisionAction.ASK_CLARIFICATION) {
-            await this.handleAskClarificationAction(
-              messages[messages.length - 1]?.content || '',
-              routerOutput,
-              responseData,
-              dataStream,
-              insightsDbPool,
-              userEmail,
-              conversationId,
-            )
-            return
-          }
-
-          dataStream.writeData({
-            type: StreamDataType.ROUTER_STATUS,
-            status: StreamDataStatus.COMPLETE,
-            reasoning: routerOutput.reasoning,
-            reformulatedQuestion: routerOutput.reformulated_question,
-          })
-
-          let sqlQuery: string | undefined = undefined
-          let pipeInstructions: PipeInstructions | undefined = undefined
-
-          if (routerOutput.next_action === RouterDecisionAction.CREATE_QUERY) {
-            const result = await this.handleCreateQueryAction({
-              messages,
-              date,
-              projectName: projectName as string,
-              pipe,
-              parametersString,
-              segmentId: segmentId as string,
-              reformulatedQuestion: routerOutput.reformulated_question,
-              dataStream,
-            })
-            sqlQuery = result.sqlQuery
-          } else if (routerOutput.next_action === RouterDecisionAction.PIPES) {
-            const result = await this.handlePipesAction({
-              messages,
-              date,
-              projectName: projectName as string,
-              pipe,
-              parametersString,
-              segmentId: segmentId as string,
-              reformulatedQuestion: routerOutput.reformulated_question,
-              toolNames: routerOutput.tools,
-              dataStream,
-              responseData,
-              routerOutput,
-            })
-            pipeInstructions = result.pipeInstructions
-          }
-
-          await this.handleResponseComplete({
-            userPrompt: messages[messages.length - 1]?.content || '',
-            responseData,
-            routerOutput,
-            pipeInstructions,
-            sqlQuery,
-            conversationId,
-            insightsDbPool,
-            userEmail,
-            dataStream,
-          })
-        } catch (error) {
-          dataStream.writeData({
-            type: 'router-status',
-            status: 'error',
-            error: error instanceof Error ? error.message : 'An error occurred',
-          })
-          throw error
-        }
+      // Handle completed execution (CREATE_QUERY or PIPES)
+      await this.handleResponseComplete({
+        userPrompt: messages[messages.length - 1]?.content || '',
+        responseData,
+        routerOutput,
+        pipeInstructions,
+        sqlQuery,
+        conversationId,
+        insightsDbPool,
+        userEmail,
+        dataStream,
+      })
+    } catch (error) {
+      dataStream.writeData({
+        type: 'router-status',
+        status: 'error',
+        error: error instanceof Error ? error.message : 'An error occurred',
+      })
+      throw error
+    }
   }
 
   /**
@@ -584,7 +762,7 @@ export class DataCopilot {
     segmentId,
     reformulatedQuestion,
     dataStream,
-  }: TextToSqlAgentStreamInput): Promise<{ sqlQuery: string }> {
+  }: TextToSqlAgentStreamInput): Promise<{ sqlQuery: string; data: any[] }> {
     // Send progress update before starting TextToSql agent
     this.sendProgress(dataStream, 'progress', 'Analyzing database schema...')
 
@@ -595,17 +773,21 @@ export class DataCopilot {
 
     try {
       const textToSqlOutput = await this.runTextToSqlAgent({
-          messages,
-          date,
-          projectName,
-          pipe,
-          parametersString,
-          segmentId,
-          reformulatedQuestion,
-        })
+        messages,
+        date,
+        projectName,
+        pipe,
+        parametersString,
+        segmentId,
+        reformulatedQuestion,
+      })
 
       clearInterval(keepaliveInterval)
-      this.sendProgress(dataStream, 'progress', `SQL query generated! Executing [${textToSqlOutput.instructions}]...`)
+      this.sendProgress(
+        dataStream,
+        'progress',
+        `SQL query generated! Executing [${textToSqlOutput.instructions}]...`,
+      )
 
       const queryData = await executeTextToSqlInstructions(textToSqlOutput.instructions)
 
@@ -616,7 +798,7 @@ export class DataCopilot {
         data: queryData,
       })
 
-      return { sqlQuery: textToSqlOutput.instructions }
+      return { sqlQuery: textToSqlOutput.instructions, data: queryData }
     } catch (error) {
       clearInterval(keepaliveInterval)
       throw error
@@ -637,7 +819,7 @@ export class DataCopilot {
     toolNames,
     dataStream,
     responseData,
-  }: PipeAgentStreamInput): Promise<{ pipeInstructions: PipeInstructions }> {
+  }: PipeAgentStreamInput): Promise<{ pipeInstructions: PipeInstructions; data: any[] }> {
     const pipeOutput = await this.runPipeAgent({
       messages,
       date,
@@ -665,7 +847,7 @@ export class DataCopilot {
       data: combinedData,
     })
 
-    return { pipeInstructions: pipeOutput.instructions }
+    return { pipeInstructions: pipeOutput.instructions, data: combinedData }
   }
 
   /**

@@ -56,6 +56,24 @@ export interface ChatResponse {
   outputTokens?: number
 }
 
+export interface IChatResponseDb {
+  id: string
+  created_at: Date
+  created_by: string
+  user_prompt: string
+  router_response: RouterDecisionAction
+  router_reason: string
+  pipe_instructions: PipeInstructions | null
+  sql_query: string | null
+  clarification_question: string | null
+  model: string
+  input_tokens: number | null
+  output_tokens: number | null
+  feedback: number | null
+  conversation_id: string | null
+
+}
+
 export class ChatRepository {
   constructor(private pool: Pool) {}
 
@@ -135,7 +153,7 @@ export class ChatRepository {
     return result.rows.length > 0 ? result.rows[0] : null
   }
 
-  async getChatResponsesByConversation(conversationId: string): Promise<ChatResponse[]> {
+  async getChatResponsesByConversation(conversationId: string): Promise<IChatResponseDb[]> {
     const query = `
       SELECT * FROM chat_responses
       WHERE conversation_id = $1

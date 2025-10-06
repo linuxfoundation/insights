@@ -58,6 +58,11 @@ ${toolsOverview}
 **Step 1: Check Existing Tools (HIGHEST PRIORITY)**
 - **FIRST: For activity-count-related queries (stars count, forks count, commits count, etc.) → Consider activities_count or activities_cumulative_count pipes**
 ${pipeToolQuestion}
+- ** Each activity type and its description can be found in activityTypes datasource. 
+  * Refer to this datasource when user asks for specific activity types and use this field for filtering types.
+  * Keep in mind that for some activities, there can be multiple types to filter. (For instance to get commits => "commited-commit" and "authored-commit")
+  * When activities are reffered as "contributions" find all types in "activityTypes" with "isCodeContribution" = true.
+  * When activities are reffered as "collaboration" find all types in "activityTypes" with "isCollaboration" = true.
 - **MANDATORY VALIDATION: Before routing to pipes, verify the pipe can FULLY answer the question:**
   - **Check dimensions/groupings:** Does the query ask for breakdowns the pipe doesn't support?
     * Example: "commits by company" → activities_count cannot group by company → USE create_query
@@ -87,13 +92,16 @@ ${pipeToolQuestion}
 **Step 2: Check Data Sources (only if Step 1 is NO)**
 - Use list_datasources to examine available tables and fields
 - Check if the required fields exist in any data source
-- Pay special attention to the pull_requests_analyzed, issues_analyzed, activityRelations_deduplicated_cleaned_ds tables
-- If something can be answered by avoiding using activityRelations_deduplicated_cleaned_ds, prefer that (e.g., use pull_requests_analyzed for PR counts, issues_analyzed for issue counts, etc.)
+- Pay special attention to the pull_requests_analyzed, issues_analyzed, activityRelations_data_copilot tables
+- If something can be answered by avoiding using activityRelations_data_copilot, prefer that (e.g., use pull_requests_analyzed for PR counts, issues_analyzed for issue counts, etc.)
 - If the needed fields exist → Question is VALID, route to "create_query" action
 - If fields don't exist → Question is INVALID, route to "stop" action
 - If the question is referencing a field about contributors/people that we have only for organizations, the question is INVALID
 
 # ROUTING DECISIONS
+** CRITICAL: Always consider the current dashboard information to disambiguate.
+  * Example: Split the count by repository to find the repo with the strongest growth.
+  * In the example above, if the user is coming from active-contributors dashboard, he's probably referring to "active contributor count" when asking for "count".
 - "stop": The question cannot be answered with available data
 - "create_query": Custom SQL query needed using available data sources (tools can be empty)
 - "pipes": Existing tools can answer the question (specify which tools in the tools array)
@@ -135,5 +143,6 @@ It must be something user-friendly.
 - Must be a clear, specific question that helps the user provide the missing information
 - Should offer options or examples when appropriate
 - Must be conversational and friendly
+- Always check for historical context: if with historical context the question is clear, do NOT ask for clarification
 `
 }

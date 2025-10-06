@@ -10,11 +10,8 @@ import type {
   MessageStatus,
 } from '../types/copilot.types'
 import type { CopilotParams } from '../types/copilot.types'
-// import testData from './test.json'
-import testData3 from './test3.json'
 import type { Project } from '~~/types/project'
 
-export const tempData = testData3 as AIMessage[]
 class CopilotApiService {
   // Generate unique ID for messages
   generateId = () => Date.now().toString(36) + Math.random().toString(36).substring(2);
@@ -228,11 +225,30 @@ class CopilotApiService {
           statusCallBack(statusText)
 
           if (
-            data.type === 'router-status' &&
-            (data.status === 'complete' || data.status === 'error' || data.status === 'ask_clarification')
+            (data.type === 'router-status' || data.type === 'auditor-status') &&
+            (
+             data.status === 'complete' || 
+             data.status === 'error' || 
+             data.status === 'ask_clarification' || 
+             data.status === 'validated' 
+            )
           ) {
             if (!assistantMessageId) {
               assistantMessageId = this.generateId()
+
+              let content: string
+              if (data.status === 'ask_clarification') {
+                content = data.question || 'I need more information to answer your question.'
+              }
+              else if (data.status === 'error') {
+                content = data.error || 'An error occurred.'
+              }
+              else if (data.status === 'validated') {
+                content = data.summary || 'Data validated successfully.'
+              }
+              else {
+                content = data.reasoning || 'Analysis complete.'
+              }
 
               messageCallBack(
                 {
@@ -240,7 +256,7 @@ class CopilotApiService {
                   role: 'assistant',
                   type: 'router-status',
                   status: data.status,
-                  content: data.status === 'ask_clarification' ? (data.question || '') : (data.reasoning || ''),
+                  content,
                   explanation: data.status === 'error' ? data.error : undefined,
                   routerReasoning: data.reasoning,
                   question: data.question, // Include the clarification question
@@ -339,6 +355,8 @@ class CopilotApiService {
     switch (type) {
       case 'router-status':
         return this.getStatusTextRouterStatus(status, reasoning, error)
+      case 'auditor-status':
+        return this.getStatusTextAuditorStatus(status, reasoning)
       case 'sql-result':
         return 'SQL query executed successfully'
       case 'pipe-result':
@@ -358,6 +376,21 @@ class CopilotApiService {
         return reasoning || 'I need more information to answer your question.'
       default:
         return `Error: ${error || 'An error occurred'}`
+    }
+  }
+
+  getStatusTextAuditorStatus(status: string, reasoning: string): string {
+    switch (status) {
+      case 'validating':
+        return 'Validating data quality...'
+      case 'validated':
+        return reasoning ? `Validation passed: ${reasoning}` : 'Data validated successfully'
+      case 'retrying':
+        return 'Retrying with improved query...'
+      case 'max_retries':
+        return reasoning ? `Validation feedback: ${reasoning}` : 'Maximum validation attempts reached'
+      default:
+        return 'Validating...'
     }
   }
 }

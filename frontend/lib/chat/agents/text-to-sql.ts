@@ -48,6 +48,7 @@ export class TextToSqlAgent extends BaseAgent<TextToSqlAgentInput, SqlOutput> {
       const fullSystemPrompt = conversationHistoryReceipt + systemPrompt + `
 
 ## CRITICAL INSTRUCTIONS
+0. NEVER use the functions that are NOT provided under AVAILABLE FUNCTIONS
 1. Use tools BRIEFLY to understand schema (max 2 tool calls)
 2. Then STOP calling tools and write the SQL query
 3. Put your SQL in a markdown code block: \`\`\`sql ... \`\`\`
