@@ -4,7 +4,7 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <div 
-    class="block bg-brand-800 text-white py-2 sm:py-1 px-5 flex 
+    class="block bg-brand-800 text-white py-2 px-5 flex 
     items-center sm:justify-center justify-start gap-3"
   >
     <span class="text-2xs sm:text-xs leading-3.5 sm:leading-4">
