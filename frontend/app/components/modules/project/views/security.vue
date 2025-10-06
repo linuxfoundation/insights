@@ -36,7 +36,10 @@ SPDX-License-Identifier: MIT
           v-if="!isFetching && data?.length && !allArchived"
           class="flex items-center gap-2"
         >
-          <lfx-tooltip placement="top">
+          <lfx-tooltip
+            v-if="hasLfxInsightsPermission"
+            placement="top"
+          >
             <lfx-button
               type="secondary"
               size="small"
@@ -205,6 +208,7 @@ import LfxTag from "~/components/uikit/tag/tag.vue";
 import LfxButton from "~/components/uikit/button/button.vue";
 import LfxTooltip from "~/components/uikit/tooltip/tooltip.vue";
 import LfSecurityGenerateYamlModal from "~/components/modules/project/components/security/yaml/generate-yaml-modal.vue";
+import {useAuthStore} from "~/components/modules/auth/store/auth.store";
 
 const accordion = ref('');
 
@@ -212,6 +216,8 @@ const route = useRoute();
 const { name } = route.params;
 
 const isGenerateYamlModalOpen = ref(false);
+
+const  {hasLfxInsightsPermission} = useAuthStore();
 
 const {
   selectedReposValues,

@@ -22,6 +22,7 @@ SPDX-License-Identifier: MIT
       :type="props.type"
       :disabled="props.disabled"
       v-bind="$attrs"
+      :tabindex="props.tabindex"
       class="!outline-none !shadow-none "
     >
     <div
@@ -42,11 +43,13 @@ const props = withDefaults(defineProps<{
   disabled?: boolean,
   invalid?: boolean,
   type?: string,
+  tabindex?: string,
 }>(), {
   placeholder: '',
   disabled: false,
   invalid: false,
   type: 'text',
+  tabindex: undefined,
 });
 
 const emit = defineEmits<{(e: 'update:modelValue', value: string | number): void}>();

@@ -17,61 +17,22 @@ SPDX-License-Identifier: MIT
       </p>
     </div>
 
-    <article
-      v-for="(member, index) of model.repository['core-team']"
+    <lfx-yaml-core-member-item
+      v-for="(_, index) of model.repository['core-team']"
       :key="index"
-      class="bg-white border border-neutral-200 rounded-xl p-4 flex flex-col gap-4"
+      v-model="model.repository['core-team'][index]"
     >
-      <div class="flex justify-between items-center min-h-7">
-        <p class="text-sm font-semibold text-neutral-900">
-          Team member #{{index + 1}}
-        </p>
-        <lfx-icon-button
-          v-if="model.repository['core-team'].length > 1"
-          type="default"
-          icon="trash-can"
-          size="small"
-          @click="model.repository['core-team'].splice(index, 1)"
-        />
-      </div>
-
-      <div class="flex gap-4">
-        <div class="flex-1 flex flex-col gap-4">
-          <LfxField label="Name">
-            <LfxInput v-model="member.name" />
-          </LfxField>
-
-          <LfxField label="Email">
-            <LfxInput
-              v-model="member.email"
-              type="email"
-            />
-          </LfxField>
-        </div>
-
-        <div class="flex-1 flex flex-col gap-4">
-          <LfxField label="Affiliation">
-            <LfxInput
-              v-model="member.affiliation"
-              placeholder="Company or Organization"
-            />
-          </LfxField>
-
-          <LfxField label="GitHub profile URL">
-            <LfxInput
-              v-model="member.social"
-              placeholder="https://github.com/..."
-            />
-          </LfxField>
-        </div>
-      </div>
-
-      <lfx-toggle
-        v-model="member.primary"
-      >
-        Primary contact
-      </lfx-toggle>
-    </article>
+      <p class="text-sm font-semibold text-neutral-900">
+        Team member #{{index + 1}}
+      </p>
+      <lfx-icon-button
+        v-if="model.repository['core-team'].length > 1"
+        type="default"
+        icon="trash-can"
+        size="small"
+        @click="model.repository['core-team'].splice(index, 1)"
+      />
+    </lfx-yaml-core-member-item>
 
     <!-- Add member button -->
     <div class="flex items-center justify-center">
@@ -95,6 +56,8 @@ import LfxButton from "~/components/uikit/button/button.vue";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
 import LfxToggle from "~/components/uikit/toggle/toggle.vue";
 import LfxIconButton from "~/components/uikit/icon-button/icon-button.vue";
+import LfxYamlCoreMemberItem
+  from "~/components/modules/project/config/yaml-generation/shared/components/yaml-core-member-item.vue";
 
 const props = defineProps<{
   modelValue: object;

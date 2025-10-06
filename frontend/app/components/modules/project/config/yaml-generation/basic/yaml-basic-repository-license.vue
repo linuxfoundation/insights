@@ -24,6 +24,13 @@ SPDX-License-Identifier: MIT
         <lfx-input
           v-model="model.repository.license.url"
           placeholder="https://opensource.org/licenses/MIT"
+          :invalid="$v.repository.license.url.$invalid && $v.repository.license.url.$dirty"
+          @blur="$v.repository.license.url.$touch()"
+          @input="$v.repository.license.url.$touch()"
+        />
+        <lfx-field-messages
+          :validation="$v.repository.license.url"
+          :error-messages="{ url: 'Invalid URL' }"
         />
       </lfx-field>
     </div>
@@ -75,9 +82,12 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
+import useVuelidate from "@vuelidate/core";
+import {url} from "@vuelidate/validators";
 import LfxField from '~/components/uikit/field/field.vue';
 import LfxInput from '~/components/uikit/input/input.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxFieldMessages from "~/components/uikit/field/field-messages.vue";
 
 
 const props = defineProps<{
@@ -90,4 +100,16 @@ const model = computed<object>({
   get: () => props.modelValue,
   set: (value: object) => emit('update:modelValue', value)
 })
+
+const rules = {
+  repository: {
+    license: {
+      url: {
+        url,
+      }
+    }
+  }
+}
+
+const $v = useVuelidate(rules, model);
 </script>

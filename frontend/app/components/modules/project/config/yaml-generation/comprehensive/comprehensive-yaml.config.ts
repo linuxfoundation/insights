@@ -2,8 +2,10 @@
 // SPDX-License-Identifier: MIT
 import {DateTime} from 'luxon';
 import type {YamlGenerationConfig} from "~/components/modules/project/config/yaml-generation/yaml-generation.config";
-import YamlComprehensiveRepository
-    from "~/components/modules/project/config/yaml-generation/comprehensive/yaml-comprehensive-repository.vue";
+import YamlHeaderInformation
+    from "~/components/modules/project/config/yaml-generation/shared/yaml-header-information.vue";
+import YamlComprehensiveProject
+    from "~/components/modules/project/config/yaml-generation/comprehensive/yaml-comprehensive-project.vue";
 
 const comprehensiveYamlGenerationConfig: YamlGenerationConfig = {
     label: 'Comprehensive',
@@ -15,14 +17,14 @@ const comprehensiveYamlGenerationConfig: YamlGenerationConfig = {
         'Helps plan long-term security investments and prioritisation.'
     ],
     steps: [
-        // {
-        //     label: 'Header information',
-        //     component: YamlHeaderInformation,
-        // },
-        // {
-        //     label: 'Project details',
-        //     component: YamlComprehensiveProject,
-        // },
+        {
+            label: 'Header information',
+            component: YamlHeaderInformation,
+        },
+        {
+            label: 'Project details',
+            component: YamlComprehensiveProject,
+        },
         // {
         //     label: 'Project details | Steward',
         //     component: YamlComprehensiveProjectSteward,
@@ -43,10 +45,10 @@ const comprehensiveYamlGenerationConfig: YamlGenerationConfig = {
         //     label: 'Project details | Vulnerability reporting',
         //     component: YamlComprehensiveProjectVulnerability,
         // },
-        {
-            label: 'Repository details',
-            component: YamlComprehensiveRepository,
-        },
+        // {
+        //     label: 'Repository details',
+        //     component: YamlComprehensiveRepository,
+        // },
         // {
         //     label: 'Repository details | Core team members',
         //     component: YamlComprehensiveRepositoryTeamMembers,
@@ -128,7 +130,15 @@ const comprehensiveYamlGenerationConfig: YamlGenerationConfig = {
             'accepts-change-request': false,
             'accepts-automated-change-request': false,
             'no-third-party-packages': false,
-            'core-team': [],
+            'core-team': [
+                {
+                    name: '',
+                    affiliation: '',
+                    email: '',
+                    social: '',
+                    primary: false,
+                }
+            ],
             documentation: {
                 'contributing-guide': '',
                 'review-policy': '',
@@ -143,8 +153,20 @@ const comprehensiveYamlGenerationConfig: YamlGenerationConfig = {
             release: {
                 changelog: '',
                 'automated-pipeline': true,
-                attestations: [],
-                'distribution-points': [],
+                attestations: [
+                    {
+                        name: '',
+                        'predicate-uri': '',
+                        location: '',
+                        comment: ''
+                    }
+                ],
+                'distribution-points': [
+                    {
+                        uri: '',
+                        comment: ''
+                    }
+                ],
                 license: {
                     url: '',
                     expression: ''
@@ -157,10 +179,57 @@ const comprehensiveYamlGenerationConfig: YamlGenerationConfig = {
                         date: '',
                         comment: ''
                     },
-                    'third-party': []
+                    'third-party': [
+                        {
+                            evidence: '',
+                            date: '',
+                            comment: ''
+                        }
+                    ]
                 },
-                champions: [],
-                tools: []
+                champions: [
+                    {
+                        name: '',
+                        email: '',
+                        primary: false,
+                    }
+                ],
+                tools: [
+                    {
+                        name: '',
+                        type: '',
+                        version: '',
+                        rulesets: [
+                            ''
+                        ],
+                        results: {
+                            adhoc: {
+                                name: '',
+                                'predicate-uri': '',
+                                location: '',
+                                comment: ''
+                            },
+                            ci: {
+                                name: '',
+                                'predicate-uri': '',
+                                location: '',
+                                comment: ''
+                            },
+                            release: {
+                                name: '',
+                                'predicate-uri': '',
+                                location: '',
+                                comment: ''
+                            }
+                        },
+                        integration: {
+                            adhoc: false,
+                            ci: false,
+                            release: false
+                        },
+                        comment: 'foo bar'
+                    }
+                ]
             }
         }
     }

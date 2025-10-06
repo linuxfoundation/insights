@@ -15,10 +15,10 @@ const childRepositoryYamlGenerationConfig: YamlGenerationConfig = {
         'Reduces configuration duplication while ensuring consistency across multiple repositories'
     ],
     steps: [
-        {
-            label: 'Header information',
-            component: YamlHeaderInformation,
-        }
+        // {
+        //     label: 'Header information',
+        //     component: YamlHeaderInformation,
+        // }
     ],
     template: {
         header: {

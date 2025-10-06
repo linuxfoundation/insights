@@ -31,12 +31,18 @@ SPDX-License-Identifier: MIT
             class="flex flex-col gap-2 mt-3"
           >
             <div class="flex items-center gap-3">
-              <lfx-tag
-                size="small"
-                class="bg-neutral-200 text-neutral-600"
+              <lfx-tooltip
+                placement="top"
+                :content="config?.description || ''"
+                :disabled="!config?.description"
               >
-                {{ config.label }}
-              </lfx-tag>
+                <lfx-tag
+                  size="small"
+                  class="bg-neutral-200 text-neutral-600"
+                >
+                  {{ config?.label }}
+                </lfx-tag>
+              </lfx-tooltip>
               <p class="text-xs text-neutral-600 leading-5">
                 <span v-if="type && step >= 0">Step {{step + 1}}/{{steps.length + 1}} - </span>
                 <span v-if="!type || step < 0">Choose YAML file template</span>
@@ -144,6 +150,7 @@ import {
 } from "~/components/modules/project/config/yaml-generation/yaml-generation.config";
 import {getYaml} from "~/components/modules/project/services/js-yaml";
 import LfxTag from "~/components/uikit/tag/tag.vue";
+import LfxTooltip from "~/components/uikit/tooltip/tooltip.vue";
 
 const props = withDefaults(defineProps<{
   modelValue: boolean
