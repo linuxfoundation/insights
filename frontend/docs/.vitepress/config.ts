@@ -6,12 +6,23 @@ import { defineConfig } from 'vitepress'
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   base: '/docs/',
-  title: "LFX Insights Documentation",
-  description: "Insights evaluates the health and trustworthiness of the world's most critical open source software.",
+  title: 'LFX Insights Documentation',
+  description:
+    "Insights evaluates the health and trustworthiness of the world's most critical open source software.",
   head: [
-    ['link', { rel: 'icon', href: 'https://cdn.platform.linuxfoundation.org/assets/lf-favicon.png' }], // Adjust the path if you use a different favicon format
-    ['script', { src: 'https://kit.fontawesome.com/b5289aebdf.js' }],
-    ['script', { defer: '', 'data-domain': 'insights.linuxfoundation.org', src: 'https://plausible.io/js/script.js' }]
+    [
+      'link',
+      { rel: 'icon', href: 'https://cdn.platform.linuxfoundation.org/assets/lf-favicon.png' },
+    ], // Adjust the path if you use a different favicon format
+    ['script', { src: 'https://kit.fontawesome.com/d65f54d9ea.js' }],
+    [
+      'script',
+      {
+        defer: '',
+        'data-domain': 'insights.linuxfoundation.org',
+        src: 'https://plausible.io/js/script.js',
+      },
+    ],
   ],
   vite: {
     resolve: {
@@ -19,10 +30,10 @@ export default defineConfig({
         {
           find: /^.*\/VPNav\.vue$/,
           replacement: fileURLToPath(
-            new URL('./theme/components/CustomNavbar.vue', import.meta.url)
-          )
-        }
-      ]
+            new URL('./theme/components/CustomNavbar.vue', import.meta.url),
+          ),
+        },
+      ],
     },
   },
   themeConfig: {
@@ -32,10 +43,10 @@ export default defineConfig({
         translations: {
           button: {
             buttonText: 'Search the docs...',
-            buttonAriaLabel: 'Search the docs...'
-          }
-        }
-      }
+            buttonAriaLabel: 'Search the docs...',
+          },
+        },
+      },
     },
     // https://vitepress.dev/reference/default-theme-config
     sidebar: [
@@ -48,7 +59,7 @@ export default defineConfig({
           { text: 'Data Quality', link: '/introduction/data-quality/index.md' },
           { text: 'Contributions', link: '/introduction/contributions/index.md' },
           { text: 'Maintainers', link: '/introduction/maintainers/index.md' },
-        ]
+        ],
       },
       {
         text: 'Metrics',
@@ -58,18 +69,16 @@ export default defineConfig({
           { text: 'Popularity', link: '/metrics/popularity/index.md' },
           { text: 'Development', link: '/metrics/development/index.md' },
           { text: 'Security & Best Practices', link: '/metrics/security/index.md' },
-        ]
+        ],
       },
       {
         text: 'More',
         items: [
           { text: 'FAQ', link: '/more/faq/index.md' },
-          { text: 'Glossary', link: '/more/glossary/index.md' }
-        ]
-      }
+          { text: 'Glossary', link: '/more/glossary/index.md' },
+        ],
+      },
     ],
-    socialLinks: [
-      { icon: 'github', link: 'https://github.com/linuxfoundation/insights' }
-    ]
-  }
+    socialLinks: [{ icon: 'github', link: 'https://github.com/linuxfoundation/insights' }],
+  },
 })
