@@ -107,6 +107,7 @@ const params = computed(() => ({
   repos: selectedReposValues.value,
   startDate: startDate.value,
   endDate: endDate.value,
+  includeCollaborations: props.model.includeCollaborations,
 }));
 
 const {
