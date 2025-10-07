@@ -2,12 +2,13 @@
 // SPDX-License-Identifier: MIT
 import PullRequests from './pull-requests.vue'
 import { Granularity } from '~~/types/shared/granularity'
-import type { WidgetConfig } from '~/components/modules/widget/config/widget.config'
+import type { WidgetConfig, WidgetModel } from '~/components/modules/widget/config/widget.config'
 
 const pullRequests: WidgetConfig = {
   key: 'pullRequests',
   name: 'Pull requests',
-  description: () => 'Comparison between opened and merged (or closed) pull requests during the selected period.',
+  description: () =>
+    'Comparison between opened and merged (or closed) pull requests during the selected period.',
   learnMoreLink: `/docs/metrics/development#pull-requests`,
   component: PullRequests,
   share: true,
@@ -16,7 +17,7 @@ const pullRequests: WidgetConfig = {
   benchmark: {
     title: 'New Pull Requests per Month',
     showOnOverview: true,
-    isVisible: (model: Record<string, number | boolean | string>) => model.granularity === Granularity.MONTHLY,
+    isVisible: (model: WidgetModel) => model.granularity === Granularity.MONTHLY,
     points: {
       0: {
         type: 'negative',
@@ -56,7 +57,7 @@ const pullRequests: WidgetConfig = {
   },
   copilot: {
     icon: 'code-pull-request',
-    suggestions: 'How many pull requests are there?'
+    suggestions: 'How many pull requests are there?',
   },
 }
 

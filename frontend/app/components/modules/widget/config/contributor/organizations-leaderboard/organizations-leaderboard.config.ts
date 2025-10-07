@@ -11,7 +11,8 @@ const organizationsLeaderboard: WidgetConfig = {
     learnMoreLink: `/docs/metrics/contributors#organizations-leaderboard`,
     component: OrganizationsLeaderboard,
     defaultValue: {
-        metric: 'all:all'
+        metric: 'all:all',
+        includeCollaborations: false,
     },
     share: true,
     embed: true,
@@ -20,6 +21,7 @@ const organizationsLeaderboard: WidgetConfig = {
         icon: 'people-group',
         suggestions: 'How many organizations are there in the leaderboard?'
     },
+    showCollabToggle: true,
 }
 
 export default organizationsLeaderboard;
