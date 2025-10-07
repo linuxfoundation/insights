@@ -77,7 +77,8 @@ const { startDate, endDate, selectedReposValues } = storeToRefs(useProjectStore(
 
 const props = withDefaults(defineProps<{
   modelValue: boolean,
-  selectedMetric?: string
+  selectedMetric?: string,
+  model: { includeCollaborations?: boolean }
 }>(), {
   modelValue: false,
   selectedMetric: 'all:all'
