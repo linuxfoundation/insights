@@ -30,7 +30,6 @@ class ProjectSecurityService {
    * @returns
    */
   removeDocumentationAndVulnerability(data: SecurityData[]): SecurityData[] {
-    console.log('data', data)
     if (!data || !Array.isArray(data) || data.length === 0) {
       return []
     }
