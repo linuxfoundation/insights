@@ -57,7 +57,7 @@ export default defineConfig({
           { text: 'LF Open Source Index', link: '/introduction/lf-oss-index/index.md' },
           { text: 'Data Sources', link: '/introduction/data-sources/index.md' },
           { text: 'Data Quality', link: '/introduction/data-quality/index.md' },
-          { text: 'Contributions', link: '/introduction/contributions/index.md' },
+          { text: 'Contributions & collaborations', link: '/introduction/contributions/index.md' },
           { text: 'Maintainers', link: '/introduction/maintainers/index.md' },
         ],
       },
