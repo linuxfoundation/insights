@@ -53,7 +53,7 @@
     "jwt-decode": "^4.0.0",
     "lodash-es": "^4.17.21",
     "luxon": "^3.5.0",
-    "nuxt": "^3.15.3",
+    "nuxt": "^3.19.0",
     "nuxt-gtag": "^3.0.2",
     "ofetch": "^1.4.1",
     "openid-client": "^6.7.1",
