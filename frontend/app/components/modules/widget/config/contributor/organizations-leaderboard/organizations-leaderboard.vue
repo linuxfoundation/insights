@@ -44,6 +44,7 @@ SPDX-License-Identifier: MIT
     <lfx-organization-leaderboard-drawer
       v-model="isDrawerOpened"
       :selected-metric="model.metric"
+      :model="model"
     />
   </section>
 </template>

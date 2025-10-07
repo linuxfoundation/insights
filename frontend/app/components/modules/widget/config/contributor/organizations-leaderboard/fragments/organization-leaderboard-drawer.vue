@@ -77,10 +77,12 @@ const { startDate, endDate, selectedReposValues } = storeToRefs(useProjectStore(
 
 const props = withDefaults(defineProps<{
   modelValue: boolean,
-  selectedMetric?: string
+  selectedMetric?: string,
+  model?: { includeCollaborations?: boolean }
 }>(), {
   modelValue: false,
-  selectedMetric: 'all:all'
+  selectedMetric: 'all:all',
+  model: () => ({ includeCollaborations: false })
 });
 
 const emit = defineEmits<{(e: 'update:modelValue', value: boolean): void
@@ -105,6 +107,7 @@ const params = computed(() => ({
   repos: selectedReposValues.value,
   startDate: startDate.value,
   endDate: endDate.value,
+  includeCollaborations: props.model?.includeCollaborations,
 }));
 
 const {
