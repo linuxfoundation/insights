@@ -101,17 +101,21 @@ const props = defineProps<{
 const {sanitize} = useSanitize();
 
 const config = computed<WidgetConfig>(() => lfxWidgets[props.name]);
+const { project, collaborationSet } = storeToRefs(useProjectStore());
 
 const model = ref(config.value.defaultValue || {});
 const includeCollaborations = computed({
-  get: () => model.value.includeCollaborations || false,
+  get: () => collaborationSet.value.includes(props.name),
   set: (value) => {
+    if (value) {
+      collaborationSet.value.push(props.name);
+    } else {
+      collaborationSet.value = collaborationSet.value.filter((name) => name !== props.name);
+    }
     model.value.includeCollaborations = value;
   }
 });
 const isMenuOpen = ref(false);
-
-const { project } = storeToRefs(useProjectStore());
 
 const benchmarkScore = computed<BenchmarkScoreData | undefined>(() => props
   .benchmarkScores?.[config.value.key as keyof HealthScoreResults] as BenchmarkScoreData);
