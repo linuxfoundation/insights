@@ -1,18 +1,20 @@
-# Contributions & collaborations
+# Code contributions & Collaborations
 
 Insights tracks activity across platforms to capture the diverse ways individuals support open source projects. This activity is used to understand individual impact, engagement patterns, and participation across projects, communities, and platforms. 
-Activities are grouped into two categories: **contributions** and **collaborations**, highlighting both technical work and broader engagement.
+Activities are grouped into two categories: **Code contributions** and **Collaborations**, highlighting both technical work and broader engagement.
 
-**1. Contributions**\
-Contributions reflect meaningful technical and community-driven impact. They represent direct work that adds code or technical value to a project. This includes commits, pull requests, code reviews, and related technical activities.
+**1. Code contributions**\
+Code contributions reflect meaningful technical and community-driven impact. They represent direct work that adds code or technical value to a project. This includes commits, pull requests, code reviews, and related technical activities.
 
 **2. Collaborations**\
 Collaborations signal engagement or coordination rather than direct contributions, they capture non-code activities that support the project, including discussions, documentation, planning, and community engagement.
 
 Learn more about the [data sources](https://insights.linuxfoundation.org/docs/introduction/data-sources/) we currently track.
 
+> [!NOTE]
+> We’ve updated how Insights classifies activity. Previously, all meaningful activities were grouped under “Contributions”. We now distinguish between Code contributions and Collaborations to ensure that both technical and non-code work is recognized appropriately. Join the discussion [here](https://github.com/linuxfoundation/insights/discussions/553).
 
-## Tracked **contribution** types by platform
+## Tracked **Code contribution** types
 
 #### **Gerrit**
 - `changeset-created` – Submitted a new changeset.
@@ -56,7 +58,7 @@ Learn more about the [data sources](https://insights.linuxfoundation.org/docs/i
 - `merge_request-comment` – Commented on a merge request.
 - `authored-commit` – Authored a commit in a merge request to a GitLab repo.
 
-## Tracked **collaboration** types by platform
+## Tracked **Collaboration** types
 
 #### **Confluence**
 - `page-created` – Created a new Confluence page.
