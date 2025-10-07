@@ -82,7 +82,7 @@ const props = withDefaults(defineProps<{
 }>(), {
   modelValue: false,
   selectedMetric: 'all:all',
-  model: () => ({ includeCollaborations: true })
+  model: () => ({ includeCollaborations: false })
 });
 
 const emit = defineEmits<{(e: 'update:modelValue', value: boolean): void
