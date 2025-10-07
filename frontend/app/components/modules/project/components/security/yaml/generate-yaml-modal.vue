@@ -151,6 +151,8 @@ import {
 import {getYaml} from "~/components/modules/project/services/js-yaml";
 import LfxTag from "~/components/uikit/tag/tag.vue";
 import LfxTooltip from "~/components/uikit/tooltip/tooltip.vue";
+import useToastService from "~/components/uikit/toast/toast.service";
+import {ToastTypesEnum} from "~/components/uikit/toast/types/toast.types";
 
 const props = withDefaults(defineProps<{
   modelValue: boolean
@@ -167,6 +169,8 @@ const isModalOpen = computed({
   set: (value: boolean) => emit('update:modelValue', value)
 })
 
+const {showToast} = useToastService();
+
 const type = ref('');
 const step = ref(-1);
 const form = ref({});
@@ -175,6 +179,7 @@ const copyToClipboard = async () => {
   if(navigator.clipboard){
     const yamlContent = getYaml(form.value)
     await navigator.clipboard.writeText(yamlContent)
+    showToast('YAML file content copied to clipboard', ToastTypesEnum.positive, 'circle-check');
   }
 }
 
@@ -191,6 +196,7 @@ const downloadYamlFile = () => {
     link.click()
     document.body.removeChild(link)
     URL.revokeObjectURL(url)
+    showToast('YAML file successfully downloaded', ToastTypesEnum.positive, 'circle-check');
   } catch (error) {
     console.error('Failed to download YAML file:', error)
   }

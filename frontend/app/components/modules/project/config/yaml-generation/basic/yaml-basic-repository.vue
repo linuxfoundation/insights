@@ -29,24 +29,7 @@ SPDX-License-Identifier: MIT
       </lfx-field>
 
       <lfx-field label="Repository status">
-        <lfx-select
-          v-model="model.repository.status"
-          placeholder="Select status"
-          class="w-60"
-        >
-          <lfx-option
-            value="active"
-            label="Active"
-          />
-          <lfx-option
-            value="inactive"
-            label="Inactive"
-          />
-          <lfx-option
-            value="archived"
-            label="Archived"
-          />
-        </lfx-select>
+        <lfx-yaml-repository-status v-model="model.repository.status" />
       </lfx-field>
 
       <div class="flex flex-col gap-4">
@@ -76,10 +59,10 @@ import {url} from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
 import LfxField from '~/components/uikit/field/field.vue';
 import LfxInput from '~/components/uikit/input/input.vue';
-import LfxSelect from '~/components/uikit/select/select.vue';
-import LfxOption from '~/components/uikit/select/option.vue';
 import LfxCheckbox from '~/components/uikit/checkbox/checkbox.vue';
 import LfxFieldMessages from "~/components/uikit/field/field-messages.vue";
+import LfxYamlRepositoryStatus
+  from "~/components/modules/project/config/yaml-generation/shared/components/yaml-repository-status.vue";
 
 const props = defineProps<{
   modelValue: object;
