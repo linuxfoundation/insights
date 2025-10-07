@@ -24,6 +24,8 @@ export type CodeReviewEngagementFilter = {
 export type ContributionsOutsideWorkHoursFilter = {
   project: string,
   repos?: string[],
+  includeCodeContributions?: boolean,
+  includeCollaborations?: boolean,
   startDate?: DateTime,
   endDate?: DateTime,
 };

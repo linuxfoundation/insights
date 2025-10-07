@@ -5,19 +5,22 @@ SPDX-License-Identifier: MIT
 <template>
   <label
     class="c-toggle"
-    :class="[{
-      'is-disabled': props.disabled,
-    }, `c-toggle--${props.size}`]"
+    :class="[
+      `c-toggle--${props.size}`,
+      { 'c-toggle--disabled': props.disabled }
+    ]"
   >
     <input
       v-model="checked"
       type="checkbox"
       :disabled="props.disabled"
+      class="c-toggle__input"
     >
-    <span class="c-toggle__switch">
-      <span class="c-toggle__handle" />
+    <span class="c-toggle__slider">
+      <span class="c-toggle__thumb" />
     </span>
     <span
+      v-if="$slots.default"
       class="c-toggle__label"
     >
       <slot />
@@ -26,18 +29,21 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, withDefaults } from 'vue';
+import type { ToggleSize } from './types/toggle.types';
 
 const props = withDefaults(defineProps<{
-  modelValue: boolean,
-  disabled?: boolean,
-  size?: 'default' | 'small',
+  modelValue: boolean;
+  size?: ToggleSize;
+  disabled?: boolean;
 }>(), {
+  size: 'medium',
   disabled: false,
-  size: 'default',
 });
 
-const emit = defineEmits<{(e: 'update:modelValue', value: boolean): void}>();
+const emit = defineEmits<{
+  (e: 'update:modelValue', value: boolean): void;
+}>();
 
 const checked = computed<boolean>({
   get() {

@@ -45,6 +45,8 @@ export default defineEventHandler(async (event) => {
     countType: (query.countType as ActivityFilterCountType) || ActivityFilterCountType.NEW,
     activity_type: (query.activityType as ActivityTypes) || ActivityTypes.FORKS,
     onlyContributions: false, // forks and stars are non-contribution activities, but we want to count them.
+    includeCodeContributions: true,
+    includeCollaborations: true,
     startDate: query.startDate ? DateTime.fromISO(query.startDate as string) : undefined,
     endDate: query.endDate ? DateTime.fromISO(query.endDate as string) : undefined,
   }

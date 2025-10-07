@@ -47,6 +47,8 @@ describe('Stars Data Source', () => {
       countType: ActivityFilterCountType.CUMULATIVE,
       activity_type: ActivityTypes.FORKS,
       onlyContributions: false,
+      includeCodeContributions: true,
+      includeCollaborations: true,
       startDate,
       endDate
     };
@@ -92,6 +94,8 @@ describe('Stars Data Source', () => {
       countType: ActivityFilterCountType.NEW,
       activity_type: ActivityTypes.FORKS,
       onlyContributions: false,
+      includeCodeContributions: true,
+      includeCollaborations: true,
       startDate,
       endDate
     };
