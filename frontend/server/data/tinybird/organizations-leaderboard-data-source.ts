@@ -16,6 +16,8 @@ export async function fetchOrganizationsLeaderboard(
     project: filter.project,
     platform: filter.platform,
     activity_type: filter.activity_type,
+    includeCodeContributions: filter.includeCodeContributions,
+    includeCollaborations: filter.includeCollaborations,
     repos: filter.repos,
     limit: filter.limit,
     offset: filter.offset,
