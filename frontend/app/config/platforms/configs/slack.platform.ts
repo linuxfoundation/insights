@@ -1,8 +1,8 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { ActivityPlatforms } from '~~/types/shared/activity-platforms';
-import { ActivityTypes } from '~~/types/shared/activity-types';
-import type { PlatformConfig } from '~~/types/shared/platforms.types';
+import { ActivityPlatforms } from '~~/types/shared/activity-platforms'
+import { ActivityTypes } from '~~/types/shared/activity-types'
+import type { PlatformConfig } from '~~/types/shared/platforms.types'
 
 export const slack: PlatformConfig = {
   key: ActivityPlatforms.SLACK,
@@ -11,7 +11,8 @@ export const slack: PlatformConfig = {
   activityTypes: [
     {
       key: ActivityTypes.MESSAGE,
-      label: 'Sent a message'
-    }
-  ]
-};
+      label: 'Sent a message',
+      isCollaborationType: true,
+    },
+  ],
+}
