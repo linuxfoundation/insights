@@ -7,9 +7,7 @@ SPDX-License-Identifier: MIT
 <template>
   <div class="space-y-6">
     <div class="space-y-2">
-      <h2 class="text-lg font-semibold text-neutral-900 leading-7">
-        Header Information
-      </h2>
+      <h2 class="text-lg font-semibold text-neutral-900 leading-7">Header Information</h2>
       <p class="text-xs font-normal text-neutral-500 leading-4">
         Basic information about your project that will appear at the top of the YAML file.
       </p>
@@ -36,30 +34,30 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import useVuelidate from "@vuelidate/core";
-import {url} from "@vuelidate/validators";
-import LfxInput from "~/components/uikit/input/input.vue";
-import LfxField from "~/components/uikit/field/field.vue";
-import LfxFieldMessages from "~/components/uikit/field/field-messages.vue";
+import useVuelidate from '@vuelidate/core'
+import { url } from '@vuelidate/validators'
+import LfxInput from '~/components/uikit/input/input.vue'
+import LfxField from '~/components/uikit/field/field.vue'
+import LfxFieldMessages from '~/components/uikit/field/field-messages.vue'
 
 const props = defineProps<{
-  modelValue: object;
-}>();
+  modelValue: object
+}>()
 
-const emit = defineEmits<{(e: 'update:modelValue', value: object): void }>();
+const emit = defineEmits<{ (e: 'update:modelValue', value: object): void }>()
 
 const model = computed<object>({
   get: () => props.modelValue,
-  set: (value: object) => emit('update:modelValue', value)
+  set: (value: object) => emit('update:modelValue', value),
 })
 
 const rules = {
   header: {
     url: {
       url,
-    }
-  }
+    },
+  },
 }
 
-const $v = useVuelidate(rules, model);
+const $v = useVuelidate(rules, model)
 </script>

@@ -6,14 +6,11 @@ SPDX-License-Identifier: MIT
   <div class="flex flex-col gap-6">
     <!-- Header -->
     <div class="flex flex-col gap-1">
-      <p class="text-sm font-semibold leading-5 text-brand-600">
-        Repository details
-      </p>
-      <p class="text-lg font-semibold leading-7 text-neutral-900">
-        Security self-assessment
-      </p>
+      <p class="text-sm font-semibold leading-5 text-brand-600">Repository details</p>
+      <p class="text-lg font-semibold leading-7 text-neutral-900">Security self-assessment</p>
       <p class="text-xs font-normal leading-4 text-neutral-500">
-        Provide additional context about your project's security posture and any self-assessment comments.
+        Provide additional context about your project's security posture and any self-assessment
+        comments.
       </p>
     </div>
 
@@ -40,9 +37,7 @@ SPDX-License-Identifier: MIT
             :size="14"
             class="shrink-0"
           />
-          <p class="text-xs font-semibold leading-4">
-            Self-assessment tips
-          </p>
+          <p class="text-xs font-semibold leading-4">Self-assessment tips</p>
         </div>
         <div class="flex gap-4">
           <ul class="text-xs leading-4 text-neutral-600 list-disc pl-[18px]">
@@ -59,19 +54,19 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
-import LfxField from '~/components/uikit/field/field.vue';
-import LfxTextarea from '~/components/uikit/textarea/textarea.vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
+import { computed } from 'vue'
+import LfxField from '~/components/uikit/field/field.vue'
+import LfxTextarea from '~/components/uikit/textarea/textarea.vue'
+import LfxIcon from '~/components/uikit/icon/icon.vue'
 
 const props = defineProps<{
-  modelValue: object;
-}>();
+  modelValue: object
+}>()
 
-const emit = defineEmits<{(e: 'update:modelValue', value: object): void }>();
+const emit = defineEmits<{ (e: 'update:modelValue', value: object): void }>()
 
 const model = computed<object>({
   get: () => props.modelValue,
-  set: (value: object) => emit('update:modelValue', value)
-});
+  set: (value: object) => emit('update:modelValue', value),
+})
 </script>

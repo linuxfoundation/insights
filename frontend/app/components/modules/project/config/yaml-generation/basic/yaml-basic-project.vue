@@ -6,9 +6,7 @@ SPDX-License-Identifier: MIT
   <div class="flex flex-col gap-6">
     <!-- Project details header -->
     <div class="flex flex-col gap-1">
-      <h2 class="text-lg font-semibold leading-7 text-neutral-900">
-        Project details
-      </h2>
+      <h2 class="text-lg font-semibold leading-7 text-neutral-900">Project details</h2>
       <p class="text-xs font-normal leading-4 text-neutral-500">
         Basic project information and administrator contacts.
       </p>
@@ -25,11 +23,10 @@ SPDX-License-Identifier: MIT
     <!-- Administrators section -->
     <div class="flex flex-col gap-6">
       <div class="flex flex-col gap-1">
-        <h3 class="text-base font-semibold leading-6 text-neutral-900">
-          Administrators
-        </h3>
+        <h3 class="text-base font-semibold leading-6 text-neutral-900">Administrators</h3>
         <p class="text-xs font-normal leading-4 text-neutral-500">
-          People who have administrative access to the project. At least one administrator is required.
+          People who have administrative access to the project. At least one administrator is
+          required.
         </p>
       </div>
 
@@ -51,7 +48,6 @@ SPDX-License-Identifier: MIT
         />
       </lfx-yaml-administrator-item>
 
-
       <!-- Add administrator button -->
       <div class="flex items-center justify-center">
         <lfx-button
@@ -68,24 +64,23 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import useVuelidate from "@vuelidate/core";
-import LfxInput from "~/components/uikit/input/input.vue";
-import LfxField from "~/components/uikit/field/field.vue";
-import LfxButton from "~/components/uikit/button/button.vue";
-import LfxIcon from "~/components/uikit/icon/icon.vue";
-import LfxIconButton from "~/components/uikit/icon-button/icon-button.vue";
-import LfxYamlAdministratorItem
-  from "~/components/modules/project/config/yaml-generation/shared/components/yaml-administrator-item.vue";
+import useVuelidate from '@vuelidate/core'
+import LfxInput from '~/components/uikit/input/input.vue'
+import LfxField from '~/components/uikit/field/field.vue'
+import LfxButton from '~/components/uikit/button/button.vue'
+import LfxIcon from '~/components/uikit/icon/icon.vue'
+import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue'
+import LfxYamlAdministratorItem from '~/components/modules/project/config/yaml-generation/shared/components/yaml-administrator-item.vue'
 
 const props = defineProps<{
-  modelValue: object;
-}>();
+  modelValue: object
+}>()
 
-const emit = defineEmits<{(e: 'update:modelValue', value: object): void }>();
+const emit = defineEmits<{ (e: 'update:modelValue', value: object): void }>()
 
 const model = computed<object>({
   get: () => props.modelValue,
-  set: (value: object) => emit('update:modelValue', value)
+  set: (value: object) => emit('update:modelValue', value),
 })
 
 const addAdministrator = () => {
@@ -98,7 +93,7 @@ const addAdministrator = () => {
   })
 }
 
-const rules = {};
+const rules = {}
 
-useVuelidate(rules, model);
+useVuelidate(rules, model)
 </script>

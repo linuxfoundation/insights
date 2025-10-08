@@ -24,18 +24,18 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import LfxSelect from "~/components/uikit/select/select.vue";
-import LfxOption from "~/components/uikit/select/option.vue";
+import LfxSelect from '~/components/uikit/select/select.vue'
+import LfxOption from '~/components/uikit/select/option.vue'
 
 const props = defineProps<{
-  modelValue: string;
-}>();
+  modelValue: string
+}>()
 
-const emit = defineEmits<{(e: 'update:modelValue', value: string): void }>();
+const emit = defineEmits<{ (e: 'update:modelValue', value: string): void }>()
 
 const model = computed<string>({
   get: () => props.modelValue,
-  set: (value: string) => emit('update:modelValue', value)
+  set: (value: string) => emit('update:modelValue', value),
 })
 </script>
 

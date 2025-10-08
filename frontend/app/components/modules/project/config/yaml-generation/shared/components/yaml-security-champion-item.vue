@@ -10,59 +10,29 @@ SPDX-License-Identifier: MIT
 
     <div class="flex flex-col gap-4">
       <div class="flex gap-4">
-        <LfxField
+        <lfx-field
           label="Name"
           class="flex-1"
         >
-          <LfxInput v-model="model.name" />
-        </LfxField>
+          <lfx-input v-model="model.name" />
+        </lfx-field>
 
-        <LfxField
-          label="Affiliation"
-          class="flex-1"
-        >
-          <LfxInput
-            v-model="model.affiliation"
-            placeholder="Company or Organization"
-          />
-        </LfxField>
-      </div>
-
-      <div class="flex gap-4">
-        <LfxField
+        <lfx-field
           label="Email"
           class="flex-1"
         >
-          <LfxInput
+          <lfx-input
             v-model="model.email"
             type="email"
             :invalid="$v.email.$invalid && $v.email.$dirty"
             @blur="$v.email.$touch()"
             @input="$v.email.$touch()"
           />
-
           <lfx-field-messages
             :validation="$v.email"
             :error-messages="{ email: 'Invalid email' }"
           />
-        </LfxField>
-
-        <LfxField
-          label="GitHub profile URL"
-          class="flex-1"
-        >
-          <LfxInput
-            v-model="model.social"
-            placeholder="https://github.com/..."
-            :invalid="$v.social.$invalid && $v.social.$dirty"
-            @blur="$v.social.$touch()"
-            @input="$v.social.$touch()"
-          />
-          <lfx-field-messages
-            :validation="$v.social"
-            :error-messages="{ url: 'Invalid URL' }"
-          />
-        </LfxField>
+        </lfx-field>
       </div>
     </div>
 
@@ -72,7 +42,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import useVuelidate from '@vuelidate/core'
-import { email, url } from '@vuelidate/validators'
+import { email } from '@vuelidate/validators'
 import LfxInput from '~/components/uikit/input/input.vue'
 import LfxField from '~/components/uikit/field/field.vue'
 import LfxToggle from '~/components/uikit/toggle/toggle.vue'
@@ -93,9 +63,6 @@ const rules = {
   email: {
     email,
   },
-  social: {
-    url,
-  },
 }
 
 const $v = useVuelidate(rules, model)
@@ -103,6 +70,6 @@ const $v = useVuelidate(rules, model)
 
 <script lang="ts">
 export default {
-  name: 'LfxYamlCoreMemberItem',
+  name: 'LfxYamlSecurityChampionItem',
 }
 </script>

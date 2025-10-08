@@ -6,23 +6,18 @@ SPDX-License-Identifier: MIT
   <div class="flex flex-col gap-1">
     <!-- Header Section -->
     <div class="flex flex-col gap-1">
-      <p class="text-sm font-semibold leading-5 text-brand-600">
-        Repository details
-      </p>
-      <p class="text-lg font-semibold leading-7 text-neutral-900">
-        Security self-assessment
-      </p>
+      <p class="text-sm font-semibold leading-5 text-brand-600">Repository details</p>
+      <p class="text-lg font-semibold leading-7 text-neutral-900">Security self-assessment</p>
       <p class="text-body-2 text-neutral-500">
-        Provide additional context about your project's security posture and any self-assessment comments.
+        Provide additional context about your project's security posture and any self-assessment
+        comments.
       </p>
     </div>
 
     <!-- Self-assessment Comment Field -->
     <div class="flex flex-col gap-2 mt-4">
       <div class="flex flex-col gap-1">
-        <p class="text-sm font-medium leading-5 text-neutral-900">
-          Self-assessment comment
-        </p>
+        <p class="text-sm font-medium leading-5 text-neutral-900">Self-assessment comment</p>
         <p class="text-body-2 text-neutral-500">
           Describe your project's security practices, any security reviews conducted, known
           limitation, or other relevant security information.
@@ -44,9 +39,7 @@ SPDX-License-Identifier: MIT
           type="light"
           :size="14"
         />
-        <p class="text-xs font-semibold leading-4">
-          Self-assessment tips
-        </p>
+        <p class="text-xs font-semibold leading-4">Self-assessment tips</p>
       </div>
 
       <ul class="text-body-2 text-neutral-600 list-disc ml-[18px]">
@@ -61,32 +54,32 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
-import LfxTextarea from '~/components/uikit/textarea/textarea.vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
+import { computed } from 'vue'
+import LfxTextarea from '~/components/uikit/textarea/textarea.vue'
+import LfxIcon from '~/components/uikit/icon/icon.vue'
 
 interface Repository {
   security: {
     assessments: {
       self: {
-        comment: string;
-      };
-    };
-  };
+        comment: string
+      }
+    }
+  }
 }
 
 interface ModelValue {
-  repository: Repository;
+  repository: Repository
 }
 
 const props = defineProps<{
-  modelValue: ModelValue;
-}>();
+  modelValue: ModelValue
+}>()
 
-const emit = defineEmits<{(e: 'update:modelValue', value: ModelValue): void }>();
+const emit = defineEmits<{ (e: 'update:modelValue', value: ModelValue): void }>()
 
 const model = computed<ModelValue>({
   get: () => props.modelValue,
-  set: (value: ModelValue) => emit('update:modelValue', value)
-});
+  set: (value: ModelValue) => emit('update:modelValue', value),
+})
 </script>

@@ -4,11 +4,10 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <div class="relative w-full">
-    <h2 class="text-lg font-semibold text-slate-900 leading-7 mb-1">
-      Choose YAML file template
-    </h2>
+    <h2 class="text-lg font-semibold text-slate-900 leading-7 mb-1">Choose YAML file template</h2>
     <p class="text-xs font-normal text-neutral-500 leading-4">
-      Please select the YAML template file that better aligns with your project repository and security requirements.
+      Please select the YAML template file that better aligns with your project repository and
+      security requirements.
     </p>
 
     <div class="pt-6 flex flex-wrap -mx-1.5 gap-y-3">
@@ -64,23 +63,23 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script lang="ts" setup>
-import {yamlGenerationConfig} from "~/components/modules/project/config/yaml-generation/yaml-generation.config";
-import LfxIcon from "~/components/uikit/icon/icon.vue";
+import { yamlGenerationConfig } from '~/components/modules/project/config/yaml-generation/yaml-generation.config'
+import LfxIcon from '~/components/uikit/icon/icon.vue'
 
 const props = defineProps<{
   modelValue: string
-}>();
+}>()
 
-const emit = defineEmits<{(e: 'update:modelValue', value: string): void}>();
+const emit = defineEmits<{ (e: 'update:modelValue', value: string): void }>()
 
 const model = computed({
   get: () => props.modelValue,
-  set: (value) => emit('update:modelValue', value)
+  set: (value) => emit('update:modelValue', value),
 })
 </script>
 
 <script lang="ts">
 export default {
-name: 'LfxSecurityGenerateYamlType',
+  name: 'LfxSecurityGenerateYamlType',
 }
 </script>

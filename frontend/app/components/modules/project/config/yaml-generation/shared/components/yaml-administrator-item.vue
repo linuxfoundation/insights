@@ -23,7 +23,6 @@ SPDX-License-Identifier: MIT
           />
         </lfx-field>
 
-
         <lfx-field
           label="Affiliation"
           class="flex-1"
@@ -76,29 +75,27 @@ SPDX-License-Identifier: MIT
     </div>
 
     <!-- Primary contact toggle -->
-    <lfx-toggle v-model="model.primary">
-      Primary contact
-    </lfx-toggle>
+    <lfx-toggle v-model="model.primary"> Primary contact </lfx-toggle>
   </article>
 </template>
 
 <script setup lang="ts">
-import useVuelidate from "@vuelidate/core";
-import {email, url} from '@vuelidate/validators'
-import LfxInput from "~/components/uikit/input/input.vue";
-import LfxField from "~/components/uikit/field/field.vue";
-import LfxToggle from "~/components/uikit/toggle/toggle.vue";
-import LfxFieldMessages from "~/components/uikit/field/field-messages.vue";
+import useVuelidate from '@vuelidate/core'
+import { email, url } from '@vuelidate/validators'
+import LfxInput from '~/components/uikit/input/input.vue'
+import LfxField from '~/components/uikit/field/field.vue'
+import LfxToggle from '~/components/uikit/toggle/toggle.vue'
+import LfxFieldMessages from '~/components/uikit/field/field-messages.vue'
 
 const props = defineProps<{
-  modelValue: object;
-}>();
+  modelValue: object
+}>()
 
-const emit = defineEmits<{(e: 'update:modelValue', value: object): void }>();
+const emit = defineEmits<{ (e: 'update:modelValue', value: object): void }>()
 
 const model = computed<object>({
   get: () => props.modelValue,
-  set: (value: object) => emit('update:modelValue', value)
+  set: (value: object) => emit('update:modelValue', value),
 })
 
 const rules = {
@@ -107,10 +104,10 @@ const rules = {
   },
   social: {
     url,
-  }
+  },
 }
 
-const $v = useVuelidate(rules, model);
+const $v = useVuelidate(rules, model)
 </script>
 
 <script lang="ts">

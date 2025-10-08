@@ -5,15 +5,11 @@ SPDX-License-Identifier: MIT
 <template>
   <div class="flex flex-col gap-4">
     <div class="flex flex-col gap-1">
-      <p class="text-sm font-semibold text-brand-600">
-        Repository details
-      </p>
-      <p class="text-heading-3 font-semibold text-neutral-900">
-        Core team members
-      </p>
+      <p class="text-sm font-semibold text-brand-600">Repository details</p>
+      <p class="text-heading-3 font-semibold text-neutral-900">Core team members</p>
       <p class="text-body-2 text-neutral-500">
-        Active contributors and maintainers of the project.
-        These are the people responsible for the ongoing development and maintenance of the project.
+        Active contributors and maintainers of the project. These are the people responsible for the
+        ongoing development and maintenance of the project.
       </p>
     </div>
 
@@ -22,9 +18,7 @@ SPDX-License-Identifier: MIT
       :key="index"
       v-model="model.repository['core-team'][index]"
     >
-      <p class="text-sm font-semibold text-neutral-900">
-        Team member #{{index + 1}}
-      </p>
+      <p class="text-sm font-semibold text-neutral-900">Team member #{{ index + 1 }}</p>
       <lfx-icon-button
         v-if="model.repository['core-team'].length > 1"
         type="default"
@@ -46,27 +40,24 @@ SPDX-License-Identifier: MIT
       </lfx-button>
     </div>
   </div>
-
 </template>
 
 <script setup lang="ts">
-import LfxButton from "~/components/uikit/button/button.vue";
-import LfxIcon from "~/components/uikit/icon/icon.vue";
-import LfxIconButton from "~/components/uikit/icon-button/icon-button.vue";
-import LfxYamlCoreMemberItem
-  from "~/components/modules/project/config/yaml-generation/shared/components/yaml-core-member-item.vue";
+import LfxButton from '~/components/uikit/button/button.vue'
+import LfxIcon from '~/components/uikit/icon/icon.vue'
+import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue'
+import LfxYamlCoreMemberItem from '~/components/modules/project/config/yaml-generation/shared/components/yaml-core-member-item.vue'
 
 const props = defineProps<{
-  modelValue: object;
-}>();
+  modelValue: object
+}>()
 
-const emit = defineEmits<{(e: 'update:modelValue', value: object): void }>();
+const emit = defineEmits<{ (e: 'update:modelValue', value: object): void }>()
 
 const model = computed<object>({
   get: () => props.modelValue,
-  set: (value: object) => emit('update:modelValue', value)
+  set: (value: object) => emit('update:modelValue', value),
 })
-
 
 const addMember = () => {
   model.value.repository['core-team'].push({

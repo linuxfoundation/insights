@@ -44,7 +44,7 @@ SPDX-License-Identifier: MIT
                 </lfx-tag>
               </lfx-tooltip>
               <p class="text-xs text-neutral-600 leading-5">
-                <span v-if="type && step >= 0">Step {{step + 1}}/{{steps.length + 1}} - </span>
+                <span v-if="type && step >= 0">Step {{ step + 1 }}/{{ steps.length + 1 }} - </span>
                 <span v-if="!type || step < 0">Choose YAML file template</span>
                 <span v-else-if="step < steps.length">{{ currentStep?.label }}</span>
                 <span v-else>Preview & Download</span>
@@ -53,8 +53,8 @@ SPDX-License-Identifier: MIT
             <div class="relative">
               <div class="bg-brand-50 h-1.5 rounded-full w-full" />
               <div
-                class=" h-1.5 rounded-full absolute top-0 left-0 transition-all"
-                :style="{width: `${(type ? ((step + 1) / (steps.length + 1)) : 0) * 100}%`}"
+                class="h-1.5 rounded-full absolute top-0 left-0 transition-all"
+                :style="{ width: `${(type ? (step + 1) / (steps.length + 1) : 0) * 100}%` }"
                 :class="step < steps.length ? 'bg-brand-500' : 'bg-positive-500'"
               />
             </div>
@@ -81,9 +81,7 @@ SPDX-License-Identifier: MIT
         </div>
 
         <!-- Footer -->
-        <div
-          class="border-t border-neutral-200 px-6 py-4"
-        >
+        <div class="border-t border-neutral-200 px-6 py-4">
           <div class="flex items-center justify-between">
             <lfx-button
               v-if="step >= 0 && type"
@@ -133,32 +131,34 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import {computed, onMounted, watch} from 'vue'
-import useVuelidate from "@vuelidate/core";
+import { computed, onMounted, watch } from 'vue'
+import useVuelidate from '@vuelidate/core'
 import LfxModal from '~/components/uikit/modal/modal.vue'
 import LfxButton from '~/components/uikit/button/button.vue'
 import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue'
-import LfSecurityGenerateYamlSidebar
-  from "~/components/modules/project/components/security/yaml/generate-yaml-sidebar.vue";
-import LfxIcon from "~/components/uikit/icon/icon.vue";
-import LfSecurityGenerateYamlPreview
-  from "~/components/modules/project/components/security/yaml/generate-yaml-preview.vue";
-import LfxSecurityGenerateYamlType from "~/components/modules/project/components/security/yaml/generate-yaml-type.vue";
+import LfSecurityGenerateYamlSidebar from '~/components/modules/project/components/security/yaml/generate-yaml-sidebar.vue'
+import LfxIcon from '~/components/uikit/icon/icon.vue'
+import LfSecurityGenerateYamlPreview from '~/components/modules/project/components/security/yaml/generate-yaml-preview.vue'
+import LfxSecurityGenerateYamlType from '~/components/modules/project/components/security/yaml/generate-yaml-type.vue'
 import {
   type YamlGenerationConfig,
-  yamlGenerationConfig, type YamlGenerationStep
-} from "~/components/modules/project/config/yaml-generation/yaml-generation.config";
-import {getYaml} from "~/components/modules/project/services/js-yaml";
-import LfxTag from "~/components/uikit/tag/tag.vue";
-import LfxTooltip from "~/components/uikit/tooltip/tooltip.vue";
-import useToastService from "~/components/uikit/toast/toast.service";
-import {ToastTypesEnum} from "~/components/uikit/toast/types/toast.types";
+  yamlGenerationConfig,
+  type YamlGenerationStep,
+} from '~/components/modules/project/config/yaml-generation/yaml-generation.config'
+import { getYaml } from '~/components/modules/project/services/js-yaml'
+import LfxTag from '~/components/uikit/tag/tag.vue'
+import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue'
+import useToastService from '~/components/uikit/toast/toast.service'
+import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types'
 
-const props = withDefaults(defineProps<{
-  modelValue: boolean
-}>(), {
-  modelValue: false
-})
+const props = withDefaults(
+  defineProps<{
+    modelValue: boolean
+  }>(),
+  {
+    modelValue: false,
+  },
+)
 
 const emit = defineEmits<{
   'update:modelValue': [value: boolean]
@@ -166,20 +166,20 @@ const emit = defineEmits<{
 
 const isModalOpen = computed({
   get: () => props.modelValue,
-  set: (value: boolean) => emit('update:modelValue', value)
+  set: (value: boolean) => emit('update:modelValue', value),
 })
 
-const {showToast} = useToastService();
+const { showToast } = useToastService()
 
-const type = ref('');
-const step = ref(-1);
-const form = ref({});
+const type = ref('')
+const step = ref(-1)
+const form = ref({})
 
 const copyToClipboard = async () => {
-  if(navigator.clipboard){
+  if (navigator.clipboard) {
     const yamlContent = getYaml(form.value)
     await navigator.clipboard.writeText(yamlContent)
-    showToast('YAML file content copied to clipboard', ToastTypesEnum.positive, 'circle-check');
+    showToast('YAML file content copied to clipboard', ToastTypesEnum.positive, 'circle-check')
   }
 }
 
@@ -196,38 +196,38 @@ const downloadYamlFile = () => {
     link.click()
     document.body.removeChild(link)
     URL.revokeObjectURL(url)
-    showToast('YAML file successfully downloaded', ToastTypesEnum.positive, 'circle-check');
+    showToast('YAML file successfully downloaded', ToastTypesEnum.positive, 'circle-check')
   } catch (error) {
     console.error('Failed to download YAML file:', error)
   }
 }
 
-const $v = useVuelidate({}, form);
+const $v = useVuelidate({}, form)
 
 const config = computed<YamlGenerationConfig | null>(() => {
-  return yamlGenerationConfig[type.value] || null;
+  return yamlGenerationConfig[type.value] || null
 })
 
 const steps = computed<YamlGenerationStep[]>(() => {
-  if(!config.value) return [];
+  if (!config.value) return []
   return config.value.steps || []
 })
 
 const currentStep = computed<YamlGenerationStep | null>(() => {
-  return steps.value[step.value] || null;
+  return steps.value[step.value] || null
 })
 
 watch(type, (newType: string) => {
-  form.value = {...(yamlGenerationConfig[newType]?.template || {})};
+  form.value = { ...(yamlGenerationConfig[newType]?.template || {}) }
 })
 
 onMounted(() => {
-  form.value = {};
+  form.value = {}
 })
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfSecurityGenerateYamlModal'
+  name: 'LfSecurityGenerateYamlModal',
 }
 </script>

@@ -6,37 +6,38 @@ SPDX-License-Identifier: MIT
   <div class="flex flex-col gap-4">
     <div class="flex flex-col gap-1">
       <p class="text-sm font-semibold text-brand-600">Repository details</p>
-      <p class="text-heading-3 font-semibold text-neutral-900">Core team members</p>
+      <p class="text-lg font-semibold text-neutral-900">Security champions</p>
       <p class="text-body-2 text-neutral-500">
-        Active contributors and maintainers of the project. These are the people responsible for the
-        ongoing development and maintenance of the project.
+        Contributors or maintainers who take responsibility for promoting secure development
+        practices, assisting with vulnerability triage, and serving as a point of contact for
+        security-related matters in the repository.
       </p>
     </div>
 
-    <lfx-yaml-core-member-item
-      v-for="(_, index) of model.repository['core-team']"
+    <lfx-yaml-security-champion-item
+      v-for="(_, index) of model.repository.security.champions"
       :key="index"
-      v-model="model.repository['core-team'][index]"
+      v-model="model.repository.security.champions[index]"
     >
-      <p class="text-sm font-semibold text-neutral-900">Team member #{{ index + 1 }}</p>
+      <p class="text-sm font-semibold text-neutral-900">Security champion #{{ index + 1 }}</p>
       <lfx-icon-button
-        v-if="model.repository['core-team'].length > 1"
+        v-if="model.repository.security.champions.length > 1"
         type="default"
         icon="trash-can"
         size="small"
-        @click="model.repository['core-team'].splice(index, 1)"
+        @click="model.repository.security.champions.splice(index, 1)"
       />
-    </lfx-yaml-core-member-item>
+    </lfx-yaml-security-champion-item>
 
-    <!-- Add member button -->
+    <!-- Add security champion button -->
     <div class="flex items-center justify-center">
       <lfx-button
         type="transparent"
         button-style="pill"
-        @click="addMember"
+        @click="addChampion"
       >
         <lfx-icon name="plus" />
-        Add team member
+        Add security champion
       </lfx-button>
     </div>
   </div>
@@ -46,7 +47,7 @@ SPDX-License-Identifier: MIT
 import LfxButton from '~/components/uikit/button/button.vue'
 import LfxIcon from '~/components/uikit/icon/icon.vue'
 import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue'
-import LfxYamlCoreMemberItem from '~/components/modules/project/config/yaml-generation/shared/components/yaml-core-member-item.vue'
+import LfxYamlSecurityChampionItem from '~/components/modules/project/config/yaml-generation/shared/components/yaml-security-champion-item.vue'
 
 const props = defineProps<{
   modelValue: object
@@ -59,12 +60,10 @@ const model = computed<object>({
   set: (value: object) => emit('update:modelValue', value),
 })
 
-const addMember = () => {
-  model.value.repository['core-team'].push({
+const addChampion = () => {
+  model.value.repository.security.champions.push({
     name: '',
-    affiliation: '',
     email: '',
-    social: '',
     primary: false,
   })
 }

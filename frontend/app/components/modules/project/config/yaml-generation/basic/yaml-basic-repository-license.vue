@@ -5,22 +5,16 @@ SPDX-License-Identifier: MIT
 <template>
   <div class="flex flex-col gap-6">
     <div class="flex flex-col gap-1 items-start w-full">
-      <p class="text-sm font-semibold leading-5 text-brand-600 w-full">
-        Repository details
-      </p>
-      <p class="text-lg font-semibold leading-7 text-neutral-900 w-full">
-        License information
-      </p>
+      <p class="text-sm font-semibold leading-5 text-brand-600 w-full">Repository details</p>
+      <p class="text-lg font-semibold leading-7 text-neutral-900 w-full">License information</p>
       <p class="text-body-2 text-neutral-500 w-full">
-        Specify the license under which your project is distributed. This information helps users understand how they
-        can use, modify, and distribute your code.
+        Specify the license under which your project is distributed. This information helps users
+        understand how they can use, modify, and distribute your code.
       </p>
     </div>
     <div class="flex flex-col gap-2 w-full mt-1">
       <lfx-field label="License URL">
-        <p class="text-body-2 text-neutral-500">
-          URL to the full text of your project's license
-        </p>
+        <p class="text-body-2 text-neutral-500">URL to the full text of your project's license</p>
         <lfx-input
           v-model="model.repository.license.url"
           placeholder="https://opensource.org/licenses/MIT"
@@ -53,9 +47,7 @@ SPDX-License-Identifier: MIT
           :size="14"
           class="text-brand-600"
         />
-        <p class="text-xs font-semibold leading-4 text-brand-600">
-          Common license examples
-        </p>
+        <p class="text-xs font-semibold leading-4 text-brand-600">Common license examples</p>
       </div>
       <div class="flex gap-4 items-start w-full">
         <div class="flex flex-col gap-1 grow">
@@ -82,23 +74,22 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import useVuelidate from "@vuelidate/core";
-import {url} from "@vuelidate/validators";
-import LfxField from '~/components/uikit/field/field.vue';
-import LfxInput from '~/components/uikit/input/input.vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
-import LfxFieldMessages from "~/components/uikit/field/field-messages.vue";
-
+import useVuelidate from '@vuelidate/core'
+import { url } from '@vuelidate/validators'
+import LfxField from '~/components/uikit/field/field.vue'
+import LfxInput from '~/components/uikit/input/input.vue'
+import LfxIcon from '~/components/uikit/icon/icon.vue'
+import LfxFieldMessages from '~/components/uikit/field/field-messages.vue'
 
 const props = defineProps<{
-  modelValue: object;
-}>();
+  modelValue: object
+}>()
 
-const emit = defineEmits<{(e: 'update:modelValue', value: object): void }>();
+const emit = defineEmits<{ (e: 'update:modelValue', value: object): void }>()
 
 const model = computed<object>({
   get: () => props.modelValue,
-  set: (value: object) => emit('update:modelValue', value)
+  set: (value: object) => emit('update:modelValue', value),
 })
 
 const rules = {
@@ -106,10 +97,10 @@ const rules = {
     license: {
       url: {
         url,
-      }
-    }
-  }
+      },
+    },
+  },
 }
 
-const $v = useVuelidate(rules, model);
+const $v = useVuelidate(rules, model)
 </script>

@@ -4,15 +4,11 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <div class="flex flex-col gap-1 pb-6">
-    <p class="text-sm font-semibold text-brand-600">
-      Project details
-    </p>
-    <p class="text-lg font-semibold text-neutral-900">
-      Repositories
-    </p>
+    <p class="text-sm font-semibold text-brand-600">Project details</p>
+    <p class="text-lg font-semibold text-neutral-900">Repositories</p>
     <p class="text-xs font-normal text-neutral-500">
-      List all the project's related repositories to ensure that security policies,
-      reporting processes, and documentation are applied consistently across the entire project.
+      List all the project's related repositories to ensure that security policies, reporting
+      processes, and documentation are applied consistently across the entire project.
     </p>
   </div>
 
@@ -22,9 +18,7 @@ SPDX-License-Identifier: MIT
       :key="index"
       v-model="model.project.repositories[index]"
     >
-      <p class="text-sm font-semibold text-neutral-900">
-        Repository #{{index + 1}}
-      </p>
+      <p class="text-sm font-semibold text-neutral-900">Repository #{{ index + 1 }}</p>
 
       <lfx-icon-button
         v-if="model.project.repositories.length > 1"
@@ -50,23 +44,22 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import {computed} from "vue";
-import useVuelidate from "@vuelidate/core";
-import LfxButton from "~/components/uikit/button/button.vue";
-import LfxIcon from "~/components/uikit/icon/icon.vue";
-import LfxIconButton from "~/components/uikit/icon-button/icon-button.vue";
-import LfxYamlRepositoryItem
-  from "~/components/modules/project/config/yaml-generation/shared/components/yaml-repository-item.vue";
+import { computed } from 'vue'
+import useVuelidate from '@vuelidate/core'
+import LfxButton from '~/components/uikit/button/button.vue'
+import LfxIcon from '~/components/uikit/icon/icon.vue'
+import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue'
+import LfxYamlRepositoryItem from '~/components/modules/project/config/yaml-generation/shared/components/yaml-repository-item.vue'
 
 const props = defineProps<{
-  modelValue: object;
-}>();
+  modelValue: object
+}>()
 
-const emit = defineEmits<{(e: 'update:modelValue', value: object): void }>();
+const emit = defineEmits<{ (e: 'update:modelValue', value: object): void }>()
 
 const model = computed<object>({
   get: () => props.modelValue,
-  set: (value: object) => emit('update:modelValue', value)
+  set: (value: object) => emit('update:modelValue', value),
 })
 
 const addRepository = () => {

@@ -7,31 +7,30 @@ SPDX-License-Identifier: MIT
     <div class="flex justify-between items-center min-h-7">
       <slot />
     </div>
-    <lfx-field label="Repository name">
-      <lfx-input v-model="model.name" />
-    </lfx-field>
 
-    <lfx-field label="Repository URL">
-      <lfx-input
-        v-model="model.url"
-        placeholder="https://github.com/your-project/your-repository"
-        :invalid="$v.url.$invalid && $v.url.$dirty"
-        @blur="$v.url.$touch()"
-        @input="$v.url.$touch()"
-      />
-      <lfx-field-messages
-        :validation="$v.url"
-        :error-messages="{ url: 'Invalid URL' }"
-      />
-    </lfx-field>
+    <div class="flex flex-col gap-4">
+      <!-- URL -->
+      <lfx-field label="URL">
+        <lfx-input
+          v-model="model.uri"
+          :invalid="$v.uri.$invalid && $v.uri.$dirty"
+          @blur="$v.uri.$touch()"
+          @input="$v.uri.$touch()"
+        />
+        <lfx-field-messages
+          :validation="$v.uri"
+          :error-messages="{ url: 'Invalid URL' }"
+        />
+      </lfx-field>
 
-    <lfx-field label="Repository comment">
-      <lfx-textarea
-        v-model="model.comment"
-        placeholder="Brief description of the repository purpose and scope"
-        class="min-h-18"
-      />
-    </lfx-field>
+      <!-- Comment -->
+      <lfx-field label="Comment">
+        <lfx-textarea
+          v-model="model.comment"
+          rows="3"
+        />
+      </lfx-field>
+    </div>
   </article>
 </template>
 
@@ -40,8 +39,8 @@ import useVuelidate from '@vuelidate/core'
 import { url } from '@vuelidate/validators'
 import LfxInput from '~/components/uikit/input/input.vue'
 import LfxField from '~/components/uikit/field/field.vue'
-import LfxTextarea from '~/components/uikit/textarea/textarea.vue'
 import LfxFieldMessages from '~/components/uikit/field/field-messages.vue'
+import LfxTextarea from '~/components/uikit/textarea/textarea.vue'
 
 const props = defineProps<{
   modelValue: object
@@ -55,7 +54,7 @@ const model = computed<object>({
 })
 
 const rules = {
-  url: {
+  uri: {
     url,
   },
 }
@@ -65,6 +64,6 @@ const $v = useVuelidate(rules, model)
 
 <script lang="ts">
 export default {
-  name: 'LfxYamlRepositoryItem',
+  name: 'LfxYamlDistributionPointItem',
 }
 </script>
