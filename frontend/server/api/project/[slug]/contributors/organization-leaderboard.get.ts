@@ -5,6 +5,7 @@ import { createDataSource } from '~~/server/data/data-sources'
 import type { OrganizationsLeaderboardFilter } from '~~/server/data/types'
 import { ActivityTypes } from '~~/types/shared/activity-types'
 import { ActivityPlatforms } from '~~/types/shared/activity-platforms'
+import { getBooleanQueryParam } from '~~/server/utils/common'
 
 /**
  * Frontend expects the data to be in the following format:
@@ -40,6 +41,8 @@ export default defineEventHandler(async (event) => {
   const project = (event.context.params as { slug: string }).slug
   const activityPlatform = query.platform as ActivityPlatforms
   const activityType = query.activityType as ActivityTypes
+  const includeCodeContributions = getBooleanQueryParam(query, 'includeCodeContributions', true)
+  const includeCollaborations = getBooleanQueryParam(query, 'includeCollaborations', false)
   const limit = query.limit ? parseInt(query.limit as string, 10) : 10
   const offset = query.offset ? parseInt(query.offset as string, 10) : 0
 
@@ -55,6 +58,8 @@ export default defineEventHandler(async (event) => {
     project,
     platform: activityPlatform !== ActivityPlatforms.ALL ? activityPlatform : undefined,
     activity_type: activityType !== ActivityTypes.ALL ? activityType : undefined,
+    includeCodeContributions,
+    includeCollaborations,
     repos,
     startDate: query.startDate ? DateTime.fromISO(query.startDate as string) : undefined,
     endDate: query.endDate ? DateTime.fromISO(query.endDate as string) : undefined,

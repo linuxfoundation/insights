@@ -30,6 +30,7 @@ SPDX-License-Identifier: MIT
           <lfx-activities-dropdown
             v-model="metric"
             full-width
+            :include-collaborations="model.includeCollaborations"
           />
         </div>
 
@@ -70,17 +71,18 @@ import LfxOrganizationsTable
 import organizationsLeaderboard
   from '~/components/modules/widget/config/contributor/organizations-leaderboard/organizations-leaderboard.config';
 import LfxDrawer from '~/components/uikit/drawer/drawer.vue';
-import {TanstackKey} from "~/components/shared/types/tanstack";
 import { CONTRIBUTORS_API_SERVICE } from '~~/app/components/modules/widget/services/contributors.api.service'
 
 const { startDate, endDate, selectedReposValues } = storeToRefs(useProjectStore())
 
 const props = withDefaults(defineProps<{
   modelValue: boolean,
-  selectedMetric?: string
+  selectedMetric?: string,
+  model?: { includeCollaborations?: boolean }
 }>(), {
   modelValue: false,
-  selectedMetric: 'all:all'
+  selectedMetric: 'all:all',
+  model: () => ({ includeCollaborations: false })
 });
 
 const emit = defineEmits<{(e: 'update:modelValue', value: boolean): void
@@ -98,25 +100,15 @@ const metric = ref(props.selectedMetric);
 const platform = computed(() => metric.value.split(':')[0]);
 const activityType = computed(() => metric.value.split(':')[1]);
 
-const queryKey = computed(() => [
-  TanstackKey.ORGANIZATIONS_LEADERBOARD,
-  route.params.slug,
-  platform,
-  activityType,
-  selectedReposValues,
-  startDate,
-  endDate,
-  metric
-]);
-
-const queryFn = computed(() => CONTRIBUTORS_API_SERVICE.organizationLeaderboardQueryFn(() => ({
-  projectSlug: route.params.slug,
+const params = computed(() => ({
+  projectSlug: route.params.slug as string,
   platform: platform.value,
   activityType: activityType.value,
   repos: selectedReposValues.value,
   startDate: startDate.value,
   endDate: endDate.value,
-})));
+  includeCollaborations: props.model?.includeCollaborations,
+}));
 
 const {
   data,
@@ -126,7 +118,7 @@ const {
   fetchNextPage,
   isFetchingNextPage,
   suspense
-} = CONTRIBUTORS_API_SERVICE.fetchOrganizationLeaderboard(queryKey, queryFn);
+} = CONTRIBUTORS_API_SERVICE.fetchOrganizationLeaderboard(params);
 
 const organizations = computed<Organization[]>(() => {
   if (!data.value) {

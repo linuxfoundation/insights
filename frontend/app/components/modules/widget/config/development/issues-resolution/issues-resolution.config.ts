@@ -2,13 +2,14 @@
 // SPDX-License-Identifier: MIT
 import { DateTime } from 'luxon'
 import IssuesResolution from './issues-resolution.vue'
-import type { WidgetConfig } from '~/components/modules/widget/config/widget.config'
+import type { WidgetConfig, WidgetModel } from '~/components/modules/widget/config/widget.config'
 import { Granularity } from '~~/types/shared/granularity'
 
 const issuesResolution: WidgetConfig = {
   key: 'issuesResolution',
   name: 'Issues resolution',
-  description: () => 'Comparison between total number of issues vs. closed issues during the selected time period.',
+  description: () =>
+    'Comparison between total number of issues vs. closed issues during the selected time period.',
   learnMoreLink: `/docs/metrics/development#issues-resolution`,
   component: IssuesResolution,
   share: true,
@@ -18,10 +19,10 @@ const issuesResolution: WidgetConfig = {
     title: 'Issues Resolution',
     showOnOverview: true,
     isVisible: (
-      model: Record<string, number | boolean | string>,
+      model: WidgetModel,
       _selectedTimeRangeKey: string,
       startDate: string,
-      endDate: string
+      endDate: string,
     ) => {
       const start = DateTime.fromISO(startDate)
       const end = DateTime.fromISO(endDate)
@@ -70,8 +71,8 @@ const issuesResolution: WidgetConfig = {
   },
   copilot: {
     icon: 'people-group',
-    suggestions: 'Show me the issues resolution'
-  }
+    suggestions: 'Show me the issues resolution',
+  },
 }
 
 export default issuesResolution

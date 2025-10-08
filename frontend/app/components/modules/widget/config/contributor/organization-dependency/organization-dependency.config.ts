@@ -11,7 +11,8 @@ const organizationDependency: WidgetConfig = {
     learnMoreLink: `/docs/metrics/contributors#organizations-dependency`,
     component: OrganizationsDependency,
     defaultValue: {
-        metric: 'all:all'
+        metric: 'all:all',
+        includeCollaborations: false,
     },
     share: true,
     embed: true,
@@ -61,7 +62,8 @@ const organizationDependency: WidgetConfig = {
     copilot: {
       icon: 'people-group',
       suggestions: 'Show me the organization dependency'
-    }
+    },
+    showCollabToggle: true,
 }
 
 export default organizationDependency;

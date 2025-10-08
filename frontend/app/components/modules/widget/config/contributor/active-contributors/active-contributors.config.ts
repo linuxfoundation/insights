@@ -14,7 +14,8 @@ const activeContributors: WidgetConfig = {
     learnMoreLink: `/docs/metrics/contributors#active-contributors`,
     component: ActiveContributors,
     defaultValue: {
-        activeTab: Granularity.WEEKLY
+        activeTab: Granularity.WEEKLY,
+        includeCollaborations: false,
     },
     share: true,
     embed: true,
@@ -67,6 +68,7 @@ const activeContributors: WidgetConfig = {
         icon: 'people-group',
         suggestions: 'How many active contributors are there?'
     },
+    showCollabToggle: true,
 };
 
 export default activeContributors;
