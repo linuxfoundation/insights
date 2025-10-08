@@ -94,7 +94,7 @@ export default defineEventHandler(async (event) => {
       sameSite: 'lax' as const,
       path: '/',
       // Force domain for production to ensure cookies work across proxy inconsistencies
-      ...(isProduction ? { domain: '.linuxfoundation.org' } : { domain: 'localhost' }),
+      ...(isProduction ? { domain: config.auth0CookieDomain } : { domain: 'localhost' }),
       maxAge: tokenResponse.expires_in || 86400, // Default to 24 hours
     }
 
