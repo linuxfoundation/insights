@@ -133,6 +133,57 @@ export class DataCopilot {
   }
 
   /**
+   * Create initial chat response early to get ID for tracking agent steps
+   */
+  private async createInitialChatResponse(
+    userPrompt: string,
+    insightsDbPool: Pool,
+    userEmail: string,
+    conversationId?: string,
+  ): Promise<string> {
+    const chatRepo = new ChatRepository(insightsDbPool)
+    return await chatRepo.createInitialChatResponse(userPrompt, userEmail, conversationId)
+  }
+
+  /**
+   * Update chat response with final data
+   */
+  private async updateChatResponse(
+    chatResponseId: string,
+    response: Omit<ChatResponse, 'userPrompt'>,
+    insightsDbPool: Pool,
+  ): Promise<void> {
+    const chatRepo = new ChatRepository(insightsDbPool)
+    return await chatRepo.updateChatResponse(chatResponseId, response)
+  }
+
+  /**
+   * Track an agent execution step
+   */
+  private async trackAgentStep(
+    chatResponseId: string,
+    agent: 'ROUTER' | 'PIPE' | 'TEXT_TO_SQL' | 'AUDITOR' | 'CHART' | 'EXECUTE_INSTRUCTIONS',
+    response: any | undefined,
+    responseTimeSeconds: number,
+    insightsDbPool: Pool,
+    errorMessage?: string,
+    instructions?: string,
+  ): Promise<void> {
+    const chatRepo = new ChatRepository(insightsDbPool)
+    await chatRepo.saveAgentStep({
+      chatResponseId,
+      agent,
+      model: agent === 'EXECUTE_INSTRUCTIONS' ? undefined : this.BEDROCK_MODEL_ID,
+      response,
+      inputTokens: response?.usage?.promptTokens || 0,
+      outputTokens: response?.usage?.completionTokens || 0,
+      responseTimeSeconds,
+      instructions,
+      errorMessage,
+    })
+  }
+
+  /**
    * Executes the router agent to analyze user queries and determine the optimal processing strategy.
    * The router acts as the decision-making component that routes requests to either SQL generation
    * or data pipeline processing based on query complexity and intent.
@@ -305,6 +356,8 @@ export class DataCopilot {
     previousWasClarification,
     dataStream,
     responseData,
+    chatResponseId,
+    insightsDbPool,
   }: {
     messages: ChatMessage[]
     currentQuestion: string
@@ -316,6 +369,8 @@ export class DataCopilot {
     previousWasClarification: boolean
     dataStream: any
     responseData: ChatResponse
+    chatResponseId: string
+    insightsDbPool: Pool
   }): Promise<{
     action: RouterDecisionAction
     routerOutput: RouterOutput
@@ -338,15 +393,39 @@ export class DataCopilot {
         })
       }
 
-      routerOutput = await this.runRouterAgent({
-        messages: currentMessages,
-        date,
-        projectName,
-        pipe,
-        parametersString,
-        segmentId,
-        previousWasClarification: attemptNumber === 0 ? previousWasClarification : false,
-      })
+      const routerStartTime = Date.now()
+      try {
+        routerOutput = await this.runRouterAgent({
+          messages: currentMessages,
+          date,
+          projectName,
+          pipe,
+          parametersString,
+          segmentId,
+          previousWasClarification: attemptNumber === 0 ? previousWasClarification : false,
+        })
+        const routerResponseTime = (Date.now() - routerStartTime) / 1000
+
+        // Track router agent step
+        await this.trackAgentStep(
+          chatResponseId,
+          'ROUTER',
+          routerOutput,
+          routerResponseTime,
+          insightsDbPool,
+        )
+      } catch (error) {
+        const routerResponseTime = (Date.now() - routerStartTime) / 1000
+        await this.trackAgentStep(
+          chatResponseId,
+          'ROUTER',
+          undefined,
+          routerResponseTime,
+          insightsDbPool,
+          error instanceof Error ? error.message : String(error),
+        )
+        throw error
+      }
 
       // Accumulate router token usage
       if (routerOutput.usage) {
@@ -385,6 +464,8 @@ export class DataCopilot {
           segmentId,
           reformulatedQuestion: routerOutput.reformulated_question,
           dataStream,
+          chatResponseId,
+          insightsDbPool,
         })
         sqlQuery = result.sqlQuery
         data = result.data
@@ -401,6 +482,8 @@ export class DataCopilot {
           dataStream,
           responseData,
           routerOutput,
+          chatResponseId,
+          insightsDbPool,
         })
         pipeInstructions = result.pipeInstructions
         data = result.data
@@ -415,14 +498,40 @@ export class DataCopilot {
       })
 
       // Run auditor validation
-      const auditorResult = await this.runAuditorAgent({
-        messages: currentMessages,
-        originalQuestion: currentQuestion,
-        reformulatedQuestion: routerOutput.reformulated_question,
-        data,
-        attemptNumber,
-        previousFeedback,
-      })
+      const auditorStartTime = Date.now()
+      let auditorResult
+      try {
+        auditorResult = await this.runAuditorAgent({
+          messages: currentMessages,
+          originalQuestion: currentQuestion,
+          reformulatedQuestion: routerOutput.reformulated_question,
+          data,
+          attemptNumber,
+          previousFeedback,
+        })
+        const auditorResponseTime = (Date.now() - auditorStartTime) / 1000
+
+        // Track auditor agent step
+        await this.trackAgentStep(
+          chatResponseId,
+          'AUDITOR',
+          auditorResult,
+          auditorResponseTime,
+          insightsDbPool,
+          undefined,  // Feedback is not an error, it's part of the response
+        )
+      } catch (error) {
+        const auditorResponseTime = (Date.now() - auditorStartTime) / 1000
+        await this.trackAgentStep(
+          chatResponseId,
+          'AUDITOR',
+          undefined,
+          auditorResponseTime,
+          insightsDbPool,
+          error instanceof Error ? error.message : String(error),
+        )
+        throw error
+      }
 
       // Accumulate auditor token usage
       if (auditorResult.usage) {
@@ -627,6 +736,21 @@ export class DataCopilot {
       insightsDbPool,
     )
 
+    // Create initial chat response early to get ID for tracking agent steps
+    const chatResponseId = await this.createInitialChatResponse(
+      currentQuestion,
+      insightsDbPool,
+      userEmail,
+      conversationId,
+    )
+
+    // Stream the chat response ID immediately
+    dataStream.writeData({
+      type: StreamDataType.CHAT_RESPONSE_ID,
+      id: chatResponseId,
+      conversationId: conversationId || '',
+    })
+
     const responseData: ChatResponse = {
       userPrompt: currentQuestion,
       inputTokens: 0,
@@ -653,17 +777,18 @@ export class DataCopilot {
           previousWasClarification,
           dataStream,
           responseData,
+          chatResponseId,
+          insightsDbPool,
         })
 
       // Handle STOP and ASK_CLARIFICATION actions
       if (action === RouterDecisionAction.STOP) {
         await this.handleStopAction(
-          messages[messages.length - 1]?.content || '',
+          chatResponseId,
           routerOutput,
           responseData,
           dataStream,
           insightsDbPool,
-          userEmail,
           conversationId,
         )
         return
@@ -671,12 +796,11 @@ export class DataCopilot {
 
       if (action === RouterDecisionAction.ASK_CLARIFICATION) {
         await this.handleAskClarificationAction(
-          messages[messages.length - 1]?.content || '',
+          chatResponseId,
           routerOutput,
           responseData,
           dataStream,
           insightsDbPool,
-          userEmail,
           conversationId,
         )
         return
@@ -684,14 +808,13 @@ export class DataCopilot {
 
       // Handle completed execution (CREATE_QUERY or PIPES)
       await this.handleResponseComplete({
-        userPrompt: messages[messages.length - 1]?.content || '',
+        chatResponseId,
         responseData,
         routerOutput,
         pipeInstructions,
         sqlQuery,
         conversationId,
         insightsDbPool,
-        userEmail,
         dataStream,
       })
     } catch (error) {
@@ -708,12 +831,11 @@ export class DataCopilot {
    * Handle router 'stop' action - send final response without further processing
    */
   private async handleStopAction(
-    userPrompt: string,
+    chatResponseId: string,
     routerOutput: RouterOutput,
     responseData: ChatResponse,
     dataStream: any,
     insightsDbPool: Pool,
-    userEmail: string,
     conversationId?: string,
   ): Promise<void> {
     dataStream.writeData({
@@ -722,9 +844,9 @@ export class DataCopilot {
       reasoning: routerOutput.reasoning,
     })
 
-    const chatResponseId = await this.saveChatResponse(
+    await this.updateChatResponse(
+      chatResponseId,
       {
-        userPrompt,
         inputTokens: responseData.inputTokens,
         outputTokens: responseData.outputTokens,
         routerResponse: RouterDecisionAction.STOP,
@@ -735,26 +857,18 @@ export class DataCopilot {
         conversationId: conversationId,
       },
       insightsDbPool,
-      userEmail,
     )
-
-    dataStream.writeData({
-      type: StreamDataType.CHAT_RESPONSE_ID,
-      id: chatResponseId,
-      conversationId: conversationId || '',
-    })
   }
 
   /**
    * Handle router 'ask_clarification' action - ask user for clarification
    */
   private async handleAskClarificationAction(
-    userPrompt: string,
+    chatResponseId: string,
     routerOutput: RouterOutput,
     responseData: ChatResponse,
     dataStream: any,
     insightsDbPool: Pool,
-    userEmail: string,
     conversationId?: string,
   ): Promise<void> {
     dataStream.writeData({
@@ -764,9 +878,9 @@ export class DataCopilot {
       reasoning: routerOutput.reasoning,
     })
 
-    const chatResponseId = await this.saveChatResponse(
+    await this.updateChatResponse(
+      chatResponseId,
       {
-        userPrompt,
         inputTokens: responseData.inputTokens,
         outputTokens: responseData.outputTokens,
         routerResponse: RouterDecisionAction.ASK_CLARIFICATION,
@@ -778,14 +892,7 @@ export class DataCopilot {
         conversationId: conversationId,
       },
       insightsDbPool,
-      userEmail,
     )
-
-    dataStream.writeData({
-      type: StreamDataType.CHAT_RESPONSE_ID,
-      id: chatResponseId,
-      conversationId: conversationId || '',
-    })
   }
 
   /**
@@ -800,7 +907,12 @@ export class DataCopilot {
     segmentId,
     reformulatedQuestion,
     dataStream,
-  }: TextToSqlAgentStreamInput): Promise<{ sqlQuery: string; data: any[] }> {
+    chatResponseId,
+    insightsDbPool,
+  }: TextToSqlAgentStreamInput & { 
+    chatResponseId: string; 
+    insightsDbPool: Pool 
+  }): Promise<{ sqlQuery: string; data: any[] }> {
     let attemptNumber = 0
     let errorContext: import('./types').SqlErrorContext | undefined = undefined
     let lastGeneratedQuery = ''
@@ -833,27 +945,87 @@ export class DataCopilot {
 
         try {
           // Generate SQL query
-          const textToSqlOutput = await this.runTextToSqlAgent({
-            messages,
-            date,
-            projectName,
-            pipe,
-            parametersString,
-            segmentId,
-            reformulatedQuestion,
-            errorContext,
-          })
+          const sqlStartTime = Date.now()
+          let textToSqlOutput
+          try {
+            textToSqlOutput = await this.runTextToSqlAgent({
+              messages,
+              date,
+              projectName,
+              pipe,
+              parametersString,
+              segmentId,
+              reformulatedQuestion,
+              errorContext,
+            })
+            const sqlResponseTime = (Date.now() - sqlStartTime) / 1000
 
-          lastGeneratedQuery = textToSqlOutput.instructions
+            lastGeneratedQuery = textToSqlOutput.instructions
 
-          this.sendProgress(
-            dataStream,
-            'progress',
-            `SQL query generated! Executing...`,
-          )
+            this.sendProgress(
+              dataStream,
+              'progress',
+              `SQL query generated! Executing...`,
+            )
 
-          // Execute the query
-          const queryData = await executeTextToSqlInstructions(textToSqlOutput.instructions)
+            // Track successful Text-to-SQL agent execution
+            await this.trackAgentStep(
+              chatResponseId,
+              'TEXT_TO_SQL',
+              textToSqlOutput,
+              sqlResponseTime,
+              insightsDbPool,
+            )
+          } catch (agentError: any) {
+            // Text-to-SQL agent itself failed
+            const sqlResponseTime = (Date.now() - sqlStartTime) / 1000
+            await this.trackAgentStep(
+              chatResponseId,
+              'TEXT_TO_SQL',
+              undefined,
+              sqlResponseTime,
+              insightsDbPool,
+              agentError instanceof Error ? agentError.message : String(agentError),
+            )
+            throw agentError
+          }
+
+          // Execute the query and track execution time
+          const sqlExecutionStart = Date.now()
+          let queryData
+          try {
+            queryData = await executeTextToSqlInstructions(textToSqlOutput.instructions)
+            const sqlExecutionTime = (Date.now() - sqlExecutionStart) / 1000
+
+            // Track successful SQL execution step
+            await this.trackAgentStep(
+              chatResponseId,
+              'EXECUTE_INSTRUCTIONS',
+              undefined,
+              sqlExecutionTime,
+              insightsDbPool,
+              undefined,
+              textToSqlOutput.instructions,
+            )
+          } catch (executionError: any) {
+            // SQL execution failed
+            const sqlExecutionTime = (Date.now() - sqlExecutionStart) / 1000
+            const errorMessage = this.extractSqlErrorMessage(executionError)
+
+            // Track failed SQL execution
+            await this.trackAgentStep(
+              chatResponseId,
+              'EXECUTE_INSTRUCTIONS',
+              undefined,
+              sqlExecutionTime,
+              insightsDbPool,
+              errorMessage,
+              textToSqlOutput.instructions,
+            )
+
+            // Re-throw to handle retry logic
+            throw executionError
+          }
 
           // Success - clear interval and return (don't stream data yet, auditor will do it)
           clearInterval(keepaliveInterval)
@@ -912,8 +1084,6 @@ export class DataCopilot {
         }
       }
 
-      // This should never be reached, but TypeScript needs it
-      clearInterval(keepaliveInterval)
       throw new Error('SQL retry loop completed without returning a result')
     } catch (error) {
       clearInterval(keepaliveInterval)
@@ -951,17 +1121,47 @@ export class DataCopilot {
     reformulatedQuestion,
     toolNames,
     responseData,
-  }: PipeAgentStreamInput): Promise<{ pipeInstructions: PipeInstructions; data: any[] }> {
-    const pipeOutput = await this.runPipeAgent({
-      messages,
-      date,
-      projectName,
-      pipe,
-      parametersString,
-      segmentId: segmentId as string,
-      reformulatedQuestion,
-      toolNames,
-    })
+    chatResponseId,
+    insightsDbPool,
+  }: PipeAgentStreamInput & 
+  { chatResponseId: string; 
+    insightsDbPool: Pool 
+  }): Promise<{ pipeInstructions: PipeInstructions; data: any[] }> {
+    const pipeStartTime = Date.now()
+    let pipeOutput
+    try {
+      pipeOutput = await this.runPipeAgent({
+        messages,
+        date,
+        projectName,
+        pipe,
+        parametersString,
+        segmentId: segmentId as string,
+        reformulatedQuestion,
+        toolNames,
+      })
+      const pipeResponseTime = (Date.now() - pipeStartTime) / 1000
+
+      // Track Pipe agent execution
+      await this.trackAgentStep(
+        chatResponseId,
+        'PIPE',
+        pipeOutput,
+        pipeResponseTime,
+        insightsDbPool,
+      )
+    } catch (error) {
+      const pipeResponseTime = (Date.now() - pipeStartTime) / 1000
+      await this.trackAgentStep(
+        chatResponseId,
+        'PIPE',
+        undefined,
+        pipeResponseTime,
+        insightsDbPool,
+        error instanceof Error ? error.message : String(error),
+      )
+      throw error
+    }
 
     // Accumulate token usage from pipe agent
     if (pipeOutput.usage) {
@@ -970,28 +1170,56 @@ export class DataCopilot {
     }
 
     // Execute the pipes according to the instructions and combine results (don't stream data yet, auditor will do it)
-    const combinedData = await executePipeInstructions(pipeOutput.instructions)
+    const pipeExecutionStart = Date.now()
+    try {
+      const combinedData = await executePipeInstructions(pipeOutput.instructions)
+      const pipeExecutionTime = (Date.now() - pipeExecutionStart) / 1000
 
-    return { pipeInstructions: pipeOutput.instructions, data: combinedData }
+      // Track successful pipe execution step
+      await this.trackAgentStep(
+        chatResponseId,
+        'EXECUTE_INSTRUCTIONS',
+        undefined,
+        pipeExecutionTime,
+        insightsDbPool,
+        undefined,
+        JSON.stringify(pipeOutput.instructions),
+      )
+
+      return { pipeInstructions: pipeOutput.instructions, data: combinedData }
+    } catch (error) {
+      const pipeExecutionTime = (Date.now() - pipeExecutionStart) / 1000
+
+      // Track failed pipe execution
+      await this.trackAgentStep(
+        chatResponseId,
+        'EXECUTE_INSTRUCTIONS',
+        undefined,
+        pipeExecutionTime,
+        insightsDbPool,
+        error instanceof Error ? error.message : String(error),
+        JSON.stringify(pipeOutput.instructions),
+      )
+
+      throw error
+    }
   }
 
   /**
-   * Save final response to database and stream chat response ID
+   * Save final response to database
    */
   private async handleResponseComplete({
-    userPrompt,
+    chatResponseId,
     responseData,
     routerOutput,
     pipeInstructions,
     sqlQuery,
     conversationId,
     insightsDbPool,
-    userEmail,
-    dataStream,
-  }: AgentResponseCompleteParams): Promise<void> {
-    const chatResponseId = await this.saveChatResponse(
+  }: Omit<AgentResponseCompleteParams, 'userPrompt' | 'userEmail'> & { chatResponseId: string }): Promise<void> {
+    await this.updateChatResponse(
+      chatResponseId,
       {
-        userPrompt,
         inputTokens: responseData.inputTokens,
         outputTokens: responseData.outputTokens,
         routerResponse: routerOutput.next_action,
@@ -1002,13 +1230,6 @@ export class DataCopilot {
         conversationId: conversationId,
       },
       insightsDbPool,
-      userEmail,
     )
-
-    dataStream.writeData({
-      type: StreamDataType.CHAT_RESPONSE_ID,
-      id: chatResponseId,
-      conversationId: conversationId || '',
-    })
   }
 }

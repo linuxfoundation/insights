@@ -77,6 +77,84 @@ export interface IChatResponseDb {
 export class ChatRepository {
   constructor(private pool: Pool) {}
 
+  async createInitialChatResponse(
+    userPrompt: string,
+    userEmail: string,
+    conversationId?: string,
+  ): Promise<string> {
+    const query = `
+      INSERT INTO chat_responses (created_by, user_prompt, conversation_id, model)
+      VALUES ($1, $2, $3, $4)
+      RETURNING id
+    `
+    const result = await this.pool.query(query, [
+      userEmail,
+      userPrompt,
+      conversationId || null,
+      'pending',
+    ])
+    return result.rows[0].id
+  }
+
+  async updateChatResponse(
+    chatResponseId: string,
+    response: Omit<ChatResponse, 'userPrompt'>,
+  ): Promise<void> {
+    const query = `
+      UPDATE chat_responses
+      SET
+        router_response = $1,
+        router_reason = $2,
+        pipe_instructions = $3,
+        sql_query = $4,
+        clarification_question = $5,
+        model = $6,
+        input_tokens = $7,
+        output_tokens = $8
+      WHERE id = $9
+    `
+    await this.pool.query(query, [
+      response.routerResponse,
+      response.routerReason,
+      response.pipeInstructions ? JSON.stringify(response.pipeInstructions) : null,
+      response.sqlQuery,
+      response.clarificationQuestion,
+      response.model,
+      response.inputTokens,
+      response.outputTokens,
+      chatResponseId,
+    ])
+  }
+
+  async saveAgentStep(step: {
+    chatResponseId: string
+    agent: 'ROUTER' | 'PIPE' | 'TEXT_TO_SQL' | 'AUDITOR' | 'CHART' | 'EXECUTE_INSTRUCTIONS'
+    model?: string
+    response?: any
+    inputTokens?: number
+    outputTokens?: number
+    responseTimeSeconds: number
+    instructions?: string
+    errorMessage?: string
+  }): Promise<void> {
+    const query = `
+      INSERT INTO chat_response_agent_steps
+      (chat_response_id, model, agent, response, input_tokens, output_tokens, response_time_seconds, instructions, error_message)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+    `
+    await this.pool.query(query, [
+      step.chatResponseId,
+      step.model || null,
+      step.agent,
+      step.response ? JSON.stringify(step.response) : null,
+      step.inputTokens || 0,
+      step.outputTokens || 0,
+      step.responseTimeSeconds,
+      step.instructions || null,
+      step.errorMessage || null,
+    ])
+  }
+
   async saveChatResponse(response: ChatResponse, userEmail: string): Promise<string> {
     try {
       const query = `
