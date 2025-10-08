@@ -48,7 +48,7 @@ import {
 const route = useRoute();
 const {slug} = route.params;
 const {
-project, isProjectLoading, selectedTimeRangeKey, startDate, endDate
+project, isProjectLoading, selectedTimeRangeKey, startDate, endDate, collaborationSet
 } = storeToRefs(useProjectStore());
 
 const { queryParams } = useQueryParam(processProjectParams, projectParamsSetter);
@@ -100,6 +100,7 @@ watch(() => data.value, (value) => {
     }
 
     project.value = value;
+    collaborationSet.value = [];
   }
 }, { immediate: true });
 
