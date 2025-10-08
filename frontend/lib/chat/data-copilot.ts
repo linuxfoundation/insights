@@ -68,6 +68,9 @@ export class DataCopilot {
   /** Maximum number of auditor retry attempts */
   private readonly MAX_AUDITOR_RETRIES = 1
 
+  /** Maximum number of SQL execution retry attempts */
+  private readonly MAX_SQL_RETRIES = 2
+
   constructor() {
     this.model = bedrock(this.BEDROCK_MODEL_ID)
     this.tbMcpUrl = `https://mcp.tinybird.co?token=${process.env.NUXT_INSIGHTS_DATA_COPILOT_TINYBIRD_TOKEN}&host=${process.env.NUXT_TINYBIRD_BASE_URL}`
@@ -95,7 +98,6 @@ export class DataCopilot {
   private buildToolsOverview(): void {
     const excludedFromOverview = new Set([
       'explore_data',
-      'execute_query',
       'text_to_sql',
       'list_endpoints',
       'list_service_datasources',
@@ -328,11 +330,13 @@ export class DataCopilot {
     let pipeInstructions: PipeInstructions | undefined = undefined
 
     while (attemptNumber <= this.MAX_AUDITOR_RETRIES) {
-      // Run router agent
-      dataStream.writeData({
-        type: StreamDataType.ROUTER_STATUS,
-        status: StreamDataStatus.ANALYZING,
-      })
+      // Run router agent - only stream status on first attempt
+      if (attemptNumber === 0) {
+        dataStream.writeData({
+          type: StreamDataType.ROUTER_STATUS,
+          status: StreamDataStatus.ANALYZING,
+        })
+      }
 
       routerOutput = await this.runRouterAgent({
         messages: currentMessages,
@@ -358,13 +362,15 @@ export class DataCopilot {
         return { action: routerOutput.next_action, routerOutput }
       }
 
-      // Router decided on CREATE_QUERY or PIPES - continue with execution
-      dataStream.writeData({
-        type: StreamDataType.ROUTER_STATUS,
-        status: StreamDataStatus.COMPLETE,
-        reasoning: routerOutput.reasoning,
-        reformulatedQuestion: routerOutput.reformulated_question,
-      })
+      // Router decided on CREATE_QUERY or PIPES - only stream complete status on first attempt
+      if (attemptNumber === 0) {
+        dataStream.writeData({
+          type: StreamDataType.ROUTER_STATUS,
+          status: StreamDataStatus.COMPLETE,
+          reasoning: routerOutput.reasoning,
+          reformulatedQuestion: routerOutput.reformulated_question,
+        })
+      }
 
       let data: any[] = []
 
@@ -425,25 +431,57 @@ export class DataCopilot {
       }
 
       if (auditorResult.is_valid) {
-        // Data is valid, stream summary and exit loop
+        // Data is valid, stream summary and data
         dataStream.writeData({
           type: StreamDataType.AUDITOR_STATUS,
           status: StreamDataStatus.VALIDATED,
           summary: auditorResult.summary,
           reasoning: auditorResult.reasoning,
         })
+
+        // Stream data after auditor approval
+        if (routerOutput.next_action === RouterDecisionAction.CREATE_QUERY) {
+          dataStream.writeData({
+            type: StreamDataType.SQL_RESULT,
+            instructions: sqlQuery,
+            data,
+          })
+        } else if (routerOutput.next_action === RouterDecisionAction.PIPES) {
+          dataStream.writeData({
+            type: StreamDataType.PIPE_RESULT,
+            instructions: pipeInstructions,
+            data,
+          })
+        }
+
         return { action: routerOutput.next_action, routerOutput, sqlQuery, pipeInstructions }
       }
 
       // Data is invalid
       if (attemptNumber >= this.MAX_AUDITOR_RETRIES) {
-        // Max retries reached, send final status
+        // Max retries reached, send final status and stream data anyway
         dataStream.writeData({
           type: StreamDataType.AUDITOR_STATUS,
           status: StreamDataStatus.MAX_RETRIES,
           feedback: auditorResult.feedback_to_router,
           reasoning: auditorResult.reasoning,
         })
+
+        // Stream data even though validation failed (max retries reached)
+        if (routerOutput.next_action === RouterDecisionAction.CREATE_QUERY) {
+          dataStream.writeData({
+            type: StreamDataType.SQL_RESULT,
+            instructions: sqlQuery,
+            data,
+          })
+        } else if (routerOutput.next_action === RouterDecisionAction.PIPES) {
+          dataStream.writeData({
+            type: StreamDataType.PIPE_RESULT,
+            instructions: pipeInstructions,
+            data,
+          })
+        }
+
         return { action: routerOutput.next_action, routerOutput, sqlQuery, pipeInstructions }
       }
 
@@ -751,7 +789,7 @@ export class DataCopilot {
   }
 
   /**
-   * Handle router 'create_query' action - generate and execute SQL query
+   * Handle router 'create_query' action - generate and execute SQL query with retry logic
    */
   private async handleCreateQueryAction({
     messages,
@@ -763,8 +801,9 @@ export class DataCopilot {
     reformulatedQuestion,
     dataStream,
   }: TextToSqlAgentStreamInput): Promise<{ sqlQuery: string; data: any[] }> {
-    // Send progress update before starting TextToSql agent
-    this.sendProgress(dataStream, 'progress', 'Analyzing database schema...')
+    let attemptNumber = 0
+    let errorContext: import('./types').SqlErrorContext | undefined = undefined
+    let lastGeneratedQuery = ''
 
     // Set up keepalive interval during long operation
     const keepaliveInterval = setInterval(() => {
@@ -772,37 +811,131 @@ export class DataCopilot {
     }, 15000) // Send keepalive every 15 seconds
 
     try {
-      const textToSqlOutput = await this.runTextToSqlAgent({
-        messages,
-        date,
-        projectName,
-        pipe,
-        parametersString,
-        segmentId,
-        reformulatedQuestion,
-      })
+      while (attemptNumber <= this.MAX_SQL_RETRIES) {
+        // Send status update
+        if (attemptNumber === 0) {
+          this.sendProgress(dataStream, 'progress', 'Analyzing database schema...')
+          dataStream.writeData({
+            type: StreamDataType.SQL_STATUS,
+            status: StreamDataStatus.EXECUTING,
+            attempt: attemptNumber + 1,
+            maxAttempts: this.MAX_SQL_RETRIES + 1,
+          })
+        } else {
+          dataStream.writeData({
+            type: StreamDataType.SQL_STATUS,
+            status: StreamDataStatus.RETRYING,
+            attempt: attemptNumber + 1,
+            maxAttempts: this.MAX_SQL_RETRIES + 1,
+            error: errorContext?.errorMessage,
+          })
+        }
 
+        try {
+          // Generate SQL query
+          const textToSqlOutput = await this.runTextToSqlAgent({
+            messages,
+            date,
+            projectName,
+            pipe,
+            parametersString,
+            segmentId,
+            reformulatedQuestion,
+            errorContext,
+          })
+
+          lastGeneratedQuery = textToSqlOutput.instructions
+
+          this.sendProgress(
+            dataStream,
+            'progress',
+            `SQL query generated! Executing...`,
+          )
+
+          // Execute the query
+          const queryData = await executeTextToSqlInstructions(textToSqlOutput.instructions)
+
+          // Success - clear interval and return (don't stream data yet, auditor will do it)
+          clearInterval(keepaliveInterval)
+
+          return { sqlQuery: textToSqlOutput.instructions, data: queryData }
+        } catch (executionError: any) {
+          // SQL execution failed
+          console.error(`SQL execution error (attempt ${attemptNumber + 1}):`, executionError)
+
+          // Extract error message from Tinybird response
+          const errorMessage = this.extractSqlErrorMessage(executionError)
+
+          // Check if query contains UNION - TinyBird doesn't support it with CTEs
+          let enhancedErrorMessage = errorMessage
+          if (lastGeneratedQuery.toUpperCase().includes('UNION')) {
+            enhancedErrorMessage = `${errorMessage}\n\nCRITICAL: Your query contains UNION or UNION ALL, 
+            which is NOT supported by TinyBird's SQL API. This is likely causing the error. 
+            You MUST rewrite the query WITHOUT using UNION. 
+            Instead:\n
+            - Return a single result set with all data\n
+            - Use CASE statements to categorize different data types\n
+            - Add a 'type' or 'category' column to distinguish different aggregations\n
+            - Do NOT attempt to combine multiple SELECTs with UNION`
+          }
+
+          // Check if we've exhausted retries
+          if (attemptNumber >= this.MAX_SQL_RETRIES) {
+            clearInterval(keepaliveInterval)
+            dataStream.writeData({
+              type: StreamDataType.SQL_STATUS,
+              status: StreamDataStatus.MAX_RETRIES,
+              error: enhancedErrorMessage,
+              attempt: attemptNumber + 1,
+            })
+            throw new Error(
+              `SQL query failed after ${this.MAX_SQL_RETRIES + 1} attempts: ${enhancedErrorMessage}`,
+            )
+          }
+
+          // Prepare for retry
+          errorContext = {
+            errorMessage: enhancedErrorMessage,
+            previousQuery: lastGeneratedQuery,
+            attemptNumber: attemptNumber + 1,
+          }
+          attemptNumber++
+
+          dataStream.writeData({
+            type: StreamDataType.SQL_STATUS,
+            status: StreamDataStatus.EXECUTION_ERROR,
+            error: enhancedErrorMessage,
+            attempt: attemptNumber,
+          })
+
+          // Continue to next iteration
+        }
+      }
+
+      // This should never be reached, but TypeScript needs it
       clearInterval(keepaliveInterval)
-      this.sendProgress(
-        dataStream,
-        'progress',
-        `SQL query generated! Executing [${textToSqlOutput.instructions}]...`,
-      )
-
-      const queryData = await executeTextToSqlInstructions(textToSqlOutput.instructions)
-
-      dataStream.writeData({
-        type: StreamDataType.SQL_RESULT,
-        explanation: textToSqlOutput.explanation,
-        instructions: textToSqlOutput.instructions,
-        data: queryData,
-      })
-
-      return { sqlQuery: textToSqlOutput.instructions, data: queryData }
+      throw new Error('SQL retry loop completed without returning a result')
     } catch (error) {
       clearInterval(keepaliveInterval)
       throw error
     }
+  }
+
+  /**
+   * Extract user-friendly error message from Tinybird API error
+   */
+  private extractSqlErrorMessage(error: any): string {
+    // Try to get detailed error from Tinybird response
+    if (error.data?.error) {
+      return error.data.error
+    }
+    if (error.response?.data?.error) {
+      return error.response.data.error
+    }
+    if (error.message) {
+      return error.message
+    }
+    return String(error)
   }
 
   /**
@@ -817,7 +950,6 @@ export class DataCopilot {
     segmentId,
     reformulatedQuestion,
     toolNames,
-    dataStream,
     responseData,
   }: PipeAgentStreamInput): Promise<{ pipeInstructions: PipeInstructions; data: any[] }> {
     const pipeOutput = await this.runPipeAgent({
@@ -837,15 +969,8 @@ export class DataCopilot {
       responseData.outputTokens += pipeOutput.usage.completionTokens || 0
     }
 
-    // Execute the pipes according to the instructions and combine results
+    // Execute the pipes according to the instructions and combine results (don't stream data yet, auditor will do it)
     const combinedData = await executePipeInstructions(pipeOutput.instructions)
-
-    dataStream.writeData({
-      type: StreamDataType.PIPE_RESULT,
-      explanation: pipeOutput.explanation,
-      instructions: pipeOutput.instructions,
-      data: combinedData,
-    })
 
     return { pipeInstructions: pipeOutput.instructions, data: combinedData }
   }

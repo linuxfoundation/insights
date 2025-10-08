@@ -128,10 +128,21 @@ Always ensure variables in formulas match the dependency variable names.
    - Use segmentId when relevant to the query
    - Always include parameters mentioned in the user question
    - Set onlyContributions to 0 when querying non-contribution activities (stars, forks, social mentions, etc.)
-   - Apply timestamp filters for time-based queries  
+   - Apply timestamp filters for time-based queries
    - Use provided parameters as defaults
    - NEVER use custom SQL queries in pipe inputs (no "q" parameter)
    - **If unsure about a parameter, include it if it's documented in the tool schema**
+
+   **CRITICAL: Date/Time Parameter Format:**
+   - **ALL date and timestamp parameters MUST use format: "YYYY-MM-DD HH:MM:SS"**
+   - ❌ WRONG: "2024-10-08"
+   - ✅ CORRECT: "2024-10-08 00:00:00"
+   - This applies to: startDate, endDate, timestamp, dateFrom, dateTo, and any other date/time parameters
+   - For start dates/times: use "00:00:00" (beginning of day)
+   - For end dates/times: use "23:59:59" (end of day) or "00:00:00" of the next day
+   - Examples:
+     * "startDate": "2024-01-01 00:00:00"
+     * "endDate": "2024-12-31 23:59:59"
 
 3. **Focus on the Task:**
    - Answer the reformulated question directly

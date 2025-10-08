@@ -75,7 +75,7 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { computed, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import LfxCopilotLoadingState from '../shared/loading-state.vue';
 import LfxCopilotEmptyResult from '../info/empty-result.vue';
@@ -98,9 +98,9 @@ const props = defineProps<{
 const { resultData, selectedResultId } = storeToRefs(useCopilotStore());
 
 const isChartError = ref(false);
-const selectedTab = ref('chart');
+const selectedTab = ref('data');
 const isSnapshotModalOpen = ref(false);
-const isChartLoading = ref(true);
+const isChartLoading = ref(false);
 const selectedResultConfig = computed<Config | null>(() => {
   return resultData.value.find(result => result.id === selectedResultId.value)?.chartConfig || null;
 });
@@ -147,11 +147,8 @@ const handleChartLoading = (value: boolean) => {
   emit('update:isChartLoading', value);
 }
 
-watch(isChartLoading, (value) => {
-  if (value) {
-    selectedTab.value = 'chart';
-  } 
-})
+// Removed watcher that forced chart tab selection during loading
+// Now users stay on data tab by default and can manually switch to chart if desired
 </script>
 
 <script lang="ts">

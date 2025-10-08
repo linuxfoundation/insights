@@ -184,6 +184,12 @@ export interface DataCopilotQueryInput {
   dataStream: DataStreamWriter // DataStreamWriter from AI SDK
 }
 
+export interface SqlErrorContext {
+  errorMessage: string
+  previousQuery: string
+  attemptNumber: number
+}
+
 export interface TextToSqlAgentInput {
   messages: ChatMessage[]
   date: string
@@ -192,6 +198,7 @@ export interface TextToSqlAgentInput {
   parametersString: string
   segmentId: string
   reformulatedQuestion: string
+  errorContext?: SqlErrorContext
 }
 
 export interface TextToSqlAgentStreamInput {
@@ -203,6 +210,7 @@ export interface TextToSqlAgentStreamInput {
   segmentId: string
   reformulatedQuestion: string
   dataStream: any
+  errorContext?: SqlErrorContext
 }
 
 export interface AuditorAgentInput {

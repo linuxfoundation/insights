@@ -4,6 +4,7 @@ export enum StreamDataType {
   ROUTER_STATUS = 'router-status',
   CHAT_RESPONSE_ID = 'chat-response-id',
   SQL_RESULT = 'sql-result',
+  SQL_STATUS = 'sql-status',
   PIPE_RESULT = 'pipe-result',
   AUDITOR_STATUS = 'auditor-status',
 }
@@ -16,6 +17,8 @@ export enum StreamDataStatus {
   VALIDATED = 'validated',
   RETRYING = 'retrying',
   MAX_RETRIES = 'max_retries',
+  EXECUTING = 'executing',
+  EXECUTION_ERROR = 'execution_error',
 }
 
 export enum RouterDecisionAction {

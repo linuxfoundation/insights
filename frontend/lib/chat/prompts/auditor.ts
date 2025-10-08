@@ -79,26 +79,36 @@ Make a **BINARY decision**: Can this data answer the user's question?
 - Numeric metrics not all zeros?
 
 **3. Time Dimension (if applicable)**
-- If question mentions time period, does date range match?
-- If "daily", are there enough distinct dates?
-- If "monthly", is data aggregated correctly?
+- If question asks for time-series data (e.g., "daily activity", "monthly trends"), verify:
+  - Date column exists in output
+  - Date range matches question timeframe
+  - Enough distinct dates for the requested granularity
+- If question only filters by time (e.g., "top 5 orgs last quarter"), date column in output is NOT required
+  - Time filtering happens in query, final result can be a simple list
 
 **4. Granularity**
 - If question asks "by company", is there a company/organization column?
 - If question asks for breakdown, are grouping columns present?
 
-**5. Metric Presence**
-- If question asks for "count", "activity", "growth", etc., is there a numeric metric?
-- Is the metric column name relevant to the question?
+**5. Metric Presence (context-dependent)**
+- **Requires numeric metric** if question asks for:
+  - Aggregations: "count", "total", "average", "sum"
+  - Trends: "growth", "change", "increase"
+  - Rankings: "top", "most", "highest", "bottom", "least", "lowest"
+- **Does NOT require metric** for pure listing questions:
+  - "which", "list all", "show", "enumerate", "what are the"
+  - Example: "Which days had no activity" only needs date/repository columns, not an activity count column
 
 ### Decision Criteria
 
 ✅ **is_valid = true** IF:
 - All required columns exist (even if imperfect names)
 - Data has > 0 rows with non-null values
-- Time range matches question (if time-based)
-- Granularity is appropriate
-- At least one relevant metric present
+- For time-series questions: date column present and range matches
+- For time-filtered questions: date column NOT required in output
+- Granularity is appropriate (right grouping columns)
+- For aggregation/ranking questions: relevant metric present
+- For listing questions: metric NOT required
 
 ❌ **is_valid = false** IF:
 - Missing critical columns (e.g., no metric for "show activity")
@@ -127,10 +137,13 @@ Make a **BINARY decision**: Can this data answer the user's question?
   - Be direct and actionable
 
 ### Important Notes
-- **If there's no date column, don't check period validity:** 
-If user asks for a single metric and you have a relevant numeric column, it's likely valid
+- **Question type determines requirements:**
+  - Time-series questions ("daily commits", "monthly trend") → need date column in output
+  - Time-filtered questions ("top 5 last month") → date column NOT needed in output
+  - Listing questions ("which repos", "list all") → metric NOT needed
+  - Aggregation/ranking questions → metric IS needed
 - **Statistics are your friend:** Use min/max/avg/range to validate without seeing raw data
-- **Date ranges are critical:** If question has timeframe, validate earliestDate/latestDate (for timeseries)
+- **Date ranges:** Only validate if question asks for time-series data, not just time-filtered results
 - **Distinct counts matter:** Low distinctCount on grouping columns = problem
 - **Don't be overly strict:** If data can partially answer, mark valid
 - ${attemptNumber >= 1 ? '**This is a RETRY:** Be slightly more lenient unless clearly broken' : ''}

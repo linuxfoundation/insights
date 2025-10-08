@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { z } from 'zod'
-import { textToSqlInstructionsSchema } from '../types'
+import { textToSqlInstructionsSchema, type SqlErrorContext } from '../types'
 import { textToSqlPrompt } from '../prompts/text-to-sql'
 import { BaseAgent } from './base-agent'
 
@@ -26,6 +26,7 @@ interface TextToSqlAgentInput {
   parametersString: string
   segmentId: string | null
   reformulatedQuestion: string
+  errorContext?: SqlErrorContext
 }
 
 export class TextToSqlAgent extends BaseAgent<TextToSqlAgentInput, SqlOutput> {
@@ -33,7 +34,7 @@ export class TextToSqlAgent extends BaseAgent<TextToSqlAgentInput, SqlOutput> {
    * Generate SQL query using tools and text extraction
    */
   override async execute(
-    input: TextToSqlAgentInput & { messages: any[] }
+    input: TextToSqlAgentInput & { messages: any[] },
   ): Promise<SqlOutput & { usage?: any }> {
     try {
       const { generateText } = await import('ai')
@@ -45,7 +46,10 @@ export class TextToSqlAgent extends BaseAgent<TextToSqlAgentInput, SqlOutput> {
       const workingTools = { ...tools }
       delete workingTools['text_to_sql']
 
-      const fullSystemPrompt = conversationHistoryReceipt + systemPrompt + `
+      const fullSystemPrompt =
+        conversationHistoryReceipt +
+        systemPrompt +
+        `
 
 ## CRITICAL INSTRUCTIONS
 0. NEVER use the functions that are NOT provided under AVAILABLE FUNCTIONS
@@ -67,9 +71,9 @@ export class TextToSqlAgent extends BaseAgent<TextToSqlAgentInput, SqlOutput> {
         generateConfig.providerOptions = providerOptions
       }
 
-      generateConfig.messages = input.messages.filter(
-        (msg: any) => msg.content && msg.content.trim() !== '' && msg.role === 'user',
-      ).slice(-1)
+      generateConfig.messages = input.messages
+        .filter((msg: any) => msg.content && msg.content.trim() !== '' && msg.role === 'user')
+        .slice(-1)
 
       const response = await generateText(generateConfig)
 
@@ -79,7 +83,7 @@ export class TextToSqlAgent extends BaseAgent<TextToSqlAgentInput, SqlOutput> {
 
       // Extract SQL from text response
       const result = this.extractSqlFromTextResponse(response)
-      console.warn("🔍 Extracted SQL:", result.instructions)
+      console.warn('🔍 Extracted SQL:', result.instructions)
 
       return {
         ...result,
@@ -89,7 +93,6 @@ export class TextToSqlAgent extends BaseAgent<TextToSqlAgentInput, SqlOutput> {
       throw this.createError(error)
     }
   }
-
 
   /**
    * Extract SQL query from text response when tools fail
@@ -102,7 +105,7 @@ export class TextToSqlAgent extends BaseAgent<TextToSqlAgentInput, SqlOutput> {
     if (sqlBlockMatch && sqlBlockMatch[1]) {
       const sqlQuery = this.cleanSqlQuery(sqlBlockMatch[1].trim())
       return {
-        explanation: "Generated SQL query based on database schema analysis",
+        explanation: 'Generated SQL query based on database schema analysis',
         instructions: sqlQuery,
       }
     }
@@ -113,14 +116,14 @@ export class TextToSqlAgent extends BaseAgent<TextToSqlAgentInput, SqlOutput> {
 
     if (withMatch && withMatch[1]) {
       return {
-        explanation: "Extracted SQL query from agent response",
+        explanation: 'Extracted SQL query from agent response',
         instructions: this.cleanSqlQuery(withMatch[1].trim()),
       }
     }
 
     if (selectMatch && selectMatch[1]) {
       return {
-        explanation: "Extracted SQL query from agent response",
+        explanation: 'Extracted SQL query from agent response',
         instructions: this.cleanSqlQuery(selectMatch[1].trim()),
       }
     }
@@ -129,7 +132,7 @@ export class TextToSqlAgent extends BaseAgent<TextToSqlAgentInput, SqlOutput> {
     const generalSqlMatch = text.match(/\b((?:WITH|SELECT)[\s\S]*?)(?=\n\n|\n(?![A-Z\s,()])|$)/i)
     if (generalSqlMatch && generalSqlMatch[1]) {
       return {
-        explanation: "Extracted SQL query from agent response",
+        explanation: 'Extracted SQL query from agent response',
         instructions: this.cleanSqlQuery(generalSqlMatch[1].trim()),
       }
     }
@@ -171,11 +174,11 @@ export class TextToSqlAgent extends BaseAgent<TextToSqlAgentInput, SqlOutput> {
       input.parametersString,
       input.segmentId,
       input.reformulatedQuestion,
+      input.errorContext,
     )
   }
 
   protected getUserPrompt(input: TextToSqlAgentInput): string {
-    // Not used when messages are provided, but required by base class
     return input.reformulatedQuestion
   }
 
@@ -193,12 +196,12 @@ export class TextToSqlAgent extends BaseAgent<TextToSqlAgentInput, SqlOutput> {
   protected override getProviderOptions(_input: TextToSqlAgentInput): any {
     return {
       bedrock: {
-        reasoningConfig: { type: 'enabled', budgetTokens: 1500 }, // Reduced from 3000 for faster responses
+        reasoningConfig: { type: 'enabled', budgetTokens: 1500 },
       },
     }
   }
 
   protected override shouldMonitorToolCalls(_input: TextToSqlAgentInput): boolean {
-    return false // Enable tool call monitoring for SQL agent
+    return false
   }
 }
