@@ -220,7 +220,9 @@ const groupedData = computed(() => (securityAssessmentData.value || []).reduce((
     if (!obj[check.category]) {
       obj[check.category] = [];
     }
-    check.assessments = PROJECT_SECURITY_SERVICE.mergeDuplicateAssessments(check.assessments);
+    check.assessments = PROJECT_SECURITY_SERVICE.orderAssessmentsByRequirementId(
+      PROJECT_SECURITY_SERVICE.mergeDuplicateAssessments(check.assessments)
+    );
     obj[check.category]?.push(check);
     return obj;
   }, {} as Record<string, SecurityData[]>))
@@ -230,7 +232,9 @@ const groupChecksByRepository = (checks: SecurityData[]) => (checks || []).reduc
     if (!obj[check.repo]) {
       obj[check.repo] = [];
     }
-    check.assessments = PROJECT_SECURITY_SERVICE.mergeDuplicateAssessments(check.assessments);
+    check.assessments = PROJECT_SECURITY_SERVICE.orderAssessmentsByRequirementId(
+      PROJECT_SECURITY_SERVICE.mergeDuplicateAssessments(check.assessments)
+    );
     obj[check.repo]?.push(check);
     return obj;
   }, {} as Record<string, SecurityData[]>)
