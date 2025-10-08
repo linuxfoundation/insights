@@ -108,7 +108,9 @@ const includeCollaborations = computed({
   get: () => collaborationSet.value.includes(props.name),
   set: (value) => {
     if (value) {
-      collaborationSet.value.push(props.name);
+      if (!collaborationSet.value.includes(props.name)) {
+        collaborationSet.value.push(props.name);
+      }
     } else {
       collaborationSet.value = collaborationSet.value.filter((name) => name !== props.name);
     }
