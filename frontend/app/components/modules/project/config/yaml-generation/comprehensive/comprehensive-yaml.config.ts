@@ -1,11 +1,21 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import {DateTime} from 'luxon';
-import type {YamlGenerationConfig} from "~/components/modules/project/config/yaml-generation/yaml-generation.config";
+import YamlComprehensiveProject
+    from "./yaml-comprehensive-project.vue";
+import YamlComprehensiveProjectSteward
+    from "./yaml-comprehensive-project-steward.vue";
+import YamlComprehensiveProjectAdministrators
+    from "./yaml-comprehensive-project-administrators.vue";
+import YamlComprehensiveProjectDocumentation
+    from "./yaml-comprehensive-project-documentation.vue";
+import YamlComprehensiveProjectRepositories
+    from "./yaml-comprehensive-project-repositories.vue";
+import YamlComprehensiveProjectVulnerability
+    from "./yaml-comprehensive-project-vulnerability.vue";
 import YamlHeaderInformation
     from "~/components/modules/project/config/yaml-generation/shared/yaml-header-information.vue";
-import YamlComprehensiveProject
-    from "~/components/modules/project/config/yaml-generation/comprehensive/yaml-comprehensive-project.vue";
+import type {YamlGenerationConfig} from "~/components/modules/project/config/yaml-generation/yaml-generation.config";
 
 const comprehensiveYamlGenerationConfig: YamlGenerationConfig = {
     label: 'Comprehensive',
@@ -25,26 +35,26 @@ const comprehensiveYamlGenerationConfig: YamlGenerationConfig = {
             label: 'Project details',
             component: YamlComprehensiveProject,
         },
-        // {
-        //     label: 'Project details | Steward',
-        //     component: YamlComprehensiveProjectSteward,
-        // },
-        // {
-        //     label: 'Project details | Administrators',
-        //     component: YamlComprehensiveProjectAdministrators,
-        // },
-        // {
-        //     label: 'Project details | Documentation',
-        //     component: YamlComprehensiveProjectDocumentation,
-        // },
-        // {
-        //     label: 'Project details | Repositories',
-        //     component: YamlComprehensiveProjectRepositories,
-        // },
-        // {
-        //     label: 'Project details | Vulnerability reporting',
-        //     component: YamlComprehensiveProjectVulnerability,
-        // },
+        {
+            label: 'Project details | Steward',
+            component: YamlComprehensiveProjectSteward,
+        },
+        {
+            label: 'Project details | Administrators',
+            component: YamlComprehensiveProjectAdministrators,
+        },
+        {
+            label: 'Project details | Documentation',
+            component: YamlComprehensiveProjectDocumentation,
+        },
+        {
+            label: 'Project details | Repositories',
+            component: YamlComprehensiveProjectRepositories,
+        },
+        {
+            label: 'Project details | Vulnerability reporting',
+            component: YamlComprehensiveProjectVulnerability,
+        },
         // {
         //     label: 'Repository details',
         //     component: YamlComprehensiveRepository,

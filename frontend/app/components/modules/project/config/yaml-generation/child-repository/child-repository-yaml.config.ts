@@ -55,8 +55,8 @@ const childRepositoryYamlGenerationConfig: YamlGenerationConfig = {
         repository: {
             url: '',
             status: '',
-            'accepts-change-request': true,
-            'accepts-automated-change-request': true,
+            'accepts-change-request': false,
+            'accepts-automated-change-request': false,
             'core-team': [
                 {
                     name: '',

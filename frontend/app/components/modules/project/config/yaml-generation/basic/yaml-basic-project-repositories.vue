@@ -17,7 +17,7 @@ SPDX-License-Identifier: MIT
 
   <div class="flex flex-col gap-4">
     <lfx-yaml-repository-item
-      v-for="(repository, index) of model.project.repositories"
+      v-for="(_, index) of model.project.repositories"
       :key="index"
       v-model="model.project.repositories[index]"
     >

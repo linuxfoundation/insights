@@ -12,7 +12,6 @@ SPDX-License-Identifier: MIT
     <lfx-field label="Repository name">
       <lfx-input
         v-model="model.name"
-        placeholder=" "
       />
     </lfx-field>
 

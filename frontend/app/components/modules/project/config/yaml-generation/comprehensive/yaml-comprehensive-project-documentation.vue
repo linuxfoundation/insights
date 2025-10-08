@@ -23,8 +23,15 @@ SPDX-License-Identifier: MIT
         Beginner-friendly setup or installation guide
       </p>
       <lfx-input
-        v-model="model.documentation['quickstart-guide']"
-        placeholder=""
+        v-model="model.project.documentation['quickstart-guide']"
+        :invalid="$v.project.documentation['quickstart-guide'].$invalid
+          && $v.project.documentation['quickstart-guide'].$dirty"
+        @blur="$v.project.documentation['quickstart-guide'].$touch()"
+        @input="$v.project.documentation['quickstart-guide'].$touch()"
+      />
+      <lfx-field-messages
+        :validation="$v.project.documentation['quickstart-guide']"
+        :error-messages="{ url: 'Invalid URL' }"
       />
     </lfx-field>
 
@@ -33,8 +40,15 @@ SPDX-License-Identifier: MIT
         Full project documentation or reference manual
       </p>
       <lfx-input
-        v-model="model.documentation['detailed-guide']"
-        placeholder=""
+        v-model="model.project.documentation['detailed-guide']"
+        :invalid="$v.project.documentation['detailed-guide'].$invalid
+          && $v.project.documentation['detailed-guide'].$dirty"
+        @blur="$v.project.documentation['detailed-guide'].$touch()"
+        @input="$v.project.documentation['detailed-guide'].$touch()"
+      />
+      <lfx-field-messages
+        :validation="$v.project.documentation['detailed-guide']"
+        :error-messages="{ url: 'Invalid URL' }"
       />
     </lfx-field>
 
@@ -43,8 +57,15 @@ SPDX-License-Identifier: MIT
         Rules on behavior and community participation
       </p>
       <lfx-input
-        v-model="model.documentation['code-of-conduct']"
-        placeholder=""
+        v-model="model.project.documentation['code-of-conduct']"
+        :invalid="$v.project.documentation['code-of-conduct'].$invalid
+          && $v.project.documentation['code-of-conduct'].$dirty"
+        @blur="$v.project.documentation['code-of-conduct'].$touch()"
+        @input="$v.project.documentation['code-of-conduct'].$touch()"
+      />
+      <lfx-field-messages
+        :validation="$v.project.documentation['code-of-conduct']"
+        :error-messages="{ url: 'Invalid URL' }"
       />
     </lfx-field>
 
@@ -53,8 +74,15 @@ SPDX-License-Identifier: MIT
         Releases planning, approval, and publishing processes
       </p>
       <lfx-input
-        v-model="model.documentation['release-process']"
-        placeholder=""
+        v-model="model.project.documentation['release-process']"
+        :invalid="$v.project.documentation['release-process'].$invalid
+          && $v.project.documentation['release-process'].$dirty"
+        @blur="$v.project.documentation['release-process'].$touch()"
+        @input="$v.project.documentation['release-process'].$touch()"
+      />
+      <lfx-field-messages
+        :validation="$v.project.documentation['release-process']"
+        :error-messages="{ url: 'Invalid URL' }"
       />
     </lfx-field>
 
@@ -63,8 +91,15 @@ SPDX-License-Identifier: MIT
         Project support guidelines and assistance
       </p>
       <lfx-input
-        v-model="model.documentation['support-policy']"
-        placeholder=""
+        v-model="model.project.documentation['support-policy']"
+        :invalid="$v.project.documentation['support-policy'].$invalid
+          && $v.project.documentation['support-policy'].$dirty"
+        @blur="$v.project.documentation['support-policy'].$touch()"
+        @input="$v.project.documentation['support-policy'].$touch()"
+      />
+      <lfx-field-messages
+        :validation="$v.project.documentation['support-policy']"
+        :error-messages="{ url: 'Invalid URL' }"
       />
     </lfx-field>
 
@@ -73,16 +108,26 @@ SPDX-License-Identifier: MIT
         Instructions for verifying signed releases or artifacts
       </p>
       <lfx-input
-        v-model="model.documentation['signature-verification']"
-        placeholder=""
+        v-model="model.project.documentation['signature-verification']"
+        :invalid="$v.project.documentation['signature-verification'].$invalid
+          && $v.project.documentation['signature-verification'].$dirty"
+        @blur="$v.project.documentation['signature-verification'].$touch()"
+        @input="$v.project.documentation['signature-verification'].$touch()"
+      />
+      <lfx-field-messages
+        :validation="$v.project.documentation['signature-verification']"
+        :error-messages="{ url: 'Invalid URL' }"
       />
     </lfx-field>
   </div>
 </template>
 
 <script setup lang="ts">
+import {url} from "@vuelidate/validators";
+import useVuelidate from "@vuelidate/core";
 import LfxField from '~/components/uikit/field/field.vue';
 import LfxInput from '~/components/uikit/input/input.vue';
+import LfxFieldMessages from "~/components/uikit/field/field-messages.vue";
 
 const props = defineProps<{
   modelValue: object;
@@ -94,4 +139,31 @@ const model = computed<object>({
   get: () => props.modelValue,
   set: (value: object) => emit('update:modelValue', value)
 })
+
+const rules = {
+  project: {
+    documentation: {
+      'quickstart-guide': {
+        url,
+      },
+      'detailed-guide': {
+        url,
+      },
+      'code-of-conduct': {
+        url,
+      },
+      'release-process': {
+        url,
+      },
+      'support-policy': {
+        url,
+      },
+      'signature-verification': {
+        url,
+      }
+    }
+  }
+}
+
+const $v = useVuelidate(rules, model);
 </script>

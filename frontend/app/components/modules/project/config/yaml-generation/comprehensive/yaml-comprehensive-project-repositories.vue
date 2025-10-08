@@ -11,52 +11,29 @@ SPDX-License-Identifier: MIT
       Repositories
     </p>
     <p class="text-xs font-normal text-neutral-500">
-      List all the project's related repositories to ensure that security policies, reporting processes,
-      and documentation are applied consistently across the entire project.
+      List all the project's related repositories to ensure that security policies,
+      reporting processes, and documentation are applied consistently across the entire project.
     </p>
   </div>
 
   <div class="flex flex-col gap-4">
-    <article
-      v-for="(repository, index) of model.project.repositories"
+    <lfx-yaml-repository-item
+      v-for="(_, index) of model.project.repositories"
       :key="index"
-      class="bg-white border border-neutral-200 rounded-xl p-4 flex flex-col gap-4"
+      v-model="model.project.repositories[index]"
     >
-      <div class="flex justify-between items-center min-h-7">
-        <p class="text-sm font-semibold text-neutral-900">
-          Repository #{{index + 1}}
-        </p>
+      <p class="text-sm font-semibold text-neutral-900">
+        Repository #{{index + 1}}
+      </p>
 
-        <lfx-icon-button
-          v-if="model.project.repositories.length > 1"
-          type="default"
-          icon="trash-can"
-          size="small"
-          @click="model.project.repositories.splice(index, 1)"
-        />
-      </div>
-      <lfx-field label="Repository name">
-        <lfx-input
-          v-model="repository.name"
-          placeholder=" "
-        />
-      </lfx-field>
-
-      <lfx-field label="Repository URL">
-        <lfx-input
-          v-model="repository.url"
-          placeholder="https://github.com/your-project/your-repository"
-        />
-      </lfx-field>
-
-      <lfx-field label="Repository comment">
-        <lfx-textarea
-          v-model="repository.comment"
-          placeholder="Brief description of the repository purpose and scope"
-          class="min-h-18"
-        />
-      </lfx-field>
-    </article>
+      <lfx-icon-button
+        v-if="model.project.repositories.length > 1"
+        type="default"
+        icon="trash-can"
+        size="small"
+        @click="model.project.repositories.splice(index, 1)"
+      />
+    </lfx-yaml-repository-item>
   </div>
 
   <!-- Add repository button -->
@@ -74,12 +51,12 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import {computed} from "vue";
-import LfxInput from '~/components/uikit/input/input.vue';
-import LfxField from '~/components/uikit/field/field.vue';
-import LfxTextarea from '~/components/uikit/textarea/textarea.vue';
+import useVuelidate from "@vuelidate/core";
 import LfxButton from "~/components/uikit/button/button.vue";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
 import LfxIconButton from "~/components/uikit/icon-button/icon-button.vue";
+import LfxYamlRepositoryItem
+  from "~/components/modules/project/config/yaml-generation/shared/components/yaml-repository-item.vue";
 
 const props = defineProps<{
   modelValue: object;
@@ -99,4 +76,6 @@ const addRepository = () => {
     comment: '',
   })
 }
+
+useVuelidate({}, model)
 </script>
