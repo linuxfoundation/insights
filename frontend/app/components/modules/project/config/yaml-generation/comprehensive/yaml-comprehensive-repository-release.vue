@@ -205,8 +205,10 @@ import LfxButton from '~/components/uikit/button/button.vue'
 import LfxIcon from '~/components/uikit/icon/icon.vue'
 import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue'
 import LfxFieldMessages from '~/components/uikit/field/field-messages.vue'
-import LfxYamlAttestationItem from '~/components/modules/project/config/yaml-generation/shared/components/yaml-attestation-item.vue'
-import LfxYamlDistributionPointItem from '~/components/modules/project/config/yaml-generation/shared/components/yaml-distribution-point-item.vue'
+import LfxYamlAttestationItem from
+  '~/components/modules/project/config/yaml-generation/shared/components/yaml-attestation-item.vue'
+import LfxYamlDistributionPointItem from
+  '~/components/modules/project/config/yaml-generation/shared/components/yaml-distribution-point-item.vue'
 
 const props = defineProps<{
   modelValue: object

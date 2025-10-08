@@ -8,8 +8,10 @@ import YamlBasicRepository from './yaml-basic-repository.vue'
 import YamlBasicRepositoryMembers from './yaml-basic-repository-members.vue'
 import YamlBasicRepositoryLicense from './yaml-basic-repository-license.vue'
 import YamlBasicRepositorySecurity from './yaml-basic-repository-security.vue'
-import type { YamlGenerationConfig } from '~/components/modules/project/config/yaml-generation/yaml-generation.config'
-import YamlHeaderInformation from '~/components/modules/project/config/yaml-generation/shared/yaml-header-information.vue'
+import type { YamlGenerationConfig } from
+  '~/components/modules/project/config/yaml-generation/yaml-generation.config'
+import YamlHeaderInformation from
+  '~/components/modules/project/config/yaml-generation/shared/yaml-header-information.vue'
 
 const basicYamlGenerationConfig: YamlGenerationConfig = {
   label: 'Basic',

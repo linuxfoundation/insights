@@ -70,7 +70,8 @@ import LfxField from '~/components/uikit/field/field.vue'
 import LfxButton from '~/components/uikit/button/button.vue'
 import LfxIcon from '~/components/uikit/icon/icon.vue'
 import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue'
-import LfxYamlAdministratorItem from '~/components/modules/project/config/yaml-generation/shared/components/yaml-administrator-item.vue'
+import LfxYamlAdministratorItem from
+  '~/components/modules/project/config/yaml-generation/shared/components/yaml-administrator-item.vue'
 
 const props = defineProps<{
   modelValue: object

@@ -50,7 +50,8 @@ import { computed } from 'vue'
 import LfxButton from '~/components/uikit/button/button.vue'
 import LfxIcon from '~/components/uikit/icon/icon.vue'
 import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue'
-import LfxYamlSecurityToolItem from '~/components/modules/project/config/yaml-generation/shared/components/yaml-security-tool-item.vue'
+import LfxYamlSecurityToolItem from
+  '~/components/modules/project/config/yaml-generation/shared/components/yaml-security-tool-item.vue'
 
 const props = defineProps<{
   modelValue: object

@@ -46,7 +46,8 @@ SPDX-License-Identifier: MIT
 import LfxButton from '~/components/uikit/button/button.vue'
 import LfxIcon from '~/components/uikit/icon/icon.vue'
 import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue'
-import LfxYamlCoreMemberItem from '~/components/modules/project/config/yaml-generation/shared/components/yaml-core-member-item.vue'
+import LfxYamlCoreMemberItem from
+  '~/components/modules/project/config/yaml-generation/shared/components/yaml-core-member-item.vue'
 
 const props = defineProps<{
   modelValue: object

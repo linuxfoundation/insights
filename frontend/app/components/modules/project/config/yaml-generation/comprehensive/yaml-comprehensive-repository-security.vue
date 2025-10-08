@@ -140,7 +140,8 @@ import LfxButton from '~/components/uikit/button/button.vue'
 import LfxIcon from '~/components/uikit/icon/icon.vue'
 import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue'
 import LfxFieldMessages from '~/components/uikit/field/field-messages.vue'
-import LfxYamlThirdPartyAssessmentItem from '~/components/modules/project/config/yaml-generation/shared/components/yaml-third-party-assessment-item.vue'
+import LfxYamlThirdPartyAssessmentItem from
+  '~/components/modules/project/config/yaml-generation/shared/components/yaml-third-party-assessment-item.vue'
 
 const props = defineProps<{
   modelValue: object

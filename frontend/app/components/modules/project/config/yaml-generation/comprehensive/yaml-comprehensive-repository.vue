@@ -67,7 +67,8 @@ import LfxField from '~/components/uikit/field/field.vue'
 import LfxInput from '~/components/uikit/input/input.vue'
 import LfxCheckbox from '~/components/uikit/checkbox/checkbox.vue'
 import LfxFieldMessages from '~/components/uikit/field/field-messages.vue'
-import LfxYamlRepositoryStatus from '~/components/modules/project/config/yaml-generation/shared/components/yaml-repository-status.vue'
+import LfxYamlRepositoryStatus from
+  '~/components/modules/project/config/yaml-generation/shared/components/yaml-repository-status.vue'
 
 const props = defineProps<{
   modelValue: object
