@@ -76,7 +76,7 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script lang="ts" setup>
-import {computed, ref} from "vue";
+import {computed, ref, watch} from "vue";
 import {storeToRefs} from "pinia";
 import LfxCard from "~/components/uikit/card/card.vue";
 import type {Widget} from "~/components/modules/widget/types/widget";
@@ -112,13 +112,16 @@ const includeCollaborations = computed({
     } else {
       collaborationSet.value = collaborationSet.value.filter((name) => name !== props.name);
     }
-    model.value.includeCollaborations = value;
   }
 });
 const isMenuOpen = ref(false);
 
 const benchmarkScore = computed<BenchmarkScoreData | undefined>(() => props
   .benchmarkScores?.[config.value.key as keyof HealthScoreResults] as BenchmarkScoreData);
+
+watch(includeCollaborations, (value) => {
+  model.value.includeCollaborations = value;
+}, { immediate: true });
 </script>
 
 <script lang="ts">
