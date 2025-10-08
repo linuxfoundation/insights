@@ -130,7 +130,7 @@ export class ChatRepository {
     chatResponseId: string
     agent: 'ROUTER' | 'PIPE' | 'TEXT_TO_SQL' | 'AUDITOR' | 'CHART' | 'EXECUTE_INSTRUCTIONS'
     model?: string
-    response?: any
+    response?: string | object
     inputTokens?: number
     outputTokens?: number
     responseTimeSeconds: number
@@ -139,7 +139,17 @@ export class ChatRepository {
   }): Promise<void> {
     const query = `
       INSERT INTO chat_response_agent_steps
-      (chat_response_id, model, agent, response, input_tokens, output_tokens, response_time_seconds, instructions, error_message)
+      (
+        chat_response_id, 
+        model, 
+        agent, 
+        response, 
+        input_tokens, 
+        output_tokens, 
+        response_time_seconds, 
+        instructions, 
+        error_message
+      )
       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
     `
     await this.pool.query(query, [
