@@ -79,6 +79,19 @@ class ProjectSecurityService {
     }, [] as SecurityAssessmentData[]) as SecurityAssessmentData[]
   }
 
+  /**
+   * Order assessments by requirementId
+   * @param data SecurityAssessmentData[]
+   * @returns SecurityAssessmentData[]
+   */
+  orderAssessmentsByRequirementId(data: SecurityAssessmentData[]): SecurityAssessmentData[] {
+    if (!data || !Array.isArray(data) || data.length === 0) {
+      return []
+    }
+
+    return data.sort((a, b) => a.requirementId.localeCompare(b.requirementId))
+  }
+
   calculateOSPSScore(data: SecurityData[], isRepository: boolean): number {
     if (data.length === 0) {
       return 0

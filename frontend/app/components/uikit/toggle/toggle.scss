@@ -11,16 +11,11 @@
     @apply flex items-center;
 
     // Default medium size
-    @apply w-11 h-6 rounded-full;
+    @apply w-[30px] h-4 rounded-full;
 
     // Small size
     .c-toggle--small & {
       @apply w-5 h-3;
-    }
-
-    // Large size
-    .c-toggle--large & {
-      @apply w-14 h-7;
     }
   }
 
@@ -29,21 +24,19 @@
     @apply shadow-sm;
 
     // Default medium size
-    @apply w-5 h-5 left-0.5;
+    @apply w-3 h-3 left-0.5;
 
     // Small size
     .c-toggle--small & {
       @apply w-2 h-2 left-0.5;
     }
-
-    // Large size
-    .c-toggle--large & {
-      @apply w-6 h-6 left-0.5;
-    }
   }
 
   &__label {
-    @apply text-xs text-neutral-900 text-nowrap;
+    @apply text-sm text-neutral-900 text-nowrap;
+    .c-toggle--small & {
+      @apply text-xs;
+    }
   }
 
   // Checked state
@@ -52,16 +45,11 @@
 
     .c-toggle__thumb {
       // Default medium size
-      @apply translate-x-5;
+      @apply translate-x-3.5;
 
       // Small size
       .c-toggle--small & {
         @apply translate-x-2;
-      }
-
-      // Large size
-      .c-toggle--large & {
-        @apply translate-x-7;
       }
     }
   }
@@ -69,25 +57,25 @@
 
   // Disabled state
   &--disabled {
-    @apply cursor-not-allowed opacity-50;
+    @apply cursor-not-allowed;
 
     .c-toggle__slider {
-      @apply bg-neutral-100;
+      @apply bg-neutral-300;
     }
 
     .c-toggle__thumb {
-      @apply bg-neutral-200;
+      @apply bg-neutral-400;
     }
 
     .c-toggle__label {
-      @apply text-neutral-400;
+      @apply text-neutral-500;
     }
 
     .c-toggle__input:checked + .c-toggle__slider {
       @apply bg-neutral-300;
 
       .c-toggle__thumb {
-        @apply bg-neutral-100;
+        @apply bg-neutral-400;
       }
     }
   }
