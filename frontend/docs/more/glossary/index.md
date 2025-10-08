@@ -1,14 +1,17 @@
 # Glossary
 Important terms of LFX Insighs, alphabetically sorted
 
+## Code contribution activity
+An activity, performed by an individual, that is counted as Code contribution. Code contributions reflect meaningful technical and community-driven impact, they represent direct work that adds code or technical value to a project. This includes commits, pull requests, code reviews, and related technical activities. A list of all Code contribution activities can be found [here](https://github.com/linuxfoundation/insights/blob/main/frontend/docs/introduction/contributions/index.md#tracked-code-contribution-types).
+
+## Collaboration activity
+An activity, performed by an individual, that is counted as Collaboration. Collaborations signal engagement or coordination rather than direct contributions, they capture non-code activities that support the project, including discussions, documentation, planning, and community engagement. A list of all Collaboration activities can be found [here](https://github.com/linuxfoundation/insights/blob/main/frontend/docs/introduction/contributions/index.md#tracked-collaboration-types).
+
 ## Collection
 A curated group of projects organized around a common theme, organization, foundation, or purpose. Collections help users explore and compare related projects, such as all CNCF-hosted projects, critical non-Linux Foundation projects, or top-ranked initiatives by health score.
 
 ## Commit
 A recorded change to a project's source code, typically including code additions, deletions, or updates. In LFX Insights, commits are used to measure development activity and contributor engagement. 
-
-## Contribution activity
-An activity, performed by an individual, that is counted as contribution. Relevant for leaderboards, contributor dependency, and a few other metrics. A list of all contribution activity can be found here.
 
 ## Contributor
 Any individual who actively participates in the development or maintenance of an open source project. This includes writing code, reviewing pull requests, reporting issues, or updating documentation. In LFX Insights, contributors are identified through activity in version control systems and other platforms, and can be analyzed by metrics such as activity level, organization affiliation, and contribution history.

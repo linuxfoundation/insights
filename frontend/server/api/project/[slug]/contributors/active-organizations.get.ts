@@ -22,6 +22,7 @@ import { DateTime } from 'luxon'
 import type { ActiveOrganizationsFilter } from '~~/server/data/types'
 import { createDataSource } from '~~/server/data/data-sources'
 import { Granularity } from '~~/types/shared/granularity'
+import { getBooleanQueryParam } from '~~/server/utils/common'
 
 /**
  * Query params:
@@ -38,11 +39,16 @@ export default defineEventHandler(async (event) => {
 
   const repos = Array.isArray(query.repos) ? query.repos : query.repos ? [query.repos] : undefined
 
+  const includeCodeContributions = getBooleanQueryParam(query, 'includeCodeContributions', true)
+  const includeCollaborations = getBooleanQueryParam(query, 'includeCollaborations', false)
+
   // TODO: Validate the query params
   const filter: ActiveOrganizationsFilter = {
     granularity: (query.granularity as Granularity) || Granularity.QUARTERLY,
     project,
     repos,
+    includeCodeContributions,
+    includeCollaborations,
     startDate: undefined,
     endDate: undefined,
   }

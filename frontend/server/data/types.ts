@@ -17,58 +17,50 @@ export type DefaultFilter = {
 // TODO: refactor all filter types to "inherit" from DefaultFilter
 export type ActiveContributorsFilter = DefaultFilter & {
   activity_types?: ActivityTypes[];
+  includeCodeContributions?: boolean;
+  includeCollaborations?: boolean;
   granularity?: Granularity;
 };
 
-export type ActiveOrganizationsFilter = {
-  project: string;
-  repos?: string[];
+export type ActiveOrganizationsFilter = DefaultFilter & {
   granularity?: Granularity;
-  startDate?: DateTime;
-  endDate?: DateTime;
+  includeCodeContributions?: boolean;
+  includeCollaborations?: boolean;
 };
 
-export type ContributorsLeaderboardFilter = {
-  project: string;
+export type ContributorsLeaderboardFilter = DefaultFilter & {
   platform?: ActivityPlatforms;
   activity_type?: ActivityTypes;
   activity_types?: ActivityTypes[];
-  repos?: string[];
+  includeCodeContributions?: boolean;
+  includeCollaborations?: boolean;
   limit?: number;
   offset?: number;
-  startDate?: DateTime;
-  endDate?: DateTime;
 };
 
-export type OrganizationsLeaderboardFilter = {
-  project: string;
+export type OrganizationsLeaderboardFilter = DefaultFilter & {
   platform?: ActivityPlatforms;
   activity_type?: ActivityTypes;
-  repos?: string[];
+  includeCodeContributions?: boolean;
+  includeCollaborations?: boolean;
   limit?: number;
   offset?: number;
-  startDate?: DateTime;
-  endDate?: DateTime;
 };
 
-export type ContributorDependencyFilter = {
-  project: string;
-  repos?: string[];
+export type ContributorDependencyFilter = DefaultFilter & {
+  includeCodeContributions?: boolean;
+  includeCollaborations?: boolean;
   granularity?: Granularity;
   platform?: ActivityPlatforms;
   activity_type?: ActivityTypes;
   limit?: number;
-  startDate?: DateTime;
-  endDate?: DateTime;
 };
 
-export type OrganizationDependencyFilter = {
-  project: string;
-  repos?: string[];
+export type OrganizationDependencyFilter = DefaultFilter & {
   platform?: ActivityPlatforms;
   activity_type?: ActivityTypes;
-  startDate?: DateTime;
-  endDate?: DateTime;
+  includeCodeContributions?: boolean;
+  includeCollaborations?: boolean;
 };
 
 export enum DemographicType {
@@ -76,14 +68,12 @@ export enum DemographicType {
   ORGANIZATIONS = 'organizations'
 }
 
-export type GeographicDistributionFilter = {
-  project: string;
+export type GeographicDistributionFilter = DefaultFilter & {
   platform?: ActivityPlatforms;
   activity_type?: ActivityTypes;
-  repos?: string[];
+  includeCodeContributions?: boolean;
+  includeCollaborations?: boolean;
   type?: DemographicType;
-  startDate?: DateTime;
-  endDate?: DateTime;
 };
 
 export type RetentionFilter = DefaultFilter & {
@@ -93,6 +83,8 @@ export type RetentionFilter = DefaultFilter & {
   demographicType?: DemographicType;
   granularity?: Granularity;
   onlyContributions: boolean;
+  includeCodeContributions?: boolean;
+  includeCollaborations?: boolean;
 };
 
 export enum ActivityFilterCountType {
@@ -100,16 +92,14 @@ export enum ActivityFilterCountType {
   NEW = 'new'
 }
 
-export type ActivityCountFilter = {
-  project: string;
+export type ActivityCountFilter = DefaultFilter & {
   granularity?: Granularity;
   countType?: ActivityFilterCountType;
   activity_type?: ActivityTypes;
   activity_types?: ActivityTypes[];
   onlyContributions: boolean;
-  repos?: string[];
-  startDate?: DateTime;
-  endDate?: DateTime;
+  includeCodeContributions?: boolean;
+  includeCollaborations?: boolean;
 };
 
 export type ReviewTimeByPRSizeFilter = {
@@ -142,12 +132,10 @@ export type MergeLeadTimeFilter = {
   endDate?: DateTime;
 };
 
-export type ActiveDaysFilter = {
-  project: string;
+export type ActiveDaysFilter = DefaultFilter & {
   granularity?: Granularity;
-  repos?: string[];
-  startDate?: DateTime;
-  endDate?: DateTime;
+  includeCodeContributions?: boolean;
+  includeCollaborations?: boolean;
 };
 
 export type PackageFilter = {

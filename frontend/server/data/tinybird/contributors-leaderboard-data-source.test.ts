@@ -44,6 +44,8 @@ describe('Contributors Leaderboard Data Source', () => {
       repos: ['linux'],
       platform: ActivityPlatforms.GITHUB,
       activity_type: ActivityTypes.AUTHORED_COMMIT,
+      includeCodeContributions: true,
+      includeCollaborations: false,
       startDate,
       endDate
     };

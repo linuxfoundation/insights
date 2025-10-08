@@ -47,6 +47,9 @@ describe('Forks Data Source', () => {
       countType: ActivityFilterCountType.CUMULATIVE,
       activity_type: ActivityTypes.FORKS,
       onlyContributions: false,
+      includeCodeContributions: false,
+      includeCollaborations: false,
+      includeOtherContributions: true,
       startDate,
       endDate
     };
@@ -92,6 +95,8 @@ describe('Forks Data Source', () => {
       countType: ActivityFilterCountType.NEW,
       activity_type: ActivityTypes.FORKS,
       onlyContributions: false,
+      includeCodeContributions: true,
+      includeCollaborations: true,
       startDate,
       endDate
     };

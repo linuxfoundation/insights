@@ -32,6 +32,8 @@ export default defineEventHandler(async (event): Promise<OrgDashPrOpened[]> => {
         granularity,
         activity_type: 'pull_request-opened',
         onlyContributions: false,
+        includeCodeContributions: true,
+        includeCollaborations: true,
       },
     )
 
