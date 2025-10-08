@@ -79,9 +79,9 @@ const comprehensiveYamlGenerationConfig: YamlGenerationConfig = {
             'last-reviewed': DateTime.now().toISODate(),
             url: '',
             comment:
-                'This file contains all possible information for both project and repository,\n' +
-                'though it is not required to include all of this information every time.\n' +
-                'Nor is it required to include both a project and repository section if the project\n' +
+                'This file contains all possible information for both project and repository, ' +
+                'though it is not required to include all of this information every time. ' +
+                'Nor is it required to include both a project and repository section if the project ' +
                 'section is intended to be inherited by repositories via header.project-si-source'
         },
         project: {

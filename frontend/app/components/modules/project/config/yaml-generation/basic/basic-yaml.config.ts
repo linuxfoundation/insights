@@ -69,8 +69,8 @@ const basicYamlGenerationConfig: YamlGenerationConfig = {
             'last-updated': DateTime.now().toISODate(),
             'last-reviewed': DateTime.now().toISODate(),
             url: '',
-            comment: 'This file contains the minimum information for both project and repository.\n' +
-                'It not required to include both a project and repository section if the project\n' +
+            comment: 'This file contains the minimum information for both project and repository. ' +
+                'It not required to include both a project and repository section if the project ' +
                 'section is intended to be inherited by repositories via header.project-si-source'
         },
         project: {
