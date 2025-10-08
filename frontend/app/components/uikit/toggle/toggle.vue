@@ -37,7 +37,7 @@ const props = withDefaults(defineProps<{
   size?: ToggleSize;
   disabled?: boolean;
 }>(), {
-  size: 'medium',
+  size: 'default',
   disabled: false,
 });
 

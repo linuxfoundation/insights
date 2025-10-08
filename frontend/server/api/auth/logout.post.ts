@@ -10,6 +10,8 @@ import type { DecodedOidcToken } from '~~/types/auth/auth-jwt.types'
 const isProduction = process.env.NUXT_APP_ENV === 'production'
 
 const setOIDCCookie = (event: H3Event) => {
+  const config = useRuntimeConfig()
+
   const tokenCookieOptions = {
     httpOnly: true,
     secure: isProduction,
@@ -17,7 +19,7 @@ const setOIDCCookie = (event: H3Event) => {
     sameSite: 'lax' as const,
     path: '/',
     // Force domain for production to ensure cookies work across proxy inconsistencies
-    ...(isProduction ? { domain: '.linuxfoundation.org' } : { domain: 'localhost' }),
+    ...(isProduction ? { domain: config.auth0CookieDomain } : { domain: 'localhost' }),
     maxAge: 0,
   }
 
