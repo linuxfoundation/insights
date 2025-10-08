@@ -1,8 +1,8 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { ActivityPlatforms } from '~~/types/shared/activity-platforms';
-import { ActivityTypes } from '~~/types/shared/activity-types';
-import type { PlatformConfig } from '~~/types/shared/platforms.types';
+import { ActivityPlatforms } from '~~/types/shared/activity-platforms'
+import { ActivityTypes } from '~~/types/shared/activity-types'
+import type { PlatformConfig } from '~~/types/shared/platforms.types'
 
 export const github: PlatformConfig = {
   key: ActivityPlatforms.GITHUB,
@@ -11,52 +11,57 @@ export const github: PlatformConfig = {
   activityTypes: [
     {
       key: ActivityTypes.AUTHORED_COMMIT,
-      label: 'Authored a commit'
+      label: 'Authored a commit',
     },
     {
       key: ActivityTypes.PULL_REQUEST_CLOSED,
-      label: 'Closed a pull request'
+      label: 'Closed a pull request',
     },
     {
       key: ActivityTypes.PULL_REQUEST_OPENED,
-      label: 'Opened a pull request'
+      label: 'Opened a pull request',
     },
     {
       key: ActivityTypes.PULL_REQUEST_COMMENT,
-      label: 'Commented on a pull request'
+      label: 'Commented on a pull request',
     },
     {
       key: ActivityTypes.PULL_REQUEST_MERGED,
-      label: 'Merged a pull request'
+      label: 'Merged a pull request',
     },
     {
       key: ActivityTypes.PULL_REQUEST_REVIEW_REQUESTED,
-      label: 'Requested a review for a pull request'
+      label: 'Requested a review for a pull request',
     },
     {
       key: ActivityTypes.PULL_REQUEST_REVIEW_THREAD_COMMENT,
-      label: 'Commented on a pull request review thread'
+      label: 'Commented on a pull request review thread',
     },
     {
       key: ActivityTypes.ISSUES_CLOSED,
-      label: 'Closed an issue'
+      label: 'Closed an issue',
+      isCollaborationType: true,
     },
     {
       key: ActivityTypes.ISSUES_OPENED,
-      label: 'Opened an issue'
+      label: 'Opened an issue',
+      isCollaborationType: true,
     },
     {
       key: ActivityTypes.ISSUE_COMMENT,
-      label: 'Commented on an issue'
+      label: 'Commented on an issue',
+      isCollaborationType: true,
     },
 
     {
       key: ActivityTypes.DISCUSSION_STARTED,
-      label: 'Started a discussion'
+      label: 'Started a discussion',
+      isCollaborationType: true,
     },
     {
       key: ActivityTypes.DISCUSSION_COMMENT,
-      label: 'Commented on a discussion'
-    }
-  ]
-};
+      label: 'Commented on a discussion',
+      isCollaborationType: true,
+    },
+  ],
+}
