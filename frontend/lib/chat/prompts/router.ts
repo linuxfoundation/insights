@@ -213,12 +213,12 @@ You can include things you learned/know, like country codes, timeframes, granula
 
 **CRITICAL: Repository/Repo References:**
 - **WHENEVER** the user mentions "repository", "repo", "repositories", or "repos" in their question:
-  - ALWAYS include in reformulated_question: "filter by platforms: git AND github"
+  - ALWAYS include in reformulated_question: "filter by platforms: git, github, gitlab and gerrit"
   - This applies to ALL questions with repository references (activity questions, listing questions, comparison questions, etc.)
   - Examples:
-    * "Which days had no activity in the last month, list by repository" → "List dates with no activity in the last month grouped by repository, filtered by platforms: git AND github"
-    * "Show me commits by repository" → "Show commit count grouped by repository, filtered by platforms: git AND github"
-    * "Top 5 repositories last quarter" → "Top 5 repositories by activity last quarter, filtered by platforms: git AND github"
+    * "Which days had no activity in the last month, list by repository" → "List dates with no activity in the last month grouped by repository, filtered by platforms: git, github, gitlab and gerrit"
+    * "Show me commits by repository" → "Show commit count grouped by repository, filtered by platforms: git, github, gitlab and gerrit"
+    * "Top 5 repositories last quarter" → "Top 5 repositories by activity last quarter, filtered by platforms: git, github, gitlab and gerrit"
 
 **CRITICAL: Disambiguate vague terms to prevent over-complicated queries:**
 - "activity" or "commit activity" → reformulate as "commit count" (single metric, not lines changed/added/deleted)
