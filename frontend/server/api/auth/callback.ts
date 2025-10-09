@@ -20,7 +20,7 @@ export default defineEventHandler(async (event) => {
 
       // For silent authentication failures, don't throw an error - just redirect
       if (error === 'login_required' || error === 'interaction_required') {
-        console.log('Silent authentication failed - user needs to log in:', errorDescription)
+        // Silent authentication failed - user needs to log in
         // Redirect to home page without error for silent auth failures
         await sendRedirect(event, '/')
         return
