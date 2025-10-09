@@ -15,38 +15,41 @@ export interface CopilotData {
 
 export type CopilotParams = Record<string, string | number | null>
 
-export type MessagePartType =
-  | 'router-status'
-  | 'sql-result'
-  | 'text'
-  | 'pipe-result'
-  | 'chat-response-id'
-export type MessageStatus = 'analyzing' | 'complete' | 'error'
-export type MessageData = Record<string, string | number | null | string[] | object>
-export type MessageRole = 'user' | 'assistant'
+export type MessagePartType = 'router-status' | 
+                              'sql-result' | 
+                              'text' | 
+                              'pipe-result' | 
+                              'chat-response-id' | 
+                              'conversation-id';
+export type MessageStatus = 'analyzing' | 'complete' | 'error' | 'ask_clarification';
+export type MessageData = Record<string, string | number | null | string[] | object>;
+export type MessageRole = 'user' | 'assistant';
 
 export type ChartErrorType = 'default' | 'chart-empty' | 'chart-error'
 
 export interface ResultsHistory {
-  id: string
-  data: MessageData[]
-  title?: string
-  chartConfig?: Config | null
-  chartErrorType?: ChartErrorType
-  routerReasoning?: string
+  id: string;
+  data: MessageData[];
+  title?: string;
+  chartConfig?: Config | null;
+  chartErrorType?: ChartErrorType;
+  routerReasoning?: string;
+  conversationId?: string;
 }
 
 export interface AIMessage {
-  id: string
-  role: MessageRole
-  type: MessagePartType
-  status: MessageStatus
-  content: string
-  timestamp: number
-  sql?: string
-  data?: Array<MessageData>
-  explanation?: string
-  routerReasoning?: string
+  id: string;
+  role: MessageRole;
+  type: MessagePartType;
+  status: MessageStatus;
+  content: string;
+  timestamp: number;
+  conversationId?: string;
+  sql?: string;
+  data?: Array<MessageData>;
+  explanation?: string;
+  routerReasoning?: string;
+  question?: string; // Clarification question when status is 'ask_clarification'
   instructions?: {
     pipes: Array<{
       id: string

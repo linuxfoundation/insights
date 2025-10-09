@@ -1,39 +1,76 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import type { Pool } from 'pg'
-import { streamingAgentRequestHandler } from '../../../lib/chat/data-copilot'
-import { ChatRepository } from '../../repo/chat.repo'
-import { ChatMessage } from '~~/lib/chat/types'
+import { createDataStreamResponse } from 'ai'
+import { DataCopilot } from '~~/lib/chat/data-copilot'
+import { InsightsProjectsRepository } from '~~/server/repo/insightsProjects.repo'
 
 export const maxDuration = 30
 
 interface IStreamRequestBody {
-  messages: ChatMessage[]
-  segmentId?: string
+  messages: Array<{ role: 'user' | 'assistant'; content: string }>
+  projectSlug?: string
   projectName?: string
   pipe: string
   parameters?: Record<string, unknown>
+  conversationId?: string
 }
 
 export default defineEventHandler(async (event): Promise<Response | Error> => {
+  // Set streaming headers for Cloudflare compatibility
+  setHeader(event, 'Cache-Control', 'no-cache, no-store, must-revalidate, no-transform')
+  setHeader(event, 'Pragma', 'no-cache')
+  setHeader(event, 'Expires', '0')
+  setHeader(event, 'X-Accel-Buffering', 'no')
+  setHeader(event, 'Content-Type', 'text/plain; charset=utf-8')
+  setHeader(event, 'Connection', 'close')
+
   try {
-    const { messages, segmentId, projectName, pipe, parameters } =
+    const { messages, projectName, pipe, parameters, conversationId, projectSlug } =
       await readBody<IStreamRequestBody>(event)
 
-    const dbPool = event.context.dbPool as Pool
+    if (!projectSlug) {
+      return createError({ statusCode: 400, statusMessage: 'Project slug is required' })
+    }
 
-    return await streamingAgentRequestHandler({
-      messages,
-      segmentId,
-      projectName,
-      pipe,
-      parameters,
-      onResponseComplete: dbPool
-        ? async (response) => {
-            const chatRepo = new ChatRepository(dbPool)
-            return await chatRepo.saveChatResponse(response, event.context.user.email)
-          }
-        : undefined,
+    const question = messages?.filter((m) => m.role === 'user').pop()?.content
+
+    if (!question) {
+      return createError({ statusCode: 400, statusMessage: 'Question is required' })
+    }
+
+    // Generate conversationId if not provided
+    const finalConversationId = conversationId || crypto.randomUUID()
+
+    const insightsDbPool = event.context.insightsDbPool as Pool
+    const cmDbPool = event.context.cmDbPool as Pool
+
+    // find project by slug to get the segmentId
+    const insightsProjectsRepo = new InsightsProjectsRepository(cmDbPool)
+
+    const insightsProjects = await insightsProjectsRepo.findInsightsProjectsBySlug(projectSlug)
+
+    if (!insightsProjects) {
+      return createError({ statusCode: 404, statusMessage: 'Project not found' })
+    }
+
+    const dataCopilot = new DataCopilot()
+    await dataCopilot.initialize()
+
+    return createDataStreamResponse({
+      execute: async (dataStream) => {
+        await dataCopilot.streamingAgentRequestHandler({
+          currentQuestion: question,
+          segmentId: insightsProjects.segmentId,
+          projectName,
+          pipe,
+          parameters,
+          conversationId: finalConversationId,
+          insightsDbPool,
+          userEmail: event.context.user.email,
+          dataStream,
+        })
+      },
     })
   } catch (error) {
     return createError({

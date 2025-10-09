@@ -11,3 +11,5 @@ node_modules
 .prettierrc
 **/.env*
 !.env.dist
+database/Dockerfile.flyway
+database/flyway_migrate.sh

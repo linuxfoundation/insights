@@ -2,8 +2,6 @@
 // SPDX-License-Identifier: MIT
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-// Copyright (c) 2025 The Linux Foundation and each contributor.
-// SPDX-License-Identifier: MIT
 import { DateTime } from 'luxon'
 import type { Result } from './types'
 interface RecommendedVisualization {
@@ -188,12 +186,25 @@ export function pivotLongToWide(
 
 function detectLeaderboardFromReasoning(routerReasoning?: string): boolean {
   if (!routerReasoning) return false
-  
+
   const leaderboardKeywords = [
-    'leaderboard', 'ranking', 'rank', 'top', 'leading', 'highest', 'lowest', 
-    'leaders', 'ranked', 'ranking', 'position', 'standings', 'table', 'best', 'worst'
+    'leaderboard',
+    'ranking',
+    'rank',
+    'top',
+    'leading',
+    'highest',
+    'lowest',
+    'leaders',
+    'ranked',
+    'ranking',
+    'position',
+    'standings',
+    'table',
+    'best',
+    'worst',
   ]
-  
+
   const reasoningText = routerReasoning.toLowerCase()
   return leaderboardKeywords.some((keyword) => reasoningText.includes(keyword))
 }
@@ -220,7 +231,11 @@ function prioritizeMetricForLeaderboard(numericColumns: ColumnProfile[]): string
   return numericColumns[0]?.name || null
 }
 
-function detectComparisonScenario(columns: ColumnProfile[], userQuestion: string, routerReasoning?: string) {
+function detectComparisonScenario(
+  columns: ColumnProfile[],
+  userQuestion: string,
+  routerReasoning?: string,
+) {
   const numericColumns = columns.filter((c) => c.type === 'numeric')
   const columnNames = columns.map((c) => c.name.toLowerCase())
 
@@ -240,7 +255,7 @@ function detectComparisonScenario(columns: ColumnProfile[], userQuestion: string
           type: 'leaderboard' as const,
           primaryColumns: [primaryMetric],
           secondaryColumns: secondaryMetrics,
-        }
+        },
       }
     }
   }

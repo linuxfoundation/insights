@@ -219,8 +219,9 @@ export async function executeTextToSqlInstructions(query: TextToSqlInstructions)
     // Execute the SQL query via TinyBird's Query API
     // TinyBird expects the query as URL-encoded form data
     const params = new URLSearchParams()
-    params.append('q', `${query} FORMAT JSON`)
-
+    const finalQuery = `${query} FORMAT JSON`
+    params.append('q', finalQuery)
+    
     const response = await ofetch(`${tinybirdBaseUrl}/v0/sql`, {
       method: 'POST',
       headers: {
@@ -233,7 +234,7 @@ export async function executeTextToSqlInstructions(query: TextToSqlInstructions)
     // TinyBird SQL API response format has data array
     return response.data || []
   } catch (error: any) {
-    console.error('Error executing SQL query:', error)
+    console.error('❌ Error executing SQL query:', error)
     // Log more details about the error
     if (error.data) {
       console.error('Error response data:', error.data)
