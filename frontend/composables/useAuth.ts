@@ -153,9 +153,6 @@ export const useAuth = () => {
         } else {
           await navigateTo(response.authorizationUrl, { external: true })
         }
-      } else {
-        // Silent authentication setup failed
-        console.debug('Silent authentication not available:', response.reason, response.message)
       }
     } catch {
       // Silent failure - don't disrupt user experience
