@@ -13,6 +13,7 @@ const geographicalDistribution: WidgetConfig = {
     defaultValue: {
         metric: 'all:all',
         activeTab: 'organizations',
+        includeCollaborations: false,
     },
     share: true,
     embed: true,
@@ -20,7 +21,8 @@ const geographicalDistribution: WidgetConfig = {
     copilot: {
         icon: 'people-group',
         suggestions: 'Show me the geographical distribution of contributors'
-      }
+      },
+    showCollabToggle: true,
 }
 
 export default geographicalDistribution;

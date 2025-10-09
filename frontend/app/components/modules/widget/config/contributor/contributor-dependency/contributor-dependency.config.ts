@@ -11,7 +11,8 @@ const contributorDependency: WidgetConfig = {
     learnMoreLink: `/docs/metrics/contributors#contributor-dependency`,
     component: ContributorDependency,
     defaultValue: {
-        metric: 'all:all'
+        metric: 'all:all',
+        includeCollaborations: false,
     },
     share: true,
     embed: true,
@@ -57,7 +58,8 @@ const contributorDependency: WidgetConfig = {
               ensuring robust support and a highly resilient development process.`,
             }
         }
-    }
+    },
+    showCollabToggle: true,
 }
 
 export default contributorDependency;

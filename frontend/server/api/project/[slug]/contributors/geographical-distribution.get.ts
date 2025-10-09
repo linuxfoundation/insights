@@ -44,6 +44,8 @@ export default defineEventHandler(async (event) => {
     project,
     platform: activityPlatform !== ActivityPlatforms.ALL ? activityPlatform : undefined,
     activity_type: activityType !== ActivityTypes.ALL ? activityType : undefined,
+    includeCodeContributions: true,
+    includeCollaborations: false,
     repos,
     type: (query.type as DemographicType) || DemographicType.CONTRIBUTORS,
     startDate: query.startDate ? DateTime.fromISO(query.startDate as string) : undefined,

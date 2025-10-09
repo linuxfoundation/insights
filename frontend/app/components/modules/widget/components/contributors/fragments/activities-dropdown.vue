@@ -32,7 +32,7 @@ SPDX-License-Identifier: MIT
     </template>
 
     <lfx-dropdown-item
-      value="all:all"
+      :value="defaultAllValue"
       label="All activities"
     />
 
@@ -42,13 +42,13 @@ SPDX-License-Identifier: MIT
       v-for="group in platforms"
       :key="group.key"
     >
-      <template v-if="connected.includes(group.key)">
+      <template v-if="connected.includes(group.key) && filterActivityTypes(group.activityTypes).length > 0">
         <lfx-dropdown-group-title>
           {{ group.label }}
         </lfx-dropdown-group-title>
 
         <lfx-dropdown-item
-          v-for="option of group.activityTypes"
+          v-for="option of filterActivityTypes(group.activityTypes)"
           :key="option.key"
           :value="`${group.key}:${option.key}`"
           :label="option.label"
@@ -70,7 +70,7 @@ SPDX-License-Identifier: MIT
   >
     <img
       v-if="selected.platform !== 'all'"
-      :src="getIcon(selected?.platform)"
+      :src="getIcon(selected?.platform!)"
       class="w-4 h-4"
     >
     <lfx-icon
@@ -80,12 +80,13 @@ SPDX-License-Identifier: MIT
     />
     <p class="text-sm font-medium">
       {{ selected.label || 'All activities' }}
+      {{ includeCollaborations ? ' and collaborations' : '' }}
     </p>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, watch } from 'vue';
 import {storeToRefs} from "pinia";
 import LfxDropdownSelector from "~/components/uikit/dropdown/dropdown-selector.vue";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
@@ -101,12 +102,14 @@ const props = withDefaults(defineProps<{
   modelValue: string;
   fullWidth?: boolean
   snapshot?: boolean;
+  includeCollaborations?: boolean;
 }>(), {
   fullWidth: true,
   snapshot: false,
 });
 
 const emit = defineEmits<{(e: 'update:modelValue', value: string): void }>();
+const defaultAllValue = 'all:all';
 
 const { project } = storeToRefs(useProjectStore());
 
@@ -137,6 +140,36 @@ const selected = computed(() => {
     label: option?.label || '',
   }
 })
+
+/**
+ * Filter activity types based on the property includeCollaborations.
+ * If includeCollaborations is true, return all activity types.
+ * If includeCollaborations is false, return only non-collaboration types (where isCollaborationType is false or undefined).
+ * @param activityTypes 
+ */
+const filterActivityTypes = (activityTypes: ActivityType[]) => {
+  if (props.includeCollaborations) {
+    return activityTypes;
+  }
+  return activityTypes.filter((activityType) => !activityType.isCollaborationType);
+}
+
+/**
+ * Watch for the includeCollaborations property and update the activity types accordingly.
+ * If the current activity type is not included in the filtered activity types, update the activity type to the defaultAllValue.
+ */
+watch(() => props.includeCollaborations, (newVal: boolean) => {
+  const filteredActivityTypes = Object.values(platforms)
+    .filter((platform) => connected.value.includes(platform.key))
+    .flatMap((platform) =>
+      platform.activityTypes
+        .filter((activityType) => !activityType.isCollaborationType)
+        .map((activityType) => `${platform.key}:${activityType.key}`)
+    );
+  if (activity.value !== defaultAllValue && !newVal && !filteredActivityTypes.includes(activity.value)) {
+    activity.value = defaultAllValue;
+  }
+}, { immediate: true });
 </script>
 
 <script lang="ts">

@@ -7,11 +7,12 @@ const organizationsLeaderboard: WidgetConfig = {
     key: 'organizationsLeaderboard',
     name: 'Organizations leaderboard',
     description: () => 'Organizations ranked by the number of contribution activities'
-    + 'performed by contributors on their behalf during the selected time period.',
+    + ' performed by contributors on their behalf during the selected time period.',
     learnMoreLink: `/docs/metrics/contributors#organizations-leaderboard`,
     component: OrganizationsLeaderboard,
     defaultValue: {
-        metric: 'all:all'
+        metric: 'all:all',
+        includeCollaborations: false,
     },
     share: true,
     embed: true,
@@ -20,6 +21,7 @@ const organizationsLeaderboard: WidgetConfig = {
         icon: 'people-group',
         suggestions: 'How many organizations are there in the leaderboard?'
     },
+    showCollabToggle: true,
 }
 
 export default organizationsLeaderboard;

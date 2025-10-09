@@ -4,20 +4,21 @@ import {
   type SecurityData,
   SecurityDataCategory,
   SecurityDataResult,
-} from '~~/types/security/responses.types';
+  type SecurityAssessmentData,
+} from '~~/types/security/responses.types'
 import {
   lfxOspsBaselineScore,
   type OspsBaselineScore,
-} from '~/components/modules/project/config/osps-baseline-score';
-import { lfxColors } from '~/config/styles/colors';
+} from '~/components/modules/project/config/osps-baseline-score'
+import { lfxColors } from '~/config/styles/colors'
 
 export interface OverviewQueryParams {
-  projectSlug: string;
-  repository?: string;
+  projectSlug: string
+  repository?: string
 }
 
 export interface ScoreDataQueryParams extends OverviewQueryParams {
-  type: string;
+  type: string
 }
 
 // TODO: Refactor other services to follow this pattern
@@ -30,74 +31,119 @@ class ProjectSecurityService {
    */
   removeDocumentationAndVulnerability(data: SecurityData[]): SecurityData[] {
     if (!data || !Array.isArray(data) || data.length === 0) {
-      return [];
+      return []
     }
 
-    return this.removeUnavailableChecks(data.filter(
-        (item) => item.category !== SecurityDataCategory.DOCUMENTATION
-            && item.category !== SecurityDataCategory.VULNERABILITY_MANAGEMENT)
-    );
+    return this.removeUnavailableChecks(
+      data.filter(
+        (item) =>
+          item.category !== SecurityDataCategory.DOCUMENTATION &&
+          item.category !== SecurityDataCategory.VULNERABILITY_MANAGEMENT,
+      ),
+    )
   }
 
   removeUnavailableChecks(data: SecurityData[]): SecurityData[] {
     if (!data || !Array.isArray(data) || data.length === 0) {
-      return [];
+      return []
     }
 
-    const filteredCheck = ['OSPS-AC-01'];
+    const filteredCheck = ['OSPS-AC-01']
 
-    return data.filter((item) => !filteredCheck.includes(item.controlId));
+    return data.filter((item) => !filteredCheck.includes(item.controlId))
+  }
+
+  /**
+   * Merge duplicate assessments - if there are multiple assessments for the same requirement, merge them
+   * There should be only one assessment for each requirement
+   * @param assessments SecurityAssessmentData[]
+   * @returns SecurityAssessmentData[]
+   */
+  mergeDuplicateAssessments(assessments: SecurityAssessmentData[]): SecurityAssessmentData[] {
+    if (!assessments || !Array.isArray(assessments) || assessments.length === 0) {
+      return []
+    }
+
+    return assessments.reduce((acc, assessment) => {
+      const existingAssessment = acc.find((a) => a.requirementId === assessment.requirementId)
+      if (existingAssessment) {
+        existingAssessment.result = assessment.result ?? existingAssessment.result
+        existingAssessment.message = assessment.message ?? existingAssessment.message
+        existingAssessment.recommendation =
+          assessment.recommendation ?? existingAssessment.recommendation
+        existingAssessment.description = assessment.description ?? existingAssessment.description
+      } else {
+        acc.push(assessment)
+      }
+      return acc
+    }, [] as SecurityAssessmentData[]) as SecurityAssessmentData[]
+  }
+
+  /**
+   * Order assessments by requirementId
+   * @param data SecurityAssessmentData[]
+   * @returns SecurityAssessmentData[]
+   */
+  orderAssessmentsByRequirementId(data: SecurityAssessmentData[]): SecurityAssessmentData[] {
+    if (!data || !Array.isArray(data) || data.length === 0) {
+      return []
+    }
+
+    return data.sort((a, b) => a.requirementId.localeCompare(b.requirementId))
   }
 
   calculateOSPSScore(data: SecurityData[], isRepository: boolean): number {
     if (data.length === 0) {
-      return 0;
+      return 0
     }
 
     if (isRepository) {
-      const assessments = (data || []).map((check) => check.assessments).flat();
+      const assessments = (data || []).map((check) => check.assessments).flat()
       const passed = assessments.filter(
-        (assessment) => assessment.result === SecurityDataResult.PASSED
-      );
+        (assessment) => assessment.result === SecurityDataResult.PASSED,
+      )
       const failed = assessments.filter(
-        (assessment) => assessment.result === SecurityDataResult.FAILED
-      );
-      const total = passed.length + failed.length;
-      return Math.round((passed.length / total) * 100);
+        (assessment) => assessment.result === SecurityDataResult.FAILED,
+      )
+      const total = passed.length + failed.length
+      return Math.round((passed.length / total) * 100)
     }
 
     // Group checks by category
-    const grouppedByCategory = (data || []).reduce((mapping, check) => {
-      const obj = { ...mapping };
-      if (!obj[check.category]) {
-        obj[check.category] = [];
-      }
-      obj[check.category]?.push(check);
-      return obj;
-    }, {} as Record<string, SecurityData[]>);
+    const grouppedByCategory = (data || []).reduce(
+      (mapping, check) => {
+        const obj = { ...mapping }
+        if (!obj[check.category]) {
+          obj[check.category] = []
+        }
+        obj[check.category]?.push(check)
+        return obj
+      },
+      {} as Record<string, SecurityData[]>,
+    )
 
-    const percentageByCategory: Record<string, number> = {};
+    const percentageByCategory: Record<string, number> = {}
 
     Object.keys(grouppedByCategory).forEach((category) => {
       const assessments = (grouppedByCategory[category] || [])
         .map((check) => check.assessments)
-        .flat();
+        .flat()
       const passed = assessments.filter(
-        (assessment) => assessment.result === SecurityDataResult.PASSED
-      );
+        (assessment) => assessment.result === SecurityDataResult.PASSED,
+      )
       const failed = assessments.filter(
-        (assessment) => assessment.result === SecurityDataResult.FAILED
-      );
-      const total = passed.length + failed.length;
-      percentageByCategory[category] = passed.length / total;
-    });
+        (assessment) => assessment.result === SecurityDataResult.FAILED,
+      )
+      const total = passed.length + failed.length
+      percentageByCategory[category] = passed.length / total
+    })
 
     const passingRateSum = Object.values(percentageByCategory).reduce(
       (sum, value) => sum + value,
-      0
-    );
+      0,
+    )
 
-    return Math.round((passingRateSum / Object.keys(percentageByCategory).length) * 100);
+    return Math.round((passingRateSum / Object.keys(percentageByCategory).length) * 100)
   }
 
   getOSPSconfig(results: number): OspsBaselineScore {
@@ -111,8 +157,8 @@ class ProjectSecurityService {
         badgeBgColor: lfxColors.neutral[100],
         badgeTextColor: lfxColors.neutral[500],
       }
-    );
+    )
   }
 }
 
-export const PROJECT_SECURITY_SERVICE = new ProjectSecurityService();
+export const PROJECT_SECURITY_SERVICE = new ProjectSecurityService()

@@ -2,13 +2,14 @@
 // SPDX-License-Identifier: MIT
 import { DateTime } from 'luxon'
 import MergeLeadTime from './merge-lead-time.vue'
-import type { WidgetConfig } from '~/components/modules/widget/config/widget.config'
+import type { WidgetConfig, WidgetModel } from '~/components/modules/widget/config/widget.config'
 
 const mergeLeadTime: WidgetConfig = {
   key: 'mergeLeadTime',
   name: 'Merge lead time',
   description: () =>
-    'Average time taken for pull requests to be raised, reviewed, ' + 'accepted, and merged in the selected period.',
+    'Average time taken for pull requests to be raised, reviewed, ' +
+    'accepted, and merged in the selected period.',
   learnMoreLink: `/docs/metrics/development#merge-lead-time`,
   component: MergeLeadTime,
   share: true,
@@ -18,10 +19,10 @@ const mergeLeadTime: WidgetConfig = {
     title: 'Merge Lead Time',
     showOnOverview: true,
     isVisible: (
-      _model: Record<string, number | boolean | string>,
+      _model: WidgetModel,
       _selectedTimeRangeKey: string,
       startDate: string,
-      endDate: string
+      endDate: string,
     ) => {
       const start = DateTime.fromISO(startDate)
       const end = DateTime.fromISO(endDate)
@@ -70,8 +71,8 @@ const mergeLeadTime: WidgetConfig = {
   },
   copilot: {
     icon: 'people-group',
-    suggestions: 'Show me the merge lead time'
-  }
+    suggestions: 'Show me the merge lead time',
+  },
 }
 
 export default mergeLeadTime

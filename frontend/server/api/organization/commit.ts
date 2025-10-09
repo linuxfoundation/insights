@@ -32,6 +32,8 @@ export default defineEventHandler(async (event): Promise<OrgDashCommit[]> => {
         granularity,
         activity_type: 'authored-commit',
         onlyContributions: false,
+        includeCodeContributions: true,
+        includeCollaborations: true,
       },
     )
 
