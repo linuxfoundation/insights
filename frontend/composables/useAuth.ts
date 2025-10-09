@@ -174,7 +174,7 @@ export const useAuth = () => {
                 }
               }, 2000)
             }
-          } catch (e) {
+          } catch {
             // Cross-origin error is expected, clean up iframe
             setTimeout(() => {
               isLoading.value = false
@@ -187,11 +187,9 @@ export const useAuth = () => {
 
         // Add iframe to document
         document.body.appendChild(iframe)
-      } else {
-        console.log('Silent login not attempted:', response.reason || 'Unknown reason')
       }
     } catch (error) {
-      console.log('Silent login failed:', error)
+      console.error('Silent login failed:', error)
       // Silent failure - don't disrupt user experience
     }
   }
