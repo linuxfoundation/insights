@@ -57,6 +57,7 @@ export default defineNuxtConfig({
     insightsDbUsername: 'postgres',
     insightsDbPassword: 'example',
     insightsDbDatabase: 'insights',
+    cmDbEnabled: isProduction,
     cmDbWriteHost: "localhost",
     cmDbReadHost: "localhost",
     cmDbPort: 5432,

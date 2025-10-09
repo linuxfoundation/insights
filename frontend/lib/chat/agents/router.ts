@@ -10,7 +10,7 @@ export class RouterAgent extends BaseAgent<RouterAgentInput, RouterOutput> {
   readonly name = 'Router'
   readonly outputSchema = routerOutputSchema
   readonly temperature = 0
-  readonly maxSteps = 3 // Allow router to use list_datasources if needed
+  readonly maxSteps = 6 // Allow router to use list_datasources if needed
 
   protected getModel(input: RouterAgentInput): any {
     return input.model
@@ -24,6 +24,7 @@ export class RouterAgent extends BaseAgent<RouterAgentInput, RouterOutput> {
       input.parametersString,
       input.segmentId,
       input.toolsOverview,
+      input.previousWasClarification,
     )
   }
 
@@ -33,10 +34,13 @@ export class RouterAgent extends BaseAgent<RouterAgentInput, RouterOutput> {
   }
 
   protected getTools(input: RouterAgentInput): Record<string, any> {
-    // Only allow calling list_datasources; all other tools remain visible in prompt via toolsOverview
+    // Allow list_datasources and execute_query for activityTypes lookups
     const allowed: Record<string, any> = {}
     if (input.tools && input.tools['list_datasources']) {
       allowed['list_datasources'] = input.tools['list_datasources']
+    }
+    if (input.tools && input.tools['execute_query']) {
+      allowed['execute_query'] = input.tools['execute_query']
     }
     return allowed
   }

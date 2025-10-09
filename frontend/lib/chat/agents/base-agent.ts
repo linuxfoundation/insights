@@ -99,7 +99,7 @@ export abstract class BaseAgent<TInput, TOutput> {
       const jsonInstructions = this.generateJSONInstructions()
       const conversationHistoryReceipt = this.generateConversationHistoryReceipt(input.messages)
 
-      const fullSystemPrompt = conversationHistoryReceipt + systemPrompt + jsonInstructions
+      const fullSystemPrompt = systemPrompt + conversationHistoryReceipt + jsonInstructions
 
       // Check if we have messages in the input
       const hasMessages =
@@ -223,7 +223,7 @@ export abstract class BaseAgent<TInput, TOutput> {
 
       ${conversationHistory}
 
-      ## END OF CONVERSATION HISTORY`
+      ## END OF CONVERSATION HISTORY\n`
     } catch (error) {
       console.error('Error generating conversation history context', error)
       return ''
