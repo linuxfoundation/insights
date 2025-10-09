@@ -14,6 +14,10 @@ const authState = ref<AuthData>({
   token: null,
 })
 
+// Track last silent login attempt to prevent too frequent attempts
+let lastSilentLoginAttempt = 0
+const SILENT_LOGIN_COOLDOWN = 30000 // 30 seconds
+
 export const useAuth = () => {
   // Fetch user data from server
   const { data: userData, refresh: refreshAuth } = useAsyncData<AuthData>(
@@ -34,6 +38,11 @@ export const useAuth = () => {
   watchEffect(() => {
     if (userData.value) {
       authState.value = userData.value
+
+      // Attempt silent login if suggested by the server
+      if (userData.value.shouldAttemptSilentLogin && process.client) {
+        attemptSilentLogin()
+      }
     }
   })
 
@@ -94,6 +103,98 @@ export const useAuth = () => {
   const user = computed(() => authState.value.user)
   const token = computed(() => authState.value.token)
   const isLoading = ref(false)
+
+  // Silent login attempt function
+  const attemptSilentLogin = async () => {
+    try {
+      // Prevent multiple simultaneous silent login attempts
+      if (isLoading.value) return
+
+      // Check cooldown period to prevent too frequent attempts
+      const now = Date.now()
+      if (now - lastSilentLoginAttempt < SILENT_LOGIN_COOLDOWN) {
+        // Silent login skipped - cooldown period active
+        return
+      }
+      lastSilentLoginAttempt = now
+
+      // Attempting silent login...
+      isLoading.value = true
+
+      // Call the silent login API
+      const response = await $fetch<{
+        success: boolean
+        authorizationUrl?: string
+        isSilent?: boolean
+        reason?: string
+      }>('/api/auth/silent-login', {
+        method: 'GET',
+        credentials: 'include',
+      })
+
+      if (response.success && response.authorizationUrl && response.isSilent) {
+        // Create a hidden iframe to attempt silent authentication
+        const iframe = document.createElement('iframe')
+        iframe.style.display = 'none'
+        iframe.src = response.authorizationUrl
+
+        // Set up a timeout to clean up the iframe
+        const timeoutId = setTimeout(() => {
+          if (iframe.parentNode) {
+            iframe.parentNode.removeChild(iframe)
+          }
+          isLoading.value = false
+          // Silent login timeout - user may not be logged in to SSO
+        }, 10000) // 10 second timeout
+
+        // Listen for the iframe to load (which might indicate success or failure)
+        iframe.onload = () => {
+          clearTimeout(timeoutId)
+          // Check if we're now on the callback URL (success) or error page
+          try {
+            const iframeUrl = iframe.contentWindow?.location.href
+            if (
+              iframeUrl &&
+              (iframeUrl.includes('/api/auth/callback') || iframeUrl.includes('auth=success'))
+            ) {
+              // Success! The iframe was redirected to callback or success page
+              setTimeout(() => {
+                isLoading.value = false
+                refreshAuth()
+                if (iframe.parentNode) {
+                  iframe.parentNode.removeChild(iframe)
+                }
+              }, 1000) // Give callback time to process
+            } else {
+              // Clean up iframe after a short delay
+              setTimeout(() => {
+                isLoading.value = false
+                if (iframe.parentNode) {
+                  iframe.parentNode.removeChild(iframe)
+                }
+              }, 2000)
+            }
+          } catch (e) {
+            // Cross-origin error is expected, clean up iframe
+            setTimeout(() => {
+              isLoading.value = false
+              if (iframe.parentNode) {
+                iframe.parentNode.removeChild(iframe)
+              }
+            }, 2000)
+          }
+        }
+
+        // Add iframe to document
+        document.body.appendChild(iframe)
+      } else {
+        console.log('Silent login not attempted:', response.reason || 'Unknown reason')
+      }
+    } catch (error) {
+      console.log('Silent login failed:', error)
+      // Silent failure - don't disrupt user experience
+    }
+  }
 
   const login = async (redirectTo?: string) => {
     isLoading.value = true
@@ -170,5 +271,6 @@ export const useAuth = () => {
     login,
     logout,
     refreshAuth,
+    attemptSilentLogin,
   }
 }
