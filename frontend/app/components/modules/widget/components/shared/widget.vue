@@ -76,7 +76,7 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script lang="ts" setup>
-import {computed, ref} from "vue";
+import {computed, ref, watch} from "vue";
 import {storeToRefs} from "pinia";
 import LfxCard from "~/components/uikit/card/card.vue";
 import type {Widget} from "~/components/modules/widget/types/widget";
@@ -101,20 +101,29 @@ const props = defineProps<{
 const {sanitize} = useSanitize();
 
 const config = computed<WidgetConfig>(() => lfxWidgets[props.name]);
+const { project, collaborationSet } = storeToRefs(useProjectStore());
 
 const model = ref(config.value.defaultValue || {});
 const includeCollaborations = computed({
-  get: () => model.value.includeCollaborations || false,
+  get: () => collaborationSet.value.includes(props.name),
   set: (value) => {
-    model.value.includeCollaborations = value;
+    if (value) {
+      if (!collaborationSet.value.includes(props.name)) {
+        collaborationSet.value.push(props.name);
+      }
+    } else {
+      collaborationSet.value = collaborationSet.value.filter((name) => name !== props.name);
+    }
   }
 });
 const isMenuOpen = ref(false);
 
-const { project } = storeToRefs(useProjectStore());
-
 const benchmarkScore = computed<BenchmarkScoreData | undefined>(() => props
   .benchmarkScores?.[config.value.key as keyof HealthScoreResults] as BenchmarkScoreData);
+
+watch(includeCollaborations, (value) => {
+  model.value.includeCollaborations = value;
+}, { immediate: true });
 </script>
 
 <script lang="ts">
