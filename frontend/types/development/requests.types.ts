@@ -31,6 +31,9 @@ export type ContributionsOutsideWorkHoursFilter = {
 };
 
 export type ActivityTypesFilter = {
-  project: string,
-  repository?: string,
+  project: string;
+  repos?: string[];
+  includeCodeContributions?: boolean;
+  includeCollaborations?: boolean;
+  includeOtherContributions?: boolean;
 };

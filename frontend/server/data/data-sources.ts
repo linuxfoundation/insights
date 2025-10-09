@@ -70,7 +70,7 @@ import type {
   MergeLeadTime,
   CodeReviewEngagement,
   ContributionOutsideHours,
-  ActivityTypesResponse
+  ActivityTypesByPlatformResponse
 } from "~~/types/development/responses.types";
 import type {CodeReviewEngagementFilter, ActivityTypesFilter} from "~~/types/development/requests.types";
 import {fetchMailingListsMessageActivities} from "~~/server/data/tinybird/mailing-lists-messages-data-source";
@@ -105,7 +105,7 @@ export interface DataSource {
       => Promise<ContributionOutsideHours>;
     fetchPackages(filter: PackageFilter): Promise<Package[]>;
     fetchPackageMetrics(filter: PackageMetricsFilter): Promise<PackageDownloadsResponse>;
-    fetchActivityTypes(filter: ActivityTypesFilter): Promise<ActivityTypesResponse>;
+    fetchActivityTypes(filter: ActivityTypesFilter): Promise<ActivityTypesByPlatformResponse>;
 }
 
 export function createDataSource(): DataSource {

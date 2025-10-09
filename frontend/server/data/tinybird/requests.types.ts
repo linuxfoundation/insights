@@ -82,5 +82,8 @@ export type ActivitiesCountTinybirdQuery = {
 
 export type ActivityTypesTinybirdQuery = {
   project: string;
-  repo?: string;
+  repos?: string[];
+  includeCodeContributions?: boolean;
+  includeCollaborations?: boolean;
+  includeOtherContributions?: boolean;
 }

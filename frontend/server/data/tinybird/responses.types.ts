@@ -64,6 +64,10 @@ export type TinyBirdActivitiesCountDataItem = {
   activityCount?: number
 };
 
-export type TinybirdActivityTypesResponse = {
-  [platform: string]: string[];
+export type TinybirdActivityTypeItem = {
+  platform: string;
+  activityType: string;
+  label: string;
 };
+
+export type TinybirdActivityTypesResponse = TinybirdActivityTypeItem[];
