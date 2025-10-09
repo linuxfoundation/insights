@@ -42,7 +42,7 @@ SPDX-License-Identifier: MIT
       v-for="group in platforms"
       :key="group.key"
     >
-      <template v-if="connected.includes(group.key)">
+      <template v-if="connected.includes(group.key) && filterActivityTypes(group.activityTypes).length > 0">
         <lfx-dropdown-group-title>
           {{ group.label }}
         </lfx-dropdown-group-title>
