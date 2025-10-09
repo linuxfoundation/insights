@@ -11,10 +11,21 @@ export default defineEventHandler(async (event) => {
     const oidcToken = getCookie(event, 'auth_oidc_token')
 
     if (!oidcToken) {
+      // Check if this is a request that should attempt silent login
+      const userAgent = getHeader(event, 'user-agent') || ''
+      const referer = getHeader(event, 'referer') || ''
+
+      // Only attempt silent login for browser requests (not API calls from other sources)
+      // and avoid infinite loops by checking if we're already in a callback
+      const isBrowserRequest = userAgent.includes('Mozilla')
+      const isNotCallback = !referer.includes('/api/auth/callback')
+      const shouldAttemptSilentLogin = isBrowserRequest && isNotCallback
+
       return {
         isAuthenticated: false,
         user: null,
         token: null,
+        shouldAttemptSilentLogin,
       }
     }
 
