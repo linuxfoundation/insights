@@ -121,76 +121,77 @@ export const useAuth = () => {
       // Attempting silent login...
       isLoading.value = true
 
-      // Call the silent login API
+      // Get the authorization URL for silent authentication
       const response = await $fetch<{
         success: boolean
         authorizationUrl?: string
         isSilent?: boolean
         reason?: string
-      }>('/api/auth/silent-login', {
+        message?: string
+      }>('/api/auth/silent-check', {
         method: 'GET',
         credentials: 'include',
       })
 
       if (response.success && response.authorizationUrl && response.isSilent) {
-        // Create a hidden iframe to attempt silent authentication
-        const iframe = document.createElement('iframe')
-        iframe.style.display = 'none'
-        iframe.src = response.authorizationUrl
+        // Use a popup window for silent authentication to avoid X-Frame-Options issues
+        const popup = window.open(
+          response.authorizationUrl,
+          'silent-auth',
+          'width=1,height=1,left=-1000,top=-1000,toolbar=no,scrollbars=no,resizable=no',
+        )
 
-        // Set up a timeout to clean up the iframe
+        if (!popup) {
+          // Popup blocked - silent authentication not possible
+          return
+        }
+
+        // Set up a timeout to clean up the popup
         const timeoutId = setTimeout(() => {
-          if (iframe.parentNode) {
-            iframe.parentNode.removeChild(iframe)
+          if (!popup.closed) {
+            popup.close()
           }
           isLoading.value = false
           // Silent login timeout - user may not be logged in to SSO
         }, 10000) // 10 second timeout
 
-        // Listen for the iframe to load (which might indicate success or failure)
-        iframe.onload = () => {
-          clearTimeout(timeoutId)
-          // Check if we're now on the callback URL (success) or error page
+        // Poll the popup to detect when it's redirected to the callback
+        const checkPopup = setInterval(() => {
           try {
-            const iframeUrl = iframe.contentWindow?.location.href
+            if (popup.closed) {
+              clearInterval(checkPopup)
+              clearTimeout(timeoutId)
+              isLoading.value = false
+              return
+            }
+
+            // Check if popup was redirected to callback URL (indicates success)
+            const popupUrl = popup.location.href
             if (
-              iframeUrl &&
-              (iframeUrl.includes('/api/auth/callback') || iframeUrl.includes('auth=success'))
+              popupUrl &&
+              (popupUrl.includes('/api/auth/callback') || popupUrl.includes('auth=success'))
             ) {
-              // Success! The iframe was redirected to callback or success page
-              setTimeout(() => {
+              // Success! Close popup and refresh auth state
+              clearInterval(checkPopup)
+              clearTimeout(timeoutId)
+              popup.close()
+
+              // Give the callback time to process, then refresh auth state
+              setTimeout(async () => {
+                await refreshAuth()
                 isLoading.value = false
-                refreshAuth()
-                if (iframe.parentNode) {
-                  iframe.parentNode.removeChild(iframe)
-                }
-              }, 1000) // Give callback time to process
-            } else {
-              // Clean up iframe after a short delay
-              setTimeout(() => {
-                isLoading.value = false
-                if (iframe.parentNode) {
-                  iframe.parentNode.removeChild(iframe)
-                }
-              }, 2000)
+              }, 1000)
             }
           } catch {
-            // Cross-origin error is expected, clean up iframe
-            setTimeout(() => {
-              isLoading.value = false
-              if (iframe.parentNode) {
-                iframe.parentNode.removeChild(iframe)
-              }
-            }, 2000)
+            // Cross-origin error is expected when popup navigates to Auth0
+            // Continue polling until popup is closed or timeout
           }
-        }
-
-        // Add iframe to document
-        document.body.appendChild(iframe)
+        }, 500) // Check every 500ms
       }
-    } catch (error) {
-      console.error('Silent login failed:', error)
+    } catch {
       // Silent failure - don't disrupt user experience
+    } finally {
+      isLoading.value = false
     }
   }
 

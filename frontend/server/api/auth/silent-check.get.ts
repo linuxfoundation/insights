@@ -63,17 +63,19 @@ export default defineEventHandler(async (event) => {
       response_mode: 'query', // Use query parameters for response
     })
 
+    // Return the authorization URL for client-side silent authentication
+    // The client will use a popup window approach to avoid X-Frame-Options issues
     return {
       success: true,
       authorizationUrl: authorizationUrl.toString(),
       isSilent: true,
     }
   } catch (error) {
-    console.error('Silent login error:', error)
+    console.error('Silent check error:', error)
     return {
       success: false,
       reason: 'error',
-      message: 'Silent authentication failed',
+      message: 'Silent authentication check failed',
       error: error instanceof Error ? error.message : 'Unknown error',
     }
   }
