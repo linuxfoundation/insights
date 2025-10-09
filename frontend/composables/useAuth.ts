@@ -18,6 +18,9 @@ const authState = ref<AuthData>({
 let lastSilentLoginAttempt = 0
 const SILENT_LOGIN_COOLDOWN = 30000 // 30 seconds
 
+// Track if silent login has already been attempted to prevent multiple executions
+let silentLoginAttempted = false
+
 export const useAuth = () => {
   // Fetch user data from server
   const { data: userData, refresh: refreshAuth } = useAsyncData<AuthData>(
@@ -39,8 +42,9 @@ export const useAuth = () => {
     if (userData.value) {
       authState.value = userData.value
 
-      // Attempt silent login if suggested by the server
-      if (userData.value.shouldAttemptSilentLogin && process.client) {
+      // Attempt silent login if suggested by the server and not already attempted
+      // Also check if welcome modal is active to avoid interrupting the welcome flow
+      if (userData.value.shouldAttemptSilentLogin && process.client && !silentLoginAttempted) {
         attemptSilentLogin()
       }
     }
@@ -110,6 +114,12 @@ export const useAuth = () => {
       // Prevent multiple simultaneous silent login attempts
       if (isLoading.value) return
 
+      // Prevent multiple silent login attempts - only allow once
+      if (silentLoginAttempted) {
+        return
+      }
+      silentLoginAttempted = true
+
       // Check cooldown period to prevent too frequent attempts
       const now = Date.now()
       if (now - lastSilentLoginAttempt < SILENT_LOGIN_COOLDOWN) {
@@ -121,6 +131,8 @@ export const useAuth = () => {
       // Attempting silent login...
       isLoading.value = true
 
+      const currentPath = window.location.pathname + window.location.search + window.location.hash
+
       // Get the authorization URL for silent authentication
       const response = await $fetch<{
         success: boolean
@@ -130,12 +142,20 @@ export const useAuth = () => {
         message?: string
       }>('/api/auth/silent-check', {
         method: 'GET',
+        query: currentPath !== '/' ? { redirectTo: currentPath } : {},
         credentials: 'include',
       })
 
-      if (response.success) {
-        // Silent authentication was successful on the server side
-        await refreshAuth()
+      if (response.success && response.authorizationUrl && response.isSilent) {
+        // Redirect to Auth0 using the returned URL
+        if (process.client) {
+          window.location.href = response.authorizationUrl
+        } else {
+          await navigateTo(response.authorizationUrl, { external: true })
+        }
+      } else {
+        // Silent authentication setup failed
+        console.debug('Silent authentication not available:', response.reason, response.message)
       }
     } catch {
       // Silent failure - don't disrupt user experience

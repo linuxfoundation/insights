@@ -19,7 +19,13 @@ export default defineEventHandler(async (event) => {
       // and avoid infinite loops by checking if we're already in a callback
       const isBrowserRequest = userAgent.includes('Mozilla')
       const isNotCallback = !referer.includes('/api/auth/callback')
-      const shouldAttemptSilentLogin = isBrowserRequest && isNotCallback
+
+      // Check if silent login was already attempted by looking for the silent login cookies
+      const silentLoginState = getCookie(event, 'auth_state')
+      const silentLoginCodeVerifier = getCookie(event, 'auth_code_verifier')
+      const hasAttemptedSilentLogin = !!(silentLoginState && silentLoginCodeVerifier)
+
+      const shouldAttemptSilentLogin = isBrowserRequest && isNotCallback && !hasAttemptedSilentLogin
 
       return {
         isAuthenticated: false,
