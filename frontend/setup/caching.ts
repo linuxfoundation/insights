@@ -12,6 +12,7 @@ export default {
           '/api/auth/login': { prerender: false, index: false, cache: false },
           '/api/auth/logout': { prerender: false, index: false, cache: false },
           '/api/auth/user': { prerender: false, index: false, cache: false },
+          '/api/auth/silent-check': { prerender: false, index: false, cache: false },
           '/api/health': { cache: false },
           '/api/chat/**': { cache: false },
           '/api/health/live': { cache: false },
@@ -36,6 +37,7 @@ export default {
           '/api/auth/login': { prerender: false, index: false, cache: false },
           '/api/auth/logout': { prerender: false, index: false, cache: false },
           '/api/auth/user': { prerender: false, index: false, cache: false },
+          '/api/auth/silent-check': { prerender: false, index: false, cache: false },
         },
   nitro: {
     storage: {

@@ -133,60 +133,9 @@ export const useAuth = () => {
         credentials: 'include',
       })
 
-      if (response.success && response.authorizationUrl && response.isSilent) {
-        // Use a popup window for silent authentication to avoid X-Frame-Options issues
-        const popup = window.open(
-          response.authorizationUrl,
-          'silent-auth',
-          'width=1,height=1,left=-1000,top=-1000,toolbar=no,scrollbars=no,resizable=no',
-        )
-
-        if (!popup) {
-          // Popup blocked - silent authentication not possible
-          return
-        }
-
-        // Set up a timeout to clean up the popup
-        const timeoutId = setTimeout(() => {
-          if (!popup.closed) {
-            popup.close()
-          }
-          isLoading.value = false
-          // Silent login timeout - user may not be logged in to SSO
-        }, 10000) // 10 second timeout
-
-        // Poll the popup to detect when it's redirected to the callback
-        const checkPopup = setInterval(() => {
-          try {
-            if (popup.closed) {
-              clearInterval(checkPopup)
-              clearTimeout(timeoutId)
-              isLoading.value = false
-              return
-            }
-
-            // Check if popup was redirected to callback URL (indicates success)
-            const popupUrl = popup.location.href
-            if (
-              popupUrl &&
-              (popupUrl.includes('/api/auth/callback') || popupUrl.includes('auth=success'))
-            ) {
-              // Success! Close popup and refresh auth state
-              clearInterval(checkPopup)
-              clearTimeout(timeoutId)
-              popup.close()
-
-              // Give the callback time to process, then refresh auth state
-              setTimeout(async () => {
-                await refreshAuth()
-                isLoading.value = false
-              }, 1000)
-            }
-          } catch {
-            // Cross-origin error is expected when popup navigates to Auth0
-            // Continue polling until popup is closed or timeout
-          }
-        }, 500) // Check every 500ms
+      if (response.success) {
+        // Silent authentication was successful on the server side
+        await refreshAuth()
       }
     } catch {
       // Silent failure - don't disrupt user experience
