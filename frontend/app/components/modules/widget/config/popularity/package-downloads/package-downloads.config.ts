@@ -18,6 +18,10 @@ const packageDownloads: WidgetConfig = {
   share: true,
   embed: true,
   snapshot: true,
+  copilot: {
+    icon: 'download',
+    suggestions: 'How many package downloads does this project have?'
+  },
 };
 
 export default packageDownloads;

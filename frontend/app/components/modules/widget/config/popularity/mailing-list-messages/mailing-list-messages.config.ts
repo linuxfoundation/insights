@@ -15,6 +15,10 @@ const mailingListMessages: WidgetConfig = {
     share: true,
     embed: true,
     snapshot: true,
+    copilot: {
+        icon: 'envelope',
+        suggestions: 'How many mailing list messages were sent?'
+    },
 }
 
 export default mailingListMessages;

@@ -259,7 +259,8 @@ class CopilotApiService {
                   content,
                   explanation: data.status === 'error' ? data.error : undefined,
                   routerReasoning: data.reasoning,
-                  question: data.question, // Include the clarification question
+                  reformulatedQuestion: data.reformulatedQuestion,
+                  question: data.question,
                   timestamp: Date.now(),
                 },
                 -1,
@@ -289,12 +290,13 @@ class CopilotApiService {
               role: 'assistant',
               type: data.type,
               status: data.status,
-              sql: data.sql, 
+              sql: data.sql,
               data: data.data,
               content,
               explanation: data.explanation,
               instructions: data.instructions,
               conversationId: data.conversationId,
+              chatResponseId: data.chatResponseId,
               timestamp: Date.now()
             }, -1);
           } 

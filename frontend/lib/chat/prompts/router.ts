@@ -137,28 +137,27 @@ ${pipeToolQuestion}
 - If fields don't exist → Question is INVALID, route to "stop" action
 - If the question is referencing a field about contributors/people that we have only for organizations, the question is INVALID
 
-# BEFORE CHOOSING "stop"
+# STOP IS A LAST RESORT - EXHAUST ALL OPTIONS FIRST
 
-The "stop" action means the data fundamentally doesn't exist in our system.
+Before choosing "stop", you MUST verify ALL of the following:
 
-**MANDATORY CHECKLIST - You MUST verify ALL of these before returning "stop":**
-- ✓ Checked all available pipes (not just obvious keyword matches)
-- ✓ Considered calling same pipe multiple times with different parameters (for comparisons, growth, trends)
-- ✓ Considered combining multiple different pipes
-- ✓ Used list_datasources to verify the data truly doesn't exist
-- ✓ Verified create_query cannot work with any available tables
+1. ✓ Checked if ANY pipe can answer (even partially)
+2. ✓ Checked if MULTIPLE pipes combined can answer
+3. ✓ Checked if the SAME pipe with different parameters can help
+4. ✓ Reviewed ALL datasources in the tools catalog above - can CREATE_QUERY use them?
+5. ✓ Considered if the question can be answered with available data, even if it requires custom SQL
+6. ✓ Asked yourself: "Is this really impossible, or am I just uncertain?"
 
-**Valid reasons for "stop":**
-- Data about external systems we don't track (e.g., "Twitter sentiment", "stock prices", "news coverage")
-- Metrics we don't collect (e.g., "code quality scores", "security vulnerabilities", "test coverage")
-- After using list_datasources, confirmed no relevant tables/fields exist
+**STOP should ONLY be used when:**
+- The question requires external data not in our system (weather, stock prices, etc.)
+- After reviewing the tools catalog, no datasource contains relevant data
+- The question fundamentally cannot be answered with the datasources listed above
 - Question asks for contributor-level metrics we only have for organizations
 
-**Invalid reasons for "stop" (use pipes or create_query instead):**
-- Question needs comparison/growth calculation → Use pipes multiple times with different parameters
-- Question seems complex or requires multiple steps → Break it down into pipe combinations
-- Question asks for aggregation across dimensions → Use create_query
-- Question asks for time-based trends → Use pipes with different time periods
+**If you're unsure whether to choose STOP:**
+- Default to CREATE_QUERY (let the Text-to-SQL agent try)
+- Default to PIPES (let the Pipe agent explore options)
+- When in doubt, DON'T choose STOP
 
 **Anti-pattern Examples - Learn from these WRONG decisions:**
 

@@ -206,7 +206,10 @@ describe('Router Agent', () => {
     })
 
     describe('CREATE_QUERY (TEXT_TO_SQL) routing', () => {
-      test.each(['Show me commit activity by company over all time period'])(
+      test.each([
+        'Show me commit activity by company over all time period',
+        'Show me the total counts of each contribution type for 2024.',
+      ])(
         'should route "%s" to CREATE_QUERY',
         async (query) => {
           if (skipIfNoCredentials()) return

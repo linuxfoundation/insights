@@ -5,13 +5,14 @@ SPDX-License-Identifier: MIT
 <template>
   <div>
     <div
+      v-if="shouldShowReasoning"
       class="cursor-pointer flex items-center gap-1"
       @click="isReasonExpanded = !isReasonExpanded"
     >
-      <lfx-chat-label 
+      <lfx-chat-label
         v-if="message"
-        label="Reasoning" 
-        :status="message.status" 
+        label="Reasoning"
+        :status="message.status"
       />
       <lfx-icon
         :name="isReasonExpanded ? 'angle-up' : 'angle-down'"
@@ -19,7 +20,7 @@ SPDX-License-Identifier: MIT
       />
     </div>
     <div
-      v-if="isReasonExpanded"
+      v-if="isReasonExpanded && shouldShowReasoning"
       class="my-4 text-xs text-neutral-400"
     >
       {{ reasoning }}
@@ -40,8 +41,12 @@ const props = defineProps<{
 
 const isReasonExpanded = ref(false);
 
+const shouldShowReasoning = computed(() => {
+  return props.message.type === 'router-status';
+});
+
 const reasoning = computed(() => {
-  return props.message.explanation || props.message.sql;
+  return props.message.reformulatedQuestion || props.message.explanation || props.message.sql;
 })
 
 </script>

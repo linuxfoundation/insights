@@ -383,6 +383,7 @@ export class DataCopilot {
     let routerOutput: RouterOutput
     let sqlQuery: string | undefined = undefined
     let pipeInstructions: PipeInstructions | undefined = undefined
+    let explanation: string | undefined = undefined
 
     while (attemptNumber <= this.MAX_AUDITOR_RETRIES) {
       // Run router agent - only stream status on first attempt
@@ -468,6 +469,7 @@ export class DataCopilot {
           insightsDbPool,
         })
         sqlQuery = result.sqlQuery
+        explanation = result.explanation
         data = result.data
       } else if (routerOutput.next_action === RouterDecisionAction.PIPES) {
         const result = await this.handlePipesAction({
@@ -486,6 +488,7 @@ export class DataCopilot {
           insightsDbPool,
         })
         pipeInstructions = result.pipeInstructions
+        explanation = result.explanation
         data = result.data
       }
 
@@ -553,13 +556,17 @@ export class DataCopilot {
           dataStream.writeData({
             type: StreamDataType.SQL_RESULT,
             instructions: sqlQuery,
+            explanation,
             data,
+            chatResponseId,
           })
         } else if (routerOutput.next_action === RouterDecisionAction.PIPES) {
           dataStream.writeData({
             type: StreamDataType.PIPE_RESULT,
             instructions: pipeInstructions,
+            explanation,
             data,
+            chatResponseId,
           })
         }
 
@@ -581,13 +588,17 @@ export class DataCopilot {
           dataStream.writeData({
             type: StreamDataType.SQL_RESULT,
             instructions: sqlQuery,
+            explanation,
             data,
+            chatResponseId,
           })
         } else if (routerOutput.next_action === RouterDecisionAction.PIPES) {
           dataStream.writeData({
             type: StreamDataType.PIPE_RESULT,
             instructions: pipeInstructions,
+            explanation,
             data,
+            chatResponseId,
           })
         }
 
@@ -909,10 +920,10 @@ export class DataCopilot {
     dataStream,
     chatResponseId,
     insightsDbPool,
-  }: TextToSqlAgentStreamInput & { 
-    chatResponseId: string; 
-    insightsDbPool: Pool 
-  }): Promise<{ sqlQuery: string; data: any[] }> {
+  }: TextToSqlAgentStreamInput & {
+    chatResponseId: string;
+    insightsDbPool: Pool
+  }): Promise<{ sqlQuery: string; explanation: string; data: any[] }> {
     let attemptNumber = 0
     let errorContext: import('./types').SqlErrorContext | undefined = undefined
     let lastGeneratedQuery = ''
@@ -1030,7 +1041,11 @@ export class DataCopilot {
           // Success - clear interval and return (don't stream data yet, auditor will do it)
           clearInterval(keepaliveInterval)
 
-          return { sqlQuery: textToSqlOutput.instructions, data: queryData }
+          return {
+            sqlQuery: textToSqlOutput.instructions,
+            explanation: textToSqlOutput.explanation,
+            data: queryData
+          }
         } catch (executionError: any) {
           // SQL execution failed
           console.error(`SQL execution error (attempt ${attemptNumber + 1}):`, executionError)
@@ -1123,10 +1138,10 @@ export class DataCopilot {
     responseData,
     chatResponseId,
     insightsDbPool,
-  }: PipeAgentStreamInput & 
-  { chatResponseId: string; 
-    insightsDbPool: Pool 
-  }): Promise<{ pipeInstructions: PipeInstructions; data: any[] }> {
+  }: PipeAgentStreamInput &
+  { chatResponseId: string;
+    insightsDbPool: Pool
+  }): Promise<{ pipeInstructions: PipeInstructions; explanation: string; data: any[] }> {
     const pipeStartTime = Date.now()
     let pipeOutput
     try {
@@ -1186,7 +1201,11 @@ export class DataCopilot {
         JSON.stringify(pipeOutput.instructions),
       )
 
-      return { pipeInstructions: pipeOutput.instructions, data: combinedData }
+      return {
+        pipeInstructions: pipeOutput.instructions,
+        explanation: pipeOutput.explanation,
+        data: combinedData
+      }
     } catch (error) {
       const pipeExecutionTime = (Date.now() - pipeExecutionStart) / 1000
 

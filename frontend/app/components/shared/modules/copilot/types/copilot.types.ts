@@ -45,10 +45,12 @@ export interface AIMessage {
   content: string;
   timestamp: number;
   conversationId?: string;
+  chatResponseId?: string;
   sql?: string;
   data?: Array<MessageData>;
   explanation?: string;
   routerReasoning?: string;
+  reformulatedQuestion?: string;
   question?: string; // Clarification question when status is 'ask_clarification'
   instructions?: {
     pipes: Array<{
