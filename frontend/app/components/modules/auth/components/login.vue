@@ -11,12 +11,11 @@ SPDX-License-Identifier: MIT
       :disabled="isLoading"
       @click="loginHandler()"
     >
-      My account
       <lfx-icon
-        v-if="isLoading"
-        name="spinner-third"
-        class="animate-spin mr-2"
+        :name="isLoading ? 'spinner-third' : 'circle-user'"
+        :class="isLoading ? 'animate-spin' : ''"
       />
+      Log in
     </lfx-button>
     <lfx-popover
       v-else
@@ -41,13 +40,20 @@ SPDX-License-Identifier: MIT
             target="_blank"
           >
             <lfx-menu-button
-              class="!text-neutral-900 !rounded-md flex items-center gap-2"
+              class="!text-neutral-900 !rounded-md flex !items-start gap-2"
             >
               <lfx-icon
                 name="circle-user"
+                class="mt-1"
               />
-              Manage profile
+              <div class="flex-col gap-1">
+                Manage profile
+                <p class="text-xs text-neutral-500">
+                  LFX Individual Dashboard
+                </p>
+              </div>
             </lfx-menu-button>
+
           </a>
           <lfx-menu-button
             class="!text-neutral-900 !rounded-md flex items-center gap-2"
@@ -56,7 +62,7 @@ SPDX-License-Identifier: MIT
             <lfx-icon
               name="arrow-right-from-bracket"
             />
-            Log Out
+            Log out
           </lfx-menu-button>
         </div>
       </template>

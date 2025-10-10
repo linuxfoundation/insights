@@ -14,6 +14,20 @@ const authState = ref<AuthData>({
   token: null,
 })
 
+// Helper functions for localStorage access with client-side checks
+const getSilentLoginAttempted = (): boolean => {
+  if (!process.client) return false
+  return localStorage.getItem('lfx-silent-login-attempted') === 'true'
+}
+
+const setSilentLoginAttempted = (value: boolean): void => {
+  if (!process.client) return
+  localStorage.setItem('lfx-silent-login-attempted', value.toString())
+}
+
+// this determines if this is the first time the user is coming to the site
+const welcomeModal = process.client ? localStorage.getItem('lfx-welcome-modal') : null
+
 export const useAuth = () => {
   // Fetch user data from server
   const { data: userData, refresh: refreshAuth } = useAsyncData<AuthData>(
@@ -34,6 +48,21 @@ export const useAuth = () => {
   watchEffect(() => {
     if (userData.value) {
       authState.value = userData.value
+
+      // Attempt silent login if suggested by the server and not already attempted
+      if (userData.value.shouldAttemptSilentLogin && process.client && !getSilentLoginAttempted()) {
+        // check if this is the first time the user is coming to the site
+        if (welcomeModal !== null) {
+          const currentPath =
+            window.location.pathname + window.location.search + window.location.hash
+          login(currentPath, true)
+          // attemptSilentLogin()
+        }
+      }
+
+      if (userData.value.isAuthenticated) {
+        setSilentLoginAttempted(false)
+      }
     }
   })
 
@@ -45,6 +74,8 @@ export const useAuth = () => {
     if (route.query.auth === 'success') {
       nextTick(async () => {
         await refreshAuth()
+        // Reset silent login flag when authentication is successful
+        setSilentLoginAttempted(false)
       })
     }
 
@@ -54,6 +85,8 @@ export const useAuth = () => {
       async (authParam) => {
         if (authParam === 'success') {
           await refreshAuth()
+          // Reset silent login flag when authentication is successful
+          setSilentLoginAttempted(false)
         }
       },
     )
@@ -95,8 +128,10 @@ export const useAuth = () => {
   const token = computed(() => authState.value.token)
   const isLoading = ref(false)
 
-  const login = async (redirectTo?: string) => {
+  const login = async (redirectTo?: string, silent?: boolean) => {
     isLoading.value = true
+    // Reset silent login flag for next time
+    setSilentLoginAttempted(false)
     try {
       let currentPath = redirectTo || '/'
 
@@ -114,7 +149,7 @@ export const useAuth = () => {
         '/api/auth/login',
         {
           method: 'GET',
-          query: currentPath !== '/' ? { redirectTo: currentPath } : {},
+          query: currentPath !== '/' ? { redirectTo: currentPath, silent } : { silent },
           credentials: 'include',
         },
       )
@@ -135,6 +170,8 @@ export const useAuth = () => {
 
   const logout = async () => {
     isLoading.value = true
+    // Reset silent login flag for next time
+    setSilentLoginAttempted(false)
     try {
       const response = await $fetch<{ success: boolean; logoutUrl: string }>('/api/auth/logout', {
         method: 'POST',

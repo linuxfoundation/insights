@@ -56,6 +56,8 @@ export default defineEventHandler(async (event) => {
       code_challenge: codeChallenge,
       code_challenge_method: 'S256',
       redirect_uri: redirectUri,
+      // Silent authentication parameters - don't show login UI
+      ...(query.silent === 'true' && { prompt: 'none' }),
     })
 
     // Return the authorization URL for client-side redirect
