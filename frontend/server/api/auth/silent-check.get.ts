@@ -66,7 +66,6 @@ export default defineEventHandler(async (event) => {
       redirect_uri: redirectUri,
       // Silent authentication parameters
       prompt: 'none', // This is key for silent auth - don't show login UI
-      response_mode: 'query', // Use query parameters for response
     })
 
     // Return the authorization URL for client-side popup handling

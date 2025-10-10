@@ -60,6 +60,10 @@ export const useAuth = () => {
           attemptSilentLogin()
         }
       }
+
+      if (userData.value.isAuthenticated) {
+        setSilentLoginAttempted(false)
+      }
     }
   })
 
