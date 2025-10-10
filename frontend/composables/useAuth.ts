@@ -163,14 +163,16 @@ export const useAuth = () => {
         credentials: 'include',
       })
 
-      if (response.success && response.authorizationUrl && response.isSilent) {
-        // Redirect to Auth0 using the returned URL
-        if (process.client) {
-          window.location.href = response.authorizationUrl
-        } else {
-          await navigateTo(response.authorizationUrl, { external: true })
+      setTimeout(async () => {
+        if (response.success && response.authorizationUrl && response.isSilent) {
+          // Redirect to Auth0 using the returned URL
+          if (process.client) {
+            window.location.href = response.authorizationUrl
+          } else {
+            await navigateTo(response.authorizationUrl, { external: true })
+          }
         }
-      }
+      }, 1000)
     } catch {
       // Silent failure - don't disrupt user experience
     } finally {
