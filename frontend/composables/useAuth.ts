@@ -18,6 +18,9 @@ const authState = ref<AuthData>({
 let lastSilentLoginAttempt = 0
 const SILENT_LOGIN_COOLDOWN = 30000 // 30 seconds
 
+// this determines if this is the first time the user is coming to the site
+const welcomeModal = localStorage.getItem('lfx-welcome-modal')
+
 // Track if silent login has already been attempted to prevent multiple executions
 let silentLoginAttempted = false
 
@@ -43,9 +46,11 @@ export const useAuth = () => {
       authState.value = userData.value
 
       // Attempt silent login if suggested by the server and not already attempted
-      // Also check if welcome modal is active to avoid interrupting the welcome flow
       if (userData.value.shouldAttemptSilentLogin && process.client && !silentLoginAttempted) {
-        attemptSilentLogin()
+        // check if this is the first time the user is coming to the site
+        if (welcomeModal !== null) {
+          attemptSilentLogin()
+        }
       }
     }
   })
