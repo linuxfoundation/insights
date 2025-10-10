@@ -57,7 +57,10 @@ export const useAuth = () => {
       if (userData.value.shouldAttemptSilentLogin && process.client && !getSilentLoginAttempted()) {
         // check if this is the first time the user is coming to the site
         if (welcomeModal !== null) {
-          attemptSilentLogin()
+          const currentPath =
+            window.location.pathname + window.location.search + window.location.hash
+          login(currentPath, true)
+          // attemptSilentLogin()
         }
       }
 
@@ -184,7 +187,7 @@ export const useAuth = () => {
     }
   }
 
-  const login = async (redirectTo?: string) => {
+  const login = async (redirectTo?: string, silent?: boolean) => {
     isLoading.value = true
     // Reset silent login flag for next time
     setSilentLoginAttempted(false)
@@ -205,7 +208,7 @@ export const useAuth = () => {
         '/api/auth/login',
         {
           method: 'GET',
-          query: currentPath !== '/' ? { redirectTo: currentPath } : {},
+          query: currentPath !== '/' ? { redirectTo: currentPath, silent } : { silent },
           credentials: 'include',
         },
       )
