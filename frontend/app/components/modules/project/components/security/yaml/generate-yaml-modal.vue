@@ -187,11 +187,12 @@ const copyToClipboard = async () => {
 }
 
 const downloadYamlFile = () => {
+  let url: string | null = null
   try {
     const yamlContent = getYaml(form.value)
     // eslint-disable-next-line no-undef
     const blob = new Blob([yamlContent], { type: 'application/x-yaml' })
-    const url = URL.createObjectURL(blob)
+    url = URL.createObjectURL(blob)
     const link = document.createElement('a')
     link.href = url
     link.download = 'security.yaml'
@@ -202,6 +203,10 @@ const downloadYamlFile = () => {
     showToast('YAML file successfully downloaded', ToastTypesEnum.positive, 'circle-check')
   } catch (error) {
     console.error('Failed to download YAML file:', error)
+    if (url) {
+      URL.revokeObjectURL(url)
+    }
+    showToast('Failed to download YAML file', ToastTypesEnum.negative)
   }
 }
 
