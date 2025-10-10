@@ -3,7 +3,7 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div>
+  <div class="h-full flex flex-col">
     <h2 class="text-lg font-semibold mb-1 leading-7">YAML file preview</h2>
     <p class="text-body-2 leading-4 text-neutral-500">
       Review your generated YAML file before downloading. You can copy the content or download it as
@@ -24,7 +24,7 @@ SPDX-License-Identifier: MIT
 
     <pre
       lang="yaml"
-      class="mt-6 p-4 bg-white border border-neutral-200 rounded-xl overflow-auto text-sm font-mono"
+      class="mt-6 p-4 bg-white border border-neutral-200 rounded-xl overflow-auto text-sm font-mono flex-grow"
     >{{ yaml }}</pre>
   </div>
 </template>

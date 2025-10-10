@@ -17,7 +17,7 @@ import YamlChildRepositorySecurity from
 const childRepositoryYamlGenerationConfig: YamlGenerationConfig = {
   label: 'Child repository',
   icon: 'book',
-  description: 'Individual repositories in a multi-repository project.',
+  description: 'Individual repositories in a multi-repository project',
   features: [
     'Use in secondary repositories to inherit configuration from a centralized parent repository',
     'Must include header.project-si-source URL that points to the parent configuration file',

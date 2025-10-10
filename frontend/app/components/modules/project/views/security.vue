@@ -37,27 +37,28 @@ SPDX-License-Identifier: MIT
           class="flex items-center gap-2"
         >
           <lfx-tooltip
-            v-if="hasLfxInsightsPermission"
+            v-if="!PROJECT_SECURITY_SERVICE.hasSecurityMdFile(data || [])"
             placement="top"
           >
             <lfx-button
-              type="secondary"
+              type="transparent"
               size="small"
               button-style="pill"
               class="whitespace-nowrap"
               @click="isGenerateYamlModalOpen = true"
             >
-              <lfx-icon name="file-code" />
+              <lfx-icon name="file-shield" />
               Generate YAML file
             </lfx-button>
 
             <template #content>
               <div class="flex flex-col gap-1 max-w-72">
                 <div class="font-semibold text-white text-xs">
-                  It looks like this repository is missing a YAML file.
+                  YAML Security specifications file
                 </div>
                 <div class="text-neutral-300 text-xs">
-                  Please generate the file and upload it so we can run all the security assessments.
+                  Generate a YAML security file, upload it to your repository,
+                  and ensure we can run all security assessments for your project.
                 </div>
               </div>
             </template>
@@ -208,7 +209,6 @@ import LfxTag from "~/components/uikit/tag/tag.vue";
 import LfxButton from "~/components/uikit/button/button.vue";
 import LfxTooltip from "~/components/uikit/tooltip/tooltip.vue";
 import LfSecurityGenerateYamlModal from "~/components/modules/project/components/security/yaml/generate-yaml-modal.vue";
-import {useAuthStore} from "~/components/modules/auth/store/auth.store";
 
 const accordion = ref('');
 
@@ -216,8 +216,6 @@ const route = useRoute();
 const { name } = route.params;
 
 const isGenerateYamlModalOpen = ref(false);
-
-const  {hasLfxInsightsPermission} = useAuthStore();
 
 const {
   selectedReposValues,
@@ -252,7 +250,7 @@ const {
 
 // TODO: Remove this when we have data for them
 const securityAssessmentData = computed(() => PROJECT_SECURITY_SERVICE
-.removeDocumentationAndVulnerability(data.value || []));
+    .removeUnavailableChecks(data.value || []));
 
 const groupedData = computed(() => (securityAssessmentData.value || []).reduce((mapping, check) => {
     const obj = {...mapping};

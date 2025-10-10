@@ -6,9 +6,9 @@ SPDX-License-Identifier: MIT
   <lfx-modal
     v-model="isModalOpen"
     width="1200px"
-    type="cover"
+    height="900px"
     class="!justify-center"
-    content-class="!h-screen"
+    content-class="!h-full"
   >
     <div class="flex h-full">
       <lf-security-generate-yaml-sidebar />
@@ -35,6 +35,7 @@ SPDX-License-Identifier: MIT
                 placement="top"
                 :content="config?.description || ''"
                 :disabled="!config?.description"
+                class="flex items-center"
               >
                 <lfx-tag
                   size="small"
@@ -43,7 +44,7 @@ SPDX-License-Identifier: MIT
                   {{ config?.label }}
                 </lfx-tag>
               </lfx-tooltip>
-              <p class="text-xs text-neutral-600 leading-5">
+              <p class="text-xs text-neutral-600 !leading-6">
                 <span v-if="type && step >= 0">Step {{ step + 1 }}/{{ steps.length + 1 }} - </span>
                 <span v-if="!type || step < 0">Choose YAML file template</span>
                 <span v-else-if="step < steps.length">{{ currentStep?.label }}</span>
@@ -193,7 +194,7 @@ const downloadYamlFile = () => {
     const url = URL.createObjectURL(blob)
     const link = document.createElement('a')
     link.href = url
-    link.download = 'security-insights.yaml'
+    link.download = 'security.yaml'
     document.body.appendChild(link)
     link.click()
     document.body.removeChild(link)

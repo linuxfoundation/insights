@@ -16,7 +16,7 @@ import YamlHeaderInformation from
 const basicYamlGenerationConfig: YamlGenerationConfig = {
   label: 'Basic',
   icon: 'file-circle-check',
-  description: 'Essential project security specifications.',
+  description: 'Essential project security specifications',
   features: [
     'Use as the master security insights file in your main repository.',
     'Use when you want to get up and running quickly.',

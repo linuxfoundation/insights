@@ -33,7 +33,7 @@ import type { YamlGenerationConfig } from '~/components/modules/project/config/y
 const comprehensiveYamlGenerationConfig: YamlGenerationConfig = {
   label: 'Comprehensive',
   icon: 'file-shield',
-  description: 'Comprehensive security documentation and planning.',
+  description: 'Comprehensive security documentation and planning',
   features: [
     'Use as a reference for all possible specification sections.',
     'Ideal for identifying areas for future improvement.',

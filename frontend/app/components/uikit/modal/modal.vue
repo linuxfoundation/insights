@@ -13,7 +13,7 @@ SPDX-License-Identifier: MIT
         <div
           class="c-modal__content"
           :class="props.contentClass"
-          :style="{ 'max-width': props.width }"
+          :style="{ 'max-width': props.width, 'max-height': props.height }"
           v-bind="$attrs"
           @click.stop
         >
@@ -32,10 +32,12 @@ const props = withDefaults(defineProps<{
   type?: 'default' | 'floating' | 'cover',
   contentClass?: string,
   width?: string,
+  height?: string,
   closeFunction?:() => boolean,
 }>(), {
   type: 'default',
   width: '37.5rem',
+  height: 'auto',
   closeFunction: () => true,
   contentClass: undefined,
 });
