@@ -14,10 +14,6 @@ const authState = ref<AuthData>({
   token: null,
 })
 
-// Track last silent login attempt to prevent too frequent attempts
-let lastSilentLoginAttempt = 0
-const SILENT_LOGIN_COOLDOWN = 30000 // 30 seconds
-
 // Helper functions for localStorage access with client-side checks
 const getSilentLoginAttempted = (): boolean => {
   if (!process.client) return false
@@ -132,61 +128,6 @@ export const useAuth = () => {
   const token = computed(() => authState.value.token)
   const isLoading = ref(false)
 
-  // Silent login attempt function
-  const attemptSilentLogin = async () => {
-    try {
-      // Prevent multiple simultaneous silent login attempts
-      if (isLoading.value) return
-
-      // Prevent multiple silent login attempts - only allow once
-      if (getSilentLoginAttempted()) {
-        return
-      }
-      setSilentLoginAttempted(true)
-
-      // Check cooldown period to prevent too frequent attempts
-      const now = Date.now()
-      if (now - lastSilentLoginAttempt < SILENT_LOGIN_COOLDOWN) {
-        // Silent login skipped - cooldown period active
-        return
-      }
-      lastSilentLoginAttempt = now
-
-      // Attempting silent login...
-      isLoading.value = true
-
-      const currentPath = window.location.pathname + window.location.search + window.location.hash
-
-      // Get the authorization URL for silent authentication
-      const response = await $fetch<{
-        success: boolean
-        authorizationUrl?: string
-        isSilent?: boolean
-        reason?: string
-        message?: string
-      }>('/api/auth/silent-check', {
-        method: 'GET',
-        query: currentPath !== '/' ? { redirectTo: currentPath } : {},
-        credentials: 'include',
-      })
-
-      setTimeout(async () => {
-        if (response.success && response.authorizationUrl && response.isSilent) {
-          // Redirect to Auth0 using the returned URL
-          if (process.client) {
-            window.location.href = response.authorizationUrl
-          } else {
-            await navigateTo(response.authorizationUrl, { external: true })
-          }
-        }
-      }, 1000)
-    } catch {
-      // Silent failure - don't disrupt user experience
-    } finally {
-      isLoading.value = false
-    }
-  }
-
   const login = async (redirectTo?: string, silent?: boolean) => {
     isLoading.value = true
     // Reset silent login flag for next time
@@ -266,6 +207,5 @@ export const useAuth = () => {
     login,
     logout,
     refreshAuth,
-    attemptSilentLogin,
   }
 }
