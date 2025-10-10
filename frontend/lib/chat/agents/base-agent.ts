@@ -14,10 +14,8 @@ export abstract class BaseAgent<TInput, TOutput> {
   abstract readonly temperature: number
   abstract readonly maxSteps: number
 
-  protected getConversationHistory<T extends object>(
-    input: { messages: ChatMessage[] } & T,
-  ): string {
-    const userMessages = input.messages.filter((m) => m.role === 'user')
+  protected getConversationHistory(messages: ChatMessage[]): string {
+    const userMessages = messages.filter((m) => m.role === 'user')
     if (userMessages.length > 1) {
       return JSON.stringify(userMessages.slice(0, -1), null, 2)
     }
@@ -91,7 +89,7 @@ export abstract class BaseAgent<TInput, TOutput> {
     return 'value'
   }
 
-  async execute(input: TInput): Promise<TOutput & { usage?: any }> {
+  async execute(input: TInput & { messages: ChatMessage[] }): Promise<TOutput & { usage?: any }> {
     try {
       const systemPrompt = await this.getSystemPrompt(input)
       const userPrompt = this.getUserPrompt(input)
@@ -99,12 +97,11 @@ export abstract class BaseAgent<TInput, TOutput> {
 
       // Append JSON format instructions to system prompt
       const jsonInstructions = this.generateJSONInstructions()
-      const conversationHistoryReceipt = this.generateConversationHistoryReceipt(input)
+      const conversationHistoryReceipt = this.generateConversationHistoryReceipt(input.messages)
 
-      const fullSystemPrompt = conversationHistoryReceipt + systemPrompt + jsonInstructions
+      const fullSystemPrompt = systemPrompt + conversationHistoryReceipt + jsonInstructions
 
       // Check if we have messages in the input
-
       const hasMessages =
         typeof input === 'object' &&
         input !== null &&
@@ -151,6 +148,7 @@ export abstract class BaseAgent<TInput, TOutput> {
         usage: response.usage,
       }
     } catch (error) {
+      // TODO:: Potentially a good place to catch zod validation errors and retryinh
       throw this.createError(error)
     }
   }
@@ -159,41 +157,82 @@ export abstract class BaseAgent<TInput, TOutput> {
    * Extract and validate JSON from the response text
    */
   protected getJson(text: string): TOutput {
-    // First, try simple JSON.parse since the text usually contains valid JSON
+    // Debug logging to see what the agent actually returned
+    console.warn(`🔍 ${this.name} agent raw response:`, text.substring(0, 500) + (text.length > 500 ? '...' : ''))
+
+    // Try multiple parsing strategies for speed and reliability
     let parsedOutput
     try {
+      // Strategy 1: Direct JSON.parse (fastest)
       parsedOutput = JSON.parse(text)
+      console.warn(`✅ ${this.name} agent JSON.parse succeeded`)
     } catch {
-      // Fall back to extractJSON if direct parsing fails
       try {
-        parsedOutput = extractJSON(text)
-      } catch (error) {
-        console.error(`${this.name} agent failed to parse JSON:`, error)
-        console.error(`Response text:`, text)
-        throw new Error(`${this.name} agent did not return valid JSON`)
+        // Strategy 2: Try parsing after trimming and cleaning
+        const cleanedText = text.trim().replace(/^```json\s*|\s*```$/g, '')
+        parsedOutput = JSON.parse(cleanedText)
+        console.warn(`✅ ${this.name} agent cleaned JSON.parse succeeded`)
+      } catch {
+        // Strategy 3: Fall back to extractJSON (slower but more robust)
+        try {
+          parsedOutput = extractJSON(text)
+          console.warn(`✅ ${this.name} agent extractJSON succeeded`)
+        } catch (error) {
+          console.error(`❌ ${this.name} agent failed to parse JSON:`, error)
+          console.error(`❌ Response text:`, text)
+          throw new Error(`${this.name} agent did not return valid JSON`)
+        }
       }
     }
 
     if (!parsedOutput) {
-      console.error('No JSON found in the response')
+      console.error('❌ No JSON found in the response')
       console.error(text)
       throw new Error(`${this.name} agent did not return valid JSON`)
     }
 
+    // Debug logging for parsed output
+    console.warn(`🔍 ${this.name} agent parsed output:`, JSON.stringify(parsedOutput, null, 2))
+
     // Validate against schema
     try {
       const validatedOutput = this.outputSchema.parse(parsedOutput)
+      console.warn(`✅ ${this.name} agent schema validation succeeded`)
       return validatedOutput
     } catch (error) {
-      console.error(`Failed to validate ${this.name} JSON`, error)
+      console.error(`❌ Failed to validate ${this.name} JSON`, error)
+      console.error(`❌ Parsed output was:`, JSON.stringify(parsedOutput, null, 2))
       throw new Error(`Failed to validate ${this.name} JSON: ${error}`)
+    }
+  }
+
+  protected generateConversationHistoryReceipt(messages: ChatMessage[]): string {
+    try {
+      const conversationHistory = this.getConversationHistory(messages)
+
+      if (!conversationHistory || conversationHistory.trim() === '') {
+        return ''
+      }
+
+      return `
+      
+      ## CONVERSATION HISTORY (FOR CONTEXT ONLY)
+
+      The following is the conversation history leading up to the current question. \n\n
+      Use this ONLY for context and understanding. Do NOT attempt to answer previous questions.
+
+      ${conversationHistory}
+
+      ## END OF CONVERSATION HISTORY\n`
+    } catch (error) {
+      console.error('Error generating conversation history context', error)
+      return ''
     }
   }
 
   protected abstract getModel(input: TInput): any
   protected abstract getSystemPrompt(input: TInput): string | Promise<string>
   protected abstract getUserPrompt(input: TInput): string
-  protected abstract generateConversationHistoryReceipt(input: TInput): string
   protected abstract getTools(input: TInput): Record<string, any>
   protected abstract createError(error: unknown): Error
 

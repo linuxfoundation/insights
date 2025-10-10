@@ -42,18 +42,25 @@ SPDX-License-Identifier: MIT
             :message="message"
           />
           <span v-else>{{ message.content }}</span>
+          <lfx-chat-result
+            v-if="message.status === 'complete' && message.reformulatedQuestion"
+            :message="message"
+            :version="1"
+            :is-selected="false"
+          />
         </div>
-        <lfx-chat-result 
-          v-if="message.type === 'sql-result' || message.type === 'pipe-result'"
-          :message="message"
-          :version="resultVersion(message)" 
-          :is-selected="!!(selectedResultId && message.id === selectedResultId)"
-          @select="selectResult(message.id)"
-        />
-        <lfx-chat-feedback
-          v-if="message.type === 'chat-response-id'"
-          :id="message.content"
-        />
+        <div v-if="message.type === 'sql-result' || message.type === 'pipe-result'">
+          <lfx-chat-result
+            :message="message"
+            :version="resultVersion(message)"
+            :is-selected="!!(selectedResultId && message.id === selectedResultId)"
+            @select="selectResult(message.id)"
+          />
+          <lfx-chat-feedback
+            v-if="message.chatResponseId"
+            :id="message.chatResponseId"
+          />
+        </div>
       </div>
     </div>
   </div>
