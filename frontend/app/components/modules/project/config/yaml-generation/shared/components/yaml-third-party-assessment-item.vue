@@ -58,21 +58,15 @@ import LfxField from '~/components/uikit/field/field.vue'
 import LfxFieldMessages from '~/components/uikit/field/field-messages.vue'
 import LfxTextarea from '~/components/uikit/textarea/textarea.vue'
 
-interface ThirdPartyAssessment {
-  evidence: string
-  date: string
-  comment: string
-}
-
 const props = defineProps<{
-  modelValue: ThirdPartyAssessment
+  modelValue: object
 }>()
 
-const emit = defineEmits<{ (e: 'update:modelValue', value: ThirdPartyAssessment): void }>()
+const emit = defineEmits<{ (e: 'update:modelValue', value: object): void }>()
 
-const model = computed<ThirdPartyAssessment>({
+const model = computed<object>({
   get: () => props.modelValue,
-  set: (value: ThirdPartyAssessment) => emit('update:modelValue', value),
+  set: (value: object) => emit('update:modelValue', value),
 })
 
 const rules = {

@@ -65,8 +65,7 @@ const model = computed<object>({
 })
 
 const addSecurityTool = () => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ;(model.value as any).repository.security.tools.push({
+  model.value.repository.security.tools.push({
     name: '',
     type: '',
     version: '',
