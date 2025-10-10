@@ -18,11 +18,19 @@ const authState = ref<AuthData>({
 let lastSilentLoginAttempt = 0
 const SILENT_LOGIN_COOLDOWN = 30000 // 30 seconds
 
-// this determines if this is the first time the user is coming to the site
-const welcomeModal = localStorage.getItem('lfx-welcome-modal')
+// Helper functions for localStorage access with client-side checks
+const getSilentLoginAttempted = (): boolean => {
+  if (!process.client) return false
+  return localStorage.getItem('lfx-silent-login-attempted') === 'true'
+}
 
-// Track if silent login has already been attempted to prevent multiple executions
-let silentLoginAttempted = false
+const setSilentLoginAttempted = (value: boolean): void => {
+  if (!process.client) return
+  localStorage.setItem('lfx-silent-login-attempted', value.toString())
+}
+
+// this determines if this is the first time the user is coming to the site
+const welcomeModal = process.client ? localStorage.getItem('lfx-welcome-modal') : null
 
 export const useAuth = () => {
   // Fetch user data from server
@@ -46,7 +54,7 @@ export const useAuth = () => {
       authState.value = userData.value
 
       // Attempt silent login if suggested by the server and not already attempted
-      if (userData.value.shouldAttemptSilentLogin && process.client && !silentLoginAttempted) {
+      if (userData.value.shouldAttemptSilentLogin && process.client && !getSilentLoginAttempted()) {
         // check if this is the first time the user is coming to the site
         if (welcomeModal !== null) {
           attemptSilentLogin()
@@ -63,6 +71,8 @@ export const useAuth = () => {
     if (route.query.auth === 'success') {
       nextTick(async () => {
         await refreshAuth()
+        // Reset silent login flag when authentication is successful
+        setSilentLoginAttempted(false)
       })
     }
 
@@ -72,6 +82,8 @@ export const useAuth = () => {
       async (authParam) => {
         if (authParam === 'success') {
           await refreshAuth()
+          // Reset silent login flag when authentication is successful
+          setSilentLoginAttempted(false)
         }
       },
     )
@@ -120,10 +132,10 @@ export const useAuth = () => {
       if (isLoading.value) return
 
       // Prevent multiple silent login attempts - only allow once
-      if (silentLoginAttempted) {
+      if (getSilentLoginAttempted()) {
         return
       }
-      silentLoginAttempted = true
+      setSilentLoginAttempted(true)
 
       // Check cooldown period to prevent too frequent attempts
       const now = Date.now()
@@ -168,6 +180,8 @@ export const useAuth = () => {
 
   const login = async (redirectTo?: string) => {
     isLoading.value = true
+    // Reset silent login flag for next time
+    setSilentLoginAttempted(false)
     try {
       let currentPath = redirectTo || '/'
 
@@ -206,6 +220,8 @@ export const useAuth = () => {
 
   const logout = async () => {
     isLoading.value = true
+    // Reset silent login flag for next time
+    setSilentLoginAttempted(false)
     try {
       const response = await $fetch<{ success: boolean; logoutUrl: string }>('/api/auth/logout', {
         method: 'POST',
