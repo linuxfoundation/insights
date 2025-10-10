@@ -25,6 +25,8 @@ export default defineEventHandler(async (event): Promise<Response | Error> => {
   setHeader(event, 'Content-Type', 'text/plain; charset=utf-8')
   setHeader(event, 'Connection', 'close')
 
+  const config = useRuntimeConfig()
+
   try {
     const { messages, projectName, pipe, parameters, conversationId, projectSlug } =
       await readBody<IStreamRequestBody>(event)
@@ -45,13 +47,18 @@ export default defineEventHandler(async (event): Promise<Response | Error> => {
     const insightsDbPool = event.context.insightsDbPool as Pool
     const cmDbPool = event.context.cmDbPool as Pool
 
-    // find project by slug to get the segmentId
-    const insightsProjectsRepo = new InsightsProjectsRepository(cmDbPool)
+    let segmentId = ''
 
-    const insightsProjects = await insightsProjectsRepo.findInsightsProjectsBySlug(projectSlug)
-
-    if (!insightsProjects) {
-      return createError({ statusCode: 404, statusMessage: 'Project not found' })
+    if (config.cmDbEnabled) {
+      // find project by slug to get the segmentId
+      const insightsProjectsRepo = new InsightsProjectsRepository(cmDbPool)
+      const insightsProject = await insightsProjectsRepo.findInsightsProjectsBySlug(projectSlug)
+      if (!insightsProject) {
+        return createError({ statusCode: 404, statusMessage: 'Project not found' })
+      }
+      segmentId = insightsProject.segmentId
+    } else {
+      segmentId = config.dataCopilotDefaultSegmentId
     }
 
     const dataCopilot = new DataCopilot()
@@ -61,7 +68,7 @@ export default defineEventHandler(async (event): Promise<Response | Error> => {
       execute: async (dataStream) => {
         await dataCopilot.streamingAgentRequestHandler({
           currentQuestion: question,
-          segmentId: insightsProjects.segmentId,
+          segmentId: segmentId,
           projectName,
           pipe,
           parameters,

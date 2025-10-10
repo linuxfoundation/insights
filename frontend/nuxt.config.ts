@@ -65,6 +65,7 @@ export default defineNuxtConfig({
     cmDbUsername: "postgres",
     cmDbPassword: "example",
     cmDbDatabase: "crowd-web",
+    dataCopilotDefaultSegmentId: '',
     // These are also exposed on the client-side
     public: {
       apiBase: '/api',
