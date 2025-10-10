@@ -31,9 +31,9 @@ SPDX-License-Identifier: MIT
           label="Date"
           class="w-1/3"
         >
-          <lfx-input
+          <lfx-yaml-datepicker
             v-model="model.date"
-            placeholder="mm/dd/yyyy"
+            placeholder="dd/mm/yyyy"
           />
         </lfx-field>
       </div>
@@ -57,6 +57,8 @@ import LfxInput from '~/components/uikit/input/input.vue'
 import LfxField from '~/components/uikit/field/field.vue'
 import LfxFieldMessages from '~/components/uikit/field/field-messages.vue'
 import LfxTextarea from '~/components/uikit/textarea/textarea.vue'
+import LfxYamlDatepicker
+  from "~/components/modules/project/config/yaml-generation/shared/components/yaml-datepicker.vue";
 
 const props = defineProps<{
   modelValue: object

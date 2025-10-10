@@ -51,7 +51,7 @@ SPDX-License-Identifier: MIT
             label="Date"
             class="w-1/3"
           >
-            <lfx-input
+            <lfx-yaml-datepicker
               v-model="model.repository.security.assessments.self.date"
               placeholder="mm/dd/yyyy"
             />
@@ -142,6 +142,8 @@ import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue'
 import LfxFieldMessages from '~/components/uikit/field/field-messages.vue'
 import LfxYamlThirdPartyAssessmentItem from
   '~/components/modules/project/config/yaml-generation/shared/components/yaml-third-party-assessment-item.vue'
+import LfxYamlDatepicker
+  from "~/components/modules/project/config/yaml-generation/shared/components/yaml-datepicker.vue";
 
 const props = defineProps<{
   modelValue: object

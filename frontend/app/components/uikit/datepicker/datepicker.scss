@@ -10,26 +10,32 @@
     }
   }
 
-  &-calendar {
-    @apply flex-auto;
+  &-calendar-container {
+    &:has(.p-datepicker-calendar:nth-child(2)) {
+      .p-datepicker-calendar {
+        &:first-child {
+          .p-datepicker-next-button {
+            @apply invisible opacity-0 transition-none #{!important};
+          }
+        }
 
-    &:first-child {
-      .p-datepicker-next-button {
-        @apply invisible opacity-0 transition-none #{!important};
-      }
-    }
+        &:last-child{
+          @apply border-l border-neutral-100 pl-5;
 
-    &:last-child {
-      @apply border-l border-neutral-100 pl-5;
-
-      .p-datepicker-prev-button {
-        @apply invisible opacity-0 transition-none  #{!important};
+          .p-datepicker-prev-button {
+            @apply invisible opacity-0 transition-none  #{!important};
+          }
+        }
       }
     }
   }
 
+  &-calendar {
+    @apply flex-auto;
+  }
+
   &-header {
-    @apply flex justify-between items-center pb-2 border-b border-neutral-100 mb-2;
+    @apply flex justify-between items-center pb-2 border-b border-neutral-100 mb-2 px-1 gap-3;
   }
 
   &-next-button, &-prev-button {
@@ -84,5 +90,28 @@
       @apply bg-brand-100;
 
     }
+  }
+
+  &-panel[role="dialog"]{
+    @apply bg-white shadow-md rounded-md mt-2 px-2;
+  }
+
+  &-month-view, &-year-view {
+    @apply pb-2 px-3 flex flex-wrap
+  }
+
+  &-month, &-year{
+    @apply  text-center text-sm rounded-md py-0.5 cursor-pointer;
+
+    &:hover{
+      @apply bg-neutral-50;
+    }
+  }
+
+  &-month{
+    @apply basis-1/3;
+  }
+  &-year{
+    @apply basis-1/2;
   }
 }

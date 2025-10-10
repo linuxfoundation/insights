@@ -25,7 +25,7 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed, watch } from 'vue';
+import {computed, onUnmounted, watch} from 'vue';
 
 const props = withDefaults(defineProps<{
   modelValue: boolean,
@@ -77,13 +77,21 @@ const modalClass = computed(() => {
   };
 });
 
-watch(() => isModalOpened.value, (show: boolean) => {
+watch(() => props.modelValue, (show: boolean) => {
+  if(!document || !window) return;
   if (!show) {
     window.removeEventListener('keyup', onEscapeKeyUp);
+    document.documentElement.style.overflow = '';
   } else {
     window.addEventListener('keyup', onEscapeKeyUp);
+    document.documentElement.style.overflow = 'hidden';
   }
-});
+}, {immediate: true});
+
+onUnmounted(() => {
+  window.removeEventListener('keyup', onEscapeKeyUp);
+  document.documentElement.style.overflow = '';
+})
 </script>
 
 <script lang="ts">
