@@ -44,7 +44,7 @@ SPDX-License-Identifier: MIT
               type="transparent"
               size="small"
               button-style="pill"
-              class="whitespace-nowrap"
+              class="whitespace-nowrap !hidden lg:!flex"
               @click="isGenerateYamlModalOpen = true"
             >
               <lfx-icon name="file-shield" />

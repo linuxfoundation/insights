@@ -3,7 +3,7 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="flex flex-col bg-neutral-50 w-1/3 h-full relative border-r border-neutral-200">
+  <div class="flex flex-col bg-neutral-50 w-1/3 h-full relative border-r border-neutral-200 overflow-auto">
     <div class="flex flex-col gap-6 p-6">
       <!-- Why generate a YAML file section -->
       <div>

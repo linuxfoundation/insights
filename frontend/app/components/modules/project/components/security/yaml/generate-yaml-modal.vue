@@ -8,7 +8,7 @@ SPDX-License-Identifier: MIT
     width="1200px"
     height="900px"
     class="!justify-center"
-    content-class="!h-full"
+    content-class="!h-full !overflow-hidden"
   >
     <div class="flex h-full">
       <lf-security-generate-yaml-sidebar />
