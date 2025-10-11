@@ -34,7 +34,7 @@ export default defineNuxtConfig({
     '@nuxtjs/robots',
     '@nuxtjs/sitemap',
   ],
-  plugins: ['~/plugins/vue-query.ts', '~/plugins/analytics.ts'],
+  plugins: ['~/plugins/vue-query.ts', '~/plugins/analytics.ts', '~/plugins/canonical.ts'],
   css: ['~/assets/styles/main.scss'],
   tailwindcss,
   primevue,
