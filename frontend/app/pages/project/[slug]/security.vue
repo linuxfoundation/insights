@@ -16,9 +16,11 @@ const {project} = storeToRefs(useProjectStore());
 const route = useRoute()
 const config = useRuntimeConfig()
 
-const title = computed(() => `LFX Insights | ${project.value?.name} security insights`);
+const title = computed(() => `${project.value?.name} Security Insights`);
 const imageAlt = computed(() => `${project.value?.name} security insights`);
-const description = computed(() => `Explore ${project.value?.name} security insights`);
+const description = computed(() =>
+  `Check ${project.value?.name} security and best practices, `
+  + `including vulnerabilities, dependencies, licensing, and governance compliance.`);
 const url = computed(() => `${config.public.appUrl}${route.fullPath}`);
 const image = computed(() => (project.value
     ? `${config.public.appUrl}/api/seo/og-image?projectSlug=${project.value.slug}`

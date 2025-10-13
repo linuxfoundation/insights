@@ -17,12 +17,11 @@ const slug = route.params.slug as string;
 const {project, selectedRepositoryGroup} = storeToRefs(useProjectStore());
 const config = useRuntimeConfig()
 
-const title = computed(() => `LFX Insights | ${project.value?.name} ${
-  selectedRepositoryGroup.value?.name} security insights`);
-const imageAlt = computed(() => `${project.value?.name} ${
-  selectedRepositoryGroup.value?.name} security insights`);
-const description = computed(() => `Explore ${project.value?.name} ${
-  selectedRepositoryGroup.value?.name} security insights`);
+const title = computed(() => `${selectedRepositoryGroup.value?.name} Repositories Security | LFX Insights`);
+const imageAlt = computed(() => `${project.value?.name} ${selectedRepositoryGroup.value?.name} security insights`);
+const description = computed(() =>
+  `Check ${project.value?.name} ${selectedRepositoryGroup.value?.name} security and best practices, `
+  + `including vulnerabilities, dependencies, licensing, and governance compliance.`);
 const url = computed(() => `${config.public.appUrl}${route.fullPath}`);
 const image = computed(() => `${config.public.appUrl}/api/seo/og-image?projectSlug=${slug}&repositoryGroupSlug=${
     selectedRepositoryGroup.value?.slug

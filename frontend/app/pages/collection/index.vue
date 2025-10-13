@@ -10,8 +10,8 @@ SPDX-License-Identifier: MIT
 import LfxCollectionListView from "~/components/modules/collection/views/collection-list.vue";
 
 const title = 'Collections | LFX Insights';
-const description = 'Explore a curated list of collections to gain valuable insights'
-    + ' and stay informed with the latest trends and data on LFX Insights.';
+const description = 'Explore curated collections of open source projects on LFX Insights. '
+  + 'Discover projects grouped by technology, ecosystem, and community.';
 
 useSeoMeta({
   title,
