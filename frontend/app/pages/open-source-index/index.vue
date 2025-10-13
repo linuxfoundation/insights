@@ -9,9 +9,9 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import LfxOpenSourceIndex from '~/components/modules/open-source-index/views/open-source-index.vue';
 
-const title = 'Open Source Index | LFX Insights';
-const description = `Curated list of the most critical open source projects powering our modern
-    digital infrastructure, measured by contributor volume and software value`;
+const title = 'Open Source Index | by Linux Foundation';
+const description = 'Explore the Linux Foundation Open Source Index on LFX Insights. '
+  + 'Compare thousands of open source projects by contributors, software value, and category.';
 
 useSeoMeta({
   title,

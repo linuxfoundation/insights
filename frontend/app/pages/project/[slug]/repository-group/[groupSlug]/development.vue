@@ -21,19 +21,23 @@ const {project, selectedRepositoryGroup} = storeToRefs(useProjectStore());
 const widget = route.query?.widget
 const config = useRuntimeConfig();
 
-
-const title = computed(() => `LFX Insights | ${project.value?.name}  ${selectedRepositoryGroup.value?.name} ${
-    (widget && lfxWidgets[widget as Widget]?.name?.length)
+const title = computed(() => {
+    const widgetName = widget && lfxWidgets[widget as Widget]?.name?.length
         ? lfxWidgets[widget as Widget]?.name
-        : 'development insights'}`);
+        : 'Development';
+    return widget
+        ? `${selectedRepositoryGroup.value?.name} Repositories ${widgetName} | LFX Insights`
+        : `${selectedRepositoryGroup.value?.name} Repositories Development | LFX Insights`;
+});
 
-const imageAlt = computed(() => `${project.value?.name}  ${selectedRepositoryGroup.value?.name} development insights${
+const imageAlt = computed(() => `${project.value?.name} ${selectedRepositoryGroup.value?.name} development insights${
     (widget && lfxWidgets[widget as Widget]?.name?.length)
         ? ` - ${lfxWidgets[widget as Widget]?.name}`
         : ''}`);
 
-const description = computed(() => `Explore ${project.value?.name} ${
-  selectedRepositoryGroup.value?.name} development insights`);
+const description = computed(() =>
+  `Track ${project.value?.name} ${selectedRepositoryGroup.value?.name} development activity, `
+  + `including commits, releases, pull requests, and issues over time.`);
 
 const url = computed(() => `${config.public.appUrl}${route.fullPath}`);
 
