@@ -1,10 +1,30 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
+import { Pool } from 'pg'
 import { generateChartConfig, modifyChartConfig } from '../../../lib/chat/chart/generator'
+import { ChatRepository } from '../../repo/chat.repo'
 import { Result, Config, DataMapping } from '../../../lib/chat/chart/types'
 import { PipeInstructions } from '~~/lib/chat/types'
 
 export const maxDuration = 30
+
+// Helper function to get router reasoning from conversation
+async function getRouterReasoningFromConversation(
+  pool: Pool,
+  conversationId?: string,
+): Promise<string | undefined> {
+  if (!conversationId) return undefined
+
+  try {
+    const chatRepo = new ChatRepository(pool)
+    const latestResponse = await chatRepo.getLatestChatResponseByConversation(conversationId)
+
+    return latestResponse?.routerReason || undefined
+  } catch (error) {
+    console.error('Error fetching router reasoning from conversation:', error)
+    return undefined
+  }
+}
 
 interface IChartRequestBody {
   results?: Result[]
@@ -12,7 +32,7 @@ interface IChartRequestBody {
   currentConfig?: Config
   instructions?: string
   pipeInstructions?: PipeInstructions
-  routerReasoning?: string
+  conversationId?: string
 }
 
 interface ChartConfigResponse {
@@ -25,8 +45,14 @@ interface ChartConfigResponse {
 
 export default defineEventHandler(async (event): Promise<ChartConfigResponse | Error> => {
   try {
-    const { results, userQuery, currentConfig, instructions, pipeInstructions, routerReasoning } =
+    const { results, userQuery, currentConfig, instructions, pipeInstructions, conversationId } =
       await readBody<IChartRequestBody>(event)
+
+    // Get router reasoning from conversation
+    const routerReasoning = await getRouterReasoningFromConversation(
+      event.context.insightsDbPool as Pool,
+      conversationId,
+    )
 
     // If pipe instructions are provided, execute them first to get results
     if (pipeInstructions && !results) {
@@ -42,7 +68,11 @@ export default defineEventHandler(async (event): Promise<ChartConfigResponse | E
           })
         }
 
-        const chartGeneration = await generateChartConfig(executedResults as Result[], userQuery, routerReasoning)
+        const chartGeneration = await generateChartConfig(
+          executedResults as Result[],
+          userQuery,
+          routerReasoning,
+        )
 
         return {
           success: true,
@@ -90,7 +120,11 @@ export default defineEventHandler(async (event): Promise<ChartConfigResponse | E
       })
     }
 
-    const chartGeneration = await generateChartConfig(results as Result[], userQuery, routerReasoning)
+    const chartGeneration = await generateChartConfig(
+      results as Result[],
+      userQuery,
+      routerReasoning,
+    )
 
     return {
       success: true,

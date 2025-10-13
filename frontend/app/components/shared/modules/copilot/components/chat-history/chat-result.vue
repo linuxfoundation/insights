@@ -5,13 +5,14 @@ SPDX-License-Identifier: MIT
 <template>
   <div>
     <div
+      v-if="shouldShowReasoning"
       class="cursor-pointer flex items-center gap-1"
       @click="isReasonExpanded = !isReasonExpanded"
     >
-      <lfx-chat-label 
+      <lfx-chat-label
         v-if="message"
-        label="Reasoning" 
-        :status="message.status" 
+        label="Reasoning"
+        :status="message.status"
       />
       <lfx-icon
         :name="isReasonExpanded ? 'angle-up' : 'angle-down'"
@@ -19,38 +20,16 @@ SPDX-License-Identifier: MIT
       />
     </div>
     <div
-      v-if="isReasonExpanded"
+      v-if="isReasonExpanded && shouldShowReasoning"
       class="my-4 text-xs text-neutral-400"
     >
       {{ reasoning }}
     </div>
-    <div class="my-4">{{ message.content }}</div>
-
-    <span 
-      class="flex items-center p-3 border border-solid border-neutral-200 
-      rounded-xl bg-white justify-between cursor-pointer hover:bg-neutral-50"
-      @click="emit('select')"
-    >
-      <lfx-chat-result-label
-        :version="version"
-        :label="getTitle(message.id)"
-      />
-      <lfx-icon
-        v-if="!isSelected"
-        name="arrow-rotate-left"
-        :size="16"
-        class="text-neutral-400"
-      />
-    </span>
-    
   </div>
 </template>
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { storeToRefs } from 'pinia';
 import type { AIMessage } from '../../types/copilot.types'
-import LfxChatResultLabel from '../shared/result-label.vue'
-import { useCopilotStore } from '../../store/copilot.store';
 import LfxChatLabel from './chat-label.vue'
 import LfxIcon from '~/components/uikit/icon/icon.vue'
 
@@ -60,23 +39,16 @@ const props = defineProps<{
   isSelected: boolean | undefined
 }>()
 
-const { resultData } = storeToRefs(useCopilotStore());
-
 const isReasonExpanded = ref(false);
-// TODO: Implement feedback backend
 
-const emit = defineEmits<{
-  (e: 'select'): void
-}>()
+const shouldShowReasoning = computed(() => {
+  return props.message.type === 'router-status';
+});
 
 const reasoning = computed(() => {
-  return props.message.explanation || props.message.sql;
+  return props.message.reformulatedQuestion || props.message.explanation || props.message.sql;
 })
 
-const getTitle = (id: string) => {
-  const result = resultData.value.find(r => String(r.id) === String(id));
-  return result?.title || 'Loading...';
-}
 </script>
 
 <script lang="ts">

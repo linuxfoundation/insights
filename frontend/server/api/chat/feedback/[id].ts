@@ -29,12 +29,12 @@ export default defineEventHandler(async (event): Promise<IFeedbackRequestRespons
       return createError({ statusCode: 400, statusMessage: 'Feedback must be 0, 1, or null' })
     }
 
-    const dbPool = event.context.dbPool as Pool
-    if (!dbPool) {
+    const insightsDbPool = event.context.insightsDbPool as Pool
+    if (!insightsDbPool) {
       return createError({ statusCode: 500, statusMessage: 'Database connection not available' })
     }
 
-    const chatRepo = new ChatRepository(dbPool)
+    const chatRepo = new ChatRepository(insightsDbPool)
     const updated = await chatRepo.updateChatFeedback(chatResponseId, feedback)
 
     if (!updated) {

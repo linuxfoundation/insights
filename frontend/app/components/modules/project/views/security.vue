@@ -31,21 +31,49 @@ SPDX-License-Identifier: MIT
             >Learn more</a>
           </p>
         </div>
-        <!-- Update button and last updated -->
-        <!--        <div class="flex items-center gap-2">-->
-        <!--          <p class="text-body-2 text-neutral-500 italic whitespace-nowrap">-->
-        <!--            Last updated 1 day ago-->
-        <!--          </p>-->
-        <!--          <lfx-button-->
-        <!--            type="tertiary"-->
-        <!--            size="small"-->
-        <!--            button-style="pill"-->
-        <!--            class="whitespace-nowrap"-->
-        <!--          >-->
-        <!--            <lfx-icon name="arrows-rotate-reverse" />-->
-        <!--            Update results-->
-        <!--          </lfx-button>-->
-        <!--        </div>-->
+        <!-- Generate YAML and Update buttons -->
+        <div
+          v-if="!isFetching && data?.length && !allArchived"
+          class="flex items-center gap-2"
+        >
+          <lfx-tooltip
+            v-if="!PROJECT_SECURITY_SERVICE.hasSecurityMdFile(data || [])"
+            placement="top"
+          >
+            <lfx-button
+              type="transparent"
+              size="small"
+              button-style="pill"
+              class="whitespace-nowrap !hidden lg:!flex"
+              @click="isGenerateYamlModalOpen = true"
+            >
+              <lfx-icon name="file-shield" />
+              Generate YAML file
+            </lfx-button>
+
+            <template #content>
+              <div class="flex flex-col gap-1 max-w-72">
+                <div class="font-semibold text-white text-xs">
+                  YAML Security specifications file
+                </div>
+                <div class="text-neutral-300 text-xs">
+                  Generate a YAML security file, upload it to your repository,
+                  and ensure we can run all security assessments for your project.
+                </div>
+              </div>
+            </template>
+          </lfx-tooltip>
+          <!-- TODO: Enable when backend is ready -->
+          <!--          <lfx-button-->
+          <!--            type="tertiary"-->
+          <!--            size="small"-->
+          <!--            button-style="pill"-->
+          <!--            class="whitespace-nowrap"-->
+          <!--          >-->
+          <!--            <lfx-icon name="arrows-rotate-reverse" />-->
+          <!--            Update results-->
+          <!--          </lfx-button>-->
+        </div>
       </div>
 
       <!-- Disclaimer for aggregated view -->
@@ -147,6 +175,10 @@ SPDX-License-Identifier: MIT
       />
     </lfx-card>
   </div>
+  <lf-security-generate-yaml-modal
+    v-if="isGenerateYamlModalOpen"
+    v-model="isGenerateYamlModalOpen"
+  />
 </template>
 
 <script setup lang="ts">
@@ -174,11 +206,16 @@ import { PROJECT_SECURITY_SERVICE } from "~/components/modules/project/services/
 import LfxReposExclusionFooter from '~/components/shared/components/repos-exclusion-footer.vue';
 import LfxEmptyState from '~/components/shared/components/empty-state.vue';
 import LfxTag from "~/components/uikit/tag/tag.vue";
+import LfxButton from "~/components/uikit/button/button.vue";
+import LfxTooltip from "~/components/uikit/tooltip/tooltip.vue";
+import LfSecurityGenerateYamlModal from "~/components/modules/project/components/security/yaml/generate-yaml-modal.vue";
 
 const accordion = ref('');
 
 const route = useRoute();
 const { name } = route.params;
+
+const isGenerateYamlModalOpen = ref(false);
 
 const {
   selectedReposValues,
@@ -213,17 +250,22 @@ const {
 
 // TODO: Remove this when we have data for them
 const securityAssessmentData = computed(() => PROJECT_SECURITY_SERVICE
-.removeDocumentationAndVulnerability(data.value || []));
+    .removeUnavailableChecks(data.value || []));
 
 const groupedData = computed(() => (securityAssessmentData.value || []).reduce((mapping, check) => {
     const obj = {...mapping};
     if (!obj[check.category]) {
       obj[check.category] = [];
     }
-    check.assessments = PROJECT_SECURITY_SERVICE.orderAssessmentsByRequirementId(
+    const tmpAssessments = PROJECT_SECURITY_SERVICE.orderAssessmentsByRequirementId(
       PROJECT_SECURITY_SERVICE.mergeDuplicateAssessments(check.assessments)
     );
-    obj[check.category]?.push(check);
+    // Create a copy of the check object to avoid mutating the original
+    const checkCopy = {
+      ...check,
+      assessments: tmpAssessments
+    };
+    obj[check.category]?.push(checkCopy);
     return obj;
   }, {} as Record<string, SecurityData[]>))
 
@@ -232,10 +274,15 @@ const groupChecksByRepository = (checks: SecurityData[]) => (checks || []).reduc
     if (!obj[check.repo]) {
       obj[check.repo] = [];
     }
-    check.assessments = PROJECT_SECURITY_SERVICE.orderAssessmentsByRequirementId(
+    const tmpAssessments = PROJECT_SECURITY_SERVICE.orderAssessmentsByRequirementId(
       PROJECT_SECURITY_SERVICE.mergeDuplicateAssessments(check.assessments)
     );
-    obj[check.repo]?.push(check);
+    // Create a copy of the check object to avoid mutating the original
+    const checkCopy = {
+      ...check,
+      assessments: tmpAssessments
+    };
+    obj[check.repo]?.push(checkCopy);
     return obj;
   }, {} as Record<string, SecurityData[]>)
 

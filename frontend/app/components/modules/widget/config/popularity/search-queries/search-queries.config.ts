@@ -13,6 +13,10 @@ const searchQueries: WidgetConfig = {
   embed: true,
   snapshot: true,
   hideOnRepoFilter: true,
+  copilot: {
+    icon: 'magnifying-glass',
+    suggestions: 'What is the search volume for this project?'
+  },
   benchmark: {
     title: 'Search Queries',
     showOnOverview: true,

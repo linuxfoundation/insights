@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 export const tagStyles = [
   'default',
+  'neutral',
   'info',
   'positive',
   'warning',

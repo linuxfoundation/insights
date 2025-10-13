@@ -1,7 +1,11 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import type { DataStreamWriter } from 'ai'
+import type { Pool } from 'pg'
 import { z } from 'zod'
+import { RouterDecisionAction } from './enums'
+import type { ChatResponse } from '~~/server/repo/chat.repo'
 
 // ============================================
 // Pipe Instruction Types
@@ -86,10 +90,20 @@ export type Instructions = z.infer<typeof instructionsSchema>
 
 // Router agent output schema
 export const routerOutputSchema = z.object({
-  next_action: z.enum(['stop', 'create_query', 'pipes']),
+  next_action: z.enum([
+    RouterDecisionAction.STOP,
+    RouterDecisionAction.CREATE_QUERY,
+    RouterDecisionAction.PIPES,
+    RouterDecisionAction.ASK_CLARIFICATION,
+  ]),
   reasoning: z.string().describe('Maximum 2 sentences explaining the decision'),
   reformulated_question: z.string().describe('Enhanced query with all parameters'),
   tools: z.array(z.string()).describe('Tools needed for next agent'),
+  clarification_question: z
+    .string()
+    .optional()
+    .nullable()
+    .describe('Question to ask user when next_action is ASK_CLARIFICATION'),
 })
 
 // Pipe agent output schema
@@ -100,16 +114,28 @@ export const pipeOutputSchema = z.object({
   ),
 })
 
+// Auditor agent output schema
+export const auditorOutputSchema = z.object({
+  is_valid: z.boolean().describe('true = data answers question, false = needs retry'),
+  reasoning: z.string().describe('2-3 sentences explaining the validation decision'),
+  feedback_to_router: z
+    .string()
+    .optional()
+    .describe('If invalid, specific guidance for router to fix the issue'),
+  summary: z.string().optional().describe('If valid, user-friendly summary of findings'),
+})
+
 // TypeScript types for agent outputs
 export type RouterOutput = z.infer<typeof routerOutputSchema> & { usage?: any }
 export type PipeOutput = z.infer<typeof pipeOutputSchema> & { usage?: any }
+export type AuditorOutput = z.infer<typeof auditorOutputSchema> & { usage?: any }
 
 // ============================================
 // Agent Input Types
 // ============================================
 
 export interface ChatMessage {
-  content: string,
+  content: string
   role: string
 }
 
@@ -123,6 +149,14 @@ export interface RouterAgentInput {
   pipe: string
   parametersString: string
   segmentId: string | null
+  previousWasClarification?: boolean
+}
+
+export interface PipeAgentStreamInput extends Omit<PipeAgentInput, 'model' | 'tools' | 'date'> {
+  dataStream: DataStreamWriter
+  date: string
+  responseData: ChatResponse
+  routerOutput: RouterOutput
 }
 
 export interface PipeAgentInput {
@@ -136,4 +170,67 @@ export interface PipeAgentInput {
   segmentId: string | null
   reformulatedQuestion: string
   toolNames: string[] // Array of tool names from router
+}
+
+export interface DataCopilotQueryInput {
+  currentQuestion: string // The current user question
+  segmentId?: string
+  projectName?: string
+  pipe: string
+  parameters?: Record<string, unknown>
+  conversationId: string
+  insightsDbPool: Pool
+  userEmail: string
+  dataStream: DataStreamWriter // DataStreamWriter from AI SDK
+}
+
+export interface SqlErrorContext {
+  errorMessage: string
+  previousQuery: string
+  attemptNumber: number
+}
+
+export interface TextToSqlAgentInput {
+  messages: ChatMessage[]
+  date: string
+  projectName: string
+  pipe: string
+  parametersString: string
+  segmentId: string
+  reformulatedQuestion: string
+  errorContext?: SqlErrorContext
+}
+
+export interface TextToSqlAgentStreamInput {
+  messages: ChatMessage[]
+  date: string
+  projectName: string
+  pipe: string
+  parametersString: string
+  segmentId: string
+  reformulatedQuestion: string
+  dataStream: any
+  errorContext?: SqlErrorContext
+}
+
+export interface AuditorAgentInput {
+  model: any
+  messages: ChatMessage[]
+  originalQuestion: string
+  reformulatedQuestion: string
+  dataSummary: import('./utils/data-summary').DataSummary
+  attemptNumber: number
+  previousFeedback?: string
+}
+
+export interface AgentResponseCompleteParams {
+  userPrompt: string
+  responseData: ChatResponse
+  routerOutput: RouterOutput
+  pipeInstructions?: PipeInstructions
+  sqlQuery?: string
+  conversationId?: string
+  insightsDbPool: Pool
+  userEmail: string
+  dataStream: DataStreamWriter
 }

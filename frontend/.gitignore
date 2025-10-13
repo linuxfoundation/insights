@@ -37,3 +37,7 @@ robots.txt
 # SSL
 certs/
 certs/*
+
+# Claude
+CLAUDE.md
+.claude

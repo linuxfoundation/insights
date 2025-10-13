@@ -17,6 +17,10 @@ const packageDependency: WidgetConfig = {
   share: true,
   embed: true,
   snapshot: true,
+  copilot: {
+    icon: 'box',
+    suggestions: 'How many packages depend on this project?'
+  },
 };
 
 export default packageDependency;
