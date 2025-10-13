@@ -21,18 +21,23 @@ const {project, selectedRepositoryGroup} = storeToRefs(useProjectStore());
 const widget = route.query?.widget
 const config = useRuntimeConfig();
 
-const title = computed(() => `LFX Insights | ${project.value?.name} ${selectedRepositoryGroup.value?.name} ${
-    (widget && lfxWidgets[widget as Widget]?.name?.length)
-        ? lfxWidgets[widget as Widget]?.name
-        : 'popularity insights'}`);
+const title = computed(() => {
+  const widgetName = widget && lfxWidgets[widget as Widget]?.name?.length
+      ? lfxWidgets[widget as Widget]?.name
+      : 'Popularity';
+  return widget
+      ? `${selectedRepositoryGroup.value?.name} Repositories ${widgetName} | LFX Insights`
+      : `${selectedRepositoryGroup.value?.name} Repositories Popularity | LFX Insights`;
+});
 
 const imageAlt = computed(() => `${project.value?.name} ${selectedRepositoryGroup.value?.name} popularity insights${
     (widget && lfxWidgets[widget as Widget]?.name?.length)
         ? ` - ${lfxWidgets[widget as Widget]?.name}`
         : ''}`);
 
-const description = computed(() => `Explore ${project.value?.name} ${
-  selectedRepositoryGroup.value?.name} popularity insights`);
+const description = computed(() =>
+  `Explore ${project.value?.name} ${selectedRepositoryGroup.value?.name} popularity `
+  + `with data on stars, forks, watchers, and adoption across the open source ecosystem.`);
 
 const url = computed(() => `${config.public.appUrl}${route.fullPath}`);
 

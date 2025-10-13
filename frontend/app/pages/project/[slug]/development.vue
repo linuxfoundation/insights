@@ -22,15 +22,19 @@ const config = useRuntimeConfig()
 
 const widget = route.query?.widget
 
-const title = computed(() => `LFX Insights | ${project.value?.name} ${
-  (widget && lfxWidgets[widget as Widget]?.name?.length)
-    ? lfxWidgets[widget as Widget]?.name
-    : 'development insights'}`);
+const title = computed(() => {
+    const widgetName = widget && lfxWidgets[widget as Widget]?.name?.length
+        ? lfxWidgets[widget as Widget]?.name
+        : 'Development Insights';
+    return widget ? `${project.value?.name} ${widgetName}` : `${project.value?.name} Development Insights`;
+});
 const imageAlt = computed(() => `${project.value?.name} development insights${
   (widget && lfxWidgets[widget as Widget]?.name?.length)
     ? ` - ${lfxWidgets[widget as Widget]?.name}`
     : ''}`);
-const description = computed(() => `Explore ${project.value?.name} development insights`);
+const description = computed(() =>
+  `Track ${project.value?.name} development activity, `
+  + `including commits, releases, pull requests, and issues over time.`);
 const url = computed(() => `${config.public.appUrl}${route.fullPath}`);
 const image = computed(() => (project.value
     ? `${config.public.appUrl}/api/seo/og-image?projectSlug=${project.value.slug}`

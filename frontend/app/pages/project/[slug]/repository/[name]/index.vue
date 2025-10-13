@@ -21,9 +21,11 @@ const config = useRuntimeConfig()
 const repository = computed(() => selectedRepositories.value.find((repo) => repo.slug === name));
 const repoName = computed(() => (repository.value?.name || name).split('/').at(-1));
 
-const title = computed(() => `LFX Insights | ${project.value?.name} ${repoName.value} insights`);
+const title = computed(() => `${project.value?.name} ${repoName.value} Repository | LFX Insights`);
 const imageAlt = computed(() => `${project.value?.name} ${repoName.value} insights`);
-const description = computed(() => `Explore ${project.value?.name} ${repoName.value} insights`);
+const description = computed(() =>
+  `Analyze the ${repoName.value} repository with LFX Insights. `
+  + `See contributor activity, code changes, and development trends over time.`);
 const url = computed(() => `${config.public.appUrl}${route.fullPath}`);
 const image = computed(() => `${config.public.appUrl}/api/seo/og-image?projectSlug=${slug}&repositorySlug=${name}`);
 

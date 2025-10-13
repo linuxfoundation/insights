@@ -21,18 +21,23 @@ const {project, selectedRepositoryGroup} = storeToRefs(useProjectStore());
 const widget = route.query?.widget
 const config = useRuntimeConfig()
 
-const title = computed(() => `LFX Insights | ${project?.value?.name} ${selectedRepositoryGroup.value?.name} ${
-    (widget && lfxWidgets[widget as Widget]?.name?.length)
-        ? lfxWidgets[widget as Widget]?.name
-        : 'contributor insights'}`);
+const title = computed(() => {
+  const widgetName = widget && lfxWidgets[widget as Widget]?.name?.length
+      ? lfxWidgets[widget as Widget]?.name
+      : 'Contributors';
+  return widget
+      ? `${selectedRepositoryGroup.value?.name} Repositories ${widgetName} | LFX Insights`
+      : `${selectedRepositoryGroup.value?.name} Repositories Contributors | LFX Insights`;
+});
 
 const imageAlt = computed(() => `${project?.value?.name} ${selectedRepositoryGroup.value?.name} contributor insights${
     (widget && lfxWidgets[widget as Widget]?.name?.length)
         ? ` - ${lfxWidgets[widget as Widget]?.name}`
         : ''}`);
 
-const description = computed(() => `Explore ${project?.value?.name} ${
-  selectedRepositoryGroup.value?.name} contributor insights`);
+const description = computed(() =>
+  `See who contributes to ${project?.value?.name} ${selectedRepositoryGroup.value?.name}, `
+  + `with insights on maintainers, top contributors, and organizations in open source.`);
 const url = computed(() => `${config.public.appUrl}${route.fullPath}`);
 const image = computed(() => `${config.public.appUrl}/api/seo/og-image?projectSlug=${slug}&repositoryGroupSlug=${
     selectedRepositoryGroup.value?.slug

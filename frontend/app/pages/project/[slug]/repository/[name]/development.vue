@@ -25,17 +25,19 @@ const config = useRuntimeConfig();
 const repository = computed(() => selectedRepositories.value.find((repo) => repo.slug === name));
 const repoName = computed(() => (repository.value?.name || name).split('/').at(-1));
 
-const title = computed(() => `LFX Insights | ${project.value?.name} ${repoName.value} ${
+const title = computed(() => `${project?.value?.name} ${repoName.value} Repository ${
     (widget && lfxWidgets[widget as Widget]?.name?.length)
         ? lfxWidgets[widget as Widget]?.name
-        : 'development insights'}`);
+        : 'development'} | LFX Insights`);
 
 const imageAlt = computed(() => `${project.value?.name} ${repoName.value} development insights${
     (widget && lfxWidgets[widget as Widget]?.name?.length)
         ? ` - ${lfxWidgets[widget as Widget]?.name}`
         : ''}`);
 
-const description = computed(() => `Explore ${project.value?.name} ${repoName.value} development insights`);
+const description = computed(() =>
+  `Track ${project.value?.name} ${repoName.value} development activity, `
+  + `including commits, releases, pull requests, and issues over time.`);
 
 const url = computed(() => `${config.public.appUrl}${route.fullPath}`);
 
