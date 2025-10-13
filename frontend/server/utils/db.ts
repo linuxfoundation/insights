@@ -3,12 +3,13 @@
 import { Pool } from 'pg';
 import { isLocal } from './common';
 
-let pool: Pool | null = null;
+let insightsDbPool: Pool | null = null;
+let cmDbPool: Pool | null = null;
 
-export function getDbPool(): Pool {
+export function getInsightsDbPool(): Pool {
     const config = useRuntimeConfig()
-  if (!pool) {
-    pool = new Pool({
+  if (!insightsDbPool) {
+    insightsDbPool = new Pool({
       host: config.insightsDbWriteHost,
       port: config.insightsDbPort,
       database: config.insightsDbDatabase,
@@ -20,5 +21,24 @@ export function getDbPool(): Pool {
       ssl: isLocal ? false : { rejectUnauthorized: false },
     });
   }
-  return pool;
+  return insightsDbPool;
+}
+
+
+export function getCMDbPool(): Pool {
+    const config = useRuntimeConfig()
+  if (!cmDbPool) {
+    cmDbPool = new Pool({
+      host: config.cmDbWriteHost,
+      port: config.cmDbPort,
+      database: config.cmDbDatabase,
+      user: config.cmDbUsername,
+      password: config.cmDbPassword,
+      max: 20,
+      idleTimeoutMillis: 30000,
+      connectionTimeoutMillis: 2000,
+      ssl: isLocal ? false : { rejectUnauthorized: false },
+    });
+  }
+  return cmDbPool;
 }

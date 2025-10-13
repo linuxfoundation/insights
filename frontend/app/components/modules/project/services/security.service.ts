@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: MIT
 import {
   type SecurityData,
-  SecurityDataCategory,
   SecurityDataResult,
   type SecurityAssessmentData,
 } from '~~/types/security/responses.types'
@@ -29,19 +28,6 @@ class ProjectSecurityService {
    * @param data
    * @returns
    */
-  removeDocumentationAndVulnerability(data: SecurityData[]): SecurityData[] {
-    if (!data || !Array.isArray(data) || data.length === 0) {
-      return []
-    }
-
-    return this.removeUnavailableChecks(
-      data.filter(
-        (item) =>
-          item.category !== SecurityDataCategory.DOCUMENTATION &&
-          item.category !== SecurityDataCategory.VULNERABILITY_MANAGEMENT,
-      ),
-    )
-  }
 
   removeUnavailableChecks(data: SecurityData[]): SecurityData[] {
     if (!data || !Array.isArray(data) || data.length === 0) {
@@ -52,6 +38,18 @@ class ProjectSecurityService {
 
     return data.filter((item) => !filteredCheck.includes(item.controlId))
   }
+
+
+    hasSecurityMdFile(data: SecurityData[]): boolean {
+      const vulnerabilityManagement: SecurityAssessmentData[] =
+        data.find((d) => d.controlId === 'OSPS-VM-02')?.assessments || [];
+      const securityMdFile: SecurityAssessmentData | undefined =
+        vulnerabilityManagement.find((d) => d.requirementId === 'OSPS-VM-02.01');
+      if(!securityMdFile){
+          return false;
+      }
+      return securityMdFile.result !== SecurityDataResult.FAILED;
+    }
 
   /**
    * Merge duplicate assessments - if there are multiple assessments for the same requirement, merge them

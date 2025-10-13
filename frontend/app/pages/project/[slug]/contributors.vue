@@ -24,8 +24,8 @@ const widget = route.query?.widget
 const title = computed(() => {
     const widgetName = widget && lfxWidgets[widget as Widget]?.name?.length
         ? lfxWidgets[widget as Widget]?.name
-        : 'contributor insights';
-    return `LFX Insights | ${project.value?.name} ${widgetName}`;
+        : 'Contributors Insights';
+    return widget ? `${project.value?.name} ${widgetName}` : `${project.value?.name} Contributors Insights`;
 });
 const imageAlt = computed(() => {
     const widgetName = widget && lfxWidgets[widget as Widget]?.name?.length
@@ -33,7 +33,9 @@ const imageAlt = computed(() => {
         : '';
     return `${project.value?.name} contributor insights${widgetName ? ` - ${widgetName}` : ''}`;
 });
-const description = computed(() => `Explore ${project.value?.name} contributor insights`);
+const description = computed(() =>
+  `See who contributes to ${project.value?.name}, `
+  + `with insights on maintainers, top contributors, and organizations in open source.`);
 const url = computed(() => `${config.public.appUrl}${route.fullPath}`);
 const image = computed(() => (project.value
     ? `${config.public.appUrl}/api/seo/og-image?projectSlug=${project.value.slug}`

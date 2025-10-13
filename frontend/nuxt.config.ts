@@ -34,7 +34,7 @@ export default defineNuxtConfig({
     '@nuxtjs/robots',
     '@nuxtjs/sitemap',
   ],
-  plugins: ['~/plugins/vue-query.ts', '~/plugins/analytics.ts'],
+  plugins: ['~/plugins/vue-query.ts', '~/plugins/analytics.ts', '~/plugins/canonical.ts'],
   css: ['~/assets/styles/main.scss'],
   tailwindcss,
   primevue,
@@ -58,6 +58,14 @@ export default defineNuxtConfig({
     insightsDbUsername: 'postgres',
     insightsDbPassword: 'example',
     insightsDbDatabase: 'insights',
+    cmDbEnabled: isProduction,
+    cmDbWriteHost: "localhost",
+    cmDbReadHost: "localhost",
+    cmDbPort: 5432,
+    cmDbUsername: "postgres",
+    cmDbPassword: "example",
+    cmDbDatabase: "crowd-web",
+    dataCopilotDefaultSegmentId: '',
     // These are also exposed on the client-side
     public: {
       apiBase: '/api',

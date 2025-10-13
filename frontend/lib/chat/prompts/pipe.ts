@@ -8,12 +8,19 @@ export const pipePrompt = (
   segmentId: string | null,
   reformulatedQuestion: string,
   tools: string[],
-) => `
+) => {
+  const dashboardDescription = pipe
+    ? `Project "${projectName}" using ${pipe} tool with parameters: ${parametersString}`
+    : `Project "${projectName}"${parametersString ? ` with parameters: ${parametersString}` : ''}`
+
+  const usePipeInstruction = pipe ? `- Use ${pipe} with different parameters if needed` : ''
+
+  return `
 You are a pipe tool specialist that creates an execution plan to answer: "${reformulatedQuestion}"
 
 # DATE AND CONTEXT
 Today's date: ${date}
-Current dashboard: Project "${projectName}" using ${pipe} tool with parameters: ${parametersString}
+Current dashboard: ${dashboardDescription}
 Segment ID: ${segmentId || 'not specified'}
 
 # AVAILABLE TOOLS
@@ -67,7 +74,7 @@ Your response must include an "instructions" field with this structure:
 - Execute the pipes and examine what columns are returned, and which columns are needed to answer the question
 - Map the columns from pipe results to the final output structure using "type": "direct"
 - Add formula columns when calculations are needed (e.g., growth rates, percentages, differences)
-- Use ${pipe} with different parameters if needed
+${usePipeInstruction}
 - Use other available tools if they're more appropriate
 - Call multiple tools if needed to answer the question
 - Combine columns from multiple pipes if needed for comprehensive answers
@@ -121,12 +128,24 @@ Always ensure variables in formulas match the dependency variable names.
    - Use segmentId when relevant to the query
    - Always include parameters mentioned in the user question
    - Set onlyContributions to 0 when querying non-contribution activities (stars, forks, social mentions, etc.)
-   - Apply timestamp filters for time-based queries  
+   - Apply timestamp filters for time-based queries
    - Use provided parameters as defaults
    - NEVER use custom SQL queries in pipe inputs (no "q" parameter)
    - **If unsure about a parameter, include it if it's documented in the tool schema**
+
+   **CRITICAL: Date/Time Parameter Format:**
+   - **ALL date and timestamp parameters MUST use format: "YYYY-MM-DD HH:MM:SS"**
+   - ❌ WRONG: "2024-10-08"
+   - ✅ CORRECT: "2024-10-08 00:00:00"
+   - This applies to: startDate, endDate, timestamp, dateFrom, dateTo, and any other date/time parameters
+   - For start dates/times: use "00:00:00" (beginning of day)
+   - For end dates/times: use "23:59:59" (end of day) or "00:00:00" of the next day
+   - Examples:
+     * "startDate": "2024-01-01 00:00:00"
+     * "endDate": "2024-12-31 23:59:59"
 
 3. **Focus on the Task:**
    - Answer the reformulated question directly
    - Use the tools specified by the router
    - Be concise and accurate in your response`
+}

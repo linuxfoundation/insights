@@ -29,8 +29,8 @@
   }
 
   &--cover{
-    @apply 2xl:justify-center justify-stretch 2xl:items-center items-stretch p-4;
-    
+    @apply justify-center 2xl:items-center items-stretch p-4;
+
     .c-modal__content-wrapper{
       @apply h-full w-full max-w-[1600px] max-h-[1024px];
     }

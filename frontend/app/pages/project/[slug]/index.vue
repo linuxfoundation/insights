@@ -16,10 +16,10 @@ const route = useRoute();
 const {project} = storeToRefs(useProjectStore());
 const config = useRuntimeConfig()
 
-const title = computed(() => (project.value ? `LFX Insights | ${project.value.name} insights` : "LFX Insights"));
+const title = computed(() => (project.value ? `${project.value.name} Insights` : "LFX Insights"));
 const imageAlt = computed(() => (project.value ? `${project.value.name} insights` : "LFX Project insights"));
 const description = computed(() => (project.value
-    ? `Explore ${project.value.name} insights`
+    ? project.value.description || `Explore ${project.value.name} insights`
     : "Explore LFX Project insights"));
 const url = computed(() => `${config.public.appUrl}${route.fullPath}`);
 const image = computed(() => (project.value

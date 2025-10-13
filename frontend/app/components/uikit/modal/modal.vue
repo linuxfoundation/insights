@@ -13,7 +13,7 @@ SPDX-License-Identifier: MIT
         <div
           class="c-modal__content"
           :class="props.contentClass"
-          :style="{ 'max-width': props.width }"
+          :style="{ 'max-width': props.width, 'max-height': props.height }"
           v-bind="$attrs"
           @click.stop
         >
@@ -25,17 +25,19 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed, watch } from 'vue';
+import {computed, onUnmounted, watch} from 'vue';
 
 const props = withDefaults(defineProps<{
   modelValue: boolean,
   type?: 'default' | 'floating' | 'cover',
   contentClass?: string,
   width?: string,
+  height?: string,
   closeFunction?:() => boolean,
 }>(), {
   type: 'default',
   width: '37.5rem',
+  height: 'auto',
   closeFunction: () => true,
   contentClass: undefined,
 });
@@ -75,13 +77,21 @@ const modalClass = computed(() => {
   };
 });
 
-watch(() => isModalOpened.value, (show: boolean) => {
+watch(() => props.modelValue, (show: boolean) => {
+  if(!document || !window) return;
   if (!show) {
     window.removeEventListener('keyup', onEscapeKeyUp);
+    document.documentElement.style.overflow = '';
   } else {
     window.addEventListener('keyup', onEscapeKeyUp);
+    document.documentElement.style.overflow = 'hidden';
   }
-});
+}, {immediate: true});
+
+onUnmounted(() => {
+  window.removeEventListener('keyup', onEscapeKeyUp);
+  document.documentElement.style.overflow = '';
+})
 </script>
 
 <script lang="ts">
