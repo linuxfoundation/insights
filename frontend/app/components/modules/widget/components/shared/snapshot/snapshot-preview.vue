@@ -59,6 +59,9 @@ SPDX-License-Identifier: MIT
       <img
         src="~/assets/images/logo.svg"
         alt="LFX Insights"
+        loading="lazy"
+        width="176"
+        height="24"
       >
       <p class="pt-3 text-2xs text-neutral-400">
         The Linux Foundation ®. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks.

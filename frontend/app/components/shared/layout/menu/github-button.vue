@@ -24,6 +24,9 @@ SPDX-License-Identifier: MIT
         src="~/assets/images/github.svg"
         alt="GitHub Logo"
         class="w-full"
+        loading="lazy"
+        width="18"
+        height="18"
       >
     </a>
   </div>

@@ -9,29 +9,38 @@ SPDX-License-Identifier: MIT
       class="cursor-pointer"
       @click="twitter()"
     >
-      <img
+      <NuxtImg
         src="/images/share/x.svg"
         alt="X/Twitter"
-      >
+        loading="lazy"
+        width="40"
+        height="40"
+      />
     </div>
 
     <div
       class="cursor-pointer"
       @click="linkedin()"
     >
-      <img
+      <NuxtImg
         src="/images/share/linkedin.svg"
         alt="LinkedIn"
-      >
+        loading="lazy"
+        width="40"
+        height="40"
+      />
     </div>
     <div
       class="cursor-pointer"
       @click="reddit()"
     >
-      <img
+      <NuxtImg
         src="/images/share/reddit.svg"
         alt="Reddit"
-      >
+        loading="lazy"
+        width="40"
+        height="40"
+      />
     </div>
     <lfx-tooltip
       content="Send email"

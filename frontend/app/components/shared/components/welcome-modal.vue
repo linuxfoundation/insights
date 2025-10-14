@@ -19,11 +19,14 @@ SPDX-License-Identifier: MIT
           target="_blank"
         >insights@linuxfoundation.org</a>
       </p>
-      <img
+      <NuxtImg
         alt="LFX Insights"
         src="/og-image.png"
         class="mb-6 mt-3"
-      >
+        loading="lazy"
+        width="480"
+        height="252"
+      />
 
       <lfx-button
         class="w-full justify-center mb-3"

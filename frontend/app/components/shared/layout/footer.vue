@@ -11,6 +11,9 @@ SPDX-License-Identifier: MIT
             src="~/assets/images/logo.svg"
             alt="LFX Logo"
             class="h-6"
+            loading="lazy"
+            width="176"
+            height="24"
           >
           <p class="pt-3 text-body-2 text-neutral-500">
             LFX Insights helps developers and their organizations make smarter
@@ -27,6 +30,9 @@ SPDX-License-Identifier: MIT
                   src="~/assets/images/github.svg"
                   alt="GitHub Logo"
                   class="h-5"
+                  loading="lazy"
+                  width="20"
+                  height="20"
                 >
               </lfx-icon-button>
             </a>

@@ -31,6 +31,7 @@
     "@linuxfoundation/lfx-ui-core": "^0.0.20",
     "@modelcontextprotocol/sdk": "^1.16.0",
     "@nuxt/eslint": "^0.7.5",
+    "@nuxt/image": "^1.11.0",
     "@nuxtjs/plausible": "^1.2.0",
     "@nuxtjs/robots": "^5.2.10",
     "@nuxtjs/sitemap": "^7.4.7",

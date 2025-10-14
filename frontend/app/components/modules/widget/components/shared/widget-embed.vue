@@ -62,6 +62,9 @@ SPDX-License-Identifier: MIT
           src="~/assets/images/logo.svg"
           alt="LFX Insights"
           class="h-3.5"
+          loading="lazy"
+          width="88"
+          height="14"
         >
       </div>
     </a>
