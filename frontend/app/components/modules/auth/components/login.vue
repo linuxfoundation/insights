@@ -28,7 +28,7 @@ SPDX-License-Identifier: MIT
         :src="user?.picture || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlOLBRK-3wEFFeCojWlHou4nooggl5iI2PJQ&s'"
         size="small"
         :aria-label="user?.name"
-      />
+        :aria-label="user?.picture && user?.name"
 
       <template #content>
 
