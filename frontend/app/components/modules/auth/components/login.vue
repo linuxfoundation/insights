@@ -28,10 +28,8 @@ SPDX-License-Identifier: MIT
         :src="user?.picture || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlOLBRK-3wEFFeCojWlHou4nooggl5iI2PJQ&s'"
         size="small"
         :aria-label="user?.name"
-        :aria-label="user?.picture && user?.name"
-
+      />
       <template #content>
-
         <div
           class="bg-white shadow-lg rounded-lg border border-neutral-200 w-56 p-1
           flex flex-col gap-1"
