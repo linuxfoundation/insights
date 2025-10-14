@@ -37,6 +37,7 @@ SPDX-License-Identifier: MIT
             :name="avatar.name"
             :src="avatar.avatar"
             type="member"
+            :aria-label="avatar.avatar && avatar.name"
           />
         </lfx-avatar-group>
       </lfx-dependency-display>
@@ -72,7 +73,7 @@ import LfxProjectLoadState from "~/components/modules/project/components/shared/
 import LfxDependencyDisplay from "~/components/modules/widget/components/contributors/fragments/dependency-display.vue";
 import LfxContributorsTable from "~/components/modules/widget/components/contributors/fragments/contributors-table.vue";
 import {Widget} from "~/components/modules/widget/types/widget";
-import { CONTRIBUTORS_API_SERVICE, type LeaderboardQueryParams } 
+import { CONTRIBUTORS_API_SERVICE, type LeaderboardQueryParams }
   from '~~/app/components/modules/widget/services/contributors.api.service';
 import type { WidgetModel } from '~/components/modules/widget/config/widget.config';
 

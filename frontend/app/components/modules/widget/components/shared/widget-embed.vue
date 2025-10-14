@@ -11,6 +11,7 @@ SPDX-License-Identifier: MIT
             :src="data?.logo"
             type="organization"
             size="normal"
+            :aria-label="data?.logo && data?.name"
           />
           <p class="text-sm leading-5 font-semibold">
             {{ data?.name }}

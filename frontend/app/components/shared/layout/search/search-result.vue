@@ -40,6 +40,7 @@ SPDX-License-Identifier: MIT
             size="xsmall"
             type="organization"
             class="!rounded-sm !outline-1"
+            :aria-label="project.logo && project.name"
           />
           {{project.name}}
         </nuxt-link>

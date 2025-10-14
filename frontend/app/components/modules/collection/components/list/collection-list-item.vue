@@ -89,6 +89,7 @@ SPDX-License-Identifier: MIT
               :src="project.logo"
               size="xsmall"
               type="organization"
+              :aria-label="project.logo && project.name"
             />
             {{ project.name }}
           </lfx-chip>

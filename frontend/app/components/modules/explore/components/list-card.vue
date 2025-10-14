@@ -7,9 +7,9 @@ SPDX-License-Identifier: MIT
     class="border border-neutral-200 rounded-xl flex flex-col gap-4 bg-white h-full"
   >
     <div class="flex flex-col gap-2 px-6 pt-6">
-      <h4 class="text-heading-3 font-secondary font-bold text-neutral-900">
+      <h3 class="text-heading-3 font-secondary font-bold text-neutral-900">
         {{ props.value.title }}
-      </h4>
+      </h3>
       <p class="text-xs text-neutral-500">
         {{ props.value.description }}
       </p>
