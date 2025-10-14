@@ -6,9 +6,9 @@ SPDX-License-Identifier: MIT
   <div>
     <div class="flex flex-col lg:flex-row justify-between lg:items-end pb-8 gap-5 lg:gap-20">
       <div>
-        <h3 class="text-heading-3 font-secondary font-bold">
+        <h2 class="text-heading-3 font-secondary font-bold">
           Controls assessment
-        </h3>
+        </h2>
         <p
           class="text-xs text-neutral-500 mt-4"
         >
@@ -17,6 +17,7 @@ SPDX-License-Identifier: MIT
           <a
             :href="links.securityScore"
             target="_blank"
+            rel="noopener noreferrer"
             class="text-brand-500"
           >Learn more</a>
         </p>
@@ -45,9 +46,9 @@ SPDX-License-Identifier: MIT
             <lfx-chart :config="categoryChartConfig(score.percentage)" />
           </div>
           <div class="flex-grow">
-            <h4 class="text-sm leading-5 font-semibold">
+            <h3 class="text-sm leading-5 font-semibold">
               {{ score.category}}
-            </h4>
+            </h3>
             <p
               v-if="categoryConfig(score.category)"
               class="text-body-2 text-neutral-500 mt-1"

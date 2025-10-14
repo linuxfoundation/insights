@@ -14,6 +14,7 @@ SPDX-License-Identifier: MIT
       'p-avatar-xsmall': props.size === 'xsmall',
       'has-image': props.src
     }"
+    v-bind="$attrs"
   />
 </template>
 

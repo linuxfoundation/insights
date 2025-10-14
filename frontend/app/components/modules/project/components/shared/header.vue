@@ -33,6 +33,7 @@ SPDX-License-Identifier: MIT
                   :src="props.project?.logo || ''"
                   :size="scrollTop > 50 ? 'normal' : ((pageWidth < 768 && pageWidth > 0) ? 'normal' : 'large')"
                   :is-lf="!!props.project?.isLF"
+                  :alt="props.project?.name"
                 />
 
                 <h1

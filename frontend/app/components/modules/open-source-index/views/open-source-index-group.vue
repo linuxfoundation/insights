@@ -31,9 +31,9 @@ SPDX-License-Identifier: MIT
         <p class="text-xs text-neutral-500">
           {{ data?.type === 'horizontal' ? 'Stack' : 'Industry' }}
         </p>
-        <h3 class="text-heading-3 font-bold font-secondary">
+        <h2 class="text-heading-3 font-bold font-secondary">
           {{ data?.name }}
-        </h3>
+        </h2>
       </div>
     </div>
   </LfxOSIHeader>
