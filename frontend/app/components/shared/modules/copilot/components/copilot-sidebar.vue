@@ -223,7 +223,7 @@ const callChatApi = async (userMessage: string) => {
         // Focus textarea when chat response is complete
         setTimeout(() => {
           textareaRef.value?.focus();
-        }, 200);
+        }, 100);
       });
       
       // Also capture conversationId from the return value as backup
