@@ -11,12 +11,35 @@ export default defineEventHandler(async (event) => {
   const query = getQuery(event)
 
   const isProduction = process.env.NUXT_APP_ENV === 'production'
+  const redirectTo = getCookie(event, 'auth_redirect_to') || '/'
 
   try {
+    // Handle Auth0 errors (including silent authentication failures)
+    if (query.error) {
+      const error = query.error as string
+      const errorDescription = query.error_description as string
+
+      // For silent authentication failures, don't throw an error - just redirect
+      if (error === 'login_required' || error === 'interaction_required') {
+        // Silent authentication failed - user needs to log in
+        // Redirect to home page without error for silent auth failures
+        const finalRedirectError =
+          redirectTo === '/'
+            ? '/?auth=success'
+            : `${redirectTo}${redirectTo.includes('?') ? '&' : '?'}auth=success`
+        await sendRedirect(event, finalRedirectError)
+        return
+      }
+
+      // For other errors, throw as usual
+      throw createError({
+        statusCode: 400,
+        statusMessage: `Authentication error: ${error} - ${errorDescription}`,
+      })
+    }
     // Get stored state and code verifier
     const storedState = query.state as string
     const codeVerifier = getCookie(event, 'auth_code_verifier')
-    const redirectTo = getCookie(event, 'auth_redirect_to') || '/'
 
     if (!query.code || !codeVerifier) {
       throw createError({

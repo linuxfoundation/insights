@@ -14,4 +14,5 @@ export interface AuthData {
   isAuthenticated: boolean
   user: User | null
   token: string | null
+  shouldAttemptSilentLogin?: boolean
 }
