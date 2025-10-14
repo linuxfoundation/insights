@@ -28,7 +28,7 @@ SPDX-License-Identifier: MIT
           <lfx-avatar
             :src="row.logo"
             type="organization"
-            :aria-label="row.name"
+            :aria-label="row.logo && row.name"
           />
           <div
             class="text-ellipsis overflow-hidden"
