@@ -42,11 +42,13 @@ SPDX-License-Identifier: MIT
       </div>
     </lfx-project-load-state>
   </section>
-  <lfx-contributor-leaderboard-drawer
-    v-model="isDrawerOpened"
-    :selected-metric="model.metric"
-    :model="model"
-  />
+  <client-only>
+    <lfx-contributor-leaderboard-drawer
+      v-model="isDrawerOpened"
+      :selected-metric="model.metric"
+      :model="model"
+    />
+  </client-only>
 </template>
 
 <script setup lang="ts">

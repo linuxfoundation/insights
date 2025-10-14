@@ -44,10 +44,12 @@ SPDX-License-Identifier: MIT
       </lfx-menu-button>
     </div>
   </div>
-  <lfx-search-modal
-    v-if="isModalOpen"
-    v-model="isModalOpen"
-  />
+  <client-only>
+    <lfx-search-modal
+      v-if="isModalOpen"
+      v-model="isModalOpen"
+    />
+  </client-only>
 </template>
 
 <script setup lang="ts">

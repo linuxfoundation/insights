@@ -30,11 +30,13 @@ SPDX-License-Identifier: MIT
       </div>
     </div>
   </article>
-  <lfx-explore-list-modal
-    v-model="isModalOpen"
-    :value="props.value"
-    width="27rem"
-  />
+  <client-only>
+    <lfx-explore-list-modal
+      v-model="isModalOpen"
+      :value="props.value"
+      width="27rem"
+    />
+  </client-only>
 </template>
 
 <script setup lang="ts">

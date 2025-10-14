@@ -41,11 +41,13 @@ SPDX-License-Identifier: MIT
         </lfx-button>
       </div>
     </lfx-project-load-state>
-    <lfx-organization-leaderboard-drawer
-      v-model="isDrawerOpened"
-      :selected-metric="model.metric"
-      :model="model"
-    />
+    <client-only>
+      <lfx-organization-leaderboard-drawer
+        v-model="isDrawerOpened"
+        :selected-metric="model.metric"
+        :model="model"
+      />
+    </client-only>
   </section>
 </template>
 
