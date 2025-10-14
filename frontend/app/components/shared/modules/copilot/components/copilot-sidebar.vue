@@ -248,7 +248,7 @@ const callChatApi = async (userMessage: string) => {
     // Ensure textarea is focused even if there was an error
     setTimeout(() => {
       textareaRef.value?.focus();
-    }, 200);
+    }, 100);
   }
 }
 
