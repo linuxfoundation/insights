@@ -54,7 +54,7 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { useRoute } from 'nuxt/app';
 import {
- ref, computed, onServerPrefetch, watch
+ ref, computed, watch
 } from 'vue';
 import { storeToRefs } from "pinia";
 import LfxContributorLeaderboardDrawer from './fragments/contributor-leaderboard-drawer.vue';
@@ -109,17 +109,12 @@ const {
   isSuccess,
   isError,
   status,
-  suspense,
 } = CONTRIBUTORS_API_SERVICE.fetchContributorLeaderboard(params);
 
 const contributors = computed<ContributorLeaderboard>(() => data.value?.pages[0] as ContributorLeaderboard);
 const hideAllContributorsButton = computed(() => contributors.value?.data.length < 10);
 
 const isEmpty = computed(() => isEmptyData(contributors.value?.data as unknown as Record<string, unknown>[]));
-
-onServerPrefetch(async () => {
-  await suspense();
-})
 
 watch(status, (value) => {
   if (value !== 'pending') {

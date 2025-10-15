@@ -54,7 +54,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { useRoute } from 'nuxt/app';
-import { computed, onServerPrefetch, watch } from 'vue';
+import { computed, watch } from 'vue';
 import { storeToRefs } from "pinia";
 import {type QueryFunction, useQuery} from "@tanstack/vue-query";
 import type { GithubMentions } from '~~/types/popularity/responses.types';
@@ -143,14 +143,10 @@ const fetchData: QueryFunction<GithubMentions> = async () => $fetch(
 );
 
 const {
-  data, status, error, suspense
+  data, status, error
 } = useQuery<GithubMentions>({
   queryKey,
   queryFn: fetchData,
-});
-
-onServerPrefetch(async () => {
-  await suspense();
 });
 
 const mentions = computed<GithubMentions>(() => data.value as GithubMentions);

@@ -18,43 +18,44 @@ SPDX-License-Identifier: MIT
         {{selectedOption.value.startsWith('group-') ? '(all sub-stacks)' : ''}}
       </lfx-dropdown-selector>
     </template>
+    <client-only>
+      <lfx-dropdown-item
+        value="all"
+        label="All stacks & industries"
+      />
+      <lfx-dropdown-separator />
 
-    <lfx-dropdown-item
-      value="all"
-      label="All stacks & industries"
-    />
-    <lfx-dropdown-separator />
+      <lfx-dropdown-submenu
+        width="21.5rem"
+        name="stack"
+        label="Stacks"
+      >
+        <template #item>
+          <lfx-icon
+            name="layer-group"
+            :size="16"
+          />
+          Stacks
+        </template>
+        <lfx-collection-list-category-options :options="categoryGroupsHorizontal" />
+      </lfx-dropdown-submenu>
 
-    <lfx-dropdown-submenu
-      width="21.5rem"
-      name="stack"
-      label="Stacks"
-    >
-      <template #item>
-        <lfx-icon
-          name="layer-group"
-          :size="16"
-        />
-        Stacks
-      </template>
-      <lfx-collection-list-category-options :options="categoryGroupsHorizontal" />
-    </lfx-dropdown-submenu>
+      <lfx-dropdown-submenu
+        width="21.5rem"
+        name="industry"
+        label="Industries"
+      >
+        <template #item>
+          <lfx-icon
+            name="buildings"
+            :size="16"
+          />
+          Industries
+        </template>
 
-    <lfx-dropdown-submenu
-      width="21.5rem"
-      name="industry"
-      label="Industries"
-    >
-      <template #item>
-        <lfx-icon
-          name="buildings"
-          :size="16"
-        />
-        Industries
-      </template>
-
-      <lfx-collection-list-category-options :options="categoryGroupsVertical" />
-    </lfx-dropdown-submenu>
+        <lfx-collection-list-category-options :options="categoryGroupsVertical" />
+      </lfx-dropdown-submenu>
+    </client-only>
   </lfx-dropdown-select>
 </template>
 

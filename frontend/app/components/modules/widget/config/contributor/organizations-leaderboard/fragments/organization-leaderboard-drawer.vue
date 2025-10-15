@@ -57,7 +57,7 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { useRoute } from 'nuxt/app';
 import {
- ref, computed, watch, onServerPrefetch
+ ref, computed, watch
 } from 'vue';
 import { storeToRefs } from "pinia";
 import type { OrganizationLeaderboard, Organization } from '~~/types/contributors/responses.types';
@@ -117,7 +117,6 @@ const {
   hasNextPage,
   fetchNextPage,
   isFetchingNextPage,
-  suspense
 } = CONTRIBUTORS_API_SERVICE.fetchOrganizationLeaderboard(params);
 
 const organizations = computed<Organization[]>(() => {
@@ -140,10 +139,6 @@ watch(props, () => {
     metric.value = props.selectedMetric;
   }
 });
-
-onServerPrefetch(async () => {
-  await suspense()
-})
 </script>
 
 <script lang="ts">

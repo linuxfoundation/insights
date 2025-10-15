@@ -73,7 +73,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { useRoute } from 'nuxt/app';
-import { computed, watch, onServerPrefetch } from 'vue';
+import { computed, watch } from 'vue';
 import { storeToRefs } from "pinia";
 import {type QueryFunction, useQuery} from "@tanstack/vue-query";
 import LfxMergeLeadItem from "./fragments/merge-lead-item.vue";
@@ -118,14 +118,10 @@ const fetchData: QueryFunction<MergeLeadTime> = async () => $fetch(
 );
 
 const {
-  data, status, error, suspense
+  data, status, error
 } = useQuery<MergeLeadTime>({
   queryKey,
   queryFn: fetchData,
-});
-
-onServerPrefetch(async () => {
-  await suspense()
 });
 
 const mergeLeadTime = computed<MergeLeadTime>(() => data.value as MergeLeadTime);

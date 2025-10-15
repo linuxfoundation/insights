@@ -55,7 +55,7 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { useRoute } from 'nuxt/app';
 import {
- computed, watch, onServerPrefetch
+ computed, watch
 } from 'vue';
 import { storeToRefs } from "pinia";
 import type { StarsData } from '~~/types/popularity/responses.types';
@@ -128,14 +128,8 @@ const queryParams = computed(() => ({
 const {
   data,
   status,
-  error,
-  suspense
+  error
 } = POPULARITY_API_SERVICE.fetchStars(queryParams);
-
-
-onServerPrefetch(async () => {
-  await suspense();
-});
 
 const stars = computed<StarsData | undefined>(() => (data.value as StarsData));
 

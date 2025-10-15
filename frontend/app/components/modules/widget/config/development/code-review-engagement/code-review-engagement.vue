@@ -82,7 +82,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { useRoute } from 'nuxt/app';
-import { computed, onServerPrefetch, watch } from 'vue';
+import { computed, watch } from 'vue';
 import { storeToRefs } from "pinia";
 import {type QueryFunction, useQuery} from "@tanstack/vue-query";
 import type { 
@@ -165,14 +165,10 @@ const fetchData: QueryFunction<CodeReviewEngagement> = async () => $fetch(
 );
 
 const {
-  data, status, error, suspense
+  data, status, error
 } = useQuery<CodeReviewEngagement>({
   queryKey,
   queryFn: fetchData,
-});
-
-onServerPrefetch(async () => {
-  await suspense();
 });
 
 const codeReviewEngagement = computed<CodeReviewEngagement>(() => data.value as CodeReviewEngagement);

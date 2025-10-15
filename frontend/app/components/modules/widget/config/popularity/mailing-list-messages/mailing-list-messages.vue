@@ -55,7 +55,7 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { useRoute } from 'nuxt/app';
 import {
- computed, watch, onServerPrefetch
+ computed, watch
 } from 'vue';
 import { storeToRefs } from "pinia";
 import type {MailingListsMessages} from '~~/types/popularity/responses.types';
@@ -128,13 +128,8 @@ const queryParams = computed(() => ({
 const {
   data,
   status,
-  error,
-  suspense
+  error
 } = POPULARITY_API_SERVICE.fetchMailingListsMessages(queryParams);
-
-onServerPrefetch(async () => {
-  await suspense();
-});
 
 const messages = computed<MailingListsMessages | undefined>(() => (data.value as MailingListsMessages));
 
