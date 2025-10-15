@@ -17,6 +17,7 @@ SPDX-License-Identifier: MIT
           href="mailto:insights@linuxfoundation.org"
           class="text-brand-600"
           target="_blank"
+          rel="noopener noreferrer"
         >insights@linuxfoundation.org</a>
       </p>
       <NuxtImg
@@ -39,6 +40,7 @@ SPDX-License-Identifier: MIT
       <a
         href="/docs/introduction/what-is-insights/"
         target="_blank"
+        rel="noopener noreferrer"
       >
         <lfx-button
           class="w-full justify-center"

@@ -13,6 +13,7 @@ SPDX-License-Identifier: MIT
           :src="project?.logo"
           type="organization"
           size="normal"
+          :aria-label="project?.logo && project?.name"
         />
         <p class="text-sm leading-5 font-semibold">
           {{ project?.name }}

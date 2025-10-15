@@ -17,6 +17,7 @@ SPDX-License-Identifier: MIT
           <lfx-avatar
             :src="organization.logo"
             type="organization"
+            :aria-label="organization.logo && organization.name"
           />
           <div class="text-neutral-900 font-medium text-sm mt-1">
             {{ organization.name }}
@@ -46,6 +47,7 @@ SPDX-License-Identifier: MIT
         <a
           :href="organization.website"
           target="_blank"
+          rel="noopener noreferrer"
           class="flex flex-row gap-2"
         >
           <lfx-icon name="link" />

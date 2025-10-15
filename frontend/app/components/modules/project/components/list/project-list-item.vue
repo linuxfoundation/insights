@@ -20,6 +20,7 @@ SPDX-License-Identifier: MIT
           :src="props.project.logo || ''"
           size="large"
           :is-lf="props.project.isLF"
+          :alt="props.project.name"
         />
         <h3 class="text-heading-3 font-bold font-secondary pt-4 line-clamp-1">
           {{ props.project.name }}

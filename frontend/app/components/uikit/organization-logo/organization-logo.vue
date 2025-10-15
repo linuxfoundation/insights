@@ -11,6 +11,7 @@ SPDX-License-Identifier: MIT
       :src="props.src || ''"
       :size="size"
       type="organization"
+      :aria-label="props.src && props.alt"
     />
     <div
       v-if="props.isLf"
@@ -43,11 +44,13 @@ const props = withDefaults(
     size?: AvatarSize;
     src?: string;
     isLf?: boolean;
+    alt?: string;
   }>(),
   {
     size: 'normal',
     src: undefined,
-    isLf: false
+    isLf: false,
+    alt: undefined
   }
 );
 </script>

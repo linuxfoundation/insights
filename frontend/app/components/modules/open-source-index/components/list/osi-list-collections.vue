@@ -112,6 +112,7 @@ SPDX-License-Identifier: MIT
                         size="large"
                         class="min-w-12"
                         :src="project.logo"
+                        :aria-label="project.logo && project.name"
                       />
                       <div>
                         <h6 class="text-sm font-semibold">

@@ -37,6 +37,7 @@ SPDX-License-Identifier: MIT
             :name="orgAvatar.name"
             :src="orgAvatar.logo"
             type="organization"
+            :aria-label="orgAvatar.logo && orgAvatar.name"
           />
         </lfx-avatar-group>
       </lfx-dependency-display>
@@ -72,7 +73,7 @@ import LfxDependencyDisplay from "~/components/modules/widget/components/contrib
 import LfxOrganizationsTable
   from "~/components/modules/widget/components/contributors/fragments/organizations-table.vue";
 import {Widget} from "~/components/modules/widget/types/widget";
-import { CONTRIBUTORS_API_SERVICE, type LeaderboardQueryParams } 
+import { CONTRIBUTORS_API_SERVICE, type LeaderboardQueryParams }
     from '~~/app/components/modules/widget/services/contributors.api.service';
 import type { WidgetModel } from '~/components/modules/widget/config/widget.config';
 

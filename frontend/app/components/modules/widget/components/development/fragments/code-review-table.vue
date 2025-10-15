@@ -20,6 +20,7 @@ SPDX-License-Identifier: MIT
           :src="item.avatar"
           type="member"
           class="min-w-8"
+          :aria-label="item.avatar && item.name"
         />
         <div class="flex flex-col items-start sm:flex-row gap-2 overflow-hidden w-full">
           <div class="overflow-hidden whitespace-nowrap text-ellipsis no-underline w-full">

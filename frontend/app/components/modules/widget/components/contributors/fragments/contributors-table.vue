@@ -39,6 +39,7 @@ SPDX-License-Identifier: MIT
           <lfx-avatar
             :src="contributor.avatar"
             type="member"
+            :aria-label="contributor.avatar && contributor.name"
           />
           <div
             class="text-ellipsis overflow-hidden no-underline"

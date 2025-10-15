@@ -5,12 +5,13 @@ SPDX-License-Identifier: MIT
 <template>
   <div class="pt-2 xl:block lg:hidden block">
     <client-only>
-      <a 
-        class="github-button" 
-        href="https://github.com/linuxfoundation/insights" 
-        data-show-count="true" 
+      <a
+        class="github-button"
+        href="https://github.com/linuxfoundation/insights"
+        data-show-count="true"
         aria-label="Star linuxfoundation/insights on GitHub"
         target="_blank"
+        rel="noopener noreferrer"
       />
     </client-only>
   </div>
@@ -18,6 +19,7 @@ SPDX-License-Identifier: MIT
     <a
       href="https://github.com/linuxfoundation/insights"
       target="_blank"
+      rel="noopener noreferrer"
       class="h-[18px] w-[18px]"
     >
       <img

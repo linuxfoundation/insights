@@ -24,11 +24,13 @@ SPDX-License-Identifier: MIT
         <img
           v-if="link.img"
           :src="link.img"
+          :alt="`${link.name} icon`"
           class="w-[14px] h-[14px]"
         >
         <a
           :href="link.url"
           target="_blank"
+          rel="noopener noreferrer"
         >
           {{ link.name }}
         </a>

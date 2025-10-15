@@ -9,10 +9,10 @@ SPDX-License-Identifier: MIT
   >
     <div class="max-w-auto xl:max-w-100 flex sm:flex-row flex-col xl:flex-col gap-4">
       <div class="flex flex-col gap-4">
-        <h1 class="text-heading-2 lg:text-heading-1 font-secondary font-light">
+        <h2 class="text-heading-2 lg:text-heading-1 font-secondary font-light">
           Linux Foundation <br>
           Open Source Index
-        </h1>
+        </h2>
 
         <p class="text-sm lg:text-base text-neutral-900 pb-4">
           Curated list of the most critical open source projects powering our modern digital

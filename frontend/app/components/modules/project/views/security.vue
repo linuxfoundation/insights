@@ -9,9 +9,9 @@ SPDX-License-Identifier: MIT
         <div>
           <!-- Title -->
           <div class="flex flex-col-reverse sm:flex-row items-start sm:items-center gap-2 sm:gap-4 pb-2">
-            <h3 class="text-heading-3 font-secondary font-bold">
+            <h1 class="text-heading-3 font-secondary font-bold">
               Controls assessment
-            </h3>
+            </h1>
             <lfx-tag
               variation="warning"
               size="small"
@@ -28,6 +28,7 @@ SPDX-License-Identifier: MIT
               :href="links.securityScore"
               class="text-brand-500"
               target="_blank"
+              rel="noopener noreferrer"
             >Learn more</a>
           </p>
         </div>

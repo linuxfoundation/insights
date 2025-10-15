@@ -17,6 +17,7 @@ SPDX-License-Identifier: MIT
           <a
             :href="links.criticality"
             target="_blank"
+            rel="noopener noreferrer"
             class="text-brand-500"
           >Learn more</a>
         </p>

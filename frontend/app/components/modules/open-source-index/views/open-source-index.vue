@@ -50,7 +50,7 @@ import type {TreeMapData} from "~/components/uikit/chart/types/ChartTypes";
 const route = useRoute();
 
 const type = ref<OSIType>(route.query.type as OSIType || 'projects');
-const sort = ref<SortType>(route.query.sort as SortType || 'healthScore');
+const sort = ref<SortType>(route.query.sort as SortType || 'totalContributors');
 const view = ref<string>(route.query.view as string || 'list');
 
 
