@@ -1,28 +1,10 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { ActivityPlatforms } from '~~/types/shared/activity-platforms'
-import { ActivityTypes } from '~~/types/shared/activity-types'
 import type { PlatformConfig } from '~~/types/shared/platforms.types'
 
 export const discord: PlatformConfig = {
   key: ActivityPlatforms.DISCORD,
   label: 'Discord',
   image: '/images/integrations/discord.png',
-  activityTypes: [
-    {
-      key: ActivityTypes.MESSAGE,
-      label: 'Sent a message',
-      isCollaborationType: true,
-    },
-    {
-      key: ActivityTypes.THREAD_STARTED,
-      label: 'Started a thread',
-      isCollaborationType: true,
-    },
-    {
-      key: ActivityTypes.THREAD_MESSAGE,
-      label: 'Sent a message in a thread',
-      isCollaborationType: true,
-    },
-  ],
 }

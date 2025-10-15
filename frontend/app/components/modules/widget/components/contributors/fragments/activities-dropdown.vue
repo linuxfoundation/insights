@@ -39,16 +39,16 @@ SPDX-License-Identifier: MIT
     <lfx-dropdown-separator v-if="connected.length > 0" />
 
     <template
-      v-for="group in platforms"
+      v-for="group in platformsWithActivityTypes"
       :key="group.key"
     >
-      <template v-if="connected.includes(group.key) && filterActivityTypes(group.activityTypes).length > 0">
+      <template v-if="connected.includes(group.key) && group.activityTypes.length > 0">
         <lfx-dropdown-group-title>
           {{ group.label }}
         </lfx-dropdown-group-title>
 
         <lfx-dropdown-item
-          v-for="option of filterActivityTypes(group.activityTypes)"
+          v-for="option of group.activityTypes"
           :key="option.key"
           :value="`${group.key}:${option.key}`"
           :label="option.label"
@@ -86,23 +86,26 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed, watch } from 'vue';
-import {storeToRefs} from "pinia";
-import LfxDropdownSelector from "~/components/uikit/dropdown/dropdown-selector.vue";
-import LfxIcon from "~/components/uikit/icon/icon.vue";
-import LfxDropdownGroupTitle from "~/components/uikit/dropdown/dropdown-group-title.vue";
-import LfxDropdownItem from "~/components/uikit/dropdown/dropdown-item.vue";
-import LfxDropdownSelect from "~/components/uikit/dropdown/dropdown-select.vue";
-import LfxDropdownSeparator from "~/components/uikit/dropdown/dropdown-separator.vue";
+import { computed } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useQuery, type QueryFunction } from '@tanstack/vue-query';
+import LfxDropdownSelector from '~/components/uikit/dropdown/dropdown-selector.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxDropdownGroupTitle from '~/components/uikit/dropdown/dropdown-group-title.vue';
+import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
+import LfxDropdownSelect from '~/components/uikit/dropdown/dropdown-select.vue';
+import LfxDropdownSeparator from '~/components/uikit/dropdown/dropdown-separator.vue';
 import { platforms } from '~~/app/config/platforms';
-import {useProjectStore} from "~/components/modules/project/store/project.store";
-import type {ActivityType} from "~~/types/shared/platforms.types";
+import { useProjectStore } from '~/components/modules/project/store/project.store';
+import type { ActivityTypeItem, ActivityTypesByPlatformResponse } from '~~/types/development/responses.types';
+import { TanstackKey } from '~/components/shared/types/tanstack';
 
 const props = withDefaults(defineProps<{
   modelValue: string;
   fullWidth?: boolean
   snapshot?: boolean;
   includeCollaborations?: boolean;
+  includeOtherContributions?: boolean;
 }>(), {
   fullWidth: true,
   snapshot: false,
@@ -113,11 +116,69 @@ const defaultAllValue = 'all:all';
 
 const { project } = storeToRefs(useProjectStore());
 
+const projectSlug = computed(() => project.value?.slug || '');
+
+const queryKey = computed(() => [
+  TanstackKey.ACTIVITY_TYPES,
+  projectSlug.value,
+  props.includeCollaborations,
+  props.includeOtherContributions,
+]);
+
+const queryFn = computed<QueryFunction<ActivityTypesByPlatformResponse>>(() => {
+  // Capture values at the time the function is created
+  const slug = projectSlug.value;
+  const includeCollabs = props.includeCollaborations ?? false;
+  const includeOther = props.includeOtherContributions ?? false;
+
+  return async () => {
+    if (!slug) {
+      return {};
+    }
+
+    const params = new URLSearchParams();
+    params.set('includeCodeContributions', String(true));
+    params.set('includeCollaborations', String(includeCollabs));
+    params.set('includeOtherContributions', String(includeOther));
+
+    const result = await $fetch<ActivityTypesByPlatformResponse>(
+      `/api/project/${slug}/activity-types?${params.toString()}`
+    );
+    return result;
+  };
+});
+
+const enabledState = computed(() => {
+  const enabled = !!projectSlug.value;
+  return enabled;
+});
+
+const queryResult = useQuery<ActivityTypesByPlatformResponse>({
+  queryKey,
+  queryFn,
+  enabled: enabledState,
+  placeholderData: {},
+});
+
+const { data: activityTypesData } = queryResult;
+
 const connected = computed(() => {
   const platformList = (project.value?.connectedPlatforms || [])
       .map((platform) => platform.split('-').at(0) || platform);
   return [...new Set(platformList)];
 })
+
+// Build platforms list with corresponding activity types and their labels, from Tinybird data.
+const platformsWithActivityTypes = computed(() => {
+  if (!activityTypesData.value) return [];
+
+  return Object.entries(activityTypesData.value).map(([platformKey, activityTypes]) => ({
+    key: platformKey,
+    label: platforms[platformKey]?.label || platformKey,
+    image: platforms[platformKey]?.image,
+    activityTypes,
+  }));
+});
 
 const activity = computed({
   get() {
@@ -130,7 +191,9 @@ const activity = computed({
 
 const getIcon = (platform: string) => platforms[platform]?.image || '';
 
-const options = computed<ActivityType[]>(() => Object.values(platforms).map((p) => p.activityTypes).flat());
+const options = computed<ActivityTypeItem[]>(() =>
+  platformsWithActivityTypes.value.flatMap((p) => p.activityTypes)
+);
 
 const selected = computed(() => {
   const [platform, type] = activity.value.split(':');
@@ -141,35 +204,6 @@ const selected = computed(() => {
   }
 })
 
-/**
- * Filter activity types based on the property includeCollaborations.
- * If includeCollaborations is true, return all activity types.
- * If includeCollaborations is false, return only non-collaboration types (where isCollaborationType is false or undefined).
- * @param activityTypes 
- */
-const filterActivityTypes = (activityTypes: ActivityType[]) => {
-  if (props.includeCollaborations) {
-    return activityTypes;
-  }
-  return activityTypes.filter((activityType) => !activityType.isCollaborationType);
-}
-
-/**
- * Watch for the includeCollaborations property and update the activity types accordingly.
- * If the current activity type is not included in the filtered activity types, update the activity type to the defaultAllValue.
- */
-watch(() => props.includeCollaborations, (newVal: boolean) => {
-  const filteredActivityTypes = Object.values(platforms)
-    .filter((platform) => connected.value.includes(platform.key))
-    .flatMap((platform) =>
-      platform.activityTypes
-        .filter((activityType) => !activityType.isCollaborationType)
-        .map((activityType) => `${platform.key}:${activityType.key}`)
-    );
-  if (activity.value !== defaultAllValue && !newVal && !filteredActivityTypes.includes(activity.value)) {
-    activity.value = defaultAllValue;
-  }
-}, { immediate: true });
 </script>
 
 <script lang="ts">

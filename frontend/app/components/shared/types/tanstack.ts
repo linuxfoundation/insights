@@ -19,6 +19,7 @@ export enum TanstackKey {
 
   // Development
   ACTIVE_DAYS = 'active-days',
+  ACTIVITY_TYPES = 'activity-types',
   AVERAGE_TIME_TO_MERGE = 'average-time-to-merge',
   CODE_REVIEW_ENGAGEMENT = 'code-review-engagement',
   CONTRIBUTIONS_OUTSIDE_WORK_HOURS = 'contributions-outside-work-hours',
