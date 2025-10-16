@@ -142,8 +142,19 @@ export default defineNuxtConfig({
               if (id.includes('echarts')) {
                 return 'echarts';
               }
+                if (id.includes('primevue')) {
+                    return 'primevue';
+                }
+                if (id.includes('@tanstack')) {
+                    return 'tanstack';
+                }
+                if (id.includes('pinia')) {
+                    return 'pinia';
+                }
+                // return 'vendor';
             }
           },
+
         },
       },
       chunkSizeWarningLimit: 1000,
