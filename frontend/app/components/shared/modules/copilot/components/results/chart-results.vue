@@ -29,24 +29,26 @@ SPDX-License-Identifier: MIT
     <lfx-chart :config="chartConfig" />
   </div>
 
-  <lfx-snapshot-modal
-    v-if="isSnapshotModalOpen"
-    v-model="isSnapshotModalOpen"
-    :widget-name="'chart' as Widget"
-    :use-slot="true"
-    :data="chartConfig || {}"
-    :snapshot-name="chartTitle"
-  >
-    <div
-      if="chartConfig"
-      class="h-[450px]"
+  <client-only>
+    <lfx-snapshot-modal
+      v-if="isSnapshotModalOpen"
+      v-model="isSnapshotModalOpen"
+      :widget-name="'chart' as Widget"
+      :use-slot="true"
+      :data="chartConfig || {}"
+      :snapshot-name="chartTitle"
     >
-      <h3 class="text-heading-3 font-semibold font-secondary">
-        {{ chartTitle }}
-      </h3>
-      <lfx-chart :config="configNoTitle" />
-    </div>
-  </lfx-snapshot-modal>
+      <div
+        if="chartConfig"
+        class="h-[450px]"
+      >
+        <h3 class="text-heading-3 font-semibold font-secondary">
+          {{ chartTitle }}
+        </h3>
+        <lfx-chart :config="configNoTitle" />
+      </div>
+    </lfx-snapshot-modal>
+  </client-only>
 </template>
 
 <script setup lang="ts">

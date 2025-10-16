@@ -46,7 +46,7 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed, watch, onServerPrefetch } from 'vue';
+import { computed, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { storeToRefs } from "pinia";
 import { DateTime } from 'luxon';
@@ -118,12 +118,8 @@ const params = computed<RetentionQueryParams>(() => ({
 }));
 
 const {
-  data, status, error, suspense
+  data, status, error
 } = CONTRIBUTORS_API_SERVICE.fetchRetention(params);
-
-onServerPrefetch(async () => {
-  await suspense()
-})
 
 const retention = computed<Retention[]>(() => data.value as Retention[]);
 

@@ -4,7 +4,7 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <div class="lg:flex hidden items-center gap-3">
-    <template v-if="isProjectLoading">
+    <template v-if="!props.project">
       <lfx-skeleton-state
         v-for="link of lfProjectLinks"
         :key="link.label"
@@ -94,7 +94,7 @@ const props = defineProps<{
 const route = useRoute();
 const repoName = computed(() => route.params.name as string);
 
-const { isProjectLoading, selectedRepositoryGroup } = storeToRefs(useProjectStore());
+const { selectedRepositoryGroup } = storeToRefs(useProjectStore());
 
 const activeLink = computed(() => lfProjectLinks.find((link) => {
   if(selectedRepositoryGroup.value){

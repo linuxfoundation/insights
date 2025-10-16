@@ -55,7 +55,7 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { useRoute } from 'nuxt/app';
 import {
- computed, watch, onServerPrefetch
+ computed, watch
 } from 'vue';
 import { storeToRefs } from "pinia";
 import {type QueryFunction, useQuery} from "@tanstack/vue-query";
@@ -145,7 +145,6 @@ const {
   data,
   status,
   error,
-  suspense: barSuspense
 } = useQuery<CommitActivities>({
   queryKey: barQueryKey,
   queryFn: fetchBarData,
@@ -181,14 +180,9 @@ const {
   data: cumulativeData,
   status: cumulativeStatus,
   error: cumulativeError,
-  suspense: lineSuspense
 } = useQuery<CommitActivities>({
   queryKey: lineQueryKey,
   queryFn: fetchLineData,
-});
-
-onServerPrefetch(async () => {
-  await Promise.all([barSuspense(), lineSuspense()]);
 });
 
 const commitActivities = computed<CommitActivities | undefined>(() => (model.value.activeTab === 'cumulative'

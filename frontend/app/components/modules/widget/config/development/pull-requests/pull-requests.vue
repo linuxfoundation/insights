@@ -91,7 +91,7 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { useRoute } from 'nuxt/app';
 import {
- ref, computed, watch, onServerPrefetch
+ ref, computed, watch
 } from 'vue';
 import { storeToRefs } from "pinia";
 import {type QueryFunction, useQuery} from "@tanstack/vue-query";
@@ -166,14 +166,10 @@ const fetchData: QueryFunction<PullRequests> = async () => $fetch(
 );
 
 const {
-  data, status, error, suspense
+  data, status, error
 } = useQuery<PullRequests>({
   queryKey,
   queryFn: fetchData,
-});
-
-onServerPrefetch(async () => {
-  await suspense()
 });
 
 const pullRequests = computed<PullRequests>(() => data.value as PullRequests);

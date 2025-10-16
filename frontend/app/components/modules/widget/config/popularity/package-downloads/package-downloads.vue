@@ -73,7 +73,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { useRoute } from 'nuxt/app';
-import { computed, onServerPrefetch, watch } from 'vue';
+import { computed, watch } from 'vue';
 import { storeToRefs } from "pinia";
 import { DateTime } from 'luxon';
 import LfxPackageDropdown from './fragments/package-dropdown.vue';
@@ -175,19 +175,14 @@ const packagesParams = computed(() => ({
 }));
 
 const {
-  data, status, error, suspense
+  data, status, error
 } = POPULARITY_API_SERVICE.fetchPackageDownloads(downloadsParams);
 
 const {
-  data: packagesData, status: packagesStatus, suspense: packagesSuspense
+  data: packagesData, status: packagesStatus
 } = POPULARITY_API_SERVICE.fetchPackages(packagesParams);
 
 const packages = computed(() => (packagesStatus.value === 'success' && packagesData.value ? packagesData.value : []));
-
-onServerPrefetch(async () => {
-  await suspense();
-  await packagesSuspense()
-});
 
 const packageDownloads = computed<PackageDownloads>(() => data.value as PackageDownloads);
 

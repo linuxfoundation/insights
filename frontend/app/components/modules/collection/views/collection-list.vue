@@ -30,12 +30,15 @@ SPDX-License-Identifier: MIT
         :class="scrollTop > 50 ? 'py-3 md:py-4' : 'py-3 md:py-5'"
       >
         <div class="flex items-center justify-between gap-4 w-full">
-          <lfx-collection-list-filters
-            v-model:category="category"
-            :category-groups-vertical="categoryGroupsVertical"
-            :category-groups-horizontal="categoryGroupsHorizontal"
-            @update:category="updateCategory"
-          />
+          <client-only>
+            <lfx-collection-list-filters
+              v-model:category="category"
+              :category-groups-vertical="categoryGroupsVertical"
+              :category-groups-horizontal="categoryGroupsHorizontal"
+              @update:category="updateCategory"
+            />
+          </client-only>
+          <div />
           <lfx-dropdown-select
             v-model="sort"
             width="20rem"
@@ -74,23 +77,23 @@ SPDX-License-Identifier: MIT
   <section>
     <div class="container py-5 lg:py-10 flex flex-col gap-5 lg:gap-8">
       <div
-        v-if="isPending"
-        class="flex flex-col gap-5 lg:gap-8"
-      >
-        <lfx-collection-list-item-loading
-          v-for="i in 3"
-          :key="i"
-        />
-      </div>
-
-      <div
-        v-else
+        v-if="data?.pages.flatMap(p => p.data).length"
         class="flex flex-col gap-5 lg:gap-8"
       >
         <lfx-collection-list-item
           v-for="collection in data?.pages.flatMap(p => p.data)"
           :key="collection.slug"
           :collection="collection"
+        />
+      </div>
+
+      <div
+        v-if="isPending && !data?.pages.length"
+        class="flex flex-col gap-5 lg:gap-8"
+      >
+        <lfx-collection-list-item-loading
+          v-for="i in 3"
+          :key="i"
         />
       </div>
 
@@ -132,7 +135,7 @@ SPDX-License-Identifier: MIT
 import {
  watch, onServerPrefetch, computed, ref
 } from 'vue'
-import {useInfiniteQuery, useQuery} from '@tanstack/vue-query'
+import {useInfiniteQuery, useQuery, useQueryClient} from '@tanstack/vue-query'
 import { collectionListParamsGetter, collectionListParamsSetter } from
   "../services/collections.query.service";
 import type { Pagination } from '~~/types/shared/pagination'
@@ -163,6 +166,7 @@ const { listSort } = queryParams.value;
 const { showToast } = useToastService();
 const {pageWidth} = useResponsive();
 const {scrollTop} = useScroll();
+const queryClient = useQueryClient();
 
 // NOTE: This is a temporary workaround to highlight the most important collections within the LF featured collections
 const pageSize = 100
@@ -171,6 +175,26 @@ const category = ref('all');
 
 const queryKey = computed(() => [TanstackKey.COLLECTIONS, sort.value, category.value])
 
+const getCategoryIds = (value: string): string[] | undefined => {
+  if (value === 'all') {
+    return undefined
+  }
+
+  return value.replace(/group\(([^)]+)\)-/, '').split(',')
+}
+
+const queryFn = COLLECTIONS_API_SERVICE.fetchCollections(() => ({
+  pageSize,
+  sort: sort.value,
+  categories: getCategoryIds(category.value),
+}));
+
+const getNextPageParam = (lastPage) => {
+  const nextPage = lastPage.page + 1
+  const totalPages = Math.ceil(lastPage.total / lastPage.pageSize)
+  return nextPage < totalPages ? nextPage : undefined
+}
+
 const {
   data,
   isPending,
@@ -178,20 +202,12 @@ const {
   fetchNextPage,
   hasNextPage,
   isSuccess,
-  error,
-    suspense
+  error
 } = useInfiniteQuery<Pagination<Collection>, Error>({
   queryKey,
-  queryFn: COLLECTIONS_API_SERVICE.fetchCollections(() => ({
-    pageSize,
-    sort: sort.value,
-    categories: getCategoryIds(category.value),
-  })),
-  getNextPageParam: (lastPage) => {
-    const nextPage = lastPage.page + 1
-    const totalPages = Math.ceil(lastPage.total / lastPage.pageSize)
-    return nextPage < totalPages ? nextPage : undefined
-  },
+  queryFn,
+  getNextPageParam,
+  initialPageParam: 0,
 })
 
 /* Moving the options fetch here on the main component
@@ -210,7 +226,6 @@ const queryKeyHorizontal = computed(() => [
 
 const {
   data: dataVertical,
-  suspense: suspenseVertical
 } = useQuery<Pagination<CategoryGroup>>({
   queryKey: queryKeyVertical,
   queryFn: COLLECTIONS_API_SERVICE.fetchCategoryGroups(() => ({
@@ -220,7 +235,6 @@ const {
 });
 const {
   data: dataHorizontal,
-  suspense: suspenseHorizontal
 } = useQuery<Pagination<CategoryGroup>>({
   queryKey: queryKeyHorizontal,
   queryFn: COLLECTIONS_API_SERVICE.fetchCategoryGroups(() => ({
@@ -282,18 +296,15 @@ const updateSort = (value: string) => {
   }
 }
 
-const getCategoryIds = (value: string): string[] | undefined => {
-  if (value === 'all') {
-    return undefined
-  }
-
-  return value.replace(/group\(([^)]+)\)-/, '').split(',')
-}
-
+// Server-side prefetching for infinite query
 onServerPrefetch(async () => {
-  await suspense();
-  await suspenseVertical();
-  await suspenseHorizontal();
+  // Prefetch the first page of the infinite query on the server
+  await queryClient.prefetchInfiniteQuery({
+    queryKey,
+    queryFn,
+    initialPageParam: 0,
+    getNextPageParam,
+  })
 })
 
 /**

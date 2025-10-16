@@ -9,10 +9,13 @@ SPDX-License-Identifier: MIT
     <div
       class="relative text-center"
     >
-      <img
+      <NuxtImg
         src="/images/misc/loading-state-bg.svg"
         alt="Empty state background"
-      >
+        loading="lazy"
+        width="240"
+        height="240"
+      />
       <lfx-icon
         name="chart-column"
         :size="80"

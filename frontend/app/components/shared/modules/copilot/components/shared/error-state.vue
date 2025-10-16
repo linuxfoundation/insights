@@ -10,10 +10,13 @@ SPDX-License-Identifier: MIT
       v-if="errorType === 'default'"
       class="relative text-center"
     >
-      <img
+      <NuxtImg
         src="/images/misc/loading-state-bg.svg"
         alt="Error state background"
-      >
+        loading="lazy"
+        width="240"
+        height="240"
+      />
       <lfx-icon
         name="chart-column"
         :size="80"

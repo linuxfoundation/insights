@@ -54,7 +54,7 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import {useRoute} from 'nuxt/app';
 import {
-  ref, computed, watch, onServerPrefetch
+  ref, computed, watch
 } from 'vue';
 import {storeToRefs} from "pinia";
 import type { ActiveOrganizations } from '~~/types/contributors/responses.types';
@@ -113,12 +113,8 @@ const params = computed(() => ({
 }));
 
 const {
-  data, status, error, suspense
+  data, status, error
 } = CONTRIBUTORS_API_SERVICE.fetchActiveOrganizations(params);
-
-onServerPrefetch(async () => {
-  await suspense()
-})
 
 const activeOrganizations = computed<ActiveOrganizations>(() => data.value as ActiveOrganizations);
 

@@ -24,11 +24,17 @@ SPDX-License-Identifier: MIT
                     v-if="tab === 'lfx'"
                     src="~/assets/images/icon.svg"
                     alt="LFX icon"
+                    loading="lazy"
+                    width="16"
+                    height="16"
                   >
                   <img
                     v-else
                     src="~/assets/images/icon-gray.svg"
                     alt="LFX icon"
+                    loading="lazy"
+                    width="16"
+                    height="16"
                   >
                 </template>
                 <template v-if="option.value === 'lfx'">

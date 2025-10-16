@@ -134,7 +134,7 @@ import {
   computed, onServerPrefetch
 } from 'vue';
 import {useRouter} from "nuxt/app";
-import {useInfiniteQuery} from "@tanstack/vue-query";
+import {useInfiniteQuery, useQueryClient} from "@tanstack/vue-query";
 import LfxTable from "~/components/uikit/table/table.vue";
 import LfxIcon from "~/components/uikit/icon/icon.vue";
 import LfxAvatar from "~/components/uikit/avatar/avatar.vue";
@@ -153,6 +153,7 @@ const props = defineProps<{
 }>()
 
 const router = useRouter()
+const queryClient = useQueryClient();
 
 const sort = computed(() => props.sort || 'totalContributors');
 
@@ -167,24 +168,28 @@ const pageSize = 20
 
 const queryKey = computed(() => [TanstackKey.OSS_INDEX_PROJECTS, sort.value])
 
+const queryFn = PROJECT_API_SERVICE.fetchProjects(() => ({
+  sort: sortMapping[sort.value] || 'contributorCount_desc',
+  pageSize,
+}))
+
+const getNextPageParam = (lastPage) => {
+  const nextPage = lastPage.page + 1
+  const totalPages = Math.ceil(lastPage.total / lastPage.pageSize)
+  return nextPage < totalPages ? nextPage : undefined
+}
+
 const {
   data,
   isFetchingNextPage,
   fetchNextPage,
   hasNextPage,
-  suspense,
   isFetching
 } = useInfiniteQuery<Pagination<Project>>({
   queryKey,
-  queryFn: PROJECT_API_SERVICE.fetchProjects(() => ({
-    sort: sortMapping[sort.value] || 'contributorCount_desc',
-    pageSize,
-  })),
-  getNextPageParam: (lastPage) => {
-    const nextPage = lastPage.page + 1
-    const totalPages = Math.ceil(lastPage.total / lastPage.pageSize)
-    return nextPage < totalPages ? nextPage : undefined
-  },
+  queryFn,
+  getNextPageParam,
+  initialPageParam: 0
 })
 
 const loadMore = () => {
@@ -194,7 +199,12 @@ const loadMore = () => {
 }
 
 onServerPrefetch(async () => {
-  await suspense();
+  await queryClient.prefetchInfiniteQuery({
+    queryKey,
+    queryFn,
+    getNextPageParam,
+    initialPageParam: 0
+  })
 });
 </script>
 

@@ -46,7 +46,7 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { useRoute } from 'nuxt/app';
 import {
- ref, computed, onServerPrefetch, watch
+ ref, computed, watch
 } from 'vue';
 import { storeToRefs } from "pinia";
 import {type QueryFunction, useQuery} from "@tanstack/vue-query";
@@ -111,14 +111,10 @@ const fetchData: QueryFunction<WaitTime1stReview> = async () => $fetch(
 );
 
 const {
-  data, status, error, suspense
+  data, status, error
 } = useQuery<WaitTime1stReview>({
   queryKey,
   queryFn: fetchData,
-});
-
-onServerPrefetch(async () => {
-  await suspense();
 });
 
 const waitTime1stReview = computed<WaitTime1stReview>(() => data.value as WaitTime1stReview);

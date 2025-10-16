@@ -92,7 +92,7 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { useRoute } from 'nuxt/app';
 import {
- ref, computed, onServerPrefetch, watch
+ ref, computed, watch
 } from 'vue';
 import { storeToRefs } from "pinia";
 import type { ContributionOutsideHours } from '~~/types/development/responses.types';
@@ -143,12 +143,8 @@ const params = computed<QueryParams>(() => ({
 }));
 
 const {
-  data, status, error, suspense
+  data, status, error
 } = DEVELOPMENT_API_SERVICE.fetchContributionsOutsideWorkHours(params);
-
-onServerPrefetch(async () => {
-  await suspense();
-});
 
 const contributionOutsideHours = computed<ContributionOutsideHours>(() => data.value as ContributionOutsideHours);
 const summary = computed<Summary>(() => contributionOutsideHours.value.summary);

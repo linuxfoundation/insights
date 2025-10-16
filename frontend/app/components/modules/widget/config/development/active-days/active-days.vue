@@ -76,7 +76,7 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { useRoute } from 'nuxt/app';
 import {
- ref, computed, watch, onServerPrefetch
+ ref, computed, watch
 } from 'vue';
 import { storeToRefs } from "pinia";
 import type { ActiveDays } from '~~/types/development/responses.types';
@@ -158,12 +158,8 @@ const params = computed<QueryParams>(() => ({
 }));
 
 const {
-  data, status, error, suspense
+  data, status, error
 } = DEVELOPMENT_API_SERVICE.fetchActiveDays(params);
-
-onServerPrefetch(async () => {
-  await suspense();
-});
 
 const activeDays = computed<ActiveDays>(() => data.value as ActiveDays);
 

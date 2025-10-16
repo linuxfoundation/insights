@@ -39,7 +39,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { useRoute } from 'nuxt/app';
-import { computed, onServerPrefetch, watch } from 'vue';
+import { computed, watch } from 'vue';
 import { storeToRefs } from "pinia";
 import {type QueryFunction, useQuery} from "@tanstack/vue-query";
 import type { ReviewTimeByPrItem } from '~~/types/development/responses.types';
@@ -76,15 +76,12 @@ const fetchData: QueryFunction<ReviewTimeByPrItem[]> = async () => $fetch(
 );
 
 const {
-  data, status, error, suspense
+  data, status, error
 } = useQuery<ReviewTimeByPrItem[]>({
   queryKey,
   queryFn: fetchData,
 });
 
-onServerPrefetch(async () => {
-  await suspense();
-});
 const reviewTimeByPr = computed<ReviewTimeByPrItem[]>(() => data.value as ReviewTimeByPrItem[]);
 const maxValue = computed(() => Math.max(...reviewTimeByPr.value.map((item) => item.averageReviewTime)));
 const isEmpty = computed(() => isEmptyData(reviewTimeByPr.value as unknown as Record<string, unknown>[]));

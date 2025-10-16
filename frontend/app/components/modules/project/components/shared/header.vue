@@ -178,10 +178,12 @@ SPDX-License-Identifier: MIT
       </section>
     </div>
   </lfx-maintain-height>
-  <lfx-project-repository-switch
-    v-if="isSearchRepoModalOpen && props.project"
-    v-model="isSearchRepoModalOpen"
-  />
+  <client-only>
+    <lfx-project-repository-switch
+      v-if="isSearchRepoModalOpen && props.project"
+      v-model="isSearchRepoModalOpen"
+    />
+  </client-only>
 </template>
 
 <script lang="ts" setup>

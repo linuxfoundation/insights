@@ -93,7 +93,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import {
-computed, onServerPrefetch, watch
+computed, watch
 } from 'vue';
 import { useRoute } from 'vue-router';
 import { storeToRefs } from "pinia";
@@ -156,12 +156,8 @@ const params = computed<GeographicalDistributionQueryParams>(() => ({
 }));
 
 const {
-data, status, error, suspense
+data, status, error
 } = CONTRIBUTORS_API_SERVICE.fetchGeographicalDistribution(params);
-
-onServerPrefetch(async () => {
-  await suspense()
-})
 
 const geoMapData = computed<GeoMapData[] | undefined>(() => (data.value as GeoMapResponse)?.data);
 const geoMapDataCountries = computed<GeoMapData[] | undefined>(() => (geoMapData.value

@@ -3,7 +3,7 @@
 import type { NuxtApp } from 'nuxt/app'
 import {defineNuxtPlugin, useRuntimeConfig} from 'nuxt/app'
 
-export default defineNuxtPlugin(async (nuxtApp: NuxtApp) => {
+export default defineNuxtPlugin((nuxtApp: NuxtApp) => {
   if (process.server) return
   if (process.env.NODE_ENV !== 'production') return
 
@@ -23,53 +23,66 @@ export default defineNuxtPlugin(async (nuxtApp: NuxtApp) => {
       document.head.appendChild(s)
     })
 
+  // Load analytics asynchronously after the page is interactive
+  // Don't block initial render with analytics
+  const initAnalytics = async () => {
+    try {
+      // 1) Load the LFX wrapper script from the CDN
+      await loadScript(cdnUrl)
 
+      // 2) Grab the singleton
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const analytics = (window as any)?.LfxAnalytics?.LfxSegmentsAnalytics?.getInstance?.()
 
-  try {
-    // 1) Load the LFX wrapper script from the CDN
-    await loadScript(cdnUrl)
+      if (!analytics) {
+        console.warn('[LFX Segment] LfxSegmentsAnalytics not found on window.')
+        return
+      }
 
-    // 2) Grab the singleton
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const analytics = (window as any)?.LfxAnalytics?.LfxSegmentsAnalytics?.getInstance?.()
+      // 3) Initialize
+      await analytics.init()
 
-    if (!analytics) {
-      console.warn('[LFX Segment] LfxSegmentsAnalytics not found on window.')
-      return
+      const trackPage = () => {
+        analytics.page(document.title, {
+          path: location.pathname + location.search + location.hash,
+          referrer: document.referrer || undefined,
+        })
+      }
+
+      // 4) First page load
+      trackPage();
+
+      // 5) Track subsequent route navigations (Nuxt 3)
+      nuxtApp.hook('page:finish', () => {
+        trackPage();
+      })
+
+      // Optional: expose a tiny helper for custom events anywhere in app
+      nuxtApp.provide('track', (event: string, props?: Record<string, unknown>) => {
+        analytics.track(event, props)
+      })
+
+      // Optional: expose identify for signed-in users (e.g., Auth0)
+      nuxtApp.provide('identify', (id: string, traits?: Record<string, unknown>) => {
+        analytics.identify(id, traits)
+      })
+
+      // Optional: expose anonymous ID helpers if needed
+      nuxtApp.provide('getAnonymousId', () => analytics.getAnonymousId())
+      nuxtApp.provide('resetAnalytics', () => analytics.reset())
+    } catch (err) {
+      console.error('[LFX Segment] init failed:', err)
     }
+  }
 
-    // 3) Initialize
-    await analytics.init()
-
-    const trackPage = () => {
-      analytics.page(document.title, {
-        path: location.pathname + location.search + location.hash,
-        referrer: document.referrer || undefined,
+  // Start loading analytics after the page is interactive (non-blocking)
+  if (typeof window !== 'undefined') {
+    if (document.readyState === 'complete') {
+      setTimeout(initAnalytics, 0)
+    } else {
+      window.addEventListener('load', () => {
+        setTimeout(initAnalytics, 0)
       })
     }
-
-    // 4) First page load
-    trackPage();
-
-    // 5) Track subsequent route navigations (Nuxt 3)
-    nuxtApp.hook('page:finish', () => {
-      trackPage();
-    })
-
-    // Optional: expose a tiny helper for custom events anywhere in app
-    nuxtApp.provide('track', (event: string, props?: Record<string, unknown>) => {
-      analytics.track(event, props)
-    })
-
-    // Optional: expose identify for signed-in users (e.g., Auth0)
-    nuxtApp.provide('identify', (id: string, traits?: Record<string, unknown>) => {
-      analytics.identify(id, traits)
-    })
-
-    // Optional: expose anonymous ID helpers if needed
-    nuxtApp.provide('getAnonymousId', () => analytics.getAnonymousId())
-    nuxtApp.provide('resetAnalytics', () => analytics.reset())
-  } catch (err) {
-    console.error('[LFX Segment] init failed:', err)
   }
 })
