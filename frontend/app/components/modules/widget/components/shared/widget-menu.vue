@@ -81,21 +81,19 @@ SPDX-License-Identifier: MIT
       </lfx-dropdown>
     </div>
 
-    <client-only>
-      <lfx-snapshot-modal
-        v-if="isSnapshotModalOpen"
-        v-model="isSnapshotModalOpen"
-        :widget-name="props.name"
-        :data="props.data"
-      />
+    <lfx-snapshot-modal
+      v-if="isSnapshotModalOpen"
+      v-model="isSnapshotModalOpen"
+      :widget-name="props.name"
+      :data="props.data"
+    />
 
-      <lfx-widget-embed-modal
-        v-if="isEmbedModalOpen"
-        v-model="isEmbedModalOpen"
-        :widget-name="props.name"
-        :data="props.data"
-      />
-    </client-only>
+    <lfx-widget-embed-modal
+      v-if="isEmbedModalOpen"
+      v-model="isEmbedModalOpen"
+      :widget-name="props.name"
+      :data="props.data"
+    />
   </div>
 </template>
 
