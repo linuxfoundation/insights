@@ -15,7 +15,7 @@ SPDX-License-Identifier: MIT
         :size="14"
       />
       <p class="text-body-1 text-neutral-400 truncate">
-        Search projects, repositories...
+        Search projects, repositories... {{isModalOpen}}
       </p>
       <div class="flex-grow" />
       <lfx-chip
