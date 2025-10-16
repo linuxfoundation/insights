@@ -11,7 +11,12 @@ SPDX-License-Identifier: MIT
     <div class="container">
       <div class="h-14 lg:h-17 flex justify-between items-center gap-4 lg:gap-5">
         <div class="flex items-center gap-6 flex-grow min-w-0">
-          <div>
+          <div class="flex items-center gap-4">
+            <!-- Mobile menu button -->
+            <lfx-menu-tablet  class="hidden sm:block lg:!hidden" />
+            <lfx-menu-mobile  class="block sm:!hidden" />
+
+            <lfx-tools class="hidden lg:block" />
             <nuxt-link :to="{ name: LfxRoutes.EXPLORE }">
               <img
                 src="~/assets/images/logo.svg"
@@ -39,6 +44,9 @@ import LfxSearch from "~/components/shared/layout/search/search.vue";
 import {LfxRoutes} from "~/components/shared/types/routes";
 import LfxMenu from "~/components/shared/layout/menu.vue";
 import LfxBanner from "~/components/shared/layout/banner.vue";
+import LfxTools from "~/components/shared/layout/tools.vue";
+import LfxMenuMobile from "~/components/shared/layout/menu/menu-mobile.vue";
+import LfxMenuTablet from "~/components/shared/layout/menu/menu-tablet.vue";
 </script>
 
 <script lang="ts">
