@@ -131,32 +131,23 @@ export default defineNuxtConfig({
         },
       },
     },
-    // build: {
-    //   cssCodeSplit: true,
-    //   rollupOptions: {
-    //     output: {
-    //       manualChunks: (id) => {
-    //         // Split vendor chunks for better caching
-    //         if (id.includes('node_modules')) {
-    //           if (id.includes('echarts')) {
-    //             return 'echarts';
-    //           }
-    //           if (id.includes('primevue')) {
-    //             return 'primevue';
-    //           }
-    //           if (id.includes('@tanstack')) {
-    //             return 'tanstack';
-    //           }
-    //           if (id.includes('pinia')) {
-    //             return 'pinia';
-    //           }
-    //           return 'vendor';
-    //         }
-    //       },
-    //     },
-    //   },
-    //   chunkSizeWarningLimit: 1000,
-    // },
+    build: {
+      cssCodeSplit: true,
+      rollupOptions: {
+        output: {
+          manualChunks: (id) => {
+            // Only split heavy visualization libraries to avoid breaking Vue reactivity
+            if (id.includes('node_modules')) {
+              // ECharts is heavy and self-contained - safe to split
+              if (id.includes('echarts')) {
+                return 'echarts';
+              }
+            }
+          },
+        },
+      },
+      chunkSizeWarningLimit: 1000,
+    },
   },
   robots: {
     disallow: isProduction || isDevelopment ? [] : ['/'],
