@@ -176,12 +176,10 @@ SPDX-License-Identifier: MIT
       />
     </lfx-card>
   </div>
-  <client-only>
-    <lf-security-generate-yaml-modal
-      v-if="isGenerateYamlModalOpen"
-      v-model="isGenerateYamlModalOpen"
-    />
-  </client-only>
+  <lf-security-generate-yaml-modal
+    v-if="isGenerateYamlModalOpen"
+    v-model="isGenerateYamlModalOpen"
+  />
 </template>
 
 <script setup lang="ts">
