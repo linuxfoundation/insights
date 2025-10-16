@@ -63,6 +63,7 @@ SPDX-License-Identifier: MIT
       <form @submit="handleSubmit">
         <div class="relative border border-solid border-neutral-200 rounded-xl bg-white shadow-sm">
           <textarea
+            ref="textareaRef"
             v-model="input"
             placeholder="Ask a follow-up question..."
             class="w-full p-4 bg-transparent
@@ -139,6 +140,7 @@ const emit = defineEmits<{
 const { copilotDefaults, selectedResultId, selectedWidgetKey } = storeToRefs(useCopilotStore());
 
 const scrollable = ref<HTMLElement | null>(null)
+const textareaRef = ref<HTMLElement | null>(null)
 const showTopGradient = ref(false)
 const showBottomGradient = ref(false)
 
@@ -177,6 +179,12 @@ const callChatApi = async (userMessage: string) => {
   )
   
   input.value = '';
+  
+  // Focus the textarea after clearing input
+  setTimeout(() => {
+    textareaRef.value?.focus();
+  }, 100);
+  
   scrollToEnd();
   
   try {
@@ -212,6 +220,10 @@ const callChatApi = async (userMessage: string) => {
         if (receivedConversationId) {
           conversationId.value = receivedConversationId;
         }
+        // Focus textarea when chat response is complete
+        setTimeout(() => {
+          textareaRef.value?.focus();
+        }, 100);
       });
       
       // Also capture conversationId from the return value as backup
@@ -233,6 +245,10 @@ const callChatApi = async (userMessage: string) => {
   } finally {
     isLoading.value = false
     streamingStatus.value = ''
+    // Ensure textarea is focused even if there was an error
+    setTimeout(() => {
+      textareaRef.value?.focus();
+    }, 100);
   }
 }
 

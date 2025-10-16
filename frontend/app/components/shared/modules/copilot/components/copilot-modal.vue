@@ -23,6 +23,7 @@ SPDX-License-Identifier: MIT
         <lfx-copilot-results-section
           :is-loading="isLoading"
           @update:is-chart-loading="isChartLoading = $event"
+          @close="isModalOpen = false"
         />
       </div>
     </div>

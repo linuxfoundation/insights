@@ -9,8 +9,9 @@ SPDX-License-Identifier: MIT
     >
       <div>
         <lfx-copilot-results-header
-          v-if="!isEmpty"
+          :is-empty="isEmpty"
           :is-loading="isLoading || isChartLoading"
+          @close="emit('close')"
         />
       </div>
       <div 
@@ -89,6 +90,7 @@ import type { ChartErrorType } from '~/components/shared/modules/copilot/types/c
 
 const emit = defineEmits<{
   (e: 'update:isChartLoading', value: boolean): void;
+  (e: 'close'): void;
 }>();
 
 const props = defineProps<{
