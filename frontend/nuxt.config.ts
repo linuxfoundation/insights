@@ -22,12 +22,12 @@ export default defineNuxtConfig({
   components: false,
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
-  experimental: {
+  // experimental: {
     // Disabled - causes hydration mismatch and @click event issues in production
     // payloadExtraction: true,
     // renderJsonPayloads: true,
-    typedPages: true,
-  },
+  //   // typedPages: true,
+  // },
   modules: [
     '@nuxtjs/tailwindcss',
     '@pinia/nuxt',
@@ -132,32 +132,32 @@ export default defineNuxtConfig({
         },
       },
     },
-    build: {
-      cssCodeSplit: true,
-      rollupOptions: {
-        output: {
-          manualChunks: (id) => {
-            // Split vendor chunks for better caching
-            if (id.includes('node_modules')) {
-              if (id.includes('echarts')) {
-                return 'echarts';
-              }
-              if (id.includes('primevue')) {
-                return 'primevue';
-              }
-              if (id.includes('@tanstack')) {
-                return 'tanstack';
-              }
-              if (id.includes('pinia')) {
-                return 'pinia';
-              }
-              return 'vendor';
-            }
-          },
-        },
-      },
-      chunkSizeWarningLimit: 1000,
-    },
+    // build: {
+    //   cssCodeSplit: true,
+    //   rollupOptions: {
+    //     output: {
+    //       manualChunks: (id) => {
+    //         // Split vendor chunks for better caching
+    //         if (id.includes('node_modules')) {
+    //           if (id.includes('echarts')) {
+    //             return 'echarts';
+    //           }
+    //           if (id.includes('primevue')) {
+    //             return 'primevue';
+    //           }
+    //           if (id.includes('@tanstack')) {
+    //             return 'tanstack';
+    //           }
+    //           if (id.includes('pinia')) {
+    //             return 'pinia';
+    //           }
+    //           return 'vendor';
+    //         }
+    //       },
+    //     },
+    //   },
+    //   chunkSizeWarningLimit: 1000,
+    // },
   },
   robots: {
     disallow: isProduction || isDevelopment ? [] : ['/'],
