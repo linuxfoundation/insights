@@ -13,7 +13,7 @@ SPDX-License-Identifier: MIT
       >
         <div class="flex flex-col justify-between h-full">
           <div>
-            <h3 class="text-heading-3 font-bold font-secondary mb-2">Health score</h3>
+            <h2 class="text-heading-3 font-bold font-secondary mb-2">Health score</h2>
 
             <lfx-skeleton-state
               v-if="!isRepoSelected && !allArchived && !isEmpty"
@@ -58,6 +58,7 @@ SPDX-License-Identifier: MIT
                 <a
                   :href="links.trustScore"
                   target="_blank"
+                  rel="noopener noreferrer"
                   class="text-brand-500"
                 >Learn more</a>
               </p>

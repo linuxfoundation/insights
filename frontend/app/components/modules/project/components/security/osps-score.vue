@@ -5,9 +5,9 @@ SPDX-License-Identifier: MIT
 <template>
   <lfx-card class=" w-full !shadow-sm">
     <div class="p-6 pb-8">
-      <h3 class="text-heading-3 font-bold font-secondary">
+      <h2 class="text-heading-3 font-bold font-secondary">
         OSPS Baseline score
-      </h3>
+      </h2>
       <div class="pt-8 px-4 flex justify-center">
         <div class="aspect-[3/2] w-full relative">
           <lfx-chart
@@ -43,6 +43,7 @@ SPDX-License-Identifier: MIT
       <a
         :href="links.ospsScore"
         target="_blank"
+        rel="noopener noreferrer"
         class="pt-3 block"
       >
         <div class="flex items-center gap-1">

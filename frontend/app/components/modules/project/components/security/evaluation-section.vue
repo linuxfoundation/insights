@@ -21,9 +21,9 @@ SPDX-License-Identifier: MIT
         </template>
       </lfx-project-security-evaluation-result>
       <div v-if="props.checks.length">
-        <h4 class="text-heading-4 font-bold font-secondary">
+        <h2 class="text-heading-4 font-bold font-secondary">
           {{ category}}
-        </h4>
+        </h2>
         <p
           v-if="config"
           class="text-body-2 text-neutral-500 mt-1"
