@@ -22,12 +22,11 @@ export default defineNuxtConfig({
   components: false,
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
-  // experimental: {
-    // Disabled - causes hydration mismatch and @click event issues in production
-    // payloadExtraction: true,
-    // renderJsonPayloads: true,
-  //   // typedPages: true,
-  // },
+  experimental: {
+    payloadExtraction: true,
+    renderJsonPayloads: true,
+    typedPages: true,
+  },
   modules: [
     '@nuxtjs/tailwindcss',
     '@pinia/nuxt',
