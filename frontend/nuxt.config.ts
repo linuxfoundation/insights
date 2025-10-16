@@ -23,8 +23,9 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
   experimental: {
-    payloadExtraction: true,
-    renderJsonPayloads: true,
+    // Disabled - causes hydration mismatch and @click event issues in production
+    // payloadExtraction: true,
+    // renderJsonPayloads: true,
     typedPages: true,
   },
   modules: [
