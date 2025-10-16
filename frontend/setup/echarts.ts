@@ -9,8 +9,7 @@ export default {
     'MapChart',
     'ScatterChart',
     'HeatmapChart',
-    'TreemapChart',
-    'RadarChart'
+    'TreemapChart'
   ],
   features: ['LabelLayout', 'UniversalTransition'],
   components: [
@@ -18,12 +17,6 @@ export default {
     'TooltipComponent',
     'LegendComponent',
     'DatasetComponent',
-    'GridComponent',
-    'RadarComponent',
-    'VisualMapComponent',
-    'MarkLineComponent',
-    'MarkAreaComponent',
-    'GraphicComponent',
-    'GeoComponent'
+    'GridComponent'
   ]
 };
