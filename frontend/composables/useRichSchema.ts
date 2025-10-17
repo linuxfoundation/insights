@@ -5,7 +5,6 @@ import type { Project } from '../types/project';
 import type { Collection } from '../types/collection';
 import {
     defineWebSite,
-    defineWebApplication,
     useSchemaOrg,
     useRuntimeConfig
 } from '#imports';
@@ -20,7 +19,8 @@ export function useRichSchema() {
                 name: 'LFX Insights',
                 url: baseUrl,
             }),
-            defineWebApplication({
+            {
+                '@type': 'WebApplication',
                 name: 'LFX Insights',
                 applicationCategory: 'BusinessApplication',
                 operatingSystem: 'Web',
@@ -30,7 +30,7 @@ export function useRichSchema() {
                     price: 0,
                     priceCurrency: 'USD',
                 },
-            }),
+            },
         ]);
     };
 
