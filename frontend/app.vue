@@ -11,4 +11,7 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
+// Add sitewide rich schema (JSON-LD) to all pages
+const { addSitewideSchema } = useRichSchema();
+addSitewideSchema();
 </script>

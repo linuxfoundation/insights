@@ -34,6 +34,7 @@
     "@nuxt/image": "^1.11.0",
     "@nuxtjs/plausible": "^1.2.0",
     "@nuxtjs/robots": "^5.2.10",
+    "@nuxtjs/seo": "^3.2.2",
     "@nuxtjs/sitemap": "^7.4.7",
     "@pinia/nuxt": "^0.10.1",
     "@popperjs/core": "^2.11.8",
