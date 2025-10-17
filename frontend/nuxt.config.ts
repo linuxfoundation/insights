@@ -8,6 +8,7 @@ import primevue from './setup/primevue'
 import echarts from './setup/echarts'
 import caching from './setup/caching'
 import sitemap from './setup/sitemap'
+import schemaOrg from './setup/schemaOrg'
 
 const isProduction = process.env.NUXT_APP_ENV === 'production'
 const isDevelopment = process.env.NODE_ENV === 'development'
@@ -39,6 +40,7 @@ export default defineNuxtConfig({
     '@nuxtjs/robots',
     '@nuxtjs/sitemap',
     '@nuxt/image',
+    '@nuxtjs/seo',
   ],
   image: {
     formats: ['webp', 'avif', 'jpeg', 'png'],
@@ -161,6 +163,7 @@ export default defineNuxtConfig({
   robots: {
     disallow: isProduction || isDevelopment ? [] : ['/'],
   },
+  ...schemaOrg,
   ...sitemap,
   ...caching,
 })

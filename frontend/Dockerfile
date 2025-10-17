@@ -1,4 +1,4 @@
-ARG NODE_VERSION=20
+ARG NODE_VERSION=22
 ARG APP_ENV=production
 ARG NUXT_REDIS_URL
 
@@ -48,6 +48,9 @@ RUN echo "Building with APP_ENV=$APP_ENV" && \
 
 FROM node:${NODE_VERSION}-slim AS prod
 
+# Install pnpm globally
+RUN npm install -g pnpm
+
 WORKDIR /usr/src/app
 
 # Install system packages needed by sharp and font rendering
@@ -57,7 +60,16 @@ RUN apt-get update && apt-get install -y \
     fonts-dejavu-core \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
+# Copy the built output
 COPY --from=builder /usr/src/app/.output ./.output
+
+# Install production dependencies in .output/server
+# This ensures all modules required by the built app are available
+WORKDIR /usr/src/app/.output/server
+RUN pnpm install --prod --shamefully-hoist || npm install --production
+
+# Switch back to main working directory
+WORKDIR /usr/src/app
 
 EXPOSE 3000
 CMD ["node", ".output/server/index.mjs"]

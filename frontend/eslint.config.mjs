@@ -108,6 +108,7 @@ export default [
         navigateTo: 'readonly',
         definePageMeta: 'readonly',
         $fetch: 'readonly',
+        useRichSchema: 'readonly',
 
         // Browser globals for client-side
         document: 'readonly',

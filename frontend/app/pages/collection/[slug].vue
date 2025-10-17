@@ -14,7 +14,7 @@ import {
 useRoute, createError, showError
 } from "nuxt/app";
 import {useQuery} from "@tanstack/vue-query";
-import {computed, onServerPrefetch} from "vue";
+import {computed, onServerPrefetch, watch} from "vue";
 import type {Collection} from "~~/types/collection";
 import LfxCollectionDetailsView from "~/components/modules/collection/views/collection-details.vue";
 import {TanstackKey} from "~/components/shared/types/tanstack";
@@ -22,6 +22,7 @@ import {COLLECTIONS_API_SERVICE} from "~/components/modules/collection/services/
 
 const route = useRoute();
 const {slug} = route.params;
+const { addCollectionSchema } = useRichSchema();
 
 const queryKey = computed(() => [TanstackKey.COLLECTION, slug]);
 
@@ -85,4 +86,11 @@ useSeoMeta({
   twitterTitle: title,
   twitterDescription: description
 })
+
+// Add rich schema for the collection
+watch(() => data.value, (value) => {
+  if (value) {
+    addCollectionSchema(value);
+  }
+}, { immediate: true });
 </script>
