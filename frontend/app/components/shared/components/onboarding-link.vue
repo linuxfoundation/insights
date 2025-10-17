@@ -23,7 +23,7 @@ SPDX-License-Identifier: MIT
       <lfx-button
         type="tertiary"
         button-style="pill"
-        :size="size"
+        size="small"
       >
         <lfx-icon
           name="grid-round-2-plus"
@@ -35,18 +35,13 @@ SPDX-License-Identifier: MIT
   </div>
 </template>
 <script setup lang="ts">
-import { computed } from 'vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxButton from '~/components/uikit/button/button.vue';
-import { type ButtonSize } from '~/components/uikit/button/types/button.types';
 
-const props = withDefaults(defineProps<{
+defineProps<{
   showMessage?: boolean;
-}>(), {
-  showMessage: false
-});
+}>();
 
-const size = computed<ButtonSize>(() => props.showMessage ? 'small' : 'medium');
 const href = 'https://github.com/linuxfoundation/insights/discussions/categories/' +
  'project-onboardings?discussions_q=is:open+category:%22Project+onboardings%22+sort:top'
 </script>

@@ -16,25 +16,24 @@ SPDX-License-Identifier: MIT
     </lfx-menu-button>
     <teleport to="body">
       <div
-        class="fixed top-0 left-0 w-full h-full bg-gradient-to-b from-black/5 to-black/25 z-50 transition-all"
+        class="fixed top-0 left-0 w-full h-full bg-gradient-to-b from-black/5 to-black/25 z-[100] transition-all"
         :class="isOpen ? 'opacity-100 visible' : 'opacity-0 invisible'"
         @click="isOpen = false"
       />
       <div
-        class="fixed top-0 right-0 h-full w-78 bg-white p-5 transition-all transform z-50"
-        :class="isOpen ? 'translate-x-0' : 'translate-x-full'"
+        class="fixed top-0 left-0 h-full w-[350px] bg-white p-5 transition-all transform z-[100]"
+        :class="isOpen ? 'translate-x-0' : '-translate-x-full'"
         @click.stop
       >
         <div class="flex flex-col justify-between h-full">
           <div>
-            <div class="flex justify-end pb-4">
+            <div class="flex flex-col gap-3 items-start relative">
+              <lfx-menu-static-links />
               <lfx-icon-button
                 icon="close"
+                class="absolute top-0 right-0"
                 @click="isOpen = false"
               />
-            </div>
-            <div class="flex flex-col gap-3 items-start">
-              <lfx-menu-static-links />
             </div>
           </div>
           <div>

@@ -5,7 +5,7 @@ SPDX-License-Identifier: MIT
 <template>
   <main class="min-h-screen flex flex-col pt-28 sm:pt-21 lg:pt-24">
     <lfx-navbar />
-    <div :class="['pb-10']">
+    <div>
       <slot />
     </div>
     <lfx-toast theme="dark" />
