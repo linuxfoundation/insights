@@ -44,6 +44,7 @@ import {
   processProjectParams,
   projectParamsSetter
 } from "~/components/modules/project/services/project.query.service";
+import {useRichSchema} from "~~/composables/useRichSchema";
 
 const route = useRoute();
 const {slug} = route.params;

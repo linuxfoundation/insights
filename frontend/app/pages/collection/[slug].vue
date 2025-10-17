@@ -19,6 +19,7 @@ import type {Collection} from "~~/types/collection";
 import LfxCollectionDetailsView from "~/components/modules/collection/views/collection-details.vue";
 import {TanstackKey} from "~/components/shared/types/tanstack";
 import {COLLECTIONS_API_SERVICE} from "~/components/modules/collection/services/collections.api.service";
+import {useRichSchema} from "~~/composables/useRichSchema";
 
 const route = useRoute();
 const {slug} = route.params;
