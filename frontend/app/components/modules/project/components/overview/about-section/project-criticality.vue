@@ -30,11 +30,14 @@ SPDX-License-Identifier: MIT
               to the {{ topRank }} most critical open source projects
             </span>
           </template>
-          <img
+          <NuxtImg
             :src="`/images/criticality/top-${topRank}.svg`"
             :alt="`Top ${topRank} criticality`"
             class="min-w-14"
-          >
+            loading="lazy"
+            width="56"
+            height="56"
+          />
         </lfx-tooltip>
       </div>
     </div>

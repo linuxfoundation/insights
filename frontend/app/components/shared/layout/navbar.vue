@@ -22,11 +22,15 @@ SPDX-License-Identifier: MIT
                 src="~/assets/images/logo.svg"
                 alt="LFX Insights"
                 class="h-6 min-w-44 hidden xl:block"
+                width="176"
+                height="24"
               >
               <img
                 src="~/assets/images/logo-mobile.svg"
                 alt="LFX Insights"
                 class="h-6 min-w-29 block xl:hidden"
+                width="116"
+                height="24"
               >
             </nuxt-link>
           </div>

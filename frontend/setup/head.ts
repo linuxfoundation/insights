@@ -58,15 +58,27 @@ export default {
       type: 'image/x-icon',
       href: 'https://cdn.platform.linuxfoundation.org/assets/lf-favicon.png',
     },
+    // Preconnect to critical origins early
     { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
     { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: 'anonymous' },
+    { rel: 'preconnect', href: 'https://cdn.platform.linuxfoundation.org' },
+    { rel: 'dns-prefetch', href: 'https://kit.fontawesome.com' },
+    // Async load fonts (non-blocking)
+    {
+      rel: 'preload',
+      as: 'style',
+      href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Roboto+Slab:wght@300;400;600&display=swap',
+      onload: "this.onload=null;this.rel='stylesheet'",
+    },
     {
       rel: 'stylesheet',
       href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Roboto+Slab:wght@300;400;600&display=swap',
+      media: 'print',
+      onload: "this.media='all'",
     },
   ],
   script: [
-    // Using fontawesome like this instead of installing plugins
-    { src: 'https://kit.fontawesome.com/d65f54d9ea.js', crossorigin: 'anonymous' },
+    // Using fontawesome like this instead of installing plugins - load async
+    { src: 'https://kit.fontawesome.com/d65f54d9ea.js', crossorigin: 'anonymous', async: true },
   ],
 };

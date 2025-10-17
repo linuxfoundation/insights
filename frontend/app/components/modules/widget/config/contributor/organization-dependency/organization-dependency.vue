@@ -57,7 +57,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import {
-computed, watch, onServerPrefetch
+computed, watch
 } from 'vue';
 import { useRoute } from 'nuxt/app';
 import { storeToRefs } from "pinia";
@@ -112,12 +112,8 @@ const params = computed<LeaderboardQueryParams>(() => ({
 }));
 
 const {
-  data, status, error, suspense
+  data, status, error
 } = CONTRIBUTORS_API_SERVICE.fetchOrganizationDependency(params);
-
-onServerPrefetch(async () => {
-  await suspense()
-})
 
 const organizationDependency = computed<OrganizationDependency>(() => data.value as OrganizationDependency);
 const topOrganizations = computed(() => organizationDependency.value?.topOrganizations);

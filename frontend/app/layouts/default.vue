@@ -23,11 +23,11 @@ import {useRoute} from "nuxt/app";
 import {watch} from 'vue'
 import LfxNavbar from '~/components/shared/layout/navbar.vue';
 import LfxToast from '~/components/uikit/toast/toast.vue';
+import LfxInsightsFooter from "~/components/shared/layout/footer.vue";
 import LfxReportGlobal from "~/components/shared/modules/report/components/report-global.vue";
 import LfxShareGlobal from "~/components/shared/modules/share/components/share-global.vue";
 import LfxCopilotGlobal from "~/components/shared/modules/copilot/components/copilot-global.vue";
 import LfxWelcomeModal from "~/components/shared/components/welcome-modal.vue";
-import LfxInsightsFooter from "~/components/shared/layout/footer.vue";
 
 const route = useRoute();
 

@@ -22,6 +22,11 @@ export default defineNuxtConfig({
   components: false,
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
+  experimental: {
+    payloadExtraction: true,
+    renderJsonPayloads: true,
+    typedPages: true,
+  },
   modules: [
     '@nuxtjs/tailwindcss',
     '@pinia/nuxt',
@@ -33,7 +38,20 @@ export default defineNuxtConfig({
     '@nuxtjs/plausible',
     '@nuxtjs/robots',
     '@nuxtjs/sitemap',
+    '@nuxt/image',
   ],
+  image: {
+    formats: ['webp', 'avif', 'jpeg', 'png'],
+    quality: 80,
+    screens: {
+      xs: 320,
+      sm: 640,
+      md: 768,
+      lg: 1024,
+      xl: 1280,
+      '2xl': 1536,
+    },
+  },
   plugins: ['~/plugins/vue-query.ts', '~/plugins/analytics.ts', '~/plugins/canonical.ts'],
   css: ['~/assets/styles/main.scss'],
   tailwindcss,
@@ -112,6 +130,32 @@ export default defineNuxtConfig({
           rewrite: (path) => path.replace(/^\/blog/, '/blog'),
         },
       },
+    },
+    build: {
+      cssCodeSplit: true,
+      rollupOptions: {
+        output: {
+          manualChunks: (id) => {
+            // Only split heavy visualization libraries to avoid breaking Vue reactivity
+            if (id.includes('node_modules')) {
+              // ECharts is heavy and self-contained - safe to split
+              if (id.includes('echarts')) {
+                return 'echarts';
+              }
+              if (id.includes('primevue')) {
+                return 'primevue';
+              }
+              if (id.includes('@tanstack')) {
+                return 'tanstack';
+              }
+              if (id.includes('pinia')) {
+                return 'pinia';
+              }
+            }
+          },
+        },
+      },
+      chunkSizeWarningLimit: 1000,
     },
   },
   robots: {

@@ -36,7 +36,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { useRoute } from 'nuxt/app';
-import { computed, onServerPrefetch, watch } from 'vue';
+import { computed, watch } from 'vue';
 import { storeToRefs } from "pinia";
 import { DateTime } from 'luxon';
 import searchQueriesConfig from './search-queries.config'
@@ -84,12 +84,8 @@ const queryParams = computed(() => ({
 }));
 
 const {
-  data, status, error, suspense
+  data, status, error
 } = POPULARITY_API_SERVICE.fetchSearchQueries(queryParams);
-
-onServerPrefetch(async () => {
-  await suspense();
-});
 
 const searchQueries = computed<SearchQueries>(() => data.value as SearchQueries);
 

@@ -94,6 +94,7 @@ SPDX-License-Identifier: MIT
 import {computed, onServerPrefetch, watch} from 'vue'
 import { useRoute } from 'vue-router'
 import { useInfiniteQuery } from '@tanstack/vue-query'
+import {useQueryClient} from "@tanstack/vue-query";
 import type { Project } from '~~/types/project'
 import type { Collection } from '~~/types/collection'
 import type { Pagination } from '~~/types/shared/pagination'
@@ -124,6 +125,7 @@ const props = defineProps<{
 const {scrollTop} = useScroll();
 const route = useRoute()
 const collectionSlug = route.params.slug as string
+const queryClient = useQueryClient();
 
 const { queryParams } = useQueryParam(collectionDetailsParamsGetter, collectionListParamsSetter);
 const { collectionTab, collectionSort } = queryParams.value;
@@ -136,6 +138,19 @@ const isLF = computed(() => tab.value === 'lfx')
 
 const queryKey = computed(() => [TanstackKey.PROJECTS, sort.value, tab.value, collectionSlug])
 
+const queryFn =PROJECT_API_SERVICE.fetchProjects(() => ({
+  sort: sort.value,
+  pageSize,
+  isLF: isLF.value,
+  collectionSlug,
+}))
+
+const getNextPageParam = (lastPage) => {
+  const nextPage = lastPage.page + 1
+  const totalPages = Math.ceil(lastPage.total / lastPage.pageSize)
+  return nextPage < totalPages ? nextPage : undefined
+}
+
 const {
   data,
   isPending,
@@ -143,20 +158,11 @@ const {
   fetchNextPage,
   hasNextPage,
   isSuccess,
-    suspense,
 } = useInfiniteQuery<Pagination<Project>>({
   queryKey,
-  queryFn: PROJECT_API_SERVICE.fetchProjects(() => ({
-    sort: sort.value,
-    pageSize,
-    isLF: isLF.value,
-    collectionSlug,
-  })),
-  getNextPageParam: (lastPage) => {
-    const nextPage = lastPage.page + 1
-    const totalPages = Math.ceil(lastPage.total / lastPage.pageSize)
-    return nextPage < totalPages ? nextPage : undefined
-  },
+  queryFn,
+  getNextPageParam,
+  initialPageParam: 0
 })
 
 const loadMore = () => {
@@ -164,11 +170,6 @@ const loadMore = () => {
     fetchNextPage()
   }
 }
-
-onServerPrefetch(async () => {
-  await suspense()
-})
-
 const updateSort = (value: string) => {
   queryParams.value = {
     collectionSort: value,
@@ -192,6 +193,16 @@ watch(() => queryParams.value, (value) => {
     tab.value = value.collectionTab;
   }
 });
+
+onServerPrefetch(async () => {
+  await queryClient.prefetchInfiniteQuery({
+    queryKey,
+    queryFn,
+    getNextPageParam,
+    initialPageParam: 0
+  })
+})
+
 
 </script>
 

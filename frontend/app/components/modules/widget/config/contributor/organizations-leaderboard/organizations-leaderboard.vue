@@ -41,18 +41,20 @@ SPDX-License-Identifier: MIT
         </lfx-button>
       </div>
     </lfx-project-load-state>
-    <lfx-organization-leaderboard-drawer
-      v-model="isDrawerOpened"
-      :selected-metric="model.metric"
-      :model="model"
-    />
+    <client-only>
+      <lfx-organization-leaderboard-drawer
+        v-model="isDrawerOpened"
+        :selected-metric="model.metric"
+        :model="model"
+      />
+    </client-only>
   </section>
 </template>
 
 <script setup lang="ts">
 import { useRoute } from 'nuxt/app';
 import {
- ref, computed, onServerPrefetch, watch
+ ref, computed, watch
 } from 'vue';
 import { storeToRefs } from "pinia";
 import LfxOrganizationLeaderboardDrawer from './fragments/organization-leaderboard-drawer.vue';
@@ -108,7 +110,6 @@ const {
   isSuccess,
   isError,
   status,
-  suspense,
 } = CONTRIBUTORS_API_SERVICE.fetchOrganizationLeaderboard(params);
 
 const organizations = computed<OrganizationLeaderboard>(
@@ -117,10 +118,6 @@ const organizations = computed<OrganizationLeaderboard>(
 const hideAllOrganizationsButton = computed(() => organizations.value?.data.length < 10);
 
 const isEmpty = computed(() => isEmptyData(organizations.value?.data as unknown as Record<string, unknown>[]));
-
-onServerPrefetch(async () => {
-  await suspense()
-})
 
 watch(status, (value) => {
   if (value !== 'pending') {

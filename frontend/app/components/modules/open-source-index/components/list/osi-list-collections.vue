@@ -178,7 +178,7 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import {computed, onServerPrefetch} from "vue";
 import pluralize from "pluralize";
-import {useInfiniteQuery} from "@tanstack/vue-query";
+import {useInfiniteQuery, useQueryClient} from "@tanstack/vue-query";
 import LfxAccordion from "~/components/uikit/accordion/accordion.vue";
 import LfxAccordionItem from "~/components/uikit/accordion/accordion-item.vue";
 import {LfxRoutes} from "~/components/shared/types/routes";
@@ -206,6 +206,8 @@ const props = withDefaults(defineProps<{
   isSub: false,
 })
 
+const queryClient = useQueryClient();
+
 const sort = computed(() => props.sort || 'totalContributors');
 
 const accordion = ref<string>('');
@@ -215,24 +217,29 @@ const router = useRouter()
 const queryKey = computed(() => [TanstackKey.OSS_INDEX_COLLECTIONS_LIST, sort.value, props.pageSize,
   props.categoryGroupId])
 
+
+const queryFn = OSS_INDEX_API_SERVICE.ossCollectionQueryFn(() => ({
+  sort: sort.value || 'totalContributors',
+  categoryGroupId: props.categoryGroupId,
+  pageSize: props.pageSize,
+}))
+
+const getNextPageParam = (lastPage) => {
+  const nextPage = lastPage.page + 1
+  return lastPage.collections.length >= props.pageSize ? nextPage : undefined
+}
+
 const {
   data,
   isFetchingNextPage,
   fetchNextPage,
   hasNextPage,
-  suspense,
     isFetching,
 } = useInfiniteQuery<OSSIndexCategoryDetails>({
   queryKey,
-  queryFn: OSS_INDEX_API_SERVICE.ossCollectionQueryFn(() => ({
-    sort: sort.value || 'totalContributors',
-    categoryGroupId: props.categoryGroupId,
-    pageSize: props.pageSize,
-  })),
-  getNextPageParam: (lastPage) => {
-    const nextPage = lastPage.page + 1
-    return lastPage.collections.length >= props.pageSize ? nextPage : undefined
-  },
+  queryFn,
+  getNextPageParam,
+  initialPageParam: 0,
 })
 
 const loadMore = () => {
@@ -242,7 +249,12 @@ const loadMore = () => {
 }
 
 onServerPrefetch(async () => {
-  await suspense();
+  await queryClient.prefetchInfiniteQuery({
+    queryKey,
+    queryFn,
+    getNextPageParam,
+    initialPageParam: 0,
+  })
 });
 </script>
 

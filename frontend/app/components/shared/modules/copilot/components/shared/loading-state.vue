@@ -7,10 +7,13 @@ SPDX-License-Identifier: MIT
     class="flex flex-col gap-5"
   >
     <div class="relative text-center">
-      <img
+      <NuxtImg
         src="/images/misc/loading-state-bg.svg"
         alt="Loading state background"
-      >
+        loading="lazy"
+        width="240"
+        height="240"
+      />
       <lfx-icon
         name="chart-column"
         :size="80"
