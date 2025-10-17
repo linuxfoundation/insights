@@ -2,35 +2,37 @@
 // SPDX-License-Identifier: MIT
 
 import {
-  defineWebSite,
-  defineWebApplication,
-  useSchemaOrg,
+    defineWebSite,
+    defineWebApplication,
+    useSchemaOrg,
+    useRuntimeConfig
 } from '#imports';
 
 export function useRichSchema() {
-  const baseUrl = 'https://insights.linuxfoundation.org';
+    const config = useRuntimeConfig();
+    const baseUrl = config.public.appUrl;
 
-  const addSitewideSchema = () => {
-    useSchemaOrg([
-      defineWebSite({
-        name: 'LFX Insights',
-        url: baseUrl,
-      }),
-      defineWebApplication({
-        name: 'LFX Insights',
-        applicationCategory: 'BusinessApplication',
-        operatingSystem: 'Web',
-        url: baseUrl,
-        offers: {
-          '@type': 'Offer',
-          price: '0',
-          priceCurrency: 'USD',
-        },
-      }),
-    ]);
-  };
+    const addSitewideSchema = () => {
+        useSchemaOrg([
+            defineWebSite({
+                name: 'LFX Insights',
+                url: baseUrl,
+            }),
+            defineWebApplication({
+                name: 'LFX Insights',
+                applicationCategory: 'BusinessApplication',
+                operatingSystem: 'Web',
+                url: baseUrl,
+                offers: {
+                    '@type': 'Offer',
+                    price: 0,
+                    priceCurrency: 'USD',
+                },
+            }),
+        ]);
+    };
 
-  return {
-    addSitewideSchema,
-  };
+    return {
+        addSitewideSchema,
+    };
 }
