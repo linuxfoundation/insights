@@ -1,12 +1,12 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import pluginVue from 'eslint-plugin-vue'
-import typescriptEslint from 'typescript-eslint'
-import prettier from 'eslint-config-prettier'
-import pluginPrettier from 'eslint-plugin-prettier'
-import pluginImport from 'eslint-plugin-import'
-import vueParser from 'vue-eslint-parser'
-import tsParser from '@typescript-eslint/parser'
+import pluginVue from 'eslint-plugin-vue';
+import typescriptEslint from 'typescript-eslint';
+import prettier from 'eslint-config-prettier';
+import pluginPrettier from 'eslint-plugin-prettier';
+import pluginImport from 'eslint-plugin-import';
+import vueParser from 'vue-eslint-parser';
+import tsParser from '@typescript-eslint/parser';
 
 export default [
   // Ignore patterns
@@ -86,7 +86,19 @@ export default [
     },
     rules: {
       // Prettier integration
-      'prettier/prettier': 'error',
+      'prettier/prettier': [
+        'error',
+        {
+          semi: true,
+          singleQuote: true,
+          trailingComma: 'all',
+          printWidth: 100,
+          tabWidth: 2,
+          useTabs: false,
+          arrowParens: 'always',
+          endOfLine: 'lf',
+        },
+      ],
 
       // Console and debugging
       'no-console': ['error', { allow: ['warn', 'error'] }],
@@ -94,26 +106,19 @@ export default [
 
       // Vue specific rules
       'vue/no-unused-components': 'error',
-      'vue/first-attribute-linebreak': 'error',
-      'vue/max-attributes-per-line': 'error',
-      'vue/html-closing-bracket-newline': 'error',
-      'vue/html-closing-bracket-spacing': 'warn',
-      'vue/html-indent': 'warn',
-      'vue/html-self-closing': 'warn',
+      'vue/first-attribute-linebreak': 'off',
+      'vue/max-attributes-per-line': 'off',
+      'vue/html-closing-bracket-newline': 'off',
+      'vue/html-closing-bracket-spacing': 'off',
+      'vue/html-indent': 'off',
+      'vue/html-self-closing': 'off',
       'vue/html-button-has-type': 'warn',
       'vue/no-multiple-template-root': 'off',
       'vue/no-required-prop-with-default': 'off',
       'vue/multi-word-component-names': 'off',
       'vue/no-parsing-error': 'off',
       'vue/no-v-html': 'off',
-      'vue/max-len': [
-        'error',
-        {
-          code: 120,
-          ignoreComments: true,
-          ignoreUrls: true,
-        },
-      ],
+      'vue/max-len': 'off',
 
       // Import rules
       'import/order': 'warn',
@@ -145,17 +150,10 @@ export default [
       '@typescript-eslint/no-explicit-any': 'warn',
 
       // General rules
-      'max-len': [
-        'error',
-        {
-          code: 120,
-          ignoreComments: true,
-          ignoreUrls: true,
-        },
-      ],
+      'max-len': 'off',
       'class-methods-use-this': 'off',
       'no-shadow': 'off',
       'func-names': 'off',
     },
   },
-]
+];

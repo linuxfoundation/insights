@@ -7,7 +7,7 @@
  */
 export default {
   // Basic formatting
-  semi: false,
+  semi: true,
   trailingComma: 'all',
   singleQuote: true,
   printWidth: 100,
@@ -37,8 +37,11 @@ export default {
       files: ['*.vue'],
       options: {
         // Force consistent formatting for Vue files
+        semi: true,
         singleAttributePerLine: true,
         htmlWhitespaceSensitivity: 'css',
+        // Prevent breaking Vue template expressions across multiple lines
+        printWidth: 120,
       },
     },
     {
@@ -62,4 +65,4 @@ export default {
       },
     },
   ],
-}
+};
