@@ -3,7 +3,7 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="pt-2 xl:block lg:hidden block">
+  <div class="pt-2 lg:block hidden">
     <client-only>
       <a
         class="github-button"
@@ -12,30 +12,33 @@ SPDX-License-Identifier: MIT
         aria-label="Star linuxfoundation/insights on GitHub"
         target="_blank"
         rel="noopener noreferrer"
-      />
+      >Star</a>
     </client-only>
   </div>
-  <div class="items-start xl:hidden lg:flex hidden h-9 pt-1">
+  <div class="items-start lg:hidden flex h-9 pt-1">
     <a
       href="https://github.com/linuxfoundation/insights"
       target="_blank"
       rel="noopener noreferrer"
-      class="h-[18px] w-[18px]"
+      class="c-menu-button"
     >
-      <img
+      <!-- <img
         src="~/assets/images/github.svg"
         alt="GitHub Logo"
-        class="w-full"
-        loading="lazy"
-        width="18"
-        height="18"
-      >
+        class="h-[18px] w-[18px]"
+      > -->
+      <lfx-icon
+        name="github"
+        type="brands"
+      />
+      GitHub
     </a>
   </div>
 </template>
 
 <script setup lang="ts">
 import { onMounted } from 'vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 
 onMounted(() => {
   const scriptSrc = 'https://buttons.github.io/buttons.js'
@@ -46,7 +49,7 @@ onMounted(() => {
     script.setAttribute('src', scriptSrc)
     script.setAttribute('async', '')
     script.setAttribute('defer', '')
-    document.body.appendChild(script)
+    document.body.appendChild(script) 
   }
 })
 </script>

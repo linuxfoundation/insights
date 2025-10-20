@@ -3,9 +3,9 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <footer class="border-t border-neutral-200 py-10 bg-white">
+  <footer class="border-t border-neutral-200 py-10 bg-white lg:!mt-30 mt-20">
     <div class="container">
-      <div class="flex justify-between pb-10 md:pb-16 gap-x-10 gap-y-15 flex-col md:flex-row">
+      <div class="flex justify-between pb-10 md:pb-16 gap-x-10 gap-y-15 flex-col xl:flex-row">
         <div class="max-w-100">
           <img
             src="~/assets/images/logo.svg"
@@ -19,21 +19,20 @@ SPDX-License-Identifier: MIT
             LFX Insights helps developers and their organizations make smarter
             decisions about the open source projects they depend on.
           </p>
-          <div class="pt-10 md:pt-11 lg:pt-15 flex items-center gap-5">
+          <div class="pt-10 md:pt-11 lg:pt-15 flex items-center gap-3">
             <a
               href="https://github.com/linuxfoundation/insights"
               target="_blank"
               rel="noopener noreferrer"
             >
-              <lfx-icon-button icon="github">
-                <img
-                  src="~/assets/images/github.svg"
-                  alt="GitHub Logo"
-                  class="h-5"
-                  loading="lazy"
-                  width="20"
-                  height="20"
-                >
+              <lfx-icon-button
+                icon="github"
+                size="small"
+              >
+                <lfx-icon
+                  name="github"
+                  type="brands"
+                />
               </lfx-icon-button>
             </a>
             <a
@@ -44,6 +43,7 @@ SPDX-License-Identifier: MIT
               <lfx-button
                 type="secondary"
                 button-style="pill"
+                size="small"
               >
                 <lfx-icon name="messages" />
                 Join discussions
@@ -52,7 +52,7 @@ SPDX-License-Identifier: MIT
             <lfx-onboarding-link />
           </div>
         </div>
-        <div class="flex gap-x-10 gap-y-10 lg:gap-x-20 flex-col sm:flex-row">
+        <div class="flex gap-x-10 gap-y-8 lg:gap-x-20 flex-col lg:flex-row">
           <section
             v-for="section of lfxFooterMenu"
             :key="section.title"
