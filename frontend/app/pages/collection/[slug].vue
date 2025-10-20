@@ -14,7 +14,7 @@ import {
 useRoute, createError, showError
 } from "nuxt/app";
 import {useQuery} from "@tanstack/vue-query";
-import {computed, onServerPrefetch, watch} from "vue";
+import {computed, onServerPrefetch} from "vue";
 import type {Collection} from "~~/types/collection";
 import LfxCollectionDetailsView from "~/components/modules/collection/views/collection-details.vue";
 import {TanstackKey} from "~/components/shared/types/tanstack";
@@ -23,7 +23,7 @@ import {useRichSchema} from "~~/composables/useRichSchema";
 
 const route = useRoute();
 const {slug} = route.params;
-const { addCollectionSchema } = useRichSchema();
+const { getCollectionSchema } = useRichSchema();
 
 const queryKey = computed(() => [TanstackKey.COLLECTION, slug]);
 
@@ -89,9 +89,5 @@ useSeoMeta({
 })
 
 // Add rich schema for the collection
-watch(() => data.value, (value) => {
-  if (value) {
-    addCollectionSchema(value);
-  }
-}, { immediate: true });
+useHead(getCollectionSchema(data));
 </script>
