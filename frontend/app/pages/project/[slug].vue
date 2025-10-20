@@ -51,7 +51,7 @@ const {slug} = route.params;
 const {
 project, isProjectLoading, selectedTimeRangeKey, startDate, endDate, collaborationSet
 } = storeToRefs(useProjectStore());
-const { addProjectSchema } = useRichSchema();
+const { getProjectSchema } = useRichSchema();
 
 const { queryParams } = useQueryParam(processProjectParams, projectParamsSetter);
 const queryKey = computed(() => [TanstackKey.PROJECT, slug]);
@@ -111,9 +111,5 @@ watch(() => isLoading.value, (value) => {
 }, { immediate: true })
 
 // Add rich schema for the project
-watch(() => project.value, (value) => {
-  if (value) {
-    addProjectSchema(value);
-  }
-}, { immediate: true });
+useHead(getProjectSchema(project));
 </script>
