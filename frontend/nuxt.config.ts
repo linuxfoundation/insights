@@ -12,19 +12,13 @@ import sitemap from './setup/sitemap'
 const isProduction = process.env.NUXT_APP_ENV === 'production'
 const isDevelopment = process.env.NODE_ENV === 'development'
 export default defineNuxtConfig({
-  future: {
-    compatibilityVersion: 4,
-  },
   app: {
-    head,
-    errorHandler: '~/app/error.vue',
+      head,
   },
   components: false,
-  compatibilityDate: '2024-11-01',
+  compatibilityDate: '2025-01-01',
   devtools: { enabled: true },
   experimental: {
-    payloadExtraction: true,
-    renderJsonPayloads: true,
     typedPages: true,
   },
   modules: [
