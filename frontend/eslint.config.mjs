@@ -5,6 +5,7 @@ import typescriptEslint from 'typescript-eslint';
 import prettier from 'eslint-config-prettier';
 import pluginPrettier from 'eslint-plugin-prettier';
 import pluginImport from 'eslint-plugin-import';
+import pluginVueA11y from 'eslint-plugin-vuejs-accessibility';
 import vueParser from 'vue-eslint-parser';
 import tsParser from '@typescript-eslint/parser';
 
@@ -72,6 +73,7 @@ export default [
     plugins: {
       import: pluginImport,
       prettier: pluginPrettier,
+      'vuejs-accessibility': pluginVueA11y,
     },
     settings: {
       'import/resolver': {
@@ -119,6 +121,29 @@ export default [
       'vue/no-parsing-error': 'off',
       'vue/no-v-html': 'off',
       'vue/max-len': 'off',
+
+      // Accessibility rules (Vue)
+      'vuejs-accessibility/alt-text': 'warn',
+      'vuejs-accessibility/anchor-has-content': 'warn',
+      'vuejs-accessibility/aria-props': 'error',
+      'vuejs-accessibility/aria-role': 'error',
+      'vuejs-accessibility/aria-unsupported-elements': 'error',
+      'vuejs-accessibility/click-events-have-key-events': 'off',
+      'vuejs-accessibility/form-control-has-label': 'off',
+      'vuejs-accessibility/heading-has-content': 'warn',
+      'vuejs-accessibility/iframe-has-title': 'error',
+      'vuejs-accessibility/interactive-supports-focus': 'warn',
+      'vuejs-accessibility/label-has-for': 'off',
+      'vuejs-accessibility/media-has-caption': 'warn',
+      'vuejs-accessibility/mouse-events-have-key-events': 'off',
+      'vuejs-accessibility/no-access-key': 'warn',
+      'vuejs-accessibility/no-autofocus': 'off',
+      'vuejs-accessibility/no-distracting-elements': 'error',
+      'vuejs-accessibility/no-onchange': 'off',
+      'vuejs-accessibility/no-redundant-roles': 'warn',
+      'vuejs-accessibility/no-static-element-interactions': 'off',
+      'vuejs-accessibility/role-has-required-aria-props': 'error',
+      'vuejs-accessibility/tabindex-no-positive': 'warn',
 
       // Import rules
       'import/order': 'warn',
