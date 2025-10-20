@@ -44,12 +44,14 @@ import {
   processProjectParams,
   projectParamsSetter
 } from "~/components/modules/project/services/project.query.service";
+import {useRichSchema} from "~~/composables/useRichSchema";
 
 const route = useRoute();
 const {slug} = route.params;
 const {
 project, isProjectLoading, selectedTimeRangeKey, startDate, endDate, collaborationSet
 } = storeToRefs(useProjectStore());
+const { addProjectSchema } = useRichSchema();
 
 const { queryParams } = useQueryParam(processProjectParams, projectParamsSetter);
 const queryKey = computed(() => [TanstackKey.PROJECT, slug]);
@@ -107,4 +109,11 @@ watch(() => data.value, (value) => {
 watch(() => isLoading.value, (value) => {
   isProjectLoading.value = value;
 }, { immediate: true })
+
+// Add rich schema for the project
+watch(() => project.value, (value) => {
+  if (value) {
+    addProjectSchema(value);
+  }
+}, { immediate: true });
 </script>
