@@ -25,9 +25,6 @@ const setSilentLoginAttempted = (value: boolean): void => {
   localStorage.setItem('lfx-silent-login-attempted', value.toString())
 }
 
-// this determines if this is the first time the user is coming to the site
-const welcomeModal = process.client ? localStorage.getItem('lfx-welcome-modal') : null
-
 export const useAuth = () => {
   // Fetch user data from server
   const { data: userData, refresh: refreshAuth } = useAsyncData<AuthData>(
@@ -51,13 +48,9 @@ export const useAuth = () => {
 
       // Attempt silent login if suggested by the server and not already attempted
       if (userData.value.shouldAttemptSilentLogin && process.client && !getSilentLoginAttempted()) {
-        // check if this is the first time the user is coming to the site
-        if (welcomeModal !== null) {
-          const currentPath =
-            window.location.pathname + window.location.search + window.location.hash
-          login(currentPath, true)
-          // attemptSilentLogin()
-        }
+        const currentPath =
+          window.location.pathname + window.location.search + window.location.hash
+        login(currentPath, true)
       }
 
       if (userData.value.isAuthenticated) {
