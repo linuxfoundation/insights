@@ -1,6 +1,11 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-module.exports = {
+
+/**
+ * Prettier configuration for Nuxt 4
+ * @type {import("prettier").Config}
+ */
+export default {
   // Basic formatting
   semi: false,
   trailingComma: 'all',
@@ -11,21 +16,21 @@ module.exports = {
 
   // Vue-specific settings
   vueIndentScriptAndStyle: false,
-  
+
   // HTML/Vue template formatting
   htmlWhitespaceSensitivity: 'css',
   singleAttributePerLine: true,
-  
+
   // Bracket formatting
   bracketSpacing: true,
   bracketSameLine: false,
-  
+
   // Arrow functions
   arrowParens: 'always',
-  
+
   // End of line
   endOfLine: 'lf',
-  
+
   // Override settings for specific file types
   overrides: [
     {
@@ -47,6 +52,13 @@ module.exports = {
       options: {
         proseWrap: 'preserve',
         htmlWhitespaceSensitivity: 'ignore',
+      },
+    },
+    {
+      files: ['*.yaml', '*.yml'],
+      options: {
+        tabWidth: 2,
+        singleQuote: false,
       },
     },
   ],

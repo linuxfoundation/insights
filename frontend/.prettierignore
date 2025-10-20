@@ -3,11 +3,40 @@ dist/
 .nuxt/
 .output/
 docs/.vitepress/dist/
+blog/.vitepress/dist/
 storybook-static/
 
-# Dependencies  
+# Dependencies
 node_modules/
+.pnpm-store/
 
 # Generated files
 *.d.ts
 pnpm-lock.yaml
+package-lock.json
+yarn.lock
+
+# Cache
+.cache/
+.eslintcache
+.turbo/
+
+# Logs
+*.log
+logs/
+
+# Coverage
+coverage/
+
+# Auto-generated configs
+.nuxt/eslint.config.mjs
+.nuxt/eslint-typegen.d.ts
+
+# VitePress theme CSS overrides
+docs/.vitepress/theme/cssOverrides/
+blog/.vitepress/theme/cssOverrides/
+
+# Environment files
+.env
+.env.local
+.env.*.local
