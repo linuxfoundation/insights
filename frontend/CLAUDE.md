@@ -6,8 +6,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ### Package Management
 - Use `pnpm` for package management (not npm/yarn)
-- `pnpm install` - Install dependencies
+- `pnpm install --ignore-workspace` - Install dependencies
 - `pnpm dev` - Start development server on localhost:3000
+- always ignore workspace dependencies when installing
 
 ### Build & Test
 - `pnpm build` - Build for production
