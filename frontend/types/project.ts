@@ -88,3 +88,20 @@ export interface ProjectTinybird {
   connectedPlatforms: string[];
   repoData: ProjectRepoData[];
 }
+
+export interface ProjectInsights {
+  id: string;
+  name: string;
+  slug: string;
+  softwareValue: number;
+  healthScore: number;
+  firstCommit: string;
+  starsLast365Days: number;
+  forksLast365Days: number;
+  activeContributorsLast365Days: number;
+  activeOrganizationsLast365Days: number;
+  starsPrevious365Days: number;
+  forksPrevious365Days: number;
+  activeContributorsPrevious365Days: number;
+  activeOrganizationsPrevious365Days: number;
+}
