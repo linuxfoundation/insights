@@ -9,11 +9,11 @@ export default {
   tags: ['autodocs'],
   argTypes: {
     icon: {
-      description: 'The icon of the button (font-awesome icon)',
+      description: 'The icon of the button (font-awesome icon name)',
       control: 'text'
     },
     type: {
-      description: 'The type of the button',
+      description: 'The visual style type of the button',
       control: 'select',
       options: iconButtonTypes
     },
@@ -21,6 +21,17 @@ export default {
       description: 'The size of the button',
       control: 'select',
       options: iconButtonSizes
+    },
+    iconType: {
+      description: 'The icon type/weight (regular, solid, light)',
+      control: 'select',
+      options: ['regular', 'solid', 'light'],
+      defaultValue: 'light'
+    },
+    iconSize: {
+      description: 'The size of the icon in pixels',
+      control: 'number',
+      defaultValue: 16
     },
     disabled: {
       description: 'Whether the button is disabled',

@@ -12,37 +12,60 @@ export default {
   argTypes: {
     // Props
     placement: {
-      description: 'Popover placement',
+      description: 'Popover placement position',
       defaultValue: 'bottom-start',
       control: 'select',
       options: popoverPlacements,
     },
     triggerEvent: {
-      description: 'Popover trigger',
+      description: 'Event that triggers the popover (click or hover)',
       defaultValue: 'click',
       control: 'select',
       options: popoverTrigger,
     },
+    visibility: {
+      description: 'Controls popover visibility (v-model:visibility)',
+      defaultValue: false,
+      control: 'boolean',
+    },
     spacing: {
-      description: 'Popover spacing',
-      defaultValue: '4',
+      description: 'Spacing between trigger and popover content in pixels',
+      defaultValue: 4,
       control: 'number',
     },
     disabled: {
-      description: 'Specifies if popover is hidden',
+      description: 'Disables the popover (prevents it from showing)',
+      defaultValue: false,
+      control: 'boolean',
+    },
+    matchWidth: {
+      description: 'Makes popover width match the trigger element width',
+      defaultValue: false,
+      control: 'boolean',
+    },
+    isModal: {
+      description: 'Displays popover as a modal (closes on backdrop click)',
       defaultValue: false,
       control: 'boolean',
     },
 
     // Slots
     default: {
-      description: 'Any content belonging to trigger',
+      description: 'Content for the trigger element',
       control: {
         type: null,
       },
     },
     content: {
-      description: 'Any content belonging to popover',
+      description: 'Content displayed in the popover',
+      control: {
+        type: null,
+      },
+    },
+
+    // Events
+    'update:visibility': {
+      description: 'Event triggered when visibility changes',
       control: {
         type: null,
       },

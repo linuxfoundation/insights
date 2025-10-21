@@ -1,6 +1,6 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import LfxIcon from "../icon/Icon.vue";
+import LfxIcon from "../icon/icon.vue";
 import LfxMenuButton from './menu-button.vue';
 
 export default {
@@ -9,19 +9,30 @@ export default {
     component: LfxMenuButton,
     tags: ['autodocs'],
     argTypes: {
-        // Slots
+        // Props
         active: {
             description: 'If menu button is active',
             defaultValue: false,
             control: 'boolean',
         },
         to: {
-            description: 'Router link to navigate to',
+            description: 'Router link to navigate to (Vue Router route location)',
             defaultValue: undefined,
             control: {
                 type: null,
             },
         },
+        exact: {
+            description: 'Use exact active class matching for router links',
+            defaultValue: false,
+            control: 'boolean',
+        },
+        disabled: {
+            description: 'Whether the menu button is disabled',
+            defaultValue: false,
+            control: 'boolean',
+        },
+
         // Slots
         default: {
             description: 'Text or html content of the button',

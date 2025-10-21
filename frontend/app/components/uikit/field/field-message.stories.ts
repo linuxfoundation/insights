@@ -1,9 +1,9 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import LfInput from '../input/Input.vue';
-import LfField from "./Field.vue";
-import LfFieldMessage from './FieldMessage.vue';
-import { fieldMessageTypes } from '@/ui-kit/field-message/types/FieldMessageType';
+import LfInput from '../input/input.vue';
+import LfField from "./field.vue";
+import LfFieldMessage from './field-message.vue';
+import { fieldMessageTypes } from './types/FieldMessageType';
 
 export default {
   title: 'LinuxFoundation/FieldMessage',
