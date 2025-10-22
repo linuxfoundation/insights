@@ -24,9 +24,9 @@ const config: StorybookConfig = {
     // Add custom plugin to suppress specific warnings
     const customWarningSuppressionPlugin = {
       name: 'suppress-storybook-warnings',
-      configResolved(resolvedConfig: any) {
+      configResolved(resolvedConfig: { logger: { warn: (msg: string, options?: unknown) => void } }) {
         const originalWarn = resolvedConfig.logger.warn;
-        resolvedConfig.logger.warn = (msg: string, options: any) => {
+        resolvedConfig.logger.warn = (msg: string, options?: unknown) => {
           // Suppress virtual module warnings from Storybook
           if (msg.includes('Failed to resolve') && msg.includes('virtual:/@storybook')) {
             return;

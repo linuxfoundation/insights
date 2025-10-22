@@ -40,8 +40,10 @@ export const Default = {
           </template>
           <template #content>
             <div class="pt-4 text-neutral-600">
-              Insights evaluates the health and trustworthiness of the world's most critical open source software.
-              It provides comprehensive metrics and analytics to help you understand project activity, contributor engagement, and overall ecosystem health.
+              Insights evaluates the health and trustworthiness of the world's most
+              critical open source software. It provides comprehensive metrics and
+              analytics to help you understand project activity, contributor engagement,
+              and overall ecosystem health.
             </div>
           </template>
         </lfx-accordion-item>
@@ -52,8 +54,10 @@ export const Default = {
           </template>
           <template #content>
             <div class="pt-4 text-neutral-600">
-              Insights aggregates data from multiple sources including GitHub, package registries, and community platforms.
-              It then processes this data to provide meaningful metrics about project health, contributor activity, and software value.
+              Insights aggregates data from multiple sources including GitHub, package
+              registries, and community platforms. It then processes this data to provide
+              meaningful metrics about project health, contributor activity, and software
+              value.
             </div>
           </template>
         </lfx-accordion-item>
@@ -64,8 +68,10 @@ export const Default = {
           </template>
           <template #content>
             <div class="pt-4 text-neutral-600">
-              Insights is available to everyone! Whether you're a developer, maintainer, enterprise user, or open source enthusiast,
-              you can access project metrics and analytics to make informed decisions about the software you use and contribute to.
+              Insights is available to everyone! Whether you're a developer, maintainer,
+              enterprise user, or open source enthusiast, you can access project metrics
+              and analytics to make informed decisions about the software you use and
+              contribute to.
             </div>
           </template>
         </lfx-accordion-item>
@@ -102,8 +108,9 @@ export const Preselected = {
           </template>
           <template #content>
             <div class="pt-4 text-neutral-600">
-              We aggregate data from GitHub, package registries, social media, mailing lists, and other public sources
-              to provide comprehensive insights into open source projects.
+              We aggregate data from GitHub, package registries, social media, mailing
+              lists, and other public sources to provide comprehensive insights into
+              open source projects.
             </div>
           </template>
         </lfx-accordion-item>
