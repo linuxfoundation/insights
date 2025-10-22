@@ -16,14 +16,32 @@ export default {
       control: 'boolean',
     },
 
+    type: {
+      description: 'Modal type/style',
+      control: 'select',
+      options: ['default', 'floating', 'cover'],
+      defaultValue: 'default',
+    },
+
+    contentClass: {
+      description: 'Additional CSS classes for modal content container',
+      control: 'text',
+    },
+
     width: {
       description: 'Specifies modal width',
       defaultValue: '37.5rem',
       control: 'text',
     },
 
+    height: {
+      description: 'Specifies modal height',
+      defaultValue: 'auto',
+      control: 'text',
+    },
+
     closeFunction: {
-      description: 'Function that prevents modal from closing',
+      description: 'Function that validates/prevents modal from closing (must return boolean)',
       control: {
         type: null,
       },

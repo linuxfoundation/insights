@@ -1,28 +1,19 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import LfCheckbox from './Checkbox.vue';
-import { checkboxSizes } from '@/ui-kit/checkbox/types/CheckboxSize';
+import LfxCheckbox from './checkbox.vue';
 
 export default {
   title: 'LinuxFoundation/Checkbox',
-  component: LfCheckbox,
+  component: LfxCheckbox,
   tags: ['autodocs'],
   argTypes: {
     // Props
-    size: {
-      description: 'Specifies checkbox size',
-      defaultValue: 'medium',
-      control: 'select',
-      options: checkboxSizes,
-    },
     modelValue: {
-      description: 'Checkbox value',
-      control: {
-        type: null,
-      },
+      description: 'Checkbox checked state',
+      control: 'boolean',
     },
     value: {
-      description: 'Value for checkbox when checked',
+      description: 'Value for checkbox when checked (used in checkbox groups)',
       control: {
         type: null,
       },
@@ -32,15 +23,10 @@ export default {
       defaultValue: false,
       control: 'boolean',
     },
-    multiple: {
-      description: 'Specifies if checkbox is disabled',
-      defaultValue: false,
-      control: 'boolean',
-    },
 
     // Slots
     default: {
-      description: 'Text or html content of the checkbox',
+      description: 'Text or html content of the checkbox label',
       control: {
         type: null,
       },
@@ -48,7 +34,7 @@ export default {
 
     // Events
     'update:modelValue': {
-      description: 'Event triggered when value changes',
+      description: 'Event triggered when checkbox value changes',
       control: {
         type: null,
       },
@@ -56,46 +42,38 @@ export default {
   },
 };
 
-export const Primary = {
-  label: 'Primary',
+export const Unchecked = {
+  label: 'Unchecked',
   args: {
-    size: 'medium',
     modelValue: false,
     disabled: false,
-    multiple: false,
     default: 'Checkbox text',
   },
 };
 
 export const Checked = {
-  label: 'Primary',
+  label: 'Checked',
   args: {
-    size: 'medium',
     modelValue: true,
     disabled: false,
-    multiple: false,
     default: 'Checkbox text',
   },
 };
 
 export const Disabled = {
-  label: 'Primary',
+  label: 'Disabled',
   args: {
-    size: 'medium',
     modelValue: true,
     disabled: true,
-    multiple: false,
     default: 'Checkbox text',
   },
 };
 
-export const Multiple = {
-  label: 'Primary',
+export const DisabledUnchecked = {
+  label: 'Disabled Unchecked',
   args: {
-    size: 'medium',
-    modelValue: true,
-    disabled: false,
-    multiple: true,
+    modelValue: false,
+    disabled: true,
     default: 'Checkbox text',
   },
 };

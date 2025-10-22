@@ -12,11 +12,6 @@ export default {
       defaultValue: false,
       control: 'boolean',
     },
-    label: {
-      description: 'Label text displayed next to toggle',
-      defaultValue: '',
-      control: 'text',
-    },
     disabled: {
       description: 'Specifies if toggle is disabled',
       defaultValue: false,
@@ -27,6 +22,14 @@ export default {
       defaultValue: 'default',
       control: 'select',
       options: ['default', 'small'],
+    },
+
+    // Slots
+    default: {
+      description: 'Label text or content displayed next to toggle',
+      control: {
+        type: null,
+      },
     },
 
     // Events
@@ -43,7 +46,7 @@ export const Default = {
   label: 'Default',
   args: {
     modelValue: false,
-    label: 'Toggle switch',
+    default: 'Toggle switch',
     disabled: false,
     size: 'default',
   },
@@ -53,7 +56,7 @@ export const Checked = {
   label: 'Checked',
   args: {
     modelValue: true,
-    label: 'Toggle switch',
+    default: 'Toggle switch',
     disabled: false,
     size: 'default',
   },
@@ -63,7 +66,7 @@ export const Disabled = {
   label: 'Disabled',
   args: {
     modelValue: false,
-    label: 'Toggle switch',
+    default: 'Toggle switch',
     disabled: true,
     size: 'default',
   },
@@ -73,7 +76,7 @@ export const DisabledChecked = {
   label: 'Disabled Checked',
   args: {
     modelValue: true,
-    label: 'Toggle switch',
+    default: 'Toggle switch',
     disabled: true,
     size: 'default',
   },
@@ -83,7 +86,7 @@ export const Small = {
   label: 'Small',
   args: {
     modelValue: false,
-    label: 'Toggle switch',
+    default: 'Toggle switch',
     disabled: false,
     size: 'small',
   },
@@ -93,7 +96,7 @@ export const SmallChecked = {
   label: 'Small Checked',
   args: {
     modelValue: true,
-    label: 'Toggle switch',
+    default: 'Toggle switch',
     disabled: false,
     size: 'small',
   },
@@ -103,7 +106,6 @@ export const WithoutLabel = {
   label: 'Without Label',
   args: {
     modelValue: false,
-    label: '',
     disabled: false,
     size: 'default',
   },
