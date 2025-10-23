@@ -1,0 +1,12 @@
+# Expected overlay differences relative to base manifests
+---
+overlay: staging
+notes:
+  - Ingress uses `letsencrypt-staging` issuer and `insights.staging.lfx.dev` host/TLS secret.
+  - SecretSync references staging Vault OCID `ocid1.vaultsecret.oc1..staging-placeholder`.
+  - Deployments and Redis consume the `insights-runtime` secret for runtime configuration.
+---
+overlay: production
+notes:
+  - SecretSync references production Vault OCID `ocid1.vaultsecret.oc1..production-placeholder`.
+  - Deployments and Redis consume the `insights-runtime` secret for runtime configuration.

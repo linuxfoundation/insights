@@ -1,0 +1,88 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: insights-app-dpl
+  namespace: insights
+spec:
+  template:
+    spec:
+      containers:
+        - name: frontend
+          envFrom:
+            - configMapRef:
+                name: insights-config-map
+            - secretRef:
+                name: insights-runtime
+          env:
+            - name: BACKEND_ENV
+              valueFrom:
+                secretKeyRef:
+                  name: insights-runtime
+                  key: BACKEND_ENV
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: package-downloads-worker-dpl
+  namespace: insights
+spec:
+  template:
+    spec:
+      containers:
+        - name: package-downloads-worker
+          envFrom:
+            - configMapRef:
+                name: insights-config-map
+            - secretRef:
+                name: insights-runtime
+          env:
+            - name: BACKEND_ENV
+              valueFrom:
+                secretKeyRef:
+                  name: insights-runtime
+                  key: BACKEND_ENV
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: search-volume-worker-dpl
+  namespace: insights
+spec:
+  template:
+    spec:
+      containers:
+        - name: search-volume-worker
+          envFrom:
+            - configMapRef:
+                name: insights-config-map
+            - secretRef:
+                name: insights-runtime
+          env:
+            - name: BACKEND_ENV
+              valueFrom:
+                secretKeyRef:
+                  name: insights-runtime
+                  key: BACKEND_ENV
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-dpl
+  namespace: insights
+spec:
+  template:
+    spec:
+      containers:
+        - name: redis
+          env:
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: insights-runtime
+                  key: REDIS_PASSWORD
+          command:
+            - /bin/sh
+            - -c
+          args:
+            - redis-server /redis.conf --requirepass "$REDIS_PASSWORD"

@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: package-downloads-worker-dpl
+  namespace: insights
+  labels:
+    app.kubernetes.io/name: package-downloads-worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: package-downloads-worker
+  template:
+    metadata:
+      labels:
+        app: package-downloads-worker
+    spec:
+      nodeSelector:
+        name: pg-insights
+      imagePullSecrets:
+        - name: ocir-secret
+      containers:
+        - name: package-downloads-worker
+          image: sjc.ocir.io/axbydjxa5zuh/package-downloads-worker:1750147302.2d64686
+          workingDir: /usr/insights/app/workers/temporal/package_downloads_worker
+          command:
+            - pnpm
+          args:
+            - run
+            - start
+          envFrom:
+            - configMapRef:
+                name: insights-config-map
+          env:
+            - name: KUBE_HOST_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP

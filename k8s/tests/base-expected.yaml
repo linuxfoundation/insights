@@ -1,0 +1,225 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: insights
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: insights-app
+  name: insights-app-svc
+  namespace: insights
+spec:
+  ports:
+  - port: 3000
+    targetPort: 3000
+  selector:
+    app: insights-app
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: redis
+  name: redis-svc
+  namespace: insights
+spec:
+  ports:
+  - port: 6379
+    targetPort: 6379
+  selector:
+    app: redis
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/name: insights-app
+  name: insights-app-dpl
+  namespace: insights
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: insights-app
+  template:
+    metadata:
+      labels:
+        app: insights-app
+    spec:
+      containers:
+      - envFrom:
+        - configMapRef:
+            name: insights-config-map
+        image: sjc.ocir.io/axbydjxa5zuh/insights-app:2
+        livenessProbe:
+          httpGet:
+            path: /api/health/live
+            port: 3000
+        name: frontend
+        ports:
+        - containerPort: 3000
+        readinessProbe:
+          httpGet:
+            path: /api/health/live
+            port: 3000
+      imagePullSecrets:
+      - name: ocir-secret
+      nodeSelector:
+        name: pg-insights
+      tolerations:
+      - effect: NoSchedule
+        key: dedicated
+        operator: Equal
+        value: insights
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/name: package-downloads-worker
+  name: package-downloads-worker-dpl
+  namespace: insights
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: package-downloads-worker
+  template:
+    metadata:
+      labels:
+        app: package-downloads-worker
+    spec:
+      containers:
+      - args:
+        - run
+        - start
+        command:
+        - pnpm
+        env:
+        - name: KUBE_HOST_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.hostIP
+        envFrom:
+        - configMapRef:
+            name: insights-config-map
+        image: sjc.ocir.io/axbydjxa5zuh/package-downloads-worker:1750147302.2d64686
+        name: package-downloads-worker
+        workingDir: /usr/insights/app/workers/temporal/package_downloads_worker
+      imagePullSecrets:
+      - name: ocir-secret
+      nodeSelector:
+        name: pg-insights
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/name: redis
+  name: redis-dpl
+  namespace: insights
+spec:
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+      - args:
+        - /redis.conf
+        - --requirepass
+        - V434DbYua628UmgD8BHxiCuMNXxXu4kD
+        command:
+        - redis-server
+        image: crowddotdev/redis:1668671743.d99338c4
+        name: redis
+        ports:
+        - containerPort: 6379
+      nodeSelector:
+        name: pg-insights-redis
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/name: search-volume-worker
+  name: search-volume-worker-dpl
+  namespace: insights
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: search-volume-worker
+  template:
+    metadata:
+      labels:
+        app: search-volume-worker
+    spec:
+      containers:
+      - args:
+        - run
+        - start
+        command:
+        - pnpm
+        env:
+        - name: KUBE_HOST_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.hostIP
+        envFrom:
+        - configMapRef:
+            name: insights-config-map
+        image: sjc.ocir.io/axbydjxa5zuh/insights-search-volume-worker:1752680491.4e4905d
+        name: search-volume-worker
+        workingDir: /insights-search-volume-app/workers/temporal/search_volume_worker
+      imagePullSecrets:
+      - name: ocir-secret
+      nodeSelector:
+        name: pg-insights
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-production
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+  labels:
+    name: ingress
+  name: ingress
+  namespace: insights
+spec:
+  rules:
+  - host: insights.production.lfx.dev
+    http:
+      paths:
+      - backend:
+          service:
+            name: insights-app-svc
+            port:
+              number: 3000
+        path: /(.*)
+        pathType: Prefix
+  - host: insights.linuxfoundation.org
+    http:
+      paths:
+      - backend:
+          service:
+            name: insights-app-svc
+            port:
+              number: 3000
+        path: /(.*)
+        pathType: Prefix
+  tls:
+  - hosts:
+    - insights.production.lfx.dev
+    - insights.linuxfoundation.org
+    secretName: letsencrypt-production

@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress
+  namespace: insights
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-staging
+spec:
+  tls:
+    - hosts:
+        - insights.staging.lfx.dev
+      secretName: letsencrypt-staging
+  rules:
+    - host: insights.staging.lfx.dev
+      http:
+        paths:
+          - path: /(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: insights-app-svc
+                port:
+                  number: 3000

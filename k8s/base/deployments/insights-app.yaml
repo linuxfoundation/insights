@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: insights-app-dpl
+  namespace: insights
+  labels:
+    app.kubernetes.io/name: insights-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: insights-app
+  template:
+    metadata:
+      labels:
+        app: insights-app
+    spec:
+      nodeSelector:
+        name: pg-insights
+      tolerations:
+        - key: dedicated
+          operator: Equal
+          value: insights
+          effect: NoSchedule
+      imagePullSecrets:
+        - name: ocir-secret
+      containers:
+        - name: frontend
+          image: sjc.ocir.io/axbydjxa5zuh/insights-app:2
+          envFrom:
+            - configMapRef:
+                name: insights-config-map
+          ports:
+            - containerPort: 3000
+          readinessProbe:
+            httpGet:
+              port: 3000
+              path: /api/health/live
+          livenessProbe:
+            httpGet:
+              port: 3000
+              path: /api/health/live

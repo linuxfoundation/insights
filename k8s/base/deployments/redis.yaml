@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-dpl
+  namespace: insights
+  labels:
+    app.kubernetes.io/name: redis
+spec:
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      nodeSelector:
+        name: pg-insights-redis
+      containers:
+        - name: redis
+          image: crowddotdev/redis:1668671743.d99338c4
+          command:
+            - redis-server
+          args:
+            - /redis.conf
+            - --requirepass
+            - V434DbYua628UmgD8BHxiCuMNXxXu4kD
+          ports:
+            - containerPort: 6379

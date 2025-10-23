@@ -1,0 +1,12 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - config/namespace.yaml
+  - secrets/operator.yaml
+  - deployments/insights-app.yaml
+  - deployments/package-downloads-worker.yaml
+  - deployments/search-volume-worker.yaml
+  - deployments/redis.yaml
+  - services/insights-app.yaml
+  - services/redis.yaml
+  - ingress/insights.yaml

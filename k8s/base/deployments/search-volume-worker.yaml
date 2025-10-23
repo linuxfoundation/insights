@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: search-volume-worker-dpl
+  namespace: insights
+  labels:
+    app.kubernetes.io/name: search-volume-worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: search-volume-worker
+  template:
+    metadata:
+      labels:
+        app: search-volume-worker
+    spec:
+      nodeSelector:
+        name: pg-insights
+      imagePullSecrets:
+        - name: ocir-secret
+      containers:
+        - name: search-volume-worker
+          image: sjc.ocir.io/axbydjxa5zuh/insights-search-volume-worker:1752680491.4e4905d
+          workingDir: /insights-search-volume-app/workers/temporal/search_volume_worker
+          command:
+            - pnpm
+          args:
+            - run
+            - start
+          envFrom:
+            - configMapRef:
+                name: insights-config-map
+          env:
+            - name: KUBE_HOST_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
