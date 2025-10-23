@@ -78,7 +78,6 @@ SPDX-License-Identifier: MIT
 import { useRoute } from 'nuxt/app';
 import { computed, watch } from 'vue';
 import { storeToRefs } from "pinia";
-import {type QueryFunction, useQuery} from "@tanstack/vue-query";
 import type { SocialMentions } from '~~/types/popularity/responses.types';
 import type { Summary } from '~~/types/shared/summary.types';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
@@ -99,25 +98,25 @@ import { dateOptKeys } from '~/components/modules/project/config/date-options';
 import { isEmptyData } from '~/components/shared/utils/helper';
 import type { Granularity } from '~~/types/shared/granularity';
 import { barGranularities, lineGranularities } from '~/components/shared/types/granularity';
-import {TanstackKey} from "~/components/shared/types/tanstack";
 import LfxSkeletonState from "~/components/modules/project/components/shared/skeleton-state.vue";
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
 import {Widget} from "~/components/modules/widget/types/widget";
+import { POPULARITY_API_SERVICE } from '~/components/modules/widget/services/popularity.api.service';
 
-interface PackageDownloadsModel {
+interface SocialMentionsModel {
   activeTab: string;
 }
 
 const props = defineProps<{
-  modelValue: PackageDownloadsModel,
+  modelValue: SocialMentionsModel,
   snapshot?: boolean
 }>()
 
 const emit = defineEmits<{(e: 'dataLoaded', value: string): void;
-(e: 'update:modelValue', value: PackageDownloadsModel): void;
+(e: 'update:modelValue', value: SocialMentionsModel): void;
 }>();
 
-const model = computed<PackageDownloadsModel>({
+const model = computed<SocialMentionsModel>({
   get: () => props.modelValue,
   set: (value) => emit('update:modelValue', value)
 })
@@ -142,35 +141,18 @@ const granularity = computed(() => (model.value.activeTab === 'cumulative'
   ? lineGranularity.value
   : barGranularity.value));
 
-const queryKey = computed(() => [
-  TanstackKey.SOCIAL_MENTIONS,
-  route.params.slug,
-  granularity.value,
-  model.value.activeTab,
-  selectedReposValues.value,
-  startDate.value,
-  endDate.value,
-]);
-
-const fetchData: QueryFunction<SocialMentions> = async () => $fetch(
-    `/api/project/${route.params.slug}/popularity/social-mentions`,
-    {
-  params: {
-    granularity: granularity.value,
-    type: model.value.activeTab,
-    repos: selectedReposValues.value,
-    startDate: startDate.value,
-    endDate: endDate.value,
-  }
-}
-);
+const queryParams = computed(() => ({
+  projectSlug: route.params.slug as string,
+  granularity: granularity.value,
+  repos: selectedReposValues.value,
+  startDate: startDate.value,
+  endDate: endDate.value,
+  type: model.value.activeTab,
+}));
 
 const {
   data, status, error
-} = useQuery<SocialMentions>({
-  queryKey,
-  queryFn: fetchData,
-});
+} = POPULARITY_API_SERVICE.fetchSocialMentions(queryParams);
 
 const socialMentions = computed<SocialMentions>(() => data.value as SocialMentions);
 
@@ -237,9 +219,9 @@ const barChartConfig = computed(() => getBarChartConfigStacked(
   barGranularity.value
 ));
 
-watch(status, (value) => {
+watch(status, (value: string) => {
   if (value !== 'pending') {
-    emit('dataLoaded', Widget.ACTIVE_CONTRIBUTORS);
+    emit('dataLoaded', Widget.SOCIAL_MENTIONS);
   }
 }, {
   immediate: true

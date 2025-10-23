@@ -54,11 +54,8 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { useRoute } from 'nuxt/app';
-import {
- ref, computed, watch
-} from 'vue';
+import { ref, computed, watch } from 'vue';
 import { storeToRefs } from "pinia";
-import {type QueryFunction, useQuery} from "@tanstack/vue-query";
 import type { PressMentions, PressMention } from '~~/types/popularity/responses.types';
 import type { Summary } from '~~/types/shared/summary.types';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
@@ -77,12 +74,12 @@ import { dateOptKeys } from '~/components/modules/project/config/date-options';
 import { isEmptyData } from '~/components/shared/utils/helper';
 import { lineGranularities } from '~/components/shared/types/granularity';
 import type { Granularity } from '~~/types/shared/granularity';
-import {TanstackKey} from "~/components/shared/types/tanstack";
 import LfxSkeletonState from "~/components/modules/project/components/shared/skeleton-state.vue";
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
 import LfxProjectPressMentionLists
   from "~/components/modules/widget/components/popularity/fragments/press-mention-lists.vue";
 import {Widget} from "~/components/modules/widget/types/widget";
+import { POPULARITY_API_SERVICE } from '~/components/modules/widget/services/popularity.api.service';
 
 const props = defineProps<{
   snapshot?: boolean
@@ -104,33 +101,17 @@ const granularity = computed(() => (selectedTimeRangeKey.value === dateOptKeys.c
   ? customRangeGranularity.value[0] as Granularity
   : lineGranularities[selectedTimeRangeKey.value as keyof typeof lineGranularities]));
 
-const queryKey = computed(() => [
-  TanstackKey.PRESS_MENTIONS,
-  route.params.slug,
-  granularity,
-  selectedReposValues,
-  startDate,
-  endDate,
-]);
-
-const fetchData: QueryFunction<PressMentions> = async () => $fetch(
-    `/api/project/${route.params.slug}/popularity/press-mentions`,
-    {
-  params: {
-    granularity: granularity.value,
-    repos: selectedReposValues.value,
-    startDate: startDate.value,
-    endDate: endDate.value,
-  }
-}
-);
+const queryParams = computed(() => ({
+  projectSlug: route.params.slug as string,
+  granularity: granularity.value,
+  repos: selectedReposValues.value,
+  startDate: startDate.value,
+  endDate: endDate.value,
+}));
 
 const {
   data, status, error
-} = useQuery<PressMentions>({
-  queryKey,
-  queryFn: fetchData,
-});
+} = POPULARITY_API_SERVICE.fetchPressMentions(queryParams);
 
 const mentions = computed<PressMentions>(() => data.value as PressMentions);
 
@@ -162,7 +143,7 @@ const lineAreaChartConfig = computed(() => getLineAreaChartConfig(
   granularity.value
 ));
 
-watch(status, (value) => {
+watch(status, (value: string) => {
   if (value !== 'pending') {
     emit('dataLoaded', Widget.PRESS_MENTIONS);
   }
