@@ -94,7 +94,6 @@ import {
  ref, computed, watch
 } from 'vue';
 import { storeToRefs } from "pinia";
-import {type QueryFunction, useQuery} from "@tanstack/vue-query";
 import type { PullRequests } from '~~/types/development/responses.types';
 import type { Summary } from '~~/types/shared/summary.types';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
@@ -114,19 +113,22 @@ import { isEmptyData } from '~/components/shared/utils/helper';
 import { barGranularities } from '~/components/shared/types/granularity';
 import { dateOptKeys } from '~/components/modules/project/config/date-options';
 import { Granularity } from '~~/types/shared/granularity';
-import {TanstackKey} from "~/components/shared/types/tanstack";
 import LfxSkeletonState from "~/components/modules/project/components/shared/skeleton-state.vue";
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
 import LfxProjectPullRequestLegendItem
   from "~/components/modules/widget/components/development/fragments/pull-request-legend-item.vue";
 import {Widget} from "~/components/modules/widget/types/widget";
 import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
+import { DEVELOPMENT_API_SERVICE, type QueryParams } 
+  from '~/components/modules/widget/services/development.api.service';
+import type { WidgetModel } from '~/components/modules/widget/config/widget.config';
 
-interface PullRequestsModel {
+interface PullRequestsModel extends WidgetModel {
   granularity: Granularity;
 }
 
 const props = defineProps<{
+  modelValue?: PullRequestsModel,
   snapshot?: boolean;
 }>()
 
@@ -144,33 +146,18 @@ const route = useRoute();
 const granularity = computed(() => (selectedTimeRangeKey.value === dateOptKeys.custom
   ? customRangeGranularity.value[0] as Granularity
   : barGranularities[selectedTimeRangeKey.value as keyof typeof barGranularities]));
-const queryKey = computed(() => [
-  TanstackKey.PULL_REQUESTS,
-  route.params.slug,
-  granularity.value,
-  selectedReposValues.value,
-  startDate.value,
-  endDate.value,
-]);
 
-const fetchData: QueryFunction<PullRequests> = async () => $fetch(
-    `/api/project/${route.params.slug}/development/pull-requests`,
-    {
-  params: {
-    granularity: granularity.value,
-    repos: selectedReposValues.value,
-    startDate: startDate.value,
-    endDate: endDate.value,
-  }
-}
-);
+const params = computed<QueryParams>(() => ({
+  projectSlug: route.params.slug as string,
+  granularity: granularity.value,
+  repos: selectedReposValues.value,
+  startDate: startDate.value,
+  endDate: endDate.value,
+}));
 
 const {
   data, status, error
-} = useQuery<PullRequests>({
-  queryKey,
-  queryFn: fetchData,
-});
+} = DEVELOPMENT_API_SERVICE.fetchPullRequests(params);
 
 const pullRequests = computed<PullRequests>(() => data.value as PullRequests);
 
@@ -227,7 +214,7 @@ const barChartConfig = computed(() => getBarChartConfigStackAndLine(
 
 const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
 
-watch(status, (value) => {
+watch(status, (value: string) => {
   if (value !== 'pending') {
     emit('dataLoaded', Widget.PULL_REQUESTS);
   }
@@ -235,7 +222,7 @@ watch(status, (value) => {
   immediate: true
 });
 
-watch(granularity, (value) => {
+watch(granularity, (value: Granularity) => {
   emit('update:modelValue', { granularity: value });
 }, { immediate: true });
 </script>

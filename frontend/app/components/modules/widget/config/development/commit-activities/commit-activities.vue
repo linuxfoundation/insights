@@ -58,7 +58,6 @@ import {
  computed, watch
 } from 'vue';
 import { storeToRefs } from "pinia";
-import {type QueryFunction, useQuery} from "@tanstack/vue-query";
 import type { CommitActivities } from '~~/types/popularity/responses.types';
 import { lineGranularities, barGranularities } from '~/components/shared/types/granularity';
 import type { Summary } from '~~/types/shared/summary.types';
@@ -79,17 +78,19 @@ import { useProjectStore } from "~/components/modules/project/store/project.stor
 import { isEmptyData } from '~/components/shared/utils/helper';
 import { dateOptKeys } from '~/components/modules/project/config/date-options';
 import type { Granularity } from '~~/types/shared/granularity';
-import {TanstackKey} from "~/components/shared/types/tanstack";
 import LfxSkeletonState from "~/components/modules/project/components/shared/skeleton-state.vue";
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
 import {Widget} from "~/components/modules/widget/types/widget";
+import { DEVELOPMENT_API_SERVICE, type QueryParams } 
+  from '~/components/modules/widget/services/development.api.service';
+import type { WidgetModel } from '~/components/modules/widget/config/widget.config';
 
-interface CommitActivitiesModel {
+interface CommitActivitiesModel extends WidgetModel {
   activeTab: string;
 }
 
 const props = defineProps<{
-  modelValue: CommitActivitiesModel,
+  modelValue?: CommitActivitiesModel,
   snapshot?: boolean
 }>()
 
@@ -98,8 +99,8 @@ const emit = defineEmits<{(e: 'update:modelValue', value: CommitActivitiesModel)
 }>();
 
 const model = computed<CommitActivitiesModel>({
-  get: () => props.modelValue,
-  set: (value) => emit('update:modelValue', value)
+  get: () => props.modelValue || { activeTab: 'new' },
+  set: (value: CommitActivitiesModel) => emit('update:modelValue', value)
 })
 
 const {
@@ -115,75 +116,39 @@ const lineGranularity = computed(() => (selectedTimeRangeKey.value === dateOptKe
   ? customRangeGranularity.value[0] as Granularity
   : lineGranularities[selectedTimeRangeKey.value as keyof typeof lineGranularities]));
 
-const barQueryKey = computed(() => [
-  TanstackKey.COMMIT_ACTIVITIES,
-  route.params.slug,
-  barGranularity.value,
-  'new',
-  'authored-commit',
-  selectedReposValues.value,
-  startDate.value,
-  endDate.value,
-]);
+const barParams = computed<QueryParams>(() => ({
+  projectSlug: route.params.slug as string,
+  granularity: barGranularity.value,
+  repos: selectedReposValues.value,
+  startDate: startDate.value,
+  endDate: endDate.value,
+  type: 'new',
+  countType: 'new',
+  activityType: 'authored-commit',
+}));
 
-const fetchBarData: QueryFunction<CommitActivities> = async () => $fetch(
-`/api/project/${route.params.slug}/development/commit-activities`,
-    {
-    params: {
-      granularity: barGranularity.value,
-      type: 'new',
-      countType: 'new',
-      activityType: 'authored-commit',
-      repos: selectedReposValues.value,
-      startDate: startDate.value,
-      endDate: endDate.value,
-    },
-  }
-);
+const lineParams = computed<QueryParams>(() => ({
+  projectSlug: route.params.slug as string,
+  granularity: lineGranularity.value,
+  repos: selectedReposValues.value,
+  startDate: startDate.value,
+  endDate: endDate.value,
+  type: 'cumulative',
+  countType: 'cumulative',
+  activityType: 'authored-commit',
+}));
 
 const {
   data,
   status,
   error,
-} = useQuery<CommitActivities>({
-  queryKey: barQueryKey,
-  queryFn: fetchBarData,
-});
-
-const lineQueryKey = computed(() => [
-  TanstackKey.COMMIT_ACTIVITIES,
-  route.params.slug,
-  lineGranularity.value,
-  'cumulative',
-  'authored-commit',
-  selectedReposValues.value,
-  startDate.value,
-  endDate.value,
-]);
-
-const fetchLineData: QueryFunction<CommitActivities> = async () => $fetch(
-    `/api/project/${route.params.slug}/development/commit-activities`,
-    {
-  params: {
-    granularity: lineGranularity.value,
-    type: 'cumulative',
-    countType: 'cumulative',
-    activityType: 'authored-commit',
-    repos: selectedReposValues.value,
-    startDate: startDate.value,
-    endDate: endDate.value,
-  }
-}
-);
+} = DEVELOPMENT_API_SERVICE.fetchCommitActivities(barParams);
 
 const {
   data: cumulativeData,
   status: cumulativeStatus,
   error: cumulativeError,
-} = useQuery<CommitActivities>({
-  queryKey: lineQueryKey,
-  queryFn: fetchLineData,
-});
+} = DEVELOPMENT_API_SERVICE.fetchCommitActivities(lineParams);
 
 const commitActivities = computed<CommitActivities | undefined>(() => (model.value.activeTab === 'cumulative'
   ? cumulativeData.value as CommitActivities
@@ -229,13 +194,17 @@ const barChartConfig = computed(() => getBarChartConfig(
   barGranularity.value
 ));
 
-watch(status, (value) => {
+watch(status, (value: string) => {
   if (value !== 'pending') {
     emit('dataLoaded', Widget.COMMIT_ACTIVITIES);
   }
 }, {
   immediate: true
 });
+
+watch(() => model.value.activeTab, (value: string) => {
+  emit('update:modelValue', { activeTab: value });
+}, { immediate: true });
 </script>
 
 <script lang="ts">
