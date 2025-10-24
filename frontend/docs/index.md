@@ -5,14 +5,16 @@
 layout: home
 
 hero:
-name: "LFX Insights"
-text: "Documentation"
-tagline: "How to use LFX Insights to evaluate open source software."
-actions: - theme: brand
-text: Go to Docs
-link: /introduction/what-is-insights/index - theme: alt
-text: "Back to LFX Insights"
-link: "https://insights.linuxfoundation.org"
+  name: "LFX Insights"
+  text: "Documentation"
+  tagline: "How to use LFX Insights to evaluate open source software."
+  actions:
+    - theme: brand
+      text: Go to Docs
+      link: /introduction/what-is-insights/index
+    - theme: alt
+      text: "Back to LFX Insights"
+      link: "https://insights.linuxfoundation.org"
 
 features:
 
