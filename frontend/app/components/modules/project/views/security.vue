@@ -5,8 +5,8 @@ SPDX-License-Identifier: MIT
 <template>
   <div class="container pt-4 md:pt-12">
     <lfx-card class="pt-4 sm:pt-6">
-      <div class="px-4 sm:px-6 flex justify-between items-start pb-4 sm:pb-5">
-        <div class="w-1/2">
+      <div class="px-4 sm:px-6 flex justify-between items-start pb-4 sm:pb-5 flex-wrap gap-2">
+        <div class="w-full sm:w-1/2 md:w-1/2">
           <!-- Title -->
           <div class="flex flex-col-reverse sm:flex-row items-start sm:items-center gap-2 sm:gap-4 pb-2">
             <h1 class="text-heading-3 font-secondary font-bold">Controls assessment</h1>
