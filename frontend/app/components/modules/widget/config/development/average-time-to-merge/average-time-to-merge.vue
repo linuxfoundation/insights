@@ -49,7 +49,6 @@ import {
  ref, computed, watch
 } from 'vue';
 import { storeToRefs } from "pinia";
-import {type QueryFunction, useQuery} from "@tanstack/vue-query";
 import type { AverageTimeMerge } from '~~/types/development/responses.types';
 import type { Summary } from '~~/types/shared/summary.types';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
@@ -66,19 +65,29 @@ import { useProjectStore } from "~/components/modules/project/store/project.stor
 import { isEmptyData } from '~/components/shared/utils/helper';
 import { barGranularities } from '~/components/shared/types/granularity';
 import { dateOptKeys } from '~/components/modules/project/config/date-options';
-import type { Granularity } from '~~/types/shared/granularity';
+import { Granularity } from '~~/types/shared/granularity';
 import { formatSecondsToDuration } from '~/components/shared/utils/formatter';
-import {TanstackKey} from "~/components/shared/types/tanstack";
 import LfxSkeletonState from "~/components/modules/project/components/shared/skeleton-state.vue";
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
 import {Widget} from "~/components/modules/widget/types/widget";
 import { minHours, maxHours } from '~/components/uikit/chart/configs/defaults.chart';
+import { DEVELOPMENT_API_SERVICE, type QueryParams } 
+  from '~/components/modules/widget/services/development.api.service';
+import type { WidgetModel } from '~/components/modules/widget/config/widget.config';
+
+interface AverageTimeMergeModel extends WidgetModel  {
+  granularity: Granularity;
+}
 
 const props = defineProps<{
+  modelValue?: AverageTimeMergeModel,
   snapshot?: boolean;
 }>()
 
-const emit = defineEmits<{(e: 'dataLoaded', value: string): void}>();
+const emit = defineEmits<{
+(e: 'dataLoaded', value: string): void;
+(e: 'update:modelValue', value: AverageTimeMergeModel): void
+}>();
 
 const {
   startDate, endDate, selectedReposValues, selectedTimeRangeKey, customRangeGranularity
@@ -89,33 +98,18 @@ const route = useRoute();
 const granularity = computed(() => (selectedTimeRangeKey.value === dateOptKeys.custom
   ? customRangeGranularity.value[0] as Granularity
   : barGranularities[selectedTimeRangeKey.value as keyof typeof barGranularities]));
-const queryKey = computed(() => [
-  TanstackKey.AVERAGE_TIME_TO_MERGE,
-  route.params.slug,
-  granularity,
-  selectedReposValues,
-  startDate,
-  endDate,
-]);
 
-const fetchData: QueryFunction<AverageTimeMerge> = async () => $fetch(
-    `/api/project/${route.params.slug}/development/average-time-merge`,
-    {
-  params: {
-    granularity: granularity.value,
-    repos: selectedReposValues.value,
-    startDate: startDate.value,
-    endDate: endDate.value,
-  }
-}
-);
+const params = computed<QueryParams>(() => ({
+  projectSlug: route.params.slug as string,
+  granularity: granularity.value,
+  repos: selectedReposValues.value,
+  startDate: startDate.value,
+  endDate: endDate.value,
+}));
 
 const {
   data, status, error
-} = useQuery<AverageTimeMerge>({
-  queryKey,
-  queryFn: fetchData,
-});
+} = DEVELOPMENT_API_SERVICE.fetchAverageTimeMerge(params);
 
 const averageTimeMerge = computed<AverageTimeMerge>(() => data.value as AverageTimeMerge);
 
@@ -165,13 +159,17 @@ const chartDataMapper = (d: ChartData) => ({
     values: d.values.map((v) => Number(formatSecondsToDuration(v, 'no')))
   })
 
-watch(status, (value) => {
+watch(status, (value: string) => {
   if (value !== 'pending') {
     emit('dataLoaded', Widget.AVERAGE_TIME_TO_MERGE);
   }
 }, {
   immediate: true
 });
+
+watch(granularity, (value: Granularity) => {
+  emit('update:modelValue', { granularity: value });
+}, { immediate: true });
 </script>
 
 <script lang="ts">
