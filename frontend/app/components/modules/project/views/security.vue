@@ -6,7 +6,7 @@ SPDX-License-Identifier: MIT
   <div class="container pt-4 md:pt-12">
     <lfx-card class="pt-4 sm:pt-6">
       <div class="px-4 sm:px-6 flex justify-between items-start pb-4 sm:pb-5">
-        <div>
+        <div class="w-1/2">
           <!-- Title -->
           <div class="flex flex-col-reverse sm:flex-row items-start sm:items-center gap-2 sm:gap-4 pb-2">
             <h1 class="text-heading-3 font-secondary font-bold">Controls assessment</h1>
@@ -32,15 +32,25 @@ SPDX-License-Identifier: MIT
           </p>
         </div>
 
-        <div class="flex items-center justify-center px-1.5 h-5 border border-neutral-200 rounded-full">
-          <div class="text-neutral-500 text-xs mr-2">Powered by:</div>
+        <div class="flex items-center justify-center px-2.5 py-1 border border-neutral-200 rounded-full">
+          <p class="text-neutral-500 text-xs mr-2">Powered by:</p>
           <img
             src="~/assets/images/revanite.svg"
             alt="Revanite.io Logo"
             class="h-5 w-5.5 mr-1.5"
           />
-          <div class="text-neutral-900 text-xs">Revanite.io</div>
+          <p class="text-neutral-900 text-xs">Revanite.io</p>
         </div>
+        <!-- TODO: Enable when backend is ready -->
+        <!--          <lfx-button-->
+        <!--            type="tertiary"-->
+        <!--            size="small"-->
+        <!--            button-style="pill"-->
+        <!--            class="whitespace-nowrap"-->
+        <!--          >-->
+        <!--            <lfx-icon name="arrows-rotate-reverse" />-->
+        <!--            Update results-->
+        <!--          </lfx-button>-->
       </div>
 
       <!-- Disclaimer for aggregated view -->
@@ -128,56 +138,46 @@ SPDX-License-Identifier: MIT
           </lfx-accordion>
         </div>
       </div>
-      <div class="flex items-center justify-center gap-1.5">
-        <lfx-repos-exclusion-footer
-          v-if="hasSelectedArchivedRepos && !isFetching"
-          class="mt-3"
-          page-content="security"
-        />
-        <p class="text-neutral-500 text-xs">・</p>
-        <!-- Generate YAML and Update buttons -->
-        <div
-          v-if="!isFetching && data?.length && !allArchived"
-          class="flex items-center gap-2"
-        >
-          <lfx-tooltip
-            v-if="!PROJECT_SECURITY_SERVICE.hasSecurityMdFile(data || [])"
-            placement="top"
-          >
-            <lfx-button
-              type="transparent"
-              size="small"
-              button-style="pill"
-              class="whitespace-nowrap !hidden lg:!flex"
-              @click="isGenerateYamlModalOpen = true"
-            >
-              <lfx-icon name="file-shield" />
-              Generate YAML file
-            </lfx-button>
-
-            <template #content>
-              <div class="flex flex-col gap-1 max-w-72">
-                <div class="font-semibold text-white text-xs">YAML Security specifications file</div>
-                <div class="text-neutral-300 text-xs">
-                  Generate a YAML security file, upload it to your repository, and ensure we can run all security
-                  assessments for your project.
-                </div>
-              </div>
-            </template>
-          </lfx-tooltip>
-          <!-- TODO: Enable when backend is ready -->
-          <!--          <lfx-button-->
-          <!--            type="tertiary"-->
-          <!--            size="small"-->
-          <!--            button-style="pill"-->
-          <!--            class="whitespace-nowrap"-->
-          <!--          >-->
-          <!--            <lfx-icon name="arrows-rotate-reverse" />-->
-          <!--            Update results-->
-          <!--          </lfx-button>-->
-        </div>
-      </div>
     </lfx-card>
+
+    <div class="flex items-center justify-center mt-8">
+      <lfx-repos-exclusion-footer
+        v-if="hasSelectedArchivedRepos && !isFetching"
+        page-content="security"
+      />
+      <!-- Generate YAML and Update buttons -->
+      <div
+        v-if="!isFetching && data?.length && !allArchived"
+        class="flex items-center gap-2 px-1.5"
+      >
+        <p class="text-neutral-500 text-xs font-semibold">・</p>
+        <lfx-tooltip
+          v-if="!PROJECT_SECURITY_SERVICE.hasSecurityMdFile(data || [])"
+          placement="top"
+        >
+          <lfx-button
+            type="transparent"
+            size="small"
+            button-style="pill"
+            class="whitespace-nowrap !hidden lg:!flex"
+            @click="isGenerateYamlModalOpen = true"
+          >
+            <lfx-icon name="file-shield" />
+            Generate YAML file
+          </lfx-button>
+
+          <template #content>
+            <div class="flex flex-col gap-1 max-w-72">
+              <div class="font-semibold text-white text-xs">YAML Security specifications file</div>
+              <div class="text-neutral-300 text-xs">
+                Generate a YAML security file, upload it to your repository, and ensure we can run all security
+                assessments for your project.
+              </div>
+            </div>
+          </template>
+        </lfx-tooltip>
+      </div>
+    </div>
   </div>
   <lf-security-generate-yaml-modal
     v-if="isGenerateYamlModalOpen"

@@ -5,7 +5,10 @@ SPDX-License-Identifier: MIT
 <template>
   <div
     v-if="displayArchivedReposNote"
-    class="w-full text-center flex items-center justify-center gap-1.5 bg-neutral-50 py-3 px-2 rounded-b-lg"
+    :class="{
+      'w-full bg-neutral-50 py-3 px-2 rounded-b-lg': pageContent === 'health-score',
+    }"
+    class="text-center flex items-center justify-center gap-1.5"
   >
     <lfx-icon
       name="info-circle"
