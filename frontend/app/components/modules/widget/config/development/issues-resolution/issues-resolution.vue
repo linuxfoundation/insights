@@ -90,7 +90,6 @@ import {
  computed, watch
 } from 'vue';
 import { storeToRefs } from "pinia";
-import {type QueryFunction, useQuery} from "@tanstack/vue-query";
 import { DateTime } from 'luxon';
 import type { IssuesResolution, IssuesResolutionSummary } from '~~/types/development/responses.types';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
@@ -110,22 +109,26 @@ import { isEmptyData } from '~/components/shared/utils/helper';
 import { lineGranularities } from '~/components/shared/types/granularity';
 import { dateOptKeys } from '~/components/modules/project/config/date-options';
 import { Granularity } from '~~/types/shared/granularity';
-import {TanstackKey} from "~/components/shared/types/tanstack";
 import LfxSkeletonState from "~/components/modules/project/components/shared/skeleton-state.vue";
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
 import {Widget} from "~/components/modules/widget/types/widget";
+import { DEVELOPMENT_API_SERVICE, type QueryParams } 
+  from '~/components/modules/widget/services/development.api.service';
+import type { WidgetModel } from '~/components/modules/widget/config/widget.config';
 
-interface IssuesResolutionModel {
+interface IssuesResolutionModel extends WidgetModel {
   granularity: Granularity;
 }
 
 const props = defineProps<{
+  modelValue?: IssuesResolutionModel,
   snapshot?: boolean
 }>()
 
 const emit = defineEmits<{
 (e: 'dataLoaded', value: string): void;
-(e: 'update:modelValue', value: IssuesResolutionModel): void
+(e: 'update:modelValue', value: IssuesResolutionModel): void;
+(e: 'hasData', value: boolean): void;
 }>();
 
 const {
@@ -133,36 +136,22 @@ const {
 } = storeToRefs(useProjectStore())
 
 const route = useRoute();
+
 const granularity = computed(() => (selectedTimeRangeKey.value === dateOptKeys.custom
   ? customRangeGranularity.value[0] as Granularity
   : lineGranularities[selectedTimeRangeKey.value as keyof typeof lineGranularities]));
-const queryKey = computed(() => [
-  TanstackKey.ISSUES_RESOLUTION,
-  route.params.slug,
-  granularity.value,
-  selectedReposValues.value,
-  startDate.value,
-  endDate.value,
-]);
 
-const fetchData: QueryFunction<IssuesResolution> = async () => $fetch(
-    `/api/project/${route.params.slug}/development/issues-resolution`,
-    {
-  params: {
-    granularity: granularity.value,
-    repos: selectedReposValues.value,
-    startDate: startDate.value,
-    endDate: endDate.value,
-  }
-}
-);
+const params = computed<QueryParams>(() => ({
+  projectSlug: route.params.slug as string,
+  granularity: granularity.value,
+  repos: selectedReposValues.value,
+  startDate: startDate.value,
+  endDate: endDate.value,
+}));
 
 const {
   data, status, error
-} = useQuery<IssuesResolution>({
-  queryKey,
-  queryFn: fetchData,
-});
+} = DEVELOPMENT_API_SERVICE.fetchIssuesResolution(params);
 
 const issuesResolution = computed<IssuesResolution>(() => data.value as IssuesResolution);
 
@@ -236,7 +225,7 @@ const lineAreaChartConfig = computed(() => getLineAreaChartConfig(
 ));
 const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
 
-watch(status, (value) => {
+watch(status, (value: string) => {
   if (value !== 'pending') {
     emit('dataLoaded', Widget.ISSUES_RESOLUTION);
   }
@@ -244,9 +233,15 @@ watch(status, (value) => {
   immediate: true
 });
 
-watch(granularity, (value) => {
+watch(granularity, (value: Granularity) => {
   emit('update:modelValue', { granularity: value });
 }, { immediate: true });
+
+watch(isEmpty, (value: boolean) => {
+  emit('hasData', !value);
+}, {
+  immediate: true
+});
 </script>
 
 <script lang="ts">

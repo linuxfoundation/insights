@@ -56,7 +56,6 @@ SPDX-License-Identifier: MIT
 import { useRoute } from 'nuxt/app';
 import { computed, watch } from 'vue';
 import { storeToRefs } from "pinia";
-import {type QueryFunction, useQuery} from "@tanstack/vue-query";
 import type { GithubMentions } from '~~/types/popularity/responses.types';
 import type { Summary } from '~~/types/shared/summary.types';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
@@ -77,10 +76,10 @@ import { isEmptyData } from '~/components/shared/utils/helper';
 import { getBarChartConfig } from '~/components/uikit/chart/configs/bar.chart';
 import { barGranularities, lineGranularities } from '~/components/shared/types/granularity';
 import type { Granularity } from '~~/types/shared/granularity';
-import {TanstackKey} from "~/components/shared/types/tanstack";
 import LfxSkeletonState from "~/components/modules/project/components/shared/skeleton-state.vue";
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
 import {Widget} from "~/components/modules/widget/types/widget";
+import { POPULARITY_API_SERVICE } from '~/components/modules/widget/services/popularity.api.service';
 
 interface GithubMentionsModel {
   activeTab: string;
@@ -119,35 +118,18 @@ const granularity = computed(() => (model.value.activeTab === 'cumulative'
   ? lineGranularity.value
   : barGranularity.value));
 
-const queryKey = computed(() => [
-  TanstackKey.GITHUB_MENTIONS,
-  route.params.slug,
-  granularity.value,
-  model.value.activeTab,
-  selectedReposValues.value,
-  startDate.value,
-  endDate.value,
-]);
-
-const fetchData: QueryFunction<GithubMentions> = async () => $fetch(
-    `/api/project/${route.params.slug}/popularity/github-mentions`,
-    {
-  params: {
-    granularity: granularity.value,
-    type: model.value.activeTab,
-    repos: selectedReposValues.value,
-    startDate: startDate.value,
-    endDate: endDate.value,
-  }
-}
-);
+const queryParams = computed(() => ({
+  projectSlug: route.params.slug as string,
+  granularity: granularity.value,
+  repos: selectedReposValues.value,
+  startDate: startDate.value,
+  endDate: endDate.value,
+  type: model.value.activeTab,
+}));
 
 const {
   data, status, error
-} = useQuery<GithubMentions>({
-  queryKey,
-  queryFn: fetchData,
-});
+} = POPULARITY_API_SERVICE.fetchGithubMentions(queryParams);
 
 const mentions = computed<GithubMentions>(() => data.value as GithubMentions);
 

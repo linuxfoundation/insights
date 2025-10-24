@@ -8,8 +8,8 @@ export default {
   component: LfxTag,
   tags: ['autodocs'],
   argTypes: {
-    style: {
-      description: 'The style of the tag',
+    variation: {
+      description: 'The visual variation/style of the tag',
       control: 'select',
       options: tagStyles
     },
@@ -37,7 +37,7 @@ export default {
 export const Default = {
   args: {
     default: 'I\'m tag content',
-    style: 'default',
+    variation: 'default',
     size: 'medium',
     type: 'solid'
   }
@@ -46,7 +46,7 @@ export const Default = {
 export const Info = {
   args: {
     default: 'I\'m tag content',
-    style: 'info',
+    variation: 'info',
     size: 'medium',
     type: 'solid'
   }
@@ -55,7 +55,7 @@ export const Info = {
 export const Positive = {
   args: {
     default: 'I\'m tag content',
-    style: 'positive',
+    variation: 'positive',
     size: 'medium',
     type: 'solid'
   }
@@ -64,7 +64,7 @@ export const Positive = {
 export const Warning = {
   args: {
     default: 'I\'m tag content',
-    style: 'warning',
+    variation: 'warning',
     size: 'medium',
     type: 'solid'
   }
@@ -73,7 +73,7 @@ export const Warning = {
 export const Negative = {
   args: {
     default: 'I\'m tag content',
-    style: 'negative',
+    variation: 'negative',
     size: 'medium',
     type: 'solid'
   }
@@ -82,7 +82,7 @@ export const Negative = {
 export const Small = {
   args: {
     default: 'I\'m tag content',
-    style: 'info',
+    variation: 'info',
     size: 'small',
     type: 'solid'
   }
@@ -91,7 +91,7 @@ export const Small = {
 export const Transparent = {
   args: {
     default: 'I\'m tag content',
-    style: 'info',
+    variation: 'info',
     size: 'medium',
     type: 'transparent'
   }

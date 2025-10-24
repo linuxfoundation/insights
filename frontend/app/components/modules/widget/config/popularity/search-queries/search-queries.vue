@@ -62,7 +62,9 @@ const props = defineProps<{
   snapshot?: boolean
 }>()
 
-const emit = defineEmits<{(e: 'dataLoaded', value: string): void}>();
+const emit = defineEmits<{(e: 'dataLoaded', value: string): void;
+  (e: 'hasData', value: boolean): void;
+}>();
 
 const {
   startDate,
@@ -131,6 +133,12 @@ watch(status, (value) => {
   if (value !== 'pending') {
     emit('dataLoaded', Widget.SEARCH_QUERIES);
   }
+}, {
+  immediate: true
+});
+
+watch(isEmpty, (value: boolean) => {
+  emit('hasData', !value);
 }, {
   immediate: true
 });

@@ -41,60 +41,67 @@ SPDX-License-Identifier: MIT
 import { useRoute } from 'nuxt/app';
 import { computed, watch } from 'vue';
 import { storeToRefs } from "pinia";
-import {type QueryFunction, useQuery} from "@tanstack/vue-query";
 import type { ReviewTimeByPrItem } from '~~/types/development/responses.types';
 import LfxProgressBar from '~/components/uikit/progress-bar/progress-bar.vue';
 import { isEmptyData } from '~/components/shared/utils/helper';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
 import { formatSecondsToDuration } from '~/components/shared/utils/formatter';
-import {TanstackKey} from "~/components/shared/types/tanstack";
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
 import {Widget} from "~/components/modules/widget/types/widget";
+import { DEVELOPMENT_API_SERVICE, type QueryParams } 
+  from '~/components/modules/widget/services/development.api.service';
+import type { WidgetModel } from '~/components/modules/widget/config/widget.config';
 
-const emit = defineEmits<{(e: 'dataLoaded', value: string): void}>();
+const props = defineProps<{
+  modelValue?: WidgetModel,
+  snapshot?: boolean;
+}>()
+
+const emit = defineEmits<{
+(e: 'dataLoaded', value: string): void;
+(e: 'update:modelValue', value: WidgetModel): void
+}>();
+
+const model = computed<WidgetModel>({
+  get: () => props.modelValue || {},
+  set: (value: WidgetModel) => emit('update:modelValue', value)
+})
 
 const route = useRoute();
 const { startDate, endDate, selectedReposValues } = storeToRefs(useProjectStore());
 
-const queryKey = computed(() => [
-  TanstackKey.REVIEW_TIME_BY_PULL_REQUEST_SIZE,
-  route.params.slug,
-  selectedReposValues.value,
-  startDate.value,
-  endDate.value,
-]);
-
-const fetchData: QueryFunction<ReviewTimeByPrItem[]> = async () => $fetch(
-    `/api/project/${route.params.slug}/development/review-time-by-pr-size`,
-    {
-  params: {
-    repos: selectedReposValues.value,
-    startDate: startDate.value,
-    endDate: endDate.value,
-  }
-}
-);
+const params = computed<QueryParams>(() => ({
+  projectSlug: route.params.slug as string,
+  granularity: '', // Not needed for review time by PR size
+  repos: selectedReposValues.value,
+  startDate: startDate.value,
+  endDate: endDate.value,
+}));
 
 const {
   data, status, error
-} = useQuery<ReviewTimeByPrItem[]>({
-  queryKey,
-  queryFn: fetchData,
-});
+} = DEVELOPMENT_API_SERVICE.fetchReviewTimeByPrSize(params);
 
 const reviewTimeByPr = computed<ReviewTimeByPrItem[]>(() => data.value as ReviewTimeByPrItem[]);
-const maxValue = computed(() => Math.max(...reviewTimeByPr.value.map((item) => item.averageReviewTime)));
+const maxValue = computed(() => Math
+  .max(
+    ...reviewTimeByPr.value.map((item: ReviewTimeByPrItem) => item.averageReviewTime
+  )));
 const isEmpty = computed(() => isEmptyData(reviewTimeByPr.value as unknown as Record<string, unknown>[]));
 
 const convertAverageReviewTime = (value: number) => formatSecondsToDuration(value, 'long');
 
-watch(status, (value) => {
+watch(status, (value: string) => {
   if (value !== 'pending') {
     emit('dataLoaded', Widget.REVIEW_TIME_BY_PULL_REQUEST_SIZE);
   }
 }, {
   immediate: true
 });
+
+watch(() => model.value, (value: WidgetModel) => {
+  emit('update:modelValue', value);
+}, { immediate: true });
 </script>
 
 <script lang="ts">

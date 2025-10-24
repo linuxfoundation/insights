@@ -20,9 +20,44 @@ const config: StorybookConfig = {
     const filteredPlugins = config.plugins?.filter(
         (plugin) => plugin?.name !== 'vite-plugin-inspect'
     );
+
+    // Add custom plugin to suppress specific warnings
+    const customWarningSuppressionPlugin = {
+      name: 'suppress-storybook-warnings',
+      configResolved(resolvedConfig: { logger: { warn: (msg: string, options?: unknown) => void } }) {
+        const originalWarn = resolvedConfig.logger.warn;
+        resolvedConfig.logger.warn = (msg: string, options?: unknown) => {
+          // Suppress virtual module warnings from Storybook
+          if (msg.includes('Failed to resolve') && msg.includes('virtual:/@storybook')) {
+            return;
+          }
+          originalWarn(msg, options);
+        };
+      },
+    };
+
     return {
         ...config,
-        plugins: filteredPlugins,
+        plugins: [...(filteredPlugins || []), customWarningSuppressionPlugin],
+        server: {
+          ...config.server,
+          // Suppress proxy errors for Nuxt build metadata
+          proxy: undefined,
+        },
+        build: {
+          ...config.build,
+          // Suppress rollup warnings about virtual modules
+          rollupOptions: {
+            ...config.build?.rollupOptions,
+            onwarn(warning, warn) {
+              // Ignore virtual module warnings
+              if (warning.code === 'UNRESOLVED_IMPORT' && warning.message?.includes('virtual:')) {
+                return;
+              }
+              warn(warning);
+            },
+          },
+        },
     };
   },
 };

@@ -9,7 +9,7 @@ SPDX-License-Identifier: MIT
     </div>
     <div class="c-benchmark-component">
       <lfx-benchmark
-        v-if="isVisible"
+        v-if="isVisible && showBenchmark"
         :type="type"
       >
         {{ benchmarkText }}
@@ -30,8 +30,10 @@ const props = withDefaults(defineProps<{
   benchmarkConfig?: WidgetBenchmarkConfig | undefined;
   point: number;
   widgetModel: WidgetModel;
+  showBenchmark?: boolean;
 }>(), {
-  benchmarkConfig: undefined
+  benchmarkConfig: undefined,
+  showBenchmark: true,
 });
 
 const { selectedTimeRangeKey, startDate, endDate } = storeToRefs(useProjectStore())

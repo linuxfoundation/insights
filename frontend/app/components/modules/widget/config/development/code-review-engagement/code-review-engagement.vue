@@ -84,7 +84,6 @@ SPDX-License-Identifier: MIT
 import { useRoute } from 'nuxt/app';
 import { computed, watch } from 'vue';
 import { storeToRefs } from "pinia";
-import {type QueryFunction, useQuery} from "@tanstack/vue-query";
 import type { 
   CodeReviewEngagement, 
   CodeReviewEngagementPRParticipantsItem, 
@@ -99,7 +98,6 @@ import { useProjectStore } from "~/components/modules/project/store/project.stor
 import { isEmptyData } from '~/components/shared/utils/helper';
 import { dateOptKeys } from '~/components/modules/project/config/date-options';
 import {CodeReviewEngagementMetric} from "~~/types/development/requests.types";
-import {TanstackKey} from "~/components/shared/types/tanstack";
 import LfxCodeReviewTable from "~/components/modules/widget/components/development/fragments/code-review-table.vue";
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
 import LfxSkeletonState from "~/components/modules/project/components/shared/skeleton-state.vue";
@@ -118,13 +116,16 @@ import type {
 import { lfxColors } from '~/config/styles/colors';
 import type { Granularity } from '~~/types/shared/granularity';
 import { barGranularities } from '~/components/shared/types/granularity';
+import { DEVELOPMENT_API_SERVICE, type QueryParams } 
+  from '~/components/modules/widget/services/development.api.service';
+import type { WidgetModel } from '~/components/modules/widget/config/widget.config';
 
-interface CodeReviewEngagementModel {
+interface CodeReviewEngagementModel extends WidgetModel {
   activeTab: string;
 }
 
 const props = defineProps<{
-  modelValue: CodeReviewEngagementModel,
+  modelValue?: CodeReviewEngagementModel,
   snapshot?: boolean
 }>()
 
@@ -133,8 +134,8 @@ const emit = defineEmits<{(e: 'update:modelValue', value: CodeReviewEngagementMo
 }>();
 
 const model = computed<CodeReviewEngagementModel>({
-  get: () => props.modelValue,
-  set: (value) => emit('update:modelValue', value)
+  get: () => props.modelValue || { activeTab: CodeReviewEngagementMetric.PR_PARTICIPANTS },
+  set: (value: CodeReviewEngagementModel) => emit('update:modelValue', value)
 })
 
 const {
@@ -143,33 +144,18 @@ const {
 
 const route = useRoute();
 
-const queryKey = computed(() => [
-  TanstackKey.CODE_REVIEW_ENGAGEMENT,
-  route.params.slug,
-  model.value.activeTab,
-  selectedReposValues.value,
-  startDate.value,
-  endDate.value,
-]);
-
-const fetchData: QueryFunction<CodeReviewEngagement> = async () => $fetch(
-    `/api/project/${route.params.slug}/development/code-review-engagement`,
-    {
-  params: {
-    metric: model.value.activeTab,
-    repos: selectedReposValues.value,
-    startDate: startDate.value,
-    endDate: endDate.value,
-  }
-}
-);
+const params = computed<QueryParams>(() => ({
+  projectSlug: route.params.slug as string,
+  granularity: '', // Not needed for code review engagement
+  repos: selectedReposValues.value,
+  startDate: startDate.value,
+  endDate: endDate.value,
+  metric: model.value.activeTab,
+}));
 
 const {
   data, status, error
-} = useQuery<CodeReviewEngagement>({
-  queryKey,
-  queryFn: fetchData,
-});
+} = DEVELOPMENT_API_SERVICE.fetchCodeReviewEngagement(params);
 
 const codeReviewEngagement = computed<CodeReviewEngagement>(() => data.value as CodeReviewEngagement);
 const prParticipantsData = computed<CodeReviewEngagementPRParticipantsItem[]>(() =>
@@ -250,13 +236,17 @@ const barChartConfig = computed(() => getBarChartConfig(
   barGranularity.value
 ));
 
-watch(status, (value) => {
+watch(status, (value: string) => {
   if (value !== 'pending') {
     emit('dataLoaded', Widget.CODE_REVIEW_ENGAGEMENT);
   }
 }, {
   immediate: true
 });
+
+watch(() => model.value.activeTab, (value: string) => {
+  emit('update:modelValue', { activeTab: value });
+}, { immediate: true });
 </script>
 
 <script lang="ts">

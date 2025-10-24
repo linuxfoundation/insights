@@ -117,7 +117,8 @@ const props = defineProps<{
 
 const emit = defineEmits<{
 (e: 'dataLoaded', value: string): void;
-(e: 'update:modelValue', value: ActiveDaysModel): void
+(e: 'update:modelValue', value: ActiveDaysModel): void;
+(e: 'hasData', value: boolean): void;
 }>();
 
 const model = computed<ActiveDaysModel>({
@@ -196,6 +197,12 @@ watch(status, (value) => {
 watch(granularity, (value) => {
   emit('update:modelValue', { granularity: value, includeCollaborations: model.value.includeCollaborations });
 }, { immediate: true });
+
+watch(isEmpty, (value: boolean) => {
+  emit('hasData', !value);
+}, {
+  immediate: true
+});
 </script>
 
 <script lang="ts">

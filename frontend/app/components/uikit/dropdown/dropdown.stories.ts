@@ -1,189 +1,198 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
+import type { Placement } from '@popperjs/core';
+import LfxButton from '../button/button.vue';
 import LfxDropdown from './dropdown.vue';
-import { dropdownTypes, dropdownSizes } from './types/dropdown.types';
+import LfxDropdownItem from './dropdown-item.vue';
+import LfxDropdownSeparator from './dropdown-separator.vue';
 
 export default {
   title: 'LinuxFoundation/Dropdown',
   component: LfxDropdown,
   tags: ['autodocs'],
   argTypes: {
-    modelValue: {
-      description: 'The model value of the dropdown',
+    placement: {
+      description: 'Position of the dropdown relative to the trigger',
+      control: 'select',
+      options: [
+        'top-start', 'top', 'top-end',
+        'right-start', 'right', 'right-end',
+        'bottom-start', 'bottom', 'bottom-end',
+        'left-start', 'left', 'left-end'
+      ]
+    },
+    width: {
+      description: 'Width of the dropdown content',
       control: 'text'
     },
-    options: {
-      description: 'The options of the dropdown',
-      control: 'object'
+    visibility: {
+      description: 'Controls dropdown visibility (v-model:visibility)',
+      control: 'boolean'
     },
-    placeholder: {
-      description: 'The placeholder of the dropdown',
+    matchWidth: {
+      description: 'Whether dropdown should match the width of the trigger element',
+      control: 'boolean'
+    },
+    dropdownClass: {
+      description: 'Additional CSS classes for the dropdown container',
       control: 'text'
-    },
-    disabled: {
-      description: 'Whether the dropdown is disabled',
-      control: 'boolean'
-    },
-    type: {
-      description: 'The type of the dropdown',
-      control: 'select',
-      options: dropdownTypes
-    },
-    size: {
-      description: 'The size of the dropdown',
-      control: 'select',
-      options: dropdownSizes
-    },
-    showGroupBreaks: {
-      description: 'Whether to show group breaks',
-      control: 'boolean'
-    },
-    showFilter: {
-      description: 'Whether to show the filter',
-      control: 'boolean'
     }
   }
 };
 
 export const Default = {
   args: {
-    options: [
-      { label: 'Option 1', value: 'option-1' },
-      { label: 'Option 2', value: 'option-2' },
-      { label: 'Option 3', value: 'option-3' }
-    ],
-    type: 'filled',
-    size: 'default',
-    modelValue: 'option-1'
+    placement: 'bottom-start' as Placement,
+    width: '200px',
+    matchWidth: false
   },
   render: (args) => ({
     components: {
-      LfxDropdown
+      LfxDropdown,
+      LfxDropdownItem,
+      LfxDropdownSeparator,
+      LfxButton
     },
     setup() {
       return { args };
     },
     template: `
-    <div class="flex flex-row gap-4" style="height: 150px;">
-      <div class="w-1/2">
-        <LfxDropdown v-bind="args" />
-      </div>
-      <div class="w-1/2 flex justify-end">
-        <LfxDropdown v-bind="args" dropdown-position="right" />
-      </div>
+    <div class="h-64">
+      <lfx-dropdown v-bind="args">
+        <template #trigger>
+          <lfx-button>
+            Open Dropdown
+          </lfx-button>
+        </template>
+
+        <lfx-dropdown-item>Option 1</lfx-dropdown-item>
+        <lfx-dropdown-item>Option 2</lfx-dropdown-item>
+        <lfx-dropdown-separator />
+        <lfx-dropdown-item>Option 3</lfx-dropdown-item>
+      </lfx-dropdown>
     </div>`
   })
 };
 
-export const CustomOptionTemplate = {
+export const WithIcons = {
   args: {
-    ...Default.args,
-    options: [
-      {
-        label: 'Option Custom 1',
-        value: 'option-custom-1',
-        description: 'Option Custom 1 Description. lorem ipsum dolor sit amet.'
-      },
-      {
-        label: 'Option Custom 2',
-        value: 'option-custom-2',
-        description: 'Option Custom 2 Description. lorem ipsum dolor sit amet.'
-      },
-      {
-        label: 'Option Custom 3',
-        value: 'option-custom-3',
-        description: 'Option Custom 3 Description. lorem ipsum dolor sit amet.'
-      }
-    ],
-    optionTemplate: '<i class="fa-light fa-face-smile"></i> {{ option.label }}',
-    modelValue: 'option-custom-1'
+    placement: 'bottom-start' as Placement,
+    width: '250px',
+    matchWidth: false
   },
   render: (args) => ({
     components: {
-      LfxDropdown
+      LfxDropdown,
+      LfxDropdownItem,
+      LfxButton
     },
     setup() {
       return { args };
     },
     template: `
-    <div class="flex flex-row gap-4" style="height: 300px;">
-      <div class="w-1/2">
-        <LfxDropdown v-bind="args">
-          <template #optionTemplate="{ option }">
-            <span class="flex gap-2 items-center">
-              <i class="fa-light fa-face-smile"></i> {{ option.label }}
-            </span>
-            <div class="text-xs text-neutral-500">{{ option.description }}</div>
-          </template>
-        </LfxDropdown>
-      </div>
+    <div class="h-64">
+      <lfx-dropdown v-bind="args">
+        <template #trigger>
+          <lfx-button>
+            Actions
+          </lfx-button>
+        </template>
+
+        <lfx-dropdown-item>
+          <i class="fa-light fa-pen mr-2"></i>
+          Edit
+        </lfx-dropdown-item>
+        <lfx-dropdown-item>
+          <i class="fa-light fa-copy mr-2"></i>
+          Duplicate
+        </lfx-dropdown-item>
+        <lfx-dropdown-item>
+          <i class="fa-light fa-trash mr-2"></i>
+          Delete
+        </lfx-dropdown-item>
+      </lfx-dropdown>
     </div>`
   })
 };
 
-export const GroupedOptions = {
+export const MatchWidth = {
   args: {
-    ...Default.args,
-    options: [
-      {
-        label: 'Group 1',
-        items: [
-          { label: 'Option 1', value: 'option-1' },
-          { label: 'Option 2', value: 'option-2' }
-        ]
-      },
-      {
-        label: 'Group 2',
-        items: [
-          { label: 'Option 3', value: 'option-3' },
-          { label: 'Option 4', value: 'option-4' }
-        ]
-      }
-    ]
+    placement: 'bottom-start' as Placement,
+    matchWidth: true
   },
   render: (args) => ({
     components: {
-      LfxDropdown
+      LfxDropdown,
+      LfxDropdownItem,
+      LfxButton
     },
     setup() {
       return { args };
     },
     template: `
-    <div class="flex flex-row gap-4" style="height: 250px;">
-      <div class="w-1/2">
-        <LfxDropdown v-bind="args" />
-      </div>
+    <div class="h-64">
+      <lfx-dropdown v-bind="args">
+        <template #trigger>
+          <lfx-button style="width: 300px;">
+            Wide Button - Dropdown Matches Width
+          </lfx-button>
+        </template>
+
+        <lfx-dropdown-item>Short option</lfx-dropdown-item>
+        <lfx-dropdown-item>Another option</lfx-dropdown-item>
+        <lfx-dropdown-item>Third option</lfx-dropdown-item>
+      </lfx-dropdown>
     </div>`
   })
 };
 
-export const WithFilter = {
+export const DifferentPlacements = {
   args: {
-    options: [
-      { label: 'Apple', value: 'apple' },
-      { label: 'Banana', value: 'banana' },
-      { label: 'Cherry', value: 'cherry' },
-      { label: 'Date', value: 'date' },
-      { label: 'Elderberry', value: 'elderberry' },
-      { label: 'Fig', value: 'fig' }
-    ],
-    type: 'filled',
-    size: 'default',
-    modelValue: 'apple',
-    showFilter: true
+    width: '200px',
+    matchWidth: false
   },
   render: (args) => ({
     components: {
-      LfxDropdown
+      LfxDropdown,
+      LfxDropdownItem,
+      LfxButton
     },
     setup() {
       return { args };
     },
     template: `
-    <div class="flex flex-row gap-4" style="height: 300px;">
-      <div class="w-1/2">
-        <LfxDropdown v-bind="args" />
-      </div>
+    <div class="flex items-center justify-center gap-4 h-96">
+      <lfx-dropdown v-bind="args" placement="top">
+        <template #trigger>
+          <lfx-button>Top</lfx-button>
+        </template>
+        <lfx-dropdown-item>Option 1</lfx-dropdown-item>
+        <lfx-dropdown-item>Option 2</lfx-dropdown-item>
+      </lfx-dropdown>
+
+      <lfx-dropdown v-bind="args" placement="bottom">
+        <template #trigger>
+          <lfx-button>Bottom</lfx-button>
+        </template>
+        <lfx-dropdown-item>Option 1</lfx-dropdown-item>
+        <lfx-dropdown-item>Option 2</lfx-dropdown-item>
+      </lfx-dropdown>
+
+      <lfx-dropdown v-bind="args" placement="left">
+        <template #trigger>
+          <lfx-button>Left</lfx-button>
+        </template>
+        <lfx-dropdown-item>Option 1</lfx-dropdown-item>
+        <lfx-dropdown-item>Option 2</lfx-dropdown-item>
+      </lfx-dropdown>
+
+      <lfx-dropdown v-bind="args" placement="right">
+        <template #trigger>
+          <lfx-button>Right</lfx-button>
+        </template>
+        <lfx-dropdown-item>Option 1</lfx-dropdown-item>
+        <lfx-dropdown-item>Option 2</lfx-dropdown-item>
+      </lfx-dropdown>
     </div>`
   })
 };

@@ -94,6 +94,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{(e: 'update:modelValue', value: ForksModel): void;
   (e: 'dataLoaded', value: string): void;
+  (e: 'hasData', value: boolean): void;
 }>();
 
 const model = computed<ForksModel>({
@@ -177,6 +178,12 @@ watch(status, (value) => {
   if (value !== 'pending') {
     emit('dataLoaded', Widget.FORKS);
   }
+}, {
+  immediate: true
+});
+
+watch(isEmpty, (value: boolean) => {
+  emit('hasData', !value);
 }, {
   immediate: true
 });

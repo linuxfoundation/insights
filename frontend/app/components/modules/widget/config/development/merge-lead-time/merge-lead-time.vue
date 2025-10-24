@@ -75,7 +75,6 @@ SPDX-License-Identifier: MIT
 import { useRoute } from 'nuxt/app';
 import { computed, watch } from 'vue';
 import { storeToRefs } from "pinia";
-import {type QueryFunction, useQuery} from "@tanstack/vue-query";
 import LfxMergeLeadItem from "./fragments/merge-lead-item.vue";
 import type { MergeLeadTime, MergeLeadTimeItem, MergeLeadTimeUnit } from '~~/types/development/responses.types';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
@@ -83,14 +82,28 @@ import type { Summary } from '~~/types/shared/summary.types';
 import { useProjectStore } from "~/components/modules/project/store/project.store";
 import {dateOptKeys} from "~/components/modules/project/config/date-options";
 import { formatSecondsToDuration } from '~/components/shared/utils/formatter';
-import {TanstackKey} from "~/components/shared/types/tanstack";
 import LfxSkeletonState from "~/components/modules/project/components/shared/skeleton-state.vue";
 import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
 import {Widget} from "~/components/modules/widget/types/widget";
+import { DEVELOPMENT_API_SERVICE, type QueryParams } 
+  from '~/components/modules/widget/services/development.api.service';
+import type { WidgetModel } from '~/components/modules/widget/config/widget.config';
+
+const props = defineProps<{
+  modelValue?: WidgetModel,
+  snapshot?: boolean;
+}>()
 
 const emit = defineEmits<{
 (e: 'dataLoaded', value: string): void;
+(e: 'update:modelValue', value: WidgetModel): void;
+(e: 'hasData', value: boolean): void;
 }>();
+
+const model = computed<WidgetModel>({
+  get: () => props.modelValue || {},
+  set: (value: WidgetModel) => emit('update:modelValue', value)
+})
 
 const {
  startDate, endDate, selectedReposValues, selectedTimeRangeKey
@@ -98,31 +111,17 @@ const {
 
 const route = useRoute();
 
-const queryKey = computed(() => [
-  TanstackKey.MERGE_LEAD_TIME,
-  route.params.slug,
-  selectedReposValues.value,
-  startDate.value,
-  endDate.value,
-]);
-
-const fetchData: QueryFunction<MergeLeadTime> = async () => $fetch(
-    `/api/project/${route.params.slug}/development/merge-lead-time`,
-    {
-  params: {
-    repos: selectedReposValues.value,
-    startDate: startDate.value,
-    endDate: endDate.value,
-  }
-}
-);
+const params = computed<QueryParams>(() => ({
+  projectSlug: route.params.slug as string,
+  granularity: '', // Not needed for merge lead time
+  repos: selectedReposValues.value,
+  startDate: startDate.value,
+  endDate: endDate.value,
+}));
 
 const {
   data, status, error
-} = useQuery<MergeLeadTime>({
-  queryKey,
-  queryFn: fetchData,
-});
+} = DEVELOPMENT_API_SERVICE.fetchMergeLeadTime(params);
 
 const mergeLeadTime = computed<MergeLeadTime>(() => data.value as MergeLeadTime);
 const pickup = computed<MergeLeadTimeItem | undefined>(() => getMergeLeadTimeItem(mergeLeadTime.value, 'pickup'));
@@ -167,13 +166,23 @@ const getMergeLeadTimeItem = (
   return undefined;
 };
 
-watch(status, (value) => {
+watch(status, (value: string) => {
   if (value !== 'pending') {
     emit('dataLoaded', Widget.MERGE_LEAD_TIME);
   }
 }, {
   immediate: true
 });
+
+watch(isEmpty, (value: boolean) => {
+  emit('hasData', !value);
+}, {
+  immediate: true
+});
+
+watch(() => model.value, (value: WidgetModel) => {
+  emit('update:modelValue', value);
+}, { immediate: true });
 </script>
 
 <script lang="ts">

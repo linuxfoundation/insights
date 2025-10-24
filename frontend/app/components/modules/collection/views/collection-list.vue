@@ -77,11 +77,11 @@ SPDX-License-Identifier: MIT
   <section>
     <div class="container py-5 lg:py-10 flex flex-col gap-5 lg:gap-8">
       <div
-        v-if="data?.pages.flatMap(p => p.data).length"
+        v-if="flatData.length"
         class="flex flex-col gap-5 lg:gap-8"
       >
         <lfx-collection-list-item
-          v-for="collection in data?.pages.flatMap(p => p.data)"
+          v-for="collection in flatData"
           :key="collection.slug"
           :collection="collection"
         />
@@ -135,11 +135,9 @@ SPDX-License-Identifier: MIT
 import {
  watch, onServerPrefetch, computed, ref
 } from 'vue'
-import {useInfiniteQuery, useQuery, useQueryClient} from '@tanstack/vue-query'
 import { collectionListParamsGetter, collectionListParamsSetter } from
   "../services/collections.query.service";
 import type { Pagination } from '~~/types/shared/pagination'
-import type { Collection } from '~~/types/collection'
 
 import LfxIcon from '~/components/uikit/icon/icon.vue'
 import LfxTag from '~/components/uikit/tag/tag.vue'
@@ -156,24 +154,21 @@ import useToastService from '~/components/uikit/toast/toast.service'
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types'
 import useResponsive from '~/components/shared/utils/responsive'
 import useScroll from '~/components/shared/utils/scroll'
-import {TanstackKey} from "~/components/shared/types/tanstack";
 import {COLLECTIONS_API_SERVICE} from "~/components/modules/collection/services/collections.api.service";
-import { useQueryParam } from '~/components/shared/utils/query-param';
-import type { CategoryGroup } from '~~/types/category'
+import { useQueryParam, type URLParams } from '~/components/shared/utils/query-param';
+import type { Category, CategoryGroup } from '~~/types/category'
+import type { Collection } from '~~/types/collection'
 
 const { queryParams } = useQueryParam(collectionListParamsGetter, collectionListParamsSetter);
 const { listSort } = queryParams.value;
 const { showToast } = useToastService();
 const {pageWidth} = useResponsive();
 const {scrollTop} = useScroll();
-const queryClient = useQueryClient();
 
 // NOTE: This is a temporary workaround to highlight the most important collections within the LF featured collections
 const pageSize = 100
 const sort = ref(listSort || 'starred_desc')
 const category = ref('all');
-
-const queryKey = computed(() => [TanstackKey.COLLECTIONS, sort.value, category.value])
 
 const getCategoryIds = (value: string): string[] | undefined => {
   if (value === 'all') {
@@ -183,17 +178,11 @@ const getCategoryIds = (value: string): string[] | undefined => {
   return value.replace(/group\(([^)]+)\)-/, '').split(',')
 }
 
-const queryFn = COLLECTIONS_API_SERVICE.fetchCollections(() => ({
+const params = computed(() => ({
   pageSize,
-  sort: sort.value,
+  sort: sort.value || 'starred_desc',
   categories: getCategoryIds(category.value),
-}));
-
-const getNextPageParam = (lastPage) => {
-  const nextPage = lastPage.page + 1
-  const totalPages = Math.ceil(lastPage.total / lastPage.pageSize)
-  return nextPage < totalPages ? nextPage : undefined
-}
+}))
 
 const {
   data,
@@ -203,53 +192,34 @@ const {
   hasNextPage,
   isSuccess,
   error
-} = useInfiniteQuery<Pagination<Collection>, Error>({
-  queryKey,
-  queryFn,
-  getNextPageParam,
-  initialPageParam: 0,
-})
+} = COLLECTIONS_API_SERVICE.fetchCollections(params);
+
+const flatData = computed(() => data.value?.pages.flatMap((page: Pagination<Collection>) => page.data) || []);
 
 /* Moving the options fetch here on the main component
 The dropdown-select component for sub options sets the selected option label and value the same
 If the dropdown's value is set other than the default value, the selected option label is
 displayed as value.
 */
-const queryKeyVertical = computed(() => [
-  TanstackKey.CATEGORY_GROUPS,
-  'vertical',
-]);
-const queryKeyHorizontal = computed(() => [
-  TanstackKey.CATEGORY_GROUPS,
-  'horizontal',
-]);
+const verticalParams = computed(() => ({
+  type: 'vertical',
+  pageSize: 1000
+}));
+const horizontalParams = computed(() => ({
+  type: 'horizontal',
+  pageSize: 1000
+}));
 
-const {
-  data: dataVertical,
-} = useQuery<Pagination<CategoryGroup>>({
-  queryKey: queryKeyVertical,
-  queryFn: COLLECTIONS_API_SERVICE.fetchCategoryGroups(() => ({
-    type: 'vertical',
-    pageSize: 1000
-  })),
-});
-const {
-  data: dataHorizontal,
-} = useQuery<Pagination<CategoryGroup>>({
-  queryKey: queryKeyHorizontal,
-  queryFn: COLLECTIONS_API_SERVICE.fetchCategoryGroups(() => ({
-    type: 'horizontal',
-    pageSize: 1000
-  })),
-});
+const { data: dataVertical } = COLLECTIONS_API_SERVICE.fetchCategoryGroups(verticalParams);
+const { data: dataHorizontal } = COLLECTIONS_API_SERVICE.fetchCategoryGroups(horizontalParams);
 
-const categoryGroupsVertical = computed(() => (dataVertical.value?.data || []).map((cg) => ({
+const categoryGroupsVertical = computed(() => (dataVertical.value?.data || []).map((cg: CategoryGroup) => ({
   ...cg,
   value: `group(${cg.id})-${cg.categories.map((c) => c.id).join(',')}`,
   categories: cg.categories
 })))
 
-const categoryGroupsHorizontal = computed(() => (dataHorizontal.value?.data || []).map((cg) => ({
+const categoryGroupsHorizontal = computed(() => (dataHorizontal.value?.data || []).map((cg: CategoryGroup) => ({
   ...cg,
   value: `group(${cg.id})-${cg.categories.map((c) => c.id).join(',')}`,
   categories: cg.categories
@@ -258,11 +228,13 @@ const categoryGroupsHorizontal = computed(() => (dataHorizontal.value?.data || [
 const allCategoryGroups = computed(() => [
   ...categoryGroupsVertical.value,
   ...categoryGroupsHorizontal.value,
-  ...categoryGroupsVertical.value.flatMap((cg) => cg.categories.map((c) => ({id: c.id, name: c.name, value: c.id}))),
-  ...categoryGroupsHorizontal.value.flatMap((cg) => cg.categories.map((c) => ({id: c.id, name: c.name, value: c.id})))
+  ...categoryGroupsVertical.value
+    .flatMap((cg: CategoryGroup) => cg.categories.map((c: Category) => ({id: c.id, name: c.name, value: c.id}))),
+  ...categoryGroupsHorizontal.value
+    .flatMap((cg: CategoryGroup) => cg.categories.map((c: Category) => ({id: c.id, name: c.name, value: c.id}))),
 ]);
 
-watch(error, (err) => {
+watch(error, (err: Error) => {
   if (err) {
     showToast('There was an error fetching collections', ToastTypesEnum.negative, undefined, 5000)
   }
@@ -299,12 +271,7 @@ const updateSort = (value: string) => {
 // Server-side prefetching for infinite query
 onServerPrefetch(async () => {
   // Prefetch the first page of the infinite query on the server
-  await queryClient.prefetchInfiniteQuery({
-    queryKey,
-    queryFn,
-    initialPageParam: 0,
-    getNextPageParam,
-  })
+  await COLLECTIONS_API_SERVICE.prefetchCollections(params)
 })
 
 /**
@@ -312,7 +279,7 @@ onServerPrefetch(async () => {
  * This also avoids the issue of the category ID not existing in the allCategoryGroups array
  * When that happens, the category is set to 'all'
  */
-watch(queryParams, (value) => {
+watch(queryParams, (value: URLParams) => {
   if (value.listCategory && value.listCategory !== 'all') {
     let catId = value.listCategory;
 
@@ -323,7 +290,7 @@ watch(queryParams, (value) => {
       }
     }
 
-    const foundGroup = allCategoryGroups.value.find((group) => group.id === catId)
+    const foundGroup = allCategoryGroups.value.find((group: CategoryGroup) => group.id === catId)
     category.value = foundGroup ? foundGroup.value : 'all';
   } else {
     category.value = 'all';
