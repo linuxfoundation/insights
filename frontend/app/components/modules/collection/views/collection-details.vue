@@ -91,13 +91,9 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import {computed, onServerPrefetch, watch} from 'vue'
+import { computed, onServerPrefetch, watch, ref} from 'vue'
 import { useRoute } from 'vue-router'
-import { useInfiniteQuery } from '@tanstack/vue-query'
-import {useQueryClient} from "@tanstack/vue-query";
-import type { Project } from '~~/types/project'
 import type { Collection } from '~~/types/collection'
-import type { Pagination } from '~~/types/shared/pagination'
 
 import LfxCollectionHeader from '~/components/modules/collection/components/details/header.vue'
 import LfxCollectionFilters from '~/components/modules/collection/components/details/filters.vue'
@@ -106,10 +102,9 @@ import LfxProjectListItemLoading from '~/components/modules/project/components/l
 import LfxIcon from '~/components/uikit/icon/icon.vue'
 import LfxButton from '~/components/uikit/button/button.vue'
 import LfxMaintainHeight from '~/components/uikit/maintain-height/maintain-height.vue'
-import {TanstackKey} from "~/components/shared/types/tanstack";
 import {PROJECT_API_SERVICE} from "~/components/modules/project/services/project.api.service";
 import useScroll from "~/components/shared/utils/scroll";
-import { useQueryParam } from '~/components/shared/utils/query-param';
+import { useQueryParam, type URLParams } from '~/components/shared/utils/query-param';
 import {
   collectionDetailsParamsGetter,
   collectionListParamsSetter
@@ -125,7 +120,6 @@ const props = defineProps<{
 const {scrollTop} = useScroll();
 const route = useRoute()
 const collectionSlug = route.params.slug as string
-const queryClient = useQueryClient();
 
 const { queryParams } = useQueryParam(collectionDetailsParamsGetter, collectionListParamsSetter);
 const { collectionTab, collectionSort } = queryParams.value;
@@ -136,20 +130,12 @@ const pageSize = 60
 
 const isLF = computed(() => tab.value === 'lfx')
 
-const queryKey = computed(() => [TanstackKey.PROJECTS, sort.value, tab.value, collectionSlug])
-
-const queryFn =PROJECT_API_SERVICE.fetchProjects(() => ({
+const params = computed(() => ({
   sort: sort.value,
   pageSize,
   isLF: isLF.value,
   collectionSlug,
 }))
-
-const getNextPageParam = (lastPage) => {
-  const nextPage = lastPage.page + 1
-  const totalPages = Math.ceil(lastPage.total / lastPage.pageSize)
-  return nextPage < totalPages ? nextPage : undefined
-}
 
 const {
   data,
@@ -158,12 +144,7 @@ const {
   fetchNextPage,
   hasNextPage,
   isSuccess,
-} = useInfiniteQuery<Pagination<Project>>({
-  queryKey,
-  queryFn,
-  getNextPageParam,
-  initialPageParam: 0
-})
+} = PROJECT_API_SERVICE.fetchProjects(params);
 
 const loadMore = () => {
   if (hasNextPage.value) {
@@ -184,7 +165,7 @@ const updateTab = (value: string) => {
   }
 }
 
-watch(() => queryParams.value, (value) => {
+watch(() => queryParams.value, (value: URLParams) => {
   if (value.collectionSort && value.collectionSort !== sort.value) {
     sort.value = value.collectionSort;
   }
@@ -195,12 +176,7 @@ watch(() => queryParams.value, (value) => {
 });
 
 onServerPrefetch(async () => {
-  await queryClient.prefetchInfiniteQuery({
-    queryKey,
-    queryFn,
-    getNextPageParam,
-    initialPageParam: 0
-  })
+  await PROJECT_API_SERVICE.prefetchProjects(params);
 })
 
 
