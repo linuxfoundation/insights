@@ -4,15 +4,14 @@ const longCache = 86400; // 1 day in seconds
 const shortCache = 3600; // 1 hour in seconds
 
 export default {
-  routeRules:
-    process.env.NUXT_APP_ENV === 'production'
+  routeRules: {
+    '/auth/callback': { redirect: '/api/auth/callback' },
+    '/callback': { redirect: '/api/auth/callback' },
+    '/api/auth/**': { prerender: false, index: false, cache: false },
+    ...(process.env.NUXT_APP_ENV === 'production'
       ? {
           '/auth/callback': { redirect: '/api/auth/callback' },
-          '/api/auth/callback': { prerender: false, index: false, cache: false },
-          '/api/auth/login': { prerender: false, index: false, cache: false },
-          '/api/auth/logout': { prerender: false, index: false, cache: false },
-          '/api/auth/user': { prerender: false, index: false, cache: false },
-          '/api/auth/silent-check': { prerender: false, index: false, cache: false },
+          '/api/auth/**': { prerender: false, index: false, cache: false },
           '/api/health': { cache: false },
           '/api/chat/**': { cache: false },
           '/api/health/live': { cache: false },
@@ -30,26 +29,13 @@ export default {
           '/collection': { cache: { maxAge: shortCache, base: 'redis' } },
           '**': { cache: { maxAge: longCache, base: 'redis' } },
         }
-      : {
-          '/auth/callback': { redirect: '/api/auth/callback' },
-          '/callback': { redirect: '/api/auth/callback' },
-          '/api/auth/callback': { prerender: false, index: false, cache: false },
-          '/api/auth/login': { prerender: false, index: false, cache: false },
-          '/api/auth/logout': { prerender: false, index: false, cache: false },
-          '/api/auth/user': { prerender: false, index: false, cache: false },
-          '/api/auth/silent-check': { prerender: false, index: false, cache: false },
-        },
+      : {}),
+  },
   nitro: {
     storage: {
       redis: {
         driver: 'redis',
         url: process.env.NUXT_REDIS_URL || '',
-      },
-    },
-    routeRules: {
-      '/api/**': {
-        headers: { 'cache-control': 's-maxage=0' },
-        prerender: false,
       },
     },
   },
