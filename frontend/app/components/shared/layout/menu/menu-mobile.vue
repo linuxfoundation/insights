@@ -39,15 +39,14 @@ SPDX-License-Identifier: MIT
           <div>
             <div class="my-3 flex justify-start items-center relative">
               <span class="absolute w-full h-[1px] bg-neutral-200" />
-              <p class="text-xs font-semibold text-neutral-400 z-10 bg-white pr-4">
-                LFX Platform
-              </p>
+              <p class="text-xs font-semibold text-neutral-400 z-10 bg-white pr-4">LFX Platform</p>
             </div>
             <div class="flex flex-wrap gap-3 pb-8">
               <a
                 v-for="(tool, key) in lfxTools"
                 :key="key"
                 :href="tool.link"
+                :aria-label="tool.name"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -83,15 +82,15 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import {ref, watch} from 'vue';
-import {useRoute} from 'vue-router';
-import {lfxMenu} from "../../../../config/menu";
-import LfxIcon from "~/components/uikit/icon/icon.vue";
-import LfxMenuButton from "~/components/uikit/menu-button/menu-button.vue";
-import LfxIconButton from "~/components/uikit/icon-button/icon-button.vue";
-import LfxMenuStaticLinks from "~/components/shared/layout/menu/static-links.vue";
-import {lfxTools} from "~/config/menu/tools";
-import LfxButton from "~/components/uikit/button/button.vue";
+import { ref, watch } from 'vue';
+import { useRoute } from 'vue-router';
+import { lfxMenu } from '../../../../config/menu';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxMenuButton from '~/components/uikit/menu-button/menu-button.vue';
+import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
+import LfxMenuStaticLinks from '~/components/shared/layout/menu/static-links.vue';
+import { lfxTools } from '~/config/menu/tools';
+import LfxButton from '~/components/uikit/button/button.vue';
 
 const route = useRoute();
 
@@ -103,21 +102,27 @@ const onEscapeKeyUp = (event: KeyboardEvent) => {
   }
 };
 
-watch(() => isOpen.value, (show: boolean) => {
-  if (!show) {
-    window.removeEventListener('keyup', onEscapeKeyUp);
-  } else {
-    window.addEventListener('keyup', onEscapeKeyUp);
-  }
-});
+watch(
+  () => isOpen.value,
+  (show: boolean) => {
+    if (!show) {
+      window.removeEventListener('keyup', onEscapeKeyUp);
+    } else {
+      window.addEventListener('keyup', onEscapeKeyUp);
+    }
+  },
+);
 
-watch(() => route.path, () => {
-  isOpen.value = false;
-});
+watch(
+  () => route.path,
+  () => {
+    isOpen.value = false;
+  },
+);
 </script>
 
 <script lang="ts">
-  export default {
-    name: 'LfxMenuMobile'
-  }
+export default {
+  name: 'LfxMenuMobile',
+};
 </script>

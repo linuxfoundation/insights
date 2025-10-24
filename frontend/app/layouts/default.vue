@@ -18,15 +18,15 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import {useRoute, useHead} from "nuxt/app";
-import {watch} from 'vue'
+import { useRoute, useHead } from 'nuxt/app';
+import { watch } from 'vue';
 import LfxNavbar from '~/components/shared/layout/navbar.vue';
 import LfxToast from '~/components/uikit/toast/toast.vue';
-import LfxInsightsFooter from "~/components/shared/layout/footer.vue";
-import LfxReportGlobal from "~/components/shared/modules/report/components/report-global.vue";
-import LfxShareGlobal from "~/components/shared/modules/share/components/share-global.vue";
-import LfxCopilotGlobal from "~/components/shared/modules/copilot/components/copilot-global.vue";
-import {useRichSchema} from "~~/composables/useRichSchema";
+import LfxInsightsFooter from '~/components/shared/layout/footer.vue';
+import LfxReportGlobal from '~/components/shared/modules/report/components/report-global.vue';
+import LfxShareGlobal from '~/components/shared/modules/share/components/share-global.vue';
+import LfxCopilotGlobal from '~/components/shared/modules/copilot/components/copilot-global.vue';
+import { useRichSchema } from '~~/composables/useRichSchema';
 
 const route = useRoute();
 
@@ -34,7 +34,10 @@ const route = useRoute();
 const { getSitewideSchema } = useRichSchema();
 useHead(getSitewideSchema());
 
-watch(() => route.path, () => {
-  document.body.scrollTo(0, 0);
-});
+watch(
+  () => route.path,
+  () => {
+    document.body.scrollTo(0, 0);
+  },
+);
 </script>

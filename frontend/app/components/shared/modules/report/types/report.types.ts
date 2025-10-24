@@ -1,12 +1,12 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import type {WidgetArea} from "~/components/modules/widget/types/widget-area";
+import type { WidgetArea } from '~/components/modules/widget/types/widget-area';
 
 export interface ReportDataForm {
-    area: WidgetArea;
-    widget: string;
-    hideArea: boolean;
-    description: string;
-    steps: string;
-    expectations: string;
+  area: WidgetArea;
+  widget: string;
+  hideArea: boolean;
+  description: string;
+  steps: string;
+  expectations: string;
 }

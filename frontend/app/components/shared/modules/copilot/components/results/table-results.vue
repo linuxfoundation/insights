@@ -6,8 +6,7 @@ SPDX-License-Identifier: MIT
   <div class="h-full overflow-auto rounded">
     <table class="min-w-full text-xs">
       <thead
-        class="bg-white sticky top-0 z-10 after:absolute 
-        after:bottom-0 after:left-0 after:w-full after:h-[1px] after:bg-neutral-200"
+        class="bg-white sticky top-0 z-10 after:absolute after:bottom-0 after:left-0 after:w-full after:h-[1px] after:bg-neutral-200"
       >
         <tr>
           <th
@@ -42,8 +41,8 @@ SPDX-License-Identifier: MIT
 import type { MessageData } from '../../types/copilot.types';
 
 defineProps<{
-  data: MessageData[] | null
-}>()
+  data: MessageData[] | null;
+}>();
 
 const normalizedColumnHeader = (header: string) => {
   // Replace underscores and camelCase with spaces, then capitalize only the first character
@@ -53,11 +52,11 @@ const normalizedColumnHeader = (header: string) => {
     .replace(/\s+/g, ' ') // collapse multiple spaces
     .trim();
   return formatted.charAt(0).toUpperCase() + formatted.slice(1);
-}
+};
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxCopilotTableResults'
-}
+  name: 'LfxCopilotTableResults',
+};
 </script>

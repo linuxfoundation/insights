@@ -17,7 +17,7 @@ SPDX-License-Identifier: MIT
             :model-value="tab"
             @update:model-value="tab = $event"
           >
-            <template #slotItem="{option}">
+            <template #slotItem="{ option }">
               <div class="flex items-center gap-2">
                 <template v-if="option.value === 'lfx'">
                   <img
@@ -27,7 +27,7 @@ SPDX-License-Identifier: MIT
                     loading="lazy"
                     width="16"
                     height="16"
-                  >
+                  />
                   <img
                     v-else
                     src="~/assets/images/icon-gray.svg"
@@ -35,14 +35,14 @@ SPDX-License-Identifier: MIT
                     loading="lazy"
                     width="16"
                     height="16"
-                  >
+                  />
                 </template>
                 <template v-if="option.value === 'lfx'">
                   <span class="hidden sm:inline">Linux Foundation projects</span>
                   <span class="inline sm:hidden">LF projects</span>
                 </template>
                 <template v-else>
-                  {{option.label}}
+                  {{ option.label }}
                 </template>
               </div>
             </template>
@@ -53,14 +53,14 @@ SPDX-License-Identifier: MIT
           width="20rem"
           placement="bottom-end"
         >
-          <template #trigger="{selectedOption}">
+          <template #trigger="{ selectedOption }">
             <lfx-dropdown-selector>
               <lfx-icon
                 name="arrow-down-wide-short"
                 :size="16"
               />
               <span class="hidden sm:inline">
-                {{selectedOption.label}}
+                {{ selectedOption.label }}
               </span>
             </lfx-dropdown-selector>
           </template>
@@ -88,24 +88,24 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script lang="ts" setup>
-import {computed} from "vue";
-import useScroll from "~/components/shared/utils/scroll";
-import LfxDropdownSelector from "~/components/uikit/dropdown/dropdown-selector.vue";
-import LfxDropdownSelect from "~/components/uikit/dropdown/dropdown-select.vue";
-import LfxIcon from "~/components/uikit/icon/icon.vue";
-import LfxDropdownItem from "~/components/uikit/dropdown/dropdown-item.vue";
-import LfxTabs from "~/components/uikit/tabs/tabs.vue";
-import useResponsive from "~/components/shared/utils/responsive";
+import { computed } from 'vue';
+import useScroll from '~/components/shared/utils/scroll';
+import LfxDropdownSelector from '~/components/uikit/dropdown/dropdown-selector.vue';
+import LfxDropdownSelect from '~/components/uikit/dropdown/dropdown-select.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
+import LfxTabs from '~/components/uikit/tabs/tabs.vue';
+import useResponsive from '~/components/shared/utils/responsive';
 
 const props = defineProps<{
   sort: string;
   tab: string;
 }>();
 
-const emit = defineEmits<{(e: 'update:sort' | 'update:tab', value: string): void}>();
+const emit = defineEmits<{ (e: 'update:sort' | 'update:tab', value: string): void }>();
 
-const {scrollTop} = useScroll();
-const {pageWidth} = useResponsive();
+const { scrollTop } = useScroll();
+const { pageWidth } = useResponsive();
 
 const tabs = [
   { label: 'All projects', value: 'all' },
@@ -114,18 +114,17 @@ const tabs = [
 
 const sort = computed({
   get: () => props.sort,
-  set: (value: string) => emit('update:sort', value)
+  set: (value: string) => emit('update:sort', value),
 });
 
 const tab = computed({
   get: () => props.tab,
-  set: (value: string) => emit('update:tab', value)
+  set: (value: string) => emit('update:tab', value),
 });
-
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxCollectionFilters'
+  name: 'LfxCollectionFilters',
 };
 </script>

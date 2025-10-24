@@ -1,17 +1,17 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { LfxRoutes } from '~/components/shared/types/routes'
+import { LfxRoutes } from '~/components/shared/types/routes';
 
 interface MenuItem {
-  label: string
-  icon?: string
-  route?: LfxRoutes
-  href?: string
+  label: string;
+  icon?: string;
+  route?: LfxRoutes;
+  href?: string;
 }
 
 interface MenuConfig {
-  links: MenuItem[]
-  footer: MenuItem
+  links: MenuItem[];
+  footer: MenuItem;
 }
 
 export const lfxMenu: MenuConfig = {
@@ -31,4 +31,4 @@ export const lfxMenu: MenuConfig = {
     label: 'Know more about LFX Platform',
     href: 'https://lfx.linuxfoundation.org',
   },
-}
+};

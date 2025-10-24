@@ -6,20 +6,16 @@ SPDX-License-Identifier: MIT
   <section>
     <div class="flex flex-row justify-between items-center gap-10">
       <div class="text-neutral-900">
-        <h2 class="text-2xl font-bold font-secondary mb-2 leading-8">
-          Featured collections
-        </h2>
+        <h2 class="text-2xl font-bold font-secondary mb-2 leading-8">Featured collections</h2>
         <p class="text-sm">
           Curated sets of open source projects that belong to the same technology stack or industry domain.
         </p>
       </div>
       <nuxt-link
-        :to="{name: LfxRoutes.COLLECTIONS}"
+        :to="{ name: LfxRoutes.COLLECTIONS }"
         class="sm:block hidden"
       >
-        <lfx-button
-          type="transparent"
-        >
+        <lfx-button type="transparent">
           <lfx-icon
             name="rectangle-history"
             :size="20"
@@ -41,21 +37,15 @@ SPDX-License-Identifier: MIT
       :is-empty="isEmpty"
     >
       <client-only>
-        <lfx-carousel
-          :value="(carouselData as unknown as CarouselData[])"
-        >
-          <template #item="{data}">
-            <lfx-explore-collection-card
-              :collection="data"
-            />
+        <lfx-carousel :value="carouselData as unknown as CarouselData[]">
+          <template #item="{ data }">
+            <lfx-explore-collection-card :collection="data" />
           </template>
         </lfx-carousel>
       </client-only>
       <div class="sm:hidden block flex justify-center">
-        <nuxt-link :to="{name: LfxRoutes.COLLECTIONS}">
-          <lfx-button
-            type="transparent"
-          >
+        <nuxt-link :to="{ name: LfxRoutes.COLLECTIONS }">
+          <lfx-button type="transparent">
             <lfx-icon
               name="rectangle-history"
               :size="20"
@@ -82,16 +72,11 @@ import LfxCarousel from '~/components/uikit/carousel/carousel.vue';
 import type { CarouselData } from '~/components/uikit/carousel/types/carousel.types';
 import LfxButton from '~/components/uikit/button/button.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
-import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
+import LfxProjectLoadState from '~/components/modules/project/components/shared/load-state.vue';
 import { isEmptyData } from '~/components/shared/utils/helper';
 import { LfxRoutes } from '~/components/shared/types/routes';
 
-const {
-  data: featuredCollectionsData,
-  status,
-  error,
-  suspense
-} = EXPLORE_API_SERVICE.fetchFeaturedCollections();
+const { data: featuredCollectionsData, status, error, suspense } = EXPLORE_API_SERVICE.fetchFeaturedCollections();
 
 const carouselData = computed(() => featuredCollectionsData.value?.data);
 
@@ -104,6 +89,6 @@ onServerPrefetch(async () => {
 
 <script lang="ts">
 export default {
-  name: 'LfxExploreFeaturedCollection'
+  name: 'LfxExploreFeaturedCollection',
 };
 </script>

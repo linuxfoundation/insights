@@ -1,8 +1,8 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { DateTime } from 'luxon'
-import MergeLeadTime from './merge-lead-time.vue'
-import type { WidgetConfig, WidgetModel } from '~/components/modules/widget/config/widget.config'
+import { DateTime } from 'luxon';
+import MergeLeadTime from './merge-lead-time.vue';
+import type { WidgetConfig, WidgetModel } from '~/components/modules/widget/config/widget.config';
 
 const mergeLeadTime: WidgetConfig = {
   key: 'mergeLeadTime',
@@ -24,11 +24,11 @@ const mergeLeadTime: WidgetConfig = {
       startDate: string,
       endDate: string,
     ) => {
-      const start = DateTime.fromISO(startDate)
-      const end = DateTime.fromISO(endDate)
-      const diffInDays = Math.ceil(end.diff(start, 'days').days)
+      const start = DateTime.fromISO(startDate);
+      const end = DateTime.fromISO(endDate);
+      const diffInDays = Math.ceil(end.diff(start, 'days').days);
 
-      return diffInDays > 30
+      return diffInDays > 30;
     },
     points: {
       0: {
@@ -73,6 +73,6 @@ const mergeLeadTime: WidgetConfig = {
     icon: 'people-group',
     suggestions: 'Show me the merge lead time',
   },
-}
+};
 
-export default mergeLeadTime
+export default mergeLeadTime;

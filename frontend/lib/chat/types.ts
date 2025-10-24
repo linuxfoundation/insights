@@ -1,11 +1,11 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { DataStreamWriter } from 'ai'
-import type { Pool } from 'pg'
-import { z } from 'zod'
-import { RouterDecisionAction } from './enums'
-import type { ChatResponse } from '~~/server/repo/chat.repo'
+import type { DataStreamWriter } from 'ai';
+import type { Pool } from 'pg';
+import { z } from 'zod';
+import { RouterDecisionAction } from './enums';
+import type { ChatResponse } from '~~/server/repo/chat.repo';
 
 // ============================================
 // Pipe Instruction Types
@@ -16,7 +16,7 @@ export const pipeExecutionSchema = z.object({
   id: z.string().describe('Unique identifier for referencing this pipe'),
   name: z.string().describe('Actual pipe name to execute'),
   inputs: z.record(z.any()).describe('Input parameters for the pipe'),
-})
+});
 
 // Schema for output column mapping - either direct mapping or formula
 export const outputColumnSchema = z.discriminatedUnion('type', [
@@ -42,28 +42,28 @@ export const outputColumnSchema = z.discriminatedUnion('type', [
       )
       .describe('Variables that the formula depends on'),
   }),
-])
+]);
 
 // Schema for pipe instructions
 export const pipeInstructionsSchema = z.object({
   pipes: z.array(pipeExecutionSchema).describe('List of pipes to execute'),
   output: z.array(outputColumnSchema).describe('Define the final output columns'),
-})
+});
 
 // TypeScript types inferred from schemas
-export type PipeExecution = z.infer<typeof pipeExecutionSchema>
-export type OutputColumn = z.infer<typeof outputColumnSchema>
-export type PipeInstructions = z.infer<typeof pipeInstructionsSchema>
+export type PipeExecution = z.infer<typeof pipeExecutionSchema>;
+export type OutputColumn = z.infer<typeof outputColumnSchema>;
+export type PipeInstructions = z.infer<typeof pipeInstructionsSchema>;
 
 // ============================================
 // Text-to-SQL Instruction Types
 // ============================================
 
 // Schema for text-to-SQL instructions
-export const textToSqlInstructionsSchema = z.string()
+export const textToSqlInstructionsSchema = z.string();
 
 // TypeScript type for text-to-SQL instructions
-export type TextToSqlInstructions = z.infer<typeof textToSqlInstructionsSchema>
+export type TextToSqlInstructions = z.infer<typeof textToSqlInstructionsSchema>;
 
 // ============================================
 // Unified Instructions Type
@@ -79,10 +79,10 @@ export const instructionsSchema = z.discriminatedUnion('type', [
     type: z.literal('pipes'),
     instructions: pipeInstructionsSchema,
   }),
-])
+]);
 
 // TypeScript type for unified instructions
-export type Instructions = z.infer<typeof instructionsSchema>
+export type Instructions = z.infer<typeof instructionsSchema>;
 
 // ============================================
 // Agent Output Types
@@ -104,7 +104,7 @@ export const routerOutputSchema = z.object({
     .optional()
     .nullable()
     .describe('Question to ask user when next_action is ASK_CLARIFICATION'),
-})
+});
 
 // Pipe agent output schema
 export const pipeOutputSchema = z.object({
@@ -112,7 +112,7 @@ export const pipeOutputSchema = z.object({
   instructions: pipeInstructionsSchema.describe(
     'Instructions describing how to execute pipes and combine results',
   ),
-})
+});
 
 // Auditor agent output schema
 export const auditorOutputSchema = z.object({
@@ -123,114 +123,114 @@ export const auditorOutputSchema = z.object({
     .optional()
     .describe('If invalid, specific guidance for router to fix the issue'),
   summary: z.string().optional().describe('If valid, user-friendly summary of findings'),
-})
+});
 
 // TypeScript types for agent outputs
-export type RouterOutput = z.infer<typeof routerOutputSchema> & { usage?: any }
-export type PipeOutput = z.infer<typeof pipeOutputSchema> & { usage?: any }
-export type AuditorOutput = z.infer<typeof auditorOutputSchema> & { usage?: any }
+export type RouterOutput = z.infer<typeof routerOutputSchema> & { usage?: any };
+export type PipeOutput = z.infer<typeof pipeOutputSchema> & { usage?: any };
+export type AuditorOutput = z.infer<typeof auditorOutputSchema> & { usage?: any };
 
 // ============================================
 // Agent Input Types
 // ============================================
 
 export interface ChatMessage {
-  content: string
-  role: string
+  content: string;
+  role: string;
 }
 
 export interface RouterAgentInput {
-  model: any // Bedrock model instance
-  messages: ChatMessage[]
-  tools: Record<string, any>
-  toolsOverview: string
-  date: string
-  projectName: string
-  pipe: string
-  parametersString: string
-  segmentId: string | null
-  previousWasClarification?: boolean
+  model: any; // Bedrock model instance
+  messages: ChatMessage[];
+  tools: Record<string, any>;
+  toolsOverview: string;
+  date: string;
+  projectName: string;
+  pipe: string;
+  parametersString: string;
+  segmentId: string | null;
+  previousWasClarification?: boolean;
 }
 
 export interface PipeAgentStreamInput extends Omit<PipeAgentInput, 'model' | 'tools' | 'date'> {
-  dataStream: DataStreamWriter
-  date: string
-  responseData: ChatResponse
-  routerOutput: RouterOutput
+  dataStream: DataStreamWriter;
+  date: string;
+  responseData: ChatResponse;
+  routerOutput: RouterOutput;
 }
 
 export interface PipeAgentInput {
-  model: any // Bedrock model instance
-  messages: ChatMessage[]
-  tools: Record<string, any> // Filtered pipe tools based on router decision
-  date: string
-  projectName: string
-  pipe: string
-  parametersString: string
-  segmentId: string | null
-  reformulatedQuestion: string
-  toolNames: string[] // Array of tool names from router
+  model: any; // Bedrock model instance
+  messages: ChatMessage[];
+  tools: Record<string, any>; // Filtered pipe tools based on router decision
+  date: string;
+  projectName: string;
+  pipe: string;
+  parametersString: string;
+  segmentId: string | null;
+  reformulatedQuestion: string;
+  toolNames: string[]; // Array of tool names from router
 }
 
 export interface DataCopilotQueryInput {
-  currentQuestion: string // The current user question
-  segmentId?: string
-  projectName?: string
-  pipe: string
-  parameters?: Record<string, unknown>
-  conversationId: string
-  insightsDbPool: Pool
-  userEmail: string
-  dataStream: DataStreamWriter // DataStreamWriter from AI SDK
+  currentQuestion: string; // The current user question
+  segmentId?: string;
+  projectName?: string;
+  pipe: string;
+  parameters?: Record<string, unknown>;
+  conversationId: string;
+  insightsDbPool: Pool;
+  userEmail: string;
+  dataStream: DataStreamWriter; // DataStreamWriter from AI SDK
 }
 
 export interface SqlErrorContext {
-  errorMessage: string
-  previousQuery: string
-  attemptNumber: number
+  errorMessage: string;
+  previousQuery: string;
+  attemptNumber: number;
 }
 
 export interface TextToSqlAgentInput {
-  messages: ChatMessage[]
-  date: string
-  projectName: string
-  pipe: string
-  parametersString: string
-  segmentId: string
-  reformulatedQuestion: string
-  errorContext?: SqlErrorContext
+  messages: ChatMessage[];
+  date: string;
+  projectName: string;
+  pipe: string;
+  parametersString: string;
+  segmentId: string;
+  reformulatedQuestion: string;
+  errorContext?: SqlErrorContext;
 }
 
 export interface TextToSqlAgentStreamInput {
-  messages: ChatMessage[]
-  date: string
-  projectName: string
-  pipe: string
-  parametersString: string
-  segmentId: string
-  reformulatedQuestion: string
-  dataStream: any
-  errorContext?: SqlErrorContext
+  messages: ChatMessage[];
+  date: string;
+  projectName: string;
+  pipe: string;
+  parametersString: string;
+  segmentId: string;
+  reformulatedQuestion: string;
+  dataStream: any;
+  errorContext?: SqlErrorContext;
 }
 
 export interface AuditorAgentInput {
-  model: any
-  messages: ChatMessage[]
-  originalQuestion: string
-  reformulatedQuestion: string
-  dataSummary: import('./utils/data-summary').DataSummary
-  attemptNumber: number
-  previousFeedback?: string
+  model: any;
+  messages: ChatMessage[];
+  originalQuestion: string;
+  reformulatedQuestion: string;
+  dataSummary: import('./utils/data-summary').DataSummary;
+  attemptNumber: number;
+  previousFeedback?: string;
 }
 
 export interface AgentResponseCompleteParams {
-  userPrompt: string
-  responseData: ChatResponse
-  routerOutput: RouterOutput
-  pipeInstructions?: PipeInstructions
-  sqlQuery?: string
-  conversationId?: string
-  insightsDbPool: Pool
-  userEmail: string
-  dataStream: DataStreamWriter
+  userPrompt: string;
+  responseData: ChatResponse;
+  routerOutput: RouterOutput;
+  pipeInstructions?: PipeInstructions;
+  sqlQuery?: string;
+  conversationId?: string;
+  insightsDbPool: Pool;
+  userEmail: string;
+  dataStream: DataStreamWriter;
 }

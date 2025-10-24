@@ -3,15 +3,13 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <label
-    class="c-checkbox"
-  >
+  <label class="c-checkbox">
     <input
       v-model="checked"
       type="checkbox"
       :value="props.value"
       :disabled="props.disabled"
-    >
+    />
     <lfx-icon
       v-if="checked"
       name="check"
@@ -28,18 +26,21 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed, withDefaults } from 'vue';
-import LfxIcon from "~/components/uikit/icon/icon.vue";
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 
-const props = withDefaults(defineProps<{
-  modelValue: boolean,
-  value?: string | boolean,
-  disabled?: boolean,
-}>(), {
-  value: true,
-  disabled: false,
-});
+const props = withDefaults(
+  defineProps<{
+    modelValue: boolean;
+    value?: string | boolean;
+    disabled?: boolean;
+  }>(),
+  {
+    value: true,
+    disabled: false,
+  },
+);
 
-const emit = defineEmits<{(e: 'update:modelValue', value: boolean): void}>();
+const emit = defineEmits<{ (e: 'update:modelValue', value: boolean): void }>();
 
 const checked = computed<boolean>({
   get() {

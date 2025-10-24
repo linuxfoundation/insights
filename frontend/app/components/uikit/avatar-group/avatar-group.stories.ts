@@ -12,15 +12,15 @@ export default {
     default: {
       description: 'List of avatars',
       control: {
-        type: null
-      }
-    }
-  }
+        type: null,
+      },
+    },
+  },
 };
 
 export const Default = {
   args: {
-    default: 'Sample Name'
+    default: 'Sample Name',
   },
   render: (args) => ({
     components: { LfxAvatarGroup, LfxAvatar },
@@ -28,13 +28,13 @@ export const Default = {
       <lfx-avatar name="${args.name}" size="normal" />
       <lfx-avatar name="${args.name}" size="normal" />
       <lfx-avatar name="${args.name}" size="normal" />
-    </lfx-avatar-group>`
-  })
+    </lfx-avatar-group>`,
+  }),
 };
 
 export const Small = {
   args: {
-    default: 'Sample Name'
+    default: 'Sample Name',
   },
   render: (args) => ({
     components: { LfxAvatarGroup, LfxAvatar },
@@ -42,13 +42,13 @@ export const Small = {
       <lfx-avatar name="${args.name}" size="small" />
       <lfx-avatar name="${args.name}" size="small" />
       <lfx-avatar name="${args.name}" size="small" />
-    </lfx-avatar-group>`
-  })
+    </lfx-avatar-group>`,
+  }),
 };
 
 export const Large = {
   args: {
-    default: 'Sample Name'
+    default: 'Sample Name',
   },
   render: (args) => ({
     components: { LfxAvatarGroup, LfxAvatar },
@@ -56,13 +56,13 @@ export const Large = {
       <lfx-avatar name="${args.name}" size="large" />
       <lfx-avatar name="${args.name}" size="large" />
       <lfx-avatar name="${args.name}" size="large" />
-    </lfx-avatar-group>`
-  })
+    </lfx-avatar-group>`,
+  }),
 };
 
 export const XLarge = {
   args: {
-    default: 'Sample Name'
+    default: 'Sample Name',
   },
   render: (args) => ({
     components: { LfxAvatarGroup, LfxAvatar },
@@ -70,6 +70,6 @@ export const XLarge = {
       <lfx-avatar name="${args.name}" size="xlarge" />
       <lfx-avatar name="${args.name}" size="xlarge" />
       <lfx-avatar name="${args.name}" size="xlarge" />
-    </lfx-avatar-group>`
-  })
+    </lfx-avatar-group>`,
+  }),
 };

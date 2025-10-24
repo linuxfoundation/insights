@@ -8,12 +8,10 @@ SPDX-License-Identifier: MIT
   </section>
 </template>
 
-<script setup lang="ts">
-
-</script>
+<script setup lang="ts"></script>
 
 <script lang="ts">
 export default {
-  name: 'LfxTabsPanels'
+  name: 'LfxTabsPanels',
 };
 </script>

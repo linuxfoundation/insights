@@ -8,11 +8,11 @@ in the format the API will return to the client, which isn't ideal. If we ever n
 let's refactor it to return the data in a more generic format.
  */
 
-import type {DateTime} from "luxon";
-import type {ActiveOrganizationsFilter} from "../types";
-import {getPreviousDates} from "../util";
-import type {TinybirdResponse} from './tinybird';
-import {fetchFromTinybird} from './tinybird'
+import type { DateTime } from 'luxon';
+import type { ActiveOrganizationsFilter } from '../types';
+import { getPreviousDates } from '../util';
+import type { TinybirdResponse } from './tinybird';
+import { fetchFromTinybird } from './tinybird';
 
 export type ActiveOrganizationsDataPoint = {
   startDate: string;
@@ -29,7 +29,7 @@ export type ActiveOrganizationsResponse = {
     periodFrom: DateTime; // Start of the period (e.g. last 90 days)
     periodTo: DateTime; // End of the period (e.g. last 90 days)
   };
-  data: ActiveOrganizationsResponseData
+  data: ActiveOrganizationsResponseData;
 };
 
 type TinybirdActiveOrganizationsSummary = {
@@ -53,7 +53,7 @@ export async function fetchActiveOrganizations(filter: ActiveOrganizationsFilter
     includeCodeContributions: filter.includeCodeContributions,
     includeCollaborations: filter.includeCollaborations,
     startDate: dates.current.from,
-    endDate: dates.current.to
+    endDate: dates.current.to,
   };
 
   const previousSummaryQuery = {
@@ -62,7 +62,7 @@ export async function fetchActiveOrganizations(filter: ActiveOrganizationsFilter
     includeCodeContributions: filter.includeCodeContributions,
     includeCollaborations: filter.includeCollaborations,
     startDate: dates.previous.from,
-    endDate: dates.previous.to
+    endDate: dates.previous.to,
   };
 
   const dataQuery = {
@@ -72,13 +72,22 @@ export async function fetchActiveOrganizations(filter: ActiveOrganizationsFilter
     includeCodeContributions: filter.includeCodeContributions,
     includeCollaborations: filter.includeCollaborations,
     startDate: dates.current.from,
-    endDate: dates.current.to
+    endDate: dates.current.to,
   };
 
   const [currentSummary, previousSummary, data] = await Promise.all([
-    fetchFromTinybird<TinybirdActiveOrganizationsSummary>('/v0/pipes/active_organizations.json', currentSummaryQuery),
-    fetchFromTinybird<TinybirdActiveOrganizationsSummary>('/v0/pipes/active_organizations.json', previousSummaryQuery),
-    fetchFromTinybird<TinybirdActiveOrganizationsData>('/v0/pipes/active_organizations.json', dataQuery)
+    fetchFromTinybird<TinybirdActiveOrganizationsSummary>(
+      '/v0/pipes/active_organizations.json',
+      currentSummaryQuery,
+    ),
+    fetchFromTinybird<TinybirdActiveOrganizationsSummary>(
+      '/v0/pipes/active_organizations.json',
+      previousSummaryQuery,
+    ),
+    fetchFromTinybird<TinybirdActiveOrganizationsData>(
+      '/v0/pipes/active_organizations.json',
+      dataQuery,
+    ),
   ]);
 
   let processedData: ActiveOrganizationsResponseData = [];
@@ -87,8 +96,8 @@ export async function fetchActiveOrganizations(filter: ActiveOrganizationsFilter
       (item): ActiveOrganizationsDataPoint => ({
         startDate: item.startDate,
         endDate: item.endDate,
-        organizations: item.organizationCount
-      })
+        organizations: item.organizationCount,
+      }),
     );
   }
 
@@ -101,7 +110,8 @@ export async function fetchActiveOrganizations(filter: ActiveOrganizationsFilter
   } else if (previousOrganizationCount === 0 && currentOrganizationCount === 0) {
     percentageChange = 0;
   } else if (previousOrganizationCount !== 0) {
-    percentageChange = ((currentOrganizationCount - previousOrganizationCount) / previousOrganizationCount) * 100;
+    percentageChange =
+      ((currentOrganizationCount - previousOrganizationCount) / previousOrganizationCount) * 100;
   }
 
   const response: ActiveOrganizationsResponse = {

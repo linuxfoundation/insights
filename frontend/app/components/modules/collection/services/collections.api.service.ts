@@ -1,42 +1,47 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { type QueryFunction, useInfiniteQuery, useQuery, useQueryClient } from '@tanstack/vue-query'
-import { type ComputedRef, computed } from 'vue'
-import type { Pagination } from '~~/types/shared/pagination'
-import type { Collection } from '~~/types/collection'
-import type { Category, CategoryGroup } from '~~/types/category'
-import { TanstackKey } from '~/components/shared/types/tanstack'
+import {
+  type QueryFunction,
+  useInfiniteQuery,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/vue-query';
+import { type ComputedRef, computed } from 'vue';
+import type { Pagination } from '~~/types/shared/pagination';
+import type { Collection } from '~~/types/collection';
+import type { Category, CategoryGroup } from '~~/types/category';
+import { TanstackKey } from '~/components/shared/types/tanstack';
 
 export interface CategoryGroupOptions {
-  value: string
-  categories: Category[]
-  id: string
-  name: string
+  value: string;
+  categories: Category[];
+  id: string;
+  name: string;
 }
 
 export interface QueryParams {
-  pageSize: number
-  sort: string
-  categories: string
+  pageSize: number;
+  sort: string;
+  categories: string;
 }
 
 export interface CategoryGroupsQueryParams {
-  type: 'vertical' | 'horizontal'
-  pageSize: number
+  type: 'vertical' | 'horizontal';
+  pageSize: number;
 }
 
 class CollectionsApiService {
   async prefetchCollections(params: ComputedRef<QueryParams>) {
-    const queryClient = useQueryClient()
+    const queryClient = useQueryClient();
     const queryKey = computed(() => [
       TanstackKey.COLLECTIONS,
       params.value.sort,
       params.value.categories,
-    ])
+    ]);
 
     const queryFn = this.fetchCollectionsQueryFn(() => ({
       ...params.value,
-    }))
+    }));
 
     return await queryClient.prefetchInfiniteQuery<
       Pagination<Collection>,
@@ -49,13 +54,13 @@ class CollectionsApiService {
       queryFn,
       initialPageParam: 0,
       getNextPageParam: this.getNextPageCollectionsParam,
-    })
+    });
   }
 
   getNextPageCollectionsParam(lastPage: Pagination<Collection>) {
-    const nextPage = lastPage.page + 1
-    const totalPages = Math.ceil(lastPage.total / lastPage.pageSize)
-    return nextPage < totalPages ? nextPage : null
+    const nextPage = lastPage.page + 1;
+    const totalPages = Math.ceil(lastPage.total / lastPage.pageSize);
+    return nextPage < totalPages ? nextPage : null;
   }
 
   fetchCollections(params: ComputedRef<QueryParams>) {
@@ -63,11 +68,11 @@ class CollectionsApiService {
       TanstackKey.COLLECTIONS,
       params.value.sort,
       params.value.categories,
-    ])
+    ]);
 
     const queryFn = this.fetchCollectionsQueryFn(() => ({
       ...params.value,
-    }))
+    }));
 
     return useInfiniteQuery<
       Pagination<Collection>,
@@ -80,7 +85,7 @@ class CollectionsApiService {
       queryFn,
       getNextPageParam: this.getNextPageCollectionsParam,
       initialPageParam: 0,
-    })
+    });
   }
 
   fetchCollectionsQueryFn(
@@ -92,11 +97,11 @@ class CollectionsApiService {
           page: pageParam,
           ...query(),
         },
-      })
+      });
   }
 
   fetchCollection(slug: string): QueryFunction<Collection> {
-    return () => $fetch(`/api/collection/${slug}`)
+    return () => $fetch(`/api/collection/${slug}`);
   }
 
   fetchCategoryGroups(params: ComputedRef<CategoryGroupsQueryParams>) {
@@ -104,18 +109,18 @@ class CollectionsApiService {
       TanstackKey.CATEGORY_GROUPS,
       params.value.type,
       params.value.pageSize,
-    ])
+    ]);
 
     const queryFn = computed<QueryFunction<Pagination<CategoryGroup>>>(() =>
       this.fetchCategoryGroupsQueryFn(() => ({
         ...params.value,
       })),
-    )
+    );
 
     return useQuery<Pagination<CategoryGroup>, Error>({
       queryKey,
       queryFn,
-    })
+    });
   }
 
   fetchCategoryGroupsQueryFn(
@@ -124,8 +129,8 @@ class CollectionsApiService {
     return () =>
       $fetch(`/api/category`, {
         params: query(),
-      })
+      });
   }
 }
 
-export const COLLECTIONS_API_SERVICE = new CollectionsApiService()
+export const COLLECTIONS_API_SERVICE = new CollectionsApiService();

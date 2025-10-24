@@ -1,16 +1,17 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import {
-  describe, test, expect, vi, beforeEach
-} from 'vitest';
-import {DateTime} from "luxon";
+import { describe, test, expect, vi, beforeEach } from 'vitest';
+import { DateTime } from 'luxon';
 import {
   mockContributorRetentionData,
-  mockOrganizationRetentionData
+  mockOrganizationRetentionData,
 } from '../../mocks/tinybird-retention-response.mock';
-import {DemographicType} from "~~/server/data/types";
-import {Granularity} from "~~/types/shared/granularity";
-import type {RetentionDataPoint, RetentionResponse} from "~~/server/data/tinybird/retention-data-source";
+import { DemographicType } from '~~/server/data/types';
+import { Granularity } from '~~/types/shared/granularity';
+import type {
+  RetentionDataPoint,
+  RetentionResponse,
+} from '~~/server/data/tinybird/retention-data-source';
 
 const mockFetchFromTinybird = vi.fn();
 
@@ -22,14 +23,14 @@ describe('Retention Data Source', () => {
     // This means that the import for tinybird.ts inside active-organizations-data-source.ts would still be used,
     // and thus not mocked. This means we need to import the module again after the mock is set, whenever we want to
     // use it.
-    vi.doMock(import("./tinybird"), () => ({
+    vi.doMock(import('./tinybird'), () => ({
       fetchFromTinybird: mockFetchFromTinybird,
     }));
-  })
+  });
 
   test('should fetch contributors retention data with correct parameters', async () => {
     // We have to import this here again because vi.doMock is not hoisted. See the explanation in beforeEach().
-    const {fetchRetention} = await import("~~/server/data/tinybird/retention-data-source");
+    const { fetchRetention } = await import('~~/server/data/tinybird/retention-data-source');
 
     mockFetchFromTinybird.mockResolvedValue(mockContributorRetentionData);
 
@@ -44,14 +45,14 @@ describe('Retention Data Source', () => {
       includeCollaborations: false,
       demographicType: DemographicType.CONTRIBUTORS,
       startDate,
-      endDate
+      endDate,
     };
 
     const result = await fetchRetention(filter);
 
     expect(mockFetchFromTinybird).toHaveBeenCalledWith(
       '/v0/pipes/contributor_retention.json',
-      filter
+      filter,
     );
 
     const expectedResult: RetentionResponse = mockContributorRetentionData.data.map(
@@ -59,7 +60,7 @@ describe('Retention Data Source', () => {
         startDate: item.startDate,
         endDate: item.endDate,
         percentage: item.retentionRate,
-      })
+      }),
     );
 
     expect(result).toEqual(expectedResult);
@@ -70,7 +71,7 @@ describe('Retention Data Source', () => {
   // like this for now.
   test('should fetch organization retention data with correct parameters', async () => {
     // We have to import this here again because vi.doMock is not hoisted. See the explanation in beforeEach().
-    const {fetchRetention} = await import("~~/server/data/tinybird/retention-data-source");
+    const { fetchRetention } = await import('~~/server/data/tinybird/retention-data-source');
 
     mockFetchFromTinybird.mockResolvedValue(mockOrganizationRetentionData);
 
@@ -85,14 +86,14 @@ describe('Retention Data Source', () => {
       includeCollaborations: false,
       demographicType: DemographicType.ORGANIZATIONS,
       startDate,
-      endDate
+      endDate,
     };
 
     const result = await fetchRetention(filter);
 
     expect(mockFetchFromTinybird).toHaveBeenCalledWith(
       '/v0/pipes/organization_retention.json',
-      filter
+      filter,
     );
 
     const expectedResult: RetentionResponse = mockOrganizationRetentionData.data.map(
@@ -100,7 +101,7 @@ describe('Retention Data Source', () => {
         startDate: item.startDate,
         endDate: item.endDate,
         percentage: item.retentionRate,
-      })
+      }),
     );
 
     expect(result).toEqual(expectedResult);

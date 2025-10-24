@@ -34,8 +34,8 @@ SPDX-License-Identifier: MIT
       v-else
       class="text-sm leading-4 font-semibold first-letter:uppercase pb-3 border-t border-neutral-100 pt-5"
     >
-      <span v-if="model.activeTab === 'new-mentions'">{{barGranularity}} new mentions by platform</span>
-      <span v-else>{{lineGranularity}} mentions by platform growth</span>
+      <span v-if="model.activeTab === 'new-mentions'">{{ barGranularity }} new mentions by platform</span>
+      <span v-else>{{ lineGranularity }} mentions by platform growth</span>
     </div>
     <lfx-project-load-state
       :status="status"
@@ -77,30 +77,26 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { useRoute } from 'nuxt/app';
 import { computed, watch } from 'vue';
-import { storeToRefs } from "pinia";
+import { storeToRefs } from 'pinia';
 import type { SocialMentions } from '~~/types/popularity/responses.types';
 import type { Summary } from '~~/types/shared/summary.types';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
 import { convertToChartData } from '~/components/uikit/chart/helpers/chart-helpers';
-import type {
-  ChartData,
-  RawChartData,
-  ChartSeries
-} from '~/components/uikit/chart/types/ChartTypes';
+import type { ChartData, RawChartData, ChartSeries } from '~/components/uikit/chart/types/ChartTypes';
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import { getBarChartConfigStacked } from '~/components/uikit/chart/configs/bar.chart';
 import { getLineAreaChartConfig } from '~/components/uikit/chart/configs/line.area.chart';
 import { lfxColors } from '~/config/styles/colors';
 import { formatNumber } from '~/components/shared/utils/formatter';
-import { useProjectStore } from "~/components/modules/project/store/project.store";
+import { useProjectStore } from '~/components/modules/project/store/project.store';
 import { dateOptKeys } from '~/components/modules/project/config/date-options';
 import { isEmptyData } from '~/components/shared/utils/helper';
 import type { Granularity } from '~~/types/shared/granularity';
 import { barGranularities, lineGranularities } from '~/components/shared/types/granularity';
-import LfxSkeletonState from "~/components/modules/project/components/shared/skeleton-state.vue";
-import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
-import {Widget} from "~/components/modules/widget/types/widget";
+import LfxSkeletonState from '~/components/modules/project/components/shared/skeleton-state.vue';
+import LfxProjectLoadState from '~/components/modules/project/components/shared/load-state.vue';
+import { Widget } from '~/components/modules/widget/types/widget';
 import { POPULARITY_API_SERVICE } from '~/components/modules/widget/services/popularity.api.service';
 
 interface SocialMentionsModel {
@@ -108,38 +104,38 @@ interface SocialMentionsModel {
 }
 
 const props = defineProps<{
-  modelValue: SocialMentionsModel,
-  snapshot?: boolean
-}>()
+  modelValue: SocialMentionsModel;
+  snapshot?: boolean;
+}>();
 
-const emit = defineEmits<{(e: 'dataLoaded', value: string): void;
-(e: 'update:modelValue', value: SocialMentionsModel): void;
+const emit = defineEmits<{
+  (e: 'dataLoaded', value: string): void;
+  (e: 'update:modelValue', value: SocialMentionsModel): void;
 }>();
 
 const model = computed<SocialMentionsModel>({
   get: () => props.modelValue,
-  set: (value) => emit('update:modelValue', value)
-})
+  set: (value) => emit('update:modelValue', value),
+});
 
-const {
-  startDate,
-  endDate,
-  selectedReposValues,
-  selectedTimeRangeKey,
-  customRangeGranularity
-} = storeToRefs(useProjectStore())
+const { startDate, endDate, selectedReposValues, selectedTimeRangeKey, customRangeGranularity } =
+  storeToRefs(useProjectStore());
 
 const route = useRoute();
 
-const barGranularity = computed(() => (selectedTimeRangeKey.value === dateOptKeys.custom
-  ? customRangeGranularity.value[0] as Granularity
-  : barGranularities[selectedTimeRangeKey.value as keyof typeof barGranularities]));
-const lineGranularity = computed(() => (selectedTimeRangeKey.value === dateOptKeys.custom
-  ? customRangeGranularity.value[0] as Granularity
-  : lineGranularities[selectedTimeRangeKey.value as keyof typeof lineGranularities]));
-const granularity = computed(() => (model.value.activeTab === 'cumulative'
-  ? lineGranularity.value
-  : barGranularity.value));
+const barGranularity = computed(() =>
+  selectedTimeRangeKey.value === dateOptKeys.custom
+    ? (customRangeGranularity.value[0] as Granularity)
+    : barGranularities[selectedTimeRangeKey.value as keyof typeof barGranularities],
+);
+const lineGranularity = computed(() =>
+  selectedTimeRangeKey.value === dateOptKeys.custom
+    ? (customRangeGranularity.value[0] as Granularity)
+    : lineGranularities[selectedTimeRangeKey.value as keyof typeof lineGranularities],
+);
+const granularity = computed(() =>
+  model.value.activeTab === 'cumulative' ? lineGranularity.value : barGranularity.value,
+);
 
 const queryParams = computed(() => ({
   projectSlug: route.params.slug as string,
@@ -150,21 +146,21 @@ const queryParams = computed(() => ({
   type: model.value.activeTab,
 }));
 
-const {
-  data, status, error
-} = POPULARITY_API_SERVICE.fetchSocialMentions(queryParams);
+const { data, status, error } = POPULARITY_API_SERVICE.fetchSocialMentions(queryParams);
 
 const socialMentions = computed<SocialMentions>(() => data.value as SocialMentions);
 
 const summary = computed<Summary>(() => socialMentions.value.summary);
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
-  () => convertToChartData((socialMentions.value?.data || []) as RawChartData[], 'startDate', [
-    'twitter',
-    'reddit',
-    'hackerNews',
-    'stackOverflow'
-  ], undefined, 'endDate')
+  () =>
+    convertToChartData(
+      (socialMentions.value?.data || []) as RawChartData[],
+      'startDate',
+      ['twitter', 'reddit', 'hackerNews', 'stackOverflow'],
+      undefined,
+      'endDate',
+    ),
 );
 
 const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
@@ -181,7 +177,7 @@ const chartSeries = computed<ChartSeries[]>(() => [
     yAxisIndex: 0,
     dataIndex: 0,
     position: 'left',
-    color: lfxColors.brand[500]
+    color: lfxColors.brand[500],
   },
   {
     name: 'Reddit',
@@ -189,7 +185,7 @@ const chartSeries = computed<ChartSeries[]>(() => [
     yAxisIndex: 0,
     dataIndex: 1,
     position: 'left',
-    color: lfxColors.negative[500]
+    color: lfxColors.negative[500],
   },
   {
     name: 'Hacker News',
@@ -197,7 +193,7 @@ const chartSeries = computed<ChartSeries[]>(() => [
     yAxisIndex: 0,
     dataIndex: 2,
     position: 'left',
-    color: lfxColors.warning[500]
+    color: lfxColors.warning[500],
   },
   {
     name: 'Stack Overflow',
@@ -205,31 +201,31 @@ const chartSeries = computed<ChartSeries[]>(() => [
     yAxisIndex: 0,
     dataIndex: 3,
     position: 'left',
-    color: lfxColors.warning[200]
-  }
+    color: lfxColors.warning[200],
+  },
 ]);
-const lineChartConfig = computed(() => getLineAreaChartConfig(
-  chartData.value,
-  chartSeries.value,
-  lineGranularity.value
-));
-const barChartConfig = computed(() => getBarChartConfigStacked(
-  chartData.value,
-  chartSeries.value,
-  barGranularity.value
-));
+const lineChartConfig = computed(() =>
+  getLineAreaChartConfig(chartData.value, chartSeries.value, lineGranularity.value),
+);
+const barChartConfig = computed(() =>
+  getBarChartConfigStacked(chartData.value, chartSeries.value, barGranularity.value),
+);
 
-watch(status, (value: string) => {
-  if (value !== 'pending') {
-    emit('dataLoaded', Widget.SOCIAL_MENTIONS);
-  }
-}, {
-  immediate: true
-});
+watch(
+  status,
+  (value: string) => {
+    if (value !== 'pending') {
+      emit('dataLoaded', Widget.SOCIAL_MENTIONS);
+    }
+  },
+  {
+    immediate: true,
+  },
+);
 </script>
 
 <script lang="ts">
 export default {
   name: 'LfxProjectSocialMentions',
-}
+};
 </script>

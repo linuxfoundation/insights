@@ -3,7 +3,7 @@
 import type {
   CallbackDataParams,
   MarkLineOption,
-  ScatterSeriesOption
+  ScatterSeriesOption,
 } from 'echarts/types/dist/shared';
 import { merge } from 'lodash-es';
 import { punchCardFormatter } from '../helpers/formatters';
@@ -12,7 +12,7 @@ import type {
   CategoryDataItem,
   ChartData,
   ChartSeries,
-  SeriesTypes
+  SeriesTypes,
 } from '../types/ChartTypes';
 import { convertToScatterData } from '../helpers/chart-helpers';
 import defaultOption, { categoryData } from './defaults.chart';
@@ -35,24 +35,24 @@ const defaultScatterOption: ECOption = {
     left: '5%',
     right: '5%',
     bottom: '3%',
-    containLabel: true
+    containLabel: true,
   },
   xAxis: {
     ...defaultOption.xAxis,
     boundaryGap: false,
     position: 'top', // move the x axis to the top of the chart
     axisLine: {
-      show: false
+      show: false,
     },
     axisLabel: {
       align: 'center',
       interval: 0,
       fontSize: '12px',
       fontWeight: 'normal',
-      color: lfxColors.neutral[400]
+      color: lfxColors.neutral[400],
     },
     splitLine: {
-      show: false
+      show: false,
       // lineStyle: {
       //   type: [
       //     // this is a hack to make the x axis line appear dashed in "working hours" sections
@@ -63,17 +63,17 @@ const defaultScatterOption: ECOption = {
       //   ],
       //   color: lfxColors.neutral[200]
       // }
-    }
+    },
   },
   yAxis: {
     ...defaultOption.yAxis,
     type: 'category',
     axisTick: {
-      show: false
+      show: false,
     },
     axisLine: {
       show: false,
-      onZero: false
+      onZero: false,
     },
     offset: 20, // move the y axis to the left
     axisLabel: {
@@ -87,24 +87,24 @@ const defaultScatterOption: ECOption = {
       },
       rich: {
         a: {
-          fontSize: '12px'
+          fontSize: '12px',
         },
         b: {
-          fontSize: '8px'
-        }
-      }
+          fontSize: '8px',
+        },
+      },
     },
     splitLine: {
-      show: false
-    }
+      show: false,
+    },
   },
   tooltip: {
     trigger: 'item',
     axisPointer: {
-      type: 'none'
+      type: 'none',
     },
-    borderColor: 'transparent'
-  }
+    borderColor: 'transparent',
+  },
 };
 
 /**
@@ -132,19 +132,19 @@ const defaultSeriesStyle: ScatterSeriesOption = {
     animation: false,
     z: -1,
     label: {
-      show: false
+      show: false,
     },
     lineStyle: {
       color: lfxColors.neutral[200],
       type: [5, 5],
-      width: 1
+      width: 1,
     },
     emphasis: {
-      disabled: true
+      disabled: true,
     },
     tooltip: {
-      show: false
-    }
+      show: false,
+    },
   },
   itemStyle: {
     // data points that are in the "working hours" section are gray, and the rest are blue
@@ -154,15 +154,15 @@ const defaultSeriesStyle: ScatterSeriesOption = {
       const y = value[1] || 0;
       return x >= 0 && x < 5 && y > 5 ? lfxColors.neutral[300] : lfxColors.brand[300];
     },
-    opacity: 0.8
+    opacity: 0.8,
   },
   emphasis: {
     scale: false,
     itemStyle: {
       color: 'inherit',
-      opacity: 1
-    }
-  }
+      opacity: 1,
+    },
+  },
 };
 
 const isInWorkingHours = (value: number): boolean => value >= 8 && value <= 18;
@@ -179,8 +179,8 @@ const buildYAxisMarkLineData = (yAxis: CategoryDataItem[]): MarkLineOption['data
         name: '',
         yAxis: idx, // using the index instead of the value because the scatter plot is using x,y coordinates
         lineStyle: {
-          type: isInWorkingHours(+item.value) ? 'solid' : ([5, 5] as ZRLineType)
-        }
+          type: isInWorkingHours(+item.value) ? 'solid' : ([5, 5] as ZRLineType),
+        },
       },
       {
         // this is the hack to add the "gap" line between the working and non-working hours sections
@@ -188,22 +188,20 @@ const buildYAxisMarkLineData = (yAxis: CategoryDataItem[]): MarkLineOption['data
         x: '66%',
         lineStyle: {
           type: 'solid' as ZRLineType,
-          color: isInWorkingHours(+item.value) ? 'inherit' : lfxColors.white
-        }
+          color: isInWorkingHours(+item.value) ? 'inherit' : lfxColors.white,
+        },
       },
       // this is the hack to add the solid line on the non-working days section
-      { yAxis: idx, x: '81%', lineStyle: { type: 'solid' as ZRLineType } }
+      { yAxis: idx, x: '81%', lineStyle: { type: 'solid' as ZRLineType } },
     ])
-    .flat()
+    .flat(),
 ];
 
 /**
  * Builds the x axis mark line data hack for non-working days
  * @returns The x axis mark line data
  */
-const buildXAxisMarkLineData = (
-  xAxis: CategoryDataItem[]
-): YMarkLineOptionData['data'] => [
+const buildXAxisMarkLineData = (xAxis: CategoryDataItem[]): YMarkLineOptionData['data'] => [
   ...xAxis
     .map((item, idx) => {
       const yGridLines = [];
@@ -212,13 +210,13 @@ const buildXAxisMarkLineData = (
         yGridLines.push({
           xAxis: idx,
           y: '56.2%',
-          lineStyle: { type: 'solid' as ZRLineType, color: lfxColors.white }
+          lineStyle: { type: 'solid' as ZRLineType, color: lfxColors.white },
         });
         // adding dashed line for the working hours section on top of the white line
         yGridLines.push({
           xAxis: idx,
           y: '49%',
-          lineStyle: { type: [5, 5] as ZRLineType, color: lfxColors.neutral[200] }
+          lineStyle: { type: [5, 5] as ZRLineType, color: lfxColors.neutral[200] },
         });
       }
 
@@ -227,12 +225,12 @@ const buildXAxisMarkLineData = (
           // solid gray lines for all
           xAxis: idx,
           y: '93.5%',
-          lineStyle: { type: 'solid' as ZRLineType }
+          lineStyle: { type: 'solid' as ZRLineType },
         },
-        ...yGridLines
+        ...yGridLines,
       ];
     })
-    .flat()
+    .flat(),
 ];
 
 /**
@@ -245,14 +243,14 @@ const buildMarkLineData = (categoryData: CategoryData): MarkLineOption => {
   const xAxisMarkLineData = buildXAxisMarkLineData(categoryData.xAxis);
   return {
     ...defaultSeriesStyle.markLine,
-    data: [...(yAxisMarkLineData || []), ...(xAxisMarkLineData || [])]
+    data: [...(yAxisMarkLineData || []), ...(xAxisMarkLineData || [])],
   };
 };
 
 const applySeriesStyle = (
   chartSeries: ChartSeries[],
   data: number[][],
-  categoryData: CategoryData
+  categoryData: CategoryData,
 ): SeriesTypes[] => {
   if (!chartSeries) return [];
 
@@ -272,7 +270,7 @@ const applySeriesStyle = (
         return normalizeSymbolSize(value, maxValue);
       },
       data,
-      markLine: markLineData
+      markLine: markLineData,
     };
 
     return baseStyle as SeriesTypes;
@@ -285,34 +283,35 @@ const applySeriesStyle = (
  * @param series - Series
  * @returns Chart config
  */
-export const getScatterChartConfig = (
-  data: ChartData[],
-  series: ChartSeries[]
-): ECOption => {
+export const getScatterChartConfig = (data: ChartData[], series: ChartSeries[]): ECOption => {
   const yAxisData = categoryData.yAxis.map((item) => item.key).reverse();
   const xAxis = {
     ...defaultScatterOption.xAxis,
-    data: categoryData.xAxis.map((item) => item.key)
+    data: categoryData.xAxis.map((item) => item.key),
   };
   const yAxis = {
     ...defaultScatterOption.yAxis,
-    data: yAxisData
+    data: yAxisData,
   };
 
   const styledSeries = applySeriesStyle(
     series,
     convertToScatterData(data, categoryData),
-    categoryData
+    categoryData,
   );
 
   const tooltip = merge({}, defaultScatterOption.tooltip, {
-    formatter: punchCardFormatter('wut', true, yAxisData as string[])
+    formatter: punchCardFormatter('wut', true, yAxisData as string[]),
   });
 
   return merge(
     {},
     {
- ...defaultScatterOption, xAxis, yAxis, series: styledSeries, tooltip
-}
+      ...defaultScatterOption,
+      xAxis,
+      yAxis,
+      series: styledSeries,
+      tooltip,
+    },
   );
 };

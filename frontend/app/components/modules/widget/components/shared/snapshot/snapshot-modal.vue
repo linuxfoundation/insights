@@ -13,9 +13,7 @@ SPDX-License-Identifier: MIT
           <p class="text-body-2 text-neutral-500">
             {{ widgetConfig?.name }}
           </p>
-          <h3 class="text-heading-3 font-secondary font-bold">
-            Snapshot
-          </h3>
+          <h3 class="text-heading-3 font-secondary font-bold">Snapshot</h3>
         </div>
         <lfx-icon-button
           icon="close"
@@ -35,9 +33,7 @@ SPDX-License-Identifier: MIT
         </lfx-button>
       </div>
       <div class="bg-neutral-100 border border-neutral-200 rounded-lg">
-        <p class="text-neutral-500 text-xs font-semibold leading-5 text-center mb-px">
-          Preview
-        </p>
+        <p class="text-neutral-500 text-xs font-semibold leading-5 text-center mb-px">Preview</p>
         <div class="-m-px bg-white border border-neutral-200 rounded-lg overflow-auto">
           <div
             ref="snapshot"
@@ -58,49 +54,48 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script lang="ts" setup>
-import {storeToRefs} from "pinia";
-import {computed, nextTick} from "vue";
-import html2canvas from "html2canvas";
-import LfxModal from "~/components/uikit/modal/modal.vue";
-import type {Widget} from "~/components/modules/widget/types/widget";
-import {lfxWidgets} from "~/components/modules/widget/config/widget.config";
-import LfxButton from "~/components/uikit/button/button.vue";
-import LfxIcon from "~/components/uikit/icon/icon.vue";
-import LfxSnapshotPreview from "~/components/modules/widget/components/shared/snapshot/snapshot-preview.vue";
-import {useProjectStore} from "~/components/modules/project/store/project.store";
-import LfxIconButton from "~/components/uikit/icon-button/icon-button.vue";
-import useToastService from "~/components/uikit/toast/toast.service";
-import { ToastTypesEnum } from "~/components/uikit/toast/types/toast.types";
+import { storeToRefs } from 'pinia';
+import { computed, nextTick } from 'vue';
+import html2canvas from 'html2canvas';
+import LfxModal from '~/components/uikit/modal/modal.vue';
+import type { Widget } from '~/components/modules/widget/types/widget';
+import { lfxWidgets } from '~/components/modules/widget/config/widget.config';
+import LfxButton from '~/components/uikit/button/button.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxSnapshotPreview from '~/components/modules/widget/components/shared/snapshot/snapshot-preview.vue';
+import { useProjectStore } from '~/components/modules/project/store/project.store';
+import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
+import useToastService from '~/components/uikit/toast/toast.service';
+import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 
 const props = defineProps<{
   modelValue: boolean;
-  widgetName: Widget,
-  data: object,
-  useSlot?: boolean,
-  snapshotName?: string
+  widgetName: Widget;
+  data: object;
+  useSlot?: boolean;
+  snapshotName?: string;
 }>();
 
 const { showToast } = useToastService();
 
-const emit = defineEmits<{(e: 'update:modelValue', value: boolean): void;
-}>();
+const emit = defineEmits<{ (e: 'update:modelValue', value: boolean): void }>();
 
 const snapshot = ref(null);
 
 const isModalOpen = computed<boolean>({
   get: () => props.modelValue,
-  set: (value: boolean) => emit('update:modelValue', value)
+  set: (value: boolean) => emit('update:modelValue', value),
 });
-const {project, selectedRepositories} = storeToRefs(useProjectStore())
-const repoName = computed(() => (
-  selectedRepositories?.value?.map((repo) => repo.name.split('/').at(-1)).join(', ') || '')
+const { project, selectedRepositories } = storeToRefs(useProjectStore());
+const repoName = computed(
+  () => selectedRepositories?.value?.map((repo) => repo.name.split('/').at(-1)).join(', ') || '',
 );
 
 const widgetConfig = computed(() => lfxWidgets[props.widgetName]);
 
 const download = async () => {
-  if (!snapshot.value) return
-  try{
+  if (!snapshot.value) return;
+  try {
     await document?.fonts.ready;
     await nextTick();
     const canvas = await html2canvas(snapshot.value, {
@@ -108,26 +103,26 @@ const download = async () => {
       allowTaint: false,
       imageTimeout: 5000,
       backgroundColor: 'white',
-    })
-    const dataUrl = canvas.toDataURL('image/png')
-    const link = document?.createElement('a')
+    });
+    const dataUrl = canvas.toDataURL('image/png');
+    const link = document?.createElement('a');
     const fileName = `LFX Insights - ${project.value?.name || ''}${
-        repoName.value ? ` / ${repoName.value}` : ''
-    } - ${props.snapshotName || widgetConfig.value?.name}`
-    link.download = `${fileName}.png`
-    link.href = dataUrl
+      repoName.value ? ` / ${repoName.value}` : ''
+    } - ${props.snapshotName || widgetConfig.value?.name}`;
+    link.download = `${fileName}.png`;
+    link.href = dataUrl;
     document.body.appendChild(link);
-    link.click()
+    link.click();
     document.body.removeChild(link);
   } catch (e) {
-    showToast('Failed to download snapshot', ToastTypesEnum.negative)
+    showToast('Failed to download snapshot', ToastTypesEnum.negative);
   }
   isModalOpen.value = false;
-}
+};
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxSnapshotModal'
-}
+  name: 'LfxSnapshotModal',
+};
 </script>

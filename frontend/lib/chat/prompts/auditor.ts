@@ -1,6 +1,6 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import type { DataSummary } from '../utils/data-summary'
+import type { DataSummary } from '../utils/data-summary';
 
 export const auditorPrompt = (
   originalQuestion: string,
@@ -11,30 +11,30 @@ export const auditorPrompt = (
 ) => {
   const statsFormatted = Object.entries(dataSummary.columnStats)
     .map(([col, stats]) => {
-      const lines = [`- ${col} (${stats.type}):`]
+      const lines = [`- ${col} (${stats.type}):`];
 
       if (stats.nullPercentage > 0) {
-        lines.push(`  • ${stats.nullPercentage}% null values`)
+        lines.push(`  • ${stats.nullPercentage}% null values`);
       }
 
       if (stats.type === 'numeric') {
-        lines.push(`  • Range: ${stats.min} to ${stats.max}`)
-        lines.push(`  • Average: ${stats.avg}`)
-        if (stats.hasAllZeros) lines.push(`  • ⚠️ All values are zero`)
+        lines.push(`  • Range: ${stats.min} to ${stats.max}`);
+        lines.push(`  • Average: ${stats.avg}`);
+        if (stats.hasAllZeros) lines.push(`  • ⚠️ All values are zero`);
       }
 
       if (stats.type === 'date') {
-        lines.push(`  • Date range: ${stats.dateRange}`)
-        lines.push(`  • ${stats.distinctCount} distinct dates`)
+        lines.push(`  • Date range: ${stats.dateRange}`);
+        lines.push(`  • ${stats.distinctCount} distinct dates`);
       }
 
       if (stats.type === 'string') {
-        lines.push(`  • ${stats.distinctCount} distinct values`)
+        lines.push(`  • ${stats.distinctCount} distinct values`);
       }
 
-      return lines.join('\n')
+      return lines.join('\n');
     })
-    .join('\n')
+    .join('\n');
 
   return `You are an Auditor agent that validates whether retrieved data can answer the user's question.
 
@@ -155,5 +155,5 @@ Explain your decision in 2-3 sentences:
 1. What you validated in the statistics
 2. Whether it matches the question requirements
 3. Your final decision
-`
-}
+`;
+};

@@ -1,21 +1,21 @@
 :root {
   /* LFX Colors */
   --lfx-color-black: #000000;
-  --lfx-color-white: #FFFFFF;
+  --lfx-color-white: #ffffff;
 
-  --lfx-color-brand-600: #006DBE;
-  --lfx-color-brand-500: #0094FF;
-  --lfx-color-brand-400: #54ABFF;
-  --lfx-color-brand-300: #83C1FF;
-  --lfx-color-brand-200: #ADD6FF;
-  --lfx-color-brand-50: #EBF5FF;
+  --lfx-color-brand-600: #006dbe;
+  --lfx-color-brand-500: #0094ff;
+  --lfx-color-brand-400: #54abff;
+  --lfx-color-brand-300: #83c1ff;
+  --lfx-color-brand-200: #add6ff;
+  --lfx-color-brand-50: #ebf5ff;
 
-  --lfx-color-neutral-900: #0F172A;
-  --lfx-color-neutral-500: #64748B;
-  --lfx-color-neutral-400: #94A3B8;
-  --lfx-color-neutral-200: #E2E8F0;
-  --lfx-color-neutral-100: #F1F5F9;
-  --lfx-color-neutral-50: #F8FAFC;
+  --lfx-color-neutral-900: #0f172a;
+  --lfx-color-neutral-500: #64748b;
+  --lfx-color-neutral-400: #94a3b8;
+  --lfx-color-neutral-200: #e2e8f0;
+  --lfx-color-neutral-100: #f1f5f9;
+  --lfx-color-neutral-50: #f8fafc;
 
   /* Brand color override */
   --vp-c-brand-1: var(--lfx-color-brand-500);

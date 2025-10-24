@@ -19,10 +19,9 @@ SPDX-License-Identifier: MIT
           @scrolled-to-view="onScrolledToView"
         >
           <template #default="{ observer }">
-            
             <lfx-repos-inclusion-note
               v-if="hasSelectedArchivedRepos"
-              :all-archived="allArchived"            
+              :all-archived="allArchived"
             />
 
             <lfx-scroll-view
@@ -45,35 +44,30 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script lang="ts" setup>
-import {
-computed, ref, onServerPrefetch, watch
-} from "vue";
-import {storeToRefs} from "pinia";
-import {useRoute} from "nuxt/app";
+import { computed, ref, onServerPrefetch, watch } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useRoute } from 'nuxt/app';
 import { BENCHMARKS_API_SERVICE } from '../../services/benchmarks.api.service';
 import { POPULARITY_API_SERVICE } from '../../services/popularity.api.service';
-import {Widget} from "~/components/modules/widget/types/widget";
-import {lfxWidgets} from "~/components/modules/widget/config/widget.config";
-import {WidgetArea} from "~/components/modules/widget/types/widget-area";
-import {lfxWidgetArea, type WidgetAreaConfig} from "~/components/modules/widget/config/widget-area.config";
-import LfxSideNav from "~/components/uikit/side-nav/side-nav.vue";
-import LfxScrollView from "~/components/uikit/scroll-view/scroll-view.vue";
-import LfxScrollArea from "~/components/uikit/scroll-view/scroll-area.vue";
-import useScroll from "~/components/shared/utils/scroll";
-import LfxWidget from "~/components/modules/widget/components/shared/widget.vue";
-import {useProjectStore} from "~/components/modules/project/store/project.store";
-import { useQueryParam } from "~/components/shared/utils/query-param";
-import {
-  processProjectParams,
-  projectParamsSetter
-} from "~/components/modules/project/services/project.query.service";
+import { Widget } from '~/components/modules/widget/types/widget';
+import { lfxWidgets } from '~/components/modules/widget/config/widget.config';
+import { WidgetArea } from '~/components/modules/widget/types/widget-area';
+import { lfxWidgetArea, type WidgetAreaConfig } from '~/components/modules/widget/config/widget-area.config';
+import LfxSideNav from '~/components/uikit/side-nav/side-nav.vue';
+import LfxScrollView from '~/components/uikit/scroll-view/scroll-view.vue';
+import LfxScrollArea from '~/components/uikit/scroll-view/scroll-area.vue';
+import useScroll from '~/components/shared/utils/scroll';
+import LfxWidget from '~/components/modules/widget/components/shared/widget.vue';
+import { useProjectStore } from '~/components/modules/project/store/project.store';
+import { useQueryParam } from '~/components/shared/utils/query-param';
+import { processProjectParams, projectParamsSetter } from '~/components/modules/project/services/project.query.service';
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 import { Granularity } from '~~/types/shared/granularity';
 import LfxReposInclusionNote from '~/components/shared/components/repos-inclusion-note.vue';
 
 const props = defineProps<{
-  name: WidgetArea
+  name: WidgetArea;
 }>();
 
 const { showToast } = useToastService();
@@ -87,15 +81,8 @@ const tmpClickedItem = ref('');
 const loadedWidgets = ref<Record<string, boolean>>({});
 
 const { scrollToTarget, scrollToTop } = useScroll();
-const {
-  project,
-  selectedRepoSlugs,
-  startDate,
-  endDate,
-  selectedReposValues,
-  allArchived,
-  hasSelectedArchivedRepos
-} = storeToRefs(useProjectStore())
+const { project, selectedRepoSlugs, startDate, endDate, selectedReposValues, allArchived, hasSelectedArchivedRepos } =
+  storeToRefs(useProjectStore());
 const isFirstLoad = ref(true);
 
 /**
@@ -127,38 +114,52 @@ const mailingListMessagesParams = computed(() => ({
 
 // package downloads and dependency share the same endpoint
 const {
-  data: downloadsData, status: downloadsStatus, suspense: downloadsSuspense
+  data: downloadsData,
+  status: downloadsStatus,
+  suspense: downloadsSuspense,
 } = POPULARITY_API_SERVICE.fetchPackageDownloads(downloadsParams);
 
-const isPackageDownloadsEmpty = computed(() => POPULARITY_API_SERVICE
-  .isPackageDownloadsEmpty(downloadsStatus.value === 'success' ? downloadsData.value : undefined));
+const isPackageDownloadsEmpty = computed(() =>
+  POPULARITY_API_SERVICE.isPackageDownloadsEmpty(downloadsStatus.value === 'success' ? downloadsData.value : undefined),
+);
 
-const isPackageDependencyEmpty = computed(() => POPULARITY_API_SERVICE
-  .isPackageDependencyEmpty(downloadsStatus.value === 'success' ? downloadsData.value : undefined));
+const isPackageDependencyEmpty = computed(() =>
+  POPULARITY_API_SERVICE.isPackageDependencyEmpty(
+    downloadsStatus.value === 'success' ? downloadsData.value : undefined,
+  ),
+);
 
 // search queries
 const {
-  data: searchQueriesData, status: searchQueriesStatus, suspense: searchQueriesSuspense
+  data: searchQueriesData,
+  status: searchQueriesStatus,
+  suspense: searchQueriesSuspense,
 } = POPULARITY_API_SERVICE.fetchSearchQueries(popularityParams);
 
-const isSearchQueriesEmpty = computed(() => POPULARITY_API_SERVICE
-  .isSearchQueriesEmpty(searchQueriesStatus.value === 'success' ? searchQueriesData.value : undefined));
+const isSearchQueriesEmpty = computed(() =>
+  POPULARITY_API_SERVICE.isSearchQueriesEmpty(
+    searchQueriesStatus.value === 'success' ? searchQueriesData.value : undefined,
+  ),
+);
 
 // mailing list messages
 const {
-  data: mailingListMessagesData, status: mailingListMessagesStatus, suspense: mailingListMessagesSuspense
+  data: mailingListMessagesData,
+  status: mailingListMessagesStatus,
+  suspense: mailingListMessagesSuspense,
 } = POPULARITY_API_SERVICE.fetchMailingListsMessages(mailingListMessagesParams);
 
-const isMailingListMessagesEmpty = computed(() => POPULARITY_API_SERVICE
-  .isMailingListMessagesEmpty(
-    mailingListMessagesStatus.value === 'success' ? mailingListMessagesData.value : undefined
-  ));
+const isMailingListMessagesEmpty = computed(() =>
+  POPULARITY_API_SERVICE.isMailingListMessagesEmpty(
+    mailingListMessagesStatus.value === 'success' ? mailingListMessagesData.value : undefined,
+  ),
+);
 
 const excludedWidgets = computed(() => {
   const excludedWidgets = [];
   if (props.name === WidgetArea.POPULARITY) {
     if (isPackageDownloadsEmpty.value) {
-    excludedWidgets.push(Widget.PACKAGE_DOWNLOADS);
+      excludedWidgets.push(Widget.PACKAGE_DOWNLOADS);
     }
     if (isPackageDependencyEmpty.value) {
       excludedWidgets.push(Widget.PACKAGE_DEPENDENCY);
@@ -173,39 +174,37 @@ const excludedWidgets = computed(() => {
   return excludedWidgets;
 });
 
- /**
-  * ===============================
-  */
-
+/**
+ * ===============================
+ */
 
 const params = computed(() => ({
   projectSlug: route.params.slug as string,
   repos: selectedReposValues.value,
   startDate: startDate.value,
   endDate: endDate.value,
-}))
+}));
 
-const {
-  data, 
-  error,
-  suspense
-} = BENCHMARKS_API_SERVICE.fetchWidgetBenchmarks(params);
+const { data, error, suspense } = BENCHMARKS_API_SERVICE.fetchWidgetBenchmarks(params);
 
-const widgets = computed(() => (config.value.widgets || [])
-    .filter((widget) => {
-      const key = lfxWidgets[widget as Widget]?.key;
-      const widgetConfig = lfxWidgets[widget as Widget];
-      return (
-        project.value?.widgets.includes(key)
-        && (!widgetConfig?.hideOnRepoFilter || !selectedRepoSlugs.value.length)
-        && !excludedWidgets.value.includes(widget as Widget)
-      );
-    }));
+const widgets = computed(() =>
+  (config.value.widgets || []).filter((widget) => {
+    const key = lfxWidgets[widget as Widget]?.key;
+    const widgetConfig = lfxWidgets[widget as Widget];
+    return (
+      project.value?.widgets.includes(key) &&
+      (!widgetConfig?.hideOnRepoFilter || !selectedRepoSlugs.value.length) &&
+      !excludedWidgets.value.includes(widget as Widget)
+    );
+  }),
+);
 
-const sideNavItems = computed(() => widgets.value.map((widget: Widget) => ({
-  key: widget,
-  label: lfxWidgets[widget]?.name,
-})))
+const sideNavItems = computed(() =>
+  widgets.value.map((widget: Widget) => ({
+    key: widget,
+    label: lfxWidgets[widget]?.name,
+  })),
+);
 
 const onSideNavUpdate = (value: string) => {
   tmpClickedItem.value = value;
@@ -243,7 +242,7 @@ const onDataLoaded = (value: string) => {
   loadedWidgets.value[value] = true;
 
   navigateToWidget();
-}
+};
 
 const areWidgetsAboveLoaded = (currentWidget: string) => {
   const currentWidgetIndex = widgets.value.indexOf(currentWidget as Widget);
@@ -261,7 +260,7 @@ const navigateToWidget = () => {
       onSideNavUpdate(widget as string);
     }, 100);
   }
-}
+};
 
 onServerPrefetch(async () => {
   await suspense();
@@ -269,24 +268,23 @@ onServerPrefetch(async () => {
   await downloadsSuspense();
   await searchQueriesSuspense();
   await mailingListMessagesSuspense();
-})
+});
 
-watch(error, (err) => {
-  if (err) {
-    setTimeout(() => {
-      showToast(
-        `Error fetching benchmarks`,
-        ToastTypesEnum.negative,
-        undefined,
-        10000
-      );
-    }, 500);
-  }
-}, { immediate: true });
+watch(
+  error,
+  (err) => {
+    if (err) {
+      setTimeout(() => {
+        showToast(`Error fetching benchmarks`, ToastTypesEnum.negative, undefined, 10000);
+      }, 500);
+    }
+  },
+  { immediate: true },
+);
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxWidgetArea'
-}
+  name: 'LfxWidgetArea',
+};
 </script>

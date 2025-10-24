@@ -25,24 +25,27 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import {computed, onUnmounted, watch} from 'vue';
+import { computed, onUnmounted, watch } from 'vue';
 
-const props = withDefaults(defineProps<{
-  modelValue: boolean,
-  type?: 'default' | 'floating' | 'cover',
-  contentClass?: string,
-  width?: string,
-  height?: string,
-  closeFunction?:() => boolean,
-}>(), {
-  type: 'default',
-  width: '37.5rem',
-  height: 'auto',
-  closeFunction: () => true,
-  contentClass: undefined,
-});
+const props = withDefaults(
+  defineProps<{
+    modelValue: boolean;
+    type?: 'default' | 'floating' | 'cover';
+    contentClass?: string;
+    width?: string;
+    height?: string;
+    closeFunction?: () => boolean;
+  }>(),
+  {
+    type: 'default',
+    width: '37.5rem',
+    height: 'auto',
+    closeFunction: () => true,
+    contentClass: undefined,
+  },
+);
 
-const emit = defineEmits<{(e: 'update:modelValue', value: boolean): void }>();
+const emit = defineEmits<{ (e: 'update:modelValue', value: boolean): void }>();
 
 const isModalOpened = computed<boolean>({
   get() {
@@ -77,21 +80,25 @@ const modalClass = computed(() => {
   };
 });
 
-watch(() => props.modelValue, (show: boolean) => {
-  if(!document || !window) return;
-  if (!show) {
-    window.removeEventListener('keyup', onEscapeKeyUp);
-    document.documentElement.style.overflow = '';
-  } else {
-    window.addEventListener('keyup', onEscapeKeyUp);
-    document.documentElement.style.overflow = 'hidden';
-  }
-}, {immediate: true});
+watch(
+  () => props.modelValue,
+  (show: boolean) => {
+    if (!document || !window) return;
+    if (!show) {
+      window.removeEventListener('keyup', onEscapeKeyUp);
+      document.documentElement.style.overflow = '';
+    } else {
+      window.addEventListener('keyup', onEscapeKeyUp);
+      document.documentElement.style.overflow = 'hidden';
+    }
+  },
+  { immediate: true },
+);
 
 onUnmounted(() => {
   window.removeEventListener('keyup', onEscapeKeyUp);
   document.documentElement.style.overflow = '';
-})
+});
 </script>
 
 <script lang="ts">

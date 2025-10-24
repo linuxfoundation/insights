@@ -3,9 +3,7 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div
-    class="container pt-10"
-  >
+  <div class="container pt-10">
     <div class="lg:block hidden">
       <lfx-project-load-state
         :status="status"
@@ -25,12 +23,8 @@ SPDX-License-Identifier: MIT
         :size="80"
         class="text-neutral-300"
       />
-      <div class="font-semibold text-sm text-neutral-500 mb-3">
-        Open Source Index requires a bit more room
-      </div>
-      <div class="text-xs text-neutral-500">
-        Please resize your browser window to explore this feature
-      </div>
+      <div class="font-semibold text-sm text-neutral-500 mb-3">Open Source Index requires a bit more room</div>
+      <div class="text-xs text-neutral-500">Please resize your browser window to explore this feature</div>
     </div>
   </div>
 </template>
@@ -46,12 +40,12 @@ const props = defineProps<{
   sort: string;
   hasError?: boolean;
   status?: string;
-  data: TreeMapData[]
-}>()
+  data: TreeMapData[];
+}>();
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxOsiDistribution'
+  name: 'LfxOsiDistribution',
 };
 </script>

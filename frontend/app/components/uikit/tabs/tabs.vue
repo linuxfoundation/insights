@@ -34,7 +34,7 @@ import { computed } from 'vue';
 import type { TabsProps, TabsEmits } from './types/tab.types';
 
 const props = withDefaults(defineProps<TabsProps>(), {
-  widthType: 'full'
+  widthType: 'full',
 });
 const emit = defineEmits<TabsEmits>();
 
@@ -44,12 +44,12 @@ const value = computed({
   },
   set(value: string) {
     emit('update:modelValue', value);
-  }
+  },
 });
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxTabs'
+  name: 'LfxTabs',
 };
 </script>

@@ -10,6 +10,6 @@ SPDX-License-Identifier: MIT
 
 <script lang="ts">
 export default {
-  name: 'LfxScrollableShadow'
-}
+  name: 'LfxScrollableShadow',
+};
 </script>

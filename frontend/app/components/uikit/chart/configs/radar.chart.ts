@@ -18,28 +18,28 @@ const defaultRadarOption: ECOption = {
   radar: {
     splitNumber: 3,
     axisName: {
-      color: lfxColors.neutral[500]
+      color: lfxColors.neutral[500],
     },
     axisLine: {
       lineStyle: {
         color: lfxColors.neutral[300],
-        type: 'dashed'
-      }
+        type: 'dashed',
+      },
     },
     splitLine: {
       lineStyle: {
-        color: lfxColors.neutral[300]
-      }
+        color: lfxColors.neutral[300],
+      },
     },
     splitArea: {
-      show: false
-    }
-  }
+      show: false,
+    },
+  },
 };
 
 const defaultSeriesStyle: RadarSeriesOption = {
   color: lfxColors.brand[500],
-  type: 'radar'
+  type: 'radar',
 };
 
 /**
@@ -51,14 +51,14 @@ const defaultSeriesStyle: RadarSeriesOption = {
  */
 const applySeriesStyle = (
   chartSeries: ChartSeries[],
-  series: SeriesTypes[] | undefined
+  series: SeriesTypes[] | undefined,
 ): SeriesTypes[] => {
   if (!series) return [];
 
   return series.map((seriesItem: SeriesTypes, index: number) => {
     const baseStyle: RadarSeriesOption = {
       ...defaultSeriesStyle,
-      ...(seriesItem as RadarSeriesOption)
+      ...(seriesItem as RadarSeriesOption),
     };
     // override the color with the color from the chart series if it exists
     baseStyle.color = chartSeries[index]?.color || lfxColors.brand[500];
@@ -67,28 +67,27 @@ const applySeriesStyle = (
   });
 };
 
-const buildSeriesData = (
-  series: ChartSeries[],
-  data: ChartData[]
-): SeriesTypes[] | undefined => (series.length > 0
+const buildSeriesData = (series: ChartSeries[], data: ChartData[]): SeriesTypes[] | undefined =>
+  series.length > 0
     ? series.map(
-        (series: ChartSeries) => ({
+        (series: ChartSeries) =>
+          ({
             data: [
               {
                 value: data.map((item: ChartData) => item.values[series.dataIndex]) || [],
                 name: '',
                 symbol: 'none',
                 lineStyle: {
-                  color: lfxColors.brand[500]
+                  color: lfxColors.brand[500],
                 },
                 areaStyle: {
-                  color: hexToRgba(lfxColors.brand[500], 0.2)
-                }
-              }
-            ]
-          } as SeriesTypes)
+                  color: hexToRgba(lfxColors.brand[500], 0.2),
+                },
+              },
+            ],
+          }) as SeriesTypes,
       )
-    : undefined);
+    : undefined;
 
 /**
  * Get radar chart config. This function takes in the data and series and returns the chart config.
@@ -99,7 +98,7 @@ const buildSeriesData = (
 export const getRadarChartConfig = (
   data: ChartData[],
   series: ChartSeries[],
-  indicators: RadarIndicator[]
+  indicators: RadarIndicator[],
 ): ECOption => {
   const styledSeries = applySeriesStyle(series, buildSeriesData(series, data));
 
@@ -108,8 +107,8 @@ export const getRadarChartConfig = (
     radar: {
       indicator: indicators.map((indicator) => ({
         name: indicator.name,
-        max: indicator.max || 100
-      }))
-    }
+        max: indicator.max || 100,
+      })),
+    },
   });
 };

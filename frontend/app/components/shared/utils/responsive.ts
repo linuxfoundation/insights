@@ -1,8 +1,6 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import {
-  onMounted, onUnmounted, ref
-} from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue';
 
 const useResponsive = () => {
   const pageWidth = ref(0);

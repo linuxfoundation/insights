@@ -4,9 +4,7 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <div class="flex flex-col gap-3 text-xs">
-    <div class="text-neutral-400 font-semibold">
-      Links
-    </div>
+    <div class="text-neutral-400 font-semibold">Links</div>
     <div
       v-if="links.length"
       class="text-neutral-900 flex flex-col gap-3"
@@ -26,7 +24,7 @@ SPDX-License-Identifier: MIT
           :src="link.img"
           :alt="`${link.name} icon`"
           class="w-[14px] h-[14px]"
-        >
+        />
         <a
           :href="link.url"
           target="_blank"
@@ -39,9 +37,10 @@ SPDX-License-Identifier: MIT
     <div
       v-else
       class="text-xs text-neutral-900"
-    >No links available</div>
+    >
+      No links available
+    </div>
   </div>
-
 </template>
 
 <script setup lang="ts">
@@ -52,11 +51,11 @@ import { useProjectStore } from '~~/app/components/modules/project/store/project
 import type {
   WebsiteLinkConfig,
   SocialLinkConfig,
-  DisplayLinkConfig
+  DisplayLinkConfig,
 } from '~~/app/components/modules/project/config/social-links';
 import { socialLinkConfigs, socialLinkOrder } from '~~/app/components/modules/project/config/social-links';
 
-const { project } = storeToRefs(useProjectStore())
+const { project } = storeToRefs(useProjectStore());
 
 const links = computed(() => {
   const socialLinkEntries = Object.entries(socialLinkConfigs);
@@ -77,7 +76,7 @@ const links = computed(() => {
         ...('icon' in config && { icon: config.icon }),
         name: config.transformName ? config.transformName(link.url) : link.url,
         url: config.transformUrl ? config.transformUrl(link.url) : link.url,
-        key: config.key
+        key: config.key,
       };
     }
 
@@ -99,6 +98,6 @@ const links = computed(() => {
 
 <script lang="ts">
 export default {
-  name: 'LfxProjectAboutSection'
+  name: 'LfxProjectAboutSection',
 };
 </script>

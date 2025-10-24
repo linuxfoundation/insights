@@ -11,9 +11,9 @@ export const pipePrompt = (
 ) => {
   const dashboardDescription = pipe
     ? `Project "${projectName}" using ${pipe} tool with parameters: ${parametersString}`
-    : `Project "${projectName}"${parametersString ? ` with parameters: ${parametersString}` : ''}`
+    : `Project "${projectName}"${parametersString ? ` with parameters: ${parametersString}` : ''}`;
 
-  const usePipeInstruction = pipe ? `- Use ${pipe} with different parameters if needed` : ''
+  const usePipeInstruction = pipe ? `- Use ${pipe} with different parameters if needed` : '';
 
   return `
 You are a pipe tool specialist that creates an execution plan to answer: "${reformulatedQuestion}"
@@ -147,5 +147,5 @@ Always ensure variables in formulas match the dependency variable names.
 3. **Focus on the Task:**
    - Answer the reformulated question directly
    - Use the tools specified by the router
-   - Be concise and accurate in your response`
-}
+   - Be concise and accurate in your response`;
+};

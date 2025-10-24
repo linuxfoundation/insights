@@ -17,9 +17,11 @@ SPDX-License-Identifier: MIT
           <p
             v-if="slotProps.message.title"
             class="text-sm font-semibold leading-5"
-          >{{ slotProps.message.title }}</p>
+          >
+            {{ slotProps.message.title }}
+          </p>
           <p class="text-xs leading-5">
-            {{slotProps.message.detail }}
+            {{ slotProps.message.detail }}
           </p>
         </div>
         <div v-if="slotProps.message.actionLabel">
@@ -33,7 +35,7 @@ SPDX-License-Identifier: MIT
               type="tertiary"
               size="small"
             >
-              {{slotProps.message.actionLabel}}
+              {{ slotProps.message.actionLabel }}
             </lfx-button>
           </a>
           <lfx-button
@@ -42,12 +44,10 @@ SPDX-License-Identifier: MIT
             size="small"
             @click="slotProps.message.action()"
           >
-            {{slotProps.message.actionLabel}}
+            {{ slotProps.message.actionLabel }}
           </lfx-button>
-
         </div>
       </div>
-
     </template>
   </pv-toast>
 </template>
@@ -55,15 +55,15 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import type { ToastOptions, ToastTheme } from './types/toast.types';
 import { ToastTypesEnum } from './types/toast.types';
-import LfxButton from "~/components/uikit/button/button.vue";
+import LfxButton from '~/components/uikit/button/button.vue';
 
 const props = withDefaults(
   defineProps<{
     theme?: ToastTheme;
   }>(),
   {
-    theme: 'dark'
-  }
+    theme: 'dark',
+  },
 );
 
 const getToastIcon = (options: ToastOptions) => {
@@ -87,6 +87,6 @@ const getToastIcon = (options: ToastOptions) => {
 </script>
 <script lang="ts">
 export default {
-  name: 'LfxToast'
+  name: 'LfxToast',
 };
 </script>

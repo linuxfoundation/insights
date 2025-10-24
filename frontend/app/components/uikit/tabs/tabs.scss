@@ -16,7 +16,7 @@
           @apply font-bold;
         }
       }
-      &-content{
+      &-content {
         @apply w-full;
       }
     }
@@ -35,7 +35,7 @@
       @apply bg-white text-neutral-900 rounded-md font-medium;
     }
 
-    &-content{
+    &-content {
       @apply w-max;
     }
   }

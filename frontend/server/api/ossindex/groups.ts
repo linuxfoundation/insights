@@ -1,10 +1,10 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird'
+import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
 import type {
   OSSIndexCategoryGroup,
   OSSIndexCategoryGroupTinybird,
-} from '~~/types/ossindex/category-group'
+} from '~~/types/ossindex/category-group';
 
 /**
  * API endpoint to fetch OSS Index category groups from TinyBird
@@ -15,10 +15,10 @@ import type {
  * @throws {Error} 500 error if TinyBird API request fails
  */
 export default defineEventHandler(async (event): Promise<OSSIndexCategoryGroup[] | Error> => {
-  const query = getQuery(event)
-  const type: string = query?.type as string
-  let sort: string = query?.sort as string
-  sort = ['totalContributors', 'softwareValue'].includes(sort) ? sort : 'totalContributors'
+  const query = getQuery(event);
+  const type: string = query?.type as string;
+  let sort: string = query?.sort as string;
+  sort = ['totalContributors', 'softwareValue'].includes(sort) ? sort : 'totalContributors';
 
   try {
     const res = await fetchFromTinybird<OSSIndexCategoryGroupTinybird[]>(
@@ -27,22 +27,22 @@ export default defineEventHandler(async (event): Promise<OSSIndexCategoryGroup[]
         type,
         orderBy: sort,
       },
-    )
+    );
 
     return res.data.map((item) => ({
       ...item,
       topCollections: item.topCollections.map((collection) => {
-        const [id, count, name, softwareValue, avgScore] = collection
+        const [id, count, name, softwareValue, avgScore] = collection;
         return {
           id: id as string,
           count: count as number,
           name: name as string,
           softwareValue: softwareValue as number,
           avgScore: avgScore as number,
-        }
+        };
       }),
       topProjects: item.topProjects.map((project) => {
-        const [id, count, name, logo, softwareValue, avgScore, healthScore, description] = project
+        const [id, count, name, logo, softwareValue, avgScore, healthScore, description] = project;
         return {
           id: id as string,
           count: count as number,
@@ -52,11 +52,11 @@ export default defineEventHandler(async (event): Promise<OSSIndexCategoryGroup[]
           softwareValue: softwareValue as number,
           avgScore: avgScore as number,
           healthScore: healthScore as number,
-        }
+        };
       }),
-    }))
+    }));
   } catch (error) {
-    console.error('Error fetching oss index category group list from TinyBird:', error)
-    throw createError({ statusCode: 500, statusMessage: 'Internal Server Error' })
+    console.error('Error fetching oss index category group list from TinyBird:', error);
+    throw createError({ statusCode: 500, statusMessage: 'Internal Server Error' });
   }
-})
+});

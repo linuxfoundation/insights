@@ -16,10 +16,10 @@ SPDX-License-Identifier: MIT
           ref="searchInputRef"
           v-model="search"
           type="text"
-          class="!outline-none  !shadow-none flex-grow text-sm text-neutral-900 leading-5"
+          class="!outline-none !shadow-none flex-grow text-sm text-neutral-900 leading-5"
           placeholder="Search projects, repositories, or collections..."
           @input="triggerSearch"
-        >
+        />
         <lfx-icon
           v-if="search.length > 0"
           name="circle-xmark"
@@ -40,7 +40,7 @@ SPDX-License-Identifier: MIT
         >
           <lfx-spinner
             :size="40"
-            class=" text-neutral-300"
+            class="text-neutral-300"
           />
         </div>
         <!-- Results -->
@@ -56,22 +56,20 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from "vue";
-import { debounce } from "lodash-es";
-import type {
-  SearchCollection, SearchProject, SearchRepository, SearchResults
-} from "~~/types/search";
-import LfxModal from "~/components/uikit/modal/modal.vue";
-import LfxIcon from "~/components/uikit/icon/icon.vue";
-import LfxSearchResult from "~/components/shared/layout/search/search-result.vue";
-import LfxSpinner from "~/components/uikit/spinner/spinner.vue";
+import { computed, onMounted, ref } from 'vue';
+import { debounce } from 'lodash-es';
+import type { SearchCollection, SearchProject, SearchRepository, SearchResults } from '~~/types/search';
+import LfxModal from '~/components/uikit/modal/modal.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxSearchResult from '~/components/shared/layout/search/search-result.vue';
+import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 
 const props = defineProps<{ modelValue: boolean }>();
-const emit = defineEmits<{(e: 'update:modelValue', value: boolean): void }>();
+const emit = defineEmits<{ (e: 'update:modelValue', value: boolean): void }>();
 
 const isModalOpen = computed({
   get: () => props.modelValue,
-  set: (value: boolean) => emit('update:modelValue', value)
+  set: (value: boolean) => emit('update:modelValue', value),
 });
 
 const searchInputRef = ref(null);
@@ -84,26 +82,28 @@ const collections = ref<SearchCollection[]>([]);
 
 const fetchSearchResults = () => {
   searchQuery.value = search.value;
-  if(searchQuery.value.length === 0){
+  if (searchQuery.value.length === 0) {
     return;
   }
   loading.value = true;
-  ($fetch('/api/search', {
-    query: { query: searchQuery.value }
-  }) as Promise<SearchResults>)
-      .then((res: SearchResults) => {
-        projects.value = res.projects;
-        repositories.value = res.repositories;
-        collections.value = res.collections;
-      })
-      .catch(() => {
-        projects.value = [];
-        repositories.value = [];
-        collections.value = [];
-      })
-      .finally(() => {
-        loading.value = false;
-      });
+  (
+    $fetch('/api/search', {
+      query: { query: searchQuery.value },
+    }) as Promise<SearchResults>
+  )
+    .then((res: SearchResults) => {
+      projects.value = res.projects;
+      repositories.value = res.repositories;
+      collections.value = res.collections;
+    })
+    .catch(() => {
+      projects.value = [];
+      repositories.value = [];
+      collections.value = [];
+    })
+    .finally(() => {
+      loading.value = false;
+    });
 };
 
 const triggerSearch = debounce(fetchSearchResults, 300);
@@ -115,6 +115,6 @@ onMounted(() => {
 
 <script lang="ts">
 export default {
-  name: 'LfxSearchModal'
+  name: 'LfxSearchModal',
 };
 </script>

@@ -9,24 +9,23 @@ SPDX-License-Identifier: MIT
   >
     <div class="relative flex flex-col justify-start h-full">
       <div class="pt-4 sm:pt-6 px-4 sm:px-6">
-        <h3 class="text-heading-3 font-semibold font-secondary pb-3">{{ contributorsLeaderboard.name }}</h3>
+        <h3 class="text-heading-3 font-semibold font-secondary pb-3">
+          {{ contributorsLeaderboard.name }}
+        </h3>
         <p class="text-body-2 text-neutral-500 mb-6">
           {{ contributorsLeaderboard.description(project!) }}
           <a
             :href="contributorsLeaderboard.learnMoreLink"
             class="text-brand-500"
             target="_blank"
-          >Learn more</a>
+            >Learn more</a
+          >
         </p>
 
-        <hr>
+        <hr />
       </div>
-      <section
-        class="mt-5 flex flex-col flex-grow overflow-auto"
-      >
-        <div
-          class="mb-6 px-4 sm:px-6 pt-[1px]"
-        >
+      <section class="mt-5 flex flex-col flex-grow overflow-auto">
+        <div class="mb-6 px-4 sm:px-6 pt-[1px]">
           <lfx-activities-dropdown
             v-model="metric"
             full-width
@@ -57,40 +56,38 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { useRoute } from 'nuxt/app';
-import {
- ref, computed, watch
-} from 'vue';
-import { storeToRefs } from "pinia";
+import { ref, computed, watch } from 'vue';
+import { storeToRefs } from 'pinia';
 import type { ContributorLeaderboard, Contributor } from '~~/types/contributors/responses.types';
-import { useProjectStore } from "~/components/modules/project/store/project.store";
+import { useProjectStore } from '~/components/modules/project/store/project.store';
 import { isEmptyData } from '~/components/shared/utils/helper';
-import LfxActivitiesDropdown
-  from "~/components/modules/widget/components/contributors/fragments/activities-dropdown.vue";
-import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
-import LfxContributorsTable from "~/components/modules/widget/components/contributors/fragments/contributors-table.vue";
-import contributorsLeaderboard
-  from '~/components/modules/widget/config/contributor/contributors-leaderboard/contributors-leaderboard.config';
+import LfxActivitiesDropdown from '~/components/modules/widget/components/contributors/fragments/activities-dropdown.vue';
+import LfxProjectLoadState from '~/components/modules/project/components/shared/load-state.vue';
+import LfxContributorsTable from '~/components/modules/widget/components/contributors/fragments/contributors-table.vue';
+import contributorsLeaderboard from '~/components/modules/widget/config/contributor/contributors-leaderboard/contributors-leaderboard.config';
 import LfxDrawer from '~/components/uikit/drawer/drawer.vue';
-import { CONTRIBUTORS_API_SERVICE } from '~~/app/components/modules/widget/services/contributors.api.service'
+import { CONTRIBUTORS_API_SERVICE } from '~~/app/components/modules/widget/services/contributors.api.service';
 
-const { startDate, endDate, selectedReposValues } = storeToRefs(useProjectStore())
+const { startDate, endDate, selectedReposValues } = storeToRefs(useProjectStore());
 
-const props = withDefaults(defineProps<{
-  modelValue: boolean,
-  selectedMetric?: string,
-  model: { includeCollaborations?: boolean }
-}>(), {
-  modelValue: false,
-  selectedMetric: 'all:all',
-  model: () => ({ includeCollaborations: false })
-});
+const props = withDefaults(
+  defineProps<{
+    modelValue: boolean;
+    selectedMetric?: string;
+    model: { includeCollaborations?: boolean };
+  }>(),
+  {
+    modelValue: false,
+    selectedMetric: 'all:all',
+    model: () => ({ includeCollaborations: false }),
+  },
+);
 
-const emit = defineEmits<{(e: 'update:modelValue', value: boolean): void
-}>();
+const emit = defineEmits<{ (e: 'update:modelValue', value: boolean): void }>();
 
 const isDrawerOpen = computed({
   get: () => props.modelValue,
-  set: (value: boolean) => emit('update:modelValue', value)
+  set: (value: boolean) => emit('update:modelValue', value),
 });
 
 const route = useRoute();
@@ -98,7 +95,7 @@ const metric = ref(props.selectedMetric);
 const platform = computed(() => metric.value.split(':')[0]);
 const activityType = computed(() => metric.value.split(':')[1]);
 
-const { project } = storeToRefs(useProjectStore())
+const { project } = storeToRefs(useProjectStore());
 
 const params = computed(() => ({
   projectSlug: route.params.slug as string,
@@ -110,14 +107,8 @@ const params = computed(() => ({
   includeCollaborations: props.model.includeCollaborations,
 }));
 
-const {
-  data,
-  isSuccess,
-  isError,
-  hasNextPage,
-  fetchNextPage,
-  isFetchingNextPage,
-} = CONTRIBUTORS_API_SERVICE.fetchContributorLeaderboard(params);
+const { data, isSuccess, isError, hasNextPage, fetchNextPage, isFetchingNextPage } =
+  CONTRIBUTORS_API_SERVICE.fetchContributorLeaderboard(params);
 
 const contributors = computed<Contributor[]>(() => {
   if (!data.value) {
@@ -143,6 +134,6 @@ watch(props, () => {
 
 <script lang="ts">
 export default {
-  name: 'LfxContributorLeaderboardDrawer'
+  name: 'LfxContributorLeaderboardDrawer',
 };
 </script>

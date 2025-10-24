@@ -30,28 +30,28 @@ import LfxChatLabel from './chat-label.vue';
 import type { Widget } from '~/components/modules/widget/types/widget';
 
 const emit = defineEmits<{
-  (e: 'selectResult', id: string): void
-}>()
+  (e: 'selectResult', id: string): void;
+}>();
 
 const props = defineProps<{
-  messages: Array<AIMessage>,
-  selectedResultId: string | null,
-  isLoading: boolean,
+  messages: Array<AIMessage>;
+  selectedResultId: string | null;
+  isLoading: boolean;
   widgetName: Widget | undefined;
-}>()
+}>();
 
-const allResults = computed(() => props.messages.filter(m => m.type === 'sql-result' || m.type === 'pipe-result'));
+const allResults = computed(() => props.messages.filter((m) => m.type === 'sql-result' || m.type === 'pipe-result'));
 
 // Filter out chat-response-id messages - they're only for internal tracking
-const visibleMessages = computed(() => props.messages.filter(m => m.type !== 'chat-response-id'));
+const visibleMessages = computed(() => props.messages.filter((m) => m.type !== 'chat-response-id'));
 
 const selectResult = (id: string) => {
-  emit('selectResult', id)
-}
+  emit('selectResult', id);
+};
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxCopilotChatHistory'
-}
+  name: 'LfxCopilotChatHistory',
+};
 </script>

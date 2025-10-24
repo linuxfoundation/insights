@@ -7,16 +7,17 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import LfxCollectionListView from "~/components/modules/collection/views/collection-list.vue";
+import LfxCollectionListView from '~/components/modules/collection/views/collection-list.vue';
 
 const title = 'Collections | LFX Insights';
-const description = 'Explore curated collections of open source projects on LFX Insights. '
-  + 'Discover projects grouped by technology, ecosystem, and community.';
+const description =
+  'Explore curated collections of open source projects on LFX Insights. ' +
+  'Discover projects grouped by technology, ecosystem, and community.';
 
 useSeoMeta({
   title,
   description,
   ogTitle: title,
-  twitterDescription: description
-})
+  twitterDescription: description,
+});
 </script>

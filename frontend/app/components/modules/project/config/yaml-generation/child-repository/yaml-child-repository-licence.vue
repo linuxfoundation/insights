@@ -9,8 +9,8 @@ SPDX-License-Identifier: MIT
       <p class="text-sm font-semibold leading-5 text-brand-600">Repository details</p>
       <p class="text-lg font-semibold leading-7 text-neutral-900">License information</p>
       <p class="text-xs font-normal leading-4 text-neutral-500">
-        Specify the license under which your project is distributed. This information helps users
-        understand how they can use, modify, and distribute your code.
+        Specify the license under which your project is distributed. This information helps users understand how they
+        can use, modify, and distribute your code.
       </p>
     </div>
 
@@ -66,13 +66,11 @@ SPDX-License-Identifier: MIT
             </p>
             <p class="text-xs leading-4 text-neutral-600">
               <span class="font-semibold">GPL-3.0:</span>
-              <span class="font-normal">
-                Copyleft license requiring derivative works to be open source</span>
+              <span class="font-normal"> Copyleft license requiring derivative works to be open source</span>
             </p>
             <p class="text-xs leading-4 text-neutral-600">
               <span class="font-semibold">BSD-3-Clause:</span>
-              <span class="font-normal">
-                Permissive license similar to MIT with additional clause</span>
+              <span class="font-normal"> Permissive license similar to MIT with additional clause</span>
             </p>
           </div>
         </div>
@@ -82,24 +80,24 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-import { url } from '@vuelidate/validators'
-import useVuelidate from '@vuelidate/core'
-import LfxField from '~/components/uikit/field/field.vue'
-import LfxInput from '~/components/uikit/input/input.vue'
-import LfxIcon from '~/components/uikit/icon/icon.vue'
-import LfxFieldMessages from '~/components/uikit/field/field-messages.vue'
+import { computed } from 'vue';
+import { url } from '@vuelidate/validators';
+import useVuelidate from '@vuelidate/core';
+import LfxField from '~/components/uikit/field/field.vue';
+import LfxInput from '~/components/uikit/input/input.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxFieldMessages from '~/components/uikit/field/field-messages.vue';
 
 const props = defineProps<{
-  modelValue: object
-}>()
+  modelValue: object;
+}>();
 
-const emit = defineEmits<{ (e: 'update:modelValue', value: object): void }>()
+const emit = defineEmits<{ (e: 'update:modelValue', value: object): void }>();
 
 const model = computed<object>({
   get: () => props.modelValue,
   set: (value: object) => emit('update:modelValue', value),
-})
+});
 
 const rules = {
   repository: {
@@ -109,7 +107,7 @@ const rules = {
       },
     },
   },
-}
+};
 
-const $v = useVuelidate(rules, model)
+const $v = useVuelidate(rules, model);
 </script>

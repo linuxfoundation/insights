@@ -9,7 +9,7 @@ export default {
     'MapChart',
     'ScatterChart',
     'HeatmapChart',
-    'TreemapChart'
+    'TreemapChart',
   ],
   features: ['LabelLayout', 'UniversalTransition'],
   components: [
@@ -17,6 +17,6 @@ export default {
     'TooltipComponent',
     'LegendComponent',
     'DatasetComponent',
-    'GridComponent'
-  ]
+    'GridComponent',
+  ],
 };

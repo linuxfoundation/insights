@@ -32,9 +32,7 @@ SPDX-License-Identifier: MIT
         :size="40"
         class="text-neutral-300"
       />
-      <p class="text-sm text-neutral-500 mt-5">
-        No data available
-      </p>
+      <p class="text-sm text-neutral-500 mt-5">No data available</p>
     </div>
   </div>
 </template>
@@ -48,42 +46,45 @@ import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 
-const props = withDefaults(defineProps<{
-  status: AsyncDataRequestStatus;
-  isEmpty?: boolean;
-  height?: number;
-  errorMessage?: string;
-  error?: unknown;
-  useMinHeight?: boolean;
-  loadingMessage?: string;
-}>(), {
-  height: 100,
-  errorMessage: 'Error fetching data',
-  error: undefined,
-  useMinHeight: true,
-  loadingMessage: 'Loading data...'
-});
+const props = withDefaults(
+  defineProps<{
+    status: AsyncDataRequestStatus;
+    isEmpty?: boolean;
+    height?: number;
+    errorMessage?: string;
+    error?: unknown;
+    useMinHeight?: boolean;
+    loadingMessage?: string;
+  }>(),
+  {
+    height: 100,
+    errorMessage: 'Error fetching data',
+    error: undefined,
+    useMinHeight: true,
+    loadingMessage: 'Loading data...',
+  },
+);
 
 const { showToast } = useToastService();
-const heightStyle = computed(() => (props.useMinHeight
-  ? { minHeight: `${props.height}px` } : { height: `${props.height}px` }));
+const heightStyle = computed(() =>
+  props.useMinHeight ? { minHeight: `${props.height}px` } : { height: `${props.height}px` },
+);
 
-watch(() => props.error, (err) => {
-  if (err) {
-    setTimeout(() => {
-      showToast(
-        `${props.errorMessage}`,
-        ToastTypesEnum.negative,
-        undefined,
-        10000
-      );
-    }, 500);
-  }
-}, { immediate: true });
+watch(
+  () => props.error,
+  (err) => {
+    if (err) {
+      setTimeout(() => {
+        showToast(`${props.errorMessage}`, ToastTypesEnum.negative, undefined, 10000);
+      }, 500);
+    }
+  },
+  { immediate: true },
+);
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxProjectLoadState'
+  name: 'LfxProjectLoadState',
 };
 </script>

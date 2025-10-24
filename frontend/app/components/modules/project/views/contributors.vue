@@ -157,11 +157,10 @@ const onSideNavUpdate = (value: string) => {
     tmpClickedItem.value = '';
   }, 1000);
 };
-
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxProjectContributorsView'
+  name: 'LfxProjectContributorsView',
 };
 </script>

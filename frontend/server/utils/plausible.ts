@@ -1,9 +1,9 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import type { H3Event } from 'h3'
+import type { H3Event } from 'h3';
 
 interface TrackEventOptions {
-  props?: Record<string, string | number | boolean>
+  props?: Record<string, string | number | boolean>;
 }
 
 /**
@@ -27,17 +27,18 @@ export function useApiTrackEvent(
   url: string,
   options?: TrackEventOptions,
 ) {
-  const config = useRuntimeConfig()
+  const config = useRuntimeConfig();
 
   // Only track in production
   if (config.public.appEnv !== 'production') {
-    return
+    return;
   }
 
-  const forwardedFor = getHeader(event, 'x-forwarded-for')
-    || getHeader(event, 'x-real-ip')
-    || event.node.req.socket.remoteAddress
-    || ''
+  const forwardedFor =
+    getHeader(event, 'x-forwarded-for') ||
+    getHeader(event, 'x-real-ip') ||
+    event.node.req.socket.remoteAddress ||
+    '';
 
   // Fire and forget - don't await to avoid slowing down the response
   $fetch('https://plausible.io/api/event', {
@@ -55,6 +56,6 @@ export function useApiTrackEvent(
     },
   }).catch((trackingError) => {
     // Silently fail - don't impact the API response
-    console.error('Failed to track Plausible event:', trackingError)
-  })
+    console.error('Failed to track Plausible event:', trackingError);
+  });
 }

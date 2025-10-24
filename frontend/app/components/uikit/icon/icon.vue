@@ -22,17 +22,17 @@ const props = withDefaults(
   }>(),
   {
     type: 'light',
-    size: 16
-  }
+    size: 16,
+  },
 );
 
 const sizeStyle = computed(() => ({
-  '--lfx-icon-size': `${props.size / 16}rem`
+  '--lfx-icon-size': `${props.size / 16}rem`,
 }));
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxIcon'
+  name: 'LfxIcon',
 };
 </script>

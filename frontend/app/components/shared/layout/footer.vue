@@ -14,16 +14,17 @@ SPDX-License-Identifier: MIT
             loading="lazy"
             width="176"
             height="24"
-          >
+          />
           <p class="pt-3 text-body-2 text-neutral-500">
-            LFX Insights helps developers and their organizations make smarter
-            decisions about the open source projects they depend on.
+            LFX Insights helps developers and their organizations make smarter decisions about the open source projects
+            they depend on.
           </p>
           <div class="pt-10 md:pt-11 lg:pt-15 flex items-center gap-3">
             <a
               href="https://github.com/linuxfoundation/insights"
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="GitHub Repository"
             >
               <lfx-icon-button
                 icon="github"
@@ -67,10 +68,10 @@ SPDX-License-Identifier: MIT
               >
                 <router-link
                   v-if="link.route"
-                  :to="{name: link.route}"
+                  :to="{ name: link.route }"
                   class="text-sm leading-7 hover:underline whitespace-nowrap"
                 >
-                  {{link.name}}
+                  {{ link.name }}
                 </router-link>
                 <a
                   v-else-if="link.link"
@@ -79,14 +80,14 @@ SPDX-License-Identifier: MIT
                   rel="noopener noreferrer"
                   class="text-sm leading-7 hover:underline whitespace-nowrap"
                 >
-                  {{link.name}}
+                  {{ link.name }}
                 </a>
                 <div
                   v-else
                   class="text-sm leading-7 hover:underline whitespace-nowrap cursor-pointer"
                   @click="link.click()"
                 >
-                  {{link.name}}
+                  {{ link.name }}
                 </div>
               </template>
             </nav>
@@ -104,33 +105,33 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-  import {nextTick} from "vue";
-  import LfxIconButton from "~/components/uikit/icon-button/icon-button.vue";
-  import LfxButton from "~/components/uikit/button/button.vue";
-  import LfxIcon from "~/components/uikit/icon/icon.vue";
-  import {lfxFooterMenu} from "~/config/menu/footer";
-  import LfxOnboardingLink from "~/components/shared/components/onboarding-link.vue";
-  
-  if (import.meta.client) {
-    await import('@linuxfoundation/lfx-ui-core');
-  }
+import { nextTick } from 'vue';
+import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
+import LfxButton from '~/components/uikit/button/button.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import { lfxFooterMenu } from '~/config/menu/footer';
+import LfxOnboardingLink from '~/components/shared/components/onboarding-link.vue';
 
-  onMounted(async () => {
-    await nextTick()
-    // Hackish way to align footer content to the left as there is no other way to do it
-    const footer = document.querySelector('.footer') as HTMLElement;
-    const shadowRoot = footer?.shadowRoot;
-    if (shadowRoot) {
-      const container = shadowRoot.querySelector('.footer-content');
-      if (container) {
-        (container as HTMLElement).style.textAlign = 'left';
-      }
+if (import.meta.client) {
+  await import('@linuxfoundation/lfx-ui-core');
+}
+
+onMounted(async () => {
+  await nextTick();
+  // Hackish way to align footer content to the left as there is no other way to do it
+  const footer = document.querySelector('.footer') as HTMLElement;
+  const shadowRoot = footer?.shadowRoot;
+  if (shadowRoot) {
+    const container = shadowRoot.querySelector('.footer-content');
+    if (container) {
+      (container as HTMLElement).style.textAlign = 'left';
     }
-  });
+  }
+});
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxInsightsFooter'
-}
+  name: 'LfxInsightsFooter',
+};
 </script>

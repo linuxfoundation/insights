@@ -1,12 +1,13 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import Forks from './forks.vue'
-import type { WidgetConfig } from '~/components/modules/widget/config/widget.config'
+import Forks from './forks.vue';
+import type { WidgetConfig } from '~/components/modules/widget/config/widget.config';
 
 const forks: WidgetConfig = {
   key: 'forks',
   name: 'Forks',
-  description: () => 'New forks (copies) of the project repositories during the selected time period.',
+  description: () =>
+    'New forks (copies) of the project repositories during the selected time period.',
   learnMoreLink: `/docs/metrics/popularity#forks`,
   component: Forks,
   defaultValue: {
@@ -72,8 +73,8 @@ const forks: WidgetConfig = {
   },
   copilot: {
     icon: 'code-fork',
-    suggestions: 'How many forks does this project have?'
+    suggestions: 'How many forks does this project have?',
   },
-}
+};
 
-export default forks
+export default forks;

@@ -8,8 +8,7 @@ SPDX-License-Identifier: MIT
   </div>
 </template>
 
-<script lang="ts" setup>
-</script>
+<script lang="ts" setup></script>
 
 <script lang="ts">
 export default {

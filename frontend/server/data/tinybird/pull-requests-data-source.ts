@@ -1,17 +1,17 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import type { ActivityCountFilter } from "../types";
-import { fetchFromTinybird } from './tinybird'
-import {ActivityTypes} from "~~/types/shared/activity-types";
-import { calculatePercentageChange, getPreviousDates } from "~~/server/data/util";
-import type { PullRequests } from "~~/types/development/responses.types";
+import type { ActivityCountFilter } from '../types';
+import { fetchFromTinybird } from './tinybird';
+import { ActivityTypes } from '~~/types/shared/activity-types';
+import { calculatePercentageChange, getPreviousDates } from '~~/server/data/util';
+import type { PullRequests } from '~~/types/development/responses.types';
 
 // This is the data part of the response from Tinybird
 type TinybirdActivityCountData = {
-  startDate: string,
-  endDate: string,
-  activityCount?: number
-  cumulativeActivityCount?: number
+  startDate: string;
+  endDate: string;
+  activityCount?: number;
+  cumulativeActivityCount?: number;
 };
 
 type TinybirdActivityCountSummary = {
@@ -24,24 +24,24 @@ type TinybirdPullRequestResolutionVelocityData = {
 
 function getTinybirdQueries(filter: ActivityCountFilter) {
   const dates = getPreviousDates(filter.startDate, filter.endDate);
-  
+
   const openedPRsActivities = [
     ActivityTypes.PULL_REQUEST_OPENED,
     ActivityTypes.MERGE_REQUEST_OPENED,
-    ActivityTypes.CHANGESET_CREATED
+    ActivityTypes.CHANGESET_CREATED,
   ];
 
   const mergedPRsActivities = [
     ActivityTypes.PULL_REQUEST_MERGED,
     ActivityTypes.MERGE_REQUEST_MERGED,
-    ActivityTypes.CHANGESET_MERGED
+    ActivityTypes.CHANGESET_MERGED,
   ];
 
   const closedPRsActivities = [
     ActivityTypes.PULL_REQUEST_CLOSED,
     ActivityTypes.MERGE_REQUEST_CLOSED,
     ActivityTypes.CHANGESET_CLOSED,
-    ActivityTypes.CHANGESET_ABANDONED
+    ActivityTypes.CHANGESET_ABANDONED,
   ];
 
   return {
@@ -55,7 +55,7 @@ function getTinybirdQueries(filter: ActivityCountFilter) {
       activity_types: openedPRsActivities,
       granularity: undefined, // This tells TinyBird to return a summary instead of time series
       startDate: dates.previous.from,
-      endDate: dates.previous.to
+      endDate: dates.previous.to,
     },
 
     currentMergedPRsSummaryQuery: {
@@ -68,7 +68,7 @@ function getTinybirdQueries(filter: ActivityCountFilter) {
       activity_types: mergedPRsActivities,
       granularity: undefined, // This tells TinyBird to return a summary instead of time series
       startDate: dates.previous.from,
-      endDate: dates.previous.to
+      endDate: dates.previous.to,
     },
 
     currentClosedPRsSummaryQuery: {
@@ -81,7 +81,7 @@ function getTinybirdQueries(filter: ActivityCountFilter) {
       activity_types: closedPRsActivities,
       granularity: undefined, // This tells TinyBird to return a summary instead of time series
       startDate: dates.previous.from,
-      endDate: dates.previous.to
+      endDate: dates.previous.to,
     },
 
     openedPRsQuery: {
@@ -100,8 +100,8 @@ function getTinybirdQueries(filter: ActivityCountFilter) {
       ...filter,
       activity_type: undefined,
       granularity: undefined, // This tells TinyBird to return a summary instead of time series
-    }
-  }
+    },
+  };
 }
 
 export async function fetchPullRequests(filter: ActivityCountFilter): Promise<PullRequests> {
@@ -118,7 +118,7 @@ export async function fetchPullRequests(filter: ActivityCountFilter): Promise<Pu
     openedPRsQuery,
     mergedPRsQuery,
     closedPRsQuery,
-    prResolutionVelocityQuery
+    prResolutionVelocityQuery,
   } = getTinybirdQueries(filter);
 
   const summariesPath = '/v0/pipes/activities_count.json';
@@ -135,7 +135,7 @@ export async function fetchPullRequests(filter: ActivityCountFilter): Promise<Pu
     openedPRs,
     mergedPRs,
     closedPRs,
-    prResolutionVelocity
+    prResolutionVelocity,
   ] = await Promise.all([
     fetchFromTinybird<TinybirdActivityCountSummary[]>(summariesPath, currentOpenedPRsSummaryQuery),
     fetchFromTinybird<TinybirdActivityCountSummary[]>(summariesPath, previousOpenedPRsSummaryQuery),
@@ -146,7 +146,10 @@ export async function fetchPullRequests(filter: ActivityCountFilter): Promise<Pu
     fetchFromTinybird<TinybirdActivityCountData[]>(dataPath, openedPRsQuery),
     fetchFromTinybird<TinybirdActivityCountData[]>(dataPath, mergedPRsQuery),
     fetchFromTinybird<TinybirdActivityCountData[]>(dataPath, closedPRsQuery),
-    fetchFromTinybird<TinybirdPullRequestResolutionVelocityData[]>(prResolutionVelocityPath, prResolutionVelocityQuery)
+    fetchFromTinybird<TinybirdPullRequestResolutionVelocityData[]>(
+      prResolutionVelocityPath,
+      prResolutionVelocityQuery,
+    ),
   ]);
 
   const currentOpenedCount = currentOpenedPRsSummary.data[0]?.activityCount || 0;
@@ -202,6 +205,6 @@ export async function fetchPullRequests(filter: ActivityCountFilter): Promise<Pu
       open: item.activityCount || 0,
       merged: mergedPRs.data[index]?.activityCount || 0,
       closed: closedPRs.data[index]?.activityCount || 0,
-    }))
+    })),
   };
 }

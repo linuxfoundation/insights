@@ -94,5 +94,5 @@ export enum ActivityTypes {
 
   // The ones below are for Twitter
   HASHTAG = 'hashtag',
-  MENTION = 'mention'
+  MENTION = 'mention',
 }

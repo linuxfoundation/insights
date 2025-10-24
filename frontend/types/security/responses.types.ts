@@ -5,20 +5,20 @@
  */
 
 export enum SecurityDataCategory {
-    ACCESS_CONTROL = 'Access Control',
-    BUILD_AND_RELEASE = 'Build and Release',
-    DOCUMENTATION = 'Documentation',
-    GOVERNANCE = 'Governance',
-    LEGAL = 'Legal',
-    QUALITY = 'Quality',
-    SECURITY_ASSESSMENT = 'Security Assessment',
-    VULNERABILITY_MANAGEMENT = 'Vulnerability Management',
+  ACCESS_CONTROL = 'Access Control',
+  BUILD_AND_RELEASE = 'Build and Release',
+  DOCUMENTATION = 'Documentation',
+  GOVERNANCE = 'Governance',
+  LEGAL = 'Legal',
+  QUALITY = 'Quality',
+  SECURITY_ASSESSMENT = 'Security Assessment',
+  VULNERABILITY_MANAGEMENT = 'Vulnerability Management',
 }
 
 export enum SecurityDataResult {
-    PASSED = 'Passed',
-    FAILED = 'Failed',
-    NEEDS_REVIEW = 'Needs Review',
+  PASSED = 'Passed',
+  FAILED = 'Failed',
+  NEEDS_REVIEW = 'Needs Review',
 }
 
 export interface SecurityAssessmentData {
@@ -32,7 +32,7 @@ export interface SecurityAssessmentData {
 export interface SecurityData {
   category: SecurityDataCategory;
   controlId: string;
-  "eval.id": string;
+  'eval.id': string;
   message: string;
   repo: string;
   result: SecurityDataResult;

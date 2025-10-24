@@ -10,30 +10,22 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import {
-useRoute, createError, showError
-} from "nuxt/app";
-import {useQuery} from "@tanstack/vue-query";
-import {computed, onServerPrefetch} from "vue";
-import type {Collection} from "~~/types/collection";
-import LfxCollectionDetailsView from "~/components/modules/collection/views/collection-details.vue";
-import {TanstackKey} from "~/components/shared/types/tanstack";
-import {COLLECTIONS_API_SERVICE} from "~/components/modules/collection/services/collections.api.service";
-import {useRichSchema} from "~~/composables/useRichSchema";
+import { useRoute, createError, showError } from 'nuxt/app';
+import { useQuery } from '@tanstack/vue-query';
+import { computed, onServerPrefetch } from 'vue';
+import type { Collection } from '~~/types/collection';
+import LfxCollectionDetailsView from '~/components/modules/collection/views/collection-details.vue';
+import { TanstackKey } from '~/components/shared/types/tanstack';
+import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
+import { useRichSchema } from '~~/composables/useRichSchema';
 
 const route = useRoute();
-const {slug} = route.params;
+const { slug } = route.params;
 const { getCollectionSchema } = useRichSchema();
 
 const queryKey = computed(() => [TanstackKey.COLLECTION, slug]);
 
-const {
-  data,
-    isPending,
-    suspense,
-    isError,
-    error
-} = useQuery<Collection>({
+const { data, isPending, suspense, isError, error } = useQuery<Collection>({
   queryKey,
   queryFn: COLLECTIONS_API_SERVICE.fetchCollection(slug as string),
   retry: false,
@@ -50,7 +42,7 @@ onServerPrefetch(async () => {
       showError({ statusCode: 404, statusMessage });
     }
   }
-})
+});
 
 const title = computed(() => `${data.value?.name || 'Collection'} Insights`);
 
@@ -85,8 +77,8 @@ useSeoMeta({
   ogTitle: title,
   ogDescription: description,
   twitterTitle: title,
-  twitterDescription: description
-})
+  twitterDescription: description,
+});
 
 // Add rich schema for the collection
 useHead(getCollectionSchema(data));

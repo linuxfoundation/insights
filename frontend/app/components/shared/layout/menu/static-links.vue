@@ -20,7 +20,7 @@ SPDX-License-Identifier: MIT
     <lfx-menu-button
       v-else
       :key="link.label"
-      :to="{name: link.route}"
+      :to="{ name: link.route }"
     >
       <lfx-icon
         v-if="link.icon"
@@ -34,14 +34,14 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-  import LfxMenuGithubButton from './github-button.vue';
-  import LfxMenuButton from "~/components/uikit/menu-button/menu-button.vue";
-  import LfxIcon from "~/components/uikit/icon/icon.vue";
-  import {lfxMenu} from "~/config/menu";
+import LfxMenuGithubButton from './github-button.vue';
+import LfxMenuButton from '~/components/uikit/menu-button/menu-button.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import { lfxMenu } from '~/config/menu';
 </script>
 
 <script lang="ts">
-  export default {
-    name: 'LfxMenuStaticLinks'
-  }
+export default {
+  name: 'LfxMenuStaticLinks',
+};
 </script>

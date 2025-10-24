@@ -11,48 +11,48 @@ export default {
     type: {
       description: 'Type of the avatar',
       control: 'select',
-      options: avatarTypes
+      options: avatarTypes,
     },
     size: {
       description: 'Size of the avatar',
       control: 'select',
-      options: avatarSizes
+      options: avatarSizes,
     },
     src: {
       description: 'Source of the avatar',
       control: {
-        type: 'text'
-      }
-    }
-  }
+        type: 'text',
+      },
+    },
+  },
 };
 
 export const Default = {
   args: {
     type: 'member',
     size: 'normal',
-    src: 'https://primefaces.org/cdn/primevue/images/organization/walter.jpg'
-  }
+    src: 'https://primefaces.org/cdn/primevue/images/organization/walter.jpg',
+  },
 };
 
 export const UserNoImage = {
   args: {
     type: 'member',
-    size: 'normal'
-  }
+    size: 'normal',
+  },
 };
 
 export const OrganizationWithImage = {
   args: {
     type: 'organization',
     size: 'normal',
-    src: 'https://static-00.iconduck.com/assets.00/linux-icon-256x256-773o7tyd.png'
-  }
+    src: 'https://static-00.iconduck.com/assets.00/linux-icon-256x256-773o7tyd.png',
+  },
 };
 
 export const OrganizationNoImage = {
   args: {
     type: 'organization',
-    size: 'normal'
-  }
+    size: 'normal',
+  },
 };

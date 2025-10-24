@@ -1,16 +1,10 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import type { ActivityCountFilter } from "../types";
-import { fetchFromTinybird } from "./tinybird";
-import { ActivityTypes } from "~~/types/shared/activity-types";
-import {
-  calculatePercentageChange,
-  getPreviousDates,
-} from "~~/server/data/util";
-import type {
-  IssuesResolution,
-  IssuesResolutionData,
-} from "~~/types/development/responses.types";
+import type { ActivityCountFilter } from '../types';
+import { fetchFromTinybird } from './tinybird';
+import { ActivityTypes } from '~~/types/shared/activity-types';
+import { calculatePercentageChange, getPreviousDates } from '~~/server/data/util';
+import type { IssuesResolution, IssuesResolutionData } from '~~/types/development/responses.types';
 
 // This is the data part of the response from Tinybird
 type TinybirdActivityCountData = {
@@ -61,7 +55,7 @@ function getTinybirdQueries(filter: ActivityCountFilter) {
 }
 
 export async function fetchIssuesResolution(
-  filter: ActivityCountFilter
+  filter: ActivityCountFilter,
 ): Promise<IssuesResolution> {
   // TODO: We're passing unchecked query parameters to TinyBird directly from the frontend.
   //  We need to ensure this doesn't pose a security risk.
@@ -74,9 +68,9 @@ export async function fetchIssuesResolution(
     issueResolutionVelocityQuery,
   } = getTinybirdQueries(filter);
 
-  const summariesPath = "/v0/pipes/activities_count.json";
-  const dataPath = "/v0/pipes/activities_count.json";
-  const issueResolutionVelocityPath = "/v0/pipes/issues_average_resolve_velocity.json";
+  const summariesPath = '/v0/pipes/activities_count.json';
+  const dataPath = '/v0/pipes/activities_count.json';
+  const issueResolutionVelocityPath = '/v0/pipes/issues_average_resolve_velocity.json';
 
   const [
     currentSummaryData,
@@ -85,19 +79,13 @@ export async function fetchIssuesResolution(
     issuesClosed,
     issueResolutionVelocity,
   ] = await Promise.all([
-    fetchFromTinybird<TinybirdActivityCountSummary[]>(
-      summariesPath,
-      currentSummaryQuery
-    ),
-    fetchFromTinybird<TinybirdActivityCountSummary[]>(
-      summariesPath,
-      previousSummaryQuery
-    ),
+    fetchFromTinybird<TinybirdActivityCountSummary[]>(summariesPath, currentSummaryQuery),
+    fetchFromTinybird<TinybirdActivityCountSummary[]>(summariesPath, previousSummaryQuery),
     fetchFromTinybird<TinybirdActivityCountData[]>(dataPath, issuesOpenedQuery),
     fetchFromTinybird<TinybirdActivityCountData[]>(dataPath, issuesClosedQuery),
     fetchFromTinybird<TinybirdIssueResolutionVelocityData[]>(
       issueResolutionVelocityPath,
-      issueResolutionVelocityQuery
+      issueResolutionVelocityQuery,
     ),
   ]);
 
@@ -105,7 +93,7 @@ export async function fetchIssuesResolution(
   const previousCumulativeCount = previousSummaryData.data[0]?.activityCount || 0;
   const percentageChange = calculatePercentageChange(
     currentCumulativeCount,
-    previousCumulativeCount
+    previousCumulativeCount,
   );
 
   // join the data from issuesOpened and issuesClosed together
@@ -115,10 +103,9 @@ export async function fetchIssuesResolution(
       previous: previousCumulativeCount,
       percentageChange,
       changeValue: currentCumulativeCount - previousCumulativeCount,
-      periodFrom: filter.startDate?.toISO() || "",
-      periodTo: filter.endDate?.toISO() || "",
-      avgVelocityInDays:
-        issueResolutionVelocity.data[0].averageIssueResolveVelocitySeconds,
+      periodFrom: filter.startDate?.toISO() || '',
+      periodTo: filter.endDate?.toISO() || '',
+      avgVelocityInDays: issueResolutionVelocity.data[0].averageIssueResolveVelocitySeconds,
     },
     data: mergeRanges(issuesOpened.data, issuesClosed.data),
   };
@@ -126,7 +113,7 @@ export async function fetchIssuesResolution(
 
 export function mergeRanges(
   array1: TinybirdActivityCountData[],
-  array2: TinybirdActivityCountData[]
+  array2: TinybirdActivityCountData[],
 ): IssuesResolutionData[] {
   const getKey = (r: TinybirdActivityCountData) => `${r.startDate}_${r.endDate}`;
 
@@ -137,7 +124,7 @@ export function mergeRanges(
 
   return allKeys
     .map((key) => {
-      const [startDate, endDate] = key.split("_");
+      const [startDate, endDate] = key.split('_');
       const r1 = map1.get(key);
       const r2 = map2.get(key);
 

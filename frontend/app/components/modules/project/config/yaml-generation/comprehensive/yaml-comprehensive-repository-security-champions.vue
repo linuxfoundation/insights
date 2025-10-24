@@ -8,9 +8,8 @@ SPDX-License-Identifier: MIT
       <p class="text-sm font-semibold text-brand-600">Repository details</p>
       <p class="text-lg font-semibold text-neutral-900">Security champions</p>
       <p class="text-body-2 text-neutral-500">
-        Contributors or maintainers who take responsibility for promoting secure development
-        practices, assisting with vulnerability triage, and serving as a point of contact for
-        security-related matters in the repository.
+        Contributors or maintainers who take responsibility for promoting secure development practices, assisting with
+        vulnerability triage, and serving as a point of contact for security-related matters in the repository.
       </p>
     </div>
 
@@ -44,28 +43,27 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import LfxButton from '~/components/uikit/button/button.vue'
-import LfxIcon from '~/components/uikit/icon/icon.vue'
-import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue'
-import LfxYamlSecurityChampionItem from
-  '~/components/modules/project/config/yaml-generation/shared/components/yaml-security-champion-item.vue'
+import LfxButton from '~/components/uikit/button/button.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
+import LfxYamlSecurityChampionItem from '~/components/modules/project/config/yaml-generation/shared/components/yaml-security-champion-item.vue';
 
 const props = defineProps<{
-  modelValue: object
-}>()
+  modelValue: object;
+}>();
 
-const emit = defineEmits<{ (e: 'update:modelValue', value: object): void }>()
+const emit = defineEmits<{ (e: 'update:modelValue', value: object): void }>();
 
 const model = computed<object>({
   get: () => props.modelValue,
   set: (value: object) => emit('update:modelValue', value),
-})
+});
 
 const addChampion = () => {
   model.value.repository.security.champions.push({
     name: '',
     email: '',
     primary: false,
-  })
-}
+  });
+};
 </script>

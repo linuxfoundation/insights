@@ -8,14 +8,14 @@ SPDX-License-Identifier: MIT
     width="21.25rem"
     dropdown-class="!overflow-auto sm:!overflow-visible"
   >
-    <template #trigger="{selectedOption}">
+    <template #trigger="{ selectedOption }">
       <lfx-dropdown-selector type="filled">
         <lfx-icon
           name="arrow-down-wide-short"
           :size="16"
         />
         {{ selectedOption.value === 'all' ? selectedOption.label : getSelectedLabel(selectedOption.value) }}
-        {{selectedOption.value.startsWith('group-') ? '(all sub-stacks)' : ''}}
+        {{ selectedOption.value.startsWith('group-') ? '(all sub-stacks)' : '' }}
       </lfx-dropdown-selector>
     </template>
     <client-only>
@@ -60,48 +60,46 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-
-import {computed} from "vue";
-import LfxDropdownSelect from "~/components/uikit/dropdown/dropdown-select.vue";
-import LfxDropdownSelector from "~/components/uikit/dropdown/dropdown-selector.vue";
-import LfxIcon from "~/components/uikit/icon/icon.vue";
-import LfxDropdownItem from "~/components/uikit/dropdown/dropdown-item.vue";
-import LfxDropdownSeparator from "~/components/uikit/dropdown/dropdown-separator.vue";
-import LfxDropdownSubmenu from "~/components/uikit/dropdown/dropdown-submenu.vue";
-import LfxCollectionListCategoryOptions
-  from "~/components/modules/collection/components/list/filters/collection-list-filters-category-options.vue";
-import type { CategoryGroupOptions} from "~/components/modules/collection/services/collections.api.service";
+import { computed } from 'vue';
+import LfxDropdownSelect from '~/components/uikit/dropdown/dropdown-select.vue';
+import LfxDropdownSelector from '~/components/uikit/dropdown/dropdown-selector.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
+import LfxDropdownSeparator from '~/components/uikit/dropdown/dropdown-separator.vue';
+import LfxDropdownSubmenu from '~/components/uikit/dropdown/dropdown-submenu.vue';
+import LfxCollectionListCategoryOptions from '~/components/modules/collection/components/list/filters/collection-list-filters-category-options.vue';
+import type { CategoryGroupOptions } from '~/components/modules/collection/services/collections.api.service';
 
 const props = defineProps<{
   modelValue: string;
-  categoryGroupsVertical: CategoryGroupOptions[],
-  categoryGroupsHorizontal: CategoryGroupOptions[]
+  categoryGroupsVertical: CategoryGroupOptions[];
+  categoryGroupsHorizontal: CategoryGroupOptions[];
 }>();
 
-const emit = defineEmits<{(e: 'update:modelValue', value: string): void;
-}>();
+const emit = defineEmits<{ (e: 'update:modelValue', value: string): void }>();
 
 const model = computed({
   get: () => props.modelValue,
-  set: (value: string) => emit('update:modelValue', value)
-})
+  set: (value: string) => emit('update:modelValue', value),
+});
 
 const allCategoryGroups = computed(() => [
   ...props.categoryGroupsVertical,
   ...props.categoryGroupsHorizontal,
-  ...props.categoryGroupsVertical.flatMap((cg) => cg.categories.map((c) => ({id: c.id, name: c.name, value: c.id}))),
-  ...props.categoryGroupsHorizontal.flatMap((cg) => cg.categories.map((c) => ({id: c.id, name: c.name, value: c.id})))
+  ...props.categoryGroupsVertical.flatMap((cg) => cg.categories.map((c) => ({ id: c.id, name: c.name, value: c.id }))),
+  ...props.categoryGroupsHorizontal.flatMap((cg) =>
+    cg.categories.map((c) => ({ id: c.id, name: c.name, value: c.id })),
+  ),
 ]);
 
 const getSelectedLabel = (value: string) => {
   const categoryGroup = allCategoryGroups.value.find((cg) => cg.value === value);
   return categoryGroup?.name || '';
 };
-
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxCollectionListCategory'
-}
+  name: 'LfxCollectionListCategory',
+};
 </script>

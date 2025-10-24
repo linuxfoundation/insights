@@ -36,10 +36,9 @@ const props = defineProps<{
   delta: Summary;
   color: string;
 }>();
-
 </script>
 <script lang="ts">
 export default {
   name: 'LfxProjectPackageLegendItem',
-}
+};
 </script>

@@ -1,7 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { fileURLToPath, URL } from 'node:url'
-import { defineConfig } from 'vitepress'
+import { fileURLToPath, URL } from 'node:url';
+import { defineConfig } from 'vitepress';
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -57,7 +57,10 @@ export default defineConfig({
           { text: 'LF Open Source Index', link: '/introduction/lf-oss-index/index.md' },
           { text: 'Data Sources', link: '/introduction/data-sources/index.md' },
           { text: 'Data Quality', link: '/introduction/data-quality/index.md' },
-          { text: 'Code contributions & Collaborations', link: '/introduction/contributions/index.md' },
+          {
+            text: 'Code contributions & Collaborations',
+            link: '/introduction/contributions/index.md',
+          },
           { text: 'Maintainers', link: '/introduction/maintainers/index.md' },
         ],
       },
@@ -81,4 +84,4 @@ export default defineConfig({
     ],
     socialLinks: [{ icon: 'github', link: 'https://github.com/linuxfoundation/insights' }],
   },
-})
+});

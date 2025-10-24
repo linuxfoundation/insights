@@ -7,25 +7,30 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import {useRoute} from "nuxt/app";
-import {storeToRefs} from "pinia";
-import {useProjectStore} from "~/components/modules/project/store/project.store";
-import LfxProjectOverviewView from "~/components/modules/project/views/overview.vue";
+import { useRoute } from 'nuxt/app';
+import { storeToRefs } from 'pinia';
+import { useProjectStore } from '~/components/modules/project/store/project.store';
+import LfxProjectOverviewView from '~/components/modules/project/views/overview.vue';
 
 const route = useRoute();
 const slug = route.params.slug as string;
-const {project, selectedRepositoryGroup} = storeToRefs(useProjectStore());
-const config = useRuntimeConfig()
+const { project, selectedRepositoryGroup } = storeToRefs(useProjectStore());
+const config = useRuntimeConfig();
 
 const title = computed(() => `${selectedRepositoryGroup.value?.name} Repositories | LFX Insights`);
 const imageAlt = computed(() => `${project.value?.name} ${selectedRepositoryGroup.value?.name} insights`);
-const description = computed(() =>
-  `Track repositories under ${project.value?.name} ${selectedRepositoryGroup.value?.name} with LFX Insights. `
-  + `Compare activity, contributors, and development health across related projects.`);
+const description = computed(
+  () =>
+    `Track repositories under ${project.value?.name} ${selectedRepositoryGroup.value?.name} with LFX Insights. ` +
+    `Compare activity, contributors, and development health across related projects.`,
+);
 const url = computed(() => `${config.public.appUrl}${route.fullPath}`);
-const image = computed(() => `${config.public.appUrl}/api/seo/og-image?projectSlug=${slug}&repositoryGroupSlug=${
-  selectedRepositoryGroup.value?.slug
-}`);
+const image = computed(
+  () =>
+    `${config.public.appUrl}/api/seo/og-image?projectSlug=${slug}&repositoryGroupSlug=${
+      selectedRepositoryGroup.value?.slug
+    }`,
+);
 
 useSeoMeta({
   title,
@@ -44,5 +49,5 @@ useSeoMeta({
   twitterDescription: description,
   twitterImage: image,
   twitterImageAlt: imageAlt,
-})
+});
 </script>

@@ -14,12 +14,11 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import LfxActiveContributorBadge from "~/components/shared/modules/share/components/active-contributor-badge.vue";
-
+import LfxActiveContributorBadge from '~/components/shared/modules/share/components/active-contributor-badge.vue';
 </script>
 
 <script lang="ts">
 export default {
   name: 'LfxShareActiveContributors',
-}
+};
 </script>

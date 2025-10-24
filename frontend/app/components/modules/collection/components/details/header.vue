@@ -13,7 +13,7 @@ SPDX-License-Identifier: MIT
         class="transition-all overflow-hidden ease-linear"
       >
         <nuxt-link
-          :to="{name: LfxRoutes.COLLECTIONS}"
+          :to="{ name: LfxRoutes.COLLECTIONS }"
           class="block sm:hidden"
         >
           <lfx-button
@@ -25,9 +25,7 @@ SPDX-License-Identifier: MIT
           />
         </nuxt-link>
       </div>
-      <div
-        class="flex  transition-all"
-      >
+      <div class="flex transition-all">
         <div
           :class="
             scrollTop > 50
@@ -50,12 +48,10 @@ SPDX-License-Identifier: MIT
 
         <div
           class="flex justify-between gap-x-5 md:gap-x-8 flex-grow flex-col lg:flex-row"
-          :class="scrollTop > 50 ? 'lg:items-center': ''"
+          :class="scrollTop > 50 ? 'lg:items-center' : ''"
         >
           <div class="flex-grow flex">
-            <div
-              class="w-full flex flex-col justify-center"
-            >
+            <div class="w-full flex flex-col justify-center">
               <lfx-skeleton
                 v-if="loading"
                 height="2rem"
@@ -71,7 +67,7 @@ SPDX-License-Identifier: MIT
               </h1>
               <div
                 :class="scrollTop > 50 ? 'h-0 opacity-0 invisible pt-0' : 'h-auto opacity-100 visible pt-2 md:pt-3'"
-                class=" w-full transition-all ease-linear"
+                class="w-full transition-all ease-linear"
               >
                 <lfx-skeleton
                   v-if="loading"
@@ -83,7 +79,7 @@ SPDX-License-Identifier: MIT
                   v-else-if="props.collection"
                   class="text-body-2 md:text-body-1 text-neutral-500"
                 >
-                  {{props.collection.description}}
+                  {{ props.collection.description }}
                 </p>
               </div>
             </div>
@@ -115,7 +111,7 @@ SPDX-License-Identifier: MIT
                 v-else
                 class="leading-6 transition-all whitespace-nowrap text-xs md:text-sm"
               >
-                {{formatNumberShort(props.collection.projectCount)}}
+                {{ formatNumberShort(props.collection.projectCount) }}
                 {{ pluralize('project', props.collection.projectCount) }}
               </p>
             </article>
@@ -135,23 +131,19 @@ SPDX-License-Identifier: MIT
               />
               <p
                 v-else
-                class="leading-6 transition-all whitespace-nowrap  text-xs md:text-sm"
+                class="leading-6 transition-all whitespace-nowrap text-xs md:text-sm"
               >
-                {{formatNumber(props.collection.contributorCount || 0)}}
+                {{ formatNumber(props.collection.contributorCount || 0) }}
                 {{ pluralize('contributors', props.collection.contributorCount) }}
               </p>
             </article>
             <lfx-tooltip
               v-if="props.collection.softwareValue"
-              :content="
-                `Aggregated software value of $${
-                  formatNumberShort(props.collection.softwareValue)
-                } according to Constructive Cost Model (COCOMO)`"
+              :content="`Aggregated software value of $${formatNumberShort(
+                props.collection.softwareValue,
+              )} according to Constructive Cost Model (COCOMO)`"
             >
-              <article
-
-                class="flex items-center gap-2 h-min"
-              >
+              <article class="flex items-center gap-2 h-min">
                 <div class="h-6 w-6 md:h-8 md:w-8 rounded-full flex items-center justify-center bg-positive-50">
                   <lfx-icon
                     name="dollar-circle"
@@ -182,28 +174,28 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script lang="ts" setup>
-import pluralize from "pluralize";
-import type {Collection} from "~~/types/collection";
-import LfxIconButton from "~/components/uikit/icon-button/icon-button.vue";
-import LfxBack from "~/components/uikit/back/back.vue";
-import {formatNumber, formatNumberShort} from "~/components/shared/utils/formatter";
-import LfxIcon from "~/components/uikit/icon/icon.vue";
-import useScroll from "~/components/shared/utils/scroll";
-import LfxSkeleton from "~/components/uikit/skeleton/skeleton.vue";
-import {LfxRoutes} from "~/components/shared/types/routes";
-import LfxButton from "~/components/uikit/button/button.vue";
-import LfxTooltip from "~/components/uikit/tooltip/tooltip.vue";
+import pluralize from 'pluralize';
+import type { Collection } from '~~/types/collection';
+import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
+import LfxBack from '~/components/uikit/back/back.vue';
+import { formatNumber, formatNumberShort } from '~/components/shared/utils/formatter';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import useScroll from '~/components/shared/utils/scroll';
+import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
+import { LfxRoutes } from '~/components/shared/types/routes';
+import LfxButton from '~/components/uikit/button/button.vue';
+import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
 
 const props = defineProps<{
-  collection?: Collection,
-  loading?: boolean
-}>()
+  collection?: Collection;
+  loading?: boolean;
+}>();
 
-const {scrollTop} = useScroll();
+const { scrollTop } = useScroll();
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxCollectionHeader'
+  name: 'LfxCollectionHeader',
 };
 </script>

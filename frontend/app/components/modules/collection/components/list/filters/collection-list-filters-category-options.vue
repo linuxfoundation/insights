@@ -3,12 +3,8 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div
-    class="sticky -top-1 z-10 bg-white flex flex-col gap-1 -mt-1 pt-1"
-  >
-    <lfx-dropdown-search
-      v-model="search"
-    />
+  <div class="sticky -top-1 z-10 bg-white flex flex-col gap-1 -mt-1 pt-1">
+    <lfx-dropdown-search v-model="search" />
     <lfx-dropdown-separator />
   </div>
   <div
@@ -26,7 +22,7 @@ SPDX-License-Identifier: MIT
       :value="group.value"
       :label="group.name"
     >
-      {{group.name}}
+      {{ group.name }}
     </lfx-dropdown-item>
     <lfx-dropdown-item
       v-for="category of group.categories"
@@ -39,29 +35,30 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import {computed} from "vue";
-import LfxDropdownSearch from "~/components/uikit/dropdown/dropdown-search.vue";
-import LfxDropdownItem from "~/components/uikit/dropdown/dropdown-item.vue";
-import LfxDropdownSeparator from "~/components/uikit/dropdown/dropdown-separator.vue";
-import type {CategoryGroupOptions} from "~/components/modules/collection/services/collections.api.service";
+import { computed } from 'vue';
+import LfxDropdownSearch from '~/components/uikit/dropdown/dropdown-search.vue';
+import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
+import LfxDropdownSeparator from '~/components/uikit/dropdown/dropdown-separator.vue';
+import type { CategoryGroupOptions } from '~/components/modules/collection/services/collections.api.service';
 
 const props = defineProps<{
-  options: CategoryGroupOptions[]
+  options: CategoryGroupOptions[];
 }>();
 
 const search = ref('');
 
-const categoryGroups = computed(() => (props.options || []).map((cg) => ({
-      ...cg,
-      categories: cg.categories.filter((c) => c.name.toLowerCase().includes(search.value.toLowerCase()))
-    })))
+const categoryGroups = computed(() =>
+  (props.options || []).map((cg) => ({
+    ...cg,
+    categories: cg.categories.filter((c) => c.name.toLowerCase().includes(search.value.toLowerCase())),
+  })),
+);
 
 const noResults = computed(() => search.value && categoryGroups.value.every((cg) => cg.categories.length === 0));
-
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxCollectionListCategoryOptions'
-}
+  name: 'LfxCollectionListCategoryOptions',
+};
 </script>

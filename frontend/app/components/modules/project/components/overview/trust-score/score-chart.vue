@@ -4,7 +4,7 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <div
-    style="height: 280px;"
+    style="height: 280px"
     class="w-full"
   >
     <lfx-chart :config="radarChartConfig" />
@@ -28,8 +28,8 @@ const chartSeries = ref<ChartSeries[]>([
     type: 'radar',
     yAxisIndex: 0,
     dataIndex: 0,
-    color: lfxColors.brand[500]
-  }
+    color: lfxColors.brand[500],
+  },
 ]);
 const radarIndicators = ref<RadarIndicator[]>([
   {
@@ -47,7 +47,7 @@ const radarIndicators = ref<RadarIndicator[]>([
   {
     key: 'development',
     name: 'Development',
-  }
+  },
 ]);
 
 const radarChartConfig = computed(() => getRadarChartConfig(props.chartData, chartSeries.value, radarIndicators.value));
@@ -55,6 +55,6 @@ const radarChartConfig = computed(() => getRadarChartConfig(props.chartData, cha
 
 <script lang="ts">
 export default {
-  name: 'LfxProjectTrustScoreChart'
+  name: 'LfxProjectTrustScoreChart',
 };
 </script>

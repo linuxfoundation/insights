@@ -8,9 +8,7 @@ SPDX-License-Identifier: MIT
     width="42.5rem"
   >
     <div class="p-6">
-      <h3 class="text-heading-3 font-secondary font-bold pb-6">
-        Custom time range
-      </h3>
+      <h3 class="text-heading-3 font-secondary font-bold pb-6">Custom time range</h3>
       <div>
         <lfx-datepicker
           v-model="dateRange"
@@ -40,23 +38,26 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import {computed} from "vue";
-import {DateTime} from 'luxon';
-import LfxModal from "~/components/uikit/modal/modal.vue";
-import LfxButton from "~/components/uikit/button/button.vue";
-import LfxDatepicker from "~/components/uikit/datepicker/datepicker.vue";
-import type {DateOptionConfig} from "~/components/modules/project/config/date-options";
+import { computed } from 'vue';
+import { DateTime } from 'luxon';
+import LfxModal from '~/components/uikit/modal/modal.vue';
+import LfxButton from '~/components/uikit/button/button.vue';
+import LfxDatepicker from '~/components/uikit/datepicker/datepicker.vue';
+import type { DateOptionConfig } from '~/components/modules/project/config/date-options';
 
 const props = defineProps<{
   modelValue: boolean;
-}>()
+}>();
 
-const emit = defineEmits<{(e: 'update:modelValue', value: boolean): void, (e: 'select', value: DateOptionConfig)}>()
+const emit = defineEmits<{
+  (e: 'update:modelValue', value: boolean): void;
+  (e: 'select', value: DateOptionConfig);
+}>();
 
 const isModalOpen = computed({
   get: () => props.modelValue,
-  set: (value: boolean) => emit('update:modelValue', value)
-})
+  set: (value: boolean) => emit('update:modelValue', value),
+});
 
 const dateRange = ref(null);
 const select = () => {
@@ -65,14 +66,14 @@ const select = () => {
     key: 'custom',
     label: 'Custom',
     startDate: DateTime.fromJSDate(start).toFormat('yyyy-MM-dd'),
-    endDate: DateTime.fromJSDate(end).toFormat('yyyy-MM-dd')
+    endDate: DateTime.fromJSDate(end).toFormat('yyyy-MM-dd'),
   });
   emit('update:modelValue', false);
-}
+};
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxProjectCustomDateRangePicker'
+  name: 'LfxProjectCustomDateRangePicker',
 };
 </script>

@@ -1,12 +1,10 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import {
-  describe, test, expect, vi, beforeEach
-} from 'vitest';
-import { DateTime } from "luxon";
+import { describe, test, expect, vi, beforeEach } from 'vitest';
+import { DateTime } from 'luxon';
 import { mockReviewTimeByPRSizeData } from '../../mocks/tinybird-review-time-by-pr-size-response.mock';
-import type { ReviewTimeByPrItem } from "~~/types/development/responses.types";
-import type { ReviewTimeByPRSizeFilter } from "~~/server/data/types";
+import type { ReviewTimeByPrItem } from '~~/types/development/responses.types';
+import type { ReviewTimeByPRSizeFilter } from '~~/server/data/types';
 
 const mockFetchFromTinybird = vi.fn();
 
@@ -18,14 +16,16 @@ describe('Review Time By PR Size Data Source', () => {
     // This means that the import for tinybird.ts inside the data source module would still be used,
     // and thus not mocked. This means we need to import the module again after the mock is set, whenever we want to
     // use it.
-    vi.doMock(import("./tinybird"), () => ({
+    vi.doMock(import('./tinybird'), () => ({
       fetchFromTinybird: mockFetchFromTinybird,
     }));
-  })
+  });
 
   test('should fetch review time by PR size data with correct parameters', async () => {
     // We have to import this here again because vi.doMock is not hoisted. See the explanation in beforeEach().
-    const {fetchReviewTimeByPRSize} = await import("~~/server/data/tinybird/review-time-by-pr-size-data-source");
+    const { fetchReviewTimeByPRSize } = await import(
+      '~~/server/data/tinybird/review-time-by-pr-size-data-source'
+    );
 
     mockFetchFromTinybird.mockResolvedValueOnce(mockReviewTimeByPRSizeData);
 
@@ -36,7 +36,7 @@ describe('Review Time By PR Size Data Source', () => {
       project: 'the-linux-kernel-organization',
       repos: ['some-random-repo'],
       startDate,
-      endDate
+      endDate,
     };
 
     const result = await fetchReviewTimeByPRSize(filter);
@@ -45,13 +45,15 @@ describe('Review Time By PR Size Data Source', () => {
 
     expect(mockFetchFromTinybird).toHaveBeenCalledWith(expectedTinybirdPath, filter);
 
-    const expectedResult: ReviewTimeByPrItem[] = mockReviewTimeByPRSizeData.data.map((item, index) => ({
-      sortId: index,
-      lines: item.gitChangedLinesBucket,
-      prCount: item.pullRequestCount,
-      averageReviewTime: item.reviewedInSecondsAvg,
-      averageReviewTimeUnit: 'seconds',
-    }));
+    const expectedResult: ReviewTimeByPrItem[] = mockReviewTimeByPRSizeData.data.map(
+      (item, index) => ({
+        sortId: index,
+        lines: item.gitChangedLinesBucket,
+        prCount: item.pullRequestCount,
+        averageReviewTime: item.reviewedInSecondsAvg,
+        averageReviewTimeUnit: 'seconds',
+      }),
+    );
 
     expect(result).toEqual(expectedResult);
   });

@@ -1,17 +1,13 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import {
-  describe, test, expect, vi, beforeEach
-} from 'vitest';
-import {DateTime} from "luxon";
+import { describe, test, expect, vi, beforeEach } from 'vitest';
+import { DateTime } from 'luxon';
 import {
   mockContributorsGeoDistTimeseries,
-  mockOrganizationsGeoDistTimeseries
+  mockOrganizationsGeoDistTimeseries,
 } from '../../mocks/tinybird-geo-distribution-response.mock';
-import {DemographicType} from "~~/server/data/types";
-import type {
-  GeographicDistributionResponse
-} from "~~/server/data/tinybird/geographic-distribution-data-source";
+import { DemographicType } from '~~/server/data/types';
+import type { GeographicDistributionResponse } from '~~/server/data/tinybird/geographic-distribution-data-source';
 
 const mockFetchFromTinybird = vi.fn();
 
@@ -23,14 +19,16 @@ describe('Geographic Distribution Data Source', () => {
     // This means that the import for tinybird.ts inside active-organizations-data-source.ts would still be used,
     // and thus not mocked. This means we need to import the module again after the mock is set, whenever we want to
     // use it.
-    vi.doMock(import("./tinybird"), () => ({
+    vi.doMock(import('./tinybird'), () => ({
       fetchFromTinybird: mockFetchFromTinybird,
     }));
-  })
+  });
 
   test('should fetch contributors geographic distribution data with correct parameters', async () => {
     // We have to import this here again because vi.doMock is not hoisted. See the explanation in beforeEach().
-    const {fetchGeographicDistribution} = await import("~~/server/data/tinybird/geographic-distribution-data-source");
+    const { fetchGeographicDistribution } = await import(
+      '~~/server/data/tinybird/geographic-distribution-data-source'
+    );
 
     mockFetchFromTinybird.mockResolvedValue(mockContributorsGeoDistTimeseries);
 
@@ -43,14 +41,14 @@ describe('Geographic Distribution Data Source', () => {
       includeCodeContributions: true,
       includeCollaborations: false,
       startDate,
-      endDate
+      endDate,
     };
 
     const result = await fetchGeographicDistribution(filter);
 
     expect(mockFetchFromTinybird).toHaveBeenCalledWith(
       '/v0/pipes/contributors_geo_distribution.json',
-      filter
+      filter,
     );
 
     const processedData = mockContributorsGeoDistTimeseries.data.map((item) => ({
@@ -65,7 +63,7 @@ describe('Geographic Distribution Data Source', () => {
       summary: {
         totalContributions: 0,
       },
-      data: processedData
+      data: processedData,
     };
 
     expect(result).toEqual(expectedResult);
@@ -76,7 +74,9 @@ describe('Geographic Distribution Data Source', () => {
   // like this for now.
   test('should fetch organizations geographic distribution data with correct parameters', async () => {
     // We have to import this here again because vi.doMock is not hoisted. See the explanation in beforeEach().
-    const {fetchGeographicDistribution} = await import("~~/server/data/tinybird/geographic-distribution-data-source");
+    const { fetchGeographicDistribution } = await import(
+      '~~/server/data/tinybird/geographic-distribution-data-source'
+    );
 
     mockFetchFromTinybird.mockResolvedValue(mockOrganizationsGeoDistTimeseries);
 
@@ -87,14 +87,14 @@ describe('Geographic Distribution Data Source', () => {
       project: 'the-linux-kernel-organization',
       type: DemographicType.ORGANIZATIONS,
       startDate,
-      endDate
+      endDate,
     };
 
     const result = await fetchGeographicDistribution(filter);
 
     expect(mockFetchFromTinybird).toHaveBeenCalledWith(
       '/v0/pipes/organizations_geo_distribution.json',
-      filter
+      filter,
     );
 
     const expectedResult: GeographicDistributionResponse = {
@@ -107,7 +107,7 @@ describe('Geographic Distribution Data Source', () => {
         flag: item.flag,
         count: item.organizationCount,
         percentage: item.organizationPercentage,
-      }))
+      })),
     };
 
     expect(result).toEqual(expectedResult);

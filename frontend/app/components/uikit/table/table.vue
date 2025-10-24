@@ -16,6 +16,6 @@ SPDX-License-Identifier: MIT
 
 <script lang="ts">
 export default {
-  name: 'LfxTable'
+  name: 'LfxTable',
 };
 </script>

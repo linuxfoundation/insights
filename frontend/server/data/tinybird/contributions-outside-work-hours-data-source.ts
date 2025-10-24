@@ -1,14 +1,14 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import {fetchFromTinybird} from './tinybird'
-import {calculatePercentageChange, getPreviousDates} from "~~/server/data/util";
-import type {ContributionOutsideHours} from "~~/types/development/responses.types";
-import type {ContributionsOutsideWorkHoursFilter} from "~~/types/development/requests.types";
-import type {TinybirdActivityHeatmapData} from "~~/server/data/tinybird/responses.types";
-import type {ActivityHeatmapByWeekdayTBQuery} from "~~/server/data/tinybird/requests.types";
+import { fetchFromTinybird } from './tinybird';
+import { calculatePercentageChange, getPreviousDates } from '~~/server/data/util';
+import type { ContributionOutsideHours } from '~~/types/development/responses.types';
+import type { ContributionsOutsideWorkHoursFilter } from '~~/types/development/requests.types';
+import type { TinybirdActivityHeatmapData } from '~~/server/data/tinybird/responses.types';
+import type { ActivityHeatmapByWeekdayTBQuery } from '~~/server/data/tinybird/requests.types';
 
 export async function fetchContributionsOutsideWorkHours(
-  filter: ContributionsOutsideWorkHoursFilter
+  filter: ContributionsOutsideWorkHoursFilter,
 ): Promise<ContributionOutsideHours> {
   // TODO: We're passing unchecked query parameters to TinyBird directly from the frontend.
   //  We need to ensure this doesn't pose a security risk.
@@ -20,15 +20,12 @@ export async function fetchContributionsOutsideWorkHours(
   const previousSummaryQuery: ActivityHeatmapByWeekdayTBQuery = {
     ...filter,
     startDate: dates.previous.from,
-    endDate: dates.previous.to
+    endDate: dates.previous.to,
   };
 
   const path = '/v0/pipes/activity_heatmap_by_weekday_and_2hours_blocks.json';
 
-  const [
-    currentData,
-    previousData,
-  ] = await Promise.all([
+  const [currentData, previousData] = await Promise.all([
     fetchFromTinybird<TinybirdActivityHeatmapData[]>(path, currentSummaryQuery),
     fetchFromTinybird<TinybirdActivityHeatmapData[]>(path, previousSummaryQuery),
   ]);
@@ -70,7 +67,7 @@ export async function fetchContributionsOutsideWorkHours(
       day: item.weekday - 1, // We have to subtract 1 because the frontend uses a 0-indexed approach.
       hour: item.twoHoursBlock,
       contributions: item.activityCount,
-    }))
+    })),
   };
 }
 
@@ -78,8 +75,12 @@ function sum(data: TinybirdActivityHeatmapData[]): number {
   return data.reduce((acc, item) => acc + item.activityCount, 0);
 }
 
-function filterWeekdaysOutsideWorkHours(data: TinybirdActivityHeatmapData[]): TinybirdActivityHeatmapData[] {
-  return data.filter((item) => item.weekday <= 5 && (item.twoHoursBlock >= 18 || item.twoHoursBlock < 8));
+function filterWeekdaysOutsideWorkHours(
+  data: TinybirdActivityHeatmapData[],
+): TinybirdActivityHeatmapData[] {
+  return data.filter(
+    (item) => item.weekday <= 5 && (item.twoHoursBlock >= 18 || item.twoHoursBlock < 8),
+  );
 }
 
 function filterWeekends(data: TinybirdActivityHeatmapData[]): TinybirdActivityHeatmapData[] {

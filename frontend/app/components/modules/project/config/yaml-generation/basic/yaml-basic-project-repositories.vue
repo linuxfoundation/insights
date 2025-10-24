@@ -6,9 +6,7 @@ SPDX-License-Identifier: MIT
   <div class="flex flex-col gap-1 pb-6">
     <p class="text-sm font-semibold text-brand-600">Project details</p>
     <p class="text-lg font-semibold text-neutral-900">Repositories</p>
-    <p class="text-xs font-normal text-neutral-500">
-      Details about your project repository and contribution policies.
-    </p>
+    <p class="text-xs font-normal text-neutral-500">Details about your project repository and contribution policies.</p>
   </div>
 
   <div class="flex flex-col gap-4">
@@ -43,29 +41,28 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-import LfxButton from '~/components/uikit/button/button.vue'
-import LfxIcon from '~/components/uikit/icon/icon.vue'
-import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue'
-import LfxYamlRepositoryItem from
-  '~/components/modules/project/config/yaml-generation/shared/components/yaml-repository-item.vue'
+import { computed } from 'vue';
+import LfxButton from '~/components/uikit/button/button.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
+import LfxYamlRepositoryItem from '~/components/modules/project/config/yaml-generation/shared/components/yaml-repository-item.vue';
 
 const props = defineProps<{
-  modelValue: object
-}>()
+  modelValue: object;
+}>();
 
-const emit = defineEmits<{ (e: 'update:modelValue', value: object): void }>()
+const emit = defineEmits<{ (e: 'update:modelValue', value: object): void }>();
 
 const model = computed<object>({
   get: () => props.modelValue,
   set: (value: object) => emit('update:modelValue', value),
-})
+});
 
 const addRepository = () => {
   model.value.project.repositories.push({
     name: '',
     url: '',
     comment: '',
-  })
-}
+  });
+};
 </script>

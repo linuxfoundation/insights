@@ -177,5 +177,5 @@ export const geoMapCountries = [
   { name: 'Yemen', value: 0, emoji: '🇾🇪' },
   { name: 'South Africa', value: 0, emoji: '🇿🇦' },
   { name: 'Zambia', value: 0, emoji: '🇿🇲' },
-  { name: 'Zimbabwe', value: 0, emoji: '🇿🇼' }
+  { name: 'Zimbabwe', value: 0, emoji: '🇿🇼' },
 ];

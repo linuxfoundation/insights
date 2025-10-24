@@ -3,18 +3,21 @@
 Learn more about the data that powers Insights. We are constantly adding more data sources (e.g. package managers).
 
 ## Code
+
 - GitHub
 - Git
 - Gerrit
 - GitLab
 
 ## Communication
+
 - Groups.io
 - Discord
 - Slack
 - Discourse
 
 ## Socials
+
 - X/Twitter
 - Reddit
 - Hacker News

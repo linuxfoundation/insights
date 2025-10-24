@@ -4,9 +4,7 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <div class="flex flex-col gap-3 text-xs">
-    <div class="text-neutral-400 font-semibold flex items-center gap-1">
-      Tags
-    </div>
+    <div class="text-neutral-400 font-semibold flex items-center gap-1">Tags</div>
     <div>
       <template v-if="tags && tags.length > 0">
         <lfx-tag
@@ -56,7 +54,7 @@ import { computed } from 'vue';
 import LfxTag from '~/components/uikit/tag/tag.vue';
 import { useProjectStore } from '~~/app/components/modules/project/store/project.store';
 
-const { project } = storeToRefs(useProjectStore())
+const { project } = storeToRefs(useProjectStore());
 
 // TODO: remove this once we have the tags from the API
 const tags = computed(() => project.value?.tags || []);
@@ -80,6 +78,6 @@ const tags = computed(() => project.value?.tags || []);
 
 <script lang="ts">
 export default {
-  name: 'LfxTagsAndLanguages'
+  name: 'LfxTagsAndLanguages',
 };
 </script>

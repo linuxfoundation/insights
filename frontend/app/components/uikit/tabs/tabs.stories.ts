@@ -9,25 +9,25 @@ export default {
   argTypes: {
     modelValue: {
       description: 'The currently selected tab value',
-      control: 'text'
+      control: 'text',
     },
     tabs: {
       description: 'The tabs to display',
-      control: 'object'
+      control: 'object',
     },
     widthType: {
       description: 'The width type of the tabs',
       control: 'select',
-      options: ['full', 'inline']
-    }
+      options: ['full', 'inline'],
+    },
   },
   parameters: {
     docs: {
       description: {
-        component: `Note: The tabs component takes on the width of the parent container.`
-      }
-    }
-  }
+        component: `Note: The tabs component takes on the width of the parent container.`,
+      },
+    },
+  },
 };
 
 export const Default = {
@@ -37,9 +37,9 @@ export const Default = {
     tabs: [
       { value: '1', label: 'Tab 1' },
       { value: '2', label: 'Tab 2' },
-      { value: '3', label: 'Tab 3' }
-    ]
-  }
+      { value: '3', label: 'Tab 3' },
+    ],
+  },
 };
 
 export const Inline = {
@@ -50,9 +50,9 @@ export const Inline = {
     tabs: [
       { value: '1', label: 'Tab 1' },
       { value: '2', label: 'Tab 2' },
-      { value: '3', label: 'Tab 3' }
-    ]
-  }
+      { value: '3', label: 'Tab 3' },
+    ],
+  },
 };
 
 const iconsOnlyTmpl = `<div class="p-4 bg-white flex">
@@ -66,8 +66,8 @@ export const IconsOnly = {
     tabs: [
       { value: '1', label: 'Tab 1', icon: 'fa-solid fa-chart-line' },
       { value: '2', label: 'Tab 2', icon: 'fa-solid fa-chart-bar' },
-      { value: '3', label: 'Tab 3', icon: 'fa-solid fa-chart-scatter' }
-    ]
+      { value: '3', label: 'Tab 3', icon: 'fa-solid fa-chart-scatter' },
+    ],
   },
   render: (args, { argTypes }) => ({
     components: { LfxTabs },
@@ -76,9 +76,9 @@ export const IconsOnly = {
     computed: {
       propsObj() {
         return args;
-      }
-    }
-  })
+      },
+    },
+  }),
 };
 
 const customTmpl = `
@@ -98,8 +98,8 @@ export const CustomTemplate = {
     tabs: [
       { value: '1', label: 'Tab 1', icon: 'fa-solid fa-chart-line' },
       { value: '2', label: 'Tab 2', icon: 'fa-solid fa-chart-bar' },
-      { value: '3', label: 'Tab 3', icon: 'fa-solid fa-chart-scatter' }
-    ]
+      { value: '3', label: 'Tab 3', icon: 'fa-solid fa-chart-scatter' },
+    ],
   },
   render: (args, { argTypes }) => ({
     components: { LfxTabs },
@@ -108,8 +108,8 @@ export const CustomTemplate = {
     computed: {
       propsObj() {
         return args;
-      }
-    }
+      },
+    },
   }),
   parameters: {
     docs: {
@@ -140,8 +140,8 @@ export const CustomTemplate = {
 
 <template>
   ${customTmpl}
-</template>`
-      }
-    }
-  }
+</template>`,
+      },
+    },
+  },
 };

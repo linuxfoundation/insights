@@ -6,5 +6,5 @@ export enum FormatterUnits {
   HOURS = 'hours',
   DAYS = 'days',
   MONTHS = 'months',
-  YEARS = 'years'
+  YEARS = 'years',
 }

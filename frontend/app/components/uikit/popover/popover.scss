@@ -12,12 +12,12 @@
       @apply invisible opacity-0 pointer-events-none;
     }
 
-    &.is-modal{
-      background: linear-gradient(to bottom, rgba(0,0,0,0.05), rgba(0,0,0,0.25));
+    &.is-modal {
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.25));
       @apply fixed top-0 left-0 h-full w-full transform translate-x-0 translate-y-0  p-12 pt-16 px-5 #{!important};
       @apply flex flex-wrap justify-center items-start;
 
-      &>div{
+      & > div {
         @apply w-full max-h-full #{!important};
       }
     }

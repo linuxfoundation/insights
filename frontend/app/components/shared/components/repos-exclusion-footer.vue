@@ -14,32 +14,28 @@ SPDX-License-Identifier: MIT
     />
     <span class="text-neutral-500 text-xs">
       <span class="font-semibold">Archived repositories</span> are excluded from
-      {{ pageContent === 'health-score' ? 'Health Score and Security & Best practices' : 'Security & Best practices'}}.
+      {{ pageContent === 'health-score' ? 'Health Score and Security & Best practices' : 'Security & Best practices' }}.
     </span>
   </div>
 </template>
-  
+
 <script setup lang="ts">
 import { computed } from 'vue';
 import { storeToRefs } from 'pinia';
-import LfxIcon from "~/components/uikit/icon/icon.vue";
-import { useProjectStore } from "~/components/modules/project/store/project.store";
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import { useProjectStore } from '~/components/modules/project/store/project.store';
 
 defineProps<{
-  pageContent: 'health-score' | 'security'
-}>()
+  pageContent: 'health-score' | 'security';
+}>();
 
-const {
-  archivedRepos,
-  allArchived,
-} = storeToRefs(useProjectStore())
+const { archivedRepos, allArchived } = storeToRefs(useProjectStore());
 
-const displayArchivedReposNote = computed(() => !!archivedRepos.value.length && !allArchived.value)
-
+const displayArchivedReposNote = computed(() => !!archivedRepos.value.length && !allArchived.value);
 </script>
 
 <script lang="ts">
 export default {
-    name: 'LfxReposExclusionFooter'
-}
+  name: 'LfxReposExclusionFooter',
+};
 </script>

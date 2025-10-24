@@ -5,10 +5,7 @@ SPDX-License-Identifier: MIT
 <template>
   <div
     class="c-dropdown__selector"
-    :class="[
-      `c-dropdown__selector--${props.size}`,
-      `c-dropdown__selector--${props.type}`,
-    ]"
+    :class="[`c-dropdown__selector--${props.size}`, `c-dropdown__selector--${props.type}`]"
   >
     <slot />
     <slot name="append">
@@ -22,15 +19,18 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script lang="ts" setup>
-import LfxIcon from "~/components/uikit/icon/icon.vue";
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 
-const props = withDefaults(defineProps<{
-  size?: 'medium' | 'small';
-  type?: 'transparent' | 'filled';
-}>(), {
-  size: 'medium',
-  type: 'transparent',
-});
+const props = withDefaults(
+  defineProps<{
+    size?: 'medium' | 'small';
+    type?: 'transparent' | 'filled';
+  }>(),
+  {
+    size: 'medium',
+    type: 'transparent',
+  },
+);
 </script>
 
 <script lang="ts">

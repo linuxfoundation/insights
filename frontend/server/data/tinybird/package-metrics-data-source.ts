@@ -1,14 +1,12 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import type { DateTime } from "luxon";
+import type { DateTime } from 'luxon';
 
-import type { PackageMetricsFilter } from "../types";
-import { fetchFromTinybird } from "./tinybird";
-import type { PackageMetrics } from "~~/types/popularity/responses.types";
+import type { PackageMetricsFilter } from '../types';
+import { fetchFromTinybird } from './tinybird';
+import type { PackageMetrics } from '~~/types/popularity/responses.types';
 
-import {
-  getPreviousDates,
-} from "~~/server/data/util";
+import { getPreviousDates } from '~~/server/data/util';
 
 export type PackageDownloadsResponse = {
   summary: {
@@ -75,44 +73,47 @@ export async function fetchPackageMetrics(filter: PackageMetricsFilter) {
   };
 
   const [currentSummary, previousSummary, timeseries] = await Promise.all([
-    fetchFromTinybird<PackageMetrics[]>(
-      "/v0/pipes/package_metrics.json",
-      currentSummaryQuery
-    ),
-    fetchFromTinybird<PackageMetrics[]>(
-      "/v0/pipes/package_metrics.json",
-      previousSummaryQuery
-    ),
-    fetchFromTinybird<PackageMetrics[]>(
-      "/v0/pipes/package_metrics.json",
-      dataQuery
-    ),
+    fetchFromTinybird<PackageMetrics[]>('/v0/pipes/package_metrics.json', currentSummaryQuery),
+    fetchFromTinybird<PackageMetrics[]>('/v0/pipes/package_metrics.json', previousSummaryQuery),
+    fetchFromTinybird<PackageMetrics[]>('/v0/pipes/package_metrics.json', dataQuery),
   ]);
 
   const currentDownloads = currentSummary.data[0]?.downloadsCount || 0;
   const previousDownloads = previousSummary.data[0]?.downloadsCount || 0;
   const downloadsChangeValue = currentDownloads - previousDownloads;
-  const downloadsPercentageChange = getPercentageChange(currentDownloads, previousDownloads)
+  const downloadsPercentageChange = getPercentageChange(currentDownloads, previousDownloads);
 
   const currentDockerDownloads = currentSummary.data[0]?.dockerDownloadsCount || 0;
   const previousDockerDownloads = previousSummary.data[0]?.dockerDownloadsCount || 0;
   const dockerDownloadsChangeValue = currentDockerDownloads - previousDockerDownloads;
-  const dockerDownloadsPercentageChange = getPercentageChange(currentDockerDownloads, previousDockerDownloads)
+  const dockerDownloadsPercentageChange = getPercentageChange(
+    currentDockerDownloads,
+    previousDockerDownloads,
+  );
 
   const currentDockerDependents = currentSummary.data[0]?.dockerDependentsCount || 0;
   const previousDockerDependents = previousSummary.data[0]?.dockerDependentsCount || 0;
   const dockerDependentsChangeValue = currentDockerDependents - previousDockerDependents;
-  const dockerDependentsPercentageChange = getPercentageChange(currentDockerDependents, previousDockerDependents)
+  const dockerDependentsPercentageChange = getPercentageChange(
+    currentDockerDependents,
+    previousDockerDependents,
+  );
 
   const currentDependentPackages = currentSummary.data[0]?.dependentPackagesCount || 0;
   const previousDependentPackages = previousSummary.data[0]?.dependentPackagesCount || 0;
   const dependentPackagesChangeValue = currentDependentPackages - previousDependentPackages;
-  const dependentPackagesPercentageChange = getPercentageChange(currentDependentPackages, previousDependentPackages)
+  const dependentPackagesPercentageChange = getPercentageChange(
+    currentDependentPackages,
+    previousDependentPackages,
+  );
 
   const currentDependentRepos = currentSummary.data[0]?.dependentReposCount || 0;
   const previousDependentRepos = previousSummary.data[0]?.dependentReposCount || 0;
   const dependentReposChangeValue = currentDependentRepos - previousDependentRepos;
-  const dependentReposPercentageChange = getPercentageChange(currentDependentRepos, previousDependentRepos)
+  const dependentReposPercentageChange = getPercentageChange(
+    currentDependentRepos,
+    previousDependentRepos,
+  );
 
   const response: PackageDownloadsResponse = {
     summary: {
@@ -150,11 +151,8 @@ export async function fetchPackageMetrics(filter: PackageMetricsFilter) {
   return response;
 }
 
-function getPercentageChange(
-  currentValue: number,
-  previousValue: number
-): number {
-    let percentageChange = 0;
+function getPercentageChange(currentValue: number, previousValue: number): number {
+  let percentageChange = 0;
 
   if (previousValue === 0 && currentValue > 0) {
     percentageChange = 100;

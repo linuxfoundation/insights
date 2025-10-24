@@ -13,48 +13,48 @@ export default {
     size: {
       description: 'Size of the chip',
       control: 'select',
-      options: chipSizes
+      options: chipSizes,
     },
     type: {
       description: 'Type of the chip',
       control: 'select',
-      options: chipTypes
+      options: chipTypes,
     },
     removable: {
       description: 'Whether the chip is removable',
-      control: 'boolean'
+      control: 'boolean',
     },
     // slot
     default: {
       description: 'Label of the chip',
       control: {
-        type: null
-      }
-    }
-  }
+        type: null,
+      },
+    },
+  },
 };
 
 export const Default = {
   args: {
     default: 'Chip',
     size: 'default',
-    type: 'default'
-  }
+    type: 'default',
+  },
 };
 
 export const Bordered = {
   args: {
     default: 'Chip',
     size: 'normal',
-    type: 'bordered'
-  }
+    type: 'bordered',
+  },
 };
 
 export const Small = {
   args: {
     default: 'Small Chip',
-    size: 'small'
-  }
+    size: 'small',
+  },
 };
 
 const withIconTmpl = `
@@ -66,7 +66,7 @@ const withIconTmpl = `
 export const WithIcon = {
   args: {
     size: 'default',
-    type: 'bordered'
+    type: 'bordered',
   },
   render: (args, { argTypes }) => ({
     components: { LfxChip, LfxIcon },
@@ -75,8 +75,8 @@ export const WithIcon = {
     computed: {
       propsObj() {
         return args;
-      }
-    }
+      },
+    },
   }),
   parameters: {
     docs: {
@@ -84,10 +84,10 @@ export const WithIcon = {
         code: `
 <template>
   ${withIconTmpl}
-</template>`
-      }
-    }
-  }
+</template>`,
+      },
+    },
+  },
 };
 
 const withAvatarTmpl = `
@@ -100,7 +100,7 @@ const withAvatarTmpl = `
 export const WithAvatar = {
   args: {
     size: 'default',
-    type: 'bordered'
+    type: 'bordered',
   },
   render: (args, { argTypes }) => ({
     components: { LfxChip, LfxAvatar },
@@ -109,8 +109,8 @@ export const WithAvatar = {
     computed: {
       propsObj() {
         return args;
-      }
-    }
+      },
+    },
   }),
   parameters: {
     docs: {
@@ -118,10 +118,10 @@ export const WithAvatar = {
         code: `
 <template>
   ${withAvatarTmpl}
-</template>`
-      }
-    }
-  }
+</template>`,
+      },
+    },
+  },
 };
 
 const withLogoTmpl = `
@@ -134,7 +134,7 @@ const withLogoTmpl = `
 export const WithLogo = {
   args: {
     size: 'default',
-    type: 'bordered'
+    type: 'bordered',
   },
   render: (args, { argTypes }) => ({
     components: { LfxChip, LfxAvatar },
@@ -143,8 +143,8 @@ export const WithLogo = {
     computed: {
       propsObj() {
         return args;
-      }
-    }
+      },
+    },
   }),
   parameters: {
     docs: {
@@ -152,16 +152,16 @@ export const WithLogo = {
         code: `
 <template>
   ${withLogoTmpl}
-</template>`
-      }
-    }
-  }
+</template>`,
+      },
+    },
+  },
 };
 
 export const Dismissable = {
   args: {
     default: 'Chip dismissable',
     size: 'default',
-    removable: true
-  }
+    removable: true,
+  },
 };

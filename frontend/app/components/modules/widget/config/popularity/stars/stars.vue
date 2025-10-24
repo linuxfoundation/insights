@@ -33,8 +33,8 @@ SPDX-License-Identifier: MIT
       v-if="props.snapshot"
       class="text-sm leading-4 font-semibold first-letter:uppercase pb-3 border-t border-neutral-100 pt-5"
     >
-      <span v-if="model.activeTab === 'new'">{{barGranularity}} new stars</span>
-      <span v-else>{{lineGranularity}} stars growth</span>
+      <span v-if="model.activeTab === 'new'">{{ barGranularity }} new stars</span>
+      <span v-else>{{ lineGranularity }} stars growth</span>
     </div>
     <lfx-project-load-state
       :status="status"
@@ -54,33 +54,27 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { useRoute } from 'nuxt/app';
-import {
- computed, watch
-} from 'vue';
-import { storeToRefs } from "pinia";
+import { computed, watch } from 'vue';
+import { storeToRefs } from 'pinia';
 import type { StarsData } from '~~/types/popularity/responses.types';
 import { lineGranularities, barGranularities } from '~/components/shared/types/granularity';
 import type { Summary } from '~~/types/shared/summary.types';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
 import { convertToChartData, markLastDataItem } from '~/components/uikit/chart/helpers/chart-helpers';
-import type {
-  ChartData,
-  RawChartData,
-  ChartSeries
-} from '~/components/uikit/chart/types/ChartTypes';
+import type { ChartData, RawChartData, ChartSeries } from '~/components/uikit/chart/types/ChartTypes';
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import { getBarChartConfig } from '~/components/uikit/chart/configs/bar.chart';
 import { getLineAreaChartConfig } from '~/components/uikit/chart/configs/line.area.chart';
 import { lfxColors } from '~/config/styles/colors';
 import { formatNumber } from '~/components/shared/utils/formatter';
-import { useProjectStore } from "~/components/modules/project/store/project.store";
+import { useProjectStore } from '~/components/modules/project/store/project.store';
 import { isEmptyData } from '~/components/shared/utils/helper';
 import { dateOptKeys } from '~/components/modules/project/config/date-options';
 import type { Granularity } from '~~/types/shared/granularity';
-import LfxSkeletonState from "~/components/modules/project/components/shared/skeleton-state.vue";
-import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
-import {Widget} from "~/components/modules/widget/types/widget";
+import LfxSkeletonState from '~/components/modules/project/components/shared/skeleton-state.vue';
+import LfxProjectLoadState from '~/components/modules/project/components/shared/load-state.vue';
+import { Widget } from '~/components/modules/widget/types/widget';
 import { POPULARITY_API_SERVICE } from '~/components/modules/widget/services/popularity.api.service';
 
 interface StarsModel {
@@ -88,32 +82,36 @@ interface StarsModel {
 }
 
 const props = defineProps<{
-  modelValue: StarsModel,
-  snapshot?: boolean
-}>()
+  modelValue: StarsModel;
+  snapshot?: boolean;
+}>();
 
-const emit = defineEmits<{(e: 'update:modelValue', value: StarsModel): void;
+const emit = defineEmits<{
+  (e: 'update:modelValue', value: StarsModel): void;
   (e: 'dataLoaded', value: string): void;
   (e: 'hasData', value: boolean): void;
 }>();
 
 const model = computed<StarsModel>({
   get: () => props.modelValue,
-  set: (value) => emit('update:modelValue', value)
-})
+  set: (value) => emit('update:modelValue', value),
+});
 
-const {
-  startDate, endDate, selectedReposValues, selectedTimeRangeKey, customRangeGranularity
-} = storeToRefs(useProjectStore())
+const { startDate, endDate, selectedReposValues, selectedTimeRangeKey, customRangeGranularity } =
+  storeToRefs(useProjectStore());
 
 const route = useRoute();
 
-const barGranularity = computed(() => (selectedTimeRangeKey.value === dateOptKeys.custom
-  ? customRangeGranularity.value[0] as Granularity
-  : barGranularities[selectedTimeRangeKey.value as keyof typeof barGranularities]));
-const lineGranularity = computed(() => (selectedTimeRangeKey.value === dateOptKeys.custom
-  ? customRangeGranularity.value[0] as Granularity
-  : lineGranularities[selectedTimeRangeKey.value as keyof typeof lineGranularities]));
+const barGranularity = computed(() =>
+  selectedTimeRangeKey.value === dateOptKeys.custom
+    ? (customRangeGranularity.value[0] as Granularity)
+    : barGranularities[selectedTimeRangeKey.value as keyof typeof barGranularities],
+);
+const lineGranularity = computed(() =>
+  selectedTimeRangeKey.value === dateOptKeys.custom
+    ? (customRangeGranularity.value[0] as Granularity)
+    : lineGranularities[selectedTimeRangeKey.value as keyof typeof lineGranularities],
+);
 
 const queryParams = computed(() => ({
   projectSlug: route.params.slug as string,
@@ -125,25 +123,18 @@ const queryParams = computed(() => ({
   countType: model.value.activeTab === 'cumulative' ? 'cumulative' : 'new',
 }));
 
+const { data, status, error } = POPULARITY_API_SERVICE.fetchStars(queryParams);
 
-const {
-  data,
-  status,
-  error
-} = POPULARITY_API_SERVICE.fetchStars(queryParams);
-
-const stars = computed<StarsData | undefined>(() => (data.value as StarsData));
+const stars = computed<StarsData | undefined>(() => data.value as StarsData);
 
 const summary = computed<Summary | undefined>(() => stars.value?.summary);
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
   () => {
-    let tmpData = convertToChartData(stars.value?.data as RawChartData[], 'startDate', [
-    'stars'
-  ], undefined, 'endDate');
+    let tmpData = convertToChartData(stars.value?.data as RawChartData[], 'startDate', ['stars'], undefined, 'endDate');
 
-  return markLastDataItem(tmpData, barGranularity.value);
-  }
+    return markLastDataItem(tmpData, barGranularity.value);
+  },
 );
 const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
 
@@ -159,38 +150,40 @@ const chartSeries = computed<ChartSeries[]>(() => [
     yAxisIndex: 0,
     dataIndex: 0,
     position: 'left',
-    color: lfxColors.brand[500]
-  }
+    color: lfxColors.brand[500],
+  },
 ]);
 
-const lineChartConfig = computed(() => getLineAreaChartConfig(
-  chartData.value,
-  chartSeries.value,
-  lineGranularity.value
-));
-const barChartConfig = computed(() => getBarChartConfig(
-  chartData.value,
-  chartSeries.value,
-  barGranularity.value
-));
+const lineChartConfig = computed(() =>
+  getLineAreaChartConfig(chartData.value, chartSeries.value, lineGranularity.value),
+);
+const barChartConfig = computed(() => getBarChartConfig(chartData.value, chartSeries.value, barGranularity.value));
 
-watch(status, (value) => {
-  if (value !== 'pending') {
-    emit('dataLoaded', Widget.STARS);
-  }
-}, {
-  immediate: true
-});
+watch(
+  status,
+  (value) => {
+    if (value !== 'pending') {
+      emit('dataLoaded', Widget.STARS);
+    }
+  },
+  {
+    immediate: true,
+  },
+);
 
-watch(isEmpty, (value: boolean) => {
-  emit('hasData', !value);
-}, {
-  immediate: true
-});
+watch(
+  isEmpty,
+  (value: boolean) => {
+    emit('hasData', !value);
+  },
+  {
+    immediate: true,
+  },
+);
 </script>
 
 <script lang="ts">
 export default {
   name: 'LfxProjectStars',
-}
+};
 </script>

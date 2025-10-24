@@ -15,4 +15,4 @@ export const popoverPlacements = [
   'right-end',
 ] as const;
 
-export type PopoverPlacement = typeof popoverPlacements[number];
+export type PopoverPlacement = (typeof popoverPlacements)[number];

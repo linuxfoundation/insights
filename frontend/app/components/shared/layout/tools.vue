@@ -9,7 +9,7 @@ SPDX-License-Identifier: MIT
   >
     <lfx-menu-button
       class="!px-2"
-      :class="{'bg-neutral-100 text-neutral-600': isOpen}"
+      :class="{ 'bg-neutral-100 text-neutral-600': isOpen }"
     >
       <lfx-icon
         name="grid-round"
@@ -18,14 +18,13 @@ SPDX-License-Identifier: MIT
     </lfx-menu-button>
 
     <template #content>
-
       <div class="bg-white shadow-lg rounded-lg border border-neutral-200">
         <div class="p-3 w-149">
           <div class="flex flex-wrap -m-1.5">
             <div
               v-for="(tool, key) in lfxTools"
               :key="key"
-              class="p-1.5 w-1/2 "
+              class="p-1.5 w-1/2"
             >
               <a
                 :href="tool.link"
@@ -40,9 +39,9 @@ SPDX-License-Identifier: MIT
                   :size="24"
                 />
                 <div class="pl-4">
-                  <h6 class="text-sm font-semibold mb-0.5 leading-4.5">{{tool.name}}</h6>
+                  <h6 class="text-sm font-semibold mb-0.5 leading-4.5">{{ tool.name }}</h6>
                   <p class="text-xs text-neutral-500 leading-4">
-                    {{tool.description}}
+                    {{ tool.description }}
                   </p>
                 </div>
               </a>
@@ -72,18 +71,18 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-  import {ref} from 'vue';
-  import LfxMenuButton from "~/components/uikit/menu-button/menu-button.vue";
-  import LfxIcon from "~/components/uikit/icon/icon.vue";
-  import LfxPopover from "~/components/uikit/popover/popover.vue";
-  import {lfxTools} from "~/config/menu/tools";
-  import {lfxMenu} from "~/config/menu";
+import { ref } from 'vue';
+import LfxMenuButton from '~/components/uikit/menu-button/menu-button.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxPopover from '~/components/uikit/popover/popover.vue';
+import { lfxTools } from '~/config/menu/tools';
+import { lfxMenu } from '~/config/menu';
 
-  const isOpen = ref(false);
+const isOpen = ref(false);
 </script>
 
 <script lang="ts">
-  export default {
-    name: 'LfxTools'
-  }
+export default {
+  name: 'LfxTools',
+};
 </script>

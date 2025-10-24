@@ -1,11 +1,11 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { DateTime } from 'luxon'
-import type { OrganizationDependencyFilter } from '~~/server/data/types'
-import { createDataSource } from '~~/server/data/data-sources'
-import { ActivityTypes } from '~~/types/shared/activity-types'
-import { ActivityPlatforms } from '~~/types/shared/activity-platforms'
-import { getBooleanQueryParam } from '~~/server/utils/common'
+import { DateTime } from 'luxon';
+import type { OrganizationDependencyFilter } from '~~/server/data/types';
+import { createDataSource } from '~~/server/data/data-sources';
+import { ActivityTypes } from '~~/types/shared/activity-types';
+import { ActivityPlatforms } from '~~/types/shared/activity-platforms';
+import { getBooleanQueryParam } from '~~/server/utils/common';
 
 /**
  * Frontend expects the data to be in the following format:
@@ -37,17 +37,17 @@ import { getBooleanQueryParam } from '~~/server/utils/common'
  * - time-period: string
  */
 export default defineEventHandler(async (event) => {
-  const query = getQuery(event)
+  const query = getQuery(event);
 
-  const project = (event.context.params as { slug: string }).slug
+  const project = (event.context.params as { slug: string }).slug;
 
-  const activityPlatform = query.platform as ActivityPlatforms
-  const activityType = query.activityType as ActivityTypes
+  const activityPlatform = query.platform as ActivityPlatforms;
+  const activityType = query.activityType as ActivityTypes;
 
-  const includeCodeContributions = getBooleanQueryParam(query, 'includeCodeContributions', true)
-  const includeCollaborations = getBooleanQueryParam(query, 'includeCollaborations', false)
+  const includeCodeContributions = getBooleanQueryParam(query, 'includeCodeContributions', true);
+  const includeCollaborations = getBooleanQueryParam(query, 'includeCollaborations', false);
 
-  const repos = Array.isArray(query.repos) ? query.repos : query.repos ? [query.repos] : undefined
+  const repos = Array.isArray(query.repos) ? query.repos : query.repos ? [query.repos] : undefined;
 
   const filter: OrganizationDependencyFilter = {
     project,
@@ -58,8 +58,8 @@ export default defineEventHandler(async (event) => {
     repos,
     startDate: query.startDate ? DateTime.fromISO(query.startDate as string) : undefined,
     endDate: query.endDate ? DateTime.fromISO(query.endDate as string) : undefined,
-  }
+  };
 
-  const dataSource = createDataSource()
-  return await dataSource.fetchOrganizationDependency(filter)
-})
+  const dataSource = createDataSource();
+  return await dataSource.fetchOrganizationDependency(filter);
+});

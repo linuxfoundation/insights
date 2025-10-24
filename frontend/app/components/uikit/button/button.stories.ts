@@ -1,12 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import LfxButton from './button.vue';
-import {
-  buttonTypes,
-  iconPosition,
-  buttonSizes,
-  buttonStyles
-} from './types/button.types';
+import { buttonTypes, iconPosition, buttonSizes, buttonStyles } from './types/button.types';
 
 export default {
   title: 'LinuxFoundation/Button',
@@ -15,50 +10,50 @@ export default {
   argTypes: {
     label: {
       description: 'The label of the button',
-      control: 'text'
+      control: 'text',
     },
     icon: {
       description: 'The icon of the button (font-awesome icon)',
-      control: 'text'
+      control: 'text',
     },
     type: {
       description: 'The type of the button',
       control: 'select',
-      options: buttonTypes
+      options: buttonTypes,
     },
     size: {
       description: 'The size of the button',
       control: 'select',
-      options: buttonSizes
+      options: buttonSizes,
     },
     buttonStyle: {
       description: 'The style of the button',
       control: 'select',
-      options: buttonStyles
+      options: buttonStyles,
     },
     iconPosition: {
       description: 'The position of the icon',
       control: 'select',
-      options: iconPosition
+      options: iconPosition,
     },
     loading: {
       description: 'Whether the button is loading',
-      control: 'boolean'
+      control: 'boolean',
     },
     disabled: {
       description: 'Whether the button is disabled',
-      control: 'boolean'
-    }
+      control: 'boolean',
+    },
   },
   parameters: {
     backgrounds: {
       values: [
         { name: 'Dark', value: '#333' },
-        { name: 'Light', value: '#F1F5F9' }
+        { name: 'Light', value: '#F1F5F9' },
       ],
-      default: 'Light'
-    }
-  }
+      default: 'Light',
+    },
+  },
 };
 
 export const Default = {
@@ -67,8 +62,8 @@ export const Default = {
     label: 'Button',
     type: 'primary',
     size: 'medium',
-    loading: false
-  }
+    loading: false,
+  },
 };
 
 export const Secondary = {
@@ -77,8 +72,8 @@ export const Secondary = {
     label: 'Button',
     type: 'secondary',
     size: 'medium',
-    loading: false
-  }
+    loading: false,
+  },
 };
 
 export const Tertiary = {
@@ -87,8 +82,8 @@ export const Tertiary = {
     label: 'Button',
     type: 'tertiary',
     size: 'medium',
-    loading: false
-  }
+    loading: false,
+  },
 };
 
 export const Pill = {
@@ -98,8 +93,8 @@ export const Pill = {
     type: 'primary',
     buttonStyle: 'pill',
     size: 'medium',
-    loading: false
-  }
+    loading: false,
+  },
 };
 
 export const WithIcons = {
@@ -110,8 +105,8 @@ export const WithIcons = {
     size: 'medium',
     loading: false,
     icon: 'fa-solid fa-chart-line',
-    iconPosition: 'left'
-  }
+    iconPosition: 'left',
+  },
 };
 
 const customTmpl = `
@@ -137,7 +132,7 @@ export const CustomTemplate = {
     label: 'Button',
     type: 'primary',
     size: 'medium',
-    loading: false
+    loading: false,
   },
   render: (args, { argTypes }) => ({
     components: { LfxButton },
@@ -146,8 +141,8 @@ export const CustomTemplate = {
     computed: {
       propsObj() {
         return args;
-      }
-    }
+      },
+    },
   }),
   parameters: {
     docs: {
@@ -155,8 +150,8 @@ export const CustomTemplate = {
         code: `
 <template>
   ${customTmpl}
-</template>`
-      }
-    }
-  }
+</template>`,
+      },
+    },
+  },
 };

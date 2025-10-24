@@ -1,12 +1,12 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 export interface Category {
-    id: string;
-    name: string;
+  id: string;
+  name: string;
 }
 
 export interface CategoryGroup {
-    id: string;
-    name: string;
-    categories: Category[];
+  id: string;
+  name: string;
+  categories: Category[];
 }

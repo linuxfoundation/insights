@@ -24,16 +24,15 @@ SPDX-License-Identifier: MIT
         Projects
       </div>
       <section
-        v-if="tab === 'all' || tab === 'projects' && props.projects.length > 0"
+        v-if="tab === 'all' || (tab === 'projects' && props.projects.length > 0)"
         class="flex flex-col gap-1"
       >
         <nuxt-link
           v-for="project of props.projects"
           :key="project.slug"
-          :to="{name: LfxRoutes.PROJECT, params: {slug: project.slug}}"
-          class="px-3 py-2 rounded-md transition-all
-        hover:bg-neutral-50 flex items-center gap-2 cursor-pointer text-sm text-neutral-900"
-          :external="(route.name as string || '').includes('repository')"
+          :to="{ name: LfxRoutes.PROJECT, params: { slug: project.slug } }"
+          class="px-3 py-2 rounded-md transition-all hover:bg-neutral-50 flex items-center gap-2 cursor-pointer text-sm text-neutral-900"
+          :external="((route.name as string) || '').includes('repository')"
         >
           <lfx-avatar
             :src="project.logo || ''"
@@ -42,7 +41,7 @@ SPDX-License-Identifier: MIT
             class="!rounded-sm !outline-1"
             :aria-label="project.logo && project.name"
           />
-          {{project.name}}
+          {{ project.name }}
         </nuxt-link>
       </section>
       <section
@@ -54,9 +53,7 @@ SPDX-License-Identifier: MIT
           :size="40"
           class="text-neutral-300"
         />
-        <p class="pt-5 text-sm leading-5 text-neutral-500 text-center">
-          We couldn’t find any projects with that term
-        </p>
+        <p class="pt-5 text-sm leading-5 text-neutral-500 text-center">We couldn’t find any projects with that term</p>
       </section>
 
       <!-- Repositories -->
@@ -67,15 +64,17 @@ SPDX-License-Identifier: MIT
         Repositories
       </div>
       <section
-        v-if="tab === 'all' || tab === 'repositories' && props.repositories.length > 0"
+        v-if="tab === 'all' || (tab === 'repositories' && props.repositories.length > 0)"
         class="flex flex-col gap-1"
       >
         <nuxt-link
           v-for="repository of props.repositories"
           :key="repository.slug"
-          :to="{name: LfxRoutes.REPOSITORY, params: {name: repository.slug, slug: repository.projectSlug}}"
-          class="px-3 py-2 rounded-md transition-all
-        hover:bg-neutral-50 flex items-center gap-2 cursor-pointer text-sm text-neutral-900 justify-between"
+          :to="{
+            name: LfxRoutes.REPOSITORY,
+            params: { name: repository.slug, slug: repository.projectSlug },
+          }"
+          class="px-3 py-2 rounded-md transition-all hover:bg-neutral-50 flex items-center gap-2 cursor-pointer text-sm text-neutral-900 justify-between"
         >
           <div class="flex items-center gap-2">
             <lfx-icon
@@ -83,7 +82,7 @@ SPDX-License-Identifier: MIT
               :size="16"
               class="text-neutral-400"
             />
-            <span>{{repository.name}}</span>
+            <span>{{ repository.name }}</span>
           </div>
 
           <lfx-archived-tag
@@ -115,22 +114,21 @@ SPDX-License-Identifier: MIT
         Collections
       </div>
       <section
-        v-if="tab === 'all' || tab === 'collections' && props.collections.length > 0"
+        v-if="tab === 'all' || (tab === 'collections' && props.collections.length > 0)"
         class="flex flex-col gap-1"
       >
         <nuxt-link
           v-for="collection of props.collections"
           :key="collection.slug"
-          :to="{name: LfxRoutes.COLLECTION, params: { slug: collection.slug }}"
-          class="px-3 py-2 rounded-md transition-all
-        hover:bg-neutral-50 flex items-center gap-2 cursor-pointer text-sm text-neutral-900"
+          :to="{ name: LfxRoutes.COLLECTION, params: { slug: collection.slug } }"
+          class="px-3 py-2 rounded-md transition-all hover:bg-neutral-50 flex items-center gap-2 cursor-pointer text-sm text-neutral-900"
         >
           <lfx-icon
             name="rectangle-history"
             :size="16"
             class="text-neutral-400"
           />
-          {{collection.name}}
+          {{ collection.name }}
         </nuxt-link>
       </section>
       <section
@@ -166,25 +164,25 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import {useRoute} from "nuxt/app";
-import type {SearchCollection, SearchProject, SearchRepository} from "~~/types/search";
-import LfxTabs from "~/components/uikit/tabs/tabs.vue";
-import LfxAvatar from "~/components/uikit/avatar/avatar.vue";
-import LfxIcon from "~/components/uikit/icon/icon.vue";
-import {LfxRoutes} from "~/components/shared/types/routes";
-import LfxArchivedTag from "~/components/shared/components/archived-tag.vue";
+import { useRoute } from 'nuxt/app';
+import type { SearchCollection, SearchProject, SearchRepository } from '~~/types/search';
+import LfxTabs from '~/components/uikit/tabs/tabs.vue';
+import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import { LfxRoutes } from '~/components/shared/types/routes';
+import LfxArchivedTag from '~/components/shared/components/archived-tag.vue';
 
 const props = defineProps<{
   projects: SearchProject[];
   repositories: SearchRepository[];
   collections: SearchCollection[];
-}>()
+}>();
 
 const route = useRoute();
 
 const tab = ref('all');
 
-const noResult = computed(() => !props.projects.length && !props.repositories.length && !props.collections.length)
+const noResult = computed(() => !props.projects.length && !props.repositories.length && !props.collections.length);
 
 const tabs = [
   {
@@ -203,11 +201,11 @@ const tabs = [
     value: 'collections',
     label: 'Collections',
   },
-]
+];
 </script>
 
 <script lang="ts">
-  export default {
-    name: 'LfxSearchResult'
-  }
+export default {
+  name: 'LfxSearchResult',
+};
 </script>

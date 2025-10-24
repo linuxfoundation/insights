@@ -3,11 +3,8 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div
-    class="container pt-6 md:pt-10"
-  >
+  <div class="container pt-6 md:pt-10">
     <lfx-table>
-
       <!-- Head -->
       <thead>
         <tr>
@@ -44,10 +41,10 @@ SPDX-License-Identifier: MIT
 
       <tbody>
         <tr
-          v-for="project of data?.pages.flatMap(p => p.data)"
+          v-for="project of data?.pages.flatMap((p) => p.data)"
           :key="project.id"
           class="tr hover:!bg-neutral-100 transition cursor-pointer"
-          @click="router.push({name: LfxRoutes.PROJECT, params: {slug: project.slug}})"
+          @click="router.push({ name: LfxRoutes.PROJECT, params: { slug: project.slug } })"
         >
           <td class="w-7/12 min-w-80">
             <div class="flex items-center gap-4">
@@ -60,7 +57,7 @@ SPDX-License-Identifier: MIT
               />
               <div>
                 <h6 class="text-sm font-semibold">
-                  {{project.name}}
+                  {{ project.name }}
                 </h6>
                 <p
                   v-if="project.description"
@@ -72,11 +69,11 @@ SPDX-License-Identifier: MIT
             </div>
           </td>
           <td>
-            <span v-if="project.contributorCount > 0">{{formatNumber(project.contributorCount)}}</span>
+            <span v-if="project.contributorCount > 0">{{ formatNumber(project.contributorCount) }}</span>
             <span v-else>-</span>
           </td>
           <td>
-            <span v-if="project.softwareValue">${{formatNumberShort(project.softwareValue)}}</span>
+            <span v-if="project.softwareValue">${{ formatNumberShort(project.softwareValue) }}</span>
             <span v-else>-</span>
           </td>
           <td>
@@ -130,29 +127,27 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import {
-  computed, onServerPrefetch
-} from 'vue';
-import {useRouter} from "nuxt/app";
-import {useInfiniteQuery, useQueryClient} from "@tanstack/vue-query";
-import LfxTable from "~/components/uikit/table/table.vue";
-import LfxIcon from "~/components/uikit/icon/icon.vue";
-import LfxAvatar from "~/components/uikit/avatar/avatar.vue";
-import type {Pagination} from "~~/types/shared/pagination";
-import type {Project} from "~~/types/project";
-import {PROJECT_API_SERVICE} from "~/components/modules/project/services/project.api.service";
-import {TanstackKey} from "~/components/shared/types/tanstack";
-import {formatNumber, formatNumberShort} from "~/components/shared/utils/formatter";
-import LfxHealthScore from "~/components/shared/components/health-score.vue";
-import {LfxRoutes} from "~/components/shared/types/routes";
-import LfxButton from "~/components/uikit/button/button.vue";
-import LfxSkeleton from "~/components/uikit/skeleton/skeleton.vue";
+import { computed, onServerPrefetch } from 'vue';
+import { useRouter } from 'nuxt/app';
+import { useInfiniteQuery, useQueryClient } from '@tanstack/vue-query';
+import LfxTable from '~/components/uikit/table/table.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
+import type { Pagination } from '~~/types/shared/pagination';
+import type { Project } from '~~/types/project';
+import { PROJECT_API_SERVICE } from '~/components/modules/project/services/project.api.service';
+import { TanstackKey } from '~/components/shared/types/tanstack';
+import { formatNumber, formatNumberShort } from '~/components/shared/utils/formatter';
+import LfxHealthScore from '~/components/shared/components/health-score.vue';
+import { LfxRoutes } from '~/components/shared/types/routes';
+import LfxButton from '~/components/uikit/button/button.vue';
+import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
 
 const props = defineProps<{
   sort: string;
-}>()
+}>();
 
-const router = useRouter()
+const router = useRouter();
 const queryClient = useQueryClient();
 
 const sort = computed(() => props.sort || 'totalContributors');
@@ -162,54 +157,48 @@ const sortMapping: Record<string, string> = {
   softwareValue: 'softwareValue_desc',
   alphabetical: 'name_asc',
   healthScore: 'healthScore_desc',
-}
+};
 
-const pageSize = 20
+const pageSize = 20;
 
-const queryKey = computed(() => [TanstackKey.OSS_INDEX_PROJECTS, sort.value])
+const queryKey = computed(() => [TanstackKey.OSS_INDEX_PROJECTS, sort.value]);
 
 const queryFn = PROJECT_API_SERVICE.fetchProjects(() => ({
   sort: sortMapping[sort.value] || 'contributorCount_desc',
   pageSize,
-}))
+}));
 
 const getNextPageParam = (lastPage) => {
-  const nextPage = lastPage.page + 1
-  const totalPages = Math.ceil(lastPage.total / lastPage.pageSize)
-  return nextPage < totalPages ? nextPage : undefined
-}
+  const nextPage = lastPage.page + 1;
+  const totalPages = Math.ceil(lastPage.total / lastPage.pageSize);
+  return nextPage < totalPages ? nextPage : undefined;
+};
 
-const {
-  data,
-  isFetchingNextPage,
-  fetchNextPage,
-  hasNextPage,
-  isFetching
-} = useInfiniteQuery<Pagination<Project>>({
+const { data, isFetchingNextPage, fetchNextPage, hasNextPage, isFetching } = useInfiniteQuery<Pagination<Project>>({
   queryKey,
   queryFn,
   getNextPageParam,
-  initialPageParam: 0
-})
+  initialPageParam: 0,
+});
 
 const loadMore = () => {
   if (hasNextPage.value) {
-    fetchNextPage()
+    fetchNextPage();
   }
-}
+};
 
 onServerPrefetch(async () => {
   await queryClient.prefetchInfiniteQuery({
     queryKey,
     queryFn,
     getNextPageParam,
-    initialPageParam: 0
-  })
+    initialPageParam: 0,
+  });
 });
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxOsiListProjects'
+  name: 'LfxOsiListProjects',
 };
 </script>

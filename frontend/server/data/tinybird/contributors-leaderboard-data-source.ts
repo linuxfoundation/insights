@@ -1,13 +1,16 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import type {ContributorsLeaderboardFilter} from "~~/server/data/types";
-import {fetchFromTinybird} from "~~/server/data/tinybird/tinybird";
-import type {TinybirdContributorsLeaderboardData, TinybirdCountData} from "~~/server/data/tinybird/responses.types";
-import type {Contributor, ContributorLeaderboard} from "~~/types/contributors/responses.types";
-import type {ContributorsLeaderboardTinybirdQuery} from "~~/server/data/tinybird/requests.types";
+import type { ContributorsLeaderboardFilter } from '~~/server/data/types';
+import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
+import type {
+  TinybirdContributorsLeaderboardData,
+  TinybirdCountData,
+} from '~~/server/data/tinybird/responses.types';
+import type { Contributor, ContributorLeaderboard } from '~~/types/contributors/responses.types';
+import type { ContributorsLeaderboardTinybirdQuery } from '~~/server/data/tinybird/requests.types';
 
 export async function fetchContributorsLeaderboard(
-  filter: ContributorsLeaderboardFilter
+  filter: ContributorsLeaderboardFilter,
 ): Promise<ContributorLeaderboard> {
   // TODO: We're passing unchecked query parameters to TinyBird directly from the frontend.
   //  We need to ensure this doesn't pose a security risk.
@@ -38,15 +41,18 @@ export async function fetchContributorsLeaderboard(
   };
 
   const [dataResponse, countResponse] = await Promise.all([
-    fetchFromTinybird<TinybirdContributorsLeaderboardData[]>('/v0/pipes/contributors_leaderboard.json', dataQuery),
-    fetchFromTinybird<TinybirdCountData[]>('/v0/pipes/contributors_leaderboard.json', countQuery)
+    fetchFromTinybird<TinybirdContributorsLeaderboardData[]>(
+      '/v0/pipes/contributors_leaderboard.json',
+      dataQuery,
+    ),
+    fetchFromTinybird<TinybirdCountData[]>('/v0/pipes/contributors_leaderboard.json', countQuery),
   ]);
 
   return {
     meta: {
       offset: filter.offset || 0,
       limit: filter.limit || 10,
-      total: countResponse?.data?.[0]?.count || 0
+      total: countResponse?.data?.[0]?.count || 0,
     },
     data: dataResponse.data.map(
       (item): Contributor => ({
@@ -55,7 +61,7 @@ export async function fetchContributorsLeaderboard(
         contributions: item.contributionCount,
         percentage: item.contributionPercentage,
         roles: item.roles || [],
-      })
-    )
+      }),
+    ),
   };
 }

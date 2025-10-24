@@ -10,33 +10,33 @@ export default {
   argTypes: {
     icon: {
       description: 'The icon of the button (font-awesome icon name)',
-      control: 'text'
+      control: 'text',
     },
     type: {
       description: 'The visual style type of the button',
       control: 'select',
-      options: iconButtonTypes
+      options: iconButtonTypes,
     },
     size: {
       description: 'The size of the button',
       control: 'select',
-      options: iconButtonSizes
+      options: iconButtonSizes,
     },
     iconType: {
       description: 'The icon type/weight (regular, solid, light)',
       control: 'select',
       options: ['regular', 'solid', 'light'],
-      defaultValue: 'light'
+      defaultValue: 'light',
     },
     iconSize: {
       description: 'The size of the icon in pixels',
       control: 'number',
-      defaultValue: 16
+      defaultValue: 16,
     },
     disabled: {
       description: 'Whether the button is disabled',
-      control: 'boolean'
-    }
+      control: 'boolean',
+    },
   },
 };
 
@@ -46,7 +46,7 @@ export const Default = {
     size: 'medium',
     icon: 'compass',
     disabled: false,
-  }
+  },
 };
 
 export const Transparent = {
@@ -55,5 +55,5 @@ export const Transparent = {
     size: 'medium',
     icon: 'compass',
     disabled: false,
-  }
+  },
 };

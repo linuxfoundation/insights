@@ -87,17 +87,20 @@ const defaultSeriesStyle: MapSeriesOption = {
  * @param data - Data
  * @returns Series
  */
-const buildSeries = (series: ChartSeries[], data: ChartData[]): SeriesTypes[] | undefined => (series.length > 0
+const buildSeries = (series: ChartSeries[], data: ChartData[]): SeriesTypes[] | undefined =>
+  series.length > 0
     ? series.map(
-        (series: ChartSeries) => ({
+        (series: ChartSeries) =>
+          ({
             name: series.name,
             ...defaultSeriesStyle,
             data: serializeDataForGeoMap(data),
-          } as SeriesTypes)
+          }) as SeriesTypes,
       )
-    : undefined);
+    : undefined;
 
-const serializeDataForGeoMap = (data: ChartData[]): GeoMapData[] => data.map((item) => ({
+const serializeDataForGeoMap = (data: ChartData[]): GeoMapData[] =>
+  data.map((item) => ({
     name: item.key,
     value: item.values[0] ?? 0,
     percentage: item.values[1] ?? 0,
@@ -128,7 +131,7 @@ const getLayoutSize = () => {
 export const getGeoMapChartConfig = (
   data: ChartData[],
   series: ChartSeries[],
-  maxValue: number = 100000
+  maxValue: number = 100000,
 ): ECOption => {
   const option = merge({}, defaultGeoOption, {
     visualMap: {

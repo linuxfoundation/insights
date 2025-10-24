@@ -1,17 +1,15 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import {
-  describe, test, expect, vi, beforeEach
-} from 'vitest';
-import { DateTime } from "luxon";
+import { describe, test, expect, vi, beforeEach } from 'vitest';
+import { DateTime } from 'luxon';
 import {
   mockCurrentSummary,
   mockPreviousSummary,
-  mockAverageTimeToMerge
+  mockAverageTimeToMerge,
 } from '../../mocks/tinybird-average-time-to-merge-response.mock';
-import type { AverageTimeMerge } from "~~/types/development/responses.types";
-import type { AverageTimeToMergeFilter } from "~~/server/data/types";
-import { Granularity } from "~~/types/shared/granularity";
+import type { AverageTimeMerge } from '~~/types/development/responses.types';
+import type { AverageTimeToMergeFilter } from '~~/server/data/types';
+import { Granularity } from '~~/types/shared/granularity';
 
 const mockFetchFromTinybird = vi.fn();
 
@@ -23,16 +21,19 @@ describe('Average Time to Merge Data Source', () => {
     // This means that the import for tinybird.ts inside the data source module would still be used,
     // and thus not mocked. This means we need to import the module again after the mock is set, whenever we want to
     // use it.
-    vi.doMock(import("./tinybird"), () => ({
+    vi.doMock(import('./tinybird'), () => ({
       fetchFromTinybird: mockFetchFromTinybird,
     }));
-  })
+  });
 
   test('should fetch average time to merge data with correct parameters', async () => {
     // We have to import this here again because vi.doMock is not hoisted. See the explanation in beforeEach().
-    const {fetchAverageTimeToMerge} = await import("~~/server/data/tinybird/average-time-to-merge-data-source");
+    const { fetchAverageTimeToMerge } = await import(
+      '~~/server/data/tinybird/average-time-to-merge-data-source'
+    );
 
-    mockFetchFromTinybird.mockResolvedValueOnce(mockCurrentSummary)
+    mockFetchFromTinybird
+      .mockResolvedValueOnce(mockCurrentSummary)
       .mockResolvedValueOnce(mockPreviousSummary)
       .mockResolvedValueOnce(mockAverageTimeToMerge);
 
@@ -43,7 +44,7 @@ describe('Average Time to Merge Data Source', () => {
       granularity: Granularity.WEEKLY,
       project: 'the-linux-kernel-organization',
       startDate,
-      endDate
+      endDate,
     };
 
     const result = await fetchAverageTimeToMerge(filter);
@@ -61,8 +62,16 @@ describe('Average Time to Merge Data Source', () => {
       endDate: DateTime.utc(2024, 3, 19),
     };
 
-    expect(mockFetchFromTinybird).toHaveBeenNthCalledWith(1, expectedTinybirdPath, expectedCurrentSummaryQuery);
-    expect(mockFetchFromTinybird).toHaveBeenNthCalledWith(2, expectedTinybirdPath, expectedPreviousSummaryQuery);
+    expect(mockFetchFromTinybird).toHaveBeenNthCalledWith(
+      1,
+      expectedTinybirdPath,
+      expectedCurrentSummaryQuery,
+    );
+    expect(mockFetchFromTinybird).toHaveBeenNthCalledWith(
+      2,
+      expectedTinybirdPath,
+      expectedPreviousSummaryQuery,
+    );
     expect(mockFetchFromTinybird).toHaveBeenNthCalledWith(3, expectedTinybirdPath, filter);
 
     const currentAverageTime = mockCurrentSummary.data[0]?.averageTimeToMergeSeconds || 0;
@@ -81,7 +90,7 @@ describe('Average Time to Merge Data Source', () => {
         startDate: item.startDate,
         endDate: item.endDate,
         averageTime: item.averageTimeToMergeSeconds,
-      }))
+      })),
     };
 
     expect(result).toEqual(expectedResult);

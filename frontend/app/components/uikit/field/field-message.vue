@@ -27,17 +27,20 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import type {FieldMessageType} from "~/components/uikit/field/types/FieldMessageType";
-import {fieldMessageTypeData} from "~/components/uikit/field/constants/fieldMessageTypeData";
-import LfxIcon from "~/components/uikit/icon/icon.vue";
+import type { FieldMessageType } from '~/components/uikit/field/types/FieldMessageType';
+import { fieldMessageTypeData } from '~/components/uikit/field/constants/fieldMessageTypeData';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 
-const props = withDefaults(defineProps<{
-  type?: FieldMessageType,
-  hideIcon?: boolean,
-}>(), {
-  type: 'error',
-  hideIcon: false,
-});
+const props = withDefaults(
+  defineProps<{
+    type?: FieldMessageType;
+    hideIcon?: boolean;
+  }>(),
+  {
+    type: 'error',
+    hideIcon: false,
+  },
+);
 
 const iconClass = computed(() => {
   const { icon } = fieldMessageTypeData[props.type];

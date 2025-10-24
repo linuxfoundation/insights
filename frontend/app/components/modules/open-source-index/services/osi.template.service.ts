@@ -19,14 +19,13 @@ export interface OSIGroup {
   collections?: OSIItem[];
 }
 
-const valueDisplay = (value: string, icon: string) => [
-    `<div class="value-display">`,
-    `<i class="value-icon ${icon}"></i>`,
-    `${value}`,
-    `</div>`
-  ].join('');
+const valueDisplay = (value: string, icon: string) =>
+  [`<div class="value-display">`, `<i class="value-icon ${icon}"></i>`, `${value}`, `</div>`].join(
+    '',
+  );
 
-const itemDisplay = (item: OSIItem) => [
+const itemDisplay = (item: OSIItem) =>
+  [
     `<div class="tooltip-row">`,
     `<div class="name-display">`,
     `<div class="name-icon">`,
@@ -37,42 +36,41 @@ const itemDisplay = (item: OSIItem) => [
     `<div class="name-text">${item.name}</div>`,
     `</div>`,
     valueDisplay(formatNumber(item.count || 0), 'fa-light fa-people-group'),
-    item.softwareValue
-      ? valueDisplay(item.softwareValue, 'fa-light fa-dollar-circle')
-      : '',
-    `</div>`
+    item.softwareValue ? valueDisplay(item.softwareValue, 'fa-light fa-dollar-circle') : '',
+    `</div>`,
   ].join('');
 
-const itemGroupDisplay = (items: OSIItem[], title: string) => [
+const itemGroupDisplay = (items: OSIItem[], title: string) =>
+  [
     `<div class="flex flex-col gap-3 mt-4">`,
     `<div class="text-xs text-neutral-400 font-semibold">${title}</div>`,
     items.map((item) => itemDisplay(item)).join('') || '',
-    `</div>`
+    `</div>`,
   ].join('');
 
-export const footerDisplay = () => [
+export const footerDisplay = () =>
+  [
     `<div class="footer-display">`,
     `<i class="footer-icon fa-light fa-circle-info"></i>`,
-    `<div class="text-xs">Sorted by most contributors</div>`
+    `<div class="text-xs">Sorted by most contributors</div>`,
   ].join('');
 
 // This is the original tooltip template
 // However, this is glitching the images because it refetches the images every time
 // the user moves the mouse over the boxes
-export const getOSITooltipTemplate = (group: OSIGroup) => [
+export const getOSITooltipTemplate = (group: OSIGroup) =>
+  [
     `<div class="osi-tooltip">`,
     `<div class="tooltip-group">${group.name}</div>`,
     `<div class="tooltip-title">${group.categoryName}</div>`,
     `<div class="flex flex-row gap-3">`,
     valueDisplay(formatNumber(group.count || 0), 'fa-light fa-people-group'),
-    group.softwareValue
-      ? valueDisplay(group.softwareValue, 'fa-light fa-dollar-circle')
-      : '',
+    group.softwareValue ? valueDisplay(group.softwareValue, 'fa-light fa-dollar-circle') : '',
     `</div>`,
     `<hr class="mt-4">`,
     group.collections ? itemGroupDisplay(group.collections, 'Top collections') : '',
     itemGroupDisplay(group.projects, 'Top projects'),
     footerDisplay(),
     `</div>`,
-    `</div>`
+    `</div>`,
   ].join('');

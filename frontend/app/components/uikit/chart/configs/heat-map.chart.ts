@@ -3,12 +3,7 @@
 import type { HeatmapSeriesOption } from 'echarts/types/dist/shared';
 import { merge } from 'lodash-es';
 import { punchCardFormatter } from '../helpers/formatters';
-import type {
-  CategoryData,
-  ChartData,
-  ChartSeries,
-  SeriesTypes
-} from '../types/ChartTypes';
+import type { CategoryData, ChartData, ChartSeries, SeriesTypes } from '../types/ChartTypes';
 import { convertToHeatMapData } from '../helpers/chart-helpers';
 import defaultOption from './defaults.chart';
 import { lfxColors } from '~/config/styles/colors';
@@ -24,29 +19,29 @@ const defaultHeatMapOption: ECOption = {
     top: '3%',
     left: '-15',
     right: '0',
-    bottom: '45'
+    bottom: '45',
   },
   xAxis: {
     ...defaultOption.xAxis,
     // boundaryGap: true,
     offset: 5,
     axisLabel: {
-      show: false
-    }
+      show: false,
+    },
   },
   yAxis: {
     ...defaultOption.yAxis,
     type: 'category',
     axisLine: {
-      show: false
+      show: false,
     },
     axisTick: {
-      show: false
+      show: false,
     },
     splitLine: { show: false },
     axisLabel: {
-      show: false
-    }
+      show: false,
+    },
   },
   visualMap: {
     type: 'piecewise',
@@ -58,12 +53,12 @@ const defaultHeatMapOption: ECOption = {
         lfxColors.neutral[200],
         lfxColors.brand[200],
         lfxColors.brand[500],
-        lfxColors.brand[700]
-      ]
+        lfxColors.brand[700],
+      ],
     },
     itemWidth: 12,
     itemHeight: 12,
-    itemGap: 0
+    itemGap: 0,
   },
   graphic: {
     // TODO: Find a better way to do this
@@ -79,45 +74,42 @@ const defaultHeatMapOption: ECOption = {
           font: '12px Inter',
           padding: [0, 175, 4, 0],
           borderWidth: 1,
-          borderColor: 'transparent'
-        }
-      }
-    ]
+          borderColor: 'transparent',
+        },
+      },
+    ],
   },
   tooltip: {
     trigger: 'item',
     axisPointer: {
-      type: 'none'
+      type: 'none',
     },
-    borderColor: 'transparent'
+    borderColor: 'transparent',
     // formatter: punchCardFormatter
-  }
+  },
 };
 
 // Update the defaultSeriesStyle to use normalized sizes
 const defaultSeriesStyle: HeatmapSeriesOption = {
   type: 'heatmap',
   label: {
-    show: false
+    show: false,
   },
   itemStyle: {
     borderRadius: 4,
     borderWidth: 4,
-    borderColor: lfxColors.white
+    borderColor: lfxColors.white,
   },
   emphasis: {
     focus: 'series',
     itemStyle: {
       color: 'inherit',
-      borderWidth: 2
-    }
-  }
+      borderWidth: 2,
+    },
+  },
 };
 
-const applySeriesStyle = (
-  chartSeries: ChartSeries[],
-  data: number[][]
-): SeriesTypes[] => {
+const applySeriesStyle = (chartSeries: ChartSeries[], data: number[][]): SeriesTypes[] => {
   if (!chartSeries) return [];
 
   return chartSeries.map((seriesItem: ChartSeries) => {
@@ -125,7 +117,7 @@ const applySeriesStyle = (
       ...defaultSeriesStyle,
       name: seriesItem.name,
       color: seriesItem.color || lfxColors.brand[500],
-      data
+      data,
     };
 
     return baseStyle as SeriesTypes;
@@ -144,7 +136,7 @@ const splitRange = (min: number, max: number): pieceRange[] => {
     { min, max: min + step },
     { min: min + step, max: min + step * 2 },
     { min: min + step * 2, max: min + step * 3 },
-    { min: min + step * 3, max }
+    { min: min + step * 3, max },
   ];
 };
 
@@ -158,15 +150,15 @@ export const getHeatMapChartConfig = (
   data: ChartData[],
   series: ChartSeries[],
   categoryData: CategoryData,
-  granularity: string
+  granularity: string,
 ): ECOption => {
   const xAxis = {
     ...defaultHeatMapOption.xAxis,
-    data: categoryData.xAxis.map((item) => item.key)
+    data: categoryData.xAxis.map((item) => item.key),
   };
   const yAxis = {
     ...defaultHeatMapOption.yAxis,
-    data: categoryData.yAxis.map((item) => item.key)
+    data: categoryData.yAxis.map((item) => item.key),
   };
   const convertedData = convertToHeatMapData(data);
   const styledSeries = applySeriesStyle(series, convertedData);
@@ -174,7 +166,7 @@ export const getHeatMapChartConfig = (
   const maxValue = Math.max(...convertedData.map((item) => item[2] || 0));
   const splitRanges = splitRange(0, maxValue);
   const tooltip = merge({}, defaultHeatMapOption.tooltip, {
-    formatter: punchCardFormatter(granularity)
+    formatter: punchCardFormatter(granularity),
   });
 
   return merge(
@@ -187,13 +179,13 @@ export const getHeatMapChartConfig = (
         pieces: splitRanges.map((range: pieceRange, index: number) => ({
           min: range.min,
           max: range.max,
-          label: index === splitRanges.length - 1 ? `More` : ' '
-        }))
+          label: index === splitRanges.length - 1 ? `More` : ' ',
+        })),
       },
       xAxis,
       yAxis,
       series: styledSeries,
-      tooltip
-    }
+      tooltip,
+    },
   );
 };

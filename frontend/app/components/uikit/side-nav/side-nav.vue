@@ -12,8 +12,8 @@ SPDX-License-Identifier: MIT
         :href="`#${item.key}`"
         :class="{ active: activeItem === item.key }"
         @click="onClick(item.key, $event)"
-      >{{
-        item.label }}</a>
+        >{{ item.label }}</a
+      >
     </li>
   </ul>
 
@@ -35,11 +35,8 @@ import type { SideNavItem } from './types/side-nav.types';
 import LfxButton from '~/components/uikit/button/button.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import useScroll from '~/components/shared/utils/scroll';
-import { useQueryParam} from "~/components/shared/utils/query-param";
-import {
-  processProjectParams,
-  projectParamsSetter
-} from "~/components/modules/project/services/project.query.service";
+import { useQueryParam } from '~/components/shared/utils/query-param';
+import { processProjectParams, projectParamsSetter } from '~/components/modules/project/services/project.query.service';
 
 const props = defineProps<{
   list: SideNavItem[];
@@ -49,7 +46,7 @@ const props = defineProps<{
 const { scrollTopPercentage } = useScroll();
 const { queryParams } = useQueryParam(processProjectParams, projectParamsSetter);
 
-const emit = defineEmits<{(e: 'update:modelValue', value: string): void }>();
+const emit = defineEmits<{ (e: 'update:modelValue', value: string): void }>();
 
 const activeItem = computed<string>({
   get() {
@@ -57,7 +54,7 @@ const activeItem = computed<string>({
   },
   set(value: string) {
     emit('update:modelValue', value);
-  }
+  },
 });
 
 const onClick = (value: string, e: Event) => {
@@ -73,6 +70,6 @@ const onClick = (value: string, e: Event) => {
 
 <script lang="ts">
 export default {
-  name: 'LfxSideNav'
+  name: 'LfxSideNav',
 };
 </script>

@@ -25,14 +25,12 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import type { ECElementEvent } from 'echarts';
-import {useRouter} from "nuxt/app";
+import { useRouter } from 'nuxt/app';
 import type { OSIGroup } from '../services/osi.template.service';
 import type { SortType } from '../services/osi.api.service';
-import LfxOSITooltip from "./osi-tooltip.vue";
+import LfxOSITooltip from './osi-tooltip.vue';
 import LfxChart from '~/components/uikit/chart/chart.vue';
-import {
-  getTreeMapConfig,
-} from '~/components/uikit/chart/configs/tree-map.chart';
+import { getTreeMapConfig } from '~/components/uikit/chart/configs/tree-map.chart';
 import type { TreeLabelFormatterParams } from '~/components/uikit/chart/types/EChartTypes';
 import type { TreeMapData } from '~/components/uikit/chart/types/ChartTypes';
 import { formatNumberCurrency } from '~/components/shared/utils/formatter';
@@ -59,21 +57,23 @@ const tooltip = (info: TreeLabelFormatterParams): string => {
     categoryName: collection?.name || '',
     count: collection?.totalContributors || 0,
     softwareValue: collection?.softwareValue ? formatNumberCurrency(collection?.softwareValue, 'USD') : undefined,
-    projects: projects?.map((project) => ({
-      name: project.name,
-      count: project.count,
-      softwareValue: project.softwareValue ? formatNumberCurrency(project.softwareValue, 'USD') : undefined,
-      logoUrl: project.logoUrl
-    })) || [],
-    collections: collection?.topCollections?.map((collection) => ({
-      name: collection.name,
-      count: collection.count,
-      softwareValue: collection.softwareValue ? formatNumberCurrency(collection.softwareValue, 'USD') : undefined,
-      icon: 'fa-light fa-people-group'
-    })) || []
-  }
+    projects:
+      projects?.map((project) => ({
+        name: project.name,
+        count: project.count,
+        softwareValue: project.softwareValue ? formatNumberCurrency(project.softwareValue, 'USD') : undefined,
+        logoUrl: project.logoUrl,
+      })) || [],
+    collections:
+      collection?.topCollections?.map((collection) => ({
+        name: collection.name,
+        count: collection.count,
+        softwareValue: collection.softwareValue ? formatNumberCurrency(collection.softwareValue, 'USD') : undefined,
+        icon: 'fa-light fa-people-group',
+      })) || [],
+  };
 
-  if(selectedGroup.value?.categoryName !== group.categoryName) {
+  if (selectedGroup.value?.categoryName !== group.categoryName) {
     selectedGroup.value = group;
   }
 
@@ -114,8 +114,8 @@ const handleMouseMove = (event: MouseEvent) => {
 
     // Keep y position within viewport bounds
     let y = clientY + offset;
-    if ((y + height) > (innerHeight + topOffset)) {
-      y = (clientY - height - offset) + topOffset;
+    if (y + height > innerHeight + topOffset) {
+      y = clientY - height - offset + topOffset;
     }
     if (y < 0) {
       y = offset + topOffset;
@@ -128,7 +128,7 @@ const handleMouseMove = (event: MouseEvent) => {
 
 const handleMouseLeave = () => {
   selectedGroup.value = undefined;
-}
+};
 
 const handleChartClick = (params: ECElementEvent) => {
   if (params.componentSubType === 'treemap' && params.componentType === 'series' && params.dataIndex > 0) {
@@ -138,16 +138,16 @@ const handleChartClick = (params: ECElementEvent) => {
       router.push({
         path: data.link,
         query: {
-          sort: props.isCollection ? undefined : props.sort
-        }
+          sort: props.isCollection ? undefined : props.sort,
+        },
       });
     }
   }
-}
+};
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxOSIChart'
+  name: 'LfxOSIChart',
 };
 </script>

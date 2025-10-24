@@ -16,14 +16,14 @@ export const mockTreeMap: TreeMapData[] = [
         id: 'branch-1',
         name: 'Collection One',
         count: 1000,
-        softwareValue: '$1000'
+        softwareValue: '$1000',
       },
       {
         id: 'branch-2',
         name: 'Collection Two',
         count: 2000,
-        softwareValue: '$2000'
-      }
+        softwareValue: '$2000',
+      },
     ],
     topProjects: [
       {
@@ -31,16 +31,16 @@ export const mockTreeMap: TreeMapData[] = [
         name: 'Project One lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.',
         count: 1000,
         softwareValue: '$1000',
-        logoUrl: 'https://avatars.githubusercontent.com/u/13629408?v=4'
+        logoUrl: 'https://avatars.githubusercontent.com/u/13629408?v=4',
       },
       {
         id: 'leaf-2',
         name: 'Project Two',
         count: 2000,
         softwareValue: '$2000',
-        logoUrl: 'https://avatars.githubusercontent.com/u/49998002?v=4'
-      }
-    ]
+        logoUrl: 'https://avatars.githubusercontent.com/u/49998002?v=4',
+      },
+    ],
   },
   {
     value: [3000, 1],
@@ -55,14 +55,14 @@ export const mockTreeMap: TreeMapData[] = [
         id: 'branch-1',
         name: 'Collection One',
         count: 1000,
-        softwareValue: '$1000'
+        softwareValue: '$1000',
       },
       {
         id: 'branch-2',
         name: 'Collection Two',
         count: 2000,
-        softwareValue: '$2000'
-      }
+        softwareValue: '$2000',
+      },
     ],
     topProjects: [
       {
@@ -70,16 +70,16 @@ export const mockTreeMap: TreeMapData[] = [
         name: 'Project One lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.',
         count: 1000,
         softwareValue: '$1000',
-        logoUrl: 'https://avatars.githubusercontent.com/u/13629408?v=4'
+        logoUrl: 'https://avatars.githubusercontent.com/u/13629408?v=4',
       },
       {
         id: 'leaf-2',
         name: 'Project Two',
         count: 2000,
         softwareValue: '$2000',
-        logoUrl: 'https://avatars.githubusercontent.com/u/49998002?v=4'
-      }
-    ]
+        logoUrl: 'https://avatars.githubusercontent.com/u/49998002?v=4',
+      },
+    ],
   },
   {
     value: [12000, 5],
@@ -94,14 +94,14 @@ export const mockTreeMap: TreeMapData[] = [
         id: 'branch-3',
         name: 'Collection One',
         count: 1000,
-        softwareValue: '$1000'
+        softwareValue: '$1000',
       },
       {
         id: 'branch-4',
         name: 'Collection Two',
         count: 2000,
-        softwareValue: '$2000'
-      }
+        softwareValue: '$2000',
+      },
     ],
     topProjects: [
       {
@@ -109,16 +109,16 @@ export const mockTreeMap: TreeMapData[] = [
         name: 'Project Three',
         count: 3000,
         softwareValue: '$3000',
-        logoUrl: 'https://avatars.githubusercontent.com/u/13629408?v=4'
+        logoUrl: 'https://avatars.githubusercontent.com/u/13629408?v=4',
       },
       {
         id: 'leaf-4',
         name: 'Project Four',
         count: 4000,
         softwareValue: '$4000',
-        logoUrl: 'https://avatars.githubusercontent.com/u/49998002?v=4'
-      }
-    ]
+        logoUrl: 'https://avatars.githubusercontent.com/u/49998002?v=4',
+      },
+    ],
   },
   {
     value: [7000, 3],
@@ -133,14 +133,14 @@ export const mockTreeMap: TreeMapData[] = [
         id: 'branch-5',
         name: 'Collection One',
         count: 1000,
-        softwareValue: '$1000'
+        softwareValue: '$1000',
       },
       {
         id: 'branch-6',
         name: 'Collection Two',
         count: 2000,
-        softwareValue: '$2000'
-      }
+        softwareValue: '$2000',
+      },
     ],
     topProjects: [
       {
@@ -148,16 +148,16 @@ export const mockTreeMap: TreeMapData[] = [
         name: 'Project Three',
         count: 3000,
         softwareValue: '$3000',
-        logoUrl: 'https://avatars.githubusercontent.com/u/13629408?v=4'
+        logoUrl: 'https://avatars.githubusercontent.com/u/13629408?v=4',
       },
       {
         id: 'leaf-6',
         name: 'Project Four',
         count: 4000,
         softwareValue: '$4000',
-        logoUrl: 'https://avatars.githubusercontent.com/u/49998002?v=4'
-      }
-    ]
+        logoUrl: 'https://avatars.githubusercontent.com/u/49998002?v=4',
+      },
+    ],
   },
   {
     value: [6000, 2],
@@ -172,14 +172,14 @@ export const mockTreeMap: TreeMapData[] = [
         id: 'branch-7',
         name: 'Collection One',
         count: 1000,
-        softwareValue: '$1000'
+        softwareValue: '$1000',
       },
       {
         id: 'branch-8',
         name: 'Collection Two',
         count: 2000,
-        softwareValue: '$2000'
-      }
+        softwareValue: '$2000',
+      },
     ],
     topProjects: [
       {
@@ -187,16 +187,16 @@ export const mockTreeMap: TreeMapData[] = [
         name: 'Project One lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.',
         count: 1000,
         softwareValue: '$1000',
-        logoUrl: 'https://avatars.githubusercontent.com/u/13629408?v=4'
+        logoUrl: 'https://avatars.githubusercontent.com/u/13629408?v=4',
       },
       {
         id: 'leaf-8',
         name: 'Project Two',
         count: 2000,
         softwareValue: '$2000',
-        logoUrl: 'https://avatars.githubusercontent.com/u/49998002?v=4'
-      }
-    ]
+        logoUrl: 'https://avatars.githubusercontent.com/u/49998002?v=4',
+      },
+    ],
   },
   {
     value: [1000, 1],
@@ -211,14 +211,14 @@ export const mockTreeMap: TreeMapData[] = [
         id: 'branch-9',
         name: 'Collection One',
         count: 1000,
-        softwareValue: '$1000'
+        softwareValue: '$1000',
       },
       {
         id: 'branch-10',
         name: 'Collection Two',
         count: 2000,
-        softwareValue: '$2000'
-      }
+        softwareValue: '$2000',
+      },
     ],
     topProjects: [
       {
@@ -226,16 +226,16 @@ export const mockTreeMap: TreeMapData[] = [
         name: 'Project Three',
         count: 3000,
         softwareValue: '$3000',
-        logoUrl: 'https://avatars.githubusercontent.com/u/13629408?v=4'
+        logoUrl: 'https://avatars.githubusercontent.com/u/13629408?v=4',
       },
       {
         id: 'leaf-10',
         name: 'Project Four',
         count: 4000,
         softwareValue: '$4000',
-        logoUrl: 'https://avatars.githubusercontent.com/u/49998002?v=4'
-      }
-    ]
+        logoUrl: 'https://avatars.githubusercontent.com/u/49998002?v=4',
+      },
+    ],
   },
   {
     value: [2000, 1],
@@ -250,14 +250,14 @@ export const mockTreeMap: TreeMapData[] = [
         id: 'branch-11',
         name: 'Collection One',
         count: 1000,
-        softwareValue: '$1000'
+        softwareValue: '$1000',
       },
       {
         id: 'branch-12',
         name: 'Collection Two',
         count: 2000,
-        softwareValue: '$2000'
-      }
+        softwareValue: '$2000',
+      },
     ],
     topProjects: [
       {
@@ -265,16 +265,16 @@ export const mockTreeMap: TreeMapData[] = [
         name: 'Project Three',
         count: 3000,
         softwareValue: '$3000',
-        logoUrl: 'https://avatars.githubusercontent.com/u/13629408?v=4'
+        logoUrl: 'https://avatars.githubusercontent.com/u/13629408?v=4',
       },
       {
         id: 'leaf-12',
         name: 'Project Four',
         count: 4000,
         softwareValue: '$4000',
-        logoUrl: 'https://avatars.githubusercontent.com/u/49998002?v=4'
-      }
-    ]
+        logoUrl: 'https://avatars.githubusercontent.com/u/49998002?v=4',
+      },
+    ],
   },
   {
     value: [11000, 5],
@@ -289,14 +289,14 @@ export const mockTreeMap: TreeMapData[] = [
         id: 'branch-13',
         name: 'Collection One',
         count: 1000,
-        softwareValue: '$1000'
+        softwareValue: '$1000',
       },
       {
         id: 'branch-14',
         name: 'Collection Two',
         count: 2000,
-        softwareValue: '$2000'
-      }
+        softwareValue: '$2000',
+      },
     ],
     topProjects: [
       {
@@ -304,16 +304,16 @@ export const mockTreeMap: TreeMapData[] = [
         name: 'Project One lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.',
         count: 1000,
         softwareValue: '$1000',
-        logoUrl: 'https://avatars.githubusercontent.com/u/13629408?v=4'
+        logoUrl: 'https://avatars.githubusercontent.com/u/13629408?v=4',
       },
       {
         id: 'leaf-14',
         name: 'Project Two',
         count: 2000,
         softwareValue: '$2000',
-        logoUrl: 'https://avatars.githubusercontent.com/u/49998002?v=4'
-      }
-    ]
+        logoUrl: 'https://avatars.githubusercontent.com/u/49998002?v=4',
+      },
+    ],
   },
   {
     value: [5000, 3],
@@ -328,14 +328,14 @@ export const mockTreeMap: TreeMapData[] = [
         id: 'branch-15',
         name: 'Collection One',
         count: 1000,
-        softwareValue: '$1000'
+        softwareValue: '$1000',
       },
       {
         id: 'branch-16',
         name: 'Collection Two',
         count: 2000,
-        softwareValue: '$2000'
-      }
+        softwareValue: '$2000',
+      },
     ],
     topProjects: [
       {
@@ -343,16 +343,16 @@ export const mockTreeMap: TreeMapData[] = [
         name: 'Project Three',
         count: 3000,
         softwareValue: '$3000',
-        logoUrl: 'https://avatars.githubusercontent.com/u/13629408?v=4'
+        logoUrl: 'https://avatars.githubusercontent.com/u/13629408?v=4',
       },
       {
         id: 'leaf-16',
         name: 'Project Four',
         count: 4000,
         softwareValue: '$4000',
-        logoUrl: 'https://avatars.githubusercontent.com/u/49998002?v=4'
-      }
-    ]
+        logoUrl: 'https://avatars.githubusercontent.com/u/49998002?v=4',
+      },
+    ],
   },
   {
     value: [4000, 2],
@@ -367,14 +367,14 @@ export const mockTreeMap: TreeMapData[] = [
         id: 'branch-17',
         name: 'Collection One',
         count: 1000,
-        softwareValue: '$1000'
+        softwareValue: '$1000',
       },
       {
         id: 'branch-18',
         name: 'Collection Two',
         count: 2000,
-        softwareValue: '$2000'
-      }
+        softwareValue: '$2000',
+      },
     ],
     topProjects: [
       {
@@ -382,15 +382,15 @@ export const mockTreeMap: TreeMapData[] = [
         name: 'Project Three',
         count: 3000,
         softwareValue: '$3000',
-        logoUrl: 'https://avatars.githubusercontent.com/u/13629408?v=4'
+        logoUrl: 'https://avatars.githubusercontent.com/u/13629408?v=4',
       },
       {
         id: 'leaf-18',
         name: 'Project Four',
         count: 4000,
         softwareValue: '$4000',
-        logoUrl: 'https://avatars.githubusercontent.com/u/49998002?v=4'
-      }
-    ]
-  }
+        logoUrl: 'https://avatars.githubusercontent.com/u/49998002?v=4',
+      },
+    ],
+  },
 ];

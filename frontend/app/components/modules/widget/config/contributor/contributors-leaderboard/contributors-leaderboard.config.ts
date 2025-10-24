@@ -1,7 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import ContributorLeaderboard from './contributors-leaderboard.vue'
-import type { WidgetConfig } from '~/components/modules/widget/config/widget.config'
+import ContributorLeaderboard from './contributors-leaderboard.vue';
+import type { WidgetConfig } from '~/components/modules/widget/config/widget.config';
 
 const contributorsLeaderboard: WidgetConfig = {
   key: 'contributorsLeaderboard',
@@ -19,6 +19,6 @@ const contributorsLeaderboard: WidgetConfig = {
   embed: true,
   snapshot: true,
   showCollabToggle: true,
-}
+};
 
-export default contributorsLeaderboard
+export default contributorsLeaderboard;

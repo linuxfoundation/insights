@@ -26,17 +26,16 @@ SPDX-License-Identifier: MIT
   </span>
 </template>
 <script setup lang="ts">
-import LfxIcon from '~/components/uikit/icon/icon.vue'
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 
 defineProps<{
   label: string;
   status: string;
-}>()
-
+}>();
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxChatLabel'
-}
+  name: 'LfxChatLabel',
+};
 </script>

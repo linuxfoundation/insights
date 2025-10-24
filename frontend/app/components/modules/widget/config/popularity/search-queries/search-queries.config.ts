@@ -1,7 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import SearchQueries from './search-queries.vue'
-import type { WidgetConfig } from '~/components/modules/widget/config/widget.config'
+import SearchQueries from './search-queries.vue';
+import type { WidgetConfig } from '~/components/modules/widget/config/widget.config';
 
 const searchQueries: WidgetConfig = {
   key: 'searchQueries',
@@ -15,7 +15,7 @@ const searchQueries: WidgetConfig = {
   hideOnRepoFilter: true,
   copilot: {
     icon: 'magnifying-glass',
-    suggestions: 'What is the search volume for this project?'
+    suggestions: 'What is the search volume for this project?',
   },
   benchmark: {
     title: 'Search Queries',
@@ -61,6 +61,6 @@ const searchQueries: WidgetConfig = {
       },
     },
   },
-}
+};
 
-export default searchQueries
+export default searchQueries;

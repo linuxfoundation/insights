@@ -29,15 +29,15 @@ SPDX-License-Identifier: MIT
 </template>
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import type { AIMessage } from '../../types/copilot.types'
-import LfxChatLabel from './chat-label.vue'
-import LfxIcon from '~/components/uikit/icon/icon.vue'
+import type { AIMessage } from '../../types/copilot.types';
+import LfxChatLabel from './chat-label.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 
 const props = defineProps<{
-  message: AIMessage,
-  version: number,
-  isSelected: boolean | undefined
-}>()
+  message: AIMessage;
+  version: number;
+  isSelected: boolean | undefined;
+}>();
 
 const isReasonExpanded = ref(false);
 
@@ -47,12 +47,11 @@ const shouldShowReasoning = computed(() => {
 
 const reasoning = computed(() => {
   return props.message.reformulatedQuestion || props.message.explanation || props.message.sql;
-})
-
+});
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxChatResult'
-}
+  name: 'LfxChatResult',
+};
 </script>

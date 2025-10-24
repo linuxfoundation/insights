@@ -13,14 +13,14 @@ const packageDownloads: WidgetConfig = {
   component: PackageDownloads,
   defaultValue: {
     package: 'all::All packages',
-    activeTab: 'packageDownloads'
+    activeTab: 'packageDownloads',
   },
   share: true,
   embed: true,
   snapshot: true,
   copilot: {
     icon: 'download',
-    suggestions: 'How many package downloads does this project have?'
+    suggestions: 'How many package downloads does this project have?',
   },
 };
 

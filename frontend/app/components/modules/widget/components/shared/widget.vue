@@ -15,9 +15,8 @@ SPDX-License-Identifier: MIT
 
         <lfx-widget-menu
           :data="model"
-          class="relative lg:absolute lg:-top-3 lg:right-6 lg:opacity-0
-          lg:invisible group-hover:opacity-100 group-hover:visible"
-          :class="{'!opacity-100 !visible': isMenuOpen}"
+          class="relative lg:absolute lg:-top-3 lg:right-6 lg:opacity-0 lg:invisible group-hover:opacity-100 group-hover:visible"
+          :class="{ '!opacity-100 !visible': isMenuOpen }"
           :name="props.name"
           :is-menu-open="isMenuOpen"
           @update:is-menu-open="isMenuOpen = $event"
@@ -34,7 +33,8 @@ SPDX-License-Identifier: MIT
             :href="config.learnMoreLink"
             class="ml-1 text-brand-500"
             target="_blank"
-          >Learn more</a>
+            >Learn more</a
+          >
         </p>
         <div
           v-if="config.showCollabToggle"
@@ -49,13 +49,14 @@ SPDX-License-Identifier: MIT
           <lfx-tooltip>
             <template #content>
               <p>
-                Collaborations refer to activities associated with engagement or<br>coordination with others,
-                and don't reflect technical-driven<br>impact.
+                Collaborations refer to activities associated with engagement or<br />coordination with others, and
+                don't reflect technical-driven<br />impact.
                 <a
                   :href="links.collaborationDocs"
                   target="_blank"
                   class="text-brand-500"
-                >Learn more</a>
+                  >Learn more</a
+                >
               </p>
             </template>
             <lfx-icon
@@ -66,7 +67,7 @@ SPDX-License-Identifier: MIT
           </lfx-tooltip>
         </div>
       </div>
-      <hr>
+      <hr />
       <component
         :is="config.component"
         v-model="model"
@@ -78,29 +79,28 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script lang="ts" setup>
-import {computed, ref, watch} from "vue";
-import {storeToRefs} from "pinia";
-import LfxCard from "~/components/uikit/card/card.vue";
-import type {Widget} from "~/components/modules/widget/types/widget";
-import {lfxWidgets, type WidgetConfig} from "~/components/modules/widget/config/widget.config";
-import {useProjectStore} from "~/components/modules/project/store/project.store";
-import LfxWidgetMenu from "~/components/modules/widget/components/shared/widget-menu.vue";
-import {useSanitize} from "~~/composables/useSanitize";
+import { computed, ref, watch } from 'vue';
+import { storeToRefs } from 'pinia';
+import LfxCard from '~/components/uikit/card/card.vue';
+import type { Widget } from '~/components/modules/widget/types/widget';
+import { lfxWidgets, type WidgetConfig } from '~/components/modules/widget/config/widget.config';
+import { useProjectStore } from '~/components/modules/project/store/project.store';
+import LfxWidgetMenu from '~/components/modules/widget/components/shared/widget-menu.vue';
+import { useSanitize } from '~~/composables/useSanitize';
 import type { BenchmarkScoreData, HealthScoreResults } from '~~/types/overview/responses.types';
-import LfxBenchmarksWrap from "~/components/uikit/benchmarks/benchmarks-wrap.vue";
-import LfxToggle from "~/components/uikit/toggle/toggle.vue";
-import LfxTooltip from "~/components/uikit/tooltip/tooltip.vue";
-import LfxIcon from "~/components/uikit/icon/icon.vue";
+import LfxBenchmarksWrap from '~/components/uikit/benchmarks/benchmarks-wrap.vue';
+import LfxToggle from '~/components/uikit/toggle/toggle.vue';
+import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 import { links } from '~/config/links';
 
-const emit = defineEmits<{(e: 'dataLoaded', value: string): void;
-}>();
+const emit = defineEmits<{ (e: 'dataLoaded', value: string): void }>();
 const props = defineProps<{
-  name: Widget,
-  benchmarkScores: HealthScoreResults | undefined
+  name: Widget;
+  benchmarkScores: HealthScoreResults | undefined;
 }>();
 
-const {sanitize} = useSanitize();
+const { sanitize } = useSanitize();
 
 const config = computed<WidgetConfig>(() => lfxWidgets[props.name]);
 const { project, collaborationSet } = storeToRefs(useProjectStore());
@@ -116,21 +116,26 @@ const includeCollaborations = computed({
     } else {
       collaborationSet.value = collaborationSet.value.filter((name) => name !== props.name);
     }
-  }
+  },
 });
 const isMenuOpen = ref(false);
 const widgetHasData = ref(true);
 
-const benchmarkScore = computed<BenchmarkScoreData | undefined>(() => props
-  .benchmarkScores?.[config.value.key as keyof HealthScoreResults] as BenchmarkScoreData);
+const benchmarkScore = computed<BenchmarkScoreData | undefined>(
+  () => props.benchmarkScores?.[config.value.key as keyof HealthScoreResults] as BenchmarkScoreData,
+);
 
-watch(includeCollaborations, (value) => {
-  model.value.includeCollaborations = value;
-}, { immediate: true });
+watch(
+  includeCollaborations,
+  (value) => {
+    model.value.includeCollaborations = value;
+  },
+  { immediate: true },
+);
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxWidget'
-}
+  name: 'LfxWidget',
+};
 </script>

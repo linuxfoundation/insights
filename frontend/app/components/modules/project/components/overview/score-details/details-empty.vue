@@ -3,9 +3,7 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div
-    class="text-sm text-neutral-500 flex flex-col items-center justify-center gap-5 py-20"
-  >
+  <div class="text-sm text-neutral-500 flex flex-col items-center justify-center gap-5 py-20">
     <lfx-icon
       name="eyes"
       :size="40"
@@ -27,6 +25,6 @@ defineProps<{
 
 <script lang="ts">
 export default {
-  name: 'LfxProjectDetailsEmpty'
+  name: 'LfxProjectDetailsEmpty',
 };
 </script>

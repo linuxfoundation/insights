@@ -155,7 +155,9 @@ export const CompleteForm = {
         country: '',
         message: '',
       });
-      const emailValid = computed(() => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.value.email) || form.value.email === '');
+      const emailValid = computed(
+        () => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.value.email) || form.value.email === '',
+      );
       return { form, emailValid };
     },
     template: `

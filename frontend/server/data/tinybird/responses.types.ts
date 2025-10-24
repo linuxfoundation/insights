@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 // These are the types of the responses from the Tinybird API
 
-import type {DateTime} from "luxon";
+import type { DateTime } from 'luxon';
 
 export type TinybirdActiveContributorsSummary = {
   contributorCount: number;
@@ -15,35 +15,35 @@ export type TinybirdActiveContributorsData = {
 }[];
 
 export type TinybirdContributorsLeaderboardData = {
-  avatar: string,
-  displayName: string,
-  contributionCount: number,
-  contributionPercentage: number
-  roles: string[]
+  avatar: string;
+  displayName: string;
+  contributionCount: number;
+  contributionPercentage: number;
+  roles: string[];
 };
 
 export type TinybirdCountData = {
-  count: number
+  count: number;
 };
 
 export type TinybirdContributorDependencyData = {
-  displayName: string,
-  contributionPercentage: number,
-  contributionPercentageRunningTotal: number,
-  totalContributorCount: number
+  displayName: string;
+  contributionPercentage: number;
+  contributionPercentageRunningTotal: number;
+  totalContributorCount: number;
 };
 
 export type TinybirdOrganizationsLeaderboardData = {
-  logo: string,
-  displayName: string,
-  contributionCount: number,
-  contributionPercentage: number
+  logo: string;
+  displayName: string;
+  contributionCount: number;
+  contributionPercentage: number;
 };
 
 export type TinybirdActivityHeatmapData = {
-  weekday: number,
-  twoHoursBlock: number,
-  activityCount: number
+  weekday: number;
+  twoHoursBlock: number;
+  activityCount: number;
 };
 
 export type TinybirdSearchVolumeData = {
@@ -52,16 +52,16 @@ export type TinybirdSearchVolumeData = {
   dataTimestamp: string;
   volume: number;
   updatedAt: DateTime;
-}
+};
 
 export type TinyBirdActivitiesCountSummaryData = {
-  activityCount?: number
+  activityCount?: number;
 };
 
 export type TinyBirdActivitiesCountDataItem = {
-  startDate: string,
-  endDate: string,
-  activityCount?: number
+  startDate: string;
+  endDate: string;
+  activityCount?: number;
 };
 
 export type TinybirdActivityTypeItem = {

@@ -24,17 +24,17 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import LfxIcon from '~/components/uikit/icon/icon.vue'
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 
 defineProps<{
-  icon: string
-  title?: string
-  description: string
-}>()
+  icon: string;
+  title?: string;
+  description: string;
+}>();
 </script>
 
 <script lang="ts">
 export default {
-    name: 'LfxEmptyState'
-}
+  name: 'LfxEmptyState',
+};
 </script>

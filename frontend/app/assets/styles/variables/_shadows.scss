@@ -8,9 +8,17 @@
 :root {
   --lfx-shadow-none: none;
   --lfx-shadow-xs: 0 #{toRem(1)} #{toRem(2)} 0 rgba(0, 0, 0, 0.05);
-  --lfx-shadow-sm: 0 #{toRem(1)} #{toRem(3)} 0 rgba(0, 0, 0, 0.10), 0 #{toRem(1)} #{toRem(2)} #{toRem(-1)} rgba(0, 0, 0, 0.10);
-  --lfx-shadow-md: 0 #{toRem(4)} #{toRem(6)} #{toRem(-1)} rgba(0, 0, 0, 0.10), 0 #{toRem(2)} #{toRem(4)} #{toRem(-2)} rgba(0, 0, 0, 0.10);
-  --lfx-shadow-lg: 0 #{toRem(4)} #{toRem(6)} #{toRem(-4)} rgba(0, 0, 0, 0.10), 0 #{toRem(10)} #{toRem(15)} #{toRem(-3)} rgba(0, 0, 0, 0.10);
-  --lfx-shadow-xl: 0 #{toRem(20)} #{toRem(25)} #{toRem(-5)} rgba(0, 0, 0, 0.10), 0 #{toRem(8)} #{toRem(10)} #{toRem(-6)} rgba(0, 0, 0, 0.10);
+  --lfx-shadow-sm:
+    0 #{toRem(1)} #{toRem(3)} 0 rgba(0, 0, 0, 0.1),
+    0 #{toRem(1)} #{toRem(2)} #{toRem(-1)} rgba(0, 0, 0, 0.1);
+  --lfx-shadow-md:
+    0 #{toRem(4)} #{toRem(6)} #{toRem(-1)} rgba(0, 0, 0, 0.1),
+    0 #{toRem(2)} #{toRem(4)} #{toRem(-2)} rgba(0, 0, 0, 0.1);
+  --lfx-shadow-lg:
+    0 #{toRem(4)} #{toRem(6)} #{toRem(-4)} rgba(0, 0, 0, 0.1),
+    0 #{toRem(10)} #{toRem(15)} #{toRem(-3)} rgba(0, 0, 0, 0.1);
+  --lfx-shadow-xl:
+    0 #{toRem(20)} #{toRem(25)} #{toRem(-5)} rgba(0, 0, 0, 0.1),
+    0 #{toRem(8)} #{toRem(10)} #{toRem(-6)} rgba(0, 0, 0, 0.1);
   --lfx-shadow-2xl: 0 #{toRem(25)} #{toRem(50)} #{toRem(-12)} rgba(0, 0, 0, 0.25);
 }

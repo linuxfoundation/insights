@@ -15,9 +15,9 @@ SPDX-License-Identifier: MIT
         ref="searchInputRef"
         v-model="search"
         type="text"
-        class="!outline-none !shadow-none  flex-grow text-sm text-neutral-900 leading-5"
+        class="!outline-none !shadow-none flex-grow text-sm text-neutral-900 leading-5"
         placeholder="Search repository groups..."
-      >
+      />
       <lfx-icon
         v-if="search.length > 0"
         name="circle-xmark"
@@ -27,7 +27,7 @@ SPDX-License-Identifier: MIT
       />
     </label>
 
-    <hr>
+    <hr />
     <!-- Result -->
     <div class="flex flex-col gap-1 max-h-[29.5rem] overflow-y-auto">
       <lfx-project-repository-switch-item
@@ -37,7 +37,7 @@ SPDX-License-Identifier: MIT
         @click="handleSelectRepositoryGroup(rg)"
       >
         <div>
-          <p class="text-sm mb-1">{{rg.name}}</p>
+          <p class="text-sm mb-1">{{ rg.name }}</p>
           <div class="flex items-center gap-1.5">
             <lfx-icon
               name="book"
@@ -45,7 +45,7 @@ SPDX-License-Identifier: MIT
               :size="14"
             />
             <p class="text-xs text-neutral-500">
-              {{pluralize('repository', rg.repositories.length, true)}}
+              {{ pluralize('repository', rg.repositories.length, true) }}
             </p>
           </div>
         </div>
@@ -68,24 +68,23 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import {computed, onMounted, ref} from "vue";
-import {storeToRefs} from "pinia";
-import pluralize from "pluralize";
-import {useRoute, useRouter} from "nuxt/app";
-import LfxIcon from "~/components/uikit/icon/icon.vue";
-import {useProjectStore} from "~/components/modules/project/store/project.store";
-import type {ProjectRepositoryGroup} from "~~/types/project";
-import LfxProjectRepositorySwitchItem
-  from "~/components/modules/project/components/shared/header/repository-switch/repository-switch-item.vue";
-import type {ProjectLinkConfig} from "~/components/modules/project/config/links";
+import { computed, onMounted, ref } from 'vue';
+import { storeToRefs } from 'pinia';
+import pluralize from 'pluralize';
+import { useRoute, useRouter } from 'nuxt/app';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import { useProjectStore } from '~/components/modules/project/store/project.store';
+import type { ProjectRepositoryGroup } from '~~/types/project';
+import LfxProjectRepositorySwitchItem from '~/components/modules/project/components/shared/header/repository-switch/repository-switch-item.vue';
+import type { ProjectLinkConfig } from '~/components/modules/project/config/links';
 
 const props = defineProps<{
-  link: ProjectLinkConfig
+  link: ProjectLinkConfig;
 }>();
 
 const emit = defineEmits<{
-  (e: 'close'): void
-}>()
+  (e: 'close'): void;
+}>();
 
 const route = useRoute();
 const router = useRouter();
@@ -93,26 +92,25 @@ const router = useRouter();
 const searchInputRef = ref(null);
 const search = ref('');
 
-const {
-  projectRepositoryGroups,
-    selectedRepositoryGroup,
-} = storeToRefs(useProjectStore());
+const { projectRepositoryGroups, selectedRepositoryGroup } = storeToRefs(useProjectStore());
 
-
-const result = computed<ProjectRepositoryGroup[]>(() => projectRepositoryGroups.value
-    .filter((rg: ProjectRepositoryGroup) => rg.name.toLowerCase().includes(search.value.toLowerCase())));
+const result = computed<ProjectRepositoryGroup[]>(() =>
+  projectRepositoryGroups.value.filter((rg: ProjectRepositoryGroup) =>
+    rg.name.toLowerCase().includes(search.value.toLowerCase()),
+  ),
+);
 
 const handleSelectRepositoryGroup = (rg: ProjectRepositoryGroup) => {
   const routeQuery = route.query;
   router.push({
     name: props.link.repoGroupRouteName,
     params: {
-      groupSlug: rg.slug
+      groupSlug: rg.slug,
     },
-    query: {...routeQuery, repos: undefined}
-  })
+    query: { ...routeQuery, repos: undefined },
+  });
   emit('close');
-}
+};
 
 onMounted(() => {
   searchInputRef.value?.focus();
@@ -121,6 +119,6 @@ onMounted(() => {
 
 <script lang="ts">
 export default {
-  name: 'LfxProjectRepositoryGroupSearch'
+  name: 'LfxProjectRepositoryGroupSearch',
 };
 </script>

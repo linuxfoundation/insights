@@ -9,38 +9,37 @@ SPDX-License-Identifier: MIT
     :match-width="true"
     dropdown-class="z-10"
   >
-    <template #trigger="{selectedOption}">
+    <template #trigger="{ selectedOption }">
       <lfx-dropdown-selector
         type="filled"
         class="flex justify-center items-center"
       >
         <lfx-icon
-          v-if="selectedOption.value === `${allPackages.ecosystem}${EcosystemSeparator}${allPackages.name}` ||
-            getIcon(selectedOption.value.split(EcosystemSeparator)[0]) === ''"
+          v-if="
+            selectedOption.value === `${allPackages.ecosystem}${EcosystemSeparator}${allPackages.name}` ||
+            getIcon(selectedOption.value.split(EcosystemSeparator)[0]) === ''
+          "
           name="cube"
           :size="16"
         />
         <img
           v-else
           :src="getIcon(selectedOption.value.split(EcosystemSeparator)[0])"
+          :alt="selectedOption.value.split(EcosystemSeparator)[0]"
           class="w-4 h-4"
-        >
-        {{selectedOption.label}}
+        />
+        {{ selectedOption.label }}
       </lfx-dropdown-selector>
     </template>
 
-    <div
-      class="sticky -top-1 z-10 bg-white flex flex-col gap-1 -mt-1 pt-1"
-    >
+    <div class="sticky -top-1 z-10 bg-white flex flex-col gap-1 -mt-1 pt-1">
       <lfx-dropdown-item
         :value="`${allPackages.ecosystem}${EcosystemSeparator}${allPackages.name}`"
         :label="allPackages.name"
       />
       <lfx-dropdown-separator />
 
-      <lfx-dropdown-search
-        v-model="search"
-      />
+      <lfx-dropdown-search v-model="search" />
       <lfx-dropdown-separator />
     </div>
     <div
@@ -72,8 +71,9 @@ SPDX-License-Identifier: MIT
           <img
             v-else
             :src="getIcon(ecosystem)"
+            :alt="ecosystem"
             class="w-4 h-4"
-          >
+          />
           {{ option.name }}
         </lfx-dropdown-item>
       </template>
@@ -82,25 +82,28 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import {computed, ref} from "vue";
-import LfxDropdownSelect from "~/components/uikit/dropdown/dropdown-select.vue";
-import LfxDropdownSelector from "~/components/uikit/dropdown/dropdown-selector.vue";
-import LfxIcon from "~/components/uikit/icon/icon.vue";
-import LfxDropdownGroupTitle from "~/components/uikit/dropdown/dropdown-group-title.vue";
-import LfxDropdownItem from "~/components/uikit/dropdown/dropdown-item.vue";
-import LfxDropdownSeparator from "~/components/uikit/dropdown/dropdown-separator.vue";
-import LfxDropdownSearch from "~/components/uikit/dropdown/dropdown-search.vue";
-import type { Package } from "~~/types/popularity/responses.types";
+import { computed, ref } from 'vue';
+import LfxDropdownSelect from '~/components/uikit/dropdown/dropdown-select.vue';
+import LfxDropdownSelector from '~/components/uikit/dropdown/dropdown-selector.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxDropdownGroupTitle from '~/components/uikit/dropdown/dropdown-group-title.vue';
+import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
+import LfxDropdownSeparator from '~/components/uikit/dropdown/dropdown-separator.vue';
+import LfxDropdownSearch from '~/components/uikit/dropdown/dropdown-search.vue';
+import type { Package } from '~~/types/popularity/responses.types';
 import { ecosystems } from '~~/app/config/ecosystems';
 import { EcosystemSeparator } from '~~/types/shared/ecosystems.types';
 
-const props = withDefaults(defineProps<{
-  modelValue: string;
-  packages: Package[];
-  fullWidth?: boolean
-}>(), {
-  fullWidth: true,
-});
+const props = withDefaults(
+  defineProps<{
+    modelValue: string;
+    packages: Package[];
+    fullWidth?: boolean;
+  }>(),
+  {
+    fullWidth: true,
+  },
+);
 
 const allPackages: Package = {
   name: 'All packages',
@@ -113,11 +116,11 @@ const allEcosystem: Package = {
   ecosystem: '',
 };
 
-const emit = defineEmits<{(e: 'update:modelValue', value: string): void;}>();
+const emit = defineEmits<{ (e: 'update:modelValue', value: string): void }>();
 
 const model = computed({
   get: () => props.modelValue,
-  set: (value) => emit('update:modelValue', value)
+  set: (value) => emit('update:modelValue', value),
 });
 const search = ref('');
 
@@ -126,30 +129,38 @@ const getIcon = (ecosystem: string) => ecosystems[ecosystem]?.image || '';
 
 const getEcosystemLabel = (ecosystem: string) => ecosystems[ecosystem]?.label || ecosystem;
 
-const filteredPackages = computed(() => props.packages.filter((item) => {
-  const searchValue = search.value.toLowerCase();
-  return searchValue ? (item.name.toLowerCase().includes(searchValue)
-      || item.ecosystem.toLowerCase().includes(searchValue)) : true;
-}));
+const filteredPackages = computed(() =>
+  props.packages.filter((item) => {
+    const searchValue = search.value.toLowerCase();
+    return searchValue
+      ? item.name.toLowerCase().includes(searchValue) || item.ecosystem.toLowerCase().includes(searchValue)
+      : true;
+  }),
+);
 
-const groupedPackages = computed(() => filteredPackages.value.reduce((acc, item) => {
-    acc[item.ecosystem] = acc[item.ecosystem] || [];
-    if (acc[item.ecosystem]!.length === 0) {
-      acc[item.ecosystem]!.push({
-        ...allEcosystem,
-        ecosystem: item.ecosystem,
-        name: `${getEcosystemLabel(item.ecosystem)} ${allEcosystem.name}`
-      });
-    }
-    acc[item.ecosystem]!.push(item);
-    return acc;
-  }, {} as Record<string, Package[]>));
+const groupedPackages = computed(() =>
+  filteredPackages.value.reduce(
+    (acc, item) => {
+      acc[item.ecosystem] = acc[item.ecosystem] || [];
+      if (acc[item.ecosystem]!.length === 0) {
+        acc[item.ecosystem]!.push({
+          ...allEcosystem,
+          ecosystem: item.ecosystem,
+          name: `${getEcosystemLabel(item.ecosystem)} ${allEcosystem.name}`,
+        });
+      }
+      acc[item.ecosystem]!.push(item);
+      return acc;
+    },
+    {} as Record<string, Package[]>,
+  ),
+);
 
 const noResults = computed(() => search.value && !filteredPackages.value.length);
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxPackageDropdown'
-}
+  name: 'LfxPackageDropdown',
+};
 </script>

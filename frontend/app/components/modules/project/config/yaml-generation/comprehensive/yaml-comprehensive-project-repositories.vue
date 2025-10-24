@@ -7,8 +7,8 @@ SPDX-License-Identifier: MIT
     <p class="text-sm font-semibold text-brand-600">Project details</p>
     <p class="text-lg font-semibold text-neutral-900">Repositories</p>
     <p class="text-xs font-normal text-neutral-500">
-      List all the project's related repositories to ensure that security policies, reporting
-      processes, and documentation are applied consistently across the entire project.
+      List all the project's related repositories to ensure that security policies, reporting processes, and
+      documentation are applied consistently across the entire project.
     </p>
   </div>
 
@@ -44,32 +44,31 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-import useVuelidate from '@vuelidate/core'
-import LfxButton from '~/components/uikit/button/button.vue'
-import LfxIcon from '~/components/uikit/icon/icon.vue'
-import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue'
-import LfxYamlRepositoryItem from
-  '~/components/modules/project/config/yaml-generation/shared/components/yaml-repository-item.vue'
+import { computed } from 'vue';
+import useVuelidate from '@vuelidate/core';
+import LfxButton from '~/components/uikit/button/button.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
+import LfxYamlRepositoryItem from '~/components/modules/project/config/yaml-generation/shared/components/yaml-repository-item.vue';
 
 const props = defineProps<{
-  modelValue: object
-}>()
+  modelValue: object;
+}>();
 
-const emit = defineEmits<{ (e: 'update:modelValue', value: object): void }>()
+const emit = defineEmits<{ (e: 'update:modelValue', value: object): void }>();
 
 const model = computed<object>({
   get: () => props.modelValue,
   set: (value: object) => emit('update:modelValue', value),
-})
+});
 
 const addRepository = () => {
   model.value.project.repositories.push({
     name: '',
     url: '',
     comment: '',
-  })
-}
+  });
+};
 
-useVuelidate({}, model)
+useVuelidate({}, model);
 </script>

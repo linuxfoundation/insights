@@ -14,7 +14,7 @@ SPDX-License-Identifier: MIT
 
     <div class="lg:hidden block -mt-1">
       <div class="-mx-5 overflow-x-auto">
-        <div class="flex gap-2 justify-start sm:justify-center w-full py-1 px-5  min-w-max">
+        <div class="flex gap-2 justify-start sm:justify-center w-full py-1 px-5 min-w-max">
           <button
             v-for="(tab, index) in TOP_SECTION_TABS"
             :key="index"
@@ -55,11 +55,10 @@ import LfxIcon from '~/components/uikit/icon/icon.vue';
 import { TOP_SECTION_TABS } from '~/components/modules/explore/config/top-section-tabs';
 
 const activeTab = ref(0);
-
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxExploreTopSection'
+  name: 'LfxExploreTopSection',
 };
 </script>

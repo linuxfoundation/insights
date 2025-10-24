@@ -39,9 +39,7 @@ SPDX-License-Identifier: MIT
         </p>
         <lfx-input
           v-model="model.header['project-si-source']"
-          :invalid="
-            $v.header['project-si-source'].$invalid && $v.header['project-si-source'].$dirty
-          "
+          :invalid="$v.header['project-si-source'].$invalid && $v.header['project-si-source'].$dirty"
           @blur="$v.header['project-si-source'].$touch()"
           @input="$v.header['project-si-source'].$touch()"
         />
@@ -55,23 +53,23 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-import { url } from '@vuelidate/validators'
-import useVuelidate from '@vuelidate/core'
-import LfxField from '~/components/uikit/field/field.vue'
-import LfxInput from '~/components/uikit/input/input.vue'
-import LfxFieldMessages from '~/components/uikit/field/field-messages.vue'
+import { computed } from 'vue';
+import { url } from '@vuelidate/validators';
+import useVuelidate from '@vuelidate/core';
+import LfxField from '~/components/uikit/field/field.vue';
+import LfxInput from '~/components/uikit/input/input.vue';
+import LfxFieldMessages from '~/components/uikit/field/field-messages.vue';
 
 const props = defineProps<{
-  modelValue: object
-}>()
+  modelValue: object;
+}>();
 
-const emit = defineEmits<{ (e: 'update:modelValue', value: object): void }>()
+const emit = defineEmits<{ (e: 'update:modelValue', value: object): void }>();
 
 const model = computed<object>({
   get: () => props.modelValue,
   set: (value: object) => emit('update:modelValue', value),
-})
+});
 
 const rules = {
   header: {
@@ -82,13 +80,13 @@ const rules = {
       url,
     },
   },
-}
+};
 
-const $v = useVuelidate(rules, model)
+const $v = useVuelidate(rules, model);
 </script>
 
 <script lang="ts">
 export default {
   name: 'YamlChildRepositoryHeader',
-}
+};
 </script>

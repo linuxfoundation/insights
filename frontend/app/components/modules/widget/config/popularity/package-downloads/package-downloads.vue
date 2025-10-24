@@ -11,12 +11,13 @@ SPDX-License-Identifier: MIT
       :model-value="model.activeTab"
       @update:model-value="model.activeTab = $event"
     >
-      <template #slotItem="{option}">
+      <template #slotItem="{ option }">
         <lfx-tooltip
-          :content="option.value === 'packageDownloads' ? 
-            'Primary Registry Package downloads' : 'Docker Package downloads'"
+          :content="
+            option.value === 'packageDownloads' ? 'Primary Registry Package downloads' : 'Docker Package downloads'
+          "
         >
-          <span @click="model.activeTab = option.value">{{option.label}}</span>
+          <span @click="model.activeTab = option.value">{{ option.label }}</span>
         </lfx-tooltip>
       </template>
     </lfx-tabs>
@@ -38,7 +39,9 @@ SPDX-License-Identifier: MIT
           v-if="summary && !isEmpty"
           class="flex flex-wrap flex-row gap-4 items-center"
         >
-          <div class="text-heading-1 sm:text-data-display-1">{{ formatNumber(summary.current) }}</div>
+          <div class="text-heading-1 sm:text-data-display-1">
+            {{ formatNumber(summary.current) }}
+          </div>
           <lfx-delta-display
             v-if="selectedTimeRangeKey !== dateOptKeys.alltime"
             :summary="summary"
@@ -74,30 +77,26 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { useRoute } from 'nuxt/app';
 import { computed, watch } from 'vue';
-import { storeToRefs } from "pinia";
+import { storeToRefs } from 'pinia';
 import { DateTime } from 'luxon';
 import LfxPackageDropdown from './fragments/package-dropdown.vue';
 import type { Package, PackageDownloads } from '~~/types/popularity/responses.types';
 import type { Summary } from '~~/types/shared/summary.types';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
 import { convertToChartData, currentInterval, removeZeroValues } from '~/components/uikit/chart/helpers/chart-helpers';
-import type {
-  ChartData,
-  RawChartData,
-  ChartSeries
-} from '~/components/uikit/chart/types/ChartTypes';
+import type { ChartData, RawChartData, ChartSeries } from '~/components/uikit/chart/types/ChartTypes';
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import { getLineAreaChartConfig, getMarkLine, getVisualMap } from '~/components/uikit/chart/configs/line.area.chart';
 import { lfxColors } from '~/config/styles/colors';
 import { formatNumber, formatNumberShort } from '~/components/shared/utils/formatter';
-import { useProjectStore } from "~/components/modules/project/store/project.store";
+import { useProjectStore } from '~/components/modules/project/store/project.store';
 import { dateOptKeys } from '~/components/modules/project/config/date-options';
 import { isEmptyData } from '~/components/shared/utils/helper';
 import { lineGranularities } from '~/components/shared/types/granularity';
 import type { Granularity } from '~~/types/shared/granularity';
-import LfxSkeletonState from "~/components/modules/project/components/shared/skeleton-state.vue";
-import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
-import {Widget} from "~/components/modules/widget/types/widget";
+import LfxSkeletonState from '~/components/modules/project/components/shared/skeleton-state.vue';
+import LfxProjectLoadState from '~/components/modules/project/components/shared/load-state.vue';
+import { Widget } from '~/components/modules/widget/types/widget';
 import { POPULARITY_API_SERVICE } from '~/components/modules/widget/services/popularity.api.service';
 import { EcosystemSeparator } from '~~/types/shared/ecosystems.types';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
@@ -110,18 +109,19 @@ interface PackageDownloadsModel {
 }
 
 const props = defineProps<{
-  modelValue: PackageDownloadsModel,
-  snapshot?: boolean
-}>()
+  modelValue: PackageDownloadsModel;
+  snapshot?: boolean;
+}>();
 
-const emit = defineEmits<{(e: 'dataLoaded', value: string): void;
-(e: 'update:modelValue', value: PackageDownloadsModel): void;
+const emit = defineEmits<{
+  (e: 'dataLoaded', value: string): void;
+  (e: 'update:modelValue', value: PackageDownloadsModel): void;
 }>();
 
 const model = computed<PackageDownloadsModel>({
   get: () => props.modelValue,
-  set: (value) => emit('update:modelValue', value)
-})
+  set: (value) => emit('update:modelValue', value),
+});
 
 const tabs = [
   { label: 'Package downloads', value: 'packageDownloads' },
@@ -144,19 +144,16 @@ const selectedEcosystem = computed<string | undefined>(() => {
   return ecosystem && ecosystem !== 'all' ? ecosystem : undefined;
 });
 
-const {
-  startDate,
-  endDate,
-  selectedReposValues,
-  selectedTimeRangeKey,
-  customRangeGranularity
-} = storeToRefs(useProjectStore())
+const { startDate, endDate, selectedReposValues, selectedTimeRangeKey, customRangeGranularity } =
+  storeToRefs(useProjectStore());
 
 const route = useRoute();
 
-const granularity = computed(() => (selectedTimeRangeKey.value === dateOptKeys.custom
-  ? customRangeGranularity.value[0] as Granularity
-  : lineGranularities[selectedTimeRangeKey.value as keyof typeof lineGranularities]));
+const granularity = computed(() =>
+  selectedTimeRangeKey.value === dateOptKeys.custom
+    ? (customRangeGranularity.value[0] as Granularity)
+    : lineGranularities[selectedTimeRangeKey.value as keyof typeof lineGranularities],
+);
 
 const downloadsParams = computed(() => ({
   projectSlug: route.params.slug as string,
@@ -174,27 +171,17 @@ const packagesParams = computed(() => ({
   search: '',
 }));
 
-const {
-  data, status, error
-} = POPULARITY_API_SERVICE.fetchPackageDownloads(downloadsParams);
+const { data, status, error } = POPULARITY_API_SERVICE.fetchPackageDownloads(downloadsParams);
 
-const {
-  data: packagesData, status: packagesStatus
-} = POPULARITY_API_SERVICE.fetchPackages(packagesParams);
+const { data: packagesData, status: packagesStatus } = POPULARITY_API_SERVICE.fetchPackages(packagesParams);
 
 const packages = computed(() => (packagesStatus.value === 'success' && packagesData.value ? packagesData.value : []));
 
 const packageDownloads = computed<PackageDownloads>(() => data.value as PackageDownloads);
 
 const summary = computed<Summary>(() => {
-  const {
-    periodFrom,
-    periodTo,
-    currentDownloads,
-    previousDownloads,
-    downloadsPercentageChange,
-    downloadsChangeValue
-  } = packageDownloads.value.summary;
+  const { periodFrom, periodTo, currentDownloads, previousDownloads, downloadsPercentageChange, downloadsChangeValue } =
+    packageDownloads.value.summary;
 
   return {
     current: currentDownloads,
@@ -203,17 +190,20 @@ const summary = computed<Summary>(() => {
     changeValue: downloadsChangeValue,
     periodFrom,
     periodTo,
-  }
+  };
 });
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
   () => {
-    const tmpData = convertToChartData((packageDownloads.value?.data || []) as RawChartData[], 'startDate', [
-      'downloadsCount',
-      'dockerDownloadsCount',
-    ], undefined, 'endDate');
+    const tmpData = convertToChartData(
+      (packageDownloads.value?.data || []) as RawChartData[],
+      'startDate',
+      ['downloadsCount', 'dockerDownloadsCount'],
+      undefined,
+      'endDate',
+    );
     return removeZeroValues(tmpData, true);
-  }
+  },
 );
 
 const isLastDataItemIncomplete = computed(() => {
@@ -230,7 +220,11 @@ const isLastDataItemIncomplete = computed(() => {
 const columnBeforeLastItem = computed<string>(() => {
   if (chartData.value.length > 1) {
     const columnBeforeLastItem = chartData.value[chartData.value.length - 2];
-    return DateTime.fromISO(columnBeforeLastItem?.key || '').toUTC().endOf('day').toMillis().toString();
+    return DateTime.fromISO(columnBeforeLastItem?.key || '')
+      .toUTC()
+      .endOf('day')
+      .toMillis()
+      .toString();
   }
   return '';
 });
@@ -244,56 +238,68 @@ const isEmpty = computed(() => {
   return chartData.value.every((dataPoint) => dataPoint.values[0] === 0 && dataPoint.values[1] === 0);
 });
 
-const chartSeries = computed<ChartSeries[]>(() => model.value.activeTab === 'packageDownloads' ? [
-  {
-    name: 'Primary Registry Package downloads',
-    type: 'line',
-    yAxisIndex: 0,
-    dataIndex: 0,
-    position: 'left',
-    color: lfxColors.brand[500],
-    lineWidth: 2,
-    markLine: isLastDataItemIncomplete.value ? getMarkLine(columnBeforeLastItem.value) : undefined
-  }
-] : [
-  {
-    name: 'Docker Package downloads',
-    type: 'line',
-    yAxisIndex: 0,
-    dataIndex: 1,
-    position: 'left',
-    color: lfxColors.brand[500],
-    lineWidth: 2,
-    markLine: isLastDataItemIncomplete.value ? getMarkLine(columnBeforeLastItem.value) : undefined
-  }
-]);
+const chartSeries = computed<ChartSeries[]>(() =>
+  model.value.activeTab === 'packageDownloads'
+    ? [
+        {
+          name: 'Primary Registry Package downloads',
+          type: 'line',
+          yAxisIndex: 0,
+          dataIndex: 0,
+          position: 'left',
+          color: lfxColors.brand[500],
+          lineWidth: 2,
+          markLine: isLastDataItemIncomplete.value ? getMarkLine(columnBeforeLastItem.value) : undefined,
+        },
+      ]
+    : [
+        {
+          name: 'Docker Package downloads',
+          type: 'line',
+          yAxisIndex: 0,
+          dataIndex: 1,
+          position: 'left',
+          color: lfxColors.brand[500],
+          lineWidth: 2,
+          markLine: isLastDataItemIncomplete.value ? getMarkLine(columnBeforeLastItem.value) : undefined,
+        },
+      ],
+);
 
-const lineChartConfig = computed(() => getLineAreaChartConfig(
-  chartData.value,
-  chartSeries.value,
-  granularity.value,
-  (value: number, index?: number) => {
-    if (index === 0) {
-      return '';
+const lineChartConfig = computed(() =>
+  getLineAreaChartConfig(
+    chartData.value,
+    chartSeries.value,
+    granularity.value,
+    (value: number, index?: number) => {
+      if (index === 0) {
+        return '';
+      }
+      return formatNumberShort(value);
+    },
+    isLastDataItemIncomplete.value
+      ? {
+          visualMap: getVisualMap(chartData.value.length, chartSeries.value),
+        }
+      : undefined,
+  ),
+);
+
+watch(
+  status,
+  (value) => {
+    if (value !== 'pending') {
+      emit('dataLoaded', Widget.PACKAGE_DOWNLOADS);
     }
-    return formatNumberShort(value);
   },
-  isLastDataItemIncomplete.value ? {
-    visualMap: getVisualMap(chartData.value.length, chartSeries.value)
-  } : undefined
-));
-
-watch(status, (value) => {
-  if (value !== 'pending') {
-    emit('dataLoaded', Widget.PACKAGE_DOWNLOADS);
-  }
-}, {
-  immediate: true
-});
+  {
+    immediate: true,
+  },
+);
 </script>
 
 <script lang="ts">
 export default {
   name: 'LfxProjectPackageDownloads',
-}
+};
 </script>

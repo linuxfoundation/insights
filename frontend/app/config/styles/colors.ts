@@ -18,7 +18,7 @@ export const lfxColors = {
     300: '#83C1FF',
     200: '#ADD6FF',
     100: '#D6EBFF',
-    50: '#EBF5FF'
+    50: '#EBF5FF',
   },
 
   neutral: {
@@ -31,7 +31,7 @@ export const lfxColors = {
     300: '#CBD5E1',
     200: '#E2E8F0',
     100: '#F1F5F9',
-    50: '#F8FAFC'
+    50: '#F8FAFC',
   },
 
   positive: {
@@ -44,7 +44,7 @@ export const lfxColors = {
     300: '#6EE7B7',
     200: '#A7F3D0',
     100: '#D1FAE5',
-    50: '#ECFDF5'
+    50: '#ECFDF5',
   },
 
   negative: {
@@ -57,7 +57,7 @@ export const lfxColors = {
     300: '#FCA5A5',
     200: '#FECACA',
     100: '#FEE2E2',
-    50: '#FEF2F2'
+    50: '#FEF2F2',
   },
 
   warning: {
@@ -70,7 +70,7 @@ export const lfxColors = {
     300: '#FCD34D',
     200: '#FDE68A',
     100: '#FEF3C7',
-    50: '#FFFBEB'
+    50: '#FFFBEB',
   },
 
   violet: {
@@ -83,8 +83,8 @@ export const lfxColors = {
     300: '#c4b5fd',
     200: '#ddd6fe',
     100: '#ede9fe',
-    50: '#f5f3ff'
+    50: '#f5f3ff',
   },
   // TODO: Verify with Nuno what color alias we should use
-  yellow: '#FFD6A7'
+  yellow: '#FFD6A7',
 };

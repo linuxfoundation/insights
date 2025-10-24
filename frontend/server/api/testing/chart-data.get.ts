@@ -19,4 +19,4 @@ export default defineEventHandler(async () => [
     2016: 50,
     2017: 30,
   },
-])
+]);

@@ -37,35 +37,37 @@ export const socialLinkConfigs: Record<string, LinkConfig> = {
     key: 'twitter',
     domains: ['x.com', 'twitter.com'],
     img: '/images/integrations/x.png',
-    transformName: (name: string) => `@${name.replace(/^https?:\/\/(?:www\.)?(?:x\.com|twitter\.com)\/?/, '')}`,
-    transformUrl: (url: string) => (url.startsWith('http') ? url : `https://${url}`)
+    transformName: (name: string) =>
+      `@${name.replace(/^https?:\/\/(?:www\.)?(?:x\.com|twitter\.com)\/?/, '')}`,
+    transformUrl: (url: string) => (url.startsWith('http') ? url : `https://${url}`),
   },
   linkedin: {
     key: 'linkedin',
     domains: ['linkedin.com'],
     img: '/images/integrations/linkedin.png',
-    transformName: (name: string) => `/${name
-      .replace(/^https?:\/\/(?:www\.)?linkedin\.com\/?/, '')
-      .replace(/^company\//, '')
-      .replace(/\/$/, '')}`,
-    transformUrl: (url: string) => (url.startsWith('http') ? url : `https://${url}`)
+    transformName: (name: string) =>
+      `/${name
+        .replace(/^https?:\/\/(?:www\.)?linkedin\.com\/?/, '')
+        .replace(/^company\//, '')
+        .replace(/\/$/, '')}`,
+    transformUrl: (url: string) => (url.startsWith('http') ? url : `https://${url}`),
   },
   github: {
     key: 'github',
     domains: ['github.com'],
     img: '/images/integrations/github.png',
     transformName: (name: string) => `/${name.replace(/^https?:\/\/(?:www\.)?github\.com\/?/, '')}`,
-    transformUrl: (url: string) => (url.startsWith('http') ? url : `https://${url}`)
+    transformUrl: (url: string) => (url.startsWith('http') ? url : `https://${url}`),
   },
   website: {
     key: 'website',
     name: 'Website',
     icon: 'link',
     transformName: (name: string) => name.replace(/^https?:\/\/(?:www\.)?/, '').replace(/\/$/, ''),
-    transformUrl: (url: string) => (url.startsWith('http') ? url : `https://${url}`)
+    transformUrl: (url: string) => (url.startsWith('http') ? url : `https://${url}`),
   },
   default: {
     key: 'default',
-    icon: 'link'
-  }
+    icon: 'link',
+  },
 };

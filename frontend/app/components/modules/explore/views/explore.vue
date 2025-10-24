@@ -22,6 +22,6 @@ import LfxExploreFeaturedCollection from '~/components/modules/explore/component
 
 <script lang="ts">
 export default {
-  name: 'LfxExplore'
+  name: 'LfxExplore',
 };
 </script>

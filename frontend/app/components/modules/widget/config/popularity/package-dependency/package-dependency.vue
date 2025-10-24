@@ -48,28 +48,24 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { useRoute } from 'nuxt/app';
 import { computed, watch } from 'vue';
-import { storeToRefs } from "pinia";
+import { storeToRefs } from 'pinia';
 import LfxPackageDropdown from '../package-downloads/fragments/package-dropdown.vue';
 import LfxProjectPackageLegendItem from './fragments/package-legend-item.vue';
 import type { Package, PackageDownloads } from '~~/types/popularity/responses.types';
 import type { Summary } from '~~/types/shared/summary.types';
 import { convertToChartData, markLastDataItem, removeZeroValues } from '~/components/uikit/chart/helpers/chart-helpers';
-import type {
-  ChartData,
-  RawChartData,
-  ChartSeries
-} from '~/components/uikit/chart/types/ChartTypes';
+import type { ChartData, RawChartData, ChartSeries } from '~/components/uikit/chart/types/ChartTypes';
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import { getBarChartConfigStacked } from '~/components/uikit/chart/configs/bar.chart';
 import { lfxColors } from '~/config/styles/colors';
 import { formatNumberShort } from '~/components/shared/utils/formatter';
-import { useProjectStore } from "~/components/modules/project/store/project.store";
+import { useProjectStore } from '~/components/modules/project/store/project.store';
 import { dateOptKeys } from '~/components/modules/project/config/date-options';
 import { isEmptyData } from '~/components/shared/utils/helper';
 import { barGranularities } from '~/components/shared/types/granularity';
 import type { Granularity } from '~~/types/shared/granularity';
-import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
-import {Widget} from "~/components/modules/widget/types/widget";
+import LfxProjectLoadState from '~/components/modules/project/components/shared/load-state.vue';
+import { Widget } from '~/components/modules/widget/types/widget';
 import { POPULARITY_API_SERVICE } from '~/components/modules/widget/services/popularity.api.service';
 import { EcosystemSeparator } from '~~/types/shared/ecosystems.types';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
@@ -79,18 +75,19 @@ interface PackageDownloadsModel {
 }
 
 const props = defineProps<{
-  modelValue: PackageDownloadsModel,
-  snapshot?: boolean
-}>()
+  modelValue: PackageDownloadsModel;
+  snapshot?: boolean;
+}>();
 
-const emit = defineEmits<{(e: 'dataLoaded', value: string): void;
-(e: 'update:modelValue', value: PackageDownloadsModel): void;
+const emit = defineEmits<{
+  (e: 'dataLoaded', value: string): void;
+  (e: 'update:modelValue', value: PackageDownloadsModel): void;
 }>();
 
 const model = computed<PackageDownloadsModel>({
   get: () => props.modelValue,
-  set: (value) => emit('update:modelValue', value)
-})
+  set: (value) => emit('update:modelValue', value),
+});
 
 const selectedPackage = computed<Package | undefined>(() => {
   const [ecosystem, name] = model.value.package.split(EcosystemSeparator);
@@ -108,19 +105,16 @@ const selectedEcosystem = computed<string | undefined>(() => {
   return ecosystem && ecosystem !== 'all' ? ecosystem : undefined;
 });
 
-const {
-  startDate,
-  endDate,
-  selectedReposValues,
-  selectedTimeRangeKey,
-  customRangeGranularity
-} = storeToRefs(useProjectStore())
+const { startDate, endDate, selectedReposValues, selectedTimeRangeKey, customRangeGranularity } =
+  storeToRefs(useProjectStore());
 
 const route = useRoute();
 
-const granularity = computed(() => (selectedTimeRangeKey.value === dateOptKeys.custom
-  ? customRangeGranularity.value[0] as Granularity
-  : barGranularities[selectedTimeRangeKey.value as keyof typeof barGranularities]));
+const granularity = computed(() =>
+  selectedTimeRangeKey.value === dateOptKeys.custom
+    ? (customRangeGranularity.value[0] as Granularity)
+    : barGranularities[selectedTimeRangeKey.value as keyof typeof barGranularities],
+);
 
 const downloadsParams = computed(() => ({
   projectSlug: route.params.slug as string,
@@ -138,13 +132,9 @@ const packagesParams = computed(() => ({
   search: '',
 }));
 
-const {
-  data, status, error
-} = POPULARITY_API_SERVICE.fetchPackageDownloads(downloadsParams);
+const { data, status, error } = POPULARITY_API_SERVICE.fetchPackageDownloads(downloadsParams);
 
-const {
-  data: packagesData, status: packagesStatus
-} = POPULARITY_API_SERVICE.fetchPackages(packagesParams);
+const { data: packagesData, status: packagesStatus } = POPULARITY_API_SERVICE.fetchPackages(packagesParams);
 
 const packages = computed(() => (packagesStatus.value === 'success' && packagesData.value ? packagesData.value : []));
 
@@ -157,7 +147,7 @@ const dependentReposSummary = computed<Summary | undefined>(() => {
     currentDependentRepos,
     previousDependentRepos,
     dependentReposPercentageChange,
-    dependentReposChangeValue
+    dependentReposChangeValue,
   } = packageDownloads.value.summary;
 
   return {
@@ -167,7 +157,7 @@ const dependentReposSummary = computed<Summary | undefined>(() => {
     changeValue: dependentReposChangeValue,
     periodFrom,
     periodTo,
-  }
+  };
 });
 const dependentPackagesSummary = computed<Summary | undefined>(() => {
   const {
@@ -176,7 +166,7 @@ const dependentPackagesSummary = computed<Summary | undefined>(() => {
     currentDependentPackages,
     previousDependentPackages,
     dependentPackagesPercentageChange,
-    dependentPackagesChangeValue
+    dependentPackagesChangeValue,
   } = packageDownloads.value.summary;
 
   return {
@@ -186,7 +176,7 @@ const dependentPackagesSummary = computed<Summary | undefined>(() => {
     changeValue: dependentPackagesChangeValue,
     periodFrom,
     periodTo,
-  }
+  };
 });
 const dockerDependentsSummary = computed<Summary | undefined>(() => {
   const {
@@ -195,7 +185,7 @@ const dockerDependentsSummary = computed<Summary | undefined>(() => {
     currentDockerDependents,
     previousDockerDependents,
     dockerDependentsPercentageChange,
-    dockerDependentsChangeValue
+    dockerDependentsChangeValue,
   } = packageDownloads.value.summary;
 
   return {
@@ -205,18 +195,19 @@ const dockerDependentsSummary = computed<Summary | undefined>(() => {
     changeValue: dockerDependentsChangeValue,
     periodFrom,
     periodTo,
-  }
+  };
 });
 
 const chartData = computed<ChartData[]>(() => {
-    const tmpData = convertToChartData((packageDownloads.value?.data || []) as RawChartData[], 'startDate', [
-      'dependentReposCount',
-      'dependentPackagesCount',
-      'dockerDependentsCount',
-    ], undefined, 'endDate');
-    return markLastDataItem(removeZeroValues(tmpData), granularity.value);
-  }
-);
+  const tmpData = convertToChartData(
+    (packageDownloads.value?.data || []) as RawChartData[],
+    'startDate',
+    ['dependentReposCount', 'dependentPackagesCount', 'dockerDependentsCount'],
+    undefined,
+    'endDate',
+  );
+  return markLastDataItem(removeZeroValues(tmpData), granularity.value);
+});
 const isEmpty = computed(() => {
   if (isEmptyData(chartData.value as unknown as Record<string, unknown>[])) {
     return true;
@@ -233,7 +224,7 @@ const chartSeries = computed<ChartSeries[]>(() => [
     yAxisIndex: 0,
     dataIndex: 0,
     position: 'left',
-    color: lfxColors.brand[500]
+    color: lfxColors.brand[500],
   },
   {
     name: 'Dependent packages',
@@ -241,7 +232,7 @@ const chartSeries = computed<ChartSeries[]>(() => [
     yAxisIndex: 0,
     dataIndex: 1,
     position: 'left',
-    color: lfxColors.brand[200]
+    color: lfxColors.brand[200],
   },
   {
     name: 'Dependent Docker packages',
@@ -249,15 +240,12 @@ const chartSeries = computed<ChartSeries[]>(() => [
     yAxisIndex: 0,
     dataIndex: 2,
     position: 'left',
-    color: lfxColors.brand[800]
-  }
+    color: lfxColors.brand[800],
+  },
 ]);
 
-const barChartConfig = computed(() => getBarChartConfigStacked(
-  chartData.value,
-  chartSeries.value,
-  granularity.value,
-  {
+const barChartConfig = computed(() =>
+  getBarChartConfigStacked(chartData.value, chartSeries.value, granularity.value, {
     yAxis: {
       axisLabel: {
         formatter: (value: number, index?: number) => {
@@ -265,11 +253,11 @@ const barChartConfig = computed(() => getBarChartConfigStacked(
             return '';
           }
           return formatNumberShort(value);
-        }
-      }
+        },
+      },
     },
-  }
-));
+  }),
+);
 
 const getSummary = (index: number) => {
   switch (index) {
@@ -282,17 +270,21 @@ const getSummary = (index: number) => {
   }
 };
 
-watch(status, (value) => {
-  if (value !== 'pending') {
-    emit('dataLoaded', Widget.PACKAGE_DOWNLOADS);
-  }
-}, {
-  immediate: true
-});
+watch(
+  status,
+  (value) => {
+    if (value !== 'pending') {
+      emit('dataLoaded', Widget.PACKAGE_DOWNLOADS);
+    }
+  },
+  {
+    immediate: true,
+  },
+);
 </script>
 
 <script lang="ts">
 export default {
   name: 'LfxProjectPackageDependency',
-}
+};
 </script>

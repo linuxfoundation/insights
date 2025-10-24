@@ -1,15 +1,15 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { createAmazonBedrock } from '@ai-sdk/amazon-bedrock'
-import { experimental_createMCPClient as createMCPClient, type LanguageModelV1 } from 'ai'
-import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js'
-import type { Pool } from 'pg'
-import type { ChatResponse, IChatResponseDb } from '../../server/repo/chat.repo'
-import { ChatRepository } from '../../server/repo/chat.repo'
+import { createAmazonBedrock } from '@ai-sdk/amazon-bedrock';
+import { experimental_createMCPClient as createMCPClient, type LanguageModelV1 } from 'ai';
+import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
+import type { Pool } from 'pg';
+import type { ChatResponse, IChatResponseDb } from '../../server/repo/chat.repo';
+import { ChatRepository } from '../../server/repo/chat.repo';
 
-import { TextToSqlAgent, PipeAgent, RouterAgent, AuditorAgent } from './agents'
-import { executePipeInstructions, executeTextToSqlInstructions } from './instructions'
+import { TextToSqlAgent, PipeAgent, RouterAgent, AuditorAgent } from './agents';
+import { executePipeInstructions, executeTextToSqlInstructions } from './instructions';
 import type {
   AgentResponseCompleteParams,
   AuditorAgentInput,
@@ -22,74 +22,74 @@ import type {
   RouterOutput,
   TextToSqlAgentInput,
   TextToSqlAgentStreamInput,
-} from './types'
-import { RouterDecisionAction, StreamDataStatus, StreamDataType } from './enums'
-import { generateDataSummary } from './utils/data-summary'
+} from './types';
+import { RouterDecisionAction, StreamDataStatus, StreamDataType } from './enums';
+import { generateDataSummary } from './utils/data-summary';
 
 const bedrock = createAmazonBedrock({
   accessKeyId: process.env.NUXT_AWS_BEDROCK_ACCESS_KEY_ID,
   secretAccessKey: process.env.NUXT_AWS_BEDROCK_SECRET_ACCESS_KEY,
   region: process.env.NUXT_AWS_BEDROCK_REGION,
-})
+});
 
-type MCPClient = Awaited<ReturnType<typeof createMCPClient>>
+type MCPClient = Awaited<ReturnType<typeof createMCPClient>>;
 
 type TbTools = Record<
   string,
   {
-    description?: string
-    meta?: { description?: string }
-    inputSchema?: unknown
-    parameters?: unknown
-    schema?: unknown
-    [key: string]: unknown // Allow additional properties
+    description?: string;
+    meta?: { description?: string };
+    inputSchema?: unknown;
+    parameters?: unknown;
+    schema?: unknown;
+    [key: string]: unknown; // Allow additional properties
   }
->
+>;
 
 export class DataCopilot {
   /** MCP client for communicating with Tinybird services */
-  private mcpClient!: MCPClient
+  private mcpClient!: MCPClient;
 
   /** Available Tinybird tools loaded from MCP server */
-  private tbTools: TbTools = {}
+  private tbTools: TbTools = {};
 
   /** Human-readable overview of tools for router agent decision making */
-  private toolsOverview: string = ''
+  private toolsOverview: string = '';
 
   /** Tinybird MCP server URL */
-  private tbMcpUrl: string = ''
+  private tbMcpUrl: string = '';
 
   /** Amazon Bedrock language model instance */
-  private model: LanguageModelV1
+  private model: LanguageModelV1;
 
   /** Bedrock model identifier */
-  private readonly BEDROCK_MODEL_ID = 'us.anthropic.claude-sonnet-4-20250514-v1:0'
+  private readonly BEDROCK_MODEL_ID = 'us.anthropic.claude-sonnet-4-20250514-v1:0';
 
   /** Maximum number of auditor retry attempts */
-  private readonly MAX_AUDITOR_RETRIES = 1
+  private readonly MAX_AUDITOR_RETRIES = 1;
 
   /** Maximum number of SQL execution retry attempts */
-  private readonly MAX_SQL_RETRIES = 2
+  private readonly MAX_SQL_RETRIES = 2;
 
   constructor() {
-    this.model = bedrock(this.BEDROCK_MODEL_ID)
-    this.tbMcpUrl = `https://mcp.tinybird.co?token=${process.env.NUXT_INSIGHTS_DATA_COPILOT_TINYBIRD_TOKEN}&host=${process.env.NUXT_TINYBIRD_BASE_URL}`
+    this.model = bedrock(this.BEDROCK_MODEL_ID);
+    this.tbMcpUrl = `https://mcp.tinybird.co?token=${process.env.NUXT_INSIGHTS_DATA_COPILOT_TINYBIRD_TOKEN}&host=${process.env.NUXT_TINYBIRD_BASE_URL}`;
   }
 
   /**
    * Initialize MCP client connection and load Tinybird tools
    */
   async initialize(): Promise<void> {
-    const url = new URL(this.tbMcpUrl)
+    const url = new URL(this.tbMcpUrl);
 
     this.mcpClient = await createMCPClient({
       transport: new StreamableHTTPClientTransport(url, {
         sessionId: `session_${Date.now()}`,
       }),
-    })
+    });
 
-    this.tbTools = await this.mcpClient.tools({})
-    this.buildToolsOverview()
+    this.tbTools = await this.mcpClient.tools({});
+    this.buildToolsOverview();
   }
 
   /**
@@ -101,23 +101,23 @@ export class DataCopilot {
       'text_to_sql',
       'list_endpoints',
       'list_service_datasources',
-    ])
+    ]);
 
     this.toolsOverview = Object.entries(this.tbTools)
       .filter(([name]) => !excludedFromOverview.has(name))
       .map(([name, def]: [string, TbTools[string]]) => {
         try {
-          const description = def?.description || def?.meta?.description || ''
-          const inputSchema = def?.inputSchema || def?.parameters || def?.schema || undefined
-          const params = inputSchema ? JSON.stringify(inputSchema, null, 2) : undefined
+          const description = def?.description || def?.meta?.description || '';
+          const inputSchema = def?.inputSchema || def?.parameters || def?.schema || undefined;
+          const params = inputSchema ? JSON.stringify(inputSchema, null, 2) : undefined;
           return [`- ${name}: ${description}`, params ? `  params: ${params}` : undefined]
             .filter(Boolean)
-            .join('\n')
+            .join('\n');
         } catch {
-          return `- ${name}`
+          return `- ${name}`;
         }
       })
-      .join('\n')
+      .join('\n');
   }
 
   /**
@@ -128,8 +128,8 @@ export class DataCopilot {
     insightsDbPool: Pool,
     userEmail: string,
   ): Promise<string> {
-    const chatRepo = new ChatRepository(insightsDbPool)
-    return await chatRepo.saveChatResponse(response, userEmail)
+    const chatRepo = new ChatRepository(insightsDbPool);
+    return await chatRepo.saveChatResponse(response, userEmail);
   }
 
   /**
@@ -141,8 +141,8 @@ export class DataCopilot {
     userEmail: string,
     conversationId?: string,
   ): Promise<string> {
-    const chatRepo = new ChatRepository(insightsDbPool)
-    return await chatRepo.createInitialChatResponse(userPrompt, userEmail, conversationId)
+    const chatRepo = new ChatRepository(insightsDbPool);
+    return await chatRepo.createInitialChatResponse(userPrompt, userEmail, conversationId);
   }
 
   /**
@@ -153,8 +153,8 @@ export class DataCopilot {
     response: Omit<ChatResponse, 'userPrompt'>,
     insightsDbPool: Pool,
   ): Promise<void> {
-    const chatRepo = new ChatRepository(insightsDbPool)
-    return await chatRepo.updateChatResponse(chatResponseId, response)
+    const chatRepo = new ChatRepository(insightsDbPool);
+    return await chatRepo.updateChatResponse(chatResponseId, response);
   }
 
   /**
@@ -169,7 +169,7 @@ export class DataCopilot {
     errorMessage?: string,
     instructions?: string,
   ): Promise<void> {
-    const chatRepo = new ChatRepository(insightsDbPool)
+    const chatRepo = new ChatRepository(insightsDbPool);
     await chatRepo.saveAgentStep({
       chatResponseId,
       agent,
@@ -180,7 +180,7 @@ export class DataCopilot {
       responseTimeSeconds,
       instructions,
       errorMessage,
-    })
+    });
   }
 
   /**
@@ -205,7 +205,7 @@ export class DataCopilot {
     segmentId,
     previousWasClarification,
   }: Omit<RouterAgentInput, 'toolsOverview' | 'model' | 'tools'>) {
-    const agent = new RouterAgent()
+    const agent = new RouterAgent();
     return agent.execute({
       model: this.model,
       messages,
@@ -217,7 +217,7 @@ export class DataCopilot {
       parametersString,
       segmentId,
       previousWasClarification,
-    })
+    });
   }
 
   /**
@@ -243,10 +243,10 @@ export class DataCopilot {
     segmentId,
     reformulatedQuestion,
   }: TextToSqlAgentInput) {
-    const followUpTools = this.tbTools
-    delete followUpTools['execute_query']
+    const followUpTools = this.tbTools;
+    delete followUpTools['execute_query'];
 
-    const agent = new TextToSqlAgent()
+    const agent = new TextToSqlAgent();
     return agent.execute({
       model: this.model,
       messages,
@@ -257,7 +257,7 @@ export class DataCopilot {
       parametersString,
       segmentId,
       reformulatedQuestion,
-    })
+    });
   }
 
   /**
@@ -285,13 +285,13 @@ export class DataCopilot {
     reformulatedQuestion,
     toolNames,
   }: Omit<PipeAgentInput, 'model' | 'tools'>) {
-    const followUpTools: Record<string, unknown> = {}
+    const followUpTools: Record<string, unknown> = {};
     for (const toolName of toolNames) {
       if (this.tbTools[toolName]) {
-        followUpTools[toolName] = this.tbTools[toolName]
+        followUpTools[toolName] = this.tbTools[toolName];
       }
     }
-    const agent = new PipeAgent()
+    const agent = new PipeAgent();
     return agent.execute({
       model: this.model,
       messages,
@@ -303,7 +303,7 @@ export class DataCopilot {
       segmentId,
       reformulatedQuestion,
       toolNames,
-    })
+    });
   }
 
   /**
@@ -326,8 +326,8 @@ export class DataCopilot {
     attemptNumber,
     previousFeedback,
   }: Omit<AuditorAgentInput, 'model' | 'dataSummary'> & { data: any[] }) {
-    const dataSummary = generateDataSummary(data)
-    const agent = new AuditorAgent()
+    const dataSummary = generateDataSummary(data);
+    const agent = new AuditorAgent();
     return agent.execute({
       model: this.model,
       messages,
@@ -336,7 +336,7 @@ export class DataCopilot {
       dataSummary,
       attemptNumber,
       previousFeedback,
-    })
+    });
   }
 
   /**
@@ -359,31 +359,31 @@ export class DataCopilot {
     chatResponseId,
     insightsDbPool,
   }: {
-    messages: ChatMessage[]
-    currentQuestion: string
-    date: string
-    projectName: string
-    pipe: string
-    parametersString: string
-    segmentId: string
-    previousWasClarification: boolean
-    dataStream: any
-    responseData: ChatResponse
-    chatResponseId: string
-    insightsDbPool: Pool
+    messages: ChatMessage[];
+    currentQuestion: string;
+    date: string;
+    projectName: string;
+    pipe: string;
+    parametersString: string;
+    segmentId: string;
+    previousWasClarification: boolean;
+    dataStream: any;
+    responseData: ChatResponse;
+    chatResponseId: string;
+    insightsDbPool: Pool;
   }): Promise<{
-    action: RouterDecisionAction
-    routerOutput: RouterOutput
-    sqlQuery?: string
-    pipeInstructions?: PipeInstructions
+    action: RouterDecisionAction;
+    routerOutput: RouterOutput;
+    sqlQuery?: string;
+    pipeInstructions?: PipeInstructions;
   }> {
-    let attemptNumber = 0
-    let previousFeedback: string | undefined = undefined
-    let currentMessages = messages
-    let routerOutput: RouterOutput
-    let sqlQuery: string | undefined = undefined
-    let pipeInstructions: PipeInstructions | undefined = undefined
-    let explanation: string | undefined = undefined
+    let attemptNumber = 0;
+    let previousFeedback: string | undefined = undefined;
+    let currentMessages = messages;
+    let routerOutput: RouterOutput;
+    let sqlQuery: string | undefined = undefined;
+    let pipeInstructions: PipeInstructions | undefined = undefined;
+    let explanation: string | undefined = undefined;
 
     while (attemptNumber <= this.MAX_AUDITOR_RETRIES) {
       // Run router agent - only stream status on first attempt
@@ -391,10 +391,10 @@ export class DataCopilot {
         dataStream.writeData({
           type: StreamDataType.ROUTER_STATUS,
           status: StreamDataStatus.ANALYZING,
-        })
+        });
       }
 
-      const routerStartTime = Date.now()
+      const routerStartTime = Date.now();
       try {
         routerOutput = await this.runRouterAgent({
           messages: currentMessages,
@@ -404,8 +404,8 @@ export class DataCopilot {
           parametersString,
           segmentId,
           previousWasClarification: attemptNumber === 0 ? previousWasClarification : false,
-        })
-        const routerResponseTime = (Date.now() - routerStartTime) / 1000
+        });
+        const routerResponseTime = (Date.now() - routerStartTime) / 1000;
 
         // Track router agent step
         await this.trackAgentStep(
@@ -414,9 +414,9 @@ export class DataCopilot {
           routerOutput,
           routerResponseTime,
           insightsDbPool,
-        )
+        );
       } catch (error) {
-        const routerResponseTime = (Date.now() - routerStartTime) / 1000
+        const routerResponseTime = (Date.now() - routerStartTime) / 1000;
         await this.trackAgentStep(
           chatResponseId,
           'ROUTER',
@@ -424,14 +424,14 @@ export class DataCopilot {
           routerResponseTime,
           insightsDbPool,
           error instanceof Error ? error.message : String(error),
-        )
-        throw error
+        );
+        throw error;
       }
 
       // Accumulate router token usage
       if (routerOutput.usage) {
-        responseData.inputTokens += routerOutput.usage.promptTokens || 0
-        responseData.outputTokens += routerOutput.usage.completionTokens || 0
+        responseData.inputTokens += routerOutput.usage.promptTokens || 0;
+        responseData.outputTokens += routerOutput.usage.completionTokens || 0;
       }
 
       // Handle STOP and ASK_CLARIFICATION - no auditor needed
@@ -439,7 +439,7 @@ export class DataCopilot {
         routerOutput.next_action === RouterDecisionAction.STOP ||
         routerOutput.next_action === RouterDecisionAction.ASK_CLARIFICATION
       ) {
-        return { action: routerOutput.next_action, routerOutput }
+        return { action: routerOutput.next_action, routerOutput };
       }
 
       // Router decided on CREATE_QUERY or PIPES - only stream complete status on first attempt
@@ -449,10 +449,10 @@ export class DataCopilot {
           status: StreamDataStatus.COMPLETE,
           reasoning: routerOutput.reasoning,
           reformulatedQuestion: routerOutput.reformulated_question,
-        })
+        });
       }
 
-      let data: any[] = []
+      let data: any[] = [];
 
       // Execute based on router decision
       if (routerOutput.next_action === RouterDecisionAction.CREATE_QUERY) {
@@ -467,10 +467,10 @@ export class DataCopilot {
           dataStream,
           chatResponseId,
           insightsDbPool,
-        })
-        sqlQuery = result.sqlQuery
-        explanation = result.explanation
-        data = result.data
+        });
+        sqlQuery = result.sqlQuery;
+        explanation = result.explanation;
+        data = result.data;
       } else if (routerOutput.next_action === RouterDecisionAction.PIPES) {
         const result = await this.handlePipesAction({
           messages: currentMessages,
@@ -486,10 +486,10 @@ export class DataCopilot {
           routerOutput,
           chatResponseId,
           insightsDbPool,
-        })
-        pipeInstructions = result.pipeInstructions
-        explanation = result.explanation
-        data = result.data
+        });
+        pipeInstructions = result.pipeInstructions;
+        explanation = result.explanation;
+        data = result.data;
       }
 
       // Stream auditor status
@@ -498,11 +498,11 @@ export class DataCopilot {
         status: attemptNumber === 0 ? StreamDataStatus.VALIDATING : StreamDataStatus.RETRYING,
         attempt: attemptNumber + 1,
         maxAttempts: this.MAX_AUDITOR_RETRIES + 1,
-      })
+      });
 
       // Run auditor validation
-      const auditorStartTime = Date.now()
-      let auditorResult
+      const auditorStartTime = Date.now();
+      let auditorResult;
       try {
         auditorResult = await this.runAuditorAgent({
           messages: currentMessages,
@@ -511,8 +511,8 @@ export class DataCopilot {
           data,
           attemptNumber,
           previousFeedback,
-        })
-        const auditorResponseTime = (Date.now() - auditorStartTime) / 1000
+        });
+        const auditorResponseTime = (Date.now() - auditorStartTime) / 1000;
 
         // Track auditor agent step
         await this.trackAgentStep(
@@ -521,10 +521,10 @@ export class DataCopilot {
           auditorResult,
           auditorResponseTime,
           insightsDbPool,
-          undefined,  // Feedback is not an error, it's part of the response
-        )
+          undefined, // Feedback is not an error, it's part of the response
+        );
       } catch (error) {
-        const auditorResponseTime = (Date.now() - auditorStartTime) / 1000
+        const auditorResponseTime = (Date.now() - auditorStartTime) / 1000;
         await this.trackAgentStep(
           chatResponseId,
           'AUDITOR',
@@ -532,14 +532,14 @@ export class DataCopilot {
           auditorResponseTime,
           insightsDbPool,
           error instanceof Error ? error.message : String(error),
-        )
-        throw error
+        );
+        throw error;
       }
 
       // Accumulate auditor token usage
       if (auditorResult.usage) {
-        responseData.inputTokens += auditorResult.usage.promptTokens || 0
-        responseData.outputTokens += auditorResult.usage.completionTokens || 0
+        responseData.inputTokens += auditorResult.usage.promptTokens || 0;
+        responseData.outputTokens += auditorResult.usage.completionTokens || 0;
       }
 
       if (auditorResult.is_valid) {
@@ -549,7 +549,7 @@ export class DataCopilot {
           status: StreamDataStatus.VALIDATED,
           summary: auditorResult.summary,
           reasoning: auditorResult.reasoning,
-        })
+        });
 
         // Stream data after auditor approval
         if (routerOutput.next_action === RouterDecisionAction.CREATE_QUERY) {
@@ -559,7 +559,7 @@ export class DataCopilot {
             explanation,
             data,
             chatResponseId,
-          })
+          });
         } else if (routerOutput.next_action === RouterDecisionAction.PIPES) {
           dataStream.writeData({
             type: StreamDataType.PIPE_RESULT,
@@ -567,10 +567,10 @@ export class DataCopilot {
             explanation,
             data,
             chatResponseId,
-          })
+          });
         }
 
-        return { action: routerOutput.next_action, routerOutput, sqlQuery, pipeInstructions }
+        return { action: routerOutput.next_action, routerOutput, sqlQuery, pipeInstructions };
       }
 
       // Data is invalid
@@ -581,7 +581,7 @@ export class DataCopilot {
           status: StreamDataStatus.MAX_RETRIES,
           feedback: auditorResult.feedback_to_router,
           reasoning: auditorResult.reasoning,
-        })
+        });
 
         // Stream data even though validation failed (max retries reached)
         if (routerOutput.next_action === RouterDecisionAction.CREATE_QUERY) {
@@ -591,7 +591,7 @@ export class DataCopilot {
             explanation,
             data,
             chatResponseId,
-          })
+          });
         } else if (routerOutput.next_action === RouterDecisionAction.PIPES) {
           dataStream.writeData({
             type: StreamDataType.PIPE_RESULT,
@@ -599,22 +599,22 @@ export class DataCopilot {
             explanation,
             data,
             chatResponseId,
-          })
+          });
         }
 
-        return { action: routerOutput.next_action, routerOutput, sqlQuery, pipeInstructions }
+        return { action: routerOutput.next_action, routerOutput, sqlQuery, pipeInstructions };
       }
 
       // Prepare for retry - add feedback to messages and loop
-      previousFeedback = auditorResult.feedback_to_router
-      attemptNumber++
+      previousFeedback = auditorResult.feedback_to_router;
+      attemptNumber++;
 
       dataStream.writeData({
         type: StreamDataType.AUDITOR_STATUS,
         status: StreamDataStatus.RETRYING,
         feedback: previousFeedback,
         attempt: attemptNumber + 1,
-      })
+      });
 
       // Add feedback to conversation context for next iteration
       currentMessages = [
@@ -624,11 +624,11 @@ export class DataCopilot {
           content: `Previous attempt did not produce valid results. Auditor feedback: ${previousFeedback}. \n
                     Please adjust your approach based on this feedback.`,
         },
-      ]
+      ];
     }
 
     // This should never be reached, but TypeScript needs it
-    throw new Error('Auditor loop completed without returning a result')
+    throw new Error('Auditor loop completed without returning a result');
   }
 
   /**
@@ -639,7 +639,7 @@ export class DataCopilot {
       type: 'keepalive',
       message,
       timestamp: new Date().toISOString(),
-    })
+    });
   }
 
   /**
@@ -651,7 +651,7 @@ export class DataCopilot {
       status: 'progress',
       message,
       timestamp: new Date().toISOString(),
-    })
+    });
   }
 
   /**
@@ -663,64 +663,66 @@ export class DataCopilot {
     conversationId: string | undefined,
     insightsDbPool: Pool,
   ): Promise<{ messages: ChatMessage[]; previousWasClarification: boolean }> {
-    const chatRepo = new ChatRepository(insightsDbPool)
+    const chatRepo = new ChatRepository(insightsDbPool);
 
     if (!conversationId) {
       // No conversation history, just return the current question
       return {
         messages: [{ role: 'user', content: currentQuestion }],
         previousWasClarification: false,
-      }
+      };
     }
 
-    const previousChatResponses = await chatRepo.getChatResponsesByConversation(conversationId)
+    const previousChatResponses = await chatRepo.getChatResponsesByConversation(conversationId);
 
     if (previousChatResponses.length === 0) {
       // No previous responses in this conversation
       return {
         messages: [{ role: 'user', content: currentQuestion }],
         previousWasClarification: false,
-      }
+      };
     }
 
     // Check if the latest response was ASK_CLARIFICATION
-    const latestResponse = previousChatResponses[previousChatResponses.length - 1] as IChatResponseDb
+    const latestResponse = previousChatResponses[
+      previousChatResponses.length - 1
+    ] as IChatResponseDb;
     const previousWasClarification =
-      latestResponse.router_response === RouterDecisionAction.ASK_CLARIFICATION
+      latestResponse.router_response === RouterDecisionAction.ASK_CLARIFICATION;
 
     if (previousWasClarification) {
       // Merge the clarification: combine the ambiguous question with the clarification answer
-      const ambiguousQuestion = latestResponse.user_prompt
-      const mergedQuestion = `Original question: ${ambiguousQuestion}\n\nClarification provided: ${currentQuestion}`
+      const ambiguousQuestion = latestResponse.user_prompt;
+      const mergedQuestion = `Original question: ${ambiguousQuestion}\n\nClarification provided: ${currentQuestion}`;
 
       // Build messages: [older history before clarification] + [merged question]
       const messages = previousChatResponses.slice(0, -1).map((response) => ({
         role: 'user' as const,
         content: response.user_prompt,
-      }))
+      }));
 
       // Add the merged question as the current message
       messages.push({
         role: 'user',
         content: mergedQuestion,
-      })
+      });
 
-      return { messages, previousWasClarification: true }
+      return { messages, previousWasClarification: true };
     }
 
     // Normal case: build messages from all previous responses + current question
     const messages = previousChatResponses.map((response) => ({
       role: 'user' as const,
       content: response.user_prompt,
-    }))
+    }));
 
     // Add the current question
     messages.push({
       role: 'user',
       content: currentQuestion,
-    })
+    });
 
-    return { messages, previousWasClarification: false }
+    return { messages, previousWasClarification: false };
   }
 
   /**
@@ -737,15 +739,15 @@ export class DataCopilot {
     userEmail,
     dataStream,
   }: DataCopilotQueryInput): Promise<void> {
-    const parametersString = JSON.stringify(parameters || {})
-    const date = new Date().toISOString().slice(0, 10)
+    const parametersString = JSON.stringify(parameters || {});
+    const date = new Date().toISOString().slice(0, 10);
 
     // Build messages from conversation history
     const { messages, previousWasClarification } = await this.buildMessagesFromConversation(
       currentQuestion,
       conversationId,
       insightsDbPool,
-    )
+    );
 
     // Create initial chat response early to get ID for tracking agent steps
     const chatResponseId = await this.createInitialChatResponse(
@@ -753,14 +755,14 @@ export class DataCopilot {
       insightsDbPool,
       userEmail,
       conversationId,
-    )
+    );
 
     // Stream the chat response ID immediately
     dataStream.writeData({
       type: StreamDataType.CHAT_RESPONSE_ID,
       id: chatResponseId,
       conversationId: conversationId || '',
-    })
+    });
 
     const responseData: ChatResponse = {
       userPrompt: currentQuestion,
@@ -772,7 +774,7 @@ export class DataCopilot {
       routerReason: '',
       pipeInstructions: undefined as PipeInstructions | undefined,
       sqlQuery: undefined as string | undefined,
-    }
+    };
 
     try {
       // Run execution with auditor loop (handles router, execution, validation, retries)
@@ -790,7 +792,7 @@ export class DataCopilot {
           responseData,
           chatResponseId,
           insightsDbPool,
-        })
+        });
 
       // Handle STOP and ASK_CLARIFICATION actions
       if (action === RouterDecisionAction.STOP) {
@@ -801,8 +803,8 @@ export class DataCopilot {
           dataStream,
           insightsDbPool,
           conversationId,
-        )
-        return
+        );
+        return;
       }
 
       if (action === RouterDecisionAction.ASK_CLARIFICATION) {
@@ -813,8 +815,8 @@ export class DataCopilot {
           dataStream,
           insightsDbPool,
           conversationId,
-        )
-        return
+        );
+        return;
       }
 
       // Handle completed execution (CREATE_QUERY or PIPES)
@@ -827,14 +829,14 @@ export class DataCopilot {
         conversationId,
         insightsDbPool,
         dataStream,
-      })
+      });
     } catch (error) {
       dataStream.writeData({
         type: 'router-status',
         status: 'error',
         error: error instanceof Error ? error.message : 'An error occurred',
-      })
-      throw error
+      });
+      throw error;
     }
   }
 
@@ -853,7 +855,7 @@ export class DataCopilot {
       type: StreamDataType.ROUTER_STATUS,
       status: StreamDataStatus.COMPLETE,
       reasoning: routerOutput.reasoning,
-    })
+    });
 
     await this.updateChatResponse(
       chatResponseId,
@@ -868,7 +870,7 @@ export class DataCopilot {
         conversationId: conversationId,
       },
       insightsDbPool,
-    )
+    );
   }
 
   /**
@@ -887,7 +889,7 @@ export class DataCopilot {
       status: StreamDataStatus.ASK_CLARIFICATION,
       question: routerOutput.clarification_question,
       reasoning: routerOutput.reasoning,
-    })
+    });
 
     await this.updateChatResponse(
       chatResponseId,
@@ -903,7 +905,7 @@ export class DataCopilot {
         conversationId: conversationId,
       },
       insightsDbPool,
-    )
+    );
   }
 
   /**
@@ -922,28 +924,28 @@ export class DataCopilot {
     insightsDbPool,
   }: TextToSqlAgentStreamInput & {
     chatResponseId: string;
-    insightsDbPool: Pool
+    insightsDbPool: Pool;
   }): Promise<{ sqlQuery: string; explanation: string; data: any[] }> {
-    let attemptNumber = 0
-    let errorContext: import('./types').SqlErrorContext | undefined = undefined
-    let lastGeneratedQuery = ''
+    let attemptNumber = 0;
+    let errorContext: import('./types').SqlErrorContext | undefined = undefined;
+    let lastGeneratedQuery = '';
 
     // Set up keepalive interval during long operation
     const keepaliveInterval = setInterval(() => {
-      this.sendKeepalive(dataStream, 'Processing SQL query generation...')
-    }, 15000) // Send keepalive every 15 seconds
+      this.sendKeepalive(dataStream, 'Processing SQL query generation...');
+    }, 15000); // Send keepalive every 15 seconds
 
     try {
       while (attemptNumber <= this.MAX_SQL_RETRIES) {
         // Send status update
         if (attemptNumber === 0) {
-          this.sendProgress(dataStream, 'progress', 'Analyzing database schema...')
+          this.sendProgress(dataStream, 'progress', 'Analyzing database schema...');
           dataStream.writeData({
             type: StreamDataType.SQL_STATUS,
             status: StreamDataStatus.EXECUTING,
             attempt: attemptNumber + 1,
             maxAttempts: this.MAX_SQL_RETRIES + 1,
-          })
+          });
         } else {
           dataStream.writeData({
             type: StreamDataType.SQL_STATUS,
@@ -951,13 +953,13 @@ export class DataCopilot {
             attempt: attemptNumber + 1,
             maxAttempts: this.MAX_SQL_RETRIES + 1,
             error: errorContext?.errorMessage,
-          })
+          });
         }
 
         try {
           // Generate SQL query
-          const sqlStartTime = Date.now()
-          let textToSqlOutput
+          const sqlStartTime = Date.now();
+          let textToSqlOutput;
           try {
             textToSqlOutput = await this.runTextToSqlAgent({
               messages,
@@ -968,16 +970,12 @@ export class DataCopilot {
               segmentId,
               reformulatedQuestion,
               errorContext,
-            })
-            const sqlResponseTime = (Date.now() - sqlStartTime) / 1000
+            });
+            const sqlResponseTime = (Date.now() - sqlStartTime) / 1000;
 
-            lastGeneratedQuery = textToSqlOutput.instructions
+            lastGeneratedQuery = textToSqlOutput.instructions;
 
-            this.sendProgress(
-              dataStream,
-              'progress',
-              `SQL query generated! Executing...`,
-            )
+            this.sendProgress(dataStream, 'progress', `SQL query generated! Executing...`);
 
             // Track successful Text-to-SQL agent execution
             await this.trackAgentStep(
@@ -986,10 +984,10 @@ export class DataCopilot {
               textToSqlOutput,
               sqlResponseTime,
               insightsDbPool,
-            )
+            );
           } catch (agentError: any) {
             // Text-to-SQL agent itself failed
-            const sqlResponseTime = (Date.now() - sqlStartTime) / 1000
+            const sqlResponseTime = (Date.now() - sqlStartTime) / 1000;
             await this.trackAgentStep(
               chatResponseId,
               'TEXT_TO_SQL',
@@ -997,16 +995,16 @@ export class DataCopilot {
               sqlResponseTime,
               insightsDbPool,
               agentError instanceof Error ? agentError.message : String(agentError),
-            )
-            throw agentError
+            );
+            throw agentError;
           }
 
           // Execute the query and track execution time
-          const sqlExecutionStart = Date.now()
-          let queryData
+          const sqlExecutionStart = Date.now();
+          let queryData;
           try {
-            queryData = await executeTextToSqlInstructions(textToSqlOutput.instructions)
-            const sqlExecutionTime = (Date.now() - sqlExecutionStart) / 1000
+            queryData = await executeTextToSqlInstructions(textToSqlOutput.instructions);
+            const sqlExecutionTime = (Date.now() - sqlExecutionStart) / 1000;
 
             // Track successful SQL execution step
             await this.trackAgentStep(
@@ -1017,11 +1015,11 @@ export class DataCopilot {
               insightsDbPool,
               undefined,
               textToSqlOutput.instructions,
-            )
+            );
           } catch (executionError: any) {
             // SQL execution failed
-            const sqlExecutionTime = (Date.now() - sqlExecutionStart) / 1000
-            const errorMessage = this.extractSqlErrorMessage(executionError)
+            const sqlExecutionTime = (Date.now() - sqlExecutionStart) / 1000;
+            const errorMessage = this.extractSqlErrorMessage(executionError);
 
             // Track failed SQL execution
             await this.trackAgentStep(
@@ -1032,29 +1030,29 @@ export class DataCopilot {
               insightsDbPool,
               errorMessage,
               textToSqlOutput.instructions,
-            )
+            );
 
             // Re-throw to handle retry logic
-            throw executionError
+            throw executionError;
           }
 
           // Success - clear interval and return (don't stream data yet, auditor will do it)
-          clearInterval(keepaliveInterval)
+          clearInterval(keepaliveInterval);
 
           return {
             sqlQuery: textToSqlOutput.instructions,
             explanation: textToSqlOutput.explanation,
-            data: queryData
-          }
+            data: queryData,
+          };
         } catch (executionError: any) {
           // SQL execution failed
-          console.error(`SQL execution error (attempt ${attemptNumber + 1}):`, executionError)
+          console.error(`SQL execution error (attempt ${attemptNumber + 1}):`, executionError);
 
           // Extract error message from Tinybird response
-          const errorMessage = this.extractSqlErrorMessage(executionError)
+          const errorMessage = this.extractSqlErrorMessage(executionError);
 
           // Check if query contains UNION - TinyBird doesn't support it with CTEs
-          let enhancedErrorMessage = errorMessage
+          let enhancedErrorMessage = errorMessage;
           if (lastGeneratedQuery.toUpperCase().includes('UNION')) {
             enhancedErrorMessage = `${errorMessage}\n\nCRITICAL: Your query contains UNION or UNION ALL, 
             which is NOT supported by TinyBird's SQL API. This is likely causing the error. 
@@ -1063,21 +1061,21 @@ export class DataCopilot {
             - Return a single result set with all data\n
             - Use CASE statements to categorize different data types\n
             - Add a 'type' or 'category' column to distinguish different aggregations\n
-            - Do NOT attempt to combine multiple SELECTs with UNION`
+            - Do NOT attempt to combine multiple SELECTs with UNION`;
           }
 
           // Check if we've exhausted retries
           if (attemptNumber >= this.MAX_SQL_RETRIES) {
-            clearInterval(keepaliveInterval)
+            clearInterval(keepaliveInterval);
             dataStream.writeData({
               type: StreamDataType.SQL_STATUS,
               status: StreamDataStatus.MAX_RETRIES,
               error: enhancedErrorMessage,
               attempt: attemptNumber + 1,
-            })
+            });
             throw new Error(
               `SQL query failed after ${this.MAX_SQL_RETRIES + 1} attempts: ${enhancedErrorMessage}`,
-            )
+            );
           }
 
           // Prepare for retry
@@ -1085,24 +1083,24 @@ export class DataCopilot {
             errorMessage: enhancedErrorMessage,
             previousQuery: lastGeneratedQuery,
             attemptNumber: attemptNumber + 1,
-          }
-          attemptNumber++
+          };
+          attemptNumber++;
 
           dataStream.writeData({
             type: StreamDataType.SQL_STATUS,
             status: StreamDataStatus.EXECUTION_ERROR,
             error: enhancedErrorMessage,
             attempt: attemptNumber,
-          })
+          });
 
           // Continue to next iteration
         }
       }
 
-      throw new Error('SQL retry loop completed without returning a result')
+      throw new Error('SQL retry loop completed without returning a result');
     } catch (error) {
-      clearInterval(keepaliveInterval)
-      throw error
+      clearInterval(keepaliveInterval);
+      throw error;
     }
   }
 
@@ -1112,15 +1110,15 @@ export class DataCopilot {
   private extractSqlErrorMessage(error: any): string {
     // Try to get detailed error from Tinybird response
     if (error.data?.error) {
-      return error.data.error
+      return error.data.error;
     }
     if (error.response?.data?.error) {
-      return error.response.data.error
+      return error.response.data.error;
     }
     if (error.message) {
-      return error.message
+      return error.message;
     }
-    return String(error)
+    return String(error);
   }
 
   /**
@@ -1138,12 +1136,13 @@ export class DataCopilot {
     responseData,
     chatResponseId,
     insightsDbPool,
-  }: PipeAgentStreamInput &
-  { chatResponseId: string;
-    insightsDbPool: Pool
-  }): Promise<{ pipeInstructions: PipeInstructions; explanation: string; data: any[] }> {
-    const pipeStartTime = Date.now()
-    let pipeOutput
+  }: PipeAgentStreamInput & { chatResponseId: string; insightsDbPool: Pool }): Promise<{
+    pipeInstructions: PipeInstructions;
+    explanation: string;
+    data: any[];
+  }> {
+    const pipeStartTime = Date.now();
+    let pipeOutput;
     try {
       pipeOutput = await this.runPipeAgent({
         messages,
@@ -1154,8 +1153,8 @@ export class DataCopilot {
         segmentId: segmentId as string,
         reformulatedQuestion,
         toolNames,
-      })
-      const pipeResponseTime = (Date.now() - pipeStartTime) / 1000
+      });
+      const pipeResponseTime = (Date.now() - pipeStartTime) / 1000;
 
       // Track Pipe agent execution
       await this.trackAgentStep(
@@ -1164,9 +1163,9 @@ export class DataCopilot {
         pipeOutput,
         pipeResponseTime,
         insightsDbPool,
-      )
+      );
     } catch (error) {
-      const pipeResponseTime = (Date.now() - pipeStartTime) / 1000
+      const pipeResponseTime = (Date.now() - pipeStartTime) / 1000;
       await this.trackAgentStep(
         chatResponseId,
         'PIPE',
@@ -1174,21 +1173,21 @@ export class DataCopilot {
         pipeResponseTime,
         insightsDbPool,
         error instanceof Error ? error.message : String(error),
-      )
-      throw error
+      );
+      throw error;
     }
 
     // Accumulate token usage from pipe agent
     if (pipeOutput.usage) {
-      responseData.inputTokens += pipeOutput.usage.promptTokens || 0
-      responseData.outputTokens += pipeOutput.usage.completionTokens || 0
+      responseData.inputTokens += pipeOutput.usage.promptTokens || 0;
+      responseData.outputTokens += pipeOutput.usage.completionTokens || 0;
     }
 
     // Execute the pipes according to the instructions and combine results (don't stream data yet, auditor will do it)
-    const pipeExecutionStart = Date.now()
+    const pipeExecutionStart = Date.now();
     try {
-      const combinedData = await executePipeInstructions(pipeOutput.instructions)
-      const pipeExecutionTime = (Date.now() - pipeExecutionStart) / 1000
+      const combinedData = await executePipeInstructions(pipeOutput.instructions);
+      const pipeExecutionTime = (Date.now() - pipeExecutionStart) / 1000;
 
       // Track successful pipe execution step
       await this.trackAgentStep(
@@ -1199,15 +1198,15 @@ export class DataCopilot {
         insightsDbPool,
         undefined,
         JSON.stringify(pipeOutput.instructions),
-      )
+      );
 
       return {
         pipeInstructions: pipeOutput.instructions,
         explanation: pipeOutput.explanation,
-        data: combinedData
-      }
+        data: combinedData,
+      };
     } catch (error) {
-      const pipeExecutionTime = (Date.now() - pipeExecutionStart) / 1000
+      const pipeExecutionTime = (Date.now() - pipeExecutionStart) / 1000;
 
       // Track failed pipe execution
       await this.trackAgentStep(
@@ -1218,9 +1217,9 @@ export class DataCopilot {
         insightsDbPool,
         error instanceof Error ? error.message : String(error),
         JSON.stringify(pipeOutput.instructions),
-      )
+      );
 
-      throw error
+      throw error;
     }
   }
 
@@ -1235,7 +1234,9 @@ export class DataCopilot {
     sqlQuery,
     conversationId,
     insightsDbPool,
-  }: Omit<AgentResponseCompleteParams, 'userPrompt' | 'userEmail'> & { chatResponseId: string }): Promise<void> {
+  }: Omit<AgentResponseCompleteParams, 'userPrompt' | 'userEmail'> & {
+    chatResponseId: string;
+  }): Promise<void> {
     await this.updateChatResponse(
       chatResponseId,
       {
@@ -1249,6 +1250,6 @@ export class DataCopilot {
         conversationId: conversationId,
       },
       insightsDbPool,
-    )
+    );
   }
 }

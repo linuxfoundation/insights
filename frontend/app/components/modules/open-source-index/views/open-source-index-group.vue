@@ -15,8 +15,8 @@ SPDX-License-Identifier: MIT
           query: {
             sort,
             view: 'distribution',
-            type: data?.type
-          }
+            type: data?.type,
+          },
         }"
       >
         <lfx-icon-button
@@ -48,32 +48,24 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import {
-  computed, onServerPrefetch,
-  ref,
-} from 'vue';
+import { computed, onServerPrefetch, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import LfxOSIHeader from '../components/osi-header.vue';
-import {type OSIType, OSS_INDEX_API_SERVICE, type SortType} from '../services/osi.api.service';
-import LfxOsiDistribution from "~/components/modules/open-source-index/components/osi-distribution.vue";
-import type {TreeMapData} from "~/components/uikit/chart/types/ChartTypes";
-import LfxIconButton from "~/components/uikit/icon-button/icon-button.vue";
-import {LfxRoutes} from "~/components/shared/types/routes";
+import { type OSIType, OSS_INDEX_API_SERVICE, type SortType } from '../services/osi.api.service';
+import LfxOsiDistribution from '~/components/modules/open-source-index/components/osi-distribution.vue';
+import type { TreeMapData } from '~/components/uikit/chart/types/ChartTypes';
+import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
+import { LfxRoutes } from '~/components/shared/types/routes';
 
 const route = useRoute();
 
-const slug = ref<string>(route.params.slug as string || '');
+const slug = ref<string>((route.params.slug as string) || '');
 
-const sort = ref<SortType>(route.query.sort as SortType || 'totalContributors');
-const view = ref<string>(route.query.view as string || 'distribution');
-const type = ref<OSIType>(route.query.type as OSIType || 'horizontal');
+const sort = ref<SortType>((route.query.sort as SortType) || 'totalContributors');
+const view = ref<string>((route.query.view as string) || 'distribution');
+const type = ref<OSIType>((route.query.type as OSIType) || 'horizontal');
 
-const {
-  data,
-  status,
-  error,
-  suspense
-} = OSS_INDEX_API_SERVICE.fetchOSSCategory(slug.value, sort);
+const { data, status, error, suspense } = OSS_INDEX_API_SERVICE.fetchOSSCategory(slug.value, sort);
 
 const chartData = computed<TreeMapData[]>(() => {
   return OSS_INDEX_API_SERVICE.mapDataToTreeMapData(data.value?.categories || [], 'category', sort.value);
@@ -86,6 +78,6 @@ onServerPrefetch(async () => {
 
 <script lang="ts">
 export default {
-  name: 'LfxOpenSourceIndexGroup'
+  name: 'LfxOpenSourceIndexGroup',
 };
 </script>

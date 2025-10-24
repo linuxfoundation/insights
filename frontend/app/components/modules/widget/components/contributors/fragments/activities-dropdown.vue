@@ -21,7 +21,7 @@ SPDX-License-Identifier: MIT
           :src="getIcon(selectedOption.platform)"
           :alt="selectedOption.platform"
           class="w-4 h-4"
-        >
+        />
         <lfx-icon
           v-else
           name="display-code"
@@ -57,8 +57,9 @@ SPDX-License-Identifier: MIT
           <img
             v-if="group.image"
             :src="group.image"
+            :alt="group.label"
             class="w-4 h-4"
-          >
+          />
           {{ option.label }}
         </lfx-dropdown-item>
       </template>
@@ -71,8 +72,9 @@ SPDX-License-Identifier: MIT
     <img
       v-if="selected.platform !== 'all'"
       :src="getIcon(selected?.platform!)"
+      :alt="selected.platform"
       class="w-4 h-4"
-    >
+    />
     <lfx-icon
       v-else
       name="display-code"
@@ -100,18 +102,21 @@ import { useProjectStore } from '~/components/modules/project/store/project.stor
 import type { ActivityTypeItem, ActivityTypesByPlatformResponse } from '~~/types/development/responses.types';
 import { TanstackKey } from '~/components/shared/types/tanstack';
 
-const props = withDefaults(defineProps<{
-  modelValue: string;
-  fullWidth?: boolean
-  snapshot?: boolean;
-  includeCollaborations?: boolean;
-  includeOtherContributions?: boolean;
-}>(), {
-  fullWidth: true,
-  snapshot: false,
-});
+const props = withDefaults(
+  defineProps<{
+    modelValue: string;
+    fullWidth?: boolean;
+    snapshot?: boolean;
+    includeCollaborations?: boolean;
+    includeOtherContributions?: boolean;
+  }>(),
+  {
+    fullWidth: true,
+    snapshot: false,
+  },
+);
 
-const emit = defineEmits<{(e: 'update:modelValue', value: string): void }>();
+const emit = defineEmits<{ (e: 'update:modelValue', value: string): void }>();
 const defaultAllValue = 'all:all';
 
 const { project } = storeToRefs(useProjectStore());
@@ -142,7 +147,7 @@ const queryFn = computed<QueryFunction<ActivityTypesByPlatformResponse>>(() => {
     params.set('includeOtherContributions', String(includeOther));
 
     const result = await $fetch<ActivityTypesByPlatformResponse>(
-      `/api/project/${slug}/activity-types?${params.toString()}`
+      `/api/project/${slug}/activity-types?${params.toString()}`,
     );
     return result;
   };
@@ -163,10 +168,11 @@ const queryResult = useQuery<ActivityTypesByPlatformResponse>({
 const { data: activityTypesData } = queryResult;
 
 const connected = computed(() => {
-  const platformList = (project.value?.connectedPlatforms || [])
-      .map((platform) => platform.split('-').at(0) || platform);
+  const platformList = (project.value?.connectedPlatforms || []).map(
+    (platform) => platform.split('-').at(0) || platform,
+  );
   return [...new Set(platformList)];
-})
+});
 
 // Build platforms list with corresponding activity types and their labels, from Tinybird data.
 const platformsWithActivityTypes = computed(() => {
@@ -186,14 +192,12 @@ const activity = computed({
   },
   set(value: string) {
     emit('update:modelValue', value);
-  }
+  },
 });
 
 const getIcon = (platform: string) => platforms[platform]?.image || '';
 
-const options = computed<ActivityTypeItem[]>(() =>
-  platformsWithActivityTypes.value.flatMap((p) => p.activityTypes)
-);
+const options = computed<ActivityTypeItem[]>(() => platformsWithActivityTypes.value.flatMap((p) => p.activityTypes));
 
 const selected = computed(() => {
   const [platform, type] = activity.value.split(':');
@@ -201,13 +205,12 @@ const selected = computed(() => {
   return {
     platform,
     label: option?.label || '',
-  }
-})
-
+  };
+});
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxActivitiesDropdown'
+  name: 'LfxActivitiesDropdown',
 };
 </script>

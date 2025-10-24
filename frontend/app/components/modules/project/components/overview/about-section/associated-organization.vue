@@ -10,9 +10,7 @@ SPDX-License-Identifier: MIT
       error-message="Error fetching associated organization"
     >
       <div class="p-5 flex flex-col gap-4">
-        <div class="text-neutral-400 font-semibold">
-          About
-        </div>
+        <div class="text-neutral-400 font-semibold">About</div>
         <div class="flex flex-col gap-2">
           <lfx-avatar
             :src="organization.logo"
@@ -73,20 +71,16 @@ import LfxProjectLoadState from '~~/app/components/modules/project/components/sh
 const route = useRoute();
 
 const params = computed(() => ({
-  projectSlug: route.params.slug as string
+  projectSlug: route.params.slug as string,
 }));
 
-const {
-  data,
-  status,
-  error
-} = OVERVIEW_API_SERVICE.fetchAssociatedOrganization(params);
+const { data, status, error } = OVERVIEW_API_SERVICE.fetchAssociatedOrganization(params);
 
 const organization = computed<Organization>(() => data.value as Organization);
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxProjectAboutSection'
+  name: 'LfxProjectAboutSection',
 };
 </script>

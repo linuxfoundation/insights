@@ -17,8 +17,8 @@ const commitActivities: WidgetConfig = {
   snapshot: true,
   copilot: {
     icon: 'people-group',
-    suggestions: 'Show me the commit activities'
-  }
+    suggestions: 'Show me the commit activities',
+  },
 };
 
 export default commitActivities;

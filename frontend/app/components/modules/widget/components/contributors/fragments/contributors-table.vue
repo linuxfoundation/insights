@@ -23,7 +23,7 @@ SPDX-License-Identifier: MIT
       <div>Total contributions</div>
     </div>
 
-    <lfx-scrollable-shadow  :class="props.showFullList ? 'px-4 sm:px-6 overflow-y-auto' : ''">
+    <lfx-scrollable-shadow :class="props.showFullList ? 'px-4 sm:px-6 overflow-y-auto' : ''">
       <div
         v-for="(contributor, index) in props.contributors"
         :key="index"
@@ -44,7 +44,9 @@ SPDX-License-Identifier: MIT
           <div
             class="text-ellipsis overflow-hidden no-underline"
             :title="contributor.name"
-          >{{ contributor.name }}</div>
+          >
+            {{ contributor.name }}
+          </div>
           <lfx-tag
             v-if="contributor.roles?.includes('maintainer')"
             size="small"
@@ -75,9 +77,7 @@ SPDX-License-Identifier: MIT
               :type="'light'"
             />
           </span>
-          <span class="text-sm text-brand-300 text-sm font-semibold">
-            Loading contributors
-          </span>
+          <span class="text-sm text-brand-300 text-sm font-semibold"> Loading contributors </span>
         </div>
       </div>
     </lfx-scrollable-shadow>
@@ -85,19 +85,16 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import {
- computed, ref, onMounted, watch
-} from 'vue';
+import { computed, ref, onMounted, watch } from 'vue';
 import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
 import LfxScrollableShadow from '~/components/uikit/scrollable-shadow/scrollable-shadow.vue';
 import type { Contributor } from '~~/types/contributors/responses.types';
 import { formatNumber } from '~/components/shared/utils/formatter';
 import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 import { isElementVisible } from '~/components/shared/utils/helper';
-import LfxTag from "~/components/uikit/tag/tag.vue";
+import LfxTag from '~/components/uikit/tag/tag.vue';
 
-const emit = defineEmits<{(e: 'loadMore'): void
-}>();
+const emit = defineEmits<{ (e: 'loadMore'): void }>();
 
 const loadMore = ref(null);
 const props = withDefaults(
@@ -113,8 +110,8 @@ const props = withDefaults(
     showPercentage: false,
     showFullList: false,
     hasNextPage: false,
-    isFetchingNextPage: false
-  }
+    isFetchingNextPage: false,
+  },
 );
 
 const showLoadMore = computed(() => props.hasNextPage && props.showFullList);
@@ -122,7 +119,7 @@ const showLoadMore = computed(() => props.hasNextPage && props.showFullList);
 const options = {
   root: null,
   rootMargin: '0px',
-  threshold: 0
+  threshold: 0,
 };
 
 const handleIntersectCallback = (entries: IntersectionObserverEntry[]) => {
@@ -131,7 +128,7 @@ const handleIntersectCallback = (entries: IntersectionObserverEntry[]) => {
       emit('loadMore');
     }
   });
-}
+};
 
 const isLoadMoreVisible = () => {
   if (!loadMore.value) {
@@ -148,18 +145,21 @@ onMounted(() => {
   }
 });
 
-watch(() => props.isFetchingNextPage, (newVal: boolean) => {
-  if (!newVal) {
-    // check if the load more is visible
-    if (isLoadMoreVisible()) {
-      emit('loadMore');
+watch(
+  () => props.isFetchingNextPage,
+  (newVal: boolean) => {
+    if (!newVal) {
+      // check if the load more is visible
+      if (isLoadMoreVisible()) {
+        emit('loadMore');
+      }
     }
-  }
-});
+  },
+);
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxContributorsTable'
+  name: 'LfxContributorsTable',
 };
 </script>

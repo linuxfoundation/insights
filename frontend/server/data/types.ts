@@ -3,7 +3,7 @@
 import type { DateTime } from 'luxon';
 import type { ActivityPlatforms } from '~~/types/shared/activity-platforms';
 import type { ActivityTypes } from '~~/types/shared/activity-types';
-import { Granularity } from "~~/types/shared/granularity";
+import { Granularity } from '~~/types/shared/granularity';
 
 export type FetchFunction = typeof $fetch;
 
@@ -65,7 +65,7 @@ export type OrganizationDependencyFilter = DefaultFilter & {
 
 export enum DemographicType {
   CONTRIBUTORS = 'contributors',
-  ORGANIZATIONS = 'organizations'
+  ORGANIZATIONS = 'organizations',
 }
 
 export type GeographicDistributionFilter = DefaultFilter & {
@@ -89,7 +89,7 @@ export type RetentionFilter = DefaultFilter & {
 
 export enum ActivityFilterCountType {
   CUMULATIVE = 'cumulative',
-  NEW = 'new'
+  NEW = 'new',
 }
 
 export type ActivityCountFilter = DefaultFilter & {
@@ -158,4 +158,4 @@ export type SearchVolumeFilter = {
   project: string;
   startDate?: DateTime;
   endDate?: DateTime;
-}
+};

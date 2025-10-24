@@ -32,9 +32,7 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import {
- ref, computed
-} from 'vue';
+import { ref, computed } from 'vue';
 import { storeToRefs } from 'pinia';
 import type { AsyncDataRequestStatus } from 'nuxt/app';
 import { WidgetArea } from '../../../widget/types/widget-area';
@@ -45,7 +43,7 @@ import type {
   TrustScoreSummary,
   SecurityScore,
   HealthScoreResults,
-  BenchmarkScoreData
+  BenchmarkScoreData,
 } from '~~/types/overview/responses.types';
 import type { Tab } from '~/components/uikit/tabs/types/tab.types';
 import type { ScoreDisplay } from '~~/types/overview/score-display.types';
@@ -53,7 +51,7 @@ import { overviewScore } from '~~/app/components/shared/utils/overview-score';
 import { useProjectStore } from '~/components/modules/project/store/project.store';
 import type { WidgetConfig } from '~/components/modules/widget/config/widget.config';
 
-const { project, selectedRepoSlugs } = storeToRefs(useProjectStore())
+const { project, selectedRepoSlugs } = storeToRefs(useProjectStore());
 
 const props = defineProps<{
   trustScoreSummary: TrustScoreSummary | undefined;
@@ -69,7 +67,7 @@ const tabs = ref<Tab[]>([
   { label: 'Contributors', value: WidgetArea.CONTRIBUTORS },
   { label: 'Popularity', value: WidgetArea.POPULARITY },
   { label: 'Development', value: WidgetArea.DEVELOPMENT },
-  { label: 'Security & Best practices', value: WidgetArea.SECURITY }
+  { label: 'Security & Best practices', value: WidgetArea.SECURITY },
 ]);
 const selectedTab = ref(tabs.value[0]?.value || WidgetArea.CONTRIBUTORS);
 
@@ -77,7 +75,7 @@ const parsedTrustScoreSummary = computed(() => {
   const scoreFromData = overviewScore(props.trustScoreSummary, props.scoreDisplay);
 
   if (props.isRepoSelected) {
-    return {...repoTrustScoreSummary.value, security: scoreFromData.security};
+    return { ...repoTrustScoreSummary.value, security: scoreFromData.security };
   }
 
   return scoreFromData;
@@ -94,22 +92,20 @@ const repoTrustScoreSummary = computed(() => {
 
   return {
     overall: 0,
-    popularity: ((popularityScores / popularityWidgets.length * 5) / 25) * 100,
-    contributors: (contributorScores / contributorWidgets.length * 5) / 25 * 100,
+    popularity: (((popularityScores / popularityWidgets.length) * 5) / 25) * 100,
+    contributors: (((contributorScores / contributorWidgets.length) * 5) / 25) * 100,
     security: 0,
-    development: (developmentScores / developmentWidgets.length * 5) / 25 * 100,
+    development: (((developmentScores / developmentWidgets.length) * 5) / 25) * 100,
   };
 });
 
 const getWidgets = (widgetArea: WidgetArea) => {
-  return OVERVIEW_API_SERVICE.getOverviewWidgetConfigs(widgetArea)
-  .filter((widget) => {
+  return OVERVIEW_API_SERVICE.getOverviewWidgetConfigs(widgetArea).filter((widget) => {
     return (
-      project.value?.widgets.includes(widget.key)
-      && (!widget?.hideOnRepoFilter || !selectedRepoSlugs.value.length)
+      project.value?.widgets.includes(widget.key) && (!widget?.hideOnRepoFilter || !selectedRepoSlugs.value.length)
     );
   });
-}
+};
 
 const getTotalScore = (widgets: WidgetConfig[]) => {
   let total = 0;
@@ -123,10 +119,10 @@ const getTotalScore = (widgets: WidgetConfig[]) => {
   });
 
   return total;
-}
+};
 </script>
 <script lang="ts">
 export default {
-  name: 'LfxProjectScoreTabs'
+  name: 'LfxProjectScoreTabs',
 };
 </script>

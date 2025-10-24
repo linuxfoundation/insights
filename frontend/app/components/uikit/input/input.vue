@@ -23,8 +23,8 @@ SPDX-License-Identifier: MIT
       :disabled="props.disabled"
       v-bind="$attrs"
       :tabindex="props.tabindex"
-      class="!outline-none !shadow-none "
-    >
+      class="!outline-none !shadow-none"
+    />
     <div
       v-if="$slots.suffix"
       class="c-input__suffix"
@@ -37,22 +37,25 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { computed } from 'vue';
 
-const props = withDefaults(defineProps<{
-  modelValue: string | number,
-  placeholder?: string,
-  disabled?: boolean,
-  invalid?: boolean,
-  type?: string,
-  tabindex?: string,
-}>(), {
-  placeholder: '',
-  disabled: false,
-  invalid: false,
-  type: 'text',
-  tabindex: undefined,
-});
+const props = withDefaults(
+  defineProps<{
+    modelValue: string | number;
+    placeholder?: string;
+    disabled?: boolean;
+    invalid?: boolean;
+    type?: string;
+    tabindex?: string;
+  }>(),
+  {
+    placeholder: '',
+    disabled: false,
+    invalid: false,
+    type: 'text',
+    tabindex: undefined,
+  },
+);
 
-const emit = defineEmits<{(e: 'update:modelValue', value: string | number): void}>();
+const emit = defineEmits<{ (e: 'update:modelValue', value: string | number): void }>();
 
 const value = computed<string | number>({
   get() {

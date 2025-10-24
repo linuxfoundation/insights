@@ -28,27 +28,29 @@ SPDX-License-Identifier: MIT
   >
     <slot />
   </div>
-
 </template>
 
 <script lang="ts" setup>
-  import type { RouteLocationRaw } from 'vue-router';
+import type { RouteLocationRaw } from 'vue-router';
 
-  const props = withDefaults(defineProps<{
+const props = withDefaults(
+  defineProps<{
     active?: boolean;
     to?: RouteLocationRaw;
     exact?: boolean;
     disabled?: boolean;
-  }>(), {
+  }>(),
+  {
     active: false,
     to: undefined,
     exact: false,
     disabled: false,
-  })
+  },
+);
 </script>
 
 <script lang="ts">
 export default {
-    name: "LfxMenuButton"
+  name: 'LfxMenuButton',
 };
 </script>

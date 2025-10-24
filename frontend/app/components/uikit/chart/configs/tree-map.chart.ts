@@ -185,7 +185,8 @@ const defaultTreeMapOption: ECOption = {
   series: [SERIES_DEFAULT] as ECOption['series'],
 };
 
-const mapDataStyles = (data: TreeMapData[]) => data.map((item) => {
+const mapDataStyles = (data: TreeMapData[]) =>
+  data.map((item) => {
     const style = dataStyles[item.value[1]];
     return {
       ...item,
@@ -213,7 +214,7 @@ export const getTreeMapConfig = (
   data: TreeMapData[],
   tooltipFormatter: (info: TreeLabelFormatterParams) => string,
   isValueCurrency: boolean,
-  options?: ECOption
+  options?: ECOption,
 ): ECOption => {
   const treeMapOption = merge({}, defaultTreeMapOption, {
     series: [isValueCurrency ? SERIES_CURRENCY : SERIES_DEFAULT] as ECOption['series'],

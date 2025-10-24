@@ -4,7 +4,7 @@
  * See responses.types.ts for the response format.
  */
 
-import type { Organization } from '~~/types/contributors/responses.types'
+import type { Organization } from '~~/types/contributors/responses.types';
 
 /**
  * Query params:
@@ -21,7 +21,7 @@ export default defineEventHandler(async () => {
     address: 'California, United States',
     employees: '1000+',
     organizationType: 'Public',
-  }
+  };
 
-  return organization
-})
+  return organization;
+});

@@ -28,9 +28,7 @@ SPDX-License-Identifier: MIT
       </div>
     </div>
     <div v-if="props.snapshot">
-      <div class="text-sm leading-4 font-semibold first-letter:uppercase pb-5">
-        {{model.activeTab}} distribution
-      </div>
+      <div class="text-sm leading-4 font-semibold first-letter:uppercase pb-5">{{ model.activeTab }} distribution</div>
     </div>
     <lfx-project-load-state
       :status="status"
@@ -78,9 +76,7 @@ SPDX-License-Identifier: MIT
             :key="item.name"
             class="flex flex-row justify-between items-center text-sm border-neutral-100 border-t pt-5 mt-5"
           >
-            <span class="text-neutral-500 font-medium">
-              Unknown location
-            </span>
+            <span class="text-neutral-500 font-medium"> Unknown location </span>
             <span class="text-neutral-500 font-medium">
               {{ formatNumber(item.count) }} {{ pluralize(label.toLowerCase(), item.count) }} ・ {{ item.percentage }}%
             </span>
@@ -92,33 +88,30 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import {
-computed, watch
-} from 'vue';
+import { computed, watch } from 'vue';
 import { useRoute } from 'vue-router';
-import { storeToRefs } from "pinia";
-import pluralize from "pluralize";
+import { storeToRefs } from 'pinia';
+import pluralize from 'pluralize';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import { convertToChartData, getMaxValue } from '~/components/uikit/chart/helpers/chart-helpers';
-import type {
-  ChartData,
-  RawChartData,
-  ChartSeries
-} from '~/components/uikit/chart/types/ChartTypes';
+import type { ChartData, RawChartData, ChartSeries } from '~/components/uikit/chart/types/ChartTypes';
 import { getGeoMapChartConfig } from '~/components/uikit/chart/configs/geo-map.chart';
 import { formatNumber } from '~/components/shared/utils/formatter';
-import { useProjectStore } from "~/components/modules/project/store/project.store";
+import { useProjectStore } from '~/components/modules/project/store/project.store';
 import { isEmptyData } from '~/components/shared/utils/helper';
-import type {GeoMapData, GeoMapResponse }
-  from "~/components/modules/widget/components/contributors/types/geo-map.types";
-import LfxActivitiesDropdown
-  from "~/components/modules/widget/components/contributors/fragments/activities-dropdown.vue";
-import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
-import {Widget} from "~/components/modules/widget/types/widget";
-import { CONTRIBUTORS_API_SERVICE, type GeographicalDistributionQueryParams } 
-from '~~/app/components/modules/widget/services/contributors.api.service';
-  import type { WidgetModel } from '~/components/modules/widget/config/widget.config';
+import type {
+  GeoMapData,
+  GeoMapResponse,
+} from '~/components/modules/widget/components/contributors/types/geo-map.types';
+import LfxActivitiesDropdown from '~/components/modules/widget/components/contributors/fragments/activities-dropdown.vue';
+import LfxProjectLoadState from '~/components/modules/project/components/shared/load-state.vue';
+import { Widget } from '~/components/modules/widget/types/widget';
+import {
+  CONTRIBUTORS_API_SERVICE,
+  type GeographicalDistributionQueryParams,
+} from '~~/app/components/modules/widget/services/contributors.api.service';
+import type { WidgetModel } from '~/components/modules/widget/config/widget.config';
 
 interface GeographicalDistributionModel extends WidgetModel {
   metric: string;
@@ -127,22 +120,24 @@ interface GeographicalDistributionModel extends WidgetModel {
 }
 
 const props = defineProps<{
-  modelValue: GeographicalDistributionModel,
-  snapshot?: boolean
-}>()
+  modelValue: GeographicalDistributionModel;
+  snapshot?: boolean;
+}>();
 
-const emit = defineEmits<{(e: 'dataLoaded', value: string): void;
-(e: 'update:modelValue', value: GeographicalDistributionModel): void}>();
+const emit = defineEmits<{
+  (e: 'dataLoaded', value: string): void;
+  (e: 'update:modelValue', value: GeographicalDistributionModel): void;
+}>();
 
 const model = computed<GeographicalDistributionModel>({
   get: () => props.modelValue,
-  set: (value) => emit('update:modelValue', value)
-})
+  set: (value) => emit('update:modelValue', value),
+});
 
 const route = useRoute();
 const platform = computed(() => model.value.metric.split(':')[0]);
 const activityType = computed(() => model.value.metric.split(':')[1]);
-const { startDate, endDate, selectedReposValues } = storeToRefs(useProjectStore())
+const { startDate, endDate, selectedReposValues } = storeToRefs(useProjectStore());
 
 const params = computed<GeographicalDistributionQueryParams>(() => ({
   projectSlug: route.params.slug as string,
@@ -155,23 +150,23 @@ const params = computed<GeographicalDistributionQueryParams>(() => ({
   includeCollaborations: model.value.includeCollaborations,
 }));
 
-const {
-data, status, error
-} = CONTRIBUTORS_API_SERVICE.fetchGeographicalDistribution(params);
+const { data, status, error } = CONTRIBUTORS_API_SERVICE.fetchGeographicalDistribution(params);
 
 const geoMapData = computed<GeoMapData[] | undefined>(() => (data.value as GeoMapResponse)?.data);
-const geoMapDataCountries = computed<GeoMapData[] | undefined>(() => (geoMapData.value
-  ? geoMapData.value.filter((item) => item.name !== 'Unknown').slice(0, 5) : undefined));
-const unknownGeoMapData = computed<GeoMapData[] | undefined>(() => (geoMapData.value
-  ? geoMapData.value.filter((item) => item.name === 'Unknown') : undefined));
+const geoMapDataCountries = computed<GeoMapData[] | undefined>(() =>
+  geoMapData.value ? geoMapData.value.filter((item) => item.name !== 'Unknown').slice(0, 5) : undefined,
+);
+const unknownGeoMapData = computed<GeoMapData[] | undefined>(() =>
+  geoMapData.value ? geoMapData.value.filter((item) => item.name === 'Unknown') : undefined,
+);
 
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
-  () => convertToChartData(geoMapData.value as unknown as RawChartData[], 'name', ['count', 'percentage'])
-  .map((item) => ({
-    ...item,
-    key: item.key === 'United States' ? 'United States of America' : item.key
-  }))
+  () =>
+    convertToChartData(geoMapData.value as unknown as RawChartData[], 'name', ['count', 'percentage']).map((item) => ({
+      ...item,
+      key: item.key === 'United States' ? 'United States of America' : item.key,
+    })),
 );
 
 const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
@@ -179,12 +174,12 @@ const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<
 const tabs = [
   {
     label: 'Organizations',
-    value: 'organizations'
+    value: 'organizations',
   },
   {
     label: 'Contributors',
-    value: 'contributors'
-  }
+    value: 'contributors',
+  },
 ];
 
 const label = computed(() => (model.value.activeTab === 'contributors' ? 'Contributor' : 'Organization'));
@@ -194,21 +189,25 @@ const chartSeries = computed<ChartSeries[]>(() => [
     name: label.value,
     type: 'map',
     yAxisIndex: 0,
-    dataIndex: 0
-  }
+    dataIndex: 0,
+  },
 ]);
 
-watch(status, (value) => {
-  if (value !== 'pending') {
-    emit('dataLoaded', Widget.GEOGRAPHICAL_DISTRIBUTION);
-  }
-}, {
-  immediate: true
-});
+watch(
+  status,
+  (value) => {
+    if (value !== 'pending') {
+      emit('dataLoaded', Widget.GEOGRAPHICAL_DISTRIBUTION);
+    }
+  },
+  {
+    immediate: true,
+  },
+);
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxProjectGeographicalDistribution'
+  name: 'LfxProjectGeographicalDistribution',
 };
 </script>

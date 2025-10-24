@@ -5,40 +5,26 @@ export default {
   sitemap: {
     sitemaps: {
       static: {
-        sources: [
-          '/api/seo/sitemap/static',
-        ]
+        sources: ['/api/seo/sitemap/static'],
       },
       collections: {
-        sources: [
-          '/api/seo/sitemap/collections',
-        ]
+        sources: ['/api/seo/sitemap/collections'],
       },
       projects: {
-        sources: [
-          '/api/seo/sitemap/projects',
-        ]
+        sources: ['/api/seo/sitemap/projects'],
       },
       ossIndexGroups: {
-        sources: [
-          '/api/seo/sitemap/oss-index-groups',
-        ]
+        sources: ['/api/seo/sitemap/oss-index-groups'],
       },
       ossIndexCategories: {
-        sources: [
-          '/api/seo/sitemap/oss-index-categories',
-        ]
+        sources: ['/api/seo/sitemap/oss-index-categories'],
       },
       docs: {
-        sources: [
-          '/api/seo/sitemap/docs',
-        ]
+        sources: ['/api/seo/sitemap/docs'],
       },
       blog: {
-        sources: [
-          '/api/seo/sitemap/blog',
-        ]
+        sources: ['/api/seo/sitemap/blog'],
       },
-    }
+    },
   },
 };

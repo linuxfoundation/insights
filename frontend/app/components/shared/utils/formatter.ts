@@ -12,7 +12,8 @@ import pluralize from 'pluralize';
 import { FormatterUnits } from '~/components/shared/types/formatter.types';
 
 type ShowUnits = 'short' | 'long' | 'no';
-export const formatNumber = (value: number, decimals = 0): string => Intl.NumberFormat('en-US', {
+export const formatNumber = (value: number, decimals = 0): string =>
+  Intl.NumberFormat('en-US', {
     style: 'decimal',
     maximumFractionDigits: decimals,
   }).format(value);
@@ -22,7 +23,8 @@ export const formatNumber = (value: number, decimals = 0): string => Intl.Number
  * @param value - The number to format
  * @returns Formatted string representation of the number
  */
-export const formatNumberShort = (value: number): string => new Intl.NumberFormat('en', {
+export const formatNumberShort = (value: number): string =>
+  new Intl.NumberFormat('en', {
     notation: 'compact',
     compactDisplay: 'short',
   }).format(value);
@@ -32,7 +34,8 @@ export const formatNumberShort = (value: number): string => new Intl.NumberForma
  * @param value - The number to format
  * @returns Formatted string representation of the number
  */
-export const formatNumberCurrency = (value: number, currency: string): string => new Intl.NumberFormat('en', {
+export const formatNumberCurrency = (value: number, currency: string): string =>
+  new Intl.NumberFormat('en', {
     style: 'currency',
     notation: 'compact',
     compactDisplay: 'short',
@@ -78,7 +81,7 @@ const convertToUnit = (
   value: number,
   unit: FormatterUnits,
   showUnits: ShowUnits,
-  roundTo?: number
+  roundTo?: number,
 ): string => {
   const shiftedValue = shiftToUnit(value, unit);
   const roundedValue = roundNumber(shiftedValue, roundTo);
@@ -97,14 +100,12 @@ export const formatSecondsToDuration = (
   value: number,
   showUnits: ShowUnits = 'short',
   toUnit?: FormatterUnits,
-  roundTo?: number
+  roundTo?: number,
 ): string => {
   // Convert to various units
   const duration = Duration.fromObject({ seconds: value }).rescale().toObject();
 
-  const {
- years, months, weeks, days, hours, minutes
-} = duration;
+  const { years, months, weeks, days, hours, minutes } = duration;
 
   // Handle each case from largest to smallest unit
   if (toUnit) {

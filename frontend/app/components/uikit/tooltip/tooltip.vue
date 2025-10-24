@@ -24,12 +24,12 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import type {Placement} from "@popperjs/core";
-import LfxPopover from "~/components/uikit/popover/popover.vue";
+import type { Placement } from '@popperjs/core';
+import LfxPopover from '~/components/uikit/popover/popover.vue';
 
 const props = withDefaults(
   defineProps<{
-    placement?: Placement,
+    placement?: Placement;
     content?: string;
     disabled?: boolean;
   }>(),
@@ -37,12 +37,12 @@ const props = withDefaults(
     placement: 'top',
     content: '',
     disabled: false,
-  }
+  },
 );
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxTooltip'
+  name: 'LfxTooltip',
 };
 </script>

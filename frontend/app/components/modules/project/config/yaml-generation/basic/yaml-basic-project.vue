@@ -25,8 +25,7 @@ SPDX-License-Identifier: MIT
       <div class="flex flex-col gap-1">
         <h3 class="text-base font-semibold leading-6 text-neutral-900">Administrators</h3>
         <p class="text-xs font-normal leading-4 text-neutral-500">
-          People who have administrative access to the project. At least one administrator is
-          required.
+          People who have administrative access to the project. At least one administrator is required.
         </p>
       </div>
 
@@ -36,9 +35,7 @@ SPDX-License-Identifier: MIT
         :key="index"
         v-model="model.project.administrators[index]"
       >
-        <p class="text-sm font-semibold leading-5 text-neutral-900">
-          Administrator #{{ index + 1 }}
-        </p>
+        <p class="text-sm font-semibold leading-5 text-neutral-900">Administrator #{{ index + 1 }}</p>
         <lfx-icon-button
           v-if="model.project.administrators.length > 1"
           type="default"
@@ -64,25 +61,24 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import useVuelidate from '@vuelidate/core'
-import LfxInput from '~/components/uikit/input/input.vue'
-import LfxField from '~/components/uikit/field/field.vue'
-import LfxButton from '~/components/uikit/button/button.vue'
-import LfxIcon from '~/components/uikit/icon/icon.vue'
-import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue'
-import LfxYamlAdministratorItem from
-  '~/components/modules/project/config/yaml-generation/shared/components/yaml-administrator-item.vue'
+import useVuelidate from '@vuelidate/core';
+import LfxInput from '~/components/uikit/input/input.vue';
+import LfxField from '~/components/uikit/field/field.vue';
+import LfxButton from '~/components/uikit/button/button.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
+import LfxYamlAdministratorItem from '~/components/modules/project/config/yaml-generation/shared/components/yaml-administrator-item.vue';
 
 const props = defineProps<{
-  modelValue: object
-}>()
+  modelValue: object;
+}>();
 
-const emit = defineEmits<{ (e: 'update:modelValue', value: object): void }>()
+const emit = defineEmits<{ (e: 'update:modelValue', value: object): void }>();
 
 const model = computed<object>({
   get: () => props.modelValue,
   set: (value: object) => emit('update:modelValue', value),
-})
+});
 
 const addAdministrator = () => {
   model.value.project.administrators.push({
@@ -91,10 +87,10 @@ const addAdministrator = () => {
     email: '',
     social: '',
     primary: false,
-  })
-}
+  });
+};
 
-const rules = {}
+const rules = {};
 
-useVuelidate(rules, model)
+useVuelidate(rules, model);
 </script>

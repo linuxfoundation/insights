@@ -1,16 +1,14 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import {
-  describe, test, expect, vi, beforeEach
-} from 'vitest';
-import {DateTime} from "luxon";
+import { describe, test, expect, vi, beforeEach } from 'vitest';
+import { DateTime } from 'luxon';
 import {
   mockCurrentData,
-  mockPreviousData
+  mockPreviousData,
 } from '../../mocks/tinybird-activities-heatmap-by-weekday-and-2hours-blocks-response.mock';
-import type {ContributionOutsideHours} from "~~/types/development/responses.types";
-import type {ContributionsOutsideWorkHoursFilter} from "~~/types/development/requests.types";
-import type {ActivityHeatmapByWeekdayTBQuery} from "~~/server/data/tinybird/requests.types";
+import type { ContributionOutsideHours } from '~~/types/development/responses.types';
+import type { ContributionsOutsideWorkHoursFilter } from '~~/types/development/requests.types';
+import type { ActivityHeatmapByWeekdayTBQuery } from '~~/server/data/tinybird/requests.types';
 
 const mockFetchFromTinybird = vi.fn();
 
@@ -22,16 +20,16 @@ describe('Code Review Engagement Data Source', () => {
     // This means that the import for tinybird.ts inside active-contributors-data-source.ts would still be used,
     // and thus not mocked. This means we need to import the module again after the mock is set, whenever we want to
     // use it.
-    vi.doMock(import("./tinybird"), () => ({
+    vi.doMock(import('./tinybird'), () => ({
       fetchFromTinybird: mockFetchFromTinybird,
     }));
-  })
+  });
 
   test('should fetch contributions outside working hours data with correct parameters', async () => {
     // We have to import this here again because vi.doMock is not hoisted. See the explanation in beforeEach().
-    const {
-      fetchContributionsOutsideWorkHours
-    } = await import("~~/server/data/tinybird/contributions-outside-work-hours-data-source");
+    const { fetchContributionsOutsideWorkHours } = await import(
+      '~~/server/data/tinybird/contributions-outside-work-hours-data-source'
+    );
 
     mockFetchFromTinybird
       .mockResolvedValueOnce(mockCurrentData)
@@ -44,7 +42,7 @@ describe('Code Review Engagement Data Source', () => {
       project: 'the-linux-kernel-organization',
       repos: ['some-repo'],
       startDate,
-      endDate
+      endDate,
     };
 
     const result = await fetchContributionsOutsideWorkHours(filter);
@@ -68,12 +66,12 @@ describe('Code Review Engagement Data Source', () => {
     expect(mockFetchFromTinybird).toHaveBeenNthCalledWith(
       1,
       '/v0/pipes/activity_heatmap_by_weekday_and_2hours_blocks.json',
-      expectedCurrentDataQuery
+      expectedCurrentDataQuery,
     );
     expect(mockFetchFromTinybird).toHaveBeenNthCalledWith(
       2,
       '/v0/pipes/activity_heatmap_by_weekday_and_2hours_blocks.json',
-      expectedPreviousDataQuery
+      expectedPreviousDataQuery,
     );
 
     const expectedResult: ContributionOutsideHours = {
@@ -91,7 +89,7 @@ describe('Code Review Engagement Data Source', () => {
         day: item.weekday - 1, // We have to subtract 1 because the frontend uses a 0-indexed approach.
         hour: item.twoHoursBlock,
         contributions: item.activityCount,
-      }))
+      })),
     };
 
     expect(result).toEqual(expectedResult);

@@ -21,8 +21,7 @@ const scrollAreaRef = ref<HTMLElement | null>(null);
 const observer = ref<IntersectionObserver | null>(null);
 const scrolledToView = new Event('scrolledToView');
 
-const emit = defineEmits<{(e: 'scrolledToView', id: string): void;
-}>();
+const emit = defineEmits<{ (e: 'scrolledToView', id: string): void }>();
 
 const handleIntersectCallback = (entries: IntersectionObserverEntry[]) => {
   entries.forEach((entry) => {
@@ -45,7 +44,7 @@ onMounted(() => {
   const options = {
     root: null,
     rootMargin: '100px 0px 0px 0px',
-    threshold: 0.5
+    threshold: 0.5,
   };
 
   observer.value = new IntersectionObserver(handleIntersectCallback, options);
@@ -58,6 +57,6 @@ onUnmounted(() => {
 
 <script lang="ts">
 export default {
-  name: 'LfxScrollArea'
+  name: 'LfxScrollArea',
 };
 </script>

@@ -4,7 +4,6 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <div v-if="isDrawerOpened">
-
     <teleport to="body">
       <div
         class="c-drawer"
@@ -32,20 +31,23 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed, watch } from 'vue';
-import LfxIconButton from "~/components/uikit/icon-button/icon-button.vue";
+import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
 
-const props = withDefaults(defineProps<{
-  modelValue: boolean,
-  width?: string,
-  closeFunction?:() => boolean,
-  position?: 'left' | 'right',
-}>(), {
-  width: '37.5rem',
-  closeFunction: () => true,
-  position: 'right',
-});
+const props = withDefaults(
+  defineProps<{
+    modelValue: boolean;
+    width?: string;
+    closeFunction?: () => boolean;
+    position?: 'left' | 'right';
+  }>(),
+  {
+    width: '37.5rem',
+    closeFunction: () => true,
+    position: 'right',
+  },
+);
 
-const emit = defineEmits<{(e: 'update:modelValue', value: boolean): void }>();
+const emit = defineEmits<{ (e: 'update:modelValue', value: boolean): void }>();
 
 const isDrawerOpened = computed<boolean>({
   get() {
@@ -73,13 +75,16 @@ const onEscapeKeyUp = (event: KeyboardEvent) => {
   }
 };
 
-watch(() => isDrawerOpened.value, (show: boolean) => {
-  if (!show) {
-    window.removeEventListener('keyup', onEscapeKeyUp);
-  } else {
-    window.addEventListener('keyup', onEscapeKeyUp);
-  }
-});
+watch(
+  () => isDrawerOpened.value,
+  (show: boolean) => {
+    if (!show) {
+      window.removeEventListener('keyup', onEscapeKeyUp);
+    } else {
+      window.addEventListener('keyup', onEscapeKeyUp);
+    }
+  },
+);
 </script>
 
 <script lang="ts">

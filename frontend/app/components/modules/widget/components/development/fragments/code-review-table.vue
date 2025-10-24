@@ -38,9 +38,7 @@ SPDX-License-Identifier: MIT
       <div class="basis-1/4 text-right">
         {{ formatNumberShort(item.activityCount) }}
       </div>
-      <div class="basis-1/4 text-right">
-        {{ (item.percentage || 0) > 0 ? item.percentage : '<1' }}%
-      </div>
+      <div class="basis-1/4 text-right">{{ (item.percentage || 0) > 0 ? item.percentage : '<1' }}%</div>
     </div>
   </div>
 </template>
@@ -49,8 +47,8 @@ SPDX-License-Identifier: MIT
 import { computed } from 'vue';
 import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
 import { formatNumberShort } from '~/components/shared/utils/formatter';
-import LfxTag from "~/components/uikit/tag/tag.vue";
-import type {CodeReviewEngagementPRParticipantsItem} from "~~/types/development/responses.types";
+import LfxTag from '~/components/uikit/tag/tag.vue';
+import type { CodeReviewEngagementPRParticipantsItem } from '~~/types/development/responses.types';
 
 const props = defineProps<{
   metric: string;
@@ -71,6 +69,6 @@ const activityColumnHeader = computed(() => {
 
 <script lang="ts">
 export default {
-  name: 'LfxCodeReviewTable'
+  name: 'LfxCodeReviewTable',
 };
 </script>

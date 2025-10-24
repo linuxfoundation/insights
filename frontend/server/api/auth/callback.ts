@@ -1,23 +1,23 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 
-import { discovery, authorizationCodeGrant } from 'openid-client'
-import jwt from 'jsonwebtoken'
-import { jwtDecode } from 'jwt-decode'
-import { hasLfxInsightsPermission } from '../../utils/jwt'
-import { type DecodedIdToken } from '~~/types/auth/auth-jwt.types'
+import { discovery, authorizationCodeGrant } from 'openid-client';
+import jwt from 'jsonwebtoken';
+import { jwtDecode } from 'jwt-decode';
+import { hasLfxInsightsPermission } from '../../utils/jwt';
+import { type DecodedIdToken } from '~~/types/auth/auth-jwt.types';
 export default defineEventHandler(async (event) => {
-  const config = useRuntimeConfig()
-  const query = getQuery(event)
+  const config = useRuntimeConfig();
+  const query = getQuery(event);
 
-  const isProduction = process.env.NUXT_APP_ENV === 'production'
-  const redirectTo = getCookie(event, 'auth_redirect_to') || '/'
+  const isProduction = process.env.NUXT_APP_ENV === 'production';
+  const redirectTo = getCookie(event, 'auth_redirect_to') || '/';
 
   try {
     // Handle Auth0 errors (including silent authentication failures)
     if (query.error) {
-      const error = query.error as string
-      const errorDescription = query.error_description as string
+      const error = query.error as string;
+      const errorDescription = query.error_description as string;
 
       // For silent authentication failures, don't throw an error - just redirect
       if (error === 'login_required' || error === 'interaction_required') {
@@ -26,51 +26,51 @@ export default defineEventHandler(async (event) => {
         const finalRedirectError =
           redirectTo === '/'
             ? '/?auth=success'
-            : `${redirectTo}${redirectTo.includes('?') ? '&' : '?'}auth=success`
-        await sendRedirect(event, finalRedirectError)
-        return
+            : `${redirectTo}${redirectTo.includes('?') ? '&' : '?'}auth=success`;
+        await sendRedirect(event, finalRedirectError);
+        return;
       }
 
       // For other errors, throw as usual
       throw createError({
         statusCode: 400,
         statusMessage: `Authentication error: ${error} - ${errorDescription}`,
-      })
+      });
     }
     // Get stored state and code verifier
-    const storedState = query.state as string
-    const codeVerifier = getCookie(event, 'auth_code_verifier')
+    const storedState = query.state as string;
+    const codeVerifier = getCookie(event, 'auth_code_verifier');
 
     if (!query.code || !codeVerifier) {
       throw createError({
         statusCode: 400,
         statusMessage: 'Missing authorization code or code verifier',
-      })
+      });
     }
 
     // Discover Auth0 configuration
     const authConfig = await discovery(
       new URL(`https://${config.public.auth0Domain}`),
       config.public.auth0ClientId,
-    )
+    );
 
     // Exchange authorization code for tokens
     const tokenResponse = await authorizationCodeGrant(authConfig, new URL(getRequestURL(event)), {
       expectedState: storedState,
       pkceCodeVerifier: codeVerifier,
-    })
+    });
 
     // Clean up temporary cookies
-    deleteCookie(event, 'auth_state')
-    deleteCookie(event, 'auth_code_verifier')
-    deleteCookie(event, 'auth_redirect_to')
+    deleteCookie(event, 'auth_state');
+    deleteCookie(event, 'auth_code_verifier');
+    deleteCookie(event, 'auth_redirect_to');
 
     // Validate client secret
     if (!config.auth0ClientSecret) {
       throw createError({
         statusCode: 500,
         statusMessage: 'Auth0 client secret not configured',
-      })
+      });
     }
 
     // Validate and decode the ID token to extract user information
@@ -78,12 +78,12 @@ export default defineEventHandler(async (event) => {
       throw createError({
         statusCode: 500,
         statusMessage: 'No ID token received from Auth0',
-      })
+      });
     }
 
-    const decodedIdToken = jwtDecode(tokenResponse.id_token) as DecodedIdToken
+    const decodedIdToken = jwtDecode(tokenResponse.id_token) as DecodedIdToken;
 
-    const claims = decodedIdToken[config.lfxAuth0TokenClaimGroupKey]
+    const claims = decodedIdToken[config.lfxAuth0TokenClaimGroupKey];
 
     // Create custom OpenID Connect token payload
     const oidcTokenPayload = {
@@ -102,12 +102,12 @@ export default defineEventHandler(async (event) => {
       // Include original tokens for reference if needed
       // original_access_token: tokenResponse.access_token,
       original_id_token: tokenResponse.id_token,
-    }
+    };
 
     // Sign the custom OpenID Connect token with client secret
     const oidcToken = jwt.sign(oidcTokenPayload, config.auth0ClientSecret, {
       algorithm: 'HS256',
-    })
+    });
 
     // Define consistent cookie options for the OIDC token
     const tokenCookieOptions = {
@@ -119,39 +119,39 @@ export default defineEventHandler(async (event) => {
       // Force domain for production to ensure cookies work across proxy inconsistencies
       ...(isProduction ? { domain: config.auth0CookieDomain } : { domain: 'localhost' }),
       maxAge: tokenResponse.expires_in || 86400, // Default to 24 hours
-    }
+    };
 
     // Store the single OpenID Connect token
-    setCookie(event, 'auth_oidc_token', oidcToken, tokenCookieOptions)
+    setCookie(event, 'auth_oidc_token', oidcToken, tokenCookieOptions);
 
     // Store refresh token separately if available
     if (tokenResponse.refresh_token) {
       setCookie(event, 'auth_refresh_token', tokenResponse.refresh_token, {
         ...tokenCookieOptions,
         maxAge: 60 * 60 * 24 * 30, // 30 days
-      })
+      });
     }
 
     // Redirect to the original page or home with auth success flag
     const finalRedirect =
       redirectTo === '/'
         ? '/?auth=success'
-        : `${redirectTo}${redirectTo.includes('?') ? '&' : '?'}auth=success`
+        : `${redirectTo}${redirectTo.includes('?') ? '&' : '?'}auth=success`;
 
-    await sendRedirect(event, finalRedirect)
+    await sendRedirect(event, finalRedirect);
   } catch (error) {
-    console.error('Auth callback error:', error)
+    console.error('Auth callback error:', error);
 
     // Clean up cookies on error
-    deleteCookie(event, 'auth_state')
-    deleteCookie(event, 'auth_code_verifier')
-    deleteCookie(event, 'auth_redirect_to')
-    deleteCookie(event, 'auth_oidc_token')
-    deleteCookie(event, 'auth_refresh_token')
+    deleteCookie(event, 'auth_state');
+    deleteCookie(event, 'auth_code_verifier');
+    deleteCookie(event, 'auth_redirect_to');
+    deleteCookie(event, 'auth_oidc_token');
+    deleteCookie(event, 'auth_refresh_token');
 
     throw createError({
       statusCode: 500,
       statusMessage: 'Authentication callback error',
-    })
+    });
   }
-})
+});

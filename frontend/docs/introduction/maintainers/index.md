@@ -61,4 +61,5 @@ We are actively working on expanding maintainer data collection capabilities, in
 - Enhanced role normalization and classification.
 
 ## Data Privacy and Accuracy
+
 All maintainer information is sourced from publicly available repository files. If you notice inaccuracies in maintainer data for your projects, please ensure your repository's maintainer files are up-to-date and properly formatted.

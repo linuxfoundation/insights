@@ -3,9 +3,7 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div
-    class="lfx-table-row"
-  >
+  <div class="lfx-table-row">
     <div
       ref="loadMore"
       class="flex flex-row gap-2 items-center justify-center w-full"
@@ -22,7 +20,6 @@ SPDX-License-Identifier: MIT
       </span>
     </div>
   </div>
-
 </template>
 
 <script setup lang="ts">
@@ -30,8 +27,7 @@ import { ref, onMounted, watch } from 'vue';
 import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 import { isElementVisible } from '~/components/shared/utils/helper';
 
-const emit = defineEmits<{(e: 'loadMore'): void
-}>();
+const emit = defineEmits<{ (e: 'loadMore'): void }>();
 
 const props = defineProps<{
   text: string;
@@ -43,7 +39,7 @@ const loadMore = ref(null);
 const options = {
   root: null,
   rootMargin: '0px',
-  threshold: 0
+  threshold: 0,
 };
 
 const handleIntersectCallback = (entries: IntersectionObserverEntry[]) => {
@@ -52,7 +48,7 @@ const handleIntersectCallback = (entries: IntersectionObserverEntry[]) => {
       emit('loadMore');
     }
   });
-}
+};
 
 const isLoadMoreVisible = () => {
   if (!loadMore.value) {
@@ -69,18 +65,21 @@ onMounted(() => {
   }
 });
 
-watch(() => props.isFetchingNextPage, (newVal: boolean) => {
-  if (!newVal) {
-    // check if the load more is visible
-    if (isLoadMoreVisible()) {
-      emit('loadMore');
+watch(
+  () => props.isFetchingNextPage,
+  (newVal: boolean) => {
+    if (!newVal) {
+      // check if the load more is visible
+      if (isLoadMoreVisible()) {
+        emit('loadMore');
+      }
     }
-  }
-});
+  },
+);
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxExploreTopContributors'
+  name: 'LfxExploreTopContributors',
 };
 </script>

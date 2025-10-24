@@ -1,17 +1,15 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import {
-  describe, test, expect, vi, beforeEach
-} from 'vitest';
-import { DateTime } from "luxon";
+import { describe, test, expect, vi, beforeEach } from 'vitest';
+import { DateTime } from 'luxon';
 import {
   mockCurrentSummary,
   mockPreviousSummary,
-  mockWaitTimeFor1stReviewData
+  mockWaitTimeFor1stReviewData,
 } from '../../mocks/tinybird-wait-time-for-1st-review-response.mock';
-import type { WaitTime1stReview } from "~~/types/development/responses.types";
-import type { WaitTimeFor1stReviewFilter} from "~~/server/data/types";
-import { Granularity } from "~~/types/shared/granularity";
+import type { WaitTime1stReview } from '~~/types/development/responses.types';
+import type { WaitTimeFor1stReviewFilter } from '~~/server/data/types';
+import { Granularity } from '~~/types/shared/granularity';
 
 const mockFetchFromTinybird = vi.fn();
 
@@ -23,16 +21,19 @@ describe('Wait Time For 1st Review Data Source', () => {
     // This means that the import for tinybird.ts inside the data source module would still be used,
     // and thus not mocked. This means we need to import the module again after the mock is set, whenever we want to
     // use it.
-    vi.doMock(import("./tinybird"), () => ({
+    vi.doMock(import('./tinybird'), () => ({
       fetchFromTinybird: mockFetchFromTinybird,
     }));
-  })
+  });
 
   test('should fetch wait time for 1st review data with correct parameters', async () => {
     // We have to import this here again because vi.doMock is not hoisted. See the explanation in beforeEach().
-    const {fetchWaitTimeFor1stReview} = await import("~~/server/data/tinybird/wait-time-for-1st-review-data-source");
+    const { fetchWaitTimeFor1stReview } = await import(
+      '~~/server/data/tinybird/wait-time-for-1st-review-data-source'
+    );
 
-    mockFetchFromTinybird.mockResolvedValueOnce(mockCurrentSummary)
+    mockFetchFromTinybird
+      .mockResolvedValueOnce(mockCurrentSummary)
       .mockResolvedValueOnce(mockPreviousSummary)
       .mockResolvedValueOnce(mockWaitTimeFor1stReviewData);
 
@@ -43,7 +44,7 @@ describe('Wait Time For 1st Review Data Source', () => {
       granularity: Granularity.WEEKLY,
       project: 'the-linux-kernel-organization',
       startDate,
-      endDate
+      endDate,
     };
 
     const result = await fetchWaitTimeFor1stReview(filter);
@@ -61,8 +62,16 @@ describe('Wait Time For 1st Review Data Source', () => {
       endDate: DateTime.utc(2024, 3, 19),
     };
 
-    expect(mockFetchFromTinybird).toHaveBeenNthCalledWith(1, expectedTinybirdPath, expectedCurrentSummaryQuery);
-    expect(mockFetchFromTinybird).toHaveBeenNthCalledWith(2, expectedTinybirdPath, expectedPreviousSummaryQuery);
+    expect(mockFetchFromTinybird).toHaveBeenNthCalledWith(
+      1,
+      expectedTinybirdPath,
+      expectedCurrentSummaryQuery,
+    );
+    expect(mockFetchFromTinybird).toHaveBeenNthCalledWith(
+      2,
+      expectedTinybirdPath,
+      expectedPreviousSummaryQuery,
+    );
     expect(mockFetchFromTinybird).toHaveBeenNthCalledWith(3, expectedTinybirdPath, filter);
 
     const currentWaitTime = mockCurrentSummary.data[0]?.averageTimeToFirstReviewSeconds || 0;
@@ -81,7 +90,7 @@ describe('Wait Time For 1st Review Data Source', () => {
         startDate: item.startDate,
         endDate: item.endDate,
         waitTime: item.averageTimeToFirstReviewSeconds,
-      }))
+      })),
     };
 
     expect(result).toEqual(expectedResult);

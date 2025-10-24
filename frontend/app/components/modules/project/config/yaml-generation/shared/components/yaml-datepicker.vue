@@ -15,13 +15,13 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { DateTime } from 'luxon';
-import LfxDatepicker from "~/components/uikit/datepicker/datepicker.vue";
+import LfxDatepicker from '~/components/uikit/datepicker/datepicker.vue';
 
 const props = defineProps<{
-  modelValue: string | null
-}>()
+  modelValue: string | null;
+}>();
 
-const emit = defineEmits<{ (e: 'update:modelValue', value: string | null): void }>()
+const emit = defineEmits<{ (e: 'update:modelValue', value: string | null): void }>();
 
 // Convert dd/mm/yyyy string to Date object
 const stringToDate = (dateStr: string | null): Date | null => {
@@ -39,11 +39,11 @@ const dateToString = (date: Date | null): string | null => {
 const model = computed({
   get: () => stringToDate(props.modelValue),
   set: (value: Date | null) => emit('update:modelValue', dateToString(value)),
-})
+});
 </script>
 
 <script lang="ts">
 export default {
   name: 'LfxYamlDatepicker',
-}
+};
 </script>

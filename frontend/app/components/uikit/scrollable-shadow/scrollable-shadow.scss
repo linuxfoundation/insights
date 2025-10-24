@@ -3,14 +3,17 @@
 .scrollable-shadow-content {
   @apply overflow-auto;
 
-
   background: /* Shadow covers */
-  linear-gradient(white 10%, rgba(255, 255, 255, 0)), linear-gradient(rgba(255, 255, 255, 0), white 90%) 0 100%, /* Shadows */
-  linear-gradient(rgba(0, 0, 0, .1), rgba(0, 0, 0, 0));
+    linear-gradient(white 10%, rgba(255, 255, 255, 0)),
+    linear-gradient(rgba(255, 255, 255, 0), white 90%) 0 100%,
+    /* Shadows */ linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
   /* radial-gradient(farthest-side at 0% 0, rgba(0, 0, 0, .2), rgba(0, 0, 0, 0)); */
   background-repeat: no-repeat;
   background-color: white;
-  background-size: 100% 40px, 100% 40px, 100% 3px;
+  background-size:
+    100% 40px,
+    100% 40px,
+    100% 3px;
   /* Opera doesn't support this in the shorthand */
   background-attachment: local, local, scroll;
 }

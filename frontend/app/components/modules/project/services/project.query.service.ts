@@ -15,7 +15,7 @@ import type { URLParams } from '~/components/shared/utils/query-param';
 
 const getStartAndEndDate = (rangeValue: string) => {
   const option = lfxProjectDateOptions.find(
-    (option) => option.key === rangeValue
+    (option) => option.key === rangeValue,
   ) as DateOptionConfig;
 
   if (option) {

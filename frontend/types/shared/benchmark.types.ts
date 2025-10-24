@@ -3,4 +3,3 @@
 export const benchmarkTypes = ['positive', 'warning', 'negative'] as const;
 
 export type BenchmarkType = (typeof benchmarkTypes)[number];
-

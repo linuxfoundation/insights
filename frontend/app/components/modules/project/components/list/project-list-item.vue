@@ -4,7 +4,7 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <nuxt-link
-    :to="{name: LfxRoutes.PROJECT, params: {slug: props.project.slug}}"
+    :to="{ name: LfxRoutes.PROJECT, params: { slug: props.project.slug } }"
     class="flex flex-col"
     :class="{
       'pointer-events-none': projectNotOnboarded,
@@ -30,9 +30,7 @@ SPDX-License-Identifier: MIT
         </p>
       </div>
       <div class="flex-grow" />
-      <div
-        class="pt-5 flex flex-col gap-2"
-      >
+      <div class="pt-5 flex flex-col gap-2">
         <div v-if="!projectNotOnboarded">
           <article class="flex justify-between items-center">
             <lfx-tag
@@ -46,7 +44,7 @@ SPDX-License-Identifier: MIT
               Contributors
             </lfx-tag>
             <p class="text-body-1">
-              {{formatNumber(props.project.contributorCount)}}
+              {{ formatNumber(props.project.contributorCount) }}
             </p>
           </article>
           <article class="flex justify-between items-center">
@@ -61,7 +59,7 @@ SPDX-License-Identifier: MIT
               Organizations
             </lfx-tag>
             <p class="text-body-1">
-              {{formatNumber(props.project.organizationCount)}}
+              {{ formatNumber(props.project.organizationCount) }}
             </p>
           </article>
           <article
@@ -78,9 +76,7 @@ SPDX-License-Identifier: MIT
               />
               Software value
             </lfx-tag>
-            <p class="text-body-1">
-              ${{formatNumberShort(props.project.softwareValue)}}
-            </p>
+            <p class="text-body-1">${{ formatNumberShort(props.project.softwareValue) }}</p>
           </article>
         </div>
         <div
@@ -95,24 +91,24 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script lang="ts" setup>
-import { computed } from "vue";
-import type {Project} from "~~/types/project";
-import {formatNumber,formatNumberShort} from "~/components/shared/utils/formatter";
-import LfxCard from "~/components/uikit/card/card.vue";
-import LfxTag from "~/components/uikit/tag/tag.vue";
-import LfxIcon from "~/components/uikit/icon/icon.vue";
-import {LfxRoutes} from "~/components/shared/types/routes";
-import LfxOrganizationLogo from "~/components/uikit/organization-logo/organization-logo.vue";
+import { computed } from 'vue';
+import type { Project } from '~~/types/project';
+import { formatNumber, formatNumberShort } from '~/components/shared/utils/formatter';
+import LfxCard from '~/components/uikit/card/card.vue';
+import LfxTag from '~/components/uikit/tag/tag.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import { LfxRoutes } from '~/components/shared/types/routes';
+import LfxOrganizationLogo from '~/components/uikit/organization-logo/organization-logo.vue';
 
 const props = defineProps<{
-  project: Project
-}>()
+  project: Project;
+}>();
 
 const projectNotOnboarded = computed(() => !props.project.contributorCount && !props.project.organizationCount);
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxProjectListItem'
-}
+  name: 'LfxProjectListItem',
+};
 </script>

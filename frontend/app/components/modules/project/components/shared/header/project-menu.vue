@@ -44,7 +44,7 @@ SPDX-License-Identifier: MIT
             :size="16"
             class="text-brand-500 font-black"
           />
-          {{activeLink?.label}}
+          {{ activeLink?.label }}
         </lfx-dropdown-selector>
       </template>
 
@@ -61,34 +61,31 @@ SPDX-License-Identifier: MIT
             :label="link.label"
           />
         </router-link>
-
       </template>
-
     </lfx-dropdown>
-
   </div>
 </template>
 
 <script setup lang="ts">
-import {useRoute} from "nuxt/app";
-import {computed} from "vue";
+import { useRoute } from 'nuxt/app';
+import { computed } from 'vue';
 import { storeToRefs } from 'pinia';
-import LfxIcon from "~/components/uikit/icon/icon.vue";
-import LfxTooltip from "~/components/uikit/tooltip/tooltip.vue";
-import LfxMenuButton from "~/components/uikit/menu-button/menu-button.vue";
-import LfxDropdown from "~/components/uikit/dropdown/dropdown.vue";
-import LfxDropdownSelector from "~/components/uikit/dropdown/dropdown-selector.vue";
-import LfxDropdownItem from "~/components/uikit/dropdown/dropdown-item.vue";
-import {lfProjectLinks} from "~/components/modules/project/config/links";
-import type {Project} from "~~/types/project";
-import {WidgetArea} from "~/components/modules/widget/types/widget-area";
-import {lfxWidgetArea} from "~/components/modules/widget/config/widget-area.config";
-import {lfxWidgets} from "~/components/modules/widget/config/widget.config";
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
+import LfxMenuButton from '~/components/uikit/menu-button/menu-button.vue';
+import LfxDropdown from '~/components/uikit/dropdown/dropdown.vue';
+import LfxDropdownSelector from '~/components/uikit/dropdown/dropdown-selector.vue';
+import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
+import { lfProjectLinks } from '~/components/modules/project/config/links';
+import type { Project } from '~~/types/project';
+import { WidgetArea } from '~/components/modules/widget/types/widget-area';
+import { lfxWidgetArea } from '~/components/modules/widget/config/widget-area.config';
+import { lfxWidgets } from '~/components/modules/widget/config/widget.config';
 import { useProjectStore } from '~~/app/components/modules/project/store/project.store';
-import LfxSkeletonState from "~/components/modules/project/components/shared/skeleton-state.vue";
+import LfxSkeletonState from '~/components/modules/project/components/shared/skeleton-state.vue';
 
 const props = defineProps<{
-  project?: Project
+  project?: Project;
 }>();
 
 const route = useRoute();
@@ -96,15 +93,17 @@ const repoName = computed(() => route.params.name as string);
 
 const { selectedRepositoryGroup } = storeToRefs(useProjectStore());
 
-const activeLink = computed(() => lfProjectLinks.find((link) => {
-  if(selectedRepositoryGroup.value){
-    return link.repoGroupRouteName === route.name;
-  }
-  if(repoName.value){
-    return link.repoRouteName === route.name;
-  }
-  return (link.projectRouteName === route.name);
-}));
+const activeLink = computed(() =>
+  lfProjectLinks.find((link) => {
+    if (selectedRepositoryGroup.value) {
+      return link.repoGroupRouteName === route.name;
+    }
+    if (repoName.value) {
+      return link.repoRouteName === route.name;
+    }
+    return link.projectRouteName === route.name;
+  }),
+);
 
 const isAreaEnabled = (area: WidgetArea) => {
   const widgets = lfxWidgetArea[area].widgets || [];
@@ -113,37 +112,36 @@ const isAreaEnabled = (area: WidgetArea) => {
     return props.project?.connectedPlatforms.some((platform) => platform.toLowerCase().includes('github'));
   }
 
-  return widgets.length === 0 || widgets.some((widget) => props.project?.widgets.includes(lfxWidgets[widget]?.key))
-}
+  return widgets.length === 0 || widgets.some((widget) => props.project?.widgets.includes(lfxWidgets[widget]?.key));
+};
 
-const links = computed(() => lfProjectLinks.filter((link) => isAreaEnabled(link.area)))
+const links = computed(() => lfProjectLinks.filter((link) => isAreaEnabled(link.area)));
 
-const linkUrl = (link: typeof lfProjectLinks[number]) => {
+const linkUrl = (link: (typeof lfProjectLinks)[number]) => {
   if (link.comingSoon) {
     return undefined;
   }
 
   const query = {
     ...route.query,
-    widget: undefined // remove the widget from the query
-  }
+    widget: undefined, // remove the widget from the query
+  };
   let name = link.projectRouteName;
   if (selectedRepositoryGroup.value) {
     name = link.repoGroupRouteName;
-  }
-  else if(repoName.value) {
+  } else if (repoName.value) {
     name = link.repoRouteName;
   }
 
   return {
     name,
-    query
+    query,
   };
-}
+};
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxProjectMenu'
+  name: 'LfxProjectMenu',
 };
 </script>

@@ -219,7 +219,7 @@ const mcpClient = await createMCPClient({
   transport: new StreamableHTTPClientTransport(url, {
     sessionId: `session_${Date.now()}`,
   }),
-})
+});
 ```
 
 ### Available Tool Types

@@ -44,18 +44,18 @@ SPDX-License-Identifier: MIT
     <lfx-tabs
       :tabs="sortTabs"
       :model-value="activeSort"
-      @update:model-value="sort = ($event as SortType)"
+      @update:model-value="sort = $event as SortType"
     >
-      <template #slotItem="{option}">
+      <template #slotItem="{ option }">
         {{ option.label === 'Most contributors' ? 'Contributors' : option.label }}
       </template>
     </lfx-tabs>
     <lfx-tabs
       :tabs="typeTabs"
       :model-value="activeType"
-      @update:model-value="type = ($event as OSIType)"
+      @update:model-value="type = $event as OSIType"
     >
-      <template #slotItem="{option}">
+      <template #slotItem="{ option }">
         {{ option.label }}
       </template>
     </lfx-tabs>
@@ -64,14 +64,12 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import type {
-  OSIType,
-  SortType
-} from '~/components/modules/open-source-index/services/osi.api.service';
+import type { OSIType, SortType } from '~/components/modules/open-source-index/services/osi.api.service';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
 
-const emit = defineEmits<{(e: 'update:activeType', value: OSIType): void;
+const emit = defineEmits<{
+  (e: 'update:activeType', value: OSIType): void;
   (e: 'update:activeSort', value: SortType): void;
 }>();
 
@@ -101,6 +99,6 @@ const sort = computed({
 
 <script lang="ts">
 export default {
-  name: 'LfxExploreSourceIndexFilters'
+  name: 'LfxExploreSourceIndexFilters',
 };
 </script>

@@ -1,11 +1,11 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { DateTime } from 'luxon'
-import { createDataSource } from '~~/server/data/data-sources'
-import type { OrganizationsLeaderboardFilter } from '~~/server/data/types'
-import { ActivityTypes } from '~~/types/shared/activity-types'
-import { ActivityPlatforms } from '~~/types/shared/activity-platforms'
-import { getBooleanQueryParam } from '~~/server/utils/common'
+import { DateTime } from 'luxon';
+import { createDataSource } from '~~/server/data/data-sources';
+import type { OrganizationsLeaderboardFilter } from '~~/server/data/types';
+import { ActivityTypes } from '~~/types/shared/activity-types';
+import { ActivityPlatforms } from '~~/types/shared/activity-platforms';
+import { getBooleanQueryParam } from '~~/server/utils/common';
 
 /**
  * Frontend expects the data to be in the following format:
@@ -36,23 +36,23 @@ import { getBooleanQueryParam } from '~~/server/utils/common'
  * - limit: number
  */
 export default defineEventHandler(async (event) => {
-  const query = getQuery(event)
+  const query = getQuery(event);
 
-  const project = (event.context.params as { slug: string }).slug
-  const activityPlatform = query.platform as ActivityPlatforms
-  const activityType = query.activityType as ActivityTypes
-  const includeCodeContributions = getBooleanQueryParam(query, 'includeCodeContributions', true)
-  const includeCollaborations = getBooleanQueryParam(query, 'includeCollaborations', false)
-  const limit = query.limit ? parseInt(query.limit as string, 10) : 10
-  const offset = query.offset ? parseInt(query.offset as string, 10) : 0
+  const project = (event.context.params as { slug: string }).slug;
+  const activityPlatform = query.platform as ActivityPlatforms;
+  const activityType = query.activityType as ActivityTypes;
+  const includeCodeContributions = getBooleanQueryParam(query, 'includeCodeContributions', true);
+  const includeCollaborations = getBooleanQueryParam(query, 'includeCollaborations', false);
+  const limit = query.limit ? parseInt(query.limit as string, 10) : 10;
+  const offset = query.offset ? parseInt(query.offset as string, 10) : 0;
 
   const meta = {
     limit,
     offset,
     total: 20,
-  }
+  };
 
-  const repos = Array.isArray(query.repos) ? query.repos : query.repos ? [query.repos] : undefined
+  const repos = Array.isArray(query.repos) ? query.repos : query.repos ? [query.repos] : undefined;
 
   const filter: OrganizationsLeaderboardFilter = {
     project,
@@ -65,13 +65,13 @@ export default defineEventHandler(async (event) => {
     endDate: query.endDate ? DateTime.fromISO(query.endDate as string) : undefined,
     limit,
     offset,
-  }
+  };
 
-  const dataSource = createDataSource()
-  const result = await dataSource.fetchOrganizationsLeaderboard(filter)
+  const dataSource = createDataSource();
+  const result = await dataSource.fetchOrganizationsLeaderboard(filter);
 
   return {
     meta,
     data: result.data,
-  }
-})
+  };
+});

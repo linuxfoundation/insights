@@ -74,10 +74,10 @@ import LfxProgressBar from '~/components/uikit/progress-bar/progress-bar.vue';
 import type { ProgressBarType } from '~/components/uikit/progress-bar/types/progress-bar.types';
 import type { TrustScoreSummary, SecurityScore, HealthScoreResults } from '~~/types/overview/responses.types';
 import type { Tab } from '~/components/uikit/tabs/types/tab.types';
-import LfxProjectSecurityScore from "~/components/modules/project/components/overview/security/security-score.vue";
+import LfxProjectSecurityScore from '~/components/modules/project/components/overview/security/security-score.vue';
 import type { ScoreDisplay } from '~~/types/overview/score-display.types';
 import LfxProjectLoadState from '~~/app/components/modules/project/components/shared/load-state.vue';
-import LfxSkeletonState from "~/components/modules/project/components/shared/skeleton-state.vue";
+import LfxSkeletonState from '~/components/modules/project/components/shared/skeleton-state.vue';
 import type { WidgetArea } from '~/components/modules/widget/types/widget-area';
 
 const props = defineProps<{
@@ -90,12 +90,11 @@ const props = defineProps<{
   status: AsyncDataRequestStatus;
   error: unknown;
 }>();
-const emit = defineEmits<{(e: 'update:modelValue', value: string): void
-}>();
+const emit = defineEmits<{ (e: 'update:modelValue', value: string): void }>();
 
 const selectedTab = computed({
   get: () => props.modelValue,
-  set: (value: string) => emit('update:modelValue', value)
+  set: (value: string) => emit('update:modelValue', value),
 });
 
 const getColor = (value: number) => {
@@ -119,6 +118,6 @@ const getValues = (name: string): number => {
 </script>
 <script lang="ts">
 export default {
-  name: 'LfxProjectScoreTabView'
+  name: 'LfxProjectScoreTabView',
 };
 </script>

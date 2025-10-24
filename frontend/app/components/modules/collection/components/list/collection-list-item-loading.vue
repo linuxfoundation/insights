@@ -23,12 +23,12 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import LfxCard from "~/components/uikit/card/card.vue";
-import LfxSkeleton from "~/components/uikit/skeleton/skeleton.vue";
+import LfxCard from '~/components/uikit/card/card.vue';
+import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxCollectionListItemLoading'
-}
+  name: 'LfxCollectionListItemLoading',
+};
 </script>

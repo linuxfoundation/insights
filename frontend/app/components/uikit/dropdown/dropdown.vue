@@ -16,7 +16,7 @@ SPDX-License-Identifier: MIT
     <template #content>
       <div
         class="c-dropdown overflow-y-auto"
-        :style="{width: props.width}"
+        :style="{ width: props.width }"
         :class="props.dropdownClass"
         @click="popover.closePopover()"
       >
@@ -27,26 +27,29 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import type {Placement} from "@popperjs/core";
-import {computed, provide} from "vue";
-import LfxPopover from "~/components/uikit/popover/popover.vue";
-import useResponsive from "~/components/shared/utils/responsive";
+import type { Placement } from '@popperjs/core';
+import { computed, provide } from 'vue';
+import LfxPopover from '~/components/uikit/popover/popover.vue';
+import useResponsive from '~/components/shared/utils/responsive';
 
-const props = withDefaults(defineProps<{
-  placement?: Placement,
-  width?: string;
-  visibility?: boolean,
-  matchWidth?: boolean,
-  dropdownClass?: string,
-}>(), {
-  placement: 'bottom-start',
-  width: 'auto',
-  visibility: false,
-  matchWidth: false,
-  dropdownClass: '',
-});
+const props = withDefaults(
+  defineProps<{
+    placement?: Placement;
+    width?: string;
+    visibility?: boolean;
+    matchWidth?: boolean;
+    dropdownClass?: string;
+  }>(),
+  {
+    placement: 'bottom-start',
+    width: 'auto',
+    visibility: false,
+    matchWidth: false,
+    dropdownClass: '',
+  },
+);
 
-const emit = defineEmits<{(e:'update:visibility', value: boolean): void}>();
+const emit = defineEmits<{ (e: 'update:visibility', value: boolean): void }>();
 
 const submenuOpen = ref('');
 
@@ -58,15 +61,15 @@ const isVisible = computed({
     emit('update:visibility', value);
     submenuOpen.value = '';
   },
-})
+});
 
 const popover = ref<LfxPopover | null>(null);
 
-const {pageWidth} = useResponsive();
+const { pageWidth } = useResponsive();
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxDropdown'
+  name: 'LfxDropdown',
 };
 </script>

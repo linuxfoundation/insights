@@ -17,14 +17,10 @@ SPDX-License-Identifier: MIT
         v-for="(row, index) in tableData"
         :key="index"
         class="lfx-table-row"
-        @click.prevent="router.push({name: LfxRoutes.PROJECT, params: {slug: row.slug}})"
+        @click.prevent="router.push({ name: LfxRoutes.PROJECT, params: { slug: row.slug } })"
       >
         <div class="name-col grow">
-          <div
-            class="mr-1 text-neutral-400 text-xs"
-          >
-            #{{ index + 1 }}
-          </div>
+          <div class="mr-1 text-neutral-400 text-xs">#{{ index + 1 }}</div>
           <lfx-avatar
             :src="row.logo"
             type="organization"
@@ -60,13 +56,13 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { computed, onServerPrefetch } from 'vue';
 import { useRouter } from 'vue-router';
-import {formatNumber} from "../../../shared/utils/formatter";
+import { formatNumber } from '../../../shared/utils/formatter';
 import { EXPLORE_API_SERVICE } from '~/components/modules/explore/services/explore.api.service';
 import type { Pagination } from '~~/types/shared/pagination';
 import type { Project } from '~~/types/project';
-import LfxAvatar from "~/components/uikit/avatar/avatar.vue";
+import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
 import { isEmptyData } from '~/components/shared/utils/helper';
-import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
+import LfxProjectLoadState from '~/components/modules/project/components/shared/load-state.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import { LfxRoutes } from '~/components/shared/types/routes';
 
@@ -76,13 +72,7 @@ const props = defineProps<{
   isFullList?: boolean;
 }>();
 
-const {
-  data,
-  isPending,
-  status,
-  error,
-  suspense
-} = EXPLORE_API_SERVICE.fetchTopProjects(props.isFullList ? 50 : 10);
+const { data, isPending, status, error, suspense } = EXPLORE_API_SERVICE.fetchTopProjects(props.isFullList ? 50 : 10);
 
 const tableData = computed(() => data.value?.pages.flatMap((p) => (p as Pagination<Project>).data));
 
@@ -95,6 +85,6 @@ onServerPrefetch(async () => {
 
 <script lang="ts">
 export default {
-  name: 'LfxExploreTopProjects'
+  name: 'LfxExploreTopProjects',
 };
 </script>

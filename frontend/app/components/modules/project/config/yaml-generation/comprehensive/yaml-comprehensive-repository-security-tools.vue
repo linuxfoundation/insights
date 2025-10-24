@@ -9,9 +9,8 @@ SPDX-License-Identifier: MIT
       <p class="text-sm font-semibold text-brand-600">Repository details</p>
       <p class="text-lg font-semibold text-neutral-900">Security tools</p>
       <p class="text-body-2 text-neutral-500">
-        Tools used to assess, monitor, or enforce security within the repository. This includes
-        static analysis, dependency scanning, vulnerability detection, and other automated or manual
-        security solutions.
+        Tools used to assess, monitor, or enforce security within the repository. This includes static analysis,
+        dependency scanning, vulnerability detection, and other automated or manual security solutions.
       </p>
     </div>
 
@@ -46,23 +45,22 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-import LfxButton from '~/components/uikit/button/button.vue'
-import LfxIcon from '~/components/uikit/icon/icon.vue'
-import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue'
-import LfxYamlSecurityToolItem from
-  '~/components/modules/project/config/yaml-generation/shared/components/yaml-security-tool-item.vue'
+import { computed } from 'vue';
+import LfxButton from '~/components/uikit/button/button.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
+import LfxYamlSecurityToolItem from '~/components/modules/project/config/yaml-generation/shared/components/yaml-security-tool-item.vue';
 
 const props = defineProps<{
-  modelValue: object
-}>()
+  modelValue: object;
+}>();
 
-const emit = defineEmits<{ (e: 'update:modelValue', value: object): void }>()
+const emit = defineEmits<{ (e: 'update:modelValue', value: object): void }>();
 
 const model = computed<object>({
   get: () => props.modelValue,
   set: (value: object) => emit('update:modelValue', value),
-})
+});
 
 const addSecurityTool = () => {
   model.value.repository.security.tools.push({
@@ -96,12 +94,12 @@ const addSecurityTool = () => {
       release: false,
     },
     comment: '',
-  })
-}
+  });
+};
 </script>
 
 <script lang="ts">
 export default {
   name: 'LfxYamlComprehensiveRepositorySecurityTools',
-}
+};
 </script>

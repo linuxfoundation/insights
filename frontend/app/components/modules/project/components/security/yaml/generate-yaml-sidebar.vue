@@ -7,17 +7,14 @@ SPDX-License-Identifier: MIT
     <div class="flex flex-col gap-6 p-6">
       <!-- Why generate a YAML file section -->
       <div>
-        <h2 class="text-lg font-semibold text-neutral-900 leading-7 mb-6">
-          Why generate a YAML file?
-        </h2>
+        <h2 class="text-lg font-semibold text-neutral-900 leading-7 mb-6">Why generate a YAML file?</h2>
 
         <!-- Purpose -->
         <div class="mb-6">
           <h3 class="text-sm font-semibold text-neutral-900 leading-5 mb-2">Purpose</h3>
           <p class="text-sm text-neutral-600 leading-5">
-            YAML security file provides a standardised way to document, assess, and share a
-            project's security practices, ensuring consistency and alignment with the specification
-            across repositories.
+            YAML security file provides a standardised way to document, assess, and share a project's security
+            practices, ensuring consistency and alignment with the specification across repositories.
             <a
               href="https://github.com/ossf/security-insights"
               rel="noopener noreferrer"
@@ -42,16 +39,14 @@ SPDX-License-Identifier: MIT
             </lfx-tag>
           </div>
           <p class="text-sm text-neutral-600 leading-5">
-            Repository owner or admin. You'll need write permissions to upload the generated file to
-            your GitHub repository.
+            Repository owner or admin. You'll need write permissions to upload the generated file to your GitHub
+            repository.
           </p>
         </div>
 
         <!-- Information collected -->
         <div>
-          <h3 class="text-sm font-semibold text-neutral-900 leading-5 mb-2">
-            Information collected
-          </h3>
+          <h3 class="text-sm font-semibold text-neutral-900 leading-5 mb-2">Information collected</h3>
           <ul class="text-sm text-neutral-600 leading-5 list-disc ml-5">
             <li>Project details</li>
             <li>Repository details</li>
@@ -75,21 +70,20 @@ SPDX-License-Identifier: MIT
         :size="16"
       />
       <p class="text-body-1 text-neutral-600">
-        YAML security file specifications are optional, and we don't run strict
-        validation on them, but your project will still benefit from documenting
-        as many as possible.
+        YAML security file specifications are optional, and we don't run strict validation on them, but your project
+        will still benefit from documenting as many as possible.
       </p>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import LfxTag from '~/components/uikit/tag/tag.vue'
-import LfxIcon from '~/components/uikit/icon/icon.vue'
+import LfxTag from '~/components/uikit/tag/tag.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 </script>
 
 <script lang="ts">
 export default {
   name: 'LfSecurityGenerateYamlSidebar',
-}
+};
 </script>

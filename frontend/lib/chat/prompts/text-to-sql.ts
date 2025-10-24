@@ -1,25 +1,25 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { readFileSync } from 'fs'
-import { join } from 'path'
+import { readFileSync } from 'fs';
+import { join } from 'path';
 
 /**
  * Load reference documentation files
  */
 function loadReferenceDoc(filename: string): string {
   try {
-    const path = join(__dirname, filename)
-    return readFileSync(path, 'utf-8')
+    const path = join(__dirname, filename);
+    return readFileSync(path, 'utf-8');
   } catch (error) {
-    console.warn(`Failed to load ${filename}:`, error)
-    return ''
+    console.warn(`Failed to load ${filename}:`, error);
+    return '';
   }
 }
 
 interface SqlErrorContext {
-  errorMessage: string
-  previousQuery: string
-  attemptNumber: number
+  errorMessage: string;
+  previousQuery: string;
+  attemptNumber: number;
 }
 
 export const textToSqlPrompt = (
@@ -147,10 +147,10 @@ SELECT
 FROM histogram_buckets
 -- For statistics, either add them as special rows or return in separate query
 -- You cannot combine with UNION in TinyBird
-\`\`\``
+\`\`\``;
 
   // Add error-specific guidance if this is a retry
-  let errorGuidance = ''
+  let errorGuidance = '';
   if (errorContext) {
     errorGuidance = `
 
@@ -167,19 +167,19 @@ ${errorContext.previousQuery}
 - **Unknown function**: Check function name spelling or use available alternatives
 - **Ambiguous column**: Add table aliases or qualify column names
 - **Syntax error**: Check for semicolons, correlated subqueries, or unsupported syntax
-- **Type mismatch**: Add explicit CAST() or use correct comparison types`
+- **Type mismatch**: Add explicit CAST() or use correct comparison types`;
 
     // Load additional reference docs for error resolution
-    const functionsRef = loadReferenceDoc('tinybird-functions.md')
-    const patternsRef = loadReferenceDoc('tinybird-patterns.md')
+    const functionsRef = loadReferenceDoc('tinybird-functions.md');
+    const patternsRef = loadReferenceDoc('tinybird-patterns.md');
 
     if (functionsRef) {
-      errorGuidance += `\n\n## AVAILABLE FUNCTIONS REFERENCE\n${functionsRef}`
+      errorGuidance += `\n\n## AVAILABLE FUNCTIONS REFERENCE\n${functionsRef}`;
     }
     if (patternsRef) {
-      errorGuidance += `\n\n## QUERY PATTERNS REFERENCE\n${patternsRef}`
+      errorGuidance += `\n\n## QUERY PATTERNS REFERENCE\n${patternsRef}`;
     }
   }
 
-  return basePrompt + errorGuidance
-}
+  return basePrompt + errorGuidance;
+};

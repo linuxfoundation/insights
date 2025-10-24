@@ -14,7 +14,9 @@ SPDX-License-Identifier: MIT
     <div
       v-if="props.label"
       class="c-progress-bar__label"
-    >{{ props.label }}</div>
+    >
+      {{ props.label }}
+    </div>
     <div
       v-if="!props.hideEmpty"
       class="c-progress-bar__empty"
@@ -38,13 +40,13 @@ const props = withDefaults(
     color: 'normal',
     size: 'normal',
     hideEmpty: false,
-    label: undefined
-  }
+    label: undefined,
+  },
 );
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxProgressBar'
+  name: 'LfxProgressBar',
 };
 </script>

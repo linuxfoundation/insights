@@ -14,20 +14,23 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script lang="ts" setup>
-import LfxIcon from "~/components/uikit/icon/icon.vue";
-import type { IconType } from "~/components/uikit/icon/types/icon.types";
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import type { IconType } from '~/components/uikit/icon/types/icon.types';
 
-const props = withDefaults(defineProps<{
-  size?: number;
-  type?: IconType;
-}>(), {
-  size: 16,
-  type: 'regular'
-});
+const props = withDefaults(
+  defineProps<{
+    size?: number;
+    type?: IconType;
+  }>(),
+  {
+    size: 16,
+    type: 'regular',
+  },
+);
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxSpinner'
+  name: 'LfxSpinner',
 };
 </script>

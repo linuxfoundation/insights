@@ -25,14 +25,17 @@ import * as echarts from 'echarts';
 import world from './configs/world.json';
 import type { SeriesTypes } from '~/components/uikit/chart/types/ChartTypes';
 
-const props = withDefaults(defineProps<{
-  config: ECOption;
-  animation?: boolean;
-  onClick?:(params: echarts.ECElementEvent) => void;
-}>(), {
-  animation: true,
-  onClick: undefined
-});
+const props = withDefaults(
+  defineProps<{
+    config: ECOption;
+    animation?: boolean;
+    onClick?: (params: echarts.ECElementEvent) => void;
+  }>(),
+  {
+    animation: true,
+    onClick: undefined,
+  },
+);
 
 onBeforeMount(() => {
   const series = props.config.series as SeriesTypes[];
@@ -58,6 +61,6 @@ onMounted(() => {
 
 <script lang="ts">
 export default {
-  name: 'LfxChart'
+  name: 'LfxChart',
 };
 </script>

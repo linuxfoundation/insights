@@ -5,11 +5,7 @@ SPDX-License-Identifier: MIT
 <template>
   <div
     class="c-tag"
-    :class="[
-      `c-tag--${props.variation}`,
-      `c-tag--${props.size}`,
-      `c-tag--${props.type}`
-    ]"
+    :class="[`c-tag--${props.variation}`, `c-tag--${props.size}`, `c-tag--${props.type}`]"
   >
     <slot />
   </div>
@@ -28,12 +24,12 @@ const props = withDefaults(
     variation: 'default',
     size: 'medium',
     type: 'solid',
-  }
+  },
 );
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxTag'
+  name: 'LfxTag',
 };
 </script>

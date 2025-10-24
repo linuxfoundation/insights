@@ -1,29 +1,29 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 
-import { ref, computed, watchEffect, watch, nextTick } from 'vue'
-import { useAsyncData, navigateTo, useRoute } from 'nuxt/app'
-import type { AuthData } from '~~/types/auth/auth-user.types'
+import { ref, computed, watchEffect, watch, nextTick } from 'vue';
+import { useAsyncData, navigateTo, useRoute } from 'nuxt/app';
+import type { AuthData } from '~~/types/auth/auth-user.types';
 
 // Fix for window access in Nuxt
-declare const window: Window & typeof globalThis
+declare const window: Window & typeof globalThis;
 
 const authState = ref<AuthData>({
   isAuthenticated: false,
   user: null,
   token: null,
-})
+});
 
 // Helper functions for localStorage access with client-side checks
 const getSilentLoginAttempted = (): boolean => {
-  if (!process.client) return false
-  return localStorage.getItem('lfx-silent-login-attempted') === 'true'
-}
+  if (!process.client) return false;
+  return localStorage.getItem('lfx-silent-login-attempted') === 'true';
+};
 
 const setSilentLoginAttempted = (value: boolean): void => {
-  if (!process.client) return
-  localStorage.setItem('lfx-silent-login-attempted', value.toString())
-}
+  if (!process.client) return;
+  localStorage.setItem('lfx-silent-login-attempted', value.toString());
+};
 
 export const useAuth = () => {
   // Fetch user data from server
@@ -39,37 +39,37 @@ export const useAuth = () => {
       server: false, // Allow client-side fetching
       lazy: true, // Don't block on initial load
     },
-  )
+  );
 
   // Update local state when data changes
   watchEffect(() => {
     if (userData.value) {
-      authState.value = userData.value
+      authState.value = userData.value;
 
       // Attempt silent login if suggested by the server and not already attempted
       if (userData.value.shouldAttemptSilentLogin && process.client && !getSilentLoginAttempted()) {
         const currentPath =
-          window.location.pathname + window.location.search + window.location.hash
-        login(currentPath, true)
+          window.location.pathname + window.location.search + window.location.hash;
+        login(currentPath, true);
       }
 
       if (userData.value.isAuthenticated) {
-        setSilentLoginAttempted(false)
+        setSilentLoginAttempted(false);
       }
     }
-  })
+  });
 
   // Watch for auth success parameter and refresh state
   if (process.client) {
-    const route = useRoute()
+    const route = useRoute();
 
     // Initial check for auth success
     if (route.query.auth === 'success') {
       nextTick(async () => {
-        await refreshAuth()
+        await refreshAuth();
         // Reset silent login flag when authentication is successful
-        setSilentLoginAttempted(false)
-      })
+        setSilentLoginAttempted(false);
+      });
     }
 
     // Watch for route changes
@@ -77,25 +77,25 @@ export const useAuth = () => {
       () => route.query.auth,
       async (authParam) => {
         if (authParam === 'success') {
-          await refreshAuth()
+          await refreshAuth();
           // Reset silent login flag when authentication is successful
-          setSilentLoginAttempted(false)
+          setSilentLoginAttempted(false);
         }
       },
-    )
+    );
 
     // Check for logout success parameter and refresh state
     if (route.query.auth === 'logout') {
       nextTick(async () => {
-        await refreshAuth()
+        await refreshAuth();
         authState.value = {
           isAuthenticated: false,
           user: null,
           token: null,
-        }
+        };
         // Clean up the URL by removing the auth parameter
-        await navigateTo('/', { replace: true })
-      })
+        await navigateTo('/', { replace: true });
+      });
     }
 
     // Watch for logout success parameter
@@ -103,37 +103,37 @@ export const useAuth = () => {
       () => route.query.auth,
       async (authParam) => {
         if (authParam === 'logout') {
-          await refreshAuth()
+          await refreshAuth();
           authState.value = {
             isAuthenticated: false,
             user: null,
             token: null,
-          }
+          };
           // Clean up the URL by removing the auth parameter
-          await navigateTo('/', { replace: true })
+          await navigateTo('/', { replace: true });
         }
       },
-    )
+    );
   }
 
-  const isAuthenticated = computed(() => authState.value.isAuthenticated)
-  const user = computed(() => authState.value.user)
-  const token = computed(() => authState.value.token)
-  const isLoading = ref(false)
+  const isAuthenticated = computed(() => authState.value.isAuthenticated);
+  const user = computed(() => authState.value.user);
+  const token = computed(() => authState.value.token);
+  const isLoading = ref(false);
 
   const login = async (redirectTo?: string, silent?: boolean) => {
-    isLoading.value = true
+    isLoading.value = true;
     // Reset silent login flag for next time
-    setSilentLoginAttempted(false)
+    setSilentLoginAttempted(false);
     try {
-      let currentPath = redirectTo || '/'
+      let currentPath = redirectTo || '/';
 
       if (!redirectTo && process.client) {
         try {
-          const route = useRoute()
-          currentPath = route.fullPath || '/'
+          const route = useRoute();
+          currentPath = route.fullPath || '/';
         } catch {
-          currentPath = '/'
+          currentPath = '/';
         }
       }
 
@@ -145,30 +145,30 @@ export const useAuth = () => {
           query: currentPath !== '/' ? { redirectTo: currentPath, silent } : { silent },
           credentials: 'include',
         },
-      )
+      );
 
       if (response.success && response.authorizationUrl) {
         // Redirect to Auth0 using the returned URL
         if (process.client) {
-          window.location.href = response.authorizationUrl
+          window.location.href = response.authorizationUrl;
         } else {
-          await navigateTo(response.authorizationUrl, { external: true })
+          await navigateTo(response.authorizationUrl, { external: true });
         }
       }
     } catch (error) {
-      console.error('Login error:', error)
-      isLoading.value = false
+      console.error('Login error:', error);
+      isLoading.value = false;
     }
-  }
+  };
 
   const logout = async () => {
-    isLoading.value = true
+    isLoading.value = true;
     // Reset silent login flag for next time
-    setSilentLoginAttempted(false)
+    setSilentLoginAttempted(false);
     try {
       const response = await $fetch<{ success: boolean; logoutUrl: string }>('/api/auth/logout', {
         method: 'POST',
-      })
+      });
 
       if (response.success) {
         // Clear local state
@@ -176,21 +176,21 @@ export const useAuth = () => {
           isAuthenticated: false,
           user: null,
           token: null,
-        }
+        };
 
         // Redirect to Auth0 logout or home
         if (process.client) {
-          window.location.href = response.logoutUrl
+          window.location.href = response.logoutUrl;
         } else {
-          await navigateTo(response.logoutUrl, { external: true })
+          await navigateTo(response.logoutUrl, { external: true });
         }
       }
     } catch (error) {
-      console.error('Logout error:', error)
+      console.error('Logout error:', error);
     } finally {
-      isLoading.value = false
+      isLoading.value = false;
     }
-  }
+  };
 
   return {
     isAuthenticated,
@@ -200,5 +200,5 @@ export const useAuth = () => {
     login,
     logout,
     refreshAuth,
-  }
-}
+  };
+};

@@ -21,34 +21,35 @@ class ShareApiService {
       params.value.projectSlug,
       params.value.repos,
       params.value.startDate,
-      params.value.endDate
+      params.value.endDate,
     ]);
-    const queryFn = computed<QueryFunction<ActiveContributors>>(() => this.activeContributorsQueryFn(() => ({
+    const queryFn = computed<QueryFunction<ActiveContributors>>(() =>
+      this.activeContributorsQueryFn(() => ({
         projectSlug: params.value.projectSlug,
         repos: params.value.repos,
         startDate: params.value.startDate,
-        endDate: params.value.endDate
-      })));
+        endDate: params.value.endDate,
+      })),
+    );
 
     return useQuery<ActiveContributors>({
       queryKey,
-      queryFn
+      queryFn,
     });
   }
 
   activeContributorsQueryFn(
-    query: () => Record<string, string | number | boolean | undefined | string[] | null>
+    query: () => Record<string, string | number | boolean | undefined | string[] | null>,
   ): QueryFunction<ActiveContributors> {
-    const {
- projectSlug, repos, startDate, endDate
-} = query();
-    return async () => await $fetch(`/api/project/${projectSlug}/contributors/active-contributors`, {
+    const { projectSlug, repos, startDate, endDate } = query();
+    return async () =>
+      await $fetch(`/api/project/${projectSlug}/contributors/active-contributors`, {
         params: {
           granularity: Granularity.WEEKLY,
           repos,
           startDate,
-          endDate
-        }
+          endDate,
+        },
       });
   }
 }

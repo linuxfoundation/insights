@@ -5,7 +5,7 @@ SPDX-License-Identifier: MIT
 <template>
   <div class="flex flex-col gap-1">
     <p class="text-sm font-medium leading-5">
-      {{props.label}}
+      {{ props.label }}
       <span
         v-if="props.required"
         class="text-negative-500"
@@ -24,13 +24,13 @@ const props = withDefaults(
     required?: boolean;
   }>(),
   {
-    required: false
-  }
+    required: false,
+  },
 );
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxField'
+  name: 'LfxField',
 };
 </script>

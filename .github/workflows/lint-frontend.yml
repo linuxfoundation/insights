@@ -1,4 +1,4 @@
-name: Lint & Typescript Check
+name: Lint & Format & Typescript Check
 
 on:
   pull_request:
@@ -18,5 +18,5 @@ jobs:
           version: 10
 
       - name: Lint code
-        run: pnpm i --ignore-workspace && pnpm lint && pnpm tsc-check
+        run: pnpm i --ignore-workspace && pnpm format:check && pnpm lint && pnpm tsc-check
         working-directory: frontend

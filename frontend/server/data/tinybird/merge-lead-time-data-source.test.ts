@@ -1,8 +1,6 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import {
-  describe, test, expect, vi, beforeEach
-} from 'vitest';
+import { describe, test, expect, vi, beforeEach } from 'vitest';
 import { DateTime } from 'luxon';
 import {
   mockCurrentData,
@@ -24,11 +22,13 @@ describe('Merge Lead Time Data Source', () => {
     vi.doMock(import('./tinybird'), () => ({
       fetchFromTinybird: mockFetchFromTinybird,
     }));
-  })
+  });
 
   test('should fetch merge lead time data with correct parameters', async () => {
     // We have to import this here again because vi.doMock is not hoisted. See the explanation in beforeEach().
-    const {fetchMergeLeadTime} = await import('~~/server/data/tinybird/merge-lead-time-data-source');
+    const { fetchMergeLeadTime } = await import(
+      '~~/server/data/tinybird/merge-lead-time-data-source'
+    );
 
     mockFetchFromTinybird
       .mockResolvedValueOnce(mockCurrentData)
@@ -41,7 +41,7 @@ describe('Merge Lead Time Data Source', () => {
       project: 'the-linux-kernel-organization',
       repos: ['some-repo'],
       startDate,
-      endDate
+      endDate,
     };
 
     const result = await fetchMergeLeadTime(filter);
@@ -55,7 +55,11 @@ describe('Merge Lead Time Data Source', () => {
     };
 
     expect(mockFetchFromTinybird).toHaveBeenNthCalledWith(1, expectedTinybirdPath, filter);
-    expect(mockFetchFromTinybird).toHaveBeenNthCalledWith(2, expectedTinybirdPath, expectedPreviousQuery);
+    expect(mockFetchFromTinybird).toHaveBeenNthCalledWith(
+      2,
+      expectedTinybirdPath,
+      expectedPreviousQuery,
+    );
 
     const currentValue = mockCurrentData.data[0].openedToMergedSeconds;
     const previousValue = mockPreviousData.data[0].openedToMergedSeconds;
@@ -81,24 +85,24 @@ describe('Merge Lead Time Data Source', () => {
         pickup: {
           value: currentToReviewAssigned,
           unit: 'seconds',
-          changeType: currentToReviewAssigned > previousToReviewAssigned ? 'positive' : 'negative'
+          changeType: currentToReviewAssigned > previousToReviewAssigned ? 'positive' : 'negative',
         },
         review: {
           value: currentToFirstReview,
           unit: 'seconds',
-          changeType: currentToFirstReview > previousToFirstReview ? 'positive' : 'negative'
+          changeType: currentToFirstReview > previousToFirstReview ? 'positive' : 'negative',
         },
         accepted: {
           value: mockCurrentData.data[0].firstReviewToApprovedSeconds,
           unit: 'seconds',
-          changeType: currentToApproved > previousToApproved ? 'positive' : 'negative'
+          changeType: currentToApproved > previousToApproved ? 'positive' : 'negative',
         },
         prMerged: {
           value: mockCurrentData.data[0].approvedToMergedSeconds,
           unit: 'seconds',
-          changeType: currentToMerged > previousToMerged ? 'positive' : 'negative'
-        }
-      }
+          changeType: currentToMerged > previousToMerged ? 'positive' : 'negative',
+        },
+      },
     };
 
     expect(result).toEqual(expectedResult);

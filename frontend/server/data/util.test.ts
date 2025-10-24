@@ -1,11 +1,9 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import {
-  describe, test, expect, vi
-} from 'vitest';
+import { describe, test, expect, vi } from 'vitest';
 
-import {DateTime} from "luxon";
-import {calculatePercentageChange, earliestPossibleStartDate, getPreviousDates} from './util';
+import { DateTime } from 'luxon';
+import { calculatePercentageChange, earliestPossibleStartDate, getPreviousDates } from './util';
 
 describe('getPreviousDates', () => {
   test('should return the previous interval start and end dates, for the current start and end dates', () => {
@@ -20,12 +18,12 @@ describe('getPreviousDates', () => {
     expect(result).toEqual({
       current: {
         from: currentStartDate,
-        to: currentEndDate
+        to: currentEndDate,
       },
       previous: {
         from: expectedStartDate,
-        to: expectedEndDate
-      }
+        to: expectedEndDate,
+      },
     });
   });
 
@@ -43,12 +41,12 @@ describe('getPreviousDates', () => {
     expect(result).toEqual({
       current: {
         from: expectedCurrentStartDate,
-        to: currentEndDate
+        to: currentEndDate,
       },
       previous: {
         from: expectedPreviousStartDate,
-        to: expectedPreviousEndDate
-      }
+        to: expectedPreviousEndDate,
+      },
     });
   });
 
@@ -71,12 +69,12 @@ describe('getPreviousDates', () => {
     expect(result).toEqual({
       current: {
         from: currentStartDate,
-        to: fakeTodayDate
+        to: fakeTodayDate,
       },
       previous: {
         from: expectedPreviousStartDate,
-        to: expectedPreviousEndDate
-      }
+        to: expectedPreviousEndDate,
+      },
     });
   });
 });
@@ -89,7 +87,7 @@ describe('calculatePercentageChange', () => {
     [100, 0, undefined],
     [100, 50, 100],
     [50, 100, 50],
-  ])("current %i, previous %i, returns %i", (current, previous, expected) => {
+  ])('current %i, previous %i, returns %i', (current, previous, expected) => {
     const result = calculatePercentageChange(current, previous);
     if (expected === undefined) {
       expect(result).toBeUndefined();

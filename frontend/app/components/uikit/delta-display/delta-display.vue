@@ -18,14 +18,13 @@ SPDX-License-Identifier: MIT
         :type="'light'"
         :size="12"
       />
-      <template v-if="!isHidePercentage">
-        {{ percentage }}%
-      </template>
+      <template v-if="!isHidePercentage"> {{ percentage }}% </template>
       {{ deltaDisplay }}
     </span>
     <span class="text-neutral-400 text-xs">
       vs.
-      {{ previousDisplay }} last period</span>
+      {{ previousDisplay }} last period</span
+    >
   </div>
 </template>
 
@@ -36,7 +35,7 @@ import LfxIcon from '~/components/uikit/icon/icon.vue';
 import { formatNumber, formatNumberShort, formatSecondsToDuration } from '~/components/shared/utils/formatter';
 
 const props = withDefaults(defineProps<DeltaDisplayProps>(), {
-  isReverse: false
+  isReverse: false,
 });
 
 const isHidePercentage = computed(() => props.summary.percentageChange === undefined);
@@ -60,18 +59,14 @@ const deltaDirection = computed<'positive' | 'negative'>(() => {
 // TODO: remove isDuration and use deltaUnit instead
 const delta = computed(() => {
   const value = props.summary.changeValue;
-  const changeDuration = formatSecondsToDuration(
-    Math.abs(value),
-    'short'
-  );
+  const changeDuration = formatSecondsToDuration(Math.abs(value), 'short');
   const changeValue = props.isShort ? formatNumberShort(value) : formatNumber(value, 1);
 
   const sign = value >= 0 ? '+' : '';
   return sign + (props.isDuration ? changeDuration : changeValue);
 });
 
-const deltaColor = computed(() => (deltaDirection.value === 'negative'
-  ? 'text-negative-600' : 'text-positive-600'));
+const deltaColor = computed(() => (deltaDirection.value === 'negative' ? 'text-negative-600' : 'text-positive-600'));
 
 const deltaDisplay = computed(() => {
   const unit = props.isDuration ? '' : props.unit;
@@ -82,8 +77,7 @@ const deltaDisplay = computed(() => {
 });
 
 // The up and down icons will only rely on the value instead of the deltaDirection
-const deltaIcon = computed(() => (props.summary.changeValue < 0
-  ? 'circle-arrow-down' : 'circle-arrow-up'));
+const deltaIcon = computed(() => (props.summary.changeValue < 0 ? 'circle-arrow-down' : 'circle-arrow-up'));
 
 const previousDisplay = computed(() => {
   if (!props.hidePreviousValue) {

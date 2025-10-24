@@ -25,33 +25,33 @@ export const Default = {
   args: {
     size: 16,
     type: 'regular',
-  }
+  },
 };
 
 export const Large = {
   args: {
     size: 32,
     type: 'regular',
-  }
+  },
 };
 
 export const Small = {
   args: {
     size: 12,
     type: 'regular',
-  }
+  },
 };
 
 export const Solid = {
   args: {
     size: 16,
     type: 'solid',
-  }
+  },
 };
 
 export const Light = {
   args: {
     size: 16,
     type: 'light',
-  }
+  },
 };

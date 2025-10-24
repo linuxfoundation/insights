@@ -12,7 +12,8 @@ SPDX-License-Identifier: MIT
         aria-label="Star linuxfoundation/insights on GitHub"
         target="_blank"
         rel="noopener noreferrer"
-      >Star</a>
+        >Star</a
+      >
     </client-only>
   </div>
   <div class="items-start lg:hidden flex h-9 pt-1">
@@ -41,21 +42,21 @@ import { onMounted } from 'vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 
 onMounted(() => {
-  const scriptSrc = 'https://buttons.github.io/buttons.js'
+  const scriptSrc = 'https://buttons.github.io/buttons.js';
   // GitHub buttons script adds the functionality
   // Adding check to prevent adding the script twice that causes the error
   if (!document.querySelector(`script[src="${scriptSrc}"]`)) {
-    const script = document.createElement('script')
-    script.setAttribute('src', scriptSrc)
-    script.setAttribute('async', '')
-    script.setAttribute('defer', '')
-    document.body.appendChild(script) 
+    const script = document.createElement('script');
+    script.setAttribute('src', scriptSrc);
+    script.setAttribute('async', '');
+    script.setAttribute('defer', '');
+    document.body.appendChild(script);
   }
-})
+});
 </script>
 
 <script lang="ts">
-  export default {
-    name: 'LfxMenuGithubButton'
-  }
+export default {
+  name: 'LfxMenuGithubButton',
+};
 </script>

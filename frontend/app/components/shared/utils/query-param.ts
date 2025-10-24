@@ -19,7 +19,7 @@ export type URLParams = {
 
 export const useQueryParam = (
   getterProcessor: (query: LocationQuery) => URLParams,
-  setterProcessor: (query: URLParams) => URLParams
+  setterProcessor: (query: URLParams) => URLParams,
 ) => {
   const route = useRoute();
   const router = useRouter();

@@ -8,18 +8,18 @@ SPDX-License-Identifier: MIT
       variation="info"
       v-bind="$attrs"
     >
-      {{result}}%
+      {{ result }}%
     </lfx-tag>
   </slot>
 </template>
 
 <script setup lang="ts">
-import LfxTag from "~/components/uikit/tag/tag.vue";
-import {SecurityDataResult} from "~~/types/security/responses.types";
+import LfxTag from '~/components/uikit/tag/tag.vue';
+import { SecurityDataResult } from '~~/types/security/responses.types';
 
 const props = defineProps<{
-  results: SecurityDataResult[]
-}>()
+  results: SecurityDataResult[];
+}>();
 
 const result = computed<number>(() => {
   const passed = props.results.filter((result) => result === SecurityDataResult.PASSED).length || 0;
@@ -36,5 +36,5 @@ const result = computed<number>(() => {
 <script lang="ts">
 export default {
   name: 'LfxProjectSecurityEvaluationResult',
-}
+};
 </script>

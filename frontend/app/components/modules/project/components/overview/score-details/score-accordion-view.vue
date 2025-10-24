@@ -37,9 +37,7 @@ SPDX-License-Identifier: MIT
               v-else
               class="pb-6"
             >
-              <lfx-project-security-score
-                :data="securityScore"
-              />
+              <lfx-project-security-score :data="securityScore" />
             </div>
           </div>
         </lfx-project-load-state>
@@ -53,11 +51,11 @@ import { computed } from 'vue';
 import type { AsyncDataRequestStatus } from 'nuxt/app';
 import LfxProjectScoreList from './score-list.vue';
 import LfxProjectDetailsEmpty from './details-empty.vue';
-import LfxAccordion from "~/components/uikit/accordion/accordion.vue";
-import LfxAccordionItem from "~/components/uikit/accordion/accordion-item.vue";
+import LfxAccordion from '~/components/uikit/accordion/accordion.vue';
+import LfxAccordionItem from '~/components/uikit/accordion/accordion-item.vue';
 import type { TrustScoreSummary, SecurityScore, HealthScoreResults } from '~~/types/overview/responses.types';
 import type { Tab } from '~/components/uikit/tabs/types/tab.types';
-import LfxProjectSecurityScore from "~/components/modules/project/components/overview/security/security-score.vue";
+import LfxProjectSecurityScore from '~/components/modules/project/components/overview/security/security-score.vue';
 import LfxProjectLoadState from '~~/app/components/modules/project/components/shared/load-state.vue';
 import type { ScoreDisplay } from '~~/types/overview/score-display.types';
 import type { WidgetArea } from '~/components/modules/widget/types/widget-area';
@@ -73,17 +71,15 @@ const props = defineProps<{
   error: unknown;
 }>();
 
-const emit = defineEmits<{(e: 'update:modelValue', value: string): void
-}>();
+const emit = defineEmits<{ (e: 'update:modelValue', value: string): void }>();
 
 const selectedTab = computed({
   get: () => props.modelValue,
-  set: (value: string) => emit('update:modelValue', value)
+  set: (value: string) => emit('update:modelValue', value),
 });
-
 </script>
 <script lang="ts">
 export default {
-  name: 'LfxProjectScoreAccordionView'
+  name: 'LfxProjectScoreAccordionView',
 };
 </script>

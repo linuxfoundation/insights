@@ -1,6 +1,6 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { allTime, newMentions } from '~~/server/mocks/social-mentions.mock'
+import { allTime, newMentions } from '~~/server/mocks/social-mentions.mock';
 
 /**
  * Frontend expects the data to be in the following format:
@@ -32,13 +32,13 @@ import { allTime, newMentions } from '~~/server/mocks/social-mentions.mock'
  * - time-period: string // This is isn't defined yet, but we'll add '90d', '1y', '5y' for now
  */
 export default defineEventHandler(async (event) => {
-  const query = getQuery(event)
-  let data
+  const query = getQuery(event);
+  let data;
 
   if (query.type === 'cumulative') {
-    data = allTime
+    data = allTime;
   } else {
-    data = newMentions
+    data = newMentions;
   }
 
   // doing fake changes to data if query.repository is not empty
@@ -49,8 +49,8 @@ export default defineEventHandler(async (event) => {
       reddit: item.reddit - 100,
       hackerNews: item.hackerNews - 200,
       stackOverflow: item.stackOverflow - 100,
-    }))
+    }));
   }
 
-  return data
-})
+  return data;
+});

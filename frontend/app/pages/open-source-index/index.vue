@@ -10,8 +10,9 @@ SPDX-License-Identifier: MIT
 import LfxOpenSourceIndex from '~/components/modules/open-source-index/views/open-source-index.vue';
 
 const title = 'Open Source Index | by Linux Foundation';
-const description = 'Explore the Linux Foundation Open Source Index on LFX Insights. '
-  + 'Compare thousands of open source projects by contributors, software value, and category.';
+const description =
+  'Explore the Linux Foundation Open Source Index on LFX Insights. ' +
+  'Compare thousands of open source projects by contributors, software value, and category.';
 
 useSeoMeta({
   title,
@@ -19,6 +20,6 @@ useSeoMeta({
   ogTitle: title,
   ogDescription: description,
   twitterTitle: title,
-  twitterDescription: description
-})
+  twitterDescription: description,
+});
 </script>
