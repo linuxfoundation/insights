@@ -40,3 +40,7 @@ blog/.vitepress/theme/cssOverrides/
 .env
 .env.local
 .env.*.local
+
+# Static content
+blog
+docs
