@@ -155,7 +155,12 @@ SPDX-License-Identifier: MIT
         v-if="!isFetching && data?.length && !allArchived"
         class="flex items-center gap-2 px-1.5"
       >
-        <p class="text-neutral-500 text-xs font-semibold">・</p>
+        <p
+          v-if="hasSelectedArchivedRepos && !isFetching"
+          class="text-neutral-500 text-xs font-semibold"
+        >
+          ・
+        </p>
         <lfx-tooltip
           v-if="!PROJECT_SECURITY_SERVICE.hasSecurityMdFile(data || [])"
           placement="top"
