@@ -46,12 +46,6 @@ export default defineEventHandler(async (event) => {
   const limit = query.limit ? parseInt(query.limit as string, 10) : 10;
   const offset = query.offset ? parseInt(query.offset as string, 10) : 0;
 
-  const meta = {
-    limit,
-    offset,
-    total: 20,
-  };
-
   const repos = Array.isArray(query.repos) ? query.repos : query.repos ? [query.repos] : undefined;
 
   const filter: OrganizationsLeaderboardFilter = {
@@ -71,7 +65,7 @@ export default defineEventHandler(async (event) => {
   const result = await dataSource.fetchOrganizationsLeaderboard(filter);
 
   return {
-    meta,
+    meta: result.meta,
     data: result.data,
   };
 });
