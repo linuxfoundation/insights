@@ -92,7 +92,8 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{(e: 'dataLoaded', value: string): void;
-  (e: 'update:modelValue', value: ActiveContributorsModel): void
+  (e: 'update:modelValue', value: ActiveContributorsModel): void;
+  (e: 'hasData', value: boolean): void;
 }>();
 
 const model = computed<ActiveContributorsModel>({
@@ -186,6 +187,12 @@ watch(status, (value) => {
   if (value !== 'pending') {
     emit('dataLoaded', Widget.ACTIVE_CONTRIBUTORS);
   }
+}, {
+  immediate: true
+});
+
+watch(isEmpty, (value: boolean) => {
+  emit('hasData', !value);
 }, {
   immediate: true
 });

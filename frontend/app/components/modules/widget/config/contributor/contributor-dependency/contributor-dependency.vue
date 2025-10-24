@@ -88,7 +88,9 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: 'dataLoaded', value: string): void;
-  (e: 'update:modelValue', value: ContributorDependencyModel): void}>()
+  (e: 'update:modelValue', value: ContributorDependencyModel): void;
+  (e: 'hasData', value: boolean): void;
+}>()
 
 const model = computed<ContributorDependencyModel>({
   get: () => props.modelValue,
@@ -131,6 +133,12 @@ watch(status, (value) => {
   if (value !== 'pending') {
     emit('dataLoaded', Widget.CONTRIBUTOR_DEPENDENCY);
   }
+}, {
+  immediate: true
+});
+
+watch(isEmpty, (value: boolean) => {
+  emit('hasData', !value);
 }, {
   immediate: true
 });

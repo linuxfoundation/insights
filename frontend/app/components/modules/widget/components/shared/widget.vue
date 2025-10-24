@@ -7,11 +7,12 @@ SPDX-License-Identifier: MIT
     :benchmark-config="config.benchmark"
     :point="benchmarkScore?.benchmark || 0"
     :widget-model="model"
+    :show-benchmark="widgetHasData"
   >
     <lfx-card class="p-4 sm:p-6 relative group">
       <div class="flex justify-between items-center pb-3">
         <h3 class="text-heading-3 font-semibold font-secondary">{{ config.name }}</h3>
-        
+
         <lfx-widget-menu
           :data="model"
           class="relative lg:absolute lg:-top-3 lg:right-6 lg:opacity-0
@@ -48,8 +49,8 @@ SPDX-License-Identifier: MIT
           <lfx-tooltip>
             <template #content>
               <p>
-                Collaborations refer to activities associated with engagement or<br>coordination with others, 
-                and don’t reflect technical-driven<br>impact. 
+                Collaborations refer to activities associated with engagement or<br>coordination with others,
+                and don't reflect technical-driven<br>impact.
                 <a
                   :href="links.collaborationDocs"
                   target="_blank"
@@ -70,6 +71,7 @@ SPDX-License-Identifier: MIT
         :is="config.component"
         v-model="model"
         @data-loaded="emit('dataLoaded', $event)"
+        @has-data="widgetHasData = $event"
       />
     </lfx-card>
   </lfx-benchmarks-wrap>
@@ -117,6 +119,7 @@ const includeCollaborations = computed({
   }
 });
 const isMenuOpen = ref(false);
+const widgetHasData = ref(true);
 
 const benchmarkScore = computed<BenchmarkScoreData | undefined>(() => props
   .benchmarkScores?.[config.value.key as keyof HealthScoreResults] as BenchmarkScoreData);

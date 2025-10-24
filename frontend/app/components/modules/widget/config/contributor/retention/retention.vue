@@ -81,7 +81,8 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: 'dataLoaded', value: string): void;
-  (e: 'update:modelValue', value: RetentionModel): void
+  (e: 'update:modelValue', value: RetentionModel): void;
+  (e: 'hasData', value: boolean): void;
 }>();
 
 const model = computed<RetentionModel>({
@@ -194,6 +195,12 @@ watch(status, (value) => {
   if (value !== 'pending') {
     emit('dataLoaded', Widget.RETENTION);
   }
+}, {
+  immediate: true
+});
+
+watch(isEmpty, (value: boolean) => {
+  emit('hasData', !value);
 }, {
   immediate: true
 });
