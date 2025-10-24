@@ -11,4 +11,4 @@ export const links = {
   copilotDocs: '/docs/introduction/what-is-insights/',
   collaborationDocs: '/docs/introduction/contributions/',
   profileLink: 'https://openprofile.dev/',
-}
+};

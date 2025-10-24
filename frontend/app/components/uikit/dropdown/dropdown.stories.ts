@@ -15,43 +15,51 @@ export default {
       description: 'Position of the dropdown relative to the trigger',
       control: 'select',
       options: [
-        'top-start', 'top', 'top-end',
-        'right-start', 'right', 'right-end',
-        'bottom-start', 'bottom', 'bottom-end',
-        'left-start', 'left', 'left-end'
-      ]
+        'top-start',
+        'top',
+        'top-end',
+        'right-start',
+        'right',
+        'right-end',
+        'bottom-start',
+        'bottom',
+        'bottom-end',
+        'left-start',
+        'left',
+        'left-end',
+      ],
     },
     width: {
       description: 'Width of the dropdown content',
-      control: 'text'
+      control: 'text',
     },
     visibility: {
       description: 'Controls dropdown visibility (v-model:visibility)',
-      control: 'boolean'
+      control: 'boolean',
     },
     matchWidth: {
       description: 'Whether dropdown should match the width of the trigger element',
-      control: 'boolean'
+      control: 'boolean',
     },
     dropdownClass: {
       description: 'Additional CSS classes for the dropdown container',
-      control: 'text'
-    }
-  }
+      control: 'text',
+    },
+  },
 };
 
 export const Default = {
   args: {
     placement: 'bottom-start' as Placement,
     width: '200px',
-    matchWidth: false
+    matchWidth: false,
   },
   render: (args) => ({
     components: {
       LfxDropdown,
       LfxDropdownItem,
       LfxDropdownSeparator,
-      LfxButton
+      LfxButton,
     },
     setup() {
       return { args };
@@ -70,21 +78,21 @@ export const Default = {
         <lfx-dropdown-separator />
         <lfx-dropdown-item>Option 3</lfx-dropdown-item>
       </lfx-dropdown>
-    </div>`
-  })
+    </div>`,
+  }),
 };
 
 export const WithIcons = {
   args: {
     placement: 'bottom-start' as Placement,
     width: '250px',
-    matchWidth: false
+    matchWidth: false,
   },
   render: (args) => ({
     components: {
       LfxDropdown,
       LfxDropdownItem,
-      LfxButton
+      LfxButton,
     },
     setup() {
       return { args };
@@ -111,20 +119,20 @@ export const WithIcons = {
           Delete
         </lfx-dropdown-item>
       </lfx-dropdown>
-    </div>`
-  })
+    </div>`,
+  }),
 };
 
 export const MatchWidth = {
   args: {
     placement: 'bottom-start' as Placement,
-    matchWidth: true
+    matchWidth: true,
   },
   render: (args) => ({
     components: {
       LfxDropdown,
       LfxDropdownItem,
-      LfxButton
+      LfxButton,
     },
     setup() {
       return { args };
@@ -142,20 +150,20 @@ export const MatchWidth = {
         <lfx-dropdown-item>Another option</lfx-dropdown-item>
         <lfx-dropdown-item>Third option</lfx-dropdown-item>
       </lfx-dropdown>
-    </div>`
-  })
+    </div>`,
+  }),
 };
 
 export const DifferentPlacements = {
   args: {
     width: '200px',
-    matchWidth: false
+    matchWidth: false,
   },
   render: (args) => ({
     components: {
       LfxDropdown,
       LfxDropdownItem,
-      LfxButton
+      LfxButton,
     },
     setup() {
       return { args };
@@ -193,6 +201,6 @@ export const DifferentPlacements = {
         <lfx-dropdown-item>Option 1</lfx-dropdown-item>
         <lfx-dropdown-item>Option 2</lfx-dropdown-item>
       </lfx-dropdown>
-    </div>`
-  })
+    </div>`,
+  }),
 };

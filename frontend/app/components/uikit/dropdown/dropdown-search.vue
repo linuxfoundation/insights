@@ -15,32 +15,35 @@ SPDX-License-Identifier: MIT
     <input
       v-model="model"
       type="text"
-      class="!outline-none !shadow-none  flex-grow text-sm text-neutral-900 leading-5"
+      class="!outline-none !shadow-none flex-grow text-sm text-neutral-900 leading-5"
       :placeholder="props.placeholder || 'Search...'"
       @input="changedValue"
-    >
+    />
     <lfx-icon
       v-if="model.length > 0"
       name="circle-xmark"
       :size="16"
       type="solid"
       class="text-neutral-300 cursor-pointer"
-      @click="model = '';changedValue()"
+      @click="
+        model = '';
+        changedValue();
+      "
     />
   </label>
 </template>
 
 <script setup lang="ts">
-import { debounce } from "lodash-es";
-import LfxIcon from "~/components/uikit/icon/icon.vue";
+import { debounce } from 'lodash-es';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 
 const props = defineProps<{
   modelValue: string;
   placeholder?: string;
   lazy?: boolean;
-}>()
+}>();
 
-const emit = defineEmits<{(e: 'update:modelValue', value: string): void;}>();
+const emit = defineEmits<{ (e: 'update:modelValue', value: string): void }>();
 
 const model = ref(props.modelValue);
 

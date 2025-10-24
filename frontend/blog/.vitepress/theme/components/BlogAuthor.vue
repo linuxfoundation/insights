@@ -5,58 +5,62 @@ SPDX-License-Identifier: MIT
 <template>
   <div class="blog-author-container">
     <div class="author-info">
-      <img 
-        v-if="authorImage" 
-        :src="authorImage" 
+      <img
+        v-if="authorImage"
+        :src="authorImage"
         :alt="authorName"
         class="author-avatar"
-      >
+      />
       <div class="author-details">
         <div class="author-name">{{ authorName }}</div>
         <div
           v-if="authorCompany"
           class="author-company"
-        >{{ authorCompany }}</div>
+        >
+          {{ authorCompany }}
+        </div>
         <div
           v-if="datePublished"
           class="publish-date"
-        >{{ formattedDate }}</div>
+        >
+          {{ formattedDate }}
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed } from 'vue';
 
 interface Props {
-  authorName?: string
-  authorImage?: string
-  authorCompany?: string
-  datePublished?: string
+  authorName?: string;
+  authorImage?: string;
+  authorCompany?: string;
+  datePublished?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   authorName: '',
   authorImage: '',
   authorCompany: '',
-  datePublished: ''
-})
+  datePublished: '',
+});
 
 const formattedDate = computed(() => {
-  if (!props.datePublished) return ''
-  
+  if (!props.datePublished) return '';
+
   try {
-    const date = new Date(props.datePublished)
+    const date = new Date(props.datePublished);
     return date.toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'long',
-      day: 'numeric'
-    })
+      day: 'numeric',
+    });
   } catch {
-    return props.datePublished
+    return props.datePublished;
   }
-})
+});
 </script>
 
 <style lang="scss" scoped>

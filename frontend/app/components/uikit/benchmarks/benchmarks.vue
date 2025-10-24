@@ -8,7 +8,8 @@ SPDX-License-Identifier: MIT
     :class="{
       'c-benchmarks--positive': props.type === 'positive',
       'c-benchmarks--warning': props.type === 'warning',
-      'c-benchmarks--negative': props.type === 'negative' }"
+      'c-benchmarks--negative': props.type === 'negative',
+    }"
   >
     <div class="c-benchmarks__header">
       <lfx-benchmark-icon :type="props.type" />
@@ -31,6 +32,6 @@ const props = defineProps<{
 
 <script lang="ts">
 export default {
-  name: 'LfxBenchmarks'
+  name: 'LfxBenchmarks',
 };
 </script>

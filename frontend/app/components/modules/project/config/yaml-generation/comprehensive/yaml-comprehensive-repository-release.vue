@@ -195,31 +195,29 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-import { url } from '@vuelidate/validators'
-import useVuelidate from '@vuelidate/core'
-import LfxField from '~/components/uikit/field/field.vue'
-import LfxInput from '~/components/uikit/input/input.vue'
-import LfxCheckbox from '~/components/uikit/checkbox/checkbox.vue'
-import LfxButton from '~/components/uikit/button/button.vue'
-import LfxIcon from '~/components/uikit/icon/icon.vue'
-import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue'
-import LfxFieldMessages from '~/components/uikit/field/field-messages.vue'
-import LfxYamlAttestationItem from
-  '~/components/modules/project/config/yaml-generation/shared/components/yaml-attestation-item.vue'
-import LfxYamlDistributionPointItem from
-  '~/components/modules/project/config/yaml-generation/shared/components/yaml-distribution-point-item.vue'
+import { computed } from 'vue';
+import { url } from '@vuelidate/validators';
+import useVuelidate from '@vuelidate/core';
+import LfxField from '~/components/uikit/field/field.vue';
+import LfxInput from '~/components/uikit/input/input.vue';
+import LfxCheckbox from '~/components/uikit/checkbox/checkbox.vue';
+import LfxButton from '~/components/uikit/button/button.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
+import LfxFieldMessages from '~/components/uikit/field/field-messages.vue';
+import LfxYamlAttestationItem from '~/components/modules/project/config/yaml-generation/shared/components/yaml-attestation-item.vue';
+import LfxYamlDistributionPointItem from '~/components/modules/project/config/yaml-generation/shared/components/yaml-distribution-point-item.vue';
 
 const props = defineProps<{
-  modelValue: object
-}>()
+  modelValue: object;
+}>();
 
-const emit = defineEmits<{ (e: 'update:modelValue', value: object): void }>()
+const emit = defineEmits<{ (e: 'update:modelValue', value: object): void }>();
 
 const model = computed<object>({
   get: () => props.modelValue,
   set: (value: object) => emit('update:modelValue', value),
-})
+});
 
 const rules = {
   repository: {
@@ -234,9 +232,9 @@ const rules = {
       },
     },
   },
-}
+};
 
-const $v = useVuelidate(rules, model)
+const $v = useVuelidate(rules, model);
 
 const addAttestation = () => {
   model.value.repository.release.attestations.push({
@@ -244,13 +242,13 @@ const addAttestation = () => {
     'predicate-uri': '',
     location: '',
     comment: '',
-  })
-}
+  });
+};
 
 const addDistributionPoint = () => {
   model.value.repository.release['distribution-points'].push({
     uri: '',
     comment: '',
-  })
-}
+  });
+};
 </script>

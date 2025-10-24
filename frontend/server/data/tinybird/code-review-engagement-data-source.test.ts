@@ -1,9 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import {
-  describe, test, expect, vi, beforeEach
-} from 'vitest';
-import {DateTime} from "luxon";
+import { describe, test, expect, vi, beforeEach } from 'vitest';
+import { DateTime } from 'luxon';
 import {
   mockPRParticipantsCurrentSummary,
   mockPRParticipantsPreviousSummary,
@@ -13,23 +11,27 @@ import {
   mockActivitiesCountCurrentSummary,
   mockActivitiesCountPreviousSummary,
   mockQuarterlyActivitiesCountData,
-} from "~~/server/mocks/tinybird-activities-count.mock";
-import type {CodeReviewEngagement} from "~~/types/development/responses.types";
-import type {CodeReviewEngagementFilter} from "~~/types/development/requests.types";
-import {CodeReviewEngagementMetric} from "~~/types/development/requests.types";
-import {ActivityTypes} from "~~/types/shared/activity-types";
+} from '~~/server/mocks/tinybird-activities-count.mock';
+import type { CodeReviewEngagement } from '~~/types/development/responses.types';
+import type { CodeReviewEngagementFilter } from '~~/types/development/requests.types';
+import { CodeReviewEngagementMetric } from '~~/types/development/requests.types';
+import { ActivityTypes } from '~~/types/shared/activity-types';
 import {
-  ActiveContributorsTinybirdQuery, ActivitiesCountTinybirdQuery,
-  ContributorsLeaderboardTinybirdQuery
-} from "~~/server/data/tinybird/requests.types";
-import {Granularity} from "~~/types/shared/granularity";
+  ActiveContributorsTinybirdQuery,
+  ActivitiesCountTinybirdQuery,
+  ContributorsLeaderboardTinybirdQuery,
+} from '~~/server/data/tinybird/requests.types';
+import { Granularity } from '~~/types/shared/granularity';
 
 const mockFetchFromTinybird = vi.fn();
 
 /**
  * returns the expected Tinybird queries based on the provided filter and activity types.
  */
-function getTinybirdQueries(filter: CodeReviewEngagementFilter, expectedActivityTypes: ActivityTypes[]) {
+function getTinybirdQueries(
+  filter: CodeReviewEngagementFilter,
+  expectedActivityTypes: ActivityTypes[],
+) {
   const participantsCurrentSummaryQuery: ActiveContributorsTinybirdQuery = {
     project: filter.project,
     repos: filter.repos,
@@ -50,14 +52,16 @@ function getTinybirdQueries(filter: CodeReviewEngagementFilter, expectedActivity
   };
 
   const commentsCurrentSummaryQuery: ActivitiesCountTinybirdQuery = participantsCurrentSummaryQuery;
-  const commentsPreviousSummaryQuery: ActivitiesCountTinybirdQuery = participantsPreviousSummaryQuery;
+  const commentsPreviousSummaryQuery: ActivitiesCountTinybirdQuery =
+    participantsPreviousSummaryQuery;
   const commentsDataQuery: ActivitiesCountTinybirdQuery = {
     ...commentsCurrentSummaryQuery,
     granularity: filter.granularity,
   };
 
   const reviewsCurrentSummaryQuery: ActivitiesCountTinybirdQuery = commentsCurrentSummaryQuery;
-  const reviewsPreviousSummaryQuery: ActivitiesCountTinybirdQuery = participantsPreviousSummaryQuery;
+  const reviewsPreviousSummaryQuery: ActivitiesCountTinybirdQuery =
+    participantsPreviousSummaryQuery;
   const reviewsDataQuery: ActivitiesCountTinybirdQuery = commentsDataQuery;
 
   let expectedCurrentSummaryQuery, expectedPreviousSummaryQuery, expectedDataQuery;
@@ -85,8 +89,8 @@ function getTinybirdQueries(filter: CodeReviewEngagementFilter, expectedActivity
   return {
     expectedCurrentSummaryQuery,
     expectedPreviousSummaryQuery,
-    expectedDataQuery
-  }
+    expectedDataQuery,
+  };
 }
 
 describe('Code Review Engagement Data Source', () => {
@@ -97,10 +101,10 @@ describe('Code Review Engagement Data Source', () => {
     // This means that the import for tinybird.ts inside active-contributors-data-source.ts would still be used,
     // and thus not mocked. This means we need to import the module again after the mock is set, whenever we want to
     // use it.
-    vi.doMock(import("./tinybird"), () => ({
+    vi.doMock(import('./tinybird'), () => ({
       fetchFromTinybird: mockFetchFromTinybird,
     }));
-  })
+  });
 
   const expectedPRParticipantsActivityTypes = [
     ActivityTypes.PULL_REQUEST_REVIEWED,
@@ -152,10 +156,12 @@ describe('Code Review Engagement Data Source', () => {
     expectedDataPath: string,
     currentSummaryMock: MockResponse,
     previousSummaryMock: MockResponse,
-    dataMock: MockResponse
+    dataMock: MockResponse,
   ) {
     // We have to import this here again because vi.doMock is not hoisted. See the explanation in beforeEach().
-    const {fetchCodeReviewEngagement} = await import("~~/server/data/tinybird/code-review-engagement-data-source");
+    const { fetchCodeReviewEngagement } = await import(
+      '~~/server/data/tinybird/code-review-engagement-data-source'
+    );
 
     mockFetchFromTinybird
       .mockResolvedValueOnce(currentSummaryMock)
@@ -171,35 +177,28 @@ describe('Code Review Engagement Data Source', () => {
       granularity: Granularity.QUARTERLY,
       metric,
       startDate,
-      endDate
+      endDate,
     };
 
     const result = await fetchCodeReviewEngagement(filter);
 
-    const {
-      expectedCurrentSummaryQuery,
-      expectedPreviousSummaryQuery,
-      expectedDataQuery
-    } = getTinybirdQueries(filter, expectedActivityTypes);
+    const { expectedCurrentSummaryQuery, expectedPreviousSummaryQuery, expectedDataQuery } =
+      getTinybirdQueries(filter, expectedActivityTypes);
 
     expect(mockFetchFromTinybird).toHaveBeenNthCalledWith(
       1,
       expectedSummariesPath,
-      expectedCurrentSummaryQuery
+      expectedCurrentSummaryQuery,
     );
     expect(mockFetchFromTinybird).toHaveBeenNthCalledWith(
       2,
       expectedSummariesPath,
-      expectedPreviousSummaryQuery
+      expectedPreviousSummaryQuery,
     );
-    expect(mockFetchFromTinybird).toHaveBeenNthCalledWith(
-      3,
-      expectedDataPath,
-      expectedDataQuery
-    );
+    expect(mockFetchFromTinybird).toHaveBeenNthCalledWith(3, expectedDataPath, expectedDataQuery);
 
     let currentCount = 0;
-    let previousCount =  0;
+    let previousCount = 0;
     let resultData;
 
     switch (filter.metric) {
@@ -245,7 +244,7 @@ describe('Code Review Engagement Data Source', () => {
         periodFrom: filter.startDate?.toISO() || '',
         periodTo: filter.endDate?.toISO() || '',
       },
-      data: resultData
+      data: resultData,
     };
 
     expect(result).toEqual(expectedResult);
@@ -259,7 +258,7 @@ describe('Code Review Engagement Data Source', () => {
       '/v0/pipes/contributors_leaderboard.json',
       mockPRParticipantsCurrentSummary,
       mockPRParticipantsPreviousSummary,
-      mockPRParticipantsData
+      mockPRParticipantsData,
     ],
     [
       CodeReviewEngagementMetric.REVIEW_COMMENTS,
@@ -268,7 +267,7 @@ describe('Code Review Engagement Data Source', () => {
       '/v0/pipes/activities_count.json',
       mockActivitiesCountCurrentSummary,
       mockActivitiesCountPreviousSummary,
-      mockQuarterlyActivitiesCountData
+      mockQuarterlyActivitiesCountData,
     ],
     [
       CodeReviewEngagementMetric.CODE_REVIEWS,
@@ -277,7 +276,7 @@ describe('Code Review Engagement Data Source', () => {
       '/v0/pipes/activities_count.json',
       mockActivitiesCountCurrentSummary,
       mockActivitiesCountPreviousSummary,
-      mockQuarterlyActivitiesCountData
+      mockQuarterlyActivitiesCountData,
     ],
   ])('should fetch code review engagement data with correct parameters', testCodeReviewEngagement);
 });

@@ -22,7 +22,7 @@ SPDX-License-Identifier: MIT
           v-model="model.repository.documentation['contributing-guide']"
           :invalid="
             $v.repository.documentation['contributing-guide'].$invalid &&
-              $v.repository.documentation['contributing-guide'].$dirty
+            $v.repository.documentation['contributing-guide'].$dirty
           "
           @blur="$v.repository.documentation['contributing-guide'].$touch()"
           @input="$v.repository.documentation['contributing-guide'].$touch()"
@@ -42,7 +42,7 @@ SPDX-License-Identifier: MIT
           v-model="model.repository.documentation['review-policy']"
           :invalid="
             $v.repository.documentation['review-policy'].$invalid &&
-              $v.repository.documentation['review-policy'].$dirty
+            $v.repository.documentation['review-policy'].$dirty
           "
           @blur="$v.repository.documentation['review-policy'].$touch()"
           @input="$v.repository.documentation['review-policy'].$touch()"
@@ -61,7 +61,7 @@ SPDX-License-Identifier: MIT
           v-model="model.repository.documentation['security-policy']"
           :invalid="
             $v.repository.documentation['security-policy'].$invalid &&
-              $v.repository.documentation['security-policy'].$dirty
+            $v.repository.documentation['security-policy'].$dirty
           "
           @blur="$v.repository.documentation['security-policy'].$touch()"
           @input="$v.repository.documentation['security-policy'].$touch()"
@@ -81,7 +81,7 @@ SPDX-License-Identifier: MIT
           v-model="model.repository.documentation.governance"
           :invalid="
             $v.repository.documentation.governance.$invalid &&
-              $v.repository.documentation.governance.$dirty
+            $v.repository.documentation.governance.$dirty
           "
           @blur="$v.repository.documentation.governance.$touch()"
           @input="$v.repository.documentation.governance.$touch()"
@@ -100,7 +100,7 @@ SPDX-License-Identifier: MIT
           v-model="model.repository.documentation['dependency-management-policy']"
           :invalid="
             $v.repository.documentation['dependency-management-policy'].$invalid &&
-              $v.repository.documentation['dependency-management-policy'].$dirty
+            $v.repository.documentation['dependency-management-policy'].$dirty
           "
           @blur="$v.repository.documentation['dependency-management-policy'].$touch()"
           @input="$v.repository.documentation['dependency-management-policy'].$touch()"
@@ -115,22 +115,22 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { url } from '@vuelidate/validators'
-import useVuelidate from '@vuelidate/core'
-import LfxField from '~/components/uikit/field/field.vue'
-import LfxInput from '~/components/uikit/input/input.vue'
-import LfxFieldMessages from '~/components/uikit/field/field-messages.vue'
+import { url } from '@vuelidate/validators';
+import useVuelidate from '@vuelidate/core';
+import LfxField from '~/components/uikit/field/field.vue';
+import LfxInput from '~/components/uikit/input/input.vue';
+import LfxFieldMessages from '~/components/uikit/field/field-messages.vue';
 
 const props = defineProps<{
-  modelValue: object
-}>()
+  modelValue: object;
+}>();
 
-const emit = defineEmits<{ (e: 'update:modelValue', value: object): void }>()
+const emit = defineEmits<{ (e: 'update:modelValue', value: object): void }>();
 
 const model = computed<object>({
   get: () => props.modelValue,
   set: (value: object) => emit('update:modelValue', value),
-})
+});
 
 const rules = {
   repository: {
@@ -152,7 +152,7 @@ const rules = {
       },
     },
   },
-}
+};
 
-const $v = useVuelidate(rules, model)
+const $v = useVuelidate(rules, model);
 </script>

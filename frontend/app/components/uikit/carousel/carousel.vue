@@ -59,9 +59,7 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import {
- ref, computed, onMounted, onUnmounted, watch
-} from 'vue';
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue';
 import type { CarouselProps } from './types/carousel.types';
 import LfxCarouselNavigation from './carousel-navigation.vue';
 
@@ -85,18 +83,18 @@ const responsiveOptions = [
   {
     breakpoint: 1024,
     numVisible: 3,
-    numScroll: 3
+    numScroll: 3,
   },
   {
     breakpoint: 768,
     numVisible: 2,
-    numScroll: 2
+    numScroll: 2,
   },
   {
     breakpoint: 320,
     numVisible: 1,
-    numScroll: 1
-  }
+    numScroll: 1,
+  },
 ];
 
 // Computed properties
@@ -133,7 +131,9 @@ const showDots = computed(() => totalPages.value > 1);
 const trackStyle = computed(() => {
   const baseTranslate = props.circular ? -itemsPerView.value * (100 / itemsPerView.value) : 0;
   const currentTranslate = -currentIndex.value * (100 / itemsPerView.value);
-  const dragTranslate = isDragging.value ? ((currentX.value - startX.value) / containerWidth.value) * 100 : 0;
+  const dragTranslate = isDragging.value
+    ? ((currentX.value - startX.value) / containerWidth.value) * 100
+    : 0;
   return {
     transform: `translateX(${baseTranslate + currentTranslate + dragTranslate}%)`,
     transition: isDragging.value ? 'none' : 'transform 0.3s ease',
@@ -182,16 +182,13 @@ const goToNext = () => {
   } else {
     currentIndex.value = Math.min(
       totalItems.value - itemsPerView.value,
-      currentIndex.value + itemsToScroll.value
+      currentIndex.value + itemsToScroll.value,
     );
   }
 };
 
 const goToPage = (page: number) => {
-  currentIndex.value = Math.min(
-    page * itemsToScroll.value,
-    totalItems.value - itemsPerView.value
-  );
+  currentIndex.value = Math.min(page * itemsToScroll.value, totalItems.value - itemsPerView.value);
 };
 
 // Touch and mouse event handlers
@@ -266,13 +263,16 @@ onMounted(() => {
 
   // Handle circular carousel infinite loop
   if (props.circular) {
-    watch(() => currentIndex.value, (newIndex) => {
-      if (newIndex < 0) {
-        currentIndex.value = totalItems.value - itemsPerView.value;
-      } else if (newIndex >= totalItems.value) {
-        currentIndex.value = 0;
-      }
-    });
+    watch(
+      () => currentIndex.value,
+      (newIndex) => {
+        if (newIndex < 0) {
+          currentIndex.value = totalItems.value - itemsPerView.value;
+        } else if (newIndex >= totalItems.value) {
+          currentIndex.value = 0;
+        }
+      },
+    );
   }
 });
 

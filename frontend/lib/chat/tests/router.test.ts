@@ -7,35 +7,35 @@
  * Tests router agent with actual Bedrock model and real Tinybird MCP tools
  */
 
-import { describe, test, expect, beforeAll, afterAll } from 'vitest'
-import { createAmazonBedrock, type AmazonBedrockProvider } from '@ai-sdk/amazon-bedrock'
-import { experimental_createMCPClient as createMCPClient, type LanguageModelV1 } from 'ai'
-import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js'
+import { describe, test, expect, beforeAll, afterAll } from 'vitest';
+import { createAmazonBedrock, type AmazonBedrockProvider } from '@ai-sdk/amazon-bedrock';
+import { experimental_createMCPClient as createMCPClient, type LanguageModelV1 } from 'ai';
+import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
 
-import { RouterAgent } from '../agents/router'
-import { RouterDecisionAction } from '../enums'
-import type { ChatMessage, RouterAgentInput } from '../types'
+import { RouterAgent } from '../agents/router';
+import { RouterDecisionAction } from '../enums';
+import type { ChatMessage, RouterAgentInput } from '../types';
 
-let bedrock: AmazonBedrockProvider | null = null
+let bedrock: AmazonBedrockProvider | null = null;
 
 describe('Router Agent', () => {
-  let model: LanguageModelV1
-  let mcpClient: any
-  let tbTools: Record<string, any> = {}
-  let toolsOverview: string = ''
+  let model: LanguageModelV1;
+  let mcpClient: any;
+  let tbTools: Record<string, any> = {};
+  let toolsOverview: string = '';
 
   beforeAll(async () => {
     // Check if we have the required environment variables
-    const tinybirdToken = process.env.NUXT_INSIGHTS_DATA_COPILOT_TINYBIRD_TOKEN
-    const tinybirdBaseUrl = process.env.NUXT_TINYBIRD_BASE_URL
-    const hasAwsCredentials = process.env.NUXT_AWS_BEDROCK_ACCESS_KEY_ID
+    const tinybirdToken = process.env.NUXT_INSIGHTS_DATA_COPILOT_TINYBIRD_TOKEN;
+    const tinybirdBaseUrl = process.env.NUXT_TINYBIRD_BASE_URL;
+    const hasAwsCredentials = process.env.NUXT_AWS_BEDROCK_ACCESS_KEY_ID;
 
     if (!tinybirdToken || !tinybirdBaseUrl || !hasAwsCredentials) {
-      console.warn('⚠️ Skipping real integration tests - missing credentials')
+      console.warn('⚠️ Skipping real integration tests - missing credentials');
       console.warn(
         'Required: NUXT_INSIGHTS_DATA_COPILOT_TINYBIRD_TOKEN, NUXT_TINYBIRD_BASE_URL, AWS Bedrock credentials',
-      )
-      return
+      );
+      return;
     }
 
     // Initialize AWS Bedrock model exactly like DataCopilot
@@ -43,43 +43,43 @@ describe('Router Agent', () => {
       accessKeyId: process.env.NUXT_AWS_BEDROCK_ACCESS_KEY_ID,
       secretAccessKey: process.env.NUXT_AWS_BEDROCK_SECRET_ACCESS_KEY,
       region: process.env.NUXT_AWS_BEDROCK_REGION,
-    })
+    });
 
     // Initialize model once, like DataCopilot does in constructor
-    const BEDROCK_MODEL_ID = 'us.anthropic.claude-sonnet-4-20250514-v1:0'
-    model = bedrock(BEDROCK_MODEL_ID)
+    const BEDROCK_MODEL_ID = 'us.anthropic.claude-sonnet-4-20250514-v1:0';
+    model = bedrock(BEDROCK_MODEL_ID);
 
     // Initialize MCP client to get real tools - same as DataCopilot
-    const tbMcpUrl = `https://mcp.tinybird.co?token=${tinybirdToken}&host=${tinybirdBaseUrl}`
-    const url = new URL(tbMcpUrl)
+    const tbMcpUrl = `https://mcp.tinybird.co?token=${tinybirdToken}&host=${tinybirdBaseUrl}`;
+    const url = new URL(tbMcpUrl);
 
     try {
       mcpClient = await createMCPClient({
         transport: new StreamableHTTPClientTransport(url, {
           sessionId: `test_session_${Date.now()}`,
         }),
-      })
+      });
 
       // Load real tools from Tinybird MCP
-      tbTools = await mcpClient.tools({})
-      buildToolsOverview()
+      tbTools = await mcpClient.tools({});
+      buildToolsOverview();
 
-      console.warn(`✅ Connected to Tinybird MCP - ${Object.keys(tbTools).length} tools loaded`)
+      console.warn(`✅ Connected to Tinybird MCP - ${Object.keys(tbTools).length} tools loaded`);
     } catch (error) {
-      console.error('❌ Failed to connect to Tinybird MCP:', error)
-      throw error
+      console.error('❌ Failed to connect to Tinybird MCP:', error);
+      throw error;
     }
-  }, 30000)
+  }, 30000);
 
   afterAll(async () => {
     if (mcpClient) {
       try {
-        await mcpClient.close?.()
+        await mcpClient.close?.();
       } catch (error) {
-        console.warn('Warning: Could not close MCP client:', error)
+        console.warn('Warning: Could not close MCP client:', error);
       }
     }
-  })
+  });
 
   // Build tools overview exactly like DataCopilot does
   function buildToolsOverview(): void {
@@ -89,23 +89,23 @@ describe('Router Agent', () => {
       'text_to_sql',
       'list_endpoints',
       'list_service_datasources',
-    ])
+    ]);
 
-    const toolDescriptions: string[] = []
+    const toolDescriptions: string[] = [];
     for (const [toolName, tool] of Object.entries(tbTools)) {
-      if (excludedFromOverview.has(toolName)) continue
+      if (excludedFromOverview.has(toolName)) continue;
 
-      const description = tool.description || tool.meta?.description || 'No description available'
-      toolDescriptions.push(`- ${toolName}: ${description}`)
+      const description = tool.description || tool.meta?.description || 'No description available';
+      toolDescriptions.push(`- ${toolName}: ${description}`);
     }
 
-    toolsOverview = toolDescriptions.join('\n')
+    toolsOverview = toolDescriptions.join('\n');
   }
 
   function createTestInput(userQuery: string): RouterAgentInput {
-    const messages: ChatMessage[] = [{ role: 'user', content: userQuery }]
+    const messages: ChatMessage[] = [{ role: 'user', content: userQuery }];
 
-    console.warn('📝 Creating test input for query:', userQuery)
+    console.warn('📝 Creating test input for query:', userQuery);
 
     return {
       model,
@@ -117,64 +117,64 @@ describe('Router Agent', () => {
       pipe: 'test-pipe',
       parametersString: '{}',
       segmentId: 'test-segment',
-    }
+    };
   }
 
   function skipIfNoCredentials() {
     const hasCredentials =
       process.env.NUXT_INSIGHTS_DATA_COPILOT_TINYBIRD_TOKEN &&
       process.env.NUXT_TINYBIRD_BASE_URL &&
-      process.env.NUXT_AWS_BEDROCK_ACCESS_KEY_ID
+      process.env.NUXT_AWS_BEDROCK_ACCESS_KEY_ID;
 
     if (!hasCredentials) {
-      console.warn('Skipping test - missing credentials')
-      return true
+      console.warn('Skipping test - missing credentials');
+      return true;
     }
-    return false
+    return false;
   }
 
   describe('Basic functionality', () => {
     test('should create original router agent successfully', () => {
-      const router = new RouterAgent()
-      expect(router).toBeDefined()
-      expect(router.name).toBe('Router')
-      expect(router.temperature).toBe(0)
-    })
+      const router = new RouterAgent();
+      expect(router).toBeDefined();
+      expect(router.name).toBe('Router');
+      expect(router.temperature).toBe(0);
+    });
 
     test('should validate output schema for both implementations', () => {
-      const originalRouter = new RouterAgent()
+      const originalRouter = new RouterAgent();
 
       const validOutput = {
         next_action: RouterDecisionAction.PIPES,
         reasoning: 'Test reasoning',
         reformulated_question: 'Test question',
         tools: ['activities_count'],
-      }
+      };
 
       // Both should use the same schema
-      expect(originalRouter.outputSchema.safeParse(validOutput).success).toBe(true)
-    })
+      expect(originalRouter.outputSchema.safeParse(validOutput).success).toBe(true);
+    });
 
     test('should reject invalid output for both implementations', () => {
-      const originalRouter = new RouterAgent()
+      const originalRouter = new RouterAgent();
 
       const invalidOutput = {
         next_action: 'INVALID_ACTION',
         reasoning: 'Test reasoning',
-      }
+      };
 
       // Both should reject invalid output
-      expect(originalRouter.outputSchema.safeParse(invalidOutput).success).toBe(false)
-    })
+      expect(originalRouter.outputSchema.safeParse(invalidOutput).success).toBe(false);
+    });
 
     test('should connect to MCP and load tools', () => {
-      if (skipIfNoCredentials()) return
+      if (skipIfNoCredentials()) return;
 
-      expect(Object.keys(tbTools).length).toBeGreaterThan(0)
-      expect(tbTools.list_datasources).toBeDefined()
-      expect(toolsOverview).toContain('activities')
-    })
-  })
+      expect(Object.keys(tbTools).length).toBeGreaterThan(0);
+      expect(tbTools.list_datasources).toBeDefined();
+      expect(toolsOverview).toContain('activities');
+    });
+  });
 
   describe('Real AI routing decisions', () => {
     describe('PIPES routing', () => {
@@ -186,24 +186,24 @@ describe('Router Agent', () => {
       ])(
         'should route "%s" to PIPES',
         async (query) => {
-          if (skipIfNoCredentials()) return
+          if (skipIfNoCredentials()) return;
 
-          console.warn(`🤖 Testing query: "${query}"`)
-          const router = new RouterAgent()
-          const input = createTestInput(query)
-          const result = await router.execute(input)
+          console.warn(`🤖 Testing query: "${query}"`);
+          const router = new RouterAgent();
+          const input = createTestInput(query);
+          const result = await router.execute(input);
 
-          expect(result.next_action).toBe(RouterDecisionAction.PIPES)
-          expect(result.reasoning).toBeTruthy()
-          expect(result.reformulated_question).toBeTruthy()
-          expect(Array.isArray(result.tools)).toBe(true)
+          expect(result.next_action).toBe(RouterDecisionAction.PIPES);
+          expect(result.reasoning).toBeTruthy();
+          expect(result.reformulated_question).toBeTruthy();
+          expect(Array.isArray(result.tools)).toBe(true);
 
-          console.warn(`✅ "${query}" → ${result.next_action}`)
-          console.warn(`🔍 Reasoning: ${result.reasoning}`)
+          console.warn(`✅ "${query}" → ${result.next_action}`);
+          console.warn(`🔍 Reasoning: ${result.reasoning}`);
         },
         15000,
-      )
-    })
+      );
+    });
 
     describe('CREATE_QUERY (TEXT_TO_SQL) routing', () => {
       test.each([
@@ -212,74 +212,70 @@ describe('Router Agent', () => {
       ])(
         'should route "%s" to CREATE_QUERY',
         async (query) => {
-          if (skipIfNoCredentials()) return
+          if (skipIfNoCredentials()) return;
 
-          console.warn(`🤖 Testing query: "${query}"`)
-          const router = new RouterAgent()
-          const input = createTestInput(query)
-          const result = await router.execute(input)
+          console.warn(`🤖 Testing query: "${query}"`);
+          const router = new RouterAgent();
+          const input = createTestInput(query);
+          const result = await router.execute(input);
 
-          expect(result.next_action).toBe(RouterDecisionAction.CREATE_QUERY)
-          expect(result.reasoning).toBeTruthy()
-          expect(result.reformulated_question).toBeTruthy()
+          expect(result.next_action).toBe(RouterDecisionAction.CREATE_QUERY);
+          expect(result.reasoning).toBeTruthy();
+          expect(result.reformulated_question).toBeTruthy();
 
-          console.warn(`✅ "${query}" → ${result.next_action}`)
-          console.warn(`🔍 Reasoning: ${result.reasoning}`)
+          console.warn(`✅ "${query}" → ${result.next_action}`);
+          console.warn(`🔍 Reasoning: ${result.reasoning}`);
         },
         15000,
-      )
-    })
+      );
+    });
 
     describe('STOP routing', () => {
       test.each([
         "What's the weather forecast for contributors?",
-        "Show me contributors from Brazil",
+        'Show me contributors from Brazil',
       ])(
         'should route "%s" to STOP',
         async (query) => {
-          if (skipIfNoCredentials()) return
+          if (skipIfNoCredentials()) return;
 
-          console.warn(`🤖 Testing query: "${query}"`)
-          const router = new RouterAgent()
-          const input = createTestInput(query)
-          const result = await router.execute(input)
+          console.warn(`🤖 Testing query: "${query}"`);
+          const router = new RouterAgent();
+          const input = createTestInput(query);
+          const result = await router.execute(input);
 
-          expect(result.next_action).toBe(RouterDecisionAction.STOP)
-          expect(result.reasoning).toBeTruthy()
-          expect(result.tools).toEqual([])
+          expect(result.next_action).toBe(RouterDecisionAction.STOP);
+          expect(result.reasoning).toBeTruthy();
+          expect(result.tools).toEqual([]);
 
-          console.warn(`✅ "${query}" → ${result.next_action}`)
-          console.warn(`🔍 Reasoning: ${result.reasoning}`)
+          console.warn(`✅ "${query}" → ${result.next_action}`);
+          console.warn(`🔍 Reasoning: ${result.reasoning}`);
         },
         15000,
-      )
-    })
+      );
+    });
 
     describe('ASK_CLARIFICATION routing', () => {
-      test.each([
-        "Show me the activity",
-        "Give me stats for last period",
-        "Show me metrics",
-      ])(
+      test.each(['Show me the activity', 'Give me stats for last period', 'Show me metrics'])(
         'should route "%s" to ASK_CLARIFICATION',
         async (query) => {
-          if (skipIfNoCredentials()) return
+          if (skipIfNoCredentials()) return;
 
-          console.warn(`🤖 Testing query: "${query}"`)
-          const router = new RouterAgent()
-          const input = createTestInput(query)
-          const result = await router.execute(input)
+          console.warn(`🤖 Testing query: "${query}"`);
+          const router = new RouterAgent();
+          const input = createTestInput(query);
+          const result = await router.execute(input);
 
-          expect(result.next_action).toBe(RouterDecisionAction.ASK_CLARIFICATION)
-          expect(result.reasoning).toBeTruthy()
-          expect(result.clarification_question).toBeTruthy()
+          expect(result.next_action).toBe(RouterDecisionAction.ASK_CLARIFICATION);
+          expect(result.reasoning).toBeTruthy();
+          expect(result.clarification_question).toBeTruthy();
 
-          console.warn(`✅ "${query}" → ${result.next_action}`)
-          console.warn(`🔍 Reasoning: ${result.reasoning}`)
-          console.warn(`❓ Clarification: ${result.clarification_question}`)
+          console.warn(`✅ "${query}" → ${result.next_action}`);
+          console.warn(`🔍 Reasoning: ${result.reasoning}`);
+          console.warn(`❓ Clarification: ${result.clarification_question}`);
         },
         15000,
-      )
-    })
-  })
-})
+      );
+    });
+  });
+});

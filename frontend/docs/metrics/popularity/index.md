@@ -1,4 +1,3 @@
-
 # Popularity Metrics Explained
 
 This page explains the key popularity metrics tracked by LFX Insights. These indicators help you understand <b>how widely adopted and talked-about an open source project is</b> across the web and developer ecosystem.
@@ -15,7 +14,7 @@ This page explains the key popularity metrics tracked by LFX Insights. These ind
 
 **Why it matters:** Forks often indicate developer interest in modifying, contributing to, or building on top of a project.
 
-## Social Mentions 
+## Social Mentions
 
 <i>Coming soon.</i>
 
@@ -23,7 +22,7 @@ This page explains the key popularity metrics tracked by LFX Insights. These ind
 
 **Why it matters:** Social mentions show real-time buzz and community conversations, signaling current relevance and visibility.
 
-## GitHub Mentions 
+## GitHub Mentions
 
 <i>Coming soon.</i>
 
@@ -35,7 +34,7 @@ This page explains the key popularity metrics tracked by LFX Insights. These ind
 
 <i>Coming soon.</i>
 
-**What it is:** The number of times the project is mentioned in online news outlets, blogs, and tech media. 
+**What it is:** The number of times the project is mentioned in online news outlets, blogs, and tech media.
 
 **Why it matters:** Press mentions reflect broader industry attention and can drive credibility and adoption beyond the developer community.
 
@@ -46,14 +45,16 @@ This page explains the key popularity metrics tracked by LFX Insights. These ind
 **Why it matters:** Search trends indicate public interest and awareness. A rising number of queries often correlates with growing adoption.
 
 #### How the Data Is Collected
+
 To estimate search volume, we use a third-party API that provides monthly search trends for Google Search.
 
 For each project:
+
 - The project's slug (e.g., linux, datahub) is used as the query term. This assumes the slug most accurately reflects the name users would search for.
 - Query the API endpoint to return the monthly search volume estimates for the last 12 months.
 - The historical aggregation is designed to be run monthly. Each run captures a rolling 12-month window.
 
-*Note: Historical data before June 2024 is unavailable, as we initiated data collection in June 2025.*
+_Note: Historical data before June 2024 is unavailable, as we initiated data collection in June 2025._
 
 ## Package Downloads
 
@@ -62,16 +63,18 @@ For each project:
 **Why it matters:** High download counts are a strong signal of adoption and usage. They indicate how widely the project is being installed, integrated, and potentially relied upon by users and systems in the ecosystem.
 
 #### How the Data Is Collected
+
 Package download data is retrieved using the [ecosyste.ms](https://ecosyste.ms/) API.
 
 For each project repository:
+
 - Query the ecosyste.ms `/packages/lookup` endpoint to retrieve all packages linked to that repository.
 - For each package, it pulls the `downloads_count` (downloads from the primary registry) and `docker_downloads_count` (if applicable).
 - The historical aggregation is designed to be run daily. Each run captures a rolling 24-hours window.
 
 These values are aggregated and stored, grouped by registry and package name.
 
-*Note: Historical data prior to June 1, 2025 is unavailable, as data collection began on that date.*
+_Note: Historical data prior to June 1, 2025 is unavailable, as data collection began on that date._
 
 ## Package Dependency
 
@@ -80,24 +83,26 @@ These values are aggregated and stored, grouped by registry and package name.
 **Why it matters:** Dependency data is a proxy for influence and integration within the software ecosystem. If many other projects or containers depend on a package, it suggests trust, stability, and criticality.
 
 #### How the Data Is Collected
+
 Package download data is retrieved using the [ecosyste.ms](https://ecosyste.ms/) API.
 
 For each project repository:
+
 - Query the ecosyste.ms API to retrieve associated packages across various registries.
 - For each package, it collects:
-    - `dependent_repos_count`: Number of repositories that depend on the package.
-    - `dependent_packages_count`: Number of packages that list this package as a dependency.
-    - `docker_dependents_count`: Number of Docker images that rely on the package.
+  - `dependent_repos_count`: Number of repositories that depend on the package.
+  - `dependent_packages_count`: Number of packages that list this package as a dependency.
+  - `docker_dependents_count`: Number of Docker images that rely on the package.
 - The historical aggregation is designed to be run daily. Each run captures a rolling 24-hours window.
 
 These values are aggregated and stored, grouped by registry and package name.
 
-*Historical data prior to June 1, 2025 is unavailable, as data collection began on that date.*
+_Historical data prior to June 1, 2025 is unavailable, as data collection began on that date._
 
 ## Mailing List Messages
 
 <i>This metric is only available for selected projects of the Linux Foundation.</i>
 
-**What it is:** The number of messages exchanged on the project’s public mailing lists. 
+**What it is:** The number of messages exchanged on the project’s public mailing lists.
 
 **Why it matters:** Mailing list activity reflects the depth and frequency of technical discussions, support requests, and community coordination.

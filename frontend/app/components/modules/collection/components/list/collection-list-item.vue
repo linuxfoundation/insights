@@ -3,7 +3,7 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <nuxt-link :to="{name: LfxRoutes.COLLECTION, params: {slug: props.collection.slug}}">
+  <nuxt-link :to="{ name: LfxRoutes.COLLECTION, params: { slug: props.collection.slug } }">
     <lfx-card class="p-5 md:p-6 hover:shadow-sm transition-all">
       <div class="flex justify-between flex-col lg:flex-row items-start gap-4">
         <div>
@@ -44,10 +44,9 @@ SPDX-License-Identifier: MIT
           </article>
           <lfx-tooltip
             v-if="props.collection.softwareValue"
-            :content="
-              `Aggregated software value of $${
-                formatNumberShort(props.collection.softwareValue)
-              } according to Constructive Cost Model (COCOMO)`"
+            :content="`Aggregated software value of $${formatNumberShort(
+              props.collection.softwareValue,
+            )} according to Constructive Cost Model (COCOMO)`"
           >
             <article
               v-if="props.collection.softwareValue"
@@ -72,18 +71,16 @@ SPDX-License-Identifier: MIT
         v-if="props.collection.featuredProjects.length > 0"
         class="pt-4 md:pt-6"
       >
-        <p class="text-neutral-400 text-body-2 font-medium pb-2">
-          Featured projects
-        </p>
-        <div
-          class="flex flex-wrap gap-3"
-        >
+        <p class="text-neutral-400 text-body-2 font-medium pb-2">Featured projects</p>
+        <div class="flex flex-wrap gap-3">
           <lfx-chip
             v-for="project of props.collection.featuredProjects"
             :key="project.slug"
             type="bordered"
             class="transition hover:bg-neutral-100"
-            @click.prevent="router.push({name: LfxRoutes.PROJECT, params: {slug: project.slug}})"
+            @click.prevent="
+              router.push({ name: LfxRoutes.PROJECT, params: { slug: project.slug } })
+            "
           >
             <lfx-avatar
               :src="project.logo"
@@ -95,33 +92,31 @@ SPDX-License-Identifier: MIT
           </lfx-chip>
         </div>
       </section>
-
     </lfx-card>
   </nuxt-link>
 </template>
 
 <script setup lang="ts">
-import {useRouter} from "nuxt/app";
-import pluralize from "pluralize";
-import type {Collection} from "~~/types/collection";
-import LfxCard from "~/components/uikit/card/card.vue";
-import LfxChip from "~/components/uikit/chip/chip.vue";
-import LfxAvatar from "~/components/uikit/avatar/avatar.vue";
-import LfxIcon from "~/components/uikit/icon/icon.vue";
-import {LfxRoutes} from "~/components/shared/types/routes";
-import {formatNumber, formatNumberShort} from "~/components/shared/utils/formatter";
-import LfxTooltip from "~/components/uikit/tooltip/tooltip.vue";
+import { useRouter } from 'nuxt/app';
+import pluralize from 'pluralize';
+import type { Collection } from '~~/types/collection';
+import LfxCard from '~/components/uikit/card/card.vue';
+import LfxChip from '~/components/uikit/chip/chip.vue';
+import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import { LfxRoutes } from '~/components/shared/types/routes';
+import { formatNumber, formatNumberShort } from '~/components/shared/utils/formatter';
+import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
 
 const props = defineProps<{
   collection: Collection;
-}>()
+}>();
 
 const router = useRouter();
-
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxCollectionListItem'
-}
+  name: 'LfxCollectionListItem',
+};
 </script>

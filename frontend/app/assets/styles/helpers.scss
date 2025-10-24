@@ -3,7 +3,7 @@
 /* ---------------------------------- *\
             Helpers
 \* ---------------------------------- */
-@use "sass:math";
+@use 'sass:math';
 
 /* responsive font-size */
 @function toRem($size, $base: 16) {

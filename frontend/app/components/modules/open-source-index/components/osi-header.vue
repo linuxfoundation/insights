@@ -17,9 +17,7 @@ SPDX-License-Identifier: MIT
             </p>
           </div>
         </div>
-        <div
-          class="lg:flex hidden items-end gap-4 justify-end"
-        >
+        <div class="lg:flex hidden items-end gap-4 justify-end">
           <div class="border-r border-neutral-200 pr-4">
             <lfx-tabs
               :tabs="viewTabs"
@@ -49,7 +47,9 @@ SPDX-License-Identifier: MIT
         </div>
       </div>
     </section>
-    <section class="container border-t border-t-neutral-100 py-2 sm:py-4 flex justify-between items-center">
+    <section
+      class="container border-t border-t-neutral-100 py-2 sm:py-4 flex justify-between items-center"
+    >
       <slot>
         <div class="hidden items-center gap-4 md:flex">
           <lfx-menu-button
@@ -88,9 +88,9 @@ SPDX-License-Identifier: MIT
             width="12.5rem"
             placement="bottom-start"
           >
-            <template #trigger="{selectedOption}">
+            <template #trigger="{ selectedOption }">
               <lfx-dropdown-selector class="justify-between">
-                {{selectedOption.label}}
+                {{ selectedOption.label }}
               </lfx-dropdown-selector>
             </template>
             <lfx-dropdown-item
@@ -118,14 +118,14 @@ SPDX-License-Identifier: MIT
         width="12.5rem"
         placement="bottom-end"
       >
-        <template #trigger="{selectedOption}">
+        <template #trigger="{ selectedOption }">
           <lfx-dropdown-selector class="justify-between">
             <div class="flex items-center gap-2">
               <lfx-icon
                 name="arrow-down-wide-short"
                 :size="16"
               />
-              {{selectedOption.label}}
+              {{ selectedOption.label }}
             </div>
           </lfx-dropdown-selector>
         </template>
@@ -152,22 +152,21 @@ SPDX-License-Identifier: MIT
     </section>
   </div>
   <!-- </lfx-maintain-height> -->
-
 </template>
 
 <script setup lang="ts">
-import {computed, watch} from 'vue';
-import {useRoute, useRouter} from 'nuxt/app';
+import { computed, watch } from 'vue';
+import { useRoute, useRouter } from 'nuxt/app';
 import type { SortType } from '../services/osi.api.service';
-import LfxDropdownSelector from "~/components/uikit/dropdown/dropdown-selector.vue";
-import LfxDropdownSelect from "~/components/uikit/dropdown/dropdown-select.vue";
-import LfxIcon from "~/components/uikit/icon/icon.vue";
-import LfxDropdownItem from "~/components/uikit/dropdown/dropdown-item.vue";
-import LfxTabs from "~/components/uikit/tabs/tabs.vue";
-import {useShareStore} from "~/components/shared/modules/share/store/share.store";
-import LfxMenuButton from "~/components/uikit/menu-button/menu-button.vue";
-import LfxButton from "~/components/uikit/button/button.vue";
-import {LfxRoutes} from "~/components/shared/types/routes";
+import LfxDropdownSelector from '~/components/uikit/dropdown/dropdown-selector.vue';
+import LfxDropdownSelect from '~/components/uikit/dropdown/dropdown-select.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
+import LfxTabs from '~/components/uikit/tabs/tabs.vue';
+import { useShareStore } from '~/components/shared/modules/share/store/share.store';
+import LfxMenuButton from '~/components/uikit/menu-button/menu-button.vue';
+import LfxButton from '~/components/uikit/button/button.vue';
+import { LfxRoutes } from '~/components/shared/types/routes';
 
 const props = defineProps<{
   type?: string;
@@ -176,7 +175,8 @@ const props = defineProps<{
   isRoot?: boolean;
 }>();
 
-const emit = defineEmits<{(e: 'update:type' | 'update:sort' | 'update:view', type: string): void
+const emit = defineEmits<{
+  (e: 'update:type' | 'update:sort' | 'update:view', type: string): void;
 }>();
 
 const router = useRouter();
@@ -198,17 +198,17 @@ const viewTabs = [
 
 const sort = computed({
   get: () => props.sort,
-  set: (value) => emit('update:sort', value)
+  set: (value) => emit('update:sort', value),
 });
 
 const type = computed({
   get: () => props.type,
-  set: (value) => emit('update:type', value)
+  set: (value) => emit('update:type', value),
 });
 
 const view = computed({
   get: () => props.view,
-  set: (value) => emit('update:view', value)
+  set: (value) => emit('update:view', value),
 });
 
 const share = () => {
@@ -219,8 +219,8 @@ const share = () => {
 
   openShareModal({
     url: url.toString(),
-    title
-  })
+    title,
+  });
 };
 
 watch(sort, (newVal) => {
@@ -229,8 +229,8 @@ watch(sort, (newVal) => {
       ...route,
       query: {
         ...route.query,
-        sort: newVal
-      }
+        sort: newVal,
+      },
     });
   }
 });
@@ -241,8 +241,8 @@ watch(type, (newVal) => {
       ...route,
       query: {
         ...route.query,
-        type: newVal
-      }
+        type: newVal,
+      },
     });
   }
 });
@@ -254,27 +254,33 @@ watch(view, (newVal) => {
       name: LfxRoutes.OPENSOURCEINDEX,
       query: {
         ...route.query,
-        view: newVal
-      }
+        view: newVal,
+      },
     });
   }
 });
 
-watch(() => props.type, (newVal) => {
-  if(newVal !== 'projects'){
-    sort.value = 'totalContributors';
-  }
-})
+watch(
+  () => props.type,
+  (newVal) => {
+    if (newVal !== 'projects') {
+      sort.value = 'totalContributors';
+    }
+  },
+);
 
-watch(() => props.view, (val: string) => {
-  if (val === 'distribution' && !['vertical', 'horizontal'].includes(type.value)) {
-    type.value = 'horizontal';
-  }
-});
+watch(
+  () => props.view,
+  (val: string) => {
+    if (val === 'distribution' && !['vertical', 'horizontal'].includes(type.value)) {
+      type.value = 'horizontal';
+    }
+  },
+);
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxOsiHeader'
+  name: 'LfxOsiHeader',
 };
 </script>

@@ -44,36 +44,47 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import type { OSSIndexCategoryGroup } from '~~/types/ossindex/category-group';
 import type {
-  OSSIndexCategoryGroup,
-} from '~~/types/ossindex/category-group';
-import type { SortType, OSIType } from '~/components/modules/open-source-index/services/osi.api.service';
+  SortType,
+  OSIType,
+} from '~/components/modules/open-source-index/services/osi.api.service';
 import { formatNumber, formatNumberCurrency } from '~/components/shared/utils/formatter';
 import { LfxRoutes } from '~/components/shared/types/routes';
 
 const props = defineProps<{
-  data: OSSIndexCategoryGroup[] | undefined,
-  sort: SortType
-  type: OSIType
+  data: OSSIndexCategoryGroup[] | undefined;
+  sort: SortType;
+  type: OSIType;
 }>();
 
-const maxValue = computed(() => props.data?.reduce((acc, curr) => Math.max(
-acc,
-  props.sort === 'totalContributors' ? curr.totalContributors : curr.softwareValue
-), 0));
+const maxValue = computed(() =>
+  props.data?.reduce(
+    (acc, curr) =>
+      Math.max(
+        acc,
+        props.sort === 'totalContributors' ? curr.totalContributors : curr.softwareValue,
+      ),
+    0,
+  ),
+);
 
 const calculatePercentage = (item: OSSIndexCategoryGroup) => {
   const value = props.sort === 'totalContributors' ? item.totalContributors : item.softwareValue;
   return maxValue.value ? (value / maxValue.value) * 100 : 0;
 };
 
-const exploreLinkText = computed(() => (props.type === 'horizontal' ? 'Explore all stacks' : 'Explore all industries'));
-const exploreLink = computed(() => `${LfxRoutes.OPENSOURCEINDEX}${props.type === 'horizontal'
-  ? '?type=horizontal' : '?type=vertical'}`);
+const exploreLinkText = computed(() =>
+  props.type === 'horizontal' ? 'Explore all stacks' : 'Explore all industries',
+);
+const exploreLink = computed(
+  () =>
+    `${LfxRoutes.OPENSOURCEINDEX}${props.type === 'horizontal' ? '?type=horizontal' : '?type=vertical'}`,
+);
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxExploreSourceIndexProgress'
+  name: 'LfxExploreSourceIndexProgress',
 };
 </script>

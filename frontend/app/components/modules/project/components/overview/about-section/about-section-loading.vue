@@ -36,6 +36,6 @@ defineProps<{
 
 <script lang="ts">
 export default {
-  name: 'LfxProjectAboutSectionLoading'
+  name: 'LfxProjectAboutSectionLoading',
 };
 </script>

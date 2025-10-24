@@ -34,5 +34,5 @@ export const platforms: Record<string, PlatformConfig> = {
   reddit,
   slack,
   stackoverflow,
-  twitter
+  twitter,
 };

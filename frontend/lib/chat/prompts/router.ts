@@ -1,7 +1,6 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-/* eslint-disable max-len */
-/* eslint-disable vue/max-len */
+
 export const routerPrompt = (
   date: string,
   projectName: string,
@@ -13,9 +12,9 @@ export const routerPrompt = (
 ) => {
   const dashboardDescription = pipe
     ? `Project "${projectName}" using ${pipe} tool with parameters: ${parametersString}`
-    : `Project "${projectName}"${parametersString ? ` with parameters: ${parametersString}` : ''}`
+    : `Project "${projectName}"${parametersString ? ` with parameters: ${parametersString}` : ''}`;
 
-  const pipeToolQuestion = pipe ? `- Can ${pipe} tool answer this with different parameters?` : ''
+  const pipeToolQuestion = pipe ? `- Can ${pipe} tool answer this with different parameters?` : '';
 
   const clarificationWarning = previousWasClarification
     ? `\n\n## ⚠️ IMPORTANT: CLARIFICATION LOOP PREVENTION
@@ -29,7 +28,7 @@ CRITICAL RULES:
 - **NEVER** create a clarification loop by repeatedly asking for clarification
 
 The user has already provided clarification. Work with what you have.`
-    : ''
+    : '';
 
   return `You are a routing agent that analyzes user questions and determines the appropriate next action. Your job is to evaluate questions and decide whether they can be answered with existing tools, need custom queries, or cannot be answered.${clarificationWarning}
 
@@ -240,5 +239,5 @@ It must be something user-friendly.
 - Should offer options or examples when appropriate
 - Must be conversational and friendly
 - Always check for historical context: if with historical context the question is clear, do NOT ask for clarification
-`
-}
+`;
+};

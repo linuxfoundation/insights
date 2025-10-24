@@ -1,11 +1,11 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 
-import type { QueryFunction } from '@tanstack/vue-query'
-import { type ComputedRef, computed } from 'vue'
-import { useQuery } from '@tanstack/vue-query'
-import { TanstackKey } from '~/components/shared/types/tanstack'
-import type { ActiveDays } from '~~/types/development/responses.types'
+import type { QueryFunction } from '@tanstack/vue-query';
+import { type ComputedRef, computed } from 'vue';
+import { useQuery } from '@tanstack/vue-query';
+import { TanstackKey } from '~/components/shared/types/tanstack';
+import type { ActiveDays } from '~~/types/development/responses.types';
 import type {
   ContributionOutsideHours,
   CodeReviewEngagement,
@@ -15,26 +15,26 @@ import type {
   PullRequests,
   ReviewTimeByPrItem,
   WaitTime1stReview,
-} from '~~/types/development/responses.types'
-import type { CommitActivities } from '~~/types/popularity/responses.types'
+} from '~~/types/development/responses.types';
+import type { CommitActivities } from '~~/types/popularity/responses.types';
 
 export interface QueryParams {
-  projectSlug: string
-  granularity: string
-  repos?: string[]
-  startDate: string | null
-  endDate: string | null
-  includeCollaborations?: boolean
+  projectSlug: string;
+  granularity: string;
+  repos?: string[];
+  startDate: string | null;
+  endDate: string | null;
+  includeCollaborations?: boolean;
 }
 
 export interface CodeReviewEngagementQueryParams extends QueryParams {
-  metric: string
+  metric: string;
 }
 
 export interface CommitActivitiesQueryParams extends QueryParams {
-  type: string
-  countType: string
-  activityType: string
+  type: string;
+  countType: string;
+  activityType: string;
 }
 
 class DevelopmentApiService {
@@ -47,7 +47,7 @@ class DevelopmentApiService {
       params.value.startDate,
       params.value.endDate,
       params.value.includeCollaborations,
-    ])
+    ]);
     const queryFn = computed<QueryFunction<ActiveDays>>(() =>
       this.activeDaysQueryFn(() => ({
         projectSlug: params.value.projectSlug,
@@ -57,12 +57,12 @@ class DevelopmentApiService {
         endDate: params.value.endDate,
         includeCollaborations: params.value.includeCollaborations,
       })),
-    )
+    );
 
     return useQuery<ActiveDays>({
       queryKey,
       queryFn,
-    })
+    });
   }
 
   fetchContributionsOutsideWorkHours(params: ComputedRef<QueryParams>) {
@@ -73,7 +73,7 @@ class DevelopmentApiService {
       params.value.startDate,
       params.value.endDate,
       params.value.includeCollaborations,
-    ])
+    ]);
     const queryFn = computed<QueryFunction<ContributionOutsideHours>>(() =>
       this.contributionsOutsideWorkHoursQueryFn(() => ({
         projectSlug: params.value.projectSlug,
@@ -82,12 +82,12 @@ class DevelopmentApiService {
         endDate: params.value.endDate,
         includeCollaborations: params.value.includeCollaborations,
       })),
-    )
+    );
 
     return useQuery<ContributionOutsideHours>({
       queryKey,
       queryFn,
-    })
+    });
   }
 
   fetchAverageTimeMerge(params: ComputedRef<QueryParams>) {
@@ -98,7 +98,7 @@ class DevelopmentApiService {
       params.value.repos,
       params.value.startDate,
       params.value.endDate,
-    ])
+    ]);
     const queryFn = computed<QueryFunction<AverageTimeMerge>>(() =>
       this.averageTimeMergeQueryFn(() => ({
         projectSlug: params.value.projectSlug,
@@ -107,12 +107,12 @@ class DevelopmentApiService {
         startDate: params.value.startDate,
         endDate: params.value.endDate,
       })),
-    )
+    );
 
     return useQuery<AverageTimeMerge>({
       queryKey,
       queryFn,
-    })
+    });
   }
 
   fetchCodeReviewEngagement(params: ComputedRef<CodeReviewEngagementQueryParams>) {
@@ -123,7 +123,7 @@ class DevelopmentApiService {
       params.value.repos,
       params.value.startDate,
       params.value.endDate,
-    ])
+    ]);
     const queryFn = computed<QueryFunction<CodeReviewEngagement>>(() =>
       this.codeReviewEngagementQueryFn(() => ({
         projectSlug: params.value.projectSlug,
@@ -132,12 +132,12 @@ class DevelopmentApiService {
         startDate: params.value.startDate,
         endDate: params.value.endDate,
       })),
-    )
+    );
 
     return useQuery<CodeReviewEngagement>({
       queryKey,
       queryFn,
-    })
+    });
   }
 
   fetchCommitActivities(params: ComputedRef<CommitActivitiesQueryParams>) {
@@ -151,7 +151,7 @@ class DevelopmentApiService {
       params.value.repos,
       params.value.startDate,
       params.value.endDate,
-    ])
+    ]);
     const queryFn = computed<QueryFunction<CommitActivities>>(() =>
       this.commitActivitiesQueryFn(() => ({
         projectSlug: params.value.projectSlug,
@@ -163,12 +163,12 @@ class DevelopmentApiService {
         startDate: params.value.startDate,
         endDate: params.value.endDate,
       })),
-    )
+    );
 
     return useQuery<CommitActivities>({
       queryKey,
       queryFn,
-    })
+    });
   }
 
   fetchIssuesResolution(params: ComputedRef<QueryParams>) {
@@ -179,7 +179,7 @@ class DevelopmentApiService {
       params.value.repos,
       params.value.startDate,
       params.value.endDate,
-    ])
+    ]);
     const queryFn = computed<QueryFunction<IssuesResolution>>(() =>
       this.issuesResolutionQueryFn(() => ({
         projectSlug: params.value.projectSlug,
@@ -188,12 +188,12 @@ class DevelopmentApiService {
         startDate: params.value.startDate,
         endDate: params.value.endDate,
       })),
-    )
+    );
 
     return useQuery<IssuesResolution>({
       queryKey,
       queryFn,
-    })
+    });
   }
 
   fetchMergeLeadTime(params: ComputedRef<QueryParams>) {
@@ -203,7 +203,7 @@ class DevelopmentApiService {
       params.value.repos,
       params.value.startDate,
       params.value.endDate,
-    ])
+    ]);
     const queryFn = computed<QueryFunction<MergeLeadTime>>(() =>
       this.mergeLeadTimeQueryFn(() => ({
         projectSlug: params.value.projectSlug,
@@ -211,12 +211,12 @@ class DevelopmentApiService {
         startDate: params.value.startDate,
         endDate: params.value.endDate,
       })),
-    )
+    );
 
     return useQuery<MergeLeadTime>({
       queryKey,
       queryFn,
-    })
+    });
   }
 
   fetchPullRequests(params: ComputedRef<QueryParams>) {
@@ -227,7 +227,7 @@ class DevelopmentApiService {
       params.value.repos,
       params.value.startDate,
       params.value.endDate,
-    ])
+    ]);
     const queryFn = computed<QueryFunction<PullRequests>>(() =>
       this.pullRequestsQueryFn(() => ({
         projectSlug: params.value.projectSlug,
@@ -236,12 +236,12 @@ class DevelopmentApiService {
         startDate: params.value.startDate,
         endDate: params.value.endDate,
       })),
-    )
+    );
 
     return useQuery<PullRequests>({
       queryKey,
       queryFn,
-    })
+    });
   }
 
   fetchReviewTimeByPrSize(params: ComputedRef<QueryParams>) {
@@ -251,7 +251,7 @@ class DevelopmentApiService {
       params.value.repos,
       params.value.startDate,
       params.value.endDate,
-    ])
+    ]);
     const queryFn = computed<QueryFunction<ReviewTimeByPrItem[]>>(() =>
       this.reviewTimeByPrSizeQueryFn(() => ({
         projectSlug: params.value.projectSlug,
@@ -259,12 +259,12 @@ class DevelopmentApiService {
         startDate: params.value.startDate,
         endDate: params.value.endDate,
       })),
-    )
+    );
 
     return useQuery<ReviewTimeByPrItem[]>({
       queryKey,
       queryFn,
-    })
+    });
   }
 
   fetchWaitTimeFirstReview(params: ComputedRef<QueryParams>) {
@@ -275,7 +275,7 @@ class DevelopmentApiService {
       params.value.repos,
       params.value.startDate,
       params.value.endDate,
-    ])
+    ]);
     const queryFn = computed<QueryFunction<WaitTime1stReview>>(() =>
       this.waitTimeFirstReviewQueryFn(() => ({
         projectSlug: params.value.projectSlug,
@@ -284,18 +284,18 @@ class DevelopmentApiService {
         startDate: params.value.startDate,
         endDate: params.value.endDate,
       })),
-    )
+    );
 
     return useQuery<WaitTime1stReview>({
       queryKey,
       queryFn,
-    })
+    });
   }
 
   activeDaysQueryFn(
     query: () => Record<string, string | number | boolean | undefined | string[] | null>,
   ): QueryFunction<ActiveDays> {
-    const { projectSlug, repos, granularity, startDate, endDate, includeCollaborations } = query()
+    const { projectSlug, repos, granularity, startDate, endDate, includeCollaborations } = query();
     return async () =>
       await $fetch(`/api/project/${projectSlug}/development/active-days`, {
         params: {
@@ -305,13 +305,13 @@ class DevelopmentApiService {
           endDate,
           includeCollaborations,
         },
-      })
+      });
   }
 
   contributionsOutsideWorkHoursQueryFn(
     query: () => Record<string, string | number | boolean | undefined | string[] | null>,
   ): QueryFunction<ContributionOutsideHours> {
-    const { projectSlug, repos, startDate, endDate, includeCollaborations } = query()
+    const { projectSlug, repos, startDate, endDate, includeCollaborations } = query();
     return async () =>
       await $fetch(`/api/project/${projectSlug}/development/contribution-outside`, {
         params: {
@@ -320,13 +320,13 @@ class DevelopmentApiService {
           endDate,
           includeCollaborations,
         },
-      })
+      });
   }
 
   averageTimeMergeQueryFn(
     query: () => Record<string, string | number | boolean | undefined | string[] | null>,
   ): QueryFunction<AverageTimeMerge> {
-    const { projectSlug, repos, granularity, startDate, endDate } = query()
+    const { projectSlug, repos, granularity, startDate, endDate } = query();
     return async () =>
       await $fetch(`/api/project/${projectSlug}/development/average-time-merge`, {
         params: {
@@ -335,13 +335,13 @@ class DevelopmentApiService {
           startDate,
           endDate,
         },
-      })
+      });
   }
 
   codeReviewEngagementQueryFn(
     query: () => Record<string, string | number | boolean | undefined | string[] | null>,
   ): QueryFunction<CodeReviewEngagement> {
-    const { projectSlug, repos, metric, startDate, endDate } = query()
+    const { projectSlug, repos, metric, startDate, endDate } = query();
     return async () =>
       await $fetch(`/api/project/${projectSlug}/development/code-review-engagement`, {
         params: {
@@ -350,14 +350,14 @@ class DevelopmentApiService {
           startDate,
           endDate,
         },
-      })
+      });
   }
 
   commitActivitiesQueryFn(
     query: () => Record<string, string | number | boolean | undefined | string[] | null>,
   ): QueryFunction<CommitActivities> {
     const { projectSlug, repos, granularity, type, countType, activityType, startDate, endDate } =
-      query()
+      query();
     return async () =>
       await $fetch(`/api/project/${projectSlug}/development/commit-activities`, {
         params: {
@@ -369,13 +369,13 @@ class DevelopmentApiService {
           startDate,
           endDate,
         },
-      })
+      });
   }
 
   issuesResolutionQueryFn(
     query: () => Record<string, string | number | boolean | undefined | string[] | null>,
   ): QueryFunction<IssuesResolution> {
-    const { projectSlug, repos, granularity, startDate, endDate } = query()
+    const { projectSlug, repos, granularity, startDate, endDate } = query();
     return async () =>
       await $fetch(`/api/project/${projectSlug}/development/issues-resolution`, {
         params: {
@@ -384,13 +384,13 @@ class DevelopmentApiService {
           startDate,
           endDate,
         },
-      })
+      });
   }
 
   mergeLeadTimeQueryFn(
     query: () => Record<string, string | number | boolean | undefined | string[] | null>,
   ): QueryFunction<MergeLeadTime> {
-    const { projectSlug, repos, startDate, endDate } = query()
+    const { projectSlug, repos, startDate, endDate } = query();
     return async () =>
       await $fetch(`/api/project/${projectSlug}/development/merge-lead-time`, {
         params: {
@@ -398,13 +398,13 @@ class DevelopmentApiService {
           startDate,
           endDate,
         },
-      })
+      });
   }
 
   pullRequestsQueryFn(
     query: () => Record<string, string | number | boolean | undefined | string[] | null>,
   ): QueryFunction<PullRequests> {
-    const { projectSlug, repos, granularity, startDate, endDate } = query()
+    const { projectSlug, repos, granularity, startDate, endDate } = query();
     return async () =>
       await $fetch(`/api/project/${projectSlug}/development/pull-requests`, {
         params: {
@@ -413,13 +413,13 @@ class DevelopmentApiService {
           startDate,
           endDate,
         },
-      })
+      });
   }
 
   reviewTimeByPrSizeQueryFn(
     query: () => Record<string, string | number | boolean | undefined | string[] | null>,
   ): QueryFunction<ReviewTimeByPrItem[]> {
-    const { projectSlug, repos, startDate, endDate } = query()
+    const { projectSlug, repos, startDate, endDate } = query();
     return async () =>
       await $fetch(`/api/project/${projectSlug}/development/review-time-by-pr-size`, {
         params: {
@@ -427,13 +427,13 @@ class DevelopmentApiService {
           startDate,
           endDate,
         },
-      })
+      });
   }
 
   waitTimeFirstReviewQueryFn(
     query: () => Record<string, string | number | boolean | undefined | string[] | null>,
   ): QueryFunction<WaitTime1stReview> {
-    const { projectSlug, repos, granularity, startDate, endDate } = query()
+    const { projectSlug, repos, granularity, startDate, endDate } = query();
     return async () =>
       await $fetch(`/api/project/${projectSlug}/development/wait-time-1st-review`, {
         params: {
@@ -442,8 +442,8 @@ class DevelopmentApiService {
           startDate,
           endDate,
         },
-      })
+      });
   }
 }
 
-export const DEVELOPMENT_API_SERVICE = new DevelopmentApiService()
+export const DEVELOPMENT_API_SERVICE = new DevelopmentApiService();

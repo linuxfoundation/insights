@@ -20,7 +20,8 @@ SPDX-License-Identifier: MIT
         <span
           v-if="link.showLabel"
           class="text-sm font-medium"
-        >{{link.label}}</span>
+          >{{ link.label }}</span
+        >
       </lfx-widget-menu-item>
 
       <template #content>
@@ -35,18 +36,18 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script lang="ts" setup>
-import {ref, watch} from "vue";
-import type { MenuItem } from "./widget-menu.vue";
-import LfxIcon from "~/components/uikit/icon/icon.vue";
-import LfxPopover from "~/components/uikit/popover/popover.vue";
+import { ref, watch } from 'vue';
+import type { MenuItem } from './widget-menu.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxPopover from '~/components/uikit/popover/popover.vue';
 
 const emit = defineEmits<{
-  (e: 'update:isPopoverMenuClicked', value: boolean): void
+  (e: 'update:isPopoverMenuClicked', value: boolean): void;
 }>();
 const isOpen = ref(false);
 defineProps<{
-  link: MenuItem,
-  widgetName: string
+  link: MenuItem;
+  widgetName: string;
 }>();
 
 // Watch for changes to isOpen and emit the event

@@ -46,62 +46,64 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
-import type { MessageData } from '../types/copilot.types'
+import type { MessageData } from '../types/copilot.types';
 import { useCopilotStore } from '../store/copilot.store';
-import LfxModal from '~/components/uikit/modal/modal.vue'
-import LfxCopilotSidebar from "~/components/shared/modules/copilot/components/copilot-sidebar.vue"
-import LfxCopilotResultsSection from "~/components/shared/modules/copilot/components/results/results-section.vue"
+import LfxModal from '~/components/uikit/modal/modal.vue';
+import LfxCopilotSidebar from '~/components/shared/modules/copilot/components/copilot-sidebar.vue';
+import LfxCopilotResultsSection from '~/components/shared/modules/copilot/components/results/results-section.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 
 const props = defineProps<{
-  modelValue: boolean
-}>()
+  modelValue: boolean;
+}>();
 
 const { resultData, selectedResultId } = storeToRefs(useCopilotStore());
 const { resetResultData } = useCopilotStore();
-
 
 const isLoading = ref(false);
 const isChartLoading = ref(false);
 
 const emit = defineEmits<{
-  'update:modelValue': [value: boolean]
-}>()
+  'update:modelValue': [value: boolean];
+}>();
 
 const isModalOpen = computed({
   get() {
-    return props.modelValue
+    return props.modelValue;
   },
   set(value: boolean) {
-    emit('update:modelValue', value)
-  }
-})
+    emit('update:modelValue', value);
+  },
+});
 
 const handleDataUpdate = (id: string, data: MessageData[], conversationId?: string) => {
   resultData.value.push({
     id,
     data,
-    conversationId
+    conversationId,
   });
 
-
   if (selectedResultId.value === null) {
-    const withData = resultData.value.find(result => result.data.length > 0);
+    const withData = resultData.value.find((result) => result.data.length > 0);
     selectedResultId.value = withData?.id || null;
   }
-}
+};
 
-watch(isModalOpen, (value) => {
-  if (value) {
-    resetResultData();
-  }
-}, { immediate: true })
+watch(
+  isModalOpen,
+  (value) => {
+    if (value) {
+      resetResultData();
+    }
+  },
+  { immediate: true },
+);
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxCopilotModal'
-}
+  name: 'LfxCopilotModal',
+};
 </script>

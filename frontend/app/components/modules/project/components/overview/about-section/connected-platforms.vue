@@ -10,13 +10,12 @@ SPDX-License-Identifier: MIT
     <div class="flex items-center">
       <div class="border-b border-neutral-200 flex-grow" />
       <div class="px-4 flex items-center gap-2">
-        <p class="text-xs font-semibold leading-5 text-neutral-400">
-          Data sources
-        </p>
+        <p class="text-xs font-semibold leading-5 text-neutral-400">Data sources</p>
         <lfx-tooltip>
           <template #content>
             <p class="text-center">
-              The connected data sources used to<br> generate insights for this project
+              The connected data sources used to<br />
+              generate insights for this project
             </p>
           </template>
           <lfx-icon
@@ -39,7 +38,7 @@ SPDX-License-Identifier: MIT
           :src="platform.image"
           :alt="platform.label"
           class="w-3.5 h-3.5 object-contain"
-        >
+        />
         {{ platform.label }}
       </lfx-tag>
     </div>
@@ -47,31 +46,32 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import {storeToRefs} from 'pinia';
-import {computed} from "vue";
-import {useProjectStore} from '~~/app/components/modules/project/store/project.store';
-import {platforms} from "~/config/platforms";
-import LfxTooltip from "~/components/uikit/tooltip/tooltip.vue";
-import LfxIcon from "~/components/uikit/icon/icon.vue";
-import LfxTag from "~/components/uikit/tag/tag.vue";
+import { storeToRefs } from 'pinia';
+import { computed } from 'vue';
+import { useProjectStore } from '~~/app/components/modules/project/store/project.store';
+import { platforms } from '~/config/platforms';
+import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxTag from '~/components/uikit/tag/tag.vue';
 
-const {project} = storeToRefs(useProjectStore())
+const { project } = storeToRefs(useProjectStore());
 
 const connected = computed(() => {
-  const platformList = (project.value?.connectedPlatforms || [])
-      .map((platform) => platform.split('-').at(0) || platform);
+  const platformList = (project.value?.connectedPlatforms || []).map(
+    (platform) => platform.split('-').at(0) || platform,
+  );
   const uniquePlatforms = [...new Set(platformList)];
   return uniquePlatforms
-      .map((platform) => ({
-        platform,
-        ...platforms[platform],
-      }))
-      .filter((platform) => !!platform.label)
-})
+    .map((platform) => ({
+      platform,
+      ...platforms[platform],
+    }))
+    .filter((platform) => !!platform.label);
+});
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxProjectAboutSectionConnectedPlatforms'
+  name: 'LfxProjectAboutSectionConnectedPlatforms',
 };
 </script>

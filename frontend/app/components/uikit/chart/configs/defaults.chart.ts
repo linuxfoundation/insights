@@ -129,7 +129,8 @@ export const minHours = (value: { min: number; max: number }) => {
   const stepMinutes = Math.ceil(rangeMinutes / 5);
 
   // Round step to nearest hour if > 2 hours, otherwise keep in minutes
-  const roundedStepMinutes = stepMinutes > 120 ? Math.ceil(stepMinutes / 60) * 60 : Math.ceil(stepMinutes / 15) * 15;
+  const roundedStepMinutes =
+    stepMinutes > 120 ? Math.ceil(stepMinutes / 60) * 60 : Math.ceil(stepMinutes / 15) * 15;
 
   // Convert back to hours
   return Math.max(0, (minMinutes - roundedStepMinutes) / 60);
@@ -145,7 +146,8 @@ export const maxHours = (value: { min: number; max: number }) => {
   const stepMinutes = Math.ceil(rangeMinutes / 5);
 
   // Round step to nearest hour if > 2 hours, otherwise keep in minutes
-  const roundedStepMinutes = stepMinutes > 120 ? Math.ceil(stepMinutes / 60) * 60 : Math.ceil(stepMinutes / 15) * 15;
+  const roundedStepMinutes =
+    stepMinutes > 120 ? Math.ceil(stepMinutes / 60) * 60 : Math.ceil(stepMinutes / 15) * 15;
 
   // Convert back to hours and round up
   return Math.ceil((maxMinutes + roundedStepMinutes) / 60);

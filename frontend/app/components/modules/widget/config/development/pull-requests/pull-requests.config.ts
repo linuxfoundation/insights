@@ -1,8 +1,8 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import PullRequests from './pull-requests.vue'
-import { Granularity } from '~~/types/shared/granularity'
-import type { WidgetConfig, WidgetModel } from '~/components/modules/widget/config/widget.config'
+import PullRequests from './pull-requests.vue';
+import { Granularity } from '~~/types/shared/granularity';
+import type { WidgetConfig, WidgetModel } from '~/components/modules/widget/config/widget.config';
 
 const pullRequests: WidgetConfig = {
   key: 'pullRequests',
@@ -59,6 +59,6 @@ const pullRequests: WidgetConfig = {
     icon: 'code-pull-request',
     suggestions: 'How many pull requests are there?',
   },
-}
+};
 
-export default pullRequests
+export default pullRequests;

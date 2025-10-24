@@ -1,9 +1,9 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { DateTime } from 'luxon'
-import IssuesResolution from './issues-resolution.vue'
-import type { WidgetConfig, WidgetModel } from '~/components/modules/widget/config/widget.config'
-import { Granularity } from '~~/types/shared/granularity'
+import { DateTime } from 'luxon';
+import IssuesResolution from './issues-resolution.vue';
+import type { WidgetConfig, WidgetModel } from '~/components/modules/widget/config/widget.config';
+import { Granularity } from '~~/types/shared/granularity';
 
 const issuesResolution: WidgetConfig = {
   key: 'issuesResolution',
@@ -24,11 +24,11 @@ const issuesResolution: WidgetConfig = {
       startDate: string,
       endDate: string,
     ) => {
-      const start = DateTime.fromISO(startDate)
-      const end = DateTime.fromISO(endDate)
-      const diffInDays = Math.ceil(end.diff(start, 'days').days)
+      const start = DateTime.fromISO(startDate);
+      const end = DateTime.fromISO(endDate);
+      const diffInDays = Math.ceil(end.diff(start, 'days').days);
 
-      return diffInDays > 60 && model.granularity === Granularity.WEEKLY
+      return diffInDays > 60 && model.granularity === Granularity.WEEKLY;
     },
     points: {
       0: {
@@ -73,6 +73,6 @@ const issuesResolution: WidgetConfig = {
     icon: 'people-group',
     suggestions: 'Show me the issues resolution',
   },
-}
+};
 
-export default issuesResolution
+export default issuesResolution;

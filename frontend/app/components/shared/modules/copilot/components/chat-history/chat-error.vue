@@ -31,19 +31,19 @@ SPDX-License-Identifier: MIT
 </template>
 <script setup lang="ts">
 import { ref } from 'vue';
-import type { AIMessage } from '../../types/copilot.types'
-import LfxChatLabel from './chat-label.vue'
-import LfxIcon from '~/components/uikit/icon/icon.vue'
+import type { AIMessage } from '../../types/copilot.types';
+import LfxChatLabel from './chat-label.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 
 defineProps<{
-  message: AIMessage
-}>()
+  message: AIMessage;
+}>();
 
-const isReasonExpanded = ref(false)
+const isReasonExpanded = ref(false);
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxChatError'
-}
+  name: 'LfxChatError',
+};
 </script>

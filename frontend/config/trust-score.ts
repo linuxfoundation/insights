@@ -1,7 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 
-import {useRuntimeConfig} from "#imports";
+import { useRuntimeConfig } from '#imports';
 
 export interface TrustScoreConfig {
   maxScore: number;
@@ -56,7 +56,7 @@ export const getBadgeUrl = (type: string, projectSlug: string, selectedRepos: st
   }`;
 };
 export const getHealthScoreConfig = (score: number) => {
-  return lfxTrustScore.find(
-      (s) => score <= s.maxScore && score >= s.minScore
-  ) || lfxTrustScore.at(-1)!
+  return (
+    lfxTrustScore.find((s) => score <= s.maxScore && score >= s.minScore) || lfxTrustScore.at(-1)!
+  );
 };

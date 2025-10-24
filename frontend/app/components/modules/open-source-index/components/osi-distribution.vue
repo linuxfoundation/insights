@@ -3,9 +3,7 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div
-    class="container pt-10"
-  >
+  <div class="container pt-10">
     <div class="lg:block hidden">
       <lfx-project-load-state
         :status="status"
@@ -46,12 +44,12 @@ const props = defineProps<{
   sort: string;
   hasError?: boolean;
   status?: string;
-  data: TreeMapData[]
-}>()
+  data: TreeMapData[];
+}>();
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxOsiDistribution'
+  name: 'LfxOsiDistribution',
 };
 </script>

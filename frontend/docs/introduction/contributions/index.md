@@ -1,6 +1,6 @@
 # Code contributions & Collaborations
 
-Insights tracks activity across platforms to capture the diverse ways individuals support open source projects. This activity is used to understand individual impact, engagement patterns, and participation across projects, communities, and platforms. 
+Insights tracks activity across platforms to capture the diverse ways individuals support open source projects. This activity is used to understand individual impact, engagement patterns, and participation across projects, communities, and platforms.
 Activities are grouped into two categories: **Code contributions** and **Collaborations**, highlighting both technical work and broader engagement.
 
 **1. Code contributions**\
@@ -17,6 +17,7 @@ Learn more about the [data sources](https://insights.linuxfoundation.org/docs/i
 ## Tracked **Code contribution** types
 
 #### **Gerrit**
+
 - `changeset-created` – Submitted a new changeset.
 - `changeset-merged` – Merged a code change into the main branch.
 - `changeset-closed` – Closed a code review.
@@ -27,6 +28,7 @@ Learn more about the [data sources](https://insights.linuxfoundation.org/docs/i
 - `patchset_approval-created` – Approved a patchset during review.
 
 #### **Git**
+
 - `authored-commit` – Authored a Git commit in the default branch.
 - `reviewed-commit` – Reviewed a commit in the default branch.
 - `tested-commit` – Tested changes and marked them accordingly in the default branch.
@@ -40,6 +42,7 @@ Learn more about the [data sources](https://insights.linuxfoundation.org/docs/i
 - `signed-off-commit` – Signed off on a commit for compliance/review in the default branch.
 
 #### **GitHub**
+
 - `pull_request-opened` – Opened a new pull request.
 - `pull_request-closed` – Closed an existing pull request.
 - `pull_request-review-requested` – Requested a code review.
@@ -49,6 +52,7 @@ Learn more about the [data sources](https://insights.linuxfoundation.org/docs/i
 - `authored-commit` – Authored and pushed a commit in a pull request.
 
 #### **GitLab**
+
 - `merge_request-opened` – Opened a new merge request.
 - `merge_request-closed` – Closed a merge request.
 - `merge_request-review-requested` – Requested a merge request review.
@@ -61,6 +65,7 @@ Learn more about the [data sources](https://insights.linuxfoundation.org/docs/i
 ## Tracked **Collaboration** types
 
 #### **Confluence**
+
 - `page-created` – Created a new Confluence page.
 - `page-updated` – Edited or updated a Confluence page.
 - `comment-created` – Posted a comment on a page or blog post.
@@ -70,11 +75,13 @@ Learn more about the [data sources](https://insights.linuxfoundation.org/docs/i
 - `attachment` – Attached a file to a page or blog post.
 
 #### **Discord**
+
 - `message` – Sent a message in a channel or thread.
 - `thread_started` – Started a new thread in a channel.
 - `thread_message` – Replied within a thread.
 
 #### **GitHub**
+
 - `discussion-started` – Started a new GitHub Discussion.
 - `issues-opened` – Opened a new issue.
 - `issues-closed` – Closed a previously opened issue.
@@ -82,14 +89,17 @@ Learn more about the [data sources](https://insights.linuxfoundation.org/docs/i
 - `discussion-comment` – Commented on a discussion.
 
 #### **GitLab**
+
 - `issues-opened` – Opened a new issue.
 - `issues-closed` – Closed an existing issue.
 - `issue-comment` – Commented on an issue.
 
 #### **Groups.io**
+
 - `message` – Sent a message to a mailing group or list.
 
 #### **Jira**
+
 - `issue-created` – Created a new Jira issue or ticket.
 - `issue-closed` – Closed or resolved an issue.
 - `issue-assigned` – Assigned an issue to a user.
@@ -99,8 +109,10 @@ Learn more about the [data sources](https://insights.linuxfoundation.org/docs/i
 - `issue-attachment-added` – Added a file attachment to an issue.
 
 #### **Slack**
+
 - `message` – Sent a message in a public or private Slack channel.
 
 #### **Stack Overflow**
+
 - `question` – Asked a technical question.
 - `answer` – Provided an answer to someone else's question.

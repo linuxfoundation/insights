@@ -34,31 +34,23 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import {
-  computed,
-  ref,
-} from 'vue';
+import { computed, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import LfxOSIHeader from '../components/osi-header.vue';
-import {type OSIType, OSS_INDEX_API_SERVICE, type SortType} from '../services/osi.api.service';
-import LfxOsiDistribution from "~/components/modules/open-source-index/components/osi-distribution.vue";
-import LfxOsiListProjects from "~/components/modules/open-source-index/components/list/osi-list-projects.vue";
-import LfxOsiListCollections from "~/components/modules/open-source-index/components/list/osi-list-collections.vue";
-import LfxOsiListGroups from "~/components/modules/open-source-index/components/list/osi-list-groups.vue";
-import type {TreeMapData} from "~/components/uikit/chart/types/ChartTypes";
+import { type OSIType, OSS_INDEX_API_SERVICE, type SortType } from '../services/osi.api.service';
+import LfxOsiDistribution from '~/components/modules/open-source-index/components/osi-distribution.vue';
+import LfxOsiListProjects from '~/components/modules/open-source-index/components/list/osi-list-projects.vue';
+import LfxOsiListCollections from '~/components/modules/open-source-index/components/list/osi-list-collections.vue';
+import LfxOsiListGroups from '~/components/modules/open-source-index/components/list/osi-list-groups.vue';
+import type { TreeMapData } from '~/components/uikit/chart/types/ChartTypes';
 
 const route = useRoute();
 
-const type = ref<OSIType>(route.query.type as OSIType || 'projects');
-const sort = ref<SortType>(route.query.sort as SortType || 'totalContributors');
-const view = ref<string>(route.query.view as string || 'list');
+const type = ref<OSIType>((route.query.type as OSIType) || 'projects');
+const sort = ref<SortType>((route.query.sort as SortType) || 'totalContributors');
+const view = ref<string>((route.query.view as string) || 'list');
 
-
-const {
-  data,
-  status,
-  error,
-} = OSS_INDEX_API_SERVICE.fetchOSSGroup(type, sort);
+const { data, status, error } = OSS_INDEX_API_SERVICE.fetchOSSGroup(type, sort);
 
 const chartData = computed<TreeMapData[]>(() => {
   return OSS_INDEX_API_SERVICE.mapDataToTreeMapData(data.value || [], 'group', sort.value);
@@ -67,6 +59,6 @@ const chartData = computed<TreeMapData[]>(() => {
 
 <script lang="ts">
 export default {
-  name: 'LfxOpenSourceIndex'
+  name: 'LfxOpenSourceIndex',
 };
 </script>

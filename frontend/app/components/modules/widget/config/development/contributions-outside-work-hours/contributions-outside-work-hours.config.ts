@@ -1,7 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import ContributionsOutsideWorkHours from './contributions-outside-work-hours.vue'
-import type { WidgetConfig } from '~/components/modules/widget/config/widget.config'
+import ContributionsOutsideWorkHours from './contributions-outside-work-hours.vue';
+import type { WidgetConfig } from '~/components/modules/widget/config/widget.config';
 
 const contributionsOutsideWorkHours: WidgetConfig = {
   key: 'contributionsOutsideWorkHours',
@@ -58,6 +58,6 @@ const contributionsOutsideWorkHours: WidgetConfig = {
     suggestions: 'Show me the contributions outside work hours',
   },
   showCollabToggle: true,
-}
+};
 
-export default contributionsOutsideWorkHours
+export default contributionsOutsideWorkHours;

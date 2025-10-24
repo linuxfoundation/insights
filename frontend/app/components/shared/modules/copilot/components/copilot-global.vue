@@ -10,16 +10,15 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script lang="ts" setup>
-import {storeToRefs} from "pinia";
-import {useCopilotStore} from "~/components/shared/modules/copilot/store/copilot.store";
-import LfxCopilotModal from "~/components/shared/modules/copilot/components/copilot-modal.vue";
+import { storeToRefs } from 'pinia';
+import { useCopilotStore } from '~/components/shared/modules/copilot/store/copilot.store';
+import LfxCopilotModal from '~/components/shared/modules/copilot/components/copilot-modal.vue';
 
-const {isCopilotModalOpen } = storeToRefs(useCopilotStore())
-
+const { isCopilotModalOpen } = storeToRefs(useCopilotStore());
 </script>
 
 <script lang="ts">
 export default {
   name: 'LfxCopilotGlobal',
 };
-</script> 
+</script>

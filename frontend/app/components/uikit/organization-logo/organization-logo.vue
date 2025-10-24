@@ -28,7 +28,7 @@ SPDX-License-Identifier: MIT
           loading="lazy"
           width="16"
           height="16"
-        >
+        />
       </lfx-tooltip>
     </div>
   </div>
@@ -36,8 +36,8 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import type { AvatarSize } from '../avatar/types/Avatar.types';
-import LfxAvatar from "~/components/uikit/avatar/avatar.vue";
-import LfxTooltip from "~/components/uikit/tooltip/tooltip.vue";
+import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
+import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
 
 const props = withDefaults(
   defineProps<{
@@ -50,7 +50,7 @@ const props = withDefaults(
     size: 'normal',
     src: undefined,
     isLf: false,
-    alt: undefined
-  }
+    alt: undefined,
+  },
 );
 </script>

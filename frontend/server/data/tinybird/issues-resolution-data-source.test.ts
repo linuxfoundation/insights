@@ -1,23 +1,18 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import {
-  describe, test, expect, vi, beforeEach
-} from 'vitest';
-import {DateTime} from "luxon";
+import { describe, test, expect, vi, beforeEach } from 'vitest';
+import { DateTime } from 'luxon';
 import {
   mockCurrentSummaryData,
   mockPreviousSummaryData,
   mockIssuesOpened,
   mockIssuesClosed,
-  mockIssueResolutionVelocity
+  mockIssueResolutionVelocity,
 } from '../../mocks/tinybird-issues-response.mock';
-import {
-  type ActivityCountFilter,
-  ActivityFilterCountType
-} from "../types";
-import {ActivityTypes} from "~~/types/shared/activity-types";
-import {Granularity} from "~~/types/shared/granularity";
-import type {IssuesResolution} from "~~/types/development/responses.types";
+import { type ActivityCountFilter, ActivityFilterCountType } from '../types';
+import { ActivityTypes } from '~~/types/shared/activity-types';
+import { Granularity } from '~~/types/shared/granularity';
+import type { IssuesResolution } from '~~/types/development/responses.types';
 
 const mockFetchFromTinybird = vi.fn();
 
@@ -29,17 +24,20 @@ describe('Issues Resolution Data Source', () => {
     // This means that the import for tinybird.ts inside the data source module would still be used,
     // and thus not mocked. This means we need to import the module again after the mock is set, whenever we want to
     // use it.
-    vi.doMock(import("./tinybird"), () => ({
+    vi.doMock(import('./tinybird'), () => ({
       fetchFromTinybird: mockFetchFromTinybird,
     }));
-  })
+  });
 
   test('should fetch issues resolution data with correct parameters', async () => {
     // We have to import this here again because vi.doMock is not hoisted. See the explanation in beforeEach().
-    const {fetchIssuesResolution} = await import("~~/server/data/tinybird/issues-resolution-data-source");
+    const { fetchIssuesResolution } = await import(
+      '~~/server/data/tinybird/issues-resolution-data-source'
+    );
     const { mergeRanges } = await import('~~/server/data/tinybird/issues-resolution-data-source');
 
-    mockFetchFromTinybird.mockResolvedValueOnce(mockCurrentSummaryData)
+    mockFetchFromTinybird
+      .mockResolvedValueOnce(mockCurrentSummaryData)
       .mockResolvedValueOnce(mockPreviousSummaryData)
       .mockResolvedValueOnce(mockIssuesOpened)
       .mockResolvedValueOnce(mockIssuesClosed)
@@ -57,7 +55,7 @@ describe('Issues Resolution Data Source', () => {
       includeCodeContributions: true,
       includeCollaborations: true,
       startDate,
-      endDate
+      endDate,
     };
 
     const result = await fetchIssuesResolution(filter);
@@ -75,7 +73,7 @@ describe('Issues Resolution Data Source', () => {
         periodTo: filter.endDate?.toISO() || '',
         avgVelocityInDays: mockIssueResolutionVelocity.data[0].averageIssueResolveVelocitySeconds,
       },
-      data: mergeRanges(mockIssuesOpened.data, mockIssuesClosed.data)
+      data: mergeRanges(mockIssuesOpened.data, mockIssuesClosed.data),
     };
 
     expect(result).toEqual(expectedResult);

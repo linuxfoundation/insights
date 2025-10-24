@@ -24,17 +24,20 @@ export const convertToChartData = (
   keyField: string,
   valuesKey: string[],
   yAxisKey?: string,
-  xAxisKey2?: string
-) => data?.map(
-    (item: RawChartData) => ({
+  xAxisKey2?: string,
+) =>
+  data?.map(
+    (item: RawChartData) =>
+      ({
         key: item[keyField], // usually the startDate
         yAxisKey: yAxisKey ? item[yAxisKey] : undefined,
         values: valuesKey.map((key: string) => item[key]),
         xAxisKey2: xAxisKey2 ? item[xAxisKey2] : undefined,
-      }) as ChartData
+      }) as ChartData,
   ) ?? [];
 
-export const getMaxValue = (data: ChartData[]): number => data //
+export const getMaxValue = (data: ChartData[]): number =>
+  data //
     .filter((item) => item.key !== 'Unknown')
     .reduce((max, item) => Math.max(max, item.values[0] ?? 0), 0);
 
@@ -51,9 +54,10 @@ export const convertToCategoryData = (xData: ChartData[], yData: ChartData[]): C
 
 // function to convert date data to timestamp since the chart needs the date in this format
 export const convertDateData = (
-  chartData: ChartData[] //
-) => chartData.map((item: ChartData) => DateTime.fromISO(item.key).toUTC().endOf('day').toMillis())
-  || [];
+  chartData: ChartData[], //
+) =>
+  chartData.map((item: ChartData) => DateTime.fromISO(item.key).toUTC().endOf('day').toMillis()) ||
+  [];
 
 /**
  * Function to remove the 0 values from the beginning of the chart data
@@ -64,7 +68,7 @@ export const removeZeroValues = (data: ChartData[], padLeft?: boolean): ChartDat
   // Find the first non-zero value
   for (let i = 0; i < data.length; i += 1) {
     if (data[i]?.values[0] !== 0) {
-      startIndex = (padLeft && i > 0) ? i - 1 : i;
+      startIndex = padLeft && i > 0 ? i - 1 : i;
       break;
     }
   }
@@ -79,17 +83,19 @@ export const removeZeroValues = (data: ChartData[], padLeft?: boolean): ChartDat
  * @param data - Data
  * @returns Series
  */
-export const buildSeries = (series: ChartSeries[], data: ChartData[]): SeriesTypes[] | undefined => (series.length > 0
+export const buildSeries = (series: ChartSeries[], data: ChartData[]): SeriesTypes[] | undefined =>
+  series.length > 0
     ? series.map(
-        (series: ChartSeries) => ({
+        (series: ChartSeries) =>
+          ({
             type: series.type,
             name: series.name,
             yAxisIndex: series.yAxisIndex,
             dataIndex: series.dataIndex,
             data: data.map((item: ChartData) => item.values[series.dataIndex]) || [],
-          }) as SeriesTypes
+          }) as SeriesTypes,
       )
-    : undefined);
+    : undefined;
 
 /**
  * Mark the last data item as incomplete based on the granularity.
@@ -101,10 +107,14 @@ export const buildSeries = (series: ChartSeries[], data: ChartData[]): SeriesTyp
  */
 export const markLastDataItem = (data: ChartData[], granularity: Granularity): ChartData[] => {
   // apply the logic only for monthly, quarterly, and yearly granularity
-  if ([Granularity.WEEKLY, Granularity.MONTHLY, Granularity.QUARTERLY, Granularity.YEARLY].includes(granularity) &&
-    data.length > 0) {
+  if (
+    [Granularity.WEEKLY, Granularity.MONTHLY, Granularity.QUARTERLY, Granularity.YEARLY].includes(
+      granularity,
+    ) &&
+    data.length > 0
+  ) {
     const interval = currentInterval(granularity);
-    
+
     return data.map((item: ChartData, idx: number) => {
       if (idx === data.length - 1) {
         // Ensure lastItemDate is in UTC and at start of day for consistent comparison
@@ -134,7 +144,7 @@ export const currentInterval = (granularity: Granularity): Interval => {
     startOfPeriod = now.startOf(convertToLuxonPeriod(granularity));
     endOfPeriod = now.endOf(convertToLuxonPeriod(granularity));
   }
-  
+
   return Interval.fromDateTimes(startOfPeriod, endOfPeriod);
 };
 
@@ -154,8 +164,9 @@ const convertToLuxonPeriod = (granularity: Granularity): 'week' | 'month' | 'qua
 export const convertToGradientColor = (
   color: string,
   offsetStart: number = 0.1,
-  offsetEnd: number = 1
-) => new graphic.LinearGradient(0, 0, 0, 1, [
+  offsetEnd: number = 1,
+) =>
+  new graphic.LinearGradient(0, 0, 0, 1, [
     {
       offset: offsetStart,
       color, // Start color
@@ -200,17 +211,18 @@ export const convertToScatterData = (data: ChartData[], categoryData: CategoryDa
   // the y axis is reversed so we need to reverse the y axis key
   return data.map(
     (
-      item // data is formatted as [x, y, value]
+      item, // data is formatted as [x, y, value]
     ) => [
       xAxis.findIndex((x) => x.value === item.key),
       yAxis.findIndex((y) => y.value === item.yAxisKey),
       item.values[0] || 0,
-    ]
+    ],
   );
 };
 
-export const convertToHeatMapData = (data: ChartData[]): number[][] => data.map(
+export const convertToHeatMapData = (data: ChartData[]): number[][] =>
+  data.map(
     (
-      item // data is formatted as [x, y, value]
-    ) => [parseInt(item.key, 10), parseInt(item.yAxisKey || '0', 10), item.values[0] || 0]
+      item, // data is formatted as [x, y, value]
+    ) => [parseInt(item.key, 10), parseInt(item.yAxisKey || '0', 10), item.values[0] || 0],
   );

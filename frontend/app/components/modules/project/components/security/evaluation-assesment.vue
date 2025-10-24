@@ -16,25 +16,25 @@ SPDX-License-Identifier: MIT
     <div class="flex flex-col sm:flex-row flex-grow gap-4 sm:gap-10 items-start">
       <div class="w-full sm:w-1/3">
         <p class="text-xs font-semibold mb-2">
-          Requirement ID: {{props.assessment.requirementId}}
+          Requirement ID: {{ props.assessment.requirementId }}
         </p>
         <p class="text-body-2 text-neutral-600">
-          {{props.assessment.description}}
+          {{ props.assessment.description }}
         </p>
       </div>
       <div
         v-if="props.assessment.message && props.assessment.result !== SecurityDataResult.PASSED"
         class="w-full sm:w-1/3"
       >
-        <p class="text-xs font-semibold mb-2">
-          Reason
-        </p>
+        <p class="text-xs font-semibold mb-2">Reason</p>
         <p class="text-body-2 text-neutral-600">
-          {{props.assessment.message}}
+          {{ props.assessment.message }}
         </p>
       </div>
       <div
-        v-if="props.assessment.recommendation && props.assessment.result !== SecurityDataResult.PASSED"
+        v-if="
+          props.assessment.recommendation && props.assessment.result !== SecurityDataResult.PASSED
+        "
         class="w-full sm:w-1/3"
       >
         <div class="flex items-center gap-1 mb-2">
@@ -42,12 +42,10 @@ SPDX-License-Identifier: MIT
             name="lightbulb"
             :size="14"
           />
-          <p class="text-xs font-semibold">
-            Recommendation
-          </p>
+          <p class="text-xs font-semibold">Recommendation</p>
         </div>
         <p class="text-body-2 text-neutral-600">
-          {{props.assessment.recommendation}}
+          {{ props.assessment.recommendation }}
         </p>
       </div>
     </div>
@@ -55,18 +53,17 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import {type SecurityAssessmentData, SecurityDataResult} from "~~/types/security/responses.types";
-import LfxProjectSecurityEvaluationResultTag
-  from "~/components/modules/project/components/security/evaluation-result-tag.vue";
-import LfxIcon from "~/components/uikit/icon/icon.vue";
+import { type SecurityAssessmentData, SecurityDataResult } from '~~/types/security/responses.types';
+import LfxProjectSecurityEvaluationResultTag from '~/components/modules/project/components/security/evaluation-result-tag.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 
 const props = defineProps<{
-  assessment: SecurityAssessmentData
-}>()
+  assessment: SecurityAssessmentData;
+}>();
 </script>
 
 <script lang="ts">
 export default {
   name: 'LfxProjectSecurityEvaluationAssesment',
-}
+};
 </script>

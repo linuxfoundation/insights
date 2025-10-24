@@ -2,13 +2,20 @@
 // SPDX-License-Identifier: MIT
 import type { ToastMessageOptions } from 'primevue/toast';
 
-export type ToastSeverity = 'info' | 'error' | 'secondary' | 'success' | 'warn' | 'contrast' | undefined;
+export type ToastSeverity =
+  | 'info'
+  | 'error'
+  | 'secondary'
+  | 'success'
+  | 'warn'
+  | 'contrast'
+  | undefined;
 export enum ToastTypesEnum {
   default = 'secondary',
   info = 'info',
   positive = 'success',
   warning = 'warn',
-  negative = 'error'
+  negative = 'error',
 }
 
 export const toastTypes = ['secondary', 'info', 'success', 'warn', 'danger'] as const;

@@ -4,9 +4,7 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <div class="flex flex-col gap-5">
-    <h4 class="font-medium font-primary">
-      Latest Press Mentions
-    </h4>
+    <h4 class="font-medium font-primary">Latest Press Mentions</h4>
     <div class="flex flex-col gap-2">
       <div
         v-for="(mention, index) in list"
@@ -40,11 +38,10 @@ import type { PressMention } from '~~/types/popularity/responses.types';
 defineProps<{
   list: PressMention[];
 }>();
-
 </script>
 
 <script lang="ts">
 export default {
   name: 'LfxProjectPressMentionLists',
-}
+};
 </script>

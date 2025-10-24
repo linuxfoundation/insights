@@ -14,9 +14,9 @@ SPDX-License-Identifier: MIT
         ref="searchInputRef"
         v-model="search"
         type="text"
-        class="!outline-none !shadow-none  flex-grow text-sm text-neutral-900 leading-5"
+        class="!outline-none !shadow-none flex-grow text-sm text-neutral-900 leading-5"
         placeholder="Search repositories..."
-      >
+      />
       <lfx-icon
         v-if="search.length > 0"
         name="circle-xmark"
@@ -26,17 +26,15 @@ SPDX-License-Identifier: MIT
       />
     </label>
 
-    <hr>
+    <hr />
     <!-- Result -->
     <div
       v-bind="containerProps"
       class="h-[29.5rem] overflow-y-auto"
     >
-      <div
-        v-bind="wrapperProps"
-      >
+      <div v-bind="wrapperProps">
         <lfx-project-repository-switch-item
-          v-for="{ data} in list"
+          v-for="{ data } in list"
           :key="data.url"
           is-multi-select
           :selected="selectedRepoSlugs.includes(data.slug)"
@@ -49,7 +47,7 @@ SPDX-License-Identifier: MIT
                 class="text-neutral-400"
               />
               <p>
-                {{data.name}}
+                {{ data.name }}
               </p>
             </div>
 
@@ -79,20 +77,19 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import {computed, onMounted, ref} from "vue";
-import {storeToRefs} from "pinia";
-import { useVirtualList } from '@vueuse/core'
-import {useRoute, useRouter} from "nuxt/app";
-import LfxIcon from "~/components/uikit/icon/icon.vue";
-import {useProjectStore} from "~/components/modules/project/store/project.store";
-import type {ProjectRepository} from "~~/types/project";
-import LfxProjectRepositorySwitchItem
-  from "~/components/modules/project/components/shared/header/repository-switch/repository-switch-item.vue";
-import LfxArchivedTag from "~/components/shared/components/archived-tag.vue";
-import type {ProjectLinkConfig} from "~/components/modules/project/config/links";
+import { computed, onMounted, ref } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useVirtualList } from '@vueuse/core';
+import { useRoute, useRouter } from 'nuxt/app';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import { useProjectStore } from '~/components/modules/project/store/project.store';
+import type { ProjectRepository } from '~~/types/project';
+import LfxProjectRepositorySwitchItem from '~/components/modules/project/components/shared/header/repository-switch/repository-switch-item.vue';
+import LfxArchivedTag from '~/components/shared/components/archived-tag.vue';
+import type { ProjectLinkConfig } from '~/components/modules/project/config/links';
 
 const props = defineProps<{
-  link: ProjectLinkConfig
+  link: ProjectLinkConfig;
 }>();
 
 const route = useRoute();
@@ -101,37 +98,35 @@ const router = useRouter();
 const searchInputRef = ref(null);
 const search = ref('');
 
-const {
-  selectedRepoSlugs,
-  projectRepos,
-  archivedRepos,
-  excludedRepos
-} = storeToRefs(useProjectStore());
+const { selectedRepoSlugs, projectRepos, archivedRepos, excludedRepos } =
+  storeToRefs(useProjectStore());
 
 interface RepositoryItem extends ProjectRepository {
   isExcluded: boolean;
   isArchived: boolean;
 }
 
-const repositories = computed<RepositoryItem[]>(() => projectRepos.value.map((repo) => ({
-  ...repo,
-  isExcluded: excludedRepos.value.includes(repo.url),
-  isArchived: archivedRepos.value.includes(repo.url),
-})));
+const repositories = computed<RepositoryItem[]>(() =>
+  projectRepos.value.map((repo) => ({
+    ...repo,
+    isExcluded: excludedRepos.value.includes(repo.url),
+    isArchived: archivedRepos.value.includes(repo.url),
+  })),
+);
 
-const result = computed<RepositoryItem[]>(() => repositories.value
-    .filter((repository: ProjectRepository) => repository.name.toLowerCase().includes(search.value.toLowerCase())));
+const result = computed<RepositoryItem[]>(() =>
+  repositories.value.filter((repository: ProjectRepository) =>
+    repository.name.toLowerCase().includes(search.value.toLowerCase()),
+  ),
+);
 
-const { list, containerProps, wrapperProps } = useVirtualList(
-    result,
-    {
-      itemHeight: 40,
-    },
-)
+const { list, containerProps, wrapperProps } = useVirtualList(result, {
+  itemHeight: 40,
+});
 
 const handleReposChange = (slug: string) => {
   let repos = [];
-  if(selectedRepoSlugs.value.includes(slug)) {
+  if (selectedRepoSlugs.value.includes(slug)) {
     repos = selectedRepoSlugs.value.filter((s) => s !== slug);
   } else {
     repos = [...selectedRepoSlugs.value, slug];
@@ -141,14 +136,15 @@ const handleReposChange = (slug: string) => {
     router.push({
       name: props.link.repoRouteName,
       params: { name: repos[0] },
-      query: { ...routeQuery, repos: undefined }
+      query: { ...routeQuery, repos: undefined },
     });
   } else {
     router.push({
       name: props.link.projectRouteName,
-      query: repos.length > 0
+      query:
+        repos.length > 0
           ? { ...routeQuery, repos: repos.join(',') }
-          : { ...routeQuery, repos: undefined }
+          : { ...routeQuery, repos: undefined },
     });
   }
 };
@@ -160,6 +156,6 @@ onMounted(() => {
 
 <script lang="ts">
 export default {
-  name: 'LfxProjectRepositorySearch'
+  name: 'LfxProjectRepositorySearch',
 };
 </script>

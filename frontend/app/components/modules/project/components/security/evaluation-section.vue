@@ -9,7 +9,7 @@ SPDX-License-Identifier: MIT
   >
     <div class="flex gap-4 w-full">
       <lfx-project-security-evaluation-result :results="assessmentsResults">
-        <template #default="{result}">
+        <template #default="{ result }">
           <lfx-tooltip
             :content="props.tooltip"
             :disabled="!props.tooltip"
@@ -22,7 +22,7 @@ SPDX-License-Identifier: MIT
       </lfx-project-security-evaluation-result>
       <div v-if="props.checks.length">
         <h2 class="text-heading-4 font-bold font-secondary">
-          {{ category}}
+          {{ category }}
         </h2>
         <p
           v-if="config"
@@ -41,31 +41,39 @@ SPDX-License-Identifier: MIT
   </lfx-accordion-item>
 </template>
 <script setup lang="ts">
-import {computed} from "vue";
-import LfxAccordionItem from "~/components/uikit/accordion/accordion-item.vue";
-import LfxProjectSecurityEvaluationResult from "~/components/modules/project/components/security/evaluation-result.vue";
-import type { SecurityDataResult,SecurityAssessmentData, SecurityData} from "~~/types/security/responses.types";
-import LfxChart from "~/components/uikit/chart/chart.vue";
-import {getGaugeChartConfig} from "~/components/uikit/chart/configs/gauge.chart";
-import {lfxColors} from "~/config/styles/colors";
-import {lfxSecurityCategories} from "~/components/modules/project/config/security-category";
-import LfxTooltip from "~/components/uikit/tooltip/tooltip.vue";
+import { computed } from 'vue';
+import LfxAccordionItem from '~/components/uikit/accordion/accordion-item.vue';
+import LfxProjectSecurityEvaluationResult from '~/components/modules/project/components/security/evaluation-result.vue';
+import type {
+  SecurityDataResult,
+  SecurityAssessmentData,
+  SecurityData,
+} from '~~/types/security/responses.types';
+import LfxChart from '~/components/uikit/chart/chart.vue';
+import { getGaugeChartConfig } from '~/components/uikit/chart/configs/gauge.chart';
+import { lfxColors } from '~/config/styles/colors';
+import { lfxSecurityCategories } from '~/components/modules/project/config/security-category';
+import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
 
 const props = defineProps<{
-  checks: SecurityData[],
+  checks: SecurityData[];
   tooltip?: string;
-}>()
+}>();
 
-const assessments = computed<SecurityAssessmentData[]>(() => props.checks.map((check) => check.assessments).flat());
-const assessmentsResults = computed<SecurityDataResult[]>(() => assessments.value
-    .map((assessment: SecurityAssessmentData) => assessment.result));
+const assessments = computed<SecurityAssessmentData[]>(() =>
+  props.checks.map((check) => check.assessments).flat(),
+);
+const assessmentsResults = computed<SecurityDataResult[]>(() =>
+  assessments.value.map((assessment: SecurityAssessmentData) => assessment.result),
+);
 
-const chartConfig = (result: number) => getGaugeChartConfig({
+const chartConfig = (result: number) =>
+  getGaugeChartConfig({
     value: result,
     gaugeType: 'full',
     name: '',
     lineColor: lfxColors.brand[500],
-  })
+  });
 
 const category = computed(() => props.checks[0]?.category);
 const config = computed(() => category.value && lfxSecurityCategories[category.value]);
@@ -74,5 +82,5 @@ const config = computed(() => category.value && lfxSecurityCategories[category.v
 <script lang="ts">
 export default {
   name: 'LfxProjectSecurityEvaluationSection',
-}
+};
 </script>

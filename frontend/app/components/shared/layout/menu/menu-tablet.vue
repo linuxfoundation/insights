@@ -8,9 +8,7 @@ SPDX-License-Identifier: MIT
       v-model:visibility="isOpen"
       placement="bottom-end"
     >
-      <lfx-menu-button
-        class="!p-2"
-      >
+      <lfx-menu-button class="!p-2">
         <lfx-icon
           name="bars"
           class="font-black text-neutral-400 !h-5 !w-5"
@@ -47,7 +45,7 @@ SPDX-License-Identifier: MIT
                     :size="16"
                   />
                   <div class="pl-3">
-                    <h6 class="text-xs font-medium leading-5">{{tool.name}}</h6>
+                    <h6 class="text-xs font-medium leading-5">{{ tool.name }}</h6>
                   </div>
                 </a>
               </div>
@@ -77,27 +75,29 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import {ref, watch} from "vue";
-import {useRoute} from 'vue-router';
-import LfxIcon from "~/components/uikit/icon/icon.vue";
-import LfxMenuButton from "~/components/uikit/menu-button/menu-button.vue";
-import {lfxTools} from "~/config/menu/tools";
-import LfxPopover from "~/components/uikit/popover/popover.vue";
-import LfxMenuStaticLinks from "~/components/shared/layout/menu/static-links.vue";
-import {lfxMenu} from "~/config/menu";
+import { ref, watch } from 'vue';
+import { useRoute } from 'vue-router';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxMenuButton from '~/components/uikit/menu-button/menu-button.vue';
+import { lfxTools } from '~/config/menu/tools';
+import LfxPopover from '~/components/uikit/popover/popover.vue';
+import LfxMenuStaticLinks from '~/components/shared/layout/menu/static-links.vue';
+import { lfxMenu } from '~/config/menu';
 
 const route = useRoute();
 
 const isOpen = ref(false);
 
-watch(() => route.path, () => {
-  isOpen.value = false;
-});
-
+watch(
+  () => route.path,
+  () => {
+    isOpen.value = false;
+  },
+);
 </script>
 
 <script lang="ts">
-  export default {
-    name: 'LfxMenuTablet'
-  }
+export default {
+  name: 'LfxMenuTablet',
+};
 </script>

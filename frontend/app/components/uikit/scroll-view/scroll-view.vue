@@ -13,9 +13,7 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import {
-  onMounted, onUnmounted, ref, watch
-} from 'vue';
+import { onMounted, onUnmounted, ref, watch } from 'vue';
 // import useScroll from '~/components/shared/utils/scroll';
 
 const scrollViewRef = ref<HTMLElement | null>(null);
@@ -24,8 +22,7 @@ const props = defineProps<{
   observer: IntersectionObserver | null;
 }>();
 
-const emit = defineEmits<{(e: 'scrolledToView', id: string): void;
-}>();
+const emit = defineEmits<{ (e: 'scrolledToView', id: string): void }>();
 
 onMounted(() => {
   if (scrollViewRef.value) {
@@ -37,7 +34,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   if (scrollViewRef.value) {
-    scrollViewRef.value.removeEventListener('scrolledToView', () => { });
+    scrollViewRef.value.removeEventListener('scrolledToView', () => {});
 
     if (props.observer) {
       props.observer.unobserve(scrollViewRef.value);
@@ -53,6 +50,6 @@ watch(props, (newVal) => {
 </script>
 <script lang="ts">
 export default {
-  name: 'LfxScrollView'
+  name: 'LfxScrollView',
 };
 </script>

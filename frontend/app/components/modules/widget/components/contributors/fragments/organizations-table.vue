@@ -23,7 +23,7 @@ SPDX-License-Identifier: MIT
       <div>Total contributions</div>
     </div>
 
-    <lfx-scrollable-shadow  :class="props.showFullList ? 'px-4 sm:px-6 overflow-y-auto' : ''">
+    <lfx-scrollable-shadow :class="props.showFullList ? 'px-4 sm:px-6 overflow-y-auto' : ''">
       <div
         v-for="(organization, index) in props.organizations"
         :key="index"
@@ -44,7 +44,9 @@ SPDX-License-Identifier: MIT
           <div
             class="text-ellipsis overflow-hidden"
             :title="organization.name"
-          >{{ organization.name }}</div>
+          >
+            {{ organization.name }}
+          </div>
         </div>
         <div class="value-col">
           {{ formatNumber(organization.contributions) }}
@@ -68,29 +70,23 @@ SPDX-License-Identifier: MIT
               :type="'light'"
             />
           </span>
-          <span class="text-sm text-brand-300 font-semibold">
-            Loading organizations
-          </span>
+          <span class="text-sm text-brand-300 font-semibold"> Loading organizations </span>
         </div>
       </div>
-
     </lfx-scrollable-shadow>
   </div>
 </template>
 
 <script setup lang="ts">
-import {
- ref, onMounted, computed, watch
-} from 'vue';
+import { ref, onMounted, computed, watch } from 'vue';
 import type { Organization } from '~~/types/contributors/responses.types';
 import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
 import { formatNumber } from '~/components/shared/utils/formatter';
 import LfxScrollableShadow from '~/components/uikit/scrollable-shadow/scrollable-shadow.vue';
-import LfxSpinner from "~/components/uikit/spinner/spinner.vue";
+import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 import { isElementVisible } from '~/components/shared/utils/helper';
 
-const emit = defineEmits<{(e: 'loadMore'): void
-}>();
+const emit = defineEmits<{ (e: 'loadMore'): void }>();
 const loadMore = ref(null);
 
 const props = withDefaults(
@@ -106,8 +102,8 @@ const props = withDefaults(
     showPercentage: false,
     showFullList: false,
     hasNextPage: false,
-    isFetchingNextPage: false
-  }
+    isFetchingNextPage: false,
+  },
 );
 
 const showLoadMore = computed(() => props.hasNextPage && props.showFullList);
@@ -115,7 +111,7 @@ const showLoadMore = computed(() => props.hasNextPage && props.showFullList);
 const options = {
   root: null,
   rootMargin: '0px',
-  threshold: 0
+  threshold: 0,
 };
 
 const handleIntersectCallback = (entries: IntersectionObserverEntry[]) => {
@@ -124,7 +120,7 @@ const handleIntersectCallback = (entries: IntersectionObserverEntry[]) => {
       emit('loadMore');
     }
   });
-}
+};
 
 const isLoadMoreVisible = () => {
   if (!loadMore.value) {
@@ -141,17 +137,20 @@ onMounted(() => {
   }
 });
 
-watch(() => props.isFetchingNextPage, (newVal: boolean) => {
-  if (!newVal) {
-    // check if the load more is visible
-    if (isLoadMoreVisible()) {
-      emit('loadMore');
+watch(
+  () => props.isFetchingNextPage,
+  (newVal: boolean) => {
+    if (!newVal) {
+      // check if the load more is visible
+      if (isLoadMoreVisible()) {
+        emit('loadMore');
+      }
     }
-  }
-});
+  },
+);
 </script>
 <script lang="ts">
 export default {
-  name: 'LfxOrganizationsTable'
+  name: 'LfxOrganizationsTable',
 };
 </script>

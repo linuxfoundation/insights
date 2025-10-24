@@ -1,17 +1,17 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import type { MergeLeadTimeFilter } from "../types";
-import { fetchFromTinybird } from './tinybird'
-import { calculatePercentageChange, getPreviousDates } from "~~/server/data/util";
-import type { MergeLeadTime } from "~~/types/development/responses.types";
+import type { MergeLeadTimeFilter } from '../types';
+import { fetchFromTinybird } from './tinybird';
+import { calculatePercentageChange, getPreviousDates } from '~~/server/data/util';
+import type { MergeLeadTime } from '~~/types/development/responses.types';
 
 // This is the data part of the response from Tinybird
 type TinybirdMergeLeadTimeData = {
-  openedToMergedSeconds: number,
-  openedToReviewAssignedSeconds: number,
-  reviewAssignedToFirstReviewSeconds: number,
-  firstReviewToApprovedSeconds: number,
-  approvedToMergedSeconds: number
+  openedToMergedSeconds: number;
+  openedToReviewAssignedSeconds: number;
+  reviewAssignedToFirstReviewSeconds: number;
+  firstReviewToApprovedSeconds: number;
+  approvedToMergedSeconds: number;
 };
 
 export async function fetchMergeLeadTime(filter: MergeLeadTimeFilter): Promise<MergeLeadTime> {
@@ -23,7 +23,7 @@ export async function fetchMergeLeadTime(filter: MergeLeadTimeFilter): Promise<M
   const previousSummaryQuery = {
     ...filter,
     startDate: dates.previous.from,
-    endDate: dates.previous.to
+    endDate: dates.previous.to,
   };
 
   const path = '/v0/pipes/pull_requests_merge_lead_time.json';
@@ -57,23 +57,23 @@ export async function fetchMergeLeadTime(filter: MergeLeadTimeFilter): Promise<M
       pickup: {
         value: currentToReviewAssigned,
         unit: 'seconds',
-        changeType: currentToReviewAssigned > previousToReviewAssigned ? 'positive' : 'negative'
+        changeType: currentToReviewAssigned > previousToReviewAssigned ? 'positive' : 'negative',
       },
       review: {
         value: currentToFirstReview,
         unit: 'seconds',
-        changeType: currentToFirstReview > previousToFirstReview ? 'positive' : 'negative'
+        changeType: currentToFirstReview > previousToFirstReview ? 'positive' : 'negative',
       },
       accepted: {
         value: currentData.data[0].firstReviewToApprovedSeconds,
         unit: 'seconds',
-        changeType: currentToApproved > previousToApproved ? 'positive' : 'negative'
+        changeType: currentToApproved > previousToApproved ? 'positive' : 'negative',
       },
       prMerged: {
         value: currentData.data[0].approvedToMergedSeconds,
         unit: 'seconds',
-        changeType: currentToMerged > previousToMerged ? 'positive' : 'negative'
-      }
-    }
+        changeType: currentToMerged > previousToMerged ? 'positive' : 'negative',
+      },
+    },
   };
 }

@@ -7,7 +7,7 @@ let insightsDbPool: Pool | null = null;
 let cmDbPool: Pool | null = null;
 
 export function getInsightsDbPool(): Pool {
-    const config = useRuntimeConfig()
+  const config = useRuntimeConfig();
   if (!insightsDbPool) {
     insightsDbPool = new Pool({
       host: config.insightsDbWriteHost,
@@ -24,9 +24,8 @@ export function getInsightsDbPool(): Pool {
   return insightsDbPool;
 }
 
-
 export function getCMDbPool(): Pool {
-    const config = useRuntimeConfig()
+  const config = useRuntimeConfig();
   if (!cmDbPool) {
     cmDbPool = new Pool({
       host: config.cmDbWriteHost,

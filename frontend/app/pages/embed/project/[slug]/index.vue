@@ -7,15 +7,15 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script lang="ts" setup>
-import LfxWidgetEmbed from "~/components/modules/widget/components/shared/widget-embed.vue";
+import LfxWidgetEmbed from '~/components/modules/widget/components/shared/widget-embed.vue';
 
 definePageMeta({
-  layout: false
-})
+  layout: false,
+});
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxEmbedProjectWidget'
+  name: 'LfxEmbedProjectWidget',
 };
 </script>

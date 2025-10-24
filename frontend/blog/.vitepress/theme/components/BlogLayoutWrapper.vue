@@ -13,11 +13,11 @@ SPDX-License-Identifier: MIT
         :date-published="frontmatter.datePublished"
       />
     </template>
-    
+
     <template #layout-bottom>
       <CustomLfxFooter />
     </template>
-    
+
     <template #not-found>
       <CustomNotFound />
     </template>
@@ -25,12 +25,12 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { useData } from 'vitepress'
-import DefaultTheme from 'vitepress/theme'
-import BlogAuthor from './BlogAuthor.vue'
-import CustomLfxFooter from './CustomLfxFooter.vue'
-import CustomNotFound from './CustomNotFound.vue'
+import { useData } from 'vitepress';
+import DefaultTheme from 'vitepress/theme';
+import BlogAuthor from './BlogAuthor.vue';
+import CustomLfxFooter from './CustomLfxFooter.vue';
+import CustomNotFound from './CustomNotFound.vue';
 
-const { frontmatter } = useData()
-const { Layout } = DefaultTheme
+const { frontmatter } = useData();
+const { Layout } = DefaultTheme;
 </script>

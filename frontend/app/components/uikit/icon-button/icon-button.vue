@@ -8,7 +8,7 @@ SPDX-License-Identifier: MIT
     :class="[
       `c-icon-button--${props.size}`,
       `c-icon-button--${props.type}`,
-      {'is-disabled': props.disabled}
+      { 'is-disabled': props.disabled },
     ]"
   >
     <slot>
@@ -22,8 +22,11 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import LfxIcon from "~/components/uikit/icon/icon.vue";
-import type {IconButtonSize, IconButtonType} from "~/components/uikit/icon-button/types/icon-button.types";
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import type {
+  IconButtonSize,
+  IconButtonType,
+} from '~/components/uikit/icon-button/types/icon-button.types';
 import type { IconType } from '~/components/uikit/icon/types/icon.types';
 
 const props = withDefaults(
@@ -40,13 +43,13 @@ const props = withDefaults(
     size: 'medium',
     iconType: 'light',
     iconSize: 16,
-    disabled: false
-  }
+    disabled: false,
+  },
 );
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxIconButton'
+  name: 'LfxIconButton',
 };
 </script>

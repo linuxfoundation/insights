@@ -3,9 +3,7 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <lfx-project-header
-    :project="data"
-  />
+  <lfx-project-header :project="data" />
   <div>
     <div v-if="isLoading || projectIsOnboarded">
       <nuxt-page />
@@ -20,55 +18,44 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import {
-  createError,
-  showError,
-  useRoute,
-} from "nuxt/app";
-import {storeToRefs} from "pinia";
-import {
-computed, onServerPrefetch, watch
-} from "vue";
-import {useQuery} from "@tanstack/vue-query";
-import type {Project} from "~~/types/project";
-import LfxProjectHeader from "~/components/modules/project/components/shared/header.vue";
+import { createError, showError, useRoute } from 'nuxt/app';
+import { storeToRefs } from 'pinia';
+import { computed, onServerPrefetch, watch } from 'vue';
+import { useQuery } from '@tanstack/vue-query';
+import type { Project } from '~~/types/project';
+import LfxProjectHeader from '~/components/modules/project/components/shared/header.vue';
 import {
   useProjectStore,
   defaultTimeRangeKey,
-  defaultDateOption
-} from "~/components/modules/project/store/project.store";
-import {TanstackKey} from "~/components/shared/types/tanstack";
-import {PROJECT_API_SERVICE} from "~/components/modules/project/services/project.api.service";
-import { useQueryParam } from "~/components/shared/utils/query-param";
+  defaultDateOption,
+} from '~/components/modules/project/store/project.store';
+import { TanstackKey } from '~/components/shared/types/tanstack';
+import { PROJECT_API_SERVICE } from '~/components/modules/project/services/project.api.service';
+import { useQueryParam } from '~/components/shared/utils/query-param';
 import {
   processProjectParams,
-  projectParamsSetter
-} from "~/components/modules/project/services/project.query.service";
-import {useRichSchema} from "~~/composables/useRichSchema";
+  projectParamsSetter,
+} from '~/components/modules/project/services/project.query.service';
+import { useRichSchema } from '~~/composables/useRichSchema';
 
 const route = useRoute();
-const {slug} = route.params;
-const {
-project, isProjectLoading, selectedTimeRangeKey, startDate, endDate, collaborationSet
-} = storeToRefs(useProjectStore());
+const { slug } = route.params;
+const { project, isProjectLoading, selectedTimeRangeKey, startDate, endDate, collaborationSet } =
+  storeToRefs(useProjectStore());
 const { getProjectSchema } = useRichSchema();
 
 const { queryParams } = useQueryParam(processProjectParams, projectParamsSetter);
 const queryKey = computed(() => [TanstackKey.PROJECT, slug]);
 
-const {
-  isLoading,
-  data,
-  suspense,
-  isError,
-  error
-} = useQuery<Project>({
+const { isLoading, data, suspense, isError, error } = useQuery<Project>({
   queryKey,
   queryFn: PROJECT_API_SERVICE.fetchProject(slug as string),
   retry: false,
 });
 
-const projectIsOnboarded = computed(() => !!project.value?.contributorCount || !!project.value?.organizationCount);
+const projectIsOnboarded = computed(
+  () => !!project.value?.contributorCount || !!project.value?.organizationCount,
+);
 
 onServerPrefetch(async () => {
   await suspense();
@@ -81,34 +68,42 @@ onServerPrefetch(async () => {
       showError({ statusCode: 404, statusMessage });
     }
   }
-  if(data.value) {
+  if (data.value) {
     project.value = data.value;
   }
-})
+});
 
-watch(() => data.value, (value) => {
-  if (value) {
-    // reset time range if project changes
-    if (project.value?.id !== value.id) {
-      selectedTimeRangeKey.value = defaultTimeRangeKey;
-      startDate.value = defaultDateOption?.startDate || null;
-      endDate.value = defaultDateOption?.endDate || null;
+watch(
+  () => data.value,
+  (value) => {
+    if (value) {
+      // reset time range if project changes
+      if (project.value?.id !== value.id) {
+        selectedTimeRangeKey.value = defaultTimeRangeKey;
+        startDate.value = defaultDateOption?.startDate || null;
+        endDate.value = defaultDateOption?.endDate || null;
 
-      queryParams.value = {
-        timeRange: selectedTimeRangeKey.value,
-        start: startDate.value,
-        end: endDate.value,
-      };
+        queryParams.value = {
+          timeRange: selectedTimeRangeKey.value,
+          start: startDate.value,
+          end: endDate.value,
+        };
+      }
+
+      project.value = value;
+      collaborationSet.value = [];
     }
+  },
+  { immediate: true },
+);
 
-    project.value = value;
-    collaborationSet.value = [];
-  }
-}, { immediate: true });
-
-watch(() => isLoading.value, (value) => {
-  isProjectLoading.value = value;
-}, { immediate: true })
+watch(
+  () => isLoading.value,
+  (value) => {
+    isProjectLoading.value = value;
+  },
+  { immediate: true },
+);
 
 // Add rich schema for the project
 useHead(getProjectSchema(project));

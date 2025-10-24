@@ -8,28 +8,29 @@ export default {
   tags: ['autodocs'],
   argTypes: {
     values: {
-      description: 'Array of percentage values to display (each value represents a segment of the bar)',
-      control: 'object'
+      description:
+        'Array of percentage values to display (each value represents a segment of the bar)',
+      control: 'object',
     },
     size: {
       description: 'Size of the progress bar',
       control: 'select',
-      options: ['small', 'normal']
+      options: ['small', 'normal'],
     },
     color: {
       description: 'Color theme of the progress bar',
       control: 'select',
-      options: ['normal', 'positive', 'warning', 'negative']
+      options: ['normal', 'positive', 'warning', 'negative'],
     },
     label: {
       description: 'Label text to display inside the progress bar',
-      control: 'text'
+      control: 'text',
     },
     hideEmpty: {
       description: 'Hides the empty portion of the progress bar',
-      control: 'boolean'
-    }
-  }
+      control: 'boolean',
+    },
+  },
 };
 
 export const Default = {
@@ -37,8 +38,8 @@ export const Default = {
     values: [50],
     color: 'normal',
     size: 'normal',
-    hideEmpty: false
-  }
+    hideEmpty: false,
+  },
 };
 
 export const WithLabel = {
@@ -46,16 +47,16 @@ export const WithLabel = {
     values: [75],
     color: 'normal',
     size: 'normal',
-    label: '75%'
-  }
+    label: '75%',
+  },
 };
 
 export const MultipleValues = {
   args: {
     values: [30, 20, 15],
     color: 'normal',
-    size: 'normal'
-  }
+    size: 'normal',
+  },
 };
 
 export const Small = {
@@ -63,8 +64,8 @@ export const Small = {
     values: [60],
     color: 'normal',
     size: 'small',
-    hideEmpty: false
-  }
+    hideEmpty: false,
+  },
 };
 
 export const HideEmpty = {
@@ -72,8 +73,8 @@ export const HideEmpty = {
     values: [40],
     color: 'normal',
     size: 'normal',
-    hideEmpty: true
-  }
+    hideEmpty: true,
+  },
 };
 
 export const Positive = {
@@ -81,8 +82,8 @@ export const Positive = {
     values: [80],
     color: 'positive',
     size: 'normal',
-    label: 'Success'
-  }
+    label: 'Success',
+  },
 };
 
 export const Warning = {
@@ -90,8 +91,8 @@ export const Warning = {
     values: [50],
     color: 'warning',
     size: 'normal',
-    label: 'Warning'
-  }
+    label: 'Warning',
+  },
 };
 
 export const Negative = {
@@ -99,8 +100,8 @@ export const Negative = {
     values: [25],
     color: 'negative',
     size: 'normal',
-    label: 'Low'
-  }
+    label: 'Low',
+  },
 };
 
 export const MultipleSegments = {
@@ -108,6 +109,6 @@ export const MultipleSegments = {
     values: [25, 30, 20],
     color: 'normal',
     size: 'normal',
-    label: '75% Total'
-  }
+    label: '75% Total',
+  },
 };

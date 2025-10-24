@@ -5,7 +5,7 @@ SPDX-License-Identifier: MIT
 <template>
   <div
     class="c-dropdown__sub"
-    :class="{'hidden sm:block': submenuOpen !== ''}"
+    :class="{ 'hidden sm:block': submenuOpen !== '' }"
   >
     <div
       class="c-dropdown__item"
@@ -49,9 +49,9 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import {computed} from "vue";
-import LfxIcon from "~/components/uikit/icon/icon.vue";
-import LfxDropdownSeparator from "~/components/uikit/dropdown/dropdown-separator.vue";
+import { computed } from 'vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxDropdownSeparator from '~/components/uikit/dropdown/dropdown-separator.vue';
 
 const props = defineProps<{
   width?: string;
@@ -65,14 +65,14 @@ const submenuOpen = inject<ReturnType<typeof computed<string>>>('submenuOpen');
 const isVisible = computed(() => submenuOpen && submenuOpen.value === props.name);
 
 const openMenu = () => {
-  if(submenuOpen){
+  if (submenuOpen) {
     submenuOpen.value = props.name;
   }
-}
+};
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxDropdownSubmenu'
+  name: 'LfxDropdownSubmenu',
 };
 </script>

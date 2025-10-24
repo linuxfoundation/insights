@@ -16,12 +16,12 @@ SPDX-License-Identifier: MIT
               src="/images/logo-blog.svg"
               alt="LFX Insights"
               class="h-6 min-w-44 hidden xl:block"
-            >
+            />
             <img
               src="/images/logo-mobile.svg"
               alt="LFX Insights"
               class="h-6 min-w-29 block xl:hidden"
-            >
+            />
           </a>
           <VPNavBarSearch />
         </div>
@@ -32,9 +32,7 @@ SPDX-License-Identifier: MIT
             target="_parent"
             class="c-menu-button"
           >
-            <i
-              class="fa-book-open fa-light text-base w-4 h-4"
-            />
+            <i class="fa-book-open fa-light text-base w-4 h-4" />
             Docs
           </a>
           <a
@@ -42,9 +40,7 @@ SPDX-License-Identifier: MIT
             target="_parent"
             class="c-menu-button"
           >
-            <i
-              class="fa-arrow-turn-left fa-light text-base w-4 h-4"
-            />
+            <i class="fa-arrow-turn-left fa-light text-base w-4 h-4" />
             Back to LF Insights
           </a>
         </div>
@@ -52,10 +48,10 @@ SPDX-License-Identifier: MIT
         <div>
           <div class="pt-2 xl:block lg:hidden block">
             <client-only>
-              <a 
-                class="github-button" 
-                href="https://github.com/linuxfoundation/insights" 
-                data-show-count="true" 
+              <a
+                class="github-button"
+                href="https://github.com/linuxfoundation/insights"
+                data-show-count="true"
                 aria-label="Star linuxfoundation/insights on GitHub"
                 target="_blank"
               />
@@ -71,7 +67,7 @@ SPDX-License-Identifier: MIT
                 src="/images/github.svg"
                 alt="GitHub Logo"
                 class="w-full"
-              >
+              />
             </a>
           </div>
         </div>
@@ -81,28 +77,28 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup>
-import { VPNavBarSearch } from 'vitepress/theme'
+import { VPNavBarSearch } from 'vitepress/theme';
 import { onMounted } from 'vue';
 
 onMounted(() => {
-  const scriptSrc = 'https://buttons.github.io/buttons.js'
+  const scriptSrc = 'https://buttons.github.io/buttons.js';
   // GitHub buttons script adds the functionality
   // Adding check to prevent adding the script twice that causes the error
   if (!document.querySelector(`script[src="${scriptSrc}"]`)) {
-    const script = document.createElement('script')
-    script.setAttribute('src', scriptSrc)
-    script.setAttribute('async', '')
-    script.setAttribute('defer', '')
-    document.body.appendChild(script)
+    const script = document.createElement('script');
+    script.setAttribute('src', scriptSrc);
+    script.setAttribute('async', '');
+    script.setAttribute('defer', '');
+    document.body.appendChild(script);
   }
-})
+});
 </script>
 
 <style lang="scss" scoped>
 @media (min-width: 768px) {
-    .wrapper {
-      @apply px-8;
-    }
+  .wrapper {
+    @apply px-8;
+  }
 }
 
 .wrapper-content {

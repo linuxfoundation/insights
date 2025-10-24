@@ -11,7 +11,7 @@ SPDX-License-Identifier: MIT
         size="small"
         :results="assessmentsResults"
       >
-        <template #default="{result}">
+        <template #default="{ result }">
           <lfx-popover
             placement="top-start"
             trigger-event="hover"
@@ -20,9 +20,7 @@ SPDX-License-Identifier: MIT
               <div class="h-4 w-4">
                 <lfx-chart :config="chartConfig(result)" />
               </div>
-              <p class="text-sm font-semibold">
-                {{result}}%
-              </p>
+              <p class="text-sm font-semibold">{{ result }}%</p>
             </div>
 
             <template #content>
@@ -40,8 +38,8 @@ SPDX-License-Identifier: MIT
                     type="transparent"
                     :result="assessment.result"
                   />
-                  <p class="text-body-2  mt-2">
-                    {{assessment.description}}
+                  <p class="text-body-2 mt-2">
+                    {{ assessment.description }}
                   </p>
                 </article>
               </lfx-card>
@@ -58,14 +56,14 @@ SPDX-License-Identifier: MIT
           class="text-neutral-400"
         />
         <p class="text-body-2 whitespace-nowrap">
-          {{getRepoNameFromUrl(repository)}}
+          {{ getRepoNameFromUrl(repository) }}
         </p>
       </div>
     </div>
     <div class="flex sm:justify-end items-center">
       <nuxt-link
         v-if="repo"
-        :to="{name: LfxRoutes.REPOSITORY_SECURITY, params: {name: repo.slug}}"
+        :to="{ name: LfxRoutes.REPOSITORY_SECURITY, params: { name: repo.slug } }"
       >
         <lfx-button
           type="tertiary"
@@ -80,47 +78,50 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import {storeToRefs} from "pinia";
-import {computed} from "vue";
-import {getRepoNameFromUrl} from "../../../repository/utils/repository.helpers";
-import LfxProjectSecurityEvaluationResult from "~/components/modules/project/components/security/evaluation-result.vue";
-import LfxIcon from "~/components/uikit/icon/icon.vue";
-import type {SecurityAssessmentData, SecurityData} from "~~/types/security/responses.types";
-import LfxChart from "~/components/uikit/chart/chart.vue";
-import {getGaugeChartConfig} from "~/components/uikit/chart/configs/gauge.chart";
-import {lfxColors} from "~/config/styles/colors";
-import {LfxRoutes} from "~/components/shared/types/routes";
-import LfxButton from "~/components/uikit/button/button.vue";
-import {useProjectStore} from "~/components/modules/project/store/project.store";
-import LfxPopover from "~/components/uikit/popover/popover.vue";
-import LfxCard from "~/components/uikit/card/card.vue";
-import LfxProjectSecurityEvaluationResultTag
-  from "~/components/modules/project/components/security/evaluation-result-tag.vue";
+import { storeToRefs } from 'pinia';
+import { computed } from 'vue';
+import { getRepoNameFromUrl } from '../../../repository/utils/repository.helpers';
+import LfxProjectSecurityEvaluationResult from '~/components/modules/project/components/security/evaluation-result.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import type { SecurityAssessmentData, SecurityData } from '~~/types/security/responses.types';
+import LfxChart from '~/components/uikit/chart/chart.vue';
+import { getGaugeChartConfig } from '~/components/uikit/chart/configs/gauge.chart';
+import { lfxColors } from '~/config/styles/colors';
+import { LfxRoutes } from '~/components/shared/types/routes';
+import LfxButton from '~/components/uikit/button/button.vue';
+import { useProjectStore } from '~/components/modules/project/store/project.store';
+import LfxPopover from '~/components/uikit/popover/popover.vue';
+import LfxCard from '~/components/uikit/card/card.vue';
+import LfxProjectSecurityEvaluationResultTag from '~/components/modules/project/components/security/evaluation-result-tag.vue';
 
 const props = defineProps<{
-  repository: string,
-  checks: SecurityData[]
+  repository: string;
+  checks: SecurityData[];
 }>();
 
-const {projectRepos} = storeToRefs(useProjectStore())
+const { projectRepos } = storeToRefs(useProjectStore());
 
 const repo = computed(() => projectRepos.value.find((repo) => repo.url === props.repository));
 
-const assessments = computed<SecurityAssessmentData[]>(() => props.checks.map((check) => check.assessments).flat());
-const assessmentsResults = computed(() => assessments.value
-    .map((assessment: SecurityAssessmentData) => assessment.result));
+const assessments = computed<SecurityAssessmentData[]>(() =>
+  props.checks.map((check) => check.assessments).flat(),
+);
+const assessmentsResults = computed(() =>
+  assessments.value.map((assessment: SecurityAssessmentData) => assessment.result),
+);
 
-const chartConfig = (result: number) => getGaugeChartConfig({
-  value: result,
-  gaugeType: 'full',
-  name: '',
-  graphOnly: true,
-  lineColor: lfxColors.brand[500],
-})
+const chartConfig = (result: number) =>
+  getGaugeChartConfig({
+    value: result,
+    gaugeType: 'full',
+    name: '',
+    graphOnly: true,
+    lineColor: lfxColors.brand[500],
+  });
 </script>
 
 <script lang="ts">
 export default {
   name: 'LfxProjectSecurityEvaluationRepository',
-}
+};
 </script>

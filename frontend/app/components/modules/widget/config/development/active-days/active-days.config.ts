@@ -1,9 +1,9 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { DateTime } from 'luxon'
-import ActiveDays from './active-days.vue'
-import type { WidgetConfig, WidgetModel } from '~/components/modules/widget/config/widget.config'
-import { Granularity } from '~~/types/shared/granularity'
+import { DateTime } from 'luxon';
+import ActiveDays from './active-days.vue';
+import type { WidgetConfig, WidgetModel } from '~/components/modules/widget/config/widget.config';
+import { Granularity } from '~~/types/shared/granularity';
 
 const activeDays: WidgetConfig = {
   key: 'activeDays',
@@ -26,11 +26,11 @@ const activeDays: WidgetConfig = {
       startDate: string,
       endDate: string,
     ) => {
-      const start = DateTime.fromISO(startDate)
-      const end = DateTime.fromISO(endDate)
-      const diffInDays = Math.ceil(end.diff(start, 'days').days)
+      const start = DateTime.fromISO(startDate);
+      const end = DateTime.fromISO(endDate);
+      const diffInDays = Math.ceil(end.diff(start, 'days').days);
 
-      return diffInDays === 30 && model.granularity === Granularity.DAILY
+      return diffInDays === 30 && model.granularity === Granularity.DAILY;
     },
     points: {
       0: {
@@ -77,6 +77,6 @@ const activeDays: WidgetConfig = {
     suggestions: 'Show me the active days',
   },
   showCollabToggle: true,
-}
+};
 
-export default activeDays
+export default activeDays;

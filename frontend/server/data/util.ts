@@ -1,6 +1,6 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import {DateTime} from "luxon";
+import { DateTime } from 'luxon';
 
 // We should use Luxon's Interval type for this, but that would require a lot of changes in the codebase, so for now
 // we'll just use a custom type, just so we can satisfy Typescript's strict typing.
@@ -9,8 +9,8 @@ export type DateRange = {
   to: DateTime;
 };
 export type DateRangeSet = {
-  current: DateRange,
-  previous: DateRange,
+  current: DateRange;
+  previous: DateRange;
 };
 
 // This sets how far back we want to go when no start date is provided.
@@ -23,7 +23,10 @@ export const earliestPossibleStartDate = DateTime.utc(2010, 1, 1);
  * and then subtract that from the current dates to get the previous ones.
  * It provides correct defaults for the current dates if they are not provided.
  */
-export function getPreviousDates(currentStartDate?: DateTime, currentEndDate?: DateTime): DateRangeSet {
+export function getPreviousDates(
+  currentStartDate?: DateTime,
+  currentEndDate?: DateTime,
+): DateRangeSet {
   const safeStartDate = currentStartDate || earliestPossibleStartDate;
   const safeEndDate = currentEndDate || DateTime.utc();
 
@@ -33,18 +36,18 @@ export function getPreviousDates(currentStartDate?: DateTime, currentEndDate?: D
 
   const dateDiff = safeEndDate.diff(safeStartDate, ['months', 'days']);
 
-  const previousEndDate = safeStartDate.minus({days: 1});
+  const previousEndDate = safeStartDate.minus({ days: 1 });
   const previousStartDate = previousEndDate.minus(dateDiff);
 
   return {
     current: {
       from: safeStartDate,
-      to: safeEndDate
+      to: safeEndDate,
     },
     previous: {
       from: previousStartDate,
-      to: previousEndDate
-    }
+      to: previousEndDate,
+    },
   };
 }
 
@@ -53,5 +56,5 @@ export function calculatePercentageChange(current: number, previous: number): nu
     return current === 0 ? 0 : undefined; // Avoid division by zero.  Return 0 if both are 0, undefined otherwise
   }
 
-  return Math.abs(((current - previous) / previous)) * 100;
+  return Math.abs((current - previous) / previous) * 100;
 }

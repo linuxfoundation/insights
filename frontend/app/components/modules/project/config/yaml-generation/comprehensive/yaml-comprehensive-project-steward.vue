@@ -44,23 +44,23 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { url } from '@vuelidate/validators'
-import useVuelidate from '@vuelidate/core'
-import LfxInput from '~/components/uikit/input/input.vue'
-import LfxField from '~/components/uikit/field/field.vue'
-import LfxTextarea from '~/components/uikit/textarea/textarea.vue'
-import LfxFieldMessages from '~/components/uikit/field/field-messages.vue'
+import { url } from '@vuelidate/validators';
+import useVuelidate from '@vuelidate/core';
+import LfxInput from '~/components/uikit/input/input.vue';
+import LfxField from '~/components/uikit/field/field.vue';
+import LfxTextarea from '~/components/uikit/textarea/textarea.vue';
+import LfxFieldMessages from '~/components/uikit/field/field-messages.vue';
 
 const props = defineProps<{
-  modelValue: object
-}>()
+  modelValue: object;
+}>();
 
-const emit = defineEmits<{ (e: 'update:modelValue', value: object): void }>()
+const emit = defineEmits<{ (e: 'update:modelValue', value: object): void }>();
 
 const model = computed<object>({
   get: () => props.modelValue,
   set: (value: object) => emit('update:modelValue', value),
-})
+});
 
 const rules = {
   project: {
@@ -70,7 +70,7 @@ const rules = {
       },
     },
   },
-}
+};
 
-const $v = useVuelidate(rules, model)
+const $v = useVuelidate(rules, model);
 </script>

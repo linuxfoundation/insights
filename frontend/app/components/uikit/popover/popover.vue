@@ -6,7 +6,7 @@ SPDX-License-Identifier: MIT
   <div
     ref="trigger"
     class="c-popover__trigger"
-    :class="{'is-open': isVisible}"
+    :class="{ 'is-open': isVisible }"
     v-bind="$attrs"
     @click="handleClick"
   >
@@ -33,31 +33,32 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script lang="ts" setup>
-import {
-  ref, watch, onMounted, onBeforeUnmount, nextTick
-} from 'vue';
-import type {Instance, Placement} from '@popperjs/core';
-import {createPopper} from '@popperjs/core';
+import { ref, watch, onMounted, onBeforeUnmount, nextTick } from 'vue';
+import type { Instance, Placement } from '@popperjs/core';
+import { createPopper } from '@popperjs/core';
 
-const props = withDefaults(defineProps<{
-  placement?: Placement,
-  triggerEvent?: 'click' | 'hover',
-  visibility?: boolean,
-  spacing?: number,
-  disabled?: boolean,
-  matchWidth?: boolean,
-  isModal?: boolean,
-}>(), {
-  placement: 'bottom-start',
-  triggerEvent: 'click',
-  visibility: false,
-  spacing: 4,
-  disabled: false,
-  matchWidth: false,
-  isModal: false,
-});
+const props = withDefaults(
+  defineProps<{
+    placement?: Placement;
+    triggerEvent?: 'click' | 'hover';
+    visibility?: boolean;
+    spacing?: number;
+    disabled?: boolean;
+    matchWidth?: boolean;
+    isModal?: boolean;
+  }>(),
+  {
+    placement: 'bottom-start',
+    triggerEvent: 'click',
+    visibility: false,
+    spacing: 4,
+    disabled: false,
+    matchWidth: false,
+    isModal: false,
+  },
+);
 
-const emit = defineEmits<{(e: 'update:visibility', value: boolean): void }>();
+const emit = defineEmits<{ (e: 'update:visibility', value: boolean): void }>();
 
 const trigger = ref<HTMLElement | null>(null);
 const popover = ref<HTMLElement | null>(null);
@@ -65,9 +66,12 @@ const popperInstance = ref<Instance | null>(null);
 const isVisible = ref(props.visibility);
 const closeTimeout = ref<number | null>(null);
 
-watch(() => props.visibility, (val) => {
-  isVisible.value = val;
-});
+watch(
+  () => props.visibility,
+  (val) => {
+    isVisible.value = val;
+  },
+);
 watch(isVisible, (val) => emit('update:visibility', val));
 
 const createPopperInstance = () => {
@@ -82,19 +86,21 @@ const createPopperInstance = () => {
             offset: [0, props.spacing],
           },
         },
-        ...(props.matchWidth ? [
-          {
-            name: "sameWidth",
-            enabled: true,
-            phase: "beforeWrite",
-            requires: ["computeStyles"],
-            fn: ({ state }) => {
-              Object.assign(state.styles.popper, {
-                width: `${state.rects.reference.width}px`,
-              });
-            },
-          },
-        ] : [])
+        ...(props.matchWidth
+          ? [
+              {
+                name: 'sameWidth',
+                enabled: true,
+                phase: 'beforeWrite',
+                requires: ['computeStyles'],
+                fn: ({ state }) => {
+                  Object.assign(state.styles.popper, {
+                    width: `${state.rects.reference.width}px`,
+                  });
+                },
+              },
+            ]
+          : []),
       ],
     });
   }
@@ -132,9 +138,9 @@ const handleClick = (e: Event) => {
 
 const handleClickOutside = (e: Event) => {
   if (
-      popover.value
-      && !popover.value.contains(e.target as Node)
-      && !trigger.value?.contains(e.target as Node)
+    popover.value &&
+    !popover.value.contains(e.target as Node) &&
+    !trigger.value?.contains(e.target as Node)
   ) {
     closePopover();
   }
@@ -154,7 +160,7 @@ const scheduleClose = () => {
 };
 
 onMounted(() => {
-  if(import.meta.client) {
+  if (import.meta.client) {
     createPopperInstance();
     if (props.triggerEvent === 'hover') {
       trigger.value?.addEventListener('mouseenter', openPopover);
@@ -203,7 +209,7 @@ onBeforeUnmount(() => {
 defineExpose({
   closePopover,
   openPopover,
-})
+});
 </script>
 
 <script lang="ts">

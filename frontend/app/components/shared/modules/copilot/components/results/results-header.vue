@@ -46,12 +46,9 @@ SPDX-License-Identifier: MIT
             />
           </div>
         </lfx-dropdown-item>
-
       </lfx-dropdown-select>
     </template>
-    <template v-else>
-      &nbsp;
-    </template>
+    <template v-else> &nbsp; </template>
 
     <div class="flex items-center gap-2">
       <!-- <lfx-menu-button
@@ -70,15 +67,15 @@ SPDX-License-Identifier: MIT
     </div>
   </div>
 </template>
-  
+
 <script setup lang="ts">
 import { computed } from 'vue';
 import { storeToRefs } from 'pinia';
-import LfxChatResultLabel from '../shared/result-label.vue'
+import LfxChatResultLabel from '../shared/result-label.vue';
 import { useCopilotStore } from '../../store/copilot.store';
-import LfxDropdownSelector from "~/components/uikit/dropdown/dropdown-selector.vue";
-import LfxDropdownItem from "~/components/uikit/dropdown/dropdown-item.vue";
-import LfxDropdownSelect from "~/components/uikit/dropdown/dropdown-select.vue";
+import LfxDropdownSelector from '~/components/uikit/dropdown/dropdown-selector.vue';
+import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
+import LfxDropdownSelect from '~/components/uikit/dropdown/dropdown-select.vue';
 import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
 import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
 
@@ -100,27 +97,27 @@ const selectedId = computed<string>({
   get: () => selectedResultId.value || '',
   set: (value) => {
     selectedResultId.value = value || '';
-  }
-})
+  },
+});
 
 const resultsWithData = computed(() => {
-  return resultData.value.filter(r => r.data.length > 0);
-})
+  return resultData.value.filter((r) => r.data.length > 0);
+});
 
 const getVersion = (id: string) => {
-  const idx = resultsWithData.value.findIndex(r => String(r.id) === String(id));
+  const idx = resultsWithData.value.findIndex((r) => String(r.id) === String(id));
 
-  return `${idx + 1}`; 
-}
+  return `${idx + 1}`;
+};
 
 const getTitle = (id: string) => {
-  const result = resultData.value.find(r => String(r.id) === String(id));
+  const result = resultData.value.find((r) => String(r.id) === String(id));
   return result?.title || 'Results';
-}
+};
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxCopilotResultsHeader'
-}
+  name: 'LfxCopilotResultsHeader',
+};
 </script>

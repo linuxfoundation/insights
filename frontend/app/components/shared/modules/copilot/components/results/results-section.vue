@@ -4,9 +4,7 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <div class="w-full h-full min-h-0 flex flex-col bg-gradient-to-t from-neutral-100 to-white">
-    <div
-      class="py-4 px-6 w-full h-full min-h-0 flex flex-col"
-    >
+    <div class="py-4 px-6 w-full h-full min-h-0 flex flex-col">
       <div>
         <lfx-copilot-results-header
           :is-empty="isEmpty"
@@ -14,11 +12,11 @@ SPDX-License-Identifier: MIT
           @close="emit('close')"
         />
       </div>
-      <div 
+      <div
         v-if="!isLoading"
         :class="{
           'h-full flex flex-col justify-center min-h-0': isChartLoading,
-          'c-card p-4 w-full h-full min-h-0 flex flex-col': !isChartLoading
+          'c-card p-4 w-full h-full min-h-0 flex flex-col': !isChartLoading,
         }"
       >
         <lfx-copilot-results-toggle
@@ -35,9 +33,7 @@ SPDX-License-Identifier: MIT
             v-if="selectedTab === 'data'"
             class="w-full h-full min-h-0 flex flex-col"
           >
-            <lfx-copilot-table-results
-              :data="selectedResultData"
-            />
+            <lfx-copilot-table-results :data="selectedResultData" />
           </div>
           <div
             v-else
@@ -71,7 +67,6 @@ SPDX-License-Identifier: MIT
         <lfx-copilot-loading-state />
       </div>
     </div>
-    
   </div>
 </template>
 
@@ -95,7 +90,7 @@ const emit = defineEmits<{
 
 const props = defineProps<{
   isLoading: boolean;
-}>()
+}>();
 
 const { resultData, selectedResultId } = storeToRefs(useCopilotStore());
 
@@ -104,32 +99,34 @@ const selectedTab = ref('data');
 const isSnapshotModalOpen = ref(false);
 const isChartLoading = ref(false);
 const selectedResultConfig = computed<Config | null>(() => {
-  return resultData.value.find(result => result.id === selectedResultId.value)?.chartConfig || null;
+  return (
+    resultData.value.find((result) => result.id === selectedResultId.value)?.chartConfig || null
+  );
 });
 
 const chartVersion = computed(() => {
   return resultData.value.length;
-})
+});
 
 const selectedResultData = computed(() => {
-  return resultData.value.find(result => result.id === selectedResultId.value)?.data || null;
-})
+  return resultData.value.find((result) => result.id === selectedResultId.value)?.data || null;
+});
 
 const selectedResultChartErrorType = computed(() => {
-  return resultData.value.find(result => result.id === selectedResultId.value)?.chartErrorType;
-})
+  return resultData.value.find((result) => result.id === selectedResultId.value)?.chartErrorType;
+});
 
 const selectedResultConversationId = computed(() => {
-  return resultData.value.find(result => result.id === selectedResultId.value)?.conversationId;
-})
+  return resultData.value.find((result) => result.id === selectedResultId.value)?.conversationId;
+});
 
 const isEmpty = computed(() => {
   return !props.isLoading && (!selectedResultData.value || selectedResultData.value.length === 0);
-})
+});
 
 const handleConfigUpdate = (config: Config | null, chartErrorType?: ChartErrorType) => {
   if (selectedResultId.value) {
-    const result = resultData.value.find(result => result.id === selectedResultId.value);
+    const result = resultData.value.find((result) => result.id === selectedResultId.value);
     if (result) {
       result.chartConfig = config;
       result.title = config?.title?.text || 'Results';
@@ -142,12 +139,12 @@ const handleConfigUpdate = (config: Config | null, chartErrorType?: ChartErrorTy
       }
     }
   }
-}
+};
 
 const handleChartLoading = (value: boolean) => {
   isChartLoading.value = value;
   emit('update:isChartLoading', value);
-}
+};
 
 // Removed watcher that forced chart tab selection during loading
 // Now users stay on data tab by default and can manually switch to chart if desired
@@ -155,6 +152,6 @@ const handleChartLoading = (value: boolean) => {
 
 <script lang="ts">
 export default {
-  name: 'LfxCopilotResultsSection'
-}
+  name: 'LfxCopilotResultsSection',
+};
 </script>

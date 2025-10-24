@@ -7,18 +7,16 @@ SPDX-License-Identifier: MIT
     <div class="flex flex-row gap-3 items-start justify-end">
       <div
         v-if="!!props.itemValue"
-        class="flex gap-2 items-center text-sm h-6 px-2.5 py-1 rounded-full
-          font-semibold bg-neutral-50 text-neutral-600"
+        class="flex gap-2 items-center text-sm h-6 px-2.5 py-1 rounded-full font-semibold bg-neutral-50 text-neutral-600"
       >
         {{ itemDisplay }}
       </div>
-      <lfx-tooltip 
+      <lfx-tooltip
         v-else
         :content="itemDisplay === '-' ? 'Merge time could not be calculated for this stage.' : ''"
       >
         <div
-          class="flex gap-2 items-center text-sm h-6 px-2.5 py-1 rounded-full
-            font-semibold bg-neutral-50 text-neutral-600"
+          class="flex gap-2 items-center text-sm h-6 px-2.5 py-1 rounded-full font-semibold bg-neutral-50 text-neutral-600"
         >
           {{ itemDisplay }}
         </div>
@@ -62,10 +60,11 @@ const props = withDefaults(
     isLast?: boolean;
   }>(),
   {
-    isLast: false
-  }
+    isLast: false,
+  },
 );
 
-const itemDisplay= computed(() => props.itemValue ? `${props.itemValue?.value} ${props.itemValue?.unit}` : '-');
-
+const itemDisplay = computed(() =>
+  props.itemValue ? `${props.itemValue?.value} ${props.itemValue?.unit}` : '-',
+);
 </script>

@@ -1,14 +1,10 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import {
-  describe, test, expect, vi, beforeEach
-} from 'vitest';
-import {DateTime} from "luxon";
-import {mockTimeseries} from '../../mocks/tinybird-organizations-dependency-response.mock';
-import {
-  mockTimeseries as mockLeaderboardTimeseries
-} from '../../mocks/tinybird-organizations-leaderboard-response.mock';
-import type {OrganizationDependencyResponse} from "~~/server/data/tinybird/organizations-dependency-data-source";
+import { describe, test, expect, vi, beforeEach } from 'vitest';
+import { DateTime } from 'luxon';
+import { mockTimeseries } from '../../mocks/tinybird-organizations-dependency-response.mock';
+import { mockTimeseries as mockLeaderboardTimeseries } from '../../mocks/tinybird-organizations-leaderboard-response.mock';
+import type { OrganizationDependencyResponse } from '~~/server/data/tinybird/organizations-dependency-data-source';
 
 const mockFetchFromTinybird = vi.fn();
 
@@ -20,16 +16,20 @@ describe('Organizations Dependency Data Source', () => {
     // This means that the import for tinybird.ts inside active-organizations-data-source.ts would still be used,
     // and thus not mocked. This means we need to import the module again after the mock is set, whenever we want to
     // use it.
-    vi.doMock(import("./tinybird"), () => ({
+    vi.doMock(import('./tinybird'), () => ({
       fetchFromTinybird: mockFetchFromTinybird,
     }));
-  })
+  });
 
   test('should fetch organizations dependency data with correct parameters', async () => {
     // We have to import this here again because vi.doMock is not hoisted. See the explanation in beforeEach().
-    const {fetchOrganizationDependency} = await import("~~/server/data/tinybird/organizations-dependency-data-source");
+    const { fetchOrganizationDependency } = await import(
+      '~~/server/data/tinybird/organizations-dependency-data-source'
+    );
 
-    mockFetchFromTinybird.mockResolvedValueOnce(mockTimeseries).mockResolvedValueOnce(mockLeaderboardTimeseries);
+    mockFetchFromTinybird
+      .mockResolvedValueOnce(mockTimeseries)
+      .mockResolvedValueOnce(mockLeaderboardTimeseries);
 
     const startDate = DateTime.utc(2024, 3, 20);
     const endDate = DateTime.utc(2025, 3, 20);
@@ -39,7 +39,7 @@ describe('Organizations Dependency Data Source', () => {
       includeCodeContributions: true,
       includeCollaborations: false,
       startDate,
-      endDate
+      endDate,
     };
 
     const result = await fetchOrganizationDependency(filter);
@@ -47,15 +47,15 @@ describe('Organizations Dependency Data Source', () => {
     expect(mockFetchFromTinybird).toHaveBeenNthCalledWith(
       1,
       '/v0/pipes/organization_dependency.json',
-      filter
-    )
+      filter,
+    );
     expect(mockFetchFromTinybird).toHaveBeenNthCalledWith(
       2,
       '/v0/pipes/organizations_leaderboard.json',
       {
         ...filter,
-        limit: 5
-      }
+        limit: 5,
+      },
     );
 
     const topOrganizationsCount = mockTimeseries.data.length;
@@ -66,19 +66,19 @@ describe('Organizations Dependency Data Source', () => {
     const expectedResult: OrganizationDependencyResponse = {
       topOrganizations: {
         count: topOrganizationsCount,
-        percentage: topOrganizationsPercentage
+        percentage: topOrganizationsPercentage,
       },
       otherOrganizations: {
         count: Math.max(0, (totalOrganizationCount || 0) - topOrganizationsCount),
-        percentage: 100 - topOrganizationsPercentage
+        percentage: 100 - topOrganizationsPercentage,
       },
       list: mockLeaderboardTimeseries.data.map((item) => ({
         logo: item.logo,
         name: item.displayName,
         contributions: item.contributionCount,
         percentage: item.contributionPercentage,
-        website: ''
-      }))
+        website: '',
+      })),
     };
 
     expect(result).toEqual(expectedResult);

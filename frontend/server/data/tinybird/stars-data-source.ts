@@ -1,17 +1,17 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import type {ActivityCountFilter} from "../types";
-import {ActivityFilterCountType} from "../types";
-import {fetchFromTinybird} from './tinybird'
-import type {StarsData} from "~~/types/popularity/responses.types";
-import {calculatePercentageChange, getPreviousDates} from "~~/server/data/util";
+import type { ActivityCountFilter } from '../types';
+import { ActivityFilterCountType } from '../types';
+import { fetchFromTinybird } from './tinybird';
+import type { StarsData } from '~~/types/popularity/responses.types';
+import { calculatePercentageChange, getPreviousDates } from '~~/server/data/util';
 
 // This is the data part of the response from Tinybird
 type TinybirdActivityCountData = {
-  startDate: string,
-  endDate: string,
-  activityCount?: number
-  cumulativeActivityCount?: number
+  startDate: string;
+  endDate: string;
+  activityCount?: number;
+  cumulativeActivityCount?: number;
 };
 
 type TinybirdActivityCountSummary = {
@@ -27,7 +27,7 @@ function getTinybirdQueries(filter: ActivityCountFilter) {
       activity_type: filter.activity_type, // We need this due to a discrepancy between variable names in Tinybird and the frontend
       granularity: undefined, // This tells TinyBird to return a summary instead of time series
       repos: filter.repos, // We need this due to a discrepancy between variable names in Tinybird and the frontend
-      includeOtherContributions: true
+      includeOtherContributions: true,
     },
     previousSummaryQuery: {
       ...filter,
@@ -36,21 +36,21 @@ function getTinybirdQueries(filter: ActivityCountFilter) {
       repos: filter.repos, // We need this due to a discrepancy between variable names in Tinybird and the frontend
       startDate: dates.previous.from,
       endDate: dates.previous.to,
-      includeOtherContributions: true
+      includeOtherContributions: true,
     },
     dataQuery: {
       ...filter,
       activity_type: filter.activity_type, // We need this due to a discrepancy between variable names in Tinybird and the frontend
       repos: filter.repos,
-      includeOtherContributions: true
-    }
-  }
+      includeOtherContributions: true,
+    },
+  };
 }
 export async function fetchStarsActivities(filter: ActivityCountFilter): Promise<StarsData> {
   // TODO: We're passing unchecked query parameters to TinyBird directly from the frontend.
   //  We need to ensure this doesn't pose a security risk.
 
-  const {currentSummaryQuery, previousSummaryQuery, dataQuery} = getTinybirdQueries(filter);
+  const { currentSummaryQuery, previousSummaryQuery, dataQuery } = getTinybirdQueries(filter);
 
   const summariesPath = 'activities_count.json'; // Tinybird uses this one for the summaries
   let dataPath = 'activities_cumulative_count.json';
@@ -59,14 +59,23 @@ export async function fetchStarsActivities(filter: ActivityCountFilter): Promise
   }
 
   const [currentSummaryData, previousSummaryData, currentData] = await Promise.all([
-    fetchFromTinybird<TinybirdActivityCountSummary[]>(`/v0/pipes/${summariesPath}`, currentSummaryQuery),
-    fetchFromTinybird<TinybirdActivityCountSummary[]>(`/v0/pipes/${summariesPath}`, previousSummaryQuery),
-    fetchFromTinybird<TinybirdActivityCountData[]>(`/v0/pipes/${dataPath}`, dataQuery)
+    fetchFromTinybird<TinybirdActivityCountSummary[]>(
+      `/v0/pipes/${summariesPath}`,
+      currentSummaryQuery,
+    ),
+    fetchFromTinybird<TinybirdActivityCountSummary[]>(
+      `/v0/pipes/${summariesPath}`,
+      previousSummaryQuery,
+    ),
+    fetchFromTinybird<TinybirdActivityCountData[]>(`/v0/pipes/${dataPath}`, dataQuery),
   ]);
 
   const currentCumulativeCount = currentSummaryData.data[0]?.activityCount || 0;
   const previousCumulativeCount = previousSummaryData.data[0]?.activityCount || 0;
-  const percentageChange = calculatePercentageChange(currentCumulativeCount, previousCumulativeCount);
+  const percentageChange = calculatePercentageChange(
+    currentCumulativeCount,
+    previousCumulativeCount,
+  );
 
   let data;
 
@@ -75,13 +84,13 @@ export async function fetchStarsActivities(filter: ActivityCountFilter): Promise
       startDate: item.startDate,
       endDate: item.endDate,
       stars: item.cumulativeActivityCount || 0,
-    }))
+    }));
   } else {
     data = currentData.data.map((item) => ({
       startDate: item.startDate,
       endDate: item.endDate,
       stars: item.activityCount || 0,
-    }))
+    }));
   }
 
   return {
@@ -93,6 +102,6 @@ export async function fetchStarsActivities(filter: ActivityCountFilter): Promise
       periodFrom: filter.startDate?.toString() || '',
       periodTo: filter.endDate?.toString() || '',
     },
-    data
+    data,
   };
 }

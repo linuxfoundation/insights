@@ -1,15 +1,14 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import type {
-  ContributorDependencyFilter,
-  ContributorsLeaderboardFilter,
-} from "../types";
-import {fetchFromTinybird} from './tinybird'
-import {fetchContributorsLeaderboard} from "~~/server/data/tinybird/contributors-leaderboard-data-source";
-import type {TinybirdContributorDependencyData} from "~~/server/data/tinybird/responses.types";
-import type {ContributorDependency} from "~~/types/contributors/responses.types";
+import type { ContributorDependencyFilter, ContributorsLeaderboardFilter } from '../types';
+import { fetchFromTinybird } from './tinybird';
+import { fetchContributorsLeaderboard } from '~~/server/data/tinybird/contributors-leaderboard-data-source';
+import type { TinybirdContributorDependencyData } from '~~/server/data/tinybird/responses.types';
+import type { ContributorDependency } from '~~/types/contributors/responses.types';
 
-export async function fetchContributorDependency(filter: ContributorDependencyFilter): Promise<ContributorDependency> {
+export async function fetchContributorDependency(
+  filter: ContributorDependencyFilter,
+): Promise<ContributorDependency> {
   // TODO: We're passing unchecked query parameters to TinyBird directly from the frontend.
   //  We need to ensure this doesn't pose a security risk.
 
@@ -19,11 +18,11 @@ export async function fetchContributorDependency(filter: ContributorDependencyFi
     // because, when summing the contribution percentages, we want to get to at least 51%,
     // but sometimes only 10 contributors don't add up to that percentage.
     // By bumping up that limit to 100, it's almost guaranteed we will get to 51%.
-    limit: 100
+    limit: 100,
   };
   const leaderboardQuery: ContributorsLeaderboardFilter = {
     ...filter,
-    limit: 5
+    limit: 5,
   };
 
   const [tinybirdTopContributorsResponse, tinybirdLeaderboardResponse] = await Promise.all([
@@ -31,7 +30,7 @@ export async function fetchContributorDependency(filter: ContributorDependencyFi
       '/v0/pipes/contributor_dependency.json',
       dependencyQuery,
     ),
-    fetchContributorsLeaderboard(leaderboardQuery)
+    fetchContributorsLeaderboard(leaderboardQuery),
   ]);
 
   // Sort the top contributors by contributionPercentageRunningTotal in ascending order.
@@ -57,11 +56,11 @@ export async function fetchContributorDependency(filter: ContributorDependencyFi
   return {
     topContributors: {
       count: topContributorsCount,
-      percentage: topContributorsPercentage
+      percentage: topContributorsPercentage,
     },
     otherContributors: {
       count: Math.max(0, (totalContributorCount || 0) - topContributorsCount),
-      percentage: 100 - topContributorsPercentage
+      percentage: 100 - topContributorsPercentage,
     },
     list: tinybirdLeaderboardResponse.data.map((item) => ({
       avatar: item.avatar,
@@ -69,6 +68,6 @@ export async function fetchContributorDependency(filter: ContributorDependencyFi
       contributions: item.contributions,
       percentage: item.percentage,
       roles: item.roles || [],
-    }))
+    })),
   };
 }

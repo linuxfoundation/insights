@@ -1,10 +1,8 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import {
-  describe, test, expect, vi, beforeEach
-} from 'vitest';
-import type {ActivityTypesFilter} from "~~/types/development/requests.types";
-import type {ActivityTypesTinybirdQuery} from "~~/server/data/tinybird/requests.types";
+import { describe, test, expect, vi, beforeEach } from 'vitest';
+import type { ActivityTypesFilter } from '~~/types/development/requests.types';
+import type { ActivityTypesTinybirdQuery } from '~~/server/data/tinybird/requests.types';
 
 const mockFetchFromTinybird = vi.fn();
 
@@ -17,7 +15,7 @@ const mockTinybirdResponse = {
     { platform: 'gitlab', activityType: 'merge_request-merged', label: 'Merged a merge request' },
     { platform: 'jira', activityType: 'issue-created', label: 'Created an issue' },
     { platform: 'jira', activityType: 'issue-updated', label: 'Updated an issue' },
-  ]
+  ],
 };
 
 const expectedGroupedResponse = {
@@ -33,20 +31,22 @@ const expectedGroupedResponse = {
   jira: [
     { key: 'issue-created', label: 'Created an issue' },
     { key: 'issue-updated', label: 'Updated an issue' },
-  ]
+  ],
 };
 
 describe('Activity Types Data Source', () => {
   beforeEach(() => {
     mockFetchFromTinybird.mockClear();
 
-    vi.doMock(import("./tinybird"), () => ({
+    vi.doMock(import('./tinybird'), () => ({
       fetchFromTinybird: mockFetchFromTinybird,
     }));
   });
 
   test('should fetch activity types with correct parameters and transform response', async () => {
-    const {fetchActivityTypes} = await import("~~/server/data/tinybird/activity-types-data-source");
+    const { fetchActivityTypes } = await import(
+      '~~/server/data/tinybird/activity-types-data-source'
+    );
 
     mockFetchFromTinybird.mockResolvedValueOnce(mockTinybirdResponse);
 
@@ -70,19 +70,21 @@ describe('Activity Types Data Source', () => {
 
     expect(mockFetchFromTinybird).toHaveBeenCalledWith(
       '/v0/pipes/activityTypes_by_project.json',
-      expectedQuery
+      expectedQuery,
     );
 
     expect(result).toEqual(expectedGroupedResponse);
   });
 
   test('should fetch activity types without optional parameters', async () => {
-    const {fetchActivityTypes} = await import("~~/server/data/tinybird/activity-types-data-source");
+    const { fetchActivityTypes } = await import(
+      '~~/server/data/tinybird/activity-types-data-source'
+    );
 
     mockFetchFromTinybird.mockResolvedValueOnce(mockTinybirdResponse);
 
     const filter: ActivityTypesFilter = {
-      project: 'test-project'
+      project: 'test-project',
     };
 
     const result = await fetchActivityTypes(filter);
@@ -97,7 +99,7 @@ describe('Activity Types Data Source', () => {
 
     expect(mockFetchFromTinybird).toHaveBeenCalledWith(
       '/v0/pipes/activityTypes_by_project.json',
-      expectedQuery
+      expectedQuery,
     );
 
     expect(result).toEqual(expectedGroupedResponse);

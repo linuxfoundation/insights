@@ -21,7 +21,7 @@ const halfSeriesStyle: GaugeSeriesOption = {
     borderWidth: 0,
     fontFamily: 'Inter',
     fontWeight: 600,
-    color: lfxColors.white
+    color: lfxColors.white,
   },
 };
 
@@ -35,7 +35,7 @@ const halfDetail: GaugeSeriesOption['detail'] = {
       fontFamily: 'Inter',
       color: lfxColors.black,
       align: 'center',
-      padding: [15, 5, 0, 0]
+      padding: [15, 5, 0, 0],
     },
     b: {
       fontSize: '20px',
@@ -43,9 +43,9 @@ const halfDetail: GaugeSeriesOption['detail'] = {
       fontFamily: 'Inter',
       align: 'center',
       color: lfxColors.neutral[400],
-      padding: [55, 0, 20, 0]
-    }
-  }
+      padding: [55, 0, 20, 0],
+    },
+  },
 };
 
 const fullDetail: GaugeSeriesOption['detail'] = {
@@ -57,7 +57,7 @@ const fullDetail: GaugeSeriesOption['detail'] = {
       fontFamily: 'Inter',
       align: 'center',
       color: lfxColors.black,
-      padding: [0, 0, 0, 0]
+      padding: [0, 0, 0, 0],
     },
     b: {
       fontSize: '10px',
@@ -65,9 +65,9 @@ const fullDetail: GaugeSeriesOption['detail'] = {
       fontFamily: 'Inter',
       align: 'center',
       color: lfxColors.black,
-      padding: [0, 0, 0, 0]
-    }
-  }
+      padding: [0, 0, 0, 0],
+    },
+  },
 };
 
 const fullSeriesStyle: GaugeSeriesOption = {
@@ -77,34 +77,34 @@ const fullSeriesStyle: GaugeSeriesOption = {
   radius: '100%',
   axisLine: {
     lineStyle: {
-      width: 2
-    }
+      width: 2,
+    },
   },
   detail: {
     fontSize: '16px',
     fontFamily: 'Inter',
-    color: lfxColors.black
-  }
+    color: lfxColors.black,
+  },
 };
 
 const halfDataOpts = {
   title: {
-    offsetCenter: ['0%', '10%']
+    offsetCenter: ['0%', '10%'],
   },
   detail: {
     valueAnimation: true,
-    offsetCenter: ['0%', '-35%']
-  }
+    offsetCenter: ['0%', '-35%'],
+  },
 };
 
 const fullDataOpts = {
   title: {
-    offsetCenter: ['0%', '0%']
+    offsetCenter: ['0%', '0%'],
   },
   detail: {
     valueAnimation: false,
-    offsetCenter: ['0%', '0%']
-  }
+    offsetCenter: ['0%', '0%'],
+  },
 };
 
 /**
@@ -114,23 +114,26 @@ const fullDataOpts = {
  */
 export const getGaugeChartConfig = (data: GaugeData): ECOption => {
   const gaugeSeries = { ...(data.gaugeType === 'half' ? halfSeriesStyle : fullSeriesStyle) };
-  gaugeSeries.detail ={
+  gaugeSeries.detail = {
     ...(data.gaugeType === 'half' ? halfDetail : fullDetail),
-    formatter: data.gaugeType === 'half' ? `{a|{value}}{b|/${data.maxValue || 100}}` : fullDetail.formatter,
+    formatter:
+      data.gaugeType === 'half' ? `{a|{value}}{b|/${data.maxValue || 100}}` : fullDetail.formatter,
     show: !data.loading && !data.graphOnly,
   };
-  if(data.noData){
+  if (data.noData) {
     gaugeSeries.detail.rich = undefined;
     gaugeSeries.detail.formatter = '-';
     gaugeSeries.detail.fontSize = '56px';
     gaugeSeries.detail.fontWeight = 500;
   }
 
-  gaugeSeries.title = data.loading ? undefined : {
-    ...gaugeSeries.title,
-    backgroundColor: data.color || lfxColors.positive[500],
-    color: data.textColor || lfxColors.white
-};
+  gaugeSeries.title = data.loading
+    ? undefined
+    : {
+        ...gaugeSeries.title,
+        backgroundColor: data.color || lfxColors.positive[500],
+        color: data.textColor || lfxColors.white,
+      };
   // data.name === '' ? undefined : ;
 
   gaugeSeries.data = [
@@ -141,10 +144,10 @@ export const getGaugeChartConfig = (data: GaugeData): ECOption => {
       itemStyle: {
         color: data.lineColor || lfxColors.positive[500],
       },
-    }
+    },
   ];
 
   return {
-    series: [gaugeSeries]
+    series: [gaugeSeries],
   };
 };

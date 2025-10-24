@@ -12,7 +12,7 @@ export default {
   argTypes: {
     message: {
       description: 'Message of the toast',
-      control: 'text'
+      control: 'text',
     },
     // removing this as part of the argument because we cannot make this interactive
     // Adding the <Toast /> component multiple times will result in duplicate toast messages
@@ -23,9 +23,9 @@ export default {
     // },
     delay: {
       description: 'Delay of the toast',
-      control: 'number'
-    }
-  }
+      control: 'number',
+    },
+  },
 };
 
 const render = (args) => ({
@@ -41,7 +41,7 @@ const render = (args) => ({
       args,
       displayToast,
       typesEnum,
-      theme
+      theme,
     };
   },
   template: `
@@ -56,13 +56,13 @@ const render = (args) => ({
         <lfx-button label="Show Custom Icon" @click="displayToast(typesEnum.default, 'fa-solid fa-face-smile')" />
       </div>
     </div>
-  `
+  `,
 });
 
 export const Default = {
   args: {
     message: 'This is a toast message',
-    delay: 3000
+    delay: 3000,
   },
-  render
+  render,
 };

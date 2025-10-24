@@ -20,11 +20,13 @@ SPDX-License-Identifier: MIT
           <span
             v-if="selectedRepositoryGroup"
             class="font-normal"
-          >&nbsp;/ {{ selectedRepositoryGroup.name }}</span>
+            >&nbsp;/ {{ selectedRepositoryGroup.name }}</span
+          >
           <span
             v-else-if="repoName"
             class="font-normal"
-          >&nbsp;/ {{ repoName }}</span>
+            >&nbsp;/ {{ repoName }}</span
+          >
         </p>
       </div>
       <div class="text-body-2 text-neutral-500 flex items-center gap-1">
@@ -44,7 +46,7 @@ SPDX-License-Identifier: MIT
         v-if="config?.name"
         class="text-heading-2 font-bold font-secondary"
       >
-        {{config?.name}}
+        {{ config?.name }}
       </h2>
     </div>
     <slot v-if="props.useSlot" />
@@ -63,52 +65,52 @@ SPDX-License-Identifier: MIT
         loading="lazy"
         width="176"
         height="24"
-      >
+      />
       <p class="pt-3 text-2xs text-neutral-400">
-        The Linux Foundation ®. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks.
+        The Linux Foundation ®. All rights reserved. The Linux Foundation has registered trademarks
+        and uses trademarks.
       </p>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import {storeToRefs} from "pinia";
-import {computed} from "vue";
-import {DateTime} from "luxon";
-import type {Widget} from "~/components/modules/widget/types/widget";
-import {lfxWidgets, type WidgetConfig} from "~/components/modules/widget/config/widget.config";
-import {useProjectStore} from "~/components/modules/project/store/project.store";
-import LfxAvatar from "~/components/uikit/avatar/avatar.vue";
-import LfxIcon from "~/components/uikit/icon/icon.vue";
+import { storeToRefs } from 'pinia';
+import { computed } from 'vue';
+import { DateTime } from 'luxon';
+import type { Widget } from '~/components/modules/widget/types/widget';
+import { lfxWidgets, type WidgetConfig } from '~/components/modules/widget/config/widget.config';
+import { useProjectStore } from '~/components/modules/project/store/project.store';
+import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 
 const props = defineProps<{
-  widgetName: Widget,
-  data: object,
-  useSlot?: boolean
+  widgetName: Widget;
+  data: object;
+  useSlot?: boolean;
 }>();
 
 const widgetConfig = computed(() => lfxWidgets[props.widgetName]);
 
-const {
-project, selectedRepositories, startDate, endDate, selectedRepositoryGroup
-} = storeToRefs(useProjectStore());
+const { project, selectedRepositories, startDate, endDate, selectedRepositoryGroup } =
+  storeToRefs(useProjectStore());
 
 const repoName = computed(() => {
-  if(selectedRepositories.value.length === 1){
+  if (selectedRepositories.value.length === 1) {
     const repository = selectedRepositories.value[0];
     return (repository?.name || '').split('/').at(-1);
   }
-  if(selectedRepositories.value.length > 1){
+  if (selectedRepositories.value.length > 1) {
     return `${selectedRepositories.value.length} repositories`;
   }
   return '';
-})
+});
 
 const config = computed<WidgetConfig>(() => lfxWidgets[props.widgetName]);
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxSnapshotPreview'
-}
+  name: 'LfxSnapshotPreview',
+};
 </script>

@@ -16,7 +16,7 @@
     &:checked::after {
       transform: rotate(45deg) scaleY(1);
     }
-    
+
     // Disabled
     &:disabled {
       /* --lf-checkbox-border: var(--lf-checkbox-disabled-unchecked-border);

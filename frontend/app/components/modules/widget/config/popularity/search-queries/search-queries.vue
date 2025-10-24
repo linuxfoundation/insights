@@ -37,41 +37,40 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { useRoute } from 'nuxt/app';
 import { computed, watch } from 'vue';
-import { storeToRefs } from "pinia";
+import { storeToRefs } from 'pinia';
 import { DateTime } from 'luxon';
-import searchQueriesConfig from './search-queries.config'
+import searchQueriesConfig from './search-queries.config';
 import type { SearchQueries } from '~~/types/popularity/responses.types';
-import { convertToChartData, markLastDataItem } from '~/components/uikit/chart/helpers/chart-helpers';
+import {
+  convertToChartData,
+  markLastDataItem,
+} from '~/components/uikit/chart/helpers/chart-helpers';
 import type {
   ChartData,
   RawChartData,
-  ChartSeries
+  ChartSeries,
 } from '~/components/uikit/chart/types/ChartTypes';
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import { lfxColors } from '~/config/styles/colors';
-import { useProjectStore } from "~/components/modules/project/store/project.store";
+import { useProjectStore } from '~/components/modules/project/store/project.store';
 import { isEmptyData } from '~/components/shared/utils/helper';
 import { getBarChartConfig } from '~/components/uikit/chart/configs/bar.chart';
 import { Granularity } from '~~/types/shared/granularity';
-import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
-import {Widget} from "~/components/modules/widget/types/widget";
+import LfxProjectLoadState from '~/components/modules/project/components/shared/load-state.vue';
+import { Widget } from '~/components/modules/widget/types/widget';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import { POPULARITY_API_SERVICE } from '~/components/modules/widget/services/popularity.api.service';
 
 const props = defineProps<{
-  snapshot?: boolean
-}>()
+  snapshot?: boolean;
+}>();
 
-const emit = defineEmits<{(e: 'dataLoaded', value: string): void;
+const emit = defineEmits<{
+  (e: 'dataLoaded', value: string): void;
   (e: 'hasData', value: boolean): void;
 }>();
 
-const {
-  startDate,
-  endDate,
-  selectedReposValues,
-  project,
-} = storeToRefs(useProjectStore())
+const { startDate, endDate, selectedReposValues, project } = storeToRefs(useProjectStore());
 
 const route = useRoute();
 
@@ -85,21 +84,23 @@ const queryParams = computed(() => ({
   endDate: endDate.value,
 }));
 
-const {
-  data, status, error
-} = POPULARITY_API_SERVICE.fetchSearchQueries(queryParams);
+const { data, status, error } = POPULARITY_API_SERVICE.fetchSearchQueries(queryParams);
 
 const searchQueries = computed<SearchQueries>(() => data.value as SearchQueries);
 
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
   () => {
-    let tmpData = convertToChartData((searchQueries.value?.data || []) as RawChartData[], 'startDate', [
-    'queryCount'
-  ], undefined, 'endDate');
+    let tmpData = convertToChartData(
+      (searchQueries.value?.data || []) as RawChartData[],
+      'startDate',
+      ['queryCount'],
+      undefined,
+      'endDate',
+    );
 
-  return markLastDataItem(tmpData, granularity.value);
-  }
+    return markLastDataItem(tmpData, granularity.value);
+  },
 );
 
 const dateDuration = computed(() => {
@@ -108,9 +109,11 @@ const dateDuration = computed(() => {
   const duration = end.diff(start, 'days').days;
 
   return duration;
-})
-const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[])
-|| dateDuration.value < 30);
+});
+const isEmpty = computed(
+  () =>
+    isEmptyData(chartData.value as unknown as Record<string, unknown>[]) || dateDuration.value < 30,
+);
 
 const chartSeries = computed<ChartSeries[]>(() => [
   {
@@ -119,33 +122,39 @@ const chartSeries = computed<ChartSeries[]>(() => [
     yAxisIndex: 0,
     dataIndex: 0,
     position: 'left',
-    color: lfxColors.brand[500]
-  }
+    color: lfxColors.brand[500],
+  },
 ]);
 
-const barChartConfig = computed(() => getBarChartConfig(
-  chartData.value,
-  chartSeries.value,
-  granularity.value
-));
+const barChartConfig = computed(() =>
+  getBarChartConfig(chartData.value, chartSeries.value, granularity.value),
+);
 
-watch(status, (value) => {
-  if (value !== 'pending') {
-    emit('dataLoaded', Widget.SEARCH_QUERIES);
-  }
-}, {
-  immediate: true
-});
+watch(
+  status,
+  (value) => {
+    if (value !== 'pending') {
+      emit('dataLoaded', Widget.SEARCH_QUERIES);
+    }
+  },
+  {
+    immediate: true,
+  },
+);
 
-watch(isEmpty, (value: boolean) => {
-  emit('hasData', !value);
-}, {
-  immediate: true
-});
+watch(
+  isEmpty,
+  (value: boolean) => {
+    emit('hasData', !value);
+  },
+  {
+    immediate: true,
+  },
+);
 </script>
 
 <script lang="ts">
 export default {
   name: 'LfxProjectSearchQueries',
-}
+};
 </script>

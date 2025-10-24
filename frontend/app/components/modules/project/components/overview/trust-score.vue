@@ -32,15 +32,15 @@ SPDX-License-Identifier: MIT
               class="block"
             >
               <div class="text-xs text-neutral-500 mt-4">
-                LFX Insights does not have enough meaningful data to generate an overall Health score for this project.
+                LFX Insights does not have enough meaningful data to generate an overall Health
+                score for this project.
               </div>
             </div>
 
             <template v-else>
               <div
                 v-if="isRepoSelected && !allArchived"
-                class="text-xs text-brand-600 font-semibold inline-flex
-                items-center gap-1 mt-2 bg-brand-50 rounded-full px-1.5"
+                class="text-xs text-brand-600 font-semibold inline-flex items-center gap-1 mt-2 bg-brand-50 rounded-full px-1.5"
               >
                 <lfx-icon
                   name="info-circle"
@@ -50,24 +50,28 @@ SPDX-License-Identifier: MIT
                 />
                 Select “All repositories” in order to get the aggregated Health Score
               </div>
-              <p
-                class="text-xs text-neutral-500 mt-4"
-              >
-                The Insights Health Score combines the four key areas to
-                measure an open source project's overall trustworthiness.
+              <p class="text-xs text-neutral-500 mt-4">
+                The Insights Health Score combines the four key areas to measure an open source
+                project's overall trustworthiness.
                 <a
                   :href="links.trustScore"
                   target="_blank"
                   rel="noopener noreferrer"
                   class="text-brand-500"
-                >Learn more</a>
+                  >Learn more</a
+                >
               </p>
             </template>
           </div>
         </div>
       </div>
       <div
-        v-if="!hideOverallScore && status === 'success' && selectedRepositories.length <= 1 && !allArchived"
+        v-if="
+          !hideOverallScore &&
+          status === 'success' &&
+          selectedRepositories.length <= 1 &&
+          !allArchived
+        "
         class="w-[200px] hidden sm:block"
       >
         <lfx-project-trust-score-share-badge
@@ -95,9 +99,7 @@ SPDX-License-Identifier: MIT
         :size="40"
         class="text-neutral-300"
       />
-      <p class="text-sm text-neutral-500 mt-5">
-        No data available
-      </p>
+      <p class="text-sm text-neutral-500 mt-5">No data available</p>
     </div>
   </div>
 </template>
@@ -105,7 +107,7 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { computed } from 'vue';
 import type { AsyncDataRequestStatus } from 'nuxt/app';
-import { storeToRefs } from "pinia";
+import { storeToRefs } from 'pinia';
 import pluralize from 'pluralize';
 import LfxProjectTrustScoreDisplay from './trust-score/score-display.vue';
 import LfxProjectTrustScoreShareBadge from './trust-score/share-badge.vue';
@@ -113,9 +115,9 @@ import { links } from '~/config/links';
 import type { TrustScoreSummary } from '~~/types/overview/responses.types';
 import type { ScoreDisplay } from '~~/types/overview/score-display.types';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
-import LfxSkeletonState from "~/components/modules/project/components/shared/skeleton-state.vue";
-import { useProjectStore } from "~/components/modules/project/store/project.store";
-import LfxEmptyState from "~/components/shared/components/empty-state.vue";
+import LfxSkeletonState from '~/components/modules/project/components/shared/skeleton-state.vue';
+import { useProjectStore } from '~/components/modules/project/store/project.store';
+import LfxEmptyState from '~/components/shared/components/empty-state.vue';
 
 const props = defineProps<{
   trustScoreSummary: TrustScoreSummary | undefined;
@@ -126,17 +128,14 @@ const props = defineProps<{
   isEmpty: boolean;
 }>();
 
-const overallScore = computed(() => Math.round((props.trustScoreSummary ? (props.trustScoreSummary).overall : 0)));
+const overallScore = computed(() =>
+  Math.round(props.trustScoreSummary ? props.trustScoreSummary.overall : 0),
+);
 const hideOverallScore = computed(() => Object.values(props.scoreDisplay).some((score) => !score));
-const {
-  selectedRepositories,
-  allArchived,
-  archivedRepos
-} = storeToRefs(useProjectStore());
-
+const { selectedRepositories, allArchived, archivedRepos } = storeToRefs(useProjectStore());
 </script>
 <script lang="ts">
 export default {
-  name: 'LfxProjectTrustScore'
+  name: 'LfxProjectTrustScore',
 };
 </script>

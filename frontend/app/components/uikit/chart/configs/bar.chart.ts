@@ -27,7 +27,7 @@ const createStripedPattern = (color: string, opacity: number = 0.8, stripeWidth:
   const colorStops = [];
   const lightColor = '#fff'; // `rgba(${hexToRgb(color)}, ${opacity})`;
   const darkColor = `rgba(${hexToRgb(color)}, ${opacity})`;
-  
+
   // Create alternating stripes across the entire gradient
   for (let i = 0; i <= 1; i += stripeWidth * 2) {
     // Light stripe
@@ -35,7 +35,7 @@ const createStripedPattern = (color: string, opacity: number = 0.8, stripeWidth:
       colorStops.push({ offset: Math.min(i, 1), color: lightColor });
       colorStops.push({ offset: Math.min(i + stripeWidth, 1), color: lightColor });
     }
-    
+
     // Dark stripe
     const darkStart = i + stripeWidth;
     const darkEnd = i + stripeWidth * 2;
@@ -44,13 +44,13 @@ const createStripedPattern = (color: string, opacity: number = 0.8, stripeWidth:
       colorStops.push({ offset: Math.min(darkEnd, 1), color: darkColor });
     }
   }
-  
+
   // Ensure we end at 1.0
   const lastStop = colorStops[colorStops.length - 1];
   if (lastStop && lastStop.offset < 1) {
     colorStops.push({ offset: 1, color: lastStop.color });
   }
-  
+
   // Create 45-degree diagonal gradient (0,0 to 1,1 creates perfect 45-degree angle)
   return new graphic.LinearGradient(0, 0, 1, 1, colorStops);
 };
@@ -73,11 +73,11 @@ const createStripedPatterns = {
 const hexToRgb = (hex: string): string => {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   if (!result) return '0, 0, 0';
-  
+
   const r = parseInt(result[1] || '0', 16);
   const g = parseInt(result[2] || '0', 16);
   const b = parseInt(result[3] || '0', 16);
-  
+
   return `${r}, ${g}, ${b}`;
 };
 
@@ -129,21 +129,27 @@ const defaultBarOption: ECOption = {
  * @returns Series
  */
 export const buildSeriesWithStyle = (
-  series: ChartSeries[], 
-  data: ChartData[]
-): SeriesTypes[] | undefined => (series.length > 0
-  ? series.map(
-      (series: ChartSeries) => ({
-          type: series.type,
-          name: series.name,
-          yAxisIndex: series.yAxisIndex,
-          dataIndex: series.dataIndex,
-          data: data.map((item: ChartData) => {
-            return { value: item.values[series.dataIndex], ...getDataItemStyle(item.isIncomplete, series.color) };
-          }) || [],
-        }) as SeriesTypes
-    )
-  : undefined);
+  series: ChartSeries[],
+  data: ChartData[],
+): SeriesTypes[] | undefined =>
+  series.length > 0
+    ? series.map(
+        (series: ChartSeries) =>
+          ({
+            type: series.type,
+            name: series.name,
+            yAxisIndex: series.yAxisIndex,
+            dataIndex: series.dataIndex,
+            data:
+              data.map((item: ChartData) => {
+                return {
+                  value: item.values[series.dataIndex],
+                  ...getDataItemStyle(item.isIncomplete, series.color),
+                };
+              }) || [],
+          }) as SeriesTypes,
+      )
+    : undefined;
 
 export const defaultSeriesBarStyle = {
   barMaxWidth: 32,
@@ -151,23 +157,26 @@ export const defaultSeriesBarStyle = {
   barCategoryGap: '60%',
   itemStyle: {
     borderRadius: [2, 2, 2, 2],
-    borderWidth: 1
+    borderWidth: 1,
   },
-}
+};
 
 const getDefaultSeriesStyle = (useStripedPattern: boolean = false): BarSeriesOption => ({
-  color: useStripedPattern ? createStripedPatterns.fine(lfxColors.brand[500]) : lfxColors.brand[500],
+  color: useStripedPattern
+    ? createStripedPatterns.fine(lfxColors.brand[500])
+    : lfxColors.brand[500],
   // barWidth: '60%',
   ...defaultSeriesBarStyle,
 });
 
 const getDataItemStyle = (
   useStripedPattern: boolean = false,
-  color: string = lfxColors.brand[500]): BarSeriesOption => ({
+  color: string = lfxColors.brand[500],
+): BarSeriesOption => ({
   itemStyle: {
     color: useStripedPattern ? createStripedPatterns.fine(color) : color,
     borderRadius: [2, 2, 2, 2],
-    borderWidth: 1
+    borderWidth: 1,
   },
 });
 
@@ -191,7 +200,7 @@ const applySeriesStyle = (
       ...getDefaultSeriesStyle(useStripedPattern),
       ...(seriesItem as BarSeriesOption),
     };
-    
+
     return baseStyle as SeriesTypes;
   });
 };
@@ -208,9 +217,10 @@ export const getBarChartConfig = (
   data: ChartData[],
   series: ChartSeries[],
   granularity: string,
-  useStripedPattern: boolean = false
+  useStripedPattern: boolean = false,
 ): ECOption => {
-  const axisLabelFormat = formatByGranularity[granularity as keyof typeof formatByGranularity] || 'MMM yyyy';
+  const axisLabelFormat =
+    formatByGranularity[granularity as keyof typeof formatByGranularity] || 'MMM yyyy';
 
   const xAxis = {
     ...defaultBarOption.xAxis,
@@ -223,11 +233,11 @@ export const getBarChartConfig = (
   const tooltip = merge({}, defaultBarOption.tooltip, {
     formatter: tooltipFormatterWithData(data, granularity, series),
   });
-  
+
   const styledSeries = applySeriesStyle(
     series,
     buildSeriesWithStyle(series, data),
-    useStripedPattern
+    useStripedPattern,
   );
 
   return merge({}, defaultBarOption, {
@@ -251,9 +261,10 @@ export const getBarChartConfigStacked = (
   series: ChartSeries[],
   granularity: string,
   overrideConfig?: Partial<ECOption>,
-  useStripedPattern: boolean = false
+  useStripedPattern: boolean = false,
   // reuse the same function as the custom config but with the stack option
-): ECOption => getBarChartConfigCustom(
+): ECOption =>
+  getBarChartConfigCustom(
     data,
     series,
     {
@@ -267,7 +278,7 @@ export const getBarChartConfigStacked = (
     granularity,
     overrideConfig,
     undefined,
-    useStripedPattern
+    useStripedPattern,
   );
 
 export const getBarChartConfigStackAndLine = (
@@ -275,9 +286,10 @@ export const getBarChartConfigStackAndLine = (
   series: ChartSeries[],
   granularity: string,
   overrideConfig?: Partial<ECOption>,
-  useStripedPattern: boolean = false
+  useStripedPattern: boolean = false,
   // reuse the same function as the custom config but with the stack option
-): ECOption => getBarChartConfigCustom(
+): ECOption =>
+  getBarChartConfigCustom(
     data,
     series,
     {
@@ -292,9 +304,9 @@ export const getBarChartConfigStackAndLine = (
     overrideConfig,
     {
       smooth: true,
-      showSymbol: false
+      showSymbol: false,
     },
-    useStripedPattern
+    useStripedPattern,
   );
 
 /**
@@ -313,9 +325,10 @@ export const getBarChartConfigCustom = (
   granularity: string,
   overrideConfig?: Partial<ECOption>,
   lineStyle?: Partial<SeriesTypes>,
-  useStripedPattern: boolean = false
+  useStripedPattern: boolean = false,
 ): ECOption => {
-  const axisLabelFormat = formatByGranularity[granularity as keyof typeof formatByGranularity] || 'MMM yyyy';
+  const axisLabelFormat =
+    formatByGranularity[granularity as keyof typeof formatByGranularity] || 'MMM yyyy';
 
   const xAxis = {
     ...defaultBarOption.xAxis,
@@ -330,12 +343,15 @@ export const getBarChartConfigCustom = (
   });
 
   const styledSeries = applySeriesStyle(
-    series, buildSeriesWithStyle(series, data), useStripedPattern
+    series,
+    buildSeriesWithStyle(series, data),
+    useStripedPattern,
   ).map(
-    (seriesItem) => ({
+    (seriesItem) =>
+      ({
         ...seriesItem,
         ...(seriesItem.type === 'bar' ? customStyle : lineStyle),
-      } as BarSeriesOption)
+      }) as BarSeriesOption,
   );
 
   return merge(
@@ -346,6 +362,6 @@ export const getBarChartConfigCustom = (
       series: styledSeries,
       tooltip,
     },
-    overrideConfig
+    overrideConfig,
   );
 };

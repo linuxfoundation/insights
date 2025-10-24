@@ -27,10 +27,9 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import type {SecurityData} from "~~/types/security/responses.types";
-import LfxProjectSecurityEvaluationRepository
-  from "~/components/modules/project/components/security/evaluation-repository.vue";
-import LfxButton from "~/components/uikit/button/button.vue";
+import type { SecurityData } from '~~/types/security/responses.types';
+import LfxProjectSecurityEvaluationRepository from '~/components/modules/project/components/security/evaluation-repository.vue';
+import LfxButton from '~/components/uikit/button/button.vue';
 
 type PaginatedChecks = {
   repo: string;
@@ -47,10 +46,12 @@ const itemsPerPage = ref(20);
 const paginatedChecks = computed<PaginatedChecks[]>(() => {
   const end = offset.value + itemsPerPage.value;
   const checksArr = Object.entries(props.groupChecks);
-  return checksArr.slice(0, end > checksArr.length ? checksArr.length : end).map(([repo, checks]) => ({
-    repo,
-    checks,
-  }));
+  return checksArr
+    .slice(0, end > checksArr.length ? checksArr.length : end)
+    .map(([repo, checks]) => ({
+      repo,
+      checks,
+    }));
 });
 
 const hasNextPage = computed(() => {
@@ -60,7 +61,6 @@ const hasNextPage = computed(() => {
 const loadMore = () => {
   offset.value += itemsPerPage.value;
 };
-
 </script>
 <script lang="ts">
 export default {

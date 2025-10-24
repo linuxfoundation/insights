@@ -1,17 +1,15 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import {
-  describe, test, expect, vi, beforeEach
-} from 'vitest';
-import { DateTime } from "luxon";
+import { describe, test, expect, vi, beforeEach } from 'vitest';
+import { DateTime } from 'luxon';
 import {
   mockCurrentSummary,
   mockPreviousSummary,
-  mockActiveDaysData
+  mockActiveDaysData,
 } from '../../mocks/tinybird-active-days-response.mock';
-import type { ActiveDaysFilter } from "../types";
-import { Granularity } from "~~/types/shared/granularity";
-import type { ActiveDays } from "~~/types/development/responses.types";
+import type { ActiveDaysFilter } from '../types';
+import { Granularity } from '~~/types/shared/granularity';
+import type { ActiveDays } from '~~/types/development/responses.types';
 
 const mockFetchFromTinybird = vi.fn();
 
@@ -23,16 +21,17 @@ describe('Active Days Data Source', () => {
     // This means that the import for tinybird.ts inside the data source module would still be used,
     // and thus not mocked. This means we need to import the module again after the mock is set, whenever we want to
     // use it.
-    vi.doMock(import("./tinybird"), () => ({
+    vi.doMock(import('./tinybird'), () => ({
       fetchFromTinybird: mockFetchFromTinybird,
     }));
-  })
+  });
 
   test('should fetch active days data with correct parameters', async () => {
     // We have to import this here again because vi.doMock is not hoisted. See the explanation in beforeEach().
-    const { fetchActiveDays } = await import("~~/server/data/tinybird/active-days-data-source");
+    const { fetchActiveDays } = await import('~~/server/data/tinybird/active-days-data-source');
 
-    mockFetchFromTinybird.mockResolvedValueOnce(mockCurrentSummary)
+    mockFetchFromTinybird
+      .mockResolvedValueOnce(mockCurrentSummary)
       .mockResolvedValueOnce(mockPreviousSummary)
       .mockResolvedValueOnce(mockActiveDaysData);
 
@@ -44,7 +43,7 @@ describe('Active Days Data Source', () => {
       project: 'the-linux-kernel-organization',
       repos: ['some-repo'],
       startDate,
-      endDate
+      endDate,
     };
 
     const result = await fetchActiveDays(filter);
@@ -72,22 +71,22 @@ describe('Active Days Data Source', () => {
     expect(mockFetchFromTinybird).toHaveBeenNthCalledWith(
       1,
       '/v0/pipes/active_days.json',
-      expectedCurrentSummaryQuery
+      expectedCurrentSummaryQuery,
     );
     expect(mockFetchFromTinybird).toHaveBeenNthCalledWith(
       2,
       '/v0/pipes/active_days.json',
-      expectedPreviousSummaryQuery
+      expectedPreviousSummaryQuery,
     );
     expect(mockFetchFromTinybird).toHaveBeenNthCalledWith(
       3,
       '/v0/pipes/active_days.json',
-      expectedActiveDaysQuery
+      expectedActiveDaysQuery,
     );
 
     const currentActiveDays = mockCurrentSummary.data[0].activeDaysCount;
     const previousActiveDays = mockPreviousSummary.data[0].activeDaysCount;
-    const {avgContributionsPerDay} = mockCurrentSummary.data[0];
+    const { avgContributionsPerDay } = mockCurrentSummary.data[0];
 
     const expectedResult: ActiveDays = {
       summary: {
@@ -103,8 +102,8 @@ describe('Active Days Data Source', () => {
         startDate: item.startDate,
         endDate: item.endDate,
         day: index + 1,
-        contributions: item.activityCount
-      }))
+        contributions: item.activityCount,
+      })),
     };
 
     expect(result).toEqual(expectedResult);

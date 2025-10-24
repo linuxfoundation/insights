@@ -7,9 +7,7 @@ SPDX-License-Identifier: MIT
     <div>
       <div class="flex flex-row justify-between items-start">
         <div>
-          <div class="text-neutral-400 text-xs mb-1">
-            Total pull requests performed
-          </div>
+          <div class="text-neutral-400 text-xs mb-1">Total pull requests performed</div>
           <lfx-skeleton-state
             :status="status"
             height="2rem"
@@ -64,7 +62,7 @@ SPDX-License-Identifier: MIT
       <hr
         v-if="!isEmpty"
         class="my-5"
-      >
+      />
       <div
         v-if="!isEmpty"
         class="flex flex-row items-center justify-between"
@@ -82,7 +80,6 @@ SPDX-License-Identifier: MIT
         </span>
 
         <span class="text-xl">{{ avgVelocity }}</span>
-
       </div>
     </lfx-project-load-state>
   </section>
@@ -90,37 +87,39 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { useRoute } from 'nuxt/app';
-import {
- ref, computed, watch
-} from 'vue';
-import { storeToRefs } from "pinia";
+import { ref, computed, watch } from 'vue';
+import { storeToRefs } from 'pinia';
 import type { PullRequests } from '~~/types/development/responses.types';
 import type { Summary } from '~~/types/shared/summary.types';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
-import { convertToChartData, markLastDataItem } from '~/components/uikit/chart/helpers/chart-helpers';
+import {
+  convertToChartData,
+  markLastDataItem,
+} from '~/components/uikit/chart/helpers/chart-helpers';
 import type {
   ChartData,
   RawChartData,
-  ChartSeries
+  ChartSeries,
 } from '~/components/uikit/chart/types/ChartTypes';
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import { getBarChartConfigStackAndLine } from '~/components/uikit/chart/configs/bar.chart';
 import { lfxColors } from '~/config/styles/colors';
 import { formatNumber, formatSecondsToDuration } from '~/components/shared/utils/formatter';
-import { useProjectStore } from "~/components/modules/project/store/project.store";
-import LfxIcon from "~/components/uikit/icon/icon.vue";
+import { useProjectStore } from '~/components/modules/project/store/project.store';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 import { isEmptyData } from '~/components/shared/utils/helper';
 import { barGranularities } from '~/components/shared/types/granularity';
 import { dateOptKeys } from '~/components/modules/project/config/date-options';
 import { Granularity } from '~~/types/shared/granularity';
-import LfxSkeletonState from "~/components/modules/project/components/shared/skeleton-state.vue";
-import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
-import LfxProjectPullRequestLegendItem
-  from "~/components/modules/widget/components/development/fragments/pull-request-legend-item.vue";
-import {Widget} from "~/components/modules/widget/types/widget";
+import LfxSkeletonState from '~/components/modules/project/components/shared/skeleton-state.vue';
+import LfxProjectLoadState from '~/components/modules/project/components/shared/load-state.vue';
+import LfxProjectPullRequestLegendItem from '~/components/modules/widget/components/development/fragments/pull-request-legend-item.vue';
+import { Widget } from '~/components/modules/widget/types/widget';
 import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
-import { DEVELOPMENT_API_SERVICE, type QueryParams } 
-  from '~/components/modules/widget/services/development.api.service';
+import {
+  DEVELOPMENT_API_SERVICE,
+  type QueryParams,
+} from '~/components/modules/widget/services/development.api.service';
 import type { WidgetModel } from '~/components/modules/widget/config/widget.config';
 
 interface PullRequestsModel extends WidgetModel {
@@ -128,25 +127,26 @@ interface PullRequestsModel extends WidgetModel {
 }
 
 const props = defineProps<{
-  modelValue?: PullRequestsModel,
+  modelValue?: PullRequestsModel;
   snapshot?: boolean;
-}>()
-
-const emit = defineEmits<{
-(e: 'dataLoaded', value: string): void;
-(e: 'update:modelValue', value: PullRequestsModel): void;
-(e: 'hasData', value: boolean): void;
 }>();
 
-const {
-  startDate, endDate, selectedReposValues, selectedTimeRangeKey, customRangeGranularity
-} = storeToRefs(useProjectStore())
+const emit = defineEmits<{
+  (e: 'dataLoaded', value: string): void;
+  (e: 'update:modelValue', value: PullRequestsModel): void;
+  (e: 'hasData', value: boolean): void;
+}>();
+
+const { startDate, endDate, selectedReposValues, selectedTimeRangeKey, customRangeGranularity } =
+  storeToRefs(useProjectStore());
 
 const route = useRoute();
 
-const granularity = computed(() => (selectedTimeRangeKey.value === dateOptKeys.custom
-  ? customRangeGranularity.value[0] as Granularity
-  : barGranularities[selectedTimeRangeKey.value as keyof typeof barGranularities]));
+const granularity = computed(() =>
+  selectedTimeRangeKey.value === dateOptKeys.custom
+    ? (customRangeGranularity.value[0] as Granularity)
+    : barGranularities[selectedTimeRangeKey.value as keyof typeof barGranularities],
+);
 
 const params = computed<QueryParams>(() => ({
   projectSlug: route.params.slug as string,
@@ -156,24 +156,26 @@ const params = computed<QueryParams>(() => ({
   endDate: endDate.value,
 }));
 
-const {
-  data, status, error
-} = DEVELOPMENT_API_SERVICE.fetchPullRequests(params);
+const { data, status, error } = DEVELOPMENT_API_SERVICE.fetchPullRequests(params);
 
 const pullRequests = computed<PullRequests>(() => data.value as PullRequests);
 
 const summary = computed<Summary>(() => pullRequests.value?.summary);
-const avgVelocity = computed<string>(() => formatSecondsToDuration(pullRequests.value?.avgVelocityInDays || 0, 'long'));
+const avgVelocity = computed<string>(() =>
+  formatSecondsToDuration(pullRequests.value?.avgVelocityInDays || 0, 'long'),
+);
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
   () => {
-    const tmpData = convertToChartData((pullRequests.value?.data || []) as RawChartData[], 'startDate', [
-      'open',
-      'merged',
-      'closed'
-    ], undefined, 'endDate');
+    const tmpData = convertToChartData(
+      (pullRequests.value?.data || []) as RawChartData[],
+      'startDate',
+      ['open', 'merged', 'closed'],
+      undefined,
+      'endDate',
+    );
     return markLastDataItem(tmpData, granularity.value);
-  }
+  },
 );
 
 const openedSummary = computed<Summary | undefined>(() => pullRequests.value?.openedSummary);
@@ -187,7 +189,7 @@ const chartSeries = ref<ChartSeries[]>([
     yAxisIndex: 0,
     dataIndex: 0,
     position: 'left',
-    color: lfxColors.brand[500]
+    color: lfxColors.brand[500],
   },
   {
     name: 'Merged',
@@ -195,7 +197,7 @@ const chartSeries = ref<ChartSeries[]>([
     yAxisIndex: 0,
     dataIndex: 1,
     position: 'left',
-    color: lfxColors.violet[500]
+    color: lfxColors.violet[500],
   },
   {
     name: 'Closed',
@@ -203,39 +205,51 @@ const chartSeries = ref<ChartSeries[]>([
     yAxisIndex: 0,
     dataIndex: 2,
     position: 'left',
-    color: lfxColors.neutral[300]
-  }
+    color: lfxColors.neutral[300],
+  },
 ]);
 
-const barChartConfig = computed(() => getBarChartConfigStackAndLine(
-  chartData.value,
-  chartSeries.value,
-  granularity.value
-));
+const barChartConfig = computed(() =>
+  getBarChartConfigStackAndLine(chartData.value, chartSeries.value, granularity.value),
+);
 
-const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
+const isEmpty = computed(() =>
+  isEmptyData(chartData.value as unknown as Record<string, unknown>[]),
+);
 
-watch(status, (value: string) => {
-  if (value !== 'pending') {
-    emit('dataLoaded', Widget.PULL_REQUESTS);
-  }
-}, {
-  immediate: true
-});
+watch(
+  status,
+  (value: string) => {
+    if (value !== 'pending') {
+      emit('dataLoaded', Widget.PULL_REQUESTS);
+    }
+  },
+  {
+    immediate: true,
+  },
+);
 
-watch(granularity, (value: Granularity) => {
-  emit('update:modelValue', { granularity: value });
-}, { immediate: true });
+watch(
+  granularity,
+  (value: Granularity) => {
+    emit('update:modelValue', { granularity: value });
+  },
+  { immediate: true },
+);
 
-watch(isEmpty, (value: boolean) => {
-  emit('hasData', !value);
-}, {
-  immediate: true
-});
+watch(
+  isEmpty,
+  (value: boolean) => {
+    emit('hasData', !value);
+  },
+  {
+    immediate: true,
+  },
+);
 </script>
 
 <script lang="ts">
 export default {
   name: 'LfxProjectPullRequests',
-}
+};
 </script>

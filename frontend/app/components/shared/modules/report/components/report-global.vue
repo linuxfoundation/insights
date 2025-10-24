@@ -11,12 +11,11 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script lang="ts" setup>
+import { storeToRefs } from 'pinia';
+import { useReportStore } from '~/components/shared/modules/report/store/report.store';
+import LfxReportModal from '~/components/shared/modules/report/components/report-modal.vue';
 
-import {storeToRefs} from "pinia";
-import {useReportStore} from "~/components/shared/modules/report/store/report.store";
-import LfxReportModal from "~/components/shared/modules/report/components/report-modal.vue";
-
-const {isReportModalOpen,reportDataDefaults } = storeToRefs(useReportStore())
+const { isReportModalOpen, reportDataDefaults } = storeToRefs(useReportStore());
 </script>
 
 <script lang="ts">

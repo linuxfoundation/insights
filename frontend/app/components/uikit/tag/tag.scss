@@ -1,92 +1,92 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-.c-tag{
+.c-tag {
   @apply gap-1.5 inline-flex text-sm items-center rounded-full font-semibold;
 
   /* Styles */
-  &--default{
+  &--default {
     @apply bg-neutral-100 text-neutral-600;
   }
 
-  &--neutral{
+  &--neutral {
     @apply bg-neutral-600 text-white;
   }
 
-  &--info{
+  &--info {
     @apply bg-brand-50 text-brand-600;
   }
 
-  &--positive{
+  &--positive {
     @apply bg-positive-50 text-positive-600;
   }
 
-  &--positive-solid{
+  &--positive-solid {
     @apply bg-positive-500 text-white;
   }
 
-  &--warning{
+  &--warning {
     @apply bg-warning-50 text-warning-600;
   }
 
-  &--warning-solid{
+  &--warning-solid {
     @apply bg-warning-500 text-white;
   }
 
-  &--negative{
+  &--negative {
     @apply bg-negative-50 text-negative-600;
   }
 
-  &--negative-solid{
+  &--negative-solid {
     @apply bg-negative-500 text-white;
   }
 
   /* Sizes */
-  &--medium{
+  &--medium {
     @apply px-2.5 h-7 text-sm;
   }
 
-  &--small{
+  &--small {
     @apply px-1.5 h-5 text-xs;
   }
 
   /* Type */
-  &--transparent{
+  &--transparent {
     @apply bg-transparent px-0;
 
-    &.c-tag--default{
-        @apply text-neutral-500;
+    &.c-tag--default {
+      @apply text-neutral-500;
     }
   }
 
   /* Outline (same as solid but has border) */
-  &--outline{
+  &--outline {
     @apply font-normal;
-    &.c-tag--default{
+    &.c-tag--default {
       @apply border border-neutral-200 bg-white text-neutral-900;
     }
 
-    &.c-tag--info{
+    &.c-tag--info {
       @apply border border-brand-100;
     }
 
-    &.c-tag--positive{
+    &.c-tag--positive {
       @apply border border-positive-100;
     }
 
-    &.c-tag--warning{
+    &.c-tag--warning {
       @apply border border-warning-100;
     }
 
-    &.c-tag--negative{
+    &.c-tag--negative {
       @apply border border-negative-100;
     }
 
     /* Sizes */
-    &.c-tag--medium{
+    &.c-tag--medium {
       @apply px-2.5 h-8;
     }
 
-    &.c-tag--small{
+    &.c-tag--small {
       @apply px-2.5 h-6;
     }
   }

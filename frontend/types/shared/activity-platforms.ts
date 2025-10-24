@@ -17,5 +17,5 @@ export enum ActivityPlatforms {
   REDDIT = 'reddit',
   SLACK = 'slack',
   STACKOVERFLOW = 'stackoverflow',
-  TWITTER = 'twitter'
+  TWITTER = 'twitter',
 }

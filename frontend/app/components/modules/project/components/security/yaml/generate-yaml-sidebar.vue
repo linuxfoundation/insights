@@ -3,7 +3,9 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="flex flex-col bg-neutral-50 w-1/3 h-full relative border-r border-neutral-200 overflow-auto">
+  <div
+    class="flex flex-col bg-neutral-50 w-1/3 h-full relative border-r border-neutral-200 overflow-auto"
+  >
     <div class="flex flex-col gap-6 p-6">
       <!-- Why generate a YAML file section -->
       <div>
@@ -75,21 +77,20 @@ SPDX-License-Identifier: MIT
         :size="16"
       />
       <p class="text-body-1 text-neutral-600">
-        YAML security file specifications are optional, and we don't run strict
-        validation on them, but your project will still benefit from documenting
-        as many as possible.
+        YAML security file specifications are optional, and we don't run strict validation on them,
+        but your project will still benefit from documenting as many as possible.
       </p>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import LfxTag from '~/components/uikit/tag/tag.vue'
-import LfxIcon from '~/components/uikit/icon/icon.vue'
+import LfxTag from '~/components/uikit/tag/tag.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 </script>
 
 <script lang="ts">
 export default {
   name: 'LfSecurityGenerateYamlSidebar',
-}
+};
 </script>

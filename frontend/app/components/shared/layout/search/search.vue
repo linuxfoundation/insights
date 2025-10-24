@@ -5,8 +5,7 @@ SPDX-License-Identifier: MIT
 <template>
   <div class="search-container">
     <div
-      class="w-full lg:max-w-80 overflow-hidden bg-neutral-50 h-9 border
-      border-neutral-200 rounded-full hidden sm:flex items-center gap-2 px-3 cursor-pointer"
+      class="w-full lg:max-w-80 overflow-hidden bg-neutral-50 h-9 border border-neutral-200 rounded-full hidden sm:flex items-center gap-2 px-3 cursor-pointer"
       @click="isModalOpen = true"
     >
       <lfx-icon
@@ -14,21 +13,15 @@ SPDX-License-Identifier: MIT
         class="text-neutral-400 font-normal"
         :size="14"
       />
-      <p class="text-body-1 text-neutral-400 truncate">
-        Search projects, repositories...
-      </p>
+      <p class="text-body-1 text-neutral-400 truncate">Search projects, repositories...</p>
       <div class="flex-grow" />
       <lfx-chip
         v-if="!isMobile"
         size="small"
         type="bordered"
       >
-        <template v-if="isMac">
-          ⌘+K
-        </template>
-        <template v-else>
-          ⇧+K
-        </template>
+        <template v-if="isMac"> ⌘+K </template>
+        <template v-else> ⇧+K </template>
       </lfx-chip>
     </div>
     <div class="flex sm:!hidden justify-end">
@@ -51,11 +44,11 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import {watch} from "vue";
-import LfxMenuButton from "~/components/uikit/menu-button/menu-button.vue";
-import LfxSearchModal from "~/components/shared/layout/search/search-modal.vue";
-import LfxIcon from "~/components/uikit/icon/icon.vue";
-import LfxChip from "~/components/uikit/chip/chip.vue";
+import { watch } from 'vue';
+import LfxMenuButton from '~/components/uikit/menu-button/menu-button.vue';
+import LfxSearchModal from '~/components/shared/layout/search/search-modal.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxChip from '~/components/uikit/chip/chip.vue';
 
 const route = useRoute();
 
@@ -64,12 +57,14 @@ const isMac = ref(false);
 const isMobile = ref(false);
 
 const handleKeydown = (event: KeyboardEvent) => {
-  if ((isMac.value && event.metaKey && event.key.toLowerCase() === "k")
-      || (!isMac.value && event.shiftKey && event.key.toLowerCase() === "k")) {
+  if (
+    (isMac.value && event.metaKey && event.key.toLowerCase() === 'k') ||
+    (!isMac.value && event.shiftKey && event.key.toLowerCase() === 'k')
+  ) {
     event.preventDefault();
     isModalOpen.value = true;
   }
-  if(event.code === 'Escape') {
+  if (event.code === 'Escape') {
     isModalOpen.value = false;
   }
 };
@@ -79,22 +74,25 @@ onMounted(() => {
   isMac.value = /macintosh|mac os x/.test(userAgent);
   isMobile.value = /android|iphone|ipad|ipod|mobile/i.test(userAgent);
 
-  window.addEventListener("keydown", handleKeydown);
+  window.addEventListener('keydown', handleKeydown);
 });
 
 onBeforeUnmount(() => {
-  window.removeEventListener("keydown", handleKeydown);
+  window.removeEventListener('keydown', handleKeydown);
 });
 
-watch(() => route.path, () => {
-  isModalOpen.value = false;
-});
+watch(
+  () => route.path,
+  () => {
+    isModalOpen.value = false;
+  },
+);
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxSearch'
-}
+  name: 'LfxSearch',
+};
 </script>
 
 <style lang="scss" scoped>

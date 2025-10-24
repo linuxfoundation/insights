@@ -7,10 +7,11 @@
     display: none;
   }
 
-  th, td{
+  th,
+  td {
     @apply pl-6;
 
-    &:last-child{
+    &:last-child {
       @apply pr-5;
     }
   }

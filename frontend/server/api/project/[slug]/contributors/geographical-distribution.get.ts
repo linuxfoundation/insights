@@ -1,11 +1,11 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { DateTime } from 'luxon'
-import type { GeographicDistributionFilter } from '~~/server/data/types'
-import { DemographicType } from '~~/server/data/types'
-import { createDataSource } from '~~/server/data/data-sources'
-import { ActivityTypes } from '~~/types/shared/activity-types'
-import { ActivityPlatforms } from '~~/types/shared/activity-platforms'
+import { DateTime } from 'luxon';
+import type { GeographicDistributionFilter } from '~~/server/data/types';
+import { DemographicType } from '~~/server/data/types';
+import { createDataSource } from '~~/server/data/data-sources';
+import { ActivityTypes } from '~~/types/shared/activity-types';
+import { ActivityPlatforms } from '~~/types/shared/activity-platforms';
 
 /**
  * Frontend expects the data to be in the following format:
@@ -32,13 +32,13 @@ import { ActivityPlatforms } from '~~/types/shared/activity-platforms'
  * - time-period: string
  */
 export default defineEventHandler(async (event) => {
-  const query = getQuery(event)
+  const query = getQuery(event);
 
-  const project = (event.context.params as { slug: string }).slug
-  const activityPlatform = query.platform as ActivityPlatforms
-  const activityType = query.activityType as ActivityTypes
+  const project = (event.context.params as { slug: string }).slug;
+  const activityPlatform = query.platform as ActivityPlatforms;
+  const activityType = query.activityType as ActivityTypes;
 
-  const repos = Array.isArray(query.repos) ? query.repos : query.repos ? [query.repos] : undefined
+  const repos = Array.isArray(query.repos) ? query.repos : query.repos ? [query.repos] : undefined;
 
   const filter: GeographicDistributionFilter = {
     project,
@@ -50,7 +50,7 @@ export default defineEventHandler(async (event) => {
     type: (query.type as DemographicType) || DemographicType.CONTRIBUTORS,
     startDate: query.startDate ? DateTime.fromISO(query.startDate as string) : undefined,
     endDate: query.endDate ? DateTime.fromISO(query.endDate as string) : undefined,
-  }
-  const dataSource = createDataSource()
-  return await dataSource.fetchGeographicDistribution(filter)
-})
+  };
+  const dataSource = createDataSource();
+  return await dataSource.fetchGeographicDistribution(filter);
+});

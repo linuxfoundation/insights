@@ -1,19 +1,19 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import type {ActivityCountFilter} from "../types";
-import {ActivityFilterCountType} from "../types";
-import {fetchFromTinybird} from './tinybird'
-import type {MailingListsMessages} from "~~/types/popularity/responses.types";
-import {calculatePercentageChange, getPreviousDates} from "~~/server/data/util";
-import {ActivityTypes} from "~~/types/shared/activity-types";
-import {ActivityPlatforms} from "~~/types/shared/activity-platforms";
+import type { ActivityCountFilter } from '../types';
+import { ActivityFilterCountType } from '../types';
+import { fetchFromTinybird } from './tinybird';
+import type { MailingListsMessages } from '~~/types/popularity/responses.types';
+import { calculatePercentageChange, getPreviousDates } from '~~/server/data/util';
+import { ActivityTypes } from '~~/types/shared/activity-types';
+import { ActivityPlatforms } from '~~/types/shared/activity-platforms';
 
 // This is the data part of the response from Tinybird
 type TinybirdActivityCountData = {
-  startDate: string,
-  endDate: string,
-  activityCount?: number
-  cumulativeActivityCount?: number
+  startDate: string;
+  endDate: string;
+  activityCount?: number;
+  cumulativeActivityCount?: number;
 };
 
 type TinybirdActivityCountSummary = {
@@ -27,7 +27,7 @@ function getTinybirdQueries(filter: ActivityCountFilter) {
   const commonFilter = {
     activity_type: ActivityTypes.MESSAGE,
     platform: ActivityPlatforms.GROUPS_IO,
-  }
+  };
 
   return {
     currentSummaryQuery: {
@@ -42,20 +42,22 @@ function getTinybirdQueries(filter: ActivityCountFilter) {
       granularity: undefined, // This tells TinyBird to return a summary instead of time series
       repos: filter.repos, // We need this due to a discrepancy between variable names in Tinybird and the frontend
       startDate: dates.previous.from,
-      endDate: dates.previous.to
+      endDate: dates.previous.to,
     },
     dataQuery: {
       ...filter,
       ...commonFilter,
       repos: filter.repos,
-    }
-  }
+    },
+  };
 }
-export async function fetchMailingListsMessageActivities(filter: ActivityCountFilter): Promise<MailingListsMessages> {
+export async function fetchMailingListsMessageActivities(
+  filter: ActivityCountFilter,
+): Promise<MailingListsMessages> {
   // TODO: We're passing unchecked query parameters to TinyBird directly from the frontend.
   //  We need to ensure this doesn't pose a security risk.
 
-  const {currentSummaryQuery, previousSummaryQuery, dataQuery} = getTinybirdQueries(filter);
+  const { currentSummaryQuery, previousSummaryQuery, dataQuery } = getTinybirdQueries(filter);
 
   const summariesPath = 'activities_count.json'; // Tinybird uses this one for the summaries
   let dataPath = 'activities_cumulative_count.json';
@@ -64,14 +66,23 @@ export async function fetchMailingListsMessageActivities(filter: ActivityCountFi
   }
 
   const [currentSummaryData, previousSummaryData, currentData] = await Promise.all([
-    fetchFromTinybird<TinybirdActivityCountSummary[]>(`/v0/pipes/${summariesPath}`, currentSummaryQuery),
-    fetchFromTinybird<TinybirdActivityCountSummary[]>(`/v0/pipes/${summariesPath}`, previousSummaryQuery),
-    fetchFromTinybird<TinybirdActivityCountData[]>(`/v0/pipes/${dataPath}`, dataQuery)
+    fetchFromTinybird<TinybirdActivityCountSummary[]>(
+      `/v0/pipes/${summariesPath}`,
+      currentSummaryQuery,
+    ),
+    fetchFromTinybird<TinybirdActivityCountSummary[]>(
+      `/v0/pipes/${summariesPath}`,
+      previousSummaryQuery,
+    ),
+    fetchFromTinybird<TinybirdActivityCountData[]>(`/v0/pipes/${dataPath}`, dataQuery),
   ]);
 
   const currentCumulativeCount = currentSummaryData.data[0]?.activityCount || 0;
   const previousCumulativeCount = previousSummaryData.data[0]?.activityCount || 0;
-  const percentageChange = calculatePercentageChange(currentCumulativeCount, previousCumulativeCount);
+  const percentageChange = calculatePercentageChange(
+    currentCumulativeCount,
+    previousCumulativeCount,
+  );
 
   let data;
 
@@ -80,13 +91,13 @@ export async function fetchMailingListsMessageActivities(filter: ActivityCountFi
       startDate: item.startDate,
       endDate: item.endDate,
       messages: item.cumulativeActivityCount || 0,
-    }))
+    }));
   } else {
     data = currentData.data.map((item) => ({
       startDate: item.startDate,
       endDate: item.endDate,
       messages: item.activityCount || 0,
-    }))
+    }));
   }
 
   return {
@@ -98,6 +109,6 @@ export async function fetchMailingListsMessageActivities(filter: ActivityCountFi
       periodFrom: filter.startDate?.toString() || '',
       periodTo: filter.endDate?.toString() || '',
     },
-    data
+    data,
   };
 }

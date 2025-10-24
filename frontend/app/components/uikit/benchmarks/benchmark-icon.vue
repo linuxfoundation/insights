@@ -31,17 +31,20 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 
-const props = withDefaults(defineProps<{
-  type: string;
-  useTriangle?: boolean;
-  size?: number;
-}>(), {
-  useTriangle: false,
-  size: 16
-});
+const props = withDefaults(
+  defineProps<{
+    type: string;
+    useTriangle?: boolean;
+    size?: number;
+  }>(),
+  {
+    useTriangle: false,
+    size: 16,
+  },
+);
 </script>
 <script lang="ts">
 export default {
-  name: 'LfxBenchmarkIcon'
+  name: 'LfxBenchmarkIcon',
 };
 </script>

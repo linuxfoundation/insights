@@ -25,23 +25,23 @@
  * - repository: string
  * - time-period: string // This isn't defined yet, but we'll add '90d', '1y', '5y' for now
  */
-import { DateTime } from 'luxon'
+import { DateTime } from 'luxon';
 
-import { createDataSource } from '~~/server/data/data-sources'
-import type { ActiveContributorsFilter } from '~~/server/data/types'
-import { Granularity } from '~~/types/shared/granularity'
-import { getBooleanQueryParam } from '~~/server/utils/common'
+import { createDataSource } from '~~/server/data/data-sources';
+import type { ActiveContributorsFilter } from '~~/server/data/types';
+import { Granularity } from '~~/types/shared/granularity';
+import { getBooleanQueryParam } from '~~/server/utils/common';
 
 export default defineEventHandler(async (event) => {
   // TODO: Check the project configuration to determine whether to show the data.
-  const query = getQuery(event)
+  const query = getQuery(event);
 
-  const project = (event.context.params as { slug: string }).slug
+  const project = (event.context.params as { slug: string }).slug;
 
-  const repos = Array.isArray(query.repos) ? query.repos : query.repos ? [query.repos] : undefined
+  const repos = Array.isArray(query.repos) ? query.repos : query.repos ? [query.repos] : undefined;
 
-  const includeCodeContributions = getBooleanQueryParam(query, 'includeCodeContributions', true)
-  const includeCollaborations = getBooleanQueryParam(query, 'includeCollaborations', false)
+  const includeCodeContributions = getBooleanQueryParam(query, 'includeCodeContributions', true);
+  const includeCollaborations = getBooleanQueryParam(query, 'includeCollaborations', false);
 
   // TODO: Validate the query params
   const filter: ActiveContributorsFilter = {
@@ -52,26 +52,26 @@ export default defineEventHandler(async (event) => {
     includeCollaborations,
     startDate: undefined,
     endDate: undefined,
-  }
+  };
 
   if (query.startDate && (query.startDate as string).trim() !== '') {
-    filter.startDate = DateTime.fromISO(query.startDate as string)
+    filter.startDate = DateTime.fromISO(query.startDate as string);
   }
 
   if (query.endDate && (query.endDate as string).trim() !== '') {
-    filter.endDate = DateTime.fromISO(query.endDate as string)
+    filter.endDate = DateTime.fromISO(query.endDate as string);
   }
 
-  const dataSource = createDataSource()
+  const dataSource = createDataSource();
 
   try {
-    return await dataSource.fetchActiveContributors(filter)
+    return await dataSource.fetchActiveContributors(filter);
   } catch (error) {
-    console.error('Error fetching active contributors:', error)
+    console.error('Error fetching active contributors:', error);
     throw createError({
       statusCode: 500,
       statusMessage: 'Failed to fetch active contributors data',
       data: { message: error.message },
-    })
+    });
   }
-})
+});

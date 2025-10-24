@@ -3,7 +3,8 @@
 .c-progress-bar {
   @apply flex flex-row items-center gap-0.5 w-full;
 
-  .c-progress-bar__value, .c-progress-bar__empty {
+  .c-progress-bar__value,
+  .c-progress-bar__empty {
     @apply rounded-xs transition-all h-2;
   }
 
@@ -34,7 +35,8 @@
 
   &--size-small {
     @apply gap-0;
-    .c-progress-bar__value, .c-progress-bar__empty {
+    .c-progress-bar__value,
+    .c-progress-bar__empty {
       @apply h-1;
     }
   }

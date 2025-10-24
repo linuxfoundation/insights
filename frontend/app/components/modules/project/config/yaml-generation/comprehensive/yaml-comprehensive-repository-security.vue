@@ -35,7 +35,7 @@ SPDX-License-Identifier: MIT
               v-model="model.repository.security.assessments.self.evidence"
               :invalid="
                 $v.repository.security.assessments.self.evidence.$invalid &&
-                  $v.repository.security.assessments.self.evidence.$dirty
+                $v.repository.security.assessments.self.evidence.$dirty
               "
               @blur="$v.repository.security.assessments.self.evidence.$touch()"
               @input="$v.repository.security.assessments.self.evidence.$touch()"
@@ -130,31 +130,29 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-import { url } from '@vuelidate/validators'
-import useVuelidate from '@vuelidate/core'
-import LfxField from '~/components/uikit/field/field.vue'
-import LfxInput from '~/components/uikit/input/input.vue'
-import LfxTextarea from '~/components/uikit/textarea/textarea.vue'
-import LfxButton from '~/components/uikit/button/button.vue'
-import LfxIcon from '~/components/uikit/icon/icon.vue'
-import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue'
-import LfxFieldMessages from '~/components/uikit/field/field-messages.vue'
-import LfxYamlThirdPartyAssessmentItem from
-  '~/components/modules/project/config/yaml-generation/shared/components/yaml-third-party-assessment-item.vue'
-import LfxYamlDatepicker
-  from "~/components/modules/project/config/yaml-generation/shared/components/yaml-datepicker.vue";
+import { computed } from 'vue';
+import { url } from '@vuelidate/validators';
+import useVuelidate from '@vuelidate/core';
+import LfxField from '~/components/uikit/field/field.vue';
+import LfxInput from '~/components/uikit/input/input.vue';
+import LfxTextarea from '~/components/uikit/textarea/textarea.vue';
+import LfxButton from '~/components/uikit/button/button.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
+import LfxFieldMessages from '~/components/uikit/field/field-messages.vue';
+import LfxYamlThirdPartyAssessmentItem from '~/components/modules/project/config/yaml-generation/shared/components/yaml-third-party-assessment-item.vue';
+import LfxYamlDatepicker from '~/components/modules/project/config/yaml-generation/shared/components/yaml-datepicker.vue';
 
 const props = defineProps<{
-  modelValue: object
-}>()
+  modelValue: object;
+}>();
 
-const emit = defineEmits<{ (e: 'update:modelValue', value: object): void }>()
+const emit = defineEmits<{ (e: 'update:modelValue', value: object): void }>();
 
 const model = computed<object>({
   get: () => props.modelValue as object,
   set: (value: object) => emit('update:modelValue', value),
-})
+});
 
 const rules = {
   repository: {
@@ -168,15 +166,15 @@ const rules = {
       },
     },
   },
-}
+};
 
-const $v = useVuelidate(rules, model)
+const $v = useVuelidate(rules, model);
 
 const addThirdPartyAssessment = () => {
   model.value.repository.security.assessments['third-party'].push({
     evidence: '',
     date: '',
     comment: '',
-  })
-}
+  });
+};
 </script>

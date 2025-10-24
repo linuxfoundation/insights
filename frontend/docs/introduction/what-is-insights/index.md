@@ -1,4 +1,5 @@
 ![LFX Insights Banner](https://github.com/user-attachments/assets/a0bad954-940d-4811-a183-5efa67b16b6a)
+
 # What is LFX Insights?
 
 LFX Insights helps developers and their organizations make smarter decisions about the open source projects they depend on.
@@ -18,8 +19,8 @@ With LFX Insights, you can:
 
 Built by the <a href="https://www.linuxfoundation.org">Linux Foundation</a>, LFX Insights leverages trusted, high-quality data to help you reduce risk and choose open source projects that are not just functional—but reliable.
 
-
 ## Why It Matters
+
 Today's world is built on open source software. But as our stack grows, so does the complexity—and with it, the risk. Incidents like the XZ backdoor, log4shell, or even the sudden removal of left-pad highlight how fragile the software supply chain can be.
 
 And while metrics like GitHub stars may look reassuring, they often hide deeper issues. A project might seem popular but have no meaningful governance, no active maintainers, or poor security hygiene.
@@ -29,6 +30,7 @@ Insights acts as your early warning system. It helps you avoid risky dependencie
 Because software development is not just about what works today. It’s about what lasts.
 
 ## Outlook
+
 Insights was relaunched in May 2025 with a renewed focus on clarity, transparency, and usability for developers.
 
 As of today, the platform <b>covers 1,000+ open source projects hosted by the Linux Foundation</b> - including many of the most critical and widely used projects in the software ecosystem.

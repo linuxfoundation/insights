@@ -24,7 +24,7 @@ SPDX-License-Identifier: MIT
     </div>
     <div v-else>
       <div class="text-sm leading-4 font-semibold first-letter:uppercase pb-5">
-        {{model.activeTab}} retention breakdown
+        {{ model.activeTab }} retention breakdown
       </div>
     </div>
     <lfx-project-load-state
@@ -48,26 +48,35 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { computed, watch } from 'vue';
 import { useRoute } from 'vue-router';
-import { storeToRefs } from "pinia";
+import { storeToRefs } from 'pinia';
 import { DateTime } from 'luxon';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
 import LfxChart from '~/components/uikit/chart/chart.vue';
-import { convertToChartData, currentInterval } from '~/components/uikit/chart/helpers/chart-helpers';
+import {
+  convertToChartData,
+  currentInterval,
+} from '~/components/uikit/chart/helpers/chart-helpers';
 import type {
   ChartData,
   RawChartData,
-  ChartSeries
+  ChartSeries,
 } from '~/components/uikit/chart/types/ChartTypes';
 import { lfxColors } from '~/config/styles/colors';
-import { getLineAreaChartConfig, getMarkLine, getVisualMap } from '~/components/uikit/chart/configs/line.area.chart';
-import { useProjectStore } from "~/components/modules/project/store/project.store";
+import {
+  getLineAreaChartConfig,
+  getMarkLine,
+  getVisualMap,
+} from '~/components/uikit/chart/configs/line.area.chart';
+import { useProjectStore } from '~/components/modules/project/store/project.store';
 import { isEmptyData } from '~/components/shared/utils/helper';
 import type { Retention } from '~~/types/contributors/responses.types';
 import { Granularity } from '~~/types/shared/granularity';
-import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
-import {Widget} from "~/components/modules/widget/types/widget";
-import { CONTRIBUTORS_API_SERVICE, type RetentionQueryParams } 
-  from '~~/app/components/modules/widget/services/contributors.api.service';
+import LfxProjectLoadState from '~/components/modules/project/components/shared/load-state.vue';
+import { Widget } from '~/components/modules/widget/types/widget';
+import {
+  CONTRIBUTORS_API_SERVICE,
+  type RetentionQueryParams,
+} from '~~/app/components/modules/widget/services/contributors.api.service';
 import type { WidgetModel } from '~/components/modules/widget/config/widget.config';
 
 interface RetentionModel extends WidgetModel {
@@ -75,9 +84,9 @@ interface RetentionModel extends WidgetModel {
 }
 
 const props = defineProps<{
-  modelValue: RetentionModel,
-  snapshot?: boolean
-}>()
+  modelValue: RetentionModel;
+  snapshot?: boolean;
+}>();
 
 const emit = defineEmits<{
   (e: 'dataLoaded', value: string): void;
@@ -87,12 +96,10 @@ const emit = defineEmits<{
 
 const model = computed<RetentionModel>({
   get: () => props.modelValue,
-  set: (value) => emit('update:modelValue', value)
-})
+  set: (value) => emit('update:modelValue', value),
+});
 
-const {
-  startDate, endDate, selectedReposValues
-} = storeToRefs(useProjectStore())
+const { startDate, endDate, selectedReposValues } = storeToRefs(useProjectStore());
 
 const route = useRoute();
 /**
@@ -118,9 +125,7 @@ const params = computed<RetentionQueryParams>(() => ({
   includeCollaborations: model.value.includeCollaborations,
 }));
 
-const {
-  data, status, error
-} = CONTRIBUTORS_API_SERVICE.fetchRetention(params);
+const { data, status, error } = CONTRIBUTORS_API_SERVICE.fetchRetention(params);
 
 const retention = computed<Retention[]>(() => data.value as Retention[]);
 
@@ -132,9 +137,9 @@ const chartData = computed<ChartData[]>(
       'startDate',
       ['percentage'],
       undefined,
-      'endDate'
-    )
-  }
+      'endDate',
+    );
+  },
 );
 const isLastDataItemIncomplete = computed(() => {
   if (chartData.value.length > 0) {
@@ -150,23 +155,29 @@ const isLastDataItemIncomplete = computed(() => {
 const columnBeforeLastItem = computed<string>(() => {
   if (chartData.value.length > 1) {
     const columnBeforeLastItem = chartData.value[chartData.value.length - 2];
-    return DateTime.fromISO(columnBeforeLastItem?.key || '').toUTC().endOf('day').toMillis().toString();
+    return DateTime.fromISO(columnBeforeLastItem?.key || '')
+      .toUTC()
+      .endOf('day')
+      .toMillis()
+      .toString();
   }
   return '';
 });
 
-const isEmpty = computed(() => isBelowThreshold.value
-  || isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
+const isEmpty = computed(
+  () =>
+    isBelowThreshold.value || isEmptyData(chartData.value as unknown as Record<string, unknown>[]),
+);
 
 const tabs = [
   {
     label: 'Contributors',
-    value: 'contributors'
+    value: 'contributors',
   },
   {
     label: 'Organizations',
-    value: 'organizations'
-  }
+    value: 'organizations',
+  },
 ];
 
 const chartSeries = computed<ChartSeries[]>(() => [
@@ -177,37 +188,49 @@ const chartSeries = computed<ChartSeries[]>(() => [
     dataIndex: 0,
     position: 'left',
     color: lfxColors.brand[500],
-    markLine: isLastDataItemIncomplete.value ? getMarkLine(columnBeforeLastItem.value) : undefined
-  }
+    markLine: isLastDataItemIncomplete.value ? getMarkLine(columnBeforeLastItem.value) : undefined,
+  },
 ]);
 
-const lineAreaChartConfig = computed(() => getLineAreaChartConfig(
-  chartData.value, //
-  chartSeries.value, //
-  granularity,
-  (value: number, index?: number) => `${index === 0 ? '' : `${value}%`}`,
-  isLastDataItemIncomplete.value ? {
-    visualMap: getVisualMap(chartData.value.length, chartSeries.value)
-  } : undefined
-));
+const lineAreaChartConfig = computed(() =>
+  getLineAreaChartConfig(
+    chartData.value, //
+    chartSeries.value, //
+    granularity,
+    (value: number, index?: number) => `${index === 0 ? '' : `${value}%`}`,
+    isLastDataItemIncomplete.value
+      ? {
+          visualMap: getVisualMap(chartData.value.length, chartSeries.value),
+        }
+      : undefined,
+  ),
+);
 
-watch(status, (value) => {
-  if (value !== 'pending') {
-    emit('dataLoaded', Widget.RETENTION);
-  }
-}, {
-  immediate: true
-});
+watch(
+  status,
+  (value) => {
+    if (value !== 'pending') {
+      emit('dataLoaded', Widget.RETENTION);
+    }
+  },
+  {
+    immediate: true,
+  },
+);
 
-watch(isEmpty, (value: boolean) => {
-  emit('hasData', !value);
-}, {
-  immediate: true
-});
+watch(
+  isEmpty,
+  (value: boolean) => {
+    emit('hasData', !value);
+  },
+  {
+    immediate: true,
+  },
+);
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxProjectRetention'
+  name: 'LfxProjectRetention',
 };
 </script>

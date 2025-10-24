@@ -1,8 +1,6 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import {
- computed, onMounted, onUnmounted, ref
-} from 'vue';
+import { computed, onMounted, onUnmounted, ref } from 'vue';
 
 const useScroll = () => {
   const scrollTop = ref(0);
@@ -25,13 +23,13 @@ const useScroll = () => {
     setTimeout(() => {
       window?.scrollTo({
         top: value,
-        behavior
+        behavior,
       });
 
       if (value === 0) {
         window?.scrollTo({
           top: value,
-          behavior
+          behavior,
         });
       }
     }, 100);
@@ -40,7 +38,7 @@ const useScroll = () => {
   const scrollToTarget = (
     element: HTMLElement,
     headerOffset: number = 220,
-    behavior: 'smooth' | 'instant' = 'smooth'
+    behavior: 'smooth' | 'instant' = 'smooth',
   ) => {
     const elementPosition = element.getBoundingClientRect().top;
     const offsetPosition = elementPosition + (html?.scrollTop || 0) - headerOffset;
@@ -61,7 +59,7 @@ const useScroll = () => {
     scrollTop,
     scrollTopPercentage,
     scrollToTop,
-    scrollToTarget
+    scrollToTarget,
   };
 };
 

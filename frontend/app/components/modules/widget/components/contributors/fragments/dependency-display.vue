@@ -24,7 +24,8 @@ SPDX-License-Identifier: MIT
       </div>
       <div>
         <div class="text-sm font-semibold">
-          Other {{ props.otherDependency.count }} {{ pluralize(props.label, props.otherDependency.count) }}
+          Other {{ props.otherDependency.count }}
+          {{ pluralize(props.label, props.otherDependency.count) }}
         </div>
         <div class="text-body-1 text-neutral-500">
           {{ Math.round(props.otherDependency.percentage) }}% of all contributions
@@ -43,7 +44,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import pluralize from "pluralize";
+import pluralize from 'pluralize';
 import type { Dependency, Contributor, Organization } from '~~/types/contributors/responses.types';
 import LfxProgressBar from '~/components/uikit/progress-bar/progress-bar.vue';
 import type { ProgressBarType } from '~/components/uikit/progress-bar/types/progress-bar.types';
@@ -57,17 +58,17 @@ const props = withDefaults(
   }>(),
   {
     topDependency: { count: 0, percentage: 0 },
-    otherDependency: { count: 0, percentage: 0 }
-  }
+    otherDependency: { count: 0, percentage: 0 },
+  },
 );
 
 // This returns the percentage of each contributor/organization in the top
 // The maximum number of contributors/organizations is 4
 const dependencyValues = computed<number[]>(() => {
   if (
-    props.list
-    && props.list.length >= props.topDependency.count
-    && props.topDependency.count < 5 // limit the number of split values to 5
+    props.list &&
+    props.list.length >= props.topDependency.count &&
+    props.topDependency.count < 5 // limit the number of split values to 5
   ) {
     return props.list
       .slice(0, props.topDependency.count)
@@ -98,6 +99,6 @@ const dependencyColor = computed<ProgressBarType>(() => {
 
 <script lang="ts">
 export default {
-  name: 'LfxDependencyDisplay'
+  name: 'LfxDependencyDisplay',
 };
 </script>

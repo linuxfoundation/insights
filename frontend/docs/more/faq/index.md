@@ -1,4 +1,3 @@
-
 # Frequently Asked Questions
 
 ## Project Selection
@@ -37,7 +36,6 @@ We use AI-assisted identity resolution to unify contributor profiles across mult
 **Why are my contributions not showing up?**  
 This usually happens if we haven’t correctly linked your identity or if contributions occurred under an unrecognized alias. Please refer to [How You Can Help to Improve Data Quality](../../introduction/data-quality/index.md#how-you-can-help-to-improve-data-quality) to learn how to report incorrect data.
 
-
 **Why is my organization not properly affiliated to our contributions?**  
 We do organizational affiliation based on publicly available profile data (e.g. from GitHub), email domains, and other public and private signals. Nevertheless, it happens that affiliations are not correct. Please refer to [ How You Can Help to Improve Data Quality](../../introduction/data-quality/index.md#how-you-can-help-to-improve-data-quality) to learn how to report incorrect affiliations.
 
@@ -47,7 +45,7 @@ We do organizational affiliation based on publicly available profile data (e.g. 
 Our data comes from our internal [Community Data Platform](https://github.com/CrowdDotDev/crowd.dev), which covers 20+ different sources. Learn more about [Data Sources](../../introduction/data-sources/index.md).
 
 **Why is open source data so difficult to get right?**  
-There’s no single source of truth, and most data comes from weak control data sources. For example: Contributors use multiple emails, organizations have complex naming conventions, and projects span diverse platforms. 
+There’s no single source of truth, and most data comes from weak control data sources. For example: Contributors use multiple emails, organizations have complex naming conventions, and projects span diverse platforms.
 
 **Q: How do you ensure accuracy in your contributor and project data?**  
 We use a multi-step process involving AI enrichment, human curation, and direct user feedback. Our goal is 90%+ correctness in production data. Learn more about [Data Quality](../../introduction/data-quality/index.md).

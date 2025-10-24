@@ -9,7 +9,7 @@ export const granularityTabs: GranularityTabs[] = [
     label: 'Daily',
     value: Granularity.DAILY,
     format: 'MMM d',
-    showForKeys: [dateOptKeys.custom]
+    showForKeys: [dateOptKeys.custom],
   },
   {
     label: 'Weekly',
@@ -20,8 +20,8 @@ export const granularityTabs: GranularityTabs[] = [
       dateOptKeys.past180days,
       dateOptKeys.past365days,
       dateOptKeys.previousQuarter,
-      dateOptKeys.previousYear
-    ]
+      dateOptKeys.previousYear,
+    ],
   },
   {
     label: 'Monthly',
@@ -35,8 +35,8 @@ export const granularityTabs: GranularityTabs[] = [
       dateOptKeys.previousYear,
       dateOptKeys.previous5Year,
 
-      dateOptKeys.previous10Year
-    ]
+      dateOptKeys.previous10Year,
+    ],
   },
   {
     label: 'Quarterly',
@@ -48,17 +48,13 @@ export const granularityTabs: GranularityTabs[] = [
       dateOptKeys.previousYear,
       dateOptKeys.previous5Year,
       dateOptKeys.previous10Year,
-      dateOptKeys.alltime
-    ]
+      dateOptKeys.alltime,
+    ],
   },
   {
     label: 'Yearly',
     value: Granularity.YEARLY,
     format: 'yyyy',
-    showForKeys: [
-      dateOptKeys.previous5Year,
-      dateOptKeys.previous10Year,
-      dateOptKeys.alltime
-    ]
-  }
+    showForKeys: [dateOptKeys.previous5Year, dateOptKeys.previous10Year, dateOptKeys.alltime],
+  },
 ];

@@ -1,70 +1,70 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-.c-icon-button{
+.c-icon-button {
   @apply flex items-center justify-center rounded-full transition-all cursor-pointer;
 
   // Types
-  &--default{
+  &--default {
     @apply outline outline-1 outline-neutral-200 bg-white text-neutral-900 cursor-pointer;
 
-    &:hover{
+    &:hover {
       @apply bg-neutral-50;
     }
 
-    &:active{
+    &:active {
       @apply outline-brand-200 outline-3 bg-white;
     }
 
-    &.is-disabled{
+    &.is-disabled {
       @apply outline-neutral-100 outline-3 bg-white text-neutral-400 cursor-default;
     }
   }
 
-  &--primary{
+  &--primary {
     @apply outline outline-1 outline-transparent bg-brand-500 text-white;
 
-    &.is-disabled{
+    &.is-disabled {
       @apply outline-neutral-100 outline-3 bg-brand-300 cursor-default;
     }
   }
 
-  &--transparent{
+  &--transparent {
     @apply outline outline-1 outline-transparent bg-transparent text-neutral-900;
 
-    &:hover{
+    &:hover {
       @apply bg-neutral-100;
     }
 
-    &:active{
+    &:active {
       @apply outline-brand-200 outline-3 bg-transparent;
     }
 
-    &.is-disabled{
+    &.is-disabled {
       @apply text-neutral-400 cursor-default;
     }
   }
 
   // Sizes
-  &--small{
+  &--small {
     @apply w-7 h-7;
 
-    .c-icon{
+    .c-icon {
       --lfx-icon-size: 1rem #{!important};
     }
   }
 
-  &--medium{
+  &--medium {
     @apply w-9 h-9;
 
-    .c-icon{
+    .c-icon {
       --lfx-icon-size: 1.125rem #{!important};
     }
   }
 
-  &--large{
+  &--large {
     @apply w-11 h-11;
 
-    .c-icon{
+    .c-icon {
       --lfx-icon-size: 1.5rem #{!important};
     }
   }

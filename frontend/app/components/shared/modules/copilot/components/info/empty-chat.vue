@@ -10,9 +10,7 @@ SPDX-License-Identifier: MIT
       class="text-neutral-300"
       type="light"
     />
-    <div class="font-semibold mt-6 mb-2">
-      Ask questions about LFX data
-    </div>
+    <div class="font-semibold mt-6 mb-2">Ask questions about LFX data</div>
     <div class="text-neutral-500 text-xs mb-10">
       Start a conversation to generate your first chart
     </div>
@@ -34,22 +32,22 @@ import { computed } from 'vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 
 const emit = defineEmits<{
-  (e: 'suggestionClick', suggestion: string): void
-}>()
+  (e: 'suggestionClick', suggestion: string): void;
+}>();
 const props = defineProps<{
-  projectName: string
-}>()
+  projectName: string;
+}>();
 
 const suggestions = computed(() => [
   'How many new contributors joined last quarter?',
   'When were the peak commit weeks this year?',
   'Are there any critical security issues open?',
-  `Is ${props.projectName} gaining or losing momentum?`
-])
+  `Is ${props.projectName} gaining or losing momentum?`,
+]);
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxEmptyChat'
-}
+  name: 'LfxEmptyChat',
+};
 </script>

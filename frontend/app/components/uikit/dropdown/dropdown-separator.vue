@@ -8,6 +8,6 @@ SPDX-License-Identifier: MIT
 
 <script lang="ts">
 export default {
-  name: 'LfxDropdownSeparator'
+  name: 'LfxDropdownSeparator',
 };
 </script>

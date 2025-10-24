@@ -1,17 +1,15 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { DateTime } from 'luxon'
-import YamlBasicProject from './yaml-basic-project.vue'
-import YamlBasicProjectRepositories from './yaml-basic-project-repositories.vue'
-import YamlBasicProjectVulnerability from './yaml-basic-project-vulnerability.vue'
-import YamlBasicRepository from './yaml-basic-repository.vue'
-import YamlBasicRepositoryMembers from './yaml-basic-repository-members.vue'
-import YamlBasicRepositoryLicense from './yaml-basic-repository-license.vue'
-import YamlBasicRepositorySecurity from './yaml-basic-repository-security.vue'
-import type { YamlGenerationConfig } from
-  '~/components/modules/project/config/yaml-generation/yaml-generation.config'
-import YamlHeaderInformation from
-  '~/components/modules/project/config/yaml-generation/shared/yaml-header-information.vue'
+import { DateTime } from 'luxon';
+import YamlBasicProject from './yaml-basic-project.vue';
+import YamlBasicProjectRepositories from './yaml-basic-project-repositories.vue';
+import YamlBasicProjectVulnerability from './yaml-basic-project-vulnerability.vue';
+import YamlBasicRepository from './yaml-basic-repository.vue';
+import YamlBasicRepositoryMembers from './yaml-basic-repository-members.vue';
+import YamlBasicRepositoryLicense from './yaml-basic-repository-license.vue';
+import YamlBasicRepositorySecurity from './yaml-basic-repository-security.vue';
+import type { YamlGenerationConfig } from '~/components/modules/project/config/yaml-generation/yaml-generation.config';
+import YamlHeaderInformation from '~/components/modules/project/config/yaml-generation/shared/yaml-header-information.vue';
 
 const basicYamlGenerationConfig: YamlGenerationConfig = {
   label: 'Basic',
@@ -118,6 +116,6 @@ const basicYamlGenerationConfig: YamlGenerationConfig = {
       },
     },
   },
-}
+};
 
-export default basicYamlGenerationConfig
+export default basicYamlGenerationConfig;

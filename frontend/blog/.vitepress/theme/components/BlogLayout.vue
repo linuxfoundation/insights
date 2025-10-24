@@ -8,7 +8,7 @@ SPDX-License-Identifier: MIT
     <!-- <div style="background: yellow; padding: 10px; margin: 10px;">
       DEBUG: authorName={{ frontmatter.authorName }}, filePath={{ page.filePath }}
     </div> -->
-    
+
     <!-- Render author information if this is a blog post with author frontmatter -->
     <BlogAuthor
       :author-name="frontmatter.authorName"
@@ -20,16 +20,16 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { useData } from 'vitepress'
-import { computed } from 'vue'
-import BlogAuthor from './BlogAuthor.vue'
+import { useData } from 'vitepress';
+import { computed } from 'vue';
+import BlogAuthor from './BlogAuthor.vue';
 
-const { frontmatter } = useData()
+const { frontmatter } = useData();
 
 // Show author info if authorName exists in frontmatter
 const shouldShowAuthor = computed(() => {
-  return !!frontmatter.value.authorName
-})
+  return !!frontmatter.value.authorName;
+});
 </script>
 
 <style lang="scss" scoped>

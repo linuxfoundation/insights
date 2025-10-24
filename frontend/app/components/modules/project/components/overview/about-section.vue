@@ -25,17 +25,15 @@ import LfxProjectAboutSoftwareValue from './about-section/about-software-value.v
 import LfxTagsAndLanguages from './about-section/tags-ang-languages.vue';
 import LfxLinks from './about-section/links.vue';
 import LfxProjectAboutSectionLoading from './about-section/about-section-loading.vue';
-import LfxProjectAboutSectionConnectedPlatforms
-  from "~/components/modules/project/components/overview/about-section/connected-platforms.vue";
+import LfxProjectAboutSectionConnectedPlatforms from '~/components/modules/project/components/overview/about-section/connected-platforms.vue';
 import { useProjectStore } from '~~/app/components/modules/project/store/project.store';
-import LfxProjectCriticality
-  from "~/components/modules/project/components/overview/about-section/project-criticality.vue";
+import LfxProjectCriticality from '~/components/modules/project/components/overview/about-section/project-criticality.vue';
 
 const { isProjectLoading } = storeToRefs(useProjectStore());
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxProjectAboutSection'
+  name: 'LfxProjectAboutSection',
 };
 </script>

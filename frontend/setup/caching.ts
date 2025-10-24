@@ -1,7 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-const longCache = 86400 // 1 day in seconds
-const shortCache = 3600 // 1 hour in seconds
+const longCache = 86400; // 1 day in seconds
+const shortCache = 3600; // 1 hour in seconds
 
 export default {
   routeRules:
@@ -53,4 +53,4 @@ export default {
       },
     },
   },
-}
+};

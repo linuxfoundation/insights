@@ -185,7 +185,7 @@ export const ManyItems = {
       const items = Array.from({ length: 8 }, (_, i) => ({
         name: `item${i + 1}`,
         title: `Section ${i + 1}`,
-        content: `This is the content for section ${i + 1}. It can contain any information you need to display.`
+        content: `This is the content for section ${i + 1}. It can contain any information you need to display.`,
       }));
       return { openItem, items };
     },

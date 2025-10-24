@@ -49,9 +49,7 @@ SPDX-License-Identifier: MIT
           </lfx-skeleton-state>
         </div>
         <div class="flex flex-col items-end justify-center">
-          <span class="text-neutral-400 text-xs flex flex-row gap-2 items-center">
-            Weekends
-          </span>
+          <span class="text-neutral-400 text-xs flex flex-row gap-2 items-center"> Weekends </span>
           <lfx-skeleton-state
             :status="status"
             height="1.25rem"
@@ -91,10 +89,8 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { useRoute } from 'nuxt/app';
-import {
- ref, computed, watch
-} from 'vue';
-import { storeToRefs } from "pinia";
+import { ref, computed, watch } from 'vue';
+import { storeToRefs } from 'pinia';
 import type { ContributionOutsideHours } from '~~/types/development/responses.types';
 import type { Summary } from '~~/types/shared/summary.types';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
@@ -102,35 +98,36 @@ import { convertToChartData } from '~/components/uikit/chart/helpers/chart-helpe
 import type {
   ChartData,
   RawChartData,
-  ChartSeries
+  ChartSeries,
 } from '~/components/uikit/chart/types/ChartTypes';
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import { lfxColors } from '~/config/styles/colors';
 import { getScatterChartConfig } from '~/components/uikit/chart/configs/scatter.chart';
 import { formatNumber } from '~/components/shared/utils/formatter';
-import { useProjectStore } from "~/components/modules/project/store/project.store";
+import { useProjectStore } from '~/components/modules/project/store/project.store';
 import { isEmptyData } from '~/components/shared/utils/helper';
 import { dateOptKeys } from '~/components/modules/project/config/date-options';
-import LfxSkeletonState from "~/components/modules/project/components/shared/skeleton-state.vue";
-import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
-import {Widget} from "~/components/modules/widget/types/widget";
-import { DEVELOPMENT_API_SERVICE, type QueryParams } 
-  from '~/components/modules/widget/services/development.api.service';
+import LfxSkeletonState from '~/components/modules/project/components/shared/skeleton-state.vue';
+import LfxProjectLoadState from '~/components/modules/project/components/shared/load-state.vue';
+import { Widget } from '~/components/modules/widget/types/widget';
+import {
+  DEVELOPMENT_API_SERVICE,
+  type QueryParams,
+} from '~/components/modules/widget/services/development.api.service';
 import type { WidgetModel } from '~/components/modules/widget/config/widget.config';
 
 const props = defineProps<{
-  modelValue?: WidgetModel,
+  modelValue?: WidgetModel;
   snapshot?: boolean;
-}>()
-
-const emit = defineEmits<{
-(e: 'dataLoaded', value: string): void;
-(e: 'hasData', value: boolean): void;
 }>();
 
-const {
- startDate, endDate, selectedReposValues, selectedTimeRangeKey
-} = storeToRefs(useProjectStore())
+const emit = defineEmits<{
+  (e: 'dataLoaded', value: string): void;
+  (e: 'hasData', value: boolean): void;
+}>();
+
+const { startDate, endDate, selectedReposValues, selectedTimeRangeKey } =
+  storeToRefs(useProjectStore());
 
 const route = useRoute();
 
@@ -143,22 +140,27 @@ const params = computed<QueryParams>(() => ({
   includeCollaborations: props.modelValue?.includeCollaborations,
 }));
 
-const {
-  data, status, error
-} = DEVELOPMENT_API_SERVICE.fetchContributionsOutsideWorkHours(params);
+const { data, status, error } = DEVELOPMENT_API_SERVICE.fetchContributionsOutsideWorkHours(params);
 
-const contributionOutsideHours = computed<ContributionOutsideHours>(() => data.value as ContributionOutsideHours);
+const contributionOutsideHours = computed<ContributionOutsideHours>(
+  () => data.value as ContributionOutsideHours,
+);
 const summary = computed<Summary>(() => contributionOutsideHours.value.summary);
-const weekdayPercentage = computed<number>(() => contributionOutsideHours.value.weekdayOutsideHoursPercentage);
-const weekendPercentage = computed<number>(() => contributionOutsideHours.value.weekendOutsideHoursPercentage);
+const weekdayPercentage = computed<number>(
+  () => contributionOutsideHours.value.weekdayOutsideHoursPercentage,
+);
+const weekendPercentage = computed<number>(
+  () => contributionOutsideHours.value.weekendOutsideHoursPercentage,
+);
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
-  () => convertToChartData(
-    (contributionOutsideHours.value?.data || []) as RawChartData[],
-    'day',
-    ['contributions'],
-    'hour'
-  )
+  () =>
+    convertToChartData(
+      (contributionOutsideHours.value?.data || []) as RawChartData[],
+      'day',
+      ['contributions'],
+      'hour',
+    ),
 );
 
 const chartSeries = ref<ChartSeries[]>([
@@ -168,29 +170,39 @@ const chartSeries = ref<ChartSeries[]>([
     yAxisIndex: 0,
     dataIndex: 0,
     position: 'left',
-    color: lfxColors.brand[500]
-  }
+    color: lfxColors.brand[500],
+  },
 ]);
 
-const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
+const isEmpty = computed(() =>
+  isEmptyData(chartData.value as unknown as Record<string, unknown>[]),
+);
 
-watch(status, (value) => {
-  if (value !== 'pending') {
-    emit('dataLoaded', Widget.CONTRIBUTIONS_OUTSIDE_WORK_HOURS);
-  }
-}, {
-  immediate: true
-});
+watch(
+  status,
+  (value) => {
+    if (value !== 'pending') {
+      emit('dataLoaded', Widget.CONTRIBUTIONS_OUTSIDE_WORK_HOURS);
+    }
+  },
+  {
+    immediate: true,
+  },
+);
 
-watch(isEmpty, (value: boolean) => {
-  emit('hasData', !value);
-}, {
-  immediate: true
-});
+watch(
+  isEmpty,
+  (value: boolean) => {
+    emit('hasData', !value);
+  },
+  {
+    immediate: true,
+  },
+);
 </script>
 
 <script lang="ts">
 export default {
   name: 'LfxProjectContributionsOutsideWorkHours',
-}
+};
 </script>

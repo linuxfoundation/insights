@@ -3,9 +3,7 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div
-    class="container pt-6 md:pt-10"
-  >
+  <div class="container pt-6 md:pt-10">
     <lfx-accordion
       v-model="groups"
       class="flex flex-col gap-5"
@@ -20,7 +18,7 @@ SPDX-License-Identifier: MIT
       >
         <div class="flex flex-col md:flex-row justify-between py-4">
           <p class="font-secondary font-bold text-heading-3">
-            {{group.name}}
+            {{ group.name }}
           </p>
           <div class="flex items-center gap-4">
             <article class="flex items-center gap-1.5">
@@ -32,7 +30,7 @@ SPDX-License-Identifier: MIT
                 />
               </div>
               <p class="text-xs whitespace-nowrap">
-                {{formatNumber(group.totalContributors)}}
+                {{ formatNumber(group.totalContributors) }}
                 {{ pluralize('contributors', group.totalContributors) }}
               </p>
             </article>
@@ -74,32 +72,27 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import {computed, onServerPrefetch} from "vue";
-import pluralize from "pluralize";
-import {OSS_INDEX_API_SERVICE} from "~/components/modules/open-source-index/services/osi.api.service";
-import LfxAccordion from "~/components/uikit/accordion/accordion.vue";
-import LfxAccordionItem from "~/components/uikit/accordion/accordion-item.vue";
-import {formatNumber, formatNumberShort} from "~/components/shared/utils/formatter";
-import LfxIcon from "~/components/uikit/icon/icon.vue";
-import LfxOsiListCollections from "~/components/modules/open-source-index/components/list/osi-list-collections.vue";
-import LfxSkeleton from "~/components/uikit/skeleton/skeleton.vue";
+import { computed, onServerPrefetch } from 'vue';
+import pluralize from 'pluralize';
+import { OSS_INDEX_API_SERVICE } from '~/components/modules/open-source-index/services/osi.api.service';
+import LfxAccordion from '~/components/uikit/accordion/accordion.vue';
+import LfxAccordionItem from '~/components/uikit/accordion/accordion-item.vue';
+import { formatNumber, formatNumberShort } from '~/components/shared/utils/formatter';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxOsiListCollections from '~/components/modules/open-source-index/components/list/osi-list-collections.vue';
+import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
 
 const props = defineProps<{
   type: string;
   sort: string;
-}>()
+}>();
 
 const type = computed(() => props.type || 'horizontal');
 const sort = computed(() => props.sort || 'totalContributors');
 
 const groups = ref('');
 
-const {
-  data,
-    isFetching,
-  suspense
-} = OSS_INDEX_API_SERVICE.fetchOSSGroup(type, sort);
-
+const { data, isFetching, suspense } = OSS_INDEX_API_SERVICE.fetchOSSGroup(type, sort);
 
 onServerPrefetch(async () => {
   await suspense();
@@ -108,6 +101,6 @@ onServerPrefetch(async () => {
 
 <script lang="ts">
 export default {
-  name: 'LfxOsiListGroups'
+  name: 'LfxOsiListGroups',
 };
 </script>

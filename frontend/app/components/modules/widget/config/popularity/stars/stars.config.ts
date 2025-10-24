@@ -1,7 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import Stars from './stars.vue'
-import type { WidgetConfig } from '~/components/modules/widget/config/widget.config'
+import Stars from './stars.vue';
+import type { WidgetConfig } from '~/components/modules/widget/config/widget.config';
 
 const stars: WidgetConfig = {
   key: 'stars',
@@ -65,8 +65,8 @@ const stars: WidgetConfig = {
   },
   copilot: {
     icon: 'star',
-    suggestions: 'How many stars does this project have?'
+    suggestions: 'How many stars does this project have?',
   },
-}
+};
 
-export default stars
+export default stars;

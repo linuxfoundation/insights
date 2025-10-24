@@ -3,9 +3,7 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div
-    class="flex flex-col gap-5"
-  >
+  <div class="flex flex-col gap-5">
     <div class="relative text-center">
       <NuxtImg
         src="/images/misc/loading-state-bg.svg"
@@ -32,9 +30,7 @@ SPDX-License-Identifier: MIT
           class="text-positive-500"
         />
       </span>
-      <p class="text-sm font-medium">
-        Data successfully processed
-      </p>
+      <p class="text-sm font-medium">Data successfully processed</p>
     </div>
     <div class="flex items-center justify-center gap-1.5 text-neutral-500">
       <span>
@@ -48,21 +44,23 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import LfxSpinner from '~/components/uikit/spinner/spinner.vue'
-import LfxIcon from '~/components/uikit/icon/icon.vue'
+import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 
-withDefaults(defineProps<{
-  title?: string;
-  isDataReady?: boolean;
-}>(), {
-  title: 'Getting your data ready...',
-  isDataReady: false
-});
-
+withDefaults(
+  defineProps<{
+    title?: string;
+    isDataReady?: boolean;
+  }>(),
+  {
+    title: 'Getting your data ready...',
+    isDataReady: false,
+  },
+);
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxCopilotLoadingState'
-}
+  name: 'LfxCopilotLoadingState',
+};
 </script>

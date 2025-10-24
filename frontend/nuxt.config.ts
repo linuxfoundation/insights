@@ -2,18 +2,18 @@
 // SPDX-License-Identifier: MIT
 // https://nuxt.com/docs/api/configuration/nuxt-config
 
-import head from './setup/head'
-import tailwindcss from './setup/tailwind'
-import primevue from './setup/primevue'
-import echarts from './setup/echarts'
-import caching from './setup/caching'
-import sitemap from './setup/sitemap'
+import head from './setup/head';
+import tailwindcss from './setup/tailwind';
+import primevue from './setup/primevue';
+import echarts from './setup/echarts';
+import caching from './setup/caching';
+import sitemap from './setup/sitemap';
 
-const isProduction = process.env.NUXT_APP_ENV === 'production'
-const isDevelopment = process.env.NODE_ENV === 'development'
+const isProduction = process.env.NUXT_APP_ENV === 'production';
+const isDevelopment = process.env.NODE_ENV === 'development';
 export default defineNuxtConfig({
   app: {
-      head,
+    head,
   },
   components: false,
   compatibilityDate: '2025-01-01',
@@ -32,7 +32,7 @@ export default defineNuxtConfig({
     '@nuxtjs/plausible',
     '@nuxtjs/robots',
     '@nuxtjs/sitemap',
-    '@nuxt/image'
+    '@nuxt/image',
   ],
   image: {
     formats: ['webp', 'avif', 'jpeg', 'png'],
@@ -71,12 +71,12 @@ export default defineNuxtConfig({
     insightsDbPassword: 'example',
     insightsDbDatabase: 'insights',
     cmDbEnabled: isProduction,
-    cmDbWriteHost: "localhost",
-    cmDbReadHost: "localhost",
+    cmDbWriteHost: 'localhost',
+    cmDbReadHost: 'localhost',
     cmDbPort: 5432,
-    cmDbUsername: "postgres",
-    cmDbPassword: "example",
-    cmDbDatabase: "crowd-web",
+    cmDbUsername: 'postgres',
+    cmDbPassword: 'example',
+    cmDbDatabase: 'crowd-web',
     dataCopilotDefaultSegmentId: '',
     // These are also exposed on the client-side
     public: {
@@ -157,4 +157,4 @@ export default defineNuxtConfig({
   },
   ...sitemap,
   ...caching,
-})
+});

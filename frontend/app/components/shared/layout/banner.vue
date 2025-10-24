@@ -3,9 +3,8 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div 
-    class="block bg-brand-800 text-white py-2 px-5 flex 
-    items-center sm:justify-center justify-start gap-3"
+  <div
+    class="block bg-brand-800 text-white py-2 px-5 flex items-center sm:justify-center justify-start gap-3"
   >
     <span class="sm:!text-xs text-2xs sm:leading-4 leading-3.5">
       Meet us in Atlanta for KubeCon + CloudNativeCon North America · Nov 10-13
@@ -15,12 +14,13 @@ SPDX-License-Identifier: MIT
       class="font-bold hover:underline no-underline whitespace-nowrap sm:!text-xs text-2xs sm:leading-4 leading-3.5"
       target="_blank"
       rel="noopener"
-    >REGISTER TODAY</a>
+      >REGISTER TODAY</a
+    >
   </div>
 </template>
 
 <script lang="ts">
-  export default {
-    name: 'LfxBanner'
-  }
+export default {
+  name: 'LfxBanner',
+};
 </script>

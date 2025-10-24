@@ -53,17 +53,20 @@ const route = useRoute();
 const repoName = computed(() => route.params.name as string);
 const { selectedRepositoryGroup } = storeToRefs(useProjectStore());
 
-const widget = computed(() => Object.values(lfxWidgets).find(w => w.key === props.widgetKey));
+const widget = computed(() => Object.values(lfxWidgets).find((w) => w.key === props.widgetKey));
 const title = computed(() => widget.value?.benchmark?.title);
 const benchmarkValue = computed(() => Math.ceil(props.value || 0));
 const pointDetails = computed(() => widget.value?.benchmark?.points[props.benchmark]);
-const description = computed(() => `
+const description = computed(
+  () => `
   ${pointDetails.value?.description.replace('{value}', formatNumber(benchmarkValue.value || 0).toString())} 
-  - ${pointDetails.value?.text}`);
+  - ${pointDetails.value?.text}`,
+);
 const iconBGColor = computed(() => `bg-${pointDetails.value?.type}-100`);
-const widgetKebabCase = computed(
-  () => props.widgetKey ? 
-    props.widgetKey.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase() as Widget : undefined
+const widgetKebabCase = computed(() =>
+  props.widgetKey
+    ? (props.widgetKey.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase() as Widget)
+    : undefined,
 );
 const widgetArea = computed(() => {
   // Find the widget area where this widgetKey belongs to
@@ -76,31 +79,29 @@ const widgetArea = computed(() => {
   }
   return undefined;
 });
-const link = computed(() => lfProjectLinks.find(l => l.key === widgetArea.value));
+const link = computed(() => lfProjectLinks.find((l) => l.key === widgetArea.value));
 const linkUrl = computed(() => {
   if (!link.value) return undefined;
 
   const query = {
     ...route.query,
-    widget: widgetKebabCase.value // remove the widget from the query
-  }
+    widget: widgetKebabCase.value, // remove the widget from the query
+  };
   let name = link.value.projectRouteName;
   if (selectedRepositoryGroup.value) {
     name = link.value.repoGroupRouteName;
-  }
-  else if(repoName.value) {
+  } else if (repoName.value) {
     name = link.value.repoRouteName;
   }
 
   return {
     name,
-    query
+    query,
   };
 });
-
 </script>
 <script lang="ts">
 export default {
-  name: 'LfxProjectScoreItem'
+  name: 'LfxProjectScoreItem',
 };
 </script>

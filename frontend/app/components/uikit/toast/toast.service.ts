@@ -5,8 +5,13 @@ import type { ToastOptions, ToastSeverity, ToastType } from './types/toast.types
 
 const useToastService = () => {
   const toast = useToast();
-  const showToast = (message: string, toastType: ToastType, icon?: string, delay: number = 3000,
-                     config: Partial<ToastOptions> = {}) => {
+  const showToast = (
+    message: string,
+    toastType: ToastType,
+    icon?: string,
+    delay: number = 3000,
+    config: Partial<ToastOptions> = {},
+  ) => {
     const test: ToastOptions = {
       severity: toastType as ToastSeverity,
       summary: toastType,
@@ -14,14 +19,14 @@ const useToastService = () => {
       closable: false,
       icon,
       life: delay,
-      ...config
+      ...config,
     };
     toast.add(test);
-  }
+  };
 
   return {
-    showToast
-  }
-}
+    showToast,
+  };
+};
 
 export default useToastService;

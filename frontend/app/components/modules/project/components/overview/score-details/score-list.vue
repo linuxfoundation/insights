@@ -35,36 +35,41 @@ const props = defineProps<{
   data: HealthScoreResults | undefined;
   name: WidgetArea;
 }>();
-const { project, selectedRepoSlugs } = storeToRefs(useProjectStore())
+const { project, selectedRepoSlugs } = storeToRefs(useProjectStore());
 
-const widgetConfigs = computed(() => OVERVIEW_API_SERVICE.getOverviewWidgetConfigs(props.name)
-  .filter((widget) => {
+const widgetConfigs = computed(() =>
+  OVERVIEW_API_SERVICE.getOverviewWidgetConfigs(props.name).filter((widget) => {
     return (
-      project.value?.widgets.includes(widget.key)
-      && (!widget?.hideOnRepoFilter || !selectedRepoSlugs.value.length)
+      project.value?.widgets.includes(widget.key) &&
+      (!widget?.hideOnRepoFilter || !selectedRepoSlugs.value.length)
     );
-  }));
+  }),
+);
 
 /**
- * Widget keys stored in the DB are camelCase, but the widget in the widget 
+ * Widget keys stored in the DB are camelCase, but the widget in the widget
  * area configs are kebab-case, so is the enum that we use to match the widget
  */
-const scoresData = computed(() => widgetConfigs.value.map((widget) => {
-  const score = props.data?.[widget.key as keyof HealthScoreResults];
+const scoresData = computed(() =>
+  widgetConfigs.value
+    .map((widget) => {
+      const score = props.data?.[widget.key as keyof HealthScoreResults];
 
-  if (score) {
-    const scoreData = score as BenchmarkScoreData;
-    return {
-      key: widget.key,
-      value: scoreData.value,
-      benchmark: scoreData.benchmark,
-    };
-  }
-  return null;
-}).sort((a, b) => (b?.benchmark || 0) - (a?.benchmark || 0)));
+      if (score) {
+        const scoreData = score as BenchmarkScoreData;
+        return {
+          key: widget.key,
+          value: scoreData.value,
+          benchmark: scoreData.benchmark,
+        };
+      }
+      return null;
+    })
+    .sort((a, b) => (b?.benchmark || 0) - (a?.benchmark || 0)),
+);
 </script>
 <script lang="ts">
 export default {
-  name: 'LfxProjectScoreList'
+  name: 'LfxProjectScoreList',
 };
 </script>

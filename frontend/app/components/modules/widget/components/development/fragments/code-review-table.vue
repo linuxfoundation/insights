@@ -49,8 +49,8 @@ SPDX-License-Identifier: MIT
 import { computed } from 'vue';
 import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
 import { formatNumberShort } from '~/components/shared/utils/formatter';
-import LfxTag from "~/components/uikit/tag/tag.vue";
-import type {CodeReviewEngagementPRParticipantsItem} from "~~/types/development/responses.types";
+import LfxTag from '~/components/uikit/tag/tag.vue';
+import type { CodeReviewEngagementPRParticipantsItem } from '~~/types/development/responses.types';
 
 const props = defineProps<{
   metric: string;
@@ -71,6 +71,6 @@ const activityColumnHeader = computed(() => {
 
 <script lang="ts">
 export default {
-  name: 'LfxCodeReviewTable'
+  name: 'LfxCodeReviewTable',
 };
 </script>

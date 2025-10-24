@@ -25,7 +25,7 @@ SPDX-License-Identifier: MIT
             </div>
             <div class="pr-4">
               <lfx-progress-bar
-                :values="[item.averageReviewTime / maxValue * 100]"
+                :values="[(item.averageReviewTime / maxValue) * 100]"
                 :label="convertAverageReviewTime(item.averageReviewTime)"
                 hide-empty
               />
@@ -40,32 +40,34 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { useRoute } from 'nuxt/app';
 import { computed, watch } from 'vue';
-import { storeToRefs } from "pinia";
+import { storeToRefs } from 'pinia';
 import type { ReviewTimeByPrItem } from '~~/types/development/responses.types';
 import LfxProgressBar from '~/components/uikit/progress-bar/progress-bar.vue';
 import { isEmptyData } from '~/components/shared/utils/helper';
-import { useProjectStore } from "~/components/modules/project/store/project.store";
+import { useProjectStore } from '~/components/modules/project/store/project.store';
 import { formatSecondsToDuration } from '~/components/shared/utils/formatter';
-import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
-import {Widget} from "~/components/modules/widget/types/widget";
-import { DEVELOPMENT_API_SERVICE, type QueryParams } 
-  from '~/components/modules/widget/services/development.api.service';
+import LfxProjectLoadState from '~/components/modules/project/components/shared/load-state.vue';
+import { Widget } from '~/components/modules/widget/types/widget';
+import {
+  DEVELOPMENT_API_SERVICE,
+  type QueryParams,
+} from '~/components/modules/widget/services/development.api.service';
 import type { WidgetModel } from '~/components/modules/widget/config/widget.config';
 
 const props = defineProps<{
-  modelValue?: WidgetModel,
+  modelValue?: WidgetModel;
   snapshot?: boolean;
-}>()
+}>();
 
 const emit = defineEmits<{
-(e: 'dataLoaded', value: string): void;
-(e: 'update:modelValue', value: WidgetModel): void
+  (e: 'dataLoaded', value: string): void;
+  (e: 'update:modelValue', value: WidgetModel): void;
 }>();
 
 const model = computed<WidgetModel>({
   get: () => props.modelValue || {},
-  set: (value: WidgetModel) => emit('update:modelValue', value)
-})
+  set: (value: WidgetModel) => emit('update:modelValue', value),
+});
 
 const route = useRoute();
 const { startDate, endDate, selectedReposValues } = storeToRefs(useProjectStore());
@@ -78,34 +80,41 @@ const params = computed<QueryParams>(() => ({
   endDate: endDate.value,
 }));
 
-const {
-  data, status, error
-} = DEVELOPMENT_API_SERVICE.fetchReviewTimeByPrSize(params);
+const { data, status, error } = DEVELOPMENT_API_SERVICE.fetchReviewTimeByPrSize(params);
 
 const reviewTimeByPr = computed<ReviewTimeByPrItem[]>(() => data.value as ReviewTimeByPrItem[]);
-const maxValue = computed(() => Math
-  .max(
-    ...reviewTimeByPr.value.map((item: ReviewTimeByPrItem) => item.averageReviewTime
-  )));
-const isEmpty = computed(() => isEmptyData(reviewTimeByPr.value as unknown as Record<string, unknown>[]));
+const maxValue = computed(() =>
+  Math.max(...reviewTimeByPr.value.map((item: ReviewTimeByPrItem) => item.averageReviewTime)),
+);
+const isEmpty = computed(() =>
+  isEmptyData(reviewTimeByPr.value as unknown as Record<string, unknown>[]),
+);
 
 const convertAverageReviewTime = (value: number) => formatSecondsToDuration(value, 'long');
 
-watch(status, (value: string) => {
-  if (value !== 'pending') {
-    emit('dataLoaded', Widget.REVIEW_TIME_BY_PULL_REQUEST_SIZE);
-  }
-}, {
-  immediate: true
-});
+watch(
+  status,
+  (value: string) => {
+    if (value !== 'pending') {
+      emit('dataLoaded', Widget.REVIEW_TIME_BY_PULL_REQUEST_SIZE);
+    }
+  },
+  {
+    immediate: true,
+  },
+);
 
-watch(() => model.value, (value: WidgetModel) => {
-  emit('update:modelValue', value);
-}, { immediate: true });
+watch(
+  () => model.value,
+  (value: WidgetModel) => {
+    emit('update:modelValue', value);
+  },
+  { immediate: true },
+);
 </script>
 
 <script lang="ts">
 export default {
   name: 'LfxProjectForksReviewTimeByPullRequestSize',
-}
+};
 </script>

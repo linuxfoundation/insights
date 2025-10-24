@@ -4,14 +4,12 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <div class="container">
-    <div
-      class="flex justify-between pt-5 md:pt-10 lg:gap-10 gap-5 flex-col md:flex-row"
-    >
+    <div class="flex justify-between pt-5 md:pt-10 lg:gap-10 gap-5 flex-col md:flex-row">
       <div class="w-full md:w-3/4">
         <lfx-card
           class="pt-6 flex flex-col md:gap-10 gap-5"
           :class="{
-            'pb-6': !(hasSelectedArchivedRepos && status !== 'pending')
+            'pb-6': !(hasSelectedArchivedRepos && status !== 'pending'),
           }"
         >
           <lfx-project-trust-score
@@ -50,16 +48,14 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import {
- computed, onServerPrefetch
-} from 'vue';
+import { computed, onServerPrefetch } from 'vue';
 import { useRoute } from 'nuxt/app';
 import { storeToRefs } from 'pinia';
 import { WidgetArea } from '../../widget/types/widget-area';
 import LfxProjectAboutSection from '~/components/modules/project/components/overview/about-section.vue';
 import LfxProjectScoreTabs from '~/components/modules/project/components/overview/score-tabs.vue';
 import LfxProjectTrustScore from '~/components/modules/project/components/overview/trust-score.vue';
-import { useProjectStore } from "~~/app/components/modules/project/store/project.store";
+import { useProjectStore } from '~~/app/components/modules/project/store/project.store';
 import { OVERVIEW_API_SERVICE } from '~~/app/components/modules/project/services/overview.api.service';
 import type { TrustScoreSummary } from '~~/types/overview/responses.types';
 import LfxCard from '~/components/uikit/card/card.vue';
@@ -67,16 +63,12 @@ import type { HealthScoreResults } from '~~/types/overview/responses.types';
 import LfxReposExclusionFooter from '~/components/shared/components/repos-exclusion-footer.vue';
 
 const route = useRoute();
-const {
-  selectedReposValues,
-  project,
-  allArchived,
-  hasSelectedArchivedRepos
-} = storeToRefs(useProjectStore())
+const { selectedReposValues, project, allArchived, hasSelectedArchivedRepos } =
+  storeToRefs(useProjectStore());
 
 const params = computed(() => ({
   projectSlug: route.params.slug as string,
-  repos: selectedReposValues.value
+  repos: selectedReposValues.value,
 }));
 
 // Contributors score is only displayed if some contributors widgets are enabled
@@ -92,21 +84,22 @@ const displayPopularityScore = computed(() => isScoreVisible(WidgetArea.POPULARI
 const displaySecurityScore = computed(() => securityScore.value && securityScore.value.length > 0);
 
 const scoreDisplay = computed(() => ({
-  overall: displayContributorsScore.value
-    && displayDevelopmentScore.value
-    && displayPopularityScore.value
-    && displaySecurityScore.value,
+  overall:
+    displayContributorsScore.value &&
+    displayDevelopmentScore.value &&
+    displayPopularityScore.value &&
+    displaySecurityScore.value,
   contributors: displayContributorsScore.value,
   development: displayDevelopmentScore.value,
   popularity: displayPopularityScore.value,
   security: displaySecurityScore.value,
-}))
+}));
 
 const {
-  data: overviewData, 
-  status, 
-  error, 
-  suspense
+  data: overviewData,
+  status,
+  error,
+  suspense,
 } = OVERVIEW_API_SERVICE.fetchHealthScoreOverview(params);
 
 /**
@@ -116,29 +109,29 @@ const {
  * This is a workaround to show/hide the Search Queries from the score.
  * ===============================
  */
- 
+
 // delete the search queries from the overview data
 const data = computed(() => {
-  const data = {...overviewData.value};
+  const data = { ...overviewData.value };
   if (overviewData.value?.searchQueries.value === 0) {
     delete data.searchQueries;
   }
   return data as HealthScoreResults;
 });
 
- /**
-  * ===============================
-  */
+/**
+ * ===============================
+ */
 
-const securityScore = computed(() => (data.value?.securityCategoryPercentage || []));
+const securityScore = computed(() => data.value?.securityCategoryPercentage || []);
 
 const trustSummary = computed<TrustScoreSummary>(() => ({
-    overall: data.value?.overallScore || 0,
-    popularity: data.value?.popularityPercentage || 0,
-    contributors: data.value?.contributorPercentage || 0,
-    security: data.value?.securityPercentage || 0,
-    development: data.value?.developmentPercentage || 0
-  }));
+  overall: data.value?.overallScore || 0,
+  popularity: data.value?.popularityPercentage || 0,
+  contributors: data.value?.contributorPercentage || 0,
+  security: data.value?.securityPercentage || 0,
+  development: data.value?.developmentPercentage || 0,
+}));
 
 const isScoreVisible = (widgetArea: WidgetArea) => {
   const widgetKeys = OVERVIEW_API_SERVICE.getOverviewWidgetConfigs(widgetArea);
@@ -147,13 +140,15 @@ const isScoreVisible = (widgetArea: WidgetArea) => {
 
 const isRepoSelected = computed(() => selectedReposValues.value.length > 0);
 
-const isEmpty = computed(() => [
-  trustSummary.value?.overall,
-  trustSummary.value?.contributors,
-  trustSummary.value?.popularity,
-  trustSummary.value?.development,
-  trustSummary.value?.security,
-].every((score) => score === 0));
+const isEmpty = computed(() =>
+  [
+    trustSummary.value?.overall,
+    trustSummary.value?.contributors,
+    trustSummary.value?.popularity,
+    trustSummary.value?.development,
+    trustSummary.value?.security,
+  ].every((score) => score === 0),
+);
 
 onServerPrefetch(async () => {
   await suspense();
@@ -163,5 +158,5 @@ onServerPrefetch(async () => {
 <script lang="ts">
 export default {
   name: 'LfxProjectOverviewView',
-}
+};
 </script>

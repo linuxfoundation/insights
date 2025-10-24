@@ -7,24 +7,28 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import {useRoute} from "nuxt/app";
-import {storeToRefs} from "pinia";
-import {useProjectStore} from "~/components/modules/project/store/project.store";
-import LfxProjectSecurityView from "~/components/modules/project/views/security.vue";
+import { useRoute } from 'nuxt/app';
+import { storeToRefs } from 'pinia';
+import { useProjectStore } from '~/components/modules/project/store/project.store';
+import LfxProjectSecurityView from '~/components/modules/project/views/security.vue';
 
-const {project} = storeToRefs(useProjectStore());
-const route = useRoute()
-const config = useRuntimeConfig()
+const { project } = storeToRefs(useProjectStore());
+const route = useRoute();
+const config = useRuntimeConfig();
 
 const title = computed(() => `${project.value?.name} Security Insights`);
 const imageAlt = computed(() => `${project.value?.name} security insights`);
-const description = computed(() =>
-  `Check ${project.value?.name} security and best practices, `
-  + `including vulnerabilities, dependencies, licensing, and governance compliance.`);
+const description = computed(
+  () =>
+    `Check ${project.value?.name} security and best practices, ` +
+    `including vulnerabilities, dependencies, licensing, and governance compliance.`,
+);
 const url = computed(() => `${config.public.appUrl}${route.fullPath}`);
-const image = computed(() => (project.value
+const image = computed(() =>
+  project.value
     ? `${config.public.appUrl}/api/seo/og-image?projectSlug=${project.value.slug}`
-    : `${config.public.appUrl}/default-og-image.jpg`));
+    : `${config.public.appUrl}/default-og-image.jpg`,
+);
 
 useSeoMeta({
   title,
@@ -43,5 +47,5 @@ useSeoMeta({
   twitterDescription: description,
   twitterImage: image,
   twitterImageAlt: imageAlt,
-})
+});
 </script>

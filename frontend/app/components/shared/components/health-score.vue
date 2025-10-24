@@ -36,15 +36,15 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import LfxTag from "~/components/uikit/tag/tag.vue";
+import LfxTag from '~/components/uikit/tag/tag.vue';
 
 const props = defineProps<{
-  score: number
-}>()
+  score: number;
+}>();
 </script>
 
 <script lang="ts">
 export default {
   name: 'LfxHealthScore',
-}
+};
 </script>

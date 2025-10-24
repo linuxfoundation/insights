@@ -61,25 +61,24 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { url } from '@vuelidate/validators'
-import useVuelidate from '@vuelidate/core'
-import LfxField from '~/components/uikit/field/field.vue'
-import LfxInput from '~/components/uikit/input/input.vue'
-import LfxCheckbox from '~/components/uikit/checkbox/checkbox.vue'
-import LfxFieldMessages from '~/components/uikit/field/field-messages.vue'
-import LfxYamlRepositoryStatus from
-  '~/components/modules/project/config/yaml-generation/shared/components/yaml-repository-status.vue'
+import { url } from '@vuelidate/validators';
+import useVuelidate from '@vuelidate/core';
+import LfxField from '~/components/uikit/field/field.vue';
+import LfxInput from '~/components/uikit/input/input.vue';
+import LfxCheckbox from '~/components/uikit/checkbox/checkbox.vue';
+import LfxFieldMessages from '~/components/uikit/field/field-messages.vue';
+import LfxYamlRepositoryStatus from '~/components/modules/project/config/yaml-generation/shared/components/yaml-repository-status.vue';
 
 const props = defineProps<{
-  modelValue: object
-}>()
+  modelValue: object;
+}>();
 
-const emit = defineEmits<{ (e: 'update:modelValue', value: object): void }>()
+const emit = defineEmits<{ (e: 'update:modelValue', value: object): void }>();
 
 const model = computed<object>({
   get: () => props.modelValue,
   set: (value: object) => emit('update:modelValue', value),
-})
+});
 
 const rules = {
   repository: {
@@ -87,7 +86,7 @@ const rules = {
       url,
     },
   },
-}
+};
 
-const $v = useVuelidate(rules, model)
+const $v = useVuelidate(rules, model);
 </script>

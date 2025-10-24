@@ -17,9 +17,7 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import type {
-  ButtonStyle, ButtonType, ButtonSize, IconPosition
-} from './types/button.types';
+import type { ButtonStyle, ButtonType, ButtonSize, IconPosition } from './types/button.types';
 
 const props = withDefaults(
   defineProps<{
@@ -39,13 +37,13 @@ const props = withDefaults(
     disabled: false,
     label: undefined,
     icon: undefined,
-    buttonStyle: 'rounded'
-  }
+    buttonStyle: 'rounded',
+  },
 );
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxButton'
+  name: 'LfxButton',
 };
 </script>

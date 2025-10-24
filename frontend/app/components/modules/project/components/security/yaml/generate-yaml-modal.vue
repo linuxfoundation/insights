@@ -132,110 +132,108 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, watch } from 'vue'
-import useVuelidate from '@vuelidate/core'
-import LfxModal from '~/components/uikit/modal/modal.vue'
-import LfxButton from '~/components/uikit/button/button.vue'
-import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue'
-import LfSecurityGenerateYamlSidebar from
-  '~/components/modules/project/components/security/yaml/generate-yaml-sidebar.vue'
-import LfxIcon from '~/components/uikit/icon/icon.vue'
-import LfSecurityGenerateYamlPreview from
-  '~/components/modules/project/components/security/yaml/generate-yaml-preview.vue'
-import LfxSecurityGenerateYamlType from '~/components/modules/project/components/security/yaml/generate-yaml-type.vue'
+import { computed, onMounted, watch } from 'vue';
+import useVuelidate from '@vuelidate/core';
+import LfxModal from '~/components/uikit/modal/modal.vue';
+import LfxButton from '~/components/uikit/button/button.vue';
+import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
+import LfSecurityGenerateYamlSidebar from '~/components/modules/project/components/security/yaml/generate-yaml-sidebar.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfSecurityGenerateYamlPreview from '~/components/modules/project/components/security/yaml/generate-yaml-preview.vue';
+import LfxSecurityGenerateYamlType from '~/components/modules/project/components/security/yaml/generate-yaml-type.vue';
 import {
   type YamlGenerationConfig,
   yamlGenerationConfig,
   type YamlGenerationStep,
-} from '~/components/modules/project/config/yaml-generation/yaml-generation.config'
-import { getYaml } from '~/components/modules/project/services/js-yaml'
-import LfxTag from '~/components/uikit/tag/tag.vue'
-import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue'
-import useToastService from '~/components/uikit/toast/toast.service'
-import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types'
+} from '~/components/modules/project/config/yaml-generation/yaml-generation.config';
+import { getYaml } from '~/components/modules/project/services/js-yaml';
+import LfxTag from '~/components/uikit/tag/tag.vue';
+import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
+import useToastService from '~/components/uikit/toast/toast.service';
+import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 
 const props = withDefaults(
   defineProps<{
-    modelValue: boolean
+    modelValue: boolean;
   }>(),
   {
     modelValue: false,
   },
-)
+);
 
 const emit = defineEmits<{
-  'update:modelValue': [value: boolean]
-}>()
+  'update:modelValue': [value: boolean];
+}>();
 
 const isModalOpen = computed({
   get: () => props.modelValue,
   set: (value: boolean) => emit('update:modelValue', value),
-})
+});
 
-const { showToast } = useToastService()
+const { showToast } = useToastService();
 
-const type = ref('')
-const step = ref(-1)
-const form = ref({})
+const type = ref('');
+const step = ref(-1);
+const form = ref({});
 
 const copyToClipboard = async () => {
   if (navigator.clipboard) {
-    const yamlContent = getYaml(form.value)
-    await navigator.clipboard.writeText(yamlContent)
-    showToast('YAML file content copied to clipboard', ToastTypesEnum.positive, 'circle-check')
+    const yamlContent = getYaml(form.value);
+    await navigator.clipboard.writeText(yamlContent);
+    showToast('YAML file content copied to clipboard', ToastTypesEnum.positive, 'circle-check');
   }
-}
+};
 
 const downloadYamlFile = () => {
-  let url: string | null = null
+  let url: string | null = null;
   try {
-    const yamlContent = getYaml(form.value)
-    // eslint-disable-next-line no-undef
-    const blob = new Blob([yamlContent], { type: 'application/x-yaml' })
-    url = URL.createObjectURL(blob)
-    const link = document.createElement('a')
-    link.href = url
-    link.download = 'security.yaml'
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
-    URL.revokeObjectURL(url)
-    showToast('YAML file successfully downloaded', ToastTypesEnum.positive, 'circle-check')
-  } catch (error) {
-    console.error('Failed to download YAML file:', error)
-    if (url) {
-      URL.revokeObjectURL(url)
-    }
-    showToast('Failed to download YAML file', ToastTypesEnum.negative)
-  }
-}
+    const yamlContent = getYaml(form.value);
 
-const $v = useVuelidate({}, form)
+    const blob = new Blob([yamlContent], { type: 'application/x-yaml' });
+    url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'security.yaml';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+    showToast('YAML file successfully downloaded', ToastTypesEnum.positive, 'circle-check');
+  } catch (error) {
+    console.error('Failed to download YAML file:', error);
+    if (url) {
+      URL.revokeObjectURL(url);
+    }
+    showToast('Failed to download YAML file', ToastTypesEnum.negative);
+  }
+};
+
+const $v = useVuelidate({}, form);
 
 const config = computed<YamlGenerationConfig | null>(() => {
-  return yamlGenerationConfig[type.value] || null
-})
+  return yamlGenerationConfig[type.value] || null;
+});
 
 const steps = computed<YamlGenerationStep[]>(() => {
-  if (!config.value) return []
-  return config.value.steps || []
-})
+  if (!config.value) return [];
+  return config.value.steps || [];
+});
 
 const currentStep = computed<YamlGenerationStep | null>(() => {
-  return steps.value[step.value] || null
-})
+  return steps.value[step.value] || null;
+});
 
 watch(type, (newType: string) => {
-  form.value = { ...(yamlGenerationConfig[newType]?.template || {}) }
-})
+  form.value = { ...(yamlGenerationConfig[newType]?.template || {}) };
+});
 
 onMounted(() => {
-  form.value = {}
-})
+  form.value = {};
+});
 </script>
 
 <script lang="ts">
 export default {
   name: 'LfSecurityGenerateYamlModal',
-}
+};
 </script>

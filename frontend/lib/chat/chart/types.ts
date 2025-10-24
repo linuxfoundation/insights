@@ -1,8 +1,8 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { z } from 'zod'
+import { z } from 'zod';
 
-export type Result = Record<string, string | number>
+export type Result = Record<string, string | number>;
 
 // ECharts series type schema
 const echartsSeriesSchema = z.object({
@@ -30,7 +30,7 @@ const echartsSeriesSchema = z.object({
       focus: z.enum(['series', 'self']).optional(),
     })
     .optional(),
-})
+});
 
 // ECharts configuration schema
 export const configSchema = z.object({
@@ -102,20 +102,20 @@ export const configSchema = z.object({
   backgroundColor: z.string().optional(),
   animation: z.boolean().optional(),
   animationDuration: z.number().optional(),
-})
+});
 
 const dataMappingSchema = z.object({
   originalFieldName: z.string(),
   indexInDataset: z.number(),
   convertedFieldName: z.string(),
   dateConversion: z.string().optional(),
-})
+});
 
 export const outputSchema = z.object({
   chartConfig: configSchema,
   dataMapping: dataMappingSchema.array(),
-})
+});
 
-export type Config = z.infer<typeof configSchema>
-export type EChartsSeriesConfig = z.infer<typeof echartsSeriesSchema>
-export type DataMapping = z.infer<typeof dataMappingSchema>
+export type Config = z.infer<typeof configSchema>;
+export type EChartsSeriesConfig = z.infer<typeof echartsSeriesSchema>;
+export type DataMapping = z.infer<typeof dataMappingSchema>;

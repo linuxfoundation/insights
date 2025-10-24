@@ -59,7 +59,8 @@ const tooltipSingleValue = (params: SingleTooltipFormatterParams) => `
   </div>
   `;
 
-const tooltipSingleValueWithBullet = (series: ChartSeries[]) => (params: SingleTooltipFormatterParams, idx: number) => `
+const tooltipSingleValueWithBullet =
+  (series: ChartSeries[]) => (params: SingleTooltipFormatterParams, idx: number) => `
   <div style="display: flex; 
     flex-direction: row; 
     align-items: center; 
@@ -88,12 +89,12 @@ const tooltipSingleValueWithBullet = (series: ChartSeries[]) => (params: SingleT
   </div>
   `;
 export const tooltipFormatter = (
-  paramsRaw: TopLevelFormatterParams // Tooltip hover box
+  paramsRaw: TopLevelFormatterParams, // Tooltip hover box
 ): string | HTMLElement | HTMLElement[] => {
   const params: MultipleTooltipFormatterParams = paramsRaw as MultipleTooltipFormatterParams;
   return `<div style="color: ${lfxColors.neutral[400]};">${formatDate(
     params[0]?.name || '',
-    '{MMM} {yyyy}'
+    '{MMM} {yyyy}',
   )}</div>${params.map(tooltipSingleValue).join('')}`;
 };
 
@@ -111,8 +112,10 @@ const formatDateRange = (startDateMillis: string, endDateIso: string, granularit
   }
 };
 
-export const tooltipFormatterWithData = (data: ChartData[], granularity: string, series?: ChartSeries[]) => (
-    paramsRaw: TopLevelFormatterParams // Tooltip hover box
+export const tooltipFormatterWithData =
+  (data: ChartData[], granularity: string, series?: ChartSeries[]) =>
+  (
+    paramsRaw: TopLevelFormatterParams, // Tooltip hover box
   ): string | HTMLElement | HTMLElement[] => {
     const params: MultipleTooltipFormatterParams = paramsRaw as MultipleTooltipFormatterParams;
     const index = params[0]?.dataIndex || 0;
@@ -122,7 +125,7 @@ export const tooltipFormatterWithData = (data: ChartData[], granularity: string,
     };">${formatDateRange(
       params[0]?.name || '',
       data?.[index]?.xAxisKey2 || '',
-      granularity
+      granularity,
     )}</div>`;
     return `${dateStr}${params
       .map(series && series.length > 1 ? tooltipSingleValueWithBullet(series) : tooltipSingleValue)
@@ -142,14 +145,16 @@ const convertToFullDayName = (day: string) => {
   return dayMap[day as keyof typeof dayMap] || day;
 };
 
-export const punchCardFormatter = (granularity: string, isPunchCard: boolean = false, yAxisData?: string[]) => (
-    paramsRaw: TopLevelFormatterParams // Tooltip hover box
+export const punchCardFormatter =
+  (granularity: string, isPunchCard: boolean = false, yAxisData?: string[]) =>
+  (
+    paramsRaw: TopLevelFormatterParams, // Tooltip hover box
   ): string | HTMLElement | HTMLElement[] => {
     const params: SingleTooltipFormatterParams = paramsRaw as SingleTooltipFormatterParams;
     const data = params.data as number[];
     const dateStr = isPunchCard
       ? `<div style="font-size: 12px; color: ${lfxColors.neutral[400]};">${convertToFullDayName(
-          params.name
+          params.name,
         )}, ${yAxisData?.[data[1] || 0]}</div>`
       : `<div style="font-size: 12px; color: ${lfxColors.neutral[400]};">${
           granularity.charAt(0).toUpperCase() + granularity.slice(1)

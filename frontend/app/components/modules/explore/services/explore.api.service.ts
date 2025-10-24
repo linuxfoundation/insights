@@ -14,9 +14,11 @@ class ExploreApiService {
   fetchTopContributors(pageSize: number) {
     const queryKey = computed(() => [TanstackKey.TOP_CONTRIBUTORS, pageSize]);
 
-    const queryFn = computed<QueryFunction<ExploreContributors[]>>(() => this.topContributorsQueryFn(() => ({
+    const queryFn = computed<QueryFunction<ExploreContributors[]>>(() =>
+      this.topContributorsQueryFn(() => ({
         pageSize,
-      })));
+      })),
+    );
 
     return useQuery<ExploreContributors[]>({
       queryKey,
@@ -25,10 +27,11 @@ class ExploreApiService {
   }
 
   topContributorsQueryFn(
-    query: () => Record<string, string | number | boolean | undefined | string[] | null>
+    query: () => Record<string, string | number | boolean | undefined | string[] | null>,
   ): QueryFunction<ExploreContributors[]> {
     const { pageSize } = query();
-    return async () => await $fetch(`/api/explore/contributors`, {
+    return async () =>
+      await $fetch(`/api/explore/contributors`, {
         params: {
           page: 0,
           pageSize,
@@ -38,9 +41,11 @@ class ExploreApiService {
   fetchTopOrganizations(pageSize: number) {
     const queryKey = computed(() => [TanstackKey.TOP_ORGANIZATIONS, pageSize]);
 
-    const queryFn = computed<QueryFunction<ExploreOrganizations[]>>(() => this.topOrganizationsQueryFn(() => ({
+    const queryFn = computed<QueryFunction<ExploreOrganizations[]>>(() =>
+      this.topOrganizationsQueryFn(() => ({
         pageSize,
-      })));
+      })),
+    );
 
     return useQuery<ExploreOrganizations[]>({
       queryKey,
@@ -49,10 +54,11 @@ class ExploreApiService {
   }
 
   topOrganizationsQueryFn(
-    query: () => Record<string, string | number | boolean | undefined | string[] | null>
+    query: () => Record<string, string | number | boolean | undefined | string[] | null>,
   ): QueryFunction<ExploreOrganizations[]> {
     const { pageSize } = query();
-    return async () => await $fetch(`/api/explore/organizations`, {
+    return async () =>
+      await $fetch(`/api/explore/organizations`, {
         params: {
           page: 0,
           pageSize,
@@ -63,9 +69,11 @@ class ExploreApiService {
   fetchTopProjects(pageSize: number) {
     const queryKey = computed(() => [TanstackKey.TOP_PROJECTS, pageSize]);
 
-    const queryFn = computed<QueryFunction<Pagination<Project>>>(() => this.topProjectsQueryFn(() => ({
+    const queryFn = computed<QueryFunction<Pagination<Project>>>(() =>
+      this.topProjectsQueryFn(() => ({
         pageSize,
-      })));
+      })),
+    );
 
     return useInfiniteQuery<Pagination<Project>>({
       queryKey,
@@ -81,7 +89,7 @@ class ExploreApiService {
   }
 
   topProjectsQueryFn(
-    query: () => Record<string, string | number | boolean | undefined | string[] | null>
+    query: () => Record<string, string | number | boolean | undefined | string[] | null>,
   ): QueryFunction<Pagination<Project>> {
     const { pageSize } = query();
     return async (context) => {
@@ -105,10 +113,12 @@ class ExploreApiService {
     const pageSize = 9;
     const queryKey = computed(() => [TanstackKey.COLLECTIONS, sort, pageSize]);
 
-    const queryFn = computed<QueryFunction<Pagination<Collection>>>(() => this.featuredCollectionsQueryFn(() => ({
+    const queryFn = computed<QueryFunction<Pagination<Collection>>>(() =>
+      this.featuredCollectionsQueryFn(() => ({
         pageSize,
         sort,
-      })));
+      })),
+    );
 
     return useQuery<Pagination<Collection>>({
       queryKey,
@@ -117,9 +127,10 @@ class ExploreApiService {
   }
 
   featuredCollectionsQueryFn(
-    query: () => Record<string, string | number | boolean | undefined | string[] | null>
+    query: () => Record<string, string | number | boolean | undefined | string[] | null>,
   ): QueryFunction<Pagination<Collection>> {
-    return async () => await $fetch('/api/collection', {
+    return async () =>
+      await $fetch('/api/collection', {
         params: {
           page: 0,
           ...query(),

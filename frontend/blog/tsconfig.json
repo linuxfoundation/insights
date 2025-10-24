@@ -14,10 +14,6 @@
     "noEmit": true,
     "types": ["node"]
   },
-  "include": [
-    ".vitepress/**/*",
-    "**/*.md",
-    "**/*.vue"
-  ],
+  "include": [".vitepress/**/*", "**/*.md", "**/*.vue"],
   "exclude": ["node_modules", "dist", ".vitepress/dist"]
 }

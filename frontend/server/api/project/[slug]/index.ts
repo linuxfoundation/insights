@@ -1,8 +1,13 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird'
-import type {Project, ProjectRepository, ProjectRepositoryGroup, ProjectTinybird} from '~~/types/project'
-import { getRepoNameFromUrl, getRepoSlugFromName } from '~~/server/helpers/repository.helpers'
+import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
+import type {
+  Project,
+  ProjectRepository,
+  ProjectRepositoryGroup,
+  ProjectTinybird,
+} from '~~/types/project';
+import { getRepoNameFromUrl, getRepoSlugFromName } from '~~/server/helpers/repository.helpers';
 
 /**
  * API Endpoint: /api/projects/{slug}
@@ -32,7 +37,7 @@ import { getRepoNameFromUrl, getRepoSlugFromName } from '~~/server/helpers/repos
  * - 500: Internal Server Error.
  */
 export default defineEventHandler(async (event): Promise<Project | Error> => {
-  const { slug } = event.context.params as Record<string, string>
+  const { slug } = event.context.params as Record<string, string>;
   try {
     const [res, repositoryGroups] = await Promise.all([
       fetchFromTinybird<ProjectTinybird[]>('/v0/pipes/projects_list.json', {
@@ -41,42 +46,42 @@ export default defineEventHandler(async (event): Promise<Project | Error> => {
       }),
       fetchFromTinybird<ProjectRepositoryGroup[]>('/v0/pipes/repository_groups_list.json', {
         project: slug,
-      })
+      }),
     ]);
     if (!res.data || res.data.length === 0) {
-      return createError({ statusCode: 404, statusMessage: 'Project not found' })
+      return createError({ statusCode: 404, statusMessage: 'Project not found' });
     }
-    const project: ProjectTinybird = res.data[0]
+    const project: ProjectTinybird = res.data[0];
     const repoData: Record<string, Partial<ProjectRepository>> = project.repoData.reduce(
       (acc, repo) => {
-        const [url, score, rank] = repo
+        const [url, score, rank] = repo;
         acc[url] = {
           score: parseFloat(score),
           rank: parseInt(rank, 10),
-        }
-        return acc
+        };
+        return acc;
       },
       {} as Record<string, Partial<ProjectRepository>>,
-    )
+    );
 
     const repositories = project.repositories.map((repoUrl) => {
-      const name = getRepoNameFromUrl(repoUrl)
-      const slug = getRepoSlugFromName(name)
-      const details = repoData[repoUrl] || {}
+      const name = getRepoNameFromUrl(repoUrl);
+      const slug = getRepoSlugFromName(name);
+      const details = repoData[repoUrl] || {};
       return {
         url: repoUrl,
         name,
         slug,
         score: details.score || 0,
         rank: details.rank || 0,
-      }
-    })
+      };
+    });
     const projectLinks = [
       ...(project.website ? [{ name: 'Website', url: project.website }] : []),
       ...(project.linkedin ? [{ name: 'Linkedin', url: project.linkedin }] : []),
       ...(project.github ? [{ name: 'Github', url: project.github }] : []),
       ...(project.twitter ? [{ name: 'X', url: project.twitter }] : []),
-    ]
+    ];
     return {
       ...project,
       isLF: !!project.isLF,
@@ -87,9 +92,9 @@ export default defineEventHandler(async (event): Promise<Project | Error> => {
       projectLinks,
       repoData: undefined,
       tags: project?.keywords || [],
-    }
+    };
   } catch (err) {
-    console.error('Error fetching project:', err)
-    return createError({ statusCode: 500, statusMessage: 'Internal server error' })
+    console.error('Error fetching project:', err);
+    return createError({ statusCode: 500, statusMessage: 'Internal server error' });
   }
-})
+});

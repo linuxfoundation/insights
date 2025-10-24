@@ -1,18 +1,12 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { DateTime } from 'luxon'
-import type { YamlGenerationConfig } from
-  '~/components/modules/project/config/yaml-generation/yaml-generation.config'
-import YamlChildRepositoryHeader from
-  '~/components/modules/project/config/yaml-generation/child-repository/yaml-child-repository-header.vue'
-import YamlChildRepository from
-  '~/components/modules/project/config/yaml-generation/child-repository/yaml-child-repository.vue'
-import YamlChildRepositoryTeamMembers from
-  '~/components/modules/project/config/yaml-generation/child-repository/yaml-child-repository-team-members.vue'
-import YamlChildRepositoryLicence from
-  '~/components/modules/project/config/yaml-generation/child-repository/yaml-child-repository-licence.vue'
-import YamlChildRepositorySecurity from
-  '~/components/modules/project/config/yaml-generation/child-repository/yaml-child-repository-security.vue'
+import { DateTime } from 'luxon';
+import type { YamlGenerationConfig } from '~/components/modules/project/config/yaml-generation/yaml-generation.config';
+import YamlChildRepositoryHeader from '~/components/modules/project/config/yaml-generation/child-repository/yaml-child-repository-header.vue';
+import YamlChildRepository from '~/components/modules/project/config/yaml-generation/child-repository/yaml-child-repository.vue';
+import YamlChildRepositoryTeamMembers from '~/components/modules/project/config/yaml-generation/child-repository/yaml-child-repository-team-members.vue';
+import YamlChildRepositoryLicence from '~/components/modules/project/config/yaml-generation/child-repository/yaml-child-repository-licence.vue';
+import YamlChildRepositorySecurity from '~/components/modules/project/config/yaml-generation/child-repository/yaml-child-repository-security.vue';
 
 const childRepositoryYamlGenerationConfig: YamlGenerationConfig = {
   label: 'Child repository',
@@ -80,6 +74,6 @@ const childRepositoryYamlGenerationConfig: YamlGenerationConfig = {
       },
     },
   },
-}
+};
 
-export default childRepositoryYamlGenerationConfig
+export default childRepositoryYamlGenerationConfig;

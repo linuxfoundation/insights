@@ -22,9 +22,7 @@ SPDX-License-Identifier: MIT
           />
         </div>
       </div>
-      <lfx-explore-table-header
-        :type="props.value.type"
-      />
+      <lfx-explore-table-header :type="props.value.type" />
     </section>
     <section class="px-6 py-4">
       <component
@@ -36,9 +34,9 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
-import LfxModal from "~/components/uikit/modal/modal.vue";
-import LfxIconButton from "~/components/uikit/icon-button/icon-button.vue";
+import { computed } from 'vue';
+import LfxModal from '~/components/uikit/modal/modal.vue';
+import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
 import LfxExploreTableHeader from '~/components/modules/explore/components/table-header.vue';
 import type { ExploreTab } from '~/components/modules/explore/types/explore.types';
 
@@ -46,17 +44,16 @@ const props = defineProps<{
   modelValue: boolean;
   value: ExploreTab;
 }>();
-const emit = defineEmits<{(e: 'update:modelValue', value: boolean): void }>();
+const emit = defineEmits<{ (e: 'update:modelValue', value: boolean): void }>();
 
 const isModalOpen = computed({
   get: () => props.modelValue,
-  set: (value: boolean) => emit('update:modelValue', value)
+  set: (value: boolean) => emit('update:modelValue', value),
 });
-
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxExploreListCard'
+  name: 'LfxExploreListCard',
 };
 </script>

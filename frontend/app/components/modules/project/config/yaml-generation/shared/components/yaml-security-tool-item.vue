@@ -101,7 +101,7 @@ SPDX-License-Identifier: MIT
                 v-model="model.results.adhoc['predicate-uri']"
                 :invalid="
                   $v.results.adhoc['predicate-uri'].$invalid &&
-                    $v.results.adhoc['predicate-uri'].$dirty
+                  $v.results.adhoc['predicate-uri'].$dirty
                 "
                 @blur="$v.results.adhoc['predicate-uri'].$touch()"
                 @input="$v.results.adhoc['predicate-uri'].$touch()"
@@ -254,7 +254,7 @@ SPDX-License-Identifier: MIT
                 v-model="model.results.release['predicate-uri']"
                 :invalid="
                   $v.results.release['predicate-uri'].$invalid &&
-                    $v.results.release['predicate-uri'].$dirty
+                  $v.results.release['predicate-uri'].$dirty
                 "
                 @blur="$v.results.release['predicate-uri'].$touch()"
                 @input="$v.results.release['predicate-uri'].$touch()"
@@ -340,43 +340,43 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import useVuelidate from '@vuelidate/core'
-import { url } from '@vuelidate/validators'
-import LfxInput from '~/components/uikit/input/input.vue'
-import LfxField from '~/components/uikit/field/field.vue'
-import LfxFieldMessages from '~/components/uikit/field/field-messages.vue'
-import LfxTextarea from '~/components/uikit/textarea/textarea.vue'
-import LfxIcon from '~/components/uikit/icon/icon.vue'
-import LfxCheckbox from '~/components/uikit/checkbox/checkbox.vue'
+import { ref } from 'vue';
+import useVuelidate from '@vuelidate/core';
+import { url } from '@vuelidate/validators';
+import LfxInput from '~/components/uikit/input/input.vue';
+import LfxField from '~/components/uikit/field/field.vue';
+import LfxFieldMessages from '~/components/uikit/field/field-messages.vue';
+import LfxTextarea from '~/components/uikit/textarea/textarea.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxCheckbox from '~/components/uikit/checkbox/checkbox.vue';
 
 const props = defineProps<{
-  modelValue: object
-}>()
+  modelValue: object;
+}>();
 
-const emit = defineEmits<{ (e: 'update:modelValue', value: object): void }>()
+const emit = defineEmits<{ (e: 'update:modelValue', value: object): void }>();
 
 const model = computed<object>({
   get: () => props.modelValue,
   set: (value: object) => emit('update:modelValue', value),
-})
+});
 
 const expandedSections = ref({
   adhoc: false,
   ci: false,
   release: false,
-})
+});
 
 const toggleSection = (section: 'adhoc' | 'ci' | 'release') => {
-  expandedSections.value[section] = !expandedSections.value[section]
-}
+  expandedSections.value[section] = !expandedSections.value[section];
+};
 
 const addRuleset = () => {
   if (!model.value.rulesets) {
-    model.value.rulesets = []
+    model.value.rulesets = [];
   }
-  model.value.rulesets.push('')
-}
+  model.value.rulesets.push('');
+};
 
 const rules = {
   results: {
@@ -393,13 +393,13 @@ const rules = {
       location: { url },
     },
   },
-}
+};
 
-const $v = useVuelidate(rules, model)
+const $v = useVuelidate(rules, model);
 </script>
 
 <script lang="ts">
 export default {
   name: 'LfxYamlSecurityToolItem',
-}
+};
 </script>

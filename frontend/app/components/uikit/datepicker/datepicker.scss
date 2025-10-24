@@ -19,7 +19,7 @@
           }
         }
 
-        &:last-child{
+        &:last-child {
           @apply border-l border-neutral-100 pl-5;
 
           .p-datepicker-prev-button {
@@ -38,7 +38,8 @@
     @apply flex justify-between items-center pb-2 border-b border-neutral-100 mb-2 px-1 gap-3;
   }
 
-  &-next-button, &-prev-button {
+  &-next-button,
+  &-prev-button {
     @apply block #{!important};
     @apply p-2.5 h-9 w-9 bg-transparent text-neutral-500 flex items-center justify-center;
 
@@ -56,15 +57,13 @@
 
     thead {
       th {
-        @apply text-sm font-medium leading-6 text-center p-0 pb-3
+        @apply text-sm font-medium leading-6 text-center p-0 pb-3;
       }
     }
 
     tbody {
       td {
         @apply py-1;
-
-
       }
     }
   }
@@ -73,45 +72,47 @@
     @apply h-7 w-7 rounded-full mx-auto flex items-center justify-center cursor-pointer text-sm transition;
 
     &:hover:not(.p-disabled) {
-        @apply bg-neutral-100;
+      @apply bg-neutral-100;
     }
 
     &.p-disabled {
       @apply text-neutral-400 cursor-default;
     }
 
-    &-selected, &-selected-range {
+    &-selected,
+    &-selected-range {
       @apply bg-brand-500 text-white #{!important};
     }
   }
 
-  &-today{
-    span{
+  &-today {
+    span {
       @apply bg-brand-100;
-
     }
   }
 
-  &-panel[role="dialog"]{
+  &-panel[role='dialog'] {
     @apply bg-white shadow-md rounded-md mt-2 px-2;
   }
 
-  &-month-view, &-year-view {
-    @apply pb-2 px-3 flex flex-wrap
+  &-month-view,
+  &-year-view {
+    @apply pb-2 px-3 flex flex-wrap;
   }
 
-  &-month, &-year{
-    @apply  text-center text-sm rounded-md py-0.5 cursor-pointer;
+  &-month,
+  &-year {
+    @apply text-center text-sm rounded-md py-0.5 cursor-pointer;
 
-    &:hover{
+    &:hover {
       @apply bg-neutral-50;
     }
   }
 
-  &-month{
+  &-month {
     @apply basis-1/3;
   }
-  &-year{
+  &-year {
     @apply basis-1/2;
   }
 }

@@ -39,7 +39,7 @@
   .carousel-dots {
     @apply md:flex hidden justify-center gap-2;
   }
-  
+
   .carousel-dot {
     @apply w-20 h-1 rounded-full border-none bg-neutral-200 cursor-pointer transition-all duration-200;
   }
@@ -50,7 +50,6 @@
   }
 }
 
-
 /* Responsive adjustments */
 @media (max-width: 1023px) {
   .lfx-carousel {
@@ -58,9 +57,9 @@
       @apply -ml-2.5;
       width: calc(100% + 1.25rem);
     }
-  
+
     .carousel-item {
       @apply box-border px-2.5;
     }
-  } 
+  }
 }

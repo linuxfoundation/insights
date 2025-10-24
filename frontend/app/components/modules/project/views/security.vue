@@ -8,10 +8,10 @@ SPDX-License-Identifier: MIT
       <div class="px-4 sm:px-6 flex justify-between items-start pb-4 sm:pb-5">
         <div>
           <!-- Title -->
-          <div class="flex flex-col-reverse sm:flex-row items-start sm:items-center gap-2 sm:gap-4 pb-2">
-            <h1 class="text-heading-3 font-secondary font-bold">
-              Controls assessment
-            </h1>
+          <div
+            class="flex flex-col-reverse sm:flex-row items-start sm:items-center gap-2 sm:gap-4 pb-2"
+          >
+            <h1 class="text-heading-3 font-secondary font-bold">Controls assessment</h1>
             <lfx-tag
               variation="warning"
               size="small"
@@ -22,14 +22,16 @@ SPDX-License-Identifier: MIT
 
           <!-- Description -->
           <p class="text-xs text-neutral-500">
-            Process of assessing a project's practices, policies, and technical measures against a set of predefined
-            standards to determine its security posture, reliability, and maturity.
+            Process of assessing a project's practices, policies, and technical measures against a
+            set of predefined standards to determine its security posture, reliability, and
+            maturity.
             <a
               :href="links.securityScore"
               class="text-brand-500"
               target="_blank"
               rel="noopener noreferrer"
-            >Learn more</a>
+              >Learn more</a
+            >
           </p>
         </div>
         <!-- Generate YAML and Update buttons -->
@@ -58,8 +60,8 @@ SPDX-License-Identifier: MIT
                   YAML Security specifications file
                 </div>
                 <div class="text-neutral-300 text-xs">
-                  Generate a YAML security file, upload it to your repository,
-                  and ensure we can run all security assessments for your project.
+                  Generate a YAML security file, upload it to your repository, and ensure we can run
+                  all security assessments for your project.
                 </div>
               </div>
             </template>
@@ -88,12 +90,11 @@ SPDX-License-Identifier: MIT
           class="text-neutral-500"
         />
         <p class="text-body-2 text-neutral-500 font-semibold">
-          You’re viewing an aggregated score and controls assessment for the entire project.
-          For a detailed analysis, choose a specific repository.
+          You’re viewing an aggregated score and controls assessment for the entire project. For a
+          detailed analysis, choose a specific repository.
         </p>
       </div>
       <div class="px-4 sm:px-6 pt-1">
-
         <!-- Show spinner when loading -->
         <div
           v-if="isFetching"
@@ -144,9 +145,11 @@ SPDX-License-Identifier: MIT
               :key="title"
               :name="title"
               :checks="checks"
-              :tooltip="isRepository
-                ? 'Category success rate'
-                : 'Average category success rate of all repositories'"
+              :tooltip="
+                isRepository
+                  ? 'Category success rate'
+                  : 'Average category success rate of all repositories'
+              "
             >
               <template v-if="isRepository">
                 <template
@@ -183,33 +186,30 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { useRoute } from "nuxt/app";
-import { computed, onServerPrefetch, ref } from "vue";
+import { useRoute } from 'nuxt/app';
+import { computed, onServerPrefetch, ref } from 'vue';
 import pluralize from 'pluralize';
-import { storeToRefs } from "pinia";
-import {type QueryFunction, useQuery} from "@tanstack/vue-query";
-import LfxCard from "~/components/uikit/card/card.vue";
-import LfxIcon from "~/components/uikit/icon/icon.vue";
-import LfxAccordion from "~/components/uikit/accordion/accordion.vue";
+import { storeToRefs } from 'pinia';
+import { type QueryFunction, useQuery } from '@tanstack/vue-query';
+import LfxCard from '~/components/uikit/card/card.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxAccordion from '~/components/uikit/accordion/accordion.vue';
 // import LfxProjectSecurityOspsScore from "~/components/modules/project/components/security/osps-score.vue";
-import LfxProjectSecurityEvaluationSection
-  from "~/components/modules/project/components/security/evaluation-section.vue";
-import LfxProjectSecurityEvaluationAssesment
-  from "~/components/modules/project/components/security/evaluation-assesment.vue";
-import LfxProjectSecurityPaginatedEvalRepos
-  from "~/components/modules/project/components/security/paginated-eval-repos.vue";
-import { TanstackKey } from "~/components/shared/types/tanstack";
-import { useProjectStore } from "~/components/modules/project/store/project.store";
-import type { SecurityData } from "~~/types/security/responses.types";
-import { links } from "~/config/links";
-import LfxSpinner from "~/components/uikit/spinner/spinner.vue";
-import { PROJECT_SECURITY_SERVICE } from "~/components/modules/project/services/security.service";
+import LfxProjectSecurityEvaluationSection from '~/components/modules/project/components/security/evaluation-section.vue';
+import LfxProjectSecurityEvaluationAssesment from '~/components/modules/project/components/security/evaluation-assesment.vue';
+import LfxProjectSecurityPaginatedEvalRepos from '~/components/modules/project/components/security/paginated-eval-repos.vue';
+import { TanstackKey } from '~/components/shared/types/tanstack';
+import { useProjectStore } from '~/components/modules/project/store/project.store';
+import type { SecurityData } from '~~/types/security/responses.types';
+import { links } from '~/config/links';
+import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
+import { PROJECT_SECURITY_SERVICE } from '~/components/modules/project/services/security.service';
 import LfxReposExclusionFooter from '~/components/shared/components/repos-exclusion-footer.vue';
 import LfxEmptyState from '~/components/shared/components/empty-state.vue';
-import LfxTag from "~/components/uikit/tag/tag.vue";
-import LfxButton from "~/components/uikit/button/button.vue";
-import LfxTooltip from "~/components/uikit/tooltip/tooltip.vue";
-import LfSecurityGenerateYamlModal from "~/components/modules/project/components/security/yaml/generate-yaml-modal.vue";
+import LfxTag from '~/components/uikit/tag/tag.vue';
+import LfxButton from '~/components/uikit/button/button.vue';
+import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
+import LfSecurityGenerateYamlModal from '~/components/modules/project/components/security/yaml/generate-yaml-modal.vue';
 
 const accordion = ref('');
 
@@ -218,82 +218,84 @@ const { name } = route.params;
 
 const isGenerateYamlModalOpen = ref(false);
 
-const {
-  selectedReposValues,
-  allArchived,
-  archivedRepos,
-  hasSelectedArchivedRepos
-} = storeToRefs(useProjectStore())
+const { selectedReposValues, allArchived, archivedRepos, hasSelectedArchivedRepos } =
+  storeToRefs(useProjectStore());
 
-const isRepository = computed(() => !!name)
+const isRepository = computed(() => !!name);
 
 const queryKey = computed(() => [
   TanstackKey.SECURITY_ASSESSMENT,
   route.params.slug,
-  selectedReposValues.value
+  selectedReposValues.value,
 ]);
 
-const fetchData: QueryFunction<SecurityData[]> = async () => $fetch(
-    `/api/project/${route.params.slug}/security/assessment`,
-    {
-      params: {
-        repos: selectedReposValues.value || undefined,
-      }
-    }
-);
+const fetchData: QueryFunction<SecurityData[]> = async () =>
+  $fetch(`/api/project/${route.params.slug}/security/assessment`, {
+    params: {
+      repos: selectedReposValues.value || undefined,
+    },
+  });
 
-const {
-  data, suspense, error, isFetching
-} = useQuery<SecurityData[]>({
+const { data, suspense, error, isFetching } = useQuery<SecurityData[]>({
   queryKey,
   queryFn: fetchData,
 });
 
 // TODO: Remove this when we have data for them
-const securityAssessmentData = computed(() => PROJECT_SECURITY_SERVICE
-    .removeUnavailableChecks(data.value || []));
+const securityAssessmentData = computed(() =>
+  PROJECT_SECURITY_SERVICE.removeUnavailableChecks(data.value || []),
+);
 
-const groupedData = computed(() => (securityAssessmentData.value || []).reduce((mapping, check) => {
-    const obj = {...mapping};
-    if (!obj[check.category]) {
-      obj[check.category] = [];
-    }
-    const tmpAssessments = PROJECT_SECURITY_SERVICE.orderAssessmentsByRequirementId(
-      PROJECT_SECURITY_SERVICE.mergeDuplicateAssessments(check.assessments)
-    );
-    // Create a copy of the check object to avoid mutating the original
-    const checkCopy = {
-      ...check,
-      assessments: tmpAssessments
-    };
-    obj[check.category]?.push(checkCopy);
-    return obj;
-  }, {} as Record<string, SecurityData[]>))
+const groupedData = computed(() =>
+  (securityAssessmentData.value || []).reduce(
+    (mapping, check) => {
+      const obj = { ...mapping };
+      if (!obj[check.category]) {
+        obj[check.category] = [];
+      }
+      const tmpAssessments = PROJECT_SECURITY_SERVICE.orderAssessmentsByRequirementId(
+        PROJECT_SECURITY_SERVICE.mergeDuplicateAssessments(check.assessments),
+      );
+      // Create a copy of the check object to avoid mutating the original
+      const checkCopy = {
+        ...check,
+        assessments: tmpAssessments,
+      };
+      obj[check.category]?.push(checkCopy);
+      return obj;
+    },
+    {} as Record<string, SecurityData[]>,
+  ),
+);
 
-const groupChecksByRepository = (checks: SecurityData[]) => (checks || []).reduce((mapping, check) => {
-    const obj = {...mapping};
-    if (!obj[check.repo]) {
-      obj[check.repo] = [];
-    }
-    const tmpAssessments = PROJECT_SECURITY_SERVICE.orderAssessmentsByRequirementId(
-      PROJECT_SECURITY_SERVICE.mergeDuplicateAssessments(check.assessments)
-    );
-    // Create a copy of the check object to avoid mutating the original
-    const checkCopy = {
-      ...check,
-      assessments: tmpAssessments
-    };
-    obj[check.repo]?.push(checkCopy);
-    return obj;
-  }, {} as Record<string, SecurityData[]>)
+const groupChecksByRepository = (checks: SecurityData[]) =>
+  (checks || []).reduce(
+    (mapping, check) => {
+      const obj = { ...mapping };
+      if (!obj[check.repo]) {
+        obj[check.repo] = [];
+      }
+      const tmpAssessments = PROJECT_SECURITY_SERVICE.orderAssessmentsByRequirementId(
+        PROJECT_SECURITY_SERVICE.mergeDuplicateAssessments(check.assessments),
+      );
+      // Create a copy of the check object to avoid mutating the original
+      const checkCopy = {
+        ...check,
+        assessments: tmpAssessments,
+      };
+      obj[check.repo]?.push(checkCopy);
+      return obj;
+    },
+    {} as Record<string, SecurityData[]>,
+  );
 
 onServerPrefetch(async () => {
-  await suspense()
-})
+  await suspense();
+});
 </script>
 
 <script lang="ts">
 export default {
   name: 'LfxProjectSecurityView',
-}
+};
 </script>

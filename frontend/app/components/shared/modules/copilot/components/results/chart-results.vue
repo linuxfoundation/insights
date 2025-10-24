@@ -16,7 +16,7 @@ SPDX-License-Identifier: MIT
     v-else-if="isError"
     class="h-full flex items-center justify-center"
   >
-    <lfx-copilot-error-state 
+    <lfx-copilot-error-state
       :error-type="errorType"
       @retry="handleRetry"
       @check-data="emit('onCheckDataClick')"
@@ -76,19 +76,19 @@ const emit = defineEmits<{
 }>();
 
 const props = defineProps<{
-  data: MessageData[] | null,
-  config: Config | null,
-  isSnapshotModalOpen: boolean,
-  chartErrorType?: ChartErrorType,
-  conversationId?: string
-}>()
+  data: MessageData[] | null;
+  config: Config | null;
+  isSnapshotModalOpen: boolean;
+  chartErrorType?: ChartErrorType;
+  conversationId?: string;
+}>();
 
 const isSnapshotModalOpen = computed({
   get: () => props.isSnapshotModalOpen,
   set: (value) => {
     emit('update:isSnapshotModalOpen', value);
-  }
-})
+  },
+});
 
 const isLoading = ref(false);
 const isError = ref<boolean>(false);
@@ -98,16 +98,16 @@ const chartConfig = computed({
   get: () => props.config,
   set: (value) => {
     emit('update:config', value);
-  }
+  },
 });
 
 const chartTitle = computed(() => {
   return chartConfig.value?.title?.text || 'Insights Chart';
-})
+});
 
 const configNoTitle = computed(() => {
   return { ...chartConfig.value, title: undefined };
-})
+});
 
 const generateChart = async () => {
   if (props.chartErrorType) {
@@ -121,10 +121,10 @@ const generateChart = async () => {
   }
 
   isLoading.value = true;
-  
+
   const response = await copilotApiService.callChartApi(props.data, props.conversationId);
   const data = await response.json();
-  
+
   if (data.config && data.success && data.dataMapping) {
     chartConfig.value = applySeriesStyle(patchChartData(data.config, data.dataMapping)) as Config;
   } else {
@@ -134,7 +134,7 @@ const generateChart = async () => {
     emit('update:config', null, errorType.value);
   }
   isLoading.value = false;
-}
+};
 
 const handleRetry = () => {
   emit('update:config', null, undefined);
@@ -143,7 +143,7 @@ const handleRetry = () => {
     errorType.value = 'default';
     generateChart();
   }, 200);
-}
+};
 
 // Helper function to convert date strings to a specified format using Luxon
 function convertDate(value: string, format: string): string {
@@ -194,38 +194,38 @@ const patchChartData = (config: Config, dataMapping: DataMapping[] | null) => {
   }
 
   return { ...config, dataset: { source } };
-}
+};
 
 const applySeriesStyle = (config: Config) => {
   if (!config.series) return config;
   const configColors = config.color;
   const series = config.series.map((series, index) => {
     if (series.type === 'bar') {
-      return { 
-        ...series, 
+      return {
+        ...series,
         ...defaultSeriesBarStyle,
-        name: typeof series.name === 'string' ? series.name : String(series.name || '')
+        name: typeof series.name === 'string' ? series.name : String(series.name || ''),
       };
     }
     if (series.type === 'line') {
-      return { 
-        ...series, 
-        ...defaultSeriesLineStyle, 
+      return {
+        ...series,
+        ...defaultSeriesLineStyle,
         name: typeof series.name === 'string' ? series.name : String(series.name || ''),
         areaStyle: {
           color: convertToGradientColor(
-            hexToRgba(configColors?.[index] || lfxColors.brand[500], 0.1)
+            hexToRgba(configColors?.[index] || lfxColors.brand[500], 0.1),
           ),
-        } 
+        },
       };
     }
     return {
       ...series,
-      name: typeof series.name === 'string' ? series.name : String(series.name || '')
+      name: typeof series.name === 'string' ? series.name : String(series.name || ''),
     };
   });
   return { ...config, series };
-}
+};
 
 const fallbackSource = (data: MessageData[]) => {
   if (!data || data.length === 0) return [];
@@ -236,7 +236,7 @@ const fallbackSource = (data: MessageData[]) => {
 
   const dateKey = allKeys.find((key) => {
     // Check if at least one value in the column parses as a valid date
-    return data.some(row => {
+    return data.some((row) => {
       const value = row[key];
       if (typeof value !== 'string') return false;
       // Try ISO and some common date formats
@@ -256,24 +256,32 @@ const fallbackSource = (data: MessageData[]) => {
       const value = row[key] as string | number;
       // Optionally, you could try to format date columns here as well, if needed
       return value;
-    })
+    }),
   );
   return [header, ...rows];
-}
+};
 
-watch(() => props.data, () => {
-  if (props.data && !chartConfig.value) {
-    generateChart();
-  }
-}, { immediate: true });
+watch(
+  () => props.data,
+  () => {
+    if (props.data && !chartConfig.value) {
+      generateChart();
+    }
+  },
+  { immediate: true },
+);
 
-watch(isLoading, (newVal) => {
-  emit('update:isLoading', newVal);
-}, { immediate: true });
+watch(
+  isLoading,
+  (newVal) => {
+    emit('update:isLoading', newVal);
+  },
+  { immediate: true },
+);
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxCopilotTableResults'
-}
+  name: 'LfxCopilotTableResults',
+};
 </script>

@@ -12,7 +12,7 @@ SPDX-License-Identifier: MIT
       [`type-${props.type}`]: true,
       'p-avatar-sm': props.size === 'small',
       'p-avatar-xsmall': props.size === 'xsmall',
-      'has-image': props.src
+      'has-image': props.src,
     }"
     v-bind="$attrs"
   />
@@ -31,8 +31,8 @@ const props = withDefaults(
   {
     size: 'normal',
     type: 'member',
-    src: undefined
-  }
+    src: undefined,
+  },
 );
 
 const icon = computed(() => {
@@ -46,6 +46,6 @@ const icon = computed(() => {
 
 <script lang="ts">
 export default {
-  name: 'LfxAvatar'
+  name: 'LfxAvatar',
 };
 </script>

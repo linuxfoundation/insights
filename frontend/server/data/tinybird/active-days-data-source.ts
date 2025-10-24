@@ -1,20 +1,20 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import type {ActiveDaysFilter} from "../types";
-import {fetchFromTinybird} from './tinybird'
-import {calculatePercentageChange, getPreviousDates} from "~~/server/data/util";
-import type {ActiveDays} from "~~/types/development/responses.types";
+import type { ActiveDaysFilter } from '../types';
+import { fetchFromTinybird } from './tinybird';
+import { calculatePercentageChange, getPreviousDates } from '~~/server/data/util';
+import type { ActiveDays } from '~~/types/development/responses.types';
 
 // This is the data part of the response from Tinybird
 type TinybirdActiveDaysSummary = {
-  activeDaysCount: number,
-  avgContributionsPerDay: number
+  activeDaysCount: number;
+  avgContributionsPerDay: number;
 };
 
 type TinybirdActiveDaysData = {
-  startDate: string,
-  endDate: string,
-  activityCount: number
+  startDate: string;
+  endDate: string;
+  activityCount: number;
 };
 
 function getTinybirdQueries(filter: ActiveDaysFilter) {
@@ -31,31 +31,23 @@ function getTinybirdQueries(filter: ActiveDaysFilter) {
       project: filter.project,
       repos: filter.repos,
       startDate: dates.previous.from,
-      endDate: dates.previous.to
+      endDate: dates.previous.to,
     },
     activeDaysQuery: {
       ...filter,
     },
-  }
+  };
 }
 
 export async function fetchActiveDays(filter: ActiveDaysFilter): Promise<ActiveDays> {
   // TODO: We're passing unchecked query parameters to TinyBird directly from the frontend.
   //  We need to ensure this doesn't pose a security risk.
 
-  const {
-    currentSummaryQuery,
-    previousSummaryQuery,
-    activeDaysQuery
-  } = getTinybirdQueries(filter);
+  const { currentSummaryQuery, previousSummaryQuery, activeDaysQuery } = getTinybirdQueries(filter);
 
   const path = '/v0/pipes/active_days.json';
 
-  const [
-    currentSummary,
-    previousSummary,
-    activeDaysData
-  ] = await Promise.all([
+  const [currentSummary, previousSummary, activeDaysData] = await Promise.all([
     fetchFromTinybird<TinybirdActiveDaysSummary[]>(path, currentSummaryQuery),
     fetchFromTinybird<TinybirdActiveDaysSummary[]>(path, previousSummaryQuery),
     fetchFromTinybird<TinybirdActiveDaysData[]>(path, activeDaysQuery),
@@ -63,7 +55,10 @@ export async function fetchActiveDays(filter: ActiveDaysFilter): Promise<ActiveD
 
   const currentCumulativeCount = currentSummary.data[0].activeDaysCount;
   const previousCumulativeCount = previousSummary.data[0].activeDaysCount;
-  const percentageChange = calculatePercentageChange(currentCumulativeCount, previousCumulativeCount);
+  const percentageChange = calculatePercentageChange(
+    currentCumulativeCount,
+    previousCumulativeCount,
+  );
   const avgContributions = currentSummary.data[0].avgContributionsPerDay;
 
   return {
@@ -81,6 +76,6 @@ export async function fetchActiveDays(filter: ActiveDaysFilter): Promise<ActiveD
       endDate: item.endDate,
       day: index + 1, // Needs to be base 1 to satisfy the frontend implementation
       contributions: item.activityCount,
-    }))
+    })),
   };
 }

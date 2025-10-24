@@ -15,14 +15,12 @@ SPDX-License-Identifier: MIT
           <i class="value-icon fa-light fa-people-group" />
           {{ formatNumber(props.group?.count) }}
         </div>
-        <div
-          class="value-display"
-        >
+        <div class="value-display">
           <i class="value-icon fa-light fa-dollar-circle" />
           {{ props.group?.softwareValue ? `${props.group?.softwareValue}+` : 'N/A' }}
         </div>
       </div>
-      <hr class="mt-4">
+      <hr class="mt-4" />
 
       <div
         v-if="props.group?.collections && props.group?.collections.length > 0"
@@ -91,6 +89,6 @@ const groupName = computed(() => {
 </script>
 <script lang="ts">
 export default {
-  name: 'LfxOSITooltip'
+  name: 'LfxOSITooltip',
 };
 </script>

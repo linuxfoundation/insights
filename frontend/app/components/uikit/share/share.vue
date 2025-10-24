@@ -19,26 +19,26 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import {computed} from "vue";
-import useToastService from "~/components/uikit/toast/toast.service";
-import {ToastTypesEnum} from "~/components/uikit/toast/types/toast.types";
-import LfxTooltip from "~/components/uikit/tooltip/tooltip.vue";
-import useResponsive from "~/components/shared/utils/responsive";
+import { computed } from 'vue';
+import useToastService from '~/components/uikit/toast/toast.service';
+import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
+import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
+import useResponsive from '~/components/shared/utils/responsive';
 
 const props = defineProps<{
-    url?: string;
-  }>();
+  url?: string;
+}>();
 
 const { showToast } = useToastService();
 
 const sharableLink = computed(() => {
-  if(!props.url){
+  if (!props.url) {
     return window?.location.href;
   }
   return props.url;
 });
 
-const {pageWidth} = useResponsive();
+const { pageWidth } = useResponsive();
 
 const isSharable = ref<boolean>(false);
 const isCopyable = ref<boolean>(false);
@@ -49,16 +49,13 @@ const share = () => {
   if (navigator?.share && isMobile.value) {
     navigator?.share({
       title: document.title,
-      url: sharableLink.value
+      url: sharableLink.value,
     });
   }
-  if(navigator?.clipboard){
+  if (navigator?.clipboard) {
     navigator?.clipboard.writeText(sharableLink.value);
-    if(!(isSharable.value && isMobile.value)){
-      showToast(
-          `Link copied to clipboard`,
-          ToastTypesEnum.positive,
-      );
+    if (!(isSharable.value && isMobile.value)) {
+      showToast(`Link copied to clipboard`, ToastTypesEnum.positive);
     }
   }
 };
@@ -71,6 +68,6 @@ onMounted(() => {
 
 <script lang="ts">
 export default {
-  name: 'LfxShare'
+  name: 'LfxShare',
 };
 </script>

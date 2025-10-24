@@ -63,23 +63,23 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script lang="ts" setup>
-import { yamlGenerationConfig } from '~/components/modules/project/config/yaml-generation/yaml-generation.config'
-import LfxIcon from '~/components/uikit/icon/icon.vue'
+import { yamlGenerationConfig } from '~/components/modules/project/config/yaml-generation/yaml-generation.config';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 
 const props = defineProps<{
-  modelValue: string
-}>()
+  modelValue: string;
+}>();
 
-const emit = defineEmits<{ (e: 'update:modelValue', value: string): void }>()
+const emit = defineEmits<{ (e: 'update:modelValue', value: string): void }>();
 
 const model = computed({
   get: () => props.modelValue,
   set: (value) => emit('update:modelValue', value),
-})
+});
 </script>
 
 <script lang="ts">
 export default {
   name: 'LfxSecurityGenerateYamlType',
-}
+};
 </script>

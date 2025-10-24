@@ -18,13 +18,13 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import LfxTag from "~/components/uikit/tag/tag.vue";
-import {SecurityDataResult} from "~~/types/security/responses.types";
-import LfxIcon from "~/components/uikit/icon/icon.vue";
+import LfxTag from '~/components/uikit/tag/tag.vue';
+import { SecurityDataResult } from '~~/types/security/responses.types';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 
 const props = defineProps<{
-  result: SecurityDataResult
-}>()
+  result: SecurityDataResult;
+}>();
 
 interface TypeData {
   variation: string;
@@ -48,12 +48,12 @@ const typeData: Record<SecurityDataResult, TypeData> = {
     icon: 'exclamation-triangle',
     text: 'Needs review',
   },
-}
+};
 const data = computed<number>(() => typeData[props.result]);
 </script>
 
 <script lang="ts">
 export default {
   name: 'LfxProjectSecurityEvaluationResultTag',
-}
+};
 </script>

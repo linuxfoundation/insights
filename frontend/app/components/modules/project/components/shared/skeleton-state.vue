@@ -16,19 +16,21 @@ SPDX-License-Identifier: MIT
 import type { AsyncDataRequestStatus } from 'nuxt/app';
 import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
 
-const props = withDefaults(defineProps<{
-  status: AsyncDataRequestStatus;
-  height: string;
-  width: string;
-  roundedClass?: string;
-}>(), {
-  roundedClass: 'rounded-sm'
-});
-
+const props = withDefaults(
+  defineProps<{
+    status: AsyncDataRequestStatus;
+    height: string;
+    width: string;
+    roundedClass?: string;
+  }>(),
+  {
+    roundedClass: 'rounded-sm',
+  },
+);
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxSkeletonState'
+  name: 'LfxSkeletonState',
 };
 </script>

@@ -14,26 +14,26 @@ export default {
       description: 'Specifies tooltip placement',
       defaultValue: 'top',
       control: 'select',
-      options: tooltipPlacements
+      options: tooltipPlacements,
     },
     content: {
       description: 'Content of the tooltip',
-      control: 'text'
+      control: 'text',
     },
     disabled: {
       description: 'Specifies if tooltip is hidden',
       defaultValue: false,
-      control: 'boolean'
+      control: 'boolean',
     },
 
     // Slots
     default: {
       description: 'Text or html content of the tooltip',
       control: {
-        type: null
-      }
-    }
-  }
+        type: null,
+      },
+    },
+  },
 };
 
 export const Default = {
@@ -42,7 +42,7 @@ export const Default = {
     placement: 'top',
     disabled: false,
     content: 'Tooltip content',
-    default: 'Hover me'
+    default: 'Hover me',
   },
   render: (args) => ({
     components: { LfxTooltip, LfxButton },
@@ -51,8 +51,8 @@ export const Default = {
       <lfx-tooltip :placement="${args.placement}" :disabled="${args.disabled}" content="${args.content}">
         <lfx-button>Hover me</lfx-button>
       </lfx-tooltip>
-    </div>`
-  })
+    </div>`,
+  }),
 };
 
 export const CustomContent = {
@@ -60,7 +60,7 @@ export const CustomContent = {
   args: {
     placement: 'bottom',
     disabled: false,
-    default: 'Hover me'
+    default: 'Hover me',
   },
   render: (args) => ({
     components: { LfxTooltip, LfxButton },
@@ -75,6 +75,6 @@ export const CustomContent = {
         </template>
         <lfx-button>Hover me</lfx-button>
       </lfx-tooltip>
-    </div>`
-  })
+    </div>`,
+  }),
 };

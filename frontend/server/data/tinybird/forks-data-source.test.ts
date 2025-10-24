@@ -1,19 +1,17 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import {
-  describe, test, expect, vi, beforeEach
-} from 'vitest';
-import {DateTime} from "luxon";
+import { describe, test, expect, vi, beforeEach } from 'vitest';
+import { DateTime } from 'luxon';
 import {
   mockCurrentSummaryData,
   mockPreviousSummaryData,
   mockCurrentCumulativeTimeseries,
   mockCurrentNewTimeseries,
 } from '../../mocks/tinybird-forks-response.mock';
-import {ActivityFilterCountType} from "../types";
-import {ActivityTypes} from "~~/types/shared/activity-types";
-import {Granularity} from "~~/types/shared/granularity";
-import type {ForksData} from "~~/types/popularity/responses.types";
+import { ActivityFilterCountType } from '../types';
+import { ActivityTypes } from '~~/types/shared/activity-types';
+import { Granularity } from '~~/types/shared/granularity';
+import type { ForksData } from '~~/types/popularity/responses.types';
 
 const mockFetchFromTinybird = vi.fn();
 
@@ -25,16 +23,17 @@ describe('Forks Data Source', () => {
     // This means that the import for tinybird.ts inside active-contributors-data-source.ts would still be used,
     // and thus not mocked. This means we need to import the module again after the mock is set, whenever we want to
     // use it.
-    vi.doMock(import("./tinybird"), () => ({
+    vi.doMock(import('./tinybird'), () => ({
       fetchFromTinybird: mockFetchFromTinybird,
     }));
-  })
+  });
 
   test('should fetch cumulative forks data with correct parameters', async () => {
     // We have to import this here again because vi.doMock is not hoisted. See the explanation in beforeEach().
-    const {fetchForksActivities} = await import("~~/server/data/tinybird/forks-data-source");
+    const { fetchForksActivities } = await import('~~/server/data/tinybird/forks-data-source');
 
-    mockFetchFromTinybird.mockResolvedValueOnce(mockCurrentSummaryData)
+    mockFetchFromTinybird
+      .mockResolvedValueOnce(mockCurrentSummaryData)
       .mockResolvedValueOnce(mockPreviousSummaryData)
       .mockResolvedValueOnce(mockCurrentCumulativeTimeseries);
 
@@ -51,7 +50,7 @@ describe('Forks Data Source', () => {
       includeCollaborations: false,
       includeOtherContributions: true,
       startDate,
-      endDate
+      endDate,
     };
 
     const result = await fetchForksActivities(filter);
@@ -72,7 +71,7 @@ describe('Forks Data Source', () => {
         startDate: item.startDate,
         endDate: item.endDate,
         forks: item.cumulativeActivityCount,
-      }))
+      })),
     };
 
     expect(result).toEqual(expectedResult);
@@ -80,9 +79,10 @@ describe('Forks Data Source', () => {
 
   test('should fetch new forks data with correct parameters', async () => {
     // We have to import this here again because vi.doMock is not hoisted. See the explanation in beforeEach().
-    const {fetchForksActivities} = await import("~~/server/data/tinybird/forks-data-source");
+    const { fetchForksActivities } = await import('~~/server/data/tinybird/forks-data-source');
 
-    mockFetchFromTinybird.mockResolvedValueOnce(mockCurrentSummaryData)
+    mockFetchFromTinybird
+      .mockResolvedValueOnce(mockCurrentSummaryData)
       .mockResolvedValueOnce(mockPreviousSummaryData)
       .mockResolvedValueOnce(mockCurrentNewTimeseries);
 
@@ -98,7 +98,7 @@ describe('Forks Data Source', () => {
       includeCodeContributions: true,
       includeCollaborations: true,
       startDate,
-      endDate
+      endDate,
     };
 
     const result = await fetchForksActivities(filter);
@@ -119,7 +119,7 @@ describe('Forks Data Source', () => {
         startDate: item.startDate,
         endDate: item.endDate,
         forks: item.activityCount,
-      }))
+      })),
     };
 
     expect(result).toEqual(expectedResult);

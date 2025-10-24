@@ -7,41 +7,53 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import {useRoute} from "nuxt/app";
-import {storeToRefs} from "pinia";
-import {useProjectStore} from "~/components/modules/project/store/project.store";
-import {WidgetArea} from "~/components/modules/widget/types/widget-area";
-import LfxWidgetArea from "~/components/modules/widget/components/shared/widget-area.vue";
-import {lfxWidgets} from "~/components/modules/widget/config/widget.config";
-import type {Widget} from "~/components/modules/widget/types/widget";
+import { useRoute } from 'nuxt/app';
+import { storeToRefs } from 'pinia';
+import { useProjectStore } from '~/components/modules/project/store/project.store';
+import { WidgetArea } from '~/components/modules/widget/types/widget-area';
+import LfxWidgetArea from '~/components/modules/widget/components/shared/widget-area.vue';
+import { lfxWidgets } from '~/components/modules/widget/config/widget.config';
+import type { Widget } from '~/components/modules/widget/types/widget';
 
 const route = useRoute();
 const name = route.params.name as string;
 const slug = route.params.slug as string;
-const {project, selectedRepositories} = storeToRefs(useProjectStore());
-const widget = route.query?.widget
+const { project, selectedRepositories } = storeToRefs(useProjectStore());
+const widget = route.query?.widget;
 const config = useRuntimeConfig();
 
 const repository = computed(() => selectedRepositories.value.find((repo) => repo.slug === name));
 const repoName = computed(() => (repository.value?.name || name).split('/').at(-1));
 
-const title = computed(() => `${project?.value?.name} ${repoName.value} Repository ${
-    (widget && lfxWidgets[widget as Widget]?.name?.length)
+const title = computed(
+  () =>
+    `${project?.value?.name} ${repoName.value} Repository ${
+      widget && lfxWidgets[widget as Widget]?.name?.length
         ? lfxWidgets[widget as Widget]?.name
-        : 'popularity'} | LFX Insights`);
+        : 'popularity'
+    } | LFX Insights`,
+);
 
-const imageAlt = computed(() => `${project.value?.name} ${repoName.value} popularity insights${
-    (widget && lfxWidgets[widget as Widget]?.name?.length)
+const imageAlt = computed(
+  () =>
+    `${project.value?.name} ${repoName.value} popularity insights${
+      widget && lfxWidgets[widget as Widget]?.name?.length
         ? ` - ${lfxWidgets[widget as Widget]?.name}`
-        : ''}`);
+        : ''
+    }`,
+);
 
-const description = computed(() =>
-  `Explore ${project.value?.name} ${repoName.value} popularity `
-  + `with data on stars, forks, watchers, and adoption across the open source ecosystem.`);
+const description = computed(
+  () =>
+    `Explore ${project.value?.name} ${repoName.value} popularity ` +
+    `with data on stars, forks, watchers, and adoption across the open source ecosystem.`,
+);
 
 const url = computed(() => `${config.public.appUrl}${route.fullPath}`);
 
-const image = computed(() => `${config.public.appUrl}/api/seo/og-image?projectSlug=${slug}&repositorySlug=${name}`);
+const image = computed(
+  () => `${config.public.appUrl}/api/seo/og-image?projectSlug=${slug}&repositorySlug=${name}`,
+);
 
 useSeoMeta({
   title,
@@ -60,5 +72,5 @@ useSeoMeta({
   twitterDescription: description,
   twitterImage: image,
   twitterImageAlt: imageAlt,
-})
+});
 </script>

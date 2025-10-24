@@ -80,7 +80,12 @@ export const Default = {
     spacing: 4,
     triggerEvent: 'click',
   },
-  render: (args: { placement: string; disabled: boolean; spacing: number; triggerEvent: string }) => ({
+  render: (args: {
+    placement: string;
+    disabled: boolean;
+    spacing: number;
+    triggerEvent: string;
+  }) => ({
     components: { LfxPopover, LfxButton },
     setup() {
       return { args };

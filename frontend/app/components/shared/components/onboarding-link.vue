@@ -6,7 +6,7 @@ SPDX-License-Identifier: MIT
   <div
     class="flex flex-row gap-4 items-center rounded-full"
     :class="{
-      'py-1.5 pl-4 pr-2 bg-brand-50': showMessage
+      'py-1.5 pl-4 pr-2 bg-brand-50': showMessage,
     }"
   >
     <span
@@ -42,12 +42,13 @@ defineProps<{
   showMessage?: boolean;
 }>();
 
-const href = 'https://github.com/linuxfoundation/insights/discussions/categories/' +
- 'project-onboardings?discussions_q=is:open+category:%22Project+onboardings%22+sort:top'
+const href =
+  'https://github.com/linuxfoundation/insights/discussions/categories/' +
+  'project-onboardings?discussions_q=is:open+category:%22Project+onboardings%22+sort:top';
 </script>
 
 <script lang="ts">
 export default {
   name: 'LfxWelcomeModal',
-}
+};
 </script>

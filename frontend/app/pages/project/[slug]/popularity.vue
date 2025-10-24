@@ -7,39 +7,45 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import {useRoute} from "nuxt/app";
-import {storeToRefs} from "pinia";
-import {useProjectStore} from "~/components/modules/project/store/project.store";
-import {WidgetArea} from "~/components/modules/widget/types/widget-area";
-import LfxWidgetArea from "~/components/modules/widget/components/shared/widget-area.vue";
-import {lfxWidgets} from "~/components/modules/widget/config/widget.config";
-import type {Widget} from "~/components/modules/widget/types/widget";
+import { useRoute } from 'nuxt/app';
+import { storeToRefs } from 'pinia';
+import { useProjectStore } from '~/components/modules/project/store/project.store';
+import { WidgetArea } from '~/components/modules/widget/types/widget-area';
+import LfxWidgetArea from '~/components/modules/widget/components/shared/widget-area.vue';
+import { lfxWidgets } from '~/components/modules/widget/config/widget.config';
+import type { Widget } from '~/components/modules/widget/types/widget';
 
-const {project} = storeToRefs(useProjectStore());
-const route = useRoute()
-const config = useRuntimeConfig()
+const { project } = storeToRefs(useProjectStore());
+const route = useRoute();
+const config = useRuntimeConfig();
 
-const widget = route.query?.widget
+const widget = route.query?.widget;
 
 const title = computed(() => {
-    const widgetName = widget && lfxWidgets[widget as Widget]?.name?.length
-        ? lfxWidgets[widget as Widget]?.name
-        : 'Popularity Insights';
-    return widget ? `${project.value?.name} ${widgetName}` : `${project.value?.name} Popularity Insights`;
+  const widgetName =
+    widget && lfxWidgets[widget as Widget]?.name?.length
+      ? lfxWidgets[widget as Widget]?.name
+      : 'Popularity Insights';
+  return widget
+    ? `${project.value?.name} ${widgetName}`
+    : `${project.value?.name} Popularity Insights`;
 });
 const imageAlt = computed(() => {
-    const widgetName = widget && lfxWidgets[widget as Widget]?.name?.length
-        ? lfxWidgets[widget as Widget]?.name
-        : '';
-    return `${project.value?.name} popularity insights${widgetName ? ` - ${widgetName}` : ''}`;
+  const widgetName =
+    widget && lfxWidgets[widget as Widget]?.name?.length ? lfxWidgets[widget as Widget]?.name : '';
+  return `${project.value?.name} popularity insights${widgetName ? ` - ${widgetName}` : ''}`;
 });
-const description = computed(() =>
-  `Explore ${project.value?.name} popularity with data on stars, forks, watchers, `
-  + `and adoption across the open source ecosystem.`);
+const description = computed(
+  () =>
+    `Explore ${project.value?.name} popularity with data on stars, forks, watchers, ` +
+    `and adoption across the open source ecosystem.`,
+);
 const url = computed(() => `${config.public.appUrl}${route.fullPath}`);
-const image = computed(() => (project.value
+const image = computed(() =>
+  project.value
     ? `${config.public.appUrl}/api/seo/og-image?projectSlug=${project.value.slug}`
-    : `${config.public.appUrl}/default-og-image.jpg`));
+    : `${config.public.appUrl}/default-og-image.jpg`,
+);
 
 useSeoMeta({
   title,
@@ -58,5 +64,5 @@ useSeoMeta({
   twitterDescription: description,
   twitterImage: image,
   twitterImageAlt: imageAlt,
-})
+});
 </script>

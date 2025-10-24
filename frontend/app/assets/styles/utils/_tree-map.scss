@@ -22,7 +22,8 @@
       }
       .name-icon {
         @apply w-4 h-4 min-w-4 min-h-4 flex;
-        img, i {
+        img,
+        i {
           @apply w-full h-full object-contain;
         }
       }
@@ -44,6 +45,5 @@
     .footer-icon {
       @apply text-sm;
     }
-    
   }
 }

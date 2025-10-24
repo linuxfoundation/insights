@@ -4,8 +4,7 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <article
-    class="py-2 px-3 rounded-md transition hover:bg-neutral-50
-          cursor-pointer flex items-center justify-between text-sm leading-5 gap-2"
+    class="py-2 px-3 rounded-md transition hover:bg-neutral-50 cursor-pointer flex items-center justify-between text-sm leading-5 gap-2"
     @click="handleClick"
   >
     <div class="w-full flex items-center justify-between gap-3">
@@ -39,9 +38,9 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import LfxIcon from "~/components/uikit/icon/icon.vue";
-import LfxCheckbox from "~/components/uikit/checkbox/checkbox.vue";
-import LfxArchivedTag from "~/components/shared/components/archived-tag.vue";
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxCheckbox from '~/components/uikit/checkbox/checkbox.vue';
+import LfxArchivedTag from '~/components/shared/components/archived-tag.vue';
 
 const props = defineProps<{
   text: string;
@@ -52,7 +51,7 @@ const props = defineProps<{
   excluded: boolean;
 }>();
 
-const emit = defineEmits<{(e: 'update:selected', value: boolean): void}>();
+const emit = defineEmits<{ (e: 'update:selected', value: boolean): void }>();
 
 const checked = computed<boolean>({
   get() {
@@ -68,11 +67,10 @@ const handleClick = () => {
     checked.value = !checked.value;
   }
 };
-
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxProjectRepositorySwitchItem'
+  name: 'LfxProjectRepositorySwitchItem',
 };
 </script>

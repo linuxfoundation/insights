@@ -5,9 +5,8 @@ SPDX-License-Identifier: MIT
 <template>
   <div class="pb-6 px-0 bg-white h-full border-r border-neutral-200 flex flex-col">
     <!-- Header -->
-    <div 
-      class="p-4 text-xl font-secondary font-bold leading-7 gap-3 text-neutral-900 flex-none
-       flex items-center"
+    <div
+      class="p-4 text-xl font-secondary font-bold leading-7 gap-3 text-neutral-900 flex-none flex items-center"
     >
       <lfx-icon
         name="sparkles"
@@ -16,11 +15,10 @@ SPDX-License-Identifier: MIT
       />
       <span>Data Copilot</span>
       <div
-        class="flex gap-1 items-center rounded-full text-nowrap
-          text-xs text-white font-semibold bg-neutral-600 px-1.5 py-0.5 h-5"
+        class="flex gap-1 items-center rounded-full text-nowrap text-xs text-white font-semibold bg-neutral-600 px-1.5 py-0.5 h-5"
       >
         Experimental
-      </div> 
+      </div>
     </div>
 
     <!-- Main content: grows and scrolls -->
@@ -33,20 +31,24 @@ SPDX-License-Identifier: MIT
       <div
         v-show="showTopGradient"
         class="pointer-events-none sticky left-0 right-0 top-0 h-8 z-10"
-        style="background: linear-gradient(to bottom, rgba(255,255,255,1), rgba(255,255,255,0));"
+        style="
+          background: linear-gradient(to bottom, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+        "
       />
       <!-- Bottom gradient -->
       <div
         v-show="showBottomGradient"
         class="pointer-events-none sticky left-0 right-0 h-8 z-10"
-        style="background: linear-gradient(to top, rgba(255,255,255,1), rgba(255,255,255,0));
-        top: calc(100% - 32px);"
+        style="
+          background: linear-gradient(to top, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+          top: calc(100% - 32px);
+        "
       />
       <!-- Message history -->
-      <lfx-copilot-chat-history 
+      <lfx-copilot-chat-history
         v-if="!isEmptyMessages"
-        :messages="messages" 
-        :selected-result-id="selectedResultId" 
+        :messages="messages"
+        :selected-result-id="selectedResultId"
         :is-loading="isLoading"
         :widget-name="selectedWidgetKey"
         @select-result="selectResult"
@@ -66,25 +68,23 @@ SPDX-License-Identifier: MIT
             ref="textareaRef"
             v-model="input"
             placeholder="Ask a follow-up question..."
-            class="w-full p-4 bg-transparent
-              text-sm resize-none focus:outline-none"
+            class="w-full p-4 bg-transparent text-sm resize-none focus:outline-none"
             rows="2"
-            style="word-break: break-word; white-space: pre-wrap;"
+            style="word-break: break-word; white-space: pre-wrap"
             :disabled="isLoading || isChartLoading"
             @keydown.enter.prevent="handleSubmit"
           />
           <div class="flex justify-between pb-4 px-4 items-center gap-4">
             <div class="flex gap-3 text-sm w-auto max-w-[80%]">
               <span
-                class="text-sm text-neutral-900 flex gap-1 items-center bg-brand-50 
-                  rounded-full px-2.5 py-1 max-w-[65%]"
+                class="text-sm text-neutral-900 flex gap-1 items-center bg-brand-50 rounded-full px-2.5 py-1 max-w-[65%]"
                 :title="copilotDefaults.project?.name"
               >
                 <img
                   :src="copilotDefaults.project?.logo"
                   class="w-4 h-4"
                   :alt="copilotDefaults.project?.name"
-                ></img> 
+                />
                 <span class="truncate">
                   {{ copilotDefaults.project?.name }}
                 </span>
@@ -111,24 +111,23 @@ SPDX-License-Identifier: MIT
   </div>
 </template>
 <script setup lang="ts">
-import { ref, watch, computed } from 'vue'
-import { storeToRefs } from 'pinia'
-import type { AIMessage, MessageData, MessageRole, MessageStatus } from '../types/copilot.types'
-import { copilotApiService } from '../store/copilot.api.service'
+import { ref, watch, computed } from 'vue';
+import { storeToRefs } from 'pinia';
+import type { AIMessage, MessageData, MessageRole, MessageStatus } from '../types/copilot.types';
+import { copilotApiService } from '../store/copilot.api.service';
 // import { tempData } from '../store/copilot.api.service'
-import { useCopilotStore } from '../store/copilot.store'
-import LfxCopilotChatHistory from './chat-history/copilot-chat-history.vue'
+import { useCopilotStore } from '../store/copilot.store';
+import LfxCopilotChatHistory from './chat-history/copilot-chat-history.vue';
 import LfxContextDisplay from './shared/context-display.vue';
-import LfxEmptyChat from './info/empty-chat.vue'
-import LfxIcon from '~/components/uikit/icon/icon.vue'
-import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue'
-import type { Widget } from '~/components/modules/widget/types/widget'
+import LfxEmptyChat from './info/empty-chat.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
+import type { Widget } from '~/components/modules/widget/types/widget';
 
 const props = defineProps<{
   isLoading: boolean;
   isChartLoading: boolean;
-}>()
-
+}>();
 
 const emit = defineEmits<{
   (e: 'update:selectedResult', value: string): void;
@@ -139,118 +138,128 @@ const emit = defineEmits<{
 
 const { copilotDefaults, selectedResultId, selectedWidgetKey } = storeToRefs(useCopilotStore());
 
-const scrollable = ref<HTMLElement | null>(null)
-const textareaRef = ref<HTMLElement | null>(null)
-const showTopGradient = ref(false)
-const showBottomGradient = ref(false)
+const scrollable = ref<HTMLElement | null>(null);
+const textareaRef = ref<HTMLElement | null>(null);
+const showTopGradient = ref(false);
+const showBottomGradient = ref(false);
 
 // Initialize state
-const input = ref('')
-const streamingStatus = ref('')
-const error = ref('')
-const messages = ref<Array<AIMessage>>([]) // tempData as AIMessage
-const conversationId = ref<string | undefined>(undefined)
-const isEmptyMessages = computed(() => messages.value.length === 0)
+const input = ref('');
+const streamingStatus = ref('');
+const error = ref('');
+const messages = ref<Array<AIMessage>>([]); // tempData as AIMessage
+const conversationId = ref<string | undefined>(undefined);
+const isEmptyMessages = computed(() => messages.value.length === 0);
 
 const isLoading = computed<boolean>({
   get: () => props.isLoading,
   set: (value) => {
     emit('update:isLoading', value);
-  }
-})
+  },
+});
 
 // Handle form submission
 const handleSubmit = async (e?: Event) => {
-  e?.preventDefault()
-  
+  e?.preventDefault();
+
   if (input.value.trim() && !isLoading.value) {
-    callChatApi(input.value.trim())
+    callChatApi(input.value.trim());
   }
-}
+};
 
 const callChatApi = async (userMessage: string) => {
-  isLoading.value = true
-  streamingStatus.value = 'Analyzing your question...'
-  error.value = ''
-  
+  isLoading.value = true;
+  streamingStatus.value = 'Analyzing your question...';
+  error.value = '';
+
   // Add user message to chat
   messages.value.push(
-    copilotApiService.generateTextMessage(userMessage, 'user' as MessageRole, 'complete' as MessageStatus)
-  )
-  
+    copilotApiService.generateTextMessage(
+      userMessage,
+      'user' as MessageRole,
+      'complete' as MessageStatus,
+    ),
+  );
+
   input.value = '';
-  
+
   // Focus the textarea after clearing input
   setTimeout(() => {
     textareaRef.value?.focus();
   }, 100);
-  
+
   scrollToEnd();
-  
+
   try {
     if (copilotDefaults.value.project) {
       const response = await copilotApiService.callChatStream(
-        messages.value, 
-        copilotDefaults.value.project, 
+        messages.value,
+        copilotDefaults.value.project,
         selectedWidgetKey.value,
         copilotDefaults.value.params,
-        conversationId.value)
+        conversationId.value,
+      );
 
       // Handle the streaming response
       const returnedConversationId = await copilotApiService.handleStreamingResponse(
-        response, messages.value, (status) => {
+        response,
+        messages.value,
+        (status) => {
           streamingStatus.value = status;
-        }, (message, index) => {
+        },
+        (message, index) => {
           if (index === -1) {
             messages.value.push(message);
           } else {
-          messages.value[index] = message;
-        }
+            messages.value[index] = message;
+          }
 
-        if (message.data) {
-          // Pass the current conversation ID instead of extracting routerReasoning
-          emit('update:data', message.id, message.data, conversationId.value);
-          selectedResultId.value = message.id;
-        }
-        scrollToEnd();
-      }, (receivedConversationId) => {
-        isLoading.value = false;
-        streamingStatus.value = '';
-        // Store the conversationId for subsequent calls
-        if (receivedConversationId) {
-          conversationId.value = receivedConversationId;
-        }
-        // Focus textarea when chat response is complete
-        setTimeout(() => {
-          textareaRef.value?.focus();
-        }, 100);
-      });
-      
+          if (message.data) {
+            // Pass the current conversation ID instead of extracting routerReasoning
+            emit('update:data', message.id, message.data, conversationId.value);
+            selectedResultId.value = message.id;
+          }
+          scrollToEnd();
+        },
+        (receivedConversationId) => {
+          isLoading.value = false;
+          streamingStatus.value = '';
+          // Store the conversationId for subsequent calls
+          if (receivedConversationId) {
+            conversationId.value = receivedConversationId;
+          }
+          // Focus textarea when chat response is complete
+          setTimeout(() => {
+            textareaRef.value?.focus();
+          }, 100);
+        },
+      );
+
       // Also capture conversationId from the return value as backup
       if (returnedConversationId && !conversationId.value) {
         conversationId.value = returnedConversationId;
       }
     }
   } catch (err) {
-    console.error('Failed to send message:', err)
-    error.value = err instanceof Error ? err.message : 'Failed to send message'
+    console.error('Failed to send message:', err);
+    error.value = err instanceof Error ? err.message : 'Failed to send message';
     messages.value.push(
       copilotApiService.generateTextMessage(
-        'Sorry, there was an error processing your request.', 
-        'assistant' as MessageRole, 
+        'Sorry, there was an error processing your request.',
+        'assistant' as MessageRole,
         'error' as MessageStatus,
-        'router-status'
-      )
-    )
+        'router-status',
+      ),
+    );
   } finally {
-    isLoading.value = false
-    streamingStatus.value = ''
+    isLoading.value = false;
+    streamingStatus.value = '';
     // Ensure textarea is focused even if there was an error
     setTimeout(() => {
       textareaRef.value?.focus();
     }, 100);
   }
-}
+};
 
 const scrollToEnd = () => {
   setTimeout(() => {
@@ -261,43 +270,51 @@ const scrollToEnd = () => {
 
 const selectResult = (id: string) => {
   selectedResultId.value = id;
-}
+};
 
-watch(copilotDefaults, (newDefaults, oldDefaults) => {
-  // Clear conversation when widget changes
-  if (oldDefaults && newDefaults.widget !== oldDefaults.widget) {
-    conversationId.value = undefined;
-    messages.value = [];
-  }
-  
-  if (newDefaults.question) {
-    callChatApi(newDefaults.question);
-  }
-}, { immediate: true });
+watch(
+  copilotDefaults,
+  (newDefaults, oldDefaults) => {
+    // Clear conversation when widget changes
+    if (oldDefaults && newDefaults.widget !== oldDefaults.widget) {
+      conversationId.value = undefined;
+      messages.value = [];
+    }
 
-watch(messages, () => {
-  scrollToEnd();
-}, { immediate: true, deep: true });
+    if (newDefaults.question) {
+      callChatApi(newDefaults.question);
+    }
+  },
+  { immediate: true },
+);
+
+watch(
+  messages,
+  () => {
+    scrollToEnd();
+  },
+  { immediate: true, deep: true },
+);
 
 const handleScroll = () => {
   if (scrollable.value) {
-    const { scrollTop, scrollHeight, clientHeight } = scrollable.value
-    showTopGradient.value = scrollTop > 10
-    showBottomGradient.value = scrollTop + clientHeight < scrollHeight - 10
+    const { scrollTop, scrollHeight, clientHeight } = scrollable.value;
+    showTopGradient.value = scrollTop > 10;
+    showBottomGradient.value = scrollTop + clientHeight < scrollHeight - 10;
   }
-}
+};
 
 const handleSuggestionClick = (suggestion: string) => {
   input.value = suggestion;
-}
+};
 
 const handleWidgetClick = (widgetKey: Widget) => {
   selectedWidgetKey.value = widgetKey;
-}
+};
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxCopilotSidebar'
-}
+  name: 'LfxCopilotSidebar',
+};
 </script>

@@ -33,10 +33,11 @@ SPDX-License-Identifier: MIT
     </span>
 
     <template #content>
-
-      <div class="bg-white shadow-lg rounded-lg border border-neutral-200 max-h-[80vh] overflow-y-auto">
-        <div 
-          v-for="widgetKey in widgetWithCopilot" 
+      <div
+        class="bg-white shadow-lg rounded-lg border border-neutral-200 max-h-[80vh] overflow-y-auto"
+      >
+        <div
+          v-for="widgetKey in widgetWithCopilot"
           :key="widgetKey"
           class="flex gap-2 items-center cursor-pointer bg-white hover:bg-neutral-50 transition px-4 py-3"
           @click="handleWidgetClick(widgetKey)"
@@ -46,23 +47,22 @@ SPDX-License-Identifier: MIT
       </div>
     </template>
   </lfx-popover>
-  
 </template>
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { lfxWidgets } from '~/components/modules/widget/config/widget.config'
+import { lfxWidgets } from '~/components/modules/widget/config/widget.config';
 import type { Widget } from '~/components/modules/widget/types/widget';
-import LfxIcon from '~/components/uikit/icon/icon.vue'
-import LfxPopover from '~/components/uikit/popover/popover.vue'
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxPopover from '~/components/uikit/popover/popover.vue';
 
 const emit = defineEmits<{
-  (e: 'valueSelected', widgetKey: Widget): void
+  (e: 'valueSelected', widgetKey: Widget): void;
 }>();
 const props = defineProps<{
   widgetName: Widget | undefined;
   type: 'transparent' | 'solid';
   allowAllWidgets: boolean;
-}>()
+}>();
 
 const widget = computed(() => lfxWidgets[(props.widgetName || '') as Widget]);
 const widgetDisplayName = computed(() => widget.value?.name || 'Point metric');
@@ -94,6 +94,6 @@ const handleWidgetClick = (widgetKey: Widget) => {
 
 <script lang="ts">
 export default {
-  name: 'LfxContextDisplay'
-}
+  name: 'LfxContextDisplay',
+};
 </script>

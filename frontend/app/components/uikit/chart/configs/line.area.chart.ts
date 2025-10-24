@@ -72,7 +72,7 @@ export const defaultSeriesLineStyle: LineSeriesOption = {
 const applySeriesStyle = (
   chartSeries: ChartSeries[],
   series: SeriesTypes[] | undefined,
-  useVisualMapColor: boolean
+  useVisualMapColor: boolean,
 ): SeriesTypes[] => {
   if (!series) return [];
 
@@ -104,7 +104,7 @@ const applySeriesStyle = (
     baseStyle.areaStyle = {
       ...baseStyle.areaStyle,
       color: convertToGradientColor(
-        hexToRgba(chartSeries[index]?.color || lfxColors.brand[500], 0.1)
+        hexToRgba(chartSeries[index]?.color || lfxColors.brand[500], 0.1),
       ),
     };
     // }
@@ -124,9 +124,10 @@ export const getLineAreaChartConfig = (
   series: ChartSeries[],
   granularity: string,
   yAxisFormatter?: (value: number, index?: number) => string,
-  overrideConfig?: Partial<ECOption>
+  overrideConfig?: Partial<ECOption>,
 ): ECOption => {
-  const axisLabelFormat = formatByGranularity[granularity as keyof typeof formatByGranularity] || 'MMM yyyy';
+  const axisLabelFormat =
+    formatByGranularity[granularity as keyof typeof formatByGranularity] || 'MMM yyyy';
 
   const xAxis = {
     ...defaultLineOption.xAxis,
@@ -147,8 +148,12 @@ export const getLineAreaChartConfig = (
     formatter: tooltipFormatterWithData(data, granularity, series),
   });
 
-  const styledSeries = applySeriesStyle(series, buildSeries(series, data), !!overrideConfig?.visualMap);
-  
+  const styledSeries = applySeriesStyle(
+    series,
+    buildSeries(series, data),
+    !!overrideConfig?.visualMap,
+  );
+
   return merge(
     {},
     {
@@ -158,9 +163,8 @@ export const getLineAreaChartConfig = (
       series: styledSeries,
       tooltip,
       ...overrideConfig,
-    }
+    },
   );
-
 };
 
 /**
@@ -175,9 +179,10 @@ export const getLineAreChartConfigCustom = (
   data: ChartData[],
   series: ChartSeries[],
   customStyle: Partial<SeriesTypes>,
-  granularity: string
+  granularity: string,
 ): ECOption => {
-  const axisLabelFormat = formatByGranularity[granularity as keyof typeof formatByGranularity] || 'MMM yyyy';
+  const axisLabelFormat =
+    formatByGranularity[granularity as keyof typeof formatByGranularity] || 'MMM yyyy';
 
   const xAxis = {
     ...defaultLineOption.xAxis,
@@ -189,7 +194,8 @@ export const getLineAreChartConfigCustom = (
   };
 
   const styledSeries = applySeriesStyle(series, buildSeries(series, data), false).map(
-    (seriesItem) => ({
+    (seriesItem) =>
+      ({
         ...seriesItem,
         ...customStyle,
         lineStyle: {
@@ -200,7 +206,7 @@ export const getLineAreChartConfigCustom = (
           ...(seriesItem as LineSeriesOption).areaStyle,
           ...(customStyle as LineSeriesOption)?.areaStyle,
         },
-      } as LineSeriesOption)
+      }) as LineSeriesOption,
   );
 
   return merge({}, defaultLineOption, {
@@ -218,7 +224,7 @@ export const getLineAreChartConfigCustom = (
  */
 export const getLineAreaChartConfigGraphOnly = (
   data: ChartData[],
-  series: ChartSeries[]
+  series: ChartSeries[],
 ): ECOption => {
   const xAxis = {
     ...defaultGraphOnlyOption.xAxis,
@@ -239,22 +245,25 @@ export const getMarkLine = (xAxisMarker: string): Record<string, unknown> => {
     // animation: false,
     data: [
       {
-        xAxis: xAxisMarker
-      }
+        xAxis: xAxisMarker,
+      },
     ],
     z: -1,
     label: {
-      show: false
-    }, 
+      show: false,
+    },
     lineStyle: {
       color: lfxColors.neutral[300],
       type: 'solid',
-      width: 1
-    }
+      width: 1,
+    },
   };
 };
 
-export const getVisualMap = (columnLength: number, series: ChartSeries[]): Record<string, unknown>[] => {
+export const getVisualMap = (
+  columnLength: number,
+  series: ChartSeries[],
+): Record<string, unknown>[] => {
   return series.map((seriesItem: ChartSeries, idx: number) => ({
     type: 'piecewise',
     show: false,
@@ -264,13 +273,13 @@ export const getVisualMap = (columnLength: number, series: ChartSeries[]): Recor
       {
         lt: columnLength - 2.1,
         color: seriesItem.color,
-        colorAlpha: 1
+        colorAlpha: 1,
       },
       {
         gte: columnLength - 2,
         color: seriesItem.color,
-        colorAlpha: .5
+        colorAlpha: 0.5,
       },
-    ]
+    ],
   }));
 };

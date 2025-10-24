@@ -3,9 +3,7 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div
-    class="flex flex-col gap-5"
-  >
+  <div class="flex flex-col gap-5">
     <div
       v-if="errorType === 'default'"
       class="relative text-center"
@@ -34,9 +32,11 @@ SPDX-License-Identifier: MIT
       />
       <div class="flex flex-col items-center justify-center gap-2">
         <div class="text-xl font-secondary font-bold">
-          {{ errorType === 'chart-empty' ? 
-            'Unable to generate chart...more data is needed' : 
-            'Oops...something went wrong' }}
+          {{
+            errorType === 'chart-empty'
+              ? 'Unable to generate chart...more data is needed'
+              : 'Oops...something went wrong'
+          }}
         </div>
         <div
           v-if="errorType === 'chart-empty'"
@@ -48,7 +48,8 @@ SPDX-License-Identifier: MIT
           v-else
           class="text-xs text-neutral-500"
         >
-          An error has occurred while generating your chart. Please try again later or adjust your query.
+          An error has occurred while generating your chart. Please try again later or adjust your
+          query.
         </div>
         <div class="flex justify-center gap-5 mt-6">
           <lfx-button
@@ -84,24 +85,27 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import LfxIcon from '~/components/uikit/icon/icon.vue'
-import LfxButton from '~/components/uikit/button/button.vue'
-import type { ChartErrorType } from '~/components/shared/modules/copilot/types/copilot.types'
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxButton from '~/components/uikit/button/button.vue';
+import type { ChartErrorType } from '~/components/shared/modules/copilot/types/copilot.types';
 
 const emit = defineEmits<{
   (e: 'retry'): void;
   (e: 'checkData'): void;
-}>()
+}>();
 
-withDefaults(defineProps<{
-  errorType: ChartErrorType
-}>(), {
-  errorType: 'default'
-})
+withDefaults(
+  defineProps<{
+    errorType: ChartErrorType;
+  }>(),
+  {
+    errorType: 'default',
+  },
+);
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxCopilotErrorState'
-}
+  name: 'LfxCopilotErrorState',
+};
 </script>

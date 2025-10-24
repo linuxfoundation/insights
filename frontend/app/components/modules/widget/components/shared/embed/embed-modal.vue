@@ -13,9 +13,7 @@ SPDX-License-Identifier: MIT
           <p class="text-body-2 text-neutral-500 mb-1">
             {{ widgetConfig.name }}
           </p>
-          <h3 class="text-heading-3 font-secondary font-bold">
-            Embed code
-          </h3>
+          <h3 class="text-heading-3 font-secondary font-bold">Embed code</h3>
         </div>
         <lfx-icon-button
           icon="close"
@@ -31,8 +29,8 @@ SPDX-License-Identifier: MIT
       </div>
       <div v-if="tab === 'code'">
         <p class="text-body-2 text-neutral-500">
-          Copy and paste the following iframe code into your
-          website to provide users with a live snapshot of your project's metrics.
+          Copy and paste the following iframe code into your website to provide users with a live
+          snapshot of your project's metrics.
         </p>
         <div class="my-8">
           <div
@@ -41,15 +39,14 @@ SPDX-License-Identifier: MIT
           >
             <lfx-skeleton class="w-full !h-60 !rounded-lg" />
             <div class="absolute top-0 left-0 w-full h-full flex items-center justify-center">
-              <p class="text-body-1 italic text-neutral-500">
-                Loading iFrame code...
-              </p>
+              <p class="text-body-1 italic text-neutral-500">Loading iFrame code...</p>
             </div>
           </div>
           <pre
             v-else
             class="bg-neutral-50 border border-neutral-200 rounded-md py-2 px-2.5 overflow-auto"
-          >{{ iframe}}</pre>
+            >{{ iframe }}</pre
+          >
         </div>
         <lfx-button
           type="tertiary"
@@ -69,32 +66,26 @@ SPDX-License-Identifier: MIT
         >
           <lfx-skeleton class="w-full !h-60 !rounded-lg" />
           <div class="absolute top-0 left-0 w-full h-full flex items-center justify-center">
-            <p class="text-body-1 italic text-neutral-500">
-              Loading preview...
-            </p>
+            <p class="text-body-1 italic text-neutral-500">Loading preview...</p>
           </div>
         </div>
         <div
           :class="height > 0 ? 'h-auto' : 'h-0 overflow-hidden'"
           class="bg-neutral-100 border border-neutral-200 rounded-lg"
         >
-          <p class="text-neutral-500 text-xs font-semibold leading-5 text-center mb-px">
-            Preview
-          </p>
-          <div
-            class="-m-px bg-neutral-100 !rounded-lg"
-          >
+          <p class="text-neutral-500 text-xs font-semibold leading-5 text-center mb-px">Preview</p>
+          <div class="-m-px bg-neutral-100 !rounded-lg">
             <div class="overflow-auto">
               <iframe
                 ref="preview"
                 :src="fullUrl"
+                :title="`${widgetConfig.name} Widget Preview`"
                 width="600"
                 allowfullscreen
                 class="rounded-lg border-none"
                 @load="adjustIframeHeight"
               />
             </div>
-
           </div>
         </div>
       </div>
@@ -103,30 +94,29 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script lang="ts" setup>
-import {storeToRefs} from "pinia";
-import {computed} from "vue";
-import LfxModal from "~/components/uikit/modal/modal.vue";
-import type {Widget} from "~/components/modules/widget/types/widget";
-import {lfxWidgets} from "~/components/modules/widget/config/widget.config";
-import {useProjectStore} from "~/components/modules/project/store/project.store";
-import LfxIconButton from "~/components/uikit/icon-button/icon-button.vue";
-import LfxTabs from "~/components/uikit/tabs/tabs.vue";
-import LfxButton from "~/components/uikit/button/button.vue";
-import LfxIcon from "~/components/uikit/icon/icon.vue";
-import {ToastTypesEnum} from "~/components/uikit/toast/types/toast.types";
-import useToastService from "~/components/uikit/toast/toast.service";
-import LfxSkeleton from "~/components/uikit/skeleton/skeleton.vue";
+import { storeToRefs } from 'pinia';
+import { computed } from 'vue';
+import LfxModal from '~/components/uikit/modal/modal.vue';
+import type { Widget } from '~/components/modules/widget/types/widget';
+import { lfxWidgets } from '~/components/modules/widget/config/widget.config';
+import { useProjectStore } from '~/components/modules/project/store/project.store';
+import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
+import LfxTabs from '~/components/uikit/tabs/tabs.vue';
+import LfxButton from '~/components/uikit/button/button.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
+import useToastService from '~/components/uikit/toast/toast.service';
+import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
 
 const props = defineProps<{
   modelValue: boolean;
-  widgetName: Widget,
-  data: object
+  widgetName: Widget;
+  data: object;
 }>();
 
-const emit = defineEmits<{(e: 'update:modelValue', value: boolean): void;
-}>();
+const emit = defineEmits<{ (e: 'update:modelValue', value: boolean): void }>();
 
-const {showToast} = useToastService();
+const { showToast } = useToastService();
 
 const tab = ref('code');
 const preview = ref(null);
@@ -139,17 +129,22 @@ const tabs = [
 
 const isModalOpen = computed<boolean>({
   get: () => props.modelValue,
-  set: (value: boolean) => emit('update:modelValue', value)
+  set: (value: boolean) => emit('update:modelValue', value),
 });
 const {
-project, selectedRepositories, selectedRepositoryGroup, startDate, endDate, selectedTimeRangeKey
-} = storeToRefs(useProjectStore())
+  project,
+  selectedRepositories,
+  selectedRepositoryGroup,
+  startDate,
+  endDate,
+  selectedTimeRangeKey,
+} = storeToRefs(useProjectStore());
 
 const widgetConfig = computed(() => lfxWidgets[props.widgetName]);
 
 const domain = computed(() => window?.location.origin);
 const baseUrl = computed(() => {
-  return `${domain.value}/embed/project/${project.value?.slug}`
+  return `${domain.value}/embed/project/${project.value?.slug}`;
 });
 
 const queryParams = computed(() => {
@@ -158,14 +153,13 @@ const queryParams = computed(() => {
   params.set('startDate', startDate.value || '');
   params.set('endDate', endDate.value || '');
   params.set('timeRangeKey', selectedTimeRangeKey.value || '');
-  if(selectedRepositoryGroup.value) {
+  if (selectedRepositoryGroup.value) {
     params.set('repositoryGroup', selectedRepositoryGroup.value.slug);
-  }
-  else if(selectedRepositories.value?.length > 0) {
+  } else if (selectedRepositories.value?.length > 0) {
     params.set('repos', selectedRepositories.value.map((repo) => repo.slug).join('|'));
   }
   Object.entries(props.data).forEach(([key, value]) => {
-    if(value !== undefined && value !== null) {
+    if (value !== undefined && value !== null) {
       params.set(key, String(value));
     }
   });
@@ -174,7 +168,8 @@ const queryParams = computed(() => {
 
 const fullUrl = computed(() => `${baseUrl.value}?${queryParams.value}`);
 
-const iframe = computed(() => `<iframe
+const iframe = computed(
+  () => `<iframe
     src="${fullUrl.value}"
     width="600"
     height="${height.value || 600}"
@@ -182,22 +177,20 @@ const iframe = computed(() => `<iframe
     loading="lazy"
     style="border: none; border-radius: 8px">
 </iframe>
-`);
+`,
+);
 
 const copy = () => {
-  if(navigator?.clipboard){
+  if (navigator?.clipboard) {
     navigator?.clipboard.writeText(iframe.value);
-    showToast(
-        `Widget embed code copied to clipboard`,
-        ToastTypesEnum.positive,
-    );
+    showToast(`Widget embed code copied to clipboard`, ToastTypesEnum.positive);
     isModalOpen.value = false;
   }
-}
+};
 
 const adjustIframeHeight = () => {
   if (preview.value?.contentWindow?.document?.body) {
-    const {scrollHeight} = preview.value.contentWindow.document.body;
+    const { scrollHeight } = preview.value.contentWindow.document.body;
     preview.value.style.height = `${scrollHeight}px`;
     height.value = scrollHeight;
   }
@@ -206,6 +199,6 @@ const adjustIframeHeight = () => {
 
 <script lang="ts">
 export default {
-  name: 'LfxWidgetEmbedModal'
-}
+  name: 'LfxWidgetEmbedModal',
+};
 </script>

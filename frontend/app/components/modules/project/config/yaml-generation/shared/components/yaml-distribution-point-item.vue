@@ -35,35 +35,35 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import useVuelidate from '@vuelidate/core'
-import { url } from '@vuelidate/validators'
-import LfxInput from '~/components/uikit/input/input.vue'
-import LfxField from '~/components/uikit/field/field.vue'
-import LfxFieldMessages from '~/components/uikit/field/field-messages.vue'
-import LfxTextarea from '~/components/uikit/textarea/textarea.vue'
+import useVuelidate from '@vuelidate/core';
+import { url } from '@vuelidate/validators';
+import LfxInput from '~/components/uikit/input/input.vue';
+import LfxField from '~/components/uikit/field/field.vue';
+import LfxFieldMessages from '~/components/uikit/field/field-messages.vue';
+import LfxTextarea from '~/components/uikit/textarea/textarea.vue';
 
 const props = defineProps<{
-  modelValue: object
-}>()
+  modelValue: object;
+}>();
 
-const emit = defineEmits<{ (e: 'update:modelValue', value: object): void }>()
+const emit = defineEmits<{ (e: 'update:modelValue', value: object): void }>();
 
 const model = computed<object>({
   get: () => props.modelValue,
   set: (value: object) => emit('update:modelValue', value),
-})
+});
 
 const rules = {
   uri: {
     url,
   },
-}
+};
 
-const $v = useVuelidate(rules, model)
+const $v = useVuelidate(rules, model);
 </script>
 
 <script lang="ts">
 export default {
   name: 'LfxYamlDistributionPointItem',
-}
+};
 </script>

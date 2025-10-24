@@ -105,4 +105,4 @@ export default defineEventHandler(async () => [
     ISSUES_OPENED: 0,
     ISSUES_CLOSED: 0,
   },
-])
+]);

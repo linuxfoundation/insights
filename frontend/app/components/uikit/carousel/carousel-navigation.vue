@@ -30,7 +30,6 @@ SPDX-License-Identifier: MIT
       :size="18"
     />
   </button>
-
 </template>
 <script setup lang="ts">
 import LfxIcon from '~/components/uikit/icon/icon.vue';
@@ -41,8 +40,7 @@ defineProps<{
   disabled?: boolean;
 }>();
 
-const emit = defineEmits<{(e: 'next' | 'previous'): void;
-}>();
+const emit = defineEmits<{ (e: 'next' | 'previous'): void }>();
 
 const goToPrev = () => {
   emit('previous');
@@ -56,5 +54,5 @@ const goToNext = () => {
 <script lang="ts">
 export default {
   name: 'LfxCarouselNavigation',
-}
+};
 </script>

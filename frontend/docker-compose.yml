@@ -4,11 +4,10 @@ services:
   app:
     env_file:
       - .env
-    container_name: 'lfx-insights-app'
+    container_name: "lfx-insights-app"
     build:
       context: .
       target: files
     ports:
       - "3000:3000"
     command: npm run dev
-

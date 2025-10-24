@@ -42,9 +42,9 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import {computed} from 'vue';
+import { computed } from 'vue';
 import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
-import {lfxTrustScore} from "~~/config/trust-score";
+import { lfxTrustScore } from '~~/config/trust-score';
 
 const props = defineProps<{
   overallScore: number;
@@ -53,19 +53,21 @@ const props = defineProps<{
 
 const scoreConfig = computed(() => {
   if (props.hideOverallScore) {
-    return {label: 'Unavailable', color: ''};
+    return { label: 'Unavailable', color: '' };
   }
-  return lfxTrustScore.find(
-      (s) => props.overallScore <= s.maxScore && props.overallScore >= s.minScore
-  ) || {
-    label: 'Critical',
-    color: 'bg-negative-500'
-  };
+  return (
+    lfxTrustScore.find(
+      (s) => props.overallScore <= s.maxScore && props.overallScore >= s.minScore,
+    ) || {
+      label: 'Critical',
+      color: 'bg-negative-500',
+    }
+  );
 });
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxProjectTrustScoreDisplay'
+  name: 'LfxProjectTrustScoreDisplay',
 };
 </script>

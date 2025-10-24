@@ -19,11 +19,7 @@ SPDX-License-Identifier: MIT
         class="lfx-table-row"
       >
         <div class="name-col grow !gap-3">
-          <div
-            class="mr-1 text-neutral-400 text-xs"
-          >
-            #{{ index + 1 }}
-          </div>
+          <div class="mr-1 text-neutral-400 text-xs">#{{ index + 1 }}</div>
           <lfx-avatar
             :src="row.avatar"
             type="member"
@@ -44,26 +40,24 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { computed, onServerPrefetch } from 'vue';
 import { EXPLORE_API_SERVICE } from '~/components/modules/explore/services/explore.api.service';
-import LfxAvatar from "~/components/uikit/avatar/avatar.vue";
+import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
 import { isEmptyData } from '~/components/shared/utils/helper';
-import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
+import LfxProjectLoadState from '~/components/modules/project/components/shared/load-state.vue';
 
 const props = defineProps<{
   isFullList?: boolean;
 }>();
 
-const {
-  data,
-  isPending,
-  status,
-  error,
-  suspense
-} = EXPLORE_API_SERVICE.fetchTopContributors(props.isFullList ? 100 : 10);
+const { data, isPending, status, error, suspense } = EXPLORE_API_SERVICE.fetchTopContributors(
+  props.isFullList ? 100 : 10,
+);
 
 const tableData = computed(() => data.value);
 
 // const showLoadMore = computed(() => props.isFullList && tableData.value?.length && tableData.value.length < 100);
-const isEmpty = computed(() => isEmptyData(tableData.value as unknown as Record<string, unknown>[]));
+const isEmpty = computed(() =>
+  isEmptyData(tableData.value as unknown as Record<string, unknown>[]),
+);
 
 onServerPrefetch(async () => {
   await suspense();
@@ -72,6 +66,6 @@ onServerPrefetch(async () => {
 
 <script lang="ts">
 export default {
-  name: 'LfxExploreTopContributors'
+  name: 'LfxExploreTopContributors',
 };
 </script>

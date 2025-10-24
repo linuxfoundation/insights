@@ -22,17 +22,17 @@ SPDX-License-Identifier: MIT
           @click="isModalOpen = false"
         />
       </div>
-      <h3 class="text-heading-3 font-secondary font-bold pb-1">
-        Report issue
-      </h3>
+      <h3 class="text-heading-3 font-secondary font-bold pb-1">Report issue</h3>
       <p class="text-body-2 text-neutral-500">
-        Help is improve our data by reporting any issues or bugs you’ve encountered. Check the currently open
+        Help is improve our data by reporting any issues or bugs you’ve encountered. Check the
+        currently open
         <a
           :href="links.issues"
           target="_blank"
           rel="noreferrer"
           class="text-brand-500"
-        >Insights GitHub Issues</a>.
+          >Insights GitHub Issues</a
+        >.
       </p>
     </section>
 
@@ -48,10 +48,10 @@ SPDX-License-Identifier: MIT
               :key="areaKey"
               type="bordered"
               class="cursor-pointer transition-all"
-              :class="{'!bg-brand-50 !border-brand-200': form.area === areaKey}"
+              :class="{ '!bg-brand-50 !border-brand-200': form.area === areaKey }"
               @click="form.area = areaKey"
             >
-              {{area.label}}
+              {{ area.label }}
             </lfx-chip>
           </div>
 
@@ -61,7 +61,9 @@ SPDX-License-Identifier: MIT
           />
         </lfx-field>
       </article>
-      <article v-if="(lfxWidgetArea[form.area as WidgetArea]?.widgets || []).length > 0 && !form.hideArea">
+      <article
+        v-if="(lfxWidgetArea[form.area as WidgetArea]?.widgets || []).length > 0 && !form.hideArea"
+      >
         <lfx-field
           label="Data insight"
           placeholder="Select option"
@@ -71,7 +73,7 @@ SPDX-License-Identifier: MIT
             placeholder="Select option"
           >
             <lfx-option
-              v-for="widget of (lfxWidgetArea[form.area as WidgetArea]?.widgets || [])"
+              v-for="widget of lfxWidgetArea[form.area as WidgetArea]?.widgets || []"
               :key="widget"
               :value="widget"
               :label="lfxWidgets[widget]?.name"
@@ -160,41 +162,40 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script lang="ts" setup>
-import {computed, watch} from "vue";
-import { required } from '@vuelidate/validators'
-import useVuelidate from "@vuelidate/core";
-import {storeToRefs} from "pinia";
-import LfxModal from "~/components/uikit/modal/modal.vue";
-import LfxIcon from "~/components/uikit/icon/icon.vue";
-import LfxIconButton from "~/components/uikit/icon-button/icon-button.vue";
-import LfxField from "~/components/uikit/field/field.vue";
-import LfxChip from "~/components/uikit/chip/chip.vue";
-import LfxSelect from "~/components/uikit/select/select.vue";
-import LfxOption from "~/components/uikit/select/option.vue";
-import LfxTextarea from "~/components/uikit/textarea/textarea.vue";
-import LfxButton from "~/components/uikit/button/button.vue";
-import {useProjectStore} from "~/components/modules/project/store/project.store";
-import type {ReportRequest} from "~~/types/report/requests.types";
-import useToastService from "~/components/uikit/toast/toast.service";
-import {ToastTypesEnum} from "~/components/uikit/toast/types/toast.types";
-import LfxFieldMessages from "~/components/uikit/field/field-messages.vue";
-import {lfxWidgetArea} from "~/components/modules/widget/config/widget-area.config";
-import type {Widget} from "~/components/modules/widget/types/widget";
-import type {ReportDataForm} from "~/components/shared/modules/report/types/report.types";
-import {lfxWidgets} from "~/components/modules/widget/config/widget.config";
-import type {WidgetArea} from "~/components/modules/widget/types/widget-area";
-import {links} from "~/config/links";
+import { computed, watch } from 'vue';
+import { required } from '@vuelidate/validators';
+import useVuelidate from '@vuelidate/core';
+import { storeToRefs } from 'pinia';
+import LfxModal from '~/components/uikit/modal/modal.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
+import LfxField from '~/components/uikit/field/field.vue';
+import LfxChip from '~/components/uikit/chip/chip.vue';
+import LfxSelect from '~/components/uikit/select/select.vue';
+import LfxOption from '~/components/uikit/select/option.vue';
+import LfxTextarea from '~/components/uikit/textarea/textarea.vue';
+import LfxButton from '~/components/uikit/button/button.vue';
+import { useProjectStore } from '~/components/modules/project/store/project.store';
+import type { ReportRequest } from '~~/types/report/requests.types';
+import useToastService from '~/components/uikit/toast/toast.service';
+import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
+import LfxFieldMessages from '~/components/uikit/field/field-messages.vue';
+import { lfxWidgetArea } from '~/components/modules/widget/config/widget-area.config';
+import type { Widget } from '~/components/modules/widget/types/widget';
+import type { ReportDataForm } from '~/components/shared/modules/report/types/report.types';
+import { lfxWidgets } from '~/components/modules/widget/config/widget.config';
+import type { WidgetArea } from '~/components/modules/widget/types/widget-area';
+import { links } from '~/config/links';
 
 const props = defineProps<{
   modelValue: boolean;
-  defaults: Partial<ReportDataForm>
-}>()
-
-const emit = defineEmits<{(e: 'update:modelValue', value: boolean): void;
+  defaults: Partial<ReportDataForm>;
 }>();
 
-const {project, selectedRepoSlugs} = storeToRefs(useProjectStore());
-const {showToast} = useToastService();
+const emit = defineEmits<{ (e: 'update:modelValue', value: boolean): void }>();
+
+const { project, selectedRepoSlugs } = storeToRefs(useProjectStore());
+const { showToast } = useToastService();
 
 const isSending = ref(false);
 
@@ -203,7 +204,7 @@ const isModalOpen = computed({
   set: (value: boolean) => {
     emit('update:modelValue', value);
   },
-})
+});
 
 const form = reactive<ReportDataForm>({
   area: '',
@@ -213,22 +214,24 @@ const form = reactive<ReportDataForm>({
   expectations: '',
   hideArea: false,
   ...props.defaults,
-})
+});
 
 const rules = computed(() => ({
-  area: form.hideArea ? {} : {
+  area: form.hideArea
+    ? {}
+    : {
+        required,
+      },
+  description: {
     required,
   },
-  description: {
-    required
-  },
   steps: {
-    required
+    required,
   },
   expectations: {
-    required
+    required,
   },
-}))
+}));
 
 const $v = useVuelidate(rules, form);
 
@@ -244,9 +247,9 @@ const submit = () => {
     projectName: project.value?.name,
     repositoryUrl: selectedRepoSlugs.value.join(','),
     pageTitle: document.title,
-  }
+  };
 
-  if(isSending.value) {
+  if (isSending.value) {
     return;
   }
 
@@ -256,33 +259,39 @@ const submit = () => {
     method: 'POST',
     body: data,
   })
-      .then((res) => {
-        isModalOpen.value = false;
-        showToast('Thanks for your feedback! We’ll look into the issue shortly.', ToastTypesEnum.positive,
-            'circle-check',
-            15000,
-            {
-              title: 'Issue successfully reported',
-              actionLabel: 'View issue',
-              actionUrl: res as string
-            });
-      })
-      .catch(() => {
-        showToast(
-          'There was an error reporting issue, please try again later',
-          ToastTypesEnum.negative,
-          undefined,
-          3000
-        )
-      })
-      .finally(() => {
-        isSending.value = false;
-      })
-}
+    .then((res) => {
+      isModalOpen.value = false;
+      showToast(
+        'Thanks for your feedback! We’ll look into the issue shortly.',
+        ToastTypesEnum.positive,
+        'circle-check',
+        15000,
+        {
+          title: 'Issue successfully reported',
+          actionLabel: 'View issue',
+          actionUrl: res as string,
+        },
+      );
+    })
+    .catch(() => {
+      showToast(
+        'There was an error reporting issue, please try again later',
+        ToastTypesEnum.negative,
+        undefined,
+        3000,
+      );
+    })
+    .finally(() => {
+      isSending.value = false;
+    });
+};
 
-watch(() => form.area, () => {
-  form.widget = '';
-})
+watch(
+  () => form.area,
+  () => {
+    form.widget = '';
+  },
+);
 </script>
 
 <script lang="ts">

@@ -46,23 +46,22 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-import LfxButton from '~/components/uikit/button/button.vue'
-import LfxIcon from '~/components/uikit/icon/icon.vue'
-import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue'
-import LfxYamlSecurityToolItem from
-  '~/components/modules/project/config/yaml-generation/shared/components/yaml-security-tool-item.vue'
+import { computed } from 'vue';
+import LfxButton from '~/components/uikit/button/button.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
+import LfxYamlSecurityToolItem from '~/components/modules/project/config/yaml-generation/shared/components/yaml-security-tool-item.vue';
 
 const props = defineProps<{
-  modelValue: object
-}>()
+  modelValue: object;
+}>();
 
-const emit = defineEmits<{ (e: 'update:modelValue', value: object): void }>()
+const emit = defineEmits<{ (e: 'update:modelValue', value: object): void }>();
 
 const model = computed<object>({
   get: () => props.modelValue,
   set: (value: object) => emit('update:modelValue', value),
-})
+});
 
 const addSecurityTool = () => {
   model.value.repository.security.tools.push({
@@ -96,12 +95,12 @@ const addSecurityTool = () => {
       release: false,
     },
     comment: '',
-  })
-}
+  });
+};
 </script>
 
 <script lang="ts">
 export default {
   name: 'LfxYamlComprehensiveRepositorySecurityTools',
-}
+};
 </script>

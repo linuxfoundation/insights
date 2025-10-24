@@ -18,11 +18,13 @@ SPDX-License-Identifier: MIT
             <span
               v-if="repositoryGroup && selectedRepositoryGroup"
               class="font-normal"
-            >&nbsp;/ {{ selectedRepositoryGroup?.name }}</span>
+              >&nbsp;/ {{ selectedRepositoryGroup?.name }}</span
+            >
             <span
               v-else-if="repoName"
               class="font-normal"
-            >&nbsp;/ {{ repoName }}</span>
+              >&nbsp;/ {{ repoName }}</span
+            >
           </p>
         </div>
         <div class="text-body-2 text-neutral-500 flex items-center gap-1">
@@ -42,7 +44,7 @@ SPDX-License-Identifier: MIT
           v-if="config?.name"
           class="text-heading-2 font-bold font-secondary"
         >
-          {{config?.name}}
+          {{ config?.name }}
         </h2>
       </div>
       <component
@@ -66,40 +68,38 @@ SPDX-License-Identifier: MIT
           loading="lazy"
           width="88"
           height="14"
-        >
+        />
       </div>
     </a>
   </lfx-card>
 </template>
 
 <script lang="ts" setup>
-import {computed, onServerPrefetch} from "vue";
-import {useQuery} from "@tanstack/vue-query";
-import {DateTime} from "luxon";
-import {storeToRefs} from "pinia";
-import {lfxWidgets, type WidgetConfig} from "~/components/modules/widget/config/widget.config";
-import type {Widget} from "~/components/modules/widget/types/widget";
-import LfxIcon from "~/components/uikit/icon/icon.vue";
-import LfxCard from "~/components/uikit/card/card.vue";
-import {TanstackKey} from "~/components/shared/types/tanstack";
-import type {Project} from "~~/types/project";
-import {PROJECT_API_SERVICE} from "~/components/modules/project/services/project.api.service";
-import LfxAvatar from "~/components/uikit/avatar/avatar.vue";
-import {useProjectStore} from "~/components/modules/project/store/project.store";
-import {dateOptKeys} from "~/components/modules/project/config/date-options";
+import { computed, onServerPrefetch } from 'vue';
+import { useQuery } from '@tanstack/vue-query';
+import { DateTime } from 'luxon';
+import { storeToRefs } from 'pinia';
+import { lfxWidgets, type WidgetConfig } from '~/components/modules/widget/config/widget.config';
+import type { Widget } from '~/components/modules/widget/types/widget';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxCard from '~/components/uikit/card/card.vue';
+import { TanstackKey } from '~/components/shared/types/tanstack';
+import type { Project } from '~~/types/project';
+import { PROJECT_API_SERVICE } from '~/components/modules/project/services/project.api.service';
+import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
+import { useProjectStore } from '~/components/modules/project/store/project.store';
+import { dateOptKeys } from '~/components/modules/project/config/date-options';
 
 const route = useRoute();
 const { slug } = route.params;
-const {
- widget, startDate, endDate, timeRangeKey, repos, repositoryGroup, ...params
-} = route.query;
+const { widget, startDate, endDate, timeRangeKey, repos, repositoryGroup, ...params } = route.query;
 
 const {
   startDate: startDateStore,
   endDate: endDateStore,
   selectedTimeRangeKey,
-    selectedRepositoryGroup,
-  project
+  selectedRepositoryGroup,
+  project,
 } = storeToRefs(useProjectStore());
 
 const config: WidgetConfig = lfxWidgets[widget as Widget];
@@ -107,10 +107,7 @@ const config: WidgetConfig = lfxWidgets[widget as Widget];
 // Fetch project
 const queryKey = computed(() => [TanstackKey.PROJECT, slug]);
 
-const {
-  data,
-  suspense,
-} = useQuery<Project>({
+const { data, suspense } = useQuery<Project>({
   queryKey,
   queryFn: PROJECT_API_SERVICE.fetchProject(slug as string),
   retry: false,
@@ -119,29 +116,29 @@ const {
 const repositories = computed(() => repos?.split('|') || []);
 
 const repoName = computed(() => {
-  if(repositories.value?.length === 1){
-    const [repoSlug] = repositories.value
+  if (repositories.value?.length === 1) {
+    const [repoSlug] = repositories.value;
     const repo = data.value?.repositories.find((repo) => repo.slug === repoSlug);
     return repo?.name?.split('/').at(-1) || '';
   }
-  if(repositories.value?.length > 1){
+  if (repositories.value?.length > 1) {
     return `${repositories.value.length} repositories`;
   }
-  return ''
+  return '';
 });
 
 onServerPrefetch(async () => {
   await suspense();
-  project.value = data.value as Project
+  project.value = data.value as Project;
 });
 
 startDateStore.value = startDate as string;
 endDateStore.value = endDate as string;
-selectedTimeRangeKey.value = timeRangeKey as string || dateOptKeys.past365days;
+selectedTimeRangeKey.value = (timeRangeKey as string) || dateOptKeys.past365days;
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxWidgetEmbed'
+  name: 'LfxWidgetEmbed',
 };
 </script>

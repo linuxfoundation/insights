@@ -54,17 +54,17 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-import LfxTextarea from '~/components/uikit/textarea/textarea.vue'
-import LfxIcon from '~/components/uikit/icon/icon.vue'
+import { computed } from 'vue';
+import LfxTextarea from '~/components/uikit/textarea/textarea.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 const props = defineProps<{
-  modelValue: object
-}>()
+  modelValue: object;
+}>();
 
-const emit = defineEmits<{ (e: 'update:modelValue', value: object): void }>()
+const emit = defineEmits<{ (e: 'update:modelValue', value: object): void }>();
 
 const model = computed<object>({
   get: () => props.modelValue,
   set: (value: object) => emit('update:modelValue', value),
-})
+});
 </script>

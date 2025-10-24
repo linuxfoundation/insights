@@ -22,7 +22,9 @@ SPDX-License-Identifier: MIT
               v-if="summary && !isEmpty"
               class="flex flex-row flex-wrap gap-4 items-center"
             >
-              <div class="text-data-display-1 whitespace-nowrap">{{ formatNumber(summary.current) }}</div>
+              <div class="text-data-display-1 whitespace-nowrap">
+                {{ formatNumber(summary.current) }}
+              </div>
               <lfx-delta-display
                 v-if="selectedTimeRangeKey !== dateOptKeys.alltime"
                 :summary="summary"
@@ -86,34 +88,44 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { useRoute } from 'nuxt/app';
-import {
- computed, watch
-} from 'vue';
-import { storeToRefs } from "pinia";
+import { computed, watch } from 'vue';
+import { storeToRefs } from 'pinia';
 import { DateTime } from 'luxon';
-import type { IssuesResolution, IssuesResolutionSummary } from '~~/types/development/responses.types';
+import type {
+  IssuesResolution,
+  IssuesResolutionSummary,
+} from '~~/types/development/responses.types';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
-import { convertToChartData, currentInterval } from '~/components/uikit/chart/helpers/chart-helpers';
+import {
+  convertToChartData,
+  currentInterval,
+} from '~/components/uikit/chart/helpers/chart-helpers';
 import type {
   ChartData,
   RawChartData,
-  ChartSeries
+  ChartSeries,
 } from '~/components/uikit/chart/types/ChartTypes';
 import LfxChart from '~/components/uikit/chart/chart.vue';
-import { getLineAreaChartConfig, getMarkLine, getVisualMap } from '~/components/uikit/chart/configs/line.area.chart';
+import {
+  getLineAreaChartConfig,
+  getMarkLine,
+  getVisualMap,
+} from '~/components/uikit/chart/configs/line.area.chart';
 import { lfxColors } from '~/config/styles/colors';
 import { formatNumber, formatSecondsToDuration } from '~/components/shared/utils/formatter';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
-import { useProjectStore } from "~/components/modules/project/store/project.store";
+import { useProjectStore } from '~/components/modules/project/store/project.store';
 import { isEmptyData } from '~/components/shared/utils/helper';
 import { lineGranularities } from '~/components/shared/types/granularity';
 import { dateOptKeys } from '~/components/modules/project/config/date-options';
 import { Granularity } from '~~/types/shared/granularity';
-import LfxSkeletonState from "~/components/modules/project/components/shared/skeleton-state.vue";
-import LfxProjectLoadState from "~/components/modules/project/components/shared/load-state.vue";
-import {Widget} from "~/components/modules/widget/types/widget";
-import { DEVELOPMENT_API_SERVICE, type QueryParams } 
-  from '~/components/modules/widget/services/development.api.service';
+import LfxSkeletonState from '~/components/modules/project/components/shared/skeleton-state.vue';
+import LfxProjectLoadState from '~/components/modules/project/components/shared/load-state.vue';
+import { Widget } from '~/components/modules/widget/types/widget';
+import {
+  DEVELOPMENT_API_SERVICE,
+  type QueryParams,
+} from '~/components/modules/widget/services/development.api.service';
 import type { WidgetModel } from '~/components/modules/widget/config/widget.config';
 
 interface IssuesResolutionModel extends WidgetModel {
@@ -121,25 +133,26 @@ interface IssuesResolutionModel extends WidgetModel {
 }
 
 const props = defineProps<{
-  modelValue?: IssuesResolutionModel,
-  snapshot?: boolean
-}>()
-
-const emit = defineEmits<{
-(e: 'dataLoaded', value: string): void;
-(e: 'update:modelValue', value: IssuesResolutionModel): void;
-(e: 'hasData', value: boolean): void;
+  modelValue?: IssuesResolutionModel;
+  snapshot?: boolean;
 }>();
 
-const {
-  startDate, endDate, selectedReposValues, selectedTimeRangeKey, customRangeGranularity
-} = storeToRefs(useProjectStore())
+const emit = defineEmits<{
+  (e: 'dataLoaded', value: string): void;
+  (e: 'update:modelValue', value: IssuesResolutionModel): void;
+  (e: 'hasData', value: boolean): void;
+}>();
+
+const { startDate, endDate, selectedReposValues, selectedTimeRangeKey, customRangeGranularity } =
+  storeToRefs(useProjectStore());
 
 const route = useRoute();
 
-const granularity = computed(() => (selectedTimeRangeKey.value === dateOptKeys.custom
-  ? customRangeGranularity.value[0] as Granularity
-  : lineGranularities[selectedTimeRangeKey.value as keyof typeof lineGranularities]));
+const granularity = computed(() =>
+  selectedTimeRangeKey.value === dateOptKeys.custom
+    ? (customRangeGranularity.value[0] as Granularity)
+    : lineGranularities[selectedTimeRangeKey.value as keyof typeof lineGranularities],
+);
 
 const params = computed<QueryParams>(() => ({
   projectSlug: route.params.slug as string,
@@ -149,31 +162,31 @@ const params = computed<QueryParams>(() => ({
   endDate: endDate.value,
 }));
 
-const {
-  data, status, error
-} = DEVELOPMENT_API_SERVICE.fetchIssuesResolution(params);
+const { data, status, error } = DEVELOPMENT_API_SERVICE.fetchIssuesResolution(params);
 
 const issuesResolution = computed<IssuesResolution>(() => data.value as IssuesResolution);
 
 const summary = computed<IssuesResolutionSummary>(() => issuesResolution.value?.summary);
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
-  () => convertToChartData(
-    (issuesResolution.value?.data || []) as unknown as RawChartData[],
-    'dateFrom',
-    [
-      'closedIssues',
-      'totalIssues'
-    ],
-undefined,
-'dateTo'
-)
+  () =>
+    convertToChartData(
+      (issuesResolution.value?.data || []) as unknown as RawChartData[],
+      'dateFrom',
+      ['closedIssues', 'totalIssues'],
+      undefined,
+      'dateTo',
+    ),
 );
 
 const columnBeforeLastItem = computed<string>(() => {
   if (chartData.value.length > 1) {
     const columnBeforeLastItem = chartData.value[chartData.value.length - 2];
-    return DateTime.fromISO(columnBeforeLastItem?.key || '').toUTC().endOf('day').toMillis().toString();
+    return DateTime.fromISO(columnBeforeLastItem?.key || '')
+      .toUTC()
+      .endOf('day')
+      .toMillis()
+      .toString();
   }
   return '';
 });
@@ -189,7 +202,9 @@ const isLastDataItemIncomplete = computed(() => {
   return false;
 });
 
-const avgVelocity = computed<string>(() => formatSecondsToDuration(summary.value?.avgVelocityInDays || 0, 'long'));
+const avgVelocity = computed<string>(() =>
+  formatSecondsToDuration(summary.value?.avgVelocityInDays || 0, 'long'),
+);
 
 const chartSeries = computed<ChartSeries[]>(() => [
   {
@@ -200,7 +215,7 @@ const chartSeries = computed<ChartSeries[]>(() => [
     position: 'left',
     color: lfxColors.brand[500],
     lineWidth: 2,
-    markLine: isLastDataItemIncomplete.value ? getMarkLine(columnBeforeLastItem.value) : undefined
+    markLine: isLastDataItemIncomplete.value ? getMarkLine(columnBeforeLastItem.value) : undefined,
   },
   {
     name: 'Total Issues',
@@ -210,42 +225,60 @@ const chartSeries = computed<ChartSeries[]>(() => [
     position: 'left',
     lineStyle: 'dotted',
     color: lfxColors.neutral[500],
-    lineWidth: 2
-  }
+    lineWidth: 2,
+  },
 ]);
 
-const lineAreaChartConfig = computed(() => getLineAreaChartConfig(
-  chartData.value,
-  chartSeries.value,
-  granularity.value,
-  undefined,
-  isLastDataItemIncomplete.value ? {
-    visualMap: getVisualMap(chartData.value.length, chartSeries.value)
-  } : undefined
-));
-const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
+const lineAreaChartConfig = computed(() =>
+  getLineAreaChartConfig(
+    chartData.value,
+    chartSeries.value,
+    granularity.value,
+    undefined,
+    isLastDataItemIncomplete.value
+      ? {
+          visualMap: getVisualMap(chartData.value.length, chartSeries.value),
+        }
+      : undefined,
+  ),
+);
+const isEmpty = computed(() =>
+  isEmptyData(chartData.value as unknown as Record<string, unknown>[]),
+);
 
-watch(status, (value: string) => {
-  if (value !== 'pending') {
-    emit('dataLoaded', Widget.ISSUES_RESOLUTION);
-  }
-}, {
-  immediate: true
-});
+watch(
+  status,
+  (value: string) => {
+    if (value !== 'pending') {
+      emit('dataLoaded', Widget.ISSUES_RESOLUTION);
+    }
+  },
+  {
+    immediate: true,
+  },
+);
 
-watch(granularity, (value: Granularity) => {
-  emit('update:modelValue', { granularity: value });
-}, { immediate: true });
+watch(
+  granularity,
+  (value: Granularity) => {
+    emit('update:modelValue', { granularity: value });
+  },
+  { immediate: true },
+);
 
-watch(isEmpty, (value: boolean) => {
-  emit('hasData', !value);
-}, {
-  immediate: true
-});
+watch(
+  isEmpty,
+  (value: boolean) => {
+    emit('hasData', !value);
+  },
+  {
+    immediate: true,
+  },
+);
 </script>
 
 <script lang="ts">
 export default {
   name: 'LfxProjectIssuesResolution',
-}
+};
 </script>

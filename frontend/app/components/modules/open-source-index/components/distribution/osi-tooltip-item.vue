@@ -17,7 +17,7 @@ SPDX-License-Identifier: MIT
           v-else
           :src="item.logoUrl"
           :alt="item.name"
-        >
+        />
       </div>
 
       <div class="name-text">{{ item.name }}</div>
@@ -34,7 +34,6 @@ SPDX-License-Identifier: MIT
       {{ item.softwareValue }}+
     </div>
   </div>
-
 </template>
 
 <script setup lang="ts">
@@ -45,10 +44,9 @@ defineProps<{
   item: OSIItem;
   type: 'collections' | 'projects';
 }>();
-
 </script>
 <script lang="ts">
 export default {
-  name: 'LfxOSITooltipItem'
+  name: 'LfxOSITooltipItem',
 };
 </script>

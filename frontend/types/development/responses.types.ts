@@ -49,9 +49,9 @@ export interface CodeReviewEngagementReviewsItem {
 export interface CodeReviewEngagement {
   summary: Summary;
   data:
-    CodeReviewEngagementPRParticipantsItem[] |
-    CodeReviewEngagementCommentsItem[] |
-    CodeReviewEngagementReviewsItem[];
+    | CodeReviewEngagementPRParticipantsItem[]
+    | CodeReviewEngagementCommentsItem[]
+    | CodeReviewEngagementReviewsItem[];
 }
 
 export interface ContributionOutsideHours {

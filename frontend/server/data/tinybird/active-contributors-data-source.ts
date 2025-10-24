@@ -8,12 +8,15 @@ in the format the API will return to the client, which isn't ideal. If we ever n
 let's refactor it to return the data in a more generic format.
  */
 
-import type {DateTime} from "luxon";
-import type {ActiveContributorsFilter} from "../types";
-import {getPreviousDates} from "../util";
-import type {TinybirdResponse} from './tinybird';
-import {fetchFromTinybird} from './tinybird'
-import type {TinybirdActiveContributorsData, TinybirdActiveContributorsSummary} from './responses.types';
+import type { DateTime } from 'luxon';
+import type { ActiveContributorsFilter } from '../types';
+import { getPreviousDates } from '../util';
+import type { TinybirdResponse } from './tinybird';
+import { fetchFromTinybird } from './tinybird';
+import type {
+  TinybirdActiveContributorsData,
+  TinybirdActiveContributorsSummary,
+} from './responses.types';
 
 export type ActiveContributorsDataPoint = {
   startDate: string;
@@ -29,7 +32,7 @@ export type ActiveContributorsResponse = {
     periodFrom: DateTime; // Start of the period (e.g. last 90 days)
     periodTo: DateTime; // End of the period (e.g. last 90 days)
   };
-  data: ActiveContributorsDataPoint[],
+  data: ActiveContributorsDataPoint[];
 };
 
 export async function fetchActiveContributors(filter: ActiveContributorsFilter) {
@@ -43,7 +46,7 @@ export async function fetchActiveContributors(filter: ActiveContributorsFilter) 
     includeCodeContributions: filter.includeCodeContributions,
     includeCollaborations: filter.includeCollaborations,
     startDate: dates.current.from,
-    endDate: dates.current.to
+    endDate: dates.current.to,
   };
 
   const previousSummaryQuery = {
@@ -52,7 +55,7 @@ export async function fetchActiveContributors(filter: ActiveContributorsFilter) 
     includeCodeContributions: filter.includeCodeContributions,
     includeCollaborations: filter.includeCollaborations,
     startDate: dates.previous.from,
-    endDate: dates.previous.to
+    endDate: dates.previous.to,
   };
 
   const dataQuery = {
@@ -62,13 +65,22 @@ export async function fetchActiveContributors(filter: ActiveContributorsFilter) 
     includeCodeContributions: filter.includeCodeContributions,
     includeCollaborations: filter.includeCollaborations,
     startDate: dates.current.from,
-    endDate: dates.current.to
+    endDate: dates.current.to,
   };
 
   const [currentSummary, previousSummary, data] = await Promise.all([
-    fetchFromTinybird<TinybirdActiveContributorsSummary>('/v0/pipes/active_contributors.json', currentSummaryQuery),
-    fetchFromTinybird<TinybirdActiveContributorsSummary>('/v0/pipes/active_contributors.json', previousSummaryQuery),
-    fetchFromTinybird<TinybirdActiveContributorsData>('/v0/pipes/active_contributors.json', dataQuery)
+    fetchFromTinybird<TinybirdActiveContributorsSummary>(
+      '/v0/pipes/active_contributors.json',
+      currentSummaryQuery,
+    ),
+    fetchFromTinybird<TinybirdActiveContributorsSummary>(
+      '/v0/pipes/active_contributors.json',
+      previousSummaryQuery,
+    ),
+    fetchFromTinybird<TinybirdActiveContributorsData>(
+      '/v0/pipes/active_contributors.json',
+      dataQuery,
+    ),
   ]);
 
   let processedData: ActiveContributorsDataPoint[] = [];
@@ -77,8 +89,8 @@ export async function fetchActiveContributors(filter: ActiveContributorsFilter) 
       (item): ActiveContributorsDataPoint => ({
         startDate: item.startDate,
         endDate: item.endDate,
-        contributors: item.contributorCount
-      })
+        contributors: item.contributorCount,
+      }),
     );
   }
 
@@ -91,7 +103,8 @@ export async function fetchActiveContributors(filter: ActiveContributorsFilter) 
   } else if (previousContributorCount === 0 && currentContributorCount === 0) {
     percentageChange = 0;
   } else if (previousContributorCount !== 0) {
-    percentageChange = ((currentContributorCount - previousContributorCount) / previousContributorCount) * 100;
+    percentageChange =
+      ((currentContributorCount - previousContributorCount) / previousContributorCount) * 100;
   }
 
   const response: ActiveContributorsResponse = {
