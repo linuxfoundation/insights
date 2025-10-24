@@ -31,46 +31,15 @@ SPDX-License-Identifier: MIT
             >
           </p>
         </div>
-        <!-- Generate YAML and Update buttons -->
-        <div
-          v-if="!isFetching && data?.length && !allArchived"
-          class="flex items-center gap-2"
-        >
-          <lfx-tooltip
-            v-if="!PROJECT_SECURITY_SERVICE.hasSecurityMdFile(data || [])"
-            placement="top"
-          >
-            <lfx-button
-              type="transparent"
-              size="small"
-              button-style="pill"
-              class="whitespace-nowrap !hidden lg:!flex"
-              @click="isGenerateYamlModalOpen = true"
-            >
-              <lfx-icon name="file-shield" />
-              Generate YAML file
-            </lfx-button>
 
-            <template #content>
-              <div class="flex flex-col gap-1 max-w-72">
-                <div class="font-semibold text-white text-xs">YAML Security specifications file</div>
-                <div class="text-neutral-300 text-xs">
-                  Generate a YAML security file, upload it to your repository, and ensure we can run all security
-                  assessments for your project.
-                </div>
-              </div>
-            </template>
-          </lfx-tooltip>
-          <!-- TODO: Enable when backend is ready -->
-          <!--          <lfx-button-->
-          <!--            type="tertiary"-->
-          <!--            size="small"-->
-          <!--            button-style="pill"-->
-          <!--            class="whitespace-nowrap"-->
-          <!--          >-->
-          <!--            <lfx-icon name="arrows-rotate-reverse" />-->
-          <!--            Update results-->
-          <!--          </lfx-button>-->
+        <div class="flex items-center justify-center px-1.5 h-5 border border-neutral-200 rounded-full">
+          <div class="text-neutral-500 text-xs mr-2">Powered by:</div>
+          <img
+            src="~/assets/images/revanite.svg"
+            alt="Revanite.io Logo"
+            class="h-5 w-5.5 mr-1.5"
+          />
+          <div class="text-neutral-900 text-xs">Revanite.io</div>
         </div>
       </div>
 
@@ -159,11 +128,55 @@ SPDX-License-Identifier: MIT
           </lfx-accordion>
         </div>
       </div>
-      <lfx-repos-exclusion-footer
-        v-if="hasSelectedArchivedRepos && !isFetching"
-        class="mt-3"
-        page-content="security"
-      />
+      <div class="flex items-center justify-center gap-1.5">
+        <lfx-repos-exclusion-footer
+          v-if="hasSelectedArchivedRepos && !isFetching"
+          class="mt-3"
+          page-content="security"
+        />
+        <p class="text-neutral-500 text-xs">・</p>
+        <!-- Generate YAML and Update buttons -->
+        <div
+          v-if="!isFetching && data?.length && !allArchived"
+          class="flex items-center gap-2"
+        >
+          <lfx-tooltip
+            v-if="!PROJECT_SECURITY_SERVICE.hasSecurityMdFile(data || [])"
+            placement="top"
+          >
+            <lfx-button
+              type="transparent"
+              size="small"
+              button-style="pill"
+              class="whitespace-nowrap !hidden lg:!flex"
+              @click="isGenerateYamlModalOpen = true"
+            >
+              <lfx-icon name="file-shield" />
+              Generate YAML file
+            </lfx-button>
+
+            <template #content>
+              <div class="flex flex-col gap-1 max-w-72">
+                <div class="font-semibold text-white text-xs">YAML Security specifications file</div>
+                <div class="text-neutral-300 text-xs">
+                  Generate a YAML security file, upload it to your repository, and ensure we can run all security
+                  assessments for your project.
+                </div>
+              </div>
+            </template>
+          </lfx-tooltip>
+          <!-- TODO: Enable when backend is ready -->
+          <!--          <lfx-button-->
+          <!--            type="tertiary"-->
+          <!--            size="small"-->
+          <!--            button-style="pill"-->
+          <!--            class="whitespace-nowrap"-->
+          <!--          >-->
+          <!--            <lfx-icon name="arrows-rotate-reverse" />-->
+          <!--            Update results-->
+          <!--          </lfx-button>-->
+        </div>
+      </div>
     </lfx-card>
   </div>
   <lf-security-generate-yaml-modal
