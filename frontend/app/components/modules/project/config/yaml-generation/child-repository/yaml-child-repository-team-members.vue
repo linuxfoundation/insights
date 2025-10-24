@@ -8,8 +8,8 @@ SPDX-License-Identifier: MIT
       <p class="text-sm font-semibold text-brand-600">Repository details</p>
       <p class="text-heading-3 font-semibold text-neutral-900">Core team members</p>
       <p class="text-body-2 text-neutral-500">
-        Active contributors and maintainers of the project. These are the people responsible for the
-        ongoing development and maintenance of the project.
+        Active contributors and maintainers of the project. These are the people responsible for the ongoing development
+        and maintenance of the project.
       </p>
     </div>
 

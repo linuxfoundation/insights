@@ -69,15 +69,11 @@ SPDX-License-Identifier: MIT
             </div>
           </td>
           <td>
-            <span v-if="project.contributorCount > 0">{{
-              formatNumber(project.contributorCount)
-            }}</span>
+            <span v-if="project.contributorCount > 0">{{ formatNumber(project.contributorCount) }}</span>
             <span v-else>-</span>
           </td>
           <td>
-            <span v-if="project.softwareValue"
-              >${{ formatNumberShort(project.softwareValue) }}</span
-            >
+            <span v-if="project.softwareValue">${{ formatNumberShort(project.softwareValue) }}</span>
             <span v-else>-</span>
           </td>
           <td>
@@ -178,9 +174,7 @@ const getNextPageParam = (lastPage) => {
   return nextPage < totalPages ? nextPage : undefined;
 };
 
-const { data, isFetchingNextPage, fetchNextPage, hasNextPage, isFetching } = useInfiniteQuery<
-  Pagination<Project>
->({
+const { data, isFetchingNextPage, fetchNextPage, hasNextPage, isFetching } = useInfiniteQuery<Pagination<Project>>({
   queryKey,
   queryFn,
   getNextPageParam,

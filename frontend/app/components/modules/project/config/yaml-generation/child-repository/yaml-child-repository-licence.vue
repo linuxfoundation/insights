@@ -9,8 +9,8 @@ SPDX-License-Identifier: MIT
       <p class="text-sm font-semibold leading-5 text-brand-600">Repository details</p>
       <p class="text-lg font-semibold leading-7 text-neutral-900">License information</p>
       <p class="text-xs font-normal leading-4 text-neutral-500">
-        Specify the license under which your project is distributed. This information helps users
-        understand how they can use, modify, and distribute your code.
+        Specify the license under which your project is distributed. This information helps users understand how they
+        can use, modify, and distribute your code.
       </p>
     </div>
 
@@ -66,15 +66,11 @@ SPDX-License-Identifier: MIT
             </p>
             <p class="text-xs leading-4 text-neutral-600">
               <span class="font-semibold">GPL-3.0:</span>
-              <span class="font-normal">
-                Copyleft license requiring derivative works to be open source</span
-              >
+              <span class="font-normal"> Copyleft license requiring derivative works to be open source</span>
             </p>
             <p class="text-xs leading-4 text-neutral-600">
               <span class="font-semibold">BSD-3-Clause:</span>
-              <span class="font-normal">
-                Permissive license similar to MIT with additional clause</span
-              >
+              <span class="font-normal"> Permissive license similar to MIT with additional clause</span>
             </p>
           </div>
         </div>

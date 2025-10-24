@@ -87,20 +87,8 @@ export default [
       },
     },
     rules: {
-      // Prettier integration
-      'prettier/prettier': [
-        'error',
-        {
-          semi: true,
-          singleQuote: true,
-          trailingComma: 'all',
-          printWidth: 100,
-          tabWidth: 2,
-          useTabs: false,
-          arrowParens: 'always',
-          endOfLine: 'lf',
-        },
-      ],
+      // Prettier integration - delegate to prettier.config.mjs
+      'prettier/prettier': 'error',
 
       // Console and debugging
       'no-console': ['error', { allow: ['warn', 'error'] }],

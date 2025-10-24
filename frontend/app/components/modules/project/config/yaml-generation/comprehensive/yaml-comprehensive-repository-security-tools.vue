@@ -9,9 +9,8 @@ SPDX-License-Identifier: MIT
       <p class="text-sm font-semibold text-brand-600">Repository details</p>
       <p class="text-lg font-semibold text-neutral-900">Security tools</p>
       <p class="text-body-2 text-neutral-500">
-        Tools used to assess, monitor, or enforce security within the repository. This includes
-        static analysis, dependency scanning, vulnerability detection, and other automated or manual
-        security solutions.
+        Tools used to assess, monitor, or enforce security within the repository. This includes static analysis,
+        dependency scanning, vulnerability detection, and other automated or manual security solutions.
       </p>
     </div>
 

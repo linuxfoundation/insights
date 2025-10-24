@@ -24,9 +24,7 @@ SPDX-License-Identifier: MIT
     >
       {{ message.explanation }}
     </div>
-    <span class="text-sm text-neutral-900">
-      There was an error processing your request. Please try again.
-    </span>
+    <span class="text-sm text-neutral-900"> There was an error processing your request. Please try again. </span>
   </div>
 </template>
 <script setup lang="ts">

@@ -103,9 +103,7 @@ const { projectRepos } = storeToRefs(useProjectStore());
 
 const repo = computed(() => projectRepos.value.find((repo) => repo.url === props.repository));
 
-const assessments = computed<SecurityAssessmentData[]>(() =>
-  props.checks.map((check) => check.assessments).flat(),
-);
+const assessments = computed<SecurityAssessmentData[]>(() => props.checks.map((check) => check.assessments).flat());
 const assessmentsResults = computed(() =>
   assessments.value.map((assessment: SecurityAssessmentData) => assessment.result),
 );

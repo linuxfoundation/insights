@@ -55,9 +55,7 @@ const { data, isPending, status, error, suspense } = EXPLORE_API_SERVICE.fetchTo
 const tableData = computed(() => data.value);
 
 // const showLoadMore = computed(() => props.isFullList && tableData.value?.length && tableData.value.length < 100);
-const isEmpty = computed(() =>
-  isEmptyData(tableData.value as unknown as Record<string, unknown>[]),
-);
+const isEmpty = computed(() => isEmptyData(tableData.value as unknown as Record<string, unknown>[]));
 
 onServerPrefetch(async () => {
   await suspense();

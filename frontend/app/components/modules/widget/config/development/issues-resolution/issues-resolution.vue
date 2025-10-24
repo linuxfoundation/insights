@@ -91,26 +91,12 @@ import { useRoute } from 'nuxt/app';
 import { computed, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 import { DateTime } from 'luxon';
-import type {
-  IssuesResolution,
-  IssuesResolutionSummary,
-} from '~~/types/development/responses.types';
+import type { IssuesResolution, IssuesResolutionSummary } from '~~/types/development/responses.types';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
-import {
-  convertToChartData,
-  currentInterval,
-} from '~/components/uikit/chart/helpers/chart-helpers';
-import type {
-  ChartData,
-  RawChartData,
-  ChartSeries,
-} from '~/components/uikit/chart/types/ChartTypes';
+import { convertToChartData, currentInterval } from '~/components/uikit/chart/helpers/chart-helpers';
+import type { ChartData, RawChartData, ChartSeries } from '~/components/uikit/chart/types/ChartTypes';
 import LfxChart from '~/components/uikit/chart/chart.vue';
-import {
-  getLineAreaChartConfig,
-  getMarkLine,
-  getVisualMap,
-} from '~/components/uikit/chart/configs/line.area.chart';
+import { getLineAreaChartConfig, getMarkLine, getVisualMap } from '~/components/uikit/chart/configs/line.area.chart';
 import { lfxColors } from '~/config/styles/colors';
 import { formatNumber, formatSecondsToDuration } from '~/components/shared/utils/formatter';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
@@ -202,9 +188,7 @@ const isLastDataItemIncomplete = computed(() => {
   return false;
 });
 
-const avgVelocity = computed<string>(() =>
-  formatSecondsToDuration(summary.value?.avgVelocityInDays || 0, 'long'),
-);
+const avgVelocity = computed<string>(() => formatSecondsToDuration(summary.value?.avgVelocityInDays || 0, 'long'));
 
 const chartSeries = computed<ChartSeries[]>(() => [
   {
@@ -242,9 +226,7 @@ const lineAreaChartConfig = computed(() =>
       : undefined,
   ),
 );
-const isEmpty = computed(() =>
-  isEmptyData(chartData.value as unknown as Record<string, unknown>[]),
-);
+const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
 
 watch(
   status,

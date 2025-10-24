@@ -23,9 +23,7 @@ const config = useRuntimeConfig();
 
 const title = computed(() => {
   const widgetName =
-    widget && lfxWidgets[widget as Widget]?.name?.length
-      ? lfxWidgets[widget as Widget]?.name
-      : 'Contributors';
+    widget && lfxWidgets[widget as Widget]?.name?.length ? lfxWidgets[widget as Widget]?.name : 'Contributors';
   return widget
     ? `${selectedRepositoryGroup.value?.name} Repositories ${widgetName} | LFX Insights`
     : `${selectedRepositoryGroup.value?.name} Repositories Contributors | LFX Insights`;
@@ -34,9 +32,7 @@ const title = computed(() => {
 const imageAlt = computed(
   () =>
     `${project?.value?.name} ${selectedRepositoryGroup.value?.name} contributor insights${
-      widget && lfxWidgets[widget as Widget]?.name?.length
-        ? ` - ${lfxWidgets[widget as Widget]?.name}`
-        : ''
+      widget && lfxWidgets[widget as Widget]?.name?.length ? ` - ${lfxWidgets[widget as Widget]?.name}` : ''
     }`,
 );
 

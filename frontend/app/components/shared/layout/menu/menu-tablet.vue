@@ -25,9 +25,7 @@ SPDX-License-Identifier: MIT
             <div>
               <div class="my-3 flex justify-center items-center relative">
                 <span class="absolute w-full h-[1px] bg-neutral-200" />
-                <p class="text-xs font-semibold text-neutral-400 z-10 bg-white px-4">
-                  LFX Platform
-                </p>
+                <p class="text-xs font-semibold text-neutral-400 z-10 bg-white px-4">LFX Platform</p>
               </div>
               <div class="flex flex-col gap-1">
                 <a

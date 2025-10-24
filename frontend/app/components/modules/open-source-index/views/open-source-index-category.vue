@@ -69,17 +69,10 @@ const sort = ref<SortType>((route.query.sort as SortType) || 'totalContributors'
 const view = ref<string>((route.query.view as string) || 'distribution');
 const type = ref<OSIType>((route.query.type as OSIType) || 'horizontal');
 
-const { data, status, error, suspense } = OSS_INDEX_API_SERVICE.fetchOSSCollection(
-  slug.value,
-  sort,
-);
+const { data, status, error, suspense } = OSS_INDEX_API_SERVICE.fetchOSSCollection(slug.value, sort);
 
 const chartData = computed<TreeMapData[]>(() => {
-  return OSS_INDEX_API_SERVICE.mapDataToTreeMapData(
-    data.value?.collections || [],
-    'collection',
-    sort.value,
-  );
+  return OSS_INDEX_API_SERVICE.mapDataToTreeMapData(data.value?.collections || [], 'collection', sort.value);
 });
 
 onServerPrefetch(async () => {

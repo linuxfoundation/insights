@@ -22,9 +22,7 @@ SPDX-License-Identifier: MIT
           @update:is-menu-open="isMenuOpen = $event"
         />
       </div>
-      <div
-        class="mb-5 flex sm:items-end items-start justify-between sm:gap-8 gap-5 sm:flex-row flex-col"
-      >
+      <div class="mb-5 flex sm:items-end items-start justify-between sm:gap-8 gap-5 sm:flex-row flex-col">
         <p
           v-if="project"
           class="text-body-2 text-neutral-500"
@@ -51,8 +49,8 @@ SPDX-License-Identifier: MIT
           <lfx-tooltip>
             <template #content>
               <p>
-                Collaborations refer to activities associated with engagement or<br />coordination
-                with others, and don't reflect technical-driven<br />impact.
+                Collaborations refer to activities associated with engagement or<br />coordination with others, and
+                don't reflect technical-driven<br />impact.
                 <a
                   :href="links.collaborationDocs"
                   target="_blank"

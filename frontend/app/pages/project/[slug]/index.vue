@@ -17,9 +17,7 @@ const { project } = storeToRefs(useProjectStore());
 const config = useRuntimeConfig();
 
 const title = computed(() => (project.value ? `${project.value.name} Insights` : 'LFX Insights'));
-const imageAlt = computed(() =>
-  project.value ? `${project.value.name} insights` : 'LFX Project insights',
-);
+const imageAlt = computed(() => (project.value ? `${project.value.name} insights` : 'LFX Project insights'));
 const description = computed(() =>
   project.value
     ? project.value.description || `Explore ${project.value.name} insights`

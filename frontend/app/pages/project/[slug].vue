@@ -32,10 +32,7 @@ import {
 import { TanstackKey } from '~/components/shared/types/tanstack';
 import { PROJECT_API_SERVICE } from '~/components/modules/project/services/project.api.service';
 import { useQueryParam } from '~/components/shared/utils/query-param';
-import {
-  processProjectParams,
-  projectParamsSetter,
-} from '~/components/modules/project/services/project.query.service';
+import { processProjectParams, projectParamsSetter } from '~/components/modules/project/services/project.query.service';
 import { useRichSchema } from '~~/composables/useRichSchema';
 
 const route = useRoute();
@@ -53,9 +50,7 @@ const { isLoading, data, suspense, isError, error } = useQuery<Project>({
   retry: false,
 });
 
-const projectIsOnboarded = computed(
-  () => !!project.value?.contributorCount || !!project.value?.organizationCount,
-);
+const projectIsOnboarded = computed(() => !!project.value?.contributorCount || !!project.value?.organizationCount);
 
 onServerPrefetch(async () => {
   await suspense();

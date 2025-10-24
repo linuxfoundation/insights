@@ -8,8 +8,7 @@ SPDX-License-Identifier: MIT
     <div class="flex flex-col gap-1">
       <h2 class="text-lg font-semibold leading-7 text-neutral-900">Project details</h2>
       <p class="text-body-2 text-neutral-500">
-        Basic project information and online references on how it is supported and developed over
-        time.
+        Basic project information and online references on how it is supported and developed over time.
       </p>
     </div>
 
@@ -55,9 +54,7 @@ SPDX-License-Identifier: MIT
     <!-- Roadmap URL -->
     <div class="flex flex-col gap-1">
       <lfx-field label="Roadmap URL">
-        <p class="text-body-2 text-neutral-500 mb-1">
-          Website containing future plans, milestones, or feature goals.
-        </p>
+        <p class="text-body-2 text-neutral-500 mb-1">Website containing future plans, milestones, or feature goals.</p>
         <lfx-input
           v-model="model.project.roadmap"
           :invalid="$v.project.roadmap.$invalid && $v.project.roadmap.$dirty"

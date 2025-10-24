@@ -116,9 +116,7 @@ const organizations = computed<Organization[]>(() => {
   return data.value?.pages.flatMap((page) => (page as OrganizationLeaderboard).data) || [];
 });
 
-const isEmpty = computed(() =>
-  isEmptyData(organizations.value as unknown as Record<string, unknown>[]),
-);
+const isEmpty = computed(() => isEmptyData(organizations.value as unknown as Record<string, unknown>[]));
 
 const loadMore = () => {
   if (hasNextPage.value) {

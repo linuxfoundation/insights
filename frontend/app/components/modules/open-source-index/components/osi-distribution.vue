@@ -23,12 +23,8 @@ SPDX-License-Identifier: MIT
         :size="80"
         class="text-neutral-300"
       />
-      <div class="font-semibold text-sm text-neutral-500 mb-3">
-        Open Source Index requires a bit more room
-      </div>
-      <div class="text-xs text-neutral-500">
-        Please resize your browser window to explore this feature
-      </div>
+      <div class="font-semibold text-sm text-neutral-500 mb-3">Open Source Index requires a bit more room</div>
+      <div class="text-xs text-neutral-500">Please resize your browser window to explore this feature</div>
     </div>
   </div>
 </template>

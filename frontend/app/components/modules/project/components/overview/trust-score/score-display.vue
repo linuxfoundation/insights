@@ -56,9 +56,7 @@ const scoreConfig = computed(() => {
     return { label: 'Unavailable', color: '' };
   }
   return (
-    lfxTrustScore.find(
-      (s) => props.overallScore <= s.maxScore && props.overallScore >= s.minScore,
-    ) || {
+    lfxTrustScore.find((s) => props.overallScore <= s.maxScore && props.overallScore >= s.minScore) || {
       label: 'Critical',
       color: 'bg-negative-500',
     }

@@ -86,9 +86,7 @@ const reviewTimeByPr = computed<ReviewTimeByPrItem[]>(() => data.value as Review
 const maxValue = computed(() =>
   Math.max(...reviewTimeByPr.value.map((item: ReviewTimeByPrItem) => item.averageReviewTime)),
 );
-const isEmpty = computed(() =>
-  isEmptyData(reviewTimeByPr.value as unknown as Record<string, unknown>[]),
-);
+const isEmpty = computed(() => isEmptyData(reviewTimeByPr.value as unknown as Record<string, unknown>[]));
 
 const convertAverageReviewTime = (value: number) => formatSecondsToDuration(value, 'long');
 

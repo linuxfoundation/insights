@@ -27,8 +27,8 @@ SPDX-License-Identifier: MIT
         <lfx-tooltip>
           <template #content>
             <span class="text-center">
-              {{ repoWithHighestScore ? repoWithHighestScore.name : project?.name }} belongs to the
-              {{ topRank }} most critical open source projects
+              {{ repoWithHighestScore ? repoWithHighestScore.name : project?.name }} belongs to the {{ topRank }} most
+              critical open source projects
             </span>
           </template>
           <NuxtImg
@@ -84,9 +84,7 @@ const score = computed(() =>
   repoWithHighestScore.value ? repoWithHighestScore.value.score : project.value?.score || 0,
 );
 
-const rank = computed(() =>
-  repoWithHighestScore.value ? repoWithHighestScore.value.rank : project.value?.rank || 0,
-);
+const rank = computed(() => (repoWithHighestScore.value ? repoWithHighestScore.value.rank : project.value?.rank || 0));
 
 const topRank = computed(() => {
   if (!rank.value) return 0;

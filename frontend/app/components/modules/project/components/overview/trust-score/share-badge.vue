@@ -3,9 +3,7 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div
-    class="border-solid border border-neutral-200 rounded-md p-3 flex flex-col items-start gap-2"
-  >
+  <div class="border-solid border border-neutral-200 rounded-md p-3 flex flex-col items-start gap-2">
     <img
       :src="props.isRepoSelected ? repoBadgeUrl : badgeUrl"
       alt="Health Score Badge"
@@ -13,12 +11,8 @@ SPDX-License-Identifier: MIT
     />
 
     <p class="text-xs leading-4.5 text-neutral-500">
-      <span v-if="!props.isRepoSelected">
-        Share your project Health Score in your GitHub page.
-      </span>
-      <span v-else>
-        Share your repository's number of active contributors on your GitHub page.
-      </span>
+      <span v-if="!props.isRepoSelected"> Share your project Health Score in your GitHub page. </span>
+      <span v-else> Share your repository's number of active contributors on your GitHub page. </span>
       <br />
       <br />
       <span

@@ -64,10 +64,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import type {
-  OSIType,
-  SortType,
-} from '~/components/modules/open-source-index/services/osi.api.service';
+import type { OSIType, SortType } from '~/components/modules/open-source-index/services/osi.api.service';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
 

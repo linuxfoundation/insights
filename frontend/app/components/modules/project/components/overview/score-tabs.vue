@@ -102,8 +102,7 @@ const repoTrustScoreSummary = computed(() => {
 const getWidgets = (widgetArea: WidgetArea) => {
   return OVERVIEW_API_SERVICE.getOverviewWidgetConfigs(widgetArea).filter((widget) => {
     return (
-      project.value?.widgets.includes(widget.key) &&
-      (!widget?.hideOnRepoFilter || !selectedRepoSlugs.value.length)
+      project.value?.widgets.includes(widget.key) && (!widget?.hideOnRepoFilter || !selectedRepoSlugs.value.length)
     );
   });
 };

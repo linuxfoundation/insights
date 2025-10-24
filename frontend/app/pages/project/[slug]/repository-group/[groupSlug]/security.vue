@@ -17,12 +17,8 @@ const slug = route.params.slug as string;
 const { project, selectedRepositoryGroup } = storeToRefs(useProjectStore());
 const config = useRuntimeConfig();
 
-const title = computed(
-  () => `${selectedRepositoryGroup.value?.name} Repositories Security | LFX Insights`,
-);
-const imageAlt = computed(
-  () => `${project.value?.name} ${selectedRepositoryGroup.value?.name} security insights`,
-);
+const title = computed(() => `${selectedRepositoryGroup.value?.name} Repositories Security | LFX Insights`);
+const imageAlt = computed(() => `${project.value?.name} ${selectedRepositoryGroup.value?.name} security insights`);
 const description = computed(
   () =>
     `Check ${project.value?.name} ${selectedRepositoryGroup.value?.name} security and best practices, ` +

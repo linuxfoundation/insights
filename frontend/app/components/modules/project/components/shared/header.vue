@@ -16,9 +16,7 @@ SPDX-License-Identifier: MIT
           :class="scrollTop > 50 ? 'py-3 lg:py-4' : 'py-3 lg:py-6'"
         >
           <div class="flex items-center flex-row justify-between gap-1">
-            <div
-              class="flex sm:items-center items-stretch min-w-0 max-w-full sm:flex-nowrap flex-wrap sm:w-auto"
-            >
+            <div class="flex sm:items-center items-stretch min-w-0 max-w-full sm:flex-nowrap flex-wrap sm:w-auto">
               <div class="flex items-center grow sm:max-w-none max-w-full">
                 <lfx-back class="ease-linear transition-all pr-1 sm:pr-4">
                   <lfx-icon-button
@@ -30,13 +28,7 @@ SPDX-License-Identifier: MIT
                 <lfx-organization-logo
                   class="mr-4 max-h-8 md:max-h-12"
                   :src="props.project?.logo || ''"
-                  :size="
-                    scrollTop > 50
-                      ? 'normal'
-                      : pageWidth < 768 && pageWidth > 0
-                        ? 'normal'
-                        : 'large'
-                  "
+                  :size="scrollTop > 50 ? 'normal' : pageWidth < 768 && pageWidth > 0 ? 'normal' : 'large'"
                   :is-lf="!!props.project?.isLF"
                   :alt="props.project?.name"
                 />

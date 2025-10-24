@@ -48,8 +48,7 @@ SPDX-License-Identifier: MIT
           v-else
           class="text-xs text-neutral-500"
         >
-          An error has occurred while generating your chart. Please try again later or adjust your
-          query.
+          An error has occurred while generating your chart. Please try again later or adjust your query.
         </div>
         <div class="flex justify-center gap-5 mt-6">
           <lfx-button

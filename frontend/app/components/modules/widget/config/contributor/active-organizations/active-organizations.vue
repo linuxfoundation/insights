@@ -59,16 +59,8 @@ import type { ActiveOrganizations } from '~~/types/contributors/responses.types'
 import type { Summary } from '~~/types/shared/summary.types';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
-import {
-  convertToChartData,
-  markLastDataItem,
-  removeZeroValues,
-} from '~/components/uikit/chart/helpers/chart-helpers';
-import type {
-  ChartData,
-  ChartSeries,
-  RawChartData,
-} from '~/components/uikit/chart/types/ChartTypes';
+import { convertToChartData, markLastDataItem, removeZeroValues } from '~/components/uikit/chart/helpers/chart-helpers';
+import type { ChartData, ChartSeries, RawChartData } from '~/components/uikit/chart/types/ChartTypes';
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import { getBarChartConfig } from '~/components/uikit/chart/configs/bar.chart';
 import { lfxColors } from '~/config/styles/colors';
@@ -135,15 +127,12 @@ const chartData = computed<ChartData[]>(
       undefined,
       'endDate',
     );
-    tmpData =
-      selectedTimeRangeKey.value === dateOptKeys.alltime ? removeZeroValues(tmpData) : tmpData;
+    tmpData = selectedTimeRangeKey.value === dateOptKeys.alltime ? removeZeroValues(tmpData) : tmpData;
 
     return markLastDataItem(tmpData, model.value.activeTab);
   },
 );
-const isEmpty = computed(() =>
-  isEmptyData(chartData.value as unknown as Record<string, unknown>[]),
-);
+const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
 
 const tabs = computed(() =>
   granularityTabs.filter((tab) => {
@@ -166,9 +155,7 @@ const chartSeries = ref<ChartSeries[]>([
   },
 ]);
 
-const barChartConfig = computed(() =>
-  getBarChartConfig(chartData.value, chartSeries.value, model.value.activeTab),
-);
+const barChartConfig = computed(() => getBarChartConfig(chartData.value, chartSeries.value, model.value.activeTab));
 
 watch(
   tabs,

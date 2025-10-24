@@ -8,12 +8,10 @@ SPDX-License-Identifier: MIT
       <div class="flex flex-col lg:flex-row items-start lg:items-end gap-4 lg:gap-12">
         <div class="flex flex-row gap-5 flex-grow items-end">
           <div>
-            <h1 class="text-xl md:text-heading-1 font-bold pb-2 font-secondary">
-              Open Source Index
-            </h1>
+            <h1 class="text-xl md:text-heading-1 font-bold pb-2 font-secondary">Open Source Index</h1>
             <p class="text-body-2 sm:text-body-1 text-neutral-500">
-              Curated list of the most critical open source projects powering our modern digital
-              infrastructure, measured by contributor volume and software value
+              Curated list of the most critical open source projects powering our modern digital infrastructure,
+              measured by contributor volume and software value
             </p>
           </div>
         </div>
@@ -47,9 +45,7 @@ SPDX-License-Identifier: MIT
         </div>
       </div>
     </section>
-    <section
-      class="container border-t border-t-neutral-100 py-2 sm:py-4 flex justify-between items-center"
-    >
+    <section class="container border-t border-t-neutral-100 py-2 sm:py-4 flex justify-between items-center">
       <slot>
         <div class="hidden items-center gap-4 md:flex">
           <lfx-menu-button

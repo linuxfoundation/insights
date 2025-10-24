@@ -34,9 +34,7 @@ SPDX-License-Identifier: MIT
       v-else
       class="text-sm leading-4 font-semibold first-letter:uppercase pb-3 border-t border-neutral-100 pt-5"
     >
-      <span v-if="model.activeTab === 'new-mentions'"
-        >{{ barGranularity }} new mentions by platform</span
-      >
+      <span v-if="model.activeTab === 'new-mentions'">{{ barGranularity }} new mentions by platform</span>
       <span v-else>{{ lineGranularity }} mentions by platform growth</span>
     </div>
     <lfx-project-load-state
@@ -85,11 +83,7 @@ import type { Summary } from '~~/types/shared/summary.types';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
 import { convertToChartData } from '~/components/uikit/chart/helpers/chart-helpers';
-import type {
-  ChartData,
-  RawChartData,
-  ChartSeries,
-} from '~/components/uikit/chart/types/ChartTypes';
+import type { ChartData, RawChartData, ChartSeries } from '~/components/uikit/chart/types/ChartTypes';
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import { getBarChartConfigStacked } from '~/components/uikit/chart/configs/bar.chart';
 import { getLineAreaChartConfig } from '~/components/uikit/chart/configs/line.area.chart';
@@ -169,9 +163,7 @@ const chartData = computed<ChartData[]>(
     ),
 );
 
-const isEmpty = computed(() =>
-  isEmptyData(chartData.value as unknown as Record<string, unknown>[]),
-);
+const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
 
 const tabs = [
   { label: 'New mentions by platform', value: 'new-mentions' },

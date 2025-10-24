@@ -37,9 +37,7 @@ SPDX-License-Identifier: MIT
       <!-- Rulesets -->
       <div class="flex flex-col gap-1">
         <p class="text-sm font-medium leading-5 text-neutral-900">Rulesets</p>
-        <p class="text-body-2 text-neutral-500">
-          Specific rules, policies, or configurations applied by the tool
-        </p>
+        <p class="text-body-2 text-neutral-500">Specific rules, policies, or configurations applied by the tool</p>
 
         <div class="flex flex-col gap-3 mt-2">
           <lfx-input
@@ -73,8 +71,7 @@ SPDX-License-Identifier: MIT
           <div class="flex flex-col gap-1">
             <p class="text-sm font-semibold leading-5 text-neutral-900">Adhoc results</p>
             <p class="text-body-2 text-neutral-500">
-              Findings from manual or one-off runs of the tool, typically executed outside of
-              automated workflows.
+              Findings from manual or one-off runs of the tool, typically executed outside of automated workflows.
             </p>
           </div>
           <lfx-icon
@@ -99,10 +96,7 @@ SPDX-License-Identifier: MIT
             >
               <lfx-input
                 v-model="model.results.adhoc['predicate-uri']"
-                :invalid="
-                  $v.results.adhoc['predicate-uri'].$invalid &&
-                  $v.results.adhoc['predicate-uri'].$dirty
-                "
+                :invalid="$v.results.adhoc['predicate-uri'].$invalid && $v.results.adhoc['predicate-uri'].$dirty"
                 @blur="$v.results.adhoc['predicate-uri'].$touch()"
                 @input="$v.results.adhoc['predicate-uri'].$touch()"
               />
@@ -150,8 +144,7 @@ SPDX-License-Identifier: MIT
           <div class="flex flex-col gap-1">
             <p class="text-sm font-semibold leading-5 text-neutral-900">CI results</p>
             <p class="text-body-2 text-neutral-500">
-              Security findings generated automatically during continuous integration builds or pull
-              request checks.
+              Security findings generated automatically during continuous integration builds or pull request checks.
             </p>
           </div>
           <lfx-icon
@@ -176,9 +169,7 @@ SPDX-License-Identifier: MIT
             >
               <lfx-input
                 v-model="model.results.ci['predicate-uri']"
-                :invalid="
-                  $v.results.ci['predicate-uri'].$invalid && $v.results.ci['predicate-uri'].$dirty
-                "
+                :invalid="$v.results.ci['predicate-uri'].$invalid && $v.results.ci['predicate-uri'].$dirty"
                 @blur="$v.results.ci['predicate-uri'].$touch()"
                 @input="$v.results.ci['predicate-uri'].$touch()"
               />
@@ -226,8 +217,8 @@ SPDX-License-Identifier: MIT
           <div class="flex flex-col gap-1">
             <p class="text-sm font-semibold leading-5 text-neutral-900">Release results</p>
             <p class="text-body-2 text-neutral-500">
-              Results from checks performed as part of the release process, validating security
-              before publishing a new version.
+              Results from checks performed as part of the release process, validating security before publishing a new
+              version.
             </p>
           </div>
           <lfx-icon
@@ -252,10 +243,7 @@ SPDX-License-Identifier: MIT
             >
               <lfx-input
                 v-model="model.results.release['predicate-uri']"
-                :invalid="
-                  $v.results.release['predicate-uri'].$invalid &&
-                  $v.results.release['predicate-uri'].$dirty
-                "
+                :invalid="$v.results.release['predicate-uri'].$invalid && $v.results.release['predicate-uri'].$dirty"
                 @blur="$v.results.release['predicate-uri'].$touch()"
                 @input="$v.results.release['predicate-uri'].$touch()"
               />
@@ -271,9 +259,7 @@ SPDX-License-Identifier: MIT
             >
               <lfx-input
                 v-model="model.results.release.location"
-                :invalid="
-                  $v.results.release.location.$invalid && $v.results.release.location.$dirty
-                "
+                :invalid="$v.results.release.location.$invalid && $v.results.release.location.$dirty"
                 @blur="$v.results.release.location.$touch()"
                 @input="$v.results.release.location.$touch()"
               />
@@ -300,9 +286,7 @@ SPDX-License-Identifier: MIT
       <div class="flex flex-col gap-4">
         <div class="flex flex-col gap-1">
           <p class="text-sm font-semibold leading-5 text-neutral-900">Integration</p>
-          <p class="text-body-2 text-neutral-500">
-            How the security tool is incorporated into the project's workflow.
-          </p>
+          <p class="text-body-2 text-neutral-500">How the security tool is incorporated into the project's workflow.</p>
         </div>
 
         <div class="flex flex-col gap-4">

@@ -137,11 +137,7 @@ const handleClick = (e: Event) => {
 };
 
 const handleClickOutside = (e: Event) => {
-  if (
-    popover.value &&
-    !popover.value.contains(e.target as Node) &&
-    !trigger.value?.contains(e.target as Node)
-  ) {
+  if (popover.value && !popover.value.contains(e.target as Node) && !trigger.value?.contains(e.target as Node)) {
     closePopover();
   }
 };

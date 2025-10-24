@@ -18,9 +18,7 @@ SPDX-License-Identifier: MIT
         <!-- Header -->
         <div class="border-b border-neutral-200 px-6 pt-4 pb-5">
           <div class="flex justify-between items-center">
-            <h1 class="text-2xl font-secondary font-bold text-neutral-900 leading-8">
-              Generate YAML security file
-            </h1>
+            <h1 class="text-2xl font-secondary font-bold text-neutral-900 leading-8">Generate YAML security file</h1>
             <lfx-icon-button
               icon="close"
               @click="isModalOpen = false"

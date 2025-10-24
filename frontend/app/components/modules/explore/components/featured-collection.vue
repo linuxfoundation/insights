@@ -8,8 +8,7 @@ SPDX-License-Identifier: MIT
       <div class="text-neutral-900">
         <h2 class="text-2xl font-bold font-secondary mb-2 leading-8">Featured collections</h2>
         <p class="text-sm">
-          Curated sets of open source projects that belong to the same technology stack or industry
-          domain.
+          Curated sets of open source projects that belong to the same technology stack or industry domain.
         </p>
       </div>
       <nuxt-link
@@ -77,18 +76,11 @@ import LfxProjectLoadState from '~/components/modules/project/components/shared/
 import { isEmptyData } from '~/components/shared/utils/helper';
 import { LfxRoutes } from '~/components/shared/types/routes';
 
-const {
-  data: featuredCollectionsData,
-  status,
-  error,
-  suspense,
-} = EXPLORE_API_SERVICE.fetchFeaturedCollections();
+const { data: featuredCollectionsData, status, error, suspense } = EXPLORE_API_SERVICE.fetchFeaturedCollections();
 
 const carouselData = computed(() => featuredCollectionsData.value?.data);
 
-const isEmpty = computed(() =>
-  isEmptyData(carouselData.value as unknown as Record<string, unknown>[]),
-);
+const isEmpty = computed(() => isEmptyData(carouselData.value as unknown as Record<string, unknown>[]));
 
 onServerPrefetch(async () => {
   await suspense();

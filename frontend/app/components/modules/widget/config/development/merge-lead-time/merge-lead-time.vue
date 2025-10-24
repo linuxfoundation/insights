@@ -76,11 +76,7 @@ import { useRoute } from 'nuxt/app';
 import { computed, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 import LfxMergeLeadItem from './fragments/merge-lead-item.vue';
-import type {
-  MergeLeadTime,
-  MergeLeadTimeItem,
-  MergeLeadTimeUnit,
-} from '~~/types/development/responses.types';
+import type { MergeLeadTime, MergeLeadTimeItem, MergeLeadTimeUnit } from '~~/types/development/responses.types';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
 import type { Summary } from '~~/types/shared/summary.types';
 import { useProjectStore } from '~/components/modules/project/store/project.store';
@@ -111,8 +107,7 @@ const model = computed<WidgetModel>({
   set: (value: WidgetModel) => emit('update:modelValue', value),
 });
 
-const { startDate, endDate, selectedReposValues, selectedTimeRangeKey } =
-  storeToRefs(useProjectStore());
+const { startDate, endDate, selectedReposValues, selectedTimeRangeKey } = storeToRefs(useProjectStore());
 
 const route = useRoute();
 
@@ -127,28 +122,16 @@ const params = computed<QueryParams>(() => ({
 const { data, status, error } = DEVELOPMENT_API_SERVICE.fetchMergeLeadTime(params);
 
 const mergeLeadTime = computed<MergeLeadTime>(() => data.value as MergeLeadTime);
-const pickup = computed<MergeLeadTimeItem | undefined>(() =>
-  getMergeLeadTimeItem(mergeLeadTime.value, 'pickup'),
-);
-const review = computed<MergeLeadTimeItem | undefined>(() =>
-  getMergeLeadTimeItem(mergeLeadTime.value, 'review'),
-);
-const accepted = computed<MergeLeadTimeItem | undefined>(() =>
-  getMergeLeadTimeItem(mergeLeadTime.value, 'accepted'),
-);
-const prMerged = computed<MergeLeadTimeItem | undefined>(() =>
-  getMergeLeadTimeItem(mergeLeadTime.value, 'prMerged'),
-);
+const pickup = computed<MergeLeadTimeItem | undefined>(() => getMergeLeadTimeItem(mergeLeadTime.value, 'pickup'));
+const review = computed<MergeLeadTimeItem | undefined>(() => getMergeLeadTimeItem(mergeLeadTime.value, 'review'));
+const accepted = computed<MergeLeadTimeItem | undefined>(() => getMergeLeadTimeItem(mergeLeadTime.value, 'accepted'));
+const prMerged = computed<MergeLeadTimeItem | undefined>(() => getMergeLeadTimeItem(mergeLeadTime.value, 'prMerged'));
 
 const summary = computed<Summary>(() => mergeLeadTime.value?.summary);
-const current = computed<string>(() =>
-  formatSecondsToDuration(mergeLeadTime.value?.summary?.current || 0, 'long'),
-);
+const current = computed<string>(() => formatSecondsToDuration(mergeLeadTime.value?.summary?.current || 0, 'long'));
 
 const isEmpty = computed(() =>
-  [pickup.value, review.value, accepted.value, prMerged.value].every(
-    (item) => item?.value === 0 || item === undefined,
-  ),
+  [pickup.value, review.value, accepted.value, prMerged.value].every((item) => item?.value === 0 || item === undefined),
 );
 
 // TODO: Await response from Joana regarding this
@@ -166,10 +149,7 @@ const formatDuration = (
   };
 };
 
-const getMergeLeadTimeItem = (
-  data: MergeLeadTime | undefined,
-  key: string,
-): MergeLeadTimeItem | undefined => {
+const getMergeLeadTimeItem = (data: MergeLeadTime | undefined, key: string): MergeLeadTimeItem | undefined => {
   if (!data) {
     return undefined;
   }

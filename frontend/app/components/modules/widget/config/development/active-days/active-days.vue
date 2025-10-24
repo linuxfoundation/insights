@@ -82,16 +82,8 @@ import { storeToRefs } from 'pinia';
 import type { ActiveDays } from '~~/types/development/responses.types';
 import type { Summary } from '~~/types/shared/summary.types';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
-import {
-  convertToChartData,
-  convertToCategoryData,
-} from '~/components/uikit/chart/helpers/chart-helpers';
-import type {
-  ChartData,
-  RawChartData,
-  ChartSeries,
-  CategoryData,
-} from '~/components/uikit/chart/types/ChartTypes';
+import { convertToChartData, convertToCategoryData } from '~/components/uikit/chart/helpers/chart-helpers';
+import type { ChartData, RawChartData, ChartSeries, CategoryData } from '~/components/uikit/chart/types/ChartTypes';
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import { getHeatMapChartConfig } from '~/components/uikit/chart/configs/heat-map.chart';
 import { lfxColors } from '~/config/styles/colors';
@@ -171,12 +163,9 @@ const activeDays = computed<ActiveDays>(() => data.value as ActiveDays);
 const summary = computed<Summary>(() => activeDays.value?.summary);
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
-  () =>
-    convertToChartData((activeDays.value?.data || []) as RawChartData[], 'day', ['contributions']),
+  () => convertToChartData((activeDays.value?.data || []) as RawChartData[], 'day', ['contributions']),
 );
-const categoryData = computed<CategoryData>(() =>
-  convertToCategoryData(chartData.value, [{ key: '0', values: [0] }]),
-);
+const categoryData = computed<CategoryData>(() => convertToCategoryData(chartData.value, [{ key: '0', values: [0] }]));
 
 const chartSeries = ref<ChartSeries[]>([
   {
@@ -188,9 +177,7 @@ const chartSeries = ref<ChartSeries[]>([
     color: lfxColors.brand[700],
   },
 ]);
-const isEmpty = computed(() =>
-  isEmptyData(chartData.value as unknown as Record<string, unknown>[]),
-);
+const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
 
 watch(
   status,

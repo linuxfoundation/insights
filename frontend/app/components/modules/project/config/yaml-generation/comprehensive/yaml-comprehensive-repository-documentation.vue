@@ -8,8 +8,7 @@ SPDX-License-Identifier: MIT
       <p class="text-sm font-semibold text-brand-600">Repository details</p>
       <p class="text-lg font-semibold text-neutral-900">Documentation</p>
       <p class="text-body-2 text-neutral-500">
-        Repository resources regarding set up, policies, and processes that support proper usage and
-        contribution.
+        Repository resources regarding set up, policies, and processes that support proper usage and contribution.
       </p>
     </div>
 
@@ -35,14 +34,12 @@ SPDX-License-Identifier: MIT
 
       <lfx-field label="Review policy URL">
         <p class="text-xs font-normal leading-4 text-neutral-500">
-          Rules or processes for reviewing contributions, such as code reviews, approvals, or
-          quality checks.
+          Rules or processes for reviewing contributions, such as code reviews, approvals, or quality checks.
         </p>
         <lfx-input
           v-model="model.repository.documentation['review-policy']"
           :invalid="
-            $v.repository.documentation['review-policy'].$invalid &&
-            $v.repository.documentation['review-policy'].$dirty
+            $v.repository.documentation['review-policy'].$invalid && $v.repository.documentation['review-policy'].$dirty
           "
           @blur="$v.repository.documentation['review-policy'].$touch()"
           @input="$v.repository.documentation['review-policy'].$touch()"
@@ -74,15 +71,11 @@ SPDX-License-Identifier: MIT
 
       <lfx-field label="Governance URL">
         <p class="text-xs font-normal leading-4 text-neutral-500">
-          How decisions are made, who has authority in the project, and how leadership or roles are
-          structured.
+          How decisions are made, who has authority in the project, and how leadership or roles are structured.
         </p>
         <lfx-input
           v-model="model.repository.documentation.governance"
-          :invalid="
-            $v.repository.documentation.governance.$invalid &&
-            $v.repository.documentation.governance.$dirty
-          "
+          :invalid="$v.repository.documentation.governance.$invalid && $v.repository.documentation.governance.$dirty"
           @blur="$v.repository.documentation.governance.$touch()"
           @input="$v.repository.documentation.governance.$touch()"
         />

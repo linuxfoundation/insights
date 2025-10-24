@@ -33,9 +33,7 @@ SPDX-License-Identifier: MIT
     </span>
 
     <template #content>
-      <div
-        class="bg-white shadow-lg rounded-lg border border-neutral-200 max-h-[80vh] overflow-y-auto"
-      >
+      <div class="bg-white shadow-lg rounded-lg border border-neutral-200 max-h-[80vh] overflow-y-auto">
         <div
           v-for="widgetKey in widgetWithCopilot"
           :key="widgetKey"

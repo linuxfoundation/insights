@@ -70,9 +70,7 @@ const dependencyValues = computed<number[]>(() => {
     props.list.length >= props.topDependency.count &&
     props.topDependency.count < 5 // limit the number of split values to 5
   ) {
-    return props.list
-      .slice(0, props.topDependency.count)
-      .map((contributor) => contributor.percentage || 0);
+    return props.list.slice(0, props.topDependency.count).map((contributor) => contributor.percentage || 0);
   }
 
   return [props.topDependency.percentage];

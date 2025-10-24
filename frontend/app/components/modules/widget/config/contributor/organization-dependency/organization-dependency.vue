@@ -108,22 +108,16 @@ const params = computed<LeaderboardQueryParams>(() => ({
 
 const { data, status, error } = CONTRIBUTORS_API_SERVICE.fetchOrganizationDependency(params);
 
-const organizationDependency = computed<OrganizationDependency>(
-  () => data.value as OrganizationDependency,
-);
+const organizationDependency = computed<OrganizationDependency>(() => data.value as OrganizationDependency);
 const topOrganizations = computed(() => organizationDependency.value?.topOrganizations);
 const otherOrganizations = computed(() => organizationDependency.value?.otherOrganizations);
 const organizations = computed(() => organizationDependency.value?.list);
 
 const topOrganizationsAvatars = computed(() =>
-  organizations.value?.length
-    ? organizations.value.slice(0, Math.min(5, topOrganizations.value?.count || 0))
-    : [],
+  organizations.value?.length ? organizations.value.slice(0, Math.min(5, topOrganizations.value?.count || 0)) : [],
 );
 
-const isEmpty = computed(() =>
-  isEmptyData(organizations.value as unknown as Record<string, unknown>[]),
-);
+const isEmpty = computed(() => isEmptyData(organizations.value as unknown as Record<string, unknown>[]));
 
 watch(
   status,

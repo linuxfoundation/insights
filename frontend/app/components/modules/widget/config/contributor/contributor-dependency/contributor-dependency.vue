@@ -108,23 +108,17 @@ const params = computed<LeaderboardQueryParams>(() => ({
 
 const { data, status, error } = CONTRIBUTORS_API_SERVICE.fetchContributorDependency(params);
 
-const contributorDependency = computed<ContributorDependency>(
-  () => data.value as ContributorDependency,
-);
+const contributorDependency = computed<ContributorDependency>(() => data.value as ContributorDependency);
 
 const topContributors = computed(() => contributorDependency.value?.topContributors);
 const otherContributors = computed(() => contributorDependency.value?.otherContributors);
 const contributors = computed(() => contributorDependency.value?.list);
 
 const contributorsAvatars = computed(() =>
-  contributors.value?.length
-    ? contributors.value.slice(0, Math.min(5, topContributors.value.count))
-    : [],
+  contributors.value?.length ? contributors.value.slice(0, Math.min(5, topContributors.value.count)) : [],
 );
 
-const isEmpty = computed(() =>
-  isEmptyData(contributors.value as unknown as Record<string, unknown>[]),
-);
+const isEmpty = computed(() => isEmptyData(contributors.value as unknown as Record<string, unknown>[]));
 
 watch(
   status,

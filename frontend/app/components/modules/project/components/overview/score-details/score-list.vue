@@ -40,8 +40,7 @@ const { project, selectedRepoSlugs } = storeToRefs(useProjectStore());
 const widgetConfigs = computed(() =>
   OVERVIEW_API_SERVICE.getOverviewWidgetConfigs(props.name).filter((widget) => {
     return (
-      project.value?.widgets.includes(widget.key) &&
-      (!widget?.hideOnRepoFilter || !selectedRepoSlugs.value.length)
+      project.value?.widgets.includes(widget.key) && (!widget?.hideOnRepoFilter || !selectedRepoSlugs.value.length)
     );
   }),
 );

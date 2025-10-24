@@ -44,9 +44,7 @@ SPDX-License-Identifier: MIT
         :size="80"
         class="text-neutral-300"
       />
-      <h3
-        class="text-center pt-5 text-heading-3 sm:text-heading-2 font-secondary font-bold text-neutral-500"
-      >
+      <h3 class="text-center pt-5 text-heading-3 sm:text-heading-2 font-secondary font-bold text-neutral-500">
         No projects found
       </h3>
       <p class="text-body-1 text-neutral-500 pt-3 text-center">

@@ -52,10 +52,7 @@ import { POPULARITY_API_SERVICE } from '../../services/popularity.api.service';
 import { Widget } from '~/components/modules/widget/types/widget';
 import { lfxWidgets } from '~/components/modules/widget/config/widget.config';
 import { WidgetArea } from '~/components/modules/widget/types/widget-area';
-import {
-  lfxWidgetArea,
-  type WidgetAreaConfig,
-} from '~/components/modules/widget/config/widget-area.config';
+import { lfxWidgetArea, type WidgetAreaConfig } from '~/components/modules/widget/config/widget-area.config';
 import LfxSideNav from '~/components/uikit/side-nav/side-nav.vue';
 import LfxScrollView from '~/components/uikit/scroll-view/scroll-view.vue';
 import LfxScrollArea from '~/components/uikit/scroll-view/scroll-area.vue';
@@ -63,10 +60,7 @@ import useScroll from '~/components/shared/utils/scroll';
 import LfxWidget from '~/components/modules/widget/components/shared/widget.vue';
 import { useProjectStore } from '~/components/modules/project/store/project.store';
 import { useQueryParam } from '~/components/shared/utils/query-param';
-import {
-  processProjectParams,
-  projectParamsSetter,
-} from '~/components/modules/project/services/project.query.service';
+import { processProjectParams, projectParamsSetter } from '~/components/modules/project/services/project.query.service';
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 import { Granularity } from '~~/types/shared/granularity';
@@ -87,15 +81,8 @@ const tmpClickedItem = ref('');
 const loadedWidgets = ref<Record<string, boolean>>({});
 
 const { scrollToTarget, scrollToTop } = useScroll();
-const {
-  project,
-  selectedRepoSlugs,
-  startDate,
-  endDate,
-  selectedReposValues,
-  allArchived,
-  hasSelectedArchivedRepos,
-} = storeToRefs(useProjectStore());
+const { project, selectedRepoSlugs, startDate, endDate, selectedReposValues, allArchived, hasSelectedArchivedRepos } =
+  storeToRefs(useProjectStore());
 const isFirstLoad = ref(true);
 
 /**
@@ -133,9 +120,7 @@ const {
 } = POPULARITY_API_SERVICE.fetchPackageDownloads(downloadsParams);
 
 const isPackageDownloadsEmpty = computed(() =>
-  POPULARITY_API_SERVICE.isPackageDownloadsEmpty(
-    downloadsStatus.value === 'success' ? downloadsData.value : undefined,
-  ),
+  POPULARITY_API_SERVICE.isPackageDownloadsEmpty(downloadsStatus.value === 'success' ? downloadsData.value : undefined),
 );
 
 const isPackageDependencyEmpty = computed(() =>

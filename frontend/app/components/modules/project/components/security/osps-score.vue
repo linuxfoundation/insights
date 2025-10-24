@@ -36,8 +36,7 @@ SPDX-License-Identifier: MIT
     <div class="bg-neutral-50 border-t border-neutral-100 py-4 px-6">
       <p class="text-neutral-500 text-xs">
         The <b class="font-semibold">Open Source Project Security (OSPS) Baseline</b>
-        is a set of security criteria that projects should meet to demonstrate a strong security
-        posture.
+        is a set of security criteria that projects should meet to demonstrate a strong security posture.
       </p>
       <a
         :href="links.ospsScore"
@@ -76,9 +75,7 @@ const props = defineProps<{
   isLoading: boolean;
 }>();
 
-const results = computed(() =>
-  PROJECT_SECURITY_SERVICE.calculateOSPSScore(props.data, props.isRepository),
-);
+const results = computed(() => PROJECT_SECURITY_SERVICE.calculateOSPSScore(props.data, props.isRepository));
 
 const config = computed<OspsBaselineScore>(() => {
   if (props.isLoading) {

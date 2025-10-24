@@ -53,9 +53,7 @@ SPDX-License-Identifier: MIT
           :size="40"
           class="text-neutral-300"
         />
-        <p class="pt-5 text-sm leading-5 text-neutral-500 text-center">
-          We couldn’t find any projects with that term
-        </p>
+        <p class="pt-5 text-sm leading-5 text-neutral-500 text-center">We couldn’t find any projects with that term</p>
       </section>
 
       <!-- Repositories -->
@@ -184,9 +182,7 @@ const route = useRoute();
 
 const tab = ref('all');
 
-const noResult = computed(
-  () => !props.projects.length && !props.repositories.length && !props.collections.length,
-);
+const noResult = computed(() => !props.projects.length && !props.repositories.length && !props.collections.length);
 
 const tabs = [
   {

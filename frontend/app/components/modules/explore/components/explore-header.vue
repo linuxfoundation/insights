@@ -13,8 +13,8 @@ SPDX-License-Identifier: MIT
         most critical open source projects
       </h1>
       <p class="text-sm">
-        LFX Insights helps developers and their organizations make smarter decisions about the open
-        source projects they depend on
+        LFX Insights helps developers and their organizations make smarter decisions about the open source projects they
+        depend on
       </p>
 
       <div class="w-full flex justify-center mt-5 pb-10">

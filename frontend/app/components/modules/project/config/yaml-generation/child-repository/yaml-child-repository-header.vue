@@ -39,9 +39,7 @@ SPDX-License-Identifier: MIT
         </p>
         <lfx-input
           v-model="model.header['project-si-source']"
-          :invalid="
-            $v.header['project-si-source'].$invalid && $v.header['project-si-source'].$dirty
-          "
+          :invalid="$v.header['project-si-source'].$invalid && $v.header['project-si-source'].$dirty"
           @blur="$v.header['project-si-source'].$touch()"
           @input="$v.header['project-si-source'].$touch()"
         />

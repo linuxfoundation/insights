@@ -32,11 +32,7 @@ SPDX-License-Identifier: MIT
 import { computed } from 'vue';
 import type { DeltaDisplayProps } from './types/delta-display.types';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
-import {
-  formatNumber,
-  formatNumberShort,
-  formatSecondsToDuration,
-} from '~/components/shared/utils/formatter';
+import { formatNumber, formatNumberShort, formatSecondsToDuration } from '~/components/shared/utils/formatter';
 
 const props = withDefaults(defineProps<DeltaDisplayProps>(), {
   isReverse: false,
@@ -70,9 +66,7 @@ const delta = computed(() => {
   return sign + (props.isDuration ? changeDuration : changeValue);
 });
 
-const deltaColor = computed(() =>
-  deltaDirection.value === 'negative' ? 'text-negative-600' : 'text-positive-600',
-);
+const deltaColor = computed(() => (deltaDirection.value === 'negative' ? 'text-negative-600' : 'text-positive-600'));
 
 const deltaDisplay = computed(() => {
   const unit = props.isDuration ? '' : props.unit;
@@ -83,9 +77,7 @@ const deltaDisplay = computed(() => {
 });
 
 // The up and down icons will only rely on the value instead of the deltaDirection
-const deltaIcon = computed(() =>
-  props.summary.changeValue < 0 ? 'circle-arrow-down' : 'circle-arrow-up',
-);
+const deltaIcon = computed(() => (props.summary.changeValue < 0 ? 'circle-arrow-down' : 'circle-arrow-up'));
 
 const previousDisplay = computed(() => {
   if (!props.hidePreviousValue) {

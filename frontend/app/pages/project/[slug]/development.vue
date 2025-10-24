@@ -24,19 +24,13 @@ const widget = route.query?.widget;
 
 const title = computed(() => {
   const widgetName =
-    widget && lfxWidgets[widget as Widget]?.name?.length
-      ? lfxWidgets[widget as Widget]?.name
-      : 'Development Insights';
-  return widget
-    ? `${project.value?.name} ${widgetName}`
-    : `${project.value?.name} Development Insights`;
+    widget && lfxWidgets[widget as Widget]?.name?.length ? lfxWidgets[widget as Widget]?.name : 'Development Insights';
+  return widget ? `${project.value?.name} ${widgetName}` : `${project.value?.name} Development Insights`;
 });
 const imageAlt = computed(
   () =>
     `${project.value?.name} development insights${
-      widget && lfxWidgets[widget as Widget]?.name?.length
-        ? ` - ${lfxWidgets[widget as Widget]?.name}`
-        : ''
+      widget && lfxWidgets[widget as Widget]?.name?.length ? ` - ${lfxWidgets[widget as Widget]?.name}` : ''
     }`,
 );
 const description = computed(

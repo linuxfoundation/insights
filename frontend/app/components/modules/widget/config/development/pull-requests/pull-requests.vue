@@ -69,9 +69,7 @@ SPDX-License-Identifier: MIT
       >
         <span class="text-neutral-400 text-xs flex flex-row gap-2 items-center">
           Avg. velocity
-          <lfx-tooltip
-            :content="`Average duration between opening of a pull request and its resolution.`"
-          >
+          <lfx-tooltip :content="`Average duration between opening of a pull request and its resolution.`">
             <lfx-icon
               name="question-circle"
               :size="16"
@@ -92,15 +90,8 @@ import { storeToRefs } from 'pinia';
 import type { PullRequests } from '~~/types/development/responses.types';
 import type { Summary } from '~~/types/shared/summary.types';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
-import {
-  convertToChartData,
-  markLastDataItem,
-} from '~/components/uikit/chart/helpers/chart-helpers';
-import type {
-  ChartData,
-  RawChartData,
-  ChartSeries,
-} from '~/components/uikit/chart/types/ChartTypes';
+import { convertToChartData, markLastDataItem } from '~/components/uikit/chart/helpers/chart-helpers';
+import type { ChartData, RawChartData, ChartSeries } from '~/components/uikit/chart/types/ChartTypes';
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import { getBarChartConfigStackAndLine } from '~/components/uikit/chart/configs/bar.chart';
 import { lfxColors } from '~/config/styles/colors';
@@ -161,9 +152,7 @@ const { data, status, error } = DEVELOPMENT_API_SERVICE.fetchPullRequests(params
 const pullRequests = computed<PullRequests>(() => data.value as PullRequests);
 
 const summary = computed<Summary>(() => pullRequests.value?.summary);
-const avgVelocity = computed<string>(() =>
-  formatSecondsToDuration(pullRequests.value?.avgVelocityInDays || 0, 'long'),
-);
+const avgVelocity = computed<string>(() => formatSecondsToDuration(pullRequests.value?.avgVelocityInDays || 0, 'long'));
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
   () => {
@@ -213,9 +202,7 @@ const barChartConfig = computed(() =>
   getBarChartConfigStackAndLine(chartData.value, chartSeries.value, granularity.value),
 );
 
-const isEmpty = computed(() =>
-  isEmptyData(chartData.value as unknown as Record<string, unknown>[]),
-);
+const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
 
 watch(
   status,

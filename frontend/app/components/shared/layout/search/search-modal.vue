@@ -58,12 +58,7 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
 import { debounce } from 'lodash-es';
-import type {
-  SearchCollection,
-  SearchProject,
-  SearchRepository,
-  SearchResults,
-} from '~~/types/search';
+import type { SearchCollection, SearchProject, SearchRepository, SearchResults } from '~~/types/search';
 import LfxModal from '~/components/uikit/modal/modal.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxSearchResult from '~/components/shared/layout/search/search-result.vue';

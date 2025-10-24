@@ -23,16 +23,11 @@ const widget = route.query?.widget;
 
 const title = computed(() => {
   const widgetName =
-    widget && lfxWidgets[widget as Widget]?.name?.length
-      ? lfxWidgets[widget as Widget]?.name
-      : 'Popularity Insights';
-  return widget
-    ? `${project.value?.name} ${widgetName}`
-    : `${project.value?.name} Popularity Insights`;
+    widget && lfxWidgets[widget as Widget]?.name?.length ? lfxWidgets[widget as Widget]?.name : 'Popularity Insights';
+  return widget ? `${project.value?.name} ${widgetName}` : `${project.value?.name} Popularity Insights`;
 });
 const imageAlt = computed(() => {
-  const widgetName =
-    widget && lfxWidgets[widget as Widget]?.name?.length ? lfxWidgets[widget as Widget]?.name : '';
+  const widgetName = widget && lfxWidgets[widget as Widget]?.name?.length ? lfxWidgets[widget as Widget]?.name : '';
   return `${project.value?.name} popularity insights${widgetName ? ` - ${widgetName}` : ''}`;
 });
 const description = computed(

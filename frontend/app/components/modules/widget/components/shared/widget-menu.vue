@@ -4,9 +4,7 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <div>
-    <div
-      class="border border-neutral-100 shadow-xs bg-white rounded-full p-1 hidden lg:flex items-center gap-2"
-    >
+    <div class="border border-neutral-100 shadow-xs bg-white rounded-full p-1 hidden lg:flex items-center gap-2">
       <template
         v-for="link of menu"
         :key="link.label"
@@ -178,9 +176,7 @@ const share = () => {
   const url = new URL(window.location.href);
   url.searchParams.set('widget', props.name);
   const repoTitle =
-    selectedRepositories.value.length > 0
-      ? ` - ${selectedRepositories.value.map((repo) => repo.name).join(', ')}`
-      : '';
+    selectedRepositories.value.length > 0 ? ` - ${selectedRepositories.value.map((repo) => repo.name).join(', ')}` : '';
   const title = `${project.value?.name}${repoTitle} - ${config.value.name} | LFX Insights`;
   openShareModal({
     url: url.toString(),
@@ -227,8 +223,7 @@ const menu = computed<MenuItem[]>(() => [
     label: '',
     icon: '',
     action: () => {},
-    enabled:
-      (config.value.embed || config.value.snapshot || config.value.share) && isCopilotEnabled.value,
+    enabled: (config.value.embed || config.value.snapshot || config.value.share) && isCopilotEnabled.value,
     buttonClass: '!hidden xl:!block',
     isSeparator: true,
     hideOnMobile: true,

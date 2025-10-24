@@ -44,11 +44,7 @@ SPDX-License-Identifier: MIT
 import { computed } from 'vue';
 import LfxAccordionItem from '~/components/uikit/accordion/accordion-item.vue';
 import LfxProjectSecurityEvaluationResult from '~/components/modules/project/components/security/evaluation-result.vue';
-import type {
-  SecurityDataResult,
-  SecurityAssessmentData,
-  SecurityData,
-} from '~~/types/security/responses.types';
+import type { SecurityDataResult, SecurityAssessmentData, SecurityData } from '~~/types/security/responses.types';
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import { getGaugeChartConfig } from '~/components/uikit/chart/configs/gauge.chart';
 import { lfxColors } from '~/config/styles/colors';
@@ -60,9 +56,7 @@ const props = defineProps<{
   tooltip?: string;
 }>();
 
-const assessments = computed<SecurityAssessmentData[]>(() =>
-  props.checks.map((check) => check.assessments).flat(),
-);
+const assessments = computed<SecurityAssessmentData[]>(() => props.checks.map((check) => check.assessments).flat());
 const assessmentsResults = computed<SecurityDataResult[]>(() =>
   assessments.value.map((assessment: SecurityAssessmentData) => assessment.result),
 );

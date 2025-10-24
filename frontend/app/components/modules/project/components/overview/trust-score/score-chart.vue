@@ -14,10 +14,7 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import LfxChart from '~/components/uikit/chart/chart.vue';
-import {
-  getRadarChartConfig,
-  type RadarIndicator,
-} from '~/components/uikit/chart/configs/radar.chart';
+import { getRadarChartConfig, type RadarIndicator } from '~/components/uikit/chart/configs/radar.chart';
 import { lfxColors } from '~/config/styles/colors';
 import type { ChartSeries, ChartData } from '~~/app/components/uikit/chart/types/ChartTypes';
 
@@ -53,9 +50,7 @@ const radarIndicators = ref<RadarIndicator[]>([
   },
 ]);
 
-const radarChartConfig = computed(() =>
-  getRadarChartConfig(props.chartData, chartSeries.value, radarIndicators.value),
-);
+const radarChartConfig = computed(() => getRadarChartConfig(props.chartData, chartSeries.value, radarIndicators.value));
 </script>
 
 <script lang="ts">

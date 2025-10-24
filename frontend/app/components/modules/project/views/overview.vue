@@ -63,8 +63,7 @@ import type { HealthScoreResults } from '~~/types/overview/responses.types';
 import LfxReposExclusionFooter from '~/components/shared/components/repos-exclusion-footer.vue';
 
 const route = useRoute();
-const { selectedReposValues, project, allArchived, hasSelectedArchivedRepos } =
-  storeToRefs(useProjectStore());
+const { selectedReposValues, project, allArchived, hasSelectedArchivedRepos } = storeToRefs(useProjectStore());
 
 const params = computed(() => ({
   projectSlug: route.params.slug as string,
@@ -95,12 +94,7 @@ const scoreDisplay = computed(() => ({
   security: displaySecurityScore.value,
 }));
 
-const {
-  data: overviewData,
-  status,
-  error,
-  suspense,
-} = OVERVIEW_API_SERVICE.fetchHealthScoreOverview(params);
+const { data: overviewData, status, error, suspense } = OVERVIEW_API_SERVICE.fetchHealthScoreOverview(params);
 
 /**
  * TODO: remove this after https://linear.app/lfx/issue/INS-822/periodicly-check-for-widgets-data-and-enabledisable-them

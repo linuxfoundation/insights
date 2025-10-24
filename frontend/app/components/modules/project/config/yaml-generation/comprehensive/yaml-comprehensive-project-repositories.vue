@@ -7,8 +7,8 @@ SPDX-License-Identifier: MIT
     <p class="text-sm font-semibold text-brand-600">Project details</p>
     <p class="text-lg font-semibold text-neutral-900">Repositories</p>
     <p class="text-xs font-normal text-neutral-500">
-      List all the project's related repositories to ensure that security policies, reporting
-      processes, and documentation are applied consistently across the entire project.
+      List all the project's related repositories to ensure that security policies, reporting processes, and
+      documentation are applied consistently across the entire project.
     </p>
   </div>
 

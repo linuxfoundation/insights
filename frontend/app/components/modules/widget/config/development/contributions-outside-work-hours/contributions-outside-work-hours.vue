@@ -32,9 +32,7 @@ SPDX-License-Identifier: MIT
         class="flex flex-row justify-between items-center gap-10"
       >
         <div class="flex flex-col items-end justify-center">
-          <span class="text-neutral-400 text-xs flex flex-row gap-2 items-center">
-            Mon-Fri (after 18:00)
-          </span>
+          <span class="text-neutral-400 text-xs flex flex-row gap-2 items-center"> Mon-Fri (after 18:00) </span>
           <lfx-skeleton-state
             :status="status"
             height="1.25rem"
@@ -95,11 +93,7 @@ import type { ContributionOutsideHours } from '~~/types/development/responses.ty
 import type { Summary } from '~~/types/shared/summary.types';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
 import { convertToChartData } from '~/components/uikit/chart/helpers/chart-helpers';
-import type {
-  ChartData,
-  RawChartData,
-  ChartSeries,
-} from '~/components/uikit/chart/types/ChartTypes';
+import type { ChartData, RawChartData, ChartSeries } from '~/components/uikit/chart/types/ChartTypes';
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import { lfxColors } from '~/config/styles/colors';
 import { getScatterChartConfig } from '~/components/uikit/chart/configs/scatter.chart';
@@ -126,8 +120,7 @@ const emit = defineEmits<{
   (e: 'hasData', value: boolean): void;
 }>();
 
-const { startDate, endDate, selectedReposValues, selectedTimeRangeKey } =
-  storeToRefs(useProjectStore());
+const { startDate, endDate, selectedReposValues, selectedTimeRangeKey } = storeToRefs(useProjectStore());
 
 const route = useRoute();
 
@@ -142,16 +135,10 @@ const params = computed<QueryParams>(() => ({
 
 const { data, status, error } = DEVELOPMENT_API_SERVICE.fetchContributionsOutsideWorkHours(params);
 
-const contributionOutsideHours = computed<ContributionOutsideHours>(
-  () => data.value as ContributionOutsideHours,
-);
+const contributionOutsideHours = computed<ContributionOutsideHours>(() => data.value as ContributionOutsideHours);
 const summary = computed<Summary>(() => contributionOutsideHours.value.summary);
-const weekdayPercentage = computed<number>(
-  () => contributionOutsideHours.value.weekdayOutsideHoursPercentage,
-);
-const weekendPercentage = computed<number>(
-  () => contributionOutsideHours.value.weekendOutsideHoursPercentage,
-);
+const weekdayPercentage = computed<number>(() => contributionOutsideHours.value.weekdayOutsideHoursPercentage);
+const weekendPercentage = computed<number>(() => contributionOutsideHours.value.weekendOutsideHoursPercentage);
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
   () =>
@@ -174,9 +161,7 @@ const chartSeries = ref<ChartSeries[]>([
   },
 ]);
 
-const isEmpty = computed(() =>
-  isEmptyData(chartData.value as unknown as Record<string, unknown>[]),
-);
+const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
 
 watch(
   status,

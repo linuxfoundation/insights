@@ -32,8 +32,7 @@ SPDX-License-Identifier: MIT
               class="block"
             >
               <div class="text-xs text-neutral-500 mt-4">
-                LFX Insights does not have enough meaningful data to generate an overall Health
-                score for this project.
+                LFX Insights does not have enough meaningful data to generate an overall Health score for this project.
               </div>
             </div>
 
@@ -51,8 +50,8 @@ SPDX-License-Identifier: MIT
                 Select “All repositories” in order to get the aggregated Health Score
               </div>
               <p class="text-xs text-neutral-500 mt-4">
-                The Insights Health Score combines the four key areas to measure an open source
-                project's overall trustworthiness.
+                The Insights Health Score combines the four key areas to measure an open source project's overall
+                trustworthiness.
                 <a
                   :href="links.trustScore"
                   target="_blank"
@@ -66,12 +65,7 @@ SPDX-License-Identifier: MIT
         </div>
       </div>
       <div
-        v-if="
-          !hideOverallScore &&
-          status === 'success' &&
-          selectedRepositories.length <= 1 &&
-          !allArchived
-        "
+        v-if="!hideOverallScore && status === 'success' && selectedRepositories.length <= 1 && !allArchived"
         class="w-[200px] hidden sm:block"
       >
         <lfx-project-trust-score-share-badge
@@ -128,9 +122,7 @@ const props = defineProps<{
   isEmpty: boolean;
 }>();
 
-const overallScore = computed(() =>
-  Math.round(props.trustScoreSummary ? props.trustScoreSummary.overall : 0),
-);
+const overallScore = computed(() => Math.round(props.trustScoreSummary ? props.trustScoreSummary.overall : 0));
 const hideOverallScore = computed(() => Object.values(props.scoreDisplay).some((score) => !score));
 const { selectedRepositories, allArchived, archivedRepos } = storeToRefs(useProjectStore());
 </script>

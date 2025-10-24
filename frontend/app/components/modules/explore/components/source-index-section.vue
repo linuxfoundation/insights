@@ -3,9 +3,7 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <section
-    class="flex flex-col xl:flex-row w-full justify-between p-8 md:p-12 bg-brand-50 rounded-xl xl:gap-0 gap-11"
-  >
+  <section class="flex flex-col xl:flex-row w-full justify-between p-8 md:p-12 bg-brand-50 rounded-xl xl:gap-0 gap-11">
     <div class="max-w-auto xl:max-w-100 flex sm:flex-row flex-col xl:flex-col gap-4">
       <div class="flex flex-col gap-4">
         <h2 class="text-heading-2 lg:text-heading-1 font-secondary font-light">
@@ -14,8 +12,8 @@ SPDX-License-Identifier: MIT
         </h2>
 
         <p class="text-sm lg:text-base text-neutral-900 pb-4">
-          Curated list of the most critical open source projects powering our modern digital
-          infrastructure, measured by contributor volume and software value
+          Curated list of the most critical open source projects powering our modern digital infrastructure, measured by
+          contributor volume and software value
         </p>
       </div>
       <div class="w-full xl:w-auto flex sm:justify-end xl:justify-start justify-center">

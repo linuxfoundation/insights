@@ -8,9 +8,8 @@ SPDX-License-Identifier: MIT
       <p class="text-sm font-semibold text-brand-600">Repository details</p>
       <p class="text-lg font-semibold text-neutral-900">Security champions</p>
       <p class="text-body-2 text-neutral-500">
-        Contributors or maintainers who take responsibility for promoting secure development
-        practices, assisting with vulnerability triage, and serving as a point of contact for
-        security-related matters in the repository.
+        Contributors or maintainers who take responsibility for promoting secure development practices, assisting with
+        vulnerability triage, and serving as a point of contact for security-related matters in the repository.
       </p>
     </div>
 

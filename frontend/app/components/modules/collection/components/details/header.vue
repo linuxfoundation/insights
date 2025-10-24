@@ -61,20 +61,12 @@ SPDX-License-Identifier: MIT
               <h1
                 v-else-if="props.collection"
                 class="font-secondary font-bold transition-all"
-                :class="
-                  scrollTop > 50
-                    ? 'text-heading-4 md:text-heading-3'
-                    : 'text-heading-3 md:text-heading-2'
-                "
+                :class="scrollTop > 50 ? 'text-heading-4 md:text-heading-3' : 'text-heading-3 md:text-heading-2'"
               >
                 {{ props.collection.name }}
               </h1>
               <div
-                :class="
-                  scrollTop > 50
-                    ? 'h-0 opacity-0 invisible pt-0'
-                    : 'h-auto opacity-100 visible pt-2 md:pt-3'
-                "
+                :class="scrollTop > 50 ? 'h-0 opacity-0 invisible pt-0' : 'h-auto opacity-100 visible pt-2 md:pt-3'"
                 class="w-full transition-all ease-linear"
               >
                 <lfx-skeleton
@@ -102,9 +94,7 @@ SPDX-License-Identifier: MIT
             "
           >
             <article class="flex items-center gap-2 h-min">
-              <div
-                class="h-6 w-6 md:h-7 md:w-7 rounded-full flex items-center justify-center bg-neutral-100"
-              >
+              <div class="h-6 w-6 md:h-7 md:w-7 rounded-full flex items-center justify-center bg-neutral-100">
                 <lfx-icon
                   name="laptop-code"
                   :size="14"
@@ -126,9 +116,7 @@ SPDX-License-Identifier: MIT
               </p>
             </article>
             <article class="flex items-center gap-2 h-min">
-              <div
-                class="h-6 w-6 md:h-8 md:w-8 rounded-full flex items-center justify-center bg-brand-50"
-              >
+              <div class="h-6 w-6 md:h-8 md:w-8 rounded-full flex items-center justify-center bg-brand-50">
                 <lfx-icon
                   name="people-group"
                   :size="14"
@@ -156,9 +144,7 @@ SPDX-License-Identifier: MIT
               )} according to Constructive Cost Model (COCOMO)`"
             >
               <article class="flex items-center gap-2 h-min">
-                <div
-                  class="h-6 w-6 md:h-8 md:w-8 rounded-full flex items-center justify-center bg-positive-50"
-                >
+                <div class="h-6 w-6 md:h-8 md:w-8 rounded-full flex items-center justify-center bg-positive-50">
                   <lfx-icon
                     name="dollar-circle"
                     :size="14"

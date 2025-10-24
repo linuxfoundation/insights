@@ -16,9 +16,7 @@ SPDX-License-Identifier: MIT
       <span class="text-nowrap">{{ label }}</span>
     </lfx-tag>
     <template #content>
-      <div
-        class="text-xs w-78 text-center flex flex-col gap-2 bg-neutral-900 py-1.5 px-2 rounded-md"
-      >
+      <div class="text-xs w-78 text-center flex flex-col gap-2 bg-neutral-900 py-1.5 px-2 rounded-md">
         <div class="text-white">
           {{
             archived

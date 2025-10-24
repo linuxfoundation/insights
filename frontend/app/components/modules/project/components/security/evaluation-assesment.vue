@@ -3,9 +3,7 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <article
-    class="py-4 sm:py-5 border-t first:border-0 border-neutral-100 flex flex-col sm:flex-row gap-4 sm:gap-6"
-  >
+  <article class="py-4 sm:py-5 border-t first:border-0 border-neutral-100 flex flex-col sm:flex-row gap-4 sm:gap-6">
     <div class="w-full sm:w-27 sm:min-w-27">
       <lfx-project-security-evaluation-result-tag
         size="small"
@@ -15,9 +13,7 @@ SPDX-License-Identifier: MIT
     </div>
     <div class="flex flex-col sm:flex-row flex-grow gap-4 sm:gap-10 items-start">
       <div class="w-full sm:w-1/3">
-        <p class="text-xs font-semibold mb-2">
-          Requirement ID: {{ props.assessment.requirementId }}
-        </p>
+        <p class="text-xs font-semibold mb-2">Requirement ID: {{ props.assessment.requirementId }}</p>
         <p class="text-body-2 text-neutral-600">
           {{ props.assessment.description }}
         </p>
@@ -32,9 +28,7 @@ SPDX-License-Identifier: MIT
         </p>
       </div>
       <div
-        v-if="
-          props.assessment.recommendation && props.assessment.result !== SecurityDataResult.PASSED
-        "
+        v-if="props.assessment.recommendation && props.assessment.result !== SecurityDataResult.PASSED"
         class="w-full sm:w-1/3"
       >
         <div class="flex items-center gap-1 mb-2">

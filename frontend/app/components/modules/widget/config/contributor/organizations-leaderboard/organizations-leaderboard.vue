@@ -99,17 +99,12 @@ const params = computed(() => ({
   includeCollaborations: model.value.includeCollaborations,
 }));
 
-const { data, isSuccess, isError, status } =
-  CONTRIBUTORS_API_SERVICE.fetchOrganizationLeaderboard(params);
+const { data, isSuccess, isError, status } = CONTRIBUTORS_API_SERVICE.fetchOrganizationLeaderboard(params);
 
-const organizations = computed<OrganizationLeaderboard>(
-  () => data.value?.pages[0] as OrganizationLeaderboard,
-);
+const organizations = computed<OrganizationLeaderboard>(() => data.value?.pages[0] as OrganizationLeaderboard);
 const hideAllOrganizationsButton = computed(() => organizations.value?.data.length < 10);
 
-const isEmpty = computed(() =>
-  isEmptyData(organizations.value?.data as unknown as Record<string, unknown>[]),
-);
+const isEmpty = computed(() => isEmptyData(organizations.value?.data as unknown as Record<string, unknown>[]));
 
 watch(
   status,

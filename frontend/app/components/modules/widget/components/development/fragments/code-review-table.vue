@@ -38,9 +38,7 @@ SPDX-License-Identifier: MIT
       <div class="basis-1/4 text-right">
         {{ formatNumberShort(item.activityCount) }}
       </div>
-      <div class="basis-1/4 text-right">
-        {{ (item.percentage || 0) > 0 ? item.percentage : '<1' }}%
-      </div>
+      <div class="basis-1/4 text-right">{{ (item.percentage || 0) > 0 ? item.percentage : '<1' }}%</div>
     </div>
   </div>
 </template>

@@ -64,7 +64,5 @@ const props = withDefaults(
   },
 );
 
-const itemDisplay = computed(() =>
-  props.itemValue ? `${props.itemValue?.value} ${props.itemValue?.unit}` : '-',
-);
+const itemDisplay = computed(() => (props.itemValue ? `${props.itemValue?.value} ${props.itemValue?.unit}` : '-'));
 </script>

@@ -19,9 +19,7 @@ SPDX-License-Identifier: MIT
       />
     </div>
     <div class="text-2xl font-secondary font-bold">Generate insights with AI</div>
-    <div class="text-neutral-500 text-xs mb-10">
-      Leverage LFX database to create your own custom widgets
-    </div>
+    <div class="text-neutral-500 text-xs mb-10">Leverage LFX database to create your own custom widgets</div>
     <div class="flex justify-between gap-10 mx-auto">
       <div
         v-for="(step, index) in steps"

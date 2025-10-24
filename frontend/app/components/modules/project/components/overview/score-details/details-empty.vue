@@ -10,8 +10,7 @@ SPDX-License-Identifier: MIT
       class="text-neutral-300"
     />
     <p class="text-center max-w-100">
-      {{ label }} metrics are unavailable because the required data isn't available for this
-      project.
+      {{ label }} metrics are unavailable because the required data isn't available for this project.
     </p>
   </div>
 </template>

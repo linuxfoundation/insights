@@ -29,9 +29,7 @@ const description = computed(
     `See contributor activity, code changes, and development trends over time.`,
 );
 const url = computed(() => `${config.public.appUrl}${route.fullPath}`);
-const image = computed(
-  () => `${config.public.appUrl}/api/seo/og-image?projectSlug=${slug}&repositorySlug=${name}`,
-);
+const image = computed(() => `${config.public.appUrl}/api/seo/og-image?projectSlug=${slug}&repositorySlug=${name}`);
 
 useSeoMeta({
   title,

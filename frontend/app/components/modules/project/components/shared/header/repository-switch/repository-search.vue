@@ -98,8 +98,7 @@ const router = useRouter();
 const searchInputRef = ref(null);
 const search = ref('');
 
-const { selectedRepoSlugs, projectRepos, archivedRepos, excludedRepos } =
-  storeToRefs(useProjectStore());
+const { selectedRepoSlugs, projectRepos, archivedRepos, excludedRepos } = storeToRefs(useProjectStore());
 
 interface RepositoryItem extends ProjectRepository {
   isExcluded: boolean;
@@ -141,10 +140,7 @@ const handleReposChange = (slug: string) => {
   } else {
     router.push({
       name: props.link.projectRouteName,
-      query:
-        repos.length > 0
-          ? { ...routeQuery, repos: repos.join(',') }
-          : { ...routeQuery, repos: undefined },
+      query: repos.length > 0 ? { ...routeQuery, repos: repos.join(',') } : { ...routeQuery, repos: undefined },
     });
   }
 };

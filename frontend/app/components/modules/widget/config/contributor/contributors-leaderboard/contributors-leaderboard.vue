@@ -99,17 +99,12 @@ const params = computed(() => ({
   includeCollaborations: model.value.includeCollaborations,
 }));
 
-const { data, isSuccess, isError, status } =
-  CONTRIBUTORS_API_SERVICE.fetchContributorLeaderboard(params);
+const { data, isSuccess, isError, status } = CONTRIBUTORS_API_SERVICE.fetchContributorLeaderboard(params);
 
-const contributors = computed<ContributorLeaderboard>(
-  () => data.value?.pages[0] as ContributorLeaderboard,
-);
+const contributors = computed<ContributorLeaderboard>(() => data.value?.pages[0] as ContributorLeaderboard);
 const hideAllContributorsButton = computed(() => contributors.value?.data.length < 10);
 
-const isEmpty = computed(() =>
-  isEmptyData(contributors.value?.data as unknown as Record<string, unknown>[]),
-);
+const isEmpty = computed(() => isEmptyData(contributors.value?.data as unknown as Record<string, unknown>[]));
 
 watch(
   status,

@@ -5,9 +5,7 @@ SPDX-License-Identifier: MIT
 <template>
   <div class="pb-6 px-0 bg-white h-full border-r border-neutral-200 flex flex-col">
     <!-- Header -->
-    <div
-      class="p-4 text-xl font-secondary font-bold leading-7 gap-3 text-neutral-900 flex-none flex items-center"
-    >
+    <div class="p-4 text-xl font-secondary font-bold leading-7 gap-3 text-neutral-900 flex-none flex items-center">
       <lfx-icon
         name="sparkles"
         :size="20"
@@ -31,9 +29,7 @@ SPDX-License-Identifier: MIT
       <div
         v-show="showTopGradient"
         class="pointer-events-none sticky left-0 right-0 top-0 h-8 z-10"
-        style="
-          background: linear-gradient(to bottom, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
-        "
+        style="background: linear-gradient(to bottom, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0))"
       />
       <!-- Bottom gradient -->
       <div
@@ -174,11 +170,7 @@ const callChatApi = async (userMessage: string) => {
 
   // Add user message to chat
   messages.value.push(
-    copilotApiService.generateTextMessage(
-      userMessage,
-      'user' as MessageRole,
-      'complete' as MessageStatus,
-    ),
+    copilotApiService.generateTextMessage(userMessage, 'user' as MessageRole, 'complete' as MessageStatus),
   );
 
   input.value = '';

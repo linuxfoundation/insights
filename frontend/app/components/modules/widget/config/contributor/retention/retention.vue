@@ -52,21 +52,10 @@ import { storeToRefs } from 'pinia';
 import { DateTime } from 'luxon';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
 import LfxChart from '~/components/uikit/chart/chart.vue';
-import {
-  convertToChartData,
-  currentInterval,
-} from '~/components/uikit/chart/helpers/chart-helpers';
-import type {
-  ChartData,
-  RawChartData,
-  ChartSeries,
-} from '~/components/uikit/chart/types/ChartTypes';
+import { convertToChartData, currentInterval } from '~/components/uikit/chart/helpers/chart-helpers';
+import type { ChartData, RawChartData, ChartSeries } from '~/components/uikit/chart/types/ChartTypes';
 import { lfxColors } from '~/config/styles/colors';
-import {
-  getLineAreaChartConfig,
-  getMarkLine,
-  getVisualMap,
-} from '~/components/uikit/chart/configs/line.area.chart';
+import { getLineAreaChartConfig, getMarkLine, getVisualMap } from '~/components/uikit/chart/configs/line.area.chart';
 import { useProjectStore } from '~/components/modules/project/store/project.store';
 import { isEmptyData } from '~/components/shared/utils/helper';
 import type { Retention } from '~~/types/contributors/responses.types';
@@ -165,8 +154,7 @@ const columnBeforeLastItem = computed<string>(() => {
 });
 
 const isEmpty = computed(
-  () =>
-    isBelowThreshold.value || isEmptyData(chartData.value as unknown as Record<string, unknown>[]),
+  () => isBelowThreshold.value || isEmptyData(chartData.value as unknown as Record<string, unknown>[]),
 );
 
 const tabs = [

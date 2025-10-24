@@ -56,25 +56,19 @@ const tooltip = (info: TreeLabelFormatterParams): string => {
     name: collection?.type || '',
     categoryName: collection?.name || '',
     count: collection?.totalContributors || 0,
-    softwareValue: collection?.softwareValue
-      ? formatNumberCurrency(collection?.softwareValue, 'USD')
-      : undefined,
+    softwareValue: collection?.softwareValue ? formatNumberCurrency(collection?.softwareValue, 'USD') : undefined,
     projects:
       projects?.map((project) => ({
         name: project.name,
         count: project.count,
-        softwareValue: project.softwareValue
-          ? formatNumberCurrency(project.softwareValue, 'USD')
-          : undefined,
+        softwareValue: project.softwareValue ? formatNumberCurrency(project.softwareValue, 'USD') : undefined,
         logoUrl: project.logoUrl,
       })) || [],
     collections:
       collection?.topCollections?.map((collection) => ({
         name: collection.name,
         count: collection.count,
-        softwareValue: collection.softwareValue
-          ? formatNumberCurrency(collection.softwareValue, 'USD')
-          : undefined,
+        softwareValue: collection.softwareValue ? formatNumberCurrency(collection.softwareValue, 'USD') : undefined,
         icon: 'fa-light fa-people-group',
       })) || [],
   };
@@ -92,9 +86,7 @@ const tooltip = (info: TreeLabelFormatterParams): string => {
   // We're returning empty so that the tooltip is not rendered
   return '';
 };
-const config = computed(() =>
-  getTreeMapConfig(props.data, tooltip, props.sort === 'softwareValue'),
-);
+const config = computed(() => getTreeMapConfig(props.data, tooltip, props.sort === 'softwareValue'));
 
 /**
  * This is a hack to move the tooltip to the correct position
@@ -139,11 +131,7 @@ const handleMouseLeave = () => {
 };
 
 const handleChartClick = (params: ECElementEvent) => {
-  if (
-    params.componentSubType === 'treemap' &&
-    params.componentType === 'series' &&
-    params.dataIndex > 0
-  ) {
+  if (params.componentSubType === 'treemap' && params.componentType === 'series' && params.dataIndex > 0) {
     const data = params.data as TreeMapData;
 
     if (data.id && data.link) {

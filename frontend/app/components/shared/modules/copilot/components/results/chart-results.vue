@@ -213,9 +213,7 @@ const applySeriesStyle = (config: Config) => {
         ...defaultSeriesLineStyle,
         name: typeof series.name === 'string' ? series.name : String(series.name || ''),
         areaStyle: {
-          color: convertToGradientColor(
-            hexToRgba(configColors?.[index] || lfxColors.brand[500], 0.1),
-          ),
+          color: convertToGradientColor(hexToRgba(configColors?.[index] || lfxColors.brand[500], 0.1)),
         },
       };
     }

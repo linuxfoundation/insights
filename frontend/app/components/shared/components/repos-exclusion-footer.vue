@@ -14,11 +14,7 @@ SPDX-License-Identifier: MIT
     />
     <span class="text-neutral-500 text-xs">
       <span class="font-semibold">Archived repositories</span> are excluded from
-      {{
-        pageContent === 'health-score'
-          ? 'Health Score and Security & Best practices'
-          : 'Security & Best practices'
-      }}.
+      {{ pageContent === 'health-score' ? 'Health Score and Security & Best practices' : 'Security & Best practices' }}.
     </span>
   </div>
 </template>

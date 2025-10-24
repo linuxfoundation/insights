@@ -9,8 +9,8 @@ SPDX-License-Identifier: MIT
       <p class="text-sm font-semibold text-brand-600">Repository details</p>
       <p class="text-lg font-semibold text-neutral-900">Release information</p>
       <p class="text-xs font-normal leading-4 text-neutral-500">
-        Provide key details about the repository release process so contributors can verify,
-        understand, and safely use published versions.
+        Provide key details about the repository release process so contributors can verify, understand, and safely use
+        published versions.
       </p>
     </div>
 
@@ -22,9 +22,7 @@ SPDX-License-Identifier: MIT
         </p>
         <lfx-input
           v-model="model.repository.release.changelog"
-          :invalid="
-            $v.repository.release.changelog.$invalid && $v.repository.release.changelog.$dirty
-          "
+          :invalid="$v.repository.release.changelog.$invalid && $v.repository.release.changelog.$dirty"
           @blur="$v.repository.release.changelog.$touch()"
           @input="$v.repository.release.changelog.$touch()"
         />
@@ -47,8 +45,8 @@ SPDX-License-Identifier: MIT
         <div class="flex flex-col gap-1">
           <p class="text-base font-semibold leading-6 text-neutral-900">Attestations</p>
           <p class="text-xs font-normal leading-4 text-neutral-500">
-            Evidence or metadata (such as signed statements or provenance files) that verify how and
-            when a release was built.
+            Evidence or metadata (such as signed statements or provenance files) that verify how and when a release was
+            built.
           </p>
         </div>
 
@@ -86,8 +84,8 @@ SPDX-License-Identifier: MIT
         <div class="flex flex-col gap-1">
           <p class="text-base font-semibold leading-6 text-neutral-900">Distribution points</p>
           <p class="text-xs font-normal leading-4 text-neutral-500">
-            Official sources where releases can be downloaded or accessed, such as package
-            registries, artifact repositories, or release pages.
+            Official sources where releases can be downloaded or accessed, such as package registries, artifact
+            repositories, or release pages.
           </p>
         </div>
 
@@ -125,22 +123,18 @@ SPDX-License-Identifier: MIT
         <div class="flex flex-col gap-1">
           <p class="text-base font-semibold leading-6 text-neutral-900">Release license</p>
           <p class="text-xs font-normal leading-4 text-neutral-500">
-            Specify the license under which your repository is distributed. This information helps
-            users understand how they can use, modify, and distribute your code.
+            Specify the license under which your repository is distributed. This information helps users understand how
+            they can use, modify, and distribute your code.
           </p>
         </div>
 
         <!-- License URL -->
         <lfx-field label="License URL">
-          <p class="text-xs font-normal leading-4 text-neutral-500">
-            URL to the full text of your project's license
-          </p>
+          <p class="text-xs font-normal leading-4 text-neutral-500">URL to the full text of your project's license</p>
           <lfx-input
             v-model="model.repository.release.license.url"
             placeholder="https://opensource.org/licenses/MIT"
-            :invalid="
-              $v.repository.release.license.url.$invalid && $v.repository.release.license.url.$dirty
-            "
+            :invalid="$v.repository.release.license.url.$invalid && $v.repository.release.license.url.$dirty"
             @blur="$v.repository.release.license.url.$touch()"
             @input="$v.repository.release.license.url.$touch()"
           />
@@ -172,20 +166,13 @@ SPDX-License-Identifier: MIT
             <p class="text-xs font-semibold text-brand-600">Common license examples</p>
           </div>
           <div class="text-xs font-normal leading-4 text-neutral-600">
+            <p class="mb-0"><span class="font-semibold">MIT:</span> Permissive license with minimal restrictions</p>
+            <p class="mb-0"><span class="font-semibold">Apache-2.0:</span> Permissive license with patent protection</p>
             <p class="mb-0">
-              <span class="font-semibold">MIT:</span> Permissive license with minimal restrictions
+              <span class="font-semibold">GPL-3.0:</span> Copyleft license requiring derivative works to be open source
             </p>
             <p class="mb-0">
-              <span class="font-semibold">Apache-2.0:</span> Permissive license with patent
-              protection
-            </p>
-            <p class="mb-0">
-              <span class="font-semibold">GPL-3.0:</span> Copyleft license requiring derivative
-              works to be open source
-            </p>
-            <p class="mb-0">
-              <span class="font-semibold">BSD-3-Clause:</span> Permissive license similar to MIT
-              with additional clause
+              <span class="font-semibold">BSD-3-Clause:</span> Permissive license similar to MIT with additional clause
             </p>
           </div>
         </div>

@@ -39,9 +39,7 @@ SPDX-License-Identifier: MIT
           v-if="summary && !isEmpty"
           class="flex flex-wrap gap-y-3 flex-row gap-4 items-center"
         >
-          <div class="text-heading-1 sm:text-data-display-1">
-            {{ formatNumber(summary.current) }} contributors
-          </div>
+          <div class="text-heading-1 sm:text-data-display-1">{{ formatNumber(summary.current) }} contributors</div>
           <lfx-delta-display
             v-if="selectedTimeRangeKey !== dateOptKeys.alltime"
             :summary="summary"
@@ -109,15 +107,8 @@ import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
 import LfxDropdownSelect from '~/components/uikit/dropdown/dropdown-select.vue';
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import { getBarChartConfig } from '~/components/uikit/chart/configs/bar.chart';
-import {
-  convertToChartData,
-  markLastDataItem,
-} from '~/components/uikit/chart/helpers/chart-helpers';
-import type {
-  ChartData,
-  RawChartData,
-  ChartSeries,
-} from '~/components/uikit/chart/types/ChartTypes';
+import { convertToChartData, markLastDataItem } from '~/components/uikit/chart/helpers/chart-helpers';
+import type { ChartData, RawChartData, ChartSeries } from '~/components/uikit/chart/types/ChartTypes';
 import { lfxColors } from '~/config/styles/colors';
 import type { Granularity } from '~~/types/shared/granularity';
 import { barGranularities } from '~/components/shared/types/granularity';
@@ -162,9 +153,7 @@ const params = computed<QueryParams>(() => ({
 
 const { data, status, error } = DEVELOPMENT_API_SERVICE.fetchCodeReviewEngagement(params);
 
-const codeReviewEngagement = computed<CodeReviewEngagement>(
-  () => data.value as CodeReviewEngagement,
-);
+const codeReviewEngagement = computed<CodeReviewEngagement>(() => data.value as CodeReviewEngagement);
 const prParticipantsData = computed<CodeReviewEngagementPRParticipantsItem[]>(() =>
   model.value.activeTab === CodeReviewEngagementMetric.PR_PARTICIPANTS
     ? (codeReviewEngagement.value.data as CodeReviewEngagementPRParticipantsItem[])
@@ -191,10 +180,7 @@ const barGranularity = computed(() =>
 
 const chartSeries = computed<ChartSeries[]>(() => [
   {
-    name:
-      model.value.activeTab === CodeReviewEngagementMetric.REVIEW_COMMENTS
-        ? 'Review Comments'
-        : 'Code Reviews',
+    name: model.value.activeTab === CodeReviewEngagementMetric.REVIEW_COMMENTS ? 'Review Comments' : 'Code Reviews',
     type: 'bar',
     yAxisIndex: 0,
     dataIndex: 0,
@@ -206,16 +192,12 @@ const chartSeries = computed<ChartSeries[]>(() => [
 const chartData = computed<ChartData[]>(() => {
   if (model.value.activeTab === CodeReviewEngagementMetric.REVIEW_COMMENTS) {
     return markLastDataItem(
-      convertToChartData(reviewCommentsData.value as unknown as RawChartData[], 'startDate', [
-        'comments',
-      ]),
+      convertToChartData(reviewCommentsData.value as unknown as RawChartData[], 'startDate', ['comments']),
       barGranularity.value,
     );
   } else if (model.value.activeTab === CodeReviewEngagementMetric.CODE_REVIEWS) {
     return markLastDataItem(
-      convertToChartData(codeReviewsData.value as unknown as RawChartData[], 'startDate', [
-        'reviews',
-      ]),
+      convertToChartData(codeReviewsData.value as unknown as RawChartData[], 'startDate', ['reviews']),
       barGranularity.value,
     );
   }
@@ -245,9 +227,7 @@ const isEmpty = computed(() =>
   isEmptyData((codeReviewEngagement.value?.data || []) as unknown as Record<string, unknown>[]),
 );
 
-const barChartConfig = computed(() =>
-  getBarChartConfig(chartData.value, chartSeries.value, barGranularity.value),
-);
+const barChartConfig = computed(() => getBarChartConfig(chartData.value, chartSeries.value, barGranularity.value));
 
 watch(
   status,

@@ -96,11 +96,7 @@ const exportCsv = () => {
           const val = row[key];
           // Escape double quotes by doubling them, wrap in quotes if needed
           const escaped =
-            typeof val === 'string'
-              ? `"${val.replace(/"/g, '""')}"`
-              : val !== undefined && val !== null
-                ? val
-                : '';
+            typeof val === 'string' ? `"${val.replace(/"/g, '""')}"` : val !== undefined && val !== null ? val : '';
           return escaped;
         })
         .join(','),

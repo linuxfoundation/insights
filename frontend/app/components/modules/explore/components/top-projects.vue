@@ -72,15 +72,11 @@ const props = defineProps<{
   isFullList?: boolean;
 }>();
 
-const { data, isPending, status, error, suspense } = EXPLORE_API_SERVICE.fetchTopProjects(
-  props.isFullList ? 50 : 10,
-);
+const { data, isPending, status, error, suspense } = EXPLORE_API_SERVICE.fetchTopProjects(props.isFullList ? 50 : 10);
 
 const tableData = computed(() => data.value?.pages.flatMap((p) => (p as Pagination<Project>).data));
 
-const isEmpty = computed(() =>
-  isEmptyData(tableData.value as unknown as Record<string, unknown>[]),
-);
+const isEmpty = computed(() => isEmptyData(tableData.value as unknown as Record<string, unknown>[]));
 
 onServerPrefetch(async () => {
   await suspense();

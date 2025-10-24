@@ -68,11 +68,7 @@ const type = ref<OSIType>((route.query.type as OSIType) || 'horizontal');
 const { data, status, error, suspense } = OSS_INDEX_API_SERVICE.fetchOSSCategory(slug.value, sort);
 
 const chartData = computed<TreeMapData[]>(() => {
-  return OSS_INDEX_API_SERVICE.mapDataToTreeMapData(
-    data.value?.categories || [],
-    'category',
-    sort.value,
-  );
+  return OSS_INDEX_API_SERVICE.mapDataToTreeMapData(data.value?.categories || [], 'category', sort.value);
 });
 
 onServerPrefetch(async () => {

@@ -117,9 +117,7 @@ const contributors = computed<Contributor[]>(() => {
   return data.value?.pages.flatMap((page) => (page as ContributorLeaderboard).data) || [];
 });
 
-const isEmpty = computed(() =>
-  isEmptyData(contributors.value as unknown as Record<string, unknown>[]),
-);
+const isEmpty = computed(() => isEmptyData(contributors.value as unknown as Record<string, unknown>[]));
 
 const loadMore = () => {
   if (hasNextPage.value) {

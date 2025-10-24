@@ -8,8 +8,8 @@ SPDX-License-Identifier: MIT
       <div>
         <h2 class="text-heading-3 font-secondary font-bold">Controls assessment</h2>
         <p class="text-xs text-neutral-500 mt-4">
-          Process of assessing a project's practices, policies, and technical measures against a set
-          of predefined standards to determine its security posture, reliability, and maturity.
+          Process of assessing a project's practices, policies, and technical measures against a set of predefined
+          standards to determine its security posture, reliability, and maturity.
           <a
             :href="links.securityScore"
             target="_blank"

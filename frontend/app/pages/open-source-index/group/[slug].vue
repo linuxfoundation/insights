@@ -10,10 +10,7 @@ SPDX-License-Identifier: MIT
 import { computed, onServerPrefetch, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import LfxOpenSourceIndexGroup from '~/components/modules/open-source-index/views/open-source-index-group.vue';
-import {
-  OSS_INDEX_API_SERVICE,
-  type SortType,
-} from '~/components/modules/open-source-index/services/osi.api.service';
+import { OSS_INDEX_API_SERVICE, type SortType } from '~/components/modules/open-source-index/services/osi.api.service';
 
 const route = useRoute();
 const slug = ref<string>((route.params.slug as string) || '');

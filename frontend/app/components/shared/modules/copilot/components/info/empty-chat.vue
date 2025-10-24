@@ -11,9 +11,7 @@ SPDX-License-Identifier: MIT
       type="light"
     />
     <div class="font-semibold mt-6 mb-2">Ask questions about LFX data</div>
-    <div class="text-neutral-500 text-xs mb-10">
-      Start a conversation to generate your first chart
-    </div>
+    <div class="text-neutral-500 text-xs mb-10">Start a conversation to generate your first chart</div>
     <div class="flex flex-col gap-4 justify-center items-center">
       <div
         v-for="suggestion in suggestions"

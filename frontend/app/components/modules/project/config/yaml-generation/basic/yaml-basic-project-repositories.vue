@@ -6,9 +6,7 @@ SPDX-License-Identifier: MIT
   <div class="flex flex-col gap-1 pb-6">
     <p class="text-sm font-semibold text-brand-600">Project details</p>
     <p class="text-lg font-semibold text-neutral-900">Repositories</p>
-    <p class="text-xs font-normal text-neutral-500">
-      Details about your project repository and contribution policies.
-    </p>
+    <p class="text-xs font-normal text-neutral-500">Details about your project repository and contribution policies.</p>
   </div>
 
   <div class="flex flex-col gap-4">

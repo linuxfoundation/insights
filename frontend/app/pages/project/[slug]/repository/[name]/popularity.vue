@@ -28,18 +28,14 @@ const repoName = computed(() => (repository.value?.name || name).split('/').at(-
 const title = computed(
   () =>
     `${project?.value?.name} ${repoName.value} Repository ${
-      widget && lfxWidgets[widget as Widget]?.name?.length
-        ? lfxWidgets[widget as Widget]?.name
-        : 'popularity'
+      widget && lfxWidgets[widget as Widget]?.name?.length ? lfxWidgets[widget as Widget]?.name : 'popularity'
     } | LFX Insights`,
 );
 
 const imageAlt = computed(
   () =>
     `${project.value?.name} ${repoName.value} popularity insights${
-      widget && lfxWidgets[widget as Widget]?.name?.length
-        ? ` - ${lfxWidgets[widget as Widget]?.name}`
-        : ''
+      widget && lfxWidgets[widget as Widget]?.name?.length ? ` - ${lfxWidgets[widget as Widget]?.name}` : ''
     }`,
 );
 
@@ -51,9 +47,7 @@ const description = computed(
 
 const url = computed(() => `${config.public.appUrl}${route.fullPath}`);
 
-const image = computed(
-  () => `${config.public.appUrl}/api/seo/og-image?projectSlug=${slug}&repositorySlug=${name}`,
-);
+const image = computed(() => `${config.public.appUrl}/api/seo/og-image?projectSlug=${slug}&repositorySlug=${name}`);
 
 useSeoMeta({
   title,

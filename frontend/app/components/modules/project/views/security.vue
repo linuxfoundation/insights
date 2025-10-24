@@ -8,9 +8,7 @@ SPDX-License-Identifier: MIT
       <div class="px-4 sm:px-6 flex justify-between items-start pb-4 sm:pb-5">
         <div>
           <!-- Title -->
-          <div
-            class="flex flex-col-reverse sm:flex-row items-start sm:items-center gap-2 sm:gap-4 pb-2"
-          >
+          <div class="flex flex-col-reverse sm:flex-row items-start sm:items-center gap-2 sm:gap-4 pb-2">
             <h1 class="text-heading-3 font-secondary font-bold">Controls assessment</h1>
             <lfx-tag
               variation="warning"
@@ -22,9 +20,8 @@ SPDX-License-Identifier: MIT
 
           <!-- Description -->
           <p class="text-xs text-neutral-500">
-            Process of assessing a project's practices, policies, and technical measures against a
-            set of predefined standards to determine its security posture, reliability, and
-            maturity.
+            Process of assessing a project's practices, policies, and technical measures against a set of predefined
+            standards to determine its security posture, reliability, and maturity.
             <a
               :href="links.securityScore"
               class="text-brand-500"
@@ -56,12 +53,10 @@ SPDX-License-Identifier: MIT
 
             <template #content>
               <div class="flex flex-col gap-1 max-w-72">
-                <div class="font-semibold text-white text-xs">
-                  YAML Security specifications file
-                </div>
+                <div class="font-semibold text-white text-xs">YAML Security specifications file</div>
                 <div class="text-neutral-300 text-xs">
-                  Generate a YAML security file, upload it to your repository, and ensure we can run
-                  all security assessments for your project.
+                  Generate a YAML security file, upload it to your repository, and ensure we can run all security
+                  assessments for your project.
                 </div>
               </div>
             </template>
@@ -90,8 +85,8 @@ SPDX-License-Identifier: MIT
           class="text-neutral-500"
         />
         <p class="text-body-2 text-neutral-500 font-semibold">
-          You’re viewing an aggregated score and controls assessment for the entire project. For a
-          detailed analysis, choose a specific repository.
+          You’re viewing an aggregated score and controls assessment for the entire project. For a detailed analysis,
+          choose a specific repository.
         </p>
       </div>
       <div class="px-4 sm:px-6 pt-1">
@@ -106,9 +101,7 @@ SPDX-License-Identifier: MIT
               type="light"
               class="text-neutral-300"
             />
-            <p class="text-neutral-500 text-center text-body-1 pt-5">
-              Loading controls assessment...
-            </p>
+            <p class="text-neutral-500 text-center text-body-1 pt-5">Loading controls assessment...</p>
           </div>
         </div>
 
@@ -145,11 +138,7 @@ SPDX-License-Identifier: MIT
               :key="title"
               :name="title"
               :checks="checks"
-              :tooltip="
-                isRepository
-                  ? 'Category success rate'
-                  : 'Average category success rate of all repositories'
-              "
+              :tooltip="isRepository ? 'Category success rate' : 'Average category success rate of all repositories'"
             >
               <template v-if="isRepository">
                 <template
@@ -164,9 +153,7 @@ SPDX-License-Identifier: MIT
                 </template>
               </template>
               <template v-else>
-                <lfx-project-security-paginated-eval-repos
-                  :group-checks="groupChecksByRepository(checks || [])"
-                />
+                <lfx-project-security-paginated-eval-repos :group-checks="groupChecksByRepository(checks || [])" />
               </template>
             </lfx-project-security-evaluation-section>
           </lfx-accordion>
@@ -218,16 +205,11 @@ const { name } = route.params;
 
 const isGenerateYamlModalOpen = ref(false);
 
-const { selectedReposValues, allArchived, archivedRepos, hasSelectedArchivedRepos } =
-  storeToRefs(useProjectStore());
+const { selectedReposValues, allArchived, archivedRepos, hasSelectedArchivedRepos } = storeToRefs(useProjectStore());
 
 const isRepository = computed(() => !!name);
 
-const queryKey = computed(() => [
-  TanstackKey.SECURITY_ASSESSMENT,
-  route.params.slug,
-  selectedReposValues.value,
-]);
+const queryKey = computed(() => [TanstackKey.SECURITY_ASSESSMENT, route.params.slug, selectedReposValues.value]);
 
 const fetchData: QueryFunction<SecurityData[]> = async () =>
   $fetch(`/api/project/${route.params.slug}/security/assessment`, {
@@ -242,9 +224,7 @@ const { data, suspense, error, isFetching } = useQuery<SecurityData[]>({
 });
 
 // TODO: Remove this when we have data for them
-const securityAssessmentData = computed(() =>
-  PROJECT_SECURITY_SERVICE.removeUnavailableChecks(data.value || []),
-);
+const securityAssessmentData = computed(() => PROJECT_SECURITY_SERVICE.removeUnavailableChecks(data.value || []));
 
 const groupedData = computed(() =>
   (securityAssessmentData.value || []).reduce(

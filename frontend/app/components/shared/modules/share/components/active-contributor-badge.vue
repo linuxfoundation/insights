@@ -62,9 +62,7 @@ const activeContributorsParams = computed(() => ({
   endDate: endDate.value,
 }));
 
-const startDate = computed(() =>
-  DateTime.now().minus({ days: 365 }).startOf('day').toFormat('yyyy-MM-dd'),
-);
+const startDate = computed(() => DateTime.now().minus({ days: 365 }).startOf('day').toFormat('yyyy-MM-dd'));
 const endDate = computed(() => DateTime.now().endOf('day').toFormat('yyyy-MM-dd'));
 
 // Active contributors data fetch

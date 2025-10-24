@@ -24,8 +24,7 @@ SPDX-License-Identifier: MIT
       </div>
       <h3 class="text-heading-3 font-secondary font-bold pb-1">Report issue</h3>
       <p class="text-body-2 text-neutral-500">
-        Help is improve our data by reporting any issues or bugs you’ve encountered. Check the
-        currently open
+        Help is improve our data by reporting any issues or bugs you’ve encountered. Check the currently open
         <a
           :href="links.issues"
           target="_blank"
@@ -61,9 +60,7 @@ SPDX-License-Identifier: MIT
           />
         </lfx-field>
       </article>
-      <article
-        v-if="(lfxWidgetArea[form.area as WidgetArea]?.widgets || []).length > 0 && !form.hideArea"
-      >
+      <article v-if="(lfxWidgetArea[form.area as WidgetArea]?.widgets || []).length > 0 && !form.hideArea">
         <lfx-field
           label="Data insight"
           placeholder="Select option"
@@ -86,9 +83,7 @@ SPDX-License-Identifier: MIT
           label="Description"
           :required="true"
         >
-          <p class="text-xs text-neutral-500 leading-4">
-            Clear and concise description of the issue.
-          </p>
+          <p class="text-xs text-neutral-500 leading-4">Clear and concise description of the issue.</p>
           <lfx-textarea
             v-model="form.description"
             class="min-h-17"
@@ -107,9 +102,7 @@ SPDX-License-Identifier: MIT
           label="Steps to reproduce"
           :required="true"
         >
-          <p class="text-xs text-neutral-500 leading-4">
-            Step-by-step instructions to replicate the issue.
-          </p>
+          <p class="text-xs text-neutral-500 leading-4">Step-by-step instructions to replicate the issue.</p>
           <lfx-textarea
             v-model="form.steps"
             class="min-h-17"
@@ -128,9 +121,7 @@ SPDX-License-Identifier: MIT
           label="Expected behaviour"
           :required="true"
         >
-          <p class="text-xs text-neutral-500 leading-4">
-            Describe the expected functionality or outcome.
-          </p>
+          <p class="text-xs text-neutral-500 leading-4">Describe the expected functionality or outcome.</p>
           <lfx-textarea
             v-model="form.expectations"
             class="min-h-17"
@@ -274,12 +265,7 @@ const submit = () => {
       );
     })
     .catch(() => {
-      showToast(
-        'There was an error reporting issue, please try again later',
-        ToastTypesEnum.negative,
-        undefined,
-        3000,
-      );
+      showToast('There was an error reporting issue, please try again later', ToastTypesEnum.negative, undefined, 3000);
     })
     .finally(() => {
       isSending.value = false;

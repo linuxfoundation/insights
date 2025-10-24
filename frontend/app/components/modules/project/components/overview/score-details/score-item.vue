@@ -64,9 +64,7 @@ const description = computed(
 );
 const iconBGColor = computed(() => `bg-${pointDetails.value?.type}-100`);
 const widgetKebabCase = computed(() =>
-  props.widgetKey
-    ? (props.widgetKey.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase() as Widget)
-    : undefined,
+  props.widgetKey ? (props.widgetKey.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase() as Widget) : undefined,
 );
 const widgetArea = computed(() => {
   // Find the widget area where this widgetKey belongs to

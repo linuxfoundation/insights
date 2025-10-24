@@ -34,12 +34,8 @@ SPDX-License-Identifier: MIT
           :size="80"
           class="text-neutral-300"
         />
-        <div class="text-sm font-semibold text-neutral-900">
-          Data Copilot requires a bit more room
-        </div>
-        <div class="text-xs text-neutral-400">
-          Please resize your browser window to explore this feature
-        </div>
+        <div class="text-sm font-semibold text-neutral-900">Data Copilot requires a bit more room</div>
+        <div class="text-xs text-neutral-400">Please resize your browser window to explore this feature</div>
       </div>
     </div>
   </lfx-modal>

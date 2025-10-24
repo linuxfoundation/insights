@@ -29,8 +29,8 @@ SPDX-License-Identifier: MIT
       </div>
       <div v-if="tab === 'code'">
         <p class="text-body-2 text-neutral-500">
-          Copy and paste the following iframe code into your website to provide users with a live
-          snapshot of your project's metrics.
+          Copy and paste the following iframe code into your website to provide users with a live snapshot of your
+          project's metrics.
         </p>
         <div class="my-8">
           <div
@@ -131,14 +131,8 @@ const isModalOpen = computed<boolean>({
   get: () => props.modelValue,
   set: (value: boolean) => emit('update:modelValue', value),
 });
-const {
-  project,
-  selectedRepositories,
-  selectedRepositoryGroup,
-  startDate,
-  endDate,
-  selectedTimeRangeKey,
-} = storeToRefs(useProjectStore());
+const { project, selectedRepositories, selectedRepositoryGroup, startDate, endDate, selectedTimeRangeKey } =
+  storeToRefs(useProjectStore());
 
 const widgetConfig = computed(() => lfxWidgets[props.widgetName]);
 

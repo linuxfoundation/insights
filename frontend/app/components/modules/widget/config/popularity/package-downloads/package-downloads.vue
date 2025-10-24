@@ -14,9 +14,7 @@ SPDX-License-Identifier: MIT
       <template #slotItem="{ option }">
         <lfx-tooltip
           :content="
-            option.value === 'packageDownloads'
-              ? 'Primary Registry Package downloads'
-              : 'Docker Package downloads'
+            option.value === 'packageDownloads' ? 'Primary Registry Package downloads' : 'Docker Package downloads'
           "
         >
           <span @click="model.activeTab = option.value">{{ option.label }}</span>
@@ -85,22 +83,10 @@ import LfxPackageDropdown from './fragments/package-dropdown.vue';
 import type { Package, PackageDownloads } from '~~/types/popularity/responses.types';
 import type { Summary } from '~~/types/shared/summary.types';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
-import {
-  convertToChartData,
-  currentInterval,
-  removeZeroValues,
-} from '~/components/uikit/chart/helpers/chart-helpers';
-import type {
-  ChartData,
-  RawChartData,
-  ChartSeries,
-} from '~/components/uikit/chart/types/ChartTypes';
+import { convertToChartData, currentInterval, removeZeroValues } from '~/components/uikit/chart/helpers/chart-helpers';
+import type { ChartData, RawChartData, ChartSeries } from '~/components/uikit/chart/types/ChartTypes';
 import LfxChart from '~/components/uikit/chart/chart.vue';
-import {
-  getLineAreaChartConfig,
-  getMarkLine,
-  getVisualMap,
-} from '~/components/uikit/chart/configs/line.area.chart';
+import { getLineAreaChartConfig, getMarkLine, getVisualMap } from '~/components/uikit/chart/configs/line.area.chart';
 import { lfxColors } from '~/config/styles/colors';
 import { formatNumber, formatNumberShort } from '~/components/shared/utils/formatter';
 import { useProjectStore } from '~/components/modules/project/store/project.store';
@@ -187,24 +173,15 @@ const packagesParams = computed(() => ({
 
 const { data, status, error } = POPULARITY_API_SERVICE.fetchPackageDownloads(downloadsParams);
 
-const { data: packagesData, status: packagesStatus } =
-  POPULARITY_API_SERVICE.fetchPackages(packagesParams);
+const { data: packagesData, status: packagesStatus } = POPULARITY_API_SERVICE.fetchPackages(packagesParams);
 
-const packages = computed(() =>
-  packagesStatus.value === 'success' && packagesData.value ? packagesData.value : [],
-);
+const packages = computed(() => (packagesStatus.value === 'success' && packagesData.value ? packagesData.value : []));
 
 const packageDownloads = computed<PackageDownloads>(() => data.value as PackageDownloads);
 
 const summary = computed<Summary>(() => {
-  const {
-    periodFrom,
-    periodTo,
-    currentDownloads,
-    previousDownloads,
-    downloadsPercentageChange,
-    downloadsChangeValue,
-  } = packageDownloads.value.summary;
+  const { periodFrom, periodTo, currentDownloads, previousDownloads, downloadsPercentageChange, downloadsChangeValue } =
+    packageDownloads.value.summary;
 
   return {
     current: currentDownloads,
@@ -258,9 +235,7 @@ const isEmpty = computed(() => {
   }
 
   // Check if all values in the chart data are 0
-  return chartData.value.every(
-    (dataPoint) => dataPoint.values[0] === 0 && dataPoint.values[1] === 0,
-  );
+  return chartData.value.every((dataPoint) => dataPoint.values[0] === 0 && dataPoint.values[1] === 0);
 });
 
 const chartSeries = computed<ChartSeries[]>(() =>
@@ -274,9 +249,7 @@ const chartSeries = computed<ChartSeries[]>(() =>
           position: 'left',
           color: lfxColors.brand[500],
           lineWidth: 2,
-          markLine: isLastDataItemIncomplete.value
-            ? getMarkLine(columnBeforeLastItem.value)
-            : undefined,
+          markLine: isLastDataItemIncomplete.value ? getMarkLine(columnBeforeLastItem.value) : undefined,
         },
       ]
     : [
@@ -288,9 +261,7 @@ const chartSeries = computed<ChartSeries[]>(() =>
           position: 'left',
           color: lfxColors.brand[500],
           lineWidth: 2,
-          markLine: isLastDataItemIncomplete.value
-            ? getMarkLine(columnBeforeLastItem.value)
-            : undefined,
+          markLine: isLastDataItemIncomplete.value ? getMarkLine(columnBeforeLastItem.value) : undefined,
         },
       ],
 );

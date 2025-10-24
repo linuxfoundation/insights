@@ -28,9 +28,7 @@ SPDX-License-Identifier: MIT
       </div>
     </div>
     <div v-if="props.snapshot">
-      <div class="text-sm leading-4 font-semibold first-letter:uppercase pb-5">
-        {{ model.activeTab }} distribution
-      </div>
+      <div class="text-sm leading-4 font-semibold first-letter:uppercase pb-5">{{ model.activeTab }} distribution</div>
     </div>
     <lfx-project-load-state
       :status="status"
@@ -65,8 +63,7 @@ SPDX-License-Identifier: MIT
               </span>
             </div>
             <span>
-              {{ formatNumber(item.count) }} {{ pluralize(label.toLowerCase(), item.count) }} ・
-              {{ item.percentage }}%
+              {{ formatNumber(item.count) }} {{ pluralize(label.toLowerCase(), item.count) }} ・ {{ item.percentage }}%
             </span>
           </div>
         </div>
@@ -81,8 +78,7 @@ SPDX-License-Identifier: MIT
           >
             <span class="text-neutral-500 font-medium"> Unknown location </span>
             <span class="text-neutral-500 font-medium">
-              {{ formatNumber(item.count) }} {{ pluralize(label.toLowerCase(), item.count) }} ・
-              {{ item.percentage }}%
+              {{ formatNumber(item.count) }} {{ pluralize(label.toLowerCase(), item.count) }} ・ {{ item.percentage }}%
             </span>
           </div>
         </div>
@@ -99,11 +95,7 @@ import pluralize from 'pluralize';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import { convertToChartData, getMaxValue } from '~/components/uikit/chart/helpers/chart-helpers';
-import type {
-  ChartData,
-  RawChartData,
-  ChartSeries,
-} from '~/components/uikit/chart/types/ChartTypes';
+import type { ChartData, RawChartData, ChartSeries } from '~/components/uikit/chart/types/ChartTypes';
 import { getGeoMapChartConfig } from '~/components/uikit/chart/configs/geo-map.chart';
 import { formatNumber } from '~/components/shared/utils/formatter';
 import { useProjectStore } from '~/components/modules/project/store/project.store';
@@ -162,9 +154,7 @@ const { data, status, error } = CONTRIBUTORS_API_SERVICE.fetchGeographicalDistri
 
 const geoMapData = computed<GeoMapData[] | undefined>(() => (data.value as GeoMapResponse)?.data);
 const geoMapDataCountries = computed<GeoMapData[] | undefined>(() =>
-  geoMapData.value
-    ? geoMapData.value.filter((item) => item.name !== 'Unknown').slice(0, 5)
-    : undefined,
+  geoMapData.value ? geoMapData.value.filter((item) => item.name !== 'Unknown').slice(0, 5) : undefined,
 );
 const unknownGeoMapData = computed<GeoMapData[] | undefined>(() =>
   geoMapData.value ? geoMapData.value.filter((item) => item.name === 'Unknown') : undefined,
@@ -173,18 +163,13 @@ const unknownGeoMapData = computed<GeoMapData[] | undefined>(() =>
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
   () =>
-    convertToChartData(geoMapData.value as unknown as RawChartData[], 'name', [
-      'count',
-      'percentage',
-    ]).map((item) => ({
+    convertToChartData(geoMapData.value as unknown as RawChartData[], 'name', ['count', 'percentage']).map((item) => ({
       ...item,
       key: item.key === 'United States' ? 'United States of America' : item.key,
     })),
 );
 
-const isEmpty = computed(() =>
-  isEmptyData(chartData.value as unknown as Record<string, unknown>[]),
-);
+const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
 
 const tabs = [
   {
@@ -197,9 +182,7 @@ const tabs = [
   },
 ];
 
-const label = computed(() =>
-  model.value.activeTab === 'contributors' ? 'Contributor' : 'Organization',
-);
+const label = computed(() => (model.value.activeTab === 'contributors' ? 'Contributor' : 'Organization'));
 
 const chartSeries = computed<ChartSeries[]>(() => [
   {

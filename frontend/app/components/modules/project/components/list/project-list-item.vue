@@ -104,9 +104,7 @@ const props = defineProps<{
   project: Project;
 }>();
 
-const projectNotOnboarded = computed(
-  () => !props.project.contributorCount && !props.project.organizationCount,
-);
+const projectNotOnboarded = computed(() => !props.project.contributorCount && !props.project.organizationCount);
 </script>
 
 <script lang="ts">

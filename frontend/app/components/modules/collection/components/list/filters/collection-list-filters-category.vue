@@ -14,11 +14,7 @@ SPDX-License-Identifier: MIT
           name="arrow-down-wide-short"
           :size="16"
         />
-        {{
-          selectedOption.value === 'all'
-            ? selectedOption.label
-            : getSelectedLabel(selectedOption.value)
-        }}
+        {{ selectedOption.value === 'all' ? selectedOption.label : getSelectedLabel(selectedOption.value) }}
         {{ selectedOption.value.startsWith('group-') ? '(all sub-stacks)' : '' }}
       </lfx-dropdown-selector>
     </template>
@@ -90,9 +86,7 @@ const model = computed({
 const allCategoryGroups = computed(() => [
   ...props.categoryGroupsVertical,
   ...props.categoryGroupsHorizontal,
-  ...props.categoryGroupsVertical.flatMap((cg) =>
-    cg.categories.map((c) => ({ id: c.id, name: c.name, value: c.id })),
-  ),
+  ...props.categoryGroupsVertical.flatMap((cg) => cg.categories.map((c) => ({ id: c.id, name: c.name, value: c.id }))),
   ...props.categoryGroupsHorizontal.flatMap((cg) =>
     cg.categories.map((c) => ({ id: c.id, name: c.name, value: c.id })),
   ),

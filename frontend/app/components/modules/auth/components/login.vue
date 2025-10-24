@@ -33,9 +33,7 @@ SPDX-License-Identifier: MIT
         :aria-label="user?.name"
       />
       <template #content>
-        <div
-          class="bg-white shadow-lg rounded-lg border border-neutral-200 w-56 p-1 flex flex-col gap-1"
-        >
+        <div class="bg-white shadow-lg rounded-lg border border-neutral-200 w-56 p-1 flex flex-col gap-1">
           <a
             :href="links.profileLink"
             target="_blank"

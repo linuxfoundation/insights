@@ -8,8 +8,7 @@ SPDX-License-Identifier: MIT
       <p class="text-sm font-semibold leading-5 text-brand-600">Project details</p>
       <p class="text-lg font-semibold leading-7 text-neutral-900">Steward</p>
       <p class="text-xs font-normal leading-4 text-neutral-500">
-        Information about the individual responsible for overseeing the project, ensuring its proper
-        management.
+        Information about the individual responsible for overseeing the project, ensuring its proper management.
       </p>
     </div>
 
@@ -32,9 +31,7 @@ SPDX-License-Identifier: MIT
     </div>
 
     <lfx-field label="Comment">
-      <p class="text-xs font-normal leading-4 text-neutral-500">
-        Notes about the steward’s role or responsibilities
-      </p>
+      <p class="text-xs font-normal leading-4 text-neutral-500">Notes about the steward’s role or responsibilities</p>
       <lfx-textarea
         v-model="model.project.steward.comment"
         class="min-h-18"

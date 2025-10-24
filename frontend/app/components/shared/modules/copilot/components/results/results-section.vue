@@ -99,9 +99,7 @@ const selectedTab = ref('data');
 const isSnapshotModalOpen = ref(false);
 const isChartLoading = ref(false);
 const selectedResultConfig = computed<Config | null>(() => {
-  return (
-    resultData.value.find((result) => result.id === selectedResultId.value)?.chartConfig || null
-  );
+  return resultData.value.find((result) => result.id === selectedResultId.value)?.chartConfig || null;
 });
 
 const chartVersion = computed(() => {

@@ -61,11 +61,7 @@ import type { Summary } from '~~/types/shared/summary.types';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
 import { convertToChartData } from '~/components/uikit/chart/helpers/chart-helpers';
-import type {
-  ChartData,
-  RawChartData,
-  ChartSeries,
-} from '~/components/uikit/chart/types/ChartTypes';
+import type { ChartData, RawChartData, ChartSeries } from '~/components/uikit/chart/types/ChartTypes';
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import { getLineAreaChartConfig } from '~/components/uikit/chart/configs/line.area.chart';
 import { lfxColors } from '~/config/styles/colors';
@@ -136,17 +132,9 @@ const summary = computed<Summary>(() => mentions.value.summary);
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
   () =>
-    convertToChartData(
-      (mentions.value?.data || []) as RawChartData[],
-      'startDate',
-      ['mentions'],
-      undefined,
-      'endDate',
-    ),
+    convertToChartData((mentions.value?.data || []) as RawChartData[], 'startDate', ['mentions'], undefined, 'endDate'),
 );
-const isEmpty = computed(() =>
-  isEmptyData(chartData.value as unknown as Record<string, unknown>[]),
-);
+const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
 
 const tabs = [
   { label: 'New Mentions', value: 'new-mentions' },
@@ -168,9 +156,7 @@ const lineChartConfig = computed(() =>
   getLineAreaChartConfig(chartData.value, chartSeries.value, lineGranularity.value),
 );
 
-const barChartConfig = computed(() =>
-  getBarChartConfig(chartData.value, chartSeries.value, barGranularity.value),
-);
+const barChartConfig = computed(() => getBarChartConfig(chartData.value, chartSeries.value, barGranularity.value));
 
 watch(
   status,

@@ -101,9 +101,7 @@ const copy = (url: string) => {
 };
 
 const email = () => {
-  const title = props.defaults?.title
-    ? `Check this out: ${props.defaults.title}`
-    : 'Check this out';
+  const title = props.defaults?.title ? `Check this out: ${props.defaults.title}` : 'Check this out';
   const url = encodeURIComponent(props.defaults.url);
   const link = `mailto:?subject=${title}&body=${url}`;
   window?.open(link, '_blank');

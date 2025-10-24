@@ -3,18 +3,14 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div
-    class="z-10 bottom-0 left-0 relative shadow-none border-none bg-white border border-neutral-200 rounded-full"
-  >
+  <div class="z-10 bottom-0 left-0 relative shadow-none border-none bg-white border border-neutral-200 rounded-full">
     <lfx-dropdown-select
       v-model="selectedDateRange"
       placement="bottom-end"
       width="22.5rem"
     >
       <template #trigger="{ selectedOption }">
-        <lfx-dropdown-selector
-          class="whitespace-nowrap !bg-transparent !text-xs sm:!text-sm !py-1 sm:py-2"
-        >
+        <lfx-dropdown-selector class="whitespace-nowrap !bg-transparent !text-xs sm:!text-sm !py-1 sm:py-2">
           <lfx-icon
             name="calendar"
             :size="16"
@@ -132,20 +128,14 @@ import {
   lfxProjectDateOptionsPast,
   lfxProjectDateOptionsPrevious,
 } from '~/components/modules/project/config/date-options';
-import {
-  defaultTimeRangeKey,
-  useProjectStore,
-} from '~/components/modules/project/store/project.store';
+import { defaultTimeRangeKey, useProjectStore } from '~/components/modules/project/store/project.store';
 import LfxProjectCustomDateRangePicker from '~/components/modules/project/components/shared/header/custom-date-range-picker.vue';
 import LfxDropdownSelect from '~/components/uikit/dropdown/dropdown-select.vue';
 import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
 import LfxDropdownSeparator from '~/components/uikit/dropdown/dropdown-separator.vue';
 import LfxDropdownSelector from '~/components/uikit/dropdown/dropdown-selector.vue';
 import { useQueryParam } from '~/components/shared/utils/query-param';
-import {
-  processProjectParams,
-  projectParamsSetter,
-} from '~/components/modules/project/services/project.query.service';
+import { processProjectParams, projectParamsSetter } from '~/components/modules/project/services/project.query.service';
 import useResponsive from '~/components/shared/utils/responsive';
 
 const { selectedTimeRangeKey, startDate, endDate } = storeToRefs(useProjectStore());

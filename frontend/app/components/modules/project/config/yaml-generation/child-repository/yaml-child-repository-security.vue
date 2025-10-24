@@ -9,8 +9,7 @@ SPDX-License-Identifier: MIT
       <p class="text-sm font-semibold leading-5 text-brand-600">Repository details</p>
       <p class="text-lg font-semibold leading-7 text-neutral-900">Security self-assessment</p>
       <p class="text-xs font-normal leading-4 text-neutral-500">
-        Provide additional context about your project's security posture and any self-assessment
-        comments.
+        Provide additional context about your project's security posture and any self-assessment comments.
       </p>
     </div>
 
@@ -19,8 +18,8 @@ SPDX-License-Identifier: MIT
       <!-- Self-assessment Comment Field -->
       <lfx-field label="Self-assessment comment">
         <p class="text-xs font-normal leading-4 text-neutral-500 mb-2">
-          Describe your project's security practices, any security reviews conducted, known
-          limitation, or other relevant security information.
+          Describe your project's security practices, any security reviews conducted, known limitation, or other
+          relevant security information.
         </p>
         <lfx-textarea
           v-model="(model as any).repository.security.assessments.self.comment"

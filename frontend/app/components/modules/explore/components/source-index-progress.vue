@@ -45,10 +45,7 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { computed } from 'vue';
 import type { OSSIndexCategoryGroup } from '~~/types/ossindex/category-group';
-import type {
-  SortType,
-  OSIType,
-} from '~/components/modules/open-source-index/services/osi.api.service';
+import type { SortType, OSIType } from '~/components/modules/open-source-index/services/osi.api.service';
 import { formatNumber, formatNumberCurrency } from '~/components/shared/utils/formatter';
 import { LfxRoutes } from '~/components/shared/types/routes';
 
@@ -60,11 +57,7 @@ const props = defineProps<{
 
 const maxValue = computed(() =>
   props.data?.reduce(
-    (acc, curr) =>
-      Math.max(
-        acc,
-        props.sort === 'totalContributors' ? curr.totalContributors : curr.softwareValue,
-      ),
+    (acc, curr) => Math.max(acc, props.sort === 'totalContributors' ? curr.totalContributors : curr.softwareValue),
     0,
   ),
 );
@@ -74,12 +67,9 @@ const calculatePercentage = (item: OSSIndexCategoryGroup) => {
   return maxValue.value ? (value / maxValue.value) * 100 : 0;
 };
 
-const exploreLinkText = computed(() =>
-  props.type === 'horizontal' ? 'Explore all stacks' : 'Explore all industries',
-);
+const exploreLinkText = computed(() => (props.type === 'horizontal' ? 'Explore all stacks' : 'Explore all industries'));
 const exploreLink = computed(
-  () =>
-    `${LfxRoutes.OPENSOURCEINDEX}${props.type === 'horizontal' ? '?type=horizontal' : '?type=vertical'}`,
+  () => `${LfxRoutes.OPENSOURCEINDEX}${props.type === 'horizontal' ? '?type=horizontal' : '?type=vertical'}`,
 );
 </script>
 

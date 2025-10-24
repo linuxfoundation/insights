@@ -131,9 +131,7 @@ const showDots = computed(() => totalPages.value > 1);
 const trackStyle = computed(() => {
   const baseTranslate = props.circular ? -itemsPerView.value * (100 / itemsPerView.value) : 0;
   const currentTranslate = -currentIndex.value * (100 / itemsPerView.value);
-  const dragTranslate = isDragging.value
-    ? ((currentX.value - startX.value) / containerWidth.value) * 100
-    : 0;
+  const dragTranslate = isDragging.value ? ((currentX.value - startX.value) / containerWidth.value) * 100 : 0;
   return {
     transform: `translateX(${baseTranslate + currentTranslate + dragTranslate}%)`,
     transition: isDragging.value ? 'none' : 'transform 0.3s ease',
@@ -180,10 +178,7 @@ const goToNext = () => {
   if (props.circular && currentIndex.value >= totalItems.value - itemsPerView.value) {
     currentIndex.value = 0;
   } else {
-    currentIndex.value = Math.min(
-      totalItems.value - itemsPerView.value,
-      currentIndex.value + itemsToScroll.value,
-    );
+    currentIndex.value = Math.min(totalItems.value - itemsPerView.value, currentIndex.value + itemsToScroll.value);
   }
 };
 

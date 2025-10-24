@@ -7,9 +7,7 @@ SPDX-License-Identifier: MIT
     <span class="rounded-full bg-neutral-200 px-1.5 py-0.5 text-xs font-semibold text-neutral-600">
       {{ `V${version}` }}
     </span>
-    <span
-      class="text-sm text-ellipsis overflow-hidden text-nowrap max-w-full min-w-0 text-neutral-900 font-semibold"
-    >
+    <span class="text-sm text-ellipsis overflow-hidden text-nowrap max-w-full min-w-0 text-neutral-900 font-semibold">
       {{ label }}
     </span>
   </span>

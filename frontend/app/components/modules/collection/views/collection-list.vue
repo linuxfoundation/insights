@@ -3,9 +3,7 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <section
-    class="bg-white bg-[url('~/assets/images/collections-header.png')] bg-contain bg-no-repeat bg-right"
-  >
+  <section class="bg-white bg-[url('~/assets/images/collections-header.png')] bg-contain bg-no-repeat bg-right">
     <div class="container py-5 md:py-8">
       <lfx-tag
         type="transparent"
@@ -107,9 +105,7 @@ SPDX-License-Identifier: MIT
           :size="80"
           class="text-neutral-300"
         />
-        <h3
-          class="text-center pt-5 text-heading-3 sm:text-heading-2 font-secondary font-bold text-neutral-500"
-        >
+        <h3 class="text-center pt-5 text-heading-3 sm:text-heading-2 font-secondary font-bold text-neutral-500">
           No collections found
         </h3>
         <p class="text-body-1 text-neutral-500 pt-3 text-center">
@@ -136,10 +132,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { watch, onServerPrefetch, computed, ref } from 'vue';
-import {
-  collectionListParamsGetter,
-  collectionListParamsSetter,
-} from '../services/collections.query.service';
+import { collectionListParamsGetter, collectionListParamsSetter } from '../services/collections.query.service';
 import type { Pagination } from '~~/types/shared/pagination';
 
 import LfxIcon from '~/components/uikit/icon/icon.vue';
@@ -189,9 +182,7 @@ const params = computed(() => ({
 const { data, isPending, isFetchingNextPage, fetchNextPage, hasNextPage, isSuccess, error } =
   COLLECTIONS_API_SERVICE.fetchCollections(params);
 
-const flatData = computed(
-  () => data.value?.pages.flatMap((page: Pagination<Collection>) => page.data) || [],
-);
+const flatData = computed(() => data.value?.pages.flatMap((page: Pagination<Collection>) => page.data) || []);
 
 /* Moving the options fetch here on the main component
 The dropdown-select component for sub options sets the selected option label and value the same

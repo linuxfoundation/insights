@@ -99,10 +99,7 @@ import LfxDropdownSelect from '~/components/uikit/dropdown/dropdown-select.vue';
 import LfxDropdownSeparator from '~/components/uikit/dropdown/dropdown-separator.vue';
 import { platforms } from '~~/app/config/platforms';
 import { useProjectStore } from '~/components/modules/project/store/project.store';
-import type {
-  ActivityTypeItem,
-  ActivityTypesByPlatformResponse,
-} from '~~/types/development/responses.types';
+import type { ActivityTypeItem, ActivityTypesByPlatformResponse } from '~~/types/development/responses.types';
 import { TanstackKey } from '~/components/shared/types/tanstack';
 
 const props = withDefaults(
@@ -200,9 +197,7 @@ const activity = computed({
 
 const getIcon = (platform: string) => platforms[platform]?.image || '';
 
-const options = computed<ActivityTypeItem[]>(() =>
-  platformsWithActivityTypes.value.flatMap((p) => p.activityTypes),
-);
+const options = computed<ActivityTypeItem[]>(() => platformsWithActivityTypes.value.flatMap((p) => p.activityTypes));
 
 const selected = computed(() => {
   const [platform, type] = activity.value.split(':');

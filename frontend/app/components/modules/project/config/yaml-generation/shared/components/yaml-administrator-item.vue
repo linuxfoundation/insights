@@ -3,9 +3,7 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <article
-    class="flex flex-col gap-4 border border-solid border-neutral-200 rounded-xl bg-white p-4"
-  >
+  <article class="flex flex-col gap-4 border border-solid border-neutral-200 rounded-xl bg-white p-4">
     <div class="flex justify-between items-center min-h-7">
       <slot />
     </div>

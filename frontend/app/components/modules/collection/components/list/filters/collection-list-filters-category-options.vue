@@ -50,15 +50,11 @@ const search = ref('');
 const categoryGroups = computed(() =>
   (props.options || []).map((cg) => ({
     ...cg,
-    categories: cg.categories.filter((c) =>
-      c.name.toLowerCase().includes(search.value.toLowerCase()),
-    ),
+    categories: cg.categories.filter((c) => c.name.toLowerCase().includes(search.value.toLowerCase())),
   })),
 );
 
-const noResults = computed(
-  () => search.value && categoryGroups.value.every((cg) => cg.categories.length === 0),
-);
+const noResults = computed(() => search.value && categoryGroups.value.every((cg) => cg.categories.length === 0));
 </script>
 
 <script lang="ts">

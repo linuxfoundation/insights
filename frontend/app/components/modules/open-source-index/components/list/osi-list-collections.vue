@@ -54,9 +54,7 @@ SPDX-License-Identifier: MIT
                   class="text-positive-600"
                 />
               </div>
-              <p class="text-xs whitespace-nowrap">
-                ${{ formatNumberShort(collection.softwareValue) }}
-              </p>
+              <p class="text-xs whitespace-nowrap">${{ formatNumberShort(collection.softwareValue) }}</p>
             </article>
           </div>
         </div>
@@ -234,13 +232,12 @@ const getNextPageParam = (lastPage) => {
   return lastPage.collections.length >= props.pageSize ? nextPage : undefined;
 };
 
-const { data, isFetchingNextPage, fetchNextPage, hasNextPage, isFetching } =
-  useInfiniteQuery<OSSIndexCategoryDetails>({
-    queryKey,
-    queryFn,
-    getNextPageParam,
-    initialPageParam: 0,
-  });
+const { data, isFetchingNextPage, fetchNextPage, hasNextPage, isFetching } = useInfiniteQuery<OSSIndexCategoryDetails>({
+  queryKey,
+  queryFn,
+  getNextPageParam,
+  initialPageParam: 0,
+});
 
 const loadMore = () => {
   if (hasNextPage.value) {

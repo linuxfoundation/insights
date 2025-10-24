@@ -16,8 +16,8 @@ SPDX-License-Identifier: MIT
             height="24"
           />
           <p class="pt-3 text-body-2 text-neutral-500">
-            LFX Insights helps developers and their organizations make smarter decisions about the
-            open source projects they depend on.
+            LFX Insights helps developers and their organizations make smarter decisions about the open source projects
+            they depend on.
           </p>
           <div class="pt-10 md:pt-11 lg:pt-15 flex items-center gap-3">
             <a

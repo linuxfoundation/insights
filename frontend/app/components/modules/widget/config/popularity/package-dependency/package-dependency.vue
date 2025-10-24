@@ -53,16 +53,8 @@ import LfxPackageDropdown from '../package-downloads/fragments/package-dropdown.
 import LfxProjectPackageLegendItem from './fragments/package-legend-item.vue';
 import type { Package, PackageDownloads } from '~~/types/popularity/responses.types';
 import type { Summary } from '~~/types/shared/summary.types';
-import {
-  convertToChartData,
-  markLastDataItem,
-  removeZeroValues,
-} from '~/components/uikit/chart/helpers/chart-helpers';
-import type {
-  ChartData,
-  RawChartData,
-  ChartSeries,
-} from '~/components/uikit/chart/types/ChartTypes';
+import { convertToChartData, markLastDataItem, removeZeroValues } from '~/components/uikit/chart/helpers/chart-helpers';
+import type { ChartData, RawChartData, ChartSeries } from '~/components/uikit/chart/types/ChartTypes';
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import { getBarChartConfigStacked } from '~/components/uikit/chart/configs/bar.chart';
 import { lfxColors } from '~/config/styles/colors';
@@ -142,12 +134,9 @@ const packagesParams = computed(() => ({
 
 const { data, status, error } = POPULARITY_API_SERVICE.fetchPackageDownloads(downloadsParams);
 
-const { data: packagesData, status: packagesStatus } =
-  POPULARITY_API_SERVICE.fetchPackages(packagesParams);
+const { data: packagesData, status: packagesStatus } = POPULARITY_API_SERVICE.fetchPackages(packagesParams);
 
-const packages = computed(() =>
-  packagesStatus.value === 'success' && packagesData.value ? packagesData.value : [],
-);
+const packages = computed(() => (packagesStatus.value === 'success' && packagesData.value ? packagesData.value : []));
 
 const packageDownloads = computed<PackageDownloads>(() => data.value as PackageDownloads);
 
@@ -225,9 +214,7 @@ const isEmpty = computed(() => {
   }
 
   // Check if all values in the chart data are 0
-  return chartData.value.every(
-    (dataPoint) => dataPoint.values[0] === 0 && dataPoint.values[1] === 0,
-  );
+  return chartData.value.every((dataPoint) => dataPoint.values[0] === 0 && dataPoint.values[1] === 0);
 });
 
 const chartSeries = computed<ChartSeries[]>(() => [

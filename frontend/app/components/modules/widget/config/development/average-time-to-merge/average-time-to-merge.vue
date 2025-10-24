@@ -51,11 +51,7 @@ import type { AverageTimeMerge } from '~~/types/development/responses.types';
 import type { Summary } from '~~/types/shared/summary.types';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
 import { convertToChartData } from '~/components/uikit/chart/helpers/chart-helpers';
-import type {
-  ChartData,
-  RawChartData,
-  ChartSeries,
-} from '~/components/uikit/chart/types/ChartTypes';
+import type { ChartData, RawChartData, ChartSeries } from '~/components/uikit/chart/types/ChartTypes';
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import { getBarChartConfigCustom } from '~/components/uikit/chart/configs/bar.chart';
 import { lfxColors } from '~/config/styles/colors';
@@ -113,9 +109,7 @@ const { data, status, error } = DEVELOPMENT_API_SERVICE.fetchAverageTimeMerge(pa
 const averageTimeMerge = computed<AverageTimeMerge>(() => data.value as AverageTimeMerge);
 
 const summary = computed<Summary>(() => averageTimeMerge.value.summary);
-const currentSummary = computed<string>(() =>
-  formatSecondsToDuration(summary.value?.current || 0, 'long'),
-);
+const currentSummary = computed<string>(() => formatSecondsToDuration(summary.value?.current || 0, 'long'));
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
   () =>
@@ -149,13 +143,7 @@ const configOverride = computed(() => ({
 }));
 
 const barChartConfig = computed(() =>
-  getBarChartConfigCustom(
-    chartData.value,
-    chartSeries.value,
-    {},
-    granularity.value,
-    configOverride.value,
-  ),
+  getBarChartConfigCustom(chartData.value, chartSeries.value, {}, granularity.value, configOverride.value),
 );
 
 const isEmpty = computed(() =>

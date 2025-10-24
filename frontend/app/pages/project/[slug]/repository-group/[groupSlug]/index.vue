@@ -18,9 +18,7 @@ const { project, selectedRepositoryGroup } = storeToRefs(useProjectStore());
 const config = useRuntimeConfig();
 
 const title = computed(() => `${selectedRepositoryGroup.value?.name} Repositories | LFX Insights`);
-const imageAlt = computed(
-  () => `${project.value?.name} ${selectedRepositoryGroup.value?.name} insights`,
-);
+const imageAlt = computed(() => `${project.value?.name} ${selectedRepositoryGroup.value?.name} insights`);
 const description = computed(
   () =>
     `Track repositories under ${project.value?.name} ${selectedRepositoryGroup.value?.name} with LFX Insights. ` +

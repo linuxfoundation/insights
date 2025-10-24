@@ -61,15 +61,8 @@ import { lineGranularities, barGranularities } from '~/components/shared/types/g
 import type { Summary } from '~~/types/shared/summary.types';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
-import {
-  convertToChartData,
-  markLastDataItem,
-} from '~/components/uikit/chart/helpers/chart-helpers';
-import type {
-  ChartData,
-  RawChartData,
-  ChartSeries,
-} from '~/components/uikit/chart/types/ChartTypes';
+import { convertToChartData, markLastDataItem } from '~/components/uikit/chart/helpers/chart-helpers';
+import type { ChartData, RawChartData, ChartSeries } from '~/components/uikit/chart/types/ChartTypes';
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import { getBarChartConfig } from '~/components/uikit/chart/configs/bar.chart';
 import { getLineAreaChartConfig } from '~/components/uikit/chart/configs/line.area.chart';
@@ -122,8 +115,7 @@ const lineGranularity = computed(() =>
 
 const queryParams = computed(() => ({
   projectSlug: route.params.slug as string,
-  granularity:
-    model.value.activeTab === 'cumulative' ? lineGranularity.value : barGranularity.value,
+  granularity: model.value.activeTab === 'cumulative' ? lineGranularity.value : barGranularity.value,
   repos: selectedReposValues.value,
   startDate: startDate.value,
   endDate: endDate.value,
@@ -139,20 +131,12 @@ const summary = computed<Summary | undefined>(() => stars.value?.summary);
 const chartData = computed<ChartData[]>(
   // convert the data to chart data
   () => {
-    let tmpData = convertToChartData(
-      stars.value?.data as RawChartData[],
-      'startDate',
-      ['stars'],
-      undefined,
-      'endDate',
-    );
+    let tmpData = convertToChartData(stars.value?.data as RawChartData[], 'startDate', ['stars'], undefined, 'endDate');
 
     return markLastDataItem(tmpData, barGranularity.value);
   },
 );
-const isEmpty = computed(() =>
-  isEmptyData(chartData.value as unknown as Record<string, unknown>[]),
-);
+const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
 
 const tabs = [
   { label: 'New', value: 'new' },
@@ -173,9 +157,7 @@ const chartSeries = computed<ChartSeries[]>(() => [
 const lineChartConfig = computed(() =>
   getLineAreaChartConfig(chartData.value, chartSeries.value, lineGranularity.value),
 );
-const barChartConfig = computed(() =>
-  getBarChartConfig(chartData.value, chartSeries.value, barGranularity.value),
-);
+const barChartConfig = computed(() => getBarChartConfig(chartData.value, chartSeries.value, barGranularity.value));
 
 watch(
   status,

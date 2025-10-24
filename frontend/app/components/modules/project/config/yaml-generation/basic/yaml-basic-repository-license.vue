@@ -8,8 +8,8 @@ SPDX-License-Identifier: MIT
       <p class="text-sm font-semibold leading-5 text-brand-600 w-full">Repository details</p>
       <p class="text-lg font-semibold leading-7 text-neutral-900 w-full">License information</p>
       <p class="text-body-2 text-neutral-500 w-full">
-        Specify the license under which your project is distributed. This information helps users
-        understand how they can use, modify, and distribute your code.
+        Specify the license under which your project is distributed. This information helps users understand how they
+        can use, modify, and distribute your code.
       </p>
     </div>
     <div class="flex flex-col gap-2 w-full mt-1">

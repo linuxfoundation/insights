@@ -49,9 +49,7 @@ const route = useRoute();
 
 const { selectedReposValues } = storeToRefs(useProjectStore());
 
-const badgeUrl = computed(() =>
-  getBadgeUrl(props.type, route.params.slug as string, selectedReposValues.value),
-);
+const badgeUrl = computed(() => getBadgeUrl(props.type, route.params.slug as string, selectedReposValues.value));
 
 const markdown = (badgeUrl: string) => {
   const link = window?.location.href.split('?')[0];

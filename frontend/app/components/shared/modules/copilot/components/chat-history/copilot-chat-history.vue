@@ -40,9 +40,7 @@ const props = defineProps<{
   widgetName: Widget | undefined;
 }>();
 
-const allResults = computed(() =>
-  props.messages.filter((m) => m.type === 'sql-result' || m.type === 'pipe-result'),
-);
+const allResults = computed(() => props.messages.filter((m) => m.type === 'sql-result' || m.type === 'pipe-result'));
 
 // Filter out chat-response-id messages - they're only for internal tracking
 const visibleMessages = computed(() => props.messages.filter((m) => m.type !== 'chat-response-id'));

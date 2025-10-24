@@ -92,8 +92,7 @@ const emit = defineEmits<{ (e: 'update:modelValue', value: boolean): void }>();
 const route = useRoute();
 const router = useRouter();
 
-const { projectRepositoryGroups, selectedRepoSlugs, selectedRepositoryGroup } =
-  storeToRefs(useProjectStore());
+const { projectRepositoryGroups, selectedRepoSlugs, selectedRepositoryGroup } = storeToRefs(useProjectStore());
 
 const tab = ref('repositories');
 

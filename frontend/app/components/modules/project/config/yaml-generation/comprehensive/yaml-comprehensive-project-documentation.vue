@@ -9,21 +9,17 @@ SPDX-License-Identifier: MIT
       <p class="text-sm font-semibold leading-5 text-brand-600">Project details</p>
       <h2 class="text-lg font-semibold leading-7 text-neutral-900">Documentation</h2>
       <p class="text-xs font-normal leading-4 text-neutral-500">
-        Project resources regarding set up, policies, and processes that support proper usage and
-        contribution.
+        Project resources regarding set up, policies, and processes that support proper usage and contribution.
       </p>
     </div>
 
     <!-- Form Fields -->
     <lfx-field label="Quickstart guide URL">
-      <p class="text-xs font-normal leading-4 text-neutral-500 mb-1">
-        Beginner-friendly setup or installation guide
-      </p>
+      <p class="text-xs font-normal leading-4 text-neutral-500 mb-1">Beginner-friendly setup or installation guide</p>
       <lfx-input
         v-model="model.project.documentation['quickstart-guide']"
         :invalid="
-          $v.project.documentation['quickstart-guide'].$invalid &&
-          $v.project.documentation['quickstart-guide'].$dirty
+          $v.project.documentation['quickstart-guide'].$invalid && $v.project.documentation['quickstart-guide'].$dirty
         "
         @blur="$v.project.documentation['quickstart-guide'].$touch()"
         @input="$v.project.documentation['quickstart-guide'].$touch()"
@@ -35,14 +31,11 @@ SPDX-License-Identifier: MIT
     </lfx-field>
 
     <lfx-field label="Detailed guide URL">
-      <p class="text-xs font-normal leading-4 text-neutral-500 mb-1">
-        Full project documentation or reference manual
-      </p>
+      <p class="text-xs font-normal leading-4 text-neutral-500 mb-1">Full project documentation or reference manual</p>
       <lfx-input
         v-model="model.project.documentation['detailed-guide']"
         :invalid="
-          $v.project.documentation['detailed-guide'].$invalid &&
-          $v.project.documentation['detailed-guide'].$dirty
+          $v.project.documentation['detailed-guide'].$invalid && $v.project.documentation['detailed-guide'].$dirty
         "
         @blur="$v.project.documentation['detailed-guide'].$touch()"
         @input="$v.project.documentation['detailed-guide'].$touch()"
@@ -54,14 +47,11 @@ SPDX-License-Identifier: MIT
     </lfx-field>
 
     <lfx-field label="Code of conduct URL">
-      <p class="text-xs font-normal leading-4 text-neutral-500 mb-1">
-        Rules on behavior and community participation
-      </p>
+      <p class="text-xs font-normal leading-4 text-neutral-500 mb-1">Rules on behavior and community participation</p>
       <lfx-input
         v-model="model.project.documentation['code-of-conduct']"
         :invalid="
-          $v.project.documentation['code-of-conduct'].$invalid &&
-          $v.project.documentation['code-of-conduct'].$dirty
+          $v.project.documentation['code-of-conduct'].$invalid && $v.project.documentation['code-of-conduct'].$dirty
         "
         @blur="$v.project.documentation['code-of-conduct'].$touch()"
         @input="$v.project.documentation['code-of-conduct'].$touch()"
@@ -79,8 +69,7 @@ SPDX-License-Identifier: MIT
       <lfx-input
         v-model="model.project.documentation['release-process']"
         :invalid="
-          $v.project.documentation['release-process'].$invalid &&
-          $v.project.documentation['release-process'].$dirty
+          $v.project.documentation['release-process'].$invalid && $v.project.documentation['release-process'].$dirty
         "
         @blur="$v.project.documentation['release-process'].$touch()"
         @input="$v.project.documentation['release-process'].$touch()"
@@ -92,14 +81,11 @@ SPDX-License-Identifier: MIT
     </lfx-field>
 
     <lfx-field label="Support policy URL">
-      <p class="text-xs font-normal leading-4 text-neutral-500 mb-1">
-        Project support guidelines and assistance
-      </p>
+      <p class="text-xs font-normal leading-4 text-neutral-500 mb-1">Project support guidelines and assistance</p>
       <lfx-input
         v-model="model.project.documentation['support-policy']"
         :invalid="
-          $v.project.documentation['support-policy'].$invalid &&
-          $v.project.documentation['support-policy'].$dirty
+          $v.project.documentation['support-policy'].$invalid && $v.project.documentation['support-policy'].$dirty
         "
         @blur="$v.project.documentation['support-policy'].$touch()"
         @input="$v.project.documentation['support-policy'].$touch()"

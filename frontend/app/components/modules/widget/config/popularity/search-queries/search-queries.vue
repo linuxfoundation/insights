@@ -41,15 +41,8 @@ import { storeToRefs } from 'pinia';
 import { DateTime } from 'luxon';
 import searchQueriesConfig from './search-queries.config';
 import type { SearchQueries } from '~~/types/popularity/responses.types';
-import {
-  convertToChartData,
-  markLastDataItem,
-} from '~/components/uikit/chart/helpers/chart-helpers';
-import type {
-  ChartData,
-  RawChartData,
-  ChartSeries,
-} from '~/components/uikit/chart/types/ChartTypes';
+import { convertToChartData, markLastDataItem } from '~/components/uikit/chart/helpers/chart-helpers';
+import type { ChartData, RawChartData, ChartSeries } from '~/components/uikit/chart/types/ChartTypes';
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import { lfxColors } from '~/config/styles/colors';
 import { useProjectStore } from '~/components/modules/project/store/project.store';
@@ -111,8 +104,7 @@ const dateDuration = computed(() => {
   return duration;
 });
 const isEmpty = computed(
-  () =>
-    isEmptyData(chartData.value as unknown as Record<string, unknown>[]) || dateDuration.value < 30,
+  () => isEmptyData(chartData.value as unknown as Record<string, unknown>[]) || dateDuration.value < 30,
 );
 
 const chartSeries = computed<ChartSeries[]>(() => [
@@ -126,9 +118,7 @@ const chartSeries = computed<ChartSeries[]>(() => [
   },
 ]);
 
-const barChartConfig = computed(() =>
-  getBarChartConfig(chartData.value, chartSeries.value, granularity.value),
-);
+const barChartConfig = computed(() => getBarChartConfig(chartData.value, chartSeries.value, granularity.value));
 
 watch(
   status,

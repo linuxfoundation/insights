@@ -9,8 +9,8 @@ SPDX-License-Identifier: MIT
       <p class="text-sm font-semibold text-brand-600">Repository details</p>
       <p class="text-lg font-semibold text-neutral-900">Security assessments</p>
       <p class="text-xs font-normal leading-4 text-neutral-500">
-        Provide additional context about your repository security posture, such as self-assessment
-        and third-party assessments.
+        Provide additional context about your repository security posture, such as self-assessment and third-party
+        assessments.
       </p>
     </div>
 
@@ -20,8 +20,8 @@ SPDX-License-Identifier: MIT
         <div class="flex flex-col gap-1">
           <p class="text-base font-semibold leading-6 text-neutral-900">Self-assessment</p>
           <p class="text-xs font-normal leading-4 text-neutral-500">
-            Describe your repository security practices, any security reviews conducted, known
-            limitation, or other relevant security information.
+            Describe your repository security practices, any security reviews conducted, known limitation, or other
+            relevant security information.
           </p>
         </div>
 
@@ -92,8 +92,8 @@ SPDX-License-Identifier: MIT
         <div class="flex flex-col gap-1">
           <p class="text-base font-semibold leading-6 text-neutral-900">Third-party assessment</p>
           <p class="text-xs text-neutral-500 leading-4">
-            Provide information about independent security audits, code reviews, or certifications
-            performed by external parties.
+            Provide information about independent security audits, code reviews, or certifications performed by external
+            parties.
           </p>
         </div>
 

@@ -20,9 +20,7 @@ const config = useRuntimeConfig();
 const repository = computed(() => selectedRepositories.value.find((repo) => repo.slug === name));
 const repoName = computed(() => (repository.value?.name || name).split('/').at(-1));
 
-const title = computed(
-  () => `${project.value?.name} ${repoName.value} Repository Security | LFX Insights`,
-);
+const title = computed(() => `${project.value?.name} ${repoName.value} Repository Security | LFX Insights`);
 const imageAlt = computed(() => `${project.value?.name} ${repoName.value} security insights`);
 const description = computed(
   () =>
@@ -30,9 +28,7 @@ const description = computed(
     `including vulnerabilities, dependencies, licensing, and governance compliance.`,
 );
 const url = computed(() => `${config.public.appUrl}${route.fullPath}`);
-const image = computed(
-  () => `${config.public.appUrl}/api/seo/og-image?projectSlug=${slug}&repositorySlug=${name}`,
-);
+const image = computed(() => `${config.public.appUrl}/api/seo/og-image?projectSlug=${slug}&repositorySlug=${name}`);
 
 useSeoMeta({
   title,

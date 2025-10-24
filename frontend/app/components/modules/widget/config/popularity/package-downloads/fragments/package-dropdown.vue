@@ -16,8 +16,7 @@ SPDX-License-Identifier: MIT
       >
         <lfx-icon
           v-if="
-            selectedOption.value ===
-              `${allPackages.ecosystem}${EcosystemSeparator}${allPackages.name}` ||
+            selectedOption.value === `${allPackages.ecosystem}${EcosystemSeparator}${allPackages.name}` ||
             getIcon(selectedOption.value.split(EcosystemSeparator)[0]) === ''
           "
           name="cube"
@@ -134,8 +133,7 @@ const filteredPackages = computed(() =>
   props.packages.filter((item) => {
     const searchValue = search.value.toLowerCase();
     return searchValue
-      ? item.name.toLowerCase().includes(searchValue) ||
-          item.ecosystem.toLowerCase().includes(searchValue)
+      ? item.name.toLowerCase().includes(searchValue) || item.ecosystem.toLowerCase().includes(searchValue)
       : true;
   }),
 );

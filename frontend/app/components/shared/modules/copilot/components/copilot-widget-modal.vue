@@ -79,8 +79,7 @@ const widgetConfig = computed(() => lfxWidgets[props.widgetName as Widget]);
 
 const { openCopilotModal } = useCopilotStore();
 
-const { project, startDate, endDate, selectedTimeRangeKey, customRangeGranularity } =
-  storeToRefs(useProjectStore());
+const { project, startDate, endDate, selectedTimeRangeKey, customRangeGranularity } = storeToRefs(useProjectStore());
 
 const granularity = computed(() =>
   selectedTimeRangeKey.value === dateOptKeys.custom

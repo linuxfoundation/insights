@@ -10,8 +10,7 @@ SPDX-License-Identifier: MIT
 import LfxExplore from '~/components/modules/explore/views/explore.vue';
 
 const title = 'LFX Insights';
-const description =
-  "Insights into the world's most critical open source software. By the Linux Foundation.";
+const description = "Insights into the world's most critical open source software. By the Linux Foundation.";
 
 useSeoMeta({
   title,
