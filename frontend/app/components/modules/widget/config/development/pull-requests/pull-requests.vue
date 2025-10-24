@@ -134,7 +134,8 @@ const props = defineProps<{
 
 const emit = defineEmits<{
 (e: 'dataLoaded', value: string): void;
-(e: 'update:modelValue', value: PullRequestsModel): void
+(e: 'update:modelValue', value: PullRequestsModel): void;
+(e: 'hasData', value: boolean): void;
 }>();
 
 const {
@@ -225,6 +226,12 @@ watch(status, (value: string) => {
 watch(granularity, (value: Granularity) => {
   emit('update:modelValue', { granularity: value });
 }, { immediate: true });
+
+watch(isEmpty, (value: boolean) => {
+  emit('hasData', !value);
+}, {
+  immediate: true
+});
 </script>
 
 <script lang="ts">

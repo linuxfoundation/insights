@@ -125,6 +125,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
 (e: 'dataLoaded', value: string): void;
+(e: 'hasData', value: boolean): void;
 }>();
 
 const {
@@ -177,6 +178,12 @@ watch(status, (value) => {
   if (value !== 'pending') {
     emit('dataLoaded', Widget.CONTRIBUTIONS_OUTSIDE_WORK_HOURS);
   }
+}, {
+  immediate: true
+});
+
+watch(isEmpty, (value: boolean) => {
+  emit('hasData', !value);
 }, {
   immediate: true
 });

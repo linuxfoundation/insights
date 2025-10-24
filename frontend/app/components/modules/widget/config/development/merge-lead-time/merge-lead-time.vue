@@ -96,7 +96,8 @@ const props = defineProps<{
 
 const emit = defineEmits<{
 (e: 'dataLoaded', value: string): void;
-(e: 'update:modelValue', value: WidgetModel): void
+(e: 'update:modelValue', value: WidgetModel): void;
+(e: 'hasData', value: boolean): void;
 }>();
 
 const model = computed<WidgetModel>({
@@ -167,8 +168,14 @@ const getMergeLeadTimeItem = (
 
 watch(status, (value: string) => {
   if (value !== 'pending') {
-    emit('dataLoaded', Widget.MERGE_LEAD_TIME); 
+    emit('dataLoaded', Widget.MERGE_LEAD_TIME);
   }
+}, {
+  immediate: true
+});
+
+watch(isEmpty, (value: boolean) => {
+  emit('hasData', !value);
 }, {
   immediate: true
 });
