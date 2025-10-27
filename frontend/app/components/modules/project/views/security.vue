@@ -200,7 +200,6 @@ import { useRoute } from 'nuxt/app';
 import { computed, onServerPrefetch, ref } from 'vue';
 import pluralize from 'pluralize';
 import { storeToRefs } from 'pinia';
-import { type QueryFunction, useQuery } from '@tanstack/vue-query';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxAccordion from '~/components/uikit/accordion/accordion.vue';
@@ -208,7 +207,6 @@ import LfxAccordion from '~/components/uikit/accordion/accordion.vue';
 import LfxProjectSecurityEvaluationSection from '~/components/modules/project/components/security/evaluation-section.vue';
 import LfxProjectSecurityEvaluationAssesment from '~/components/modules/project/components/security/evaluation-assesment.vue';
 import LfxProjectSecurityPaginatedEvalRepos from '~/components/modules/project/components/security/paginated-eval-repos.vue';
-import { TanstackKey } from '~/components/shared/types/tanstack';
 import { useProjectStore } from '~/components/modules/project/store/project.store';
 import type { SecurityData } from '~~/types/security/responses.types';
 import { links } from '~/config/links';
@@ -220,6 +218,7 @@ import LfxTag from '~/components/uikit/tag/tag.vue';
 import LfxButton from '~/components/uikit/button/button.vue';
 import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
 import LfSecurityGenerateYamlModal from '~/components/modules/project/components/security/yaml/generate-yaml-modal.vue';
+import { SECURITY_API_SERVICE } from '~/components/modules/project/services/security.api.service';
 
 const accordion = ref('');
 
@@ -232,23 +231,15 @@ const { selectedReposValues, allArchived, archivedRepos, hasSelectedArchivedRepo
 
 const isRepository = computed(() => !!name);
 
-const queryKey = computed(() => [TanstackKey.SECURITY_ASSESSMENT, route.params.slug, selectedReposValues.value]);
+const params = computed(() => ({
+  projectSlug: route.params.slug as string,
+  repos: selectedReposValues.value || undefined,
+}));
 
-const fetchData: QueryFunction<SecurityData[]> = async () =>
-  $fetch(`/api/project/${route.params.slug}/security/assessment`, {
-    params: {
-      repos: selectedReposValues.value || undefined,
-    },
-  });
-
-const { data, suspense, error, isFetching } = useQuery<SecurityData[]>({
-  queryKey,
-  queryFn: fetchData,
-});
+const { data, suspense, error, isFetching } = SECURITY_API_SERVICE.fetchSecurityAssessment(params);
 
 // TODO: Remove this when we have data for them
 const securityAssessmentData = computed(() => PROJECT_SECURITY_SERVICE.removeUnavailableChecks(data.value || []));
-
 const groupedData = computed(() =>
   (securityAssessmentData.value || []).reduce(
     (mapping, check) => {
