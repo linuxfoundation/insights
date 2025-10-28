@@ -8,19 +8,15 @@ SPDX-License-Identifier: MIT
       <div>
         <lfx-copilot-results-header
           :is-empty="isEmpty"
-          :is-loading="isLoading || isChartLoading"
+          :is-loading="isLoading"
           @close="emit('close')"
         />
       </div>
       <div
         v-if="!isLoading"
-        :class="{
-          'h-full flex flex-col justify-center min-h-0': isChartLoading,
-          'c-card p-4 w-full h-full min-h-0 flex flex-col': !isChartLoading,
-        }"
+        class="c-card p-4 w-full h-full min-h-0 flex flex-col"
       >
         <lfx-copilot-results-toggle
-          v-if="!isChartLoading"
           :model-value="selectedTab"
           :data="selectedResultData || []"
           :is-error="isChartError"
@@ -33,6 +29,28 @@ SPDX-License-Identifier: MIT
             v-if="selectedTab === 'data'"
             class="w-full h-full min-h-0 flex flex-col"
           >
+            <div
+              v-if="!isChartRequested"
+              class="text-xs text-neutral-500 flex items-center justify-between border border-solid border-brand-200 rounded-lg p-3 bg-brand-100 mb-4"
+            >
+              <div>
+                <div class="font-semibold text-brand-800">Visualize your insights</div>
+                <div class="text-brand-800">
+                  Data Copilot can transform this data into a visual chart, making it easier to spot insights at a
+                  glance.
+                </div>
+              </div>
+              <div>
+                <lfx-button
+                  type="transparent"
+                  :button-style="'pill'"
+                  @click="handleChartRequested()"
+                >
+                  <lfx-icon name="chart-column" />
+                  Generate chart
+                </lfx-button>
+              </div>
+            </div>
             <lfx-copilot-table-results :data="selectedResultData" />
           </div>
           <div
@@ -82,6 +100,8 @@ import LfxCopilotResultsToggle from './results-toggle.vue';
 import LfxCopilotChartResults from './chart-results.vue';
 import type { Config } from '~~/lib/chat/chart/types';
 import type { ChartErrorType } from '~/components/shared/modules/copilot/types/copilot.types';
+import LfxButton from '~/components/uikit/button/button.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 
 const emit = defineEmits<{
   (e: 'update:isChartLoading', value: boolean): void;
@@ -92,7 +112,7 @@ const props = defineProps<{
   isLoading: boolean;
 }>();
 
-const { resultData, selectedResultId } = storeToRefs(useCopilotStore());
+const { resultData, selectedResultId, isChartRequested } = storeToRefs(useCopilotStore());
 
 const isChartError = ref(false);
 const selectedTab = ref('data');
@@ -142,6 +162,11 @@ const handleConfigUpdate = (config: Config | null, chartErrorType?: ChartErrorTy
 const handleChartLoading = (value: boolean) => {
   isChartLoading.value = value;
   emit('update:isChartLoading', value);
+};
+
+const handleChartRequested = () => {
+  isChartRequested.value = true;
+  selectedTab.value = 'chart';
 };
 
 // Removed watcher that forced chart tab selection during loading
