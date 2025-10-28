@@ -220,6 +220,10 @@ const callChatApi = async (userMessage: string) => {
           if (receivedConversationId) {
             conversationId.value = receivedConversationId;
           }
+
+          if (messages.value.length > 0) {
+            messages.value[messages.value.length - 1]!.isEndResponse = true;
+          }
           // Focus textarea when chat response is complete
           setTimeout(() => {
             textareaRef.value?.focus();
