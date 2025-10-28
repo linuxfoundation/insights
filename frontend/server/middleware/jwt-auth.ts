@@ -13,9 +13,14 @@ const isJWT = (token: string) => {
 export default defineEventHandler(async (event) => {
   const url = getRouterParam(event, '_') || event.node.req.url || '';
 
-  const protectedRoutes = ['/api/chat/'];
+  const protectedRoutes = ['/api/report'];
+  const protectedAndPermissionRoutes = ['/api/chat'];
 
-  const isProtectedRoute = protectedRoutes.some((route) => url.startsWith(route));
+  const isProtectedRoute = [...protectedRoutes, ...protectedAndPermissionRoutes].some((route) =>
+    url.startsWith(route),
+  );
+
+  const isPermissionRequired = protectedAndPermissionRoutes.some((route) => url.startsWith(route));
 
   if (!isProtectedRoute) {
     return;
@@ -24,8 +29,6 @@ export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig();
   const oidcToken = getCookie(event, 'auth_oidc_token');
 
-  // Read authorization header
-  // const authHeader = getHeader(event, 'authorization')
   if (!oidcToken) {
     throw createError({
       statusCode: 401,
@@ -42,7 +45,7 @@ export default defineEventHandler(async (event) => {
     if (decodedToken.original_id_token && isJWT(decodedToken.original_id_token)) {
       event.context.user = decodedToken;
 
-      if (!isLocal && !decodedToken.hasLfxInsightsPermission) {
+      if (!isLocal && isPermissionRequired && !decodedToken.hasLfxInsightsPermission) {
         throw createError({
           statusCode: 401,
           statusMessage: `User does not belong to ${config.lfxAuth0TokenClaimGroupName}`,
@@ -58,7 +61,7 @@ export default defineEventHandler(async (event) => {
     console.error('JWT verification failed:', jwtError);
     throw createError({
       statusCode: 401,
-      statusMessage: 'Invalid JWT token',
+      statusMessage: jwtError instanceof Error ? jwtError.message : 'Invalid JWT token',
     });
   }
 });
