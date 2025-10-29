@@ -37,6 +37,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
+import { computed } from 'vue';
 import type { MessageData } from '../../types/copilot.types';
 import { useCopilotStore } from '~/components/shared/modules/copilot/store/copilot.store';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
@@ -54,12 +55,16 @@ const props = defineProps<{
   chartVersion: number;
 }>();
 
-const { copilotDefaults } = storeToRefs(useCopilotStore());
+const { copilotDefaults, isChartRequested } = storeToRefs(useCopilotStore());
 
-const resultsTabs = [
-  { label: 'Chart', value: 'chart', icon: 'chart-column' },
-  { label: 'Data', value: 'data', icon: 'table-layout' },
-];
+const resultsTabs = computed(() =>
+  isChartRequested.value
+    ? [
+        { label: 'Data', value: 'data', icon: 'table-layout' },
+        { label: 'Chart', value: 'chart', icon: 'chart-column' },
+      ]
+    : [{ label: 'Data', value: 'data', icon: 'table-layout' }],
+);
 
 const exportData = () => {
   if (props.modelValue === 'data') {

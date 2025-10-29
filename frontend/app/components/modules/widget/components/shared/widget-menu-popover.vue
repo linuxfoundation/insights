@@ -29,6 +29,7 @@ SPDX-License-Identifier: MIT
           :is="link.popOverComponent"
           :widget-name="widgetName"
           :is-open="isOpen"
+          @action-done="isOpen = false"
         />
       </template>
     </lfx-popover>

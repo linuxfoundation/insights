@@ -132,6 +132,7 @@ class CopilotApiService {
     let assistantContent = '';
     let assistantMessageId: string | null = null;
     let conversationId: string | undefined = undefined;
+    let chatResponseId: string | undefined = undefined;
     let lineBuffer = ''; // Buffer to accumulate partial lines
 
     try {
@@ -145,6 +146,7 @@ class CopilotApiService {
               lineBuffer,
               assistantMessageId,
               assistantContent,
+              chatResponseId,
               messages,
               statusCallBack,
               messageCallBack,
@@ -170,6 +172,7 @@ class CopilotApiService {
             line,
             assistantMessageId,
             assistantContent,
+            chatResponseId,
             messages,
             statusCallBack,
             messageCallBack,
@@ -179,6 +182,10 @@ class CopilotApiService {
             assistantMessageId = result.assistantMessageId;
             if (result.conversationId) {
               conversationId = result.conversationId;
+            }
+
+            if (result.chatResponseId) {
+              chatResponseId = result.chatResponseId;
             }
           }
         }
@@ -195,6 +202,7 @@ class CopilotApiService {
     line: string,
     assistantMessageId: string | null,
     assistantContent: string,
+    currentChatResponseId: string | undefined,
     messages: Array<AIMessage>,
     statusCallBack: (status: string) => void,
     messageCallBack: (message: AIMessage, index: number) => void,
@@ -202,6 +210,7 @@ class CopilotApiService {
     assistantMessageId: string | null;
     assistantContent: string;
     conversationId?: string;
+    chatResponseId?: string;
   } | null {
     try {
       // Parse AI SDK data stream format: "prefix:data"
@@ -217,6 +226,7 @@ class CopilotApiService {
       if (prefix === '2') {
         assistantMessageId = null;
         let capturedConversationId: string | undefined = undefined;
+        let capturedChatResponseId: string | undefined = currentChatResponseId;
 
         // Custom data events from your backend (like router-status)
         const dataArray = JSON.parse(dataString);
@@ -258,6 +268,7 @@ class CopilotApiService {
                   reformulatedQuestion: data.reformulatedQuestion,
                   question: data.question,
                   timestamp: Date.now(),
+                  chatResponseId: data.id || currentChatResponseId,
                 },
                 -1,
               );
@@ -272,6 +283,7 @@ class CopilotApiService {
             // Capture conversationId from chat-response-id for return
             if (data.type === 'chat-response-id' && data.conversationId) {
               capturedConversationId = data.conversationId;
+              capturedChatResponseId = data.id;
             }
 
             const content = data.type === 'chat-response-id' ? data.id : data.explanation;
@@ -293,7 +305,7 @@ class CopilotApiService {
                 explanation: data.explanation,
                 instructions: data.instructions,
                 conversationId: data.conversationId,
-                chatResponseId: data.chatResponseId,
+                chatResponseId: data.id || capturedChatResponseId,
                 timestamp: Date.now(),
               },
               -1,
@@ -301,7 +313,12 @@ class CopilotApiService {
           }
         }
 
-        return { assistantMessageId, assistantContent, conversationId: capturedConversationId };
+        return {
+          assistantMessageId,
+          assistantContent,
+          conversationId: capturedConversationId,
+          chatResponseId: capturedChatResponseId,
+        };
       } else if (prefix === '0') {
         // Text delta from streamText (streaming text content)
         const textDelta = JSON.parse(dataString);

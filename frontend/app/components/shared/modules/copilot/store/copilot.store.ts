@@ -17,11 +17,13 @@ export const useCopilotStore = defineStore('copilot', () => {
   const resultData = ref<ResultsHistory[]>([]);
   const selectedResultId = ref<string | null>(null);
   const selectedWidgetKey = ref<Widget | undefined>(undefined);
+  const isChartRequested = ref(false);
 
   const openCopilotModal = (defaults: CopilotData = defaultData) => {
     copilotDefaults.value = defaults;
     selectedWidgetKey.value = defaults.widget;
     isCopilotModalOpen.value = true;
+    isChartRequested.value = false;
   };
 
   const resetResultData = () => {
@@ -37,5 +39,6 @@ export const useCopilotStore = defineStore('copilot', () => {
     selectedResultId,
     resetResultData,
     selectedWidgetKey,
+    isChartRequested,
   };
 });
