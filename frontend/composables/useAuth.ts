@@ -25,6 +25,16 @@ const setSilentLoginAttempted = (value: boolean): void => {
   localStorage.setItem('lfx-silent-login-attempted', value.toString());
 };
 
+const getWasUserLoggedIn = (): boolean => {
+  if (!process.client) return false;
+  return localStorage.getItem('lfx-user-logged-in') === 'true';
+};
+
+const setWasUserLoggedIn = (value: boolean): void => {
+  if (!process.client) return;
+  localStorage.setItem('lfx-user-logged-in', value.toString());
+};
+
 export const useAuth = () => {
   // Fetch user data from server
   const { data: userData, refresh: refreshAuth } = useAsyncData<AuthData>(
@@ -47,7 +57,12 @@ export const useAuth = () => {
       authState.value = userData.value;
 
       // Attempt silent login if suggested by the server and not already attempted
-      if (userData.value.shouldAttemptSilentLogin && process.client && !getSilentLoginAttempted()) {
+      if (
+        userData.value.shouldAttemptSilentLogin &&
+        process.client &&
+        !getSilentLoginAttempted() &&
+        getWasUserLoggedIn() // Only attempt silent login if the user has logged in previously
+      ) {
         const currentPath =
           window.location.pathname + window.location.search + window.location.hash;
         login(currentPath, true);
@@ -55,6 +70,7 @@ export const useAuth = () => {
 
       if (userData.value.isAuthenticated) {
         setSilentLoginAttempted(false);
+        setWasUserLoggedIn(true);
       }
     }
   });
@@ -184,6 +200,8 @@ export const useAuth = () => {
         } else {
           await navigateTo(response.logoutUrl, { external: true });
         }
+
+        setWasUserLoggedIn(false);
       }
     } catch (error) {
       console.error('Logout error:', error);
