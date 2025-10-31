@@ -49,7 +49,7 @@ const typeData: Record<SecurityDataResult, TypeData> = {
     text: 'Cannot measure',
   },
 };
-const data = computed<number>(() => typeData[props.result]);
+const data = computed<TypeData>(() => typeData[props.result]);
 </script>
 
 <script lang="ts">
