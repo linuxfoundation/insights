@@ -1,4 +1,4 @@
-# LFX Data Copilot (Experimental)
+# LFX Data Copilot
 
 ::: warning ⚠️ Experimental Feature
 LFX Data Copilot is currently in experimental phase and is only accessible to a limited number of users. Features and functionality may change as we continue to develop and refine this tool.
@@ -12,14 +12,16 @@ The Data Copilot leverages data from LFX Insights to provide intelligent, contex
 
 #### Key capabilities
 
-- **Natural language queries** - Ask questions in plain English about contributor, development, and popularity data.
-- **Data visualization** - View insights as charts or data tables. Get deeper insights and alternative perspectives on existing data that aren't visible in the standard Insights interface.
-- **Trend identification** - Discover patterns and changes over time in project metrics.
+- **Natural language queries** - Ask questions in plain English about contributor, development, and popularity
+  data.
+- **Flexible data access** - Get deeper insights and alternative perspectives on data that aren't visible in the
+   standard Insights app.
+- **Multiple visualization formats** - View results as charts or structured data tables.
+- **Data export** - Download table data as CSV for further analysis in your preferred tools.
+- **Dual query scope** - Ask questions at both widget-specific and project-wide levels.
+- **Trend analysis** - Discover patterns and changes over time in project metrics.
 - **Privacy-focused** - No access to personally identifiable information (PII).
-- **Export data from table to CSV** - Download data for further analysis in your preferred tools.
-- **View charts on demand** - Generate visual representations of data based on your specific queries.
-- **Ask questions widget specific or project global** - Query data at both individual widget level and entire project scope.
-- **User centered by allowing for feedback** - Continuous improvement through built-in feedback mechanisms on every response.
+- **Continuous improvement** - Built-in feedback mechanisms on every response help refine the experience.
 
 ## How to use Data Copilot
 
@@ -30,24 +32,24 @@ The Data Copilot leverages data from LFX Insights to provide intelligent, contex
 3. **Click "Ask Copilot"** in the top right corner of the project page or on the action buttons of each widget.
 <img src="../../images/widget-button.png" width="500">
 
-*Button on top of each widget (excluding Contributors leaderboard and Contributors dependency)*
+*(1) Button on top of each widget (excluding Contributors leaderboard and Contributors dependency)*
 
 <img src="../../images/global-button.png" height="100">
 
-*Button on top of the project's page*
+*(2) Button on top of the project's page*
 
 ### Getting Started
 
 1. **Start with a simple question** like "How has contributor activity changed over the last year?".
-2. **Use natural language** - you don't need to use specific technical terms or query syntax
-3. **Be specific** when possible - mention timeframes, specific metrics, or comparisons you're interested in
-4. **Choose your view** - Data can be displayed as charts or tables, with table data being exportable
+2. **Use natural language** - you don't need to use specific technical terms or query syntax.
+3. **Be specific** when possible - mention timeframes, specific metrics, or comparisons you're interested in.
+4. **Choose your view** - Data can be displayed as charts or tables, with table data being exportable.
 
 ### Tips for Better Results
 
-- **Be specific about timeframes** (e.g., "in the last 6 months", "since 2023")
-- **Mention specific metrics** if you know them (e.g., "contributor count", "pull request metrics")
-- **Use comparative language** when comparing projects or timeframes
+- **Be specific about timeframes** (e.g., "in the last 6 months", "since 2023").
+- **Mention specific metrics** if you know them (e.g., "contributor count", "pull request metrics").
+- **Use comparative language** when comparing projects or timeframes.
 
 ## Feedback
 
