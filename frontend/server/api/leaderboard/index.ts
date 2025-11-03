@@ -4,34 +4,29 @@ import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
 import { Leaderboard } from '~~/types/leaderboard/leaderboard';
 
 export default defineEventHandler(async (event) => {
-  const { type } = event.context.params as Record<string, string>;
   const query = getQuery(event);
 
   const page: number = (query.page as number) || 0;
   const pageSize: number = (query.pageSize as number) || 20;
+  const maxRank: number | undefined = (query.maxRank as number) || undefined;
+  const slug: string | undefined = (query.slug as string) || undefined;
   const search: string | undefined = (query.search as string) || undefined;
-
-  if (!type) {
-    throw createError({
-      statusCode: 400,
-      statusMessage: 'Leaderboard key is required',
-    });
-  }
 
   try {
     const response = await fetchFromTinybird<Leaderboard[]>('/v0/pipes/leaderboards.json', {
-      leaderboardType: type,
       page,
       pageSize,
       search,
+      maxRank,
+      slug,
     });
 
     return response.data;
   } catch (error) {
-    console.error('Error fetching leaderboard:', error);
+    console.error('Error fetching leaderboard list:', error);
     throw createError({
       statusCode: 500,
-      statusMessage: 'Failed to fetch leaderboard',
+      statusMessage: 'Failed to fetch leaderboard list',
     });
   }
 });
