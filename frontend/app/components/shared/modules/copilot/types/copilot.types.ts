@@ -66,6 +66,7 @@ export interface AIMessage {
       sourceColumn: string;
     }>;
   };
+  isEndResponse?: boolean;
 }
 
 // export interface CopilotMessage {

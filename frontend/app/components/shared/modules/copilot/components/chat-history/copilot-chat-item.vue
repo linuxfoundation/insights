@@ -46,6 +46,10 @@ SPDX-License-Identifier: MIT
             :version="1"
             :is-selected="false"
           />
+          <lfx-chat-feedback
+            v-if="message.status === 'complete' && message.chatResponseId && message.isEndResponse"
+            :id="message.chatResponseId"
+          />
         </div>
         <div v-if="message.type === 'sql-result' || message.type === 'pipe-result'">
           <lfx-chat-result
