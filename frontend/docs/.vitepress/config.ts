@@ -75,6 +75,12 @@ export default defineConfig({
         ],
       },
       {
+        text: 'Features',
+        items: [
+          { text: 'LFX Data Copilot', link: '/features/lfx-data-copilot/index.md' },
+        ],
+      },
+      {
         text: 'More',
         items: [
           { text: 'FAQ', link: '/more/faq/index.md' },
