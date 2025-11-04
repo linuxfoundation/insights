@@ -129,14 +129,10 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { computed, onServerPrefetch } from 'vue';
 import { useRouter } from 'nuxt/app';
-import { useInfiniteQuery, useQueryClient } from '@tanstack/vue-query';
 import LfxTable from '~/components/uikit/table/table.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
-import type { Pagination } from '~~/types/shared/pagination';
-import type { Project } from '~~/types/project';
 import { PROJECT_API_SERVICE } from '~/components/modules/project/services/project.api.service';
-import { TanstackKey } from '~/components/shared/types/tanstack';
 import { formatNumber, formatNumberShort } from '~/components/shared/utils/formatter';
 import LfxHealthScore from '~/components/shared/components/health-score.vue';
 import { LfxRoutes } from '~/components/shared/types/routes';
@@ -148,7 +144,6 @@ const props = defineProps<{
 }>();
 
 const router = useRouter();
-const queryClient = useQueryClient();
 
 const sort = computed(() => props.sort || 'totalContributors');
 
@@ -161,25 +156,12 @@ const sortMapping: Record<string, string> = {
 
 const pageSize = 20;
 
-const queryKey = computed(() => [TanstackKey.OSS_INDEX_PROJECTS, sort.value]);
-
-const queryFn = PROJECT_API_SERVICE.fetchProjects(() => ({
+const params = computed(() => ({
   sort: sortMapping[sort.value] || 'contributorCount_desc',
   pageSize,
 }));
 
-const getNextPageParam = (lastPage) => {
-  const nextPage = lastPage.page + 1;
-  const totalPages = Math.ceil(lastPage.total / lastPage.pageSize);
-  return nextPage < totalPages ? nextPage : undefined;
-};
-
-const { data, isFetchingNextPage, fetchNextPage, hasNextPage, isFetching } = useInfiniteQuery<Pagination<Project>>({
-  queryKey,
-  queryFn,
-  getNextPageParam,
-  initialPageParam: 0,
-});
+const { data, isFetchingNextPage, fetchNextPage, hasNextPage, isFetching } = PROJECT_API_SERVICE.fetchProjects(params);
 
 const loadMore = () => {
   if (hasNextPage.value) {
@@ -188,12 +170,7 @@ const loadMore = () => {
 };
 
 onServerPrefetch(async () => {
-  await queryClient.prefetchInfiniteQuery({
-    queryKey,
-    queryFn,
-    getNextPageParam,
-    initialPageParam: 0,
-  });
+  await PROJECT_API_SERVICE.prefetchProjects(params);
 });
 </script>
 

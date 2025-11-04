@@ -9,8 +9,8 @@ import { TanstackKey } from '~/components/shared/types/tanstack';
 export interface ProjectsQueryParams {
   sort: string;
   pageSize: number;
-  isLF: boolean;
-  collectionSlug: string;
+  isLF?: boolean;
+  collectionSlug?: string;
 }
 
 class ProjectApiService {
