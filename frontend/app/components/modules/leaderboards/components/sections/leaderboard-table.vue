@@ -5,38 +5,43 @@ SPDX-License-Identifier: MIT
 <template>
   <!-- Leaderboard items -->
   <div class="flex flex-col items-start w-full">
-    <div
+    <router-link
       v-for="item in data"
-      :key="item.id"
-      class="flex items-center p-3 w-full hover:bg-neutral-50 rounded-lg transition-all duration-300 cursor-pointer"
+      :key="item.rank"
+      class="w-full"
+      :to="`/project/${item.slug}`"
     >
-      <!-- Rank -->
-      <div class="w-10 shrink-0 text-neutral-900 font-secondary overflow-hidden overflow-ellipsis">
-        {{ item.rank }}
-      </div>
+      <div
+        class="flex items-center p-3 w-full hover:bg-neutral-50 rounded-lg transition-all duration-300 cursor-pointer"
+      >
+        <!-- Rank -->
+        <div class="w-10 shrink-0 text-neutral-900 font-secondary overflow-hidden overflow-ellipsis">
+          {{ item.rank }}
+        </div>
 
-      <!-- Project info -->
-      <div class="flex-1 min-w-0 flex gap-3 items-center">
-        <lfx-avatar
-          :src="item.logoUrl"
-          type="organization"
-          :aria-label="item.logoUrl && item.name"
-        />
-        <p class="text-base leading-5 font-medium text-neutral-900 overflow-hidden overflow-ellipsis">
-          {{ item.name }}
-        </p>
-      </div>
+        <!-- Project info -->
+        <div class="flex-1 min-w-0 flex gap-3 items-center">
+          <lfx-avatar
+            :src="item.logoUrl"
+            type="organization"
+            :aria-label="item.logoUrl && item.name"
+          />
+          <p class="text-base leading-5 font-medium text-neutral-900 overflow-hidden overflow-ellipsis">
+            {{ item.name }}
+          </p>
+        </div>
 
-      <!-- Stats -->
-      <div class="w-1/4 shrink-0 flex flex-col gap-2 items-end justify-center">
-        <p
-          class="text-base leading-5 font-normal text-neutral-900 text-right w-full overflow-hidden overflow-ellipsis whitespace-pre-wrap"
-        >
-          {{ formatValue(item.value) }}
-        </p>
-        <lfx-leaderboard-trend-display :data="item" />
+        <!-- Stats -->
+        <div class="w-1/4 shrink-0 flex flex-col gap-2 items-end justify-center">
+          <p
+            class="text-base leading-5 font-normal text-neutral-900 text-right w-full overflow-hidden overflow-ellipsis whitespace-pre-wrap"
+          >
+            {{ formatValue(item.value) }}
+          </p>
+          <lfx-leaderboard-trend-display :data="item" />
+        </div>
       </div>
-    </div>
+    </router-link>
     <template v-for="i in 10">
       <div
         v-if="isLoading"

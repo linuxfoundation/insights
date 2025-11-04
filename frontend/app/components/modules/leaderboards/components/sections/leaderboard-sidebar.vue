@@ -9,7 +9,7 @@ SPDX-License-Identifier: MIT
         v-for="config in allLeaderboards"
         :key="config.key"
         :to="`/leaderboards/${config.key}`"
-        class="flex gap-2 items-center text-xs leading-4 cursor-pointer transition-colors"
+        class="flex gap-2 items-center text-xs leading-4 cursor-pointer transition-colors hover:text-neutral-900 hover:font-medium"
         :class="isActiveLeaderboard(config.key) ? 'text-neutral-900 font-medium' : 'text-neutral-500 font-normal'"
       >
         <lfx-icon

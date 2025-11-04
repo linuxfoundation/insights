@@ -56,20 +56,83 @@ SPDX-License-Identifier: MIT
     <div class="relative w-full">
       <div class="w-full">
         <div class="rounded-full border border-solid border-neutral-200">
-          <lfx-input
-            v-model="searchQuery"
-            placeholder="Search projects..."
-            class="!bg-neutral-50 !border-none !rounded-full h-9 !shadow-none"
+          <lfx-popover
+            v-model:visibility="isSearchOpen"
+            placement="bottom-end"
+            class="!w-full"
+            :match-width="true"
           >
-            <template #prefix>
-              <lfx-icon
-                name="search"
-                type="regular"
-                :size="14"
-                class="text-neutral-400"
-              />
+            <lfx-input
+              v-model="searchQuery"
+              placeholder="Search projects..."
+              class="!bg-neutral-50 !border-none !rounded-full h-9 !shadow-none"
+            >
+              <template #prefix>
+                <lfx-icon
+                  name="search"
+                  type="regular"
+                  :size="14"
+                  class="text-neutral-400"
+                />
+              </template>
+            </lfx-input>
+            <template #content>
+              <lfx-card
+                class="w-full max-h-[65vh] overflow-y-auto"
+                :class="[searchQuery !== '' ? 'p-1 shadow-lg' : '!border-none']"
+              >
+                <router-link
+                  v-for="item in items"
+                  :key="item.id"
+                  :to="`/project/${item.slug}`"
+                >
+                  <div
+                    class="flex items-center p-3 w-full hover:bg-neutral-50 rounded-lg transition-all duration-300 cursor-pointer"
+                  >
+                    <!-- Project info -->
+                    <div class="flex-1 min-w-0 flex gap-3 items-center">
+                      <lfx-avatar
+                        :src="item.logoUrl"
+                        type="organization"
+                        :aria-label="item.logoUrl && item.name"
+                        size="small"
+                      />
+                      <p class="text-base leading-5 font-medium text-neutral-900 overflow-hidden overflow-ellipsis">
+                        {{ item.name }}
+                      </p>
+                    </div>
+                    <!-- Rank -->
+                    <div class="text-neutral-500 text-sm">#{{ item.rank }}</div>
+                  </div>
+                </router-link>
+
+                <div
+                  v-if="items.length === 0 && isSuccess"
+                  class="flex flex-col items-center py-20"
+                >
+                  <lfx-icon
+                    name="face-monocle"
+                    :size="40"
+                    class="text-neutral-300"
+                  />
+                  <h3
+                    class="text-center pt-5 text-heading-4 sm:text-heading-3 font-secondary font-bold text-neutral-500"
+                  >
+                    No projects found
+                  </h3>
+                </div>
+                <div
+                  v-if="isSearchPending && searchQuery !== ''"
+                  class="flex items-center justify-between h-32 py-1"
+                >
+                  <lfx-spinner
+                    :size="40"
+                    class="text-neutral-300"
+                  />
+                </div>
+              </lfx-card>
             </template>
-          </lfx-input>
+          </lfx-popover>
         </div>
       </div>
     </div>
@@ -77,12 +140,17 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import type { LeaderboardConfig } from '../../config/types/leaderboard.types';
+import { LEADERBOARD_API_SERVICE } from '../../services/leaderboard.api.service';
 import LfxButton from '~/components/uikit/button/button.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxInput from '~/components/uikit/input/input.vue';
 import useScroll from '~/components/shared/utils/scroll';
+import LfxPopover from '~/components/uikit/popover/popover.vue';
+import LfxCard from '~/components/uikit/card/card.vue';
+import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
+import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
 
 const props = defineProps<{
   config: LeaderboardConfig;
@@ -91,9 +159,8 @@ const props = defineProps<{
 const { scrollTop } = useScroll();
 
 const searchQuery = ref('');
-const emit = defineEmits<{
-  (e: 'search', query: string): void;
-}>();
+
+const isSearchOpen = ref(false);
 
 const handleShare = () => {
   // TODO: Implement share functionality
@@ -107,7 +174,23 @@ const handleShare = () => {
 };
 
 watch(searchQuery, (newVal) => {
-  emit('search', newVal);
+  isSearchOpen.value = newVal !== '';
+});
+
+const searchParams = computed(() => ({
+  leaderboardType: props.config.key,
+  search: searchQuery.value,
+}));
+
+const {
+  data: searchData,
+  isPending: isSearchPending,
+  isSuccess,
+} = LEADERBOARD_API_SERVICE.fetchLeaderboardDetailSearch(searchParams);
+
+const items = computed(() => {
+  // @ts-expect-error - TanStack Query type inference issue with Vue
+  return searchData.value?.pages.flatMap((page: Pagination<Leaderboard>) => page.data) || [];
 });
 </script>
 

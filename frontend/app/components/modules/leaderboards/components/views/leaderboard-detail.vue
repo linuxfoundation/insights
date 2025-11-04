@@ -16,16 +16,18 @@ SPDX-License-Identifier: MIT
         class="w-1/5"
         :class="[scrollTop > 1 ? 'fixed z-10' : 'relative']"
       >
-        <router-link to="/leaderboards">
-          <lfx-button type="ghost">
-            <lfx-icon
-              name="angle-left"
-              :size="16"
-            />
-            All leaderboards
-          </lfx-button>
+        <router-link
+          to="/leaderboards"
+          class="flex items-center gap-1 text-xs text-neutral-500 hover:text-neutral-900 hover:font-medium transition-all duration-100 mb-4"
+        >
+          <lfx-icon
+            name="angle-left"
+            :size="15"
+          />
+          All leaderboards
         </router-link>
 
+        <div class="h-px bg-neutral-200 w-full mb-4"></div>
         <!-- Sidebar navigation -->
         <lfx-leaderboard-sidebar :leaderboard-key="leaderboardKey" />
       </div>
@@ -49,10 +51,7 @@ SPDX-License-Identifier: MIT
             :class="[scrollTop > 1 ? 'w-3/5' : 'w-full']"
           >
             <!-- Header section -->
-            <lfx-leaderboard-detail-header
-              :config="leaderboardConfig"
-              @search="handleSearch"
-            />
+            <lfx-leaderboard-detail-header :config="leaderboardConfig" />
 
             <!-- Table header -->
             <div
@@ -99,7 +98,7 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 import leaderboardConfigs from '../../config/index.config';
 import LfxLeaderboardTable from '../sections/leaderboard-table.vue';
 import type { LeaderboardConfig } from '../../config/types/leaderboard.types';
@@ -108,7 +107,6 @@ import LfxLeaderboardDetailHeader from '../sections/leaderboard-detail-header.vu
 import { LEADERBOARD_API_SERVICE } from '../../services/leaderboard.api.service';
 import type { Leaderboard } from '~~/types/leaderboard/leaderboard';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
-import LfxButton from '~/components/uikit/button/button.vue';
 import type { Pagination } from '~~/types/shared/pagination';
 import useScroll from '~/components/shared/utils/scroll';
 import useResponsive from '~/components/shared/utils/responsive';
@@ -121,22 +119,11 @@ const props = defineProps<{
 
 const { scrollTop } = useScroll();
 const { pageWidth } = useResponsive();
-// State
-const searchQuery = ref('');
 
 const params = computed(() => ({
   leaderboardType: props.leaderboardKey,
   initialPageSize: 100,
-  search: searchQuery.value,
 }));
-
-// const searchParams = computed(() => ({
-//   leaderboardType: props.leaderboardKey,
-//   search: searchQuery.value,
-// }));
-
-// const { data: searchData, isPending: isSearchPending } =
-//   LEADERBOARD_API_SERVICE.fetchLeaderboardDetailSearch(searchParams);
 
 const { data, isPending, isFetchingNextPage, fetchNextPage, hasNextPage } =
   LEADERBOARD_API_SERVICE.fetchLeaderboardDetails(params);
@@ -150,10 +137,6 @@ const leaderboardConfig = computed<LeaderboardConfig>(() => {
   const config = leaderboardConfigs.find((config) => config.key === props.leaderboardKey);
   return config ?? leaderboardConfigs[0]!;
 });
-
-const handleSearch = (query: string) => {
-  searchQuery.value = query;
-};
 </script>
 
 <script lang="ts">

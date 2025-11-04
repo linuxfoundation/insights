@@ -54,11 +54,13 @@ class LeaderboardApiService {
   fetchLeaderboardDetails(params: ComputedRef<LeaderboardDetailQueryParams>) {
     const queryKey = computed(() => [TanstackKey.LEADERBOARD_DETAIL, params.value.leaderboardType]);
 
-    const queryFn = this.leaderboardDetailQueryFn(() => ({
-      leaderboardType: params.value.leaderboardType,
-      initialPageSize: params.value.initialPageSize,
-      search: params.value.search,
-    }));
+    const queryFn = computed<QueryFunction<Pagination<Leaderboard>>>(() =>
+      this.leaderboardDetailQueryFn(() => ({
+        leaderboardType: params.value.leaderboardType,
+        initialPageSize: params.value.initialPageSize,
+        search: params.value.search,
+      })),
+    );
 
     return useInfiniteQuery<
       Pagination<Leaderboard>,
@@ -68,6 +70,7 @@ class LeaderboardApiService {
       number
     >({
       queryKey,
+      //@ts-expect-error - TanStack Query type inference issue with Vue
       queryFn,
       getNextPageParam: this.getNextPageLeaderboardParam,
       initialPageParam: 0,
@@ -98,11 +101,13 @@ class LeaderboardApiService {
       params.value.search,
     ]);
 
-    const queryFn = this.leaderboardDetailQueryFn(() => ({
-      leaderboardType: params.value.leaderboardType,
-      initialPageSize: 20,
-      search: params.value.search,
-    }));
+    const queryFn = computed<QueryFunction<Pagination<Leaderboard>>>(() =>
+      this.leaderboardDetailQueryFn(() => ({
+        leaderboardType: params.value.leaderboardType,
+        initialPageSize: 15,
+        search: params.value.search,
+      })),
+    );
 
     return useInfiniteQuery<
       Pagination<Leaderboard>,
@@ -112,9 +117,11 @@ class LeaderboardApiService {
       number
     >({
       queryKey,
+      //@ts-expect-error - TanStack Query type inference issue with Vue
       queryFn,
       getNextPageParam: this.getNextPageLeaderboardParam,
       initialPageParam: 0,
+      enabled: computed(() => !!params.value.search && params.value.search.trim().length > 0),
     });
   }
 }
