@@ -3,14 +3,6 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <!-- Table header -->
-  <div
-    class="flex items-center justify-between px-3 py-0 w-full text-xs font-semibold text-neutral-400 whitespace-pre-wrap"
-  >
-    <div class="w-10 shrink-0">#</div>
-    <div class="flex-1 min-w-0">Project</div>
-    <div class="flex-1 min-w-0 text-right">{{ leaderboardConfig?.columnLabel }}</div>
-  </div>
   <!-- Leaderboard items -->
   <div class="flex flex-col items-start w-full">
     <div
@@ -63,6 +55,16 @@ SPDX-License-Identifier: MIT
         <lfx-skeleton class="!w-16 !h-5" />
       </div>
     </template>
+
+    <lfx-button
+      v-if="hasNextPage"
+      type="transparent"
+      :loading="isLoading"
+      class="mt-10 w-full justify-center"
+      @click="emit('fetchNextPage')"
+    >
+      View more
+    </lfx-button>
   </div>
 </template>
 
@@ -73,11 +75,17 @@ import type { Leaderboard } from '~~/types/leaderboard/leaderboard';
 import { formatNumber } from '~/components/shared/utils/formatter';
 import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
 import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
+import LfxButton from '~/components/uikit/button/button.vue';
 
 defineProps<{
   leaderboardConfig: LeaderboardConfig;
   isLoading: boolean;
   data: Leaderboard[];
+  hasNextPage: boolean;
+}>();
+
+const emit = defineEmits<{
+  (e: 'fetchNextPage'): void;
 }>();
 
 const formatValue = (value: number) => {

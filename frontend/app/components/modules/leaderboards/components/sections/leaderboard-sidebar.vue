@@ -3,7 +3,7 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="flex flex-col gap-4 w-1/4">
+  <div class="flex flex-col gap-4">
     <div class="flex flex-col gap-4">
       <router-link
         v-for="config in allLeaderboards"
