@@ -2,8 +2,9 @@
 // SPDX-License-Identifier: MIT
 import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
 import { Leaderboard } from '~~/types/leaderboard/leaderboard';
+import { Pagination } from '~~/types/shared/pagination';
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async (event): Promise<Pagination<Leaderboard>> => {
   const { type } = event.context.params as Record<string, string>;
   const query = getQuery(event);
 
@@ -26,7 +27,12 @@ export default defineEventHandler(async (event) => {
       search,
     });
 
-    return response.data;
+    return {
+      data: response.data,
+      page: page,
+      pageSize: pageSize,
+      total: response.rows_before_limit_at_least,
+    };
   } catch (error) {
     console.error('Error fetching leaderboard:', error);
     throw createError({
