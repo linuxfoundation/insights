@@ -19,8 +19,14 @@ export default defineEventHandler(async (event) => {
       slug,
     });
 
-    useApiTrackEvent(event, 'project-insights-api', `/api/project/${slug}/insights`, {
-      props: { project: slug },
+    useApiTrackEvent({
+      event,
+      eventName: 'project-insights-api',
+      url: `/project/${slug}`,
+      referer: `https://www.cncf.io/projects/${slug}`,
+      options: {
+        props: { project: slug },
+      },
     });
 
     return response.data?.[0];
