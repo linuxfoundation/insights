@@ -1,10 +1,10 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import type { QueryFunction } from '@tanstack/vue-query';
+import { type QueryFunction, useInfiniteQuery } from '@tanstack/vue-query';
 import { type ComputedRef, computed } from 'vue';
-import { useInfiniteQuery } from '@tanstack/vue-query';
 import { TanstackKey } from '~/components/shared/types/tanstack';
 import type { Leaderboard } from '~~/types/leaderboard/leaderboard';
+import type { Pagination } from '~~/types/shared/pagination';
 
 export interface LeaderboardDetailQueryParams {
   leaderboardType: string;
@@ -12,7 +12,7 @@ export interface LeaderboardDetailQueryParams {
   initialPageSize?: number;
 }
 
-// TODO: Refactor other services to follow this pattern
+const DEFAULT_PAGE_SIZE = 10;
 class LeaderboardApiService {
   //   async prefetchLeaderboardDetails(params: ComputedRef<LeaderboardDetailQueryParams>) {
   //     const queryClient = useQueryClient();
@@ -39,40 +39,47 @@ class LeaderboardApiService {
   //       getNextPageParam: this.getNextPageCollectionsParam,
   //     });
   //   }
-  fetchLeaderboardDetails(params: ComputedRef<LeaderboardDetailQueryParams>) {
-    const queryKey = computed(() => [
-      TanstackKey.LEADERBOARD_DETAIL,
-      params.value.leaderboardType,
-      params.value.search,
-    ]);
-    const queryFn = computed<QueryFunction<Leaderboard>>(() =>
-      this.leaderboardDetailQueryFn(() => ({
-        leaderboardType: params.value.leaderboardType,
-        initialPageSize: params.value.initialPageSize,
-        search: params.value.search,
-      })),
-    );
+  getNextPageLeaderboardParam(lastPage: Pagination<Leaderboard>) {
+    let nextPage = Number(lastPage.page) + 1;
 
-    return useInfiniteQuery<Leaderboard>({
+    // Handle the case where initialPageSize is greater than DEFAULT_PAGE_SIZE
+    if (lastPage.pageSize > DEFAULT_PAGE_SIZE) {
+      nextPage = Number(lastPage.pageSize) / DEFAULT_PAGE_SIZE + 1;
+    }
+
+    const totalPages = Math.ceil(lastPage.total / DEFAULT_PAGE_SIZE);
+    return nextPage < totalPages ? nextPage : null;
+  }
+
+  fetchLeaderboardDetails(params: ComputedRef<LeaderboardDetailQueryParams>) {
+    const queryKey = computed(() => [TanstackKey.LEADERBOARD_DETAIL, params.value.leaderboardType]);
+
+    const queryFn = this.leaderboardDetailQueryFn(() => ({
+      leaderboardType: params.value.leaderboardType,
+      initialPageSize: params.value.initialPageSize,
+      search: params.value.search,
+    }));
+
+    return useInfiniteQuery<
+      Pagination<Leaderboard>,
+      Error,
+      Pagination<Leaderboard>,
+      readonly unknown[],
+      number
+    >({
       queryKey,
-      // @ts-expect-error - queryFn is a computed ref
       queryFn,
-      getNextPageParam: (lastPage) => {
-        // TODO: fix this once the backend returns the total number of pages
-        const nextPage = 2;
-        const totalPages = lastPage.value;
-        return nextPage < totalPages ? nextPage : null;
-      },
+      getNextPageParam: this.getNextPageLeaderboardParam,
+      initialPageParam: 0,
     });
   }
 
   leaderboardDetailQueryFn(
     query: () => Record<string, string | number | boolean | undefined | string[] | null>,
-  ): QueryFunction<Leaderboard> {
+  ): QueryFunction<Pagination<Leaderboard>, readonly unknown[], number> {
     const { leaderboardType, initialPageSize, search } = query();
-    return async (context) => {
-      const pageParam = (context.pageParam || 0) as number;
-      const pageSize = pageParam === 0 ? (initialPageSize ?? 10) : 10;
+    return async ({ pageParam = 0 }) => {
+      const pageSize = pageParam === 0 ? (initialPageSize ?? DEFAULT_PAGE_SIZE) : DEFAULT_PAGE_SIZE;
 
       return await $fetch(`/api/leaderboard/${leaderboardType}`, {
         params: {
@@ -82,6 +89,33 @@ class LeaderboardApiService {
         },
       });
     };
+  }
+
+  fetchLeaderboardDetailSearch(params: ComputedRef<LeaderboardDetailQueryParams>) {
+    const queryKey = computed(() => [
+      TanstackKey.LEADERBOARD_DETAIL_SEARCH,
+      params.value.leaderboardType,
+      params.value.search,
+    ]);
+
+    const queryFn = this.leaderboardDetailQueryFn(() => ({
+      leaderboardType: params.value.leaderboardType,
+      initialPageSize: 20,
+      search: params.value.search,
+    }));
+
+    return useInfiniteQuery<
+      Pagination<Leaderboard>,
+      Error,
+      Pagination<Leaderboard>,
+      readonly unknown[],
+      number
+    >({
+      queryKey,
+      queryFn,
+      getNextPageParam: this.getNextPageLeaderboardParam,
+      initialPageParam: 0,
+    });
   }
 }
 
