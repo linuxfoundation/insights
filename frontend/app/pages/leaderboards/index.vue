@@ -4,12 +4,12 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <div class="bg-white lg:!pb-30 pb-20 lg:!-mb-30 -mb-20">
-    <lfx-open-source-index />
+    <lfx-leaderboard-landing />
   </div>
 </template>
 
 <script setup lang="ts">
-import LfxOpenSourceIndex from '~/components/modules/open-source-index/views/open-source-index.vue';
+import LfxLeaderboardLanding from '~/components/modules/leaderboards/components/views/leaderboard-landing.vue';
 
 const title = 'Leaderboards | by Linux Foundation';
 const description = 'Explore the Linux Foundation Leaderboards on LFX Insights.';
