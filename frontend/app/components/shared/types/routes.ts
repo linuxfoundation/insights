@@ -4,6 +4,7 @@ export enum LfxRoutes {
   HOME = '/',
   EXPLORE = 'index',
   OPENSOURCEINDEX = 'open-source-index',
+  LEADERBOARDS = 'leaderboards',
   OPENSOURCEINDEX_GROUP = 'open-source-index-group-slug',
   OPENSOURCEINDEX_CATEGORY = 'open-source-index-category-slug',
   COLLECTIONS = 'collection',
