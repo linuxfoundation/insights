@@ -4,12 +4,20 @@ SPDX-License-Identifier: MIT
 -->
 
 <template>
-  <span>{{ formattedDuration }}</span>
+  <lfx-tooltip
+    :content="dateFormatted"
+    class="!w-full flex justify-end"
+    placement="top-end"
+  >
+    <span v-if="value">{{ formattedDuration }}</span>
+    <span v-else>-</span>
+  </lfx-tooltip>
 </template>
 
 <script setup lang="ts">
-import { Duration } from 'luxon';
+import { DateTime } from 'luxon';
 import { computed } from 'vue';
+import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
 
 const props = withDefaults(
   defineProps<{
@@ -29,9 +37,11 @@ const formattedDuration = computed(() => {
     return '0s';
   }
 
-  // Convert milliseconds to duration
-  const duration = Duration.fromMillis(props.value).rescale();
-  const { years, months, weeks, days, hours, minutes, seconds } = duration.toObject();
+  // Calculate duration from timestamp to now
+  const timestamp = DateTime.fromMillis(props.value);
+  const now = DateTime.now();
+  const duration = now.diff(timestamp, ['years', 'months', 'days', 'hours', 'minutes', 'seconds']);
+  const { years, months, days, hours, minutes, seconds } = duration.toObject();
 
   const units: Array<{ value: number; label: string }> = [];
 
@@ -43,10 +53,8 @@ const formattedDuration = computed(() => {
     units.push({ value: Math.floor(months), label: 'mo' });
   }
 
-  // Combine weeks and days
-  const totalDays = (weeks || 0) * 7 + (days || 0);
-  if (totalDays > 0) {
-    units.push({ value: Math.floor(totalDays), label: 'd' });
+  if (days && days > 0) {
+    units.push({ value: Math.floor(days), label: 'd' });
   }
 
   if (hours && hours > 0) {
@@ -64,6 +72,10 @@ const formattedDuration = computed(() => {
     .slice(0, 2)
     .map((unit) => `${unit.value}${unit.label}`)
     .join(' ');
+});
+
+const dateFormatted = computed(() => {
+  return DateTime.fromMillis(props.value).toFormat('MMM dd, yyyy');
 });
 </script>
 

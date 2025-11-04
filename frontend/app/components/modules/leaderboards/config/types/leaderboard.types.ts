@@ -11,4 +11,5 @@ export interface LeaderboardConfig {
   sort: string;
   columnLabel: string;
   columnTooltip?: string;
+  hideTrend?: boolean;
 }

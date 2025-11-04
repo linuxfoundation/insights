@@ -14,7 +14,7 @@ SPDX-License-Identifier: MIT
       <!-- Back button section -->
       <div
         class="w-1/5"
-        :class="[scrollTop > 1 ? 'fixed z-10' : 'relative']"
+        :class="[scrollTop > 1 ? 'fixed z-10 pr-10' : 'relative']"
       >
         <router-link
           to="/leaderboards"
@@ -59,7 +59,20 @@ SPDX-License-Identifier: MIT
             >
               <div class="w-10 shrink-0">#</div>
               <div class="flex-1 min-w-0">Project</div>
-              <div class="flex-1 min-w-0 text-right">{{ leaderboardConfig?.columnLabel }}</div>
+              <div class="flex-1 min-w-0 text-right flex items-center gap-1.5 justify-end">
+                {{ leaderboardConfig?.columnLabel }}
+                <lfx-tooltip
+                  v-if="leaderboardConfig?.columnTooltip"
+                  :content="leaderboardConfig?.columnTooltip"
+                >
+                  <lfx-icon
+                    name="info-circle"
+                    type="light"
+                    :size="16"
+                    class="text-neutral-400 cursor-pointer"
+                  />
+                </lfx-tooltip>
+              </div>
             </div>
           </div>
           <div
@@ -98,7 +111,7 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, onServerPrefetch } from 'vue';
 import leaderboardConfigs from '../../config/index.config';
 import LfxLeaderboardTable from '../sections/leaderboard-table.vue';
 import type { LeaderboardConfig } from '../../config/types/leaderboard.types';
@@ -111,6 +124,7 @@ import type { Pagination } from '~~/types/shared/pagination';
 import useScroll from '~/components/shared/utils/scroll';
 import useResponsive from '~/components/shared/utils/responsive';
 import LfxMaintainHeight from '~/components/uikit/maintain-height/maintain-height.vue';
+import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
 
 // Props
 const props = defineProps<{
@@ -136,6 +150,12 @@ const items = computed(() => {
 const leaderboardConfig = computed<LeaderboardConfig>(() => {
   const config = leaderboardConfigs.find((config) => config.key === props.leaderboardKey);
   return config ?? leaderboardConfigs[0]!;
+});
+
+// Server-side prefetching for infinite query
+onServerPrefetch(async () => {
+  // Prefetch the first page of the infinite query on the server
+  await LEADERBOARD_API_SERVICE.prefetchLeaderboardDetails(params);
 });
 </script>
 
