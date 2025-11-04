@@ -21,12 +21,19 @@ interface TrackEventOptions {
  *   props: { project: 'foo' }
  * })
  */
-export function useApiTrackEvent(
-  event: H3Event,
-  eventName: string,
-  url: string,
-  options?: TrackEventOptions,
-) {
+export function useApiTrackEvent({
+  event,
+  eventName,
+  url,
+  options,
+  referer,
+}: {
+  event: H3Event;
+  eventName: string;
+  url: string;
+  referer: string;
+  options?: TrackEventOptions;
+}) {
   const config = useRuntimeConfig();
 
   // Only track in production
@@ -51,6 +58,7 @@ export function useApiTrackEvent(
     body: {
       name: eventName,
       url: `${config.public.appUrl}${url}`,
+      referer,
       domain: 'insights.linuxfoundation.org',
       props: options?.props,
     },
