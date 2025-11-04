@@ -5,9 +5,10 @@ import NumericDataDisplay from '../components/data-displays/numeric.vue';
 import type { LeaderboardConfig } from './types/leaderboard.types';
 
 export const mostActiveOrganizationsConfig: LeaderboardConfig = {
-  key: 'most-active-organizations',
+  key: 'active-organizations',
   name: 'Most Active Organizations',
-  icon: 'business-line',
+  description: 'These projects had the most unique organizations over the past 12 months.',
+  icon: 'buildings',
   dataDisplay: NumericDataDisplay,
   sort: 'mostActiveOrganizations_DESC',
   columnLabel: 'Organizations (12M)',

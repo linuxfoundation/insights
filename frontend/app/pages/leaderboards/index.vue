@@ -3,7 +3,9 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <lfx-open-source-index />
+  <div class="bg-white lg:!pb-30 pb-20 lg:!-mb-30 -mb-20">
+    <lfx-open-source-index />
+  </div>
 </template>
 
 <script setup lang="ts">

@@ -5,6 +5,7 @@ import type { Component } from 'vue';
 export interface LeaderboardConfig {
   key: string;
   name: string;
+  description: string;
   icon: string;
   dataDisplay: Component;
   sort: string;

@@ -5,9 +5,10 @@ import NumericDataDisplay from '../components/data-displays/numeric.vue';
 import type { LeaderboardConfig } from './types/leaderboard.types';
 
 export const mostActiveContributorsConfig: LeaderboardConfig = {
-  key: 'most-active-contributors',
+  key: 'active-contributors',
   name: 'Most Active Contributors',
-  icon: 'business-line',
+  description: 'These projects had the most unique contributors over the past 12 months.',
+  icon: 'people-group',
   dataDisplay: NumericDataDisplay,
   sort: 'mostActiveContributors_DESC',
   columnLabel: 'Contributors (12M)',
