@@ -6,8 +6,9 @@ import type { LeaderboardConfig } from './types/leaderboard.types';
 
 export const commitActivityConfig: LeaderboardConfig = {
   key: 'commit-activity',
-  name: 'Commit Activity',
-  description: 'These projects had the most commits over the past 12 months.',
+  name: 'Commit activity',
+  description:
+    'These projects recorded the most commits during the past 12 months, showing high development momentum.',
   icon: 'code-commit',
   dataDisplay: NumericDataDisplay,
   sort: 'commitActivity_DESC',

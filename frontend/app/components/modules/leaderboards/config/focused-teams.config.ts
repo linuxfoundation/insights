@@ -6,11 +6,11 @@ import type { LeaderboardConfig } from './types/leaderboard.types';
 
 export const focusedTeamsConfig: LeaderboardConfig = {
   key: 'focused-teams',
-  name: 'Focused Teams',
-  description:
-    'These projects have the highest ratio of commits to contributors, indicating focused development efforts.',
-  icon: 'bullseye',
+  name: 'Most focused teams',
+  description: 'These projects show the highest productivity per contributor.',
+  icon: 'bullseye-arrow',
   dataDisplay: NumericDataDisplay,
   sort: 'focusedTeams_DESC',
-  columnLabel: 'Commits per Contributor',
+  columnLabel: 'Avg. commits per author',
+  columnTooltip: 'For projects with 10+ authors',
 };

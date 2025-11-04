@@ -1,15 +1,17 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 
-import NumericDataDisplay from '../components/data-displays/numeric.vue';
+import TimeDurationDisplay from '../components/data-displays/time-duration.vue';
 import type { LeaderboardConfig } from './types/leaderboard.types';
 
 export const longestRunningConfig: LeaderboardConfig = {
   key: 'longest-running',
-  name: 'Longest Running',
-  description: 'These projects have been actively maintained for the longest period of time.',
-  icon: 'clock',
-  dataDisplay: NumericDataDisplay,
+  name: 'Longest running',
+  description: 'These projects have been maintained the longest.',
+  icon: 'calendar-range',
+  dataDisplay: TimeDurationDisplay,
   sort: 'longestRunning_DESC',
-  columnLabel: 'Years Active',
+  columnLabel: 'Time since first commit',
+  columnTooltip: 'For projects with at least 1 commit in the last 12 months',
+  hideTrend: true,
 };

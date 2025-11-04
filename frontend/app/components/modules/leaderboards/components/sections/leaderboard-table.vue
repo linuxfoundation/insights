@@ -36,9 +36,15 @@ SPDX-License-Identifier: MIT
           <p
             class="text-base leading-5 font-normal text-neutral-900 text-right w-full overflow-hidden overflow-ellipsis whitespace-pre-wrap"
           >
-            {{ formatValue(item.value) }}
+            <component
+              :is="leaderboardConfig?.dataDisplay"
+              :value="item.value"
+            />
           </p>
-          <lfx-leaderboard-trend-display :data="item" />
+          <lfx-leaderboard-trend-display
+            v-if="!leaderboardConfig?.hideTrend"
+            :data="item"
+          />
         </div>
       </div>
     </router-link>
@@ -77,7 +83,6 @@ SPDX-License-Identifier: MIT
 import type { LeaderboardConfig } from '../../config/types/leaderboard.types';
 import LfxLeaderboardTrendDisplay from '../data-displays/trend-display.vue';
 import type { Leaderboard } from '~~/types/leaderboard/leaderboard';
-import { formatNumber } from '~/components/shared/utils/formatter';
 import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
 import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
 import LfxButton from '~/components/uikit/button/button.vue';
@@ -92,13 +97,6 @@ defineProps<{
 const emit = defineEmits<{
   (e: 'fetchNextPage'): void;
 }>();
-
-const formatValue = (value: number) => {
-  if (!value && value !== 0) {
-    return 'data';
-  }
-  return formatNumber(value);
-};
 </script>
 
 <script lang="ts">

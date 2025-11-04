@@ -6,11 +6,12 @@ import type { LeaderboardConfig } from './types/leaderboard.types';
 
 export const smallTeamsMassiveOutputConfig: LeaderboardConfig = {
   key: 'small-teams-massive-output',
-  name: 'Small Teams, Massive Output',
+  name: 'Small teams, massive output ',
   description:
-    'These projects achieve high productivity with small teams, demonstrating exceptional efficiency.',
-  icon: 'users',
+    'These projects demonstrate exceptional productivity, achieving the highest commit volumes with 50 or fewer contributors.',
+  icon: 'arrow-up-big-small',
   dataDisplay: NumericDataDisplay,
   sort: 'smallTeamsMassiveOutput_DESC',
-  columnLabel: 'Productivity Score',
+  columnLabel: 'Commits',
+  columnTooltip: 'For projects with ≤50 contributors',
 };

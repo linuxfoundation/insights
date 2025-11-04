@@ -1,6 +1,6 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { type QueryFunction, useInfiniteQuery } from '@tanstack/vue-query';
+import { type QueryFunction, useInfiniteQuery, useQueryClient } from '@tanstack/vue-query';
 import { type ComputedRef, computed } from 'vue';
 import { TanstackKey } from '~/components/shared/types/tanstack';
 import type { Leaderboard } from '~~/types/leaderboard/leaderboard';
@@ -14,31 +14,32 @@ export interface LeaderboardDetailQueryParams {
 
 const DEFAULT_PAGE_SIZE = 10;
 class LeaderboardApiService {
-  //   async prefetchLeaderboardDetails(params: ComputedRef<LeaderboardDetailQueryParams>) {
-  //     const queryClient = useQueryClient();
-  //     const queryKey = computed(() => [
-  //       TanstackKey.LEADERBOARD_DETAIL,
-  //       params.value.sort,
-  //       params.value.categories,
-  //     ]);
+  async prefetchLeaderboardDetails(params: ComputedRef<LeaderboardDetailQueryParams>) {
+    const queryClient = useQueryClient();
+    const queryKey = computed(() => [TanstackKey.LEADERBOARD_DETAIL, params.value.leaderboardType]);
 
-  //     const queryFn = this.fetchCollectionsQueryFn(() => ({
-  //       ...params.value,
-  //     }));
+    const queryFn = computed<QueryFunction<Pagination<Leaderboard>>>(() =>
+      this.leaderboardDetailQueryFn(() => ({
+        leaderboardType: params.value.leaderboardType,
+        initialPageSize: params.value.initialPageSize,
+        search: params.value.search,
+      })),
+    );
 
-  //     return await queryClient.prefetchInfiniteQuery<
-  //       Pagination<Collection>,
-  //       Error,
-  //       Pagination<Collection>,
-  //       readonly unknown[],
-  //       number
-  //     >({
-  //       queryKey,
-  //       queryFn,
-  //       initialPageParam: 0,
-  //       getNextPageParam: this.getNextPageCollectionsParam,
-  //     });
-  //   }
+    return await queryClient.prefetchInfiniteQuery<
+      Pagination<Leaderboard>,
+      Error,
+      Pagination<Leaderboard>,
+      readonly unknown[],
+      number
+    >({
+      queryKey,
+      //@ts-expect-error - TanStack Query type inference issue with Vue
+      queryFn,
+      getNextPageParam: this.getNextPageLeaderboardParam,
+      initialPageParam: 0,
+    });
+  }
   getNextPageLeaderboardParam(lastPage: Pagination<Leaderboard>) {
     let nextPage = Number(lastPage.page) + 1;
 
