@@ -3,52 +3,56 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <!-- <lfx-maintain-height
-    :scroll-top="scrollTop"
-    :class="scrollTop > 0 ? 'fixed w-full bg-white pt-20 pb-6 top-0' : 'relative'"
-    class="z-10 w-full"
-    :loaded="pageWidth > 0"
-  > -->
   <div class="pt-10">
-    <div class="container flex gap-10">
-      <!-- Back button section -->
-      <div
-        class="w-1/5"
-        :class="[scrollTop > 1 ? 'fixed z-10 pr-10' : 'relative']"
-      >
-        <router-link
-          :to="{ name: LfxRoutes.LEADERBOARDS }"
-          class="flex items-center gap-1 text-xs text-neutral-500 hover:text-neutral-900 hover:font-medium transition-all duration-100 mb-4"
+    <div class="fixed z-10 w-full top-0 md:pt-36 pt-28">
+      <div class="container">
+        <!-- Back button section -->
+        <div
+          class="md:w-1/5 w-full flex md:flex-col flex-row md:justify-start justify-between md:items-start items-center"
         >
-          <lfx-icon
-            name="angle-left"
-            :size="15"
-          />
-          All leaderboards
-        </router-link>
+          <router-link
+            :to="{ name: LfxRoutes.LEADERBOARDS }"
+            class="flex items-center gap-1 text-xs text-neutral-500 hover:text-neutral-900 hover:font-medium transition-all duration-100"
+          >
+            <lfx-icon
+              name="angle-left"
+              :size="15"
+            />
+            All leaderboards
+          </router-link>
 
-        <div class="h-px bg-neutral-200 w-full mb-4"></div>
-        <!-- Sidebar navigation -->
-        <lfx-leaderboard-sidebar :leaderboard-key="leaderboardKey" />
+          <div class="h-px bg-neutral-200 w-full my-4 md:block hidden"></div>
+          <!-- Sidebar navigation -->
+          <lfx-leaderboard-sidebar :leaderboard-key="leaderboardKey" />
+        </div>
+      </div>
+    </div>
+
+    <div class="container flex gap-10">
+      <div
+        v-if="scrollTop < 1"
+        class="w-1/5 md:block hidden"
+      >
+        &nbsp;
       </div>
 
       <!-- Main content section -->
       <lfx-maintain-height
         :scroll-top="scrollTop"
-        :class="scrollTop > 0 ? 'fixed w-full bg-white pt-20 pb-6 top-0 left-0' : 'relative'"
-        class="z-9 w-3/5"
+        :class="scrollTop > 0 ? 'fixed !w-full bg-white pt-22 pb-6 top-0 left-0' : 'relative md:pt-0 pt-12'"
+        class="z-9 lg:w-3/5 md:w-3/4 w-full"
         :loaded="pageWidth > 0"
       >
-        <div :class="[scrollTop > 1 ? 'container w-full pt-20 flex gap-10' : '']">
+        <div :class="[scrollTop > 1 ? 'container w-full md:pt-12 pt-20 flex gap-10' : '']">
           <div
             v-if="scrollTop > 1"
-            class="w-1/5"
+            class="lg:w-1/5 w-1/4 md:block hidden"
           >
             &nbsp;
           </div>
           <div
             class="flex flex-col gap-6"
-            :class="[scrollTop > 1 ? 'w-3/5' : 'w-full']"
+            :class="[scrollTop > 1 ? 'lg:w-3/5 md:w-3/4 w-full' : 'w-full']"
           >
             <!-- Header section -->
             <lfx-leaderboard-detail-header :config="leaderboardConfig" />
@@ -56,12 +60,12 @@ SPDX-License-Identifier: MIT
             <!-- Table header -->
             <lfx-table-header
               :config="leaderboardConfig"
-              class="border-b border-neutral-200 px-3 pb-4"
+              class="border-b border-neutral-200 px-0 lg:px-3 pb-4"
             />
           </div>
           <div
             v-if="scrollTop > 1"
-            class="w-1/5"
+            class="w-1/5 lg:block hidden"
           >
             &nbsp;
           </div>
@@ -70,7 +74,7 @@ SPDX-License-Identifier: MIT
 
       <div
         v-if="scrollTop < 1"
-        class="w-1/5"
+        class="w-1/5 lg:block hidden"
       >
         &nbsp;
       </div>
@@ -79,8 +83,8 @@ SPDX-License-Identifier: MIT
 
   <div class="container">
     <div class="flex gap-10">
-      <div class="w-1/5">&nbsp;</div>
-      <div class="w-3/5">
+      <div class="lg:w-1/5 w-1/4 md:block hidden">&nbsp;</div>
+      <div class="lg:w-3/5 md:w-3/4 w-full">
         <lfx-leaderboard-table
           :leaderboard-config="leaderboardConfig"
           :data="items"
@@ -89,7 +93,7 @@ SPDX-License-Identifier: MIT
           @fetch-next-page="fetchNextPage"
         />
       </div>
-      <div class="w-1/5">&nbsp;</div>
+      <div class="w-1/5 hidden lg:block">&nbsp;</div>
     </div>
   </div>
 </template>
