@@ -32,6 +32,7 @@ export default {
           '**': { cache: { maxAge: longCache, base: 'redis' } },
         }
       : {}),
+  },
   nitro: {
     storage: {
       redis: {
