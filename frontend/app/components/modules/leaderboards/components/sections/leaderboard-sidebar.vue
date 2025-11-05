@@ -8,7 +8,7 @@ SPDX-License-Identifier: MIT
       <router-link
         v-for="config in allLeaderboards"
         :key="config.key"
-        :to="`/leaderboards/${config.key}`"
+        :to="{ name: LfxRoutes.LEADERBOARD, params: { key: config.key as string } }"
         class="flex gap-2 items-center text-xs leading-4 cursor-pointer transition-colors hover:text-neutral-900 hover:font-medium"
         :class="isActiveLeaderboard(config.key) ? 'text-neutral-900 font-medium' : 'text-neutral-500 font-normal'"
       >
@@ -26,6 +26,7 @@ SPDX-License-Identifier: MIT
 import { computed } from 'vue';
 import leaderboardConfigs from '../../config/index.config';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
+import { LfxRoutes } from '~/components/shared/types/routes';
 
 const props = defineProps<{
   leaderboardKey: string;

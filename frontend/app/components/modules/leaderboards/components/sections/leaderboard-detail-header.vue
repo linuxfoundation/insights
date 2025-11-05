@@ -151,7 +151,9 @@ import LfxPopover from '~/components/uikit/popover/popover.vue';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
+import { useShareStore } from '~/components/shared/modules/share/store/share.store';
 
+const { openShareModal } = useShareStore();
 const props = defineProps<{
   config: LeaderboardConfig;
 }>();
@@ -163,14 +165,16 @@ const searchQuery = ref('');
 const isSearchOpen = ref(false);
 
 const handleShare = () => {
-  // TODO: Implement share functionality
-  if (navigator.share) {
-    navigator.share({
-      title: props.config?.name,
-      text: props.config?.description,
-      url: window.location.href,
-    });
-  }
+  const title = `${props.config?.name} Leaderboard | LFX Insights`;
+
+  const url = new URL(window.location.href);
+  url.hash = '';
+
+  openShareModal({
+    url: url.toString(),
+    title,
+    area: props.config?.name,
+  });
 };
 
 watch(searchQuery, (newVal) => {

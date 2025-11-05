@@ -56,7 +56,7 @@ SPDX-License-Identifier: MIT
           :key="project.slug"
           type="bordered"
           class="transition hover:bg-neutral-100 cursor-pointer"
-          @click.prevent="router.push({ name: LfxRoutes.PROJECT, params: { slug: project.slug } })"
+          @click.prevent="router.push({ name: LfxRoutes.LEADERBOARD, params: { key: config.key as string } })"
         >
           <lfx-avatar
             :src="project.logoUrl"
@@ -68,14 +68,13 @@ SPDX-License-Identifier: MIT
         </lfx-chip>
       </div>
     </div>
-    <router-link :to="`/leaderboards/${config.key}`">
-      <lfx-button
-        type="transparent"
-        class="mt-6 w-full justify-center"
-      >
-        View leaderboard
-      </lfx-button>
-    </router-link>
+    <lfx-button
+      type="transparent"
+      class="mt-6 w-full justify-center"
+      @click="router.push({ name: LfxRoutes.LEADERBOARD, params: { key: config.key as string } })"
+    >
+      View leaderboard
+    </lfx-button>
   </lfx-card>
 </template>
 
@@ -93,10 +92,11 @@ import type { Leaderboard } from '~~/types/leaderboard/leaderboard';
 import { LfxRoutes } from '~/components/shared/types/routes';
 import LfxChip from '~/components/uikit/chip/chip.vue';
 import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
+import { useShareStore } from '~/components/shared/modules/share/store/share.store';
 
 const router = useRouter();
-
-defineProps<{
+const { openShareModal } = useShareStore();
+const props = defineProps<{
   config: LeaderboardConfig;
   leaderboards: Leaderboard[];
 }>();
@@ -104,7 +104,16 @@ defineProps<{
 const isHovered = ref(false);
 
 const handleShare = () => {
-  // share
+  const title = `${props.config?.name} Leaderboard | LFX Insights`;
+
+  const url = new URL(window.location.href + `/${props.config.key}`);
+  url.hash = '';
+
+  openShareModal({
+    url: url.toString(),
+    title,
+    area: props.config?.name,
+  });
 };
 </script>
 <script lang="ts">

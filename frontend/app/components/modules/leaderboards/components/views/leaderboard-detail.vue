@@ -17,7 +17,7 @@ SPDX-License-Identifier: MIT
         :class="[scrollTop > 1 ? 'fixed z-10 pr-10' : 'relative']"
       >
         <router-link
-          to="/leaderboards"
+          :to="{ name: LfxRoutes.LEADERBOARDS }"
           class="flex items-center gap-1 text-xs text-neutral-500 hover:text-neutral-900 hover:font-medium transition-all duration-100 mb-4"
         >
           <lfx-icon
@@ -109,6 +109,7 @@ import type { Pagination } from '~~/types/shared/pagination';
 import useScroll from '~/components/shared/utils/scroll';
 import useResponsive from '~/components/shared/utils/responsive';
 import LfxMaintainHeight from '~/components/uikit/maintain-height/maintain-height.vue';
+import { LfxRoutes } from '~/components/shared/types/routes';
 
 // Props
 const props = defineProps<{
