@@ -4,12 +4,9 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <div class="pt-10">
-    <div class="fixed z-10 w-full top-0 md:pt-36 pt-28">
-      <div class="container">
-        <!-- Back button section -->
-        <div
-          class="md:w-1/5 w-full flex md:flex-col flex-row md:justify-start justify-between md:items-start items-center"
-        >
+    <div class="container flex md:gap-10 gap-0 md:flex-row flex-col">
+      <div class="md:hidden fixed z-10 top-32 left-0 w-full">
+        <div class="container flex justify-between">
           <router-link
             :to="{ name: LfxRoutes.LEADERBOARDS }"
             class="flex items-center gap-1 text-xs text-neutral-500 hover:text-neutral-900 hover:font-medium transition-all duration-100"
@@ -21,29 +18,41 @@ SPDX-License-Identifier: MIT
             All leaderboards
           </router-link>
 
-          <div class="h-px bg-neutral-200 w-full my-4 md:block hidden"></div>
           <!-- Sidebar navigation -->
           <lfx-leaderboard-sidebar :leaderboard-key="leaderboardKey" />
         </div>
       </div>
-    </div>
 
-    <div class="container flex gap-10">
       <div
-        v-if="scrollTop < 1"
-        class="w-1/5 md:block hidden"
+        ref="sidebarRef"
+        class="md:w-1/5 w-full flex md:flex-col flex-row md:justify-start justify-between md:items-start items-center md:flex hidden"
+        :class="scrollTop > 0 ? 'fixed bg-white pt-32 mt-2 top-0 z-10' : ''"
+        :style="scrollTop > 0 && sidebarWidth ? { width: sidebarWidth + 'px' } : {}"
       >
-        &nbsp;
+        <router-link
+          :to="{ name: LfxRoutes.LEADERBOARDS }"
+          class="flex items-center gap-1 text-xs text-neutral-500 hover:text-neutral-900 hover:font-medium transition-all duration-100"
+        >
+          <lfx-icon
+            name="angle-left"
+            :size="15"
+          />
+          All leaderboards
+        </router-link>
+
+        <div class="h-px bg-neutral-200 w-full my-4"></div>
+        <!-- Sidebar navigation -->
+        <lfx-leaderboard-sidebar :leaderboard-key="leaderboardKey" />
       </div>
 
       <!-- Main content section -->
       <lfx-maintain-height
         :scroll-top="scrollTop"
-        :class="scrollTop > 0 ? 'fixed !w-full bg-white pt-22 pb-6 top-0 left-0' : 'relative md:pt-0 pt-12'"
+        :class="scrollTop > 0 ? 'fixed !w-full bg-white pt-22 top-0 left-0' : 'relative md:pt-0 pt-4'"
         class="z-9 lg:w-3/5 md:w-3/4 w-full"
         :loaded="pageWidth > 0"
       >
-        <div :class="[scrollTop > 1 ? 'container w-full md:pt-12 pt-20 flex gap-10' : '']">
+        <div :class="[scrollTop > 1 ? 'container w-full md:pt-12 pt-16 flex gap-10' : '']">
           <div
             v-if="scrollTop > 1"
             class="lg:w-1/5 w-1/4 md:block hidden"
@@ -51,7 +60,7 @@ SPDX-License-Identifier: MIT
             &nbsp;
           </div>
           <div
-            class="flex flex-col gap-6"
+            class="flex flex-col gap-6 md:pt-0 pt-10"
             :class="[scrollTop > 1 ? 'lg:w-3/5 md:w-3/4 w-full' : 'w-full']"
           >
             <!-- Header section -->
@@ -99,7 +108,7 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed, onServerPrefetch } from 'vue';
+import { computed, onMounted, onServerPrefetch, ref, watch } from 'vue';
 import leaderboardConfigs from '../../config/index.config';
 import LfxLeaderboardTable from '../sections/leaderboard-table.vue';
 import type { LeaderboardConfig } from '../../config/types/leaderboard.types';
@@ -122,6 +131,14 @@ const props = defineProps<{
 
 const { scrollTop } = useScroll();
 const { pageWidth } = useResponsive();
+const sidebarRef = ref<HTMLElement | null>(null);
+const sidebarWidth = ref<number>(0);
+
+onMounted(() => {
+  if (sidebarRef.value) {
+    sidebarWidth.value = sidebarRef.value.offsetWidth;
+  }
+});
 
 const params = computed(() => ({
   leaderboardType: props.leaderboardKey,
@@ -145,6 +162,12 @@ const leaderboardConfig = computed<LeaderboardConfig>(() => {
 onServerPrefetch(async () => {
   // Prefetch the first page of the infinite query on the server
   await LEADERBOARD_API_SERVICE.prefetchLeaderboardDetails(params);
+});
+
+watch(pageWidth, () => {
+  if (sidebarRef.value) {
+    sidebarWidth.value = sidebarRef.value.offsetWidth;
+  }
 });
 </script>
 
