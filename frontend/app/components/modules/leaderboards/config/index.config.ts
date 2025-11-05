@@ -8,6 +8,10 @@ import { longestRunningConfig } from './longest-running.config';
 import { commitActivityConfig } from './commit-activity.config';
 import { focusedTeamsConfig } from './focused-teams.config';
 import { smallTeamsMassiveOutputConfig } from './small-teams-massive-output.config';
+// import { codebaseSizeConfig } from './codebase-size.config';
+// import { fastestRespondersConfig } from './fastest-responders.config';
+// import { fastestMergersConfig } from './fastest-mergers.config';
+// import { resolutionRateConfig } from './resolution-rate.config';
 
 const leaderboardConfigs: LeaderboardConfig[] = [
   mostActiveContributorsConfig,
@@ -16,6 +20,10 @@ const leaderboardConfigs: LeaderboardConfig[] = [
   commitActivityConfig,
   focusedTeamsConfig,
   smallTeamsMassiveOutputConfig,
+  // codebaseSizeConfig,
+  // fastestRespondersConfig,
+  // fastestMergersConfig,
+  // resolutionRateConfig,
 ];
 
 export default leaderboardConfigs;
