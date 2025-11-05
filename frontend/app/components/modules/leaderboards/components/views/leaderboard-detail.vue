@@ -54,26 +54,10 @@ SPDX-License-Identifier: MIT
             <lfx-leaderboard-detail-header :config="leaderboardConfig" />
 
             <!-- Table header -->
-            <div
-              class="flex items-center justify-between px-3 pb-4 w-full text-xs font-semibold text-neutral-400 whitespace-pre-wrap border-b border-neutral-200 bg-white"
-            >
-              <div class="w-10 shrink-0">#</div>
-              <div class="flex-1 min-w-0">Project</div>
-              <div class="flex-1 min-w-0 text-right flex items-center gap-1.5 justify-end">
-                {{ leaderboardConfig?.columnLabel }}
-                <lfx-tooltip
-                  v-if="leaderboardConfig?.columnTooltip"
-                  :content="leaderboardConfig?.columnTooltip"
-                >
-                  <lfx-icon
-                    name="info-circle"
-                    type="light"
-                    :size="16"
-                    class="text-neutral-400 cursor-pointer"
-                  />
-                </lfx-tooltip>
-              </div>
-            </div>
+            <lfx-table-header
+              :config="leaderboardConfig"
+              class="border-b border-neutral-200 px-3 pb-4"
+            />
           </div>
           <div
             v-if="scrollTop > 1"
@@ -118,13 +102,13 @@ import type { LeaderboardConfig } from '../../config/types/leaderboard.types';
 import LfxLeaderboardSidebar from '../sections/leaderboard-sidebar.vue';
 import LfxLeaderboardDetailHeader from '../sections/leaderboard-detail-header.vue';
 import { LEADERBOARD_API_SERVICE } from '../../services/leaderboard.api.service';
+import LfxTableHeader from '../sections/table-header.vue';
 import type { Leaderboard } from '~~/types/leaderboard/leaderboard';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import type { Pagination } from '~~/types/shared/pagination';
 import useScroll from '~/components/shared/utils/scroll';
 import useResponsive from '~/components/shared/utils/responsive';
 import LfxMaintainHeight from '~/components/uikit/maintain-height/maintain-height.vue';
-import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
 
 // Props
 const props = defineProps<{

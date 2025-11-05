@@ -36,6 +36,12 @@ SPDX-License-Identifier: MIT
       </div>
 
       <div class="flex-col gap-3 sm:flex hidden">
+        <!-- Table header -->
+        <lfx-table-header
+          :config="config"
+          :show-rank="false"
+        />
+
         <lfx-table-row
           v-for="item in leaderboards"
           :key="item.rank"
@@ -78,6 +84,7 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import type { LeaderboardConfig } from '../../config/types/leaderboard.types';
 import LfxTableRow from './table-row.vue';
+import LfxTableHeader from './table-header.vue';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxButton from '~/components/uikit/button/button.vue';
