@@ -3,15 +3,22 @@
 
 export default defineEventHandler(async (event) => {
   try {
-    const body = await readBody(event);
-    const headers = getHeaders(event); // returns an object with all headers
+    const query = getQuery(event);
+    const token = query.token as string;
 
-    // eslint-disable-next-line no-console
-    console.log('🔍 Incoming webhook headers:', headers);
-    // Forward to Tinybird ingestion endpoint
+    // Validate token
+    if (token !== process.env.NUXT_OCTOLENS_WEBHOOK_TOKEN) {
+      return sendError(
+        event,
+        createError({ statusCode: 403, statusMessage: 'Forbidden: Invalid token' }),
+      );
+    }
+
+    const body = await readBody(event);
+
     const tinybirdUrl = `${process.env.NUXT_TINYBIRD_EVENTS_API}?name=octolens_projects_mentions&token=${process.env.NUXT_OCTOLENS_TINYBIRD_TOKEN}`;
 
-    const res = await fetch(tinybirdUrl, {
+    const res = await $fetch(tinybirdUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -19,8 +26,7 @@ export default defineEventHandler(async (event) => {
       body: JSON.stringify(body),
     });
 
-    const response = await res.json();
-    return response;
+    return res;
   } catch (err) {
     console.error('Proxy error:', err);
     return sendError(
