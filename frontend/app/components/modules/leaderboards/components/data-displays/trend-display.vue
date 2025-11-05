@@ -23,7 +23,7 @@ SPDX-License-Identifier: MIT
 import { computed } from 'vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import type { Leaderboard } from '~~/types/leaderboard/leaderboard';
-import { formatNumber } from '~/components/shared/utils/formatter';
+import { formatNumber, formatNumberShort } from '~/components/shared/utils/formatter';
 
 const props = defineProps<{
   data: Leaderboard;
@@ -45,6 +45,10 @@ const trendPercentage = computed(() => {
 
 const formatTrendValue = computed(() => {
   const sign = trend.value >= 0 ? '+' : '-';
+  if (trend.value >= 1000000) {
+    return formatNumberShort(trend.value);
+  }
+
   return `${sign}${formatNumber(Math.abs(trend.value))}`;
 });
 

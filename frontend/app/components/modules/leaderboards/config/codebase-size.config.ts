@@ -13,4 +13,5 @@ export const codebaseSizeConfig: LeaderboardConfig = {
   dataDisplay: NumericDataDisplay,
   sort: 'codebaseSize_DESC',
   columnLabel: 'Lines of code',
+  hideTrend: true,
 };

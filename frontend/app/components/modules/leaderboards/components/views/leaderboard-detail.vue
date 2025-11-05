@@ -25,7 +25,7 @@ SPDX-License-Identifier: MIT
 
       <div
         ref="sidebarRef"
-        class="md:w-1/5 w-full flex md:flex-col flex-row md:justify-start justify-between md:items-start items-center md:flex hidden"
+        class="md:w-1/5 w-full flex md:flex-col flex-row md:justify-start justify-between md:items-start items-center md:flex hidden min-w-50"
         :class="scrollTop > 0 ? 'fixed bg-white pt-32 mt-2 top-0 z-10' : ''"
         :style="scrollTop > 0 && sidebarWidth ? { width: sidebarWidth + 'px' } : {}"
       >
@@ -55,7 +55,7 @@ SPDX-License-Identifier: MIT
         <div :class="[scrollTop > 1 ? 'container w-full md:pt-12 pt-16 flex gap-10' : '']">
           <div
             v-if="scrollTop > 1"
-            class="lg:w-1/5 w-1/4 md:block hidden"
+            class="lg:w-1/5 w-1/4 md:block hidden min-w-50"
           >
             &nbsp;
           </div>
@@ -92,8 +92,8 @@ SPDX-License-Identifier: MIT
 
   <div class="container">
     <div class="flex gap-10">
-      <div class="lg:w-1/5 w-1/4 md:block hidden">&nbsp;</div>
-      <div class="lg:w-3/5 md:w-3/4 w-full">
+      <div class="lg:w-1/5 w-1/4 md:block hidden min-w-50">&nbsp;</div>
+      <div class="lg:w-3/5 md:w-3/4 w-full min-w-0">
         <lfx-leaderboard-table
           :leaderboard-config="leaderboardConfig"
           :data="items"
