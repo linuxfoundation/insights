@@ -23,12 +23,21 @@ SPDX-License-Identifier: MIT
 import { computed } from 'vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import type { Leaderboard } from '~~/types/leaderboard/leaderboard';
-import { formatNumber, formatNumberShort } from '~/components/shared/utils/formatter';
+import { formatNumber, formatNumberShort, formatValueToLargestUnitDuration } from '~/components/shared/utils/formatter';
 
-const props = defineProps<{
-  data: Leaderboard;
-  isReverse?: boolean;
-}>();
+const props = withDefaults(
+  defineProps<{
+    data: Leaderboard;
+    isReverse?: boolean;
+    isTimeDisplay?: boolean;
+    isDataDuration?: boolean;
+  }>(),
+  {
+    isReverse: false,
+    isTimeDisplay: false,
+    isDataDuration: false,
+  },
+);
 
 const trend = computed(() => {
   return props.data.value - props.data.previousPeriodValue;
@@ -45,6 +54,10 @@ const trendPercentage = computed(() => {
 
 const formatTrendValue = computed(() => {
   const sign = trend.value >= 0 ? '+' : '-';
+  if (props.isTimeDisplay) {
+    return `${sign}${formatValueToLargestUnitDuration(Math.abs(trend.value), 2, props.isDataDuration)}`;
+  }
+
   if (trend.value >= 1000000) {
     return formatNumberShort(trend.value);
   }

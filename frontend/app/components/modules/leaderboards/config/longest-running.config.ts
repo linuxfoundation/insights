@@ -10,7 +10,6 @@ export const longestRunningConfig: LeaderboardConfig = {
   description: 'These projects have been maintained the longest.',
   icon: 'calendar-range',
   dataDisplay: TimeDurationDisplay,
-  sort: 'longestRunning_DESC',
   columnLabel: 'Time since first commit',
   columnTooltip: 'For projects with at least 1 commit in the last 12 months',
   hideTrend: true,

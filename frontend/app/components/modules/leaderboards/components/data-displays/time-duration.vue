@@ -18,13 +18,16 @@ SPDX-License-Identifier: MIT
 import { DateTime } from 'luxon';
 import { computed } from 'vue';
 import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
+import { formatValueToLargestUnitDuration } from '~/components/shared/utils/formatter';
 
 const props = withDefaults(
   defineProps<{
-    value: number; // Time in milliseconds
+    value: number; // Time in milliseconds or duration in seconds
+    isDataDuration?: boolean;
   }>(),
   {
     value: 0,
+    isDataDuration: false,
   },
 );
 
@@ -37,44 +40,14 @@ const formattedDuration = computed(() => {
     return '0s';
   }
 
-  // Calculate duration from timestamp to now
-  const timestamp = DateTime.fromMillis(props.value);
-  const now = DateTime.now();
-  const duration = now.diff(timestamp, ['years', 'months', 'days', 'hours', 'minutes', 'seconds']);
-  const { years, months, days, hours, minutes, seconds } = duration.toObject();
-
-  const units: Array<{ value: number; label: string }> = [];
-
-  // Build array of non-zero units
-  if (years && years > 0) {
-    units.push({ value: Math.floor(years), label: 'y' });
-  }
-  if (months && months > 0) {
-    units.push({ value: Math.floor(months), label: 'mo' });
-  }
-
-  if (days && days > 0) {
-    units.push({ value: Math.floor(days), label: 'd' });
-  }
-
-  if (hours && hours > 0) {
-    units.push({ value: Math.floor(hours), label: 'h' });
-  }
-  if (minutes && minutes > 0) {
-    units.push({ value: Math.floor(minutes), label: 'm' });
-  }
-  if (seconds && seconds > 0) {
-    units.push({ value: Math.floor(seconds), label: 's' });
-  }
-
-  // Return up to 2 units
-  return units
-    .slice(0, 2)
-    .map((unit) => `${unit.value}${unit.label}`)
-    .join(' ');
+  return formatValueToLargestUnitDuration(props.value, 2, props.isDataDuration);
 });
 
 const dateFormatted = computed(() => {
+  if (props.isDataDuration) {
+    // If it's a duration, show the duration in a human-readable format
+    return formattedDuration.value;
+  }
   return DateTime.fromMillis(props.value).toFormat('MMM dd, yyyy');
 });
 </script>

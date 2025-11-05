@@ -42,11 +42,14 @@ SPDX-License-Identifier: MIT
       >
         <component
           :is="leaderboardConfig?.dataDisplay"
+          :is-data-duration="leaderboardConfig?.isDataDuration"
           :value="item.value"
         />
       </p>
       <lfx-leaderboard-trend-display
         v-if="!leaderboardConfig?.hideTrend && !isSmall"
+        :is-time-display="isTimeDisplay"
+        :is-data-duration="leaderboardConfig?.isDataDuration"
         :data="item"
       />
     </div>
@@ -54,16 +57,18 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 import type { LeaderboardConfig } from '../../config/types/leaderboard.types';
 import LfxLeaderboardTrendDisplay from '../data-displays/trend-display.vue';
+import TimeDurationDataDisplay from '../data-displays/time-duration.vue';
 import type { Leaderboard } from '~~/types/leaderboard/leaderboard';
 import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
 import { LfxRoutes } from '~/components/shared/types/routes';
 
 const router = useRouter();
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
     item: Leaderboard;
     leaderboardConfig: LeaderboardConfig;
@@ -73,6 +78,10 @@ withDefaults(
     isSmall: false,
   },
 );
+
+const isTimeDisplay = computed(() => {
+  return props.leaderboardConfig.dataDisplay === TimeDurationDataDisplay;
+});
 
 const navigateToProject = (slug: string) => {
   router.push({ name: LfxRoutes.PROJECT, params: { slug } });

@@ -9,10 +9,10 @@ export interface LeaderboardConfig {
   description: string;
   icon: string;
   dataDisplay: Component;
-  sort: string;
   columnLabel: string;
   columnTooltip?: string;
   hideTrend?: boolean;
+  isDataDuration?: boolean;
 }
 
 export interface LeaderboardLandingResponse {

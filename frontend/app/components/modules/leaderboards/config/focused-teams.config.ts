@@ -10,7 +10,6 @@ export const focusedTeamsConfig: LeaderboardConfig = {
   description: 'These projects show the highest productivity per contributor.',
   icon: 'bullseye-arrow',
   dataDisplay: NumericDataDisplay,
-  sort: 'focusedTeams_DESC',
   columnLabel: 'Avg. commits per author',
   columnTooltip: 'For projects with 10+ authors',
 };

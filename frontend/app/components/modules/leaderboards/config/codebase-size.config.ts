@@ -11,7 +11,6 @@ export const codebaseSizeConfig: LeaderboardConfig = {
     'These projects maintain the largest codebases measured by total source lines of code.',
   icon: 'laptop-code',
   dataDisplay: NumericDataDisplay,
-  sort: 'codebaseSize_DESC',
   columnLabel: 'Lines of code',
   hideTrend: true,
 };

@@ -11,6 +11,5 @@ export const mostActiveContributorsConfig: LeaderboardConfig = {
     'These projects attracted the highest number of unique contributors over the past 12 months.',
   icon: 'people-group',
   dataDisplay: NumericDataDisplay,
-  sort: 'mostActiveContributors_DESC',
   columnLabel: 'Contributors (12M)',
 };

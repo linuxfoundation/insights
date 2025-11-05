@@ -11,7 +11,6 @@ export const smallTeamsMassiveOutputConfig: LeaderboardConfig = {
     'These projects demonstrate exceptional productivity, achieving the highest commit volumes with 50 or fewer contributors.',
   icon: 'arrow-up-big-small',
   dataDisplay: NumericDataDisplay,
-  sort: 'smallTeamsMassiveOutput_DESC',
   columnLabel: 'Commits',
   columnTooltip: 'For projects with ≤50 contributors',
 };

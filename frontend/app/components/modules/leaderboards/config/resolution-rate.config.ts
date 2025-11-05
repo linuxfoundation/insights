@@ -11,6 +11,5 @@ export const resolutionRateConfig: LeaderboardConfig = {
     'These projects keep development flowing, with most pull requests merged relative to issues opened.',
   icon: 'rocket-launch',
   dataDisplay: NumericDataDisplay,
-  sort: 'resolutionRate_DESC',
   columnLabel: 'PR/Issue ratio',
 };

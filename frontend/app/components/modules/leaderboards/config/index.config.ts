@@ -10,7 +10,7 @@ import { focusedTeamsConfig } from './focused-teams.config';
 import { smallTeamsMassiveOutputConfig } from './small-teams-massive-output.config';
 import { codebaseSizeConfig } from './codebase-size.config';
 // import { fastestRespondersConfig } from './fastest-responders.config';
-// import { fastestMergersConfig } from './fastest-mergers.config';
+import { fastestMergersConfig } from './fastest-mergers.config';
 // import { resolutionRateConfig } from './resolution-rate.config';
 
 const leaderboardConfigs: LeaderboardConfig[] = [
@@ -22,7 +22,7 @@ const leaderboardConfigs: LeaderboardConfig[] = [
   smallTeamsMassiveOutputConfig,
   codebaseSizeConfig,
   // fastestRespondersConfig,
-  // fastestMergersConfig,
+  fastestMergersConfig,
   // resolutionRateConfig,
 ];
 

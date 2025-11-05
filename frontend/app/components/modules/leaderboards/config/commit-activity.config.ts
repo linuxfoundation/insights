@@ -11,6 +11,5 @@ export const commitActivityConfig: LeaderboardConfig = {
     'These projects recorded the most commits during the past 12 months, showing high development momentum.',
   icon: 'code-commit',
   dataDisplay: NumericDataDisplay,
-  sort: 'commitActivity_DESC',
   columnLabel: 'Commits (12M)',
 };

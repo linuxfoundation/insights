@@ -7,7 +7,7 @@
  * @returns Formatted string representation of the number
  */
 
-import { Duration } from 'luxon';
+import { DateTime, Duration } from 'luxon';
 import pluralize from 'pluralize';
 import { FormatterUnits } from '~/components/shared/types/formatter.types';
 
@@ -130,4 +130,61 @@ export const formatSecondsToDuration = (
 
   // Only show decimal for seconds
   return convertToUnit(value, FormatterUnits.SECONDS, showUnits, roundTo);
+};
+
+export const formatValueToLargestUnitDuration = (
+  value: number,
+  noOfUnits: number = 2,
+  isDuration?: boolean,
+): string => {
+  let duration;
+
+  if (isDuration) {
+    // Value is already a duration in seconds - create Duration object directly
+    duration = Duration.fromObject({ seconds: value }).shiftTo(
+      'years',
+      'months',
+      'days',
+      'hours',
+      'minutes',
+      'seconds',
+    );
+  } else {
+    // Calculate duration from timestamp to now
+    const timestamp = DateTime.fromMillis(value);
+    const now = DateTime.now();
+    duration = now.diff(timestamp, ['years', 'months', 'days', 'hours', 'minutes', 'seconds']);
+  }
+
+  const { years, months, days, hours, minutes, seconds } = duration.toObject();
+
+  const units: Array<{ value: number; label: string }> = [];
+
+  // Build array of non-zero units
+  if (years && years > 0) {
+    units.push({ value: Math.floor(years), label: 'y' });
+  }
+  if (months && months > 0) {
+    units.push({ value: Math.floor(months), label: 'mo' });
+  }
+
+  if (days && days > 0) {
+    units.push({ value: Math.floor(days), label: 'd' });
+  }
+
+  if (hours && hours > 0) {
+    units.push({ value: Math.floor(hours), label: 'h' });
+  }
+  if (minutes && minutes > 0) {
+    units.push({ value: Math.floor(minutes), label: 'm' });
+  }
+  if (seconds && seconds > 0) {
+    units.push({ value: Math.floor(seconds), label: 's' });
+  }
+
+  // Return up to 2 units
+  return units
+    .slice(0, noOfUnits)
+    .map((unit) => `${unit.value}${unit.label}`)
+    .join(' ');
 };
