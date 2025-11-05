@@ -11,42 +11,11 @@ SPDX-License-Identifier: MIT
       class="w-full"
       :to="`/project/${item.slug}`"
     >
-      <div
-        class="flex items-center p-3 w-full hover:bg-neutral-50 rounded-lg transition-all duration-300 cursor-pointer"
-      >
-        <!-- Rank -->
-        <div class="w-10 shrink-0 text-neutral-900 font-secondary overflow-hidden overflow-ellipsis">
-          {{ item.rank }}
-        </div>
-
-        <!-- Project info -->
-        <div class="flex-1 min-w-0 flex gap-3 items-center">
-          <lfx-avatar
-            :src="item.logoUrl"
-            type="organization"
-            :aria-label="item.logoUrl && item.name"
-          />
-          <p class="text-base leading-5 font-medium text-neutral-900 overflow-hidden overflow-ellipsis">
-            {{ item.name }}
-          </p>
-        </div>
-
-        <!-- Stats -->
-        <div class="w-1/4 shrink-0 flex flex-col gap-2 items-end justify-center">
-          <p
-            class="text-base leading-5 font-normal text-neutral-900 text-right w-full overflow-hidden overflow-ellipsis whitespace-pre-wrap"
-          >
-            <component
-              :is="leaderboardConfig?.dataDisplay"
-              :value="item.value"
-            />
-          </p>
-          <lfx-leaderboard-trend-display
-            v-if="!leaderboardConfig?.hideTrend"
-            :data="item"
-          />
-        </div>
-      </div>
+      <lfx-table-row
+        :item="item"
+        :leaderboard-config="leaderboardConfig"
+        :is-small="false"
+      />
     </router-link>
     <template v-for="i in 10">
       <div
@@ -81,9 +50,8 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import type { LeaderboardConfig } from '../../config/types/leaderboard.types';
-import LfxLeaderboardTrendDisplay from '../data-displays/trend-display.vue';
+import LfxTableRow from './table-row.vue';
 import type { Leaderboard } from '~~/types/leaderboard/leaderboard';
-import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
 import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
 import LfxButton from '~/components/uikit/button/button.vue';
 

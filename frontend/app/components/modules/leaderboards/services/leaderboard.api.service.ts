@@ -1,7 +1,13 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { type QueryFunction, useInfiniteQuery, useQueryClient } from '@tanstack/vue-query';
+import {
+  type QueryFunction,
+  useInfiniteQuery,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/vue-query';
 import { type ComputedRef, computed } from 'vue';
+import type { LeaderboardLandingResponse } from '../config/types/leaderboard.types';
 import { TanstackKey } from '~/components/shared/types/tanstack';
 import type { Leaderboard } from '~~/types/leaderboard/leaderboard';
 import type { Pagination } from '~~/types/shared/pagination';
@@ -124,6 +130,39 @@ class LeaderboardApiService {
       initialPageParam: 0,
       enabled: computed(() => !!params.value.search && params.value.search.trim().length > 0),
     });
+  }
+
+  fetchLeaderboardLanding() {
+    const queryKey = computed(() => [TanstackKey.LEADERBOARD_INDEX]);
+    const queryFn = this.leaderboardLandingQueryFn();
+
+    return useQuery<
+      LeaderboardLandingResponse,
+      Error,
+      LeaderboardLandingResponse,
+      readonly unknown[]
+    >({ queryKey, queryFn });
+  }
+
+  leaderboardLandingQueryFn(): QueryFunction<LeaderboardLandingResponse, readonly unknown[]> {
+    return async () => {
+      return await $fetch<LeaderboardLandingResponse>('/api/leaderboard', {
+        params: { maxRank: 5 },
+      });
+    };
+  }
+
+  groupLeaderboardsByType(leaderboards: Leaderboard[]): Record<string, Leaderboard[]> {
+    return leaderboards.reduce(
+      (acc, leaderboard) => {
+        acc[leaderboard.leaderboardType] = [
+          ...(acc[leaderboard.leaderboardType] || []),
+          leaderboard,
+        ];
+        return acc;
+      },
+      {} as Record<string, Leaderboard[]>,
+    );
   }
 }
 
