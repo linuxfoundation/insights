@@ -43,7 +43,7 @@ SPDX-License-Identifier: MIT
           </div>
           <p
             :class="[scrollTop < 50 ? 'block' : 'hidden']"
-            class="transition-all ease-linear text-sm text-neutral-500 w-full whitespace-pre-wrap h-10"
+            class="transition-all ease-linear text-sm text-neutral-500 w-full whitespace-pre-wrap min-h-10"
           >
             {{ config?.description }}
           </p>

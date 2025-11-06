@@ -33,7 +33,10 @@ SPDX-License-Identifier: MIT
         :loaded="pageWidth > 0"
       > -->
       <div class="z-10 w-full fixed !w-full bg-white pt-22 top-0 left-0">
-        <div class="container w-full md:pt-12 pt-8 flex gap-10">
+        <div
+          ref="headerContainerRef"
+          class="container w-full md:pt-12 pt-8 flex gap-10"
+        >
           <div class="lg:w-1/5 w-1/4 md:block hidden min-w-50">&nbsp;</div>
           <div class="flex flex-col gap-6 lg:w-3/5 md:w-3/4 w-full">
             <!-- Header section -->
@@ -57,8 +60,11 @@ SPDX-License-Identifier: MIT
     </div>
   </div>
 
-  <div class="container pt-60">
-    <div class="flex gap-10 sm:pt-12 md:pt-20 pt-28">
+  <div
+    class="container"
+    :style="{ paddingTop: headerHeight + 'px' }"
+  >
+    <div class="flex gap-10 lg:-mt-12 md:-mt-8 mt-4">
       <div class="lg:w-1/5 w-1/4 md:block hidden min-w-50">&nbsp;</div>
       <div class="lg:w-3/5 md:w-3/4 w-full min-w-0">
         <lfx-leaderboard-table
@@ -102,10 +108,16 @@ const { pageWidth } = useResponsive();
 const sidebarRef = ref<HTMLElement | null>(null);
 const sidebarWidth = ref<number>(0);
 const isScrollingIntoRow = ref<boolean>(false);
+const headerContainerRef = ref<HTMLElement | null>(null);
+const headerHeight = ref<number>(0);
 
 onMounted(() => {
   if (sidebarRef.value) {
     sidebarWidth.value = sidebarRef.value.offsetWidth;
+  }
+
+  if (headerContainerRef.value) {
+    headerHeight.value = headerContainerRef.value.offsetHeight;
   }
 });
 
