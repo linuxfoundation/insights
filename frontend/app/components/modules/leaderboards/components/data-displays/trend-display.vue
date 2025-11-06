@@ -12,10 +12,17 @@ SPDX-License-Identifier: MIT
         :class="getTrendColor"
       />
       <span
-        class="text-xs leading-[15px] font-medium"
+        v-if="trendDirection !== 'neutral'"
+        class="text-xs font-medium"
         :class="getTrendColor"
       >
         {{ trendPercentage }}% ({{ formatTrendValue }})
+      </span>
+      <span
+        v-else
+        class="text-xs font-medium text-neutral-400"
+      >
+        = 0%
       </span>
     </div>
   </lfx-tooltip>
@@ -55,7 +62,7 @@ const trendPercentage = computed(() => {
     // For division by zero, show as 100% increase
     return '100.0';
   }
-  const value = (trend.value / props.data.previousPeriodValue) * 100;
+  const value = (Math.abs(trend.value) / props.data.previousPeriodValue) * 100;
   return value.toFixed(1);
 });
 

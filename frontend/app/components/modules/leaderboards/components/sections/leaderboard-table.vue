@@ -30,7 +30,7 @@ SPDX-License-Identifier: MIT
           <div class="w-10 shrink-0 text-neutral-900 font-secondary">
             {{ (isForceLoading ? 0 : data.length) + i }}
           </div>
-          <lfx-skeleton class="!w-12 !h-12" />
+          <lfx-skeleton class="!w-8 !h-8 !rounded-sm" />
         </div>
         <div class="flex-1 shrink-0">
           <lfx-skeleton class="!w-2/4 !h-5" />
@@ -42,6 +42,7 @@ SPDX-License-Identifier: MIT
     <lfx-button
       v-if="hasNextPage"
       type="transparent"
+      button-style="pill"
       :loading="isLoading"
       class="mt-10 w-full justify-center"
       @click="emit('fetchNextPage')"

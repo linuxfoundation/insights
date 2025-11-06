@@ -21,7 +21,6 @@ SPDX-License-Identifier: MIT
           v-show="isHovered"
           type="transparent"
           icon="share-nodes"
-          size="small"
           @click="handleShare"
         />
       </div>
@@ -71,6 +70,7 @@ SPDX-License-Identifier: MIT
     <lfx-button
       type="transparent"
       class="mt-6 w-full justify-center"
+      button-style="pill"
       @click="router.push({ name: LfxRoutes.LEADERBOARD, params: { key: config.key as string } })"
     >
       View leaderboard

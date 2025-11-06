@@ -27,6 +27,16 @@ SPDX-License-Identifier: MIT
             class="text-neutral-400"
           />
         </template>
+        <template #suffix>
+          <lfx-icon
+            v-if="searchQuery !== ''"
+            name="circle-xmark"
+            type="regular"
+            :size="14"
+            class="text-neutral-400 cursor-pointer"
+            @click="searchQuery = ''"
+          />
+        </template>
       </lfx-input>
       <template #content>
         <lfx-card
@@ -58,15 +68,18 @@ SPDX-License-Identifier: MIT
               class="text-neutral-400"
             />
           </template>
-        </lfx-input>
 
-        <lfx-icon
-          name="circle-xmark"
-          type="regular"
-          :size="14"
-          class="text-neutral-400 absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer"
-          @click="searchQuery = ''"
-        />
+          <template #suffix>
+            <lfx-icon
+              v-if="searchQuery !== ''"
+              name="circle-xmark"
+              type="regular"
+              :size="14"
+              class="text-neutral-400 cursor-pointer"
+              @click="searchQuery = ''"
+            />
+          </template>
+        </lfx-input>
       </div>
       <div
         v-if="searchQuery !== ''"

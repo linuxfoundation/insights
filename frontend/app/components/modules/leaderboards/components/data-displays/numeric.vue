@@ -4,13 +4,23 @@ SPDX-License-Identifier: MIT
 -->
 
 <template>
-  <span>{{ formattedNumeric }}</span>
+  <lfx-tooltip
+    v-if="isLargeNumber"
+    :content="formattedNumericTooltip"
+    placement="top-end"
+    class="!w-full"
+  >
+    <span class="cursor-pointer">{{ formattedNumeric }}</span>
+  </lfx-tooltip>
+  <span v-else>{{ formattedNumeric }}</span>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue';
 import type { LeaderboardDataType } from '../../config/types/leaderboard.types';
 import { formatNumber } from '~/components/shared/utils/formatter';
+import { formatNumberShort } from '~/components/shared/utils/formatter';
+import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
 
 const props = withDefaults(
   defineProps<{
@@ -24,11 +34,26 @@ const props = withDefaults(
   },
 );
 
+const isLargeNumber = computed(() => {
+  return props.value > 1000000;
+});
+
 /**
  * Formats a number to a numeric string with up to 2 units
  * Example: 1,000,000
  */
 const formattedNumeric = computed(() => {
+  if (!props.value || props.value === 0) {
+    return '0';
+  }
+
+  if (isLargeNumber.value) {
+    return formatNumberShort(props.value);
+  }
+
+  return formatNumber(props.value, props.decimals);
+});
+const formattedNumericTooltip = computed(() => {
   if (!props.value || props.value === 0) {
     return '0';
   }

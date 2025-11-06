@@ -59,7 +59,8 @@ SPDX-License-Identifier: MIT
         <lfx-button
           type="tertiary"
           size="small"
-          class="h-9 rounded-full"
+          button-style="pill"
+          class="h-9"
           @click="handleShare"
         >
           <lfx-icon

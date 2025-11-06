@@ -17,17 +17,17 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { DateTime } from 'luxon';
 import { computed } from 'vue';
+import type { LeaderboardDataType } from '../../config/types/leaderboard.types';
 import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
 import { formatValueToLargestUnitDuration } from '~/components/shared/utils/formatter';
 
 const props = withDefaults(
   defineProps<{
     value: number; // Time in milliseconds or duration in seconds
-    isDataDuration?: boolean;
+    dataType: LeaderboardDataType;
   }>(),
   {
     value: 0,
-    isDataDuration: false,
   },
 );
 
@@ -40,11 +40,11 @@ const formattedDuration = computed(() => {
     return '0s';
   }
 
-  return formatValueToLargestUnitDuration(props.value, 2, props.isDataDuration);
+  return formatValueToLargestUnitDuration(props.value, 2, props.dataType === 'duration');
 });
 
 const dateFormatted = computed(() => {
-  if (props.isDataDuration) {
+  if (props.dataType === 'duration') {
     // If it's a duration, show the duration in a human-readable format
     return formattedDuration.value;
   }

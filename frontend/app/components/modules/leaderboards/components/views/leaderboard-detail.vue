@@ -7,9 +7,8 @@ SPDX-License-Identifier: MIT
     <div class="container flex md:gap-10 gap-0 md:flex-row flex-col">
       <div
         ref="sidebarRef"
-        class="md:w-1/5 w-full flex md:flex-col flex-row md:justify-start justify-between md:items-start items-center md:flex hidden min-w-50"
-        :class="scrollTop > 0 ? 'fixed bg-white pt-32 mt-2 top-0 z-[11]' : ''"
-        :style="scrollTop > 0 && sidebarWidth ? { width: sidebarWidth + 'px' } : {}"
+        class="md:w-1/5 w-full flex md:flex-col flex-row md:justify-start justify-between md:items-start items-center md:flex hidden min-w-50 fixed bg-white pt-32 mt-2 top-0 z-[11]"
+        :style="{ width: sidebarWidth + 'px' }"
       >
         <router-link
           :to="{ name: LfxRoutes.LEADERBOARDS }"
@@ -28,23 +27,15 @@ SPDX-License-Identifier: MIT
       </div>
 
       <!-- Main content section -->
-      <lfx-maintain-height
+      <!-- <lfx-maintain-height
         :scroll-top="scrollTop"
-        :class="scrollTop > 0 ? 'fixed !w-full bg-white pt-22 top-0 left-0' : 'relative md:pt-0 pt-4'"
-        class="z-10 lg:w-3/5 md:w-3/4 w-full"
+        class="z-10 w-full fixed !w-full bg-white pt-22 top-0 left-0"
         :loaded="pageWidth > 0"
-      >
-        <div :class="[scrollTop > 1 ? 'container w-full md:pt-12 pt-8 flex gap-10' : '']">
-          <div
-            v-if="scrollTop > 1"
-            class="lg:w-1/5 w-1/4 md:block hidden min-w-50"
-          >
-            &nbsp;
-          </div>
-          <div
-            class="flex flex-col gap-6"
-            :class="[scrollTop > 1 ? 'lg:w-3/5 md:w-3/4 w-full' : 'w-full']"
-          >
+      > -->
+      <div class="z-10 w-full fixed !w-full bg-white pt-22 top-0 left-0">
+        <div class="container w-full md:pt-12 pt-8 flex gap-10">
+          <div class="lg:w-1/5 w-1/4 md:block hidden min-w-50">&nbsp;</div>
+          <div class="flex flex-col gap-6 lg:w-3/5 md:w-3/4 w-full">
             <!-- Header section -->
             <lfx-leaderboard-detail-header
               :config="leaderboardConfig"
@@ -57,26 +48,17 @@ SPDX-License-Identifier: MIT
               class="border-b border-neutral-200 px-0 lg:px-3 pb-4"
             />
           </div>
-          <div
-            v-if="scrollTop > 1"
-            class="w-1/5 lg:block hidden"
-          >
-            &nbsp;
-          </div>
+          <div class="w-1/5 lg:block hidden">&nbsp;</div>
         </div>
-      </lfx-maintain-height>
-
-      <div
-        v-if="scrollTop < 1"
-        class="w-1/5 lg:block hidden"
-      >
-        &nbsp;
       </div>
+      <!-- </lfx-maintain-height> -->
+
+      <div class="w-1/5 lg:block hidden">&nbsp;</div>
     </div>
   </div>
 
-  <div class="container">
-    <div class="flex gap-10">
+  <div class="container pt-60">
+    <div class="flex gap-10 pt-5">
       <div class="lg:w-1/5 w-1/4 md:block hidden min-w-50">&nbsp;</div>
       <div class="lg:w-3/5 md:w-3/4 w-full min-w-0">
         <lfx-leaderboard-table
@@ -95,6 +77,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed, onMounted, onServerPrefetch, ref, watch, nextTick } from 'vue';
+import { useRoute } from 'vue-router';
 import leaderboardConfigs from '../../config/index.config';
 import LfxLeaderboardTable from '../sections/leaderboard-table.vue';
 import type { LeaderboardConfig } from '../../config/types/leaderboard.types';
@@ -105,17 +88,16 @@ import LfxTableHeader from '../sections/table-header.vue';
 import type { Leaderboard } from '~~/types/leaderboard/leaderboard';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import type { Pagination } from '~~/types/shared/pagination';
-import useScroll from '~/components/shared/utils/scroll';
 import useResponsive from '~/components/shared/utils/responsive';
-import LfxMaintainHeight from '~/components/uikit/maintain-height/maintain-height.vue';
 import { LfxRoutes } from '~/components/shared/types/routes';
+
+const route = useRoute();
 
 // Props
 const props = defineProps<{
   leaderboardKey: string;
 }>();
 
-const { scrollTop } = useScroll();
 const { pageWidth } = useResponsive();
 const sidebarRef = ref<HTMLElement | null>(null);
 const sidebarWidth = ref<number>(0);
@@ -159,6 +141,17 @@ watch(pageWidth, () => {
   }
 });
 
+// Reset scroll position whenever the route changes (including back button)
+watch(
+  () => route.fullPath,
+  async () => {
+    setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }, 100);
+  },
+  { immediate: true },
+);
+
 // Handle search item click to scroll to row
 const handleSearchItemClick = async (item: Leaderboard) => {
   const targetRank = item.rank;
@@ -180,10 +173,10 @@ const handleSearchItemClick = async (item: Leaderboard) => {
       // Add a brief highlight effect
       const element = row as HTMLElement;
       element.style.transition = 'background-color 0.3s ease';
-      element.style.backgroundColor = '#fef3c7'; // Light yellow highlight
+      element.classList.add('bg-neutral-50');
 
       setTimeout(() => {
-        element.style.backgroundColor = '';
+        element.classList.remove('bg-neutral-50');
       }, 2000);
 
       return true;
