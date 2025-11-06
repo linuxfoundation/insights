@@ -3,26 +3,8 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="pt-10">
+  <div class="md:pt-10 pt-6">
     <div class="container flex md:gap-10 gap-0 md:flex-row flex-col">
-      <div class="md:hidden fixed z-10 top-32 left-0 w-full">
-        <div class="container flex justify-between">
-          <router-link
-            :to="{ name: LfxRoutes.LEADERBOARDS }"
-            class="flex items-center gap-1 text-xs text-neutral-500 hover:text-neutral-900 hover:font-medium transition-all duration-100"
-          >
-            <lfx-icon
-              name="angle-left"
-              :size="15"
-            />
-            All leaderboards
-          </router-link>
-
-          <!-- Sidebar navigation -->
-          <lfx-leaderboard-sidebar :leaderboard-key="leaderboardKey" />
-        </div>
-      </div>
-
       <div
         ref="sidebarRef"
         class="md:w-1/5 w-full flex md:flex-col flex-row md:justify-start justify-between md:items-start items-center md:flex hidden min-w-50"
@@ -52,7 +34,7 @@ SPDX-License-Identifier: MIT
         class="z-9 lg:w-3/5 md:w-3/4 w-full"
         :loaded="pageWidth > 0"
       >
-        <div :class="[scrollTop > 1 ? 'container w-full md:pt-12 pt-16 flex gap-10' : '']">
+        <div :class="[scrollTop > 1 ? 'container w-full md:pt-12 pt-8 flex gap-10' : '']">
           <div
             v-if="scrollTop > 1"
             class="lg:w-1/5 w-1/4 md:block hidden min-w-50"
@@ -60,7 +42,7 @@ SPDX-License-Identifier: MIT
             &nbsp;
           </div>
           <div
-            class="flex flex-col gap-6 md:pt-0 pt-10"
+            class="flex flex-col gap-6"
             :class="[scrollTop > 1 ? 'lg:w-3/5 md:w-3/4 w-full' : 'w-full']"
           >
             <!-- Header section -->

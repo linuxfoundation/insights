@@ -4,6 +4,18 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <div class="flex flex-col gap-6 items-start w-full pb-4">
+    <div class="md:hidden block">
+      <router-link
+        :to="{ name: LfxRoutes.LEADERBOARDS }"
+        class="flex items-center gap-1 text-xs text-neutral-500 hover:text-neutral-900 hover:font-medium transition-all duration-100"
+      >
+        <lfx-icon
+          name="angle-left"
+          :size="15"
+        />
+        All leaderboards
+      </router-link>
+    </div>
     <!-- Icon and Share button -->
     <div
       class="flex justify-between w-full"
@@ -11,7 +23,7 @@ SPDX-License-Identifier: MIT
     >
       <div
         class="flex transition-all ease-linear"
-        :class="[scrollTop > 50 ? 'flex-row gap-4' : 'flex-col gap-3']"
+        :class="[scrollTop > 50 ? 'flex-row gap-4 items-center' : 'flex-col gap-3']"
       >
         <div
           :class="[scrollTop > 50 ? 'size-10' : 'size-12']"
@@ -27,10 +39,14 @@ SPDX-License-Identifier: MIT
         <div class="flex flex-col gap-1">
           <h1
             :class="[scrollTop > 50 ? 'text-2xl' : 'text-3xl']"
-            class="transition-all ease-linear font-light font-secondary text-neutral-900"
+            class="transition-all ease-linear font-light font-secondary text-neutral-900 md:block hidden"
           >
             {{ config?.name }}
           </h1>
+          <!-- Sidebar navigation -->
+          <div class="md:hidden flex justify-start">
+            <lfx-leaderboard-mobile-nav :leaderboard-key="config.key" />
+          </div>
           <p
             :class="[scrollTop < 50 ? 'block' : 'hidden']"
             class="transition-all ease-linear text-sm text-neutral-500 w-full whitespace-pre-wrap"
@@ -39,119 +55,77 @@ SPDX-License-Identifier: MIT
           </p>
         </div>
       </div>
-      <lfx-button
-        type="tertiary"
-        size="small"
-        class="h-9 rounded-full"
-        @click="handleShare"
-      >
-        <lfx-icon
-          name="share-nodes"
-          :size="16"
+      <div class="md:block hidden">
+        <lfx-button
+          type="tertiary"
+          size="small"
+          class="h-9 rounded-full"
+          @click="handleShare"
+        >
+          <lfx-icon
+            name="share-nodes"
+            :size="16"
+          />
+          Share
+        </lfx-button>
+      </div>
+      <div class="md:!hidden block">
+        <lfx-icon-button
+          icon="share-nodes"
+          @click="handleShare"
         />
-        Share
-      </lfx-button>
+      </div>
     </div>
 
-    <div class="relative w-full">
-      <div class="w-full">
-        <div class="rounded-full border border-solid border-neutral-200">
-          <lfx-popover
-            v-model:visibility="isSearchOpen"
-            placement="bottom-end"
-            class="!w-full"
-            :match-width="true"
-          >
-            <lfx-input
-              v-model="searchQuery"
-              placeholder="Search projects..."
-              class="!bg-neutral-50 !border-none !rounded-full h-9 !shadow-none"
-            >
-              <template #prefix>
-                <lfx-icon
-                  name="search"
-                  type="regular"
-                  :size="14"
-                  class="text-neutral-400"
-                />
-              </template>
-            </lfx-input>
-            <template #content>
-              <lfx-card
-                class="w-full max-h-[65vh] overflow-y-auto"
-                :class="[searchQuery !== '' ? 'p-1 shadow-lg' : '!border-none']"
-              >
-                <router-link
-                  v-for="item in items"
-                  :key="item.id"
-                  :to="`/project/${item.slug}`"
-                >
-                  <div
-                    class="flex items-center p-3 w-full hover:bg-neutral-50 rounded-lg transition-all duration-300 cursor-pointer"
-                  >
-                    <!-- Project info -->
-                    <div class="flex-1 min-w-0 flex gap-3 items-center">
-                      <lfx-avatar
-                        :src="item.logoUrl"
-                        type="organization"
-                        :aria-label="item.logoUrl && item.name"
-                        size="small"
-                      />
-                      <p class="text-base leading-5 font-medium text-neutral-900 overflow-hidden overflow-ellipsis">
-                        {{ item.name }}
-                      </p>
-                    </div>
-                    <!-- Rank -->
-                    <div class="text-neutral-500 text-sm">#{{ item.rank }}</div>
-                  </div>
-                </router-link>
-
-                <div
-                  v-if="items.length === 0 && isSuccess"
-                  class="flex flex-col items-center py-20"
-                >
-                  <lfx-icon
-                    name="face-monocle"
-                    :size="40"
-                    class="text-neutral-300"
-                  />
-                  <h3
-                    class="text-center pt-5 text-heading-4 sm:text-heading-3 font-secondary font-bold text-neutral-500"
-                  >
-                    No projects found
-                  </h3>
-                </div>
-                <div
-                  v-if="isSearchPending && searchQuery !== ''"
-                  class="flex items-center justify-between h-32 py-1"
-                >
-                  <lfx-spinner
-                    :size="40"
-                    class="text-neutral-300"
-                  />
-                </div>
-              </lfx-card>
-            </template>
-          </lfx-popover>
-        </div>
+    <div class="relative w-full md:block hidden">
+      <lfx-leaderboard-search
+        :config="config"
+        class="rounded-full border border-solid border-neutral-200"
+      />
+    </div>
+    <div class="md:hidden block w-full">
+      <div
+        class="rounded-full border border-solid border-neutral-200 cursor-pointer flex items-center gap-2 px-3 py-2"
+        @click="isSearchOpen = true"
+      >
+        <lfx-icon
+          name="search"
+          :size="14"
+          class="text-neutral-400"
+        />
+        <span class="text-sm text-neutral-400">Search projects...</span>
       </div>
     </div>
   </div>
+
+  <lfx-modal
+    v-model="isSearchOpen"
+    width="100%"
+    content-class="!max-w-full mx-4"
+  >
+    <div class="p-1 bg-white rounded-lg">
+      <lfx-leaderboard-search
+        ref="searchComponentRef"
+        class="bg-white"
+        in-modal
+        :config="config"
+      />
+    </div>
+  </lfx-modal>
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { ref, watch, nextTick } from 'vue';
 import type { LeaderboardConfig } from '../../config/types/leaderboard.types';
-import { LEADERBOARD_API_SERVICE } from '../../services/leaderboard.api.service';
+import LfxLeaderboardMobileNav from './leaderboard-mobile-nav.vue';
+import LfxLeaderboardSearch from './leaderboard-search.vue';
 import LfxButton from '~/components/uikit/button/button.vue';
+import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
-import LfxInput from '~/components/uikit/input/input.vue';
 import useScroll from '~/components/shared/utils/scroll';
-import LfxPopover from '~/components/uikit/popover/popover.vue';
-import LfxCard from '~/components/uikit/card/card.vue';
-import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
-import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
 import { useShareStore } from '~/components/shared/modules/share/store/share.store';
+import { LfxRoutes } from '~/components/shared/types/routes';
+import LfxModal from '~/components/uikit/modal/modal.vue';
 
 const { openShareModal } = useShareStore();
 const props = defineProps<{
@@ -160,9 +134,20 @@ const props = defineProps<{
 
 const { scrollTop } = useScroll();
 
-const searchQuery = ref('');
-
 const isSearchOpen = ref(false);
+
+const searchComponentRef = ref<InstanceType<typeof LfxLeaderboardSearch> | null>(null);
+
+watch(isSearchOpen, (newValue) => {
+  if (newValue) {
+    // Use setTimeout with nextTick to ensure modal teleport has completed
+    nextTick(() => {
+      setTimeout(() => {
+        searchComponentRef.value?.focusInput();
+      }, 50);
+    });
+  }
+});
 
 const handleShare = () => {
   const title = `${props.config?.name} Leaderboard | LFX Insights`;
@@ -176,26 +161,6 @@ const handleShare = () => {
     area: props.config?.name,
   });
 };
-
-watch(searchQuery, (newVal) => {
-  isSearchOpen.value = newVal !== '';
-});
-
-const searchParams = computed(() => ({
-  leaderboardType: props.config.key,
-  search: searchQuery.value,
-}));
-
-const {
-  data: searchData,
-  isPending: isSearchPending,
-  isSuccess,
-} = LEADERBOARD_API_SERVICE.fetchLeaderboardDetailSearch(searchParams);
-
-const items = computed(() => {
-  // @ts-expect-error - TanStack Query type inference issue with Vue
-  return searchData.value?.pages.flatMap((page: Pagination<Leaderboard>) => page.data) || [];
-});
 </script>
 
 <script lang="ts">
