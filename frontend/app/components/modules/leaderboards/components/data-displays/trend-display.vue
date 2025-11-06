@@ -13,7 +13,7 @@ SPDX-License-Identifier: MIT
       />
       <span
         v-if="trendDirection !== 'neutral'"
-        class="text-xs font-medium"
+        class="text-xs font-medium text-nowrap"
         :class="getTrendColor"
       >
         {{ trendPercentage }}% ({{ formatTrendValue }})

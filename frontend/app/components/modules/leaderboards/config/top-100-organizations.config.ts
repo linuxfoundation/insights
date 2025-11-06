@@ -11,6 +11,6 @@ export const top100OrganizationsConfig: LeaderboardConfig = {
     'Most influential organizations based on the total number of contributions made over the last 10 years.',
   icon: 'chart-network',
   dataDisplay: NumericDataDisplay,
-  columnLabel: 'Contributors (10Y)',
+  columnLabel: 'Contributors (10y)',
   dataType: 'integer',
 };

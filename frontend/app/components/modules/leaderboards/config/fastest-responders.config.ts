@@ -11,6 +11,6 @@ export const fastestRespondersConfig: LeaderboardConfig = {
     'These projects achieve the shortest median time to first response on issues over the past 12 months.',
   icon: 'comment-check',
   dataDisplay: TimeDurationDisplay,
-  columnLabel: 'Median time to 1st response (12M)',
+  columnLabel: 'Median time to 1st response (12m)',
   dataType: 'duration',
 };

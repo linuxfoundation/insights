@@ -11,6 +11,6 @@ export const mostActiveOrganizationsConfig: LeaderboardConfig = {
     'These projects brought together the largest number of distinct contributing organizations in the past 12 months.',
   icon: 'buildings',
   dataDisplay: NumericDataDisplay,
-  columnLabel: 'Organizations (12M)',
+  columnLabel: 'Organizations (12m)',
   dataType: 'integer',
 };

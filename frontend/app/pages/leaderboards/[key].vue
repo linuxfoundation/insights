@@ -16,8 +16,8 @@ import LfxLeaderboardDetail from '~/components/modules/leaderboards/components/v
 const route = useRoute();
 const leaderboardKey = computed(() => route.params.key as string);
 
-const title = `${leaderboardKey.value} | Leaderboards | by Linux Foundation`;
-const description = `Explore the ${leaderboardKey.value} leaderboard on LFX Insights.`;
+const title = `${leaderboardKey.value} | Open Source Leaderboards | LFX Insights`;
+const description = `Explore the ${leaderboardKey.value} leaderboard on LFX Insights. Powered by the Linux Foundation.`;
 
 useSeoMeta({
   title,

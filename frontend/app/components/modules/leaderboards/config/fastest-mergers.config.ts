@@ -10,6 +10,6 @@ export const fastestMergersConfig: LeaderboardConfig = {
   description: 'These projects merge pull requests the fastest over the past 12 months.',
   icon: 'code-merge',
   dataDisplay: TimeDurationDisplay,
-  columnLabel: 'Median time to merge (12M)',
+  columnLabel: 'Median time to merge (12m)',
   dataType: 'duration',
 };

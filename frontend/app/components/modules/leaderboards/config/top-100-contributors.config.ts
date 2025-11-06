@@ -11,6 +11,6 @@ export const top100ContributorsConfig: LeaderboardConfig = {
     'Developers ranked by volume of contributions over the last 10 years, highlighting the most active and influential individuals.',
   icon: 'head-side-gear',
   dataDisplay: NumericDataDisplay,
-  columnLabel: 'Contributions (10Y)',
+  columnLabel: 'Contributions (10y)',
   dataType: 'integer',
 };

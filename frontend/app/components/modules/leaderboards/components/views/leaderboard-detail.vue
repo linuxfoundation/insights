@@ -58,7 +58,7 @@ SPDX-License-Identifier: MIT
   </div>
 
   <div class="container pt-60">
-    <div class="flex gap-10 pt-12">
+    <div class="flex gap-10 sm:pt-12 md:pt-20 pt-28">
       <div class="lg:w-1/5 w-1/4 md:block hidden min-w-50">&nbsp;</div>
       <div class="lg:w-3/5 md:w-3/4 w-full min-w-0">
         <lfx-leaderboard-table

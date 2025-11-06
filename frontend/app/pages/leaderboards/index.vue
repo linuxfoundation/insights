@@ -11,8 +11,9 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import LfxLeaderboardLanding from '~/components/modules/leaderboards/components/views/leaderboard-landing.vue';
 
-const title = 'Leaderboards | by Linux Foundation';
-const description = 'Explore the Linux Foundation Leaderboards on LFX Insights.';
+const title = 'Open Source Leaderboards | LFX Insights';
+const description =
+  'Explore leaderboards for the world’s most critical open source projects. Powered by the Linux Foundation.';
 
 useSeoMeta({
   title,
