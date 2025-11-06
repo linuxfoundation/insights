@@ -43,20 +43,30 @@ SPDX-License-Identifier: MIT
     </lfx-popover>
 
     <div v-else>
-      <lfx-input
-        v-model="searchQuery"
-        placeholder="Search projects..."
-        class="!border-none !bg-white !rounded-full h-9 !shadow-none"
-      >
-        <template #prefix>
-          <lfx-icon
-            name="search"
-            type="regular"
-            :size="14"
-            class="text-neutral-400"
-          />
-        </template>
-      </lfx-input>
+      <div class="relative">
+        <lfx-input
+          v-model="searchQuery"
+          placeholder="Search projects..."
+          class="!border-none !bg-white !rounded-full h-9 !shadow-none"
+        >
+          <template #prefix>
+            <lfx-icon
+              name="search"
+              type="regular"
+              :size="14"
+              class="text-neutral-400"
+            />
+          </template>
+        </lfx-input>
+
+        <lfx-icon
+          name="circle-xmark"
+          type="regular"
+          :size="14"
+          class="text-neutral-400 absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer"
+          @click="searchQuery = ''"
+        />
+      </div>
       <div
         v-if="searchQuery !== ''"
         class="h-px bg-neutral-100 w-full my-1"
