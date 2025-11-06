@@ -4,10 +4,13 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <!-- Leaderboard items -->
-  <div class="flex flex-col items-start w-full">
+  <div
+    class="flex flex-col items-start w-full"
+    v-bind="containerProps"
+  >
     <template v-if="!isForceLoading">
       <router-link
-        v-for="item in data"
+        v-for="{ data: item } in list"
         :key="item.rank"
         class="w-full"
         :to="`/project/${item.slug}`"
@@ -53,19 +56,27 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
+import { useVirtualList } from '@vueuse/core';
 import type { LeaderboardConfig } from '../../config/types/leaderboard.types';
 import LfxTableRow from './table-row.vue';
 import type { Leaderboard } from '~~/types/leaderboard/leaderboard';
 import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
 import LfxButton from '~/components/uikit/button/button.vue';
 
-defineProps<{
+const props = defineProps<{
   leaderboardConfig: LeaderboardConfig;
   isLoading: boolean;
   isForceLoading: boolean;
   data: Leaderboard[];
   hasNextPage: boolean;
 }>();
+
+const dataList = computed(() => props.data);
+
+const { list, containerProps } = useVirtualList(dataList, {
+  itemHeight: 74,
+});
 
 const emit = defineEmits<{
   (e: 'fetchNextPage'): void;
