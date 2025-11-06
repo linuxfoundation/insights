@@ -3,28 +3,27 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <router-link
+  <div
     v-for="item in items"
     :key="item.id"
-    :to="`/project/${item.slug}`"
+    class="flex items-center p-3 w-full hover:bg-neutral-50 rounded-lg transition-all duration-300 cursor-pointer"
+    @click="emit('itemClick', item)"
   >
-    <div class="flex items-center p-3 w-full hover:bg-neutral-50 rounded-lg transition-all duration-300 cursor-pointer">
-      <!-- Project info -->
-      <div class="flex-1 min-w-0 flex gap-3 items-center">
-        <lfx-avatar
-          :src="item.logoUrl"
-          type="organization"
-          :aria-label="item.logoUrl && item.name"
-          size="small"
-        />
-        <p class="text-base leading-5 font-medium text-neutral-900 overflow-hidden overflow-ellipsis">
-          {{ item.name }}
-        </p>
-      </div>
-      <!-- Rank -->
-      <div class="text-neutral-500 text-sm">#{{ item.rank }}</div>
+    <!-- Project info -->
+    <div class="flex-1 min-w-0 flex gap-3 items-center">
+      <lfx-avatar
+        :src="item.logoUrl"
+        type="organization"
+        :aria-label="item.logoUrl && item.name"
+        size="small"
+      />
+      <p class="text-base leading-5 font-medium text-neutral-900 overflow-hidden overflow-ellipsis">
+        {{ item.name }}
+      </p>
     </div>
-  </router-link>
+    <!-- Rank -->
+    <div class="text-neutral-500 text-sm">#{{ item.rank }}</div>
+  </div>
 
   <div
     v-if="items.length === 0 && isSuccess"
@@ -60,6 +59,10 @@ defineProps<{
   items: Leaderboard[];
   isSuccess: boolean;
   isLoading: boolean;
+}>();
+
+const emit = defineEmits<{
+  (e: 'itemClick', item: Leaderboard): void;
 }>();
 </script>
 

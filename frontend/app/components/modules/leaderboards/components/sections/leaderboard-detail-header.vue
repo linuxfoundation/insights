@@ -81,6 +81,7 @@ SPDX-License-Identifier: MIT
       <lfx-leaderboard-search
         :config="config"
         class="rounded-full border border-solid border-neutral-200"
+        @item-click="handleItemClick"
       />
     </div>
     <div class="md:hidden block w-full">
@@ -109,6 +110,7 @@ SPDX-License-Identifier: MIT
         class="bg-white"
         in-modal
         :config="config"
+        @item-click="handleItemClick"
       />
     </div>
   </lfx-modal>
@@ -126,6 +128,7 @@ import useScroll from '~/components/shared/utils/scroll';
 import { useShareStore } from '~/components/shared/modules/share/store/share.store';
 import { LfxRoutes } from '~/components/shared/types/routes';
 import LfxModal from '~/components/uikit/modal/modal.vue';
+import type { Leaderboard } from '~~/types/leaderboard/leaderboard';
 
 const { openShareModal } = useShareStore();
 const props = defineProps<{
@@ -148,6 +151,18 @@ watch(isSearchOpen, (newValue) => {
     });
   }
 });
+
+const emit = defineEmits<{
+  (e: 'itemClick', item: Leaderboard): void;
+}>();
+
+const handleItemClick = (item: Leaderboard) => {
+  // Close the mobile search modal if it's open
+  isSearchOpen.value = false;
+
+  // Forward the event to parent component
+  emit('itemClick', item);
+};
 
 const handleShare = () => {
   const title = `LFX Insights | Leaderboard - ${props.config?.name}`;

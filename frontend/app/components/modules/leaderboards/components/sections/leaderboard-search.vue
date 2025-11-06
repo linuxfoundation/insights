@@ -37,6 +37,7 @@ SPDX-License-Identifier: MIT
             :items="items"
             :is-success="isSuccess"
             :is-loading="isSearchPending && searchQuery !== ''"
+            @item-click="handleItemClick"
           />
         </lfx-card>
       </template>
@@ -75,6 +76,7 @@ SPDX-License-Identifier: MIT
         :items="items"
         :is-success="isSuccess"
         :is-loading="isSearchPending && searchQuery !== ''"
+        @item-click="handleItemClick"
       />
     </div>
   </div>
@@ -89,6 +91,7 @@ import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxInput from '~/components/uikit/input/input.vue';
 import LfxPopover from '~/components/uikit/popover/popover.vue';
 import LfxCard from '~/components/uikit/card/card.vue';
+import type { Leaderboard } from '~~/types/leaderboard/leaderboard';
 
 const props = defineProps<{
   config: LeaderboardConfig;
@@ -142,6 +145,19 @@ const items = computed(() => {
   // @ts-expect-error - TanStack Query type inference issue with Vue
   return searchData.value?.pages.flatMap((page: Pagination<Leaderboard>) => page.data) || [];
 });
+
+const emit = defineEmits<{
+  (e: 'itemClick', item: Leaderboard): void;
+}>();
+
+const handleItemClick = (item: Leaderboard) => {
+  // Close the search popover
+  isSearchOpen.value = false;
+  searchQuery.value = '';
+
+  // Emit the event to parent
+  emit('itemClick', item);
+};
 </script>
 
 <script lang="ts">

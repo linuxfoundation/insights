@@ -8,7 +8,7 @@ SPDX-License-Identifier: MIT
       <div
         ref="sidebarRef"
         class="md:w-1/5 w-full flex md:flex-col flex-row md:justify-start justify-between md:items-start items-center md:flex hidden min-w-50"
-        :class="scrollTop > 0 ? 'fixed bg-white pt-32 mt-2 top-0 z-10' : ''"
+        :class="scrollTop > 0 ? 'fixed bg-white pt-32 mt-2 top-0 z-[11]' : ''"
         :style="scrollTop > 0 && sidebarWidth ? { width: sidebarWidth + 'px' } : {}"
       >
         <router-link
@@ -31,7 +31,7 @@ SPDX-License-Identifier: MIT
       <lfx-maintain-height
         :scroll-top="scrollTop"
         :class="scrollTop > 0 ? 'fixed !w-full bg-white pt-22 top-0 left-0' : 'relative md:pt-0 pt-4'"
-        class="z-9 lg:w-3/5 md:w-3/4 w-full"
+        class="z-10 lg:w-3/5 md:w-3/4 w-full"
         :loaded="pageWidth > 0"
       >
         <div :class="[scrollTop > 1 ? 'container w-full md:pt-12 pt-8 flex gap-10' : '']">
@@ -46,7 +46,10 @@ SPDX-License-Identifier: MIT
             :class="[scrollTop > 1 ? 'lg:w-3/5 md:w-3/4 w-full' : 'w-full']"
           >
             <!-- Header section -->
-            <lfx-leaderboard-detail-header :config="leaderboardConfig" />
+            <lfx-leaderboard-detail-header
+              :config="leaderboardConfig"
+              @item-click="handleSearchItemClick"
+            />
 
             <!-- Table header -->
             <lfx-table-header
@@ -80,6 +83,7 @@ SPDX-License-Identifier: MIT
           :leaderboard-config="leaderboardConfig"
           :data="items"
           :is-loading="isPending || isFetchingNextPage"
+          :is-force-loading="isScrollingIntoRow"
           :has-next-page="hasNextPage"
           @fetch-next-page="fetchNextPage"
         />
@@ -90,7 +94,7 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, onServerPrefetch, ref, watch } from 'vue';
+import { computed, onMounted, onServerPrefetch, ref, watch, nextTick } from 'vue';
 import leaderboardConfigs from '../../config/index.config';
 import LfxLeaderboardTable from '../sections/leaderboard-table.vue';
 import type { LeaderboardConfig } from '../../config/types/leaderboard.types';
@@ -115,6 +119,7 @@ const { scrollTop } = useScroll();
 const { pageWidth } = useResponsive();
 const sidebarRef = ref<HTMLElement | null>(null);
 const sidebarWidth = ref<number>(0);
+const isScrollingIntoRow = ref<boolean>(false);
 
 onMounted(() => {
   if (sidebarRef.value) {
@@ -153,6 +158,68 @@ watch(pageWidth, () => {
     sidebarWidth.value = sidebarRef.value.offsetWidth;
   }
 });
+
+// Handle search item click to scroll to row
+const handleSearchItemClick = async (item: Leaderboard) => {
+  const targetRank = item.rank;
+  isScrollingIntoRow.value = true;
+
+  // Function to find and scroll to the row
+  const scrollToRow = () => {
+    const isRankInList = items.value.find((item: Leaderboard) => item.rank === targetRank);
+    if (isRankInList) {
+      isScrollingIntoRow.value = false;
+    } else {
+      return false;
+    }
+
+    const row = document.querySelector(`[data-rank="${targetRank}"]`);
+    if (row) {
+      row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+      // Add a brief highlight effect
+      const element = row as HTMLElement;
+      element.style.transition = 'background-color 0.3s ease';
+      element.style.backgroundColor = '#fef3c7'; // Light yellow highlight
+
+      setTimeout(() => {
+        element.style.backgroundColor = '';
+      }, 2000);
+
+      return true;
+    }
+    return false;
+  };
+
+  // First, try to find the row in the current view
+  if (scrollToRow()) {
+    return;
+  }
+
+  // If not found, we need to load more pages
+  const currentItemCount = items.value.length;
+
+  // Calculate how many pages we need to load
+  // If the target rank is beyond what we've loaded, keep loading
+  if (targetRank > currentItemCount) {
+    // Load pages until we have enough items
+    while (items.value.length < targetRank && hasNextPage.value) {
+      await fetchNextPage();
+
+      // Wait for the DOM to update
+      await nextTick();
+
+      // Check if the row is now available
+      if (scrollToRow()) {
+        return;
+      }
+    }
+  }
+
+  // Final attempt after all loading
+  await nextTick();
+  scrollToRow();
+};
 </script>
 
 <script lang="ts">

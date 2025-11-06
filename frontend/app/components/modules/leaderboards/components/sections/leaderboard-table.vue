@@ -5,27 +5,30 @@ SPDX-License-Identifier: MIT
 <template>
   <!-- Leaderboard items -->
   <div class="flex flex-col items-start w-full">
-    <router-link
-      v-for="item in data"
-      :key="item.rank"
-      class="w-full"
-      :to="`/project/${item.slug}`"
-    >
-      <lfx-table-row
-        :item="item"
-        :leaderboard-config="leaderboardConfig"
-        :is-small="false"
-      />
-    </router-link>
-    <template v-for="i in 10">
+    <template v-if="!isForceLoading">
+      <router-link
+        v-for="item in data"
+        :key="item.rank"
+        class="w-full"
+        :to="`/project/${item.slug}`"
+        :data-rank="item.rank"
+      >
+        <lfx-table-row
+          :item="item"
+          :leaderboard-config="leaderboardConfig"
+          :is-small="false"
+        />
+      </router-link>
+    </template>
+    <template v-for="i in 100">
       <div
-        v-if="isLoading"
+        v-if="isLoading || isForceLoading"
         :key="i"
         class="flex items-center p-3 w-full gap-3"
       >
         <div class="flex items-center justify-start">
           <div class="w-10 shrink-0 text-neutral-900 font-secondary">
-            {{ data.length + i }}
+            {{ (isForceLoading ? 0 : data.length) + i }}
           </div>
           <lfx-skeleton class="!w-12 !h-12" />
         </div>
@@ -58,6 +61,7 @@ import LfxButton from '~/components/uikit/button/button.vue';
 defineProps<{
   leaderboardConfig: LeaderboardConfig;
   isLoading: boolean;
+  isForceLoading: boolean;
   data: Leaderboard[];
   hasNextPage: boolean;
 }>();
