@@ -150,7 +150,7 @@ watch(isSearchOpen, (newValue) => {
 });
 
 const handleShare = () => {
-  const title = `${props.config?.name} Leaderboard | LFX Insights`;
+  const title = `LFX Insights | Leaderboard - ${props.config?.name}`;
 
   const url = new URL(window.location.href);
   url.hash = '';

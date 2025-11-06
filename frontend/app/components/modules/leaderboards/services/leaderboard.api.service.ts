@@ -18,7 +18,7 @@ export interface LeaderboardDetailQueryParams {
   initialPageSize?: number;
 }
 
-const DEFAULT_PAGE_SIZE = 10;
+const DEFAULT_PAGE_SIZE = 100;
 class LeaderboardApiService {
   async prefetchLeaderboardDetails(params: ComputedRef<LeaderboardDetailQueryParams>) {
     const queryClient = useQueryClient();
