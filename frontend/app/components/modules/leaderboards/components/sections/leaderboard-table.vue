@@ -75,7 +75,7 @@ const props = defineProps<{
 const dataList = computed(() => props.data);
 
 const { list, containerProps } = useVirtualList(dataList, {
-  itemHeight: 74,
+  itemHeight: 60,
 });
 
 const emit = defineEmits<{

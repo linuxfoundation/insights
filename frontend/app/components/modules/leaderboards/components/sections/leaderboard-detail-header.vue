@@ -17,14 +17,8 @@ SPDX-License-Identifier: MIT
       </router-link>
     </div>
     <!-- Icon and Share button -->
-    <div
-      class="flex justify-between w-full"
-      :class="[scrollTop > 50 ? 'items-center' : 'items-start']"
-    >
-      <div
-        class="flex transition-all ease-linear"
-        :class="[scrollTop > 50 ? 'flex-row gap-4 items-center' : 'flex-col gap-3']"
-      >
+    <div class="flex justify-between w-full items-start">
+      <div class="flex transition-all ease-linear flex-col gap-3">
         <div
           :class="[scrollTop > 50 ? 'size-10' : 'size-12']"
           class="transition-all ease-linear bg-white border border-neutral-200 rounded-lg flex items-center justify-center"
@@ -38,7 +32,7 @@ SPDX-License-Identifier: MIT
 
         <div class="flex flex-col gap-1">
           <h1
-            :class="[scrollTop > 50 ? 'text-2xl' : 'text-3xl']"
+            :class="[scrollTop > 50 ? 'text-2xl ml-13 -mt-12' : 'text-3xl']"
             class="transition-all ease-linear font-light font-secondary text-neutral-900 md:block hidden"
           >
             {{ config?.name }}
@@ -55,7 +49,7 @@ SPDX-License-Identifier: MIT
           </p>
         </div>
       </div>
-      <div :class="[scrollTop > 50 ? 'mt-0' : 'mt-1']">
+      <div class="mt-1">
         <div class="md:block hidden">
           <lfx-button
             type="tertiary"
