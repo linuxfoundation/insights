@@ -22,14 +22,14 @@ const leaderboardConfigs: LeaderboardConfig[] = [
   // top100OrganizationsConfig,
   mostActiveContributorsConfig,
   mostActiveOrganizationsConfig,
-  longestRunningConfig,
   commitActivityConfig,
-  focusedTeamsConfig,
-  smallTeamsMassiveOutputConfig,
+  longestRunningConfig,
   codebaseSizeConfig,
   // fastestRespondersConfig,
   fastestMergersConfig,
+  focusedTeamsConfig,
   resolutionRateConfig,
+  smallTeamsMassiveOutputConfig,
 ];
 
 export default leaderboardConfigs;

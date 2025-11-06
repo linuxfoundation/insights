@@ -3,20 +3,22 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="flex gap-1 items-center">
-    <lfx-icon
-      :name="getTrendIcon"
-      type="solid"
-      :size="12"
-      :class="getTrendColor"
-    />
-    <span
-      class="text-xs leading-[15px] font-medium"
-      :class="getTrendColor"
-    >
-      {{ trendPercentage }}% ({{ formatTrendValue }})
-    </span>
-  </div>
+  <lfx-tooltip content="vs. previous 12M period">
+    <div class="flex gap-1 items-center">
+      <lfx-icon
+        :name="getTrendIcon"
+        type="solid"
+        :size="12"
+        :class="getTrendColor"
+      />
+      <span
+        class="text-xs leading-[15px] font-medium"
+        :class="getTrendColor"
+      >
+        {{ trendPercentage }}% ({{ formatTrendValue }})
+      </span>
+    </div>
+  </lfx-tooltip>
 </template>
 
 <script setup lang="ts">
@@ -25,6 +27,7 @@ import type { LeaderboardDataType } from '../../config/types/leaderboard.types';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import type { Leaderboard } from '~~/types/leaderboard/leaderboard';
 import { formatNumber, formatNumberShort, formatValueToLargestUnitDuration } from '~/components/shared/utils/formatter';
+import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
 
 const props = withDefaults(
   defineProps<{
