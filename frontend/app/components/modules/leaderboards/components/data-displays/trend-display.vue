@@ -21,6 +21,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import type { LeaderboardDataType } from '../../config/types/leaderboard.types';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import type { Leaderboard } from '~~/types/leaderboard/leaderboard';
 import { formatNumber, formatNumberShort, formatValueToLargestUnitDuration } from '~/components/shared/utils/formatter';
@@ -29,15 +30,18 @@ const props = withDefaults(
   defineProps<{
     data: Leaderboard;
     isReverse?: boolean;
-    isTimeDisplay?: boolean;
-    isDataDuration?: boolean;
+    dataType: LeaderboardDataType;
+    decimals?: number;
   }>(),
   {
     isReverse: false,
-    isTimeDisplay: false,
-    isDataDuration: false,
+    decimals: 0,
   },
 );
+
+const isTimeDisplay = computed(() => {
+  return props.dataType === 'duration' || props.dataType === 'timestamp';
+});
 
 const trend = computed(() => {
   return props.data.value - props.data.previousPeriodValue;
@@ -54,15 +58,15 @@ const trendPercentage = computed(() => {
 
 const formatTrendValue = computed(() => {
   const sign = trend.value >= 0 ? '+' : '-';
-  if (props.isTimeDisplay) {
-    return `${sign}${formatValueToLargestUnitDuration(Math.abs(trend.value), 2, props.isDataDuration)}`;
+  if (isTimeDisplay.value) {
+    return `${sign}${formatValueToLargestUnitDuration(Math.abs(trend.value), 2, props.dataType === 'duration')}`;
   }
 
   if (trend.value >= 1000000) {
     return formatNumberShort(trend.value);
   }
 
-  return `${sign}${formatNumber(Math.abs(trend.value))}`;
+  return `${sign}${formatNumber(Math.abs(trend.value), props.decimals)}`;
 });
 
 const trendDirection = computed(() => {

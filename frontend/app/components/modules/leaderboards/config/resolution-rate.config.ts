@@ -12,4 +12,6 @@ export const resolutionRateConfig: LeaderboardConfig = {
   icon: 'rocket-launch',
   dataDisplay: NumericDataDisplay,
   columnLabel: 'PR/Issue ratio',
+  dataType: 'float',
+  decimals: 2,
 };

@@ -4,13 +4,13 @@
 import NumericDataDisplay from '../components/data-displays/numeric.vue';
 import type { LeaderboardConfig } from './types/leaderboard.types';
 
-export const mostActiveOrganizationsConfig: LeaderboardConfig = {
-  key: 'active-organizations',
-  name: 'Most active organizations',
+export const top100OrganizationsConfig: LeaderboardConfig = {
+  key: 'top-100-organizations',
+  name: 'Top 100 organizations',
   description:
-    'These projects brought together the largest number of distinct contributing organizations in the past 12 months.',
-  icon: 'buildings',
+    'Most influential organizations based on the total number of contributions made over the last 10 years.',
+  icon: 'chart-network',
   dataDisplay: NumericDataDisplay,
-  columnLabel: 'Organizations (12M)',
+  columnLabel: 'Contributors (10Y)',
   dataType: 'integer',
 };

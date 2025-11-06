@@ -12,4 +12,5 @@ export const commitActivityConfig: LeaderboardConfig = {
   icon: 'code-commit',
   dataDisplay: NumericDataDisplay,
   columnLabel: 'Commits (12M)',
+  dataType: 'integer',
 };

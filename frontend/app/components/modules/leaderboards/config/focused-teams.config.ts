@@ -12,4 +12,6 @@ export const focusedTeamsConfig: LeaderboardConfig = {
   dataDisplay: NumericDataDisplay,
   columnLabel: 'Avg. commits per author',
   columnTooltip: 'For projects with 10+ authors',
+  dataType: 'float',
+  decimals: 1,
 };

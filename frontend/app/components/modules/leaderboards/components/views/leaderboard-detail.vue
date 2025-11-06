@@ -151,9 +151,6 @@ const { data, isPending, isFetchingNextPage, fetchNextPage, hasNextPage } =
 const items = computed(() => {
   // @ts-expect-error - TanStack Query type inference issue with Vue
   const tmpList = data.value?.pages.flatMap((page: Pagination<Leaderboard>) => page.data) || [];
-  if (leaderboardConfig.value && leaderboardConfig.value.dataTransform) {
-    return tmpList.map((item: Leaderboard) => leaderboardConfig.value.dataTransform!(item));
-  }
 
   return tmpList;
 });

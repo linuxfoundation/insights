@@ -12,4 +12,5 @@ export const fastestRespondersConfig: LeaderboardConfig = {
   icon: 'comment-check',
   dataDisplay: TimeDurationDisplay,
   columnLabel: 'Median time to 1st response (12M)',
+  dataType: 'duration',
 };

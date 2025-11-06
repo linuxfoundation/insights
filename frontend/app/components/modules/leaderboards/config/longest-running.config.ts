@@ -13,4 +13,5 @@ export const longestRunningConfig: LeaderboardConfig = {
   columnLabel: 'Time since first commit',
   columnTooltip: 'For projects with at least 1 commit in the last 12 months',
   hideTrend: true,
+  dataType: 'timestamp',
 };

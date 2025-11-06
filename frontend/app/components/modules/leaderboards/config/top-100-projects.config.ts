@@ -4,14 +4,12 @@
 import NumericDataDisplay from '../components/data-displays/numeric.vue';
 import type { LeaderboardConfig } from './types/leaderboard.types';
 
-export const codebaseSizeConfig: LeaderboardConfig = {
-  key: 'codebase-size',
-  name: 'Codebase size',
-  description:
-    'These projects maintain the largest codebases measured by total source lines of code.',
-  icon: 'laptop-code',
+export const top100ProjectsConfig: LeaderboardConfig = {
+  key: 'top-100-projects',
+  name: 'Top 100 projects',
+  description: 'Open source projects ranked by the total number of contributors.',
+  icon: 'trophy',
   dataDisplay: NumericDataDisplay,
-  columnLabel: 'Lines of code',
-  hideTrend: true,
+  columnLabel: 'Contributors',
   dataType: 'integer',
 };

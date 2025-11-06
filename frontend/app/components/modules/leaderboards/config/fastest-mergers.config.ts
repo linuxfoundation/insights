@@ -11,5 +11,5 @@ export const fastestMergersConfig: LeaderboardConfig = {
   icon: 'code-merge',
   dataDisplay: TimeDurationDisplay,
   columnLabel: 'Median time to merge (12M)',
-  isDataDuration: true,
+  dataType: 'duration',
 };

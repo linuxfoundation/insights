@@ -9,14 +9,18 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import type { LeaderboardDataType } from '../../config/types/leaderboard.types';
 import { formatNumber } from '~/components/shared/utils/formatter';
 
 const props = withDefaults(
   defineProps<{
     value: number;
+    dataType: LeaderboardDataType;
+    decimals?: number;
   }>(),
   {
     value: 0,
+    decimals: 0,
   },
 );
 
@@ -29,7 +33,7 @@ const formattedNumeric = computed(() => {
     return '0';
   }
 
-  return formatNumber(props.value);
+  return formatNumber(props.value, props.decimals);
 });
 </script>
 

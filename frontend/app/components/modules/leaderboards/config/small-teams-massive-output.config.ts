@@ -13,4 +13,5 @@ export const smallTeamsMassiveOutputConfig: LeaderboardConfig = {
   dataDisplay: NumericDataDisplay,
   columnLabel: 'Commits',
   columnTooltip: 'For projects with ≤50 contributors',
+  dataType: 'integer',
 };

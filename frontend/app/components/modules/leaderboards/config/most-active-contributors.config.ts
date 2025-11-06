@@ -12,4 +12,5 @@ export const mostActiveContributorsConfig: LeaderboardConfig = {
   icon: 'people-group',
   dataDisplay: NumericDataDisplay,
   columnLabel: 'Contributors (12M)',
+  dataType: 'integer',
 };

@@ -32,7 +32,6 @@ import leaderboardConfigs from '../../config/index.config';
 import LfxLeaderboardCard from '../sections/leaderboard-card.vue';
 import { LEADERBOARD_API_SERVICE } from '../../services/leaderboard.api.service';
 import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
-import type { Leaderboard } from '~~/types/leaderboard/leaderboard';
 
 const { data, isPending } = LEADERBOARD_API_SERVICE.fetchLeaderboardLanding();
 
@@ -42,9 +41,6 @@ const leaderboardsByType = computed(() => {
 
 const getLeaderboardsByType = (leaderboardType: string) => {
   const config = leaderboardConfigs.find((config) => config.key === leaderboardType);
-  if (config && config.dataTransform) {
-    return (leaderboardsByType.value[leaderboardType] || []).map((item: Leaderboard) => config.dataTransform!(item));
-  }
   return leaderboardsByType.value[leaderboardType] || [];
 };
 </script>
