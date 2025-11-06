@@ -49,32 +49,34 @@ SPDX-License-Identifier: MIT
           </div>
           <p
             :class="[scrollTop < 50 ? 'block' : 'hidden']"
-            class="transition-all ease-linear text-sm text-neutral-500 w-full whitespace-pre-wrap"
+            class="transition-all ease-linear text-sm text-neutral-500 w-full whitespace-pre-wrap h-10"
           >
             {{ config?.description }}
           </p>
         </div>
       </div>
-      <div class="md:block hidden">
-        <lfx-button
-          type="tertiary"
-          size="small"
-          button-style="pill"
-          class="h-9"
-          @click="handleShare"
-        >
-          <lfx-icon
-            name="share-nodes"
-            :size="16"
+      <div :class="[scrollTop > 50 ? 'mt-0' : 'mt-1']">
+        <div class="md:block hidden">
+          <lfx-button
+            type="tertiary"
+            size="small"
+            button-style="pill"
+            class="h-9"
+            @click="handleShare"
+          >
+            <lfx-icon
+              name="share-nodes"
+              :size="16"
+            />
+            Share
+          </lfx-button>
+        </div>
+        <div class="md:!hidden block">
+          <lfx-icon-button
+            icon="share-nodes"
+            @click="handleShare"
           />
-          Share
-        </lfx-button>
-      </div>
-      <div class="md:!hidden block">
-        <lfx-icon-button
-          icon="share-nodes"
-          @click="handleShare"
-        />
+        </div>
       </div>
     </div>
 

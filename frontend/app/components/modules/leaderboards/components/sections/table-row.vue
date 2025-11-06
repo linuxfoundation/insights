@@ -6,7 +6,7 @@ SPDX-License-Identifier: MIT
   <div
     class="flex items-center w-full"
     :class="{
-      'hover:bg-neutral-50 rounded-lg transition-all duration-300 cursor-pointer p-3': !isSmall,
+      'hover:bg-neutral-50 rounded-lg transition-all duration-300 cursor-pointer px-3 h-15': !isSmall,
     }"
   >
     <!-- Rank -->

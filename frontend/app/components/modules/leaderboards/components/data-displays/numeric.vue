@@ -12,7 +12,11 @@ SPDX-License-Identifier: MIT
   >
     <span class="cursor-pointer">{{ formattedNumeric }}</span>
   </lfx-tooltip>
-  <span v-else>{{ formattedNumeric }}</span>
+  <span
+    v-else
+    class="leading-5"
+    >{{ formattedNumeric }}</span
+  >
 </template>
 
 <script setup lang="ts">
