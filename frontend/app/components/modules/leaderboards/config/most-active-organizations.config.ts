@@ -13,4 +13,7 @@ export const mostActiveOrganizationsConfig: LeaderboardConfig = {
   dataDisplay: NumericDataDisplay,
   columnLabel: 'Organizations (12m)',
   dataType: 'integer',
+  seoTitle: 'Open Source Projects With Most Active Organizations',
+  seoDescription:
+    'Leaderboard of open source projects with the largest number of distinct contributing organizations in the past 12 months.',
 };

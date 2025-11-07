@@ -13,4 +13,7 @@ export const focusedTeamsConfig: LeaderboardConfig = {
   columnLabel: 'Avg. commits per author',
   columnTooltip: 'For projects with 10+ authors',
   dataType: 'integer',
+  seoTitle: 'Most Focused Open Source Teams',
+  seoDescription:
+    'Leaderboard of open source projects with the highest productivity per contributor.',
 };

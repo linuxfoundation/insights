@@ -14,4 +14,6 @@ export const longestRunningConfig: LeaderboardConfig = {
   columnTooltip: 'For projects with at least 1 commit in the last 12 months',
   hideTrend: true,
   dataType: 'timestamp',
+  seoTitle: 'Longest-Running Open Source Projects',
+  seoDescription: 'Leaderboard of open source projects that have been maintained the longest.',
 };

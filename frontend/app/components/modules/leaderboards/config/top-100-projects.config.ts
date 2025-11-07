@@ -12,4 +12,8 @@ export const top100ProjectsConfig: LeaderboardConfig = {
   dataDisplay: NumericDataDisplay,
   columnLabel: 'Contributors',
   dataType: 'integer',
+  // TODO: Add seo title from Jonathan, these are not in the document he shared
+  seoTitle: 'Open Source Projects With Top 100 Contributors',
+  seoDescription:
+    'Leaderboard of open source projects with the most active and influential individuals.',
 };

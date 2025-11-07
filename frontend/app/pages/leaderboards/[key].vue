@@ -12,12 +12,15 @@ SPDX-License-Identifier: MIT
 import { useRoute } from 'nuxt/app';
 import { computed } from 'vue';
 import LfxLeaderboardDetail from '~/components/modules/leaderboards/components/views/leaderboard-detail.vue';
+import leaderboardConfigs from '~/components/modules/leaderboards/config/index.config';
 
 const route = useRoute();
 const leaderboardKey = computed(() => route.params.key as string);
 
-const title = `${leaderboardKey.value} | Open Source Leaderboards | LFX Insights`;
-const description = `Explore the ${leaderboardKey.value} leaderboard on LFX Insights. Powered by the Linux Foundation.`;
+const leaderboardConfig = computed(() => leaderboardConfigs.find((config) => config.key === leaderboardKey.value));
+
+const title = `${leaderboardConfig.value?.seoTitle} | Open Source Leaderboards | LFX Insights`;
+const description = leaderboardConfig.value?.seoDescription;
 
 useSeoMeta({
   title,
