@@ -1,11 +1,12 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import type { ProjectInsights } from '~~/types/project';
+import type { ProjectInsights, ProjectTinybird } from '~~/types/project';
 import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
 import { useApiTrackEvent } from '~~/server/utils/plausible';
+import { SearchResponse } from '~~/server/api/search';
 
 export default defineEventHandler(async (event) => {
-  const { slug } = event.context.params as Record<string, string>;
+  let { slug } = event.context.params as Record<string, string>;
 
   if (!slug) {
     throw createError({
@@ -15,6 +16,30 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
+    // Check if project exists
+    const project = await fetchFromTinybird<ProjectTinybird[]>('/v0/pipes/projects_list.json', {
+      slug,
+      details: false,
+      page: 0,
+      pageSize: 1,
+    });
+    // If project doesn't exist, search for it
+    if (!project.data?.length) {
+      const searchResult = await fetchFromTinybird<ProjectTinybird[]>(
+        '/v0/pipes/projects_list.json',
+        {
+          search: slug.replaceAll('-', ' '),
+          details: false,
+          page: 0,
+          pageSize: 1,
+          orderByField: 'contributorCount',
+          orderByDirection: 'desc',
+        },
+      );
+      const searchProject = searchResult.data?.[0];
+      slug = searchProject?.slug || slug;
+    }
+
     const response = await fetchFromTinybird<ProjectInsights[]>('/v0/pipes/project_insights.json', {
       slug,
     });
