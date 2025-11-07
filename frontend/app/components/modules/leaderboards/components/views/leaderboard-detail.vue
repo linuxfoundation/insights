@@ -185,10 +185,10 @@ const handleSearchItemClick = async (item: Leaderboard) => {
       // Add a brief highlight effect
       const element = row as HTMLElement;
       element.style.transition = 'background-color 0.3s ease';
-      element.classList.add('bg-neutral-50');
+      element.classList.add('bg-brand-100');
 
       setTimeout(() => {
-        element.classList.remove('bg-neutral-50');
+        element.classList.remove('bg-brand-100');
       }, 2000);
 
       return true;

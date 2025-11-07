@@ -4,7 +4,12 @@ SPDX-License-Identifier: MIT
 -->
 
 <template>
+  <template v-if="dataType === 'duration'">
+    <span v-if="value">{{ formattedDuration }}</span>
+    <span v-else>-</span>
+  </template>
   <lfx-tooltip
+    v-else
     :content="dateFormatted"
     class="!w-full flex justify-end"
     placement="top-end"

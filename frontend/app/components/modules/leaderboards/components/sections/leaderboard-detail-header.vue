@@ -4,7 +4,10 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <div class="flex flex-col gap-6 items-start w-full pb-4">
-    <div class="md:hidden block">
+    <div
+      v-if="scrollTop < 50"
+      class="md:hidden block"
+    >
       <router-link
         :to="{ name: LfxRoutes.LEADERBOARDS }"
         class="flex items-center gap-1 text-xs text-neutral-500 hover:text-neutral-900 hover:font-medium transition-all duration-100"
@@ -38,7 +41,10 @@ SPDX-License-Identifier: MIT
             {{ config?.name }}
           </h1>
           <!-- Sidebar navigation -->
-          <div class="md:hidden flex justify-start">
+          <div
+            class="md:hidden flex justify-start"
+            :class="[scrollTop > 50 ? 'ml-13 -mt-12' : '']"
+          >
             <lfx-leaderboard-mobile-nav :leaderboard-key="config.key" />
           </div>
           <p
