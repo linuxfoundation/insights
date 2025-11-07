@@ -13,4 +13,7 @@ export const fastestRespondersConfig: LeaderboardConfig = {
   dataDisplay: TimeDurationDisplay,
   columnLabel: 'Median time to 1st response (12m)',
   dataType: 'duration',
+  seoTitle: 'Open Source Projects With Fastest Responders',
+  seoDescription:
+    'Leaderboard of open source projects with the shortest median time to first response on issues.',
 };

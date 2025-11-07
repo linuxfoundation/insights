@@ -13,4 +13,7 @@ export const commitActivityConfig: LeaderboardConfig = {
   dataDisplay: NumericDataDisplay,
   columnLabel: 'Commits (12m)',
   dataType: 'integer',
+  seoTitle: 'Open Source Projects With Highest Commit Activity',
+  seoDescription:
+    'Leaderboard of open source projects with the most commits during the past 12 months.',
 };

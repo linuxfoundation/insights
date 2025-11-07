@@ -13,4 +13,7 @@ export const mostActiveContributorsConfig: LeaderboardConfig = {
   dataDisplay: NumericDataDisplay,
   columnLabel: 'Contributors (12m)',
   dataType: 'integer',
+  seoTitle: 'Open Source Projects With Most Active Contributors',
+  seoDescription:
+    'Leaderboard of open source projects with the highest number of unique contributors over the past 12 months.',
 };

@@ -12,4 +12,6 @@ export const fastestMergersConfig: LeaderboardConfig = {
   dataDisplay: TimeDurationDisplay,
   columnLabel: 'Median time to merge (12m)',
   dataType: 'duration',
+  seoTitle: 'Open Source Projects With Fastest Mergers',
+  seoDescription: 'Leaderboard of open source projects that merge pull requests the fastest.',
 };

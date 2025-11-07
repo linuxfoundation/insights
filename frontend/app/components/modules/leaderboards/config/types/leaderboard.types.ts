@@ -15,6 +15,8 @@ export interface LeaderboardConfig {
   hideTrend?: boolean;
   dataType: LeaderboardDataType;
   decimals?: number;
+  seoTitle: string;
+  seoDescription: string;
 }
 
 export interface LeaderboardLandingResponse {

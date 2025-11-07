@@ -14,4 +14,7 @@ export const codebaseSizeConfig: LeaderboardConfig = {
   columnLabel: 'Lines of code',
   hideTrend: true,
   dataType: 'integer',
+  seoTitle: 'Open Source Projects With Largest Codebase',
+  seoDescription:
+    'Leaderboard of open source projects that maintain the largest codebases measured by total source lines of code.',
 };
