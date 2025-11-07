@@ -16,13 +16,14 @@ SPDX-License-Identifier: MIT
         class="text-xs font-medium text-nowrap"
         :class="getTrendColor"
       >
-        {{ trendPercentage }}% ({{ formatTrendValue }})
+        {{ trendPercentage }}%
+        <span class="hidden sm:inline"> ({{ formatTrendValue }}) </span>
       </span>
       <span
         v-else
         class="text-xs font-medium text-neutral-400"
       >
-        = 0%
+        0%
       </span>
     </div>
   </lfx-tooltip>
@@ -95,7 +96,7 @@ const getTrendIcon = computed(() => {
 });
 
 const getTrendColor = computed(() => {
-  if (trendDirection.value === 'neutral') return 'text-brand-500';
+  if (trendDirection.value === 'neutral') return 'text-neutral-400';
 
   const isUp = trendDirection.value === 'up';
   const shouldBePositive = props.isReverse ? !isUp : isUp;

@@ -4,7 +4,7 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <lfx-card
-    class="p-5 flex-1 flex flex-col justify-between h-full min-w-0 hover:shadow-sm transition-all"
+    class="p-5 flex-1 flex flex-col justify-between h-full min-w-0 sm:hover:shadow-sm transition-all"
     @mouseenter="isHovered = true"
     @mouseleave="isHovered = false"
   >
@@ -17,12 +17,14 @@ SPDX-License-Identifier: MIT
             :size="16"
           />
         </div>
-        <lfx-icon-button
-          v-show="isHovered"
-          type="transparent"
-          icon="share-nodes"
-          @click="handleShare"
-        />
+        <div class="hidden sm:block">
+          <lfx-icon-button
+            v-show="isHovered"
+            type="transparent"
+            icon="share-nodes"
+            @click="handleShare"
+          />
+        </div>
       </div>
 
       <div class="flex flex-col gap-1">
@@ -54,7 +56,7 @@ SPDX-License-Identifier: MIT
           v-for="project of leaderboards"
           :key="project.slug"
           type="bordered"
-          class="transition hover:bg-neutral-100 cursor-pointer"
+          class="transition hover:bg-neutral-100 cursor-pointer max-w-[350px]"
           @click.prevent="router.push({ name: LfxRoutes.LEADERBOARD, params: { key: config.key as string } })"
         >
           <lfx-avatar
@@ -63,7 +65,7 @@ SPDX-License-Identifier: MIT
             type="organization"
             :aria-label="project.logoUrl && project.name"
           />
-          {{ project.name }}
+          <span class="truncate min-w-0 w-full">{{ project.name }}</span>
         </lfx-chip>
       </div>
     </div>
