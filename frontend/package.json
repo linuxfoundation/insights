@@ -44,7 +44,7 @@
     "@vuelidate/core": "^2.0.3",
     "@vuelidate/validators": "^2.0.4",
     "@vueuse/core": "^14.0.0",
-    "ai": "^4.3.19",
+    "ai": "^5.0.52",
     "echarts": "^6.0.0",
     "extract-first-json": "^2.0.2",
     "html2canvas": "^1.4.1",
