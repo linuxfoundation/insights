@@ -3,7 +3,6 @@
 import type { ProjectInsights, ProjectTinybird } from '~~/types/project';
 import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
 import { useApiTrackEvent } from '~~/server/utils/plausible';
-import { SearchResponse } from '~~/server/api/search';
 
 export default defineEventHandler(async (event) => {
   let { slug } = event.context.params as Record<string, string>;
