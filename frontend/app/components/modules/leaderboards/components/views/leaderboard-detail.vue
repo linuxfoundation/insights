@@ -7,7 +7,7 @@ SPDX-License-Identifier: MIT
     <div class="container flex md:gap-10 gap-0 md:flex-row flex-col">
       <div
         ref="sidebarRef"
-        class="md:w-1/5 w-full flex md:flex-col flex-row md:justify-start justify-between md:items-start items-center md:flex hidden min-w-50 fixed bg-white pt-32 mt-2 top-0 z-[11]"
+        class="w-1/5 flex flex-col justify-between items-start md:flex hidden min-w-50 fixed bg-white pt-32 mt-2 top-0 z-[11]"
         :style="{ width: sidebarWidth + 'px' }"
       >
         <router-link

@@ -25,6 +25,10 @@ export const lfxFooterMenu: FooterMenuSection[] = [
     title: 'LFX Insights',
     links: [
       {
+        name: 'Leaderboards',
+        route: LfxRoutes.LEADERBOARDS,
+      },
+      {
         name: 'Collections',
         route: LfxRoutes.COLLECTIONS,
       },
