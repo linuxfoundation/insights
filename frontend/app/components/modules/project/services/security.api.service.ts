@@ -17,10 +17,8 @@ class SecurityApiService {
       params.value.projectSlug,
       params.value.repos,
     ]);
-    const queryFn = this.securityAssessmentQueryFn(() => ({
-      projectSlug: params.value.projectSlug,
-      repos: params.value.repos,
-    }));
+
+    const queryFn = this.securityAssessmentQueryFn(params);
 
     return useQuery<SecurityData[]>({
       queryKey,
@@ -29,15 +27,15 @@ class SecurityApiService {
   }
 
   securityAssessmentQueryFn(
-    query: () => Record<string, string | number | boolean | undefined | string[] | null>,
+    params: ComputedRef<SecurityAssessmentQueryParams>,
   ): QueryFunction<SecurityData[]> {
-    const { projectSlug, repos } = query();
-    return async () =>
-      await $fetch(`/api/project/${projectSlug}/security/assessment`, {
-        params: {
-          repos,
-        },
+    return async () => {
+      const { projectSlug, repos } = params.value;
+
+      return await $fetch(`/api/project/${projectSlug}/security/assessment`, {
+        params: { repos },
       });
+    };
   }
 }
 
