@@ -4,6 +4,7 @@ import {
   type SecurityData,
   SecurityDataResult,
   type SecurityAssessmentData,
+  SecurityDataCategory,
 } from '~~/types/security/responses.types';
 import {
   lfxOspsBaselineScore,
@@ -36,7 +37,12 @@ class ProjectSecurityService {
 
     const filteredCheck = ['OSPS-AC-01'];
 
-    return data.filter((item) => !filteredCheck.includes(item.controlId));
+    return data.filter(
+      (item) =>
+        !filteredCheck.includes(item.controlId) &&
+        item.category !== SecurityDataCategory.DOCUMENTATION &&
+        item.category !== SecurityDataCategory.VULNERABILITY_MANAGEMENT,
+    );
   }
 
   hasSecurityMdFile(data: SecurityData[]): boolean {
