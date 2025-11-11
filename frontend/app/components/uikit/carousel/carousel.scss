@@ -27,12 +27,6 @@
     &:disabled {
       @apply opacity-50 cursor-not-allowed;
     }
-    &-prev {
-      /* @apply xl:-left-16 md:-left-5 -left-3; */
-    }
-    &-next {
-      /* @apply xl:-right-16 md:-right-5 -right-3; */
-    }
   }
 
   .carousel-dots {
