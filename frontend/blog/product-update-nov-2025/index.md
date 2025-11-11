@@ -30,7 +30,7 @@ You can explore [all leaderboards](https://insights.linuxfoundation.org/leaderbo
 
 ## Generate a security-insights.yml
 
-LFX Insights now supports generating a security-insights.yml, providing a standardized way for projects to document and share their security practices.
+LFX Insights now supports generating a `security-insights.yml`, providing a standardized way for projects to document and share their security practices.
 
 The YAML file aligns with the [OpenSSF Security Insights specification](https://github.com/ossf/security-insights) and helps projects:
 - Maintain consistent security documentation across repositories  
