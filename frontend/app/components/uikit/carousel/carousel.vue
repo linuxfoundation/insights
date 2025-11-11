@@ -4,6 +4,22 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <div class="lfx-carousel">
+    <div class="flex justify-between items-center gap-4">
+      <div class="flex-1">
+        <slot name="header" />
+      </div>
+      <div class="items-center gap-4 border-l border-neutral-200 pl-4 sm:flex hidden">
+        <!-- Navigation buttons -->
+        <lfx-carousel-navigation
+          :can-go-prev="canGoPrev"
+          :can-go-next="canGoNext"
+          :disabled="isDragging"
+          @next="goToNext"
+          @previous="goToPrev"
+        />
+      </div>
+    </div>
+
     <div
       ref="carouselContainer"
       class="carousel-container"
@@ -20,6 +36,7 @@ SPDX-License-Identifier: MIT
           v-for="(item, index) in displayItems"
           :key="`carousel-item-${index}`"
           class="carousel-item"
+          :class="[activeItemClass(index)]"
           :style="itemStyle"
         >
           <slot
@@ -31,18 +48,11 @@ SPDX-License-Identifier: MIT
       </div>
     </div>
 
-    <!-- Navigation buttons -->
-    <lfx-carousel-navigation
-      :can-go-prev="canGoPrev"
-      :can-go-next="canGoNext"
-      :disabled="isDragging"
-      @next="goToNext"
-      @previous="goToPrev"
-    />
+    <slot name="footer" />
 
     <!-- Dots indicator -->
     <div
-      v-if="showDots"
+      v-if="showDots && props.showPagination"
       class="carousel-dots"
     >
       <button
@@ -65,6 +75,7 @@ import LfxCarouselNavigation from './carousel-navigation.vue';
 
 const props = withDefaults(defineProps<CarouselProps>(), {
   circular: false,
+  showPagination: false,
 });
 
 // Reactive references
@@ -146,7 +157,9 @@ const itemStyle = computed(() => ({
 
 // Methods
 const updateResponsiveSettings = () => {
-  const width = window.innerWidth;
+  // Use the container's actual width instead of window.innerWidth
+  // This ensures responsive mode in dev tools works correctly
+  const width = carouselContainer.value?.offsetWidth || window.innerWidth;
 
   for (let i = 0; i < responsiveOptions.length; i += 1) {
     if (responsiveOptions[i] && width >= responsiveOptions[i]!.breakpoint) {
@@ -159,6 +172,11 @@ const updateResponsiveSettings = () => {
   // Adjust current index if needed
   if (currentIndex.value >= totalItems.value - itemsPerView.value + 1) {
     currentIndex.value = Math.max(0, totalItems.value - itemsPerView.value);
+  }
+
+  // Update container width for drag calculations
+  if (carouselContainer.value) {
+    containerWidth.value = carouselContainer.value.offsetWidth;
   }
 };
 
@@ -184,6 +202,30 @@ const goToNext = () => {
 
 const goToPage = (page: number) => {
   currentIndex.value = Math.min(page * itemsToScroll.value, totalItems.value - itemsPerView.value);
+};
+
+// These are used to show the next and previous items in the carousel on mobile
+const activeItemClass = (index: number) => {
+  // Only apply active class on mobile (when itemsPerView is 1)
+  if (itemsPerView.value !== 1) return '';
+
+  // For circular carousel, adjust for cloned items
+  if (props.circular) {
+    const adjustedIndex = index - itemsPerView.value;
+    return getClasses(adjustedIndex, currentIndex.value);
+  }
+
+  return getClasses(index, currentIndex.value);
+};
+
+const getClasses = (itemIndex: number, currentIndex: number) => {
+  if (itemIndex === currentIndex) return 'carousel-active';
+
+  if (itemIndex === currentIndex - 1) return 'carousel-prev';
+
+  if (itemIndex === currentIndex + 1) return 'carousel-next';
+
+  return '';
 };
 
 // Touch and mouse event handlers

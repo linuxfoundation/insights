@@ -5,7 +5,7 @@
   @apply relative w-full;
 
   .carousel-container {
-    @apply overflow-hidden w-full md:py-10 py-5;
+    @apply sm:overflow-hidden overflow-visible w-full md:py-10 py-8;
   }
 
   .carousel-track {
@@ -18,9 +18,8 @@
   }
 
   .carousel-nav {
-    @apply absolute top-1/2 transform -translate-y-1/2 bg-white border border-neutral-200;
-    @apply rounded-full lg:w-11 lg:h-11 w-9 h-9 flex items-center justify-center cursor-pointer transition-all;
-    @apply duration-200 z-10 text-neutral-900 shadow-sm;
+    @apply bg-white border border-neutral-200;
+    @apply rounded-full w-9 h-9 flex items-center justify-center cursor-pointer;
 
     &:hover {
       @apply bg-neutral-50 shadow-none;
@@ -29,10 +28,10 @@
       @apply opacity-50 cursor-not-allowed;
     }
     &-prev {
-      @apply xl:-left-16 md:-left-5 -left-3;
+      /* @apply xl:-left-16 md:-left-5 -left-3; */
     }
     &-next {
-      @apply xl:-right-16 md:-right-5 -right-3;
+      /* @apply xl:-right-16 md:-right-5 -right-3; */
     }
   }
 
@@ -58,8 +57,21 @@
       width: calc(100% + 1.25rem);
     }
 
+
     .carousel-item {
       @apply box-border px-2.5;
+
+      &.carousel-active {
+        @apply sm:mx-0 -mx-2.5 sm:pl-2.5 pl-5 sm:pr-2.5 pr-0;
+      }
+
+      &.carousel-prev {
+        @apply ml-2.5 -mr-2.5;
+      }
+
+      &.carousel-next {
+        @apply ml-2.5;
+      }
     }
   }
 }

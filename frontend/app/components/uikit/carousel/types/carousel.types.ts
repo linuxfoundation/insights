@@ -6,4 +6,5 @@ export type CarouselData = Record<string, number | string | boolean | null | und
 export interface CarouselProps {
   value: CarouselData[];
   circular?: boolean;
+  showPagination?: boolean;
 }
