@@ -32,7 +32,7 @@ SPDX-License-Identifier: MIT
         class="z-10 w-full fixed !w-full bg-white pt-22 top-0 left-0"
         :loaded="pageWidth > 0"
       > -->
-      <div class="z-10 w-full fixed !w-full bg-white pt-22 top-0 left-0">
+      <div class="z-10 fixed !w-full bg-white pt-17 top-0 left-0">
         <div
           ref="headerContainerRef"
           class="container w-full md:pt-12 pt-8 flex gap-10"
