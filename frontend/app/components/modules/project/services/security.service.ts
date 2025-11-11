@@ -39,9 +39,9 @@ class ProjectSecurityService {
 
     return data.filter(
       (item) =>
-        !filteredCheck.includes(item.controlId) ||
-        (item.category !== SecurityDataCategory.DOCUMENTATION &&
-          item.category !== SecurityDataCategory.VULNERABILITY_MANAGEMENT),
+        !filteredCheck.includes(item.controlId) &&
+        item.category !== SecurityDataCategory.DOCUMENTATION &&
+        item.category !== SecurityDataCategory.VULNERABILITY_MANAGEMENT,
     );
   }
 
