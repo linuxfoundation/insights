@@ -7,7 +7,7 @@ SPDX-License-Identifier: MIT
     <div class="flex gap-10 lg:-mt-12 md:-mt-8 mt-4">
       <div class="lg:w-1/5 w-1/4 md:block hidden min-w-50">
         <div
-          class="flex flex-col justify-between items-start md:flex hidden min-w-50 sticky bg-white pt-10 top-25 z-[11]"
+          class="flex flex-col justify-between items-start md:flex hidden min-w-50 sticky bg-white pt-10 z-[11] lg:top-17 top-14"
         >
           <router-link
             :to="{ name: LfxRoutes.LEADERBOARDS }"
@@ -26,7 +26,7 @@ SPDX-License-Identifier: MIT
         </div>
       </div>
       <div class="lg:w-3/5 md:w-3/4 w-full min-w-0">
-        <div class="sticky top-25 z-10 bg-white sm:pt-10 pt-6">
+        <div class="sticky lg:top-17 top-14 z-10 bg-white sm:pt-10 pt-6">
           <!-- Header section -->
           <lfx-leaderboard-detail-header
             :config="leaderboardConfig"
