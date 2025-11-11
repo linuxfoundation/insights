@@ -12,14 +12,14 @@ import { codebaseSizeConfig } from './codebase-size.config';
 import { fastestRespondersConfig } from './fastest-responders.config';
 import { fastestMergersConfig } from './fastest-mergers.config';
 import { resolutionRateConfig } from './resolution-rate.config';
-// import { top100ProjectsConfig } from './top-100-projects.config';
-// import { top100ContributorsConfig } from './top-100-contributors.config';
-// import { top100OrganizationsConfig } from './top-100-organizations.config';
+import { top100ProjectsConfig } from './top-100-projects.config';
+import { top100ContributorsConfig } from './top-100-contributors.config';
+import { top100OrganizationsConfig } from './top-100-organizations.config';
 
 const leaderboardConfigs: LeaderboardConfig[] = [
-  // top100ProjectsConfig,
-  // top100ContributorsConfig,
-  // top100OrganizationsConfig,
+  top100ProjectsConfig,
+  top100ContributorsConfig,
+  top100OrganizationsConfig,
   mostActiveContributorsConfig,
   mostActiveOrganizationsConfig,
   commitActivityConfig,

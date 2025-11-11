@@ -36,17 +36,19 @@ SPDX-License-Identifier: MIT
           <!-- Table header -->
           <lfx-table-header
             :config="leaderboardConfig"
-            class="border-b border-neutral-200 px-0 lg:px-3 pb-4 mb-5"
+            class="border-b border-neutral-200 px-0 lg:px-3 pb-4"
           />
         </div>
-        <lfx-leaderboard-table
-          :leaderboard-config="leaderboardConfig"
-          :data="items"
-          :is-loading="isPending || isFetchingNextPage"
-          :is-force-loading="isScrollingIntoRow"
-          :has-next-page="hasNextPage"
-          @fetch-next-page="fetchNextPage"
-        />
+        <div class="sm:pt-12 pt-6 mt-6">
+          <lfx-leaderboard-table
+            :leaderboard-config="leaderboardConfig"
+            :data="items"
+            :is-loading="isPending || isFetchingNextPage"
+            :is-force-loading="isScrollingIntoRow"
+            :has-next-page="hasNextPage"
+            @fetch-next-page="fetchNextPage"
+          />
+        </div>
       </div>
       <div class="w-1/5 hidden lg:block">&nbsp;</div>
     </div>

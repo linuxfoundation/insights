@@ -5,7 +5,7 @@ import NumericDataDisplay from '../components/data-displays/numeric.vue';
 import type { LeaderboardConfig } from './types/leaderboard.types';
 
 export const top100ContributorsConfig: LeaderboardConfig = {
-  key: 'top-100-contributors',
+  key: 'members',
   name: 'Top 100 contributors',
   description:
     'Developers ranked by volume of contributions over the last 10 years, highlighting the most active and influential individuals.',
