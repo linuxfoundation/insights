@@ -21,10 +21,10 @@ Insights now features **9 leaderboards** that rank projects across multiple dime
 3. **Commit Activity** — projects with the highest volume of commits over the past 12 months  
 4. **Codebase Size** — projects maintaining the largest codebases measured in total source lines of code  
 5. **Fastest Responders** — projects with the shortest average time to first response on issues  
-6. **Fastest Mergers** — projects with the shortest average time to merge pull requests
-7. **Most Focused Teams** — projects with highest numbers of commits per contributor
-8. **Highest Resolution Rate** — projects resolving the highest pull request to issue ratio
-9. **Small Teams, Massive Output** — projects with less than 50 contributors with the highest number of commits
+6. **Fastest Mergers** — projects with the shortest average time to merge pull requests.
+7. **Most Focused Teams** — projects with highest numbers of commits per contributor.
+8. **Highest Resolution Rate** — projects resolving the highest pull request to issue ratio.
+9. **Small Teams, Massive Output** — projects with less than 50 contributors with the highest number of commits.
 
 You can explore [all leaderboards](https://insights.linuxfoundation.org/leaderboards) directly in LFX Insights to see how your favorite projects perform.
 
