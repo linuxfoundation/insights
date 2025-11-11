@@ -21,7 +21,7 @@ SPDX-License-Identifier: MIT
     <div class="flex-1 min-w-0 flex gap-3 items-center">
       <lfx-avatar
         :src="item.logoUrl"
-        type="organization"
+        :type="leaderboardConfig.key === 'members' ? 'member' : 'organization'"
         :aria-label="item.logoUrl && item.name"
       />
       <p
