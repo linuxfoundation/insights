@@ -170,7 +170,7 @@ SPDX-License-Identifier: MIT
             size="small"
             button-style="pill"
             class="whitespace-nowrap !hidden lg:!flex"
-            @click="isGenerateYamlModalOpen = true"
+            @click="handleGenerateYamlClick"
           >
             <lfx-icon name="file-shield" />
             Generate YAML file
@@ -192,6 +192,7 @@ SPDX-License-Identifier: MIT
   <lf-security-generate-yaml-modal
     v-if="isGenerateYamlModalOpen"
     v-model="isGenerateYamlModalOpen"
+    @update:model-value="handleGenerateYamlUpdate"
   />
 </template>
 
@@ -200,6 +201,7 @@ import { useRoute } from 'nuxt/app';
 import { computed, onServerPrefetch, ref } from 'vue';
 import pluralize from 'pluralize';
 import { storeToRefs } from 'pinia';
+import { securityParamsGetter, securityParamsSetter } from '../services/project.query.service';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxAccordion from '~/components/uikit/accordion/accordion.vue';
@@ -219,13 +221,16 @@ import LfxButton from '~/components/uikit/button/button.vue';
 import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
 import LfSecurityGenerateYamlModal from '~/components/modules/project/components/security/yaml/generate-yaml-modal.vue';
 import { SECURITY_API_SERVICE } from '~/components/modules/project/services/security.api.service';
+import { useQueryParam } from '~/components/shared/utils/query-param';
 
 const accordion = ref('');
 
 const route = useRoute();
 const { name } = route.params;
 
-const isGenerateYamlModalOpen = ref(false);
+const { queryParams } = useQueryParam(securityParamsGetter, securityParamsSetter);
+const { generateYaml } = queryParams.value;
+const isGenerateYamlModalOpen = ref(generateYaml === 'true' || false);
 
 const { selectedReposValues, allArchived, archivedRepos, hasSelectedArchivedRepos } = storeToRefs(useProjectStore());
 
@@ -282,6 +287,19 @@ const groupChecksByRepository = (checks: SecurityData[]) =>
     },
     {} as Record<string, SecurityData[]>,
   );
+
+const handleGenerateYamlClick = () => {
+  isGenerateYamlModalOpen.value = true;
+  queryParams.value = {
+    generateYaml: true,
+  };
+};
+
+const handleGenerateYamlUpdate = (value: boolean) => {
+  queryParams.value = {
+    generateYaml: value,
+  };
+};
 
 onServerPrefetch(async () => {
   await suspense();
