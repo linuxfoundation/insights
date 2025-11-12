@@ -4,7 +4,7 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <div class="bg-white -mb-10 pb-10">
-    <div class="container flex flex-col gap-10 md:gap-16 lg:pb-15 pb-6">
+    <div class="container overflow-hidden flex flex-col gap-10 md:gap-16 lg:pb-15 pb-6">
       <lfx-explore-header />
       <lfx-explore-top-section />
       <lfx-explore-source-index-section />

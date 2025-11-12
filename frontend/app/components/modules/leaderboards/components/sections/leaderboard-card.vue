@@ -4,7 +4,7 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <lfx-card
-    class="p-5 flex-1 flex flex-col justify-between h-full min-w-0 sm:hover:shadow-sm transition-all"
+    class="p-5 flex-1 flex flex-col justify-between h-full min-w-0 sm:hover:shadow-sm transition-all !border-neutral-200"
     @mouseenter="isHovered = true"
     @mouseleave="isHovered = false"
   >
