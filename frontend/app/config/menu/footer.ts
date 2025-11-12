@@ -59,6 +59,10 @@ export const lfxFooterMenu: FooterMenuSection[] = [
     title: 'Latest blog posts',
     links: [
       {
+        name: 'Product Update November 2025',
+        link: '/blog/product-update-nov-2025',
+      },
+      {
         name: 'The First 3 Months of Insights',
         link: '/blog/first-3-months',
       },

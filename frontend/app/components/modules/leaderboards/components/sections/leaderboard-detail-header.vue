@@ -5,7 +5,7 @@ SPDX-License-Identifier: MIT
 <template>
   <div class="flex flex-col gap-6 items-start w-full pb-4">
     <div
-      v-if="scrollTop < 50"
+      v-if="scrollTop < scrollThreshold"
       class="md:hidden block"
     >
       <router-link
@@ -23,19 +23,19 @@ SPDX-License-Identifier: MIT
     <div class="flex justify-between w-full items-start">
       <div class="flex transition-all ease-linear flex-col gap-3">
         <div
-          :class="[scrollTop > 50 ? 'size-10' : 'size-12']"
+          :class="[scrollTop > scrollThreshold ? 'size-10' : 'size-12']"
           class="transition-all ease-linear bg-white border border-neutral-200 rounded-lg flex items-center justify-center"
         >
           <lfx-icon
             v-if="config"
             :name="config.icon"
-            :size="scrollTop > 50 ? 20 : 24"
+            :size="scrollTop > scrollThreshold ? 20 : 24"
           />
         </div>
 
         <div class="flex flex-col gap-1">
           <h1
-            :class="[scrollTop > 50 ? 'text-2xl ml-13 -mt-12' : 'text-3xl']"
+            :class="[scrollTop > scrollThreshold ? 'text-2xl ml-13 -mt-12' : 'text-3xl']"
             class="transition-all ease-linear font-light font-secondary text-neutral-900 md:block hidden"
           >
             {{ config?.name }}
@@ -43,12 +43,12 @@ SPDX-License-Identifier: MIT
           <!-- Sidebar navigation -->
           <div
             class="md:hidden flex justify-start"
-            :class="[scrollTop > 50 ? 'ml-13 -mt-12' : '']"
+            :class="[scrollTop > scrollThreshold ? 'ml-13 -mt-12' : '']"
           >
             <lfx-leaderboard-mobile-nav :leaderboard-key="config.key" />
           </div>
           <p
-            :class="[scrollTop < 50 ? 'block' : 'hidden']"
+            :class="[scrollTop < scrollThreshold ? 'block' : 'hidden']"
             class="transition-all ease-linear text-sm text-neutral-500 w-full whitespace-pre-wrap min-h-10"
           >
             {{ config?.description }}
@@ -141,6 +141,8 @@ const props = defineProps<{
 const { scrollTop } = useScroll();
 
 const isSearchOpen = ref(false);
+
+const scrollThreshold = 1;
 
 const searchComponentRef = ref<InstanceType<typeof LfxLeaderboardSearch> | null>(null);
 
