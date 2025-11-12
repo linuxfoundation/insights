@@ -6,7 +6,7 @@ SPDX-License-Identifier: MIT
   <section class="flex flex-col gap-10">
     <!-- Carousel -->
     <!-- Header with title, description and navigation -->
-    <lfx-carousel :value="leaderboardConfigs as unknown as CarouselData[]">
+    <lfx-carousel :value="leaderboardConfigs">
       <template #header>
         <div class="flex items-center justify-between w-full gap-4">
           <div class="flex flex-col gap-2 flex-1">
@@ -33,8 +33,8 @@ SPDX-License-Identifier: MIT
       <template #item="{ data }">
         <lfx-leaderboard-card
           v-if="!isPending"
-          :config="data as unknown as LeaderboardConfig"
-          :leaderboards="getLeaderboardsByType((data as unknown as LeaderboardConfig)?.key)"
+          :config="data"
+          :leaderboards="getLeaderboardsByType(data.key)"
         />
         <div v-else>
           <lfx-skeleton class="!w-full !h-[440px] rounded-lg" />
@@ -63,11 +63,9 @@ import { computed } from 'vue';
 import LfxLeaderboardCard from '../../leaderboards/components/sections/leaderboard-card.vue';
 import { LEADERBOARD_API_SERVICE } from '../../leaderboards/services/leaderboard.api.service';
 import leaderboardConfigs from '../../leaderboards/config/index.config';
-import type { LeaderboardConfig } from '../../leaderboards/config/types/leaderboard.types';
 import LfxButton from '~/components/uikit/button/button.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import { LfxRoutes } from '~/components/shared/types/routes';
-import type { CarouselData } from '~/components/uikit/carousel/types/carousel.types';
 import LfxCarousel from '~/components/uikit/carousel/carousel.vue';
 import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
 

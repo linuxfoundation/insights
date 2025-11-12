@@ -11,7 +11,7 @@ SPDX-License-Identifier: MIT
       :is-empty="isEmpty"
     >
       <client-only>
-        <lfx-carousel :value="carouselData as unknown as CarouselData[]">
+        <lfx-carousel :value="carouselData">
           <template #header>
             <div class="flex items-center justify-between w-full gap-4">
               <div class="text-neutral-900">
@@ -35,7 +35,7 @@ SPDX-License-Identifier: MIT
             </div>
           </template>
           <template #item="{ data }">
-            <lfx-explore-collection-card :collection="data as unknown as Collection" />
+            <lfx-explore-collection-card :collection="data" />
           </template>
           <template #footer>
             <div class="md:hidden flex justify-center">
@@ -61,7 +61,6 @@ import { computed, onServerPrefetch } from 'vue';
 import { EXPLORE_API_SERVICE } from '../services/explore.api.service';
 import LfxExploreCollectionCard from './collection-card.vue';
 import LfxCarousel from '~/components/uikit/carousel/carousel.vue';
-import type { CarouselData } from '~/components/uikit/carousel/types/carousel.types';
 import LfxButton from '~/components/uikit/button/button.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxProjectLoadState from '~/components/modules/project/components/shared/load-state.vue';
@@ -71,7 +70,7 @@ import type { Collection } from '~~/types/collection';
 
 const { data: featuredCollectionsData, status, error, suspense } = EXPLORE_API_SERVICE.fetchFeaturedCollections();
 
-const carouselData = computed(() => featuredCollectionsData.value?.data);
+const carouselData = computed(() => featuredCollectionsData.value?.data as Collection[]);
 
 const isEmpty = computed(() => isEmptyData(carouselData.value as unknown as Record<string, unknown>[]));
 

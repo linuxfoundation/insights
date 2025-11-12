@@ -68,12 +68,12 @@ SPDX-License-Identifier: MIT
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" generic="T">
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue';
 import type { CarouselProps } from './types/carousel.types';
 import LfxCarouselNavigation from './carousel-navigation.vue';
 
-const props = withDefaults(defineProps<CarouselProps>(), {
+const props = withDefaults(defineProps<CarouselProps<T>>(), {
   circular: false,
   showPagination: false,
 });

@@ -3,8 +3,8 @@
 
 export type CarouselData = Record<string, number | string | boolean | null | undefined>[];
 
-export interface CarouselProps {
-  value: CarouselData[];
+export interface CarouselProps<T> {
+  value: T[];
   circular?: boolean;
   showPagination?: boolean;
 }
