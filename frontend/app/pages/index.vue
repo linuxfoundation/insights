@@ -20,4 +20,6 @@ useSeoMeta({
   twitterTitle: title,
   twitterDescription: description,
 });
+
+defineOgImageComponent('LfxInsights');
 </script>
