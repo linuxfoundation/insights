@@ -9,19 +9,31 @@ SPDX-License-Identifier: MIT
     v-bind="containerProps"
   >
     <template v-if="!isForceLoading">
-      <router-link
+      <template
         v-for="{ data: item } in list"
         :key="item.rank"
-        class="w-full"
-        :to="`/project/${item.slug}`"
-        :data-rank="item.rank"
       >
+        <router-link
+          v-if="item.slug"
+          class="w-full"
+          :to="`/project/${item.slug}`"
+          :data-rank="item.rank"
+        >
+          <lfx-table-row
+            :item="item"
+            :leaderboard-config="leaderboardConfig"
+            :is-small="false"
+          />
+        </router-link>
+
         <lfx-table-row
+          v-else
           :item="item"
           :leaderboard-config="leaderboardConfig"
           :is-small="false"
+          class="hover:!bg-white !cursor-default"
         />
-      </router-link>
+      </template>
     </template>
     <template v-for="i in 100">
       <div
