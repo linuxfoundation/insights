@@ -79,6 +79,9 @@ withDefaults(
 );
 
 const navigateToProject = (slug: string) => {
+  if (!slug) {
+    return;
+  }
   router.push({ name: LfxRoutes.PROJECT, params: { slug } });
 };
 </script>
