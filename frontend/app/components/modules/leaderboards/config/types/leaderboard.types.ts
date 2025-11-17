@@ -3,7 +3,6 @@
 import type { Component } from 'vue';
 import type { Leaderboard } from '~~/types/leaderboard/leaderboard';
 
-export type LeaderboardDataType = 'integer' | 'float' | 'duration' | 'timestamp';
 export interface LeaderboardConfig {
   key: string;
   name: string;
