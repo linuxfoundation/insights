@@ -5,7 +5,7 @@
 // import { useApiTrackEvent } from '~~/server/utils/plausible';
 import { CommunityMentions } from '~~/types/community/community';
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async () => {
   // const { slug } = event.context.params as Record<string, string>;
   //
   // if (!slug) {
