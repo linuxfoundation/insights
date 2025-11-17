@@ -39,6 +39,46 @@ export async function verifyJWT(event: H3Event): Promise<void> {
 }
 
 /**
+ * Auth middleware for static jwt - supports both Authorization header and auth query parameter
+ * @param event - H3 event object
+ * @returns Promise that resolves when authentication is successful or throws error
+ */
+export async function auth(event: H3Event): Promise<void> {
+  const config = useRuntimeConfig();
+
+  const authHeader = getHeader(event, 'authorization');
+  const query = getQuery(event);
+  const queryToken = query.auth as string | undefined;
+
+  let token: string | undefined;
+
+  if (authHeader?.startsWith('Bearer ')) {
+    token = authHeader.substring(7);
+  } else if (queryToken) {
+    token = queryToken;
+  }
+
+  if (!token) {
+    throw createError({
+      statusCode: 401,
+      statusMessage: 'Unauthorized',
+    });
+  }
+
+  try {
+    jwt.verify(token, config.jwtSecret, {
+      algorithms: ['HS256'],
+    });
+  } catch (jwtError) {
+    console.error('JWT verification failed:', jwtError);
+    throw createError({
+      statusCode: 401,
+      statusMessage: jwtError instanceof Error ? jwtError.message : 'Invalid JWT token',
+    });
+  }
+}
+
+/**
  * Middleware to protect routes with JWT verification
  */
 export function requireJWT() {
