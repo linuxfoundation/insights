@@ -1,7 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 
-import NumericDataDisplay from '../components/data-displays/numeric.vue';
+import CodebaseSizeDataDisplay from '../components/data-displays/codebase-size.vue';
 import type { LeaderboardConfig } from './types/leaderboard.types';
 
 export const codebaseSizeConfig: LeaderboardConfig = {
@@ -10,10 +10,8 @@ export const codebaseSizeConfig: LeaderboardConfig = {
   description:
     'These projects maintain the largest codebases measured by total source lines of code.',
   icon: 'laptop-code',
-  dataDisplay: NumericDataDisplay,
+  dataDisplay: CodebaseSizeDataDisplay,
   columnLabel: 'Lines of code',
-  hideTrend: true,
-  dataType: 'integer',
   seoTitle: 'Open Source Projects With Largest Codebase',
   seoDescription:
     'Leaderboard of open source projects that maintain the largest codebases measured by total source lines of code.',

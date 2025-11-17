@@ -42,17 +42,10 @@ SPDX-License-Identifier: MIT
       >
         <component
           :is="leaderboardConfig?.dataDisplay"
-          :data-type="leaderboardConfig?.dataType"
-          :decimals="leaderboardConfig?.decimals"
-          :value="item.value"
+          :data="item"
+          :is-trend-hidden="isSmall"
         />
       </p>
-      <lfx-leaderboard-trend-display
-        v-if="!leaderboardConfig?.hideTrend && !isSmall"
-        :data-type="leaderboardConfig?.dataType"
-        :decimals="leaderboardConfig?.decimals"
-        :data="item"
-      />
     </div>
   </div>
 </template>
@@ -60,7 +53,6 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
 import type { LeaderboardConfig } from '../../config/types/leaderboard.types';
-import LfxLeaderboardTrendDisplay from '../data-displays/trend-display.vue';
 import type { Leaderboard } from '~~/types/leaderboard/leaderboard';
 import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
 import { LfxRoutes } from '~/components/shared/types/routes';

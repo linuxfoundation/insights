@@ -1,7 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 
-import NumericDataDisplay from '../components/data-displays/numeric.vue';
+import IntegerDataDisplay from '../components/data-displays/integer.vue';
 import type { LeaderboardConfig } from './types/leaderboard.types';
 
 export const focusedTeamsConfig: LeaderboardConfig = {
@@ -9,10 +9,9 @@ export const focusedTeamsConfig: LeaderboardConfig = {
   name: 'Most focused teams',
   description: 'These projects show the highest productivity per contributor.',
   icon: 'bullseye-arrow',
-  dataDisplay: NumericDataDisplay,
+  dataDisplay: IntegerDataDisplay,
   columnLabel: 'Avg. commits per author',
   columnTooltip: 'For projects with 10+ authors',
-  dataType: 'integer',
   seoTitle: 'Most Focused Open Source Teams',
   seoDescription:
     'Leaderboard of open source projects with the highest productivity per contributor.',

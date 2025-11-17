@@ -12,9 +12,6 @@ export interface LeaderboardConfig {
   dataDisplay: Component;
   columnLabel: string;
   columnTooltip?: string;
-  hideTrend?: boolean;
-  dataType: LeaderboardDataType;
-  decimals?: number;
   seoTitle: string;
   seoDescription: string;
 }

@@ -1,7 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 
-import NumericDataDisplay from '../components/data-displays/numeric.vue';
+import IntegerDataDisplay from '../components/data-displays/integer.vue';
 import type { LeaderboardConfig } from './types/leaderboard.types';
 
 export const smallTeamsMassiveOutputConfig: LeaderboardConfig = {
@@ -10,10 +10,9 @@ export const smallTeamsMassiveOutputConfig: LeaderboardConfig = {
   description:
     'These projects demonstrate exceptional productivity, achieving the highest commit volumes with 50 or fewer contributors.',
   icon: 'arrow-up-big-small',
-  dataDisplay: NumericDataDisplay,
+  dataDisplay: IntegerDataDisplay,
   columnLabel: 'Commits',
   columnTooltip: 'For projects with ≤50 contributors',
-  dataType: 'integer',
   seoTitle: 'Small Open Source Teams With Massive Output',
   seoDescription:
     'Leaderboard of open source projects achieving the highest commit volumes with 50 or fewer contributors.',
