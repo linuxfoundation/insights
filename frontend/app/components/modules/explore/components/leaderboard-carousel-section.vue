@@ -31,14 +31,20 @@ SPDX-License-Identifier: MIT
         </div>
       </template>
       <template #item="{ data }">
-        <lfx-leaderboard-card
-          v-if="!isPending"
-          :config="data"
-          :leaderboards="getLeaderboardsByType(data.key)"
-        />
-        <div v-else>
-          <lfx-skeleton class="!w-full !h-[440px] rounded-lg" />
-        </div>
+        <client-only>
+          <div v-if="!isPending">
+            <lfx-leaderboard-card
+              :config="data"
+              :leaderboards="getLeaderboardsByType(data.key)"
+            />
+          </div>
+          <div v-else>
+            <lfx-skeleton class="!w-full !h-[440px] rounded-lg" />
+          </div>
+          <template #fallback>
+            <lfx-skeleton class="!w-full !h-[440px] rounded-lg" />
+          </template>
+        </client-only>
       </template>
       <template #footer>
         <div class="md:hidden flex justify-center">
