@@ -27,7 +27,7 @@ SPDX-License-Identifier: MIT
       <p
         :title="item.name"
         class="text-base leading-5 font-medium text-neutral-900 overflow-hidden text-ellipsis whitespace-nowrap max-w-full"
-        :class="{ 'hover:underline text-sm cursor-pointer': isSmall && !!item.slug }"
+        :class="{ 'hover:underline cursor-pointer': isSmall && !!item.slug, 'text-sm': isSmall }"
         @click="navigateToProject(item.slug)"
       >
         {{ item.name }}
