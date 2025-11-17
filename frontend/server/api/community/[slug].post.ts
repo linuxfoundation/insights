@@ -14,6 +14,9 @@ export default defineEventHandler(async (event): Promise<boolean | Error> => {
     return createError({ statusCode: 422, statusMessage: 'Invalid request' });
   }
 
-  await addDataToTinybirdDatasource('mentions', body.data);
+  await addDataToTinybirdDatasource('mentions', {
+    ...body.data,
+    projectSlug: slug,
+  });
   return true;
 });

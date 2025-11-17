@@ -1,6 +1,6 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-export interface OctolensWebhookData {
+export interface CommunityMentionsData {
   title: string;
   body: string;
   url: string;
@@ -20,5 +20,9 @@ export interface OctolensWebhookData {
 }
 export interface OctolensWebhook {
   action: string;
-  data: OctolensWebhookData;
+  data: CommunityMentions;
+}
+
+export interface CommunityMentions extends CommunityMentionsData {
+  projectSlug: string;
 }
