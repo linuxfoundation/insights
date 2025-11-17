@@ -144,6 +144,9 @@ export function useRichSchema() {
           '@type': 'Dataset',
           '@id': `${baseUrl}/dataset/project-${project.slug}`,
           name: `LFX Insights metrics for ${project.name}`,
+          description:
+            `Comprehensive open source project metrics including contributor activity, ` +
+            `popularity trends, development velocity, and security assessments for ${project.name}.`,
           url: projectUrl,
           creator: { '@id': `${baseUrl}/#organization` },
           isPartOf: { '@id': `${baseUrl}/dataset/open-source-index` },
