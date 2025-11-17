@@ -4,41 +4,6 @@ import jwt from 'jsonwebtoken';
 import type { H3Event } from 'h3';
 
 /**
- * Verifies JWT token from Authorization header
- * @param event - H3 event object
- * @returns Promise that resolves to decoded token or throws error
- */
-export async function verifyJWT(event: H3Event): Promise<void> {
-  // Read authorization header
-  const authHeader = getHeader(event, 'authorization');
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    throw createError({
-      statusCode: 401,
-      statusMessage: 'Authorization header required',
-    });
-  }
-
-  const token = authHeader.substring(7); // Remove 'Bearer ' prefix
-  const jwtSecret = process.env.JWT_SECRET;
-
-  if (!jwtSecret) {
-    throw createError({
-      statusCode: 500,
-      statusMessage: 'JWT secret not configured',
-    });
-  }
-
-  try {
-    jwt.verify(token, jwtSecret);
-  } catch {
-    throw createError({
-      statusCode: 401,
-      statusMessage: 'Invalid JWT token',
-    });
-  }
-}
-
-/**
  * Auth middleware for static jwt - supports both Authorization header and auth query parameter
  * @param event - H3 event object
  * @returns Promise that resolves when authentication is successful or throws error
@@ -76,15 +41,6 @@ export async function auth(event: H3Event): Promise<void> {
       statusMessage: jwtError instanceof Error ? jwtError.message : 'Invalid JWT token',
     });
   }
-}
-
-/**
- * Middleware to protect routes with JWT verification
- */
-export function requireJWT() {
-  return defineEventHandler(async (event) => {
-    await verifyJWT(event);
-  });
 }
 
 /**
