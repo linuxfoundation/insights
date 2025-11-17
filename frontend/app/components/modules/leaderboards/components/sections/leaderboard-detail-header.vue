@@ -3,7 +3,7 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="flex flex-col gap-6 items-start w-full pb-4">
+  <div class="flex flex-col gap-6 items-start w-full pb-6">
     <div
       v-if="scrollTop < scrollThreshold"
       class="md:hidden block"
@@ -97,7 +97,7 @@ SPDX-License-Identifier: MIT
           :size="14"
           class="text-neutral-400"
         />
-        <span class="text-sm text-neutral-400">Search projects...</span>
+        <span class="text-sm text-neutral-400">Search {{ pluralize(config?.entityLabel.toLowerCase(), 2) }}...</span>
       </div>
     </div>
   </div>
@@ -121,6 +121,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { ref, watch, nextTick } from 'vue';
+import pluralize from 'pluralize';
 import type { LeaderboardConfig } from '../../config/types/leaderboard.types';
 import LfxLeaderboardMobileNav from './leaderboard-mobile-nav.vue';
 import LfxLeaderboardSearch from './leaderboard-search.vue';

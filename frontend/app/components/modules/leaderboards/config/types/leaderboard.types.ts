@@ -9,10 +9,10 @@ export interface LeaderboardConfig {
   description: string;
   icon: string;
   dataDisplay: Component;
-  columnLabel: string;
-  columnTooltip?: string;
-  seoTitle: string;
-  seoDescription: string;
+  minimizedDataDisplay: Component;
+  entityLabel: string;
+  metricLabel: string;
+  metricTooltip?: string;
 }
 
 export interface LeaderboardLandingResponse {

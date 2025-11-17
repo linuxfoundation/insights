@@ -1,7 +1,8 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 
-import DecimalDataDisplay from '../components/data-displays/decimal.vue';
+import LfxProjectDecimalRowDisplay from '../components/row-displays/project-decimal.vue';
+import LfxProjectDecimalMinimizedRowDisplay from '../components/minimize-row-displays/project-decimal.vue';
 import type { LeaderboardConfig } from './types/leaderboard.types';
 
 export const resolutionRateConfig: LeaderboardConfig = {
@@ -10,9 +11,8 @@ export const resolutionRateConfig: LeaderboardConfig = {
   description:
     'These projects keep development flowing, with most pull requests merged relative to issues opened.',
   icon: 'rocket-launch',
-  dataDisplay: DecimalDataDisplay,
-  columnLabel: 'PR/Issue ratio',
-  seoTitle: 'Open Source Projects With Best Resolution Rate',
-  seoDescription:
-    'Leaderboard of open source projects with the most pull requests merged relative to issues opened.',
+  dataDisplay: LfxProjectDecimalRowDisplay,
+  minimizedDataDisplay: LfxProjectDecimalMinimizedRowDisplay,
+  entityLabel: 'Project',
+  metricLabel: 'PR/Issue ratio',
 };
