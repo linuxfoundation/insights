@@ -19,7 +19,7 @@ SPDX-License-Identifier: MIT
       />
       <p
         :title="item.name"
-        class="font-medium text-neutral-900 overflow-hidden text-ellipsis whitespace-nowrap max-w-full hover:underline text-sm"
+        class="font-medium text-neutral-900 overflow-hidden text-ellipsis whitespace-nowrap max-w-full text-sm"
       >
         {{ item.name }}
       </p>
