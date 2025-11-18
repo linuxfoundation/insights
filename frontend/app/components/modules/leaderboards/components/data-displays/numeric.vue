@@ -21,25 +21,23 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import type { LeaderboardDataType } from '../../config/types/leaderboard.types';
 import { formatNumber } from '~/components/shared/utils/formatter';
 import { formatNumberShort } from '~/components/shared/utils/formatter';
 import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
+import type { Leaderboard } from '~~/types/leaderboard/leaderboard';
 
 const props = withDefaults(
   defineProps<{
-    value: number;
-    dataType: LeaderboardDataType;
-    decimals?: number;
+    data: Leaderboard;
+    decimalPlaces?: number;
   }>(),
   {
-    value: 0,
-    decimals: 0,
+    decimalPlaces: 0,
   },
 );
 
 const isLargeNumber = computed(() => {
-  return props.value > 1000000;
+  return props.data.value > 1000000;
 });
 
 /**
@@ -47,22 +45,22 @@ const isLargeNumber = computed(() => {
  * Example: 1,000,000
  */
 const formattedNumeric = computed(() => {
-  if (!props.value || props.value === 0) {
+  if (!props.data.value || props.data.value === 0) {
     return '0';
   }
 
   if (isLargeNumber.value) {
-    return formatNumberShort(props.value);
+    return formatNumberShort(props.data.value);
   }
 
-  return formatNumber(props.value, props.decimals);
+  return formatNumber(props.data.value, props.decimalPlaces);
 });
 const formattedNumericTooltip = computed(() => {
-  if (!props.value || props.value === 0) {
+  if (!props.data.value || props.data.value === 0) {
     return '0';
   }
 
-  return formatNumber(props.value, props.decimals);
+  return formatNumber(props.data.value, props.decimalPlaces);
 });
 </script>
 

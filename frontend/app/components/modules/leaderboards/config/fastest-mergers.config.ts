@@ -1,7 +1,8 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 
-import TimeDurationDisplay from '../components/data-displays/time-duration.vue';
+import LfxProjectDurationRowDisplay from '../components/row-displays/project-duration.vue';
+import LfxProjectDurationMinimizedRowDisplay from '../components/minimize-row-displays/project-duration.vue';
 import type { LeaderboardConfig } from './types/leaderboard.types';
 
 export const fastestMergersConfig: LeaderboardConfig = {
@@ -9,9 +10,8 @@ export const fastestMergersConfig: LeaderboardConfig = {
   name: 'Fastest mergers',
   description: 'These projects merge pull requests the fastest over the past 12 months.',
   icon: 'code-merge',
-  dataDisplay: TimeDurationDisplay,
-  columnLabel: 'Median time to merge (12m)',
-  dataType: 'duration',
-  seoTitle: 'Open Source Projects With Fastest Mergers',
-  seoDescription: 'Leaderboard of open source projects that merge pull requests the fastest.',
+  dataDisplay: LfxProjectDurationRowDisplay,
+  minimizedDataDisplay: LfxProjectDurationMinimizedRowDisplay,
+  entityLabel: 'Project',
+  metricLabel: 'Median time to merge (12m)',
 };

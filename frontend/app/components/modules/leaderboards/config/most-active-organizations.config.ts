@@ -1,7 +1,8 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 
-import NumericDataDisplay from '../components/data-displays/numeric.vue';
+import LfxProjectIntegerRowDisplay from '../components/row-displays/project-integer.vue';
+import LfxProjectIntegerMinimizedRowDisplay from '../components/minimize-row-displays/project-integer.vue';
 import type { LeaderboardConfig } from './types/leaderboard.types';
 
 export const mostActiveOrganizationsConfig: LeaderboardConfig = {
@@ -10,10 +11,8 @@ export const mostActiveOrganizationsConfig: LeaderboardConfig = {
   description:
     'These projects brought together the largest number of distinct contributing organizations in the past 12 months.',
   icon: 'buildings',
-  dataDisplay: NumericDataDisplay,
-  columnLabel: 'Organizations (12m)',
-  dataType: 'integer',
-  seoTitle: 'Open Source Projects With Most Active Organizations',
-  seoDescription:
-    'Leaderboard of open source projects with the largest number of distinct contributing organizations in the past 12 months.',
+  dataDisplay: LfxProjectIntegerRowDisplay,
+  minimizedDataDisplay: LfxProjectIntegerMinimizedRowDisplay,
+  entityLabel: 'Project',
+  metricLabel: 'Organizations (12m)',
 };

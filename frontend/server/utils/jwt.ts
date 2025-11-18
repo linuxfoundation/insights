@@ -4,47 +4,43 @@ import jwt from 'jsonwebtoken';
 import type { H3Event } from 'h3';
 
 /**
- * Verifies JWT token from Authorization header
+ * Auth middleware for static jwt - supports both Authorization header and auth query parameter
  * @param event - H3 event object
- * @returns Promise that resolves to decoded token or throws error
+ * @returns Promise that resolves when authentication is successful or throws error
  */
-export async function verifyJWT(event: H3Event): Promise<void> {
-  // Read authorization header
+export async function auth(event: H3Event): Promise<void> {
+  const config = useRuntimeConfig();
+
   const authHeader = getHeader(event, 'authorization');
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    throw createError({
-      statusCode: 401,
-      statusMessage: 'Authorization header required',
-    });
+  const query = getQuery(event);
+  const queryToken = query.auth as string | undefined;
+
+  let token: string | undefined;
+
+  if (authHeader?.startsWith('Bearer ')) {
+    token = authHeader.substring(7);
+  } else if (queryToken) {
+    token = queryToken;
   }
 
-  const token = authHeader.substring(7); // Remove 'Bearer ' prefix
-  const jwtSecret = process.env.JWT_SECRET;
-
-  if (!jwtSecret) {
+  if (!token) {
     throw createError({
-      statusCode: 500,
-      statusMessage: 'JWT secret not configured',
+      statusCode: 401,
+      statusMessage: 'Unauthorized',
     });
   }
 
   try {
-    jwt.verify(token, jwtSecret);
-  } catch {
+    jwt.verify(token, config.jwtSecret, {
+      algorithms: ['HS256'],
+    });
+  } catch (jwtError) {
+    console.error('JWT verification failed:', jwtError);
     throw createError({
       statusCode: 401,
-      statusMessage: 'Invalid JWT token',
+      statusMessage: jwtError instanceof Error ? jwtError.message : 'Invalid JWT token',
     });
   }
-}
-
-/**
- * Middleware to protect routes with JWT verification
- */
-export function requireJWT() {
-  return defineEventHandler(async (event) => {
-    await verifyJWT(event);
-  });
 }
 
 /**
