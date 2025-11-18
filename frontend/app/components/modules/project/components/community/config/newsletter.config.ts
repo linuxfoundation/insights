@@ -4,9 +4,9 @@
 import DefaultCard from '../card-displays/default-card.vue';
 import type { CommunityConfig } from './types/community.types';
 
-export const hackernewsConfig: CommunityConfig = {
-  key: 'hackernews',
-  label: 'Hacker News',
-  image: '/images/platforms/hackernews.png',
+export const newsletterConfig: CommunityConfig = {
+  key: 'newsletter',
+  label: 'Newsletter',
+  image: '/images/platforms/newsletter.png',
   dataDisplay: DefaultCard,
 };
