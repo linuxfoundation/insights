@@ -13,25 +13,10 @@ SPDX-License-Identifier: MIT
         v-for="{ data: item } in list"
         :key="item.rank"
       >
-        <router-link
-          v-if="item.slug"
-          class="w-full"
-          :to="`/project/${item.slug}`"
-          :data-rank="item.rank"
-        >
-          <lfx-table-row
-            :item="item"
-            :leaderboard-config="leaderboardConfig"
-            :is-small="false"
-          />
-        </router-link>
-
-        <lfx-table-row
-          v-else
+        <component
+          :is="leaderboardConfig?.dataDisplay"
           :item="item"
           :leaderboard-config="leaderboardConfig"
-          :is-small="false"
-          class="hover:!bg-white !cursor-default"
         />
       </template>
     </template>
@@ -71,7 +56,6 @@ SPDX-License-Identifier: MIT
 import { computed } from 'vue';
 import { useVirtualList } from '@vueuse/core';
 import type { LeaderboardConfig } from '../../config/types/leaderboard.types';
-import LfxTableRow from './table-row.vue';
 import type { Leaderboard } from '~~/types/leaderboard/leaderboard';
 import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
 import LfxButton from '~/components/uikit/button/button.vue';
