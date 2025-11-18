@@ -15,7 +15,7 @@ export default {
           '/api/health/live': { cache: false },
           '/api/seo/og-image': { cache: false },
           '/api/report': { cache: false },
-          '/api/community': { cache: false },
+          '/api/community/**': { cache: false },
           '/api/search': { cache: { maxAge: longCache, base: 'redis' } },
           '/api/category': { cache: { maxAge: longCache, base: 'redis' } },
           '/api/collection': { cache: { maxAge: longCache, base: 'redis' } },
