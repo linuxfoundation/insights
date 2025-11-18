@@ -1,6 +1,6 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-export const buttonTypes = ['primary', 'secondary', 'tertiary', 'transparent'] as const;
+export const buttonTypes = ['primary', 'secondary', 'tertiary', 'transparent', 'ghost'] as const;
 export const buttonSizes = ['small', 'medium', 'large'] as const;
 export const iconPosition = ['left', 'right'] as const;
 

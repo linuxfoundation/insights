@@ -64,6 +64,7 @@ export default defineNuxtConfig({
     lfxAuth0TokenClaimGroupName: '',
     auth0ClientSecret: '',
     auth0CookieDomain: 'insights.linuxfoundation.org',
+    jwtSecret: '',
     insightsDbWriteHost: 'localhost',
     insightsDbReadHost: 'localhost',
     insightsDbPort: 5432,

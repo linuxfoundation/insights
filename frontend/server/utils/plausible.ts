@@ -26,12 +26,12 @@ export function useApiTrackEvent({
   eventName,
   url,
   options,
-  referer,
+  referrer,
 }: {
   event: H3Event;
   eventName: string;
   url: string;
-  referer: string;
+  referrer: string;
   options?: TrackEventOptions;
 }) {
   const config = useRuntimeConfig();
@@ -58,7 +58,7 @@ export function useApiTrackEvent({
     body: {
       name: eventName,
       url: `${config.public.appUrl}${url}`,
-      referer,
+      referrer,
       domain: 'insights.linuxfoundation.org',
       props: options?.props,
     },

@@ -17,6 +17,11 @@ interface MenuConfig {
 export const lfxMenu: MenuConfig = {
   links: [
     {
+      label: 'Leaderboards',
+      icon: 'trophy',
+      route: LfxRoutes.LEADERBOARDS,
+    },
+    {
       label: 'Open Source Index',
       icon: 'globe',
       route: LfxRoutes.OPENSOURCEINDEX,
