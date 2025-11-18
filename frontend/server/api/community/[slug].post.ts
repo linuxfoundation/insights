@@ -4,13 +4,15 @@ import { OctolensWebhook } from '~~/types/community/community';
 import { addDataToTinybirdDatasource } from '~~/server/data/tinybird/tinybird';
 import { auth } from '~~/server/utils/jwt';
 
-export default defineEventHandler(async (event): Promise<boolean | Error> => {
+export default defineEventHandler(async (event): Promise<boolean> => {
   await auth(event);
 
+  console.log('event', event);
   const body: OctolensWebhook = await readBody(event);
   const { slug } = event.context.params as Record<string, string>;
 
-  console.log(body);
+  console.log('Body', body);
+  console.log('Slug', slug);
 
   if (!slug || !body) {
     throw createError({ statusCode: 422, statusMessage: 'Invalid request' });
