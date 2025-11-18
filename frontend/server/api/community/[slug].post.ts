@@ -8,17 +8,16 @@ export default defineEventHandler(async (event): Promise<boolean> => {
   const testBody: OctolensWebhook = await readBody(event);
   console.log('testbody', testBody);
   await auth(event);
-    console.log('Content-Type:', getHeader(event, 'content-type'));
-    console.log('Content-Length:', getHeader(event, 'content-length'));
+  console.log('Content-Type:', getHeader(event, 'content-type'));
+  console.log('Content-Length:', getHeader(event, 'content-length'));
 
-    const rawBody = await readRawBody(event);
-    console.log('Raw body string:', rawBody);
+  const rawBody = await readRawBody(event);
+  console.log('Raw body string:', rawBody);
 
-    const body: OctolensWebhook = rawBody ? JSON.parse(rawBody) : null;
-    console.log('Parsed body:', body);
+  const body: OctolensWebhook = rawBody ? JSON.parse(rawBody) : null;
+  console.log('Parsed body:', body);
 
-/exi
-    const body: OctolensWebhook = await readBody(event);
+  const body: OctolensWebhook = await readBody(event);
   const { slug } = event.context.params as Record<string, string>;
 
   console.log('Body', body);
