@@ -1,0 +1,12 @@
+// Copyright (c) 2025 The Linux Foundation and each contributor.
+// SPDX-License-Identifier: MIT
+
+import LfxCommunityDefaultCard from '../card-displays/default-card.vue';
+import type { CommunityConfig } from './types/community.types';
+import { discord } from '~/config/platforms/configs/discord.platform';
+
+export const discordCommunityConfig: CommunityConfig = {
+  key: discord.key,
+  platform: discord,
+  dataDisplay: LfxCommunityDefaultCard,
+};

@@ -29,7 +29,7 @@ export default defineEventHandler(async () => {
   //   });
   // }
 
-  return [
+  const mockData = [
     {
       projectSlug: 'pytorch',
       title: 'Fast-Track Your AI Knowledge with 3 PyTorch Courses.',
@@ -185,4 +185,11 @@ export default defineEventHandler(async () => {
       viewName: 'Brand monitoring (PyTorch)',
     },
   ] as CommunityMentions[];
+
+  return {
+    page: 1,
+    pageSize: 8,
+    total: mockData.length,
+    data: mockData,
+  };
 });
