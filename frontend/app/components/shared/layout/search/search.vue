@@ -5,7 +5,7 @@ SPDX-License-Identifier: MIT
 <template>
   <div class="search-container">
     <div
-      class="w-full lg:max-w-80 overflow-hidden bg-neutral-50 h-9 border border-neutral-200 rounded-full hidden sm:flex items-center gap-2 px-3 cursor-pointer"
+      class="w-full lg:max-w-22 xl:max-w-80 overflow-hidden bg-neutral-50 h-9 border border-neutral-200 rounded-full hidden sm:flex items-center gap-2 px-3 cursor-pointer"
       @click="isModalOpen = true"
     >
       <lfx-icon
