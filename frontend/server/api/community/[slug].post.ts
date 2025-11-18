@@ -10,12 +10,14 @@ export default defineEventHandler(async (event): Promise<boolean | Error> => {
   const body: OctolensWebhook = await readBody(event);
   const { slug } = event.context.params as Record<string, string>;
 
-  if (!slug || !body?.data) {
-    return createError({ statusCode: 422, statusMessage: 'Invalid request' });
+  console.log(body);
+
+  if (!slug || !body) {
+    throw createError({ statusCode: 422, statusMessage: 'Invalid request' });
   }
 
   await addDataToTinybirdDatasource('mentions', {
-    ...body.data,
+    ...body,
     projectSlug: slug,
   });
   return true;
