@@ -71,22 +71,15 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
-import { DateTime } from 'luxon';
 import LfxCommunityCardHeader from './card-header.vue';
 import type { CommunityMentions } from '~~/types/community/community';
 import { platforms } from '~/config/platforms';
 import LfxCard from '~/components/uikit/card/card.vue';
-import LfxTag from '~/components/uikit/tag/tag.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 
-const props = defineProps<{
+defineProps<{
   mentions: CommunityMentions[];
 }>();
-
-const platformConfig = (source: string) => {
-  return platforms[source];
-};
 
 const getSentimentIcon = (sentiment: string) => {
   const sentimentLower = sentiment.toLowerCase();

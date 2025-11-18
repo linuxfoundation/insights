@@ -34,8 +34,7 @@ const params = computed(() => ({
   endDate: '2024-12-31',
 }));
 
-const { data, isPending, isFetchingNextPage, fetchNextPage, hasNextPage, isSuccess, error } =
-  PROJECT_COMMUNITY_API_SERVICE.fetchCommunityMentions(params);
+const { data, isPending, error } = PROJECT_COMMUNITY_API_SERVICE.fetchCommunityMentions(params);
 
 // Flatten all pages of data into a single array of mentions
 const mentions = computed(() => {
