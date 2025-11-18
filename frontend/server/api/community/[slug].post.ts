@@ -5,6 +5,8 @@ import { addDataToTinybirdDatasource } from '~~/server/data/tinybird/tinybird';
 import { auth } from '~~/server/utils/jwt';
 
 export default defineEventHandler(async (event): Promise<boolean> => {
+  const testBody: OctolensWebhook = await readBody(event);
+  console.log('testbody', testBody);
   await auth(event);
 
   console.log('event', event);
