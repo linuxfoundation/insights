@@ -6,6 +6,8 @@ export default defineEventHandler(async (event) => {
     const query = getQuery(event);
     const token = query.token as string;
 
+    console.log(query);
+
     // Validate token
     if (token !== process.env.NUXT_OCTOLENS_WEBHOOK_TOKEN) {
       return sendError(
@@ -15,6 +17,8 @@ export default defineEventHandler(async (event) => {
     }
 
     const body = await readBody(event);
+
+    console.log(body);
 
     const tinybirdUrl = `${process.env.NUXT_TINYBIRD_EVENTS_API}?name=octolens_projects_mentions&token=${process.env.NUXT_OCTOLENS_TINYBIRD_TOKEN}`;
 
