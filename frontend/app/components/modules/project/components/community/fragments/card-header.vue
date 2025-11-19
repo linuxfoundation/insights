@@ -22,13 +22,16 @@ SPDX-License-Identifier: MIT
       {{ mention.keyword }}
     </lfx-tag>
     <p class="text-xs font-medium text-black">in</p>
+    <!-- Source Display -->
     <div class="flex flex-col">
-      <p
-        class="text-xs font-medium text-black"
-        :class="{ underline: mention.url }"
-      >
-        {{ getSourceDisplay }}
-      </p>
+      <slot name="source-display">
+        <p
+          class="text-xs font-medium text-black"
+          :class="{ underline: mention.url }"
+        >
+          {{ getSourceDisplay }}
+        </p>
+      </slot>
     </div>
     <p class="text-xs font-medium text-neutral-400">・ {{ formatTimestamp }} by</p>
     <div class="flex flex-col">
@@ -57,9 +60,6 @@ const platformConfig = computed(() => {
 });
 
 const getSourceDisplay = computed(() => {
-  if (props.mention.subreddit) {
-    return props.mention.subreddit;
-  }
   return platformConfig.value?.label || props.mention.source;
 });
 

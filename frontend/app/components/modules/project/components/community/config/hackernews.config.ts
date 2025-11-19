@@ -7,6 +7,6 @@ import type { CommunityConfig } from './types/community.types';
 export const hackernewsConfig: CommunityConfig = {
   key: 'hackernews',
   label: 'Hacker News',
-  image: '/images/platforms/hackernews.png',
+  image: '/images/platforms/hackernews.svg',
   dataDisplay: DefaultCard,
 };

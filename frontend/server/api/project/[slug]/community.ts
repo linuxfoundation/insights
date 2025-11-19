@@ -45,7 +45,7 @@ export default defineEventHandler(async () => {
       relevanceComment:
         "The post discusses training and education courses for PyTorch, a major open-source ML framework, aligning with LF's focus on open-source training.",
       keyword: 'pytorch',
-      sentimentLabel: 'Neutral',
+      sentimentLabel: 'Positive',
       viewId: '14286',
       viewName: 'Brand monitoring (PyTorch)',
     },
@@ -142,7 +142,7 @@ export default defineEventHandler(async () => {
       relevanceComment:
         "Discusses the integration challenges and evolution of major open-source AI frameworks (PyTorch/TensorFlow) and high-performance AI engineering, relevant to LF's ecosystem support.",
       keyword: 'pytorch',
-      sentimentLabel: 'Neutral',
+      sentimentLabel: 'Positive',
       viewId: '14286',
       viewName: 'Brand monitoring (PyTorch)',
     },
@@ -161,7 +161,7 @@ export default defineEventHandler(async () => {
       relevanceComment:
         "Discusses 'Open Models' and a talk recording released by the PyTorch community, aligning with LF's focus on open-source ecosystems and education.",
       keyword: 'pytorch',
-      sentimentLabel: 'Positive',
+      sentimentLabel: 'Negative',
       viewId: '14286',
       viewName: 'Brand monitoring (PyTorch)',
     },

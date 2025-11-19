@@ -21,10 +21,10 @@ export const communityConfigs: Record<string, CommunityConfig> = {
   hackernews: hackernewsConfig,
   linkedin: linkedinConfig,
   newsletter: newsletterConfig,
-  podcast: podcastConfig,
+  podcasts: podcastConfig,
   reddit: redditConfig,
   stackoverflow: stackoverflowConfig,
-  x: xConfig,
+  twitter: xConfig,
   youtube: youtubeConfig,
 };
 

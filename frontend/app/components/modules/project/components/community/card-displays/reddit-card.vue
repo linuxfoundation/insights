@@ -8,7 +8,16 @@ SPDX-License-Identifier: MIT
   <lfx-card class="border border-neutral-100 rounded-xl overflow-hidden">
     <div class="flex flex-col gap-5">
       <!-- Header Section -->
-      <lfx-community-card-header :mention="mention" />
+      <lfx-community-card-header :mention="mention">
+        <template #source-display>
+          <p
+            class="text-xs font-medium text-black"
+            :class="{ underline: mention.url }"
+          >
+            {{ mention.subreddit }}
+          </p>
+        </template>
+      </lfx-community-card-header>
 
       <!-- Content Section -->
       <lfx-community-card-content :mention="mention" />
@@ -34,6 +43,6 @@ defineProps<{
 
 <script lang="ts">
 export default {
-  name: 'LfxCommunityDefaultCard',
+  name: 'LfxCommunityRedditCard',
 };
 </script>

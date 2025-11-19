@@ -5,8 +5,8 @@ import DefaultCard from '../card-displays/default-card.vue';
 import type { CommunityConfig } from './types/community.types';
 
 export const podcastConfig: CommunityConfig = {
-  key: 'podcast',
-  label: 'Podcast',
-  image: '/images/platforms/podcasts.png',
+  key: 'podcasts',
+  label: 'Podcasts',
+  image: '/images/platforms/podcast.png',
   dataDisplay: DefaultCard,
 };

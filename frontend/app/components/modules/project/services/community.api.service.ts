@@ -99,7 +99,7 @@ class ProjectCommunityApiService {
 
   isCommunityEnabled(project: Project, user: User | null) {
     const hasConnectedPlatforms =
-      Array.isArray(project.connectedPlatforms) && project.connectedPlatforms.length > 0;
+      Array.isArray(project.communityPlatforms) && project.communityPlatforms.length > 0;
     const hasPermission = user?.hasLfxInsightsPermission || false;
     return hasConnectedPlatforms && hasPermission;
   }

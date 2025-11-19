@@ -5,7 +5,7 @@ import DefaultCard from '../card-displays/default-card.vue';
 import type { CommunityConfig } from './types/community.types';
 
 export const xConfig: CommunityConfig = {
-  key: 'x',
+  key: 'twitter',
   label: 'X/Twitter',
   image: '/images/platforms/x.png',
   dataDisplay: DefaultCard,
