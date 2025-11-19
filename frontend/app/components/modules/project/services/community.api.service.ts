@@ -11,12 +11,12 @@ import type { Pagination } from '~~/types/shared/pagination';
 
 export interface QueryParams {
   projectSlug: string;
-  platform?: string;
+  platforms?: string[];
   keywords?: string[];
   sentiments?: string[];
   languages?: string[];
-  startDate?: string;
-  endDate?: string;
+  startDate?: string | null;
+  endDate?: string | null;
 }
 
 class ProjectCommunityApiService {
@@ -25,6 +25,7 @@ class ProjectCommunityApiService {
     const queryKey = computed(() => [
       TanstackKey.COMMUNITY_MENTIONS,
       params.value.projectSlug,
+      params.value.platforms,
       params.value.keywords,
       params.value.sentiments,
       params.value.languages,
@@ -60,6 +61,7 @@ class ProjectCommunityApiService {
     const queryKey = computed(() => [
       TanstackKey.COMMUNITY_MENTIONS,
       params.value.projectSlug,
+      params.value.platforms,
       params.value.keywords,
       params.value.sentiments,
       params.value.languages,
@@ -67,9 +69,11 @@ class ProjectCommunityApiService {
       params.value.endDate,
     ]);
 
-    const queryFn = this.fetchCommunityMentionsQueryFn(() => ({
-      ...params.value,
-    }));
+    const queryFn = computed<QueryFunction<Pagination<CommunityMentions>>>(() =>
+      this.fetchCommunityMentionsQueryFn(() => ({
+        ...params.value,
+      })),
+    );
 
     return useInfiniteQuery<
       Pagination<CommunityMentions>,
@@ -79,6 +83,7 @@ class ProjectCommunityApiService {
       number
     >({
       queryKey,
+      //@ts-expect-error - TanStack Query type inference issue with Vue
       queryFn,
       getNextPageParam: this.getNextPageCollectionsParam,
       initialPageParam: 0,
@@ -86,7 +91,7 @@ class ProjectCommunityApiService {
   }
 
   fetchCommunityMentionsQueryFn(
-    query: () => Record<string, string | number | string[] | undefined>,
+    query: () => Record<string, string | number | string[] | undefined | null>,
   ): QueryFunction<Pagination<CommunityMentions>, readonly unknown[], number> {
     return async ({ pageParam = 0 }) =>
       await $fetch(`/api/project/${query().projectSlug}/community`, {

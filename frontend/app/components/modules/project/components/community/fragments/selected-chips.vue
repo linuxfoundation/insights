@@ -3,17 +3,17 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="flex items-center gap-2 flex-wrap">
+  <div class="flex items-center gap-2">
     <div
       v-for="item in displayedItems"
       :key="item.value"
-      class="bg-neutral-100 rounded-full px-1.5 py-0.5 flex items-center gap-1"
+      class="bg-neutral-100 rounded-full px-1.5 py-0.5 flex items-center gap-1 min-w-0 max-w-[200px]"
     >
       <slot
         name="chip"
         :item="item"
       >
-        <span class="text-xs leading-4 text-neutral-900">
+        <span class="text-xs leading-4 text-neutral-900 truncate">
           {{ item.label }}
         </span>
       </slot>

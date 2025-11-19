@@ -17,12 +17,13 @@ SPDX-License-Identifier: MIT
         >
           <div
             v-if="selectedPlatforms.length === 0"
-            class="text-neutral-900"
+            class="text-neutral-900 flex-1 min-w-0"
           >
             All platforms
           </div>
           <lfx-community-selected-chips
             v-else
+            class="flex-1 min-w-0"
             :items="selectedChipItems"
             :max-displayed="maxDisplayedChips"
           >
@@ -33,7 +34,7 @@ SPDX-License-Identifier: MIT
                 :alt="item.label"
                 class="w-[15px] h-[15px] object-contain"
               />
-              <span class="text-xs leading-4 text-neutral-900">
+              <span class="text-xs leading-4 text-neutral-900 truncate">
                 {{ item.label }}
               </span>
             </template>
@@ -42,7 +43,7 @@ SPDX-License-Identifier: MIT
             <lfx-icon
               :name="dropdownOpen ? 'angle-up' : 'angle-down'"
               :size="12"
-              class="text-neutral-900 shrink-0"
+              class="text-neutral-900 shrink-0 ml-2"
             />
           </template>
         </lfx-dropdown-selector>
@@ -84,6 +85,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
+import { storeToRefs } from 'pinia';
 import { communityConfigs } from '../config';
 import LfxCommunitySelectedChips from './selected-chips.vue';
 import LfxCommunityFilterOption from './filter-option.vue';
@@ -92,38 +94,24 @@ import type { SelectedChipItem } from './selected-chips.vue';
 import LfxDropdown from '~/components/uikit/dropdown/dropdown.vue';
 import LfxDropdownSelector from '~/components/uikit/dropdown/dropdown-selector.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
+import { useProjectStore } from '~~/app/components/modules/project/store/project.store';
 
-const props = withDefaults(
-  defineProps<{
-    modelValue?: string[];
-    maxDisplayedChips?: number;
-  }>(),
-  {
-    modelValue: () => [],
-    maxDisplayedChips: 2,
-  },
-);
-
-const emit = defineEmits<{
-  (e: 'update:modelValue', value: string[]): void;
-}>();
+const maxDisplayedChips = 2;
+const { selectedPlatforms, project } = storeToRefs(useProjectStore());
 
 const dropdownOpen = ref(false);
 
 const platformConfigs = communityConfigs;
 
 const availablePlatforms = computed(() =>
-  Object.entries(communityConfigs).map(([key, config]) => ({
-    key,
-    label: config.label,
-    image: config.image,
-  })),
+  Object.entries(communityConfigs)
+    .filter(([key]) => project.value?.communityPlatforms?.includes(key))
+    .map(([key, config]) => ({
+      key,
+      label: config.label,
+      image: config.image,
+    })),
 );
-
-const selectedPlatforms = computed({
-  get: () => props.modelValue,
-  set: (value: string[]) => emit('update:modelValue', value),
-});
 
 const selectedChipItems = computed<SelectedChipItem[]>(() =>
   selectedPlatforms.value.map((platform) => ({

@@ -59,6 +59,11 @@ export const useProjectStore = defineStore('project', () => {
   const project = ref<Project | null>(null);
   const collaborationSet = ref<string[]>([]); // stores the widget names that have includeCollaborations set to true
 
+  const selectedPlatforms = ref<string[]>([]);
+  const selectedKeywords = ref<string[]>([]);
+  const selectedSentiments = ref<string[]>([]);
+  const selectedLanguages = ref<string[]>([]);
+
   // List of all project repositories
   const projectRepos = computed<ProjectRepository[]>(() => project.value?.repositories || []);
 
@@ -145,5 +150,9 @@ export const useProjectStore = defineStore('project', () => {
     allArchived,
     hasSelectedArchivedRepos,
     collaborationSet,
+    selectedPlatforms,
+    selectedKeywords,
+    selectedSentiments,
+    selectedLanguages,
   };
 });

@@ -5,75 +5,51 @@ SPDX-License-Identifier: MIT
 <template>
   <div class="flex flex-col gap-5">
     <!-- Platform Filter -->
-    <lfx-community-platform-filter
-      v-model="selectedPlatforms"
-      :max-displayed-chips="maxDisplayedChips"
-    />
+    <lfx-community-platform-filter />
 
     <!-- Keywords Filter -->
-    <lfx-community-keyword-filter
-      v-model="selectedKeywords"
-      :keywords="availableKeywords"
-      :max-displayed-chips="maxDisplayedChips"
-    />
+    <lfx-community-keyword-filter />
 
     <!-- Sentiment Filter -->
-    <lfx-community-sentiment-filter
-      v-model="selectedSentiments"
-      :max-displayed-chips="maxDisplayedChips"
-    />
+    <lfx-community-sentiment-filter />
 
     <!-- Language Filter -->
-    <lfx-community-language-filter
-      v-model="selectedLanguages"
-      :max-displayed-chips="maxDisplayedChips"
-    />
+    <!-- Hiding for now until we have the API support -->
+    <!-- <lfx-community-language-filter /> -->
+
+    <lfx-button
+      type="transparent"
+      class="w-full justify-center"
+      button-style="pill"
+      @click="resetFilters"
+    >
+      <lfx-icon
+        name="arrow-rotate-left"
+        :size="16"
+      />
+      Reset filters
+    </lfx-button>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { storeToRefs } from 'pinia';
 import LfxCommunityPlatformFilter from '../fragments/platform-filter.vue';
 import LfxCommunityKeywordFilter from '../fragments/keyword-filter.vue';
 import LfxCommunitySentimentFilter from '../fragments/sentiment-filter.vue';
-import LfxCommunityLanguageFilter from '../fragments/language-filter.vue';
+import LfxButton from '~/components/uikit/button/button.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+// import LfxCommunityLanguageFilter from '../fragments/language-filter.vue';
+import { useProjectStore } from '~~/app/components/modules/project/store/project.store';
 
-// Selected values
-const selectedPlatforms = ref<string[]>([]);
-const selectedKeywords = ref<string[]>([]);
-const selectedSentiments = ref<string[]>([]);
-const selectedLanguages = ref<string[]>([]);
+const { selectedPlatforms, selectedKeywords, selectedSentiments, selectedLanguages } = storeToRefs(useProjectStore());
 
-// Max chips to display before showing +X
-const maxDisplayedChips = 2;
-
-// Available keywords (this should come from API/props in real implementation)
-const availableKeywords = ref<string[]>(['kubernetes', 'docker', 'containers', 'cloud native', 'microservices']);
-
-// Emit filter changes (for parent component to use)
-const emit = defineEmits<{
-  (e: 'update:platforms', value: string[]): void;
-  (e: 'update:keywords', value: string[]): void;
-  (e: 'update:sentiments', value: string[]): void;
-  (e: 'update:languages', value: string[]): void;
-}>();
-
-// Watch for changes and emit
-watch(selectedPlatforms, (value: string[]) => {
-  emit('update:platforms', value);
-});
-
-watch(selectedKeywords, (value: string[]) => {
-  emit('update:keywords', value);
-});
-
-watch(selectedSentiments, (value: string[]) => {
-  emit('update:sentiments', value);
-});
-
-watch(selectedLanguages, (value: string[]) => {
-  emit('update:languages', value);
-});
+const resetFilters = () => {
+  selectedPlatforms.value = [];
+  selectedKeywords.value = [];
+  selectedSentiments.value = [];
+  selectedLanguages.value = [];
+};
 </script>
 
 <script lang="ts">

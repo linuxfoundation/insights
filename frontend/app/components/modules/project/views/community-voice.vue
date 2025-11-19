@@ -12,44 +12,42 @@ SPDX-License-Identifier: MIT
       />
     </section>
     <section class="w-1/4">
-      <lfx-community-filter-area
-        @update:platforms="handlePlatformsChange"
-        @update:keywords="handleKeywordsChange"
-        @update:sentiments="handleSentimentsChange"
-        @update:languages="handleLanguagesChange"
-      />
+      <lfx-community-filter-area />
     </section>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, onServerPrefetch, ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { computed, onServerPrefetch, watch } from 'vue';
+import { storeToRefs } from 'pinia';
 import LfxCommunityResultsArea from '../components/community/sections/results-area.vue';
 import LfxCommunityFilterArea from '../components/community/sections/filter-area.vue';
 import { PROJECT_COMMUNITY_API_SERVICE } from '~/components/modules/project/services/community.api.service';
 import type { CommunityMentions } from '~~/types/community/community';
 import type { Pagination } from '~~/types/shared/pagination';
+import useToastService from '~/components/uikit/toast/toast.service';
+import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
+import { useProjectStore } from '~~/app/components/modules/project/store/project.store';
 
-const route = useRoute();
-
-// Filter states
-const selectedPlatforms = ref<string[]>([]);
-const selectedKeywords = ref<string[]>([]);
-const selectedSentiments = ref<string[]>([]);
-const selectedLanguages = ref<string[]>([]);
+const { showToast } = useToastService();
+const { project, startDate, endDate, selectedPlatforms, selectedKeywords, selectedSentiments, selectedLanguages } =
+  storeToRefs(useProjectStore());
 
 const params = computed(() => ({
-  projectSlug: route.params.slug as string,
+  projectSlug: project.value?.slug as string,
   platforms: selectedPlatforms.value.length > 0 ? selectedPlatforms.value : undefined,
-  keywords: selectedKeywords.value.length > 0 ? selectedKeywords.value : [],
+  keywords: selectedKeywords.value.length > 0 ? selectedKeywords.value : undefined,
   sentiments: selectedSentiments.value.length > 0 ? selectedSentiments.value : undefined,
   languages: selectedLanguages.value.length > 0 ? selectedLanguages.value : undefined,
-  startDate: '2024-01-01',
-  endDate: '2024-12-31',
+  startDate: startDate.value,
+  endDate: endDate.value,
 }));
 
-const { data, isPending } = PROJECT_COMMUNITY_API_SERVICE.fetchCommunityMentions(params);
+const { data, isPending, error } = PROJECT_COMMUNITY_API_SERVICE.fetchCommunityMentions(params);
+
+const errorMessage = computed(() => {
+  return error.value?.message || 'Error fetching community mentions';
+});
 
 // Flatten all pages of data into a single array of mentions
 const mentions = computed(() => {
@@ -58,27 +56,16 @@ const mentions = computed(() => {
   return tmpList;
 });
 
-// Filter change handlers
-const handlePlatformsChange = (platforms: string[]) => {
-  selectedPlatforms.value = platforms;
-};
-
-const handleKeywordsChange = (keywords: string[]) => {
-  selectedKeywords.value = keywords;
-};
-
-const handleSentimentsChange = (sentiments: string[]) => {
-  selectedSentiments.value = sentiments;
-};
-
-const handleLanguagesChange = (languages: string[]) => {
-  selectedLanguages.value = languages;
-};
-
 // Server-side prefetching for infinite query
 onServerPrefetch(async () => {
   // Prefetch the first page of the infinite query on the server
   await PROJECT_COMMUNITY_API_SERVICE.prefetchCommunityMentions(params);
+});
+
+watch(error, (err) => {
+  if (err) {
+    showToast(errorMessage.value, ToastTypesEnum.negative);
+  }
 });
 </script>
 

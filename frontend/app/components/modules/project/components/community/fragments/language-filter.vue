@@ -17,12 +17,13 @@ SPDX-License-Identifier: MIT
         >
           <div
             v-if="selectedLanguages.length === 0"
-            class="text-neutral-900"
+            class="text-neutral-900 flex-1 min-w-0"
           >
             All languages
           </div>
           <lfx-community-selected-chips
             v-else
+            class="flex-1 min-w-0"
             :items="selectedChipItems"
             :max-displayed="maxDisplayedChips"
           />
@@ -30,7 +31,7 @@ SPDX-License-Identifier: MIT
             <lfx-icon
               :name="dropdownOpen ? 'angle-up' : 'angle-down'"
               :size="12"
-              class="text-neutral-900 shrink-0"
+              class="text-neutral-900 shrink-0 ml-2"
             />
           </template>
         </lfx-dropdown-selector>
@@ -61,6 +62,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
+import { storeToRefs } from 'pinia';
 import LfxCommunitySelectedChips from './selected-chips.vue';
 import LfxCommunityFilterOption from './filter-option.vue';
 import LfxCommunityFilterSelectAll from './filter-select-all.vue';
@@ -68,46 +70,25 @@ import type { SelectedChipItem } from './selected-chips.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxDropdownSelector from '~/components/uikit/dropdown/dropdown-selector.vue';
 import LfxDropdown from '~/components/uikit/dropdown/dropdown.vue';
+import { useProjectStore } from '~~/app/components/modules/project/store/project.store';
 
-const props = withDefaults(
-  defineProps<{
-    modelValue?: string[];
-    maxDisplayedChips?: number;
-  }>(),
-  {
-    modelValue: () => [],
-    maxDisplayedChips: 2,
-  },
-);
+const { selectedLanguages, project } = storeToRefs(useProjectStore());
 
-const emit = defineEmits<{
-  (e: 'update:modelValue', value: string[]): void;
-}>();
-
+const maxDisplayedChips = 2;
 const dropdownOpen = ref(false);
 
-const availableLanguages = [
-  { value: 'en', label: 'English' },
-  { value: 'es', label: 'Spanish' },
-  { value: 'fr', label: 'French' },
-  { value: 'de', label: 'German' },
-  { value: 'zh', label: 'Chinese' },
-  { value: 'ja', label: 'Japanese' },
-  { value: 'ko', label: 'Korean' },
-  { value: 'pt', label: 'Portuguese' },
-  { value: 'ru', label: 'Russian' },
-  { value: 'ar', label: 'Arabic' },
-];
-
-const selectedLanguages = computed({
-  get: () => props.modelValue,
-  set: (value: string[]) => emit('update:modelValue', value),
-});
+const availableLanguages = computed(
+  () =>
+    project.value?.communityLanguages?.map((language) => ({
+      value: language.toLowerCase(),
+      label: language.charAt(0).toUpperCase() + language.slice(1).toLowerCase(),
+    })) || [],
+);
 
 const selectedChipItems = computed<SelectedChipItem[]>(() =>
   selectedLanguages.value.map((language) => ({
     value: language,
-    label: availableLanguages.find((l) => l.value === language)?.label || language,
+    label: availableLanguages.value.find((l) => l.value === language)?.label || language,
   })),
 );
 
