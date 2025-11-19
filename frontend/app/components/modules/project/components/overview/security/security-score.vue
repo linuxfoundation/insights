@@ -6,7 +6,15 @@ SPDX-License-Identifier: MIT
   <div>
     <div class="flex flex-col lg:flex-row justify-between lg:items-end pb-8 gap-5 lg:gap-20">
       <div>
-        <h2 class="text-heading-3 font-secondary font-bold">Controls assessment</h2>
+        <div class="flex flex-col-reverse sm:flex-row items-start sm:items-center gap-2 sm:gap-4 pb-2">
+          <h2 class="text-heading-3 font-secondary font-bold">Controls assessment</h2>
+          <lfx-tag
+            variation="warning"
+            size="small"
+          >
+            Alpha version
+          </lfx-tag>
+        </div>
         <p class="text-xs text-neutral-500 mt-4">
           Process of assessing a project's practices, policies, and technical measures against a set of predefined
           standards to determine its security posture, reliability, and maturity.
@@ -73,6 +81,7 @@ import {
   type SecurityCategoryConfig,
 } from '~/components/modules/project/config/security-category';
 import type { SecurityScore } from '~~/types/overview/responses.types';
+import LfxTag from '~/components/uikit/tag/tag.vue';
 
 const route = useRoute();
 const { name } = route.params;
