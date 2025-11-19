@@ -3,7 +3,7 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="flex flex-col gap-5 py-10">
+  <div class="flex flex-col gap-5">
     <!-- Platform Filter -->
     <lfx-community-platform-filter
       v-model="selectedPlatforms"

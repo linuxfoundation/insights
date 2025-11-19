@@ -17,7 +17,7 @@ SPDX-License-Identifier: MIT
       variation="info"
       size="small"
       type="solid"
-      class="!bg-accent-100 !text-accent-500"
+      class="!text-brand-500"
     >
       {{ mention.keyword }}
     </lfx-tag>
@@ -25,22 +25,40 @@ SPDX-License-Identifier: MIT
     <!-- Source Display -->
     <div class="flex flex-col">
       <slot name="source-display">
-        <p
-          class="text-xs font-medium text-black"
-          :class="{ underline: mention.url }"
-        >
-          {{ getSourceDisplay }}
-        </p>
+        <template v-if="mention.url">
+          <a
+            :href="mention.url"
+            class="text-xs font-medium text-black hover:underline decoration-dashed"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {{ getSourceDisplay }}
+          </a>
+        </template>
+        <template v-else>
+          <span class="text-xs font-medium text-black">
+            {{ getSourceDisplay }}
+          </span>
+        </template>
       </slot>
     </div>
     <p class="text-xs font-medium text-neutral-400">・ {{ formatTimestamp }} by</p>
     <div class="flex flex-col">
-      <p
-        class="text-xs font-medium text-neutral-500"
-        :class="{ underline: mention.authorProfileLink }"
-      >
-        {{ mention.author }}
-      </p>
+      <template v-if="mention.authorProfileLink">
+        <a
+          :href="mention.authorProfileLink"
+          class="text-xs font-medium text-neutral-400 underline decoration-dashed"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {{ mention.author }}
+        </a>
+      </template>
+      <template v-else>
+        <span class="text-xs font-medium text-neutral-400">
+          {{ mention.author }}
+        </span>
+      </template>
     </div>
   </div>
 </template>
@@ -50,6 +68,7 @@ import { computed } from 'vue';
 import { DateTime } from 'luxon';
 import { communityConfigs } from '../config';
 import type { CommunityMentions } from '~~/types/community/community';
+import LfxTag from '~/components/uikit/tag/tag.vue';
 
 const props = defineProps<{
   mention: CommunityMentions;

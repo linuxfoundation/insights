@@ -17,13 +17,13 @@ SPDX-License-Identifier: MIT
             target="_blank"
             rel="noopener noreferrer"
           >
-            {{ mention.subreddit }}
+            {{ githubRepoName }}
           </a>
           <span
             v-else
             class="text-xs font-medium text-black"
           >
-            {{ mention.subreddit }}
+            {{ githubRepoName }}
           </span>
         </template>
       </lfx-community-card-header>
@@ -39,19 +39,31 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 // Default card display component for community mentions
+import { computed } from 'vue';
 import LfxCommunityCardHeader from '../fragments/card-header.vue';
 import LfxCommunityCardContent from '../fragments/card-content.vue';
 import LfxCommunityCardFooter from '../fragments/card-footer.vue';
 import LfxCommunityDefaultCard from './default-card.vue';
 import type { CommunityMentions } from '~~/types/community/community';
 
-defineProps<{
+const props = defineProps<{
   mention: CommunityMentions;
 }>();
+
+const githubRepoName = computed(() => {
+  if (!props.mention.url) {
+    return 'Github';
+  }
+  // Attempt to match GitHub repo URLs, extracting "owner/repo"
+  // e.g., "https://github.com/org/repo/issues/123..." => "org/repo"
+  const githubUrlRegex = /^https?:\/\/github\.com\/([^\/]+\/[^\/]+)/i;
+  const match = props.mention.url.match(githubUrlRegex);
+  return match ? match[1] : props.mention.url;
+});
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxCommunityRedditCard',
+  name: 'LfxCommunityGithubCard',
 };
 </script>

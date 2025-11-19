@@ -6,8 +6,6 @@ SPDX-License-Identifier: MIT
   <div class="container flex gap-10 py-10">
     <section class="w-3/4">
       <div v-if="isPending">Loading...</div>
-      <div v-else-if="error">Error loading community mentions: {{ error.message }}</div>
-      <div v-else-if="mentions.length === 0">No community mentions found.</div>
       <lfx-community-results-area
         v-else
         :mentions="mentions"
@@ -25,7 +23,7 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, onServerPrefetch, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import LfxCommunityResultsArea from '../components/community/sections/results-area.vue';
 import LfxCommunityFilterArea from '../components/community/sections/filter-area.vue';
@@ -51,7 +49,7 @@ const params = computed(() => ({
   endDate: '2024-12-31',
 }));
 
-const { data, isPending, error } = PROJECT_COMMUNITY_API_SERVICE.fetchCommunityMentions(params);
+const { data, isPending } = PROJECT_COMMUNITY_API_SERVICE.fetchCommunityMentions(params);
 
 // Flatten all pages of data into a single array of mentions
 const mentions = computed(() => {
@@ -76,6 +74,12 @@ const handleSentimentsChange = (sentiments: string[]) => {
 const handleLanguagesChange = (languages: string[]) => {
   selectedLanguages.value = languages;
 };
+
+// Server-side prefetching for infinite query
+onServerPrefetch(async () => {
+  // Prefetch the first page of the infinite query on the server
+  await PROJECT_COMMUNITY_API_SERVICE.prefetchCommunityMentions(params);
+});
 </script>
 
 <script lang="ts">

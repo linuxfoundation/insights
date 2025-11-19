@@ -71,6 +71,26 @@ export default defineEventHandler(async () => {
     },
     {
       projectSlug: 'pytorch',
+      title:
+        'Enhanced run_comfyui.bat with Automated Dependency Checking and CUDA PyTorch Detection',
+      body: '# Feature Request: Enhanced run_comfyui.bat with Automated Dependency Checking and CUDA PyTorch Detection\n\n## Problem\n\nWindows users often encounter frustrating issues when setting up ComfyUI:\n\n1. **Missing Dependencies**: Users encounter cryptic `ModuleNotFoundError` messages when dependencies are missing, requiring manual troubleshooting and installation\n2. **CPU-Only PyTorch**: Many users accidentally install CPU-only PyTorch, which prevents GPU acceleration and causes significant performance issues without clear indication of the problem\n3. **Poor Error Messages**: Existing error messages don\'t provide clear guidance on how to resolve issues, leaving users to search forums and documentation\n4. **Installation Confusion**: Users are unsure which dependencies are required vs optional, and whether they should install in virtual environments\n\nThese issues create a poor first-time user experience and increase support burden.\n\n## Proposed Solution\n\nEnhance the `run_comfyui.bat` startup script to:\n\n- **Automated Dependency Checking**: Check all critical Python dependencies before launching ComfyUI, with clear prompts for missing packages\n- **CUDA PyTorch Detection**: Automatically detect CPU-only PyTorch installations and offer to install the CUDA-enabled version\n- **User-Friendly Error Messages**: Provide clear, actionable error messages with specific troubleshooting steps\n- **Virtual Environment Guidance**: Detect virtual environments and provide appropriate warnings and guidance\n- **Progress Feedback**: Show progress bars during installations for better user experience\n\n## Benefits\n\n- **Reduced Support Burden**: Common setup issues are caught and resolved automatically\n- **Better User Experience**: Windows users get clear guidance instead of cryptic errors\n- **GPU Support**: Automatically ensures users have CUDA-enabled PyTorch for optimal performance\n- **Professional Appearance**: Polished interface with clear formatting and helpful prompts\n\n## Implementation Details\n\nThe enhancement would:\n- Check for missing dependencies using `importlib.util.find_spec()`\n- Separate critical vs optional dependencies\n- Detect CPU-only PyTorch by checking version string for "+cpu" indicator\n- Provide interactive prompts for installation options\n- Maintain full backward compatibility with existing functionality\n\n## Additional Notes\n\n- All installations would be optional (users can cancel at any time)\n- The script would warn users about system Python vs virtual environment implications\n- All existing functionality would be preserved\n- The enhancement is designed to be safe and non-destructive\n\n## Status\n\nI have a complete PR ready to submit if this feature is desired. The implementation includes comprehensive dependency checking, CUDA PyTorch auto-installation, user-friendly error handling, and has been tested in various scenarios.\n\n---\n\n**Note**: This addresses common user pain points that may not have been formally reported as issues, but are frequently encountered in the community (especially on Discord/Matrix support channels).\n\n',
+      url: 'https://github.com/comfyanonymous/ComfyUI/issues/10705',
+      timestamp: '2025-11-11 00:07:42',
+      imageUrl: '',
+      author: 'Lvishnurm20011995-cmyk',
+      authorProfileLink: 'https://github.com/vishnurm20011995-cmyk',
+      source: 'github',
+      sourceId: '3610152513',
+      relevanceScore: 'high',
+      relevanceComment:
+        "Technical bug report on GitHub involving PyTorch integration and performance issues (FP16 vs FP32). Relevant to LF's focus on open-source ML ecosystems.",
+      keyword: 'pytorch',
+      sentimentLabel: 'Negative',
+      viewId: '14286',
+      viewName: 'Brand monitoring (PyTorch)',
+    },
+    {
+      projectSlug: 'pytorch',
       title: "Dominic Pajak's Post",
       body: "Dominic Pajak's Post ... Shout-out to Niall Lyons and the Infineon team for pulling this demo together. I was impressed when I saw it at the PyTorch conference!",
       url: 'https://www.linkedin.com/posts/dominicpajak_this-demo-is-incredible-a-contextually-activity-7391820158173929472-D183',
