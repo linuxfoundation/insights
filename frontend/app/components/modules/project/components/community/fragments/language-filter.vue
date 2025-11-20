@@ -9,6 +9,7 @@ SPDX-License-Identifier: MIT
       v-model:visibility="dropdownOpen"
       class="!w-full"
       match-width
+      :popover-class="!isInsideModal ? 'dropdown-popover' : ''"
     >
       <template #trigger>
         <lfx-dropdown-selector
@@ -72,7 +73,21 @@ import LfxDropdownSelector from '~/components/uikit/dropdown/dropdown-selector.v
 import LfxDropdown from '~/components/uikit/dropdown/dropdown.vue';
 import { useProjectStore } from '~~/app/components/modules/project/store/project.store';
 
-const { selectedLanguages, project } = storeToRefs(useProjectStore());
+const props = defineProps<{
+  modelValue: string[];
+  isInsideModal?: boolean;
+}>();
+
+const emit = defineEmits<{ (e: 'update:modelValue', value: string[]): void }>();
+
+const selectedLanguages = computed({
+  get: () => props.modelValue,
+  set: (value: string[]) => {
+    emit('update:modelValue', value);
+  },
+});
+
+const { project } = storeToRefs(useProjectStore());
 
 const maxDisplayedChips = 2;
 const dropdownOpen = ref(false);

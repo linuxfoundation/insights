@@ -9,6 +9,7 @@ SPDX-License-Identifier: MIT
       v-model:visibility="dropdownOpen"
       class="!w-full"
       match-width
+      :popover-class="!isInsideModal ? 'dropdown-popover' : ''"
     >
       <template #trigger>
         <lfx-dropdown-selector
@@ -70,6 +71,7 @@ SPDX-License-Identifier: MIT
           <template #default="{ option }">
             <div class="flex items-center gap-2">
               <lfx-icon
+                v-if="option.icon"
                 :name="option.icon"
                 :size="16"
                 :class="option.color"
@@ -85,7 +87,6 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { storeToRefs } from 'pinia';
 import LfxCommunitySelectedChips from './selected-chips.vue';
 import LfxCommunityFilterOption from './filter-option.vue';
 import LfxCommunityFilterSelectAll from './filter-select-all.vue';
@@ -93,10 +94,21 @@ import type { SelectedChipItem } from './selected-chips.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxDropdownSelector from '~/components/uikit/dropdown/dropdown-selector.vue';
 import LfxDropdown from '~/components/uikit/dropdown/dropdown.vue';
-import { useProjectStore } from '~~/app/components/modules/project/store/project.store';
 import { availableSentiments } from '~~/app/components/modules/project/config/sentiments';
 
-const { selectedSentiments } = storeToRefs(useProjectStore());
+const props = defineProps<{
+  modelValue: string[];
+  isInsideModal?: boolean;
+}>();
+
+const emit = defineEmits<{ (e: 'update:modelValue', value: string[]): void }>();
+
+const selectedSentiments = computed({
+  get: () => props.modelValue,
+  set: (value: string[]) => {
+    emit('update:modelValue', value);
+  },
+});
 
 const maxDisplayedChips = 2;
 const dropdownOpen = ref(false);

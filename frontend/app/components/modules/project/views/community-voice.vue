@@ -33,10 +33,11 @@ import type { Pagination } from '~~/types/shared/pagination';
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 import { useProjectStore } from '~~/app/components/modules/project/store/project.store';
+import { useCommunityStore } from '~~/app/components/modules/project/components/community/store/community.store';
 
 const { showToast } = useToastService();
-const { project, startDate, endDate, selectedPlatforms, selectedKeywords, selectedSentiments, selectedLanguages } =
-  storeToRefs(useProjectStore());
+const { project, startDate, endDate } = storeToRefs(useProjectStore());
+const { selectedPlatforms, selectedKeywords, selectedSentiments, selectedLanguages } = storeToRefs(useCommunityStore());
 
 const params = computed(() => ({
   projectSlug: project.value?.slug as string,

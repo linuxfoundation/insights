@@ -5,17 +5,17 @@ SPDX-License-Identifier: MIT
 <template>
   <div class="flex flex-col gap-5">
     <!-- Platform Filter -->
-    <lfx-community-platform-filter />
+    <lfx-community-platform-filter v-model="selectedPlatforms" />
 
     <!-- Keywords Filter -->
-    <lfx-community-keyword-filter />
+    <lfx-community-keyword-filter v-model="selectedKeywords" />
 
     <!-- Sentiment Filter -->
-    <lfx-community-sentiment-filter />
+    <lfx-community-sentiment-filter v-model="selectedSentiments" />
 
     <!-- Language Filter -->
     <!-- Hiding for now until we have the API support -->
-    <!-- <lfx-community-language-filter /> -->
+    <!-- <lfx-community-language-filter v-model="selectedLanguages" /> -->
 
     <lfx-button
       type="transparent"
@@ -40,9 +40,9 @@ import LfxCommunitySentimentFilter from '../fragments/sentiment-filter.vue';
 import LfxButton from '~/components/uikit/button/button.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 // import LfxCommunityLanguageFilter from '../fragments/language-filter.vue';
-import { useProjectStore } from '~~/app/components/modules/project/store/project.store';
+import { useCommunityStore } from '~~/app/components/modules/project/components/community/store/community.store';
 
-const { selectedPlatforms, selectedKeywords, selectedSentiments, selectedLanguages } = storeToRefs(useProjectStore());
+const { selectedPlatforms, selectedKeywords, selectedSentiments, selectedLanguages } = storeToRefs(useCommunityStore());
 
 const resetFilters = () => {
   selectedPlatforms.value = [];
