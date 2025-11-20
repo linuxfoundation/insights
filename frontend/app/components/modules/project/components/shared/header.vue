@@ -144,7 +144,15 @@ SPDX-License-Identifier: MIT
                   name="bars-filter"
                   :size="14"
                 />
-                <p class="text-xs whitespace-nowrap">Filters</p>
+                <p class="text-xs whitespace-nowrap">
+                  Filters
+                  <span
+                    v-if="filterCount > 0"
+                    class="text-white text-xs bg-neutral-600 rounded-full px-1.5 py-0.5 ml-1.5"
+                  >
+                    {{ filterCount }}
+                  </span>
+                </p>
               </div>
               <div
                 v-if="showDatepicker || showCommunityFilter"
@@ -232,6 +240,7 @@ const {
 const { openReportModal } = useReportStore();
 const { openShareModal } = useShareStore();
 const { openCopilotModal } = useCopilotStore();
+const { filterCount } = storeToRefs(useCommunityStore());
 const { openCommunityFilterModal } = useCommunityStore();
 
 const { hasLfxInsightsPermission } = storeToRefs(useAuthStore());
