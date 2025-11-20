@@ -4,31 +4,25 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <div class="flex flex-col gap-8">
-    <template v-if="isLoading">
+    <div
+      v-for="mention in mentions"
+      :key="mention.sourceId"
+    >
+      <component
+        :is="getCommunityConfig(mention.source)?.dataDisplay"
+        :mention="mention"
+      />
+    </div>
+    <template v-if="isLoading || isPageLoading">
       <lfx-skeleton
-        v-for="n in 4"
+        v-for="n in 5"
         :key="n"
         class="!h-30 w-full rounded-xl"
       />
     </template>
-    <template v-else>
-      <div
-        v-for="mention in mentions"
-        :key="mention.sourceId"
-      >
-        <component
-          :is="getCommunityConfig(mention.source)?.dataDisplay"
-          :mention="mention"
-        />
-      </div>
-    </template>
 
-    <lfx-skeleton
-      v-if="isPageLoading || isLoading"
-      class="!h-30 w-full rounded-xl"
-    />
     <lfx-button
-      v-else
+      v-if="!isLoading && hasNextPage"
       type="transparent"
       class="w-full justify-center"
       button-style="pill"
@@ -49,6 +43,7 @@ defineProps<{
   mentions: CommunityMentions[];
   isLoading: boolean;
   isPageLoading: boolean;
+  hasNextPage: boolean;
 }>();
 
 const emit = defineEmits<{

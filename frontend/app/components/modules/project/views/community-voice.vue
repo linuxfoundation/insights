@@ -4,15 +4,19 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <div class="container flex gap-10 py-10">
-    <section class="w-3/4">
+    <section class="w-full md:w-3/4">
       <lfx-community-results-area
         :is-loading="isPending"
         :is-page-loading="isFetchingNextPage"
         :mentions="mentions"
+        :has-next-page="hasNextPage"
         @fetch-next-page="fetchNextPage"
       />
     </section>
-    <section class="w-1/4">
+    <section
+      class="w-1/4 md:block hidden"
+      :class="{ 'opacity-50': isPending }"
+    >
       <lfx-community-filter-area />
     </section>
   </div>
@@ -44,7 +48,7 @@ const params = computed(() => ({
   endDate: endDate.value,
 }));
 
-const { data, isPending, isFetchingNextPage, fetchNextPage, error } =
+const { data, isPending, isFetchingNextPage, hasNextPage, fetchNextPage, error } =
   PROJECT_COMMUNITY_API_SERVICE.fetchCommunityMentions(params);
 
 const errorMessage = computed(() => {

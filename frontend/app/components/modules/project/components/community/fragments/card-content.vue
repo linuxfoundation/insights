@@ -25,7 +25,7 @@ SPDX-License-Identifier: MIT
 
       <!-- Image -->
       <img
-        v-if="mention.imageUrl"
+        v-if="mention.imageUrl && isValidUrl(mention.imageUrl)"
         :src="mention.imageUrl"
         alt=""
         class="w-[200px] h-[100px] object-cover rounded-lg shrink-0"
@@ -46,6 +46,16 @@ const truncateText = (text: string, maxLength: number) => {
   if (!text) return '';
   if (text.length <= maxLength) return text;
   return text.substring(0, maxLength) + '...';
+};
+
+const isValidUrl = (url: string) => {
+  if (!url) return false;
+  try {
+    const urlObj = new URL(url);
+    return urlObj.protocol === 'http:' || urlObj.protocol === 'https:';
+  } catch {
+    return false;
+  }
 };
 </script>
 

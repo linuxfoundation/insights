@@ -290,6 +290,9 @@ const showDatepicker = computed(
       LfxRoutes.REPOSITORY_SECURITY,
       LfxRoutes.REPOSITORY_GROUP,
       LfxRoutes.REPOSITORY_GROUP_SECURITY,
+      LfxRoutes.PROJECT_COMMUNITY_VOICE,
+      LfxRoutes.REPOSITORY_COMMUNITY_VOICE,
+      LfxRoutes.REPOSITORY_GROUP_COMMUNITY_VOICE,
     ].includes(route.name as LfxRoutes),
 );
 
