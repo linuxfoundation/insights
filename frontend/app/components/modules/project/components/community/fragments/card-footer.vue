@@ -3,7 +3,7 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="flex gap-2 items-start sm:items-center px-6 py-4 bg-neutral-50 text-neutral-500">
+  <div class="flex gap-2 items-start sm:items-center sm:px-6 px-4 py-4 bg-neutral-50 text-neutral-500">
     <slot>
       <lfx-icon
         name="info-circle"

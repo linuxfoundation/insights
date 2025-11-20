@@ -3,7 +3,7 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="container flex gap-10 py-10">
+  <div class="container flex gap-10 md:py-10 py-5">
     <section class="w-full md:w-3/4">
       <lfx-community-results-area
         :is-loading="isPending"

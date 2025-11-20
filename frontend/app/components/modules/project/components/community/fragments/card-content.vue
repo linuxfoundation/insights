@@ -3,33 +3,35 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="flex gap-8 items-start px-6 py-3">
+  <div class="md:px-6 px-4 py-3">
     <slot>
-      <div class="flex gap-3 items-stretch flex-1 min-w-0">
-        <!-- Sentiment Icon -->
-        <lfx-community-sentiment-icon :sentiment-label="mention.sentimentLabel" />
+      <div class="flex md:flex-row flex-col flex-wrap items-start md:gap-8 gap-4">
+        <div class="flex gap-3 items-stretch flex-1 min-w-0">
+          <!-- Sentiment Icon -->
+          <lfx-community-sentiment-icon :sentiment-label="mention.sentimentLabel" />
 
-        <!-- Text Content -->
-        <div class="flex-1 min-w-0">
-          <p
-            v-if="mention.title"
-            class="text-base font-semibold leading-6 text-black mb-3 whitespace-pre-wrap"
-          >
-            {{ mention.title }}
-          </p>
-          <p class="text-base leading-6 text-black whitespace-pre-wrap">
-            {{ truncateText(mention.body, 300) }}
-          </p>
+          <!-- Text Content -->
+          <div class="flex-1 min-w-0">
+            <p
+              v-if="mention.title"
+              class="text-base font-semibold leading-6 text-black mb-3 whitespace-pre-wrap"
+            >
+              {{ mention.title }}
+            </p>
+            <p class="text-base leading-6 text-black whitespace-pre-wrap">
+              {{ truncateText(mention.body, 300) }}
+            </p>
+          </div>
         </div>
-      </div>
 
-      <!-- Image -->
-      <img
-        v-if="mention.imageUrl && isValidUrl(mention.imageUrl)"
-        :src="mention.imageUrl"
-        alt=""
-        class="w-[200px] h-[100px] object-cover rounded-lg shrink-0"
-      />
+        <!-- Image -->
+        <img
+          v-if="mention.imageUrl && isValidUrl(mention.imageUrl)"
+          :src="mention.imageUrl"
+          alt=""
+          class="w-full md:w-[200px] md:h-[100px] h-[120px] object-cover rounded-lg shrink-0"
+        />
+      </div>
     </slot>
   </div>
 </template>

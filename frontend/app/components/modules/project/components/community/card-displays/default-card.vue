@@ -8,7 +8,7 @@ SPDX-License-Identifier: MIT
   <lfx-card
     class="border border-neutral-100 rounded-xl overflow-hidden cursor-pointer hover:shadow-lg transition-shadow duration-300"
   >
-    <div class="flex flex-col gap-5">
+    <div class="flex flex-col md:gap-5 gap-3">
       <slot>
         <!-- Header Section -->
         <lfx-community-card-header :mention="mention" />
