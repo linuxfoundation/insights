@@ -9,7 +9,7 @@ export const top100OrganizationsConfig: LeaderboardConfig = {
   key: 'organizations',
   name: 'Top 100 organizations',
   description:
-    'Most influential organizations based on the total number of contributions made over the last 10 years.',
+    'Most influential organizations based on the total number of contributions made over the last 12 months.',
   icon: 'building-flag',
   dataDisplay: LfxOrganizationRowDisplay,
   minimizedDataDisplay: LfxOrganizationMinimizedRowDisplay,
