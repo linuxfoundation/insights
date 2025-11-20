@@ -35,12 +35,12 @@ export interface Project {
   firstCommit?: string;
   projectLinks?: ProjectLink[];
   connectedPlatforms: string[];
-  communityPlatforms?: string[];
-  communityLanguages?: string[];
-  communityKeywords?: string[];
   score: number;
   rank: number;
   healthScore: number;
+  communityPlatforms: string[];
+  communityKeywords: string[];
+  communityLanguages: string[];
 }
 
 export interface ProjectLanguage {

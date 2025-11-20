@@ -61,6 +61,10 @@
   }
 }
 
+.dropdown-popover.c-popover__content{
+  @apply z-[9];
+}
+
 .is-open {
   .c-dropdown {
     &__selector {

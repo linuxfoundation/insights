@@ -5,10 +5,11 @@ SPDX-License-Identifier: MIT
 <template>
   <div class="container flex gap-10 py-10">
     <section class="w-3/4">
-      <div v-if="isPending">Loading...</div>
       <lfx-community-results-area
-        v-else
+        :is-loading="isPending"
+        :is-page-loading="isFetchingNextPage"
         :mentions="mentions"
+        @fetch-next-page="fetchNextPage"
       />
     </section>
     <section class="w-1/4">
@@ -43,7 +44,8 @@ const params = computed(() => ({
   endDate: endDate.value,
 }));
 
-const { data, isPending, error } = PROJECT_COMMUNITY_API_SERVICE.fetchCommunityMentions(params);
+const { data, isPending, isFetchingNextPage, fetchNextPage, error } =
+  PROJECT_COMMUNITY_API_SERVICE.fetchCommunityMentions(params);
 
 const errorMessage = computed(() => {
   return error.value?.message || 'Error fetching community mentions';

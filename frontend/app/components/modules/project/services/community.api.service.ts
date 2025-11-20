@@ -52,7 +52,7 @@ class ProjectCommunityApiService {
   }
 
   getNextPageCollectionsParam(lastPage: Pagination<CommunityMentions>) {
-    const nextPage = lastPage.page + 1;
+    const nextPage = Number(lastPage.page) + 1;
     const totalPages = Math.ceil(lastPage.total / lastPage.pageSize);
     return nextPage < totalPages ? nextPage : null;
   }

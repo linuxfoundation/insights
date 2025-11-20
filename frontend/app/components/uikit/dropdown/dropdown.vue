@@ -10,6 +10,7 @@ SPDX-License-Identifier: MIT
     v-bind="$attrs"
     :is-modal="pageWidth < 640"
     :match-width="props.matchWidth"
+    popover-class="dropdown-popover"
   >
     <slot name="trigger" />
 
