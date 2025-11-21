@@ -136,7 +136,26 @@ SPDX-License-Identifier: MIT
             >
               <lfx-project-date-range-picker v-show="showDatepicker" />
               <div
-                v-if="showDatepicker"
+                v-show="showCommunityFilter"
+                class="flex items-center py-1.5 px-3 gap-1.5 cursor-pointer"
+                @click="openCommunityFilter()"
+              >
+                <lfx-icon
+                  name="bars-filter"
+                  :size="14"
+                />
+                <p class="text-xs whitespace-nowrap">
+                  Filters
+                  <span
+                    v-if="filterCount > 0"
+                    class="text-white text-xs bg-neutral-600 rounded-full px-1.5 py-0.5 ml-1.5"
+                  >
+                    {{ filterCount }}
+                  </span>
+                </p>
+              </div>
+              <div
+                v-if="showDatepicker || showCommunityFilter"
                 class="border-l border-neutral-200 my-1"
               />
               <div
@@ -202,6 +221,7 @@ import LfxArchivedTag from '~/components/shared/components/archived-tag.vue';
 import { useAuthStore } from '~/components/modules/auth/store/auth.store';
 import { useCopilotStore } from '~/components/shared/modules/copilot/store/copilot.store';
 import LfxTag from '~/components/uikit/tag/tag.vue';
+import { useCommunityStore } from '~/components/modules/project/components/community/store/community.store';
 
 const props = defineProps<{
   project?: Project;
@@ -220,6 +240,8 @@ const {
 const { openReportModal } = useReportStore();
 const { openShareModal } = useShareStore();
 const { openCopilotModal } = useCopilotStore();
+const { filterCount } = storeToRefs(useCommunityStore());
+const { openCommunityFilterModal } = useCommunityStore();
 
 const { hasLfxInsightsPermission } = storeToRefs(useAuthStore());
 
@@ -281,6 +303,10 @@ const share = () => {
   });
 };
 
+const openCommunityFilter = () => {
+  openCommunityFilterModal();
+};
+
 const showDatepicker = computed(
   () =>
     ![
@@ -290,8 +316,19 @@ const showDatepicker = computed(
       LfxRoutes.REPOSITORY_SECURITY,
       LfxRoutes.REPOSITORY_GROUP,
       LfxRoutes.REPOSITORY_GROUP_SECURITY,
+      LfxRoutes.PROJECT_COMMUNITY_VOICE,
+      LfxRoutes.REPOSITORY_COMMUNITY_VOICE,
+      LfxRoutes.REPOSITORY_GROUP_COMMUNITY_VOICE,
     ].includes(route.name as LfxRoutes),
 );
+
+const showCommunityFilter = computed(() => {
+  return [
+    LfxRoutes.PROJECT_COMMUNITY_VOICE,
+    LfxRoutes.REPOSITORY_COMMUNITY_VOICE,
+    LfxRoutes.REPOSITORY_GROUP_COMMUNITY_VOICE,
+  ].includes(route.name as LfxRoutes);
+});
 
 const openCopilotHandler = () => {
   openCopilotModal({

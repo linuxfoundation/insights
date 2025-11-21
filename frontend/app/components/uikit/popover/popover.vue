@@ -20,7 +20,7 @@ SPDX-License-Identifier: MIT
       <div
         ref="popover"
         class="c-popover__content"
-        :class="{ 'is-modal': props.isModal }"
+        :class="{ 'is-modal': props.isModal, [props.popoverClass || '']: props.popoverClass }"
         @click="props.isModal ? closePopover() : null"
       >
         <slot
@@ -46,6 +46,7 @@ const props = withDefaults(
     disabled?: boolean;
     matchWidth?: boolean;
     isModal?: boolean;
+    popoverClass?: string;
   }>(),
   {
     placement: 'bottom-start',
@@ -55,6 +56,7 @@ const props = withDefaults(
     disabled: false,
     matchWidth: false,
     isModal: false,
+    popoverClass: '',
   },
 );
 

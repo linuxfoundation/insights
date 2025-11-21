@@ -13,6 +13,7 @@ SPDX-License-Identifier: MIT
     <lfx-report-global />
     <lfx-share-global />
     <lfx-copilot-global />
+    <lfx-community-filter-global />
     <lfx-insights-footer />
   </main>
 </template>
@@ -26,6 +27,7 @@ import LfxInsightsFooter from '~/components/shared/layout/footer.vue';
 import LfxReportGlobal from '~/components/shared/modules/report/components/report-global.vue';
 import LfxShareGlobal from '~/components/shared/modules/share/components/share-global.vue';
 import LfxCopilotGlobal from '~/components/shared/modules/copilot/components/copilot-global.vue';
+import LfxCommunityFilterGlobal from '~/components/modules/project/components/community/sections/community-filter-global.vue';
 import { useRichSchema } from '~~/composables/useRichSchema';
 
 const route = useRoute();

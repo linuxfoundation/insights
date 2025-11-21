@@ -10,6 +10,7 @@ SPDX-License-Identifier: MIT
     v-bind="$attrs"
     :is-modal="pageWidth < 640"
     :match-width="props.matchWidth"
+    :popover-class="props.popoverClass"
   >
     <slot name="trigger" />
 
@@ -39,6 +40,7 @@ const props = withDefaults(
     visibility?: boolean;
     matchWidth?: boolean;
     dropdownClass?: string;
+    popoverClass?: string;
   }>(),
   {
     placement: 'bottom-start',
@@ -46,6 +48,7 @@ const props = withDefaults(
     visibility: false,
     matchWidth: false,
     dropdownClass: '',
+    popoverClass: '',
   },
 );
 
