@@ -41,8 +41,6 @@ export default defineEventHandler(async (event): Promise<HealthScoreResults | un
       healthScore = await fetchHealthScoreMetrics({
         project,
         repos,
-        startDate: DateTime.now().minus({ days: 365 }).startOf('day'),
-        endDate: DateTime.now().endOf('day'),
       });
     }
 
