@@ -18,12 +18,14 @@ SPDX-License-Identifier: MIT
             >
               {{ mention.title }}
             </p>
-            <p class="text-base leading-6 text-black whitespace-pre-wrap lg:break-normal break-all md:block hidden">
-              {{ truncateText(mention.body, 300) }}
-            </p>
-            <p class="text-base leading-6 text-black whitespace-pre-wrap md:hidden block">
-              {{ truncateText(mention.body, 150) }}
-            </p>
+            <p
+              class="text-base leading-6 text-black whitespace-pre-wrap lg:break-normal break-all md:block hidden"
+              v-html="truncateText(mention.body, 300)"
+            />
+            <p
+              class="text-base leading-6 text-black whitespace-pre-wrap md:hidden block"
+              v-html="truncateText(mention.body, 150)"
+            />
           </div>
         </div>
 
