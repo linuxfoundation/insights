@@ -44,12 +44,12 @@ const typeData: Record<SecurityDataResult, TypeData> = {
     text: 'Passed',
   },
   [SecurityDataResult.NEEDS_REVIEW]: {
-    variation: 'warning-solid',
-    icon: 'exclamation-triangle',
-    text: 'Needs review',
+    variation: 'neutral',
+    icon: 'question-circle',
+    text: 'Cannot measure',
   },
 };
-const data = computed<number>(() => typeData[props.result]);
+const data = computed<TypeData>(() => typeData[props.result]);
 </script>
 
 <script lang="ts">
