@@ -5,9 +5,10 @@ SPDX-License-Identifier: MIT
 <template>
   <lfx-modal
     v-model="isCommunityFilterOpen"
+    type="cover"
     class="p-6"
   >
-    <section class="flex flex-col h-[calc(100vh-160px)]">
+    <section class="flex flex-col h-full">
       <div class="flex justify-end">
         <lfx-icon-button
           icon="close"

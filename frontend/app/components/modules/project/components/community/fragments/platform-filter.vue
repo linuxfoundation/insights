@@ -33,7 +33,7 @@ SPDX-License-Identifier: MIT
                 v-if="item.image"
                 :src="item.image"
                 :alt="item.label"
-                class="w-[15px] h-[15px] object-contain"
+                class="w-4 h-4 object-contain"
               />
               <span class="text-xs leading-4 text-neutral-900 truncate">
                 {{ item.label }}

@@ -11,7 +11,7 @@ SPDX-License-Identifier: MIT
       :class="sentimentTextColor"
     />
     <div
-      class="flex-1 w-0.5 min-h-[20px]"
+      class="flex-1 w-0.5 min-h-5"
       :class="sentimentBarColor"
     />
   </div>

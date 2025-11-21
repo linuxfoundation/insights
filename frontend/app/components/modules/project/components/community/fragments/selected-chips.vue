@@ -7,7 +7,7 @@ SPDX-License-Identifier: MIT
     <div
       v-for="item in displayedItems"
       :key="item.value"
-      class="bg-neutral-100 rounded-full px-1.5 py-0.5 flex items-center gap-1 min-w-0 max-w-[200px]"
+      class="bg-neutral-100 rounded-full px-1.5 py-0.5 flex items-center gap-1 min-w-0 max-w-50"
     >
       <slot
         name="chip"

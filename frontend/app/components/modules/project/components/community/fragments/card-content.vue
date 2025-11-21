@@ -20,11 +20,11 @@ SPDX-License-Identifier: MIT
             </p>
             <p
               class="text-base leading-6 text-black whitespace-pre-wrap lg:break-normal break-all md:block hidden"
-              v-html="truncateText(mention.body, 300)"
+              v-html="truncateText(sanitize(mention.body), 300)"
             />
             <p
               class="text-base leading-6 text-black whitespace-pre-wrap md:hidden block"
-              v-html="truncateText(mention.body, 150)"
+              v-html="truncateText(sanitize(mention.body), 150)"
             />
           </div>
         </div>
@@ -34,7 +34,7 @@ SPDX-License-Identifier: MIT
           v-if="mention.imageUrl && isValidUrl(mention.imageUrl)"
           :src="mention.imageUrl"
           alt=""
-          class="w-full lg:w-[200px] lg:h-[100px] h-[120px] object-cover rounded-lg shrink-0"
+          class="w-full lg:w-51 lg:h-25 h-29 object-cover rounded-lg shrink-0"
         />
       </div>
     </slot>
@@ -44,10 +44,13 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import LfxCommunitySentimentIcon from './sentiment-icon.vue';
 import type { CommunityMentions } from '~~/types/community/community';
+import { useSanitize } from '~~/composables/useSanitize';
 
 defineProps<{
   mention: CommunityMentions;
 }>();
+
+const { sanitize } = useSanitize();
 
 const truncateText = (text: string, maxLength: number) => {
   if (!text) return '';

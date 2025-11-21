@@ -62,7 +62,7 @@
 }
 
 .dropdown-popover.c-popover__content {
-  @apply z-[9];
+  z-index: 9;
 }
 
 .is-open {

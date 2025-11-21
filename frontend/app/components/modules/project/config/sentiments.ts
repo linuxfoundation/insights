@@ -3,21 +3,21 @@
 
 export const availableSentiments = [
   {
-    value: 'positive',
+    value: 'Positive',
     label: 'Positive',
     icon: 'face-smile',
     color: 'text-positive-500',
     backgroundColor: 'bg-positive-500',
   },
   {
-    value: 'neutral',
+    value: 'Neutral',
     label: 'Neutral',
     icon: 'face-meh',
     color: 'text-neutral-400',
     backgroundColor: 'bg-neutral-400',
   },
   {
-    value: 'negative',
+    value: 'Negative',
     label: 'Negative',
     icon: 'face-frown-slight',
     color: 'text-negative-500',
