@@ -6,7 +6,6 @@
  * - project: string
  * - repos: string[]
  */
-import { DateTime } from 'luxon';
 import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
 import type { HealthScoreTinybird, HealthScoreResults } from '~~/types/overview/responses.types';
 import {
