@@ -14,7 +14,7 @@ SPDX-License-Identifier: MIT
       />
     </section>
     <section
-      class="md:block hidden lg:w-1/4 w-2/5"
+      class="md:block hidden lg:w-1/4 w-2/5 min-w-60 max-w-80"
       :class="{ 'opacity-50': isPending }"
     >
       <lfx-community-filter-area />

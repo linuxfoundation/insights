@@ -8,7 +8,10 @@ SPDX-License-Identifier: MIT
       <div class="flex lg:flex-row flex-col flex-wrap items-start lg:gap-8 gap-4">
         <div class="flex gap-3 items-stretch flex-1 min-w-0">
           <!-- Sentiment Icon -->
-          <lfx-community-sentiment-icon :sentiment-label="mention.sentimentLabel" />
+          <lfx-community-sentiment-icon
+            :sentiment-label="mention.sentimentLabel"
+            :hide-bar="mention.body === null || mention.body === ''"
+          />
 
           <!-- Text Content -->
           <div class="flex-1 min-w-0 overflow-hidden">
@@ -19,7 +22,7 @@ SPDX-License-Identifier: MIT
               {{ mention.title }}
             </p>
             <p
-              class="text-base leading-6 text-black whitespace-pre-wrap lg:break-normal break-all md:block hidden"
+              class="text-base leading-6 text-black whitespace-pre-wrap xl:break-normal break-all md:block hidden"
               v-html="truncateText(sanitize(mention.body), 300)"
             />
             <p

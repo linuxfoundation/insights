@@ -103,6 +103,9 @@ export default {
       outlineWidth: {
         3: '0.1875rem',
       },
+      top: {
+        29: '7.5rem',
+      },
     },
   },
   plugins: [],

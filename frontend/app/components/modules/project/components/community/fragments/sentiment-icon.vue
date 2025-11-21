@@ -11,6 +11,7 @@ SPDX-License-Identifier: MIT
       :class="sentimentTextColor"
     />
     <div
+      v-if="!hideBar"
       class="flex-1 w-0.5 min-h-5"
       :class="sentimentBarColor"
     />
@@ -23,6 +24,7 @@ import LfxIcon from '~/components/uikit/icon/icon.vue';
 
 const props = defineProps<{
   sentimentLabel: string;
+  hideBar?: boolean;
 }>();
 
 const sentimentIcon = computed(() => {
