@@ -21,8 +21,22 @@ SPDX-License-Identifier: MIT
       />
     </template>
 
+    <div
+      v-if="mentions.length === 0 && !isLoading && !isPageLoading"
+      class="flex flex-col items-center py-20"
+    >
+      <lfx-icon
+        name="face-monocle"
+        :size="40"
+        class="text-neutral-300"
+      />
+      <h3 class="text-center pt-5 text-heading-4 sm:text-heading-3 font-secondary font-bold text-neutral-500">
+        No mentions found
+      </h3>
+    </div>
+
     <lfx-button
-      v-if="!isLoading && hasNextPage"
+      v-if="!isLoading && hasNextPage && mentions.length > 0"
       type="transparent"
       class="w-full justify-center"
       button-style="pill"
@@ -38,6 +52,7 @@ import { communityConfigs } from '../config';
 import type { CommunityMentions } from '~~/types/community/community';
 import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
 import LfxButton from '~/components/uikit/button/button.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 
 defineProps<{
   mentions: CommunityMentions[];
