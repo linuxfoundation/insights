@@ -9,7 +9,7 @@ export const top100ContributorsConfig: LeaderboardConfig = {
   key: 'contributors',
   name: 'Top 100 contributors',
   description:
-    'Developers ranked by volume of contributions over the last 10 years, highlighting the most active and influential individuals.',
+    'Developers ranked by volume of contributions over the last 12 months, highlighting the most active and influential individuals.',
   icon: 'head-side-gear',
   dataDisplay: LfxContributorRowDisplay,
   minimizedDataDisplay: LfxContributorMinimizedRowDisplay,
