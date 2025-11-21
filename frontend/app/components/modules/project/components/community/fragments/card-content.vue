@@ -18,7 +18,7 @@ SPDX-License-Identifier: MIT
             >
               {{ mention.title }}
             </p>
-            <p class="text-base leading-6 text-black whitespace-pre-wrap lg:break-words break-all md:block hidden">
+            <p class="text-base leading-6 text-black whitespace-pre-wrap lg:break-normal break-all md:block hidden">
               {{ truncateText(mention.body, 300) }}
             </p>
             <p class="text-base leading-6 text-black whitespace-pre-wrap md:hidden block">
