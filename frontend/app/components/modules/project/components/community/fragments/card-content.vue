@@ -5,21 +5,24 @@ SPDX-License-Identifier: MIT
 <template>
   <div class="md:px-6 px-4 py-3">
     <slot>
-      <div class="flex md:flex-row flex-col flex-wrap items-start md:gap-8 gap-4">
+      <div class="flex lg:flex-row flex-col flex-wrap items-start lg:gap-8 gap-4">
         <div class="flex gap-3 items-stretch flex-1 min-w-0">
           <!-- Sentiment Icon -->
           <lfx-community-sentiment-icon :sentiment-label="mention.sentimentLabel" />
 
           <!-- Text Content -->
-          <div class="flex-1 min-w-0">
+          <div class="flex-1 min-w-0 overflow-hidden">
             <p
               v-if="mention.title"
               class="text-base font-semibold leading-6 text-black mb-3 whitespace-pre-wrap"
             >
               {{ mention.title }}
             </p>
-            <p class="text-base leading-6 text-black whitespace-pre-wrap">
+            <p class="text-base leading-6 text-black whitespace-pre-wrap lg:break-words break-all md:block hidden">
               {{ truncateText(mention.body, 300) }}
+            </p>
+            <p class="text-base leading-6 text-black whitespace-pre-wrap md:hidden block">
+              {{ truncateText(mention.body, 150) }}
             </p>
           </div>
         </div>
@@ -29,7 +32,7 @@ SPDX-License-Identifier: MIT
           v-if="mention.imageUrl && isValidUrl(mention.imageUrl)"
           :src="mention.imageUrl"
           alt=""
-          class="w-full md:w-[200px] md:h-[100px] h-[120px] object-cover rounded-lg shrink-0"
+          class="w-full lg:w-[200px] lg:h-[100px] h-[120px] object-cover rounded-lg shrink-0"
         />
       </div>
     </slot>

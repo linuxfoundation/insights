@@ -3,7 +3,7 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="flex flex-col gap-8">
+  <div class="flex flex-col md:gap-8 gap-5">
     <div
       v-for="mention in mentions"
       :key="mention.sourceId"

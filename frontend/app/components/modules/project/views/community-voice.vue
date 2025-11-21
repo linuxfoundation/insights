@@ -3,8 +3,8 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="container flex gap-10 md:py-10 py-5">
-    <section class="w-full md:w-3/4">
+  <div class="container flex lg:gap-10 gap-6 md:py-10 py-5">
+    <section class="w-full md:w-3/5 lg:w-3/4">
       <lfx-community-results-area
         :is-loading="isPending"
         :is-page-loading="isFetchingNextPage"
@@ -14,7 +14,7 @@ SPDX-License-Identifier: MIT
       />
     </section>
     <section
-      class="w-1/4 md:block hidden"
+      class="md:block hidden lg:w-1/4 w-2/5"
       :class="{ 'opacity-50': isPending }"
     >
       <lfx-community-filter-area />

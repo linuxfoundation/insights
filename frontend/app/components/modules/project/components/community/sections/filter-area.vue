@@ -3,7 +3,10 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="flex flex-col gap-5 sticky top-[17.5rem]">
+  <div
+    class="flex flex-col gap-5 sticky lg:top-[15rem] top-[13rem]"
+    :class="{ sticky: scrollTop > 50 }"
+  >
     <!-- Platform Filter -->
     <lfx-community-platform-filter v-model="selectedPlatforms" />
 
@@ -34,6 +37,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
+import { useScroll } from '@vueuse/core';
 import LfxCommunityPlatformFilter from '../fragments/platform-filter.vue';
 import LfxCommunityKeywordFilter from '../fragments/keyword-filter.vue';
 import LfxCommunitySentimentFilter from '../fragments/sentiment-filter.vue';
@@ -43,6 +47,8 @@ import LfxIcon from '~/components/uikit/icon/icon.vue';
 import { useCommunityStore } from '~~/app/components/modules/project/components/community/store/community.store';
 
 const { selectedPlatforms, selectedKeywords, selectedSentiments, selectedLanguages } = storeToRefs(useCommunityStore());
+
+const { scrollTop } = useScroll();
 
 const resetFilters = () => {
   selectedPlatforms.value = [];
