@@ -12,10 +12,10 @@ SPDX-License-Identifier: MIT
   <div class="flex items-center w-full">
     <!-- Project info -->
     <div class="flex-1 min-w-0 flex gap-3 items-center">
-      <lfx-avatar
+      <lfx-organization-logo
         :src="item.logoUrl"
-        type="organization"
-        :aria-label="item.logoUrl && item.name"
+        :is-lf="item.isLF"
+        :alt="item.name"
       />
       <p
         :title="item.name"
@@ -40,7 +40,7 @@ import { useRouter } from 'vue-router';
 import type { LeaderboardConfig } from '../../config/types/leaderboard.types';
 import DurationDataDisplay from '../data-displays/duration.vue';
 import type { Leaderboard } from '~~/types/leaderboard/leaderboard';
-import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
+import LfxOrganizationLogo from '~/components/uikit/organization-logo/organization-logo.vue';
 import { LfxRoutes } from '~/components/shared/types/routes';
 
 const router = useRouter();
