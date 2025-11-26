@@ -105,8 +105,12 @@ class ProjectCommunityApiService {
   isCommunityEnabled(project: Project, user: User | null) {
     const hasConnectedPlatforms =
       Array.isArray(project.communityPlatforms) && project.communityPlatforms.length > 0;
+
+    const lfEmail = new RegExp('@(contractor\\.)?linuxfoundation\\.org$');
+    const isLFContributor = lfEmail.test(user?.email || '');
+
     const hasPermission = user?.hasLfxInsightsPermission || false;
-    return hasConnectedPlatforms && hasPermission;
+    return hasConnectedPlatforms && (hasPermission || isLFContributor);
   }
 }
 
