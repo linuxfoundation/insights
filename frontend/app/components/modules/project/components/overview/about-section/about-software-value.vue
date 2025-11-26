@@ -14,8 +14,26 @@ SPDX-License-Identifier: MIT
     class="flex flex-col gap-2 text-xs"
   >
     <div class="text-neutral-400 font-semibold">First commit</div>
-    <div class="text-neutral-900">
-      {{ formatFirstCommit(project.firstCommit) }}
+    <div class="text-neutral-900 flex items-center gap-2">
+      <a
+        v-if="project.repositories?.[0]?.url"
+        :href="project.repositories[0].url"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="hover:underline text-primary-500"
+      >
+        {{ formatFirstCommit(project.firstCommit) }}
+      </a>
+      <span v-else>
+        {{ formatFirstCommit(project.firstCommit) }}
+      </span>
+      <span
+        v-if="isBirthday(project.firstCommit)"
+        class="animate-bounce text-lg cursor-help"
+        title="Happy Birthday!"
+      >
+        🎈
+      </span>
     </div>
   </div>
   <div class="flex flex-col gap-2 text-xs">
@@ -78,6 +96,12 @@ const { project } = storeToRefs(useProjectStore());
 const formatFirstCommit = (date: string) => {
   const dt = DateTime.fromSQL(date);
   return dt.toFormat('LLLL yyyy');
+};
+
+const isBirthday = (date: string) => {
+  const dt = DateTime.fromSQL(date);
+  const now = DateTime.now();
+  return dt.month === now.month && dt.day === now.day;
 };
 </script>
 
