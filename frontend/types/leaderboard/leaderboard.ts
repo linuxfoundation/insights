@@ -1,6 +1,6 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-export interface Leaderboard {
+export interface LeaderboardBase {
   rank: number;
   id: string;
   segmentId: string;
@@ -10,4 +10,12 @@ export interface Leaderboard {
   leaderboardType: string;
   value: number;
   previousPeriodValue: number;
+  collectionsSlugs: string[];
+}
+
+export interface Leaderboard extends LeaderboardBase {
+  isLF: boolean;
+}
+export interface LeaderboardTinybird extends LeaderboardBase {
+  isLF: number;
 }
