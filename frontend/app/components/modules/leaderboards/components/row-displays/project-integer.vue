@@ -25,10 +25,10 @@ SPDX-License-Identifier: MIT
 
       <!-- Project info -->
       <div class="flex-1 min-w-0 flex gap-3 items-center">
-        <lfx-avatar
+        <lfx-organization-logo
           :src="item.logoUrl"
-          type="organization"
-          :aria-label="item.logoUrl && item.name"
+          :is-lf="item.isLF"
+          :alt="item.name"
         />
         <p
           :title="item.name"
@@ -59,7 +59,7 @@ import type { LeaderboardConfig } from '../../config/types/leaderboard.types';
 import NumericDataDisplay from '../data-displays/numeric.vue';
 import NumericTrends from '../trends/numeric-trends.vue';
 import type { Leaderboard } from '~~/types/leaderboard/leaderboard';
-import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
+import LfxOrganizationLogo from '~/components/uikit/organization-logo/organization-logo.vue';
 import { LfxRoutes } from '~/components/shared/types/routes';
 
 const router = useRouter();
