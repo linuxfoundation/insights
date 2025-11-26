@@ -44,6 +44,18 @@ SPDX-License-Identifier: MIT
     >
       View more
     </lfx-button>
+
+    <div class="text-xs text-neutral-400 md:hidden block text-center">
+      Community Voice data powered by
+      <a
+        :href="links.octolens"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="underline"
+      >
+        Octolens
+      </a>
+    </div>
   </div>
 </template>
 
@@ -53,6 +65,7 @@ import type { CommunityMentions } from '~~/types/community/community';
 import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
 import LfxButton from '~/components/uikit/button/button.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
+import { links } from '~/config/links';
 
 defineProps<{
   mentions: CommunityMentions[];

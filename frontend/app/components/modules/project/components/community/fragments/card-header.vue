@@ -46,26 +46,7 @@ SPDX-License-Identifier: MIT
       </div>
     </div>
     <div class="flex items-center gap-1">
-      <p class="text-xs font-medium text-neutral-400">
-        <span class="hidden md:inline">・</span> {{ formatTimestamp }} by
-      </p>
-      <div class="flex flex-col">
-        <template v-if="mention.authorProfileLink">
-          <a
-            :href="mention.authorProfileLink"
-            class="text-xs font-medium text-neutral-400 underline decoration-dashed hover:text-neutral-500"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {{ mention.author }}
-          </a>
-        </template>
-        <template v-else>
-          <span class="text-xs font-medium text-neutral-400">
-            {{ mention.author }}
-          </span>
-        </template>
-      </div>
+      <p class="text-xs font-medium text-neutral-400"><span class="hidden md:inline">・</span> {{ formatTimestamp }}</p>
     </div>
   </div>
 </template>

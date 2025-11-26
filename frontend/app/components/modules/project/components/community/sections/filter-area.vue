@@ -29,6 +29,18 @@ SPDX-License-Identifier: MIT
       />
       Reset filters
     </lfx-button>
+
+    <div class="text-xs text-neutral-400 border-t border-neutral-200 pt-4">
+      Community Voice data powered by
+      <a
+        :href="links.octolens"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="underline"
+      >
+        Octolens
+      </a>
+    </div>
   </div>
 </template>
 
@@ -41,6 +53,7 @@ import LfxButton from '~/components/uikit/button/button.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 // import LfxCommunityLanguageFilter from '../fragments/language-filter.vue';
 import { useCommunityStore } from '~~/app/components/modules/project/components/community/store/community.store';
+import { links } from '~/config/links';
 
 const { selectedPlatforms, selectedKeywords, selectedSentiments, selectedLanguages } = storeToRefs(useCommunityStore());
 
