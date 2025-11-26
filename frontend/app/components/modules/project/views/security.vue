@@ -32,20 +32,47 @@ SPDX-License-Identifier: MIT
           </p>
         </div>
 
-        <a
-          href="https://revanite.io"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="flex items-center justify-center px-2.5 py-1 border border-neutral-200 rounded-full"
-        >
-          <p class="text-neutral-500 text-xs mr-2">Powered by:</p>
-          <img
-            src="~/assets/images/revanite.svg"
-            alt="Revanite.io Logo"
-            class="h-5 w-5.5 mr-1.5"
-          />
-          <p class="text-neutral-900 text-xs">Revanite.io</p>
-        </a>
+        <div class="flex items-center gap-2">
+          <lfx-tooltip
+            v-if="!PROJECT_SECURITY_SERVICE.hasSecurityMdFile(data || [])"
+            placement="top"
+          >
+            <lfx-button
+              type="transparent"
+              size="small"
+              button-style="pill"
+              class="whitespace-nowrap !hidden lg:!flex"
+              @click="handleGenerateYamlClick"
+            >
+              <lfx-icon name="file-shield" />
+              Generate YAML file
+            </lfx-button>
+
+            <template #content>
+              <div class="flex flex-col gap-1 max-w-72">
+                <div class="font-semibold text-white text-xs">YAML Security specifications file</div>
+                <div class="text-neutral-300 text-xs">
+                  Generate a YAML security file, upload it to your repository, and ensure we can run all security
+                  assessments for your project.
+                </div>
+              </div>
+            </template>
+          </lfx-tooltip>
+          <a
+            href="https://revanite.io"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="flex items-center justify-center px-2.5 py-1 border border-neutral-200 rounded-full"
+          >
+            <p class="text-neutral-500 text-xs mr-2">Powered by:</p>
+            <img
+              src="~/assets/images/revanite.svg"
+              alt="Revanite.io Logo"
+              class="h-5 w-5.5 mr-1.5"
+            />
+            <p class="text-neutral-900 text-xs">Revanite.io</p>
+          </a>
+        </div>
         <!-- TODO: Enable when backend is ready -->
         <!--          <lfx-button-->
         <!--            type="tertiary"-->
@@ -161,31 +188,6 @@ SPDX-License-Identifier: MIT
         >
           ・
         </p>
-        <lfx-tooltip
-          v-if="!PROJECT_SECURITY_SERVICE.hasSecurityMdFile(data || [])"
-          placement="top"
-        >
-          <lfx-button
-            type="transparent"
-            size="small"
-            button-style="pill"
-            class="whitespace-nowrap !hidden lg:!flex"
-            @click="handleGenerateYamlClick"
-          >
-            <lfx-icon name="file-shield" />
-            Generate YAML file
-          </lfx-button>
-
-          <template #content>
-            <div class="flex flex-col gap-1 max-w-72">
-              <div class="font-semibold text-white text-xs">YAML Security specifications file</div>
-              <div class="text-neutral-300 text-xs">
-                Generate a YAML security file, upload it to your repository, and ensure we can run all security
-                assessments for your project.
-              </div>
-            </div>
-          </template>
-        </lfx-tooltip>
       </div>
     </div>
   </div>
