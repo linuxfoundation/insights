@@ -5,7 +5,7 @@ SPDX-License-Identifier: MIT
 <template>
   <!-- Leaderboard items -->
   <div
-    class="flex flex-col items-start w-full"
+    class="flex flex-col items-start w-full min-h-80"
     v-bind="containerProps"
   >
     <template v-if="!isForceLoading">
