@@ -8,10 +8,9 @@ SPDX-License-Identifier: MIT
       <div class="flex lg:flex-row flex-col flex-wrap items-start lg:gap-8 gap-4">
         <div class="flex gap-3 items-stretch flex-1 min-w-0">
           <!-- Sentiment Icon -->
-          <lfx-community-sentiment-icon
-            :sentiment-label="mention.sentimentLabel"
-            :hide-bar="mention.body === null || mention.body === ''"
-          />
+          <div class="relative w-5 shrink-0 overflow-hidden">
+            <lfx-community-sentiment-icon :sentiment-label="mention.sentimentLabel" />
+          </div>
 
           <!-- Text Content -->
           <div class="flex-1 min-w-0 overflow-hidden">

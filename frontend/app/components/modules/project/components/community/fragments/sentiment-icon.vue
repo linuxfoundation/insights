@@ -3,7 +3,7 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="flex flex-col items-center gap-2 py-1 w-5 shrink-0">
+  <div class="flex flex-col items-center gap-2 py-1 w-5 shrink-0 absolute top-0 bottom-0">
     <lfx-icon
       :name="sentimentIcon"
       type="regular"
