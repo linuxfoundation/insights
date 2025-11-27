@@ -16,16 +16,16 @@ SPDX-License-Identifier: MIT
           <div class="flex-1 min-w-0 overflow-hidden">
             <p
               v-if="mention.title"
-              class="text-base font-semibold leading-6 text-black mb-3 whitespace-pre-wrap"
+              class="text-sm font-semibold leading-6 text-black mb-3 whitespace-pre-wrap"
             >
               {{ mention.title }}
             </p>
             <p
-              class="text-base leading-6 text-black whitespace-pre-wrap xl:break-normal break-all md:block hidden"
+              class="text-sm leading-6 text-black whitespace-pre-wrap xl:break-normal break-all md:block hidden"
               v-html="truncateText(sanitize(mention.body), 300)"
             />
             <p
-              class="text-base leading-6 text-black whitespace-pre-wrap md:hidden block"
+              class="text-sm leading-6 text-black whitespace-pre-wrap md:hidden block"
               v-html="truncateText(sanitize(mention.body), 150)"
             />
           </div>
