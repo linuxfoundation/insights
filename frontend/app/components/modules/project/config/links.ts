@@ -63,7 +63,7 @@ export const lfProjectLinks: ProjectLinkConfig[] = [
   {
     key: 'community',
     icon: 'comments',
-    label: 'Community voice',
+    label: 'Community Voice',
     area: WidgetArea.COMMUNITY,
     projectRouteName: LfxRoutes.PROJECT_COMMUNITY_VOICE,
     repoRouteName: LfxRoutes.REPOSITORY_COMMUNITY_VOICE,
