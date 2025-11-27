@@ -94,7 +94,7 @@ class ProjectCommunityApiService {
     query: () => Record<string, string | number | string[] | undefined | null>,
   ): QueryFunction<Pagination<CommunityMentions>, readonly unknown[], number> {
     return async ({ pageParam = 0 }) =>
-      await $fetch(`/api/project/${query().projectSlug}/community`, {
+      await $fetch(`/api/community/list`, {
         params: {
           page: pageParam,
           ...query(),
