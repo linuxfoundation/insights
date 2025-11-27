@@ -13,10 +13,12 @@ export interface CommunityMentionsData {
   relevanceScore: string;
   relevanceComment: string;
   keyword: string;
+  keywords: string[];
   sentimentLabel: string;
   subreddit?: string;
   viewId: string;
   viewName: string;
+  viewKeywords: string[];
 }
 export interface OctolensWebhook {
   action: string;
