@@ -15,17 +15,17 @@ import { xConfig } from './x.config';
 import { youtubeConfig } from './youtube.config';
 
 export const communityConfigs: Record<string, CommunityConfig> = {
-  bluesky: blueskyConfig,
-  devto: devtoConfig,
-  github: githubConfig,
-  hackernews: hackernewsConfig,
   linkedin: linkedinConfig,
-  newsletter: newsletterConfig,
-  podcasts: podcastConfig,
-  reddit: redditConfig,
   stackoverflow: stackoverflowConfig,
+  github: githubConfig,
+  devto: devtoConfig,
+  reddit: redditConfig,
+  hackernews: hackernewsConfig,
   twitter: xConfig,
   youtube: youtubeConfig,
+  newsletter: newsletterConfig,
+  bluesky: blueskyConfig,
+  podcasts: podcastConfig,
 };
 
 export default communityConfigs;

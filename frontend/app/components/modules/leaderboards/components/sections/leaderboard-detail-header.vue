@@ -40,19 +40,13 @@ SPDX-License-Identifier: MIT
           >
             {{ config?.name }}
           </h1>
-          <!-- Sidebar navigation -->
+          <!-- mobile navigation -->
           <div
             class="md:hidden flex justify-start"
             :class="[scrollTop > scrollThreshold ? 'ml-13 -mt-12' : '']"
           >
             <lfx-leaderboard-mobile-nav :leaderboard-key="config.key" />
           </div>
-          <p
-            :class="[scrollTop < scrollThreshold ? 'block' : 'hidden']"
-            class="transition-all ease-linear text-sm text-neutral-500 w-full whitespace-pre-wrap min-h-10"
-          >
-            {{ config?.description }}
-          </p>
         </div>
       </div>
       <div class="mt-1">
@@ -79,6 +73,13 @@ SPDX-License-Identifier: MIT
         </div>
       </div>
     </div>
+
+    <p
+      :class="[scrollTop < scrollThreshold ? 'block' : 'hidden']"
+      class="-mt-5 transition-all ease-linear text-sm text-neutral-500 w-full whitespace-pre-wrap min-h-10"
+    >
+      {{ config?.description }}
+    </p>
 
     <div class="relative w-full md:block hidden">
       <lfx-leaderboard-search
