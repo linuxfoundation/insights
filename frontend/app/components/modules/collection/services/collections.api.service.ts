@@ -88,6 +88,16 @@ class CollectionsApiService {
     });
   }
 
+  searchCollections(query: string) {
+    return $fetch(`/api/collection`, {
+      params: {
+        page: 0,
+        pageSize: 100,
+        search: query,
+      },
+    });
+  }
+
   fetchCollectionsQueryFn(
     query: () => Record<string, string | number | string[] | undefined>,
   ): QueryFunction<Pagination<Collection>, readonly unknown[], number> {

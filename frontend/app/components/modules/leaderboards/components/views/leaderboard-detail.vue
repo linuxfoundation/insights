@@ -29,6 +29,7 @@ SPDX-License-Identifier: MIT
         <div class="sticky lg:top-17 top-14 z-10 bg-white sm:pt-10 pt-6">
           <!-- Header section -->
           <lfx-leaderboard-detail-header
+            v-model:collection-slug="collectionSlug"
             :config="leaderboardConfig"
             @item-click="handleSearchItemClick"
           />
@@ -78,10 +79,12 @@ const props = defineProps<{
 }>();
 
 const isScrollingIntoRow = ref<boolean>(false);
+const collectionSlug = ref<string>('');
 
 const params = computed(() => ({
   leaderboardType: props.leaderboardKey,
   initialPageSize: 100,
+  collectionSlug: collectionSlug.value && collectionSlug.value !== 'all' ? collectionSlug.value : undefined,
 }));
 
 const { data, isPending, isFetchingNextPage, fetchNextPage, hasNextPage } =

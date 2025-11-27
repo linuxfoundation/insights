@@ -33,13 +33,21 @@ SPDX-License-Identifier: MIT
           />
         </div>
 
-        <div class="flex flex-col gap-1">
-          <h1
-            :class="[scrollTop > scrollThreshold ? 'text-2xl ml-13 -mt-12' : 'text-3xl']"
-            class="transition-all ease-linear font-light font-secondary text-neutral-900 md:block hidden"
-          >
-            {{ config?.name }}
-          </h1>
+        <div class="gap-1 w-full">
+          <div class="flex justify-between items-center w-full">
+            <h1
+              :class="[scrollTop > scrollThreshold ? 'text-2xl ml-13 -mt-12' : 'text-3xl']"
+              class="transition-all ease-linear font-light font-secondary text-neutral-900 md:block hidden"
+            >
+              {{ config?.name }}
+            </h1>
+            <lfx-collections-filter
+              v-model="selectedCollection"
+              width="350px"
+              size="medium"
+              type="filled"
+            />
+          </div>
           <!-- Sidebar navigation -->
           <div
             class="md:hidden flex justify-start"
@@ -58,7 +66,7 @@ SPDX-License-Identifier: MIT
       <div class="mt-1">
         <div class="md:block hidden">
           <lfx-button
-            type="tertiary"
+            type="ghost"
             size="small"
             button-style="pill"
             class="h-9"
@@ -123,6 +131,7 @@ SPDX-License-Identifier: MIT
 import { ref, watch, nextTick } from 'vue';
 import pluralize from 'pluralize';
 import type { LeaderboardConfig } from '../../config/types/leaderboard.types';
+import LfxCollectionsFilter from '../filters/collections-filter.vue';
 import LfxLeaderboardMobileNav from './leaderboard-mobile-nav.vue';
 import LfxLeaderboardSearch from './leaderboard-search.vue';
 import LfxButton from '~/components/uikit/button/button.vue';
@@ -138,6 +147,8 @@ const { openShareModal } = useShareStore();
 const props = defineProps<{
   config: LeaderboardConfig;
 }>();
+
+const selectedCollection = defineModel<string>('collectionSlug', { default: '' });
 
 const { scrollTop } = useScroll();
 

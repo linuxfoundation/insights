@@ -31,6 +31,7 @@ export default defineEventHandler(async (event): Promise<Pagination<Collection> 
   const query = getQuery(event);
   const sort: string = (query?.sort as string) || 'name_asc';
   const categories: string | undefined = (query?.categories as string) || undefined;
+  const search: string | undefined = (query?.search as string) || undefined;
   const [orderByField, orderByDirection] = sort.split('_');
 
   // Pagination parameters
@@ -43,6 +44,7 @@ export default defineEventHandler(async (event): Promise<Pagination<Collection> 
       count,
       page,
       pageSize,
+      search,
       categoryIds: categories?.length ? categories : undefined,
       orderByField,
       orderByDirection,
