@@ -201,16 +201,6 @@ SPDX-License-Identifier: MIT
         >
           Generate YAML
         </lfx-button>
-
-        <!-- <template #content>
-            <div class="flex flex-col gap-1 max-w-72">
-              <div class="font-semibold text-white text-xs">YAML Security specifications file</div>
-              <div class="text-neutral-300 text-xs">
-                Generate a YAML security file, upload it to your repository, and ensure we can run all security
-                assessments for your project.
-              </div>
-            </div>
-          </template> -->
       </lfx-card>
     </div>
   </div>
