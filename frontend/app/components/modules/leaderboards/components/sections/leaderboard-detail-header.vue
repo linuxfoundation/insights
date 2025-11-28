@@ -39,7 +39,7 @@ SPDX-License-Identifier: MIT
         <div class="md:block hidden">
           <lfx-button
             type="ghost"
-            size="small"
+            size="medium"
             button-style="pill"
             class="h-9"
             :class="[scrollTop > scrollThreshold ? 'invisible' : 'visible']"
@@ -159,7 +159,7 @@ const props = defineProps<{
   config: LeaderboardConfig;
 }>();
 
-const selectedCollection = defineModel<string>('collectionSlug', { default: '' });
+const selectedCollection = defineModel<string>('collectionSlug', { default: 'all' });
 
 const { scrollTop } = useScroll();
 

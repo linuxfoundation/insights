@@ -94,6 +94,7 @@ class CollectionsApiService {
         page: 0,
         pageSize: 100,
         search: query,
+        sort: 'starred_desc',
       },
     });
   }
