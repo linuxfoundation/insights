@@ -11,6 +11,7 @@ export default defineEventHandler(async (event): Promise<Pagination<Leaderboard>
   const page: number = (query.page as number) || 0;
   const pageSize: number = (query.pageSize as number) || 20;
   const search: string | undefined = (query.search as string) || undefined;
+  const collectionSlug: string | undefined = (query.collectionSlug as string) || undefined;
 
   if (!type) {
     throw createError({
@@ -25,6 +26,7 @@ export default defineEventHandler(async (event): Promise<Pagination<Leaderboard>
       page,
       pageSize,
       search,
+      collectionSlug,
     });
 
     return {
