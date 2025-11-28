@@ -42,6 +42,7 @@ SPDX-License-Identifier: MIT
             size="small"
             button-style="pill"
             class="h-9"
+            :class="[scrollTop > scrollThreshold ? 'invisible' : 'visible']"
             @click="handleShare"
           >
             <lfx-icon
@@ -72,15 +73,15 @@ SPDX-License-Identifier: MIT
         <lfx-collections-filter
           v-model="selectedCollection"
           width="350px"
-          size="medium"
+          :size="scrollTop < scrollThreshold ? 'medium' : 'small'"
           type="filled"
           class="transition-all ease-linear"
           :class="[scrollTop > scrollThreshold ? '-mt-10' : '']"
         />
       </div>
       <div
-        class="md:hidden flex justify-start"
-        :class="[scrollTop > scrollThreshold ? 'ml-13 -mt-12' : '']"
+        class="md:hidden flex justify-start transition-all ease-linear"
+        :class="[scrollTop > scrollThreshold ? 'ml-13 -mt-9 mb-2' : '']"
       >
         <lfx-leaderboard-mobile-nav :leaderboard-key="config.key" />
       </div>
@@ -100,13 +101,6 @@ SPDX-License-Identifier: MIT
       type="filled"
     />
     <div class="relative w-full md:block hidden">
-      <lfx-collections-filter
-        v-model="selectedCollection"
-        class="block md:hidden"
-        width="350px"
-        size="medium"
-        type="filled"
-      />
       <lfx-leaderboard-search
         :config="config"
         class="rounded-full border border-solid border-neutral-200"
