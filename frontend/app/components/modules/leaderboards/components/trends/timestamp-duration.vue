@@ -2,6 +2,7 @@
 Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
+
 <template>
   <lfx-tooltip content="vs. previous 12M period">
     <div class="flex gap-1 items-center">
@@ -31,28 +32,15 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import type { LeaderboardDataType } from '../../config/types/leaderboard.types';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
-import type { Leaderboard } from '~~/types/leaderboard/leaderboard';
-import { formatNumber, formatNumberShort, formatValueToLargestUnitDuration } from '~/components/shared/utils/formatter';
 import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+import { formatValueToLargestUnitDuration } from '~/components/shared/utils/formatter';
+import type { Leaderboard } from '~~/types/leaderboard/leaderboard';
 
-const props = withDefaults(
-  defineProps<{
-    data: Leaderboard;
-    isReverse?: boolean;
-    dataType: LeaderboardDataType;
-    decimals?: number;
-  }>(),
-  {
-    isReverse: false,
-    decimals: 0,
-  },
-);
-
-const isTimeDisplay = computed(() => {
-  return props.dataType === 'duration' || props.dataType === 'timestamp';
-});
+const props = defineProps<{
+  data: Leaderboard;
+  isDuration?: boolean;
+}>();
 
 const trend = computed(() => {
   return props.data.value - props.data.previousPeriodValue;
@@ -69,15 +57,8 @@ const trendPercentage = computed(() => {
 
 const formatTrendValue = computed(() => {
   const sign = trend.value >= 0 ? '+' : '-';
-  if (isTimeDisplay.value) {
-    return `${sign}${formatValueToLargestUnitDuration(Math.abs(trend.value), 2, props.dataType === 'duration')}`;
-  }
 
-  if (trend.value >= 1000000) {
-    return formatNumberShort(trend.value);
-  }
-
-  return `${sign}${formatNumber(Math.abs(trend.value), props.decimals)}`;
+  return `${sign}${formatValueToLargestUnitDuration(Math.abs(trend.value), 2, props.isDuration)}`;
 });
 
 const trendDirection = computed(() => {
@@ -89,24 +70,18 @@ const trendDirection = computed(() => {
 const getTrendIcon = computed(() => {
   if (trendDirection.value === 'neutral') return 'equals';
 
-  const isUp = trendDirection.value === 'up';
-  const shouldShowUp = props.isReverse ? !isUp : isUp;
-
-  return shouldShowUp ? 'circle-arrow-up' : 'circle-arrow-down';
+  return trendDirection.value === 'up' ? 'circle-arrow-up' : 'circle-arrow-down';
 });
 
 const getTrendColor = computed(() => {
   if (trendDirection.value === 'neutral') return 'text-neutral-400';
 
-  const isUp = trendDirection.value === 'up';
-  const shouldBePositive = props.isReverse ? !isUp : isUp;
-
-  return shouldBePositive ? 'text-positive-600' : 'text-negative-600';
+  return trendDirection.value === 'up' ? 'text-positive-600' : 'text-negative-600';
 });
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LeaderboardTrendDisplay',
+  name: 'TimestampDurationTrend',
 };
 </script>

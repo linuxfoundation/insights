@@ -4,7 +4,6 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <button
-    v-if="canGoPrev"
     class="carousel-nav carousel-nav-prev"
     :disabled="!canGoPrev || disabled"
     aria-label="Previous"
@@ -13,12 +12,11 @@ SPDX-License-Identifier: MIT
   >
     <lfx-icon
       name="chevron-left"
-      :size="18"
+      :size="16"
     />
   </button>
 
   <button
-    v-if="canGoNext"
     class="carousel-nav carousel-nav-next"
     :disabled="!canGoNext || disabled"
     aria-label="Next"
@@ -27,7 +25,7 @@ SPDX-License-Identifier: MIT
   >
     <lfx-icon
       name="chevron-right"
-      :size="18"
+      :size="16"
     />
   </button>
 </template>

@@ -38,6 +38,9 @@ export interface Project {
   score: number;
   rank: number;
   healthScore: number;
+  communityPlatforms: string[];
+  communityKeywords: string[];
+  communityLanguages: string[];
 }
 
 export interface ProjectLanguage {

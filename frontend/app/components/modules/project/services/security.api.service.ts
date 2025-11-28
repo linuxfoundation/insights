@@ -17,10 +17,12 @@ class SecurityApiService {
       params.value.projectSlug,
       params.value.repos,
     ]);
-    const queryFn = this.securityAssessmentQueryFn(() => ({
-      projectSlug: params.value.projectSlug,
-      repos: params.value.repos,
-    }));
+    const queryFn = computed<QueryFunction<SecurityData[]>>(() =>
+      this.securityAssessmentQueryFn(() => ({
+        projectSlug: params.value.projectSlug,
+        repos: params.value.repos,
+      })),
+    );
 
     return useQuery<SecurityData[]>({
       queryKey,

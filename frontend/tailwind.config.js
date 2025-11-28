@@ -40,6 +40,7 @@ export default {
       'heading-4': ['var(--lfx-text-heading-4-font-size)', 'var(--lfx-text-heading-4-line-height)'],
       'body-1': ['var(--lfx-text-body-1-font-size)', 'var(--lfx-text-body-1-line-height)'],
       'body-2': ['var(--lfx-text-body-2-font-size)', 'var(--lfx-text-body-2-line-height)'],
+      'icon-label': ['7px', 'normal'],
     },
 
     boxShadow: {
@@ -69,9 +70,11 @@ export default {
         7.5: '1.875rem',
         17: '4.25rem',
         18: '4.5rem',
+        29: '7.5rem',
       },
       width: {
         13: '3.25rem',
+        51: '12.5rem',
         78: '19.5rem',
         100: '25rem',
         149: '37.25rem',
@@ -100,6 +103,9 @@ export default {
       },
       outlineWidth: {
         3: '0.1875rem',
+      },
+      top: {
+        29: '7.5rem',
       },
     },
   },
