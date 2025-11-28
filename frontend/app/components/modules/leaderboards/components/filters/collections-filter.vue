@@ -29,22 +29,25 @@ SPDX-License-Identifier: MIT
     </template>
 
     <template #default>
-      <!-- All collections option -->
-      <lfx-dropdown-item
-        value="all"
-        label="All collections"
-      />
+      <div class="sticky -top-1 z-10 bg-white w-full -mt-1 pt-1">
+        <!-- All collections option -->
+        <lfx-dropdown-item
+          value="all"
+          label="All collections"
+        />
 
-      <lfx-dropdown-separator />
+        <lfx-dropdown-separator />
 
-      <!-- Search input -->
-      <lfx-dropdown-search
-        v-model="searchQuery"
-        placeholder="Search collections..."
-        lazy
-      />
+        <!-- Search input -->
+        <lfx-dropdown-search
+          v-model="searchQuery"
+          placeholder="Search collections..."
+          lazy
+          class=""
+        />
 
-      <lfx-dropdown-separator />
+        <lfx-dropdown-separator />
+      </div>
 
       <!-- Collections list -->
       <div

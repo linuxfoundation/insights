@@ -43,7 +43,7 @@ SPDX-License-Identifier: MIT
         </div>
         <div class="mt-6">
           <lfx-leaderboard-table
-            v-if="items.length > 0"
+            v-if="isPending || items.length > 0"
             :leaderboard-config="leaderboardConfig"
             :data="items"
             :is-loading="isPending || isFetchingNextPage"
