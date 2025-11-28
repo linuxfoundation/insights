@@ -29,7 +29,7 @@ SPDX-License-Identifier: MIT
     </template>
 
     <template #default>
-      <div class="sticky -top-1 z-10 bg-white w-full -mt-1 pt-1">
+      <div class="sticky -top-1 z-10 bg-white w-full -mt-1 pt-1 flex flex-col gap-1">
         <!-- All collections option -->
         <lfx-dropdown-item
           value="all"
