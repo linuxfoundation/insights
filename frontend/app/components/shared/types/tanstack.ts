@@ -52,6 +52,9 @@ export enum TanstackKey {
   // Security
   SECURITY_ASSESSMENT = 'security-assessment',
 
+  // Community
+  COMMUNITY_MENTIONS = 'community-mentions',
+
   // Open Source Index
   OSS_INDEX_GROUP = 'oss-index-group',
   OSS_INDEX_CATEGORY = 'oss-index-category',

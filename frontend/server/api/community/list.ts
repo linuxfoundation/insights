@@ -5,16 +5,15 @@ import { Pagination } from '~~/types/shared/pagination';
 import { CommunityMentions } from '~~/types/community/community';
 
 export default defineEventHandler(async (event): Promise<Pagination<CommunityMentions>> => {
-  const { slug } = event.context.params as Record<string, string>;
+  const query = getQuery(event);
+  const projectSlug = query.projectSlug as string;
 
-  if (!slug) {
+  if (!projectSlug) {
     throw createError({
       statusCode: 400,
       statusMessage: 'Project slug is required',
     });
   }
-
-  const query = getQuery(event);
 
   const page: number = (query.page as number) || 0;
   const pageSize: number = (query.pageSize as number) || 20;
@@ -47,7 +46,7 @@ export default defineEventHandler(async (event): Promise<Pagination<CommunityMen
       keywords,
       sentiments,
       languages,
-      projectSlug: slug,
+      projectSlug,
     });
 
     return {

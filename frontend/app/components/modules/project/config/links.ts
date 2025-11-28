@@ -60,4 +60,13 @@ export const lfProjectLinks: ProjectLinkConfig[] = [
     repoRouteName: LfxRoutes.REPOSITORY_SECURITY,
     repoGroupRouteName: LfxRoutes.REPOSITORY_GROUP_SECURITY,
   },
+  {
+    key: 'community',
+    icon: 'comments',
+    label: 'Community Voice',
+    area: WidgetArea.COMMUNITY,
+    projectRouteName: LfxRoutes.PROJECT_COMMUNITY_VOICE,
+    repoRouteName: LfxRoutes.REPOSITORY_COMMUNITY_VOICE,
+    repoGroupRouteName: LfxRoutes.REPOSITORY_GROUP_COMMUNITY_VOICE,
+  },
 ];
