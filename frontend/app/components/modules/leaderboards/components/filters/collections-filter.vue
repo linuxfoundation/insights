@@ -14,7 +14,7 @@ SPDX-License-Identifier: MIT
       <lfx-dropdown-selector
         :size="props.size"
         :type="props.type"
-        class="!rounded-full"
+        class="!rounded-full flex items-center justify-center w-full"
       >
         <div class="flex items-center gap-2">
           <lfx-icon

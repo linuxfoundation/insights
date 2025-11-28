@@ -4,7 +4,7 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <div class="container">
-    <div class="flex gap-10 lg:-mt-12 md:-mt-8 mt-4">
+    <div class="flex gap-10">
       <div class="lg:w-1/5 w-1/4 md:block hidden min-w-50">
         <div
           class="flex flex-col justify-between items-start md:flex hidden min-w-50 sticky bg-white pt-10 z-[11] lg:top-17 top-14"
@@ -36,12 +36,14 @@ SPDX-License-Identifier: MIT
 
           <!-- Table header -->
           <lfx-table-header
+            v-if="items.length > 0"
             :config="leaderboardConfig"
             class="border-b border-neutral-200 px-0 lg:px-3 pb-4"
           />
         </div>
-        <div class="sm:pt-12 pt-6 mt-6">
+        <div class="mt-6">
           <lfx-leaderboard-table
+            v-if="items.length > 0"
             :leaderboard-config="leaderboardConfig"
             :data="items"
             :is-loading="isPending || isFetchingNextPage"
@@ -49,6 +51,24 @@ SPDX-License-Identifier: MIT
             :has-next-page="hasNextPage"
             @fetch-next-page="fetchNextPage"
           />
+          <!-- Empty state -->
+          <div
+            v-else
+            class="flex flex-col gap-6 items-center justify-center px-0 py-20 w-full"
+          >
+            <lfx-icon
+              name="eyes"
+              type="light"
+              :size="80"
+              class="text-neutral-200"
+            />
+            <div class="flex flex-col gap-2 items-center text-center w-full">
+              <h3 class="font-secondary font-bold text-heading-3 text-black">
+                No {{ pluralize(leaderboardConfig?.entityLabel.toLowerCase(), 2) }} found
+              </h3>
+              <p class="text-body-2 text-neutral-500">Try adjusting your filters to find what you're looking for.</p>
+            </div>
+          </div>
         </div>
       </div>
       <div class="w-1/5 hidden lg:block">&nbsp;</div>
@@ -59,6 +79,7 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { computed, onServerPrefetch, ref, watch, nextTick } from 'vue';
 import { useRoute } from 'vue-router';
+import pluralize from 'pluralize';
 import leaderboardConfigs from '../../config/index.config';
 import LfxLeaderboardTable from '../sections/leaderboard-table.vue';
 import type { LeaderboardConfig } from '../../config/types/leaderboard.types';
