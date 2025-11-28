@@ -18,7 +18,7 @@ SPDX-License-Identifier: MIT
         >
           <div
             v-if="selectedKeywords.length === 0"
-            class="text-neutral-900 flex-1 min-w-0"
+            class="text-neutral-900 flex-1 min-w-0 font-normal"
           >
             All keywords
           </div>

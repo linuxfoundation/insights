@@ -44,9 +44,9 @@ SPDX-License-Identifier: MIT
           </template>
         </slot>
       </div>
-    </div>
-    <div class="flex items-center gap-1">
-      <p class="text-xs font-medium text-neutral-400"><span class="hidden md:inline">・</span> {{ formatTimestamp }}</p>
+      <div class="flex items-center gap-1">
+        <p class="text-xs font-medium text-neutral-400"><span>・</span> {{ formatTimestamp }}</p>
+      </div>
     </div>
   </div>
 </template>

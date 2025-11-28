@@ -5,9 +5,10 @@ SPDX-License-Identifier: MIT
 <template>
   <lfx-modal
     v-model="isCommunityFilterOpen"
+    type="mobile-cover"
     class="p-6"
   >
-    <section class="flex flex-col h-[calc(100vh-200px)]">
+    <section class="flex flex-col h-full">
       <div class="flex justify-end">
         <lfx-icon-button
           icon="close"
@@ -40,6 +41,7 @@ SPDX-License-Identifier: MIT
         </div>
         <div class="flex flex-col gap-4">
           <lfx-button
+            v-if="showResetFilters"
             type="transparent"
             class="w-full justify-center"
             button-style="pill"
@@ -52,6 +54,7 @@ SPDX-License-Identifier: MIT
             Reset filters
           </lfx-button>
           <lfx-button
+            v-if="showApplyFilters"
             type="primary"
             class="w-full justify-center"
             button-style="pill"
@@ -66,7 +69,7 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { storeToRefs } from 'pinia';
 import LfxCommunityPlatformFilter from '../fragments/platform-filter.vue';
 import LfxCommunityKeywordFilter from '../fragments/keyword-filter.vue';
@@ -99,6 +102,24 @@ const resetFilters = () => {
 
   isCommunityFilterOpen.value = false;
 };
+
+const showResetFilters = computed(() => {
+  return (
+    selectedPlatforms.value.length > 0 ||
+    selectedKeywords.value.length > 0 ||
+    selectedSentiments.value.length > 0 ||
+    selectedLanguages.value.length > 0
+  );
+});
+
+const showApplyFilters = computed(() => {
+  return (
+    platformFilterCache.value.length !== selectedPlatforms.value.length ||
+    keywordFilterCache.value.length !== selectedKeywords.value.length ||
+    sentimentFilterCache.value.length !== selectedSentiments.value.length
+  );
+  // languageFilterCache.value.length !== selectedLanguages.value.length;
+});
 
 const applyFilters = () => {
   selectedPlatforms.value = platformFilterCache.value;

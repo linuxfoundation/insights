@@ -23,16 +23,15 @@ SPDX-License-Identifier: MIT
 
     <div
       v-if="mentions.length === 0 && !isLoading && !isPageLoading"
-      class="flex flex-col items-center py-20"
+      class="flex flex-col items-center md:py-20 py-10"
     >
       <lfx-icon
-        name="face-monocle"
-        :size="40"
-        class="text-neutral-300"
+        name="eyes"
+        :size="80"
+        class="text-neutral-200"
       />
-      <h3 class="text-center pt-5 text-heading-4 sm:text-heading-3 font-secondary font-bold text-neutral-500">
-        No mentions found
-      </h3>
+      <h3 class="text-center pt-5 md:text-xl text-base font-secondary font-bold mb-2">No mentions found</h3>
+      <p class="text-xs text-neutral-500">Try adjusting your filters to find what you’re looking for.</p>
     </div>
 
     <lfx-button

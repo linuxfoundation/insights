@@ -18,6 +18,7 @@ SPDX-License-Identifier: MIT
     <!-- <lfx-community-language-filter v-model="selectedLanguages" /> -->
 
     <lfx-button
+      v-if="showResetFilters"
       type="transparent"
       class="w-full justify-center"
       button-style="pill"
@@ -46,6 +47,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
+import { computed } from 'vue';
 import LfxCommunityPlatformFilter from '../fragments/platform-filter.vue';
 import LfxCommunityKeywordFilter from '../fragments/keyword-filter.vue';
 import LfxCommunitySentimentFilter from '../fragments/sentiment-filter.vue';
@@ -63,6 +65,15 @@ const resetFilters = () => {
   selectedSentiments.value = [];
   selectedLanguages.value = [];
 };
+
+const showResetFilters = computed(() => {
+  return (
+    selectedPlatforms.value.length > 0 ||
+    selectedKeywords.value.length > 0 ||
+    selectedSentiments.value.length > 0 ||
+    selectedLanguages.value.length > 0
+  );
+});
 </script>
 
 <script lang="ts">
