@@ -50,6 +50,7 @@ export default defineConfig({
       {
         text: 'Blog',
         items: [
+          { text: 'Product Update November 2025', link: '/product-update-nov-2025/index.md' },
           { text: 'The First 3 Months of Insights', link: '/first-3-months/index.md' },
           { text: 'Introducing Insights', link: '/introducing-insights/index.md' },
         ],

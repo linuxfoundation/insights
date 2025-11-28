@@ -6,5 +6,6 @@ export enum WidgetArea {
   POPULARITY = 'popularity',
   DEVELOPMENT = 'development',
   SECURITY = 'security',
+  COMMUNITY = 'community',
   OTHER = 'other',
 }

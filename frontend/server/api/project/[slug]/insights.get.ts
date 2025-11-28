@@ -21,9 +21,9 @@ export default defineEventHandler(async (event) => {
 
     useApiTrackEvent({
       event,
-      eventName: 'project-insights-api',
+      eventName: 'pageview',
       url: `/project/${slug}`,
-      referer: `https://www.cncf.io/projects/${slug}`,
+      referrer: `https://www.cncf.io/projects/${slug}`,
       options: {
         props: { project: slug },
       },

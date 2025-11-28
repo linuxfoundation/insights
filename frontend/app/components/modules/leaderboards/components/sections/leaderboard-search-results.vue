@@ -35,7 +35,7 @@ SPDX-License-Identifier: MIT
       class="text-neutral-300"
     />
     <h3 class="text-center pt-5 text-heading-4 sm:text-heading-3 font-secondary font-bold text-neutral-500">
-      No projects found
+      No {{ pluralize(config?.entityLabel.toLowerCase(), 2) }} found
     </h3>
   </div>
   <div
@@ -50,15 +50,18 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
+import pluralize from 'pluralize';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
 import type { Leaderboard } from '~~/types/leaderboard/leaderboard';
+import type { LeaderboardConfig } from '~/components/modules/leaderboards/config/types/leaderboard.types';
 
 defineProps<{
   items: Leaderboard[];
   isSuccess: boolean;
   isLoading: boolean;
+  config: LeaderboardConfig;
 }>();
 
 const emit = defineEmits<{

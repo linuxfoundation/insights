@@ -1,0 +1,83 @@
+<!--
+Copyright (c) 2025 The Linux Foundation and each contributor.
+SPDX-License-Identifier: MIT
+-->
+<template>
+  <div class="flex flex-col gap-5 sticky lg:top-60 top-52">
+    <!-- Platform Filter -->
+    <lfx-community-platform-filter v-model="selectedPlatforms" />
+
+    <!-- Keywords Filter -->
+    <lfx-community-keyword-filter v-model="selectedKeywords" />
+
+    <!-- Sentiment Filter -->
+    <lfx-community-sentiment-filter v-model="selectedSentiments" />
+
+    <!-- Language Filter -->
+    <!-- Hiding for now until we have the API support -->
+    <!-- <lfx-community-language-filter v-model="selectedLanguages" /> -->
+
+    <lfx-button
+      v-if="showResetFilters"
+      type="transparent"
+      class="w-full justify-center"
+      button-style="pill"
+      @click="resetFilters"
+    >
+      <lfx-icon
+        name="arrow-rotate-left"
+        :size="16"
+      />
+      Reset filters
+    </lfx-button>
+
+    <div class="text-xs text-neutral-400 border-t border-neutral-200 pt-4">
+      Community Voice data powered by
+      <a
+        :href="links.octolens"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="underline"
+      >
+        Octolens
+      </a>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { storeToRefs } from 'pinia';
+import { computed } from 'vue';
+import LfxCommunityPlatformFilter from '../fragments/platform-filter.vue';
+import LfxCommunityKeywordFilter from '../fragments/keyword-filter.vue';
+import LfxCommunitySentimentFilter from '../fragments/sentiment-filter.vue';
+import LfxButton from '~/components/uikit/button/button.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
+// import LfxCommunityLanguageFilter from '../fragments/language-filter.vue';
+import { useCommunityStore } from '~~/app/components/modules/project/components/community/store/community.store';
+import { links } from '~/config/links';
+
+const { selectedPlatforms, selectedKeywords, selectedSentiments, selectedLanguages } = storeToRefs(useCommunityStore());
+
+const resetFilters = () => {
+  selectedPlatforms.value = [];
+  selectedKeywords.value = [];
+  selectedSentiments.value = [];
+  selectedLanguages.value = [];
+};
+
+const showResetFilters = computed(() => {
+  return (
+    selectedPlatforms.value.length > 0 ||
+    selectedKeywords.value.length > 0 ||
+    selectedSentiments.value.length > 0 ||
+    selectedLanguages.value.length > 0
+  );
+});
+</script>
+
+<script lang="ts">
+export default {
+  name: 'LfxCommunityFilterArea',
+};
+</script>

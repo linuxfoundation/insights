@@ -28,9 +28,16 @@ const healthScores: string[] = [
 ];
 
 const fetchHealthScore = async (name: string, filter: HealthScoreFilters) => {
+  const quarterFilter = {
+    project: filter.project,
+    repos: filter.repos,
+    startDate: DateTime.now().minus({ days: 90 }).startOf('day'),
+    endDate: DateTime.now().endOf('day'),
+  };
+
   const res = await fetchFromTinybird<HealthScoreTinybird[]>(
     `/v0/pipes/health_score_${name}.json`,
-    filter,
+    ['active_contributors', 'retention'].includes(name) ? quarterFilter : filter,
   );
   return res.data?.[0];
 };

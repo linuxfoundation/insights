@@ -13,7 +13,7 @@ const isJWT = (token: string) => {
 export default defineEventHandler(async (event) => {
   const url = getRouterParam(event, '_') || event.node.req.url || '';
 
-  const protectedRoutes = ['/api/report'];
+  const protectedRoutes = ['/api/report', '/api/community/list'];
   const protectedAndPermissionRoutes = ['/api/chat'];
 
   const isProtectedRoute = [...protectedRoutes, ...protectedAndPermissionRoutes].some((route) =>

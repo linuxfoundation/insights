@@ -13,12 +13,12 @@ SPDX-License-Identifier: MIT
     >
       #
     </div>
-    <div class="flex-1 min-w-0">Project</div>
+    <div class="flex-1 min-w-0">{{ config?.entityLabel }}</div>
     <div class="flex-1 min-w-0 text-right flex items-center gap-1.5 justify-end">
-      {{ config?.columnLabel }}
+      {{ config?.metricLabel }}
       <lfx-tooltip
-        v-if="config?.columnTooltip"
-        :content="config?.columnTooltip"
+        v-if="config?.metricTooltip"
+        :content="config?.metricTooltip"
       >
         <lfx-icon
           name="info-circle"

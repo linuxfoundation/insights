@@ -36,7 +36,7 @@ Our automated system:
 From maintainer files, we extract:
 
 - **GitHub usernames** of maintainers.
-- **Display names** and contact information.
+- **Display names** and contact information including email addresses when available.
 - **Roles and titles** (e.g., "Lead Maintainer", "Core Developer", "Security Lead").
 - **Organizational affiliations** when available.
 

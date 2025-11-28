@@ -57,6 +57,9 @@ export const lfxWidgetArea: Record<WidgetArea, WidgetAreaConfig> = {
   [WidgetArea.SECURITY]: {
     label: 'Security & Best practices',
   },
+  [WidgetArea.COMMUNITY]: {
+    label: 'Community Voice',
+  },
   [WidgetArea.OTHER]: {
     label: 'Other',
   },

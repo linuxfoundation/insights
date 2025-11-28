@@ -6,7 +6,6 @@
  * - project: string
  * - repos: string[]
  */
-import { DateTime } from 'luxon';
 import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
 import type { HealthScoreTinybird, HealthScoreResults } from '~~/types/overview/responses.types';
 import {
@@ -41,8 +40,6 @@ export default defineEventHandler(async (event): Promise<HealthScoreResults | un
       healthScore = await fetchHealthScoreMetrics({
         project,
         repos,
-        startDate: DateTime.now().minus({ days: 365 }).startOf('day'),
-        endDate: DateTime.now().endOf('day'),
       });
     }
 

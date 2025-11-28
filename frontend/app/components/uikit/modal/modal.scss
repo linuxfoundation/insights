@@ -43,4 +43,12 @@
       @apply right-7 top-[1.115rem];
     }
   }
+
+  &--mobile-cover {
+    @apply px-0 pb-0;
+
+    .c-modal__content {
+      @apply h-full w-full rounded-none;
+    }
+  }
 }

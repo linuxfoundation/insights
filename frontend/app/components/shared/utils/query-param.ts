@@ -15,6 +15,7 @@ export type URLParams = {
   collectionTab?: string;
   collectionSort?: string;
   repos?: string;
+  generateYaml?: string;
 };
 
 export const useQueryParam = (

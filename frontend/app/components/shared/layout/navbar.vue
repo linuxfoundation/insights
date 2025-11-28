@@ -4,9 +4,6 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <header class="outline outline-1 outline-neutral-100 bg-white fixed top-0 left-0 z-40 w-full">
-    <!-- Banner -->
-    <lfx-banner />
-
     <div class="container">
       <div class="h-14 lg:h-17 flex justify-between items-center gap-4 lg:gap-5">
         <div class="flex items-center gap-6 flex-grow min-w-0">
@@ -46,7 +43,6 @@ SPDX-License-Identifier: MIT
 import LfxSearch from '~/components/shared/layout/search/search.vue';
 import { LfxRoutes } from '~/components/shared/types/routes';
 import LfxMenu from '~/components/shared/layout/menu.vue';
-import LfxBanner from '~/components/shared/layout/banner.vue';
 import LfxTools from '~/components/shared/layout/tools.vue';
 import LfxMenuMobile from '~/components/shared/layout/menu/menu-mobile.vue';
 import LfxMenuTablet from '~/components/shared/layout/menu/menu-tablet.vue';

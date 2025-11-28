@@ -94,3 +94,19 @@ export const projectParamsSetter = (query: URLParams) => {
 
   return tmpQuery;
 };
+
+export const securityParamsGetter = (query: LocationQuery): URLParams => ({
+  generateYaml: (query.generateYaml as string) || undefined,
+});
+
+export const securityParamsSetter = (query: URLParams) => {
+  const tmpQuery = { ...query };
+
+  if (query.generateYaml) {
+    tmpQuery.generateYaml = 'true';
+  } else {
+    delete tmpQuery.generateYaml;
+  }
+
+  return tmpQuery;
+};
