@@ -13,7 +13,7 @@ SPDX-License-Identifier: MIT
           <a
             v-if="mention.url"
             :href="mention.url"
-            class="text-xs font-medium text-black hover:underline decoration-dashed"
+            class="text-xs font-medium text-black underline decoration-dashed"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -21,7 +21,7 @@ SPDX-License-Identifier: MIT
           </a>
           <span
             v-else
-            class="text-xs font-medium text-black"
+            class="text-xs font-medium text-black underline decoration-dashed"
           >
             {{ mention.subreddit }}
           </span>

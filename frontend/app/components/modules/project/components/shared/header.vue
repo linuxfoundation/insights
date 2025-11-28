@@ -132,7 +132,7 @@ SPDX-License-Identifier: MIT
             to="body"
           >
             <div
-              class="fixed bottom-5 z-50 left-1/2 transform -translate-x-1/2 bg-white border border-neutral-200 rounded-full shadow-md px-1 py-px gap-2 flex"
+              class="fixed bottom-4 z-50 left-1/2 transform -translate-x-1/2 bg-white border border-neutral-200 rounded-full shadow-md px-1 py-px gap-2 flex"
             >
               <lfx-project-date-range-picker v-show="showDatepicker" />
               <div
