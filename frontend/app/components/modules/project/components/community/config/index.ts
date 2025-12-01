@@ -18,7 +18,7 @@ export const communityConfigs: Record<string, CommunityConfig> = {
   linkedin: linkedinConfig,
   stackoverflow: stackoverflowConfig,
   github: githubConfig,
-  devto: devtoConfig,
+  dev: devtoConfig,
   reddit: redditConfig,
   hackernews: hackernewsConfig,
   twitter: xConfig,
