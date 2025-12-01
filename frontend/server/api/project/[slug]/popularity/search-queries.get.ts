@@ -1,7 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { DateTime } from 'luxon';
-import { fetchSearchVolume } from '~~/server/data/tinybird/search-queries-data-source';
+import { fetchSearchVolume } from '~~/server/data/tinybird/popularity/search-queries';
 import type { SearchVolumeFilter } from '~~/server/data/types';
 
 /**

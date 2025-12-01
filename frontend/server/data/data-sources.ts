@@ -21,30 +21,30 @@ import type {
   PackageFilter,
   PackageMetricsFilter,
 } from '~~/server/data/types';
-import type { ActiveContributorsResponse } from '~~/server/data/tinybird/active-contributors-data-source';
-import type { ActiveOrganizationsResponse } from '~~/server/data/tinybird/active-organizations-data-source';
-import type { OrganizationDependencyResponse } from '~~/server/data/tinybird/organizations-dependency-data-source';
-import type { GeographicDistributionResponse } from '~~/server/data/tinybird/geographic-distribution-data-source';
-import type { RetentionResponse } from '~~/server/data/tinybird/retention-data-source';
-import { fetchActiveContributors } from '~~/server/data/tinybird/active-contributors-data-source';
-import { fetchActiveOrganizations } from '~~/server/data/tinybird/active-organizations-data-source';
-import { fetchContributorsLeaderboard } from '~~/server/data/tinybird/contributors-leaderboard-data-source';
-import { fetchOrganizationsLeaderboard } from '~~/server/data/tinybird/organizations-leaderboard-data-source';
-import { fetchContributorDependency } from '~~/server/data/tinybird/contributors-dependency-data-source';
-import { fetchOrganizationDependency } from '~~/server/data/tinybird/organizations-dependency-data-source';
-import { fetchGeographicDistribution } from '~~/server/data/tinybird/geographic-distribution-data-source';
-import { fetchRetention } from '~~/server/data/tinybird/retention-data-source';
-import { fetchForksActivities } from '~~/server/data/tinybird/forks-data-source';
-import { fetchStarsActivities } from '~~/server/data/tinybird/stars-data-source';
-import { fetchIssuesResolution } from '~~/server/data/tinybird/issues-resolution-data-source';
-import { fetchPullRequests } from '~~/server/data/tinybird/pull-requests-data-source';
-import { fetchReviewTimeByPRSize } from '~~/server/data/tinybird/review-time-by-pr-size-data-source';
-import { fetchAverageTimeToMerge } from '~~/server/data/tinybird/average-time-to-merge-data-source';
-import { fetchWaitTimeFor1stReview } from '~~/server/data/tinybird/wait-time-for-1st-review-data-source';
-import { fetchMergeLeadTime } from '~~/server/data/tinybird/merge-lead-time-data-source';
-import { fetchActiveDays } from '~~/server/data/tinybird/active-days-data-source';
-import { fetchCodeReviewEngagement } from '~~/server/data/tinybird/code-review-engagement-data-source';
-import { fetchContributionsOutsideWorkHours } from '~~/server/data/tinybird/contributions-outside-work-hours-data-source';
+import type { ActiveContributorsResponse } from '~~/server/data/tinybird/contributors/active-contributors';
+import type { ActiveOrganizationsResponse } from '~~/server/data/tinybird/contributors/active-organizations';
+import type { OrganizationDependencyResponse } from '~~/server/data/tinybird/contributors/organizations-dependency';
+import type { GeographicDistributionResponse } from '~~/server/data/tinybird/contributors/geographic-distribution';
+import type { RetentionResponse } from '~~/server/data/tinybird/contributors/retention';
+import { fetchActiveContributors } from '~~/server/data/tinybird/contributors/active-contributors';
+import { fetchActiveOrganizations } from '~~/server/data/tinybird/contributors/active-organizations';
+import { fetchContributorsLeaderboard } from '~~/server/data/tinybird/contributors/contributors-leaderboard';
+import { fetchOrganizationsLeaderboard } from '~~/server/data/tinybird/contributors/organizations-leaderboard';
+import { fetchContributorDependency } from '~~/server/data/tinybird/contributors/contributors-dependency';
+import { fetchOrganizationDependency } from '~~/server/data/tinybird/contributors/organizations-dependency';
+import { fetchGeographicDistribution } from '~~/server/data/tinybird/contributors/geographic-distribution';
+import { fetchRetention } from '~~/server/data/tinybird/contributors/retention';
+import { fetchForksActivities } from '~~/server/data/tinybird/popularity/forks';
+import { fetchStarsActivities } from '~~/server/data/tinybird/popularity/stars';
+import { fetchIssuesResolution } from '~~/server/data/tinybird/development/issues-resolution';
+import { fetchPullRequests } from '~~/server/data/tinybird/development/pull-requests';
+import { fetchReviewTimeByPRSize } from '~~/server/data/tinybird/development/review-time-by-pr-size';
+import { fetchAverageTimeToMerge } from '~~/server/data/tinybird/development/average-time-to-merge';
+import { fetchWaitTimeFor1stReview } from '~~/server/data/tinybird/development/wait-time-for-1st-review';
+import { fetchMergeLeadTime } from '~~/server/data/tinybird/development/merge-lead-time';
+import { fetchActiveDays } from '~~/server/data/tinybird/development/active-days';
+import { fetchCodeReviewEngagement } from '~~/server/data/tinybird/development/code-review-engagement';
+import { fetchContributionsOutsideWorkHours } from '~~/server/data/tinybird/development/contributions-outside-work-hours';
 import type { ActivityHeatmapByWeekdayTBQuery } from '~~/server/data/tinybird/requests.types';
 import type {
   ContributorDependency,
@@ -74,12 +74,12 @@ import type {
   CodeReviewEngagementFilter,
   ActivityTypesFilter,
 } from '~~/types/development/requests.types';
-import { fetchMailingListsMessageActivities } from '~~/server/data/tinybird/mailing-lists-messages-data-source';
-import { fetchCommitActivities } from '~~/server/data/tinybird/commit-activites-data-source';
-import { fetchPackages } from '~~/server/data/tinybird/packages-data-source';
-import { fetchPackageMetrics } from '~~/server/data/tinybird/package-metrics-data-source';
-import type { PackageDownloadsResponse } from '~~/server/data/tinybird/package-metrics-data-source';
-import { fetchActivityTypes } from '~~/server/data/tinybird/activity-types-data-source';
+import { fetchMailingListsMessageActivities } from '~~/server/data/tinybird/popularity/mailing-lists-messages';
+import { fetchCommitActivities } from '~~/server/data/tinybird/development/commit-activites';
+import { fetchPackages } from '~~/server/data/tinybird/popularity/packages';
+import { fetchPackageMetrics } from '~~/server/data/tinybird/popularity/package-metrics';
+import type { PackageDownloadsResponse } from '~~/server/data/tinybird/popularity/package-metrics';
+import { fetchActivityTypes } from '~~/server/data/tinybird/activity-types';
 
 export interface DataSource {
   fetchActiveContributors: (

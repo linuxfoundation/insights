@@ -1,0 +1,7 @@
+1) Define domain-facing contracts: move provider-agnostic filter/response types into `types/` (or a new `server/data/domain` module), keeping only Tinybird DTOs inside `server/data/tinybird`.
+2) Introduce a `DataSource` interface per domain area (contributors, development, popularity) and a root `DataSource` that aggregates them; ensure contracts are expressed in domain terms, not Tinybird field names.
+3) Add a provider factory/registry: resolve the concrete provider from config/env (default Tinybird) and expose it via a Nuxt server plugin or event context so API handlers receive an injected `dataSource` instead of importing Tinybird implementations directly.
+4) Refactor Tinybird into a repository + mapper: keep HTTP calls/paths/tokens in a repository layer, map Tinybird rows to domain models in services, and implement the `DataSource` interface with those services.
+5) Update API handlers to depend on the injected `DataSource` contracts; drop direct imports of Tinybird modules and remove Tinybird-specific field names from filters and responses at the handler boundary.
+6) Add tests: a) contract tests for the Tinybird adapter (mocks for HTTP) to verify mapping to domain models; b) handler tests using a mock `DataSource` to confirm filters/behaviors; c) unit tests for shared utilities (date/percentage) reused across providers.
+7) Incrementally migrate per domain slice (contributors → development → popularity): port one area end-to-end, validate, then repeat for the remaining slices to avoid a big-bang switch.
