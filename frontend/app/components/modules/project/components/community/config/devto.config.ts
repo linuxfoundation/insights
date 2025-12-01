@@ -5,7 +5,7 @@ import DefaultCard from '../card-displays/default-card.vue';
 import type { CommunityConfig } from './types/community.types';
 
 export const devtoConfig: CommunityConfig = {
-  key: 'devto',
+  key: 'dev',
   label: 'Dev.to',
   image: '/images/platforms/devto.png',
   dataDisplay: DefaultCard,
