@@ -72,20 +72,22 @@ export async function getBucketIdForProject(
 
   const cacheKey = `project_bucket:${projectValue}`;
 
-  // Try to get from Redis cache first
-  try {
-    const storage = useStorage('redis');
-    const cachedBucketId = await storage.getItem<number>(cacheKey);
-
-    if (cachedBucketId !== null && cachedBucketId !== undefined) {
-      return cachedBucketId;
-    }
-  } catch (cacheError) {
-    // Redis is unavailable or error occurred, continue without cache
-    console.error(`Failed to read from Redis cache for project ${projectValue}:`, cacheError);
-  }
-
+  // Create and store the fetch promise immediately to prevent race conditions
   const fetchPromise = (async () => {
+    // Try to get from Redis cache first
+    try {
+      const storage = useStorage('redis');
+      const cachedBucketId = await storage.getItem<number>(cacheKey);
+
+      if (cachedBucketId !== null && cachedBucketId !== undefined) {
+        return cachedBucketId;
+      }
+    } catch (cacheError) {
+      // Redis is unavailable or error occurred, continue without cache
+      console.error(`Failed to read from Redis cache for project ${projectValue}:`, cacheError);
+    }
+
+    // Not in cache, fetch from Tinybird
     try {
       const bucketId = await fetchBucketIdFromTinybird(projectValue, fetcher);
 
