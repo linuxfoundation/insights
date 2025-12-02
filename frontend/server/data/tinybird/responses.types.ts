@@ -6,6 +6,8 @@ import type { DateTime } from 'luxon';
 
 export type TinybirdActiveContributorsSummary = {
   contributorCount: number;
+  maintainerCount: number;
+  reviewerCount: number;
 }[];
 
 export type TinybirdActiveContributorsData = {
