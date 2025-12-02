@@ -5,22 +5,66 @@ SPDX-License-Identifier: MIT
 <template>
   <section class="mt-5">
     <div :class="props.snapshot ? 'mb-5' : 'mb-6'">
-      <lfx-skeleton-state
-        :status="summaryLoading ? status : 'success'"
-        height="2rem"
-        width="7.5rem"
-      >
-        <div
-          v-if="summary && !isEmpty"
-          class="flex flex-row gap-4 items-center"
+      <div class="flex justify-between items-center">
+        <lfx-skeleton-state
+          :status="summaryLoading ? status : 'success'"
+          height="2.75rem"
+          width="7.5rem"
         >
-          <div class="text-data-display-1">{{ formatNumber(summary.current) }}</div>
-          <lfx-delta-display
-            v-if="selectedTimeRangeKey !== dateOptKeys.alltime"
-            :summary="summary"
-          />
+          <div
+            v-if="summary && !isEmpty"
+            class="flex flex-row gap-4 items-center"
+          >
+            <div class="text-data-display-1">{{ formatNumber(summary.current) }}</div>
+            <lfx-delta-display
+              v-if="selectedTimeRangeKey !== dateOptKeys.alltime"
+              :summary="summary"
+            />
+          </div>
+        </lfx-skeleton-state>
+        <div class="flex items-center gap-3 xl:gap-8">
+          <lfx-skeleton-state
+            :status="summaryLoading ? status : 'success'"
+            height="2.5rem"
+            width="5rem"
+          >
+            <div class="flex flex-col gap-1 items-end">
+              <div class="flex gap-1 items-center justify-end">
+                <lfx-icon
+                  name="shield-user"
+                  type="light"
+                  :size="14"
+                  class="text-neutral-400"
+                />
+                <p class="text-body-2 text-neutral-400 font-normal">Maintainers</p>
+              </div>
+              <p class="text-base text-neutral-900 font-normal leading-5">
+                {{ activeContributors.maintainerCount }}
+              </p>
+            </div>
+          </lfx-skeleton-state>
+          <lfx-skeleton-state
+            :status="summaryLoading ? status : 'success'"
+            height="2.5rem"
+            width="5rem"
+          >
+            <div class="flex flex-col gap-1 items-end">
+              <div class="flex gap-1 items-center justify-end">
+                <lfx-icon
+                  name="eye"
+                  type="light"
+                  :size="14"
+                  class="text-neutral-400"
+                />
+                <p class="text-body-2 text-neutral-400 font-normal">Reviewers</p>
+              </div>
+              <p class="text-base text-neutral-900 font-normal leading-5">
+                {{ activeContributors.reviewerCount }}
+              </p>
+            </div>
+          </lfx-skeleton-state>
         </div>
-      </lfx-skeleton-state>
+      </div>
     </div>
 
     <lfx-tabs
@@ -58,6 +102,7 @@ import { storeToRefs } from 'pinia';
 import type { ActiveContributors } from '~~/types/contributors/responses.types';
 import type { Summary } from '~~/types/shared/summary.types';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
 import { convertToChartData, markLastDataItem, removeZeroValues } from '~/components/uikit/chart/helpers/chart-helpers';
 import type { ChartData, RawChartData, ChartSeries } from '~/components/uikit/chart/types/ChartTypes';
