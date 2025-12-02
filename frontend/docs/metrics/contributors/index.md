@@ -38,7 +38,7 @@ This page provides concise explanations of the metrics available on the Contribu
 
 **Why it matters:** Reveals potential over-reliance on single entities. Projects with diverse organizational support are generally more robust.
 
-## Quaterly Contributor Retention
+## Quarterly Contributor Retention
 
 **What it is:** The percentage of contributors who stay active in the project across multiple time periods.
 
