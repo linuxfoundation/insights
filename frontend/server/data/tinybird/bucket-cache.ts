@@ -83,11 +83,9 @@ export async function getBucketIdForProject(
         return cachedBucketId;
       }
     } catch (cacheError) {
-      // Redis is unavailable or error occurred, continue without cache
       console.error(`Failed to read from Redis cache for project ${projectValue}:`, cacheError);
     }
 
-    // Not in cache, fetch from Tinybird
     try {
       const bucketId = await fetchBucketIdFromTinybird(projectValue, fetcher);
 
@@ -99,7 +97,6 @@ export async function getBucketIdForProject(
         const storage = useStorage('redis');
         await storage.setItem(cacheKey, bucketId, { ttl: 86400 });
       } catch (cacheError) {
-        // Cache failure shouldn't block the request
         console.error(`Failed to cache bucketId for project ${projectValue}:`, cacheError);
       }
 
