@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 import { DateTime } from 'luxon';
 import { ofetch } from 'ofetch';
+import { getBucketIdForProject } from './bucket-cache';
 
 /**
  * Represents the structure of a response from the Tinybird API.
@@ -65,6 +66,25 @@ export async function fetchFromTinybird<T>(
   }
   if (!tinybirdToken) {
     throw new Error('Tinybird token is not defined');
+  }
+
+  // Fetch and add bucketId if query contains a project parameter
+  // Tinybird will route the request to the correct bucket that contains the data for that project
+  if (
+    query.project &&
+    typeof query.project === 'string' &&
+    !query.bucketId &&
+    path !== '/v0/pipes/project_buckets.json'
+  ) {
+    try {
+      const bucketId = await getBucketIdForProject(query.project, fetchFromTinybird);
+      if (bucketId !== null) {
+        query.bucketId = bucketId;
+      }
+    } catch (error) {
+      console.error(`Failed to fetch bucketId for project ${query.project}:`, error);
+      // Continue without bucketId
+    }
   }
 
   // We don't want to send undefined, null, or empty values to TinyBird, so we remove those from the query.
