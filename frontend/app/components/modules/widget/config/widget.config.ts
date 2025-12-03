@@ -23,6 +23,10 @@ import activeDays from './development/active-days/active-days.config';
 import contributionsOutsideWorkHours from './development/contributions-outside-work-hours/contributions-outside-work-hours.config';
 import mergeLeadTime from './development/merge-lead-time/merge-lead-time.config';
 import averateTimeToMerge from './development/average-time-to-merge/average-time-to-merge.config';
+import medianTimeToMerge from './development/median-time-to-merge/median-time-to-merge.config';
+import medianTimeToReview from './development/median-time-to-review/median-time-to-review.config';
+import patchsetsPerReview from './development/patchsets-per-review/patchsets-per-review.config';
+import reviewEfficiency from './development/review-efficiency/review-efficiency.config';
 import waitTimeFirstReview from './development/wait-time-first-review/wait-time-first-review.config';
 import codeReviewEngagement from './development/code-review-engagement/code-review-engagement.config';
 import reviewTimeByPullRequestSize from './development/review-time-by-pull-request-size/review-time-by-pull-request-size.config';
@@ -108,6 +112,10 @@ export const lfxWidgets: Record<Widget, WidgetConfig> = {
   [Widget.CONTRIBUTIONS_OUTSIDE_WORK_HOURS]: contributionsOutsideWorkHours,
   [Widget.MERGE_LEAD_TIME]: mergeLeadTime,
   [Widget.AVERAGE_TIME_TO_MERGE]: averateTimeToMerge,
+  [Widget.MEDIAN_TIME_TO_MERGE]: medianTimeToMerge,
+  [Widget.MEDIAN_TIME_TO_REVIEW]: medianTimeToReview,
+  [Widget.PATCHSETS_PER_REVIEW]: patchsetsPerReview,
+  [Widget.REVIEW_EFFICIENCY]: reviewEfficiency,
   [Widget.WAIT_TIME_FIRST_REVIEW]: waitTimeFirstReview,
   [Widget.CODE_REVIEW_ENGAGEMENT]: codeReviewEngagement,
   [Widget.REVIEW_TIME_BY_PULL_REQUEST_SIZE]: reviewTimeByPullRequestSize,
