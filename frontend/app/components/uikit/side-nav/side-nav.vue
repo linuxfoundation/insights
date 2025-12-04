@@ -18,7 +18,10 @@ SPDX-License-Identifier: MIT
       </li>
     </ul>
 
-    <div class="flex flex-col gap-2 p-3 bg-neutral-100 rounded-lg border border-neutral-200 mt-6 max-w-[190px]">
+    <div
+      v-if="name === WidgetArea.DEVELOPMENT"
+      class="flex flex-col gap-2 p-3 bg-neutral-100 rounded-lg border border-neutral-200 mt-6 max-w-[190px]"
+    >
       <lfx-icon
         name="info-circle"
         :size="14"
@@ -57,10 +60,12 @@ import LfxIcon from '~/components/uikit/icon/icon.vue';
 import useScroll from '~/components/shared/utils/scroll';
 import { useQueryParam } from '~/components/shared/utils/query-param';
 import { processProjectParams, projectParamsSetter } from '~/components/modules/project/services/project.query.service';
+import { WidgetArea } from '~/components/modules/widget/types/widget-area';
 
 const props = defineProps<{
   list: SideNavItem[];
   modelValue: string;
+  name: WidgetArea;
 }>();
 
 const { scrollTopPercentage } = useScroll();
