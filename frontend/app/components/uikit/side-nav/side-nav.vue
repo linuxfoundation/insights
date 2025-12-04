@@ -3,19 +3,39 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <ul class="lfx-side-nav sticky top-[240px] flex flex-col gap-4">
-    <li
-      v-for="item in props.list"
-      :key="item.label"
-    >
-      <a
-        :href="`#${item.key}`"
-        :class="{ active: activeItem === item.key }"
-        @click="onClick(item.key, $event)"
-        >{{ item.label }}</a
+  <div class="sticky top-[240px]">
+    <ul class="lfx-side-nav flex flex-col gap-4">
+      <li
+        v-for="item in props.list"
+        :key="item.label"
       >
-    </li>
-  </ul>
+        <a
+          :href="`#${item.key}`"
+          :class="{ active: activeItem === item.key }"
+          @click="onClick(item.key, $event)"
+          >{{ item.label }}</a
+        >
+      </li>
+    </ul>
+
+    <div class="flex flex-col gap-2 p-3 bg-neutral-100 rounded-lg border border-neutral-200 mt-6 max-w-[190px]">
+      <lfx-icon
+        name="info-circle"
+        :size="14"
+      />
+      <span class="text-xs text-neutral-900 font-semibold">Bot activity is now included</span>
+      <span class="text-xs text-neutral-600">
+        We've updated the Development metrics to also count actions performed by bots. You may notice some changes in
+        the numbers as a result.
+        <a
+          href="/docs/metrics/development"
+          target="_blank"
+          class="underline"
+          >Learn more</a
+        >
+      </span>
+    </div>
+  </div>
 
   <lfx-button
     v-if="scrollTopPercentage > 25"
