@@ -2,6 +2,10 @@
 
 This section explains the development activity metrics tracked by LFX Insights. These metrics help assess <b>how actively and efficiently an open source project is being developed and maintained</b>.
 
+:::info Please note
+The Development metrics include actions performed by bots. We include bot activities because they often represent important automated processes in modern development workflows (such as automated testing, dependency updates, and CI/CD processes). Excluding these would result in incomplete data for development activity analysis. Bot actions are excluded from all other metric categories.
+:::
+
 ## Issues Resolution
 
 **What it is:** The number of issues opened, closed, and the average time it takes to resolve them.

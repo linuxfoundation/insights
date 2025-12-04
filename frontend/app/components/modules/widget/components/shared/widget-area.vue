@@ -9,6 +9,7 @@ SPDX-License-Identifier: MIT
         <lfx-side-nav
           :list="sideNavItems"
           :model-value="activeItem"
+          :name="name"
           @update:model-value="onSideNavUpdate"
         />
       </div>
