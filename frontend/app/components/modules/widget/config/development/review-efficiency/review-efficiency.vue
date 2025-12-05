@@ -83,8 +83,6 @@ import {
   type QueryParams,
 } from '~/components/modules/widget/services/development.api.service';
 import type { WidgetModel } from '~/components/modules/widget/config/widget.config';
-import { gerrit } from '~/config/platforms/configs/gerrit.platform';
-import LfxButton from '~/components/uikit/button/button.vue';
 import LfxFilterPlatform from '~/components/modules/widget/components/shared/filter/filter-platform.vue';
 
 interface ReviewEfficiencyModel extends WidgetModel {
