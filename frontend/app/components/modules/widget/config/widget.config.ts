@@ -80,6 +80,7 @@ export interface WidgetConfig {
   hideOnRepoFilter?: boolean;
   benchmark?: WidgetBenchmarkConfig;
   showCollabToggle?: boolean;
+  headerFilters?: Component;
 }
 
 export const lfxWidgets: Record<Widget, WidgetConfig> = {

@@ -102,6 +102,11 @@ export type ActivityCountFilter = DefaultFilter & {
   includeCollaborations?: boolean;
 };
 
+export type PatchSetsFilter = DefaultFilter & {
+  granularity?: Granularity;
+  dataType?: string;
+};
+
 export type ReviewTimeByPRSizeFilter = {
   project: string;
   repos?: string[];
@@ -136,6 +141,33 @@ export type ActiveDaysFilter = DefaultFilter & {
   granularity?: Granularity;
   includeCodeContributions?: boolean;
   includeCollaborations?: boolean;
+};
+
+export type MedianTimeToMergeFilter = {
+  project: string;
+  granularity?: Granularity;
+  repos?: string[];
+  startDate?: DateTime;
+  endDate?: DateTime;
+  platform?: string;
+};
+
+export type MedianTimeToReviewFilter = {
+  project: string;
+  granularity?: Granularity;
+  repos?: string[];
+  startDate?: DateTime;
+  endDate?: DateTime;
+  platform?: string;
+};
+
+export type ReviewEfficiencyFilter = {
+  project: string;
+  granularity?: Granularity;
+  repos?: string[];
+  startDate?: DateTime;
+  endDate?: DateTime;
+  platform?: string;
 };
 
 export type PackageFilter = {

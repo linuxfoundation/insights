@@ -160,8 +160,6 @@ export interface PatchsetsPerReview {
 
 export interface ReviewEfficiency {
   summary: Summary;
-  openedSummary: Summary;
-  closedSummary: Summary;
   data: {
     startDate: string;
     endDate: string;

@@ -4,51 +4,29 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <section class="mt-5">
-    <div class="bg-neutral-50 flex gap-1 items-start p-1 rounded-lg mb-5">
-      <button
-        :class="[
-          'flex-1 px-4 py-0.5 rounded-md text-sm font-medium transition-colors',
-          dataType === 'median' ? 'bg-white text-neutral-900' : 'text-neutral-500 hover:text-neutral-900',
-        ]"
-        @click="dataType = 'median'"
-      >
-        Median
-      </button>
-      <button
-        :class="[
-          'flex-1 px-4 py-0.5 rounded-md text-sm font-medium transition-colors',
-          dataType === 'average' ? 'bg-white text-neutral-900' : 'text-neutral-500 hover:text-neutral-900',
-        ]"
-        @click="dataType = 'average'"
-      >
-        Average
-      </button>
+    <div class="mb-5">
+      <lfx-tabs
+        v-model="dataType"
+        :tabs="dataTypeTabs"
+        width-type="full"
+      />
     </div>
 
-    <div class="grid-cols-[max-content] grid-rows-[max-content] inline-grid leading-[0] place-items-start">
+    <div class="flex justify-between items-center">
       <lfx-skeleton-state
         :status="status"
-        height="2.5rem"
-        width="10rem"
+        height="2.75rem"
+        width="7.5rem"
       >
         <div
           v-if="summary && !isEmpty"
-          class="grid-cols-[max-content] grid-rows-[max-content] inline-grid place-items-start"
+          class="flex flex-row gap-4 items-center"
         >
-          <p class="text-data-display-1">{{ formatNumber(summary.current, 1) }}</p>
-          <div class="grid-cols-[max-content] grid-rows-[max-content] inline-grid ml-[76px] mt-[7px] place-items-start">
-            <lfx-delta-display
-              v-if="selectedTimeRangeKey !== dateOptKeys.alltime"
-              :summary="summary"
-              :decimals="1"
-            />
-            <p
-              v-if="selectedTimeRangeKey !== dateOptKeys.alltime && summary"
-              class="text-neutral-400 text-xs mt-[19px]"
-            >
-              vs. {{ formatNumber(summary.previous || 0, 1) }} last period
-            </p>
-          </div>
+          <div class="text-data-display-1">{{ formatNumber(summary.current) }}</div>
+          <lfx-delta-display
+            v-if="selectedTimeRangeKey !== dateOptKeys.alltime"
+            :summary="summary"
+          />
         </div>
       </lfx-skeleton-state>
     </div>
@@ -77,6 +55,7 @@ import { storeToRefs } from 'pinia';
 import type { PatchsetsPerReview } from '~~/types/development/responses.types';
 import type { Summary } from '~~/types/shared/summary.types';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
+import LfxTabs from '~/components/uikit/tabs/tabs.vue';
 import { convertToChartData, markLastDataItem } from '~/components/uikit/chart/helpers/chart-helpers';
 import type { ChartData, RawChartData, ChartSeries } from '~/components/uikit/chart/types/ChartTypes';
 import LfxChart from '~/components/uikit/chart/chart.vue';
@@ -93,9 +72,12 @@ import LfxProjectLoadState from '~/components/modules/project/components/shared/
 import { Widget } from '~/components/modules/widget/types/widget';
 import {
   DEVELOPMENT_API_SERVICE,
-  type QueryParams,
+  type PatchsetsPerReviewQueryParams,
 } from '~/components/modules/widget/services/development.api.service';
 import type { WidgetModel } from '~/components/modules/widget/config/widget.config';
+import LfxButton from '~/components/uikit/button/button.vue';
+import { gerrit } from '~/config/platforms/configs/gerrit.platform';
+import LfxWidgetFilterPlatform from '~/components/modules/widget/components/shared/filter/filter-platform.vue';
 
 interface PatchsetsPerReviewModel extends WidgetModel {
   granularity: Granularity;
@@ -118,6 +100,11 @@ const { startDate, endDate, selectedReposValues, selectedTimeRangeKey, customRan
 
 const route = useRoute();
 
+const dataTypeTabs = [
+  { value: 'median', label: 'Median' },
+  { value: 'average', label: 'Average' },
+];
+
 const dataType = ref<'median' | 'average'>(props.modelValue?.dataType || 'median');
 
 const granularity = computed(() =>
@@ -126,36 +113,21 @@ const granularity = computed(() =>
     : barGranularities[selectedTimeRangeKey.value as keyof typeof barGranularities],
 );
 
-const params = computed<QueryParams>(() => ({
+const params = computed<PatchsetsPerReviewQueryParams>(() => ({
   projectSlug: route.params.slug as string,
   granularity: granularity.value,
   repos: selectedReposValues.value,
   startDate: startDate.value,
   endDate: endDate.value,
+  dataType: dataType.value,
 }));
 
 const { data, status, error } = DEVELOPMENT_API_SERVICE.fetchPatchsetsPerReview(params);
 
 const patchsetsPerReview = computed<PatchsetsPerReview>(() => data.value as PatchsetsPerReview);
 
-const summary = computed<Summary>(() => {
-  if (!patchsetsPerReview.value?.data) return {} as Summary;
-
-  const currentData = patchsetsPerReview.value.data;
-  const dataKey = dataType.value;
-
-  // Calculate current and previous values
-  const current = currentData.reduce((sum, item) => sum + (item[dataKey] || 0), 0) / (currentData.length || 1);
-  const previous = patchsetsPerReview.value.summary?.previous || 0;
-  const change = current - previous;
-  const changePercentage = previous !== 0 ? (change / previous) * 100 : 0;
-
-  return {
-    current,
-    previous,
-    change,
-    changePercentage,
-  };
+const summary = computed<Summary | undefined>(() => {
+  return patchsetsPerReview.value?.summary;
 });
 
 const chartData = computed<ChartData[]>(() => {
@@ -180,7 +152,9 @@ const chartSeries = ref<ChartSeries[]>([
   },
 ]);
 
-const barChartConfig = computed(() => getBarChartConfig(chartData.value, chartSeries.value, granularity.value));
+const barChartConfig = computed(() =>
+  getBarChartConfig(chartData.value, chartSeries.value, granularity.value, false, 1),
+);
 
 const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
 
@@ -199,7 +173,7 @@ watch(
 watch(
   [granularity, dataType],
   ([granularityValue, dataTypeValue]) => {
-    emit('update:modelValue', { granularity: granularityValue, dataType: dataTypeValue });
+    emit('update:modelValue', { ...props.modelValue, granularity: granularityValue, dataType: dataTypeValue });
   },
   { immediate: true },
 );

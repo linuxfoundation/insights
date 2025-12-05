@@ -36,8 +36,14 @@ SPDX-License-Identifier: MIT
             >Learn more</a
           >
         </p>
+        <component
+          :is="config.headerFilters"
+          v-if="config.headerFilters"
+          v-model="model"
+        />
+        <!-- Backward compatibility: keep old showCollabToggle logic -->
         <div
-          v-if="config.showCollabToggle"
+          v-else-if="config.showCollabToggle"
           class="flex items-center gap-1"
         >
           <lfx-toggle

@@ -1,6 +1,6 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import type { ActivityCountFilter } from '../types';
+import type { ReviewEfficiencyFilter } from '../types';
 import { fetchFromTinybird } from './tinybird';
 import { calculatePercentageChange, getPreviousDates } from '~~/server/data/util';
 import type { ReviewEfficiency } from '~~/types/development/responses.types';
@@ -8,18 +8,17 @@ import type { ReviewEfficiency } from '~~/types/development/responses.types';
 type TinybirdReviewEfficiencyData = {
   startDate: string;
   endDate: string;
-  openedPullRequests: number;
-  mergedAndClosedPullRequests: number;
+  openedCount: number;
+  mergedCount: number;
 };
 
 type TinybirdReviewEfficiencySummary = {
-  openedPullRequests: number;
-  mergedAndClosedPullRequests: number;
-  reviewEfficiency: number;
+  openedCount: number;
+  mergedCount: number;
 };
 
 export async function fetchReviewEfficiency(
-  filter: ActivityCountFilter,
+  filter: ReviewEfficiencyFilter,
 ): Promise<ReviewEfficiency> {
   const dates = getPreviousDates(filter.startDate, filter.endDate);
 
@@ -39,8 +38,8 @@ export async function fetchReviewEfficiency(
     ...filter,
   };
 
-  const summaryPath = '/v0/pipes/pull_requests_review_efficiency.json';
-  const dataPath = '/v0/pipes/pull_requests_review_efficiency.json';
+  const summaryPath = '/v0/pipes/review_efficiency.json';
+  const dataPath = '/v0/pipes/review_efficiency.json';
 
   const [currentSummary, previousSummary, data] = await Promise.all([
     fetchFromTinybird<TinybirdReviewEfficiencySummary[]>(summaryPath, currentSummaryQuery),
@@ -48,12 +47,14 @@ export async function fetchReviewEfficiency(
     fetchFromTinybird<TinybirdReviewEfficiencyData[]>(dataPath, dataQuery),
   ]);
 
-  const currentEfficiency = currentSummary.data[0]?.reviewEfficiency || 0;
-  const previousEfficiency = previousSummary.data[0]?.reviewEfficiency || 0;
-  const currentOpened = currentSummary.data[0]?.openedPullRequests || 0;
-  const previousOpened = previousSummary.data[0]?.openedPullRequests || 0;
-  const currentClosed = currentSummary.data[0]?.mergedAndClosedPullRequests || 0;
-  const previousClosed = previousSummary.data[0]?.mergedAndClosedPullRequests || 0;
+  const currentOpened = currentSummary.data[0]?.openedCount || 0;
+  const previousOpened = previousSummary.data[0]?.openedCount || 0;
+  const currentClosed = currentSummary.data[0]?.mergedCount || 0;
+  const previousClosed = previousSummary.data[0]?.mergedCount || 0;
+
+  // Calculate review efficiency (merged/opened ratio)
+  const currentEfficiency = currentOpened > 0 ? currentClosed / currentOpened : 0;
+  const previousEfficiency = previousOpened > 0 ? previousClosed / previousOpened : 0;
 
   const efficiencyPercentageChange = calculatePercentageChange(
     currentEfficiency,
@@ -90,8 +91,8 @@ export async function fetchReviewEfficiency(
     data: data.data.map((item) => ({
       startDate: item.startDate,
       endDate: item.endDate,
-      opened: item.openedPullRequests,
-      closed: item.mergedAndClosedPullRequests,
+      opened: item.openedCount,
+      closed: item.mergedCount,
     })),
   };
 }

@@ -20,6 +20,10 @@ import type {
   ReviewTimeByPRSizeFilter,
   PackageFilter,
   PackageMetricsFilter,
+  PatchSetsFilter,
+  MedianTimeToMergeFilter,
+  MedianTimeToReviewFilter,
+  ReviewEfficiencyFilter,
 } from '~~/server/data/types';
 import type { ActiveContributorsResponse } from '~~/server/data/tinybird/active-contributors-data-source';
 import type { ActiveOrganizationsResponse } from '~~/server/data/tinybird/active-organizations-data-source';
@@ -122,10 +126,10 @@ export interface DataSource {
   fetchPullRequests: (filter: ActivityCountFilter) => Promise<PullRequests>;
   fetchReviewTimeByPRSize: (filter: ReviewTimeByPRSizeFilter) => Promise<ReviewTimeByPrItem[]>;
   fetchAverageTimeToMerge: (filter: AverageTimeToMergeFilter) => Promise<AverageTimeMerge>;
-  fetchMedianTimeToMerge: (filter: ActivityCountFilter) => Promise<MedianTimeToMerge>;
-  fetchMedianTimeToReview: (filter: ActivityCountFilter) => Promise<MedianTimeToReview>;
-  fetchPatchsetsPerReview: (filter: ActivityCountFilter) => Promise<PatchsetsPerReview>;
-  fetchReviewEfficiency: (filter: ActivityCountFilter) => Promise<ReviewEfficiency>;
+  fetchMedianTimeToMerge: (filter: MedianTimeToMergeFilter) => Promise<MedianTimeToMerge>;
+  fetchMedianTimeToReview: (filter: MedianTimeToReviewFilter) => Promise<MedianTimeToReview>;
+  fetchPatchsetsPerReview: (filter: PatchSetsFilter) => Promise<PatchsetsPerReview>;
+  fetchReviewEfficiency: (filter: ReviewEfficiencyFilter) => Promise<ReviewEfficiency>;
   fetchWaitTimeFor1stReview: (filter: WaitTimeFor1stReviewFilter) => Promise<WaitTime1stReview>;
   fetchMergeLeadTime: (filter: MergeLeadTimeFilter) => Promise<MergeLeadTime>;
   fetchActiveDays: (filter: ActiveDaysFilter) => Promise<ActiveDays>;

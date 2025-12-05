@@ -1,7 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { DateTime } from 'luxon';
-import type { ActivityCountFilter } from '~~/server/data/types';
+import { ActivityCountFilter, PatchSetsFilter } from '~~/server/data/types';
 import { Granularity } from '~~/types/shared/granularity';
 import { createDataSource } from '~~/server/data/data-sources';
 
@@ -31,13 +31,11 @@ export default defineEventHandler(async (event) => {
 
   const repos = Array.isArray(query.repos) ? query.repos : query.repos ? [query.repos] : undefined;
 
-  const filter: ActivityCountFilter = {
+  const filter: PatchSetsFilter = {
     project,
     granularity: query.granularity as Granularity,
     repos,
-    onlyContributions: false,
-    includeCodeContributions: true,
-    includeCollaborations: true,
+    dataType: query.dataType as string,
     startDate: query.startDate ? DateTime.fromISO(query.startDate as string) : undefined,
     endDate: query.endDate ? DateTime.fromISO(query.endDate as string) : undefined,
   };

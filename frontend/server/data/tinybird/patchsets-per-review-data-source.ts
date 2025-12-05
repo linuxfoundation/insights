@@ -1,6 +1,6 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import type { ActivityCountFilter } from '../types';
+import { ActivityCountFilter, PatchSetsFilter } from '../types';
 import { fetchFromTinybird } from './tinybird';
 import { calculatePercentageChange, getPreviousDates } from '~~/server/data/util';
 import type { PatchsetsPerReview } from '~~/types/development/responses.types';
@@ -8,17 +8,15 @@ import type { PatchsetsPerReview } from '~~/types/development/responses.types';
 type TinybirdPatchsetsPerReviewData = {
   startDate: string;
   endDate: string;
-  medianPatchsetsPerReview: number;
-  averagePatchsetsPerReview: number;
+  patchsetsPerReview: number;
 };
 
 type TinybirdPatchsetsPerReviewSummary = {
-  medianPatchsetsPerReview: number;
-  averagePatchsetsPerReview: number;
+  patchsetsPerReview: number;
 };
 
 export async function fetchPatchsetsPerReview(
-  filter: ActivityCountFilter,
+  filter: PatchSetsFilter,
 ): Promise<PatchsetsPerReview> {
   const dates = getPreviousDates(filter.startDate, filter.endDate);
 
@@ -38,8 +36,8 @@ export async function fetchPatchsetsPerReview(
     ...filter,
   };
 
-  const summaryPath = '/v0/pipes/pull_requests_patchsets_per_review.json';
-  const dataPath = '/v0/pipes/pull_requests_patchsets_per_review.json';
+  const summaryPath = '/v0/pipes/patchsets_per_review.json';
+  const dataPath = '/v0/pipes/patchsets_per_review.json';
 
   const [currentSummary, previousSummary, data] = await Promise.all([
     fetchFromTinybird<TinybirdPatchsetsPerReviewSummary[]>(summaryPath, currentSummaryQuery),
@@ -47,24 +45,24 @@ export async function fetchPatchsetsPerReview(
     fetchFromTinybird<TinybirdPatchsetsPerReviewData[]>(dataPath, dataQuery),
   ]);
 
-  const currentMedian = currentSummary.data[0]?.medianPatchsetsPerReview || 0;
-  const previousMedian = previousSummary.data[0]?.medianPatchsetsPerReview || 0;
-  const percentageChange = calculatePercentageChange(currentMedian, previousMedian);
+  const currentValue = currentSummary.data[0]?.patchsetsPerReview || 0;
+  const previousValue = previousSummary.data[0]?.patchsetsPerReview || 0;
+  const percentageChange = calculatePercentageChange(currentValue, previousValue);
 
   return {
     summary: {
-      current: currentMedian,
-      previous: previousMedian,
+      current: currentValue,
+      previous: previousValue,
       percentageChange,
-      changeValue: currentMedian - previousMedian,
+      changeValue: currentValue - previousValue,
       periodFrom: filter.startDate?.toISO() || '',
       periodTo: filter.endDate?.toISO() || '',
     },
     data: data.data.map((item) => ({
       startDate: item.startDate,
       endDate: item.endDate,
-      median: item.medianPatchsetsPerReview,
-      average: item.averagePatchsetsPerReview,
+      median: item.patchsetsPerReview,
+      average: item.patchsetsPerReview,
     })),
   };
 }

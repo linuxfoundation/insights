@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 import { DateTime } from 'luxon';
 import Retention from './retention.vue';
+import LfxWidgetFilterCollaboration from '~/components/modules/widget/components/shared/filter/filter-collaboration.vue';
 import type { WidgetConfig, WidgetModel } from '~/components/modules/widget/config/widget.config';
 
 const retention: WidgetConfig = {
@@ -78,7 +79,7 @@ const retention: WidgetConfig = {
     icon: 'people-group',
     suggestions: 'Show me the retention rate for the last 3 quarters',
   },
-  showCollabToggle: true,
+  headerFilters: LfxWidgetFilterCollaboration,
 };
 
 export default retention;

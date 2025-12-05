@@ -1,6 +1,6 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import type { ActivityCountFilter } from '../types';
+import type { MedianTimeToMergeFilter } from '../types';
 import { fetchFromTinybird } from './tinybird';
 import { calculatePercentageChange, getPreviousDates } from '~~/server/data/util';
 import type { MedianTimeToMerge } from '~~/types/development/responses.types';
@@ -16,7 +16,7 @@ type TinybirdMedianTimeToMergeSummary = {
 };
 
 export async function fetchMedianTimeToMerge(
-  filter: ActivityCountFilter,
+  filter: MedianTimeToMergeFilter,
 ): Promise<MedianTimeToMerge> {
   const dates = getPreviousDates(filter.startDate, filter.endDate);
 
@@ -36,8 +36,8 @@ export async function fetchMedianTimeToMerge(
     ...filter,
   };
 
-  const summaryPath = '/v0/pipes/pull_requests_median_time_to_merge.json';
-  const dataPath = '/v0/pipes/pull_requests_median_time_to_merge.json';
+  const summaryPath = '/v0/pipes/median_time_to_merge.json';
+  const dataPath = '/v0/pipes/median_time_to_merge.json';
 
   const [currentSummary, previousSummary, data] = await Promise.all([
     fetchFromTinybird<TinybirdMedianTimeToMergeSummary[]>(summaryPath, currentSummaryQuery),

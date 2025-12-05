@@ -41,6 +41,10 @@ export interface CommitActivitiesQueryParams extends QueryParams {
   activityType: string;
 }
 
+export interface PatchsetsPerReviewQueryParams extends QueryParams {
+  dataType: string;
+}
+
 class DevelopmentApiService {
   fetchActiveDays(params: ComputedRef<QueryParams>) {
     const queryKey = computed(() => [
@@ -346,7 +350,7 @@ class DevelopmentApiService {
     });
   }
 
-  fetchPatchsetsPerReview(params: ComputedRef<QueryParams>) {
+  fetchPatchsetsPerReview(params: ComputedRef<PatchsetsPerReviewQueryParams>) {
     const queryKey = computed(() => [
       TanstackKey.PATCHSETS_PER_REVIEW,
       params.value.projectSlug,
@@ -354,6 +358,7 @@ class DevelopmentApiService {
       params.value.repos,
       params.value.startDate,
       params.value.endDate,
+      params.value.dataType,
     ]);
     const queryFn = computed<QueryFunction<PatchsetsPerReview>>(() =>
       this.patchsetsPerReviewQueryFn(() => ({
@@ -362,6 +367,7 @@ class DevelopmentApiService {
         granularity: params.value.granularity,
         startDate: params.value.startDate,
         endDate: params.value.endDate,
+        dataType: params.value.dataType,
       })),
     );
 
@@ -582,7 +588,7 @@ class DevelopmentApiService {
   patchsetsPerReviewQueryFn(
     query: () => Record<string, string | number | boolean | undefined | string[] | null>,
   ): QueryFunction<PatchsetsPerReview> {
-    const { projectSlug, repos, granularity, startDate, endDate } = query();
+    const { projectSlug, repos, granularity, startDate, endDate, dataType } = query();
     return async () =>
       await $fetch(`/api/project/${projectSlug}/development/patchsets-per-review`, {
         params: {
@@ -590,6 +596,7 @@ class DevelopmentApiService {
           granularity,
           startDate,
           endDate,
+          dataType,
         },
       });
   }

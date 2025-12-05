@@ -1,6 +1,6 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import type { ActivityCountFilter } from '../types';
+import type { MedianTimeToReviewFilter } from '../types';
 import { fetchFromTinybird } from './tinybird';
 import { calculatePercentageChange, getPreviousDates } from '~~/server/data/util';
 import type { MedianTimeToReview } from '~~/types/development/responses.types';
@@ -8,15 +8,15 @@ import type { MedianTimeToReview } from '~~/types/development/responses.types';
 type TinybirdMedianTimeToReviewData = {
   startDate: string;
   endDate: string;
-  medianTimeToFirstReviewSeconds: number;
+  medianTimeToReviewSeconds: number;
 };
 
 type TinybirdMedianTimeToReviewSummary = {
-  medianTimeToFirstReviewSeconds: number;
+  medianTimeToReviewSeconds: number;
 };
 
 export async function fetchMedianTimeToReview(
-  filter: ActivityCountFilter,
+  filter: MedianTimeToReviewFilter,
 ): Promise<MedianTimeToReview> {
   const dates = getPreviousDates(filter.startDate, filter.endDate);
 
@@ -36,8 +36,8 @@ export async function fetchMedianTimeToReview(
     ...filter,
   };
 
-  const summaryPath = '/v0/pipes/pull_requests_median_time_to_first_review.json';
-  const dataPath = '/v0/pipes/pull_requests_median_time_to_first_review.json';
+  const summaryPath = '/v0/pipes/median_time_to_review.json';
+  const dataPath = '/v0/pipes/median_time_to_review.json';
 
   const [currentSummary, previousSummary, data] = await Promise.all([
     fetchFromTinybird<TinybirdMedianTimeToReviewSummary[]>(summaryPath, currentSummaryQuery),
@@ -45,8 +45,8 @@ export async function fetchMedianTimeToReview(
     fetchFromTinybird<TinybirdMedianTimeToReviewData[]>(dataPath, dataQuery),
   ]);
 
-  const currentMedianTime = currentSummary.data[0]?.medianTimeToFirstReviewSeconds || 0;
-  const previousMedianTime = previousSummary.data[0]?.medianTimeToFirstReviewSeconds || 0;
+  const currentMedianTime = currentSummary.data[0]?.medianTimeToReviewSeconds || 0;
+  const previousMedianTime = previousSummary.data[0]?.medianTimeToReviewSeconds || 0;
   const percentageChange = calculatePercentageChange(currentMedianTime, previousMedianTime);
 
   return {
@@ -61,7 +61,7 @@ export async function fetchMedianTimeToReview(
     data: data.data.map((item) => ({
       startDate: item.startDate,
       endDate: item.endDate,
-      medianTime: item.medianTimeToFirstReviewSeconds,
+      medianTime: item.medianTimeToReviewSeconds,
     })),
   };
 }
