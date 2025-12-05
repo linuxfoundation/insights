@@ -211,6 +211,7 @@ const applySeriesStyle = (
  * @param series - Series
  * @param granularity - Time granularity for axis formatting
  * @param useStripedPattern - Whether to use striped patterns for bar fills (default: false)
+ * @param decimals - Number of decimal places to show in tooltip values (default: 0)
  * @returns Chart config
  */
 export const getBarChartConfig = (
@@ -218,6 +219,7 @@ export const getBarChartConfig = (
   series: ChartSeries[],
   granularity: string,
   useStripedPattern: boolean = false,
+  decimals: number = 0,
 ): ECOption => {
   const axisLabelFormat =
     formatByGranularity[granularity as keyof typeof formatByGranularity] || 'MMM yyyy';
@@ -231,7 +233,7 @@ export const getBarChartConfig = (
     },
   };
   const tooltip = merge({}, defaultBarOption.tooltip, {
-    formatter: tooltipFormatterWithData(data, granularity, series),
+    formatter: tooltipFormatterWithData(data, granularity, series, decimals),
   });
 
   const styledSeries = applySeriesStyle(
@@ -254,6 +256,7 @@ export const getBarChartConfig = (
  * @param granularity - Time granularity for axis formatting
  * @param overrideConfig - Additional config to merge
  * @param useStripedPattern - Whether to use striped patterns for bar fills (default: false)
+ * @param decimals - Number of decimal places to show in tooltip values (default: 0)
  * @returns Chart config
  */
 export const getBarChartConfigStacked = (
@@ -262,6 +265,7 @@ export const getBarChartConfigStacked = (
   granularity: string,
   overrideConfig?: Partial<ECOption>,
   useStripedPattern: boolean = false,
+  decimals: number = 0,
   // reuse the same function as the custom config but with the stack option
 ): ECOption =>
   getBarChartConfigCustom(
@@ -279,6 +283,7 @@ export const getBarChartConfigStacked = (
     overrideConfig,
     undefined,
     useStripedPattern,
+    decimals,
   );
 
 export const getBarChartConfigStackAndLine = (
@@ -287,6 +292,7 @@ export const getBarChartConfigStackAndLine = (
   granularity: string,
   overrideConfig?: Partial<ECOption>,
   useStripedPattern: boolean = false,
+  decimals: number = 0,
   // reuse the same function as the custom config but with the stack option
 ): ECOption =>
   getBarChartConfigCustom(
@@ -307,6 +313,7 @@ export const getBarChartConfigStackAndLine = (
       showSymbol: false,
     },
     useStripedPattern,
+    decimals,
   );
 
 /**
@@ -316,6 +323,7 @@ export const getBarChartConfigStackAndLine = (
  * @param series - Series
  * @param customStyle - Custom series style (bar chart)
  * @param lineStyle - Custom line style (line chart)
+ * @param decimals - Number of decimal places to show in tooltip values (default: 0)
  * @returns Chart config
  */
 export const getBarChartConfigCustom = (
@@ -326,6 +334,7 @@ export const getBarChartConfigCustom = (
   overrideConfig?: Partial<ECOption>,
   lineStyle?: Partial<SeriesTypes>,
   useStripedPattern: boolean = false,
+  decimals: number = 0,
 ): ECOption => {
   const axisLabelFormat =
     formatByGranularity[granularity as keyof typeof formatByGranularity] || 'MMM yyyy';
@@ -339,7 +348,7 @@ export const getBarChartConfigCustom = (
     },
   };
   const tooltip = merge({}, defaultBarOption.tooltip, {
-    formatter: tooltipFormatterWithData(data, granularity, series),
+    formatter: tooltipFormatterWithData(data, granularity, series, decimals),
   });
 
   const styledSeries = applySeriesStyle(

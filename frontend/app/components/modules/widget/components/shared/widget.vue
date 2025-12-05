@@ -27,7 +27,7 @@ SPDX-License-Identifier: MIT
           v-if="project"
           class="text-body-2 text-neutral-500"
         >
-          <span v-html="sanitize(config.description(project))" />
+          <span v-html="sanitize(config.description(project, model))" />
           <a
             v-if="config.learnMoreLink"
             :href="config.learnMoreLink"
@@ -36,8 +36,14 @@ SPDX-License-Identifier: MIT
             >Learn more</a
           >
         </p>
+        <component
+          :is="config.headerFilters"
+          v-if="config.headerFilters"
+          v-model="model"
+        />
+        <!-- Backward compatibility: keep old showCollabToggle logic -->
         <div
-          v-if="config.showCollabToggle"
+          v-else-if="config.showCollabToggle"
           class="flex items-center gap-1"
         >
           <lfx-toggle

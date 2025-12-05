@@ -52,6 +52,10 @@ export const lfxWidgetArea: Record<WidgetArea, WidgetAreaConfig> = {
       Widget.AVERAGE_TIME_TO_MERGE,
       Widget.WAIT_TIME_FIRST_REVIEW,
       Widget.CODE_REVIEW_ENGAGEMENT,
+      Widget.PATCHSETS_PER_REVIEW,
+      // Widget.MEDIAN_TIME_TO_MERGE,
+      // Widget.MEDIAN_TIME_TO_REVIEW,
+      // Widget.REVIEW_EFFICIENCY,
     ],
   },
   [WidgetArea.SECURITY]: {

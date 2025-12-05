@@ -117,6 +117,7 @@ const applySeriesStyle = (
  * Get line area chart config. This function takes in the data and series and returns the chart config.
  * @param data - Data
  * @param series - Series
+ * @param decimals - Number of decimal places to show in tooltip values (default: 0)
  * @returns Chart config
  */
 export const getLineAreaChartConfig = (
@@ -125,6 +126,7 @@ export const getLineAreaChartConfig = (
   granularity: string,
   yAxisFormatter?: (value: number, index?: number) => string,
   overrideConfig?: Partial<ECOption>,
+  decimals: number = 0,
 ): ECOption => {
   const axisLabelFormat =
     formatByGranularity[granularity as keyof typeof formatByGranularity] || 'MMM yyyy';
@@ -145,7 +147,7 @@ export const getLineAreaChartConfig = (
     },
   };
   const tooltip = merge({}, defaultLineOption.tooltip, {
-    formatter: tooltipFormatterWithData(data, granularity, series),
+    formatter: tooltipFormatterWithData(data, granularity, series, decimals),
   });
 
   const styledSeries = applySeriesStyle(

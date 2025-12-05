@@ -1,6 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import OrganizationsLeaderboard from './organizations-leaderboard.vue';
+import LfxWidgetFilterCollaboration from '~/components/modules/widget/components/shared/filter/filter-collaboration.vue';
 import type { WidgetConfig } from '~/components/modules/widget/config/widget.config';
 
 const organizationsLeaderboard: WidgetConfig = {
@@ -22,7 +23,7 @@ const organizationsLeaderboard: WidgetConfig = {
     icon: 'people-group',
     suggestions: 'How many organizations are there in the leaderboard?',
   },
-  showCollabToggle: true,
+  headerFilters: LfxWidgetFilterCollaboration,
 };
 
 export default organizationsLeaderboard;

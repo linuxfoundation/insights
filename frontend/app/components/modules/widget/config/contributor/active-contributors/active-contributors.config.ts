@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 import ActiveContributors from './active-contributors.vue';
 import LfxShareActiveContributors from './share-active-contributors.vue';
+import LfxWidgetFilterCollaboration from '~/components/modules/widget/components/shared/filter/filter-collaboration.vue';
 import type { WidgetConfig } from '~/components/modules/widget/config/widget.config';
 import { Granularity } from '~~/types/shared/granularity';
 import { dateOptKeys } from '~/components/modules/project/config/date-options';
@@ -22,6 +23,7 @@ const activeContributors: WidgetConfig = {
   embed: true,
   snapshot: true,
   additionalShare: LfxShareActiveContributors,
+  headerFilters: LfxWidgetFilterCollaboration,
   benchmark: {
     title: 'Quarterly Active Contributors',
     showOnOverview: true,
@@ -69,7 +71,6 @@ const activeContributors: WidgetConfig = {
     icon: 'people-group',
     suggestions: 'How many active contributors are there?',
   },
-  showCollabToggle: true,
 };
 
 export default activeContributors;

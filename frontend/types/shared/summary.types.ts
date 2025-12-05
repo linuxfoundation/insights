@@ -7,7 +7,7 @@ export interface Summary {
   changeValue: number;
   periodFrom: string;
   periodTo: string;
-  maintainerCount: number;
+  maintainerCount?: number;
 }
 
 export interface Meta {
