@@ -6,10 +6,17 @@ SPDX-License-Identifier: MIT
   <section class="mt-5">
     <div class="mb-5">
       <lfx-tabs
+        v-if="!isEmpty && !props.snapshot"
         v-model="dataType"
         :tabs="dataTypeTabs"
         width-type="full"
       />
+      <div
+        v-if="props.snapshot"
+        class="text-sm leading-4 font-semibold first-letter:uppercase pb-3 border-t border-neutral-100 pt-5"
+      >
+        {{ props.modelValue?.dataType }} patchsets per review
+      </div>
     </div>
 
     <div class="flex justify-between items-center">

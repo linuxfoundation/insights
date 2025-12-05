@@ -27,7 +27,7 @@ SPDX-License-Identifier: MIT
           v-if="project"
           class="text-body-2 text-neutral-500"
         >
-          <span v-html="sanitize(config.description(project))" />
+          <span v-html="sanitize(config.description(project, model))" />
           <a
             v-if="config.learnMoreLink"
             :href="config.learnMoreLink"

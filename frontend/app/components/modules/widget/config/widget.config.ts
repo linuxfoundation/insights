@@ -65,7 +65,7 @@ export interface WidgetCopilotConfig {
 export interface WidgetConfig {
   key: string;
   name: string;
-  description: (project: Project) => string;
+  description: (project: Project, model: object) => string;
   learnMoreLink?: string;
   component: Component;
   share: boolean;
