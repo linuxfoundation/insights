@@ -75,9 +75,6 @@ import {
   type PatchsetsPerReviewQueryParams,
 } from '~/components/modules/widget/services/development.api.service';
 import type { WidgetModel } from '~/components/modules/widget/config/widget.config';
-import LfxButton from '~/components/uikit/button/button.vue';
-import { gerrit } from '~/config/platforms/configs/gerrit.platform';
-import LfxWidgetFilterPlatform from '~/components/modules/widget/components/shared/filter/filter-platform.vue';
 
 interface PatchsetsPerReviewModel extends WidgetModel {
   granularity: Granularity;

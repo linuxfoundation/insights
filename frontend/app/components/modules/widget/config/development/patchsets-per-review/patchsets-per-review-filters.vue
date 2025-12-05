@@ -13,11 +13,11 @@ SPDX-License-Identifier: MIT
 import LfxWidgetFilterPlatform from '~/components/modules/widget/components/shared/filter/filter-platform.vue';
 
 const props = defineProps<{
-  modelValue: Record<string, any>;
+  modelValue: Record<string, unknown>;
 }>();
 
 const emit = defineEmits<{
-  (e: 'update:modelValue', value: Record<string, any>): void;
+  (e: 'update:modelValue', value: Record<string, unknown>): void;
 }>();
 
 const platform = computed({

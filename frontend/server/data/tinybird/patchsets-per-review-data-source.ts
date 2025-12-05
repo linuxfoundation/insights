@@ -1,6 +1,6 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { ActivityCountFilter, PatchSetsFilter } from '../types';
+import { PatchSetsFilter } from '../types';
 import { fetchFromTinybird } from './tinybird';
 import { calculatePercentageChange, getPreviousDates } from '~~/server/data/util';
 import type { PatchsetsPerReview } from '~~/types/development/responses.types';

@@ -40,11 +40,11 @@ import LfxIcon from '~/components/uikit/icon/icon.vue';
 import { links } from '~/config/links';
 
 const props = defineProps<{
-  modelValue: Record<string, any>;
+  modelValue: Record<string, unknown>;
 }>();
 
 const emit = defineEmits<{
-  (e: 'update:modelValue', value: Record<string, any>): void;
+  (e: 'update:modelValue', value: Record<string, unknown>): void;
 }>();
 
 const includeCollaborations = computed({
