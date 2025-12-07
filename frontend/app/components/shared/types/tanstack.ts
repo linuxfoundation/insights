@@ -24,7 +24,7 @@ export enum TanstackKey {
   CODE_REVIEW_ENGAGEMENT = 'code-review-engagement',
   CONTRIBUTIONS_OUTSIDE_WORK_HOURS = 'contributions-outside-work-hours',
   ISSUES_RESOLUTION = 'issues-resolution',
-  MEDIAN_TIME_TO_MERGE = 'median-time-to-merge',
+  MEDIAN_TIME_TO_CLOSE = 'median-time-to-close',
   MEDIAN_TIME_TO_REVIEW = 'median-time-to-review',
   MERGE_LEAD_TIME = 'merge-lead-time',
   PATCHSETS_PER_REVIEW = 'patchsets-per-review',

@@ -4,39 +4,39 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <section class="mt-5">
-    <div class="grid-cols-[max-content] grid-rows-[max-content] inline-grid leading-[0] place-items-start">
+    <div class="flex justify-between items-center mb-5">
       <lfx-skeleton-state
         :status="status"
-        height="2.5rem"
-        width="10rem"
+        height="2rem"
+        width="7.5rem"
       >
         <div
           v-if="summary && !isEmpty"
-          class="grid-cols-[max-content] grid-rows-[max-content] inline-grid place-items-start"
+          class="flex flex-row gap-4 items-center"
         >
-          <p class="text-data-display-1">{{ medianTimeFormatted }}</p>
-          <div
-            class="grid-cols-[max-content] grid-rows-[max-content] inline-grid ml-[161px] mt-[7px] place-items-start"
-          >
-            <lfx-delta-display
-              v-if="selectedTimeRangeKey !== dateOptKeys.alltime"
-              :summary="summary"
-            />
-            <p
-              v-if="selectedTimeRangeKey !== dateOptKeys.alltime && summary"
-              class="text-neutral-400 text-xs mt-[19px]"
-            >
-              vs. {{ formatSecondsToDuration(summary.previous || 0, 'short') }} last period
-            </p>
-          </div>
+          <div class="text-data-display-1">{{ medianTimeFormatted }}</div>
+          <lfx-delta-display
+            v-if="selectedTimeRangeKey !== dateOptKeys.alltime"
+            :summary="summary"
+            is-duration
+            is-reverse
+          />
         </div>
+        <div
+          v-else
+          class="h-11"
+        />
       </lfx-skeleton-state>
+      <lfx-filter-platform
+        v-model="platform"
+        :available-platforms="['github', 'gitlab', 'gerrit']"
+      />
     </div>
 
     <lfx-project-load-state
       :status="status"
       :error="error"
-      error-message="Error fetching median time to merge"
+      error-message="Error fetching median time to close"
       :is-empty="isEmpty"
       use-min-height
     >
@@ -54,13 +54,13 @@ SPDX-License-Identifier: MIT
 import { useRoute } from 'nuxt/app';
 import { ref, computed, watch } from 'vue';
 import { storeToRefs } from 'pinia';
-import type { MedianTimeToMerge } from '~~/types/development/responses.types';
+import type { MedianTimeToClose } from '~~/types/development/responses.types';
 import type { Summary } from '~~/types/shared/summary.types';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
 import { convertToChartData, markLastDataItem } from '~/components/uikit/chart/helpers/chart-helpers';
 import type { ChartData, RawChartData, ChartSeries } from '~/components/uikit/chart/types/ChartTypes';
 import LfxChart from '~/components/uikit/chart/chart.vue';
-import { getBarChartConfig } from '~/components/uikit/chart/configs/bar.chart';
+import { getBarChartConfigCustom } from '~/components/uikit/chart/configs/bar.chart';
 import { lfxColors } from '~/config/styles/colors';
 import { formatSecondsToDuration } from '~/components/shared/utils/formatter';
 import { useProjectStore } from '~/components/modules/project/store/project.store';
@@ -76,21 +76,27 @@ import {
   type QueryParams,
 } from '~/components/modules/widget/services/development.api.service';
 import type { WidgetModel } from '~/components/modules/widget/config/widget.config';
+import { maxHours, minHours } from '~/components/uikit/chart/configs/defaults.chart';
+import { customTooltipFormatter } from '~/components/uikit/chart/helpers/formatters';
+import LfxFilterPlatform from '~/components/modules/widget/components/shared/filter/filter-platform.vue';
 
-interface MedianTimeToMergeModel extends WidgetModel {
+interface MedianTimeToCloseModel extends WidgetModel {
   granularity: Granularity;
+  platform?: string;
 }
 
 const props = defineProps<{
-  modelValue?: MedianTimeToMergeModel;
+  modelValue?: MedianTimeToCloseModel;
   snapshot?: boolean;
 }>();
 
 const emit = defineEmits<{
   (e: 'dataLoaded', value: string): void;
-  (e: 'update:modelValue', value: MedianTimeToMergeModel): void;
+  (e: 'update:modelValue', value: MedianTimeToCloseModel): void;
   (e: 'hasData', value: boolean): void;
 }>();
+
+const platform = ref(props.modelValue?.platform || '');
 
 const { startDate, endDate, selectedReposValues, selectedTimeRangeKey, customRangeGranularity } =
   storeToRefs(useProjectStore());
@@ -109,20 +115,21 @@ const params = computed<QueryParams>(() => ({
   repos: selectedReposValues.value,
   startDate: startDate.value,
   endDate: endDate.value,
+  platform: platform.value || undefined,
 }));
 
-const { data, status, error } = DEVELOPMENT_API_SERVICE.fetchMedianTimeToMerge(params);
+const { data, status, error } = DEVELOPMENT_API_SERVICE.fetchMedianTimeToClose(params);
 
-const medianTimeToMerge = computed<MedianTimeToMerge>(() => data.value as MedianTimeToMerge);
+const medianTimeToClose = computed<MedianTimeToClose>(() => data.value as MedianTimeToClose);
 
-const summary = computed<Summary>(() => medianTimeToMerge.value?.summary);
+const summary = computed<Summary>(() => medianTimeToClose.value?.summary);
 const medianTimeFormatted = computed<string>(() =>
-  formatSecondsToDuration(medianTimeToMerge.value?.summary?.current || 0, 'short'),
+  formatSecondsToDuration(medianTimeToClose.value?.summary?.current || 0, 'short'),
 );
 
 const chartData = computed<ChartData[]>(() => {
   const tmpData = convertToChartData(
-    (medianTimeToMerge.value?.data || []) as RawChartData[],
+    (medianTimeToClose.value?.data || []) as RawChartData[],
     'startDate',
     ['medianTime'],
     undefined,
@@ -133,7 +140,7 @@ const chartData = computed<ChartData[]>(() => {
 
 const chartSeries = ref<ChartSeries[]>([
   {
-    name: 'Median time to merge',
+    name: 'Median time to close',
     type: 'bar',
     yAxisIndex: 0,
     dataIndex: 0,
@@ -142,7 +149,28 @@ const chartSeries = ref<ChartSeries[]>([
   },
 ]);
 
-const barChartConfig = computed(() => getBarChartConfig(chartData.value, chartSeries.value, granularity.value));
+const configOverride = computed(() => ({
+  yAxis: {
+    axisLabel: {
+      formatter: (value: number) => `${value === 0 ? '' : `${value}h`}`,
+    },
+    min: minHours,
+    max: maxHours,
+  },
+  tooltip: {
+    formatter: (params: unknown) => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const dataPoint = (params as any)[0];
+      const seconds = dataPoint.value;
+      const formattedDuration = formatSecondsToDuration(seconds, 'short');
+      return customTooltipFormatter(chartData.value, granularity.value, formattedDuration)(params);
+    },
+  },
+}));
+
+const barChartConfig = computed(() =>
+  getBarChartConfigCustom(chartData.value, chartSeries.value, {}, granularity.value, configOverride.value),
+);
 
 const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
 
@@ -150,7 +178,7 @@ watch(
   status,
   (value: string) => {
     if (value !== 'pending') {
-      emit('dataLoaded', Widget.MEDIAN_TIME_TO_MERGE);
+      emit('dataLoaded', Widget.MEDIAN_TIME_TO_CLOSE);
     }
   },
   {
@@ -159,9 +187,9 @@ watch(
 );
 
 watch(
-  granularity,
-  (value: Granularity) => {
-    emit('update:modelValue', { granularity: value });
+  [granularity, platform],
+  ([granularityValue, platformValue]) => {
+    emit('update:modelValue', { granularity: granularityValue, platform: platformValue });
   },
   { immediate: true },
 );
@@ -179,6 +207,6 @@ watch(
 
 <script lang="ts">
 export default {
-  name: 'LfxProjectMedianTimeToMerge',
+  name: 'LfxProjectMedianTimeToClose',
 };
 </script>

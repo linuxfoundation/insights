@@ -130,7 +130,7 @@ export interface WaitTime1stReview {
   }[];
 }
 
-export interface MedianTimeToMerge {
+export interface MedianTimeToClose {
   summary: Summary;
   data: {
     startDate: string;

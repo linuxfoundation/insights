@@ -14,7 +14,7 @@ type TinybirdReviewEfficiencyData = {
 
 type TinybirdReviewEfficiencySummary = {
   openedCount: number;
-  mergedCount: number;
+  resolvedCount: number;
 };
 
 export async function fetchReviewEfficiency(
@@ -49,8 +49,8 @@ export async function fetchReviewEfficiency(
 
   const currentOpened = currentSummary.data[0]?.openedCount || 0;
   const previousOpened = previousSummary.data[0]?.openedCount || 0;
-  const currentClosed = currentSummary.data[0]?.mergedCount || 0;
-  const previousClosed = previousSummary.data[0]?.mergedCount || 0;
+  const currentClosed = currentSummary.data[0]?.resolvedCount || 0;
+  const previousClosed = previousSummary.data[0]?.resolvedCount || 0;
 
   // Calculate review efficiency (merged/opened ratio)
   const currentEfficiency = currentOpened > 0 ? currentClosed / currentOpened : 0;
@@ -60,8 +60,6 @@ export async function fetchReviewEfficiency(
     currentEfficiency,
     previousEfficiency,
   );
-  const openedPercentageChange = calculatePercentageChange(currentOpened, previousOpened);
-  const closedPercentageChange = calculatePercentageChange(currentClosed, previousClosed);
 
   return {
     summary: {
@@ -72,27 +70,11 @@ export async function fetchReviewEfficiency(
       periodFrom: filter.startDate?.toISO() || '',
       periodTo: filter.endDate?.toISO() || '',
     },
-    openedSummary: {
-      current: currentOpened,
-      previous: previousOpened,
-      percentageChange: openedPercentageChange,
-      changeValue: currentOpened - previousOpened,
-      periodFrom: filter.startDate?.toISO() || '',
-      periodTo: filter.endDate?.toISO() || '',
-    },
-    closedSummary: {
-      current: currentClosed,
-      previous: previousClosed,
-      percentageChange: closedPercentageChange,
-      changeValue: currentClosed - previousClosed,
-      periodFrom: filter.startDate?.toISO() || '',
-      periodTo: filter.endDate?.toISO() || '',
-    },
     data: data.data.map((item) => ({
       startDate: item.startDate,
       endDate: item.endDate,
       opened: item.openedCount,
-      closed: item.mergedCount,
+      closed: item.resolvedCount,
     })),
   };
 }

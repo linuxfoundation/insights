@@ -21,7 +21,7 @@ import type {
   PackageFilter,
   PackageMetricsFilter,
   PatchSetsFilter,
-  MedianTimeToMergeFilter,
+  MedianTimeToCloseFilter,
   MedianTimeToReviewFilter,
   ReviewEfficiencyFilter,
 } from '~~/server/data/types';
@@ -44,7 +44,7 @@ import { fetchIssuesResolution } from '~~/server/data/tinybird/issues-resolution
 import { fetchPullRequests } from '~~/server/data/tinybird/pull-requests-data-source';
 import { fetchReviewTimeByPRSize } from '~~/server/data/tinybird/review-time-by-pr-size-data-source';
 import { fetchAverageTimeToMerge } from '~~/server/data/tinybird/average-time-to-merge-data-source';
-import { fetchMedianTimeToMerge } from '~~/server/data/tinybird/median-time-to-merge-data-source';
+import { fetchMedianTimeToClose } from '~~/server/data/tinybird/median-time-to-close-data-source';
 import { fetchMedianTimeToReview } from '~~/server/data/tinybird/median-time-to-review-data-source';
 import { fetchPatchsetsPerReview } from '~~/server/data/tinybird/patchsets-per-review-data-source';
 import { fetchReviewEfficiency } from '~~/server/data/tinybird/review-efficiency-data-source';
@@ -69,7 +69,7 @@ import type {
 import type {
   ActiveDays,
   IssuesResolution,
-  MedianTimeToMerge,
+  MedianTimeToClose,
   MedianTimeToReview,
   PatchsetsPerReview,
   PullRequests,
@@ -126,7 +126,7 @@ export interface DataSource {
   fetchPullRequests: (filter: ActivityCountFilter) => Promise<PullRequests>;
   fetchReviewTimeByPRSize: (filter: ReviewTimeByPRSizeFilter) => Promise<ReviewTimeByPrItem[]>;
   fetchAverageTimeToMerge: (filter: AverageTimeToMergeFilter) => Promise<AverageTimeMerge>;
-  fetchMedianTimeToMerge: (filter: MedianTimeToMergeFilter) => Promise<MedianTimeToMerge>;
+  fetchMedianTimeToClose: (filter: MedianTimeToCloseFilter) => Promise<MedianTimeToClose>;
   fetchMedianTimeToReview: (filter: MedianTimeToReviewFilter) => Promise<MedianTimeToReview>;
   fetchPatchsetsPerReview: (filter: PatchSetsFilter) => Promise<PatchsetsPerReview>;
   fetchReviewEfficiency: (filter: ReviewEfficiencyFilter) => Promise<ReviewEfficiency>;
@@ -159,7 +159,7 @@ export function createDataSource(): DataSource {
     fetchCommitActivities,
     fetchPullRequests,
     fetchAverageTimeToMerge,
-    fetchMedianTimeToMerge,
+    fetchMedianTimeToClose,
     fetchMedianTimeToReview,
     fetchPatchsetsPerReview,
     fetchReviewEfficiency,

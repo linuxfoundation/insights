@@ -1,7 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { DateTime } from 'luxon';
-import type { MedianTimeToMergeFilter } from '~~/server/data/types';
+import type { MedianTimeToCloseFilter } from '~~/server/data/types';
 import { Granularity } from '~~/types/shared/granularity';
 import { createDataSource } from '~~/server/data/data-sources';
 
@@ -19,7 +19,7 @@ import { createDataSource } from '~~/server/data/data-sources';
  *   data: {
  *     startDate: string; // ISO 8601 date string
  *     endDate: string; // ISO 8601 date string
- *     medianTime: number; // median time to merge in seconds
+ *     medianTime: number; // median time to close in seconds
  *   }[];
  * }
  */
@@ -30,7 +30,7 @@ export default defineEventHandler(async (event) => {
 
   const repos = Array.isArray(query.repos) ? query.repos : query.repos ? [query.repos] : undefined;
 
-  const filter: MedianTimeToMergeFilter = {
+  const filter: MedianTimeToCloseFilter = {
     project,
     granularity: query.granularity as Granularity,
     repos,
@@ -41,5 +41,5 @@ export default defineEventHandler(async (event) => {
 
   const dataSource = createDataSource();
 
-  return await dataSource.fetchMedianTimeToMerge(filter);
+  return await dataSource.fetchMedianTimeToClose(filter);
 });

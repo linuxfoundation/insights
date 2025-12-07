@@ -40,19 +40,6 @@ SPDX-License-Identifier: MIT
           :animation="!props.snapshot"
         />
       </div>
-
-      <div class="flex flex-col gap-4">
-        <!--        <lfx-project-pull-request-legend-item-->
-        <!--          title="Opened pull requests"-->
-        <!--          :delta="openedSummary!"-->
-        <!--          :color="chartSeries[0]!.color!"-->
-        <!--        />-->
-        <!--        <lfx-project-pull-request-legend-item-->
-        <!--          title="Merged/Closed pull requests"-->
-        <!--          :delta="closedSummary!"-->
-        <!--          :color="chartSeries[1]!.color!"-->
-        <!--        />-->
-      </div>
     </lfx-project-load-state>
   </section>
 </template>
@@ -87,6 +74,7 @@ import LfxFilterPlatform from '~/components/modules/widget/components/shared/fil
 
 interface ReviewEfficiencyModel extends WidgetModel {
   granularity: Granularity;
+  platform?: string;
 }
 
 const props = defineProps<{
@@ -100,7 +88,7 @@ const emit = defineEmits<{
   (e: 'hasData', value: boolean): void;
 }>();
 
-const platform = ref('');
+const platform = ref(props.modelValue?.platform || '');
 
 const { startDate, endDate, selectedReposValues, selectedTimeRangeKey, customRangeGranularity } =
   storeToRefs(useProjectStore());
@@ -119,6 +107,7 @@ const params = computed<QueryParams>(() => ({
   repos: selectedReposValues.value,
   startDate: startDate.value,
   endDate: endDate.value,
+  platform: platform.value || undefined,
 }));
 
 const { data, status, error } = DEVELOPMENT_API_SERVICE.fetchReviewEfficiency(params);
@@ -173,9 +162,9 @@ watch(
 );
 
 watch(
-  granularity,
-  (value: Granularity) => {
-    emit('update:modelValue', { granularity: value });
+  [granularity, platform],
+  ([granularityValue, platformValue]) => {
+    emit('update:modelValue', { granularity: granularityValue, platform: platformValue });
   },
   { immediate: true },
 );

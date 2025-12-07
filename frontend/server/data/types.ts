@@ -143,7 +143,7 @@ export type ActiveDaysFilter = DefaultFilter & {
   includeCollaborations?: boolean;
 };
 
-export type MedianTimeToMergeFilter = {
+export type MedianTimeToCloseFilter = {
   project: string;
   granularity?: Granularity;
   repos?: string[];

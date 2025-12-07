@@ -1,23 +1,23 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import type { MedianTimeToMergeFilter } from '../types';
+import type { MedianTimeToCloseFilter } from '../types';
 import { fetchFromTinybird } from './tinybird';
 import { calculatePercentageChange, getPreviousDates } from '~~/server/data/util';
-import type { MedianTimeToMerge } from '~~/types/development/responses.types';
+import type { MedianTimeToClose } from '~~/types/development/responses.types';
 
-type TinybirdMedianTimeToMergeData = {
+type TinybirdMedianTimeToCloseData = {
   startDate: string;
   endDate: string;
-  medianTimeToMergeSeconds: number;
+  medianTimeToCloseSeconds: number;
 };
 
-type TinybirdMedianTimeToMergeSummary = {
-  medianTimeToMergeSeconds: number;
+type TinybirdMedianTimeToCloseSummary = {
+  medianTimeToCloseSeconds: number;
 };
 
-export async function fetchMedianTimeToMerge(
-  filter: MedianTimeToMergeFilter,
-): Promise<MedianTimeToMerge> {
+export async function fetchMedianTimeToClose(
+  filter: MedianTimeToCloseFilter,
+): Promise<MedianTimeToClose> {
   const dates = getPreviousDates(filter.startDate, filter.endDate);
 
   const currentSummaryQuery = {
@@ -36,17 +36,17 @@ export async function fetchMedianTimeToMerge(
     ...filter,
   };
 
-  const summaryPath = '/v0/pipes/median_time_to_merge.json';
-  const dataPath = '/v0/pipes/median_time_to_merge.json';
+  const summaryPath = '/v0/pipes/median_time_to_close.json';
+  const dataPath = '/v0/pipes/median_time_to_close.json';
 
   const [currentSummary, previousSummary, data] = await Promise.all([
-    fetchFromTinybird<TinybirdMedianTimeToMergeSummary[]>(summaryPath, currentSummaryQuery),
-    fetchFromTinybird<TinybirdMedianTimeToMergeSummary[]>(summaryPath, previousSummaryQuery),
-    fetchFromTinybird<TinybirdMedianTimeToMergeData[]>(dataPath, dataQuery),
+    fetchFromTinybird<TinybirdMedianTimeToCloseSummary[]>(summaryPath, currentSummaryQuery),
+    fetchFromTinybird<TinybirdMedianTimeToCloseSummary[]>(summaryPath, previousSummaryQuery),
+    fetchFromTinybird<TinybirdMedianTimeToCloseData[]>(dataPath, dataQuery),
   ]);
 
-  const currentMedianTime = currentSummary.data[0]?.medianTimeToMergeSeconds || 0;
-  const previousMedianTime = previousSummary.data[0]?.medianTimeToMergeSeconds || 0;
+  const currentMedianTime = currentSummary.data[0]?.medianTimeToCloseSeconds || 0;
+  const previousMedianTime = previousSummary.data[0]?.medianTimeToCloseSeconds || 0;
   const percentageChange = calculatePercentageChange(currentMedianTime, previousMedianTime);
 
   return {
@@ -61,7 +61,7 @@ export async function fetchMedianTimeToMerge(
     data: data.data.map((item) => ({
       startDate: item.startDate,
       endDate: item.endDate,
-      medianTime: item.medianTimeToMergeSeconds,
+      medianTime: item.medianTimeToCloseSeconds,
     })),
   };
 }

@@ -138,6 +138,27 @@ export const tooltipFormatterWithData =
       )
       .join('')}`;
   };
+export const customTooltipFormatter = (
+  data: ChartData[],
+  granularity: string,
+  value: string | number,
+) => {
+  return (
+    paramsRaw: TopLevelFormatterParams, // Tooltip hover box
+  ): string | HTMLElement | HTMLElement[] => {
+    const params: MultipleTooltipFormatterParams = paramsRaw as MultipleTooltipFormatterParams;
+    const index = params[0]?.dataIndex || 0;
+
+    const dateStr = `<div style="font-size: 12px; min-width: 100px; color: ${
+      lfxColors.neutral[400]
+    };">${formatDateRange(
+      params[0]?.name || '',
+      data?.[index]?.xAxisKey2 || '',
+      granularity,
+    )}</div>`;
+    return `${dateStr}${value}`;
+  };
+};
 
 const convertToFullDayName = (day: string) => {
   const dayMap = {

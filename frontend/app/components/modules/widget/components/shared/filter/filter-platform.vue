@@ -4,6 +4,7 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <lfx-dropdown-select
+    v-if="availablePlatforms.length > 0"
     v-model="selectedPlatform"
     placement="bottom-end"
     width="10rem"

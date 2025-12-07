@@ -11,7 +11,7 @@ import type {
   CodeReviewEngagement,
   AverageTimeMerge,
   IssuesResolution,
-  MedianTimeToMerge,
+  MedianTimeToClose,
   MedianTimeToReview,
   MergeLeadTime,
   PatchsetsPerReview,
@@ -29,6 +29,7 @@ export interface QueryParams {
   startDate: string | null;
   endDate: string | null;
   includeCollaborations?: boolean;
+  platform?: string;
 }
 
 export interface CodeReviewEngagementQueryParams extends QueryParams {
@@ -300,26 +301,28 @@ class DevelopmentApiService {
     });
   }
 
-  fetchMedianTimeToMerge(params: ComputedRef<QueryParams>) {
+  fetchMedianTimeToClose(params: ComputedRef<QueryParams>) {
     const queryKey = computed(() => [
-      TanstackKey.MEDIAN_TIME_TO_MERGE,
+      TanstackKey.MEDIAN_TIME_TO_CLOSE,
       params.value.projectSlug,
       params.value.granularity,
       params.value.repos,
       params.value.startDate,
       params.value.endDate,
+      params.value.platform,
     ]);
-    const queryFn = computed<QueryFunction<MedianTimeToMerge>>(() =>
-      this.medianTimeToMergeQueryFn(() => ({
+    const queryFn = computed<QueryFunction<MedianTimeToClose>>(() =>
+      this.medianTimeToCloseQueryFn(() => ({
         projectSlug: params.value.projectSlug,
         repos: params.value.repos,
         granularity: params.value.granularity,
         startDate: params.value.startDate,
         endDate: params.value.endDate,
+        platform: params.value.platform,
       })),
     );
 
-    return useQuery<MedianTimeToMerge>({
+    return useQuery<MedianTimeToClose>({
       queryKey,
       queryFn,
     });
@@ -333,6 +336,7 @@ class DevelopmentApiService {
       params.value.repos,
       params.value.startDate,
       params.value.endDate,
+      params.value.platform,
     ]);
     const queryFn = computed<QueryFunction<MedianTimeToReview>>(() =>
       this.medianTimeToReviewQueryFn(() => ({
@@ -341,6 +345,7 @@ class DevelopmentApiService {
         granularity: params.value.granularity,
         startDate: params.value.startDate,
         endDate: params.value.endDate,
+        platform: params.value.platform,
       })),
     );
 
@@ -385,6 +390,7 @@ class DevelopmentApiService {
       params.value.repos,
       params.value.startDate,
       params.value.endDate,
+      params.value.platform,
     ]);
     const queryFn = computed<QueryFunction<ReviewEfficiency>>(() =>
       this.reviewEfficiencyQueryFn(() => ({
@@ -393,6 +399,7 @@ class DevelopmentApiService {
         granularity: params.value.granularity,
         startDate: params.value.startDate,
         endDate: params.value.endDate,
+        platform: params.value.platform,
       })),
     );
 
@@ -555,17 +562,18 @@ class DevelopmentApiService {
       });
   }
 
-  medianTimeToMergeQueryFn(
+  medianTimeToCloseQueryFn(
     query: () => Record<string, string | number | boolean | undefined | string[] | null>,
-  ): QueryFunction<MedianTimeToMerge> {
-    const { projectSlug, repos, granularity, startDate, endDate } = query();
+  ): QueryFunction<MedianTimeToClose> {
+    const { projectSlug, repos, granularity, startDate, endDate, platform } = query();
     return async () =>
-      await $fetch(`/api/project/${projectSlug}/development/median-time-to-merge`, {
+      await $fetch(`/api/project/${projectSlug}/development/median-time-to-close`, {
         params: {
           repos,
           granularity,
           startDate,
           endDate,
+          platform,
         },
       });
   }
@@ -573,7 +581,7 @@ class DevelopmentApiService {
   medianTimeToReviewQueryFn(
     query: () => Record<string, string | number | boolean | undefined | string[] | null>,
   ): QueryFunction<MedianTimeToReview> {
-    const { projectSlug, repos, granularity, startDate, endDate } = query();
+    const { projectSlug, repos, granularity, startDate, endDate, platform } = query();
     return async () =>
       await $fetch(`/api/project/${projectSlug}/development/median-time-to-review`, {
         params: {
@@ -581,6 +589,7 @@ class DevelopmentApiService {
           granularity,
           startDate,
           endDate,
+          platform,
         },
       });
   }
@@ -604,7 +613,7 @@ class DevelopmentApiService {
   reviewEfficiencyQueryFn(
     query: () => Record<string, string | number | boolean | undefined | string[] | null>,
   ): QueryFunction<ReviewEfficiency> {
-    const { projectSlug, repos, granularity, startDate, endDate } = query();
+    const { projectSlug, repos, granularity, startDate, endDate, platform } = query();
     return async () =>
       await $fetch(`/api/project/${projectSlug}/development/review-efficiency`, {
         params: {
@@ -612,6 +621,7 @@ class DevelopmentApiService {
           granularity,
           startDate,
           endDate,
+          platform,
         },
       });
   }
