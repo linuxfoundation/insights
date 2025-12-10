@@ -23,7 +23,10 @@ SPDX-License-Identifier: MIT
     </div>
   </section>
 
-  <div class="sticky top-14 lg:top-17 z-20">
+  <div
+    class="sticky z-20"
+    :class="headerTopClass"
+  >
     <div class="bg-white border-b border-neutral-100">
       <div
         class="container transition-all"
@@ -132,6 +135,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { watch, onServerPrefetch, computed, ref } from 'vue';
+import { storeToRefs } from 'pinia';
 import { collectionListParamsGetter, collectionListParamsSetter } from '../services/collections.query.service';
 import type { Pagination } from '~~/types/shared/pagination';
 
@@ -153,13 +157,14 @@ import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/service
 import { useQueryParam, type URLParams } from '~/components/shared/utils/query-param';
 import type { Category, CategoryGroup } from '~~/types/category';
 import type { Collection } from '~~/types/collection';
+import { useBannerStore } from '~/components/shared/store/banner.store';
 
 const { queryParams } = useQueryParam(collectionListParamsGetter, collectionListParamsSetter);
 const { listSort } = queryParams.value;
 const { showToast } = useToastService();
 const { pageWidth } = useResponsive();
 const { scrollTop } = useScroll();
-
+const { headerTopClass } = storeToRefs(useBannerStore());
 // NOTE: This is a temporary workaround to highlight the most important collections within the LF featured collections
 const pageSize = 100;
 const sort = ref(listSort || 'starred_desc');

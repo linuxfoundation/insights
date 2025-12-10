@@ -7,7 +7,8 @@ SPDX-License-Identifier: MIT
     <div class="flex gap-10">
       <div class="lg:w-1/5 w-1/4 md:block hidden min-w-50">
         <div
-          class="flex flex-col justify-between items-start md:flex hidden min-w-50 sticky bg-white pt-10 z-[11] lg:top-17 top-14"
+          class="flex flex-col justify-between items-start md:flex hidden min-w-50 sticky bg-white pt-10 z-[11]"
+          :class="headerTopClass"
         >
           <router-link
             :to="{ name: LfxRoutes.LEADERBOARDS }"
@@ -26,7 +27,10 @@ SPDX-License-Identifier: MIT
         </div>
       </div>
       <div class="lg:w-3/5 md:w-3/4 w-full min-w-0">
-        <div class="sticky lg:top-17 top-14 z-10 bg-white sm:pt-10 pt-6">
+        <div
+          class="sticky z-10 bg-white sm:pt-10 pt-6"
+          :class="headerTopClass"
+        >
           <!-- Header section -->
           <lfx-leaderboard-detail-header
             v-model:collection-slug="collectionSlug"
@@ -80,6 +84,7 @@ SPDX-License-Identifier: MIT
 import { computed, onServerPrefetch, ref, watch, nextTick } from 'vue';
 import { useRoute } from 'vue-router';
 import pluralize from 'pluralize';
+import { storeToRefs } from 'pinia';
 import leaderboardConfigs from '../../config/index.config';
 import LfxLeaderboardTable from '../sections/leaderboard-table.vue';
 import type { LeaderboardConfig } from '../../config/types/leaderboard.types';
@@ -91,6 +96,7 @@ import type { Leaderboard } from '~~/types/leaderboard/leaderboard';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import type { Pagination } from '~~/types/shared/pagination';
 import { LfxRoutes } from '~/components/shared/types/routes';
+import { useBannerStore } from '~/components/shared/store/banner.store';
 
 const route = useRoute();
 
@@ -98,6 +104,8 @@ const route = useRoute();
 const props = defineProps<{
   leaderboardKey: string;
 }>();
+
+const { headerTopClass } = storeToRefs(useBannerStore());
 
 const isScrollingIntoRow = ref<boolean>(false);
 const collectionSlug = ref<string>('');

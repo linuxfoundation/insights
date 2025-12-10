@@ -4,18 +4,18 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <div
-    v-if="showBanner"
+    v-if="isBannerVisible"
     class="sm:flex-row flex-col block bg-brand-800 text-white py-2 px-5 flex items-center sm:justify-center justify-start gap-3 relative"
   >
     <span class="sm:!text-xs text-2xs sm:leading-4 leading-3.5">
-      Meet us in Amsterdam for KubeCon + CloudNativeCon Europe 2026 • Mar 23–26 •
+      {{ bannerConfig.text }}
     </span>
     <a
-      href="https://events.linuxfoundation.org/kubecon-cloudnativecon-europe/register/?utm_source=lfx-insights&utm_medium=homepage&utm_campaign=18269725-KubeCon-EU-2026&utm_content=banner"
+      :href="bannerConfig.link"
       class="font-bold hover:underline no-underline whitespace-nowrap sm:!text-xs text-2xs sm:leading-4 leading-3.5"
       target="_blank"
       rel="noopener"
-      >REGISTER NOW</a
+      >{{ bannerConfig.linkText }}</a
     >
 
     <button
@@ -32,19 +32,21 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
+import { storeToRefs } from 'pinia';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
+import { bannerConfig } from '~/config/banner.config';
+import { useBannerStore } from '~/components/shared/store/banner.store';
 
-const showBanner = ref(false);
+const bannerStore = useBannerStore();
+const { isBannerVisible } = storeToRefs(bannerStore);
+const { hideBanner, checkBannerVisibility } = bannerStore;
 
 const flagBanner = () => {
-  localStorage.setItem('lfx-kubecon2025-banner-flagged', 'true');
-  showBanner.value = false;
+  hideBanner();
 };
 
 onMounted(() => {
-  const bannerFlagged = localStorage.getItem('lfx-kubecon2025-banner-flagged') === 'true';
-
-  showBanner.value = new Date() < new Date('2026-03-23') && !bannerFlagged;
+  isBannerVisible.value = checkBannerVisibility();
 });
 </script>
 
