@@ -1,6 +1,8 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import ReviewEfficiency from './review-efficiency.vue';
+import ReviewEfficiencyFilters from './review-efficiency-filters.vue';
+import ReviewEfficiencySnapshotHeader from './review-efficiency-snapshot-header.vue';
 import type { WidgetConfig } from '~/components/modules/widget/config/widget.config';
 
 const reviewEfficiency: WidgetConfig = {
@@ -13,6 +15,8 @@ const reviewEfficiency: WidgetConfig = {
   share: true,
   embed: true,
   snapshot: true,
+  headerFilters: ReviewEfficiencyFilters,
+  snapshotHeaderComponent: ReviewEfficiencySnapshotHeader,
   copilot: {
     icon: 'code-pull-request',
     suggestions: 'What is the review efficiency?',

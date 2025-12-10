@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 import PatchsetsPerReview from './patchsets-per-review.vue';
 import PatchsetsPerReviewFilters from './patchsets-per-review-filters.vue';
+import PatchsetsPerReviewSnapshotHeader from './patchsets-per-review-snapshot-header.vue';
 import type { WidgetConfig } from '~/components/modules/widget/config/widget.config';
 
 const patchsetsPerReview: WidgetConfig = {
@@ -19,6 +20,7 @@ const patchsetsPerReview: WidgetConfig = {
   embed: true,
   snapshot: true,
   headerFilters: PatchsetsPerReviewFilters,
+  snapshotHeaderComponent: PatchsetsPerReviewSnapshotHeader,
   copilot: {
     icon: 'code-commit',
     suggestions: 'How many patchsets per review?',

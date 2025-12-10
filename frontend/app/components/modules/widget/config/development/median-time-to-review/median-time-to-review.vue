@@ -27,10 +27,6 @@ SPDX-License-Identifier: MIT
           class="h-11"
         />
       </lfx-skeleton-state>
-      <lfx-filter-platform
-        v-model="platform"
-        :available-platforms="['github', 'gitlab', 'gerrit']"
-      />
     </div>
 
     <lfx-project-load-state
@@ -78,7 +74,6 @@ import {
 import type { WidgetModel } from '~/components/modules/widget/config/widget.config';
 import { maxHours, minHours } from '~/components/uikit/chart/configs/defaults.chart';
 import { customTooltipFormatter } from '~/components/uikit/chart/helpers/formatters';
-import LfxFilterPlatform from '~/components/modules/widget/components/shared/filter/filter-platform.vue';
 
 interface MedianTimeToReviewModel extends WidgetModel {
   granularity: Granularity;
@@ -96,7 +91,7 @@ const emit = defineEmits<{
   (e: 'hasData', value: boolean): void;
 }>();
 
-const platform = ref(props.modelValue?.platform || '');
+const platform = computed(() => props.modelValue?.platform || '');
 
 const { startDate, endDate, selectedReposValues, selectedTimeRangeKey, customRangeGranularity } =
   storeToRefs(useProjectStore());

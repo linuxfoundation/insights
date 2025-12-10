@@ -53,9 +53,9 @@ export const lfxWidgetArea: Record<WidgetArea, WidgetAreaConfig> = {
       Widget.WAIT_TIME_FIRST_REVIEW,
       Widget.CODE_REVIEW_ENGAGEMENT,
       Widget.PATCHSETS_PER_REVIEW,
-      // Widget.MEDIAN_TIME_TO_CLOSE,
-      // Widget.MEDIAN_TIME_TO_REVIEW,
-      // Widget.REVIEW_EFFICIENCY,
+      Widget.MEDIAN_TIME_TO_CLOSE,
+      Widget.MEDIAN_TIME_TO_REVIEW,
+      Widget.REVIEW_EFFICIENCY,
     ],
   },
   [WidgetArea.SECURITY]: {

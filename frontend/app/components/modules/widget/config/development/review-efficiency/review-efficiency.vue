@@ -21,10 +21,6 @@ SPDX-License-Identifier: MIT
           />
         </div>
       </lfx-skeleton-state>
-      <lfx-filter-platform
-        v-model="platform"
-        :available-platforms="['github', 'gitlab', 'gerrit']"
-      />
     </div>
 
     <lfx-project-load-state
@@ -70,7 +66,6 @@ import {
   type QueryParams,
 } from '~/components/modules/widget/services/development.api.service';
 import type { WidgetModel } from '~/components/modules/widget/config/widget.config';
-import LfxFilterPlatform from '~/components/modules/widget/components/shared/filter/filter-platform.vue';
 
 interface ReviewEfficiencyModel extends WidgetModel {
   granularity: Granularity;
@@ -88,7 +83,7 @@ const emit = defineEmits<{
   (e: 'hasData', value: boolean): void;
 }>();
 
-const platform = ref(props.modelValue?.platform || '');
+const platform = computed(() => props.modelValue?.platform || '');
 
 const { startDate, endDate, selectedReposValues, selectedTimeRangeKey, customRangeGranularity } =
   storeToRefs(useProjectStore());

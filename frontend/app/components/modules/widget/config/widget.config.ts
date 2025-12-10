@@ -81,6 +81,7 @@ export interface WidgetConfig {
   benchmark?: WidgetBenchmarkConfig;
   showCollabToggle?: boolean;
   headerFilters?: Component;
+  snapshotHeaderComponent?: Component;
 }
 
 export const lfxWidgets: Record<Widget, WidgetConfig> = {

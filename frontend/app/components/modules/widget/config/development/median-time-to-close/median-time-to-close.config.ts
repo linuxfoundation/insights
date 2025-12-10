@@ -1,6 +1,8 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import MedianTimeToClose from './median-time-to-close.vue';
+import MedianTimeToCloseFilters from './median-time-to-close-filters.vue';
+import MedianTimeToCloseSnapshotHeader from './median-time-to-close-snapshot-header.vue';
 import type { WidgetConfig } from '~/components/modules/widget/config/widget.config';
 
 const medianTimeToClose: WidgetConfig = {
@@ -12,6 +14,8 @@ const medianTimeToClose: WidgetConfig = {
   share: true,
   embed: true,
   snapshot: true,
+  headerFilters: MedianTimeToCloseFilters,
+  snapshotHeaderComponent: MedianTimeToCloseSnapshotHeader,
   copilot: {
     icon: 'clock',
     suggestions: 'What is the median time to close?',
