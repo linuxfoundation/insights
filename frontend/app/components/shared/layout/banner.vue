@@ -14,12 +14,13 @@ SPDX-License-Identifier: MIT
       :href="bannerConfig.link"
       class="font-bold hover:underline no-underline whitespace-nowrap sm:!text-xs text-2xs sm:leading-4 leading-3.5"
       target="_blank"
-      rel="noopener"
+      rel="noopener noreferrer"
       >{{ bannerConfig.linkText }}</a
     >
 
     <button
       class="text-white absolute top-1/2 -translate-y-1/2 right-2"
+      aria-label="Close banner"
       @click="flagBanner"
     >
       <lfx-icon

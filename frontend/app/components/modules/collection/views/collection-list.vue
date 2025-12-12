@@ -25,7 +25,7 @@ SPDX-License-Identifier: MIT
 
   <div
     class="sticky z-20"
-    :class="headerTopClass"
+    :class="headerTopClass.join(' ')"
   >
     <div class="bg-white border-b border-neutral-100">
       <div
