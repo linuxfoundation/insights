@@ -5,7 +5,7 @@ SPDX-License-Identifier: MIT
 <template>
   <lfx-maintain-height
     :scroll-top="scrollTop"
-    :class="scrollTop > 0 ? 'fixed top-14 lg:top-17' : 'relative'"
+    :class="scrollTop > 0 ? ['fixed', ...headerTopClass].join(' ') : 'relative'"
     class="z-10 w-full"
     :loaded="pageWidth > 0"
   >
@@ -222,12 +222,15 @@ import { useAuthStore } from '~/components/modules/auth/store/auth.store';
 import { useCopilotStore } from '~/components/shared/modules/copilot/store/copilot.store';
 import LfxTag from '~/components/uikit/tag/tag.vue';
 import { useCommunityStore } from '~/components/modules/project/components/community/store/community.store';
+import { useBannerStore } from '~/components/shared/store/banner.store';
 
 const props = defineProps<{
   project?: Project;
 }>();
 
 const route = useRoute();
+
+const { headerTopClass } = storeToRefs(useBannerStore());
 
 const {
   projectRepos,
