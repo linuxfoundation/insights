@@ -147,7 +147,7 @@ const chartSeries = ref<ChartSeries[]>([
 const configOverride = computed(() => ({
   yAxis: {
     axisLabel: {
-      formatter: (value: number) => `${value === 0 ? '' : `${value}h`}`,
+      formatter: (value: number) => `${value === 0 ? '' : `${formatSecondsToDuration(value)}`}`,
     },
     min: minHours,
     max: maxHours,
