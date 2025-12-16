@@ -14,10 +14,11 @@ SPDX-License-Identifier: MIT
           v-if="summary && !isEmpty"
           class="flex flex-row gap-4 items-center"
         >
-          <div class="text-data-display-1">{{ formatNumber(summary.current) }}</div>
+          <div class="text-data-display-1">{{ formatNumber(summary.current, 2) }}</div>
           <lfx-delta-display
             v-if="selectedTimeRangeKey !== dateOptKeys.alltime"
             :summary="summary"
+            :decimals="2"
           />
         </div>
       </lfx-skeleton-state>

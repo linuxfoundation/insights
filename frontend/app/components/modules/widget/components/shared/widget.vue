@@ -111,7 +111,20 @@ const { sanitize } = useSanitize();
 const config = computed<WidgetConfig>(() => lfxWidgets[props.name]);
 const { project, collaborationSet } = storeToRefs(useProjectStore());
 
-const model = ref(config.value.defaultValue || {});
+const getDefaultValue = () => {
+  const defaultValue = config.value.defaultValue;
+  if (!defaultValue) return {};
+
+  // If defaultValue is a function, call it with project
+  if (typeof defaultValue === 'function') {
+    return project.value ? defaultValue(project.value) : {};
+  }
+
+  // Otherwise use it directly
+  return defaultValue;
+};
+
+const model = ref(getDefaultValue());
 const includeCollaborations = computed({
   get: () => collaborationSet.value.includes(props.name),
   set: (value) => {
@@ -135,6 +148,25 @@ watch(
   includeCollaborations,
   (value) => {
     model.value.includeCollaborations = value;
+  },
+  { immediate: true },
+);
+
+// Watch for project changes to update model if defaultValue is a function
+watch(
+  project,
+  (newProject) => {
+    if (newProject && typeof config.value.defaultValue === 'function') {
+      // Only update if model is still at default (empty or only has includeCollaborations)
+      const currentKeys = Object.keys(model.value);
+      const isDefaultModel =
+        currentKeys.length === 0 || (currentKeys.length === 1 && currentKeys[0] === 'includeCollaborations');
+
+      if (isDefaultModel) {
+        const newDefaults = config.value.defaultValue(newProject);
+        model.value = { ...newDefaults, ...model.value };
+      }
+    }
   },
   { immediate: true },
 );

@@ -12,6 +12,12 @@ const medianTimeToReview: WidgetConfig = {
     'Median time taken between change submission and its first review during the selected period.',
   learnMoreLink: `/docs/metrics/development#median-time-to-review`,
   component: MedianTimeToReview,
+  defaultValue: (project) => {
+    // Get first available platform from the allowed list
+    const allowedPlatforms = ['github', 'gitlab', 'gerrit'];
+    const platform = allowedPlatforms.find((p) => project.connectedPlatforms?.includes(p)) || '';
+    return { platform };
+  },
   share: true,
   embed: true,
   snapshot: true,

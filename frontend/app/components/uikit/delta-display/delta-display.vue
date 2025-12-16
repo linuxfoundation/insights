@@ -36,6 +36,7 @@ import { formatNumber, formatNumberShort, formatSecondsToDuration } from '~/comp
 
 const props = withDefaults(defineProps<DeltaDisplayProps>(), {
   isReverse: false,
+  decimals: 0,
 });
 
 const isHidePercentage = computed(() => props.summary.percentageChange === undefined);
@@ -60,7 +61,7 @@ const deltaDirection = computed<'positive' | 'negative'>(() => {
 const delta = computed(() => {
   const value = props.summary.changeValue;
   const changeDuration = formatSecondsToDuration(Math.abs(value), 'short');
-  const changeValue = props.isShort ? formatNumberShort(value) : formatNumber(value, 1);
+  const changeValue = props.isShort ? formatNumberShort(value) : formatNumber(value, props.decimals || 1);
 
   const sign = value >= 0 ? '+' : '';
   return sign + (props.isDuration ? changeDuration : changeValue);
@@ -84,7 +85,7 @@ const previousDisplay = computed(() => {
     const unit = props.isDuration ? '' : props.unit;
     const previousValue = props.isDuration
       ? formatSecondsToDuration(props.summary.previous || 0, 'short')
-      : formatNumber(props.summary.previous, props.percentageOnly ? 1 : 0);
+      : formatNumber(props.summary.previous, props.percentageOnly ? 1 : props.decimals);
     return `${previousValue}${unit || ''}`;
   }
   return '';

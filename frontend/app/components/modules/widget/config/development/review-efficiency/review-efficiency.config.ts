@@ -12,6 +12,12 @@ const reviewEfficiency: WidgetConfig = {
     'Closed-to-opened pull requests ratio and activity trend during the selected period.',
   learnMoreLink: `/docs/metrics/development#review-efficiency`,
   component: ReviewEfficiency,
+  defaultValue: (project) => {
+    // Get first available platform from the allowed list
+    const allowedPlatforms = ['github', 'gitlab', 'gerrit'];
+    const platform = allowedPlatforms.find((p) => project.connectedPlatforms?.includes(p)) || '';
+    return { platform };
+  },
   share: true,
   embed: true,
   snapshot: true,

@@ -11,6 +11,12 @@ const medianTimeToClose: WidgetConfig = {
   description: () => 'Median time taken for pull requests to be closed during the selected period.',
   learnMoreLink: `/docs/metrics/development#median-time-to-close`,
   component: MedianTimeToClose,
+  defaultValue: (project) => {
+    // Get first available platform from the allowed list
+    const allowedPlatforms = ['github', 'gitlab', 'gerrit'];
+    const platform = allowedPlatforms.find((p) => project.connectedPlatforms?.includes(p)) || '';
+    return { platform };
+  },
   share: true,
   embed: true,
   snapshot: true,

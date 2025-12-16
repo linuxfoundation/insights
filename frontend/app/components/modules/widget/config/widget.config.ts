@@ -75,7 +75,7 @@ export interface WidgetConfig {
   embed: boolean;
   snapshot: boolean;
   copilot?: WidgetCopilotConfig;
-  defaultValue?: WidgetModel;
+  defaultValue?: WidgetModel | ((project: Project) => WidgetModel);
   additionalShare?: Component;
   hideOnRepoFilter?: boolean;
   benchmark?: WidgetBenchmarkConfig;

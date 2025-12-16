@@ -60,7 +60,7 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue';
+import { computed, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 import LfxDropdownSelect from '~/components/uikit/dropdown/dropdown-select.vue';
 import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
@@ -97,9 +97,17 @@ const availablePlatforms = computed<PlatformConfig[]>(() => {
     .filter((platform): platform is PlatformConfig => !!platform);
 });
 
-if (props.modelValue?.length <= 0) {
-  emit('update:modelValue', availablePlatforms.value.at(0)?.key || '');
-}
+// Watch for available platforms and set default value when they become available
+watch(
+  availablePlatforms,
+  (platforms) => {
+    // Only set default value if current value is empty and platforms are available
+    if (!props.modelValue?.length && platforms.length > 0) {
+      emit('update:modelValue', platforms.at(0)?.key || '');
+    }
+  },
+  { immediate: true },
+);
 </script>
 
 <script lang="ts">
