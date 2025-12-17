@@ -130,6 +130,44 @@ export interface WaitTime1stReview {
   }[];
 }
 
+export interface MedianTimeToClose {
+  summary: Summary;
+  data: {
+    startDate: string;
+    endDate: string;
+    medianTime: number;
+  }[];
+}
+
+export interface MedianTimeToReview {
+  summary: Summary;
+  data: {
+    startDate: string;
+    endDate: string;
+    medianTime: number;
+  }[];
+}
+
+export interface PatchsetsPerReview {
+  summary: Summary;
+  data: {
+    startDate: string;
+    endDate: string;
+    median: number;
+    average: number;
+  }[];
+}
+
+export interface ReviewEfficiency {
+  summary: Summary;
+  data: {
+    startDate: string;
+    endDate: string;
+    opened: number;
+    closed: number;
+  }[];
+}
+
 export interface ActivityTypeItem {
   key: string;
   label: string;

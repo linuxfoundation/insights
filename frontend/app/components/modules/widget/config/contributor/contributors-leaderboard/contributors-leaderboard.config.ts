@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 import ContributorLeaderboard from './contributors-leaderboard.vue';
 import type { WidgetConfig } from '~/components/modules/widget/config/widget.config';
+import LfxWidgetFilterCollaboration from '~/components/modules/widget/components/shared/filter/filter-collaboration.vue';
 
 const contributorsLeaderboard: WidgetConfig = {
   key: 'contributorsLeaderboard',
@@ -11,6 +12,7 @@ const contributorsLeaderboard: WidgetConfig = {
     'activities performed during the selected time period.',
   learnMoreLink: `/docs/metrics/contributors#contributors-leaderboard`,
   component: ContributorLeaderboard,
+  headerFilters: LfxWidgetFilterCollaboration,
   defaultValue: {
     metric: 'all:all',
     includeCollaborations: false,
@@ -18,7 +20,6 @@ const contributorsLeaderboard: WidgetConfig = {
   share: true,
   embed: true,
   snapshot: true,
-  showCollabToggle: true,
 };
 
 export default contributorsLeaderboard;

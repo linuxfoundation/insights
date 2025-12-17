@@ -44,10 +44,12 @@ export const tooltipLabelFormatter = (params: LabelFormatterParams) => {
 };
 
 // charts tooltip can't use tailwind classes, so we need to use inline styles
-const tooltipSingleValue = (params: SingleTooltipFormatterParams) => `
-  <div style="display: flex; 
-    flex-direction: row; 
-    align-items: center; 
+const tooltipSingleValue =
+  (decimals: number = 0) =>
+  (params: SingleTooltipFormatterParams) => `
+  <div style="display: flex;
+    flex-direction: row;
+    align-items: center;
     justify-content: space-between;
     min-width: 180px;
     font-weight: 400;
@@ -55,15 +57,16 @@ const tooltipSingleValue = (params: SingleTooltipFormatterParams) => `
      color: ${lfxColors.neutral[900]}
   ">
     <span style="font-weight: 400; margin-right: 1rem;">${params.seriesName}</span>
-    <span style="font-weight: 500;">${formatNumber(Number(params.value))}</span>
+    <span style="font-weight: 500;">${formatNumber(Number(params.value), decimals)}</span>
   </div>
   `;
 
 const tooltipSingleValueWithBullet =
-  (series: ChartSeries[]) => (params: SingleTooltipFormatterParams, idx: number) => `
-  <div style="display: flex; 
-    flex-direction: row; 
-    align-items: center; 
+  (series: ChartSeries[], decimals: number = 0) =>
+  (params: SingleTooltipFormatterParams, idx: number) => `
+  <div style="display: flex;
+    flex-direction: row;
+    align-items: center;
     justify-content: space-between;
     min-width: 180px;
     font-weight: 400;
@@ -71,9 +74,9 @@ const tooltipSingleValueWithBullet =
      color: ${lfxColors.neutral[900]}
   ">
     <span style="font-weight: 400; font-size: 12px; margin-right: 10px;">
-      <span style="background-color: ${series[idx]?.color || lfxColors.brand[500]}; 
+      <span style="background-color: ${series[idx]?.color || lfxColors.brand[500]};
         display: inline-block;
-        border-radius: 100%; 
+        border-radius: 100%;
         height: 8px;
         width: 8px;
         margin-right: 4px;"></span>
@@ -83,7 +86,7 @@ const tooltipSingleValueWithBullet =
       ${
         Number(params.value) > 1000000
           ? formatNumberShort(Number(params.value))
-          : formatNumber(Number(params.value))
+          : formatNumber(Number(params.value), decimals)
       }
     </span>
   </div>
@@ -95,7 +98,7 @@ export const tooltipFormatter = (
   return `<div style="color: ${lfxColors.neutral[400]};">${formatDate(
     params[0]?.name || '',
     '{MMM} {yyyy}',
-  )}</div>${params.map(tooltipSingleValue).join('')}`;
+  )}</div>${params.map(tooltipSingleValue(0)).join('')}`;
 };
 
 const formatDateRange = (startDateMillis: string, endDateIso: string, granularity: string) => {
@@ -113,7 +116,7 @@ const formatDateRange = (startDateMillis: string, endDateIso: string, granularit
 };
 
 export const tooltipFormatterWithData =
-  (data: ChartData[], granularity: string, series?: ChartSeries[]) =>
+  (data: ChartData[], granularity: string, series?: ChartSeries[], decimals: number = 0) =>
   (
     paramsRaw: TopLevelFormatterParams, // Tooltip hover box
   ): string | HTMLElement | HTMLElement[] => {
@@ -128,9 +131,34 @@ export const tooltipFormatterWithData =
       granularity,
     )}</div>`;
     return `${dateStr}${params
-      .map(series && series.length > 1 ? tooltipSingleValueWithBullet(series) : tooltipSingleValue)
+      .map(
+        series && series.length > 1
+          ? tooltipSingleValueWithBullet(series, decimals)
+          : tooltipSingleValue(decimals),
+      )
       .join('')}`;
   };
+export const customTooltipFormatter = (
+  data: ChartData[],
+  granularity: string,
+  value: string | number,
+) => {
+  return (
+    paramsRaw: TopLevelFormatterParams, // Tooltip hover box
+  ): string | HTMLElement | HTMLElement[] => {
+    const params: MultipleTooltipFormatterParams = paramsRaw as MultipleTooltipFormatterParams;
+    const index = params[0]?.dataIndex || 0;
+
+    const dateStr = `<div style="font-size: 12px; min-width: 100px; color: ${
+      lfxColors.neutral[400]
+    };">${formatDateRange(
+      params[0]?.name || '',
+      data?.[index]?.xAxisKey2 || '',
+      granularity,
+    )}</div>`;
+    return `${dateStr}${value}`;
+  };
+};
 
 const convertToFullDayName = (day: string) => {
   const dayMap = {

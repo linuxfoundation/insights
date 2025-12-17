@@ -11,8 +11,12 @@ import type {
   CodeReviewEngagement,
   AverageTimeMerge,
   IssuesResolution,
+  MedianTimeToClose,
+  MedianTimeToReview,
   MergeLeadTime,
+  PatchsetsPerReview,
   PullRequests,
+  ReviewEfficiency,
   ReviewTimeByPrItem,
   WaitTime1stReview,
 } from '~~/types/development/responses.types';
@@ -25,6 +29,7 @@ export interface QueryParams {
   startDate: string | null;
   endDate: string | null;
   includeCollaborations?: boolean;
+  platform?: string;
 }
 
 export interface CodeReviewEngagementQueryParams extends QueryParams {
@@ -35,6 +40,10 @@ export interface CommitActivitiesQueryParams extends QueryParams {
   type: string;
   countType: string;
   activityType: string;
+}
+
+export interface PatchsetsPerReviewQueryParams extends QueryParams {
+  dataType: string;
 }
 
 class DevelopmentApiService {
@@ -292,6 +301,114 @@ class DevelopmentApiService {
     });
   }
 
+  fetchMedianTimeToClose(params: ComputedRef<QueryParams>) {
+    const queryKey = computed(() => [
+      TanstackKey.MEDIAN_TIME_TO_CLOSE,
+      params.value.projectSlug,
+      params.value.granularity,
+      params.value.repos,
+      params.value.startDate,
+      params.value.endDate,
+      params.value.platform,
+    ]);
+    const queryFn = computed<QueryFunction<MedianTimeToClose>>(() =>
+      this.medianTimeToCloseQueryFn(() => ({
+        projectSlug: params.value.projectSlug,
+        repos: params.value.repos,
+        granularity: params.value.granularity,
+        startDate: params.value.startDate,
+        endDate: params.value.endDate,
+        platform: params.value.platform,
+      })),
+    );
+
+    return useQuery<MedianTimeToClose>({
+      queryKey,
+      queryFn,
+    });
+  }
+
+  fetchMedianTimeToReview(params: ComputedRef<QueryParams>) {
+    const queryKey = computed(() => [
+      TanstackKey.MEDIAN_TIME_TO_REVIEW,
+      params.value.projectSlug,
+      params.value.granularity,
+      params.value.repos,
+      params.value.startDate,
+      params.value.endDate,
+      params.value.platform,
+    ]);
+    const queryFn = computed<QueryFunction<MedianTimeToReview>>(() =>
+      this.medianTimeToReviewQueryFn(() => ({
+        projectSlug: params.value.projectSlug,
+        repos: params.value.repos,
+        granularity: params.value.granularity,
+        startDate: params.value.startDate,
+        endDate: params.value.endDate,
+        platform: params.value.platform,
+      })),
+    );
+
+    return useQuery<MedianTimeToReview>({
+      queryKey,
+      queryFn,
+    });
+  }
+
+  fetchPatchsetsPerReview(params: ComputedRef<PatchsetsPerReviewQueryParams>) {
+    const queryKey = computed(() => [
+      TanstackKey.PATCHSETS_PER_REVIEW,
+      params.value.projectSlug,
+      params.value.granularity,
+      params.value.repos,
+      params.value.startDate,
+      params.value.endDate,
+      params.value.dataType,
+    ]);
+    const queryFn = computed<QueryFunction<PatchsetsPerReview>>(() =>
+      this.patchsetsPerReviewQueryFn(() => ({
+        projectSlug: params.value.projectSlug,
+        repos: params.value.repos,
+        granularity: params.value.granularity,
+        startDate: params.value.startDate,
+        endDate: params.value.endDate,
+        dataType: params.value.dataType,
+      })),
+    );
+
+    return useQuery<PatchsetsPerReview>({
+      queryKey,
+      queryFn,
+    });
+  }
+
+  fetchReviewEfficiency(params: ComputedRef<QueryParams>) {
+    const queryKey = computed(() => [
+      TanstackKey.REVIEW_EFFICIENCY,
+      params.value.projectSlug,
+      params.value.granularity,
+      params.value.repos,
+      params.value.startDate,
+      params.value.endDate,
+      params.value.platform,
+    ]);
+    const queryFn = computed<QueryFunction<ReviewEfficiency>>(() =>
+      this.reviewEfficiencyQueryFn(() => ({
+        projectSlug: params.value.projectSlug,
+        repos: params.value.repos,
+        granularity: params.value.granularity,
+        startDate: params.value.startDate,
+        endDate: params.value.endDate,
+        platform: params.value.platform,
+      })),
+    );
+
+    return useQuery<ReviewEfficiency>({
+      queryKey,
+      queryFn,
+    });
+  }
+
   activeDaysQueryFn(
     query: () => Record<string, string | number | boolean | undefined | string[] | null>,
   ): QueryFunction<ActiveDays> {
@@ -441,6 +558,70 @@ class DevelopmentApiService {
           granularity,
           startDate,
           endDate,
+        },
+      });
+  }
+
+  medianTimeToCloseQueryFn(
+    query: () => Record<string, string | number | boolean | undefined | string[] | null>,
+  ): QueryFunction<MedianTimeToClose> {
+    const { projectSlug, repos, granularity, startDate, endDate, platform } = query();
+    return async () =>
+      await $fetch(`/api/project/${projectSlug}/development/median-time-to-close`, {
+        params: {
+          repos,
+          granularity,
+          startDate,
+          endDate,
+          platform,
+        },
+      });
+  }
+
+  medianTimeToReviewQueryFn(
+    query: () => Record<string, string | number | boolean | undefined | string[] | null>,
+  ): QueryFunction<MedianTimeToReview> {
+    const { projectSlug, repos, granularity, startDate, endDate, platform } = query();
+    return async () =>
+      await $fetch(`/api/project/${projectSlug}/development/median-time-to-review`, {
+        params: {
+          repos,
+          granularity,
+          startDate,
+          endDate,
+          platform,
+        },
+      });
+  }
+
+  patchsetsPerReviewQueryFn(
+    query: () => Record<string, string | number | boolean | undefined | string[] | null>,
+  ): QueryFunction<PatchsetsPerReview> {
+    const { projectSlug, repos, granularity, startDate, endDate, dataType } = query();
+    return async () =>
+      await $fetch(`/api/project/${projectSlug}/development/patchsets-per-review`, {
+        params: {
+          repos,
+          granularity,
+          startDate,
+          endDate,
+          dataType,
+        },
+      });
+  }
+
+  reviewEfficiencyQueryFn(
+    query: () => Record<string, string | number | boolean | undefined | string[] | null>,
+  ): QueryFunction<ReviewEfficiency> {
+    const { projectSlug, repos, granularity, startDate, endDate, platform } = query();
+    return async () =>
+      await $fetch(`/api/project/${projectSlug}/development/review-efficiency`, {
+        params: {
+          repos,
+          granularity,
+          startDate,
+          endDate,
+          platform,
         },
       });
   }
