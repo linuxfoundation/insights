@@ -6,7 +6,7 @@ SPDX-License-Identifier: MIT
   <lfx-maintain-height
     :scroll-top="scrollTop"
     :loaded="!loading"
-    :class="scrollTop > 0 ? 'fixed top-14 lg:top-17' : 'relative'"
+    :class="scrollTop > 0 ? ['fixed', ...headerTopClass].join(' ') : 'relative'"
     class="z-10 w-lvw ml-auto mr-0"
   >
     <div class="bg-white outline outline-neutral-100">
@@ -91,6 +91,7 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { computed, onServerPrefetch, watch, ref } from 'vue';
 import { useRoute } from 'vue-router';
+import { storeToRefs } from 'pinia';
 import type { Collection } from '~~/types/collection';
 
 import LfxCollectionHeader from '~/components/modules/collection/components/details/header.vue';
@@ -108,11 +109,14 @@ import {
   collectionListParamsSetter,
 } from '~/components/modules/collection/services/collections.query.service';
 import LfxOnboardingLink from '~/components/shared/components/onboarding-link.vue';
+import { useBannerStore } from '~/components/shared/store/banner.store';
 
 const props = defineProps<{
   collection?: Collection;
   loading?: boolean;
 }>();
+
+const { headerTopClass } = storeToRefs(useBannerStore());
 
 const { scrollTop } = useScroll();
 const route = useRoute();

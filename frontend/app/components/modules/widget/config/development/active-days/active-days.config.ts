@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 import { DateTime } from 'luxon';
 import ActiveDays from './active-days.vue';
+import LfxWidgetFilterCollaboration from '~/components/modules/widget/components/shared/filter/filter-collaboration.vue';
 import type { WidgetConfig, WidgetModel } from '~/components/modules/widget/config/widget.config';
 import { Granularity } from '~~/types/shared/granularity';
 
@@ -76,7 +77,7 @@ const activeDays: WidgetConfig = {
     icon: 'people-group',
     suggestions: 'Show me the active days',
   },
-  showCollabToggle: true,
+  headerFilters: LfxWidgetFilterCollaboration,
 };
 
 export default activeDays;
