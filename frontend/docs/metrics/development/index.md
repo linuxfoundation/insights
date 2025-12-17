@@ -20,7 +20,7 @@ The Development metrics include actions performed by bots. We include bot activi
 
 **Why it matters:** Commit activity provides insight into the development pace and contributor engagement. Regular commit patterns indicate consistent development progress.
 
-**Data Sources:** GitHub, GitLab and Git.
+**Data Sources:** GitHub, GitLab, Gerrit and Git.
 
 ## Pull Requests
 
