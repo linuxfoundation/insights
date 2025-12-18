@@ -115,7 +115,7 @@
     "prettier": "^3.6.2",
     "sass": "^1.93.2",
     "sass-embedded": "^1.93.2",
-    "storybook": "8.6.14",
+    "storybook": "8.6.15",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.46.2",
     "vitest": "^4.0.2",
