@@ -114,22 +114,6 @@ export type ReviewTimeByPRSizeFilter = {
   endDate?: DateTime;
 };
 
-export type AverageTimeToMergeFilter = {
-  project: string;
-  granularity?: Granularity;
-  repos?: string[];
-  startDate?: DateTime;
-  endDate?: DateTime;
-};
-
-export type WaitTimeFor1stReviewFilter = {
-  project: string;
-  granularity?: Granularity;
-  repos?: string[];
-  startDate?: DateTime;
-  endDate?: DateTime;
-};
-
 export type MergeLeadTimeFilter = {
   project: string;
   repos?: string[];

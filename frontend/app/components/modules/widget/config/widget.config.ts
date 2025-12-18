@@ -22,12 +22,10 @@ import pullRequests from './development/pull-requests/pull-requests.config';
 import activeDays from './development/active-days/active-days.config';
 import contributionsOutsideWorkHours from './development/contributions-outside-work-hours/contributions-outside-work-hours.config';
 import mergeLeadTime from './development/merge-lead-time/merge-lead-time.config';
-import averateTimeToMerge from './development/average-time-to-merge/average-time-to-merge.config';
 import patchsetsPerReview from './development/patchsets-per-review/patchsets-per-review.config';
 import medianTimeToClose from './development/median-time-to-close/median-time-to-close.config';
 import medianTimeToReview from './development/median-time-to-review/median-time-to-review.config';
 import reviewEfficiency from './development/review-efficiency/review-efficiency.config';
-import waitTimeFirstReview from './development/wait-time-first-review/wait-time-first-review.config';
 import codeReviewEngagement from './development/code-review-engagement/code-review-engagement.config';
 import reviewTimeByPullRequestSize from './development/review-time-by-pull-request-size/review-time-by-pull-request-size.config';
 import mailingListMessages from './popularity/mailing-list-messages/mailing-list-messages.config';
@@ -113,12 +111,10 @@ export const lfxWidgets: Record<Widget, WidgetConfig> = {
   [Widget.ACTIVE_DAYS]: activeDays,
   [Widget.CONTRIBUTIONS_OUTSIDE_WORK_HOURS]: contributionsOutsideWorkHours,
   [Widget.MERGE_LEAD_TIME]: mergeLeadTime,
-  [Widget.AVERAGE_TIME_TO_MERGE]: averateTimeToMerge,
   [Widget.PATCHSETS_PER_REVIEW]: patchsetsPerReview,
   [Widget.MEDIAN_TIME_TO_CLOSE]: medianTimeToClose,
   [Widget.MEDIAN_TIME_TO_REVIEW]: medianTimeToReview,
   [Widget.REVIEW_EFFICIENCY]: reviewEfficiency,
-  [Widget.WAIT_TIME_FIRST_REVIEW]: waitTimeFirstReview,
   [Widget.CODE_REVIEW_ENGAGEMENT]: codeReviewEngagement,
   [Widget.REVIEW_TIME_BY_PULL_REQUEST_SIZE]: reviewTimeByPullRequestSize,
 };
