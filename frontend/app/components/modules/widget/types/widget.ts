@@ -13,7 +13,6 @@ export enum Widget {
 
   // Development
   ACTIVE_DAYS = 'active-days',
-  AVERAGE_TIME_TO_MERGE = 'average-time-to-merge',
   CODE_REVIEW_ENGAGEMENT = 'code-review-engagement',
   CONTRIBUTIONS_OUTSIDE_WORK_HOURS = 'contributions-outside-work-hours',
   ISSUES_RESOLUTION = 'issues-resolution',
@@ -24,7 +23,6 @@ export enum Widget {
   REVIEW_EFFICIENCY = 'review-efficiency',
   PULL_REQUESTS = 'pull-requests',
   REVIEW_TIME_BY_PULL_REQUEST_SIZE = 'review-time-by-pull-request-size',
-  WAIT_TIME_FIRST_REVIEW = 'wait-time-first-review',
   COMMIT_ACTIVITIES = 'commit-activities',
 
   // Popularity

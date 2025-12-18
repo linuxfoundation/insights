@@ -9,7 +9,6 @@ import type { ActiveDays } from '~~/types/development/responses.types';
 import type {
   ContributionOutsideHours,
   CodeReviewEngagement,
-  AverageTimeMerge,
   IssuesResolution,
   MedianTimeToClose,
   MedianTimeToReview,
@@ -18,7 +17,6 @@ import type {
   PullRequests,
   ReviewEfficiency,
   ReviewTimeByPrItem,
-  WaitTime1stReview,
 } from '~~/types/development/responses.types';
 import type { CommitActivities } from '~~/types/popularity/responses.types';
 
@@ -94,31 +92,6 @@ class DevelopmentApiService {
     );
 
     return useQuery<ContributionOutsideHours>({
-      queryKey,
-      queryFn,
-    });
-  }
-
-  fetchAverageTimeMerge(params: ComputedRef<QueryParams>) {
-    const queryKey = computed(() => [
-      TanstackKey.AVERAGE_TIME_TO_MERGE,
-      params.value.projectSlug,
-      params.value.granularity,
-      params.value.repos,
-      params.value.startDate,
-      params.value.endDate,
-    ]);
-    const queryFn = computed<QueryFunction<AverageTimeMerge>>(() =>
-      this.averageTimeMergeQueryFn(() => ({
-        projectSlug: params.value.projectSlug,
-        repos: params.value.repos,
-        granularity: params.value.granularity,
-        startDate: params.value.startDate,
-        endDate: params.value.endDate,
-      })),
-    );
-
-    return useQuery<AverageTimeMerge>({
       queryKey,
       queryFn,
     });
@@ -276,31 +249,6 @@ class DevelopmentApiService {
     });
   }
 
-  fetchWaitTimeFirstReview(params: ComputedRef<QueryParams>) {
-    const queryKey = computed(() => [
-      TanstackKey.WAIT_TIME_FIRST_REVIEW,
-      params.value.projectSlug,
-      params.value.granularity,
-      params.value.repos,
-      params.value.startDate,
-      params.value.endDate,
-    ]);
-    const queryFn = computed<QueryFunction<WaitTime1stReview>>(() =>
-      this.waitTimeFirstReviewQueryFn(() => ({
-        projectSlug: params.value.projectSlug,
-        repos: params.value.repos,
-        granularity: params.value.granularity,
-        startDate: params.value.startDate,
-        endDate: params.value.endDate,
-      })),
-    );
-
-    return useQuery<WaitTime1stReview>({
-      queryKey,
-      queryFn,
-    });
-  }
-
   fetchMedianTimeToClose(params: ComputedRef<QueryParams>) {
     const queryKey = computed(() => [
       TanstackKey.MEDIAN_TIME_TO_CLOSE,
@@ -440,21 +388,6 @@ class DevelopmentApiService {
       });
   }
 
-  averageTimeMergeQueryFn(
-    query: () => Record<string, string | number | boolean | undefined | string[] | null>,
-  ): QueryFunction<AverageTimeMerge> {
-    const { projectSlug, repos, granularity, startDate, endDate } = query();
-    return async () =>
-      await $fetch(`/api/project/${projectSlug}/development/average-time-merge`, {
-        params: {
-          repos,
-          granularity,
-          startDate,
-          endDate,
-        },
-      });
-  }
-
   codeReviewEngagementQueryFn(
     query: () => Record<string, string | number | boolean | undefined | string[] | null>,
   ): QueryFunction<CodeReviewEngagement> {
@@ -541,21 +474,6 @@ class DevelopmentApiService {
       await $fetch(`/api/project/${projectSlug}/development/review-time-by-pr-size`, {
         params: {
           repos,
-          startDate,
-          endDate,
-        },
-      });
-  }
-
-  waitTimeFirstReviewQueryFn(
-    query: () => Record<string, string | number | boolean | undefined | string[] | null>,
-  ): QueryFunction<WaitTime1stReview> {
-    const { projectSlug, repos, granularity, startDate, endDate } = query();
-    return async () =>
-      await $fetch(`/api/project/${projectSlug}/development/wait-time-1st-review`, {
-        params: {
-          repos,
-          granularity,
           startDate,
           endDate,
         },

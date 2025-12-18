@@ -19,6 +19,7 @@ SPDX-License-Identifier: MIT
     >
 
     <button
+      type="button"
       class="text-white absolute top-1/2 -translate-y-1/2 right-2"
       aria-label="Close banner"
       @click="flagBanner"

@@ -87,13 +87,12 @@ const selectedPlatform = computed({
 });
 
 const availablePlatforms = computed<PlatformConfig[]>(() => {
+  const projectPlatforms = (project.value?.connectedPlatforms || []).map((key) => key.replace('-nango', ''));
   const connectedPlatformKeys =
-    (props.availablePlatforms || Object.keys(platforms)).filter((key) =>
-      project.value?.connectedPlatforms.includes(key),
-    ) || [];
+    (props.availablePlatforms || Object.keys(platforms)).filter((key) => projectPlatforms.includes(key)) || [];
 
   return connectedPlatformKeys
-    .map((key) => platforms[key])
+    .map((key) => platforms[key.replace('-nango', '')])
     .filter((platform): platform is PlatformConfig => !!platform);
 });
 
