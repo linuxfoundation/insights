@@ -15,7 +15,11 @@ const reviewEfficiency: WidgetConfig = {
   defaultValue: (project) => {
     // Get first available platform from the allowed list
     const allowedPlatforms = ['github', 'gitlab', 'gerrit'];
-    const platform = allowedPlatforms.find((p) => project.connectedPlatforms?.includes(p)) || '';
+    // Normalize platform names by removing -nango suffix
+    const normalizedPlatforms = (project.connectedPlatforms || []).map((p) =>
+      p.replace('-nango', ''),
+    );
+    const platform = allowedPlatforms.find((p) => normalizedPlatforms.includes(p)) || '';
     return { platform };
   },
   share: true,
