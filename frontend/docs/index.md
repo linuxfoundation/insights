@@ -7,7 +7,7 @@ layout: home
 hero:
   name: "LFX Insights"
   text: "Documentation"
-  tagline: "How to use LFX Insights to evaluate open source software."
+  tagline: "learn How to use LFX Insights to evaluate open source software."
   actions:
     - theme: brand
       text: Go to Docs
