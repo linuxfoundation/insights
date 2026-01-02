@@ -77,6 +77,7 @@ describe('Contributors Leaderboard Data Source', () => {
         total: mockContributorsLeaderboardCount.data[0].count,
       },
       data: mockTimeseries.data.map((item) => ({
+        id: item.id,
         avatar: item.avatar,
         name: item.displayName,
         contributions: item.contributionCount,

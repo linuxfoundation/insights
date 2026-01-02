@@ -17,6 +17,7 @@ export type TinybirdActiveContributorsData = {
 }[];
 
 export type TinybirdContributorsLeaderboardData = {
+  id: string;
   avatar: string;
   displayName: string;
   contributionCount: number;

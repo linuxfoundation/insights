@@ -56,6 +56,7 @@ export async function fetchContributorsLeaderboard(
     },
     data: dataResponse.data.map(
       (item): Contributor => ({
+        id: item.id,
         avatar: item.avatar,
         name: item.displayName,
         contributions: item.contributionCount,

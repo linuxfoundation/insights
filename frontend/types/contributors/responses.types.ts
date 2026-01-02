@@ -23,6 +23,7 @@ export interface ActiveOrganizations {
 }
 
 export interface Contributor {
+  id?: string;
   avatar: string;
   name: string;
   contributions: number;
