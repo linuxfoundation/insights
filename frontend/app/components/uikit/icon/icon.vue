@@ -7,6 +7,9 @@ SPDX-License-Identifier: MIT
     :class="`fa-${props.name} fa-${props.type}`"
     :style="sizeStyle"
     class="c-icon"
+    :role="props.ariaLabel ? 'img' : undefined"
+    :aria-label="props.ariaLabel"
+    :aria-hidden="props.ariaLabel ? undefined : 'true'"
   />
 </template>
 
@@ -19,6 +22,7 @@ const props = withDefaults(
     name: string;
     type?: IconType;
     size?: number;
+    ariaLabel?: string;
   }>(),
   {
     type: 'light',
