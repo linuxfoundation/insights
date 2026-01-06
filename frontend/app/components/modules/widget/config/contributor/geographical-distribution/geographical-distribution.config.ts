@@ -1,6 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import GeographicalDistribution from './geographical-distribution.vue';
+import LfxWidgetFilterCollaboration from '~/components/modules/widget/components/shared/filter/filter-collaboration.vue';
 import type { WidgetConfig } from '~/components/modules/widget/config/widget.config';
 
 const geographicalDistribution: WidgetConfig = {
@@ -23,7 +24,7 @@ const geographicalDistribution: WidgetConfig = {
     icon: 'people-group',
     suggestions: 'Show me the geographical distribution of contributors',
   },
-  showCollabToggle: true,
+  headerFilters: LfxWidgetFilterCollaboration,
 };
 
 export default geographicalDistribution;

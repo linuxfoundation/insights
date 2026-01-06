@@ -3,20 +3,16 @@
 import type { Component } from 'vue';
 import type { Leaderboard } from '~~/types/leaderboard/leaderboard';
 
-export type LeaderboardDataType = 'integer' | 'float' | 'duration' | 'timestamp';
 export interface LeaderboardConfig {
   key: string;
   name: string;
   description: string;
   icon: string;
   dataDisplay: Component;
-  columnLabel: string;
-  columnTooltip?: string;
-  hideTrend?: boolean;
-  dataType: LeaderboardDataType;
-  decimals?: number;
-  seoTitle: string;
-  seoDescription: string;
+  minimizedDataDisplay: Component;
+  entityLabel: string;
+  metricLabel: string;
+  metricTooltip?: string;
 }
 
 export interface LeaderboardLandingResponse {

@@ -15,6 +15,14 @@ At its core, the LF Open Source Index (and therefore Insights) includes:
 
 We aim to cover projects that are not just active, but impactful and deeply integrated into the technology stack of the modern world.
 
+### Archived Projects
+
+LFX Insights represents the world’s most critical open source projects including those from the LF and many outside our ecosystem. When a project is archived, it usually signals that its lifecycle is complete, yet the historical data remains useful for analysis and comparison. For this reason, we keep archived projects available in Insights.
+
+**Archived Repositories**
+
+When a repository is archived, LFX Insights continues to display it within the project, but treats it as inactive. Historical metrics, such as Contributors, Popularity, and Development, remain available, but archived repositories are excluded from calculations related to [Security & Best Practices](../../metrics/security/index.md) and the overall [Health Score](../../metrics/health-score/index.md).
+
 ## How we define "critical" projects
 
 To identify critical open source projects outside of the LF, we rely on the [OpenSSF Criticality Score](https://github.com/ossf/criticality_score) — an open-source metric that evaluates projects based on:

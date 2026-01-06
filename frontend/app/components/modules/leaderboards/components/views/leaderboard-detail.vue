@@ -3,78 +3,77 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="md:pt-10 pt-6">
-    <div class="container flex md:gap-10 gap-0 md:flex-row flex-col">
-      <div
-        ref="sidebarRef"
-        class="w-1/5 flex flex-col justify-between items-start md:flex hidden min-w-50 fixed bg-white pt-32 mt-2 top-0 z-[11]"
-        :style="{ width: sidebarWidth + 'px' }"
-      >
-        <router-link
-          :to="{ name: LfxRoutes.LEADERBOARDS }"
-          class="flex items-center gap-1 text-xs text-neutral-500 hover:text-neutral-900 hover:font-medium transition-all duration-100"
-        >
-          <lfx-icon
-            name="angle-left"
-            :size="15"
-          />
-          All leaderboards
-        </router-link>
-
-        <div class="h-px bg-neutral-200 w-full my-4"></div>
-        <!-- Sidebar navigation -->
-        <lfx-leaderboard-sidebar :leaderboard-key="leaderboardKey" />
-      </div>
-
-      <!-- Main content section -->
-      <!-- <lfx-maintain-height
-        :scroll-top="scrollTop"
-        class="z-10 w-full fixed !w-full bg-white pt-22 top-0 left-0"
-        :loaded="pageWidth > 0"
-      > -->
-      <div class="z-10 fixed !w-full bg-white pt-17 top-0 left-0">
+  <div class="container">
+    <div class="flex gap-10">
+      <div class="lg:w-1/5 w-1/4 md:block hidden min-w-50">
         <div
-          ref="headerContainerRef"
-          class="container w-full md:pt-12 pt-8 flex gap-10"
+          class="flex flex-col justify-between items-start md:flex hidden min-w-50 sticky bg-white pt-10 z-[11]"
+          :class="headerTopClass.join(' ')"
         >
-          <div class="lg:w-1/5 w-1/4 md:block hidden min-w-50">&nbsp;</div>
-          <div class="flex flex-col gap-6 lg:w-3/5 md:w-3/4 w-full">
-            <!-- Header section -->
-            <lfx-leaderboard-detail-header
-              :config="leaderboardConfig"
-              @item-click="handleSearchItemClick"
+          <router-link
+            :to="{ name: LfxRoutes.LEADERBOARDS }"
+            class="flex items-center gap-1 text-xs text-neutral-500 hover:text-neutral-900 hover:font-medium transition-all duration-100"
+          >
+            <lfx-icon
+              name="angle-left"
+              :size="15"
             />
+            All leaderboards
+          </router-link>
 
-            <!-- Table header -->
-            <lfx-table-header
-              :config="leaderboardConfig"
-              class="border-b border-neutral-200 px-0 lg:px-3 pb-4"
-            />
-          </div>
-          <div class="w-1/5 lg:block hidden">&nbsp;</div>
+          <div class="h-px bg-neutral-200 w-full my-4"></div>
+          <!-- Sidebar navigation -->
+          <lfx-leaderboard-sidebar :leaderboard-key="leaderboardKey" />
         </div>
       </div>
-      <!-- </lfx-maintain-height> -->
-
-      <div class="w-1/5 lg:block hidden">&nbsp;</div>
-    </div>
-  </div>
-
-  <div
-    class="container"
-    :style="{ paddingTop: headerHeight + 'px' }"
-  >
-    <div class="flex gap-10 lg:-mt-12 md:-mt-8 mt-4">
-      <div class="lg:w-1/5 w-1/4 md:block hidden min-w-50">&nbsp;</div>
       <div class="lg:w-3/5 md:w-3/4 w-full min-w-0">
-        <lfx-leaderboard-table
-          :leaderboard-config="leaderboardConfig"
-          :data="items"
-          :is-loading="isPending || isFetchingNextPage"
-          :is-force-loading="isScrollingIntoRow"
-          :has-next-page="hasNextPage"
-          @fetch-next-page="fetchNextPage"
-        />
+        <div
+          class="sticky z-10 bg-white sm:pt-10 pt-6"
+          :class="headerTopClass.join(' ')"
+        >
+          <!-- Header section -->
+          <lfx-leaderboard-detail-header
+            v-model:collection-slug="collectionSlug"
+            :config="leaderboardConfig"
+            @item-click="handleSearchItemClick"
+          />
+
+          <!-- Table header -->
+          <lfx-table-header
+            v-if="items.length > 0"
+            :config="leaderboardConfig"
+            class="border-b border-neutral-200 px-0 lg:px-3 pb-4"
+          />
+        </div>
+        <div class="mt-6">
+          <lfx-leaderboard-table
+            v-if="isPending || items.length > 0"
+            :leaderboard-config="leaderboardConfig"
+            :data="items"
+            :is-loading="isPending || isFetchingNextPage"
+            :is-force-loading="isScrollingIntoRow"
+            :has-next-page="hasNextPage"
+            @fetch-next-page="fetchNextPage"
+          />
+          <!-- Empty state -->
+          <div
+            v-else
+            class="flex flex-col gap-6 items-center justify-center px-0 py-20 w-full"
+          >
+            <lfx-icon
+              name="eyes"
+              type="light"
+              :size="80"
+              class="text-neutral-200"
+            />
+            <div class="flex flex-col gap-2 items-center text-center w-full">
+              <h3 class="font-secondary font-bold text-heading-3 text-black">
+                No {{ pluralize(leaderboardConfig?.entityLabel.toLowerCase(), 2) }} found
+              </h3>
+              <p class="text-body-2 text-neutral-500">Try adjusting your filters to find what you're looking for.</p>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="w-1/5 hidden lg:block">&nbsp;</div>
     </div>
@@ -82,8 +81,10 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, onServerPrefetch, ref, watch, nextTick } from 'vue';
+import { computed, onServerPrefetch, ref, watch, nextTick } from 'vue';
 import { useRoute } from 'vue-router';
+import pluralize from 'pluralize';
+import { storeToRefs } from 'pinia';
 import leaderboardConfigs from '../../config/index.config';
 import LfxLeaderboardTable from '../sections/leaderboard-table.vue';
 import type { LeaderboardConfig } from '../../config/types/leaderboard.types';
@@ -94,8 +95,8 @@ import LfxTableHeader from '../sections/table-header.vue';
 import type { Leaderboard } from '~~/types/leaderboard/leaderboard';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import type { Pagination } from '~~/types/shared/pagination';
-import useResponsive from '~/components/shared/utils/responsive';
 import { LfxRoutes } from '~/components/shared/types/routes';
+import { useBannerStore } from '~/components/shared/store/banner.store';
 
 const route = useRoute();
 
@@ -104,26 +105,15 @@ const props = defineProps<{
   leaderboardKey: string;
 }>();
 
-const { pageWidth } = useResponsive();
-const sidebarRef = ref<HTMLElement | null>(null);
-const sidebarWidth = ref<number>(0);
+const { headerTopClass } = storeToRefs(useBannerStore());
+
 const isScrollingIntoRow = ref<boolean>(false);
-const headerContainerRef = ref<HTMLElement | null>(null);
-const headerHeight = ref<number>(0);
-
-onMounted(() => {
-  if (sidebarRef.value) {
-    sidebarWidth.value = sidebarRef.value.offsetWidth;
-  }
-
-  if (headerContainerRef.value) {
-    headerHeight.value = headerContainerRef.value.offsetHeight;
-  }
-});
+const collectionSlug = ref<string>('');
 
 const params = computed(() => ({
   leaderboardType: props.leaderboardKey,
   initialPageSize: 100,
+  collectionSlug: collectionSlug.value && collectionSlug.value !== 'all' ? collectionSlug.value : undefined,
 }));
 
 const { data, isPending, isFetchingNextPage, fetchNextPage, hasNextPage } =
@@ -145,12 +135,6 @@ const leaderboardConfig = computed<LeaderboardConfig>(() => {
 onServerPrefetch(async () => {
   // Prefetch the first page of the infinite query on the server
   await LEADERBOARD_API_SERVICE.prefetchLeaderboardDetails(params);
-});
-
-watch(pageWidth, () => {
-  if (sidebarRef.value) {
-    sidebarWidth.value = sidebarRef.value.offsetWidth;
-  }
 });
 
 // Reset scroll position whenever the route changes (including back button)

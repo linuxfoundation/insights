@@ -4,6 +4,8 @@ import type { Summary, Meta } from '../shared/summary.types';
 
 export interface ActiveContributors {
   summary: Summary;
+  maintainerCount: number;
+  reviewerCount: number;
   data: {
     startDate: string;
     endDate: string;

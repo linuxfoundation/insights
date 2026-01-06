@@ -5,7 +5,7 @@ SPDX-License-Identifier: MIT
 <template>
   <lfx-maintain-height
     :scroll-top="scrollTop"
-    :class="scrollTop > 0 ? 'fixed top-14 lg:top-17' : 'relative'"
+    :class="scrollTop > 0 ? ['fixed', ...headerTopClass].join(' ') : 'relative'"
     class="z-10 w-full"
     :loaded="pageWidth > 0"
   >
@@ -132,11 +132,30 @@ SPDX-License-Identifier: MIT
             to="body"
           >
             <div
-              class="fixed bottom-5 z-50 left-1/2 transform -translate-x-1/2 bg-white border border-neutral-200 rounded-full shadow-md px-1 py-px gap-2 flex"
+              class="fixed bottom-4 z-50 left-1/2 transform -translate-x-1/2 bg-white border border-neutral-200 rounded-full shadow-md px-1 py-px gap-2 flex"
             >
               <lfx-project-date-range-picker v-show="showDatepicker" />
               <div
-                v-if="showDatepicker"
+                v-show="showCommunityFilter"
+                class="flex items-center py-1.5 px-3 gap-1.5 cursor-pointer"
+                @click="openCommunityFilter()"
+              >
+                <lfx-icon
+                  name="bars-filter"
+                  :size="14"
+                />
+                <p class="text-xs whitespace-nowrap">
+                  Filters
+                  <span
+                    v-if="filterCount > 0"
+                    class="text-white text-xs bg-neutral-600 rounded-full px-1.5 py-0.5 ml-1.5"
+                  >
+                    {{ filterCount }}
+                  </span>
+                </p>
+              </div>
+              <div
+                v-if="showDatepicker || showCommunityFilter"
                 class="border-l border-neutral-200 my-1"
               />
               <div
@@ -202,12 +221,16 @@ import LfxArchivedTag from '~/components/shared/components/archived-tag.vue';
 import { useAuthStore } from '~/components/modules/auth/store/auth.store';
 import { useCopilotStore } from '~/components/shared/modules/copilot/store/copilot.store';
 import LfxTag from '~/components/uikit/tag/tag.vue';
+import { useCommunityStore } from '~/components/modules/project/components/community/store/community.store';
+import { useBannerStore } from '~/components/shared/store/banner.store';
 
 const props = defineProps<{
   project?: Project;
 }>();
 
 const route = useRoute();
+
+const { headerTopClass } = storeToRefs(useBannerStore());
 
 const {
   projectRepos,
@@ -220,6 +243,8 @@ const {
 const { openReportModal } = useReportStore();
 const { openShareModal } = useShareStore();
 const { openCopilotModal } = useCopilotStore();
+const { filterCount } = storeToRefs(useCommunityStore());
+const { openCommunityFilterModal } = useCommunityStore();
 
 const { hasLfxInsightsPermission } = storeToRefs(useAuthStore());
 
@@ -281,6 +306,10 @@ const share = () => {
   });
 };
 
+const openCommunityFilter = () => {
+  openCommunityFilterModal();
+};
+
 const showDatepicker = computed(
   () =>
     ![
@@ -290,8 +319,19 @@ const showDatepicker = computed(
       LfxRoutes.REPOSITORY_SECURITY,
       LfxRoutes.REPOSITORY_GROUP,
       LfxRoutes.REPOSITORY_GROUP_SECURITY,
+      LfxRoutes.PROJECT_COMMUNITY_VOICE,
+      LfxRoutes.REPOSITORY_COMMUNITY_VOICE,
+      LfxRoutes.REPOSITORY_GROUP_COMMUNITY_VOICE,
     ].includes(route.name as LfxRoutes),
 );
+
+const showCommunityFilter = computed(() => {
+  return [
+    LfxRoutes.PROJECT_COMMUNITY_VOICE,
+    LfxRoutes.REPOSITORY_COMMUNITY_VOICE,
+    LfxRoutes.REPOSITORY_GROUP_COMMUNITY_VOICE,
+  ].includes(route.name as LfxRoutes);
+});
 
 const openCopilotHandler = () => {
   openCopilotModal({

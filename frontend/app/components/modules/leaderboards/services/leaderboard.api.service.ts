@@ -16,19 +16,25 @@ export interface LeaderboardDetailQueryParams {
   leaderboardType: string;
   search?: string;
   initialPageSize?: number;
+  collectionSlug?: string;
 }
 
 const DEFAULT_PAGE_SIZE = 100;
 class LeaderboardApiService {
   async prefetchLeaderboardDetails(params: ComputedRef<LeaderboardDetailQueryParams>) {
     const queryClient = useQueryClient();
-    const queryKey = computed(() => [TanstackKey.LEADERBOARD_DETAIL, params.value.leaderboardType]);
+    const queryKey = computed(() => [
+      TanstackKey.LEADERBOARD_DETAIL,
+      params.value.leaderboardType,
+      params.value.collectionSlug,
+    ]);
 
     const queryFn = computed<QueryFunction<Pagination<Leaderboard>>>(() =>
       this.leaderboardDetailQueryFn(() => ({
         leaderboardType: params.value.leaderboardType,
         initialPageSize: params.value.initialPageSize,
         search: params.value.search,
+        collectionSlug: params.value.collectionSlug,
       })),
     );
 
@@ -59,13 +65,18 @@ class LeaderboardApiService {
   }
 
   fetchLeaderboardDetails(params: ComputedRef<LeaderboardDetailQueryParams>) {
-    const queryKey = computed(() => [TanstackKey.LEADERBOARD_DETAIL, params.value.leaderboardType]);
+    const queryKey = computed(() => [
+      TanstackKey.LEADERBOARD_DETAIL,
+      params.value.leaderboardType,
+      params.value.collectionSlug,
+    ]);
 
     const queryFn = computed<QueryFunction<Pagination<Leaderboard>>>(() =>
       this.leaderboardDetailQueryFn(() => ({
         leaderboardType: params.value.leaderboardType,
         initialPageSize: params.value.initialPageSize,
         search: params.value.search,
+        collectionSlug: params.value.collectionSlug,
       })),
     );
 
@@ -87,7 +98,7 @@ class LeaderboardApiService {
   leaderboardDetailQueryFn(
     query: () => Record<string, string | number | boolean | undefined | string[] | null>,
   ): QueryFunction<Pagination<Leaderboard>, readonly unknown[], number> {
-    const { leaderboardType, initialPageSize, search } = query();
+    const { leaderboardType, initialPageSize, search, collectionSlug } = query();
     return async ({ pageParam = 0 }) => {
       const pageSize = pageParam === 0 ? (initialPageSize ?? DEFAULT_PAGE_SIZE) : DEFAULT_PAGE_SIZE;
 
@@ -96,6 +107,7 @@ class LeaderboardApiService {
           page: pageParam,
           pageSize,
           search,
+          collectionSlug,
         },
       });
     };

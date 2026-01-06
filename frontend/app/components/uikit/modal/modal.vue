@@ -30,7 +30,7 @@ import { computed, onUnmounted, watch } from 'vue';
 const props = withDefaults(
   defineProps<{
     modelValue: boolean;
-    type?: 'default' | 'floating' | 'cover';
+    type?: 'default' | 'floating' | 'cover' | 'mobile-cover';
     contentClass?: string;
     width?: string;
     height?: string;
@@ -77,6 +77,7 @@ const modalClass = computed(() => {
   return {
     'c-modal--floating': props.type === 'floating',
     'c-modal--cover': props.type === 'cover',
+    'c-modal--mobile-cover': props.type === 'mobile-cover',
   };
 });
 

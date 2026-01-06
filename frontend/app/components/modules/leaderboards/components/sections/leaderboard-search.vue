@@ -16,7 +16,7 @@ SPDX-License-Identifier: MIT
     >
       <lfx-input
         v-model="searchQuery"
-        placeholder="Search projects..."
+        :placeholder="`Search ${pluralize(config?.entityLabel.toLowerCase(), 2)}...`"
         class="!border-none !bg-neutral-50 !rounded-full h-9 !shadow-none"
       >
         <template #prefix>
@@ -44,6 +44,7 @@ SPDX-License-Identifier: MIT
           :class="[searchQuery !== '' ? 'p-1 shadow-lg' : '!border-none']"
         >
           <lfx-leaderboard-search-results
+            :config="config"
             :items="items"
             :is-success="isSuccess"
             :is-loading="isSearchPending && searchQuery !== ''"
@@ -57,7 +58,7 @@ SPDX-License-Identifier: MIT
       <div class="relative">
         <lfx-input
           v-model="searchQuery"
-          placeholder="Search projects..."
+          :placeholder="`Search ${pluralize(config?.entityLabel.toLowerCase(), 2)}...`"
           class="!border-none !bg-white !rounded-full h-9 !shadow-none"
         >
           <template #prefix>
@@ -86,6 +87,7 @@ SPDX-License-Identifier: MIT
         class="h-px bg-neutral-100 w-full my-1"
       ></div>
       <lfx-leaderboard-search-results
+        :config="config"
         :items="items"
         :is-success="isSuccess"
         :is-loading="isSearchPending && searchQuery !== ''"
@@ -97,6 +99,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue';
+import pluralize from 'pluralize';
 import type { LeaderboardConfig } from '../../config/types/leaderboard.types';
 import { LEADERBOARD_API_SERVICE } from '../../services/leaderboard.api.service';
 import LfxLeaderboardSearchResults from './leaderboard-search-results.vue';

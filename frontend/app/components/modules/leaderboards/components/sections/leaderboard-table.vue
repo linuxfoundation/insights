@@ -5,23 +5,20 @@ SPDX-License-Identifier: MIT
 <template>
   <!-- Leaderboard items -->
   <div
-    class="flex flex-col items-start w-full"
+    class="flex flex-col items-start w-full min-h-80"
     v-bind="containerProps"
   >
     <template v-if="!isForceLoading">
-      <router-link
+      <template
         v-for="{ data: item } in list"
         :key="item.rank"
-        class="w-full"
-        :to="`/project/${item.slug}`"
-        :data-rank="item.rank"
       >
-        <lfx-table-row
+        <component
+          :is="leaderboardConfig?.dataDisplay"
           :item="item"
           :leaderboard-config="leaderboardConfig"
-          :is-small="false"
         />
-      </router-link>
+      </template>
     </template>
     <template v-for="i in 100">
       <div
@@ -59,7 +56,6 @@ SPDX-License-Identifier: MIT
 import { computed } from 'vue';
 import { useVirtualList } from '@vueuse/core';
 import type { LeaderboardConfig } from '../../config/types/leaderboard.types';
-import LfxTableRow from './table-row.vue';
 import type { Leaderboard } from '~~/types/leaderboard/leaderboard';
 import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
 import LfxButton from '~/components/uikit/button/button.vue';

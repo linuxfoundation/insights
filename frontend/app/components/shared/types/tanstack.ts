@@ -20,14 +20,16 @@ export enum TanstackKey {
   // Development
   ACTIVE_DAYS = 'active-days',
   ACTIVITY_TYPES = 'activity-types',
-  AVERAGE_TIME_TO_MERGE = 'average-time-to-merge',
   CODE_REVIEW_ENGAGEMENT = 'code-review-engagement',
   CONTRIBUTIONS_OUTSIDE_WORK_HOURS = 'contributions-outside-work-hours',
   ISSUES_RESOLUTION = 'issues-resolution',
+  MEDIAN_TIME_TO_CLOSE = 'median-time-to-close',
+  MEDIAN_TIME_TO_REVIEW = 'median-time-to-review',
   MERGE_LEAD_TIME = 'merge-lead-time',
+  PATCHSETS_PER_REVIEW = 'patchsets-per-review',
   PULL_REQUESTS = 'pull-requests',
+  REVIEW_EFFICIENCY = 'review-efficiency',
   REVIEW_TIME_BY_PULL_REQUEST_SIZE = 'review-time-by-pull-request-size',
-  WAIT_TIME_FIRST_REVIEW = 'wait-time-first-review',
   COMMIT_ACTIVITIES = 'commit-activities',
 
   // Popularity
@@ -51,6 +53,9 @@ export enum TanstackKey {
 
   // Security
   SECURITY_ASSESSMENT = 'security-assessment',
+
+  // Community
+  COMMUNITY_MENTIONS = 'community-mentions',
 
   // Open Source Index
   OSS_INDEX_GROUP = 'oss-index-group',

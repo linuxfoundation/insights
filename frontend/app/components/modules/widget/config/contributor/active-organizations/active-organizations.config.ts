@@ -1,6 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import ActiveOrganizations from './active-organizations.vue';
+import LfxWidgetFilterCollaboration from '~/components/modules/widget/components/shared/filter/filter-collaboration.vue';
 import type { WidgetConfig } from '~/components/modules/widget/config/widget.config';
 import { Granularity } from '~~/types/shared/granularity';
 
@@ -22,7 +23,7 @@ const activeOrganizations: WidgetConfig = {
     icon: 'people-group',
     suggestions: 'How many active organizations are there?',
   },
-  showCollabToggle: true,
+  headerFilters: LfxWidgetFilterCollaboration,
 };
 
 export default activeOrganizations;
