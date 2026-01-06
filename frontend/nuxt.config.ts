@@ -51,6 +51,20 @@ export default defineNuxtConfig({
     url: isProduction ? 'https://insights.linuxfoundation.org' : 'http://localhost:3000',
     name: 'LFX Insights',
   },
+  ogImage: {
+    fonts: [
+      {
+        name: 'Inter',
+        weights: [400],
+        style: 'normal',
+      },
+      {
+        name: 'Roboto Slab',
+        weights: [300],
+        style: 'normal',
+      },
+    ],
+  },
   plugins: ['~/plugins/vue-query.ts', '~/plugins/analytics.ts', '~/plugins/canonical.ts'],
   css: ['~/assets/styles/main.scss'],
   tailwindcss,
