@@ -55,13 +55,19 @@ export default defineNuxtConfig({
     fonts: [
       {
         name: 'Inter',
-        weights: [400],
-        style: 'normal',
+        weight: 400,
       },
       {
         name: 'Roboto Slab',
-        weights: [300],
-        style: 'normal',
+        weight: 300,
+      },
+      {
+        name: 'Roboto Slab',
+        weight: 400,
+      },
+      {
+        name: 'Roboto Slab',
+        weight: 700,
       },
     ],
   },

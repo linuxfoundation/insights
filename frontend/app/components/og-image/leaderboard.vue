@@ -3,10 +3,10 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div style="width: 1200px; height: 630px; display: flex; align-items: center; justify-content: center">
+  <div style="width: 1200px; height: 630px; position: relative">
     <img
-      src="/images/og-image/background.svg"
-      style="position: absolute; inset: 0; width: 100%; height: 100%"
+      src="/images/og-image/leaderboard.svg"
+      style="position: absolute; top: 0; left: 0; width: 100%; height: 100%"
     />
     <!-- Leaderboard Label -->
     <div
@@ -21,6 +21,7 @@ SPDX-License-Identifier: MIT
         text-transform: uppercase;
         letter-spacing: 10px;
         line-height: 32px;
+        width: 807px;
       "
     >
       LEADERBOARD
@@ -34,34 +35,13 @@ SPDX-License-Identifier: MIT
         top: 136px;
         width: 807px;
         font-family: 'Roboto Slab', serif;
-        font-size: 64px;
+        font-size: 56px;
         font-weight: 300;
         color: #0f172a;
         line-height: 80px;
       "
     >
       {{ title }}
-    </div>
-
-    <!-- Decorative Icon -->
-    <div
-      style="
-        position: absolute;
-        top: 15px;
-        right: -140px;
-        width: 600px;
-        height: 600px;
-        opacity: 0.5;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      "
-    >
-      <img
-        src="/images/og-image/leaderboard/contributors.svg"
-        alt="Contributors"
-        style="width: 600px; height: 600px; object-fit: contain"
-      />
     </div>
 
     <!-- LFX Insights Logo -->
