@@ -56,18 +56,22 @@ export default defineNuxtConfig({
       {
         name: 'Inter',
         weight: 400,
+        path: '/fonts/Inter-Regular.ttf',
       },
       {
         name: 'Roboto Slab',
         weight: 300,
+        path: '/fonts/RobotoSlab-Light.ttf',
       },
       {
         name: 'Roboto Slab',
         weight: 400,
+        path: '/fonts/RobotoSlab-Regular.ttf',
       },
       {
         name: 'Roboto Slab',
         weight: 700,
+        path: '/fonts/RobotoSlab-Bold.ttf',
       },
     ],
   },
