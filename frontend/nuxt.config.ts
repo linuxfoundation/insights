@@ -52,13 +52,6 @@ export default defineNuxtConfig({
     name: 'LFX Insights',
   },
   ogImage: {
-    compatibility: {
-      runtime: {
-        satori: 'node',
-        resvg: 'node',
-        sharp: 'node',
-      },
-    },
     fonts: [
       {
         name: 'Inter',
@@ -191,6 +184,15 @@ export default defineNuxtConfig({
   },
   robots: {
     disallow: isProduction || isDevelopment ? [] : ['/'],
+  },
+  nitro: {
+    rollupConfig: {
+      external: [
+        // Externalize native modules to avoid bundling issues
+        '@resvg/resvg-js',
+        'yoga-layout-prebuilt',
+      ],
+    },
   },
   ...sitemap,
   ...caching,

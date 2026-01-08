@@ -42,7 +42,7 @@ SPDX-License-Identifier: MIT
         line-height: 80px;
       "
     >
-      {{ title }}
+      {{ leaderboardTitle }}
     </div>
 
     <!-- LFX Insights Logo -->
@@ -55,19 +55,12 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
-import leaderboardConfigs from '~/components/modules/leaderboards/config/index.config';
-
-const props = withDefaults(
+withDefaults(
   defineProps<{
-    leaderboardKey?: string;
+    leaderboardTitle?: string;
   }>(),
   {
-    leaderboardKey: '',
+    leaderboardTitle: '',
   },
 );
-
-// Extract only serializable data
-const config = computed(() => leaderboardConfigs.find((c) => c.key === props.leaderboardKey));
-const title = computed(() => config.value?.name || 'Leaderboard');
 </script>
