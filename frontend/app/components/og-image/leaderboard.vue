@@ -4,11 +4,11 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <div style="width: 1200px; height: 630px; position: relative">
-    <img
-      src="/images/og-image/leaderboard.svg"
-      alt=""
-      style="position: absolute; top: 0; left: 0; width: 100%; height: 100%"
-    />
+    <!--    <img-->
+    <!--      src="/images/og-image/leaderboard.svg"-->
+    <!--      alt=""-->
+    <!--      style="position: absolute; top: 0; left: 0; width: 100%; height: 100%"-->
+    <!--    />-->
     <!-- Leaderboard Label -->
     <div
       style="
