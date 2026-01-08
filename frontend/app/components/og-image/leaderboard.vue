@@ -3,12 +3,12 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div style="width: 1200px; height: 630px; position: relative">
-    <!--    <img-->
-    <!--      src="/images/og-image/leaderboard.svg"-->
-    <!--      alt=""-->
-    <!--      style="position: absolute; top: 0; left: 0; width: 100%; height: 100%"-->
-    <!--    />-->
+  <div style="width: 1200px; height: 630px; position: relative; display: flex">
+    <img
+      src="/images/og-image/bg.svg"
+      alt=""
+      style="position: absolute; top: 0; left: 0; width: 100%; height: 100%"
+    />
     <!-- Leaderboard Label -->
     <div
       style="
@@ -19,8 +19,6 @@ SPDX-License-Identifier: MIT
         font-size: 20px;
         font-weight: 400;
         color: #002648;
-        text-transform: uppercase;
-        letter-spacing: 10px;
         line-height: 32px;
         width: 807px;
       "
