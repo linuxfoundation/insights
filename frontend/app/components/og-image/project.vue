@@ -70,7 +70,7 @@ SPDX-License-Identifier: MIT
         font-family: 'Inter', sans-serif;
         font-size: 24px;
         font-weight: 400;
-        line-height: 1.5;
+        line-height: 36px;
         color: #0f172a;
       "
       :style="{
