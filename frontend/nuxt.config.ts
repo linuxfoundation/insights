@@ -54,7 +54,9 @@ export default defineNuxtConfig({
   ogImage: {
     compatibility: {
       runtime: {
-        satori: 'wasm',
+        satori: 'node',
+        resvg: 'node',
+        sharp: 'node',
       },
     },
     fonts: [
