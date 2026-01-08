@@ -7,45 +7,45 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { useRoute } from 'nuxt/app';
 import { storeToRefs } from 'pinia';
 import { useProjectStore } from '~/components/modules/project/store/project.store';
 import LfxProjectSecurityView from '~/components/modules/project/views/security.vue';
 
-const { project } = storeToRefs(useProjectStore());
 const route = useRoute();
 const config = useRuntimeConfig();
+const { project } = storeToRefs(useProjectStore());
 
 const title = computed(() => `${project.value?.name} Security Insights`);
-const imageAlt = computed(() => `${project.value?.name} security insights`);
 const description = computed(
   () =>
     `Check ${project.value?.name} security and best practices, ` +
     `including vulnerabilities, dependencies, licensing, and governance compliance.`,
 );
+
+const imageAlt = computed(() => `${project.value?.name} Security Insights - LFX Insights`);
 const url = computed(() => `${config.public.appUrl}${route.fullPath}`);
-const image = computed(() =>
-  project.value
-    ? `${config.public.appUrl}/api/seo/og-image?projectSlug=${project.value.slug}`
-    : `${config.public.appUrl}/default-og-image.jpg`,
-);
+
+const projectName = computed(() => project.value?.name || '');
+const projectDescription = computed(() => project.value?.description || '');
+const projectLogo = computed(() => project.value?.logo || '');
+
+defineOgImageComponent('project', {
+  projectName,
+  projectDescription,
+  repositoryName: '',
+  projectLogo,
+});
 
 useSeoMeta({
   title,
   description,
-  ogType: 'article',
+  ogType: 'website',
   ogUrl: url,
   ogTitle: title,
   ogDescription: description,
-  ogImage: image,
   ogImageAlt: imageAlt,
-  ogImageSecureUrl: '/og-image.png',
-  ogImageType: 'image/jpeg',
-  twitterCard: 'summary_large_image',
-  twitterUrl: url,
   twitterTitle: title,
   twitterDescription: description,
-  twitterImage: image,
   twitterImageAlt: imageAlt,
 });
 </script>
