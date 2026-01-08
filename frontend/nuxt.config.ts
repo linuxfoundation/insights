@@ -52,6 +52,11 @@ export default defineNuxtConfig({
     name: 'LFX Insights',
   },
   ogImage: {
+    compatibility: {
+      runtime: {
+        satori: 'wasm',
+      },
+    },
     fonts: [
       {
         name: 'Inter',
