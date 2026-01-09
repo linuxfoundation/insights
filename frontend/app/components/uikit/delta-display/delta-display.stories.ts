@@ -1,6 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import LfxDeltaDisplay from './delta-display.vue';
+import { FormatterUnits } from '~/components/shared/types/formatter.types';
 import type { Summary } from '~~/types/shared/summary.types';
 
 export default {
@@ -38,10 +39,10 @@ export default {
       description: 'Unit to display after the numeric values (e.g., "%", "ms", "K")',
       control: 'text',
     },
-    isDuration: {
-      description: 'Formats values as duration (e.g., "2h 30m")',
-      defaultValue: false,
-      control: 'boolean',
+    deltaUnit: {
+      description: 'Formats values as duration with a specific unit (e.g., "seconds", "minutes")',
+      control: 'select',
+      options: Object.values(FormatterUnits),
     },
     isShort: {
       description: 'Uses short number formatting (e.g., "1.2K" instead of "1,200")',
@@ -108,7 +109,7 @@ export const Reversed = {
 export const Duration = {
   args: {
     summary: createSummary(7200, 3600), // 2 hours vs 1 hour in seconds
-    isDuration: true,
+    deltaUnit: FormatterUnits.SECONDS,
     isReverse: false,
   },
 };

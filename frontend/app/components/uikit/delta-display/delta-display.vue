@@ -57,20 +57,19 @@ const deltaDirection = computed<'positive' | 'negative'>(() => {
   return value >= 0 ? 'positive' : 'negative';
 });
 
-// TODO: remove isDuration and use deltaUnit instead
 const delta = computed(() => {
   const value = props.summary.changeValue;
-  const changeDuration = formatSecondsToDuration(Math.abs(value), 'short');
+  const changeDuration = formatSecondsToDuration(Math.abs(value), 'short', props.deltaUnit);
   const changeValue = props.isShort ? formatNumberShort(value) : formatNumber(value, props.decimals || 1);
 
   const sign = value >= 0 ? '+' : '';
-  return sign + (props.isDuration ? changeDuration : changeValue);
+  return sign + (props.deltaUnit ? changeDuration : changeValue);
 });
 
 const deltaColor = computed(() => (deltaDirection.value === 'negative' ? 'text-negative-600' : 'text-positive-600'));
 
 const deltaDisplay = computed(() => {
-  const unit = props.isDuration ? '' : props.unit;
+  const unit = props.deltaUnit ? '' : props.unit;
   if (!props.percentageOnly) {
     return isHidePercentage.value ? `${delta.value}${unit || ''}` : `(${delta.value}${unit || ''})`;
   }
@@ -82,9 +81,9 @@ const deltaIcon = computed(() => (props.summary.changeValue < 0 ? 'circle-arrow-
 
 const previousDisplay = computed(() => {
   if (!props.hidePreviousValue) {
-    const unit = props.isDuration ? '' : props.unit;
-    const previousValue = props.isDuration
-      ? formatSecondsToDuration(props.summary.previous || 0, 'short')
+    const unit = props.deltaUnit ? '' : props.unit;
+    const previousValue = props.deltaUnit
+      ? formatSecondsToDuration(props.summary.previous || 0, 'short', props.deltaUnit)
       : formatNumber(props.summary.previous, props.percentageOnly ? 1 : props.decimals);
     return `${previousValue}${unit || ''}`;
   }
