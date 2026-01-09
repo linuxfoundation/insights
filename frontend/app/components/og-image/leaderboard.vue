@@ -5,7 +5,7 @@ SPDX-License-Identifier: MIT
 <template>
   <div style="width: 1200px; height: 630px; position: relative; display: flex">
     <img
-      src="/images/og-image/bg.svg"
+      src="/images/og-image/leaderboard.svg"
       alt=""
       style="position: absolute; top: 0; left: 0; width: 100%; height: 100%"
     />
