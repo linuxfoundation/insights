@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 import {
   type QueryFunction,
+  type InfiniteData,
   useInfiniteQuery,
   useQuery,
   useQueryClient,
@@ -29,25 +30,21 @@ class LeaderboardApiService {
       params.value.collectionSlug,
     ]);
 
-    const queryFn = computed<QueryFunction<Pagination<Leaderboard>>>(() =>
-      this.leaderboardDetailQueryFn(() => ({
-        leaderboardType: params.value.leaderboardType,
-        initialPageSize: params.value.initialPageSize,
-        search: params.value.search,
-        collectionSlug: params.value.collectionSlug,
-      })),
-    );
-
     return await queryClient.prefetchInfiniteQuery<
       Pagination<Leaderboard>,
       Error,
-      Pagination<Leaderboard>,
+      InfiniteData<Pagination<Leaderboard>>,
       readonly unknown[],
       number
     >({
       queryKey,
-      //@ts-expect-error - TanStack Query type inference issue with Vue
-      queryFn,
+      queryFn: (context) =>
+        this.leaderboardDetailQueryFn(() => ({
+          leaderboardType: params.value.leaderboardType,
+          initialPageSize: params.value.initialPageSize,
+          search: params.value.search,
+          collectionSlug: params.value.collectionSlug,
+        }))(context),
       getNextPageParam: this.getNextPageLeaderboardParam,
       initialPageParam: 0,
     });
@@ -71,25 +68,21 @@ class LeaderboardApiService {
       params.value.collectionSlug,
     ]);
 
-    const queryFn = computed<QueryFunction<Pagination<Leaderboard>>>(() =>
-      this.leaderboardDetailQueryFn(() => ({
-        leaderboardType: params.value.leaderboardType,
-        initialPageSize: params.value.initialPageSize,
-        search: params.value.search,
-        collectionSlug: params.value.collectionSlug,
-      })),
-    );
-
     return useInfiniteQuery<
       Pagination<Leaderboard>,
       Error,
-      Pagination<Leaderboard>,
+      InfiniteData<Pagination<Leaderboard>>,
       readonly unknown[],
       number
     >({
       queryKey,
-      //@ts-expect-error - TanStack Query type inference issue with Vue
-      queryFn,
+      queryFn: (context) =>
+        this.leaderboardDetailQueryFn(() => ({
+          leaderboardType: params.value.leaderboardType,
+          initialPageSize: params.value.initialPageSize,
+          search: params.value.search,
+          collectionSlug: params.value.collectionSlug,
+        }))(context),
       getNextPageParam: this.getNextPageLeaderboardParam,
       initialPageParam: 0,
     });
@@ -120,24 +113,20 @@ class LeaderboardApiService {
       params.value.search,
     ]);
 
-    const queryFn = computed<QueryFunction<Pagination<Leaderboard>>>(() =>
-      this.leaderboardDetailQueryFn(() => ({
-        leaderboardType: params.value.leaderboardType,
-        initialPageSize: 15,
-        search: params.value.search,
-      })),
-    );
-
     return useInfiniteQuery<
       Pagination<Leaderboard>,
       Error,
-      Pagination<Leaderboard>,
+      InfiniteData<Pagination<Leaderboard>>,
       readonly unknown[],
       number
     >({
       queryKey,
-      //@ts-expect-error - TanStack Query type inference issue with Vue
-      queryFn,
+      queryFn: (context) =>
+        this.leaderboardDetailQueryFn(() => ({
+          leaderboardType: params.value.leaderboardType,
+          initialPageSize: 15,
+          search: params.value.search,
+        }))(context),
       getNextPageParam: this.getNextPageLeaderboardParam,
       initialPageParam: 0,
       enabled: computed(() => !!params.value.search && params.value.search.trim().length > 0),

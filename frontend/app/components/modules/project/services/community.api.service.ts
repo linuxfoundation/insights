@@ -1,8 +1,12 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { computed, type ComputedRef } from 'vue';
-import type { QueryFunction } from '@tanstack/vue-query';
-import { useInfiniteQuery, useQueryClient } from '@tanstack/vue-query';
+import {
+  type QueryFunction,
+  type InfiniteData,
+  useInfiniteQuery,
+  useQueryClient,
+} from '@tanstack/vue-query';
 import type { Project } from '~~/types/project';
 import type { User } from '~~/types/auth/auth-user.types';
 import { TanstackKey } from '~/components/shared/types/tanstack';
@@ -33,19 +37,18 @@ class ProjectCommunityApiService {
       params.value.endDate,
     ]);
 
-    const queryFn = this.fetchCommunityMentionsQueryFn(() => ({
-      ...params.value,
-    }));
-
     return await queryClient.prefetchInfiniteQuery<
       Pagination<CommunityMentions>,
       Error,
-      Pagination<CommunityMentions>,
+      InfiniteData<Pagination<CommunityMentions>>,
       readonly unknown[],
       number
     >({
       queryKey,
-      queryFn,
+      queryFn: (context) =>
+        this.fetchCommunityMentionsQueryFn(() => ({
+          ...params.value,
+        }))(context),
       initialPageParam: 0,
       getNextPageParam: this.getNextPageCollectionsParam,
     });
@@ -69,22 +72,18 @@ class ProjectCommunityApiService {
       params.value.endDate,
     ]);
 
-    const queryFn = computed<QueryFunction<Pagination<CommunityMentions>>>(() =>
-      this.fetchCommunityMentionsQueryFn(() => ({
-        ...params.value,
-      })),
-    );
-
     return useInfiniteQuery<
       Pagination<CommunityMentions>,
       Error,
-      Pagination<CommunityMentions>,
+      InfiniteData<Pagination<CommunityMentions>>,
       readonly unknown[],
       number
     >({
       queryKey,
-      //@ts-expect-error - TanStack Query type inference issue with Vue
-      queryFn,
+      queryFn: (context) =>
+        this.fetchCommunityMentionsQueryFn(() => ({
+          ...params.value,
+        }))(context),
       getNextPageParam: this.getNextPageCollectionsParam,
       initialPageParam: 0,
     });
