@@ -18,7 +18,6 @@ SPDX-License-Identifier: MIT
         font-family: 'Inter', sans-serif;
         font-size: 20px;
         font-weight: 400;
-        letter-spacing: 10px;
         color: #002648;
         line-height: 32px;
         width: 807px;
