@@ -158,8 +158,7 @@ const {
 } = LEADERBOARD_API_SERVICE.fetchLeaderboardDetailSearch(searchParams);
 
 const items = computed(() => {
-  // @ts-expect-error - TanStack Query type inference issue with Vue
-  return searchData.value?.pages.flatMap((page: Pagination<Leaderboard>) => page.data) || [];
+  return searchData.value?.pages.flatMap((page) => page.data) || [];
 });
 
 const emit = defineEmits<{

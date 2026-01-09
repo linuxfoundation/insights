@@ -28,8 +28,6 @@ import { storeToRefs } from 'pinia';
 import LfxCommunityResultsArea from '../components/community/sections/results-area.vue';
 import LfxCommunityFilterArea from '../components/community/sections/filter-area.vue';
 import { PROJECT_COMMUNITY_API_SERVICE } from '~/components/modules/project/services/community.api.service';
-import type { CommunityMentions } from '~~/types/community/community';
-import type { Pagination } from '~~/types/shared/pagination';
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 import { useProjectStore } from '~~/app/components/modules/project/store/project.store';
@@ -58,8 +56,7 @@ const errorMessage = computed(() => {
 
 // Flatten all pages of data into a single array of mentions
 const mentions = computed(() => {
-  // @ts-expect-error - TanStack Query type inference issue with Vue
-  const tmpList = data.value?.pages.flatMap((page: Pagination<CommunityMentions>) => page.data) || [];
+  const tmpList = data.value?.pages.flatMap((page) => page.data) || [];
   return tmpList;
 });
 

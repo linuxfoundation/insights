@@ -94,7 +94,6 @@ import { LEADERBOARD_API_SERVICE } from '../../services/leaderboard.api.service'
 import LfxTableHeader from '../sections/table-header.vue';
 import type { Leaderboard } from '~~/types/leaderboard/leaderboard';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
-import type { Pagination } from '~~/types/shared/pagination';
 import { LfxRoutes } from '~/components/shared/types/routes';
 import { useBannerStore } from '~/components/shared/store/banner.store';
 
@@ -120,8 +119,7 @@ const { data, isPending, isFetchingNextPage, fetchNextPage, hasNextPage } =
   LEADERBOARD_API_SERVICE.fetchLeaderboardDetails(params);
 
 const items = computed(() => {
-  // @ts-expect-error - TanStack Query type inference issue with Vue
-  const tmpList = data.value?.pages.flatMap((page: Pagination<Leaderboard>) => page.data) || [];
+  const tmpList = data.value?.pages.flatMap((page) => page.data) || [];
 
   return tmpList;
 });
