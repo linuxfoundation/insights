@@ -18,7 +18,7 @@ SPDX-License-Identifier: MIT
           <lfx-delta-display
             v-if="selectedTimeRangeKey !== dateOptKeys.alltime"
             :summary="summary"
-            is-duration
+            :delta-unit="FormatterUnits.SECONDS"
             is-reverse
           />
         </div>
@@ -50,6 +50,7 @@ SPDX-License-Identifier: MIT
 import { useRoute } from 'nuxt/app';
 import { ref, computed, watch } from 'vue';
 import { storeToRefs } from 'pinia';
+import { FormatterUnits } from '~/components/shared/types/formatter.types';
 import type { MedianTimeToReview } from '~~/types/development/responses.types';
 import type { Summary } from '~~/types/shared/summary.types';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';

@@ -11,4 +11,7 @@ on:
 
 jobs:
   pr-title-lint:
+    permissions:
+      pull-requests: write
+      statuses: write
     uses: linuxfoundation/lfx-ui/.github/workflows/_pr-title-lint.yml@main
