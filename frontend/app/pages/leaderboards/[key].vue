@@ -14,5 +14,9 @@ import { computed } from 'vue';
 import LfxLeaderboardDetail from '~/components/modules/leaderboards/components/views/leaderboard-detail.vue';
 
 const route = useRoute();
-const leaderboardKey = computed(() => route.params.key as string);
+const leaderboardKey = computed<string>(() => route.params.key as string);
+
+defineOgImageComponent('leaderboard', {
+  leaderboardKey,
+});
 </script>
