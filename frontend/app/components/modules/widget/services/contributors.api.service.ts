@@ -1,6 +1,6 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import type { QueryFunction } from '@tanstack/vue-query';
+import { type QueryFunction, type InfiniteData } from '@tanstack/vue-query';
 import { type ComputedRef, computed } from 'vue';
 import { useInfiniteQuery, useQuery } from '@tanstack/vue-query';
 import { TanstackKey } from '~/components/shared/types/tanstack';
@@ -50,27 +50,30 @@ class ContributorsApiService {
       params.value.endDate,
       params.value.includeCollaborations,
     ]);
-    const queryFn = computed<QueryFunction<ContributorLeaderboard>>(() =>
-      this.contributorLeaderboardQueryFn(() => ({
-        projectSlug: params.value.projectSlug,
-        platform: params.value.platform,
-        activityType: params.value.activityType,
-        repos: params.value.repos,
-        startDate: params.value.startDate,
-        endDate: params.value.endDate,
-        includeCollaborations: params.value.includeCollaborations,
-      })),
-    );
-
-    return useInfiniteQuery<ContributorLeaderboard>({
+    return useInfiniteQuery<
+      ContributorLeaderboard,
+      Error,
+      InfiniteData<ContributorLeaderboard>,
+      readonly unknown[],
+      number
+    >({
       queryKey,
-      // @ts-expect-error - queryFn is a computed ref
-      queryFn,
+      queryFn: (context) =>
+        this.contributorLeaderboardQueryFn(() => ({
+          projectSlug: params.value.projectSlug,
+          platform: params.value.platform,
+          activityType: params.value.activityType,
+          repos: params.value.repos,
+          startDate: params.value.startDate,
+          endDate: params.value.endDate,
+          includeCollaborations: params.value.includeCollaborations,
+        }))(context),
       getNextPageParam: (lastPage) => {
         const nextPage = lastPage.meta.offset + lastPage.meta.limit;
         const totalRows = lastPage.meta.total;
         return nextPage < totalRows ? nextPage : undefined;
       },
+      initialPageParam: 0,
     });
   }
 
@@ -115,27 +118,30 @@ class ContributorsApiService {
       params.value.endDate,
       params.value.includeCollaborations,
     ]);
-    const queryFn = computed<QueryFunction<OrganizationLeaderboard>>(() =>
-      this.organizationLeaderboardQueryFn(() => ({
-        projectSlug: params.value.projectSlug,
-        platform: params.value.platform,
-        activityType: params.value.activityType,
-        repos: params.value.repos,
-        startDate: params.value.startDate,
-        endDate: params.value.endDate,
-        includeCollaborations: params.value.includeCollaborations,
-      })),
-    );
-
-    return useInfiniteQuery<OrganizationLeaderboard>({
+    return useInfiniteQuery<
+      OrganizationLeaderboard,
+      Error,
+      InfiniteData<OrganizationLeaderboard>,
+      readonly unknown[],
+      number
+    >({
       queryKey,
-      // @ts-expect-error - queryFn is a computed ref
-      queryFn,
+      queryFn: (context) =>
+        this.organizationLeaderboardQueryFn(() => ({
+          projectSlug: params.value.projectSlug,
+          platform: params.value.platform,
+          activityType: params.value.activityType,
+          repos: params.value.repos,
+          startDate: params.value.startDate,
+          endDate: params.value.endDate,
+          includeCollaborations: params.value.includeCollaborations,
+        }))(context),
       getNextPageParam: (lastPage) => {
         const nextPage = lastPage.meta.offset + lastPage.meta.limit;
         const totalRows = lastPage.meta.total;
         return nextPage < totalRows ? nextPage : undefined;
       },
+      initialPageParam: 0,
     });
   }
 
