@@ -99,7 +99,7 @@ const router = useRouter();
 const searchInputRef = ref(null);
 const search = ref('');
 
-const { project, selectedRepoSlugs, projectRepos, archivedRepos, excludedRepos } = storeToRefs(useProjectStore());
+const { selectedRepoSlugs, projectRepos, archivedRepos, excludedRepos } = storeToRefs(useProjectStore());
 
 interface RepositoryItem extends ProjectRepository {
   isExcluded: boolean;
@@ -114,14 +114,7 @@ const repositories = computed<RepositoryItem[]>(() =>
   })),
 );
 
-const isGitAndGerrit = computed(() => {
-  return (
-    project.value?.connectedPlatforms.some((platform) => platform.toLowerCase().includes('github')) &&
-    project.value?.connectedPlatforms.some((platform) => platform.toLowerCase().includes('gerrit'))
-  );
-});
-
-const reposNoSlashes = computed<RepositoryItem[]>(() =>
+const normalizedRepos = computed<RepositoryItem[]>(() =>
   repositories.value.map((repo) => ({
     ...repo,
     name: normalizeRepoName(repo),
@@ -130,21 +123,16 @@ const reposNoSlashes = computed<RepositoryItem[]>(() =>
 
 const result = computed<RepositoryItem[]>(() => {
   const seen = new Set<string>();
-  if (isGitAndGerrit.value) {
-    return reposNoSlashes.value
-      .filter((repo) => {
-        if (seen.has(repo.name)) {
-          return false;
-        }
-        seen.add(repo.name);
-        return true;
-      })
-      .filter((repository: RepositoryItem) => repository.name.toLowerCase().includes(search.value.toLowerCase()));
-  }
 
-  return repositories.value.filter((repository: ProjectRepository) =>
-    repository.name.toLowerCase().includes(search.value.toLowerCase()),
-  );
+  return normalizedRepos.value
+    .filter((repo) => {
+      if (seen.has(repo.name)) {
+        return false;
+      }
+      seen.add(repo.name);
+      return true;
+    })
+    .filter((repository: RepositoryItem) => repository.name.toLowerCase().includes(search.value.toLowerCase()));
 });
 
 const { list, containerProps, wrapperProps } = useVirtualList(result, {
@@ -153,9 +141,7 @@ const { list, containerProps, wrapperProps } = useVirtualList(result, {
 
 const handleReposChange = (repo: RepositoryItem) => {
   let repos: string[] = [];
-  const slugs: string[] = isGitAndGerrit.value
-    ? reposNoSlashes.value.filter((r) => r.name === repo.name).map((r) => r.slug)
-    : [repo.slug];
+  const slugs: string[] = normalizedRepos.value.filter((r) => r.name === repo.name).map((r) => r.slug);
   const isSelected = slugs.some((slug) => selectedRepoSlugs.value.includes(slug));
   if (isSelected) {
     repos = selectedRepoSlugs.value.filter((s) => !slugs.includes(s));

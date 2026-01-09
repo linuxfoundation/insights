@@ -27,7 +27,8 @@ export const isElementVisible = (element: HTMLElement) => {
 
 export const normalizeRepoName = (repo: ProjectRepository): string => {
   try {
-    const url = new URL(repo.url);
+    const cleanUrl = repo.url.replace('q/', '').replace('project:', '');
+    const url = new URL(cleanUrl);
     const pathParts = url.pathname.split('/').filter(Boolean);
 
     // GitHub URLs: return last 2 segments (owner/repo)
@@ -35,11 +36,8 @@ export const normalizeRepoName = (repo: ProjectRepository): string => {
       return pathParts.slice(-2).join('/');
     }
 
-    // Check for "project:" keyword in the path (e.g., gerrit URLs)
-    const projectKeywordPart = pathParts.find((part) => part.startsWith('project:'));
-    if (projectKeywordPart) {
-      // Extract everything after "project:" (e.g., "project:aaf/cadi" -> "aaf/cadi")
-      return projectKeywordPart.replace('project:', '');
+    if (pathParts.length > 2) {
+      return pathParts.slice(-2).join('/');
     }
 
     // Fallback: return repo name or last path segment

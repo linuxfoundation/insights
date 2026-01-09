@@ -269,7 +269,7 @@ const repoName = computed<string>(() => {
     return '';
   }
   if (reposNoDuplicates.value.length === 1) {
-    return reposNoDuplicates.value[0]!.name.split('/').at(-1) || '';
+    return reposNoDuplicates.value[0]!.name; //.split('/').at(-1) || '';
   }
   return `${reposNoDuplicates.value.length} repositories`;
 });
