@@ -11,20 +11,14 @@ SPDX-License-Identifier: MIT
         type="solid"
         :size="12"
         :class="getTrendColor"
+        :aria-label="getTrendAriaLabel"
       />
       <span
-        v-if="trendDirection !== 'neutral'"
-        class="text-xs font-medium text-nowrap"
+        class="text-xs font-medium truncate sm:text-nowrap"
         :class="getTrendColor"
       >
         {{ trendPercentage }}%
-        <span class="hidden sm:inline"> ({{ formatTrendValue }}) </span>
-      </span>
-      <span
-        v-else
-        class="text-xs font-medium text-neutral-400"
-      >
-        0%
+        <span class="hidden sm:inline">({{ formatTrendValue }}) </span>
       </span>
     </div>
   </lfx-tooltip>
@@ -74,9 +68,15 @@ const getTrendIcon = computed(() => {
 });
 
 const getTrendColor = computed(() => {
-  if (trendDirection.value === 'neutral') return 'text-neutral-400';
+  if (trendDirection.value === 'neutral') return 'text-neutral-600';
 
   return trendDirection.value === 'up' ? 'text-positive-600' : 'text-negative-600';
+});
+
+const getTrendAriaLabel = computed(() => {
+  if (trendDirection.value === 'neutral') return 'trend neutral';
+
+  return trendDirection.value === 'up' ? 'trend up' : 'trend down';
 });
 </script>
 
