@@ -1,7 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { computed } from 'vue';
-import type { QueryFunction } from '@tanstack/vue-query';
+import type { QueryFunction, InfiniteData } from '@tanstack/vue-query';
 import { useInfiniteQuery, useQuery } from '@tanstack/vue-query';
 import type { ExploreContributors } from '~~/types/explore/contributors';
 import { TanstackKey } from '~/components/shared/types/tanstack';
@@ -69,22 +69,21 @@ class ExploreApiService {
   fetchTopProjects(pageSize: number) {
     const queryKey = computed(() => [TanstackKey.TOP_PROJECTS, pageSize]);
 
-    const queryFn = computed<QueryFunction<Pagination<Project>>>(() =>
-      this.topProjectsQueryFn(() => ({
-        pageSize,
-      })),
-    );
-
-    return useInfiniteQuery<Pagination<Project>>({
+    return useInfiniteQuery<
+      Pagination<Project>,
+      Error,
+      InfiniteData<Pagination<Project>>,
+      readonly unknown[],
+      number
+    >({
       queryKey,
-      // TODO: fix this type error
-      // @ts-expect-error - queryFn is a computed ref
-      queryFn,
+      queryFn: (context) => this.topProjectsQueryFn(() => ({ pageSize }))(context),
       getNextPageParam: (lastPage) => {
         const nextPage = lastPage.page + 1;
         const totalPages = Math.ceil(lastPage.total / lastPage.pageSize);
         return nextPage < totalPages ? nextPage : undefined;
       },
+      initialPageParam: 0,
     });
   }
 
