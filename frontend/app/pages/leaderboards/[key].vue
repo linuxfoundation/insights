@@ -18,8 +18,8 @@ const route = useRoute();
 const leaderboardKey = computed<string>(() => route.params.key as string);
 const config = computed(() => leaderboardConfigs.find((c) => c.key === leaderboardKey.value));
 const title = computed(() => config.value?.name || 'Leaderboard');
-//
-// defineOgImageComponent('leaderboard', {
-//   leaderboardTitle: title,
-// });
+
+defineOgImageComponent('leaderboard', {
+  leaderboardTitle: title,
+});
 </script>

@@ -9,41 +9,42 @@ SPDX-License-Identifier: MIT
       alt=""
       style="position: absolute; top: 0; left: 0; width: 100%; height: 100%"
     />
-    <!--    &lt;!&ndash; Leaderboard Label &ndash;&gt;-->
-    <!--    <div-->
-    <!--      style="-->
-    <!--        position: absolute;-->
-    <!--        left: 80px;-->
-    <!--        top: 80px;-->
-    <!--        font-family: 'Inter', sans-serif;-->
-    <!--        font-size: 20px;-->
-    <!--        font-weight: 400;-->
-    <!--        color: #002648;-->
-    <!--        line-height: 32px;-->
-    <!--        width: 807px;-->
-    <!--      "-->
-    <!--    >-->
-    <!--      LEADERBOARD-->
-    <!--    </div>-->
+    <!-- Leaderboard Label -->
+    <div
+      style="
+        position: absolute;
+        left: 80px;
+        top: 80px;
+        font-family: 'Inter', sans-serif;
+        font-size: 20px;
+        font-weight: 400;
+        letter-spacing: 10px;
+        color: #002648;
+        line-height: 32px;
+        width: 807px;
+      "
+    >
+      LEADERBOARD
+    </div>
 
-    <!--    &lt;!&ndash; Main Title &ndash;&gt;-->
-    <!--    <div-->
-    <!--      style="-->
-    <!--        position: absolute;-->
-    <!--        left: 80px;-->
-    <!--        top: 136px;-->
-    <!--        width: 807px;-->
-    <!--        font-family: 'Roboto Slab', serif;-->
-    <!--        font-size: 56px;-->
-    <!--        font-weight: 300;-->
-    <!--        color: #0f172a;-->
-    <!--        line-height: 80px;-->
-    <!--      "-->
-    <!--    >-->
-    <!--      {{ leaderboardTitle }}-->
-    <!--    </div>-->
+    <!-- Main Title -->
+    <div
+      style="
+        position: absolute;
+        left: 80px;
+        top: 136px;
+        width: 807px;
+        font-family: 'Roboto Slab', serif;
+        font-size: 56px;
+        font-weight: 300;
+        color: #0f172a;
+        line-height: 80px;
+      "
+    >
+      {{ props.leaderboardTitle }}
+    </div>
 
-    <!--    &lt;!&ndash; LFX Insights Logo &ndash;&gt;-->
+    <!-- LFX Insights Logo -->
     <img
       src="/images/lfx-insights-logo.svg"
       alt="LFX Insights"
@@ -52,13 +53,13 @@ SPDX-License-Identifier: MIT
   </div>
 </template>
 
-<!--<script setup lang="ts">-->
-<!--const props = withDefaults(-->
-<!--  defineProps<{-->
-<!--    leaderboardTitle?: string;-->
-<!--  }>(),-->
-<!--  {-->
-<!--    leaderboardTitle: '',-->
-<!--  },-->
-<!--);-->
-<!--</script>-->
+<script setup lang="ts">
+const props = withDefaults(
+  defineProps<{
+    leaderboardTitle?: string;
+  }>(),
+  {
+    leaderboardTitle: '',
+  },
+);
+</script>
