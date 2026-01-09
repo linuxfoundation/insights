@@ -12,11 +12,14 @@ SPDX-License-Identifier: MIT
 import { useRoute } from 'nuxt/app';
 import { computed } from 'vue';
 import LfxLeaderboardDetail from '~/components/modules/leaderboards/components/views/leaderboard-detail.vue';
+import leaderboardConfigs from '~/components/modules/leaderboards/config/index.config';
 
 const route = useRoute();
 const leaderboardKey = computed<string>(() => route.params.key as string);
+const config = computed(() => leaderboardConfigs.find((c) => c.key === leaderboardKey.value));
+const title = computed(() => config.value?.name || 'Leaderboard');
 
 defineOgImageComponent('leaderboard', {
-  leaderboardKey,
+  leaderboardTitle: title,
 });
 </script>

@@ -3,7 +3,7 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div style="width: 1200px; height: 630px; position: relative">
+  <div style="width: 1200px; height: 630px; position: relative; display: flex">
     <img
       src="/images/og-image/leaderboard.svg"
       alt=""
@@ -18,9 +18,8 @@ SPDX-License-Identifier: MIT
         font-family: 'Inter', sans-serif;
         font-size: 20px;
         font-weight: 400;
-        color: #002648;
-        text-transform: uppercase;
         letter-spacing: 10px;
+        color: #002648;
         line-height: 32px;
         width: 807px;
       "
@@ -42,7 +41,7 @@ SPDX-License-Identifier: MIT
         line-height: 80px;
       "
     >
-      {{ title }}
+      {{ props.leaderboardTitle }}
     </div>
 
     <!-- LFX Insights Logo -->
@@ -55,19 +54,12 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
-import leaderboardConfigs from '~/components/modules/leaderboards/config/index.config';
-
 const props = withDefaults(
   defineProps<{
-    leaderboardKey?: string;
+    leaderboardTitle?: string;
   }>(),
   {
-    leaderboardKey: '',
+    leaderboardTitle: '',
   },
 );
-
-// Extract only serializable data
-const config = computed(() => leaderboardConfigs.find((c) => c.key === props.leaderboardKey));
-const title = computed(() => config.value?.name || 'Leaderboard');
 </script>
