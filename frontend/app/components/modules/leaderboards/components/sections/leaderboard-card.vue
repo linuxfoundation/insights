@@ -59,11 +59,10 @@ SPDX-License-Identifier: MIT
           :target="project.githubHandle ? '_blank' : undefined"
           :rel="project.githubHandle ? 'noopener noreferrer' : undefined"
           class="inline-block"
-          @click="!project.githubHandle && handleChipClick()"
         >
           <lfx-chip
             type="bordered"
-            class="transition hover:bg-neutral-100 cursor-pointer max-w-[350px]"
+            :class="['transition max-w-[350px]', project.githubHandle && 'hover:bg-neutral-100 cursor-pointer']"
           >
             <lfx-avatar
               :src="project.logoUrl"
@@ -123,10 +122,6 @@ const handleShare = () => {
     title,
     area: props.config?.name,
   });
-};
-
-const handleChipClick = () => {
-  router.push({ name: LfxRoutes.LEADERBOARD, params: { key: props.config.key as string } });
 };
 </script>
 <script lang="ts">
