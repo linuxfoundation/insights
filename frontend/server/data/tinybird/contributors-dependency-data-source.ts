@@ -68,6 +68,7 @@ export async function fetchContributorDependency(
       contributions: item.contributions,
       percentage: item.percentage,
       roles: item.roles || [],
+      githubHandle: item.githubHandle,
     })),
   };
 }
