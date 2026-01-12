@@ -34,6 +34,7 @@ export default defineNuxtConfig({
     '@nuxtjs/robots',
     '@nuxtjs/sitemap',
     '@nuxt/image',
+    'nuxt-og-image',
   ],
   image: {
     formats: ['webp', 'avif', 'jpeg', 'png'],
@@ -46,6 +47,34 @@ export default defineNuxtConfig({
       xl: 1280,
       '2xl': 1536,
     },
+  },
+  site: {
+    url: isProduction ? 'https://insights.linuxfoundation.org' : 'http://localhost:3000',
+    name: 'LFX Insights',
+  },
+  ogImage: {
+    fonts: [
+      {
+        name: 'Inter',
+        weight: 400,
+        path: '/fonts/Inter-Regular.ttf',
+      },
+      {
+        name: 'Roboto Slab',
+        weight: 300,
+        path: '/fonts/RobotoSlab-Light.ttf',
+      },
+      {
+        name: 'Roboto Slab',
+        weight: 400,
+        path: '/fonts/RobotoSlab-Regular.ttf',
+      },
+      {
+        name: 'Roboto Slab',
+        weight: 700,
+        path: '/fonts/RobotoSlab-Bold.ttf',
+      },
+    ],
   },
   plugins: ['~/plugins/vue-query.ts', '~/plugins/analytics.ts', '~/plugins/canonical.ts'],
   css: ['~/assets/styles/main.scss'],
@@ -157,6 +186,15 @@ export default defineNuxtConfig({
   },
   robots: {
     disallow: isProduction || isDevelopment ? [] : ['/'],
+  },
+  nitro: {
+    rollupConfig: {
+      external: [
+        // Externalize native modules to avoid bundling issues
+        '@resvg/resvg-js',
+        'yoga-layout-prebuilt',
+      ],
+    },
   },
   ...sitemap,
   ...caching,

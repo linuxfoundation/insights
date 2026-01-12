@@ -11,4 +11,5 @@ export type DeltaDisplayProps = {
   unit?: string;
   isDuration?: boolean;
   isShort?: boolean;
+  decimals?: number;
 };

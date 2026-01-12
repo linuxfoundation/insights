@@ -5,21 +5,28 @@ SPDX-License-Identifier: MIT
 <template>
   <section class="mt-5">
     <div class="mb-5">
+      <lfx-tabs
+        v-if="!isEmpty && !props.snapshot"
+        v-model="dataType"
+        :tabs="dataTypeTabs"
+        width-type="full"
+      />
+    </div>
+
+    <div class="flex justify-between items-center">
       <lfx-skeleton-state
         :status="status"
-        height="2rem"
+        height="2.75rem"
         width="7.5rem"
       >
         <div
           v-if="summary && !isEmpty"
           class="flex flex-row gap-4 items-center"
         >
-          <div class="text-data-display-1">{{ currentSummary }}</div>
+          <div class="text-data-display-1">{{ formatNumber(summary.current) }}</div>
           <lfx-delta-display
             v-if="selectedTimeRangeKey !== dateOptKeys.alltime"
             :summary="summary"
-            is-duration
-            is-reverse
           />
         </div>
       </lfx-skeleton-state>
@@ -28,12 +35,11 @@ SPDX-License-Identifier: MIT
     <lfx-project-load-state
       :status="status"
       :error="error"
-      error-message="Error fetching average time to merge"
+      error-message="Error fetching patchsets per review"
       :is-empty="isEmpty"
       use-min-height
-      :height="330"
     >
-      <div class="w-full h-[330px]">
+      <div class="w-full h-[330px] my-5">
         <lfx-chart
           :config="barChartConfig"
           :animation="!props.snapshot"
@@ -47,42 +53,44 @@ SPDX-License-Identifier: MIT
 import { useRoute } from 'nuxt/app';
 import { ref, computed, watch } from 'vue';
 import { storeToRefs } from 'pinia';
-import type { AverageTimeMerge } from '~~/types/development/responses.types';
+import type { PatchsetsPerReview } from '~~/types/development/responses.types';
 import type { Summary } from '~~/types/shared/summary.types';
 import LfxDeltaDisplay from '~/components/uikit/delta-display/delta-display.vue';
-import { convertToChartData } from '~/components/uikit/chart/helpers/chart-helpers';
+import LfxTabs from '~/components/uikit/tabs/tabs.vue';
+import { convertToChartData, markLastDataItem } from '~/components/uikit/chart/helpers/chart-helpers';
 import type { ChartData, RawChartData, ChartSeries } from '~/components/uikit/chart/types/ChartTypes';
 import LfxChart from '~/components/uikit/chart/chart.vue';
-import { getBarChartConfigCustom } from '~/components/uikit/chart/configs/bar.chart';
+import { getBarChartConfig } from '~/components/uikit/chart/configs/bar.chart';
 import { lfxColors } from '~/config/styles/colors';
+import { formatNumber } from '~/components/shared/utils/formatter';
 import { useProjectStore } from '~/components/modules/project/store/project.store';
 import { isEmptyData } from '~/components/shared/utils/helper';
 import { barGranularities } from '~/components/shared/types/granularity';
 import { dateOptKeys } from '~/components/modules/project/config/date-options';
 import { Granularity } from '~~/types/shared/granularity';
-import { formatSecondsToDuration } from '~/components/shared/utils/formatter';
 import LfxSkeletonState from '~/components/modules/project/components/shared/skeleton-state.vue';
 import LfxProjectLoadState from '~/components/modules/project/components/shared/load-state.vue';
 import { Widget } from '~/components/modules/widget/types/widget';
-import { minHours, maxHours } from '~/components/uikit/chart/configs/defaults.chart';
 import {
   DEVELOPMENT_API_SERVICE,
-  type QueryParams,
+  type PatchsetsPerReviewQueryParams,
 } from '~/components/modules/widget/services/development.api.service';
 import type { WidgetModel } from '~/components/modules/widget/config/widget.config';
 
-interface AverageTimeMergeModel extends WidgetModel {
+interface PatchsetsPerReviewModel extends WidgetModel {
   granularity: Granularity;
+  dataType: 'median' | 'average';
 }
 
 const props = defineProps<{
-  modelValue?: AverageTimeMergeModel;
+  modelValue?: PatchsetsPerReviewModel;
   snapshot?: boolean;
 }>();
 
 const emit = defineEmits<{
   (e: 'dataLoaded', value: string): void;
-  (e: 'update:modelValue', value: AverageTimeMergeModel): void;
+  (e: 'update:modelValue', value: PatchsetsPerReviewModel): void;
+  (e: 'hasData', value: boolean): void;
 }>();
 
 const { startDate, endDate, selectedReposValues, selectedTimeRangeKey, customRangeGranularity } =
@@ -90,41 +98,50 @@ const { startDate, endDate, selectedReposValues, selectedTimeRangeKey, customRan
 
 const route = useRoute();
 
+const dataTypeTabs = [
+  { value: 'median', label: 'Median' },
+  { value: 'average', label: 'Average' },
+];
+
+const dataType = ref<'median' | 'average'>(props.modelValue?.dataType || 'median');
+
 const granularity = computed(() =>
   selectedTimeRangeKey.value === dateOptKeys.custom
     ? (customRangeGranularity.value[0] as Granularity)
     : barGranularities[selectedTimeRangeKey.value as keyof typeof barGranularities],
 );
 
-const params = computed<QueryParams>(() => ({
+const params = computed<PatchsetsPerReviewQueryParams>(() => ({
   projectSlug: route.params.slug as string,
   granularity: granularity.value,
   repos: selectedReposValues.value,
   startDate: startDate.value,
   endDate: endDate.value,
+  dataType: dataType.value,
 }));
 
-const { data, status, error } = DEVELOPMENT_API_SERVICE.fetchAverageTimeMerge(params);
+const { data, status, error } = DEVELOPMENT_API_SERVICE.fetchPatchsetsPerReview(params);
 
-const averageTimeMerge = computed<AverageTimeMerge>(() => data.value as AverageTimeMerge);
+const patchsetsPerReview = computed<PatchsetsPerReview>(() => data.value as PatchsetsPerReview);
 
-const summary = computed<Summary>(() => averageTimeMerge.value.summary);
-const currentSummary = computed<string>(() => formatSecondsToDuration(summary.value?.current || 0, 'long'));
-const chartData = computed<ChartData[]>(
-  // convert the data to chart data
-  () =>
-    convertToChartData(
-      (averageTimeMerge.value?.data || []) as RawChartData[],
-      'startDate',
-      ['averageTime'],
-      undefined,
-      'endDate',
-    ).map(chartDataMapper),
-);
+const summary = computed<Summary | undefined>(() => {
+  return patchsetsPerReview.value?.summary;
+});
+
+const chartData = computed<ChartData[]>(() => {
+  const tmpData = convertToChartData(
+    (patchsetsPerReview.value?.data || []) as RawChartData[],
+    'startDate',
+    [dataType.value],
+    undefined,
+    'endDate',
+  );
+  return markLastDataItem(tmpData, granularity.value);
+});
 
 const chartSeries = ref<ChartSeries[]>([
   {
-    name: 'Average time',
+    name: dataType.value === 'median' ? 'Median patchsets' : 'Average patchsets',
     type: 'bar',
     yAxisIndex: 0,
     dataIndex: 0,
@@ -132,34 +149,18 @@ const chartSeries = ref<ChartSeries[]>([
     color: lfxColors.brand[500],
   },
 ]);
-const configOverride = computed(() => ({
-  yAxis: {
-    axisLabel: {
-      formatter: (value: number) => `${value === 0 ? '' : `${value}h`}`,
-    },
-    min: minHours,
-    max: maxHours,
-  },
-}));
 
 const barChartConfig = computed(() =>
-  getBarChartConfigCustom(chartData.value, chartSeries.value, {}, granularity.value, configOverride.value),
+  getBarChartConfig(chartData.value, chartSeries.value, granularity.value, false, 1),
 );
 
-const isEmpty = computed(() =>
-  isEmptyData((averageTimeMerge.value?.data || []) as unknown as Record<string, unknown>[]),
-);
-
-const chartDataMapper = (d: ChartData) => ({
-  ...d,
-  values: d.values.map((v) => Number(formatSecondsToDuration(v, 'no'))),
-});
+const isEmpty = computed(() => isEmptyData(chartData.value as unknown as Record<string, unknown>[]));
 
 watch(
   status,
   (value: string) => {
     if (value !== 'pending') {
-      emit('dataLoaded', Widget.AVERAGE_TIME_TO_MERGE);
+      emit('dataLoaded', Widget.PATCHSETS_PER_REVIEW);
     }
   },
   {
@@ -168,16 +169,30 @@ watch(
 );
 
 watch(
-  granularity,
-  (value: Granularity) => {
-    emit('update:modelValue', { granularity: value });
+  [granularity, dataType],
+  ([granularityValue, dataTypeValue]) => {
+    emit('update:modelValue', { ...props.modelValue, granularity: granularityValue, dataType: dataTypeValue });
   },
   { immediate: true },
 );
+
+watch(
+  isEmpty,
+  (value: boolean) => {
+    emit('hasData', !value);
+  },
+  {
+    immediate: true,
+  },
+);
+
+watch(dataType, () => {
+  chartSeries.value[0]!.name = dataType.value === 'median' ? 'Median patchsets' : 'Average patchsets';
+});
 </script>
 
 <script lang="ts">
 export default {
-  name: 'LfxProjectAverageTimeToMerge',
+  name: 'LfxProjectPatchsetsPerReview',
 };
 </script>

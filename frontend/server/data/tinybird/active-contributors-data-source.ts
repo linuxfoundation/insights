@@ -32,6 +32,8 @@ export type ActiveContributorsResponse = {
     periodFrom: DateTime; // Start of the period (e.g. last 90 days)
     periodTo: DateTime; // End of the period (e.g. last 90 days)
   };
+  maintainerCount: number;
+  reviewerCount: number;
   data: ActiveContributorsDataPoint[];
 };
 
@@ -95,6 +97,8 @@ export async function fetchActiveContributors(filter: ActiveContributorsFilter) 
   }
 
   const currentContributorCount = currentSummary.data[0].contributorCount;
+  const maintainerCount = currentSummary.data[0].maintainerCount;
+  const reviewerCount = currentSummary.data[0].reviewerCount;
   const previousContributorCount = previousSummary.data[0].contributorCount;
   const changeValue = currentContributorCount - previousContributorCount;
   let percentageChange = 0;
@@ -116,6 +120,8 @@ export async function fetchActiveContributors(filter: ActiveContributorsFilter) 
       periodFrom: dates.current.from,
       periodTo: dates.current.to,
     },
+    maintainerCount,
+    reviewerCount,
     data: processedData,
   };
 

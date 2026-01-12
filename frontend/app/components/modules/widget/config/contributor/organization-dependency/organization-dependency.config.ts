@@ -1,6 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import OrganizationsDependency from './organization-dependency.vue';
+import LfxWidgetFilterCollaboration from '~/components/modules/widget/components/shared/filter/filter-collaboration.vue';
 import type { WidgetConfig } from '~/components/modules/widget/config/widget.config';
 
 const organizationDependency: WidgetConfig = {
@@ -64,7 +65,7 @@ const organizationDependency: WidgetConfig = {
     icon: 'people-group',
     suggestions: 'Show me the organization dependency',
   },
-  showCollabToggle: true,
+  headerFilters: LfxWidgetFilterCollaboration,
 };
 
 export default organizationDependency;

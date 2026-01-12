@@ -1,33 +1,28 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { DateTime } from 'luxon';
-import type { WaitTimeFor1stReviewFilter } from '~~/server/data/types';
-import { createDataSource } from '~~/server/data/data-sources';
+import { PatchSetsFilter } from '~~/server/data/types';
 import { Granularity } from '~~/types/shared/granularity';
+import { createDataSource } from '~~/server/data/data-sources';
 
 /**
  * Frontend expects the data to be in the following format:
  * {
  *   summary: {
- *     current: number; // current value
- *     previous: number; // previous value
- *     percentageChange: number; // percentage change (return as actual percentage ex: 2.3 percent)
+ *     current: number; // current median/average patchsets
+ *     previous: number; // previous median/average patchsets
+ *     percentageChange: number; // percentage change
  *     changeValue: number; // change value
  *     periodFrom: string; // period from
  *     periodTo: string; // period to
  *   },
  *   data: {
- *     startDate: string; // ISO 8601 date string - start of the bucket. Based on the interval
- *     endDate: string; // ISO 8601 date string - end of the bucket. Based on the interval
- *     waitTime: number; // wait time in hours
+ *     startDate: string; // ISO 8601 date string
+ *     endDate: string; // ISO 8601 date string
+ *     median: number; // median patchsets per review
+ *     average: number; // average patchsets per review
  *   }[];
  * }
- */
-/**
- * Query params:
- * - project: string
- * - repository: string
- * - time-period: string // This is isn't defined yet, but we'll add '90d', '1y', '5y' for now
  */
 export default defineEventHandler(async (event) => {
   const query = getQuery(event);
@@ -36,15 +31,16 @@ export default defineEventHandler(async (event) => {
 
   const repos = Array.isArray(query.repos) ? query.repos : query.repos ? [query.repos] : undefined;
 
-  const filter: WaitTimeFor1stReviewFilter = {
+  const filter: PatchSetsFilter = {
     project,
     granularity: query.granularity as Granularity,
     repos,
+    dataType: query.dataType as string,
     startDate: query.startDate ? DateTime.fromISO(query.startDate as string) : undefined,
     endDate: query.endDate ? DateTime.fromISO(query.endDate as string) : undefined,
   };
 
   const dataSource = createDataSource();
 
-  return await dataSource.fetchWaitTimeFor1stReview(filter);
+  return await dataSource.fetchPatchsetsPerReview(filter);
 });
