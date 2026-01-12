@@ -15,9 +15,9 @@ import LfxWidgetArea from '~/components/modules/widget/components/shared/widget-
 import { lfxWidgets } from '~/components/modules/widget/config/widget.config';
 import type { Widget } from '~/components/modules/widget/types/widget';
 
-const { project } = storeToRefs(useProjectStore());
 const route = useRoute();
 const config = useRuntimeConfig();
+const { project } = storeToRefs(useProjectStore());
 
 const widget = route.query?.widget;
 
@@ -26,38 +26,36 @@ const title = computed(() => {
     widget && lfxWidgets[widget as Widget]?.name?.length ? lfxWidgets[widget as Widget]?.name : 'Popularity Insights';
   return widget ? `${project.value?.name} ${widgetName}` : `${project.value?.name} Popularity Insights`;
 });
-const imageAlt = computed(() => {
-  const widgetName = widget && lfxWidgets[widget as Widget]?.name?.length ? lfxWidgets[widget as Widget]?.name : '';
-  return `${project.value?.name} popularity insights${widgetName ? ` - ${widgetName}` : ''}`;
-});
 const description = computed(
   () =>
     `Explore ${project.value?.name} popularity with data on stars, forks, watchers, ` +
     `and adoption across the open source ecosystem.`,
 );
+
+const imageAlt = computed(() => `${project.value?.name} Popularity Insights - LFX Insights`);
 const url = computed(() => `${config.public.appUrl}${route.fullPath}`);
-const image = computed(() =>
-  project.value
-    ? `${config.public.appUrl}/api/seo/og-image?projectSlug=${project.value.slug}`
-    : `${config.public.appUrl}/default-og-image.jpg`,
-);
+
+const projectName = computed(() => project.value?.name || '');
+const projectDescription = computed(() => project.value?.description || '');
+const projectLogo = computed(() => project.value?.logo || '');
+
+defineOgImageComponent('project', {
+  projectName,
+  projectDescription,
+  repositoryName: '',
+  projectLogo,
+});
 
 useSeoMeta({
   title,
   description,
-  ogType: 'article',
+  ogType: 'website',
   ogUrl: url,
   ogTitle: title,
   ogDescription: description,
-  ogImage: image,
   ogImageAlt: imageAlt,
-  ogImageSecureUrl: '/og-image.png',
-  ogImageType: 'image/jpeg',
-  twitterCard: 'summary_large_image',
-  twitterUrl: url,
   twitterTitle: title,
   twitterDescription: description,
-  twitterImage: image,
   twitterImageAlt: imageAlt,
 });
 </script>

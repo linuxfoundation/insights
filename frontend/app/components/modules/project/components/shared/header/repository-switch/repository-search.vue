@@ -38,7 +38,7 @@ SPDX-License-Identifier: MIT
           :key="data.url"
           is-multi-select
           :selected="selectedRepoSlugs.includes(data.slug)"
-          @click="handleReposChange(data.slug)"
+          @click="handleReposChange(data)"
         >
           <div class="flex justify-between w-full">
             <div class="flex items-center gap-3">
@@ -87,6 +87,7 @@ import type { ProjectRepository } from '~~/types/project';
 import LfxProjectRepositorySwitchItem from '~/components/modules/project/components/shared/header/repository-switch/repository-switch-item.vue';
 import LfxArchivedTag from '~/components/shared/components/archived-tag.vue';
 import type { ProjectLinkConfig } from '~/components/modules/project/config/links';
+import { normalizeRepoName } from '~/components/shared/utils/helper';
 
 const props = defineProps<{
   link: ProjectLinkConfig;
@@ -113,22 +114,39 @@ const repositories = computed<RepositoryItem[]>(() =>
   })),
 );
 
-const result = computed<RepositoryItem[]>(() =>
-  repositories.value.filter((repository: ProjectRepository) =>
-    repository.name.toLowerCase().includes(search.value.toLowerCase()),
-  ),
+const normalizedRepos = computed<RepositoryItem[]>(() =>
+  repositories.value.map((repo) => ({
+    ...repo,
+    name: normalizeRepoName(repo),
+  })),
 );
+
+const result = computed<RepositoryItem[]>(() => {
+  const seen = new Set<string>();
+
+  return normalizedRepos.value
+    .filter((repo) => {
+      if (seen.has(repo.name)) {
+        return false;
+      }
+      seen.add(repo.name);
+      return true;
+    })
+    .filter((repository: RepositoryItem) => repository.name.toLowerCase().includes(search.value.toLowerCase()));
+});
 
 const { list, containerProps, wrapperProps } = useVirtualList(result, {
   itemHeight: 40,
 });
 
-const handleReposChange = (slug: string) => {
-  let repos = [];
-  if (selectedRepoSlugs.value.includes(slug)) {
-    repos = selectedRepoSlugs.value.filter((s) => s !== slug);
+const handleReposChange = (repo: RepositoryItem) => {
+  let repos: string[] = [];
+  const slugs: string[] = normalizedRepos.value.filter((r) => r.name === repo.name).map((r) => r.slug);
+  const isSelected = slugs.some((slug) => selectedRepoSlugs.value.includes(slug));
+  if (isSelected) {
+    repos = selectedRepoSlugs.value.filter((s) => !slugs.includes(s));
   } else {
-    repos = [...selectedRepoSlugs.value, slug];
+    repos = [...selectedRepoSlugs.value, ...slugs];
   }
   const routeQuery = route.query;
   if (repos.length === 1) {

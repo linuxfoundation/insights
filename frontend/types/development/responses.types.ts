@@ -17,15 +17,6 @@ export interface ActiveDays {
   }[];
 }
 
-export interface AverageTimeMerge {
-  summary: Summary;
-  data: {
-    startDate: string;
-    endDate: string;
-    averageTime: number;
-  }[];
-}
-
 export interface CodeReviewEngagementPRParticipantsItem {
   avatar: string;
   name: string;
@@ -121,12 +112,41 @@ export interface ReviewTimeByPrItem {
   averageReviewTimeUnit: string;
 }
 
-export interface WaitTime1stReview {
+export interface MedianTimeToClose {
   summary: Summary;
   data: {
     startDate: string;
     endDate: string;
-    waitTime: number;
+    medianTime: number;
+  }[];
+}
+
+export interface MedianTimeToReview {
+  summary: Summary;
+  data: {
+    startDate: string;
+    endDate: string;
+    medianTime: number;
+  }[];
+}
+
+export interface PatchsetsPerReview {
+  summary: Summary;
+  data: {
+    startDate: string;
+    endDate: string;
+    median: number;
+    average: number;
+  }[];
+}
+
+export interface ReviewEfficiency {
+  summary: Summary;
+  data: {
+    startDate: string;
+    endDate: string;
+    opened: number;
+    closed: number;
   }[];
 }
 

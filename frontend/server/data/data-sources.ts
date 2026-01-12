@@ -14,12 +14,14 @@ import type {
   RetentionFilter,
   ActivityCountFilter,
   ActiveDaysFilter,
-  WaitTimeFor1stReviewFilter,
-  AverageTimeToMergeFilter,
   MergeLeadTimeFilter,
   ReviewTimeByPRSizeFilter,
   PackageFilter,
   PackageMetricsFilter,
+  PatchSetsFilter,
+  MedianTimeToCloseFilter,
+  MedianTimeToReviewFilter,
+  ReviewEfficiencyFilter,
 } from '~~/server/data/types';
 import type { ActiveContributorsResponse } from '~~/server/data/tinybird/contributors/active-contributors';
 import type { ActiveOrganizationsResponse } from '~~/server/data/tinybird/contributors/active-organizations';
@@ -39,8 +41,10 @@ import { fetchStarsActivities } from '~~/server/data/tinybird/popularity/stars';
 import { fetchIssuesResolution } from '~~/server/data/tinybird/development/issues-resolution';
 import { fetchPullRequests } from '~~/server/data/tinybird/development/pull-requests';
 import { fetchReviewTimeByPRSize } from '~~/server/data/tinybird/development/review-time-by-pr-size';
-import { fetchAverageTimeToMerge } from '~~/server/data/tinybird/development/average-time-to-merge';
-import { fetchWaitTimeFor1stReview } from '~~/server/data/tinybird/development/wait-time-for-1st-review';
+import { fetchMedianTimeToClose } from '~~/server/data/tinybird/development/median-time-to-close';
+import { fetchMedianTimeToReview } from '~~/server/data/tinybird/development/median-time-to-review';
+import { fetchPatchsetsPerReview } from '~~/server/data/tinybird/development/patchsets-per-review';
+import { fetchReviewEfficiency } from '~~/server/data/tinybird/development/review-efficiency';
 import { fetchMergeLeadTime } from '~~/server/data/tinybird/development/merge-lead-time';
 import { fetchActiveDays } from '~~/server/data/tinybird/development/active-days';
 import { fetchCodeReviewEngagement } from '~~/server/data/tinybird/development/code-review-engagement';
@@ -61,10 +65,12 @@ import type {
 import type {
   ActiveDays,
   IssuesResolution,
+  MedianTimeToClose,
+  MedianTimeToReview,
+  PatchsetsPerReview,
   PullRequests,
+  ReviewEfficiency,
   ReviewTimeByPrItem,
-  AverageTimeMerge,
-  WaitTime1stReview,
   MergeLeadTime,
   CodeReviewEngagement,
   ContributionOutsideHours,
@@ -113,8 +119,10 @@ export interface DataSource {
   fetchCommitActivities: (filter: ActivityCountFilter) => Promise<CommitActivities>;
   fetchPullRequests: (filter: ActivityCountFilter) => Promise<PullRequests>;
   fetchReviewTimeByPRSize: (filter: ReviewTimeByPRSizeFilter) => Promise<ReviewTimeByPrItem[]>;
-  fetchAverageTimeToMerge: (filter: AverageTimeToMergeFilter) => Promise<AverageTimeMerge>;
-  fetchWaitTimeFor1stReview: (filter: WaitTimeFor1stReviewFilter) => Promise<WaitTime1stReview>;
+  fetchMedianTimeToClose: (filter: MedianTimeToCloseFilter) => Promise<MedianTimeToClose>;
+  fetchMedianTimeToReview: (filter: MedianTimeToReviewFilter) => Promise<MedianTimeToReview>;
+  fetchPatchsetsPerReview: (filter: PatchSetsFilter) => Promise<PatchsetsPerReview>;
+  fetchReviewEfficiency: (filter: ReviewEfficiencyFilter) => Promise<ReviewEfficiency>;
   fetchMergeLeadTime: (filter: MergeLeadTimeFilter) => Promise<MergeLeadTime>;
   fetchActiveDays: (filter: ActiveDaysFilter) => Promise<ActiveDays>;
   fetchCodeReviewEngagement: (filter: CodeReviewEngagementFilter) => Promise<CodeReviewEngagement>;
@@ -142,8 +150,10 @@ export function createDataSource(): DataSource {
     fetchIssuesResolution,
     fetchCommitActivities,
     fetchPullRequests,
-    fetchAverageTimeToMerge,
-    fetchWaitTimeFor1stReview,
+    fetchMedianTimeToClose,
+    fetchMedianTimeToReview,
+    fetchPatchsetsPerReview,
+    fetchReviewEfficiency,
     fetchMergeLeadTime,
     fetchActiveDays,
     fetchReviewTimeByPRSize,

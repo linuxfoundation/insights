@@ -42,8 +42,14 @@ SPDX-License-Identifier: MIT
       </div>
     </div>
     <div class="pt-5">
+      <component
+        :is="widgetConfig?.snapshotHeaderComponent"
+        v-if="widgetConfig?.snapshotHeaderComponent"
+        :data="props.data"
+        :config="config"
+      />
       <h2
-        v-if="config?.name"
+        v-else-if="config?.name"
         class="text-heading-2 font-bold font-secondary"
       >
         {{ config?.name }}

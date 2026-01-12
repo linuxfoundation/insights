@@ -13,7 +13,6 @@ export default {
           '/api/health': { cache: false },
           '/api/chat/**': { cache: false },
           '/api/health/live': { cache: false },
-          '/api/seo/og-image': { cache: false },
           '/api/report': { cache: false },
           '/api/community/list': { cache: { maxAge: longCache, base: 'redis' } },
           '/api/community/**': { cache: false },

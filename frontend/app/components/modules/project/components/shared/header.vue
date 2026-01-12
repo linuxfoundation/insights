@@ -5,7 +5,7 @@ SPDX-License-Identifier: MIT
 <template>
   <lfx-maintain-height
     :scroll-top="scrollTop"
-    :class="scrollTop > 0 ? 'fixed top-14 lg:top-17' : 'relative'"
+    :class="scrollTop > 0 ? ['fixed', ...headerTopClass].join(' ') : 'relative'"
     class="z-10 w-full"
     :loaded="pageWidth > 0"
   >
@@ -222,12 +222,16 @@ import { useAuthStore } from '~/components/modules/auth/store/auth.store';
 import { useCopilotStore } from '~/components/shared/modules/copilot/store/copilot.store';
 import LfxTag from '~/components/uikit/tag/tag.vue';
 import { useCommunityStore } from '~/components/modules/project/components/community/store/community.store';
+import { useBannerStore } from '~/components/shared/store/banner.store';
+import { normalizeRepoName } from '~/components/shared/utils/helper';
 
 const props = defineProps<{
   project?: Project;
 }>();
 
 const route = useRoute();
+
+const { headerTopClass } = storeToRefs(useBannerStore());
 
 const {
   projectRepos,
@@ -246,16 +250,28 @@ const { openCommunityFilterModal } = useCommunityStore();
 const { hasLfxInsightsPermission } = storeToRefs(useAuthStore());
 
 const repos = computed<ProjectRepository[]>(() =>
-  projectRepos.value.filter((repo) => selectedRepoSlugs.value.includes(repo.slug)),
+  projectRepos.value
+    .filter((repo) => selectedRepoSlugs.value.includes(repo.slug))
+    .map((repo) => {
+      return {
+        ...repo,
+        name: normalizeRepoName(repo),
+      };
+    }),
 );
+
+const reposNoDuplicates = computed<ProjectRepository[]>(() => {
+  return repos.value.filter((repo, index, self) => index === self.findIndex((t) => t.name === repo.name));
+});
+
 const repoName = computed<string>(() => {
-  if (repos.value.length === 0) {
+  if (reposNoDuplicates.value.length === 0) {
     return '';
   }
-  if (repos.value.length === 1) {
-    return repos.value[0]!.name.split('/').at(-1) || '';
+  if (reposNoDuplicates.value.length === 1) {
+    return reposNoDuplicates.value[0]!.name; //.split('/').at(-1) || '';
   }
-  return `${repos.value.length} repositories`;
+  return `${reposNoDuplicates.value.length} repositories`;
 });
 
 const archivedRepoLabel = computed<string>(() => {
