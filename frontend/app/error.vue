@@ -56,7 +56,7 @@ const props = defineProps<{
 
 const route = useRoute();
 const { pageWidth } = useResponsive();
-
+import { computed } from 'vue'
 const notFound = computed(() => props.error?.statusCode === 404);
 
 watch(route, () => {
