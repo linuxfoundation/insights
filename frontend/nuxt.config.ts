@@ -185,6 +185,15 @@ export default defineNuxtConfig({
   robots: {
     disallow: isProduction || isDevelopment ? [] : ['/'],
   },
+  nitro: {
+    rollupConfig: {
+      external: [
+        // Externalize native modules to avoid bundling issues
+        '@resvg/resvg-js',
+        'yoga-layout-prebuilt',
+      ],
+    },
+  },
   ...sitemap,
   ...caching,
 });

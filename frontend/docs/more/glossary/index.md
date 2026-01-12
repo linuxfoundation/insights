@@ -4,11 +4,11 @@ Important terms of LFX Insighs, alphabetically sorted
 
 ## Code contribution activity
 
-An activity, performed by an individual, that is counted as Code contribution. Code contributions reflect meaningful technical and community-driven impact, they represent direct work that adds code or technical value to a project. This includes commits, pull requests, code reviews, and related technical activities. A list of all Code contribution activities can be found [here](https://github.com/linuxfoundation/insights/blob/main/frontend/docs/introduction/contributions/index.md#tracked-code-contribution-types).
+An activity, performed by an individual, that is counted as Code contribution. Code contributions reflect meaningful technical and community-driven impact, they represent direct work that adds code or technical value to a project. This includes commits, pull requests, code reviews, and related technical activities. A list of all Code contribution activities can be found [here](../../introduction/contributions/index.md#tracked-code-contribution-types).
 
 ## Collaboration activity
 
-An activity, performed by an individual, that is counted as Collaboration. Collaborations signal engagement or coordination rather than direct contributions, they capture non-code activities that support the project, including discussions, documentation, planning, and community engagement. A list of all Collaboration activities can be found [here](https://github.com/linuxfoundation/insights/blob/main/frontend/docs/introduction/contributions/index.md#tracked-collaboration-types).
+An activity, performed by an individual, that is counted as Collaboration. Collaborations signal engagement or coordination rather than direct contributions, they capture non-code activities that support the project, including discussions, documentation, planning, and community engagement. A list of all Collaboration activities can be found [here](../../introduction/contributions/index.md#tracked-collaboration-types).
 
 ## Collection
 
