@@ -1,7 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 
-import { getCookie } from 'h3';
+import { getCookie, getHeader } from 'h3'; // FIX : getHeader was used but never imported
 import jwt from 'jsonwebtoken';
 import type { DecodedOidcToken } from '~~/types/auth/auth-jwt.types';
 
