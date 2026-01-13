@@ -19,6 +19,9 @@ SPDX-License-Identifier: MIT
           :manual-input="false"
           :max-date="new Date()"
           :pt="{
+            title: {
+              class: '!gap-1',
+            },
             selectMonth: {
               disabled: false,
               class: 'p-button p-button-pill p-button-tertiary',
@@ -38,6 +41,9 @@ SPDX-License-Identifier: MIT
           :manual-input="false"
           :max-date="new Date()"
           :pt="{
+            title: {
+              class: '!gap-1',
+            },
             selectMonth: {
               disabled: false,
               class: 'p-button p-button-pill p-button-tertiary',
@@ -52,12 +58,14 @@ SPDX-License-Identifier: MIT
       <div class="flex justify-end gap-4 pt-6">
         <lfx-button
           type="tertiary"
+          button-style="pill"
           @click="isModalOpen = false"
         >
           Cancel
         </lfx-button>
         <lfx-button
           :disabled="!dateRange || !dateRange[0] || !dateRange[1]"
+          button-style="pill"
           @click="select()"
         >
           Apply
