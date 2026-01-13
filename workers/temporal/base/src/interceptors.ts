@@ -67,7 +67,10 @@ export class WorkflowMonitoringInterceptor implements WorkflowInboundCallsInterc
       const result = await next(input)
       return result
     } catch (err) {
-      if (err.message !== 'Workflow continued as new') {
+      // Type guard to ensure err is an Error object
+      const error = err instanceof Error ? err : new Error(String(err))
+
+      if (error.message !== 'Workflow continued as new') {
         // Only send detailed notification if it's an activity that reached retry limit
         if (err instanceof ActivityFailure && err.retryState === 'MAXIMUM_ATTEMPTS_REACHED') {
           const errorDetails = getActivityRetryLimitDetails(err)
@@ -76,7 +79,7 @@ export class WorkflowMonitoringInterceptor implements WorkflowInboundCallsInterc
           await activity.slackNotify(message, SLACK_PERSONA_ERROR_REPORTER)
         } else {
           // For other errors, send a simpler notification
-          const message = `*Workflow Failed*\n\n*Workflow:* \`${info.workflowType}\`\n*Workflow ID:* \`${info.workflowId}\`\n*Run ID:* \`${info.runId}\`\n*Error:* ${err.message}`
+          const message = `*Workflow Failed*\n\n*Workflow:* \`${info.workflowType}\`\n*Workflow ID:* \`${info.workflowId}\`\n*Run ID:* \`${info.runId}\`\n*Error:* ${error.message}`
 
           await activity.slackNotify(message, SLACK_PERSONA_ERROR_REPORTER)
         }
