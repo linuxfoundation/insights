@@ -16,10 +16,9 @@ import { lfxWidgets } from '~/components/modules/widget/config/widget.config';
 import type { Widget } from '~/components/modules/widget/types/widget';
 
 const route = useRoute();
-const slug = route.params.slug as string;
+const config = useRuntimeConfig();
 const { project, selectedRepositoryGroup } = storeToRefs(useProjectStore());
 const widget = route.query?.widget;
-const config = useRuntimeConfig();
 
 const title = computed(() => {
   const widgetName =
@@ -29,42 +28,39 @@ const title = computed(() => {
     : `${selectedRepositoryGroup.value?.name} Repositories Contributors | LFX Insights`;
 });
 
-const imageAlt = computed(
-  () =>
-    `${project?.value?.name} ${selectedRepositoryGroup.value?.name} contributor insights${
-      widget && lfxWidgets[widget as Widget]?.name?.length ? ` - ${lfxWidgets[widget as Widget]?.name}` : ''
-    }`,
-);
-
 const description = computed(
   () =>
     `See who contributes to ${project?.value?.name} ${selectedRepositoryGroup.value?.name}, ` +
     `with insights on maintainers, top contributors, and organizations in open source.`,
 );
+
+const imageAlt = computed(() => `${selectedRepositoryGroup.value?.name} Repositories Contributors - LFX Insights`);
 const url = computed(() => `${config.public.appUrl}${route.fullPath}`);
-const image = computed(
-  () =>
-    `${config.public.appUrl}/api/seo/og-image?projectSlug=${slug}&repositoryGroupSlug=${
-      selectedRepositoryGroup.value?.slug
-    }`,
+
+const projectName = computed(() => project.value?.name || '');
+const projectDescription = computed(
+  () => project.value?.description || 'See contributor activity, code changes, and development trends over time.',
 );
+const repositoryName = computed(() => selectedRepositoryGroup.value?.name || '');
+const projectLogo = computed(() => project.value?.logo || '');
+
+defineOgImageComponent('project', {
+  projectName,
+  projectDescription,
+  repositoryName,
+  projectLogo,
+});
 
 useSeoMeta({
   title,
   description,
-  ogType: 'article',
+  ogType: 'website',
   ogUrl: url,
   ogTitle: title,
   ogDescription: description,
-  ogImage: image,
   ogImageAlt: imageAlt,
-  ogImageSecureUrl: '/og-image.png',
-  ogImageType: 'image/jpeg',
-  twitterCard: 'summary_large_image',
-  twitterUrl: url,
   twitterTitle: title,
   twitterDescription: description,
-  twitterImage: image,
   twitterImageAlt: imageAlt,
 });
 </script>
