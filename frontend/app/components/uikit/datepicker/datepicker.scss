@@ -116,3 +116,15 @@
     @apply basis-1/2;
   }
 }
+
+.custom-inline-datepicker {
+  .p-datepicker-month-view,
+  .p-datepicker-year-view {
+    @apply flex-col;
+
+    .p-datepicker-month,
+    .p-datepicker-year {
+      @apply rounded-full;
+    }
+  }
+}
