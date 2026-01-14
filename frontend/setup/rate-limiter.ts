@@ -23,7 +23,7 @@ const rateLimiterConfig: RateLimiterConfig = {
   secret: process.env.NUXT_RATE_LIMITER_SECRET || 'this is a random secret string for hashing ips',
 
   // Redis database number to use for rate limiting
-  redisDatabase: parseInt(process.env.NUXT_RATE_LIMITER_REDIS_DB, 10),
+  redisDatabase: parseInt(process.env.NUXT_RATE_LIMITER_REDIS_DB || '1', 10),
 
   // Route-specific rules
   rules: [
