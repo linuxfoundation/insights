@@ -45,11 +45,11 @@ export async function fetchContributorsLeaderboard(
     fetchFromTinybird<TinybirdCountData[]>('/v0/pipes/contributors_leaderboard.json', countQuery),
   ]);
 
-  // Aggregate data by displayName
+  // Aggregate data by id
   const aggregatedData = new Map<string, Contributor>();
 
   dataResponse.data.forEach((item) => {
-    const existing = aggregatedData.get(item.displayName);
+    const existing = aggregatedData.get(item.id);
 
     if (existing) {
       existing.contributions += item.contributionCount;
@@ -58,7 +58,7 @@ export async function fetchContributorsLeaderboard(
       const combinedRoles = [...(existing.roles || []), ...(item.roles || [])];
       existing.roles = [...new Set(combinedRoles)];
     } else {
-      aggregatedData.set(item.displayName, {
+      aggregatedData.set(item.id, {
         id: item.id,
         avatar: item.avatar,
         name: item.displayName,

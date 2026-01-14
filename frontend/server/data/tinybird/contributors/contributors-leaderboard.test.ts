@@ -90,7 +90,7 @@ describe('Contributors Leaderboard Data Source', () => {
     expect(result).toEqual(expectedResult);
   });
 
-  test('should aggregate contributors with the same display name', async () => {
+  test('should not aggregate contributors with different IDs', async () => {
     // We have to import this here again because vi.doMock is not hoisted.
     const { fetchContributorsLeaderboard } = await import(
       '~~/server/data/tinybird/contributors/contributors-leaderboard'
@@ -139,20 +139,25 @@ describe('Contributors Leaderboard Data Source', () => {
 
     const result = await fetchContributorsLeaderboard(filter);
 
-    // Expect 'Duplicate User' to be aggregated
-    const aggregatedUser = result.data.find((c) => c.name === 'Duplicate User');
-    expect(aggregatedUser).toBeDefined();
-    expect(aggregatedUser?.contributions).toBe(150); // 100 + 50
-    expect(aggregatedUser?.percentage).toBe(1.5); // 1 + 0.5
-    expect(aggregatedUser?.roles).toContain('role1');
-    expect(aggregatedUser?.roles).toContain('role2');
-    
+    // Expect 'Duplicate User' NOT to be aggregated, but appear twice
+    const user1 = result.data.find((c) => c.githubHandle === 'gh1');
+    expect(user1).toBeDefined();
+    expect(user1?.name).toBe('Duplicate User');
+    expect(user1?.contributions).toBe(100);
+    expect(user1?.roles).toEqual(['role1']);
+
+    const user2 = result.data.find((c) => c.githubHandle === 'gh2');
+    expect(user2).toBeDefined();
+    expect(user2?.name).toBe('Duplicate User');
+    expect(user2?.contributions).toBe(50);
+    expect(user2?.roles).toEqual(['role2']);
+
     // Expect unique user to remain
     const uniqueUser = result.data.find((c) => c.name === 'Unique User');
     expect(uniqueUser).toBeDefined();
     expect(uniqueUser?.contributions).toBe(200);
 
-    // Total should be 2 (one aggregated, one unique)
-    expect(result.data.length).toBe(2);
+    // Total should be 3
+    expect(result.data.length).toBe(3);
   });
 });
