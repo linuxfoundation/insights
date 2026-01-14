@@ -6,6 +6,9 @@ import { mostActiveContributorsConfig } from './most-active-contributors.config'
 import { mostActiveOrganizationsConfig } from './most-active-organizations.config';
 // import { longestRunningConfig } from './longest-running.config';
 import { commitActivityConfig } from './commit-activity.config';
+import { starsConfig } from './stars.config';
+import { forksConfig } from './forks.config';
+// import { packageDownloadsConfig } from './package-downloads.config';
 import { focusedTeamsConfig } from './focused-teams.config';
 import { smallTeamsMassiveOutputConfig } from './small-teams-massive-output.config';
 import { codebaseSizeConfig } from './codebase-size.config';
@@ -21,6 +24,9 @@ const leaderboardConfigs: LeaderboardConfig[] = [
   mostActiveContributorsConfig,
   mostActiveOrganizationsConfig,
   commitActivityConfig,
+  starsConfig,
+  forksConfig,
+  // packageDownloadsConfig,
   // longestRunningConfig,
   codebaseSizeConfig,
   fastestRespondersConfig,

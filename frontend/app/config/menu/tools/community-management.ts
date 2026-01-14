@@ -3,8 +3,8 @@
 import type { ToolsItem } from '~/config/menu/tools';
 
 const communityManagement: ToolsItem = {
-  name: 'Community Management',
-  description: 'Community data management platform',
+  name: 'Community Data Platform',
+  description: 'Collect and manage community data',
   icon: 'users',
   link: 'https://cm.lfx.dev',
 };

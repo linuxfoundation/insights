@@ -8,6 +8,7 @@ import primevue from './setup/primevue';
 import echarts from './setup/echarts';
 import caching from './setup/caching';
 import sitemap from './setup/sitemap';
+import rateLimiter from './setup/rate-limiter';
 
 const isProduction = process.env.NUXT_APP_ENV === 'production';
 const isDevelopment = process.env.NODE_ENV === 'development';
@@ -33,6 +34,7 @@ export default defineNuxtConfig({
     '@nuxtjs/robots',
     '@nuxtjs/sitemap',
     '@nuxt/image',
+    'nuxt-og-image',
   ],
   image: {
     formats: ['webp', 'avif', 'jpeg', 'png'],
@@ -46,13 +48,41 @@ export default defineNuxtConfig({
       '2xl': 1536,
     },
   },
+  site: {
+    url: isProduction ? 'https://insights.linuxfoundation.org' : 'http://localhost:3000',
+    name: 'LFX Insights',
+  },
+  ogImage: {
+    fonts: [
+      {
+        name: 'Inter',
+        weight: 400,
+        path: '/fonts/Inter-Regular.ttf',
+      },
+      {
+        name: 'Roboto Slab',
+        weight: 300,
+        path: '/fonts/RobotoSlab-Light.ttf',
+      },
+      {
+        name: 'Roboto Slab',
+        weight: 400,
+        path: '/fonts/RobotoSlab-Regular.ttf',
+      },
+      {
+        name: 'Roboto Slab',
+        weight: 700,
+        path: '/fonts/RobotoSlab-Bold.ttf',
+      },
+    ],
+  },
   plugins: ['~/plugins/vue-query.ts', '~/plugins/analytics.ts', '~/plugins/canonical.ts'],
   css: ['~/assets/styles/main.scss'],
   tailwindcss,
   primevue,
   echarts,
   runtimeConfig: {
-    // These are are only available on the server-side and can be overridden by the .env file
+    // These are only available on the server-side and can be overridden by the .env file
     appEnv: process.env.APP_ENV,
     tinybirdBaseUrl: 'https://api.us-west-2.aws.tinybird.co',
     tinybirdToken: '',
@@ -79,6 +109,7 @@ export default defineNuxtConfig({
     cmDbPassword: 'example',
     cmDbDatabase: 'crowd-web',
     dataCopilotDefaultSegmentId: '',
+    rateLimiter: rateLimiter,
     // These are also exposed on the client-side
     public: {
       apiBase: '/api',
@@ -155,6 +186,15 @@ export default defineNuxtConfig({
   },
   robots: {
     disallow: isProduction || isDevelopment ? [] : ['/'],
+  },
+  nitro: {
+    rollupConfig: {
+      external: [
+        // Externalize native modules to avoid bundling issues
+        '@resvg/resvg-js',
+        'yoga-layout-prebuilt',
+      ],
+    },
   },
   ...sitemap,
   ...caching,

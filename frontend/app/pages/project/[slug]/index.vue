@@ -17,35 +17,35 @@ const { project } = storeToRefs(useProjectStore());
 const config = useRuntimeConfig();
 
 const title = computed(() => (project.value ? `${project.value.name} Insights` : 'LFX Insights'));
-const imageAlt = computed(() => (project.value ? `${project.value.name} insights` : 'LFX Project insights'));
 const description = computed(() =>
   project.value
     ? project.value.description || `Explore ${project.value.name} insights`
     : 'Explore LFX Project insights',
 );
+const imageAlt = computed(() => (project.value ? `${project.value.name} insights` : 'LFX Project insights'));
 const url = computed(() => `${config.public.appUrl}${route.fullPath}`);
-const image = computed(() =>
-  project.value
-    ? `${config.public.appUrl}/api/seo/og-image?projectSlug=${project.value.slug}`
-    : `${config.public.appUrl}/default-og-image.jpg`,
-);
+
+const projectName = computed(() => project.value?.name || '');
+const projectDescription = computed(() => project.value?.description || '');
+const projectLogo = computed(() => project.value?.logo || '');
+
+defineOgImageComponent('project', {
+  projectName,
+  projectDescription,
+  repositoryName: '',
+  projectLogo,
+});
 
 useSeoMeta({
   title,
   description,
-  ogType: 'article',
+  ogType: 'website',
   ogUrl: url,
   ogTitle: title,
   ogDescription: description,
-  ogImage: image,
   ogImageAlt: imageAlt,
-  ogImageSecureUrl: image,
-  ogImageType: 'image/jpeg',
-  twitterCard: 'summary_large_image',
-  twitterUrl: url,
   twitterTitle: title,
   twitterDescription: description,
-  twitterImage: image,
   twitterImageAlt: imageAlt,
 });
 </script>

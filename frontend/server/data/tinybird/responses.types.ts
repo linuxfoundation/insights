@@ -23,6 +23,7 @@ export type TinybirdContributorsLeaderboardData = {
   contributionCount: number;
   contributionPercentage: number;
   roles: string[];
+  githubHandle?: string;
 };
 
 export type TinybirdCountData = {

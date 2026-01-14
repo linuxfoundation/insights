@@ -111,6 +111,8 @@ SPDX-License-Identifier: MIT
 
     <lfx-project-custom-date-range-picker
       v-model="isCustomSelectorOpen"
+      :initial-start-date="startDate"
+      :initial-end-date="endDate"
       @select="changeSelected($event)"
     />
   </div>

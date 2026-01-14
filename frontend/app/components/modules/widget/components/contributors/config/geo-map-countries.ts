@@ -161,6 +161,7 @@ export const geoMapCountries = [
   { name: 'Tajikistan', value: 0, emoji: '🇹🇯' },
   { name: 'Turkmenistan', value: 0, emoji: '🇹🇲' },
   { name: 'East Timor', value: 0, emoji: '🇹🇱' },
+  { name: 'Taiwan', value: 0, emoji: '🇹🇼' },
   { name: 'Trinidad and Tobago', value: 0, emoji: '🇹🇹' },
   { name: 'Tunisia', value: 0, emoji: '🇹🇳' },
   { name: 'Turkey', value: 0, emoji: '🇹🇷' },
