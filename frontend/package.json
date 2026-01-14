@@ -39,6 +39,7 @@
     "@pinia/nuxt": "^0.11.2",
     "@popperjs/core": "^2.11.8",
     "@primevue/themes": "^4.4.1",
+    "@redis/client": "^5.9.0",
     "@tanstack/vue-query": "^5.90.5",
     "@types/jsonwebtoken": "^9.0.10",
     "@vuelidate/core": "^2.0.3",

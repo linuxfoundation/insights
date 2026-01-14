@@ -53,6 +53,9 @@ importers:
       '@primevue/themes':
         specifier: ^4.4.1
         version: 4.4.1
+      '@redis/client':
+        specifier: ^5.9.0
+        version: 5.10.0
       '@tanstack/vue-query':
         specifier: ^5.90.5
         version: 5.90.5(vue@3.5.22(typescript@5.9.3))
@@ -2092,6 +2095,10 @@ packages:
   '@primevue/themes@4.4.1':
     resolution: {integrity: sha512-3qofw+UhTG5rZXUU+RtYY1ea5Q84LvfHtDuzFLUSK9pL1SLS+S4CBnoMuVM9I009FdVyNGT0Bib3sLMf21SBVQ==}
     engines: {node: '>=12.11.0'}
+
+  '@redis/client@5.10.0':
+    resolution: {integrity: sha512-JXmM4XCoso6C75Mr3lhKA3eNxSzkYi3nCzxDIKY+YOszYsJjuKbFgVtguVPbLMOttN4iu2fXoc2BGhdnYhIOxA==}
+    engines: {node: '>= 18'}
 
   '@resvg/resvg-js-android-arm-eabi@2.6.2':
     resolution: {integrity: sha512-FrJibrAk6v29eabIPgcTUMPXiEz8ssrAk7TXxsiZzww9UTQ1Z5KAbFJs+Z0Ez+VZTYgnE5IQJqBcoSiMebtPHA==}
@@ -11128,6 +11135,10 @@ snapshots:
     dependencies:
       '@primeuix/styled': 0.7.4
       '@primeuix/themes': 1.2.5
+
+  '@redis/client@5.10.0':
+    dependencies:
+      cluster-key-slot: 1.1.2
 
   '@resvg/resvg-js-android-arm-eabi@2.6.2':
     optional: true
