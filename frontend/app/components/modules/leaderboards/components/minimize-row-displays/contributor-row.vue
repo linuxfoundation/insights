@@ -3,7 +3,7 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 
-<!-- 
+<!--
   This component is used to display a contributor row in a leaderboard table row.
   It is used to display the contributor name, rank, and value in a leaderboard table row.
  -->
@@ -17,12 +17,40 @@ SPDX-License-Identifier: MIT
         type="member"
         :aria-label="item.logoUrl && item.name"
       />
-      <p
-        :title="item.name"
-        class="text-base leading-5 font-medium text-neutral-900 overflow-hidden text-ellipsis whitespace-nowrap max-w-full"
-      >
-        {{ item.name }}
-      </p>
+
+      <lfx-tooltip :disabled="!item.githubHandle">
+        <template
+          v-if="item.githubHandle"
+          #content
+        >
+          <a
+            :href="`https://github.com/${item.githubHandle}`"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="flex items-center gap-1 text-white"
+          >
+            <lfx-icon
+              name="github"
+              type="brands"
+              :size="14"
+            />
+            <span class="text-xs font-semibold">{{ item.githubHandle }}</span>
+            <lfx-icon
+              name="arrow-up-right-from-square"
+              type="regular"
+              :size="14"
+              class="text-neutral-400"
+            />
+          </a>
+        </template>
+        <p
+          :title="item.name"
+          class="text-base leading-5 font-medium text-neutral-900 overflow-hidden text-ellipsis whitespace-nowrap max-w-full"
+          :class="item.githubHandle ? 'hover:underline' : ''"
+        >
+          {{ item.name }}
+        </p>
+      </lfx-tooltip>
     </div>
 
     <!-- Stats -->
@@ -39,6 +67,8 @@ import type { LeaderboardConfig } from '../../config/types/leaderboard.types';
 import NumericDataDisplay from '../data-displays/numeric.vue';
 import type { Leaderboard } from '~~/types/leaderboard/leaderboard';
 import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
+import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 
 defineProps<{
   item: Leaderboard;

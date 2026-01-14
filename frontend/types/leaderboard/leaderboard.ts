@@ -11,6 +11,7 @@ export interface LeaderboardBase {
   value: number;
   previousPeriodValue: number;
   collectionsSlugs: string[];
+  githubHandle?: string;
 }
 
 export interface Leaderboard extends LeaderboardBase {
