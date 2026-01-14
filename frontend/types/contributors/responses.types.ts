@@ -28,6 +28,7 @@ export interface Contributor {
   contributions: number;
   percentage?: number;
   roles?: string[];
+  githubHandle?: string;
 }
 
 export interface Organization {

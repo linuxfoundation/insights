@@ -51,21 +51,28 @@ SPDX-License-Identifier: MIT
         />
       </div>
       <div class="flex flex-wrap gap-3 sm:hidden">
-        <lfx-chip
+        <component
+          :is="project.githubHandle ? 'a' : 'div'"
           v-for="project of leaderboards"
           :key="project.slug"
-          type="bordered"
-          class="transition hover:bg-neutral-100 cursor-pointer max-w-[350px]"
-          @click.prevent="router.push({ name: LfxRoutes.LEADERBOARD, params: { key: config.key as string } })"
+          :href="project.githubHandle ? `https://github.com/${project.githubHandle}` : undefined"
+          :target="project.githubHandle ? '_blank' : undefined"
+          :rel="project.githubHandle ? 'noopener noreferrer' : undefined"
+          class="inline-block"
         >
-          <lfx-avatar
-            :src="project.logoUrl"
-            size="xsmall"
-            type="organization"
-            :aria-label="project.logoUrl && project.name"
-          />
-          <span class="truncate min-w-0 w-full">{{ project.name }}</span>
-        </lfx-chip>
+          <lfx-chip
+            type="bordered"
+            :class="['transition max-w-[350px]', project.githubHandle && 'hover:bg-neutral-100 cursor-pointer']"
+          >
+            <lfx-avatar
+              :src="project.logoUrl"
+              size="xsmall"
+              type="organization"
+              :aria-label="project.logoUrl && project.name"
+            />
+            <span class="truncate min-w-0 w-full">{{ project.name }}</span>
+          </lfx-chip>
+        </component>
       </div>
     </div>
     <lfx-button

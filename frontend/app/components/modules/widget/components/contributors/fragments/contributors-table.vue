@@ -41,12 +41,39 @@ SPDX-License-Identifier: MIT
             type="member"
             :aria-label="contributor.avatar && contributor.name"
           />
-          <div
-            class="text-ellipsis overflow-hidden no-underline"
-            :title="contributor.name"
-          >
-            {{ contributor.name }}
-          </div>
+          <lfx-tooltip :disabled="!contributor.githubHandle">
+            <template
+              v-if="contributor.githubHandle"
+              #content
+            >
+              <a
+                :href="`https://github.com/${contributor.githubHandle}`"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="flex items-center gap-1 text-white"
+              >
+                <lfx-icon
+                  name="github"
+                  type="brands"
+                  :size="14"
+                />
+                <span class="text-xs font-semibold">{{ contributor.githubHandle }}</span>
+                <lfx-icon
+                  name="arrow-up-right-from-square"
+                  type="regular"
+                  :size="14"
+                  class="text-neutral-400"
+                />
+              </a>
+            </template>
+            <div
+              class="text-ellipsis overflow-hidden no-underline"
+              :title="contributor.name"
+              :class="contributor.githubHandle ? 'hover:underline' : ''"
+            >
+              {{ contributor.name }}
+            </div>
+          </lfx-tooltip>
           <lfx-tag
             v-if="contributor.roles?.includes('maintainer')"
             size="small"
@@ -93,6 +120,8 @@ import { formatNumber } from '~/components/shared/utils/formatter';
 import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 import { isElementVisible } from '~/components/shared/utils/helper';
 import LfxTag from '~/components/uikit/tag/tag.vue';
+import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 
 const emit = defineEmits<{ (e: 'loadMore'): void }>();
 
