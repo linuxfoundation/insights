@@ -75,6 +75,11 @@ export default defineNuxtConfig({
         path: '/fonts/RobotoSlab-Bold.ttf',
       },
     ],
+    compatibility: {
+      runtime: {
+        resvg: 'wasm',
+      },
+    },
   },
   plugins: ['~/plugins/vue-query.ts', '~/plugins/analytics.ts', '~/plugins/canonical.ts'],
   css: ['~/assets/styles/main.scss'],
