@@ -23,6 +23,11 @@ export default defineEventHandler(async (event: H3Event) => {
   const config = useRuntimeConfig();
   const rateLimiterConfig = config.rateLimiter as RateLimiterConfig;
 
+  // Skip rate limiting if Redis URL is not configured
+  if (!config.redisUrl) {
+    return;
+  }
+
   // getRedisClient memoizes the client instance, so it's not a problem to call it multiple times.
   const redisClient = await getRedisClient(config.redisUrl, rateLimiterConfig.redisDatabase, true);
 

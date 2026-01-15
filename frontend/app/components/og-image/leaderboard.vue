@@ -5,7 +5,7 @@ SPDX-License-Identifier: MIT
 <template>
   <div style="width: 1200px; height: 630px; position: relative; display: flex">
     <img
-      src="/images/og-image/leaderboard.svg"
+      src="/images/og-image/leaderboard.png"
       alt=""
       style="position: absolute; top: 0; left: 0; width: 100%; height: 100%"
     />
@@ -18,13 +18,12 @@ SPDX-License-Identifier: MIT
         font-family: 'Inter', sans-serif;
         font-size: 20px;
         font-weight: 400;
-        letter-spacing: 10px;
         color: #002648;
         line-height: 32px;
         width: 807px;
       "
     >
-      LEADERBOARD
+      L E A D E R B O A R D
     </div>
 
     <!-- Main Title -->
@@ -46,7 +45,7 @@ SPDX-License-Identifier: MIT
 
     <!-- LFX Insights Logo -->
     <img
-      src="/images/lfx-insights-logo.svg"
+      src="/images/og-image/lfx-insights-logo.png"
       alt="LFX Insights"
       style="position: absolute; left: 80px; top: 472px; width: 352px; height: 48px"
     />
