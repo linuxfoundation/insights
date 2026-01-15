@@ -142,7 +142,9 @@ watch(
   () => route.fullPath,
   async () => {
     setTimeout(() => {
-      window.scrollTo({ top: 0, behavior: 'instant' });
+      if (window) {
+        window.scrollTo({ top: 0, behavior: 'instant' });
+      }
     }, 100);
   },
   { immediate: true },
