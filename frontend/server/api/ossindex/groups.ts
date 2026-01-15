@@ -42,7 +42,8 @@ export default defineEventHandler(async (event): Promise<OSSIndexCategoryGroup[]
         };
       }),
       topProjects: item.topProjects.map((project) => {
-        const [id, count, name, logo, softwareValue, avgScore, healthScore, description] = project;
+        const [id, count, name, logo, softwareValue, avgScore, healthScore, description, status] =
+          project;
         return {
           id: id as string,
           count: count as number,
@@ -52,6 +53,7 @@ export default defineEventHandler(async (event): Promise<OSSIndexCategoryGroup[]
           softwareValue: softwareValue as number,
           avgScore: avgScore as number,
           healthScore: healthScore as number,
+          status: status as string,
         };
       }),
     }));

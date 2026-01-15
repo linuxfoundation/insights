@@ -18,4 +18,5 @@ export interface OSSIndexTopProject {
   softwareValue: number;
   avgScore: number;
   healthScore: number;
+  status: string;
 }

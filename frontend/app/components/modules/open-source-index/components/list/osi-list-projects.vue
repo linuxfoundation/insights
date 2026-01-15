@@ -56,9 +56,17 @@ SPDX-License-Identifier: MIT
                 :aria-label="project.logo && project.name"
               />
               <div>
-                <h6 class="text-sm font-semibold">
-                  {{ project.name }}
-                </h6>
+                <div class="flex items-center gap-2">
+                  <h6 class="text-sm font-semibold">
+                    {{ project.name }}
+                  </h6>
+                  <lfx-archived-tag
+                    v-if="project.status === 'archived'"
+                    :archived="true"
+                    label="Archived"
+                    type="project"
+                  />
+                </div>
                 <p
                   v-if="project.description"
                   class="text-xs text-neutral-500 mt-0.5 line-clamp-2"
@@ -138,6 +146,7 @@ import LfxHealthScore from '~/components/shared/components/health-score.vue';
 import { LfxRoutes } from '~/components/shared/types/routes';
 import LfxButton from '~/components/uikit/button/button.vue';
 import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
+import LfxArchivedTag from '~/components/shared/components/archived-tag.vue';
 
 const props = defineProps<{
   sort: string;

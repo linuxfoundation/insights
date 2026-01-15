@@ -39,6 +39,13 @@ SPDX-License-Identifier: MIT
                 >
                   {{ props.project?.name }}
                 </h1>
+                <lfx-archived-tag
+                  v-if="props.project?.status === 'archived'"
+                  :archived="true"
+                  label="Archived"
+                  type="project"
+                  class="mr-3"
+                />
                 <span
                   v-if="(props.project?.repositories?.length ?? 0) > 0"
                   class="mr-1 text-neutral-400 font-secondary leading-8 ease-linear transition-all text-2xl"
@@ -198,7 +205,7 @@ SPDX-License-Identifier: MIT
 
 <script lang="ts" setup>
 import { useRoute } from 'nuxt/app';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import pluralize from 'pluralize';
 import type { Project, ProjectRepository } from '~~/types/project';
