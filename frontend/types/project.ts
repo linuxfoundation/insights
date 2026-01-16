@@ -41,6 +41,7 @@ export interface Project {
   communityPlatforms: string[];
   communityKeywords: string[];
   communityLanguages: string[];
+  status: string;
 }
 
 export interface ProjectLanguage {

@@ -9,6 +9,7 @@ export interface SearchProject {
   name: string;
   slug: string;
   logo: string | null;
+  status: string;
 }
 
 export interface SearchRepository {

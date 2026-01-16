@@ -12,6 +12,7 @@ export interface SearchResponse {
   name: string | null;
   archived: boolean | null;
   excluded: boolean | null;
+  status: string;
 }
 
 /**
@@ -64,6 +65,7 @@ export default defineEventHandler(async (event) => {
             name: item.name as string,
             slug: item.slug,
             logo: item.logo,
+            status: item.status,
           });
         } else if (item.type === 'repository') {
           const name = getRepoNameFromUrl(item.slug);

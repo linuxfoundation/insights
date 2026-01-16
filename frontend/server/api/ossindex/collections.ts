@@ -50,8 +50,18 @@ export default defineEventHandler(async (event): Promise<OSSIndexCategoryDetails
     const collections = res.data.map((item) => ({
       ...item,
       topProjects: item.topProjects.map((project) => {
-        const [id, count, name, logo, softwareValue, avgScore, healthScore, description, slug] =
-          project;
+        const [
+          id,
+          count,
+          name,
+          logo,
+          softwareValue,
+          avgScore,
+          healthScore,
+          description,
+          slug,
+          status,
+        ] = project;
         return {
           id: id as string,
           count: count as number,
@@ -62,6 +72,7 @@ export default defineEventHandler(async (event): Promise<OSSIndexCategoryDetails
           softwareValue: softwareValue as number,
           avgScore: avgScore as number,
           healthScore: healthScore as number,
+          status: status as string,
         };
       }),
     }));

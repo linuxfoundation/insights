@@ -31,17 +31,26 @@ SPDX-License-Identifier: MIT
           v-for="project of props.projects"
           :key="project.slug"
           :to="{ name: LfxRoutes.PROJECT, params: { slug: project.slug } }"
-          class="px-3 py-2 rounded-md transition-all hover:bg-neutral-50 flex items-center gap-2 cursor-pointer text-sm text-neutral-900"
+          class="px-3 py-2 rounded-md transition-all hover:bg-neutral-50 flex justify-between cursor-pointer text-sm text-neutral-900"
           :external="((route.name as string) || '').includes('repository')"
         >
-          <lfx-avatar
-            :src="project.logo || ''"
-            size="xsmall"
-            type="organization"
-            class="!rounded-sm !outline-1"
-            :aria-label="project.logo && project.name"
+          <span class="flex items-center gap-2">
+            <lfx-avatar
+              :src="project.logo || ''"
+              size="xsmall"
+              type="organization"
+              class="!rounded-sm !outline-1"
+              :aria-label="project.logo && project.name"
+            />
+            {{ project.name }}
+          </span>
+
+          <lfx-archived-tag
+            v-if="project.status === 'archived'"
+            :archived="true"
+            label="Archived"
+            type="project"
           />
-          {{ project.name }}
         </nuxt-link>
       </section>
       <section

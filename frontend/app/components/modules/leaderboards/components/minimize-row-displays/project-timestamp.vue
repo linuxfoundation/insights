@@ -24,6 +24,12 @@ SPDX-License-Identifier: MIT
       >
         {{ item.name }}
       </p>
+      <lfx-archived-tag
+        v-if="item.status === 'archived'"
+        :archived="true"
+        label="Archived"
+        type="project"
+      />
     </div>
 
     <!-- Stats -->
@@ -42,6 +48,7 @@ import TimestampDataDisplay from '../data-displays/timestamp.vue';
 import type { Leaderboard } from '~~/types/leaderboard/leaderboard';
 import LfxOrganizationLogo from '~/components/uikit/organization-logo/organization-logo.vue';
 import { LfxRoutes } from '~/components/shared/types/routes';
+import LfxArchivedTag from '~/components/shared/components/archived-tag.vue';
 
 const router = useRouter();
 
