@@ -23,9 +23,8 @@ describe('Review Time By PR Size Data Source', () => {
 
   test('should fetch review time by PR size data with correct parameters', async () => {
     // We have to import this here again because vi.doMock is not hoisted. See the explanation in beforeEach().
-    const { fetchReviewTimeByPRSize } = await import(
-      '~~/server/data/tinybird/development/review-time-by-pr-size'
-    );
+    const { fetchReviewTimeByPRSize } =
+      await import('~~/server/data/tinybird/development/review-time-by-pr-size');
 
     mockFetchFromTinybird.mockResolvedValueOnce(mockReviewTimeByPRSizeData);
 
