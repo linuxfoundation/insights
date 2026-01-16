@@ -72,7 +72,7 @@ export async function fetchContributorsLeaderboard(
 
   // Convert aggregation back to array and sort by contributions (descending)
   const sortedData = Array.from(aggregatedData.values()).sort(
-    (a, b) => b.contributions - a.contributions
+    (a, b) => b.contributions - a.contributions,
   );
 
   return {

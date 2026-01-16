@@ -28,9 +28,8 @@ describe('Contributors Leaderboard Data Source', () => {
 
   test('should fetch contributors leaderboard data with correct parameters', async () => {
     // We have to import this here again because vi.doMock is not hoisted. See the explanation in beforeEach().
-    const { fetchContributorsLeaderboard } = await import(
-      '~~/server/data/tinybird/contributors/contributors-leaderboard'
-    );
+    const { fetchContributorsLeaderboard } =
+      await import('~~/server/data/tinybird/contributors/contributors-leaderboard');
 
     mockFetchFromTinybird
       .mockResolvedValueOnce(mockTimeseries)
@@ -92,9 +91,8 @@ describe('Contributors Leaderboard Data Source', () => {
 
   test('should aggregate contributors with the same display name', async () => {
     // We have to import this here again because vi.doMock is not hoisted.
-    const { fetchContributorsLeaderboard } = await import(
-      '~~/server/data/tinybird/contributors/contributors-leaderboard'
-    );
+    const { fetchContributorsLeaderboard } =
+      await import('~~/server/data/tinybird/contributors/contributors-leaderboard');
 
     const duplicateData = {
       ...mockTimeseries,
@@ -129,7 +127,9 @@ describe('Contributors Leaderboard Data Source', () => {
       ],
     };
 
-    mockFetchFromTinybird.mockResolvedValueOnce(duplicateData).mockResolvedValueOnce(mockContributorsLeaderboardCount);
+    mockFetchFromTinybird
+      .mockResolvedValueOnce(duplicateData)
+      .mockResolvedValueOnce(mockContributorsLeaderboardCount);
 
     const filter: ContributorsLeaderboardFilter = {
       project: 'test-project',
@@ -146,7 +146,7 @@ describe('Contributors Leaderboard Data Source', () => {
     expect(aggregatedUser?.percentage).toBe(1.5); // 1 + 0.5
     expect(aggregatedUser?.roles).toContain('role1');
     expect(aggregatedUser?.roles).toContain('role2');
-    
+
     // Expect unique user to remain
     const uniqueUser = result.data.find((c) => c.name === 'Unique User');
     expect(uniqueUser).toBeDefined();
