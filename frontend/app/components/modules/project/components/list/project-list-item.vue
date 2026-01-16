@@ -16,12 +16,20 @@ SPDX-License-Identifier: MIT
           'opacity-50': projectNotOnboarded,
         }"
       >
-        <lfx-organization-logo
-          :src="props.project.logo || ''"
-          size="large"
-          :is-lf="props.project.isLF"
-          :alt="props.project.name"
-        />
+        <div class="flex items-start justify-between">
+          <lfx-organization-logo
+            :src="props.project.logo || ''"
+            size="large"
+            :is-lf="props.project.isLF"
+            :alt="props.project.name"
+          />
+          <lfx-archived-tag
+            v-if="props.project.status === 'archived'"
+            :archived="true"
+            label="Archived"
+            type="project"
+          />
+        </div>
         <h3 class="text-heading-3 font-bold font-secondary pt-4 line-clamp-1">
           {{ props.project.name }}
         </h3>
@@ -99,6 +107,7 @@ import LfxTag from '~/components/uikit/tag/tag.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import { LfxRoutes } from '~/components/shared/types/routes';
 import LfxOrganizationLogo from '~/components/uikit/organization-logo/organization-logo.vue';
+import LfxArchivedTag from '~/components/shared/components/archived-tag.vue';
 
 const props = defineProps<{
   project: Project;

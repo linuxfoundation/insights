@@ -7,16 +7,28 @@ SPDX-License-Identifier: MIT
     placement="top"
     trigger-event="hover"
   >
-    <lfx-tag size="small">
+    <lfx-tag
+      size="small"
+      :type="props.type === 'repository' ? 'solid' : 'outline'"
+      :class="props.type === 'repository' ? '' : '!border-neutral-400 !px-1.5 !py-0.5'"
+    >
       <lfx-icon
-        v-if="archived"
+        v-if="props.type === 'repository' && archived"
         name="archive"
         :size="12"
       />
-      <span class="text-nowrap">{{ label }}</span>
+      <span
+        class="text-nowrap"
+        :class="props.type === 'repository' ? '' : '!text-neutral-400 font-semibold'"
+      >
+        {{ label }}
+      </span>
     </lfx-tag>
     <template #content>
-      <div class="text-xs w-78 text-center flex flex-col gap-2 bg-neutral-900 py-1.5 px-2 rounded-md">
+      <div
+        v-if="props.type === 'repository'"
+        class="text-xs w-78 text-center flex flex-col gap-2 bg-neutral-900 py-1.5 px-2 rounded-md"
+      >
         <div class="text-white">
           {{
             archived
@@ -28,6 +40,12 @@ SPDX-License-Identifier: MIT
           You can still access historical data of Contributors, Popularity, or Development metrics
         </div>
       </div>
+      <div
+        v-if="props.type === 'project'"
+        class="text-xs font-semibold bg-neutral-900 py-1.5 px-2 rounded-md"
+      >
+        <div class="text-white">This project is retired and no longer maintained</div>
+      </div>
     </template>
   </lfx-popover>
 </template>
@@ -37,10 +55,18 @@ import LfxPopover from '~/components/uikit/popover/popover.vue';
 import LfxTag from '~/components/uikit/tag/tag.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 
-defineProps<{
-  archived: boolean;
-  label: string;
-}>();
+const props = withDefaults(
+  defineProps<{
+    archived: boolean;
+    label: string;
+    type?: 'repository' | 'project';
+  }>(),
+  {
+    archived: false,
+    label: '',
+    type: 'repository',
+  },
+);
 </script>
 
 <script lang="ts">
