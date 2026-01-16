@@ -116,10 +116,10 @@ const isAreaEnabled = (area: WidgetArea) => {
   }
 
   if (area === WidgetArea.SECURITY) {
-    return props.project?.connectedPlatforms.some((platform) => platform.toLowerCase().includes('github'));
+    return props.project?.connectedPlatforms?.some((platform) => platform.toLowerCase().includes('github'));
   }
 
-  return widgets.length === 0 || widgets.some((widget) => props.project?.widgets.includes(lfxWidgets[widget]?.key));
+  return widgets.length === 0 || widgets.some((widget) => props.project?.widgets?.includes(lfxWidgets[widget]?.key));
 };
 
 const links = computed(() => lfProjectLinks.filter((link) => isAreaEnabled(link.area)));
