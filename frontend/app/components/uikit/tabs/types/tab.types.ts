@@ -4,6 +4,7 @@ export interface Tab {
   value: string;
   label: string;
   icon?: string;
+  disabled?: boolean;
 }
 
 export interface TabsProps {
