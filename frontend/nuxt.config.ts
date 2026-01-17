@@ -75,10 +75,6 @@ export default defineNuxtConfig({
         path: '/fonts/RobotoSlab-Bold.ttf',
       },
     ],
-    // Disable emojis to prevent resvg crashes from unsupported characters
-    defaults: {
-      emojis: false,
-    },
     // Use compatibility mode to prevent resvg crashes from taking down the app
     compatibility: {
       runtime: {
