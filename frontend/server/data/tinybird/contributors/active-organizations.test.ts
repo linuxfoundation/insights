@@ -27,8 +27,9 @@ describe('Active Organizations Data Source', () => {
 
   test('should fetch active organizations data with correct parameters', async () => {
     // We have to import this here again because vi.doMock is not hoisted. See the explanation in beforeEach().
-    const { fetchActiveOrganizations } =
-      await import('~~/server/data/tinybird/contributors/active-organizations');
+    const { fetchActiveOrganizations } = await import(
+      '~~/server/data/tinybird/contributors/active-organizations'
+    );
 
     mockFetchFromTinybird
       .mockResolvedValueOnce(mockCurrentMonthlySummary)

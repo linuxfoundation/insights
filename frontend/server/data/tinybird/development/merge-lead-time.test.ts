@@ -26,8 +26,9 @@ describe('Merge Lead Time Data Source', () => {
 
   test('should fetch merge lead time data with correct parameters', async () => {
     // We have to import this here again because vi.doMock is not hoisted. See the explanation in beforeEach().
-    const { fetchMergeLeadTime } =
-      await import('~~/server/data/tinybird/development/merge-lead-time');
+    const { fetchMergeLeadTime } = await import(
+      '~~/server/data/tinybird/development/merge-lead-time'
+    );
 
     mockFetchFromTinybird
       .mockResolvedValueOnce(mockCurrentData)
