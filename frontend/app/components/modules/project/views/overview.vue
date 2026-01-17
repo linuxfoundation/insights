@@ -107,7 +107,7 @@ const { data: overviewData, status, error, suspense } = OVERVIEW_API_SERVICE.fet
 // delete the search queries from the overview data
 const data = computed(() => {
   const data = { ...overviewData.value };
-  if (overviewData.value?.searchQueries.value === 0) {
+  if (overviewData.value?.searchQueries?.value === 0) {
     delete data.searchQueries;
   }
   return data as HealthScoreResults;
