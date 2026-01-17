@@ -23,8 +23,9 @@ describe('Contributors Dependency Data Source', () => {
 
   test('should fetch contributors dependency data with correct parameters', async () => {
     // We have to import this here again because vi.doMock is not hoisted. See the explanation in beforeEach().
-    const { fetchContributorDependency } =
-      await import('~~/server/data/tinybird/contributors/contributors-dependency');
+    const { fetchContributorDependency } = await import(
+      '~~/server/data/tinybird/contributors/contributors-dependency'
+    );
 
     mockFetchFromTinybird
       .mockResolvedValueOnce(mockTimeseries)

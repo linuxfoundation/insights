@@ -31,8 +31,9 @@ describe('Issues Resolution Data Source', () => {
 
   test('should fetch issues resolution data with correct parameters', async () => {
     // We have to import this here again because vi.doMock is not hoisted. See the explanation in beforeEach().
-    const { fetchIssuesResolution } =
-      await import('~~/server/data/tinybird/development/issues-resolution');
+    const { fetchIssuesResolution } = await import(
+      '~~/server/data/tinybird/development/issues-resolution'
+    );
     const { mergeRanges } = await import('~~/server/data/tinybird/development/issues-resolution');
 
     mockFetchFromTinybird

@@ -27,8 +27,9 @@ describe('Code Review Engagement Data Source', () => {
 
   test('should fetch contributions outside working hours data with correct parameters', async () => {
     // We have to import this here again because vi.doMock is not hoisted. See the explanation in beforeEach().
-    const { fetchContributionsOutsideWorkHours } =
-      await import('~~/server/data/tinybird/development/contributions-outside-work-hours');
+    const { fetchContributionsOutsideWorkHours } = await import(
+      '~~/server/data/tinybird/development/contributions-outside-work-hours'
+    );
 
     mockFetchFromTinybird
       .mockResolvedValueOnce(mockCurrentData)
