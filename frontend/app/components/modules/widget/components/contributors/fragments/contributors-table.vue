@@ -26,7 +26,7 @@ SPDX-License-Identifier: MIT
     <lfx-scrollable-shadow :class="props.showFullList ? 'px-4 sm:px-6 overflow-y-auto' : ''">
       <div
         v-for="(contributor, index) in props.contributors"
-        :key="index"
+        :key="contributor.id || index"
         class="lfx-table-row"
       >
         <div class="name-col">
