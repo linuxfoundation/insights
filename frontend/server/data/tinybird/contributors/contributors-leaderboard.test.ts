@@ -77,6 +77,7 @@ describe('Contributors Leaderboard Data Source', () => {
         total: mockContributorsLeaderboardCount.data[0].count,
       },
       data: mockTimeseries.data.map((item) => ({
+        id: item.id,
         avatar: item.avatar,
         name: item.displayName,
         contributions: item.contributionCount,
@@ -87,5 +88,76 @@ describe('Contributors Leaderboard Data Source', () => {
     };
 
     expect(result).toEqual(expectedResult);
+  });
+
+  test('should not aggregate contributors with different IDs', async () => {
+    // We have to import this here again because vi.doMock is not hoisted.
+    const { fetchContributorsLeaderboard } = await import(
+      '~~/server/data/tinybird/contributors/contributors-leaderboard'
+    );
+
+    const duplicateData = {
+      ...mockTimeseries,
+      data: [
+        {
+          id: 'user-1',
+          avatar: 'avatar-1',
+          displayName: 'Duplicate User',
+          contributionCount: 100,
+          contributionPercentage: 1,
+          roles: ['role1'],
+          githubHandle: 'gh1',
+        },
+        {
+          id: 'user-2',
+          avatar: 'avatar-2',
+          displayName: 'Duplicate User', // Same name
+          contributionCount: 50,
+          contributionPercentage: 0.5,
+          roles: ['role2'],
+          githubHandle: 'gh2',
+        },
+        {
+          id: 'user-3',
+          avatar: 'avatar-3',
+          displayName: 'Unique User',
+          contributionCount: 200,
+          contributionPercentage: 2,
+          roles: [],
+          githubHandle: 'gh3',
+        },
+      ],
+    };
+
+    mockFetchFromTinybird.mockResolvedValueOnce(duplicateData).mockResolvedValueOnce(mockContributorsLeaderboardCount);
+
+    const filter: ContributorsLeaderboardFilter = {
+      project: 'test-project',
+      startDate: DateTime.utc(2024, 1, 1),
+      endDate: DateTime.utc(2025, 1, 1),
+    };
+
+    const result = await fetchContributorsLeaderboard(filter);
+
+    // Expect 'Duplicate User' NOT to be aggregated, but appear twice
+    const user1 = result.data.find((c) => c.githubHandle === 'gh1');
+    expect(user1).toBeDefined();
+    expect(user1?.name).toBe('Duplicate User');
+    expect(user1?.contributions).toBe(100);
+    expect(user1?.roles).toEqual(['role1']);
+
+    const user2 = result.data.find((c) => c.githubHandle === 'gh2');
+    expect(user2).toBeDefined();
+    expect(user2?.name).toBe('Duplicate User');
+    expect(user2?.contributions).toBe(50);
+    expect(user2?.roles).toEqual(['role2']);
+
+    // Expect unique user to remain
+    const uniqueUser = result.data.find((c) => c.name === 'Unique User');
+    expect(uniqueUser).toBeDefined();
+    expect(uniqueUser?.contributions).toBe(200);
+
+    // Total should be 3
+    expect(result.data.length).toBe(3);
   });
 });

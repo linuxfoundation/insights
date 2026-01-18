@@ -45,21 +45,42 @@ export async function fetchContributorsLeaderboard(
     fetchFromTinybird<TinybirdCountData[]>('/v0/pipes/contributors_leaderboard.json', countQuery),
   ]);
 
-  return {
-    meta: {
-      offset: filter.offset || 0,
-      limit: filter.limit || 10,
-      total: countResponse?.data?.[0]?.count || 0,
-    },
-    data: dataResponse.data.map(
-      (item): Contributor => ({
+  // Aggregate data by id
+  const aggregatedData = new Map<string, Contributor>();
+
+  dataResponse.data.forEach((item) => {
+    const existing = aggregatedData.get(item.id);
+
+    if (existing) {
+      existing.contributions += item.contributionCount;
+      existing.percentage = (existing.percentage || 0) + item.contributionPercentage;
+      // Merge roles and deduplicate
+      const combinedRoles = [...(existing.roles || []), ...(item.roles || [])];
+      existing.roles = [...new Set(combinedRoles)];
+    } else {
+      aggregatedData.set(item.id, {
+        id: item.id,
         avatar: item.avatar,
         name: item.displayName,
         contributions: item.contributionCount,
         percentage: item.contributionPercentage,
         roles: item.roles || [],
         githubHandle: item.githubHandle,
-      }),
-    ),
+      });
+    }
+  });
+
+  // Convert aggregation back to array and sort by contributions (descending)
+  const sortedData = Array.from(aggregatedData.values()).sort(
+    (a, b) => b.contributions - a.contributions
+  );
+
+  return {
+    meta: {
+      offset: filter.offset || 0,
+      limit: filter.limit || 10,
+      total: countResponse?.data?.[0]?.count || 0,
+    },
+    data: sortedData,
   };
 }
