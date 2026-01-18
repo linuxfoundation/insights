@@ -208,6 +208,12 @@ const sideNavItems = computed(() =>
 );
 
 const onSideNavUpdate = (value: string) => {
+  // Skip DOM operations during SSR
+  if (import.meta.server) {
+    activeItem.value = value;
+    return;
+  }
+
   tmpClickedItem.value = value;
   if (value === sideNavItems.value?.[0]?.key) {
     scrollToTop();

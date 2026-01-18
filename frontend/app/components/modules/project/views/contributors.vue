@@ -140,6 +140,12 @@ const tmpClickedItem = ref('');
 const { scrollToTarget, scrollToTop } = useScroll();
 
 const onSideNavUpdate = (value: string) => {
+  // Skip DOM operations during SSR
+  if (import.meta.server) {
+    activeItem.value = value;
+    return;
+  }
+
   tmpClickedItem.value = value;
   if (value === sideNavItems[0]?.key) {
     scrollToTop();
