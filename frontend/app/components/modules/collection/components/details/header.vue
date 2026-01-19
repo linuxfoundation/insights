@@ -134,7 +134,7 @@ SPDX-License-Identifier: MIT
                 class="leading-6 transition-all whitespace-nowrap text-xs md:text-sm"
               >
                 {{ formatNumber(props.collection.contributorCount || 0) }}
-                {{ pluralize('contributors', props.collection.contributorCount) }}
+                {{ pluralize('code contributors', props.collection.contributorCount) }}
               </p>
             </article>
             <lfx-tooltip

@@ -16,4 +16,5 @@ export interface Collection {
   featuredProjects: CollectionFeaturedProject[];
   softwareValue?: number;
   contributorCount?: number;
+  organizationCount?: number;
 }
