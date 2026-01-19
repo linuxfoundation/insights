@@ -17,11 +17,15 @@ SPDX-License-Identifier: MIT
         left: 80px;
         top: 80px;
         width: 807px;
+        height: 70px;
         font-family: 'Roboto Slab', serif;
         font-size: 56px;
         font-weight: 700;
         line-height: 1.25;
         color: #0f172a;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       "
     >
       {{ truncatedProjectName }}
@@ -35,11 +39,15 @@ SPDX-License-Identifier: MIT
         left: 80px;
         top: 80px;
         width: 807px;
+        height: 60px;
         font-family: 'Roboto Slab', serif;
         font-size: 48px;
         line-height: 1.25;
         color: #0f172a;
         font-weight: 300;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       "
     >
       {{ truncatedProjectName }}
@@ -51,11 +59,15 @@ SPDX-License-Identifier: MIT
         left: 80px;
         top: 140px;
         width: 807px;
+        height: 60px;
         font-family: 'Roboto Slab', serif;
         font-size: 48px;
         line-height: 1.25;
         color: #0f172a;
         font-weight: 700;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       "
     >
       / {{ truncatedRepositoryName }}
@@ -67,11 +79,16 @@ SPDX-License-Identifier: MIT
         position: absolute;
         left: 80px;
         width: 807px;
+        height: 108px;
         font-family: 'Inter', sans-serif;
         font-size: 24px;
         font-weight: 400;
         line-height: 36px;
         color: #0f172a;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
       "
       :style="{
         top: repositoryName ? '224px' : '174px',
@@ -139,30 +156,43 @@ const props = withDefaults(
   },
 );
 
+// Strip emojis and other problematic unicode characters that can crash resvg
+const stripEmojis = (text: string): string => {
+  return text
+    .replace(
+      /[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{1F1E0}-\u{1F1FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{1F900}-\u{1F9FF}\u{1FA00}-\u{1FA6F}\u{1FA70}-\u{1FAFF}\u{FE00}-\u{FE0F}\u{200D}]/gu,
+      '',
+    )
+    .trim();
+};
+
 // Truncate project name to fit in one line (approximately 30 characters for 56px font)
 const truncatedProjectName = computed(() => {
+  const cleanName = stripEmojis(props.projectName);
   const maxLength = props.repositoryName ? 29 : 24;
-  if (props.projectName.length <= maxLength) {
-    return props.projectName;
+  if (cleanName.length <= maxLength) {
+    return cleanName;
   }
-  return props.projectName.substring(0, maxLength).trim() + '...';
+  return cleanName.substring(0, maxLength).trim() + '...';
 });
 
 // Truncate repository name to fit in one line (approximately 35 characters for 48px font)
 const truncatedRepositoryName = computed(() => {
+  const cleanName = stripEmojis(props.repositoryName);
   const maxLength = 29;
-  if (props.repositoryName.length <= maxLength) {
-    return props.repositoryName;
+  if (cleanName.length <= maxLength) {
+    return cleanName;
   }
-  return props.repositoryName.substring(0, maxLength).trim() + '...';
+  return cleanName.substring(0, maxLength).trim() + '...';
 });
 
 // Truncate description to fit in 3 lines (approximately 150 characters)
 const truncatedDescription = computed(() => {
+  const cleanDescription = stripEmojis(props.projectDescription);
   const maxLength = 150;
-  if (props.projectDescription.length <= maxLength) {
-    return props.projectDescription;
+  if (cleanDescription.length <= maxLength) {
+    return cleanDescription;
   }
-  return props.projectDescription.substring(0, maxLength).trim() + '...';
+  return cleanDescription.substring(0, maxLength).trim() + '...';
 });
 </script>
