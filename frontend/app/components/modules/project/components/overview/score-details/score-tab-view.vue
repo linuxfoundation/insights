@@ -6,27 +6,60 @@ SPDX-License-Identifier: MIT
   <lfx-tabs-panels>
     <lfx-tabs
       v-model="selectedTab"
-      :tabs="tabs"
+      :tabs="tabsOptions"
     >
       <template #slotItem="{ option }">
-        <div class="flex flex-col gap-2 items-start">
-          <div class="text-neutral-900 font-secondary text-sm tab-label">
-            {{ option.label }}
-          </div>
-          <div class="text-sm text-gray-500 w-full">
-            <lfx-skeleton-state
-              :status="status"
-              height=".188rem"
-              width="100%"
+        <lfx-tooltip class="!w-full">
+          <template #content>
+            <p
+              v-if="!scoreDisplay[option.value as keyof typeof scoreDisplay]"
+              class="max-w-60"
             >
-              <lfx-progress-bar
-                size="small"
-                :values="[getValues(option.value)]"
-                :color="getColor(getValues(option.value))"
-              />
-            </lfx-skeleton-state>
+              {{ option.label }} metrics are unavailable because the required data isn't available for this project.
+              <a
+                :href="links.securityScore"
+                target="_blank"
+                class="text-brand-500"
+                >Learn more</a
+              >
+            </p>
+            <p
+              v-else
+              class="max-w-60"
+            >
+              <a
+                :href="links.securityScore"
+                target="_blank"
+                class="text-brand-500"
+                >Learn more</a
+              >
+            </p>
+          </template>
+          <div class="flex flex-col gap-2 items-start cursor-not-allowed">
+            <div
+              class="text-sm tab-label"
+              :class="{
+                'text-neutral-400': !scoreDisplay[option.value as keyof typeof scoreDisplay],
+                'text-neutral-900': scoreDisplay[option.value as keyof typeof scoreDisplay],
+              }"
+            >
+              {{ option.label }}
+            </div>
+            <div class="text-sm text-gray-500 w-full">
+              <lfx-skeleton-state
+                :status="status"
+                height=".188rem"
+                width="100%"
+              >
+                <lfx-progress-bar
+                  size="small"
+                  :values="[getValues(option.value)]"
+                  :color="getColor(getValues(option.value))"
+                />
+              </lfx-skeleton-state>
+            </div>
           </div>
-        </div>
+        </lfx-tooltip>
       </template>
     </lfx-tabs>
     <template
@@ -79,6 +112,8 @@ import type { ScoreDisplay } from '~~/types/overview/score-display.types';
 import LfxProjectLoadState from '~~/app/components/modules/project/components/shared/load-state.vue';
 import LfxSkeletonState from '~/components/modules/project/components/shared/skeleton-state.vue';
 import type { WidgetArea } from '~/components/modules/widget/types/widget-area';
+import { links } from '~/config/links';
+import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
 
 const props = defineProps<{
   trustScoreSummary: TrustScoreSummary | undefined;
@@ -95,6 +130,13 @@ const emit = defineEmits<{ (e: 'update:modelValue', value: string): void }>();
 const selectedTab = computed({
   get: () => props.modelValue,
   set: (value: string) => emit('update:modelValue', value),
+});
+
+const tabsOptions = computed(() => {
+  return props.tabs.map((tab) => ({
+    ...tab,
+    disabled: !props.scoreDisplay[tab.value as keyof typeof props.scoreDisplay],
+  }));
 });
 
 const getColor = (value: number) => {
