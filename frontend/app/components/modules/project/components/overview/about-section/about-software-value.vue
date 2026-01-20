@@ -14,9 +14,42 @@ SPDX-License-Identifier: MIT
     class="flex flex-col gap-2 text-xs"
   >
     <div class="text-neutral-400 font-semibold">First commit</div>
-    <div class="text-neutral-900">
-      {{ formatFirstCommit(project.firstCommit) }}
-    </div>
+    <lfx-tooltip :disabled="!project.firstCommitUrl">
+      <template
+        v-if="project.firstCommitUrl"
+        #content
+      >
+        <div class="flex items-center gap-1 text-white">
+          <lfx-icon
+            name="github"
+            type="brands"
+            :size="14"
+          />
+          <span class="text-xs font-semibold">View commit</span>
+          <lfx-icon
+            name="arrow-up-right-from-square"
+            type="regular"
+            :size="14"
+            class="text-neutral-400"
+          />
+        </div>
+      </template>
+      <a
+        v-if="project.firstCommitUrl"
+        :href="project.firstCommitUrl"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-neutral-900 hover:underline"
+      >
+        {{ formatFirstCommit(project.firstCommit) }}
+      </a>
+      <span
+        v-else
+        class="text-neutral-900"
+      >
+        {{ formatFirstCommit(project.firstCommit) }}
+      </span>
+    </lfx-tooltip>
   </div>
   <div class="flex flex-col gap-2 text-xs">
     <div class="text-neutral-400 font-semibold flex items-center gap-1">
