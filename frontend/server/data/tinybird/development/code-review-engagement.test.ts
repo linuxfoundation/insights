@@ -159,9 +159,8 @@ describe('Code Review Engagement Data Source', () => {
     dataMock: MockResponse,
   ) {
     // We have to import this here again because vi.doMock is not hoisted. See the explanation in beforeEach().
-    const { fetchCodeReviewEngagement } = await import(
-      '~~/server/data/tinybird/development/code-review-engagement'
-    );
+    const { fetchCodeReviewEngagement } =
+      await import('~~/server/data/tinybird/development/code-review-engagement');
 
     mockFetchFromTinybird
       .mockResolvedValueOnce(currentSummaryMock)

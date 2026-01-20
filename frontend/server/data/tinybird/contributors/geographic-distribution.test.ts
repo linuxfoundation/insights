@@ -26,9 +26,8 @@ describe('Geographic Distribution Data Source', () => {
 
   test('should fetch contributors geographic distribution data with correct parameters', async () => {
     // We have to import this here again because vi.doMock is not hoisted. See the explanation in beforeEach().
-    const { fetchGeographicDistribution } = await import(
-      '~~/server/data/tinybird/contributors/geographic-distribution'
-    );
+    const { fetchGeographicDistribution } =
+      await import('~~/server/data/tinybird/contributors/geographic-distribution');
 
     mockFetchFromTinybird.mockResolvedValue(mockContributorsGeoDistTimeseries);
 
@@ -74,9 +73,8 @@ describe('Geographic Distribution Data Source', () => {
   // like this for now.
   test('should fetch organizations geographic distribution data with correct parameters', async () => {
     // We have to import this here again because vi.doMock is not hoisted. See the explanation in beforeEach().
-    const { fetchGeographicDistribution } = await import(
-      '~~/server/data/tinybird/contributors/geographic-distribution'
-    );
+    const { fetchGeographicDistribution } =
+      await import('~~/server/data/tinybird/contributors/geographic-distribution');
 
     mockFetchFromTinybird.mockResolvedValue(mockOrganizationsGeoDistTimeseries);
 
