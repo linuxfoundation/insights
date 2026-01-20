@@ -1,5 +1,5 @@
 name: Insights docker image builder
-description: Builds and pushes insights docker image
+description: Builds and pushes insights docker image with caching
 
 inputs:
   app-env:
@@ -15,30 +15,36 @@ outputs:
 runs:
   using: composite
   steps:
-    - name: Get short commit sha hash
-      uses: benjlevesque/short-sha@v2.1
-      id: short-sha
-      with:
-        length: 6
-
-    - run: echo "IMAGE_VERSION=${{ steps.short-sha.outputs.sha }}.${{ github.run_attempt }}" >> $GITHUB_OUTPUT
-      shell: bash
-      id: version-generator
-
-    - run: echo "IMAGE_TAG=sjc.ocir.io/axbydjxa5zuh/insights-app:${{ steps.version-generator.outputs.IMAGE_VERSION }}" >> $GITHUB_OUTPUT
+    - name: Generate image tag
       shell: bash
       id: tag-generator
+      run: |
+        SHORT_SHA=$(echo "${{ github.sha }}" | cut -c1-6)
+        IMAGE_VERSION="${SHORT_SHA}.${{ github.run_attempt }}"
+        IMAGE_TAG="sjc.ocir.io/axbydjxa5zuh/insights-app:${IMAGE_VERSION}"
+        echo "IMAGE_VERSION=${IMAGE_VERSION}" >> $GITHUB_OUTPUT
+        echo "IMAGE_TAG=${IMAGE_TAG}" >> $GITHUB_OUTPUT
 
-    - name: Login to docker repository
-      shell: bash
-      run: echo '${{ env.ORACLE_DOCKER_PASSWORD }}' | docker login sjc.ocir.io -u '${{ env.ORACLE_DOCKER_USERNAME }}' --password-stdin
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Login to Oracle Container Registry
+      uses: docker/login-action@v3
+      with:
+        registry: sjc.ocir.io
+        username: ${{ env.ORACLE_DOCKER_USERNAME }}
+        password: ${{ env.ORACLE_DOCKER_PASSWORD }}
 
     - name: Build and push docker image
-      shell: bash
-      run: |
-        BUILD_ARGS=$(env | grep -v '^PWD=' | grep -v '^HOME=' | grep -v '^GITHUB_' | awk -F= '{print "--build-arg " $1}')
-        docker build $BUILD_ARGS \
-          --build-arg APP_ENV=${{ inputs.app-env }} \
-          -f frontend/Dockerfile \
-          -t ${{ steps.tag-generator.outputs.IMAGE_TAG }} .
-        docker push ${{ steps.tag-generator.outputs.IMAGE_TAG }}
+      uses: docker/build-push-action@v6
+      with:
+        context: .
+        file: frontend/Dockerfile
+        push: true
+        tags: ${{ steps.tag-generator.outputs.IMAGE_TAG }}
+        build-args: |
+          APP_ENV=${{ inputs.app-env }}
+          NUXT_REDIS_URL=${{ env.NUXT_REDIS_URL }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+        provenance: false
