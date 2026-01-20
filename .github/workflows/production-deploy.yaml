@@ -14,7 +14,6 @@ env:
   ORACLE_KEY: ${{ secrets.ORACLE_KEY }}
   ORACLE_KEY_PASSPHRASE: ${{ secrets.ORACLE_KEY_PASSPHRASE }}
   ORACLE_CLUSTER: ${{ secrets.ORACLE_PRODUCTION_CLUSTER }}
-  KUBECONFIG_PATH: /home/runner/.kube/config
 
 jobs:
   deploy:
@@ -23,17 +22,37 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install and configure OCI CLI
-        uses: oracle-actions/configure-kubectl-oke@v1.5.1
-        id: oke-kubeconfig
-        with:
-          cluster: ${{ env.ORACLE_CLUSTER }}
-          region: ${{ env.ORACLE_REGION }}
-          tenancy: ${{ env.ORACLE_TENANT }}
-          user: ${{ env.ORACLE_USER }}
-          fingerprint: ${{ env.ORACLE_FINGERPRINT }}
-          private_key: ${{ env.ORACLE_KEY }}
-          passphrase: ${{ env.ORACLE_KEY_PASSPHRASE }}
+      - name: Setup OCI CLI and Kubectl
+        run: |
+          # Install OCI CLI
+          curl -sL https://raw.githubusercontent.com/oracle/oci-cli/master/scripts/install/install.sh | bash -s -- --accept-all-defaults
+          echo "$HOME/bin" >> $GITHUB_PATH
+          export PATH="$HOME/bin:$PATH"
+
+          # Configure OCI CLI
+          mkdir -p ~/.oci
+          echo "${{ env.ORACLE_KEY }}" | base64 --decode > ~/.oci/oci_api_key.pem
+          chmod 600 ~/.oci/oci_api_key.pem
+
+          cat > ~/.oci/config << EOF
+          [DEFAULT]
+          user=${{ env.ORACLE_USER }}
+          fingerprint=${{ env.ORACLE_FINGERPRINT }}
+          key_file=$HOME/.oci/oci_api_key.pem
+          tenancy=${{ env.ORACLE_TENANT }}
+          region=${{ env.ORACLE_REGION }}
+          pass_phrase=${{ env.ORACLE_KEY_PASSPHRASE }}
+          EOF
+          chmod 600 ~/.oci/config
+
+          # Get kubeconfig
+          $HOME/bin/oci ce cluster create-kubeconfig \
+            --cluster-id ${{ env.ORACLE_CLUSTER }} \
+            --file $HOME/.kube/config \
+            --region ${{ env.ORACLE_REGION }} \
+            --token-version 2.0.0 \
+            --kube-endpoint PUBLIC_ENDPOINT \
+            --overwrite
 
       - name: Load all envs from ConfigMap
         run: |
