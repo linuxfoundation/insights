@@ -13,6 +13,17 @@ import rateLimiter from './setup/rate-limiter';
 const isProduction = process.env.NUXT_APP_ENV === 'production';
 const isDevelopment = process.env.NODE_ENV === 'development';
 export default defineNuxtConfig({
+  hooks: {
+    'imports:extend': (imports) => {
+      // Remove nuxt-gtag's useTrackEvent to avoid duplicate with @nuxtjs/plausible
+      const gtagTrackEventIndex = imports.findIndex(
+        (i) => i.as === 'useTrackEvent' && i.from?.includes('nuxt-gtag'),
+      );
+      if (gtagTrackEventIndex !== -1) {
+        imports.splice(gtagTrackEventIndex, 1);
+      }
+    },
+  },
   app: {
     head,
   },
@@ -28,7 +39,6 @@ export default defineNuxtConfig({
     '@nuxt/eslint',
     '@primevue/nuxt-module',
     'nuxt-echarts',
-    '@nuxtjs/storybook',
     'nuxt-gtag',
     '@nuxtjs/plausible',
     '@nuxtjs/robots',
