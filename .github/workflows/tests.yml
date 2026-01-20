@@ -15,9 +15,12 @@ jobs:
         with:
           version: 10
 
+      - name: Install dependencies
+        run: pnpm install --filter lfx-insights...
+
       - name: Run tests
         env:
           TINYBIRD_BASE_URL: https://tb.lf.org/
           TINYBIRD_TOKEN: arandomtoken
-        run: pnpm i --ignore-workspace && pnpm vitest
+        run: pnpm vitest
         working-directory: frontend
