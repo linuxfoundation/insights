@@ -7,27 +7,24 @@ FROM node:$NODE_VERSION-slim AS base
 # Install pnpm globally
 RUN npm install -g pnpm
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
-# Install dependencies
+# Install dependencies using pnpm workspaces
 FROM base AS deps
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
-COPY package.json pnpm-lock.yaml ./
+# Copy workspace configuration files
+COPY pnpm-workspace.yaml package.json pnpm-lock.yaml ./
 
-RUN pnpm install --shamefully-hoist
+# Copy frontend package.json for dependency resolution
+COPY frontend/package.json ./frontend/
 
-# Copy dependencies into the files stage
-FROM base AS files
+# Install only frontend dependencies using workspace filter
+RUN pnpm install --filter lfx-insights... --frozen-lockfile
 
-WORKDIR /usr/src/app
-
-COPY --from=deps /usr/src/app/node_modules ./node_modules
-COPY . .
-
-# Build the Nuxt app first
-FROM files AS builder
+# Copy frontend source files and build
+FROM deps AS builder
 
 ARG APP_ENV=production
 ARG NUXT_REDIS_URL
@@ -35,7 +32,12 @@ ENV NUXT_APP_ENV=$APP_ENV
 ENV NUXT_REDIS_URL=$NUXT_REDIS_URL
 ENV NODE_OPTIONS=--max-old-space-size=4096
 
-WORKDIR /usr/src/app
+WORKDIR /app
+
+# Copy frontend source
+COPY frontend ./frontend
+
+WORKDIR /app/frontend
 
 # Build vitepress docs
 RUN pnpm docs:build && mkdir -p public/docs && cp -r docs/.vitepress/dist/* public/docs/
@@ -51,7 +53,7 @@ FROM node:${NODE_VERSION}-slim AS prod
 # Install pnpm globally
 RUN npm install -g pnpm
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
 # Install system packages needed by sharp and font rendering
 RUN apt-get update && apt-get install -y \
@@ -61,15 +63,15 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Copy the built output
-COPY --from=builder /usr/src/app/.output ./.output
+COPY --from=builder /app/frontend/.output ./.output
 
 # Install production dependencies in .output/server
 # This ensures all modules required by the built app are available
-WORKDIR /usr/src/app/.output/server
+WORKDIR /app/.output/server
 RUN pnpm install --prod --shamefully-hoist || npm install --production
 
 # Switch back to main working directory
-WORKDIR /usr/src/app
+WORKDIR /app
 
 EXPOSE 3000
 CMD ["node", ".output/server/index.mjs"]

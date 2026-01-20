@@ -17,6 +17,9 @@ jobs:
         with:
           version: 10
 
+      - name: Install dependencies
+        run: pnpm install --filter lfx-insights...
+
       - name: Lint code
-        run: pnpm i --ignore-workspace && pnpm format:check && pnpm lint && pnpm tsc-check
+        run: pnpm format:check && pnpm lint && pnpm tsc-check
         working-directory: frontend

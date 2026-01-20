@@ -39,5 +39,6 @@ runs:
         BUILD_ARGS=$(env | grep -v '^PWD=' | grep -v '^HOME=' | grep -v '^GITHUB_' | awk -F= '{print "--build-arg " $1}')
         docker build $BUILD_ARGS \
           --build-arg APP_ENV=${{ inputs.app-env }} \
-          -t ${{ steps.tag-generator.outputs.IMAGE_TAG }} ./frontend
+          -f frontend/Dockerfile \
+          -t ${{ steps.tag-generator.outputs.IMAGE_TAG }} .
         docker push ${{ steps.tag-generator.outputs.IMAGE_TAG }}

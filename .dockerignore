@@ -1,0 +1,58 @@
+# Git
+.git
+.gitignore
+.gitmodules
+
+# Node modules (will be installed in Docker)
+node_modules
+**/node_modules
+
+# Submodules (not needed for frontend build)
+submodules
+
+# Other services (not needed for frontend build)
+workers
+services
+database
+
+# IDE and editor files
+.idea
+.vscode
+*.swp
+*.swo
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Test and coverage
+coverage
+.nyc_output
+
+# Build artifacts (we build fresh in Docker)
+frontend/.output
+frontend/.nuxt
+frontend/dist
+frontend/.vitepress/cache
+frontend/docs/.vitepress/dist
+frontend/blog/.vitepress/dist
+frontend/storybook-static
+
+# Documentation and misc
+*.md
+!frontend/docs/**/*.md
+!frontend/blog/**/*.md
+LICENSE
+CHANGELOG
+
+# CI/CD (not needed in build)
+.github
+
+# Scripts not needed in Docker
+scripts
