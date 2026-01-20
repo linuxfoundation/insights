@@ -15,17 +15,12 @@ outputs:
 runs:
   using: composite
   steps:
-    - name: Get short commit sha hash
-      uses: benjlevesque/short-sha@v3
-      id: short-sha
-      with:
-        length: 6
-
     - name: Generate image tag
       shell: bash
       id: tag-generator
       run: |
-        IMAGE_VERSION="${{ steps.short-sha.outputs.sha }}.${{ github.run_attempt }}"
+        SHORT_SHA=$(echo "${{ github.sha }}" | cut -c1-6)
+        IMAGE_VERSION="${SHORT_SHA}.${{ github.run_attempt }}"
         IMAGE_TAG="sjc.ocir.io/axbydjxa5zuh/insights-app:${IMAGE_VERSION}"
         echo "IMAGE_VERSION=${IMAGE_VERSION}" >> $GITHUB_OUTPUT
         echo "IMAGE_TAG=${IMAGE_TAG}" >> $GITHUB_OUTPUT
