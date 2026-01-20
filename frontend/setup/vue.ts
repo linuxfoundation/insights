@@ -1,0 +1,8 @@
+// Copyright (c) 2025 The Linux Foundation and each contributor.
+// SPDX-License-Identifier: MIT
+
+export default {
+  compilerOptions: {
+    isCustomElement: (tag: string) => ['lfx-footer'].includes(tag),
+  },
+};
