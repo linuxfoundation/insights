@@ -1,75 +1,88 @@
+# syntax=docker/dockerfile:1.4
 ARG NODE_VERSION=22
-ARG APP_ENV=production
-ARG NUXT_REDIS_URL
 
+# ============================================
+# Base stage: Node with pnpm via corepack
+# ============================================
 FROM node:$NODE_VERSION-slim AS base
 
-# Install pnpm globally
-RUN npm install -g pnpm
+# Enable corepack and install pnpm (faster than npm install -g pnpm)
+RUN corepack enable && corepack prepare pnpm@latest --activate
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
-# Install dependencies
+# ============================================
+# Dependencies stage: Install node_modules
+# ============================================
 FROM base AS deps
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
-COPY package.json pnpm-lock.yaml ./
+# Copy workspace configuration files first (better cache)
+COPY pnpm-workspace.yaml package.json pnpm-lock.yaml ./
+COPY frontend/package.json ./frontend/
 
-RUN pnpm install --shamefully-hoist
+# Install dependencies with BuildKit cache mount for pnpm store
+RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store \
+    pnpm install --filter lfx-insights... --frozen-lockfile
 
-# Copy dependencies into the files stage
-FROM base AS files
-
-WORKDIR /usr/src/app
-
-COPY --from=deps /usr/src/app/node_modules ./node_modules
-COPY . .
-
-# Build the Nuxt app first
-FROM files AS builder
+# ============================================
+# Builder stage: Build the application
+# ============================================
+FROM deps AS builder
 
 ARG APP_ENV=production
 ARG NUXT_REDIS_URL
+
 ENV NUXT_APP_ENV=$APP_ENV
 ENV NUXT_REDIS_URL=$NUXT_REDIS_URL
 ENV NODE_OPTIONS=--max-old-space-size=4096
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
-# Build vitepress docs
-RUN pnpm docs:build && mkdir -p public/docs && cp -r docs/.vitepress/dist/* public/docs/
-RUN pnpm blog:build && mkdir -p public/blog && cp -r blog/.vitepress/dist/* public/blog/
+# Copy frontend source
+COPY frontend ./frontend
+
+WORKDIR /app/frontend
+
+# Build docs and blog in parallel using shell background processes
+RUN pnpm docs:build & pnpm blog:build & wait && \
+    mkdir -p public/docs public/blog && \
+    cp -r docs/.vitepress/dist/* public/docs/ && \
+    cp -r blog/.vitepress/dist/* public/blog/
 
 # Build the Nuxt app
 RUN echo "Building with APP_ENV=$APP_ENV" && \
     NUXT_APP_ENV=$APP_ENV pnpm build
 
-
+# ============================================
+# Production stage: Minimal runtime image
+# ============================================
 FROM node:${NODE_VERSION}-slim AS prod
 
-# Install pnpm globally
-RUN npm install -g pnpm
-
-WORKDIR /usr/src/app
-
 # Install system packages needed by sharp and font rendering
-RUN apt-get update && apt-get install -y \
-    libvips-dev \
+# Combine update, install, and cleanup in single layer
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked \
+    apt-get update && apt-get install -y --no-install-recommends \
+    libvips42 \
     fontconfig \
     fonts-dejavu-core \
-    && apt-get clean && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/*
 
-# Copy the built output
-COPY --from=builder /usr/src/app/.output ./.output
+WORKDIR /app
 
-# Install production dependencies in .output/server
-# This ensures all modules required by the built app are available
-WORKDIR /usr/src/app/.output/server
-RUN pnpm install --prod --shamefully-hoist || npm install --production
+# Copy only the built output (Nuxt bundles dependencies)
+COPY --from=builder /app/frontend/.output ./.output
 
-# Switch back to main working directory
-WORKDIR /usr/src/app
+# Set non-root user for security
+RUN groupadd --gid 1001 nodejs && \
+    useradd --uid 1001 --gid nodejs --shell /bin/bash --create-home nuxt && \
+    chown -R nuxt:nodejs /app
+
+USER nuxt
 
 EXPOSE 3000
+
+# Use exec form for proper signal handling
 CMD ["node", ".output/server/index.mjs"]

@@ -1,0 +1,80 @@
+# Git
+.git
+.gitignore
+.gitmodules
+.git-branches.toml
+
+# Node modules (will be installed in Docker)
+node_modules
+**/node_modules
+
+# Submodules (not needed for frontend build)
+submodules
+
+# Other services (not needed for frontend build)
+workers
+services
+database
+
+# IDE and editor files
+.idea
+.vscode
+.claude
+*.swp
+*.swo
+*~
+
+# Environment files
+.env
+.env.*
+!.env.example
+.env.dist
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Test and coverage
+coverage
+.nyc_output
+**/*.test.ts
+**/*.spec.ts
+**/__tests__
+frontend/.vitest
+
+# Build artifacts (we build fresh in Docker)
+frontend/.output
+frontend/.nuxt
+frontend/dist
+frontend/.vitepress/cache
+frontend/docs/.vitepress/dist
+frontend/blog/.vitepress/dist
+frontend/storybook-static
+
+# Documentation and misc
+*.md
+!frontend/docs/**/*.md
+!frontend/blog/**/*.md
+LICENSE
+CHANGELOG
+CONTRIBUTING.md
+MAINTAINERS.md
+SECURITY.md
+COPYRIGHT_HEADER*
+
+# CI/CD (not needed in build)
+.github
+
+# Scripts not needed in Docker
+scripts
+init-submodules.sh
+commitlint.config.mjs
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Docker files (prevent recursive context)
+Dockerfile
+docker-compose*
