@@ -13,6 +13,9 @@ export default {
       projects: {
         sources: ['/api/seo/sitemap/projects'],
       },
+      leaderboards: {
+        sources: ['/api/seo/sitemap/leaderboards'],
+      },
       ossIndexGroups: {
         sources: ['/api/seo/sitemap/oss-index-groups'],
       },
