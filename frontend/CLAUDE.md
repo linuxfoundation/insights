@@ -6,9 +6,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ### Package Management
 - Use `pnpm` for package management (not npm/yarn)
-- `pnpm install --ignore-workspace` - Install dependencies
-- `pnpm dev` - Start development server on localhost:3000
-- always ignore workspace dependencies when installing
+- `pnpm install --filter lfx-insights...` - Install dependencies from project root
+- `pnpm dev` - Start development server on localhost:3000 (run from frontend directory)
+- Always run install commands from project root using workspace filter
 
 ### Build & Test
 - `pnpm build` - Build for production

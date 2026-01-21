@@ -11,6 +11,7 @@ SPDX-License-Identifier: MIT
     option-value="value"
     :allow-empty="false"
     :class="`tabs-width-${props.widthType}`"
+    option-disabled="disabled"
   >
     <template #option="slotProps">
       <slot

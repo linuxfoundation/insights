@@ -14,45 +14,45 @@ env:
   ORACLE_KEY: ${{ secrets.ORACLE_KEY }}
   ORACLE_KEY_PASSPHRASE: ${{ secrets.ORACLE_KEY_PASSPHRASE }}
   ORACLE_CLUSTER: ${{ secrets.ORACLE_PRODUCTION_CLUSTER }}
-  KUBECONFIG_PATH: /home/runner/.kube/config
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - name: Install OCI
+      - name: Setup OCI CLI and Kubectl
         run: |
-          curl -L https://raw.githubusercontent.com/oracle/oci-cli/master/scripts/install/install.sh > install.sh
-          chmod +x install.sh
-          ./install.sh --accept-all-defaults
-          echo "OCI_CLI_DIR=/home/runner/bin" >> $GITHUB_ENV
+          # Install OCI CLI
+          curl -sL https://raw.githubusercontent.com/oracle/oci-cli/master/scripts/install/install.sh | bash -s -- --accept-all-defaults
+          echo "$HOME/bin" >> $GITHUB_PATH
+          export PATH="$HOME/bin:$PATH"
 
-      - name: Update PATH
-        run: echo "${{ env.OCI_CLI_DIR }}" >> $GITHUB_PATH
-
-      - name: Configure Oracle Cloud CLI
-        run: |
+          # Configure OCI CLI
           mkdir -p ~/.oci
           echo "${{ env.ORACLE_KEY }}" | base64 --decode > ~/.oci/oci_api_key.pem
           chmod 600 ~/.oci/oci_api_key.pem
-          echo "[DEFAULT]" > ~/.oci/config
-          echo "user=${{ env.ORACLE_USER }}" >> ~/.oci/config
-          echo "fingerprint=${{ env.ORACLE_FINGERPRINT }}" >> ~/.oci/config
-          echo "key_file=~/.oci/oci_api_key.pem" >> ~/.oci/config
-          echo "tenancy=${{ env.ORACLE_TENANT }}" >> ~/.oci/config
-          echo "region=${{ env.ORACLE_REGION }}" >> ~/.oci/config
-          echo "pass_phrase=${{ env.ORACLE_KEY_PASSPHRASE }}" >> ~/.oci/config
+
+          cat > ~/.oci/config << EOF
+          [DEFAULT]
+          user=${{ env.ORACLE_USER }}
+          fingerprint=${{ env.ORACLE_FINGERPRINT }}
+          key_file=$HOME/.oci/oci_api_key.pem
+          tenancy=${{ env.ORACLE_TENANT }}
+          region=${{ env.ORACLE_REGION }}
+          pass_phrase=${{ env.ORACLE_KEY_PASSPHRASE }}
+          EOF
           chmod 600 ~/.oci/config
 
-      - name: Verify OCI CLI Configuration
-        run: |
-          oci os ns get --config-file ~/.oci/config || cat ~/.oci/config
-
-      - name: Get Cluster Kubeconfig
-        run: |
-          oci ce cluster create-kubeconfig --cluster-id ${{ env.ORACLE_CLUSTER }} --file ${{ env.KUBECONFIG_PATH }} --region ${{ env.ORACLE_REGION }} --token-version 2.0.0  --kube-endpoint PUBLIC_ENDPOINT --overwrite
+          # Get kubeconfig
+          $HOME/bin/oci ce cluster create-kubeconfig \
+            --cluster-id ${{ env.ORACLE_CLUSTER }} \
+            --file $HOME/.kube/config \
+            --region ${{ env.ORACLE_REGION }} \
+            --token-version 2.0.0 \
+            --kube-endpoint PUBLIC_ENDPOINT \
+            --overwrite
 
       - name: Load all envs from ConfigMap
         run: |
@@ -69,10 +69,10 @@ jobs:
 
       - name: Update Deployment Image
         run: |
-            kubectl set image deployment/insights-app-dpl frontend=${{ steps.build-docker-image.outputs.image }} -n insights
-            kubectl rollout status deployment/insights-app-dpl -n insights
+          kubectl set image deployment/insights-app-dpl frontend=${{ steps.build-docker-image.outputs.image }} -n insights
+          kubectl rollout status deployment/insights-app-dpl -n insights --timeout=300s
 
-      - name: Flush cache
+      - name: Flush Redis cache
         run: |
           REDIS_URL=$(kubectl get configmap insights-config-map -n insights -o jsonpath="{.data.NUXT_REDIS_URL}")
           PASSWORD=$(echo "$REDIS_URL" | sed -n 's|.*://:\([^@]*\)@.*|\1|p')

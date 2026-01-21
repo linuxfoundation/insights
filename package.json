@@ -11,5 +11,11 @@
 	},
 	"dependencies": {
 		"jwt-decode": "^4.0.0"
+	},
+	"pnpm": {
+		"overrides": {
+			"eslint-plugin-vue": "^10.2.0",
+			"h3": "^1.15.5"
+		}
 	}
 }

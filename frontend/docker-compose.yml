@@ -6,8 +6,25 @@ services:
       - .env
     container_name: "lfx-insights-app"
     build:
-      context: .
-      target: files
+      context: ..
+      dockerfile: frontend/Dockerfile
+      target: prod
     ports:
       - "3000:3000"
-    command: npm run dev
+
+  # Development mode with volume mounts
+  dev:
+    env_file:
+      - .env
+    container_name: "lfx-insights-dev"
+    build:
+      context: ..
+      dockerfile: frontend/Dockerfile
+      target: deps
+    volumes:
+      - ./:/app/frontend
+      - /app/frontend/node_modules
+    ports:
+      - "3000:3000"
+    working_dir: /app/frontend
+    command: pnpm dev
