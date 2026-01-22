@@ -55,7 +55,7 @@
     "jsonwebtoken": "^9.0.3",
     "jwks-rsa": "^3.2.1",
     "jwt-decode": "^4.0.0",
-    "lodash-es": "^4.17.22",
+    "lodash-es": "^4.17.23",
     "luxon": "^3.7.2",
     "nuxt": "^4.2.2",
     "nuxt-gtag": "^4.1.0",
