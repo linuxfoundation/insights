@@ -33,6 +33,7 @@ export interface Project {
   tags?: string[];
   languages?: ProjectLanguage[];
   firstCommit?: string;
+  firstCommitUrl?: string;
   projectLinks?: ProjectLink[];
   connectedPlatforms: string[];
   score: number;
@@ -89,6 +90,7 @@ export interface ProjectTinybird {
   twitter?: string;
   widgets: string[];
   firstCommit?: string;
+  firstCommitUrl?: string;
   connectedPlatforms: string[];
   repoData: ProjectRepoData[];
 }
