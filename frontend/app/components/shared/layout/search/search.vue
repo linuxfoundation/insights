@@ -5,7 +5,7 @@ SPDX-License-Identifier: MIT
 <template>
   <div class="search-container">
     <div
-      class="w-full lg:max-w-[6.5rem] xl:max-w-[18rem] 2xl:max-w-100 overflow-hidden bg-neutral-50 h-9 border border-neutral-200 rounded-full hidden sm:flex items-center gap-2 px-3 cursor-pointer"
+      class="w-full lg:max-w-[6.5rem] xl:max-w-[18rem] 2xl:max-w-[26rem] overflow-hidden bg-neutral-50 h-9 border border-neutral-200 rounded-full hidden sm:flex items-center gap-2 px-3 cursor-pointer"
       @click="isModalOpen = true"
     >
       <lfx-icon
@@ -13,7 +13,7 @@ SPDX-License-Identifier: MIT
         class="text-neutral-400 font-normal"
         :size="14"
       />
-      <p class="text-body-1 text-neutral-400 lg:truncate">Search projects, repositories...</p>
+      <p class="text-body-1 text-neutral-400 lg:truncate">Search projects, repositories, or collections</p>
       <div class="flex-grow" />
       <lfx-chip
         v-if="!isMobile"

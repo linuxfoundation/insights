@@ -3,26 +3,21 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="flex flex-col gap-3 text-xs">
+  <div
+    v-if="tags && tags.length > 0"
+    class="flex flex-col gap-3 text-xs"
+  >
     <div class="text-neutral-400 font-semibold flex items-center gap-1">Tags</div>
     <div>
-      <template v-if="tags && tags.length > 0">
-        <lfx-tag
-          v-for="tag of tags"
-          :key="tag"
-          :size="'small'"
-          type="outline"
-          class="justify-center mr-1.5 mb-1.5"
-        >
-          {{ tag }}
-        </lfx-tag>
-      </template>
-      <span
-        v-else
-        class="text-xs text-neutral-900"
+      <lfx-tag
+        v-for="tag of tags"
+        :key="tag"
+        :size="'small'"
+        type="outline"
+        class="justify-center mr-1.5 mb-1.5"
       >
-        No tags available
-      </span>
+        {{ tag }}
+      </lfx-tag>
     </div>
   </div>
   <!-- <div class="flex flex-col gap-3 text-xs">

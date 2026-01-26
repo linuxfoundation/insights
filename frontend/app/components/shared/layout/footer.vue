@@ -3,7 +3,7 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <footer class="border-t border-neutral-200 py-10 bg-white lg:!mt-30 mt-20">
+  <footer class="border-t border-neutral-200 py-10 bg-white mt-30">
     <div class="container">
       <div class="flex justify-between pb-10 md:pb-16 gap-x-10 gap-y-15 flex-col xl:flex-row">
         <div class="max-w-100">

@@ -23,7 +23,10 @@ SPDX-License-Identifier: MIT
 
               <div class="md:block hidden">
                 <nuxt-link :to="{ name: LfxRoutes.COLLECTIONS }">
-                  <lfx-button type="transparent">
+                  <lfx-button
+                    type="transparent"
+                    button-style="pill"
+                  >
                     <lfx-icon
                       name="rectangle-history"
                       :size="16"
@@ -40,7 +43,10 @@ SPDX-License-Identifier: MIT
           <template #footer>
             <div class="md:hidden flex justify-center">
               <nuxt-link :to="{ name: LfxRoutes.COLLECTIONS }">
-                <lfx-button type="transparent">
+                <lfx-button
+                  type="transparent"
+                  button-style="pill"
+                >
                   <lfx-icon
                     name="rectangle-history"
                     :size="16"

@@ -43,13 +43,17 @@ SPDX-License-Identifier: MIT
             />
           </a>
         </template>
-        <p
+        <component
+          :is="item.githubHandle ? 'a' : 'p'"
+          :href="item.githubHandle ? `https://github.com/${item.githubHandle}` : undefined"
+          :target="item.githubHandle ? '_blank' : undefined"
+          :rel="item.githubHandle ? 'noopener noreferrer' : undefined"
           :title="item.name"
-          class="text-base leading-5 font-medium text-neutral-900 overflow-hidden text-ellipsis whitespace-nowrap max-w-full"
+          class="text-sm leading-5 font-medium text-neutral-900 overflow-hidden text-ellipsis whitespace-nowrap max-w-full"
           :class="item.githubHandle ? 'hover:underline' : ''"
         >
           {{ item.name }}
-        </p>
+        </component>
       </lfx-tooltip>
     </div>
 

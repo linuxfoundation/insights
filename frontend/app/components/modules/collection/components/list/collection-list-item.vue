@@ -74,7 +74,7 @@ SPDX-License-Identifier: MIT
         <p class="text-neutral-400 text-body-2 font-medium pb-2">Featured projects</p>
         <div class="flex flex-wrap gap-3">
           <lfx-chip
-            v-for="project of props.collection.featuredProjects"
+            v-for="project of props.collection.featuredProjects.slice(0, 5)"
             :key="project.slug"
             type="bordered"
             class="transition hover:bg-neutral-100"
