@@ -83,6 +83,7 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { computed, onServerPrefetch, ref, watch, nextTick } from 'vue';
 import { useRoute } from 'vue-router';
+import { useUrlSearchParams } from '@vueuse/core';
 import pluralize from 'pluralize';
 import { storeToRefs } from 'pinia';
 import leaderboardConfigs from '../../config/index.config';
@@ -108,7 +109,20 @@ const props = defineProps<{
 const { headerTopClass } = storeToRefs(useBannerStore());
 
 const isScrollingIntoRow = ref<boolean>(false);
-const collectionSlug = ref<string>('');
+
+// Sync collection filter with URL using VueUse
+const urlParams = useUrlSearchParams('history');
+const collectionSlug = computed({
+  get: () => (urlParams.collection as string) || '',
+  set: (value: string) => {
+    if (value && value !== 'all') {
+      urlParams.collection = value;
+    } else {
+      // Remove from URL when empty or 'all'
+      delete urlParams.collection;
+    }
+  },
+});
 
 const params = computed(() => ({
   leaderboardType: props.leaderboardKey,
