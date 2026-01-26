@@ -14,5 +14,5 @@ export const mostActiveContributorsConfig: LeaderboardConfig = {
   dataDisplay: LfxProjectIntegerRowDisplay,
   minimizedDataDisplay: LfxProjectIntegerMinimizedRowDisplay,
   entityLabel: 'Project',
-  metricLabel: 'Contributors (12m)',
+  metricLabel: 'Contributors (12M)',
 };

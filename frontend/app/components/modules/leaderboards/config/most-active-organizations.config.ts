@@ -14,5 +14,5 @@ export const mostActiveOrganizationsConfig: LeaderboardConfig = {
   dataDisplay: LfxProjectIntegerRowDisplay,
   minimizedDataDisplay: LfxProjectIntegerMinimizedRowDisplay,
   entityLabel: 'Project',
-  metricLabel: 'Organizations (12m)',
+  metricLabel: 'Organizations (12M)',
 };

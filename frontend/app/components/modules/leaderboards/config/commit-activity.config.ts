@@ -14,5 +14,5 @@ export const commitActivityConfig: LeaderboardConfig = {
   dataDisplay: LfxProjectIntegerRowDisplay,
   minimizedDataDisplay: LfxProjectIntegerMinimizedRowDisplay,
   entityLabel: 'Project',
-  metricLabel: 'Commits (12m)',
+  metricLabel: 'Commits (12M)',
 };

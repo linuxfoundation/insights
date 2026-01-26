@@ -14,5 +14,5 @@ export const fastestRespondersConfig: LeaderboardConfig = {
   dataDisplay: LfxProjectDurationRowDisplay,
   minimizedDataDisplay: LfxProjectDurationMinimizedRowDisplay,
   entityLabel: 'Project',
-  metricLabel: 'Median time to 1st response (12m)',
+  metricLabel: 'Median time to 1st response (12M)',
 };

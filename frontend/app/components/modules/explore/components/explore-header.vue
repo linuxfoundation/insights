@@ -19,7 +19,7 @@ SPDX-License-Identifier: MIT
 
       <div class="w-full flex justify-center mt-5 pb-10">
         <div
-          class="w-full sm:max-w-120 overflow-hidden bg-neutral-50 h-[45px] border border-neutral-200 rounded-full flex items-center gap-2 px-5 cursor-pointer"
+          class="w-full sm:max-w-120 overflow-hidden bg-neutral-50 h-[45px] border border-neutral-200 hover:bg-neutral-100 transition hover:shadow-xs rounded-full flex items-center gap-2 px-5 cursor-pointer"
           @click="isModalOpen = true"
         >
           <lfx-icon
