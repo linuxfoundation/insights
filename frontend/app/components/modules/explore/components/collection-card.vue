@@ -4,7 +4,7 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <nuxt-link :to="{ name: LfxRoutes.COLLECTION, params: { slug: props.collection.slug } }">
-    <div class="border border-neutral-200 bg-white rounded-lg p-5 flex flex-col gap-5">
+    <div class="border border-neutral-200 bg-white rounded-lg p-5 flex flex-col gap-5 hover:shadow-md transition">
       <lfx-icon
         name="rectangle-history"
         class="text-neutral-400"
@@ -21,7 +21,7 @@ SPDX-License-Identifier: MIT
         <p class="text-neutral-400 text-body-2 font-medium pb-2">Featured projects</p>
         <div class="flex flex-wrap gap-3">
           <lfx-chip
-            v-for="project of props.collection.featuredProjects"
+            v-for="project of props.collection.featuredProjects.slice(0, 5)"
             :key="project.slug"
             type="bordered"
             class="transition hover:bg-neutral-100"

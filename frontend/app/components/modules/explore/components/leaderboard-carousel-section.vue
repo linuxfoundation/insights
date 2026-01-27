@@ -19,7 +19,10 @@ SPDX-License-Identifier: MIT
           <div class="md:block hidden">
             <!-- All leaderboards button -->
             <nuxt-link :to="{ name: LfxRoutes.LEADERBOARDS }">
-              <lfx-button type="transparent">
+              <lfx-button
+                type="transparent"
+                button-style="pill"
+              >
                 <lfx-icon
                   name="grid-2"
                   :size="16"
@@ -50,7 +53,10 @@ SPDX-License-Identifier: MIT
         <div class="md:hidden flex justify-center">
           <!-- All leaderboards button -->
           <nuxt-link :to="{ name: LfxRoutes.LEADERBOARDS }">
-            <lfx-button type="transparent">
+            <lfx-button
+              type="transparent"
+              button-style="pill"
+            >
               <lfx-icon
                 name="grid-2"
                 :size="16"

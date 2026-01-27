@@ -3,12 +3,12 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="flex flex-col gap-3 text-xs">
+  <div
+    v-if="links.length"
+    class="flex flex-col gap-3 text-xs"
+  >
     <div class="text-neutral-400 font-semibold">Links</div>
-    <div
-      v-if="links.length"
-      class="text-neutral-900 flex flex-col gap-3"
-    >
+    <div class="text-neutral-900 flex flex-col gap-3">
       <div
         v-for="link of links"
         :key="link.name"
@@ -33,12 +33,6 @@ SPDX-License-Identifier: MIT
           {{ link.name }}
         </a>
       </div>
-    </div>
-    <div
-      v-else
-      class="text-xs text-neutral-900"
-    >
-      No links available
     </div>
   </div>
 </template>

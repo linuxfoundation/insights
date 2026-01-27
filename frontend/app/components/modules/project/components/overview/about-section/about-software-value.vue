@@ -51,7 +51,10 @@ SPDX-License-Identifier: MIT
       </span>
     </lfx-tooltip>
   </div>
-  <div class="flex flex-col gap-2 text-xs">
+  <div
+    v-if="project?.softwareValue"
+    class="flex flex-col gap-2 text-xs"
+  >
     <div class="text-neutral-400 font-semibold flex items-center gap-1">
       Software value
       <lfx-tooltip
@@ -61,10 +64,7 @@ SPDX-License-Identifier: MIT
         <lfx-icon name="question-circle" />
       </lfx-tooltip>
     </div>
-    <div class="text-neutral-900">
-      <span v-if="project?.softwareValue"> ${{ formatNumberShort(project?.softwareValue) }} </span>
-      <span v-else> No Data </span>
-    </div>
+    <div class="text-neutral-900">${{ formatNumberShort(project?.softwareValue) }}</div>
   </div>
   <!--  <div-->
   <!--    class="flex flex-col gap-3 text-xs"-->

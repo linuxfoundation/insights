@@ -21,7 +21,7 @@ SPDX-License-Identifier: MIT
             name="rectangle-history"
             :size="16"
           />
-          <span class="text-sm text-neutral-900 truncate">
+          <span class="text-sm text-neutral-900 truncate max-w-[20ch]">
             {{ selectedOption.label || 'All collections' }}
           </span>
         </div>

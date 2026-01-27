@@ -39,25 +39,12 @@ SPDX-License-Identifier: MIT
       </span>
     </div>
   </div>
-
-  <lfx-button
-    v-if="scrollTopPercentage > 25"
-    class="fixed bottom-10"
-    type="tertiary"
-    button-style="pill"
-    @click="onClick(props.list[0]?.key || '', $event)"
-  >
-    <lfx-icon name="arrow-up" />
-    Back to top
-  </lfx-button>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue';
 import type { SideNavItem } from './types/side-nav.types';
-import LfxButton from '~/components/uikit/button/button.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
-import useScroll from '~/components/shared/utils/scroll';
 import { useQueryParam } from '~/components/shared/utils/query-param';
 import { processProjectParams, projectParamsSetter } from '~/components/modules/project/services/project.query.service';
 import { WidgetArea } from '~/components/modules/widget/types/widget-area';
@@ -68,7 +55,6 @@ const props = defineProps<{
   name: WidgetArea;
 }>();
 
-const { scrollTopPercentage } = useScroll();
 const { queryParams } = useQueryParam(processProjectParams, projectParamsSetter);
 
 const emit = defineEmits<{ (e: 'update:modelValue', value: string): void }>();

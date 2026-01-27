@@ -27,7 +27,7 @@ SPDX-License-Identifier: MIT
             class="text-neutral-400 font-normal"
             :size="20"
           />
-          <p class="text-base text-neutral-400 truncate">Search projects, repositories...</p>
+          <p class="text-base text-neutral-400 truncate">Search projects, repositories, or collections</p>
           <div class="flex-grow" />
         </div>
       </div>

@@ -13,11 +13,12 @@
 
   &::before {
     content: '';
-    @apply absolute top-0 left-0 w-1 h-full rounded-full max-lg:hidden block;
+    @apply absolute top-0 left-0 w-1 rounded-full max-lg:hidden block;
+    height: calc(100% - 1.25rem);
   }
 
   &__content {
-    @apply text-neutral-900 text-xs;
+    @apply text-neutral-900 text-sm;
   }
 
   &__header {

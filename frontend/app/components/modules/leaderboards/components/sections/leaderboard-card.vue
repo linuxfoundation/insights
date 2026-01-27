@@ -4,9 +4,10 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <lfx-card
-    class="p-5 flex-1 flex flex-col justify-between h-full min-w-0 sm:hover:shadow-sm transition-all !border-neutral-200"
+    class="p-5 flex-1 flex flex-col justify-between h-full min-w-0 sm:hover:shadow-md sm:cursor-pointer transition-all !border-neutral-200"
     @mouseenter="isHovered = true"
     @mouseleave="isHovered = false"
+    @click="handleCardClick"
   >
     <div class="flex flex-col gap-4">
       <div class="flex items-center justify-between">
@@ -22,7 +23,7 @@ SPDX-License-Identifier: MIT
             v-show="isHovered"
             type="transparent"
             icon="share-nodes"
-            @click="handleShare"
+            @click.stop="handleShare"
           />
         </div>
       </div>
@@ -77,9 +78,9 @@ SPDX-License-Identifier: MIT
     </div>
     <lfx-button
       type="transparent"
-      class="mt-6 w-full justify-center"
+      class="mt-6 w-full justify-center sm:!hidden"
       button-style="pill"
-      @click="router.push({ name: LfxRoutes.LEADERBOARD, params: { key: config.key as string } })"
+      @click="navigateToLeaderboard"
     >
       View leaderboard
     </lfx-button>
@@ -110,6 +111,22 @@ const props = defineProps<{
 }>();
 
 const isHovered = ref(false);
+
+const navigateToLeaderboard = () => {
+  router.push({ name: LfxRoutes.LEADERBOARD, params: { key: props.config.key as string } });
+};
+
+const handleCardClick = (event: MouseEvent) => {
+  // Only navigate on desktop (sm breakpoint = 640px)
+  if (window.innerWidth >= 640) {
+    // Don't navigate if clicking on the share button
+    const target = event.target as HTMLElement;
+    if (target.closest('button')) {
+      return;
+    }
+    navigateToLeaderboard();
+  }
+};
 
 const handleShare = () => {
   const title = `LFX Insights | Leaderboard - ${props.config?.name}`;
