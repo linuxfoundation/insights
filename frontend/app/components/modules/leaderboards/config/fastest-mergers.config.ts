@@ -13,5 +13,5 @@ export const fastestMergersConfig: LeaderboardConfig = {
   dataDisplay: LfxProjectDurationRowDisplay,
   minimizedDataDisplay: LfxProjectDurationMinimizedRowDisplay,
   entityLabel: 'Project',
-  metricLabel: 'Median time to merge (12m)',
+  metricLabel: 'Median time to merge (12M)',
 };

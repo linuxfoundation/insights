@@ -15,7 +15,7 @@ SPDX-License-Identifier: MIT
     </div>
     <div class="flex-1 min-w-0">{{ config?.entityLabel }}</div>
     <div class="flex-1 min-w-0 text-right flex items-center gap-1.5 justify-end">
-      {{ config?.metricLabel }}
+      <div>{{ config?.metricLabel }}</div>
       <lfx-tooltip
         v-if="config?.metricTooltip"
         :content="config?.metricTooltip"

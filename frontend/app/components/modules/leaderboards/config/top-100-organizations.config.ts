@@ -14,5 +14,5 @@ export const top100OrganizationsConfig: LeaderboardConfig = {
   dataDisplay: LfxOrganizationRowDisplay,
   minimizedDataDisplay: LfxOrganizationMinimizedRowDisplay,
   entityLabel: 'Organization',
-  metricLabel: 'Contributions (12m)',
+  metricLabel: 'Contributions (12M)',
 };

@@ -14,5 +14,5 @@ export const top100ContributorsConfig: LeaderboardConfig = {
   dataDisplay: LfxContributorRowDisplay,
   minimizedDataDisplay: LfxContributorMinimizedRowDisplay,
   entityLabel: 'Contributor',
-  metricLabel: 'Contributions (12m)',
+  metricLabel: 'Contributions (12M)',
 };
