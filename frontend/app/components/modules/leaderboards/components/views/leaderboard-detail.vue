@@ -113,7 +113,7 @@ const isScrollingIntoRow = ref<boolean>(false);
 // Sync collection filter with URL using VueUse
 const urlParams = useUrlSearchParams('history');
 const collectionSlug = computed({
-  get: () => (urlParams.collection as string) || '',
+  get: () => (urlParams.collection as string) || 'all',
   set: (value: string) => {
     if (value && value !== 'all') {
       urlParams.collection = value;
