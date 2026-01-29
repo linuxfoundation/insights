@@ -24,26 +24,3 @@ export const isElementVisible = (element: HTMLElement) => {
   const windowHeight = window.innerHeight || document.documentElement.clientHeight;
   return rect.top >= 0 && rect.bottom <= windowHeight;
 };
-
-export const normalizeRepoName = (repo: ProjectRepository): string => {
-  try {
-    const cleanUrl = repo.url.replace('q/', '').replace('project:', '');
-    const url = new URL(cleanUrl);
-    const pathParts = url.pathname.split('/').filter(Boolean);
-
-    // GitHub URLs: return last 2 segments (owner/repo)
-    if (url.hostname === 'github.com') {
-      return pathParts.slice(-2).join('/');
-    }
-
-    if (pathParts.length > 2) {
-      return pathParts.slice(-2).join('/');
-    }
-
-    // Fallback: return repo name or last path segment
-    return pathParts[pathParts.length - 1] || repo.name;
-  } catch {
-    // If URL parsing fails, return the repo name as fallback
-    return repo.name;
-  }
-};

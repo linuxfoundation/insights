@@ -101,9 +101,33 @@ export const useProjectStore = defineStore('project', () => {
   });
 
   // Selected repository URLs
-  const selectedReposValues = computed<string[]>(() =>
-    selectedRepositories.value.map((repo: ProjectRepository) => repo.url),
-  );
+  const selectedReposValues = computed<string[]>(() => {
+    const hasGerrit = project.value?.connectedPlatforms?.some((platform) =>
+      platform.toLowerCase().includes('gerrit'),
+    );
+    const repos = selectedRepositories.value.map((repo: ProjectRepository) => repo.url);
+
+    if (hasGerrit) {
+      // For Gerrit repos, add the query URL format alongside each repo URL
+      // Input: https://gerrit.<domain>/<namespace>/<project>/<repo>
+      // Output: https://gerrit.<domain>/<namespace>/q/project:<project>/<repo>
+      const gerritUrlPattern = /^(https:\/\/gerrit\.[^/]+\/[^/]+)\/(.+)$/;
+      const expandedRepos: string[] = [];
+
+      for (const repoUrl of repos) {
+        expandedRepos.push(repoUrl);
+        const match = repoUrl.match(gerritUrlPattern);
+        if (match) {
+          const [, baseWithNamespace, projectPath] = match;
+          expandedRepos.push(`${baseWithNamespace}/q/project:${projectPath}`);
+        }
+      }
+
+      return expandedRepos;
+    }
+
+    return repos;
+  });
 
   // Determine granularity options based on selected date range
   const customRangeGranularity = computed<string[]>(() =>
