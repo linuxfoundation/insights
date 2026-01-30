@@ -9,7 +9,10 @@ SPDX-License-Identifier: MIT
       :tabs="tabsOptions"
     >
       <template #slotItem="{ option }">
-        <lfx-tooltip class="!w-full">
+        <lfx-tooltip
+          class="!w-full"
+          :disabled="true"
+        >
           <template #content>
             <p
               v-if="!scoreDisplay[option.value as keyof typeof scoreDisplay]"
