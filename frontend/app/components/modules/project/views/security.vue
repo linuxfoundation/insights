@@ -32,31 +32,51 @@ SPDX-License-Identifier: MIT
               >
             </p>
           </div>
-
-          <a
-            href="https://revanite.io"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="flex items-center justify-center px-2.5 py-1 border border-neutral-200 rounded-full"
-          >
-            <p class="text-neutral-500 text-xs mr-2">Powered by:</p>
-            <img
-              src="~/assets/images/revanite.svg"
-              alt="Revanite.io Logo"
-              class="h-5 w-5.5 mr-1.5"
-            />
-            <p class="text-neutral-900 text-xs">Revanite.io</p>
-          </a>
-          <!-- TODO: Enable when backend is ready -->
-          <!--          <lfx-button-->
-          <!--            type="tertiary"-->
-          <!--            size="small"-->
-          <!--            button-style="pill"-->
-          <!--            class="whitespace-nowrap"-->
-          <!--          >-->
-          <!--            <lfx-icon name="arrows-rotate-reverse" />-->
-          <!--            Update results-->
-          <!--          </lfx-button>-->
+          <div class="flex items-center gap-4">
+            <a
+              href="https://revanite.io"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex items-center justify-center px-2.5 py-1 border border-neutral-200 rounded-full"
+            >
+              <p class="text-neutral-500 text-xs mr-2">Powered by:</p>
+              <img
+                src="~/assets/images/revanite.svg"
+                alt="Revanite.io Logo"
+                class="h-5 w-5.5 mr-1.5"
+              />
+              <p class="text-neutral-900 text-xs">Revanite.io</p>
+            </a>
+            <lfx-tooltip
+              v-if="isRepository && currentRepoUrl"
+              placement="top"
+            >
+              <template #content>
+                <p class="font-bold text-xs">Repository updates can’t be processed immediately</p>
+                <p class="text-xs text-neutral-300">Assessment results will be updated within an hour.</p>
+              </template>
+              <lfx-button
+                type="tertiary"
+                size="small"
+                button-style="pill"
+                class="whitespace-nowrap"
+                :disabled="isUpdatingResults"
+                @click="handleUpdateResultsClick"
+              >
+                <lfx-spinner
+                  v-if="isUpdatingResults"
+                  :size="14"
+                  class="mr-1"
+                />
+                <lfx-icon
+                  v-else
+                  name="arrows-rotate-reverse"
+                  :size="12"
+                />
+                Update results
+              </lfx-button>
+            </lfx-tooltip>
+          </div>
         </div>
 
         <!-- Disclaimer for aggregated view -->
@@ -220,7 +240,6 @@ import { securityParamsGetter, securityParamsSetter } from '../services/project.
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxAccordion from '~/components/uikit/accordion/accordion.vue';
-// import LfxProjectSecurityOspsScore from "~/components/modules/project/components/security/osps-score.vue";
 import LfxProjectSecurityEvaluationSection from '~/components/modules/project/components/security/evaluation-section.vue';
 import LfxProjectSecurityEvaluationAssesment from '~/components/modules/project/components/security/evaluation-assesment.vue';
 import LfxProjectSecurityPaginatedEvalRepos from '~/components/modules/project/components/security/paginated-eval-repos.vue';
@@ -233,9 +252,12 @@ import LfxReposExclusionFooter from '~/components/shared/components/repos-exclus
 import LfxEmptyState from '~/components/shared/components/empty-state.vue';
 import LfxTag from '~/components/uikit/tag/tag.vue';
 import LfxButton from '~/components/uikit/button/button.vue';
+import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
 import LfSecurityGenerateYamlModal from '~/components/modules/project/components/security/yaml/generate-yaml-modal.vue';
 import { SECURITY_API_SERVICE } from '~/components/modules/project/services/security.api.service';
 import { useQueryParam } from '~/components/shared/utils/query-param';
+import useToastService from '~/components/uikit/toast/toast.service';
+import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 
 const accordion = ref('');
 
@@ -249,6 +271,43 @@ const isGenerateYamlModalOpen = ref(generateYaml === 'true' || false);
 const { selectedReposValues, allArchived, archivedRepos, hasSelectedArchivedRepos } = storeToRefs(useProjectStore());
 
 const isRepository = computed(() => !!name);
+const isUpdatingResults = ref(false);
+
+const { showToast } = useToastService();
+
+// Get the current repository URL for security update
+const currentRepoUrl = computed(() => {
+  if (!isRepository.value || !selectedReposValues.value?.length) return '';
+  return selectedReposValues.value[0];
+});
+
+const handleUpdateResultsClick = async () => {
+  if (!currentRepoUrl.value || isUpdatingResults.value) return;
+
+  isUpdatingResults.value = true;
+
+  try {
+    await SECURITY_API_SERVICE.triggerSecurityUpdate(route.params.slug as string, {
+      repoUrl: currentRepoUrl.value || '',
+    });
+    showToast(
+      '<span class="text-neutral-300">Repository updates can’t be processed immediately.<br>Assessment results will be updated within an hour.</span>',
+      ToastTypesEnum.positive,
+      '',
+      5000,
+      {
+        title: 'Controls assessement results updated',
+      },
+    );
+  } catch (error) {
+    console.error('Failed to trigger security update:', error);
+    showToast('An error occurred while triggering the update', ToastTypesEnum.negative, 'circle-exclamation', 5000, {
+      summary: 'Failed to update results',
+    });
+  } finally {
+    isUpdatingResults.value = false;
+  }
+};
 
 const params = computed(() => ({
   projectSlug: route.params.slug as string,
@@ -305,13 +364,13 @@ const groupChecksByRepository = (checks: SecurityData[]) =>
 const handleGenerateYamlClick = () => {
   isGenerateYamlModalOpen.value = true;
   queryParams.value = {
-    generateYaml: true,
+    generateYaml: 'true',
   };
 };
 
 const handleGenerateYamlUpdate = (value: boolean) => {
   queryParams.value = {
-    generateYaml: value,
+    generateYaml: value ? 'true' : undefined,
   };
 };
 
