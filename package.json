@@ -15,7 +15,8 @@
 	"pnpm": {
 		"overrides": {
 			"eslint-plugin-vue": "^10.2.0",
-			"h3": "^1.15.5"
+			"h3": "^1.15.5",
+			"h3-next": "npm:h3@^1.15.5"
 		}
 	}
 }
