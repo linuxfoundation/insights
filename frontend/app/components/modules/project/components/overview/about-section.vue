@@ -4,6 +4,7 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <div class="flex flex-col gap-6">
+    <lfx-badges />
     <lfx-project-criticality />
     <lfx-project-about-section-loading :is-loading="isProjectLoading">
       <lfx-project-about-software-value />
@@ -28,6 +29,7 @@ import LfxProjectAboutSectionLoading from './about-section/about-section-loading
 import LfxProjectAboutSectionConnectedPlatforms from '~/components/modules/project/components/overview/about-section/connected-platforms.vue';
 import { useProjectStore } from '~~/app/components/modules/project/store/project.store';
 import LfxProjectCriticality from '~/components/modules/project/components/overview/about-section/project-criticality.vue';
+import LfxBadges from '~/components/modules/badges/components/badges.vue';
 
 const { isProjectLoading } = storeToRefs(useProjectStore());
 </script>

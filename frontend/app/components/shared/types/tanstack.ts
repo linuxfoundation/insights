@@ -73,4 +73,7 @@ export enum TanstackKey {
   LEADERBOARD_INDEX = 'leaderboard-index',
   LEADERBOARD_DETAIL = 'leaderboard-detail',
   LEADERBOARD_DETAIL_SEARCH = 'leaderboard-detail-search',
+
+  // Badges
+  PROJECT_BADGES = 'project-badges',
 }

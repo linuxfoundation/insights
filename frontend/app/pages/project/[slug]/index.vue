@@ -29,11 +29,17 @@ const projectName = computed(() => project.value?.name || '');
 const projectDescription = computed(() => project.value?.description || '');
 const projectLogo = computed(() => project.value?.logo || '');
 
-defineOgImageComponent('project', {
-  projectName,
-  projectDescription,
-  repositoryName: '',
-  projectLogo,
+// Check for badge query parameter
+const badgeKey = computed(() => route.query.badge as string | undefined);
+const projectSlug = computed(() => route.params.slug as string | undefined);
+
+// Single OG image component - it fetches badge data internally
+defineOgImageComponent('badge', {
+  projectName: project.value?.name || '',
+  projectLogo: project.value?.logo || '',
+  projectDescription: project.value?.description || '',
+  projectSlug: projectSlug.value || '',
+  badge: badgeKey.value || '',
 });
 
 useSeoMeta({

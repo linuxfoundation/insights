@@ -13,6 +13,7 @@ export interface LeaderboardBase {
   collectionsSlugs: string[];
   githubHandle?: string;
   status: string;
+  totalCount: number;
 }
 
 export interface Leaderboard extends LeaderboardBase {
