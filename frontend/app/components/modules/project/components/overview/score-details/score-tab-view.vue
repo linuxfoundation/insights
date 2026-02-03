@@ -9,30 +9,65 @@ SPDX-License-Identifier: MIT
       :tabs="tabsOptions"
     >
       <template #slotItem="{ option }">
-        <div class="flex flex-col gap-2 items-start">
+        <lfx-tooltip
+          class="!w-full"
+          :allow-pass-through="true"
+        >
+          <template #content>
+            <p
+              v-if="!scoreDisplay[option.value as keyof typeof scoreDisplay]"
+              class="max-w-60"
+            >
+              {{ option.label }} metrics are unavailable because the required data isn't available for this project.
+              <a
+                :href="links.securityScore"
+                target="_blank"
+                class="text-brand-500"
+                >Learn more</a
+              >
+            </p>
+            <p
+              v-else
+              class="max-w-60"
+            >
+              <a
+                :href="links.securityScore"
+                target="_blank"
+                class="text-brand-500"
+                >Learn more</a
+              >
+            </p>
+          </template>
           <div
-            class="text-sm tab-label"
+            class="flex flex-col gap-2 items-start"
             :class="{
-              'text-neutral-400': !scoreDisplay[option.value as keyof typeof scoreDisplay],
-              'text-neutral-900': scoreDisplay[option.value as keyof typeof scoreDisplay],
+              'cursor-not-allowed': !scoreDisplay[option.value as keyof typeof scoreDisplay],
             }"
           >
-            {{ option.label }}
-          </div>
-          <div class="text-sm text-gray-500 w-full">
-            <lfx-skeleton-state
-              :status="status"
-              height=".188rem"
-              width="100%"
+            <div
+              class="text-sm tab-label"
+              :class="{
+                'text-neutral-400': !scoreDisplay[option.value as keyof typeof scoreDisplay],
+                'text-neutral-900': scoreDisplay[option.value as keyof typeof scoreDisplay],
+              }"
             >
-              <lfx-progress-bar
-                size="small"
-                :values="[getValues(option.value)]"
-                :color="getColor(getValues(option.value))"
-              />
-            </lfx-skeleton-state>
+              {{ option.label }}
+            </div>
+            <div class="text-sm text-gray-500 w-full">
+              <lfx-skeleton-state
+                :status="status"
+                height=".188rem"
+                width="100%"
+              >
+                <lfx-progress-bar
+                  size="small"
+                  :values="[getValues(option.value)]"
+                  :color="getColor(getValues(option.value))"
+                />
+              </lfx-skeleton-state>
+            </div>
           </div>
-        </div>
+        </lfx-tooltip>
       </template>
     </lfx-tabs>
     <template
@@ -85,6 +120,8 @@ import type { ScoreDisplay } from '~~/types/overview/score-display.types';
 import LfxProjectLoadState from '~~/app/components/modules/project/components/shared/load-state.vue';
 import LfxSkeletonState from '~/components/modules/project/components/shared/skeleton-state.vue';
 import type { WidgetArea } from '~/components/modules/widget/types/widget-area';
+import { links } from '~/config/links';
+import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
 
 const props = defineProps<{
   trustScoreSummary: TrustScoreSummary | undefined;

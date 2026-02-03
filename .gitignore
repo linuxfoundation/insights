@@ -13,3 +13,5 @@ node_modules
 !.env.dist
 database/Dockerfile.flyway
 database/flyway_migrate.sh
+
+**/AGENTS.md
