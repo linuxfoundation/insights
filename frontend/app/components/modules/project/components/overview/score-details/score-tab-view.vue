@@ -22,6 +22,7 @@ SPDX-License-Identifier: MIT
               <a
                 :href="links.securityScore"
                 target="_blank"
+                rel="noopener noreferrer"
                 class="text-brand-500"
                 >Learn more</a
               >
