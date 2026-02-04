@@ -106,7 +106,6 @@ export async function findReposToProcessForDate(
           url as "repoUrl"
       from repositories
       where url like 'https://github.com%'
-      and "insightsProjectId" is not null
       and "deletedAt" is null
       ${failedReposSubquery}
       ${lastProcessedRepoUrlFilter}
