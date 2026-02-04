@@ -7,12 +7,12 @@ import type { LeaderboardConfig } from './types/leaderboard.types';
 
 export const starsConfig: LeaderboardConfig = {
   key: 'stars',
-  name: 'GitHub stars',
+  name: 'Stars',
   description:
-    'Projects ranked by total GitHub stars, reflecting overall popularity and community interest.',
+    'Projects ranked by total stars, reflecting overall popularity and community interest.',
   icon: 'star',
   dataDisplay: LfxProjectIntegerRowDisplay,
   minimizedDataDisplay: LfxProjectIntegerMinimizedRowDisplay,
   entityLabel: 'Project',
-  metricLabel: 'GitHub stars',
+  metricLabel: 'Stars',
 };
