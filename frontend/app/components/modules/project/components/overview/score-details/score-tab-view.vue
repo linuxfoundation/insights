@@ -12,6 +12,7 @@ SPDX-License-Identifier: MIT
         <lfx-tooltip
           class="!w-full"
           :allow-pass-through="true"
+          :disabled="scoreDisplay[option.value as keyof typeof scoreDisplay]"
         >
           <template #content>
             <p
@@ -23,17 +24,6 @@ SPDX-License-Identifier: MIT
                 :href="links.securityScore"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="text-brand-500"
-                >Learn more</a
-              >
-            </p>
-            <p
-              v-else
-              class="max-w-60"
-            >
-              <a
-                :href="links.securityScore"
-                target="_blank"
                 class="text-brand-500"
                 >Learn more</a
               >
