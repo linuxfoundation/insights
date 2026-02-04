@@ -91,28 +91,22 @@ export async function findReposToProcessForDate(
     );
 
   const lastProcessedRepoUrlFilter = lastProcessedRepo
-    ? ` and "repoUrl"  > $(lastProcessedRepoUrl)`
+    ? " and url > $(lastProcessedRepoUrl)"
     : "";
 
   const failedReposSubquery =
     failedRepos.length > 0
-      ? 'and all_repos."repoUrl" not in ($(failedRepos:csv))'
+      ? 'and url not in ($(failedRepos:csv))'
       : "";
 
   const repos: IInsightsProjectRepo[] = await cmDbStore.connection().query(
     `
-      with all_repos as (
-            select
-                id as "insightsProjectId",
-                slug as "insightsProjectSlug",
-                unnest(repositories) as "repoUrl"
-            from "insightsProjects"
-      )
       select distinct
           "insightsProjectId",
-          "repoUrl"
-      from all_repos
-      where "repoUrl" like 'https://github.com%'
+          url as "repoUrl"
+      from repositories
+      where url like 'https://github.com%'
+      and "deletedAt" is null
       ${failedReposSubquery}
       ${lastProcessedRepoUrlFilter}
       order by "repoUrl" asc
