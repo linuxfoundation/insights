@@ -6,24 +6,14 @@ SPDX-License-Identifier: MIT
   <div>
     <lfx-popover
       v-if="badge"
-      placement="bottom"
+      placement="top"
       trigger-event="hover"
     >
-      <div
-        :class="[
-          'size-[52px] rounded-full flex items-center justify-center p-0.5 transition-all cursor-pointer hover:scale-105',
-          tierClasses,
-        ]"
-      >
-        <div :class="['size-11 rounded-full flex items-center justify-center', tierBackgroundClasses]">
-          <lfx-icon
-            :name="badge.config.icon"
-            :size="20"
-            class="badge-icon"
-            :class="tierIconClasses"
-          />
-        </div>
-      </div>
+      <img
+        :src="badgeImage"
+        :alt="badge.config.title"
+        class="size-13 transition-all cursor-pointer hover:scale-105"
+      />
       <template #content>
         <lfx-badges-popover
           :badge="badge"
@@ -31,12 +21,6 @@ SPDX-License-Identifier: MIT
         />
       </template>
     </lfx-popover>
-    <div
-      v-else
-      class="size-[52px] rounded-full flex items-center justify-center p-0.5 bg-transparent"
-    >
-      <div class="size-11 rounded-full flex items-center justify-center border border-dashed border-neutral-300" />
-    </div>
 
     <!-- Share Modal -->
     <lfx-badges-share-modal
@@ -49,11 +33,10 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import type { ProjectBadge } from '../config/badge.types';
+import type { ProjectBadge } from '../types/badge.types';
 import LfxBadgesPopover from './badges-popover.vue';
-import LfxBadgesShareModal from './badges-share-modal.vue';
+import LfxBadgesShareModal from './share/badges-share-modal.vue';
 import LfxPopover from '~/components/uikit/popover/popover.vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
 
 const props = defineProps<{
   badge?: ProjectBadge;
@@ -65,43 +48,9 @@ const openShareModal = () => {
   isShareModalOpen.value = true;
 };
 
-const tierClasses = computed(() => {
+const badgeImage = computed(() => {
   if (!props.badge) return '';
-
-  const classes: Record<string, string> = {
-    bronze: 'bg-neutral-200',
-    silver: 'bg-neutral-200',
-    gold: 'bg-warning-300',
-    black: 'bg-neutral-700',
-  };
-
-  return classes[props.badge.tier] || '';
-});
-
-const tierBackgroundClasses = computed(() => {
-  if (!props.badge) return '';
-
-  const classes: Record<string, string> = {
-    bronze: 'bg-gradient-to-b from-warning-200 to-warning-100',
-    silver: 'bg-gradient-to-b from-neutral-100 to-neutral-50',
-    gold: 'bg-gradient-to-b from-warning-300 to-warning-200',
-    black: 'bg-gradient-to-b from-neutral-800 to-neutral-700',
-  };
-
-  return classes[props.badge.tier] || '';
-});
-
-const tierIconClasses = computed(() => {
-  if (!props.badge) return '';
-
-  const classes: Record<string, string> = {
-    bronze: 'text-warning-700',
-    silver: 'text-neutral-500',
-    gold: 'text-warning-600',
-    black: 'text-neutral-300',
-  };
-
-  return classes[props.badge.tier] || '';
+  return props.badge.config.badgeImages[props.badge.tier];
 });
 </script>
 

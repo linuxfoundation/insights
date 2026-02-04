@@ -20,7 +20,7 @@ SPDX-License-Identifier: MIT
     </div>
 
     <!-- Badges Grid -->
-    <div class="flex flex-wrap items-start gap-2">
+    <div class="flex flex-wrap items-start gap-x-4 gap-y-2">
       <lfx-badges-item
         v-for="(badge, index) in badges"
         :key="index"

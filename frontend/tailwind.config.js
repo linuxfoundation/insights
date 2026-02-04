@@ -26,6 +26,8 @@ export default {
     },
     fontSize: {
       ...lfxFontSizes,
+      xxxs: ['8px', '1.25'],
+      xxs: ['10px', '1.25'],
       'data-display-1': [
         'var(--lfx-text-data-display-1-font-size)',
         'var(--lfx-text-data-display-1-line-height)',
@@ -75,7 +77,9 @@ export default {
       width: {
         13: '3.25rem',
         51: '12.5rem',
+        70: '17.5rem',
         78: '19.5rem',
+        90: '22.5rem',
         100: '25rem',
         149: '37.25rem',
       },
@@ -95,6 +99,7 @@ export default {
         13: '3.25rem',
         15: '3.75rem',
         17: '4.25rem',
+        18: '4.5rem',
         21: '5.25rem',
         22: '5.5rem',
         25: '6.25rem',

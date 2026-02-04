@@ -6,7 +6,7 @@ const config: StorybookConfig = {
   stories: ['../app/components/**/*.stories.@(js|jsx|ts|tsx|mdx)'],
   addons: [
     '@storybook/addon-essentials',
-    '@chromatic-com/storybook',
+    // '@chromatic-com/storybook', // Disabled: incompatible with Storybook 8.6.x
     '@storybook/addon-interactions',
   ],
   framework: {

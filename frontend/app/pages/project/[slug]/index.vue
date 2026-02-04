@@ -25,16 +25,11 @@ const description = computed(() =>
 const imageAlt = computed(() => (project.value ? `${project.value.name} insights` : 'LFX Project insights'));
 const url = computed(() => `${config.public.appUrl}${route.fullPath}`);
 
-const projectName = computed(() => project.value?.name || '');
-const projectDescription = computed(() => project.value?.description || '');
-const projectLogo = computed(() => project.value?.logo || '');
-
 // Check for badge query parameter
 const badgeKey = computed(() => route.query.badge as string | undefined);
 const projectSlug = computed(() => route.params.slug as string | undefined);
 
-// Single OG image component - it fetches badge data internally
-defineOgImageComponent('badge', {
+defineOgImageComponent('project', {
   projectName: project.value?.name || '',
   projectLogo: project.value?.logo || '',
   projectDescription: project.value?.description || '',
