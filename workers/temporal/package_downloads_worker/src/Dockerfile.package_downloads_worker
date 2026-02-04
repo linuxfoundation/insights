@@ -5,7 +5,7 @@ RUN apk add --no-cache python3 make g++
 WORKDIR /usr/insights/app
 RUN npm install -g corepack@latest && corepack enable pnpm && corepack prepare pnpm@9.15.0 --activate
 
-COPY ./pnpm-workspace.yaml ./pnpm-lock.yaml ./
+COPY ./package.json ./pnpm-workspace.yaml ./pnpm-lock.yaml ./
 RUN pnpm fetch
 
 COPY ./submodules ./submodules
