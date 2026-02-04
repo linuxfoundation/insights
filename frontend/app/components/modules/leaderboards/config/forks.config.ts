@@ -9,7 +9,7 @@ export const forksConfig: LeaderboardConfig = {
   key: 'Forks',
   name: 'Forks',
   description:
-    'Projects ranked by number of forks, highlighting reuse and extensibility by developers.',
+    'Projects ranked by number of fork activities, highlighting reuse and extensibility by developers.',
   icon: 'code-fork',
   dataDisplay: LfxProjectIntegerRowDisplay,
   minimizedDataDisplay: LfxProjectIntegerMinimizedRowDisplay,

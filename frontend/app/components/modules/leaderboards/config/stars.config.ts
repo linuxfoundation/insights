@@ -9,7 +9,7 @@ export const starsConfig: LeaderboardConfig = {
   key: 'stars',
   name: 'Stars',
   description:
-    'Projects ranked by total stars, reflecting overall popularity and community interest.',
+    'Projects ranked by number of stars, reflecting overall popularity and community interest.',
   icon: 'star',
   dataDisplay: LfxProjectIntegerRowDisplay,
   minimizedDataDisplay: LfxProjectIntegerMinimizedRowDisplay,
