@@ -6,13 +6,13 @@ import LfxProjectIntegerMinimizedRowDisplay from '../components/minimize-row-dis
 import type { LeaderboardConfig } from './types/leaderboard.types';
 
 export const forksConfig: LeaderboardConfig = {
-  key: 'forks',
-  name: 'GitHub forks',
+  key: 'Forks',
+  name: 'Forks',
   description:
-    'Projects ranked by number of GitHub forks, highlighting reuse and extensibility by developers.',
+    'Projects ranked by number of forks, highlighting reuse and extensibility by developers.',
   icon: 'code-fork',
   dataDisplay: LfxProjectIntegerRowDisplay,
   minimizedDataDisplay: LfxProjectIntegerMinimizedRowDisplay,
   entityLabel: 'Project',
-  metricLabel: 'GitHub forks',
+  metricLabel: 'Forks',
 };
