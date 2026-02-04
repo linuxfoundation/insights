@@ -33,20 +33,6 @@ SPDX-License-Identifier: MIT
             </p>
           </div>
 
-          <a
-            href="https://revanite.io"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="flex items-center justify-center px-2.5 py-1 border border-neutral-200 rounded-full"
-          >
-            <p class="text-neutral-500 text-xs mr-2">Powered by:</p>
-            <img
-              src="~/assets/images/revanite.svg"
-              alt="Revanite.io Logo"
-              class="h-5 w-5.5 mr-1.5"
-            />
-            <p class="text-neutral-900 text-xs">Revanite.io</p>
-          </a>
           <!-- TODO: Enable when backend is ready -->
           <!--          <lfx-button-->
           <!--            type="tertiary"-->
