@@ -121,7 +121,7 @@ const handleCardClick = (event: MouseEvent) => {
   if (window.innerWidth >= 640) {
     // Don't navigate if clicking on the share button
     const target = event.target as HTMLElement;
-    if (target.closest('button') || target.classList.contains('project-link')) {
+    if (target.closest('button')) {
       return;
     }
     navigateToLeaderboard();
