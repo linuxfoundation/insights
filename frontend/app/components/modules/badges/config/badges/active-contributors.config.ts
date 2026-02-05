@@ -4,8 +4,8 @@
 import { BadgeTier, type BadgeConfig } from '../../types/badge.types';
 
 export const activeContributorsBadgeConfig: BadgeConfig = {
-  title: 'Active Contributors',
-  description: 'Ranking based on number of unique contributors',
+  title: 'Active contributors',
+  description: 'Unique contributors contributing in the last 12 months',
   leaderboardKey: 'active-contributors',
   badgeImages: {
     [BadgeTier.BRONZE]: '/images/badges/active-contributors/bronze.png',

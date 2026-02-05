@@ -7,5 +7,8 @@ export const silverTierConfig: TierConfig = {
   label: 'Silver',
   min: 10,
   max: 25, // Top 10-25%
-  tagClasses: 'bg-neutral-500 text-white',
+  gradient: {
+    from: '#9fa3ad',
+    to: '#d5d5d5',
+  },
 };

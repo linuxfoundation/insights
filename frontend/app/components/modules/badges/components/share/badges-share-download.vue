@@ -27,7 +27,7 @@ SPDX-License-Identifier: MIT
     >
       <div class="flex flex-col gap-1">
         <span class="text-sm font-medium text-neutral-900">Achievement card</span>
-        <span class="text-xs text-neutral-500">800x320px · PNG</span>
+        <span class="text-xs text-neutral-500">720x540px · PNG</span>
       </div>
       <img
         src="/images/badges/shared/card-preview.svg"

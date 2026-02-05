@@ -4,8 +4,8 @@
 import { BadgeTier, type BadgeConfig } from '../../types/badge.types';
 
 export const codebaseSizeBadgeConfig: BadgeConfig = {
-  title: 'Code Size',
-  description: 'Ranking based on lines of code',
+  title: 'Codebase size',
+  description: 'Count of source lines of code',
   leaderboardKey: 'codebase-size',
   badgeImages: {
     [BadgeTier.BRONZE]: '/images/badges/code-size/bronze.png',

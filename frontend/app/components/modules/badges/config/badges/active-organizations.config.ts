@@ -4,8 +4,8 @@
 import { BadgeTier, type BadgeConfig } from '../../types/badge.types';
 
 export const activeOrganizationsBadgeConfig: BadgeConfig = {
-  title: 'Active Organizations',
-  description: 'Ranking based on number of contributing organizations',
+  title: 'Active organizations',
+  description: 'Unique organizations contributing in the last 12 months',
   leaderboardKey: 'active-organizations',
   badgeImages: {
     [BadgeTier.BRONZE]: '/images/badges/active-organizations/bronze.png',

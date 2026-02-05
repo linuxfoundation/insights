@@ -7,11 +7,16 @@ import { goldTierConfig } from './tiers/gold.config';
 import { silverTierConfig } from './tiers/silver.config';
 import { bronzeTierConfig } from './tiers/bronze.config';
 
+export interface TierGradient {
+  from: string;
+  to: string;
+}
+
 export interface TierConfig {
   label: string;
   min: number;
   max: number;
-  tagClasses: string;
+  gradient: TierGradient;
 }
 
 export const tierConfigs: Record<BadgeTier, TierConfig> = {

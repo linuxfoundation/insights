@@ -4,8 +4,8 @@
 import { BadgeTier, type BadgeConfig } from '../../types/badge.types';
 
 export const packageDownloadsBadgeConfig: BadgeConfig = {
-  title: 'Package Downloads',
-  description: 'Ranking based on package downloads',
+  title: 'Package downloads',
+  description: 'Package downloads in the last 12 months',
   leaderboardKey: 'package-downloads',
   badgeImages: {
     [BadgeTier.BRONZE]: '/images/badges/package-downloads/bronze.png',

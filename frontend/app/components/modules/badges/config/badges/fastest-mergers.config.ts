@@ -4,8 +4,8 @@
 import { BadgeTier, type BadgeConfig } from '../../types/badge.types';
 
 export const fastestMergersBadgeConfig: BadgeConfig = {
-  title: 'Fastest Mergers',
-  description: 'Ranking based on PR merge time',
+  title: 'Fastest mergers',
+  description: 'Average time taken for pull requests to be merged in the last 12 months.',
   leaderboardKey: 'fastest-mergers',
   badgeImages: {
     [BadgeTier.BRONZE]: '/images/badges/merge-time/bronze.png',

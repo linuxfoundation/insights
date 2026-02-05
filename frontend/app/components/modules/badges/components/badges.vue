@@ -19,8 +19,29 @@ SPDX-License-Identifier: MIT
       </nuxt-link>
     </div>
 
+    <!-- Badges Loading State -->
+    <div
+      v-if="isPending"
+      class="flex items-center justify-between"
+    >
+      <div
+        v-for="i in 5"
+        :key="i"
+        class="p-skeleton !bg-transparent rounded-full"
+      >
+        <img
+          src="/images/badges/mask.svg"
+          alt=""
+          class="size-13"
+        />
+      </div>
+    </div>
+
     <!-- Badges Grid -->
-    <div class="flex flex-wrap items-start gap-x-4 gap-y-2">
+    <div
+      v-else
+      class="flex flex-wrap items-start gap-x-4 gap-y-2"
+    >
       <lfx-badges-item
         v-for="(badge, index) in badges"
         :key="index"
@@ -42,7 +63,7 @@ import { useProjectStore } from '~~/app/components/modules/project/store/project
 const { project } = storeToRefs(useProjectStore());
 
 const projectSlug = computed(() => project.value?.slug);
-const { data: badgesData } = BADGES_API_SERVICE.fetchProjectBadges(projectSlug);
+const { data: badgesData, isPending } = BADGES_API_SERVICE.fetchProjectBadges(projectSlug);
 const badges = computed(() => badgesData.value || []);
 </script>
 

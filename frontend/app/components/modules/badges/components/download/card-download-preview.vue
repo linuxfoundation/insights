@@ -40,7 +40,10 @@ SPDX-License-Identifier: MIT
           >
             Rank: #{{ badge.rank }}
           </span>
-          <span :class="['px-1.5 py-1 rounded-full text-[9px] font-semibold leading-none', tierTagClasses]">
+          <span
+            class="px-1.5 py-1 rounded-full text-[9px] font-semibold leading-none text-white"
+            :style="tierTagStyle"
+          >
             Top {{ tierConfig.max }}%
           </span>
         </div>
@@ -85,7 +88,9 @@ const formattedDate = computed(() => {
 
 const badgeImage = computed(() => props.badge.config.badgeImages[props.badge.tier]);
 const tierConfig = computed(() => tierConfigs[props.badge.tier]);
-const tierTagClasses = computed(() => tierConfig.value.tagClasses);
+const tierTagStyle = computed(() => ({
+  background: `linear-gradient(to bottom, ${tierConfig.value.gradient.from}, ${tierConfig.value.gradient.to})`,
+}));
 </script>
 
 <script lang="ts">

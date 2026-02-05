@@ -5,7 +5,7 @@ import { BadgeTier, type BadgeConfig } from '../../types/badge.types';
 
 export const forksBadgeConfig: BadgeConfig = {
   title: 'Forks',
-  description: 'Ranking based on total repository forks',
+  description: 'All-time number of forks',
   leaderboardKey: 'forks',
   badgeImages: {
     [BadgeTier.BRONZE]: '/images/badges/forks/bronze.png',

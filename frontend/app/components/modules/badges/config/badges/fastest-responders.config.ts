@@ -4,8 +4,8 @@
 import { BadgeTier, type BadgeConfig } from '../../types/badge.types';
 
 export const fastestRespondersBadgeConfig: BadgeConfig = {
-  title: 'Fastest Responders',
-  description: 'Ranking based on issue response time',
+  title: 'Fastest responders',
+  description: 'Average time to first response in the last 12 months.',
   leaderboardKey: 'fastest-responders',
   badgeImages: {
     [BadgeTier.BRONZE]: '/images/badges/response-time/bronze.png',

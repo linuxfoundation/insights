@@ -29,8 +29,8 @@ SPDX-License-Identifier: MIT
           <!-- Tags -->
           <div class="flex items-center gap-2">
             <span
-              class="px-1.5 py-0.5 rounded-full text-xs font-semibold"
-              :class="tierTagClasses"
+              class="px-1.5 py-0.5 rounded-full text-xs font-semibold text-white"
+              :style="tierTagStyle"
             >
               Top {{ tierConfig.max }}%
             </span>
@@ -100,7 +100,9 @@ const emit = defineEmits<{
 const badgeImage = computed(() => props.badge.config.badgeImages[props.badge.tier]);
 
 const tierConfig = computed(() => tierConfigs[props.badge.tier]);
-const tierTagClasses = computed(() => tierConfig.value.tagClasses);
+const tierTagStyle = computed(() => ({
+  background: `linear-gradient(to bottom, ${tierConfig.value.gradient.from}, ${tierConfig.value.gradient.to})`,
+}));
 
 const handleShare = () => {
   emit('share');

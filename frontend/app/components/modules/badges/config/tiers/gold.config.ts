@@ -7,5 +7,8 @@ export const goldTierConfig: TierConfig = {
   label: 'Gold',
   min: 1,
   max: 10, // Top 1-10%
-  tagClasses: 'bg-warning-500 text-white',
+  gradient: {
+    from: '#d7a262',
+    to: '#fdd17a',
+  },
 };

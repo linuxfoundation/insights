@@ -4,8 +4,8 @@
 import { BadgeTier, type BadgeConfig } from '../../types/badge.types';
 
 export const commitActivityBadgeConfig: BadgeConfig = {
-  title: 'Commit Activity',
-  description: 'Ranking based on commit frequency',
+  title: 'Commit activity',
+  description: 'Total commits in the last 12 months',
   leaderboardKey: 'commit-activity',
   badgeImages: {
     [BadgeTier.BRONZE]: '/images/badges/commit/bronze.png',

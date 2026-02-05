@@ -4,8 +4,8 @@
 import { BadgeTier, type BadgeConfig } from '../../types/badge.types';
 
 export const starsBadgeConfig: BadgeConfig = {
-  title: 'GitHub Stars',
-  description: 'Ranking based on total GitHub stars',
+  title: 'Stars',
+  description: 'All-time number of stars',
   leaderboardKey: 'stars',
   badgeImages: {
     [BadgeTier.BRONZE]: '/images/badges/stars/bronze.png',
