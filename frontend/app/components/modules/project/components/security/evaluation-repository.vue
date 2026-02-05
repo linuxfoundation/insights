@@ -67,10 +67,11 @@ SPDX-License-Identifier: MIT
       >
         <lfx-button
           type="tertiary"
+          button-style="pill"
           size="small"
           class="whitespace-nowrap"
         >
-          View repository breakdown
+          View repository
         </lfx-button>
       </nuxt-link>
     </div>

@@ -3,46 +3,58 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <lfx-accordion-item
-    name="access-control"
-    class="py-4 sm:py-5 border-t first:border-t-0 border-neutral-100"
-  >
-    <div class="flex gap-4 w-full">
-      <lfx-project-security-evaluation-result :results="assessmentsResults">
-        <template #default="{ result }">
-          <lfx-tooltip
-            :content="props.tooltip"
-            :disabled="!props.tooltip"
-          >
-            <div class="h-12 w-12 min-w-12">
-              <lfx-chart :config="chartConfig(result)" />
-            </div>
-          </lfx-tooltip>
-        </template>
-      </lfx-project-security-evaluation-result>
-      <div v-if="props.checks.length">
-        <h2 class="text-heading-4 font-bold font-secondary">
-          {{ category }}
-        </h2>
-        <p
-          v-if="config"
-          class="text-body-2 text-neutral-500 mt-1"
+  <!-- <lfx-accordion-item -->
+  <!-- <div
+    class="py-4 sm:py-5 border-t first:border-t-0 border-neutral-100 flex gap-10 items-center"
+  > -->
+  <div class="flex gap-4 w-full">
+    <lfx-project-security-evaluation-result :results="assessmentsResults">
+      <template #default="{ result }">
+        <lfx-tooltip
+          :content="props.tooltip"
+          :disabled="!props.tooltip"
         >
-          {{ config.description }}
-        </p>
-      </div>
+          <div class="h-12 w-12 min-w-12">
+            <lfx-chart :config="chartConfig(result)" />
+          </div>
+        </lfx-tooltip>
+      </template>
+    </lfx-project-security-evaluation-result>
+    <div v-if="props.checks.length">
+      <h2 class="text-heading-4 font-bold font-secondary">
+        {{ category }}
+      </h2>
+      <p
+        v-if="config"
+        class="text-body-2 text-neutral-500 mt-1"
+      >
+        {{ config.description }}
+      </p>
     </div>
+  </div>
 
-    <template #content>
+  <!-- <div>
+      <lfx-button
+        type="tertiary"
+        button-style="pill"
+        size="small"
+        class="whitespace-nowrap"
+        @click="openReposEvalModal"
+      >
+      Repository breakdown
+      </lfx-button>
+    </div> -->
+
+  <!-- <template #content>
       <div class="border border-neutral-200 rounded-md px-4 sm:px-5 mt-4">
         <slot />
       </div>
     </template>
-  </lfx-accordion-item>
+  </lfx-accordion-item> -->
+  <!-- </div> -->
 </template>
 <script setup lang="ts">
 import { computed } from 'vue';
-import LfxAccordionItem from '~/components/uikit/accordion/accordion-item.vue';
 import LfxProjectSecurityEvaluationResult from '~/components/modules/project/components/security/evaluation-result.vue';
 import type { SecurityDataResult, SecurityAssessmentData, SecurityData } from '~~/types/security/responses.types';
 import LfxChart from '~/components/uikit/chart/chart.vue';

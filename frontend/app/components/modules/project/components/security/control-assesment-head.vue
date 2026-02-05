@@ -4,7 +4,7 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <div class="px-4 sm:px-6 flex justify-between items-start pb-4 sm:pb-5 flex-wrap gap-2">
-    <div class="w-full sm:w-1/2 md:w-1/2">
+    <div class="w-full md:w-3/4">
       <!-- Title -->
       <div class="flex flex-col-reverse sm:flex-row items-start sm:items-center gap-2 sm:gap-4 pb-2">
         <h1 class="text-heading-3 font-secondary font-bold">Controls assessment</h1>
@@ -21,7 +21,7 @@ SPDX-License-Identifier: MIT
       </div>
 
       <!-- Description -->
-      <p class="text-xs text-neutral-500">
+      <p class="text-xs text-neutral-500 pr-6 sm:pr-8">
         Process of assessing a project's practices, policies, and technical measures against a set of predefined
         standards to determine its security posture, reliability, and maturity.
         <a
@@ -34,6 +34,8 @@ SPDX-License-Identifier: MIT
       </p>
     </div>
 
+    <!-- 
+    removed by Jonathan on PR: https://github.com/linuxfoundation/insights/pull/1649
     <a
       href="https://revanite.io"
       target="_blank"
@@ -47,7 +49,7 @@ SPDX-License-Identifier: MIT
         class="h-5 w-5.5 mr-1.5"
       />
       <p class="text-neutral-900 text-xs">Revanite.io</p>
-    </a>
+    </a> -->
   </div>
 </template>
 

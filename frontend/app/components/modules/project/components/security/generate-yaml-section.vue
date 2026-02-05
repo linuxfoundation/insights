@@ -3,16 +3,12 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="flex md:flex-col flex-row justify-center items-start gap-5">
-    <div class="relative inline-block">
-      <lfx-icon
-        name="file"
-        :size="32"
-        class="text-brand-500"
+  <div class="flex md:flex-col flex-row justify-center items-start gap-3 mb-5">
+    <div class="flex items-center justify-center w-8 h-8 bg-accent-100 rounded-full">
+      <img
+        src="~/assets/images/yaml-icon.png"
+        alt="YAML icon"
       />
-      <div class="bg-brand-500 text-icon-label font-bold absolute bottom-0 w-[75%] py-0.5 text-white text-center ml-1">
-        YAML
-      </div>
     </div>
     <div class="flex flex-col gap-2">
       <span class="text-sm font-semibold text-neutral-900">YAML security file</span>

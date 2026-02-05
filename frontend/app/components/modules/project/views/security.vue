@@ -3,21 +3,23 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="container pt-4 md:pt-12 flex flex-col gap-8">
-    <div class="flex items-center justify-center mt-2">
+  <div class="container pt-4 md:pt-10 flex flex-col gap-8">
+    <div class="flex items-center justify-center gap-2">
+      <hr class="grow border-t border-neutral-200" />
       <lfx-repos-exclusion-footer
         v-if="hasSelectedArchivedRepos && !isFetching"
         page-content="security"
       />
+      <hr class="grow border-t border-neutral-200" />
     </div>
     <lfx-card class="pt-4 sm:pt-6">
       <lfx-project-security-control-assesment-head />
-      <div class="flex md:gap-10 gap-5 md:flex-row flex-col-reverse">
-        <div class="md:w-3/4 w-full">
+      <div class="flex md:gap-8 gap-6 md:flex-row flex-col-reverse px-4 sm:px-6 py-4">
+        <div class="md:w-3/4 w-full md:border-r border-neutral-200 pr-6 sm:pr-8">
           <!-- Disclaimer for aggregated view -->
           <div
             v-if="!isRepository"
-            class="px-6 py-3 bg-neutral-50 border-y border-neutral-100 flex items-center gap-1.5 rounded-b-lg"
+            class="p-3 bg-neutral-50 border-y border-neutral-100 flex items-center gap-1.5 rounded-md"
           >
             <lfx-icon
               name="info-circle"
@@ -26,14 +28,19 @@ SPDX-License-Identifier: MIT
             />
             <p class="text-body-2 text-neutral-500 font-semibold">
               You’re viewing an aggregated score and controls assessment for the entire project. For a detailed
-              analysis, choose a specific repository.
+              analysis,
+              <span
+                class="cursor-pointer underline decoration-dotted"
+                @click="isSearchRepoModalOpen = true"
+                >choose a specific repository.</span
+              >
             </p>
           </div>
-          <div class="px-4 sm:px-6 pt-1">
+          <div class="pt-1">
             <!-- Show spinner when loading -->
             <div
               v-if="isFetching"
-              class="pt-5 border-t border-neutral-100"
+              class="pt-5"
             >
               <div class="flex flex-col items-center justify-center py-20">
                 <lfx-spinner
@@ -72,33 +79,45 @@ SPDX-License-Identifier: MIT
             </div>
             <div v-else>
               <!-- Display checks -->
-              <lfx-accordion v-model="accordion">
-                <lfx-project-security-evaluation-section
+
+              <lfx-accordion
+                v-if="isRepository"
+                v-model="accordion"
+              >
+                <lfx-project-security-evaluation-section-accordion
                   v-for="(checks, title) in groupedData"
                   :key="title"
-                  :name="title"
+                  :title="title"
                   :checks="checks"
                   :tooltip="
                     isRepository ? 'Category success rate' : 'Average category success rate of all repositories'
                   "
                 >
-                  <template v-if="isRepository">
-                    <template
-                      v-for="check in checks"
-                      :key="check.controlId"
-                    >
-                      <lfx-project-security-evaluation-assesment
-                        v-for="assessment in check.assessments"
-                        :key="assessment.requirementId"
-                        :assessment="assessment"
-                      />
-                    </template>
+                  <template
+                    v-for="check in checks"
+                    :key="check.controlId"
+                  >
+                    <lfx-project-security-evaluation-assesment
+                      v-for="assessment in check.assessments"
+                      :key="assessment.requirementId"
+                      :assessment="assessment"
+                    />
                   </template>
-                  <template v-else>
-                    <lfx-project-security-paginated-eval-repos :group-checks="groupChecksByRepository(checks || [])" />
-                  </template>
-                </lfx-project-security-evaluation-section>
+                </lfx-project-security-evaluation-section-accordion>
               </lfx-accordion>
+
+              <template v-else>
+                <lfx-project-security-evaluation-section-row
+                  v-for="(checks, title) in groupedData"
+                  :key="title"
+                  :title="title"
+                  :checks="checks"
+                  :tooltip="
+                    isRepository ? 'Category success rate' : 'Average category success rate of all repositories'
+                  "
+                  @open-repos-eval-modal="openReposEvalModal"
+                />
+              </template>
             </div>
           </div>
         </div>
@@ -109,6 +128,19 @@ SPDX-License-Identifier: MIT
       </div>
     </lfx-card>
   </div>
+
+  <lfx-project-repository-switch
+    v-if="isSearchRepoModalOpen"
+    v-model="isSearchRepoModalOpen"
+  />
+
+  <lfx-project-security-repos-eval-modal
+    :model-value="isReposEvalModalOpen"
+    :current-tab="currentTab"
+    :checks-group="groupedData"
+    @update:model-value="isReposEvalModalOpen = $event"
+    @update:current-tab="currentTab = $event"
+  />
 </template>
 
 <script setup lang="ts">
@@ -120,9 +152,9 @@ import LfxCard from '~/components/uikit/card/card.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxAccordion from '~/components/uikit/accordion/accordion.vue';
 // import LfxProjectSecurityOspsScore from "~/components/modules/project/components/security/osps-score.vue";
-import LfxProjectSecurityEvaluationSection from '~/components/modules/project/components/security/evaluation-section.vue';
+import LfxProjectSecurityEvaluationSectionRow from '~/components/modules/project/components/security/evaluation-section-row.vue';
+import LfxProjectSecurityEvaluationSectionAccordion from '~/components/modules/project/components/security/evaluation-section-accordion.vue';
 import LfxProjectSecurityEvaluationAssesment from '~/components/modules/project/components/security/evaluation-assesment.vue';
-import LfxProjectSecurityPaginatedEvalRepos from '~/components/modules/project/components/security/paginated-eval-repos.vue';
 import { useProjectStore } from '~/components/modules/project/store/project.store';
 import type { SecurityData } from '~~/types/security/responses.types';
 import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
@@ -131,9 +163,11 @@ import LfxReposExclusionFooter from '~/components/shared/components/repos-exclus
 import LfxEmptyState from '~/components/shared/components/empty-state.vue';
 import LfxProjectSecurityGenerateYamlSection from '~/components/modules/project/components/security/generate-yaml-section.vue';
 import LfxProjectSecurityControlAssesmentHead from '~/components/modules/project/components/security/control-assesment-head.vue';
+import LfxProjectRepositorySwitch from '~/components/modules/project/components/shared/header/repository-switch.vue';
+import LfxProjectSecurityReposEvalModal from '~/components/modules/project/components/security/repos-eval-modal.vue';
 import { SECURITY_API_SERVICE } from '~/components/modules/project/services/security.api.service';
 
-const accordion = ref('');
+const isSearchRepoModalOpen = ref(false);
 
 const route = useRoute();
 const { name } = route.params;
@@ -141,6 +175,9 @@ const { name } = route.params;
 const { selectedReposValues, allArchived, archivedRepos, hasSelectedArchivedRepos } = storeToRefs(useProjectStore());
 
 const isRepository = computed(() => !!name);
+const isReposEvalModalOpen = ref(false);
+const currentTab = ref('');
+const accordion = ref('');
 
 const params = computed(() => ({
   projectSlug: route.params.slug as string,
@@ -173,26 +210,10 @@ const groupedData = computed(() =>
   ),
 );
 
-const groupChecksByRepository = (checks: SecurityData[]) =>
-  (checks || []).reduce(
-    (mapping, check) => {
-      const obj = { ...mapping };
-      if (!obj[check.repo]) {
-        obj[check.repo] = [];
-      }
-      const tmpAssessments = PROJECT_SECURITY_SERVICE.orderAssessmentsByRequirementId(
-        PROJECT_SECURITY_SERVICE.mergeDuplicateAssessments(check.assessments),
-      );
-      // Create a copy of the check object to avoid mutating the original
-      const checkCopy = {
-        ...check,
-        assessments: tmpAssessments,
-      };
-      obj[check.repo]?.push(checkCopy);
-      return obj;
-    },
-    {} as Record<string, SecurityData[]>,
-  );
+const openReposEvalModal = (category: string | undefined) => {
+  isReposEvalModalOpen.value = true;
+  currentTab.value = category || '';
+};
 
 onServerPrefetch(async () => {
   await suspense();
