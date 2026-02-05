@@ -87,6 +87,7 @@ import type { ProjectRepository } from '~~/types/project';
 import LfxProjectRepositorySwitchItem from '~/components/modules/project/components/shared/header/repository-switch/repository-switch-item.vue';
 import LfxArchivedTag from '~/components/shared/components/archived-tag.vue';
 import type { ProjectLinkConfig } from '~/components/modules/project/config/links';
+import { normalizeRepoName } from '~/components/shared/utils/helper';
 
 const props = defineProps<{
   link: ProjectLinkConfig;
@@ -108,6 +109,7 @@ interface RepositoryItem extends ProjectRepository {
 const repositories = computed<RepositoryItem[]>(() =>
   projectRepos.value.map((repo) => ({
     ...repo,
+    name: normalizeRepoName(repo),
     isExcluded: excludedRepos.value.includes(repo.url),
     isArchived: archivedRepos.value.includes(repo.url),
   })),
