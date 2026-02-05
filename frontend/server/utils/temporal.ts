@@ -4,7 +4,7 @@ import { webcrypto as crypto } from 'node:crypto';
 import { Client, Connection } from '@temporalio/client';
 import type { DataConverter, Payload, PayloadCodec } from '@temporalio/common';
 import { METADATA_ENCODING_KEY } from '@temporalio/common';
-import { decode, encode } from '@temporalio/common/lib/encoding';
+import { decode, encode } from '@temporalio/common/lib/encoding.js';
 import proto from '@temporalio/proto';
 import { isLocal } from './common';
 
