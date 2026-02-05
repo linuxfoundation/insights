@@ -108,8 +108,8 @@ export default {
         29: '7.5rem',
       },
       borderWidth: {
-        '3': '3px',
-      }
+        3: '3px',
+      },
     },
   },
   plugins: [],
