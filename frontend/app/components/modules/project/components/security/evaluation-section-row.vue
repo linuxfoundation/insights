@@ -3,7 +3,7 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="py-4 sm:py-5 border-t first:border-t-0 border-neutral-100 flex gap-10 items-center">
+  <div class="py-4 sm:py-5 border-t first:border-t-0 border-neutral-200 flex gap-10 items-center">
     <lfx-project-security-evaluation-section
       :title="title"
       :checks="checks"
@@ -15,7 +15,7 @@ SPDX-License-Identifier: MIT
         type="tertiary"
         button-style="pill"
         size="small"
-        class="whitespace-nowrap"
+        class="whitespace-nowrap !font-semibold"
         @click="openReposEvalModal"
       >
         Repository breakdown

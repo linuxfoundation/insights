@@ -3,7 +3,7 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="px-4 sm:px-6 flex justify-between items-start pb-4 sm:pb-5 flex-wrap gap-2">
+  <div class="flex justify-between items-start pb-4 sm:pb-5 flex-wrap gap-2">
     <div class="w-full md:w-3/4">
       <!-- Title -->
       <div class="flex flex-col-reverse sm:flex-row items-start sm:items-center gap-2 sm:gap-4 pb-2">
@@ -33,23 +33,6 @@ SPDX-License-Identifier: MIT
         >
       </p>
     </div>
-
-    <!-- 
-    removed by Jonathan on PR: https://github.com/linuxfoundation/insights/pull/1649
-    <a
-      href="https://revanite.io"
-      target="_blank"
-      rel="noopener noreferrer"
-      class="flex items-center justify-center px-2.5 py-1 border border-neutral-200 rounded-full"
-    >
-      <p class="text-neutral-500 text-xs mr-2">Powered by:</p>
-      <img
-        src="~/assets/images/revanite.svg"
-        alt="Revanite.io Logo"
-        class="h-5 w-5.5 mr-1.5"
-      />
-      <p class="text-neutral-900 text-xs">Revanite.io</p>
-    </a> -->
   </div>
 </template>
 

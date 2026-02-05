@@ -3,10 +3,6 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <!-- <lfx-accordion-item -->
-  <!-- <div
-    class="py-4 sm:py-5 border-t first:border-t-0 border-neutral-100 flex gap-10 items-center"
-  > -->
   <div class="flex gap-4 w-full">
     <lfx-project-security-evaluation-result :results="assessmentsResults">
       <template #default="{ result }">
@@ -32,26 +28,6 @@ SPDX-License-Identifier: MIT
       </p>
     </div>
   </div>
-
-  <!-- <div>
-      <lfx-button
-        type="tertiary"
-        button-style="pill"
-        size="small"
-        class="whitespace-nowrap"
-        @click="openReposEvalModal"
-      >
-      Repository breakdown
-      </lfx-button>
-    </div> -->
-
-  <!-- <template #content>
-      <div class="border border-neutral-200 rounded-md px-4 sm:px-5 mt-4">
-        <slot />
-      </div>
-    </template>
-  </lfx-accordion-item> -->
-  <!-- </div> -->
 </template>
 <script setup lang="ts">
 import { computed } from 'vue';

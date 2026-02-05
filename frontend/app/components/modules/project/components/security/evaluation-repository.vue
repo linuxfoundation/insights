@@ -20,7 +20,7 @@ SPDX-License-Identifier: MIT
               <div class="h-4 w-4">
                 <lfx-chart :config="chartConfig(result)" />
               </div>
-              <p class="text-sm font-semibold">{{ result }}%</p>
+              <p class="text-xs font-semibold">{{ result }}%</p>
             </div>
 
             <template #content>
@@ -35,7 +35,6 @@ SPDX-License-Identifier: MIT
                   </p>
                   <lfx-project-security-evaluation-result-tag
                     size="small"
-                    type="transparent"
                     :result="assessment.result"
                   />
                   <p class="text-body-2 mt-2">
@@ -55,7 +54,7 @@ SPDX-License-Identifier: MIT
           :size="16"
           class="text-neutral-400"
         />
-        <p class="text-body-2 whitespace-nowrap">
+        <p class="text-sm text-neutral-900 whitespace-nowrap">
           {{ getRepoNameFromUrl(repository) }}
         </p>
       </div>

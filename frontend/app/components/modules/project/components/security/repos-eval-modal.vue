@@ -11,8 +11,19 @@ SPDX-License-Identifier: MIT
     content-class="!overflow-hidden h-[85vh] mt-11"
   >
     <div class="p-5 flex flex-col h-full">
-      <div class="flex items-center justify-between shrink-0">
-        <h1>Controls assessment breakdown</h1>
+      <div class="flex items-start justify-between mb-1">
+        <div class="flex items-center gap-2">
+          <lfx-organization-logo
+            class="max-h-8"
+            :src="project?.logo || ''"
+            size="small"
+            :alt="project?.name"
+          />
+
+          <span class="text-body-2 font-semibold text-neutral-900">
+            {{ project?.name }}
+          </span>
+        </div>
 
         <lfx-icon-button
           icon="close"
@@ -20,6 +31,10 @@ SPDX-License-Identifier: MIT
           :icon-size="12"
           @click="isModalOpen = false"
         />
+      </div>
+
+      <div class="flex items-center justify-between shrink-0">
+        <h1 class="font-bold text-xl text-neutral-900 font-secondary">Controls assessment breakdown</h1>
       </div>
 
       <div class="mt-8 shrink-0">
@@ -52,13 +67,16 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import { storeToRefs } from 'pinia';
 import LfxModal from '~/components/uikit/modal/modal.vue';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
 import type { SecurityData } from '~~/types/security/responses.types';
 import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
 import { lfxSecurityCategories } from '~/components/modules/project/config/security-category';
 import LfxProjectSecurityPaginatedEvalRepos from '~/components/modules/project/components/security/paginated-eval-repos.vue';
+import LfxOrganizationLogo from '~/components/uikit/organization-logo/organization-logo.vue';
 import { PROJECT_SECURITY_SERVICE } from '~/components/modules/project/services/security.service';
+import { useProjectStore } from '~/components/modules/project/store/project.store';
 
 const emit = defineEmits<{
   (e: 'update:modelValue', value: boolean): void;
@@ -70,6 +88,8 @@ const props = defineProps<{
   currentTab: string;
   checksGroup: Record<string, SecurityData[]>;
 }>();
+
+const { project } = storeToRefs(useProjectStore());
 
 const isModalOpen = computed({
   get: () => props.modelValue,

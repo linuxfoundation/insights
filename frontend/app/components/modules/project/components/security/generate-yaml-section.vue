@@ -23,7 +23,7 @@ SPDX-License-Identifier: MIT
     type="tertiary"
     size="small"
     button-style="pill"
-    class="flex justify-center w-full"
+    class="flex justify-center w-full !font-semibold"
     @click="handleGenerateYamlClick"
   >
     Generate YAML

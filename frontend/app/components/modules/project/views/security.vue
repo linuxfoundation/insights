@@ -4,17 +4,17 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <div class="container pt-4 md:pt-10 flex flex-col gap-8">
-    <div class="flex items-center justify-center gap-2">
+    <div
+      v-if="hasSelectedArchivedRepos && !isFetching"
+      class="flex items-center justify-center gap-2"
+    >
       <hr class="grow border-t border-neutral-200" />
-      <lfx-repos-exclusion-footer
-        v-if="hasSelectedArchivedRepos && !isFetching"
-        page-content="security"
-      />
+      <lfx-repos-exclusion-footer page-content="security" />
       <hr class="grow border-t border-neutral-200" />
     </div>
-    <lfx-card class="pt-4 sm:pt-6">
+    <lfx-card class="p-4 sm:p-6">
       <lfx-project-security-control-assesment-head />
-      <div class="flex md:gap-8 gap-6 md:flex-row flex-col-reverse px-4 sm:px-6 py-4">
+      <div class="flex md:gap-8 gap-6 md:flex-row flex-col-reverse py-4">
         <div class="md:w-3/4 w-full md:border-r border-neutral-200 pr-6 sm:pr-8">
           <!-- Disclaimer for aggregated view -->
           <div
@@ -36,7 +36,7 @@ SPDX-License-Identifier: MIT
               >
             </p>
           </div>
-          <div class="pt-1">
+          <div>
             <!-- Show spinner when loading -->
             <div
               v-if="isFetching"

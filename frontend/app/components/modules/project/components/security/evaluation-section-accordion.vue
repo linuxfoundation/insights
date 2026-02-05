@@ -5,7 +5,7 @@ SPDX-License-Identifier: MIT
 <template>
   <lfx-accordion-item
     :name="title"
-    class="py-4 sm:py-5 border-t first:border-t-0 border-neutral-100"
+    class="py-4 sm:py-5 border-t first:border-t-0 border-neutral-200"
   >
     <lfx-project-security-evaluation-section
       :title="title"
