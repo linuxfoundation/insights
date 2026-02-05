@@ -32,6 +32,13 @@ export default {
   cmDbUsername: 'postgres',
   cmDbPassword: 'example',
   cmDbDatabase: 'crowd-web',
+  temporalServerUrl: 'localhost:7233',
+  temporalNamespace: 'default',
+  temporalCertificate: '',
+  temporalPrivateKey: '',
+  temporalEncryptionKeyId: 'local',
+  temporalEncryptionKey: '',
+  securityGithubToken: '',
   dataCopilotDefaultSegmentId: '',
   rateLimiter: rateLimiter,
   // These are also exposed on the client-side

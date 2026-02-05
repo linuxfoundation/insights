@@ -20,9 +20,10 @@ SPDX-License-Identifier: MIT
           >
             {{ slotProps.message.title }}
           </p>
-          <p class="text-xs leading-5">
-            {{ slotProps.message.detail }}
-          </p>
+          <p
+            class="text-xs leading-5"
+            v-html="sanitize(slotProps.message.detail)"
+          ></p>
         </div>
         <div v-if="slotProps.message.actionLabel">
           <a
@@ -56,6 +57,7 @@ SPDX-License-Identifier: MIT
 import type { ToastOptions, ToastTheme } from './types/toast.types';
 import { ToastTypesEnum } from './types/toast.types';
 import LfxButton from '~/components/uikit/button/button.vue';
+import { useSanitize } from '~~/composables/useSanitize';
 
 const props = withDefaults(
   defineProps<{
@@ -65,6 +67,8 @@ const props = withDefaults(
     theme: 'dark',
   },
 );
+
+const { sanitize } = useSanitize();
 
 const getToastIcon = (options: ToastOptions) => {
   if (options.severity === ToastTypesEnum.default && options.icon) {
