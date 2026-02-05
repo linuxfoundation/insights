@@ -34,7 +34,7 @@ SPDX-License-Identifier: MIT
           </div>
           <div class="flex items-center gap-4">
             <lfx-tooltip
-              v-if="isRepository && currentRepoUrl"
+              v-if="isAuthenticated && isRepository && currentRepoUrl"
               placement="top"
             >
               <template #content>
@@ -244,6 +244,7 @@ import { SECURITY_API_SERVICE } from '~/components/modules/project/services/secu
 import { useQueryParam } from '~/components/shared/utils/query-param';
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
+import { useAuthStore } from '~/components/modules/auth/store/auth.store';
 
 const accordion = ref('');
 
@@ -255,6 +256,7 @@ const { generateYaml } = queryParams.value;
 const isGenerateYamlModalOpen = ref(generateYaml === 'true' || false);
 
 const { selectedReposValues, allArchived, archivedRepos, hasSelectedArchivedRepos } = storeToRefs(useProjectStore());
+const { isAuthenticated } = storeToRefs(useAuthStore());
 
 const isRepository = computed(() => !!name);
 const isUpdatingResults = ref(false);
@@ -273,7 +275,8 @@ const handleUpdateResultsClick = async () => {
   isUpdatingResults.value = true;
 
   try {
-    await SECURITY_API_SERVICE.triggerSecurityUpdate(route.params.slug as string, {
+    await SECURITY_API_SERVICE.triggerSecurityUpdate({
+      slug: route.params.slug as string,
       repoUrl: currentRepoUrl.value || '',
     });
     showToast(
@@ -282,7 +285,7 @@ const handleUpdateResultsClick = async () => {
       '',
       5000,
       {
-        title: 'Controls assessement results updated',
+        title: 'Controls assessment results updated',
       },
     );
   } catch (error) {

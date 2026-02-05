@@ -7,6 +7,7 @@ import { TanstackKey } from '~/components/shared/types/tanstack';
 import type { SecurityData } from '~~/types/security/responses.types';
 
 export interface SecurityUpdateRequest {
+  slug: string;
   repoUrl: string;
 }
 
@@ -52,11 +53,8 @@ class SecurityApiService {
       });
   }
 
-  async triggerSecurityUpdate(
-    projectSlug: string,
-    request: SecurityUpdateRequest,
-  ): Promise<SecurityUpdateResponse> {
-    return await $fetch<SecurityUpdateResponse>(`/api/project/${projectSlug}/security/update`, {
+  async triggerSecurityUpdate(request: SecurityUpdateRequest): Promise<SecurityUpdateResponse> {
+    return await $fetch<SecurityUpdateResponse>('/api/security/update', {
       method: 'POST',
       body: request,
     });

@@ -1,5 +1,6 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
+import { WorkflowExecutionAlreadyStartedError } from '@temporalio/client';
 import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
 import type { ProjectTinybird } from '~~/types/project';
 import {
@@ -10,6 +11,7 @@ import {
 } from '~~/server/utils/temporal';
 
 interface SecurityUpdateRequest {
+  slug: string;
   repoUrl: string;
 }
 
@@ -20,13 +22,11 @@ interface SecurityUpdateResponse {
 }
 
 /**
- * API Endpoint: POST /api/project/{slug}/security/update
+ * API Endpoint: POST /api/security/update
  * Description: Triggers a security assessment update for a specific repository
  *
- * Path Parameters:
- * - slug (string, required): The project slug
- *
  * Request Body:
+ * - slug (string, required): The project slug
  * - repoUrl (string, required): The repository URL to run the security assessment on
  *
  * Response:
@@ -36,10 +36,16 @@ interface SecurityUpdateResponse {
  */
 export default defineEventHandler(async (event): Promise<SecurityUpdateResponse | Error> => {
   const config = useRuntimeConfig();
-  const { slug } = event.context.params as Record<string, string>;
   const body: SecurityUpdateRequest = await readBody(event);
 
   // Validate request body
+  if (!body.slug) {
+    return createError({
+      statusCode: 400,
+      statusMessage: 'Missing required field: slug is required',
+    });
+  }
+
   if (!body.repoUrl) {
     return createError({
       statusCode: 400,
@@ -55,6 +61,8 @@ export default defineEventHandler(async (event): Promise<SecurityUpdateResponse 
       statusMessage: 'Security GitHub token is not configured on the server',
     });
   }
+
+  const { slug } = body;
 
   try {
     // Fetch project details to get the project ID
@@ -87,11 +95,16 @@ export default defineEventHandler(async (event): Promise<SecurityUpdateResponse 
       token,
     };
 
-    const workflowId = `security-update-${slug}-${Date.now()}`;
+    // Use static workflowId per repo to prevent duplicate workflows for the same repo
+    // WorkflowIdReusePolicy.REJECT_DUPLICATE will reject if workflow is already running
+    // Sanitize repoUrl for use in workflowId (replace non-alphanumeric chars with dashes)
+    const sanitizedRepo = body.repoUrl.replace(/[^a-zA-Z0-9]/g, '-').replace(/-+/g, '-');
+    const workflowId = `security-update-${slug}-${sanitizedRepo}`;
 
     await client.workflow.start(UPSERT_OSPS_BASELINE_WORKFLOW, {
       taskQueue: SECURITY_BEST_PRACTICES_TASK_QUEUE,
       workflowId,
+      workflowIdReusePolicy: 'REJECT_DUPLICATE',
       args: [workflowParams],
     });
 
@@ -101,10 +114,19 @@ export default defineEventHandler(async (event): Promise<SecurityUpdateResponse 
       message: 'Security assessment update has been triggered successfully',
     };
   } catch (err) {
+    // Handle case where workflow is already running for this project
+    if (err instanceof WorkflowExecutionAlreadyStartedError) {
+      return createError({
+        statusCode: 429,
+        statusMessage:
+          'A security update is already in progress for this project. Please try again later.',
+      });
+    }
+
     console.error('Error triggering security update:', err);
     return createError({
       statusCode: 500,
-      statusMessage: err instanceof Error ? err.message : 'Failed to trigger security update',
+      statusMessage: 'Failed to trigger security update',
     });
   }
 });
