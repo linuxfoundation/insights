@@ -13,7 +13,7 @@ SPDX-License-Identifier: MIT
       <hr class="grow border-t border-neutral-200" />
     </div>
     <lfx-card class="p-4 sm:p-6">
-      <lfx-project-security-control-assesment-head />
+      <lfx-project-security-control-assessment-head />
 
       <div class="flex md:gap-8 gap-6 md:flex-row flex-col-reverse py-4">
         <div class="md:w-3/4 w-full md:border-r border-neutral-200 pr-6 sm:pr-8">
@@ -163,7 +163,7 @@ import { PROJECT_SECURITY_SERVICE } from '~/components/modules/project/services/
 import LfxReposExclusionFooter from '~/components/shared/components/repos-exclusion-footer.vue';
 import LfxEmptyState from '~/components/shared/components/empty-state.vue';
 import LfxProjectSecurityGenerateYamlSection from '~/components/modules/project/components/security/generate-yaml-section.vue';
-import LfxProjectSecurityControlAssesmentHead from '~/components/modules/project/components/security/control-assesment-head.vue';
+import LfxProjectSecurityControlAssessmentHead from '~/components/modules/project/components/security/control-assessment-head.vue';
 import LfxProjectRepositorySwitch from '~/components/modules/project/components/shared/header/repository-switch.vue';
 import LfxProjectSecurityReposEvalModal from '~/components/modules/project/components/security/repos-eval-modal.vue';
 import { SECURITY_API_SERVICE } from '~/components/modules/project/services/security.api.service';

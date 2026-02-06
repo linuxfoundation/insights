@@ -5,7 +5,6 @@ SPDX-License-Identifier: MIT
 <template>
   <div class="py-4 sm:py-5 border-t first:border-t-0 border-neutral-200 flex gap-10 items-center">
     <lfx-project-security-evaluation-section
-      :title="title"
       :checks="checks"
       :tooltip="tooltip"
     />
@@ -46,6 +45,6 @@ const openReposEvalModal = () => {
 
 <script lang="ts">
 export default {
-  name: 'LfxProjectSecurityEvaluationSection',
+  name: 'LfxProjectSecurityEvaluationSectionRow',
 };
 </script>

@@ -117,6 +117,6 @@ const handleUpdateResultsClick = async () => {
 
 <script lang="ts">
 export default {
-  name: 'LfxProjectSecurityControlAssesmentHead',
+  name: 'LfxProjectSecurityControlAssessmentHead',
 };
 </script>

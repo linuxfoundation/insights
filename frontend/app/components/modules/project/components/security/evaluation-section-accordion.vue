@@ -8,7 +8,6 @@ SPDX-License-Identifier: MIT
     class="py-4 sm:py-5 border-t first:border-t-0 border-neutral-200"
   >
     <lfx-project-security-evaluation-section
-      :title="title"
       :checks="checks"
       :tooltip="tooltip"
     />
@@ -34,6 +33,6 @@ defineProps<{
 
 <script lang="ts">
 export default {
-  name: 'LfxProjectSecurityEvaluationSection',
+  name: 'LfxProjectSecurityEvaluationSectionAccordion',
 };
 </script>
