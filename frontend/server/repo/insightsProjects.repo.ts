@@ -16,7 +16,6 @@ export interface InsightsProject {
   linkedin?: string;
   twitter?: string;
   widgets: string[];
-  repositories: string[];
   slug: string;
   enabled: boolean;
   isLF: boolean;
@@ -45,7 +44,6 @@ export class InsightsProjectsRepository {
           linkedin,
           twitter,
           widgets,
-          repositories,
           slug,
           enabled,
           "isLF",

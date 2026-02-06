@@ -7,6 +7,7 @@ SPDX-License-Identifier: MIT
     :placement="props.placement"
     :disabled="props.disabled"
     trigger-event="hover"
+    :allow-pass-through="props.allowPassThrough"
   >
     <slot />
 
@@ -32,11 +33,13 @@ const props = withDefaults(
     placement?: Placement;
     content?: string;
     disabled?: boolean;
+    allowPassThrough?: boolean;
   }>(),
   {
     placement: 'top',
     content: '',
     disabled: false,
+    allowPassThrough: false,
   },
 );
 </script>

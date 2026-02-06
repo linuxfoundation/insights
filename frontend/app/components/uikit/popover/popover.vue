@@ -47,6 +47,7 @@ const props = withDefaults(
     matchWidth?: boolean;
     isModal?: boolean;
     popoverClass?: string;
+    allowPassThrough?: boolean;
   }>(),
   {
     placement: 'bottom-start',
@@ -57,6 +58,7 @@ const props = withDefaults(
     matchWidth: false,
     isModal: false,
     popoverClass: '',
+    allowPassThrough: false,
   },
 );
 
@@ -128,7 +130,9 @@ const closePopover = () => {
 };
 
 const handleClick = (e: Event) => {
-  e.stopPropagation();
+  if (!props.allowPassThrough) {
+    e.stopPropagation();
+  }
   if (props.triggerEvent === 'click') {
     if (isVisible.value) {
       closePopover();
