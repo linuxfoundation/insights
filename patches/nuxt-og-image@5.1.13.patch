@@ -1,0 +1,22 @@
+diff --git a/dist/runtime/server/og-image/satori/renderer.js b/dist/runtime/server/og-image/satori/renderer.js
+index ccf2b0622fa2cb630e75f7af46ac9071d4e66a5e..55d32872b9ea66b9e365c1e766ad258e66e59a9c 100644
+--- a/dist/runtime/server/og-image/satori/renderer.js
++++ b/dist/runtime/server/og-image/satori/renderer.js
+@@ -2,7 +2,7 @@ import { fontCache } from "#og-image-cache";
+ import { theme } from "#og-image-virtual/unocss-config.mjs";
+ import compatibility from "#og-image/compatibility";
+ import { defu } from "defu";
+-import { sendError } from "h3";
++import { createError } from "h3";
+ import { normaliseFontInput } from "../../../shared.js";
+ import { useOgImageRuntimeConfig } from "../../utils.js";
+ import { loadFont } from "./font.js";
+@@ -53,7 +53,7 @@ export async function createSvg(event) {
+     height: options.height
+   });
+   return satori(vnodes, satoriOptions).catch((err) => {
+-    return sendError(event.e, err, import.meta.dev);
++    throw createError({ statusCode: 500, statusMessage: err?.message || 'Failed to create SVG' });
+   });
+ }
+ async function createPng(event) {

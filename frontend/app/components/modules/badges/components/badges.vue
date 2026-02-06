@@ -56,16 +56,14 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { storeToRefs } from 'pinia';
 import { BADGES_API_SERVICE } from '../services/badges.api.service';
 import LfxBadgesItem from './badges-item.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import { LfxRoutes } from '~/components/shared/types/routes';
-import { useProjectStore } from '~~/app/components/modules/project/store/project.store';
 
-const { project } = storeToRefs(useProjectStore());
+const route = useRoute();
 
-const projectSlug = computed(() => project.value?.slug);
+const projectSlug = computed(() => route.params.slug as string);
 const { data: badgesData, isPending } = BADGES_API_SERVICE.fetchProjectBadges(projectSlug);
 const badges = computed(() => badgesData.value || []);
 </script>

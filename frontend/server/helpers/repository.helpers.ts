@@ -29,4 +29,4 @@ export const getRepoNameFromUrl = (url: string): string => {
 };
 
 export const getRepoSlugFromName = (name: string): string =>
-  slugify(name.replace(/\//g, '-'), { lower: true });
+  slugify(name.replace(/\//g, '_'), { lower: true });
