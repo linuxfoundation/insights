@@ -177,8 +177,8 @@ importers:
         version: 3.25.76
     devDependencies:
       '@chromatic-com/storybook':
-        specifier: ^4.1.3
-        version: 4.1.3(storybook@8.6.15(prettier@3.8.0))
+        specifier: 4.2.0-next.1
+        version: 4.2.0-next.1(storybook@8.6.15(prettier@3.8.0))
       '@eslint/compat':
         specifier: ^1.4.1
         version: 1.4.1(eslint@9.39.2(jiti@2.6.1))
@@ -778,11 +778,11 @@ importers:
         specifier: ^0.52.4
         version: 0.52.5
       '@nangohq/node':
-        specifier: ^0.50.0
-        version: 0.50.0
+        specifier: ^0.69.22
+        version: 0.69.30
       '@nangohq/types':
-        specifier: ^0.50.0
-        version: 0.50.0
+        specifier: ^0.69.22
+        version: 0.69.30
       axios:
         specifier: ^1.8.4
         version: 1.9.0
@@ -1690,11 +1690,11 @@ packages:
   '@bufbuild/protobuf@2.10.0':
     resolution: {integrity: sha512-fdRs9PSrBF7QUntpZpq6BTw58fhgGJojgg39m9oFOJGZT+nip9b0so5cYY1oWl5pvemDLr0cPPsH46vwThEbpQ==}
 
-  '@chromatic-com/storybook@4.1.3':
-    resolution: {integrity: sha512-hc0HO9GAV9pxqDE6fTVOV5KeLpTiCfV8Jrpk5ogKLiIgeq2C+NPjpt74YnrZTjiK8E19fYcMP+2WY9ZtX7zHmw==}
+  '@chromatic-com/storybook@4.2.0-next.1':
+    resolution: {integrity: sha512-p2IWRWKMIKfMsgKCTolhMrXYW4AuvuhmMEd6iHaE8OjkK4mib68cheA/PI7cT3wldX9QfJFZTQKXTKMxnXF/SA==}
     engines: {node: '>=20.0.0', yarn: '>=1.22.18'}
     peerDependencies:
-      storybook: ^0.0.0-0 || ^9.0.0 || ^9.1.0-0 || ^9.2.0-0 || ^10.0.0-0 || ^10.1.0-0 || ^10.2.0-0 || ^10.3.0-0
+      storybook: ^0.0.0-0 || ^9.0.0 || ^9.1.0-0 || ^9.2.0-0 || ^10.0.0-0
 
   '@clack/core@0.5.0':
     resolution: {integrity: sha512-p3y0FIOwaYRUPRcMO7+dlmLh8PSRcrjuTndsiA0WAFbWES0mLZlrjVoBRZ9DzkPFJZG6KGkJmoEAY0ZcVWTkow==}
@@ -2938,12 +2938,12 @@ packages:
   '@nangohq/frontend@0.52.5':
     resolution: {integrity: sha512-KQ5Rc91AShd8pYHmHs+Egsroqei5qaX5z+/qAuBku7uQIr96bfkwtTaJkhYf8my7XyxcPExDq0HKXavrhoKOHA==}
 
-  '@nangohq/node@0.50.0':
-    resolution: {integrity: sha512-azQs+oc628q37DF26Y471YpKeL2xnP1R/4WhllpraaExpaanG2VP/xshVTsuVqsRpo4YykquJBZAh5w4bQtcZw==}
-    engines: {node: '>=18.0'}
+  '@nangohq/node@0.69.30':
+    resolution: {integrity: sha512-6lvqCchnbpPdjJDllFg+c7BZoSK7fT7v80uCgryJnpsOdJ1FUNJ2iDQWlJZgEp3caFGQbHIKot0r6U6UFf9Kwg==}
+    engines: {node: '>=20.0'}
 
-  '@nangohq/types@0.50.0':
-    resolution: {integrity: sha512-RgVFq37gW/EFRQi8zBjd2PbV7reYYmYNFrCgNrCrQg+QKIkDPwCocnp6qsa8Jv7R8meO9K6X7SFf8Y/oaMOr/w==}
+  '@nangohq/types@0.69.30':
+    resolution: {integrity: sha512-dtKDsN6nAMbzv7B+Qtax9yXJ/v17n8bYUPW0hyg3Otc+Jp/mW6nlQUoExadegnBvzN0eWasZf2joHhuKZKa+SA==}
 
   '@napi-rs/wasm-runtime@0.2.10':
     resolution: {integrity: sha512-bCsCyeZEwVErsGmyPNSzwfwFn4OdxBj0mmv6hOFucB/k81Ojdu68RbZdxYsRQUPc9l6SU5F/cG+bXgWs3oUgsQ==}
@@ -6007,6 +6007,9 @@ packages:
   axios@0.21.4:
     resolution: {integrity: sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==}
 
+  axios@1.12.0:
+    resolution: {integrity: sha512-oXTDccv8PcfjZmPGlWsPSwtOJCZ/b6W5jAMCNcfwJbCzDckwG0jrYJFaWH1yvivfCXjVzV/SPDEhMB3Q+DSurg==}
+
   axios@1.13.4:
     resolution: {integrity: sha512-1wVkUaAO6WyaYtCkcYCOx12ZgpGf9Zif+qXa4n+oYzK558YryKqiL6UWwd5DqiH3VRW0GYhTZQ/vlgJrCoNQlg==}
 
@@ -6347,8 +6350,8 @@ packages:
     resolution: {integrity: sha512-+IxzY9BZOQd/XuYPRmrvEVjF/nqj5kgT4kEq7VofrDoM1MxoRjEWkrCC3EtLi59TVawxTAn+orJwFQcrqEN1+g==}
     engines: {node: '>=18'}
 
-  chromatic@13.3.5:
-    resolution: {integrity: sha512-MzPhxpl838qJUo0A55osCF2ifwPbjcIPeElr1d4SHcjnHoIcg7l1syJDrAYK/a+PcCBrOGi06jPNpQAln5hWgw==}
+  chromatic@12.2.0:
+    resolution: {integrity: sha512-GswmBW9ZptAoTns1BMyjbm55Z7EsIJnUvYKdQqXIBZIKbGErmpA+p4c0BYA+nzw5B0M+rb3Iqp1IaH8TFwIQew==}
     hasBin: true
     peerDependencies:
       '@chromatic-com/cypress': ^0.*.* || ^1.0.0
@@ -11502,6 +11505,10 @@ packages:
     resolution: {integrity: sha512-RAH822pAdBgcNMAfWnCBU3CFZcfZ/i1eZjwFU/dsLKumyuuP3niueg2UAukXYF0E2AAoc82ZSSf9J0WQBinzHA==}
     engines: {node: '>=12.20'}
 
+  type-fest@4.41.0:
+    resolution: {integrity: sha512-TeTSQ6H5YHvpqVwBRcnLDCBnDOHWYu7IvGbHT6N8AOymcr9PJGjc1GTtiWZTYg0NCgYwvnYWEkVChQAr9bjfwA==}
+    engines: {node: '>=16'}
+
   type-fest@5.2.0:
     resolution: {integrity: sha512-xxCJm+Bckc6kQBknN7i9fnP/xobQRsRQxR01CztFkp/h++yfVxUUcmMgfR2HttJx/dpWjS9ubVuyspJv24Q9DA==}
     engines: {node: '>=20'}
@@ -13362,7 +13369,7 @@ snapshots:
       '@azure/logger': 1.2.0
       '@types/node-fetch': 2.6.12
       '@types/tunnel': 0.0.3
-      form-data: 4.0.2
+      form-data: 4.0.5
       node-fetch: 2.7.0
       process: 0.11.10
       tslib: 2.8.1
@@ -13697,10 +13704,10 @@ snapshots:
 
   '@bufbuild/protobuf@2.10.0': {}
 
-  '@chromatic-com/storybook@4.1.3(storybook@8.6.15(prettier@3.8.0))':
+  '@chromatic-com/storybook@4.2.0-next.1(storybook@8.6.15(prettier@3.8.0))':
     dependencies:
       '@neoconfetti/react': 1.0.0
-      chromatic: 13.3.5
+      chromatic: 12.2.0
       filesize: 10.1.6
       jsonfile: 6.2.0
       storybook: 8.6.15(prettier@3.8.0)
@@ -14698,13 +14705,20 @@ snapshots:
 
   '@nangohq/frontend@0.52.5': {}
 
-  '@nangohq/node@0.50.0':
+  '@nangohq/node@0.69.30':
     dependencies:
-      axios: 1.13.4
+      '@nangohq/types': 0.69.30
+      axios: 1.12.0
     transitivePeerDependencies:
       - debug
 
-  '@nangohq/types@0.50.0': {}
+  '@nangohq/types@0.69.30':
+    dependencies:
+      axios: 1.12.0
+      json-schema: 0.4.0
+      type-fest: 4.41.0
+    transitivePeerDependencies:
+      - debug
 
   '@napi-rs/wasm-runtime@0.2.10':
     dependencies:
@@ -17414,7 +17428,7 @@ snapshots:
   '@types/node-fetch@2.6.12':
     dependencies:
       '@types/node': 22.16.0
-      form-data: 4.0.2
+      form-data: 4.0.5
 
   '@types/node@18.19.110':
     dependencies:
@@ -18742,6 +18756,14 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
+  axios@1.12.0:
+    dependencies:
+      follow-redirects: 1.15.9
+      form-data: 4.0.5
+      proxy-from-env: 1.1.0
+    transitivePeerDependencies:
+      - debug
+
   axios@1.13.4:
     dependencies:
       follow-redirects: 1.15.9
@@ -19115,7 +19137,7 @@ snapshots:
 
   chownr@3.0.0: {}
 
-  chromatic@13.3.5: {}
+  chromatic@12.2.0: {}
 
   chrome-launcher@1.2.1:
     dependencies:
@@ -25224,6 +25246,8 @@ snapshots:
   type-fest@0.8.1: {}
 
   type-fest@2.19.0: {}
+
+  type-fest@4.41.0: {}
 
   type-fest@5.2.0:
     dependencies:
