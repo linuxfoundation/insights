@@ -29,7 +29,7 @@
     "@ai-sdk/openai": "^2.0.89",
     "@ai-sdk/vue": "^2.0.121",
     "@linuxfoundation/lfx-ui-core": "^0.0.20",
-    "@modelcontextprotocol/sdk": "^1.25.2",
+    "@modelcontextprotocol/sdk": "^1.26.0",
     "@nuxt/eslint": "^1.12.1",
     "@nuxt/image": "^1.11.0",
     "@nuxtjs/plausible": "^2.0.1",
