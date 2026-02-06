@@ -4,7 +4,7 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <lfx-card
-    v-if="score && score > 0 && project?.isLF"
+    v-if="slugMatchesProject && score && score > 0 && project?.isLF"
     class="p-5"
   >
     <div class="flex justify-between pb-8 gap-3">
@@ -68,7 +68,10 @@ import LfxCard from '~/components/uikit/card/card.vue';
 import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
 import { links } from '~/config/links';
 
+const route = useRoute();
 const { project, selectedRepositories } = storeToRefs(useProjectStore());
+
+const slugMatchesProject = computed(() => project.value?.slug === route.params.slug);
 
 const repoWithHighestScore = computed(() => {
   if (selectedRepositories.value && selectedRepositories.value.length > 0) {

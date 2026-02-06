@@ -15,7 +15,11 @@
 	"pnpm": {
 		"overrides": {
 			"eslint-plugin-vue": "^10.2.0",
-			"h3": "^1.15.5"
+			"h3": "1.15.5",
+			"@nuxtjs/robots": "^5.7.0"
+		},
+		"patchedDependencies": {
+			"nuxt-og-image@5.1.13": "patches/nuxt-og-image@5.1.13.patch"
 		}
 	}
 }
