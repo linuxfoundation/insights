@@ -78,6 +78,7 @@ const { project } = storeToRefs(useProjectStore());
 const tierConfig = computed(() => tierConfigs[props.badge.tier]);
 
 const shareUrl = computed(() => {
+  if (!import.meta.client) return '';
   const url = new URL(window.location.origin + window.location.pathname);
   url.searchParams.set('badge', props.badge.config.leaderboardKey);
   return url.toString();
@@ -93,11 +94,13 @@ const shareTitle = computed(() => {
 });
 
 const shareToX = () => {
+  if (!import.meta.client) return;
   const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareTitle.value)}&url=${encodeURIComponent(shareUrl.value)}`;
   window.open(url, '_blank', 'width=550,height=420');
 };
 
 const shareToLinkedIn = () => {
+  if (!import.meta.client) return;
   const url = `https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(shareUrl.value)}&title=${encodeURIComponent(shareTitle.value)}`;
   window.open(url, '_blank', 'width=550,height=420');
 };
@@ -107,6 +110,7 @@ const redditTitle = computed(() => {
 });
 
 const shareToReddit = () => {
+  if (!import.meta.client) return;
   const url = `https://reddit.com/submit?url=${encodeURIComponent(shareUrl.value)}&title=${encodeURIComponent(redditTitle.value)}`;
   window.open(url, '_blank', 'width=550,height=420');
 };
@@ -120,6 +124,7 @@ const emailBody = computed(() => {
 });
 
 const shareViaEmail = () => {
+  if (!import.meta.client) return;
   window.open(
     `mailto:?subject=${encodeURIComponent(emailSubject.value)}&body=${encodeURIComponent(emailBody.value)}`,
     '_blank',

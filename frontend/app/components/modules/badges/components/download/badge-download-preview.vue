@@ -3,24 +3,22 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="size-[400px] bg-white relative">
+  <div class="size-[600px] bg-white relative">
     <!-- Badge image centered -->
     <div class="absolute inset-0 flex items-center justify-center">
       <img
         :src="badgeImage"
         :alt="badge.config.title"
-        class="w-80 h-auto"
+        class="w-full h-full"
       />
     </div>
     <!-- Project Logo in top-right corner -->
     <div
-      class="absolute top-4 right-4 size-20 bg-white border border-neutral-200 rounded-[20px] flex items-center justify-center shadow-xl"
+      class="absolute top-0 right-10 size-[140px] bg-white border border-neutral-200 rounded-[20px] flex items-center justify-center"
     >
-      <lfx-avatar
+      <img
         :src="project?.logo"
-        size="large"
-        type="organization"
-        class="rounded-2xl"
+        class="size-25"
       />
     </div>
   </div>
@@ -30,7 +28,6 @@ SPDX-License-Identifier: MIT
 import { computed } from 'vue';
 import { storeToRefs } from 'pinia';
 import type { ProjectBadge } from '../../types/badge.types';
-import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
 import { useProjectStore } from '~~/app/components/modules/project/store/project.store';
 
 const props = defineProps<{

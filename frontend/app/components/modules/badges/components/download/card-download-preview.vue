@@ -3,65 +3,71 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="w-90 bg-white border border-neutral-200 rounded-xl p-5 flex flex-col">
+  <div
+    class="w-[1000px] h-[680px] bg-white border border-neutral-200 rounded-[32px] p-12 flex flex-col justify-between"
+  >
     <!-- Header: Project info + Badge -->
     <div class="flex justify-between items-start">
       <!-- Project Logo & Name -->
-      <div class="flex items-center gap-2">
-        <lfx-avatar
+      <div class="flex items-center gap-4">
+        <img
           :src="project?.logo"
-          size="small"
-          type="organization"
+          :alt="project?.name"
+          class="size-14 shrink-0 rounded-[12px] border border-neutral-200 object-cover"
         />
-        <span class="text-xxs font-semibold text-black">{{ project?.name }}</span>
+        <span class="text-2xl font-semibold text-black">{{ project?.name }}</span>
       </div>
 
       <!-- Badge Image -->
       <img
         :src="badgeImage"
         :alt="badge.config.title"
-        class="size-20 shrink-0"
+        class="w-[240px] shrink-0"
       />
     </div>
 
-    <!-- Content -->
-    <div class="flex flex-col gap-2 mt-4">
-      <!-- Achievement Label -->
-      <p class="text-xxxs font-semibold text-neutral-900">Achievement · {{ formattedDate }}</p>
+    <!-- Bottom Section: Content + Divider + Footer -->
+    <div class="flex flex-col gap-8">
+      <!-- Text Section -->
+      <div class="flex flex-col gap-2">
+        <!-- Achievement Label -->
+        <p class="text-2xl font-medium text-neutral-900">Achievement · {{ formattedDate }}</p>
 
-      <!-- Badge Title & Tags -->
-      <div class="flex items-center gap-2 flex-wrap">
-        <h3 class="text-xl font-light text-black font-secondary">
-          {{ badge.config.title }}
-        </h3>
-        <div class="flex items-center gap-1 ml-auto">
-          <span
-            class="px-1.5 py-1 rounded-full text-[9px] font-medium text-neutral-500 border border-neutral-500 leading-none"
-          >
-            Rank: #{{ badge.rank }}
-          </span>
-          <span
-            class="px-1.5 py-1 rounded-full text-[9px] font-semibold leading-none text-white"
-            :style="tierTagStyle"
-          >
-            Top {{ tierConfig.max }}%
-          </span>
+        <!-- Badge Title & Tags -->
+        <div class="flex items-center gap-[37px]">
+          <h3 class="text-[60px] font-light text-black font-secondary leading-[90px]">
+            {{ badge.config.title }}
+          </h3>
+          <div class="flex items-center gap-3 flex-1 justify-end">
+            <span
+              class="px-3 py-1 rounded-full text-2xl font-medium text-neutral-500 border border-neutral-500 leading-[36px]"
+            >
+              Rank: #{{ badge.rank }}
+            </span>
+            <span
+              class="px-3 py-1 rounded-full text-2xl font-semibold leading-[36px] text-white"
+              :style="tierTagStyle"
+            >
+              Top {{ tierConfig.max }}%
+            </span>
+          </div>
         </div>
+
+        <!-- Description -->
+        <p class="text-2xl font-normal text-neutral-600 leading-[36px]">
+          {{ project?.name }} is in the top {{ tierConfig.max }}% of open source projects based on
+          {{ badge.config.description.toLowerCase() }}
+        </p>
       </div>
 
-      <!-- Description -->
-      <p class="text-xxs text-neutral-600 leading-[1.25]">
-        {{ project?.name }} is in the top {{ tierConfig.max }}% of open source projects for
-        {{ badge.config.description.toLowerCase() }}
-      </p>
-    </div>
+      <!-- Divider -->
+      <div class="border-t border-neutral-200" />
 
-    <!-- Footer: LFX Insights branding -->
-    <div class="mt-5 pt-4 border-t border-neutral-200">
+      <!-- LFX Insights branding -->
       <img
-        src="/images/lfx-insights-logo.png"
+        src="/images/og-image/lfx-insights-logo.png"
         alt="LFX Insights"
-        class="h-[14px]"
+        class="h-[38px] w-fit"
       />
     </div>
   </div>
@@ -72,7 +78,6 @@ import { computed } from 'vue';
 import { storeToRefs } from 'pinia';
 import type { ProjectBadge } from '../../types/badge.types';
 import { tierConfigs } from '../../config/tiers.config';
-import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
 import { useProjectStore } from '~~/app/components/modules/project/store/project.store';
 
 const props = defineProps<{

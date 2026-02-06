@@ -46,6 +46,10 @@ class BadgesApiService {
     );
 
     for (const leaderboard of filteredLeaderboards) {
+      if (!leaderboard.totalCount || leaderboard.totalCount <= 0) {
+        continue;
+      }
+
       // Calculate percentile using rank and totalCount from each leaderboard
       const percentile = (leaderboard.rank / leaderboard.totalCount) * 100;
       const tier = getBadgeTierFromPercentile(percentile);

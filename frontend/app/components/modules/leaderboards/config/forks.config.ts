@@ -6,7 +6,7 @@ import LfxProjectIntegerMinimizedRowDisplay from '../components/minimize-row-dis
 import type { LeaderboardConfig } from './types/leaderboard.types';
 
 export const forksConfig: LeaderboardConfig = {
-  key: 'Forks',
+  key: 'forks',
   name: 'Forks',
   description:
     'Projects ranked by number of fork activities, highlighting reuse and extensibility by developers.',

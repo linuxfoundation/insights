@@ -3,7 +3,10 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="flex flex-col gap-4">
+  <div
+    v-if="isPending || badges.length"
+    class="flex flex-col gap-4"
+  >
     <!-- Header -->
     <div class="flex items-center justify-between">
       <p class="text-sm font-semibold text-neutral-900">Project Achievements</p>

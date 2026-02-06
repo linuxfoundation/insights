@@ -27,7 +27,7 @@ SPDX-License-Identifier: MIT
     >
       <div class="flex flex-col gap-1">
         <span class="text-sm font-medium text-neutral-900">Achievement card</span>
-        <span class="text-xs text-neutral-500">720x540px · PNG</span>
+        <span class="text-xs text-neutral-500">1000x680px · PNG</span>
       </div>
       <img
         src="/images/badges/shared/card-preview.svg"
@@ -42,7 +42,7 @@ SPDX-License-Identifier: MIT
     >
       <div class="flex flex-col gap-1">
         <span class="text-sm font-medium text-neutral-900">Achievement badge</span>
-        <span class="text-xs text-neutral-500">400x400px · PNG</span>
+        <span class="text-xs text-neutral-500">600x600px · PNG</span>
       </div>
       <img
         src="/images/badges/shared/badge-preview.svg"
@@ -89,18 +89,18 @@ const cardRenderRef = ref<InstanceType<typeof LfxCardDownloadPreview> | null>(nu
 const badgeRenderRef = ref<InstanceType<typeof LfxBadgeDownloadPreview> | null>(null);
 
 const downloadImage = async (element: HTMLElement | null, filename: string) => {
-  if (!element) return;
+  if (!element || !import.meta.client) return;
 
   try {
-    await document?.fonts.ready;
+    await document.fonts.ready;
     await nextTick();
 
     const canvas = await html2canvas(element, {
       useCORS: true,
       allowTaint: false,
       imageTimeout: 5000,
-      backgroundColor: 'white',
-      scale: 2,
+      backgroundColor: 'transparent',
+      scale: 1,
     });
 
     const dataUrl = canvas.toDataURL('image/png');
@@ -110,7 +110,8 @@ const downloadImage = async (element: HTMLElement | null, filename: string) => {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-  } catch {
+  } catch (error) {
+    console.error('Failed to download image', error);
     showToast('Failed to download image', ToastTypesEnum.negative);
   }
 };

@@ -49,7 +49,7 @@ SPDX-License-Identifier: MIT
         <!-- Description -->
         <p class="text-xxs text-neutral-600 leading-[1.25]">
           {{ project?.name }} is in the top {{ tierConfig.max }}% of open source projects for
-          {{ badge.config.description.toLowerCase() }} in the last 12 months.
+          {{ badge.config.description.toLowerCase() }}.
         </p>
       </div>
     </div>
