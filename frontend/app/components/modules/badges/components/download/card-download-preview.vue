@@ -40,12 +40,12 @@ SPDX-License-Identifier: MIT
           </h3>
           <div class="flex items-center gap-3 flex-1 justify-end">
             <span
-              class="px-3 py-1 rounded-full text-2xl font-medium text-neutral-500 border border-neutral-500 leading-[36px]"
+              class="px-3 py-1 rounded-full text-2xl font-medium text-neutral-500 border border-neutral-500 leading-[36px] whitespace-nowrap"
             >
-              Rank: #{{ badge.rank }}
+              #{{ badge.rank }}
             </span>
             <span
-              class="px-3 py-1 rounded-full text-2xl font-semibold leading-[36px] text-white"
+              class="px-3 py-1 rounded-full text-2xl font-semibold leading-[36px] text-white whitespace-nowrap"
               :style="tierTagStyle"
             >
               Top {{ tierConfig.max }}%
