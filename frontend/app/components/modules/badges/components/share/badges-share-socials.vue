@@ -101,7 +101,7 @@ const shareToX = () => {
 
 const shareToLinkedIn = () => {
   if (!import.meta.client) return;
-  const url = `https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(shareUrl.value)}&title=${encodeURIComponent(shareTitle.value)}`;
+  const url = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl.value)}`;
   window.open(url, '_blank', 'width=550,height=420');
 };
 
