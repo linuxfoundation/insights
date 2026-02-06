@@ -123,7 +123,7 @@ SPDX-License-Identifier: MIT
           </div>
         </div>
 
-        <div class="md:w-1/4 w-full">
+        <div class="md:w-1/4 md:block hidden">
           <lfx-project-security-generate-yaml-section />
         </div>
       </div>
