@@ -10,6 +10,7 @@ export interface Tab {
 export interface TabsProps {
   modelValue: string;
   tabs: Tab[];
+  tabStyle?: 'pill' | 'default';
   widthType?: 'full' | 'inline';
 }
 

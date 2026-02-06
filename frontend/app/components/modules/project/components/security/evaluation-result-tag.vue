@@ -7,6 +7,7 @@ SPDX-License-Identifier: MIT
     v-if="data"
     :variation="data.variation"
     v-bind="$attrs"
+    type="transparent"
   >
     <lfx-icon
       :name="data.icon"
@@ -34,17 +35,17 @@ interface TypeData {
 
 const typeData: Record<SecurityDataResult, TypeData> = {
   [SecurityDataResult.FAILED]: {
-    variation: 'negative-solid',
+    variation: 'negative',
     icon: 'exclamation-circle',
     text: 'Failed',
   },
   [SecurityDataResult.PASSED]: {
-    variation: 'positive-solid',
+    variation: 'positive',
     icon: 'check',
     text: 'Passed',
   },
   [SecurityDataResult.NEEDS_REVIEW]: {
-    variation: 'warning-solid',
+    variation: 'warning',
     icon: 'exclamation-triangle',
     text: 'Needs review',
   },

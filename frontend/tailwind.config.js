@@ -107,6 +107,9 @@ export default {
       top: {
         29: '7.5rem',
       },
+      borderWidth: {
+        3: '3px',
+      },
     },
   },
   plugins: [],
