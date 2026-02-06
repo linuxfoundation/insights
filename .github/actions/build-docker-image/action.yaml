@@ -45,6 +45,5 @@ runs:
         build-args: |
           APP_ENV=${{ inputs.app-env }}
           NUXT_REDIS_URL=${{ env.NUXT_REDIS_URL }}
-        cache-from: type=gha
-        cache-to: type=gha,mode=max
+        no-cache: true
         provenance: false

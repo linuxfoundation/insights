@@ -20,6 +20,7 @@ WORKDIR /app
 
 # Copy workspace configuration files first (better cache)
 COPY pnpm-workspace.yaml package.json pnpm-lock.yaml ./
+COPY patches ./patches
 COPY frontend/package.json ./frontend/
 
 # Install dependencies with BuildKit cache mount for pnpm store
