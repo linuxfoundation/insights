@@ -18,6 +18,7 @@ SPDX-License-Identifier: MIT
     >
       <img
         :src="project?.logo"
+        :alt="project?.name || 'Project logo'"
         class="size-25"
       />
     </div>
