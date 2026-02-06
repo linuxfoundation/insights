@@ -10,7 +10,7 @@ SPDX-License-Identifier: MIT
     data-key="value"
     option-value="value"
     :allow-empty="false"
-    :class="`tabs-width-${props.widthType}`"
+    :class="`tabs-width-${props.widthType} tabs-style-${props.tabStyle}`"
     option-disabled="disabled"
   >
     <template #option="slotProps">
@@ -36,6 +36,7 @@ import type { TabsProps, TabsEmits } from './types/tab.types';
 
 const props = withDefaults(defineProps<TabsProps>(), {
   widthType: 'full',
+  tabStyle: 'default',
 });
 const emit = defineEmits<TabsEmits>();
 

@@ -28,6 +28,14 @@
 
 .p-selectbutton {
   @apply flex bg-neutral-50 rounded-lg p-1 flex-row justify-evenly gap-1;
+
+  &.tabs-style-pill {
+    @apply rounded-full;
+    .p-togglebutton.p-togglebutton-checked {
+      @apply rounded-full;
+    }
+  }
+
   .p-togglebutton {
     @apply text-neutral-500 w-full py-0.5 px-4 max-h-6 text-nowrap flex items-center;
     @apply justify-center text-sm;
