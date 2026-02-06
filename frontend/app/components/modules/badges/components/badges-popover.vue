@@ -84,7 +84,7 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { computed } from 'vue';
 import type { ProjectBadge } from '../types/badge.types';
-import { tierConfigs } from '../config/tiers.config';
+import { tierConfigs, getTierTagStyle } from '../config/tiers.config';
 import LfxButton from '~/components/uikit/button/button.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import { LfxRoutes } from '~/components/shared/types/routes';
@@ -100,9 +100,7 @@ const emit = defineEmits<{
 const badgeImage = computed(() => props.badge.config.badgeImages[props.badge.tier]);
 
 const tierConfig = computed(() => tierConfigs[props.badge.tier]);
-const tierTagStyle = computed(() => ({
-  background: `linear-gradient(to bottom, ${tierConfig.value.gradient.from}, ${tierConfig.value.gradient.to})`,
-}));
+const tierTagStyle = computed(() => getTierTagStyle(tierConfig.value.color));
 
 const handleShare = () => {
   emit('share');

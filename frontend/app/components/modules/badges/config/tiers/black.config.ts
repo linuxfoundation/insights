@@ -7,8 +7,5 @@ export const blackTierConfig: TierConfig = {
   label: 'Black',
   min: 0,
   max: 1, // Top 1%
-  gradient: {
-    from: '#1d2b45',
-    to: '#8f97a2',
-  },
+  color: '#000000',
 };

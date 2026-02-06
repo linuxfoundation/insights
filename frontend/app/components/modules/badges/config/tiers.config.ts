@@ -7,17 +7,17 @@ import { goldTierConfig } from './tiers/gold.config';
 import { silverTierConfig } from './tiers/silver.config';
 import { bronzeTierConfig } from './tiers/bronze.config';
 
-export interface TierGradient {
-  from: string;
-  to: string;
-}
-
 export interface TierConfig {
   label: string;
   min: number;
   max: number;
-  gradient: TierGradient;
+  color: string;
 }
+
+export const getTierTagStyle = (color: string) => ({
+  background: `radial-gradient(ellipse at 85% 90%, rgba(0,0,0,0.23) 0%, rgba(0,0,0,0) 86%), radial-gradient(ellipse at 25% 20%, rgba(255,255,255,0.41) 0%, rgba(255,255,255,0) 70%), ${color}`,
+  textShadow: '1px 1px 1px rgba(0, 0, 0, 0.25)',
+});
 
 export const tierConfigs: Record<BadgeTier, TierConfig> = {
   [BadgeTier.BLACK]: blackTierConfig,

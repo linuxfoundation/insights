@@ -7,8 +7,5 @@ export const goldTierConfig: TierConfig = {
   label: 'Gold',
   min: 1,
   max: 10, // Top 1-10%
-  gradient: {
-    from: '#d7a262',
-    to: '#fdd17a',
-  },
+  color: '#D7A262',
 };

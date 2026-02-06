@@ -77,7 +77,7 @@ SPDX-License-Identifier: MIT
 import { computed } from 'vue';
 import { storeToRefs } from 'pinia';
 import type { ProjectBadge } from '../../types/badge.types';
-import { tierConfigs } from '../../config/tiers.config';
+import { tierConfigs, getTierTagStyle } from '../../config/tiers.config';
 import { useProjectStore } from '~~/app/components/modules/project/store/project.store';
 
 const props = defineProps<{
@@ -93,9 +93,7 @@ const formattedDate = computed(() => {
 
 const badgeImage = computed(() => props.badge.config.badgeImages[props.badge.tier]);
 const tierConfig = computed(() => tierConfigs[props.badge.tier]);
-const tierTagStyle = computed(() => ({
-  background: `linear-gradient(to bottom, ${tierConfig.value.gradient.from}, ${tierConfig.value.gradient.to})`,
-}));
+const tierTagStyle = computed(() => getTierTagStyle(tierConfig.value.color));
 </script>
 
 <script lang="ts">

@@ -39,6 +39,11 @@ const route = useRoute();
 const { slug } = route.params;
 const { project, isProjectLoading, selectedTimeRangeKey, startDate, endDate, collaborationSet } =
   storeToRefs(useProjectStore());
+
+// Clear stale project data when navigating to a different project
+if (project.value?.slug !== slug) {
+  project.value = null;
+}
 const { getProjectSchema } = useRichSchema();
 
 const { queryParams } = useQueryParam(processProjectParams, projectParamsSetter);
