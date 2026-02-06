@@ -5,6 +5,17 @@ import { type ComputedRef, computed } from 'vue';
 import { useQuery } from '@tanstack/vue-query';
 import { TanstackKey } from '~/components/shared/types/tanstack';
 import type { SecurityData } from '~~/types/security/responses.types';
+
+export interface SecurityUpdateRequest {
+  slug: string;
+  repoUrl: string;
+}
+
+export interface SecurityUpdateResponse {
+  success: boolean;
+  workflowId: string;
+  message: string;
+}
 export interface SecurityAssessmentQueryParams {
   projectSlug: string;
   repos?: string[];
@@ -40,6 +51,13 @@ class SecurityApiService {
           repos,
         },
       });
+  }
+
+  async triggerSecurityUpdate(request: SecurityUpdateRequest): Promise<SecurityUpdateResponse> {
+    return await $fetch<SecurityUpdateResponse>('/api/security/update', {
+      method: 'POST',
+      body: request,
+    });
   }
 }
 

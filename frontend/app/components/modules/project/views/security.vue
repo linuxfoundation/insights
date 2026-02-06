@@ -14,6 +14,7 @@ SPDX-License-Identifier: MIT
     </div>
     <lfx-card class="p-4 sm:p-6">
       <lfx-project-security-control-assesment-head />
+
       <div class="flex md:gap-8 gap-6 md:flex-row flex-col-reverse py-4">
         <div class="md:w-3/4 w-full md:border-r border-neutral-200 pr-6 sm:pr-8">
           <!-- Disclaimer for aggregated view -->
