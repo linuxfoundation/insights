@@ -6,6 +6,16 @@ inputs:
     description: The APP_ENV to pass as a build argument
     required: false
     default: production
+  dockerfile:
+    description: Path to the Dockerfile
+    required: true
+  image-name:
+    description: Image name (e.g. insights-app, package-downloads-worker)
+    required: true
+  build-args:
+    description: Extra build args (newline-separated KEY=VALUE)
+    required: false
+    default: ''
 
 outputs:
   image:
@@ -21,7 +31,7 @@ runs:
       run: |
         SHORT_SHA=$(echo "${{ github.sha }}" | cut -c1-6)
         IMAGE_VERSION="${SHORT_SHA}.${{ github.run_attempt }}"
-        IMAGE_TAG="sjc.ocir.io/axbydjxa5zuh/insights-app:${IMAGE_VERSION}"
+        IMAGE_TAG="sjc.ocir.io/axbydjxa5zuh/${{ inputs.image-name }}:${IMAGE_VERSION}"
         echo "IMAGE_VERSION=${IMAGE_VERSION}" >> $GITHUB_OUTPUT
         echo "IMAGE_TAG=${IMAGE_TAG}" >> $GITHUB_OUTPUT
 
@@ -39,11 +49,11 @@ runs:
       uses: docker/build-push-action@v6
       with:
         context: .
-        file: frontend/Dockerfile
+        file: ${{ inputs.dockerfile }}
         push: true
         tags: ${{ steps.tag-generator.outputs.IMAGE_TAG }}
         build-args: |
           APP_ENV=${{ inputs.app-env }}
-          NUXT_REDIS_URL=${{ env.NUXT_REDIS_URL }}
+          ${{ inputs.build-args }}
         no-cache: true
         provenance: false
