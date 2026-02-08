@@ -85,6 +85,7 @@ class ExploreApiService {
         const totalPages = Math.ceil(lastPage.total / lastPage.pageSize);
         return nextPage < totalPages ? nextPage : undefined;
       },
+      initialPageParam: 0,
     });
   }
 
