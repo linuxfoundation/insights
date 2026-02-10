@@ -131,7 +131,8 @@ const handleCardClick = (event: MouseEvent) => {
 const handleShare = () => {
   const title = `LFX Insights | Leaderboard - ${props.config?.name}`;
 
-  const url = new URL(window.location.href + `/${props.config.key}`);
+  const baseUrl = window.location.href.replace(/\/+$/, '');
+  const url = new URL(`${baseUrl}/leaderboards/${props.config.key}`);
   url.hash = '';
 
   openShareModal({
