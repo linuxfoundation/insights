@@ -15,7 +15,7 @@ SPDX-License-Identifier: MIT
 
     <lfx-yaml-security-champion-item
       v-for="(_, index) of model.repository.security.champions"
-      :key="index"
+      :key="`champion-${index}`"
       v-model="model.repository.security.champions[index]"
     >
       <p class="text-sm font-semibold text-neutral-900">Security champion #{{ index + 1 }}</p>

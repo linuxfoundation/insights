@@ -15,7 +15,7 @@ SPDX-License-Identifier: MIT
 
     <lfx-yaml-core-member-item
       v-for="(_, index) of model.repository['core-team']"
-      :key="index"
+      :key="`member-${index}`"
       v-model="model.repository['core-team'][index]"
     >
       <p class="text-sm font-semibold text-neutral-900">Team member #{{ index + 1 }}</p>

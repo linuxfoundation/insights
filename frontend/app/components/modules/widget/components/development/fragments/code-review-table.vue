@@ -12,7 +12,7 @@ SPDX-License-Identifier: MIT
 
     <div
       v-for="(item, index) in props.codeReviewItem"
-      :key="index"
+      :key="`${item.name}-${index}`"
       class="lfx-table-row !gap-1 sm:!gap-4"
     >
       <div class="flex flex-row gap-3 items-center basis-1/2 overflow-hidden">
