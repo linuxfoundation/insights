@@ -30,8 +30,8 @@ export default defineEventHandler(async (event): Promise<Pagination<CategoryGrou
   const type: string = (query?.type as string) || '';
 
   // Pagination parameters
-  const page: number = +(query?.page ?? 0);
-  const pageSize: number = +(query?.pageSize ?? 30);
+  const page: number = Number(query?.page) || 0;
+  const pageSize: number = Number(query?.pageSize) || 30;
 
   try {
     const res = await fetchFromTinybird<Category[]>('/v0/pipes/category_list.json', {
