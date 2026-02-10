@@ -36,12 +36,15 @@ export default defineEventHandler(async (event) => {
     const healthScore = await fetchHealthScoreMetrics(filter);
 
     return createHealthScoreSchema(healthScore);
-  } catch (error) {
+  } catch (error: unknown) {
+    if (error && typeof error === 'object' && 'statusCode' in error) {
+      throw error;
+    }
     console.error('Error fetching active contributors:', error);
     throw createError({
       statusCode: 500,
       statusMessage: 'Failed to fetch health score',
-      data: { message: error.message },
+      data: { message: (error as Error).message },
     });
   }
 });

@@ -93,7 +93,10 @@ export default defineEventHandler(async (event): Promise<Project | Error> => {
       repoData: undefined,
       tags: project?.keywords || [],
     };
-  } catch (err) {
+  } catch (err: unknown) {
+    if (err && typeof err === 'object' && 'statusCode' in err) {
+      throw err;
+    }
     console.error('Error fetching project:', err);
     return createError({ statusCode: 500, statusMessage: 'Internal server error' });
   }

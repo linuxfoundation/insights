@@ -436,13 +436,13 @@ class PopularityApiService {
   }
 
   isPackageDownloadsEmpty(data: PackageDownloads | undefined) {
-    if (!data) {
+    if (!data?.data) {
       return true;
     }
     return data.data.every((item) => item.downloadsCount === 0 && item.dockerDownloadsCount === 0);
   }
   isPackageDependencyEmpty(data: PackageDownloads | undefined) {
-    if (!data) {
+    if (!data?.data) {
       return true;
     }
     return data.data.every(
@@ -453,13 +453,13 @@ class PopularityApiService {
     );
   }
   isSearchQueriesEmpty(data: SearchQueries | undefined) {
-    if (!data) {
+    if (!data?.data) {
       return true;
     }
     return data.data.every((item) => item.queryCount === 0);
   }
   isMailingListMessagesEmpty(data: MailingListsMessages | undefined) {
-    if (!data) {
+    if (!data?.data) {
       return true;
     }
     return data.data.every((item) => item.messages === 0);

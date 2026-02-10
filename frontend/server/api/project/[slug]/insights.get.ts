@@ -30,7 +30,10 @@ export default defineEventHandler(async (event) => {
     });
 
     return response.data?.[0];
-  } catch (error) {
+  } catch (error: unknown) {
+    if (error && typeof error === 'object' && 'statusCode' in error) {
+      throw error;
+    }
     console.error('Error fetching project insights:', error);
     throw createError({
       statusCode: 500,

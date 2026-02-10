@@ -17,7 +17,10 @@ export default defineEventHandler(async (event): Promise<SecurityData[] | Error>
       },
     );
     return res.data;
-  } catch (err) {
+  } catch (err: unknown) {
+    if (err && typeof err === 'object' && 'statusCode' in err) {
+      throw err;
+    }
     console.error('Error fetching project security details:', err);
     return createError({ statusCode: 500, statusMessage: 'Internal server error' });
   }
