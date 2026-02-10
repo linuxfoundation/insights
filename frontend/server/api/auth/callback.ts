@@ -149,9 +149,16 @@ export default defineEventHandler(async (event) => {
     deleteCookie(event, 'auth_oidc_token');
     deleteCookie(event, 'auth_refresh_token');
 
+    let errorMessage = 'Authentication callback error';
+    let errorCode = 401;
+    if (error instanceof H3Error) {
+      errorMessage = error.statusMessage || error.message || 'Authentication callback error';
+      errorCode = error.statusCode;
+    }
+
     throw createError({
-      statusCode: 500,
-      statusMessage: 'Authentication callback error',
+      statusCode: errorCode,
+      statusMessage: errorMessage,
     });
   }
 });
