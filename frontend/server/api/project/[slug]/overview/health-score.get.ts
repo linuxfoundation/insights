@@ -37,7 +37,7 @@ export default defineEventHandler(async (event) => {
 
     return createHealthScoreSchema(healthScore);
   } catch (error: unknown) {
-    if (error && typeof error === 'object' && 'statusCode' in error) {
+    if (error && typeof error === 'object' && 'statusCode' in error && error.statusCode === 404) {
       throw error;
     }
     console.error('Error fetching active contributors:', error);

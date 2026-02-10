@@ -18,7 +18,7 @@ export default defineEventHandler(async (event): Promise<SecurityData[] | Error>
     );
     return res.data;
   } catch (err: unknown) {
-    if (err && typeof err === 'object' && 'statusCode' in err) {
+    if (err && typeof err === 'object' && 'statusCode' in err && err.statusCode === 404) {
       throw err;
     }
     console.error('Error fetching project security details:', err);
