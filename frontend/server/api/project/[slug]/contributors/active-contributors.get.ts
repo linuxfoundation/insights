@@ -66,12 +66,15 @@ export default defineEventHandler(async (event) => {
 
   try {
     return await dataSource.fetchActiveContributors(filter);
-  } catch (error) {
+  } catch (error: unknown) {
+    if (error && typeof error === 'object' && 'statusCode' in error && error.statusCode === 404) {
+      throw error;
+    }
     console.error('Error fetching active contributors:', error);
     throw createError({
       statusCode: 500,
       statusMessage: 'Failed to fetch active contributors data',
-      data: { message: error.message },
+      data: { message: (error as Error).message },
     });
   }
 });

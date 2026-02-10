@@ -44,7 +44,10 @@ export default defineEventHandler(async (event): Promise<HealthScoreResults | un
     }
 
     return createHealthScoreSchema(healthScore);
-  } catch (error) {
+  } catch (error: unknown) {
+    if (error && typeof error === 'object' && 'statusCode' in error && error.statusCode === 404) {
+      throw error;
+    }
     console.error('Error fetching health score:', error);
     throw createError({
       statusCode: 500,

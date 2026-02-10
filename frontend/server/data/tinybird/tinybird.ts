@@ -80,10 +80,19 @@ export async function fetchFromTinybird<T>(
       const bucketId = await getBucketIdForProject(query.project, fetchFromTinybird);
       if (bucketId !== null) {
         query.bucketId = bucketId;
+      } else {
+        throw createError({
+          statusCode: 404,
+          statusMessage: `Project not found: ${query.project}`,
+        });
       }
-    } catch (error) {
+    } catch (error: unknown) {
+      // Re-throw 404 errors
+      if (error && typeof error === 'object' && 'statusCode' in error && error.statusCode === 404) {
+        throw error;
+      }
       console.error(`Failed to fetch bucketId for project ${query.project}:`, error);
-      // Continue without bucketId
+      // Continue without bucketId for other errors
     }
   }
 
