@@ -6,8 +6,8 @@ import type { ExploreContributors } from '~~/types/explore/contributors';
 export default defineEventHandler(async (event): Promise<ExploreContributors[] | Error> => {
   const query = getQuery(event);
   // Pagination parameters
-  const page: number = +(query?.page ?? 0);
-  const pageSize: number = +(query?.pageSize ?? 10);
+  const page: number = Number(query?.page) || 0;
+  const pageSize: number = Number(query?.pageSize) || 10;
   try {
     const res = await fetchFromTinybird<ExploreContributors[]>(
       '/v0/pipes/top_active_contributors.json',

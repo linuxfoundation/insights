@@ -35,8 +35,8 @@ export default defineEventHandler(async (event): Promise<Pagination<Collection> 
   const [orderByField, orderByDirection] = sort.split('_');
 
   // Pagination parameters
-  const page: number = +(query?.page ?? 0);
-  const pageSize: number = +(query?.pageSize ?? 10);
+  const page: number = Number(query?.page) || 0;
+  const pageSize: number = Number(query?.pageSize) || 10;
   const count: boolean = !!query?.count;
 
   try {

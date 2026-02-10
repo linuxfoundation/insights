@@ -100,7 +100,10 @@ export async function fetchFromTinybird<T>(
   // We also format DateTime objects so that TinyBird understands them.
   const processedQuery = Object.fromEntries(
     Object.entries(query)
-      .filter(([_, value]) => value !== undefined && value !== '' && value !== null)
+      .filter(
+        ([_, value]) =>
+          value !== undefined && value !== '' && value !== null && !Number.isNaN(value),
+      )
       .map(([key, value]) => [
         key,
         value instanceof DateTime ? formatDateForTinyBird(value) : value,
