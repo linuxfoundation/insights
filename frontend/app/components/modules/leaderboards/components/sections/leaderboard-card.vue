@@ -131,8 +131,11 @@ const handleCardClick = (event: MouseEvent) => {
 const handleShare = () => {
   const title = `LFX Insights | Leaderboard - ${props.config?.name}`;
 
-  const url = new URL(window.location.href + `/${props.config.key}`);
-  url.hash = '';
+  const resolvedRoute = router.resolve({
+    name: LfxRoutes.LEADERBOARD,
+    params: { key: props.config.key as string },
+  });
+  const url = new URL(resolvedRoute.href, window.location.origin);
 
   openShareModal({
     url: url.toString(),
