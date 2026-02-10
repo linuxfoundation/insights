@@ -265,15 +265,19 @@ const repos = computed<ProjectRepository[]>(() =>
     })),
 );
 
+const reposNoDuplicates = computed<ProjectRepository[]>(() => {
+  return repos.value.filter((repo, index, self) => index === self.findIndex((t) => t.name === repo.name));
+});
+
 const repoName = computed<string>(() => {
-  if (repos.value.length === 0) {
+  if (reposNoDuplicates.value.length === 0) {
     return '';
   }
 
-  if (repos.value.length === 1) {
+  if (reposNoDuplicates.value.length === 1) {
     return repos.value[0]!.name;
   }
-  return `${repos.value.length} repositories`;
+  return `${reposNoDuplicates.value.length} repositories`;
 });
 
 const archivedRepoLabel = computed<string>(() => {

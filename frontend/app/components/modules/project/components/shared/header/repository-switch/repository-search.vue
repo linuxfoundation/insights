@@ -116,9 +116,16 @@ const repositories = computed<RepositoryItem[]>(() =>
 );
 
 const result = computed<RepositoryItem[]>(() => {
-  return repositories.value.filter((repository: RepositoryItem) =>
-    repository.name.toLowerCase().includes(search.value.toLowerCase()),
-  );
+  const seen = new Set<string>();
+  return repositories.value
+    .filter((repo) => {
+      if (seen.has(repo.name)) {
+        return false;
+      }
+      seen.add(repo.name);
+      return true;
+    })
+    .filter((repository: RepositoryItem) => repository.name.toLowerCase().includes(search.value.toLowerCase()));
 });
 
 const { list, containerProps, wrapperProps } = useVirtualList(result, {
@@ -127,10 +134,13 @@ const { list, containerProps, wrapperProps } = useVirtualList(result, {
 
 const handleReposChange = (repo: RepositoryItem) => {
   let repos: string[] = [];
-  if (selectedRepoSlugs.value.includes(repo.slug)) {
-    repos = selectedRepoSlugs.value.filter((s) => s !== repo.slug);
+  const slugs: string[] = repositories.value.filter((r) => r.name === repo.name).map((r) => r.slug);
+
+  const isSelected = slugs.some((slug) => selectedRepoSlugs.value.includes(slug));
+  if (isSelected) {
+    repos = selectedRepoSlugs.value.filter((s) => !slugs.includes(s));
   } else {
-    repos = [...selectedRepoSlugs.value, repo.slug];
+    repos = [...selectedRepoSlugs.value, ...slugs];
   }
   const routeQuery = route.query;
   if (repos.length === 1) {
