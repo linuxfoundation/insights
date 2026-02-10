@@ -266,7 +266,13 @@ const repos = computed<ProjectRepository[]>(() =>
 );
 
 const reposNoDuplicates = computed<ProjectRepository[]>(() => {
-  return repos.value.filter((repo, index, self) => index === self.findIndex((t) => t.name === repo.name));
+  const seen = new Map<string, ProjectRepository>();
+  for (const repo of repos.value) {
+    if (!seen.has(repo.name)) {
+      seen.set(repo.name, repo);
+    }
+  }
+  return Array.from(seen.values());
 });
 
 const repoName = computed<string>(() => {
