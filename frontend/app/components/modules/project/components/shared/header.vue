@@ -230,6 +230,7 @@ import { useCopilotStore } from '~/components/shared/modules/copilot/store/copil
 import LfxTag from '~/components/uikit/tag/tag.vue';
 import { useCommunityStore } from '~/components/modules/project/components/community/store/community.store';
 import { useBannerStore } from '~/components/shared/store/banner.store';
+import { normalizeRepoName } from '~/components/shared/utils/helper';
 
 const props = defineProps<{
   project?: Project;
@@ -256,17 +257,33 @@ const { openCommunityFilterModal } = useCommunityStore();
 const { hasLfxInsightsPermission } = storeToRefs(useAuthStore());
 
 const repos = computed<ProjectRepository[]>(() =>
-  projectRepos.value.filter((repo) => selectedRepoSlugs.value.includes(repo.slug)),
+  projectRepos.value
+    .filter((repo) => selectedRepoSlugs.value.includes(repo.slug))
+    .map((repo) => ({
+      ...repo,
+      name: normalizeRepoName(repo),
+    })),
 );
 
+const reposNoDuplicates = computed<ProjectRepository[]>(() => {
+  const seen = new Map<string, ProjectRepository>();
+  for (const repo of repos.value) {
+    if (!seen.has(repo.name)) {
+      seen.set(repo.name, repo);
+    }
+  }
+  return Array.from(seen.values());
+});
+
 const repoName = computed<string>(() => {
-  if (repos.value.length === 0) {
+  if (reposNoDuplicates.value.length === 0) {
     return '';
   }
-  if (repos.value.length === 1) {
-    return repos.value[0]!.name; //.split('/').at(-1) || '';
+
+  if (reposNoDuplicates.value.length === 1) {
+    return repos.value[0]!.name;
   }
-  return `${repos.value.length} repositories`;
+  return `${reposNoDuplicates.value.length} repositories`;
 });
 
 const archivedRepoLabel = computed<string>(() => {
