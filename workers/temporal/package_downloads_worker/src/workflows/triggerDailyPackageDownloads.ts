@@ -69,7 +69,6 @@ export async function triggerDailyPackageDownloads(
       }
     } catch (err) {
       // Child workflow crashed after all retries — track it and move on
-      console.log(`Child workflow crashed for repo ${repo.repoUrl}: ${err}`);
       crashedReposCount++;
 
       // If half or more of the repos in this batch have crashed, stop the workflow
