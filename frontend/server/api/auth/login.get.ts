@@ -8,7 +8,9 @@ import {
   calculatePKCECodeChallenge,
   buildAuthorizationUrl,
 } from 'openid-client';
-import { getSafeRedirectUrl } from '../../utils/redirect';
+import { Pool } from 'pg';
+import { isValidRedirectUrl, getSafeRedirectUrl } from '../../utils/redirect';
+import { SecurityAuditRepository } from '../../repo/securityAudit.repo';
 
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig();
@@ -44,6 +46,20 @@ export default defineEventHandler(async (event) => {
     // Store redirect URL if provided (validated to prevent open redirect)
     const redirectTo = query.redirectTo as string;
     if (redirectTo) {
+      // Log invalid redirect attempts for security monitoring
+      if (!isValidRedirectUrl(redirectTo)) {
+        const insightsDbPool = event.context.insightsDbPool as Pool;
+        if (insightsDbPool) {
+          const securityAuditRepo = new SecurityAuditRepository(insightsDbPool);
+          // Fire-and-forget: don't await to avoid blocking the request
+          securityAuditRepo.logInvalidRedirect(
+            '/api/auth/login',
+            redirectTo,
+            getHeader(event, 'x-forwarded-for') || getHeader(event, 'x-real-ip'),
+            getHeader(event, 'user-agent'),
+          );
+        }
+      }
       const safeRedirectTo = getSafeRedirectUrl(redirectTo);
       setCookie(event, 'auth_redirect_to', safeRedirectTo, cookieOptions);
     }

@@ -5,7 +5,9 @@
 import { getCookie, deleteCookie } from 'h3';
 import jwt from 'jsonwebtoken';
 import type { H3Event } from 'h3';
+import { Pool } from 'pg';
 import { isValidRedirectUrl } from '../../utils/redirect';
+import { SecurityAuditRepository } from '../../repo/securityAudit.repo';
 import type { DecodedOidcToken } from '~~/types/auth/auth-jwt.types';
 
 const isProduction = process.env.NUXT_APP_ENV === 'production';
@@ -34,14 +36,27 @@ export default defineEventHandler(async (event) => {
   let returnToUrl = `${config.public.appUrl}?auth=logout`;
   try {
     const body = await readBody(event);
-    if (body?.returnTo && isValidRedirectUrl(body.returnTo)) {
-      // Build absolute URL if relative path provided
-      const validatedReturnTo = body.returnTo.startsWith('/')
-        ? `${config.public.appUrl}${body.returnTo}`
-        : body.returnTo;
-      returnToUrl = validatedReturnTo.includes('?')
-        ? `${validatedReturnTo}&auth=logout`
-        : `${validatedReturnTo}?auth=logout`;
+    const insightsDbPool = event.context.insightsDbPool as Pool;
+    if (body?.returnTo && insightsDbPool) {
+      if (isValidRedirectUrl(body.returnTo)) {
+        // Build absolute URL if relative path provided
+        const validatedReturnTo = body.returnTo.startsWith('/')
+          ? `${config.public.appUrl}${body.returnTo}`
+          : body.returnTo;
+        returnToUrl = validatedReturnTo.includes('?')
+          ? `${validatedReturnTo}&auth=logout`
+          : `${validatedReturnTo}?auth=logout`;
+      } else {
+        // Log invalid redirect attempt for security monitoring
+        const securityAuditRepo = new SecurityAuditRepository(insightsDbPool);
+        // Fire-and-forget: don't await to avoid blocking the request
+        securityAuditRepo.logInvalidRedirect(
+          '/api/auth/logout',
+          body.returnTo,
+          getHeader(event, 'x-forwarded-for') || getHeader(event, 'x-real-ip'),
+          getHeader(event, 'user-agent'),
+        );
+      }
     }
   } catch {
     // Body parsing failed, use default returnTo

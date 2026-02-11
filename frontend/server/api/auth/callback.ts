@@ -5,8 +5,10 @@ import { discovery, authorizationCodeGrant } from 'openid-client';
 import jwt from 'jsonwebtoken';
 import { jwtDecode } from 'jwt-decode';
 import { H3Error } from 'h3';
+import { Pool } from 'pg';
 import { hasLfxInsightsPermission } from '../../utils/jwt';
-import { getSafeRedirectUrl } from '../../utils/redirect';
+import { isValidRedirectUrl, getSafeRedirectUrl } from '../../utils/redirect';
+import { SecurityAuditRepository } from '../../repo/securityAudit.repo';
 import { type DecodedIdToken } from '~~/types/auth/auth-jwt.types';
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig();
@@ -14,7 +16,20 @@ export default defineEventHandler(async (event) => {
 
   const isProduction = process.env.NUXT_APP_ENV === 'production';
   // Validate redirect URL from cookie (defense in depth - also validated at login)
-  const redirectTo = getSafeRedirectUrl(getCookie(event, 'auth_redirect_to'));
+  const rawRedirectTo = getCookie(event, 'auth_redirect_to');
+  const insightsDbPool = event.context.insightsDbPool as Pool;
+  // Log if cookie contains invalid redirect (could indicate cookie tampering)
+  if (rawRedirectTo && !isValidRedirectUrl(rawRedirectTo) && insightsDbPool) {
+    const securityAuditRepo = new SecurityAuditRepository(insightsDbPool);
+    // Fire-and-forget: don't await to avoid blocking the request
+    securityAuditRepo.logInvalidRedirect(
+      '/api/auth/callback',
+      rawRedirectTo,
+      getHeader(event, 'x-forwarded-for') || getHeader(event, 'x-real-ip'),
+      getHeader(event, 'user-agent'),
+    );
+  }
+  const redirectTo = getSafeRedirectUrl(rawRedirectTo);
 
   try {
     // Handle Auth0 errors (including silent authentication failures)
