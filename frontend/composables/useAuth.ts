@@ -184,6 +184,9 @@ export const useAuth = () => {
     try {
       const response = await $fetch<{ success: boolean; logoutUrl: string }>('/api/auth/logout', {
         method: 'POST',
+        body: {
+          returnTo: window.location.origin + window.location.pathname,
+        },
       });
 
       if (response.success) {

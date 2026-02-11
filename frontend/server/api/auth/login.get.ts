@@ -8,6 +8,7 @@ import {
   calculatePKCECodeChallenge,
   buildAuthorizationUrl,
 } from 'openid-client';
+import { getSafeRedirectUrl } from '../../utils/redirect';
 
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig();
@@ -40,10 +41,11 @@ export default defineEventHandler(async (event) => {
     setCookie(event, 'auth_state', state, cookieOptions);
     setCookie(event, 'auth_code_verifier', codeVerifier, cookieOptions);
 
-    // Store redirect URL if provided
+    // Store redirect URL if provided (validated to prevent open redirect)
     const redirectTo = query.redirectTo as string;
     if (redirectTo) {
-      setCookie(event, 'auth_redirect_to', redirectTo, cookieOptions);
+      const safeRedirectTo = getSafeRedirectUrl(redirectTo);
+      setCookie(event, 'auth_redirect_to', safeRedirectTo, cookieOptions);
     }
 
     // Build authorization URL

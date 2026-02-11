@@ -6,13 +6,15 @@ import jwt from 'jsonwebtoken';
 import { jwtDecode } from 'jwt-decode';
 import { H3Error } from 'h3';
 import { hasLfxInsightsPermission } from '../../utils/jwt';
+import { getSafeRedirectUrl } from '../../utils/redirect';
 import { type DecodedIdToken } from '~~/types/auth/auth-jwt.types';
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig();
   const query = getQuery(event);
 
   const isProduction = process.env.NUXT_APP_ENV === 'production';
-  const redirectTo = getCookie(event, 'auth_redirect_to') || '/';
+  // Validate redirect URL from cookie (defense in depth - also validated at login)
+  const redirectTo = getSafeRedirectUrl(getCookie(event, 'auth_redirect_to'));
 
   try {
     // Handle Auth0 errors (including silent authentication failures)
