@@ -37,7 +37,7 @@ export default defineEventHandler(async (event) => {
   try {
     const body = await readBody(event);
     const insightsDbPool = event.context.insightsDbPool as Pool;
-    if (body?.returnTo && insightsDbPool) {
+    if (body?.returnTo) {
       if (isValidRedirectUrl(body.returnTo)) {
         // Build absolute URL if relative path provided
         const validatedReturnTo = body.returnTo.startsWith('/')
@@ -47,15 +47,17 @@ export default defineEventHandler(async (event) => {
           ? `${validatedReturnTo}&auth=logout`
           : `${validatedReturnTo}?auth=logout`;
       } else {
-        // Log invalid redirect attempt for security monitoring
-        const securityAuditRepo = new SecurityAuditRepository(insightsDbPool);
-        // Fire-and-forget: don't await to avoid blocking the request
-        securityAuditRepo.logInvalidRedirect(
-          '/api/auth/logout',
-          body.returnTo,
-          getHeader(event, 'x-forwarded-for') || getHeader(event, 'x-real-ip'),
-          getHeader(event, 'user-agent'),
-        );
+        if (insightsDbPool) {
+          // Log invalid redirect attempt for security monitoring
+          const securityAuditRepo = new SecurityAuditRepository(insightsDbPool);
+          // Fire-and-forget: don't await to avoid blocking the request
+          securityAuditRepo.logInvalidRedirect(
+            '/api/auth/logout',
+            body.returnTo,
+            getHeader(event, 'x-forwarded-for') || getHeader(event, 'x-real-ip'),
+            getHeader(event, 'user-agent'),
+          );
+        }
       }
     }
   } catch {

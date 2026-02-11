@@ -2,11 +2,9 @@
 // SPDX-License-Identifier: MIT
 import { isLocal } from './common';
 
-const ALLOWED_REDIRECT_DOMAINS = [
-  'linuxfoundation.org',
-  'auth0.com',
-  isLocal ? 'localhost' : undefined,
-];
+const ALLOWED_REDIRECT_DOMAINS = isLocal
+  ? ['linuxfoundation.org', 'auth0.com', 'localhost']
+  : ['linuxfoundation.org', 'auth0.com'];
 export const DEFAULT_REDIRECT = '/';
 
 /**
