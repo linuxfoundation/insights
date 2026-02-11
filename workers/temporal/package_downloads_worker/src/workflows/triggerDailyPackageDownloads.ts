@@ -30,6 +30,7 @@ export async function triggerDailyPackageDownloads(
 
   const info = workflowInfo();
   const failedRepoUrls = args?.failedRepoUrls || [];
+  let crashedReposCount = 0;
 
   const repos = await fetchUnprocessedReposForDate(
     date,
@@ -43,27 +44,43 @@ export async function triggerDailyPackageDownloads(
 
   // process each repo one by one
   for (const repo of repos) {
-    const result = await executeChild(savePackageDownloads, {
-      workflowId: `${info.workflowId}->${repo.repoUrl}`,
-      cancellationType: ChildWorkflowCancellationType.ABANDON,
-      parentClosePolicy: ParentClosePolicy.PARENT_CLOSE_POLICY_ABANDON,
-      retry: {
-        maximumAttempts: 3,
-        initialInterval: 2000,
-        backoffCoefficient: 2,
-        maximumInterval: 30000,
-      },
-      args: [
-        {
-          repoUrl: repo.repoUrl,
-          insightsProjectId: repo.insightsProjectId,
-          date,
+    try {
+      const result = await executeChild(savePackageDownloads, {
+        workflowId: `${info.workflowId}->${repo.repoUrl}`,
+        cancellationType: ChildWorkflowCancellationType.ABANDON,
+        parentClosePolicy: ParentClosePolicy.PARENT_CLOSE_POLICY_ABANDON,
+        retry: {
+          maximumAttempts: 5,
+          initialInterval: 5000,
+          backoffCoefficient: 3,
+          maximumInterval: 60000,
         },
-      ],
-    });
-    
-    if (!result) {
-      failedRepoUrls.push(repo.repoUrl);
+        args: [
+          {
+            repoUrl: repo.repoUrl,
+            insightsProjectId: repo.insightsProjectId,
+            date,
+          },
+        ],
+      });
+
+      if (!result) {
+        failedRepoUrls.push(repo.repoUrl);
+      }
+    } catch (err) {
+      // Child workflow crashed after all retries — track it and move on
+      console.log(`Child workflow crashed for repo ${repo.repoUrl}: ${err}`);
+      crashedReposCount++;
+
+      // If half or more of the repos in this batch have crashed, stop the workflow
+      if (crashedReposCount >= Math.ceil(repos.length / 2)) {
+        console.log(
+          `Stopping workflow: ${crashedReposCount} out of ${repos.length} repos crashed in this batch.`
+        );
+        throw ApplicationFailure.nonRetryable(
+          `Too many child workflow crashes (${crashedReposCount}/${repos.length}). Aborting parent workflow.`
+        );
+      }
     }
 
     // wait for a short time to avoid overwhelming the API
