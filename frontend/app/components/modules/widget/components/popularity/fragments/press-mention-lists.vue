@@ -7,8 +7,8 @@ SPDX-License-Identifier: MIT
     <h4 class="font-medium font-primary">Latest Press Mentions</h4>
     <div class="flex flex-col gap-2">
       <div
-        v-for="(mention, index) in list"
-        :key="index"
+        v-for="mention in list"
+        :key="mention.url"
         class="flex flex-row gap-4 items-center rounded-md hover:bg-neutral-50 p-2 cursor-pointer"
       >
         <div
