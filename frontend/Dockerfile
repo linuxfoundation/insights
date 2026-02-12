@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1.4
-ARG NODE_VERSION=22
+ARG NODE_VERSION=24
 
 # ============================================
 # Base stage: Node with pnpm via corepack
@@ -33,10 +33,8 @@ RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store \
 FROM deps AS builder
 
 ARG APP_ENV=production
-ARG NUXT_REDIS_URL
 
 ENV NUXT_APP_ENV=$APP_ENV
-ENV NUXT_REDIS_URL=$NUXT_REDIS_URL
 ENV NODE_OPTIONS=--max-old-space-size=4096
 
 WORKDIR /app
