@@ -27,7 +27,7 @@ SPDX-License-Identifier: MIT
       <div class="flex flex-col gap-4">
         <lfx-project-package-legend-item
           v-for="(series, index) in chartSeries"
-          :key="index"
+          :key="series.name"
           :title="series.name"
           :delta="getSummary(index)!"
           :color="series.color!"

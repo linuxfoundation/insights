@@ -17,7 +17,7 @@ SPDX-License-Identifier: MIT
     <!-- Security tool items -->
     <lfx-yaml-security-tool-item
       v-for="(tool, index) of (model as any).repository.security.tools"
-      :key="index"
+      :key="`tool-${index}`"
       v-model="(model as any).repository.security.tools[index]"
     >
       <p class="text-sm font-bold text-neutral-900">Security tool #{{ index + 1 }}</p>

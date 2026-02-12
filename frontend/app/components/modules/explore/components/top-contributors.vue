@@ -15,7 +15,7 @@ SPDX-License-Identifier: MIT
     >
       <div
         v-for="(row, index) in tableData"
-        :key="index"
+        :key="row.id"
         class="lfx-table-row"
       >
         <div class="name-col grow !gap-3">

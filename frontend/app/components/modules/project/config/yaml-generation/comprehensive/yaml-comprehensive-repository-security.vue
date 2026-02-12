@@ -100,7 +100,7 @@ SPDX-License-Identifier: MIT
         <!-- Third-party Assessment Items -->
         <lfx-yaml-third-party-assessment-item
           v-for="(_, index) of model.repository.security.assessments['third-party']"
-          :key="index"
+          :key="`assessment-${index}`"
           v-model="model.repository.security.assessments['third-party'][index]"
         >
           <p class="text-sm font-bold text-neutral-900">Third-party assessment #{{ index + 1 }}</p>
