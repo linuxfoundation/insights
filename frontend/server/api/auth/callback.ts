@@ -4,14 +4,32 @@
 import { discovery, authorizationCodeGrant } from 'openid-client';
 import jwt from 'jsonwebtoken';
 import { jwtDecode } from 'jwt-decode';
+import { H3Error } from 'h3';
+import { Pool } from 'pg';
 import { hasLfxInsightsPermission } from '../../utils/jwt';
+import { isValidRedirectUrl, getSafeRedirectUrl } from '../../utils/redirect';
+import { SecurityAuditRepository } from '../../repo/securityAudit.repo';
 import { type DecodedIdToken } from '~~/types/auth/auth-jwt.types';
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig();
   const query = getQuery(event);
 
   const isProduction = process.env.NUXT_APP_ENV === 'production';
-  const redirectTo = getCookie(event, 'auth_redirect_to') || '/';
+  // Validate redirect URL from cookie (defense in depth - also validated at login)
+  const rawRedirectTo = getCookie(event, 'auth_redirect_to');
+  const insightsDbPool = event.context.insightsDbPool as Pool;
+  // Log if cookie contains invalid redirect (could indicate cookie tampering)
+  if (rawRedirectTo && !isValidRedirectUrl(rawRedirectTo) && insightsDbPool) {
+    const securityAuditRepo = new SecurityAuditRepository(insightsDbPool);
+    // Fire-and-forget: don't await to avoid blocking the request
+    securityAuditRepo.logInvalidRedirect(
+      '/api/auth/callback',
+      rawRedirectTo,
+      getHeader(event, 'x-forwarded-for') || getHeader(event, 'x-real-ip'),
+      getHeader(event, 'user-agent'),
+    );
+  }
+  const redirectTo = getSafeRedirectUrl(rawRedirectTo);
 
   try {
     // Handle Auth0 errors (including silent authentication failures)
@@ -149,9 +167,16 @@ export default defineEventHandler(async (event) => {
     deleteCookie(event, 'auth_oidc_token');
     deleteCookie(event, 'auth_refresh_token');
 
+    let errorMessage = 'Authentication callback error';
+    let errorCode = 500;
+    if (error instanceof H3Error) {
+      errorMessage = error.statusMessage || error.message || 'Authentication callback error';
+      errorCode = error.statusCode ?? 500;
+    }
+
     throw createError({
-      statusCode: 500,
-      statusMessage: 'Authentication callback error',
+      statusCode: errorCode,
+      statusMessage: errorMessage,
     });
   }
 });
