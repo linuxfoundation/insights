@@ -5,8 +5,8 @@ SPDX-License-Identifier: MIT
 <template>
   <div class="h-full flex flex-col gap-6 chat-messages">
     <lfx-copilot-chat-item
-      v-for="(message, index) in visibleMessages"
-      :key="index"
+      v-for="message in visibleMessages"
+      :key="message.id"
       :message="message"
       :all-results="allResults"
       :selected-result-id="selectedResultId"

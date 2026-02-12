@@ -15,7 +15,7 @@ SPDX-License-Identifier: MIT
     >
       <div
         v-for="(row, index) in tableData"
-        :key="index"
+        :key="row.slug"
         class="lfx-table-row"
         @click.prevent="router.push({ name: LfxRoutes.PROJECT, params: { slug: row.slug } })"
       >
