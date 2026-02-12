@@ -56,6 +56,10 @@ jobs:
               echo "k8s_deployment=search-volume-worker-dpl" >> $GITHUB_OUTPUT
               echo "k8s_container=search-volume-worker" >> $GITHUB_OUTPUT
               ;;
+            *)
+              echo "::error::Unknown service: ${{ inputs.service }}"
+              exit 1
+              ;;
           esac
 
       - name: Setup OCI CLI and Kubectl
@@ -102,7 +106,7 @@ jobs:
           app-env: staging
           dockerfile: ${{ steps.config.outputs.dockerfile }}
           image-name: ${{ steps.config.outputs.image_name }}
-          build-args: ${{ inputs.service == 'frontend' && format('NUXT_REDIS_URL={0}', env.NUXT_REDIS_URL) || '' }}
+          build-args: ''
 
       - name: Update Deployment Image
         run: |
