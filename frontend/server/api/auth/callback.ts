@@ -4,6 +4,7 @@
 import { discovery, authorizationCodeGrant } from 'openid-client';
 import jwt from 'jsonwebtoken';
 import { jwtDecode } from 'jwt-decode';
+import { H3Error } from 'h3';
 import { hasLfxInsightsPermission } from '../../utils/jwt';
 import { type DecodedIdToken } from '~~/types/auth/auth-jwt.types';
 export default defineEventHandler(async (event) => {
@@ -149,9 +150,16 @@ export default defineEventHandler(async (event) => {
     deleteCookie(event, 'auth_oidc_token');
     deleteCookie(event, 'auth_refresh_token');
 
+    let errorMessage = 'Authentication callback error';
+    let errorCode = 500;
+    if (error instanceof H3Error) {
+      errorMessage = error.statusMessage || error.message || 'Authentication callback error';
+      errorCode = error.statusCode ?? 500;
+    }
+
     throw createError({
-      statusCode: 500,
-      statusMessage: 'Authentication callback error',
+      statusCode: errorCode,
+      statusMessage: errorMessage,
     });
   }
 });
