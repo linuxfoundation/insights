@@ -106,7 +106,7 @@ jobs:
           app-env: production
           dockerfile: ${{ steps.config.outputs.dockerfile }}
           image-name: ${{ steps.config.outputs.image_name }}
-          build-args: ''
+          build-args: ${{ inputs.service == 'frontend' && format('NUXT_REDIS_URL={0}', env.NUXT_REDIS_URL) || '' }}
 
       - name: Update Deployment Image
         run: |
