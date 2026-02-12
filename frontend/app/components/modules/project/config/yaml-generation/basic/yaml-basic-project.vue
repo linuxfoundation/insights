@@ -32,7 +32,7 @@ SPDX-License-Identifier: MIT
       <!-- Administrator cards -->
       <lfx-yaml-administrator-item
         v-for="(_, index) of model.project.administrators"
-        :key="index"
+        :key="`admin-${index}`"
         v-model="model.project.administrators[index]"
       >
         <p class="text-sm font-semibold leading-5 text-neutral-900">Administrator #{{ index + 1 }}</p>

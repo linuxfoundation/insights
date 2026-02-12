@@ -6,8 +6,8 @@ import type { ExploreOrganizations } from '~~/types/explore/organizations';
 export default defineEventHandler(async (event): Promise<ExploreOrganizations[] | Error> => {
   const query = getQuery(event);
   // Pagination parameters
-  const page: number = +(query?.page ?? 0);
-  const pageSize: number = +(query?.pageSize ?? 10);
+  const page: number = Number(query?.page) || 0;
+  const pageSize: number = Number(query?.pageSize) || 10;
   try {
     const res = await fetchFromTinybird<ExploreOrganizations[]>(
       '/v0/pipes/top_active_organizations.json',

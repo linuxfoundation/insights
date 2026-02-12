@@ -53,7 +53,7 @@ SPDX-License-Identifier: MIT
         <!-- Attestation Items -->
         <lfx-yaml-attestation-item
           v-for="(_, index) of model.repository.release.attestations"
-          :key="index"
+          :key="`attestation-${index}`"
           v-model="model.repository.release.attestations[index]"
         >
           <p class="text-sm font-bold text-neutral-900">Attestation #{{ index + 1 }}</p>
@@ -92,7 +92,7 @@ SPDX-License-Identifier: MIT
         <!-- Distribution Point Items -->
         <lfx-yaml-distribution-point-item
           v-for="(_, index) of model.repository.release['distribution-points']"
-          :key="index"
+          :key="`distribution-${index}`"
           v-model="model.repository.release['distribution-points'][index]"
         >
           <p class="text-sm font-bold text-neutral-900">Distribution point #{{ index + 1 }}</p>

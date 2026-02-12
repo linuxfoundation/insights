@@ -48,8 +48,8 @@ SPDX-License-Identifier: MIT
               class="text-xs font-normal text-neutral-500 leading-4 list-disc pl-5"
             >
               <li
-                v-for="(feature, index) in option.features"
-                :key="index"
+                v-for="feature in option.features"
+                :key="feature"
               >
                 {{ feature }}
               </li>

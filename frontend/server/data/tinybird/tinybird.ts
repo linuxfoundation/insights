@@ -80,10 +80,19 @@ export async function fetchFromTinybird<T>(
       const bucketId = await getBucketIdForProject(query.project, fetchFromTinybird);
       if (bucketId !== null) {
         query.bucketId = bucketId;
+      } else {
+        throw createError({
+          statusCode: 404,
+          statusMessage: `Project not found: ${query.project}`,
+        });
       }
-    } catch (error) {
+    } catch (error: unknown) {
+      // Re-throw 404 errors
+      if (error && typeof error === 'object' && 'statusCode' in error && error.statusCode === 404) {
+        throw error;
+      }
       console.error(`Failed to fetch bucketId for project ${query.project}:`, error);
-      // Continue without bucketId
+      // Continue without bucketId for other errors
     }
   }
 
@@ -91,7 +100,10 @@ export async function fetchFromTinybird<T>(
   // We also format DateTime objects so that TinyBird understands them.
   const processedQuery = Object.fromEntries(
     Object.entries(query)
-      .filter(([_, value]) => value !== undefined && value !== '' && value !== null)
+      .filter(
+        ([_, value]) =>
+          value !== undefined && value !== '' && value !== null && !Number.isNaN(value),
+      )
       .map(([key, value]) => [
         key,
         value instanceof DateTime ? formatDateForTinyBird(value) : value,

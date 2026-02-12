@@ -42,7 +42,7 @@ SPDX-License-Identifier: MIT
         <div class="flex flex-col gap-3 mt-2">
           <lfx-input
             v-for="(_, index) in model.rulesets"
-            :key="index"
+            :key="`ruleset-${index}`"
             v-model="model.rulesets[index]"
           />
 

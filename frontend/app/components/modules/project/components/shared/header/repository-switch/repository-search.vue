@@ -87,6 +87,7 @@ import type { ProjectRepository } from '~~/types/project';
 import LfxProjectRepositorySwitchItem from '~/components/modules/project/components/shared/header/repository-switch/repository-switch-item.vue';
 import LfxArchivedTag from '~/components/shared/components/archived-tag.vue';
 import type { ProjectLinkConfig } from '~/components/modules/project/config/links';
+import { normalizeRepoName } from '~/components/shared/utils/helper';
 
 const props = defineProps<{
   link: ProjectLinkConfig;
@@ -108,6 +109,7 @@ interface RepositoryItem extends ProjectRepository {
 const repositories = computed<RepositoryItem[]>(() =>
   projectRepos.value.map((repo) => ({
     ...repo,
+    name: normalizeRepoName(repo),
     isExcluded: excludedRepos.value.includes(repo.url),
     isArchived: archivedRepos.value.includes(repo.url),
   })),
@@ -115,7 +117,6 @@ const repositories = computed<RepositoryItem[]>(() =>
 
 const result = computed<RepositoryItem[]>(() => {
   const seen = new Set<string>();
-
   return repositories.value
     .filter((repo) => {
       if (seen.has(repo.name)) {
@@ -134,6 +135,7 @@ const { list, containerProps, wrapperProps } = useVirtualList(result, {
 const handleReposChange = (repo: RepositoryItem) => {
   let repos: string[] = [];
   const slugs: string[] = repositories.value.filter((r) => r.name === repo.name).map((r) => r.slug);
+
   const isSelected = slugs.some((slug) => selectedRepoSlugs.value.includes(slug));
   if (isSelected) {
     repos = selectedRepoSlugs.value.filter((s) => !slugs.includes(s));

@@ -7,7 +7,7 @@ SPDX-License-Identifier: MIT
   <div :class="`c-progress-bar c-progress-bar--${props.color} c-progress-bar--size-${props.size}`">
     <div
       v-for="(value, index) in props.values"
-      :key="index"
+      :key="`${value}-${index}`"
       class="c-progress-bar__value"
       :style="{ width: `${value}%` }"
     />

@@ -46,8 +46,8 @@ SPDX-License-Identifier: MIT
       class="flex flex-wrap items-start gap-x-4 gap-y-2"
     >
       <lfx-badges-item
-        v-for="(badge, index) in badges"
-        :key="index"
+        v-for="badge in badges"
+        :key="badge.config.leaderboardKey"
         :badge="badge"
       />
     </div>
