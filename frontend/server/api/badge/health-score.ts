@@ -14,7 +14,7 @@ export default defineEventHandler(async (event): Promise<void> => {
       { project },
     );
     if (!res.data || res.data.length === 0) {
-      return;
+      throw createError({ statusCode: 404, statusMessage: 'Project not found' });
     }
     const healthScore = res.data[0].overallScore;
     const config = getHealthScoreConfig(healthScore);
@@ -24,7 +24,10 @@ export default defineEventHandler(async (event): Promise<void> => {
     const url = `https://img.shields.io/static/v1?label=${label}&message=${message}&color=${color}&logo=linuxfoundation&logoColor=white&style=flat`;
 
     return sendRedirect(event, url, 302);
-  } catch (error) {
+  } catch (error: unknown) {
+    if (error && typeof error === 'object' && 'statusCode' in error) {
+      throw error;
+    }
     console.error('Error fetching badge', error);
     throw createError({ statusCode: 500, statusMessage: 'Internal Server Error' });
   }
