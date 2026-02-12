@@ -25,7 +25,12 @@ export default defineEventHandler(async (event): Promise<void> => {
 
     return sendRedirect(event, url, 302);
   } catch (error: unknown) {
-    if (error && typeof error === 'object' && 'statusCode' in error) {
+    if (
+      error &&
+      typeof error === 'object' &&
+      'statusCode' in error &&
+      (error as { statusCode?: number }).statusCode === 404
+    ) {
       throw error;
     }
     console.error('Error fetching badge', error);
