@@ -118,14 +118,14 @@ const destroyPopperInstance = () => {
 const openPopover = async () => {
   isVisible.value = true;
   if (props.triggerEvent === 'click') {
-    document.addEventListener('click', handleClickOutside);
+    document.addEventListener('click', handleClickOutside, true);
   }
 };
 
 const closePopover = () => {
   isVisible.value = false;
   if (props.triggerEvent === 'click') {
-    document.removeEventListener('click', handleClickOutside);
+    document.removeEventListener('click', handleClickOutside, true);
   }
 };
 

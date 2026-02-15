@@ -35,7 +35,7 @@ SPDX-License-Identifier: MIT
             <span
               class="px-1.5 py-1 rounded-full text-[9px] font-medium text-neutral-500 border border-neutral-500 leading-none"
             >
-              #{{ badge.rank }}
+              <template v-if="showRankLabel">Rank: </template>#{{ badge.rank }}
             </span>
             <span
               class="px-1.5 py-1 rounded-full text-[9px] font-semibold leading-none text-white"
@@ -76,6 +76,9 @@ const formattedDate = computed(() => {
 });
 
 const badgeImage = computed(() => props.badge.config.badgeImages[props.badge.tier]);
+const showRankLabel = computed(
+  () => props.badge.config.title.length + String(props.badge.rank).length <= 22 || props.badge.rank < 1000,
+);
 const tierConfig = computed(() => tierConfigs[props.badge.tier]);
 const tierTagStyle = computed(() => getTierTagStyle(tierConfig.value.color));
 </script>

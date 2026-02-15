@@ -25,7 +25,8 @@ SPDX-License-Identifier: MIT
     <!-- Badges Loading State -->
     <div
       v-if="isPending"
-      class="flex items-center justify-between"
+      class="grid gap-x-4 gap-y-2 items-start"
+      style="grid-template-columns: repeat(auto-fill, minmax(52px, 1fr))"
     >
       <div
         v-for="i in 5"
@@ -43,7 +44,8 @@ SPDX-License-Identifier: MIT
     <!-- Badges Grid -->
     <div
       v-else
-      class="flex flex-wrap items-start gap-x-4 gap-y-2"
+      class="grid gap-x-4 gap-y-2 items-start"
+      style="grid-template-columns: repeat(auto-fill, minmax(52px, 1fr))"
     >
       <lfx-badges-item
         v-for="badge in badges"

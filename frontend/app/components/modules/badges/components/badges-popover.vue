@@ -3,16 +3,18 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="w-70 bg-white rounded-xl shadow-xl overflow-hidden border border-neutral-100">
+  <div class="w-70 bg-white rounded-xl shadow-xl overflow-hidden border border-neutral-100 animate-popover-in">
     <!-- Header with gradient -->
     <div class="p-4 bg-gradient-to-t from-white to-brand-50">
       <div class="flex flex-col gap-3">
         <!-- Badge Image -->
-        <img
-          :src="badgeImage"
-          :alt="badge.config.title"
-          class="size-20"
-        />
+        <div class="badge-shine relative overflow-hidden size-20">
+          <img
+            :src="badgeImage"
+            :alt="badge.config.title"
+            class="size-20"
+          />
+        </div>
 
         <!-- Content -->
         <div class="flex flex-col gap-3">
@@ -112,3 +114,20 @@ export default {
   name: 'LfxBadgesPopover',
 };
 </script>
+
+<style scoped>
+.animate-popover-in {
+  animation: popover-in 0.15s ease-out;
+}
+
+@keyframes popover-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+</style>
