@@ -85,5 +85,7 @@ USER nuxt
 
 EXPOSE 3000
 
+ENV NODE_OPTIONS=--max-old-space-size=1536
+
 # Use exec form for proper signal handling
 CMD ["node", ".output/server/index.mjs"]
