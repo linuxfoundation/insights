@@ -8,6 +8,7 @@ SPDX-License-Identifier: MIT
     <lfx-tooltip content="X/Twitter">
       <button
         type="button"
+        aria-label="Share on X/Twitter"
         class="size-9 rounded-full bg-black flex items-center justify-center hover:opacity-80 transition-opacity"
         @click="shareToX"
       >
@@ -24,6 +25,7 @@ SPDX-License-Identifier: MIT
     <lfx-tooltip content="LinkedIn">
       <button
         type="button"
+        aria-label="Share on LinkedIn"
         class="size-9 rounded-full bg-[#0A66C2] flex items-center justify-center hover:opacity-80 transition-opacity"
         @click="shareToLinkedIn"
       >
@@ -40,6 +42,7 @@ SPDX-License-Identifier: MIT
     <lfx-tooltip content="Reddit">
       <button
         type="button"
+        aria-label="Share on Reddit"
         class="size-9 rounded-full bg-[#FF4500] flex items-center justify-center hover:opacity-80 transition-opacity"
         @click="shareToReddit"
       >
@@ -56,6 +59,7 @@ SPDX-License-Identifier: MIT
     <lfx-tooltip content="Email">
       <button
         type="button"
+        aria-label="Share via email"
         class="size-9 rounded-full border border-neutral-200 bg-white flex items-center justify-center hover:bg-neutral-50 transition-colors"
         @click="shareViaEmail"
       >

@@ -76,8 +76,13 @@ const formattedDate = computed(() => {
 });
 
 const badgeImage = computed(() => props.badge.config.badgeImages[props.badge.tier]);
+
+// Max combined character count of title + rank before hiding the "Rank:" prefix to prevent overflow
+const RANK_LABEL_MAX_CHARS = 22;
 const showRankLabel = computed(
-  () => props.badge.config.title.length + String(props.badge.rank).length <= 22 || props.badge.rank < 1000,
+  () =>
+    props.badge.config.title.length + String(props.badge.rank).length <= RANK_LABEL_MAX_CHARS ||
+    props.badge.rank < 1000,
 );
 const tierConfig = computed(() => tierConfigs[props.badge.tier]);
 const tierTagStyle = computed(() => getTierTagStyle(tierConfig.value.color));

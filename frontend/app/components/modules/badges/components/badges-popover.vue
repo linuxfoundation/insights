@@ -8,7 +8,7 @@ SPDX-License-Identifier: MIT
     <div class="p-4 bg-gradient-to-t from-white to-brand-50">
       <div class="flex flex-col gap-3">
         <!-- Badge Image -->
-        <div class="badge-shine relative overflow-hidden size-20">
+        <div class="badge-shine size-20">
           <img
             :src="badgeImage"
             :alt="badge.config.title"
