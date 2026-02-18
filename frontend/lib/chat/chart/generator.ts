@@ -43,7 +43,7 @@ const chartColors = {
     lines: [lfxColors.positive[500], lfxColors.negative[500], lfxColors.brand[300]],
   },
 };
-const model = bedrock('us.anthropic.claude-sonnet-4-20250514-v1:0');
+const model = bedrock('anthropic.claude-opus-4-6-v1');
 
 export async function generateChartConfig(
   results: Result[],

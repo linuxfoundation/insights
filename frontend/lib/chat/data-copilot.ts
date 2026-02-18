@@ -63,7 +63,7 @@ export class DataCopilot {
   private model: LanguageModelV1;
 
   /** Bedrock model identifier */
-  private readonly BEDROCK_MODEL_ID = 'us.anthropic.claude-sonnet-4-20250514-v1:0';
+  private readonly BEDROCK_MODEL_ID = 'anthropic.claude-opus-4-6-v1';
 
   /** Maximum number of auditor retry attempts */
   private readonly MAX_AUDITOR_RETRIES = 1;
