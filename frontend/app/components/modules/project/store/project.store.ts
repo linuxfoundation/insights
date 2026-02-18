@@ -120,6 +120,8 @@ export const useProjectStore = defineStore('project', () => {
         selectedReposValues.value.every((repo) => archivedRepos.value.includes(repo))),
   );
 
+  const isProjectArchived = computed(() => project.value?.status === 'archived');
+
   // If any selected repo is archived
   const hasSelectedArchivedRepos = computed(
     () =>
@@ -145,5 +147,6 @@ export const useProjectStore = defineStore('project', () => {
     allArchived,
     hasSelectedArchivedRepos,
     collaborationSet,
+    isProjectArchived,
   };
 });

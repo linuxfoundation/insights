@@ -123,19 +123,19 @@ const props = defineProps<{
 
 const overallScore = computed(() => Math.round(props.trustScoreSummary ? props.trustScoreSummary.overall : 0));
 const hideOverallScore = computed(() => Object.values(props.scoreDisplay).some((score) => !score));
-const { selectedRepositories, allArchived, archivedRepos, project } = storeToRefs(useProjectStore());
+const { selectedRepositories, allArchived, archivedRepos, isProjectArchived } = storeToRefs(useProjectStore());
 
-const isArchived = computed(() => allArchived.value || project.value?.status === 'archived');
+const isArchived = computed(() => allArchived.value || isProjectArchived.value);
 
 const emptyStateTitle = computed(() => {
-  if (project.value?.status === 'archived') {
+  if (isProjectArchived.value) {
     return 'Archived Project';
   }
   return pluralize('Archived Repository', archivedRepos.value.length);
 });
 
 const emptyStateDescription = computed(() => {
-  return `Archived ${project.value?.status === 'archived' ? 'project' : 'repositories'} are excluded from 
+  return `Archived ${isProjectArchived.value ? 'project' : 'repositories'} are excluded from 
     Health Score and Security & Best practices. You can still access historical data of Contributors, 
     Popularity, or Development metrics.`;
 });
