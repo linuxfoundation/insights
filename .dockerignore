@@ -8,11 +8,7 @@
 node_modules
 **/node_modules
 
-# Submodules (not needed for frontend build)
-submodules
-
-# Other services (not needed for frontend build)
-workers
+# Other services (not needed for most builds)
 services
 database
 

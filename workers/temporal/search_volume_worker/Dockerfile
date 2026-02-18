@@ -17,12 +17,13 @@ RUN npm install -g corepack@latest && \
 
 # Copy root-level files
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY patches ./patches
 
 COPY ./workers/temporal/search_volume_worker/package.json ./workers/temporal/search_volume_worker/
 
 # Pre-fetch dependencies and use a Docker cache mount for pnpm to speed up subsequent builds
 RUN --mount=type=cache,id=pnpm,target=${PNPM_CACHE_DIR} pnpm config set store-dir ${PNPM_CACHE_DIR} && \
-    pnpm fetch --frozen-lockfile
+    pnpm fetch --frozen-lockfile --ignore-scripts
 
 COPY ./submodules ./submodules
 COPY ./workers/temporal/base ./workers/temporal/base

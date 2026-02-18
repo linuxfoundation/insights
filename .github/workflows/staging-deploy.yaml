@@ -2,6 +2,16 @@ name: Staging Deploy
 
 on:
   workflow_dispatch:
+    inputs:
+      service:
+        description: Service to deploy
+        required: true
+        type: choice
+        default: frontend
+        options:
+          - frontend
+          - package-downloads-worker
+          - search-volume-worker
 
 env:
   CLOUD_ENV: lf-oracle-staging
@@ -21,6 +31,36 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Set service config
+        id: config
+        run: |
+          case "${{ inputs.service }}" in
+            frontend)
+              echo "dockerfile=frontend/Dockerfile" >> $GITHUB_OUTPUT
+              echo "image_name=insights-app" >> $GITHUB_OUTPUT
+              echo "k8s_deployment=insights-app-dpl" >> $GITHUB_OUTPUT
+              echo "k8s_container=frontend" >> $GITHUB_OUTPUT
+              ;;
+            package-downloads-worker)
+              echo "dockerfile=workers/temporal/package_downloads_worker/Dockerfile" >> $GITHUB_OUTPUT
+              echo "image_name=package-downloads-worker" >> $GITHUB_OUTPUT
+              echo "k8s_deployment=package-downloads-worker-dpl" >> $GITHUB_OUTPUT
+              echo "k8s_container=package-downloads-worker" >> $GITHUB_OUTPUT
+              ;;
+            search-volume-worker)
+              echo "dockerfile=workers/temporal/search_volume_worker/Dockerfile" >> $GITHUB_OUTPUT
+              echo "image_name=insights-search-volume-worker" >> $GITHUB_OUTPUT
+              echo "k8s_deployment=search-volume-worker-dpl" >> $GITHUB_OUTPUT
+              echo "k8s_container=search-volume-worker" >> $GITHUB_OUTPUT
+              ;;
+            *)
+              echo "::error::Unknown service: ${{ inputs.service }}"
+              exit 1
+              ;;
+          esac
 
       - name: Setup OCI CLI and Kubectl
         run: |
@@ -64,10 +104,13 @@ jobs:
         id: build-docker-image
         with:
           app-env: staging
-        env:
-          NUXT_REDIS_URL: ${{ env.NUXT_REDIS_URL }}
+          dockerfile: ${{ steps.config.outputs.dockerfile }}
+          image-name: ${{ steps.config.outputs.image_name }}
+          build-args: ${{ inputs.service == 'frontend' && format('NUXT_REDIS_URL={0}', env.NUXT_REDIS_URL) || '' }}
 
       - name: Update Deployment Image
         run: |
-          kubectl set image deployment/insights-app-dpl frontend=${{ steps.build-docker-image.outputs.image }} -n insights
-          kubectl rollout status deployment/insights-app-dpl -n insights --timeout=300s
+          kubectl set image deployment/${{ steps.config.outputs.k8s_deployment }} \
+            ${{ steps.config.outputs.k8s_container }}=${{ steps.build-docker-image.outputs.image }} \
+            -n insights
+          kubectl rollout status deployment/${{ steps.config.outputs.k8s_deployment }} -n insights --timeout=300s
