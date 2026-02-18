@@ -29,6 +29,7 @@ export interface Contributor {
   percentage?: number;
   roles?: string[];
   githubHandle?: string;
+  githubHandleArray?: string[];
 }
 
 export interface Organization {

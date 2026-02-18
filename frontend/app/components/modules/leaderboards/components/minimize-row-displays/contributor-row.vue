@@ -18,30 +18,34 @@ SPDX-License-Identifier: MIT
         :aria-label="item.logoUrl && item.name"
       />
 
-      <lfx-tooltip :disabled="!item.githubHandle">
+      <lfx-tooltip :disabled="!item.githubHandleArray || item.githubHandleArray.length === 0">
         <template
-          v-if="item.githubHandle"
+          v-if="item.githubHandleArray"
           #content
         >
-          <a
-            :href="`https://github.com/${item.githubHandle}`"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="flex items-center gap-1 text-white"
-          >
-            <lfx-icon
-              name="github"
-              type="brands"
-              :size="14"
-            />
-            <span class="text-xs font-semibold">{{ item.githubHandle }}</span>
-            <lfx-icon
-              name="arrow-up-right-from-square"
-              type="regular"
-              :size="14"
-              class="text-neutral-400"
-            />
-          </a>
+          <div class="flex flex-col gap-2">
+            <a
+              v-for="githubHandle in item.githubHandleArray"
+              :key="githubHandle"
+              :href="`https://github.com/${githubHandle}`"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex items-center gap-1 text-white"
+            >
+              <lfx-icon
+                name="github"
+                type="brands"
+                :size="14"
+              />
+              <span class="text-xs font-semibold">{{ githubHandle }}</span>
+              <lfx-icon
+                name="arrow-up-right-from-square"
+                type="regular"
+                :size="14"
+                class="text-neutral-400"
+              />
+            </a>
+          </div>
         </template>
         <component
           :is="item.githubHandle ? 'a' : 'p'"

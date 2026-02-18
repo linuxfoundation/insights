@@ -59,6 +59,7 @@ export async function fetchContributorsLeaderboard(
         percentage: item.contributionPercentage,
         roles: item.roles || [],
         githubHandle: item.githubHandle,
+        githubHandleArray: item.githubHandleArray,
       }),
     ),
   };

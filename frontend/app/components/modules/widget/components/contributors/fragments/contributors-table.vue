@@ -41,30 +41,34 @@ SPDX-License-Identifier: MIT
             type="member"
             :aria-label="contributor.avatar && contributor.name"
           />
-          <lfx-tooltip :disabled="!contributor.githubHandle">
+          <lfx-tooltip :disabled="!contributor.githubHandleArray || contributor.githubHandleArray.length === 0">
             <template
-              v-if="contributor.githubHandle"
+              v-if="contributor.githubHandleArray"
               #content
             >
-              <a
-                :href="`https://github.com/${contributor.githubHandle}`"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="flex items-center gap-1 text-white"
-              >
-                <lfx-icon
-                  name="github"
-                  type="brands"
-                  :size="14"
-                />
-                <span class="text-xs font-semibold">{{ contributor.githubHandle }}</span>
-                <lfx-icon
-                  name="arrow-up-right-from-square"
-                  type="regular"
-                  :size="14"
-                  class="text-neutral-400"
-                />
-              </a>
+              <div class="flex flex-col gap-2">
+                <a
+                  v-for="githubHandle in contributor.githubHandleArray"
+                  :key="githubHandle"
+                  :href="`https://github.com/${githubHandle}`"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="flex items-center gap-1 text-white"
+                >
+                  <lfx-icon
+                    name="github"
+                    type="brands"
+                    :size="14"
+                  />
+                  <span class="text-xs font-semibold">{{ githubHandle }}</span>
+                  <lfx-icon
+                    name="arrow-up-right-from-square"
+                    type="regular"
+                    :size="14"
+                    class="text-neutral-400"
+                  />
+                </a>
+              </div>
             </template>
             <div
               class="text-ellipsis overflow-hidden no-underline"
@@ -85,7 +89,7 @@ SPDX-License-Identifier: MIT
         <div>
           {{ formatNumber(contributor.contributions) }}
           <span v-if="props.showPercentage">
-            - {{ (contributor.percentage || 0) > 0 ? Math.round(contributor.percentage) : '<1' }}%
+            - {{ (contributor.percentage || 0) > 0 ? Math.round(contributor.percentage || 0) : '<1' }}%
           </span>
         </div>
       </div>

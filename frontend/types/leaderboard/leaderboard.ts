@@ -12,6 +12,7 @@ export interface LeaderboardBase {
   previousPeriodValue: number;
   collectionsSlugs: string[];
   githubHandle?: string;
+  githubHandleArray?: string[];
   status: string;
   totalCount: number;
 }
