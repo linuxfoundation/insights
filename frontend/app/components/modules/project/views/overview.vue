@@ -21,7 +21,7 @@ SPDX-License-Identifier: MIT
             :is-repo-selected="isRepoSelected"
           />
           <div
-            v-if="!allArchived && !isEmpty"
+            v-if="!isArchived && !isEmpty"
             class="px-6"
           >
             <lfx-project-score-tabs
@@ -81,6 +81,8 @@ const displayPopularityScore = computed(() => isScoreVisible(WidgetArea.POPULARI
 
 // Security score is only displayed if security data is available
 const displaySecurityScore = computed(() => securityScore.value && securityScore.value.length > 0);
+
+const isArchived = computed(() => allArchived.value || project.value?.status === 'archived');
 
 const scoreDisplay = computed(() => ({
   overall:

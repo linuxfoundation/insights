@@ -16,7 +16,7 @@ SPDX-License-Identifier: MIT
             <h2 class="text-heading-3 font-bold font-secondary mb-2">Health score</h2>
 
             <lfx-skeleton-state
-              v-if="!isRepoSelected && !allArchived && !isEmpty"
+              v-if="!isRepoSelected && !isArchived && !isEmpty"
               :status="status"
               height="1.75rem"
               width="11.5rem"
@@ -38,7 +38,7 @@ SPDX-License-Identifier: MIT
 
             <template v-else>
               <div
-                v-if="isRepoSelected && !allArchived"
+                v-if="isRepoSelected && !isArchived"
                 class="text-xs text-brand-600 font-semibold inline-flex items-center gap-1 mt-2 bg-brand-50 rounded-full px-1.5"
               >
                 <lfx-icon
@@ -65,7 +65,7 @@ SPDX-License-Identifier: MIT
         </div>
       </div>
       <div
-        v-if="!hideOverallScore && status === 'success' && selectedRepositories.length <= 1 && !allArchived"
+        v-if="!hideOverallScore && status === 'success' && selectedRepositories.length <= 1 && !isArchived"
         class="w-[200px] hidden sm:block"
       >
         <lfx-project-trust-score-share-badge
@@ -77,11 +77,10 @@ SPDX-License-Identifier: MIT
     </div>
 
     <lfx-empty-state
-      v-if="allArchived && status !== 'pending'"
+      v-if="isArchived && status !== 'pending'"
       icon="archive"
-      :title="pluralize('Archived Repository', archivedRepos.length)"
-      description="Archived repositories are excluded from Health Score and Security & Best practices.
-      You can still access historical data of Contributors, Popularity, or Development metrics."
+      :title="emptyStateTitle"
+      :description="emptyStateDescription"
     />
 
     <div
@@ -124,7 +123,22 @@ const props = defineProps<{
 
 const overallScore = computed(() => Math.round(props.trustScoreSummary ? props.trustScoreSummary.overall : 0));
 const hideOverallScore = computed(() => Object.values(props.scoreDisplay).some((score) => !score));
-const { selectedRepositories, allArchived, archivedRepos } = storeToRefs(useProjectStore());
+const { selectedRepositories, allArchived, archivedRepos, project } = storeToRefs(useProjectStore());
+
+const isArchived = computed(() => allArchived.value || project.value?.status === 'archived');
+
+const emptyStateTitle = computed(() => {
+  if (project.value?.status === 'archived') {
+    return 'Archived Project';
+  }
+  return pluralize('Archived Repository', archivedRepos.value.length);
+});
+
+const emptyStateDescription = computed(() => {
+  return `Archived ${project.value?.status === 'archived' ? 'project' : 'repositories'} are excluded from 
+    Health Score and Security & Best practices. You can still access historical data of Contributors, 
+    Popularity, or Development metrics.`;
+});
 </script>
 <script lang="ts">
 export default {
