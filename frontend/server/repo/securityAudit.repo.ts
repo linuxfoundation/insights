@@ -65,9 +65,6 @@ export class SecurityAuditRepository {
       ipAddress,
       userAgent,
       attemptedValue: attemptedUrl,
-      details: {
-        timestamp: new Date().toISOString(),
-      },
     });
   }
 }
