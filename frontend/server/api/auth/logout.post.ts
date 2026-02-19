@@ -5,6 +5,9 @@
 import { getCookie, deleteCookie } from 'h3';
 import jwt from 'jsonwebtoken';
 import type { H3Event } from 'h3';
+import { Pool } from 'pg';
+import { isValidRedirectUrl } from '../../utils/redirect';
+import { SecurityAuditRepository } from '../../repo/securityAudit.repo';
 import type { DecodedOidcToken } from '~~/types/auth/auth-jwt.types';
 
 const isProduction = process.env.NUXT_APP_ENV === 'production';
@@ -28,6 +31,39 @@ const setOIDCCookie = (event: H3Event) => {
 };
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig();
+
+  // Read optional returnTo from request body and validate it
+  let returnToUrl = `${config.public.appUrl}?auth=logout`;
+  try {
+    const body = await readBody(event);
+    const insightsDbPool = event.context.insightsDbPool as Pool;
+    if (body?.returnTo) {
+      if (isValidRedirectUrl(body.returnTo)) {
+        // Build absolute URL if relative path provided
+        const validatedReturnTo = body.returnTo.startsWith('/')
+          ? `${config.public.appUrl}${body.returnTo}`
+          : body.returnTo;
+        returnToUrl = validatedReturnTo.includes('?')
+          ? `${validatedReturnTo}&auth=logout`
+          : `${validatedReturnTo}?auth=logout`;
+      } else {
+        if (insightsDbPool) {
+          // Log invalid redirect attempt for security monitoring
+          const securityAuditRepo = new SecurityAuditRepository(insightsDbPool);
+          // Fire-and-forget: don't await to avoid blocking the request
+          securityAuditRepo.logInvalidRedirect(
+            '/api/auth/logout',
+            body.returnTo,
+            getHeader(event, 'x-forwarded-for') || getHeader(event, 'x-real-ip'),
+            getHeader(event, 'user-agent'),
+          );
+        }
+      }
+    }
+  } catch {
+    // Body parsing failed, use default returnTo
+    returnToUrl = `${config.public.appUrl}?auth=logout`;
+  }
 
   try {
     // Get the OIDC token for logout (don't delete yet - we need it for proper logout)
@@ -65,7 +101,7 @@ export default defineEventHandler(async (event) => {
           if (isProduction && parsedAuth0Domain.hostname === 'sso.linuxfoundation.org') {
             // For Linux Foundation SSO, use their logout endpoint with ID token hint
             const logoutParams = new URLSearchParams({
-              returnTo: `${config.public.appUrl}?auth=logout`,
+              returnTo: returnToUrl,
               client_id: config.public.auth0ClientId,
             });
 
@@ -79,7 +115,7 @@ export default defineEventHandler(async (event) => {
             // For standard Auth0 domains, use the standard logout endpoint
             const auth0Domain = config.public.auth0Domain.replace('https://', '');
             const logoutParams = new URLSearchParams({
-              returnTo: `${config.public.appUrl}?auth=logout`,
+              returnTo: returnToUrl,
               client_id: config.public.auth0ClientId,
             });
 
@@ -126,7 +162,7 @@ export default defineEventHandler(async (event) => {
 
     return {
       success: true,
-      logoutUrl: `${config.public.appUrl}?auth=logout`,
+      logoutUrl: returnToUrl,
     };
   } catch (error) {
     console.error('Auth logout error:', error);
@@ -137,7 +173,7 @@ export default defineEventHandler(async (event) => {
 
     return {
       success: true,
-      logoutUrl: `${config.public.appUrl}?auth=logout`,
+      logoutUrl: returnToUrl,
     };
   }
 });
