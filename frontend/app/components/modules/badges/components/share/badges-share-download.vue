@@ -14,7 +14,7 @@ SPDX-License-Identifier: MIT
       >
         <lfx-icon
           name="arrow-down-to-line"
-          :size="12"
+          :size="16"
         />
         Download (PNG)
       </lfx-button>

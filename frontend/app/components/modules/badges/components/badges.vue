@@ -25,7 +25,8 @@ SPDX-License-Identifier: MIT
     <!-- Badges Loading State -->
     <div
       v-if="isPending"
-      class="flex items-center justify-between"
+      :style="badgesGridStyle"
+      class="grid gap-x-4 gap-y-2 items-start"
     >
       <div
         v-for="i in 5"
@@ -43,7 +44,8 @@ SPDX-License-Identifier: MIT
     <!-- Badges Grid -->
     <div
       v-else
-      class="flex flex-wrap items-start gap-x-4 gap-y-2"
+      :style="badgesGridStyle"
+      class="grid gap-x-4 gap-y-2 items-start"
     >
       <lfx-badges-item
         v-for="badge in badges"
@@ -66,6 +68,8 @@ const route = useRoute();
 const projectSlug = computed(() => route.params.slug as string);
 const { data: badgesData, isPending } = BADGES_API_SERVICE.fetchProjectBadges(projectSlug);
 const badges = computed(() => badgesData.value || []);
+
+const badgesGridStyle = { gridTemplateColumns: 'repeat(auto-fill, minmax(52px, 1fr))' };
 </script>
 
 <script lang="ts">

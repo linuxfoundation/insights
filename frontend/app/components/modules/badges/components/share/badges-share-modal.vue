@@ -5,7 +5,7 @@ SPDX-License-Identifier: MIT
 <template>
   <lfx-modal
     v-model="isOpen"
-    width="480px"
+    width="600px"
     content-class="!p-0 !rounded-xl overflow-hidden"
   >
     <div class="relative">
