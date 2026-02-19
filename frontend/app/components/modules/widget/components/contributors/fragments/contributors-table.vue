@@ -73,7 +73,9 @@ SPDX-License-Identifier: MIT
             <div
               class="text-ellipsis overflow-hidden no-underline"
               :title="contributor.name"
-              :class="contributor.githubHandle ? 'hover:underline' : ''"
+              :class="
+                contributor.githubHandleArray && contributor.githubHandleArray.length > 0 ? 'hover:underline' : ''
+              "
             >
               {{ contributor.name }}
             </div>

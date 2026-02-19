@@ -28,7 +28,6 @@ export interface Contributor {
   contributions: number;
   percentage?: number;
   roles?: string[];
-  githubHandle?: string;
   githubHandleArray?: string[];
 }
 
