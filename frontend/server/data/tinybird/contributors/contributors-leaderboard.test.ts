@@ -81,7 +81,7 @@ describe('Contributors Leaderboard Data Source', () => {
         contributions: item.contributionCount,
         percentage: item.contributionPercentage,
         roles: item.roles || [],
-        githubHandle: item.githubHandle,
+        githubHandleArray: item.githubHandleArray,
       })),
     };
 
