@@ -46,7 +46,7 @@ describe('Router Agent', () => {
     });
 
     // Initialize model once, like DataCopilot does in constructor
-    const BEDROCK_MODEL_ID = 'anthropic.claude-opus-4-6-v1';
+    const BEDROCK_MODEL_ID = 'us.anthropic.claude-opus-4-6-v1';
     model = bedrock(BEDROCK_MODEL_ID);
 
     // Initialize MCP client to get real tools - same as DataCopilot
