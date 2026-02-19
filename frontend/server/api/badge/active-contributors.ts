@@ -18,7 +18,7 @@ export default defineEventHandler(async (event): Promise<void> => {
       },
     );
     if (!res.data || res.data.length === 0) {
-      return;
+      throw createError({ statusCode: 404, statusMessage: 'Project not found' });
     }
     const activeContributors = res.data[0].activeContributors;
     const label = encodeURIComponent('Active contributors (1Y)');
@@ -26,7 +26,15 @@ export default defineEventHandler(async (event): Promise<void> => {
     const url = `https://img.shields.io/static/v1?label=${label}&message=${message}&color=0094FF&logo=linuxfoundation&logoColor=white&style=flat`;
 
     return sendRedirect(event, url, 302);
-  } catch (error) {
+  } catch (error: unknown) {
+    if (
+      error &&
+      typeof error === 'object' &&
+      'statusCode' in error &&
+      (error as { statusCode?: number }).statusCode === 404
+    ) {
+      throw error;
+    }
     console.error('Error fetching badge', error);
     throw createError({ statusCode: 500, statusMessage: 'Internal Server Error' });
   }
