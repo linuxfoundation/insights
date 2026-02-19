@@ -36,7 +36,7 @@ describe('Auditor Agent', () => {
       region: process.env.NUXT_AWS_BEDROCK_REGION,
     });
 
-    const BEDROCK_MODEL_ID = 'us.anthropic.claude-sonnet-4-20250514-v1:0';
+    const BEDROCK_MODEL_ID = 'us.anthropic.claude-opus-4-6-v1';
     model = bedrock(BEDROCK_MODEL_ID);
   }, 30000);
 
