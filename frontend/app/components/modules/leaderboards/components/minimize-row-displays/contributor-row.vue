@@ -18,39 +18,43 @@ SPDX-License-Identifier: MIT
         :aria-label="item.logoUrl && item.name"
       />
 
-      <lfx-tooltip :disabled="!item.githubHandle">
+      <lfx-tooltip :disabled="!item.githubHandleArray || item.githubHandleArray.length === 0">
         <template
-          v-if="item.githubHandle"
+          v-if="item.githubHandleArray"
           #content
         >
-          <a
-            :href="`https://github.com/${item.githubHandle}`"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="flex items-center gap-1 text-white"
-          >
-            <lfx-icon
-              name="github"
-              type="brands"
-              :size="14"
-            />
-            <span class="text-xs font-semibold">{{ item.githubHandle }}</span>
-            <lfx-icon
-              name="arrow-up-right-from-square"
-              type="regular"
-              :size="14"
-              class="text-neutral-400"
-            />
-          </a>
+          <div class="flex flex-col gap-2">
+            <a
+              v-for="githubHandle in item.githubHandleArray"
+              :key="githubHandle"
+              :href="`https://github.com/${githubHandle}`"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex items-center gap-1 text-white"
+            >
+              <lfx-icon
+                name="github"
+                type="brands"
+                :size="14"
+              />
+              <span class="text-xs font-semibold">{{ githubHandle }}</span>
+              <lfx-icon
+                name="arrow-up-right-from-square"
+                type="regular"
+                :size="14"
+                class="text-neutral-400"
+              />
+            </a>
+          </div>
         </template>
         <component
-          :is="item.githubHandle ? 'a' : 'p'"
-          :href="item.githubHandle ? `https://github.com/${item.githubHandle}` : undefined"
-          :target="item.githubHandle ? '_blank' : undefined"
-          :rel="item.githubHandle ? 'noopener noreferrer' : undefined"
+          :is="hasGithubHandle ? 'a' : 'p'"
+          :href="hasGithubHandle ? `https://github.com/${item.githubHandleArray?.[0]}` : undefined"
+          :target="hasGithubHandle ? '_blank' : undefined"
+          :rel="hasGithubHandle ? 'noopener noreferrer' : undefined"
           :title="item.name"
           class="text-sm leading-5 font-medium text-neutral-900 overflow-hidden text-ellipsis whitespace-nowrap max-w-full"
-          :class="item.githubHandle ? 'hover:underline' : ''"
+          :class="hasGithubHandle ? 'hover:underline' : ''"
         >
           {{ item.name }}
         </component>
@@ -67,6 +71,7 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
 import type { LeaderboardConfig } from '../../config/types/leaderboard.types';
 import NumericDataDisplay from '../data-displays/numeric.vue';
 import type { Leaderboard } from '~~/types/leaderboard/leaderboard';
@@ -74,10 +79,12 @@ import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
 import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 
-defineProps<{
+const props = defineProps<{
   item: Leaderboard;
   leaderboardConfig: LeaderboardConfig;
 }>();
+
+const hasGithubHandle = computed(() => props.item.githubHandleArray && props.item.githubHandleArray.length > 0);
 </script>
 
 <script lang="ts">
