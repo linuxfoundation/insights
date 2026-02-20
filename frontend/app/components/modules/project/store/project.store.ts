@@ -4,6 +4,7 @@ import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
 import { useRoute } from 'nuxt/app';
 import { DateTime } from 'luxon';
+import pluralize from 'pluralize';
 import {
   dateOptKeys,
   lfxProjectDateOptions,
@@ -121,6 +122,21 @@ export const useProjectStore = defineStore('project', () => {
   );
 
   const isProjectArchived = computed(() => project.value?.status === 'archived');
+  // If all repos are archived or the project is archived
+  const isArchived = computed(() => allArchived.value || isProjectArchived.value);
+
+  const emptyStateTitle = computed(() => {
+    if (isProjectArchived.value) {
+      return 'Archived Project';
+    }
+    return pluralize('Archived Repository', archivedRepos.value.length);
+  });
+
+  const emptyStateDescription = computed(() => {
+    return `Archived ${isProjectArchived.value ? 'project' : 'repositories'} are excluded from 
+      Health Score and Security & Best practices. You can still access historical data of Contributors, 
+      Popularity, or Development metrics.`;
+  });
 
   // If any selected repo is archived
   const hasSelectedArchivedRepos = computed(
@@ -148,5 +164,8 @@ export const useProjectStore = defineStore('project', () => {
     hasSelectedArchivedRepos,
     collaborationSet,
     isProjectArchived,
+    isArchived,
+    emptyStateTitle,
+    emptyStateDescription,
   };
 });
