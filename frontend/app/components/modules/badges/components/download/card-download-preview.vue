@@ -42,7 +42,7 @@ SPDX-License-Identifier: MIT
             <span
               class="px-3 py-1 rounded-full text-2xl font-medium text-neutral-500 border border-neutral-500 leading-[36px] whitespace-nowrap"
             >
-              #{{ badge.rank }}
+              Rank: #{{ badge.rank }}
             </span>
             <span
               class="px-3 py-1 rounded-full text-2xl font-semibold leading-[36px] text-white whitespace-nowrap"
