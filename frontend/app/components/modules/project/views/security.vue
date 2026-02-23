@@ -19,7 +19,7 @@ SPDX-License-Identifier: MIT
         <div class="md:w-3/4 w-full md:border-r border-neutral-200 pr-6 sm:pr-8">
           <!-- Disclaimer for aggregated view -->
           <div
-            v-if="!isRepository"
+            v-if="!isRepository && !isArchived"
             class="p-3 bg-neutral-50 border-y border-neutral-100 flex items-center gap-1.5 rounded-md"
           >
             <lfx-icon
@@ -55,11 +55,10 @@ SPDX-License-Identifier: MIT
 
             <!-- show if all repos are archived -->
             <lfx-empty-state
-              v-else-if="allArchived"
+              v-else-if="isArchived"
               icon="archive"
-              :title="pluralize('Archived Repository', archivedRepos.length)"
-              description="Archived repositories are excluded from Health Score and Security & Best practices.
-                    You can still access historical data of Contributors, Popularity, or Development metrics."
+              :title="emptyStateTitle"
+              :description="emptyStateDescription"
             />
 
             <!-- Show if no data available -->
@@ -147,7 +146,6 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { useRoute } from 'nuxt/app';
 import { computed, onServerPrefetch, ref } from 'vue';
-import pluralize from 'pluralize';
 import { storeToRefs } from 'pinia';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
@@ -173,7 +171,8 @@ const isSearchRepoModalOpen = ref(false);
 const route = useRoute();
 const { name } = route.params;
 
-const { selectedReposValues, allArchived, archivedRepos, hasSelectedArchivedRepos } = storeToRefs(useProjectStore());
+const { selectedReposValues, isArchived, emptyStateTitle, emptyStateDescription, hasSelectedArchivedRepos } =
+  storeToRefs(useProjectStore());
 
 const isRepository = computed(() => !!name);
 const isReposEvalModalOpen = ref(false);
