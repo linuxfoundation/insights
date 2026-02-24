@@ -22,7 +22,7 @@ export interface CategoryGroupOptions {
 export interface QueryParams {
   pageSize: number;
   sort: string;
-  categories: string;
+  categories: string | undefined;
 }
 
 export interface CategoryGroupsQueryParams {

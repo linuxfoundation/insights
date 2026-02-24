@@ -6,6 +6,8 @@ export interface CollectionFeaturedProject {
   logo: string;
 }
 
+export type CollectionType = 'curated' | 'community' | 'my-collections';
+
 export interface Collection {
   id: string;
   name: string;
@@ -16,4 +18,12 @@ export interface Collection {
   featuredProjects: CollectionFeaturedProject[];
   softwareValue?: number;
   contributorCount?: number;
+  updatedAt: string;
+  owner?: {
+    name: string;
+    logo: string;
+  };
+  imgUrl?: string;
+  gradient?: [string, string];
+  type?: CollectionType;
 }

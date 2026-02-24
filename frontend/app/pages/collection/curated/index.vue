@@ -3,15 +3,13 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <!-- <lfx-collection-list-view /> -->
-  <!-- TODO: Add the discovery page here -->
-  <div>Discover Collections</div>
+  <lfx-collection-list-view type="curated" />
 </template>
 
 <script setup lang="ts">
-// import LfxCollectionListView from '~/components/modules/collection/views/collection-list.vue';
+import LfxCollectionListView from '~/components/modules/collection/views/collection-list.vue';
 
-const title = 'Collections | LFX Insights';
+const title = 'Curated Collections | LFX Insights';
 const description =
   'Explore curated collections of open source projects on LFX Insights. ' +
   'Discover projects grouped by technology, ecosystem, and community.';

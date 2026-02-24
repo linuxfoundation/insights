@@ -15,10 +15,8 @@ SPDX-License-Identifier: MIT
           <template #header>
             <div class="flex items-center justify-between w-full gap-4">
               <div class="text-neutral-900">
-                <h2 class="text-2xl font-bold font-secondary mb-2 leading-8">Featured collections</h2>
-                <p class="text-sm">
-                  Curated sets of open source projects that belong to the same technology stack or industry domain.
-                </p>
+                <h2 class="text-2xl font-bold font-secondary mb-2 leading-8">Curated collections</h2>
+                <p class="text-sm">Hand-picked collections from The Linux Foundation.</p>
               </div>
 
               <div class="md:block hidden">
@@ -65,7 +63,7 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { computed, onServerPrefetch } from 'vue';
 import { EXPLORE_API_SERVICE } from '../services/explore.api.service';
-import LfxExploreCollectionCard from './collection-card.vue';
+import LfxExploreCollectionCard from '~/components/shared/components/collection-card.vue';
 import LfxCarousel from '~/components/uikit/carousel/carousel.vue';
 import LfxButton from '~/components/uikit/button/button.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';

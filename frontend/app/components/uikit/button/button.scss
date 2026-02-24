@@ -83,6 +83,21 @@
       @apply text-neutral-400;
     }
   }
+  &-outline {
+    @apply bg-white text-neutral-900 font-semibold outline outline-1 outline-neutral-200;
+
+    &:hover {
+      @apply bg-neutral-50;
+    }
+
+    &:active {
+      @apply bg-white;
+    }
+
+    &:disabled {
+      @apply text-neutral-400;
+    }
+  }
 
   &-large {
     @apply text-base px-5 py-3;

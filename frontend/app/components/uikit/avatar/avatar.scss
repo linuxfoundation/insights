@@ -21,6 +21,12 @@
     }
   }
 
+  &.type-project {
+    &.has-image {
+      @apply bg-white rounded-full;
+    }
+  }
+
   &.p-avatar-xl {
     @apply h-16 w-16;
     .p-avatar-icon {
