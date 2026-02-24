@@ -9,11 +9,13 @@ SPDX-License-Identifier: MIT
       placement="top"
       trigger-event="hover"
     >
-      <img
-        :src="badgeImage"
-        :alt="badge.config.title"
-        class="size-13 transition-all cursor-pointer hover:scale-105"
-      />
+      <div class="badge-shine size-13 transition-all cursor-pointer hover:scale-105">
+        <img
+          :src="badgeImage"
+          :alt="badge.config.title"
+          class="size-13"
+        />
+      </div>
       <template #content>
         <lfx-badges-popover
           :badge="badge"

@@ -101,7 +101,6 @@ SPDX-License-Identifier: MIT
 import { computed } from 'vue';
 import type { AsyncDataRequestStatus } from 'nuxt/app';
 import { storeToRefs } from 'pinia';
-import pluralize from 'pluralize';
 import LfxProjectTrustScoreDisplay from './trust-score/score-display.vue';
 import LfxProjectTrustScoreShareBadge from './trust-score/share-badge.vue';
 import { links } from '~/config/links';
@@ -123,22 +122,7 @@ const props = defineProps<{
 
 const overallScore = computed(() => Math.round(props.trustScoreSummary ? props.trustScoreSummary.overall : 0));
 const hideOverallScore = computed(() => Object.values(props.scoreDisplay).some((score) => !score));
-const { selectedRepositories, allArchived, archivedRepos, isProjectArchived } = storeToRefs(useProjectStore());
-
-const isArchived = computed(() => allArchived.value || isProjectArchived.value);
-
-const emptyStateTitle = computed(() => {
-  if (isProjectArchived.value) {
-    return 'Archived Project';
-  }
-  return pluralize('Archived Repository', archivedRepos.value.length);
-});
-
-const emptyStateDescription = computed(() => {
-  return `Archived ${isProjectArchived.value ? 'project' : 'repositories'} are excluded from 
-    Health Score and Security & Best practices. You can still access historical data of Contributors, 
-    Popularity, or Development metrics.`;
-});
+const { selectedRepositories, isArchived, emptyStateTitle, emptyStateDescription } = storeToRefs(useProjectStore());
 </script>
 <script lang="ts">
 export default {
