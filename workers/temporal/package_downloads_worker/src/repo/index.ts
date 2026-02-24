@@ -4,6 +4,7 @@ import { DbStore } from "@crowd/database";
 import {
   IInsightsProjectRepo,
   IPackageDownload,
+  IPackageDownloadRun,
   IPackageDownloadsRepo,
 } from "../types";
 
@@ -69,6 +70,19 @@ export async function savePackagesDownloadForRepo(
       docker_downloads_count: packageDownload.docker_downloads_count,
       downloads_count: packageDownload.downloads_count,
     }
+  );
+}
+
+export async function savePackageDownloadRun(
+  store: DbStore,
+  run: IPackageDownloadRun
+) {
+  await store.connection().query(
+    `INSERT INTO package_downloads_runs
+      (date, insights_project_id, repository_url, bytes_returned, returned_any_package_data, error)
+     VALUES
+      ($(date), $(insights_project_id), $(repository_url), $(bytes_returned), $(returned_any_package_data), $(error))`,
+    run
   );
 }
 

@@ -4,13 +4,11 @@ import axios from "axios";
 import { svc } from "../main";
 import {
   findReposToProcessForDate,
+  savePackageDownloadRun,
   savePackagesDownloadForRepo,
 } from "../repo";
-import { IInsightsProjectRepo, IPackageDownload, IPackageDownloadEcosystemsResponse } from "../types";
+import { IInsightsProjectRepo, IPackageDownloadEcosystemsResponse } from "../types";
 
-export async function testAct() {
-  return 1;
-}
 
 export async function fetchAndSavePackageDownloads(
   date: string,
@@ -18,16 +16,46 @@ export async function fetchAndSavePackageDownloads(
   repoUrl: string
 ): Promise<boolean> {
   console.log(`Getting package downloads for ${repoUrl}`);
-  let data: IPackageDownloadEcosystemsResponse[] = await fetchPackageDownloads(repoUrl);
-  console.log(`Got package downloads for ${repoUrl}`, data);
 
-  if (!data || data.length === 0) {
+  let data: IPackageDownloadEcosystemsResponse[] = [];
+  let bytesReturned = 0;
+  let errorMessage: string | null = null;
+
+  try {
+    data = await fetchPackageDownloads(repoUrl);
+    bytesReturned = data.length > 0 ? Buffer.byteLength(JSON.stringify(data)) : 0;
+    console.log(`Got package downloads for ${repoUrl}`, data);
+  } catch (err) {
+    errorMessage = err instanceof Error ? err.message : String(err);
+    console.log(`Failed getting package downloads for ${repoUrl}: ${errorMessage}`);
+  }
+
+  await savePackageDownloadRun(svc.insightsPostgres.writer, {
+    date,
+    insights_project_id: insightsProjectId,
+    repository_url: repoUrl,
+    bytes_returned: bytesReturned,
+    returned_any_package_data: data.some(
+      (pkg) =>
+        pkg.dependent_repos_count != null ||
+        pkg.dependent_packages_count != null ||
+        pkg.docker_dependents_count != null ||
+        pkg.docker_downloads_count != null ||
+        pkg.downloads != null
+    ),
+    error: errorMessage,
+  });
+
+  if (errorMessage) {
+    throw new Error(errorMessage);
+  }
+
+  if (data.length === 0) {
     console.log(`No package downloads found for ${repoUrl}`);
     return false;
   }
 
   for (const packageDownload of data) {
-    // Save package downloads to the database
     await savePackagesDownloadForRepo(svc.insightsPostgres.writer, {
       ...packageDownload,
       date,
