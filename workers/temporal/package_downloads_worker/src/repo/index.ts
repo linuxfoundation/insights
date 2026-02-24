@@ -10,7 +10,7 @@ import {
 
 export async function savePackagesDownloadForRepo(
   store: DbStore,
-  packageDownload: IPackageDownload
+  packageDownload: IPackageDownload,
 ) {
   // Save package downloads to the database
   await store.connection().query(
@@ -69,20 +69,20 @@ export async function savePackagesDownloadForRepo(
       docker_dependents_count: packageDownload.docker_dependents_count,
       docker_downloads_count: packageDownload.docker_downloads_count,
       downloads_count: packageDownload.downloads_count,
-    }
+    },
   );
 }
 
 export async function savePackageDownloadRun(
   store: DbStore,
-  run: IPackageDownloadRun
+  run: IPackageDownloadRun,
 ) {
   await store.connection().query(
     `INSERT INTO package_downloads_runs
       (date, insights_project_id, repository_url, bytes_returned, returned_any_package_data, error)
      VALUES
       ($(date), $(insights_project_id), $(repository_url), $(bytes_returned), $(returned_any_package_data), $(error))`,
-    run
+    run,
   );
 }
 
@@ -91,7 +91,7 @@ export async function findReposToProcessForDate(
   cmDbStore: DbStore,
   date: string,
   failedRepos: string[],
-  limit: number
+  limit: number,
 ): Promise<IInsightsProjectRepo[]> {
   // find last processed repo for the date
   const lastProcessedRepo: IPackageDownloadsRepo = await insightsDbStore
@@ -101,7 +101,7 @@ export async function findReposToProcessForDate(
      where date = $(date)
      order by repository_url desc
      limit 1`,
-      { date }
+      { date },
     );
 
   const lastProcessedRepoUrlFilter = lastProcessedRepo
@@ -109,9 +109,7 @@ export async function findReposToProcessForDate(
     : "";
 
   const failedReposSubquery =
-    failedRepos.length > 0
-      ? 'and url not in ($(failedRepos:csv))'
-      : "";
+    failedRepos.length > 0 ? "and url not in ($(failedRepos:csv))" : "";
 
   const repos: IInsightsProjectRepo[] = await cmDbStore.connection().query(
     `
@@ -132,7 +130,7 @@ export async function findReposToProcessForDate(
         : undefined,
       limit,
       failedRepos: failedRepos.length > 0 ? failedRepos : undefined,
-    }
+    },
   );
 
   return repos;

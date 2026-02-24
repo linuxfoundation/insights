@@ -7,51 +7,55 @@ import {
   savePackageDownloadRun,
   savePackagesDownloadForRepo,
 } from "../repo";
-import { IInsightsProjectRepo, IPackageDownloadEcosystemsResponse } from "../types";
-
+import {
+  IInsightsProjectRepo,
+  IPackageDownloadEcosystemsResponse,
+} from "../types";
 
 export async function fetchAndSavePackageDownloads(
   date: string,
   insightsProjectId: string,
-  repoUrl: string
+  repoUrl: string,
 ): Promise<boolean> {
-  console.log(`Getting package downloads for ${repoUrl}`);
-
   let data: IPackageDownloadEcosystemsResponse[] = [];
   let bytesReturned = 0;
   let errorMessage: string | null = null;
 
   try {
     data = await fetchPackageDownloads(repoUrl);
-    bytesReturned = data.length > 0 ? Buffer.byteLength(JSON.stringify(data)) : 0;
-    console.log(`Got package downloads for ${repoUrl}`, data);
+    bytesReturned =
+      data.length > 0 ? Buffer.byteLength(JSON.stringify(data)) : 0;
   } catch (err) {
     errorMessage = err instanceof Error ? err.message : String(err);
-    console.log(`Failed getting package downloads for ${repoUrl}: ${errorMessage}`);
   }
+
+  const returnedAnyPackageData = data.some(
+    (pkg) =>
+      pkg.dependent_repos_count != null ||
+      pkg.dependent_packages_count != null ||
+      pkg.docker_dependents_count != null ||
+      pkg.docker_downloads_count != null ||
+      pkg.downloads != null,
+  );
 
   await savePackageDownloadRun(svc.insightsPostgres.writer, {
     date,
     insights_project_id: insightsProjectId,
     repository_url: repoUrl,
     bytes_returned: bytesReturned,
-    returned_any_package_data: data.some(
-      (pkg) =>
-        pkg.dependent_repos_count != null ||
-        pkg.dependent_packages_count != null ||
-        pkg.docker_dependents_count != null ||
-        pkg.docker_downloads_count != null ||
-        pkg.downloads != null
-    ),
+    returned_any_package_data: returnedAnyPackageData,
     error: errorMessage,
   });
+
+  console.info(
+    `[package_downloads_run] date=${date} repo=${repoUrl} bytes=${bytesReturned} hasData=${returnedAnyPackageData} error=${errorMessage ?? "none"}`,
+  );
 
   if (errorMessage) {
     throw new Error(errorMessage);
   }
 
   if (data.length === 0) {
-    console.log(`No package downloads found for ${repoUrl}`);
     return false;
   }
 
@@ -68,9 +72,8 @@ export async function fetchAndSavePackageDownloads(
 }
 
 async function fetchPackageDownloads(
-  repoUrl: string
+  repoUrl: string,
 ): Promise<IPackageDownloadEcosystemsResponse[]> {
-  console.log(`Getting package downloads for ${repoUrl}`);
   const url = `https://packages.ecosyste.ms/api/v1/packages/lookup?repository_url=${repoUrl}&mailto=insights@linuxfoundation.org`;
   const requestOptions = {
     method: "GET",
@@ -91,13 +94,13 @@ async function fetchPackageDownloads(
 export async function fetchUnprocessedReposForDate(
   date: string,
   failedRepos: string[],
-  limit: number
+  limit: number,
 ): Promise<IInsightsProjectRepo[]> {
   return findReposToProcessForDate(
     svc.insightsPostgres.reader,
     svc.cmPostgres.reader,
     date,
     failedRepos,
-    limit
+    limit,
   );
 }
