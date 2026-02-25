@@ -13,7 +13,7 @@ SPDX-License-Identifier: MIT
         class="text-neutral-400 font-normal"
         :size="14"
       />
-      <p class="text-body-1 text-neutral-400 lg:truncate">Search projects, repositories, or collections</p>
+      <p class="text-body-1 text-neutral-400 truncate">Search projects, repositories, or collections</p>
       <div class="flex-grow" />
       <lfx-chip
         v-if="!isMobile"
@@ -103,12 +103,6 @@ export default {
 @media (width > 1024px) {
   .search-container {
     @apply w-1/2;
-  }
-}
-
-@media (width > 1300px) {
-  .search-container {
-    @apply w-2/3;
   }
 }
 </style>

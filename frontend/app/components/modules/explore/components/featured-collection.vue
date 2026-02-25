@@ -10,52 +10,42 @@ SPDX-License-Identifier: MIT
       error-message="Error fetching featured collections"
       :is-empty="isEmpty"
     >
-      <client-only>
-        <lfx-carousel :value="carouselData">
-          <template #header>
-            <div class="flex items-center justify-between w-full gap-4">
-              <div class="text-neutral-900">
-                <h2 class="text-2xl font-bold font-secondary mb-2 leading-8">Curated collections</h2>
-                <p class="text-sm">Hand-picked collections from The Linux Foundation.</p>
-              </div>
+      <div class="flex items-center justify-between w-full gap-4">
+        <div class="flex items-center gap-4">
+          <span class="text-white block bg-neutral-900 rounded-full p-2">
+            <lfx-icon
+              name="gem"
+              :size="24"
+            />
+          </span>
+          <div class="text-neutral-900">
+            <h2 class="text-xl font-bold font-secondary mb-1 leading-8">Curated collections</h2>
+            <p class="text-sm leading-4">Hand-picked collections from The Linux Foundation.</p>
+          </div>
+        </div>
 
-              <div class="md:block hidden">
-                <nuxt-link :to="{ name: LfxRoutes.COLLECTIONS }">
-                  <lfx-button
-                    type="transparent"
-                    button-style="pill"
-                  >
-                    <lfx-icon
-                      name="rectangle-history"
-                      :size="16"
-                    />
-                    <span class="md:text-base text-sm text-nowrap">All collections</span>
-                  </lfx-button>
-                </nuxt-link>
-              </div>
-            </div>
-          </template>
-          <template #item="{ data }">
-            <lfx-explore-collection-card :collection="data" />
-          </template>
-          <template #footer>
-            <div class="md:hidden flex justify-center">
-              <nuxt-link :to="{ name: LfxRoutes.COLLECTIONS }">
-                <lfx-button
-                  type="transparent"
-                  button-style="pill"
-                >
-                  <lfx-icon
-                    name="rectangle-history"
-                    :size="16"
-                  />
-                  <span class="md:text-base text-sm text-nowrap">All collections</span>
-                </lfx-button>
-              </nuxt-link>
-            </div>
-          </template>
-        </lfx-carousel>
-      </client-only>
+        <div>
+          <nuxt-link :to="{ name: LfxRoutes.COLLECTIONS }">
+            <lfx-button
+              type="transparent"
+              button-style="pill"
+            >
+              <lfx-icon
+                name="rectangle-history"
+                :size="16"
+              />
+              <span class="md:text-base text-sm text-nowrap">View all</span>
+            </lfx-button>
+          </nuxt-link>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8 mb-10">
+        <lfx-explore-collection-card
+          v-for="collection in carouselData"
+          :key="collection.slug"
+          :collection="collection"
+        />
+      </div>
     </lfx-project-load-state>
   </section>
 </template>
@@ -64,7 +54,6 @@ SPDX-License-Identifier: MIT
 import { computed, onServerPrefetch } from 'vue';
 import { EXPLORE_API_SERVICE } from '../services/explore.api.service';
 import LfxExploreCollectionCard from '~/components/shared/components/collection-card.vue';
-import LfxCarousel from '~/components/uikit/carousel/carousel.vue';
 import LfxButton from '~/components/uikit/button/button.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxProjectLoadState from '~/components/modules/project/components/shared/load-state.vue';
