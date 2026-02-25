@@ -201,7 +201,7 @@ describe('Router Agent', () => {
           console.warn(`✅ "${query}" → ${result.next_action}`);
           console.warn(`🔍 Reasoning: ${result.reasoning}`);
         },
-        360000,
+        15000,
       );
     });
 
@@ -226,7 +226,7 @@ describe('Router Agent', () => {
           console.warn(`✅ "${query}" → ${result.next_action}`);
           console.warn(`🔍 Reasoning: ${result.reasoning}`);
         },
-        360000,
+        15000,
       );
     });
 
@@ -251,7 +251,7 @@ describe('Router Agent', () => {
           console.warn(`✅ "${query}" → ${result.next_action}`);
           console.warn(`🔍 Reasoning: ${result.reasoning}`);
         },
-        360000,
+        15000,
       );
     });
 
@@ -274,7 +274,7 @@ describe('Router Agent', () => {
           console.warn(`🔍 Reasoning: ${result.reasoning}`);
           console.warn(`❓ Clarification: ${result.clarification_question}`);
         },
-        360000,
+        15000,
       );
     });
   });
