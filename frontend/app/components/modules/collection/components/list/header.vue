@@ -113,11 +113,10 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useRoute } from 'nuxt/app';
+import { collectionTabs } from '../../config/collection-tabs';
 import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
 import LfxBack from '~/components/uikit/back/back.vue';
-import { LfxRoutes } from '~/components/shared/types/routes';
 import type { CollectionType } from '~~/types/collection';
-import type { MenuItem } from '~/config/menu';
 import LfxMenuButton from '~/components/uikit/menu-button/menu-button.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxButton from '~/components/uikit/button/button.vue';
@@ -142,29 +141,7 @@ const sortValue = computed({
 });
 
 const route = useRoute();
-const linkUrl: MenuItem[] = [
-  {
-    label: 'Curated',
-    icon: 'gem',
-    route: LfxRoutes.COLLECTIONS_CURATED,
-    activeClass: '!bg-neutral-200',
-    iconHighlightClass: '!bg-neutral-900',
-  },
-  {
-    label: 'Community',
-    icon: 'globe',
-    route: LfxRoutes.COLLECTIONS_COMMUNITY,
-    activeClass: '!bg-accent-200',
-    iconHighlightClass: '!bg-accent-500',
-  },
-  {
-    label: 'My Collections',
-    icon: 'folder-heart',
-    route: LfxRoutes.COLLECTIONS_MY_COLLECTIONS,
-    activeClass: '!bg-discovery-200',
-    iconHighlightClass: '!bg-discovery-500',
-  },
-];
+const linkUrl = computed(() => collectionTabs);
 
 const viewTabs = [
   { label: '', value: 'grid', icon: 'grid-2' },

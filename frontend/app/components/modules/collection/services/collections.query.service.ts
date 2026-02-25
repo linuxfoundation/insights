@@ -9,7 +9,7 @@ export const collectionListParamsGetter = (query: LocationQuery): URLParams => (
 });
 
 export const collectionDetailsParamsGetter = (query: LocationQuery): URLParams => ({
-  collectionTab: (query.collectionTab as string) || undefined,
+  onlyLFProjects: (query.onlyLFProjects as string) || undefined,
   collectionSort: (query.collectionSort as string) || undefined,
 });
 
