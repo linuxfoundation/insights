@@ -35,8 +35,8 @@ async function executeTinybirdPipe(
       },
     });
 
-    const data = response.data || [];
-    return data;
+    // TinyBird response format has data array
+    return response.data || [];
   } catch (error) {
     console.error(`Error executing TinyBird pipe ${pipeName}:`, error);
     return [];
