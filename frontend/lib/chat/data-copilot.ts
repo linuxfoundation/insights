@@ -8,6 +8,8 @@ import type { Pool } from 'pg';
 import type { ChatResponse, IChatResponseDb } from '../../server/repo/chat.repo';
 import { ChatRepository } from '../../server/repo/chat.repo';
 
+import { getBucketIdForProject } from '../../server/data/tinybird/bucket-cache';
+import { fetchFromTinybird } from '../../server/data/tinybird/tinybird';
 import { TextToSqlAgent, PipeAgent, RouterAgent, AuditorAgent } from './agents';
 import { executePipeInstructions, executeTextToSqlInstructions } from './instructions';
 import type {
@@ -56,6 +58,9 @@ export class DataCopilot {
   /** Human-readable overview of tools for router agent decision making */
   private toolsOverview: string = '';
 
+  /** Tinybird bucketId for the current project — fetched once and reused across all pipe calls */
+  private bucketId: number | null = null;
+
   /** Tinybird MCP server URL */
   private tbMcpUrl: string = '';
 
@@ -95,8 +100,33 @@ export class DataCopilot {
       }),
     });
 
-    this.tbTools = await this.mcpClient.tools({});
+    const allTools = await this.mcpClient.tools({});
+
+    // Filter out tools with empty descriptions — Bedrock rejects them with a validation error
+    this.tbTools = Object.fromEntries(
+      Object.entries(allTools).filter(([_, tool]: [string, any]) => {
+        const description =
+          (tool?.description as string) || (tool?.meta?.description as string) || '';
+        return description.trim().length > 0;
+      }),
+    );
+
     this.buildToolsOverview();
+  }
+
+  /**
+   * Fetch and cache the Tinybird bucketId for a project.
+   * Delegates to getBucketIdForProject which handles Redis caching and stampede prevention.
+   */
+  private async fetchBucketId(project: string): Promise<void> {
+    if (!project) return;
+    try {
+      this.bucketId = await getBucketIdForProject(project, fetchFromTinybird);
+      console.warn(`🪣 [DataCopilot] bucketId for "${project}": ${this.bucketId}`);
+    } catch (error) {
+      console.error(`[DataCopilot] Failed to fetch bucketId for "${project}":`, error);
+      this.bucketId = null;
+    }
   }
 
   /**
@@ -182,7 +212,9 @@ export class DataCopilot {
 
     if (agent === 'EXECUTE_INSTRUCTIONS') {
       model = undefined;
-    } else if (agent === 'TEXT_TO_SQL' || agent === 'PIPE' || agent === 'CHART') {
+      // For now, we use the Opus model for text-to-SQL and auditor.
+      // The model is currently too slow for both the pipe and router agents.
+    } else if (agent === 'TEXT_TO_SQL' || agent === 'AUDITOR') {
       model = this.BEDROCK_OPUS_MODEL_ID;
     }
     await chatRepo.saveAgentStep({
@@ -303,12 +335,21 @@ export class DataCopilot {
     const followUpTools: Record<string, unknown> = {};
     for (const toolName of toolNames) {
       if (this.tbTools[toolName]) {
-        followUpTools[toolName] = this.tbTools[toolName];
+        const tool = this.tbTools[toolName] as any;
+        // Wrap execute to inject bucketId into every MCP tool call during planning
+        followUpTools[toolName] =
+          this.bucketId !== null && this.tbTools[toolName]?.execute
+            ? {
+                ...this.tbTools[toolName],
+                execute: async (params: any) =>
+                  tool.execute({ bucketId: this.bucketId, ...params }),
+              }
+            : tool;
       }
     }
     const agent = new PipeAgent();
     return agent.execute({
-      model: this.opusModel,
+      model: this.sonnetModel,
       messages,
       tools: followUpTools,
       date,
@@ -344,7 +385,7 @@ export class DataCopilot {
     const dataSummary = generateDataSummary(data);
     const agent = new AuditorAgent();
     return agent.execute({
-      model: this.sonnetModel,
+      model: this.opusModel,
       messages,
       originalQuestion,
       reformulatedQuestion,
@@ -621,7 +662,7 @@ export class DataCopilot {
       }
 
       // Prepare for retry - add feedback to messages and loop
-      previousFeedback = auditorResult.feedback_to_router;
+      previousFeedback = auditorResult.feedback_to_router || undefined;
       attemptNumber++;
 
       dataStream.writeData({
@@ -756,6 +797,12 @@ export class DataCopilot {
   }: DataCopilotQueryInput): Promise<void> {
     const parametersString = JSON.stringify(parameters || {});
     const date = new Date().toISOString().slice(0, 10);
+
+    // Fetch bucketId once upfront — required by all Tinybird pipes for data partitioning
+    const project = (parameters as any)?.project;
+    if (project) {
+      await this.fetchBucketId(project);
+    }
 
     // Build messages from conversation history
     const { messages, previousWasClarification } = await this.buildMessagesFromConversation(
@@ -1201,7 +1248,7 @@ export class DataCopilot {
     // Execute the pipes according to the instructions and combine results (don't stream data yet, auditor will do it)
     const pipeExecutionStart = Date.now();
     try {
-      const combinedData = await executePipeInstructions(pipeOutput.instructions);
+      const combinedData = await executePipeInstructions(pipeOutput.instructions, this.bucketId);
       const pipeExecutionTime = (Date.now() - pipeExecutionStart) / 1000;
 
       // Track successful pipe execution step

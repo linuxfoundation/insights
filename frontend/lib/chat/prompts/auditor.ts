@@ -36,6 +36,8 @@ export const auditorPrompt = (
     })
     .join('\n');
 
+  const dataSection = `\n## TOP ROWS (first ${dataSummary.topRows.length} of ${dataSummary.rowCount} — use these actual values in your summary)\n\`\`\`json\n${JSON.stringify(dataSummary.topRows, null, 2)}\n\`\`\``;
+
   return `You are an Auditor agent that validates whether retrieved data can answer the user's question.
 
 ## USER'S QUESTION
@@ -47,6 +49,7 @@ ${reformulatedQuestion}
 ## DATA SUMMARY
 **Total Rows:** ${dataSummary.rowCount}
 **Columns:** ${dataSummary.columns.join(', ')}
+**Top Rows:** ${dataSection}
 
 **Column Statistics:**
 ${statsFormatted}
@@ -121,12 +124,12 @@ Make a **BINARY decision**: Can this data answer the user's question?
 
 **IF is_valid = true:**
 - Set \`is_valid: true\`
-- Write a brief \`summary\` (2-3 sentences) for the user:
-  - What the data shows
-  - Key findings based on statistics
-  - Direct answer to their question
-  - Example: "Commit activity in 2024 ranged from 0 to 453 per day across 12 companies, 
-  with an average of 87 commits daily."
+- Write a conversational \`summary\` (1-3 sentences) for the user:
+  - If possible, write a summary that directly answers the user's question.
+    - You SHOULD reference actual values from the TOP ROWS data above — name the specific country, person, organization, etc. NEVER guess, infer, or use external knowledge.
+    - Unknown / null / placeholder entries: If a top row has a null, empty, "Unknown", or placeholder value (e.g. country code "XX", name "null") in a label column, do NOT treat it as a real result. Explain it represents unattributed or anonymous data (e.g. "contributions where the country of origin is unknown"), then identify and state the top row with a real value as the actual answer.
+      - ✅ Example: "The top contributor country is the United States with 670 contributors. Note: 5,882 contributions have no country attribution and are listed separately as 'Unknown'."
+  - Write summary in plain text, not markdown.
 
 **IF is_valid = false:**
 - Set \`is_valid: false\`
