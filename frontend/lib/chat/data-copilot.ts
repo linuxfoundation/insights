@@ -59,11 +59,17 @@ export class DataCopilot {
   /** Tinybird MCP server URL */
   private tbMcpUrl: string = '';
 
-  /** Amazon Bedrock language model instance */
+  /** Amazon Bedrock language model instance for routing, auditing, and pipe agents */
   private model: LanguageModelV1;
 
-  /** Bedrock model identifier */
-  private readonly BEDROCK_MODEL_ID = 'us.anthropic.claude-opus-4-6-v1';
+  /** Amazon Bedrock language model instance for text-to-SQL (higher reasoning capacity) */
+  private sqlModel: LanguageModelV1;
+
+  /** Bedrock model identifier for general agents */
+  private readonly BEDROCK_SONNET_MODEL_ID = 'us.anthropic.claude-sonnet-4-20250514-v1:0';
+
+  /** Bedrock model identifier for text-to-SQL and pipe agent */
+  private readonly BEDROCK_OPUS_MODEL_ID = 'us.anthropic.claude-opus-4-6-v1';
 
   /** Maximum number of auditor retry attempts */
   private readonly MAX_AUDITOR_RETRIES = 1;
@@ -72,7 +78,8 @@ export class DataCopilot {
   private readonly MAX_SQL_RETRIES = 2;
 
   constructor() {
-    this.model = bedrock(this.BEDROCK_MODEL_ID);
+    this.model = bedrock(this.BEDROCK_SONNET_MODEL_ID);
+    this.sqlModel = bedrock(this.BEDROCK_OPUS_MODEL_ID);
     this.tbMcpUrl = `https://mcp.tinybird.co?token=${process.env.NUXT_INSIGHTS_DATA_COPILOT_TINYBIRD_TOKEN}&host=${process.env.NUXT_TINYBIRD_BASE_URL}`;
   }
 
@@ -170,10 +177,18 @@ export class DataCopilot {
     instructions?: string,
   ): Promise<void> {
     const chatRepo = new ChatRepository(insightsDbPool);
+
+    let model: string | undefined = this.BEDROCK_SONNET_MODEL_ID;
+
+    if (agent === 'EXECUTE_INSTRUCTIONS') {
+      model = undefined;
+    } else if (agent === 'TEXT_TO_SQL' || agent === 'PIPE' || agent === 'CHART') {
+      model = this.BEDROCK_OPUS_MODEL_ID;
+    }
     await chatRepo.saveAgentStep({
       chatResponseId,
       agent,
-      model: agent === 'EXECUTE_INSTRUCTIONS' ? undefined : this.BEDROCK_MODEL_ID,
+      model,
       response,
       inputTokens: response?.usage?.promptTokens || 0,
       outputTokens: response?.usage?.completionTokens || 0,
@@ -248,7 +263,7 @@ export class DataCopilot {
 
     const agent = new TextToSqlAgent();
     return agent.execute({
-      model: this.model,
+      model: this.sqlModel,
       messages,
       tools: followUpTools,
       date,
@@ -768,7 +783,7 @@ export class DataCopilot {
       userPrompt: currentQuestion,
       inputTokens: 0,
       outputTokens: 0,
-      model: this.BEDROCK_MODEL_ID,
+      model: this.BEDROCK_SONNET_MODEL_ID,
       conversationId: conversationId || '',
       routerResponse: RouterDecisionAction.STOP,
       routerReason: '',
@@ -866,7 +881,7 @@ export class DataCopilot {
         routerReason: routerOutput.reasoning,
         pipeInstructions: undefined,
         sqlQuery: undefined,
-        model: this.BEDROCK_MODEL_ID,
+        model: this.BEDROCK_SONNET_MODEL_ID,
         conversationId: conversationId,
       },
       insightsDbPool,
@@ -901,7 +916,7 @@ export class DataCopilot {
         clarificationQuestion: routerOutput.clarification_question || undefined,
         pipeInstructions: undefined,
         sqlQuery: undefined,
-        model: this.BEDROCK_MODEL_ID,
+        model: this.BEDROCK_SONNET_MODEL_ID,
         conversationId: conversationId,
       },
       insightsDbPool,
@@ -1246,7 +1261,7 @@ export class DataCopilot {
         routerReason: routerOutput.reasoning,
         pipeInstructions,
         sqlQuery,
-        model: this.BEDROCK_MODEL_ID,
+        model: this.BEDROCK_SONNET_MODEL_ID,
         conversationId: conversationId,
       },
       insightsDbPool,

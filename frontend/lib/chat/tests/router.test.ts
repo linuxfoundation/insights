@@ -46,7 +46,7 @@ describe('Router Agent', () => {
     });
 
     // Initialize model once, like DataCopilot does in constructor
-    const BEDROCK_MODEL_ID = 'us.anthropic.claude-opus-4-6-v1';
+    const BEDROCK_MODEL_ID = 'us.anthropic.claude-sonnet-4-20250514-v1:0';
     model = bedrock(BEDROCK_MODEL_ID);
 
     // Initialize MCP client to get real tools - same as DataCopilot
@@ -201,7 +201,7 @@ describe('Router Agent', () => {
           console.warn(`✅ "${query}" → ${result.next_action}`);
           console.warn(`🔍 Reasoning: ${result.reasoning}`);
         },
-        15000,
+        360000,
       );
     });
 
@@ -226,7 +226,7 @@ describe('Router Agent', () => {
           console.warn(`✅ "${query}" → ${result.next_action}`);
           console.warn(`🔍 Reasoning: ${result.reasoning}`);
         },
-        15000,
+        360000,
       );
     });
 
@@ -251,7 +251,7 @@ describe('Router Agent', () => {
           console.warn(`✅ "${query}" → ${result.next_action}`);
           console.warn(`🔍 Reasoning: ${result.reasoning}`);
         },
-        15000,
+        360000,
       );
     });
 
@@ -274,7 +274,7 @@ describe('Router Agent', () => {
           console.warn(`🔍 Reasoning: ${result.reasoning}`);
           console.warn(`❓ Clarification: ${result.clarification_question}`);
         },
-        15000,
+        360000,
       );
     });
   });

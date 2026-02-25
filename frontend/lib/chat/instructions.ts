@@ -28,6 +28,9 @@ async function executeTinybirdPipe(
     ? `${tinybirdBaseUrl}/v0/pipes/${pipeName}.json?${params}`
     : `${tinybirdBaseUrl}/v0/pipes/${pipeName}.json`;
 
+  console.warn(`🔍 [Tinybird] Calling pipe: ${pipeName}`);
+  console.warn(`🔍 [Tinybird] URL: ${url}`);
+
   try {
     const response = await ofetch(url, {
       headers: {
@@ -35,8 +38,12 @@ async function executeTinybirdPipe(
       },
     });
 
-    // TinyBird response format has data array
-    return response.data || [];
+    const data = response.data || [];
+    console.warn(
+      `✅ [Tinybird] ${pipeName} returned ${data.length} rows:`,
+      JSON.stringify(data.slice(0, 3)),
+    );
+    return data;
   } catch (error) {
     console.error(`Error executing TinyBird pipe ${pipeName}:`, error);
     return [];
