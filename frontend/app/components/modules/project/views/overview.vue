@@ -21,7 +21,7 @@ SPDX-License-Identifier: MIT
             :is-repo-selected="isRepoSelected"
           />
           <div
-            v-if="!allArchived && !isEmpty"
+            v-if="!isArchived && !isEmpty"
             class="px-6"
           >
             <lfx-project-score-tabs
@@ -63,7 +63,8 @@ import type { HealthScoreResults } from '~~/types/overview/responses.types';
 import LfxReposExclusionFooter from '~/components/shared/components/repos-exclusion-footer.vue';
 
 const route = useRoute();
-const { selectedReposValues, project, allArchived, hasSelectedArchivedRepos } = storeToRefs(useProjectStore());
+const { selectedReposValues, project, allArchived, hasSelectedArchivedRepos, isProjectArchived } =
+  storeToRefs(useProjectStore());
 
 const params = computed(() => ({
   projectSlug: route.params.slug as string,
@@ -81,6 +82,8 @@ const displayPopularityScore = computed(() => isScoreVisible(WidgetArea.POPULARI
 
 // Security score is only displayed if security data is available
 const displaySecurityScore = computed(() => securityScore.value && securityScore.value.length > 0);
+
+const isArchived = computed(() => allArchived.value || isProjectArchived.value);
 
 const scoreDisplay = computed(() => ({
   overall:

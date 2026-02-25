@@ -30,20 +30,27 @@ SPDX-License-Identifier: MIT
           {{ item.name }}
         </p>
 
-        <a
-          v-if="item.githubHandle"
-          :href="`https://github.com/${item.githubHandle}`"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="flex items-center gap-1 text-xs leading-5 text-neutral-400 hover:text-neutral-500 whitespace-nowrap transition-colors"
-        >
-          <lfx-icon
-            name="github"
-            type="brands"
-            :size="12"
-          />
-          <span class="font-medium overflow-hidden text-ellipsis">{{ item.githubHandle }}</span>
-        </a>
+        <div class="flex items-center gap-1">
+          <template
+            v-for="(githubHandle, idx) in item.githubHandleArray"
+            :key="githubHandle"
+          >
+            <a
+              :href="`https://github.com/${githubHandle}`"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex items-center gap-1 text-xs leading-5 text-neutral-400 hover:text-neutral-500 whitespace-nowrap transition-colors"
+            >
+              <lfx-icon
+                name="github"
+                type="brands"
+                :size="12"
+              />
+              <span class="font-medium overflow-hidden text-ellipsis">{{ githubHandle }}</span>
+            </a>
+            <span v-if="idx < (item.githubHandleArray?.length ?? 0) - 1"> | </span>
+          </template>
+        </div>
       </div>
     </div>
 

@@ -33,7 +33,7 @@ export const mockTimeseries = {
       contributionCount: 9234,
       contributionPercentage: 3,
       roles: [],
-      githubHandle: 'kuba-moo',
+      githubHandleArray: ['kuba-moo'],
     },
     {
       id: 'a3bbff07-7cec-4885-b688-d8b377a580c6',
@@ -42,7 +42,7 @@ export const mockTimeseries = {
       contributionCount: 6625,
       contributionPercentage: 2,
       roles: [],
-      githubHandle: 'alexdeucher',
+      githubHandleArray: ['alexdeucher'],
     },
     {
       id: '7f65feb0-589b-11ee-bf26-d732180a3416',
@@ -69,7 +69,7 @@ export const mockTimeseries = {
       contributionCount: 5446,
       contributionPercentage: 2,
       roles: [],
-      githubHandle: 'torvalds',
+      githubHandleArray: ['torvalds'],
     },
     {
       id: '6ac1a927-efc8-4b42-9cd4-683f7ec2e4c8',

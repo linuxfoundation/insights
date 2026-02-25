@@ -117,16 +117,10 @@ const destroyPopperInstance = () => {
 
 const openPopover = async () => {
   isVisible.value = true;
-  if (props.triggerEvent === 'click') {
-    document.addEventListener('click', handleClickOutside);
-  }
 };
 
 const closePopover = () => {
   isVisible.value = false;
-  if (props.triggerEvent === 'click') {
-    document.removeEventListener('click', handleClickOutside);
-  }
 };
 
 const handleClick = (e: Event) => {
@@ -178,16 +172,22 @@ watch(isVisible, async (visible) => {
     await nextTick();
     createPopperInstance();
 
+    if (props.triggerEvent === 'click') {
+      document.addEventListener('click', handleClickOutside, true);
+    }
+
     if (props.triggerEvent === 'hover') {
-      // Safely add listeners now that popover is in DOM
       popover.value?.addEventListener('mouseenter', cancelClose);
       popover.value?.addEventListener('mouseleave', scheduleClose);
     }
   } else {
     destroyPopperInstance();
 
+    if (props.triggerEvent === 'click') {
+      document.removeEventListener('click', handleClickOutside, true);
+    }
+
     if (props.triggerEvent === 'hover') {
-      // Clean up listeners when hiding
       popover.value?.removeEventListener('mouseenter', cancelClose);
       popover.value?.removeEventListener('mouseleave', scheduleClose);
     }
@@ -196,6 +196,11 @@ watch(isVisible, async (visible) => {
 
 onBeforeUnmount(() => {
   destroyPopperInstance();
+
+  if (props.triggerEvent === 'click') {
+    document.removeEventListener('click', handleClickOutside, true);
+  }
+
   if (props.triggerEvent === 'hover') {
     trigger.value?.removeEventListener('mouseenter', openPopover);
     trigger.value?.removeEventListener('mouseleave', scheduleClose);
