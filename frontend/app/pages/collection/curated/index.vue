@@ -3,7 +3,9 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <lfx-collection-list-view type="curated" />
+  <div class="bg-white">
+    <lfx-collection-list-view type="curated" />
+  </div>
 </template>
 
 <script setup lang="ts">

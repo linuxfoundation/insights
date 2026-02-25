@@ -7,9 +7,9 @@ SPDX-License-Identifier: MIT
     <lfx-card class="!shadow-none !rounded-xl !border-neutral-200 flex flex-col hover:!shadow-md transition">
       <!-- header -->
       <div
-        v-if="collection.imgUrl"
+        v-if="collection.coverImgUrl"
         class="flex items-center gap-2 h-32 rounded-t-xl"
-        :style="{ backgroundImage: `url(${props.collection.imgUrl})` }"
+        :style="{ backgroundImage: `url(${props.collection.coverImgUrl})` }"
       ></div>
       <div
         v-else
@@ -57,7 +57,7 @@ SPDX-License-Identifier: MIT
             class="text-neutral-600"
           />
           <p
-            v-if="props.collection.featuredProjects && props.collection.featuredProjects.length > 0"
+            v-if="props.collection.projectCount && props.collection.projectCount > 0"
             class="text-xs leading-5 text-neutral-500"
           >
             {{ props.collection.projectCount }} projects

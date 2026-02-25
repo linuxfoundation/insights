@@ -24,6 +24,7 @@ export interface Collection {
     logo: string;
   };
   imgUrl?: string;
+  coverImgUrl?: string;
   gradient?: [string, string];
   type?: CollectionType;
 }
