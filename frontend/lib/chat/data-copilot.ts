@@ -5,11 +5,10 @@ import { createAmazonBedrock } from '@ai-sdk/amazon-bedrock';
 import { experimental_createMCPClient as createMCPClient, type LanguageModelV1 } from 'ai';
 import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
 import type { Pool } from 'pg';
+import { ofetch } from 'ofetch';
 import type { ChatResponse, IChatResponseDb } from '../../server/repo/chat.repo';
 import { ChatRepository } from '../../server/repo/chat.repo';
 
-import { getBucketIdForProject } from '../../server/data/tinybird/bucket-cache';
-import { fetchFromTinybird } from '../../server/data/tinybird/tinybird';
 import { TextToSqlAgent, PipeAgent, RouterAgent, AuditorAgent } from './agents';
 import { executePipeInstructions, executeTextToSqlInstructions } from './instructions';
 import type {
@@ -115,13 +114,21 @@ export class DataCopilot {
   }
 
   /**
-   * Fetch and cache the Tinybird bucketId for a project.
-   * Delegates to getBucketIdForProject which handles Redis caching and stampede prevention.
+   * Fetch and store the Tinybird bucketId for a project.
+   * Uses ofetch directly to stay outside the Nuxt server context (no useStorage/createError).
    */
   private async fetchBucketId(project: string): Promise<void> {
     if (!project) return;
+    const tinybirdBaseUrl =
+      process.env.NUXT_TINYBIRD_BASE_URL || 'https://api.us-west-2.aws.tinybird.co';
+    const tinybirdToken = process.env.NUXT_INSIGHTS_DATA_COPILOT_TINYBIRD_TOKEN;
+    if (!tinybirdToken) return;
     try {
-      this.bucketId = await getBucketIdForProject(project, fetchFromTinybird);
+      const response = await ofetch(
+        `${tinybirdBaseUrl}/v0/pipes/project_buckets.json?project=${encodeURIComponent(project)}`,
+        { headers: { Authorization: `Bearer ${tinybirdToken}` }, timeout: 10_000 },
+      );
+      this.bucketId = response.data?.[0]?.bucketId ?? null;
       console.warn(`🪣 [DataCopilot] bucketId for "${project}": ${this.bucketId}`);
     } catch (error) {
       console.error(`[DataCopilot] Failed to fetch bucketId for "${project}":`, error);
