@@ -4,18 +4,16 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <nuxt-link :to="{ name: LfxRoutes.COLLECTION, params: { slug: props.collection.slug } }">
-    <div class="border border-neutral-200 bg-white rounded-lg flex flex-col gap-5 hover:shadow-md transition">
+    <lfx-card class="!shadow-none !rounded-xl !border-neutral-200 flex flex-col hover:!shadow-md transition">
       <!-- header -->
       <div
         v-if="collection.imgUrl"
-        class="flex items-center gap-2 h-32"
+        class="flex items-center gap-2 h-32 rounded-t-xl"
         :style="{ backgroundImage: `url(${props.collection.imgUrl})` }"
-      >
-        >
-      </div>
+      ></div>
       <div
         v-else
-        class="flex items-center gap-2 p-4"
+        class="flex items-center gap-2 p-4 min-h-16 rounded-t-xl"
         :style="headerBackground"
       >
         <lfx-avatar-group type="project">
@@ -78,7 +76,7 @@ SPDX-License-Identifier: MIT
           />
         </div>
       </div>
-    </div>
+    </lfx-card>
   </nuxt-link>
 </template>
 
@@ -93,6 +91,7 @@ import { LfxRoutes } from '~/components/shared/types/routes';
 import type { Collection } from '~~/types/collection';
 import { formatDate } from '~/components/shared/utils/formatter';
 import { useShareStore } from '~/components/shared/modules/share/store/share.store';
+import LfxCard from '~/components/uikit/card/card.vue';
 // @ts-expect-error Vite asset import with ?url suffix
 import lfIconUrl from '~/assets/images/icon.svg?url';
 

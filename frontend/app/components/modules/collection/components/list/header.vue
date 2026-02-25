@@ -3,7 +3,7 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="flex flex-col gap-10">
+  <div class="flex flex-col gap-10 container py-3 md:py-4">
     <div class="flex items-center justify-between w-full">
       <div class="flex items-center gap-2">
         <lfx-back class="ease-linear transition-all">
@@ -94,11 +94,14 @@ SPDX-License-Identifier: MIT
         <div>
           <lfx-tabs
             :tabs="viewTabs"
+            tab-style="pill"
             :model-value="props.view"
             @update:model-value="emit('update:view', $event)"
           >
             <template #slotItem="{ option }">
-              <lfx-icon :name="option.icon!" />
+              <div class="py-1">
+                <lfx-icon :name="option.icon!" />
+              </div>
             </template>
           </lfx-tabs>
         </div>
