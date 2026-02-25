@@ -59,11 +59,11 @@ export class DataCopilot {
   /** Tinybird MCP server URL */
   private tbMcpUrl: string = '';
 
-  /** Amazon Bedrock language model instance for routing, auditing, and pipe agents */
-  private model: LanguageModelV1;
+  /** Amazon Bedrock language model instance for routing and auditing (Sonnet) */
+  private sonnetModel: LanguageModelV1;
 
-  /** Amazon Bedrock language model instance for text-to-SQL (higher reasoning capacity) */
-  private sqlModel: LanguageModelV1;
+  /** Amazon Bedrock language model instance for text-to-SQL, pipe, and chart agents (Opus) */
+  private opusModel: LanguageModelV1;
 
   /** Bedrock model identifier for general agents */
   private readonly BEDROCK_SONNET_MODEL_ID = 'us.anthropic.claude-sonnet-4-20250514-v1:0';
@@ -78,8 +78,8 @@ export class DataCopilot {
   private readonly MAX_SQL_RETRIES = 2;
 
   constructor() {
-    this.model = bedrock(this.BEDROCK_SONNET_MODEL_ID);
-    this.sqlModel = bedrock(this.BEDROCK_OPUS_MODEL_ID);
+    this.sonnetModel = bedrock(this.BEDROCK_SONNET_MODEL_ID);
+    this.opusModel = bedrock(this.BEDROCK_OPUS_MODEL_ID);
     this.tbMcpUrl = `https://mcp.tinybird.co?token=${process.env.NUXT_INSIGHTS_DATA_COPILOT_TINYBIRD_TOKEN}&host=${process.env.NUXT_TINYBIRD_BASE_URL}`;
   }
 
@@ -222,7 +222,7 @@ export class DataCopilot {
   }: Omit<RouterAgentInput, 'toolsOverview' | 'model' | 'tools'>) {
     const agent = new RouterAgent();
     return agent.execute({
-      model: this.model,
+      model: this.sonnetModel,
       messages,
       tools: this.tbTools,
       toolsOverview: this.toolsOverview,
@@ -263,7 +263,7 @@ export class DataCopilot {
 
     const agent = new TextToSqlAgent();
     return agent.execute({
-      model: this.sqlModel,
+      model: this.opusModel,
       messages,
       tools: followUpTools,
       date,
@@ -308,7 +308,7 @@ export class DataCopilot {
     }
     const agent = new PipeAgent();
     return agent.execute({
-      model: this.model,
+      model: this.opusModel,
       messages,
       tools: followUpTools,
       date,
@@ -344,7 +344,7 @@ export class DataCopilot {
     const dataSummary = generateDataSummary(data);
     const agent = new AuditorAgent();
     return agent.execute({
-      model: this.model,
+      model: this.sonnetModel,
       messages,
       originalQuestion,
       reformulatedQuestion,
