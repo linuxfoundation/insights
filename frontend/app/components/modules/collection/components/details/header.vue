@@ -87,6 +87,7 @@ SPDX-License-Identifier: MIT
           v-if="props.collection && !loading"
           class="flex lg:justify-end transition-all ease-linear gap-4 w-full"
         >
+          <!-- TODO: Add back the copy and heart buttons
           <lfx-icon-button
             icon="copy"
             class=""
@@ -97,7 +98,7 @@ SPDX-License-Identifier: MIT
           >
             <lfx-icon name="heart" />
             1.6K
-          </lfx-button>
+          </lfx-button> -->
           <lfx-button
             type="outline"
             class="!rounded-full"

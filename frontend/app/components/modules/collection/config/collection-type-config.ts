@@ -19,24 +19,25 @@ export const collectionTabs: CollectionTypesTabs[] = [
     iconHighlightClass: '!bg-neutral-900',
     type: 'curated',
   },
-  {
-    label: 'Community',
-    detailsLabel: 'Community Collections',
-    icon: 'globe',
-    route: LfxRoutes.COLLECTIONS_COMMUNITY,
-    activeClass: '!bg-accent-200',
-    iconHighlightClass: '!bg-accent-500',
-    type: 'community',
-  },
-  {
-    label: 'My Collections',
-    detailsLabel: 'My Collections',
-    icon: 'folder-heart',
-    route: LfxRoutes.COLLECTIONS_MY_COLLECTIONS,
-    activeClass: '!bg-discovery-200',
-    iconHighlightClass: '!bg-discovery-500',
-    type: 'my-collections',
-  },
+  // TODO: Add back the community and my collections tabs when we have the discovery page
+  // {
+  //   label: 'Community',
+  //   detailsLabel: 'Community Collections',
+  //   icon: 'globe',
+  //   route: LfxRoutes.COLLECTIONS_COMMUNITY,
+  //   activeClass: '!bg-accent-200',
+  //   iconHighlightClass: '!bg-accent-500',
+  //   type: 'community',
+  // },
+  // {
+  //   label: 'My Collections',
+  //   detailsLabel: 'My Collections',
+  //   icon: 'folder-heart',
+  //   route: LfxRoutes.COLLECTIONS_MY_COLLECTIONS,
+  //   activeClass: '!bg-discovery-200',
+  //   iconHighlightClass: '!bg-discovery-500',
+  //   type: 'my-collections',
+  // },
 ];
 
 export const headerBackground = (type?: CollectionType) => {

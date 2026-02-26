@@ -22,7 +22,7 @@ SPDX-License-Identifier: MIT
   </div>
 
   <section>
-    <div class="container py-5 lg:py-10 flex flex-col gap-5 lg:gap-8">
+    <div class="container py-3 flex flex-col">
       <div
         v-if="flatData.length"
         :class="classDisplay"
@@ -150,7 +150,7 @@ const classDisplay = computed(() => {
   if (view.value === 'grid') {
     return 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6';
   }
-  return 'flex flex-col gap-5';
+  return 'flex flex-col';
 });
 
 const updateView = (value: string) => {

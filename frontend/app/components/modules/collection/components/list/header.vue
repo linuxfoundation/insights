@@ -3,8 +3,8 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="flex flex-col gap-10 container py-3 md:py-4">
-    <div class="flex items-center justify-between w-full">
+  <div class="flex flex-col gap-10 container pt-6 pb-10 gap-10">
+    <div class="flex items-center justify-between w-full pb-6 border-b border-neutral-200">
       <div class="flex items-center gap-2">
         <!-- TODO: change this to the correct route when we have the discovery page -->
         <nuxt-link
@@ -41,18 +41,19 @@ SPDX-License-Identifier: MIT
         </lfx-menu-button>
       </div>
       <div>
-        <lfx-button
+        <!-- TODO: Add back the create collection button -->
+        <!-- <lfx-button
           type="outline"
           class="!rounded-full"
         >
           <lfx-icon name="rectangle-history-circle-plus" />
           Create Collection
-        </lfx-button>
+        </lfx-button> -->
       </div>
     </div>
     <div class="flex justify-between items-start">
-      <div>
-        <h1 class="text-4xl font-secondary">
+      <div class="flex flex-col gap-1">
+        <h1 class="text-4xl font-secondary font-light">
           {{ title }}
         </h1>
         <p class="text-neutral-600">
@@ -60,7 +61,7 @@ SPDX-License-Identifier: MIT
         </p>
       </div>
 
-      <div class="flex items-center gap-2">
+      <div class="flex items-center gap-4">
         <lfx-dropdown-select
           v-model="sortValue"
           width="20rem"
@@ -122,7 +123,7 @@ import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
 import type { CollectionType } from '~~/types/collection';
 import LfxMenuButton from '~/components/uikit/menu-button/menu-button.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
-import LfxButton from '~/components/uikit/button/button.vue';
+// import LfxButton from '~/components/uikit/button/button.vue';
 import LfxDropdownSelect from '~/components/uikit/dropdown/dropdown-select.vue';
 import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
 import LfxDropdownSelector from '~/components/uikit/dropdown/dropdown-selector.vue';

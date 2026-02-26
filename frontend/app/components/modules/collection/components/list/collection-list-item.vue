@@ -54,7 +54,7 @@ SPDX-License-Identifier: MIT
             />
             <p
               v-if="props.collection.projectCount && props.collection.projectCount > 0"
-              class="text-xs leading-5 text-neutral-600"
+              class="text-sm leading-5 text-neutral-600"
             >
               {{ props.collection.projectCount }} projects
               <span v-if="props.collection.updatedAt">
