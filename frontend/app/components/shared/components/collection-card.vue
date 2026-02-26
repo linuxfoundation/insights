@@ -42,8 +42,8 @@ SPDX-License-Identifier: MIT
             :alt="owner.name"
             class="block"
             loading="lazy"
-            width="16"
-            height="16"
+            width="12"
+            height="12"
           />
           <p class="text-xs leading-5 text-neutral-600">
             by
@@ -53,8 +53,8 @@ SPDX-License-Identifier: MIT
         <div class="flex items-center gap-2">
           <lfx-icon
             name="laptop-code"
-            :size="16"
-            class="text-neutral-600"
+            :size="12"
+            class="text-neutral-500"
           />
           <p
             v-if="props.collection.projectCount && props.collection.projectCount > 0"
@@ -72,6 +72,8 @@ SPDX-License-Identifier: MIT
           <lfx-icon-button
             type="transparent"
             icon="share-nodes"
+            size="small"
+            class="!text-neutral-900 opacity-50 hover:!opacity-100"
             @click.stop.prevent="handleShare"
           />
         </div>
@@ -147,6 +149,6 @@ const handleShare = () => {
 
 <script lang="ts">
 export default {
-  name: 'LfxExploreCollectionCard',
+  name: 'LfxCollectionCard',
 };
 </script>

@@ -25,7 +25,8 @@ SPDX-License-Identifier: MIT
         </div>
 
         <div>
-          <nuxt-link :to="{ name: LfxRoutes.COLLECTIONS }">
+          <!-- TODO: change this to the correct route when we have the discovery page -->
+          <nuxt-link :to="{ name: LfxRoutes.COLLECTIONS_CURATED }">
             <lfx-button
               type="transparent"
               button-style="pill"
@@ -34,13 +35,13 @@ SPDX-License-Identifier: MIT
                 name="rectangle-history"
                 :size="16"
               />
-              <span class="md:text-base text-sm text-nowrap">View all</span>
+              <span class="text-sm text-nowrap">View all</span>
             </lfx-button>
           </nuxt-link>
         </div>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8 mb-10">
-        <lfx-explore-collection-card
+        <lfx-collection-card
           v-for="collection in carouselData"
           :key="collection.slug"
           :collection="collection"
@@ -53,7 +54,7 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { computed, onServerPrefetch } from 'vue';
 import { EXPLORE_API_SERVICE } from '../services/explore.api.service';
-import LfxExploreCollectionCard from '~/components/shared/components/collection-card.vue';
+import LfxCollectionCard from '~/components/shared/components/collection-card.vue';
 import LfxButton from '~/components/uikit/button/button.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxProjectLoadState from '~/components/modules/project/components/shared/load-state.vue';

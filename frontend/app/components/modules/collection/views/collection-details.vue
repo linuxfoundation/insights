@@ -12,7 +12,7 @@ SPDX-License-Identifier: MIT
     <div class="bg-white outline outline-neutral-100">
       <lfx-collection-header
         :loading="loading"
-        :collection="props.collection!"
+        :collection="props.collection"
         :only-lf-projects="isLFOnly"
         :sort="sort"
         @update:only-lf-projects="updateOnlyLFProjects"

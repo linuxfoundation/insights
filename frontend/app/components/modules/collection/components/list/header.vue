@@ -6,13 +6,17 @@ SPDX-License-Identifier: MIT
   <div class="flex flex-col gap-10 container py-3 md:py-4">
     <div class="flex items-center justify-between w-full">
       <div class="flex items-center gap-2">
-        <lfx-back class="ease-linear transition-all">
+        <!-- TODO: change this to the correct route when we have the discovery page -->
+        <nuxt-link
+          :to="{ name: LfxRoutes.EXPLORE }"
+          class="ease-linear transition-all"
+        >
           <lfx-icon-button
             type="transparent"
             icon="angle-left"
             class=""
           />
-        </lfx-back>
+        </nuxt-link>
 
         <lfx-menu-button
           v-for="link of linkUrl"
@@ -115,7 +119,6 @@ import { computed } from 'vue';
 import { useRoute } from 'nuxt/app';
 import { collectionTabs } from '../../config/collection-type-config';
 import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
-import LfxBack from '~/components/uikit/back/back.vue';
 import type { CollectionType } from '~~/types/collection';
 import LfxMenuButton from '~/components/uikit/menu-button/menu-button.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
@@ -124,6 +127,7 @@ import LfxDropdownSelect from '~/components/uikit/dropdown/dropdown-select.vue';
 import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
 import LfxDropdownSelector from '~/components/uikit/dropdown/dropdown-selector.vue';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
+import { LfxRoutes } from '~/components/shared/types/routes';
 
 const props = defineProps<{
   type?: CollectionType;

@@ -126,22 +126,22 @@ SPDX-License-Identifier: MIT
             {{ owner.name }}
           </p>
           <span
-            v-if="props.collection.projectCount > 0"
+            v-if="projectCount > 0"
             class="text-neutral-600"
             >・</span
           >
           <lfx-icon
-            v-if="props.collection.projectCount > 0"
+            v-if="projectCount > 0"
             name="laptop-code"
             :size="16"
             class="text-neutral-600"
           />
           <p
-            v-if="props.collection.projectCount && props.collection.projectCount > 0"
+            v-if="projectCount > 0"
             class="text-xs leading-5 text-neutral-600"
           >
-            {{ props.collection.projectCount }} projects
-            <span v-if="props.collection.updatedAt">
+            {{ projectCount }} projects
+            <span v-if="props.collection?.updatedAt">
               ・ Updated {{ formatDate(props.collection.updatedAt, 'dd MMM yyyy') }}
             </span>
           </p>
@@ -209,7 +209,7 @@ import { formatDate } from '~/components/shared/utils/formatter';
 import LfxToggle from '~/components/uikit/toggle/toggle.vue';
 
 const props = defineProps<{
-  collection: Collection;
+  collection?: Collection;
   loading?: boolean;
   onlyLfProjects: boolean;
   sort: string;
@@ -233,8 +233,10 @@ const collectionTab = computed(
 );
 const headerBackgroundStyle = computed(() => headerBackground(props.collection?.type));
 
+const projectCount = computed(() => props.collection?.projectCount || 0);
+
 const owner = computed(() => {
-  if (props.collection.owner) {
+  if (props.collection && props.collection.owner) {
     return {
       name: props.collection.owner?.name,
       logo: props.collection.owner?.logo,
