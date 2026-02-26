@@ -41,14 +41,14 @@ SPDX-License-Identifier: MIT
         </lfx-menu-button>
       </div>
       <div>
-        <!-- TODO: Add back the create collection button -->
-        <!-- <lfx-button
+        <lfx-button
           type="outline"
           class="!rounded-full"
+          @click="isCreateCollectionModalOpen = true"
         >
           <lfx-icon name="rectangle-history-circle-plus" />
           Create Collection
-        </lfx-button> -->
+        </lfx-button>
       </div>
     </div>
     <div class="flex justify-between items-start">
@@ -113,17 +113,24 @@ SPDX-License-Identifier: MIT
       </div>
     </div>
   </div>
+
+  <lf-create-collection-modal
+    v-if="isCreateCollectionModalOpen"
+    v-model="isCreateCollectionModalOpen"
+    @update:model-value="handleCreateCollectionUpdate"
+  />
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useRoute } from 'nuxt/app';
 import { collectionTabs } from '../../config/collection-type-config';
+import LfCreateCollectionModal from '../../components/create-modal/create-collection-modal.vue';
 import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
 import type { CollectionType } from '~~/types/collection';
 import LfxMenuButton from '~/components/uikit/menu-button/menu-button.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
-// import LfxButton from '~/components/uikit/button/button.vue';
+import LfxButton from '~/components/uikit/button/button.vue';
 import LfxDropdownSelect from '~/components/uikit/dropdown/dropdown-select.vue';
 import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
 import LfxDropdownSelector from '~/components/uikit/dropdown/dropdown-selector.vue';
@@ -144,6 +151,8 @@ const sortValue = computed({
   get: () => props.sort,
   set: (value: string) => emit('update:sort', value),
 });
+
+const isCreateCollectionModalOpen = ref(false);
 
 const route = useRoute();
 const linkUrl = computed(() => collectionTabs);
@@ -173,6 +182,10 @@ const description = computed(() => {
       return `Collections you've created or liked.`;
   }
 });
+
+const handleCreateCollectionUpdate = () => {
+  isCreateCollectionModalOpen.value = false;
+};
 </script>
 
 <script lang="ts">
