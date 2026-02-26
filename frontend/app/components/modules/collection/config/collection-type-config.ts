@@ -38,3 +38,23 @@ export const collectionTabs: CollectionTypesTabs[] = [
     type: 'my-collections',
   },
 ];
+
+export const headerBackground = (type?: CollectionType) => {
+  switch (type) {
+    case 'curated':
+      return {
+        background:
+          'linear-gradient(0deg, rgba(15, 23, 43, 0.00) 0%, rgba(15, 23, 43, 0.05) 100%), var(--White, #FFF)',
+      };
+    case 'community':
+      return {
+        background:
+          'linear-gradient(0deg, rgba(0, 154, 255, 0.00) 0%, rgba(0, 154, 255, 0.05) 100%), var(--White, #FFF)',
+      };
+    default:
+      return {
+        background:
+          'linear-gradient(0deg, rgba(142, 81, 255, 0.00) 0%, rgba(142, 81, 255, 0.05) 100%), var(--White, #FFF)',
+      };
+  }
+};

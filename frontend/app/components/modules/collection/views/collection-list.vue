@@ -9,7 +9,7 @@ SPDX-License-Identifier: MIT
   >
     <div
       :class="scrollTop > 50 ? 'border-b border-neutral-100' : ''"
-      :style="headerBackground"
+      :style="headerBackgroundStyle"
     >
       <lfx-collection-list-header
         :type="props.type"
@@ -99,6 +99,7 @@ SPDX-License-Identifier: MIT
 import { watch, onServerPrefetch, computed, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { collectionListParamsGetter, collectionListParamsSetter } from '../services/collections.query.service';
+import { headerBackground } from '../config/collection-type-config';
 import type { Pagination } from '~~/types/shared/pagination';
 
 import LfxIcon from '~/components/uikit/icon/icon.vue';
@@ -156,24 +157,7 @@ const updateView = (value: string) => {
   view.value = value;
 };
 
-const headerBackground = computed(() => {
-  switch (props.type) {
-    case 'curated':
-      return {
-        background: 'linear-gradient(0deg, rgba(15, 23, 43, 0.00) 0%, rgba(15, 23, 43, 0.05) 100%), var(--White, #FFF)',
-      };
-    case 'community':
-      return {
-        background:
-          'linear-gradient(0deg, rgba(0, 154, 255, 0.00) 0%, rgba(0, 154, 255, 0.05) 100%), var(--White, #FFF)',
-      };
-    default:
-      return {
-        background:
-          'linear-gradient(0deg, rgba(142, 81, 255, 0.00) 0%, rgba(142, 81, 255, 0.05) 100%), var(--White, #FFF)',
-      };
-  }
-});
+const headerBackgroundStyle = computed(() => headerBackground(props.type));
 
 watch(error, (err: Error | null) => {
   if (err) {

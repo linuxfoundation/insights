@@ -113,7 +113,7 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useRoute } from 'nuxt/app';
-import { collectionTabs } from '../../config/collection-tabs';
+import { collectionTabs } from '../../config/collection-type-config';
 import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
 import LfxBack from '~/components/uikit/back/back.vue';
 import type { CollectionType } from '~~/types/collection';

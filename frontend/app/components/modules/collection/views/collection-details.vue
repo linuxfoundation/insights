@@ -14,23 +14,19 @@ SPDX-License-Identifier: MIT
         :loading="loading"
         :collection="props.collection!"
         :only-lf-projects="isLFOnly"
+        :sort="sort"
         @update:only-lf-projects="updateOnlyLFProjects"
-      />
-      <!-- <lfx-collection-filters
-        v-model:sort="sort"
-        v-model:tab="tab"
         @update:sort="updateSort"
-        @update:tab="updateTab"
-      /> -->
+      />
     </div>
   </lfx-maintain-height>
 
-  <div class="container py-5 lg:py-10 flex flex-col gap-5 lg:gap-8">
+  <div class="container pb-5 lg:pb-10 flex flex-col">
     <div
       v-if="!isPending && flatData.length"
-      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 lg:gap-8"
+      class="flex flex-col"
     >
-      <lfx-project-list-item
+      <lfx-collection-project-item
         v-for="project in flatData"
         :key="project.slug"
         :project="project"
@@ -55,10 +51,10 @@ SPDX-License-Identifier: MIT
     </div>
 
     <div
-      v-if="isPending"
-      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 lg:gap-8"
+      v-if="isPending || isFetchingNextPage"
+      class="flex flex-col"
     >
-      <lfx-project-list-item-loading
+      <lfx-collection-project-item-loading
         v-for="i in 6"
         :key="i"
       />
@@ -85,7 +81,7 @@ SPDX-License-Identifier: MIT
       />
     </lfx-button>
   </div>
-  <div class="flex justify-center mt-5 mb-10 lg:mb-20 lg:mt-10">
+  <div class="flex justify-center mt-5 lg:mt-10">
     <lfx-onboarding-link show-message />
   </div>
 </template>
@@ -94,11 +90,11 @@ SPDX-License-Identifier: MIT
 import { computed, onServerPrefetch, watch, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { storeToRefs } from 'pinia';
+import LfxCollectionProjectItem from '../components/details/collection-project-item.vue';
+import LfxCollectionProjectItemLoading from '../components/details/collection-project-item-loading.vue';
 import type { Collection, CollectionType } from '~~/types/collection';
 
 import LfxCollectionHeader from '~/components/modules/collection/components/details/header.vue';
-import LfxProjectListItem from '~/components/modules/project/components/list/project-list-item.vue';
-import LfxProjectListItemLoading from '~/components/modules/project/components/list/project-list-item-loading.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxButton from '~/components/uikit/button/button.vue';
 import LfxMaintainHeight from '~/components/uikit/maintain-height/maintain-height.vue';
@@ -111,6 +107,7 @@ import {
 } from '~/components/modules/collection/services/collections.query.service';
 import LfxOnboardingLink from '~/components/shared/components/onboarding-link.vue';
 import { useBannerStore } from '~/components/shared/store/banner.store';
+import type { Project } from '~~/types/project';
 
 const props = defineProps<{
   type?: CollectionType;
@@ -150,12 +147,12 @@ const loadMore = () => {
     fetchNextPage();
   }
 };
-// const updateSort = (value: string) => {
-//   queryParams.value = {
-//     collectionSort: value,
-//     onlyLFProjects: queryParams.value.onlyLFProjects,
-//   };
-// };
+const updateSort = (value: string) => {
+  queryParams.value = {
+    collectionSort: value,
+    onlyLFProjects: queryParams.value.onlyLFProjects,
+  };
+};
 
 const updateOnlyLFProjects = (value: boolean) => {
   queryParams.value = {

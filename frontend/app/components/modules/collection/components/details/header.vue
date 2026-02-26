@@ -3,7 +3,7 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="bg-white">
+  <div :style="headerBackgroundStyle">
     <section
       class="container"
       :class="scrollTop > 50 ? 'py-3 md:py-5' : ' py-5'"
@@ -32,7 +32,8 @@ SPDX-License-Identifier: MIT
           "
           class="transition-all ease-linear"
         >
-          <lfx-back
+          <nuxt-link
+            :to="{ name: collectionTab?.route }"
             class="ease-linear transition-all"
             :class="scrollTop > 50 ? 'block' : 'hidden sm:block'"
           >
@@ -41,7 +42,7 @@ SPDX-License-Identifier: MIT
               icon="angle-left"
               class=""
             />
-          </lfx-back>
+          </nuxt-link>
         </div>
         <div class="text-sm text-neutral-500 font-medium">
           {{ collectionTab?.detailsLabel }}
@@ -148,15 +149,56 @@ SPDX-License-Identifier: MIT
         <lfx-toggle v-model="isOnlyLFProjects"> Only Linux Foundation projects </lfx-toggle>
       </div>
     </section>
+    <section class="container py-5 text-neutral-500 text-xs font-semibold">
+      <div class="flex items-center gap-2">
+        <div
+          class="w-2/5 cursor-pointer group flex items-center gap-1"
+          @click="handleSort('name_asc')"
+        >
+          Project
+          <lfx-icon
+            name="caret-large-down"
+            type="solid"
+            :class="[sortIconClass('name_asc')]"
+          />
+        </div>
+        <!-- Health Score -->
+        <div
+          class="w-1/5 cursor-pointer group flex items-center gap-1"
+          @click="handleSort('contributorCount_desc')"
+        >
+          Contributors
+          <lfx-icon
+            name="caret-large-down"
+            type="solid"
+            :class="[sortIconClass('contributorCount_desc')]"
+          />
+        </div>
+        <!-- Temporary only until we have the other data ready -->
+        <div
+          class="w-1/5 cursor-pointer group flex items-center gap-1"
+          @click="handleSort('organizationCount_desc')"
+        >
+          Organizations
+          <lfx-icon
+            name="caret-large-down"
+            type="solid"
+            :class="[sortIconClass('organizationCount_desc')]"
+          />
+        </div>
+        <div class="w-1/5">Software value</div>
+        <!-- Contributor/Organization dependency -->
+        <!-- Achievements -->
+      </div>
+    </section>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { computed } from 'vue';
-import { collectionTabs } from '../../config/collection-tabs';
+import { collectionTabs, headerBackground } from '../../config/collection-type-config';
 import type { Collection } from '~~/types/collection';
 import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
-import LfxBack from '~/components/uikit/back/back.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import useScroll from '~/components/shared/utils/scroll';
 import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
@@ -170,9 +212,13 @@ const props = defineProps<{
   collection: Collection;
   loading?: boolean;
   onlyLfProjects: boolean;
+  sort: string;
 }>();
 
-const emit = defineEmits<{ (e: 'update:onlyLfProjects', value: boolean): void }>();
+const emit = defineEmits<{
+  (e: 'update:onlyLfProjects', value: boolean): void;
+  (e: 'update:sort', value: string): void;
+}>();
 
 const isOnlyLFProjects = computed({
   get: () => props.onlyLfProjects,
@@ -185,6 +231,7 @@ const { scrollTop } = useScroll();
 const collectionTab = computed(
   () => collectionTabs.find((tab) => tab.type === props.collection?.type) || collectionTabs[0],
 );
+const headerBackgroundStyle = computed(() => headerBackground(props.collection?.type));
 
 const owner = computed(() => {
   if (props.collection.owner) {
@@ -199,6 +246,14 @@ const owner = computed(() => {
     logo: lfIconUrl,
   };
 });
+
+const handleSort = (value: string) => {
+  emit('update:sort', value);
+};
+
+const sortIconClass = (value: string) => {
+  return [props.sort === value ? 'text-neutral-500' : 'text-neutral-300 invisible group-hover:visible'];
+};
 </script>
 
 <script lang="ts">
