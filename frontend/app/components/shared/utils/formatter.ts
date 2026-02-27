@@ -188,3 +188,14 @@ export const formatValueToLargestUnitDuration = (
     .map((unit) => `${unit.value}${unit.label}`)
     .join(' ');
 };
+
+export const formatDate = (date: string, format: string = 'short'): string => {
+  const dateTime = DateTime.fromMillis(parseInt(date, 10));
+  if (!dateTime.isValid) {
+    return '';
+  }
+  if (format === 'short') {
+    return dateTime.toLocaleString(DateTime.DATE_SHORT);
+  }
+  return dateTime.toFormat(format);
+};

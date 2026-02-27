@@ -3,8 +3,27 @@
 .p-avatar-group {
   @apply flex items-center;
 
-  .p-avatar:not(:first-child) {
+  &.type-project {
+    .p-avatar {
+      @apply -ms-2 outline outline-3 outline-neutral-100;
+    }
+    .p-avatar:not(:first-child) {
+      &.p-avatar-sm {
+        @apply -ms-1;
+      }
+      &.p-avatar-lg {
+        @apply -ms-3;
+      }
+      &.p-avatar-xl {
+        @apply -ms-5;
+      }
+    }
+  }
+
+  .p-avatar {
     @apply -ms-3 outline outline-3 outline-white;
+  }
+  .p-avatar:not(:first-child) {
     &.p-avatar-sm {
       @apply -ms-2;
     }

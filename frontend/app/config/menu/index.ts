@@ -2,11 +2,13 @@
 // SPDX-License-Identifier: MIT
 import { LfxRoutes } from '~/components/shared/types/routes';
 
-interface MenuItem {
+export interface MenuItem {
   label: string;
   icon?: string;
   route?: LfxRoutes;
   href?: string;
+  activeClass?: string;
+  iconHighlightClass?: string;
 }
 
 interface MenuConfig {
@@ -16,6 +18,12 @@ interface MenuConfig {
 
 export const lfxMenu: MenuConfig = {
   links: [
+    // {
+    //   label: 'Collections',
+    //   icon: 'rectangle-history',
+    //   // TODO: Change this to collections only when the discovery page is ready
+    //   route: LfxRoutes.COLLECTIONS_CURATED,
+    // },
     {
       label: 'Leaderboards',
       icon: 'trophy',
@@ -25,11 +33,6 @@ export const lfxMenu: MenuConfig = {
       label: 'Open Source Index',
       icon: 'globe',
       route: LfxRoutes.OPENSOURCEINDEX,
-    },
-    {
-      label: 'Docs',
-      icon: 'book-open',
-      href: '/docs/introduction/what-is-insights/',
     },
   ],
   footer: {
