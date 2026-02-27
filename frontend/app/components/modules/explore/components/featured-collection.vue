@@ -20,7 +20,7 @@ SPDX-License-Identifier: MIT
           </span>
           <div class="text-neutral-900">
             <h2 class="text-xl font-bold font-secondary mb-1 leading-8">Curated collections</h2>
-            <p class="text-sm leading-4">Collections created and owned by The Linux Foundation.</p>
+            <p class="text-sm leading-4">Hand-picked collections from The Linux Foundation.</p>
           </div>
         </div>
 
