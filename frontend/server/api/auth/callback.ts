@@ -6,7 +6,7 @@ import jwt from 'jsonwebtoken';
 import { jwtDecode } from 'jwt-decode';
 import { H3Error } from 'h3';
 import { Pool } from 'pg';
-import { hasLfxInsightsPermission } from '../../utils/jwt';
+import { hasLfxInsightsPermission, isLfInsightsTeamMember } from '../../utils/jwt';
 import { isValidRedirectUrl, getSafeRedirectUrl } from '../../utils/redirect';
 import { SecurityAuditRepository } from '../../repo/securityAudit.repo';
 import { type DecodedIdToken } from '~~/types/auth/auth-jwt.types';
@@ -117,6 +117,7 @@ export default defineEventHandler(async (event) => {
       exp: Math.floor(Date.now() / 1000) + (tokenResponse.expires_in || 86400),
       claims,
       hasLfxInsightsPermission: hasLfxInsightsPermission(claims as string[]),
+      isLfInsightsTeamMember: isLfInsightsTeamMember(decodedIdToken.email || ''),
       // Include original tokens for reference if needed
       // original_access_token: tokenResponse.access_token,
       original_id_token: tokenResponse.id_token,

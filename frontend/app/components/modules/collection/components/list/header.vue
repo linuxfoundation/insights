@@ -138,7 +138,6 @@ import LfxDropdownSelector from '~/components/uikit/dropdown/dropdown-selector.v
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
 import { LfxRoutes } from '~/components/shared/types/routes';
 // TODO: remove this once we have everything done and tested
-import { isLFUser } from '~/components/shared/utils/helper';
 import { useAuthStore } from '~/components/modules/auth/store/auth.store';
 
 const authStore = useAuthStore();
@@ -159,8 +158,9 @@ const sortValue = computed({
   set: (value: string) => emit('update:sort', value),
 });
 
+// TODO: remove this once we have everything done and tested
 const canCreateCollection = computed(() => {
-  return isLFUser(user.value?.email);
+  return user.value?.isLfInsightsTeamMember || false;
 });
 
 const isCreateCollectionModalOpen = ref(false);

@@ -16,6 +16,8 @@ export default {
   lfxAuth0JwtSecret: '',
   lfxAuth0TokenClaimGroupKey: '',
   lfxAuth0TokenClaimGroupName: '',
+  lfxAuth0TokenStaffClaimGroupName: '',
+  lfxInsightsTeam: '',
   auth0ClientSecret: '',
   auth0CookieDomain: 'insights.linuxfoundation.org',
   jwtSecret: '',

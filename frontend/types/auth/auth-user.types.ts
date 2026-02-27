@@ -8,6 +8,7 @@ export interface User {
   email_verified?: boolean;
   updated_at?: string;
   hasLfxInsightsPermission?: boolean;
+  isLfInsightsTeamMember?: boolean;
 }
 
 export interface AuthData {

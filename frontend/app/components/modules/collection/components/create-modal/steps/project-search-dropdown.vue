@@ -125,6 +125,8 @@ import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 import LfxButton from '~/components/uikit/button/button.vue';
 import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
+import useToastService from '~/components/uikit/toast/toast.service';
+import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 
 const props = defineProps<{
   selectedSlugs: string[];
@@ -134,6 +136,8 @@ const emit = defineEmits<{
   add: [project: SearchProject];
   toggle: [project: SearchProject];
 }>();
+
+const { showToast } = useToastService();
 
 const containerRef = ref<HTMLElement | null>(null);
 const searchQuery = ref('');
@@ -168,6 +172,9 @@ const fetchSearchResults = async () => {
   loading.value = true;
   try {
     searchResults.value = await COLLECTIONS_API_SERVICE.searchProjects(searchQuery.value);
+  } catch {
+    showToast('Error searching projects', ToastTypesEnum.negative);
+    searchResults.value = [];
   } finally {
     loading.value = false;
   }
