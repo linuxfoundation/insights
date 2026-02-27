@@ -20,7 +20,6 @@ SPDX-License-Identifier: MIT
       </div>
       <lfx-input
         v-model="model.name"
-        placeholder="Enter collection name"
         :maxlength="NAME_MAX_LENGTH"
         :invalid="$v.name.$error"
         class="!rounded-full"
@@ -49,7 +48,6 @@ SPDX-License-Identifier: MIT
       </div>
       <lfx-textarea
         v-model="model.description"
-        placeholder="Describe your collection"
         :maxlength="DESCRIPTION_MAX_LENGTH"
         :invalid="$v.description.$error"
         class="h-[72px] !rounded-[20px]"

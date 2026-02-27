@@ -8,6 +8,7 @@ import type { User } from '~~/types/auth/auth-user.types';
 import { TanstackKey } from '~/components/shared/types/tanstack';
 import type { CommunityMentions } from '~~/types/community/community';
 import type { Pagination } from '~~/types/shared/pagination';
+import { isLFUser } from '~/components/shared/utils/helper';
 
 export interface QueryParams {
   projectSlug: string;
@@ -106,8 +107,7 @@ class ProjectCommunityApiService {
     const hasConnectedPlatforms =
       Array.isArray(project.communityPlatforms) && project.communityPlatforms.length > 0;
 
-    const lfEmail = new RegExp('@(contractor\\.)?linuxfoundation\\.org$');
-    const isLFContributor = lfEmail.test(user?.email || '');
+    const isLFContributor = isLFUser(user?.email || '');
 
     const hasPermission = user?.hasLfxInsightsPermission || false;
     return hasConnectedPlatforms && (hasPermission || isLFContributor);

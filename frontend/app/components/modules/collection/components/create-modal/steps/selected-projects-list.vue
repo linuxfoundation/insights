@@ -42,11 +42,17 @@ SPDX-License-Identifier: MIT
         <lfx-icon-button
           icon="circle-xmark"
           icon-type="light"
-          size="medium"
+          size="small"
           type="transparent"
           class="shrink-0"
           @click="$emit('remove', project.slug)"
-        />
+        >
+          <lfx-icon
+            name="circle-xmark"
+            type="light"
+            class="text-neutral-500"
+          />
+        </lfx-icon-button>
       </div>
     </div>
   </div>

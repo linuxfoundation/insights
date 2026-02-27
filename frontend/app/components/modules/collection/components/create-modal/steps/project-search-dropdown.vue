@@ -8,7 +8,7 @@ SPDX-License-Identifier: MIT
     class="relative"
   >
     <!-- Search input -->
-    <label class="c-input !rounded-full flex items-center gap-2">
+    <label class="c-input !rounded-full flex items-center gap-2 !px-3">
       <lfx-icon
         name="search"
         :size="14"
@@ -18,7 +18,7 @@ SPDX-License-Identifier: MIT
         ref="searchInputRef"
         v-model="searchQuery"
         type="text"
-        class="!outline-none !shadow-none flex-grow text-sm text-neutral-900 leading-5"
+        class="!outline-none !shadow-none flex-grow text-sm text-neutral-900 leading-5 !pl-0"
         placeholder="Search projects & repositories"
         @input="triggerSearch"
         @focus="showDropdown = true"
@@ -37,7 +37,7 @@ SPDX-License-Identifier: MIT
     <div
       v-if="showDropdown && searchQuery.length > 0"
       ref="dropdownRef"
-      class="absolute top-full left-0 right-0 mt-1 bg-white border border-neutral-200 rounded-lg shadow-lg z-10 max-h-80 overflow-auto"
+      class="absolute top-full left-0 right-0 mt-1 bg-white border border-neutral-200 rounded-lg shadow-lg z-99 max-h-[24rem] overflow-auto"
     >
       <!-- Loading state -->
       <div
@@ -88,6 +88,7 @@ SPDX-License-Identifier: MIT
             v-if="!isSelected(project.slug)"
             type="ghost"
             size="small"
+            class="!font-medium"
             @click.stop="addProject(project)"
           >
             <lfx-icon
@@ -123,7 +124,7 @@ import type { SearchProject } from '~~/types/search';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 import LfxButton from '~/components/uikit/button/button.vue';
-import { COLLECTION_API_SERVICE } from '~/components/modules/collection/services/collection.api.service';
+import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
 
 const props = defineProps<{
   selectedSlugs: string[];
@@ -135,8 +136,6 @@ const emit = defineEmits<{
 }>();
 
 const containerRef = ref<HTMLElement | null>(null);
-const dropdownRef = ref<HTMLElement | null>(null);
-const searchInputRef = ref<HTMLInputElement | null>(null);
 const searchQuery = ref('');
 const searchResults = ref<SearchProject[]>([]);
 const loading = ref(false);
@@ -168,7 +167,7 @@ const fetchSearchResults = async () => {
 
   loading.value = true;
   try {
-    searchResults.value = await COLLECTION_API_SERVICE.searchProjects(searchQuery.value);
+    searchResults.value = await COLLECTIONS_API_SERVICE.searchProjects(searchQuery.value);
   } finally {
     loading.value = false;
   }

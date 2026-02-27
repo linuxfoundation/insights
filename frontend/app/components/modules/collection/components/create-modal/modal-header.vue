@@ -8,7 +8,7 @@ SPDX-License-Identifier: MIT
     <div class="flex items-start gap-3">
       <div class="flex flex-col flex-1 gap-3">
         <!-- Icon -->
-        <div class="size-12 rounded-full bg-accent-50 flex items-center justify-center">
+        <div class="size-12 rounded-full bg-accent-100 flex items-center justify-center">
           <lfx-icon
             name="rectangle-history-circle-plus"
             :size="24"

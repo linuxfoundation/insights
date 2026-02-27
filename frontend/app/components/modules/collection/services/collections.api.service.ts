@@ -11,6 +11,7 @@ import type { Pagination } from '~~/types/shared/pagination';
 import type { Collection } from '~~/types/collection';
 import type { Category, CategoryGroup } from '~~/types/category';
 import { TanstackKey } from '~/components/shared/types/tanstack';
+import type { SearchProject, SearchResults } from '~~/types/search';
 
 export interface CategoryGroupOptions {
   value: string;
@@ -142,6 +143,23 @@ class CollectionsApiService {
       $fetch(`/api/category`, {
         params: query(),
       });
+  }
+
+  async searchProjects(query: string): Promise<SearchProject[]> {
+    if (!query || query.length === 0) {
+      return [];
+    }
+
+    try {
+      const res = await $fetch<SearchResults>('/api/search', {
+        query: { query },
+      });
+
+      return res.projects || [];
+    } catch (error) {
+      console.error('Error searching projects:', error);
+      return [];
+    }
   }
 }
 

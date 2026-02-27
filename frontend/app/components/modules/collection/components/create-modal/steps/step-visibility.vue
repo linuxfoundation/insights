@@ -7,29 +7,13 @@ SPDX-License-Identifier: MIT
     <p class="text-xs font-medium leading-4 text-neutral-900">Collection visibility:</p>
     <div class="border border-neutral-200 rounded-lg overflow-hidden">
       <!-- Private option -->
-      <label
-        class="flex gap-4 items-start p-4 cursor-pointer transition-colors"
-        :class="{ 'bg-white': model.visibility === 'private', 'bg-neutral-50': model.visibility !== 'private' }"
-      >
+      <label class="flex gap-4 items-start p-4 cursor-pointer transition-colors hover:bg-neutral-50">
         <div class="flex items-center py-0.5">
-          <input
+          <lfx-radio
             v-model="model.visibility"
-            type="radio"
             name="visibility"
             value="private"
-            class="sr-only peer"
           />
-          <div
-            class="size-4 rounded-full border transition-all"
-            :class="model.visibility === 'private' ? 'bg-accent-500 border-accent-500' : 'bg-white border-neutral-300'"
-          >
-            <div
-              v-if="model.visibility === 'private'"
-              class="w-full h-full flex items-center justify-center"
-            >
-              <div class="size-1.5 bg-white rounded-full" />
-            </div>
-          </div>
         </div>
         <div class="flex flex-col flex-1">
           <p class="text-sm font-medium leading-5 text-neutral-900">Private</p>
@@ -41,29 +25,13 @@ SPDX-License-Identifier: MIT
       <div class="border-t border-neutral-200" />
 
       <!-- Public option -->
-      <label
-        class="flex gap-4 items-start p-4 cursor-pointer transition-colors"
-        :class="{ 'bg-white': model.visibility === 'public', 'bg-neutral-50': model.visibility !== 'public' }"
-      >
+      <label class="flex gap-4 items-start p-4 cursor-pointer transition-colors hover:bg-neutral-50">
         <div class="flex items-center py-0.5">
-          <input
+          <lfx-radio
             v-model="model.visibility"
-            type="radio"
             name="visibility"
             value="public"
-            class="sr-only peer"
           />
-          <div
-            class="size-4 rounded-full border transition-all"
-            :class="model.visibility === 'public' ? 'bg-accent-500 border-accent-500' : 'bg-white border-neutral-300'"
-          >
-            <div
-              v-if="model.visibility === 'public'"
-              class="w-full h-full flex items-center justify-center"
-            >
-              <div class="size-1.5 bg-white rounded-full" />
-            </div>
-          </div>
         </div>
         <div class="flex flex-col flex-1">
           <p class="text-sm font-medium leading-5 text-neutral-900">Public</p>
@@ -78,6 +46,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import LfxRadio from '~/components/uikit/radio/radio.vue';
 import type { CreateCollectionForm } from '~/components/modules/collection/config/create-collection.config';
 
 const props = defineProps<{

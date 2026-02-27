@@ -42,6 +42,7 @@ SPDX-License-Identifier: MIT
       </div>
       <div>
         <lfx-button
+          v-if="canCreateCollection"
           type="outline"
           class="!rounded-full"
           @click="isCreateCollectionModalOpen = true"
@@ -136,6 +137,12 @@ import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
 import LfxDropdownSelector from '~/components/uikit/dropdown/dropdown-selector.vue';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
 import { LfxRoutes } from '~/components/shared/types/routes';
+// TODO: remove this once we have everything done and tested
+import { isLFUser } from '~/components/shared/utils/helper';
+import { useAuthStore } from '~/components/modules/auth/store/auth.store';
+
+const authStore = useAuthStore();
+const user = computed(() => authStore.user);
 
 const props = defineProps<{
   type?: CollectionType;
@@ -150,6 +157,10 @@ const emit = defineEmits<{
 const sortValue = computed({
   get: () => props.sort,
   set: (value: string) => emit('update:sort', value),
+});
+
+const canCreateCollection = computed(() => {
+  return isLFUser(user.value?.email);
 });
 
 const isCreateCollectionModalOpen = ref(false);

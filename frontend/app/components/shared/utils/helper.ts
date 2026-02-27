@@ -42,3 +42,11 @@ export const normalizeRepoName = (repo: ProjectRepository): string => {
     return repo.name;
   }
 };
+
+export const isLFUser = (email?: string) => {
+  if (!email) {
+    return false;
+  }
+  const lfEmail = new RegExp('@(contractor\\.)?linuxfoundation\\.org$');
+  return lfEmail.test(email);
+};
