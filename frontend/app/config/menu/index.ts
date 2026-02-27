@@ -25,12 +25,6 @@ export const lfxMenu: MenuConfig = {
     //   route: LfxRoutes.COLLECTIONS_CURATED,
     // },
     {
-      label: 'Collections',
-      icon: 'rectangle-history',
-      // TODO: Change this to collections only when the discovery page is ready
-      route: LfxRoutes.COLLECTIONS_CURATED,
-    },
-    {
       label: 'Leaderboards',
       icon: 'trophy',
       route: LfxRoutes.LEADERBOARDS,
