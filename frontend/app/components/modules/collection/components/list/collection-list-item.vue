@@ -7,12 +7,12 @@ SPDX-License-Identifier: MIT
     <div class="flex flex-row items-center py-4 px-2 hover:bg-neutral-50 cursor-pointer border-b border-neutral-100">
       <div class="flex items-center gap-3 w-1/2">
         <div
-          v-if="collection.imgUrl"
+          v-if="props.collection.imgUrl"
           class="w-8 h-8 rounded-sm"
         >
           <img
-            :src="collection.imgUrl"
-            :alt="collection.name"
+            :src="props.collection.imgUrl"
+            :alt="props.collection.name"
             class="w-full"
           />
         </div>
@@ -28,7 +28,7 @@ SPDX-License-Identifier: MIT
       </div>
       <div class="w-1/2 pl-10">
         <div class="flex items-center justify-between">
-          <div class="flex items-center gap-2 mb-2">
+          <div class="flex items-center gap-2">
             <img
               :src="owner.logo"
               :alt="owner.name"

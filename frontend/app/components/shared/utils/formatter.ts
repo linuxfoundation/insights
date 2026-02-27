@@ -191,5 +191,11 @@ export const formatValueToLargestUnitDuration = (
 
 export const formatDate = (date: string, format: string = 'short'): string => {
   const dateTime = DateTime.fromMillis(parseInt(date, 10));
-  return dateTime.isValid ? dateTime.toFormat(format) : '';
+  if (!dateTime.isValid) {
+    return '';
+  }
+  if (format === 'short') {
+    return dateTime.toLocaleString(DateTime.DATE_SHORT);
+  }
+  return dateTime.toFormat(format);
 };

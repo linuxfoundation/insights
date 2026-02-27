@@ -4,9 +4,10 @@
   @apply flex items-center;
 
   &.type-project {
-    .p-avatar:not(:first-child) {
+    .p-avatar {
       @apply -ms-2 outline outline-3 outline-neutral-100;
-
+    }
+    .p-avatar:not(:first-child) {
       &.p-avatar-sm {
         @apply -ms-1;
       }
@@ -19,8 +20,10 @@
     }
   }
 
-  .p-avatar:not(:first-child) {
+  .p-avatar {
     @apply -ms-3 outline outline-3 outline-white;
+  }
+  .p-avatar:not(:first-child) {
     &.p-avatar-sm {
       @apply -ms-2;
     }

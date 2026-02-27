@@ -68,6 +68,7 @@ class CollectionsApiService {
       TanstackKey.COLLECTIONS,
       params.value.sort,
       params.value.categories,
+      params.value.pageSize,
     ]);
 
     const queryFn = this.fetchCollectionsQueryFn(() => ({

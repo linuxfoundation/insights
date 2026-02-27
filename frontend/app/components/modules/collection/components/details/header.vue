@@ -154,39 +154,40 @@ SPDX-License-Identifier: MIT
       <div class="flex items-center gap-2">
         <div
           class="w-2/5 cursor-pointer group flex items-center gap-1"
-          @click="handleSort('name_asc')"
+          @click="handleSort('name')"
         >
           Project
           <lfx-icon
             name="caret-large-down"
             type="solid"
-            :class="[sortIconClass('name_asc')]"
+            :class="[sortIconClass('name')]"
           />
         </div>
         <!-- Health Score -->
         <div
           class="w-1/5 cursor-pointer group flex items-center gap-1"
-          @click="handleSort('contributorCount_desc')"
+          @click="handleSort('contributorCount')"
         >
           Contributors
           <lfx-icon
             name="caret-large-down"
             type="solid"
-            :class="[sortIconClass('contributorCount_desc')]"
+            :class="[sortIconClass('contributorCount')]"
           />
         </div>
         <!-- Temporary only until we have the other data ready -->
         <div
           class="w-1/5 cursor-pointer group flex items-center gap-1"
-          @click="handleSort('organizationCount_desc')"
+          @click="handleSort('organizationCount')"
         >
           Organizations
           <lfx-icon
             name="caret-large-down"
             type="solid"
-            :class="[sortIconClass('organizationCount_desc')]"
+            :class="[sortIconClass('organizationCount')]"
           />
         </div>
+        <!-- TODO: Enable sorting by software value when backend is ready-->
         <div class="w-1/5">Software value</div>
         <!-- Contributor/Organization dependency -->
         <!-- Achievements -->
@@ -250,12 +251,38 @@ const owner = computed(() => {
   };
 });
 
-const handleSort = (value: string) => {
-  emit('update:sort', value);
+const currentSort = computed(() => {
+  const match = props.sort.match(/^(.+)_(asc|desc)$/);
+  if (match) {
+    return { field: match[1], direction: match[2] as 'asc' | 'desc' };
+  }
+  return { field: props.sort, direction: 'asc' as const };
+});
+
+const handleSort = (field: string) => {
+  const defaultDirections: Record<string, 'asc' | 'desc'> = {
+    name: 'asc',
+    contributorCount: 'desc',
+    organizationCount: 'desc',
+  };
+
+  if (currentSort.value.field === field) {
+    const newDirection = currentSort.value.direction === 'asc' ? 'desc' : 'asc';
+    emit('update:sort', `${field}_${newDirection}`);
+  } else {
+    const direction = defaultDirections[field] || 'asc';
+    emit('update:sort', `${field}_${direction}`);
+  }
 };
 
-const sortIconClass = (value: string) => {
-  return [props.sort === value ? 'text-neutral-500' : 'text-neutral-300 invisible group-hover:visible'];
+const sortIconClass = (field: string) => {
+  const isActive = currentSort.value.field === field;
+  const isAscending = currentSort.value.direction === 'asc';
+
+  return [
+    isActive ? 'text-neutral-500' : 'text-neutral-300 invisible group-hover:visible',
+    isActive && isAscending ? 'rotate-180' : '',
+  ];
 };
 </script>
 

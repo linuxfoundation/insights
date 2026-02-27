@@ -166,7 +166,7 @@ const title = computed(() => {
 const description = computed(() => {
   switch (props.type) {
     case 'curated':
-      return 'Hand-picked collections from The Linux Foundation.';
+      return 'Collections created and owned by The Linux Foundation.';
     case 'community':
       return 'Discover collections from the open source community.';
     default:

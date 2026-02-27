@@ -7,7 +7,7 @@ SPDX-License-Identifier: MIT
     <lfx-card class="!shadow-none !rounded-xl !border-neutral-200 flex flex-col hover:!shadow-md transition">
       <!-- header -->
       <div
-        v-if="collection.coverImgUrl"
+        v-if="props.collection.coverImgUrl"
         class="flex items-center gap-2 h-32 rounded-t-xl"
         :style="{ backgroundImage: `url(${props.collection.coverImgUrl})` }"
       ></div>
@@ -16,6 +16,7 @@ SPDX-License-Identifier: MIT
         class="flex items-center gap-2 p-4 min-h-16 rounded-t-xl"
         :style="headerBackground"
       >
+        <!-- TODO here to refactor this later to no longer show the featured projects but rather the 5 projects with most contributors? -->
         <lfx-avatar-group type="project">
           <lfx-avatar
             v-for="project of props.collection.featuredProjects.slice(0, 5)"
