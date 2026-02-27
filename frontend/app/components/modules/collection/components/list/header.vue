@@ -166,7 +166,7 @@ const canCreateCollection = computed(() => {
 const isCreateCollectionModalOpen = ref(false);
 
 const route = useRoute();
-const linkUrl = computed(() => collectionTabs);
+const linkUrl = computed(() => collectionTabs(user.value));
 
 const viewTabs = [
   { label: '', value: 'grid', icon: 'grid-2' },

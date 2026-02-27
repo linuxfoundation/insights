@@ -209,6 +209,10 @@ import LfxButton from '~/components/uikit/button/button.vue';
 import lfIconUrl from '~/assets/images/icon.svg?url';
 import { formatDate } from '~/components/shared/utils/formatter';
 import LfxToggle from '~/components/uikit/toggle/toggle.vue';
+import { useAuthStore } from '~/components/modules/auth/store/auth.store';
+
+const authStore = useAuthStore();
+const user = computed(() => authStore.user);
 
 const props = defineProps<{
   collection?: Collection;
@@ -230,8 +234,9 @@ const isOnlyLFProjects = computed({
 });
 
 const { scrollTop } = useScroll();
+const allTabs = computed(() => collectionTabs(user.value));
 const collectionTab = computed(
-  () => collectionTabs.find((tab) => tab.type === props.collection?.type) || collectionTabs[0],
+  () => allTabs.value.find((tab) => tab.type === props.collection?.type) || allTabs.value[0],
 );
 const headerBackgroundStyle = computed(() => headerBackground(props.collection?.type));
 
