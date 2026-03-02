@@ -62,6 +62,8 @@ export default defineEventHandler(async (event): Promise<SecurityUpdateResponse 
     });
   }
 
+  console.log('[Security Update] User:', JSON.stringify(event.context.user, null, 2));
+
   const { slug } = body;
 
   try {

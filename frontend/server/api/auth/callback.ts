@@ -101,6 +101,8 @@ export default defineEventHandler(async (event) => {
 
     const decodedIdToken = jwtDecode(tokenResponse.id_token) as DecodedIdToken;
 
+    console.log('[Auth0 SSO User]', JSON.stringify(decodedIdToken, null, 2));
+
     const claims = decodedIdToken[config.lfxAuth0TokenClaimGroupKey];
 
     // Create custom OpenID Connect token payload
