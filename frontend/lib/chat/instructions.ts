@@ -44,14 +44,19 @@ async function executeTinybirdPipe(
 }
 
 // Function to execute pipe instructions and combine results
-export async function executePipeInstructions(instructions: PipeInstructions): Promise<any[]> {
+export async function executePipeInstructions(
+  instructions: PipeInstructions,
+  bucketId?: number | null,
+): Promise<any[]> {
   // Execute the pipes according to the instructions
   const pipeResults: Record<string, any[]> = {};
 
   // Execute each pipe with its inputs using TinyBird API
   for (const pipeInstruction of instructions.pipes) {
     try {
-      const result = await executeTinybirdPipe(pipeInstruction.name, pipeInstruction.inputs);
+      const inputs =
+        bucketId !== null ? { bucketId, ...pipeInstruction.inputs } : pipeInstruction.inputs;
+      const result = await executeTinybirdPipe(pipeInstruction.name, inputs);
       pipeResults[pipeInstruction.id] = result;
     } catch (error) {
       console.error(`Error executing pipe ${pipeInstruction.name}:`, error);

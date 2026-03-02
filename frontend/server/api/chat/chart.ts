@@ -4,6 +4,8 @@ import { Pool } from 'pg';
 import { generateChartConfig, modifyChartConfig } from '../../../lib/chat/chart/generator';
 import { ChatRepository } from '../../repo/chat.repo';
 import { Result, Config, DataMapping } from '../../../lib/chat/chart/types';
+import { getBucketIdForProject } from '../../data/tinybird/bucket-cache';
+import { fetchFromTinybird } from '../../data/tinybird/tinybird';
 import { PipeInstructions } from '~~/lib/chat/types';
 
 export const maxDuration = 30;
@@ -59,7 +61,9 @@ export default defineEventHandler(async (event): Promise<ChartConfigResponse | E
       const { executePipeInstructions } = await import('../../../lib/chat/instructions');
 
       try {
-        const executedResults = await executePipeInstructions(pipeInstructions);
+        const project = pipeInstructions.pipes[0]?.inputs?.project as string | undefined;
+        const bucketId = project ? await getBucketIdForProject(project, fetchFromTinybird) : null;
+        const executedResults = await executePipeInstructions(pipeInstructions, bucketId);
 
         if (!userQuery) {
           return createError({

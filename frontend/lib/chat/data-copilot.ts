@@ -5,6 +5,7 @@ import { createAmazonBedrock } from '@ai-sdk/amazon-bedrock';
 import { experimental_createMCPClient as createMCPClient, type LanguageModelV1 } from 'ai';
 import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
 import type { Pool } from 'pg';
+import { ofetch } from 'ofetch';
 import type { ChatResponse, IChatResponseDb } from '../../server/repo/chat.repo';
 import { ChatRepository } from '../../server/repo/chat.repo';
 
@@ -56,14 +57,23 @@ export class DataCopilot {
   /** Human-readable overview of tools for router agent decision making */
   private toolsOverview: string = '';
 
+  /** Tinybird bucketId for the current project — fetched once and reused across all pipe calls */
+  private bucketId: number | null = null;
+
   /** Tinybird MCP server URL */
   private tbMcpUrl: string = '';
 
-  /** Amazon Bedrock language model instance */
-  private model: LanguageModelV1;
+  /** Amazon Bedrock language model instance for routing and auditing (Sonnet) */
+  private sonnetModel: LanguageModelV1;
 
-  /** Bedrock model identifier */
-  private readonly BEDROCK_MODEL_ID = 'us.anthropic.claude-sonnet-4-20250514-v1:0';
+  /** Amazon Bedrock language model instance for text-to-SQL, pipe, and chart agents (Opus) */
+  private opusModel: LanguageModelV1;
+
+  /** Bedrock model identifier for general agents */
+  private readonly BEDROCK_SONNET_MODEL_ID = 'us.anthropic.claude-sonnet-4-20250514-v1:0';
+
+  /** Bedrock model identifier for text-to-SQL and pipe agent */
+  private readonly BEDROCK_OPUS_MODEL_ID = 'us.anthropic.claude-opus-4-6-v1';
 
   /** Maximum number of auditor retry attempts */
   private readonly MAX_AUDITOR_RETRIES = 1;
@@ -72,7 +82,8 @@ export class DataCopilot {
   private readonly MAX_SQL_RETRIES = 2;
 
   constructor() {
-    this.model = bedrock(this.BEDROCK_MODEL_ID);
+    this.sonnetModel = bedrock(this.BEDROCK_SONNET_MODEL_ID);
+    this.opusModel = bedrock(this.BEDROCK_OPUS_MODEL_ID);
     this.tbMcpUrl = `https://mcp.tinybird.co?token=${process.env.NUXT_INSIGHTS_DATA_COPILOT_TINYBIRD_TOKEN}&host=${process.env.NUXT_TINYBIRD_BASE_URL}`;
   }
 
@@ -88,8 +99,41 @@ export class DataCopilot {
       }),
     });
 
-    this.tbTools = await this.mcpClient.tools({});
+    const allTools = await this.mcpClient.tools({});
+
+    // Filter out tools with empty descriptions — Bedrock rejects them with a validation error
+    this.tbTools = Object.fromEntries(
+      Object.entries(allTools).filter(([_, tool]: [string, any]) => {
+        const description =
+          (tool?.description as string) || (tool?.meta?.description as string) || '';
+        return description.trim().length > 0;
+      }),
+    );
+
     this.buildToolsOverview();
+  }
+
+  /**
+   * Fetch and store the Tinybird bucketId for a project.
+   * Uses ofetch directly to stay outside the Nuxt server context (no useStorage/createError).
+   */
+  private async fetchBucketId(project: string): Promise<void> {
+    if (!project) return;
+    const tinybirdBaseUrl =
+      process.env.NUXT_TINYBIRD_BASE_URL || 'https://api.us-west-2.aws.tinybird.co';
+    const tinybirdToken = process.env.NUXT_INSIGHTS_DATA_COPILOT_TINYBIRD_TOKEN;
+    if (!tinybirdToken) return;
+    try {
+      const response = await ofetch(
+        `${tinybirdBaseUrl}/v0/pipes/project_buckets.json?project=${encodeURIComponent(project)}`,
+        { headers: { Authorization: `Bearer ${tinybirdToken}` }, timeout: 10_000 },
+      );
+      this.bucketId = response.data?.[0]?.bucketId ?? null;
+      console.warn(`🪣 [DataCopilot] bucketId for "${project}": ${this.bucketId}`);
+    } catch (error) {
+      console.error(`[DataCopilot] Failed to fetch bucketId for "${project}":`, error);
+      this.bucketId = null;
+    }
   }
 
   /**
@@ -170,10 +214,20 @@ export class DataCopilot {
     instructions?: string,
   ): Promise<void> {
     const chatRepo = new ChatRepository(insightsDbPool);
+
+    let model: string | undefined = this.BEDROCK_SONNET_MODEL_ID;
+
+    if (agent === 'EXECUTE_INSTRUCTIONS') {
+      model = undefined;
+      // For now, we use the Opus model for text-to-SQL and auditor.
+      // The model is currently too slow for both the pipe and router agents.
+    } else if (agent === 'TEXT_TO_SQL' || agent === 'AUDITOR') {
+      model = this.BEDROCK_OPUS_MODEL_ID;
+    }
     await chatRepo.saveAgentStep({
       chatResponseId,
       agent,
-      model: agent === 'EXECUTE_INSTRUCTIONS' ? undefined : this.BEDROCK_MODEL_ID,
+      model,
       response,
       inputTokens: response?.usage?.promptTokens || 0,
       outputTokens: response?.usage?.completionTokens || 0,
@@ -207,7 +261,7 @@ export class DataCopilot {
   }: Omit<RouterAgentInput, 'toolsOverview' | 'model' | 'tools'>) {
     const agent = new RouterAgent();
     return agent.execute({
-      model: this.model,
+      model: this.sonnetModel,
       messages,
       tools: this.tbTools,
       toolsOverview: this.toolsOverview,
@@ -248,7 +302,7 @@ export class DataCopilot {
 
     const agent = new TextToSqlAgent();
     return agent.execute({
-      model: this.model,
+      model: this.opusModel,
       messages,
       tools: followUpTools,
       date,
@@ -288,12 +342,21 @@ export class DataCopilot {
     const followUpTools: Record<string, unknown> = {};
     for (const toolName of toolNames) {
       if (this.tbTools[toolName]) {
-        followUpTools[toolName] = this.tbTools[toolName];
+        const tool = this.tbTools[toolName] as any;
+        // Wrap execute to inject bucketId into every MCP tool call during planning
+        followUpTools[toolName] =
+          this.bucketId !== null && this.tbTools[toolName]?.execute
+            ? {
+                ...this.tbTools[toolName],
+                execute: async (params: any) =>
+                  tool.execute({ bucketId: this.bucketId, ...params }),
+              }
+            : tool;
       }
     }
     const agent = new PipeAgent();
     return agent.execute({
-      model: this.model,
+      model: this.sonnetModel,
       messages,
       tools: followUpTools,
       date,
@@ -329,7 +392,7 @@ export class DataCopilot {
     const dataSummary = generateDataSummary(data);
     const agent = new AuditorAgent();
     return agent.execute({
-      model: this.model,
+      model: this.opusModel,
       messages,
       originalQuestion,
       reformulatedQuestion,
@@ -606,7 +669,7 @@ export class DataCopilot {
       }
 
       // Prepare for retry - add feedback to messages and loop
-      previousFeedback = auditorResult.feedback_to_router;
+      previousFeedback = auditorResult.feedback_to_router || undefined;
       attemptNumber++;
 
       dataStream.writeData({
@@ -742,6 +805,12 @@ export class DataCopilot {
     const parametersString = JSON.stringify(parameters || {});
     const date = new Date().toISOString().slice(0, 10);
 
+    // Fetch bucketId once upfront — required by all Tinybird pipes for data partitioning
+    const project = (parameters as any)?.project;
+    if (project) {
+      await this.fetchBucketId(project);
+    }
+
     // Build messages from conversation history
     const { messages, previousWasClarification } = await this.buildMessagesFromConversation(
       currentQuestion,
@@ -768,7 +837,7 @@ export class DataCopilot {
       userPrompt: currentQuestion,
       inputTokens: 0,
       outputTokens: 0,
-      model: this.BEDROCK_MODEL_ID,
+      model: this.BEDROCK_SONNET_MODEL_ID,
       conversationId: conversationId || '',
       routerResponse: RouterDecisionAction.STOP,
       routerReason: '',
@@ -866,7 +935,7 @@ export class DataCopilot {
         routerReason: routerOutput.reasoning,
         pipeInstructions: undefined,
         sqlQuery: undefined,
-        model: this.BEDROCK_MODEL_ID,
+        model: this.BEDROCK_SONNET_MODEL_ID,
         conversationId: conversationId,
       },
       insightsDbPool,
@@ -901,7 +970,7 @@ export class DataCopilot {
         clarificationQuestion: routerOutput.clarification_question || undefined,
         pipeInstructions: undefined,
         sqlQuery: undefined,
-        model: this.BEDROCK_MODEL_ID,
+        model: this.BEDROCK_SONNET_MODEL_ID,
         conversationId: conversationId,
       },
       insightsDbPool,
@@ -1186,7 +1255,7 @@ export class DataCopilot {
     // Execute the pipes according to the instructions and combine results (don't stream data yet, auditor will do it)
     const pipeExecutionStart = Date.now();
     try {
-      const combinedData = await executePipeInstructions(pipeOutput.instructions);
+      const combinedData = await executePipeInstructions(pipeOutput.instructions, this.bucketId);
       const pipeExecutionTime = (Date.now() - pipeExecutionStart) / 1000;
 
       // Track successful pipe execution step
@@ -1246,7 +1315,7 @@ export class DataCopilot {
         routerReason: routerOutput.reasoning,
         pipeInstructions,
         sqlQuery,
-        model: this.BEDROCK_MODEL_ID,
+        model: this.BEDROCK_SONNET_MODEL_ID,
         conversationId: conversationId,
       },
       insightsDbPool,
