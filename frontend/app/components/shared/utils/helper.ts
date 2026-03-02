@@ -36,11 +36,7 @@ export const normalizeRepoName = (repo: ProjectRepository): string => {
     }
 
     // GitHub, GitLab and Git repos: always show owner/repo (last 2 path segments)
-    if (
-      hostname.includes('github.com') ||
-      hostname.includes('gitlab') ||
-      hostname.startsWith('git.')
-    ) {
+    if (hostname === 'github.com' || hostname === 'gitlab' || hostname === 'git.') {
       return pathParts.length >= 2 ? pathParts.slice(-2).join('/') : pathParts[0] || '';
     }
 
