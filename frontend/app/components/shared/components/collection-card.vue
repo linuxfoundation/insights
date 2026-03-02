@@ -4,7 +4,7 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <nuxt-link :to="{ name: LfxRoutes.COLLECTION, params: { slug: props.collection.slug } }">
-    <lfx-card class="!shadow-none !rounded-xl !border-neutral-200 flex flex-col hover:!shadow-md transition">
+    <lfx-card class="!shadow-none !rounded-xl !border-neutral-200 flex flex-col hover:!shadow-md transition h-full">
       <!-- header -->
       <div
         v-if="props.collection.coverImgUrl"
@@ -13,7 +13,7 @@ SPDX-License-Identifier: MIT
       ></div>
       <div
         v-else
-        class="flex items-center gap-2 p-4 min-h-16 rounded-t-xl"
+        class="flex items-center gap-2 p-4 min-h-16 rounded-t-xl ml-3"
         :style="headerBackground"
       >
         <!-- TODO here to refactor this later to no longer show the featured projects but rather the 5 projects with most contributors? -->
@@ -29,7 +29,7 @@ SPDX-License-Identifier: MIT
       </div>
 
       <!-- content -->
-      <div class="p-4">
+      <div class="p-4 flex-1 flex flex-col">
         <h3 class="text-base leading-6 font-semibold text-neutral-900 mb-1">
           {{ props.collection.name }}
         </h3>
@@ -69,14 +69,17 @@ SPDX-License-Identifier: MIT
         </div>
 
         <!-- footer -->
-        <div class="pt-3 mt-3 border-t border-neutral-200 flex justify-center">
-          <lfx-icon-button
+        <div class="pt-3 mt-auto border-t border-neutral-200 flex justify-center">
+          <lfx-button
             type="transparent"
-            icon="share-nodes"
-            size="small"
-            class="!text-neutral-900 opacity-50 hover:!opacity-100"
+            class="opacity-50 hover:!opacity-100 w-1/3 flex justify-center items-center hover:!bg-transparent"
             @click.stop.prevent="handleShare"
-          />
+          >
+            <lfx-icon
+              name="share-nodes"
+              class="!text-neutral-900"
+            />
+          </lfx-button>
         </div>
       </div>
     </lfx-card>
@@ -87,7 +90,7 @@ SPDX-License-Identifier: MIT
 import { computed } from 'vue';
 import { useRouter } from 'nuxt/app';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
-import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
+import LfxButton from '~/components/uikit/button/button.vue';
 import LfxAvatarGroup from '~/components/uikit/avatar-group/avatar-group.vue';
 import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
 import { LfxRoutes } from '~/components/shared/types/routes';
