@@ -11,20 +11,21 @@
   },
   "dependencies": {
     "@crowd/archetype-standard": "workspace:*",
-    "@insights/temporal-worker": "workspace:*",
+    "@crowd/common": "workspace:*",
     "@crowd/database": "workspace:*",
     "@crowd/logging": "workspace:*",
-    "@crowd/common": "workspace:*",
     "@crowd/opensearch": "workspace:*",
     "@crowd/redis": "workspace:*",
     "@crowd/types": "workspace:*",
-    "@temporalio/workflow": "~1.11.1",
+    "@insights/temporal-worker": "workspace:*",
     "@temporalio/client": "~1.11.1",
+    "@temporalio/workflow": "~1.11.1",
     "axios": "^1.6.8",
+    "js-yaml": "^4.1.0",
     "moment": "~2.29.4",
+    "prettier": "^3.8.0",
     "tsx": "^4.7.1",
-    "typescript": "^5.6.3",
-    "js-yaml": "^4.1.0"
+    "typescript": "^5.6.3"
   },
   "devDependencies": {
     "@types/node": "^20.8.2",

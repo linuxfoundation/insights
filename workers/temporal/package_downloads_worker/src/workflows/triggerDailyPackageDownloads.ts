@@ -22,7 +22,7 @@ const { fetchUnprocessedReposForDate } = proxyActivities<typeof activities>({
 });
 
 export async function triggerDailyPackageDownloads(
-  args: ITriggerPackageDownloadsCheckForReposParams
+  args: ITriggerPackageDownloadsCheckForReposParams,
 ): Promise<void> {
   const date = getYesterdayDate();
   const LIMIT_REPOS_TO_CHECK_PER_RUN = 50;
@@ -35,7 +35,7 @@ export async function triggerDailyPackageDownloads(
   const repos = await fetchUnprocessedReposForDate(
     date,
     failedRepoUrls,
-    LIMIT_REPOS_TO_CHECK_PER_RUN
+    LIMIT_REPOS_TO_CHECK_PER_RUN,
   );
 
   if (repos.length === 0) {
@@ -74,17 +74,17 @@ export async function triggerDailyPackageDownloads(
       // If half or more of the repos in this batch have crashed, stop the workflow
       if (crashedReposCount >= Math.ceil(repos.length / 2)) {
         console.log(
-          `Stopping workflow: ${crashedReposCount} out of ${repos.length} repos crashed in this batch.`
+          `Stopping workflow: ${crashedReposCount} out of ${repos.length} repos crashed in this batch.`,
         );
         throw ApplicationFailure.nonRetryable(
-          `Too many child workflow crashes (${crashedReposCount}/${repos.length}). Aborting parent workflow.`
+          `Too many child workflow crashes (${crashedReposCount}/${repos.length}). Aborting parent workflow.`,
         );
       }
     }
 
     // wait for a short time to avoid overwhelming the API
     await new Promise((resolve) =>
-      setTimeout(resolve, WAIT_BETWEEN_PROCESSING_REPOS_MS)
+      setTimeout(resolve, WAIT_BETWEEN_PROCESSING_REPOS_MS),
     );
   }
 
@@ -93,5 +93,4 @@ export async function triggerDailyPackageDownloads(
       failedRepoUrls,
     });
   }
-
 }
