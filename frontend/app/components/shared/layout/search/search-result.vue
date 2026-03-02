@@ -67,17 +67,17 @@ SPDX-License-Identifier: MIT
 
       <!-- Repositories -->
       <div
-        v-if="tab === 'all' && props.repositories.length > 0"
+        v-if="tab === 'all' && repositories.length > 0"
         class="pt-3 px-3 text-xs font-semibold leading-5 text-neutral-400"
       >
         Repositories
       </div>
       <section
-        v-if="tab === 'all' || (tab === 'repositories' && props.repositories.length > 0)"
+        v-if="tab === 'all' || (tab === 'repositories' && repositories.length > 0)"
         class="flex flex-col gap-1"
       >
         <nuxt-link
-          v-for="repository of props.repositories"
+          v-for="repository of repositories"
           :key="repository.slug"
           :to="{
             name: LfxRoutes.REPOSITORY,
@@ -102,7 +102,7 @@ SPDX-License-Identifier: MIT
         </nuxt-link>
       </section>
       <section
-        v-if="tab === 'repositories' && props.repositories.length === 0"
+        v-if="tab === 'repositories' && repositories.length === 0"
         class="px-3 py-12 flex flex-col items-center"
       >
         <lfx-icon
@@ -180,6 +180,7 @@ import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import { LfxRoutes } from '~/components/shared/types/routes';
 import LfxArchivedTag from '~/components/shared/components/archived-tag.vue';
+import { normalizeRepoName } from '~/components/shared/utils/helper';
 
 const props = defineProps<{
   projects: SearchProject[];
@@ -192,6 +193,18 @@ const route = useRoute();
 const tab = ref('all');
 
 const noResult = computed(() => !props.projects.length && !props.repositories.length && !props.collections.length);
+
+const repositories = computed(() =>
+  props.repositories.map((repository) => ({
+    ...repository,
+    name: normalizeRepoName({
+      ...repository,
+      url: repository.name,
+      score: 0,
+      rank: 0,
+    }),
+  })),
+);
 
 const tabs = [
   {
