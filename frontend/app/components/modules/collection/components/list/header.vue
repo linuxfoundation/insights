@@ -118,7 +118,7 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useRoute } from 'nuxt/app';
-import { collectionTabs } from '../../config/collection-type-config';
+import { collectionTabs, discoveryCollectionTabs } from '../../config/collection-type-config';
 import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
 import type { CollectionType } from '~~/types/collection';
 import LfxMenuButton from '~/components/uikit/menu-button/menu-button.vue';
@@ -153,26 +153,8 @@ const viewTabs = [
   { label: '', value: 'list', icon: 'list-ul' },
 ];
 
-const title = computed(() => {
-  switch (props.type) {
-    case 'curated':
-      return 'Curated Collections';
-    case 'community':
-      return 'Community Collections';
-    default:
-      return 'My Collections';
-  }
-});
-const description = computed(() => {
-  switch (props.type) {
-    case 'curated':
-      return 'Hand-picked collections from The Linux Foundation.';
-    case 'community':
-      return 'Discover collections from the open source community.';
-    default:
-      return `Collections you've created or liked.`;
-  }
-});
+const title = computed(() => discoveryCollectionTabs.find((tab) => tab.type === props.type)?.detailsLabel || '');
+const description = computed(() => discoveryCollectionTabs.find((tab) => tab.type === props.type)?.description || '');
 </script>
 
 <script lang="ts">

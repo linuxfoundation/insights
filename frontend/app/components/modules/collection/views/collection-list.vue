@@ -104,7 +104,7 @@ import type { Pagination } from '~~/types/shared/pagination';
 
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxButton from '~/components/uikit/button/button.vue';
-import LfxCollectionListItem from '~/components/modules/collection/components/list/collection-list-item.vue';
+import LfxCollectionListItem from '~/components/shared/components/collection-list-item.vue';
 import LfxCollectionListItemLoading from '~/components/modules/collection/components/list/collection-list-item-loading.vue';
 import LfxCollectionListHeader from '~/components/modules/collection/components/list/header.vue';
 import LfxCollectionCardLoading from '~/components/shared/components/collection-card-loading.vue';
@@ -144,7 +144,15 @@ const { data, isPending, isFetchingNextPage, fetchNextPage, hasNextPage, isSucce
   COLLECTIONS_API_SERVICE.fetchCollections(params);
 
 // @ts-expect-error - TanStack Query type inference issue with Vue
-const flatData = computed(() => data.value?.pages.flatMap((page: Pagination<Collection>) => page.data) || []);
+const flatData = computed(
+  () =>
+    data.value?.pages
+      .flatMap((page: Pagination<Collection>) => page.data)
+      .map((collection: Collection) => ({
+        ...collection,
+        isLf: true,
+      })) || [],
+);
 
 const classDisplay = computed(() => {
   if (view.value === 'grid') {
