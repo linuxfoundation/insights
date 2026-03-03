@@ -13,13 +13,13 @@ SPDX-License-Identifier: MIT
         :is-lf="props.project.isLF"
         :alt="props.project.name"
       />
+      {{ props.project.name }}
       <lfx-archived-tag
         v-if="props.project.status === 'archived'"
         :archived="true"
         label="Archived"
         type="project"
       />
-      {{ props.project.name }}
     </div>
     <div class="w-1/5">
       {{ formatNumber(props.project.contributorCount) }}
