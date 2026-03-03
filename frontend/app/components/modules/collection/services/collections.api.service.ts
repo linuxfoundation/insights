@@ -10,6 +10,7 @@ import { type ComputedRef, computed } from 'vue';
 import type { Pagination } from '~~/types/shared/pagination';
 import type { Collection } from '~~/types/collection';
 import type { Category, CategoryGroup } from '~~/types/category';
+import type { CollectionDiscoveryResponse } from '~~/server/mocks/collection-discovery.mock';
 import { TanstackKey } from '~/components/shared/types/tanstack';
 import type { SearchProject, SearchResults } from '~~/types/search';
 
@@ -178,6 +179,23 @@ class CollectionsApiService {
     });
 
     return res.projects || [];
+  }
+
+  fetchDiscoveryCollections() {
+    const queryKey = computed(() => [TanstackKey.COLLECTION_DISCOVERY]);
+
+    const queryFn = computed<QueryFunction<CollectionDiscoveryResponse>>(() =>
+      this.discoveryCollectionsQueryFn(),
+    );
+
+    return useQuery<CollectionDiscoveryResponse>({
+      queryKey,
+      queryFn,
+    });
+  }
+
+  discoveryCollectionsQueryFn(): QueryFunction<CollectionDiscoveryResponse> {
+    return () => $fetch('/api/collection/discovery');
   }
 }
 

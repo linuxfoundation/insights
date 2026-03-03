@@ -173,26 +173,8 @@ const viewTabs = [
   { label: '', value: 'list', icon: 'list-ul' },
 ];
 
-const title = computed(() => {
-  switch (props.type) {
-    case 'curated':
-      return 'Curated Collections';
-    case 'community':
-      return 'Community Collections';
-    default:
-      return 'My Collections';
-  }
-});
-const description = computed(() => {
-  switch (props.type) {
-    case 'curated':
-      return 'Hand-picked collections from The Linux Foundation.';
-    case 'community':
-      return 'Discover collections from the open source community.';
-    default:
-      return `Collections you've created or liked.`;
-  }
-});
+const title = computed(() => linkUrl.value.find((tab) => tab.type === props.type)?.detailsLabel || '');
+const description = computed(() => linkUrl.value.find((tab) => tab.type === props.type)?.description || '');
 
 const handleCreateCollectionUpdate = () => {
   isCreateCollectionModalOpen.value = false;

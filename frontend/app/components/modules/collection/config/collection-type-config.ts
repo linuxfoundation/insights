@@ -8,6 +8,7 @@ import type { User } from '~~/types/auth/auth-user.types';
 
 export interface CollectionTypesTabs extends MenuItem {
   type: CollectionType;
+  description: string;
   detailsLabel: string;
 }
 export const collectionTabs = (user: User | null): CollectionTypesTabs[] => {
@@ -20,6 +21,7 @@ export const collectionTabs = (user: User | null): CollectionTypesTabs[] => {
       activeClass: '!bg-neutral-200',
       iconHighlightClass: '!bg-neutral-900',
       type: 'curated',
+      description: 'Hand-picked collections from The Linux Foundation.',
     },
   ];
 
@@ -33,6 +35,7 @@ export const collectionTabs = (user: User | null): CollectionTypesTabs[] => {
         activeClass: '!bg-accent-200',
         iconHighlightClass: '!bg-accent-500',
         type: 'community',
+        description: 'Discover collections from the open source community.',
       },
       {
         label: 'My Collections',
@@ -42,6 +45,7 @@ export const collectionTabs = (user: User | null): CollectionTypesTabs[] => {
         activeClass: '!bg-discovery-200',
         iconHighlightClass: '!bg-discovery-500',
         type: 'my-collections',
+        description: "Collections you've created or liked.",
       },
     );
   }
@@ -68,3 +72,37 @@ export const headerBackground = (type?: CollectionType) => {
       };
   }
 };
+
+// TODO: reconcile this after the create collection PR is merged
+export const discoveryCollectionTabs: CollectionTypesTabs[] = [
+  {
+    label: 'Curated',
+    detailsLabel: 'Curated Collections',
+    description: 'Hand-picked collections from The Linux Foundation.',
+    icon: 'gem',
+    route: LfxRoutes.COLLECTIONS_CURATED,
+    activeClass: '!bg-neutral-200',
+    iconHighlightClass: '!bg-neutral-900',
+    type: 'curated',
+  },
+  {
+    label: 'Community',
+    detailsLabel: 'Community Collections',
+    description: 'Discover collections from the open source community.',
+    icon: 'globe',
+    route: LfxRoutes.COLLECTIONS_COMMUNITY,
+    activeClass: '!bg-accent-200',
+    iconHighlightClass: '!bg-accent-500',
+    type: 'community',
+  },
+  {
+    label: 'My Collections',
+    detailsLabel: 'My Collections',
+    description: "Collections you've created or liked.",
+    icon: 'folder-heart',
+    route: LfxRoutes.COLLECTIONS_MY_COLLECTIONS,
+    activeClass: '!bg-discovery-200',
+    iconHighlightClass: '!bg-discovery-500',
+    type: 'my-collections',
+  },
+];
