@@ -22,7 +22,7 @@ export const communityCollectionsMock: Collection[] = [
       {
         name: 'Kubernetes',
         slug: 'kubernetes',
-        logo: 'https://www.cncf.io/wp-content/uploads/2018/03/kubernetes-stacked-color.png',
+        logo: 'https://e7.pngegg.com/pngimages/938/554/png-clipart-white-and-blue-ship-wheel-illustration-kubernetes-logo-icons-logos-emojis-tech-companies.png',
       },
       {
         name: 'Linux',
@@ -33,12 +33,12 @@ export const communityCollectionsMock: Collection[] = [
       {
         name: 'Prometheus',
         slug: 'prometheus',
-        logo: 'https://prometheus.io/assets/prometheus_logo_grey.svg',
+        logo: 'https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg',
       },
       {
         name: 'Envoy',
         slug: 'envoy',
-        logo: 'https://www.envoyproxy.io/img/envoy-logo.svg',
+        logo: 'https://angular.io/assets/images/logos/angular/angular.svg',
       },
     ],
     updatedAt: '2025-02-01',
@@ -77,7 +77,7 @@ export const communityCollectionsMock: Collection[] = [
       {
         name: 'Next.js',
         slug: 'nextjs',
-        logo: 'https://nextjs.org/static/favicon/favicon-32x32.png',
+        logo: 'https://upload.wikimedia.org/wikipedia/commons/3/35/Tux.svg',
       },
     ],
     updatedAt: '2025-02-01',
@@ -142,7 +142,7 @@ export const myCollectionsMock: Collection[] = [
       {
         name: 'Kubernetes',
         slug: 'kubernetes',
-        logo: 'https://www.cncf.io/wp-content/uploads/2018/03/kubernetes-stacked-color.png',
+        logo: 'https://e7.pngegg.com/pngimages/938/554/png-clipart-white-and-blue-ship-wheel-illustration-kubernetes-logo-icons-logos-emojis-tech-companies.png',
       },
       {
         name: 'Linux',
@@ -153,12 +153,12 @@ export const myCollectionsMock: Collection[] = [
       {
         name: 'Prometheus',
         slug: 'prometheus',
-        logo: 'https://prometheus.io/assets/prometheus_logo_grey.svg',
+        logo: 'https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg',
       },
       {
         name: 'Envoy',
         slug: 'envoy',
-        logo: 'https://www.envoyproxy.io/img/envoy-logo.svg',
+        logo: 'https://angular.io/assets/images/logos/angular/angular.svg',
       },
     ],
     updatedAt: '2025-02-01',
@@ -192,7 +192,7 @@ export const myCollectionsMock: Collection[] = [
       {
         name: 'Next.js',
         slug: 'nextjs',
-        logo: 'https://nextjs.org/static/favicon/favicon-32x32.png',
+        logo: 'https://upload.wikimedia.org/wikipedia/commons/3/35/Tux.svg',
       },
     ],
     updatedAt: '2025-02-01',
@@ -215,7 +215,7 @@ export const myCollectionsMock: Collection[] = [
       {
         name: 'PyTorch',
         slug: 'pytorch',
-        logo: 'https://pytorch.io/assets/images/pytorch-logo.png',
+        logo: 'https://upload.wikimedia.org/wikipedia/commons/3/35/Tux.svg',
       },
       {
         name: 'Scikit-learn',
