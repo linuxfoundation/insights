@@ -12,6 +12,7 @@ SPDX-License-Identifier: MIT
           Explore and curate open source projects organized into themed collections.
         </p>
       </div>
+      <!-- TODO: wire the create collection modal here which is part of another PR. Revisit this once that is merged -->
       <lfx-button
         type="secondary"
         button-style="pill"
@@ -26,7 +27,7 @@ SPDX-License-Identifier: MIT
 
     <div class="flex flex-col gap-10 pt-10">
       <!-- Curated Collections Section -->
-      <section>
+      <section class="border-b border-neutral-200 pb-10">
         <lfx-collection-section
           type="curated"
           :status="discoveryStatus"
@@ -44,7 +45,7 @@ SPDX-License-Identifier: MIT
       </section>
 
       <!-- Community Collections Section -->
-      <section>
+      <section class="border-b border-neutral-200 pb-10">
         <lfx-collection-section
           type="community"
           :status="discoveryStatus"

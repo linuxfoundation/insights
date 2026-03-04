@@ -17,12 +17,12 @@ SPDX-License-Identifier: MIT
         />
         <div
           v-else
-          class="w-8 h-8 rounded-full bg-accent-100 flex items-center justify-center"
+          class="w-8 h-8 rounded-sm border border-neutral-200 flex items-center justify-center"
         >
           <lfx-icon
             name="rectangle-history"
             :size="16"
-            class="text-accent-500"
+            class="text-neutral-400"
           />
         </div>
       </div>

@@ -97,9 +97,12 @@ SPDX-License-Identifier: MIT
               <lfx-icon
                 :name="props.collection.isPrivate ? 'lock' : 'globe'"
                 :size="12"
-                class="text-neutral-900"
+                :class="props.collection.isPrivate ? 'text-neutral-900' : 'text-accent-500'"
               />
-              <span class="text-xs leading-4 text-neutral-900 font-medium">
+              <span
+                class="text-xs leading-4 font-medium"
+                :class="props.collection.isPrivate ? 'text-neutral-900' : 'text-accent-500'"
+              >
                 {{ props.collection.isPrivate ? 'Private' : 'Public' }}
               </span>
             </span>
