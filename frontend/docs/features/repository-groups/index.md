@@ -21,4 +21,4 @@ Repository Groups are configured by the Insights team. If you'd like a Repositor
 Open an issue on the [LFX Insights GitHub repository](https://github.com/linuxfoundation/insights/issues) and include the following information:
 
 - **Project name** — The name of your project as it appears (or should appear) in Insights.
-- **Repositories** — A list of the repository groups you'd like included in the project. For each repository group include the repository group name and the list of associated repository URLs.
+- **Repository groups and repositories** — For each repository group you want included in the project, provide the group name and the list of repository URLs that should belong to that group.
