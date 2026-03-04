@@ -14,7 +14,7 @@ The image below shows an example of the Repository Groups feature in the [Kubern
 
 ## Requesting a Repository Group
 
-Repository Groups are configured by the Insights team. If you'd like a Repository Group set up for your project, you can reach out through Insights public repository.
+Repository Groups are configured by the Insights team. If you'd like a Repository Group set up for your project, you can reach out through the [LFX Insights GitHub repository](https://github.com/linuxfoundation/insights/issues).
 
 ### Submit a GitHub issue
 
