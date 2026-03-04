@@ -39,7 +39,7 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch, onMounted } from 'vue';
+import { computed, ref, watch } from 'vue';
 import LfCreateCollectionModalHeader from './modal-header.vue';
 import LfCreateCollectionModalFooter from './modal-footer.vue';
 import LfxModal from '~/components/uikit/modal/modal.vue';
@@ -70,7 +70,7 @@ const isModalOpen = computed({
 });
 
 const step = ref(0);
-const form = ref<CreateCollectionForm>({ ...createCollectionTemplate });
+const form = ref<CreateCollectionForm>({ ...createCollectionTemplate, projects: [] });
 const stepRef = ref<{ $v?: { $invalid: boolean; $touch: () => void } } | null>(null);
 
 const steps = computed<CreateCollectionStep[]>(() => createCollectionSteps);
@@ -113,12 +113,8 @@ const createCollection = () => {
 watch(isModalOpen, (value) => {
   if (!value) {
     step.value = 0;
-    form.value = { ...createCollectionTemplate };
+    form.value = { ...createCollectionTemplate, projects: [] };
   }
-});
-
-onMounted(() => {
-  form.value = { ...createCollectionTemplate };
 });
 </script>
 

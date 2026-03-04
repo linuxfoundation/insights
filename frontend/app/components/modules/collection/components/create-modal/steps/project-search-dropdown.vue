@@ -15,7 +15,6 @@ SPDX-License-Identifier: MIT
         class="text-neutral-400"
       />
       <input
-        ref="searchInputRef"
         v-model="searchQuery"
         type="text"
         class="!outline-none !shadow-none flex-grow text-sm text-neutral-900 leading-5 !pl-0"
@@ -36,7 +35,6 @@ SPDX-License-Identifier: MIT
     <!-- Search results dropdown -->
     <div
       v-if="showDropdown && searchQuery.length > 0"
-      ref="dropdownRef"
       class="absolute top-full left-0 right-0 mt-1 bg-white border border-neutral-200 rounded-lg shadow-lg z-99 max-h-[24rem] overflow-auto"
     >
       <!-- Loading state -->
@@ -200,6 +198,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   document.removeEventListener('mousedown', handleClickOutside);
+  triggerSearch.cancel();
 });
 </script>
 

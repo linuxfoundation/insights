@@ -19,7 +19,7 @@ SPDX-License-Identifier: MIT
         <div class="flex flex-col gap-1">
           <h2 class="text-xl font-bold font-secondary leading-7 text-neutral-900">Create collection</h2>
           <p class="text-xs font-normal leading-4 text-neutral-500">
-            Create you own collection to organize or showcase open-source projects around a specific theme or purpose.
+            Create your own collection to organize or showcase open-source projects around a specific theme or purpose.
           </p>
         </div>
       </div>
