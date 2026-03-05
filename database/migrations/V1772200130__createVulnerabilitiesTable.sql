@@ -50,3 +50,6 @@ CREATE INDEX idx_vulnerabilities_ghsa_ids ON vulnerabilities USING GIN (ghsa_ids
 CREATE INDEX idx_vulnerabilities_severity ON vulnerabilities(severity);
 CREATE INDEX idx_vulnerabilities_repo_severity_status ON vulnerabilities(repo_url, severity, status);
 CREATE INDEX idx_vulnerabilities_repo_status ON vulnerabilities(repo_url, status);
+create index idx_vulnerabilities_scanned_at_id on vulnerabilities("scanned_at", id);
+
+ALTER TABLE public.vulnerabilities REPLICA IDENTITY FULL;
