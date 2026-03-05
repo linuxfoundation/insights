@@ -27,6 +27,7 @@ CREATE TABLE IF NOT EXISTS vulnerabilities (
     ghsa_ids TEXT[] NOT NULL DEFAULT '{}',
     other_ids TEXT[] NOT NULL DEFAULT '{}',
     severity vulnerability_severity NOT NULL DEFAULT 'UNKNOWN',
+    cvss_score FLOAT,
     summary TEXT NOT NULL DEFAULT '',
     details TEXT NOT NULL DEFAULT '',
     package_name TEXT NOT NULL,
