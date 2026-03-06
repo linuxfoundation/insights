@@ -25,7 +25,7 @@ export default {
   insightsDbUsername: 'postgres',
   insightsDbPassword: 'example',
   insightsDbDatabase: 'insights',
-  cmDbEnabled: isProduction,
+  cmDbEnabled: process.env.NUXT_CM_DB_ENABLED === 'true' || isProduction,
   cmDbWriteHost: 'localhost',
   cmDbReadHost: 'localhost',
   cmDbPort: 5432,

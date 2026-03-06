@@ -1,5 +1,9 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
+import slugify from 'slugify';
+
+export const generateSlug = (name: string): string => slugify(name, { lower: true, strict: true });
+
 export const isLocal =
   process.env.NUXT_APP_ENV != 'staging' && process.env.NUXT_APP_ENV != 'production';
 
