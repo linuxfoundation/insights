@@ -13,16 +13,7 @@ SPDX-License-Identifier: MIT
         </p>
       </div>
       <!-- TODO: wire the create collection modal here which is part of another PR. Revisit this once that is merged -->
-      <lfx-button
-        type="secondary"
-        button-style="pill"
-      >
-        <lfx-icon
-          name="rectangle-history-circle-plus"
-          :size="16"
-        />
-        <span>Create collection</span>
-      </lfx-button>
+      <lf-create-collection-button />
     </section>
 
     <div class="flex flex-col gap-10 pt-10">
@@ -44,74 +35,82 @@ SPDX-License-Identifier: MIT
         </lfx-collection-section>
       </section>
 
-      <!-- Community Collections Section -->
-      <section class="border-b border-neutral-200 pb-10">
-        <lfx-collection-section
-          type="community"
-          :status="discoveryStatus"
-          :error="discoveryError"
-          error-message="Error fetching community collections"
-          :is-empty="isCommunityEmpty"
-        >
-          <lfx-collection-card
-            v-for="collection in communityCollections"
-            :key="collection.slug"
-            :collection="collection"
-            variant="community"
-          />
-        </lfx-collection-section>
-      </section>
+      <template v-if="isLfInsightsTeamMember">
+        <!-- Community Collections Section -->
+        <section class="border-b border-neutral-200 pb-10">
+          <lfx-collection-section
+            type="community"
+            :status="discoveryStatus"
+            :error="discoveryError"
+            error-message="Error fetching community collections"
+            :is-empty="isCommunityEmpty"
+          >
+            <lfx-collection-card
+              v-for="collection in communityCollections"
+              :key="collection.slug"
+              :collection="collection"
+              variant="community"
+            />
+          </lfx-collection-section>
+        </section>
 
-      <!-- My Collections Section -->
-      <section>
-        <lfx-collection-section
-          type="my-collections"
-          :status="discoveryStatus"
-          :error="discoveryError"
-          error-message="Error fetching your collections"
-          :is-empty="isMyCollectionsEmpty"
-        >
-          <lfx-collection-card
-            v-for="collection in myCollections"
-            :key="collection.slug"
-            :collection="collection"
-            variant="my-collections"
-          />
-        </lfx-collection-section>
-      </section>
+        <!-- My Collections Section -->
+        <section>
+          <lfx-collection-section
+            type="my-collections"
+            :status="discoveryStatus"
+            :error="discoveryError"
+            error-message="Error fetching your collections"
+            :is-empty="isMyCollectionsEmpty"
+          >
+            <lfx-collection-card
+              v-for="collection in myCollections"
+              :key="collection.slug"
+              :collection="collection"
+              variant="my-collections"
+            />
+          </lfx-collection-section>
+        </section>
 
-      <!-- Liked Collections Section -->
-      <section>
-        <div class="flex items-center gap-2 mb-6 pb-2 border-b border-neutral-200">
-          <lfx-icon
-            name="heart"
-            :size="16"
-            class="text-danger-500"
-            icon-style="solid"
-          />
-          <h3 class="text-sm font-medium text-neutral-900">Liked Collections ({{ likedCollections.length }})</h3>
-        </div>
-        <div class="flex flex-col gap-0">
-          <lfx-collection-list-item
-            v-for="collection in likedCollections"
-            :key="collection.slug"
-            :collection="collection"
-          />
-        </div>
-      </section>
+        <!-- Liked Collections Section -->
+        <section>
+          <div class="flex items-center gap-2 mb-6 pb-2 border-b border-neutral-200">
+            <lfx-icon
+              name="heart"
+              :size="16"
+              class="text-danger-500"
+              icon-style="solid"
+            />
+            <h3 class="text-sm font-medium text-neutral-900">Liked Collections ({{ likedCollections.length }})</h3>
+          </div>
+          <div class="flex flex-col gap-0">
+            <lfx-collection-list-item
+              v-for="collection in likedCollections"
+              :key="collection.slug"
+              :collection="collection"
+            />
+          </div>
+        </section>
+      </template>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed, onServerPrefetch } from 'vue';
-import LfxButton from '~/components/uikit/button/button.vue';
+import { storeToRefs } from 'pinia';
+import LfCreateCollectionButton from '../components/create-modal/create-button.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxCollectionSection from '~/components/shared/components/collection-section.vue';
 import LfxCollectionCard from '~/components/shared/components/collection-card.vue';
 import LfxCollectionListItem from '~/components/shared/components/collection-list-item.vue';
 import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
 import { isEmptyData } from '~/components/shared/utils/helper';
+// TODO: remove this once we have everything done and tested
+import { useAuthStore } from '~/components/modules/auth/store/auth.store';
+
+const authStore = useAuthStore();
+const { user } = storeToRefs(authStore);
 
 const {
   data: discoveryData,
@@ -130,6 +129,11 @@ const isCommunityEmpty = computed(() =>
   isEmptyData(communityCollections.value as unknown as Record<string, unknown>[]),
 );
 const isMyCollectionsEmpty = computed(() => isEmptyData(myCollections.value as unknown as Record<string, unknown>[]));
+
+// TODO: remove this once we have everything done and tested
+const isLfInsightsTeamMember = computed(() => {
+  return user.value?.isLfInsightsTeamMember || false;
+});
 
 onServerPrefetch(async () => {
   await discoverySuspense();
