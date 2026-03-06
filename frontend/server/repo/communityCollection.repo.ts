@@ -330,14 +330,29 @@ export class CommunityCollectionRepository {
     };
   }
 
-  async findBySsoUserId(ssoUserId: string): Promise<CommunityCollection[]> {
-    const collectionsResult = await this.pool.query(
-      `SELECT * FROM collections WHERE "ssoUserId" = $1 AND "deletedAt" IS NULL ORDER BY "createdAt" DESC`,
-      [ssoUserId],
-    );
+  async findBySsoUserId(
+    ssoUserId: string,
+    options?: { page?: number; pageSize?: number },
+  ): Promise<{ data: CommunityCollection[]; total: number }> {
+    const page = options?.page ?? 0;
+    const pageSize = options?.pageSize ?? 10;
+    const offset = page * pageSize;
+
+    const [collectionsResult, countResult] = await Promise.all([
+      this.pool.query(
+        `SELECT * FROM collections WHERE "ssoUserId" = $1 AND "deletedAt" IS NULL ORDER BY "createdAt" DESC LIMIT $2 OFFSET $3`,
+        [ssoUserId, pageSize, offset],
+      ),
+      this.pool.query(
+        `SELECT COUNT(*)::int as total FROM collections WHERE "ssoUserId" = $1 AND "deletedAt" IS NULL`,
+        [ssoUserId],
+      ),
+    ]);
+
+    const total = countResult.rows[0]?.total || 0;
 
     if (collectionsResult.rows.length === 0) {
-      return [];
+      return { data: [], total };
     }
 
     const collectionIds = collectionsResult.rows.map((r: { id: string }) => r.id);
@@ -353,10 +368,13 @@ export class CommunityCollectionRepository {
       projectsByCollection.set(row.collectionId, list);
     }
 
-    return collectionsResult.rows.map((c: CommunityCollection) => ({
-      ...c,
-      projects: projectsByCollection.get(c.id) || [],
-    }));
+    return {
+      data: collectionsResult.rows.map((c: CommunityCollection) => ({
+        ...c,
+        projects: projectsByCollection.get(c.id) || [],
+      })),
+      total,
+    };
   }
 
   private async validateOwnership(
