@@ -11,6 +11,7 @@ import type { Pagination } from '~~/types/shared/pagination';
 import type { Collection } from '~~/types/collection';
 import type { Category, CategoryGroup } from '~~/types/category';
 import { TanstackKey } from '~/components/shared/types/tanstack';
+import type { SearchProject, SearchResults } from '~~/types/search';
 
 export interface CategoryGroupOptions {
   value: string;
@@ -28,6 +29,23 @@ export interface QueryParams {
 export interface CategoryGroupsQueryParams {
   type: 'vertical' | 'horizontal';
   pageSize: number;
+}
+
+const MAX_SEARCH_QUERY_LENGTH = 200;
+const MIN_SEARCH_QUERY_LENGTH = 1;
+
+function sanitizeSearchQuery(query: string): string | null {
+  if (!query || typeof query !== 'string') {
+    return null;
+  }
+
+  const sanitized = query.trim().slice(0, MAX_SEARCH_QUERY_LENGTH).replace(/[<>]/g, '');
+
+  if (sanitized.length < MIN_SEARCH_QUERY_LENGTH) {
+    return null;
+  }
+
+  return sanitized;
 }
 
 class CollectionsApiService {
@@ -90,11 +108,16 @@ class CollectionsApiService {
   }
 
   searchCollections(query: string) {
+    const sanitizedQuery = sanitizeSearchQuery(query);
+    if (!sanitizedQuery) {
+      return Promise.resolve({ data: [], total: 0, page: 0, pageSize: 100 });
+    }
+
     return $fetch(`/api/collection`, {
       params: {
         page: 0,
         pageSize: 100,
-        search: query,
+        search: sanitizedQuery,
         sort: 'starred_desc',
       },
     });
@@ -142,6 +165,19 @@ class CollectionsApiService {
       $fetch(`/api/category`, {
         params: query(),
       });
+  }
+
+  async searchProjects(query: string): Promise<SearchProject[]> {
+    const sanitizedQuery = sanitizeSearchQuery(query);
+    if (!sanitizedQuery) {
+      return [];
+    }
+
+    const res = await $fetch<SearchResults>('/api/search', {
+      query: { query: sanitizedQuery },
+    });
+
+    return res.projects || [];
   }
 }
 

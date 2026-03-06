@@ -1,0 +1,68 @@
+.c-radio {
+  @apply inline-flex items-center gap-2 cursor-pointer select-none;
+
+  &__input {
+    @apply sr-only;
+  }
+
+  &__indicator {
+    @apply relative flex items-center justify-center;
+    @apply rounded-full border transition-all;
+    @apply bg-white border-neutral-300;
+
+    // Default size
+    @apply size-4;
+
+    // Small size
+    .c-radio--small & {
+      @apply size-3.5;
+    }
+  }
+
+  &__dot {
+    @apply rounded-full bg-white transition-all;
+    @apply opacity-0 scale-0;
+
+    // Default size
+    @apply size-2.5;
+
+    // Small size
+    .c-radio--small & {
+      @apply size-1;
+    }
+  }
+
+  &__label {
+    @apply text-sm text-neutral-900;
+
+    .c-radio--small & {
+      @apply text-xs;
+    }
+  }
+
+  // Checked state
+  &__input:checked + &__indicator {
+    @apply bg-accent-500 border-accent-500;
+
+    .c-radio__dot {
+      @apply opacity-100 scale-100;
+    }
+  }
+
+  // Disabled state
+  &--disabled {
+    @apply cursor-not-allowed;
+
+    .c-radio__indicator {
+      @apply bg-neutral-100 border-neutral-200;
+    }
+
+    .c-radio__label {
+      @apply text-neutral-400;
+    }
+
+    .c-radio__input:checked + .c-radio__indicator {
+      @apply bg-neutral-300 border-neutral-300;
+    }
+  }
+}

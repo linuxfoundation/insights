@@ -65,3 +65,17 @@ export const hasLfxInsightsPermission = (claims?: string[]): boolean => {
 
   return claims.includes(config.lfxAuth0TokenClaimGroupName);
 };
+
+export const isLfInsightsTeamMember = (email: string): boolean => {
+  const config = useRuntimeConfig();
+
+  if (!config.lfxInsightsTeam || !email) {
+    return false;
+  }
+
+  const lfxInsightsTeam = config.lfxInsightsTeam || '';
+  return lfxInsightsTeam
+    .split(',')
+    .map((e) => e.trim())
+    .includes(email.trim());
+};
