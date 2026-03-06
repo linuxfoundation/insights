@@ -5,6 +5,7 @@ export interface DataSummary {
   rowCount: number;
   columns: string[];
   columnStats: Record<string, ColumnStats>;
+  topRows: Record<string, unknown>[];
 }
 
 export interface ColumnStats {
@@ -32,8 +33,8 @@ export interface ColumnStats {
 
 /**
  * Generate statistical summary of dataset
- * Token-efficient: ~400-500 tokens for typical dataset
- * No raw data samples sent to LLM - only statistics
+ * Token-efficient: ~1500-200 tokens for typical dataset
+ * Top rows of raw data sent to LLM + statistics
  *
  * @param data - Array of data rows
  * @returns Statistical summary optimized for auditor validation
@@ -44,6 +45,7 @@ export function generateDataSummary<T extends Record<string, unknown>>(data: T[]
       rowCount: 0,
       columns: [],
       columnStats: {},
+      topRows: [],
     };
   }
 
@@ -127,9 +129,13 @@ export function generateDataSummary<T extends Record<string, unknown>>(data: T[]
     columnStats[col] = stats;
   }
 
+  const rows = data as Record<string, unknown>[];
   return {
     rowCount: data.length,
     columns,
     columnStats,
+    // Ideally the entire response would be available to the auditor. But that would be too costly.
+    // TODO: Explore a better way to have a proper summary of the data that answers the user's question directly.
+    topRows: rows.slice(0, 3),
   };
 }
