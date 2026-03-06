@@ -16,6 +16,7 @@ export default {
           '/api/health/live': { cache: false },
           '/api/report': { cache: false },
           '/api/security/**': { cache: false },
+          '/api/collection/community/**': { cache: false },
           '/api/community/list': { cache: { maxAge: longCache, base: 'redis' } },
           '/api/community/**': { cache: false },
           '/api/search': { cache: { maxAge: longCache, base: 'redis' } },
