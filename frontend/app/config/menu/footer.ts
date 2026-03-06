@@ -38,7 +38,7 @@ export const lfxFooterMenu: FooterMenuSection[] = [
       },
       {
         name: 'Docs',
-        link: '/docs/',
+        link: '/docs/introduction/what-is-insights/',
       },
       {
         name: 'Report issue',
