@@ -25,7 +25,8 @@ const setSilentLoginAttempted = (value: boolean): void => {
   localStorage.setItem('lfx-silent-login-attempted', value.toString());
 };
 
-const getWasUserLoggedIn = (): boolean => {
+// TODO: revert this once we have tested the discovery page
+export const getWasUserLoggedIn = (): boolean => {
   if (!process.client) return false;
   return localStorage.getItem('lfx-user-logged-in') === 'true';
 };
@@ -36,6 +37,11 @@ const setWasUserLoggedIn = (value: boolean): void => {
 };
 
 export const useAuth = () => {
+  const isAuthenticated = computed(() => authState.value.isAuthenticated);
+  const user = computed(() => authState.value.user);
+  const token = computed(() => authState.value.token);
+  const isLoading = ref(false);
+
   // Fetch user data from server
   const { data: userData, refresh: refreshAuth } = useAsyncData<AuthData>(
     'auth-user',
@@ -54,6 +60,7 @@ export const useAuth = () => {
   // Update local state when data changes
   watchEffect(() => {
     if (userData.value) {
+      isLoading.value = false;
       authState.value = userData.value;
 
       // Attempt silent login if suggested by the server and not already attempted
@@ -131,11 +138,6 @@ export const useAuth = () => {
       },
     );
   }
-
-  const isAuthenticated = computed(() => authState.value.isAuthenticated);
-  const user = computed(() => authState.value.user);
-  const token = computed(() => authState.value.token);
-  const isLoading = ref(false);
 
   const login = async (redirectTo?: string, silent?: boolean) => {
     isLoading.value = true;

@@ -27,4 +27,7 @@ export interface Collection {
   coverImgUrl?: string;
   gradient?: [string, string];
   type?: CollectionType;
+  isLiked?: boolean;
+  likeCount?: number;
+  isPrivate?: boolean;
 }

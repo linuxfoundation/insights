@@ -198,6 +198,7 @@ SPDX-License-Identifier: MIT
 
 <script lang="ts" setup>
 import { computed } from 'vue';
+import { storeToRefs } from 'pinia';
 import { collectionTabs, headerBackground } from '../../config/collection-type-config';
 import type { Collection } from '~~/types/collection';
 import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
@@ -212,7 +213,7 @@ import LfxToggle from '~/components/uikit/toggle/toggle.vue';
 import { useAuthStore } from '~/components/modules/auth/store/auth.store';
 
 const authStore = useAuthStore();
-const user = computed(() => authStore.user);
+const { user } = storeToRefs(authStore);
 
 const props = defineProps<{
   collection?: Collection;
