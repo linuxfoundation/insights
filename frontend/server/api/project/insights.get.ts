@@ -1,6 +1,6 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import type { ProjectInsights } from '~~/types/project';
+import type { ProjectInsightsTinybird } from '~~/types/project';
 import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
 
 /**
@@ -40,10 +40,13 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    const response = await fetchFromTinybird<ProjectInsights[]>('/v0/pipes/project_insights.json', {
-      slugs: slugs.length > 0 ? slugs : undefined,
-      ids: ids.length > 0 ? ids : undefined,
-    });
+    const response = await fetchFromTinybird<ProjectInsightsTinybird[]>(
+      '/v0/pipes/project_insights.json',
+      {
+        slugs: slugs.length > 0 ? slugs : undefined,
+        ids: ids.length > 0 ? ids : undefined,
+      },
+    );
 
     return response.data.map((project) => ({
       ...project,

@@ -1,6 +1,6 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import type { ProjectInsights } from '~~/types/project';
+import type { ProjectInsightsTinybird } from '~~/types/project';
 import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
 import { useApiTrackEvent } from '~~/server/utils/plausible';
 
@@ -15,9 +15,12 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    const response = await fetchFromTinybird<ProjectInsights[]>('/v0/pipes/project_insights.json', {
-      slug,
-    });
+    const response = await fetchFromTinybird<ProjectInsightsTinybird[]>(
+      '/v0/pipes/project_insights.json',
+      {
+        slug,
+      },
+    );
 
     useApiTrackEvent({
       event,
