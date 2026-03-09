@@ -189,8 +189,14 @@ export const formatValueToLargestUnitDuration = (
     .join(' ');
 };
 
+/**
+ * Format date from iso string to locale string or format string
+ * @param date - The date to format
+ * @param format - The format to use (default: 'short')
+ * @returns The formatted date
+ */
 export const formatDate = (date: string, format: string = 'short'): string => {
-  const dateTime = DateTime.fromMillis(parseInt(date, 10));
+  const dateTime = DateTime.fromISO(date);
   if (!dateTime.isValid) {
     return '';
   }
