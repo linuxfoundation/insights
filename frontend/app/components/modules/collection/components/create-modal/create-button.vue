@@ -16,7 +16,6 @@ SPDX-License-Identifier: MIT
   <lf-create-collection-modal
     v-if="isCreateCollectionModalOpen"
     v-model="isCreateCollectionModalOpen"
-    @update:model-value="isCreateCollectionModalOpen = $event"
   />
 </template>
 

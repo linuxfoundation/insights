@@ -6,7 +6,7 @@ SPDX-License-Identifier: MIT
   <pv-avatar
     :icon="icon"
     :image="props.src"
-    :shape="props.type === 'member' ? 'circle' : 'square'"
+    :shape="props.type === 'organization' ? 'square' : 'circle'"
     :size="props.size"
     :class="{
       [`type-${props.type}`]: true,
@@ -38,6 +38,10 @@ const props = withDefaults(
 const icon = computed(() => {
   if (props.src) {
     return undefined;
+  }
+
+  if (props.type === 'project') {
+    return AvatarIcons.Project;
   }
 
   return props.type === 'member' ? AvatarIcons.Member : AvatarIcons.Organization;

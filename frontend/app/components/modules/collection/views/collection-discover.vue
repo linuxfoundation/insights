@@ -79,7 +79,7 @@ SPDX-License-Identifier: MIT
               name="heart"
               :size="16"
               class="text-danger-500"
-              icon-style="solid"
+              type="solid"
             />
             <h3 class="text-sm font-medium text-neutral-900">Liked Collections ({{ likedCollections.length }})</h3>
           </div>
@@ -99,15 +99,16 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { computed, onServerPrefetch } from 'vue';
 import { storeToRefs } from 'pinia';
+import { isArray } from 'lodash-es';
 import LfCreateCollectionButton from '../components/create-modal/create-button.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxCollectionSection from '~/components/shared/components/collection-section.vue';
 import LfxCollectionCard from '~/components/shared/components/collection-card.vue';
 import LfxCollectionListItem from '~/components/shared/components/collection-list-item.vue';
 import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
-import { isEmptyData } from '~/components/shared/utils/helper';
 // TODO: remove this once we have everything done and tested
 import { useAuthStore } from '~/components/modules/auth/store/auth.store';
+import type { Collection } from '~~/types/collection';
 
 const authStore = useAuthStore();
 const { user } = storeToRefs(authStore);
@@ -124,16 +125,22 @@ const communityCollections = computed(() => discoveryData.value?.communityCollec
 const myCollections = computed(() => discoveryData.value?.myCollections || []);
 const likedCollections = computed(() => discoveryData.value?.likedCollections || []);
 
-const isCuratedEmpty = computed(() => isEmptyData(curatedCollections.value as unknown as Record<string, unknown>[]));
-const isCommunityEmpty = computed(() =>
-  isEmptyData(communityCollections.value as unknown as Record<string, unknown>[]),
-);
-const isMyCollectionsEmpty = computed(() => isEmptyData(myCollections.value as unknown as Record<string, unknown>[]));
+const isCuratedEmpty = computed(() => isEmptyData(curatedCollections.value));
+const isCommunityEmpty = computed(() => isEmptyData(communityCollections.value));
+const isMyCollectionsEmpty = computed(() => isEmptyData(myCollections.value));
 
 // TODO: remove this once we have everything done and tested
 const isLfInsightsTeamMember = computed(() => {
   return user.value?.isLfInsightsTeamMember || false;
 });
+
+const isEmptyData = (value: Collection[] | null | undefined) => {
+  // check if the value is null or undefined or the length of the value is 0
+  if (value === null || value === undefined || value?.length === 0 || !isArray(value)) {
+    return true;
+  }
+  return false;
+};
 
 onServerPrefetch(async () => {
   await discoverySuspense();

@@ -51,11 +51,16 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import { storeToRefs } from 'pinia';
 import LfxButton from '~/components/uikit/button/button.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxProjectLoadState from '~/components/modules/project/components/shared/load-state.vue';
-import { discoveryCollectionTabs } from '~/components/modules/collection/config/collection-type-config';
+import { collectionTabs } from '~/components/modules/collection/config/collection-type-config';
 import type { CollectionType } from '~~/types/collection';
+import { useAuthStore } from '~/components/modules/auth/store/auth.store';
+
+const authStore = useAuthStore();
+const { user } = storeToRefs(authStore);
 
 const props = withDefaults(
   defineProps<{
@@ -73,13 +78,14 @@ const props = withDefaults(
   },
 );
 
-const title = computed(() => discoveryCollectionTabs.find((tab) => tab.type === props.type)?.detailsLabel || '');
-const subtitle = computed(() => discoveryCollectionTabs.find((tab) => tab.type === props.type)?.description || '');
-const icon = computed(() => discoveryCollectionTabs.find((tab) => tab.type === props.type)?.icon || '');
-const iconBackground = computed(
-  () => discoveryCollectionTabs.find((tab) => tab.type === props.type)?.iconHighlightClass || '',
-);
-const viewAllRoute = computed(() => discoveryCollectionTabs.find((tab) => tab.type === props.type)?.route || '');
+const allTabs = computed(() => collectionTabs(user.value));
+const currentTab = computed(() => allTabs.value.find((tab) => tab.type === props.type));
+
+const title = computed(() => currentTab.value?.detailsLabel || '');
+const subtitle = computed(() => currentTab.value?.description || '');
+const icon = computed(() => currentTab.value?.icon || '');
+const iconBackground = computed(() => currentTab.value?.iconHighlightClass || '');
+const viewAllRoute = computed(() => currentTab.value?.route || '');
 </script>
 
 <script lang="ts">

@@ -4,6 +4,7 @@
   @apply flex items-center;
 
   &.type-project {
+    @apply ms-2;
     .p-avatar {
       @apply -ms-2 outline outline-3 outline-neutral-100;
     }

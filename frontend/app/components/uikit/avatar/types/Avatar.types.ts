@@ -6,6 +6,7 @@ export const avatarTypes = ['member', 'organization', 'project'] as const;
 export enum AvatarIcons {
   Member = 'fa-solid fa-user',
   Organization = 'fa-solid fa-building',
+  Project = 'fa-regular fa-laptop-code',
 }
 
 export type AvatarSize = (typeof avatarSizes)[number];
