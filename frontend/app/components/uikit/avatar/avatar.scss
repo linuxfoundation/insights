@@ -22,9 +22,7 @@
   }
 
   &.type-project {
-    &.has-image {
-      @apply bg-white rounded-full;
-    }
+    @apply bg-white rounded-full;
   }
 
   &.p-avatar-xl {

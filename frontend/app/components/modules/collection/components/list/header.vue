@@ -41,15 +41,7 @@ SPDX-License-Identifier: MIT
         </lfx-menu-button>
       </div>
       <div>
-        <lfx-button
-          v-if="canCreateCollection"
-          type="outline"
-          class="!rounded-full"
-          @click="isCreateCollectionModalOpen = true"
-        >
-          <lfx-icon name="rectangle-history-circle-plus" />
-          Create Collection
-        </lfx-button>
+        <lf-create-collection-button />
       </div>
     </div>
     <div class="flex justify-between items-start">
@@ -114,24 +106,18 @@ SPDX-License-Identifier: MIT
       </div>
     </div>
   </div>
-
-  <lf-create-collection-modal
-    v-if="isCreateCollectionModalOpen"
-    v-model="isCreateCollectionModalOpen"
-    @update:model-value="handleCreateCollectionUpdate"
-  />
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 import { useRoute } from 'nuxt/app';
+import { storeToRefs } from 'pinia';
 import { collectionTabs } from '../../config/collection-type-config';
-import LfCreateCollectionModal from '../../components/create-modal/create-collection-modal.vue';
+import LfCreateCollectionButton from '../../components/create-modal/create-button.vue';
 import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
 import type { CollectionType } from '~~/types/collection';
 import LfxMenuButton from '~/components/uikit/menu-button/menu-button.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
-import LfxButton from '~/components/uikit/button/button.vue';
 import LfxDropdownSelect from '~/components/uikit/dropdown/dropdown-select.vue';
 import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
 import LfxDropdownSelector from '~/components/uikit/dropdown/dropdown-selector.vue';
@@ -141,7 +127,7 @@ import { LfxRoutes } from '~/components/shared/types/routes';
 import { useAuthStore } from '~/components/modules/auth/store/auth.store';
 
 const authStore = useAuthStore();
-const user = computed(() => authStore.user);
+const { user } = storeToRefs(authStore);
 
 const props = defineProps<{
   type?: CollectionType;
@@ -158,13 +144,6 @@ const sortValue = computed({
   set: (value: string) => emit('update:sort', value),
 });
 
-// TODO: remove this once we have everything done and tested
-const canCreateCollection = computed(() => {
-  return user.value?.isLfInsightsTeamMember || false;
-});
-
-const isCreateCollectionModalOpen = ref(false);
-
 const route = useRoute();
 const linkUrl = computed(() => collectionTabs(user.value));
 
@@ -173,30 +152,8 @@ const viewTabs = [
   { label: '', value: 'list', icon: 'list-ul' },
 ];
 
-const title = computed(() => {
-  switch (props.type) {
-    case 'curated':
-      return 'Curated Collections';
-    case 'community':
-      return 'Community Collections';
-    default:
-      return 'My Collections';
-  }
-});
-const description = computed(() => {
-  switch (props.type) {
-    case 'curated':
-      return 'Hand-picked collections from The Linux Foundation.';
-    case 'community':
-      return 'Discover collections from the open source community.';
-    default:
-      return `Collections you've created or liked.`;
-  }
-});
-
-const handleCreateCollectionUpdate = () => {
-  isCreateCollectionModalOpen.value = false;
-};
+const title = computed(() => linkUrl.value.find((tab) => tab.type === props.type)?.detailsLabel || '');
+const description = computed(() => linkUrl.value.find((tab) => tab.type === props.type)?.description || '');
 </script>
 
 <script lang="ts">

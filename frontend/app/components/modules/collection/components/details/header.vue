@@ -85,7 +85,7 @@ SPDX-License-Identifier: MIT
         </div>
         <div
           v-if="props.collection && !loading"
-          class="flex lg:justify-end transition-all ease-linear gap-4 w-full"
+          class="flex lg:justify-end transition-all ease-linear gap-4 w-full lg:w-auto shrink-0"
         >
           <!-- TODO: Add back the copy and heart buttons
           <lfx-icon-button
@@ -102,6 +102,7 @@ SPDX-License-Identifier: MIT
           <lfx-button
             type="outline"
             class="!rounded-full"
+            @click="handleShare"
           >
             <lfx-icon name="share-nodes" />
             Share
@@ -198,6 +199,8 @@ SPDX-License-Identifier: MIT
 
 <script lang="ts" setup>
 import { computed } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useRouter } from 'nuxt/app';
 import { collectionTabs, headerBackground } from '../../config/collection-type-config';
 import type { Collection } from '~~/types/collection';
 import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
@@ -210,9 +213,14 @@ import lfIconUrl from '~/assets/images/icon.svg?url';
 import { formatDate } from '~/components/shared/utils/formatter';
 import LfxToggle from '~/components/uikit/toggle/toggle.vue';
 import { useAuthStore } from '~/components/modules/auth/store/auth.store';
+import { useShareStore } from '~/components/shared/modules/share/store/share.store';
+import { LfxRoutes } from '~/components/shared/types/routes';
 
 const authStore = useAuthStore();
-const user = computed(() => authStore.user);
+const { user } = storeToRefs(authStore);
+
+const router = useRouter();
+const { openShareModal } = useShareStore();
 
 const props = defineProps<{
   collection?: Collection;
@@ -288,6 +296,22 @@ const sortIconClass = (field: string) => {
     isActive ? 'text-neutral-500' : 'text-neutral-300 invisible group-hover:visible',
     isActive && isAscending ? 'rotate-180' : '',
   ];
+};
+
+const handleShare = () => {
+  const title = `LFX Insights | Collections - ${props.collection?.name}`;
+
+  const resolvedRoute = router.resolve({
+    name: LfxRoutes.COLLECTION,
+    params: { slug: props.collection?.slug },
+  });
+  const url = new URL(resolvedRoute.href, window.location.origin);
+
+  openShareModal({
+    url: url.toString(),
+    title,
+    area: props.collection?.name,
+  });
 };
 </script>
 
