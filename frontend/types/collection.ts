@@ -13,7 +13,7 @@ export interface Collection {
   name: string;
   slug: string;
   description: string;
-  isLf: number;
+  isLf: boolean;
   projectCount: number;
   featuredProjects: CollectionFeaturedProject[];
   softwareValue?: number;
@@ -30,4 +30,5 @@ export interface Collection {
   isLiked?: boolean;
   likeCount?: number;
   isPrivate?: boolean;
+  ssoUserId?: string | null;
 }

@@ -16,7 +16,7 @@ export const communityCollectionsMock: Collection[] = [
     slug: 'innovative-tools',
     description:
       'A curated list of the most essential open source projects, based on the OpenSSF Criticality Score. These projects power global infrastructure and are widely relied upon across industries.',
-    isLf: 0,
+    isLf: false,
     projectCount: 10,
     featuredProjects: [
       {
@@ -55,7 +55,7 @@ export const communityCollectionsMock: Collection[] = [
     slug: 'creative-solutions',
     description:
       'A curated list of the most essential open source projects, based on the OpenSSF Criticality Score. These projects power global infrastructure and are widely relied upon across industries.',
-    isLf: 0,
+    isLf: false,
     projectCount: 10,
     featuredProjects: [
       {
@@ -94,7 +94,7 @@ export const communityCollectionsMock: Collection[] = [
     slug: 'tech-revolution',
     description:
       'A curated list of the most essential open source projects, based on the OpenSSF Criticality Score. These projects power global infrastructure and are widely relied upon across industries.',
-    isLf: 0,
+    isLf: false,
     projectCount: 10,
     featuredProjects: [
       {
@@ -136,7 +136,7 @@ export const myCollectionsMock: Collection[] = [
     slug: 'future-tech',
     description:
       'A curated list of the most essential open source projects, based on the OpenSSF Criticality Score. These projects power global infrastructure and are widely relied upon across industries.',
-    isLf: 0,
+    isLf: false,
     projectCount: 10,
     featuredProjects: [
       {
@@ -170,7 +170,7 @@ export const myCollectionsMock: Collection[] = [
     slug: 'community-driven',
     description:
       'A curated list of the most essential open source projects, based on the OpenSSF Criticality Score. These projects power global infrastructure and are widely relied upon across industries.',
-    isLf: 0,
+    isLf: false,
     projectCount: 10,
     featuredProjects: [
       {
@@ -204,7 +204,7 @@ export const myCollectionsMock: Collection[] = [
     slug: 'open-innovation',
     description:
       'A curated list of the most essential open source projects, based on the OpenSSF Criticality Score. These projects power global infrastructure and are widely relied upon across industries.',
-    isLf: 0,
+    isLf: false,
     projectCount: 10,
     featuredProjects: [
       {
@@ -252,7 +252,7 @@ export const likedCollectionsMock: Collection[] = [
     slug: 'creative-solutions',
     description:
       'Alias atque aut ducimus voluptate nulla deserunt explicabo itaque qui molestiae nulla.',
-    isLf: 0,
+    isLf: false,
     projectCount: 10,
     featuredProjects: [],
     updatedAt: '2025-02-01',
@@ -266,7 +266,7 @@ export const likedCollectionsMock: Collection[] = [
     name: 'Tech Revolution',
     slug: 'tech-revolution',
     description: 'Necessitatibus sit iure recusandae nulla rerum inventore incidunt ut saepe.',
-    isLf: 0,
+    isLf: false,
     projectCount: 10,
     featuredProjects: [],
     updatedAt: '2025-02-01',

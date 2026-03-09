@@ -197,6 +197,13 @@ class CollectionsApiService {
   discoveryCollectionsQueryFn(): QueryFunction<CollectionDiscoveryResponse> {
     return () => $fetch('/api/collection/discovery');
   }
+
+  mapCollectionTypes(collections: Collection[]): Collection[] {
+    return collections.map((collection) => ({
+      ...collection,
+      isLf: !!collection.ssoUserId,
+    }));
+  }
 }
 
 export const COLLECTIONS_API_SERVICE = new CollectionsApiService();

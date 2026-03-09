@@ -143,15 +143,11 @@ const params = computed(() => ({
 const { data, isPending, isFetchingNextPage, fetchNextPage, hasNextPage, isSuccess, error } =
   COLLECTIONS_API_SERVICE.fetchCollections(params);
 
-// @ts-expect-error - TanStack Query type inference issue with Vue
-const flatData = computed(
-  () =>
-    data.value?.pages
-      .flatMap((page: Pagination<Collection>) => page.data)
-      .map((collection: Collection) => ({
-        ...collection,
-        isLf: true,
-      })) || [],
+const flatData = computed(() =>
+  // @ts-expect-error - TanStack Query type inference issue with Vue
+  COLLECTIONS_API_SERVICE.mapCollectionTypes(
+    data.value?.pages.flatMap((page: Pagination<Collection>) => page.data) || [],
+  ),
 );
 
 const classDisplay = computed(() => {
@@ -172,6 +168,14 @@ watch(error, (err: Error | null) => {
     showToast('There was an error fetching collections', ToastTypesEnum.negative, undefined, 5000);
   }
 });
+
+watch(
+  flatData,
+  (value: any) => {
+    console.log('data', value);
+  },
+  { immediate: true },
+);
 
 const loadMore = () => {
   if (hasNextPage.value) {
