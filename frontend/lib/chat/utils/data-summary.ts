@@ -33,7 +33,7 @@ export interface ColumnStats {
 
 /**
  * Generate statistical summary of dataset
- * Token-efficient: ~1500-200 tokens for typical dataset
+ * Token-efficient: ~1500-2000 tokens for typical dataset
  * Top rows of raw data sent to LLM + statistics
  *
  * @param data - Array of data rows
@@ -134,8 +134,6 @@ export function generateDataSummary<T extends Record<string, unknown>>(data: T[]
     rowCount: data.length,
     columns,
     columnStats,
-    // Ideally the entire response would be available to the auditor. But that would be too costly.
-    // TODO: Explore a better way to have a proper summary of the data that answers the user's question directly.
     topRows: rows.slice(0, 3),
   };
 }

@@ -63,14 +63,14 @@ export class DataCopilot {
   /** Tinybird MCP server URL */
   private tbMcpUrl: string = '';
 
-  /** Amazon Bedrock language model instance for routing and auditing (Sonnet) */
+  /** Amazon Bedrock language model instance for routing and piping agents (Sonnet) */
   private sonnetModel: LanguageModelV1;
 
-  /** Amazon Bedrock language model instance for text-to-SQL, pipe, and chart agents (Opus) */
+  /** Amazon Bedrock language model instance for text-to-SQL, auditor, and chart agents (Opus) */
   private opusModel: LanguageModelV1;
 
   /** Bedrock model identifier for general agents */
-  private readonly BEDROCK_SONNET_MODEL_ID = 'us.anthropic.claude-sonnet-4-20250514-v1:0';
+  private readonly BEDROCK_SONNET_MODEL_ID = 'us.anthropic.claude-sonnet-4-6';
 
   /** Bedrock model identifier for text-to-SQL and pipe agent */
   private readonly BEDROCK_OPUS_MODEL_ID = 'us.anthropic.claude-opus-4-6-v1';
@@ -126,10 +126,9 @@ export class DataCopilot {
     try {
       const response = await ofetch(
         `${tinybirdBaseUrl}/v0/pipes/project_buckets.json?project=${encodeURIComponent(project)}`,
-        { headers: { Authorization: `Bearer ${tinybirdToken}` }, timeout: 10_000 },
+        { headers: { Authorization: `Bearer ${tinybirdToken}` }, timeout: 10000 },
       );
       this.bucketId = response.data?.[0]?.bucketId ?? null;
-      console.warn(`🪣 [DataCopilot] bucketId for "${project}": ${this.bucketId}`);
     } catch (error) {
       console.error(`[DataCopilot] Failed to fetch bucketId for "${project}":`, error);
       this.bucketId = null;
@@ -215,12 +214,12 @@ export class DataCopilot {
   ): Promise<void> {
     const chatRepo = new ChatRepository(insightsDbPool);
 
+    // For now, we use the Opus model for TextToSql and Auditor Agents.
+    // The model is currently too slow for both the Pipe and Router agents.
     let model: string | undefined = this.BEDROCK_SONNET_MODEL_ID;
 
     if (agent === 'EXECUTE_INSTRUCTIONS') {
       model = undefined;
-      // For now, we use the Opus model for text-to-SQL and auditor.
-      // The model is currently too slow for both the pipe and router agents.
     } else if (agent === 'TEXT_TO_SQL' || agent === 'AUDITOR') {
       model = this.BEDROCK_OPUS_MODEL_ID;
     }
@@ -345,7 +344,7 @@ export class DataCopilot {
         const tool = this.tbTools[toolName] as any;
         // Wrap execute to inject bucketId into every MCP tool call during planning
         followUpTools[toolName] =
-          this.bucketId !== null && this.tbTools[toolName]?.execute
+          !!this.bucketId && this.tbTools[toolName]?.execute
             ? {
                 ...this.tbTools[toolName],
                 execute: async (params: any) =>

@@ -54,8 +54,7 @@ export async function executePipeInstructions(
   // Execute each pipe with its inputs using TinyBird API
   for (const pipeInstruction of instructions.pipes) {
     try {
-      const inputs =
-        bucketId !== null ? { bucketId, ...pipeInstruction.inputs } : pipeInstruction.inputs;
+      const inputs = !!bucketId ? { bucketId, ...pipeInstruction.inputs } : pipeInstruction.inputs;
       const result = await executeTinybirdPipe(pipeInstruction.name, inputs);
       pipeResults[pipeInstruction.id] = result;
     } catch (error) {
