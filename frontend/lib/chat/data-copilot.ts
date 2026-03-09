@@ -70,7 +70,7 @@ export class DataCopilot {
   private opusModel: LanguageModelV1;
 
   /** Bedrock model identifier for general agents */
-  private readonly BEDROCK_SONNET_MODEL_ID = 'us.anthropic.claude-sonnet-4-6';
+  private readonly BEDROCK_SONNET_MODEL_ID = 'us.anthropic.claude-sonnet-4-20250514-v1:0';
 
   /** Bedrock model identifier for text-to-SQL and pipe agent */
   private readonly BEDROCK_OPUS_MODEL_ID = 'us.anthropic.claude-opus-4-6-v1';
