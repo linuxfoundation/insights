@@ -8,6 +8,7 @@ import {
 } from '~~/server/repo/communityCollection.repo';
 import { InsightsSsoUserRepository } from '~~/server/repo/insightsSsoUser.repo';
 import type { DecodedOidcToken } from '~~/types/auth/auth-jwt.types';
+import { getAuthUsername } from '~~/server/utils/common';
 
 /**
  * API Endpoint: PUT /api/collection/community/:id
@@ -51,7 +52,7 @@ export default defineEventHandler(async (event): Promise<CommunityCollection | E
   }
 
   try {
-    const username = user.sub.includes('|') ? user.sub.split('|').pop()! : user.sub;
+    const username = getAuthUsername(user.sub);
 
     const ssoUserRepo = new InsightsSsoUserRepository(cmDbPool);
     const ssoUser = await ssoUserRepo.upsert({

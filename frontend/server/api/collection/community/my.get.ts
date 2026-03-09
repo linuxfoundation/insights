@@ -8,6 +8,7 @@ import {
 import { InsightsSsoUserRepository } from '~~/server/repo/insightsSsoUser.repo';
 import type { DecodedOidcToken } from '~~/types/auth/auth-jwt.types';
 import type { Pagination } from '~~/types/shared/pagination';
+import { getAuthUsername } from '~~/server/utils/common';
 
 /**
  * API Endpoint: GET /api/collection/community/my
@@ -41,7 +42,7 @@ export default defineEventHandler(
     const pageSize: number = Number(query?.pageSize) || 10;
 
     try {
-      const username = user.sub.includes('|') ? user.sub.split('|').pop()! : user.sub;
+      const username = getAuthUsername(user.sub);
 
       const ssoUserRepo = new InsightsSsoUserRepository(cmDbPool);
       const ssoUser = await ssoUserRepo.findByUsername(username);

@@ -18,6 +18,7 @@ export default defineEventHandler(async (event) => {
     '/api/community/list',
     '/api/security/update',
     '/api/collection/community',
+    '/api/collection/like',
   ];
   const protectedAndPermissionRoutes = ['/api/chat'];
 

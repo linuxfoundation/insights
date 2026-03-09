@@ -7,6 +7,10 @@ export const generateSlug = (name: string): string => slugify(name, { lower: tru
 export const isLocal =
   process.env.NUXT_APP_ENV != 'staging' && process.env.NUXT_APP_ENV != 'production';
 
+export function getAuthUsername(sub: string): string {
+  return sub.includes('|') ? sub.split('|').pop()! : sub;
+}
+
 export function getBooleanQueryParam(
   query: Record<string, unknown>,
   key: string,

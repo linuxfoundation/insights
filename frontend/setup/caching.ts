@@ -17,6 +17,8 @@ export default {
           '/api/report': { cache: false },
           '/api/security/**': { cache: false },
           '/api/collection/community/**': { cache: false },
+          '/api/collection/like': { cache: false },
+          '/api/collection/like/**': { cache: false },
           '/api/community/list': { cache: { maxAge: longCache, base: 'redis' } },
           '/api/community/**': { cache: false },
           '/api/search': { cache: { maxAge: longCache, base: 'redis' } },

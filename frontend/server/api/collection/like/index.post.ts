@@ -1,23 +1,22 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import type { Pool } from 'pg';
-import { CommunityCollectionRepository } from '~~/server/repo/communityCollection.repo';
+import { CollectionLikeRepository } from '~~/server/repo/collectionLike.repo';
 import { InsightsSsoUserRepository } from '~~/server/repo/insightsSsoUser.repo';
 import type { DecodedOidcToken } from '~~/types/auth/auth-jwt.types';
 import { getAuthUsername } from '~~/server/utils/common';
 
 /**
- * API Endpoint: DELETE /api/collection/community/:id
- * Description: Soft-deletes a community collection owned by the authenticated user.
+ * API Endpoint: POST /api/collection/like
+ * Description: Likes a collection for the authenticated user.
  *
- * URL Parameters:
- * - id (string, required): Collection ID
+ * Request Body:
+ * - collectionId (string, required): The ID of the collection to like
  *
  * Response:
  * - 200: Success
+ * - 400: Validation error
  * - 401: Unauthorized
- * - 403: Forbidden (not the owner)
- * - 404: Collection not found
  * - 500: Internal Server Error
  */
 export default defineEventHandler(async (event): Promise<{ success: boolean } | Error> => {
@@ -27,10 +26,10 @@ export default defineEventHandler(async (event): Promise<{ success: boolean } | 
     throw createError({ statusCode: 401, statusMessage: 'Unauthorized' });
   }
 
-  const { id } = event.context.params as Record<string, string>;
+  const body = await readBody<{ collectionId?: string }>(event);
 
-  if (!id) {
-    throw createError({ statusCode: 400, statusMessage: 'Collection ID is required' });
+  if (!body?.collectionId?.trim()) {
+    throw createError({ statusCode: 400, statusMessage: 'collectionId is required' });
   }
 
   const cmDbPool = event.context.cmDbPool as Pool | undefined;
@@ -51,15 +50,26 @@ export default defineEventHandler(async (event): Promise<{ success: boolean } | 
       username,
     });
 
-    const repo = new CommunityCollectionRepository(cmDbPool);
-    await repo.destroy(id, ssoUser.id);
+    const collectionId = body.collectionId.trim();
+
+    const repo = new CollectionLikeRepository(cmDbPool);
+    await repo.like(collectionId, ssoUser.id);
 
     return { success: true };
   } catch (error: unknown) {
     if (error && typeof error === 'object' && 'statusCode' in error) {
       throw error;
     }
-    console.error('Error deleting community collection:', error);
+    // FK violation means the collection doesn't exist
+    if (
+      error &&
+      typeof error === 'object' &&
+      'code' in error &&
+      (error as { code: string }).code === '23503'
+    ) {
+      throw createError({ statusCode: 404, statusMessage: 'Collection not found' });
+    }
+    console.error('Error liking collection:', error);
     throw createError({ statusCode: 500, statusMessage: 'Internal Server Error' });
   }
 });
