@@ -169,14 +169,6 @@ watch(error, (err: Error | null) => {
   }
 });
 
-watch(
-  flatData,
-  (value: any) => {
-    console.log('data', value);
-  },
-  { immediate: true },
-);
-
 const loadMore = () => {
   if (hasNextPage.value) {
     fetchNextPage();
