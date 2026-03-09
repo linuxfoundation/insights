@@ -29,7 +29,23 @@ export default defineEventHandler(async (event) => {
       },
     });
 
-    return response.data?.[0];
+    const project = response.data?.[0];
+    if (!project) {
+      return project;
+    }
+
+    return {
+      ...project,
+      isLF: !!project.isLF,
+      achievements:
+        project.achievements?.map(
+          ([leaderboardType, rank, totalCount]: [string, number, number]) => ({
+            leaderboardType,
+            rank,
+            totalCount,
+          }),
+        ) ?? [],
+    };
   } catch (error: unknown) {
     if (error && typeof error === 'object' && 'statusCode' in error && error.statusCode === 404) {
       throw error;

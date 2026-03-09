@@ -9,6 +9,10 @@ export default {
     '/callback': { redirect: '/api/auth/callback' },
     '/api/auth/**': { prerender: false, index: false, cache: false },
     '/__og-image__/**': { cache: false },
+    '/api/**/*.post': { cache: false },
+    '/api/**/*.put': { cache: false },
+    '/api/**/*.delete': { cache: false },
+    '/api/**/*.patch': { cache: false },
     ...(process.env.NUXT_APP_ENV === 'production'
       ? {
           '/api/health': { cache: false },

@@ -95,11 +95,26 @@ export interface ProjectTinybird {
   repoData: ProjectRepoData[];
 }
 
+export interface ProjectInsightsAchievement {
+  leaderboardType: string;
+  rank: number;
+  totalCount: number;
+}
+
 export interface ProjectInsights {
   id: string;
   name: string;
   slug: string;
+  logoUrl: string;
+  isLF: number;
+  contributorCount: number;
+  organizationCount: number;
   softwareValue: number;
+  contributorDependencyCount: number;
+  contributorDependencyPercentage: number;
+  organizationDependencyCount: number;
+  organizationDependencyPercentage: number;
+  achievements: [string, number, number][];
   healthScore: number;
   firstCommit: string;
   starsLast365Days: number;
