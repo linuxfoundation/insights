@@ -16,6 +16,7 @@ export interface DecodedOidcToken {
   exp: number;
   original_id_token?: string;
   hasLfxInsightsPermission?: boolean;
+  isLfInsightsTeamMember?: boolean;
 }
 
 export interface DecodedIdToken extends JwtPayload {

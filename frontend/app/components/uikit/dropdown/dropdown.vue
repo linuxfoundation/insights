@@ -11,6 +11,7 @@ SPDX-License-Identifier: MIT
     :is-modal="pageWidth < 640"
     :match-width="props.matchWidth"
     :popover-class="props.popoverClass"
+    :allow-pass-through="false"
   >
     <slot name="trigger" />
 

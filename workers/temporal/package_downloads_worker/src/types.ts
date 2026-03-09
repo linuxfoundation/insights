@@ -46,6 +46,15 @@ export interface IPackageDownloadsRepo {
   repository_url: string;
 }
 
+export interface IPackageDownloadRun {
+  date: string;
+  insights_project_id: string;
+  repository_url: string;
+  bytes_returned: number;
+  returned_any_package_data: boolean;
+  error: string | null;
+}
+
 export interface ITriggerPackageDownloadsCheckForReposParams {
   failedRepoUrls?: string[];
   testRun?: boolean;

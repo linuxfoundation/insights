@@ -13,30 +13,28 @@ SPDX-License-Identifier: MIT
       <lfx-collection-header
         :loading="loading"
         :collection="props.collection"
-      />
-      <lfx-collection-filters
-        v-model:sort="sort"
-        v-model:tab="tab"
+        :only-lf-projects="isLFOnly"
+        :sort="sort"
+        @update:only-lf-projects="updateOnlyLFProjects"
         @update:sort="updateSort"
-        @update:tab="updateTab"
       />
     </div>
   </lfx-maintain-height>
 
-  <div class="container py-5 lg:py-10 flex flex-col gap-5 lg:gap-8">
+  <div class="container pb-5 lg:pb-10 flex flex-col">
     <div
-      v-if="!isPending && data?.pages.flatMap((p) => p.data).length"
-      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 lg:gap-8"
+      v-if="!isPending && flatData.length"
+      class="flex flex-col"
     >
-      <lfx-project-list-item
-        v-for="project in data?.pages.flatMap((p) => p.data)"
+      <lfx-collection-project-item
+        v-for="project in flatData"
         :key="project.slug"
         :project="project"
       />
     </div>
 
     <div
-      v-if="data?.pages[0]?.data.length === 0 && isSuccess"
+      v-if="flatData.length === 0 && isSuccess"
       class="flex flex-col items-center py-20"
     >
       <lfx-icon
@@ -53,10 +51,10 @@ SPDX-License-Identifier: MIT
     </div>
 
     <div
-      v-if="isPending"
-      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 lg:gap-8"
+      v-if="isPending || isFetchingNextPage"
+      class="flex flex-col"
     >
-      <lfx-project-list-item-loading
+      <lfx-collection-project-item-loading
         v-for="i in 6"
         :key="i"
       />
@@ -83,7 +81,7 @@ SPDX-License-Identifier: MIT
       />
     </lfx-button>
   </div>
-  <div class="flex justify-center mt-5 mb-10 lg:mb-20 lg:mt-10">
+  <div class="flex justify-center mt-5 lg:mt-10">
     <lfx-onboarding-link show-message />
   </div>
 </template>
@@ -92,12 +90,11 @@ SPDX-License-Identifier: MIT
 import { computed, onServerPrefetch, watch, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { storeToRefs } from 'pinia';
-import type { Collection } from '~~/types/collection';
+import LfxCollectionProjectItem from '../components/details/collection-project-item.vue';
+import LfxCollectionProjectItemLoading from '../components/details/collection-project-item-loading.vue';
+import type { Collection, CollectionType } from '~~/types/collection';
 
 import LfxCollectionHeader from '~/components/modules/collection/components/details/header.vue';
-import LfxCollectionFilters from '~/components/modules/collection/components/details/filters.vue';
-import LfxProjectListItem from '~/components/modules/project/components/list/project-list-item.vue';
-import LfxProjectListItemLoading from '~/components/modules/project/components/list/project-list-item-loading.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxButton from '~/components/uikit/button/button.vue';
 import LfxMaintainHeight from '~/components/uikit/maintain-height/maintain-height.vue';
@@ -110,8 +107,10 @@ import {
 } from '~/components/modules/collection/services/collections.query.service';
 import LfxOnboardingLink from '~/components/shared/components/onboarding-link.vue';
 import { useBannerStore } from '~/components/shared/store/banner.store';
+import type { Project } from '~~/types/project';
 
 const props = defineProps<{
+  type?: CollectionType;
   collection?: Collection;
   loading?: boolean;
 }>();
@@ -123,23 +122,25 @@ const route = useRoute();
 const collectionSlug = route.params.slug as string;
 
 const { queryParams } = useQueryParam(collectionDetailsParamsGetter, collectionListParamsSetter);
-const { collectionTab, collectionSort } = queryParams.value;
+const { onlyLFProjects, collectionSort } = queryParams.value;
 
 const sort = ref(collectionSort || 'contributorCount_desc');
-const tab = ref(collectionTab || 'all');
-const pageSize = 60;
+const isLFOnly = ref(onlyLFProjects === 'true');
 
-const isLF = computed(() => tab.value === 'lfx');
+const pageSize = 60;
 
 const params = computed(() => ({
   sort: sort.value,
   pageSize,
-  isLF: isLF.value,
+  isLF: isLFOnly.value,
   collectionSlug,
 }));
 
 const { data, isPending, isFetchingNextPage, fetchNextPage, hasNextPage, isSuccess } =
   PROJECT_API_SERVICE.fetchProjects(params);
+
+// @ts-expect-error - TanStack Query type inference issue with Vue
+const flatData = computed(() => data.value?.pages.flatMap((page: Pagination<Project>) => page.data) || []);
 
 const loadMore = () => {
   if (hasNextPage.value) {
@@ -149,14 +150,14 @@ const loadMore = () => {
 const updateSort = (value: string) => {
   queryParams.value = {
     collectionSort: value,
-    collectionTab: queryParams.value.collectionTab,
+    onlyLFProjects: queryParams.value.onlyLFProjects,
   };
 };
 
-const updateTab = (value: string) => {
+const updateOnlyLFProjects = (value: boolean) => {
   queryParams.value = {
     collectionSort: queryParams.value.collectionSort,
-    collectionTab: value,
+    onlyLFProjects: value ? 'true' : undefined,
   };
 };
 
@@ -167,8 +168,11 @@ watch(
       sort.value = value.collectionSort;
     }
 
-    if (value.collectionTab && value.collectionTab !== tab.value) {
-      tab.value = value.collectionTab;
+    if (value.onlyLFProjects) {
+      const onlyLFParam = value.onlyLFProjects === 'true';
+      if (onlyLFParam !== isLFOnly.value) {
+        isLFOnly.value = onlyLFParam;
+      }
     }
   },
 );

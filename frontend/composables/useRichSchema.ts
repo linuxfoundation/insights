@@ -224,7 +224,7 @@ export function useRichSchema() {
       if (!collectionRef.value) return { script: [] };
 
       const collection = collectionRef.value;
-      const collectionUrl = `${baseUrl}/collection/${collection.slug}`;
+      const collectionUrl = `${baseUrl}/collection/details/${collection.slug}`;
 
       // Build description - use first 1-2 sentences
       let description = collection.description || `Critical projects in the Open Source Index`;

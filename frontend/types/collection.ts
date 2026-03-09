@@ -6,14 +6,29 @@ export interface CollectionFeaturedProject {
   logo: string;
 }
 
+export type CollectionType = 'curated' | 'community' | 'my-collections';
+
 export interface Collection {
   id: string;
   name: string;
   slug: string;
   description: string;
-  isLf: number;
+  isLf: boolean;
   projectCount: number;
   featuredProjects: CollectionFeaturedProject[];
   softwareValue?: number;
   contributorCount?: number;
+  updatedAt: string;
+  owner?: {
+    name: string;
+    logo: string;
+  };
+  imgUrl?: string;
+  coverImgUrl?: string;
+  gradient?: [string, string];
+  type?: CollectionType;
+  isLiked?: boolean;
+  likeCount?: number;
+  isPrivate?: boolean;
+  ssoUserId?: string | null;
 }

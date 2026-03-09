@@ -110,7 +110,7 @@ class ExploreApiService {
 
   fetchFeaturedCollections() {
     const sort = 'starred_desc';
-    const pageSize = 9;
+    const pageSize = 3;
     const queryKey = computed(() => [TanstackKey.COLLECTIONS, sort, pageSize]);
 
     const queryFn = computed<QueryFunction<Pagination<Collection>>>(() =>

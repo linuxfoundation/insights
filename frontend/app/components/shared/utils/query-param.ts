@@ -12,7 +12,7 @@ export type URLParams = {
   listCategory?: string;
   listSort?: string;
   // collection details
-  collectionTab?: string;
+  onlyLFProjects?: string;
   collectionSort?: string;
   repos?: string;
   generateYaml?: string;

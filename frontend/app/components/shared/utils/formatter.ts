@@ -188,3 +188,20 @@ export const formatValueToLargestUnitDuration = (
     .map((unit) => `${unit.value}${unit.label}`)
     .join(' ');
 };
+
+/**
+ * Format date from iso string to locale string or format string
+ * @param date - The date to format
+ * @param format - The format to use (default: 'short')
+ * @returns The formatted date
+ */
+export const formatDate = (date: string, format: string = 'short'): string => {
+  const dateTime = DateTime.fromISO(date);
+  if (!dateTime.isValid) {
+    return '';
+  }
+  if (format === 'short') {
+    return dateTime.toLocaleString(DateTime.DATE_SHORT);
+  }
+  return dateTime.toFormat(format);
+};

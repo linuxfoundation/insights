@@ -5,6 +5,7 @@ SPDX-License-Identifier: MIT
 <template>
   <nuxt-link
     v-if="props.to"
+    v-slot="{ isActive, isExactActive }"
     v-bind="$attrs"
     :to="props.to"
     class="c-menu-button"
@@ -15,7 +16,7 @@ SPDX-License-Identifier: MIT
       'is-disabled': props.disabled,
     }"
   >
-    <slot />
+    <slot :is-active="props.active || (props.exact ? isExactActive : isActive)" />
   </nuxt-link>
   <div
     v-else
@@ -26,7 +27,7 @@ SPDX-License-Identifier: MIT
       'is-disabled': props.disabled,
     }"
   >
-    <slot />
+    <slot :is-active="props.active" />
   </div>
 </template>
 

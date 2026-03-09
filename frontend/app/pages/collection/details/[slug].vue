@@ -3,10 +3,12 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <lfx-collection-details-view
-    :collection="data"
-    :loading="isPending"
-  />
+  <div class="bg-white lg:!pb-30 pb-20 lg:!-mb-30 -mb-20">
+    <lfx-collection-details-view
+      :collection="data"
+      :loading="isPending"
+    />
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -46,20 +48,16 @@ onServerPrefetch(async () => {
 
 const title = computed(() => `${data.value?.name || 'Collection'} Insights`);
 
-// Truncate description to first 1-2 sentences, keeping it under 160 characters
 const description = computed(() => {
   const desc = data.value?.description || '';
   if (!desc) return '';
 
-  // Split by sentence endings (. ! ?)
   const sentences = desc.match(/[^.!?]+[.!?]+/g) || [desc];
 
-  // Try first sentence
   if (sentences[0] && sentences[0].trim().length <= 160) {
     return sentences[0].trim();
   }
 
-  // Try first two sentences
   if (sentences.length > 1) {
     const twoSentences = (sentences[0] + ' ' + sentences[1]).trim();
     if (twoSentences.length <= 160) {
@@ -67,7 +65,6 @@ const description = computed(() => {
     }
   }
 
-  // Fallback: truncate to 157 chars and add ellipsis
   return desc.substring(0, 157).trim() + '...';
 });
 
@@ -80,6 +77,5 @@ useSeoMeta({
   twitterDescription: description,
 });
 
-// Add rich schema for the collection
 useHead(getCollectionSchema(data));
 </script>
