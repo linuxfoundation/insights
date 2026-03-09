@@ -1,7 +1,8 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
+import type { Pool } from 'pg';
 import type { Collection } from '~~/types/collection';
+import { CommunityCollectionRepository } from '~~/server/repo/communityCollection.repo';
 
 /**
  * API Endpoint: Fetch Collection Details by Slug
@@ -16,45 +17,33 @@ import type { Collection } from '~~/types/collection';
  * - slug (string) [URL Parameter]: The unique slug identifier for the collection.
  *
  * Response:
- * - 200 OK: Returns the details of the collection in the following structure:
- *   {
- *     id: string;
- *     name: string;
- *     slug: string;
- *     description: string;
- *     isLf: number;
- *     projectCount: number;
- *     featuredProjects: {
- *       name: string;
- *       slug: string;
- *       logo: string;
- *     }[];
- *   }
- *
+ * - 200 OK: Returns the collection details.
  * - 404 Not Found: If the collection with the provided slug does not exist.
- *   {
- *     statusCode: 404;
- *     statusMessage: "Collection not found"
- *   }
- *
- * - 500 Internal Server Error: If an unexpected error occurs while processing the request.
- *   {
- *     statusCode: 500;
- *     statusMessage: "Internal server error"
- *   }
+ * - 500 Internal Server Error: If an unexpected error occurs.
  */
 export default defineEventHandler(async (event): Promise<Collection | Error> => {
   const { slug } = event.context.params as Record<string, string>;
+
+  const cmDbPool = event.context.cmDbPool as Pool | undefined;
+
+  if (!cmDbPool) {
+    throw createError({ statusCode: 503, statusMessage: 'Database not available' });
+  }
+
   try {
-    const res = await fetchFromTinybird<Collection[]>('/v0/pipes/collections_list.json', {
-      slug,
-    });
-    if (!res.data || res.data.length === 0) {
-      return createError({ statusCode: 404, statusMessage: 'Collection not found' });
+    const repo = new CommunityCollectionRepository(cmDbPool);
+    const collection = await repo.findBySlug(slug);
+
+    if (!collection) {
+      throw createError({ statusCode: 404, statusMessage: 'Collection not found' });
     }
-    return res.data[0];
-  } catch (err) {
-    console.error('Error fetching collection details:', err);
-    return createError({ statusCode: 500, statusMessage: 'Internal server error' });
+
+    return collection as unknown as Collection;
+  } catch (error: unknown) {
+    if (error && typeof error === 'object' && 'statusCode' in error) {
+      throw error;
+    }
+    console.error('Error fetching collection from DB:', error);
+    throw createError({ statusCode: 500, statusMessage: 'Internal server error' });
   }
 });

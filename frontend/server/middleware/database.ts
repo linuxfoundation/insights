@@ -5,7 +5,13 @@ import { getInsightsDbPool, getCMDbPool } from '../utils/db';
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig();
 
-  const allowedRoutes = ['/api/chat/', '/api/auth/login', '/api/auth/callback', '/api/auth/logout'];
+  const allowedRoutes = [
+    '/api/chat/',
+    '/api/auth/login',
+    '/api/auth/callback',
+    '/api/auth/logout',
+    '/api/collection',
+  ];
   if (allowedRoutes.some((route) => event.node.req.url?.startsWith(route))) {
     // Add the database pool to the event context
     event.context.insightsDbPool = getInsightsDbPool();
