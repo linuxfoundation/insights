@@ -20,7 +20,7 @@ SPDX-License-Identifier: MIT
       >
         <lfx-avatar-group type="project">
           <lfx-avatar
-            v-for="project of props.collection.featuredProjects.slice(0, 5)"
+            v-for="project of collectionProjects"
             :key="project.slug"
             :src="project.logo"
             type="project"
@@ -80,10 +80,10 @@ SPDX-License-Identifier: MIT
               class="text-neutral-500"
             />
             <p
-              v-if="props.collection.projectCount && props.collection.projectCount > 0"
+              v-if="props.collection.projects && props.collection.projects.length > 0"
               class="text-xs leading-4 text-neutral-500"
             >
-              {{ props.collection.projectCount }} projects
+              {{ props.collection.projects.length }} projects
               <span v-if="props.collection.updatedAt">
                 ・ Updated {{ formatDate(props.collection.updatedAt, 'dd MMM') }}
               </span>
@@ -174,6 +174,7 @@ import type { Collection, CollectionType } from '~~/types/collection';
 import { formatDate } from '~/components/shared/utils/formatter';
 import { useShareStore } from '~/components/shared/modules/share/store/share.store';
 import LfxCard from '~/components/uikit/card/card.vue';
+import type { CollectionFeaturedProject } from '~~/types/collection';
 // @ts-expect-error Vite asset import with ?url suffix
 import lfIconUrl from '~/assets/images/icon.svg?url';
 
@@ -213,6 +214,20 @@ const owner = computed(() => {
     name: 'The Linux Foundation',
     logo: lfIconUrl,
   };
+});
+
+const collectionProjects = computed<CollectionFeaturedProject[]>(() => {
+  // TODO: remove once the issue on the backend is fixed
+  if (props.variant === 'my-collections') {
+    return (
+      props.collection.projects?.slice(0, 5).map((id) => ({
+        name: id,
+        slug: id,
+        logo: '',
+      })) || []
+    );
+  }
+  return props.collection.featuredProjects.slice(0, 5);
 });
 
 const handleShare = () => {
