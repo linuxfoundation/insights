@@ -118,7 +118,7 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed, onServerPrefetch } from 'vue';
+import { computed, onServerPrefetch, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 import { isArray } from 'lodash-es';
 import LfCreateCollectionButton from '../components/create-modal/create-button.vue';
@@ -186,6 +186,14 @@ const isEmptyData = (value: Collection[] | null | undefined) => {
   }
   return false;
 };
+
+watch(
+  curatedData,
+  (value) => {
+    console.log('curatedData', value);
+  },
+  { immediate: true },
+);
 
 onServerPrefetch(async () => {
   await Promise.all([curatedSuspense(), communitySuspense(), myCollectionsSuspense()]);
