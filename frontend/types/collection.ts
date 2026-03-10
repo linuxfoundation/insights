@@ -23,6 +23,7 @@ export interface Collection {
     name: string;
     logo: string;
   };
+  projects?: string[];
   imgUrl?: string;
   coverImgUrl?: string;
   gradient?: [string, string];
