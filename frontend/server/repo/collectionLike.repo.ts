@@ -8,6 +8,8 @@ interface LikedCollectionRow {
   slug: string;
   description: string;
   logoUrl: string | null;
+  color: string | null;
+  imageUrl: string | null;
   updatedAt: string;
   ownerName: string | null;
   ownerLogo: string | null;
@@ -19,6 +21,8 @@ export interface LikedCollection {
   slug: string;
   description: string;
   logoUrl: string | null;
+  color: string | null;
+  imageUrl: string | null;
   updatedAt: string;
   projectCount: number;
   owner: {
@@ -73,7 +77,7 @@ export class CollectionLikeRepository {
 
     const [collectionsResult, countResult] = await Promise.all([
       this.pool.query(
-        `SELECT c.id, c.name, c.slug, c.description, c."logoUrl", c."updatedAt",
+        `SELECT c.id, c.name, c.slug, c.description, c."logoUrl", c.color, c."imageUrl", c."updatedAt",
                 u."displayName" AS "ownerName", u."avatarUrl" AS "ownerLogo"
          FROM "collectionLikes" cl
          JOIN collections c ON c.id = cl."collectionId" AND c."deletedAt" IS NULL
@@ -119,6 +123,8 @@ export class CollectionLikeRepository {
         slug: r.slug,
         description: r.description,
         logoUrl: r.logoUrl,
+        color: r.color,
+        imageUrl: r.imageUrl,
         updatedAt: r.updatedAt,
         projectCount: projectCountMap.get(r.id) || 0,
         owner: r.ownerName

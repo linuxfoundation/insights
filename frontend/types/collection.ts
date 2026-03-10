@@ -29,7 +29,6 @@ export interface Collection {
   gradient?: [string, string];
   type?: CollectionType;
   isLiked?: boolean;
-  likeCount?: number;
   isPrivate?: boolean;
   ssoUserId?: string | null;
 }
