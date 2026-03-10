@@ -6,6 +6,7 @@ export interface SearchCollection {
 }
 
 export interface SearchProject {
+  id: string;
   name: string;
   slug: string;
   logo: string | null;
