@@ -120,9 +120,10 @@ export const auditorOutputSchema = z.object({
   reasoning: z.string().describe('2-3 sentences explaining the validation decision'),
   feedback_to_router: z
     .string()
+    .nullable()
     .optional()
     .describe('If invalid, specific guidance for router to fix the issue'),
-  summary: z.string().optional().describe('If valid, user-friendly summary of findings'),
+  summary: z.string().nullable().optional().describe('If valid, user-friendly summary of findings'),
 });
 
 // TypeScript types for agent outputs
