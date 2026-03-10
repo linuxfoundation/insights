@@ -11,6 +11,8 @@ export interface CommunityCollection {
   isPrivate: boolean;
   ssoUserId: string;
   logoUrl: string | null;
+  color: string | null;
+  imageUrl: string | null;
   projects: string[];
   createdAt: string;
   updatedAt: string;
