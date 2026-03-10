@@ -8,6 +8,7 @@ import {
 } from '~~/server/repo/communityCollection.repo';
 import { InsightsSsoUserRepository } from '~~/server/repo/insightsSsoUser.repo';
 import type { DecodedOidcToken } from '~~/types/auth/auth-jwt.types';
+import { getAuthUsername } from '~~/server/utils/common';
 
 /**
  * API Endpoint: POST /api/collection/community
@@ -46,7 +47,7 @@ export default defineEventHandler(async (event): Promise<CommunityCollection | E
 
   try {
     // Derive username from Auth0 sub (e.g. "auth0|abc123" -> "abc123")
-    const username = user.sub.includes('|') ? user.sub.split('|').pop()! : user.sub;
+    const username = getAuthUsername(user.sub);
 
     // Upsert SSO user
     const ssoUserRepo = new InsightsSsoUserRepository(cmDbPool);

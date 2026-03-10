@@ -23,6 +23,7 @@ export interface Collection {
     name: string;
     logo: string;
   };
+  likeCount?: number;
   imgUrl?: string;
   coverImgUrl?: string;
   gradient?: [string, string];

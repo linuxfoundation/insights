@@ -1,23 +1,22 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import type { Pool } from 'pg';
-import { CommunityCollectionRepository } from '~~/server/repo/communityCollection.repo';
+import { CollectionLikeRepository } from '~~/server/repo/collectionLike.repo';
 import { InsightsSsoUserRepository } from '~~/server/repo/insightsSsoUser.repo';
 import type { DecodedOidcToken } from '~~/types/auth/auth-jwt.types';
 import { getAuthUsername } from '~~/server/utils/common';
 
 /**
- * API Endpoint: DELETE /api/collection/community/:id
- * Description: Soft-deletes a community collection owned by the authenticated user.
+ * API Endpoint: DELETE /api/collection/like
+ * Description: Unlikes a collection for the authenticated user.
  *
- * URL Parameters:
- * - id (string, required): Collection ID
+ * Request Body:
+ * - collectionId (string, required): The ID of the collection to unlike
  *
  * Response:
  * - 200: Success
+ * - 400: Validation error
  * - 401: Unauthorized
- * - 403: Forbidden (not the owner)
- * - 404: Collection not found
  * - 500: Internal Server Error
  */
 export default defineEventHandler(async (event): Promise<{ success: boolean } | Error> => {
@@ -27,10 +26,10 @@ export default defineEventHandler(async (event): Promise<{ success: boolean } | 
     throw createError({ statusCode: 401, statusMessage: 'Unauthorized' });
   }
 
-  const { id } = event.context.params as Record<string, string>;
+  const body = await readBody<{ collectionId?: string }>(event);
 
-  if (!id) {
-    throw createError({ statusCode: 400, statusMessage: 'Collection ID is required' });
+  if (!body?.collectionId?.trim()) {
+    throw createError({ statusCode: 400, statusMessage: 'collectionId is required' });
   }
 
   const cmDbPool = event.context.cmDbPool as Pool | undefined;
@@ -43,23 +42,21 @@ export default defineEventHandler(async (event): Promise<{ success: boolean } | 
     const username = getAuthUsername(user.sub);
 
     const ssoUserRepo = new InsightsSsoUserRepository(cmDbPool);
-    const ssoUser = await ssoUserRepo.upsert({
-      id: user.sub,
-      displayName: user.name,
-      avatarUrl: user.picture,
-      email: user.email,
-      username,
-    });
+    const ssoUser = await ssoUserRepo.findByUsername(username);
 
-    const repo = new CommunityCollectionRepository(cmDbPool);
-    await repo.destroy(id, ssoUser.id);
+    if (!ssoUser) {
+      return { success: true };
+    }
+
+    const repo = new CollectionLikeRepository(cmDbPool);
+    await repo.unlike(body.collectionId.trim(), ssoUser.id);
 
     return { success: true };
   } catch (error: unknown) {
     if (error && typeof error === 'object' && 'statusCode' in error) {
       throw error;
     }
-    console.error('Error deleting community collection:', error);
+    console.error('Error unliking collection:', error);
     throw createError({ statusCode: 500, statusMessage: 'Internal Server Error' });
   }
 });
