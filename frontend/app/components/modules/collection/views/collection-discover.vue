@@ -83,12 +83,33 @@ SPDX-License-Identifier: MIT
             />
             <h3 class="text-sm font-medium text-neutral-900">Liked Collections ({{ likedCollections.length }})</h3>
           </div>
-          <div class="flex flex-col gap-0">
+          <div
+            v-if="!isLikedCollectionsEmpty"
+            class="flex flex-col gap-0"
+          >
             <lfx-collection-list-item
               v-for="collection in likedCollections"
               :key="collection.slug"
               :collection="collection"
             />
+          </div>
+          <div
+            v-else
+            class="flex flex-col items-center justify-center py-10 gap-5"
+          >
+            <div class="flex items-center justify-center h-14 w-14 rounded-full bg-accent-100">
+              <lfx-icon
+                name="hearts"
+                :size="32"
+                class="text-accent-500"
+              />
+            </div>
+            <div class="flex flex-col items-center justify-center gap-3">
+              <h3 class="text-xl font-bold font-secondary leading-8">No liked collections yet</h3>
+              <p class="text-sm text-neutral-600">
+                Explore curated and community collections, and like the ones that inspire you. They'll appear here.
+              </p>
+            </div>
           </div>
         </section>
       </template>
@@ -97,7 +118,7 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed, onServerPrefetch, watch } from 'vue';
+import { computed, onServerPrefetch } from 'vue';
 import { storeToRefs } from 'pinia';
 import { isArray } from 'lodash-es';
 import LfCreateCollectionButton from '../components/create-modal/create-button.vue';
@@ -151,6 +172,7 @@ const likedCollections = computed<Collection[]>(() => []);
 const isCuratedEmpty = computed(() => isEmptyData(curatedCollections.value));
 const isCommunityEmpty = computed(() => isEmptyData(communityCollections.value));
 const isMyCollectionsEmpty = computed(() => isEmptyData(myCollections.value));
+const isLikedCollectionsEmpty = computed(() => isEmptyData(likedCollections.value));
 
 // TODO: remove this once we have everything done and tested
 const isLfInsightsTeamMember = computed(() => {
@@ -164,14 +186,6 @@ const isEmptyData = (value: Collection[] | null | undefined) => {
   }
   return false;
 };
-
-watch(
-  curatedData,
-  (value) => {
-    console.log('curatedData', value);
-  },
-  { immediate: true },
-);
 
 onServerPrefetch(async () => {
   await Promise.all([curatedSuspense(), communitySuspense(), myCollectionsSuspense()]);

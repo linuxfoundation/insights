@@ -8,7 +8,7 @@ SPDX-License-Identifier: MIT
       <div class="flex items-center gap-2">
         <!-- TODO: change this to the correct route when we have the discovery page -->
         <nuxt-link
-          :to="{ name: LfxRoutes.EXPLORE }"
+          :to="{ name: isLfInsightsTeamMember ? LfxRoutes.COLLECTIONS : LfxRoutes.EXPLORE }"
           class="ease-linear transition-all"
         >
           <lfx-icon-button
@@ -146,6 +146,7 @@ const sortValue = computed({
 
 const route = useRoute();
 const linkUrl = computed(() => collectionTabs(user.value));
+const isLfInsightsTeamMember = computed(() => user.value?.isLfInsightsTeamMember || false);
 
 const viewTabs = [
   { label: '', value: 'grid', icon: 'grid-2' },

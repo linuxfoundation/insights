@@ -5,8 +5,9 @@ SPDX-License-Identifier: MIT
 <template>
   <lfx-button
     v-if="canCreateCollection"
-    type="secondary"
+    :type="type"
     button-style="pill"
+    :class="type === 'ghost' ? '!text-accent-500' : ''"
     @click="isCreateCollectionModalOpen = true"
   >
     <lfx-icon name="rectangle-history-circle-plus" />
@@ -26,6 +27,16 @@ import LfCreateCollectionModal from './create-collection-modal.vue';
 import { useAuthStore } from '~/components/modules/auth/store/auth.store';
 import LfxButton from '~/components/uikit/button/button.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
+import type { ButtonType } from '~/components/uikit/button/types/button.types';
+
+withDefaults(
+  defineProps<{
+    type?: ButtonType;
+  }>(),
+  {
+    type: 'outline',
+  },
+);
 
 const isCreateCollectionModalOpen = ref(false);
 const authStore = useAuthStore();
