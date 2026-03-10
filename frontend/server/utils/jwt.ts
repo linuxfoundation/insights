@@ -73,6 +73,15 @@ export const isLfInsightsTeamMember = (email: string): boolean => {
     return false;
   }
 
+  const appEnv = config.public.appEnv;
+
+  const isLocal = appEnv !== 'staging' && appEnv !== 'production';
+
+  // In local we don't have SSO Groups so we should always allow to use the feature
+  if (isLocal) {
+    return true;
+  }
+
   const lfxInsightsTeam = config.lfxInsightsTeam || '';
   return lfxInsightsTeam
     .split(',')

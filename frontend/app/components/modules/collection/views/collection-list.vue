@@ -138,10 +138,13 @@ const params = computed(() => ({
   pageSize: pageSize.value,
   sort: sort.value || 'starred_desc',
   categories: undefined,
+  type: props.type === 'my-collections' ? undefined : props.type,
 }));
 
 const { data, isPending, isFetchingNextPage, fetchNextPage, hasNextPage, isSuccess, error } =
-  COLLECTIONS_API_SERVICE.fetchCollections(params);
+  props.type === 'my-collections'
+    ? COLLECTIONS_API_SERVICE.fetchMyCollections(params)
+    : COLLECTIONS_API_SERVICE.fetchCollections(params);
 
 const flatData = computed(() =>
   // @ts-expect-error - TanStack Query type inference issue with Vue

@@ -11,6 +11,7 @@ export interface CreateCollectionStep {
 }
 
 export interface CollectionProject {
+  id: string;
   name: string;
   slug: string;
   logo: string | null;
