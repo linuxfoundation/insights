@@ -127,7 +127,7 @@ const createCollection = async () => {
     name: form.value.name,
     description: form.value.description,
     isPrivate: form.value.visibility === 'private',
-    projects: form.value.projects.map((project) => project.id),
+    projects: ['b2222bc8-af2d-4c44-a318-e2abbd7b955e', 'dab93171-acbe-42d6-a05b-ab32810e764a'], //form.value.projects.map((project) => project.id),
   };
 
   isCreating.value = true;
