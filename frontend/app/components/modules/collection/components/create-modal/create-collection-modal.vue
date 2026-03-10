@@ -29,6 +29,7 @@ SPDX-License-Identifier: MIT
       <lf-create-collection-modal-footer
         :step="step"
         :can-proceed="canProceed"
+        :loading="isCreating"
         @previous="previousStep"
         @next="nextStep"
         @cancel="isModalOpen = false"
@@ -49,6 +50,9 @@ import {
   type CreateCollectionStep,
   type CreateCollectionForm,
 } from '~/components/modules/collection/config/create-collection.config';
+import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
+import useToastService from '~/components/uikit/toast/toast.service';
+import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 
 const props = withDefaults(
   defineProps<{
@@ -69,9 +73,12 @@ const isModalOpen = computed({
   set: (value: boolean) => emit('update:modelValue', value),
 });
 
+const { showToast } = useToastService();
+
 const step = ref(0);
 const form = ref<CreateCollectionForm>({ ...createCollectionTemplate, projects: [] });
 const stepRef = ref<{ $v?: { $invalid: boolean; $touch: () => void } } | null>(null);
+const isCreating = ref(false);
 
 const steps = computed<CreateCollectionStep[]>(() => createCollectionSteps);
 
@@ -105,9 +112,36 @@ const previousStep = () => {
   }
 };
 
-const createCollection = () => {
-  emit('created', form.value);
-  isModalOpen.value = false;
+const isFormValid = computed(() => {
+  return (
+    form.value.name.trim().length > 0 && form.value.description.trim().length > 0 && form.value.projects.length > 0
+  );
+});
+
+const createCollection = async () => {
+  if (!isFormValid.value || isCreating.value) {
+    return;
+  }
+
+  const payload = {
+    name: form.value.name,
+    description: form.value.description,
+    isPrivate: form.value.visibility === 'private',
+    projects: form.value.projects.map((project) => project.id),
+  };
+
+  isCreating.value = true;
+
+  try {
+    await COLLECTIONS_API_SERVICE.createCollection(payload);
+    emit('created', form.value);
+    isModalOpen.value = false;
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Failed to create collection';
+    showToast(message, ToastTypesEnum.negative);
+  } finally {
+    isCreating.value = false;
+  }
 };
 
 watch(isModalOpen, (value) => {

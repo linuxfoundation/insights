@@ -21,8 +21,8 @@ SPDX-License-Identifier: MIT
       <section class="border-b border-neutral-200 pb-10">
         <lfx-collection-section
           type="curated"
-          :status="discoveryStatus"
-          :error="discoveryError"
+          :status="curatedStatus"
+          :error="curatedError"
           error-message="Error fetching curated collections"
           :is-empty="isCuratedEmpty"
         >
@@ -40,8 +40,8 @@ SPDX-License-Identifier: MIT
         <section class="border-b border-neutral-200 pb-10">
           <lfx-collection-section
             type="community"
-            :status="discoveryStatus"
-            :error="discoveryError"
+            :status="communityStatus"
+            :error="communityError"
             error-message="Error fetching community collections"
             :is-empty="isCommunityEmpty"
           >
@@ -58,8 +58,8 @@ SPDX-License-Identifier: MIT
         <section>
           <lfx-collection-section
             type="my-collections"
-            :status="discoveryStatus"
-            :error="discoveryError"
+            :status="myCollectionsStatus"
+            :error="myCollectionsError"
             error-message="Error fetching your collections"
             :is-empty="isMyCollectionsEmpty"
           >
@@ -97,7 +97,7 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed, onServerPrefetch } from 'vue';
+import { computed, onServerPrefetch, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 import { isArray } from 'lodash-es';
 import LfCreateCollectionButton from '../components/create-modal/create-button.vue';
@@ -114,16 +114,39 @@ const authStore = useAuthStore();
 const { user } = storeToRefs(authStore);
 
 const {
-  data: discoveryData,
-  status: discoveryStatus,
-  error: discoveryError,
-  suspense: discoverySuspense,
-} = COLLECTIONS_API_SERVICE.fetchDiscoveryCollections();
+  data: curatedData,
+  status: curatedStatus,
+  error: curatedError,
+  suspense: curatedSuspense,
+} = COLLECTIONS_API_SERVICE.fetchDiscoveryCuratedCollections();
 
-const curatedCollections = computed(() => discoveryData.value?.curatedCollections || []);
-const communityCollections = computed(() => discoveryData.value?.communityCollections || []);
-const myCollections = computed(() => discoveryData.value?.myCollections || []);
-const likedCollections = computed(() => discoveryData.value?.likedCollections || []);
+const {
+  data: communityData,
+  status: communityStatus,
+  error: communityError,
+  suspense: communitySuspense,
+} = COLLECTIONS_API_SERVICE.fetchDiscoveryCommunityCollections();
+
+const {
+  data: myCollectionsData,
+  status: myCollectionsStatus,
+  error: myCollectionsError,
+  suspense: myCollectionsSuspense,
+} = COLLECTIONS_API_SERVICE.fetchDiscoveryMyCollections();
+
+// TODO: Uncomment when backend for liked collections is ready
+// const {
+//   data: likedData,
+//   status: likedStatus,
+//   error: likedError,
+//   suspense: likedSuspense,
+// } = COLLECTIONS_API_SERVICE.fetchDiscoveryLikedCollections();
+
+const curatedCollections = computed(() => curatedData.value?.data || []);
+const communityCollections = computed(() => communityData.value?.data || []);
+const myCollections = computed(() => myCollectionsData.value?.data || []);
+// TODO: Uncomment when backend for liked collections is ready
+const likedCollections = computed<Collection[]>(() => []);
 
 const isCuratedEmpty = computed(() => isEmptyData(curatedCollections.value));
 const isCommunityEmpty = computed(() => isEmptyData(communityCollections.value));
@@ -142,8 +165,16 @@ const isEmptyData = (value: Collection[] | null | undefined) => {
   return false;
 };
 
+watch(
+  curatedData,
+  (value) => {
+    console.log('curatedData', value);
+  },
+  { immediate: true },
+);
+
 onServerPrefetch(async () => {
-  await discoverySuspense();
+  await Promise.all([curatedSuspense(), communitySuspense(), myCollectionsSuspense()]);
 });
 </script>
 <script lang="ts">
