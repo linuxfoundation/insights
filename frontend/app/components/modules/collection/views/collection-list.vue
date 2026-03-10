@@ -61,22 +61,7 @@ SPDX-License-Identifier: MIT
         </template>
       </div>
 
-      <div
-        v-if="flatData.length === 0 && isSuccess"
-        class="flex flex-col items-center py-20"
-      >
-        <lfx-icon
-          name="face-monocle"
-          :size="80"
-          class="text-neutral-300"
-        />
-        <h3 class="text-center pt-5 text-heading-3 sm:text-heading-2 font-secondary font-bold text-neutral-500">
-          No collections found
-        </h3>
-        <p class="text-body-1 text-neutral-500 pt-3 text-center">
-          Try adjusting your filters to find what you’re looking for.
-        </p>
-      </div>
+      <lfx-collections-empty v-if="flatData.length === 0 && isSuccess" />
     </div>
   </section>
 
@@ -102,13 +87,13 @@ import { collectionListParamsGetter, collectionListParamsSetter } from '../servi
 import { headerBackground } from '../config/collection-type-config';
 import type { Pagination } from '~~/types/shared/pagination';
 
-import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxButton from '~/components/uikit/button/button.vue';
 import LfxCollectionListItem from '~/components/shared/components/collection-list-item.vue';
 import LfxCollectionListItemLoading from '~/components/modules/collection/components/list/collection-list-item-loading.vue';
 import LfxCollectionListHeader from '~/components/modules/collection/components/list/header.vue';
 import LfxCollectionCardLoading from '~/components/shared/components/collection-card-loading.vue';
 import LfxCollectionCard from '~/components/shared/components/collection-card.vue';
+import LfxCollectionsEmpty from '~/components/shared/components/collections-empty.vue';
 
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
