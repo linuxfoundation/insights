@@ -261,20 +261,17 @@ class CollectionsApiService {
     ]);
   }
 
-  // TODO: Uncomment when backend for liked collections is ready
-  // fetchDiscoveryLikedCollections() {
-  //   const queryKey = computed(() => [TanstackKey.COLLECTION_DISCOVERY, 'liked']);
-  //   const queryFn = this.fetchMyCollectionsQueryFn(() => ({
-  //     pageSize: 10,
-  //     sort: 'contributors_desc',
-  //     categories: undefined,
-  //   }));
-  //
-  //   return useQuery<Pagination<Collection>>({
-  //     queryKey,
-  //     queryFn,
-  //   });
-  // }
+  fetchDiscoveryLikedCollections(params: ComputedRef<number>) {
+    const queryKey = computed(() => [TanstackKey.COLLECTION_DISCOVERY, 'liked', params.value]);
+    const queryFn = this.fetchLikedCollectionsQueryFn(() => ({
+      pageSize: 10,
+    }));
+
+    return useQuery<Pagination<Collection>>({
+      queryKey,
+      queryFn,
+    });
+  }
 
   fetchMyCollections(params: ComputedRef<QueryParams>) {
     const queryKey = computed(() => [
@@ -339,6 +336,61 @@ class CollectionsApiService {
   async deleteCollection(id: string): Promise<void> {
     await $fetch(`/api/collection/community/${id}`, {
       method: 'DELETE',
+    });
+  }
+
+  fetchLikedCollections(params: ComputedRef<{ page?: number; pageSize: number }>) {
+    const queryKey = computed(() => [
+      TanstackKey.LIKED_COLLECTIONS,
+      params.value.pageSize,
+      params.value.page,
+    ]);
+
+    const queryFn = this.fetchLikedCollectionsQueryFn(() => ({
+      ...params.value,
+    }));
+
+    return useInfiniteQuery<
+      Pagination<Collection>,
+      Error,
+      Pagination<Collection>,
+      readonly unknown[],
+      number
+    >({
+      queryKey,
+      queryFn,
+      getNextPageParam: (lastPage) => {
+        const nextPage = lastPage.page + 1;
+        const totalPages = Math.ceil(lastPage.total / lastPage.pageSize);
+        return nextPage < totalPages ? nextPage : null;
+      },
+      initialPageParam: 0,
+    });
+  }
+
+  fetchLikedCollectionsQueryFn(
+    query: () => Record<string, string | number | undefined>,
+  ): QueryFunction<Pagination<Collection>, readonly unknown[], number> {
+    return async ({ pageParam = 0 }) =>
+      await $fetch('/api/collection/like', {
+        params: {
+          page: pageParam,
+          ...query(),
+        },
+      });
+  }
+
+  async likeCollection(collectionId: string): Promise<{ success: boolean }> {
+    return await $fetch('/api/collection/like', {
+      method: 'POST',
+      body: { collectionId },
+    });
+  }
+
+  async unlikeCollection(collectionId: string): Promise<{ success: boolean }> {
+    return await $fetch('/api/collection/like', {
+      method: 'DELETE',
+      body: { collectionId },
     });
   }
 }

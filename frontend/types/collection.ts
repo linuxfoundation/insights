@@ -24,11 +24,13 @@ export interface Collection {
     logo: string;
   };
   projects?: string[];
-  imgUrl?: string;
+  logoUrl?: string | null;
+  imageUrl?: string | null;
   coverImgUrl?: string;
-  gradient?: [string, string];
+  color?: string | null;
   type?: CollectionType;
   isLiked?: boolean;
   isPrivate?: boolean;
   ssoUserId?: string | null;
+  likeCount?: number;
 }

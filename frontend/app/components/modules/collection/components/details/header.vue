@@ -215,6 +215,7 @@ import LfxToggle from '~/components/uikit/toggle/toggle.vue';
 import { useAuthStore } from '~/components/modules/auth/store/auth.store';
 import { useShareStore } from '~/components/shared/modules/share/store/share.store';
 import { LfxRoutes } from '~/components/shared/types/routes';
+import type { CollectionType } from '~~/types/collection';
 
 const authStore = useAuthStore();
 const { user } = storeToRefs(authStore);
@@ -243,10 +244,11 @@ const isOnlyLFProjects = computed({
 
 const { scrollTop } = useScroll();
 const allTabs = computed(() => collectionTabs(user.value));
+const collectionType = computed<CollectionType>(() => (props.collection?.ssoUserId ? 'community' : 'curated'));
 const collectionTab = computed(
-  () => allTabs.value.find((tab) => tab.type === props.collection?.type) || allTabs.value[0],
+  () => allTabs.value.find((tab) => tab.type === collectionType.value) || allTabs.value[0],
 );
-const headerBackgroundStyle = computed(() => headerBackground(props.collection?.type));
+const headerBackgroundStyle = computed(() => headerBackground(collectionType.value, props.collection?.color));
 
 const projectCount = computed(() => props.collection?.projectCount || 0);
 

@@ -32,6 +32,7 @@ SPDX-License-Identifier: MIT
             v-for="collection in flatData"
             :key="collection.slug"
             :collection="collection"
+            :show-like-count="true"
           />
         </template>
         <template v-else>

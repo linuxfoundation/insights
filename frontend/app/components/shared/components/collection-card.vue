@@ -7,9 +7,9 @@ SPDX-License-Identifier: MIT
     <lfx-card class="!shadow-none !rounded-xl !border-neutral-200 flex flex-col hover:!shadow-md transition h-full">
       <!-- header: cover image for curated collections -->
       <div
-        v-if="props.collection.coverImgUrl && props.variant === 'curated'"
+        v-if="props.collection.imageUrl && props.variant === 'curated'"
         class="flex items-center gap-2 h-[120px] rounded-t-xl bg-cover bg-center"
-        :style="{ backgroundImage: `url(${props.collection.coverImgUrl})` }"
+        :style="{ backgroundImage: `url(${props.collection.imageUrl})` }"
       ></div>
       <!-- header: avatar stack for community/my-collections or curated without cover image -->
       <div
@@ -135,25 +135,7 @@ SPDX-License-Identifier: MIT
                 class="!text-neutral-900"
               />
             </lfx-button>
-            <lfx-button
-              type="transparent"
-              class="w-1/3 flex justify-center items-center hover:!bg-transparent"
-              :class="props.collection.isLiked ? 'opacity-100' : 'opacity-50 hover:!opacity-100'"
-              @click.stop.prevent="handleLike"
-            >
-              <lfx-icon
-                name="heart"
-                :size="16"
-                :class="props.collection.isLiked ? '!text-negative-500' : 'text-neutral-900'"
-                :type="props.collection.isLiked ? 'solid' : 'light'"
-              />
-              <span
-                v-if="props.collection.likeCount !== undefined"
-                class="text-xs leading-4 text-neutral-900 font-medium"
-              >
-                {{ props.collection.likeCount }}
-              </span>
-            </lfx-button>
+            <like-button :collection="props.collection" />
           </div>
         </div>
       </div>
@@ -177,6 +159,7 @@ import LfxCard from '~/components/uikit/card/card.vue';
 import type { CollectionFeaturedProject } from '~~/types/collection';
 // @ts-expect-error Vite asset import with ?url suffix
 import lfIconUrl from '~/assets/images/icon.svg?url';
+import LikeButton from '~/components/shared/components/like-button.vue';
 
 const router = useRouter();
 const { openShareModal } = useShareStore();
@@ -192,13 +175,13 @@ const props = withDefaults(
 );
 
 const headerBackground = computed(() => {
-  if (props.collection.gradient) {
+  if (props.collection.color && props.variant === 'curated') {
     return {
-      backgroundImage: `linear-gradient(180deg, ${props.collection.gradient[0]}, ${props.collection.gradient[1]})`,
+      backgroundImage: `linear-gradient(180deg, ${props.collection.color}00, ${props.collection.color}0D), var(--White, #FFF)`,
     };
   }
   return {
-    backgroundImage: 'linear-gradient(180deg, rgba(248, 251, 255, 1), rgba(248, 251, 255, 0))',
+    backgroundImage: 'linear-gradient(180deg, #009AFF00, #009AFF0D), var(--White, #FFF)',
   };
 });
 
@@ -248,10 +231,6 @@ const handleShare = () => {
 
 const handleClone = () => {
   // TODO: Implement clone functionality
-};
-
-const handleLike = () => {
-  // TODO: Implement like functionality
 };
 
 const handleOptionsMenu = () => {

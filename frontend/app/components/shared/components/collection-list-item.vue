@@ -11,8 +11,8 @@ SPDX-License-Identifier: MIT
       <!-- Collection Avatar -->
       <div class="relative shrink-0">
         <lfx-avatar
-          v-if="props.collection.imgUrl"
-          :src="props.collection.imgUrl"
+          v-if="props.collection.logoUrl"
+          :src="props.collection.logoUrl"
           type="project"
         />
         <div
@@ -42,22 +42,24 @@ SPDX-License-Identifier: MIT
     <div class="flex items-center gap-4 shrink-0">
       <!-- Owner info -->
       <div class="flex items-center gap-2">
-        <template v-if="props.collection.isLf">
-          <img
-            :src="lfIconUrl"
-            alt="The Linux Foundation"
-            class="w-4 h-4"
-          />
-          <span class="text-sm text-neutral-600"> Curated by The Linux Foundation ・ </span>
-        </template>
-        <template v-else-if="props.collection.owner">
+        <template v-if="props.collection.owner && props.collection.owner.logo">
           <lfx-avatar
             :src="props.collection.owner.logo"
             type="member"
-            size="xsmall"
+            size="small"
           />
-          <span class="text-sm text-neutral-600"> by {{ props.collection.owner.name }} ・ </span>
         </template>
+        <template v-else>
+          <img
+            :src="owner.logo"
+            :alt="owner.name"
+            class="block"
+            loading="lazy"
+            width="12"
+            height="12"
+          />
+        </template>
+        <span class="text-sm text-neutral-600"> by {{ owner.name }} ・ </span>
 
         <!-- Project count and updated date -->
         <div class="flex items-center gap-1.5">
@@ -70,6 +72,12 @@ SPDX-License-Identifier: MIT
             {{ props.collection.projectCount }} projects ・ Updated
             {{ formatDate(props.collection.updatedAt, 'dd MMM') }}
           </span>
+        </div>
+        <div
+          v-if="showLikeCount"
+          class="ml-4"
+        >
+          <like-button :collection="props.collection" />
         </div>
       </div>
 
@@ -98,6 +106,7 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
 import { useRouter } from 'nuxt/app';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
@@ -110,13 +119,34 @@ import lfIconUrl from '~/assets/images/icon.svg?url';
 import { useShareStore } from '~/components/shared/modules/share/store/share.store';
 import LfxDropdown from '~/components/uikit/dropdown/dropdown.vue';
 import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
+import LikeButton from '~/components/shared/components/like-button.vue';
 
 const router = useRouter();
 const { openShareModal } = useShareStore();
 
-const props = defineProps<{
-  collection: Collection;
-}>();
+const props = withDefaults(
+  defineProps<{
+    collection: Collection;
+    showLikeCount?: boolean;
+  }>(),
+  {
+    showLikeCount: false,
+  },
+);
+
+const owner = computed(() => {
+  if (props.collection.owner) {
+    return {
+      name: props.collection.owner?.name,
+      logo: props.collection.owner?.logo,
+    };
+  }
+
+  return {
+    name: 'Curated by The Linux Foundation',
+    logo: lfIconUrl,
+  };
+});
 
 const handleShare = () => {
   const title = `LFX Insights | Collections - ${props.collection.name}`;
