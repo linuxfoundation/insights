@@ -174,14 +174,26 @@ const props = withDefaults(
   },
 );
 
+// This only applies to the collection card header, in the designs the header gradient seems to be different
+// from the card background gradient for communinity and my collections
 const headerBackground = computed(() => {
-  if (props.collection.color && props.variant === 'curated') {
-    return {
-      backgroundImage: `linear-gradient(180deg, ${props.collection.color}00, ${props.collection.color}0D), var(--White, #FFF)`,
-    };
+  if (props.variant === 'curated') {
+    // curated collections should have an image so we don't need a background
+    // however, if the image is not set, we need to use a default background
+    if (props.collection.imageUrl) {
+      return {};
+    }
+
+    if (props.collection.color) {
+      return {
+        background: `linear-gradient(0deg, ${props.collection.color}00, ${props.collection.color}0D), var(--White, #FFF)`,
+      };
+    }
   }
+
+  // community and my-collections (curated too if no image and no color)
   return {
-    backgroundImage: 'linear-gradient(180deg, #009AFF00, #009AFF0D), var(--White, #FFF)',
+    background: 'linear-gradient(0deg, #F8FBFF00, #F8FBFF)',
   };
 });
 

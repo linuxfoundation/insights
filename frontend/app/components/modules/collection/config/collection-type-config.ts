@@ -53,13 +53,14 @@ export const collectionTabs = (user: User | null): CollectionTypesTabs[] => {
   return tabs;
 };
 
+// This only applies to the collection details page header
 export const headerBackground = (type?: CollectionType, curatedColor?: string | null) => {
   switch (type) {
     case 'curated':
       return {
         background: curatedColor
           ? `linear-gradient(0deg, ${curatedColor}00, ${curatedColor}0D), var(--White, #FFF)`
-          : 'linear-gradient(0deg, #0F172B00, #0F172B0D, var(--White, #FFF))',
+          : 'linear-gradient(0deg, #0F172B00, #0F172B0D), var(--White, #FFF)',
       };
     case 'community':
       return {
@@ -67,7 +68,7 @@ export const headerBackground = (type?: CollectionType, curatedColor?: string | 
       };
     default:
       return {
-        background: 'linear-gradient(0deg, #8E51FF00, #8E51FF0D, var(--White, #FFF)',
+        background: 'linear-gradient(0deg, #8E51FF00, #8E51FF0D), var(--White, #FFF)',
       };
   }
 };
