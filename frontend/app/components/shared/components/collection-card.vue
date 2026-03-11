@@ -52,24 +52,10 @@ SPDX-License-Identifier: MIT
             v-if="props.variant !== 'my-collections'"
             class="flex items-center gap-2 mb-2"
           >
-            <template v-if="props.variant === 'community' && props.collection.owner?.logo">
-              <lfx-avatar
-                :src="props.collection.owner.logo"
-                type="member"
-                size="small"
-              />
-            </template>
-            <template v-else>
-              <img
-                :src="owner.logo"
-                :alt="owner.name"
-                class="block"
-                loading="lazy"
-                width="12"
-                height="12"
-              />
-            </template>
-            <p class="text-xs leading-4 text-neutral-600">by {{ owner.name }}</p>
+            <collection-owner
+              :collection="props.collection"
+              size="small"
+            />
           </div>
 
           <!-- project count and updated date -->
@@ -157,8 +143,7 @@ import { formatDate } from '~/components/shared/utils/formatter';
 import { useShareStore } from '~/components/shared/modules/share/store/share.store';
 import LfxCard from '~/components/uikit/card/card.vue';
 import type { CollectionFeaturedProject } from '~~/types/collection';
-// @ts-expect-error Vite asset import with ?url suffix
-import lfIconUrl from '~/assets/images/icon.svg?url';
+import CollectionOwner from '~/components/shared/components/collection-owner.vue';
 import LikeButton from '~/components/shared/components/like-button.vue';
 
 const router = useRouter();
@@ -194,20 +179,6 @@ const headerBackground = computed(() => {
   // community and my-collections (curated too if no image and no color)
   return {
     background: 'linear-gradient(0deg, #F8FBFF00, #F8FBFF)',
-  };
-});
-
-const owner = computed(() => {
-  if (props.collection.owner) {
-    return {
-      name: props.collection.owner?.name,
-      logo: props.collection.owner?.logo,
-    };
-  }
-
-  return {
-    name: 'The Linux Foundation',
-    logo: lfIconUrl,
   };
 });
 

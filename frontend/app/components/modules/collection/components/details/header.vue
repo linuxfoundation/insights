@@ -115,18 +115,11 @@ SPDX-License-Identifier: MIT
         :class="scrollTop > 50 ? 'h-0 opacity-0 invisible pt-0' : 'h-auto opacity-100 visible mt-10'"
       >
         <div class="flex items-center gap-2">
-          <img
-            :src="owner.logo"
-            :alt="owner.name"
-            class="block"
-            loading="lazy"
-            width="16"
-            height="16"
+          <collection-owner
+            v-if="props.collection"
+            :collection="props.collection"
           />
-          <p class="text-sm leading-5 text-neutral-600">
-            by
-            {{ owner.name }}
-          </p>
+
           <span
             v-if="projectCount > 0"
             class="text-neutral-600"
@@ -208,8 +201,7 @@ import LfxIcon from '~/components/uikit/icon/icon.vue';
 import useScroll from '~/components/shared/utils/scroll';
 import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
 import LfxButton from '~/components/uikit/button/button.vue';
-// @ts-expect-error Vite asset import with ?url suffix
-import lfIconUrl from '~/assets/images/icon.svg?url';
+import CollectionOwner from '~/components/shared/components/collection-owner.vue';
 import { formatDate } from '~/components/shared/utils/formatter';
 import LfxToggle from '~/components/uikit/toggle/toggle.vue';
 import { useAuthStore } from '~/components/modules/auth/store/auth.store';
@@ -251,20 +243,6 @@ const collectionTab = computed(
 const headerBackgroundStyle = computed(() => headerBackground(collectionType.value, props.collection?.color));
 
 const projectCount = computed(() => props.collection?.projectCount || 0);
-
-const owner = computed(() => {
-  if (props.collection && props.collection.owner) {
-    return {
-      name: props.collection.owner?.name,
-      logo: props.collection.owner?.logo,
-    };
-  }
-
-  return {
-    name: 'The Linux Foundation',
-    logo: lfIconUrl,
-  };
-});
 
 const currentSort = computed(() => {
   const match = props.sort.match(/^(.+)_(asc|desc)$/);

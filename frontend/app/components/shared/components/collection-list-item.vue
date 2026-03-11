@@ -42,24 +42,12 @@ SPDX-License-Identifier: MIT
     <div class="flex items-center gap-4 shrink-0">
       <!-- Owner info -->
       <div class="flex items-center gap-2">
-        <template v-if="props.collection.owner && props.collection.owner.logo">
-          <lfx-avatar
-            :src="props.collection.owner.logo"
-            type="member"
-            size="small"
-          />
-        </template>
-        <template v-else>
-          <img
-            :src="owner.logo"
-            :alt="owner.name"
-            class="block"
-            loading="lazy"
-            width="12"
-            height="12"
-          />
-        </template>
-        <span class="text-sm text-neutral-600"> by {{ owner.name }} ・ </span>
+        <collection-owner
+          :collection="props.collection"
+          by-prefix="Curated "
+        />
+
+        <span class="text-neutral-600 text-sm"> ・ </span>
 
         <!-- Project count and updated date -->
         <div class="flex items-center gap-1.5">
@@ -106,7 +94,6 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
 import { useRouter } from 'nuxt/app';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
@@ -114,12 +101,11 @@ import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
 import { LfxRoutes } from '~/components/shared/types/routes';
 import type { Collection } from '~~/types/collection';
 import { formatDate } from '~/components/shared/utils/formatter';
-// @ts-expect-error Vite asset import with ?url suffix
-import lfIconUrl from '~/assets/images/icon.svg?url';
 import { useShareStore } from '~/components/shared/modules/share/store/share.store';
 import LfxDropdown from '~/components/uikit/dropdown/dropdown.vue';
 import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
 import LikeButton from '~/components/shared/components/like-button.vue';
+import CollectionOwner from '~/components/shared/components/collection-owner.vue';
 
 const router = useRouter();
 const { openShareModal } = useShareStore();
@@ -133,20 +119,6 @@ const props = withDefaults(
     showLikeCount: false,
   },
 );
-
-const owner = computed(() => {
-  if (props.collection.owner) {
-    return {
-      name: props.collection.owner?.name,
-      logo: props.collection.owner?.logo,
-    };
-  }
-
-  return {
-    name: 'Curated by The Linux Foundation',
-    logo: lfIconUrl,
-  };
-});
 
 const handleShare = () => {
   const title = `LFX Insights | Collections - ${props.collection.name}`;
