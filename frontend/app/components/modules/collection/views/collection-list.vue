@@ -17,6 +17,7 @@ SPDX-License-Identifier: MIT
         :view="view"
         @update:sort="updateSort"
         @update:view="updateView"
+        @created="handleCreated"
       />
     </div>
   </div>
@@ -165,7 +166,7 @@ const params = computed(() => ({
   type: props.type === 'my-collections' ? undefined : props.type,
 }));
 
-const { data, isPending, isFetchingNextPage, fetchNextPage, hasNextPage, isSuccess, error } =
+const { data, isPending, isFetchingNextPage, fetchNextPage, hasNextPage, isSuccess, error, refetch } =
   props.type === 'my-collections'
     ? COLLECTIONS_API_SERVICE.fetchMyCollections(params)
     : COLLECTIONS_API_SERVICE.fetchCollections(params);
@@ -206,6 +207,10 @@ const updateSort = (value: string) => {
   queryParams.value = {
     listSort: value,
   };
+};
+
+const handleCreated = () => {
+  refetch();
 };
 
 // Server-side prefetching for infinite query
