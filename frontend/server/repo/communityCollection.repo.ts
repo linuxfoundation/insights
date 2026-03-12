@@ -412,7 +412,7 @@ export class CommunityCollectionRepository {
               ip.name, ip.slug, ip."logoUrl"
        FROM "collectionsInsightsProjects" cip
        LEFT JOIN "insightsProjects" ip ON ip.id = cip."insightsProjectId"
-       WHERE cip."collectionId" = ANY($1) AND cip."deletedAt" IS NULL`,
+       WHERE cip."collectionId" = ANY($1) AND cip."deletedAt" IS NULL LIMIT 5`,
       [collectionIds],
     );
 

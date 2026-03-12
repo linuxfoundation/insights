@@ -4,37 +4,50 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <div class="flex flex-col gap-6">
-    <!-- Search input with dropdown -->
-    <lf-project-search-dropdown
-      :selected-slugs="selectedSlugs"
-      @add="addProject"
-      @toggle="toggleProject"
-    />
-
-    <!-- Selected projects list -->
-    <lf-selected-projects-list
-      v-if="model.projects.length > 0"
-      :projects="model.projects"
-      @remove="removeProject"
-    />
-
-    <!-- Empty state -->
     <div
-      v-else
-      class="flex flex-col gap-5 items-center justify-center py-10"
+      v-if="isLoading"
+      class="flex flex-col gap-2"
     >
-      <lfx-icon
-        name="grid-round-2-plus"
-        :size="60"
-        class="text-neutral-300"
+      <lf-skeleton-loader
+        v-for="i in 5"
+        :key="i"
+        width="100%"
+        height="1rem"
       />
-      <div class="flex flex-col gap-2 items-center text-center">
-        <p class="text-sm font-semibold leading-5 text-neutral-900">Add projects to your collection</p>
-        <p class="text-xs font-normal leading-4 text-neutral-500">
-          Add at least 1 project in order to save the collection
-        </p>
-      </div>
     </div>
+    <template v-else>
+      <!-- Search input with dropdown -->
+      <lf-project-search-dropdown
+        :selected-slugs="selectedSlugs"
+        @add="addProject"
+        @toggle="toggleProject"
+      />
+
+      <!-- Selected projects list -->
+      <lf-selected-projects-list
+        v-if="model.projects.length > 0"
+        :projects="model.projects"
+        @remove="removeProject"
+      />
+
+      <!-- Empty state -->
+      <div
+        v-else
+        class="flex flex-col gap-5 items-center justify-center py-10"
+      >
+        <lfx-icon
+          name="grid-round-2-plus"
+          :size="60"
+          class="text-neutral-300"
+        />
+        <div class="flex flex-col gap-2 items-center text-center">
+          <p class="text-sm font-semibold leading-5 text-neutral-900">Add projects to your collection</p>
+          <p class="text-xs font-normal leading-4 text-neutral-500">
+            Add at least 1 project in order to save the collection
+          </p>
+        </div>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -48,9 +61,11 @@ import type {
   CreateCollectionForm,
   CollectionProject,
 } from '~/components/modules/collection/config/create-collection.config';
+import LfSkeletonLoader from '~/components/uikit/skeleton/skeleton.vue';
 
 const props = defineProps<{
   modelValue: CreateCollectionForm;
+  isLoading: boolean;
 }>();
 
 const emit = defineEmits<{ (e: 'update:modelValue', value: CreateCollectionForm): void }>();

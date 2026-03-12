@@ -8,6 +8,7 @@ SPDX-License-Identifier: MIT
     width="600px"
     content-class="!overflow-hidden"
   >
+    {{ collectionProjectsData }}
     <div class="flex flex-col bg-white rounded-xl shadow-xl">
       <!-- Header and content -->
       <div class="flex flex-col gap-6 p-6">
@@ -50,6 +51,7 @@ SPDX-License-Identifier: MIT
         <lf-edit-modal-projects
           v-else-if="activeTab === 'projects'"
           v-model="form"
+          :is-loading="isLoadingProjects"
         />
       </div>
 
@@ -93,6 +95,8 @@ import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/service
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 import type { Collection } from '~~/types/collection';
+import type { ProjectInsights } from '~~/types/project';
+import type { Pagination } from '~~/types/shared/pagination';
 import type {
   CreateCollectionForm,
   CollectionProject,
@@ -124,6 +128,19 @@ const isModalOpen = computed({
   set: (value: boolean) => emit('update:modelValue', value),
 });
 
+const collectionProjectsParams = computed(() => ({
+  slug: props.collection?.slug || '',
+  pageSize: 100,
+}));
+
+const { data: collectionProjectsData, isLoading: isLoadingProjects } =
+  COLLECTIONS_API_SERVICE.fetchCollectionProjects(collectionProjectsParams);
+
+const collectionProjects = computed<ProjectInsights[]>(
+  // @ts-expect-error - TanStack Query type inference issue with Vue
+  () => collectionProjectsData.value?.pages.flatMap((page: Pagination<ProjectInsights>) => page.data) || [],
+);
+
 const { showToast } = useToastService();
 
 const activeTab = ref<'settings' | 'projects'>('settings');
@@ -146,12 +163,12 @@ const initializeForm = () => {
     form.value = {
       name: props.collection.name,
       description: props.collection.description,
-      projects: props.collection.featuredProjects.map(
-        (p): CollectionProject => ({
-          id: p.slug,
+      projects: collectionProjects.value.map(
+        (p: ProjectInsights): CollectionProject => ({
+          id: p.id,
           name: p.name,
           slug: p.slug,
-          logo: p.logo,
+          logo: p.logoUrl,
         }),
       ),
       visibility: props.collection.isPrivate ? 'private' : 'public',
@@ -201,6 +218,12 @@ watch(
     }
   },
 );
+
+watch(collectionProjects, () => {
+  if (isModalOpen.value && props.collection) {
+    initializeForm();
+  }
+});
 </script>
 
 <script lang="ts">
