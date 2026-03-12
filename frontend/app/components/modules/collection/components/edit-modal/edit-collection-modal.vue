@@ -8,7 +8,6 @@ SPDX-License-Identifier: MIT
     width="600px"
     content-class="!overflow-hidden"
   >
-    {{ collectionProjectsData }}
     <div class="flex flex-col bg-white rounded-xl shadow-xl">
       <!-- Header and content -->
       <div class="flex flex-col gap-6 p-6">
