@@ -448,6 +448,39 @@ class CollectionsApiService {
       });
     };
   }
+
+  async prefetchCollectionProjects(params: ComputedRef<CollectionProjectsQueryParams>) {
+    const queryClient = useQueryClient();
+    const queryKey = computed(() => [
+      TanstackKey.COLLECTION_PROJECTS,
+      params.value.slug,
+      params.value.sort,
+      params.value.isLF,
+      params.value.page,
+      params.value.pageSize,
+    ]);
+
+    const queryFn = this.fetchCollectionProjectsQueryFn(() => ({
+      ...params.value,
+    }));
+
+    return await queryClient.prefetchInfiniteQuery<
+      Pagination<ProjectInsights>,
+      Error,
+      Pagination<ProjectInsights>,
+      readonly unknown[],
+      number
+    >({
+      queryKey,
+      queryFn,
+      initialPageParam: 0,
+      getNextPageParam: (lastPage) => {
+        const nextPage = lastPage.page + 1;
+        const totalPages = Math.ceil(lastPage.total / lastPage.pageSize);
+        return nextPage < totalPages ? nextPage : null;
+      },
+    });
+  }
 }
 
 export const COLLECTIONS_API_SERVICE = new CollectionsApiService();

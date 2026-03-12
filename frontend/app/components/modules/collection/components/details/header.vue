@@ -145,7 +145,7 @@ SPDX-License-Identifier: MIT
     <section class="container py-5 text-neutral-500 text-xs font-semibold">
       <div class="flex items-center gap-2">
         <div
-          class="w-2/5 cursor-pointer group flex items-center gap-1"
+          class="w-3/12 cursor-pointer group flex items-center gap-1"
           @click="handleSort('name')"
         >
           Project
@@ -155,9 +155,9 @@ SPDX-License-Identifier: MIT
             :class="[sortIconClass('name')]"
           />
         </div>
-        <!-- Health Score -->
+        <div class="w-2/12 group flex items-center gap-1">Health Score</div>
         <div
-          class="w-1/5 cursor-pointer group flex items-center gap-1"
+          class="w-1/12 cursor-pointer group flex items-center gap-1"
           @click="handleSort('contributorCount')"
         >
           Contributors
@@ -167,22 +167,11 @@ SPDX-License-Identifier: MIT
             :class="[sortIconClass('contributorCount')]"
           />
         </div>
-        <!-- Temporary only until we have the other data ready -->
-        <div
-          class="w-1/5 cursor-pointer group flex items-center gap-1"
-          @click="handleSort('organizationCount')"
-        >
-          Organizations
-          <lfx-icon
-            name="caret-large-down"
-            type="solid"
-            :class="[sortIconClass('organizationCount')]"
-          />
-        </div>
         <!-- TODO: Enable sorting by software value when backend is ready-->
-        <div class="w-1/5">Software value</div>
+        <div class="w-1/12">Software value</div>
         <!-- Contributor/Organization dependency -->
-        <!-- Achievements -->
+        <div class="w-3/12">Contributor/Organization dependency</div>
+        <div class="w-2/12">Achievements</div>
       </div>
     </section>
   </div>

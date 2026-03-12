@@ -234,16 +234,6 @@ const headerBackground = computed(() => {
 });
 
 const collectionProjects = computed<CollectionFeaturedProject[]>(() => {
-  // TODO: remove once the issue on the backend is fixed
-  if (props.variant === 'my-collections') {
-    return (
-      props.collection.projects?.slice(0, 5).map((id) => ({
-        name: id,
-        slug: id,
-        logo: '',
-      })) || []
-    );
-  }
   return props.collection.featuredProjects.slice(0, 5);
 });
 

@@ -7,6 +7,7 @@ SPDX-License-Identifier: MIT
     v-model="isModalOpen"
     width="600px"
     content-class="!overflow-hidden"
+    :close-function="handleCloseAttempt"
   >
     <div class="flex flex-col gap-8 p-6 bg-white rounded-xl shadow-xl">
       <!-- Header section -->
@@ -94,6 +95,16 @@ const canProceed = computed(() => {
   return true;
 });
 
+const isFormDirty = computed(() => {
+  return (
+    form.value.name.trim().length > 0 || form.value.description.trim().length > 0 || form.value.projects.length > 0
+  );
+});
+
+const handleCloseAttempt = (): boolean => {
+  return !isFormDirty.value;
+};
+
 const nextStep = () => {
   if (stepRef.value?.$v) {
     stepRef.value.$v.$touch();
@@ -127,7 +138,7 @@ const createCollection = async () => {
     name: form.value.name,
     description: form.value.description,
     isPrivate: form.value.visibility === 'private',
-    projects: ['b2222bc8-af2d-4c44-a318-e2abbd7b955e', 'dab93171-acbe-42d6-a05b-ab32810e764a'], //form.value.projects.map((project) => project.id),
+    projects: form.value.projects.map((project) => project.id),
   };
 
   isCreating.value = true;

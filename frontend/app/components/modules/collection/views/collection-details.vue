@@ -98,7 +98,7 @@ import LfxCollectionHeader from '~/components/modules/collection/components/deta
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxButton from '~/components/uikit/button/button.vue';
 import LfxMaintainHeight from '~/components/uikit/maintain-height/maintain-height.vue';
-import { PROJECT_API_SERVICE } from '~/components/modules/project/services/project.api.service';
+import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
 import useScroll from '~/components/shared/utils/scroll';
 import { useQueryParam, type URLParams } from '~/components/shared/utils/query-param';
 import {
@@ -133,11 +133,13 @@ const params = computed(() => ({
   sort: sort.value,
   pageSize,
   isLF: isLFOnly.value,
-  collectionSlug,
+  slug: collectionSlug,
 }));
 
+// const { data, isPending, isFetchingNextPage, fetchNextPage, hasNextPage, isSuccess } =
+//   PROJECT_API_SERVICE.fetchProjects(params);
 const { data, isPending, isFetchingNextPage, fetchNextPage, hasNextPage, isSuccess } =
-  PROJECT_API_SERVICE.fetchProjects(params);
+  COLLECTIONS_API_SERVICE.fetchCollectionProjects(params);
 
 // @ts-expect-error - TanStack Query type inference issue with Vue
 const flatData = computed(() => data.value?.pages.flatMap((page: Pagination<Project>) => page.data) || []);
@@ -178,7 +180,7 @@ watch(
 );
 
 onServerPrefetch(async () => {
-  await PROJECT_API_SERVICE.prefetchProjects(params);
+  await COLLECTIONS_API_SERVICE.prefetchCollectionProjects(params);
 });
 </script>
 

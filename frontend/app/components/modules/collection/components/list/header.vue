@@ -41,7 +41,7 @@ SPDX-License-Identifier: MIT
         </lfx-menu-button>
       </div>
       <div>
-        <lf-create-collection-button />
+        <lf-create-collection-button @created="handleCreated" />
       </div>
     </div>
     <div class="flex justify-between items-start">
@@ -125,6 +125,7 @@ import LfxTabs from '~/components/uikit/tabs/tabs.vue';
 import { LfxRoutes } from '~/components/shared/types/routes';
 // TODO: remove this once we have everything done and tested
 import { useAuthStore } from '~/components/modules/auth/store/auth.store';
+import type { CreateCollectionForm } from '~/components/modules/collection/config/create-collection.config';
 
 const authStore = useAuthStore();
 const { user } = storeToRefs(authStore);
@@ -137,6 +138,7 @@ const props = defineProps<{
 const emit = defineEmits<{
   (e: 'update:sort', value: string): void;
   (e: 'update:view', value: string): void;
+  (e: 'created', form: CreateCollectionForm): void;
 }>();
 
 const sortValue = computed({
@@ -155,6 +157,10 @@ const viewTabs = [
 
 const title = computed(() => linkUrl.value.find((tab) => tab.type === props.type)?.detailsLabel || '');
 const description = computed(() => linkUrl.value.find((tab) => tab.type === props.type)?.description || '');
+
+const handleCreated = (form: CreateCollectionForm) => {
+  emit('created', form);
+};
 </script>
 
 <script lang="ts">
