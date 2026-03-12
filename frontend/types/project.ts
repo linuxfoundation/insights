@@ -107,6 +107,7 @@ export interface ProjectInsightsTinybird {
   slug: string;
   logoUrl: string;
   isLF: number;
+  status: string;
   contributorCount: number;
   organizationCount: number;
   softwareValue: number;
@@ -137,6 +138,7 @@ export interface ProjectInsights {
   slug: string;
   logoUrl: string;
   isLF: boolean;
+  status: string;
   contributorCount: number;
   organizationCount: number;
   softwareValue: number;
