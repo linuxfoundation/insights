@@ -87,18 +87,16 @@ SPDX-License-Identifier: MIT
           v-if="props.collection && !loading"
           class="flex lg:justify-end transition-all ease-linear gap-4 w-full lg:w-auto shrink-0"
         >
-          <!-- TODO: Add back the copy and heart buttons
+          <!-- TODO: Add back the copy 
           <lfx-icon-button
             icon="copy"
             class=""
-          />
-          <lfx-button
-            type="outline"
+          /> -->
+          <lfx-like-button
+            :collection="props.collection"
+            button-type="outline"
             class="!rounded-full"
-          >
-            <lfx-icon name="heart" />
-            1.6K
-          </lfx-button> -->
+          />
           <lfx-button
             type="outline"
             class="!rounded-full"
@@ -208,6 +206,7 @@ import { useAuthStore } from '~/components/modules/auth/store/auth.store';
 import { useShareStore } from '~/components/shared/modules/share/store/share.store';
 import { LfxRoutes } from '~/components/shared/types/routes';
 import type { CollectionType } from '~~/types/collection';
+import LfxLikeButton from '~/components/shared/components/like-button.vue';
 
 const authStore = useAuthStore();
 const { user } = storeToRefs(authStore);

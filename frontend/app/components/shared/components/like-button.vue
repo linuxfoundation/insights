@@ -4,9 +4,12 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <lfx-button
-    type="transparent"
-    class="w-1/3 flex justify-center items-center hover:!bg-transparent"
-    :class="isLiked ? 'opacity-100' : 'opacity-50 hover:!opacity-100'"
+    :type="buttonType"
+    class="w-1/3 flex justify-center items-center"
+    :class="[
+      isLiked || buttonType !== 'transparent' ? 'opacity-100' : 'opacity-50 hover:!opacity-100',
+      buttonType === 'transparent' ? 'hover:!bg-transparent' : '',
+    ]"
     @click.stop.prevent="handleLike"
   >
     <lfx-icon
@@ -19,7 +22,7 @@ SPDX-License-Identifier: MIT
       v-if="likeCount !== undefined"
       class="text-xs leading-4 text-neutral-900 font-medium"
     >
-      {{ likeCount }}
+      {{ formatNumberShort(likeCount) }}
     </span>
   </lfx-button>
 </template>
@@ -33,14 +36,22 @@ import { useCollectionsStore } from '~/components/modules/collection/services/co
 import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
+import type { ButtonType } from '~/components/uikit/button/types/button.types';
+import { formatNumberShort } from '~/components/shared/utils/formatter';
 
 const collectionsStore = useCollectionsStore();
 
 const { showToast } = useToastService();
 
-const props = defineProps<{
-  collection: Collection;
-}>();
+const props = withDefaults(
+  defineProps<{
+    collection: Collection;
+    buttonType?: ButtonType;
+  }>(),
+  {
+    buttonType: 'transparent',
+  },
+);
 
 const isLiked = computed(() => collectionsStore.isLiked(props.collection.id));
 const likeCount = ref<number>(props.collection.likeCount || 0);
