@@ -428,6 +428,35 @@ export class CommunityCollectionRepository {
     };
   }
 
+  async findProjectIdsBySlug(
+    slug: string,
+  ): Promise<{ collectionId: string; projectIds: string[] } | null> {
+    const collectionResult = await this.pool.query(
+      `SELECT c.id FROM collections c
+       WHERE c.slug = $1 AND c."deletedAt" IS NULL AND c."isPrivate" = false`,
+      [slug],
+    );
+
+    if (collectionResult.rows.length === 0) {
+      return null;
+    }
+
+    const collectionId = collectionResult.rows[0].id;
+
+    const projectsResult = await this.pool.query(
+      `SELECT "insightsProjectId" FROM "collectionsInsightsProjects"
+       WHERE "collectionId" = $1 AND "deletedAt" IS NULL`,
+      [collectionId],
+    );
+
+    return {
+      collectionId,
+      projectIds: projectsResult.rows.map(
+        (r: { insightsProjectId: string }) => r.insightsProjectId,
+      ),
+    };
+  }
+
   private async validateOwnership(
     client: PoolClient,
     collectionId: string,
