@@ -32,7 +32,7 @@ import { computed, ref } from 'vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxButton from '~/components/uikit/button/button.vue';
 import type { Collection } from '~~/types/collection';
-import { useCollectionsStore } from '~/components/modules/collection/services/collections.store';
+import { useCollectionsStore } from '~/components/modules/collection/store/collections.store';
 import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';

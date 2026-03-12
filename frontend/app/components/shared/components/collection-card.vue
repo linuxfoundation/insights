@@ -156,18 +156,10 @@ SPDX-License-Identifier: MIT
       </div>
     </lfx-card>
   </nuxt-link>
-
-  <!-- Edit Collection Modal -->
-  <lf-edit-collection-modal
-    v-if="props.variant === 'my-collections'"
-    v-model="isEditModalOpen"
-    :collection="props.collection"
-    @updated="handleCollectionUpdated"
-  />
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 import { useRouter } from 'nuxt/app';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
@@ -184,13 +176,14 @@ import LfxCard from '~/components/uikit/card/card.vue';
 import type { CollectionFeaturedProject } from '~~/types/collection';
 import CollectionOwner from '~/components/shared/components/collection-owner.vue';
 import LikeButton from '~/components/shared/components/like-button.vue';
-import LfEditCollectionModal from '~/components/modules/collection/components/edit-modal/edit-collection-modal.vue';
+import { useEditCollectionStore } from '~/components/modules/collection/store/edit-collection.store';
 import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 
 const router = useRouter();
 const { openShareModal } = useShareStore();
+const { openEditModal } = useEditCollectionStore();
 const { showToast } = useToastService();
 
 const props = withDefaults(
@@ -207,8 +200,6 @@ const emit = defineEmits<{
   deleted: [id: string];
   updated: [collection: Collection];
 }>();
-
-const isEditModalOpen = ref(false);
 
 // This only applies to the collection card header, in the designs the header gradient seems to be different
 // from the card background gradient for communinity and my collections
@@ -258,11 +249,12 @@ const handleClone = () => {
 };
 
 const handleEdit = () => {
-  isEditModalOpen.value = true;
-};
-
-const handleCollectionUpdated = (collection: Collection) => {
-  emit('updated', collection);
+  openEditModal({
+    collection: props.collection,
+    onUpdated: (collection: Collection) => {
+      emit('updated', collection);
+    },
+  });
 };
 
 const handleDelete = async () => {

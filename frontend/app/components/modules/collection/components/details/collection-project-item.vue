@@ -29,8 +29,7 @@ SPDX-License-Identifier: MIT
     </div>
     <div class="w-1/12">${{ formatNumberShort(props.project.softwareValue || 0) }}</div>
     <div class="w-3/12">
-      <!-- {{ formatNumber(props.project.organizationCount) }} -->
-      show dependency here
+      <lfx-dependency-column :project="props.project" />
     </div>
     <div class="w-2/12">
       <!-- {{ formatNumber(props.project.organizationCount) }} -->
@@ -48,6 +47,7 @@ import LfxArchivedTag from '~/components/shared/components/archived-tag.vue';
 import { formatNumber, formatNumberShort } from '~/components/shared/utils/formatter';
 import { LfxRoutes } from '~/components/shared/types/routes';
 import LfxHealthScore from '~/components/shared/components/health-score.vue';
+import LfxDependencyColumn from '~/components/modules/collection/components/details/dependency-column.vue';
 
 const props = defineProps<{
   project: ProjectInsights;

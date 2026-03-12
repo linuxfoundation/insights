@@ -34,6 +34,7 @@ SPDX-License-Identifier: MIT
             :key="collection.slug"
             :collection="collection"
             :show-like-count="true"
+            :variant="props.type"
           />
         </template>
         <template v-else>
@@ -81,16 +82,6 @@ SPDX-License-Identifier: MIT
       Load more
     </lfx-button>
   </div>
-
-  <!-- <lfx-button @click="isEditCollectionModalOpen = true">
-    Edit Collection
-  </lfx-button>
-  <lfx-edit-collection-modal
-    v-if="isEditCollectionModalOpen"
-    v-model="isEditCollectionModalOpen"
-    :collection="editCollection"
-    @updated="updateCollection"
-  /> -->
 </template>
 
 <script setup lang="ts">
@@ -115,33 +106,6 @@ import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/service
 import { useQueryParam, type URLParams } from '~/components/shared/utils/query-param';
 import type { Collection, CollectionType } from '~~/types/collection';
 import { useBannerStore } from '~/components/shared/store/banner.store';
-
-// TODO: remove this, testing the edit modal
-// import LfxEditCollectionModal from '~/components/modules/collection/components/edit-modal/edit-collection-modal.vue';
-
-// const isEditCollectionModalOpen = ref(false);
-// const editCollection = ref<Collection | null>({
-//   id: '123',
-//   name: 'Test Collection',
-//   description: 'Test Description',
-//   isPrivate: false,
-//   featuredProjects: [],
-//   updatedAt: (new Date()).toISOString(),
-//   slug: 'test-collection',
-//   type: 'community',
-//   owner: {
-//     name: 'Test User',
-//     logo: 'https://via.placeholder.com/150',
-//   },
-//   isLf: false,
-//   projectCount: 0,
-// });
-
-// const updateCollection = (collection: Collection) => {
-//   editCollection.value = collection;
-//   isEditCollectionModalOpen.value = false;
-// };
-// ------------------------------------------------------------
 
 interface Props {
   type?: CollectionType;

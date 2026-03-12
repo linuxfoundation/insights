@@ -79,6 +79,16 @@ SPDX-License-Identifier: MIT
               class="!p-2"
             />
           </template>
+          <template v-if="props.variant === 'my-collections'">
+            <lfx-dropdown-item @click="handleEditCollection()">
+              <lfx-icon
+                name="pencil"
+                :size="16"
+                class="text-neutral-600"
+              />
+              Edit
+            </lfx-dropdown-item>
+          </template>
           <lfx-dropdown-item @click="handleShare()">
             <lfx-icon
               name="share-nodes"
@@ -87,6 +97,16 @@ SPDX-License-Identifier: MIT
             />
             Share
           </lfx-dropdown-item>
+          <template v-if="props.variant === 'my-collections'">
+            <lfx-dropdown-item @click="handleDeleteCollection()">
+              <lfx-icon
+                name="trash"
+                :size="16"
+                class="text-neutral-600"
+              />
+              Delete
+            </lfx-dropdown-item>
+          </template>
         </lfx-dropdown>
       </div>
     </div>
@@ -106,17 +126,28 @@ import LfxDropdown from '~/components/uikit/dropdown/dropdown.vue';
 import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
 import LikeButton from '~/components/shared/components/like-button.vue';
 import CollectionOwner from '~/components/shared/components/collection-owner.vue';
+import type { CollectionType } from '~~/types/collection';
+import { useEditCollectionStore } from '~/components/modules/collection/store/edit-collection.store';
+import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
+import useToastService from '~/components/uikit/toast/toast.service';
+import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 
 const router = useRouter();
 const { openShareModal } = useShareStore();
-
+const { openEditModal } = useEditCollectionStore();
+const { showToast } = useToastService();
+const emit = defineEmits<{
+  (e: 'updated', collection: Collection | null): void;
+}>();
 const props = withDefaults(
   defineProps<{
     collection: Collection;
     showLikeCount?: boolean;
+    variant?: CollectionType;
   }>(),
   {
     showLikeCount: false,
+    variant: 'curated',
   },
 );
 
@@ -134,6 +165,26 @@ const handleShare = () => {
     title,
     area: props.collection.name,
   });
+};
+
+const handleEditCollection = () => {
+  openEditModal({
+    collection: props.collection,
+    onUpdated: (collection: Collection) => {
+      emit('updated', collection);
+    },
+  });
+};
+
+const handleDeleteCollection = async () => {
+  try {
+    await COLLECTIONS_API_SERVICE.deleteCollection(props.collection.id);
+    showToast('Collection deleted successfully', ToastTypesEnum.positive);
+    emit('updated', null);
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Failed to delete collection';
+    showToast(message, ToastTypesEnum.negative);
+  }
 };
 </script>
 

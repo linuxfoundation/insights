@@ -3,7 +3,7 @@
 
 import { ref, computed, watchEffect, watch, nextTick } from 'vue';
 import { useAsyncData, navigateTo, useRoute } from 'nuxt/app';
-import { useCollectionsStore } from '~/components/modules/collection/services/collections.store';
+import { useCollectionsStore } from '~/components/modules/collection/store/collections.store';
 import type { AuthData } from '~~/types/auth/auth-user.types';
 
 // Fix for window access in Nuxt

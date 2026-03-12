@@ -72,7 +72,7 @@ import LfxCollectionListItemLoading from '~/components/modules/collection/compon
 import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
-import { useCollectionsStore } from '~/components/modules/collection/services/collections.store';
+import { useCollectionsStore } from '~/components/modules/collection/store/collections.store';
 
 const { showToast } = useToastService();
 const { likedCollectionsList } = storeToRefs(useCollectionsStore());

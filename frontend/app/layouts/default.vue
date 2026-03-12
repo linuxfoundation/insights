@@ -15,6 +15,7 @@ SPDX-License-Identifier: MIT
     <div class="flex-grow" />
     <lfx-report-global />
     <lfx-share-global />
+    <lf-edit-collection-global />
     <lfx-copilot-global />
     <lfx-community-filter-global />
     <lfx-insights-footer />
@@ -30,6 +31,7 @@ import LfxToast from '~/components/uikit/toast/toast.vue';
 import LfxInsightsFooter from '~/components/shared/layout/footer.vue';
 import LfxReportGlobal from '~/components/shared/modules/report/components/report-global.vue';
 import LfxShareGlobal from '~/components/shared/modules/share/components/share-global.vue';
+import LfEditCollectionGlobal from '~/components/modules/collection/components/edit-modal/edit-collection-global.vue';
 import LfxCopilotGlobal from '~/components/shared/modules/copilot/components/copilot-global.vue';
 import LfxCommunityFilterGlobal from '~/components/modules/project/components/community/sections/community-filter-global.vue';
 import { useRichSchema } from '~~/composables/useRichSchema';

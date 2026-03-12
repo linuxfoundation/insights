@@ -92,7 +92,17 @@ SPDX-License-Identifier: MIT
             icon="copy"
             class=""
           /> -->
+          <lfx-button
+            v-if="props.type === 'my-collections'"
+            type="outline"
+            class="!rounded-full"
+            @click="handleEdit"
+          >
+            <lfx-icon name="pencil" />
+            Edit Collection
+          </lfx-button>
           <lfx-like-button
+            v-else
             :collection="props.collection"
             button-type="outline"
             class="!rounded-full"
@@ -196,6 +206,9 @@ import { useShareStore } from '~/components/shared/modules/share/store/share.sto
 import { LfxRoutes } from '~/components/shared/types/routes';
 import type { CollectionType } from '~~/types/collection';
 import LfxLikeButton from '~/components/shared/components/like-button.vue';
+import { useEditCollectionStore } from '~/components/modules/collection/store/edit-collection.store';
+
+const { openEditModal } = useEditCollectionStore();
 
 const authStore = useAuthStore();
 const { user } = storeToRefs(authStore);
@@ -208,11 +221,13 @@ const props = defineProps<{
   loading?: boolean;
   onlyLfProjects: boolean;
   sort: string;
+  type?: CollectionType;
 }>();
 
 const emit = defineEmits<{
   (e: 'update:onlyLfProjects', value: boolean): void;
   (e: 'update:sort', value: string): void;
+  (e: 'updated', value: Collection): void;
 }>();
 
 const isOnlyLFProjects = computed({
@@ -224,11 +239,9 @@ const isOnlyLFProjects = computed({
 
 const { scrollTop } = useScroll();
 const allTabs = computed(() => collectionTabs(user.value));
-const collectionType = computed<CollectionType>(() => (props.collection?.ssoUserId ? 'community' : 'curated'));
-const collectionTab = computed(
-  () => allTabs.value.find((tab) => tab.type === collectionType.value) || allTabs.value[0],
-);
-const headerBackgroundStyle = computed(() => headerBackground(collectionType.value, props.collection?.color));
+
+const collectionTab = computed(() => allTabs.value.find((tab) => tab.type === props.type) || allTabs.value[0]);
+const headerBackgroundStyle = computed(() => headerBackground(props.type, props.collection?.color));
 
 const projectCount = computed(() => props.collection?.projectCount || 0);
 
@@ -280,6 +293,17 @@ const handleShare = () => {
     title,
     area: props.collection?.name,
   });
+};
+
+const handleEdit = () => {
+  if (props.collection) {
+    openEditModal({
+      collection: props.collection,
+      onUpdated: (collection: Collection) => {
+        emit('updated', collection);
+      },
+    });
+  }
 };
 </script>
 

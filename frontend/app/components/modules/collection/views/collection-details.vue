@@ -12,11 +12,13 @@ SPDX-License-Identifier: MIT
     <div class="bg-white outline outline-neutral-100">
       <lfx-collection-header
         :loading="loading"
-        :collection="props.collection"
+        :collection="currentCollection"
         :only-lf-projects="isLFOnly"
         :sort="sort"
+        :type="collectionType"
         @update:only-lf-projects="updateOnlyLFProjects"
         @update:sort="updateSort"
+        @updated="handleCollectionUpdated"
       />
     </div>
   </lfx-maintain-height>
@@ -108,14 +110,17 @@ import {
 import LfxOnboardingLink from '~/components/shared/components/onboarding-link.vue';
 import { useBannerStore } from '~/components/shared/store/banner.store';
 import type { Project } from '~~/types/project';
+import { useAuthStore } from '~/components/modules/auth/store/auth.store';
 
 const props = defineProps<{
-  type?: CollectionType;
   collection?: Collection;
   loading?: boolean;
 }>();
 
 const { headerTopClass } = storeToRefs(useBannerStore());
+const { user } = storeToRefs(useAuthStore());
+
+const currentCollection = ref<Collection | undefined>(props.collection);
 
 const { scrollTop } = useScroll();
 const route = useRoute();
@@ -123,6 +128,13 @@ const collectionSlug = route.params.slug as string;
 
 const { queryParams } = useQueryParam(collectionDetailsParamsGetter, collectionListParamsSetter);
 const { onlyLFProjects, collectionSort } = queryParams.value;
+const collectionType = computed<CollectionType>(() => {
+  if (user.value && user.value.sub === currentCollection.value?.ssoUserId) {
+    return 'my-collections';
+  }
+
+  return currentCollection.value?.ssoUserId ? 'community' : 'curated';
+});
 
 const sort = ref(collectionSort || 'contributorCount_desc');
 const isLFOnly = ref(onlyLFProjects === 'true');
@@ -138,7 +150,7 @@ const params = computed(() => ({
 
 // const { data, isPending, isFetchingNextPage, fetchNextPage, hasNextPage, isSuccess } =
 //   PROJECT_API_SERVICE.fetchProjects(params);
-const { data, isPending, isFetchingNextPage, fetchNextPage, hasNextPage, isSuccess } =
+const { data, isPending, isFetchingNextPage, fetchNextPage, hasNextPage, isSuccess, refetch } =
   COLLECTIONS_API_SERVICE.fetchCollectionProjects(params);
 
 // @ts-expect-error - TanStack Query type inference issue with Vue
@@ -161,6 +173,11 @@ const updateOnlyLFProjects = (value: boolean) => {
     collectionSort: queryParams.value.collectionSort,
     onlyLFProjects: value ? 'true' : undefined,
   };
+};
+
+const handleCollectionUpdated = (collection: Collection) => {
+  currentCollection.value = collection;
+  refetch();
 };
 
 watch(
