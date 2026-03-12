@@ -27,14 +27,43 @@ SPDX-License-Identifier: MIT
             :aria-label="project.logo && project.name"
           />
         </lfx-avatar-group>
-        <lfx-icon-button
+        <lfx-dropdown
           v-if="props.variant === 'my-collections'"
-          type="transparent"
-          icon="ellipsis"
-          size="small"
-          class="!text-neutral-900"
-          @click.stop.prevent="handleOptionsMenu"
-        />
+          placement="bottom-end"
+        >
+          <template #trigger>
+            <lfx-icon-button
+              icon="ellipsis"
+              size="small"
+              type="transparent"
+              class="!text-neutral-900"
+            />
+          </template>
+          <lfx-dropdown-item @click.stop.prevent="handleEdit">
+            <lfx-icon
+              name="pen"
+              :size="16"
+              class="text-neutral-600"
+            />
+            Edit
+          </lfx-dropdown-item>
+          <lfx-dropdown-item @click.stop.prevent="handleShare">
+            <lfx-icon
+              name="share-nodes"
+              :size="16"
+              class="text-neutral-600"
+            />
+            Share
+          </lfx-dropdown-item>
+          <lfx-dropdown-item @click.stop.prevent="handleDelete">
+            <lfx-icon
+              name="trash"
+              :size="16"
+              class="text-negative-500"
+            />
+            <span class="text-negative-500">Delete</span>
+          </lfx-dropdown-item>
+        </lfx-dropdown>
       </div>
 
       <!-- content -->
@@ -127,16 +156,26 @@ SPDX-License-Identifier: MIT
       </div>
     </lfx-card>
   </nuxt-link>
+
+  <!-- Edit Collection Modal -->
+  <lf-edit-collection-modal
+    v-if="props.variant === 'my-collections'"
+    v-model="isEditModalOpen"
+    :collection="props.collection"
+    @updated="handleCollectionUpdated"
+  />
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useRouter } from 'nuxt/app';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
 import LfxButton from '~/components/uikit/button/button.vue';
 import LfxAvatarGroup from '~/components/uikit/avatar-group/avatar-group.vue';
 import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
+import LfxDropdown from '~/components/uikit/dropdown/dropdown.vue';
+import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
 import { LfxRoutes } from '~/components/shared/types/routes';
 import type { Collection, CollectionType } from '~~/types/collection';
 import { formatDate } from '~/components/shared/utils/formatter';
@@ -145,9 +184,14 @@ import LfxCard from '~/components/uikit/card/card.vue';
 import type { CollectionFeaturedProject } from '~~/types/collection';
 import CollectionOwner from '~/components/shared/components/collection-owner.vue';
 import LikeButton from '~/components/shared/components/like-button.vue';
+import LfEditCollectionModal from '~/components/modules/collection/components/edit-modal/edit-collection-modal.vue';
+import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
+import useToastService from '~/components/uikit/toast/toast.service';
+import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 
 const router = useRouter();
 const { openShareModal } = useShareStore();
+const { showToast } = useToastService();
 
 const props = withDefaults(
   defineProps<{
@@ -158,6 +202,13 @@ const props = withDefaults(
     variant: 'curated',
   },
 );
+
+const emit = defineEmits<{
+  deleted: [id: string];
+  updated: [collection: Collection];
+}>();
+
+const isEditModalOpen = ref(false);
 
 // This only applies to the collection card header, in the designs the header gradient seems to be different
 // from the card background gradient for communinity and my collections
@@ -216,8 +267,23 @@ const handleClone = () => {
   // TODO: Implement clone functionality
 };
 
-const handleOptionsMenu = () => {
-  // TODO: Implement options menu for my-collections
+const handleEdit = () => {
+  isEditModalOpen.value = true;
+};
+
+const handleCollectionUpdated = (collection: Collection) => {
+  emit('updated', collection);
+};
+
+const handleDelete = async () => {
+  try {
+    await COLLECTIONS_API_SERVICE.deleteCollection(props.collection.id);
+    showToast('Collection deleted successfully', ToastTypesEnum.positive);
+    emit('deleted', props.collection.id);
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Failed to delete collection';
+    showToast(message, ToastTypesEnum.negative);
+  }
 };
 </script>
 
