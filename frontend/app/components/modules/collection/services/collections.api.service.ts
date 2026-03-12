@@ -10,6 +10,7 @@ import { type ComputedRef, computed } from 'vue';
 import type { Pagination } from '~~/types/shared/pagination';
 import type { Collection, CollectionType } from '~~/types/collection';
 import type { Category, CategoryGroup } from '~~/types/category';
+import type { ProjectInsights } from '~~/types/project';
 import { TanstackKey } from '~/components/shared/types/tanstack';
 import type { SearchProject, SearchResults } from '~~/types/search';
 
@@ -39,6 +40,14 @@ export interface CollectionPayload {
   description?: string;
   isPrivate?: boolean;
   projects?: string[];
+}
+
+export interface CollectionProjectsQueryParams {
+  slug: string;
+  sort?: string;
+  isLF?: boolean;
+  page?: number;
+  pageSize?: number;
 }
 
 const MAX_SEARCH_QUERY_LENGTH = 200;
@@ -392,6 +401,52 @@ class CollectionsApiService {
       method: 'DELETE',
       body: { collectionId },
     });
+  }
+
+  fetchCollectionProjects(params: ComputedRef<CollectionProjectsQueryParams>) {
+    const queryKey = computed(() => [
+      TanstackKey.COLLECTION_PROJECTS,
+      params.value.slug,
+      params.value.sort,
+      params.value.isLF,
+      params.value.page,
+      params.value.pageSize,
+    ]);
+
+    const queryFn = this.fetchCollectionProjectsQueryFn(() => ({
+      ...params.value,
+    }));
+
+    return useInfiniteQuery<
+      Pagination<ProjectInsights>,
+      Error,
+      Pagination<ProjectInsights>,
+      readonly unknown[],
+      number
+    >({
+      queryKey,
+      queryFn,
+      getNextPageParam: (lastPage) => {
+        const nextPage = lastPage.page + 1;
+        const totalPages = Math.ceil(lastPage.total / lastPage.pageSize);
+        return nextPage < totalPages ? nextPage : null;
+      },
+      initialPageParam: 0,
+    });
+  }
+
+  fetchCollectionProjectsQueryFn(
+    query: () => CollectionProjectsQueryParams,
+  ): QueryFunction<Pagination<ProjectInsights>, readonly unknown[], number> {
+    return async ({ pageParam = 0 }) => {
+      const { slug, ...rest } = query();
+      return await $fetch(`/api/collection/${slug}/projects`, {
+        params: {
+          page: pageParam,
+          ...rest,
+        },
+      });
+    };
   }
 }
 
