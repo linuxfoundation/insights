@@ -38,7 +38,16 @@ SPDX-License-Identifier: MIT
     </div>
     <div class="w-1/12">${{ formatNumberShort(props.project.softwareValue || 0) }}</div>
     <div class="w-3/12">
-      <lfx-dependency-column :project="props.project" />
+      <lfx-popover
+        placement="top"
+        trigger-event="hover"
+        :allow-pass-through="true"
+      >
+        <lfx-dependency-column :project="props.project" />
+        <template #content>
+          <lfx-dependency-details :project="props.project" />
+        </template>
+      </lfx-popover>
     </div>
     <div class="w-2/12 flex items-center gap-2">
       <!-- {{ formatNumber(props.project.organizationCount) }} -->
@@ -80,6 +89,7 @@ import badgeConfigs, {
 } from '~/components/modules/badges/config/badge.config';
 import LfxChip from '~/components/uikit/chip/chip.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxDependencyDetails from '~/components/modules/collection/components/details/dependency-details.vue';
 
 const props = defineProps<{
   project: ProjectInsights;
