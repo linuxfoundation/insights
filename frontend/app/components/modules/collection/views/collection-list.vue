@@ -33,7 +33,7 @@ SPDX-License-Identifier: MIT
             v-for="collection in flatData"
             :key="collection.slug"
             :collection="collection"
-            :show-like-count="true"
+            :show-like-count="props.type !== 'my-collections'"
             :variant="props.type"
           />
         </template>
@@ -82,6 +82,13 @@ SPDX-License-Identifier: MIT
       Load more
     </lfx-button>
   </div>
+
+  <section
+    v-if="props.type === 'my-collections'"
+    class="container mt-10"
+  >
+    <lfx-liked-collections :view="view" />
+  </section>
 </template>
 
 <script setup lang="ts">
@@ -98,6 +105,7 @@ import LfxCollectionListHeader from '~/components/modules/collection/components/
 import LfxCollectionCardLoading from '~/components/shared/components/collection-card-loading.vue';
 import LfxCollectionCard from '~/components/shared/components/collection-card.vue';
 import LfxCollectionsEmpty from '~/components/shared/components/collections-empty.vue';
+import LfxLikedCollections from '~/components/modules/collection/components/discovery/liked-collections.vue';
 
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';

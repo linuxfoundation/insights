@@ -31,9 +31,23 @@ SPDX-License-Identifier: MIT
     <div class="w-3/12">
       <lfx-dependency-column :project="props.project" />
     </div>
-    <div class="w-2/12">
+    <div class="w-2/12 flex items-center gap-2">
       <!-- {{ formatNumber(props.project.organizationCount) }} -->
-      show achievements here
+      <lfx-chip
+        v-for="(count, tier) in badgeCountByTier"
+        :key="count"
+        :style="{ background: getBadgeColor(tier as BadgeTier) }"
+        class="flex items-center gap-1"
+      >
+        <lfx-icon
+          name="hexagon"
+          :size="12"
+          class="text-white"
+        />
+        <span class="text-white text-xs font-semibold">
+          {{ count }}
+        </span>
+      </lfx-chip>
     </div>
   </div>
 </template>
@@ -48,6 +62,13 @@ import { formatNumber, formatNumberShort } from '~/components/shared/utils/forma
 import { LfxRoutes } from '~/components/shared/types/routes';
 import LfxHealthScore from '~/components/shared/components/health-score.vue';
 import LfxDependencyColumn from '~/components/modules/collection/components/details/dependency-column.vue';
+import badgeConfigs, {
+  getBadgeTierFromPercentile,
+  BadgeTier,
+  type ProjectBadge,
+} from '~/components/modules/badges/config/badge.config';
+import LfxChip from '~/components/uikit/chip/chip.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 
 const props = defineProps<{
   project: ProjectInsights;
@@ -62,6 +83,57 @@ const status = computed(() => {
 
 const navigateToProject = (slug: string) => {
   router.push({ name: LfxRoutes.PROJECT, params: { slug } });
+};
+
+const badges = computed<ProjectBadge[]>(() => {
+  if (!props.project.achievements) return [];
+
+  return props.project.achievements
+    .map((achievement) => {
+      const { leaderboardType, rank, totalCount } = achievement;
+      const percentile = Math.round((rank / totalCount) * 100);
+
+      if (percentile > 50) return null;
+
+      const tier = getBadgeTierFromPercentile(percentile);
+      if (!tier) return null;
+
+      const config = badgeConfigs.find((c) => c.leaderboardKey === leaderboardType);
+      if (!config) return null;
+
+      return {
+        config,
+        tier,
+        rank,
+        percentile,
+      };
+    })
+    .filter((badge): badge is ProjectBadge => badge !== null);
+});
+const badgeCountByTier = computed(() => {
+  return badges.value.reduce(
+    (acc, badge) => {
+      acc[badge.tier] = (acc[badge.tier] || 0) + 1;
+      return acc;
+    },
+    {} as Record<BadgeTier, number>,
+  );
+});
+
+const getBadgeColor = (tier: BadgeTier) => {
+  const radialGradient = `radial-gradient(107.08% 85.59% at 86.3% 87.5%, #0000003B 0%, #00000000 86.18%), 
+      radial-gradient(83.94% 83.94% at 26.39% 20.83%, #FFFFFF96 0%, 
+      #FFFFFF00 69.79%, #FFFFFF00 100%), `;
+  switch (tier) {
+    case BadgeTier.BLACK:
+      return `${radialGradient} #000`;
+    case BadgeTier.GOLD:
+      return `${radialGradient} #D7A262`;
+    case BadgeTier.SILVER:
+      return `${radialGradient} #9FA3AD`;
+    default: // BRONZE
+      return `${radialGradient} #B97A50`;
+  }
 };
 </script>
 

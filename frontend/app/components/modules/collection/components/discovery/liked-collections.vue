@@ -6,10 +6,9 @@ SPDX-License-Identifier: MIT
   <section>
     <div class="flex items-center gap-2 mb-6 pb-2 border-b border-neutral-200">
       <lfx-icon
-        name="heart"
+        name="hearts"
         :size="16"
-        class="text-danger-500"
-        type="solid"
+        class="text-neutral-900"
       />
       <h3 class="text-sm font-medium text-neutral-900">
         Liked Collections
@@ -20,10 +19,18 @@ SPDX-License-Identifier: MIT
     <!-- Loading State -->
     <template v-if="status === 'pending'">
       <div class="flex flex-col gap-0">
-        <lfx-collection-list-item-loading
-          v-for="i in 3"
-          :key="i"
-        />
+        <template v-if="props.view === 'list'">
+          <lfx-collection-list-item-loading
+            v-for="i in 3"
+            :key="i"
+          />
+        </template>
+        <template v-else>
+          <lfx-collection-card-loading
+            v-for="i in 3"
+            :key="i"
+          />
+        </template>
       </div>
     </template>
 
@@ -53,11 +60,26 @@ SPDX-License-Identifier: MIT
         v-else
         class="flex flex-col gap-0"
       >
-        <lfx-collection-list-item
-          v-for="collection in likedCollections"
-          :key="collection.slug"
-          :collection="collection"
-        />
+        <template v-if="props.view === 'list'">
+          <lfx-collection-list-item
+            v-for="collection in likedCollections"
+            :key="collection.slug"
+            :collection="collection"
+            variant="my-collections"
+            :show-like-count="true"
+            @updated="handleLikeUpdated"
+          />
+        </template>
+        <template v-else>
+          collection card here
+          <!-- <lfx-collection-card
+            v-for="collection in likedCollections"
+            :key="collection.slug"
+            :collection="collection"
+            variant="my-collections"
+            @updated="handleLikeUpdated"
+          /> -->
+        </template>
       </div>
     </template>
   </section>
@@ -73,13 +95,29 @@ import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/service
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 import { useCollectionsStore } from '~/components/modules/collection/store/collections.store';
+import LfxCollectionCardLoading from '~/components/shared/components/collection-card-loading.vue';
+// import LfxCollectionCard from '~/components/shared/components/collection-card.vue';
+
+const props = withDefaults(
+  defineProps<{
+    view?: string;
+  }>(),
+  {
+    view: 'list',
+  },
+);
 
 const { showToast } = useToastService();
 const { likedCollectionsList } = storeToRefs(useCollectionsStore());
 
 const currentCount = computed(() => likedCollectionsList.value.length);
 
-const { data: likedData, status, error } = COLLECTIONS_API_SERVICE.fetchDiscoveryLikedCollections(currentCount);
+const {
+  data: likedData,
+  status,
+  error,
+  refetch,
+} = COLLECTIONS_API_SERVICE.fetchDiscoveryLikedCollections(currentCount);
 
 const likedCollections = computed(() => likedData.value?.data || []);
 const isLikedCollectionsEmpty = computed(() => likedCollections.value.length === 0);
@@ -95,6 +133,10 @@ watch(
   },
   { immediate: true },
 );
+
+const handleLikeUpdated = () => {
+  refetch();
+};
 </script>
 
 <script lang="ts">

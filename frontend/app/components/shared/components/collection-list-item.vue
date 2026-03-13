@@ -65,7 +65,11 @@ SPDX-License-Identifier: MIT
           v-if="showLikeCount"
           class="ml-4"
         >
-          <like-button :collection="props.collection" />
+          <like-button
+            :collection="props.collection"
+            :variant="props.variant"
+            @updated="handleLikeUpdated"
+          />
         </div>
       </div>
 
@@ -185,6 +189,10 @@ const handleDeleteCollection = async () => {
     const message = error instanceof Error ? error.message : 'Failed to delete collection';
     showToast(message, ToastTypesEnum.negative);
   }
+};
+
+const handleLikeUpdated = (collection: Collection) => {
+  emit('updated', collection);
 };
 </script>
 
