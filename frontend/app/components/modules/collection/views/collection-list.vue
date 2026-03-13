@@ -107,11 +107,9 @@ import { useQueryParam, type URLParams } from '~/components/shared/utils/query-p
 import type { Collection, CollectionType } from '~~/types/collection';
 import { useBannerStore } from '~/components/shared/store/banner.store';
 
-interface Props {
+const props = defineProps<{
   type?: CollectionType;
-}
-
-const props = defineProps<Props>();
+}>();
 
 const { queryParams } = useQueryParam(collectionListParamsGetter, collectionListParamsSetter);
 const { listSort } = queryParams.value;

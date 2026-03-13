@@ -90,7 +90,8 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed, onServerPrefetch, watch, ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { createError, showError } from 'nuxt/app';
+import { useQuery } from '@tanstack/vue-query';
 import { storeToRefs } from 'pinia';
 import LfxCollectionProjectItem from '../components/details/collection-project-item.vue';
 import LfxCollectionProjectItemLoading from '../components/details/collection-project-item-loading.vue';
@@ -111,20 +112,37 @@ import LfxOnboardingLink from '~/components/shared/components/onboarding-link.vu
 import { useBannerStore } from '~/components/shared/store/banner.store';
 import type { Project } from '~~/types/project';
 import { useAuthStore } from '~/components/modules/auth/store/auth.store';
+import { TanstackKey } from '~/components/shared/types/tanstack';
 
 const props = defineProps<{
-  collection?: Collection;
-  loading?: boolean;
+  slug: string;
 }>();
 
 const { headerTopClass } = storeToRefs(useBannerStore());
 const { user } = storeToRefs(useAuthStore());
 
-const currentCollection = ref<Collection | undefined>(props.collection);
+const queryKey = computed(() => [TanstackKey.COLLECTION, props.slug]);
+
+const {
+  data: collection,
+  isPending: loading,
+  suspense,
+  isError,
+  error,
+} = useQuery<Collection>({
+  queryKey,
+  queryFn: COLLECTIONS_API_SERVICE.fetchCollection(props.slug),
+  retry: false,
+});
+
+const currentCollection = ref<Collection | undefined>(collection.value);
+
+watch(collection, (newCollection) => {
+  currentCollection.value = newCollection;
+});
 
 const { scrollTop } = useScroll();
-const route = useRoute();
-const collectionSlug = route.params.slug as string;
+const collectionSlug = props.slug;
 
 const { queryParams } = useQueryParam(collectionDetailsParamsGetter, collectionListParamsSetter);
 const { onlyLFProjects, collectionSort } = queryParams.value;
@@ -197,6 +215,16 @@ watch(
 );
 
 onServerPrefetch(async () => {
+  await suspense();
+  if (isError.value) {
+    const statusMessage = error.value?.message || 'Collection Not Found';
+
+    if (import.meta.server) {
+      throw createError({ statusCode: 404, statusMessage });
+    } else {
+      showError({ statusCode: 404, statusMessage });
+    }
+  }
   await COLLECTIONS_API_SERVICE.prefetchCollectionProjects(params);
 });
 </script>

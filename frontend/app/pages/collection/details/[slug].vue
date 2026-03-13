@@ -4,17 +4,14 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <div class="bg-white lg:!pb-30 pb-20 lg:!-mb-30 -mb-20">
-    <lfx-collection-details-view
-      :collection="data"
-      :loading="isPending"
-    />
+    <lfx-collection-details-view :slug="slug as string" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { useRoute, createError, showError } from 'nuxt/app';
+import { useRoute } from 'nuxt/app';
 import { useQuery } from '@tanstack/vue-query';
-import { computed, onServerPrefetch } from 'vue';
+import { computed } from 'vue';
 import type { Collection } from '~~/types/collection';
 import LfxCollectionDetailsView from '~/components/modules/collection/views/collection-details.vue';
 import { TanstackKey } from '~/components/shared/types/tanstack';
@@ -27,23 +24,10 @@ const { getCollectionSchema } = useRichSchema();
 
 const queryKey = computed(() => [TanstackKey.COLLECTION, slug]);
 
-const { data, isPending, suspense, isError, error } = useQuery<Collection>({
+const { data } = useQuery<Collection>({
   queryKey,
   queryFn: COLLECTIONS_API_SERVICE.fetchCollection(slug as string),
   retry: false,
-});
-
-onServerPrefetch(async () => {
-  await suspense();
-  if (isError.value) {
-    const statusMessage = error.value?.message || 'Collection Not Found';
-
-    if (import.meta.server) {
-      throw createError({ statusCode: 404, statusMessage });
-    } else {
-      showError({ statusCode: 404, statusMessage });
-    }
-  }
 });
 
 const title = computed(() => `${data.value?.name || 'Collection'} Insights`);
