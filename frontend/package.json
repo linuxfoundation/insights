@@ -119,7 +119,7 @@
     "prettier": "^3.8.0",
     "sass": "^1.97.2",
     "sass-embedded": "^1.97.2",
-    "storybook": "8.6.15",
+    "storybook": "8.6.17",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.53.1",
     "vitest": "^4.0.17",
