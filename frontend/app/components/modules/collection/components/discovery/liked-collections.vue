@@ -58,7 +58,7 @@ SPDX-License-Identifier: MIT
       <!-- Collections List -->
       <div
         v-else
-        class="flex flex-col gap-0"
+        :class="classDisplay"
       >
         <template v-if="props.view === 'list'">
           <lfx-collection-list-item
@@ -71,14 +71,13 @@ SPDX-License-Identifier: MIT
           />
         </template>
         <template v-else>
-          collection card here
-          <!-- <lfx-collection-card
+          <lfx-collection-card
             v-for="collection in likedCollections"
             :key="collection.slug"
             :collection="collection"
             variant="my-collections"
             @updated="handleLikeUpdated"
-          /> -->
+          />
         </template>
       </div>
     </template>
@@ -96,7 +95,7 @@ import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 import { useCollectionsStore } from '~/components/modules/collection/store/collections.store';
 import LfxCollectionCardLoading from '~/components/shared/components/collection-card-loading.vue';
-// import LfxCollectionCard from '~/components/shared/components/collection-card.vue';
+import LfxCollectionCard from '~/components/shared/components/collection-card.vue';
 
 const props = withDefaults(
   defineProps<{
@@ -121,6 +120,13 @@ const {
 
 const likedCollections = computed(() => likedData.value?.data || []);
 const isLikedCollectionsEmpty = computed(() => likedCollections.value.length === 0);
+
+const classDisplay = computed(() => {
+  if (props.view === 'grid') {
+    return 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 auto-rows-fr';
+  }
+  return 'flex flex-col';
+});
 
 watch(
   () => error.value,
