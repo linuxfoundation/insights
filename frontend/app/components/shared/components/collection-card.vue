@@ -130,7 +130,7 @@ SPDX-License-Identifier: MIT
           >
             <lfx-button
               type="transparent"
-              class="opacity-50 hover:!opacity-100 w-1/3 flex justify-center items-center hover:!bg-transparent"
+              class="opacity-50 hover:!opacity-100 flex-1 flex justify-center items-center hover:!bg-transparent"
               @click.stop.prevent="handleShare"
             >
               <lfx-icon
@@ -139,18 +139,23 @@ SPDX-License-Identifier: MIT
                 class="!text-neutral-900"
               />
             </lfx-button>
-            <lfx-button
-              type="transparent"
-              class="opacity-50 hover:!opacity-100 w-1/3 flex justify-center items-center hover:!bg-transparent"
-              @click.stop.prevent="handleClone"
-            >
-              <lfx-icon
-                name="clone"
-                :size="16"
-                class="!text-neutral-900"
+            <template v-if="isLfInsightsTeamMember">
+              <lfx-button
+                type="transparent"
+                class="opacity-50 hover:!opacity-100 flex-1 flex justify-center items-center hover:!bg-transparent"
+                @click.stop.prevent="handleClone"
+              >
+                <lfx-icon
+                  name="clone"
+                  :size="16"
+                  class="!text-neutral-900"
+                />
+              </lfx-button>
+              <like-button
+                :collection="props.collection"
+                class="flex-1"
               />
-            </lfx-button>
-            <like-button :collection="props.collection" />
+            </template>
           </div>
         </div>
       </div>
@@ -161,6 +166,7 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useRouter } from 'nuxt/app';
+import { storeToRefs } from 'pinia';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
 import LfxButton from '~/components/uikit/button/button.vue';
@@ -180,11 +186,13 @@ import { useEditCollectionStore } from '~/components/modules/collection/store/ed
 import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
+import { useAuthStore } from '~/components/modules/auth/store/auth.store';
 
 const router = useRouter();
 const { openShareModal } = useShareStore();
 const { openEditModal } = useEditCollectionStore();
 const { showToast } = useToastService();
+const { user } = storeToRefs(useAuthStore());
 
 const props = withDefaults(
   defineProps<{
@@ -200,6 +208,8 @@ const emit = defineEmits<{
   deleted: [id: string];
   updated: [collection: Collection];
 }>();
+
+const isLfInsightsTeamMember = computed(() => user.value?.isLfInsightsTeamMember || false);
 
 // This only applies to the collection card header, in the designs the header gradient seems to be different
 // from the card background gradient for communinity and my collections

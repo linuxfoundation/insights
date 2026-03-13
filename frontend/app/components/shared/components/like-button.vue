@@ -6,7 +6,7 @@ SPDX-License-Identifier: MIT
   <lfx-tooltip :content="isLiked ? 'Dislike collection' : 'Like collection'">
     <lfx-button
       :type="buttonType"
-      class="w-1/3 flex justify-center items-center"
+      class="w-full flex justify-center items-center"
       :class="[
         isLiked || buttonType !== 'transparent' ? 'opacity-100' : 'opacity-50 hover:!opacity-100',
         buttonType === 'transparent' ? 'hover:!bg-transparent' : '',

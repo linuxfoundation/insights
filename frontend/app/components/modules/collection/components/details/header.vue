@@ -92,21 +92,23 @@ SPDX-License-Identifier: MIT
             icon="copy"
             class=""
           /> -->
-          <lfx-button
-            v-if="props.type === 'my-collections'"
-            type="outline"
-            class="!rounded-full"
-            @click="handleEdit"
-          >
-            <lfx-icon name="pencil" />
-            Edit Collection
-          </lfx-button>
-          <lfx-like-button
-            v-else
-            :collection="props.collection"
-            button-type="outline"
-            class="!rounded-full"
-          />
+          <template v-if="isLfInsightsTeamMember">
+            <lfx-button
+              v-if="props.type === 'my-collections'"
+              type="outline"
+              class="!rounded-full"
+              @click="handleEdit"
+            >
+              <lfx-icon name="pencil" />
+              Edit Collection
+            </lfx-button>
+            <lfx-like-button
+              v-else
+              :collection="props.collection"
+              button-type="outline"
+              class="!rounded-full"
+            />
+          </template>
           <lfx-button
             type="outline"
             class="!rounded-full"
@@ -215,6 +217,8 @@ const { user } = storeToRefs(authStore);
 
 const router = useRouter();
 const { openShareModal } = useShareStore();
+
+const isLfInsightsTeamMember = computed(() => user.value?.isLfInsightsTeamMember || false);
 
 const props = defineProps<{
   collection?: Collection;

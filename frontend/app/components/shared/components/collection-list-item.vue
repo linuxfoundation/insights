@@ -62,7 +62,7 @@ SPDX-License-Identifier: MIT
           </span>
         </div>
         <div
-          v-if="showLikeCount"
+          v-if="showLikeCount && isLfInsightsTeamMember"
           class="ml-4"
         >
           <like-button
@@ -83,7 +83,7 @@ SPDX-License-Identifier: MIT
               class="!p-2"
             />
           </template>
-          <template v-if="props.variant === 'my-collections'">
+          <template v-if="props.variant === 'my-collections' && isLfInsightsTeamMember">
             <lfx-dropdown-item @click="handleEditCollection()">
               <lfx-icon
                 name="pencil"
@@ -101,7 +101,7 @@ SPDX-License-Identifier: MIT
             />
             Share
           </lfx-dropdown-item>
-          <template v-if="props.variant === 'my-collections'">
+          <template v-if="props.variant === 'my-collections' && isLfInsightsTeamMember">
             <lfx-dropdown-item @click="handleDeleteCollection()">
               <lfx-icon
                 name="trash"
@@ -119,6 +119,8 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { useRouter } from 'nuxt/app';
+import { storeToRefs } from 'pinia';
+import { computed } from 'vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
 import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
@@ -135,8 +137,10 @@ import { useEditCollectionStore } from '~/components/modules/collection/store/ed
 import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
+import { useAuthStore } from '~/components/modules/auth/store/auth.store';
 
 const router = useRouter();
+const { user } = storeToRefs(useAuthStore());
 const { openShareModal } = useShareStore();
 const { openEditModal } = useEditCollectionStore();
 const { showToast } = useToastService();
@@ -154,6 +158,8 @@ const props = withDefaults(
     variant: 'curated',
   },
 );
+
+const isLfInsightsTeamMember = computed(() => user.value?.isLfInsightsTeamMember || false);
 
 const handleShare = () => {
   const title = `LFX Insights | Collections - ${props.collection.name}`;
