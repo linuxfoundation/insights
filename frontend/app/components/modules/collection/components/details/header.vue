@@ -87,18 +87,28 @@ SPDX-License-Identifier: MIT
           v-if="props.collection && !loading"
           class="flex lg:justify-end transition-all ease-linear gap-4 w-full lg:w-auto shrink-0"
         >
-          <!-- TODO: Add back the copy and heart buttons
+          <!-- TODO: Add back the copy 
           <lfx-icon-button
             icon="copy"
             class=""
-          />
-          <lfx-button
-            type="outline"
-            class="!rounded-full"
-          >
-            <lfx-icon name="heart" />
-            1.6K
-          </lfx-button> -->
+          /> -->
+          <template v-if="isLfInsightsTeamMember">
+            <lfx-button
+              v-if="props.type === 'my-collections'"
+              type="outline"
+              class="!rounded-full"
+              @click="handleEdit"
+            >
+              <lfx-icon name="pencil" />
+              Edit Collection
+            </lfx-button>
+            <lfx-like-button
+              v-else
+              :collection="props.collection"
+              button-type="outline"
+              class="!rounded-full"
+            />
+          </template>
           <lfx-button
             type="outline"
             class="!rounded-full"
@@ -115,18 +125,11 @@ SPDX-License-Identifier: MIT
         :class="scrollTop > 50 ? 'h-0 opacity-0 invisible pt-0' : 'h-auto opacity-100 visible mt-10'"
       >
         <div class="flex items-center gap-2">
-          <img
-            :src="owner.logo"
-            :alt="owner.name"
-            class="block"
-            loading="lazy"
-            width="16"
-            height="16"
+          <collection-owner
+            v-if="props.collection"
+            :collection="props.collection"
           />
-          <p class="text-sm leading-5 text-neutral-600">
-            by
-            {{ owner.name }}
-          </p>
+
           <span
             v-if="projectCount > 0"
             class="text-neutral-600"
@@ -154,7 +157,7 @@ SPDX-License-Identifier: MIT
     <section class="container py-5 text-neutral-500 text-xs font-semibold">
       <div class="flex items-center gap-2">
         <div
-          class="w-2/5 cursor-pointer group flex items-center gap-1"
+          class="w-3/12 cursor-pointer group flex items-center gap-1"
           @click="handleSort('name')"
         >
           Project
@@ -164,9 +167,9 @@ SPDX-License-Identifier: MIT
             :class="[sortIconClass('name')]"
           />
         </div>
-        <!-- Health Score -->
+        <div class="w-2/12 group flex items-center gap-1">Health Score</div>
         <div
-          class="w-1/5 cursor-pointer group flex items-center gap-1"
+          class="w-1/12 cursor-pointer group flex items-center gap-1"
           @click="handleSort('contributorCount')"
         >
           Contributors
@@ -176,22 +179,11 @@ SPDX-License-Identifier: MIT
             :class="[sortIconClass('contributorCount')]"
           />
         </div>
-        <!-- Temporary only until we have the other data ready -->
-        <div
-          class="w-1/5 cursor-pointer group flex items-center gap-1"
-          @click="handleSort('organizationCount')"
-        >
-          Organizations
-          <lfx-icon
-            name="caret-large-down"
-            type="solid"
-            :class="[sortIconClass('organizationCount')]"
-          />
-        </div>
         <!-- TODO: Enable sorting by software value when backend is ready-->
-        <div class="w-1/5">Software value</div>
+        <div class="w-1/12">Software value</div>
         <!-- Contributor/Organization dependency -->
-        <!-- Achievements -->
+        <div class="w-3/12">Contributor/Organization dependency</div>
+        <div class="w-2/12">Achievements</div>
       </div>
     </section>
   </div>
@@ -208,13 +200,17 @@ import LfxIcon from '~/components/uikit/icon/icon.vue';
 import useScroll from '~/components/shared/utils/scroll';
 import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
 import LfxButton from '~/components/uikit/button/button.vue';
-// @ts-expect-error Vite asset import with ?url suffix
-import lfIconUrl from '~/assets/images/icon.svg?url';
+import CollectionOwner from '~/components/shared/components/collection-owner.vue';
 import { formatDate } from '~/components/shared/utils/formatter';
 import LfxToggle from '~/components/uikit/toggle/toggle.vue';
 import { useAuthStore } from '~/components/modules/auth/store/auth.store';
 import { useShareStore } from '~/components/shared/modules/share/store/share.store';
 import { LfxRoutes } from '~/components/shared/types/routes';
+import type { CollectionType } from '~~/types/collection';
+import LfxLikeButton from '~/components/shared/components/like-button.vue';
+import { useEditCollectionStore } from '~/components/modules/collection/store/edit-collection.store';
+
+const { openEditModal } = useEditCollectionStore();
 
 const authStore = useAuthStore();
 const { user } = storeToRefs(authStore);
@@ -222,16 +218,20 @@ const { user } = storeToRefs(authStore);
 const router = useRouter();
 const { openShareModal } = useShareStore();
 
+const isLfInsightsTeamMember = computed(() => user.value?.isLfInsightsTeamMember || false);
+
 const props = defineProps<{
   collection?: Collection;
   loading?: boolean;
   onlyLfProjects: boolean;
   sort: string;
+  type?: CollectionType;
 }>();
 
 const emit = defineEmits<{
   (e: 'update:onlyLfProjects', value: boolean): void;
   (e: 'update:sort', value: string): void;
+  (e: 'updated', value: Collection): void;
 }>();
 
 const isOnlyLFProjects = computed({
@@ -243,26 +243,11 @@ const isOnlyLFProjects = computed({
 
 const { scrollTop } = useScroll();
 const allTabs = computed(() => collectionTabs(user.value));
-const collectionTab = computed(
-  () => allTabs.value.find((tab) => tab.type === props.collection?.type) || allTabs.value[0],
-);
-const headerBackgroundStyle = computed(() => headerBackground(props.collection?.type));
+
+const collectionTab = computed(() => allTabs.value.find((tab) => tab.type === props.type) || allTabs.value[0]);
+const headerBackgroundStyle = computed(() => headerBackground(props.type, props.collection?.color));
 
 const projectCount = computed(() => props.collection?.projectCount || 0);
-
-const owner = computed(() => {
-  if (props.collection && props.collection.owner) {
-    return {
-      name: props.collection.owner?.name,
-      logo: props.collection.owner?.logo,
-    };
-  }
-
-  return {
-    name: 'The Linux Foundation',
-    logo: lfIconUrl,
-  };
-});
 
 const currentSort = computed(() => {
   const match = props.sort.match(/^(.+)_(asc|desc)$/);
@@ -312,6 +297,17 @@ const handleShare = () => {
     title,
     area: props.collection?.name,
   });
+};
+
+const handleEdit = () => {
+  if (props.collection) {
+    openEditModal({
+      collection: props.collection,
+      onUpdated: (collection: Collection) => {
+        emit('updated', collection);
+      },
+    });
+  }
 };
 </script>
 

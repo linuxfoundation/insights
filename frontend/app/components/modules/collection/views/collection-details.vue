@@ -12,11 +12,13 @@ SPDX-License-Identifier: MIT
     <div class="bg-white outline outline-neutral-100">
       <lfx-collection-header
         :loading="loading"
-        :collection="props.collection"
+        :collection="currentCollection"
         :only-lf-projects="isLFOnly"
         :sort="sort"
+        :type="collectionType"
         @update:only-lf-projects="updateOnlyLFProjects"
         @update:sort="updateSort"
+        @updated="handleCollectionUpdated"
       />
     </div>
   </lfx-maintain-height>
@@ -88,7 +90,8 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed, onServerPrefetch, watch, ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { createError, showError } from 'nuxt/app';
+import { useQuery } from '@tanstack/vue-query';
 import { storeToRefs } from 'pinia';
 import LfxCollectionProjectItem from '../components/details/collection-project-item.vue';
 import LfxCollectionProjectItemLoading from '../components/details/collection-project-item-loading.vue';
@@ -98,7 +101,7 @@ import LfxCollectionHeader from '~/components/modules/collection/components/deta
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxButton from '~/components/uikit/button/button.vue';
 import LfxMaintainHeight from '~/components/uikit/maintain-height/maintain-height.vue';
-import { PROJECT_API_SERVICE } from '~/components/modules/project/services/project.api.service';
+import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
 import useScroll from '~/components/shared/utils/scroll';
 import { useQueryParam, type URLParams } from '~/components/shared/utils/query-param';
 import {
@@ -108,21 +111,48 @@ import {
 import LfxOnboardingLink from '~/components/shared/components/onboarding-link.vue';
 import { useBannerStore } from '~/components/shared/store/banner.store';
 import type { Project } from '~~/types/project';
+import { useAuthStore } from '~/components/modules/auth/store/auth.store';
+import { TanstackKey } from '~/components/shared/types/tanstack';
 
 const props = defineProps<{
-  type?: CollectionType;
-  collection?: Collection;
-  loading?: boolean;
+  slug: string;
 }>();
 
 const { headerTopClass } = storeToRefs(useBannerStore());
+const { user } = storeToRefs(useAuthStore());
+
+const queryKey = computed(() => [TanstackKey.COLLECTION, props.slug]);
+
+const {
+  data: collection,
+  isPending: loading,
+  suspense,
+  isError,
+  error,
+} = useQuery<Collection>({
+  queryKey,
+  queryFn: COLLECTIONS_API_SERVICE.fetchCollection(props.slug),
+  retry: false,
+});
+
+const currentCollection = ref<Collection | undefined>(collection.value);
+
+watch(collection, (newCollection) => {
+  currentCollection.value = newCollection;
+});
 
 const { scrollTop } = useScroll();
-const route = useRoute();
-const collectionSlug = route.params.slug as string;
+const collectionSlug = props.slug;
 
 const { queryParams } = useQueryParam(collectionDetailsParamsGetter, collectionListParamsSetter);
 const { onlyLFProjects, collectionSort } = queryParams.value;
+const collectionType = computed<CollectionType>(() => {
+  if (user.value && user.value.sub === currentCollection.value?.ssoUserId) {
+    return 'my-collections';
+  }
+
+  return currentCollection.value?.ssoUserId ? 'community' : 'curated';
+});
 
 const sort = ref(collectionSort || 'contributorCount_desc');
 const isLFOnly = ref(onlyLFProjects === 'true');
@@ -133,11 +163,13 @@ const params = computed(() => ({
   sort: sort.value,
   pageSize,
   isLF: isLFOnly.value,
-  collectionSlug,
+  slug: collectionSlug,
 }));
 
-const { data, isPending, isFetchingNextPage, fetchNextPage, hasNextPage, isSuccess } =
-  PROJECT_API_SERVICE.fetchProjects(params);
+// const { data, isPending, isFetchingNextPage, fetchNextPage, hasNextPage, isSuccess } =
+//   PROJECT_API_SERVICE.fetchProjects(params);
+const { data, isPending, isFetchingNextPage, fetchNextPage, hasNextPage, isSuccess, refetch } =
+  COLLECTIONS_API_SERVICE.fetchCollectionProjects(params);
 
 // @ts-expect-error - TanStack Query type inference issue with Vue
 const flatData = computed(() => data.value?.pages.flatMap((page: Pagination<Project>) => page.data) || []);
@@ -161,6 +193,11 @@ const updateOnlyLFProjects = (value: boolean) => {
   };
 };
 
+const handleCollectionUpdated = (collection: Collection) => {
+  currentCollection.value = collection;
+  refetch();
+};
+
 watch(
   () => queryParams.value,
   (value: URLParams) => {
@@ -178,7 +215,17 @@ watch(
 );
 
 onServerPrefetch(async () => {
-  await PROJECT_API_SERVICE.prefetchProjects(params);
+  await suspense();
+  if (isError.value) {
+    const statusMessage = error.value?.message || 'Collection Not Found';
+
+    if (import.meta.server) {
+      throw createError({ statusCode: 404, statusMessage });
+    } else {
+      showError({ statusCode: 404, statusMessage });
+    }
+  }
+  await COLLECTIONS_API_SERVICE.prefetchCollectionProjects(params);
 });
 </script>
 

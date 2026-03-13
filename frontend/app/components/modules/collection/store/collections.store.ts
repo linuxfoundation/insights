@@ -1,0 +1,68 @@
+// Copyright (c) 2025 The Linux Foundation and each contributor.
+// SPDX-License-Identifier: MIT
+import { defineStore } from 'pinia';
+import { computed, ref } from 'vue';
+import type { Collection } from '~~/types/collection';
+import type { Pagination } from '~~/types/shared/pagination';
+
+export const useCollectionsStore = defineStore('collections', () => {
+  const likedCollectionIds = ref<Set<string>>(new Set());
+  const isLikedCollectionsLoaded = ref(false);
+
+  const likedCollectionsList = computed(() => Array.from(likedCollectionIds.value));
+
+  const isLiked = (collectionId: string): boolean => likedCollectionIds.value.has(collectionId);
+
+  const setLikedCollections = (collectionIds: string[]) => {
+    likedCollectionIds.value = new Set(collectionIds);
+  };
+
+  const addLikedCollection = (collectionId: string) => {
+    likedCollectionIds.value = new Set([...likedCollectionIds.value, collectionId]);
+  };
+
+  const removeLikedCollection = (collectionId: string) => {
+    const newSet = new Set(likedCollectionIds.value);
+    newSet.delete(collectionId);
+    likedCollectionIds.value = newSet;
+  };
+
+  const toggleLike = (collectionId: string) => {
+    if (isLiked(collectionId)) {
+      removeLikedCollection(collectionId);
+    } else {
+      addLikedCollection(collectionId);
+    }
+  };
+
+  const fetchAndSetLikedCollections = async () => {
+    try {
+      const response = await $fetch<Pagination<Collection>>('/api/collection/like', {
+        params: { page: 0, pageSize: 100000 },
+      });
+      const ids = response.data.map((collection) => collection.id);
+      setLikedCollections(ids);
+      isLikedCollectionsLoaded.value = true;
+    } catch (error) {
+      console.error('Error fetching liked collections:', error);
+    }
+  };
+
+  const clearLikedCollections = () => {
+    likedCollectionIds.value = new Set();
+    isLikedCollectionsLoaded.value = false;
+  };
+
+  return {
+    likedCollectionIds,
+    likedCollectionsList,
+    isLikedCollectionsLoaded,
+    isLiked,
+    setLikedCollections,
+    addLikedCollection,
+    removeLikedCollection,
+    toggleLike,
+    fetchAndSetLikedCollections,
+    clearLikedCollections,
+  };
+});

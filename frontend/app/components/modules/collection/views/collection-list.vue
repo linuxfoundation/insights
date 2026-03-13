@@ -17,6 +17,7 @@ SPDX-License-Identifier: MIT
         :view="view"
         @update:sort="updateSort"
         @update:view="updateView"
+        @created="handleCreated"
       />
     </div>
   </div>
@@ -32,6 +33,8 @@ SPDX-License-Identifier: MIT
             v-for="collection in flatData"
             :key="collection.slug"
             :collection="collection"
+            :show-like-count="props.type !== 'my-collections'"
+            :variant="props.type"
           />
         </template>
         <template v-else>
@@ -39,6 +42,7 @@ SPDX-License-Identifier: MIT
             v-for="collection in flatData"
             :key="collection.slug"
             :collection="collection"
+            :variant="props.type"
           />
         </template>
       </div>
@@ -61,22 +65,7 @@ SPDX-License-Identifier: MIT
         </template>
       </div>
 
-      <div
-        v-if="flatData.length === 0 && isSuccess"
-        class="flex flex-col items-center py-20"
-      >
-        <lfx-icon
-          name="face-monocle"
-          :size="80"
-          class="text-neutral-300"
-        />
-        <h3 class="text-center pt-5 text-heading-3 sm:text-heading-2 font-secondary font-bold text-neutral-500">
-          No collections found
-        </h3>
-        <p class="text-body-1 text-neutral-500 pt-3 text-center">
-          Try adjusting your filters to find what you’re looking for.
-        </p>
-      </div>
+      <lfx-collections-empty v-if="flatData.length === 0 && isSuccess" />
     </div>
   </section>
 
@@ -93,6 +82,13 @@ SPDX-License-Identifier: MIT
       Load more
     </lfx-button>
   </div>
+
+  <section
+    v-if="props.type === 'my-collections'"
+    class="container mt-10"
+  >
+    <lfx-liked-collections :view="view" />
+  </section>
 </template>
 
 <script setup lang="ts">
@@ -102,13 +98,14 @@ import { collectionListParamsGetter, collectionListParamsSetter } from '../servi
 import { headerBackground } from '../config/collection-type-config';
 import type { Pagination } from '~~/types/shared/pagination';
 
-import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxButton from '~/components/uikit/button/button.vue';
 import LfxCollectionListItem from '~/components/shared/components/collection-list-item.vue';
 import LfxCollectionListItemLoading from '~/components/modules/collection/components/list/collection-list-item-loading.vue';
 import LfxCollectionListHeader from '~/components/modules/collection/components/list/header.vue';
 import LfxCollectionCardLoading from '~/components/shared/components/collection-card-loading.vue';
 import LfxCollectionCard from '~/components/shared/components/collection-card.vue';
+import LfxCollectionsEmpty from '~/components/shared/components/collections-empty.vue';
+import LfxLikedCollections from '~/components/modules/collection/components/discovery/liked-collections.vue';
 
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
@@ -118,11 +115,9 @@ import { useQueryParam, type URLParams } from '~/components/shared/utils/query-p
 import type { Collection, CollectionType } from '~~/types/collection';
 import { useBannerStore } from '~/components/shared/store/banner.store';
 
-interface Props {
+const props = defineProps<{
   type?: CollectionType;
-}
-
-const props = defineProps<Props>();
+}>();
 
 const { queryParams } = useQueryParam(collectionListParamsGetter, collectionListParamsSetter);
 const { listSort } = queryParams.value;
@@ -138,10 +133,13 @@ const params = computed(() => ({
   pageSize: pageSize.value,
   sort: sort.value || 'starred_desc',
   categories: undefined,
+  type: props.type === 'my-collections' ? undefined : props.type,
 }));
 
-const { data, isPending, isFetchingNextPage, fetchNextPage, hasNextPage, isSuccess, error } =
-  COLLECTIONS_API_SERVICE.fetchCollections(params);
+const { data, isPending, isFetchingNextPage, fetchNextPage, hasNextPage, isSuccess, error, refetch } =
+  props.type === 'my-collections'
+    ? COLLECTIONS_API_SERVICE.fetchMyCollections(params)
+    : COLLECTIONS_API_SERVICE.fetchCollections(params);
 
 const flatData = computed(() =>
   // @ts-expect-error - TanStack Query type inference issue with Vue
@@ -179,6 +177,10 @@ const updateSort = (value: string) => {
   queryParams.value = {
     listSort: value,
   };
+};
+
+const handleCreated = () => {
+  refetch();
 };
 
 // Server-side prefetching for infinite query

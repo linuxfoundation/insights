@@ -408,23 +408,70 @@ export class CommunityCollectionRepository {
 
     const collectionIds = collectionsResult.rows.map((r: { id: string }) => r.id);
     const projectsResult = await this.pool.query(
-      `SELECT "collectionId", "insightsProjectId" FROM "collectionsInsightsProjects" WHERE "collectionId" = ANY($1) AND "deletedAt" IS NULL`,
+      `SELECT cip."collectionId", cip."insightsProjectId",
+              ip.name, ip.slug, ip."logoUrl"
+       FROM "collectionsInsightsProjects" cip
+       LEFT JOIN "insightsProjects" ip ON ip.id = cip."insightsProjectId"
+       WHERE cip."collectionId" = ANY($1) AND cip."deletedAt" IS NULL LIMIT 5`,
       [collectionIds],
     );
 
-    const projectsByCollection = new Map<string, string[]>();
+    const projectsByCollection = new Map<
+      string,
+      { id: string; name: string; slug: string; logoUrl: string }[]
+    >();
     for (const row of projectsResult.rows) {
       const list = projectsByCollection.get(row.collectionId) || [];
-      list.push(row.insightsProjectId);
+      list.push({
+        id: row.insightsProjectId,
+        name: row.name,
+        slug: row.slug,
+        logoUrl: row.logoUrl,
+      });
       projectsByCollection.set(row.collectionId, list);
     }
 
     return {
       data: collectionsResult.rows.map((c: CommunityCollection) => ({
         ...c,
-        projects: projectsByCollection.get(c.id) || [],
+        projects: (projectsByCollection.get(c.id) || []).map((p) => p.id),
+        projectCount: (projectsByCollection.get(c.id) || []).length,
+        featuredProjects: (projectsByCollection.get(c.id) || []).slice(0, 5).map((p) => ({
+          name: p.name,
+          slug: p.slug,
+          logo: p.logoUrl,
+        })),
       })),
       total,
+    };
+  }
+
+  async findProjectIdsBySlug(
+    slug: string,
+  ): Promise<{ collectionId: string; projectIds: string[] } | null> {
+    const collectionResult = await this.pool.query(
+      `SELECT c.id FROM collections c
+       WHERE c.slug = $1 AND c."deletedAt" IS NULL AND c."isPrivate" = false`,
+      [slug],
+    );
+
+    if (collectionResult.rows.length === 0) {
+      return null;
+    }
+
+    const collectionId = collectionResult.rows[0].id;
+
+    const projectsResult = await this.pool.query(
+      `SELECT "insightsProjectId" FROM "collectionsInsightsProjects"
+       WHERE "collectionId" = $1 AND "deletedAt" IS NULL`,
+      [collectionId],
+    );
+
+    return {
+      collectionId,
+      projectIds: projectsResult.rows.map(
+        (r: { insightsProjectId: string }) => r.insightsProjectId,
+      ),
     };
   }
 

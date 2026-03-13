@@ -21,8 +21,8 @@ SPDX-License-Identifier: MIT
       <section class="border-b border-neutral-200 pb-10">
         <lfx-collection-section
           type="curated"
-          :status="discoveryStatus"
-          :error="discoveryError"
+          :status="curatedStatus"
+          :error="curatedError"
           error-message="Error fetching curated collections"
           :is-empty="isCuratedEmpty"
         >
@@ -40,8 +40,8 @@ SPDX-License-Identifier: MIT
         <section class="border-b border-neutral-200 pb-10">
           <lfx-collection-section
             type="community"
-            :status="discoveryStatus"
-            :error="discoveryError"
+            :status="communityStatus"
+            :error="communityError"
             error-message="Error fetching community collections"
             :is-empty="isCommunityEmpty"
           >
@@ -58,8 +58,8 @@ SPDX-License-Identifier: MIT
         <section>
           <lfx-collection-section
             type="my-collections"
-            :status="discoveryStatus"
-            :error="discoveryError"
+            :status="myCollectionsStatus"
+            :error="myCollectionsError"
             error-message="Error fetching your collections"
             :is-empty="isMyCollectionsEmpty"
           >
@@ -73,24 +73,7 @@ SPDX-License-Identifier: MIT
         </section>
 
         <!-- Liked Collections Section -->
-        <section>
-          <div class="flex items-center gap-2 mb-6 pb-2 border-b border-neutral-200">
-            <lfx-icon
-              name="heart"
-              :size="16"
-              class="text-danger-500"
-              type="solid"
-            />
-            <h3 class="text-sm font-medium text-neutral-900">Liked Collections ({{ likedCollections.length }})</h3>
-          </div>
-          <div class="flex flex-col gap-0">
-            <lfx-collection-list-item
-              v-for="collection in likedCollections"
-              :key="collection.slug"
-              :collection="collection"
-            />
-          </div>
-        </section>
+        <lfx-liked-collections />
       </template>
     </div>
   </div>
@@ -101,10 +84,9 @@ import { computed, onServerPrefetch } from 'vue';
 import { storeToRefs } from 'pinia';
 import { isArray } from 'lodash-es';
 import LfCreateCollectionButton from '../components/create-modal/create-button.vue';
-import LfxIcon from '~/components/uikit/icon/icon.vue';
+import LfxLikedCollections from '../components/discovery/liked-collections.vue';
 import LfxCollectionSection from '~/components/shared/components/collection-section.vue';
 import LfxCollectionCard from '~/components/shared/components/collection-card.vue';
-import LfxCollectionListItem from '~/components/shared/components/collection-list-item.vue';
 import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
 // TODO: remove this once we have everything done and tested
 import { useAuthStore } from '~/components/modules/auth/store/auth.store';
@@ -114,16 +96,29 @@ const authStore = useAuthStore();
 const { user } = storeToRefs(authStore);
 
 const {
-  data: discoveryData,
-  status: discoveryStatus,
-  error: discoveryError,
-  suspense: discoverySuspense,
-} = COLLECTIONS_API_SERVICE.fetchDiscoveryCollections();
+  data: curatedData,
+  status: curatedStatus,
+  error: curatedError,
+  suspense: curatedSuspense,
+} = COLLECTIONS_API_SERVICE.fetchDiscoveryCuratedCollections();
 
-const curatedCollections = computed(() => discoveryData.value?.curatedCollections || []);
-const communityCollections = computed(() => discoveryData.value?.communityCollections || []);
-const myCollections = computed(() => discoveryData.value?.myCollections || []);
-const likedCollections = computed(() => discoveryData.value?.likedCollections || []);
+const {
+  data: communityData,
+  status: communityStatus,
+  error: communityError,
+  suspense: communitySuspense,
+} = COLLECTIONS_API_SERVICE.fetchDiscoveryCommunityCollections();
+
+const {
+  data: myCollectionsData,
+  status: myCollectionsStatus,
+  error: myCollectionsError,
+  suspense: myCollectionsSuspense,
+} = COLLECTIONS_API_SERVICE.fetchDiscoveryMyCollections();
+
+const curatedCollections = computed(() => curatedData.value?.data || []);
+const communityCollections = computed(() => communityData.value?.data || []);
+const myCollections = computed(() => myCollectionsData.value?.data || []);
 
 const isCuratedEmpty = computed(() => isEmptyData(curatedCollections.value));
 const isCommunityEmpty = computed(() => isEmptyData(communityCollections.value));
@@ -143,7 +138,7 @@ const isEmptyData = (value: Collection[] | null | undefined) => {
 };
 
 onServerPrefetch(async () => {
-  await discoverySuspense();
+  await Promise.all([curatedSuspense(), communitySuspense(), myCollectionsSuspense()]);
 });
 </script>
 <script lang="ts">

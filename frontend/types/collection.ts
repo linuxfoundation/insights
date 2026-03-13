@@ -23,12 +23,14 @@ export interface Collection {
     name: string;
     logo: string;
   };
-  likeCount?: number;
-  imgUrl?: string;
+  projects?: string[];
+  logoUrl?: string | null;
+  imageUrl?: string | null;
   coverImgUrl?: string;
-  gradient?: [string, string];
+  color?: string | null;
   type?: CollectionType;
   isLiked?: boolean;
   isPrivate?: boolean;
   ssoUserId?: string | null;
+  likeCount?: number;
 }

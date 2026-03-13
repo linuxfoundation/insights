@@ -59,11 +59,16 @@ export default defineEventHandler(
       const repo = new CommunityCollectionRepository(cmDbPool);
       const result = await repo.findBySsoUserId(ssoUser.id, { page, pageSize });
 
+      const owner = {
+        name: ssoUser.displayName || '',
+        logo: ssoUser.avatarUrl || '',
+      };
+
       return {
         page,
         pageSize,
         total: result.total,
-        data: result.data,
+        data: result.data.map((c) => ({ ...c, owner })),
       };
     } catch (error) {
       console.error('Error fetching user collections:', error);

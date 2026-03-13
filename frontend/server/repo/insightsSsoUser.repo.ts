@@ -32,10 +32,11 @@ export class InsightsSsoUserRepository {
     const query = `
       INSERT INTO "insightsSsoUsers" (id, "displayName", "avatarUrl", email, username, "accountId", "accountName", "accountWebsite", "updatedAt")
       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, NOW())
-      ON CONFLICT (username) DO UPDATE SET
+      ON CONFLICT (id) DO UPDATE SET
         "displayName" = COALESCE(EXCLUDED."displayName", "insightsSsoUsers"."displayName"),
         "avatarUrl" = COALESCE(EXCLUDED."avatarUrl", "insightsSsoUsers"."avatarUrl"),
         email = COALESCE(EXCLUDED.email, "insightsSsoUsers".email),
+        username = COALESCE(EXCLUDED.username, "insightsSsoUsers".username),
         "accountId" = COALESCE(EXCLUDED."accountId", "insightsSsoUsers"."accountId"),
         "accountName" = COALESCE(EXCLUDED."accountName", "insightsSsoUsers"."accountName"),
         "accountWebsite" = COALESCE(EXCLUDED."accountWebsite", "insightsSsoUsers"."accountWebsite"),

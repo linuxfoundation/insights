@@ -11,8 +11,8 @@ SPDX-License-Identifier: MIT
       <!-- Collection Avatar -->
       <div class="relative shrink-0">
         <lfx-avatar
-          v-if="props.collection.imgUrl"
-          :src="props.collection.imgUrl"
+          v-if="props.collection.logoUrl"
+          :src="props.collection.logoUrl"
           type="project"
         />
         <div
@@ -42,22 +42,12 @@ SPDX-License-Identifier: MIT
     <div class="flex items-center gap-4 shrink-0">
       <!-- Owner info -->
       <div class="flex items-center gap-2">
-        <template v-if="props.collection.isLf">
-          <img
-            :src="lfIconUrl"
-            alt="The Linux Foundation"
-            class="w-4 h-4"
-          />
-          <span class="text-sm text-neutral-600"> Curated by The Linux Foundation ・ </span>
-        </template>
-        <template v-else-if="props.collection.owner">
-          <lfx-avatar
-            :src="props.collection.owner.logo"
-            type="member"
-            size="xsmall"
-          />
-          <span class="text-sm text-neutral-600"> by {{ props.collection.owner.name }} ・ </span>
-        </template>
+        <collection-owner
+          :collection="props.collection"
+          by-prefix="Curated "
+        />
+
+        <span class="text-neutral-600 text-sm"> ・ </span>
 
         <!-- Project count and updated date -->
         <div class="flex items-center gap-1.5">
@@ -71,6 +61,16 @@ SPDX-License-Identifier: MIT
             {{ formatDate(props.collection.updatedAt, 'dd MMM') }}
           </span>
         </div>
+        <div
+          v-if="showLikeCount && isLfInsightsTeamMember"
+          class="ml-4"
+        >
+          <like-button
+            :collection="props.collection"
+            :variant="props.variant"
+            @updated="handleLikeUpdated"
+          />
+        </div>
       </div>
 
       <div>
@@ -83,6 +83,16 @@ SPDX-License-Identifier: MIT
               class="!p-2"
             />
           </template>
+          <template v-if="props.variant === 'my-collections' && isLfInsightsTeamMember">
+            <lfx-dropdown-item @click="handleEditCollection()">
+              <lfx-icon
+                name="pencil"
+                :size="16"
+                class="text-neutral-600"
+              />
+              Edit
+            </lfx-dropdown-item>
+          </template>
           <lfx-dropdown-item @click="handleShare()">
             <lfx-icon
               name="share-nodes"
@@ -91,6 +101,16 @@ SPDX-License-Identifier: MIT
             />
             Share
           </lfx-dropdown-item>
+          <template v-if="props.variant === 'my-collections' && isLfInsightsTeamMember">
+            <lfx-dropdown-item @click="handleDeleteCollection()">
+              <lfx-icon
+                name="trash"
+                :size="16"
+                class="text-neutral-600"
+              />
+              Delete
+            </lfx-dropdown-item>
+          </template>
         </lfx-dropdown>
       </div>
     </div>
@@ -99,24 +119,47 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { useRouter } from 'nuxt/app';
+import { storeToRefs } from 'pinia';
+import { computed } from 'vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
 import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
 import { LfxRoutes } from '~/components/shared/types/routes';
 import type { Collection } from '~~/types/collection';
 import { formatDate } from '~/components/shared/utils/formatter';
-// @ts-expect-error Vite asset import with ?url suffix
-import lfIconUrl from '~/assets/images/icon.svg?url';
 import { useShareStore } from '~/components/shared/modules/share/store/share.store';
 import LfxDropdown from '~/components/uikit/dropdown/dropdown.vue';
 import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
+import LikeButton from '~/components/shared/components/like-button.vue';
+import CollectionOwner from '~/components/shared/components/collection-owner.vue';
+import type { CollectionType } from '~~/types/collection';
+import { useEditCollectionStore } from '~/components/modules/collection/store/edit-collection.store';
+import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
+import useToastService from '~/components/uikit/toast/toast.service';
+import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
+import { useAuthStore } from '~/components/modules/auth/store/auth.store';
 
 const router = useRouter();
+const { user } = storeToRefs(useAuthStore());
 const { openShareModal } = useShareStore();
-
-const props = defineProps<{
-  collection: Collection;
+const { openEditModal } = useEditCollectionStore();
+const { showToast } = useToastService();
+const emit = defineEmits<{
+  (e: 'updated', collection: Collection | null): void;
 }>();
+const props = withDefaults(
+  defineProps<{
+    collection: Collection;
+    showLikeCount?: boolean;
+    variant?: CollectionType;
+  }>(),
+  {
+    showLikeCount: false,
+    variant: 'curated',
+  },
+);
+
+const isLfInsightsTeamMember = computed(() => user.value?.isLfInsightsTeamMember || false);
 
 const handleShare = () => {
   const title = `LFX Insights | Collections - ${props.collection.name}`;
@@ -132,6 +175,30 @@ const handleShare = () => {
     title,
     area: props.collection.name,
   });
+};
+
+const handleEditCollection = () => {
+  openEditModal({
+    collection: props.collection,
+    onUpdated: (collection: Collection) => {
+      emit('updated', collection);
+    },
+  });
+};
+
+const handleDeleteCollection = async () => {
+  try {
+    await COLLECTIONS_API_SERVICE.deleteCollection(props.collection.id);
+    showToast('Collection deleted successfully', ToastTypesEnum.positive);
+    emit('updated', null);
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Failed to delete collection';
+    showToast(message, ToastTypesEnum.negative);
+  }
+};
+
+const handleLikeUpdated = (collection: Collection) => {
+  emit('updated', collection);
 };
 </script>
 
