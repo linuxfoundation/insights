@@ -22,7 +22,16 @@ SPDX-License-Identifier: MIT
       />
     </div>
     <div class="w-2/12">
-      <lfx-health-score :score="project.healthScore" />
+      <lfx-popover
+        placement="top"
+        trigger-event="hover"
+        :allow-pass-through="true"
+      >
+        <lfx-health-score :score="project.healthScore" />
+        <template #content>
+          <lfx-health-score-details :project="props.project" />
+        </template>
+      </lfx-popover>
     </div>
     <div class="w-1/12">
       {{ formatNumber(props.project.contributorCount) }}
@@ -61,7 +70,9 @@ import LfxArchivedTag from '~/components/shared/components/archived-tag.vue';
 import { formatNumber, formatNumberShort } from '~/components/shared/utils/formatter';
 import { LfxRoutes } from '~/components/shared/types/routes';
 import LfxHealthScore from '~/components/shared/components/health-score.vue';
+import LfxHealthScoreDetails from '~/components/modules/collection/components/details/health-score-details.vue';
 import LfxDependencyColumn from '~/components/modules/collection/components/details/dependency-column.vue';
+import LfxPopover from '~/components/uikit/popover/popover.vue';
 import badgeConfigs, {
   getBadgeTierFromPercentile,
   BadgeTier,
