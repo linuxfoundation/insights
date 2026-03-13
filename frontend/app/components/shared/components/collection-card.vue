@@ -183,6 +183,7 @@ import type { CollectionFeaturedProject } from '~~/types/collection';
 import CollectionOwner from '~/components/shared/components/collection-owner.vue';
 import LikeButton from '~/components/shared/components/like-button.vue';
 import { useEditCollectionStore } from '~/components/modules/collection/store/edit-collection.store';
+import { useDuplicateCollectionStore } from '~/components/modules/collection/store/duplicate-collection.store';
 import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
@@ -191,6 +192,7 @@ import { useAuthStore } from '~/components/modules/auth/store/auth.store';
 const router = useRouter();
 const { openShareModal } = useShareStore();
 const { openEditModal } = useEditCollectionStore();
+const { openDuplicateModal } = useDuplicateCollectionStore();
 const { showToast } = useToastService();
 const { user } = storeToRefs(useAuthStore());
 
@@ -255,7 +257,9 @@ const handleShare = () => {
 };
 
 const handleClone = () => {
-  // TODO: Implement clone functionality
+  openDuplicateModal({
+    collection: props.collection,
+  });
 };
 
 const handleEdit = () => {

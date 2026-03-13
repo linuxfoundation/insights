@@ -14,6 +14,8 @@ SPDX-License-Identifier: MIT
       <div class="flex flex-col gap-6">
         <lf-create-collection-modal-header
           :step="step"
+          :is-duplicate-mode="isDuplicateMode"
+          :source-collection-name="sourceCollection?.name"
           @close="isModalOpen = false"
         />
 
@@ -41,7 +43,7 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { computed, ref, watch, onMounted } from 'vue';
 import LfCreateCollectionModalHeader from './modal-header.vue';
 import LfCreateCollectionModalFooter from './modal-footer.vue';
 import LfxModal from '~/components/uikit/modal/modal.vue';
@@ -50,19 +52,25 @@ import {
   createCollectionTemplate,
   type CreateCollectionStep,
   type CreateCollectionForm,
+  type CollectionProject,
 } from '~/components/modules/collection/config/create-collection.config';
 import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
+import type { Collection } from '~~/types/collection';
 
 const props = withDefaults(
   defineProps<{
     modelValue: boolean;
+    sourceCollection?: Collection;
   }>(),
   {
     modelValue: false,
+    sourceCollection: undefined,
   },
 );
+
+const isDuplicateMode = computed(() => !!props.sourceCollection);
 
 const emit = defineEmits<{
   'update:modelValue': [value: boolean];
@@ -80,8 +88,43 @@ const step = ref(0);
 const form = ref<CreateCollectionForm>({ ...createCollectionTemplate, projects: [] });
 const stepRef = ref<{ $v?: { $invalid: boolean; $touch: () => void } } | null>(null);
 const isCreating = ref(false);
+const isLoadingProjects = ref(false);
 
 const steps = computed<CreateCollectionStep[]>(() => createCollectionSteps);
+
+const initializeFromSourceCollection = async () => {
+  if (!props.sourceCollection) return;
+
+  form.value.name = `Copy of ${props.sourceCollection.name}`;
+  form.value.description = props.sourceCollection.description || '';
+  form.value.visibility = props.sourceCollection.isPrivate ? 'private' : 'public';
+
+  isLoadingProjects.value = true;
+  try {
+    const response = await $fetch<{ data: Array<{ id: string; name: string; slug: string; logoUrl: string | null }> }>(
+      `/api/collection/${props.sourceCollection.slug}/projects`,
+      { params: { pageSize: 1000 } },
+    );
+    form.value.projects = response.data.map(
+      (p): CollectionProject => ({
+        id: p.id,
+        name: p.name,
+        slug: p.slug,
+        logo: p.logoUrl || null,
+      }),
+    );
+  } catch (error) {
+    console.error('Failed to load source collection projects:', error);
+  } finally {
+    isLoadingProjects.value = false;
+  }
+};
+
+onMounted(() => {
+  if (isDuplicateMode.value) {
+    initializeFromSourceCollection();
+  }
+});
 
 const currentStep = computed<CreateCollectionStep | null>(() => steps.value[step.value] || null);
 
@@ -155,8 +198,12 @@ const createCollection = async () => {
   }
 };
 
-watch(isModalOpen, (value) => {
-  if (!value) {
+watch(isModalOpen, async (value) => {
+  if (value) {
+    if (isDuplicateMode.value) {
+      await initializeFromSourceCollection();
+    }
+  } else {
     step.value = 0;
     form.value = { ...createCollectionTemplate, projects: [] };
   }
