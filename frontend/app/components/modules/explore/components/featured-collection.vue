@@ -65,7 +65,7 @@ const {
   status: communityStatus,
   error: communityError,
   suspense: communitySuspense,
-} = COLLECTIONS_API_SERVICE.fetchDiscoveryCommunityCollections();
+} = COLLECTIONS_API_SERVICE.fetchDiscoveryCommunityCollections(user.value);
 
 const curatedCollections = computed(() => curatedData.value?.data || []);
 const communityCollections = computed(() => communityData.value?.data || []);

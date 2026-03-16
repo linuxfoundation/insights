@@ -14,6 +14,7 @@ import type { Category, CategoryGroup } from '~~/types/category';
 import type { ProjectInsights } from '~~/types/project';
 import { TanstackKey } from '~/components/shared/types/tanstack';
 import type { SearchProject, SearchResults } from '~~/types/search';
+import { type User } from '~~/types/auth/auth-user.types';
 
 export interface CategoryGroupOptions {
   value: string;
@@ -230,7 +231,7 @@ class CollectionsApiService {
     });
   }
 
-  fetchDiscoveryCommunityCollections() {
+  fetchDiscoveryCommunityCollections(user: User | null) {
     const params = this.discoveryParams('community');
     const queryKey = computed(() => [
       TanstackKey.COLLECTION_DISCOVERY,
@@ -245,6 +246,7 @@ class CollectionsApiService {
     return useQuery<Pagination<Collection>>({
       queryKey,
       queryFn,
+      enabled: !!user,
     });
   }
 
