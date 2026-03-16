@@ -4,16 +4,15 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <div class="flex items-center gap-2">
-    <lfx-popover
-      v-if="badges.length > 0"
-      placement="top"
-      trigger-event="hover"
-      :allow-pass-through="true"
-    >
-      <div class="flex items-center gap-2">
+    <template v-if="badges.length > 0">
+      <lfx-popover
+        v-for="(count, tier) in badgeCountByTier"
+        :key="tier"
+        placement="top"
+        trigger-event="hover"
+        :allow-pass-through="true"
+      >
         <lfx-chip
-          v-for="(count, tier) in badgeCountByTier"
-          :key="tier"
           :style="{ background: getBadgeColor(tier as BadgeTier) }"
           class="flex items-center gap-1"
         >
@@ -26,72 +25,72 @@ SPDX-License-Identifier: MIT
             {{ count }}
           </span>
         </lfx-chip>
-      </div>
-      <template #content>
-        <div class="bg-white border border-neutral-100 rounded-xl shadow-xl overflow-hidden p-3 w-100">
-          <div class="flex flex-col">
-            <div
-              v-for="(badge, index) in badges"
-              :key="badge.config.leaderboardKey"
-            >
-              <div class="flex gap-3 items-start py-2">
-                <!-- Badge Image -->
-                <div class="shrink-0 size-13">
-                  <img
-                    :src="badge.config.badgeImages[badge.tier]"
-                    :alt="badge.config.title"
-                    class="size-13"
-                  />
-                </div>
+        <template #content>
+          <div class="bg-white border border-neutral-100 rounded-xl shadow-xl overflow-hidden p-3 w-100">
+            <div class="flex flex-col">
+              <div
+                v-for="(badge, index) in getBadgesByTier(tier as BadgeTier)"
+                :key="badge.config.leaderboardKey"
+              >
+                <div class="flex gap-3 items-start py-2">
+                  <!-- Badge Image -->
+                  <div class="shrink-0 size-13">
+                    <img
+                      :src="badge.config.badgeImages[badge.tier]"
+                      :alt="badge.config.title"
+                      class="size-13"
+                    />
+                  </div>
 
-                <!-- Content -->
-                <div class="flex-1 min-w-0 flex flex-col justify-center">
-                  <p class="text-sm font-semibold text-neutral-900 truncate">
-                    {{ badge.config.title }}
-                  </p>
-                  <p class="text-xs leading-4 text-neutral-500">
-                    {{ getBadgeDescription(badge) }}
-                  </p>
-                </div>
+                  <!-- Content -->
+                  <div class="flex-1 min-w-0 flex flex-col justify-center">
+                    <p class="text-sm font-semibold text-neutral-900 truncate">
+                      {{ badge.config.title }}
+                    </p>
+                    <p class="text-xs leading-4 text-neutral-500">
+                      {{ getBadgeDescription(badge) }}
+                    </p>
+                  </div>
 
-                <!-- Actions -->
-                <div class="flex items-center gap-2 shrink-0">
-                  <lfx-tooltip content="View leaderboard">
-                    <nuxt-link
-                      :to="{
-                        name: LfxRoutes.LEADERBOARD,
-                        params: { key: badge.config.leaderboardKey },
-                      }"
-                      @click.stop
-                    >
+                  <!-- Actions -->
+                  <div class="flex items-center gap-2 shrink-0">
+                    <lfx-tooltip content="View leaderboard">
+                      <nuxt-link
+                        :to="{
+                          name: LfxRoutes.LEADERBOARD,
+                          params: { key: badge.config.leaderboardKey },
+                        }"
+                        @click.stop
+                      >
+                        <lfx-icon-button
+                          icon="trophy"
+                          type="transparent"
+                          size="small"
+                        />
+                      </nuxt-link>
+                    </lfx-tooltip>
+                    <lfx-tooltip content="Share achievement">
                       <lfx-icon-button
-                        icon="trophy"
+                        icon="share-nodes"
                         type="transparent"
                         size="small"
+                        @click.stop="openShareModal(badge)"
                       />
-                    </nuxt-link>
-                  </lfx-tooltip>
-                  <lfx-tooltip content="Share achievement">
-                    <lfx-icon-button
-                      icon="share-nodes"
-                      type="transparent"
-                      size="small"
-                      @click.stop="openShareModal(badge)"
-                    />
-                  </lfx-tooltip>
+                    </lfx-tooltip>
+                  </div>
                 </div>
-              </div>
 
-              <!-- Divider -->
-              <div
-                v-if="index < badges.length - 1"
-                class="border-t border-neutral-100"
-              />
+                <!-- Divider -->
+                <div
+                  v-if="index < getBadgesByTier(tier as BadgeTier).length - 1"
+                  class="border-t border-neutral-100"
+                />
+              </div>
             </div>
           </div>
-        </div>
-      </template>
-    </lfx-popover>
+        </template>
+      </lfx-popover>
+    </template>
 
     <!-- Share Modal -->
     <lfx-badges-share-modal
@@ -176,6 +175,10 @@ const getBadgeColor = (tier: BadgeTier) => {
     default: // BRONZE
       return `${radialGradient} #B97A50`;
   }
+};
+
+const getBadgesByTier = (tier: BadgeTier): ProjectBadge[] => {
+  return badges.value.filter((badge) => badge.tier === tier);
 };
 
 const getBadgeDescription = (badge: ProjectBadge): string => {

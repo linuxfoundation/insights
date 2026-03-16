@@ -3,7 +3,7 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="flex flex-col items-center justify-center py-10 gap-5">
+  <div class="flex flex-col items-center justify-center py-10 gap-5 border border-neutral-200 rounded-lg">
     <div class="flex items-center justify-center h-14 w-14 rounded-full bg-accent-100">
       <lfx-icon
         name="rectangle-history"

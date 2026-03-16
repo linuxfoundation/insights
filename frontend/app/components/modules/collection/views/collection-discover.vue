@@ -3,19 +3,31 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="container">
-    <!-- Header Section -->
-    <section class="flex items-start justify-between gap-4 border-b border-neutral-200 pt-16 pb-10">
-      <div class="flex-1">
-        <h1 class="font-secondary font-light text-4xl leading-[56px] text-neutral-900">Discover Collections</h1>
-        <p class="text-base leading-6 text-neutral-600">
-          Explore and curate open source projects organized into themed collections.
-        </p>
-      </div>
-      <!-- TODO: wire the create collection modal here which is part of another PR. Revisit this once that is merged -->
-      <lf-create-collection-button />
-    </section>
+  <!-- Header Section -->
+  <lfx-maintain-height
+    :scroll-top="scrollTop"
+    :loaded="!loading"
+    :class="scrollTop > 0 ? ['fixed', ...headerTopClass].join(' ') : 'relative'"
+    class="z-10 w-full left-0"
+  >
+    <div class="container bg-white">
+      <section
+        class="flex items-start justify-between gap-4 border-b border-neutral-200"
+        :class="scrollTop > 50 ? '!border-b-0 py-5' : 'pt-16 pb-10'"
+      >
+        <div class="flex-1">
+          <h1 class="font-secondary font-light text-4xl leading-[56px] text-neutral-900">Discover Collections</h1>
+          <p class="text-base leading-6 text-neutral-600">
+            Explore and curate open source projects organized into themed collections.
+          </p>
+        </div>
+        <!-- TODO: wire the create collection modal here which is part of another PR. Revisit this once that is merged -->
+        <lf-create-collection-button />
+      </section>
+    </div>
+  </lfx-maintain-height>
 
+  <div class="container">
     <div class="flex flex-col gap-10 pt-10">
       <!-- Curated Collections Section -->
       <section class="border-b border-neutral-200 pb-10">
@@ -82,18 +94,23 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { computed, onServerPrefetch } from 'vue';
 import { storeToRefs } from 'pinia';
-import { isArray } from 'lodash-es';
 import LfCreateCollectionButton from '../components/create-modal/create-button.vue';
 import LfxLikedCollections from '../components/discovery/liked-collections.vue';
 import LfxCollectionSection from '~/components/shared/components/collection-section.vue';
 import LfxCollectionCard from '~/components/shared/components/collection-card.vue';
 import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
+import LfxMaintainHeight from '~/components/uikit/maintain-height/maintain-height.vue';
+import useScroll from '~/components/shared/utils/scroll';
+import { useBannerStore } from '~/components/shared/store/banner.store';
+
 // TODO: remove this once we have everything done and tested
 import { useAuthStore } from '~/components/modules/auth/store/auth.store';
-import type { Collection } from '~~/types/collection';
 
 const authStore = useAuthStore();
 const { user } = storeToRefs(authStore);
+
+const { scrollTop } = useScroll();
+const { headerTopClass } = storeToRefs(useBannerStore());
 
 const {
   data: curatedData,
@@ -120,22 +137,20 @@ const curatedCollections = computed(() => curatedData.value?.data || []);
 const communityCollections = computed(() => communityData.value?.data || []);
 const myCollections = computed(() => myCollectionsData.value?.data || []);
 
-const isCuratedEmpty = computed(() => isEmptyData(curatedCollections.value));
-const isCommunityEmpty = computed(() => isEmptyData(communityCollections.value));
-const isMyCollectionsEmpty = computed(() => isEmptyData(myCollections.value));
+const isCuratedEmpty = computed(() => COLLECTIONS_API_SERVICE.isEmptyData(curatedCollections.value));
+const isCommunityEmpty = computed(() => COLLECTIONS_API_SERVICE.isEmptyData(communityCollections.value));
+const isMyCollectionsEmpty = computed(() => COLLECTIONS_API_SERVICE.isEmptyData(myCollections.value));
 
 // TODO: remove this once we have everything done and tested
 const isLfInsightsTeamMember = computed(() => {
   return user.value?.isLfInsightsTeamMember || false;
 });
 
-const isEmptyData = (value: Collection[] | null | undefined) => {
-  // check if the value is null or undefined or the length of the value is 0
-  if (value === null || value === undefined || value?.length === 0 || !isArray(value)) {
-    return true;
-  }
-  return false;
-};
+const loading = computed(() => {
+  return (
+    curatedStatus.value === 'pending' || communityStatus.value === 'pending' || myCollectionsStatus.value === 'pending'
+  );
+});
 
 onServerPrefetch(async () => {
   await Promise.all([curatedSuspense(), communitySuspense(), myCollectionsSuspense()]);

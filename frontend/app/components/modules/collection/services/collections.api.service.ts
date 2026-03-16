@@ -7,6 +7,7 @@ import {
   useQueryClient,
 } from '@tanstack/vue-query';
 import { type ComputedRef, computed } from 'vue';
+import { isArray } from 'lodash-es';
 import type { Pagination } from '~~/types/shared/pagination';
 import type { Collection, CollectionType } from '~~/types/collection';
 import type { Category, CategoryGroup } from '~~/types/category';
@@ -205,15 +206,23 @@ class CollectionsApiService {
   discoveryParams(type: CollectionType) {
     return {
       pageSize: 3,
-      sort: 'contributors_desc',
+      sort: 'starred_desc',
       type,
       categories: undefined,
     };
   }
 
   fetchDiscoveryCuratedCollections() {
-    const queryKey = computed(() => [TanstackKey.COLLECTION_DISCOVERY, 'curated']);
-    const queryFn = this.fetchCollectionsQueryFn(() => this.discoveryParams('curated'));
+    const params = this.discoveryParams('curated');
+    const queryKey = computed(() => [
+      TanstackKey.COLLECTION_DISCOVERY,
+      'curated',
+      params.sort,
+      params.pageSize,
+      params.type,
+      params.categories,
+    ]);
+    const queryFn = this.fetchCollectionsQueryFn(() => params);
 
     return useQuery<Pagination<Collection>>({
       queryKey,
@@ -222,8 +231,16 @@ class CollectionsApiService {
   }
 
   fetchDiscoveryCommunityCollections() {
-    const queryKey = computed(() => [TanstackKey.COLLECTION_DISCOVERY, 'community']);
-    const queryFn = this.fetchCollectionsQueryFn(() => this.discoveryParams('community'));
+    const params = this.discoveryParams('community');
+    const queryKey = computed(() => [
+      TanstackKey.COLLECTION_DISCOVERY,
+      'community',
+      params.sort,
+      params.pageSize,
+      params.type,
+      params.categories,
+    ]);
+    const queryFn = this.fetchCollectionsQueryFn(() => params);
 
     return useQuery<Pagination<Collection>>({
       queryKey,
@@ -232,8 +249,16 @@ class CollectionsApiService {
   }
 
   fetchDiscoveryMyCollections() {
-    const queryKey = computed(() => [TanstackKey.COLLECTION_DISCOVERY, 'my']);
-    const queryFn = this.fetchMyCollectionsQueryFn(() => this.discoveryParams('my-collections'));
+    const params = this.discoveryParams('my-collections');
+    const queryKey = computed(() => [
+      TanstackKey.COLLECTION_DISCOVERY,
+      'my',
+      params.sort,
+      params.pageSize,
+      params.type,
+      params.categories,
+    ]);
+    const queryFn = this.fetchMyCollectionsQueryFn(() => params);
 
     return useQuery<Pagination<Collection>>({
       queryKey,
@@ -480,6 +505,14 @@ class CollectionsApiService {
         return nextPage < totalPages ? nextPage : null;
       },
     });
+  }
+
+  isEmptyData(value: Collection[] | null | undefined) {
+    // check if the value is null or undefined or the length of the value is 0
+    if (value === null || value === undefined || value?.length === 0 || !isArray(value)) {
+      return true;
+    }
+    return false;
   }
 }
 

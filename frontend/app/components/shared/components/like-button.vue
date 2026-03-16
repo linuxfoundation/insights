@@ -6,10 +6,12 @@ SPDX-License-Identifier: MIT
   <lfx-tooltip :content="isLiked ? 'Dislike collection' : 'Like collection'">
     <lfx-button
       :type="buttonType"
+      :size="size"
       class="w-full flex justify-center items-center"
       :class="[
         isLiked || buttonType !== 'transparent' ? 'opacity-100' : 'opacity-50 hover:!opacity-100',
         buttonType === 'transparent' ? 'hover:!bg-transparent' : '',
+        $attrs.class,
       ]"
       @click.stop.prevent="handleLike"
     >
@@ -49,6 +51,7 @@ import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 import type { ButtonType } from '~/components/uikit/button/types/button.types';
 import { formatNumberShort } from '~/components/shared/utils/formatter';
 import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
+import type { ButtonSize } from '~/components/uikit/button/types/button.types';
 
 const collectionsStore = useCollectionsStore();
 
@@ -59,10 +62,12 @@ const props = withDefaults(
     collection: Collection;
     buttonType?: ButtonType;
     variant?: CollectionType;
+    size?: ButtonSize;
   }>(),
   {
     buttonType: 'transparent',
     variant: 'community',
+    size: 'medium',
   },
 );
 

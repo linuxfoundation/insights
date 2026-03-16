@@ -7,14 +7,14 @@ SPDX-License-Identifier: MIT
     class="sticky z-20"
     :class="headerTopClass.join(' ')"
   >
-    <div
-      :class="scrollTop > 50 ? 'border-b border-neutral-100' : ''"
-      :style="headerBackgroundStyle"
-    >
+    <div :style="headerBackgroundStyle">
       <lfx-collection-list-header
         :type="props.type"
         :sort="sort"
         :view="view"
+        :is-empty="flatData.length === 0"
+        :is-scrolled-state="isScrolledState"
+        :is-loading="isPending || isFetchingNextPage"
         @update:sort="updateSort"
         @update:view="updateView"
         @created="handleCreated"
@@ -142,8 +142,8 @@ const { data, isPending, isFetchingNextPage, fetchNextPage, hasNextPage, isSucce
     : COLLECTIONS_API_SERVICE.fetchCollections(params);
 
 const flatData = computed(() =>
-  // @ts-expect-error - TanStack Query type inference issue with Vue
   COLLECTIONS_API_SERVICE.mapCollectionTypes(
+    // @ts-expect-error - TanStack Query type inference issue with Vue
     data.value?.pages.flatMap((page: Pagination<Collection>) => page.data) || [],
   ),
 );
@@ -154,6 +154,8 @@ const classDisplay = computed(() => {
   }
   return 'flex flex-col';
 });
+
+const isScrolledState = computed(() => scrollTop.value < 10);
 
 const updateView = (value: string) => {
   view.value = value;

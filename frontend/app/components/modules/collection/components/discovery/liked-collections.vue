@@ -38,7 +38,7 @@ SPDX-License-Identifier: MIT
       <!-- Empty State -->
       <div
         v-if="isLikedCollectionsEmpty || status === 'error'"
-        class="flex flex-col items-center justify-center py-10 gap-5"
+        class="flex flex-col items-center justify-center py-10 gap-5 border border-neutral-200 rounded-lg"
       >
         <div class="flex items-center justify-center h-14 w-14 rounded-full bg-accent-100">
           <lfx-icon
