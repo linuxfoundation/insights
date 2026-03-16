@@ -36,8 +36,11 @@ export default defineEventHandler(async (event): Promise<Pagination<unknown> | E
   const query = getQuery(event);
 
   const sort: string = (query?.sort as string) || 'contributorCount_desc';
-  const [orderByField, orderByDirection] = sort.split('_');
-  const isLF = query?.isLF === 'true' ? true : query?.isLF === 'false' ? false : undefined;
+  const lastUnderscoreIndex = sort.lastIndexOf('_');
+  const orderByField = lastUnderscoreIndex > 0 ? sort.substring(0, lastUnderscoreIndex) : sort;
+  const orderByDirection =
+    lastUnderscoreIndex > 0 ? sort.substring(lastUnderscoreIndex + 1) : 'desc';
+  const isLfx = query?.isLF === 'true' ? 1 : query?.isLF === 'false' ? 0 : undefined;
 
   const page: number = Number(query?.page) || 0;
   const pageSize: number = Number(query?.pageSize) || 10;
@@ -71,9 +74,9 @@ export default defineEventHandler(async (event): Promise<Pagination<unknown> | E
       '/v0/pipes/project_insights.json',
       {
         ids: projectIds,
-        isLF,
-        orderBy: orderByField || 'contributorCount',
-        orderDirection: orderByDirection || 'desc',
+        isLfx,
+        orderByField: orderByField || 'contributorCount',
+        orderByDirection: orderByDirection || 'desc',
         pageSize,
         page,
       },
