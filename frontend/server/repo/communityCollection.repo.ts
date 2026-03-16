@@ -224,15 +224,29 @@ export class CommunityCollectionRepository {
 
     const where = conditions.join(' AND ');
 
+    const orderDir = orderByDirection?.toUpperCase() === 'DESC' ? 'DESC' : 'ASC';
+
+    // Computed sort fields require subqueries
+    const computedOrderFields: Record<string, string> = {
+      projectCount: `(SELECT COUNT(*) FROM "collectionsInsightsProjects" cip WHERE cip."collectionId" = c.id AND cip."deletedAt" IS NULL)`,
+      contributorCount: `(SELECT COUNT(*) FROM "collectionsInsightsProjects" cip WHERE cip."collectionId" = c.id AND cip."deletedAt" IS NULL)`,
+    };
+
     const allowedOrderFields: Record<string, string> = {
       name: 'c.name',
       starred: 'c.starred',
       createdAt: 'c."createdAt"',
     };
-    const orderField = allowedOrderFields[orderByField || 'name'] || 'c.name';
-    const orderDir = orderByDirection?.toUpperCase() === 'DESC' ? 'DESC' : 'ASC';
-    const orderClause =
-      orderByField === 'starred' ? `c.starred DESC, c.name ASC` : `${orderField} ${orderDir}`;
+
+    let orderClause: string;
+    if (orderByField === 'starred') {
+      orderClause = `c.starred DESC, c.name ASC`;
+    } else if (computedOrderFields[orderByField || '']) {
+      orderClause = `${computedOrderFields[orderByField!]} ${orderDir}`;
+    } else {
+      const orderField = allowedOrderFields[orderByField || 'name'] || 'c.name';
+      orderClause = `${orderField} ${orderDir}`;
+    }
 
     const offset = page * pageSize;
 
