@@ -30,10 +30,10 @@ SPDX-License-Identifier: MIT
         :type="isLiked ? 'solid' : 'light'"
       />
       <span
-        v-if="likeCount !== undefined"
+        v-if="likeCount !== undefined || isLiked"
         class="text-xs leading-4 text-neutral-900 font-medium"
       >
-        {{ formatNumberShort(likeCount) }}
+        {{ formatNumberShort(isLiked && likeCount === 0 ? 1 : likeCount) }}
       </span>
     </lfx-button>
   </lfx-tooltip>
