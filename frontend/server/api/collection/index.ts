@@ -49,17 +49,9 @@ export default defineEventHandler(async (event): Promise<Pagination<Collection> 
 
   try {
     const repo = new CommunityCollectionRepository(cmDbPool);
-    const result = await repo.query({
-      page,
-      pageSize,
-      search,
-      categoryIds: categories,
-      type,
-      orderByField,
-      orderByDirection,
-    });
 
-    let data = result.data as unknown as Collection[];
+    let data: Collection[];
+    let total: number;
 
     // NOTE: This is a temporary workaround to highlight one of the featured collections
     // TODO: Remove this once we have a more permanent solution
@@ -67,27 +59,98 @@ export default defineEventHandler(async (event): Promise<Pagination<Collection> 
       const config = useRuntimeConfig();
       const { highlightedIds } = config;
       const parsedIds: string[] = highlightedIds?.split(',') || [];
-      const existingHighlightedIds = parsedIds.filter((id: string) =>
-        data.some((item) => item.id === id),
-      );
 
-      if (existingHighlightedIds.length > 0) {
-        const highlightedItems = existingHighlightedIds
-          .map((highlightId) => data.find((item) => item.id === highlightId))
-          .filter((item): item is Collection => item !== undefined);
+      if (parsedIds.length > 0 && page === 0) {
+        if (pageSize <= parsedIds.length) {
+          // Page size fits within highlighted IDs, just fetch those
+          const result = await repo.query({
+            page: 0,
+            pageSize,
+            search,
+            categoryIds: categories,
+            type,
+            ids: parsedIds.slice(0, pageSize),
+            orderByField,
+            orderByDirection,
+          });
+          data = result.data as unknown as Collection[];
+          total = result.total;
+        } else {
+          // Fetch highlighted collections and remaining collections separately
+          const [highlightedResult, remainingResult] = await Promise.all([
+            repo.query({
+              page: 0,
+              pageSize: parsedIds.length,
+              search,
+              categoryIds: categories,
+              type,
+              ids: parsedIds,
+              orderByField,
+              orderByDirection,
+            }),
+            repo.query({
+              page: 0,
+              pageSize: pageSize - parsedIds.length,
+              search,
+              categoryIds: categories,
+              type,
+              excludeIds: parsedIds,
+              orderByField,
+              orderByDirection,
+            }),
+          ]);
 
-        const nonHighlightedItems = data.filter(
-          (item) => !existingHighlightedIds.includes(item.id),
-        );
+          const highlightedItems = highlightedResult.data as unknown as Collection[];
+          const remainingItems = remainingResult.data as unknown as Collection[];
 
-        data = [...highlightedItems, ...nonHighlightedItems];
+          data = [...highlightedItems, ...remainingItems];
+          total = remainingResult.total + highlightedResult.total;
+        }
+      } else if (parsedIds.length > 0) {
+        // On subsequent pages, exclude highlighted IDs to keep pagination consistent
+        const result = await repo.query({
+          page,
+          pageSize,
+          search,
+          categoryIds: categories,
+          type,
+          excludeIds: parsedIds,
+          orderByField,
+          orderByDirection,
+        });
+        data = result.data as unknown as Collection[];
+        total = result.total + parsedIds.length;
+      } else {
+        const result = await repo.query({
+          page,
+          pageSize,
+          search,
+          categoryIds: categories,
+          type,
+          orderByField,
+          orderByDirection,
+        });
+        data = result.data as unknown as Collection[];
+        total = result.total;
       }
+    } else {
+      const result = await repo.query({
+        page,
+        pageSize,
+        search,
+        categoryIds: categories,
+        type,
+        orderByField,
+        orderByDirection,
+      });
+      data = result.data as unknown as Collection[];
+      total = result.total;
     }
 
     return {
       page,
       pageSize,
-      total: result.total,
+      total,
       data,
     };
   } catch (error) {
