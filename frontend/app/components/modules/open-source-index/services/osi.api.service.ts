@@ -175,7 +175,7 @@ class OssIndexApiService {
         link = `/${LfxRoutes.OPENSOURCEINDEX}/category`;
         break;
       default: // collection
-        link = '/collection';
+        link = '/collection/details';
     }
 
     const filteredData = this.filterDataByLimit(data);
