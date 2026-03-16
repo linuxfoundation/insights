@@ -196,12 +196,36 @@ export class CommunityCollectionRepository {
     type?: string;
     orderByField?: string;
     orderByDirection?: string;
+    ids?: string[];
+    excludeIds?: string[];
   }): Promise<{ data: CommunityCollection[]; total: number }> {
-    const { page, pageSize, search, categoryIds, type, orderByField, orderByDirection } = options;
+    const {
+      page,
+      pageSize,
+      search,
+      categoryIds,
+      type,
+      orderByField,
+      orderByDirection,
+      ids,
+      excludeIds,
+    } = options;
 
     const conditions: string[] = ['c."deletedAt" IS NULL', 'c."isPrivate" = false'];
     const params: unknown[] = [];
     let paramIndex = 1;
+
+    if (ids && ids.length > 0) {
+      conditions.push(`c.id = ANY($${paramIndex})`);
+      params.push(ids);
+      paramIndex++;
+    }
+
+    if (excludeIds && excludeIds.length > 0) {
+      conditions.push(`c.id != ALL($${paramIndex})`);
+      params.push(excludeIds);
+      paramIndex++;
+    }
 
     if (search) {
       conditions.push(`c.name ILIKE $${paramIndex}`);
