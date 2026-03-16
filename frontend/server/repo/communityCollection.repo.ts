@@ -253,7 +253,7 @@ export class CommunityCollectionRepository {
     // Computed sort fields require subqueries
     const computedOrderFields: Record<string, string> = {
       projectCount: `(SELECT COUNT(*) FROM "collectionsInsightsProjects" cip WHERE cip."collectionId" = c.id AND cip."deletedAt" IS NULL)`,
-      contributorCount: `(SELECT COUNT(*) FROM "collectionsInsightsProjects" cip WHERE cip."collectionId" = c.id AND cip."deletedAt" IS NULL)`,
+      likeCount: `(SELECT COUNT(*) FROM "collectionLikes" cl WHERE cl."collectionId" = c.id AND cl."deletedAt" IS NULL)`,
     };
 
     const allowedOrderFields: Record<string, string> = {
