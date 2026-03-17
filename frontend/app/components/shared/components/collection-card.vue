@@ -95,10 +95,10 @@ SPDX-License-Identifier: MIT
               class="text-neutral-500"
             />
             <p
-              v-if="props.collection.projects && props.collection.projects.length > 0"
+              v-if="props.collection"
               class="text-xs leading-4 text-neutral-500"
             >
-              {{ props.collection.projects.length }} projects
+              {{ props.collection.projectCount }} projects
               <span v-if="props.collection.updatedAt">
                 ・ Updated {{ formatDate(props.collection.updatedAt, 'dd MMM') }}
               </span>

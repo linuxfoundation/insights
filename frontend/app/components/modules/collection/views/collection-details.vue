@@ -227,7 +227,6 @@ onServerPrefetch(async () => {
       showError({ statusCode: 404, statusMessage });
     }
   }
-  // await COLLECTIONS_API_SERVICE.prefetchCollectionProjects(params);
 });
 </script>
 
