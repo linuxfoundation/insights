@@ -6,7 +6,7 @@ import {
   useQuery,
   useQueryClient,
 } from '@tanstack/vue-query';
-import { type ComputedRef, computed } from 'vue';
+import { type ComputedRef, type Ref, computed } from 'vue';
 import { isArray } from 'lodash-es';
 import type { Pagination } from '~~/types/shared/pagination';
 import type { Collection, CollectionType } from '~~/types/collection';
@@ -50,6 +50,12 @@ export interface CollectionProjectsQueryParams {
   isLF?: boolean;
   page?: number;
   pageSize?: number;
+}
+
+export interface LikedCollectionsQueryParams {
+  pageSize: number;
+  likedList: number;
+  user?: User | null;
 }
 
 const MAX_SEARCH_QUERY_LENGTH = 200;
@@ -102,7 +108,7 @@ class CollectionsApiService {
     return nextPage < totalPages ? nextPage : null;
   }
 
-  fetchCollections(params: ComputedRef<QueryParams>) {
+  fetchCollections(params: ComputedRef<QueryParams>, user?: User | null) {
     const queryKey = computed(() => [
       TanstackKey.COLLECTIONS,
       params.value.sort,
@@ -112,6 +118,8 @@ class CollectionsApiService {
       params.value.search,
       params.value.page,
     ]);
+
+    const isEnabled = params.value.type !== 'my-collections' ? true : !!user;
 
     const queryFn = this.fetchCollectionsQueryFn(() => ({
       ...params.value,
@@ -128,6 +136,7 @@ class CollectionsApiService {
       queryFn,
       getNextPageParam: this.getNextPageCollectionsParam,
       initialPageParam: 0,
+      enabled: isEnabled,
     });
   }
 
@@ -297,19 +306,30 @@ class CollectionsApiService {
     ]);
   }
 
-  fetchDiscoveryLikedCollections(params: ComputedRef<number>) {
-    const queryKey = computed(() => [TanstackKey.COLLECTION_DISCOVERY, 'liked', params.value]);
+  fetchDiscoveryLikedCollections(
+    params: ComputedRef<LikedCollectionsQueryParams>,
+    user: ComputedRef<User | null | undefined> | Ref<User | null | undefined>,
+  ) {
+    const queryKey = computed(() => [
+      TanstackKey.COLLECTION_DISCOVERY,
+      'liked',
+      params.value.pageSize,
+      params.value.likedList,
+    ]);
     const queryFn = this.fetchLikedCollectionsQueryFn(() => ({
       pageSize: 10,
     }));
 
+    const isEnabled = computed(() => !!user.value);
+
     return useQuery<Pagination<Collection>>({
       queryKey,
       queryFn,
+      enabled: isEnabled,
     });
   }
 
-  fetchMyCollections(params: ComputedRef<QueryParams>) {
+  fetchMyCollections(params: ComputedRef<QueryParams>, user?: User | null) {
     const queryKey = computed(() => [
       TanstackKey.MY_COLLECTIONS,
       params.value.sort,
@@ -333,6 +353,7 @@ class CollectionsApiService {
       queryFn,
       getNextPageParam: this.getNextPageCollectionsParam,
       initialPageParam: 0,
+      enabled: !!user,
     });
   }
 

@@ -18,7 +18,7 @@ SPDX-License-Identifier: MIT
 
     <!-- Loading State -->
     <template v-if="status === 'pending'">
-      <div class="flex flex-col gap-0">
+      <div :class="classDisplay">
         <template v-if="props.view === 'list'">
           <lfx-collection-list-item-loading
             v-for="i in 3"
@@ -96,6 +96,7 @@ import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 import { useCollectionsStore } from '~/components/modules/collection/store/collections.store';
 import LfxCollectionCardLoading from '~/components/shared/components/collection-card-loading.vue';
 import LfxCollectionCard from '~/components/shared/components/collection-card.vue';
+import { useAuthStore } from '~/components/modules/auth/store/auth.store';
 
 const props = withDefaults(
   defineProps<{
@@ -106,17 +107,22 @@ const props = withDefaults(
   },
 );
 
+const { user } = storeToRefs(useAuthStore());
 const { showToast } = useToastService();
 const { likedCollectionsList } = storeToRefs(useCollectionsStore());
 
-const currentCount = computed(() => likedCollectionsList.value.length);
+const params = computed(() => ({
+  pageSize: 10,
+  likedList: likedCollectionsList.value.length,
+  user: user.value,
+}));
 
 const {
   data: likedData,
   status,
   error,
   refetch,
-} = COLLECTIONS_API_SERVICE.fetchDiscoveryLikedCollections(currentCount);
+} = COLLECTIONS_API_SERVICE.fetchDiscoveryLikedCollections(params, user);
 
 const likedCollections = computed(() => likedData.value?.data || []);
 const isLikedCollectionsEmpty = computed(() => likedCollections.value.length === 0);
@@ -143,6 +149,10 @@ watch(
 const handleLikeUpdated = () => {
   refetch();
 };
+
+watch(user, () => {
+  refetch();
+});
 </script>
 
 <script lang="ts">

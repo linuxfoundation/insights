@@ -114,6 +114,7 @@ import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/service
 import { useQueryParam, type URLParams } from '~/components/shared/utils/query-param';
 import type { Collection, CollectionType } from '~~/types/collection';
 import { useBannerStore } from '~/components/shared/store/banner.store';
+import { useAuthStore } from '~/components/modules/auth/store/auth.store';
 
 const props = defineProps<{
   type?: CollectionType;
@@ -124,6 +125,8 @@ const { listSort } = queryParams.value;
 const { showToast } = useToastService();
 const { scrollTop } = useScroll();
 const { headerTopClass } = storeToRefs(useBannerStore());
+const { user } = storeToRefs(useAuthStore());
+
 // NOTE: This is a temporary workaround to highlight the most important collections within the LF featured collections
 const sort = ref(listSort || 'starred_desc');
 const view = ref('grid');
@@ -138,8 +141,8 @@ const params = computed(() => ({
 
 const { data, isPending, isFetchingNextPage, fetchNextPage, hasNextPage, isSuccess, error, refetch } =
   props.type === 'my-collections'
-    ? COLLECTIONS_API_SERVICE.fetchMyCollections(params)
-    : COLLECTIONS_API_SERVICE.fetchCollections(params);
+    ? COLLECTIONS_API_SERVICE.fetchMyCollections(params, user.value)
+    : COLLECTIONS_API_SERVICE.fetchCollections(params, user.value);
 
 const flatData = computed(() =>
   COLLECTIONS_API_SERVICE.mapCollectionTypes(
@@ -199,6 +202,10 @@ watch(
   },
   { immediate: true },
 );
+
+watch(user, () => {
+  refetch();
+});
 </script>
 
 <script lang="ts">
