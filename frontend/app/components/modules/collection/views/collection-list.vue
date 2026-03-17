@@ -92,7 +92,7 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { watch, onServerPrefetch, computed, ref } from 'vue';
+import { watch, computed, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { collectionListParamsGetter, collectionListParamsSetter } from '../services/collections.query.service';
 import { headerBackground } from '../config/collection-type-config';
@@ -184,12 +184,6 @@ const updateSort = (value: string) => {
 const handleCreated = () => {
   refetch();
 };
-
-// Server-side prefetching for infinite query
-onServerPrefetch(async () => {
-  // Prefetch the first page of the infinite query on the server
-  await COLLECTIONS_API_SERVICE.prefetchCollections(params);
-});
 
 /**
  * Watch for query param changes on the first load only

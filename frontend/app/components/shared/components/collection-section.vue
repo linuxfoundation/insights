@@ -21,7 +21,7 @@ SPDX-License-Identifier: MIT
         </div>
       </div>
 
-      <div v-if="viewAllRoute && status === 'success' && !isEmpty">
+      <div v-if="viewAllRoute && status === 'success' && !props.isEmpty">
         <nuxt-link :to="{ name: viewAllRoute }">
           <lfx-button
             type="transparent"
@@ -36,10 +36,7 @@ SPDX-License-Identifier: MIT
         </nuxt-link>
       </div>
     </div>
-    <div
-      class="mt-8"
-      :class="isEmpty ? '' : 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'"
-    >
+    <div :class="gridClasses">
       <template v-if="status === 'pending'">
         <lfx-collection-card-loading
           v-for="i in 3"
@@ -48,7 +45,7 @@ SPDX-License-Identifier: MIT
         />
       </template>
       <template v-else-if="status === 'success'">
-        <lfx-collections-empty v-if="isEmpty" />
+        <lfx-collections-empty v-if="props.isEmpty" />
         <slot v-else />
       </template>
       <template v-else-if="status === 'error'">
@@ -99,6 +96,13 @@ const subtitle = computed(() => currentTab.value?.description || '');
 const icon = computed(() => currentTab.value?.icon || '');
 const iconBackground = computed(() => currentTab.value?.iconHighlightClass || '');
 const viewAllRoute = computed(() => currentTab.value?.route || '');
+
+const gridClasses = computed(() => {
+  if (props.isEmpty && props.status === 'success') {
+    return 'mt-8';
+  }
+  return 'mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6';
+});
 
 watch(
   () => props.error,
