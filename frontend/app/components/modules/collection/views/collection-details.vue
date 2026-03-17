@@ -191,6 +191,8 @@ const updateOnlyLFProjects = (value: boolean) => {
     collectionSort: queryParams.value.collectionSort,
     onlyLFProjects: value ? 'true' : undefined,
   };
+
+  isLFOnly.value = value;
 };
 
 const handleCollectionUpdated = (collection: Collection) => {
@@ -225,7 +227,7 @@ onServerPrefetch(async () => {
       showError({ statusCode: 404, statusMessage });
     }
   }
-  await COLLECTIONS_API_SERVICE.prefetchCollectionProjects(params);
+  // await COLLECTIONS_API_SERVICE.prefetchCollectionProjects(params);
 });
 </script>
 
