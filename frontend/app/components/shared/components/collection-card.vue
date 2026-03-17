@@ -126,7 +126,7 @@ SPDX-License-Identifier: MIT
           <!-- footer actions - not shown for my-collections -->
           <div
             v-if="props.variant !== 'my-collections'"
-            class="pt-3 mt-3 border-t border-neutral-200 flex items-center gap-2"
+            class="pt-3 mt-3 border-t border-neutral-200 flex items-center justify-center gap-2"
           >
             <lfx-button
               type="transparent"
