@@ -41,6 +41,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed, ref } from 'vue';
+import { useQueryClient } from '@tanstack/vue-query';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxButton from '~/components/uikit/button/button.vue';
 import type { Collection, CollectionType } from '~~/types/collection';
@@ -52,8 +53,10 @@ import type { ButtonType } from '~/components/uikit/button/types/button.types';
 import { formatNumberShort } from '~/components/shared/utils/formatter';
 import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
 import type { ButtonSize } from '~/components/uikit/button/types/button.types';
+import { TanstackKey } from '~/components/shared/types/tanstack';
 
 const collectionsStore = useCollectionsStore();
+const queryClient = useQueryClient();
 
 const { showToast } = useToastService();
 
@@ -78,6 +81,14 @@ const emit = defineEmits<{
 const isLiked = computed(() => collectionsStore.isLiked(props.collection.id));
 const likeCount = ref<number>(props.collection.likeCount || 0);
 
+const invalidateCollectionQueries = () => {
+  queryClient.invalidateQueries({ queryKey: [TanstackKey.COLLECTIONS] });
+  queryClient.invalidateQueries({ queryKey: [TanstackKey.COLLECTION] });
+  queryClient.invalidateQueries({ queryKey: [TanstackKey.COLLECTION_DISCOVERY] });
+  queryClient.invalidateQueries({ queryKey: [TanstackKey.LIKED_COLLECTIONS] });
+  queryClient.invalidateQueries({ queryKey: [TanstackKey.MY_COLLECTIONS] });
+};
+
 const handleLike = async () => {
   const wasLiked = isLiked.value;
 
@@ -92,6 +103,7 @@ const handleLike = async () => {
         likeCount.value = likeCount.value + 1;
         showToast('Failed to unlike collection', ToastTypesEnum.negative);
       } else {
+        invalidateCollectionQueries();
         emit('updated', props.collection);
       }
     } else {
@@ -103,6 +115,7 @@ const handleLike = async () => {
         likeCount.value = Math.max(0, likeCount.value - 1);
         showToast('Failed to like collection', ToastTypesEnum.negative);
       } else {
+        invalidateCollectionQueries();
         emit('updated', props.collection);
       }
     }
