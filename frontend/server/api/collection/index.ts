@@ -52,26 +52,22 @@ export default defineEventHandler(async (event): Promise<Pagination<Collection> 
     const { highlightedIds } = config;
     const parsedIds: string[] = highlightedIds?.split(',') || [];
     const repo = new CommunityCollectionRepository(cmDbPool);
-    let pageSizeFetch = pageSize;
-    if (sort.includes('starred')) {
-      pageSizeFetch = Math.max(parsedIds.length, pageSize);
-    }
-    // @Gasper, check this work around for the curated featured collections
+
     const isFetchByIds =
-      type === 'curated' && pageSize === 3 && sort.includes('starred') && parsedIds.length > 0;
+      sort.includes('starred') && type === 'curated' && pageSize < parsedIds.length;
 
     const result = isFetchByIds
       ? await repo.query({
           page,
-          pageSize: pageSizeFetch,
+          pageSize,
           search,
           categoryIds: categories,
           type,
-          ids: parsedIds,
+          ids: parsedIds.slice(0, pageSize),
         })
       : await repo.query({
           page,
-          pageSize: pageSizeFetch,
+          pageSize,
           search,
           categoryIds: categories,
           type,
