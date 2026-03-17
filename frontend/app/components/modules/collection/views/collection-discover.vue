@@ -92,7 +92,7 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed, onServerPrefetch } from 'vue';
+import { computed, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 import LfCreateCollectionButton from '../components/create-modal/create-button.vue';
 import LfxLikedCollections from '../components/discovery/liked-collections.vue';
@@ -116,21 +116,20 @@ const {
   data: curatedData,
   status: curatedStatus,
   error: curatedError,
-  suspense: curatedSuspense,
 } = COLLECTIONS_API_SERVICE.fetchDiscoveryCuratedCollections();
 
 const {
   data: communityData,
   status: communityStatus,
   error: communityError,
-  suspense: communitySuspense,
+  refetch: refetchCommunityCollections,
 } = COLLECTIONS_API_SERVICE.fetchDiscoveryCommunityCollections(user.value);
 
 const {
   data: myCollectionsData,
   status: myCollectionsStatus,
   error: myCollectionsError,
-  suspense: myCollectionsSuspense,
+  refetch: refetchMyCollections,
 } = COLLECTIONS_API_SERVICE.fetchDiscoveryMyCollections();
 
 const curatedCollections = computed(() => curatedData.value?.data || []);
@@ -152,8 +151,9 @@ const loading = computed(() => {
   );
 });
 
-onServerPrefetch(async () => {
-  await Promise.all([curatedSuspense(), communitySuspense(), myCollectionsSuspense()]);
+watch(user, () => {
+  refetchCommunityCollections();
+  refetchMyCollections();
 });
 </script>
 <script lang="ts">

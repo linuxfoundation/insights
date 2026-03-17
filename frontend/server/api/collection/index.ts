@@ -56,15 +56,27 @@ export default defineEventHandler(async (event): Promise<Pagination<Collection> 
     if (sort.includes('starred')) {
       pageSizeFetch = Math.max(parsedIds.length, pageSize);
     }
-    const result = await repo.query({
-      page,
-      pageSize: pageSizeFetch,
-      search,
-      categoryIds: categories,
-      type,
-      orderByField,
-      orderByDirection,
-    });
+    // @Gasper, check this work around for the curated featured collections
+    const isFetchByIds = type === 'curated' && pageSize === 3 && sort.includes('starred');
+
+    const result = isFetchByIds
+      ? await repo.query({
+          page,
+          pageSize: pageSizeFetch,
+          search,
+          categoryIds: categories,
+          type,
+          ids: parsedIds,
+        })
+      : await repo.query({
+          page,
+          pageSize: pageSizeFetch,
+          search,
+          categoryIds: categories,
+          type,
+          orderByField,
+          orderByDirection,
+        });
 
     let data = result.data as unknown as Collection[];
 
