@@ -9,6 +9,7 @@ import {
 import { InsightsSsoUserRepository } from '~~/server/repo/insightsSsoUser.repo';
 import type { DecodedOidcToken } from '~~/types/auth/auth-jwt.types';
 import { getAuthUsername } from '~~/server/utils/common';
+import { checkGuardrails } from '~~/server/utils/guardrail';
 
 /**
  * API Endpoint: PUT /api/collection/community/:id
@@ -52,6 +53,24 @@ export default defineEventHandler(async (event): Promise<CommunityCollection | E
   }
 
   try {
+    // Run guardrail checks on name and description if provided
+    const fieldsToCheck = [
+      ...(body.name ? [{ field: 'name', value: body.name.trim() }] : []),
+      ...(body.description ? [{ field: 'description', value: body.description.trim() }] : []),
+    ];
+
+    if (fieldsToCheck.length > 0 && !body.isPrivate) {
+      const guardrailResult = await checkGuardrails(fieldsToCheck);
+
+      if (guardrailResult.blocked) {
+        throw createError({
+          statusCode: 422,
+          statusMessage: guardrailResult.message,
+          data: { field: guardrailResult.field },
+        });
+      }
+    }
+
     const username = getAuthUsername(user.sub);
 
     const ssoUserRepo = new InsightsSsoUserRepository(cmDbPool);

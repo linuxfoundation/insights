@@ -28,6 +28,7 @@
     "@ai-sdk/amazon-bedrock": "^2.2.12",
     "@ai-sdk/openai": "^2.0.89",
     "@ai-sdk/vue": "^2.0.121",
+    "@aws-sdk/client-bedrock-runtime": "^3.821.0",
     "@linuxfoundation/lfx-ui-core": "^0.0.20",
     "@modelcontextprotocol/sdk": "^1.26.0",
     "@nuxt/eslint": "^1.12.1",
