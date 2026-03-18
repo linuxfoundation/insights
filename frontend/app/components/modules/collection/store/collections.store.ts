@@ -5,9 +5,16 @@ import { computed, ref } from 'vue';
 import type { Collection } from '~~/types/collection';
 import type { Pagination } from '~~/types/shared/pagination';
 
+export type CollectionViewType = 'grid' | 'list';
+
 export const useCollectionsStore = defineStore('collections', () => {
   const likedCollectionIds = ref<Set<string>>(new Set());
   const isLikedCollectionsLoaded = ref(false);
+  const view = ref<CollectionViewType>('grid');
+
+  const setView = (value: CollectionViewType) => {
+    view.value = value;
+  };
 
   const likedCollectionsList = computed(() => Array.from(likedCollectionIds.value));
 
@@ -57,7 +64,9 @@ export const useCollectionsStore = defineStore('collections', () => {
     likedCollectionIds,
     likedCollectionsList,
     isLikedCollectionsLoaded,
+    view,
     isLiked,
+    setView,
     setLikedCollections,
     addLikedCollection,
     removeLikedCollection,
