@@ -115,6 +115,7 @@ import { useQueryParam, type URLParams } from '~/components/shared/utils/query-p
 import type { Collection, CollectionType } from '~~/types/collection';
 import { useBannerStore } from '~/components/shared/store/banner.store';
 import { useAuthStore } from '~/components/modules/auth/store/auth.store';
+import { useCollectionsStore } from '~/components/modules/collection/store/collections.store';
 
 const props = defineProps<{
   type?: CollectionType;
@@ -126,10 +127,11 @@ const { showToast } = useToastService();
 const { scrollTop } = useScroll();
 const { headerTopClass } = storeToRefs(useBannerStore());
 const { user } = storeToRefs(useAuthStore());
+const collectionsStore = useCollectionsStore();
+const { view } = storeToRefs(collectionsStore);
 
 // NOTE: This is a temporary workaround to highlight the most important collections within the LF featured collections
 const sort = ref(listSort || 'starred_desc');
-const view = ref('grid');
 const pageSize = computed(() => (view.value === 'grid' ? 99 : 100));
 
 const params = computed(() => ({
@@ -161,7 +163,7 @@ const classDisplay = computed(() => {
 const isScrolledState = computed(() => scrollTop.value < 10);
 
 const updateView = (value: string) => {
-  view.value = value;
+  collectionsStore.setView(value as 'grid' | 'list');
 };
 
 const headerBackgroundStyle = computed(() => headerBackground(props.type));
