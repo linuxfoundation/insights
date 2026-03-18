@@ -27,6 +27,18 @@ const healthScores: string[] = [
   'security',
 ];
 
+const quarterMetrics = ['active_contributors', 'retention'];
+const yearlyMetrics = [
+  'contributor_dependency',
+  'organization_dependency',
+  'issues_resolution',
+  'pull_requests',
+  'merge_lead_time',
+  'active_days',
+  'contributions_outside_work_hours',
+  'search_volume',
+];
+
 const fetchHealthScore = async (name: string, filter: HealthScoreFilters) => {
   const quarterFilter = {
     project: filter.project,
@@ -35,9 +47,25 @@ const fetchHealthScore = async (name: string, filter: HealthScoreFilters) => {
     endDate: DateTime.now().endOf('day'),
   };
 
+  const yearlyFilter = {
+    project: filter.project,
+    repos: filter.repos,
+    startDate: filter.startDate ?? DateTime.now().minus({ days: 365 }).startOf('day'),
+    endDate: filter.endDate ?? DateTime.now().endOf('day'),
+  };
+
+  let effectiveFilter: HealthScoreFilters;
+  if (quarterMetrics.includes(name)) {
+    effectiveFilter = quarterFilter;
+  } else if (yearlyMetrics.includes(name)) {
+    effectiveFilter = yearlyFilter;
+  } else {
+    effectiveFilter = filter;
+  }
+
   const res = await fetchFromTinybird<HealthScoreTinybird[]>(
     `/v0/pipes/health_score_${name}.json`,
-    ['active_contributors', 'retention'].includes(name) ? quarterFilter : filter,
+    effectiveFilter,
   );
   return res.data?.[0];
 };
