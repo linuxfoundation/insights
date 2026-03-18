@@ -369,7 +369,7 @@ export class CommunityCollectionRepository {
       `SELECT c.*, u."displayName" AS "ownerName", u."avatarUrl" AS "ownerLogo"
        FROM collections c
        LEFT JOIN "insightsSsoUsers" u ON u.id = c."ssoUserId"
-       WHERE c.slug = $1 AND c."deletedAt" IS NULL AND c."isPrivate" = false`,
+       WHERE c.slug = $1 AND c."deletedAt" IS NULL`,
       [slug],
     );
 
@@ -489,7 +489,7 @@ export class CommunityCollectionRepository {
   ): Promise<{ collectionId: string; projectIds: string[] } | null> {
     const collectionResult = await this.pool.query(
       `SELECT c.id FROM collections c
-       WHERE c.slug = $1 AND c."deletedAt" IS NULL AND c."isPrivate" = false`,
+       WHERE c.slug = $1 AND c."deletedAt" IS NULL`,
       [slug],
     );
 
