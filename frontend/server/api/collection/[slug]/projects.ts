@@ -44,6 +44,12 @@ export default defineEventHandler(async (event): Promise<Pagination<unknown> | E
 
   const page: number = Number(query?.page) || 0;
   const pageSize: number = Number(query?.pageSize) || 10;
+  console.log('sort', sort);
+  console.log('orderByField', orderByField);
+  console.log('orderByDirection', orderByDirection);
+  console.log('isLfx', isLfx);
+  console.log('page', page);
+  console.log('pageSize', pageSize);
 
   const cmDbPool = event.context.cmDbPool as Pool | undefined;
 
@@ -60,6 +66,7 @@ export default defineEventHandler(async (event): Promise<Pagination<unknown> | E
     }
 
     const { projectIds } = result;
+    console.log('projectIds', projectIds);
 
     if (projectIds.length === 0) {
       return {
@@ -81,6 +88,7 @@ export default defineEventHandler(async (event): Promise<Pagination<unknown> | E
         page,
       },
     );
+    console.log('tinybird', response.data);
 
     const data = response.data.map((project) => ({
       ...project,
