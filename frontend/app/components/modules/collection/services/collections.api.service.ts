@@ -487,11 +487,12 @@ class CollectionsApiService {
     query: () => CollectionProjectsQueryParams,
   ): QueryFunction<Pagination<ProjectInsights>, readonly unknown[], number> {
     return async ({ pageParam = 0 }) => {
-      const { slug, ...rest } = query();
+      const { slug, isLF, ...rest } = query();
       return await $fetch(`/api/collection/${slug}/projects`, {
         params: {
           page: pageParam,
           ...rest,
+          ...(isLF && { isLF }),
         },
       });
     };
