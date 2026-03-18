@@ -40,18 +40,26 @@ const yearlyMetrics = [
 ];
 
 const fetchHealthScore = async (name: string, filter: HealthScoreFilters) => {
+  const now = DateTime.now();
+  const currentQuarterStart = DateTime.fromObject({
+    year: now.year,
+    month: (now.quarter - 1) * 3 + 1,
+    day: 1,
+  }).startOf('day');
+  const lastQuarterStart = currentQuarterStart.minus({ months: 3 });
+
   const quarterFilter = {
     project: filter.project,
     repos: filter.repos,
-    startDate: DateTime.now().minus({ days: 90 }).startOf('day'),
-    endDate: DateTime.now().endOf('day'),
+    startDate: lastQuarterStart,
+    endDate: currentQuarterStart,
   };
 
   const yearlyFilter = {
     project: filter.project,
     repos: filter.repos,
     startDate: filter.startDate ?? DateTime.now().minus({ days: 365 }).startOf('day'),
-    endDate: filter.endDate ?? DateTime.now().endOf('day'),
+    endDate: filter.endDate ?? DateTime.now().plus({ days: 1 }).startOf('day'),
   };
 
   let effectiveFilter: HealthScoreFilters;
