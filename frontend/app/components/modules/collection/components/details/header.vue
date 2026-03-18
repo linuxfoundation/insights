@@ -61,7 +61,20 @@ SPDX-License-Identifier: MIT
           </div>
         </div>
         <div class="flex justify-between gap-x-5 md:gap-x-15 flex-grow flex-col lg:flex-row items-start">
-          <div class="flex-grow flex">
+          <div
+            class="flex-grow flex"
+            :class="scrollTop > 50 ? 'gap-4' : 'gap-8'"
+          >
+            <div
+              v-if="props.collection?.logoUrl"
+              class="shrink-0"
+            >
+              <img
+                :src="props.collection?.logoUrl"
+                alt="Collection image"
+                :class="scrollTop > 50 ? 'h-10 w-10' : 'h-30 w-auto'"
+              />
+            </div>
             <div class="w-full flex flex-col justify-center">
               <lfx-skeleton
                 v-if="loading"

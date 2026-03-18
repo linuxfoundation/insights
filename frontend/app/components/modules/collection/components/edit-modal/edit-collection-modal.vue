@@ -7,6 +7,7 @@ SPDX-License-Identifier: MIT
     v-model="isModalOpen"
     width="600px"
     content-class="!overflow-hidden"
+    :close-function="handleCloseAttempt"
   >
     <div class="flex flex-col bg-white rounded-xl shadow-xl">
       <!-- Header and content -->
@@ -20,7 +21,7 @@ SPDX-License-Identifier: MIT
               type="default"
               size="small"
               :icon-size="12"
-              @click="isModalOpen = false"
+              @click="closeModal"
             />
           </div>
 
@@ -60,7 +61,7 @@ SPDX-License-Identifier: MIT
           type="tertiary"
           button-style="pill"
           :disabled="isUpdating"
-          @click="isModalOpen = false"
+          @click="closeModal"
         >
           Cancel
         </lfx-button>
@@ -150,6 +151,7 @@ const form = ref<CreateCollectionForm>({
   projects: [],
   visibility: 'private',
 });
+const originalForm = ref<CreateCollectionForm | null>(null);
 
 const isFormValid = computed(() => {
   return (
@@ -157,9 +159,34 @@ const isFormValid = computed(() => {
   );
 });
 
+const hasUnsavedChanges = computed(() => {
+  if (!originalForm.value) return false;
+
+  const projectIds = form.value.projects.map((p) => p.id).sort();
+  const originalProjectIds = originalForm.value.projects.map((p) => p.id).sort();
+
+  return (
+    form.value.name !== originalForm.value.name ||
+    form.value.description !== originalForm.value.description ||
+    form.value.visibility !== originalForm.value.visibility ||
+    JSON.stringify(projectIds) !== JSON.stringify(originalProjectIds)
+  );
+});
+
+const handleCloseAttempt = (): boolean => {
+  return !hasUnsavedChanges.value;
+};
+
+const closeModal = () => {
+  if (originalForm.value) {
+    form.value = JSON.parse(JSON.stringify(originalForm.value));
+  }
+  isModalOpen.value = false;
+};
+
 const initializeForm = () => {
   if (props.collection) {
-    form.value = {
+    const formData: CreateCollectionForm = {
       name: props.collection.name,
       description: props.collection.description,
       projects: collectionProjects.value.map(
@@ -172,6 +199,8 @@ const initializeForm = () => {
       ),
       visibility: props.collection.isPrivate ? 'private' : 'public',
     };
+    form.value = formData;
+    originalForm.value = JSON.parse(JSON.stringify(formData));
   }
 };
 
@@ -202,12 +231,16 @@ const updateCollection = async () => {
   }
 };
 
-watch(isModalOpen, (value) => {
-  if (value) {
-    activeTab.value = 'settings';
-    initializeForm();
-  }
-});
+watch(
+  isModalOpen,
+  (value) => {
+    if (value) {
+      activeTab.value = 'settings';
+      initializeForm();
+    }
+  },
+  { immediate: true },
+);
 
 watch(
   () => props.collection,
