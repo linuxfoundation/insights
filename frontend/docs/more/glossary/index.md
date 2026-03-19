@@ -12,7 +12,7 @@ An activity, performed by an individual, that is counted as Collaboration. Colla
 
 ## Collection
 
-A named group of open source projects organized around a common theme, organization, foundation, technology, or purpose. Collections help users discover, explore, and compare related projects, such as all CNCF-hosted projects, critical non-Linux Foundation projects, ot top-ranked initiatives. There are two types of collections in LFX Insights: [Curated Collections](#curated-collection) and [Community Collections](#community-collection).
+A named group of open source projects organized around a common theme, organization, foundation, technology, or purpose. Collections help users discover, explore, and compare related projects, such as all CNCF-hosted projects, critical non-Linux Foundation projects, or top-ranked initiatives. There are two types of collections in LFX Insights: [Curated Collections](#curated-collection) and [Community Collections](#community-collection).
 
 ## Community Collection
 
