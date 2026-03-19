@@ -1,7 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { sendRedirect } from 'h3';
-import redirectMap from '../../shared/collection-redirects.json';
+import redirectMap from '../../config/collection-redirects.json';
 
 const COLLECTION_DETAILS_PREFIX = '/collection/details/';
 
