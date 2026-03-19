@@ -56,4 +56,4 @@ Click the duplicate icon on a collection card or on the Collection Detail page t
 ## Collection Visibility
 
 User-created collections support two visibility states, private and public.
-Private collections will only be visible to the user that created them. Public collections will be visibly within Community Collections.
+Private collections will only be visible to the user that created them. Public collections will be visible in the Community Collections list.
