@@ -117,7 +117,9 @@ describe('fetchFromTinybird', () => {
     await fetchFromTinybird('/mock-path', query);
 
     const calledUrl = mockOfetch.mock.calls[0][0];
-    expect(calledUrl).toEqual(`${mockTinybirdBaseUrl}/mock-path?dateParam=2025-03-20+00%3A00%3A00`);
+    expect(calledUrl).toEqual(
+      `${mockTinybirdBaseUrl}/mock-path?dateParam=2025-03-20%2000%3A00%3A00`,
+    );
     const calledOptions = mockOfetch.mock.calls[0][1];
     expect(calledOptions.headers).toEqual({ Authorization: `Bearer ${mockTinybirdToken}` });
   });
