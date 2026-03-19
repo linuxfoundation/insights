@@ -45,7 +45,6 @@ CREATE TABLE IF NOT EXISTS vulnerabilities (
     UNIQUE(repo_url, vulnerability_id, package_name, source_path)
 );
 
-CREATE INDEX idx_vulnerabilities_repo_url ON vulnerabilities(repo_url);
 CREATE INDEX idx_vulnerabilities_cve_ids  ON vulnerabilities USING GIN (cve_ids);
 CREATE INDEX idx_vulnerabilities_ghsa_ids ON vulnerabilities USING GIN (ghsa_ids);
 CREATE INDEX idx_vulnerabilities_severity ON vulnerabilities(severity);
@@ -54,3 +53,4 @@ CREATE INDEX idx_vulnerabilities_repo_status ON vulnerabilities(repo_url, status
 CREATE INDEX idx_vulnerabilities_scanned_at_id on vulnerabilities("scanned_at", id);
 
 ALTER TABLE public.vulnerabilities REPLICA IDENTITY FULL;
+ALTER TABLE public.vulnerability_scans REPLICA IDENTITY FULL;
