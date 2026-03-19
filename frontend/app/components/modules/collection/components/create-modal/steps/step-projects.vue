@@ -67,6 +67,7 @@ const selectedSlugs = computed(() => model.value.projects.map((p) => p.slug));
 const addProject = (project: SearchProject) => {
   if (!selectedSlugs.value.includes(project.slug)) {
     const collectionProject: CollectionProject = {
+      id: project.id,
       name: project.name,
       slug: project.slug,
       logo: project.logo,

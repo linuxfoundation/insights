@@ -5,36 +5,75 @@ SPDX-License-Identifier: MIT
 <template>
   <lfx-collection-section
     type="curated"
-    :status="status"
-    :error="error"
+    :status="curatedStatus"
+    :error="curatedError"
     error-message="Error fetching featured collections"
-    :is-empty="isEmpty"
+    :is-empty="isCuratedEmpty"
   >
     <lfx-collection-card
-      v-for="collection in carouselData"
+      v-for="collection in curatedCollections"
       :key="collection.slug"
       :collection="collection"
       variant="curated"
     />
   </lfx-collection-section>
+
+  <div
+    v-if="isLfInsightsTeamMember"
+    class="pt-10 border-t border-neutral-200"
+  >
+    <lfx-collection-section
+      type="community"
+      :status="communityStatus"
+      :error="communityError"
+      error-message="Error fetching community collections"
+      :is-empty="isCommunityEmpty"
+    >
+      <lfx-collection-card
+        v-for="collection in communityCollections"
+        :key="collection.slug"
+        :collection="collection"
+        variant="community"
+      />
+    </lfx-collection-section>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { computed, onServerPrefetch } from 'vue';
-import { EXPLORE_API_SERVICE } from '../services/explore.api.service';
+import { computed, watch } from 'vue';
+import { storeToRefs } from 'pinia';
+import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
 import LfxCollectionCard from '~/components/shared/components/collection-card.vue';
 import LfxCollectionSection from '~/components/shared/components/collection-section.vue';
-import { isEmptyData } from '~/components/shared/utils/helper';
-import type { Collection } from '~~/types/collection';
+import { useAuthStore } from '~/components/modules/auth/store/auth.store';
 
-const { data: featuredCollectionsData, status, error, suspense } = EXPLORE_API_SERVICE.fetchFeaturedCollections();
+const { user } = storeToRefs(useAuthStore());
 
-const carouselData = computed(() => featuredCollectionsData.value?.data as Collection[]);
+const isLfInsightsTeamMember = computed(() => {
+  return user.value?.isLfInsightsTeamMember || false;
+});
 
-const isEmpty = computed(() => isEmptyData(carouselData.value as unknown as Record<string, unknown>[]));
+const {
+  data: curatedData,
+  status: curatedStatus,
+  error: curatedError,
+} = COLLECTIONS_API_SERVICE.fetchDiscoveryCuratedCollections();
 
-onServerPrefetch(async () => {
-  await suspense();
+const {
+  data: communityData,
+  status: communityStatus,
+  error: communityError,
+  refetch,
+} = COLLECTIONS_API_SERVICE.fetchDiscoveryCommunityCollections(user.value);
+
+const curatedCollections = computed(() => curatedData.value?.data || []);
+const communityCollections = computed(() => communityData.value?.data || []);
+
+const isCuratedEmpty = computed(() => COLLECTIONS_API_SERVICE.isEmptyData(curatedCollections.value));
+const isCommunityEmpty = computed(() => COLLECTIONS_API_SERVICE.isEmptyData(communityCollections.value));
+
+watch(user, () => {
+  refetch();
 });
 </script>
 

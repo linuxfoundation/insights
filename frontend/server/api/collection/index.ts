@@ -48,25 +48,38 @@ export default defineEventHandler(async (event): Promise<Pagination<Collection> 
   }
 
   try {
+    const config = useRuntimeConfig();
+    const { highlightedIds } = config;
+    const parsedIds: string[] = highlightedIds?.split(',') || [];
     const repo = new CommunityCollectionRepository(cmDbPool);
-    const result = await repo.query({
-      page,
-      pageSize,
-      search,
-      categoryIds: categories,
-      type,
-      orderByField,
-      orderByDirection,
-    });
+
+    const isFetchByIds =
+      sort.includes('starred') && type === 'curated' && pageSize < parsedIds.length;
+
+    const result = isFetchByIds
+      ? await repo.query({
+          page,
+          pageSize,
+          search,
+          categoryIds: categories,
+          type,
+          ids: parsedIds.slice(0, pageSize),
+        })
+      : await repo.query({
+          page,
+          pageSize,
+          search,
+          categoryIds: categories,
+          type,
+          orderByField,
+          orderByDirection,
+        });
 
     let data = result.data as unknown as Collection[];
 
     // NOTE: This is a temporary workaround to highlight one of the featured collections
     // TODO: Remove this once we have a more permanent solution
     if (sort.includes('starred')) {
-      const config = useRuntimeConfig();
-      const { highlightedIds } = config;
-      const parsedIds: string[] = highlightedIds?.split(',') || [];
       const existingHighlightedIds = parsedIds.filter((id: string) =>
         data.some((item) => item.id === id),
       );
@@ -82,6 +95,7 @@ export default defineEventHandler(async (event): Promise<Pagination<Collection> 
 
         data = [...highlightedItems, ...nonHighlightedItems];
       }
+      data = data.slice(0, pageSize);
     }
 
     return {

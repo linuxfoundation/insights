@@ -70,10 +70,6 @@ SPDX-License-Identifier: MIT
             label="Alphabetically"
           />
           <lfx-dropdown-item
-            value="contributorCount_desc"
-            label="Most contributors"
-          />
-          <lfx-dropdown-item
             value="organizationCount_desc"
             label="Most organizations"
           />
