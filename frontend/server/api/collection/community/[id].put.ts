@@ -9,6 +9,7 @@ import {
 import { InsightsSsoUserRepository } from '~~/server/repo/insightsSsoUser.repo';
 import type { DecodedOidcToken } from '~~/types/auth/auth-jwt.types';
 import { getAuthUsername } from '~~/server/utils/common';
+import { checkGuardrails } from '~~/server/utils/guardrail';
 
 /**
  * API Endpoint: PUT /api/collection/community/:id
@@ -52,6 +53,37 @@ export default defineEventHandler(async (event): Promise<CommunityCollection | E
   }
 
   try {
+    // Fetch existing collection to check visibility and fill in missing fields for guardrails
+    const repo = new CommunityCollectionRepository(cmDbPool);
+    const existing = await repo.findById(id);
+    const willBePublic =
+      body.isPrivate === false || (body.isPrivate === undefined && !existing.isPrivate);
+
+    // Run guardrail checks on name and description if the collection will be public
+    if (willBePublic) {
+      const fieldsToCheck = [
+        { field: 'name', value: (body.name ?? existing.name).trim() },
+        ...(body.description || existing.description
+          ? [
+              {
+                field: 'description',
+                value: (body.description ?? existing.description ?? '').trim(),
+              },
+            ]
+          : []),
+      ];
+
+      const guardrailResult = await checkGuardrails(fieldsToCheck);
+
+      if (guardrailResult.blocked) {
+        throw createError({
+          statusCode: 422,
+          statusMessage: guardrailResult.message,
+          data: { field: guardrailResult.field },
+        });
+      }
+    }
+
     const username = getAuthUsername(user.sub);
 
     const ssoUserRepo = new InsightsSsoUserRepository(cmDbPool);
@@ -63,7 +95,6 @@ export default defineEventHandler(async (event): Promise<CommunityCollection | E
       username,
     });
 
-    const repo = new CommunityCollectionRepository(cmDbPool);
     return await repo.update(id, ssoUser.id, {
       name: body.name?.trim(),
       description: body.description?.trim(),

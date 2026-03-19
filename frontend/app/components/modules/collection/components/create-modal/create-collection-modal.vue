@@ -190,9 +190,23 @@ const createCollection = async () => {
     await COLLECTIONS_API_SERVICE.createCollection(payload);
     emit('created', form.value);
     isModalOpen.value = false;
-  } catch (error) {
-    const message = error instanceof Error ? error.message : 'Failed to create collection';
-    showToast(message, ToastTypesEnum.negative);
+  } catch (error: unknown) {
+    const fetchError = error as { statusCode?: number; statusMessage?: string; data?: { field?: string } };
+
+    if (fetchError.statusCode === 422) {
+      // Guardrail violation - navigate back to details step
+      step.value = 0;
+      showToast(
+        fetchError.statusMessage || 'Content violates our guidelines. Please revise and try again.',
+        ToastTypesEnum.negative,
+      );
+    } else if (fetchError.statusCode === 409) {
+      step.value = 0;
+      showToast('A collection with this name already exists.', ToastTypesEnum.negative);
+    } else {
+      const message = error instanceof Error ? error.message : 'Failed to create collection';
+      showToast(message, ToastTypesEnum.negative);
+    }
   } finally {
     isCreating.value = false;
   }

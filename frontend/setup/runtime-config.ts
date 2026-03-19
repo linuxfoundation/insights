@@ -41,6 +41,12 @@ export default {
   temporalEncryptionKeyId: 'local',
   temporalEncryptionKey: '',
   securityGithubToken: '',
+  awsBedrockAccessKeyId: '',
+  awsBedrockSecretAccessKey: '',
+  awsBedrockRegion: 'us-east-1',
+  awsBedrockWordFilterGuardrailId: '',
+  awsBedrockContentFilterGuardrailId: '',
+  awsBedrockGuardrailVersion: 'DRAFT',
   dataCopilotDefaultSegmentId: '',
   rateLimiter: rateLimiter,
   // These are also exposed on the client-side
