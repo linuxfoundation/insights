@@ -4,6 +4,7 @@ import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import type { Collection } from '~~/types/collection';
 import type { CreateCollectionForm } from '~/components/modules/collection/config/create-collection.config';
+import { useAuth } from '~~/composables/useAuth';
 
 export interface DuplicateCollectionData {
   collection: Collection;
@@ -15,6 +16,12 @@ export const useDuplicateCollectionStore = defineStore('duplicateCollection', ()
   const duplicateData = ref<DuplicateCollectionData | null>(null);
 
   const openDuplicateModal = (data: DuplicateCollectionData) => {
+    const { isAuthenticated, login } = useAuth();
+
+    if (!isAuthenticated.value) {
+      login(window.location.pathname + window.location.search + window.location.hash);
+      return;
+    }
     duplicateData.value = data;
     isDuplicateModalOpen.value = true;
   };

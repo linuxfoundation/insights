@@ -92,9 +92,8 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { watch, computed, ref, onMounted } from 'vue';
+import { watch, computed, ref } from 'vue';
 import { storeToRefs } from 'pinia';
-import { useRoute } from 'nuxt/app';
 import { collectionListParamsGetter, collectionListParamsSetter } from '../services/collections.query.service';
 import { headerBackground } from '../config/collection-type-config';
 import type { Pagination } from '~~/types/shared/pagination';
@@ -117,7 +116,6 @@ import type { Collection, CollectionType } from '~~/types/collection';
 import { useBannerStore } from '~/components/shared/store/banner.store';
 import { useAuthStore } from '~/components/modules/auth/store/auth.store';
 import { useCollectionsStore } from '~/components/modules/collection/store/collections.store';
-import { useAuth } from '~~/composables/useAuth';
 
 const props = defineProps<{
   type?: CollectionType;
@@ -131,8 +129,6 @@ const { headerTopClass } = storeToRefs(useBannerStore());
 const { user } = storeToRefs(useAuthStore());
 const collectionsStore = useCollectionsStore();
 const { view } = storeToRefs(collectionsStore);
-
-const { isAuthenticated, login } = useAuth();
 
 // NOTE: This is a temporary workaround to highlight the most important collections within the LF featured collections
 const sort = ref(listSort || 'starred_desc');
@@ -211,15 +207,6 @@ watch(
 
 watch(user, () => {
   refetch();
-});
-
-onMounted(() => {
-  const route = useRoute();
-  const isAuthCallback = route.query.auth === 'success' || route.query.auth === 'logout';
-
-  if (!isAuthCallback && !isAuthenticated.value && props.type === 'my-collections') {
-    login(window.location.pathname + window.location.search + window.location.hash);
-  }
 });
 </script>
 

@@ -54,10 +54,11 @@ import { formatNumberShort } from '~/components/shared/utils/formatter';
 import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
 import type { ButtonSize } from '~/components/uikit/button/types/button.types';
 import { TanstackKey } from '~/components/shared/types/tanstack';
+// import { useAuth } from '~~/composables/useAuth';
 
 const collectionsStore = useCollectionsStore();
 const queryClient = useQueryClient();
-
+// const { isAuthenticated, login } = useAuth();
 const { showToast } = useToastService();
 
 const props = withDefaults(
@@ -90,6 +91,11 @@ const invalidateCollectionQueries = () => {
 };
 
 const handleLike = async () => {
+  // if (!isAuthenticated.value) {
+  //   login(window.location.pathname + window.location.search + window.location.hash);
+  //   return;
+  // }
+
   const wasLiked = isLiked.value;
 
   try {
@@ -107,7 +113,10 @@ const handleLike = async () => {
         emit('updated', props.collection);
       }
     } else {
-      collectionsStore.addLikedCollection(props.collection.id);
+      const wasAdded = collectionsStore.addLikedCollection(props.collection.id);
+      if (!wasAdded) {
+        return;
+      }
       likeCount.value = likeCount.value + 1;
       const { success } = await COLLECTIONS_API_SERVICE.likeCollection(props.collection.id);
       if (!success) {

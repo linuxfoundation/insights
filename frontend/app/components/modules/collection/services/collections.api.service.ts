@@ -237,7 +237,7 @@ class CollectionsApiService {
     });
   }
 
-  fetchDiscoveryCommunityCollections(user: User | null) {
+  fetchDiscoveryCommunityCollections() {
     const params = this.discoveryParams('community');
     const queryKey = computed(() => [
       TanstackKey.COLLECTION_DISCOVERY,
@@ -252,11 +252,10 @@ class CollectionsApiService {
     return useQuery<Pagination<Collection>>({
       queryKey,
       queryFn,
-      enabled: !!user,
     });
   }
 
-  fetchDiscoveryMyCollections() {
+  fetchDiscoveryMyCollections(user: User | null) {
     const params = this.discoveryParams('my-collections');
     const queryKey = computed(() => [
       TanstackKey.COLLECTION_DISCOVERY,
@@ -271,6 +270,7 @@ class CollectionsApiService {
     return useQuery<Pagination<Collection>>({
       queryKey,
       queryFn,
+      enabled: !!user,
     });
   }
 

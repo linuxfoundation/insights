@@ -66,26 +66,28 @@ SPDX-License-Identifier: MIT
           </lfx-collection-section>
         </section>
 
-        <!-- My Collections Section -->
-        <section>
-          <lfx-collection-section
-            type="my-collections"
-            :status="myCollectionsStatus"
-            :error="myCollectionsError"
-            error-message="Error fetching your collections"
-            :is-empty="isMyCollectionsEmpty"
-          >
-            <lfx-collection-card
-              v-for="collection in myCollections"
-              :key="collection.slug"
-              :collection="collection"
-              variant="my-collections"
-            />
-          </lfx-collection-section>
-        </section>
+        <template v-if="!!user">
+          <!-- My Collections Section -->
+          <section>
+            <lfx-collection-section
+              type="my-collections"
+              :status="myCollectionsStatus"
+              :error="myCollectionsError"
+              error-message="Error fetching your collections"
+              :is-empty="isMyCollectionsEmpty"
+            >
+              <lfx-collection-card
+                v-for="collection in myCollections"
+                :key="collection.slug"
+                :collection="collection"
+                variant="my-collections"
+              />
+            </lfx-collection-section>
+          </section>
 
-        <!-- Liked Collections Section -->
-        <lfx-liked-collections />
+          <!-- Liked Collections Section -->
+          <lfx-liked-collections />
+        </template>
       </template>
     </div>
   </div>
@@ -123,14 +125,14 @@ const {
   status: communityStatus,
   error: communityError,
   refetch: refetchCommunityCollections,
-} = COLLECTIONS_API_SERVICE.fetchDiscoveryCommunityCollections(user.value);
+} = COLLECTIONS_API_SERVICE.fetchDiscoveryCommunityCollections();
 
 const {
   data: myCollectionsData,
   status: myCollectionsStatus,
   error: myCollectionsError,
   refetch: refetchMyCollections,
-} = COLLECTIONS_API_SERVICE.fetchDiscoveryMyCollections();
+} = COLLECTIONS_API_SERVICE.fetchDiscoveryMyCollections(user.value);
 
 const curatedCollections = computed(() => curatedData.value?.data || []);
 const communityCollections = computed(() => communityData.value?.data || []);
