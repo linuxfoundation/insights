@@ -79,6 +79,7 @@ export default defineConfig({
         items: [
           { text: 'LFX Data Copilot', link: '/features/lfx-data-copilot/index.md' },
           { text: 'Repository Groups', link: '/features/repository-groups/index.md' },
+          { text: 'Community Collections', link: '/features/community-collections/index.md' },
         ],
       },
       {
