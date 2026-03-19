@@ -1,0 +1,167 @@
+<!--
+Copyright (c) 2025 The Linux Foundation and each contributor.
+SPDX-License-Identifier: MIT
+-->
+<template>
+  <!-- Header Section -->
+  <lfx-maintain-height
+    :scroll-top="scrollTop"
+    :loaded="!loading"
+    :class="scrollTop > 0 ? ['fixed', ...headerTopClass].join(' ') : 'relative'"
+    class="z-10 w-full left-0"
+  >
+    <div class="container bg-white">
+      <section
+        class="flex items-start justify-between gap-4 border-b border-neutral-200"
+        :class="scrollTop > 50 ? '!border-b-0 py-5' : 'pt-16 pb-10'"
+      >
+        <div class="flex-1">
+          <h1 class="font-secondary font-light text-4xl leading-[56px] text-neutral-900">Discover Collections</h1>
+          <p class="text-base leading-6 text-neutral-600">
+            Explore and curate open source projects organized into themed collections.
+          </p>
+        </div>
+        <!-- TODO: wire the create collection modal here which is part of another PR. Revisit this once that is merged -->
+        <lf-create-collection-button />
+      </section>
+    </div>
+  </lfx-maintain-height>
+
+  <div class="container">
+    <div class="flex flex-col gap-10 pt-10">
+      <!-- Curated Collections Section -->
+      <section class="border-b border-neutral-200 pb-10">
+        <lfx-collection-section
+          type="curated"
+          :status="curatedStatus"
+          :error="curatedError"
+          error-message="Error fetching curated collections"
+          :is-empty="isCuratedEmpty"
+        >
+          <lfx-collection-card
+            v-for="collection in curatedCollections"
+            :key="collection.slug"
+            :collection="collection"
+            variant="curated"
+          />
+        </lfx-collection-section>
+      </section>
+
+      <template v-if="isLfInsightsTeamMember">
+        <!-- Community Collections Section -->
+        <section class="border-b border-neutral-200 pb-10">
+          <lfx-collection-section
+            type="community"
+            :status="communityStatus"
+            :error="communityError"
+            error-message="Error fetching community collections"
+            :is-empty="isCommunityEmpty"
+            @created="refetchCommunityCollections"
+          >
+            <lfx-collection-card
+              v-for="collection in communityCollections"
+              :key="collection.slug"
+              :collection="collection"
+              variant="community"
+            />
+          </lfx-collection-section>
+        </section>
+
+        <template v-if="!!user">
+          <!-- My Collections Section -->
+          <section>
+            <lfx-collection-section
+              type="my-collections"
+              :status="myCollectionsStatus"
+              :error="myCollectionsError"
+              error-message="Error fetching your collections"
+              :is-empty="isMyCollectionsEmpty"
+              @created="refetchMyCollections"
+            >
+              <lfx-collection-card
+                v-for="collection in myCollections"
+                :key="collection.slug"
+                :collection="collection"
+                variant="my-collections"
+              />
+            </lfx-collection-section>
+          </section>
+
+          <!-- Liked Collections Section -->
+          <lfx-liked-collections />
+        </template>
+      </template>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { computed, watch } from 'vue';
+import { storeToRefs } from 'pinia';
+import LfCreateCollectionButton from '../components/create-modal/create-button.vue';
+import LfxLikedCollections from '../components/discovery/liked-collections.vue';
+import LfxCollectionSection from '~/components/shared/components/collection-section.vue';
+import LfxCollectionCard from '~/components/shared/components/collection-card.vue';
+import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
+import LfxMaintainHeight from '~/components/uikit/maintain-height/maintain-height.vue';
+import useScroll from '~/components/shared/utils/scroll';
+import { useBannerStore } from '~/components/shared/store/banner.store';
+
+// TODO: remove this once we have everything done and tested
+import { useAuthStore } from '~/components/modules/auth/store/auth.store';
+
+const authStore = useAuthStore();
+const { user } = storeToRefs(authStore);
+
+const { scrollTop } = useScroll();
+const { headerTopClass } = storeToRefs(useBannerStore());
+
+const {
+  data: curatedData,
+  status: curatedStatus,
+  error: curatedError,
+} = COLLECTIONS_API_SERVICE.fetchDiscoveryCuratedCollections();
+
+const {
+  data: communityData,
+  status: communityStatus,
+  error: communityError,
+  refetch: refetchCommunityCollections,
+} = COLLECTIONS_API_SERVICE.fetchDiscoveryCommunityCollections();
+
+const {
+  data: myCollectionsData,
+  status: myCollectionsStatus,
+  error: myCollectionsError,
+  refetch: refetchMyCollections,
+} = COLLECTIONS_API_SERVICE.fetchDiscoveryMyCollections(user.value);
+
+const curatedCollections = computed(() => curatedData.value?.data || []);
+const communityCollections = computed(() => communityData.value?.data || []);
+const myCollections = computed(() => myCollectionsData.value?.data || []);
+
+const isCuratedEmpty = computed(() => COLLECTIONS_API_SERVICE.isEmptyData(curatedCollections.value));
+const isCommunityEmpty = computed(() => COLLECTIONS_API_SERVICE.isEmptyData(communityCollections.value));
+const isMyCollectionsEmpty = computed(() => COLLECTIONS_API_SERVICE.isEmptyData(myCollections.value));
+
+// TODO: remove this once we have everything done and tested
+const isLfInsightsTeamMember = computed(() => {
+  return user.value?.isLfInsightsTeamMember || false;
+});
+
+const loading = computed(() => {
+  return (
+    curatedStatus.value === 'pending' || communityStatus.value === 'pending' || myCollectionsStatus.value === 'pending'
+  );
+});
+
+watch(user, () => {
+  refetchCommunityCollections();
+  refetchMyCollections();
+});
+</script>
+<script lang="ts">
+export default {
+  name: 'LfxCollectionDiscover',
+};
+</script>

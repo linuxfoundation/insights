@@ -1,6 +1,6 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import type { ProjectInsights } from '~~/types/project';
+import type { ProjectInsightsTinybird } from '~~/types/project';
 import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
 import { useApiTrackEvent } from '~~/server/utils/plausible';
 
@@ -15,9 +15,12 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    const response = await fetchFromTinybird<ProjectInsights[]>('/v0/pipes/project_insights.json', {
-      slug,
-    });
+    const response = await fetchFromTinybird<ProjectInsightsTinybird[]>(
+      '/v0/pipes/project_insights.json',
+      {
+        slug,
+      },
+    );
 
     useApiTrackEvent({
       event,
@@ -29,7 +32,23 @@ export default defineEventHandler(async (event) => {
       },
     });
 
-    return response.data?.[0];
+    const project = response.data?.[0];
+    if (!project) {
+      return project;
+    }
+
+    return {
+      ...project,
+      isLF: !!project.isLF,
+      achievements:
+        project.achievements?.map(
+          ([leaderboardType, rank, totalCount]: [string, number, number]) => ({
+            leaderboardType,
+            rank,
+            totalCount,
+          }),
+        ) ?? [],
+    };
   } catch (error: unknown) {
     if (error && typeof error === 'object' && 'statusCode' in error && error.statusCode === 404) {
       throw error;

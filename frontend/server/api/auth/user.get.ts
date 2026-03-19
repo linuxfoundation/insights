@@ -61,6 +61,7 @@ export default defineEventHandler(async (event) => {
         email_verified: decodedToken.email_verified,
         updated_at: decodedToken.updated_at,
         hasLfxInsightsPermission: decodedToken.hasLfxInsightsPermission,
+        isLfInsightsTeamMember: decodedToken.isLfInsightsTeamMember,
       },
       token: decodedToken.original_id_token,
     };

@@ -65,3 +65,26 @@ export const hasLfxInsightsPermission = (claims?: string[]): boolean => {
 
   return claims.includes(config.lfxAuth0TokenClaimGroupName);
 };
+
+export const isLfInsightsTeamMember = (email: string): boolean => {
+  const config = useRuntimeConfig();
+
+  if (!config.lfxInsightsTeam || !email) {
+    return false;
+  }
+
+  const appEnv = config.public.appEnv;
+
+  const isLocal = appEnv !== 'staging' && appEnv !== 'production';
+
+  // In local we don't have SSO Groups so we should always allow to use the feature
+  if (isLocal) {
+    return true;
+  }
+
+  const lfxInsightsTeam = config.lfxInsightsTeam || '';
+  return lfxInsightsTeam
+    .split(',')
+    .map((e) => e.trim())
+    .includes(email.trim());
+};

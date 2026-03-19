@@ -268,7 +268,8 @@ const mcpClient = await createMCPClient({
 
 # Model Configuration
 
-Currently using: `us.anthropic.claude-sonnet-4-20250514-v1:0` via AWS Bedrock
+Currently using: `us.anthropic.claude-sonnet-4-20250514-v1:0` via AWS Bedrock for Router and Pipe Agent.
+Currently using: `us.anthropic.claude-opus-4-6-v1` via AWS Bedrock for Auditor and TextToSql Agent.
 
 ## Data Flow Example
 

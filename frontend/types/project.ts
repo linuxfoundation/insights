@@ -95,12 +95,63 @@ export interface ProjectTinybird {
   repoData: ProjectRepoData[];
 }
 
+export interface ProjectInsightsAchievement {
+  leaderboardType: string;
+  rank: number;
+  totalCount: number;
+}
+
+export interface ProjectInsightsTinybird {
+  id: string;
+  name: string;
+  slug: string;
+  logoUrl: string;
+  isLF: number;
+  status: string;
+  contributorCount: number;
+  organizationCount: number;
+  softwareValue: number;
+  contributorDependencyCount: number;
+  contributorDependencyPercentage: number;
+  organizationDependencyCount: number;
+  organizationDependencyPercentage: number;
+  achievements: [string, number, number][];
+  healthScore: number;
+  contributorHealthScore: number;
+  popularityHealthScore: number;
+  developmentHealthScore: number;
+  securityHealthScore: number;
+  firstCommit: string;
+  starsLast365Days: number;
+  forksLast365Days: number;
+  activeContributorsLast365Days: number;
+  activeOrganizationsLast365Days: number;
+  starsPrevious365Days: number;
+  forksPrevious365Days: number;
+  activeContributorsPrevious365Days: number;
+  activeOrganizationsPrevious365Days: number;
+}
+
 export interface ProjectInsights {
   id: string;
   name: string;
   slug: string;
+  logoUrl: string;
+  isLF: boolean;
+  status: string;
+  contributorCount: number;
+  organizationCount: number;
   softwareValue: number;
+  contributorDependencyCount: number;
+  contributorDependencyPercentage: number;
+  organizationDependencyCount: number;
+  organizationDependencyPercentage: number;
+  achievements: ProjectInsightsAchievement[];
   healthScore: number;
+  contributorHealthScore: number;
+  popularityHealthScore: number;
+  developmentHealthScore: number;
+  securityHealthScore: number;
   firstCommit: string;
   starsLast365Days: number;
   forksLast365Days: number;

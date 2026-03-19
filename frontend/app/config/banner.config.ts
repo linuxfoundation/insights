@@ -7,5 +7,5 @@ export const bannerConfig = {
   link: 'https://events.linuxfoundation.org/kubecon-cloudnativecon-europe/register/?utm_source=lfx-insights&utm_medium=homepage&utm_campaign=18269725-KubeCon-EU-2026&utm_content=banner',
   validUntil: new Date('2026-03-23'),
   key: 'lfx-kubecon2026-banner',
-  enabled: true,
+  enabled: false,
 };

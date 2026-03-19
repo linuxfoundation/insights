@@ -18,12 +18,11 @@ interface MenuConfig {
 
 export const lfxMenu: MenuConfig = {
   links: [
-    // {
-    //   label: 'Collections',
-    //   icon: 'rectangle-history',
-    //   // TODO: Change this to collections only when the discovery page is ready
-    //   route: LfxRoutes.COLLECTIONS_CURATED,
-    // },
+    {
+      label: 'Collections',
+      icon: 'rectangle-history',
+      route: LfxRoutes.COLLECTIONS,
+    },
     {
       label: 'Leaderboards',
       icon: 'trophy',

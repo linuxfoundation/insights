@@ -28,17 +28,29 @@ export const isElementVisible = (element: HTMLElement) => {
 export const normalizeRepoName = (repo: ProjectRepository): string => {
   try {
     const url = new URL(repo.url);
+    const { hostname } = url;
     const pathParts = url.pathname.split('/').filter(Boolean);
 
-    // return last 2 segments (owner/repo)
-    if (pathParts.length > 2) {
-      return pathParts.slice(-2).join('/');
+    if (!pathParts.length) {
+      return repo.name;
     }
 
-    // Fallback: return repo name or last path segment
-    return pathParts[pathParts.length - 1] || repo.name;
+    // GitHub, GitLab and Git repos: always show owner/repo (last 2 path segments)
+    if (hostname === 'github.com' || hostname === 'gitlab' || hostname === 'git.') {
+      return pathParts.length >= 2 ? pathParts.slice(-2).join('/') : pathParts[0] || '';
+    }
+
+    // For all other platforms (Gerrit): show full path after domain
+    return pathParts.join('/');
   } catch {
-    // If URL parsing fails, return the repo name as fallback
     return repo.name;
   }
+};
+
+export const isLFUser = (email?: string) => {
+  if (!email) {
+    return false;
+  }
+  const lfEmail = new RegExp('@(contractor\\.)?linuxfoundation\\.org$');
+  return lfEmail.test(email);
 };
