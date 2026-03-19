@@ -345,7 +345,13 @@ export class CommunityCollectionRepository {
             ownerLogo: undefined,
             projects: allProjects.map((p) => p.id),
             projectCount: allProjects.length,
-            featuredProjects: [],
+            featuredProjects: (starredProjects.length > 0 ? starredProjects : allProjects)
+              .slice(0, 5)
+              .map((p) => ({
+                name: p.name,
+                slug: p.slug,
+                logo: p.logoUrl,
+              })),
             // Project IDs to fetch from Tinybird for sorting by contributorCount
             _needsTinybirdSort: allProjects.length > 0,
             _projectIds: (starredProjects.length > 0 ? starredProjects : allProjects).map(
@@ -415,7 +421,13 @@ export class CommunityCollectionRepository {
       ownerLogo: undefined,
       projects: allProjects.map((r: { insightsProjectId: string }) => r.insightsProjectId),
       projectCount: allProjects.length,
-      featuredProjects: [],
+      featuredProjects: featuredSource
+        .slice(0, 5)
+        .map((r: { name: string; slug: string; logoUrl: string }) => ({
+          name: r.name,
+          slug: r.slug,
+          logo: r.logoUrl,
+        })),
       // Project IDs to fetch from Tinybird for sorting by contributorCount
       _needsTinybirdSort: allProjects.length > 0,
       _projectIds: featuredSource.map((r: { insightsProjectId: string }) => r.insightsProjectId),
@@ -489,7 +501,13 @@ export class CommunityCollectionRepository {
           ...c,
           projects: allProjects.map((p) => p.id),
           projectCount: allProjects.length,
-          featuredProjects: [],
+          featuredProjects: (starredProjects.length > 0 ? starredProjects : allProjects)
+            .slice(0, 5)
+            .map((p) => ({
+              name: p.name,
+              slug: p.slug,
+              logo: p.logoUrl,
+            })),
           _needsTinybirdSort: allProjects.length > 0,
           _projectIds: (starredProjects.length > 0 ? starredProjects : allProjects).map(
             (p) => p.id,

@@ -53,6 +53,7 @@ SPDX-License-Identifier: MIT
       <div
         v-if="isPending || isFetchingNextPage"
         :class="classDisplay"
+        class="pt-6"
       >
         <template v-if="view === 'list'">
           <lfx-collection-list-item-loading

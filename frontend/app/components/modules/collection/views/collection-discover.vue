@@ -42,6 +42,7 @@ SPDX-License-Identifier: MIT
             :key="collection.slug"
             :collection="collection"
             variant="curated"
+            @updated="handleCollectionUpdated"
           />
         </lfx-collection-section>
       </section>
@@ -62,6 +63,7 @@ SPDX-License-Identifier: MIT
               :key="collection.slug"
               :collection="collection"
               variant="community"
+              @updated="handleCollectionUpdated"
             />
           </lfx-collection-section>
         </section>
@@ -82,6 +84,7 @@ SPDX-License-Identifier: MIT
                 :key="collection.slug"
                 :collection="collection"
                 variant="my-collections"
+                @updated="handleCollectionUpdated"
               />
             </lfx-collection-section>
           </section>
@@ -119,6 +122,7 @@ const {
   data: curatedData,
   status: curatedStatus,
   error: curatedError,
+  refetch: refetchCuratedCollections,
 } = COLLECTIONS_API_SERVICE.fetchDiscoveryCuratedCollections();
 
 const {
@@ -157,6 +161,12 @@ const loading = computed(() => {
 const handleCollectionCreated = () => {
   refetchMyCollections();
   refetchCommunityCollections();
+};
+
+const handleCollectionUpdated = () => {
+  refetchCuratedCollections();
+  refetchCommunityCollections();
+  refetchMyCollections();
 };
 
 watch(user, () => {
