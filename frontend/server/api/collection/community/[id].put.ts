@@ -53,32 +53,34 @@ export default defineEventHandler(async (event): Promise<CommunityCollection | E
   }
 
   try {
+    // Fetch existing collection to check visibility and fill in missing fields for guardrails
+    const repo = new CommunityCollectionRepository(cmDbPool);
+    const existing = await repo.findById(id);
+    const willBePublic =
+      body.isPrivate === false || (body.isPrivate === undefined && !existing.isPrivate);
+
     // Run guardrail checks on name and description if the collection will be public
-    const fieldsToCheck = [
-      ...(body.name ? [{ field: 'name', value: body.name.trim() }] : []),
-      ...(body.description ? [{ field: 'description', value: body.description.trim() }] : []),
-    ];
+    if (willBePublic) {
+      const fieldsToCheck = [
+        { field: 'name', value: (body.name ?? existing.name).trim() },
+        ...(body.description || existing.description
+          ? [
+              {
+                field: 'description',
+                value: (body.description ?? existing.description ?? '').trim(),
+              },
+            ]
+          : []),
+      ];
 
-    if (fieldsToCheck.length > 0) {
-      // If isPrivate is explicitly set, use that; otherwise check the current collection state
-      let willBePublic = body.isPrivate === false;
+      const guardrailResult = await checkGuardrails(fieldsToCheck);
 
-      if (body.isPrivate === undefined) {
-        const repo = new CommunityCollectionRepository(cmDbPool);
-        const existing = await repo.findById(id);
-        willBePublic = !existing.isPrivate;
-      }
-
-      if (willBePublic) {
-        const guardrailResult = await checkGuardrails(fieldsToCheck);
-
-        if (guardrailResult.blocked) {
-          throw createError({
-            statusCode: 422,
-            statusMessage: guardrailResult.message,
-            data: { field: guardrailResult.field },
-          });
-        }
+      if (guardrailResult.blocked) {
+        throw createError({
+          statusCode: 422,
+          statusMessage: guardrailResult.message,
+          data: { field: guardrailResult.field },
+        });
       }
     }
 
@@ -93,7 +95,6 @@ export default defineEventHandler(async (event): Promise<CommunityCollection | E
       username,
     });
 
-    const repo = new CommunityCollectionRepository(cmDbPool);
     return await repo.update(id, ssoUser.id, {
       name: body.name?.trim(),
       description: body.description?.trim(),
