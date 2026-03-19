@@ -88,15 +88,19 @@ async function createOrUpdate(params, existingId, envKey) {
         ...params,
       }),
     );
+    // eslint-disable-next-line no-console
     console.log(`Updated "${params.name}" — ID: ${response.guardrailId}`);
   } else {
     response = await client.send(new CreateGuardrailCommand(params));
+    // eslint-disable-next-line no-console
     console.log(`Created "${params.name}" — ID: ${response.guardrailId}`);
   }
+  // eslint-disable-next-line no-console
   console.log(`  Add to .env: ${envKey}=${response.guardrailId}`);
 }
 
 async function main() {
+  // eslint-disable-next-line no-console
   console.log(`Setting up guardrails in region: ${region}\n`);
 
   await createOrUpdate(
@@ -111,7 +115,9 @@ async function main() {
     'NUXT_AWS_BEDROCK_CONTENT_FILTER_GUARDRAIL_ID',
   );
 
+  // eslint-disable-next-line no-console
   console.log('\nDone! Add the guardrail IDs to your .env file.');
+  // eslint-disable-next-line no-console
   console.log('Set NUXT_AWS_BEDROCK_GUARDRAIL_VERSION=DRAFT (or a published version number).');
 }
 

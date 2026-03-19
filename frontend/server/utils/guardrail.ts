@@ -18,12 +18,13 @@ function getClient(
   accessKeyId: string,
   secretAccessKey: string,
 ): BedrockRuntimeClient {
+  // Only pass explicit credentials when both are set;
+  // otherwise fall back to standard AWS credential resolution (e.g. IAM roles)
+  const credentials = accessKeyId && secretAccessKey ? { accessKeyId, secretAccessKey } : undefined;
+
   return new BedrockRuntimeClient({
     region,
-    credentials: {
-      accessKeyId,
-      secretAccessKey,
-    },
+    ...(credentials && { credentials }),
   });
 }
 
