@@ -65,7 +65,7 @@ SPDX-License-Identifier: MIT
             v-for="collection in likedCollections"
             :key="collection.slug"
             :collection="collection"
-            variant="my-collections"
+            variant="community"
             :show-like-count="true"
             @updated="handleLikeUpdated"
           />
@@ -75,7 +75,7 @@ SPDX-License-Identifier: MIT
             v-for="collection in likedCollections"
             :key="collection.slug"
             :collection="collection"
-            variant="my-collections"
+            variant="community"
             @updated="handleLikeUpdated"
           />
         </template>

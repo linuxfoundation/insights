@@ -326,13 +326,14 @@ class CollectionsApiService {
     });
   }
 
-  fetchMyCollections(params: ComputedRef<QueryParams>, user?: User | null) {
+  fetchMyCollections(params: ComputedRef<QueryParams>, user: Ref<User | null | undefined>) {
     const queryKey = computed(() => [
       TanstackKey.MY_COLLECTIONS,
       params.value.sort,
       params.value.categories,
       params.value.pageSize,
       params.value.page,
+      user.value?.sub,
     ]);
 
     const queryFn = this.fetchMyCollectionsQueryFn(() => ({

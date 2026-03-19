@@ -101,6 +101,14 @@ SPDX-License-Identifier: MIT
             />
             Share
           </lfx-dropdown-item>
+          <lfx-dropdown-item @click="handleClone()">
+            <lfx-icon
+              name="clone"
+              :size="16"
+              class="text-neutral-600"
+            />
+            Duplicate
+          </lfx-dropdown-item>
           <template v-if="props.variant === 'my-collections' && isLfInsightsTeamMember">
             <lfx-dropdown-item @click="handleDeleteCollection()">
               <lfx-icon
@@ -138,11 +146,13 @@ import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/service
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 import { useAuthStore } from '~/components/modules/auth/store/auth.store';
+import { useDuplicateCollectionStore } from '~/components/modules/collection/store/duplicate-collection.store';
 
 const router = useRouter();
 const { user } = storeToRefs(useAuthStore());
 const { openShareModal } = useShareStore();
 const { openEditModal } = useEditCollectionStore();
+const { openDuplicateModal } = useDuplicateCollectionStore();
 const { showToast } = useToastService();
 const emit = defineEmits<{
   (e: 'updated', collection: Collection | null): void;
@@ -183,6 +193,12 @@ const handleEditCollection = () => {
     onUpdated: (collection: Collection) => {
       emit('updated', collection);
     },
+  });
+};
+
+const handleClone = () => {
+  openDuplicateModal({
+    collection: props.collection,
   });
 };
 

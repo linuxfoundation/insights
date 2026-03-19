@@ -143,7 +143,7 @@ const params = computed(() => ({
 
 const { data, isPending, isFetchingNextPage, fetchNextPage, hasNextPage, isSuccess, error, refetch } =
   props.type === 'my-collections'
-    ? COLLECTIONS_API_SERVICE.fetchMyCollections(params, user.value)
+    ? COLLECTIONS_API_SERVICE.fetchMyCollections(params, user)
     : COLLECTIONS_API_SERVICE.fetchCollections(params);
 
 const flatData = computed(() =>
