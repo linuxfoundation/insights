@@ -4,7 +4,7 @@ For a general definition of what a Collection is, see [Collection](/more/glossar
 
 ## Overview
 
-Collections in LFX Insights come in two flavours. **Curated Collections** are maintained exclusively by The Linux Foundation and showcase hand-picked groups of projects around themes, foundations, or initiatives. **Community Collections** are created and shared by any registered user, letting anyone in the open source community organise projects around a topic, technology, or use case that matters to them.
+Collections in LFX Insights come in two flavors. **Curated Collections** are maintained exclusively by The Linux Foundation and showcase hand-picked groups of projects around themes, foundations, or initiatives. **Community Collections** are created and shared by any registered user, letting anyone in the open source community organize projects around a topic, technology, or use case that matters to them.
 
 ## Discovering Collections
 
