@@ -53,21 +53,32 @@ export default defineEventHandler(async (event): Promise<CommunityCollection | E
   }
 
   try {
-    // Run guardrail checks on name and description if provided
+    // Run guardrail checks on name and description if the collection will be public
     const fieldsToCheck = [
       ...(body.name ? [{ field: 'name', value: body.name.trim() }] : []),
       ...(body.description ? [{ field: 'description', value: body.description.trim() }] : []),
     ];
 
-    if (fieldsToCheck.length > 0 && !body.isPrivate) {
-      const guardrailResult = await checkGuardrails(fieldsToCheck);
+    if (fieldsToCheck.length > 0) {
+      // If isPrivate is explicitly set, use that; otherwise check the current collection state
+      let willBePublic = body.isPrivate === false;
 
-      if (guardrailResult.blocked) {
-        throw createError({
-          statusCode: 422,
-          statusMessage: guardrailResult.message,
-          data: { field: guardrailResult.field },
-        });
+      if (body.isPrivate === undefined) {
+        const repo = new CommunityCollectionRepository(cmDbPool);
+        const existing = await repo.findById(id);
+        willBePublic = !existing.isPrivate;
+      }
+
+      if (willBePublic) {
+        const guardrailResult = await checkGuardrails(fieldsToCheck);
+
+        if (guardrailResult.blocked) {
+          throw createError({
+            statusCode: 422,
+            statusMessage: guardrailResult.message,
+            data: { field: guardrailResult.field },
+          });
+        }
       }
     }
 
