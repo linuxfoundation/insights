@@ -8,11 +8,10 @@ SPDX-License-Identifier: MIT
     :class="topClass"
   >
     <lfx-navbar />
-    <div>
+    <div class="flex-grow pb-30 flex flex-col">
       <slot />
     </div>
     <lfx-toast theme="dark" />
-    <div class="flex-grow" />
     <lfx-report-global />
     <lfx-share-global />
     <lf-edit-collection-global />
