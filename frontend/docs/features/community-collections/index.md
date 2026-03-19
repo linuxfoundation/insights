@@ -33,8 +33,8 @@ You must be signed in to be able to manage Collections.
 
 ### Create a Collection
 1. Click **Create collection** from any Collections page (top-right button on the Discover page or any list page)
-3. Fill in the collection name, description, visibility setting (Public or Private), and search for and add projects.
-4. Save — the new collection appears in your **My Collections** page
+2. Fill in the collection name, description, visibility setting (Public or Private), and search for and add projects.
+3. Save — the new collection appears in your **My Collections** page
 
 ### Add a Project to a Collection
 
