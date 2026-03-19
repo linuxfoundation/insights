@@ -2,7 +2,9 @@
 // SPDX-License-Identifier: MIT
 import type { Pool } from 'pg';
 import type { Collection } from '~~/types/collection';
+import type { ProjectInsightsTinybird } from '~~/types/project';
 import { CommunityCollectionRepository } from '~~/server/repo/communityCollection.repo';
+import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
 
 /**
  * API Endpoint: Fetch Collection Details by Slug
@@ -38,7 +40,33 @@ export default defineEventHandler(async (event): Promise<Collection | Error> => 
       throw createError({ statusCode: 404, statusMessage: 'Collection not found' });
     }
 
-    return collection as unknown as Collection;
+    // Fetch featured projects from Tinybird if no starred projects exist
+    if (collection._needsFeaturedFallback && collection._projectIds.length > 0) {
+      try {
+        const response = await fetchFromTinybird<ProjectInsightsTinybird[]>(
+          '/v0/pipes/project_insights.json',
+          {
+            ids: collection._projectIds,
+            orderByField: 'contributorCount',
+            orderByDirection: 'desc',
+            pageSize: 5,
+            page: 0,
+          },
+        );
+
+        collection.featuredProjects = response.data.map((p) => ({
+          name: p.name,
+          slug: p.slug,
+          logo: p.logoUrl,
+        }));
+      } catch (error) {
+        console.error('Error fetching featured projects from Tinybird:', error);
+      }
+    }
+
+    const { _needsFeaturedFallback, _projectIds, ...result } = collection;
+
+    return result as unknown as Collection;
   } catch (error: unknown) {
     if (error && typeof error === 'object' && 'statusCode' in error) {
       throw error;

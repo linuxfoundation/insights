@@ -296,7 +296,7 @@ export class CommunityCollectionRepository {
     const collectionIds = collections.map((r: { id: string }) => r.id);
     const [projectsResult, likeCountResult] = await Promise.all([
       this.pool.query(
-        `SELECT cip."collectionId", cip."insightsProjectId",
+        `SELECT cip."collectionId", cip."insightsProjectId", cip.starred,
                 ip.name, ip.slug, ip."logoUrl"
          FROM "collectionsInsightsProjects" cip
          LEFT JOIN "insightsProjects" ip ON ip.id = cip."insightsProjectId"
@@ -314,7 +314,7 @@ export class CommunityCollectionRepository {
 
     const projectsByCollection = new Map<
       string,
-      { id: string; name: string; slug: string; logoUrl: string }[]
+      { id: string; name: string; slug: string; logoUrl: string; starred: boolean }[]
     >();
     for (const row of projectsResult.rows) {
       const list = projectsByCollection.get(row.collectionId) || [];
@@ -323,6 +323,7 @@ export class CommunityCollectionRepository {
         name: row.name,
         slug: row.slug,
         logoUrl: row.logoUrl,
+        starred: row.starred,
       });
       projectsByCollection.set(row.collectionId, list);
     }
@@ -334,25 +335,33 @@ export class CommunityCollectionRepository {
 
     return {
       data: collections.map(
-        (c: CommunityCollection & { ownerName?: string; ownerLogo?: string }) => ({
-          ...c,
-          ownerName: undefined,
-          ownerLogo: undefined,
-          projects: (projectsByCollection.get(c.id) || []).map((p) => p.id),
-          projectCount: (projectsByCollection.get(c.id) || []).length,
-          featuredProjects: (projectsByCollection.get(c.id) || []).slice(0, 5).map((p) => ({
-            name: p.name,
-            slug: p.slug,
-            logo: p.logoUrl,
-          })),
-          owner: c.ownerName
-            ? {
-                name: c.ownerName,
-                logo: c.ownerLogo || '',
-              }
-            : undefined,
-          likeCount: likeCountByCollection.get(c.id) || 0,
-        }),
+        (c: CommunityCollection & { ownerName?: string; ownerLogo?: string }) => {
+          const allProjects = projectsByCollection.get(c.id) || [];
+          const starredProjects = allProjects.filter((p) => p.starred);
+
+          return {
+            ...c,
+            ownerName: undefined,
+            ownerLogo: undefined,
+            projects: allProjects.map((p) => p.id),
+            projectCount: allProjects.length,
+            featuredProjects: starredProjects.slice(0, 5).map((p) => ({
+              name: p.name,
+              slug: p.slug,
+              logo: p.logoUrl,
+            })),
+            // Project IDs for collections that need Tinybird fallback for featured projects
+            _needsFeaturedFallback: starredProjects.length === 0 && allProjects.length > 0,
+            _projectIds: starredProjects.length === 0 ? allProjects.map((p) => p.id) : [],
+            owner: c.ownerName
+              ? {
+                  name: c.ownerName,
+                  logo: c.ownerLogo || '',
+                }
+              : undefined,
+            likeCount: likeCountByCollection.get(c.id) || 0,
+          };
+        },
       ),
       total,
     };
@@ -362,6 +371,8 @@ export class CommunityCollectionRepository {
     | (CommunityCollection & {
         projectCount: number;
         featuredProjects: { name: string; slug: string; logo: string }[];
+        _needsFeaturedFallback: boolean;
+        _projectIds: string[];
       })
     | null
   > {
@@ -381,7 +392,7 @@ export class CommunityCollectionRepository {
 
     const [projectsResult, likeCountResult] = await Promise.all([
       this.pool.query(
-        `SELECT cip."insightsProjectId",
+        `SELECT cip."insightsProjectId", cip.starred,
                 ip.name, ip.slug, ip."logoUrl"
          FROM "collectionsInsightsProjects" cip
          LEFT JOIN "insightsProjects" ip ON ip.id = cip."insightsProjectId"
@@ -396,19 +407,29 @@ export class CommunityCollectionRepository {
       ),
     ]);
 
+    const allProjects = projectsResult.rows;
+    const starredProjects = allProjects.filter((r: { starred: boolean }) => r.starred);
+    const featuredSource = starredProjects.length > 0 ? starredProjects : [];
+
     return {
       ...collection,
       ownerName: undefined,
       ownerLogo: undefined,
-      projects: projectsResult.rows.map((r: { insightsProjectId: string }) => r.insightsProjectId),
-      projectCount: projectsResult.rows.length,
-      featuredProjects: projectsResult.rows
+      projects: allProjects.map((r: { insightsProjectId: string }) => r.insightsProjectId),
+      projectCount: allProjects.length,
+      featuredProjects: featuredSource
         .slice(0, 5)
         .map((r: { name: string; slug: string; logoUrl: string }) => ({
           name: r.name,
           slug: r.slug,
           logo: r.logoUrl,
         })),
+      // When no starred projects, the caller should fetch from Tinybird
+      _needsFeaturedFallback: starredProjects.length === 0 && allProjects.length > 0,
+      _projectIds:
+        starredProjects.length === 0
+          ? allProjects.map((r: { insightsProjectId: string }) => r.insightsProjectId)
+          : [],
       owner: collection.ownerName
         ? {
             name: collection.ownerName,

@@ -3,8 +3,10 @@
 import type { Pool } from 'pg';
 import type { Pagination } from '~~/types/shared/pagination';
 import type { Collection } from '~~/types/collection';
+import type { ProjectInsightsTinybird } from '~~/types/project';
 import { useRuntimeConfig } from '#imports';
 import { CommunityCollectionRepository } from '~~/server/repo/communityCollection.repo';
+import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
 
 /**
  * API Endpoint: /api/collection
@@ -75,7 +77,10 @@ export default defineEventHandler(async (event): Promise<Pagination<Collection> 
           orderByDirection,
         });
 
-    let data = result.data as unknown as Collection[];
+    let data = result.data as unknown as (Collection & {
+      _needsFeaturedFallback?: boolean;
+      _projectIds?: string[];
+    })[];
 
     // NOTE: This is a temporary workaround to highlight one of the featured collections
     // TODO: Remove this once we have a more permanent solution
@@ -98,11 +103,61 @@ export default defineEventHandler(async (event): Promise<Pagination<Collection> 
       data = data.slice(0, pageSize);
     }
 
+    // Fetch featured projects from Tinybird for collections without starred projects
+    const collectionsNeedingFallback = data.filter((c) => c._needsFeaturedFallback);
+    if (collectionsNeedingFallback.length > 0) {
+      // Collect all unique project IDs across all collections needing fallback
+      const allProjectIds = [
+        ...new Set(collectionsNeedingFallback.flatMap((c) => c._projectIds || [])),
+      ];
+
+      if (allProjectIds.length > 0) {
+        try {
+          const response = await fetchFromTinybird<ProjectInsightsTinybird[]>(
+            '/v0/pipes/project_insights.json',
+            {
+              ids: allProjectIds,
+              orderByField: 'contributorCount',
+              orderByDirection: 'desc',
+              pageSize: allProjectIds.length,
+              page: 0,
+            },
+          );
+
+          // Tinybird returns projects sorted by contributorCount desc
+          const tinybirdProjects = response.data.map((p) => ({
+            id: p.id,
+            name: p.name,
+            slug: p.slug,
+            logo: p.logoUrl,
+          }));
+
+          for (const collection of collectionsNeedingFallback) {
+            const projectIdSet = new Set(collection._projectIds || []);
+            // Filter to this collection's projects, preserving Tinybird sort order
+            const featured = tinybirdProjects
+              .filter((p) => projectIdSet.has(p.id))
+              .slice(0, 5)
+              .map(({ name, slug, logo }) => ({ name, slug, logo }));
+
+            collection.featuredProjects = featured;
+          }
+        } catch (error) {
+          console.error('Error fetching featured projects from Tinybird:', error);
+        }
+      }
+    }
+
+    // Clean up internal fields before returning
+    const cleanData: Collection[] = data.map(
+      ({ _needsFeaturedFallback, _projectIds, ...rest }) => rest as Collection,
+    );
+
     return {
       page,
       pageSize,
       total: result.total,
-      data,
+      data: cleanData,
     };
   } catch (error) {
     console.error('Error fetching collections from DB:', error);
