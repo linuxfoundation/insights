@@ -3,12 +3,15 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="flex flex-col gap-10 container pt-6 pb-10 gap-10">
+  <div
+    class="flex flex-col gap-10 container pt-6 gap-10"
+    :class="!props.isScrolledState ? 'pb-0' : 'pb-10 '"
+  >
     <div class="flex items-center justify-between w-full pb-6 border-b border-neutral-200">
       <div class="flex items-center gap-2">
         <!-- TODO: change this to the correct route when we have the discovery page -->
         <nuxt-link
-          :to="{ name: LfxRoutes.EXPLORE }"
+          :to="{ name: isLfInsightsTeamMember ? LfxRoutes.COLLECTIONS : LfxRoutes.EXPLORE }"
           class="ease-linear transition-all"
         >
           <lfx-icon-button
@@ -40,11 +43,23 @@ SPDX-License-Identifier: MIT
           </template>
         </lfx-menu-button>
       </div>
-      <div>
-        <lf-create-collection-button />
+      <div class="flex items-center gap-4">
+        <div v-if="!props.isScrolledState">
+          <lfx-collection-list-controls
+            v-if="!props.isEmpty || props.isLoading"
+            :sort="props.sort"
+            :view="props.view"
+            @update:sort="emit('update:sort', $event)"
+            @update:view="emit('update:view', $event)"
+          />
+        </div>
+        <lf-create-collection-button @created="handleCreated" />
       </div>
     </div>
-    <div class="flex justify-between items-start">
+    <div
+      v-if="props.isScrolledState"
+      class="flex justify-between items-start"
+    >
       <div class="flex flex-col gap-1">
         <h1 class="text-4xl font-secondary font-light">
           {{ title }}
@@ -54,56 +69,13 @@ SPDX-License-Identifier: MIT
         </p>
       </div>
 
-      <div class="flex items-center gap-4">
-        <lfx-dropdown-select
-          v-model="sortValue"
-          width="20rem"
-          placement="bottom-end"
-          @update:model-value="emit('update:sort', $event)"
-        >
-          <template #trigger="{ selectedOption }">
-            <lfx-dropdown-selector>
-              <lfx-icon
-                name="arrow-down-wide-short"
-                :size="16"
-              />
-              <span class="hidden sm:inline">{{ selectedOption.label }}</span>
-            </lfx-dropdown-selector>
-          </template>
-
-          <lfx-dropdown-item
-            value="starred_desc"
-            label="Featured"
-          />
-          <lfx-dropdown-item
-            value="contributorCount_desc"
-            label="Most contributors"
-          />
-          <lfx-dropdown-item
-            value="projectCount_desc"
-            label="Most projects"
-          />
-          <lfx-dropdown-item
-            value="name_asc"
-            label="Alphabetically"
-          />
-        </lfx-dropdown-select>
-
-        <div>
-          <lfx-tabs
-            :tabs="viewTabs"
-            tab-style="pill"
-            :model-value="props.view"
-            @update:model-value="emit('update:view', $event)"
-          >
-            <template #slotItem="{ option }">
-              <div class="py-1">
-                <lfx-icon :name="option.icon!" />
-              </div>
-            </template>
-          </lfx-tabs>
-        </div>
-      </div>
+      <lfx-collection-list-controls
+        v-if="!props.isEmpty || props.isLoading"
+        :sort="props.sort"
+        :view="props.view"
+        @update:sort="emit('update:sort', $event)"
+        @update:view="emit('update:view', $event)"
+      />
     </div>
   </div>
 </template>
@@ -114,17 +86,15 @@ import { useRoute } from 'nuxt/app';
 import { storeToRefs } from 'pinia';
 import { collectionTabs } from '../../config/collection-type-config';
 import LfCreateCollectionButton from '../../components/create-modal/create-button.vue';
+import LfxCollectionListControls from './collection-list-controls.vue';
 import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
 import type { CollectionType } from '~~/types/collection';
 import LfxMenuButton from '~/components/uikit/menu-button/menu-button.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
-import LfxDropdownSelect from '~/components/uikit/dropdown/dropdown-select.vue';
-import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
-import LfxDropdownSelector from '~/components/uikit/dropdown/dropdown-selector.vue';
-import LfxTabs from '~/components/uikit/tabs/tabs.vue';
 import { LfxRoutes } from '~/components/shared/types/routes';
 // TODO: remove this once we have everything done and tested
 import { useAuthStore } from '~/components/modules/auth/store/auth.store';
+import type { CreateCollectionForm } from '~/components/modules/collection/config/create-collection.config';
 
 const authStore = useAuthStore();
 const { user } = storeToRefs(authStore);
@@ -133,27 +103,26 @@ const props = defineProps<{
   type?: CollectionType;
   sort: string;
   view: string;
+  isEmpty: boolean;
+  isScrolledState: boolean;
+  isLoading: boolean;
 }>();
 const emit = defineEmits<{
   (e: 'update:sort', value: string): void;
   (e: 'update:view', value: string): void;
+  (e: 'created', form: CreateCollectionForm): void;
 }>();
-
-const sortValue = computed({
-  get: () => props.sort,
-  set: (value: string) => emit('update:sort', value),
-});
 
 const route = useRoute();
 const linkUrl = computed(() => collectionTabs(user.value));
-
-const viewTabs = [
-  { label: '', value: 'grid', icon: 'grid-2' },
-  { label: '', value: 'list', icon: 'list-ul' },
-];
+const isLfInsightsTeamMember = computed(() => user.value?.isLfInsightsTeamMember || false);
 
 const title = computed(() => linkUrl.value.find((tab) => tab.type === props.type)?.detailsLabel || '');
 const description = computed(() => linkUrl.value.find((tab) => tab.type === props.type)?.description || '');
+
+const handleCreated = (form: CreateCollectionForm) => {
+  emit('created', form);
+};
 </script>
 
 <script lang="ts">

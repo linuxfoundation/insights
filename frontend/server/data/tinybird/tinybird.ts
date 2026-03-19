@@ -107,11 +107,21 @@ export async function fetchFromTinybird<T>(
       .map(([key, value]) => [
         key,
         value instanceof DateTime ? formatDateForTinyBird(value) : value,
-      ])
-      .map(([key, value]) => [key, Array.isArray(value) ? value.join(',') : value]),
+      ]),
   );
 
-  const params = new URLSearchParams(processedQuery as Record<string, string>).toString();
+  const paramParts: string[] = [];
+  for (const [key, value] of Object.entries(processedQuery)) {
+    // Arrays need raw commas (not URL-encoded) for Tinybird Array() parameters
+    if (Array.isArray(value)) {
+      paramParts.push(
+        `${encodeURIComponent(key)}=${value.map((v) => encodeURIComponent(String(v))).join(',')}`,
+      );
+    } else {
+      paramParts.push(`${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`);
+    }
+  }
+  const params = paramParts.join('&');
   const url = params ? `${tinybirdBaseUrl}${path}?${params}` : `${tinybirdBaseUrl}${path}`;
 
   const data: TinybirdResponse<T> = await ofetch(url, {

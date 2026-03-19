@@ -244,7 +244,7 @@ export const likedCollectionsMock: Collection[] = [
     projectCount: 10,
     featuredProjects: [],
     updatedAt: '2025-02-01',
-    coverImgUrl: 'https://via.placeholder.com/384x120/1e3a5f/ffffff?text=Agentic+AI',
+    imageUrl: 'https://via.placeholder.com/384x120/1e3a5f/ffffff?text=Agentic+AI',
   },
   {
     id: 'liked-2',

@@ -107,6 +107,7 @@ export interface ProjectInsightsTinybird {
   slug: string;
   logoUrl: string;
   isLF: number;
+  status: string;
   contributorCount: number;
   organizationCount: number;
   softwareValue: number;
@@ -116,6 +117,10 @@ export interface ProjectInsightsTinybird {
   organizationDependencyPercentage: number;
   achievements: [string, number, number][];
   healthScore: number;
+  contributorHealthScore: number;
+  popularityHealthScore: number;
+  developmentHealthScore: number;
+  securityHealthScore: number;
   firstCommit: string;
   starsLast365Days: number;
   forksLast365Days: number;
@@ -133,6 +138,7 @@ export interface ProjectInsights {
   slug: string;
   logoUrl: string;
   isLF: boolean;
+  status: string;
   contributorCount: number;
   organizationCount: number;
   softwareValue: number;
@@ -142,6 +148,10 @@ export interface ProjectInsights {
   organizationDependencyPercentage: number;
   achievements: ProjectInsightsAchievement[];
   healthScore: number;
+  contributorHealthScore: number;
+  popularityHealthScore: number;
+  developmentHealthScore: number;
+  securityHealthScore: number;
   firstCommit: string;
   starsLast365Days: number;
   forksLast365Days: number;

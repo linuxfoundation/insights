@@ -24,6 +24,7 @@ SPDX-License-Identifier: MIT
       <lfx-button
         type="tertiary"
         button-style="pill"
+        :disabled="loading"
         @click="$emit('cancel')"
       >
         Cancel
@@ -40,10 +41,15 @@ SPDX-License-Identifier: MIT
       <lfx-button
         v-else
         button-style="pill"
-        :disabled="!canProceed"
+        :disabled="!canProceed || loading"
         @click="$emit('submit')"
       >
-        Create collection
+        <lfx-icon
+          v-if="loading"
+          name="loader-circle"
+          class="animate-spin"
+        />
+        {{ loading ? 'Creating...' : 'Create collection' }}
       </lfx-button>
     </div>
   </div>
@@ -58,6 +64,7 @@ import { createCollectionSteps } from '~/components/modules/collection/config/cr
 const props = defineProps<{
   step: number;
   canProceed: boolean;
+  loading?: boolean;
 }>();
 
 defineEmits<{
