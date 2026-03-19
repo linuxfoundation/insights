@@ -108,7 +108,7 @@ class CollectionsApiService {
     return nextPage < totalPages ? nextPage : null;
   }
 
-  fetchCollections(params: ComputedRef<QueryParams>, user?: User | null) {
+  fetchCollections(params: ComputedRef<QueryParams>) {
     const queryKey = computed(() => [
       TanstackKey.COLLECTIONS,
       params.value.sort,
@@ -118,8 +118,6 @@ class CollectionsApiService {
       params.value.search,
       params.value.page,
     ]);
-
-    const isEnabled = params.value.type !== 'my-collections' ? true : !!user;
 
     const queryFn = this.fetchCollectionsQueryFn(() => ({
       ...params.value,
@@ -136,7 +134,6 @@ class CollectionsApiService {
       queryFn,
       getNextPageParam: this.getNextPageCollectionsParam,
       initialPageParam: 0,
-      enabled: isEnabled,
     });
   }
 
