@@ -12,7 +12,7 @@ The [Discover Collections](https://insights.linuxfoundation.org/collection) page
 
 From there you can navigate to three dedicated sections:
 
-- [Curated Collections](https://insights.linuxfoundation.org/collection/curated): full listing of all Linux Foundation–curated collections, sorted by Feature collections by default.
+- [Curated Collections](https://insights.linuxfoundation.org/collection/curated): full listing of all Linux Foundation–curated collections, sorted by Featured collections by default.
 - [Community Collections](https://insights.linuxfoundation.org/collection/community): full listing of all public community-created collections.
 - [My Collections](https://insights.linuxfoundation.org/collection/my-collections): your personal hub, requires login.
 
