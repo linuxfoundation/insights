@@ -17,7 +17,7 @@ SPDX-License-Identifier: MIT
         :is-loading="isPending || isFetchingNextPage"
         @update:sort="updateSort"
         @update:view="updateView"
-        @created="handleCreated"
+        @created="refreshList"
       />
     </div>
   </div>
@@ -35,6 +35,7 @@ SPDX-License-Identifier: MIT
             :collection="collection"
             :show-like-count="props.type !== 'my-collections'"
             :variant="props.type"
+            @updated="refreshList"
           />
         </template>
         <template v-else>
@@ -43,6 +44,7 @@ SPDX-License-Identifier: MIT
             :key="collection.slug"
             :collection="collection"
             :variant="props.type"
+            @deleted="refreshList"
           />
         </template>
       </div>
@@ -65,7 +67,10 @@ SPDX-License-Identifier: MIT
         </template>
       </div>
 
-      <lfx-collections-empty v-if="flatData.length === 0 && isSuccess" />
+      <lfx-collections-empty
+        v-if="flatData.length === 0 && isSuccess"
+        @created="refreshList"
+      />
     </div>
   </section>
 
@@ -186,7 +191,7 @@ const updateSort = (value: string) => {
   };
 };
 
-const handleCreated = () => {
+const refreshList = () => {
   refetch();
 };
 

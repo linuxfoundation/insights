@@ -17,13 +17,24 @@ SPDX-License-Identifier: MIT
         Start building your first collection of open source projects and share it with the community.
       </p>
     </div>
-    <lfx-create-collection-button type="ghost" />
+    <lfx-create-collection-button
+      type="ghost"
+      @created="handleCreated"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxCreateCollectionButton from '~/components/modules/collection/components/create-modal/create-button.vue';
+
+const emit = defineEmits<{
+  created: [];
+}>();
+
+const handleCreated = () => {
+  emit('created');
+};
 </script>
 
 <script lang="ts">

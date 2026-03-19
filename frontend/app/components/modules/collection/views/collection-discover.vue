@@ -56,6 +56,7 @@ SPDX-License-Identifier: MIT
             :error="communityError"
             error-message="Error fetching community collections"
             :is-empty="isCommunityEmpty"
+            @created="refetchCommunityCollections"
           >
             <lfx-collection-card
               v-for="collection in communityCollections"
@@ -75,6 +76,7 @@ SPDX-License-Identifier: MIT
               :error="myCollectionsError"
               error-message="Error fetching your collections"
               :is-empty="isMyCollectionsEmpty"
+              @created="refetchMyCollections"
             >
               <lfx-collection-card
                 v-for="collection in myCollections"

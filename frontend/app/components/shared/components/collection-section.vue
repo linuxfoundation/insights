@@ -45,11 +45,14 @@ SPDX-License-Identifier: MIT
         />
       </template>
       <template v-else-if="status === 'success'">
-        <lfx-collections-empty v-if="props.isEmpty" />
+        <lfx-collections-empty
+          v-if="props.isEmpty"
+          @created="handleCreated"
+        />
         <slot v-else />
       </template>
       <template v-else-if="status === 'error'">
-        <lfx-collections-empty />
+        <lfx-collections-empty @created="handleCreated" />
       </template>
     </div>
   </section>
@@ -88,6 +91,9 @@ const props = withDefaults(
   },
 );
 
+const emit = defineEmits<{
+  created: [];
+}>();
 const allTabs = computed(() => collectionTabs(user.value));
 const currentTab = computed(() => allTabs.value.find((tab) => tab.type === props.type));
 
@@ -103,6 +109,10 @@ const gridClasses = computed(() => {
   }
   return 'mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6';
 });
+
+const handleCreated = () => {
+  emit('created');
+};
 
 watch(
   () => props.error,
