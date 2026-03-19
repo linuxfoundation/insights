@@ -5,6 +5,7 @@ import { CollectionLikeRepository } from '~~/server/repo/collectionLike.repo';
 import { InsightsSsoUserRepository } from '~~/server/repo/insightsSsoUser.repo';
 import type { DecodedOidcToken } from '~~/types/auth/auth-jwt.types';
 import { getAuthUsername } from '~~/server/utils/common';
+import { invalidateRouteCache } from '~~/server/utils/cache';
 
 /**
  * API Endpoint: DELETE /api/collection/like
@@ -50,6 +51,9 @@ export default defineEventHandler(async (event): Promise<{ success: boolean } | 
 
     const repo = new CollectionLikeRepository(cmDbPool);
     await repo.unlike(body.collectionId.trim(), ssoUser.id);
+
+    // Invalidate cached collection endpoints so like counts are fresh
+    await invalidateRouteCache(['collection']);
 
     return { success: true };
   } catch (error: unknown) {

@@ -196,12 +196,36 @@ export class CommunityCollectionRepository {
     type?: string;
     orderByField?: string;
     orderByDirection?: string;
+    ids?: string[];
+    excludeIds?: string[];
   }): Promise<{ data: CommunityCollection[]; total: number }> {
-    const { page, pageSize, search, categoryIds, type, orderByField, orderByDirection } = options;
+    const {
+      page,
+      pageSize,
+      search,
+      categoryIds,
+      type,
+      orderByField,
+      orderByDirection,
+      ids,
+      excludeIds,
+    } = options;
 
     const conditions: string[] = ['c."deletedAt" IS NULL', 'c."isPrivate" = false'];
     const params: unknown[] = [];
     let paramIndex = 1;
+
+    if (ids && ids.length > 0) {
+      conditions.push(`c.id = ANY($${paramIndex})`);
+      params.push(ids);
+      paramIndex++;
+    }
+
+    if (excludeIds && excludeIds.length > 0) {
+      conditions.push(`c.id != ALL($${paramIndex})`);
+      params.push(excludeIds);
+      paramIndex++;
+    }
 
     if (search) {
       conditions.push(`c.name ILIKE $${paramIndex}`);
@@ -224,15 +248,29 @@ export class CommunityCollectionRepository {
 
     const where = conditions.join(' AND ');
 
+    const orderDir = orderByDirection?.toUpperCase() === 'DESC' ? 'DESC' : 'ASC';
+
+    // Computed sort fields require subqueries
+    const computedOrderFields: Record<string, string> = {
+      projectCount: `(SELECT COUNT(*) FROM "collectionsInsightsProjects" cip WHERE cip."collectionId" = c.id AND cip."deletedAt" IS NULL)`,
+      likeCount: `(SELECT COUNT(*) FROM "collectionLikes" cl WHERE cl."collectionId" = c.id AND cl."deletedAt" IS NULL)`,
+    };
+
     const allowedOrderFields: Record<string, string> = {
       name: 'c.name',
       starred: 'c.starred',
       createdAt: 'c."createdAt"',
     };
-    const orderField = allowedOrderFields[orderByField || 'name'] || 'c.name';
-    const orderDir = orderByDirection?.toUpperCase() === 'DESC' ? 'DESC' : 'ASC';
-    const orderClause =
-      orderByField === 'starred' ? `c.starred DESC, c.name ASC` : `${orderField} ${orderDir}`;
+
+    let orderClause: string;
+    if (orderByField === 'starred') {
+      orderClause = `c.starred DESC, c.name ASC`;
+    } else if (computedOrderFields[orderByField || '']) {
+      orderClause = `${computedOrderFields[orderByField!]} ${orderDir}`;
+    } else {
+      const orderField = allowedOrderFields[orderByField || 'name'] || 'c.name';
+      orderClause = `${orderField} ${orderDir}`;
+    }
 
     const offset = page * pageSize;
 
@@ -331,7 +369,7 @@ export class CommunityCollectionRepository {
       `SELECT c.*, u."displayName" AS "ownerName", u."avatarUrl" AS "ownerLogo"
        FROM collections c
        LEFT JOIN "insightsSsoUsers" u ON u.id = c."ssoUserId"
-       WHERE c.slug = $1 AND c."deletedAt" IS NULL AND c."isPrivate" = false`,
+       WHERE c.slug = $1 AND c."deletedAt" IS NULL`,
       [slug],
     );
 
@@ -408,23 +446,70 @@ export class CommunityCollectionRepository {
 
     const collectionIds = collectionsResult.rows.map((r: { id: string }) => r.id);
     const projectsResult = await this.pool.query(
-      `SELECT "collectionId", "insightsProjectId" FROM "collectionsInsightsProjects" WHERE "collectionId" = ANY($1) AND "deletedAt" IS NULL`,
+      `SELECT cip."collectionId", cip."insightsProjectId",
+              ip.name, ip.slug, ip."logoUrl"
+       FROM "collectionsInsightsProjects" cip
+       LEFT JOIN "insightsProjects" ip ON ip.id = cip."insightsProjectId"
+       WHERE cip."collectionId" = ANY($1) AND cip."deletedAt" IS NULL LIMIT 5`,
       [collectionIds],
     );
 
-    const projectsByCollection = new Map<string, string[]>();
+    const projectsByCollection = new Map<
+      string,
+      { id: string; name: string; slug: string; logoUrl: string }[]
+    >();
     for (const row of projectsResult.rows) {
       const list = projectsByCollection.get(row.collectionId) || [];
-      list.push(row.insightsProjectId);
+      list.push({
+        id: row.insightsProjectId,
+        name: row.name,
+        slug: row.slug,
+        logoUrl: row.logoUrl,
+      });
       projectsByCollection.set(row.collectionId, list);
     }
 
     return {
       data: collectionsResult.rows.map((c: CommunityCollection) => ({
         ...c,
-        projects: projectsByCollection.get(c.id) || [],
+        projects: (projectsByCollection.get(c.id) || []).map((p) => p.id),
+        projectCount: (projectsByCollection.get(c.id) || []).length,
+        featuredProjects: (projectsByCollection.get(c.id) || []).slice(0, 5).map((p) => ({
+          name: p.name,
+          slug: p.slug,
+          logo: p.logoUrl,
+        })),
       })),
       total,
+    };
+  }
+
+  async findProjectIdsBySlug(
+    slug: string,
+  ): Promise<{ collectionId: string; projectIds: string[] } | null> {
+    const collectionResult = await this.pool.query(
+      `SELECT c.id FROM collections c
+       WHERE c.slug = $1 AND c."deletedAt" IS NULL`,
+      [slug],
+    );
+
+    if (collectionResult.rows.length === 0) {
+      return null;
+    }
+
+    const collectionId = collectionResult.rows[0].id;
+
+    const projectsResult = await this.pool.query(
+      `SELECT "insightsProjectId" FROM "collectionsInsightsProjects"
+       WHERE "collectionId" = $1 AND "deletedAt" IS NULL`,
+      [collectionId],
+    );
+
+    return {
+      collectionId,
+      projectIds: projectsResult.rows.map(
+        (r: { insightsProjectId: string }) => r.insightsProjectId,
+      ),
     };
   }
 

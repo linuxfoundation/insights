@@ -10,16 +10,16 @@ SPDX-License-Identifier: MIT
         <!-- Icon -->
         <div class="size-12 rounded-full bg-accent-100 flex items-center justify-center">
           <lfx-icon
-            name="rectangle-history-circle-plus"
+            :name="iconName"
             :size="24"
             class="col-1 row-1 text-accent-500 m-auto"
           />
         </div>
         <!-- Title and description -->
         <div class="flex flex-col gap-1">
-          <h2 class="text-xl font-bold font-secondary leading-7 text-neutral-900">Create collection</h2>
+          <h2 class="text-xl font-bold font-secondary leading-7 text-neutral-900">{{ title }}</h2>
           <p class="text-xs font-normal leading-4 text-neutral-500">
-            Create your own collection to organize or showcase open-source projects around a specific theme or purpose.
+            {{ description }}
           </p>
         </div>
       </div>
@@ -47,15 +47,33 @@ SPDX-License-Identifier: MIT
 import { computed } from 'vue';
 import { createCollectionSteps } from '~/components/modules/collection/config/create-collection.config';
 
-const props = defineProps<{
-  step: number;
-}>();
+const props = withDefaults(
+  defineProps<{
+    step: number;
+    isDuplicateMode?: boolean;
+    sourceCollectionName?: string;
+  }>(),
+  {
+    isDuplicateMode: false,
+    sourceCollectionName: undefined,
+  },
+);
 
 defineEmits<{
   close: [];
 }>();
 
 const totalSteps = computed(() => createCollectionSteps.length);
+
+const title = computed(() => (props.isDuplicateMode ? 'Duplicate collection' : 'Create collection'));
+
+const description = computed(() =>
+  props.isDuplicateMode
+    ? `Create your own collection based on ${props.sourceCollectionName || 'the selected collection'}.`
+    : 'Create your own collection to organize or showcase open-source projects around a specific theme or purpose.',
+);
+
+const iconName = computed(() => (props.isDuplicateMode ? 'clone' : 'rectangle-history-circle-plus'));
 
 const getProgressBarClass = (index: number) => {
   if (index < props.step) {

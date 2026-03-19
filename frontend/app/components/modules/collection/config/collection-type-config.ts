@@ -53,22 +53,22 @@ export const collectionTabs = (user: User | null): CollectionTypesTabs[] => {
   return tabs;
 };
 
-export const headerBackground = (type?: CollectionType) => {
+// This only applies to the collection details page header
+export const headerBackground = (type?: CollectionType, curatedColor?: string | null) => {
   switch (type) {
     case 'curated':
       return {
-        background:
-          'linear-gradient(0deg, rgba(15, 23, 43, 0.00) 0%, rgba(15, 23, 43, 0.05) 100%), var(--White, #FFF)',
+        background: curatedColor
+          ? `linear-gradient(0deg, ${curatedColor}00, ${curatedColor}0D), var(--White, #FFF)`
+          : 'linear-gradient(0deg, #0F172B00, #0F172B0D), var(--White, #FFF)',
       };
     case 'community':
       return {
-        background:
-          'linear-gradient(0deg, rgba(0, 154, 255, 0.00) 0%, rgba(0, 154, 255, 0.05) 100%), var(--White, #FFF)',
+        background: 'linear-gradient(0deg, #009AFF00, #009AFF0D), var(--White, #FFF)',
       };
     default:
       return {
-        background:
-          'linear-gradient(0deg, rgba(142, 81, 255, 0.00) 0%, rgba(142, 81, 255, 0.05) 100%), var(--White, #FFF)',
+        background: 'linear-gradient(0deg, #8E51FF00, #8E51FF0D), var(--White, #FFF)',
       };
   }
 };

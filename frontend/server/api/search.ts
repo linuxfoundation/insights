@@ -5,6 +5,7 @@ import type { SearchCollection, SearchProject, SearchRepository } from '~~/types
 import { getRepoNameFromUrl, getRepoSlugFromName } from '~~/server/helpers/repository.helpers';
 
 export interface SearchResponse {
+  id: string;
   type: 'project' | 'repository' | 'collection';
   slug: string;
   logo: string | null;
@@ -62,6 +63,7 @@ export default defineEventHandler(async (event) => {
       res.data.forEach((item) => {
         if (item.type === 'project') {
           projects.push({
+            id: item.id,
             name: item.name as string,
             slug: item.slug,
             logo: item.logo,

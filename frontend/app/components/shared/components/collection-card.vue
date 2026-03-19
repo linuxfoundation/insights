@@ -7,9 +7,9 @@ SPDX-License-Identifier: MIT
     <lfx-card class="!shadow-none !rounded-xl !border-neutral-200 flex flex-col hover:!shadow-md transition h-full">
       <!-- header: cover image for curated collections -->
       <div
-        v-if="props.collection.coverImgUrl && props.variant === 'curated'"
+        v-if="props.collection.imageUrl && props.variant === 'curated'"
         class="flex items-center gap-2 h-[120px] rounded-t-xl bg-cover bg-center"
-        :style="{ backgroundImage: `url(${props.collection.coverImgUrl})` }"
+        :style="{ backgroundImage: `url(${props.collection.imageUrl})` }"
       ></div>
       <!-- header: avatar stack for community/my-collections or curated without cover image -->
       <div
@@ -20,21 +20,50 @@ SPDX-License-Identifier: MIT
       >
         <lfx-avatar-group type="project">
           <lfx-avatar
-            v-for="project of props.collection.featuredProjects.slice(0, 5)"
+            v-for="project of collectionProjects"
             :key="project.slug"
             :src="project.logo"
             type="project"
             :aria-label="project.logo && project.name"
           />
         </lfx-avatar-group>
-        <lfx-icon-button
+        <lfx-dropdown
           v-if="props.variant === 'my-collections'"
-          type="transparent"
-          icon="ellipsis"
-          size="small"
-          class="!text-neutral-900"
-          @click.stop.prevent="handleOptionsMenu"
-        />
+          placement="bottom-end"
+        >
+          <template #trigger>
+            <lfx-icon-button
+              icon="ellipsis"
+              size="small"
+              type="transparent"
+              class="!text-neutral-900"
+            />
+          </template>
+          <lfx-dropdown-item @click.stop.prevent="handleEdit">
+            <lfx-icon
+              name="pen"
+              :size="16"
+              class="text-neutral-600"
+            />
+            Edit
+          </lfx-dropdown-item>
+          <lfx-dropdown-item @click.stop.prevent="handleShare">
+            <lfx-icon
+              name="share-nodes"
+              :size="16"
+              class="text-neutral-600"
+            />
+            Share
+          </lfx-dropdown-item>
+          <lfx-dropdown-item @click.stop.prevent="handleDelete">
+            <lfx-icon
+              name="trash"
+              :size="16"
+              class="text-negative-500"
+            />
+            <span class="text-negative-500">Delete</span>
+          </lfx-dropdown-item>
+        </lfx-dropdown>
       </div>
 
       <!-- content -->
@@ -52,24 +81,10 @@ SPDX-License-Identifier: MIT
             v-if="props.variant !== 'my-collections'"
             class="flex items-center gap-2 mb-2"
           >
-            <template v-if="props.variant === 'community' && props.collection.owner?.logo">
-              <lfx-avatar
-                :src="props.collection.owner.logo"
-                type="member"
-                size="small"
-              />
-            </template>
-            <template v-else>
-              <img
-                :src="owner.logo"
-                :alt="owner.name"
-                class="block"
-                loading="lazy"
-                width="12"
-                height="12"
-              />
-            </template>
-            <p class="text-xs leading-4 text-neutral-600">by {{ owner.name }}</p>
+            <collection-owner
+              :collection="props.collection"
+              size="small"
+            />
           </div>
 
           <!-- project count and updated date -->
@@ -80,7 +95,7 @@ SPDX-License-Identifier: MIT
               class="text-neutral-500"
             />
             <p
-              v-if="props.collection.projectCount && props.collection.projectCount > 0"
+              v-if="props.collection"
               class="text-xs leading-4 text-neutral-500"
             >
               {{ props.collection.projectCount }} projects
@@ -115,7 +130,7 @@ SPDX-License-Identifier: MIT
           >
             <lfx-button
               type="transparent"
-              class="opacity-50 hover:!opacity-100 w-1/3 flex justify-center items-center hover:!bg-transparent"
+              class="opacity-50 hover:!opacity-100 flex-1 flex justify-center items-center hover:!bg-transparent"
               @click.stop.prevent="handleShare"
             >
               <lfx-icon
@@ -124,40 +139,23 @@ SPDX-License-Identifier: MIT
                 class="!text-neutral-900"
               />
             </lfx-button>
-            <!-- TODO: Remove this once feature is ready -->
-            <lfx-button
-              v-if="false"
-              type="transparent"
-              class="opacity-50 hover:!opacity-100 w-1/3 flex justify-center items-center hover:!bg-transparent"
-              @click.stop.prevent="handleClone"
-            >
-              <lfx-icon
-                name="clone"
-                :size="16"
-                class="!text-neutral-900"
-              />
-            </lfx-button>
-            <!-- TODO: Remove this once feature is ready -->
-            <lfx-button
-              v-if="false"
-              type="transparent"
-              class="w-1/3 flex justify-center items-center hover:!bg-transparent"
-              :class="props.collection.isLiked ? 'opacity-100' : 'opacity-50 hover:!opacity-100'"
-              @click.stop.prevent="handleLike"
-            >
-              <lfx-icon
-                name="heart"
-                :size="16"
-                :class="props.collection.isLiked ? '!text-negative-500' : 'text-neutral-900'"
-                :type="props.collection.isLiked ? 'solid' : 'light'"
-              />
-              <span
-                v-if="props.collection.likeCount !== undefined"
-                class="text-xs leading-4 text-neutral-900 font-medium"
+            <template v-if="isLfInsightsTeamMember">
+              <lfx-button
+                type="transparent"
+                class="opacity-50 hover:!opacity-100 flex-1 flex justify-center items-center hover:!bg-transparent"
+                @click.stop.prevent="handleClone"
               >
-                {{ props.collection.likeCount }}
-              </span>
-            </lfx-button>
+                <lfx-icon
+                  name="clone"
+                  :size="16"
+                  class="!text-neutral-900"
+                />
+              </lfx-button>
+              <like-button
+                :collection="props.collection"
+                class="flex-1"
+              />
+            </template>
           </div>
         </div>
       </div>
@@ -168,21 +166,35 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useRouter } from 'nuxt/app';
+import { storeToRefs } from 'pinia';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
 import LfxButton from '~/components/uikit/button/button.vue';
 import LfxAvatarGroup from '~/components/uikit/avatar-group/avatar-group.vue';
 import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
+import LfxDropdown from '~/components/uikit/dropdown/dropdown.vue';
+import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
 import { LfxRoutes } from '~/components/shared/types/routes';
 import type { Collection, CollectionType } from '~~/types/collection';
 import { formatDate } from '~/components/shared/utils/formatter';
 import { useShareStore } from '~/components/shared/modules/share/store/share.store';
 import LfxCard from '~/components/uikit/card/card.vue';
-// @ts-expect-error Vite asset import with ?url suffix
-import lfIconUrl from '~/assets/images/icon.svg?url';
+import type { CollectionFeaturedProject } from '~~/types/collection';
+import CollectionOwner from '~/components/shared/components/collection-owner.vue';
+import LikeButton from '~/components/shared/components/like-button.vue';
+import { useEditCollectionStore } from '~/components/modules/collection/store/edit-collection.store';
+import { useDuplicateCollectionStore } from '~/components/modules/collection/store/duplicate-collection.store';
+import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
+import useToastService from '~/components/uikit/toast/toast.service';
+import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
+import { useAuthStore } from '~/components/modules/auth/store/auth.store';
 
 const router = useRouter();
 const { openShareModal } = useShareStore();
+const { openEditModal } = useEditCollectionStore();
+const { openDuplicateModal } = useDuplicateCollectionStore();
+const { showToast } = useToastService();
+const { user } = storeToRefs(useAuthStore());
 
 const props = withDefaults(
   defineProps<{
@@ -194,29 +206,38 @@ const props = withDefaults(
   },
 );
 
+const emit = defineEmits<{
+  deleted: [id: string];
+  updated: [collection: Collection];
+}>();
+
+const isLfInsightsTeamMember = computed(() => user.value?.isLfInsightsTeamMember || false);
+
+// This only applies to the collection card header, in the designs the header gradient seems to be different
+// from the card background gradient for communinity and my collections
 const headerBackground = computed(() => {
-  if (props.collection.gradient) {
-    return {
-      backgroundImage: `linear-gradient(180deg, ${props.collection.gradient[0]}, ${props.collection.gradient[1]})`,
-    };
+  if (props.variant === 'curated') {
+    // curated collections should have an image so we don't need a background
+    // however, if the image is not set, we need to use a default background
+    if (props.collection.imageUrl) {
+      return {};
+    }
+
+    if (props.collection.color) {
+      return {
+        background: `linear-gradient(0deg, ${props.collection.color}00, ${props.collection.color}0D), var(--White, #FFF)`,
+      };
+    }
   }
+
+  // community and my-collections (curated too if no image and no color)
   return {
-    backgroundImage: 'linear-gradient(180deg, rgba(248, 251, 255, 1), rgba(248, 251, 255, 0))',
+    background: 'linear-gradient(0deg, #F8FBFF00, #F8FBFF)',
   };
 });
 
-const owner = computed(() => {
-  if (props.collection.owner) {
-    return {
-      name: props.collection.owner?.name,
-      logo: props.collection.owner?.logo,
-    };
-  }
-
-  return {
-    name: 'The Linux Foundation',
-    logo: lfIconUrl,
-  };
+const collectionProjects = computed<CollectionFeaturedProject[]>(() => {
+  return props.collection.featuredProjects.slice(0, 5);
 });
 
 const handleShare = () => {
@@ -236,15 +257,29 @@ const handleShare = () => {
 };
 
 const handleClone = () => {
-  // TODO: Implement clone functionality
+  openDuplicateModal({
+    collection: props.collection,
+  });
 };
 
-const handleLike = () => {
-  // TODO: Implement like functionality
+const handleEdit = () => {
+  openEditModal({
+    collection: props.collection,
+    onUpdated: (collection: Collection) => {
+      emit('updated', collection);
+    },
+  });
 };
 
-const handleOptionsMenu = () => {
-  // TODO: Implement options menu for my-collections
+const handleDelete = async () => {
+  try {
+    await COLLECTIONS_API_SERVICE.deleteCollection(props.collection.id);
+    showToast('Collection deleted successfully', ToastTypesEnum.positive);
+    emit('deleted', props.collection.id);
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Failed to delete collection';
+    showToast(message, ToastTypesEnum.negative);
+  }
 };
 </script>
 

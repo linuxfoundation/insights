@@ -25,6 +25,8 @@ export interface LikedCollection {
   imageUrl: string | null;
   updatedAt: string;
   projectCount: number;
+  featuredProjects: { name: string; slug: string; logo: string }[];
+  likeCount: number;
   owner: {
     name: string;
     logo: string;
@@ -103,17 +105,42 @@ export class CollectionLikeRepository {
     }
 
     const collectionIds = collectionsResult.rows.map((r: LikedCollectionRow) => r.id);
-    const projectCountResult = await this.pool.query(
-      `SELECT "collectionId", COUNT(*)::int AS count
-       FROM "collectionsInsightsProjects"
-       WHERE "collectionId" = ANY($1) AND "deletedAt" IS NULL
-       GROUP BY "collectionId"`,
-      [collectionIds],
-    );
+    const [projectsResult, likeCountResult] = await Promise.all([
+      this.pool.query(
+        `SELECT cip."collectionId", cip."insightsProjectId",
+                ip.name, ip.slug, ip."logoUrl"
+         FROM "collectionsInsightsProjects" cip
+         JOIN "insightsProjects" ip ON ip.id = cip."insightsProjectId"
+         WHERE cip."collectionId" = ANY($1) AND cip."deletedAt" IS NULL`,
+        [collectionIds],
+      ),
+      this.pool.query(
+        `SELECT "collectionId", COUNT(*)::int AS "likeCount"
+         FROM "collectionLikes"
+         WHERE "collectionId" = ANY($1) AND "deletedAt" IS NULL
+         GROUP BY "collectionId"`,
+        [collectionIds],
+      ),
+    ]);
 
-    const projectCountMap = new Map<string, number>();
-    for (const row of projectCountResult.rows) {
-      projectCountMap.set(row.collectionId, row.count);
+    const projectsByCollection = new Map<
+      string,
+      { id: string; name: string; slug: string; logoUrl: string }[]
+    >();
+    for (const row of projectsResult.rows) {
+      const list = projectsByCollection.get(row.collectionId) || [];
+      list.push({
+        id: row.insightsProjectId,
+        name: row.name,
+        slug: row.slug,
+        logoUrl: row.logoUrl,
+      });
+      projectsByCollection.set(row.collectionId, list);
+    }
+
+    const likeCountByCollection = new Map<string, number>();
+    for (const row of likeCountResult.rows) {
+      likeCountByCollection.set(row.collectionId, row.likeCount);
     }
 
     return {
@@ -126,7 +153,13 @@ export class CollectionLikeRepository {
         color: r.color,
         imageUrl: r.imageUrl,
         updatedAt: r.updatedAt,
-        projectCount: projectCountMap.get(r.id) || 0,
+        projectCount: (projectsByCollection.get(r.id) || []).length,
+        featuredProjects: (projectsByCollection.get(r.id) || []).slice(0, 5).map((p) => ({
+          name: p.name,
+          slug: p.slug,
+          logo: p.logoUrl,
+        })),
+        likeCount: likeCountByCollection.get(r.id) || 0,
         owner: r.ownerName
           ? {
               name: r.ownerName,

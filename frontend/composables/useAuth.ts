@@ -3,6 +3,7 @@
 
 import { ref, computed, watchEffect, watch, nextTick } from 'vue';
 import { useAsyncData, navigateTo, useRoute } from 'nuxt/app';
+import { useCollectionsStore } from '~/components/modules/collection/store/collections.store';
 import type { AuthData } from '~~/types/auth/auth-user.types';
 
 // Fix for window access in Nuxt
@@ -78,6 +79,12 @@ export const useAuth = () => {
       if (userData.value.isAuthenticated) {
         setSilentLoginAttempted(false);
         setWasUserLoggedIn(true);
+
+        // Fetch liked collections when user is authenticated
+        const collectionsStore = useCollectionsStore();
+        if (!collectionsStore.isLikedCollectionsLoaded) {
+          collectionsStore.fetchAndSetLikedCollections();
+        }
       }
     }
   });
@@ -195,6 +202,10 @@ export const useAuth = () => {
           user: null,
           token: null,
         };
+
+        // Clear liked collections
+        const collectionsStore = useCollectionsStore();
+        collectionsStore.clearLikedCollections();
 
         // Redirect to Auth0 logout or home
         if (process.client) {
