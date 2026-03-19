@@ -345,14 +345,12 @@ export class CommunityCollectionRepository {
             ownerLogo: undefined,
             projects: allProjects.map((p) => p.id),
             projectCount: allProjects.length,
-            featuredProjects: starredProjects.slice(0, 5).map((p) => ({
-              name: p.name,
-              slug: p.slug,
-              logo: p.logoUrl,
-            })),
-            // Project IDs for collections that need Tinybird fallback for featured projects
-            _needsFeaturedFallback: starredProjects.length === 0 && allProjects.length > 0,
-            _projectIds: starredProjects.length === 0 ? allProjects.map((p) => p.id) : [],
+            featuredProjects: [],
+            // Project IDs to fetch from Tinybird for sorting by contributorCount
+            _needsTinybirdSort: allProjects.length > 0,
+            _projectIds: (starredProjects.length > 0 ? starredProjects : allProjects).map(
+              (p) => p.id,
+            ),
             owner: c.ownerName
               ? {
                   name: c.ownerName,
@@ -371,7 +369,7 @@ export class CommunityCollectionRepository {
     | (CommunityCollection & {
         projectCount: number;
         featuredProjects: { name: string; slug: string; logo: string }[];
-        _needsFeaturedFallback: boolean;
+        _needsTinybirdSort: boolean;
         _projectIds: string[];
       })
     | null
@@ -409,7 +407,7 @@ export class CommunityCollectionRepository {
 
     const allProjects = projectsResult.rows;
     const starredProjects = allProjects.filter((r: { starred: boolean }) => r.starred);
-    const featuredSource = starredProjects.length > 0 ? starredProjects : [];
+    const featuredSource = starredProjects.length > 0 ? starredProjects : allProjects;
 
     return {
       ...collection,
@@ -417,19 +415,10 @@ export class CommunityCollectionRepository {
       ownerLogo: undefined,
       projects: allProjects.map((r: { insightsProjectId: string }) => r.insightsProjectId),
       projectCount: allProjects.length,
-      featuredProjects: featuredSource
-        .slice(0, 5)
-        .map((r: { name: string; slug: string; logoUrl: string }) => ({
-          name: r.name,
-          slug: r.slug,
-          logo: r.logoUrl,
-        })),
-      // When no starred projects, the caller should fetch from Tinybird
-      _needsFeaturedFallback: starredProjects.length === 0 && allProjects.length > 0,
-      _projectIds:
-        starredProjects.length === 0
-          ? allProjects.map((r: { insightsProjectId: string }) => r.insightsProjectId)
-          : [],
+      featuredProjects: [],
+      // Project IDs to fetch from Tinybird for sorting by contributorCount
+      _needsTinybirdSort: allProjects.length > 0,
+      _projectIds: featuredSource.map((r: { insightsProjectId: string }) => r.insightsProjectId),
       owner: collection.ownerName
         ? {
             name: collection.ownerName,
@@ -500,13 +489,11 @@ export class CommunityCollectionRepository {
           ...c,
           projects: allProjects.map((p) => p.id),
           projectCount: allProjects.length,
-          featuredProjects: starredProjects.slice(0, 5).map((p) => ({
-            name: p.name,
-            slug: p.slug,
-            logo: p.logoUrl,
-          })),
-          _needsFeaturedFallback: starredProjects.length === 0 && allProjects.length > 0,
-          _projectIds: starredProjects.length === 0 ? allProjects.map((p) => p.id) : [],
+          featuredProjects: [],
+          _needsTinybirdSort: allProjects.length > 0,
+          _projectIds: (starredProjects.length > 0 ? starredProjects : allProjects).map(
+            (p) => p.id,
+          ),
         };
       }),
       total,

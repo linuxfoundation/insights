@@ -21,8 +21,7 @@ SPDX-License-Identifier: MIT
             Explore and curate open source projects organized into themed collections.
           </p>
         </div>
-        <!-- TODO: wire the create collection modal here which is part of another PR. Revisit this once that is merged -->
-        <lf-create-collection-button />
+        <lf-create-collection-button @created="handleCollectionCreated" />
       </section>
     </div>
   </lfx-maintain-height>
@@ -154,6 +153,11 @@ const loading = computed(() => {
     curatedStatus.value === 'pending' || communityStatus.value === 'pending' || myCollectionsStatus.value === 'pending'
   );
 });
+
+const handleCollectionCreated = () => {
+  refetchMyCollections();
+  refetchCommunityCollections();
+};
 
 watch(user, () => {
   refetchCommunityCollections();

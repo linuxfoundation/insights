@@ -68,15 +68,15 @@ export default defineEventHandler(
       };
 
       const data = result.data.map((c) => ({ ...c, owner })) as unknown as (Collection & {
-        _needsFeaturedFallback?: boolean;
+        _needsTinybirdSort?: boolean;
         _projectIds?: string[];
       })[];
 
-      // Fetch featured projects from Tinybird for collections without starred projects
-      const collectionsNeedingFallback = data.filter((c) => c._needsFeaturedFallback);
-      if (collectionsNeedingFallback.length > 0) {
+      // Fetch featured projects from Tinybird sorted by contributorCount
+      const collectionsNeedingSort = data.filter((c) => c._needsTinybirdSort);
+      if (collectionsNeedingSort.length > 0) {
         const allProjectIds = [
-          ...new Set(collectionsNeedingFallback.flatMap((c) => c._projectIds || [])),
+          ...new Set(collectionsNeedingSort.flatMap((c) => c._projectIds || [])),
         ];
 
         if (allProjectIds.length > 0) {
@@ -99,7 +99,7 @@ export default defineEventHandler(
               logo: p.logoUrl,
             }));
 
-            for (const collection of collectionsNeedingFallback) {
+            for (const collection of collectionsNeedingSort) {
               const projectIdSet = new Set(collection._projectIds || []);
               collection.featuredProjects = tinybirdProjects
                 .filter((p) => projectIdSet.has(p.id))
@@ -113,7 +113,7 @@ export default defineEventHandler(
       }
 
       // Clean up internal fields before returning
-      const cleanData = data.map(({ _needsFeaturedFallback, _projectIds, ...rest }) => rest);
+      const cleanData = data.map(({ _needsTinybirdSort, _projectIds, ...rest }) => rest);
 
       return {
         page,

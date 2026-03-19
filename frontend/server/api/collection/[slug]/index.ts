@@ -40,8 +40,8 @@ export default defineEventHandler(async (event): Promise<Collection | Error> => 
       throw createError({ statusCode: 404, statusMessage: 'Collection not found' });
     }
 
-    // Fetch featured projects from Tinybird if no starred projects exist
-    if (collection._needsFeaturedFallback && collection._projectIds.length > 0) {
+    // Fetch featured projects from Tinybird sorted by contributorCount
+    if (collection._needsTinybirdSort && collection._projectIds.length > 0) {
       try {
         const response = await fetchFromTinybird<ProjectInsightsTinybird[]>(
           '/v0/pipes/project_insights.json',
@@ -64,7 +64,7 @@ export default defineEventHandler(async (event): Promise<Collection | Error> => 
       }
     }
 
-    const { _needsFeaturedFallback, _projectIds, ...result } = collection;
+    const { _needsTinybirdSort, _projectIds, ...result } = collection;
 
     return result as unknown as Collection;
   } catch (error: unknown) {

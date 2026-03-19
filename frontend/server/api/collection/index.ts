@@ -78,7 +78,7 @@ export default defineEventHandler(async (event): Promise<Pagination<Collection> 
         });
 
     let data = result.data as unknown as (Collection & {
-      _needsFeaturedFallback?: boolean;
+      _needsTinybirdSort?: boolean;
       _projectIds?: string[];
     })[];
 
@@ -103,12 +103,11 @@ export default defineEventHandler(async (event): Promise<Pagination<Collection> 
       data = data.slice(0, pageSize);
     }
 
-    // Fetch featured projects from Tinybird for collections without starred projects
-    const collectionsNeedingFallback = data.filter((c) => c._needsFeaturedFallback);
-    if (collectionsNeedingFallback.length > 0) {
-      // Collect all unique project IDs across all collections needing fallback
+    // Fetch featured projects from Tinybird sorted by contributorCount
+    const collectionsNeedingSort = data.filter((c) => c._needsTinybirdSort);
+    if (collectionsNeedingSort.length > 0) {
       const allProjectIds = [
-        ...new Set(collectionsNeedingFallback.flatMap((c) => c._projectIds || [])),
+        ...new Set(collectionsNeedingSort.flatMap((c) => c._projectIds || [])),
       ];
 
       if (allProjectIds.length > 0) {
@@ -132,15 +131,12 @@ export default defineEventHandler(async (event): Promise<Pagination<Collection> 
             logo: p.logoUrl,
           }));
 
-          for (const collection of collectionsNeedingFallback) {
+          for (const collection of collectionsNeedingSort) {
             const projectIdSet = new Set(collection._projectIds || []);
-            // Filter to this collection's projects, preserving Tinybird sort order
-            const featured = tinybirdProjects
+            collection.featuredProjects = tinybirdProjects
               .filter((p) => projectIdSet.has(p.id))
               .slice(0, 5)
               .map(({ name, slug, logo }) => ({ name, slug, logo }));
-
-            collection.featuredProjects = featured;
           }
         } catch (error) {
           console.error('Error fetching featured projects from Tinybird:', error);
@@ -150,7 +146,7 @@ export default defineEventHandler(async (event): Promise<Pagination<Collection> 
 
     // Clean up internal fields before returning
     const cleanData: Collection[] = data.map(
-      ({ _needsFeaturedFallback, _projectIds, ...rest }) => rest as Collection,
+      ({ _needsTinybirdSort, _projectIds, ...rest }) => rest as Collection,
     );
 
     return {
