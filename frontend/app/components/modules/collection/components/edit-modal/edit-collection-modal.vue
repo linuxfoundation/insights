@@ -223,9 +223,19 @@ const updateCollection = async () => {
     showToast('Collection updated successfully', ToastTypesEnum.positive);
     emit('updated', updated);
     isModalOpen.value = false;
-  } catch (error) {
-    const message = error instanceof Error ? error.message : 'Failed to update collection';
-    showToast(message, ToastTypesEnum.negative);
+  } catch (error: unknown) {
+    const fetchError = error as { statusCode?: number; statusMessage?: string };
+
+    if (fetchError.statusCode === 422) {
+      activeTab.value = 'settings';
+      showToast(
+        fetchError.statusMessage || 'Content violates our guidelines. Please revise and try again.',
+        ToastTypesEnum.negative,
+      );
+    } else {
+      const message = error instanceof Error ? error.message : 'Failed to update collection';
+      showToast(message, ToastTypesEnum.negative);
+    }
   } finally {
     isUpdating.value = false;
   }
