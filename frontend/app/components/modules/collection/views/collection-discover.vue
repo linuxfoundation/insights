@@ -21,8 +21,7 @@ SPDX-License-Identifier: MIT
             Explore and curate open source projects organized into themed collections.
           </p>
         </div>
-        <!-- TODO: wire the create collection modal here which is part of another PR. Revisit this once that is merged -->
-        <lf-create-collection-button />
+        <lf-create-collection-button @created="handleCollectionCreated" />
       </section>
     </div>
   </lfx-maintain-height>
@@ -43,6 +42,7 @@ SPDX-License-Identifier: MIT
             :key="collection.slug"
             :collection="collection"
             variant="curated"
+            @updated="handleCollectionUpdated"
           />
         </lfx-collection-section>
       </section>
@@ -63,6 +63,7 @@ SPDX-License-Identifier: MIT
               :key="collection.slug"
               :collection="collection"
               variant="community"
+              @updated="handleCollectionUpdated"
             />
           </lfx-collection-section>
         </section>
@@ -83,6 +84,7 @@ SPDX-License-Identifier: MIT
                 :key="collection.slug"
                 :collection="collection"
                 variant="my-collections"
+                @updated="handleCollectionUpdated"
               />
             </lfx-collection-section>
           </section>
@@ -120,6 +122,7 @@ const {
   data: curatedData,
   status: curatedStatus,
   error: curatedError,
+  refetch: refetchCuratedCollections,
 } = COLLECTIONS_API_SERVICE.fetchDiscoveryCuratedCollections();
 
 const {
@@ -154,6 +157,17 @@ const loading = computed(() => {
     curatedStatus.value === 'pending' || communityStatus.value === 'pending' || myCollectionsStatus.value === 'pending'
   );
 });
+
+const handleCollectionCreated = () => {
+  refetchMyCollections();
+  refetchCommunityCollections();
+};
+
+const handleCollectionUpdated = () => {
+  refetchCuratedCollections();
+  refetchCommunityCollections();
+  refetchMyCollections();
+};
 
 watch(user, () => {
   refetchCommunityCollections();

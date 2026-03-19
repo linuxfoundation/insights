@@ -68,6 +68,7 @@ SPDX-License-Identifier: MIT
           <like-button
             :collection="props.collection"
             :variant="props.variant"
+            :show-unlike-icon="props.showUnlikeIcon"
             @updated="handleLikeUpdated"
           />
         </div>
@@ -162,10 +163,12 @@ const props = withDefaults(
     collection: Collection;
     showLikeCount?: boolean;
     variant?: CollectionType;
+    showUnlikeIcon?: boolean;
   }>(),
   {
     showLikeCount: false,
     variant: 'curated',
+    showUnlikeIcon: false,
   },
 );
 

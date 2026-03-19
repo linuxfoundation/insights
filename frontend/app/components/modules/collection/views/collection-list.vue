@@ -23,7 +23,7 @@ SPDX-License-Identifier: MIT
   </div>
 
   <section>
-    <div class="container py-3 flex flex-col">
+    <div class="container pt-6 pb-3 flex flex-col">
       <div
         v-if="flatData.length"
         :class="classDisplay"
@@ -45,6 +45,7 @@ SPDX-License-Identifier: MIT
             :collection="collection"
             :variant="props.type"
             @deleted="refreshList"
+            @updated="refreshList"
           />
         </template>
       </div>
@@ -52,6 +53,7 @@ SPDX-License-Identifier: MIT
       <div
         v-if="isPending || isFetchingNextPage"
         :class="classDisplay"
+        class="pt-6"
       >
         <template v-if="view === 'list'">
           <lfx-collection-list-item-loading

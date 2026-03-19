@@ -16,7 +16,7 @@ SPDX-License-Identifier: MIT
       @click.stop.prevent="handleLike"
     >
       <lfx-icon
-        v-if="variant === 'my-collections'"
+        v-if="variant === 'my-collections' || (showUnlikeIcon && isLiked)"
         :name="isLiked ? 'heart-slash' : 'heart'"
         :size="16"
         :class="'text-neutral-900'"
@@ -67,11 +67,13 @@ const props = withDefaults(
     buttonType?: ButtonType;
     variant?: CollectionType;
     size?: ButtonSize;
+    showUnlikeIcon?: boolean;
   }>(),
   {
     buttonType: 'transparent',
     variant: 'community',
     size: 'medium',
+    showUnlikeIcon: false,
   },
 );
 
