@@ -338,25 +338,21 @@ export class CommunityCollectionRepository {
         (c: CommunityCollection & { ownerName?: string; ownerLogo?: string }) => {
           const allProjects = projectsByCollection.get(c.id) || [];
           const starredProjects = allProjects.filter((p) => p.starred);
+          const featured =
+            starredProjects.length > 0
+              ? starredProjects
+              : [...allProjects].sort((a, b) => a.name.localeCompare(b.name));
 
           return {
             ...c,
             ownerName: undefined,
             ownerLogo: undefined,
-            projects: allProjects.map((p) => p.id),
             projectCount: allProjects.length,
-            featuredProjects: (starredProjects.length > 0 ? starredProjects : allProjects)
-              .slice(0, 5)
-              .map((p) => ({
-                name: p.name,
-                slug: p.slug,
-                logo: p.logoUrl,
-              })),
-            // Project IDs to fetch from Tinybird for sorting by contributorCount
-            _needsTinybirdSort: allProjects.length > 0,
-            _projectIds: (starredProjects.length > 0 ? starredProjects : allProjects).map(
-              (p) => p.id,
-            ),
+            featuredProjects: featured.slice(0, 5).map((p) => ({
+              name: p.name,
+              slug: p.slug,
+              logo: p.logoUrl,
+            })),
             owner: c.ownerName
               ? {
                   name: c.ownerName,
@@ -375,8 +371,6 @@ export class CommunityCollectionRepository {
     | (CommunityCollection & {
         projectCount: number;
         featuredProjects: { name: string; slug: string; logo: string }[];
-        _needsTinybirdSort: boolean;
-        _projectIds: string[];
       })
     | null
   > {
@@ -413,24 +407,23 @@ export class CommunityCollectionRepository {
 
     const allProjects = projectsResult.rows;
     const starredProjects = allProjects.filter((r: { starred: boolean }) => r.starred);
-    const featuredSource = starredProjects.length > 0 ? starredProjects : allProjects;
+    const featured =
+      starredProjects.length > 0
+        ? starredProjects
+        : [...allProjects].sort((a, b) => a.name.localeCompare(b.name));
 
     return {
       ...collection,
       ownerName: undefined,
       ownerLogo: undefined,
-      projects: allProjects.map((r: { insightsProjectId: string }) => r.insightsProjectId),
       projectCount: allProjects.length,
-      featuredProjects: featuredSource
+      featuredProjects: featured
         .slice(0, 5)
         .map((r: { name: string; slug: string; logoUrl: string }) => ({
           name: r.name,
           slug: r.slug,
           logo: r.logoUrl,
         })),
-      // Project IDs to fetch from Tinybird for sorting by contributorCount
-      _needsTinybirdSort: allProjects.length > 0,
-      _projectIds: featuredSource.map((r: { insightsProjectId: string }) => r.insightsProjectId),
       owner: collection.ownerName
         ? {
             name: collection.ownerName,
@@ -496,22 +489,19 @@ export class CommunityCollectionRepository {
       data: collectionsResult.rows.map((c: CommunityCollection) => {
         const allProjects = projectsByCollection.get(c.id) || [];
         const starredProjects = allProjects.filter((p) => p.starred);
+        const featured =
+          starredProjects.length > 0
+            ? starredProjects
+            : [...allProjects].sort((a, b) => a.name.localeCompare(b.name));
 
         return {
           ...c,
-          projects: allProjects.map((p) => p.id),
           projectCount: allProjects.length,
-          featuredProjects: (starredProjects.length > 0 ? starredProjects : allProjects)
-            .slice(0, 5)
-            .map((p) => ({
-              name: p.name,
-              slug: p.slug,
-              logo: p.logoUrl,
-            })),
-          _needsTinybirdSort: allProjects.length > 0,
-          _projectIds: (starredProjects.length > 0 ? starredProjects : allProjects).map(
-            (p) => p.id,
-          ),
+          featuredProjects: featured.slice(0, 5).map((p) => ({
+            name: p.name,
+            slug: p.slug,
+            logo: p.logoUrl,
+          })),
         };
       }),
       total,

@@ -67,6 +67,7 @@ SPDX-License-Identifier: MIT
             :collection="collection"
             variant="community"
             :show-like-count="true"
+            :show-unlike-icon="true"
             @updated="handleLikeUpdated"
           />
         </template>
