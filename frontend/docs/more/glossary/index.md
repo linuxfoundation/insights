@@ -16,7 +16,7 @@ A named group of open source projects organized around a common theme, organizat
 
 ## Community Collection
 
-A collection created and shared by any signed in LFX Insights user. Community Collections let anyone in the open source community group projects around a topic or use case that matters to them. Public Community Collections are visible to all users and appear in the Community Collections list. Owners can set their collection to private to limit visibility to themselves only.
+A collection created and shared by any signed-in LFX Insights user. Community Collections let anyone in the open source community group projects around a topic or use case that matters to them. Public Community Collections are visible to all users and appear in the Community Collections list. Owners can set their collection to private to limit visibility to themselves only.
 
 ## Curated Collection
 
