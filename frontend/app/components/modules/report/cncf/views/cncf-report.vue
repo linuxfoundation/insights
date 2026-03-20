@@ -3,17 +3,17 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="container py-10 flex flex-col gap-6">
+  <div class="container py-6 md:py-10 flex flex-col gap-6">
     <div>
-      <h1 class="text-heading-1 font-secondary font-bold text-neutral-900 mb-2">
+      <h1 class="text-heading-3 md:text-heading-1 font-secondary font-bold text-neutral-900 mb-2">
         CNCF Contributor Geographic Distribution
       </h1>
-      <p class="text-body-1 text-neutral-600">
+      <p class="text-body-2 md:text-body-1 text-neutral-600">
         Geographical distribution of contributors across all CNCF projects over time
       </p>
     </div>
 
-    <div class="flex flex-wrap items-center justify-between gap-4">
+    <div class="flex flex-col sm:flex-row sm:flex-wrap sm:items-center sm:justify-between gap-3">
       <div class="flex items-center gap-4">
         <lfx-dropdown-select
           v-model="selectedDateRange"
@@ -58,9 +58,11 @@ SPDX-License-Identifier: MIT
       </div>
     </div>
 
-    <lfx-card class="p-6">
-      <div class="flex items-center justify-between mb-4">
-        <h2 class="text-heading-3 font-secondary font-semibold text-neutral-900">Contributor Distribution Over Time</h2>
+    <lfx-card class="p-4 md:p-6">
+      <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-4">
+        <h2 class="text-body-1 md:text-heading-3 font-secondary font-semibold text-neutral-900">
+          Contributor Distribution Over Time
+        </h2>
         <lfx-tabs
           v-model="displayMode"
           :tabs="displayTabs"
@@ -96,8 +98,8 @@ SPDX-License-Identifier: MIT
       />
     </lfx-card>
 
-    <lfx-card class="p-6">
-      <h2 class="text-heading-3 font-secondary font-semibold text-neutral-900 mb-4">Country Share</h2>
+    <lfx-card class="p-4 md:p-6">
+      <h2 class="text-body-1 md:text-heading-3 font-secondary font-semibold text-neutral-900 mb-4">Country Share</h2>
       <div v-if="distributionStatus === 'pending'">
         <div class="flex flex-col gap-4 h-[400px] pt-4">
           <lfx-skeleton
@@ -145,27 +147,28 @@ import type {
 
 const COLLECTION = 'cncf';
 const now = DateTime.local();
+const endOfLastYear = now.startOf('year').minus({ days: 1 }).toFormat('yyyy-MM-dd');
 
 const dateOptions = [
   {
     key: 'past12months',
     label: 'Past 12 months',
     startDate: now.minus({ months: 12 }).startOf('month').toFormat('yyyy-MM-dd'),
-    endDate: now.endOf('month').toFormat('yyyy-MM-dd'),
-    description: `${now.minus({ months: 12 }).toFormat('MMM yyyy')} -> ${now.toFormat('MMM yyyy')}`,
+    endDate: now.minus({ months: 1 }).endOf('month').toFormat('yyyy-MM-dd'),
+    description: `${now.minus({ months: 12 }).toFormat('MMM yyyy')} -> ${now.minus({ months: 1 }).toFormat('MMM yyyy')}`,
   },
   {
     key: 'past5years',
     label: 'Past 5 years',
     startDate: now.minus({ years: 5 }).startOf('year').toFormat('yyyy-MM-dd'),
-    endDate: now.endOf('year').toFormat('yyyy-MM-dd'),
-    description: `${now.minus({ years: 5 }).toFormat('yyyy')} -> ${now.toFormat('yyyy')}`,
+    endDate: endOfLastYear,
+    description: `${now.minus({ years: 5 }).toFormat('yyyy')} -> ${now.minus({ years: 1 }).toFormat('yyyy')}`,
   },
   {
     key: 'alltime',
     label: 'All time',
     startDate: null,
-    endDate: null,
+    endDate: endOfLastYear,
     description: '',
   },
 ];

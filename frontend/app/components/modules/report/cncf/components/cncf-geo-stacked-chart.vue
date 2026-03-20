@@ -4,7 +4,7 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <div class="w-full">
-    <div class="h-[400px]">
+    <div class="h-[280px] sm:h-[400px]">
       <client-only>
         <lfx-chart
           :config="chartConfig"
@@ -16,7 +16,7 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref, onMounted, onBeforeUnmount } from 'vue';
 import { merge } from 'lodash-es';
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import { getLineAreaChartConfig } from '~/components/uikit/chart/configs/line.area.chart';
@@ -31,6 +31,21 @@ const props = defineProps<{
   granularity: string;
   showPercentage?: boolean;
 }>();
+
+const isMobile = ref(false);
+
+function updateIsMobile() {
+  isMobile.value = window.innerWidth < 640;
+}
+
+onMounted(() => {
+  updateIsMobile();
+  window.addEventListener('resize', updateIsMobile);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', updateIsMobile);
+});
 
 const uniqueCountries = computed(() => {
   const countryMap = new Map<string, { country: string; countryCode: string; flag: string }>();
@@ -96,12 +111,23 @@ const chartConfig = computed(() => {
       right: '15%',
       bottom: '12%',
     },
+    media: [
+      {
+        query: { maxWidth: 640 },
+        option: {
+          grid: {
+            right: '3%',
+          },
+        },
+      },
+    ],
     legend: {
       show: false,
     },
     yAxis: props.showPercentage
       ? {
           type: 'value',
+          min: 0,
           max: 100,
           axisLabel: {
             fontSize: '12px',
@@ -166,7 +192,7 @@ const chartConfig = computed(() => {
           color,
         },
         endLabel: {
-          show: true,
+          show: !isMobile.value,
           formatter: `${country?.flag || ''} ${country?.country || ''}`,
           fontSize: 11,
           color: lfxColors.neutral[700],
