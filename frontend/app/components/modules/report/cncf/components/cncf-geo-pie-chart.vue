@@ -4,7 +4,7 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <div class="w-full">
-    <div class="h-[400px]">
+    <div class="h-[280px] sm:h-[400px]">
       <client-only>
         <lfx-chart
           :config="chartConfig"
@@ -16,7 +16,7 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref, onMounted, onBeforeUnmount } from 'vue';
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import type { GeoDistributionDataPoint } from '~~/types/report/cncf.types';
 import { lfxColors } from '~/config/styles/colors';
@@ -26,6 +26,21 @@ import { getCountryColor } from '~/components/modules/report/cncf/config/country
 const props = defineProps<{
   data: GeoDistributionDataPoint[];
 }>();
+
+const isMobile = ref(false);
+
+function updateIsMobile() {
+  isMobile.value = window.innerWidth < 640;
+}
+
+onMounted(() => {
+  updateIsMobile();
+  window.addEventListener('resize', updateIsMobile);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', updateIsMobile);
+});
 
 const chartConfig = computed<ECOption>(() => ({
   tooltip: {
@@ -58,13 +73,13 @@ const chartConfig = computed<ECOption>(() => ({
         borderWidth: 2,
       },
       label: {
-        show: true,
+        show: !isMobile.value,
         formatter: '{b}: {d}%',
         fontSize: 12,
         color: lfxColors.neutral[600],
       },
       labelLine: {
-        show: true,
+        show: !isMobile.value,
         length: 15,
         length2: 10,
         lineStyle: {
