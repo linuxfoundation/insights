@@ -62,7 +62,7 @@ SPDX-License-Identifier: MIT
           </span>
         </div>
         <div
-          v-if="showLikeCount && isLfInsightsTeamMember"
+          v-if="showLikeCount && !!user"
           class="ml-4"
         >
           <like-button
@@ -84,7 +84,7 @@ SPDX-License-Identifier: MIT
               class="!p-2"
             />
           </template>
-          <template v-if="props.variant === 'my-collections' && isLfInsightsTeamMember">
+          <template v-if="props.variant === 'my-collections' && !!user">
             <lfx-dropdown-item @click="handleEditCollection()">
               <lfx-icon
                 name="pencil"
@@ -110,7 +110,7 @@ SPDX-License-Identifier: MIT
             />
             Duplicate
           </lfx-dropdown-item>
-          <template v-if="props.variant === 'my-collections' && isLfInsightsTeamMember">
+          <template v-if="props.variant === 'my-collections' && !!user">
             <lfx-dropdown-item @click="handleDeleteCollection()">
               <lfx-icon
                 name="trash"
@@ -171,8 +171,6 @@ const props = withDefaults(
     showUnlikeIcon: false,
   },
 );
-
-const isLfInsightsTeamMember = computed(() => user.value?.isLfInsightsTeamMember || false);
 
 const handleShare = () => {
   const title = `LFX Insights | Collections - ${props.collection.name}`;

@@ -25,29 +25,28 @@ export const collectionTabs = (user: User | null): CollectionTypesTabs[] => {
     },
   ];
 
-  if (user?.isLfInsightsTeamMember) {
-    tabs.push(
-      {
-        label: 'Community',
-        detailsLabel: 'Community Collections',
-        icon: 'globe',
-        route: LfxRoutes.COLLECTIONS_COMMUNITY,
-        activeClass: '!bg-accent-200',
-        iconHighlightClass: '!bg-accent-500',
-        type: 'community',
-        description: 'Discover collections from the open source community.',
-      },
-      {
-        label: 'My Collections',
-        detailsLabel: 'My Collections',
-        icon: 'folder-heart',
-        route: LfxRoutes.COLLECTIONS_MY_COLLECTIONS,
-        activeClass: '!bg-discovery-200',
-        iconHighlightClass: '!bg-discovery-500',
-        type: 'my-collections',
-        description: "Collections you've created or liked.",
-      },
-    );
+  tabs.push({
+    label: 'Community',
+    detailsLabel: 'Community Collections',
+    icon: 'globe',
+    route: LfxRoutes.COLLECTIONS_COMMUNITY,
+    activeClass: '!bg-accent-200',
+    iconHighlightClass: '!bg-accent-500',
+    type: 'community',
+    description: 'Discover collections from the open source community.',
+  });
+
+  if (user) {
+    tabs.push({
+      label: 'My Collections',
+      detailsLabel: 'My Collections',
+      icon: 'folder-heart',
+      route: LfxRoutes.COLLECTIONS_MY_COLLECTIONS,
+      activeClass: '!bg-discovery-200',
+      iconHighlightClass: '!bg-discovery-500',
+      type: 'my-collections',
+      description: "Collections you've created or liked.",
+    });
   }
 
   return tabs;

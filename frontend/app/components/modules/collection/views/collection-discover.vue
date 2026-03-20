@@ -47,51 +47,49 @@ SPDX-License-Identifier: MIT
         </lfx-collection-section>
       </section>
 
-      <template v-if="isLfInsightsTeamMember">
-        <!-- Community Collections Section -->
-        <section class="border-b border-neutral-200 pb-10">
+      <!-- Community Collections Section -->
+      <section class="border-b border-neutral-200 pb-10">
+        <lfx-collection-section
+          type="community"
+          :status="communityStatus"
+          :error="communityError"
+          error-message="Error fetching community collections"
+          :is-empty="isCommunityEmpty"
+          @created="refetchCommunityCollections"
+        >
+          <lfx-collection-card
+            v-for="collection in communityCollections"
+            :key="collection.slug"
+            :collection="collection"
+            variant="community"
+            @updated="handleCollectionUpdated"
+          />
+        </lfx-collection-section>
+      </section>
+
+      <template v-if="!!user">
+        <!-- My Collections Section -->
+        <section>
           <lfx-collection-section
-            type="community"
-            :status="communityStatus"
-            :error="communityError"
-            error-message="Error fetching community collections"
-            :is-empty="isCommunityEmpty"
-            @created="refetchCommunityCollections"
+            type="my-collections"
+            :status="myCollectionsStatus"
+            :error="myCollectionsError"
+            error-message="Error fetching your collections"
+            :is-empty="isMyCollectionsEmpty"
+            @created="refetchMyCollections"
           >
             <lfx-collection-card
-              v-for="collection in communityCollections"
+              v-for="collection in myCollections"
               :key="collection.slug"
               :collection="collection"
-              variant="community"
+              variant="my-collections"
               @updated="handleCollectionUpdated"
             />
           </lfx-collection-section>
         </section>
 
-        <template v-if="!!user">
-          <!-- My Collections Section -->
-          <section>
-            <lfx-collection-section
-              type="my-collections"
-              :status="myCollectionsStatus"
-              :error="myCollectionsError"
-              error-message="Error fetching your collections"
-              :is-empty="isMyCollectionsEmpty"
-              @created="refetchMyCollections"
-            >
-              <lfx-collection-card
-                v-for="collection in myCollections"
-                :key="collection.slug"
-                :collection="collection"
-                variant="my-collections"
-                @updated="handleCollectionUpdated"
-              />
-            </lfx-collection-section>
-          </section>
-
-          <!-- Liked Collections Section -->
-          <lfx-liked-collections />
-        </template>
+        <!-- Liked Collections Section -->
+        <lfx-liked-collections />
       </template>
     </div>
   </div>
@@ -110,7 +108,6 @@ import useScroll from '~/components/shared/utils/scroll';
 import { useBannerStore } from '~/components/shared/store/banner.store';
 import { useLikeCounts } from '~/components/modules/collection/composables/useLikeCounts';
 
-// TODO: remove this once we have everything done and tested
 import { useAuthStore } from '~/components/modules/auth/store/auth.store';
 
 const authStore = useAuthStore();
@@ -148,13 +145,7 @@ const isCuratedEmpty = computed(() => COLLECTIONS_API_SERVICE.isEmptyData(curate
 const isCommunityEmpty = computed(() => COLLECTIONS_API_SERVICE.isEmptyData(communityCollections.value));
 const isMyCollectionsEmpty = computed(() => COLLECTIONS_API_SERVICE.isEmptyData(myCollections.value));
 
-// TODO: remove this once we have everything done and tested
-const isLfInsightsTeamMember = computed(() => {
-  return user.value?.isLfInsightsTeamMember || false;
-});
-
 const allCollectionIds = computed(() => {
-  if (!isLfInsightsTeamMember.value) return [];
   const ids = [...curatedCollections.value, ...communityCollections.value, ...myCollections.value].map((c) => c.id);
   return [...new Set(ids)];
 });

@@ -48,9 +48,8 @@ const isCreateCollectionModalOpen = ref(false);
 const authStore = useAuthStore();
 const { user } = storeToRefs(authStore);
 
-// TODO: remove this once we have everything done and tested
 const canCreateCollection = computed(() => {
-  return user.value?.isLfInsightsTeamMember || false;
+  return !!user.value;
 });
 
 const handleCreated = (form: CreateCollectionForm) => {
