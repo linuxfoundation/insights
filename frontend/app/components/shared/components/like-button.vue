@@ -109,12 +109,12 @@ const handleLike = async () => {
   try {
     if (wasLiked) {
       collectionsStore.removeLikedCollection(props.collection.id);
-      collectionsStore.adjustLikeCount(props.collection.id, -1);
+      collectionsStore.adjustLikeCount(props.collection.id, -1, props.collection.likeCount);
       const { success } = await COLLECTIONS_API_SERVICE.unlikeCollection(props.collection.id);
 
       if (!success) {
         collectionsStore.addLikedCollection(props.collection.id);
-        collectionsStore.adjustLikeCount(props.collection.id, 1);
+        collectionsStore.adjustLikeCount(props.collection.id, 1, props.collection.likeCount);
         showToast('Failed to unlike collection', ToastTypesEnum.negative);
       } else {
         invalidateCollectionQueries();
@@ -125,11 +125,11 @@ const handleLike = async () => {
       if (!wasAdded) {
         return;
       }
-      collectionsStore.adjustLikeCount(props.collection.id, 1);
+      collectionsStore.adjustLikeCount(props.collection.id, 1, props.collection.likeCount);
       const { success } = await COLLECTIONS_API_SERVICE.likeCollection(props.collection.id);
       if (!success) {
         collectionsStore.removeLikedCollection(props.collection.id);
-        collectionsStore.adjustLikeCount(props.collection.id, -1);
+        collectionsStore.adjustLikeCount(props.collection.id, -1, props.collection.likeCount);
         showToast('Failed to like collection', ToastTypesEnum.negative);
       } else {
         invalidateCollectionQueries();
@@ -140,10 +140,10 @@ const handleLike = async () => {
     // Roll back optimistic update
     if (wasLiked) {
       collectionsStore.addLikedCollection(props.collection.id);
-      collectionsStore.adjustLikeCount(props.collection.id, 1);
+      collectionsStore.adjustLikeCount(props.collection.id, 1, props.collection.likeCount);
     } else {
       collectionsStore.removeLikedCollection(props.collection.id);
-      collectionsStore.adjustLikeCount(props.collection.id, -1);
+      collectionsStore.adjustLikeCount(props.collection.id, -1, props.collection.likeCount);
     }
     showToast('Failed to update like status', ToastTypesEnum.negative);
   }

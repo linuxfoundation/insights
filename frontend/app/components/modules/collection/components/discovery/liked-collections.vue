@@ -129,7 +129,9 @@ const {
 const likedCollections = computed(() => likedData.value?.data || []);
 const isLikedCollectionsEmpty = computed(() => likedCollections.value.length === 0);
 
-const likedCollectionIds = computed(() => likedCollections.value.map((c) => c.id));
+const likedCollectionIds = computed(() =>
+  user.value?.isLfInsightsTeamMember ? likedCollections.value.map((c) => c.id) : [],
+);
 useLikeCounts(likedCollectionIds);
 
 const classDisplay = computed(() => {

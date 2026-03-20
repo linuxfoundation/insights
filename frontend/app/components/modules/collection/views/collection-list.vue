@@ -161,7 +161,10 @@ const flatData = computed(() =>
   ),
 );
 
-const collectionIds = computed(() => flatData.value.map((c) => c.id));
+const isLfInsightsTeamMember = computed(() => user.value?.isLfInsightsTeamMember || false);
+const collectionIds = computed(() =>
+  isLfInsightsTeamMember.value && props.type !== 'my-collections' ? flatData.value.map((c) => c.id) : [],
+);
 useLikeCounts(collectionIds);
 
 const classDisplay = computed(() => {

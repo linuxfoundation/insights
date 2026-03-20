@@ -10,7 +10,9 @@ export function useLikeCounts(collectionIds: ComputedRef<string[]>) {
   // Only fetch counts for IDs not yet in the store to avoid
   // growing query keys on infinite scroll and redundant refetches.
   const missingIds = computed(() =>
-    collectionIds.value.filter((id) => collectionsStore.getLikeCount(id) === undefined),
+    collectionIds.value
+      .filter((id) => collectionsStore.getLikeCount(id) === undefined)
+      .slice(0, 200),
   );
 
   const { data, isLoading, refetch } = COLLECTIONS_API_SERVICE.fetchLikeCounts(missingIds);

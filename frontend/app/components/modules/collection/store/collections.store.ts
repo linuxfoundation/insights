@@ -73,8 +73,8 @@ export const useCollectionsStore = defineStore('collections', () => {
     likeCounts.value = { ...likeCounts.value, ...counts };
   };
 
-  const adjustLikeCount = (collectionId: string, delta: number) => {
-    const current = likeCounts.value[collectionId] ?? 0;
+  const adjustLikeCount = (collectionId: string, delta: number, fallback?: number) => {
+    const current = likeCounts.value[collectionId] ?? fallback ?? 0;
     likeCounts.value = { ...likeCounts.value, [collectionId]: Math.max(0, current + delta) };
   };
 

@@ -148,17 +148,18 @@ const isCuratedEmpty = computed(() => COLLECTIONS_API_SERVICE.isEmptyData(curate
 const isCommunityEmpty = computed(() => COLLECTIONS_API_SERVICE.isEmptyData(communityCollections.value));
 const isMyCollectionsEmpty = computed(() => COLLECTIONS_API_SERVICE.isEmptyData(myCollections.value));
 
+// TODO: remove this once we have everything done and tested
+const isLfInsightsTeamMember = computed(() => {
+  return user.value?.isLfInsightsTeamMember || false;
+});
+
 const allCollectionIds = computed(() => {
+  if (!isLfInsightsTeamMember.value) return [];
   const ids = [...curatedCollections.value, ...communityCollections.value, ...myCollections.value].map((c) => c.id);
   return [...new Set(ids)];
 });
 
 useLikeCounts(allCollectionIds);
-
-// TODO: remove this once we have everything done and tested
-const isLfInsightsTeamMember = computed(() => {
-  return user.value?.isLfInsightsTeamMember || false;
-});
 
 const loading = computed(() => {
   return (
