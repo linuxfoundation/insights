@@ -113,6 +113,7 @@ import { useBannerStore } from '~/components/shared/store/banner.store';
 import type { Project } from '~~/types/project';
 import { useAuthStore } from '~/components/modules/auth/store/auth.store';
 import { TanstackKey } from '~/components/shared/types/tanstack';
+import { useLikeCounts } from '~/components/modules/collection/composables/useLikeCounts';
 
 const props = defineProps<{
   slug: string;
@@ -140,6 +141,9 @@ const currentCollection = ref<Collection | undefined>(collection.value);
 watch(collection, (newCollection) => {
   currentCollection.value = newCollection;
 });
+
+const detailCollectionIds = computed(() => (currentCollection.value ? [currentCollection.value.id] : []));
+useLikeCounts(detailCollectionIds);
 
 const { scrollTop } = useScroll();
 const collectionSlug = props.slug;

@@ -29,21 +29,26 @@ SPDX-License-Identifier: MIT
         :class="isLiked ? '!text-negative-500' : 'text-neutral-900'"
         :type="isLiked ? 'solid' : 'light'"
       />
+      <lfx-spinner
+        v-if="likeCountLoading"
+        :size="12"
+      />
       <span
-        v-if="likeCount !== undefined || isLiked"
+        v-else-if="likeCount !== undefined || isLiked"
         class="text-xs leading-4 text-neutral-900 font-medium"
       >
-        {{ formatNumberShort(isLiked && likeCount === 0 ? 1 : likeCount) }}
+        {{ formatNumberShort(isLiked && (!likeCount || likeCount === 0) ? 1 : (likeCount ?? 0)) }}
       </span>
     </lfx-button>
   </lfx-tooltip>
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 import { useQueryClient } from '@tanstack/vue-query';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxButton from '~/components/uikit/button/button.vue';
+import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 import type { Collection, CollectionType } from '~~/types/collection';
 import { useCollectionsStore } from '~/components/modules/collection/store/collections.store';
 import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
@@ -82,7 +87,8 @@ const emit = defineEmits<{
 }>();
 
 const isLiked = computed(() => collectionsStore.isLiked(props.collection.id));
-const likeCount = ref<number>(props.collection.likeCount || 0);
+const likeCount = computed(() => collectionsStore.getLikeCount(props.collection.id) ?? props.collection.likeCount);
+const likeCountLoading = computed(() => likeCount.value === undefined);
 
 const invalidateCollectionQueries = () => {
   queryClient.invalidateQueries({ queryKey: [TanstackKey.COLLECTIONS] });
@@ -103,12 +109,12 @@ const handleLike = async () => {
   try {
     if (wasLiked) {
       collectionsStore.removeLikedCollection(props.collection.id);
-      likeCount.value = Math.max(0, likeCount.value - 1);
+      collectionsStore.adjustLikeCount(props.collection.id, -1, props.collection.likeCount);
       const { success } = await COLLECTIONS_API_SERVICE.unlikeCollection(props.collection.id);
 
       if (!success) {
         collectionsStore.addLikedCollection(props.collection.id);
-        likeCount.value = likeCount.value + 1;
+        collectionsStore.adjustLikeCount(props.collection.id, 1, props.collection.likeCount);
         showToast('Failed to unlike collection', ToastTypesEnum.negative);
       } else {
         invalidateCollectionQueries();
@@ -119,11 +125,11 @@ const handleLike = async () => {
       if (!wasAdded) {
         return;
       }
-      likeCount.value = likeCount.value + 1;
+      collectionsStore.adjustLikeCount(props.collection.id, 1, props.collection.likeCount);
       const { success } = await COLLECTIONS_API_SERVICE.likeCollection(props.collection.id);
       if (!success) {
         collectionsStore.removeLikedCollection(props.collection.id);
-        likeCount.value = Math.max(0, likeCount.value - 1);
+        collectionsStore.adjustLikeCount(props.collection.id, -1, props.collection.likeCount);
         showToast('Failed to like collection', ToastTypesEnum.negative);
       } else {
         invalidateCollectionQueries();
@@ -131,6 +137,14 @@ const handleLike = async () => {
       }
     }
   } catch {
+    // Roll back optimistic update
+    if (wasLiked) {
+      collectionsStore.addLikedCollection(props.collection.id);
+      collectionsStore.adjustLikeCount(props.collection.id, 1, props.collection.likeCount);
+    } else {
+      collectionsStore.removeLikedCollection(props.collection.id);
+      collectionsStore.adjustLikeCount(props.collection.id, -1, props.collection.likeCount);
+    }
     showToast('Failed to update like status', ToastTypesEnum.negative);
   }
 };

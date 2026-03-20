@@ -123,6 +123,7 @@ import type { Collection, CollectionType } from '~~/types/collection';
 import { useBannerStore } from '~/components/shared/store/banner.store';
 import { useAuthStore } from '~/components/modules/auth/store/auth.store';
 import { useCollectionsStore } from '~/components/modules/collection/store/collections.store';
+import { useLikeCounts } from '~/components/modules/collection/composables/useLikeCounts';
 
 const props = defineProps<{
   type?: CollectionType;
@@ -159,6 +160,9 @@ const flatData = computed(() =>
     data.value?.pages.flatMap((page: Pagination<Collection>) => page.data) || [],
   ),
 );
+
+const collectionIds = computed(() => (props.type !== 'my-collections' ? flatData.value.map((c) => c.id) : []));
+useLikeCounts(collectionIds);
 
 const classDisplay = computed(() => {
   if (view.value === 'grid') {

@@ -18,10 +18,7 @@ SPDX-License-Identifier: MIT
     />
   </lfx-collection-section>
 
-  <div
-    v-if="isLfInsightsTeamMember"
-    class="pt-10 border-t border-neutral-200"
-  >
+  <div class="pt-10 border-t border-neutral-200">
     <lfx-collection-section
       type="community"
       :status="communityStatus"
@@ -48,10 +45,6 @@ import LfxCollectionSection from '~/components/shared/components/collection-sect
 import { useAuthStore } from '~/components/modules/auth/store/auth.store';
 
 const { user } = storeToRefs(useAuthStore());
-
-const isLfInsightsTeamMember = computed(() => {
-  return user.value?.isLfInsightsTeamMember || false;
-});
 
 const {
   data: curatedData,

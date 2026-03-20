@@ -11,7 +11,7 @@ SPDX-License-Identifier: MIT
       <div class="flex items-center gap-2">
         <!-- TODO: change this to the correct route when we have the discovery page -->
         <nuxt-link
-          :to="{ name: isLfInsightsTeamMember ? LfxRoutes.COLLECTIONS : LfxRoutes.EXPLORE }"
+          :to="{ name: LfxRoutes.COLLECTIONS }"
           class="ease-linear transition-all"
         >
           <lfx-icon-button
@@ -92,7 +92,6 @@ import type { CollectionType } from '~~/types/collection';
 import LfxMenuButton from '~/components/uikit/menu-button/menu-button.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import { LfxRoutes } from '~/components/shared/types/routes';
-// TODO: remove this once we have everything done and tested
 import { useAuthStore } from '~/components/modules/auth/store/auth.store';
 import type { CreateCollectionForm } from '~/components/modules/collection/config/create-collection.config';
 
@@ -115,8 +114,6 @@ const emit = defineEmits<{
 
 const route = useRoute();
 const linkUrl = computed(() => collectionTabs(user.value));
-const isLfInsightsTeamMember = computed(() => user.value?.isLfInsightsTeamMember || false);
-
 const title = computed(() => linkUrl.value.find((tab) => tab.type === props.type)?.detailsLabel || '');
 const description = computed(() => linkUrl.value.find((tab) => tab.type === props.type)?.description || '');
 

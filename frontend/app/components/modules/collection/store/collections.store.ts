@@ -11,6 +11,7 @@ export type CollectionViewType = 'grid' | 'list';
 export const useCollectionsStore = defineStore('collections', () => {
   const likedCollectionIds = ref<Set<string>>(new Set());
   const isLikedCollectionsLoaded = ref(false);
+  const likeCounts = ref<Record<string, number>>({});
   const view = ref<CollectionViewType>('grid');
 
   const setView = (value: CollectionViewType) => {
@@ -64,6 +65,19 @@ export const useCollectionsStore = defineStore('collections', () => {
     }
   };
 
+  const getLikeCount = (collectionId: string): number | undefined => {
+    return likeCounts.value[collectionId];
+  };
+
+  const setLikeCounts = (counts: Record<string, number>) => {
+    likeCounts.value = { ...likeCounts.value, ...counts };
+  };
+
+  const adjustLikeCount = (collectionId: string, delta: number, fallback?: number) => {
+    const current = likeCounts.value[collectionId] ?? fallback ?? 0;
+    likeCounts.value = { ...likeCounts.value, [collectionId]: Math.max(0, current + delta) };
+  };
+
   const clearLikedCollections = () => {
     likedCollectionIds.value = new Set();
     isLikedCollectionsLoaded.value = false;
@@ -73,8 +87,12 @@ export const useCollectionsStore = defineStore('collections', () => {
     likedCollectionIds,
     likedCollectionsList,
     isLikedCollectionsLoaded,
+    likeCounts,
     view,
     isLiked,
+    getLikeCount,
+    setLikeCounts,
+    adjustLikeCount,
     setView,
     setLikedCollections,
     addLikedCollection,
