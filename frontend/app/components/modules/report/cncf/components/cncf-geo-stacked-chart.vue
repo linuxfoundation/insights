@@ -21,33 +21,16 @@ import { merge } from 'lodash-es';
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import { getLineAreaChartConfig } from '~/components/uikit/chart/configs/line.area.chart';
 import type { ChartData, ChartSeries } from '~/components/uikit/chart/types/ChartTypes';
-import type { GeoTimeseriesDataPoint } from '~~/types/report/cncf.types';
+import type { GeoDistributionOverTimeDataPoint } from '~~/types/report/cncf.types';
 import { lfxColors } from '~/config/styles/colors';
+import { formatNumber } from '~/components/shared/utils/formatter';
+import { getCountryColor } from '~/components/modules/report/cncf/config/country-colors';
 
 const props = defineProps<{
-  data: GeoTimeseriesDataPoint[];
+  data: GeoDistributionOverTimeDataPoint[];
   granularity: string;
   showPercentage?: boolean;
 }>();
-
-// National colors for each country
-const COUNTRY_COLOR_MAP: Record<string, string> = {
-  US: '#3C3B6E', // United States - Navy blue
-  IN: '#FF9933', // India - Saffron orange
-  CN: '#DE2910', // China - Red
-  DE: '#FFCC00', // Germany - Gold
-  GB: '#012169', // United Kingdom - Royal blue
-  CA: '#FF0000', // Canada - Red
-  FR: '#0055A4', // France - Blue
-  JP: '#BC002D', // Japan - Red
-  BR: '#009739', // Brazil - Green
-  AU: '#00008B', // Australia - Dark blue
-  XX: '#94A3B8', // Other - Gray
-};
-
-const getCountryColor = (countryCode: string): string => {
-  return COUNTRY_COLOR_MAP[countryCode] || lfxColors.neutral[400];
-};
 
 const uniqueCountries = computed(() => {
   const countryMap = new Map<string, { country: string; countryCode: string; flag: string }>();
@@ -65,24 +48,21 @@ const uniqueCountries = computed(() => {
 
 const uniqueDates = computed(() => {
   const dates = new Set<string>();
-  props.data.forEach((item) => dates.add(item.date));
+  props.data.forEach((item) => dates.add(item.startDate));
   return Array.from(dates).sort();
 });
 
 const chartData = computed<ChartData[]>(() =>
   uniqueDates.value.map((date) => {
     const rawValues = uniqueCountries.value.map((country) => {
-      const dataPoint = props.data.find(
-        (item) => item.date === date && item.countryCode === country.countryCode,
-      );
+      const dataPoint = props.data.find((item) => item.startDate === date && item.countryCode === country.countryCode);
       return dataPoint?.contributorCount ?? 0;
     });
 
     if (props.showPercentage) {
       const total = rawValues.reduce((sum, val) => sum + val, 0);
-      const percentageValues = total > 0
-        ? rawValues.map((val) => Math.round((val / total) * 1000) / 10)
-        : rawValues.map(() => 0);
+      const percentageValues =
+        total > 0 ? rawValues.map((val) => Math.round((val / total) * 1000) / 10) : rawValues.map(() => 0);
       return {
         key: date,
         values: percentageValues,
@@ -107,11 +87,7 @@ const chartSeries = computed<ChartSeries[]>(() =>
 );
 
 const chartConfig = computed(() => {
-  const baseConfig = getLineAreaChartConfig(
-    chartData.value,
-    chartSeries.value,
-    props.granularity,
-  );
+  const baseConfig = getLineAreaChartConfig(chartData.value, chartSeries.value, props.granularity);
 
   return merge({}, baseConfig, {
     grid: {
@@ -128,19 +104,47 @@ const chartConfig = computed(() => {
           type: 'value',
           max: 100,
           axisLabel: {
-            formatter: '{value}%',
+            fontSize: '12px',
+            fontWeight: 'normal',
+            color: lfxColors.neutral[400],
+            formatter: (value: number) => `${value}%`,
+          },
+          splitLine: {
+            lineStyle: {
+              type: 'dashed',
+              color: lfxColors.neutral[200],
+            },
           },
         }
       : undefined,
-    tooltip: props.showPercentage
-      ? {
-          trigger: 'axis',
-          axisPointer: {
-            type: 'cross',
-          },
-          valueFormatter: (value: number) => `${value}%`,
-        }
-      : undefined,
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: {
+        type: 'none',
+      },
+      formatter: (paramsRaw: { seriesName: string; value: number; color: string }[]) => {
+        const params = Array.isArray(paramsRaw) ? paramsRaw : [paramsRaw];
+        const items = params
+          .filter((p) => p.value > 0)
+          .map(
+            (p) => `
+            <div style="display: flex; flex-direction: row; align-items: center;
+              justify-content: space-between; min-width: 200px; font-weight: 400;
+              font-size: 12px; color: ${lfxColors.neutral[900]};">
+              <span style="font-weight: 400; font-size: 12px; margin-right: 10px;">
+                <span style="background-color: ${p.color}; display: inline-block;
+                  border-radius: 100%; height: 8px; width: 8px; margin-right: 4px;"></span>
+                ${p.seriesName}
+              </span>
+              <span style="font-weight: 500; font-size: 12px;">
+                ${props.showPercentage ? `${p.value}%` : formatNumber(p.value)}
+              </span>
+            </div>`,
+          )
+          .join('');
+        return items;
+      },
+    },
     series: (baseConfig.series as unknown[])?.map((s: unknown, index: number) => {
       const country = uniqueCountries.value[index];
       const countryCode = country?.countryCode || 'XX';
@@ -165,7 +169,7 @@ const chartConfig = computed(() => {
           show: true,
           formatter: `${country?.flag || ''} ${country?.country || ''}`,
           fontSize: 11,
-          color: '#334155',
+          color: lfxColors.neutral[700],
           distance: 8,
           overflow: 'truncate',
           ellipsis: '...',

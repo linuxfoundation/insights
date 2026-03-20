@@ -1,30 +1,41 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 
-export interface GeoTimeseriesDataPoint {
-  date: string;
+export interface GeoDistributionOverTimeDataPoint {
+  startDate: string;
+  endDate: string;
   country: string;
   countryCode: string;
   flag: string;
   contributorCount: number;
 }
 
-export interface CncfGeoTimeseriesSummary {
-  totalContributors: number;
+export interface GeoDistributionDataPoint {
+  country: string;
+  countryCode: string;
+  flag: string;
+  contributorCount: number;
+  contributorPercentage: number;
+}
+
+export interface CncfGeoDistributionOverTimeResponse {
+  data: GeoDistributionOverTimeDataPoint[];
   totalCountries: number;
-  topCountry: string;
-  periodStart: string;
-  periodEnd: string;
 }
 
-export interface CncfGeoTimeseriesResponse {
-  summary: CncfGeoTimeseriesSummary;
-  data: GeoTimeseriesDataPoint[];
+export interface CncfGeoDistributionResponse {
+  data: GeoDistributionDataPoint[];
 }
 
-export interface CncfGeoTimeseriesQueryParams {
+export interface CncfGeoDistributionOverTimeQueryParams {
+  collection: string;
+  granularity: string;
   startDate?: string | null;
   endDate?: string | null;
-  granularity?: string;
-  limit?: number;
+}
+
+export interface CncfGeoDistributionQueryParams {
+  collection: string;
+  startDate?: string | null;
+  endDate?: string | null;
 }

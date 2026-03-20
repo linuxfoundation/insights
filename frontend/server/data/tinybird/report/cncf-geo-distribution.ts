@@ -1,96 +1,90 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import type { DateTime } from 'luxon';
-import { fetchFromTinybird, type TinybirdResponse } from '../tinybird';
+import { fetchFromTinybird } from '../tinybird';
 import type {
-  GeoTimeseriesDataPoint,
-  CncfGeoTimeseriesResponse,
-  CncfGeoTimeseriesSummary,
+  GeoDistributionOverTimeDataPoint,
+  GeoDistributionDataPoint,
+  CncfGeoDistributionOverTimeResponse,
+  CncfGeoDistributionResponse,
 } from '~~/types/report/cncf.types';
 
-export interface CncfGeoDistributionFilter {
-  projects: string[];
+// Tinybird raw response types
+interface TinybirdGeoDistributionOverTimeItem {
+  startDate: string;
+  endDate: string;
+  country: string;
+  flag: string;
+  country_code: string;
+  contributorCount: number;
+}
+
+interface TinybirdGeoDistributionItem {
+  country: string;
+  flag: string;
+  country_code: string;
+  contributorCount: number;
+  contributorPercentage: number;
+}
+
+export interface CollectionGeoDistributionFilter {
+  collection: string;
   startDate?: DateTime;
   endDate?: DateTime;
   granularity?: string;
-  limit?: number;
 }
 
-type TinybirdGeoTimeseriesData = {
-  date: string;
-  country: string;
-  country_code: string;
-  flag: string;
-  contributorCount: number;
-}[];
-
-export async function fetchCncfGeoDistribution(
-  filter: CncfGeoDistributionFilter,
-): Promise<CncfGeoTimeseriesResponse> {
-  const data = await fetchFromTinybird<TinybirdGeoTimeseriesData>(
-    '/v0/pipes/geo_distribution_timeseries.json',
+export async function fetchCollectionGeoDistributionOverTime(
+  filter: CollectionGeoDistributionFilter,
+): Promise<CncfGeoDistributionOverTimeResponse> {
+  const data = await fetchFromTinybird<TinybirdGeoDistributionOverTimeItem[]>(
+    '/v0/pipes/collection_contributors_geo_distribution_over_time.json',
     {
-      projects: filter.projects,
+      collection: filter.collection,
+      granularity: filter.granularity || 'monthly',
       startDate: filter.startDate,
       endDate: filter.endDate,
-      granularity: filter.granularity || 'monthly',
-      limit: filter.limit || 10,
     },
   );
 
-  const processedData: GeoTimeseriesDataPoint[] = (
-    data as TinybirdResponse<TinybirdGeoTimeseriesData>
-  )?.data.map(
-    (item): GeoTimeseriesDataPoint => ({
-      date: item.date,
-      country: item.country,
-      countryCode: item.country_code,
-      flag: item.flag,
-      contributorCount: item.contributorCount,
-    }),
-  );
+  const processedData: GeoDistributionOverTimeDataPoint[] = data.data.map((item) => ({
+    startDate: item.startDate,
+    endDate: item.endDate,
+    country: item.country,
+    countryCode: item.country_code,
+    flag: item.flag,
+    contributorCount: item.contributorCount,
+  }));
 
-  const summary = calculateSummary(processedData, filter);
+  const uniqueCountries = new Set(processedData.map((d) => d.countryCode));
 
   return {
-    summary,
     data: processedData,
+    totalCountries: uniqueCountries.size,
   };
 }
 
-function calculateSummary(
-  data: GeoTimeseriesDataPoint[],
-  filter: CncfGeoDistributionFilter,
-): CncfGeoTimeseriesSummary {
-  const uniqueCountries = new Set<string>();
-  const countryTotals = new Map<string, number>();
+export async function fetchCollectionGeoDistribution(
+  filter: Omit<CollectionGeoDistributionFilter, 'granularity'>,
+): Promise<CncfGeoDistributionResponse> {
+  const data = await fetchFromTinybird<TinybirdGeoDistributionItem[]>(
+    '/v0/pipes/collection_contributors_geo_distribution.json',
+    {
+      collection: filter.collection,
+      startDate: filter.startDate,
+      endDate: filter.endDate,
+    },
+  );
 
-  data.forEach((item) => {
-    uniqueCountries.add(item.countryCode);
-    const current = countryTotals.get(item.country) || 0;
-    countryTotals.set(item.country, current + item.contributorCount);
-  });
-
-  let topCountry = '';
-  let maxContributors = 0;
-  countryTotals.forEach((count, country) => {
-    if (count > maxContributors) {
-      maxContributors = count;
-      topCountry = country;
-    }
-  });
-
-  const latestDateData = data.filter((item) => {
-    const maxDate = data.reduce((max, d) => (d.date > max ? d.date : max), '');
-    return item.date === maxDate;
-  });
-  const totalContributors = latestDateData.reduce((sum, item) => sum + item.contributorCount, 0);
+  const processedData: GeoDistributionDataPoint[] = data.data.map((item) => ({
+    country: item.country,
+    countryCode: item.country_code,
+    flag: item.flag,
+    contributorCount: item.contributorCount,
+    contributorPercentage: item.contributorPercentage,
+  }));
 
   return {
-    totalContributors,
-    totalCountries: uniqueCountries.size,
-    topCountry,
-    periodStart: filter.startDate?.toFormat('yyyy-MM-dd') || '',
-    periodEnd: filter.endDate?.toFormat('yyyy-MM-dd') || '',
+    data: processedData,
   };
 }

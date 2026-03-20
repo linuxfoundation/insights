@@ -83,4 +83,5 @@ export enum TanstackKey {
 
   // Reports
   CNCF_GEO_TIMESERIES = 'cncf-geo-timeseries',
+  CNCF_GEO_DISTRIBUTION = 'cncf-geo-distribution',
 }

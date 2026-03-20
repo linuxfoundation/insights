@@ -5,48 +5,68 @@ import { type ComputedRef, computed } from 'vue';
 import { useQuery } from '@tanstack/vue-query';
 import { TanstackKey } from '~/components/shared/types/tanstack';
 import type {
-  CncfGeoTimeseriesResponse,
-  CncfGeoTimeseriesQueryParams,
+  CncfGeoDistributionOverTimeResponse,
+  CncfGeoDistributionOverTimeQueryParams,
+  CncfGeoDistributionResponse,
+  CncfGeoDistributionQueryParams,
 } from '~~/types/report/cncf.types';
 
+const STALE_TIME = 1000 * 60 * 60; // 1 hour
+const GC_TIME = 1000 * 60 * 60 * 2; // 2 hours
+
 class CncfReportApiService {
-  fetchGeoTimeseries(params: ComputedRef<CncfGeoTimeseriesQueryParams>) {
+  fetchGeoDistributionOverTime(params: ComputedRef<CncfGeoDistributionOverTimeQueryParams>) {
     const queryKey = computed(() => [
       TanstackKey.CNCF_GEO_TIMESERIES,
+      params.value.collection,
       params.value.startDate,
       params.value.endDate,
       params.value.granularity,
-      params.value.limit,
     ]);
-    const queryFn = computed<QueryFunction<CncfGeoTimeseriesResponse>>(() =>
-      this.geoTimeseriesQueryFn(() => ({
-        startDate: params.value.startDate,
-        endDate: params.value.endDate,
-        granularity: params.value.granularity,
-        limit: params.value.limit,
-      })),
-    );
 
-    return useQuery<CncfGeoTimeseriesResponse>({
+    const queryFn = computed<QueryFunction<CncfGeoDistributionOverTimeResponse>>(() => async () => {
+      return await $fetch('/api/report/cncf/geo-distribution-over-time', {
+        params: {
+          collection: params.value.collection,
+          granularity: params.value.granularity,
+          startDate: params.value.startDate,
+          endDate: params.value.endDate,
+        },
+      });
+    });
+
+    return useQuery<CncfGeoDistributionOverTimeResponse>({
       queryKey,
       queryFn,
+      staleTime: STALE_TIME,
+      gcTime: GC_TIME,
     });
   }
 
-  geoTimeseriesQueryFn(
-    query: () => Record<string, string | number | boolean | undefined | string[] | null>,
-  ): QueryFunction<CncfGeoTimeseriesResponse> {
-    const { startDate, endDate, granularity, limit } = query();
-    return async () => {
+  fetchGeoDistribution(params: ComputedRef<CncfGeoDistributionQueryParams>) {
+    const queryKey = computed(() => [
+      TanstackKey.CNCF_GEO_DISTRIBUTION,
+      params.value.collection,
+      params.value.startDate,
+      params.value.endDate,
+    ]);
+
+    const queryFn = computed<QueryFunction<CncfGeoDistributionResponse>>(() => async () => {
       return await $fetch('/api/report/cncf/geo-distribution', {
         params: {
-          startDate,
-          endDate,
-          granularity,
-          limit,
+          collection: params.value.collection,
+          startDate: params.value.startDate,
+          endDate: params.value.endDate,
         },
       });
-    };
+    });
+
+    return useQuery<CncfGeoDistributionResponse>({
+      queryKey,
+      queryFn,
+      staleTime: STALE_TIME,
+      gcTime: GC_TIME,
+    });
   }
 }
 

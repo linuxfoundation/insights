@@ -18,58 +18,32 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { computed } from 'vue';
 import LfxChart from '~/components/uikit/chart/chart.vue';
-import type { GeoTimeseriesDataPoint } from '~~/types/report/cncf.types';
+import type { GeoDistributionDataPoint } from '~~/types/report/cncf.types';
 import { lfxColors } from '~/config/styles/colors';
+import { formatNumber } from '~/components/shared/utils/formatter';
+import { getCountryColor } from '~/components/modules/report/cncf/config/country-colors';
 
 const props = defineProps<{
-  data: GeoTimeseriesDataPoint[];
+  data: GeoDistributionDataPoint[];
 }>();
-
-// National colors for each country
-const COUNTRY_COLOR_MAP: Record<string, string> = {
-  US: '#3C3B6E', // United States - Navy blue
-  IN: '#FF9933', // India - Saffron orange
-  CN: '#DE2910', // China - Red
-  DE: '#FFCC00', // Germany - Gold
-  GB: '#012169', // United Kingdom - Royal blue
-  CA: '#FF0000', // Canada - Red
-  FR: '#0055A4', // France - Blue
-  JP: '#BC002D', // Japan - Red
-  BR: '#009739', // Brazil - Green
-  AU: '#00008B', // Australia - Dark blue
-  XX: '#94A3B8', // Other - Gray
-};
-
-const getCountryColor = (countryCode: string): string => {
-  return COUNTRY_COLOR_MAP[countryCode] || lfxColors.neutral[400];
-};
-
-// Aggregate data by country across all dates
-const aggregatedData = computed(() => {
-  const countryTotals = new Map<string, { country: string; countryCode: string; flag: string; total: number }>();
-
-  props.data.forEach((item) => {
-    const existing = countryTotals.get(item.countryCode);
-    if (existing) {
-      existing.total += item.contributorCount;
-    } else {
-      countryTotals.set(item.countryCode, {
-        country: item.country,
-        countryCode: item.countryCode,
-        flag: item.flag,
-        total: item.contributorCount,
-      });
-    }
-  });
-
-  return Array.from(countryTotals.values()).sort((a, b) => b.total - a.total);
-});
 
 const chartConfig = computed<ECOption>(() => ({
   tooltip: {
     trigger: 'item',
-    formatter: (params: { name: string; value: number; percent: number }) => {
-      return `${params.name}<br/>${params.value.toLocaleString()} contributors (${params.percent}%)`;
+    formatter: (params: { name: string; value: number; percent: number; color: string }) => {
+      return `
+        <div style="display: flex; flex-direction: row; align-items: center;
+          justify-content: space-between; min-width: 200px; font-weight: 400;
+          font-size: 12px; color: ${lfxColors.neutral[900]};">
+          <span style="font-weight: 400; font-size: 12px; margin-right: 10px;">
+            <span style="background-color: ${params.color}; display: inline-block;
+              border-radius: 100%; height: 8px; width: 8px; margin-right: 4px;"></span>
+            ${params.name}
+          </span>
+          <span style="font-weight: 500; font-size: 12px;">
+            ${formatNumber(params.value)} (${params.percent}%)
+          </span>
+        </div>`;
     },
   },
   series: [
@@ -80,34 +54,39 @@ const chartConfig = computed<ECOption>(() => ({
       avoidLabelOverlap: true,
       itemStyle: {
         borderRadius: 4,
-        borderColor: '#fff',
+        borderColor: lfxColors.white,
         borderWidth: 2,
       },
       label: {
         show: true,
         formatter: '{b}: {d}%',
         fontSize: 12,
+        color: lfxColors.neutral[600],
       },
       labelLine: {
         show: true,
         length: 15,
         length2: 10,
+        lineStyle: {
+          color: lfxColors.neutral[300],
+        },
       },
       emphasis: {
         label: {
           show: true,
           fontSize: 14,
           fontWeight: 'bold',
+          color: lfxColors.neutral[900],
         },
         itemStyle: {
           shadowBlur: 10,
           shadowOffsetX: 0,
-          shadowColor: 'rgba(0, 0, 0, 0.3)',
+          shadowColor: 'rgba(0, 0, 0, 0.15)',
         },
       },
-      data: aggregatedData.value.map((item) => ({
+      data: props.data.map((item) => ({
         name: `${item.flag} ${item.country}`,
-        value: item.total,
+        value: item.contributorCount,
         itemStyle: {
           color: getCountryColor(item.countryCode),
         },
