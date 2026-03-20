@@ -31,6 +31,10 @@ export default defineEventHandler(async (event): Promise<Record<string, number> 
     throw createError({ statusCode: 400, statusMessage: 'ids must be a non-empty list' });
   }
 
+  if (ids.length > 200) {
+    throw createError({ statusCode: 400, statusMessage: 'ids must not exceed 200 items' });
+  }
+
   const cmDbPool = event.context.cmDbPool as Pool | undefined;
 
   if (!cmDbPool) {
