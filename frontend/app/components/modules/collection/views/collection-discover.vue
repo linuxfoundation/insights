@@ -108,6 +108,7 @@ import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/service
 import LfxMaintainHeight from '~/components/uikit/maintain-height/maintain-height.vue';
 import useScroll from '~/components/shared/utils/scroll';
 import { useBannerStore } from '~/components/shared/store/banner.store';
+import { useLikeCounts } from '~/components/modules/collection/composables/useLikeCounts';
 
 // TODO: remove this once we have everything done and tested
 import { useAuthStore } from '~/components/modules/auth/store/auth.store';
@@ -151,6 +152,14 @@ const isMyCollectionsEmpty = computed(() => COLLECTIONS_API_SERVICE.isEmptyData(
 const isLfInsightsTeamMember = computed(() => {
   return user.value?.isLfInsightsTeamMember || false;
 });
+
+const allCollectionIds = computed(() => {
+  if (!isLfInsightsTeamMember.value) return [];
+  const ids = [...curatedCollections.value, ...communityCollections.value, ...myCollections.value].map((c) => c.id);
+  return [...new Set(ids)];
+});
+
+useLikeCounts(allCollectionIds);
 
 const loading = computed(() => {
   return (

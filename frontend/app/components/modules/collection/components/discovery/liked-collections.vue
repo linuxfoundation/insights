@@ -98,6 +98,7 @@ import { useCollectionsStore } from '~/components/modules/collection/store/colle
 import LfxCollectionCardLoading from '~/components/shared/components/collection-card-loading.vue';
 import LfxCollectionCard from '~/components/shared/components/collection-card.vue';
 import { useAuthStore } from '~/components/modules/auth/store/auth.store';
+import { useLikeCounts } from '~/components/modules/collection/composables/useLikeCounts';
 
 const props = withDefaults(
   defineProps<{
@@ -127,6 +128,11 @@ const {
 
 const likedCollections = computed(() => likedData.value?.data || []);
 const isLikedCollectionsEmpty = computed(() => likedCollections.value.length === 0);
+
+const likedCollectionIds = computed(() =>
+  user.value?.isLfInsightsTeamMember ? likedCollections.value.map((c) => c.id) : [],
+);
+useLikeCounts(likedCollectionIds);
 
 const classDisplay = computed(() => {
   if (props.view === 'grid') {

@@ -35,7 +35,7 @@ SPDX-License-Identifier: MIT
     <!-- Search results dropdown -->
     <div
       v-if="showDropdown && searchQuery.length > 0"
-      class="absolute top-full left-0 right-0 mt-1 bg-white border border-neutral-200 rounded-lg shadow-lg z-99 max-h-[24rem] overflow-auto"
+      class="absolute top-full left-0 right-0 mt-1 bg-white border border-neutral-200 rounded-lg shadow-lg z-99 max-h-[19rem] overflow-auto"
     >
       <!-- Loading state -->
       <div
@@ -56,51 +56,55 @@ SPDX-License-Identifier: MIT
         </div>
 
         <!-- Project items -->
-        <div
-          v-for="project in searchResults"
-          :key="project.slug"
-          class="flex items-center justify-between px-3 py-2 rounded-md mx-1 cursor-pointer transition-colors"
-          :class="isSelected(project.slug) ? 'bg-neutral-50' : 'hover:bg-neutral-50'"
-          @click="toggleProject(project)"
-        >
-          <div class="flex items-center gap-2">
-            <div
-              class="size-4 rounded-sm border border-neutral-200 bg-white overflow-hidden flex items-center justify-center"
-            >
-              <img
-                v-if="project.logo"
-                :src="project.logo"
-                :alt="project.name"
-                class="size-full object-contain"
-              />
+        <div class="flex flex-col gap-1">
+          <div
+            v-for="project in searchResults"
+            :key="project.slug"
+            class="flex items-center justify-between px-3 py-2 rounded-md mx-1 cursor-pointer transition-colors"
+            :class="isSelected(project.slug) ? 'bg-neutral-50' : 'hover:bg-neutral-50'"
+            @click="toggleProject(project)"
+          >
+            <div class="flex items-center gap-2">
+              <div
+                class="size-4 rounded-sm border border-neutral-200 bg-white overflow-hidden flex items-center justify-center"
+              >
+                <img
+                  v-if="project.logo"
+                  :src="project.logo"
+                  :alt="project.name"
+                  class="size-full object-contain"
+                />
+                <lfx-icon
+                  v-else
+                  name="folder"
+                  :size="10"
+                  class="text-neutral-400"
+                />
+              </div>
+              <span class="text-sm font-normal text-neutral-900 leading-5">{{ project.name }}</span>
+            </div>
+            <div class="flex items-center">
+              <lfx-button
+                v-if="!isSelected(project.slug)"
+                type="ghost"
+                size="small"
+                class="!font-medium !p-0"
+                @click.stop="addProject(project)"
+              >
+                <lfx-icon
+                  name="plus"
+                  :size="12"
+                />
+                Add
+              </lfx-button>
               <lfx-icon
                 v-else
-                name="folder"
-                :size="10"
-                class="text-neutral-400"
+                name="check"
+                :size="14"
+                class="text-positive-500"
               />
             </div>
-            <span class="text-sm font-normal text-neutral-900 leading-5">{{ project.name }}</span>
           </div>
-          <lfx-button
-            v-if="!isSelected(project.slug)"
-            type="ghost"
-            size="small"
-            class="!font-medium"
-            @click.stop="addProject(project)"
-          >
-            <lfx-icon
-              name="plus"
-              :size="12"
-            />
-            Add
-          </lfx-button>
-          <lfx-icon
-            v-else
-            name="check"
-            :size="14"
-            class="text-positive-500"
-          />
         </div>
       </template>
 
@@ -149,10 +153,12 @@ const isSelected = (slug: string) => {
 
 const addProject = (project: SearchProject) => {
   emit('add', project);
+  clearSearch();
 };
 
 const toggleProject = (project: SearchProject) => {
   emit('toggle', project);
+  clearSearch();
 };
 
 const clearSearch = () => {

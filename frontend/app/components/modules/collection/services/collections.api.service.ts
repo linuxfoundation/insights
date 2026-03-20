@@ -435,6 +435,23 @@ class CollectionsApiService {
       });
   }
 
+  fetchLikeCounts(ids: ComputedRef<string[]>) {
+    const queryKey = computed(() => [TanstackKey.LIKE_COUNTS, ...ids.value.slice().sort()]);
+
+    const queryFn = async () => {
+      if (ids.value.length === 0) return {} as Record<string, number>;
+      return await $fetch<Record<string, number>>('/api/collection/like/counts', {
+        params: { ids: ids.value.join(',') },
+      });
+    };
+
+    return useQuery<Record<string, number>>({
+      queryKey,
+      queryFn,
+      enabled: computed(() => ids.value.length > 0),
+    });
+  }
+
   async likeCollection(collectionId: string): Promise<{ success: boolean }> {
     return await $fetch('/api/collection/like', {
       method: 'POST',
