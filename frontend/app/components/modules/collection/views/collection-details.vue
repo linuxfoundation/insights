@@ -142,10 +142,7 @@ watch(collection, (newCollection) => {
   currentCollection.value = newCollection;
 });
 
-const isLfInsightsTeamMember = computed(() => user.value?.isLfInsightsTeamMember || false);
-const detailCollectionIds = computed(() =>
-  isLfInsightsTeamMember.value && currentCollection.value ? [currentCollection.value.id] : [],
-);
+const detailCollectionIds = computed(() => (currentCollection.value ? [currentCollection.value.id] : []));
 useLikeCounts(detailCollectionIds);
 
 const { scrollTop } = useScroll();

@@ -139,7 +139,7 @@ SPDX-License-Identifier: MIT
                 class="!text-neutral-900"
               />
             </lfx-button>
-            <template v-if="isLfInsightsTeamMember">
+            <template v-if="!!user">
               <lfx-button
                 type="transparent"
                 class="opacity-50 hover:!opacity-100 flex-1 flex justify-center items-center hover:!bg-transparent"
@@ -210,8 +210,6 @@ const emit = defineEmits<{
   deleted: [id: string];
   updated: [collection: Collection];
 }>();
-
-const isLfInsightsTeamMember = computed(() => user.value?.isLfInsightsTeamMember || false);
 
 // This only applies to the collection card header, in the designs the header gradient seems to be different
 // from the card background gradient for communinity and my collections
