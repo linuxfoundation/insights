@@ -19,6 +19,8 @@ export default {
           '/api/chat/**': { cache: false },
           '/api/health/live': { cache: false },
           '/api/report': { cache: false },
+          '/api/report/cncf/**': { cache: { maxAge: longCache, base: 'redis' } },
+          '/report/cncf': { cache: { maxAge: longCache, base: 'redis' } },
           '/api/security/**': { cache: false },
           '/api/collection': { cache: false },
           '/api/collection/**': { cache: false },
