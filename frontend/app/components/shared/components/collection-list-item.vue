@@ -129,7 +129,6 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { useRouter } from 'nuxt/app';
 import { storeToRefs } from 'pinia';
-import { computed } from 'vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
 import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
