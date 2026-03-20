@@ -14,17 +14,26 @@ export default defineEventHandler(async (event) => {
   const url = getRouterParam(event, '_') || event.node.req.url || '';
 
   const protectedRoutes = [
-    '/api/report',
     '/api/community/list',
     '/api/security/update',
     '/api/collection/community',
     '/api/collection/like',
   ];
+
+  // Public report routes that don't require authentication
+  const publicReportRoutes = ['/api/report/cncf/geo-distribution'];
+  const isPublicReport = publicReportRoutes.some((route) => url.startsWith(route));
+  if (isPublicReport) {
+    return;
+  }
+
+  // Protected report routes (other /api/report endpoints)
+  const isProtectedReport = url.startsWith('/api/report') && !isPublicReport;
   const protectedAndPermissionRoutes = ['/api/chat'];
 
-  const isProtectedRoute = [...protectedRoutes, ...protectedAndPermissionRoutes].some((route) =>
-    url.startsWith(route),
-  );
+  const isProtectedRoute =
+    [...protectedRoutes, ...protectedAndPermissionRoutes].some((route) => url.startsWith(route)) ||
+    isProtectedReport;
 
   const isPermissionRequired = protectedAndPermissionRoutes.some((route) => url.startsWith(route));
 

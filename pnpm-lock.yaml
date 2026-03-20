@@ -11,7 +11,7 @@ overrides:
 
 patchedDependencies:
   nuxt-og-image@5.1.13:
-    hash: 800c4d227ab0deaa04dedb05f75955c64067c32f3569e33c5a9aa1912ca0c389
+    hash: xare35fy7hn5y7wal2xbkioigm
     path: patches/nuxt-og-image@5.1.13.patch
 
 importers:
@@ -21146,6 +21146,10 @@ snapshots:
     dependencies:
       ms: 2.1.3
 
+  debug@4.4.1:
+    dependencies:
+      ms: 2.1.3
+
   debug@4.4.1(supports-color@5.5.0):
     dependencies:
       ms: 2.1.3
@@ -23603,7 +23607,7 @@ snapshots:
     dependencies:
       chalk: 5.4.1
       commander: 13.1.0
-      debug: 4.4.1(supports-color@5.5.0)
+      debug: 4.4.1
       execa: 8.0.1
       lilconfig: 3.1.3
       listr2: 8.3.3
