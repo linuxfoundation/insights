@@ -56,51 +56,55 @@ SPDX-License-Identifier: MIT
         </div>
 
         <!-- Project items -->
-        <div
-          v-for="project in searchResults"
-          :key="project.slug"
-          class="flex items-center justify-between px-3 py-2 rounded-md mx-1 cursor-pointer transition-colors"
-          :class="isSelected(project.slug) ? 'bg-neutral-50' : 'hover:bg-neutral-50'"
-          @click="toggleProject(project)"
-        >
-          <div class="flex items-center gap-2">
-            <div
-              class="size-4 rounded-sm border border-neutral-200 bg-white overflow-hidden flex items-center justify-center"
-            >
-              <img
-                v-if="project.logo"
-                :src="project.logo"
-                :alt="project.name"
-                class="size-full object-contain"
-              />
+        <div class="flex flex-col gap-1">
+          <div
+            v-for="project in searchResults"
+            :key="project.slug"
+            class="flex items-center justify-between px-3 py-2 rounded-md mx-1 cursor-pointer transition-colors"
+            :class="isSelected(project.slug) ? 'bg-neutral-50' : 'hover:bg-neutral-50'"
+            @click="toggleProject(project)"
+          >
+            <div class="flex items-center gap-2">
+              <div
+                class="size-4 rounded-sm border border-neutral-200 bg-white overflow-hidden flex items-center justify-center"
+              >
+                <img
+                  v-if="project.logo"
+                  :src="project.logo"
+                  :alt="project.name"
+                  class="size-full object-contain"
+                />
+                <lfx-icon
+                  v-else
+                  name="folder"
+                  :size="10"
+                  class="text-neutral-400"
+                />
+              </div>
+              <span class="text-sm font-normal text-neutral-900 leading-5">{{ project.name }}</span>
+            </div>
+            <div class="flex items-center">
+              <lfx-button
+                v-if="!isSelected(project.slug)"
+                type="ghost"
+                size="small"
+                class="!font-medium !p-0"
+                @click.stop="addProject(project)"
+              >
+                <lfx-icon
+                  name="plus"
+                  :size="12"
+                />
+                Add
+              </lfx-button>
               <lfx-icon
                 v-else
-                name="folder"
-                :size="10"
-                class="text-neutral-400"
+                name="check"
+                :size="14"
+                class="text-positive-500"
               />
             </div>
-            <span class="text-sm font-normal text-neutral-900 leading-5">{{ project.name }}</span>
           </div>
-          <lfx-button
-            v-if="!isSelected(project.slug)"
-            type="ghost"
-            size="small"
-            class="!font-medium"
-            @click.stop="addProject(project)"
-          >
-            <lfx-icon
-              name="plus"
-              :size="12"
-            />
-            Add
-          </lfx-button>
-          <lfx-icon
-            v-else
-            name="check"
-            :size="14"
-            class="text-positive-500"
-          />
         </div>
       </template>
 
