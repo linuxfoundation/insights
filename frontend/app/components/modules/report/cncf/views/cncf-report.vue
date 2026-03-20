@@ -9,7 +9,7 @@ SPDX-License-Identifier: MIT
         CNCF Contributor Geographic Distribution
       </h1>
       <p class="text-body-2 md:text-body-1 text-neutral-600">
-        Geographical distribution of contributors across all CNCF projects over time
+        Geographical distribution of contributing organizations across all CNCF projects
       </p>
     </div>
 
@@ -61,7 +61,7 @@ SPDX-License-Identifier: MIT
     <lfx-card class="p-4 md:p-6">
       <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-4">
         <h2 class="text-body-1 md:text-heading-3 font-secondary font-semibold text-neutral-900">
-          Contributor Distribution Over Time
+          Geographical Distribution Over Time
         </h2>
         <lfx-tabs
           v-model="displayMode"
