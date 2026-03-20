@@ -35,7 +35,7 @@ SPDX-License-Identifier: MIT
     <!-- Search results dropdown -->
     <div
       v-if="showDropdown && searchQuery.length > 0"
-      class="absolute top-full left-0 right-0 mt-1 bg-white border border-neutral-200 rounded-lg shadow-lg z-99 max-h-[24rem] overflow-auto"
+      class="absolute top-full left-0 right-0 mt-1 bg-white border border-neutral-200 rounded-lg shadow-lg z-99 max-h-[19rem] overflow-auto"
     >
       <!-- Loading state -->
       <div
@@ -149,10 +149,12 @@ const isSelected = (slug: string) => {
 
 const addProject = (project: SearchProject) => {
   emit('add', project);
+  clearSearch();
 };
 
 const toggleProject = (project: SearchProject) => {
   emit('toggle', project);
+  clearSearch();
 };
 
 const clearSearch = () => {
