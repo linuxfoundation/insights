@@ -99,7 +99,10 @@ SPDX-License-Identifier: MIT
     </lfx-card>
 
     <lfx-card class="p-4 md:p-6">
-      <h2 class="text-body-1 md:text-heading-3 font-secondary font-semibold text-neutral-900 mb-4">Country Share</h2>
+      <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-4">
+        <h2 class="text-body-1 md:text-heading-3 font-secondary font-semibold text-neutral-900">Country Share</h2>
+        <lfx-toggle v-model="showEuropeAggregate"> Show Europe as aggregate </lfx-toggle>
+      </div>
       <div v-if="distributionStatus === 'pending'">
         <div class="flex flex-col gap-4 h-[400px] pt-4">
           <lfx-skeleton
@@ -129,10 +132,12 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { ref, computed, watch, type ComputedRef } from 'vue';
 import { DateTime } from 'luxon';
+import { EUROPEAN_COUNTRY_CODES, EUROPE_AGGREGATE } from '../config/european-countries';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
 import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
+import LfxToggle from '~/components/uikit/toggle/toggle.vue';
 import LfxDropdownSelect from '~/components/uikit/dropdown/dropdown-select.vue';
 import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
 import LfxDropdownSelector from '~/components/uikit/dropdown/dropdown-selector.vue';
@@ -182,6 +187,7 @@ const displayTabs = [
 ];
 const displayMode = ref('absolute');
 const showPercentage = computed(() => displayMode.value === 'percentage');
+const showEuropeAggregate = ref(false);
 
 const selectedOption = computed(
   () => dateOptions.find((opt) => opt.key === selectedDateRange.value) || dateOptions[0],
@@ -269,13 +275,32 @@ const distributionData = computed(() => {
   const raw = distributionResponse.value?.data ?? [];
   if (raw.length === 0) return raw;
 
-  const totalContributors = raw.reduce((sum, item) => sum + item.contributorCount, 0);
-  if (totalContributors === 0) return raw;
+  // If Europe aggregate is enabled, combine European countries first
+  let dataToProcess = raw;
+  if (showEuropeAggregate.value) {
+    const europeanItems = raw.filter((item) => EUROPEAN_COUNTRY_CODES.has(item.countryCode));
+    const nonEuropeanItems = raw.filter((item) => !EUROPEAN_COUNTRY_CODES.has(item.countryCode));
+
+    if (europeanItems.length > 0) {
+      const europeTotal = europeanItems.reduce((sum, item) => sum + item.contributorCount, 0);
+      dataToProcess = [
+        ...nonEuropeanItems,
+        {
+          ...EUROPE_AGGREGATE,
+          contributorCount: europeTotal,
+          contributorPercentage: 0, // Will be recalculated
+        },
+      ];
+    }
+  }
+
+  const totalContributors = dataToProcess.reduce((sum, item) => sum + item.contributorCount, 0);
+  if (totalContributors === 0) return dataToProcess;
 
   const threshold = 1;
   const getPercentage = (count: number) => (count / totalContributors) * 100;
-  const significant = raw.filter((item) => getPercentage(item.contributorCount) >= threshold);
-  const others = raw.filter((item) => getPercentage(item.contributorCount) < threshold);
+  const significant = dataToProcess.filter((item) => getPercentage(item.contributorCount) >= threshold);
+  const others = dataToProcess.filter((item) => getPercentage(item.contributorCount) < threshold);
 
   if (others.length === 0) return significant;
 
