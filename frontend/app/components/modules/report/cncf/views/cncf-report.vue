@@ -101,7 +101,19 @@ SPDX-License-Identifier: MIT
     <lfx-card class="p-4 md:p-6">
       <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-4">
         <h2 class="text-body-1 md:text-heading-3 font-secondary font-semibold text-neutral-900">Country Share</h2>
-        <lfx-toggle v-model="showEuropeAggregate"> Show Europe as aggregate </lfx-toggle>
+        <div class="flex items-center gap-2">
+          <lfx-toggle v-model="showEuropeAggregate"> Show Europe as aggregate </lfx-toggle>
+          <lfx-tooltip
+            content="Includes EU-27, UK, Switzerland, Norway, Ukraine, and other European countries"
+            placement="top"
+          >
+            <lfx-icon
+              name="circle-info"
+              :size="14"
+              class="text-neutral-400 cursor-help"
+            />
+          </lfx-tooltip>
+        </div>
       </div>
       <div v-if="distributionStatus === 'pending'">
         <div class="flex flex-col gap-4 h-[400px] pt-4">
@@ -138,6 +150,7 @@ import LfxCard from '~/components/uikit/card/card.vue';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
 import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
 import LfxToggle from '~/components/uikit/toggle/toggle.vue';
+import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
 import LfxDropdownSelect from '~/components/uikit/dropdown/dropdown-select.vue';
 import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
 import LfxDropdownSelector from '~/components/uikit/dropdown/dropdown-selector.vue';
@@ -299,7 +312,9 @@ const distributionData = computed(() => {
 
   const threshold = 1;
   const getPercentage = (count: number) => (count / totalContributors) * 100;
-  const significant = dataToProcess.filter((item) => getPercentage(item.contributorCount) >= threshold);
+  const significant = dataToProcess
+    .filter((item) => getPercentage(item.contributorCount) >= threshold)
+    .sort((a, b) => b.contributorCount - a.contributorCount);
   const others = dataToProcess.filter((item) => getPercentage(item.contributorCount) < threshold);
 
   if (others.length === 0) return significant;
