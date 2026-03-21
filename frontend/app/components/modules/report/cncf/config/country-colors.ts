@@ -13,7 +13,6 @@ export const COUNTRY_COLOR_MAP: Record<string, string> = {
   JP: lfxColors.violet[400],
   BR: lfxColors.positive[400],
   AU: lfxColors.discovery[300],
-  EU: lfxColors.discovery[500], // Europe aggregate
 };
 
 export const getCountryColor = (countryCode: string): string => {
