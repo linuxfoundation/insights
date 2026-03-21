@@ -299,7 +299,9 @@ const distributionData = computed(() => {
 
   const threshold = 1;
   const getPercentage = (count: number) => (count / totalContributors) * 100;
-  const significant = dataToProcess.filter((item) => getPercentage(item.contributorCount) >= threshold);
+  const significant = dataToProcess
+    .filter((item) => getPercentage(item.contributorCount) >= threshold)
+    .sort((a, b) => b.contributorCount - a.contributorCount);
   const others = dataToProcess.filter((item) => getPercentage(item.contributorCount) < threshold);
 
   if (others.length === 0) return significant;
