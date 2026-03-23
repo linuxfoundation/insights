@@ -136,6 +136,71 @@ export async function fetchFromTinybird<T>(
 }
 
 /**
+ * Fetches data from Tinybird using a POST request, sending parameters in the request body.
+ * Use this instead of fetchFromTinybird when query parameters would make the URL too long
+ * (e.g., when passing large arrays of IDs).
+ *
+ * @param {string} path - The API endpoint path to fetch data from.
+ * @param {Record<string, string | number | boolean | string[] | DateTime | undefined | null>} params - The parameters to be sent in the request body.
+ * @return {Promise<TinybirdResponse<T>>} A promise that resolves to the response from Tinybird.
+ */
+export async function postToTinybird<T>(
+  path: string,
+  params: Record<string, string | number | boolean | string[] | DateTime | undefined | null>,
+): Promise<TinybirdResponse<T>> {
+  const tinybirdBaseUrl =
+    process.env.NUXT_TINYBIRD_BASE_URL || 'https://api.us-west-2.aws.tinybird.co';
+  const tinybirdToken = process.env.NUXT_TINYBIRD_TOKEN;
+
+  if (!tinybirdBaseUrl) {
+    throw new Error('Tinybird base URL is not defined');
+  }
+  if (!tinybirdToken) {
+    throw new Error('Tinybird token is not defined');
+  }
+
+  // Process params: remove undefined/null/empty values and format DateTime objects
+  const processedParams = Object.fromEntries(
+    Object.entries(params)
+      .filter(
+        ([_, value]) =>
+          value !== undefined && value !== '' && value !== null && !Number.isNaN(value),
+      )
+      .map(([key, value]) => [
+        key,
+        value instanceof DateTime ? formatDateForTinyBird(value) : value,
+      ]),
+  );
+
+  // Build URL-encoded body (Tinybird POST expects form-urlencoded params)
+  const bodyParts: string[] = [];
+  for (const [key, value] of Object.entries(processedParams)) {
+    if (Array.isArray(value)) {
+      bodyParts.push(
+        `${encodeURIComponent(key)}=${value.map((v) => encodeURIComponent(String(v))).join(',')}`,
+      );
+    } else {
+      bodyParts.push(`${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`);
+    }
+  }
+
+  const url = `${tinybirdBaseUrl}${path}`;
+
+  const data: TinybirdResponse<T> = await ofetch(url, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${tinybirdToken}`,
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: bodyParts.join('&'),
+  });
+  if (!data || !data.data) {
+    throw new Error('Invalid response from Tinybird');
+  }
+  return data;
+}
+
+/**
  * Adds data to the specified Tinybird datasource.
  *
  * @param {string} datasource - The name of the Tinybird datasource where the data will be added.
