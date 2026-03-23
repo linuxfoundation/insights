@@ -1,10 +1,27 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
-import { type QueryFunction, useInfiniteQuery, useQueryClient } from '@tanstack/vue-query';
+import {
+  type QueryFunction,
+  useInfiniteQuery,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/vue-query';
 import { type ComputedRef, computed } from 'vue';
 import type { Pagination } from '~~/types/shared/pagination';
 import type { Project } from '~~/types/project';
 import { TanstackKey } from '~/components/shared/types/tanstack';
+
+export interface ProjectCollectionItem {
+  name: string;
+  slug: string;
+  logo: string | null;
+}
+
+export interface ProjectCollectionsResponse {
+  collections: ProjectCollectionItem[];
+  publicCount: number;
+  privateCount: number;
+}
 
 export interface ProjectsQueryParams {
   sort: string;
@@ -87,6 +104,23 @@ class ProjectApiService {
 
   fetchProject(slug: string): QueryFunction<Project> {
     return () => $fetch(`/api/project/${slug}`);
+  }
+
+  fetchProjectCollections(slug: string) {
+    const queryKey = computed(() => [TanstackKey.PROJECT_COLLECTIONS, slug]);
+
+    const queryFn = computed<QueryFunction<ProjectCollectionsResponse>>(() =>
+      this.projectCollectionsQueryFn(slug),
+    );
+
+    return useQuery<ProjectCollectionsResponse>({
+      queryKey,
+      queryFn,
+    });
+  }
+
+  projectCollectionsQueryFn(slug: string): QueryFunction<ProjectCollectionsResponse> {
+    return async () => await $fetch(`/api/project/${slug}/collections`);
   }
 }
 
