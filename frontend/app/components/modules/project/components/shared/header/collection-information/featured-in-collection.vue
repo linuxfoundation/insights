@@ -4,16 +4,31 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <lfx-popover
-    v-if="totalCount > 0"
+    :disabled="totalCount === 0"
     placement="bottom-start"
     :spacing="8"
   >
     <lfx-button
+      v-if="totalCount > 0"
       type="ghost"
       class="!text-neutral-600 !font-medium"
     >
       <lfx-icon name="rectangle-history" />
       Featured in {{ pluralize('collection', totalCount, true) }}
+    </lfx-button>
+
+    <lfx-button
+      v-else
+      type="ghost"
+      class="!text-neutral-600 !font-medium"
+      @click="handleOpenAddToCollectionModal"
+    >
+      <lfx-icon
+        name="rectangle-history-circle-plus"
+        type="light"
+        :size="16"
+      />
+      <span>Add to collection</span>
     </lfx-button>
     <template #content="{ close }">
       <lfx-featured-in-collection-dropdown
@@ -55,6 +70,10 @@ const totalCount = computed(() => publicCount.value + privateCount.value);
 const handleAddToCollection = (close: () => void) => {
   close();
 
+  handleOpenAddToCollectionModal();
+};
+
+const handleOpenAddToCollectionModal = () => {
   if (!isAuthenticated.value) {
     login();
     return;
