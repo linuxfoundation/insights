@@ -9,6 +9,8 @@ export interface User {
   updated_at?: string;
   hasLfxInsightsPermission?: boolean;
   isLfInsightsTeamMember?: boolean;
+  username?: string;
+  intercomJwt?: string;
 }
 
 export interface AuthData {
