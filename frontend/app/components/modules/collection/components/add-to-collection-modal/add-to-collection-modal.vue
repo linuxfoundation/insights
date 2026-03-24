@@ -87,6 +87,13 @@ SPDX-License-Identifier: MIT
         </div>
       </div>
 
+      <p
+        v-if="isProjectInCollection"
+        class="text-xs font-medium text-negative-500 text-right"
+      >
+        This project is already in the collection.
+      </p>
+
       <!-- Footer -->
       <div class="flex items-center justify-end gap-4">
         <lfx-button
@@ -99,7 +106,13 @@ SPDX-License-Identifier: MIT
         </lfx-button>
         <lfx-button
           button-style="pill"
-          :disabled="!selectedCollectionId || isAdding"
+          :disabled="
+            !selectedCollectionId ||
+            isAdding ||
+            isLoadingCollections ||
+            isLoadingProjectCollections ||
+            isProjectInCollection
+          "
           @click="addToCollection"
         >
           <lfx-icon
@@ -130,6 +143,7 @@ import LfxSelect from '~/components/uikit/select/select.vue';
 import LfxOption from '~/components/uikit/select/option.vue';
 import type { Collection } from '~~/types/collection';
 import type { Pagination } from '~~/types/shared/pagination';
+import type { ProjectInsights } from '~~/types/project';
 
 const props = defineProps<{
   modelValue: boolean;
@@ -170,6 +184,28 @@ const collections = computed<Collection[]>(() => {
   return data;
 });
 
+const selectedCollectionSlug = computed(() => {
+  return collections.value.find((c) => c.id === selectedCollectionId.value)?.slug;
+});
+
+const collectionProjectsParams = computed(() => ({
+  slug: selectedCollectionSlug.value || '',
+  pageSize: 100,
+}));
+
+const { data: projectCollectionsData, isLoading: isLoadingProjectCollections } =
+  COLLECTIONS_API_SERVICE.fetchCollectionProjects(collectionProjectsParams);
+
+const projectCollections = computed<ProjectInsights[]>(() => {
+  // @ts-expect-error - TanStack Query type inference issue with Vue
+  const data = projectCollectionsData.value?.pages.flatMap((page: Pagination<ProjectInsights>) => page.data) || [];
+  return data;
+});
+
+const isProjectInCollection = computed(() =>
+  projectCollections.value.some((p: ProjectInsights) => p.id === props.project.id),
+);
+
 const closeModal = () => {
   isModalOpen.value = false;
 };
@@ -184,19 +220,7 @@ const addToCollection = async () => {
   isAdding.value = true;
 
   try {
-    // Fetch existing projects in the collection
-    const existingProjectsResponse = await $fetch<{ data: { id: string }[] }>(
-      `/api/collection/${collection.slug}/projects`,
-      { params: { pageSize: 1000 } },
-    );
-
-    const existingProjectIds = existingProjectsResponse.data.map((p) => p.id);
-
-    // Check if project is already in the collection
-    if (existingProjectIds.includes(props.project.id)) {
-      showToast(`${props.project.name} is already in ${collection.name}`, ToastTypesEnum.warning);
-      return;
-    }
+    const existingProjectIds = projectCollections.value.map((p: ProjectInsights) => p.id);
 
     const newProjectIds = [...existingProjectIds, props.project.id];
 
