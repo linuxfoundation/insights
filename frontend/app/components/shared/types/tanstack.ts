@@ -58,6 +58,7 @@ export enum TanstackKey {
 
   // Security
   SECURITY_ASSESSMENT = 'security-assessment',
+  VULNERABILITIES = 'vulnerabilities',
 
   // Community
   COMMUNITY_MENTIONS = 'community-mentions',
