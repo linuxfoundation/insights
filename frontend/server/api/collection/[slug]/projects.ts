@@ -4,7 +4,7 @@ import type { Pool } from 'pg';
 import type { ProjectInsightsTinybird } from '~~/types/project';
 import type { Pagination } from '~~/types/shared/pagination';
 import { CommunityCollectionRepository } from '~~/server/repo/communityCollection.repo';
-import { fetchFromTinybird } from '~~/server/data/tinybird/tinybird';
+import { postToTinybird } from '~~/server/data/tinybird/tinybird';
 
 /**
  * API Endpoint: /api/collection/:slug/projects
@@ -70,7 +70,7 @@ export default defineEventHandler(async (event): Promise<Pagination<unknown> | E
       };
     }
 
-    const response = await fetchFromTinybird<ProjectInsightsTinybird[]>(
+    const response = await postToTinybird<ProjectInsightsTinybird[]>(
       '/v0/pipes/project_insights.json',
       {
         ids: projectIds,
