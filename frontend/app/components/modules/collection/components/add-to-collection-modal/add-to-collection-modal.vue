@@ -21,7 +21,7 @@ SPDX-License-Identifier: MIT
           </div>
           <div class="flex flex-col gap-1">
             <h2 class="font-secondary font-bold text-xl leading-7 text-neutral-900">Add to collection</h2>
-            <p class="text-xs text-neutral-500">Add the selected project(s) to one of your collections.</p>
+            <p class="text-xs text-neutral-500">Add the selected project to one of your collections.</p>
           </div>
         </div>
         <lfx-icon-button
@@ -77,12 +77,12 @@ SPDX-License-Identifier: MIT
             class="text-xs text-neutral-500 mt-1"
           >
             You don't have any collections yet.
-            <a
-              href="/collection?tab=my-collections"
+            <nuxt-link
+              to="/collection?tab=my-collections"
               class="text-accent-500 hover:underline"
             >
               Create one
-            </a>
+            </nuxt-link>
           </p>
         </div>
       </div>
@@ -190,7 +190,7 @@ const selectedCollectionSlug = computed(() => {
 
 const collectionProjectsParams = computed(() => ({
   slug: selectedCollectionSlug.value || '',
-  pageSize: 100,
+  pageSize: 100000,
 }));
 
 const { data: projectCollectionsData, isLoading: isLoadingProjectCollections } =

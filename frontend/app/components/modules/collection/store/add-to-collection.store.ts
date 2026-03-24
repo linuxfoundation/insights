@@ -26,6 +26,7 @@ export const useAddToCollectionStore = defineStore('addToCollection', () => {
 
   const closeModal = () => {
     isModalOpen.value = false;
+    modalData.value = null;
   };
 
   const handleAdded = () => {
