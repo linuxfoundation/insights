@@ -23,6 +23,7 @@ import { checkGuardrails } from '~~/server/utils/guardrail';
  * - description (string, optional): Collection description
  * - isPrivate (boolean, optional): Whether the collection is private
  * - projects (string[], optional): List of project IDs
+ * - repositoryUrls (string[], optional): List of repository URLs
  *
  * Response:
  * - 200: Updated collection
@@ -45,6 +46,38 @@ export default defineEventHandler(async (event): Promise<CommunityCollection | E
   }
 
   const body = await readBody<Partial<UpdateCommunityCollectionInput>>(event);
+
+  if (body?.projects !== undefined) {
+    if (!Array.isArray(body.projects) || body.projects.some((p) => typeof p !== 'string' || !p)) {
+      throw createError({
+        statusCode: 400,
+        statusMessage: 'projects must be an array of non-empty strings',
+      });
+    }
+
+    if (body.projects.length > 1000) {
+      throw createError({ statusCode: 400, statusMessage: 'projects cannot exceed 1000 items' });
+    }
+  }
+
+  if (body?.repositoryUrls !== undefined) {
+    if (
+      !Array.isArray(body.repositoryUrls) ||
+      body.repositoryUrls.some((u) => typeof u !== 'string' || !u)
+    ) {
+      throw createError({
+        statusCode: 400,
+        statusMessage: 'repositoryUrls must be an array of non-empty strings',
+      });
+    }
+
+    if (body.repositoryUrls.length > 1000) {
+      throw createError({
+        statusCode: 400,
+        statusMessage: 'repositoryUrls cannot exceed 1000 items',
+      });
+    }
+  }
 
   const cmDbPool = event.context.cmDbPool as Pool | undefined;
 
@@ -100,6 +133,7 @@ export default defineEventHandler(async (event): Promise<CommunityCollection | E
       description: body.description?.trim(),
       isPrivate: body.isPrivate,
       projects: body.projects,
+      repositoryUrls: body.repositoryUrls,
     });
   } catch (error: unknown) {
     if (error && typeof error === 'object' && 'statusCode' in error) {
