@@ -27,6 +27,7 @@ export default defineNuxtPlugin(() => {
   let isLoading = false;
   let isBooted = false;
   let bootAttempted = false;
+  let bootedWithIdentity = false;
 
   const initializeStub = () => {
     const w = window as unknown as Window & {
@@ -82,8 +83,63 @@ export default defineNuxtPlugin(() => {
     }
   };
 
+  /**
+   * Internal shutdown for re-booting (anonymous → identified transition).
+   * Resets boot state but keeps the script loaded.
+   */
+  const shutdownForReboot = () => {
+    if (window.Intercom) {
+      try {
+        window.Intercom('shutdown');
+      } catch (error) {
+        console.warn('[Intercom] Shutdown for reboot failed', error);
+      }
+    }
+    isBooted = false;
+    bootedWithIdentity = false;
+  };
+
+  /**
+   * Boot Intercom without user identity so banners and popups are visible to all visitors.
+   * When the user logs in, the authenticated boot call will upgrade the session with identity.
+   */
+  const bootAnonymous = () => {
+    if (isBooted && !bootedWithIdentity) return; // already anonymously booted
+
+    if (!isLoaded) {
+      loadScript();
+    }
+
+    const pollInterval = setInterval(() => {
+      if (isLoaded && window.Intercom) {
+        clearInterval(pollInterval);
+        clearTimeout(timeout);
+
+        if (isBooted) return;
+        isBooted = true;
+        bootedWithIdentity = false;
+
+        window.Intercom?.('boot', {
+          api_base: intercomApiBase,
+          app_id: intercomId,
+        });
+      }
+    }, 100);
+
+    const timeout = setTimeout(() => {
+      clearInterval(pollInterval);
+      isLoading = false;
+      console.warn('[Intercom] Anonymous boot: Script failed to load within 10s');
+    }, 10000);
+  };
+
   const boot = (intercomJwt: string, userId: string, name?: string, email?: string) => {
-    if (isBooted) return;
+    if (isBooted && bootedWithIdentity) return;
+
+    if (isBooted && !bootedWithIdentity) {
+      // Upgrade from anonymous to identified: shutdown and re-boot with identity
+      shutdownForReboot();
+    }
 
     if (!isLoaded) {
       loadScript();
@@ -100,8 +156,15 @@ export default defineNuxtPlugin(() => {
         clearInterval(pollInterval);
         clearTimeout(timeout);
 
-        if (isBooted) return;
+        if (isBooted && bootedWithIdentity) return;
+
+        if (isBooted && !bootedWithIdentity) {
+          // Concurrent anonymous boot finished first — upgrade to identified
+          shutdownForReboot();
+        }
+
         isBooted = true;
+        bootedWithIdentity = true;
 
         window.Intercom?.('boot', {
           api_base: intercomApiBase,
@@ -110,6 +173,18 @@ export default defineNuxtPlugin(() => {
           name,
           email,
         });
+
+        if (userId) {
+          try {
+            window.Intercom?.('update', {
+              user_id: userId,
+              name,
+              email,
+            });
+          } catch (updateError) {
+            console.warn('[Intercom] Update after boot failed', updateError);
+          }
+        }
       }
     }, 100);
 
@@ -128,8 +203,12 @@ export default defineNuxtPlugin(() => {
       window.Intercom('shutdown');
       isBooted = false;
       bootAttempted = false;
+      bootedWithIdentity = false;
     }
   };
+
+  // Boot anonymously on startup so banners/popups are visible to all visitors
+  bootAnonymous();
 
   watch(
     [isAuthenticated, user],
@@ -144,8 +223,10 @@ export default defineNuxtPlugin(() => {
         } else {
           console.warn('[Intercom] Not booted — missing userId or intercom JWT claim');
         }
-      } else if (!authenticated && isBooted) {
+      } else if (!authenticated && bootAttempted) {
+        // Shutdown identified session and re-boot anonymously so banners remain visible
         shutdown();
+        bootAnonymous();
       }
     },
     { immediate: true },
