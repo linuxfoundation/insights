@@ -83,7 +83,10 @@ export default defineEventHandler(async (event): Promise<OSSIndexCategoryDetails
       page,
       pageSize,
     };
-  } catch (error) {
+  } catch (error: unknown) {
+    if (error && typeof error === 'object' && 'statusCode' in error) {
+      throw error;
+    }
     console.error('Error fetching oss index collection list from TinyBird:', error);
     throw createError({ statusCode: 500, statusMessage: 'Internal Server Error' });
   }
