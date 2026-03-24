@@ -374,3 +374,93 @@ export const getBarChartConfigCustom = (
     overrideConfig,
   );
 };
+
+export interface HorizontalBarData {
+  category: string;
+  value: number;
+}
+
+/**
+ * Get horizontal bar chart config. This creates a bar chart where bars extend horizontally.
+ * The yAxis displays categories and xAxis displays values.
+ * @param data - Array of category-value pairs
+ * @param color - Bar color (default: accent-500)
+ * @param overrideConfig - Additional config to merge
+ * @returns Chart config
+ */
+export const getHorizontalBarChartConfig = (
+  data: HorizontalBarData[],
+  color: string = lfxColors.accent[500],
+  overrideConfig?: Partial<ECOption>,
+): ECOption => {
+  const categories = data.map((item) => item.category);
+  const values = data.map((item) => item.value);
+
+  const baseConfig: ECOption = {
+    grid: {
+      left: 0,
+      right: '5%',
+      top: 0,
+      bottom: 0,
+      containLabel: true,
+    },
+    xAxis: {
+      type: 'value',
+      axisLabel: {
+        fontSize: 10,
+        fontWeight: 'normal',
+        color: lfxColors.neutral[400],
+      },
+      axisLine: {
+        show: false,
+      },
+      splitLine: {
+        lineStyle: {
+          type: 'solid',
+          color: lfxColors.neutral[200],
+        },
+      },
+      axisTick: { show: false },
+    },
+    yAxis: {
+      type: 'category',
+      data: categories,
+      inverse: true,
+      axisLabel: {
+        fontSize: 14,
+        fontWeight: 500,
+        color: lfxColors.neutral[900],
+      },
+      axisLine: {
+        show: false,
+      },
+      axisTick: { show: false },
+    },
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: {
+        type: 'shadow',
+      },
+      formatter: (params: unknown) => {
+        const paramArray = params as Array<{ name: string; value: number }>;
+        if (!paramArray || paramArray.length === 0) return '';
+        const item = paramArray[0];
+        if (!item) return '';
+        return `${item.name}: ${item.value}`;
+      },
+    },
+    series: [
+      {
+        type: 'bar',
+        data: values,
+        barMaxWidth: 8,
+        itemStyle: {
+          color,
+          borderRadius: [0, 2, 2, 0],
+        },
+      },
+    ],
+  };
+
+  return overrideConfig ? merge({}, baseConfig, overrideConfig) : baseConfig;
+};

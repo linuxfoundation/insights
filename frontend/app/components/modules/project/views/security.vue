@@ -127,6 +127,8 @@ SPDX-License-Identifier: MIT
         </div>
       </div>
     </lfx-card>
+
+    <lfx-project-vulnerabilities-section />
   </div>
 
   <lfx-project-repository-switch
@@ -165,6 +167,7 @@ import LfxProjectSecurityControlAssessmentHead from '~/components/modules/projec
 import LfxProjectRepositorySwitch from '~/components/modules/project/components/shared/header/repository-switch.vue';
 import LfxProjectSecurityReposEvalModal from '~/components/modules/project/components/security/repos-eval-modal.vue';
 import { SECURITY_API_SERVICE } from '~/components/modules/project/services/security.api.service';
+import LfxProjectVulnerabilitiesSection from '~/components/modules/project/components/vulnerabilities/vulnerabilities-section.vue';
 
 const isSearchRepoModalOpen = ref(false);
 
