@@ -121,20 +121,11 @@ const chartConfig = computed(() => {
   return merge({}, baseConfig, {
     grid: {
       top: '5%',
-      left: '8%',
-      right: '18%',
+      left: '5%',
+      right: '5%',
       bottom: '18%',
     },
-    media: [
-      {
-        query: { maxWidth: 640 },
-        option: {
-          grid: {
-            right: '3%',
-          },
-        },
-      },
-    ],
+    media: [],
     legend: {
       show: true,
       bottom: 0,
@@ -216,16 +207,7 @@ const chartConfig = computed(() => {
           color,
         },
         endLabel: {
-          show: !isMobile.value,
-          formatter: tool?.toolName || '',
-          fontSize: 11,
-          color: lfxColors.neutral[700],
-          distance: 8,
-          overflow: 'truncate',
-          ellipsis: '...',
-        },
-        labelLayout: {
-          hideOverlap: true,
+          show: false,
         },
       };
     }),
