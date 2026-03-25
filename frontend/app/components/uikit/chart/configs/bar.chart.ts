@@ -13,6 +13,7 @@ import {
 
 import type { ChartData, ChartSeries, SeriesTypes } from '../types/ChartTypes';
 import defaultOption from './defaults.chart';
+import { formatNumber } from '~/components/shared/utils/formatter';
 import { lfxColors } from '~/config/styles/colors';
 import { formatByGranularity } from '~/components/shared/types/granularity';
 
@@ -446,7 +447,7 @@ export const getHorizontalBarChartConfig = (
         if (!paramArray || paramArray.length === 0) return '';
         const item = paramArray[0];
         if (!item) return '';
-        return `${item.name}: ${item.value}`;
+        return `${item.name}: ${formatNumber(item.value)}`;
       },
     },
     series: [
