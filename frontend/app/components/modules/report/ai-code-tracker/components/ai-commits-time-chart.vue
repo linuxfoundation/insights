@@ -49,16 +49,20 @@ onBeforeUnmount(() => {
 });
 
 const uniqueTools = computed(() => {
-  const toolMap = new Map<string, { toolKey: string; toolName: string }>();
+  const toolMap = new Map<string, { toolKey: string; toolName: string; total: number }>();
   props.data.forEach((item) => {
-    if (!toolMap.has(item.toolKey)) {
+    const existing = toolMap.get(item.toolKey);
+    if (existing) {
+      existing.total += item.commitCount;
+    } else {
       toolMap.set(item.toolKey, {
         toolKey: item.toolKey,
         toolName: item.toolName,
+        total: item.commitCount,
       });
     }
   });
-  return Array.from(toolMap.values());
+  return Array.from(toolMap.values()).sort((a, b) => a.total - b.total);
 });
 
 const uniqueDates = computed(() => {
