@@ -128,7 +128,8 @@ SPDX-License-Identifier: MIT
       </div>
     </lfx-card>
 
-    <lfx-project-vulnerabilities-section />
+    <lfx-project-vulnerabilities-section v-if="isAuthenticated" />
+    <lfx-auth-wall-vulnerabilities v-else />
   </div>
 
   <lfx-project-repository-switch
@@ -168,6 +169,8 @@ import LfxProjectRepositorySwitch from '~/components/modules/project/components/
 import LfxProjectSecurityReposEvalModal from '~/components/modules/project/components/security/repos-eval-modal.vue';
 import { SECURITY_API_SERVICE } from '~/components/modules/project/services/security.api.service';
 import LfxProjectVulnerabilitiesSection from '~/components/modules/project/components/vulnerabilities/vulnerabilities-section.vue';
+import { useAuthStore } from '~/components/modules/auth/store/auth.store';
+import LfxAuthWallVulnerabilities from '~/components/modules/project/components/vulnerabilities/auth-wall-vulnerabilities.vue';
 
 const isSearchRepoModalOpen = ref(false);
 
@@ -176,6 +179,7 @@ const { name } = route.params;
 
 const { selectedReposValues, isArchived, emptyStateTitle, emptyStateDescription, hasSelectedArchivedRepos } =
   storeToRefs(useProjectStore());
+const { isAuthenticated } = storeToRefs(useAuthStore());
 
 const isRepository = computed(() => !!name);
 const isReposEvalModalOpen = ref(false);
