@@ -29,13 +29,13 @@ export default defineEventHandler(async (event) => {
 
   // Protected report routes (other /api/report endpoints)
   const isProtectedReport = url.startsWith('/api/report') && !isPublicReport;
-  // const isProtectedVulnerabilityRoute = url.includes('/security/vulnerabilities');
+  const isProtectedVulnerabilityRoute = url.includes('/security/vulnerabilities');
   const protectedAndPermissionRoutes = ['/api/chat'];
 
   const isProtectedRoute =
     [...protectedRoutes, ...protectedAndPermissionRoutes].some((route) => url.startsWith(route)) ||
-    isProtectedReport; // ||
-  // isProtectedVulnerabilityRoute;
+    isProtectedReport ||
+    isProtectedVulnerabilityRoute;
 
   const isPermissionRequired = protectedAndPermissionRoutes.some((route) => url.startsWith(route));
 
