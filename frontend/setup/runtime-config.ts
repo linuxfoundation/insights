@@ -65,5 +65,7 @@ export default {
       ? 'https://insights.linuxfoundation.org/api/'
       : 'http://localhost:3000/api/',
     lfxSegmentCdnUrl: process.env.LFX_SEGMENT_CDN_URL || '',
+    intercomId: isProduction ? 'w29sqomy' : 'mxl90k6y',
+    intercomApiBase: 'https://api-iam.intercom.io',
   },
 };
