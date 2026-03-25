@@ -15,13 +15,15 @@ You are a frontend UI expert for the LFX Insights repo. Your job is to build Vue
 
 ## Available Uikit Components
 
-Located in `frontend/app/components/uikit/`. Auto-imported by Nuxt as `<lfx-*>`:
+Located in `frontend/app/components/uikit/`. Auto-imported by Nuxt as `<lfx-*>`. Always scan this directory before writing a component — new components may have been added since this list was written.
 
 | Component | Tag | Use for |
 |---|---|---|
 | accordion | `<lfx-accordion>` | Collapsible sections |
 | avatar | `<lfx-avatar>` | User/org avatars |
 | avatar-group | `<lfx-avatar-group>` | Stacked avatar list |
+| back | `<lfx-back>` | Back navigation link |
+| benchmarks | `<lfx-benchmarks>` | Benchmark comparisons |
 | button | `<lfx-button>` | All clickable actions |
 | card | `<lfx-card>` | Content containers |
 | carousel | `<lfx-carousel>` | Sliding content |
@@ -36,6 +38,7 @@ Located in `frontend/app/components/uikit/`. Auto-imported by Nuxt as `<lfx-*>`:
 | icon | `<lfx-icon>` | Icons |
 | icon-button | `<lfx-icon-button>` | Icon-only buttons |
 | input | `<lfx-input>` | Text inputs |
+| maintain-height | `<lfx-maintain-height>` | Prevent layout shift during loading |
 | menu-button | `<lfx-menu-button>` | Button with dropdown menu |
 | modal | `<lfx-modal>` | Dialog/modal overlays |
 | organization-logo | `<lfx-organization-logo>` | Org logo display |

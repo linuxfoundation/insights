@@ -67,6 +67,17 @@ cd database && \
   bash migrate.sh
 ```
 
+> **Linux users:** `host.docker.internal` may not resolve by default on Linux. Use `--host-network` instead, which makes the container share the host's network stack so `localhost` works:
+> ```sh
+> cd database && \
+>   PGHOST=localhost \
+>   PGPORT=5450 \
+>   PGDATABASE=insights \
+>   PGUSER=postgres \
+>   PGPASSWORD=example \
+>   bash migrate.sh --host-network
+> ```
+
 ### 5. Verify
 
 ```sh

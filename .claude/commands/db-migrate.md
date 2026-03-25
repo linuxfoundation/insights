@@ -51,8 +51,8 @@ This creates `database/migrations/V<timestamp>__<migration_name>.sql`. Open the 
 To see which migrations have been applied:
 ```sh
 cd database && \
-  PGHOST=localhost \
-  PGPORT=5432 \
+  PGHOST=host.docker.internal \
+  PGPORT=5450 \
   PGDATABASE=insights \
   PGUSER=postgres \
   PGPASSWORD=example \
@@ -63,8 +63,8 @@ cd database && \
 
 ```sh
 cd database && \
-  PGHOST=localhost \
-  PGPORT=5432 \
+  PGHOST=host.docker.internal \
+  PGPORT=5450 \
   PGDATABASE=insights \
   PGUSER=postgres \
   PGPASSWORD=example \
