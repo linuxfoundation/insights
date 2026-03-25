@@ -146,7 +146,7 @@ const dateOptions = [
 ];
 
 const selectedDateRange = ref('past12months');
-const granularity = computed(() => (selectedDateRange.value === 'past12months' ? 'monthly' : 'yearly'));
+const granularity = 'monthly';
 
 const displayTabs = [
   { value: 'percentage', label: 'Percentage' },
