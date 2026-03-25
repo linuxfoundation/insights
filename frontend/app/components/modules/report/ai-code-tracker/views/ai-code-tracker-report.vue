@@ -47,15 +47,25 @@ SPDX-License-Identifier: MIT
         </lfx-dropdown-select>
       </div>
 
-      <p
+      <div
         v-if="responseData"
-        class="text-body-1 text-neutral-600"
+        class="flex flex-col gap-1 text-right"
       >
-        <span class="font-semibold text-neutral-900">{{ formatNumber(totalAiCommits) }}</span>
-        out of
-        <span class="font-semibold text-neutral-900">{{ formatNumber(totalCommits) }}</span>
-        commits were AI-assisted
-      </p>
+        <p class="text-body-1 text-neutral-600">
+          <span class="font-semibold text-neutral-900">{{ formatNumber(totalAiCommits) }}</span>
+          out of
+          <span class="font-semibold text-neutral-900">{{ formatNumber(totalCommits) }}</span>
+          commits were AI-assisted
+        </p>
+        <p
+          v-if="responseData.projectCount"
+          class="text-body-2 text-neutral-500"
+        >
+          Tracked across
+          <span class="font-semibold text-neutral-700">{{ formatNumber(responseData.projectCount) }}</span>
+          most critical open-source projects
+        </p>
+      </div>
     </div>
 
     <lfx-card class="p-4 md:p-6">
@@ -119,29 +129,29 @@ import { formatNumber } from '~/components/shared/utils/formatter';
 import type { AiCodeTrackerQueryParams } from '~~/types/report/ai-code-tracker.types';
 
 const now = DateTime.local();
-const endOfLastYear = now.startOf('year').minus({ days: 1 }).toFormat('yyyy-MM-dd');
+const lastMonthEnd = now.minus({ months: 1 }).endOf('month').toFormat('yyyy-MM-dd');
 
 const dateOptions = [
   {
     key: 'past12months',
     label: 'Past 12 months',
     startDate: now.minus({ months: 12 }).startOf('month').toFormat('yyyy-MM-dd'),
-    endDate: now.minus({ months: 1 }).endOf('month').toFormat('yyyy-MM-dd'),
+    endDate: lastMonthEnd,
     description: `${now.minus({ months: 12 }).toFormat('MMM yyyy')} \u2192 ${now.minus({ months: 1 }).toFormat('MMM yyyy')}`,
   },
   {
     key: 'past5years',
     label: 'Past 5 years',
-    startDate: now.minus({ years: 5 }).startOf('year').toFormat('yyyy-MM-dd'),
-    endDate: endOfLastYear,
-    description: `${now.minus({ years: 5 }).toFormat('yyyy')} \u2192 ${now.minus({ years: 1 }).toFormat('yyyy')}`,
+    startDate: now.minus({ years: 5 }).startOf('month').toFormat('yyyy-MM-dd'),
+    endDate: lastMonthEnd,
+    description: `${now.minus({ years: 5 }).toFormat('MMM yyyy')} \u2192 ${now.minus({ months: 1 }).toFormat('MMM yyyy')}`,
   },
   {
     key: 'past10years',
     label: 'Past 10 years',
-    startDate: now.minus({ years: 10 }).startOf('year').toFormat('yyyy-MM-dd'),
-    endDate: endOfLastYear,
-    description: `${now.minus({ years: 10 }).toFormat('yyyy')} \u2192 ${now.minus({ years: 1 }).toFormat('yyyy')}`,
+    startDate: now.minus({ years: 10 }).startOf('month').toFormat('yyyy-MM-dd'),
+    endDate: lastMonthEnd,
+    description: `${now.minus({ years: 10 }).toFormat('MMM yyyy')} \u2192 ${now.minus({ months: 1 }).toFormat('MMM yyyy')}`,
   },
 ];
 

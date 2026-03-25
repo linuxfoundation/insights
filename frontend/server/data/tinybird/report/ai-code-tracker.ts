@@ -21,6 +21,10 @@ interface TinybirdTotalCommitsItem {
   totalCommits: number;
 }
 
+interface TinybirdProjectCountItem {
+  'count(id)': number;
+}
+
 export interface AiCodeTrackerFilter {
   granularity: string;
   startDate?: DateTime;
@@ -36,12 +40,16 @@ export async function fetchAiCodeTrackerData(
     endDate: filter.endDate,
   };
 
-  const [toolData, totalData] = await Promise.all([
+  const [toolData, totalData, projectData] = await Promise.all([
     fetchFromTinybird<TinybirdAiToolItem[]>('/v0/pipes/ai_code_tracker.json', query),
     fetchFromTinybird<TinybirdTotalCommitsItem[]>(
       '/v0/pipes/ai_code_tracker_total_commits.json',
       query,
     ),
+    fetchFromTinybird<TinybirdProjectCountItem[]>('/v0/pipes/projects_list.json', {
+      count: true,
+      onboarded: 'true',
+    }),
   ]);
 
   const data: AiToolTimeSeriesDataPoint[] = toolData.data.map((item) => ({
@@ -57,5 +65,7 @@ export async function fetchAiCodeTrackerData(
     totalCommits: item.totalCommits,
   }));
 
-  return { data, periodTotals };
+  const projectCount = projectData.data[0]?.['count(id)'] ?? 0;
+
+  return { data, periodTotals, projectCount };
 }

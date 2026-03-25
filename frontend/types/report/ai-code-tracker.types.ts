@@ -17,6 +17,7 @@ export interface PeriodTotalCommits {
 export interface AiCodeTrackerResponse {
   data: AiToolTimeSeriesDataPoint[];
   periodTotals: PeriodTotalCommits[];
+  projectCount: number;
 }
 
 export interface AiCodeTrackerQueryParams {
