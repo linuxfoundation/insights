@@ -79,17 +79,25 @@ SPDX-License-Identifier: MIT
         @view-more="handleViewMore"
       />
     </template>
+
+    <!-- Vulnerability Drawer -->
+    <lfx-project-vulnerability-drawer
+      v-model="isDrawerOpen"
+      :project-name="projectName"
+      :project-logo="projectLogo"
+    />
   </lfx-card>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useRoute } from 'nuxt/app';
 import { storeToRefs } from 'pinia';
 import LfxProjectVulnerabilitySummary from './vulnerability-summary.vue';
 import LfxProjectVulnerabilitySeverity from './vulnerability-severity.vue';
 import LfxProjectVulnerabilityEcosystem from './vulnerability-ecosystem.vue';
 import LfxProjectRecentVulnerabilities from './recent-vulnerabilities.vue';
+import LfxProjectVulnerabilityDrawer from './vulnerability-drawer.vue';
 import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxCard from '~/components/uikit/card/card.vue';
@@ -98,11 +106,15 @@ import { useProjectStore } from '~/components/modules/project/store/project.stor
 
 const route = useRoute();
 
-const { selectedReposValues } = storeToRefs(useProjectStore());
+const { selectedReposValues, project } = storeToRefs(useProjectStore());
 
 const isRepository = computed(() => !!route.params.name);
 const hasSelectedRepos = computed(() => selectedReposValues.value && selectedReposValues.value.length > 0);
 const showAggregatedDisclaimer = computed(() => !isRepository.value && !hasSelectedRepos.value);
+
+const isDrawerOpen = ref(false);
+const projectName = computed(() => project.value?.name || '');
+const projectLogo = computed(() => project.value?.logo || '');
 
 const params = computed(() => ({
   projectSlug: route.params.slug as string,
@@ -116,8 +128,7 @@ const emit = defineEmits<{
 }>();
 
 const handleViewMore = () => {
-  // TODO: Implement view more functionality
-  // console.log('View more clicked');
+  isDrawerOpen.value = true;
 };
 </script>
 
