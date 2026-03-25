@@ -123,7 +123,6 @@ export async function fetchFromTinybird<T>(
   }
   const params = paramParts.join('&');
   const url = params ? `${tinybirdBaseUrl}${path}?${params}` : `${tinybirdBaseUrl}${path}`;
-
   const data: TinybirdResponse<T> = await ofetch(url, {
     headers: {
       Authorization: `Bearer ${tinybirdToken}`,

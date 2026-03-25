@@ -47,13 +47,14 @@ SPDX-License-Identifier: MIT
         </lfx-dropdown-select>
       </div>
 
-      <p class="text-body-1 text-neutral-600">
+      <p
+        v-if="responseData"
+        class="text-body-1 text-neutral-600"
+      >
         <span class="font-semibold text-neutral-900">{{ formatNumber(totalAiCommits) }}</span>
         out of
         <span class="font-semibold text-neutral-900">{{ formatNumber(totalCommits) }}</span>
-        commits across
-        <span class="font-semibold text-neutral-900">13,500</span>
-        critical OSS projects were AI-assisted
+        commits were AI-assisted
       </p>
     </div>
 
@@ -68,9 +69,32 @@ SPDX-License-Identifier: MIT
           width-type="inline"
         />
       </div>
+
+      <div v-if="status === 'pending'">
+        <div class="flex flex-col gap-4 h-[400px] pt-4">
+          <lfx-skeleton
+            height="100%"
+            width="100%"
+          />
+        </div>
+      </div>
+
+      <div v-else-if="error">
+        <div class="flex items-center justify-center h-[400px]">
+          <div class="text-negative-500">Error loading data. Please try again.</div>
+        </div>
+      </div>
+
+      <div v-else-if="!responseData || responseData.data.length === 0">
+        <div class="flex items-center justify-center h-[400px]">
+          <div class="text-neutral-500">No data available for the selected period.</div>
+        </div>
+      </div>
+
       <lfx-ai-commits-time-chart
-        :data="filteredTimeSeriesData"
-        :period-totals="filteredPeriodTotals"
+        v-else
+        :data="responseData.data"
+        :period-totals="responseData.periodTotals"
         :granularity="granularity"
         :show-percentage="showPercentage"
       />
@@ -79,39 +103,43 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, type ComputedRef } from 'vue';
 import { DateTime } from 'luxon';
 import LfxAiCommitsTimeChart from '../components/ai-commits-time-chart.vue';
-import {
-  AI_TOOL_TIME_SERIES_DATA_MONTHLY,
-  AI_TOOL_TIME_SERIES_DATA_YEARLY,
-  PERIOD_TOTAL_COMMITS_MONTHLY,
-  PERIOD_TOTAL_COMMITS_YEARLY,
-} from '../config/ai-code-tracker-mock-data';
+import { AI_CODE_TRACKER_API_SERVICE } from '../services/ai-code-tracker.api.service';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
+import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
 import LfxDropdownSelect from '~/components/uikit/dropdown/dropdown-select.vue';
 import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
 import LfxDropdownSelector from '~/components/uikit/dropdown/dropdown-selector.vue';
 import { formatNumber } from '~/components/shared/utils/formatter';
+import type { AiCodeTrackerQueryParams } from '~~/types/report/ai-code-tracker.types';
 
 const now = DateTime.local();
+const endOfLastYear = now.startOf('year').minus({ days: 1 }).toFormat('yyyy-MM-dd');
 
 const dateOptions = [
   {
     key: 'past12months',
     label: 'Past 12 months',
-    description: `${now.minus({ months: 12 }).toFormat('MMM yyyy')} → ${now.minus({ months: 1 }).toFormat('MMM yyyy')}`,
+    startDate: now.minus({ months: 12 }).startOf('month').toFormat('yyyy-MM-dd'),
+    endDate: now.minus({ months: 1 }).endOf('month').toFormat('yyyy-MM-dd'),
+    description: `${now.minus({ months: 12 }).toFormat('MMM yyyy')} \u2192 ${now.minus({ months: 1 }).toFormat('MMM yyyy')}`,
   },
   {
     key: 'past5years',
     label: 'Past 5 years',
-    description: `${now.minus({ years: 5 }).toFormat('yyyy')} → ${now.minus({ years: 1 }).toFormat('yyyy')}`,
+    startDate: now.minus({ years: 5 }).startOf('year').toFormat('yyyy-MM-dd'),
+    endDate: endOfLastYear,
+    description: `${now.minus({ years: 5 }).toFormat('yyyy')} \u2192 ${now.minus({ years: 1 }).toFormat('yyyy')}`,
   },
   {
     key: 'alltime',
     label: 'All time',
+    startDate: null,
+    endDate: endOfLastYear,
     description: '',
   },
 ];
@@ -126,31 +154,25 @@ const displayTabs = [
 const displayMode = ref('percentage');
 const showPercentage = computed(() => displayMode.value === 'percentage');
 
-const filteredTimeSeriesData = computed(() => {
-  if (selectedDateRange.value === 'past12months') {
-    return AI_TOOL_TIME_SERIES_DATA_MONTHLY;
-  }
-  if (selectedDateRange.value === 'past5years') {
-    return AI_TOOL_TIME_SERIES_DATA_YEARLY.slice(-5 * 8); // 5 years * 8 tools
-  }
-  // All time
-  return AI_TOOL_TIME_SERIES_DATA_YEARLY;
-});
+const selectedOption = computed(
+  () => dateOptions.find((opt) => opt.key === selectedDateRange.value) || dateOptions[0],
+) as ComputedRef<(typeof dateOptions)[number]>;
 
-const filteredPeriodTotals = computed(() => {
-  if (selectedDateRange.value === 'past12months') {
-    return PERIOD_TOTAL_COMMITS_MONTHLY;
-  }
-  if (selectedDateRange.value === 'past5years') {
-    return PERIOD_TOTAL_COMMITS_YEARLY.slice(-5);
-  }
-  // All time
-  return PERIOD_TOTAL_COMMITS_YEARLY;
-});
+const queryParams = computed<AiCodeTrackerQueryParams>(() => ({
+  granularity: granularity.value,
+  startDate: selectedOption.value.startDate,
+  endDate: selectedOption.value.endDate,
+}));
 
-const totalAiCommits = computed(() => filteredTimeSeriesData.value.reduce((sum, item) => sum + item.commitCount, 0));
+const { data: responseData, status, error } = AI_CODE_TRACKER_API_SERVICE.fetchAiCodeTrackerData(queryParams);
 
-const totalCommits = computed(() => filteredPeriodTotals.value.reduce((sum, item) => sum + item.totalCommits, 0));
+const totalAiCommits = computed(() =>
+  (responseData.value?.data ?? []).reduce((sum, item) => sum + item.commitCount, 0),
+);
+
+const totalCommits = computed(() =>
+  (responseData.value?.periodTotals ?? []).reduce((sum, item) => sum + item.totalCommits, 0),
+);
 </script>
 
 <script lang="ts">

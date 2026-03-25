@@ -18,8 +18,8 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { computed, ref, onMounted, onBeforeUnmount } from 'vue';
 import { merge } from 'lodash-es';
-import type { AiToolTimeSeriesDataPoint, PeriodTotalCommits } from '../config/ai-code-tracker-mock-data';
 import { getAiToolColor } from '../config/ai-tools-colors';
+import type { AiToolTimeSeriesDataPoint, PeriodTotalCommits } from '~~/types/report/ai-code-tracker.types';
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import { getLineAreaChartConfig } from '~/components/uikit/chart/configs/line.area.chart';
 import type { ChartData, ChartSeries } from '~/components/uikit/chart/types/ChartTypes';
