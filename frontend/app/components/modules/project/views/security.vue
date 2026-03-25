@@ -128,7 +128,10 @@ SPDX-License-Identifier: MIT
       </div>
     </lfx-card>
 
-    <lfx-project-vulnerabilities-section v-if="isAuthenticated" />
+    <lfx-project-vulnerabilities-section
+      v-if="isAuthenticated"
+      @choose-repository="isSearchRepoModalOpen = true"
+    />
     <lfx-auth-wall-vulnerabilities v-else />
   </div>
 
