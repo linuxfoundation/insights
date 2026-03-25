@@ -49,7 +49,7 @@ Reference images with relative paths:
 
 ## Markdown Conventions
 
-**No frontmatter** — docs pages start directly with the `#` heading (unlike blog posts which use YAML frontmatter).
+**No frontmatter for standard doc pages** — regular docs in `docs/features/`, `docs/metrics/`, and `docs/introduction/` start directly with the `#` heading (unlike blog posts which use YAML frontmatter). Special VitePress pages (such as `frontend/docs/index.md` with `layout: home`) may use YAML frontmatter when required by the framework.
 
 **Heading hierarchy:**
 ```markdown
