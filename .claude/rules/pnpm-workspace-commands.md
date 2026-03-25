@@ -21,7 +21,7 @@ This is a pnpm monorepo. All package management and script execution must follow
    cd frontend && pnpm tsc-check
    ```
 
-4. **Never use `npm run *`** — the settings.json allows `Bash(npm run *)` for legacy reasons, but pnpm is the correct tool for this repo
+4. **Never use `npm run *`** — `.claude/settings.json` only allows `Bash(pnpm *)` and git commands, and pnpm is the required tool for this repo
 
 ## Common Commands Reference
 
