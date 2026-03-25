@@ -62,7 +62,13 @@ const uniqueTools = computed(() => {
       });
     }
   });
-  return Array.from(toolMap.values()).sort((a, b) => a.total - b.total);
+  return Array.from(toolMap.values()).sort((a, b) => {
+    // 'other' always at bottom of stack (first in array = rendered at bottom)
+    if (a.toolKey === 'other') return -1;
+    if (b.toolKey === 'other') return 1;
+    // Known tools sorted ascending so most used renders on top
+    return a.total - b.total;
+  });
 });
 
 const uniqueDates = computed(() => {
@@ -84,7 +90,7 @@ const chartData = computed<ChartData[]>(() =>
       const totalCommits = periodTotal?.totalCommits ?? 0;
       const percentageValues =
         totalCommits > 0
-          ? rawValues.map((val) => Math.round((val / totalCommits) * 1000) / 10)
+          ? rawValues.map((val) => parseFloat(((val / totalCommits) * 100).toFixed(1)))
           : rawValues.map(() => 0);
       return {
         key: date,
@@ -117,7 +123,7 @@ const chartConfig = computed(() => {
       top: '5%',
       left: '8%',
       right: '18%',
-      bottom: '12%',
+      bottom: '18%',
     },
     media: [
       {
@@ -130,7 +136,17 @@ const chartConfig = computed(() => {
       },
     ],
     legend: {
-      show: false,
+      show: true,
+      bottom: 0,
+      left: 'center',
+      type: 'scroll',
+      itemWidth: 10,
+      itemHeight: 10,
+      icon: 'circle',
+      textStyle: {
+        fontSize: 12,
+        color: lfxColors.neutral[700],
+      },
     },
     yAxis: props.showPercentage
       ? {
@@ -140,7 +156,7 @@ const chartConfig = computed(() => {
             fontSize: '12px',
             fontWeight: 'normal',
             color: lfxColors.neutral[400],
-            formatter: (value: number) => `${value}%`,
+            formatter: (value: number) => `${parseFloat(value.toFixed(2))}%`,
           },
           splitLine: {
             lineStyle: {

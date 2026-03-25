@@ -85,7 +85,7 @@ SPDX-License-Identifier: MIT
         </div>
       </div>
 
-      <div v-else-if="!responseData || responseData.data.length === 0">
+      <div v-else-if="filteredData.length === 0">
         <div class="flex items-center justify-center h-[400px]">
           <div class="text-neutral-500">No data available for the selected period.</div>
         </div>
@@ -93,8 +93,8 @@ SPDX-License-Identifier: MIT
 
       <lfx-ai-commits-time-chart
         v-else
-        :data="responseData.data"
-        :period-totals="responseData.periodTotals"
+        :data="filteredData"
+        :period-totals="responseData?.periodTotals ?? []"
         :granularity="granularity"
         :show-percentage="showPercentage"
       />
@@ -107,6 +107,7 @@ import { ref, computed, type ComputedRef } from 'vue';
 import { DateTime } from 'luxon';
 import LfxAiCommitsTimeChart from '../components/ai-commits-time-chart.vue';
 import { AI_CODE_TRACKER_API_SERVICE } from '../services/ai-code-tracker.api.service';
+import { AI_TOOL_RELEASE_DATES } from '../config/ai-tools';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
@@ -136,11 +137,11 @@ const dateOptions = [
     description: `${now.minus({ years: 5 }).toFormat('yyyy')} \u2192 ${now.minus({ years: 1 }).toFormat('yyyy')}`,
   },
   {
-    key: 'alltime',
-    label: 'All time',
-    startDate: null,
+    key: 'past10years',
+    label: 'Past 10 years',
+    startDate: now.minus({ years: 10 }).startOf('year').toFormat('yyyy-MM-dd'),
     endDate: endOfLastYear,
-    description: '',
+    description: `${now.minus({ years: 10 }).toFormat('yyyy')} \u2192 ${now.minus({ years: 1 }).toFormat('yyyy')}`,
   },
 ];
 
@@ -166,9 +167,15 @@ const queryParams = computed<AiCodeTrackerQueryParams>(() => ({
 
 const { data: responseData, status, error } = AI_CODE_TRACKER_API_SERVICE.fetchAiCodeTrackerData(queryParams);
 
-const totalAiCommits = computed(() =>
-  (responseData.value?.data ?? []).reduce((sum, item) => sum + item.commitCount, 0),
+// Filter out data points before the tool's actual release date (false positives)
+const filteredData = computed(() =>
+  (responseData.value?.data ?? []).filter((item) => {
+    const releaseDate = AI_TOOL_RELEASE_DATES[item.toolKey];
+    return !releaseDate || item.startDate >= releaseDate;
+  }),
 );
+
+const totalAiCommits = computed(() => filteredData.value.reduce((sum, item) => sum + item.commitCount, 0));
 
 const totalCommits = computed(() =>
   (responseData.value?.periodTotals ?? []).reduce((sum, item) => sum + item.totalCommits, 0),

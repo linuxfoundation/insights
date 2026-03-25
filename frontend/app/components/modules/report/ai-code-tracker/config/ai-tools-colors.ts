@@ -10,6 +10,9 @@ export const AI_TOOL_COLOR_MAP: Record<string, string> = {
   codewhisperer: lfxColors.negative[400],
   gemini: lfxColors.accent[500],
   codeium: lfxColors.discovery[500],
+  aider: lfxColors.positive[300],
+  devin: lfxColors.brand[300],
+  tabnine: lfxColors.violet[300],
   other: lfxColors.neutral[400],
 };
 
