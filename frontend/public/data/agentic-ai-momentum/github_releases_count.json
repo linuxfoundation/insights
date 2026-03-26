@@ -1,0 +1,6767 @@
+{
+  "metadata": {
+    "fetched_at": "2026-03-25T15:29:16.277930",
+    "schema": {
+      "name": "github_releases_count",
+      "description": "Cumulative monthly release counts for tracked repositories.",
+      "fields": [
+        {
+          "name": "repo",
+          "type": "string",
+          "description": "GitHub repository URL",
+          "optional": false
+        },
+        {
+          "name": "month",
+          "type": "date",
+          "description": "First day of the month (YYYY-MM-DD)",
+          "optional": false
+        },
+        {
+          "name": "cumulative_release_count",
+          "type": "number",
+          "description": "Cumulative release count at end of month",
+          "optional": false
+        }
+      ]
+    },
+    "covered_items": [
+      "https://github.com/SWE-bench/SWE-bench",
+      "https://github.com/agentsmd/agents.md",
+      "https://github.com/agno-agi/agno",
+      "https://github.com/agntcy/acp-spec",
+      "https://github.com/joonspk-research/generative_agents",
+      "https://github.com/sweepai/sweep",
+      "https://github.com/tavily-ai/tavily-python",
+      "https://github.com/w3c/did",
+      "https://github.com/wong2/litemcp"
+    ]
+  },
+  "data": [
+    {
+      "repo": "https://github.com/567-labs/instructor",
+      "month": "2024-03-01",
+      "cumulative_release_count": 46
+    },
+    {
+      "repo": "https://github.com/567-labs/instructor",
+      "month": "2024-04-01",
+      "cumulative_release_count": 56
+    },
+    {
+      "repo": "https://github.com/567-labs/instructor",
+      "month": "2024-05-01",
+      "cumulative_release_count": 61
+    },
+    {
+      "repo": "https://github.com/567-labs/instructor",
+      "month": "2024-06-01",
+      "cumulative_release_count": 63
+    },
+    {
+      "repo": "https://github.com/567-labs/instructor",
+      "month": "2024-07-01",
+      "cumulative_release_count": 65
+    },
+    {
+      "repo": "https://github.com/567-labs/instructor",
+      "month": "2024-08-01",
+      "cumulative_release_count": 66
+    },
+    {
+      "repo": "https://github.com/567-labs/instructor",
+      "month": "2024-09-01",
+      "cumulative_release_count": 70
+    },
+    {
+      "repo": "https://github.com/567-labs/instructor",
+      "month": "2024-10-01",
+      "cumulative_release_count": 76
+    },
+    {
+      "repo": "https://github.com/567-labs/instructor",
+      "month": "2024-11-01",
+      "cumulative_release_count": 78
+    },
+    {
+      "repo": "https://github.com/567-labs/instructor",
+      "month": "2024-12-01",
+      "cumulative_release_count": 80
+    },
+    {
+      "repo": "https://github.com/567-labs/instructor",
+      "month": "2025-03-01",
+      "cumulative_release_count": 86
+    },
+    {
+      "repo": "https://github.com/567-labs/instructor",
+      "month": "2025-04-01",
+      "cumulative_release_count": 87
+    },
+    {
+      "repo": "https://github.com/567-labs/instructor",
+      "month": "2025-05-01",
+      "cumulative_release_count": 91
+    },
+    {
+      "repo": "https://github.com/567-labs/instructor",
+      "month": "2025-06-01",
+      "cumulative_release_count": 92
+    },
+    {
+      "repo": "https://github.com/567-labs/instructor",
+      "month": "2025-07-01",
+      "cumulative_release_count": 95
+    },
+    {
+      "repo": "https://github.com/567-labs/instructor",
+      "month": "2025-08-01",
+      "cumulative_release_count": 97
+    },
+    {
+      "repo": "https://github.com/567-labs/instructor",
+      "month": "2025-09-01",
+      "cumulative_release_count": 98
+    },
+    {
+      "repo": "https://github.com/567-labs/instructor",
+      "month": "2025-10-01",
+      "cumulative_release_count": 99
+    },
+    {
+      "repo": "https://github.com/567-labs/instructor",
+      "month": "2025-11-01",
+      "cumulative_release_count": 100
+    },
+    {
+      "repo": "https://github.com/567-labs/instructor",
+      "month": "2026-01-01",
+      "cumulative_release_count": 106
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2024-03-01",
+      "cumulative_release_count": 34
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2024-04-01",
+      "cumulative_release_count": 37
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2024-05-01",
+      "cumulative_release_count": 43
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2024-06-01",
+      "cumulative_release_count": 47
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2024-07-01",
+      "cumulative_release_count": 54
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2024-08-01",
+      "cumulative_release_count": 61
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2024-09-01",
+      "cumulative_release_count": 65
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2024-10-01",
+      "cumulative_release_count": 67
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2024-11-01",
+      "cumulative_release_count": 72
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2024-12-01",
+      "cumulative_release_count": 77
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2025-01-01",
+      "cumulative_release_count": 80
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2025-02-01",
+      "cumulative_release_count": 81
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2025-03-01",
+      "cumulative_release_count": 87
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2025-04-01",
+      "cumulative_release_count": 89
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2025-05-01",
+      "cumulative_release_count": 91
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2025-06-01",
+      "cumulative_release_count": 92
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2025-08-01",
+      "cumulative_release_count": 93
+    },
+    {
+      "repo": "https://github.com/AmoyLab/Unla",
+      "month": "2025-04-01",
+      "cumulative_release_count": 8
+    },
+    {
+      "repo": "https://github.com/AmoyLab/Unla",
+      "month": "2025-05-01",
+      "cumulative_release_count": 26
+    },
+    {
+      "repo": "https://github.com/AmoyLab/Unla",
+      "month": "2025-06-01",
+      "cumulative_release_count": 34
+    },
+    {
+      "repo": "https://github.com/AmoyLab/Unla",
+      "month": "2025-07-01",
+      "cumulative_release_count": 39
+    },
+    {
+      "repo": "https://github.com/AmoyLab/Unla",
+      "month": "2025-09-01",
+      "cumulative_release_count": 40
+    },
+    {
+      "repo": "https://github.com/AmoyLab/Unla",
+      "month": "2026-01-01",
+      "cumulative_release_count": 42
+    },
+    {
+      "repo": "https://github.com/Arize-ai/phoenix",
+      "month": "2024-03-01",
+      "cumulative_release_count": 138
+    },
+    {
+      "repo": "https://github.com/Arize-ai/phoenix",
+      "month": "2024-04-01",
+      "cumulative_release_count": 147
+    },
+    {
+      "repo": "https://github.com/Arize-ai/phoenix",
+      "month": "2024-05-01",
+      "cumulative_release_count": 168
+    },
+    {
+      "repo": "https://github.com/Arize-ai/phoenix",
+      "month": "2024-06-01",
+      "cumulative_release_count": 178
+    },
+    {
+      "repo": "https://github.com/Arize-ai/phoenix",
+      "month": "2024-07-01",
+      "cumulative_release_count": 202
+    },
+    {
+      "repo": "https://github.com/Arize-ai/phoenix",
+      "month": "2024-08-01",
+      "cumulative_release_count": 231
+    },
+    {
+      "repo": "https://github.com/Arize-ai/phoenix",
+      "month": "2024-09-01",
+      "cumulative_release_count": 247
+    },
+    {
+      "repo": "https://github.com/Arize-ai/phoenix",
+      "month": "2024-10-01",
+      "cumulative_release_count": 266
+    },
+    {
+      "repo": "https://github.com/Arize-ai/phoenix",
+      "month": "2024-11-01",
+      "cumulative_release_count": 276
+    },
+    {
+      "repo": "https://github.com/Arize-ai/phoenix",
+      "month": "2024-12-01",
+      "cumulative_release_count": 288
+    },
+    {
+      "repo": "https://github.com/Arize-ai/phoenix",
+      "month": "2025-01-01",
+      "cumulative_release_count": 308
+    },
+    {
+      "repo": "https://github.com/Arize-ai/phoenix",
+      "month": "2025-02-01",
+      "cumulative_release_count": 339
+    },
+    {
+      "repo": "https://github.com/Arize-ai/phoenix",
+      "month": "2025-03-01",
+      "cumulative_release_count": 361
+    },
+    {
+      "repo": "https://github.com/Arize-ai/phoenix",
+      "month": "2025-04-01",
+      "cumulative_release_count": 386
+    },
+    {
+      "repo": "https://github.com/Arize-ai/phoenix",
+      "month": "2025-05-01",
+      "cumulative_release_count": 420
+    },
+    {
+      "repo": "https://github.com/Arize-ai/phoenix",
+      "month": "2025-06-01",
+      "cumulative_release_count": 450
+    },
+    {
+      "repo": "https://github.com/Arize-ai/phoenix",
+      "month": "2025-07-01",
+      "cumulative_release_count": 485
+    },
+    {
+      "repo": "https://github.com/Arize-ai/phoenix",
+      "month": "2025-08-01",
+      "cumulative_release_count": 516
+    },
+    {
+      "repo": "https://github.com/Arize-ai/phoenix",
+      "month": "2025-09-01",
+      "cumulative_release_count": 541
+    },
+    {
+      "repo": "https://github.com/Arize-ai/phoenix",
+      "month": "2025-10-01",
+      "cumulative_release_count": 554
+    },
+    {
+      "repo": "https://github.com/Arize-ai/phoenix",
+      "month": "2025-11-01",
+      "cumulative_release_count": 576
+    },
+    {
+      "repo": "https://github.com/Arize-ai/phoenix",
+      "month": "2025-12-01",
+      "cumulative_release_count": 590
+    },
+    {
+      "repo": "https://github.com/Arize-ai/phoenix",
+      "month": "2026-01-01",
+      "cumulative_release_count": 603
+    },
+    {
+      "repo": "https://github.com/Arize-ai/phoenix",
+      "month": "2026-02-01",
+      "cumulative_release_count": 621
+    },
+    {
+      "repo": "https://github.com/Azure/PyRIT",
+      "month": "2024-03-01",
+      "cumulative_release_count": 3
+    },
+    {
+      "repo": "https://github.com/Azure/PyRIT",
+      "month": "2024-04-01",
+      "cumulative_release_count": 4
+    },
+    {
+      "repo": "https://github.com/Azure/PyRIT",
+      "month": "2024-05-01",
+      "cumulative_release_count": 5
+    },
+    {
+      "repo": "https://github.com/Azure/PyRIT",
+      "month": "2024-06-01",
+      "cumulative_release_count": 6
+    },
+    {
+      "repo": "https://github.com/Azure/PyRIT",
+      "month": "2024-08-01",
+      "cumulative_release_count": 7
+    },
+    {
+      "repo": "https://github.com/Azure/PyRIT",
+      "month": "2024-11-01",
+      "cumulative_release_count": 8
+    },
+    {
+      "repo": "https://github.com/Azure/PyRIT",
+      "month": "2024-12-01",
+      "cumulative_release_count": 9
+    },
+    {
+      "repo": "https://github.com/Azure/PyRIT",
+      "month": "2025-02-01",
+      "cumulative_release_count": 10
+    },
+    {
+      "repo": "https://github.com/Azure/PyRIT",
+      "month": "2025-03-01",
+      "cumulative_release_count": 12
+    },
+    {
+      "repo": "https://github.com/Azure/PyRIT",
+      "month": "2025-04-01",
+      "cumulative_release_count": 13
+    },
+    {
+      "repo": "https://github.com/Azure/PyRIT",
+      "month": "2025-05-01",
+      "cumulative_release_count": 14
+    },
+    {
+      "repo": "https://github.com/Azure/PyRIT",
+      "month": "2025-09-01",
+      "cumulative_release_count": 15
+    },
+    {
+      "repo": "https://github.com/Azure/PyRIT",
+      "month": "2025-12-01",
+      "cumulative_release_count": 16
+    },
+    {
+      "repo": "https://github.com/Azure/PyRIT",
+      "month": "2026-02-01",
+      "cumulative_release_count": 17
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2024-03-01",
+      "cumulative_release_count": 197
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2024-04-01",
+      "cumulative_release_count": 274
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2024-05-01",
+      "cumulative_release_count": 336
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2024-06-01",
+      "cumulative_release_count": 382
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2024-07-01",
+      "cumulative_release_count": 435
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2024-08-01",
+      "cumulative_release_count": 507
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2024-09-01",
+      "cumulative_release_count": 570
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2024-10-01",
+      "cumulative_release_count": 622
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2024-11-01",
+      "cumulative_release_count": 657
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2024-12-01",
+      "cumulative_release_count": 690
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2025-01-01",
+      "cumulative_release_count": 732
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2025-02-01",
+      "cumulative_release_count": 779
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2025-03-01",
+      "cumulative_release_count": 809
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2025-04-01",
+      "cumulative_release_count": 840
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2025-05-01",
+      "cumulative_release_count": 881
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2025-06-01",
+      "cumulative_release_count": 921
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2025-07-01",
+      "cumulative_release_count": 959
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2025-08-01",
+      "cumulative_release_count": 996
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2025-09-01",
+      "cumulative_release_count": 1023
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2025-10-01",
+      "cumulative_release_count": 1066
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2025-11-01",
+      "cumulative_release_count": 1105
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2025-12-01",
+      "cumulative_release_count": 1129
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2026-01-01",
+      "cumulative_release_count": 1160
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2026-02-01",
+      "cumulative_release_count": 1222
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "month": "2024-03-01",
+      "cumulative_release_count": 9
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "month": "2024-04-01",
+      "cumulative_release_count": 17
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "month": "2024-05-01",
+      "cumulative_release_count": 21
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "month": "2024-06-01",
+      "cumulative_release_count": 37
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "month": "2024-07-01",
+      "cumulative_release_count": 52
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "month": "2024-08-01",
+      "cumulative_release_count": 71
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "month": "2024-09-01",
+      "cumulative_release_count": 88
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "month": "2024-10-01",
+      "cumulative_release_count": 96
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "month": "2024-11-01",
+      "cumulative_release_count": 109
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "month": "2024-12-01",
+      "cumulative_release_count": 123
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "month": "2025-01-01",
+      "cumulative_release_count": 135
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "month": "2025-02-01",
+      "cumulative_release_count": 140
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "month": "2025-03-01",
+      "cumulative_release_count": 148
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "month": "2025-04-01",
+      "cumulative_release_count": 153
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "month": "2025-05-01",
+      "cumulative_release_count": 154
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "month": "2025-06-01",
+      "cumulative_release_count": 164
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "month": "2025-07-01",
+      "cumulative_release_count": 194
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "month": "2025-08-01",
+      "cumulative_release_count": 264
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "month": "2025-09-01",
+      "cumulative_release_count": 303
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "month": "2025-10-01",
+      "cumulative_release_count": 359
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "month": "2025-11-01",
+      "cumulative_release_count": 393
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "month": "2025-12-01",
+      "cumulative_release_count": 460
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "month": "2026-01-01",
+      "cumulative_release_count": 565
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "month": "2026-02-01",
+      "cumulative_release_count": 584
+    },
+    {
+      "repo": "https://github.com/FoundationAgents/MetaGPT",
+      "month": "2024-03-01",
+      "cumulative_release_count": 20
+    },
+    {
+      "repo": "https://github.com/FoundationAgents/MetaGPT",
+      "month": "2024-04-01",
+      "cumulative_release_count": 21
+    },
+    {
+      "repo": "https://github.com/FoundationAgents/MetaGPT",
+      "month": "2025-03-01",
+      "cumulative_release_count": 22
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2024-12-01",
+      "cumulative_release_count": 6
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2025-01-01",
+      "cumulative_release_count": 12
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2025-02-01",
+      "cumulative_release_count": 22
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2025-03-01",
+      "cumulative_release_count": 29
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2025-04-01",
+      "cumulative_release_count": 35
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2025-05-01",
+      "cumulative_release_count": 36
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2025-06-01",
+      "cumulative_release_count": 38
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2025-07-01",
+      "cumulative_release_count": 44
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2025-08-01",
+      "cumulative_release_count": 46
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2025-09-01",
+      "cumulative_release_count": 52
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2025-10-01",
+      "cumulative_release_count": 59
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2025-11-01",
+      "cumulative_release_count": 60
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2025-12-01",
+      "cumulative_release_count": 62
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2026-01-01",
+      "cumulative_release_count": 63
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2026-02-01",
+      "cumulative_release_count": 64
+    },
+    {
+      "repo": "https://github.com/NVIDIA-NeMo/Guardrails",
+      "month": "2024-03-01",
+      "cumulative_release_count": 10
+    },
+    {
+      "repo": "https://github.com/NVIDIA-NeMo/Guardrails",
+      "month": "2024-04-01",
+      "cumulative_release_count": 12
+    },
+    {
+      "repo": "https://github.com/NVIDIA-NeMo/Guardrails",
+      "month": "2024-05-01",
+      "cumulative_release_count": 13
+    },
+    {
+      "repo": "https://github.com/NVIDIA-NeMo/Guardrails",
+      "month": "2024-07-01",
+      "cumulative_release_count": 15
+    },
+    {
+      "repo": "https://github.com/NVIDIA-NeMo/Guardrails",
+      "month": "2024-09-01",
+      "cumulative_release_count": 16
+    },
+    {
+      "repo": "https://github.com/NVIDIA-NeMo/Guardrails",
+      "month": "2024-10-01",
+      "cumulative_release_count": 17
+    },
+    {
+      "repo": "https://github.com/NVIDIA-NeMo/Guardrails",
+      "month": "2024-11-01",
+      "cumulative_release_count": 18
+    },
+    {
+      "repo": "https://github.com/NVIDIA-NeMo/Guardrails",
+      "month": "2025-01-01",
+      "cumulative_release_count": 19
+    },
+    {
+      "repo": "https://github.com/NVIDIA-NeMo/Guardrails",
+      "month": "2025-02-01",
+      "cumulative_release_count": 20
+    },
+    {
+      "repo": "https://github.com/NVIDIA-NeMo/Guardrails",
+      "month": "2025-03-01",
+      "cumulative_release_count": 21
+    },
+    {
+      "repo": "https://github.com/NVIDIA-NeMo/Guardrails",
+      "month": "2025-06-01",
+      "cumulative_release_count": 22
+    },
+    {
+      "repo": "https://github.com/NVIDIA-NeMo/Guardrails",
+      "month": "2025-07-01",
+      "cumulative_release_count": 23
+    },
+    {
+      "repo": "https://github.com/NVIDIA-NeMo/Guardrails",
+      "month": "2025-08-01",
+      "cumulative_release_count": 24
+    },
+    {
+      "repo": "https://github.com/NVIDIA-NeMo/Guardrails",
+      "month": "2025-09-01",
+      "cumulative_release_count": 25
+    },
+    {
+      "repo": "https://github.com/NVIDIA-NeMo/Guardrails",
+      "month": "2025-10-01",
+      "cumulative_release_count": 26
+    },
+    {
+      "repo": "https://github.com/NVIDIA-NeMo/Guardrails",
+      "month": "2025-11-01",
+      "cumulative_release_count": 27
+    },
+    {
+      "repo": "https://github.com/NVIDIA-NeMo/Guardrails",
+      "month": "2025-12-01",
+      "cumulative_release_count": 28
+    },
+    {
+      "repo": "https://github.com/NVIDIA-NeMo/Guardrails",
+      "month": "2026-01-01",
+      "cumulative_release_count": 29
+    },
+    {
+      "repo": "https://github.com/NVIDIA/garak",
+      "month": "2024-05-01",
+      "cumulative_release_count": 13
+    },
+    {
+      "repo": "https://github.com/NVIDIA/garak",
+      "month": "2024-07-01",
+      "cumulative_release_count": 14
+    },
+    {
+      "repo": "https://github.com/NVIDIA/garak",
+      "month": "2024-08-01",
+      "cumulative_release_count": 15
+    },
+    {
+      "repo": "https://github.com/NVIDIA/garak",
+      "month": "2024-09-01",
+      "cumulative_release_count": 16
+    },
+    {
+      "repo": "https://github.com/NVIDIA/garak",
+      "month": "2024-10-01",
+      "cumulative_release_count": 17
+    },
+    {
+      "repo": "https://github.com/NVIDIA/garak",
+      "month": "2024-12-01",
+      "cumulative_release_count": 18
+    },
+    {
+      "repo": "https://github.com/NVIDIA/garak",
+      "month": "2025-01-01",
+      "cumulative_release_count": 19
+    },
+    {
+      "repo": "https://github.com/NVIDIA/garak",
+      "month": "2025-03-01",
+      "cumulative_release_count": 21
+    },
+    {
+      "repo": "https://github.com/NVIDIA/garak",
+      "month": "2025-05-01",
+      "cumulative_release_count": 22
+    },
+    {
+      "repo": "https://github.com/NVIDIA/garak",
+      "month": "2025-07-01",
+      "cumulative_release_count": 23
+    },
+    {
+      "repo": "https://github.com/NVIDIA/garak",
+      "month": "2025-09-01",
+      "cumulative_release_count": 24
+    },
+    {
+      "repo": "https://github.com/NVIDIA/garak",
+      "month": "2025-10-01",
+      "cumulative_release_count": 25
+    },
+    {
+      "repo": "https://github.com/NVIDIA/garak",
+      "month": "2025-11-01",
+      "cumulative_release_count": 26
+    },
+    {
+      "repo": "https://github.com/NVIDIA/garak",
+      "month": "2025-12-01",
+      "cumulative_release_count": 27
+    },
+    {
+      "repo": "https://github.com/NVIDIA/garak",
+      "month": "2026-02-01",
+      "cumulative_release_count": 28
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2024-10-01",
+      "cumulative_release_count": 6
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2025-09-01",
+      "cumulative_release_count": 8
+    },
+    {
+      "repo": "https://github.com/OpenAutoCoder/Agentless",
+      "month": "2024-07-01",
+      "cumulative_release_count": 1
+    },
+    {
+      "repo": "https://github.com/OpenAutoCoder/Agentless",
+      "month": "2024-10-01",
+      "cumulative_release_count": 2
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2024-06-01",
+      "cumulative_release_count": 3
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2024-07-01",
+      "cumulative_release_count": 7
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2024-08-01",
+      "cumulative_release_count": 10
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2024-09-01",
+      "cumulative_release_count": 16
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2024-10-01",
+      "cumulative_release_count": 20
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2024-11-01",
+      "cumulative_release_count": 27
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2024-12-01",
+      "cumulative_release_count": 34
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-01-01",
+      "cumulative_release_count": 39
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-02-01",
+      "cumulative_release_count": 44
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-03-01",
+      "cumulative_release_count": 50
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-04-01",
+      "cumulative_release_count": 55
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-05-01",
+      "cumulative_release_count": 61
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-06-01",
+      "cumulative_release_count": 69
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-07-01",
+      "cumulative_release_count": 73
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-08-01",
+      "cumulative_release_count": 76
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-09-01",
+      "cumulative_release_count": 80
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-10-01",
+      "cumulative_release_count": 89
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-11-01",
+      "cumulative_release_count": 93
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-12-01",
+      "cumulative_release_count": 95
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2026-01-01",
+      "cumulative_release_count": 97
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2026-02-01",
+      "cumulative_release_count": 99
+    },
+    {
+      "repo": "https://github.com/OpenInterpreter/open-interpreter",
+      "month": "2024-03-01",
+      "cumulative_release_count": 31
+    },
+    {
+      "repo": "https://github.com/OpenInterpreter/open-interpreter",
+      "month": "2024-04-01",
+      "cumulative_release_count": 32
+    },
+    {
+      "repo": "https://github.com/OpenInterpreter/open-interpreter",
+      "month": "2024-06-01",
+      "cumulative_release_count": 38
+    },
+    {
+      "repo": "https://github.com/OpenInterpreter/open-interpreter",
+      "month": "2024-08-01",
+      "cumulative_release_count": 42
+    },
+    {
+      "repo": "https://github.com/OpenInterpreter/open-interpreter",
+      "month": "2024-09-01",
+      "cumulative_release_count": 44
+    },
+    {
+      "repo": "https://github.com/OpenInterpreter/open-interpreter",
+      "month": "2024-10-01",
+      "cumulative_release_count": 48
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/fastmcp",
+      "month": "2024-11-01",
+      "cumulative_release_count": 2
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/fastmcp",
+      "month": "2024-12-01",
+      "cumulative_release_count": 10
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/fastmcp",
+      "month": "2025-04-01",
+      "cumulative_release_count": 22
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/fastmcp",
+      "month": "2025-05-01",
+      "cumulative_release_count": 37
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/fastmcp",
+      "month": "2025-06-01",
+      "cumulative_release_count": 46
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/fastmcp",
+      "month": "2025-07-01",
+      "cumulative_release_count": 53
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/fastmcp",
+      "month": "2025-08-01",
+      "cumulative_release_count": 59
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/fastmcp",
+      "month": "2025-09-01",
+      "cumulative_release_count": 63
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/fastmcp",
+      "month": "2025-10-01",
+      "cumulative_release_count": 70
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/fastmcp",
+      "month": "2025-11-01",
+      "cumulative_release_count": 71
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/fastmcp",
+      "month": "2025-12-01",
+      "cumulative_release_count": 76
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/fastmcp",
+      "month": "2026-01-01",
+      "cumulative_release_count": 79
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/fastmcp",
+      "month": "2026-02-01",
+      "cumulative_release_count": 87
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2024-03-01",
+      "cumulative_release_count": 240
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2024-04-01",
+      "cumulative_release_count": 245
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2024-05-01",
+      "cumulative_release_count": 252
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2024-06-01",
+      "cumulative_release_count": 264
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2024-07-01",
+      "cumulative_release_count": 270
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2024-08-01",
+      "cumulative_release_count": 282
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2024-09-01",
+      "cumulative_release_count": 290
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2024-10-01",
+      "cumulative_release_count": 322
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2024-11-01",
+      "cumulative_release_count": 347
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2024-12-01",
+      "cumulative_release_count": 378
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2025-01-01",
+      "cumulative_release_count": 407
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2025-02-01",
+      "cumulative_release_count": 430
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2025-03-01",
+      "cumulative_release_count": 464
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2025-04-01",
+      "cumulative_release_count": 489
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2025-05-01",
+      "cumulative_release_count": 511
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2025-06-01",
+      "cumulative_release_count": 532
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2025-07-01",
+      "cumulative_release_count": 554
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2025-08-01",
+      "cumulative_release_count": 576
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2025-09-01",
+      "cumulative_release_count": 601
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2025-10-01",
+      "cumulative_release_count": 629
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2025-11-01",
+      "cumulative_release_count": 649
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2025-12-01",
+      "cumulative_release_count": 676
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2026-01-01",
+      "cumulative_release_count": 708
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2026-02-01",
+      "cumulative_release_count": 739
+    },
+    {
+      "repo": "https://github.com/SWE-agent/SWE-agent",
+      "month": "2024-04-01",
+      "cumulative_release_count": 1
+    },
+    {
+      "repo": "https://github.com/SWE-agent/SWE-agent",
+      "month": "2024-05-01",
+      "cumulative_release_count": 4
+    },
+    {
+      "repo": "https://github.com/SWE-agent/SWE-agent",
+      "month": "2024-06-01",
+      "cumulative_release_count": 6
+    },
+    {
+      "repo": "https://github.com/SWE-agent/SWE-agent",
+      "month": "2024-09-01",
+      "cumulative_release_count": 7
+    },
+    {
+      "repo": "https://github.com/SWE-agent/SWE-agent",
+      "month": "2025-02-01",
+      "cumulative_release_count": 9
+    },
+    {
+      "repo": "https://github.com/SWE-agent/SWE-agent",
+      "month": "2025-05-01",
+      "cumulative_release_count": 10
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2024-03-01",
+      "cumulative_release_count": 2
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2024-04-01",
+      "cumulative_release_count": 3
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2024-06-01",
+      "cumulative_release_count": 4
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2024-08-01",
+      "cumulative_release_count": 6
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2025-01-01",
+      "cumulative_release_count": 7
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2025-07-01",
+      "cumulative_release_count": 8
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2024-04-01",
+      "cumulative_release_count": 21
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2024-10-01",
+      "cumulative_release_count": 24
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2024-11-01",
+      "cumulative_release_count": 29
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2024-12-01",
+      "cumulative_release_count": 32
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2025-01-01",
+      "cumulative_release_count": 36
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2025-02-01",
+      "cumulative_release_count": 42
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2025-03-01",
+      "cumulative_release_count": 46
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2025-04-01",
+      "cumulative_release_count": 53
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2025-05-01",
+      "cumulative_release_count": 56
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2025-06-01",
+      "cumulative_release_count": 59
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2025-07-01",
+      "cumulative_release_count": 63
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2025-08-01",
+      "cumulative_release_count": 69
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2025-09-01",
+      "cumulative_release_count": 74
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2025-10-01",
+      "cumulative_release_count": 79
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2025-11-01",
+      "cumulative_release_count": 82
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2025-12-01",
+      "cumulative_release_count": 84
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2026-01-01",
+      "cumulative_release_count": 89
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2026-02-01",
+      "cumulative_release_count": 93
+    },
+    {
+      "repo": "https://github.com/a2aproject/A2A",
+      "month": "2025-05-01",
+      "cumulative_release_count": 1
+    },
+    {
+      "repo": "https://github.com/a2aproject/A2A",
+      "month": "2025-06-01",
+      "cumulative_release_count": 7
+    },
+    {
+      "repo": "https://github.com/a2aproject/A2A",
+      "month": "2025-07-01",
+      "cumulative_release_count": 9
+    },
+    {
+      "repo": "https://github.com/agentscope-ai/agentscope",
+      "month": "2024-03-01",
+      "cumulative_release_count": 2
+    },
+    {
+      "repo": "https://github.com/agentscope-ai/agentscope",
+      "month": "2024-04-01",
+      "cumulative_release_count": 3
+    },
+    {
+      "repo": "https://github.com/agentscope-ai/agentscope",
+      "month": "2024-05-01",
+      "cumulative_release_count": 4
+    },
+    {
+      "repo": "https://github.com/agentscope-ai/agentscope",
+      "month": "2024-09-01",
+      "cumulative_release_count": 5
+    },
+    {
+      "repo": "https://github.com/agentscope-ai/agentscope",
+      "month": "2024-11-01",
+      "cumulative_release_count": 6
+    },
+    {
+      "repo": "https://github.com/agentscope-ai/agentscope",
+      "month": "2025-03-01",
+      "cumulative_release_count": 7
+    },
+    {
+      "repo": "https://github.com/agentscope-ai/agentscope",
+      "month": "2025-04-01",
+      "cumulative_release_count": 10
+    },
+    {
+      "repo": "https://github.com/agentscope-ai/agentscope",
+      "month": "2025-05-01",
+      "cumulative_release_count": 11
+    },
+    {
+      "repo": "https://github.com/agentscope-ai/agentscope",
+      "month": "2025-07-01",
+      "cumulative_release_count": 12
+    },
+    {
+      "repo": "https://github.com/agentscope-ai/agentscope",
+      "month": "2025-08-01",
+      "cumulative_release_count": 15
+    },
+    {
+      "repo": "https://github.com/agentscope-ai/agentscope",
+      "month": "2025-09-01",
+      "cumulative_release_count": 18
+    },
+    {
+      "repo": "https://github.com/agentscope-ai/agentscope",
+      "month": "2025-10-01",
+      "cumulative_release_count": 20
+    },
+    {
+      "repo": "https://github.com/agentscope-ai/agentscope",
+      "month": "2025-11-01",
+      "cumulative_release_count": 22
+    },
+    {
+      "repo": "https://github.com/agentscope-ai/agentscope",
+      "month": "2025-12-01",
+      "cumulative_release_count": 24
+    },
+    {
+      "repo": "https://github.com/agentscope-ai/agentscope",
+      "month": "2026-01-01",
+      "cumulative_release_count": 28
+    },
+    {
+      "repo": "https://github.com/agentscope-ai/agentscope",
+      "month": "2026-02-01",
+      "cumulative_release_count": 31
+    },
+    {
+      "repo": "https://github.com/agno-agi/agno",
+      "month": "2025-01-01",
+      "cumulative_release_count": 4
+    },
+    {
+      "repo": "https://github.com/agno-agi/agno",
+      "month": "2025-02-01",
+      "cumulative_release_count": 17
+    },
+    {
+      "repo": "https://github.com/agno-agi/agno",
+      "month": "2025-03-01",
+      "cumulative_release_count": 34
+    },
+    {
+      "repo": "https://github.com/agno-agi/agno",
+      "month": "2025-04-01",
+      "cumulative_release_count": 54
+    },
+    {
+      "repo": "https://github.com/agno-agi/agno",
+      "month": "2025-05-01",
+      "cumulative_release_count": 65
+    },
+    {
+      "repo": "https://github.com/agno-agi/agno",
+      "month": "2025-06-01",
+      "cumulative_release_count": 74
+    },
+    {
+      "repo": "https://github.com/agno-agi/agno",
+      "month": "2025-07-01",
+      "cumulative_release_count": 81
+    },
+    {
+      "repo": "https://github.com/agno-agi/agno",
+      "month": "2025-08-01",
+      "cumulative_release_count": 88
+    },
+    {
+      "repo": "https://github.com/agno-agi/agno",
+      "month": "2025-09-01",
+      "cumulative_release_count": 103
+    },
+    {
+      "repo": "https://github.com/agno-agi/agno",
+      "month": "2025-10-01",
+      "cumulative_release_count": 120
+    },
+    {
+      "repo": "https://github.com/agno-agi/agno",
+      "month": "2025-11-01",
+      "cumulative_release_count": 133
+    },
+    {
+      "repo": "https://github.com/agno-agi/agno",
+      "month": "2025-12-01",
+      "cumulative_release_count": 150
+    },
+    {
+      "repo": "https://github.com/agno-agi/agno",
+      "month": "2026-01-01",
+      "cumulative_release_count": 163
+    },
+    {
+      "repo": "https://github.com/agno-agi/agno",
+      "month": "2026-02-01",
+      "cumulative_release_count": 170
+    },
+    {
+      "repo": "https://github.com/agntcy/oasf",
+      "month": "2025-03-01",
+      "cumulative_release_count": 2
+    },
+    {
+      "repo": "https://github.com/agntcy/oasf",
+      "month": "2025-04-01",
+      "cumulative_release_count": 5
+    },
+    {
+      "repo": "https://github.com/agntcy/oasf",
+      "month": "2025-05-01",
+      "cumulative_release_count": 7
+    },
+    {
+      "repo": "https://github.com/agntcy/oasf",
+      "month": "2025-07-01",
+      "cumulative_release_count": 13
+    },
+    {
+      "repo": "https://github.com/agntcy/oasf",
+      "month": "2025-08-01",
+      "cumulative_release_count": 15
+    },
+    {
+      "repo": "https://github.com/agntcy/oasf",
+      "month": "2025-09-01",
+      "cumulative_release_count": 20
+    },
+    {
+      "repo": "https://github.com/agntcy/oasf",
+      "month": "2025-10-01",
+      "cumulative_release_count": 21
+    },
+    {
+      "repo": "https://github.com/agntcy/oasf",
+      "month": "2025-12-01",
+      "cumulative_release_count": 23
+    },
+    {
+      "repo": "https://github.com/agntcy/oasf",
+      "month": "2026-01-01",
+      "cumulative_release_count": 28
+    },
+    {
+      "repo": "https://github.com/agntcy/oasf",
+      "month": "2026-02-01",
+      "cumulative_release_count": 31
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "month": "2025-02-01",
+      "cumulative_release_count": 31
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "month": "2025-03-01",
+      "cumulative_release_count": 64
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "month": "2025-04-01",
+      "cumulative_release_count": 83
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "month": "2025-05-01",
+      "cumulative_release_count": 112
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "month": "2025-06-01",
+      "cumulative_release_count": 123
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "month": "2025-07-01",
+      "cumulative_release_count": 144
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "month": "2025-08-01",
+      "cumulative_release_count": 145
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "month": "2025-09-01",
+      "cumulative_release_count": 167
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "month": "2025-10-01",
+      "cumulative_release_count": 195
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "month": "2025-11-01",
+      "cumulative_release_count": 225
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "month": "2025-12-01",
+      "cumulative_release_count": 230
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "month": "2026-01-01",
+      "cumulative_release_count": 258
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "month": "2026-02-01",
+      "cumulative_release_count": 294
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2024-03-01",
+      "cumulative_release_count": 16
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2024-04-01",
+      "cumulative_release_count": 17
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2024-05-01",
+      "cumulative_release_count": 21
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2024-06-01",
+      "cumulative_release_count": 24
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2024-07-01",
+      "cumulative_release_count": 28
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2024-08-01",
+      "cumulative_release_count": 32
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2024-09-01",
+      "cumulative_release_count": 34
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2024-10-01",
+      "cumulative_release_count": 37
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2024-11-01",
+      "cumulative_release_count": 39
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2024-12-01",
+      "cumulative_release_count": 42
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2025-01-01",
+      "cumulative_release_count": 44
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2025-02-01",
+      "cumulative_release_count": 48
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2025-03-01",
+      "cumulative_release_count": 51
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2025-04-01",
+      "cumulative_release_count": 52
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2025-05-01",
+      "cumulative_release_count": 53
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2025-06-01",
+      "cumulative_release_count": 55
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2025-07-01",
+      "cumulative_release_count": 57
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2025-08-01",
+      "cumulative_release_count": 58
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2025-09-01",
+      "cumulative_release_count": 60
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2025-10-01",
+      "cumulative_release_count": 61
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2025-11-01",
+      "cumulative_release_count": 62
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2025-12-01",
+      "cumulative_release_count": 63
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2026-01-01",
+      "cumulative_release_count": 65
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2026-02-01",
+      "cumulative_release_count": 66
+    },
+    {
+      "repo": "https://github.com/aurelio-labs/semantic-router",
+      "month": "2024-03-01",
+      "cumulative_release_count": 25
+    },
+    {
+      "repo": "https://github.com/aurelio-labs/semantic-router",
+      "month": "2024-04-01",
+      "cumulative_release_count": 33
+    },
+    {
+      "repo": "https://github.com/aurelio-labs/semantic-router",
+      "month": "2024-05-01",
+      "cumulative_release_count": 41
+    },
+    {
+      "repo": "https://github.com/aurelio-labs/semantic-router",
+      "month": "2024-06-01",
+      "cumulative_release_count": 44
+    },
+    {
+      "repo": "https://github.com/aurelio-labs/semantic-router",
+      "month": "2024-07-01",
+      "cumulative_release_count": 51
+    },
+    {
+      "repo": "https://github.com/aurelio-labs/semantic-router",
+      "month": "2024-08-01",
+      "cumulative_release_count": 58
+    },
+    {
+      "repo": "https://github.com/aurelio-labs/semantic-router",
+      "month": "2024-09-01",
+      "cumulative_release_count": 63
+    },
+    {
+      "repo": "https://github.com/aurelio-labs/semantic-router",
+      "month": "2024-10-01",
+      "cumulative_release_count": 67
+    },
+    {
+      "repo": "https://github.com/aurelio-labs/semantic-router",
+      "month": "2024-11-01",
+      "cumulative_release_count": 70
+    },
+    {
+      "repo": "https://github.com/aurelio-labs/semantic-router",
+      "month": "2024-12-01",
+      "cumulative_release_count": 73
+    },
+    {
+      "repo": "https://github.com/aurelio-labs/semantic-router",
+      "month": "2025-01-01",
+      "cumulative_release_count": 76
+    },
+    {
+      "repo": "https://github.com/aurelio-labs/semantic-router",
+      "month": "2025-02-01",
+      "cumulative_release_count": 78
+    },
+    {
+      "repo": "https://github.com/aurelio-labs/semantic-router",
+      "month": "2025-03-01",
+      "cumulative_release_count": 85
+    },
+    {
+      "repo": "https://github.com/aurelio-labs/semantic-router",
+      "month": "2025-04-01",
+      "cumulative_release_count": 86
+    },
+    {
+      "repo": "https://github.com/aurelio-labs/semantic-router",
+      "month": "2025-05-01",
+      "cumulative_release_count": 87
+    },
+    {
+      "repo": "https://github.com/aurelio-labs/semantic-router",
+      "month": "2025-06-01",
+      "cumulative_release_count": 88
+    },
+    {
+      "repo": "https://github.com/aurelio-labs/semantic-router",
+      "month": "2025-07-01",
+      "cumulative_release_count": 89
+    },
+    {
+      "repo": "https://github.com/aurelio-labs/semantic-router",
+      "month": "2025-08-01",
+      "cumulative_release_count": 90
+    },
+    {
+      "repo": "https://github.com/aurelio-labs/semantic-router",
+      "month": "2025-11-01",
+      "cumulative_release_count": 91
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2024-09-01",
+      "cumulative_release_count": 2
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2024-10-01",
+      "cumulative_release_count": 7
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2024-11-01",
+      "cumulative_release_count": 10
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2024-12-01",
+      "cumulative_release_count": 12
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2025-01-01",
+      "cumulative_release_count": 23
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2025-02-01",
+      "cumulative_release_count": 29
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2025-03-01",
+      "cumulative_release_count": 35
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2025-04-01",
+      "cumulative_release_count": 40
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2025-05-01",
+      "cumulative_release_count": 43
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2025-06-01",
+      "cumulative_release_count": 48
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2025-07-01",
+      "cumulative_release_count": 65
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2025-08-01",
+      "cumulative_release_count": 74
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2025-09-01",
+      "cumulative_release_count": 77
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2025-10-01",
+      "cumulative_release_count": 89
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2025-11-01",
+      "cumulative_release_count": 94
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2025-12-01",
+      "cumulative_release_count": 98
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2026-01-01",
+      "cumulative_release_count": 107
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2026-02-01",
+      "cumulative_release_count": 118
+    },
+    {
+      "repo": "https://github.com/browser-use/browser-use",
+      "month": "2024-11-01",
+      "cumulative_release_count": 12
+    },
+    {
+      "repo": "https://github.com/browser-use/browser-use",
+      "month": "2024-12-01",
+      "cumulative_release_count": 14
+    },
+    {
+      "repo": "https://github.com/browser-use/browser-use",
+      "month": "2025-01-01",
+      "cumulative_release_count": 29
+    },
+    {
+      "repo": "https://github.com/browser-use/browser-use",
+      "month": "2025-02-01",
+      "cumulative_release_count": 37
+    },
+    {
+      "repo": "https://github.com/browser-use/browser-use",
+      "month": "2025-04-01",
+      "cumulative_release_count": 38
+    },
+    {
+      "repo": "https://github.com/browser-use/browser-use",
+      "month": "2025-05-01",
+      "cumulative_release_count": 49
+    },
+    {
+      "repo": "https://github.com/browser-use/browser-use",
+      "month": "2025-06-01",
+      "cumulative_release_count": 57
+    },
+    {
+      "repo": "https://github.com/browser-use/browser-use",
+      "month": "2025-07-01",
+      "cumulative_release_count": 67
+    },
+    {
+      "repo": "https://github.com/browser-use/browser-use",
+      "month": "2025-08-01",
+      "cumulative_release_count": 78
+    },
+    {
+      "repo": "https://github.com/browser-use/browser-use",
+      "month": "2025-09-01",
+      "cumulative_release_count": 87
+    },
+    {
+      "repo": "https://github.com/browser-use/browser-use",
+      "month": "2025-10-01",
+      "cumulative_release_count": 96
+    },
+    {
+      "repo": "https://github.com/browser-use/browser-use",
+      "month": "2025-11-01",
+      "cumulative_release_count": 101
+    },
+    {
+      "repo": "https://github.com/browser-use/browser-use",
+      "month": "2025-12-01",
+      "cumulative_release_count": 104
+    },
+    {
+      "repo": "https://github.com/browser-use/browser-use",
+      "month": "2026-01-01",
+      "cumulative_release_count": 107
+    },
+    {
+      "repo": "https://github.com/browser-use/browser-use",
+      "month": "2026-02-01",
+      "cumulative_release_count": 117
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2024-04-01",
+      "cumulative_release_count": 2
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2024-05-01",
+      "cumulative_release_count": 4
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2024-06-01",
+      "cumulative_release_count": 6
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2024-07-01",
+      "cumulative_release_count": 12
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2024-08-01",
+      "cumulative_release_count": 19
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2024-09-01",
+      "cumulative_release_count": 29
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2024-10-01",
+      "cumulative_release_count": 39
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2024-11-01",
+      "cumulative_release_count": 43
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2024-12-01",
+      "cumulative_release_count": 47
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-01-01",
+      "cumulative_release_count": 52
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-02-01",
+      "cumulative_release_count": 57
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-03-01",
+      "cumulative_release_count": 74
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-04-01",
+      "cumulative_release_count": 84
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-05-01",
+      "cumulative_release_count": 96
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-06-01",
+      "cumulative_release_count": 111
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-07-01",
+      "cumulative_release_count": 145
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-08-01",
+      "cumulative_release_count": 154
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-09-01",
+      "cumulative_release_count": 164
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-10-01",
+      "cumulative_release_count": 171
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-11-01",
+      "cumulative_release_count": 179
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-12-01",
+      "cumulative_release_count": 181
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2026-01-01",
+      "cumulative_release_count": 194
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2026-02-01",
+      "cumulative_release_count": 202
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2024-04-01",
+      "cumulative_release_count": 55
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2024-06-01",
+      "cumulative_release_count": 57
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2024-07-01",
+      "cumulative_release_count": 59
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2024-09-01",
+      "cumulative_release_count": 62
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2024-10-01",
+      "cumulative_release_count": 67
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2024-11-01",
+      "cumulative_release_count": 69
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2024-12-01",
+      "cumulative_release_count": 71
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-01-01",
+      "cumulative_release_count": 74
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-04-01",
+      "cumulative_release_count": 83
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-05-01",
+      "cumulative_release_count": 89
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-06-01",
+      "cumulative_release_count": 91
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-07-01",
+      "cumulative_release_count": 93
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-08-01",
+      "cumulative_release_count": 101
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-09-01",
+      "cumulative_release_count": 105
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-10-01",
+      "cumulative_release_count": 110
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-11-01",
+      "cumulative_release_count": 115
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-12-01",
+      "cumulative_release_count": 120
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2026-01-01",
+      "cumulative_release_count": 122
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2026-02-01",
+      "cumulative_release_count": 127
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2024-07-01",
+      "cumulative_release_count": 9
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2024-08-01",
+      "cumulative_release_count": 31
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2024-09-01",
+      "cumulative_release_count": 39
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2024-10-01",
+      "cumulative_release_count": 41
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2024-12-01",
+      "cumulative_release_count": 43
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2025-01-01",
+      "cumulative_release_count": 47
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2025-02-01",
+      "cumulative_release_count": 49
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2025-03-01",
+      "cumulative_release_count": 58
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2025-04-01",
+      "cumulative_release_count": 75
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2025-05-01",
+      "cumulative_release_count": 96
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2025-06-01",
+      "cumulative_release_count": 106
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2025-07-01",
+      "cumulative_release_count": 130
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2025-08-01",
+      "cumulative_release_count": 149
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2025-09-01",
+      "cumulative_release_count": 173
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2025-10-01",
+      "cumulative_release_count": 184
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2025-11-01",
+      "cumulative_release_count": 193
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2025-12-01",
+      "cumulative_release_count": 209
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2026-01-01",
+      "cumulative_release_count": 222
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2026-02-01",
+      "cumulative_release_count": 237
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2024-03-01",
+      "cumulative_release_count": 21
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2024-04-01",
+      "cumulative_release_count": 24
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2024-05-01",
+      "cumulative_release_count": 26
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2024-06-01",
+      "cumulative_release_count": 27
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2024-07-01",
+      "cumulative_release_count": 28
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2024-09-01",
+      "cumulative_release_count": 45
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2024-10-01",
+      "cumulative_release_count": 57
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2024-11-01",
+      "cumulative_release_count": 70
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2024-12-01",
+      "cumulative_release_count": 80
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2025-01-01",
+      "cumulative_release_count": 89
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2025-02-01",
+      "cumulative_release_count": 101
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2025-03-01",
+      "cumulative_release_count": 118
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2025-04-01",
+      "cumulative_release_count": 133
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2025-05-01",
+      "cumulative_release_count": 148
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2025-06-01",
+      "cumulative_release_count": 160
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2025-07-01",
+      "cumulative_release_count": 177
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2025-08-01",
+      "cumulative_release_count": 199
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2025-09-01",
+      "cumulative_release_count": 221
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2025-10-01",
+      "cumulative_release_count": 257
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2025-11-01",
+      "cumulative_release_count": 292
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2025-12-01",
+      "cumulative_release_count": 324
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2026-01-01",
+      "cumulative_release_count": 357
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2026-02-01",
+      "cumulative_release_count": 379
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2024-03-01",
+      "cumulative_release_count": 32
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2024-06-01",
+      "cumulative_release_count": 33
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2024-07-01",
+      "cumulative_release_count": 34
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2024-10-01",
+      "cumulative_release_count": 35
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2024-12-01",
+      "cumulative_release_count": 36
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2025-01-01",
+      "cumulative_release_count": 37
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2025-02-01",
+      "cumulative_release_count": 38
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2025-03-01",
+      "cumulative_release_count": 40
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2025-04-01",
+      "cumulative_release_count": 43
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2025-05-01",
+      "cumulative_release_count": 46
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2025-06-01",
+      "cumulative_release_count": 50
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2025-07-01",
+      "cumulative_release_count": 51
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2025-08-01",
+      "cumulative_release_count": 52
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2025-12-01",
+      "cumulative_release_count": 53
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2024-03-01",
+      "cumulative_release_count": 5
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2024-04-01",
+      "cumulative_release_count": 15
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2024-05-01",
+      "cumulative_release_count": 53
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2024-06-01",
+      "cumulative_release_count": 75
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2024-07-01",
+      "cumulative_release_count": 103
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2024-08-01",
+      "cumulative_release_count": 124
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2024-09-01",
+      "cumulative_release_count": 146
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2024-10-01",
+      "cumulative_release_count": 162
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2024-11-01",
+      "cumulative_release_count": 186
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2024-12-01",
+      "cumulative_release_count": 202
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2025-01-01",
+      "cumulative_release_count": 215
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2025-02-01",
+      "cumulative_release_count": 244
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2025-03-01",
+      "cumulative_release_count": 267
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2025-04-01",
+      "cumulative_release_count": 287
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2025-05-01",
+      "cumulative_release_count": 305
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2025-06-01",
+      "cumulative_release_count": 325
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2025-07-01",
+      "cumulative_release_count": 362
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2025-08-01",
+      "cumulative_release_count": 426
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2025-09-01",
+      "cumulative_release_count": 531
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2025-10-01",
+      "cumulative_release_count": 618
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2025-11-01",
+      "cumulative_release_count": 680
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2025-12-01",
+      "cumulative_release_count": 734
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2026-01-01",
+      "cumulative_release_count": 786
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2026-02-01",
+      "cumulative_release_count": 801
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2024-03-01",
+      "cumulative_release_count": 25
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2024-04-01",
+      "cumulative_release_count": 32
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2024-05-01",
+      "cumulative_release_count": 36
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2024-06-01",
+      "cumulative_release_count": 39
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2024-07-01",
+      "cumulative_release_count": 47
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2024-08-01",
+      "cumulative_release_count": 48
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2024-09-01",
+      "cumulative_release_count": 58
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2024-10-01",
+      "cumulative_release_count": 66
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2024-11-01",
+      "cumulative_release_count": 70
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2024-12-01",
+      "cumulative_release_count": 72
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2025-01-01",
+      "cumulative_release_count": 75
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2025-02-01",
+      "cumulative_release_count": 76
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2025-03-01",
+      "cumulative_release_count": 78
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2025-04-01",
+      "cumulative_release_count": 82
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2025-05-01",
+      "cumulative_release_count": 87
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2025-06-01",
+      "cumulative_release_count": 90
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2025-07-01",
+      "cumulative_release_count": 95
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2025-08-01",
+      "cumulative_release_count": 100
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2025-09-01",
+      "cumulative_release_count": 108
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2025-10-01",
+      "cumulative_release_count": 121
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2025-11-01",
+      "cumulative_release_count": 128
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2025-12-01",
+      "cumulative_release_count": 131
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2026-01-01",
+      "cumulative_release_count": 137
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2026-02-01",
+      "cumulative_release_count": 140
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2024-03-01",
+      "cumulative_release_count": 14
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2024-04-01",
+      "cumulative_release_count": 26
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2024-05-01",
+      "cumulative_release_count": 35
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2024-06-01",
+      "cumulative_release_count": 43
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2024-07-01",
+      "cumulative_release_count": 49
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2024-08-01",
+      "cumulative_release_count": 57
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2024-09-01",
+      "cumulative_release_count": 69
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2024-10-01",
+      "cumulative_release_count": 77
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2024-11-01",
+      "cumulative_release_count": 85
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2024-12-01",
+      "cumulative_release_count": 88
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2025-01-01",
+      "cumulative_release_count": 92
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2025-02-01",
+      "cumulative_release_count": 93
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2025-04-01",
+      "cumulative_release_count": 94
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2025-09-01",
+      "cumulative_release_count": 104
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2025-10-01",
+      "cumulative_release_count": 116
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2025-11-01",
+      "cumulative_release_count": 127
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2025-12-01",
+      "cumulative_release_count": 139
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2026-01-01",
+      "cumulative_release_count": 150
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2026-02-01",
+      "cumulative_release_count": 161
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2024-03-01",
+      "cumulative_release_count": 85
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2024-04-01",
+      "cumulative_release_count": 90
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2024-05-01",
+      "cumulative_release_count": 98
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2024-06-01",
+      "cumulative_release_count": 108
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2024-07-01",
+      "cumulative_release_count": 115
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2024-08-01",
+      "cumulative_release_count": 118
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2024-09-01",
+      "cumulative_release_count": 124
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2024-10-01",
+      "cumulative_release_count": 130
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2024-11-01",
+      "cumulative_release_count": 133
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2024-12-01",
+      "cumulative_release_count": 138
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2025-01-01",
+      "cumulative_release_count": 142
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2025-02-01",
+      "cumulative_release_count": 151
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2025-03-01",
+      "cumulative_release_count": 157
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2025-04-01",
+      "cumulative_release_count": 165
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2025-05-01",
+      "cumulative_release_count": 171
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2025-06-01",
+      "cumulative_release_count": 179
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2025-07-01",
+      "cumulative_release_count": 185
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2025-08-01",
+      "cumulative_release_count": 189
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2025-09-01",
+      "cumulative_release_count": 192
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2025-10-01",
+      "cumulative_release_count": 194
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2025-11-01",
+      "cumulative_release_count": 197
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2025-12-01",
+      "cumulative_release_count": 199
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2026-01-01",
+      "cumulative_release_count": 203
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2026-02-01",
+      "cumulative_release_count": 212
+    },
+    {
+      "repo": "https://github.com/e2b-dev/code-interpreter",
+      "month": "2024-03-01",
+      "cumulative_release_count": 1
+    },
+    {
+      "repo": "https://github.com/e2b-dev/code-interpreter",
+      "month": "2024-04-01",
+      "cumulative_release_count": 6
+    },
+    {
+      "repo": "https://github.com/e2b-dev/code-interpreter",
+      "month": "2024-05-01",
+      "cumulative_release_count": 14
+    },
+    {
+      "repo": "https://github.com/e2b-dev/code-interpreter",
+      "month": "2024-06-01",
+      "cumulative_release_count": 19
+    },
+    {
+      "repo": "https://github.com/e2b-dev/code-interpreter",
+      "month": "2024-10-01",
+      "cumulative_release_count": 27
+    },
+    {
+      "repo": "https://github.com/e2b-dev/code-interpreter",
+      "month": "2024-11-01",
+      "cumulative_release_count": 31
+    },
+    {
+      "repo": "https://github.com/e2b-dev/code-interpreter",
+      "month": "2024-12-01",
+      "cumulative_release_count": 32
+    },
+    {
+      "repo": "https://github.com/e2b-dev/code-interpreter",
+      "month": "2025-01-01",
+      "cumulative_release_count": 35
+    },
+    {
+      "repo": "https://github.com/e2b-dev/code-interpreter",
+      "month": "2025-02-01",
+      "cumulative_release_count": 36
+    },
+    {
+      "repo": "https://github.com/e2b-dev/code-interpreter",
+      "month": "2025-03-01",
+      "cumulative_release_count": 41
+    },
+    {
+      "repo": "https://github.com/e2b-dev/code-interpreter",
+      "month": "2025-04-01",
+      "cumulative_release_count": 44
+    },
+    {
+      "repo": "https://github.com/e2b-dev/code-interpreter",
+      "month": "2025-05-01",
+      "cumulative_release_count": 51
+    },
+    {
+      "repo": "https://github.com/e2b-dev/code-interpreter",
+      "month": "2025-06-01",
+      "cumulative_release_count": 54
+    },
+    {
+      "repo": "https://github.com/e2b-dev/code-interpreter",
+      "month": "2025-07-01",
+      "cumulative_release_count": 55
+    },
+    {
+      "repo": "https://github.com/e2b-dev/code-interpreter",
+      "month": "2025-08-01",
+      "cumulative_release_count": 59
+    },
+    {
+      "repo": "https://github.com/e2b-dev/code-interpreter",
+      "month": "2025-10-01",
+      "cumulative_release_count": 68
+    },
+    {
+      "repo": "https://github.com/e2b-dev/code-interpreter",
+      "month": "2025-11-01",
+      "cumulative_release_count": 74
+    },
+    {
+      "repo": "https://github.com/e2b-dev/code-interpreter",
+      "month": "2025-12-01",
+      "cumulative_release_count": 76
+    },
+    {
+      "repo": "https://github.com/firecrawl/firecrawl",
+      "month": "2024-09-01",
+      "cumulative_release_count": 1
+    },
+    {
+      "repo": "https://github.com/firecrawl/firecrawl",
+      "month": "2024-12-01",
+      "cumulative_release_count": 3
+    },
+    {
+      "repo": "https://github.com/firecrawl/firecrawl",
+      "month": "2025-01-01",
+      "cumulative_release_count": 9
+    },
+    {
+      "repo": "https://github.com/firecrawl/firecrawl",
+      "month": "2025-02-01",
+      "cumulative_release_count": 12
+    },
+    {
+      "repo": "https://github.com/firecrawl/firecrawl",
+      "month": "2025-03-01",
+      "cumulative_release_count": 13
+    },
+    {
+      "repo": "https://github.com/firecrawl/firecrawl",
+      "month": "2025-04-01",
+      "cumulative_release_count": 15
+    },
+    {
+      "repo": "https://github.com/firecrawl/firecrawl",
+      "month": "2025-05-01",
+      "cumulative_release_count": 16
+    },
+    {
+      "repo": "https://github.com/firecrawl/firecrawl",
+      "month": "2025-06-01",
+      "cumulative_release_count": 20
+    },
+    {
+      "repo": "https://github.com/firecrawl/firecrawl",
+      "month": "2025-07-01",
+      "cumulative_release_count": 22
+    },
+    {
+      "repo": "https://github.com/firecrawl/firecrawl",
+      "month": "2025-08-01",
+      "cumulative_release_count": 25
+    },
+    {
+      "repo": "https://github.com/firecrawl/firecrawl",
+      "month": "2025-09-01",
+      "cumulative_release_count": 27
+    },
+    {
+      "repo": "https://github.com/firecrawl/firecrawl",
+      "month": "2025-10-01",
+      "cumulative_release_count": 29
+    },
+    {
+      "repo": "https://github.com/firecrawl/firecrawl",
+      "month": "2025-11-01",
+      "cumulative_release_count": 30
+    },
+    {
+      "repo": "https://github.com/firecrawl/firecrawl",
+      "month": "2025-12-01",
+      "cumulative_release_count": 31
+    },
+    {
+      "repo": "https://github.com/firecrawl/firecrawl",
+      "month": "2026-02-01",
+      "cumulative_release_count": 32
+    },
+    {
+      "repo": "https://github.com/google/adk-python",
+      "month": "2025-04-01",
+      "cumulative_release_count": 3
+    },
+    {
+      "repo": "https://github.com/google/adk-python",
+      "month": "2025-05-01",
+      "cumulative_release_count": 8
+    },
+    {
+      "repo": "https://github.com/google/adk-python",
+      "month": "2025-06-01",
+      "cumulative_release_count": 14
+    },
+    {
+      "repo": "https://github.com/google/adk-python",
+      "month": "2025-07-01",
+      "cumulative_release_count": 18
+    },
+    {
+      "repo": "https://github.com/google/adk-python",
+      "month": "2025-08-01",
+      "cumulative_release_count": 22
+    },
+    {
+      "repo": "https://github.com/google/adk-python",
+      "month": "2025-09-01",
+      "cumulative_release_count": 26
+    },
+    {
+      "repo": "https://github.com/google/adk-python",
+      "month": "2025-10-01",
+      "cumulative_release_count": 28
+    },
+    {
+      "repo": "https://github.com/google/adk-python",
+      "month": "2025-11-01",
+      "cumulative_release_count": 30
+    },
+    {
+      "repo": "https://github.com/google/adk-python",
+      "month": "2025-12-01",
+      "cumulative_release_count": 32
+    },
+    {
+      "repo": "https://github.com/google/adk-python",
+      "month": "2026-01-01",
+      "cumulative_release_count": 35
+    },
+    {
+      "repo": "https://github.com/google/adk-python",
+      "month": "2026-02-01",
+      "cumulative_release_count": 40
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2024-03-01",
+      "cumulative_release_count": 27
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2024-04-01",
+      "cumulative_release_count": 28
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2024-05-01",
+      "cumulative_release_count": 29
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2024-06-01",
+      "cumulative_release_count": 30
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2024-07-01",
+      "cumulative_release_count": 33
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2024-08-01",
+      "cumulative_release_count": 37
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2024-09-01",
+      "cumulative_release_count": 43
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2024-10-01",
+      "cumulative_release_count": 46
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2024-11-01",
+      "cumulative_release_count": 47
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2024-12-01",
+      "cumulative_release_count": 49
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2025-02-01",
+      "cumulative_release_count": 50
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2025-03-01",
+      "cumulative_release_count": 52
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2025-04-01",
+      "cumulative_release_count": 53
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2025-09-01",
+      "cumulative_release_count": 54
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2025-11-01",
+      "cumulative_release_count": 56
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2025-12-01",
+      "cumulative_release_count": 58
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2026-02-01",
+      "cumulative_release_count": 64
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2024-12-01",
+      "cumulative_release_count": 2
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2025-01-01",
+      "cumulative_release_count": 10
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2025-02-01",
+      "cumulative_release_count": 15
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2025-03-01",
+      "cumulative_release_count": 18
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2025-04-01",
+      "cumulative_release_count": 20
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2025-05-01",
+      "cumulative_release_count": 24
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2025-06-01",
+      "cumulative_release_count": 26
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2025-07-01",
+      "cumulative_release_count": 27
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2025-08-01",
+      "cumulative_release_count": 30
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2025-09-01",
+      "cumulative_release_count": 32
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2025-11-01",
+      "cumulative_release_count": 33
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2026-01-01",
+      "cumulative_release_count": 34
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2024-03-01",
+      "cumulative_release_count": 137
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2024-04-01",
+      "cumulative_release_count": 140
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2024-05-01",
+      "cumulative_release_count": 144
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2024-06-01",
+      "cumulative_release_count": 148
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2024-07-01",
+      "cumulative_release_count": 153
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2024-08-01",
+      "cumulative_release_count": 157
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2024-09-01",
+      "cumulative_release_count": 159
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2024-10-01",
+      "cumulative_release_count": 162
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2024-11-01",
+      "cumulative_release_count": 164
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2024-12-01",
+      "cumulative_release_count": 166
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2025-01-01",
+      "cumulative_release_count": 169
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2025-02-01",
+      "cumulative_release_count": 173
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2025-03-01",
+      "cumulative_release_count": 181
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2025-04-01",
+      "cumulative_release_count": 191
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2025-05-01",
+      "cumulative_release_count": 200
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2025-06-01",
+      "cumulative_release_count": 204
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2025-07-01",
+      "cumulative_release_count": 211
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2025-08-01",
+      "cumulative_release_count": 218
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2025-09-01",
+      "cumulative_release_count": 222
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2025-10-01",
+      "cumulative_release_count": 224
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2025-11-01",
+      "cumulative_release_count": 226
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2025-12-01",
+      "cumulative_release_count": 227
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2026-01-01",
+      "cumulative_release_count": 234
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2026-02-01",
+      "cumulative_release_count": 236
+    },
+    {
+      "repo": "https://github.com/ibm/mcp-context-forge",
+      "month": "2025-06-01",
+      "cumulative_release_count": 3
+    },
+    {
+      "repo": "https://github.com/ibm/mcp-context-forge",
+      "month": "2025-07-01",
+      "cumulative_release_count": 6
+    },
+    {
+      "repo": "https://github.com/ibm/mcp-context-forge",
+      "month": "2025-08-01",
+      "cumulative_release_count": 8
+    },
+    {
+      "repo": "https://github.com/ibm/mcp-context-forge",
+      "month": "2025-09-01",
+      "cumulative_release_count": 9
+    },
+    {
+      "repo": "https://github.com/ibm/mcp-context-forge",
+      "month": "2025-10-01",
+      "cumulative_release_count": 10
+    },
+    {
+      "repo": "https://github.com/ibm/mcp-context-forge",
+      "month": "2025-11-01",
+      "cumulative_release_count": 11
+    },
+    {
+      "repo": "https://github.com/ibm/mcp-context-forge",
+      "month": "2025-12-01",
+      "cumulative_release_count": 12
+    },
+    {
+      "repo": "https://github.com/ibm/mcp-context-forge",
+      "month": "2026-01-01",
+      "cumulative_release_count": 13
+    },
+    {
+      "repo": "https://github.com/ibm/mcp-context-forge",
+      "month": "2026-02-01",
+      "cumulative_release_count": 14
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2024-04-01",
+      "cumulative_release_count": 6
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2024-05-01",
+      "cumulative_release_count": 9
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2024-07-01",
+      "cumulative_release_count": 10
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2024-08-01",
+      "cumulative_release_count": 12
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2024-09-01",
+      "cumulative_release_count": 14
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2024-10-01",
+      "cumulative_release_count": 15
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2024-11-01",
+      "cumulative_release_count": 17
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2024-12-01",
+      "cumulative_release_count": 19
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2025-02-01",
+      "cumulative_release_count": 20
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2025-03-01",
+      "cumulative_release_count": 23
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2025-04-01",
+      "cumulative_release_count": 24
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2025-05-01",
+      "cumulative_release_count": 25
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2025-06-01",
+      "cumulative_release_count": 26
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2025-08-01",
+      "cumulative_release_count": 31
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2025-09-01",
+      "cumulative_release_count": 32
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2025-10-01",
+      "cumulative_release_count": 34
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2025-11-01",
+      "cumulative_release_count": 36
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2025-12-01",
+      "cumulative_release_count": 39
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2026-02-01",
+      "cumulative_release_count": 40
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2024-03-01",
+      "cumulative_release_count": 18
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2024-04-01",
+      "cumulative_release_count": 21
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2024-05-01",
+      "cumulative_release_count": 23
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2024-06-01",
+      "cumulative_release_count": 25
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2024-07-01",
+      "cumulative_release_count": 26
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2024-08-01",
+      "cumulative_release_count": 27
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2024-09-01",
+      "cumulative_release_count": 28
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2024-10-01",
+      "cumulative_release_count": 33
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2024-11-01",
+      "cumulative_release_count": 35
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2024-12-01",
+      "cumulative_release_count": 49
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2025-01-01",
+      "cumulative_release_count": 63
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2025-02-01",
+      "cumulative_release_count": 73
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2025-03-01",
+      "cumulative_release_count": 74
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2025-05-01",
+      "cumulative_release_count": 75
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2025-06-01",
+      "cumulative_release_count": 82
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2025-07-01",
+      "cumulative_release_count": 85
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2025-08-01",
+      "cumulative_release_count": 88
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2025-09-01",
+      "cumulative_release_count": 89
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2025-10-01",
+      "cumulative_release_count": 92
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2025-11-01",
+      "cumulative_release_count": 93
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2025-12-01",
+      "cumulative_release_count": 95
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2026-01-01",
+      "cumulative_release_count": 96
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2026-02-01",
+      "cumulative_release_count": 97
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2024-04-01",
+      "cumulative_release_count": 31
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2024-05-01",
+      "cumulative_release_count": 33
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2024-06-01",
+      "cumulative_release_count": 34
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2024-07-01",
+      "cumulative_release_count": 35
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2024-08-01",
+      "cumulative_release_count": 36
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2024-10-01",
+      "cumulative_release_count": 38
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2024-12-01",
+      "cumulative_release_count": 39
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-01-01",
+      "cumulative_release_count": 40
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-03-01",
+      "cumulative_release_count": 42
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-05-01",
+      "cumulative_release_count": 44
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-09-01",
+      "cumulative_release_count": 45
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-10-01",
+      "cumulative_release_count": 46
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-11-01",
+      "cumulative_release_count": 47
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2024-03-01",
+      "cumulative_release_count": 322
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2024-04-01",
+      "cumulative_release_count": 331
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2024-05-01",
+      "cumulative_release_count": 402
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2024-06-01",
+      "cumulative_release_count": 448
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2024-07-01",
+      "cumulative_release_count": 512
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2024-08-01",
+      "cumulative_release_count": 550
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2024-09-01",
+      "cumulative_release_count": 632
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2024-10-01",
+      "cumulative_release_count": 666
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2024-11-01",
+      "cumulative_release_count": 707
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2024-12-01",
+      "cumulative_release_count": 742
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2025-01-01",
+      "cumulative_release_count": 778
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2025-02-01",
+      "cumulative_release_count": 811
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2025-03-01",
+      "cumulative_release_count": 850
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2025-04-01",
+      "cumulative_release_count": 877
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2025-05-01",
+      "cumulative_release_count": 896
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2025-06-01",
+      "cumulative_release_count": 916
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2025-07-01",
+      "cumulative_release_count": 937
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2025-08-01",
+      "cumulative_release_count": 959
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2025-09-01",
+      "cumulative_release_count": 987
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2025-10-01",
+      "cumulative_release_count": 1060
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2025-11-01",
+      "cumulative_release_count": 1096
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2025-12-01",
+      "cumulative_release_count": 1127
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2026-01-01",
+      "cumulative_release_count": 1142
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2026-02-01",
+      "cumulative_release_count": 1167
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2024-06-01",
+      "cumulative_release_count": 14
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2024-07-01",
+      "cumulative_release_count": 31
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2024-08-01",
+      "cumulative_release_count": 66
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2024-09-01",
+      "cumulative_release_count": 98
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2024-10-01",
+      "cumulative_release_count": 124
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2024-11-01",
+      "cumulative_release_count": 158
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2024-12-01",
+      "cumulative_release_count": 181
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2025-01-01",
+      "cumulative_release_count": 205
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2025-02-01",
+      "cumulative_release_count": 229
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2025-03-01",
+      "cumulative_release_count": 278
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2025-04-01",
+      "cumulative_release_count": 314
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2025-05-01",
+      "cumulative_release_count": 333
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2025-06-01",
+      "cumulative_release_count": 352
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2025-07-01",
+      "cumulative_release_count": 375
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2025-08-01",
+      "cumulative_release_count": 390
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2025-09-01",
+      "cumulative_release_count": 404
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2025-10-01",
+      "cumulative_release_count": 423
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2025-11-01",
+      "cumulative_release_count": 434
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2025-12-01",
+      "cumulative_release_count": 446
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2026-01-01",
+      "cumulative_release_count": 458
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2026-02-01",
+      "cumulative_release_count": 473
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2024-03-01",
+      "cumulative_release_count": 128
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2024-04-01",
+      "cumulative_release_count": 169
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2024-05-01",
+      "cumulative_release_count": 188
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2024-06-01",
+      "cumulative_release_count": 209
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2024-07-01",
+      "cumulative_release_count": 227
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2024-08-01",
+      "cumulative_release_count": 238
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2024-09-01",
+      "cumulative_release_count": 246
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2024-10-01",
+      "cumulative_release_count": 254
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2024-11-01",
+      "cumulative_release_count": 263
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2024-12-01",
+      "cumulative_release_count": 285
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2025-01-01",
+      "cumulative_release_count": 314
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2025-02-01",
+      "cumulative_release_count": 340
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2025-03-01",
+      "cumulative_release_count": 360
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2025-04-01",
+      "cumulative_release_count": 372
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2025-05-01",
+      "cumulative_release_count": 390
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2025-06-01",
+      "cumulative_release_count": 415
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2025-07-01",
+      "cumulative_release_count": 439
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2025-08-01",
+      "cumulative_release_count": 468
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2025-09-01",
+      "cumulative_release_count": 478
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2025-10-01",
+      "cumulative_release_count": 496
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2025-11-01",
+      "cumulative_release_count": 513
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2025-12-01",
+      "cumulative_release_count": 521
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2026-01-01",
+      "cumulative_release_count": 528
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2026-02-01",
+      "cumulative_release_count": 536
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2024-03-01",
+      "cumulative_release_count": 25
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2024-04-01",
+      "cumulative_release_count": 30
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2024-05-01",
+      "cumulative_release_count": 34
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2024-06-01",
+      "cumulative_release_count": 36
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2024-07-01",
+      "cumulative_release_count": 39
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2024-08-01",
+      "cumulative_release_count": 43
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2024-10-01",
+      "cumulative_release_count": 46
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2024-11-01",
+      "cumulative_release_count": 50
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2024-12-01",
+      "cumulative_release_count": 58
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2025-01-01",
+      "cumulative_release_count": 71
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2025-02-01",
+      "cumulative_release_count": 85
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2025-03-01",
+      "cumulative_release_count": 98
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2025-04-01",
+      "cumulative_release_count": 112
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2025-05-01",
+      "cumulative_release_count": 133
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2025-06-01",
+      "cumulative_release_count": 143
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2025-07-01",
+      "cumulative_release_count": 154
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2025-08-01",
+      "cumulative_release_count": 162
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2025-09-01",
+      "cumulative_release_count": 163
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2025-10-01",
+      "cumulative_release_count": 166
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2025-11-01",
+      "cumulative_release_count": 169
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2025-12-01",
+      "cumulative_release_count": 171
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2026-01-01",
+      "cumulative_release_count": 173
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2026-02-01",
+      "cumulative_release_count": 174
+    },
+    {
+      "repo": "https://github.com/livekit/agents",
+      "month": "2024-07-01",
+      "cumulative_release_count": 19
+    },
+    {
+      "repo": "https://github.com/livekit/agents",
+      "month": "2024-08-01",
+      "cumulative_release_count": 45
+    },
+    {
+      "repo": "https://github.com/livekit/agents",
+      "month": "2024-09-01",
+      "cumulative_release_count": 66
+    },
+    {
+      "repo": "https://github.com/livekit/agents",
+      "month": "2024-10-01",
+      "cumulative_release_count": 92
+    },
+    {
+      "repo": "https://github.com/livekit/agents",
+      "month": "2024-11-01",
+      "cumulative_release_count": 106
+    },
+    {
+      "repo": "https://github.com/livekit/agents",
+      "month": "2024-12-01",
+      "cumulative_release_count": 163
+    },
+    {
+      "repo": "https://github.com/livekit/agents",
+      "month": "2025-01-01",
+      "cumulative_release_count": 190
+    },
+    {
+      "repo": "https://github.com/livekit/agents",
+      "month": "2025-02-01",
+      "cumulative_release_count": 216
+    },
+    {
+      "repo": "https://github.com/livekit/agents",
+      "month": "2025-03-01",
+      "cumulative_release_count": 256
+    },
+    {
+      "repo": "https://github.com/livekit/agents",
+      "month": "2025-04-01",
+      "cumulative_release_count": 268
+    },
+    {
+      "repo": "https://github.com/livekit/agents",
+      "month": "2025-05-01",
+      "cumulative_release_count": 298
+    },
+    {
+      "repo": "https://github.com/livekit/agents",
+      "month": "2025-06-01",
+      "cumulative_release_count": 302
+    },
+    {
+      "repo": "https://github.com/livekit/agents",
+      "month": "2025-07-01",
+      "cumulative_release_count": 307
+    },
+    {
+      "repo": "https://github.com/livekit/agents",
+      "month": "2025-08-01",
+      "cumulative_release_count": 312
+    },
+    {
+      "repo": "https://github.com/livekit/agents",
+      "month": "2025-09-01",
+      "cumulative_release_count": 316
+    },
+    {
+      "repo": "https://github.com/livekit/agents",
+      "month": "2025-10-01",
+      "cumulative_release_count": 321
+    },
+    {
+      "repo": "https://github.com/livekit/agents",
+      "month": "2025-11-01",
+      "cumulative_release_count": 326
+    },
+    {
+      "repo": "https://github.com/livekit/agents",
+      "month": "2025-12-01",
+      "cumulative_release_count": 331
+    },
+    {
+      "repo": "https://github.com/livekit/agents",
+      "month": "2026-01-01",
+      "cumulative_release_count": 333
+    },
+    {
+      "repo": "https://github.com/livekit/agents",
+      "month": "2026-02-01",
+      "cumulative_release_count": 339
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2025-04-01",
+      "cumulative_release_count": 6
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2025-05-01",
+      "cumulative_release_count": 11
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2025-06-01",
+      "cumulative_release_count": 15
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2025-07-01",
+      "cumulative_release_count": 20
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2025-08-01",
+      "cumulative_release_count": 24
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2025-09-01",
+      "cumulative_release_count": 28
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2025-10-01",
+      "cumulative_release_count": 33
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2025-11-01",
+      "cumulative_release_count": 38
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2026-01-01",
+      "cumulative_release_count": 62
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2026-02-01",
+      "cumulative_release_count": 68
+    },
+    {
+      "repo": "https://github.com/microsoft/OmniParser",
+      "month": "2025-02-01",
+      "cumulative_release_count": 2
+    },
+    {
+      "repo": "https://github.com/microsoft/OmniParser",
+      "month": "2025-09-01",
+      "cumulative_release_count": 3
+    },
+    {
+      "repo": "https://github.com/microsoft/TaskWeaver",
+      "month": "2024-04-01",
+      "cumulative_release_count": 1
+    },
+    {
+      "repo": "https://github.com/microsoft/TaskWeaver",
+      "month": "2024-05-01",
+      "cumulative_release_count": 2
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2024-03-01",
+      "cumulative_release_count": 44
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2024-04-01",
+      "cumulative_release_count": 50
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2024-05-01",
+      "cumulative_release_count": 51
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2024-06-01",
+      "cumulative_release_count": 54
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2024-07-01",
+      "cumulative_release_count": 56
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2024-08-01",
+      "cumulative_release_count": 58
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2024-10-01",
+      "cumulative_release_count": 60
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2024-11-01",
+      "cumulative_release_count": 62
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2024-12-01",
+      "cumulative_release_count": 66
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2025-01-01",
+      "cumulative_release_count": 71
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2025-02-01",
+      "cumulative_release_count": 75
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2025-03-01",
+      "cumulative_release_count": 82
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2025-04-01",
+      "cumulative_release_count": 87
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2025-05-01",
+      "cumulative_release_count": 89
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2025-06-01",
+      "cumulative_release_count": 91
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2025-07-01",
+      "cumulative_release_count": 94
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2025-08-01",
+      "cumulative_release_count": 97
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2025-09-01",
+      "cumulative_release_count": 98
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
+      "month": "2024-07-01",
+      "cumulative_release_count": 2
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
+      "month": "2024-08-01",
+      "cumulative_release_count": 7
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
+      "month": "2024-09-01",
+      "cumulative_release_count": 10
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
+      "month": "2024-11-01",
+      "cumulative_release_count": 13
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
+      "month": "2024-12-01",
+      "cumulative_release_count": 16
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
+      "month": "2025-01-01",
+      "cumulative_release_count": 20
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
+      "month": "2025-02-01",
+      "cumulative_release_count": 21
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
+      "month": "2025-03-01",
+      "cumulative_release_count": 22
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
+      "month": "2025-04-01",
+      "cumulative_release_count": 23
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
+      "month": "2025-05-01",
+      "cumulative_release_count": 25
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
+      "month": "2025-07-01",
+      "cumulative_release_count": 26
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
+      "month": "2025-08-01",
+      "cumulative_release_count": 27
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
+      "month": "2025-09-01",
+      "cumulative_release_count": 28
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
+      "month": "2025-10-01",
+      "cumulative_release_count": 29
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
+      "month": "2026-01-01",
+      "cumulative_release_count": 32
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
+      "month": "2026-02-01",
+      "cumulative_release_count": 35
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2024-03-01",
+      "cumulative_release_count": 121
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2024-04-01",
+      "cumulative_release_count": 123
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2024-05-01",
+      "cumulative_release_count": 125
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2024-06-01",
+      "cumulative_release_count": 126
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2024-07-01",
+      "cumulative_release_count": 129
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2024-08-01",
+      "cumulative_release_count": 131
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2024-09-01",
+      "cumulative_release_count": 134
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2024-10-01",
+      "cumulative_release_count": 137
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2024-11-01",
+      "cumulative_release_count": 138
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2024-12-01",
+      "cumulative_release_count": 139
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-01-01",
+      "cumulative_release_count": 141
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-03-01",
+      "cumulative_release_count": 143
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-04-01",
+      "cumulative_release_count": 144
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-06-01",
+      "cumulative_release_count": 147
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-07-01",
+      "cumulative_release_count": 149
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-08-01",
+      "cumulative_release_count": 151
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-09-01",
+      "cumulative_release_count": 152
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-10-01",
+      "cumulative_release_count": 154
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-11-01",
+      "cumulative_release_count": 155
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2026-01-01",
+      "cumulative_release_count": 157
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2026-02-01",
+      "cumulative_release_count": 158
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2024-03-01",
+      "cumulative_release_count": 81
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2024-04-01",
+      "cumulative_release_count": 88
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2024-05-01",
+      "cumulative_release_count": 100
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2024-06-01",
+      "cumulative_release_count": 108
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2024-07-01",
+      "cumulative_release_count": 114
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2024-08-01",
+      "cumulative_release_count": 127
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2024-09-01",
+      "cumulative_release_count": 136
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2024-10-01",
+      "cumulative_release_count": 149
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2024-11-01",
+      "cumulative_release_count": 157
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2024-12-01",
+      "cumulative_release_count": 160
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2025-01-01",
+      "cumulative_release_count": 169
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2025-02-01",
+      "cumulative_release_count": 180
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2025-03-01",
+      "cumulative_release_count": 193
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2025-04-01",
+      "cumulative_release_count": 203
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2025-05-01",
+      "cumulative_release_count": 215
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2025-06-01",
+      "cumulative_release_count": 224
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2025-07-01",
+      "cumulative_release_count": 229
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2025-08-01",
+      "cumulative_release_count": 236
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2025-09-01",
+      "cumulative_release_count": 240
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2025-10-01",
+      "cumulative_release_count": 242
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2025-11-01",
+      "cumulative_release_count": 246
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2025-12-01",
+      "cumulative_release_count": 247
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2026-01-01",
+      "cumulative_release_count": 251
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2026-02-01",
+      "cumulative_release_count": 256
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2024-03-01",
+      "cumulative_release_count": 69
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2024-04-01",
+      "cumulative_release_count": 72
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2024-05-01",
+      "cumulative_release_count": 78
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2024-06-01",
+      "cumulative_release_count": 80
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2024-07-01",
+      "cumulative_release_count": 83
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2024-08-01",
+      "cumulative_release_count": 87
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2024-09-01",
+      "cumulative_release_count": 89
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2024-10-01",
+      "cumulative_release_count": 93
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2024-11-01",
+      "cumulative_release_count": 97
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2024-12-01",
+      "cumulative_release_count": 101
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2025-01-01",
+      "cumulative_release_count": 106
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2025-02-01",
+      "cumulative_release_count": 109
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2025-03-01",
+      "cumulative_release_count": 111
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2025-04-01",
+      "cumulative_release_count": 117
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2025-05-01",
+      "cumulative_release_count": 118
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2025-06-01",
+      "cumulative_release_count": 122
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2025-07-01",
+      "cumulative_release_count": 125
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2025-08-01",
+      "cumulative_release_count": 130
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2025-09-01",
+      "cumulative_release_count": 133
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2025-10-01",
+      "cumulative_release_count": 137
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2025-11-01",
+      "cumulative_release_count": 143
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2025-12-01",
+      "cumulative_release_count": 146
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2026-01-01",
+      "cumulative_release_count": 150
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2026-02-01",
+      "cumulative_release_count": 153
+    },
+    {
+      "repo": "https://github.com/mistralai/mistral-inference",
+      "month": "2024-05-01",
+      "cumulative_release_count": 2
+    },
+    {
+      "repo": "https://github.com/mistralai/mistral-inference",
+      "month": "2024-07-01",
+      "cumulative_release_count": 4
+    },
+    {
+      "repo": "https://github.com/mistralai/mistral-inference",
+      "month": "2024-09-01",
+      "cumulative_release_count": 5
+    },
+    {
+      "repo": "https://github.com/mistralai/mistral-inference",
+      "month": "2025-03-01",
+      "cumulative_release_count": 6
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "month": "2024-10-01",
+      "cumulative_release_count": 1
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "month": "2024-11-01",
+      "cumulative_release_count": 10
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "month": "2024-12-01",
+      "cumulative_release_count": 11
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "month": "2025-02-01",
+      "cumulative_release_count": 13
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "month": "2025-03-01",
+      "cumulative_release_count": 16
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "month": "2025-04-01",
+      "cumulative_release_count": 22
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "month": "2025-05-01",
+      "cumulative_release_count": 24
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "month": "2025-06-01",
+      "cumulative_release_count": 29
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "month": "2025-07-01",
+      "cumulative_release_count": 32
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "month": "2025-08-01",
+      "cumulative_release_count": 35
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "month": "2025-09-01",
+      "cumulative_release_count": 38
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "month": "2025-10-01",
+      "cumulative_release_count": 41
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "month": "2025-11-01",
+      "cumulative_release_count": 43
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "month": "2025-12-01",
+      "cumulative_release_count": 45
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "month": "2026-01-01",
+      "cumulative_release_count": 46
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "month": "2026-02-01",
+      "cumulative_release_count": 49
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "month": "2024-11-01",
+      "cumulative_release_count": 1
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "month": "2025-01-01",
+      "cumulative_release_count": 2
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "month": "2025-03-01",
+      "cumulative_release_count": 4
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "month": "2025-06-01",
+      "cumulative_release_count": 5
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "month": "2025-11-01",
+      "cumulative_release_count": 7
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2024-03-01",
+      "cumulative_release_count": 52
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2024-04-01",
+      "cumulative_release_count": 55
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2024-05-01",
+      "cumulative_release_count": 62
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2024-06-01",
+      "cumulative_release_count": 70
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2024-07-01",
+      "cumulative_release_count": 81
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2024-08-01",
+      "cumulative_release_count": 89
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2024-09-01",
+      "cumulative_release_count": 92
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2024-10-01",
+      "cumulative_release_count": 95
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2024-11-01",
+      "cumulative_release_count": 101
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2024-12-01",
+      "cumulative_release_count": 107
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2025-01-01",
+      "cumulative_release_count": 110
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2025-02-01",
+      "cumulative_release_count": 116
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2025-03-01",
+      "cumulative_release_count": 120
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2025-04-01",
+      "cumulative_release_count": 124
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2025-05-01",
+      "cumulative_release_count": 129
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2025-06-01",
+      "cumulative_release_count": 133
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2025-07-01",
+      "cumulative_release_count": 137
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2025-08-01",
+      "cumulative_release_count": 145
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2025-09-01",
+      "cumulative_release_count": 152
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2025-10-01",
+      "cumulative_release_count": 158
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2025-11-01",
+      "cumulative_release_count": 162
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2025-12-01",
+      "cumulative_release_count": 166
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2026-01-01",
+      "cumulative_release_count": 173
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2026-02-01",
+      "cumulative_release_count": 186
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2024-04-01",
+      "cumulative_release_count": 6
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2024-05-01",
+      "cumulative_release_count": 7
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2024-08-01",
+      "cumulative_release_count": 8
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2024-10-01",
+      "cumulative_release_count": 9
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2024-11-01",
+      "cumulative_release_count": 10
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2025-01-01",
+      "cumulative_release_count": 11
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2025-03-01",
+      "cumulative_release_count": 13
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2025-05-01",
+      "cumulative_release_count": 15
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2025-06-01",
+      "cumulative_release_count": 16
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2025-07-01",
+      "cumulative_release_count": 17
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2025-08-01",
+      "cumulative_release_count": 18
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2025-10-01",
+      "cumulative_release_count": 19
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2026-01-01",
+      "cumulative_release_count": 20
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2026-02-01",
+      "cumulative_release_count": 21
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2024-03-01",
+      "cumulative_release_count": 15
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2024-04-01",
+      "cumulative_release_count": 21
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2024-05-01",
+      "cumulative_release_count": 24
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2024-06-01",
+      "cumulative_release_count": 38
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2024-07-01",
+      "cumulative_release_count": 41
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2024-08-01",
+      "cumulative_release_count": 47
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2024-09-01",
+      "cumulative_release_count": 61
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2024-10-01",
+      "cumulative_release_count": 66
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2024-11-01",
+      "cumulative_release_count": 73
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2024-12-01",
+      "cumulative_release_count": 79
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2025-01-01",
+      "cumulative_release_count": 83
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2025-02-01",
+      "cumulative_release_count": 94
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2025-03-01",
+      "cumulative_release_count": 96
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2025-04-01",
+      "cumulative_release_count": 102
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2025-05-01",
+      "cumulative_release_count": 110
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2025-06-01",
+      "cumulative_release_count": 112
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2025-07-01",
+      "cumulative_release_count": 115
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2025-08-01",
+      "cumulative_release_count": 123
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2025-09-01",
+      "cumulative_release_count": 129
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2025-10-01",
+      "cumulative_release_count": 131
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2025-11-01",
+      "cumulative_release_count": 137
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2025-12-01",
+      "cumulative_release_count": 140
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2026-01-01",
+      "cumulative_release_count": 143
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2026-02-01",
+      "cumulative_release_count": 149
+    },
+    {
+      "repo": "https://github.com/openai/openai-agents-python",
+      "month": "2025-03-01",
+      "cumulative_release_count": 6
+    },
+    {
+      "repo": "https://github.com/openai/openai-agents-python",
+      "month": "2025-04-01",
+      "cumulative_release_count": 13
+    },
+    {
+      "repo": "https://github.com/openai/openai-agents-python",
+      "month": "2025-05-01",
+      "cumulative_release_count": 15
+    },
+    {
+      "repo": "https://github.com/openai/openai-agents-python",
+      "month": "2025-06-01",
+      "cumulative_release_count": 19
+    },
+    {
+      "repo": "https://github.com/openai/openai-agents-python",
+      "month": "2025-07-01",
+      "cumulative_release_count": 24
+    },
+    {
+      "repo": "https://github.com/openai/openai-agents-python",
+      "month": "2025-08-01",
+      "cumulative_release_count": 30
+    },
+    {
+      "repo": "https://github.com/openai/openai-agents-python",
+      "month": "2025-09-01",
+      "cumulative_release_count": 35
+    },
+    {
+      "repo": "https://github.com/openai/openai-agents-python",
+      "month": "2025-10-01",
+      "cumulative_release_count": 38
+    },
+    {
+      "repo": "https://github.com/openai/openai-agents-python",
+      "month": "2025-11-01",
+      "cumulative_release_count": 42
+    },
+    {
+      "repo": "https://github.com/openai/openai-agents-python",
+      "month": "2025-12-01",
+      "cumulative_release_count": 45
+    },
+    {
+      "repo": "https://github.com/openai/openai-agents-python",
+      "month": "2026-01-01",
+      "cumulative_release_count": 51
+    },
+    {
+      "repo": "https://github.com/openai/openai-agents-python",
+      "month": "2026-02-01",
+      "cumulative_release_count": 63
+    },
+    {
+      "repo": "https://github.com/openclaw/openclaw",
+      "month": "2025-11-01",
+      "cumulative_release_count": 7
+    },
+    {
+      "repo": "https://github.com/openclaw/openclaw",
+      "month": "2025-12-01",
+      "cumulative_release_count": 12
+    },
+    {
+      "repo": "https://github.com/openclaw/openclaw",
+      "month": "2026-01-01",
+      "cumulative_release_count": 35
+    },
+    {
+      "repo": "https://github.com/openclaw/openclaw",
+      "month": "2026-02-01",
+      "cumulative_release_count": 56
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2024-03-01",
+      "cumulative_release_count": 31
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2024-04-01",
+      "cumulative_release_count": 35
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2024-05-01",
+      "cumulative_release_count": 38
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2024-06-01",
+      "cumulative_release_count": 41
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2024-07-01",
+      "cumulative_release_count": 43
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2024-08-01",
+      "cumulative_release_count": 46
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2024-09-01",
+      "cumulative_release_count": 47
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2024-10-01",
+      "cumulative_release_count": 49
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2024-11-01",
+      "cumulative_release_count": 52
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2024-12-01",
+      "cumulative_release_count": 53
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2025-01-01",
+      "cumulative_release_count": 57
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2025-02-01",
+      "cumulative_release_count": 60
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2025-03-01",
+      "cumulative_release_count": 63
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2025-04-01",
+      "cumulative_release_count": 66
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2025-05-01",
+      "cumulative_release_count": 68
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2025-06-01",
+      "cumulative_release_count": 70
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2025-07-01",
+      "cumulative_release_count": 74
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2025-08-01",
+      "cumulative_release_count": 76
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2025-10-01",
+      "cumulative_release_count": 79
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2025-11-01",
+      "cumulative_release_count": 80
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2025-12-01",
+      "cumulative_release_count": 81
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2026-01-01",
+      "cumulative_release_count": 83
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2026-02-01",
+      "cumulative_release_count": 84
+    },
+    {
+      "repo": "https://github.com/pipecat-ai/pipecat",
+      "month": "2024-05-01",
+      "cumulative_release_count": 24
+    },
+    {
+      "repo": "https://github.com/pipecat-ai/pipecat",
+      "month": "2024-06-01",
+      "cumulative_release_count": 34
+    },
+    {
+      "repo": "https://github.com/pipecat-ai/pipecat",
+      "month": "2024-07-01",
+      "cumulative_release_count": 38
+    },
+    {
+      "repo": "https://github.com/pipecat-ai/pipecat",
+      "month": "2024-08-01",
+      "cumulative_release_count": 39
+    },
+    {
+      "repo": "https://github.com/pipecat-ai/pipecat",
+      "month": "2024-09-01",
+      "cumulative_release_count": 40
+    },
+    {
+      "repo": "https://github.com/pipecat-ai/pipecat",
+      "month": "2024-10-01",
+      "cumulative_release_count": 46
+    },
+    {
+      "repo": "https://github.com/pipecat-ai/pipecat",
+      "month": "2024-11-01",
+      "cumulative_release_count": 48
+    },
+    {
+      "repo": "https://github.com/pipecat-ai/pipecat",
+      "month": "2024-12-01",
+      "cumulative_release_count": 51
+    },
+    {
+      "repo": "https://github.com/pipecat-ai/pipecat",
+      "month": "2025-01-01",
+      "cumulative_release_count": 53
+    },
+    {
+      "repo": "https://github.com/pipecat-ai/pipecat",
+      "month": "2025-02-01",
+      "cumulative_release_count": 57
+    },
+    {
+      "repo": "https://github.com/pipecat-ai/pipecat",
+      "month": "2025-03-01",
+      "cumulative_release_count": 60
+    },
+    {
+      "repo": "https://github.com/pipecat-ai/pipecat",
+      "month": "2025-04-01",
+      "cumulative_release_count": 64
+    },
+    {
+      "repo": "https://github.com/pipecat-ai/pipecat",
+      "month": "2025-05-01",
+      "cumulative_release_count": 67
+    },
+    {
+      "repo": "https://github.com/pipecat-ai/pipecat",
+      "month": "2025-06-01",
+      "cumulative_release_count": 72
+    },
+    {
+      "repo": "https://github.com/pipecat-ai/pipecat",
+      "month": "2025-07-01",
+      "cumulative_release_count": 76
+    },
+    {
+      "repo": "https://github.com/pipecat-ai/pipecat",
+      "month": "2025-08-01",
+      "cumulative_release_count": 81
+    },
+    {
+      "repo": "https://github.com/pipecat-ai/pipecat",
+      "month": "2025-09-01",
+      "cumulative_release_count": 85
+    },
+    {
+      "repo": "https://github.com/pipecat-ai/pipecat",
+      "month": "2025-10-01",
+      "cumulative_release_count": 91
+    },
+    {
+      "repo": "https://github.com/pipecat-ai/pipecat",
+      "month": "2025-11-01",
+      "cumulative_release_count": 95
+    },
+    {
+      "repo": "https://github.com/pipecat-ai/pipecat",
+      "month": "2025-12-01",
+      "cumulative_release_count": 97
+    },
+    {
+      "repo": "https://github.com/pipecat-ai/pipecat",
+      "month": "2026-01-01",
+      "cumulative_release_count": 100
+    },
+    {
+      "repo": "https://github.com/pipecat-ai/pipecat",
+      "month": "2026-02-01",
+      "cumulative_release_count": 102
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2024-03-01",
+      "cumulative_release_count": 104
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2024-04-01",
+      "cumulative_release_count": 113
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2024-05-01",
+      "cumulative_release_count": 121
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2024-06-01",
+      "cumulative_release_count": 132
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2024-07-01",
+      "cumulative_release_count": 156
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2024-08-01",
+      "cumulative_release_count": 178
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2024-09-01",
+      "cumulative_release_count": 201
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2024-10-01",
+      "cumulative_release_count": 220
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2024-11-01",
+      "cumulative_release_count": 227
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2024-12-01",
+      "cumulative_release_count": 245
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2025-01-01",
+      "cumulative_release_count": 261
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2025-02-01",
+      "cumulative_release_count": 269
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2025-03-01",
+      "cumulative_release_count": 280
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2025-04-01",
+      "cumulative_release_count": 290
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2025-05-01",
+      "cumulative_release_count": 305
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2025-06-01",
+      "cumulative_release_count": 315
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2025-07-01",
+      "cumulative_release_count": 328
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2025-08-01",
+      "cumulative_release_count": 336
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2025-09-01",
+      "cumulative_release_count": 346
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2025-10-01",
+      "cumulative_release_count": 354
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2025-11-01",
+      "cumulative_release_count": 366
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2025-12-01",
+      "cumulative_release_count": 377
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2026-01-01",
+      "cumulative_release_count": 388
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2026-02-01",
+      "cumulative_release_count": 393
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2024-10-01",
+      "cumulative_release_count": 2
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2024-11-01",
+      "cumulative_release_count": 8
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2024-12-01",
+      "cumulative_release_count": 17
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2025-01-01",
+      "cumulative_release_count": 22
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2025-02-01",
+      "cumulative_release_count": 31
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2025-03-01",
+      "cumulative_release_count": 49
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2025-04-01",
+      "cumulative_release_count": 65
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2025-05-01",
+      "cumulative_release_count": 81
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2025-06-01",
+      "cumulative_release_count": 95
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2025-07-01",
+      "cumulative_release_count": 108
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2025-08-01",
+      "cumulative_release_count": 124
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2025-09-01",
+      "cumulative_release_count": 136
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2025-10-01",
+      "cumulative_release_count": 153
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2025-11-01",
+      "cumulative_release_count": 172
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2025-12-01",
+      "cumulative_release_count": 187
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2026-01-01",
+      "cumulative_release_count": 200
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2026-02-01",
+      "cumulative_release_count": 212
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2024-03-01",
+      "cumulative_release_count": 66
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2024-04-01",
+      "cumulative_release_count": 68
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2024-05-01",
+      "cumulative_release_count": 72
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2024-06-01",
+      "cumulative_release_count": 75
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2024-07-01",
+      "cumulative_release_count": 77
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2024-08-01",
+      "cumulative_release_count": 81
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2024-09-01",
+      "cumulative_release_count": 83
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2024-10-01",
+      "cumulative_release_count": 85
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2024-11-01",
+      "cumulative_release_count": 88
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2024-12-01",
+      "cumulative_release_count": 89
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2025-01-01",
+      "cumulative_release_count": 93
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2025-02-01",
+      "cumulative_release_count": 95
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2025-03-01",
+      "cumulative_release_count": 97
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2025-04-01",
+      "cumulative_release_count": 98
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2025-05-01",
+      "cumulative_release_count": 99
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2025-07-01",
+      "cumulative_release_count": 101
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2025-08-01",
+      "cumulative_release_count": 104
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2025-09-01",
+      "cumulative_release_count": 105
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2025-11-01",
+      "cumulative_release_count": 107
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2025-12-01",
+      "cumulative_release_count": 109
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2026-02-01",
+      "cumulative_release_count": 110
+    },
+    {
+      "repo": "https://github.com/qodo-ai/pr-agent",
+      "month": "2024-03-01",
+      "cumulative_release_count": 8
+    },
+    {
+      "repo": "https://github.com/qodo-ai/pr-agent",
+      "month": "2024-05-01",
+      "cumulative_release_count": 9
+    },
+    {
+      "repo": "https://github.com/qodo-ai/pr-agent",
+      "month": "2024-07-01",
+      "cumulative_release_count": 10
+    },
+    {
+      "repo": "https://github.com/qodo-ai/pr-agent",
+      "month": "2024-09-01",
+      "cumulative_release_count": 11
+    },
+    {
+      "repo": "https://github.com/qodo-ai/pr-agent",
+      "month": "2024-12-01",
+      "cumulative_release_count": 13
+    },
+    {
+      "repo": "https://github.com/qodo-ai/pr-agent",
+      "month": "2025-02-01",
+      "cumulative_release_count": 14
+    },
+    {
+      "repo": "https://github.com/qodo-ai/pr-agent",
+      "month": "2025-03-01",
+      "cumulative_release_count": 15
+    },
+    {
+      "repo": "https://github.com/qodo-ai/pr-agent",
+      "month": "2025-05-01",
+      "cumulative_release_count": 16
+    },
+    {
+      "repo": "https://github.com/qodo-ai/pr-agent",
+      "month": "2025-06-01",
+      "cumulative_release_count": 17
+    },
+    {
+      "repo": "https://github.com/qodo-ai/pr-agent",
+      "month": "2025-11-01",
+      "cumulative_release_count": 18
+    },
+    {
+      "repo": "https://github.com/qodo-ai/pr-agent",
+      "month": "2026-02-01",
+      "cumulative_release_count": 19
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2024-03-01",
+      "cumulative_release_count": 332
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2024-04-01",
+      "cumulative_release_count": 340
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2024-05-01",
+      "cumulative_release_count": 349
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2024-06-01",
+      "cumulative_release_count": 359
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2024-07-01",
+      "cumulative_release_count": 367
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2024-08-01",
+      "cumulative_release_count": 379
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2024-09-01",
+      "cumulative_release_count": 390
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2024-10-01",
+      "cumulative_release_count": 396
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2024-11-01",
+      "cumulative_release_count": 402
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2024-12-01",
+      "cumulative_release_count": 409
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-01-01",
+      "cumulative_release_count": 417
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-02-01",
+      "cumulative_release_count": 424
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-03-01",
+      "cumulative_release_count": 433
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-04-01",
+      "cumulative_release_count": 439
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-05-01",
+      "cumulative_release_count": 444
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-06-01",
+      "cumulative_release_count": 450
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-07-01",
+      "cumulative_release_count": 462
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-08-01",
+      "cumulative_release_count": 469
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-09-01",
+      "cumulative_release_count": 477
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-10-01",
+      "cumulative_release_count": 481
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-11-01",
+      "cumulative_release_count": 482
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-12-01",
+      "cumulative_release_count": 485
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2026-01-01",
+      "cumulative_release_count": 486
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2026-02-01",
+      "cumulative_release_count": 488
+    },
+    {
+      "repo": "https://github.com/simular-ai/Agent-S",
+      "month": "2024-11-01",
+      "cumulative_release_count": 1
+    },
+    {
+      "repo": "https://github.com/simular-ai/Agent-S",
+      "month": "2025-01-01",
+      "cumulative_release_count": 2
+    },
+    {
+      "repo": "https://github.com/simular-ai/Agent-S",
+      "month": "2025-02-01",
+      "cumulative_release_count": 3
+    },
+    {
+      "repo": "https://github.com/simular-ai/Agent-S",
+      "month": "2025-03-01",
+      "cumulative_release_count": 5
+    },
+    {
+      "repo": "https://github.com/simular-ai/Agent-S",
+      "month": "2025-04-01",
+      "cumulative_release_count": 7
+    },
+    {
+      "repo": "https://github.com/simular-ai/Agent-S",
+      "month": "2025-05-01",
+      "cumulative_release_count": 8
+    },
+    {
+      "repo": "https://github.com/simular-ai/Agent-S",
+      "month": "2025-08-01",
+      "cumulative_release_count": 9
+    },
+    {
+      "repo": "https://github.com/simular-ai/Agent-S",
+      "month": "2025-10-01",
+      "cumulative_release_count": 11
+    },
+    {
+      "repo": "https://github.com/simular-ai/Agent-S",
+      "month": "2025-12-01",
+      "cumulative_release_count": 12
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2024-05-01",
+      "cumulative_release_count": 14
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2024-07-01",
+      "cumulative_release_count": 15
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2024-11-01",
+      "cumulative_release_count": 16
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2025-02-01",
+      "cumulative_release_count": 17
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2025-04-01",
+      "cumulative_release_count": 20
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2025-05-01",
+      "cumulative_release_count": 21
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2025-07-01",
+      "cumulative_release_count": 22
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2025-08-01",
+      "cumulative_release_count": 24
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2025-09-01",
+      "cumulative_release_count": 26
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2025-10-01",
+      "cumulative_release_count": 27
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2025-11-01",
+      "cumulative_release_count": 28
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2025-12-01",
+      "cumulative_release_count": 32
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2024-04-01",
+      "cumulative_release_count": 2
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2024-06-01",
+      "cumulative_release_count": 3
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2024-07-01",
+      "cumulative_release_count": 6
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2024-09-01",
+      "cumulative_release_count": 13
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2024-10-01",
+      "cumulative_release_count": 32
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2024-11-01",
+      "cumulative_release_count": 52
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2024-12-01",
+      "cumulative_release_count": 59
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2025-01-01",
+      "cumulative_release_count": 62
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2025-02-01",
+      "cumulative_release_count": 70
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2025-03-01",
+      "cumulative_release_count": 78
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2025-04-01",
+      "cumulative_release_count": 84
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2025-05-01",
+      "cumulative_release_count": 86
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2025-06-01",
+      "cumulative_release_count": 91
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2025-07-01",
+      "cumulative_release_count": 93
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2025-08-01",
+      "cumulative_release_count": 98
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2025-09-01",
+      "cumulative_release_count": 99
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2025-10-01",
+      "cumulative_release_count": 100
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2025-11-01",
+      "cumulative_release_count": 102
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2026-01-01",
+      "cumulative_release_count": 105
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2026-02-01",
+      "cumulative_release_count": 106
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2024-03-01",
+      "cumulative_release_count": 130
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2024-04-01",
+      "cumulative_release_count": 131
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2024-05-01",
+      "cumulative_release_count": 132
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2024-06-01",
+      "cumulative_release_count": 134
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2024-09-01",
+      "cumulative_release_count": 135
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2024-10-01",
+      "cumulative_release_count": 137
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2024-11-01",
+      "cumulative_release_count": 138
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2024-12-01",
+      "cumulative_release_count": 139
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2025-02-01",
+      "cumulative_release_count": 141
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2025-03-01",
+      "cumulative_release_count": 142
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2025-06-01",
+      "cumulative_release_count": 143
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2025-08-01",
+      "cumulative_release_count": 146
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2025-10-01",
+      "cumulative_release_count": 148
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2025-12-01",
+      "cumulative_release_count": 151
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2026-02-01",
+      "cumulative_release_count": 152
+    },
+    {
+      "repo": "https://github.com/unclecode/crawl4ai",
+      "month": "2025-03-01",
+      "cumulative_release_count": 1
+    },
+    {
+      "repo": "https://github.com/unclecode/crawl4ai",
+      "month": "2025-04-01",
+      "cumulative_release_count": 2
+    },
+    {
+      "repo": "https://github.com/unclecode/crawl4ai",
+      "month": "2025-05-01",
+      "cumulative_release_count": 3
+    },
+    {
+      "repo": "https://github.com/unclecode/crawl4ai",
+      "month": "2025-07-01",
+      "cumulative_release_count": 6
+    },
+    {
+      "repo": "https://github.com/unclecode/crawl4ai",
+      "month": "2025-08-01",
+      "cumulative_release_count": 8
+    },
+    {
+      "repo": "https://github.com/unclecode/crawl4ai",
+      "month": "2025-10-01",
+      "cumulative_release_count": 10
+    },
+    {
+      "repo": "https://github.com/unclecode/crawl4ai",
+      "month": "2025-11-01",
+      "cumulative_release_count": 11
+    },
+    {
+      "repo": "https://github.com/unclecode/crawl4ai",
+      "month": "2025-12-01",
+      "cumulative_release_count": 12
+    },
+    {
+      "repo": "https://github.com/unclecode/crawl4ai",
+      "month": "2026-01-01",
+      "cumulative_release_count": 13
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2024-03-01",
+      "cumulative_release_count": 34
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2024-04-01",
+      "cumulative_release_count": 36
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2024-05-01",
+      "cumulative_release_count": 38
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2024-07-01",
+      "cumulative_release_count": 41
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2024-08-01",
+      "cumulative_release_count": 44
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2024-09-01",
+      "cumulative_release_count": 49
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2024-10-01",
+      "cumulative_release_count": 55
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2024-11-01",
+      "cumulative_release_count": 58
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2024-12-01",
+      "cumulative_release_count": 61
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2025-01-01",
+      "cumulative_release_count": 64
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2025-02-01",
+      "cumulative_release_count": 65
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2025-03-01",
+      "cumulative_release_count": 66
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2025-04-01",
+      "cumulative_release_count": 67
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2025-07-01",
+      "cumulative_release_count": 70
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2025-08-01",
+      "cumulative_release_count": 75
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2025-09-01",
+      "cumulative_release_count": 81
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2025-10-01",
+      "cumulative_release_count": 84
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2025-11-01",
+      "cumulative_release_count": 85
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2025-12-01",
+      "cumulative_release_count": 88
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2026-01-01",
+      "cumulative_release_count": 89
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2024-03-01",
+      "cumulative_release_count": 222
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2024-04-01",
+      "cumulative_release_count": 226
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2024-05-01",
+      "cumulative_release_count": 237
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2024-06-01",
+      "cumulative_release_count": 246
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2024-07-01",
+      "cumulative_release_count": 255
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2024-08-01",
+      "cumulative_release_count": 262
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2024-09-01",
+      "cumulative_release_count": 271
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2024-10-01",
+      "cumulative_release_count": 284
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2024-11-01",
+      "cumulative_release_count": 294
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2024-12-01",
+      "cumulative_release_count": 305
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2025-01-01",
+      "cumulative_release_count": 311
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2025-02-01",
+      "cumulative_release_count": 329
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2025-03-01",
+      "cumulative_release_count": 338
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2025-04-01",
+      "cumulative_release_count": 349
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2025-05-01",
+      "cumulative_release_count": 370
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2025-06-01",
+      "cumulative_release_count": 378
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2025-07-01",
+      "cumulative_release_count": 393
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2025-08-01",
+      "cumulative_release_count": 407
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2025-09-01",
+      "cumulative_release_count": 417
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2025-10-01",
+      "cumulative_release_count": 430
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2025-11-01",
+      "cumulative_release_count": 447
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2025-12-01",
+      "cumulative_release_count": 467
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2026-01-01",
+      "cumulative_release_count": 485
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2026-02-01",
+      "cumulative_release_count": 502
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2024-04-01",
+      "cumulative_release_count": 1
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2024-06-01",
+      "cumulative_release_count": 2
+    }
+  ]
+}

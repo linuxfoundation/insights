@@ -1,0 +1,5231 @@
+{
+  "metadata": {
+    "fetched_at": "2026-03-25T15:29:13.080576",
+    "schema": {
+      "name": "pull_request_merge_rate",
+      "description": "Monthly pull request merge rate (merged / opened) per repo.",
+      "fields": [
+        {
+          "name": "repo",
+          "type": "string",
+          "description": "GitHub repository channel URL",
+          "optional": false
+        },
+        {
+          "name": "month",
+          "type": "date",
+          "description": "First day of the month in which PRs were opened (YYYY-MM-DD)",
+          "optional": false
+        },
+        {
+          "name": "pr_merge_rate",
+          "type": "number",
+          "description": "Fraction of PRs opened in this month that were eventually merged [0, 1]",
+          "optional": false
+        }
+      ]
+    },
+    "covered_items": [
+      "https://github.com/567-labs/instructor",
+      "https://github.com/AmoyLab/Unla",
+      "https://github.com/Arize-ai/phoenix",
+      "https://github.com/Azure/PyRIT",
+      "https://github.com/ComposioHQ/composio",
+      "https://github.com/FoundationAgents/MetaGPT",
+      "https://github.com/NVIDIA-NeMo/Guardrails",
+      "https://github.com/NVIDIA/garak",
+      "https://github.com/OpenAutoCoder/Agentless",
+      "https://github.com/OpenInterpreter/open-interpreter",
+      "https://github.com/SWE-agent/SWE-agent",
+      "https://github.com/SWE-bench/SWE-bench",
+      "https://github.com/ShishirPatil/gorilla",
+      "https://github.com/agentscope-ai/agentscope",
+      "https://github.com/agno-agi/agno",
+      "https://github.com/aurelio-labs/semantic-router",
+      "https://github.com/browser-use/browser-use",
+      "https://github.com/comet-ml/opik",
+      "https://github.com/confident-ai/deepeval",
+      "https://github.com/daytonaio/daytona",
+      "https://github.com/e2b-dev/code-interpreter",
+      "https://github.com/firecrawl/firecrawl",
+      "https://github.com/google/adk-python",
+      "https://github.com/guardrails-ai/guardrails",
+      "https://github.com/ibm/mcp-context-forge",
+      "https://github.com/joonspk-research/generative_agents",
+      "https://github.com/livekit/agents",
+      "https://github.com/microsoft/OmniParser",
+      "https://github.com/microsoft/TaskWeaver",
+      "https://github.com/microsoft/graphrag",
+      "https://github.com/mistralai/mistral-inference",
+      "https://github.com/openai/openai-agents-python",
+      "https://github.com/pathwaycom/pathway",
+      "https://github.com/pipecat-ai/pipecat",
+      "https://github.com/qodo-ai/pr-agent",
+      "https://github.com/simular-ai/Agent-S",
+      "https://github.com/skypilot-org/skypilot",
+      "https://github.com/sweepai/sweep",
+      "https://github.com/tavily-ai/tavily-python",
+      "https://github.com/unclecode/crawl4ai",
+      "https://github.com/w3c/did",
+      "https://github.com/wong2/litemcp",
+      "https://github.com/xlang-ai/OSWorld"
+    ]
+  },
+  "data": [
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2024-03-01",
+      "pr_merge_rate": 0.0
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2024-04-01",
+      "pr_merge_rate": 0.4
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2024-05-01",
+      "pr_merge_rate": 0.5454545454545454
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2024-06-01",
+      "pr_merge_rate": 0.5
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2024-07-01",
+      "pr_merge_rate": 0.5
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2024-08-01",
+      "pr_merge_rate": 0.3939393939393939
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2024-09-01",
+      "pr_merge_rate": 0.3424657534246575
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2024-10-01",
+      "pr_merge_rate": 0.325
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2024-11-01",
+      "pr_merge_rate": 0.5555555555555556
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2024-12-01",
+      "pr_merge_rate": 0.2857142857142857
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2025-01-01",
+      "pr_merge_rate": 0.35
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2025-02-01",
+      "pr_merge_rate": 0.2857142857142857
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2025-03-01",
+      "pr_merge_rate": 0.425531914893617
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2025-04-01",
+      "pr_merge_rate": 0.2830188679245283
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2025-05-01",
+      "pr_merge_rate": 0.21052631578947367
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2025-06-01",
+      "pr_merge_rate": 0.35714285714285715
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2025-07-01",
+      "pr_merge_rate": 0.18518518518518517
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2025-08-01",
+      "pr_merge_rate": 0.13636363636363635
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2025-09-01",
+      "pr_merge_rate": 0.35714285714285715
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2025-10-01",
+      "pr_merge_rate": 0.10714285714285714
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2025-11-01",
+      "pr_merge_rate": 0.23529411764705882
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2025-12-01",
+      "pr_merge_rate": 0.15384615384615385
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2026-01-01",
+      "pr_merge_rate": 0.14285714285714285
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2026-02-01",
+      "pr_merge_rate": 0.06060606060606061
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2024-03-01",
+      "pr_merge_rate": 0.8237547892720306
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2024-04-01",
+      "pr_merge_rate": 0.8459016393442623
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2024-05-01",
+      "pr_merge_rate": 0.835820895522388
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2024-06-01",
+      "pr_merge_rate": 0.8691275167785235
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2024-07-01",
+      "pr_merge_rate": 0.852233676975945
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2024-08-01",
+      "pr_merge_rate": 0.8892857142857142
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2024-09-01",
+      "pr_merge_rate": 0.8415492957746479
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2024-10-01",
+      "pr_merge_rate": 0.7609561752988048
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2024-11-01",
+      "pr_merge_rate": 0.65625
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2024-12-01",
+      "pr_merge_rate": 0.755700325732899
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2025-01-01",
+      "pr_merge_rate": 0.7718832891246684
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2025-02-01",
+      "pr_merge_rate": 0.6948717948717948
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2025-03-01",
+      "pr_merge_rate": 0.6728232189973615
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2025-04-01",
+      "pr_merge_rate": 0.731829573934837
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2025-05-01",
+      "pr_merge_rate": 0.7352342158859471
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2025-06-01",
+      "pr_merge_rate": 0.7494866529774127
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2025-07-01",
+      "pr_merge_rate": 0.7630718954248366
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2025-08-01",
+      "pr_merge_rate": 0.7976190476190477
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2025-09-01",
+      "pr_merge_rate": 0.7054263565891473
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2025-10-01",
+      "pr_merge_rate": 0.7265861027190332
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2025-11-01",
+      "pr_merge_rate": 0.7851351351351351
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2025-12-01",
+      "pr_merge_rate": 0.7902494331065759
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2026-01-01",
+      "pr_merge_rate": 0.7838297872340425
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2026-02-01",
+      "pr_merge_rate": 0.6204715353651524
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2024-10-01",
+      "pr_merge_rate": 0.8048780487804879
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2024-11-01",
+      "pr_merge_rate": 0.8148148148148148
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2024-12-01",
+      "pr_merge_rate": 0.7922077922077922
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2025-01-01",
+      "pr_merge_rate": 0.8552631578947368
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2025-02-01",
+      "pr_merge_rate": 0.8827586206896552
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2025-03-01",
+      "pr_merge_rate": 0.8413793103448276
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2025-04-01",
+      "pr_merge_rate": 0.75
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2025-05-01",
+      "pr_merge_rate": 0.6590909090909091
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2025-06-01",
+      "pr_merge_rate": 0.8461538461538461
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2025-07-01",
+      "pr_merge_rate": 0.8625
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2025-08-01",
+      "pr_merge_rate": 0.8307692307692308
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2025-09-01",
+      "pr_merge_rate": 0.6885245901639344
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2025-10-01",
+      "pr_merge_rate": 0.7164179104477612
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2025-11-01",
+      "pr_merge_rate": 0.7142857142857143
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2025-12-01",
+      "pr_merge_rate": 0.7228915662650602
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2026-01-01",
+      "pr_merge_rate": 0.4594594594594595
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2026-02-01",
+      "pr_merge_rate": 0.6585365853658537
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2024-03-01",
+      "pr_merge_rate": 0.7368421052631579
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2024-04-01",
+      "pr_merge_rate": 0.8636363636363636
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2024-05-01",
+      "pr_merge_rate": 0.6271186440677966
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2024-06-01",
+      "pr_merge_rate": 0.7954545454545454
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2024-07-01",
+      "pr_merge_rate": 0.7916666666666666
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2024-08-01",
+      "pr_merge_rate": 0.7101449275362319
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2024-09-01",
+      "pr_merge_rate": 0.6976744186046512
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2024-10-01",
+      "pr_merge_rate": 0.78125
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2024-11-01",
+      "pr_merge_rate": 0.7608695652173914
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2024-12-01",
+      "pr_merge_rate": 0.7272727272727273
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2025-01-01",
+      "pr_merge_rate": 0.6666666666666666
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2025-02-01",
+      "pr_merge_rate": 0.48717948717948717
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2025-03-01",
+      "pr_merge_rate": 0.7659574468085106
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2025-04-01",
+      "pr_merge_rate": 0.7368421052631579
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2025-05-01",
+      "pr_merge_rate": 0.7307692307692307
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2025-06-01",
+      "pr_merge_rate": 0.8202247191011236
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2025-07-01",
+      "pr_merge_rate": 0.5714285714285714
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2025-08-01",
+      "pr_merge_rate": 0.8414634146341463
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2025-09-01",
+      "pr_merge_rate": 0.8461538461538461
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2025-10-01",
+      "pr_merge_rate": 0.863013698630137
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2025-11-01",
+      "pr_merge_rate": 0.9428571428571428
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2025-12-01",
+      "pr_merge_rate": 0.9166666666666666
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2026-01-01",
+      "pr_merge_rate": 0.8888888888888888
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2026-02-01",
+      "pr_merge_rate": 0.8888888888888888
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2024-03-01",
+      "pr_merge_rate": 0.71900826446281
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2024-04-01",
+      "pr_merge_rate": 0.8147268408551069
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2024-05-01",
+      "pr_merge_rate": 0.8513513513513513
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2024-06-01",
+      "pr_merge_rate": 0.8364611260053619
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2024-07-01",
+      "pr_merge_rate": 0.8154269972451791
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2024-08-01",
+      "pr_merge_rate": 0.8614130434782609
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2024-09-01",
+      "pr_merge_rate": 0.8597560975609756
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2024-10-01",
+      "pr_merge_rate": 0.695
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2024-11-01",
+      "pr_merge_rate": 0.6090225563909775
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2024-12-01",
+      "pr_merge_rate": 0.6553524804177546
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-01-01",
+      "pr_merge_rate": 0.7506631299734748
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-02-01",
+      "pr_merge_rate": 0.6515679442508711
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-03-01",
+      "pr_merge_rate": 0.5958549222797928
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-04-01",
+      "pr_merge_rate": 0.6682926829268293
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-05-01",
+      "pr_merge_rate": 0.7034482758620689
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-06-01",
+      "pr_merge_rate": 0.5706806282722513
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-07-01",
+      "pr_merge_rate": 0.6614173228346457
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-08-01",
+      "pr_merge_rate": 0.6133909287257019
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-09-01",
+      "pr_merge_rate": 0.6030769230769231
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-10-01",
+      "pr_merge_rate": 0.6113074204946997
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-11-01",
+      "pr_merge_rate": 0.7239263803680982
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-12-01",
+      "pr_merge_rate": 0.7346153846153847
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2026-01-01",
+      "pr_merge_rate": 0.6305084745762712
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2026-02-01",
+      "pr_merge_rate": 0.5283018867924528
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/fastmcp",
+      "month": "2025-09-01",
+      "pr_merge_rate": 0.5
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/fastmcp",
+      "month": "2026-01-01",
+      "pr_merge_rate": 1.0
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/fastmcp",
+      "month": "2026-02-01",
+      "pr_merge_rate": 0.8987341772151899
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2024-03-01",
+      "pr_merge_rate": 0.8960573476702509
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2024-04-01",
+      "pr_merge_rate": 0.84251968503937
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2024-05-01",
+      "pr_merge_rate": 0.7978723404255319
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2024-06-01",
+      "pr_merge_rate": 0.9250535331905781
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2024-07-01",
+      "pr_merge_rate": 0.7847222222222222
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2024-08-01",
+      "pr_merge_rate": 0.8365758754863813
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2024-09-01",
+      "pr_merge_rate": 0.8699186991869918
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2024-10-01",
+      "pr_merge_rate": 0.852017937219731
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2024-11-01",
+      "pr_merge_rate": 0.8670886075949367
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2024-12-01",
+      "pr_merge_rate": 0.8191881918819188
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2025-01-01",
+      "pr_merge_rate": 0.8827586206896552
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2025-02-01",
+      "pr_merge_rate": 0.8140350877192982
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2025-03-01",
+      "pr_merge_rate": 0.8362831858407079
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2025-04-01",
+      "pr_merge_rate": 0.8633879781420765
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2025-05-01",
+      "pr_merge_rate": 0.8083832335329342
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2025-06-01",
+      "pr_merge_rate": 0.864406779661017
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2025-07-01",
+      "pr_merge_rate": 0.7638888888888888
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2025-08-01",
+      "pr_merge_rate": 0.762962962962963
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2025-09-01",
+      "pr_merge_rate": 0.7401129943502824
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2025-10-01",
+      "pr_merge_rate": 0.7473684210526316
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2025-11-01",
+      "pr_merge_rate": 0.5977011494252874
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2025-12-01",
+      "pr_merge_rate": 0.8375286041189931
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2026-01-01",
+      "pr_merge_rate": 0.8644578313253012
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2026-02-01",
+      "pr_merge_rate": 0.8459302325581395
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2024-03-01",
+      "pr_merge_rate": 0.2289156626506024
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2024-04-01",
+      "pr_merge_rate": 0.5
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2024-05-01",
+      "pr_merge_rate": 0.5128205128205128
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2024-06-01",
+      "pr_merge_rate": 0.711864406779661
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2024-07-01",
+      "pr_merge_rate": 0.8695652173913043
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2024-08-01",
+      "pr_merge_rate": 0.8769230769230769
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2024-09-01",
+      "pr_merge_rate": 0.7955801104972375
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2024-10-01",
+      "pr_merge_rate": 0.7671957671957672
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2024-11-01",
+      "pr_merge_rate": 0.8333333333333334
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2024-12-01",
+      "pr_merge_rate": 0.6153846153846154
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2025-01-01",
+      "pr_merge_rate": 0.6081081081081081
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2025-02-01",
+      "pr_merge_rate": 0.5983606557377049
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2025-03-01",
+      "pr_merge_rate": 0.696969696969697
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2025-04-01",
+      "pr_merge_rate": 0.71875
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2025-05-01",
+      "pr_merge_rate": 0.5563380281690141
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2025-06-01",
+      "pr_merge_rate": 0.6363636363636364
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2025-07-01",
+      "pr_merge_rate": 0.6963350785340314
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2025-08-01",
+      "pr_merge_rate": 0.645320197044335
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2025-09-01",
+      "pr_merge_rate": 0.632768361581921
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2025-10-01",
+      "pr_merge_rate": 0.6616161616161617
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2025-11-01",
+      "pr_merge_rate": 0.696551724137931
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2025-12-01",
+      "pr_merge_rate": 0.7086614173228346
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2026-01-01",
+      "pr_merge_rate": 0.6467391304347826
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2026-02-01",
+      "pr_merge_rate": 0.5
+    },
+    {
+      "repo": "https://github.com/a2aproject/A2A",
+      "month": "2025-04-01",
+      "pr_merge_rate": 0.0
+    },
+    {
+      "repo": "https://github.com/a2aproject/A2A",
+      "month": "2025-05-01",
+      "pr_merge_rate": 0.0
+    },
+    {
+      "repo": "https://github.com/a2aproject/A2A",
+      "month": "2025-06-01",
+      "pr_merge_rate": 0.7083333333333334
+    },
+    {
+      "repo": "https://github.com/a2aproject/A2A",
+      "month": "2025-07-01",
+      "pr_merge_rate": 0.7101449275362319
+    },
+    {
+      "repo": "https://github.com/a2aproject/A2A",
+      "month": "2025-08-01",
+      "pr_merge_rate": 0.8275862068965517
+    },
+    {
+      "repo": "https://github.com/a2aproject/A2A",
+      "month": "2025-09-01",
+      "pr_merge_rate": 0.7777777777777778
+    },
+    {
+      "repo": "https://github.com/a2aproject/A2A",
+      "month": "2025-10-01",
+      "pr_merge_rate": 0.5526315789473685
+    },
+    {
+      "repo": "https://github.com/a2aproject/A2A",
+      "month": "2025-11-01",
+      "pr_merge_rate": 0.75
+    },
+    {
+      "repo": "https://github.com/a2aproject/A2A",
+      "month": "2025-12-01",
+      "pr_merge_rate": 0.6896551724137931
+    },
+    {
+      "repo": "https://github.com/a2aproject/A2A",
+      "month": "2026-01-01",
+      "pr_merge_rate": 0.7096774193548387
+    },
+    {
+      "repo": "https://github.com/a2aproject/A2A",
+      "month": "2026-02-01",
+      "pr_merge_rate": 0.7222222222222222
+    },
+    {
+      "repo": "https://github.com/agentsmd/agents.md",
+      "month": "2025-08-01",
+      "pr_merge_rate": 1.0
+    },
+    {
+      "repo": "https://github.com/agentsmd/agents.md",
+      "month": "2025-09-01",
+      "pr_merge_rate": 0.25
+    },
+    {
+      "repo": "https://github.com/agentsmd/agents.md",
+      "month": "2025-10-01",
+      "pr_merge_rate": 0.3333333333333333
+    },
+    {
+      "repo": "https://github.com/agentsmd/agents.md",
+      "month": "2025-12-01",
+      "pr_merge_rate": 0.13333333333333333
+    },
+    {
+      "repo": "https://github.com/agentsmd/agents.md",
+      "month": "2026-01-01",
+      "pr_merge_rate": 0.1111111111111111
+    },
+    {
+      "repo": "https://github.com/agentsmd/agents.md",
+      "month": "2026-02-01",
+      "pr_merge_rate": 0.2857142857142857
+    },
+    {
+      "repo": "https://github.com/agno-agi/agno",
+      "month": "2024-03-01",
+      "pr_merge_rate": 0.5294117647058824
+    },
+    {
+      "repo": "https://github.com/agno-agi/agno",
+      "month": "2024-04-01",
+      "pr_merge_rate": 0.782608695652174
+    },
+    {
+      "repo": "https://github.com/agno-agi/agno",
+      "month": "2024-05-01",
+      "pr_merge_rate": 0.7192982456140351
+    },
+    {
+      "repo": "https://github.com/agno-agi/agno",
+      "month": "2024-06-01",
+      "pr_merge_rate": 0.75
+    },
+    {
+      "repo": "https://github.com/agno-agi/agno",
+      "month": "2024-07-01",
+      "pr_merge_rate": 0.8846153846153846
+    },
+    {
+      "repo": "https://github.com/agno-agi/agno",
+      "month": "2024-08-01",
+      "pr_merge_rate": 0.6111111111111112
+    },
+    {
+      "repo": "https://github.com/agno-agi/agno",
+      "month": "2024-09-01",
+      "pr_merge_rate": 0.7758620689655172
+    },
+    {
+      "repo": "https://github.com/agno-agi/agno",
+      "month": "2024-10-01",
+      "pr_merge_rate": 0.7596899224806202
+    },
+    {
+      "repo": "https://github.com/agno-agi/agno",
+      "month": "2024-11-01",
+      "pr_merge_rate": 0.7307692307692307
+    },
+    {
+      "repo": "https://github.com/agno-agi/agno",
+      "month": "2024-12-01",
+      "pr_merge_rate": 0.8468468468468469
+    },
+    {
+      "repo": "https://github.com/agno-agi/agno",
+      "month": "2025-01-01",
+      "pr_merge_rate": 0.8282828282828283
+    },
+    {
+      "repo": "https://github.com/agno-agi/agno",
+      "month": "2025-02-01",
+      "pr_merge_rate": 0.8023952095808383
+    },
+    {
+      "repo": "https://github.com/agno-agi/agno",
+      "month": "2025-03-01",
+      "pr_merge_rate": 0.8477157360406091
+    },
+    {
+      "repo": "https://github.com/agno-agi/agno",
+      "month": "2025-04-01",
+      "pr_merge_rate": 0.8333333333333334
+    },
+    {
+      "repo": "https://github.com/agno-agi/agno",
+      "month": "2025-05-01",
+      "pr_merge_rate": 0.8103448275862069
+    },
+    {
+      "repo": "https://github.com/agno-agi/agno",
+      "month": "2025-06-01",
+      "pr_merge_rate": 0.7791411042944786
+    },
+    {
+      "repo": "https://github.com/agno-agi/agno",
+      "month": "2025-07-01",
+      "pr_merge_rate": 0.8591549295774648
+    },
+    {
+      "repo": "https://github.com/agno-agi/agno",
+      "month": "2025-08-01",
+      "pr_merge_rate": 0.8414096916299559
+    },
+    {
+      "repo": "https://github.com/agno-agi/agno",
+      "month": "2025-09-01",
+      "pr_merge_rate": 0.8209459459459459
+    },
+    {
+      "repo": "https://github.com/agno-agi/agno",
+      "month": "2025-10-01",
+      "pr_merge_rate": 0.6948529411764706
+    },
+    {
+      "repo": "https://github.com/agno-agi/agno",
+      "month": "2025-11-01",
+      "pr_merge_rate": 0.7039106145251397
+    },
+    {
+      "repo": "https://github.com/agno-agi/agno",
+      "month": "2025-12-01",
+      "pr_merge_rate": 0.7004608294930875
+    },
+    {
+      "repo": "https://github.com/agno-agi/agno",
+      "month": "2026-01-01",
+      "pr_merge_rate": 0.6047430830039525
+    },
+    {
+      "repo": "https://github.com/agno-agi/agno",
+      "month": "2026-02-01",
+      "pr_merge_rate": 0.4248927038626609
+    },
+    {
+      "repo": "https://github.com/agntcy/acp-spec",
+      "month": "2025-02-01",
+      "pr_merge_rate": 0.9666666666666667
+    },
+    {
+      "repo": "https://github.com/agntcy/acp-spec",
+      "month": "2025-03-01",
+      "pr_merge_rate": 0.875
+    },
+    {
+      "repo": "https://github.com/agntcy/acp-spec",
+      "month": "2025-04-01",
+      "pr_merge_rate": 1.0
+    },
+    {
+      "repo": "https://github.com/agntcy/acp-spec",
+      "month": "2025-05-01",
+      "pr_merge_rate": 1.0
+    },
+    {
+      "repo": "https://github.com/agntcy/oasf",
+      "month": "2025-02-01",
+      "pr_merge_rate": 0.8333333333333334
+    },
+    {
+      "repo": "https://github.com/agntcy/oasf",
+      "month": "2025-03-01",
+      "pr_merge_rate": 0.92
+    },
+    {
+      "repo": "https://github.com/agntcy/oasf",
+      "month": "2025-04-01",
+      "pr_merge_rate": 0.8148148148148148
+    },
+    {
+      "repo": "https://github.com/agntcy/oasf",
+      "month": "2025-05-01",
+      "pr_merge_rate": 1.0
+    },
+    {
+      "repo": "https://github.com/agntcy/oasf",
+      "month": "2025-06-01",
+      "pr_merge_rate": 0.8571428571428571
+    },
+    {
+      "repo": "https://github.com/agntcy/oasf",
+      "month": "2025-07-01",
+      "pr_merge_rate": 0.868421052631579
+    },
+    {
+      "repo": "https://github.com/agntcy/oasf",
+      "month": "2025-08-01",
+      "pr_merge_rate": 0.8461538461538461
+    },
+    {
+      "repo": "https://github.com/agntcy/oasf",
+      "month": "2025-09-01",
+      "pr_merge_rate": 0.967741935483871
+    },
+    {
+      "repo": "https://github.com/agntcy/oasf",
+      "month": "2025-10-01",
+      "pr_merge_rate": 0.9166666666666666
+    },
+    {
+      "repo": "https://github.com/agntcy/oasf",
+      "month": "2025-11-01",
+      "pr_merge_rate": 1.0
+    },
+    {
+      "repo": "https://github.com/agntcy/oasf",
+      "month": "2025-12-01",
+      "pr_merge_rate": 1.0
+    },
+    {
+      "repo": "https://github.com/agntcy/oasf",
+      "month": "2026-01-01",
+      "pr_merge_rate": 0.9333333333333333
+    },
+    {
+      "repo": "https://github.com/agntcy/oasf",
+      "month": "2026-02-01",
+      "pr_merge_rate": 0.9230769230769231
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "month": "2025-02-01",
+      "pr_merge_rate": 0.9117647058823529
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "month": "2025-03-01",
+      "pr_merge_rate": 0.8333333333333334
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "month": "2025-04-01",
+      "pr_merge_rate": 0.9137931034482759
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "month": "2025-05-01",
+      "pr_merge_rate": 0.9032258064516129
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "month": "2025-06-01",
+      "pr_merge_rate": 0.9285714285714286
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "month": "2025-07-01",
+      "pr_merge_rate": 0.8837209302325582
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "month": "2025-08-01",
+      "pr_merge_rate": 0.8679245283018868
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "month": "2025-09-01",
+      "pr_merge_rate": 0.8924731182795699
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "month": "2025-10-01",
+      "pr_merge_rate": 0.8765432098765432
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "month": "2025-11-01",
+      "pr_merge_rate": 0.9027777777777778
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "month": "2025-12-01",
+      "pr_merge_rate": 0.7837837837837838
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "month": "2026-01-01",
+      "pr_merge_rate": 0.8461538461538461
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "month": "2026-02-01",
+      "pr_merge_rate": 0.9047619047619048
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2024-03-01",
+      "pr_merge_rate": 0.4230769230769231
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2024-04-01",
+      "pr_merge_rate": 0.5625
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2024-05-01",
+      "pr_merge_rate": 0.8372093023255814
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2024-06-01",
+      "pr_merge_rate": 0.5517241379310345
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2024-07-01",
+      "pr_merge_rate": 0.42857142857142855
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2024-08-01",
+      "pr_merge_rate": 0.5918367346938775
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2024-09-01",
+      "pr_merge_rate": 0.8571428571428571
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2024-10-01",
+      "pr_merge_rate": 0.7407407407407407
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2024-11-01",
+      "pr_merge_rate": 0.5833333333333334
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2024-12-01",
+      "pr_merge_rate": 0.7272727272727273
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2025-01-01",
+      "pr_merge_rate": 0.625
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2025-02-01",
+      "pr_merge_rate": 0.8214285714285714
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2025-03-01",
+      "pr_merge_rate": 0.717948717948718
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2025-04-01",
+      "pr_merge_rate": 0.5
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2025-05-01",
+      "pr_merge_rate": 0.5416666666666666
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2025-06-01",
+      "pr_merge_rate": 0.5333333333333333
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2025-07-01",
+      "pr_merge_rate": 0.6153846153846154
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2025-08-01",
+      "pr_merge_rate": 0.3333333333333333
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2025-09-01",
+      "pr_merge_rate": 0.8
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2025-10-01",
+      "pr_merge_rate": 0.6
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2025-11-01",
+      "pr_merge_rate": 0.6
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2025-12-01",
+      "pr_merge_rate": 0.42857142857142855
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2026-01-01",
+      "pr_merge_rate": 0.45454545454545453
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2026-02-01",
+      "pr_merge_rate": 0.6818181818181818
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2024-08-01",
+      "pr_merge_rate": 0.6818181818181818
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2024-09-01",
+      "pr_merge_rate": 0.8103448275862069
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2024-10-01",
+      "pr_merge_rate": 0.7912087912087912
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2024-11-01",
+      "pr_merge_rate": 0.7142857142857143
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2024-12-01",
+      "pr_merge_rate": 0.7034482758620689
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2025-01-01",
+      "pr_merge_rate": 0.8102564102564103
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2025-02-01",
+      "pr_merge_rate": 0.7651245551601423
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2025-03-01",
+      "pr_merge_rate": 0.8698224852071006
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2025-04-01",
+      "pr_merge_rate": 0.8125
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2025-05-01",
+      "pr_merge_rate": 0.7934782608695652
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2025-06-01",
+      "pr_merge_rate": 0.7936507936507936
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2025-07-01",
+      "pr_merge_rate": 0.7946859903381642
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2025-08-01",
+      "pr_merge_rate": 0.7265135699373695
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2025-09-01",
+      "pr_merge_rate": 0.6758620689655173
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2025-10-01",
+      "pr_merge_rate": 0.7189542483660131
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2025-11-01",
+      "pr_merge_rate": 0.7424749163879598
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2025-12-01",
+      "pr_merge_rate": 0.7628458498023716
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2026-01-01",
+      "pr_merge_rate": 0.7592137592137592
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2026-02-01",
+      "pr_merge_rate": 0.7351851851851852
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2024-03-01",
+      "pr_merge_rate": 0.8
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2024-04-01",
+      "pr_merge_rate": 0.6666666666666666
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2024-05-01",
+      "pr_merge_rate": 0.7804878048780488
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2024-06-01",
+      "pr_merge_rate": 0.8717948717948718
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2024-07-01",
+      "pr_merge_rate": 0.7894736842105263
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2024-08-01",
+      "pr_merge_rate": 0.7636363636363637
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2024-09-01",
+      "pr_merge_rate": 0.7796610169491526
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2024-10-01",
+      "pr_merge_rate": 0.8441558441558441
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2024-11-01",
+      "pr_merge_rate": 0.8888888888888888
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2024-12-01",
+      "pr_merge_rate": 0.8615384615384616
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-01-01",
+      "pr_merge_rate": 0.7307692307692307
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-02-01",
+      "pr_merge_rate": 0.7142857142857143
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-03-01",
+      "pr_merge_rate": 0.6698113207547169
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-04-01",
+      "pr_merge_rate": 0.75
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-05-01",
+      "pr_merge_rate": 0.753968253968254
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-06-01",
+      "pr_merge_rate": 0.7299270072992701
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-07-01",
+      "pr_merge_rate": 0.803030303030303
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-08-01",
+      "pr_merge_rate": 0.8253968253968254
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-09-01",
+      "pr_merge_rate": 0.7466666666666667
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-10-01",
+      "pr_merge_rate": 0.7746478873239436
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-11-01",
+      "pr_merge_rate": 0.5522388059701493
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-12-01",
+      "pr_merge_rate": 0.5932203389830508
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2026-01-01",
+      "pr_merge_rate": 0.647887323943662
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2026-02-01",
+      "pr_merge_rate": 0.38961038961038963
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2024-03-01",
+      "pr_merge_rate": 0.7394957983193278
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2024-04-01",
+      "pr_merge_rate": 0.7525773195876289
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2024-05-01",
+      "pr_merge_rate": 0.7622377622377622
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2024-06-01",
+      "pr_merge_rate": 0.7363636363636363
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2024-07-01",
+      "pr_merge_rate": 0.7769230769230769
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2024-08-01",
+      "pr_merge_rate": 0.6813186813186813
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2024-09-01",
+      "pr_merge_rate": 0.7553191489361702
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2024-10-01",
+      "pr_merge_rate": 0.8482758620689655
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2024-11-01",
+      "pr_merge_rate": 0.7114093959731543
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2024-12-01",
+      "pr_merge_rate": 0.7310344827586207
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-01-01",
+      "pr_merge_rate": 0.8190045248868778
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-02-01",
+      "pr_merge_rate": 0.8505154639175257
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-03-01",
+      "pr_merge_rate": 0.7767441860465116
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-04-01",
+      "pr_merge_rate": 0.7791164658634538
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-05-01",
+      "pr_merge_rate": 0.7870722433460076
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-06-01",
+      "pr_merge_rate": 0.7956989247311828
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-07-01",
+      "pr_merge_rate": 0.7777777777777778
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-08-01",
+      "pr_merge_rate": 0.7894736842105263
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-09-01",
+      "pr_merge_rate": 0.8062015503875969
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-10-01",
+      "pr_merge_rate": 0.8765957446808511
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-11-01",
+      "pr_merge_rate": 0.7904761904761904
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-12-01",
+      "pr_merge_rate": 0.8263473053892215
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2026-01-01",
+      "pr_merge_rate": 0.776536312849162
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2026-02-01",
+      "pr_merge_rate": 0.7695852534562212
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2024-07-01",
+      "pr_merge_rate": 0.0
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2024-08-01",
+      "pr_merge_rate": 0.05
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2024-09-01",
+      "pr_merge_rate": 0.19047619047619047
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2024-10-01",
+      "pr_merge_rate": 0.043478260869565216
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2024-11-01",
+      "pr_merge_rate": 0.11363636363636363
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2024-12-01",
+      "pr_merge_rate": 0.1
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2025-01-01",
+      "pr_merge_rate": 0.46099290780141844
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2025-02-01",
+      "pr_merge_rate": 0.5698324022346368
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2025-03-01",
+      "pr_merge_rate": 0.6653225806451613
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2025-04-01",
+      "pr_merge_rate": 0.7352112676056338
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2025-05-01",
+      "pr_merge_rate": 0.7714987714987716
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2025-06-01",
+      "pr_merge_rate": 0.7469135802469136
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2025-07-01",
+      "pr_merge_rate": 0.7690217391304348
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2025-08-01",
+      "pr_merge_rate": 0.8005390835579514
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2025-09-01",
+      "pr_merge_rate": 0.7214854111405835
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2025-10-01",
+      "pr_merge_rate": 0.7694300518134715
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2025-11-01",
+      "pr_merge_rate": 0.6936026936026936
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2025-12-01",
+      "pr_merge_rate": 0.7560975609756098
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2026-01-01",
+      "pr_merge_rate": 0.5056947608200456
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2026-02-01",
+      "pr_merge_rate": 0.6183206106870229
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2024-03-01",
+      "pr_merge_rate": 0.88
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2024-04-01",
+      "pr_merge_rate": 0.7254901960784313
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2024-05-01",
+      "pr_merge_rate": 0.8985507246376812
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2024-06-01",
+      "pr_merge_rate": 0.8737864077669902
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2024-07-01",
+      "pr_merge_rate": 0.9041095890410958
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2024-08-01",
+      "pr_merge_rate": 0.8251748251748252
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2024-09-01",
+      "pr_merge_rate": 0.7375886524822695
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2024-10-01",
+      "pr_merge_rate": 0.7653631284916201
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2024-11-01",
+      "pr_merge_rate": 0.8651162790697674
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2024-12-01",
+      "pr_merge_rate": 0.8268398268398268
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2025-01-01",
+      "pr_merge_rate": 0.806060606060606
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2025-02-01",
+      "pr_merge_rate": 0.7534246575342466
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2025-03-01",
+      "pr_merge_rate": 0.8034934497816594
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2025-04-01",
+      "pr_merge_rate": 0.8
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2025-05-01",
+      "pr_merge_rate": 0.8432203389830508
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2025-06-01",
+      "pr_merge_rate": 0.8136363636363636
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2025-07-01",
+      "pr_merge_rate": 0.8285714285714286
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2025-08-01",
+      "pr_merge_rate": 0.8022922636103151
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2025-09-01",
+      "pr_merge_rate": 0.7506561679790026
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2025-10-01",
+      "pr_merge_rate": 0.7007042253521126
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2025-11-01",
+      "pr_merge_rate": 0.6511627906976745
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2025-12-01",
+      "pr_merge_rate": 0.5567010309278351
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2026-01-01",
+      "pr_merge_rate": 0.6574585635359116
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2026-02-01",
+      "pr_merge_rate": 0.5384615384615384
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2024-03-01",
+      "pr_merge_rate": 0.6571428571428571
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2024-04-01",
+      "pr_merge_rate": 0.8
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2024-05-01",
+      "pr_merge_rate": 0.5892857142857143
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2024-06-01",
+      "pr_merge_rate": 0.5581395348837209
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2024-07-01",
+      "pr_merge_rate": 0.7978723404255319
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2024-08-01",
+      "pr_merge_rate": 0.7384615384615385
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2024-09-01",
+      "pr_merge_rate": 0.7804878048780488
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2024-10-01",
+      "pr_merge_rate": 0.8405797101449275
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2024-11-01",
+      "pr_merge_rate": 0.6785714285714286
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2024-12-01",
+      "pr_merge_rate": 0.75
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2025-01-01",
+      "pr_merge_rate": 0.7439024390243902
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2025-02-01",
+      "pr_merge_rate": 0.4421768707482993
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2025-03-01",
+      "pr_merge_rate": 0.3765432098765432
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2025-04-01",
+      "pr_merge_rate": 0.42962962962962964
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2025-05-01",
+      "pr_merge_rate": 0.49230769230769234
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2025-06-01",
+      "pr_merge_rate": 0.5445544554455446
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2025-07-01",
+      "pr_merge_rate": 0.5045045045045045
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2025-08-01",
+      "pr_merge_rate": 0.5407407407407407
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2025-09-01",
+      "pr_merge_rate": 0.5493827160493827
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2025-10-01",
+      "pr_merge_rate": 0.5906040268456376
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2025-11-01",
+      "pr_merge_rate": 0.47761194029850745
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2025-12-01",
+      "pr_merge_rate": 0.32786885245901637
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2026-01-01",
+      "pr_merge_rate": 0.43333333333333335
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2026-02-01",
+      "pr_merge_rate": 0.3041825095057034
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2024-03-01",
+      "pr_merge_rate": 0.9052631578947369
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2024-04-01",
+      "pr_merge_rate": 0.8877551020408163
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2024-05-01",
+      "pr_merge_rate": 0.8375
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2024-06-01",
+      "pr_merge_rate": 0.9285714285714286
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2024-07-01",
+      "pr_merge_rate": 0.8588235294117647
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2024-08-01",
+      "pr_merge_rate": 0.8918918918918919
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2024-09-01",
+      "pr_merge_rate": 0.9384615384615385
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2024-10-01",
+      "pr_merge_rate": 0.8809523809523809
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2024-11-01",
+      "pr_merge_rate": 0.9111111111111111
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2024-12-01",
+      "pr_merge_rate": 0.8947368421052632
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2025-01-01",
+      "pr_merge_rate": 0.8148148148148148
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2025-02-01",
+      "pr_merge_rate": 0.9102564102564102
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2025-03-01",
+      "pr_merge_rate": 0.8725490196078431
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2025-04-01",
+      "pr_merge_rate": 0.8787878787878788
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2025-05-01",
+      "pr_merge_rate": 0.8082191780821918
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2025-06-01",
+      "pr_merge_rate": 0.8518518518518519
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2025-07-01",
+      "pr_merge_rate": 0.9333333333333333
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2025-08-01",
+      "pr_merge_rate": 0.8958333333333334
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2025-09-01",
+      "pr_merge_rate": 0.9130434782608695
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2025-10-01",
+      "pr_merge_rate": 0.847457627118644
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2025-11-01",
+      "pr_merge_rate": 0.9083333333333333
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2025-12-01",
+      "pr_merge_rate": 0.8518518518518519
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2026-01-01",
+      "pr_merge_rate": 0.9308176100628931
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2026-02-01",
+      "pr_merge_rate": 0.8554216867469879
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2024-12-01",
+      "pr_merge_rate": 0.3333333333333333
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2025-01-01",
+      "pr_merge_rate": 0.75
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2025-02-01",
+      "pr_merge_rate": 0.6875
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2025-03-01",
+      "pr_merge_rate": 0.6606060606060606
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2025-04-01",
+      "pr_merge_rate": 0.75
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2025-05-01",
+      "pr_merge_rate": 0.8108108108108109
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2025-06-01",
+      "pr_merge_rate": 0.7727272727272727
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2025-07-01",
+      "pr_merge_rate": 0.7640449438202247
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2025-08-01",
+      "pr_merge_rate": 0.8059701492537313
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2025-09-01",
+      "pr_merge_rate": 0.5151515151515151
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2025-10-01",
+      "pr_merge_rate": 0.59375
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2025-11-01",
+      "pr_merge_rate": 0.4827586206896552
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2025-12-01",
+      "pr_merge_rate": 0.34615384615384615
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2026-01-01",
+      "pr_merge_rate": 0.15384615384615385
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2026-02-01",
+      "pr_merge_rate": 0.13333333333333333
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2024-03-01",
+      "pr_merge_rate": 0.7716049382716049
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2024-04-01",
+      "pr_merge_rate": 0.7629427792915532
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2024-05-01",
+      "pr_merge_rate": 0.7566765578635015
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2024-06-01",
+      "pr_merge_rate": 0.7275747508305648
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2024-07-01",
+      "pr_merge_rate": 0.7085561497326203
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2024-08-01",
+      "pr_merge_rate": 0.37799043062200954
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2024-09-01",
+      "pr_merge_rate": 0.7479892761394102
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2024-10-01",
+      "pr_merge_rate": 0.7136258660508084
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2024-11-01",
+      "pr_merge_rate": 0.6690647482014388
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2024-12-01",
+      "pr_merge_rate": 0.7084870848708487
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2025-01-01",
+      "pr_merge_rate": 0.723342939481268
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2025-02-01",
+      "pr_merge_rate": 0.6747404844290658
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2025-03-01",
+      "pr_merge_rate": 0.7223427331887202
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2025-04-01",
+      "pr_merge_rate": 0.7140186915887851
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2025-05-01",
+      "pr_merge_rate": 0.7264150943396226
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2025-06-01",
+      "pr_merge_rate": 0.6991341991341992
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2025-07-01",
+      "pr_merge_rate": 0.7079303675048356
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2025-08-01",
+      "pr_merge_rate": 0.6890909090909091
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2025-09-01",
+      "pr_merge_rate": 0.7295719844357976
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2025-10-01",
+      "pr_merge_rate": 0.6569965870307167
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2025-11-01",
+      "pr_merge_rate": 0.6368038740920097
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2025-12-01",
+      "pr_merge_rate": 0.6469248291571754
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2026-01-01",
+      "pr_merge_rate": 0.6167023554603854
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2026-02-01",
+      "pr_merge_rate": 0.4810126582278481
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2024-03-01",
+      "pr_merge_rate": 0.978494623655914
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2024-04-01",
+      "pr_merge_rate": 0.9337016574585635
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2024-05-01",
+      "pr_merge_rate": 0.9230769230769231
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2024-06-01",
+      "pr_merge_rate": 0.9212598425196851
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2024-07-01",
+      "pr_merge_rate": 0.9166666666666666
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2024-08-01",
+      "pr_merge_rate": 0.9523809523809523
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2024-09-01",
+      "pr_merge_rate": 0.8985507246376812
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2024-10-01",
+      "pr_merge_rate": 0.9502762430939227
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2024-11-01",
+      "pr_merge_rate": 0.9054054054054054
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2024-12-01",
+      "pr_merge_rate": 0.9482071713147411
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2025-01-01",
+      "pr_merge_rate": 0.94
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2025-02-01",
+      "pr_merge_rate": 0.9391304347826087
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2025-03-01",
+      "pr_merge_rate": 0.8651399491094147
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2025-04-01",
+      "pr_merge_rate": 0.8545454545454545
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2025-05-01",
+      "pr_merge_rate": 0.8318965517241379
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2025-06-01",
+      "pr_merge_rate": 0.896414342629482
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2025-07-01",
+      "pr_merge_rate": 0.9056603773584906
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2025-08-01",
+      "pr_merge_rate": 0.8666666666666667
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2025-09-01",
+      "pr_merge_rate": 0.9266409266409267
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2025-10-01",
+      "pr_merge_rate": 0.9157894736842105
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2025-11-01",
+      "pr_merge_rate": 0.9186746987951807
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2025-12-01",
+      "pr_merge_rate": 0.8356481481481481
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2026-01-01",
+      "pr_merge_rate": 0.8184818481848185
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2026-02-01",
+      "pr_merge_rate": 0.7671232876712328
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2024-03-01",
+      "pr_merge_rate": 0.9060773480662984
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2024-04-01",
+      "pr_merge_rate": 0.9016393442622951
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2024-05-01",
+      "pr_merge_rate": 0.95
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2024-06-01",
+      "pr_merge_rate": 0.8518518518518519
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2024-07-01",
+      "pr_merge_rate": 0.8666666666666667
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2024-08-01",
+      "pr_merge_rate": 0.9225352112676056
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2024-09-01",
+      "pr_merge_rate": 0.9166666666666666
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2024-10-01",
+      "pr_merge_rate": 0.9259259259259259
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2024-11-01",
+      "pr_merge_rate": 0.991304347826087
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2024-12-01",
+      "pr_merge_rate": 0.9615384615384616
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2025-01-01",
+      "pr_merge_rate": 0.9222222222222223
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2025-02-01",
+      "pr_merge_rate": 0.9736842105263158
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2025-03-01",
+      "pr_merge_rate": 0.9782608695652174
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2025-04-01",
+      "pr_merge_rate": 0.8387096774193549
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2025-05-01",
+      "pr_merge_rate": 0.9363057324840764
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2025-06-01",
+      "pr_merge_rate": 0.8212927756653993
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2025-07-01",
+      "pr_merge_rate": 0.8650306748466258
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2025-08-01",
+      "pr_merge_rate": 0.8707482993197279
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2025-09-01",
+      "pr_merge_rate": 0.8725490196078431
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2025-10-01",
+      "pr_merge_rate": 0.8333333333333334
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2025-11-01",
+      "pr_merge_rate": 0.8188976377952756
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2025-12-01",
+      "pr_merge_rate": 0.9112149532710281
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2026-01-01",
+      "pr_merge_rate": 0.9166666666666666
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2026-02-01",
+      "pr_merge_rate": 0.9047619047619048
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2024-03-01",
+      "pr_merge_rate": 0.8333333333333334
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2024-04-01",
+      "pr_merge_rate": 0.921875
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2024-05-01",
+      "pr_merge_rate": 0.8888888888888888
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2024-06-01",
+      "pr_merge_rate": 0.6923076923076923
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2024-07-01",
+      "pr_merge_rate": 0.6774193548387096
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2024-08-01",
+      "pr_merge_rate": 0.7714285714285715
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2024-09-01",
+      "pr_merge_rate": 0.64
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2024-10-01",
+      "pr_merge_rate": 0.78125
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2024-11-01",
+      "pr_merge_rate": 0.6470588235294118
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2024-12-01",
+      "pr_merge_rate": 0.5853658536585366
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-01-01",
+      "pr_merge_rate": 0.6944444444444444
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-02-01",
+      "pr_merge_rate": 0.4827586206896552
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-03-01",
+      "pr_merge_rate": 0.631578947368421
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-04-01",
+      "pr_merge_rate": 0.4716981132075472
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-05-01",
+      "pr_merge_rate": 0.725
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-06-01",
+      "pr_merge_rate": 0.5833333333333334
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-07-01",
+      "pr_merge_rate": 0.673469387755102
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-08-01",
+      "pr_merge_rate": 0.8
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-09-01",
+      "pr_merge_rate": 0.6571428571428571
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-10-01",
+      "pr_merge_rate": 0.7142857142857143
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-11-01",
+      "pr_merge_rate": 0.75
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-12-01",
+      "pr_merge_rate": 0.5135135135135135
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2026-01-01",
+      "pr_merge_rate": 0.6615384615384615
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2026-02-01",
+      "pr_merge_rate": 0.6966292134831461
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2024-03-01",
+      "pr_merge_rate": 0.7837181044957473
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2024-04-01",
+      "pr_merge_rate": 0.7973684210526316
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2024-05-01",
+      "pr_merge_rate": 0.8069241011984021
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2024-06-01",
+      "pr_merge_rate": 0.8045454545454546
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2024-07-01",
+      "pr_merge_rate": 0.7988077496274217
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2024-08-01",
+      "pr_merge_rate": 0.7941680960548885
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2024-09-01",
+      "pr_merge_rate": 0.7913043478260869
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2024-10-01",
+      "pr_merge_rate": 0.6844660194174758
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2024-11-01",
+      "pr_merge_rate": 0.7632978723404256
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2024-12-01",
+      "pr_merge_rate": 0.7973856209150327
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2025-01-01",
+      "pr_merge_rate": 0.7660256410256411
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2025-02-01",
+      "pr_merge_rate": 0.740072202166065
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2025-03-01",
+      "pr_merge_rate": 0.7537537537537538
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2025-04-01",
+      "pr_merge_rate": 0.7581699346405228
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2025-05-01",
+      "pr_merge_rate": 0.8244897959183674
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2025-06-01",
+      "pr_merge_rate": 0.7740384615384616
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2025-07-01",
+      "pr_merge_rate": 0.7410926365795725
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2025-08-01",
+      "pr_merge_rate": 0.7151162790697675
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2025-09-01",
+      "pr_merge_rate": 0.7460815047021944
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2025-10-01",
+      "pr_merge_rate": 0.7761806981519507
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2025-11-01",
+      "pr_merge_rate": 0.6060606060606061
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2025-12-01",
+      "pr_merge_rate": 0.60625
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2026-01-01",
+      "pr_merge_rate": 0.5659163987138264
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2026-02-01",
+      "pr_merge_rate": 0.4376417233560091
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2024-03-01",
+      "pr_merge_rate": 0.8035714285714286
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2024-04-01",
+      "pr_merge_rate": 0.8255813953488372
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2024-05-01",
+      "pr_merge_rate": 0.88
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2024-06-01",
+      "pr_merge_rate": 0.8642533936651584
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2024-07-01",
+      "pr_merge_rate": 0.9053254437869822
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2024-08-01",
+      "pr_merge_rate": 0.8602620087336245
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2024-09-01",
+      "pr_merge_rate": 0.8787878787878788
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2024-10-01",
+      "pr_merge_rate": 0.8954545454545455
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2024-11-01",
+      "pr_merge_rate": 0.8813559322033898
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2024-12-01",
+      "pr_merge_rate": 0.9175257731958762
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2025-01-01",
+      "pr_merge_rate": 0.8944954128440367
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2025-02-01",
+      "pr_merge_rate": 0.8761904761904762
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2025-03-01",
+      "pr_merge_rate": 0.8445378151260504
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2025-04-01",
+      "pr_merge_rate": 0.9134615384615384
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2025-05-01",
+      "pr_merge_rate": 0.8208955223880597
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2025-06-01",
+      "pr_merge_rate": 0.7727272727272727
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2025-07-01",
+      "pr_merge_rate": 0.7582781456953642
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2025-08-01",
+      "pr_merge_rate": 0.6012658227848101
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2025-09-01",
+      "pr_merge_rate": 0.6842105263157895
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2025-10-01",
+      "pr_merge_rate": 0.6296296296296297
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2025-11-01",
+      "pr_merge_rate": 0.5
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2025-12-01",
+      "pr_merge_rate": 0.34782608695652173
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2026-01-01",
+      "pr_merge_rate": 0.453125
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2026-02-01",
+      "pr_merge_rate": 0.4371859296482412
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2024-03-01",
+      "pr_merge_rate": 0.7044025157232704
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2024-04-01",
+      "pr_merge_rate": 0.8294573643410853
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2024-05-01",
+      "pr_merge_rate": 0.7828947368421053
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2024-06-01",
+      "pr_merge_rate": 0.7626262626262627
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2024-07-01",
+      "pr_merge_rate": 0.8306878306878307
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2024-08-01",
+      "pr_merge_rate": 0.7951807228915663
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2024-09-01",
+      "pr_merge_rate": 0.6685393258426966
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2024-10-01",
+      "pr_merge_rate": 0.6726618705035972
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2024-11-01",
+      "pr_merge_rate": 0.8306709265175719
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2024-12-01",
+      "pr_merge_rate": 0.8032786885245902
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2025-01-01",
+      "pr_merge_rate": 0.8277153558052435
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2025-02-01",
+      "pr_merge_rate": 0.7901785714285714
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2025-03-01",
+      "pr_merge_rate": 0.8423423423423423
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2025-04-01",
+      "pr_merge_rate": 0.864516129032258
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2025-05-01",
+      "pr_merge_rate": 0.7844036697247706
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2025-06-01",
+      "pr_merge_rate": 0.8383838383838383
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2025-07-01",
+      "pr_merge_rate": 0.8085808580858086
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2025-08-01",
+      "pr_merge_rate": 0.8232931726907631
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2025-09-01",
+      "pr_merge_rate": 0.7870036101083032
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2025-10-01",
+      "pr_merge_rate": 0.8309859154929577
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2025-11-01",
+      "pr_merge_rate": 0.8921052631578947
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2025-12-01",
+      "pr_merge_rate": 0.7751677852348994
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2026-01-01",
+      "pr_merge_rate": 0.7119341563786008
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2026-02-01",
+      "pr_merge_rate": 0.7250859106529209
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2024-03-01",
+      "pr_merge_rate": 0.9375
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2024-04-01",
+      "pr_merge_rate": 0.90625
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2024-05-01",
+      "pr_merge_rate": 0.8214285714285714
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2024-06-01",
+      "pr_merge_rate": 0.9117647058823529
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2024-07-01",
+      "pr_merge_rate": 0.7254901960784313
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2024-08-01",
+      "pr_merge_rate": 0.671875
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2024-09-01",
+      "pr_merge_rate": 0.7631578947368421
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2024-10-01",
+      "pr_merge_rate": 0.8661417322834646
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2024-11-01",
+      "pr_merge_rate": 0.8264462809917356
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2024-12-01",
+      "pr_merge_rate": 0.8944099378881988
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2025-01-01",
+      "pr_merge_rate": 0.8846153846153846
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2025-02-01",
+      "pr_merge_rate": 0.972972972972973
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2025-03-01",
+      "pr_merge_rate": 0.75
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2025-04-01",
+      "pr_merge_rate": 0.6923076923076923
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2025-05-01",
+      "pr_merge_rate": 0.6666666666666666
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2025-06-01",
+      "pr_merge_rate": 0.8636363636363636
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2025-07-01",
+      "pr_merge_rate": 0.7083333333333334
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2025-08-01",
+      "pr_merge_rate": 0.6666666666666666
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2025-09-01",
+      "pr_merge_rate": 0.8634146341463415
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2025-10-01",
+      "pr_merge_rate": 0.4838709677419355
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2025-11-01",
+      "pr_merge_rate": 0.3333333333333333
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2025-12-01",
+      "pr_merge_rate": 0.375
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2026-01-01",
+      "pr_merge_rate": 0.26666666666666666
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2026-02-01",
+      "pr_merge_rate": 0.07142857142857142
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2024-08-01",
+      "pr_merge_rate": 0.9567099567099567
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2024-09-01",
+      "pr_merge_rate": 0.9621621621621622
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2024-10-01",
+      "pr_merge_rate": 0.9447236180904522
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2024-11-01",
+      "pr_merge_rate": 0.8937728937728938
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2024-12-01",
+      "pr_merge_rate": 0.9431137724550899
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2025-01-01",
+      "pr_merge_rate": 0.9232613908872902
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2025-02-01",
+      "pr_merge_rate": 0.9195402298850575
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2025-03-01",
+      "pr_merge_rate": 0.7531380753138075
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2025-04-01",
+      "pr_merge_rate": 0.7576374745417516
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2025-05-01",
+      "pr_merge_rate": 0.8282828282828283
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2025-06-01",
+      "pr_merge_rate": 0.8675675675675676
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2025-07-01",
+      "pr_merge_rate": 0.8634453781512605
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2025-08-01",
+      "pr_merge_rate": 0.8590078328981723
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2025-09-01",
+      "pr_merge_rate": 0.8309859154929577
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2025-10-01",
+      "pr_merge_rate": 0.8189781021897811
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2025-11-01",
+      "pr_merge_rate": 0.8596187175043327
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2025-12-01",
+      "pr_merge_rate": 0.8114285714285714
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2026-01-01",
+      "pr_merge_rate": 0.7845468053491828
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2026-02-01",
+      "pr_merge_rate": 0.7696709585121603
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2024-03-01",
+      "pr_merge_rate": 0.7899159663865546
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2024-04-01",
+      "pr_merge_rate": 0.7751479289940828
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2024-05-01",
+      "pr_merge_rate": 0.7606837606837606
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2024-06-01",
+      "pr_merge_rate": 0.794392523364486
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2024-07-01",
+      "pr_merge_rate": 0.8313253012048193
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2024-08-01",
+      "pr_merge_rate": 0.7422680412371134
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2024-09-01",
+      "pr_merge_rate": 0.6851851851851852
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2024-10-01",
+      "pr_merge_rate": 0.8217821782178217
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2024-11-01",
+      "pr_merge_rate": 0.8608247422680413
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2024-12-01",
+      "pr_merge_rate": 0.8805970149253731
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2025-01-01",
+      "pr_merge_rate": 0.8909952606635071
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2025-02-01",
+      "pr_merge_rate": 0.8477157360406091
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2025-03-01",
+      "pr_merge_rate": 0.8562874251497006
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2025-04-01",
+      "pr_merge_rate": 0.782608695652174
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2025-05-01",
+      "pr_merge_rate": 0.6615384615384615
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2025-06-01",
+      "pr_merge_rate": 0.625
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2025-07-01",
+      "pr_merge_rate": 0.6029411764705882
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2025-08-01",
+      "pr_merge_rate": 0.6363636363636364
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2025-09-01",
+      "pr_merge_rate": 0.5357142857142857
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2025-10-01",
+      "pr_merge_rate": 0.125
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2025-11-01",
+      "pr_merge_rate": 0.0
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2025-12-01",
+      "pr_merge_rate": 0.0
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2026-01-01",
+      "pr_merge_rate": 0.0
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2026-02-01",
+      "pr_merge_rate": 0.0
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2024-03-01",
+      "pr_merge_rate": 0.8723404255319149
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2024-04-01",
+      "pr_merge_rate": 0.8579234972677595
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2024-05-01",
+      "pr_merge_rate": 0.8341968911917098
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2024-06-01",
+      "pr_merge_rate": 0.813953488372093
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2024-07-01",
+      "pr_merge_rate": 0.855072463768116
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2024-08-01",
+      "pr_merge_rate": 0.8767772511848341
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2024-09-01",
+      "pr_merge_rate": 0.8825622775800712
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2024-10-01",
+      "pr_merge_rate": 0.8547008547008547
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2024-11-01",
+      "pr_merge_rate": 0.8761904761904762
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2024-12-01",
+      "pr_merge_rate": 0.8356164383561644
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-01-01",
+      "pr_merge_rate": 0.8557213930348259
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-02-01",
+      "pr_merge_rate": 0.8243243243243243
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-03-01",
+      "pr_merge_rate": 0.7954545454545454
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-04-01",
+      "pr_merge_rate": 0.817351598173516
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-05-01",
+      "pr_merge_rate": 0.8177083333333334
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-06-01",
+      "pr_merge_rate": 0.8137254901960784
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-07-01",
+      "pr_merge_rate": 0.8104265402843602
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-08-01",
+      "pr_merge_rate": 0.8151658767772512
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-09-01",
+      "pr_merge_rate": 0.8327526132404182
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-10-01",
+      "pr_merge_rate": 0.776
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-11-01",
+      "pr_merge_rate": 0.7162162162162162
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-12-01",
+      "pr_merge_rate": 0.7623762376237624
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2026-01-01",
+      "pr_merge_rate": 0.7597173144876325
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2026-02-01",
+      "pr_merge_rate": 0.7587412587412588
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2024-03-01",
+      "pr_merge_rate": 0.8084291187739464
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2024-04-01",
+      "pr_merge_rate": 0.8258426966292135
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2024-05-01",
+      "pr_merge_rate": 0.8392857142857143
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2024-06-01",
+      "pr_merge_rate": 0.8273809523809523
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2024-07-01",
+      "pr_merge_rate": 0.8144796380090498
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2024-08-01",
+      "pr_merge_rate": 0.8125
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2024-09-01",
+      "pr_merge_rate": 0.8743455497382199
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2024-10-01",
+      "pr_merge_rate": 0.8901098901098901
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2024-11-01",
+      "pr_merge_rate": 0.8511904761904762
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2024-12-01",
+      "pr_merge_rate": 0.810126582278481
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2025-01-01",
+      "pr_merge_rate": 0.8691588785046729
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2025-02-01",
+      "pr_merge_rate": 0.8292682926829268
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2025-03-01",
+      "pr_merge_rate": 0.8106995884773662
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2025-04-01",
+      "pr_merge_rate": 0.8214285714285714
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2025-05-01",
+      "pr_merge_rate": 0.8962655601659751
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2025-06-01",
+      "pr_merge_rate": 0.839622641509434
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2025-07-01",
+      "pr_merge_rate": 0.8382352941176471
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2025-08-01",
+      "pr_merge_rate": 0.7183098591549296
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2025-09-01",
+      "pr_merge_rate": 0.45454545454545453
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2025-10-01",
+      "pr_merge_rate": 0.6607142857142857
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2025-11-01",
+      "pr_merge_rate": 0.6842105263157895
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2025-12-01",
+      "pr_merge_rate": 0.5263157894736842
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2026-01-01",
+      "pr_merge_rate": 0.7317073170731707
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2026-02-01",
+      "pr_merge_rate": 0.5087719298245614
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2024-03-01",
+      "pr_merge_rate": 0.9814814814814815
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2024-04-01",
+      "pr_merge_rate": 0.9810126582278481
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2024-05-01",
+      "pr_merge_rate": 0.9046563192904656
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2024-06-01",
+      "pr_merge_rate": 0.8159645232815964
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2024-07-01",
+      "pr_merge_rate": 0.8212389380530973
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2024-08-01",
+      "pr_merge_rate": 0.8473804100227791
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2024-09-01",
+      "pr_merge_rate": 0.8172043010752689
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2024-10-01",
+      "pr_merge_rate": 0.8192488262910798
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2024-11-01",
+      "pr_merge_rate": 0.8148148148148148
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2024-12-01",
+      "pr_merge_rate": 0.8009708737864077
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2025-01-01",
+      "pr_merge_rate": 0.8120481927710843
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2025-02-01",
+      "pr_merge_rate": 0.6830188679245283
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2025-03-01",
+      "pr_merge_rate": 0.7827476038338658
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2025-04-01",
+      "pr_merge_rate": 0.8104089219330854
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2025-05-01",
+      "pr_merge_rate": 0.8631578947368421
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2025-06-01",
+      "pr_merge_rate": 0.851985559566787
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2025-07-01",
+      "pr_merge_rate": 0.7094017094017094
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2025-08-01",
+      "pr_merge_rate": 0.8250950570342205
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2025-09-01",
+      "pr_merge_rate": 0.7637540453074434
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2025-10-01",
+      "pr_merge_rate": 0.8266666666666667
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2025-11-01",
+      "pr_merge_rate": 0.7811244979919679
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2025-12-01",
+      "pr_merge_rate": 0.8085501858736059
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2026-01-01",
+      "pr_merge_rate": 0.7594142259414226
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2026-02-01",
+      "pr_merge_rate": 0.6011560693641619
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "month": "2025-02-01",
+      "pr_merge_rate": 1.0
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "month": "2025-03-01",
+      "pr_merge_rate": 0.5555555555555556
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "month": "2025-04-01",
+      "pr_merge_rate": 0.6363636363636364
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "month": "2025-05-01",
+      "pr_merge_rate": 0.4375
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "month": "2025-06-01",
+      "pr_merge_rate": 0.625
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "month": "2025-07-01",
+      "pr_merge_rate": 0.37777777777777777
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "month": "2025-08-01",
+      "pr_merge_rate": 0.6428571428571429
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "month": "2025-09-01",
+      "pr_merge_rate": 0.8076923076923077
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "month": "2025-10-01",
+      "pr_merge_rate": 0.5483870967741935
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "month": "2025-11-01",
+      "pr_merge_rate": 0.7142857142857143
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "month": "2025-12-01",
+      "pr_merge_rate": 0.48
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "month": "2026-01-01",
+      "pr_merge_rate": 0.48148148148148145
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "month": "2026-02-01",
+      "pr_merge_rate": 0.5319148936170213
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "month": "2024-10-01",
+      "pr_merge_rate": 1.0
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "month": "2024-11-01",
+      "pr_merge_rate": 0.375
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "month": "2024-12-01",
+      "pr_merge_rate": 0.2
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "month": "2025-01-01",
+      "pr_merge_rate": 0.3333333333333333
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "month": "2025-02-01",
+      "pr_merge_rate": 0.0
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "month": "2025-03-01",
+      "pr_merge_rate": 0.2777777777777778
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "month": "2025-04-01",
+      "pr_merge_rate": 0.42105263157894735
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "month": "2025-05-01",
+      "pr_merge_rate": 0.42168674698795183
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "month": "2025-06-01",
+      "pr_merge_rate": 0.6126760563380281
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "month": "2025-07-01",
+      "pr_merge_rate": 0.5405405405405406
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "month": "2025-08-01",
+      "pr_merge_rate": 0.625
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "month": "2025-09-01",
+      "pr_merge_rate": 0.7411764705882353
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "month": "2025-10-01",
+      "pr_merge_rate": 0.7671232876712328
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "month": "2025-11-01",
+      "pr_merge_rate": 0.711340206185567
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "month": "2025-12-01",
+      "pr_merge_rate": 0.7096774193548387
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "month": "2026-01-01",
+      "pr_merge_rate": 0.6666666666666666
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "month": "2026-02-01",
+      "pr_merge_rate": 0.6329113924050633
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2024-03-01",
+      "pr_merge_rate": 0.6607142857142857
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2024-04-01",
+      "pr_merge_rate": 0.7188940092165899
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2024-05-01",
+      "pr_merge_rate": 0.6915887850467289
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2024-06-01",
+      "pr_merge_rate": 0.6022099447513812
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2024-07-01",
+      "pr_merge_rate": 0.65748031496063
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2024-08-01",
+      "pr_merge_rate": 0.6690647482014388
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2024-09-01",
+      "pr_merge_rate": 0.674074074074074
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2024-10-01",
+      "pr_merge_rate": 0.5441176470588235
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2024-11-01",
+      "pr_merge_rate": 0.7049180327868853
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2024-12-01",
+      "pr_merge_rate": 0.48031496062992124
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2025-01-01",
+      "pr_merge_rate": 0.5060240963855421
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2025-02-01",
+      "pr_merge_rate": 0.6262626262626263
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2025-03-01",
+      "pr_merge_rate": 0.6123595505617978
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2025-04-01",
+      "pr_merge_rate": 0.5491803278688525
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2025-05-01",
+      "pr_merge_rate": 0.7050359712230215
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2025-06-01",
+      "pr_merge_rate": 0.5578947368421052
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2025-07-01",
+      "pr_merge_rate": 0.4411764705882353
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2025-08-01",
+      "pr_merge_rate": 0.568
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2025-09-01",
+      "pr_merge_rate": 0.6454545454545455
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2025-10-01",
+      "pr_merge_rate": 0.7333333333333333
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2025-11-01",
+      "pr_merge_rate": 0.631578947368421
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2025-12-01",
+      "pr_merge_rate": 0.4306569343065693
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2026-01-01",
+      "pr_merge_rate": 0.5661375661375662
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2026-02-01",
+      "pr_merge_rate": 0.39271255060728744
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2024-03-01",
+      "pr_merge_rate": 1.0
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2024-04-01",
+      "pr_merge_rate": 0.9746835443037974
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2024-05-01",
+      "pr_merge_rate": 1.0
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2024-06-01",
+      "pr_merge_rate": 0.9629629629629629
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2024-07-01",
+      "pr_merge_rate": 0.8571428571428571
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2024-08-01",
+      "pr_merge_rate": 0.9555555555555556
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2024-09-01",
+      "pr_merge_rate": 0.925
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2024-10-01",
+      "pr_merge_rate": 0.8431372549019608
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2024-11-01",
+      "pr_merge_rate": 0.7777777777777778
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2024-12-01",
+      "pr_merge_rate": 0.717948717948718
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2025-01-01",
+      "pr_merge_rate": 0.8441558441558441
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2025-02-01",
+      "pr_merge_rate": 0.6097560975609756
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2025-03-01",
+      "pr_merge_rate": 0.8421052631578947
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2025-04-01",
+      "pr_merge_rate": 0.7777777777777778
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2025-05-01",
+      "pr_merge_rate": 0.78
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2025-06-01",
+      "pr_merge_rate": 0.5806451612903226
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2025-07-01",
+      "pr_merge_rate": 0.5301204819277109
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2025-08-01",
+      "pr_merge_rate": 0.5454545454545454
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2025-09-01",
+      "pr_merge_rate": 0.7027027027027027
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2025-10-01",
+      "pr_merge_rate": 0.68
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2025-11-01",
+      "pr_merge_rate": 0.759493670886076
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2025-12-01",
+      "pr_merge_rate": 0.8
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2026-01-01",
+      "pr_merge_rate": 0.7428571428571429
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2026-02-01",
+      "pr_merge_rate": 0.675
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2024-03-01",
+      "pr_merge_rate": 0.8037383177570093
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2024-04-01",
+      "pr_merge_rate": 0.76
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2024-05-01",
+      "pr_merge_rate": 0.5301724137931034
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2024-06-01",
+      "pr_merge_rate": 0.7431192660550459
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2024-07-01",
+      "pr_merge_rate": 0.6928104575163399
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2024-08-01",
+      "pr_merge_rate": 0.6631016042780749
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2024-09-01",
+      "pr_merge_rate": 0.7062937062937062
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2024-10-01",
+      "pr_merge_rate": 0.6477987421383647
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2024-11-01",
+      "pr_merge_rate": 0.5466666666666666
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2024-12-01",
+      "pr_merge_rate": 0.6068376068376068
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2025-01-01",
+      "pr_merge_rate": 0.5986394557823129
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2025-02-01",
+      "pr_merge_rate": 0.5577557755775577
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2025-03-01",
+      "pr_merge_rate": 0.5041666666666667
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2025-04-01",
+      "pr_merge_rate": 0.5371621621621622
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2025-05-01",
+      "pr_merge_rate": 0.4759036144578313
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2025-06-01",
+      "pr_merge_rate": 0.47572815533980584
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2025-07-01",
+      "pr_merge_rate": 0.4251012145748988
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2025-08-01",
+      "pr_merge_rate": 0.44573643410852715
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2025-09-01",
+      "pr_merge_rate": 0.4882154882154882
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2025-10-01",
+      "pr_merge_rate": 0.34105960264900664
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2025-11-01",
+      "pr_merge_rate": 0.27887323943661974
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2025-12-01",
+      "pr_merge_rate": 0.4
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2026-01-01",
+      "pr_merge_rate": 0.3047091412742382
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2026-02-01",
+      "pr_merge_rate": 0.315450643776824
+    },
+    {
+      "repo": "https://github.com/openclaw/openclaw",
+      "month": "2025-11-01",
+      "pr_merge_rate": 0.0
+    },
+    {
+      "repo": "https://github.com/openclaw/openclaw",
+      "month": "2025-12-01",
+      "pr_merge_rate": 0.4482758620689655
+    },
+    {
+      "repo": "https://github.com/openclaw/openclaw",
+      "month": "2026-01-01",
+      "pr_merge_rate": 0.25644648534086895
+    },
+    {
+      "repo": "https://github.com/openclaw/openclaw",
+      "month": "2026-02-01",
+      "pr_merge_rate": 0.13190280845692648
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2024-03-01",
+      "pr_merge_rate": 0.9215686274509803
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2024-04-01",
+      "pr_merge_rate": 0.9487179487179487
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2024-05-01",
+      "pr_merge_rate": 0.8793103448275862
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2024-06-01",
+      "pr_merge_rate": 0.9657534246575342
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2024-07-01",
+      "pr_merge_rate": 0.9722222222222222
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2024-08-01",
+      "pr_merge_rate": 0.9521276595744681
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2024-09-01",
+      "pr_merge_rate": 0.9415204678362573
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2024-10-01",
+      "pr_merge_rate": 0.9509803921568627
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2024-11-01",
+      "pr_merge_rate": 0.9351351351351351
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2024-12-01",
+      "pr_merge_rate": 0.9070796460176991
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2025-01-01",
+      "pr_merge_rate": 0.8553299492385786
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2025-02-01",
+      "pr_merge_rate": 0.7806691449814126
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2025-03-01",
+      "pr_merge_rate": 0.8315412186379928
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2025-04-01",
+      "pr_merge_rate": 0.8981818181818182
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2025-05-01",
+      "pr_merge_rate": 0.8372703412073491
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2025-06-01",
+      "pr_merge_rate": 0.8902439024390244
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2025-07-01",
+      "pr_merge_rate": 0.8631840796019901
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2025-08-01",
+      "pr_merge_rate": 0.8602941176470589
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2025-09-01",
+      "pr_merge_rate": 0.8606060606060606
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2025-10-01",
+      "pr_merge_rate": 0.8808664259927798
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2025-11-01",
+      "pr_merge_rate": 0.8870967741935484
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2025-12-01",
+      "pr_merge_rate": 0.8466522678185745
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2026-01-01",
+      "pr_merge_rate": 0.8707627118644068
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2026-02-01",
+      "pr_merge_rate": 0.85625
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2024-10-01",
+      "pr_merge_rate": 0.9615384615384616
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2024-11-01",
+      "pr_merge_rate": 0.9577464788732394
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2024-12-01",
+      "pr_merge_rate": 0.8085106382978723
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2025-01-01",
+      "pr_merge_rate": 0.6640625
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2025-02-01",
+      "pr_merge_rate": 0.8041237113402062
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2025-03-01",
+      "pr_merge_rate": 0.8609271523178808
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2025-04-01",
+      "pr_merge_rate": 0.7714285714285715
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2025-05-01",
+      "pr_merge_rate": 0.6935483870967742
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2025-06-01",
+      "pr_merge_rate": 0.7238095238095238
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2025-07-01",
+      "pr_merge_rate": 0.7692307692307693
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2025-08-01",
+      "pr_merge_rate": 0.7511961722488039
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2025-09-01",
+      "pr_merge_rate": 0.8280254777070064
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2025-10-01",
+      "pr_merge_rate": 0.7647058823529411
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2025-11-01",
+      "pr_merge_rate": 0.7657142857142857
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2025-12-01",
+      "pr_merge_rate": 0.6666666666666666
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2026-01-01",
+      "pr_merge_rate": 0.477124183006536
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2026-02-01",
+      "pr_merge_rate": 0.47317073170731705
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2024-03-01",
+      "pr_merge_rate": 0.8413793103448276
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2024-04-01",
+      "pr_merge_rate": 0.8040540540540541
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2024-05-01",
+      "pr_merge_rate": 0.9106145251396648
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2024-06-01",
+      "pr_merge_rate": 0.891566265060241
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2024-07-01",
+      "pr_merge_rate": 0.8848484848484849
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2024-08-01",
+      "pr_merge_rate": 0.9090909090909091
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2024-09-01",
+      "pr_merge_rate": 0.8692307692307693
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2024-10-01",
+      "pr_merge_rate": 0.875
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2024-11-01",
+      "pr_merge_rate": 0.9157303370786517
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2024-12-01",
+      "pr_merge_rate": 0.9173553719008265
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2025-01-01",
+      "pr_merge_rate": 0.8727272727272727
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2025-02-01",
+      "pr_merge_rate": 0.8863636363636364
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2025-03-01",
+      "pr_merge_rate": 0.9207317073170732
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2025-04-01",
+      "pr_merge_rate": 0.8251748251748252
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2025-05-01",
+      "pr_merge_rate": 0.9310344827586207
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2025-06-01",
+      "pr_merge_rate": 0.8682170542635659
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2025-07-01",
+      "pr_merge_rate": 0.8367346938775511
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2025-08-01",
+      "pr_merge_rate": 0.8823529411764706
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2025-09-01",
+      "pr_merge_rate": 0.8548387096774194
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2025-10-01",
+      "pr_merge_rate": 0.84251968503937
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2025-11-01",
+      "pr_merge_rate": 0.8879310344827587
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2025-12-01",
+      "pr_merge_rate": 0.8579545454545454
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2026-01-01",
+      "pr_merge_rate": 0.7972027972027972
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2026-02-01",
+      "pr_merge_rate": 0.7333333333333333
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2024-03-01",
+      "pr_merge_rate": 0.8969072164948454
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2024-04-01",
+      "pr_merge_rate": 0.9083094555873925
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2024-05-01",
+      "pr_merge_rate": 0.8990228013029316
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2024-06-01",
+      "pr_merge_rate": 0.9024390243902439
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2024-07-01",
+      "pr_merge_rate": 0.9053497942386831
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2024-08-01",
+      "pr_merge_rate": 0.8892215568862275
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2024-09-01",
+      "pr_merge_rate": 0.8983050847457628
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2024-10-01",
+      "pr_merge_rate": 0.9356435643564357
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2024-11-01",
+      "pr_merge_rate": 0.8830409356725146
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2024-12-01",
+      "pr_merge_rate": 0.9012345679012346
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-01-01",
+      "pr_merge_rate": 0.8802816901408451
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-02-01",
+      "pr_merge_rate": 0.9295774647887324
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-03-01",
+      "pr_merge_rate": 0.8876404494382022
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-04-01",
+      "pr_merge_rate": 0.8646616541353384
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-05-01",
+      "pr_merge_rate": 0.9144144144144144
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-06-01",
+      "pr_merge_rate": 0.9153439153439153
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-07-01",
+      "pr_merge_rate": 0.9239766081871345
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-08-01",
+      "pr_merge_rate": 0.9333333333333333
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-09-01",
+      "pr_merge_rate": 0.8187919463087249
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-10-01",
+      "pr_merge_rate": 0.8865248226950354
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-11-01",
+      "pr_merge_rate": 0.7341772151898734
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-12-01",
+      "pr_merge_rate": 0.7439024390243902
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2026-01-01",
+      "pr_merge_rate": 0.8181818181818182
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2026-02-01",
+      "pr_merge_rate": 0.6312849162011173
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2024-03-01",
+      "pr_merge_rate": 0.75
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2024-04-01",
+      "pr_merge_rate": 0.717391304347826
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2024-05-01",
+      "pr_merge_rate": 0.7246376811594203
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2024-06-01",
+      "pr_merge_rate": 0.6851851851851852
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2024-07-01",
+      "pr_merge_rate": 0.825
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2024-08-01",
+      "pr_merge_rate": 0.6585365853658537
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2024-09-01",
+      "pr_merge_rate": 0.765625
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2024-10-01",
+      "pr_merge_rate": 0.6981132075471698
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2024-11-01",
+      "pr_merge_rate": 0.7777777777777778
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2024-12-01",
+      "pr_merge_rate": 0.6753246753246753
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2025-01-01",
+      "pr_merge_rate": 0.6666666666666666
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2025-02-01",
+      "pr_merge_rate": 0.7352941176470589
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2025-03-01",
+      "pr_merge_rate": 0.7222222222222222
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2025-04-01",
+      "pr_merge_rate": 0.8194444444444444
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2025-05-01",
+      "pr_merge_rate": 0.8584905660377359
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2025-06-01",
+      "pr_merge_rate": 0.8062015503875969
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2025-07-01",
+      "pr_merge_rate": 0.6521739130434783
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2025-08-01",
+      "pr_merge_rate": 0.6947368421052632
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2025-09-01",
+      "pr_merge_rate": 0.7352941176470589
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2025-10-01",
+      "pr_merge_rate": 0.5921052631578947
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2025-11-01",
+      "pr_merge_rate": 0.5957446808510638
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2025-12-01",
+      "pr_merge_rate": 0.40625
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2026-01-01",
+      "pr_merge_rate": 0.5238095238095238
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2026-02-01",
+      "pr_merge_rate": 0.3958333333333333
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2024-03-01",
+      "pr_merge_rate": 0.821917808219178
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2024-04-01",
+      "pr_merge_rate": 0.8588957055214724
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2024-05-01",
+      "pr_merge_rate": 0.9014084507042254
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2024-06-01",
+      "pr_merge_rate": 0.9142857142857143
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2024-07-01",
+      "pr_merge_rate": 0.8837209302325582
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2024-08-01",
+      "pr_merge_rate": 0.8229166666666666
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2024-09-01",
+      "pr_merge_rate": 0.7906976744186046
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2024-10-01",
+      "pr_merge_rate": 0.875
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2024-11-01",
+      "pr_merge_rate": 0.8366013071895425
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2024-12-01",
+      "pr_merge_rate": 0.9035087719298246
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2025-01-01",
+      "pr_merge_rate": 0.8385093167701864
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2025-02-01",
+      "pr_merge_rate": 0.8524590163934426
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2025-03-01",
+      "pr_merge_rate": 0.8818897637795275
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2025-04-01",
+      "pr_merge_rate": 0.8403361344537815
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2025-05-01",
+      "pr_merge_rate": 0.8472222222222222
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2025-06-01",
+      "pr_merge_rate": 0.8188976377952756
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2025-07-01",
+      "pr_merge_rate": 0.85
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2025-08-01",
+      "pr_merge_rate": 0.6982758620689655
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2025-09-01",
+      "pr_merge_rate": 0.8629032258064516
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2025-10-01",
+      "pr_merge_rate": 0.7579617834394905
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2025-11-01",
+      "pr_merge_rate": 0.8174603174603174
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2025-12-01",
+      "pr_merge_rate": 0.8288770053475936
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2026-01-01",
+      "pr_merge_rate": 0.7540322580645161
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2026-02-01",
+      "pr_merge_rate": 0.6853448275862069
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2024-03-01",
+      "pr_merge_rate": 0.8536585365853658
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2024-04-01",
+      "pr_merge_rate": 0.5945945945945946
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2024-05-01",
+      "pr_merge_rate": 0.6756756756756757
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2024-06-01",
+      "pr_merge_rate": 0.8888888888888888
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2024-07-01",
+      "pr_merge_rate": 0.8076923076923077
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2024-08-01",
+      "pr_merge_rate": 0.8571428571428571
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2024-09-01",
+      "pr_merge_rate": 0.7792207792207793
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2024-10-01",
+      "pr_merge_rate": 0.8898305084745762
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2024-11-01",
+      "pr_merge_rate": 0.8490566037735849
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2024-12-01",
+      "pr_merge_rate": 0.8974358974358975
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2025-01-01",
+      "pr_merge_rate": 0.9607843137254902
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2025-02-01",
+      "pr_merge_rate": 1.0
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2025-03-01",
+      "pr_merge_rate": 0.6956521739130435
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2025-04-01",
+      "pr_merge_rate": 0.5789473684210527
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2025-05-01",
+      "pr_merge_rate": 0.8
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2025-06-01",
+      "pr_merge_rate": 0.55
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2025-07-01",
+      "pr_merge_rate": 0.6842105263157895
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2025-08-01",
+      "pr_merge_rate": 0.8533333333333334
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2025-09-01",
+      "pr_merge_rate": 0.8636363636363636
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2025-10-01",
+      "pr_merge_rate": 0.82
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2025-11-01",
+      "pr_merge_rate": 0.8636363636363636
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2025-12-01",
+      "pr_merge_rate": 0.8709677419354839
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2026-01-01",
+      "pr_merge_rate": 0.65
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2026-02-01",
+      "pr_merge_rate": 0.045454545454545456
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2024-03-01",
+      "pr_merge_rate": 0.7758620689655172
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2024-04-01",
+      "pr_merge_rate": 0.7536231884057971
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2024-05-01",
+      "pr_merge_rate": 0.7555555555555555
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2024-06-01",
+      "pr_merge_rate": 0.7933333333333333
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2024-07-01",
+      "pr_merge_rate": 0.8564593301435407
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2024-08-01",
+      "pr_merge_rate": 0.7428571428571429
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2024-09-01",
+      "pr_merge_rate": 0.7849462365591398
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2024-10-01",
+      "pr_merge_rate": 0.8476190476190476
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2024-11-01",
+      "pr_merge_rate": 0.8517350157728707
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2024-12-01",
+      "pr_merge_rate": 0.7174721189591078
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2025-01-01",
+      "pr_merge_rate": 0.839041095890411
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2025-02-01",
+      "pr_merge_rate": 0.8022388059701493
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2025-03-01",
+      "pr_merge_rate": 0.822463768115942
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2025-04-01",
+      "pr_merge_rate": 0.7927272727272727
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2025-05-01",
+      "pr_merge_rate": 0.7689969604863222
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2025-06-01",
+      "pr_merge_rate": 0.772972972972973
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2025-07-01",
+      "pr_merge_rate": 0.8181818181818182
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2025-08-01",
+      "pr_merge_rate": 0.7882882882882883
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2025-09-01",
+      "pr_merge_rate": 0.7372013651877133
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2025-10-01",
+      "pr_merge_rate": 0.7379032258064516
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2025-11-01",
+      "pr_merge_rate": 0.782608695652174
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2025-12-01",
+      "pr_merge_rate": 0.8025210084033614
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2026-01-01",
+      "pr_merge_rate": 0.7577092511013216
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2026-02-01",
+      "pr_merge_rate": 0.7732342007434945
+    }
+  ]
+}

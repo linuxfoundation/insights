@@ -1,0 +1,879 @@
+{
+  "metadata": {
+    "fetched_at": "2026-03-25T15:28:56.203730",
+    "schema": {
+      "name": "docker_dependents_count",
+      "description": "Monthly Docker dependent counts from Tinybird packageDownloads datasource.",
+      "fields": [
+        {
+          "name": "repo",
+          "type": "string",
+          "description": "Repository identifier",
+          "optional": false
+        },
+        {
+          "name": "month",
+          "type": "date",
+          "description": "Month as YYYY-MM-DD",
+          "optional": false
+        },
+        {
+          "name": "docker_dependent_count",
+          "type": "number",
+          "description": "Sum of dockerDependentsCount across all Docker PURLs for the month",
+          "optional": false
+        }
+      ]
+    },
+    "covered_items": [
+      "https://github.com/567-labs/instructor",
+      "https://github.com/AmoyLab/Unla",
+      "https://github.com/Arize-ai/phoenix",
+      "https://github.com/Azure/PyRIT",
+      "https://github.com/FoundationAgents/MetaGPT",
+      "https://github.com/HKUDS/LightRAG",
+      "https://github.com/NVIDIA-NeMo/Guardrails",
+      "https://github.com/NVIDIA/garak",
+      "https://github.com/OAI/OpenAPI-Specification",
+      "https://github.com/OpenAutoCoder/Agentless",
+      "https://github.com/OpenHands/OpenHands",
+      "https://github.com/PrefectHQ/fastmcp",
+      "https://github.com/SWE-agent/SWE-agent",
+      "https://github.com/SWE-bench/SWE-bench",
+      "https://github.com/ShishirPatil/gorilla",
+      "https://github.com/Significant-Gravitas/AutoGPT",
+      "https://github.com/a2aproject/A2A",
+      "https://github.com/agentscope-ai/agentscope",
+      "https://github.com/agentsmd/agents.md",
+      "https://github.com/agno-agi/agno",
+      "https://github.com/agntcy/acp-spec",
+      "https://github.com/agntcy/oasf",
+      "https://github.com/agntcy/slim",
+      "https://github.com/aurelio-labs/semantic-router",
+      "https://github.com/block/goose",
+      "https://github.com/browser-use/browser-use",
+      "https://github.com/camel-ai/camel",
+      "https://github.com/comet-ml/opik",
+      "https://github.com/confident-ai/deepeval",
+      "https://github.com/continuedev/continue",
+      "https://github.com/crewAIInc/crewAI",
+      "https://github.com/daytonaio/daytona",
+      "https://github.com/firecrawl/firecrawl",
+      "https://github.com/google/adk-python",
+      "https://github.com/guardrails-ai/guardrails",
+      "https://github.com/huggingface/smolagents",
+      "https://github.com/ibm/mcp-context-forge",
+      "https://github.com/infiniflow/ragflow",
+      "https://github.com/janhq/jan",
+      "https://github.com/joonspk-research/generative_agents",
+      "https://github.com/langfuse/langfuse",
+      "https://github.com/letta-ai/letta",
+      "https://github.com/livekit/agents",
+      "https://github.com/mastra-ai/mastra",
+      "https://github.com/microsoft/OmniParser",
+      "https://github.com/microsoft/TaskWeaver",
+      "https://github.com/microsoft/graphrag",
+      "https://github.com/mistralai/mistral-inference",
+      "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "https://github.com/open-telemetry/semantic-conventions",
+      "https://github.com/open-webui/open-webui",
+      "https://github.com/openai/openai-agents-python",
+      "https://github.com/openclaw/openclaw",
+      "https://github.com/pathwaycom/pathway",
+      "https://github.com/pipecat-ai/pipecat",
+      "https://github.com/pydantic/pydantic-ai",
+      "https://github.com/qodo-ai/pr-agent",
+      "https://github.com/simular-ai/Agent-S",
+      "https://github.com/skypilot-org/skypilot",
+      "https://github.com/sweepai/sweep",
+      "https://github.com/tavily-ai/tavily-python",
+      "https://github.com/unclecode/crawl4ai",
+      "https://github.com/vibrantlabsai/ragas",
+      "https://github.com/w3c/did",
+      "https://github.com/wong2/litemcp",
+      "https://github.com/xlang-ai/OSWorld"
+    ]
+  },
+  "data": [
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2025-06-01",
+      "docker_dependent_count": 138
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2025-07-01",
+      "docker_dependent_count": 1
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2025-08-01",
+      "docker_dependent_count": 1
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2025-09-01",
+      "docker_dependent_count": 1
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2025-10-01",
+      "docker_dependent_count": 1
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2025-11-01",
+      "docker_dependent_count": 1
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2025-12-01",
+      "docker_dependent_count": 1
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2026-01-01",
+      "docker_dependent_count": 1
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2025-06-01",
+      "docker_dependent_count": 181610
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2025-07-01",
+      "docker_dependent_count": 5
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2025-08-01",
+      "docker_dependent_count": 5
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2025-09-01",
+      "docker_dependent_count": 5
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2025-10-01",
+      "docker_dependent_count": 10
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2025-11-01",
+      "docker_dependent_count": 5
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2026-02-01",
+      "docker_dependent_count": 5
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2026-03-01",
+      "docker_dependent_count": 5
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "month": "2025-06-01",
+      "docker_dependent_count": 46488
+    },
+    {
+      "repo": "https://github.com/OpenInterpreter/open-interpreter",
+      "month": "2026-03-01",
+      "docker_dependent_count": 1
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2025-06-01",
+      "docker_dependent_count": 709050
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2025-07-01",
+      "docker_dependent_count": 209
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2025-08-01",
+      "docker_dependent_count": 209
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2025-09-01",
+      "docker_dependent_count": 209
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2025-10-01",
+      "docker_dependent_count": 293
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2025-11-01",
+      "docker_dependent_count": 209
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2025-12-01",
+      "docker_dependent_count": 209
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2026-01-01",
+      "docker_dependent_count": 209
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2026-02-01",
+      "docker_dependent_count": 125
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2026-03-01",
+      "docker_dependent_count": 125
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2025-06-01",
+      "docker_dependent_count": 370
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-06-01",
+      "docker_dependent_count": 12842
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-07-01",
+      "docker_dependent_count": 150
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-08-01",
+      "docker_dependent_count": 150
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-09-01",
+      "docker_dependent_count": 150
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-10-01",
+      "docker_dependent_count": 150
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-11-01",
+      "docker_dependent_count": 150
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-12-01",
+      "docker_dependent_count": 150
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2026-01-01",
+      "docker_dependent_count": 150
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2026-02-01",
+      "docker_dependent_count": 150
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2026-03-01",
+      "docker_dependent_count": 150
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2026-02-01",
+      "docker_dependent_count": 19
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2026-03-01",
+      "docker_dependent_count": 19
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2025-06-01",
+      "docker_dependent_count": 237
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2025-07-01",
+      "docker_dependent_count": 18
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2025-08-01",
+      "docker_dependent_count": 18
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2025-09-01",
+      "docker_dependent_count": 18
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2025-10-01",
+      "docker_dependent_count": 18
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2025-11-01",
+      "docker_dependent_count": 18
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2025-12-01",
+      "docker_dependent_count": 18
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2026-01-01",
+      "docker_dependent_count": 18
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2026-02-01",
+      "docker_dependent_count": 18
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2026-03-01",
+      "docker_dependent_count": 18
+    },
+    {
+      "repo": "https://github.com/e2b-dev/code-interpreter",
+      "month": "2026-03-01",
+      "docker_dependent_count": 1
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2025-06-01",
+      "docker_dependent_count": 2906
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2025-07-01",
+      "docker_dependent_count": 2711
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2025-08-01",
+      "docker_dependent_count": 2711
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2025-09-01",
+      "docker_dependent_count": 2711
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2025-10-01",
+      "docker_dependent_count": 5422
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2025-11-01",
+      "docker_dependent_count": 2711
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2025-12-01",
+      "docker_dependent_count": 2711
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2026-01-01",
+      "docker_dependent_count": 2711
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2026-02-01",
+      "docker_dependent_count": 5422
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2026-03-01",
+      "docker_dependent_count": 2711
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-06-01",
+      "docker_dependent_count": 142
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-07-01",
+      "docker_dependent_count": 126
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-08-01",
+      "docker_dependent_count": 126
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-09-01",
+      "docker_dependent_count": 126
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-10-01",
+      "docker_dependent_count": 126
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-11-01",
+      "docker_dependent_count": 126
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-12-01",
+      "docker_dependent_count": 126
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2026-01-01",
+      "docker_dependent_count": 126
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2026-02-01",
+      "docker_dependent_count": 126
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2026-03-01",
+      "docker_dependent_count": 126
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2025-06-01",
+      "docker_dependent_count": 749361
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2025-07-01",
+      "docker_dependent_count": 431
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2025-08-01",
+      "docker_dependent_count": 432
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2025-09-01",
+      "docker_dependent_count": 433
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2025-10-01",
+      "docker_dependent_count": 433
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2025-11-01",
+      "docker_dependent_count": 433
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2025-12-01",
+      "docker_dependent_count": 431
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2026-01-01",
+      "docker_dependent_count": 433
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2026-02-01",
+      "docker_dependent_count": 434
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2026-03-01",
+      "docker_dependent_count": 434
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2025-06-01",
+      "docker_dependent_count": 4599131
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2025-08-01",
+      "docker_dependent_count": 1
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2025-09-01",
+      "docker_dependent_count": 1
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2025-10-01",
+      "docker_dependent_count": 2
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2025-11-01",
+      "docker_dependent_count": 1
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2025-12-01",
+      "docker_dependent_count": 1
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2026-01-01",
+      "docker_dependent_count": 1
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2026-02-01",
+      "docker_dependent_count": 1
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2026-03-01",
+      "docker_dependent_count": 1
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2025-06-01",
+      "docker_dependent_count": 1433
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-06-01",
+      "docker_dependent_count": 3251
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-07-01",
+      "docker_dependent_count": 3071
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-08-01",
+      "docker_dependent_count": 3071
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-09-01",
+      "docker_dependent_count": 3071
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-10-01",
+      "docker_dependent_count": 3071
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-11-01",
+      "docker_dependent_count": 2714
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-12-01",
+      "docker_dependent_count": 2714
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2026-01-01",
+      "docker_dependent_count": 2714
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2026-02-01",
+      "docker_dependent_count": 3071
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2026-03-01",
+      "docker_dependent_count": 3071
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2026-03-01",
+      "docker_dependent_count": 3
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2025-06-01",
+      "docker_dependent_count": 11
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2025-07-01",
+      "docker_dependent_count": 11
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2025-08-01",
+      "docker_dependent_count": 11
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2025-09-01",
+      "docker_dependent_count": 11
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2025-10-01",
+      "docker_dependent_count": 11
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2025-11-01",
+      "docker_dependent_count": 11
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2025-12-01",
+      "docker_dependent_count": 11
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2026-01-01",
+      "docker_dependent_count": 11
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2026-02-01",
+      "docker_dependent_count": 11
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2026-03-01",
+      "docker_dependent_count": 11
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "month": "2025-06-01",
+      "docker_dependent_count": 228
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2025-08-01",
+      "docker_dependent_count": 1
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2025-09-01",
+      "docker_dependent_count": 1
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2025-10-01",
+      "docker_dependent_count": 1
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2025-11-01",
+      "docker_dependent_count": 1
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2025-12-01",
+      "docker_dependent_count": 1
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2026-01-01",
+      "docker_dependent_count": 1
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2026-02-01",
+      "docker_dependent_count": 1
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2026-03-01",
+      "docker_dependent_count": 1
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2025-06-01",
+      "docker_dependent_count": 13
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2025-06-01",
+      "docker_dependent_count": 1439
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2025-07-01",
+      "docker_dependent_count": 29
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2025-08-01",
+      "docker_dependent_count": 29
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2025-09-01",
+      "docker_dependent_count": 29
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2025-10-01",
+      "docker_dependent_count": 29
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2025-11-01",
+      "docker_dependent_count": 58
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2025-12-01",
+      "docker_dependent_count": 29
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2026-01-01",
+      "docker_dependent_count": 29
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2026-02-01",
+      "docker_dependent_count": 116
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2026-03-01",
+      "docker_dependent_count": 29
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-06-01",
+      "docker_dependent_count": 486
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-07-01",
+      "docker_dependent_count": 45
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-08-01",
+      "docker_dependent_count": 45
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-09-01",
+      "docker_dependent_count": 45
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-10-01",
+      "docker_dependent_count": 45
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-11-01",
+      "docker_dependent_count": 45
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-12-01",
+      "docker_dependent_count": 45
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2026-01-01",
+      "docker_dependent_count": 45
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2026-02-01",
+      "docker_dependent_count": 45
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2026-03-01",
+      "docker_dependent_count": 3
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2025-06-01",
+      "docker_dependent_count": 333
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2026-02-01",
+      "docker_dependent_count": 38
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2026-03-01",
+      "docker_dependent_count": 38
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2025-06-01",
+      "docker_dependent_count": 11
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2025-07-01",
+      "docker_dependent_count": 11
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2025-08-01",
+      "docker_dependent_count": 11
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2025-09-01",
+      "docker_dependent_count": 11
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2025-10-01",
+      "docker_dependent_count": 11
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2025-11-01",
+      "docker_dependent_count": 11
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2025-12-01",
+      "docker_dependent_count": 11
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2026-01-01",
+      "docker_dependent_count": 11
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2026-02-01",
+      "docker_dependent_count": 11
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2026-03-01",
+      "docker_dependent_count": 11
+    }
+  ]
+}
