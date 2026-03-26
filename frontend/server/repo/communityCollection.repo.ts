@@ -15,6 +15,7 @@ export interface CommunityCollection {
   imageUrl: string | null;
   projects: string[];
   repositoryUrls: string[];
+  repositoryCount: number;
   createdAt: string;
   updatedAt: string;
 }
@@ -687,7 +688,11 @@ export class CommunityCollectionRepository {
     if (notFound.length > 0) {
       throw createError({
         statusCode: 400,
-        statusMessage: `Repository URLs not found: ${notFound.join(', ')}`,
+        statusMessage: 'Some repository URLs were not found',
+        data: {
+          notFoundUrls: notFound,
+          notFoundCount: notFound.length,
+        },
       });
     }
 

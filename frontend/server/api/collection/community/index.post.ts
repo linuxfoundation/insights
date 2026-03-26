@@ -55,10 +55,16 @@ export default defineEventHandler(async (event): Promise<CommunityCollection | E
   }
 
   if (body.repositoryUrls !== undefined) {
-    if (
-      !Array.isArray(body.repositoryUrls) ||
-      body.repositoryUrls.some((u) => typeof u !== 'string' || !u)
-    ) {
+    if (!Array.isArray(body.repositoryUrls)) {
+      throw createError({
+        statusCode: 400,
+        statusMessage: 'repositoryUrls must be an array of non-empty strings',
+      });
+    }
+
+    body.repositoryUrls = body.repositoryUrls.map((u) => (typeof u === 'string' ? u.trim() : u));
+
+    if (body.repositoryUrls.some((u) => typeof u !== 'string' || !u)) {
       throw createError({
         statusCode: 400,
         statusMessage: 'repositoryUrls must be an array of non-empty strings',
