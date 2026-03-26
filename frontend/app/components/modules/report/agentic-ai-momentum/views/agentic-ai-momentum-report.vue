@@ -33,8 +33,12 @@ SPDX-License-Identifier: MIT
     <lfx-agentic-executive-summary
       :projects-data="projectsData"
       :contributors-data="contributorsData"
+      :commits-data="commitsData"
       :research-data="researchData"
+      :github-breadth-data="githubBreadthData"
       :cocomo-data="cocomoData"
+      :time-to-close-data="timeToCloseData"
+      :pr-time-to-resolve-data="prTimeToResolveData"
       :is-loading="isLoading"
     />
 
@@ -69,54 +73,106 @@ SPDX-License-Identifier: MIT
 
     <!-- Projects Section -->
     <div class="flex flex-col gap-6">
-      <h2 class="text-heading-3 font-secondary font-semibold text-neutral-900">Projects</h2>
+      <template v-if="!selectedProject">
+        <div class="flex flex-col gap-4">
+          <h2 class="text-heading-3 font-secondary font-semibold text-neutral-900">Projects</h2>
+          <lfx-tabs
+            v-model="projectsTab"
+            :tabs="PROJECT_TABS"
+            tab-style="pill"
+            width-type="inline"
+          />
+        </div>
 
-      <!-- Project Leaderboard -->
-      <lfx-card class="p-4 md:p-6">
-        <h3 class="text-body-1 md:text-heading-4 font-secondary font-semibold text-neutral-900 mb-4">
-          Project Leaderboard
-        </h3>
-        <lfx-agentic-project-leaderboard
-          :projects-data="projectsData"
+        <!-- Project Leaderboard -->
+        <lfx-card
+          v-if="projectsTab === 'leaderboard'"
+          class="p-4 md:p-6"
+        >
+          <lfx-agentic-project-leaderboard
+            :projects-data="projectsData"
+            :stargazers-data="stargazersData"
+            :forks-data="forksData"
+            :commits-data="commitsData"
+            :contributors-data="contributorsData"
+            :merge-rate-data="mergeRateData"
+            :time-to-close-data="timeToCloseData"
+            :downloads-data="downloadsData"
+            :cocomo-data="cocomoData"
+            :pr-time-to-resolve-data="prTimeToResolveData"
+            :vulnerabilities-data="totalVulnerabilitiesData"
+            :is-loading="isLoading"
+            @select-project="onSelectProject"
+          />
+        </lfx-card>
+
+        <!-- Metric Explorer -->
+        <lfx-card
+          v-if="projectsTab === 'explorer'"
+          class="p-4 md:p-6"
+        >
+          <lfx-agentic-metric-explorer
+            :projects-data="projectsData"
+            :stargazers-data="stargazersData"
+            :forks-data="forksData"
+            :contributors-data="contributorsData"
+            :downloads-data="downloadsData"
+            :merge-rate-data="mergeRateData"
+            :time-to-close-data="timeToCloseData"
+            :pr-time-to-resolve-data="prTimeToResolveData"
+            :total-vulnerabilities-data="totalVulnerabilitiesData"
+            :cocomo-data="cocomoData"
+            :github-releases-data="githubReleasesData"
+            :is-loading="isLoading"
+          />
+        </lfx-card>
+      </template>
+
+      <template v-else>
+        <lfx-agentic-project-metrics
+          :key="selectedProject.githubUrl ?? selectedProject.name"
+          :project="selectedProject"
           :stargazers-data="stargazersData"
           :forks-data="forksData"
           :commits-data="commitsData"
           :contributors-data="contributorsData"
+          :new-contributors-90d-data="newContributors90dData"
           :merge-rate-data="mergeRateData"
           :time-to-close-data="timeToCloseData"
           :downloads-data="downloadsData"
+          :cocomo-data="cocomoData"
+          :docker-pulls-data="dockerPullsData"
+          :dependent-repos-data="dependentReposData"
+          :dependent-packages-data="dependentPackagesData"
+          :docker-dependents-data="dockerDependentsData"
+          :github-releases-data="githubReleasesData"
+          :open-issues-data="openIssuesData"
+          :closed-issues-data="closedIssuesData"
+          :issue-response-time-data="issueResponseTimeData"
+          :no-response-share-data="noResponseShareData"
+          :pr-time-to-resolve-data="prTimeToResolveData"
+          :total-vulnerabilities-data="totalVulnerabilitiesData"
+          :fixed-vulnerabilities-data="fixedVulnerabilitiesData"
           :is-loading="isLoading"
+          @back="onBack"
         />
-      </lfx-card>
-
-      <!-- Metric Explorer -->
-      <lfx-card class="p-4 md:p-6">
-        <h3 class="text-body-1 md:text-heading-4 font-secondary font-semibold text-neutral-900 mb-4">
-          Metric Explorer
-        </h3>
-        <lfx-agentic-metric-explorer
-          :projects-data="projectsData"
-          :stargazers-data="stargazersData"
-          :forks-data="forksData"
-          :contributors-data="contributorsData"
-          :downloads-data="downloadsData"
-          :merge-rate-data="mergeRateData"
-          :is-loading="isLoading"
-        />
-      </lfx-card>
+      </template>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import LfxAgenticExecutiveSummary from '../components/executive-summary.vue';
 import LfxAgenticResearchChart from '../components/research-chart.vue';
 import LfxAgenticGithubActivityTable from '../components/github-activity-table.vue';
 import LfxAgenticProjectLeaderboard from '../components/project-leaderboard.vue';
 import LfxAgenticMetricExplorer from '../components/metric-explorer.vue';
+import LfxAgenticProjectMetrics from '../components/project-metrics.vue';
 import { AGENTIC_AI_MOMENTUM_API_SERVICE } from '../services/agentic-ai-momentum.api.service';
 import LfxCard from '~/components/uikit/card/card.vue';
+import LfxTabs from '~/components/uikit/tabs/tabs.vue';
+import type { ProjectLeaderboardRow } from '~~/types/report/agentic-ai-momentum.types';
 
 // Fetch all data
 const { data: projectsResponse, status: projectsStatus } = AGENTIC_AI_MOMENTUM_API_SERVICE.fetchProjects();
@@ -131,6 +187,19 @@ const { data: researchResponse, status: researchStatus } = AGENTIC_AI_MOMENTUM_A
 const { data: githubBreadthResponse, status: githubBreadthStatus } =
   AGENTIC_AI_MOMENTUM_API_SERVICE.fetchGitHubEcosystemBreadth();
 const { data: cocomoResponse } = AGENTIC_AI_MOMENTUM_API_SERVICE.fetchCocomoValue();
+const { data: newContributors90dResponse } = AGENTIC_AI_MOMENTUM_API_SERVICE.fetchNewContributors90d();
+const { data: dockerPullsResponse } = AGENTIC_AI_MOMENTUM_API_SERVICE.fetchDockerHubPulls();
+const { data: dependentReposResponse } = AGENTIC_AI_MOMENTUM_API_SERVICE.fetchDependentRepos();
+const { data: dependentPackagesResponse } = AGENTIC_AI_MOMENTUM_API_SERVICE.fetchDependentPackages();
+const { data: dockerDependentsResponse } = AGENTIC_AI_MOMENTUM_API_SERVICE.fetchDockerDependents();
+const { data: githubReleasesResponse } = AGENTIC_AI_MOMENTUM_API_SERVICE.fetchGitHubReleases();
+const { data: openIssuesResponse } = AGENTIC_AI_MOMENTUM_API_SERVICE.fetchOpenIssues();
+const { data: closedIssuesResponse } = AGENTIC_AI_MOMENTUM_API_SERVICE.fetchClosedIssues();
+const { data: issueResponseTimeResponse } = AGENTIC_AI_MOMENTUM_API_SERVICE.fetchIssueTimeToFirstResponse();
+const { data: noResponseShareResponse } = AGENTIC_AI_MOMENTUM_API_SERVICE.fetchIssueNoResponseShare();
+const { data: prTimeToResolveResponse } = AGENTIC_AI_MOMENTUM_API_SERVICE.fetchPullRequestTimeToResolve();
+const { data: totalVulnerabilitiesResponse } = AGENTIC_AI_MOMENTUM_API_SERVICE.fetchTotalVulnerabilities();
+const { data: fixedVulnerabilitiesResponse } = AGENTIC_AI_MOMENTUM_API_SERVICE.fetchFixedVulnerabilities();
 
 // Extract data arrays
 const projectsData = computed(() => projectsResponse.value?.data ?? []);
@@ -144,6 +213,19 @@ const downloadsData = computed(() => downloadsResponse.value?.data ?? []);
 const researchData = computed(() => researchResponse.value?.data ?? []);
 const githubBreadthData = computed(() => githubBreadthResponse.value?.data ?? []);
 const cocomoData = computed(() => cocomoResponse.value?.data ?? []);
+const newContributors90dData = computed(() => newContributors90dResponse.value?.data ?? []);
+const dockerPullsData = computed(() => dockerPullsResponse.value?.data ?? []);
+const dependentReposData = computed(() => dependentReposResponse.value?.data ?? []);
+const dependentPackagesData = computed(() => dependentPackagesResponse.value?.data ?? []);
+const dockerDependentsData = computed(() => dockerDependentsResponse.value?.data ?? []);
+const githubReleasesData = computed(() => githubReleasesResponse.value?.data ?? []);
+const openIssuesData = computed(() => openIssuesResponse.value?.data ?? []);
+const closedIssuesData = computed(() => closedIssuesResponse.value?.data ?? []);
+const issueResponseTimeData = computed(() => issueResponseTimeResponse.value?.data ?? []);
+const noResponseShareData = computed(() => noResponseShareResponse.value?.data ?? []);
+const prTimeToResolveData = computed(() => prTimeToResolveResponse.value?.data ?? []);
+const totalVulnerabilitiesData = computed(() => totalVulnerabilitiesResponse.value?.data ?? []);
+const fixedVulnerabilitiesData = computed(() => fixedVulnerabilitiesResponse.value?.data ?? []);
 
 // Loading states
 const isLoading = computed(
@@ -156,6 +238,22 @@ const isLoading = computed(
 
 const researchLoading = computed(() => researchStatus.value === 'pending');
 const githubBreadthLoading = computed(() => githubBreadthStatus.value === 'pending');
+
+// Projects section tabs
+const PROJECT_TABS = [
+  { value: 'leaderboard', label: 'Project Leaderboard' },
+  { value: 'explorer', label: 'Metric Explorer' },
+];
+const projectsTab = ref<'leaderboard' | 'explorer'>('leaderboard');
+
+// Project drill-down state
+const selectedProject = ref<ProjectLeaderboardRow | null>(null);
+function onSelectProject(row: ProjectLeaderboardRow) {
+  selectedProject.value = row;
+}
+function onBack() {
+  selectedProject.value = null;
+}
 </script>
 
 <script lang="ts">

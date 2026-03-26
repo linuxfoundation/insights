@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "fetched_at": "2026-03-25T15:51:33.792689",
+    "fetched_at": "2026-03-27T10:30:23.267270",
     "schema": {
       "name": "github_ecosystem_breadth",
       "description": "Monthly snapshot of GitHub repository, issue, and discussion counts per search term.",
@@ -36,58 +36,50 @@
           "optional": false
         }
       ]
-    },
-    "covered_items": [
-      "agent_memory_planning",
-      "agent_safety_alignment",
-      "agentic_rag",
-      "autonomous_agents",
-      "llm_tool_use",
-      "multi_agent_systems"
-    ]
+    }
   },
   "data": [
     {
-      "search_term": "agent_memory_planning",
-      "month": "2026-03-01",
-      "repo_count": 398,
-      "issue_count": 19624,
-      "discussion_count": 902
-    },
-    {
-      "search_term": "agent_safety_alignment",
-      "month": "2026-03-01",
-      "repo_count": 40,
-      "issue_count": 7942,
-      "discussion_count": 283
-    },
-    {
-      "search_term": "agentic_rag",
-      "month": "2026-03-01",
-      "repo_count": 20141,
-      "issue_count": 5596,
-      "discussion_count": 429
-    },
-    {
       "search_term": "autonomous_agents",
       "month": "2026-03-01",
-      "repo_count": 22754,
-      "issue_count": 80558,
-      "discussion_count": 2360
-    },
-    {
-      "search_term": "llm_tool_use",
-      "month": "2026-03-01",
-      "repo_count": 6406,
-      "issue_count": 95212,
-      "discussion_count": 8587
+      "repo_count": 23159,
+      "issue_count": 81918,
+      "discussion_count": 2424
     },
     {
       "search_term": "multi_agent_systems",
       "month": "2026-03-01",
-      "repo_count": 21147,
-      "issue_count": 43002,
-      "discussion_count": 1948
+      "repo_count": 21399,
+      "issue_count": 43539,
+      "discussion_count": 1999
+    },
+    {
+      "search_term": "llm_tool_use",
+      "month": "2026-03-01",
+      "repo_count": 6448,
+      "issue_count": 100426,
+      "discussion_count": 8652
+    },
+    {
+      "search_term": "agent_memory_planning",
+      "month": "2026-03-01",
+      "repo_count": 407,
+      "issue_count": 19940,
+      "discussion_count": 909
+    },
+    {
+      "search_term": "agent_safety_alignment",
+      "month": "2026-03-01",
+      "repo_count": 42,
+      "issue_count": 8028,
+      "discussion_count": 287
+    },
+    {
+      "search_term": "agentic_rag",
+      "month": "2026-03-01",
+      "repo_count": 20359,
+      "issue_count": 5679,
+      "discussion_count": 433
     }
   ]
 }

@@ -16,6 +16,18 @@ import type {
   CommitCountData,
   IssueTimeToCloseData,
   CocomoValueData,
+  DockerHubPullsData,
+  DependentReposData,
+  DependentPackagesData,
+  DockerDependentsData,
+  GitHubReleasesData,
+  OpenIssuesData,
+  ClosedIssuesData,
+  IssueTimeToFirstResponseData,
+  IssueNoResponseShareData,
+  PullRequestTimeToResolveData,
+  VulnerabilitiesData,
+  FixedVulnerabilitiesData,
 } from '~~/types/report/agentic-ai-momentum.types';
 
 const STALE_TIME = 1000 * 60 * 60; // 1 hour
@@ -127,6 +139,114 @@ class AgenticAiMomentumApiService {
     return useQuery<AgenticDataResponse<CocomoValueData>>({
       queryKey: [TanstackKey.AGENTIC_AI_COCOMO],
       queryFn: async () => $fetch(`${BASE_PATH}/project_value_cocomo.json`),
+      staleTime: STALE_TIME,
+      gcTime: GC_TIME,
+    });
+  }
+
+  fetchDockerHubPulls() {
+    return useQuery<AgenticDataResponse<DockerHubPullsData>>({
+      queryKey: [TanstackKey.AGENTIC_AI_DOCKER_PULLS],
+      queryFn: async () => $fetch(`${BASE_PATH}/docker_hub_pulls.json`),
+      staleTime: STALE_TIME,
+      gcTime: GC_TIME,
+    });
+  }
+
+  fetchDependentRepos() {
+    return useQuery<AgenticDataResponse<DependentReposData>>({
+      queryKey: [TanstackKey.AGENTIC_AI_DEPENDENT_REPOS],
+      queryFn: async () => $fetch(`${BASE_PATH}/dependent_repos_count.json`),
+      staleTime: STALE_TIME,
+      gcTime: GC_TIME,
+    });
+  }
+
+  fetchDependentPackages() {
+    return useQuery<AgenticDataResponse<DependentPackagesData>>({
+      queryKey: [TanstackKey.AGENTIC_AI_DEPENDENT_PACKAGES],
+      queryFn: async () => $fetch(`${BASE_PATH}/dependent_packages_count.json`),
+      staleTime: STALE_TIME,
+      gcTime: GC_TIME,
+    });
+  }
+
+  fetchDockerDependents() {
+    return useQuery<AgenticDataResponse<DockerDependentsData>>({
+      queryKey: [TanstackKey.AGENTIC_AI_DOCKER_DEPENDENTS],
+      queryFn: async () => $fetch(`${BASE_PATH}/docker_dependents_count.json`),
+      staleTime: STALE_TIME,
+      gcTime: GC_TIME,
+    });
+  }
+
+  fetchGitHubReleases() {
+    return useQuery<AgenticDataResponse<GitHubReleasesData>>({
+      queryKey: [TanstackKey.AGENTIC_AI_GITHUB_RELEASES],
+      queryFn: async () => $fetch(`${BASE_PATH}/github_releases_count.json`),
+      staleTime: STALE_TIME,
+      gcTime: GC_TIME,
+    });
+  }
+
+  fetchOpenIssues() {
+    return useQuery<AgenticDataResponse<OpenIssuesData>>({
+      queryKey: [TanstackKey.AGENTIC_AI_OPEN_ISSUES],
+      queryFn: async () => $fetch(`${BASE_PATH}/open_issues_count.json`),
+      staleTime: STALE_TIME,
+      gcTime: GC_TIME,
+    });
+  }
+
+  fetchClosedIssues() {
+    return useQuery<AgenticDataResponse<ClosedIssuesData>>({
+      queryKey: [TanstackKey.AGENTIC_AI_CLOSED_ISSUES],
+      queryFn: async () => $fetch(`${BASE_PATH}/closed_issues_count.json`),
+      staleTime: STALE_TIME,
+      gcTime: GC_TIME,
+    });
+  }
+
+  fetchIssueTimeToFirstResponse() {
+    return useQuery<AgenticDataResponse<IssueTimeToFirstResponseData>>({
+      queryKey: [TanstackKey.AGENTIC_AI_TIME_TO_FIRST_RESPONSE],
+      queryFn: async () => $fetch(`${BASE_PATH}/issue_time_to_first_response.json`),
+      staleTime: STALE_TIME,
+      gcTime: GC_TIME,
+    });
+  }
+
+  fetchIssueNoResponseShare() {
+    return useQuery<AgenticDataResponse<IssueNoResponseShareData>>({
+      queryKey: [TanstackKey.AGENTIC_AI_NO_RESPONSE_SHARE],
+      queryFn: async () => $fetch(`${BASE_PATH}/issue_share_no_response_30d.json`),
+      staleTime: STALE_TIME,
+      gcTime: GC_TIME,
+    });
+  }
+
+  fetchPullRequestTimeToResolve() {
+    return useQuery<AgenticDataResponse<PullRequestTimeToResolveData>>({
+      queryKey: [TanstackKey.AGENTIC_AI_PR_TIME_TO_RESOLVE],
+      queryFn: async () => $fetch(`${BASE_PATH}/pull_request_time_to_resolve.json`),
+      staleTime: STALE_TIME,
+      gcTime: GC_TIME,
+    });
+  }
+
+  fetchTotalVulnerabilities() {
+    return useQuery<AgenticDataResponse<VulnerabilitiesData>>({
+      queryKey: [TanstackKey.AGENTIC_AI_TOTAL_VULNERABILITIES],
+      queryFn: async () => $fetch(`${BASE_PATH}/total_vulnerabilities_count.json`),
+      staleTime: STALE_TIME,
+      gcTime: GC_TIME,
+    });
+  }
+
+  fetchFixedVulnerabilities() {
+    return useQuery<AgenticDataResponse<FixedVulnerabilitiesData>>({
+      queryKey: [TanstackKey.AGENTIC_AI_FIXED_VULNERABILITIES],
+      queryFn: async () => $fetch(`${BASE_PATH}/fixed_vulnerabilities_count.json`),
       staleTime: STALE_TIME,
       gcTime: GC_TIME,
     });

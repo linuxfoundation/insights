@@ -3,58 +3,191 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="flex flex-col gap-4">
-    <!-- KPI Cards Grid -->
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
-      <div
-        v-for="kpi in kpiCards"
-        :key="kpi.label"
-        class="bg-neutral-50 rounded-lg p-3 md:p-4 flex flex-col gap-1"
-      >
-        <div class="text-body-2 text-neutral-500">
-          {{ kpi.label }}
-        </div>
-        <div v-if="isLoading">
-          <lfx-skeleton
-            height="32px"
-            width="80%"
-          />
-        </div>
+  <div class="flex flex-col gap-6">
+    <!-- At a Glance -->
+    <div class="flex flex-col gap-3">
+      <h3 class="text-xs font-semibold text-neutral-400 uppercase tracking-wider">At a Glance</h3>
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
         <div
-          v-else
-          class="flex items-baseline gap-2"
+          v-for="kpi in kpiCards"
+          :key="kpi.label"
+          class="bg-neutral-50 rounded-lg p-3 md:p-4 flex flex-col gap-1"
         >
-          <span class="text-heading-3 md:text-heading-2 font-bold text-neutral-900">{{ kpi.value }}</span>
-          <span
-            v-if="kpi.delta"
-            class="text-xs font-medium"
-            :class="kpi.delta > 0 ? 'text-positive-500' : 'text-negative-500'"
+          <div class="text-body-2 text-neutral-500">
+            {{ kpi.label }}
+          </div>
+          <div v-if="isLoading">
+            <lfx-skeleton
+              height="32px"
+              width="80%"
+            />
+          </div>
+          <div
+            v-else
+            class="flex items-baseline gap-2"
           >
-            {{ kpi.delta > 0 ? '+' : '' }}{{ formatCompactNumber(kpi.delta) }} (last 30d)
-          </span>
+            <span class="text-heading-3 md:text-heading-2 font-bold text-neutral-900">{{ kpi.value }}</span>
+            <span
+              v-if="kpi.delta"
+              class="text-xs font-medium"
+              :class="kpi.delta > 0 ? 'text-positive-500' : 'text-negative-500'"
+            >
+              {{ kpi.delta > 0 ? '+' : '' }}{{ formatCompactNumber(kpi.delta) }} (last 30d)
+            </span>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- Key Takeaways -->
-    <lfx-card class="p-4 md:p-6">
-      <h3 class="text-body-1 font-semibold text-neutral-900 mb-3">Key Takeaways</h3>
-      <ul class="flex flex-col gap-2 text-body-2 text-neutral-700">
-        <li
-          v-for="(takeaway, index) in takeaways"
-          :key="index"
-          class="flex items-start gap-2"
+    <!-- Highlights -->
+    <div class="flex flex-col gap-3">
+      <h3 class="text-xs font-semibold text-neutral-400 uppercase tracking-wider">Highlights</h3>
+      <lfx-card class="p-4 md:p-6">
+        <dl
+          v-if="isLoading"
+          class="grid grid-cols-[max-content_1fr] gap-x-6 gap-y-3"
         >
-          <span class="text-brand-500 mt-1">
-            <lfx-icon
-              name="check-circle"
-              :size="16"
+          <template
+            v-for="i in 4"
+            :key="i"
+          >
+            <lfx-skeleton
+              height="16px"
+              width="80px"
             />
-          </span>
-          <span>{{ takeaway }}</span>
-        </li>
-      </ul>
-    </lfx-card>
+            <lfx-skeleton
+              height="16px"
+              width="100%"
+            />
+          </template>
+        </dl>
+        <dl
+          v-else
+          class="grid grid-cols-[max-content_1fr] gap-x-6 gap-y-4 text-body-2 text-neutral-500"
+        >
+          <!-- Community Growth -->
+          <dt>
+            <span
+              class="inline-flex items-center gap-1.5 bg-brand-50 text-brand-700 rounded-full px-2.5 py-1 text-xs font-semibold whitespace-nowrap"
+            >
+              <lfx-icon
+                name="people-group"
+                :size="12"
+              />
+              Community Growth
+            </span>
+          </dt>
+          <dd class="flex items-center">
+            The open source agentic AI ecosystem added
+            <span class="font-bold text-positive-500 mx-1"
+              >+{{ formatCompactNumber(communityGrowth.contribDelta) }} contributors</span
+            >
+            and
+            <span class="font-bold text-positive-500 mx-1"
+              >+{{ formatCompactNumber(communityGrowth.commitDelta) }} commits</span
+            >
+            last month ({{ formatCompactNumber(communityGrowth.total) }} total contributors).
+          </dd>
+
+          <!-- Most Active Projects -->
+          <template v-if="topGrowingProjects.length > 0">
+            <dt>
+              <span
+                class="inline-flex items-center gap-1.5 bg-brand-50 text-brand-700 rounded-full px-2.5 py-1 text-xs font-semibold whitespace-nowrap"
+              >
+                <lfx-icon
+                  name="chart-line"
+                  :size="12"
+                />
+                Most Active
+              </span>
+            </dt>
+            <dd class="flex items-center flex-wrap gap-x-1">
+              <span class="font-bold text-neutral-900">{{ topGrowingProjects[0]?.name }}</span>
+              led contributor growth with
+              <span class="font-bold text-positive-500"
+                >+{{ formatCompactNumber(topGrowingProjects[0]?.delta ?? 0) }}</span
+              >
+              new contributors last month<template v-if="topGrowingProjects[1]"
+                >, followed by
+                <span class="font-bold text-neutral-900">{{ topGrowingProjects[1].name }}</span>
+                (<span class="font-bold text-positive-500">+{{ formatCompactNumber(topGrowingProjects[1].delta) }}</span
+                >)</template
+              >.
+            </dd>
+          </template>
+
+          <!-- Research Momentum -->
+          <dt>
+            <span
+              class="inline-flex items-center gap-1.5 bg-brand-50 text-brand-700 rounded-full px-2.5 py-1 text-xs font-semibold whitespace-nowrap"
+            >
+              <lfx-icon
+                name="book-open"
+                :size="12"
+              />
+              Research Momentum
+            </span>
+          </dt>
+          <dd class="flex items-center flex-wrap gap-x-1">
+            <span class="font-bold text-neutral-900">{{ researchHighlights.largestTopic }}</span>
+            leads with
+            <span class="font-bold text-neutral-900">{{ formatCompactNumber(researchHighlights.largestCount) }}</span>
+            research papers published to date. New research in
+            <span class="font-bold text-neutral-900">{{ researchHighlights.fastestTopic }}</span>
+            is growing fastest (<span class="font-bold text-positive-500"
+              >+{{ (researchHighlights.fastestRate * 100).toFixed(0) }}%</span
+            >
+            last month).
+            <span class="font-bold text-neutral-900">{{ researchHighlights.topGhTerm }}</span>
+            is the top GitHub search term with
+            <span class="font-bold text-neutral-900"
+              >{{ formatCompactNumber(researchHighlights.topGhRepos) }} repos</span
+            >
+            matching that term.
+          </dd>
+
+          <!-- Ecosystem Health -->
+          <template v-if="healthMetrics.medianDays !== null">
+            <dt>
+              <span
+                class="inline-flex items-center gap-1.5 bg-brand-50 text-brand-700 rounded-full px-2.5 py-1 text-xs font-semibold whitespace-nowrap"
+              >
+                <lfx-icon
+                  name="heart"
+                  :size="12"
+                />
+                Ecosystem Health
+              </span>
+            </dt>
+            <dd class="flex items-center flex-wrap gap-x-1">
+              Median issue close time is
+              <span class="font-bold text-neutral-900">{{ healthMetrics.medianDays.toFixed(0) }} days</span>
+              across {{ healthMetrics.count }} projects<template v-if="healthMetrics.delta !== null">
+                (<span
+                  class="font-bold"
+                  :class="healthMetrics.delta > 0 ? 'text-negative-500' : 'text-positive-500'"
+                  >{{ healthMetrics.delta > 0 ? '+' : '' }}{{ healthMetrics.delta.toFixed(0) }}d</span
+                >
+                vs. last month)</template
+              >.
+              <template v-if="prHealthMetrics.medianDays !== null">
+                Median pull request resolution time is
+                <span class="font-bold text-neutral-900">{{ prHealthMetrics.medianDays.toFixed(0) }} days</span>
+                across {{ prHealthMetrics.count }} projects<template v-if="prHealthMetrics.delta !== null">
+                  (<span
+                    class="font-bold"
+                    :class="prHealthMetrics.delta > 0 ? 'text-negative-500' : 'text-positive-500'"
+                    >{{ prHealthMetrics.delta > 0 ? '+' : '' }}{{ prHealthMetrics.delta.toFixed(0) }}d</span
+                  >
+                  vs. last month)</template
+                >.
+              </template>
+            </dd>
+          </template>
+        </dl>
+      </lfx-card>
+    </div>
   </div>
 </template>
 
@@ -69,13 +202,21 @@ import type {
   ContributorData,
   ResearchPapersData,
   CocomoValueData,
+  CommitCountData,
+  GitHubEcosystemBreadthData,
+  IssueTimeToCloseData,
+  PullRequestTimeToResolveData,
 } from '~~/types/report/agentic-ai-momentum.types';
 
 const props = defineProps<{
   projectsData: AgenticProject[];
   contributorsData: ContributorData[];
+  commitsData: CommitCountData[];
   researchData: ResearchPapersData[];
+  githubBreadthData: GitHubEcosystemBreadthData[];
   cocomoData: CocomoValueData[];
+  timeToCloseData: IssueTimeToCloseData[];
+  prTimeToResolveData: PullRequestTimeToResolveData[];
   isLoading: boolean;
 }>();
 
@@ -189,28 +330,144 @@ const kpiCards = computed(() => [
   },
 ]);
 
-// Key takeaways - these could be computed dynamically based on data trends
-const takeaways = computed(() => {
-  const takeawaysList: string[] = [];
+const TOPIC_LABELS: Record<string, string> = {
+  autonomous_agents: 'Autonomous Agents',
+  multi_agent_systems: 'Multi-Agent Systems',
+  llm_tool_use: 'LLM Tool Use',
+  agent_memory_planning: 'Agent Memory & Planning',
+  agent_safety_alignment: 'Agent Safety & Alignment',
+  agentic_rag: 'Agentic RAG',
+};
 
-  if (props.projectsData.length > 0) {
-    const orchestrationCount = props.projectsData.filter((p) => p.layer === 'Orchestration & Multi-Agent').length;
-    takeawaysList.push(
-      `Orchestration & Multi-Agent is the largest layer with ${orchestrationCount} projects, reflecting the industry focus on agent coordination.`,
-    );
-  }
+// Card 1: Community growth (contributors + commits)
+const communityGrowth = computed(() => {
+  const months = getSortedMonths(props.contributorsData);
+  const latest = months.at(-1);
+  const prev = months.at(-2);
+  const latestContribs = props.contributorsData
+    .filter((d) => d.month === latest)
+    .reduce((s, d) => s + d.cumulative_contributors, 0);
+  const prevContribs = props.contributorsData
+    .filter((d) => d.month === prev)
+    .reduce((s, d) => s + d.cumulative_contributors, 0);
+  const latestCommits = props.commitsData
+    .filter((d) => d.month === latest)
+    .reduce((s, d) => s + d.cumulative_commits, 0);
+  const prevCommits = props.commitsData.filter((d) => d.month === prev).reduce((s, d) => s + d.cumulative_commits, 0);
+  return {
+    contribDelta: latestContribs - prevContribs,
+    commitDelta: latestCommits - prevCommits,
+    total: latestContribs,
+  };
+});
 
-  if (researchPapersWithDelta.value.value > 0) {
-    takeawaysList.push(
-      `Research momentum continues with ${formatCompactNumber(researchPapersWithDelta.value.value)} arXiv papers published across all agentic AI topics.`,
-    );
-  }
+// Card 2: Top growing projects by contributor delta
+const topGrowingProjects = computed(() => {
+  const months = getSortedMonths(props.contributorsData);
+  const latest = months.at(-1);
+  const prev = months.at(-2);
+  const repos = [...new Set(props.contributorsData.map((d) => d.repo))];
+  return repos
+    .map((repo) => {
+      const l = props.contributorsData.find((d) => d.repo === repo && d.month === latest)?.cumulative_contributors ?? 0;
+      const p = props.contributorsData.find((d) => d.repo === repo && d.month === prev)?.cumulative_contributors ?? 0;
+      const name = props.projectsData.find((proj) => proj.github_url === repo)?.name ?? repo;
+      return { name, delta: l - p };
+    })
+    .filter((r) => r.delta > 0)
+    .sort((a, b) => b.delta - a.delta)
+    .slice(0, 2);
+});
 
-  takeawaysList.push(
-    'Open source protocols like MCP and A2A are establishing interoperability standards for the agentic AI ecosystem.',
+// Card 3: Research momentum (arXiv topics + GitHub search terms)
+const researchHighlights = computed(() => {
+  const filtered = props.researchData.filter((d) => d.month !== 'pre_window');
+  const topics = [...new Set(filtered.map((d) => d.topic))];
+  const months = getSortedMonths(props.researchData);
+  const latest = months.at(-1);
+  const prev = months.at(-2);
+
+  const totals: Record<string, number> = Object.fromEntries(
+    topics.map((t) => [t, filtered.filter((d) => d.topic === t).reduce((s, d) => s + d.paper_count, 0)]),
   );
+  const largestTopic = [...topics].sort((a, b) => (totals[b] ?? 0) - (totals[a] ?? 0))[0];
 
-  return takeawaysList;
+  const growthRates: Record<string, number> = Object.fromEntries(
+    topics.map((t) => {
+      const l = filtered.filter((d) => d.topic === t && d.month === latest).reduce((s, d) => s + d.paper_count, 0);
+      const p = filtered.filter((d) => d.topic === t && d.month === prev).reduce((s, d) => s + d.paper_count, 0);
+      return [t, p > 0 ? (l - p) / p : 0];
+    }),
+  );
+  const fastestTopic = [...topics].sort((a, b) => (growthRates[b] ?? 0) - (growthRates[a] ?? 0))[0];
+
+  const searchTerms = [...new Set(props.githubBreadthData.map((d) => d.search_term))];
+  const ghTotals = searchTerms
+    .map((term) => {
+      const entry = props.githubBreadthData
+        .filter((d) => d.search_term === term)
+        .sort((a, b) => b.month.localeCompare(a.month))[0];
+      return { term, repos: entry?.repo_count ?? 0 };
+    })
+    .sort((a, b) => b.repos - a.repos);
+  const topGhTerm = ghTotals[0];
+
+  return {
+    largestTopic: TOPIC_LABELS[largestTopic] ?? largestTopic,
+    largestCount: totals[largestTopic] ?? 0,
+    fastestTopic: TOPIC_LABELS[fastestTopic] ?? fastestTopic,
+    fastestRate: growthRates[fastestTopic] ?? 0,
+    topGhTerm: TOPIC_LABELS[topGhTerm?.term ?? ''] ?? topGhTerm?.term ?? '',
+    topGhRepos: topGhTerm?.repos ?? 0,
+  };
+});
+
+// Card 4: Ecosystem health (median issue time to close)
+const healthMetrics = computed(() => {
+  const months = getSortedMonths(props.timeToCloseData);
+  const latest = months.at(-1);
+  const prev = months.at(-2);
+
+  const latestData = props.timeToCloseData.filter((d) => d.month === latest && d.median_time_to_close_days != null);
+  const median =
+    latestData.length > 0 ? latestData.reduce((s, d) => s + d.median_time_to_close_days, 0) / latestData.length : null;
+
+  let delta: number | null = null;
+  if (prev && median !== null) {
+    const prevData = props.timeToCloseData.filter((d) => d.month === prev && d.median_time_to_close_days != null);
+    if (prevData.length > 0) {
+      const prevMedian = prevData.reduce((s, d) => s + d.median_time_to_close_days, 0) / prevData.length;
+      delta = median - prevMedian;
+    }
+  }
+
+  return { medianDays: median, count: latestData.length, delta };
+});
+
+// Card 4b: PR resolution time
+const prHealthMetrics = computed(() => {
+  const months = getSortedMonths(props.prTimeToResolveData);
+  const latest = months.at(-1);
+  const prev = months.at(-2);
+
+  const latestData = props.prTimeToResolveData.filter(
+    (d) => d.month === latest && d.median_time_to_resolve_days != null,
+  );
+  const median =
+    latestData.length > 0
+      ? latestData.reduce((s, d) => s + d.median_time_to_resolve_days, 0) / latestData.length
+      : null;
+
+  let delta: number | null = null;
+  if (prev && median !== null) {
+    const prevData = props.prTimeToResolveData.filter((d) => d.month === prev && d.median_time_to_resolve_days != null);
+    if (prevData.length > 0) {
+      const prevMedian = prevData.reduce((s, d) => s + d.median_time_to_resolve_days, 0) / prevData.length;
+      delta = median - prevMedian;
+    }
+  }
+
+  return { medianDays: median, count: latestData.length, delta };
 });
 </script>
 

@@ -89,6 +89,38 @@ export function getLayerColors(layer: string) {
   );
 }
 
+/** Returns inline CSS styles for a layer badge using hex colors (works regardless of Tailwind content scanning). */
+export function getLayerBadgeStyle(layer: string): Record<string, string> {
+  const hex = LAYER_HEX_COLORS[layer] || '#6B7280';
+  return {
+    backgroundColor: `${hex}1A`, // ~10% opacity tint
+    color: hex,
+    borderColor: `${hex}40`, // ~25% opacity border
+  };
+}
+
+// Hex equivalents of the Tailwind color families above, for use in ECharts / canvas contexts
+export const LAYER_HEX_COLORS: Record<string, string> = {
+  'Protocols & Standards': '#3B82F6', // blue-500
+  'Orchestration & Multi-Agent': '#8B5CF6', // violet-500
+  'Personal & Coding Agents': '#10B981', // emerald-500
+  'Computer Use & Browser Agents': '#F97316', // orange-500
+  'MCP Infrastructure': '#06B6D4', // cyan-500
+  'Memory & Retrieval': '#6366F1', // indigo-500
+  'Tool Use & Integration': '#EC4899', // pink-500
+  'Evaluation & Observability': '#EAB308', // yellow-500
+  'Agent-Optimized Models': '#EF4444', // red-500
+  'Safety & Guardrails': '#059669', // emerald-600
+  'Developer Tooling & SDKs': '#64748B', // slate-500
+  'Agent Infrastructure': '#7C3AED', // violet-600
+  'Voice & Multimodal Agents': '#F59E0B', // amber-500
+  'Research & Vertical Agents': '#14B8A6', // teal-400
+};
+
+export function getLayerHexColor(layer: string): string {
+  return LAYER_HEX_COLORS[layer] || '#6B7280';
+}
+
 // Chart colors for research topics (ECharts compatible hex)
 export const RESEARCH_TOPIC_COLORS: Record<string, string> = {
   autonomous_agents: '#3B82F6', // blue-500

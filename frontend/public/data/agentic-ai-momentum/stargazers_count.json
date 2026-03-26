@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "fetched_at": "2026-03-25T15:43:28.642679",
+    "fetched_at": "2026-03-27T10:27:49.920123",
     "schema": {
       "name": "stargazers_count",
       "description": "Cumulative monthly GitHub star counts for tracked repositories.",
@@ -24,101 +24,7 @@
           "optional": false
         }
       ]
-    },
-    "covered_items": [
-      "https://github.com/567-labs/instructor",
-      "https://github.com/Aider-AI/aider",
-      "https://github.com/AmoyLab/Unla",
-      "https://github.com/Arize-ai/phoenix",
-      "https://github.com/Azure/PyRIT",
-      "https://github.com/BerriAI/litellm",
-      "https://github.com/ComposioHQ/composio",
-      "https://github.com/FoundationAgents/MetaGPT",
-      "https://github.com/HKUDS/LightRAG",
-      "https://github.com/NVIDIA-NeMo/Guardrails",
-      "https://github.com/NVIDIA/garak",
-      "https://github.com/OAI/OpenAPI-Specification",
-      "https://github.com/OpenAutoCoder/Agentless",
-      "https://github.com/OpenHands/OpenHands",
-      "https://github.com/OpenInterpreter/open-interpreter",
-      "https://github.com/PrefectHQ/fastmcp",
-      "https://github.com/PrefectHQ/prefect",
-      "https://github.com/SWE-agent/SWE-agent",
-      "https://github.com/SWE-bench/SWE-bench",
-      "https://github.com/ShishirPatil/gorilla",
-      "https://github.com/Significant-Gravitas/AutoGPT",
-      "https://github.com/a2aproject/A2A",
-      "https://github.com/agentscope-ai/agentscope",
-      "https://github.com/agentsmd/agents.md",
-      "https://github.com/agno-agi/agno",
-      "https://github.com/agntcy/acp-spec",
-      "https://github.com/agntcy/oasf",
-      "https://github.com/agntcy/slim",
-      "https://github.com/assafelovic/gpt-researcher",
-      "https://github.com/aurelio-labs/semantic-router",
-      "https://github.com/block/goose",
-      "https://github.com/browser-use/browser-use",
-      "https://github.com/camel-ai/camel",
-      "https://github.com/chroma-core/chroma",
-      "https://github.com/cline/cline",
-      "https://github.com/comet-ml/opik",
-      "https://github.com/confident-ai/deepeval",
-      "https://github.com/continuedev/continue",
-      "https://github.com/crewAIInc/crewAI",
-      "https://github.com/daytonaio/daytona",
-      "https://github.com/deepset-ai/haystack",
-      "https://github.com/e2b-dev/code-interpreter",
-      "https://github.com/firecrawl/firecrawl",
-      "https://github.com/google/adk-python",
-      "https://github.com/guardrails-ai/guardrails",
-      "https://github.com/huggingface/smolagents",
-      "https://github.com/huggingface/transformers",
-      "https://github.com/ibm/mcp-context-forge",
-      "https://github.com/infiniflow/ragflow",
-      "https://github.com/janhq/jan",
-      "https://github.com/joonspk-research/generative_agents",
-      "https://github.com/kserve/kserve",
-      "https://github.com/langchain-ai/langchain",
-      "https://github.com/langchain-ai/langgraph",
-      "https://github.com/langfuse/langfuse",
-      "https://github.com/letta-ai/letta",
-      "https://github.com/livekit/agents",
-      "https://github.com/mastra-ai/mastra",
-      "https://github.com/microsoft/OmniParser",
-      "https://github.com/microsoft/TaskWeaver",
-      "https://github.com/microsoft/autogen",
-      "https://github.com/microsoft/graphrag",
-      "https://github.com/microsoft/playwright",
-      "https://github.com/microsoft/semantic-kernel",
-      "https://github.com/milvus-io/milvus",
-      "https://github.com/mistralai/mistral-inference",
-      "https://github.com/modelcontextprotocol/inspector",
-      "https://github.com/modelcontextprotocol/modelcontextprotocol",
-      "https://github.com/ollama/ollama",
-      "https://github.com/open-telemetry/semantic-conventions",
-      "https://github.com/open-webui/open-webui",
-      "https://github.com/openai/openai-agents-python",
-      "https://github.com/openclaw/openclaw",
-      "https://github.com/pathwaycom/pathway",
-      "https://github.com/pipecat-ai/pipecat",
-      "https://github.com/promptfoo/promptfoo",
-      "https://github.com/pydantic/pydantic-ai",
-      "https://github.com/qdrant/qdrant",
-      "https://github.com/qodo-ai/pr-agent",
-      "https://github.com/run-llama/llama_index",
-      "https://github.com/simular-ai/Agent-S",
-      "https://github.com/skypilot-org/skypilot",
-      "https://github.com/stanfordnlp/dspy",
-      "https://github.com/sweepai/sweep",
-      "https://github.com/tavily-ai/tavily-python",
-      "https://github.com/temporalio/temporal",
-      "https://github.com/unclecode/crawl4ai",
-      "https://github.com/vibrantlabsai/ragas",
-      "https://github.com/w3c/did",
-      "https://github.com/weaviate/weaviate",
-      "https://github.com/wong2/litemcp",
-      "https://github.com/xlang-ai/OSWorld"
-    ]
+    }
   },
   "data": [
     {
@@ -179,72 +85,67 @@
     {
       "repo": "https://github.com/Aider-AI/aider",
       "month": "2025-02-01",
-      "cumulative_stars": 28077
+      "cumulative_stars": 28079
     },
     {
       "repo": "https://github.com/Aider-AI/aider",
       "month": "2025-03-01",
-      "cumulative_stars": 30130
+      "cumulative_stars": 30132
     },
     {
       "repo": "https://github.com/Aider-AI/aider",
       "month": "2025-04-01",
-      "cumulative_stars": 32027
+      "cumulative_stars": 32029
     },
     {
       "repo": "https://github.com/Aider-AI/aider",
       "month": "2025-05-01",
-      "cumulative_stars": 33584
+      "cumulative_stars": 33586
     },
     {
       "repo": "https://github.com/Aider-AI/aider",
       "month": "2025-06-01",
-      "cumulative_stars": 34931
+      "cumulative_stars": 34933
     },
     {
       "repo": "https://github.com/Aider-AI/aider",
       "month": "2025-07-01",
-      "cumulative_stars": 36216
+      "cumulative_stars": 36218
     },
     {
       "repo": "https://github.com/Aider-AI/aider",
       "month": "2025-08-01",
-      "cumulative_stars": 37204
+      "cumulative_stars": 37206
     },
     {
       "repo": "https://github.com/Aider-AI/aider",
       "month": "2025-09-01",
-      "cumulative_stars": 37913
+      "cumulative_stars": 37916
     },
     {
       "repo": "https://github.com/Aider-AI/aider",
       "month": "2025-10-01",
-      "cumulative_stars": 38424
+      "cumulative_stars": 38427
     },
     {
       "repo": "https://github.com/Aider-AI/aider",
       "month": "2025-11-01",
-      "cumulative_stars": 39083
+      "cumulative_stars": 39086
     },
     {
       "repo": "https://github.com/Aider-AI/aider",
       "month": "2025-12-01",
-      "cumulative_stars": 39813
+      "cumulative_stars": 39816
     },
     {
       "repo": "https://github.com/Aider-AI/aider",
       "month": "2026-01-01",
-      "cumulative_stars": 40821
+      "cumulative_stars": 40825
     },
     {
       "repo": "https://github.com/Aider-AI/aider",
       "month": "2026-02-01",
-      "cumulative_stars": 41779
-    },
-    {
-      "repo": "https://github.com/Aider-AI/aider",
-      "month": "2026-03-01",
-      "cumulative_stars": 43133
+      "cumulative_stars": 41783
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
@@ -354,22 +255,17 @@
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-12-01",
-      "cumulative_stars": 3093
+      "cumulative_stars": 3094
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2026-01-01",
-      "cumulative_stars": 3204
+      "cumulative_stars": 3205
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2026-02-01",
-      "cumulative_stars": 3320
-    },
-    {
-      "repo": "https://github.com/Azure/PyRIT",
-      "month": "2026-03-01",
-      "cumulative_stars": 3414
+      "cumulative_stars": 3321
     },
     {
       "repo": "https://github.com/BerriAI/litellm",
@@ -389,112 +285,107 @@
     {
       "repo": "https://github.com/BerriAI/litellm",
       "month": "2024-06-01",
-      "cumulative_stars": 9862
+      "cumulative_stars": 9863
     },
     {
       "repo": "https://github.com/BerriAI/litellm",
       "month": "2024-07-01",
-      "cumulative_stars": 10615
+      "cumulative_stars": 10616
     },
     {
       "repo": "https://github.com/BerriAI/litellm",
       "month": "2024-08-01",
-      "cumulative_stars": 11470
+      "cumulative_stars": 11471
     },
     {
       "repo": "https://github.com/BerriAI/litellm",
       "month": "2024-09-01",
-      "cumulative_stars": 12324
+      "cumulative_stars": 12325
     },
     {
       "repo": "https://github.com/BerriAI/litellm",
       "month": "2024-10-01",
-      "cumulative_stars": 13189
+      "cumulative_stars": 13190
     },
     {
       "repo": "https://github.com/BerriAI/litellm",
       "month": "2024-11-01",
-      "cumulative_stars": 14214
+      "cumulative_stars": 14215
     },
     {
       "repo": "https://github.com/BerriAI/litellm",
       "month": "2024-12-01",
-      "cumulative_stars": 15321
+      "cumulative_stars": 15322
     },
     {
       "repo": "https://github.com/BerriAI/litellm",
       "month": "2025-01-01",
-      "cumulative_stars": 16656
+      "cumulative_stars": 16658
     },
     {
       "repo": "https://github.com/BerriAI/litellm",
       "month": "2025-02-01",
-      "cumulative_stars": 18047
+      "cumulative_stars": 18049
     },
     {
       "repo": "https://github.com/BerriAI/litellm",
       "month": "2025-03-01",
-      "cumulative_stars": 19825
+      "cumulative_stars": 19827
     },
     {
       "repo": "https://github.com/BerriAI/litellm",
       "month": "2025-04-01",
-      "cumulative_stars": 21632
+      "cumulative_stars": 21637
     },
     {
       "repo": "https://github.com/BerriAI/litellm",
       "month": "2025-05-01",
-      "cumulative_stars": 23392
+      "cumulative_stars": 23397
     },
     {
       "repo": "https://github.com/BerriAI/litellm",
       "month": "2025-06-01",
-      "cumulative_stars": 24768
+      "cumulative_stars": 24773
     },
     {
       "repo": "https://github.com/BerriAI/litellm",
       "month": "2025-07-01",
-      "cumulative_stars": 26753
+      "cumulative_stars": 26758
     },
     {
       "repo": "https://github.com/BerriAI/litellm",
       "month": "2025-08-01",
-      "cumulative_stars": 28333
+      "cumulative_stars": 28338
     },
     {
       "repo": "https://github.com/BerriAI/litellm",
       "month": "2025-09-01",
-      "cumulative_stars": 29677
+      "cumulative_stars": 29682
     },
     {
       "repo": "https://github.com/BerriAI/litellm",
       "month": "2025-10-01",
-      "cumulative_stars": 30879
+      "cumulative_stars": 30884
     },
     {
       "repo": "https://github.com/BerriAI/litellm",
       "month": "2025-11-01",
-      "cumulative_stars": 32262
+      "cumulative_stars": 32267
     },
     {
       "repo": "https://github.com/BerriAI/litellm",
       "month": "2025-12-01",
-      "cumulative_stars": 33658
+      "cumulative_stars": 33664
     },
     {
       "repo": "https://github.com/BerriAI/litellm",
       "month": "2026-01-01",
-      "cumulative_stars": 35551
+      "cumulative_stars": 35557
     },
     {
       "repo": "https://github.com/BerriAI/litellm",
       "month": "2026-02-01",
-      "cumulative_stars": 38039
-    },
-    {
-      "repo": "https://github.com/BerriAI/litellm",
-      "month": "2026-03-01",
-      "cumulative_stars": 41174
+      "cumulative_stars": 38047
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
@@ -514,107 +405,102 @@
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2024-07-01",
-      "cumulative_stars": 2591
+      "cumulative_stars": 2593
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2024-08-01",
-      "cumulative_stars": 3972
+      "cumulative_stars": 3974
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2024-09-01",
-      "cumulative_stars": 5511
+      "cumulative_stars": 5514
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2024-10-01",
-      "cumulative_stars": 7677
+      "cumulative_stars": 7682
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2024-11-01",
-      "cumulative_stars": 9245
+      "cumulative_stars": 9250
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2024-12-01",
-      "cumulative_stars": 10297
+      "cumulative_stars": 10302
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-01-01",
-      "cumulative_stars": 10872
+      "cumulative_stars": 10877
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-02-01",
-      "cumulative_stars": 11417
+      "cumulative_stars": 11423
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-03-01",
-      "cumulative_stars": 16296
+      "cumulative_stars": 16305
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-04-01",
-      "cumulative_stars": 16870
+      "cumulative_stars": 16879
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-05-01",
-      "cumulative_stars": 17252
+      "cumulative_stars": 17261
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-06-01",
-      "cumulative_stars": 17576
+      "cumulative_stars": 17585
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-07-01",
-      "cumulative_stars": 17786
+      "cumulative_stars": 17795
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-08-01",
-      "cumulative_stars": 18021
+      "cumulative_stars": 18030
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-09-01",
-      "cumulative_stars": 18192
+      "cumulative_stars": 18201
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-10-01",
-      "cumulative_stars": 18379
+      "cumulative_stars": 18388
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-11-01",
-      "cumulative_stars": 18787
+      "cumulative_stars": 18796
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-12-01",
-      "cumulative_stars": 18923
+      "cumulative_stars": 18932
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2026-01-01",
-      "cumulative_stars": 19229
+      "cumulative_stars": 19238
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2026-02-01",
-      "cumulative_stars": 20000
-    },
-    {
-      "repo": "https://github.com/ComposioHQ/composio",
-      "month": "2026-03-01",
-      "cumulative_stars": 20342
+      "cumulative_stars": 20009
     },
     {
       "repo": "https://github.com/HKUDS/LightRAG",
@@ -634,77 +520,72 @@
     {
       "repo": "https://github.com/HKUDS/LightRAG",
       "month": "2025-01-01",
-      "cumulative_stars": 11178
+      "cumulative_stars": 11179
     },
     {
       "repo": "https://github.com/HKUDS/LightRAG",
       "month": "2025-02-01",
-      "cumulative_stars": 12098
+      "cumulative_stars": 12099
     },
     {
       "repo": "https://github.com/HKUDS/LightRAG",
       "month": "2025-03-01",
-      "cumulative_stars": 13064
+      "cumulative_stars": 13065
     },
     {
       "repo": "https://github.com/HKUDS/LightRAG",
       "month": "2025-04-01",
-      "cumulative_stars": 15637
+      "cumulative_stars": 15639
     },
     {
       "repo": "https://github.com/HKUDS/LightRAG",
       "month": "2025-05-01",
-      "cumulative_stars": 16705
+      "cumulative_stars": 16708
     },
     {
       "repo": "https://github.com/HKUDS/LightRAG",
       "month": "2025-06-01",
-      "cumulative_stars": 17742
+      "cumulative_stars": 17745
     },
     {
       "repo": "https://github.com/HKUDS/LightRAG",
       "month": "2025-07-01",
-      "cumulative_stars": 18784
+      "cumulative_stars": 18788
     },
     {
       "repo": "https://github.com/HKUDS/LightRAG",
       "month": "2025-08-01",
-      "cumulative_stars": 20016
+      "cumulative_stars": 20021
     },
     {
       "repo": "https://github.com/HKUDS/LightRAG",
       "month": "2025-09-01",
-      "cumulative_stars": 21324
+      "cumulative_stars": 21329
     },
     {
       "repo": "https://github.com/HKUDS/LightRAG",
       "month": "2025-10-01",
-      "cumulative_stars": 22200
+      "cumulative_stars": 22206
     },
     {
       "repo": "https://github.com/HKUDS/LightRAG",
       "month": "2025-11-01",
-      "cumulative_stars": 24804
+      "cumulative_stars": 24810
     },
     {
       "repo": "https://github.com/HKUDS/LightRAG",
       "month": "2025-12-01",
-      "cumulative_stars": 26860
+      "cumulative_stars": 26866
     },
     {
       "repo": "https://github.com/HKUDS/LightRAG",
       "month": "2026-01-01",
-      "cumulative_stars": 27840
+      "cumulative_stars": 27848
     },
     {
       "repo": "https://github.com/HKUDS/LightRAG",
       "month": "2026-02-01",
-      "cumulative_stars": 28922
-    },
-    {
-      "repo": "https://github.com/HKUDS/LightRAG",
-      "month": "2026-03-01",
-      "cumulative_stars": 30425
+      "cumulative_stars": 28930
     },
     {
       "repo": "https://github.com/OAI/OpenAPI-Specification",
@@ -827,11 +708,6 @@
       "cumulative_stars": 18964
     },
     {
-      "repo": "https://github.com/OAI/OpenAPI-Specification",
-      "month": "2026-03-01",
-      "cumulative_stars": 11986
-    },
-    {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
       "month": "2024-07-01",
       "cumulative_stars": 500
@@ -932,134 +808,124 @@
       "cumulative_stars": 1970
     },
     {
-      "repo": "https://github.com/OpenAutoCoder/Agentless",
-      "month": "2026-03-01",
-      "cumulative_stars": 1987
-    },
-    {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-03-01",
-      "cumulative_stars": 10578
+      "cumulative_stars": 10581
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-04-01",
-      "cumulative_stars": 20470
+      "cumulative_stars": 20475
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-05-01",
-      "cumulative_stars": 23457
+      "cumulative_stars": 23462
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-06-01",
-      "cumulative_stars": 24843
+      "cumulative_stars": 24848
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-07-01",
-      "cumulative_stars": 25995
+      "cumulative_stars": 26001
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-08-01",
-      "cumulative_stars": 27602
+      "cumulative_stars": 27608
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-09-01",
-      "cumulative_stars": 28983
+      "cumulative_stars": 28989
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-10-01",
-      "cumulative_stars": 30078
+      "cumulative_stars": 30084
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-11-01",
-      "cumulative_stars": 34240
+      "cumulative_stars": 34246
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-12-01",
-      "cumulative_stars": 36112
+      "cumulative_stars": 36118
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-01-01",
-      "cumulative_stars": 41236
+      "cumulative_stars": 41243
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-02-01",
-      "cumulative_stars": 44464
+      "cumulative_stars": 44471
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-03-01",
-      "cumulative_stars": 47815
+      "cumulative_stars": 47822
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-04-01",
-      "cumulative_stars": 49760
+      "cumulative_stars": 49767
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-05-01",
-      "cumulative_stars": 53056
+      "cumulative_stars": 53064
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-06-01",
-      "cumulative_stars": 55635
+      "cumulative_stars": 55643
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-07-01",
-      "cumulative_stars": 57618
+      "cumulative_stars": 57626
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-08-01",
-      "cumulative_stars": 59103
+      "cumulative_stars": 59111
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-09-01",
-      "cumulative_stars": 60087
+      "cumulative_stars": 60095
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-10-01",
-      "cumulative_stars": 60899
+      "cumulative_stars": 60907
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-11-01",
-      "cumulative_stars": 61715
+      "cumulative_stars": 61723
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-12-01",
-      "cumulative_stars": 62532
+      "cumulative_stars": 62540
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2026-01-01",
-      "cumulative_stars": 63910
+      "cumulative_stars": 63919
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2026-02-01",
-      "cumulative_stars": 65007
-    },
-    {
-      "repo": "https://github.com/OpenHands/OpenHands",
-      "month": "2026-03-01",
-      "cumulative_stars": 66466
+      "cumulative_stars": 65016
     },
     {
       "repo": "https://github.com/PrefectHQ/prefect",
@@ -1134,427 +1000,292 @@
     {
       "repo": "https://github.com/PrefectHQ/prefect",
       "month": "2025-05-01",
-      "cumulative_stars": 19368
+      "cumulative_stars": 19369
     },
     {
       "repo": "https://github.com/PrefectHQ/prefect",
       "month": "2025-06-01",
-      "cumulative_stars": 19638
+      "cumulative_stars": 19639
     },
     {
       "repo": "https://github.com/PrefectHQ/prefect",
       "month": "2025-07-01",
-      "cumulative_stars": 19906
+      "cumulative_stars": 19907
     },
     {
       "repo": "https://github.com/PrefectHQ/prefect",
       "month": "2025-08-01",
-      "cumulative_stars": 20276
+      "cumulative_stars": 20277
     },
     {
       "repo": "https://github.com/PrefectHQ/prefect",
       "month": "2025-09-01",
-      "cumulative_stars": 20583
+      "cumulative_stars": 20584
     },
     {
       "repo": "https://github.com/PrefectHQ/prefect",
       "month": "2025-10-01",
-      "cumulative_stars": 20841
+      "cumulative_stars": 20842
     },
     {
       "repo": "https://github.com/PrefectHQ/prefect",
       "month": "2025-11-01",
-      "cumulative_stars": 21137
+      "cumulative_stars": 21138
     },
     {
       "repo": "https://github.com/PrefectHQ/prefect",
       "month": "2025-12-01",
-      "cumulative_stars": 21429
+      "cumulative_stars": 21430
     },
     {
       "repo": "https://github.com/PrefectHQ/prefect",
       "month": "2026-01-01",
-      "cumulative_stars": 21761
+      "cumulative_stars": 21762
     },
     {
       "repo": "https://github.com/PrefectHQ/prefect",
       "month": "2026-02-01",
-      "cumulative_stars": 22000
-    },
-    {
-      "repo": "https://github.com/PrefectHQ/prefect",
-      "month": "2026-03-01",
-      "cumulative_stars": 16752
+      "cumulative_stars": 22001
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-03-01",
-      "cumulative_stars": 9256
+      "cumulative_stars": 9257
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-04-01",
-      "cumulative_stars": 9686
+      "cumulative_stars": 9687
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-05-01",
-      "cumulative_stars": 9994
+      "cumulative_stars": 9995
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-06-01",
-      "cumulative_stars": 10259
+      "cumulative_stars": 10260
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-07-01",
-      "cumulative_stars": 10576
+      "cumulative_stars": 10577
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-08-01",
-      "cumulative_stars": 10776
+      "cumulative_stars": 10777
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-09-01",
-      "cumulative_stars": 10903
+      "cumulative_stars": 10904
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-10-01",
-      "cumulative_stars": 11048
+      "cumulative_stars": 11049
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-11-01",
-      "cumulative_stars": 11163
+      "cumulative_stars": 11164
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-12-01",
-      "cumulative_stars": 11274
+      "cumulative_stars": 11275
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-01-01",
-      "cumulative_stars": 11387
+      "cumulative_stars": 11388
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-02-01",
-      "cumulative_stars": 11504
+      "cumulative_stars": 11506
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-03-01",
-      "cumulative_stars": 11609
+      "cumulative_stars": 11611
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-04-01",
-      "cumulative_stars": 11709
+      "cumulative_stars": 11711
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-05-01",
-      "cumulative_stars": 11790
+      "cumulative_stars": 11792
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-06-01",
-      "cumulative_stars": 11892
+      "cumulative_stars": 11894
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-07-01",
-      "cumulative_stars": 11990
+      "cumulative_stars": 11992
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-08-01",
-      "cumulative_stars": 12067
+      "cumulative_stars": 12069
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-09-01",
-      "cumulative_stars": 12153
+      "cumulative_stars": 12155
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-10-01",
-      "cumulative_stars": 12235
+      "cumulative_stars": 12237
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-11-01",
-      "cumulative_stars": 12301
+      "cumulative_stars": 12303
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-12-01",
-      "cumulative_stars": 12382
+      "cumulative_stars": 12384
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2026-01-01",
-      "cumulative_stars": 12444
+      "cumulative_stars": 12446
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2026-02-01",
-      "cumulative_stars": 12483
-    },
-    {
-      "repo": "https://github.com/ShishirPatil/gorilla",
-      "month": "2026-03-01",
-      "cumulative_stars": 12536
+      "cumulative_stars": 12485
     },
     {
       "repo": "https://github.com/Significant-Gravitas/AutoGPT",
       "month": "2024-03-01",
-      "cumulative_stars": 156779
+      "cumulative_stars": 156790
     },
     {
       "repo": "https://github.com/Significant-Gravitas/AutoGPT",
       "month": "2024-04-01",
-      "cumulative_stars": 158318
+      "cumulative_stars": 158329
     },
     {
       "repo": "https://github.com/Significant-Gravitas/AutoGPT",
       "month": "2024-05-01",
-      "cumulative_stars": 159742
+      "cumulative_stars": 159753
     },
     {
       "repo": "https://github.com/Significant-Gravitas/AutoGPT",
       "month": "2024-06-01",
-      "cumulative_stars": 160878
+      "cumulative_stars": 160889
     },
     {
       "repo": "https://github.com/Significant-Gravitas/AutoGPT",
       "month": "2024-07-01",
-      "cumulative_stars": 162997
+      "cumulative_stars": 163008
     },
     {
       "repo": "https://github.com/Significant-Gravitas/AutoGPT",
       "month": "2024-08-01",
-      "cumulative_stars": 164038
+      "cumulative_stars": 164049
     },
     {
       "repo": "https://github.com/Significant-Gravitas/AutoGPT",
       "month": "2024-09-01",
-      "cumulative_stars": 165239
+      "cumulative_stars": 165250
     },
     {
       "repo": "https://github.com/Significant-Gravitas/AutoGPT",
       "month": "2024-10-01",
-      "cumulative_stars": 166319
+      "cumulative_stars": 166330
     },
     {
       "repo": "https://github.com/Significant-Gravitas/AutoGPT",
       "month": "2024-11-01",
-      "cumulative_stars": 167412
+      "cumulative_stars": 167423
     },
     {
       "repo": "https://github.com/Significant-Gravitas/AutoGPT",
       "month": "2024-12-01",
-      "cumulative_stars": 168880
+      "cumulative_stars": 168891
     },
     {
       "repo": "https://github.com/Significant-Gravitas/AutoGPT",
       "month": "2025-01-01",
-      "cumulative_stars": 170224
+      "cumulative_stars": 170235
     },
     {
       "repo": "https://github.com/Significant-Gravitas/AutoGPT",
       "month": "2025-02-01",
-      "cumulative_stars": 171624
+      "cumulative_stars": 171635
     },
     {
       "repo": "https://github.com/Significant-Gravitas/AutoGPT",
       "month": "2025-03-01",
-      "cumulative_stars": 173923
+      "cumulative_stars": 173934
     },
     {
       "repo": "https://github.com/Significant-Gravitas/AutoGPT",
       "month": "2025-04-01",
-      "cumulative_stars": 175133
+      "cumulative_stars": 175144
     },
     {
       "repo": "https://github.com/Significant-Gravitas/AutoGPT",
       "month": "2025-05-01",
-      "cumulative_stars": 176294
+      "cumulative_stars": 176305
     },
     {
       "repo": "https://github.com/Significant-Gravitas/AutoGPT",
       "month": "2025-06-01",
-      "cumulative_stars": 177287
+      "cumulative_stars": 177298
     },
     {
       "repo": "https://github.com/Significant-Gravitas/AutoGPT",
       "month": "2025-07-01",
-      "cumulative_stars": 178449
+      "cumulative_stars": 178460
     },
     {
       "repo": "https://github.com/Significant-Gravitas/AutoGPT",
       "month": "2025-08-01",
-      "cumulative_stars": 179510
+      "cumulative_stars": 179521
     },
     {
       "repo": "https://github.com/Significant-Gravitas/AutoGPT",
       "month": "2025-09-01",
-      "cumulative_stars": 180429
+      "cumulative_stars": 180440
     },
     {
       "repo": "https://github.com/Significant-Gravitas/AutoGPT",
       "month": "2025-10-01",
-      "cumulative_stars": 181371
+      "cumulative_stars": 181382
     },
     {
       "repo": "https://github.com/Significant-Gravitas/AutoGPT",
       "month": "2025-11-01",
-      "cumulative_stars": 182270
+      "cumulative_stars": 182281
     },
     {
       "repo": "https://github.com/Significant-Gravitas/AutoGPT",
       "month": "2025-12-01",
-      "cumulative_stars": 183267
+      "cumulative_stars": 183278
     },
     {
       "repo": "https://github.com/Significant-Gravitas/AutoGPT",
       "month": "2026-01-01",
-      "cumulative_stars": 184533
+      "cumulative_stars": 184544
     },
     {
       "repo": "https://github.com/Significant-Gravitas/AutoGPT",
       "month": "2026-02-01",
-      "cumulative_stars": 185447
-    },
-    {
-      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
-      "month": "2026-03-01",
-      "cumulative_stars": 186360
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2024-03-01",
-      "cumulative_stars": 2672
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2024-04-01",
-      "cumulative_stars": 4447
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2024-05-01",
-      "cumulative_stars": 8927
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2024-06-01",
-      "cumulative_stars": 9894
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2024-07-01",
-      "cumulative_stars": 10334
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2024-08-01",
-      "cumulative_stars": 10604
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2024-09-01",
-      "cumulative_stars": 10784
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2024-10-01",
-      "cumulative_stars": 13818
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2024-11-01",
-      "cumulative_stars": 15103
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2024-12-01",
-      "cumulative_stars": 16616
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2025-01-01",
-      "cumulative_stars": 17760
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2025-02-01",
-      "cumulative_stars": 19028
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2025-03-01",
-      "cumulative_stars": 22834
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2025-04-01",
-      "cumulative_stars": 25479
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2025-05-01",
-      "cumulative_stars": 26964
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2025-06-01",
-      "cumulative_stars": 28647
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2025-07-01",
-      "cumulative_stars": 30629
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2025-08-01",
-      "cumulative_stars": 32181
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2025-09-01",
-      "cumulative_stars": 33718
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2025-10-01",
-      "cumulative_stars": 34588
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2025-11-01",
-      "cumulative_stars": 35527
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2025-12-01",
-      "cumulative_stars": 36509
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2026-01-01",
-      "cumulative_stars": 37477
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2026-02-01",
-      "cumulative_stars": 38435
+      "cumulative_stars": 185458
     },
     {
       "repo": "https://github.com/agntcy/acp-spec",
@@ -1617,11 +1348,6 @@
       "cumulative_stars": 159
     },
     {
-      "repo": "https://github.com/agntcy/acp-spec",
-      "month": "2026-03-01",
-      "cumulative_stars": 161
-    },
-    {
       "repo": "https://github.com/agntcy/oasf",
       "month": "2025-03-01",
       "cumulative_stars": 74
@@ -1680,11 +1406,6 @@
       "repo": "https://github.com/agntcy/oasf",
       "month": "2026-02-01",
       "cumulative_stars": 292
-    },
-    {
-      "repo": "https://github.com/agntcy/oasf",
-      "month": "2026-03-01",
-      "cumulative_stars": 302
     },
     {
       "repo": "https://github.com/agntcy/slim",
@@ -1752,134 +1473,124 @@
       "cumulative_stars": 178
     },
     {
-      "repo": "https://github.com/agntcy/slim",
-      "month": "2026-03-01",
-      "cumulative_stars": 184
-    },
-    {
       "repo": "https://github.com/assafelovic/gpt-researcher",
       "month": "2024-03-01",
-      "cumulative_stars": 7534
+      "cumulative_stars": 7535
     },
     {
       "repo": "https://github.com/assafelovic/gpt-researcher",
       "month": "2024-04-01",
-      "cumulative_stars": 8377
+      "cumulative_stars": 8378
     },
     {
       "repo": "https://github.com/assafelovic/gpt-researcher",
       "month": "2024-05-01",
-      "cumulative_stars": 11615
+      "cumulative_stars": 11617
     },
     {
       "repo": "https://github.com/assafelovic/gpt-researcher",
       "month": "2024-06-01",
-      "cumulative_stars": 12539
+      "cumulative_stars": 12541
     },
     {
       "repo": "https://github.com/assafelovic/gpt-researcher",
       "month": "2024-07-01",
-      "cumulative_stars": 12986
+      "cumulative_stars": 12988
     },
     {
       "repo": "https://github.com/assafelovic/gpt-researcher",
       "month": "2024-08-01",
-      "cumulative_stars": 13397
+      "cumulative_stars": 13399
     },
     {
       "repo": "https://github.com/assafelovic/gpt-researcher",
       "month": "2024-09-01",
-      "cumulative_stars": 13863
+      "cumulative_stars": 13865
     },
     {
       "repo": "https://github.com/assafelovic/gpt-researcher",
       "month": "2024-10-01",
-      "cumulative_stars": 14341
+      "cumulative_stars": 14343
     },
     {
       "repo": "https://github.com/assafelovic/gpt-researcher",
       "month": "2024-11-01",
-      "cumulative_stars": 14742
+      "cumulative_stars": 14744
     },
     {
       "repo": "https://github.com/assafelovic/gpt-researcher",
       "month": "2024-12-01",
-      "cumulative_stars": 15118
+      "cumulative_stars": 15120
     },
     {
       "repo": "https://github.com/assafelovic/gpt-researcher",
       "month": "2025-01-01",
-      "cumulative_stars": 15665
+      "cumulative_stars": 15667
     },
     {
       "repo": "https://github.com/assafelovic/gpt-researcher",
       "month": "2025-02-01",
-      "cumulative_stars": 19137
+      "cumulative_stars": 19139
     },
     {
       "repo": "https://github.com/assafelovic/gpt-researcher",
       "month": "2025-03-01",
-      "cumulative_stars": 20350
+      "cumulative_stars": 20353
     },
     {
       "repo": "https://github.com/assafelovic/gpt-researcher",
       "month": "2025-04-01",
-      "cumulative_stars": 20929
+      "cumulative_stars": 20932
     },
     {
       "repo": "https://github.com/assafelovic/gpt-researcher",
       "month": "2025-05-01",
-      "cumulative_stars": 21401
+      "cumulative_stars": 21404
     },
     {
       "repo": "https://github.com/assafelovic/gpt-researcher",
       "month": "2025-06-01",
-      "cumulative_stars": 21946
+      "cumulative_stars": 21949
     },
     {
       "repo": "https://github.com/assafelovic/gpt-researcher",
       "month": "2025-07-01",
-      "cumulative_stars": 22473
+      "cumulative_stars": 22476
     },
     {
       "repo": "https://github.com/assafelovic/gpt-researcher",
       "month": "2025-08-01",
-      "cumulative_stars": 23146
+      "cumulative_stars": 23149
     },
     {
       "repo": "https://github.com/assafelovic/gpt-researcher",
       "month": "2025-09-01",
-      "cumulative_stars": 23601
+      "cumulative_stars": 23604
     },
     {
       "repo": "https://github.com/assafelovic/gpt-researcher",
       "month": "2025-10-01",
-      "cumulative_stars": 23970
+      "cumulative_stars": 23973
     },
     {
       "repo": "https://github.com/assafelovic/gpt-researcher",
       "month": "2025-11-01",
-      "cumulative_stars": 24343
+      "cumulative_stars": 24346
     },
     {
       "repo": "https://github.com/assafelovic/gpt-researcher",
       "month": "2025-12-01",
-      "cumulative_stars": 24750
+      "cumulative_stars": 24754
     },
     {
       "repo": "https://github.com/assafelovic/gpt-researcher",
       "month": "2026-01-01",
-      "cumulative_stars": 25273
+      "cumulative_stars": 25277
     },
     {
       "repo": "https://github.com/assafelovic/gpt-researcher",
       "month": "2026-02-01",
-      "cumulative_stars": 25667
-    },
-    {
-      "repo": "https://github.com/assafelovic/gpt-researcher",
-      "month": "2026-03-01",
-      "cumulative_stars": 26138
+      "cumulative_stars": 25671
     },
     {
       "repo": "https://github.com/block/goose",
@@ -1914,72 +1625,67 @@
     {
       "repo": "https://github.com/block/goose",
       "month": "2025-02-01",
-      "cumulative_stars": 8876
+      "cumulative_stars": 8877
     },
     {
       "repo": "https://github.com/block/goose",
       "month": "2025-03-01",
-      "cumulative_stars": 10912
+      "cumulative_stars": 10913
     },
     {
       "repo": "https://github.com/block/goose",
       "month": "2025-04-01",
-      "cumulative_stars": 12005
+      "cumulative_stars": 12006
     },
     {
       "repo": "https://github.com/block/goose",
       "month": "2025-05-01",
-      "cumulative_stars": 13083
+      "cumulative_stars": 13084
     },
     {
       "repo": "https://github.com/block/goose",
       "month": "2025-06-01",
-      "cumulative_stars": 15152
+      "cumulative_stars": 15153
     },
     {
       "repo": "https://github.com/block/goose",
       "month": "2025-07-01",
-      "cumulative_stars": 17625
+      "cumulative_stars": 17628
     },
     {
       "repo": "https://github.com/block/goose",
       "month": "2025-08-01",
-      "cumulative_stars": 19190
+      "cumulative_stars": 19193
     },
     {
       "repo": "https://github.com/block/goose",
       "month": "2025-09-01",
-      "cumulative_stars": 20060
+      "cumulative_stars": 20064
     },
     {
       "repo": "https://github.com/block/goose",
       "month": "2025-10-01",
-      "cumulative_stars": 21537
+      "cumulative_stars": 21541
     },
     {
       "repo": "https://github.com/block/goose",
       "month": "2025-11-01",
-      "cumulative_stars": 22788
+      "cumulative_stars": 22792
     },
     {
       "repo": "https://github.com/block/goose",
       "month": "2025-12-01",
-      "cumulative_stars": 25644
+      "cumulative_stars": 25648
     },
     {
       "repo": "https://github.com/block/goose",
       "month": "2026-01-01",
-      "cumulative_stars": 30177
+      "cumulative_stars": 30182
     },
     {
       "repo": "https://github.com/block/goose",
       "month": "2026-02-01",
-      "cumulative_stars": 32240
-    },
-    {
-      "repo": "https://github.com/block/goose",
-      "month": "2026-03-01",
-      "cumulative_stars": 34336
+      "cumulative_stars": 32245
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
@@ -1989,82 +1695,77 @@
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2024-12-01",
-      "cumulative_stars": 7336
+      "cumulative_stars": 7337
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-01-01",
-      "cumulative_stars": 20233
+      "cumulative_stars": 20239
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-02-01",
-      "cumulative_stars": 31675
+      "cumulative_stars": 31682
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-03-01",
-      "cumulative_stars": 47161
+      "cumulative_stars": 47169
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-04-01",
-      "cumulative_stars": 54423
+      "cumulative_stars": 54431
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-05-01",
-      "cumulative_stars": 57706
+      "cumulative_stars": 57716
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-06-01",
-      "cumulative_stars": 60026
+      "cumulative_stars": 60036
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-07-01",
-      "cumulative_stars": 62254
+      "cumulative_stars": 62264
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-08-01",
-      "cumulative_stars": 64531
+      "cumulative_stars": 64541
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-09-01",
-      "cumulative_stars": 66264
+      "cumulative_stars": 66275
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-10-01",
-      "cumulative_stars": 67613
+      "cumulative_stars": 67625
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-11-01",
-      "cumulative_stars": 68741
+      "cumulative_stars": 68753
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-12-01",
-      "cumulative_stars": 70120
+      "cumulative_stars": 70132
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2026-01-01",
-      "cumulative_stars": 73091
+      "cumulative_stars": 73103
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2026-02-01",
-      "cumulative_stars": 74805
-    },
-    {
-      "repo": "https://github.com/browser-use/browser-use",
-      "month": "2026-03-01",
-      "cumulative_stars": 79459
+      "cumulative_stars": 74819
     },
     {
       "repo": "https://github.com/camel-ai/camel",
@@ -2129,192 +1830,182 @@
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-03-01",
-      "cumulative_stars": 10753
+      "cumulative_stars": 10754
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-04-01",
-      "cumulative_stars": 11608
+      "cumulative_stars": 11609
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-05-01",
-      "cumulative_stars": 12135
+      "cumulative_stars": 12138
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-06-01",
-      "cumulative_stars": 12543
+      "cumulative_stars": 12546
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-07-01",
-      "cumulative_stars": 13022
+      "cumulative_stars": 13025
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-08-01",
-      "cumulative_stars": 13425
+      "cumulative_stars": 13428
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-09-01",
-      "cumulative_stars": 13783
+      "cumulative_stars": 13786
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-10-01",
-      "cumulative_stars": 14065
+      "cumulative_stars": 14068
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-11-01",
-      "cumulative_stars": 14323
+      "cumulative_stars": 14327
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-12-01",
-      "cumulative_stars": 14601
+      "cumulative_stars": 14605
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2026-01-01",
-      "cumulative_stars": 15275
+      "cumulative_stars": 15279
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2026-02-01",
-      "cumulative_stars": 15541
-    },
-    {
-      "repo": "https://github.com/camel-ai/camel",
-      "month": "2026-03-01",
-      "cumulative_stars": 15882
+      "cumulative_stars": 15546
     },
     {
       "repo": "https://github.com/chroma-core/chroma",
       "month": "2024-03-01",
-      "cumulative_stars": 11480
+      "cumulative_stars": 11481
     },
     {
       "repo": "https://github.com/chroma-core/chroma",
       "month": "2024-04-01",
-      "cumulative_stars": 12070
+      "cumulative_stars": 12071
     },
     {
       "repo": "https://github.com/chroma-core/chroma",
       "month": "2024-05-01",
-      "cumulative_stars": 12562
+      "cumulative_stars": 12563
     },
     {
       "repo": "https://github.com/chroma-core/chroma",
       "month": "2024-06-01",
-      "cumulative_stars": 13108
+      "cumulative_stars": 13109
     },
     {
       "repo": "https://github.com/chroma-core/chroma",
       "month": "2024-07-01",
-      "cumulative_stars": 13620
+      "cumulative_stars": 13621
     },
     {
       "repo": "https://github.com/chroma-core/chroma",
       "month": "2024-08-01",
-      "cumulative_stars": 14083
+      "cumulative_stars": 14084
     },
     {
       "repo": "https://github.com/chroma-core/chroma",
       "month": "2024-09-01",
-      "cumulative_stars": 14505
+      "cumulative_stars": 14506
     },
     {
       "repo": "https://github.com/chroma-core/chroma",
       "month": "2024-10-01",
-      "cumulative_stars": 14965
+      "cumulative_stars": 14966
     },
     {
       "repo": "https://github.com/chroma-core/chroma",
       "month": "2024-11-01",
-      "cumulative_stars": 15425
+      "cumulative_stars": 15426
     },
     {
       "repo": "https://github.com/chroma-core/chroma",
       "month": "2024-12-01",
-      "cumulative_stars": 15924
+      "cumulative_stars": 15925
     },
     {
       "repo": "https://github.com/chroma-core/chroma",
       "month": "2025-01-01",
-      "cumulative_stars": 17136
+      "cumulative_stars": 17137
     },
     {
       "repo": "https://github.com/chroma-core/chroma",
       "month": "2025-02-01",
-      "cumulative_stars": 17983
+      "cumulative_stars": 17984
     },
     {
       "repo": "https://github.com/chroma-core/chroma",
       "month": "2025-03-01",
-      "cumulative_stars": 18867
+      "cumulative_stars": 18868
     },
     {
       "repo": "https://github.com/chroma-core/chroma",
       "month": "2025-04-01",
-      "cumulative_stars": 19476
+      "cumulative_stars": 19477
     },
     {
       "repo": "https://github.com/chroma-core/chroma",
       "month": "2025-05-01",
-      "cumulative_stars": 20099
+      "cumulative_stars": 20100
     },
     {
       "repo": "https://github.com/chroma-core/chroma",
       "month": "2025-06-01",
-      "cumulative_stars": 20714
+      "cumulative_stars": 20715
     },
     {
       "repo": "https://github.com/chroma-core/chroma",
       "month": "2025-07-01",
-      "cumulative_stars": 21388
+      "cumulative_stars": 21390
     },
     {
       "repo": "https://github.com/chroma-core/chroma",
       "month": "2025-08-01",
-      "cumulative_stars": 22844
+      "cumulative_stars": 22846
     },
     {
       "repo": "https://github.com/chroma-core/chroma",
       "month": "2025-09-01",
-      "cumulative_stars": 23694
+      "cumulative_stars": 23696
     },
     {
       "repo": "https://github.com/chroma-core/chroma",
       "month": "2025-10-01",
-      "cumulative_stars": 24270
+      "cumulative_stars": 24272
     },
     {
       "repo": "https://github.com/chroma-core/chroma",
       "month": "2025-11-01",
-      "cumulative_stars": 24781
+      "cumulative_stars": 24784
     },
     {
       "repo": "https://github.com/chroma-core/chroma",
       "month": "2025-12-01",
-      "cumulative_stars": 25415
+      "cumulative_stars": 25418
     },
     {
       "repo": "https://github.com/chroma-core/chroma",
       "month": "2026-01-01",
-      "cumulative_stars": 26119
+      "cumulative_stars": 26122
     },
     {
       "repo": "https://github.com/chroma-core/chroma",
       "month": "2026-02-01",
-      "cumulative_stars": 26658
-    },
-    {
-      "repo": "https://github.com/chroma-core/chroma",
-      "month": "2026-03-01",
-      "cumulative_stars": 27112
+      "cumulative_stars": 26663
     },
     {
       "repo": "https://github.com/cline/cline",
@@ -2334,92 +2025,87 @@
     {
       "repo": "https://github.com/cline/cline",
       "month": "2024-10-01",
-      "cumulative_stars": 9504
+      "cumulative_stars": 9505
     },
     {
       "repo": "https://github.com/cline/cline",
       "month": "2024-11-01",
-      "cumulative_stars": 12496
+      "cumulative_stars": 12497
     },
     {
       "repo": "https://github.com/cline/cline",
       "month": "2024-12-01",
-      "cumulative_stars": 17124
+      "cumulative_stars": 17125
     },
     {
       "repo": "https://github.com/cline/cline",
       "month": "2025-01-01",
-      "cumulative_stars": 25253
+      "cumulative_stars": 25254
     },
     {
       "repo": "https://github.com/cline/cline",
       "month": "2025-02-01",
-      "cumulative_stars": 31050
+      "cumulative_stars": 31052
     },
     {
       "repo": "https://github.com/cline/cline",
       "month": "2025-03-01",
-      "cumulative_stars": 36698
+      "cumulative_stars": 36700
     },
     {
       "repo": "https://github.com/cline/cline",
       "month": "2025-04-01",
-      "cumulative_stars": 41130
+      "cumulative_stars": 41133
     },
     {
       "repo": "https://github.com/cline/cline",
       "month": "2025-05-01",
-      "cumulative_stars": 43847
+      "cumulative_stars": 43851
     },
     {
       "repo": "https://github.com/cline/cline",
       "month": "2025-06-01",
-      "cumulative_stars": 45733
+      "cumulative_stars": 45737
     },
     {
       "repo": "https://github.com/cline/cline",
       "month": "2025-07-01",
-      "cumulative_stars": 47620
+      "cumulative_stars": 47625
     },
     {
       "repo": "https://github.com/cline/cline",
       "month": "2025-08-01",
-      "cumulative_stars": 49256
+      "cumulative_stars": 49261
     },
     {
       "repo": "https://github.com/cline/cline",
       "month": "2025-09-01",
-      "cumulative_stars": 50375
+      "cumulative_stars": 50380
     },
     {
       "repo": "https://github.com/cline/cline",
       "month": "2025-10-01",
-      "cumulative_stars": 51451
+      "cumulative_stars": 51456
     },
     {
       "repo": "https://github.com/cline/cline",
       "month": "2025-11-01",
-      "cumulative_stars": 53391
+      "cumulative_stars": 53396
     },
     {
       "repo": "https://github.com/cline/cline",
       "month": "2025-12-01",
-      "cumulative_stars": 56349
+      "cumulative_stars": 56354
     },
     {
       "repo": "https://github.com/cline/cline",
       "month": "2026-01-01",
-      "cumulative_stars": 57464
+      "cumulative_stars": 57469
     },
     {
       "repo": "https://github.com/cline/cline",
       "month": "2026-02-01",
-      "cumulative_stars": 58845
-    },
-    {
-      "repo": "https://github.com/cline/cline",
-      "month": "2026-03-01",
-      "cumulative_stars": 59783
+      "cumulative_stars": 58851
     },
     {
       "repo": "https://github.com/comet-ml/opik",
@@ -2494,57 +2180,52 @@
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-05-01",
-      "cumulative_stars": 8415
+      "cumulative_stars": 8416
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-06-01",
-      "cumulative_stars": 9661
+      "cumulative_stars": 9662
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-07-01",
-      "cumulative_stars": 11013
+      "cumulative_stars": 11014
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-08-01",
-      "cumulative_stars": 12265
+      "cumulative_stars": 12266
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-09-01",
-      "cumulative_stars": 13207
+      "cumulative_stars": 13209
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-10-01",
-      "cumulative_stars": 14002
+      "cumulative_stars": 14004
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-11-01",
-      "cumulative_stars": 14856
+      "cumulative_stars": 14858
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-12-01",
-      "cumulative_stars": 15618
+      "cumulative_stars": 15621
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2026-01-01",
-      "cumulative_stars": 16101
+      "cumulative_stars": 16104
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2026-02-01",
-      "cumulative_stars": 16418
-    },
-    {
-      "repo": "https://github.com/comet-ml/opik",
-      "month": "2026-03-01",
-      "cumulative_stars": 16957
+      "cumulative_stars": 16421
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
@@ -2664,262 +2345,247 @@
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2026-02-01",
-      "cumulative_stars": 13195
-    },
-    {
-      "repo": "https://github.com/confident-ai/deepeval",
-      "month": "2026-03-01",
-      "cumulative_stars": 13574
+      "cumulative_stars": 13196
     },
     {
       "repo": "https://github.com/continuedev/continue",
       "month": "2024-03-01",
-      "cumulative_stars": 9408
+      "cumulative_stars": 9409
     },
     {
       "repo": "https://github.com/continuedev/continue",
       "month": "2024-04-01",
-      "cumulative_stars": 10687
+      "cumulative_stars": 10688
     },
     {
       "repo": "https://github.com/continuedev/continue",
       "month": "2024-05-01",
-      "cumulative_stars": 11756
+      "cumulative_stars": 11757
     },
     {
       "repo": "https://github.com/continuedev/continue",
       "month": "2024-06-01",
-      "cumulative_stars": 12551
+      "cumulative_stars": 12552
     },
     {
       "repo": "https://github.com/continuedev/continue",
       "month": "2024-07-01",
-      "cumulative_stars": 13502
+      "cumulative_stars": 13503
     },
     {
       "repo": "https://github.com/continuedev/continue",
       "month": "2024-08-01",
-      "cumulative_stars": 14683
+      "cumulative_stars": 14685
     },
     {
       "repo": "https://github.com/continuedev/continue",
       "month": "2024-09-01",
-      "cumulative_stars": 16334
+      "cumulative_stars": 16336
     },
     {
       "repo": "https://github.com/continuedev/continue",
       "month": "2024-10-01",
-      "cumulative_stars": 18220
+      "cumulative_stars": 18222
     },
     {
       "repo": "https://github.com/continuedev/continue",
       "month": "2024-11-01",
-      "cumulative_stars": 19175
+      "cumulative_stars": 19177
     },
     {
       "repo": "https://github.com/continuedev/continue",
       "month": "2024-12-01",
-      "cumulative_stars": 20285
+      "cumulative_stars": 20287
     },
     {
       "repo": "https://github.com/continuedev/continue",
       "month": "2025-01-01",
-      "cumulative_stars": 21822
+      "cumulative_stars": 21824
     },
     {
       "repo": "https://github.com/continuedev/continue",
       "month": "2025-02-01",
-      "cumulative_stars": 23590
+      "cumulative_stars": 23593
     },
     {
       "repo": "https://github.com/continuedev/continue",
       "month": "2025-03-01",
-      "cumulative_stars": 24743
+      "cumulative_stars": 24746
     },
     {
       "repo": "https://github.com/continuedev/continue",
       "month": "2025-04-01",
-      "cumulative_stars": 25702
+      "cumulative_stars": 25705
     },
     {
       "repo": "https://github.com/continuedev/continue",
       "month": "2025-05-01",
-      "cumulative_stars": 26384
+      "cumulative_stars": 26387
     },
     {
       "repo": "https://github.com/continuedev/continue",
       "month": "2025-06-01",
-      "cumulative_stars": 27286
+      "cumulative_stars": 27289
     },
     {
       "repo": "https://github.com/continuedev/continue",
       "month": "2025-07-01",
-      "cumulative_stars": 28016
+      "cumulative_stars": 28019
     },
     {
       "repo": "https://github.com/continuedev/continue",
       "month": "2025-08-01",
-      "cumulative_stars": 28775
+      "cumulative_stars": 28778
     },
     {
       "repo": "https://github.com/continuedev/continue",
       "month": "2025-09-01",
-      "cumulative_stars": 29374
+      "cumulative_stars": 29377
     },
     {
       "repo": "https://github.com/continuedev/continue",
       "month": "2025-10-01",
-      "cumulative_stars": 29967
+      "cumulative_stars": 29970
     },
     {
       "repo": "https://github.com/continuedev/continue",
       "month": "2025-11-01",
-      "cumulative_stars": 30551
+      "cumulative_stars": 30554
     },
     {
       "repo": "https://github.com/continuedev/continue",
       "month": "2025-12-01",
-      "cumulative_stars": 31220
+      "cumulative_stars": 31223
     },
     {
       "repo": "https://github.com/continuedev/continue",
       "month": "2026-01-01",
-      "cumulative_stars": 31949
+      "cumulative_stars": 31953
     },
     {
       "repo": "https://github.com/continuedev/continue",
       "month": "2026-02-01",
-      "cumulative_stars": 32433
-    },
-    {
-      "repo": "https://github.com/continuedev/continue",
-      "month": "2026-03-01",
-      "cumulative_stars": 32936
+      "cumulative_stars": 32437
     },
     {
       "repo": "https://github.com/crewAIInc/crewAI",
       "month": "2024-03-01",
-      "cumulative_stars": 10482
+      "cumulative_stars": 10483
     },
     {
       "repo": "https://github.com/crewAIInc/crewAI",
       "month": "2024-04-01",
-      "cumulative_stars": 12720
+      "cumulative_stars": 12721
     },
     {
       "repo": "https://github.com/crewAIInc/crewAI",
       "month": "2024-05-01",
-      "cumulative_stars": 14747
+      "cumulative_stars": 14748
     },
     {
       "repo": "https://github.com/crewAIInc/crewAI",
       "month": "2024-06-01",
-      "cumulative_stars": 16166
+      "cumulative_stars": 16167
     },
     {
       "repo": "https://github.com/crewAIInc/crewAI",
       "month": "2024-07-01",
-      "cumulative_stars": 17316
+      "cumulative_stars": 17317
     },
     {
       "repo": "https://github.com/crewAIInc/crewAI",
       "month": "2024-08-01",
-      "cumulative_stars": 18238
+      "cumulative_stars": 18239
     },
     {
       "repo": "https://github.com/crewAIInc/crewAI",
       "month": "2024-09-01",
-      "cumulative_stars": 19140
+      "cumulative_stars": 19141
     },
     {
       "repo": "https://github.com/crewAIInc/crewAI",
       "month": "2024-10-01",
-      "cumulative_stars": 20196
+      "cumulative_stars": 20198
     },
     {
       "repo": "https://github.com/crewAIInc/crewAI",
       "month": "2024-11-01",
-      "cumulative_stars": 21348
+      "cumulative_stars": 21350
     },
     {
       "repo": "https://github.com/crewAIInc/crewAI",
       "month": "2024-12-01",
-      "cumulative_stars": 22835
+      "cumulative_stars": 22837
     },
     {
       "repo": "https://github.com/crewAIInc/crewAI",
       "month": "2025-01-01",
-      "cumulative_stars": 25173
+      "cumulative_stars": 25176
     },
     {
       "repo": "https://github.com/crewAIInc/crewAI",
       "month": "2025-02-01",
-      "cumulative_stars": 26966
+      "cumulative_stars": 26969
     },
     {
       "repo": "https://github.com/crewAIInc/crewAI",
       "month": "2025-03-01",
-      "cumulative_stars": 28841
+      "cumulative_stars": 28844
     },
     {
       "repo": "https://github.com/crewAIInc/crewAI",
       "month": "2025-04-01",
-      "cumulative_stars": 30340
+      "cumulative_stars": 30343
     },
     {
       "repo": "https://github.com/crewAIInc/crewAI",
       "month": "2025-05-01",
-      "cumulative_stars": 31866
+      "cumulative_stars": 31869
     },
     {
       "repo": "https://github.com/crewAIInc/crewAI",
       "month": "2025-06-01",
-      "cumulative_stars": 33205
+      "cumulative_stars": 33208
     },
     {
       "repo": "https://github.com/crewAIInc/crewAI",
       "month": "2025-07-01",
-      "cumulative_stars": 34786
+      "cumulative_stars": 34789
     },
     {
       "repo": "https://github.com/crewAIInc/crewAI",
       "month": "2025-08-01",
-      "cumulative_stars": 36030
+      "cumulative_stars": 36033
     },
     {
       "repo": "https://github.com/crewAIInc/crewAI",
       "month": "2025-09-01",
-      "cumulative_stars": 38491
+      "cumulative_stars": 38494
     },
     {
       "repo": "https://github.com/crewAIInc/crewAI",
       "month": "2025-10-01",
-      "cumulative_stars": 39792
+      "cumulative_stars": 39795
     },
     {
       "repo": "https://github.com/crewAIInc/crewAI",
       "month": "2025-11-01",
-      "cumulative_stars": 40873
+      "cumulative_stars": 40876
     },
     {
       "repo": "https://github.com/crewAIInc/crewAI",
       "month": "2025-12-01",
-      "cumulative_stars": 42117
+      "cumulative_stars": 42121
     },
     {
       "repo": "https://github.com/crewAIInc/crewAI",
       "month": "2026-01-01",
-      "cumulative_stars": 43598
+      "cumulative_stars": 43602
     },
     {
       "repo": "https://github.com/crewAIInc/crewAI",
       "month": "2026-02-01",
-      "cumulative_stars": 45132
-    },
-    {
-      "repo": "https://github.com/crewAIInc/crewAI",
-      "month": "2026-03-01",
-      "cumulative_stars": 47333
+      "cumulative_stars": 45137
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
@@ -2959,92 +2625,87 @@
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-10-01",
-      "cumulative_stars": 7863
+      "cumulative_stars": 7864
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-11-01",
-      "cumulative_stars": 9338
+      "cumulative_stars": 9341
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-12-01",
-      "cumulative_stars": 10204
+      "cumulative_stars": 10208
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-01-01",
-      "cumulative_stars": 10486
+      "cumulative_stars": 10490
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-02-01",
-      "cumulative_stars": 10892
+      "cumulative_stars": 10896
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-03-01",
-      "cumulative_stars": 11065
+      "cumulative_stars": 11069
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-04-01",
-      "cumulative_stars": 12702
+      "cumulative_stars": 12706
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-05-01",
-      "cumulative_stars": 15021
+      "cumulative_stars": 15025
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-06-01",
-      "cumulative_stars": 15275
+      "cumulative_stars": 15279
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-07-01",
-      "cumulative_stars": 15713
+      "cumulative_stars": 15717
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-08-01",
-      "cumulative_stars": 16016
+      "cumulative_stars": 16020
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-09-01",
-      "cumulative_stars": 16194
+      "cumulative_stars": 16198
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-10-01",
-      "cumulative_stars": 19703
+      "cumulative_stars": 19712
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-11-01",
-      "cumulative_stars": 22384
+      "cumulative_stars": 22395
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-12-01",
-      "cumulative_stars": 24561
+      "cumulative_stars": 24588
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2026-01-01",
-      "cumulative_stars": 27510
+      "cumulative_stars": 27555
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2026-02-01",
-      "cumulative_stars": 30011
-    },
-    {
-      "repo": "https://github.com/daytonaio/daytona",
-      "month": "2026-03-01",
-      "cumulative_stars": 32882
+      "cumulative_stars": 30070
     },
     {
       "repo": "https://github.com/deepset-ai/haystack",
@@ -3164,12 +2825,7 @@
     {
       "repo": "https://github.com/deepset-ai/haystack",
       "month": "2026-02-01",
-      "cumulative_stars": 24484
-    },
-    {
-      "repo": "https://github.com/deepset-ai/haystack",
-      "month": "2026-03-01",
-      "cumulative_stars": 23400
+      "cumulative_stars": 24486
     },
     {
       "repo": "https://github.com/e2b-dev/code-interpreter",
@@ -3292,11 +2948,6 @@
       "cumulative_stars": 2198
     },
     {
-      "repo": "https://github.com/e2b-dev/code-interpreter",
-      "month": "2026-03-01",
-      "cumulative_stars": 2233
-    },
-    {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-04-01",
       "cumulative_stars": 7418
@@ -3349,12 +3000,7 @@
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2026-02-01",
-      "cumulative_stars": 16870
-    },
-    {
-      "repo": "https://github.com/google/adk-python",
-      "month": "2026-03-01",
-      "cumulative_stars": 17385
+      "cumulative_stars": 16871
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
@@ -3454,32 +3100,27 @@
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-10-01",
-      "cumulative_stars": 5757
+      "cumulative_stars": 5758
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-11-01",
-      "cumulative_stars": 5940
+      "cumulative_stars": 5941
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-12-01",
-      "cumulative_stars": 6080
+      "cumulative_stars": 6081
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2026-01-01",
-      "cumulative_stars": 6204
+      "cumulative_stars": 6205
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2026-02-01",
-      "cumulative_stars": 6344
-    },
-    {
-      "repo": "https://github.com/guardrails-ai/guardrails",
-      "month": "2026-03-01",
-      "cumulative_stars": 6448
+      "cumulative_stars": 6345
     },
     {
       "repo": "https://github.com/huggingface/smolagents",
@@ -3489,202 +3130,192 @@
     {
       "repo": "https://github.com/huggingface/smolagents",
       "month": "2025-01-01",
-      "cumulative_stars": 5983
+      "cumulative_stars": 5984
     },
     {
       "repo": "https://github.com/huggingface/smolagents",
       "month": "2025-02-01",
-      "cumulative_stars": 12553
+      "cumulative_stars": 12554
     },
     {
       "repo": "https://github.com/huggingface/smolagents",
       "month": "2025-03-01",
-      "cumulative_stars": 15810
+      "cumulative_stars": 15811
     },
     {
       "repo": "https://github.com/huggingface/smolagents",
       "month": "2025-04-01",
-      "cumulative_stars": 17520
+      "cumulative_stars": 17521
     },
     {
       "repo": "https://github.com/huggingface/smolagents",
       "month": "2025-05-01",
-      "cumulative_stars": 19233
+      "cumulative_stars": 19234
     },
     {
       "repo": "https://github.com/huggingface/smolagents",
       "month": "2025-06-01",
-      "cumulative_stars": 20513
+      "cumulative_stars": 20514
     },
     {
       "repo": "https://github.com/huggingface/smolagents",
       "month": "2025-07-01",
-      "cumulative_stars": 21502
+      "cumulative_stars": 21503
     },
     {
       "repo": "https://github.com/huggingface/smolagents",
       "month": "2025-08-01",
-      "cumulative_stars": 22281
+      "cumulative_stars": 22283
     },
     {
       "repo": "https://github.com/huggingface/smolagents",
       "month": "2025-09-01",
-      "cumulative_stars": 22974
+      "cumulative_stars": 22976
     },
     {
       "repo": "https://github.com/huggingface/smolagents",
       "month": "2025-10-01",
-      "cumulative_stars": 23571
+      "cumulative_stars": 23573
     },
     {
       "repo": "https://github.com/huggingface/smolagents",
       "month": "2025-11-01",
-      "cumulative_stars": 24095
+      "cumulative_stars": 24097
     },
     {
       "repo": "https://github.com/huggingface/smolagents",
       "month": "2025-12-01",
-      "cumulative_stars": 24614
+      "cumulative_stars": 24616
     },
     {
       "repo": "https://github.com/huggingface/smolagents",
       "month": "2026-01-01",
-      "cumulative_stars": 25199
+      "cumulative_stars": 25201
     },
     {
       "repo": "https://github.com/huggingface/smolagents",
       "month": "2026-02-01",
-      "cumulative_stars": 25726
-    },
-    {
-      "repo": "https://github.com/huggingface/smolagents",
-      "month": "2026-03-01",
-      "cumulative_stars": 26257
+      "cumulative_stars": 25728
     },
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2024-03-01",
-      "cumulative_stars": 118401
+      "cumulative_stars": 118413
     },
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2024-04-01",
-      "cumulative_stars": 120408
+      "cumulative_stars": 120420
     },
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2024-05-01",
-      "cumulative_stars": 122219
+      "cumulative_stars": 122231
     },
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2024-06-01",
-      "cumulative_stars": 123742
+      "cumulative_stars": 123754
     },
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2024-07-01",
-      "cumulative_stars": 125572
+      "cumulative_stars": 125584
     },
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2024-08-01",
-      "cumulative_stars": 127178
+      "cumulative_stars": 127191
     },
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2024-09-01",
-      "cumulative_stars": 128694
+      "cumulative_stars": 128707
     },
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2024-10-01",
-      "cumulative_stars": 130324
+      "cumulative_stars": 130337
     },
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2024-11-01",
-      "cumulative_stars": 131942
+      "cumulative_stars": 131955
     },
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2024-12-01",
-      "cumulative_stars": 133365
+      "cumulative_stars": 133378
     },
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2025-01-01",
-      "cumulative_stars": 134933
+      "cumulative_stars": 134946
     },
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2025-02-01",
-      "cumulative_stars": 137138
+      "cumulative_stars": 137152
     },
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2025-03-01",
-      "cumulative_stars": 139220
+      "cumulative_stars": 139235
     },
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2025-04-01",
-      "cumulative_stars": 140928
+      "cumulative_stars": 140943
     },
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2025-05-01",
-      "cumulative_stars": 142455
+      "cumulative_stars": 142470
     },
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2025-06-01",
-      "cumulative_stars": 143829
+      "cumulative_stars": 143844
     },
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2025-07-01",
-      "cumulative_stars": 145562
+      "cumulative_stars": 145578
     },
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2025-08-01",
-      "cumulative_stars": 147072
+      "cumulative_stars": 147088
     },
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2025-09-01",
-      "cumulative_stars": 148815
+      "cumulative_stars": 148831
     },
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2025-10-01",
-      "cumulative_stars": 150508
+      "cumulative_stars": 150525
     },
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2025-11-01",
-      "cumulative_stars": 151985
+      "cumulative_stars": 152002
     },
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2025-12-01",
-      "cumulative_stars": 153485
+      "cumulative_stars": 153502
     },
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2026-01-01",
-      "cumulative_stars": 155249
+      "cumulative_stars": 155267
     },
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2026-02-01",
-      "cumulative_stars": 156652
-    },
-    {
-      "repo": "https://github.com/huggingface/transformers",
-      "month": "2026-03-01",
-      "cumulative_stars": 122394
+      "cumulative_stars": 156670
     },
     {
       "repo": "https://github.com/infiniflow/ragflow",
@@ -3699,367 +3330,352 @@
     {
       "repo": "https://github.com/infiniflow/ragflow",
       "month": "2024-05-01",
-      "cumulative_stars": 8258
+      "cumulative_stars": 8259
     },
     {
       "repo": "https://github.com/infiniflow/ragflow",
       "month": "2024-06-01",
-      "cumulative_stars": 10202
+      "cumulative_stars": 10203
     },
     {
       "repo": "https://github.com/infiniflow/ragflow",
       "month": "2024-07-01",
-      "cumulative_stars": 12503
+      "cumulative_stars": 12504
     },
     {
       "repo": "https://github.com/infiniflow/ragflow",
       "month": "2024-08-01",
-      "cumulative_stars": 15543
+      "cumulative_stars": 15545
     },
     {
       "repo": "https://github.com/infiniflow/ragflow",
       "month": "2024-09-01",
-      "cumulative_stars": 17869
+      "cumulative_stars": 17871
     },
     {
       "repo": "https://github.com/infiniflow/ragflow",
       "month": "2024-10-01",
-      "cumulative_stars": 20976
+      "cumulative_stars": 20979
     },
     {
       "repo": "https://github.com/infiniflow/ragflow",
       "month": "2024-11-01",
-      "cumulative_stars": 23697
+      "cumulative_stars": 23700
     },
     {
       "repo": "https://github.com/infiniflow/ragflow",
       "month": "2024-12-01",
-      "cumulative_stars": 26211
+      "cumulative_stars": 26214
     },
     {
       "repo": "https://github.com/infiniflow/ragflow",
       "month": "2025-01-01",
-      "cumulative_stars": 30026
+      "cumulative_stars": 30029
     },
     {
       "repo": "https://github.com/infiniflow/ragflow",
       "month": "2025-02-01",
-      "cumulative_stars": 40845
+      "cumulative_stars": 40849
     },
     {
       "repo": "https://github.com/infiniflow/ragflow",
       "month": "2025-03-01",
-      "cumulative_stars": 46673
+      "cumulative_stars": 46679
     },
     {
       "repo": "https://github.com/infiniflow/ragflow",
       "month": "2025-04-01",
-      "cumulative_stars": 50408
+      "cumulative_stars": 50415
     },
     {
       "repo": "https://github.com/infiniflow/ragflow",
       "month": "2025-05-01",
-      "cumulative_stars": 53570
+      "cumulative_stars": 53578
     },
     {
       "repo": "https://github.com/infiniflow/ragflow",
       "month": "2025-06-01",
-      "cumulative_stars": 58258
+      "cumulative_stars": 58266
     },
     {
       "repo": "https://github.com/infiniflow/ragflow",
       "month": "2025-07-01",
-      "cumulative_stars": 61133
+      "cumulative_stars": 61142
     },
     {
       "repo": "https://github.com/infiniflow/ragflow",
       "month": "2025-08-01",
-      "cumulative_stars": 63278
+      "cumulative_stars": 63288
     },
     {
       "repo": "https://github.com/infiniflow/ragflow",
       "month": "2025-09-01",
-      "cumulative_stars": 65410
+      "cumulative_stars": 65421
     },
     {
       "repo": "https://github.com/infiniflow/ragflow",
       "month": "2025-10-01",
-      "cumulative_stars": 67034
+      "cumulative_stars": 67045
     },
     {
       "repo": "https://github.com/infiniflow/ragflow",
       "month": "2025-11-01",
-      "cumulative_stars": 68857
+      "cumulative_stars": 68868
     },
     {
       "repo": "https://github.com/infiniflow/ragflow",
       "month": "2025-12-01",
-      "cumulative_stars": 71235
+      "cumulative_stars": 71246
     },
     {
       "repo": "https://github.com/infiniflow/ragflow",
       "month": "2026-01-01",
-      "cumulative_stars": 73213
+      "cumulative_stars": 73225
     },
     {
       "repo": "https://github.com/infiniflow/ragflow",
       "month": "2026-02-01",
-      "cumulative_stars": 74752
-    },
-    {
-      "repo": "https://github.com/infiniflow/ragflow",
-      "month": "2026-03-01",
-      "cumulative_stars": 76699
+      "cumulative_stars": 74764
     },
     {
       "repo": "https://github.com/janhq/jan",
       "month": "2024-03-01",
-      "cumulative_stars": 13747
+      "cumulative_stars": 13750
     },
     {
       "repo": "https://github.com/janhq/jan",
       "month": "2024-04-01",
-      "cumulative_stars": 16891
+      "cumulative_stars": 16895
     },
     {
       "repo": "https://github.com/janhq/jan",
       "month": "2024-05-01",
-      "cumulative_stars": 18599
+      "cumulative_stars": 18604
     },
     {
       "repo": "https://github.com/janhq/jan",
       "month": "2024-06-01",
-      "cumulative_stars": 19817
+      "cumulative_stars": 19822
     },
     {
       "repo": "https://github.com/janhq/jan",
       "month": "2024-07-01",
-      "cumulative_stars": 20441
+      "cumulative_stars": 20446
     },
     {
       "repo": "https://github.com/janhq/jan",
       "month": "2024-08-01",
-      "cumulative_stars": 21012
+      "cumulative_stars": 21017
     },
     {
       "repo": "https://github.com/janhq/jan",
       "month": "2024-09-01",
-      "cumulative_stars": 21754
+      "cumulative_stars": 21759
     },
     {
       "repo": "https://github.com/janhq/jan",
       "month": "2024-10-01",
-      "cumulative_stars": 22415
+      "cumulative_stars": 22420
     },
     {
       "repo": "https://github.com/janhq/jan",
       "month": "2024-11-01",
-      "cumulative_stars": 23230
+      "cumulative_stars": 23235
     },
     {
       "repo": "https://github.com/janhq/jan",
       "month": "2024-12-01",
-      "cumulative_stars": 24119
+      "cumulative_stars": 24124
     },
     {
       "repo": "https://github.com/janhq/jan",
       "month": "2025-01-01",
-      "cumulative_stars": 26595
+      "cumulative_stars": 26600
     },
     {
       "repo": "https://github.com/janhq/jan",
       "month": "2025-02-01",
-      "cumulative_stars": 27390
+      "cumulative_stars": 27395
     },
     {
       "repo": "https://github.com/janhq/jan",
       "month": "2025-03-01",
-      "cumulative_stars": 27925
+      "cumulative_stars": 27930
     },
     {
       "repo": "https://github.com/janhq/jan",
       "month": "2025-04-01",
-      "cumulative_stars": 28440
+      "cumulative_stars": 28445
     },
     {
       "repo": "https://github.com/janhq/jan",
       "month": "2025-05-01",
-      "cumulative_stars": 29086
+      "cumulative_stars": 29091
     },
     {
       "repo": "https://github.com/janhq/jan",
       "month": "2025-06-01",
-      "cumulative_stars": 33584
+      "cumulative_stars": 33592
     },
     {
       "repo": "https://github.com/janhq/jan",
       "month": "2025-07-01",
-      "cumulative_stars": 35147
+      "cumulative_stars": 35155
     },
     {
       "repo": "https://github.com/janhq/jan",
       "month": "2025-08-01",
-      "cumulative_stars": 37605
+      "cumulative_stars": 37613
     },
     {
       "repo": "https://github.com/janhq/jan",
       "month": "2025-09-01",
-      "cumulative_stars": 38181
+      "cumulative_stars": 38189
     },
     {
       "repo": "https://github.com/janhq/jan",
       "month": "2025-10-01",
-      "cumulative_stars": 39068
+      "cumulative_stars": 39076
     },
     {
       "repo": "https://github.com/janhq/jan",
       "month": "2025-11-01",
-      "cumulative_stars": 39901
+      "cumulative_stars": 39911
     },
     {
       "repo": "https://github.com/janhq/jan",
       "month": "2025-12-01",
-      "cumulative_stars": 40385
+      "cumulative_stars": 40395
     },
     {
       "repo": "https://github.com/janhq/jan",
       "month": "2026-01-01",
-      "cumulative_stars": 40837
+      "cumulative_stars": 40849
     },
     {
       "repo": "https://github.com/janhq/jan",
       "month": "2026-02-01",
-      "cumulative_stars": 41396
-    },
-    {
-      "repo": "https://github.com/janhq/jan",
-      "month": "2026-03-01",
-      "cumulative_stars": 41979
+      "cumulative_stars": 41410
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2024-03-01",
-      "cumulative_stars": 13714
+      "cumulative_stars": 13715
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2024-04-01",
-      "cumulative_stars": 14033
+      "cumulative_stars": 14034
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2024-05-01",
-      "cumulative_stars": 14340
+      "cumulative_stars": 14341
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2024-06-01",
-      "cumulative_stars": 14565
+      "cumulative_stars": 14566
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2024-07-01",
-      "cumulative_stars": 14810
+      "cumulative_stars": 14811
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2024-08-01",
-      "cumulative_stars": 14981
+      "cumulative_stars": 14982
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2024-09-01",
-      "cumulative_stars": 15151
+      "cumulative_stars": 15152
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2024-10-01",
-      "cumulative_stars": 16032
+      "cumulative_stars": 16033
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2024-11-01",
-      "cumulative_stars": 16412
+      "cumulative_stars": 16413
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2024-12-01",
-      "cumulative_stars": 16661
+      "cumulative_stars": 16662
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2025-01-01",
-      "cumulative_stars": 16889
+      "cumulative_stars": 16890
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2025-02-01",
-      "cumulative_stars": 17127
+      "cumulative_stars": 17128
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2025-03-01",
-      "cumulative_stars": 17379
+      "cumulative_stars": 17380
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2025-04-01",
-      "cumulative_stars": 17570
+      "cumulative_stars": 17571
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2025-05-01",
-      "cumulative_stars": 17722
+      "cumulative_stars": 17724
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2025-06-01",
-      "cumulative_stars": 17855
+      "cumulative_stars": 17857
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2025-07-01",
-      "cumulative_stars": 18024
+      "cumulative_stars": 18026
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2025-08-01",
-      "cumulative_stars": 18160
+      "cumulative_stars": 18162
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2025-09-01",
-      "cumulative_stars": 18361
+      "cumulative_stars": 18363
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2025-10-01",
-      "cumulative_stars": 18532
+      "cumulative_stars": 18535
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2025-11-01",
-      "cumulative_stars": 18695
+      "cumulative_stars": 18698
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2025-12-01",
-      "cumulative_stars": 18850
+      "cumulative_stars": 18853
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2026-01-01",
-      "cumulative_stars": 19001
+      "cumulative_stars": 19004
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2026-02-01",
-      "cumulative_stars": 19312
-    },
-    {
-      "repo": "https://github.com/joonspk-research/generative_agents",
-      "month": "2026-03-01",
-      "cumulative_stars": 19547
+      "cumulative_stars": 19315
     },
     {
       "repo": "https://github.com/kserve/kserve",
@@ -4182,134 +3798,124 @@
       "cumulative_stars": 5166
     },
     {
-      "repo": "https://github.com/kserve/kserve",
-      "month": "2026-03-01",
-      "cumulative_stars": 4540
-    },
-    {
       "repo": "https://github.com/langchain-ai/langchain",
       "month": "2024-03-01",
-      "cumulative_stars": 78346
+      "cumulative_stars": 78358
     },
     {
       "repo": "https://github.com/langchain-ai/langchain",
       "month": "2024-04-01",
-      "cumulative_stars": 81290
+      "cumulative_stars": 81303
     },
     {
       "repo": "https://github.com/langchain-ai/langchain",
       "month": "2024-05-01",
-      "cumulative_stars": 83966
+      "cumulative_stars": 83979
     },
     {
       "repo": "https://github.com/langchain-ai/langchain",
       "month": "2024-06-01",
-      "cumulative_stars": 86144
+      "cumulative_stars": 86158
     },
     {
       "repo": "https://github.com/langchain-ai/langchain",
       "month": "2024-07-01",
-      "cumulative_stars": 88118
+      "cumulative_stars": 88132
     },
     {
       "repo": "https://github.com/langchain-ai/langchain",
       "month": "2024-08-01",
-      "cumulative_stars": 89954
+      "cumulative_stars": 89969
     },
     {
       "repo": "https://github.com/langchain-ai/langchain",
       "month": "2024-09-01",
-      "cumulative_stars": 91433
+      "cumulative_stars": 91448
     },
     {
       "repo": "https://github.com/langchain-ai/langchain",
       "month": "2024-10-01",
-      "cumulative_stars": 92860
+      "cumulative_stars": 92875
     },
     {
       "repo": "https://github.com/langchain-ai/langchain",
       "month": "2024-11-01",
-      "cumulative_stars": 94440
+      "cumulative_stars": 94455
     },
     {
       "repo": "https://github.com/langchain-ai/langchain",
       "month": "2024-12-01",
-      "cumulative_stars": 96369
+      "cumulative_stars": 96386
     },
     {
       "repo": "https://github.com/langchain-ai/langchain",
       "month": "2025-01-01",
-      "cumulative_stars": 98646
+      "cumulative_stars": 98663
     },
     {
       "repo": "https://github.com/langchain-ai/langchain",
       "month": "2025-02-01",
-      "cumulative_stars": 101463
+      "cumulative_stars": 101480
     },
     {
       "repo": "https://github.com/langchain-ai/langchain",
       "month": "2025-03-01",
-      "cumulative_stars": 104494
+      "cumulative_stars": 104511
     },
     {
       "repo": "https://github.com/langchain-ai/langchain",
       "month": "2025-04-01",
-      "cumulative_stars": 106673
+      "cumulative_stars": 106690
     },
     {
       "repo": "https://github.com/langchain-ai/langchain",
       "month": "2025-05-01",
-      "cumulative_stars": 108769
+      "cumulative_stars": 108787
     },
     {
       "repo": "https://github.com/langchain-ai/langchain",
       "month": "2025-06-01",
-      "cumulative_stars": 110899
+      "cumulative_stars": 110917
     },
     {
       "repo": "https://github.com/langchain-ai/langchain",
       "month": "2025-07-01",
-      "cumulative_stars": 113276
+      "cumulative_stars": 113295
     },
     {
       "repo": "https://github.com/langchain-ai/langchain",
       "month": "2025-08-01",
-      "cumulative_stars": 115417
+      "cumulative_stars": 115436
     },
     {
       "repo": "https://github.com/langchain-ai/langchain",
       "month": "2025-09-01",
-      "cumulative_stars": 117620
+      "cumulative_stars": 117641
     },
     {
       "repo": "https://github.com/langchain-ai/langchain",
       "month": "2025-10-01",
-      "cumulative_stars": 119982
+      "cumulative_stars": 120003
     },
     {
       "repo": "https://github.com/langchain-ai/langchain",
       "month": "2025-11-01",
-      "cumulative_stars": 122491
+      "cumulative_stars": 122513
     },
     {
       "repo": "https://github.com/langchain-ai/langchain",
       "month": "2025-12-01",
-      "cumulative_stars": 125077
+      "cumulative_stars": 125099
     },
     {
       "repo": "https://github.com/langchain-ai/langchain",
       "month": "2026-01-01",
-      "cumulative_stars": 127825
+      "cumulative_stars": 127848
     },
     {
       "repo": "https://github.com/langchain-ai/langchain",
       "month": "2026-02-01",
-      "cumulative_stars": 130324
-    },
-    {
-      "repo": "https://github.com/langchain-ai/langchain",
-      "month": "2026-03-01",
-      "cumulative_stars": 133038
+      "cumulative_stars": 130350
     },
     {
       "repo": "https://github.com/langchain-ai/langgraph",
@@ -4369,72 +3975,67 @@
     {
       "repo": "https://github.com/langchain-ai/langgraph",
       "month": "2025-02-01",
-      "cumulative_stars": 9387
+      "cumulative_stars": 9388
     },
     {
       "repo": "https://github.com/langchain-ai/langgraph",
       "month": "2025-03-01",
-      "cumulative_stars": 10734
+      "cumulative_stars": 10736
     },
     {
       "repo": "https://github.com/langchain-ai/langgraph",
       "month": "2025-04-01",
-      "cumulative_stars": 11972
+      "cumulative_stars": 11974
     },
     {
       "repo": "https://github.com/langchain-ai/langgraph",
       "month": "2025-05-01",
-      "cumulative_stars": 13189
+      "cumulative_stars": 13191
     },
     {
       "repo": "https://github.com/langchain-ai/langgraph",
       "month": "2025-06-01",
-      "cumulative_stars": 14844
+      "cumulative_stars": 14846
     },
     {
       "repo": "https://github.com/langchain-ai/langgraph",
       "month": "2025-07-01",
-      "cumulative_stars": 16451
+      "cumulative_stars": 16454
     },
     {
       "repo": "https://github.com/langchain-ai/langgraph",
       "month": "2025-08-01",
-      "cumulative_stars": 17866
+      "cumulative_stars": 17869
     },
     {
       "repo": "https://github.com/langchain-ai/langgraph",
       "month": "2025-09-01",
-      "cumulative_stars": 19218
+      "cumulative_stars": 19221
     },
     {
       "repo": "https://github.com/langchain-ai/langgraph",
       "month": "2025-10-01",
-      "cumulative_stars": 20435
+      "cumulative_stars": 20438
     },
     {
       "repo": "https://github.com/langchain-ai/langgraph",
       "month": "2025-11-01",
-      "cumulative_stars": 21588
+      "cumulative_stars": 21591
     },
     {
       "repo": "https://github.com/langchain-ai/langgraph",
       "month": "2025-12-01",
-      "cumulative_stars": 22825
+      "cumulative_stars": 22828
     },
     {
       "repo": "https://github.com/langchain-ai/langgraph",
       "month": "2026-01-01",
-      "cumulative_stars": 24202
+      "cumulative_stars": 24206
     },
     {
       "repo": "https://github.com/langchain-ai/langgraph",
       "month": "2026-02-01",
-      "cumulative_stars": 25497
-    },
-    {
-      "repo": "https://github.com/langchain-ai/langgraph",
-      "month": "2026-03-01",
-      "cumulative_stars": 27404
+      "cumulative_stars": 25502
     },
     {
       "repo": "https://github.com/langfuse/langfuse",
@@ -4514,52 +4115,47 @@
     {
       "repo": "https://github.com/langfuse/langfuse",
       "month": "2025-06-01",
-      "cumulative_stars": 13159
+      "cumulative_stars": 13160
     },
     {
       "repo": "https://github.com/langfuse/langfuse",
       "month": "2025-07-01",
-      "cumulative_stars": 14432
+      "cumulative_stars": 14434
     },
     {
       "repo": "https://github.com/langfuse/langfuse",
       "month": "2025-08-01",
-      "cumulative_stars": 15626
+      "cumulative_stars": 15628
     },
     {
       "repo": "https://github.com/langfuse/langfuse",
       "month": "2025-09-01",
-      "cumulative_stars": 16680
+      "cumulative_stars": 16682
     },
     {
       "repo": "https://github.com/langfuse/langfuse",
       "month": "2025-10-01",
-      "cumulative_stars": 17868
+      "cumulative_stars": 17871
     },
     {
       "repo": "https://github.com/langfuse/langfuse",
       "month": "2025-11-01",
-      "cumulative_stars": 18915
+      "cumulative_stars": 18918
     },
     {
       "repo": "https://github.com/langfuse/langfuse",
       "month": "2025-12-01",
-      "cumulative_stars": 20204
+      "cumulative_stars": 20208
     },
     {
       "repo": "https://github.com/langfuse/langfuse",
       "month": "2026-01-01",
-      "cumulative_stars": 21556
+      "cumulative_stars": 21560
     },
     {
       "repo": "https://github.com/langfuse/langfuse",
       "month": "2026-02-01",
-      "cumulative_stars": 22702
-    },
-    {
-      "repo": "https://github.com/langfuse/langfuse",
-      "month": "2026-03-01",
-      "cumulative_stars": 23965
+      "cumulative_stars": 22706
     },
     {
       "repo": "https://github.com/letta-ai/letta",
@@ -4674,17 +4270,12 @@
     {
       "repo": "https://github.com/letta-ai/letta",
       "month": "2026-01-01",
-      "cumulative_stars": 20921
+      "cumulative_stars": 20922
     },
     {
       "repo": "https://github.com/letta-ai/letta",
       "month": "2026-02-01",
-      "cumulative_stars": 21377
-    },
-    {
-      "repo": "https://github.com/letta-ai/letta",
-      "month": "2026-03-01",
-      "cumulative_stars": 21783
+      "cumulative_stars": 21378
     },
     {
       "repo": "https://github.com/livekit/agents",
@@ -4807,11 +4398,6 @@
       "cumulative_stars": 9162
     },
     {
-      "repo": "https://github.com/livekit/agents",
-      "month": "2026-03-01",
-      "cumulative_stars": 9497
-    },
-    {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2024-08-01",
       "cumulative_stars": 1
@@ -4824,87 +4410,82 @@
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2024-11-01",
-      "cumulative_stars": 816
+      "cumulative_stars": 842
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2024-12-01",
-      "cumulative_stars": 994
+      "cumulative_stars": 1020
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-01-01",
-      "cumulative_stars": 1233
+      "cumulative_stars": 1259
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-02-01",
-      "cumulative_stars": 7006
+      "cumulative_stars": 7033
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-03-01",
-      "cumulative_stars": 9998
+      "cumulative_stars": 10025
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-04-01",
-      "cumulative_stars": 11096
+      "cumulative_stars": 11123
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-05-01",
-      "cumulative_stars": 12034
+      "cumulative_stars": 12061
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-06-01",
-      "cumulative_stars": 13124
+      "cumulative_stars": 13151
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-07-01",
-      "cumulative_stars": 13914
+      "cumulative_stars": 13941
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-08-01",
-      "cumulative_stars": 14710
+      "cumulative_stars": 14737
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-09-01",
-      "cumulative_stars": 15467
+      "cumulative_stars": 15494
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-10-01",
-      "cumulative_stars": 16406
+      "cumulative_stars": 16433
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-11-01",
-      "cumulative_stars": 17056
+      "cumulative_stars": 17083
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-12-01",
-      "cumulative_stars": 17576
+      "cumulative_stars": 17603
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2026-01-01",
-      "cumulative_stars": 19117
+      "cumulative_stars": 19145
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2026-02-01",
-      "cumulative_stars": 20032
-    },
-    {
-      "repo": "https://github.com/mastra-ai/mastra",
-      "month": "2026-03-01",
-      "cumulative_stars": 20844
+      "cumulative_stars": 20063
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
@@ -4914,212 +4495,202 @@
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2024-11-01",
-      "cumulative_stars": 4415
+      "cumulative_stars": 4416
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2024-12-01",
-      "cumulative_stars": 4797
+      "cumulative_stars": 4798
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-01-01",
-      "cumulative_stars": 5031
+      "cumulative_stars": 5032
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-02-01",
-      "cumulative_stars": 16557
+      "cumulative_stars": 16561
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-03-01",
-      "cumulative_stars": 19256
+      "cumulative_stars": 19260
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-04-01",
-      "cumulative_stars": 19920
+      "cumulative_stars": 19924
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-05-01",
-      "cumulative_stars": 20346
+      "cumulative_stars": 20350
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-06-01",
-      "cumulative_stars": 20643
+      "cumulative_stars": 20647
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-07-01",
-      "cumulative_stars": 21107
+      "cumulative_stars": 21111
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-08-01",
-      "cumulative_stars": 21552
+      "cumulative_stars": 21556
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-09-01",
-      "cumulative_stars": 21778
+      "cumulative_stars": 21782
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-10-01",
-      "cumulative_stars": 21974
+      "cumulative_stars": 21978
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-11-01",
-      "cumulative_stars": 22152
+      "cumulative_stars": 22156
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-12-01",
-      "cumulative_stars": 22352
+      "cumulative_stars": 22356
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2026-01-01",
-      "cumulative_stars": 22575
+      "cumulative_stars": 22579
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2026-02-01",
-      "cumulative_stars": 22703
-    },
-    {
-      "repo": "https://github.com/microsoft/OmniParser",
-      "month": "2026-03-01",
-      "cumulative_stars": 22867
+      "cumulative_stars": 22707
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-03-01",
-      "cumulative_stars": 4193
+      "cumulative_stars": 4194
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-04-01",
-      "cumulative_stars": 4392
+      "cumulative_stars": 4393
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-05-01",
-      "cumulative_stars": 4513
+      "cumulative_stars": 4514
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-06-01",
-      "cumulative_stars": 4633
+      "cumulative_stars": 4634
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-07-01",
-      "cumulative_stars": 4756
+      "cumulative_stars": 4757
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-08-01",
-      "cumulative_stars": 4843
+      "cumulative_stars": 4844
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-09-01",
-      "cumulative_stars": 4925
+      "cumulative_stars": 4926
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-10-01",
-      "cumulative_stars": 5002
+      "cumulative_stars": 5003
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-11-01",
-      "cumulative_stars": 5066
+      "cumulative_stars": 5067
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-12-01",
-      "cumulative_stars": 5124
+      "cumulative_stars": 5125
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2025-01-01",
-      "cumulative_stars": 5191
+      "cumulative_stars": 5192
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2025-02-01",
-      "cumulative_stars": 5251
+      "cumulative_stars": 5252
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2025-03-01",
-      "cumulative_stars": 5328
+      "cumulative_stars": 5329
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2025-04-01",
-      "cumulative_stars": 5395
+      "cumulative_stars": 5396
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2025-05-01",
-      "cumulative_stars": 5460
+      "cumulative_stars": 5461
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2025-06-01",
-      "cumulative_stars": 5501
+      "cumulative_stars": 5502
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2025-07-01",
-      "cumulative_stars": 5555
+      "cumulative_stars": 5556
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2025-08-01",
-      "cumulative_stars": 5610
+      "cumulative_stars": 5611
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2025-09-01",
-      "cumulative_stars": 5659
+      "cumulative_stars": 5660
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2025-10-01",
-      "cumulative_stars": 5701
+      "cumulative_stars": 5702
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2025-11-01",
-      "cumulative_stars": 5749
+      "cumulative_stars": 5750
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2025-12-01",
-      "cumulative_stars": 5820
+      "cumulative_stars": 5821
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2026-01-01",
-      "cumulative_stars": 5855
+      "cumulative_stars": 5856
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2026-02-01",
-      "cumulative_stars": 5872
-    },
-    {
-      "repo": "https://github.com/microsoft/TaskWeaver",
-      "month": "2026-03-01",
-      "cumulative_stars": 5892
+      "cumulative_stars": 5873
     },
     {
       "repo": "https://github.com/microsoft/autogen",
@@ -5242,11 +4813,6 @@
       "cumulative_stars": 55507
     },
     {
-      "repo": "https://github.com/microsoft/autogen",
-      "month": "2026-03-01",
-      "cumulative_stars": 55904
-    },
-    {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2024-04-01",
       "cumulative_stars": 8
@@ -5264,357 +4830,342 @@
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2024-07-01",
-      "cumulative_stars": 12609
+      "cumulative_stars": 12610
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2024-08-01",
-      "cumulative_stars": 15379
+      "cumulative_stars": 15381
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2024-09-01",
+      "cumulative_stars": 16647
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
+      "month": "2024-10-01",
+      "cumulative_stars": 17520
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
+      "month": "2024-11-01",
+      "cumulative_stars": 18826
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
+      "month": "2024-12-01",
+      "cumulative_stars": 20049
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
+      "month": "2025-01-01",
+      "cumulative_stars": 20831
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
+      "month": "2025-02-01",
+      "cumulative_stars": 21781
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
+      "month": "2025-03-01",
+      "cumulative_stars": 22874
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
+      "month": "2025-04-01",
+      "cumulative_stars": 23693
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
+      "month": "2025-05-01",
+      "cumulative_stars": 24330
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
+      "month": "2025-06-01",
+      "cumulative_stars": 24944
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
+      "month": "2025-07-01",
+      "cumulative_stars": 25730
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
+      "month": "2025-08-01",
+      "cumulative_stars": 26465
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
+      "month": "2025-09-01",
+      "cumulative_stars": 27198
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
+      "month": "2025-10-01",
+      "cumulative_stars": 27730
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
+      "month": "2025-11-01",
+      "cumulative_stars": 28246
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
+      "month": "2025-12-01",
+      "cumulative_stars": 28853
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
+      "month": "2026-01-01",
+      "cumulative_stars": 29438
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
+      "month": "2026-02-01",
+      "cumulative_stars": 29953
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2024-03-01",
+      "cumulative_stars": 60294
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2024-04-01",
+      "cumulative_stars": 61174
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2024-05-01",
+      "cumulative_stars": 62108
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2024-06-01",
+      "cumulative_stars": 63107
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2024-07-01",
+      "cumulative_stars": 63900
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2024-08-01",
+      "cumulative_stars": 64795
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2024-09-01",
+      "cumulative_stars": 65636
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2024-10-01",
+      "cumulative_stars": 66344
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2024-11-01",
+      "cumulative_stars": 67067
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2024-12-01",
+      "cumulative_stars": 67968
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-01-01",
+      "cumulative_stars": 68821
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-02-01",
+      "cumulative_stars": 69680
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-03-01",
+      "cumulative_stars": 71139
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-04-01",
+      "cumulative_stars": 72367
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-05-01",
+      "cumulative_stars": 73237
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-06-01",
+      "cumulative_stars": 74535
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-07-01",
+      "cumulative_stars": 75861
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-08-01",
+      "cumulative_stars": 77085
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-09-01",
+      "cumulative_stars": 78317
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-10-01",
+      "cumulative_stars": 79579
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-11-01",
+      "cumulative_stars": 80593
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-12-01",
+      "cumulative_stars": 81660
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2026-01-01",
+      "cumulative_stars": 83042
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2026-02-01",
+      "cumulative_stars": 84429
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2024-03-01",
+      "cumulative_stars": 16117
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2024-04-01",
       "cumulative_stars": 16645
     },
     {
-      "repo": "https://github.com/microsoft/graphrag",
-      "month": "2024-10-01",
-      "cumulative_stars": 17518
-    },
-    {
-      "repo": "https://github.com/microsoft/graphrag",
-      "month": "2024-11-01",
-      "cumulative_stars": 18823
-    },
-    {
-      "repo": "https://github.com/microsoft/graphrag",
-      "month": "2024-12-01",
-      "cumulative_stars": 20045
-    },
-    {
-      "repo": "https://github.com/microsoft/graphrag",
-      "month": "2025-01-01",
-      "cumulative_stars": 20827
-    },
-    {
-      "repo": "https://github.com/microsoft/graphrag",
-      "month": "2025-02-01",
-      "cumulative_stars": 21777
-    },
-    {
-      "repo": "https://github.com/microsoft/graphrag",
-      "month": "2025-03-01",
-      "cumulative_stars": 22869
-    },
-    {
-      "repo": "https://github.com/microsoft/graphrag",
-      "month": "2025-04-01",
-      "cumulative_stars": 23686
-    },
-    {
-      "repo": "https://github.com/microsoft/graphrag",
-      "month": "2025-05-01",
-      "cumulative_stars": 24323
-    },
-    {
-      "repo": "https://github.com/microsoft/graphrag",
-      "month": "2025-06-01",
-      "cumulative_stars": 24937
-    },
-    {
-      "repo": "https://github.com/microsoft/graphrag",
-      "month": "2025-07-01",
-      "cumulative_stars": 25722
-    },
-    {
-      "repo": "https://github.com/microsoft/graphrag",
-      "month": "2025-08-01",
-      "cumulative_stars": 26456
-    },
-    {
-      "repo": "https://github.com/microsoft/graphrag",
-      "month": "2025-09-01",
-      "cumulative_stars": 27188
-    },
-    {
-      "repo": "https://github.com/microsoft/graphrag",
-      "month": "2025-10-01",
-      "cumulative_stars": 27720
-    },
-    {
-      "repo": "https://github.com/microsoft/graphrag",
-      "month": "2025-11-01",
-      "cumulative_stars": 28236
-    },
-    {
-      "repo": "https://github.com/microsoft/graphrag",
-      "month": "2025-12-01",
-      "cumulative_stars": 28843
-    },
-    {
-      "repo": "https://github.com/microsoft/graphrag",
-      "month": "2026-01-01",
-      "cumulative_stars": 29428
-    },
-    {
-      "repo": "https://github.com/microsoft/graphrag",
-      "month": "2026-02-01",
-      "cumulative_stars": 29943
-    },
-    {
-      "repo": "https://github.com/microsoft/graphrag",
-      "month": "2026-03-01",
-      "cumulative_stars": 30462
-    },
-    {
-      "repo": "https://github.com/microsoft/playwright",
-      "month": "2024-03-01",
-      "cumulative_stars": 60292
-    },
-    {
-      "repo": "https://github.com/microsoft/playwright",
-      "month": "2024-04-01",
-      "cumulative_stars": 61172
-    },
-    {
-      "repo": "https://github.com/microsoft/playwright",
-      "month": "2024-05-01",
-      "cumulative_stars": 62106
-    },
-    {
-      "repo": "https://github.com/microsoft/playwright",
-      "month": "2024-06-01",
-      "cumulative_stars": 63105
-    },
-    {
-      "repo": "https://github.com/microsoft/playwright",
-      "month": "2024-07-01",
-      "cumulative_stars": 63898
-    },
-    {
-      "repo": "https://github.com/microsoft/playwright",
-      "month": "2024-08-01",
-      "cumulative_stars": 64793
-    },
-    {
-      "repo": "https://github.com/microsoft/playwright",
-      "month": "2024-09-01",
-      "cumulative_stars": 65634
-    },
-    {
-      "repo": "https://github.com/microsoft/playwright",
-      "month": "2024-10-01",
-      "cumulative_stars": 66342
-    },
-    {
-      "repo": "https://github.com/microsoft/playwright",
-      "month": "2024-11-01",
-      "cumulative_stars": 67065
-    },
-    {
-      "repo": "https://github.com/microsoft/playwright",
-      "month": "2024-12-01",
-      "cumulative_stars": 67966
-    },
-    {
-      "repo": "https://github.com/microsoft/playwright",
-      "month": "2025-01-01",
-      "cumulative_stars": 68819
-    },
-    {
-      "repo": "https://github.com/microsoft/playwright",
-      "month": "2025-02-01",
-      "cumulative_stars": 69678
-    },
-    {
-      "repo": "https://github.com/microsoft/playwright",
-      "month": "2025-03-01",
-      "cumulative_stars": 71137
-    },
-    {
-      "repo": "https://github.com/microsoft/playwright",
-      "month": "2025-04-01",
-      "cumulative_stars": 72365
-    },
-    {
-      "repo": "https://github.com/microsoft/playwright",
-      "month": "2025-05-01",
-      "cumulative_stars": 73235
-    },
-    {
-      "repo": "https://github.com/microsoft/playwright",
-      "month": "2025-06-01",
-      "cumulative_stars": 74533
-    },
-    {
-      "repo": "https://github.com/microsoft/playwright",
-      "month": "2025-07-01",
-      "cumulative_stars": 75859
-    },
-    {
-      "repo": "https://github.com/microsoft/playwright",
-      "month": "2025-08-01",
-      "cumulative_stars": 77083
-    },
-    {
-      "repo": "https://github.com/microsoft/playwright",
-      "month": "2025-09-01",
-      "cumulative_stars": 78315
-    },
-    {
-      "repo": "https://github.com/microsoft/playwright",
-      "month": "2025-10-01",
-      "cumulative_stars": 79577
-    },
-    {
-      "repo": "https://github.com/microsoft/playwright",
-      "month": "2025-11-01",
-      "cumulative_stars": 80591
-    },
-    {
-      "repo": "https://github.com/microsoft/playwright",
-      "month": "2025-12-01",
-      "cumulative_stars": 81658
-    },
-    {
-      "repo": "https://github.com/microsoft/playwright",
-      "month": "2026-01-01",
-      "cumulative_stars": 83040
-    },
-    {
-      "repo": "https://github.com/microsoft/playwright",
-      "month": "2026-02-01",
-      "cumulative_stars": 84427
-    },
-    {
-      "repo": "https://github.com/microsoft/playwright",
-      "month": "2026-03-01",
-      "cumulative_stars": 65164
-    },
-    {
-      "repo": "https://github.com/microsoft/semantic-kernel",
-      "month": "2024-03-01",
-      "cumulative_stars": 16116
-    },
-    {
-      "repo": "https://github.com/microsoft/semantic-kernel",
-      "month": "2024-04-01",
-      "cumulative_stars": 16644
-    },
-    {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-05-01",
-      "cumulative_stars": 17153
+      "cumulative_stars": 17154
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-06-01",
-      "cumulative_stars": 18276
+      "cumulative_stars": 18277
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-07-01",
-      "cumulative_stars": 19000
+      "cumulative_stars": 19001
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-08-01",
-      "cumulative_stars": 19328
+      "cumulative_stars": 19329
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-09-01",
-      "cumulative_stars": 19640
+      "cumulative_stars": 19641
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-10-01",
-      "cumulative_stars": 19980
+      "cumulative_stars": 19981
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-11-01",
-      "cumulative_stars": 20280
+      "cumulative_stars": 20281
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-12-01",
-      "cumulative_stars": 20615
+      "cumulative_stars": 20616
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-01-01",
-      "cumulative_stars": 21038
+      "cumulative_stars": 21039
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-02-01",
-      "cumulative_stars": 21465
+      "cumulative_stars": 21466
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-03-01",
-      "cumulative_stars": 21929
+      "cumulative_stars": 21930
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-04-01",
-      "cumulative_stars": 22391
+      "cumulative_stars": 22392
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-05-01",
-      "cumulative_stars": 22992
+      "cumulative_stars": 22993
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-06-01",
-      "cumulative_stars": 23367
+      "cumulative_stars": 23368
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-07-01",
-      "cumulative_stars": 23741
+      "cumulative_stars": 23742
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-08-01",
-      "cumulative_stars": 24112
+      "cumulative_stars": 24113
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-09-01",
-      "cumulative_stars": 24452
+      "cumulative_stars": 24453
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-10-01",
-      "cumulative_stars": 24751
+      "cumulative_stars": 24752
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-11-01",
-      "cumulative_stars": 24959
+      "cumulative_stars": 24960
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-12-01",
-      "cumulative_stars": 25168
+      "cumulative_stars": 25169
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2026-01-01",
-      "cumulative_stars": 25402
+      "cumulative_stars": 25403
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2026-02-01",
-      "cumulative_stars": 25637
-    },
-    {
-      "repo": "https://github.com/microsoft/semantic-kernel",
-      "month": "2026-03-01",
-      "cumulative_stars": 25886
+      "cumulative_stars": 25638
     },
     {
       "repo": "https://github.com/milvus-io/milvus",
@@ -5737,11 +5288,6 @@
       "cumulative_stars": 44209
     },
     {
-      "repo": "https://github.com/milvus-io/milvus",
-      "month": "2026-03-01",
-      "cumulative_stars": 39953
-    },
-    {
       "repo": "https://github.com/mistralai/mistral-inference",
       "month": "2024-03-01",
       "cumulative_stars": 7899
@@ -5862,11 +5408,6 @@
       "cumulative_stars": 10398
     },
     {
-      "repo": "https://github.com/mistralai/mistral-inference",
-      "month": "2026-03-01",
-      "cumulative_stars": 10443
-    },
-    {
       "repo": "https://github.com/modelcontextprotocol/inspector",
       "month": "2024-11-01",
       "cumulative_stars": 65
@@ -5947,11 +5488,6 @@
       "cumulative_stars": 8906
     },
     {
-      "repo": "https://github.com/modelcontextprotocol/inspector",
-      "month": "2026-03-01",
-      "cumulative_stars": 9251
-    },
-    {
       "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
       "month": "2024-11-01",
       "cumulative_stars": 150
@@ -5974,192 +5510,182 @@
     {
       "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
       "month": "2025-03-01",
-      "cumulative_stars": 957
+      "cumulative_stars": 958
     },
     {
       "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
       "month": "2025-04-01",
-      "cumulative_stars": 2319
+      "cumulative_stars": 2320
     },
     {
       "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
       "month": "2025-05-01",
-      "cumulative_stars": 3284
+      "cumulative_stars": 3286
     },
     {
       "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
       "month": "2025-06-01",
-      "cumulative_stars": 4079
+      "cumulative_stars": 4081
     },
     {
       "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
       "month": "2025-07-01",
-      "cumulative_stars": 4754
+      "cumulative_stars": 4756
     },
     {
       "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
       "month": "2025-08-01",
-      "cumulative_stars": 5265
+      "cumulative_stars": 5267
     },
     {
       "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
       "month": "2025-09-01",
-      "cumulative_stars": 5658
+      "cumulative_stars": 5660
     },
     {
       "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
       "month": "2025-10-01",
-      "cumulative_stars": 5960
+      "cumulative_stars": 5962
     },
     {
       "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
       "month": "2025-11-01",
-      "cumulative_stars": 6341
+      "cumulative_stars": 6343
     },
     {
       "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
       "month": "2025-12-01",
-      "cumulative_stars": 6707
+      "cumulative_stars": 6709
     },
     {
       "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
       "month": "2026-01-01",
-      "cumulative_stars": 7020
+      "cumulative_stars": 7022
     },
     {
       "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
       "month": "2026-02-01",
-      "cumulative_stars": 7302
-    },
-    {
-      "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
-      "month": "2026-03-01",
-      "cumulative_stars": 7569
+      "cumulative_stars": 7304
     },
     {
       "repo": "https://github.com/ollama/ollama",
       "month": "2024-03-01",
-      "cumulative_stars": 50302
+      "cumulative_stars": 50305
     },
     {
       "repo": "https://github.com/ollama/ollama",
       "month": "2024-04-01",
-      "cumulative_stars": 60974
+      "cumulative_stars": 60979
     },
     {
       "repo": "https://github.com/ollama/ollama",
       "month": "2024-05-01",
-      "cumulative_stars": 68884
+      "cumulative_stars": 68890
     },
     {
       "repo": "https://github.com/ollama/ollama",
       "month": "2024-06-01",
-      "cumulative_stars": 74619
+      "cumulative_stars": 74625
     },
     {
       "repo": "https://github.com/ollama/ollama",
       "month": "2024-07-01",
-      "cumulative_stars": 81161
+      "cumulative_stars": 81167
     },
     {
       "repo": "https://github.com/ollama/ollama",
       "month": "2024-08-01",
-      "cumulative_stars": 85961
+      "cumulative_stars": 85967
     },
     {
       "repo": "https://github.com/ollama/ollama",
       "month": "2024-09-01",
-      "cumulative_stars": 90274
+      "cumulative_stars": 90280
     },
     {
       "repo": "https://github.com/ollama/ollama",
       "month": "2024-10-01",
-      "cumulative_stars": 94542
+      "cumulative_stars": 94550
     },
     {
       "repo": "https://github.com/ollama/ollama",
       "month": "2024-11-01",
-      "cumulative_stars": 99123
+      "cumulative_stars": 99131
     },
     {
       "repo": "https://github.com/ollama/ollama",
       "month": "2024-12-01",
-      "cumulative_stars": 104149
+      "cumulative_stars": 104157
     },
     {
       "repo": "https://github.com/ollama/ollama",
       "month": "2025-01-01",
-      "cumulative_stars": 115462
+      "cumulative_stars": 115472
     },
     {
       "repo": "https://github.com/ollama/ollama",
       "month": "2025-02-01",
-      "cumulative_stars": 129543
+      "cumulative_stars": 129556
     },
     {
       "repo": "https://github.com/ollama/ollama",
       "month": "2025-03-01",
-      "cumulative_stars": 135218
+      "cumulative_stars": 135231
     },
     {
       "repo": "https://github.com/ollama/ollama",
       "month": "2025-04-01",
-      "cumulative_stars": 139102
+      "cumulative_stars": 139116
     },
     {
       "repo": "https://github.com/ollama/ollama",
       "month": "2025-05-01",
-      "cumulative_stars": 142658
+      "cumulative_stars": 142674
     },
     {
       "repo": "https://github.com/ollama/ollama",
       "month": "2025-06-01",
-      "cumulative_stars": 145804
+      "cumulative_stars": 145820
     },
     {
       "repo": "https://github.com/ollama/ollama",
       "month": "2025-07-01",
-      "cumulative_stars": 149181
+      "cumulative_stars": 149197
     },
     {
       "repo": "https://github.com/ollama/ollama",
       "month": "2025-08-01",
-      "cumulative_stars": 152729
+      "cumulative_stars": 152745
     },
     {
       "repo": "https://github.com/ollama/ollama",
       "month": "2025-09-01",
-      "cumulative_stars": 155152
+      "cumulative_stars": 155169
     },
     {
       "repo": "https://github.com/ollama/ollama",
       "month": "2025-10-01",
-      "cumulative_stars": 157353
+      "cumulative_stars": 157370
     },
     {
       "repo": "https://github.com/ollama/ollama",
       "month": "2025-11-01",
-      "cumulative_stars": 159452
+      "cumulative_stars": 159469
     },
     {
       "repo": "https://github.com/ollama/ollama",
       "month": "2025-12-01",
-      "cumulative_stars": 161619
+      "cumulative_stars": 161636
     },
     {
       "repo": "https://github.com/ollama/ollama",
       "month": "2026-01-01",
-      "cumulative_stars": 164812
+      "cumulative_stars": 164829
     },
     {
       "repo": "https://github.com/ollama/ollama",
       "month": "2026-02-01",
-      "cumulative_stars": 167699
-    },
-    {
-      "repo": "https://github.com/ollama/ollama",
-      "month": "2026-03-01",
-      "cumulative_stars": 170137
+      "cumulative_stars": 167717
     },
     {
       "repo": "https://github.com/open-telemetry/semantic-conventions",
@@ -6282,199 +5808,184 @@
       "cumulative_stars": 511
     },
     {
-      "repo": "https://github.com/open-telemetry/semantic-conventions",
-      "month": "2026-03-01",
-      "cumulative_stars": 537
-    },
-    {
       "repo": "https://github.com/open-webui/open-webui",
       "month": "2024-03-01",
-      "cumulative_stars": 10983
+      "cumulative_stars": 10984
     },
     {
       "repo": "https://github.com/open-webui/open-webui",
       "month": "2024-04-01",
-      "cumulative_stars": 16949
+      "cumulative_stars": 16950
     },
     {
       "repo": "https://github.com/open-webui/open-webui",
       "month": "2024-05-01",
-      "cumulative_stars": 24162
+      "cumulative_stars": 24164
     },
     {
       "repo": "https://github.com/open-webui/open-webui",
       "month": "2024-06-01",
-      "cumulative_stars": 28759
+      "cumulative_stars": 28762
     },
     {
       "repo": "https://github.com/open-webui/open-webui",
       "month": "2024-07-01",
-      "cumulative_stars": 32944
+      "cumulative_stars": 32948
     },
     {
       "repo": "https://github.com/open-webui/open-webui",
       "month": "2024-08-01",
-      "cumulative_stars": 36554
+      "cumulative_stars": 36558
     },
     {
       "repo": "https://github.com/open-webui/open-webui",
       "month": "2024-09-01",
-      "cumulative_stars": 40135
+      "cumulative_stars": 40140
     },
     {
       "repo": "https://github.com/open-webui/open-webui",
       "month": "2024-10-01",
-      "cumulative_stars": 44108
+      "cumulative_stars": 44113
     },
     {
       "repo": "https://github.com/open-webui/open-webui",
       "month": "2024-11-01",
-      "cumulative_stars": 48405
+      "cumulative_stars": 48410
     },
     {
       "repo": "https://github.com/open-webui/open-webui",
       "month": "2024-12-01",
-      "cumulative_stars": 53272
+      "cumulative_stars": 53280
     },
     {
       "repo": "https://github.com/open-webui/open-webui",
       "month": "2025-01-01",
-      "cumulative_stars": 63634
+      "cumulative_stars": 63642
     },
     {
       "repo": "https://github.com/open-webui/open-webui",
       "month": "2025-02-01",
-      "cumulative_stars": 79202
+      "cumulative_stars": 79211
     },
     {
       "repo": "https://github.com/open-webui/open-webui",
       "month": "2025-03-01",
-      "cumulative_stars": 86071
+      "cumulative_stars": 86080
     },
     {
       "repo": "https://github.com/open-webui/open-webui",
       "month": "2025-04-01",
-      "cumulative_stars": 91951
+      "cumulative_stars": 91963
     },
     {
       "repo": "https://github.com/open-webui/open-webui",
       "month": "2025-05-01",
-      "cumulative_stars": 96976
+      "cumulative_stars": 96989
     },
     {
       "repo": "https://github.com/open-webui/open-webui",
       "month": "2025-06-01",
-      "cumulative_stars": 100942
+      "cumulative_stars": 100956
     },
     {
       "repo": "https://github.com/open-webui/open-webui",
       "month": "2025-07-01",
-      "cumulative_stars": 105167
+      "cumulative_stars": 105182
     },
     {
       "repo": "https://github.com/open-webui/open-webui",
       "month": "2025-08-01",
-      "cumulative_stars": 109281
+      "cumulative_stars": 109296
     },
     {
       "repo": "https://github.com/open-webui/open-webui",
       "month": "2025-09-01",
-      "cumulative_stars": 112457
+      "cumulative_stars": 112472
     },
     {
       "repo": "https://github.com/open-webui/open-webui",
       "month": "2025-10-01",
-      "cumulative_stars": 115321
+      "cumulative_stars": 115336
     },
     {
       "repo": "https://github.com/open-webui/open-webui",
       "month": "2025-11-01",
-      "cumulative_stars": 118406
+      "cumulative_stars": 118421
     },
     {
       "repo": "https://github.com/open-webui/open-webui",
       "month": "2025-12-01",
-      "cumulative_stars": 121507
+      "cumulative_stars": 121522
     },
     {
       "repo": "https://github.com/open-webui/open-webui",
       "month": "2026-01-01",
-      "cumulative_stars": 124982
+      "cumulative_stars": 124997
     },
     {
       "repo": "https://github.com/open-webui/open-webui",
       "month": "2026-02-01",
-      "cumulative_stars": 128090
-    },
-    {
-      "repo": "https://github.com/open-webui/open-webui",
-      "month": "2026-03-01",
-      "cumulative_stars": 131091
+      "cumulative_stars": 128105
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-03-01",
-      "cumulative_stars": 7069
+      "cumulative_stars": 7071
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-04-01",
-      "cumulative_stars": 8852
+      "cumulative_stars": 8854
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-05-01",
-      "cumulative_stars": 10056
+      "cumulative_stars": 10059
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-06-01",
-      "cumulative_stars": 11168
+      "cumulative_stars": 11171
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-07-01",
-      "cumulative_stars": 12108
+      "cumulative_stars": 12111
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-08-01",
-      "cumulative_stars": 13041
+      "cumulative_stars": 13044
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-09-01",
-      "cumulative_stars": 14013
+      "cumulative_stars": 14016
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-10-01",
-      "cumulative_stars": 15740
+      "cumulative_stars": 15744
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-11-01",
-      "cumulative_stars": 16337
+      "cumulative_stars": 16341
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-12-01",
-      "cumulative_stars": 16837
+      "cumulative_stars": 16841
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2026-01-01",
-      "cumulative_stars": 17407
+      "cumulative_stars": 17411
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2026-02-01",
-      "cumulative_stars": 17981
-    },
-    {
-      "repo": "https://github.com/openai/openai-agents-python",
-      "month": "2026-03-01",
-      "cumulative_stars": 19029
+      "cumulative_stars": 17985
     },
     {
       "repo": "https://github.com/openclaw/openclaw",
@@ -6489,17 +6000,12 @@
     {
       "repo": "https://github.com/openclaw/openclaw",
       "month": "2026-01-01",
-      "cumulative_stars": 132843
+      "cumulative_stars": 132847
     },
     {
       "repo": "https://github.com/openclaw/openclaw",
       "month": "2026-02-01",
-      "cumulative_stars": 244837
-    },
-    {
-      "repo": "https://github.com/openclaw/openclaw",
-      "month": "2026-03-01",
-      "cumulative_stars": 323121
+      "cumulative_stars": 244872
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
@@ -6549,82 +6055,77 @@
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2024-12-01",
-      "cumulative_stars": 4778
+      "cumulative_stars": 4779
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-01-01",
-      "cumulative_stars": 6131
+      "cumulative_stars": 6135
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-02-01",
-      "cumulative_stars": 6379
+      "cumulative_stars": 6383
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-03-01",
-      "cumulative_stars": 9694
+      "cumulative_stars": 9701
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-04-01",
-      "cumulative_stars": 9984
+      "cumulative_stars": 9991
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-05-01",
-      "cumulative_stars": 11118
+      "cumulative_stars": 11125
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-06-01",
-      "cumulative_stars": 11892
+      "cumulative_stars": 11901
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-07-01",
-      "cumulative_stars": 12719
+      "cumulative_stars": 12728
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-08-01",
-      "cumulative_stars": 15573
+      "cumulative_stars": 15584
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-09-01",
-      "cumulative_stars": 23660
+      "cumulative_stars": 23674
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-10-01",
-      "cumulative_stars": 25958
+      "cumulative_stars": 25979
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-11-01",
-      "cumulative_stars": 27019
+      "cumulative_stars": 27041
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-12-01",
-      "cumulative_stars": 27829
+      "cumulative_stars": 27858
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2026-01-01",
-      "cumulative_stars": 29838
+      "cumulative_stars": 29879
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2026-02-01",
-      "cumulative_stars": 30200
-    },
-    {
-      "repo": "https://github.com/pathwaycom/pathway",
-      "month": "2026-03-01",
-      "cumulative_stars": 31132
+      "cumulative_stars": 30242
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
@@ -6664,92 +6165,87 @@
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2024-10-01",
-      "cumulative_stars": 3183
+      "cumulative_stars": 3184
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2024-11-01",
-      "cumulative_stars": 3348
+      "cumulative_stars": 3349
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2024-12-01",
-      "cumulative_stars": 3919
+      "cumulative_stars": 3920
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-01-01",
-      "cumulative_stars": 4340
+      "cumulative_stars": 4341
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-02-01",
-      "cumulative_stars": 4759
+      "cumulative_stars": 4760
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-03-01",
-      "cumulative_stars": 5205
+      "cumulative_stars": 5206
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-04-01",
-      "cumulative_stars": 5625
+      "cumulative_stars": 5626
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-05-01",
-      "cumulative_stars": 6041
+      "cumulative_stars": 6042
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-06-01",
-      "cumulative_stars": 6390
+      "cumulative_stars": 6391
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-07-01",
-      "cumulative_stars": 7010
+      "cumulative_stars": 7011
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-08-01",
-      "cumulative_stars": 7568
+      "cumulative_stars": 7569
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-09-01",
-      "cumulative_stars": 7939
+      "cumulative_stars": 7940
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-10-01",
-      "cumulative_stars": 8345
+      "cumulative_stars": 8346
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-11-01",
-      "cumulative_stars": 8809
+      "cumulative_stars": 8811
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-12-01",
-      "cumulative_stars": 9280
+      "cumulative_stars": 9282
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2026-01-01",
-      "cumulative_stars": 9780
+      "cumulative_stars": 9783
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2026-02-01",
-      "cumulative_stars": 10149
-    },
-    {
-      "repo": "https://github.com/pipecat-ai/pipecat",
-      "month": "2026-03-01",
-      "cumulative_stars": 10483
+      "cumulative_stars": 10152
     },
     {
       "repo": "https://github.com/promptfoo/promptfoo",
@@ -6804,77 +6300,72 @@
     {
       "repo": "https://github.com/promptfoo/promptfoo",
       "month": "2025-01-01",
-      "cumulative_stars": 5302
+      "cumulative_stars": 5303
     },
     {
       "repo": "https://github.com/promptfoo/promptfoo",
       "month": "2025-02-01",
-      "cumulative_stars": 5600
+      "cumulative_stars": 5601
     },
     {
       "repo": "https://github.com/promptfoo/promptfoo",
       "month": "2025-03-01",
-      "cumulative_stars": 5969
+      "cumulative_stars": 5970
     },
     {
       "repo": "https://github.com/promptfoo/promptfoo",
       "month": "2025-04-01",
-      "cumulative_stars": 6314
+      "cumulative_stars": 6315
     },
     {
       "repo": "https://github.com/promptfoo/promptfoo",
       "month": "2025-05-01",
-      "cumulative_stars": 6830
+      "cumulative_stars": 6831
     },
     {
       "repo": "https://github.com/promptfoo/promptfoo",
       "month": "2025-06-01",
-      "cumulative_stars": 7354
+      "cumulative_stars": 7355
     },
     {
       "repo": "https://github.com/promptfoo/promptfoo",
       "month": "2025-07-01",
-      "cumulative_stars": 7784
+      "cumulative_stars": 7785
     },
     {
       "repo": "https://github.com/promptfoo/promptfoo",
       "month": "2025-08-01",
-      "cumulative_stars": 8208
+      "cumulative_stars": 8209
     },
     {
       "repo": "https://github.com/promptfoo/promptfoo",
       "month": "2025-09-01",
-      "cumulative_stars": 8557
+      "cumulative_stars": 8558
     },
     {
       "repo": "https://github.com/promptfoo/promptfoo",
       "month": "2025-10-01",
-      "cumulative_stars": 8939
+      "cumulative_stars": 8940
     },
     {
       "repo": "https://github.com/promptfoo/promptfoo",
       "month": "2025-11-01",
-      "cumulative_stars": 9297
+      "cumulative_stars": 9298
     },
     {
       "repo": "https://github.com/promptfoo/promptfoo",
       "month": "2025-12-01",
-      "cumulative_stars": 9730
+      "cumulative_stars": 9731
     },
     {
       "repo": "https://github.com/promptfoo/promptfoo",
       "month": "2026-01-01",
-      "cumulative_stars": 10324
+      "cumulative_stars": 10326
     },
     {
       "repo": "https://github.com/promptfoo/promptfoo",
       "month": "2026-02-01",
-      "cumulative_stars": 10835
-    },
-    {
-      "repo": "https://github.com/promptfoo/promptfoo",
-      "month": "2026-03-01",
-      "cumulative_stars": 17767
+      "cumulative_stars": 10838
     },
     {
       "repo": "https://github.com/pydantic/pydantic-ai",
@@ -6899,77 +6390,72 @@
     {
       "repo": "https://github.com/pydantic/pydantic-ai",
       "month": "2025-01-01",
-      "cumulative_stars": 5802
+      "cumulative_stars": 5803
     },
     {
       "repo": "https://github.com/pydantic/pydantic-ai",
       "month": "2025-02-01",
-      "cumulative_stars": 6570
+      "cumulative_stars": 6571
     },
     {
       "repo": "https://github.com/pydantic/pydantic-ai",
       "month": "2025-03-01",
-      "cumulative_stars": 7732
+      "cumulative_stars": 7733
     },
     {
       "repo": "https://github.com/pydantic/pydantic-ai",
       "month": "2025-04-01",
-      "cumulative_stars": 8904
+      "cumulative_stars": 8905
     },
     {
       "repo": "https://github.com/pydantic/pydantic-ai",
       "month": "2025-05-01",
-      "cumulative_stars": 9769
+      "cumulative_stars": 9770
     },
     {
       "repo": "https://github.com/pydantic/pydantic-ai",
       "month": "2025-06-01",
-      "cumulative_stars": 10373
+      "cumulative_stars": 10374
     },
     {
       "repo": "https://github.com/pydantic/pydantic-ai",
       "month": "2025-07-01",
-      "cumulative_stars": 11225
+      "cumulative_stars": 11226
     },
     {
       "repo": "https://github.com/pydantic/pydantic-ai",
       "month": "2025-08-01",
-      "cumulative_stars": 11895
+      "cumulative_stars": 11896
     },
     {
       "repo": "https://github.com/pydantic/pydantic-ai",
       "month": "2025-09-01",
-      "cumulative_stars": 12632
+      "cumulative_stars": 12633
     },
     {
       "repo": "https://github.com/pydantic/pydantic-ai",
       "month": "2025-10-01",
-      "cumulative_stars": 13078
+      "cumulative_stars": 13079
     },
     {
       "repo": "https://github.com/pydantic/pydantic-ai",
       "month": "2025-11-01",
-      "cumulative_stars": 13542
+      "cumulative_stars": 13543
     },
     {
       "repo": "https://github.com/pydantic/pydantic-ai",
       "month": "2025-12-01",
-      "cumulative_stars": 14077
+      "cumulative_stars": 14078
     },
     {
       "repo": "https://github.com/pydantic/pydantic-ai",
       "month": "2026-01-01",
-      "cumulative_stars": 14572
+      "cumulative_stars": 14573
     },
     {
       "repo": "https://github.com/pydantic/pydantic-ai",
       "month": "2026-02-01",
-      "cumulative_stars": 15212
-    },
-    {
-      "repo": "https://github.com/pydantic/pydantic-ai",
-      "month": "2026-03-01",
-      "cumulative_stars": 15780
+      "cumulative_stars": 15213
     },
     {
       "repo": "https://github.com/qdrant/qdrant",
@@ -7014,212 +6500,202 @@
     {
       "repo": "https://github.com/qdrant/qdrant",
       "month": "2024-11-01",
-      "cumulative_stars": 20549
+      "cumulative_stars": 20550
     },
     {
       "repo": "https://github.com/qdrant/qdrant",
       "month": "2024-12-01",
-      "cumulative_stars": 20941
+      "cumulative_stars": 20942
     },
     {
       "repo": "https://github.com/qdrant/qdrant",
       "month": "2025-01-01",
-      "cumulative_stars": 21379
+      "cumulative_stars": 21380
     },
     {
       "repo": "https://github.com/qdrant/qdrant",
       "month": "2025-02-01",
-      "cumulative_stars": 22000
+      "cumulative_stars": 22001
     },
     {
       "repo": "https://github.com/qdrant/qdrant",
       "month": "2025-03-01",
-      "cumulative_stars": 22658
+      "cumulative_stars": 22659
     },
     {
       "repo": "https://github.com/qdrant/qdrant",
       "month": "2025-04-01",
-      "cumulative_stars": 23182
+      "cumulative_stars": 23183
     },
     {
       "repo": "https://github.com/qdrant/qdrant",
       "month": "2025-05-01",
-      "cumulative_stars": 23795
+      "cumulative_stars": 23796
     },
     {
       "repo": "https://github.com/qdrant/qdrant",
       "month": "2025-06-01",
-      "cumulative_stars": 24330
+      "cumulative_stars": 24331
     },
     {
       "repo": "https://github.com/qdrant/qdrant",
       "month": "2025-07-01",
-      "cumulative_stars": 24995
+      "cumulative_stars": 24997
     },
     {
       "repo": "https://github.com/qdrant/qdrant",
       "month": "2025-08-01",
-      "cumulative_stars": 25647
+      "cumulative_stars": 25649
     },
     {
       "repo": "https://github.com/qdrant/qdrant",
       "month": "2025-09-01",
-      "cumulative_stars": 26423
+      "cumulative_stars": 26425
     },
     {
       "repo": "https://github.com/qdrant/qdrant",
       "month": "2025-10-01",
-      "cumulative_stars": 26967
+      "cumulative_stars": 26969
     },
     {
       "repo": "https://github.com/qdrant/qdrant",
       "month": "2025-11-01",
-      "cumulative_stars": 27542
+      "cumulative_stars": 27544
     },
     {
       "repo": "https://github.com/qdrant/qdrant",
       "month": "2025-12-01",
-      "cumulative_stars": 28164
+      "cumulative_stars": 28166
     },
     {
       "repo": "https://github.com/qdrant/qdrant",
       "month": "2026-01-01",
-      "cumulative_stars": 28791
+      "cumulative_stars": 28793
     },
     {
       "repo": "https://github.com/qdrant/qdrant",
       "month": "2026-02-01",
-      "cumulative_stars": 29511
-    },
-    {
-      "repo": "https://github.com/qdrant/qdrant",
-      "month": "2026-03-01",
-      "cumulative_stars": 30180
+      "cumulative_stars": 29514
     },
     {
       "repo": "https://github.com/run-llama/llama_index",
       "month": "2024-03-01",
-      "cumulative_stars": 29566
+      "cumulative_stars": 29567
     },
     {
       "repo": "https://github.com/run-llama/llama_index",
       "month": "2024-04-01",
-      "cumulative_stars": 30695
+      "cumulative_stars": 30696
     },
     {
       "repo": "https://github.com/run-llama/llama_index",
       "month": "2024-05-01",
-      "cumulative_stars": 31768
+      "cumulative_stars": 31769
     },
     {
       "repo": "https://github.com/run-llama/llama_index",
       "month": "2024-06-01",
-      "cumulative_stars": 32698
+      "cumulative_stars": 32699
     },
     {
       "repo": "https://github.com/run-llama/llama_index",
       "month": "2024-07-01",
-      "cumulative_stars": 33685
+      "cumulative_stars": 33686
     },
     {
       "repo": "https://github.com/run-llama/llama_index",
       "month": "2024-08-01",
-      "cumulative_stars": 34642
+      "cumulative_stars": 34643
     },
     {
       "repo": "https://github.com/run-llama/llama_index",
       "month": "2024-09-01",
-      "cumulative_stars": 35419
+      "cumulative_stars": 35420
     },
     {
       "repo": "https://github.com/run-llama/llama_index",
       "month": "2024-10-01",
-      "cumulative_stars": 36100
+      "cumulative_stars": 36101
     },
     {
       "repo": "https://github.com/run-llama/llama_index",
       "month": "2024-11-01",
-      "cumulative_stars": 36770
+      "cumulative_stars": 36771
     },
     {
       "repo": "https://github.com/run-llama/llama_index",
       "month": "2024-12-01",
-      "cumulative_stars": 37474
+      "cumulative_stars": 37475
     },
     {
       "repo": "https://github.com/run-llama/llama_index",
       "month": "2025-01-01",
-      "cumulative_stars": 38316
+      "cumulative_stars": 38317
     },
     {
       "repo": "https://github.com/run-llama/llama_index",
       "month": "2025-02-01",
-      "cumulative_stars": 39307
+      "cumulative_stars": 39308
     },
     {
       "repo": "https://github.com/run-llama/llama_index",
       "month": "2025-03-01",
-      "cumulative_stars": 40492
+      "cumulative_stars": 40493
     },
     {
       "repo": "https://github.com/run-llama/llama_index",
       "month": "2025-04-01",
-      "cumulative_stars": 41333
+      "cumulative_stars": 41335
     },
     {
       "repo": "https://github.com/run-llama/llama_index",
       "month": "2025-05-01",
-      "cumulative_stars": 42087
+      "cumulative_stars": 42090
     },
     {
       "repo": "https://github.com/run-llama/llama_index",
       "month": "2025-06-01",
-      "cumulative_stars": 42842
+      "cumulative_stars": 42845
     },
     {
       "repo": "https://github.com/run-llama/llama_index",
       "month": "2025-07-01",
-      "cumulative_stars": 43630
+      "cumulative_stars": 43633
     },
     {
       "repo": "https://github.com/run-llama/llama_index",
       "month": "2025-08-01",
-      "cumulative_stars": 44256
+      "cumulative_stars": 44259
     },
     {
       "repo": "https://github.com/run-llama/llama_index",
       "month": "2025-09-01",
-      "cumulative_stars": 44879
+      "cumulative_stars": 44882
     },
     {
       "repo": "https://github.com/run-llama/llama_index",
       "month": "2025-10-01",
-      "cumulative_stars": 45446
+      "cumulative_stars": 45449
     },
     {
       "repo": "https://github.com/run-llama/llama_index",
       "month": "2025-11-01",
-      "cumulative_stars": 46060
+      "cumulative_stars": 46064
     },
     {
       "repo": "https://github.com/run-llama/llama_index",
       "month": "2025-12-01",
-      "cumulative_stars": 46687
+      "cumulative_stars": 46691
     },
     {
       "repo": "https://github.com/run-llama/llama_index",
       "month": "2026-01-01",
-      "cumulative_stars": 47398
+      "cumulative_stars": 47402
     },
     {
       "repo": "https://github.com/run-llama/llama_index",
       "month": "2026-02-01",
-      "cumulative_stars": 48041
-    },
-    {
-      "repo": "https://github.com/run-llama/llama_index",
-      "month": "2026-03-01",
-      "cumulative_stars": 48743
+      "cumulative_stars": 48046
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
@@ -7342,259 +6818,244 @@
       "cumulative_stars": 9365
     },
     {
-      "repo": "https://github.com/skypilot-org/skypilot",
-      "month": "2026-03-01",
-      "cumulative_stars": 9553
-    },
-    {
       "repo": "https://github.com/stanfordnlp/dspy",
       "month": "2024-03-01",
-      "cumulative_stars": 8934
+      "cumulative_stars": 8935
     },
     {
       "repo": "https://github.com/stanfordnlp/dspy",
       "month": "2024-04-01",
-      "cumulative_stars": 10472
+      "cumulative_stars": 10473
     },
     {
       "repo": "https://github.com/stanfordnlp/dspy",
       "month": "2024-05-01",
-      "cumulative_stars": 11800
+      "cumulative_stars": 11801
     },
     {
       "repo": "https://github.com/stanfordnlp/dspy",
       "month": "2024-06-01",
-      "cumulative_stars": 13497
+      "cumulative_stars": 13499
     },
     {
       "repo": "https://github.com/stanfordnlp/dspy",
       "month": "2024-07-01",
-      "cumulative_stars": 14725
+      "cumulative_stars": 14727
     },
     {
       "repo": "https://github.com/stanfordnlp/dspy",
       "month": "2024-08-01",
-      "cumulative_stars": 15952
+      "cumulative_stars": 15954
     },
     {
       "repo": "https://github.com/stanfordnlp/dspy",
       "month": "2024-09-01",
-      "cumulative_stars": 17087
+      "cumulative_stars": 17090
     },
     {
       "repo": "https://github.com/stanfordnlp/dspy",
       "month": "2024-10-01",
-      "cumulative_stars": 18059
+      "cumulative_stars": 18062
     },
     {
       "repo": "https://github.com/stanfordnlp/dspy",
       "month": "2024-11-01",
-      "cumulative_stars": 19131
+      "cumulative_stars": 19134
     },
     {
       "repo": "https://github.com/stanfordnlp/dspy",
       "month": "2024-12-01",
-      "cumulative_stars": 20391
+      "cumulative_stars": 20394
     },
     {
       "repo": "https://github.com/stanfordnlp/dspy",
       "month": "2025-01-01",
-      "cumulative_stars": 21332
+      "cumulative_stars": 21335
     },
     {
       "repo": "https://github.com/stanfordnlp/dspy",
       "month": "2025-02-01",
-      "cumulative_stars": 21994
+      "cumulative_stars": 21997
     },
     {
       "repo": "https://github.com/stanfordnlp/dspy",
       "month": "2025-03-01",
-      "cumulative_stars": 22661
+      "cumulative_stars": 22664
     },
     {
       "repo": "https://github.com/stanfordnlp/dspy",
       "month": "2025-04-01",
-      "cumulative_stars": 23833
+      "cumulative_stars": 23836
     },
     {
       "repo": "https://github.com/stanfordnlp/dspy",
       "month": "2025-05-01",
-      "cumulative_stars": 24521
+      "cumulative_stars": 24524
     },
     {
       "repo": "https://github.com/stanfordnlp/dspy",
       "month": "2025-06-01",
-      "cumulative_stars": 25939
+      "cumulative_stars": 25942
     },
     {
       "repo": "https://github.com/stanfordnlp/dspy",
       "month": "2025-07-01",
-      "cumulative_stars": 26823
+      "cumulative_stars": 26826
     },
     {
       "repo": "https://github.com/stanfordnlp/dspy",
       "month": "2025-08-01",
-      "cumulative_stars": 27758
+      "cumulative_stars": 27761
     },
     {
       "repo": "https://github.com/stanfordnlp/dspy",
       "month": "2025-09-01",
-      "cumulative_stars": 28834
+      "cumulative_stars": 28839
     },
     {
       "repo": "https://github.com/stanfordnlp/dspy",
       "month": "2025-10-01",
-      "cumulative_stars": 29788
+      "cumulative_stars": 29793
     },
     {
       "repo": "https://github.com/stanfordnlp/dspy",
       "month": "2025-11-01",
-      "cumulative_stars": 30559
+      "cumulative_stars": 30566
     },
     {
       "repo": "https://github.com/stanfordnlp/dspy",
       "month": "2025-12-01",
-      "cumulative_stars": 31389
+      "cumulative_stars": 31396
     },
     {
       "repo": "https://github.com/stanfordnlp/dspy",
       "month": "2026-01-01",
-      "cumulative_stars": 32191
+      "cumulative_stars": 32198
     },
     {
       "repo": "https://github.com/stanfordnlp/dspy",
       "month": "2026-02-01",
-      "cumulative_stars": 32805
-    },
-    {
-      "repo": "https://github.com/stanfordnlp/dspy",
-      "month": "2026-03-01",
-      "cumulative_stars": 33507
+      "cumulative_stars": 32812
     },
     {
       "repo": "https://github.com/sweepai/sweep",
       "month": "2024-03-01",
-      "cumulative_stars": 6498
+      "cumulative_stars": 6499
     },
     {
       "repo": "https://github.com/sweepai/sweep",
       "month": "2024-04-01",
-      "cumulative_stars": 6647
+      "cumulative_stars": 6648
     },
     {
       "repo": "https://github.com/sweepai/sweep",
       "month": "2024-05-01",
-      "cumulative_stars": 6777
+      "cumulative_stars": 6778
     },
     {
       "repo": "https://github.com/sweepai/sweep",
       "month": "2024-06-01",
-      "cumulative_stars": 6859
+      "cumulative_stars": 6860
     },
     {
       "repo": "https://github.com/sweepai/sweep",
       "month": "2024-07-01",
-      "cumulative_stars": 6941
+      "cumulative_stars": 6942
     },
     {
       "repo": "https://github.com/sweepai/sweep",
       "month": "2024-08-01",
-      "cumulative_stars": 6985
+      "cumulative_stars": 6986
     },
     {
       "repo": "https://github.com/sweepai/sweep",
       "month": "2024-09-01",
-      "cumulative_stars": 7020
+      "cumulative_stars": 7021
     },
     {
       "repo": "https://github.com/sweepai/sweep",
       "month": "2024-10-01",
-      "cumulative_stars": 7060
+      "cumulative_stars": 7061
     },
     {
       "repo": "https://github.com/sweepai/sweep",
       "month": "2024-11-01",
-      "cumulative_stars": 7094
+      "cumulative_stars": 7095
     },
     {
       "repo": "https://github.com/sweepai/sweep",
       "month": "2024-12-01",
-      "cumulative_stars": 7111
+      "cumulative_stars": 7112
     },
     {
       "repo": "https://github.com/sweepai/sweep",
       "month": "2025-01-01",
-      "cumulative_stars": 7132
+      "cumulative_stars": 7133
     },
     {
       "repo": "https://github.com/sweepai/sweep",
       "month": "2025-02-01",
-      "cumulative_stars": 7169
+      "cumulative_stars": 7170
     },
     {
       "repo": "https://github.com/sweepai/sweep",
       "month": "2025-03-01",
-      "cumulative_stars": 7194
+      "cumulative_stars": 7195
     },
     {
       "repo": "https://github.com/sweepai/sweep",
       "month": "2025-04-01",
-      "cumulative_stars": 7230
+      "cumulative_stars": 7231
     },
     {
       "repo": "https://github.com/sweepai/sweep",
       "month": "2025-05-01",
-      "cumulative_stars": 7252
+      "cumulative_stars": 7253
     },
     {
       "repo": "https://github.com/sweepai/sweep",
       "month": "2025-06-01",
-      "cumulative_stars": 7262
+      "cumulative_stars": 7263
     },
     {
       "repo": "https://github.com/sweepai/sweep",
       "month": "2025-07-01",
-      "cumulative_stars": 7281
+      "cumulative_stars": 7282
     },
     {
       "repo": "https://github.com/sweepai/sweep",
       "month": "2025-08-01",
-      "cumulative_stars": 7300
+      "cumulative_stars": 7301
     },
     {
       "repo": "https://github.com/sweepai/sweep",
       "month": "2025-09-01",
-      "cumulative_stars": 7313
+      "cumulative_stars": 7314
     },
     {
       "repo": "https://github.com/sweepai/sweep",
       "month": "2025-10-01",
-      "cumulative_stars": 7327
+      "cumulative_stars": 7328
     },
     {
       "repo": "https://github.com/sweepai/sweep",
       "month": "2025-11-01",
-      "cumulative_stars": 7340
+      "cumulative_stars": 7341
     },
     {
       "repo": "https://github.com/sweepai/sweep",
       "month": "2025-12-01",
-      "cumulative_stars": 7359
+      "cumulative_stars": 7360
     },
     {
       "repo": "https://github.com/sweepai/sweep",
       "month": "2026-01-01",
-      "cumulative_stars": 7379
+      "cumulative_stars": 7380
     },
     {
       "repo": "https://github.com/sweepai/sweep",
       "month": "2026-02-01",
-      "cumulative_stars": 7396
-    },
-    {
-      "repo": "https://github.com/sweepai/sweep",
-      "month": "2026-03-01",
-      "cumulative_stars": 7413
+      "cumulative_stars": 7397
     },
     {
       "repo": "https://github.com/temporalio/temporal",
@@ -7717,11 +7178,6 @@
       "cumulative_stars": 18625
     },
     {
-      "repo": "https://github.com/temporalio/temporal",
-      "month": "2026-03-01",
-      "cumulative_stars": 17724
-    },
-    {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2024-05-01",
       "cumulative_stars": 681
@@ -7739,227 +7195,217 @@
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2024-08-01",
-      "cumulative_stars": 1840
+      "cumulative_stars": 1841
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2024-09-01",
-      "cumulative_stars": 7323
+      "cumulative_stars": 7324
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2024-10-01",
-      "cumulative_stars": 13929
+      "cumulative_stars": 13930
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2024-11-01",
-      "cumulative_stars": 15855
+      "cumulative_stars": 15856
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2024-12-01",
-      "cumulative_stars": 17608
+      "cumulative_stars": 17609
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-01-01",
-      "cumulative_stars": 26006
+      "cumulative_stars": 26007
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-02-01",
-      "cumulative_stars": 29543
+      "cumulative_stars": 29545
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-03-01",
-      "cumulative_stars": 32560
+      "cumulative_stars": 32563
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-04-01",
-      "cumulative_stars": 38866
+      "cumulative_stars": 38869
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-05-01",
-      "cumulative_stars": 41702
+      "cumulative_stars": 41705
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-06-01",
-      "cumulative_stars": 43762
+      "cumulative_stars": 43767
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-07-01",
-      "cumulative_stars": 46871
+      "cumulative_stars": 46876
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-08-01",
-      "cumulative_stars": 48585
+      "cumulative_stars": 48591
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-09-01",
-      "cumulative_stars": 50726
+      "cumulative_stars": 50735
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-10-01",
-      "cumulative_stars": 51913
+      "cumulative_stars": 51922
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-11-01",
-      "cumulative_stars": 53171
+      "cumulative_stars": 53181
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-12-01",
-      "cumulative_stars": 54413
+      "cumulative_stars": 54423
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2026-01-01",
-      "cumulative_stars": 55824
+      "cumulative_stars": 55834
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2026-02-01",
-      "cumulative_stars": 57620
-    },
-    {
-      "repo": "https://github.com/unclecode/crawl4ai",
-      "month": "2026-03-01",
-      "cumulative_stars": 58859
+      "cumulative_stars": 57632
     },
     {
       "repo": "https://github.com/weaviate/weaviate",
       "month": "2024-03-01",
-      "cumulative_stars": 8933
+      "cumulative_stars": 8934
     },
     {
       "repo": "https://github.com/weaviate/weaviate",
       "month": "2024-04-01",
-      "cumulative_stars": 9246
+      "cumulative_stars": 9247
     },
     {
       "repo": "https://github.com/weaviate/weaviate",
       "month": "2024-05-01",
-      "cumulative_stars": 9573
+      "cumulative_stars": 9574
     },
     {
       "repo": "https://github.com/weaviate/weaviate",
       "month": "2024-06-01",
-      "cumulative_stars": 9863
+      "cumulative_stars": 9864
     },
     {
       "repo": "https://github.com/weaviate/weaviate",
       "month": "2024-07-01",
-      "cumulative_stars": 10143
+      "cumulative_stars": 10144
     },
     {
       "repo": "https://github.com/weaviate/weaviate",
       "month": "2024-08-01",
-      "cumulative_stars": 10372
+      "cumulative_stars": 10373
     },
     {
       "repo": "https://github.com/weaviate/weaviate",
       "month": "2024-09-01",
-      "cumulative_stars": 10704
+      "cumulative_stars": 10706
     },
     {
       "repo": "https://github.com/weaviate/weaviate",
       "month": "2024-10-01",
-      "cumulative_stars": 11031
+      "cumulative_stars": 11033
     },
     {
       "repo": "https://github.com/weaviate/weaviate",
       "month": "2024-11-01",
-      "cumulative_stars": 11410
+      "cumulative_stars": 11412
     },
     {
       "repo": "https://github.com/weaviate/weaviate",
       "month": "2024-12-01",
-      "cumulative_stars": 11665
+      "cumulative_stars": 11667
     },
     {
       "repo": "https://github.com/weaviate/weaviate",
       "month": "2025-01-01",
-      "cumulative_stars": 11916
+      "cumulative_stars": 11918
     },
     {
       "repo": "https://github.com/weaviate/weaviate",
       "month": "2025-02-01",
-      "cumulative_stars": 12322
+      "cumulative_stars": 12324
     },
     {
       "repo": "https://github.com/weaviate/weaviate",
       "month": "2025-03-01",
-      "cumulative_stars": 12725
+      "cumulative_stars": 12727
     },
     {
       "repo": "https://github.com/weaviate/weaviate",
       "month": "2025-04-01",
-      "cumulative_stars": 12998
+      "cumulative_stars": 13000
     },
     {
       "repo": "https://github.com/weaviate/weaviate",
       "month": "2025-05-01",
-      "cumulative_stars": 13292
+      "cumulative_stars": 13295
     },
     {
       "repo": "https://github.com/weaviate/weaviate",
       "month": "2025-06-01",
-      "cumulative_stars": 13597
+      "cumulative_stars": 13600
     },
     {
       "repo": "https://github.com/weaviate/weaviate",
       "month": "2025-07-01",
-      "cumulative_stars": 13899
+      "cumulative_stars": 13902
     },
     {
       "repo": "https://github.com/weaviate/weaviate",
       "month": "2025-08-01",
-      "cumulative_stars": 14254
+      "cumulative_stars": 14257
     },
     {
       "repo": "https://github.com/weaviate/weaviate",
       "month": "2025-09-01",
-      "cumulative_stars": 14578
+      "cumulative_stars": 14581
     },
     {
       "repo": "https://github.com/weaviate/weaviate",
       "month": "2025-10-01",
-      "cumulative_stars": 14799
+      "cumulative_stars": 14802
     },
     {
       "repo": "https://github.com/weaviate/weaviate",
       "month": "2025-11-01",
-      "cumulative_stars": 15048
+      "cumulative_stars": 15051
     },
     {
       "repo": "https://github.com/weaviate/weaviate",
       "month": "2025-12-01",
-      "cumulative_stars": 15272
+      "cumulative_stars": 15275
     },
     {
       "repo": "https://github.com/weaviate/weaviate",
       "month": "2026-01-01",
-      "cumulative_stars": 15489
+      "cumulative_stars": 15492
     },
     {
       "repo": "https://github.com/weaviate/weaviate",
       "month": "2026-02-01",
-      "cumulative_stars": 15699
-    },
-    {
-      "repo": "https://github.com/weaviate/weaviate",
-      "month": "2026-03-01",
-      "cumulative_stars": 15521
+      "cumulative_stars": 15703
     },
     {
       "repo": "https://github.com/wong2/litemcp",
@@ -8140,11 +7586,6 @@
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2026-02-01",
       "cumulative_stars": 2515
-    },
-    {
-      "repo": "https://github.com/xlang-ai/OSWorld",
-      "month": "2026-03-01",
-      "cumulative_stars": 2611
     }
   ]
 }
