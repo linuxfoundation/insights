@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "fetched_at": "2026-03-25T15:28:53.714147",
+    "fetched_at": "2026-03-27T10:27:56.276709",
     "schema": {
       "name": "fork_count",
       "description": "Cumulative monthly fork counts for tracked repositories.",
@@ -24,29 +24,7 @@
           "optional": false
         }
       ]
-    },
-    "covered_items": [
-      "https://github.com/567-labs/instructor",
-      "https://github.com/AmoyLab/Unla",
-      "https://github.com/Arize-ai/phoenix",
-      "https://github.com/FoundationAgents/MetaGPT",
-      "https://github.com/NVIDIA-NeMo/Guardrails",
-      "https://github.com/NVIDIA/garak",
-      "https://github.com/PrefectHQ/fastmcp",
-      "https://github.com/SWE-agent/SWE-agent",
-      "https://github.com/SWE-bench/SWE-bench",
-      "https://github.com/a2aproject/A2A",
-      "https://github.com/agentscope-ai/agentscope",
-      "https://github.com/agentsmd/agents.md",
-      "https://github.com/agno-agi/agno",
-      "https://github.com/aurelio-labs/semantic-router",
-      "https://github.com/firecrawl/firecrawl",
-      "https://github.com/qodo-ai/pr-agent",
-      "https://github.com/simular-ai/Agent-S",
-      "https://github.com/tavily-ai/tavily-python",
-      "https://github.com/vibrantlabsai/ragas",
-      "https://github.com/w3c/did"
-    ]
+    }
   },
   "data": [
     {
@@ -1428,126 +1406,6 @@
       "repo": "https://github.com/Significant-Gravitas/AutoGPT",
       "month": "2026-02-01",
       "cumulative_forks": 45910
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2024-03-01",
-      "cumulative_forks": 260
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2024-04-01",
-      "cumulative_forks": 565
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2024-05-01",
-      "cumulative_forks": 1220
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2024-06-01",
-      "cumulative_forks": 1362
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2024-07-01",
-      "cumulative_forks": 1435
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2024-08-01",
-      "cumulative_forks": 1498
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2024-09-01",
-      "cumulative_forks": 1528
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2024-10-01",
-      "cumulative_forks": 1818
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2024-11-01",
-      "cumulative_forks": 1964
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2024-12-01",
-      "cumulative_forks": 2122
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2025-01-01",
-      "cumulative_forks": 2274
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2025-02-01",
-      "cumulative_forks": 2435
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2025-03-01",
-      "cumulative_forks": 2775
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2025-04-01",
-      "cumulative_forks": 3060
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2025-05-01",
-      "cumulative_forks": 3273
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2025-06-01",
-      "cumulative_forks": 3466
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2025-07-01",
-      "cumulative_forks": 3707
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2025-08-01",
-      "cumulative_forks": 3919
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2025-09-01",
-      "cumulative_forks": 4132
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2025-10-01",
-      "cumulative_forks": 4362
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2025-11-01",
-      "cumulative_forks": 4522
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2025-12-01",
-      "cumulative_forks": 4669
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2026-01-01",
-      "cumulative_forks": 4824
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2026-02-01",
-      "cumulative_forks": 4977
     },
     {
       "repo": "https://github.com/agntcy/acp-spec",

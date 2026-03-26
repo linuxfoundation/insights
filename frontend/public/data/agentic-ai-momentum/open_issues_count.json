@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "fetched_at": "2026-03-25T15:29:09.340219",
+    "fetched_at": "2026-03-27T10:28:18.521867",
     "schema": {
       "name": "open_issues_count",
       "description": "Monthly count of issues opened for tracked repositories.",
@@ -24,31 +24,7 @@
           "optional": false
         }
       ]
-    },
-    "covered_items": [
-      "https://github.com/567-labs/instructor",
-      "https://github.com/AmoyLab/Unla",
-      "https://github.com/Arize-ai/phoenix",
-      "https://github.com/FoundationAgents/MetaGPT",
-      "https://github.com/NVIDIA-NeMo/Guardrails",
-      "https://github.com/NVIDIA/garak",
-      "https://github.com/OpenInterpreter/open-interpreter",
-      "https://github.com/PrefectHQ/fastmcp",
-      "https://github.com/SWE-agent/SWE-agent",
-      "https://github.com/SWE-bench/SWE-bench",
-      "https://github.com/a2aproject/A2A",
-      "https://github.com/agentscope-ai/agentscope",
-      "https://github.com/agentsmd/agents.md",
-      "https://github.com/agno-agi/agno",
-      "https://github.com/aurelio-labs/semantic-router",
-      "https://github.com/firecrawl/firecrawl",
-      "https://github.com/ibm/mcp-context-forge",
-      "https://github.com/qodo-ai/pr-agent",
-      "https://github.com/simular-ai/Agent-S",
-      "https://github.com/tavily-ai/tavily-python",
-      "https://github.com/vibrantlabsai/ragas",
-      "https://github.com/w3c/did"
-    ]
+    }
   },
   "data": [
     {
@@ -1270,126 +1246,6 @@
       "repo": "https://github.com/Significant-Gravitas/AutoGPT",
       "month": "2026-02-01",
       "open_issues_count": 9
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2024-03-01",
-      "open_issues_count": 9
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2024-04-01",
-      "open_issues_count": 17
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2024-05-01",
-      "open_issues_count": 50
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2024-06-01",
-      "open_issues_count": 12
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2024-07-01",
-      "open_issues_count": 19
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2024-08-01",
-      "open_issues_count": 15
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2024-09-01",
-      "open_issues_count": 7
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2024-10-01",
-      "open_issues_count": 63
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2024-11-01",
-      "open_issues_count": 36
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2024-12-01",
-      "open_issues_count": 53
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2025-01-01",
-      "open_issues_count": 91
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2025-02-01",
-      "open_issues_count": 123
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2025-03-01",
-      "open_issues_count": 141
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2025-04-01",
-      "open_issues_count": 154
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2025-05-01",
-      "open_issues_count": 137
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2025-06-01",
-      "open_issues_count": 95
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2025-07-01",
-      "open_issues_count": 126
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2025-08-01",
-      "open_issues_count": 92
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2025-09-01",
-      "open_issues_count": 161
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2025-10-01",
-      "open_issues_count": 122
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2025-11-01",
-      "open_issues_count": 110
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2025-12-01",
-      "open_issues_count": 93
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2026-01-01",
-      "open_issues_count": 107
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2026-02-01",
-      "open_issues_count": 76
     },
     {
       "repo": "https://github.com/agntcy/acp-spec",
@@ -5069,7 +4925,7 @@
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2026-02-01",
-      "open_issues_count": 20
+      "open_issues_count": 21
     },
     {
       "repo": "https://github.com/milvus-io/milvus",

@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "fetched_at": "2026-03-25T15:29:00.650437",
+    "fetched_at": "2026-03-27T10:28:03.757180",
     "schema": {
       "name": "commit_count",
       "description": "Cumulative monthly commit counts for tracked repositories.",
@@ -24,29 +24,7 @@
           "optional": false
         }
       ]
-    },
-    "covered_items": [
-      "https://github.com/567-labs/instructor",
-      "https://github.com/AmoyLab/Unla",
-      "https://github.com/Arize-ai/phoenix",
-      "https://github.com/FoundationAgents/MetaGPT",
-      "https://github.com/NVIDIA-NeMo/Guardrails",
-      "https://github.com/NVIDIA/garak",
-      "https://github.com/PrefectHQ/fastmcp",
-      "https://github.com/SWE-agent/SWE-agent",
-      "https://github.com/SWE-bench/SWE-bench",
-      "https://github.com/a2aproject/A2A",
-      "https://github.com/agentscope-ai/agentscope",
-      "https://github.com/agentsmd/agents.md",
-      "https://github.com/agno-agi/agno",
-      "https://github.com/aurelio-labs/semantic-router",
-      "https://github.com/firecrawl/firecrawl",
-      "https://github.com/qodo-ai/pr-agent",
-      "https://github.com/simular-ai/Agent-S",
-      "https://github.com/tavily-ai/tavily-python",
-      "https://github.com/vibrantlabsai/ragas",
-      "https://github.com/w3c/did"
-    ]
+    }
   },
   "data": [
     {
@@ -1365,126 +1343,6 @@
       "cumulative_commits": 35448
     },
     {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2024-03-01",
-      "cumulative_commits": 1370
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2024-04-01",
-      "cumulative_commits": 1713
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2024-05-01",
-      "cumulative_commits": 2059
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2024-06-01",
-      "cumulative_commits": 2179
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2024-07-01",
-      "cumulative_commits": 2321
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2024-08-01",
-      "cumulative_commits": 2413
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2024-09-01",
-      "cumulative_commits": 2851
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2024-10-01",
-      "cumulative_commits": 4009
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2024-11-01",
-      "cumulative_commits": 4584
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2024-12-01",
-      "cumulative_commits": 5397
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2025-01-01",
-      "cumulative_commits": 6688
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2025-02-01",
-      "cumulative_commits": 7989
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2025-03-01",
-      "cumulative_commits": 9430
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2025-04-01",
-      "cumulative_commits": 11123
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2025-05-01",
-      "cumulative_commits": 13104
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2025-06-01",
-      "cumulative_commits": 14424
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2025-07-01",
-      "cumulative_commits": 16078
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2025-08-01",
-      "cumulative_commits": 17761
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2025-09-01",
-      "cumulative_commits": 19653
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2025-10-01",
-      "cumulative_commits": 21973
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2025-11-01",
-      "cumulative_commits": 23326
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2025-12-01",
-      "cumulative_commits": 25070
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2026-01-01",
-      "cumulative_commits": 26815
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2026-02-01",
-      "cumulative_commits": 27762
-    },
-    {
       "repo": "https://github.com/agntcy/acp-spec",
       "month": "2025-02-01",
       "cumulative_commits": 163
@@ -1932,7 +1790,7 @@
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2026-02-01",
-      "cumulative_commits": 14196
+      "cumulative_commits": 14197
     },
     {
       "repo": "https://github.com/camel-ai/camel",
@@ -3937,22 +3795,22 @@
     {
       "repo": "https://github.com/kserve/kserve",
       "month": "2025-11-01",
-      "cumulative_commits": 17615
+      "cumulative_commits": 17619
     },
     {
       "repo": "https://github.com/kserve/kserve",
       "month": "2025-12-01",
-      "cumulative_commits": 18116
+      "cumulative_commits": 18120
     },
     {
       "repo": "https://github.com/kserve/kserve",
       "month": "2026-01-01",
-      "cumulative_commits": 18959
+      "cumulative_commits": 18963
     },
     {
       "repo": "https://github.com/kserve/kserve",
       "month": "2026-02-01",
-      "cumulative_commits": 19902
+      "cumulative_commits": 19910
     },
     {
       "repo": "https://github.com/langchain-ai/langchain",
@@ -5397,12 +5255,12 @@
     {
       "repo": "https://github.com/milvus-io/milvus",
       "month": "2026-01-01",
-      "cumulative_commits": 77076
+      "cumulative_commits": 77082
     },
     {
       "repo": "https://github.com/milvus-io/milvus",
       "month": "2026-02-01",
-      "cumulative_commits": 79327
+      "cumulative_commits": 79363
     },
     {
       "repo": "https://github.com/mistralai/mistral-inference",

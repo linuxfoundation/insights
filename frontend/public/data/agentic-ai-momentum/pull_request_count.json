@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "fetched_at": "2026-03-25T15:29:13.698146",
+    "fetched_at": "2026-03-27T10:28:23.909937",
     "schema": {
       "name": "pull_request_count",
       "description": "Cumulative monthly pull request counts for tracked repositories.",
@@ -24,52 +24,7 @@
           "optional": false
         }
       ]
-    },
-    "covered_items": [
-      "https://github.com/567-labs/instructor",
-      "https://github.com/AmoyLab/Unla",
-      "https://github.com/Arize-ai/phoenix",
-      "https://github.com/Azure/PyRIT",
-      "https://github.com/ComposioHQ/composio",
-      "https://github.com/FoundationAgents/MetaGPT",
-      "https://github.com/NVIDIA-NeMo/Guardrails",
-      "https://github.com/NVIDIA/garak",
-      "https://github.com/OpenAutoCoder/Agentless",
-      "https://github.com/OpenInterpreter/open-interpreter",
-      "https://github.com/SWE-agent/SWE-agent",
-      "https://github.com/SWE-bench/SWE-bench",
-      "https://github.com/ShishirPatil/gorilla",
-      "https://github.com/agentscope-ai/agentscope",
-      "https://github.com/agno-agi/agno",
-      "https://github.com/aurelio-labs/semantic-router",
-      "https://github.com/browser-use/browser-use",
-      "https://github.com/comet-ml/opik",
-      "https://github.com/confident-ai/deepeval",
-      "https://github.com/daytonaio/daytona",
-      "https://github.com/e2b-dev/code-interpreter",
-      "https://github.com/firecrawl/firecrawl",
-      "https://github.com/google/adk-python",
-      "https://github.com/guardrails-ai/guardrails",
-      "https://github.com/ibm/mcp-context-forge",
-      "https://github.com/joonspk-research/generative_agents",
-      "https://github.com/livekit/agents",
-      "https://github.com/microsoft/OmniParser",
-      "https://github.com/microsoft/TaskWeaver",
-      "https://github.com/microsoft/graphrag",
-      "https://github.com/mistralai/mistral-inference",
-      "https://github.com/openai/openai-agents-python",
-      "https://github.com/pathwaycom/pathway",
-      "https://github.com/pipecat-ai/pipecat",
-      "https://github.com/qodo-ai/pr-agent",
-      "https://github.com/simular-ai/Agent-S",
-      "https://github.com/skypilot-org/skypilot",
-      "https://github.com/sweepai/sweep",
-      "https://github.com/tavily-ai/tavily-python",
-      "https://github.com/unclecode/crawl4ai",
-      "https://github.com/w3c/did",
-      "https://github.com/wong2/litemcp",
-      "https://github.com/xlang-ai/OSWorld"
-    ]
+    }
   },
   "data": [
     {
@@ -976,126 +931,6 @@
       "repo": "https://github.com/agentsmd/agents.md",
       "month": "2026-02-01",
       "cumulative_pull_requests": 44
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2024-03-01",
-      "cumulative_pull_requests": 103
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2024-04-01",
-      "cumulative_pull_requests": 126
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2024-05-01",
-      "cumulative_pull_requests": 183
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2024-06-01",
-      "cumulative_pull_requests": 199
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2024-07-01",
-      "cumulative_pull_requests": 225
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2024-08-01",
-      "cumulative_pull_requests": 243
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2024-09-01",
-      "cumulative_pull_requests": 301
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2024-10-01",
-      "cumulative_pull_requests": 430
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2024-11-01",
-      "cumulative_pull_requests": 508
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2024-12-01",
-      "cumulative_pull_requests": 619
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2025-01-01",
-      "cumulative_pull_requests": 817
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2025-02-01",
-      "cumulative_pull_requests": 984
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2025-03-01",
-      "cumulative_pull_requests": 1181
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2025-04-01",
-      "cumulative_pull_requests": 1409
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2025-05-01",
-      "cumulative_pull_requests": 1641
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2025-06-01",
-      "cumulative_pull_requests": 1804
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2025-07-01",
-      "cumulative_pull_requests": 2017
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2025-08-01",
-      "cumulative_pull_requests": 2244
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2025-09-01",
-      "cumulative_pull_requests": 2540
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2025-10-01",
-      "cumulative_pull_requests": 2812
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2025-11-01",
-      "cumulative_pull_requests": 2991
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2025-12-01",
-      "cumulative_pull_requests": 3208
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2026-01-01",
-      "cumulative_pull_requests": 3461
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "month": "2026-02-01",
-      "cumulative_pull_requests": 3927
     },
     {
       "repo": "https://github.com/agntcy/acp-spec",

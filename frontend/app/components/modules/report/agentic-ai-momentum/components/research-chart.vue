@@ -4,7 +4,12 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <div class="w-full">
-    <div class="flex justify-end mb-4">
+    <div class="flex items-center justify-between mb-4">
+      <lfx-tabs
+        v-model="countMode"
+        :tabs="countModeTabs"
+        width-type="inline"
+      />
       <lfx-tabs
         v-model="displayMode"
         :tabs="displayTabs"
@@ -67,6 +72,13 @@ const displayTabs = [
 const displayMode = ref('absolute');
 const showPercentage = computed(() => displayMode.value === 'percentage');
 
+const countModeTabs = [
+  { value: 'monthly', label: 'Monthly' },
+  { value: 'cumulative', label: 'Cumulative' },
+];
+const countMode = ref('monthly');
+const showCumulative = computed(() => countMode.value === 'cumulative');
+
 // Get unique topics (sorted by total papers)
 const uniqueTopics = computed(() => {
   const topicTotals = new Map<string, number>();
@@ -92,10 +104,29 @@ const uniqueMonths = computed(() => {
   return Array.from(months).sort();
 });
 
+// Precompute running cumulative sums per topic (sorted month order)
+const cumulativeCounts = computed(() => {
+  const result = new Map<string, Map<string, number>>();
+  uniqueTopics.value.forEach((topic) => {
+    const topicMap = new Map<string, number>();
+    let running = 0;
+    uniqueMonths.value.forEach((month) => {
+      const dataPoint = props.data.find((item) => item.month === month && item.topic === topic);
+      running += dataPoint?.paper_count ?? 0;
+      topicMap.set(month, running);
+    });
+    result.set(topic, topicMap);
+  });
+  return result;
+});
+
 // Build chart data
 const chartData = computed<ChartData[]>(() =>
   uniqueMonths.value.map((month) => {
     const rawValues = uniqueTopics.value.map((topic) => {
+      if (showCumulative.value) {
+        return cumulativeCounts.value.get(topic)?.get(month) ?? 0;
+      }
       const dataPoint = props.data.find((item) => item.month === month && item.topic === topic);
       return dataPoint?.paper_count ?? 0;
     });

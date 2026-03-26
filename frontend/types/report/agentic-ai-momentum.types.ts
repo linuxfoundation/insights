@@ -161,7 +161,7 @@ export interface IssueNoResponseShareData extends RepoMonthMetric {
 
 // PR time to resolve
 export interface PullRequestTimeToResolveData extends RepoMonthMetric {
-  pr_time_to_resolve_avg_days: number;
+  median_time_to_resolve_days: number;
 }
 
 // Ecosystem layer definitions
@@ -206,9 +206,16 @@ export interface ProjectLeaderboardRow {
   contributors: number | null;
   contributorsDelta: number | null;
   mergeRate: number | null;
+  mergeRateDelta: number | null;
   timeToClose: number | null;
+  timeToCloseDelta: number | null;
   downloads: number | null;
   downloadsDelta: number | null;
+  cocomoValue: number | null;
+  prTimeToResolve: number | null;
+  prTimeToResolveDelta: number | null;
+  totalVulnerabilities: number | null;
+  totalVulnerabilitiesDelta: number | null;
 }
 
 // KPI summary data
@@ -230,7 +237,11 @@ export type MetricKey =
   | 'mergeRate'
   | 'timeToClose'
   | 'commits'
-  | 'pullRequests';
+  | 'pullRequests'
+  | 'cocomoValue'
+  | 'totalVulnerabilities'
+  | 'prTimeToResolve'
+  | 'releases';
 
 export interface MetricOption {
   key: MetricKey;

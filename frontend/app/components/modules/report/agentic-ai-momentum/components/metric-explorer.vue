@@ -4,54 +4,104 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <div class="w-full">
-    <!-- Axis selectors -->
-    <div class="flex flex-col sm:flex-row gap-4 mb-4">
-      <div class="flex items-center gap-2">
-        <span class="text-body-2 text-neutral-600">X-Axis:</span>
-        <lfx-dropdown-select
-          v-model="xAxisMetric"
-          placement="bottom-start"
-          width="12rem"
-        >
-          <template #trigger="{ selectedOption }">
-            <lfx-dropdown-selector class="whitespace-nowrap !text-sm">
-              <span>{{ selectedOption?.label }}</span>
-            </lfx-dropdown-selector>
-          </template>
-          <lfx-dropdown-item
-            v-for="option of metricOptions"
-            :key="option.key"
-            :value="option.key"
-            :label="option.label"
-            :checkmark-before="true"
+    <!-- Controls -->
+    <div class="flex flex-col gap-3 mb-4">
+      <!-- Row 1: three columns — X Axis | Y Axis | (Bubble Size + Trend Line stacked) -->
+      <div class="flex flex-wrap gap-x-3 gap-y-3 items-start">
+        <!-- X Axis -->
+        <div class="flex flex-col gap-1 w-[8rem]">
+          <span class="text-xs font-medium text-neutral-500">X Axis</span>
+          <lfx-dropdown-select
+            v-model="xAxisMetric"
+            placement="bottom-start"
+            width="8rem"
+          >
+            <template #trigger="{ selectedOption }">
+              <lfx-dropdown-selector class="whitespace-nowrap !text-sm">
+                <span>{{ selectedOption?.label }}</span>
+              </lfx-dropdown-selector>
+            </template>
+            <lfx-dropdown-item
+              v-for="option of metricOptions"
+              :key="option.key"
+              :value="option.key"
+              :label="option.label"
+              :checkmark-before="true"
+            />
+          </lfx-dropdown-select>
+          <lfx-tabs
+            v-model="xScaleMode"
+            :tabs="scaleTabs"
+            width-type="inline"
           />
-        </lfx-dropdown-select>
-      </div>
-      <div class="flex items-center gap-2">
-        <span class="text-body-2 text-neutral-600">Y-Axis:</span>
-        <lfx-dropdown-select
-          v-model="yAxisMetric"
-          placement="bottom-start"
-          width="12rem"
-        >
-          <template #trigger="{ selectedOption }">
-            <lfx-dropdown-selector class="whitespace-nowrap !text-sm">
-              <span>{{ selectedOption?.label }}</span>
-            </lfx-dropdown-selector>
-          </template>
-          <lfx-dropdown-item
-            v-for="option of metricOptions"
-            :key="option.key"
-            :value="option.key"
-            :label="option.label"
-            :checkmark-before="true"
+        </div>
+
+        <!-- Y Axis -->
+        <div class="flex flex-col gap-1 w-[8rem]">
+          <span class="text-xs font-medium text-neutral-500">Y Axis</span>
+          <lfx-dropdown-select
+            v-model="yAxisMetric"
+            placement="bottom-start"
+            width="8rem"
+          >
+            <template #trigger="{ selectedOption }">
+              <lfx-dropdown-selector class="whitespace-nowrap !text-sm">
+                <span>{{ selectedOption?.label }}</span>
+              </lfx-dropdown-selector>
+            </template>
+            <lfx-dropdown-item
+              v-for="option of metricOptions"
+              :key="option.key"
+              :value="option.key"
+              :label="option.label"
+              :checkmark-before="true"
+            />
+          </lfx-dropdown-select>
+          <lfx-tabs
+            v-model="yScaleMode"
+            :tabs="scaleTabs"
+            width-type="inline"
           />
-        </lfx-dropdown-select>
+        </div>
+
+        <!-- Bubble Size -->
+        <div class="flex flex-col gap-1 w-[8rem]">
+          <span class="text-xs font-medium text-neutral-500">Bubble Size</span>
+          <lfx-dropdown-select
+            v-model="zAxisMetric"
+            placement="bottom-start"
+            width="8rem"
+          >
+            <template #trigger="{ selectedOption }">
+              <lfx-dropdown-selector class="whitespace-nowrap !text-sm">
+                <span>{{ selectedOption?.label }}</span>
+              </lfx-dropdown-selector>
+            </template>
+            <lfx-dropdown-item
+              v-for="option of zMetricOptions"
+              :key="option.key"
+              :value="option.key"
+              :label="option.label"
+              :checkmark-before="true"
+            />
+          </lfx-dropdown-select>
+        </div>
+
+        <!-- Trend Line -->
+        <div class="flex flex-col gap-1 w-[8rem]">
+          <span class="text-xs font-medium text-neutral-500">Trend Line</span>
+          <lfx-tabs
+            v-model="trendLineMode"
+            :tabs="trendLineTabs"
+            width-type="inline"
+          />
+        </div>
       </div>
     </div>
 
+    <!-- Loading -->
     <div v-if="isLoading">
-      <div class="flex flex-col gap-4 h-[350px] sm:h-[400px] pt-4">
+      <div class="flex flex-col gap-4 w-full aspect-[4/3] max-h-[500px] pt-4">
         <lfx-skeleton
           height="100%"
           width="100%"
@@ -59,16 +109,18 @@ SPDX-License-Identifier: MIT
       </div>
     </div>
 
+    <!-- Empty state -->
     <div
       v-else-if="scatterData.length === 0"
-      class="flex items-center justify-center h-[350px] sm:h-[400px]"
+      class="flex items-center justify-center w-full aspect-[4/3] max-h-[500px]"
     >
       <div class="text-neutral-500">No data available for selected metrics.</div>
     </div>
 
+    <!-- Chart + Z legend overlay -->
     <div
       v-else
-      class="h-[350px] sm:h-[400px]"
+      class="relative w-full aspect-[4/3] max-h-[500px]"
     >
       <client-only>
         <lfx-chart
@@ -76,17 +128,66 @@ SPDX-License-Identifier: MIT
           :animation="true"
         />
       </client-only>
+
+      <!-- Z / bubble size legend — absolute top-right of plot area -->
+      <div
+        v-if="zAxisMetric !== 'none' && zLegendEntries.length"
+        class="absolute top-4 right-8 flex flex-col gap-1.5 bg-white/90 rounded px-2.5 py-2 shadow-sm border border-neutral-100"
+      >
+        <span class="text-xs font-medium text-neutral-500">{{ getAxisLabel(zAxisMetric as MetricKey) }}</span>
+        <div
+          v-for="(entry, i) in zLegendEntries"
+          :key="i"
+          class="flex items-center gap-2"
+        >
+          <div
+            class="rounded-full bg-neutral-400 opacity-60 flex-shrink-0"
+            :style="{ width: entry.size + 'px', height: entry.size + 'px' }"
+          />
+          <span class="text-xs text-neutral-500">{{ formatAxisValue(entry.value, zAxisMetric as MetricKey) }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Custom layer legend (replaces ECharts canvas legend) -->
+    <div
+      v-if="!isLoading && scatterData.length > 0"
+      class="flex flex-wrap items-center gap-x-4 gap-y-2 mt-3 pt-3 border-t border-neutral-100"
+    >
+      <!-- All / None filter (same LfxTabs style as other controls) -->
+      <lfx-tabs
+        v-model="layerFilterMode"
+        :tabs="layerFilterTabs"
+        width-type="inline"
+      />
+      <!-- Individual layer toggles -->
+      <button
+        v-for="layer in allLayerNames"
+        :key="layer"
+        type="button"
+        class="flex items-center gap-1.5 transition-opacity"
+        :class="activeLayers.has(layer) ? 'opacity-100' : 'opacity-30'"
+        @click="toggleLayer(layer)"
+      >
+        <div
+          class="rounded-full flex-shrink-0"
+          :style="{ width: '15px', height: '15px', backgroundColor: getLayerHexColor(layer) }"
+        />
+        <span class="text-sm text-neutral-700 whitespace-nowrap">{{ layer }}</span>
+      </button>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
+import { getLayerHexColor } from '../config/layer-colors';
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
 import LfxDropdownSelect from '~/components/uikit/dropdown/dropdown-select.vue';
 import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
 import LfxDropdownSelector from '~/components/uikit/dropdown/dropdown-selector.vue';
+import LfxTabs from '~/components/uikit/tabs/tabs.vue';
 import { lfxColors } from '~/config/styles/colors';
 import { formatNumber } from '~/components/shared/utils/formatter';
 import type {
@@ -96,6 +197,11 @@ import type {
   ContributorData,
   PackageDownloadsData,
   PullRequestMergeRateData,
+  IssueTimeToCloseData,
+  PullRequestTimeToResolveData,
+  VulnerabilitiesData,
+  CocomoValueData,
+  GitHubReleasesData,
   MetricKey,
   MetricOption,
 } from '~~/types/report/agentic-ai-momentum.types';
@@ -107,6 +213,11 @@ const props = defineProps<{
   contributorsData: ContributorData[];
   downloadsData: PackageDownloadsData[];
   mergeRateData: PullRequestMergeRateData[];
+  timeToCloseData: IssueTimeToCloseData[];
+  prTimeToResolveData: PullRequestTimeToResolveData[];
+  totalVulnerabilitiesData: VulnerabilitiesData[];
+  cocomoData: CocomoValueData[];
+  githubReleasesData: GitHubReleasesData[];
   isLoading: boolean;
 }>();
 
@@ -116,10 +227,39 @@ const metricOptions: MetricOption[] = [
   { key: 'contributors', label: 'Contributors', format: 'number' },
   { key: 'downloads', label: 'Downloads', format: 'number' },
   { key: 'mergeRate', label: 'Merge Rate', format: 'percent' },
+  { key: 'timeToClose', label: 'Time to Close', format: 'days' },
+  { key: 'prTimeToResolve', label: 'PR Time to Resolve', format: 'days' },
+  { key: 'totalVulnerabilities', label: 'Vulnerabilities', format: 'number' },
+  { key: 'cocomoValue', label: 'COCOMO Value', format: 'number' },
+  { key: 'releases', label: 'Releases', format: 'number' },
 ];
+
+const zMetricOptions = [{ key: 'none' as const, label: 'None', format: 'number' as const }, ...metricOptions];
+
+const scaleTabs = [
+  { value: 'linear', label: 'Linear' },
+  { value: 'log', label: 'Log' },
+];
+
+const trendLineTabs = [
+  { value: 'off', label: 'Off' },
+  { value: 'on', label: 'On' },
+];
+
+const MIN_SYMBOL_SIZE = 8;
+const MAX_SYMBOL_SIZE = 40;
 
 const xAxisMetric = ref<MetricKey>('stars');
 const yAxisMetric = ref<MetricKey>('contributors');
+const zAxisMetric = ref<MetricKey | 'none'>('none');
+const xScaleMode = ref<'linear' | 'log'>('linear');
+const yScaleMode = ref<'linear' | 'log'>('linear');
+const trendLineMode = ref<'off' | 'on'>('off');
+const activeLayers = ref<Set<string>>(new Set());
+
+const xLogScale = computed(() => xScaleMode.value === 'log');
+const yLogScale = computed(() => yScaleMode.value === 'log');
+const showTrendLine = computed(() => trendLineMode.value === 'on');
 
 // Helper to get latest value from time series data
 function getLatestValue<T extends { month: string }>(data: T[], repo: string, valueKey: keyof T): number | null {
@@ -148,60 +288,132 @@ function getMetricValue(project: AgenticProject, metric: MetricKey): number | nu
     }
     case 'mergeRate':
       return getLatestValue(props.mergeRateData, repo, 'pr_merge_rate');
+    case 'timeToClose':
+      return getLatestValue(props.timeToCloseData, repo, 'median_time_to_close_days');
+    case 'prTimeToResolve':
+      return getLatestValue(props.prTimeToResolveData, repo, 'median_time_to_resolve_days');
+    case 'totalVulnerabilities':
+      return getLatestValue(props.totalVulnerabilitiesData, repo, 'vulnerabilities_count');
+    case 'cocomoValue':
+      return getLatestValue(props.cocomoData, repo, 'estimated_cost_usd');
+    case 'releases':
+      return getLatestValue(props.githubReleasesData, repo, 'cumulative_releases');
     default:
       return null;
   }
 }
 
-// Build scatter data
+// Build scatter data (includes z value + log-scale zero filtering)
 const scatterData = computed(() => {
-  const data: Array<{
+  const result: Array<{
     name: string;
     layer: string;
     x: number;
     y: number;
+    z: number | null;
     githubUrl: string | null;
   }> = [];
 
-  props.projectsData.forEach((project) => {
+  for (const project of props.projectsData) {
     const xValue = getMetricValue(project, xAxisMetric.value);
     const yValue = getMetricValue(project, yAxisMetric.value);
+    if (xValue === null || yValue === null) continue;
+    if (xLogScale.value && xValue <= 0) continue;
+    if (yLogScale.value && yValue <= 0) continue;
 
-    if (xValue !== null && yValue !== null) {
-      data.push({
-        name: project.name,
-        layer: project.layer,
-        x: xValue,
-        y: yValue,
-        githubUrl: project.github_url,
-      });
-    }
-  });
+    const zValue = zAxisMetric.value !== 'none' ? getMetricValue(project, zAxisMetric.value as MetricKey) : null;
 
-  return data;
+    result.push({
+      name: project.name,
+      layer: project.layer,
+      x: xValue,
+      y: yValue,
+      z: zValue,
+      githubUrl: project.github_url,
+    });
+  }
+
+  return result;
 });
 
-// Get layer color in hex for chart
-const layerHexColors: Record<string, string> = {
-  'Protocols & Standards': '#3B82F6',
-  'Orchestration & Multi-Agent': '#8B5CF6',
-  'Personal & Coding Agents': '#10B981',
-  'Computer Use & Browser Agents': '#F97316',
-  'MCP Infrastructure': '#06B6D4',
-  'Memory & Retrieval': '#6366F1',
-  'Tool Use & Integration': '#EC4899',
-  'Evaluation & Observability': '#EAB308',
-  'Agent-Optimized Models': '#EF4444',
-  'Safety & Guardrails': '#059669',
-  'Developer Tooling & SDKs': '#64748B',
-  'Agent Infrastructure': '#7C3AED',
-  'Voice & Multimodal Agents': '#F59E0B',
-  'Research & Vertical Agents': '#14B8A6',
-};
+// Unique layer names in current data
+const allLayerNames = computed(() => [...new Set(scatterData.value.map((p) => p.layer))]);
 
-function getLayerHexColor(layer: string): string {
-  return layerHexColors[layer] || '#6B7280';
+// Sync activeLayers: add new layers as they appear, preserve existing deselections.
+// Uses watch(allLayerNames) so it only fires when the set of layers changes —
+// NOT when activeLayers itself changes (which would undo clearAllLayers()).
+watch(
+  allLayerNames,
+  (newLayers) => {
+    const current = new Set(activeLayers.value);
+    let changed = false;
+    newLayers.forEach((layer) => {
+      if (!current.has(layer)) {
+        current.add(layer);
+        changed = true;
+      }
+    });
+    if (changed) activeLayers.value = current;
+  },
+  { immediate: true },
+);
+
+function selectAllLayers() {
+  activeLayers.value = new Set(allLayerNames.value);
 }
+function clearAllLayers() {
+  activeLayers.value = new Set();
+}
+function toggleLayer(layer: string) {
+  const s = new Set(activeLayers.value);
+  if (s.has(layer)) s.delete(layer);
+  else s.add(layer);
+  activeLayers.value = s;
+}
+
+const layerFilterTabs = [
+  { value: 'all', label: 'All' },
+  { value: 'none', label: 'None' },
+];
+
+// Writable computed: reflects current selection state; setter drives select-all/clear-all.
+// Returns '' (no match) when a partial subset is active so neither tab appears selected.
+const layerFilterMode = computed({
+  get: (): string => {
+    if (activeLayers.value.size === 0) return 'none';
+    if (activeLayers.value.size >= allLayerNames.value.length) return 'all';
+    return '';
+  },
+  set: (v: string) => {
+    if (v === 'all') selectAllLayers();
+    else if (v === 'none') clearAllLayers();
+  },
+});
+
+// Z normalization
+const zRange = computed(() => {
+  if (zAxisMetric.value === 'none') return null;
+  const vals = scatterData.value
+    .filter((p) => activeLayers.value.has(p.layer) && p.z !== null)
+    .map((p) => p.z as number);
+  if (!vals.length) return null;
+  return { min: Math.min(...vals), max: Math.max(...vals) };
+});
+
+function normalizeSize(value: number): number {
+  const r = zRange.value;
+  if (!r || r.max === r.min) return MIN_SYMBOL_SIZE;
+  return MIN_SYMBOL_SIZE + Math.sqrt((value - r.min) / (r.max - r.min)) * (MAX_SYMBOL_SIZE - MIN_SYMBOL_SIZE);
+}
+
+const zLegendEntries = computed(() => {
+  const r = zRange.value;
+  if (!r || zAxisMetric.value === 'none') return [];
+  return [r.min, (r.min + r.max) / 2, r.max].map((v) => ({
+    value: v,
+    size: normalizeSize(v),
+  }));
+});
 
 // Format axis label
 function formatAxisValue(value: number, metric: MetricKey): string {
@@ -209,12 +421,12 @@ function formatAxisValue(value: number, metric: MetricKey): string {
   if (option?.format === 'percent') {
     return `${(value * 100).toFixed(0)}%`;
   }
-  if (value >= 1000000) {
-    return `${(value / 1000000).toFixed(1)}M`;
+  if (option?.format === 'days') {
+    return `${value.toFixed(0)}d`;
   }
-  if (value >= 1000) {
-    return `${(value / 1000).toFixed(0)}K`;
-  }
+  if (value >= 1_000_000_000) return `${(value / 1_000_000_000).toFixed(1)}B`;
+  if (value >= 1_000_000) return `${(value / 1_000_000).toFixed(1)}M`;
+  if (value >= 1_000) return `${(value / 1_000).toFixed(0)}K`;
   return formatNumber(value);
 }
 
@@ -223,58 +435,122 @@ function getAxisLabel(metric: MetricKey): string {
   return metricOptions.find((o) => o.key === metric)?.label || metric;
 }
 
-// Chart configuration
+// ── Linear regression helpers ─────────────────────────────────────────────────
+
+function linearRegression(points: [number, number][]) {
+  const n = points.length;
+  if (n < 3) return null;
+  const sumX = points.reduce((s, p) => s + p[0], 0);
+  const sumY = points.reduce((s, p) => s + p[1], 0);
+  const sumXX = points.reduce((s, p) => s + p[0] * p[0], 0);
+  const sumXY = points.reduce((s, p) => s + p[0] * p[1], 0);
+  const denom = n * sumXX - sumX * sumX;
+  if (denom === 0) return null;
+  const slope = (n * sumXY - sumX * sumY) / denom;
+  const intercept = (sumY - slope * sumX) / n;
+  const xMean = sumX / n;
+  const ssX = points.reduce((s, p) => s + (p[0] - xMean) ** 2, 0);
+  const ssRes = points.reduce((s, p) => s + (p[1] - (slope * p[0] + intercept)) ** 2, 0);
+  const mse = ssRes / Math.max(n - 2, 1);
+  return { slope, intercept, mse, ssX, xMean, n };
+}
+
+type Regression = NonNullable<ReturnType<typeof linearRegression>>;
+
+function predict(reg: Regression, x: number) {
+  const yPred = reg.slope * x + reg.intercept;
+  const se = Math.sqrt(reg.mse * (1 / reg.n + (x - reg.xMean) ** 2 / (reg.ssX || 1)));
+  return { yPred, lower: yPred - 1.96 * se, upper: yPred + 1.96 * se };
+}
+
+function buildTrendSeries(visiblePoints: { x: number; y: number }[]) {
+  if (visiblePoints.length < 3) return [];
+
+  const tx = (v: number) => (xLogScale.value ? Math.log10(Math.max(v, 1e-10)) : v);
+  const ty = (v: number) => (yLogScale.value ? Math.log10(Math.max(v, 1e-10)) : v);
+  const uy = (v: number) => (yLogScale.value ? Math.pow(10, v) : v);
+
+  const reg = linearRegression(visiblePoints.map((p) => [tx(p.x), ty(p.y)]));
+  if (!reg) return [];
+
+  const xs = visiblePoints.map((p) => p.x);
+  const xMin = Math.min(...xs);
+  const xMax = Math.max(...xs);
+  const N = 60;
+
+  const lineData: [number, number][] = [];
+
+  for (let i = 0; i <= N; i++) {
+    const x = xLogScale.value
+      ? Math.pow(
+          10,
+          Math.log10(Math.max(xMin, 1e-10)) +
+            (i / N) * (Math.log10(Math.max(xMax, 1e-10)) - Math.log10(Math.max(xMin, 1e-10))),
+        )
+      : xMin + (i / N) * (xMax - xMin);
+
+    const { yPred } = predict(reg, tx(x));
+    lineData.push([x, uy(yPred)]);
+  }
+
+  return [
+    {
+      name: '__trend',
+      type: 'line',
+      data: lineData,
+      lineStyle: { color: '#6B7280', width: 1.5, type: 'dashed' },
+      symbol: 'none',
+      silent: true,
+      legendHoverLink: false,
+      z: 2,
+    },
+  ];
+}
+
+// ── Chart configuration ───────────────────────────────────────────────────────
+
 const chartConfig = computed<ECOption>(() => {
-  // Group data by layer for series
-  const layerGroups = new Map<string, Array<[number, number, string]>>();
+  const layerGroups = new Map<string, Array<[number, number, string, number | null]>>();
 
   scatterData.value.forEach((point) => {
-    if (!layerGroups.has(point.layer)) {
-      layerGroups.set(point.layer, []);
-    }
-    layerGroups.get(point.layer)?.push([point.x, point.y, point.name]);
+    if (!activeLayers.value.has(point.layer)) return;
+    if (!layerGroups.has(point.layer)) layerGroups.set(point.layer, []);
+    layerGroups.get(point.layer)!.push([point.x, point.y, point.name, point.z]);
   });
 
-  const series = Array.from(layerGroups.entries()).map(([layer, points]) => ({
+  const scatterSeries = Array.from(layerGroups.entries()).map(([layer, points]) => ({
     name: layer,
     type: 'scatter',
     data: points,
-    symbolSize: 12,
+    symbolSize:
+      zAxisMetric.value === 'none'
+        ? 12
+        : (data: [number, number, string, number | null]) =>
+            data[3] !== null ? normalizeSize(data[3]) : MIN_SYMBOL_SIZE,
     itemStyle: {
       color: getLayerHexColor(layer),
       opacity: 0.8,
     },
     emphasis: {
       scale: 1.5,
-      itemStyle: {
-        opacity: 1,
-      },
+      itemStyle: { opacity: 1 },
     },
   }));
+
+  const visiblePoints = scatterData.value.filter((p) => activeLayers.value.has(p.layer));
+  const trendSeries = showTrendLine.value ? buildTrendSeries(visiblePoints) : [];
 
   return {
     grid: {
       top: '5%',
       left: '10%',
       right: '5%',
-      bottom: '25%',
+      bottom: '8%',
       containLabel: true,
     },
-    legend: {
-      show: true,
-      bottom: 0,
-      left: 'center',
-      type: 'plain',
-      itemWidth: 10,
-      itemHeight: 10,
-      itemGap: 12,
-      textStyle: {
-        fontSize: 10,
-        color: lfxColors.neutral[600],
-      },
-    },
+    legend: { show: false },
     xAxis: {
-      type: 'value',
+      type: xLogScale.value ? 'log' : 'value',
       name: getAxisLabel(xAxisMetric.value),
       nameLocation: 'middle',
       nameGap: 30,
@@ -295,7 +571,7 @@ const chartConfig = computed<ECOption>(() => {
       },
     },
     yAxis: {
-      type: 'value',
+      type: yLogScale.value ? 'log' : 'value',
       name: getAxisLabel(yAxisMetric.value),
       nameLocation: 'middle',
       nameGap: 50,
@@ -317,9 +593,10 @@ const chartConfig = computed<ECOption>(() => {
     },
     tooltip: {
       trigger: 'item',
-      formatter: (params: { data: [number, number, string]; seriesName: string; color: string }) => {
-        const [xVal, yVal, name] = params.data;
-        return `
+      formatter: (params: { data: [number, number, string, number | null]; seriesName: string; color: string }) => {
+        if (params.seriesName.startsWith('__')) return '';
+        const [xVal, yVal, name, zVal] = params.data;
+        let html = `
           <div style="font-size: 12px; color: ${lfxColors.neutral[900]};">
             <div style="font-weight: 600; margin-bottom: 4px;">${name}</div>
             <div style="display: flex; align-items: center; gap: 4px; margin-bottom: 2px;">
@@ -328,12 +605,15 @@ const chartConfig = computed<ECOption>(() => {
               ${params.seriesName}
             </div>
             <div>${getAxisLabel(xAxisMetric.value)}: ${formatAxisValue(xVal, xAxisMetric.value)}</div>
-            <div>${getAxisLabel(yAxisMetric.value)}: ${formatAxisValue(yVal, yAxisMetric.value)}</div>
-          </div>
-        `;
+            <div>${getAxisLabel(yAxisMetric.value)}: ${formatAxisValue(yVal, yAxisMetric.value)}</div>`;
+        if (zAxisMetric.value !== 'none' && zVal !== null) {
+          html += `<div>${getAxisLabel(zAxisMetric.value as MetricKey)}: ${formatAxisValue(zVal, zAxisMetric.value as MetricKey)}</div>`;
+        }
+        html += '</div>';
+        return html;
       },
     },
-    series,
+    series: [...trendSeries, ...scatterSeries],
   };
 });
 </script>
