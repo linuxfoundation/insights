@@ -7,21 +7,9 @@ SPDX-License-Identifier: MIT
     <div class="flex flex-col gap-2 items-start w-full">
       <p class="text-base font-bold leading-6 text-neutral-900">Recent vulnerabilities</p>
 
-      <!-- Loading state -->
-      <div
-        v-if="isFetching"
-        class="flex items-center justify-center py-10 w-full"
-      >
-        <lfx-spinner
-          :size="24"
-          type="light"
-          class="text-neutral-300"
-        />
-      </div>
-
       <!-- Error state -->
       <div
-        v-else-if="error"
+        v-if="error"
         class="flex items-center justify-center py-10 w-full"
       >
         <p class="text-neutral-500 text-sm">Failed to load vulnerabilities</p>
@@ -29,13 +17,15 @@ SPDX-License-Identifier: MIT
 
       <!-- Data display -->
       <lfx-project-vulnerability-table
-        v-else-if="data && data.length > 0"
-        :vulnerabilities="data"
+        :vulnerabilities="data || []"
+        :is-loading="isLoading"
+        :is-fetching-next-page="false"
+        :load-count="5"
       />
 
       <!-- Empty state -->
       <div
-        v-else
+        v-if="!isLoading && !data"
         class="flex items-center justify-center py-10 w-full"
       >
         <p class="text-neutral-500 text-sm">No recent vulnerabilities</p>
@@ -44,7 +34,7 @@ SPDX-License-Identifier: MIT
 
     <!-- View More Button -->
     <lfx-button
-      v-if="props.showViewMore && data && data.length > 0"
+      v-if="props.showViewMore && data && data.length > 0 && !isLoading"
       type="ghost"
       label="View more"
       class="!rounded-full hover:!bg-accent-100 hover:!text-accent-500"
@@ -57,7 +47,6 @@ SPDX-License-Identifier: MIT
 import { computed } from 'vue';
 import LfxProjectVulnerabilityTable from './vulnerability-table.vue';
 import LfxButton from '~/components/uikit/button/button.vue';
-import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 import {
   VULNERABILITY_API_SERVICE,
   type VulnerabilitiesQueryParams,
@@ -75,7 +64,7 @@ const props = withDefaults(
 
 const queryParams = computed(() => props.params);
 
-const { data, error, isFetching } = VULNERABILITY_API_SERVICE.fetchRecentVulnerabilities(queryParams);
+const { data, error, isLoading } = VULNERABILITY_API_SERVICE.fetchRecentVulnerabilities(queryParams);
 
 const emit = defineEmits<{
   (e: 'viewMore'): void;
