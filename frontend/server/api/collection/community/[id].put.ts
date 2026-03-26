@@ -54,10 +54,6 @@ export default defineEventHandler(async (event): Promise<CommunityCollection | E
         statusMessage: 'projects must be an array of non-empty strings',
       });
     }
-
-    if (body.projects.length > 1000) {
-      throw createError({ statusCode: 400, statusMessage: 'projects cannot exceed 1000 items' });
-    }
   }
 
   if (body?.repositoryUrls !== undefined) {
