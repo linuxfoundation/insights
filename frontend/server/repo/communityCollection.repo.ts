@@ -14,6 +14,8 @@ export interface CommunityCollection {
   color: string | null;
   imageUrl: string | null;
   projects: string[];
+  repositoryUrls: string[];
+  repositoryCount: number;
   createdAt: string;
   updatedAt: string;
 }
@@ -24,6 +26,7 @@ export interface CreateCommunityCollectionInput {
   isPrivate?: boolean;
   ssoUserId: string;
   projects?: string[];
+  repositoryUrls?: string[];
 }
 
 export interface UpdateCommunityCollectionInput {
@@ -31,6 +34,7 @@ export interface UpdateCommunityCollectionInput {
   description?: string;
   isPrivate?: boolean;
   projects?: string[];
+  repositoryUrls?: string[];
 }
 
 export class CommunityCollectionRepository {
@@ -64,6 +68,10 @@ export class CommunityCollectionRepository {
         await this.connectProjects(client, collectionId, input.projects);
       }
 
+      if (input.repositoryUrls?.length) {
+        await this.connectRepositories(client, collectionId, input.repositoryUrls);
+      }
+
       await client.query('COMMIT');
     } catch (error) {
       await client.query('ROLLBACK');
@@ -88,7 +96,7 @@ export class CommunityCollectionRepository {
 
       await this.validateOwnership(client, id, ssoUserId);
 
-      const { projects, ...collectionData } = input;
+      const { projects, repositoryUrls, ...collectionData } = input;
 
       const fields: string[] = [];
       const values: unknown[] = [];
@@ -131,6 +139,13 @@ export class CommunityCollectionRepository {
         }
       }
 
+      if (repositoryUrls !== undefined) {
+        await this.disconnectRepositories(client, id);
+        if (repositoryUrls.length > 0) {
+          await this.connectRepositories(client, id, repositoryUrls);
+        }
+      }
+
       await client.query('COMMIT');
     } catch (error) {
       await client.query('ROLLBACK');
@@ -152,6 +167,7 @@ export class CommunityCollectionRepository {
       await this.validateOwnership(client, id, ssoUserId);
 
       await this.disconnectProjects(client, id);
+      await this.disconnectRepositories(client, id);
 
       await client.query(
         `UPDATE collections SET "deletedAt" = NOW(), "updatedAt" = NOW() WHERE id = $1 AND "deletedAt" IS NULL`,
@@ -177,14 +193,26 @@ export class CommunityCollectionRepository {
       throw createError({ statusCode: 404, statusMessage: 'Collection not found' });
     }
 
-    const projectsResult = await this.pool.query(
-      `SELECT "insightsProjectId" FROM "collectionsInsightsProjects" WHERE "collectionId" = $1 AND "deletedAt" IS NULL`,
-      [id],
-    );
+    const [projectsResult, reposResult] = await Promise.all([
+      this.pool.query(
+        `SELECT "insightsProjectId" FROM "collectionsInsightsProjects" WHERE "collectionId" = $1 AND "deletedAt" IS NULL`,
+        [id],
+      ),
+      this.pool.query(
+        `SELECT r.url FROM "collectionsRepositories" cr
+         JOIN repositories r ON r.id = cr."repoId" AND r."deletedAt" IS NULL
+         WHERE cr."collectionId" = $1 AND cr."deletedAt" IS NULL`,
+        [id],
+      ),
+    ]);
+
+    const repositoryUrls = reposResult.rows.map((r: { url: string }) => r.url);
 
     return {
       ...collectionResult.rows[0],
       projects: projectsResult.rows.map((r: { insightsProjectId: string }) => r.insightsProjectId),
+      repositoryUrls,
+      repositoryCount: repositoryUrls.length,
     };
   }
 
@@ -294,13 +322,20 @@ export class CommunityCollectionRepository {
     }
 
     const collectionIds = collections.map((r: { id: string }) => r.id);
-    const [projectsResult, likeCountResult] = await Promise.all([
+    const [projectsResult, reposResult, likeCountResult] = await Promise.all([
       this.pool.query(
         `SELECT cip."collectionId", cip."insightsProjectId", cip.starred,
                 ip.name, ip.slug, ip."logoUrl"
          FROM "collectionsInsightsProjects" cip
          LEFT JOIN "insightsProjects" ip ON ip.id = cip."insightsProjectId"
          WHERE cip."collectionId" = ANY($1) AND cip."deletedAt" IS NULL`,
+        [collectionIds],
+      ),
+      this.pool.query(
+        `SELECT cr."collectionId", r.url
+         FROM "collectionsRepositories" cr
+         JOIN repositories r ON r.id = cr."repoId" AND r."deletedAt" IS NULL
+         WHERE cr."collectionId" = ANY($1) AND cr."deletedAt" IS NULL`,
         [collectionIds],
       ),
       this.pool.query(
@@ -328,6 +363,13 @@ export class CommunityCollectionRepository {
       projectsByCollection.set(row.collectionId, list);
     }
 
+    const reposByCollection = new Map<string, string[]>();
+    for (const row of reposResult.rows) {
+      const list = reposByCollection.get(row.collectionId) || [];
+      list.push(row.url);
+      reposByCollection.set(row.collectionId, list);
+    }
+
     const likeCountByCollection = new Map<string, number>();
     for (const row of likeCountResult.rows) {
       likeCountByCollection.set(row.collectionId, row.likeCount);
@@ -337,6 +379,7 @@ export class CommunityCollectionRepository {
       data: collections.map(
         (c: CommunityCollection & { ownerName?: string; ownerLogo?: string }) => {
           const allProjects = projectsByCollection.get(c.id) || [];
+          const allRepos = reposByCollection.get(c.id) || [];
           const starredProjects = allProjects.filter((p) => p.starred);
           const featured =
             starredProjects.length > 0
@@ -348,6 +391,8 @@ export class CommunityCollectionRepository {
             ownerName: undefined,
             ownerLogo: undefined,
             projectCount: allProjects.length,
+            repositoryCount: allRepos.length,
+            repositoryUrls: allRepos,
             featuredProjects: featured.slice(0, 5).map((p) => ({
               name: p.name,
               slug: p.slug,
@@ -388,13 +433,19 @@ export class CommunityCollectionRepository {
 
     const collection = collectionResult.rows[0];
 
-    const [projectsResult, likeCountResult] = await Promise.all([
+    const [projectsResult, reposResult, likeCountResult] = await Promise.all([
       this.pool.query(
         `SELECT cip."insightsProjectId", cip.starred,
                 ip.name, ip.slug, ip."logoUrl"
          FROM "collectionsInsightsProjects" cip
          LEFT JOIN "insightsProjects" ip ON ip.id = cip."insightsProjectId"
          WHERE cip."collectionId" = $1 AND cip."deletedAt" IS NULL`,
+        [collection.id],
+      ),
+      this.pool.query(
+        `SELECT r.url FROM "collectionsRepositories" cr
+         JOIN repositories r ON r.id = cr."repoId" AND r."deletedAt" IS NULL
+         WHERE cr."collectionId" = $1 AND cr."deletedAt" IS NULL`,
         [collection.id],
       ),
       this.pool.query(
@@ -406,6 +457,7 @@ export class CommunityCollectionRepository {
     ]);
 
     const allProjects = projectsResult.rows;
+    const allRepos = reposResult.rows.map((r: { url: string }) => r.url);
     const starredProjects = allProjects.filter((r: { starred: boolean }) => r.starred);
     const featured =
       starredProjects.length > 0
@@ -417,6 +469,8 @@ export class CommunityCollectionRepository {
       ownerName: undefined,
       ownerLogo: undefined,
       projectCount: allProjects.length,
+      repositoryCount: allRepos.length,
+      repositoryUrls: allRepos,
       featuredProjects: featured
         .slice(0, 5)
         .map((r: { name: string; slug: string; logoUrl: string }) => ({
@@ -460,14 +514,23 @@ export class CommunityCollectionRepository {
     }
 
     const collectionIds = collectionsResult.rows.map((r: { id: string }) => r.id);
-    const projectsResult = await this.pool.query(
-      `SELECT cip."collectionId", cip."insightsProjectId", cip.starred,
-              ip.name, ip.slug, ip."logoUrl"
-       FROM "collectionsInsightsProjects" cip
-       LEFT JOIN "insightsProjects" ip ON ip.id = cip."insightsProjectId"
-       WHERE cip."collectionId" = ANY($1) AND cip."deletedAt" IS NULL`,
-      [collectionIds],
-    );
+    const [projectsResult, reposResult] = await Promise.all([
+      this.pool.query(
+        `SELECT cip."collectionId", cip."insightsProjectId", cip.starred,
+                ip.name, ip.slug, ip."logoUrl"
+         FROM "collectionsInsightsProjects" cip
+         LEFT JOIN "insightsProjects" ip ON ip.id = cip."insightsProjectId"
+         WHERE cip."collectionId" = ANY($1) AND cip."deletedAt" IS NULL`,
+        [collectionIds],
+      ),
+      this.pool.query(
+        `SELECT cr."collectionId", r.url
+         FROM "collectionsRepositories" cr
+         JOIN repositories r ON r.id = cr."repoId" AND r."deletedAt" IS NULL
+         WHERE cr."collectionId" = ANY($1) AND cr."deletedAt" IS NULL`,
+        [collectionIds],
+      ),
+    ]);
 
     const projectsByCollection = new Map<
       string,
@@ -485,9 +548,17 @@ export class CommunityCollectionRepository {
       projectsByCollection.set(row.collectionId, list);
     }
 
+    const reposByCollection = new Map<string, string[]>();
+    for (const row of reposResult.rows) {
+      const list = reposByCollection.get(row.collectionId) || [];
+      list.push(row.url);
+      reposByCollection.set(row.collectionId, list);
+    }
+
     return {
       data: collectionsResult.rows.map((c: CommunityCollection) => {
         const allProjects = projectsByCollection.get(c.id) || [];
+        const allRepos = reposByCollection.get(c.id) || [];
         const starredProjects = allProjects.filter((p) => p.starred);
         const featured =
           starredProjects.length > 0
@@ -497,6 +568,8 @@ export class CommunityCollectionRepository {
         return {
           ...c,
           projectCount: allProjects.length,
+          repositoryCount: allRepos.length,
+          repositoryUrls: allRepos,
           featuredProjects: featured.slice(0, 5).map((p) => ({
             name: p.name,
             slug: p.slug,
@@ -510,7 +583,7 @@ export class CommunityCollectionRepository {
 
   async findProjectIdsBySlug(
     slug: string,
-  ): Promise<{ collectionId: string; projectIds: string[] } | null> {
+  ): Promise<{ collectionId: string; projectIds: string[]; repositoryUrls: string[] } | null> {
     const collectionResult = await this.pool.query(
       `SELECT c.id FROM collections c
        WHERE c.slug = $1 AND c."deletedAt" IS NULL`,
@@ -523,17 +596,26 @@ export class CommunityCollectionRepository {
 
     const collectionId = collectionResult.rows[0].id;
 
-    const projectsResult = await this.pool.query(
-      `SELECT "insightsProjectId" FROM "collectionsInsightsProjects"
-       WHERE "collectionId" = $1 AND "deletedAt" IS NULL`,
-      [collectionId],
-    );
+    const [projectsResult, reposResult] = await Promise.all([
+      this.pool.query(
+        `SELECT "insightsProjectId" FROM "collectionsInsightsProjects"
+         WHERE "collectionId" = $1 AND "deletedAt" IS NULL`,
+        [collectionId],
+      ),
+      this.pool.query(
+        `SELECT r.url FROM "collectionsRepositories" cr
+         JOIN repositories r ON r.id = cr."repoId" AND r."deletedAt" IS NULL
+         WHERE cr."collectionId" = $1 AND cr."deletedAt" IS NULL`,
+        [collectionId],
+      ),
+    ]);
 
     return {
       collectionId,
       projectIds: projectsResult.rows.map(
         (r: { insightsProjectId: string }) => r.insightsProjectId,
       ),
+      repositoryUrls: reposResult.rows.map((r: { url: string }) => r.url),
     };
   }
 
@@ -576,6 +658,58 @@ export class CommunityCollectionRepository {
   private async disconnectProjects(client: PoolClient, collectionId: string): Promise<void> {
     await client.query(
       `UPDATE "collectionsInsightsProjects" SET "deletedAt" = NOW(), "updatedAt" = NOW() WHERE "collectionId" = $1 AND "deletedAt" IS NULL`,
+      [collectionId],
+    );
+  }
+
+  private async connectRepositories(
+    client: PoolClient,
+    collectionId: string,
+    repositoryUrls: string[],
+  ): Promise<void> {
+    const uniqueUrls = [...new Set(repositoryUrls)];
+    if (uniqueUrls.length === 0) return;
+
+    // Look up repository IDs by URL
+    const repoResult = await client.query(
+      `SELECT id, url FROM repositories WHERE url = ANY($1) AND "deletedAt" IS NULL`,
+      [uniqueUrls],
+    );
+
+    if (repoResult.rows.length === 0) {
+      throw createError({
+        statusCode: 400,
+        statusMessage: 'None of the provided repository URLs were found',
+      });
+    }
+
+    const foundUrls = new Set(repoResult.rows.map((r: { url: string }) => r.url));
+    const notFound = uniqueUrls.filter((url) => !foundUrls.has(url));
+    if (notFound.length > 0) {
+      throw createError({
+        statusCode: 400,
+        statusMessage: 'Some repository URLs were not found',
+        data: {
+          notFoundUrls: notFound,
+          notFoundCount: notFound.length,
+        },
+      });
+    }
+
+    // Deduplicate repoIds in case different URLs resolve to the same repo
+    const uniqueRepoIds = [...new Set(repoResult.rows.map((r: { id: string }) => r.id))];
+
+    const values = uniqueRepoIds.map((_, i) => `($1, $${i + 2})`).join(', ');
+
+    await client.query(
+      `INSERT INTO "collectionsRepositories" ("collectionId", "repoId") VALUES ${values}`,
+      [collectionId, ...uniqueRepoIds],
+    );
+  }
+
+  private async disconnectRepositories(client: PoolClient, collectionId: string): Promise<void> {
+    await client.query(
+      `UPDATE "collectionsRepositories" SET "deletedAt" = NOW(), "updatedAt" = NOW() WHERE "collectionId" = $1 AND "deletedAt" IS NULL`,
       [collectionId],
     );
   }
