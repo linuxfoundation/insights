@@ -11,7 +11,7 @@ export enum VulnerabilitySeverity {
 
 export enum VulnerabilityStatus {
   OPEN = 'OPEN',
-  FIXED = 'RESOLVED',
+  RESOLVED = 'RESOLVED',
   FIX_AVAILABLE = 'FIX_AVAILABLE',
 }
 
@@ -71,8 +71,8 @@ export const STATUS_CONFIG: Record<VulnerabilityStatus, StatusConfig> = {
     iconClass: 'text-accent-500',
     iconType: 'solid',
   },
-  [VulnerabilityStatus.FIXED]: {
-    value: VulnerabilityStatus.FIXED,
+  [VulnerabilityStatus.RESOLVED]: {
+    value: VulnerabilityStatus.RESOLVED,
     label: 'Fixed',
     icon: 'circle-check',
     iconClass: 'text-positive-500',

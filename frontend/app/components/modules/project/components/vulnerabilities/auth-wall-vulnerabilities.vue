@@ -25,8 +25,8 @@ SPDX-License-Identifier: MIT
 
           <div class="flex flex-col gap-5 items-center">
             <div class="flex flex-col gap-1 items-center">
-              <h4 class="text-heading-4 font-secondary font-bold text-black">Unlock project vulnerabilities</h4>
-              <p class="text-body-2 text-neutral-600">Sign in to access detailed vulnerability insights including:</p>
+              <h4 class="text-xl font-secondary font-bold text-black">Unlock project vulnerabilities</h4>
+              <p class="text-sm text-neutral-600">Sign in to access detailed vulnerability insights including:</p>
             </div>
 
             <!-- Pills/Tags -->
@@ -46,13 +46,12 @@ SPDX-License-Identifier: MIT
         <div class="flex flex-col gap-4 items-center">
           <lfx-button
             type="primary"
-            size="large"
             class="!rounded-full"
             @click="handleLogin"
           >
             Sign in to your LFX account
           </lfx-button>
-          <p class="text-2xs text-neutral-600">
+          <p class="text-xs text-neutral-600">
             New to LFX?
             <a
               href="#"
