@@ -1,0 +1,2984 @@
+{
+  "metadata": {
+    "fetched_at": "2026-03-25T19:35:00.542813",
+    "schema": {
+      "name": "total_vulnerabilities_count",
+      "description": "Cumulative monthly count of known vulnerabilities for tracked repositories.",
+      "fields": [
+        {
+          "name": "repo",
+          "type": "string",
+          "description": "GitHub repository URL",
+          "optional": false
+        },
+        {
+          "name": "month",
+          "type": "date",
+          "description": "First day of the month (YYYY-MM-DD)",
+          "optional": false
+        },
+        {
+          "name": "vulnerabilities_count",
+          "type": "number",
+          "description": "Cumulative vulnerability count at end of month",
+          "optional": false
+        }
+      ]
+    },
+    "covered_items": [
+      "https://github.com/567-labs/instructor",
+      "https://github.com/Aider-AI/aider",
+      "https://github.com/AmoyLab/Unla",
+      "https://github.com/Arize-ai/phoenix",
+      "https://github.com/Azure/PyRIT",
+      "https://github.com/BerriAI/litellm",
+      "https://github.com/ComposioHQ/composio",
+      "https://github.com/FoundationAgents/MetaGPT",
+      "https://github.com/HKUDS/LightRAG",
+      "https://github.com/NVIDIA-NeMo/Guardrails",
+      "https://github.com/NVIDIA/garak",
+      "https://github.com/OAI/OpenAPI-Specification",
+      "https://github.com/OpenAutoCoder/Agentless",
+      "https://github.com/OpenHands/OpenHands",
+      "https://github.com/OpenInterpreter/open-interpreter",
+      "https://github.com/PrefectHQ/fastmcp",
+      "https://github.com/PrefectHQ/prefect",
+      "https://github.com/SWE-agent/SWE-agent",
+      "https://github.com/SWE-bench/SWE-bench",
+      "https://github.com/ShishirPatil/gorilla",
+      "https://github.com/Significant-Gravitas/AutoGPT",
+      "https://github.com/a2aproject/A2A",
+      "https://github.com/agentscope-ai/agentscope",
+      "https://github.com/agentsmd/agents.md",
+      "https://github.com/agntcy/acp-spec",
+      "https://github.com/agntcy/oasf",
+      "https://github.com/agntcy/slim",
+      "https://github.com/assafelovic/gpt-researcher",
+      "https://github.com/aurelio-labs/semantic-router",
+      "https://github.com/block/goose",
+      "https://github.com/browser-use/browser-use",
+      "https://github.com/camel-ai/camel",
+      "https://github.com/chroma-core/chroma",
+      "https://github.com/cline/cline",
+      "https://github.com/comet-ml/opik",
+      "https://github.com/confident-ai/deepeval",
+      "https://github.com/continuedev/continue",
+      "https://github.com/crewAIInc/crewAI",
+      "https://github.com/daytonaio/daytona",
+      "https://github.com/deepset-ai/haystack",
+      "https://github.com/e2b-dev/code-interpreter",
+      "https://github.com/firecrawl/firecrawl",
+      "https://github.com/google/adk-python",
+      "https://github.com/guardrails-ai/guardrails",
+      "https://github.com/huggingface/smolagents",
+      "https://github.com/huggingface/transformers",
+      "https://github.com/ibm/mcp-context-forge",
+      "https://github.com/infiniflow/ragflow",
+      "https://github.com/janhq/jan",
+      "https://github.com/joonspk-research/generative_agents",
+      "https://github.com/kserve/kserve",
+      "https://github.com/langchain-ai/langchain",
+      "https://github.com/langchain-ai/langgraph",
+      "https://github.com/langfuse/langfuse",
+      "https://github.com/letta-ai/letta",
+      "https://github.com/livekit/agents",
+      "https://github.com/mastra-ai/mastra",
+      "https://github.com/microsoft/OmniParser",
+      "https://github.com/microsoft/TaskWeaver",
+      "https://github.com/microsoft/autogen",
+      "https://github.com/microsoft/graphrag",
+      "https://github.com/microsoft/playwright",
+      "https://github.com/microsoft/semantic-kernel",
+      "https://github.com/milvus-io/milvus",
+      "https://github.com/mistralai/mistral-inference",
+      "https://github.com/modelcontextprotocol/inspector",
+      "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "https://github.com/ollama/ollama",
+      "https://github.com/open-telemetry/semantic-conventions",
+      "https://github.com/open-webui/open-webui",
+      "https://github.com/openai/openai-agents-python",
+      "https://github.com/openclaw/openclaw",
+      "https://github.com/pathwaycom/pathway",
+      "https://github.com/pipecat-ai/pipecat",
+      "https://github.com/promptfoo/promptfoo",
+      "https://github.com/pydantic/pydantic-ai",
+      "https://github.com/qdrant/qdrant",
+      "https://github.com/qodo-ai/pr-agent",
+      "https://github.com/run-llama/llama_index",
+      "https://github.com/simular-ai/Agent-S",
+      "https://github.com/skypilot-org/skypilot",
+      "https://github.com/stanfordnlp/dspy",
+      "https://github.com/sweepai/sweep",
+      "https://github.com/tavily-ai/tavily-python",
+      "https://github.com/temporalio/temporal",
+      "https://github.com/unclecode/crawl4ai",
+      "https://github.com/vibrantlabsai/ragas",
+      "https://github.com/w3c/did",
+      "https://github.com/weaviate/weaviate",
+      "https://github.com/wong2/litemcp",
+      "https://github.com/xlang-ai/OSWorld"
+    ]
+  },
+  "data": [
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2026-02-01",
+      "vulnerabilities_count": 1
+    },
+    {
+      "repo": "https://github.com/Azure/PyRIT",
+      "month": "2026-01-01",
+      "vulnerabilities_count": 1
+    },
+    {
+      "repo": "https://github.com/Azure/PyRIT",
+      "month": "2026-02-01",
+      "vulnerabilities_count": 4
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2024-03-01",
+      "vulnerabilities_count": 5
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2024-04-01",
+      "vulnerabilities_count": 6
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2025-02-01",
+      "vulnerabilities_count": 7
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2025-06-01",
+      "vulnerabilities_count": 8
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2025-10-01",
+      "vulnerabilities_count": 18
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2025-12-01",
+      "vulnerabilities_count": 28
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2026-01-01",
+      "vulnerabilities_count": 51
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2026-02-01",
+      "vulnerabilities_count": 73
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "month": "2025-07-01",
+      "vulnerabilities_count": 3
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "month": "2025-08-01",
+      "vulnerabilities_count": 4
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "month": "2025-09-01",
+      "vulnerabilities_count": 5
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "month": "2025-10-01",
+      "vulnerabilities_count": 10
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "month": "2025-11-01",
+      "vulnerabilities_count": 12
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "month": "2025-12-01",
+      "vulnerabilities_count": 19
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "month": "2026-01-01",
+      "vulnerabilities_count": 49
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "month": "2026-02-01",
+      "vulnerabilities_count": 76
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2025-09-01",
+      "vulnerabilities_count": 2
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2025-10-01",
+      "vulnerabilities_count": 4
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2025-11-01",
+      "vulnerabilities_count": 7
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2025-12-01",
+      "vulnerabilities_count": 12
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2026-01-01",
+      "vulnerabilities_count": 35
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2026-02-01",
+      "vulnerabilities_count": 59
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2025-11-01",
+      "vulnerabilities_count": 1
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2026-02-01",
+      "vulnerabilities_count": 2
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-09-01",
+      "vulnerabilities_count": 5
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-10-01",
+      "vulnerabilities_count": 7
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-11-01",
+      "vulnerabilities_count": 8
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-12-01",
+      "vulnerabilities_count": 9
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2026-01-01",
+      "vulnerabilities_count": 13
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2026-02-01",
+      "vulnerabilities_count": 21
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2024-10-01",
+      "vulnerabilities_count": 1
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2025-06-01",
+      "vulnerabilities_count": 2
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2025-07-01",
+      "vulnerabilities_count": 3
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2026-01-01",
+      "vulnerabilities_count": 9
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2026-02-01",
+      "vulnerabilities_count": 16
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2024-04-01",
+      "vulnerabilities_count": 17
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2024-05-01",
+      "vulnerabilities_count": 20
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2024-08-01",
+      "vulnerabilities_count": 21
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2024-09-01",
+      "vulnerabilities_count": 27
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2024-10-01",
+      "vulnerabilities_count": 34
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2024-11-01",
+      "vulnerabilities_count": 47
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2024-12-01",
+      "vulnerabilities_count": 49
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2025-02-01",
+      "vulnerabilities_count": 50
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2025-03-01",
+      "vulnerabilities_count": 56
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2025-04-01",
+      "vulnerabilities_count": 63
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2025-05-01",
+      "vulnerabilities_count": 67
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2025-06-01",
+      "vulnerabilities_count": 72
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2025-07-01",
+      "vulnerabilities_count": 82
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2025-08-01",
+      "vulnerabilities_count": 84
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2025-09-01",
+      "vulnerabilities_count": 91
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2025-11-01",
+      "vulnerabilities_count": 96
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2025-12-01",
+      "vulnerabilities_count": 98
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2026-01-01",
+      "vulnerabilities_count": 104
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2026-02-01",
+      "vulnerabilities_count": 115
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2024-03-01",
+      "vulnerabilities_count": 6
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2024-04-01",
+      "vulnerabilities_count": 17
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2024-05-01",
+      "vulnerabilities_count": 32
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2024-06-01",
+      "vulnerabilities_count": 45
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2024-07-01",
+      "vulnerabilities_count": 60
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2024-09-01",
+      "vulnerabilities_count": 62
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2024-10-01",
+      "vulnerabilities_count": 65
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2024-11-01",
+      "vulnerabilities_count": 74
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2024-12-01",
+      "vulnerabilities_count": 83
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2025-03-01",
+      "vulnerabilities_count": 96
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2025-04-01",
+      "vulnerabilities_count": 99
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2025-05-01",
+      "vulnerabilities_count": 105
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2025-06-01",
+      "vulnerabilities_count": 113
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2025-07-01",
+      "vulnerabilities_count": 120
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2025-08-01",
+      "vulnerabilities_count": 124
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2025-10-01",
+      "vulnerabilities_count": 129
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2025-11-01",
+      "vulnerabilities_count": 132
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2025-12-01",
+      "vulnerabilities_count": 147
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2026-01-01",
+      "vulnerabilities_count": 206
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2026-02-01",
+      "vulnerabilities_count": 231
+    },
+    {
+      "repo": "https://github.com/agntcy/oasf",
+      "month": "2025-08-01",
+      "vulnerabilities_count": 3
+    },
+    {
+      "repo": "https://github.com/agntcy/oasf",
+      "month": "2025-09-01",
+      "vulnerabilities_count": 6
+    },
+    {
+      "repo": "https://github.com/agntcy/oasf",
+      "month": "2025-10-01",
+      "vulnerabilities_count": 36
+    },
+    {
+      "repo": "https://github.com/agntcy/oasf",
+      "month": "2025-12-01",
+      "vulnerabilities_count": 42
+    },
+    {
+      "repo": "https://github.com/agntcy/oasf",
+      "month": "2026-01-01",
+      "vulnerabilities_count": 51
+    },
+    {
+      "repo": "https://github.com/agntcy/oasf",
+      "month": "2026-02-01",
+      "vulnerabilities_count": 60
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "month": "2024-09-01",
+      "vulnerabilities_count": 1
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "month": "2024-10-01",
+      "vulnerabilities_count": 2
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "month": "2025-06-01",
+      "vulnerabilities_count": 4
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "month": "2025-08-01",
+      "vulnerabilities_count": 5
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "month": "2025-09-01",
+      "vulnerabilities_count": 6
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "month": "2025-10-01",
+      "vulnerabilities_count": 26
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "month": "2025-12-01",
+      "vulnerabilities_count": 31
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "month": "2026-01-01",
+      "vulnerabilities_count": 40
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "month": "2026-02-01",
+      "vulnerabilities_count": 48
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2024-05-01",
+      "vulnerabilities_count": 6
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2024-12-01",
+      "vulnerabilities_count": 9
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2025-06-01",
+      "vulnerabilities_count": 10
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2025-07-01",
+      "vulnerabilities_count": 12
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2025-11-01",
+      "vulnerabilities_count": 14
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2025-12-01",
+      "vulnerabilities_count": 17
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2026-01-01",
+      "vulnerabilities_count": 19
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2026-02-01",
+      "vulnerabilities_count": 24
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2024-09-01",
+      "vulnerabilities_count": 3
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2024-10-01",
+      "vulnerabilities_count": 4
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2025-08-01",
+      "vulnerabilities_count": 6
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2025-09-01",
+      "vulnerabilities_count": 7
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2025-12-01",
+      "vulnerabilities_count": 8
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2026-01-01",
+      "vulnerabilities_count": 15
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2026-02-01",
+      "vulnerabilities_count": 28
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2024-03-01",
+      "vulnerabilities_count": 13
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2024-04-01",
+      "vulnerabilities_count": 15
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2024-05-01",
+      "vulnerabilities_count": 19
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2024-06-01",
+      "vulnerabilities_count": 23
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2024-08-01",
+      "vulnerabilities_count": 27
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2024-09-01",
+      "vulnerabilities_count": 28
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2024-10-01",
+      "vulnerabilities_count": 53
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2024-11-01",
+      "vulnerabilities_count": 54
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-01-01",
+      "vulnerabilities_count": 55
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-03-01",
+      "vulnerabilities_count": 58
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-04-01",
+      "vulnerabilities_count": 59
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-05-01",
+      "vulnerabilities_count": 60
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-07-01",
+      "vulnerabilities_count": 61
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-08-01",
+      "vulnerabilities_count": 62
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-10-01",
+      "vulnerabilities_count": 64
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2026-01-01",
+      "vulnerabilities_count": 74
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2026-02-01",
+      "vulnerabilities_count": 82
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2024-03-01",
+      "vulnerabilities_count": 5
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2024-05-01",
+      "vulnerabilities_count": 6
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2024-06-01",
+      "vulnerabilities_count": 7
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2024-09-01",
+      "vulnerabilities_count": 14
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2024-10-01",
+      "vulnerabilities_count": 16
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2024-11-01",
+      "vulnerabilities_count": 17
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2024-12-01",
+      "vulnerabilities_count": 21
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-02-01",
+      "vulnerabilities_count": 26
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-03-01",
+      "vulnerabilities_count": 39
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-04-01",
+      "vulnerabilities_count": 46
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-06-01",
+      "vulnerabilities_count": 53
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-07-01",
+      "vulnerabilities_count": 58
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-08-01",
+      "vulnerabilities_count": 64
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-09-01",
+      "vulnerabilities_count": 74
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-10-01",
+      "vulnerabilities_count": 84
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-11-01",
+      "vulnerabilities_count": 100
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-12-01",
+      "vulnerabilities_count": 109
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2026-01-01",
+      "vulnerabilities_count": 149
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2026-02-01",
+      "vulnerabilities_count": 198
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2025-02-01",
+      "vulnerabilities_count": 2
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2025-12-01",
+      "vulnerabilities_count": 3
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2026-01-01",
+      "vulnerabilities_count": 13
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2026-02-01",
+      "vulnerabilities_count": 43
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2024-04-01",
+      "vulnerabilities_count": 1
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2024-08-01",
+      "vulnerabilities_count": 3
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2025-02-01",
+      "vulnerabilities_count": 5
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2025-03-01",
+      "vulnerabilities_count": 9
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2025-04-01",
+      "vulnerabilities_count": 10
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2025-05-01",
+      "vulnerabilities_count": 12
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2025-06-01",
+      "vulnerabilities_count": 13
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2025-07-01",
+      "vulnerabilities_count": 15
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2025-08-01",
+      "vulnerabilities_count": 19
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2025-09-01",
+      "vulnerabilities_count": 24
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2025-10-01",
+      "vulnerabilities_count": 25
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2025-11-01",
+      "vulnerabilities_count": 27
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2025-12-01",
+      "vulnerabilities_count": 30
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2026-01-01",
+      "vulnerabilities_count": 35
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2026-02-01",
+      "vulnerabilities_count": 90
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2025-02-01",
+      "vulnerabilities_count": 1
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2025-06-01",
+      "vulnerabilities_count": 2
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2025-07-01",
+      "vulnerabilities_count": 3
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2025-11-01",
+      "vulnerabilities_count": 7
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2025-12-01",
+      "vulnerabilities_count": 9
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2026-01-01",
+      "vulnerabilities_count": 14
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2026-02-01",
+      "vulnerabilities_count": 34
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2024-04-01",
+      "vulnerabilities_count": 313
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2024-05-01",
+      "vulnerabilities_count": 316
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2024-06-01",
+      "vulnerabilities_count": 320
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2024-07-01",
+      "vulnerabilities_count": 321
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2024-08-01",
+      "vulnerabilities_count": 322
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2024-10-01",
+      "vulnerabilities_count": 323
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2024-11-01",
+      "vulnerabilities_count": 328
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2025-01-01",
+      "vulnerabilities_count": 329
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2025-02-01",
+      "vulnerabilities_count": 333
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2025-03-01",
+      "vulnerabilities_count": 344
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2025-04-01",
+      "vulnerabilities_count": 345
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2025-06-01",
+      "vulnerabilities_count": 353
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2025-07-01",
+      "vulnerabilities_count": 357
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2025-09-01",
+      "vulnerabilities_count": 368
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2025-10-01",
+      "vulnerabilities_count": 376
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2025-11-01",
+      "vulnerabilities_count": 397
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2025-12-01",
+      "vulnerabilities_count": 408
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2026-01-01",
+      "vulnerabilities_count": 467
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2026-02-01",
+      "vulnerabilities_count": 561
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2026-02-01",
+      "vulnerabilities_count": 3
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2024-03-01",
+      "vulnerabilities_count": 70
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2024-04-01",
+      "vulnerabilities_count": 77
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2024-05-01",
+      "vulnerabilities_count": 79
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2024-06-01",
+      "vulnerabilities_count": 82
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2024-07-01",
+      "vulnerabilities_count": 83
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2024-09-01",
+      "vulnerabilities_count": 91
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2024-10-01",
+      "vulnerabilities_count": 92
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2024-11-01",
+      "vulnerabilities_count": 94
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2024-12-01",
+      "vulnerabilities_count": 96
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2025-01-01",
+      "vulnerabilities_count": 98
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2025-02-01",
+      "vulnerabilities_count": 101
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2025-03-01",
+      "vulnerabilities_count": 102
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2025-04-01",
+      "vulnerabilities_count": 105
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2025-06-01",
+      "vulnerabilities_count": 113
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2025-07-01",
+      "vulnerabilities_count": 117
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2025-08-01",
+      "vulnerabilities_count": 120
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2025-09-01",
+      "vulnerabilities_count": 126
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2025-10-01",
+      "vulnerabilities_count": 168
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2025-11-01",
+      "vulnerabilities_count": 173
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2025-12-01",
+      "vulnerabilities_count": 198
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2026-01-01",
+      "vulnerabilities_count": 269
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2026-02-01",
+      "vulnerabilities_count": 313
+    },
+    {
+      "repo": "https://github.com/e2b-dev/code-interpreter",
+      "month": "2026-02-01",
+      "vulnerabilities_count": 5
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2024-03-01",
+      "vulnerabilities_count": 2
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2024-09-01",
+      "vulnerabilities_count": 3
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2025-04-01",
+      "vulnerabilities_count": 4
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2025-10-01",
+      "vulnerabilities_count": 5
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2026-01-01",
+      "vulnerabilities_count": 6
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2024-10-01",
+      "vulnerabilities_count": 1
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2024-11-01",
+      "vulnerabilities_count": 7
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2025-03-01",
+      "vulnerabilities_count": 9
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2025-04-01",
+      "vulnerabilities_count": 14
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2025-05-01",
+      "vulnerabilities_count": 16
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2025-06-01",
+      "vulnerabilities_count": 17
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2025-07-01",
+      "vulnerabilities_count": 21
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2025-08-01",
+      "vulnerabilities_count": 23
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2025-09-01",
+      "vulnerabilities_count": 26
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2025-10-01",
+      "vulnerabilities_count": 29
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2025-11-01",
+      "vulnerabilities_count": 30
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2026-01-01",
+      "vulnerabilities_count": 33
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2026-02-01",
+      "vulnerabilities_count": 40
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2024-04-01",
+      "vulnerabilities_count": 16
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2024-05-01",
+      "vulnerabilities_count": 17
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2024-10-01",
+      "vulnerabilities_count": 19
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2025-03-01",
+      "vulnerabilities_count": 21
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2025-04-01",
+      "vulnerabilities_count": 27
+    },
+    {
+      "repo": "https://github.com/ibm/mcp-context-forge",
+      "month": "2025-08-01",
+      "vulnerabilities_count": 4
+    },
+    {
+      "repo": "https://github.com/ibm/mcp-context-forge",
+      "month": "2025-09-01",
+      "vulnerabilities_count": 8
+    },
+    {
+      "repo": "https://github.com/ibm/mcp-context-forge",
+      "month": "2025-10-01",
+      "vulnerabilities_count": 66
+    },
+    {
+      "repo": "https://github.com/ibm/mcp-context-forge",
+      "month": "2025-12-01",
+      "vulnerabilities_count": 74
+    },
+    {
+      "repo": "https://github.com/ibm/mcp-context-forge",
+      "month": "2026-01-01",
+      "vulnerabilities_count": 86
+    },
+    {
+      "repo": "https://github.com/ibm/mcp-context-forge",
+      "month": "2026-02-01",
+      "vulnerabilities_count": 90
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2024-03-01",
+      "vulnerabilities_count": 5
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2024-04-01",
+      "vulnerabilities_count": 6
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2024-05-01",
+      "vulnerabilities_count": 7
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2025-03-01",
+      "vulnerabilities_count": 8
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2025-09-01",
+      "vulnerabilities_count": 9
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2025-10-01",
+      "vulnerabilities_count": 19
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2025-11-01",
+      "vulnerabilities_count": 21
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2025-12-01",
+      "vulnerabilities_count": 26
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2026-01-01",
+      "vulnerabilities_count": 36
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2026-02-01",
+      "vulnerabilities_count": 48
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2024-03-01",
+      "vulnerabilities_count": 5
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2024-05-01",
+      "vulnerabilities_count": 9
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2024-06-01",
+      "vulnerabilities_count": 15
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2024-11-01",
+      "vulnerabilities_count": 16
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2025-02-01",
+      "vulnerabilities_count": 19
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2025-03-01",
+      "vulnerabilities_count": 20
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2025-04-01",
+      "vulnerabilities_count": 23
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2025-05-01",
+      "vulnerabilities_count": 24
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2025-06-01",
+      "vulnerabilities_count": 26
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2025-07-01",
+      "vulnerabilities_count": 29
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2025-08-01",
+      "vulnerabilities_count": 39
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2025-09-01",
+      "vulnerabilities_count": 44
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2025-10-01",
+      "vulnerabilities_count": 49
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2025-11-01",
+      "vulnerabilities_count": 61
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2025-12-01",
+      "vulnerabilities_count": 68
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2026-01-01",
+      "vulnerabilities_count": 93
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2026-02-01",
+      "vulnerabilities_count": 124
+    },
+    {
+      "repo": "https://github.com/joonspk-research/generative_agents",
+      "month": "2024-04-01",
+      "vulnerabilities_count": 225
+    },
+    {
+      "repo": "https://github.com/joonspk-research/generative_agents",
+      "month": "2024-05-01",
+      "vulnerabilities_count": 231
+    },
+    {
+      "repo": "https://github.com/joonspk-research/generative_agents",
+      "month": "2024-06-01",
+      "vulnerabilities_count": 241
+    },
+    {
+      "repo": "https://github.com/joonspk-research/generative_agents",
+      "month": "2024-07-01",
+      "vulnerabilities_count": 249
+    },
+    {
+      "repo": "https://github.com/joonspk-research/generative_agents",
+      "month": "2024-10-01",
+      "vulnerabilities_count": 251
+    },
+    {
+      "repo": "https://github.com/joonspk-research/generative_agents",
+      "month": "2024-11-01",
+      "vulnerabilities_count": 253
+    },
+    {
+      "repo": "https://github.com/joonspk-research/generative_agents",
+      "month": "2025-03-01",
+      "vulnerabilities_count": 255
+    },
+    {
+      "repo": "https://github.com/joonspk-research/generative_agents",
+      "month": "2025-04-01",
+      "vulnerabilities_count": 257
+    },
+    {
+      "repo": "https://github.com/joonspk-research/generative_agents",
+      "month": "2025-06-01",
+      "vulnerabilities_count": 263
+    },
+    {
+      "repo": "https://github.com/joonspk-research/generative_agents",
+      "month": "2025-07-01",
+      "vulnerabilities_count": 265
+    },
+    {
+      "repo": "https://github.com/joonspk-research/generative_agents",
+      "month": "2025-09-01",
+      "vulnerabilities_count": 267
+    },
+    {
+      "repo": "https://github.com/joonspk-research/generative_agents",
+      "month": "2025-11-01",
+      "vulnerabilities_count": 271
+    },
+    {
+      "repo": "https://github.com/joonspk-research/generative_agents",
+      "month": "2025-12-01",
+      "vulnerabilities_count": 275
+    },
+    {
+      "repo": "https://github.com/joonspk-research/generative_agents",
+      "month": "2026-01-01",
+      "vulnerabilities_count": 293
+    },
+    {
+      "repo": "https://github.com/joonspk-research/generative_agents",
+      "month": "2026-02-01",
+      "vulnerabilities_count": 297
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2024-03-01",
+      "vulnerabilities_count": 40
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2024-04-01",
+      "vulnerabilities_count": 41
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2024-05-01",
+      "vulnerabilities_count": 42
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2024-06-01",
+      "vulnerabilities_count": 50
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2024-07-01",
+      "vulnerabilities_count": 51
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2024-09-01",
+      "vulnerabilities_count": 54
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2024-12-01",
+      "vulnerabilities_count": 57
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-01-01",
+      "vulnerabilities_count": 59
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-02-01",
+      "vulnerabilities_count": 61
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-04-01",
+      "vulnerabilities_count": 63
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-05-01",
+      "vulnerabilities_count": 73
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-06-01",
+      "vulnerabilities_count": 92
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-07-01",
+      "vulnerabilities_count": 100
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-08-01",
+      "vulnerabilities_count": 102
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-09-01",
+      "vulnerabilities_count": 105
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-10-01",
+      "vulnerabilities_count": 116
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-11-01",
+      "vulnerabilities_count": 130
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-12-01",
+      "vulnerabilities_count": 153
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2026-01-01",
+      "vulnerabilities_count": 252
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2026-02-01",
+      "vulnerabilities_count": 277
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2025-03-01",
+      "vulnerabilities_count": 1
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2025-06-01",
+      "vulnerabilities_count": 2
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2026-01-01",
+      "vulnerabilities_count": 3
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2025-02-01",
+      "vulnerabilities_count": 1
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2025-03-01",
+      "vulnerabilities_count": 2
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2025-06-01",
+      "vulnerabilities_count": 3
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2025-09-01",
+      "vulnerabilities_count": 6
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2025-10-01",
+      "vulnerabilities_count": 7
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2025-11-01",
+      "vulnerabilities_count": 8
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2026-01-01",
+      "vulnerabilities_count": 11
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2026-02-01",
+      "vulnerabilities_count": 26
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2025-03-01",
+      "vulnerabilities_count": 1
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2025-07-01",
+      "vulnerabilities_count": 5
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2025-10-01",
+      "vulnerabilities_count": 14
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2025-11-01",
+      "vulnerabilities_count": 17
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2025-12-01",
+      "vulnerabilities_count": 28
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2026-01-01",
+      "vulnerabilities_count": 49
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2026-02-01",
+      "vulnerabilities_count": 63
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2025-02-01",
+      "vulnerabilities_count": 17
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2025-03-01",
+      "vulnerabilities_count": 20
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2025-06-01",
+      "vulnerabilities_count": 21
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2025-07-01",
+      "vulnerabilities_count": 27
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2025-08-01",
+      "vulnerabilities_count": 29
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2025-09-01",
+      "vulnerabilities_count": 54
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2025-11-01",
+      "vulnerabilities_count": 82
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2025-12-01",
+      "vulnerabilities_count": 92
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2026-01-01",
+      "vulnerabilities_count": 173
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2026-02-01",
+      "vulnerabilities_count": 295
+    },
+    {
+      "repo": "https://github.com/microsoft/TaskWeaver",
+      "month": "2025-12-01",
+      "vulnerabilities_count": 1
+    },
+    {
+      "repo": "https://github.com/microsoft/TaskWeaver",
+      "month": "2026-01-01",
+      "vulnerabilities_count": 3
+    },
+    {
+      "repo": "https://github.com/microsoft/TaskWeaver",
+      "month": "2026-02-01",
+      "vulnerabilities_count": 11
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2025-02-01",
+      "vulnerabilities_count": 1
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2025-03-01",
+      "vulnerabilities_count": 3
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2025-04-01",
+      "vulnerabilities_count": 9
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2025-05-01",
+      "vulnerabilities_count": 16
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2025-06-01",
+      "vulnerabilities_count": 26
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2025-07-01",
+      "vulnerabilities_count": 42
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2025-08-01",
+      "vulnerabilities_count": 46
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2025-09-01",
+      "vulnerabilities_count": 55
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2025-10-01",
+      "vulnerabilities_count": 64
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2025-11-01",
+      "vulnerabilities_count": 71
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2025-12-01",
+      "vulnerabilities_count": 84
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2026-01-01",
+      "vulnerabilities_count": 120
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2026-02-01",
+      "vulnerabilities_count": 149
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
+      "month": "2025-12-01",
+      "vulnerabilities_count": 4
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
+      "month": "2026-01-01",
+      "vulnerabilities_count": 7
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
+      "month": "2026-02-01",
+      "vulnerabilities_count": 12
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2026-01-01",
+      "vulnerabilities_count": 1
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2026-02-01",
+      "vulnerabilities_count": 3
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2024-04-01",
+      "vulnerabilities_count": 6
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2024-10-01",
+      "vulnerabilities_count": 7
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2024-11-01",
+      "vulnerabilities_count": 8
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2025-03-01",
+      "vulnerabilities_count": 11
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2025-04-01",
+      "vulnerabilities_count": 14
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2025-06-01",
+      "vulnerabilities_count": 19
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2025-07-01",
+      "vulnerabilities_count": 27
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2025-10-01",
+      "vulnerabilities_count": 29
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2025-11-01",
+      "vulnerabilities_count": 33
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2025-12-01",
+      "vulnerabilities_count": 40
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2026-01-01",
+      "vulnerabilities_count": 66
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2026-02-01",
+      "vulnerabilities_count": 100
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2024-09-01",
+      "vulnerabilities_count": 9
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2024-11-01",
+      "vulnerabilities_count": 12
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2025-09-01",
+      "vulnerabilities_count": 13
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2025-10-01",
+      "vulnerabilities_count": 14
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2025-11-01",
+      "vulnerabilities_count": 15
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2025-12-01",
+      "vulnerabilities_count": 20
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2026-01-01",
+      "vulnerabilities_count": 26
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2026-02-01",
+      "vulnerabilities_count": 38
+    },
+    {
+      "repo": "https://github.com/mistralai/mistral-inference",
+      "month": "2024-10-01",
+      "vulnerabilities_count": 1
+    },
+    {
+      "repo": "https://github.com/mistralai/mistral-inference",
+      "month": "2024-12-01",
+      "vulnerabilities_count": 3
+    },
+    {
+      "repo": "https://github.com/mistralai/mistral-inference",
+      "month": "2025-03-01",
+      "vulnerabilities_count": 5
+    },
+    {
+      "repo": "https://github.com/mistralai/mistral-inference",
+      "month": "2025-04-01",
+      "vulnerabilities_count": 8
+    },
+    {
+      "repo": "https://github.com/mistralai/mistral-inference",
+      "month": "2025-06-01",
+      "vulnerabilities_count": 12
+    },
+    {
+      "repo": "https://github.com/mistralai/mistral-inference",
+      "month": "2025-12-01",
+      "vulnerabilities_count": 15
+    },
+    {
+      "repo": "https://github.com/mistralai/mistral-inference",
+      "month": "2026-01-01",
+      "vulnerabilities_count": 19
+    },
+    {
+      "repo": "https://github.com/mistralai/mistral-inference",
+      "month": "2026-02-01",
+      "vulnerabilities_count": 20
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "month": "2026-02-01",
+      "vulnerabilities_count": 6
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "month": "2025-08-01",
+      "vulnerabilities_count": 1
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "month": "2025-09-01",
+      "vulnerabilities_count": 2
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "month": "2025-10-01",
+      "vulnerabilities_count": 12
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "month": "2025-12-01",
+      "vulnerabilities_count": 14
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "month": "2026-01-01",
+      "vulnerabilities_count": 17
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "month": "2026-02-01",
+      "vulnerabilities_count": 19
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2025-04-01",
+      "vulnerabilities_count": 1
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2025-06-01",
+      "vulnerabilities_count": 4
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2025-07-01",
+      "vulnerabilities_count": 5
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2025-08-01",
+      "vulnerabilities_count": 6
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2025-09-01",
+      "vulnerabilities_count": 9
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2025-10-01",
+      "vulnerabilities_count": 21
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2025-11-01",
+      "vulnerabilities_count": 27
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2025-12-01",
+      "vulnerabilities_count": 31
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2026-01-01",
+      "vulnerabilities_count": 45
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2026-02-01",
+      "vulnerabilities_count": 54
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2024-04-01",
+      "vulnerabilities_count": 4
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2024-10-01",
+      "vulnerabilities_count": 5
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2025-02-01",
+      "vulnerabilities_count": 7
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2025-03-01",
+      "vulnerabilities_count": 9
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2025-04-01",
+      "vulnerabilities_count": 14
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2025-05-01",
+      "vulnerabilities_count": 19
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2025-06-01",
+      "vulnerabilities_count": 22
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2025-07-01",
+      "vulnerabilities_count": 30
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2025-08-01",
+      "vulnerabilities_count": 36
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2025-09-01",
+      "vulnerabilities_count": 41
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2025-10-01",
+      "vulnerabilities_count": 51
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2025-11-01",
+      "vulnerabilities_count": 55
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2025-12-01",
+      "vulnerabilities_count": 64
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2026-01-01",
+      "vulnerabilities_count": 110
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2026-02-01",
+      "vulnerabilities_count": 145
+    },
+    {
+      "repo": "https://github.com/openai/openai-agents-python",
+      "month": "2025-10-01",
+      "vulnerabilities_count": 1
+    },
+    {
+      "repo": "https://github.com/openai/openai-agents-python",
+      "month": "2025-12-01",
+      "vulnerabilities_count": 4
+    },
+    {
+      "repo": "https://github.com/openai/openai-agents-python",
+      "month": "2026-01-01",
+      "vulnerabilities_count": 16
+    },
+    {
+      "repo": "https://github.com/openai/openai-agents-python",
+      "month": "2026-02-01",
+      "vulnerabilities_count": 17
+    },
+    {
+      "repo": "https://github.com/openclaw/openclaw",
+      "month": "2025-04-01",
+      "vulnerabilities_count": 1
+    },
+    {
+      "repo": "https://github.com/openclaw/openclaw",
+      "month": "2025-06-01",
+      "vulnerabilities_count": 4
+    },
+    {
+      "repo": "https://github.com/openclaw/openclaw",
+      "month": "2025-08-01",
+      "vulnerabilities_count": 5
+    },
+    {
+      "repo": "https://github.com/openclaw/openclaw",
+      "month": "2025-09-01",
+      "vulnerabilities_count": 6
+    },
+    {
+      "repo": "https://github.com/openclaw/openclaw",
+      "month": "2025-10-01",
+      "vulnerabilities_count": 16
+    },
+    {
+      "repo": "https://github.com/openclaw/openclaw",
+      "month": "2025-12-01",
+      "vulnerabilities_count": 18
+    },
+    {
+      "repo": "https://github.com/openclaw/openclaw",
+      "month": "2026-01-01",
+      "vulnerabilities_count": 21
+    },
+    {
+      "repo": "https://github.com/openclaw/openclaw",
+      "month": "2026-02-01",
+      "vulnerabilities_count": 24
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2024-05-01",
+      "vulnerabilities_count": 4
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2024-06-01",
+      "vulnerabilities_count": 7
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2024-08-01",
+      "vulnerabilities_count": 8
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2024-09-01",
+      "vulnerabilities_count": 14
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2024-10-01",
+      "vulnerabilities_count": 17
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2024-11-01",
+      "vulnerabilities_count": 18
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2024-12-01",
+      "vulnerabilities_count": 20
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2025-02-01",
+      "vulnerabilities_count": 21
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2025-03-01",
+      "vulnerabilities_count": 23
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2025-04-01",
+      "vulnerabilities_count": 25
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2025-06-01",
+      "vulnerabilities_count": 34
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2025-07-01",
+      "vulnerabilities_count": 35
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2025-10-01",
+      "vulnerabilities_count": 36
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2025-11-01",
+      "vulnerabilities_count": 40
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2025-12-01",
+      "vulnerabilities_count": 52
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2026-01-01",
+      "vulnerabilities_count": 70
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2026-02-01",
+      "vulnerabilities_count": 86
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2024-09-01",
+      "vulnerabilities_count": 3
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2025-01-01",
+      "vulnerabilities_count": 5
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2025-02-01",
+      "vulnerabilities_count": 6
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2025-04-01",
+      "vulnerabilities_count": 8
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2025-06-01",
+      "vulnerabilities_count": 13
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2025-08-01",
+      "vulnerabilities_count": 15
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2025-09-01",
+      "vulnerabilities_count": 17
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2025-10-01",
+      "vulnerabilities_count": 37
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2025-12-01",
+      "vulnerabilities_count": 43
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2026-01-01",
+      "vulnerabilities_count": 50
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2026-02-01",
+      "vulnerabilities_count": 57
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2026-01-01",
+      "vulnerabilities_count": 1
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2026-02-01",
+      "vulnerabilities_count": 2
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2024-09-01",
+      "vulnerabilities_count": 4
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2024-10-01",
+      "vulnerabilities_count": 5
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2024-12-01",
+      "vulnerabilities_count": 6
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2025-03-01",
+      "vulnerabilities_count": 7
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2025-09-01",
+      "vulnerabilities_count": 9
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2025-11-01",
+      "vulnerabilities_count": 10
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2025-12-01",
+      "vulnerabilities_count": 11
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2026-02-01",
+      "vulnerabilities_count": 14
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2024-03-01",
+      "vulnerabilities_count": 1379
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2024-04-01",
+      "vulnerabilities_count": 1383
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2024-05-01",
+      "vulnerabilities_count": 1396
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2024-06-01",
+      "vulnerabilities_count": 1429
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2024-07-01",
+      "vulnerabilities_count": 1436
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2024-08-01",
+      "vulnerabilities_count": 1454
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2024-09-01",
+      "vulnerabilities_count": 1467
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2024-10-01",
+      "vulnerabilities_count": 1524
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2024-11-01",
+      "vulnerabilities_count": 1559
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2024-12-01",
+      "vulnerabilities_count": 1560
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-01-01",
+      "vulnerabilities_count": 1564
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-02-01",
+      "vulnerabilities_count": 1575
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-03-01",
+      "vulnerabilities_count": 1658
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-04-01",
+      "vulnerabilities_count": 1718
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-05-01",
+      "vulnerabilities_count": 2301
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-06-01",
+      "vulnerabilities_count": 4771
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-07-01",
+      "vulnerabilities_count": 6697
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-08-01",
+      "vulnerabilities_count": 6785
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-09-01",
+      "vulnerabilities_count": 7609
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-10-01",
+      "vulnerabilities_count": 7658
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-11-01",
+      "vulnerabilities_count": 7687
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-12-01",
+      "vulnerabilities_count": 10902
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2026-01-01",
+      "vulnerabilities_count": 18102
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2026-02-01",
+      "vulnerabilities_count": 20014
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2024-03-01",
+      "vulnerabilities_count": 261
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2024-04-01",
+      "vulnerabilities_count": 262
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2024-07-01",
+      "vulnerabilities_count": 263
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2024-09-01",
+      "vulnerabilities_count": 264
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2024-10-01",
+      "vulnerabilities_count": 266
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2024-11-01",
+      "vulnerabilities_count": 272
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2024-12-01",
+      "vulnerabilities_count": 273
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2025-01-01",
+      "vulnerabilities_count": 276
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2025-02-01",
+      "vulnerabilities_count": 277
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2025-03-01",
+      "vulnerabilities_count": 284
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2025-04-01",
+      "vulnerabilities_count": 290
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2025-05-01",
+      "vulnerabilities_count": 294
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2025-06-01",
+      "vulnerabilities_count": 297
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2025-07-01",
+      "vulnerabilities_count": 302
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2025-08-01",
+      "vulnerabilities_count": 307
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2025-09-01",
+      "vulnerabilities_count": 311
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2025-10-01",
+      "vulnerabilities_count": 321
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2025-11-01",
+      "vulnerabilities_count": 323
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2025-12-01",
+      "vulnerabilities_count": 328
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2026-01-01",
+      "vulnerabilities_count": 337
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2026-02-01",
+      "vulnerabilities_count": 345
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2024-06-01",
+      "vulnerabilities_count": 10
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2025-02-01",
+      "vulnerabilities_count": 11
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2025-04-01",
+      "vulnerabilities_count": 12
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2025-05-01",
+      "vulnerabilities_count": 13
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2025-06-01",
+      "vulnerabilities_count": 19
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2025-07-01",
+      "vulnerabilities_count": 23
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2025-09-01",
+      "vulnerabilities_count": 24
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2025-10-01",
+      "vulnerabilities_count": 27
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2025-11-01",
+      "vulnerabilities_count": 28
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2025-12-01",
+      "vulnerabilities_count": 42
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2026-01-01",
+      "vulnerabilities_count": 68
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2026-02-01",
+      "vulnerabilities_count": 75
+    },
+    {
+      "repo": "https://github.com/sweepai/sweep",
+      "month": "2024-05-01",
+      "vulnerabilities_count": 5
+    },
+    {
+      "repo": "https://github.com/sweepai/sweep",
+      "month": "2024-06-01",
+      "vulnerabilities_count": 6
+    },
+    {
+      "repo": "https://github.com/sweepai/sweep",
+      "month": "2024-08-01",
+      "vulnerabilities_count": 8
+    },
+    {
+      "repo": "https://github.com/sweepai/sweep",
+      "month": "2024-09-01",
+      "vulnerabilities_count": 18
+    },
+    {
+      "repo": "https://github.com/sweepai/sweep",
+      "month": "2024-10-01",
+      "vulnerabilities_count": 27
+    },
+    {
+      "repo": "https://github.com/sweepai/sweep",
+      "month": "2024-11-01",
+      "vulnerabilities_count": 30
+    },
+    {
+      "repo": "https://github.com/sweepai/sweep",
+      "month": "2024-12-01",
+      "vulnerabilities_count": 37
+    },
+    {
+      "repo": "https://github.com/sweepai/sweep",
+      "month": "2025-01-01",
+      "vulnerabilities_count": 41
+    },
+    {
+      "repo": "https://github.com/sweepai/sweep",
+      "month": "2025-02-01",
+      "vulnerabilities_count": 46
+    },
+    {
+      "repo": "https://github.com/sweepai/sweep",
+      "month": "2025-03-01",
+      "vulnerabilities_count": 55
+    },
+    {
+      "repo": "https://github.com/sweepai/sweep",
+      "month": "2025-04-01",
+      "vulnerabilities_count": 56
+    },
+    {
+      "repo": "https://github.com/sweepai/sweep",
+      "month": "2025-05-01",
+      "vulnerabilities_count": 62
+    },
+    {
+      "repo": "https://github.com/sweepai/sweep",
+      "month": "2025-06-01",
+      "vulnerabilities_count": 64
+    },
+    {
+      "repo": "https://github.com/sweepai/sweep",
+      "month": "2025-07-01",
+      "vulnerabilities_count": 66
+    },
+    {
+      "repo": "https://github.com/sweepai/sweep",
+      "month": "2025-08-01",
+      "vulnerabilities_count": 76
+    },
+    {
+      "repo": "https://github.com/sweepai/sweep",
+      "month": "2025-09-01",
+      "vulnerabilities_count": 77
+    },
+    {
+      "repo": "https://github.com/sweepai/sweep",
+      "month": "2025-10-01",
+      "vulnerabilities_count": 79
+    },
+    {
+      "repo": "https://github.com/sweepai/sweep",
+      "month": "2025-11-01",
+      "vulnerabilities_count": 83
+    },
+    {
+      "repo": "https://github.com/sweepai/sweep",
+      "month": "2025-12-01",
+      "vulnerabilities_count": 94
+    },
+    {
+      "repo": "https://github.com/sweepai/sweep",
+      "month": "2026-01-01",
+      "vulnerabilities_count": 105
+    },
+    {
+      "repo": "https://github.com/sweepai/sweep",
+      "month": "2026-02-01",
+      "vulnerabilities_count": 122
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2024-12-01",
+      "vulnerabilities_count": 2
+    },
+    {
+      "repo": "https://github.com/unclecode/crawl4ai",
+      "month": "2024-07-01",
+      "vulnerabilities_count": 3
+    },
+    {
+      "repo": "https://github.com/unclecode/crawl4ai",
+      "month": "2025-04-01",
+      "vulnerabilities_count": 5
+    },
+    {
+      "repo": "https://github.com/unclecode/crawl4ai",
+      "month": "2025-05-01",
+      "vulnerabilities_count": 7
+    },
+    {
+      "repo": "https://github.com/unclecode/crawl4ai",
+      "month": "2025-07-01",
+      "vulnerabilities_count": 9
+    },
+    {
+      "repo": "https://github.com/unclecode/crawl4ai",
+      "month": "2025-08-01",
+      "vulnerabilities_count": 11
+    },
+    {
+      "repo": "https://github.com/unclecode/crawl4ai",
+      "month": "2025-10-01",
+      "vulnerabilities_count": 13
+    },
+    {
+      "repo": "https://github.com/unclecode/crawl4ai",
+      "month": "2025-12-01",
+      "vulnerabilities_count": 19
+    },
+    {
+      "repo": "https://github.com/unclecode/crawl4ai",
+      "month": "2026-01-01",
+      "vulnerabilities_count": 47
+    },
+    {
+      "repo": "https://github.com/unclecode/crawl4ai",
+      "month": "2026-02-01",
+      "vulnerabilities_count": 66
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2024-12-01",
+      "vulnerabilities_count": 4
+    },
+    {
+      "repo": "https://github.com/wong2/litemcp",
+      "month": "2025-02-01",
+      "vulnerabilities_count": 1
+    },
+    {
+      "repo": "https://github.com/wong2/litemcp",
+      "month": "2025-06-01",
+      "vulnerabilities_count": 2
+    },
+    {
+      "repo": "https://github.com/wong2/litemcp",
+      "month": "2025-11-01",
+      "vulnerabilities_count": 3
+    },
+    {
+      "repo": "https://github.com/wong2/litemcp",
+      "month": "2025-12-01",
+      "vulnerabilities_count": 4
+    },
+    {
+      "repo": "https://github.com/wong2/litemcp",
+      "month": "2026-01-01",
+      "vulnerabilities_count": 5
+    },
+    {
+      "repo": "https://github.com/wong2/litemcp",
+      "month": "2026-02-01",
+      "vulnerabilities_count": 9
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2024-04-01",
+      "vulnerabilities_count": 13
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2024-05-01",
+      "vulnerabilities_count": 16
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2024-11-01",
+      "vulnerabilities_count": 28
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2025-03-01",
+      "vulnerabilities_count": 32
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2025-04-01",
+      "vulnerabilities_count": 40
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2025-05-01",
+      "vulnerabilities_count": 44
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2025-06-01",
+      "vulnerabilities_count": 45
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2025-07-01",
+      "vulnerabilities_count": 53
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2025-08-01",
+      "vulnerabilities_count": 55
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2025-09-01",
+      "vulnerabilities_count": 61
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2025-10-01",
+      "vulnerabilities_count": 64
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2025-11-01",
+      "vulnerabilities_count": 67
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2025-12-01",
+      "vulnerabilities_count": 73
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2026-01-01",
+      "vulnerabilities_count": 90
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2026-02-01",
+      "vulnerabilities_count": 103
+    }
+  ]
+}

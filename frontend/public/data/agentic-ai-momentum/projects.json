@@ -1,0 +1,743 @@
+{
+  "metadata": {
+    "fetched_at": "2026-03-26T02:34:55.784842+00:00",
+    "schema": {
+      "name": "projects",
+      "description": "Top-100 agentic AI projects metadata.",
+      "fields": [
+        {
+          "name": "rank",
+          "type": "number",
+          "description": "Project rank",
+          "optional": false
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "description": "Project display name",
+          "optional": false
+        },
+        {
+          "name": "layer",
+          "type": "string",
+          "description": "Ecosystem layer",
+          "optional": false
+        },
+        {
+          "name": "license",
+          "type": "string",
+          "description": "License identifier",
+          "optional": false
+        },
+        {
+          "name": "github_url",
+          "type": "string",
+          "description": "GitHub repository URL",
+          "optional": true
+        }
+      ]
+    }
+  },
+  "data": [
+    {
+      "rank": 1,
+      "name": "MCP (Model Context Protocol)",
+      "layer": "Protocols & Standards",
+      "license": "MIT",
+      "github_url": "https://github.com/modelcontextprotocol/modelcontextprotocol"
+    },
+    {
+      "rank": 2,
+      "name": "Agent2Agent (A2A) Protocol",
+      "layer": "Protocols & Standards",
+      "license": "Apache 2.0",
+      "github_url": "https://github.com/a2aproject/A2A"
+    },
+    {
+      "rank": 3,
+      "name": "AGENTS.md",
+      "layer": "Protocols & Standards",
+      "license": "MIT",
+      "github_url": "https://github.com/agentsmd/agents.md"
+    },
+    {
+      "rank": 4,
+      "name": "AGNTCY",
+      "layer": "Protocols & Standards",
+      "license": "Apache 2.0",
+      "github_url": "https://github.com/agntcy/acp-spec"
+    },
+    {
+      "rank": 5,
+      "name": "OpenTelemetry AI Semantic Conventions",
+      "layer": "Protocols & Standards",
+      "license": "Apache 2.0",
+      "github_url": "https://github.com/open-telemetry/semantic-conventions"
+    },
+    {
+      "rank": 6,
+      "name": "OpenAPI Specification",
+      "layer": "Protocols & Standards",
+      "license": "Apache 2.0",
+      "github_url": "https://github.com/OAI/OpenAPI-Specification"
+    },
+    {
+      "rank": 7,
+      "name": "W3C DID / Verifiable Credentials",
+      "layer": "Protocols & Standards",
+      "license": "W3C Open",
+      "github_url": "https://github.com/w3c/did"
+    },
+    {
+      "rank": 8,
+      "name": "SLIM (LF)",
+      "layer": "Protocols & Standards",
+      "license": "Apache 2.0",
+      "github_url": "https://github.com/agntcy/slim"
+    },
+    {
+      "rank": 9,
+      "name": "Open Agent Schema Framework (OASF)",
+      "layer": "Protocols & Standards",
+      "license": "Apache 2.0",
+      "github_url": "https://github.com/agntcy/oasf"
+    },
+    {
+      "rank": 10,
+      "name": "Open Agent Network (OAN)",
+      "layer": "Protocols & Standards",
+      "license": "Apache 2.0",
+      "github_url": null
+    },
+    {
+      "rank": 11,
+      "name": "LangGraph",
+      "layer": "Orchestration & Multi-Agent",
+      "license": "MIT",
+      "github_url": "https://github.com/langchain-ai/langgraph"
+    },
+    {
+      "rank": 12,
+      "name": "LangChain",
+      "layer": "Orchestration & Multi-Agent",
+      "license": "MIT",
+      "github_url": "https://github.com/langchain-ai/langchain"
+    },
+    {
+      "rank": 13,
+      "name": "CrewAI",
+      "layer": "Orchestration & Multi-Agent",
+      "license": "MIT",
+      "github_url": "https://github.com/crewAIInc/crewAI"
+    },
+    {
+      "rank": 14,
+      "name": "AutoGen (Microsoft)",
+      "layer": "Orchestration & Multi-Agent",
+      "license": "MIT",
+      "github_url": "https://github.com/microsoft/autogen"
+    },
+    {
+      "rank": 15,
+      "name": "OpenAI Agents SDK",
+      "layer": "Orchestration & Multi-Agent",
+      "license": "MIT",
+      "github_url": "https://github.com/openai/openai-agents-python"
+    },
+    {
+      "rank": 16,
+      "name": "Semantic Kernel (Microsoft)",
+      "layer": "Orchestration & Multi-Agent",
+      "license": "MIT",
+      "github_url": "https://github.com/microsoft/semantic-kernel"
+    },
+    {
+      "rank": 17,
+      "name": "SmolAgents (Hugging Face)",
+      "layer": "Orchestration & Multi-Agent",
+      "license": "Apache 2.0",
+      "github_url": "https://github.com/huggingface/smolagents"
+    },
+    {
+      "rank": 18,
+      "name": "PydanticAI",
+      "layer": "Orchestration & Multi-Agent",
+      "license": "MIT",
+      "github_url": "https://github.com/pydantic/pydantic-ai"
+    },
+    {
+      "rank": 19,
+      "name": "Mastra",
+      "layer": "Orchestration & Multi-Agent",
+      "license": "Apache 2.0",
+      "github_url": "https://github.com/mastra-ai/mastra"
+    },
+    {
+      "rank": 20,
+      "name": "CAMEL-AI / OWL",
+      "layer": "Orchestration & Multi-Agent",
+      "license": "Apache 2.0",
+      "github_url": "https://github.com/camel-ai/camel"
+    },
+    {
+      "rank": 21,
+      "name": "Google Agent Development Kit (ADK)",
+      "layer": "Orchestration & Multi-Agent",
+      "license": "Apache 2.0",
+      "github_url": "https://github.com/google/adk-python"
+    },
+    {
+      "rank": 22,
+      "name": "goose (Block)",
+      "layer": "Orchestration & Multi-Agent",
+      "license": "Apache 2.0",
+      "github_url": "https://github.com/block/goose"
+    },
+    {
+      "rank": 23,
+      "name": "MetaGPT",
+      "layer": "Orchestration & Multi-Agent",
+      "license": "MIT",
+      "github_url": "https://github.com/FoundationAgents/MetaGPT"
+    },
+    {
+      "rank": 24,
+      "name": "Temporal",
+      "layer": "Orchestration & Multi-Agent",
+      "license": "MIT",
+      "github_url": "https://github.com/temporalio/temporal"
+    },
+    {
+      "rank": 25,
+      "name": "Prefect",
+      "layer": "Orchestration & Multi-Agent",
+      "license": "Apache 2.0",
+      "github_url": "https://github.com/PrefectHQ/prefect"
+    },
+    {
+      "rank": 26,
+      "name": "AutoGPT",
+      "layer": "Orchestration & Multi-Agent",
+      "license": "MIT",
+      "github_url": "https://github.com/Significant-Gravitas/AutoGPT"
+    },
+    {
+      "rank": 27,
+      "name": "RAGFlow",
+      "layer": "Orchestration & Multi-Agent",
+      "license": "Apache 2.0",
+      "github_url": "https://github.com/infiniflow/ragflow"
+    },
+    {
+      "rank": 28,
+      "name": "AgentScope (Alibaba)",
+      "layer": "Orchestration & Multi-Agent",
+      "license": "Apache 2.0",
+      "github_url": "https://github.com/agentscope-ai/agentscope"
+    },
+    {
+      "rank": 29,
+      "name": "OpenClaw",
+      "layer": "Personal & Coding Agents",
+      "license": "MIT",
+      "github_url": "https://github.com/openclaw/openclaw"
+    },
+    {
+      "rank": 30,
+      "name": "OpenHands (OpenDevin)",
+      "layer": "Personal & Coding Agents",
+      "license": "MIT",
+      "github_url": "https://github.com/OpenHands/OpenHands"
+    },
+    {
+      "rank": 31,
+      "name": "Cline",
+      "layer": "Personal & Coding Agents",
+      "license": "Apache 2.0",
+      "github_url": "https://github.com/cline/cline"
+    },
+    {
+      "rank": 32,
+      "name": "Aider",
+      "layer": "Personal & Coding Agents",
+      "license": "Apache 2.0",
+      "github_url": "https://github.com/Aider-AI/aider"
+    },
+    {
+      "rank": 33,
+      "name": "SWE-agent (Princeton)",
+      "layer": "Personal & Coding Agents",
+      "license": "MIT",
+      "github_url": "https://github.com/SWE-agent/SWE-agent"
+    },
+    {
+      "rank": 34,
+      "name": "Agentless (UIUC)",
+      "layer": "Personal & Coding Agents",
+      "license": "MIT",
+      "github_url": "https://github.com/OpenAutoCoder/Agentless"
+    },
+    {
+      "rank": 35,
+      "name": "GPT Researcher",
+      "layer": "Personal & Coding Agents",
+      "license": "MIT",
+      "github_url": "https://github.com/assafelovic/gpt-researcher"
+    },
+    {
+      "rank": 36,
+      "name": "Open Interpreter",
+      "layer": "Personal & Coding Agents",
+      "license": "AGPL-3.0",
+      "github_url": "https://github.com/OpenInterpreter/open-interpreter"
+    },
+    {
+      "rank": 37,
+      "name": "Sweep",
+      "layer": "Personal & Coding Agents",
+      "license": "Apache 2.0",
+      "github_url": "https://github.com/sweepai/sweep"
+    },
+    {
+      "rank": 38,
+      "name": "Browser-Use",
+      "layer": "Computer Use & Browser Agents",
+      "license": "MIT",
+      "github_url": "https://github.com/browser-use/browser-use"
+    },
+    {
+      "rank": 39,
+      "name": "Firecrawl",
+      "layer": "Computer Use & Browser Agents",
+      "license": "Apache 2.0",
+      "github_url": "https://github.com/firecrawl/firecrawl"
+    },
+    {
+      "rank": 40,
+      "name": "Crawl4AI",
+      "layer": "Computer Use & Browser Agents",
+      "license": "Apache 2.0",
+      "github_url": "https://github.com/unclecode/crawl4ai"
+    },
+    {
+      "rank": 41,
+      "name": "OSWorld / WindowsAgentArena",
+      "layer": "Computer Use & Browser Agents",
+      "license": "MIT",
+      "github_url": "https://github.com/xlang-ai/OSWorld"
+    },
+    {
+      "rank": 42,
+      "name": "Agent S (Simular AI)",
+      "layer": "Computer Use & Browser Agents",
+      "license": "Apache 2.0",
+      "github_url": "https://github.com/simular-ai/Agent-S"
+    },
+    {
+      "rank": 43,
+      "name": "E2B Code Interpreter SDK",
+      "layer": "Computer Use & Browser Agents",
+      "license": "Apache 2.0",
+      "github_url": "https://github.com/e2b-dev/code-interpreter"
+    },
+    {
+      "rank": 44,
+      "name": "OmniParser (Microsoft Research)",
+      "layer": "Computer Use & Browser Agents",
+      "license": "MIT",
+      "github_url": "https://github.com/microsoft/OmniParser"
+    },
+    {
+      "rank": 45,
+      "name": "MCP Inspector",
+      "layer": "MCP Infrastructure",
+      "license": "MIT",
+      "github_url": "https://github.com/modelcontextprotocol/inspector"
+    },
+    {
+      "rank": 46,
+      "name": "FastMCP",
+      "layer": "MCP Infrastructure",
+      "license": "MIT",
+      "github_url": "https://github.com/PrefectHQ/fastmcp"
+    },
+    {
+      "rank": 47,
+      "name": "LiteMCP",
+      "layer": "MCP Infrastructure",
+      "license": "MIT",
+      "github_url": "https://github.com/wong2/litemcp"
+    },
+    {
+      "rank": 48,
+      "name": "IBM MCP Context Forge",
+      "layer": "MCP Infrastructure",
+      "license": "Apache 2.0",
+      "github_url": "https://github.com/ibm/mcp-context-forge"
+    },
+    {
+      "rank": 49,
+      "name": "Unla MCP Gateway",
+      "layer": "MCP Infrastructure",
+      "license": "Apache 2.0",
+      "github_url": "https://github.com/AmoyLab/Unla"
+    },
+    {
+      "rank": 50,
+      "name": "Letta (MemGPT)",
+      "layer": "Memory & Retrieval",
+      "license": "Apache 2.0",
+      "github_url": "https://github.com/letta-ai/letta"
+    },
+    {
+      "rank": 51,
+      "name": "LlamaIndex",
+      "layer": "Memory & Retrieval",
+      "license": "MIT",
+      "github_url": "https://github.com/run-llama/llama_index"
+    },
+    {
+      "rank": 52,
+      "name": "GraphRAG (Microsoft)",
+      "layer": "Memory & Retrieval",
+      "license": "MIT",
+      "github_url": "https://github.com/microsoft/graphrag"
+    },
+    {
+      "rank": 53,
+      "name": "LightRAG",
+      "layer": "Memory & Retrieval",
+      "license": "MIT",
+      "github_url": "https://github.com/HKUDS/LightRAG"
+    },
+    {
+      "rank": 54,
+      "name": "DSPy (Stanford)",
+      "layer": "Memory & Retrieval",
+      "license": "MIT",
+      "github_url": "https://github.com/stanfordnlp/dspy"
+    },
+    {
+      "rank": 55,
+      "name": "Ragas",
+      "layer": "Memory & Retrieval",
+      "license": "Apache 2.0",
+      "github_url": "https://github.com/vibrantlabsai/ragas"
+    },
+    {
+      "rank": 56,
+      "name": "Weaviate",
+      "layer": "Memory & Retrieval",
+      "license": "BSD-3",
+      "github_url": "https://github.com/weaviate/weaviate"
+    },
+    {
+      "rank": 57,
+      "name": "Qdrant",
+      "layer": "Memory & Retrieval",
+      "license": "Apache 2.0",
+      "github_url": "https://github.com/qdrant/qdrant"
+    },
+    {
+      "rank": 58,
+      "name": "Chroma",
+      "layer": "Memory & Retrieval",
+      "license": "Apache 2.0",
+      "github_url": "https://github.com/chroma-core/chroma"
+    },
+    {
+      "rank": 59,
+      "name": "Milvus",
+      "layer": "Memory & Retrieval",
+      "license": "Apache 2.0",
+      "github_url": "https://github.com/milvus-io/milvus"
+    },
+    {
+      "rank": 60,
+      "name": "Playwright (Microsoft)",
+      "layer": "Tool Use & Integration",
+      "license": "Apache 2.0",
+      "github_url": "https://github.com/microsoft/playwright"
+    },
+    {
+      "rank": 61,
+      "name": "Composio",
+      "layer": "Tool Use & Integration",
+      "license": "MIT",
+      "github_url": "https://github.com/ComposioHQ/composio"
+    },
+    {
+      "rank": 62,
+      "name": "Instructor",
+      "layer": "Tool Use & Integration",
+      "license": "MIT",
+      "github_url": "https://github.com/567-labs/instructor"
+    },
+    {
+      "rank": 63,
+      "name": "Haystack (deepset)",
+      "layer": "Tool Use & Integration",
+      "license": "Apache 2.0",
+      "github_url": "https://github.com/deepset-ai/haystack"
+    },
+    {
+      "rank": 64,
+      "name": "LiteLLM",
+      "layer": "Tool Use & Integration",
+      "license": "MIT",
+      "github_url": "https://github.com/BerriAI/litellm"
+    },
+    {
+      "rank": 65,
+      "name": "Pathway",
+      "layer": "Tool Use & Integration",
+      "license": "Apache 2.0",
+      "github_url": "https://github.com/pathwaycom/pathway"
+    },
+    {
+      "rank": 66,
+      "name": "Langfuse",
+      "layer": "Evaluation & Observability",
+      "license": "MIT",
+      "github_url": "https://github.com/langfuse/langfuse"
+    },
+    {
+      "rank": 67,
+      "name": "Arize Phoenix",
+      "layer": "Evaluation & Observability",
+      "license": "Apache 2.0",
+      "github_url": "https://github.com/Arize-ai/phoenix"
+    },
+    {
+      "rank": 68,
+      "name": "Comet Opik",
+      "layer": "Evaluation & Observability",
+      "license": "Apache 2.0",
+      "github_url": "https://github.com/comet-ml/opik"
+    },
+    {
+      "rank": 69,
+      "name": "DeepEval",
+      "layer": "Evaluation & Observability",
+      "license": "Apache 2.0",
+      "github_url": "https://github.com/confident-ai/deepeval"
+    },
+    {
+      "rank": 70,
+      "name": "GAIA Benchmark",
+      "layer": "Evaluation & Observability",
+      "license": "Apache 2.0",
+      "github_url": null
+    },
+    {
+      "rank": 71,
+      "name": "SWE-bench",
+      "layer": "Evaluation & Observability",
+      "license": "MIT",
+      "github_url": "https://github.com/SWE-bench/SWE-bench"
+    },
+    {
+      "rank": 72,
+      "name": "Inspect AI (UK AISI)",
+      "layer": "Evaluation & Observability",
+      "license": "MIT",
+      "github_url": null
+    },
+    {
+      "rank": 73,
+      "name": "PromptFoo",
+      "layer": "Evaluation & Observability",
+      "license": "MIT",
+      "github_url": "https://github.com/promptfoo/promptfoo"
+    },
+    {
+      "rank": 74,
+      "name": "Qwen2.5 / Qwen3 (Alibaba)",
+      "layer": "Agent-Optimized Models",
+      "license": "Apache 2.0",
+      "github_url": null
+    },
+    {
+      "rank": 75,
+      "name": "DeepSeek-V3 / R1",
+      "layer": "Agent-Optimized Models",
+      "license": "MIT",
+      "github_url": null
+    },
+    {
+      "rank": 76,
+      "name": "xLAM (Salesforce)",
+      "layer": "Agent-Optimized Models",
+      "license": "Apache 2.0",
+      "github_url": null
+    },
+    {
+      "rank": 77,
+      "name": "Gorilla LLM (Berkeley)",
+      "layer": "Agent-Optimized Models",
+      "license": "Apache 2.0",
+      "github_url": "https://github.com/ShishirPatil/gorilla"
+    },
+    {
+      "rank": 78,
+      "name": "Mistral Tool-Use Variants",
+      "layer": "Agent-Optimized Models",
+      "license": "Apache 2.0",
+      "github_url": "https://github.com/mistralai/mistral-inference"
+    },
+    {
+      "rank": 79,
+      "name": "Llama 3 Tool-Use (Meta)",
+      "layer": "Agent-Optimized Models",
+      "license": "Llama License",
+      "github_url": null
+    },
+    {
+      "rank": 80,
+      "name": "Granite (IBM)",
+      "layer": "Agent-Optimized Models",
+      "license": "Apache 2.0",
+      "github_url": null
+    },
+    {
+      "rank": 81,
+      "name": "LlamaGuard (Meta)",
+      "layer": "Safety & Guardrails",
+      "license": "Llama License",
+      "github_url": null
+    },
+    {
+      "rank": 82,
+      "name": "NeMo Guardrails (NVIDIA)",
+      "layer": "Safety & Guardrails",
+      "license": "Apache 2.0",
+      "github_url": "https://github.com/NVIDIA-NeMo/Guardrails"
+    },
+    {
+      "rank": 83,
+      "name": "Guardrails AI",
+      "layer": "Safety & Guardrails",
+      "license": "Apache 2.0",
+      "github_url": "https://github.com/guardrails-ai/guardrails"
+    },
+    {
+      "rank": 84,
+      "name": "Microsoft PyRIT",
+      "layer": "Safety & Guardrails",
+      "license": "MIT",
+      "github_url": "https://github.com/Azure/PyRIT"
+    },
+    {
+      "rank": 85,
+      "name": "Garak",
+      "layer": "Safety & Guardrails",
+      "license": "Apache 2.0",
+      "github_url": "https://github.com/NVIDIA/garak"
+    },
+    {
+      "rank": 86,
+      "name": "Ollama",
+      "layer": "Developer Tooling & SDKs",
+      "license": "MIT",
+      "github_url": "https://github.com/ollama/ollama"
+    },
+    {
+      "rank": 87,
+      "name": "Hugging Face Transformers",
+      "layer": "Developer Tooling & SDKs",
+      "license": "Apache 2.0",
+      "github_url": "https://github.com/huggingface/transformers"
+    },
+    {
+      "rank": 88,
+      "name": "Continue.dev",
+      "layer": "Developer Tooling & SDKs",
+      "license": "Apache 2.0",
+      "github_url": "https://github.com/continuedev/continue"
+    },
+    {
+      "rank": 89,
+      "name": "Semantic Router",
+      "layer": "Developer Tooling & SDKs",
+      "license": "MIT",
+      "github_url": "https://github.com/aurelio-labs/semantic-router"
+    },
+    {
+      "rank": 90,
+      "name": "TaskWeaver (Microsoft)",
+      "layer": "Developer Tooling & SDKs",
+      "license": "MIT",
+      "github_url": "https://github.com/microsoft/TaskWeaver"
+    },
+    {
+      "rank": 91,
+      "name": "SkyPilot",
+      "layer": "Agent Infrastructure",
+      "license": "Apache 2.0",
+      "github_url": "https://github.com/skypilot-org/skypilot"
+    },
+    {
+      "rank": 92,
+      "name": "KServe",
+      "layer": "Agent Infrastructure",
+      "license": "Apache 2.0",
+      "github_url": "https://github.com/kserve/kserve"
+    },
+    {
+      "rank": 93,
+      "name": "Daytona",
+      "layer": "Agent Infrastructure",
+      "license": "AGPL-3.0",
+      "github_url": "https://github.com/daytonaio/daytona"
+    },
+    {
+      "rank": 94,
+      "name": "OpenWebUI",
+      "layer": "Agent Infrastructure",
+      "license": "MIT",
+      "github_url": "https://github.com/open-webui/open-webui"
+    },
+    {
+      "rank": 95,
+      "name": "Jan (Local AI)",
+      "layer": "Agent Infrastructure",
+      "license": "AGPL-3.0",
+      "github_url": "https://github.com/janhq/jan"
+    },
+    {
+      "rank": 96,
+      "name": "Livekit Agents",
+      "layer": "Voice & Multimodal Agents",
+      "license": "Apache 2.0",
+      "github_url": "https://github.com/livekit/agents"
+    },
+    {
+      "rank": 97,
+      "name": "Pipecat",
+      "layer": "Voice & Multimodal Agents",
+      "license": "BSD-2",
+      "github_url": "https://github.com/pipecat-ai/pipecat"
+    },
+    {
+      "rank": 98,
+      "name": "PR-Agent (CodiumAI)",
+      "layer": "Research & Vertical Agents",
+      "license": "Apache 2.0",
+      "github_url": "https://github.com/qodo-ai/pr-agent"
+    },
+    {
+      "rank": 99,
+      "name": "Tavily",
+      "layer": "Research & Vertical Agents",
+      "license": "Apache 2.0",
+      "github_url": "https://github.com/tavily-ai/tavily-python"
+    },
+    {
+      "rank": 100,
+      "name": "Generative Agents (Stanford)",
+      "layer": "Research & Vertical Agents",
+      "license": "MIT",
+      "github_url": "https://github.com/joonspk-research/generative_agents"
+    }
+  ]
+}

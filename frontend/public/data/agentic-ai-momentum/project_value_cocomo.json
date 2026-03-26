@@ -1,0 +1,563 @@
+{
+  "metadata": {
+    "fetched_at": "2026-03-25T15:28:55.170423",
+    "schema": {
+      "name": "project_value_cocomo",
+      "description": "COCOMO-model estimated development cost per project from Tinybird softwareValueProjectCosts.",
+      "fields": [
+        {
+          "name": "repo",
+          "type": "string",
+          "description": "Repository identifier",
+          "optional": false
+        },
+        {
+          "name": "month",
+          "type": "date",
+          "description": "Month as YYYY-MM-DD",
+          "optional": false
+        },
+        {
+          "name": "estimated_cost_usd",
+          "type": "number",
+          "description": "Estimated development cost in USD per the COCOMO model",
+          "optional": false
+        }
+      ]
+    },
+    "covered_items": [
+      "https://github.com/567-labs/instructor",
+      "https://github.com/AmoyLab/Unla",
+      "https://github.com/Arize-ai/phoenix",
+      "https://github.com/FoundationAgents/MetaGPT",
+      "https://github.com/NVIDIA-NeMo/Guardrails",
+      "https://github.com/NVIDIA/garak",
+      "https://github.com/PrefectHQ/fastmcp",
+      "https://github.com/SWE-agent/SWE-agent",
+      "https://github.com/SWE-bench/SWE-bench",
+      "https://github.com/a2aproject/A2A",
+      "https://github.com/agentscope-ai/agentscope",
+      "https://github.com/agentsmd/agents.md",
+      "https://github.com/agno-agi/agno",
+      "https://github.com/aurelio-labs/semantic-router",
+      "https://github.com/firecrawl/firecrawl",
+      "https://github.com/qodo-ai/pr-agent",
+      "https://github.com/simular-ai/Agent-S",
+      "https://github.com/tavily-ai/tavily-python",
+      "https://github.com/vibrantlabsai/ragas",
+      "https://github.com/w3c/did"
+    ]
+  },
+  "data": [
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2025-12-01",
+      "estimated_cost_usd": 7291584.0
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 7336287.0
+    },
+    {
+      "repo": "https://github.com/Azure/PyRIT",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 8020500.0
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2025-12-01",
+      "estimated_cost_usd": 40253548.0
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 59193281.0
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 21038751.0
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 3719378.0
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2025-12-01",
+      "estimated_cost_usd": 1335148.0
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 1335627.0
+    },
+    {
+      "repo": "https://github.com/OpenAutoCoder/Agentless",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 1165766.0
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 12541387.0
+    },
+    {
+      "repo": "https://github.com/OpenInterpreter/open-interpreter",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 1322890.0
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2025-12-01",
+      "estimated_cost_usd": 31585907.0
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 37179144.0
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 21662686.0
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2025-12-01",
+      "estimated_cost_usd": 37074706.0
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 42796165.0
+    },
+    {
+      "repo": "https://github.com/agno-agi/agno",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 18549351.0
+    },
+    {
+      "repo": "https://github.com/agntcy/acp-spec",
+      "month": "2025-12-01",
+      "estimated_cost_usd": 117090.0
+    },
+    {
+      "repo": "https://github.com/agntcy/acp-spec",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 117090.0
+    },
+    {
+      "repo": "https://github.com/agntcy/oasf",
+      "month": "2025-12-01",
+      "estimated_cost_usd": 1763568.0
+    },
+    {
+      "repo": "https://github.com/agntcy/oasf",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 1795042.0
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "month": "2025-12-01",
+      "estimated_cost_usd": 3103376.0
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 4034687.0
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 6596271.0
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2025-12-01",
+      "estimated_cost_usd": 11650449.0
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 19076213.0
+    },
+    {
+      "repo": "https://github.com/browser-use/browser-use",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 2742405.0
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 13009375.0
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-12-01",
+      "estimated_cost_usd": 11248420.0
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 12788458.0
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 21100992.0
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 45156110.0
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 8973443.0
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2025-12-01",
+      "estimated_cost_usd": 15241314.0
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 15957279.0
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 20301061.0
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 21196670.0
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 31048483.0
+    },
+    {
+      "repo": "https://github.com/e2b-dev/code-interpreter",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 254450.0
+    },
+    {
+      "repo": "https://github.com/google/adk-python",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 9622193.0
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 2416493.0
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 1233149.0
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2025-12-01",
+      "estimated_cost_usd": 49952860.0
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 50866759.0
+    },
+    {
+      "repo": "https://github.com/ibm/mcp-context-forge",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 32577824.0
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2025-12-01",
+      "estimated_cost_usd": 13475727.0
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 19004813.0
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2025-12-01",
+      "estimated_cost_usd": 4330582.0
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 4691096.0
+    },
+    {
+      "repo": "https://github.com/joonspk-research/generative_agents",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 237297741.0
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-12-01",
+      "estimated_cost_usd": 104673479.0
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 150531585.0
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2025-12-01",
+      "estimated_cost_usd": 9501443.0
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 10034681.0
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 4300893.0
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2025-12-01",
+      "estimated_cost_usd": 15481189.0
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 19009348.0
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 10093116.0
+    },
+    {
+      "repo": "https://github.com/livekit/agents",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 3779147.0
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 59405843.0
+    },
+    {
+      "repo": "https://github.com/microsoft/OmniParser",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 315849.0
+    },
+    {
+      "repo": "https://github.com/microsoft/TaskWeaver",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 1094338.0
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2025-12-01",
+      "estimated_cost_usd": 6776013.0
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 6761512.0
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 2250311.0
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-12-01",
+      "estimated_cost_usd": 17523378.0
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 18160936.0
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 21658669.0
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2025-12-01",
+      "estimated_cost_usd": 45250343.0
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 52368433.0
+    },
+    {
+      "repo": "https://github.com/mistralai/mistral-inference",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 87328.0
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "month": "2025-12-01",
+      "estimated_cost_usd": 774276.0
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 963154.0
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "month": "2025-12-01",
+      "estimated_cost_usd": 1741355.0
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 2496589.0
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2025-12-01",
+      "estimated_cost_usd": 28444043.0
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 32692997.0
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2025-12-01",
+      "estimated_cost_usd": 2252482.0
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 2440319.0
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2025-12-01",
+      "estimated_cost_usd": 12338360.0
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 14367267.0
+    },
+    {
+      "repo": "https://github.com/openai/openai-agents-python",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 5270326.0
+    },
+    {
+      "repo": "https://github.com/openclaw/openclaw",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 65708319.0
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 8910176.0
+    },
+    {
+      "repo": "https://github.com/pipecat-ai/pipecat",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 4996657.0
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2025-12-01",
+      "estimated_cost_usd": 25871612.0
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 30444391.0
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 36862312.0
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2025-12-01",
+      "estimated_cost_usd": 24542504.0
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 25748910.0
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-12-01",
+      "estimated_cost_usd": 61359089.0
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 62872831.0
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 14244752.0
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2025-12-01",
+      "estimated_cost_usd": 2363575.0
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 2558028.0
+    },
+    {
+      "repo": "https://github.com/sweepai/sweep",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 2158280.0
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 26872227.0
+    },
+    {
+      "repo": "https://github.com/unclecode/crawl4ai",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 8921280.0
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 28082596.0
+    },
+    {
+      "repo": "https://github.com/wong2/litemcp",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 17212.0
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2026-03-01",
+      "estimated_cost_usd": 5787107.0
+    }
+  ]
+}
