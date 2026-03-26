@@ -58,7 +58,7 @@ export const SEVERITY_CONFIG: Record<VulnerabilitySeverity, SeverityConfig> = {
   [VulnerabilitySeverity.UNKNOWN]: {
     value: VulnerabilitySeverity.UNKNOWN,
     label: 'Unknown',
-    bgClass: 'bg-neutral-100 text-neutral-600',
+    bgClass: 'bg-neutral-300 text-neutral-600',
     dotClass: 'bg-transparent border border-neutral-500',
   },
 };

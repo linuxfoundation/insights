@@ -7,16 +7,12 @@ SPDX-License-Identifier: MIT
     <div class="flex flex-col gap-2 items-start w-full">
       <p class="text-base font-bold leading-6 text-neutral-900">Recent vulnerabilities</p>
 
-      <!-- Error state -->
-      <div
-        v-if="error"
-        class="flex items-center justify-center py-10 w-full"
-      >
-        <p class="text-neutral-500 text-sm">Failed to load vulnerabilities</p>
-      </div>
+      <!-- Error state or empty state -->
+      <lfx-vulnerabilities-empty v-if="error || isEmpty" />
 
       <!-- Data display -->
       <lfx-project-vulnerability-table
+        v-else
         :vulnerabilities="data || []"
         :is-loading="isLoading"
         :is-fetching-next-page="false"
@@ -46,6 +42,7 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { computed } from 'vue';
 import LfxProjectVulnerabilityTable from './vulnerability-table.vue';
+import LfxVulnerabilitiesEmpty from './vulnerabilities-empty.vue';
 import LfxButton from '~/components/uikit/button/button.vue';
 import {
   VULNERABILITY_API_SERVICE,
@@ -65,6 +62,14 @@ const props = withDefaults(
 const queryParams = computed(() => props.params);
 
 const { data, error, isLoading } = VULNERABILITY_API_SERVICE.fetchRecentVulnerabilities(queryParams);
+
+const isEmpty = computed(() => {
+  if (isLoading.value) {
+    return false;
+  }
+
+  return data.value?.length === 0;
+});
 
 const emit = defineEmits<{
   (e: 'viewMore'): void;
