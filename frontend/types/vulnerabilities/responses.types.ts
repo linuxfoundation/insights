@@ -121,4 +121,5 @@ export interface Vulnerability {
   publishedAt: string;
   status: VulnerabilityStatus;
   paths: string[];
+  fixedVersion: string;
 }
