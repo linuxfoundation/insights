@@ -1,0 +1,2384 @@
+{
+  "metadata": {
+    "fetched_at": "2026-03-25T15:28:54.342208",
+    "schema": {
+      "name": "package_downloads_count",
+      "description": "Monthly package download counts from Tinybird, broken out by ecosystem.",
+      "fields": [
+        {
+          "name": "repo",
+          "type": "string",
+          "description": "Repository identifier",
+          "optional": false
+        },
+        {
+          "name": "ecosystem",
+          "type": "string",
+          "description": "Package ecosystem (e.g. 'pypi', 'conda')",
+          "optional": false
+        },
+        {
+          "name": "month",
+          "type": "date",
+          "description": "Month as YYYY-MM-DD",
+          "optional": false
+        },
+        {
+          "name": "download_counts",
+          "type": "number",
+          "description": "Sum of downloadsCount across all PURLs in this ecosystem for the month",
+          "optional": false
+        }
+      ]
+    },
+    "covered_items": [
+      "https://github.com/567-labs/instructor",
+      "https://github.com/AmoyLab/Unla",
+      "https://github.com/Arize-ai/phoenix",
+      "https://github.com/Azure/PyRIT",
+      "https://github.com/FoundationAgents/MetaGPT",
+      "https://github.com/NVIDIA-NeMo/Guardrails",
+      "https://github.com/NVIDIA/garak",
+      "https://github.com/OAI/OpenAPI-Specification",
+      "https://github.com/OpenAutoCoder/Agentless",
+      "https://github.com/PrefectHQ/fastmcp",
+      "https://github.com/SWE-agent/SWE-agent",
+      "https://github.com/SWE-bench/SWE-bench",
+      "https://github.com/Significant-Gravitas/AutoGPT",
+      "https://github.com/a2aproject/A2A",
+      "https://github.com/agentscope-ai/agentscope",
+      "https://github.com/agentsmd/agents.md",
+      "https://github.com/agno-agi/agno",
+      "https://github.com/agntcy/acp-spec",
+      "https://github.com/agntcy/oasf",
+      "https://github.com/aurelio-labs/semantic-router",
+      "https://github.com/firecrawl/firecrawl",
+      "https://github.com/ibm/mcp-context-forge",
+      "https://github.com/infiniflow/ragflow",
+      "https://github.com/janhq/jan",
+      "https://github.com/joonspk-research/generative_agents",
+      "https://github.com/langfuse/langfuse",
+      "https://github.com/microsoft/OmniParser",
+      "https://github.com/milvus-io/milvus",
+      "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "https://github.com/ollama/ollama",
+      "https://github.com/open-telemetry/semantic-conventions",
+      "https://github.com/open-webui/open-webui",
+      "https://github.com/qodo-ai/pr-agent",
+      "https://github.com/simular-ai/Agent-S",
+      "https://github.com/tavily-ai/tavily-python",
+      "https://github.com/temporalio/temporal",
+      "https://github.com/vibrantlabsai/ragas",
+      "https://github.com/w3c/did",
+      "https://github.com/weaviate/weaviate",
+      "https://github.com/wong2/litemcp",
+      "https://github.com/xlang-ai/OSWorld"
+    ]
+  },
+  "data": [
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "ecosystem": "pypi",
+      "month": "2025-06-01",
+      "download_counts": 295710
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "ecosystem": "pypi",
+      "month": "2025-07-01",
+      "download_counts": 243895
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "ecosystem": "pypi",
+      "month": "2025-08-01",
+      "download_counts": 267374
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "ecosystem": "pypi",
+      "month": "2025-09-01",
+      "download_counts": 284755
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "ecosystem": "pypi",
+      "month": "2025-10-01",
+      "download_counts": 247828
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "ecosystem": "pypi",
+      "month": "2025-11-01",
+      "download_counts": 219043
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "ecosystem": "pypi",
+      "month": "2025-12-01",
+      "download_counts": 218739
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "ecosystem": "pypi",
+      "month": "2026-01-01",
+      "download_counts": 221245
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "ecosystem": "pypi",
+      "month": "2026-02-01",
+      "download_counts": 1451
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "ecosystem": "pypi",
+      "month": "2026-03-01",
+      "download_counts": 1451
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "ecosystem": "conda",
+      "month": "2025-10-01",
+      "download_counts": 3264008
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "ecosystem": "conda",
+      "month": "2025-11-01",
+      "download_counts": 3264008
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "ecosystem": "nixpkgs",
+      "month": "2026-02-01",
+      "download_counts": 3264008
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "ecosystem": "nixpkgs",
+      "month": "2026-03-01",
+      "download_counts": 3264008
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "ecosystem": "pypi",
+      "month": "2025-06-01",
+      "download_counts": 3775450
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "ecosystem": "pypi",
+      "month": "2025-07-01",
+      "download_counts": 3871906
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "ecosystem": "pypi",
+      "month": "2025-08-01",
+      "download_counts": 3978534
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "ecosystem": "pypi",
+      "month": "2025-09-01",
+      "download_counts": 4464285
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "ecosystem": "pypi",
+      "month": "2025-10-01",
+      "download_counts": 4784292
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "ecosystem": "pypi",
+      "month": "2025-11-01",
+      "download_counts": 1625601
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "ecosystem": "pypi",
+      "month": "2025-12-01",
+      "download_counts": 1625587
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "ecosystem": "pypi",
+      "month": "2026-01-01",
+      "download_counts": 1864522
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "ecosystem": "pypi",
+      "month": "2026-02-01",
+      "download_counts": 3937755
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "ecosystem": "pypi",
+      "month": "2026-03-01",
+      "download_counts": 4265458
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "ecosystem": "pypi",
+      "month": "2025-06-01",
+      "download_counts": 256047
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "ecosystem": "pypi",
+      "month": "2025-07-01",
+      "download_counts": 265285
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "ecosystem": "pypi",
+      "month": "2025-08-01",
+      "download_counts": 268750
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "ecosystem": "pypi",
+      "month": "2025-09-01",
+      "download_counts": 292678
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "ecosystem": "pypi",
+      "month": "2025-10-01",
+      "download_counts": 307302
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "ecosystem": "pypi",
+      "month": "2025-11-01",
+      "download_counts": 344759
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "ecosystem": "pypi",
+      "month": "2025-12-01",
+      "download_counts": 323824
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "ecosystem": "pypi",
+      "month": "2026-01-01",
+      "download_counts": 549597
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "ecosystem": "pypi",
+      "month": "2026-02-01",
+      "download_counts": 547691
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "ecosystem": "pypi",
+      "month": "2026-03-01",
+      "download_counts": 772562
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "ecosystem": "pypi",
+      "month": "2026-02-01",
+      "download_counts": 91877
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "ecosystem": "pypi",
+      "month": "2026-03-01",
+      "download_counts": 103626
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "ecosystem": "pypi",
+      "month": "2026-03-01",
+      "download_counts": 1144996
+    },
+    {
+      "repo": "https://github.com/OpenInterpreter/open-interpreter",
+      "ecosystem": "pypi",
+      "month": "2026-03-01",
+      "download_counts": 255047
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "ecosystem": "conda",
+      "month": "2025-07-01",
+      "download_counts": 6254512
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "ecosystem": "conda",
+      "month": "2025-08-01",
+      "download_counts": 7298565
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "ecosystem": "conda",
+      "month": "2025-09-01",
+      "download_counts": 7103067
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "ecosystem": "conda",
+      "month": "2025-10-01",
+      "download_counts": 13288050
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "ecosystem": "conda",
+      "month": "2025-11-01",
+      "download_counts": 7942255
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "ecosystem": "conda",
+      "month": "2025-12-01",
+      "download_counts": 7942255
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "ecosystem": "conda",
+      "month": "2026-01-01",
+      "download_counts": 6969639
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "ecosystem": "nixpkgs",
+      "month": "2026-03-01",
+      "download_counts": 1101801
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "ecosystem": "pypi",
+      "month": "2025-06-01",
+      "download_counts": 13840025
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "ecosystem": "pypi",
+      "month": "2025-07-01",
+      "download_counts": 7954122
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "ecosystem": "pypi",
+      "month": "2025-08-01",
+      "download_counts": 9845105
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "ecosystem": "pypi",
+      "month": "2025-09-01",
+      "download_counts": 10303630
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "ecosystem": "pypi",
+      "month": "2025-10-01",
+      "download_counts": 10212790
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "ecosystem": "pypi",
+      "month": "2025-11-01",
+      "download_counts": 10539509
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "ecosystem": "pypi",
+      "month": "2025-12-01",
+      "download_counts": 10982577
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "ecosystem": "pypi",
+      "month": "2026-01-01",
+      "download_counts": 10750979
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "ecosystem": "pypi",
+      "month": "2026-02-01",
+      "download_counts": 15401884
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "ecosystem": "pypi",
+      "month": "2026-03-01",
+      "download_counts": 15685963
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "ecosystem": "pypi",
+      "month": "2026-03-01",
+      "download_counts": 199891
+    },
+    {
+      "repo": "https://github.com/agno-agi/agno",
+      "ecosystem": "pypi",
+      "month": "2026-02-01",
+      "download_counts": 1228750
+    },
+    {
+      "repo": "https://github.com/agno-agi/agno",
+      "ecosystem": "pypi",
+      "month": "2026-03-01",
+      "download_counts": 1219205
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "ecosystem": "cargo",
+      "month": "2026-03-01",
+      "download_counts": 12
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "ecosystem": "npm",
+      "month": "2026-03-01",
+      "download_counts": 4844
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "ecosystem": "nuget",
+      "month": "2026-02-01",
+      "download_counts": 477
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "ecosystem": "nuget",
+      "month": "2026-03-01",
+      "download_counts": 640
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "ecosystem": "pypi",
+      "month": "2025-10-01",
+      "download_counts": 19519
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "ecosystem": "pypi",
+      "month": "2025-11-01",
+      "download_counts": 25248
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "ecosystem": "pypi",
+      "month": "2025-12-01",
+      "download_counts": 24588
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "ecosystem": "pypi",
+      "month": "2026-01-01",
+      "download_counts": 10420
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "ecosystem": "pypi",
+      "month": "2026-02-01",
+      "download_counts": 16097
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "ecosystem": "pypi",
+      "month": "2026-03-01",
+      "download_counts": 14507
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "ecosystem": "npm",
+      "month": "2025-06-01",
+      "download_counts": 50429
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "ecosystem": "npm",
+      "month": "2025-07-01",
+      "download_counts": 50344
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "ecosystem": "npm",
+      "month": "2025-08-01",
+      "download_counts": 52824
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "ecosystem": "npm",
+      "month": "2025-09-01",
+      "download_counts": 50712
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "ecosystem": "npm",
+      "month": "2025-10-01",
+      "download_counts": 50316
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "ecosystem": "npm",
+      "month": "2025-11-01",
+      "download_counts": 97
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "ecosystem": "npm",
+      "month": "2025-12-01",
+      "download_counts": 82579
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "ecosystem": "npm",
+      "month": "2026-01-01",
+      "download_counts": 74458
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "ecosystem": "npm",
+      "month": "2026-02-01",
+      "download_counts": 67872
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "ecosystem": "npm",
+      "month": "2026-03-01",
+      "download_counts": 67872
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "ecosystem": "pypi",
+      "month": "2025-06-01",
+      "download_counts": 60
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "ecosystem": "pypi",
+      "month": "2025-07-01",
+      "download_counts": 209
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "ecosystem": "pypi",
+      "month": "2025-08-01",
+      "download_counts": 301
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "ecosystem": "pypi",
+      "month": "2025-09-01",
+      "download_counts": 793
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "ecosystem": "pypi",
+      "month": "2025-10-01",
+      "download_counts": 303
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "ecosystem": "pypi",
+      "month": "2025-11-01",
+      "download_counts": 284
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "ecosystem": "pypi",
+      "month": "2025-12-01",
+      "download_counts": 22
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "ecosystem": "pypi",
+      "month": "2026-01-01",
+      "download_counts": 46
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "ecosystem": "pypi",
+      "month": "2026-02-01",
+      "download_counts": 46
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "ecosystem": "pypi",
+      "month": "2026-03-01",
+      "download_counts": 201
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "ecosystem": "homebrew",
+      "month": "2025-11-01",
+      "download_counts": 2636
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "ecosystem": "homebrew",
+      "month": "2025-12-01",
+      "download_counts": 2636
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "ecosystem": "homebrew",
+      "month": "2026-01-01",
+      "download_counts": 3731
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "ecosystem": "homebrew",
+      "month": "2026-02-01",
+      "download_counts": 5223
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "ecosystem": "homebrew",
+      "month": "2026-03-01",
+      "download_counts": 4807
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "ecosystem": "npm",
+      "month": "2026-03-01",
+      "download_counts": 8
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "ecosystem": "pypi",
+      "month": "2025-11-01",
+      "download_counts": 83
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "ecosystem": "pypi",
+      "month": "2025-12-01",
+      "download_counts": 40
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "ecosystem": "pypi",
+      "month": "2026-01-01",
+      "download_counts": 96
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "ecosystem": "pypi",
+      "month": "2026-02-01",
+      "download_counts": 123
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "ecosystem": "pypi",
+      "month": "2026-03-01",
+      "download_counts": 101
+    },
+    {
+      "repo": "https://github.com/browser-use/browser-use",
+      "ecosystem": "pypi",
+      "month": "2026-03-01",
+      "download_counts": 3116322
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "ecosystem": "pypi",
+      "month": "2026-03-01",
+      "download_counts": 61994
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "ecosystem": "cargo",
+      "month": "2025-06-01",
+      "download_counts": 723
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "ecosystem": "cargo",
+      "month": "2025-07-01",
+      "download_counts": 792
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "ecosystem": "cargo",
+      "month": "2025-08-01",
+      "download_counts": 853
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "ecosystem": "cargo",
+      "month": "2025-09-01",
+      "download_counts": 917
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "ecosystem": "cargo",
+      "month": "2025-10-01",
+      "download_counts": 4119
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "ecosystem": "cargo",
+      "month": "2025-11-01",
+      "download_counts": 4264
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "ecosystem": "cargo",
+      "month": "2025-12-01",
+      "download_counts": 56689
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "ecosystem": "cargo",
+      "month": "2026-01-01",
+      "download_counts": 224389
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "ecosystem": "cargo",
+      "month": "2026-02-01",
+      "download_counts": 652003
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "ecosystem": "cargo",
+      "month": "2026-03-01",
+      "download_counts": 1392446
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "ecosystem": "npm",
+      "month": "2025-06-01",
+      "download_counts": 81181
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "ecosystem": "npm",
+      "month": "2025-07-01",
+      "download_counts": 92251
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "ecosystem": "npm",
+      "month": "2025-08-01",
+      "download_counts": 124347
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "ecosystem": "npm",
+      "month": "2025-09-01",
+      "download_counts": 162141
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "ecosystem": "npm",
+      "month": "2025-10-01",
+      "download_counts": 169794
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "ecosystem": "npm",
+      "month": "2025-11-01",
+      "download_counts": 169280
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "ecosystem": "npm",
+      "month": "2025-12-01",
+      "download_counts": 162745
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "ecosystem": "npm",
+      "month": "2026-01-01",
+      "download_counts": 195563
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "ecosystem": "npm",
+      "month": "2026-02-01",
+      "download_counts": 181972
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "ecosystem": "npm",
+      "month": "2026-03-01",
+      "download_counts": 181972
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "ecosystem": "pypi",
+      "month": "2025-06-01",
+      "download_counts": 5396348
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "ecosystem": "pypi",
+      "month": "2025-07-01",
+      "download_counts": 5564300
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "ecosystem": "pypi",
+      "month": "2025-08-01",
+      "download_counts": 6828870
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "ecosystem": "pypi",
+      "month": "2025-09-01",
+      "download_counts": 8522339
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "ecosystem": "pypi",
+      "month": "2025-10-01",
+      "download_counts": 7925905
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "ecosystem": "pypi",
+      "month": "2025-11-01",
+      "download_counts": 9808961
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "ecosystem": "pypi",
+      "month": "2025-12-01",
+      "download_counts": 9440019
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "ecosystem": "pypi",
+      "month": "2026-01-01",
+      "download_counts": 9469242
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "ecosystem": "pypi",
+      "month": "2026-02-01",
+      "download_counts": 12272142
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "ecosystem": "pypi",
+      "month": "2026-03-01",
+      "download_counts": 15065558
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "ecosystem": "rubygems",
+      "month": "2026-01-01",
+      "download_counts": 1732
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "ecosystem": "rubygems",
+      "month": "2026-02-01",
+      "download_counts": 3498
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "ecosystem": "rubygems",
+      "month": "2026-03-01",
+      "download_counts": 1810
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "ecosystem": "npm",
+      "month": "2026-02-01",
+      "download_counts": 419374
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "ecosystem": "npm",
+      "month": "2026-03-01",
+      "download_counts": 1159784
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "ecosystem": "openvsx",
+      "month": "2026-02-01",
+      "download_counts": 2406012
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "ecosystem": "openvsx",
+      "month": "2026-03-01",
+      "download_counts": 2986654
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "ecosystem": "helm",
+      "month": "2026-03-01",
+      "download_counts": 1053
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "ecosystem": "npm",
+      "month": "2026-03-01",
+      "download_counts": 3236884
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "ecosystem": "pypi",
+      "month": "2026-03-01",
+      "download_counts": 112438
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "ecosystem": "pypi",
+      "month": "2026-03-01",
+      "download_counts": 2014738
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "ecosystem": "npm",
+      "month": "2025-09-01",
+      "download_counts": 9412
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "ecosystem": "npm",
+      "month": "2025-10-01",
+      "download_counts": 20952
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "ecosystem": "npm",
+      "month": "2025-11-01",
+      "download_counts": 24466
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "ecosystem": "npm",
+      "month": "2025-12-01",
+      "download_counts": 22419
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "ecosystem": "npm",
+      "month": "2026-01-01",
+      "download_counts": 26992
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "ecosystem": "npm",
+      "month": "2026-02-01",
+      "download_counts": 26158
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "ecosystem": "npm",
+      "month": "2026-03-01",
+      "download_counts": 26174
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "ecosystem": "openvsx",
+      "month": "2025-09-01",
+      "download_counts": 551514
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "ecosystem": "openvsx",
+      "month": "2025-10-01",
+      "download_counts": 614523
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "ecosystem": "openvsx",
+      "month": "2025-11-01",
+      "download_counts": 655156
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "ecosystem": "openvsx",
+      "month": "2025-12-01",
+      "download_counts": 655156
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "ecosystem": "openvsx",
+      "month": "2026-01-01",
+      "download_counts": 771967
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "ecosystem": "openvsx",
+      "month": "2026-02-01",
+      "download_counts": 867029
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "ecosystem": "openvsx",
+      "month": "2026-03-01",
+      "download_counts": 965564
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "ecosystem": "pypi",
+      "month": "2025-06-01",
+      "download_counts": 1198
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "ecosystem": "pypi",
+      "month": "2025-07-01",
+      "download_counts": 1179
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "ecosystem": "pypi",
+      "month": "2025-08-01",
+      "download_counts": 999
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "ecosystem": "pypi",
+      "month": "2025-09-01",
+      "download_counts": 1164
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "ecosystem": "pypi",
+      "month": "2025-10-01",
+      "download_counts": 1666
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "ecosystem": "pypi",
+      "month": "2025-11-01",
+      "download_counts": 1477
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "ecosystem": "pypi",
+      "month": "2025-12-01",
+      "download_counts": 1477
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "ecosystem": "pypi",
+      "month": "2026-01-01",
+      "download_counts": 2047
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "ecosystem": "pypi",
+      "month": "2026-02-01",
+      "download_counts": 1888
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "ecosystem": "pypi",
+      "month": "2026-03-01",
+      "download_counts": 1888
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "ecosystem": "nixpkgs",
+      "month": "2026-02-01",
+      "download_counts": 4890357
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "ecosystem": "pypi",
+      "month": "2025-06-01",
+      "download_counts": 1379201
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "ecosystem": "pypi",
+      "month": "2025-07-01",
+      "download_counts": 1464245
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "ecosystem": "pypi",
+      "month": "2025-08-01",
+      "download_counts": 1509182
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "ecosystem": "pypi",
+      "month": "2025-09-01",
+      "download_counts": 1785577
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "ecosystem": "pypi",
+      "month": "2025-10-01",
+      "download_counts": 3232194
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "ecosystem": "pypi",
+      "month": "2025-11-01",
+      "download_counts": 4366554
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "ecosystem": "pypi",
+      "month": "2025-12-01",
+      "download_counts": 4366554
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "ecosystem": "pypi",
+      "month": "2026-01-01",
+      "download_counts": 4435476
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "ecosystem": "pypi",
+      "month": "2026-02-01",
+      "download_counts": 3958644
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "ecosystem": "pypi",
+      "month": "2026-03-01",
+      "download_counts": 5717712
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "ecosystem": "npm",
+      "month": "2026-03-01",
+      "download_counts": 1203448
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "ecosystem": "pypi",
+      "month": "2026-03-01",
+      "download_counts": 1664813
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "ecosystem": "rubygems",
+      "month": "2026-03-01",
+      "download_counts": 13529
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "ecosystem": "conda",
+      "month": "2026-03-01",
+      "download_counts": 647921
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "ecosystem": "pypi",
+      "month": "2025-06-01",
+      "download_counts": 482064
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "ecosystem": "pypi",
+      "month": "2025-07-01",
+      "download_counts": 481911
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "ecosystem": "pypi",
+      "month": "2025-08-01",
+      "download_counts": 482974
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "ecosystem": "pypi",
+      "month": "2025-09-01",
+      "download_counts": 482957
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "ecosystem": "pypi",
+      "month": "2025-10-01",
+      "download_counts": 421189
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "ecosystem": "pypi",
+      "month": "2025-11-01",
+      "download_counts": 519325
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "ecosystem": "pypi",
+      "month": "2025-12-01",
+      "download_counts": 519325
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "ecosystem": "pypi",
+      "month": "2026-01-01",
+      "download_counts": 560480
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "ecosystem": "pypi",
+      "month": "2026-02-01",
+      "download_counts": 634608
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "ecosystem": "pypi",
+      "month": "2026-03-01",
+      "download_counts": 698147
+    },
+    {
+      "repo": "https://github.com/e2b-dev/code-interpreter",
+      "ecosystem": "npm",
+      "month": "2026-03-01",
+      "download_counts": 624132
+    },
+    {
+      "repo": "https://github.com/e2b-dev/code-interpreter",
+      "ecosystem": "pypi",
+      "month": "2026-03-01",
+      "download_counts": 1461572
+    },
+    {
+      "repo": "https://github.com/google/adk-python",
+      "ecosystem": "pypi",
+      "month": "2026-03-01",
+      "download_counts": 4039036
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "ecosystem": "pypi",
+      "month": "2026-03-01",
+      "download_counts": 232729
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "ecosystem": "pypi",
+      "month": "2026-02-01",
+      "download_counts": 412391
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "ecosystem": "pypi",
+      "month": "2026-03-01",
+      "download_counts": 452109
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "ecosystem": "conda",
+      "month": "2025-06-01",
+      "download_counts": 66868582
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "ecosystem": "conda",
+      "month": "2025-07-01",
+      "download_counts": 68186012
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "ecosystem": "conda",
+      "month": "2025-08-01",
+      "download_counts": 88198900
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "ecosystem": "conda",
+      "month": "2025-09-01",
+      "download_counts": 106189417
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "ecosystem": "conda",
+      "month": "2025-10-01",
+      "download_counts": 191961645
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "ecosystem": "conda",
+      "month": "2025-11-01",
+      "download_counts": 113759194
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "ecosystem": "conda",
+      "month": "2025-12-01",
+      "download_counts": 112695381
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "ecosystem": "conda",
+      "month": "2026-01-01",
+      "download_counts": 92933902
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "ecosystem": "conda",
+      "month": "2026-02-01",
+      "download_counts": 215800813
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "ecosystem": "conda",
+      "month": "2026-03-01",
+      "download_counts": 118527191
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "ecosystem": "pypi",
+      "month": "2025-06-01",
+      "download_counts": 916
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "ecosystem": "pypi",
+      "month": "2025-07-01",
+      "download_counts": 226
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "ecosystem": "pypi",
+      "month": "2025-08-01",
+      "download_counts": 4845
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "ecosystem": "pypi",
+      "month": "2025-09-01",
+      "download_counts": 7784
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "ecosystem": "pypi",
+      "month": "2025-10-01",
+      "download_counts": 6410
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "ecosystem": "pypi",
+      "month": "2025-11-01",
+      "download_counts": 4266
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "ecosystem": "pypi",
+      "month": "2025-12-01",
+      "download_counts": 4156
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "ecosystem": "pypi",
+      "month": "2026-01-01",
+      "download_counts": 4439
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "ecosystem": "pypi",
+      "month": "2026-02-01",
+      "download_counts": 5135
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "ecosystem": "pypi",
+      "month": "2026-03-01",
+      "download_counts": 37528
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "ecosystem": "pypi",
+      "month": "2025-06-01",
+      "download_counts": 68523
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "ecosystem": "pypi",
+      "month": "2025-07-01",
+      "download_counts": 52596
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "ecosystem": "pypi",
+      "month": "2025-08-01",
+      "download_counts": 62498
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "ecosystem": "pypi",
+      "month": "2025-09-01",
+      "download_counts": 66330
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "ecosystem": "pypi",
+      "month": "2025-10-01",
+      "download_counts": 80309
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "ecosystem": "pypi",
+      "month": "2025-11-01",
+      "download_counts": 82929
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "ecosystem": "pypi",
+      "month": "2025-12-01",
+      "download_counts": 69333
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "ecosystem": "pypi",
+      "month": "2026-01-01",
+      "download_counts": 71645
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "ecosystem": "pypi",
+      "month": "2026-02-01",
+      "download_counts": 94526
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "ecosystem": "pypi",
+      "month": "2026-03-01",
+      "download_counts": 123408
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "ecosystem": "conda",
+      "month": "2025-06-01",
+      "download_counts": 36663930
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "ecosystem": "conda",
+      "month": "2025-07-01",
+      "download_counts": 124381309
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "ecosystem": "conda",
+      "month": "2025-08-01",
+      "download_counts": 93122318
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "ecosystem": "conda",
+      "month": "2025-09-01",
+      "download_counts": 115174952
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "ecosystem": "conda",
+      "month": "2025-10-01",
+      "download_counts": 129551057
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "ecosystem": "conda",
+      "month": "2025-11-01",
+      "download_counts": 144084612
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "ecosystem": "conda",
+      "month": "2025-12-01",
+      "download_counts": 28671162
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "ecosystem": "conda",
+      "month": "2026-01-01",
+      "download_counts": 144828177
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "ecosystem": "conda",
+      "month": "2026-02-01",
+      "download_counts": 177265808
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "ecosystem": "conda",
+      "month": "2026-03-01",
+      "download_counts": 196500554
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "ecosystem": "pypi",
+      "month": "2025-06-01",
+      "download_counts": 175696639
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "ecosystem": "pypi",
+      "month": "2025-07-01",
+      "download_counts": 86395480
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "ecosystem": "pypi",
+      "month": "2025-08-01",
+      "download_counts": 88895262
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "ecosystem": "pypi",
+      "month": "2025-09-01",
+      "download_counts": 90992344
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "ecosystem": "pypi",
+      "month": "2025-10-01",
+      "download_counts": 100201588
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "ecosystem": "pypi",
+      "month": "2025-11-01",
+      "download_counts": 119101027
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "ecosystem": "pypi",
+      "month": "2025-12-01",
+      "download_counts": 115277710
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "ecosystem": "pypi",
+      "month": "2026-01-01",
+      "download_counts": 180632810
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "ecosystem": "pypi",
+      "month": "2026-02-01",
+      "download_counts": 238339899
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "ecosystem": "pypi",
+      "month": "2026-03-01",
+      "download_counts": 303628788
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "ecosystem": "conda",
+      "month": "2025-10-01",
+      "download_counts": 47988520
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "ecosystem": "conda",
+      "month": "2025-11-01",
+      "download_counts": 69268986
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "ecosystem": "conda",
+      "month": "2025-12-01",
+      "download_counts": 69268986
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "ecosystem": "conda",
+      "month": "2026-01-01",
+      "download_counts": 58679046
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "ecosystem": "conda",
+      "month": "2026-02-01",
+      "download_counts": 51191305
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "ecosystem": "conda",
+      "month": "2026-03-01",
+      "download_counts": 40634518
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "ecosystem": "homebrew",
+      "month": "2025-06-01",
+      "download_counts": 458590
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "ecosystem": "homebrew",
+      "month": "2025-07-01",
+      "download_counts": 647638
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "ecosystem": "homebrew",
+      "month": "2025-08-01",
+      "download_counts": 774026
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "ecosystem": "homebrew",
+      "month": "2025-09-01",
+      "download_counts": 1075756
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "ecosystem": "homebrew",
+      "month": "2025-10-01",
+      "download_counts": 1200573
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "ecosystem": "homebrew",
+      "month": "2026-01-01",
+      "download_counts": 1691026
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "ecosystem": "pypi",
+      "month": "2025-06-01",
+      "download_counts": 19421167
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "ecosystem": "pypi",
+      "month": "2025-07-01",
+      "download_counts": 24610992
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "ecosystem": "pypi",
+      "month": "2025-08-01",
+      "download_counts": 32816354
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "ecosystem": "pypi",
+      "month": "2025-09-01",
+      "download_counts": 37187481
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "ecosystem": "pypi",
+      "month": "2025-10-01",
+      "download_counts": 45054067
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "ecosystem": "pypi",
+      "month": "2025-11-01",
+      "download_counts": 2234601
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "ecosystem": "pypi",
+      "month": "2025-12-01",
+      "download_counts": 2131545
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "ecosystem": "pypi",
+      "month": "2026-01-01",
+      "download_counts": 2740446
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "ecosystem": "pypi",
+      "month": "2026-02-01",
+      "download_counts": 3609056
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "ecosystem": "pypi",
+      "month": "2026-03-01",
+      "download_counts": 4294323
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "ecosystem": "hex",
+      "month": "2026-02-01",
+      "download_counts": 84
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "ecosystem": "hex",
+      "month": "2026-03-01",
+      "download_counts": 90
+    },
+    {
+      "repo": "https://github.com/livekit/agents",
+      "ecosystem": "pypi",
+      "month": "2026-03-01",
+      "download_counts": 13787915
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "ecosystem": "npm",
+      "month": "2026-03-01",
+      "download_counts": 13897131
+    },
+    {
+      "repo": "https://github.com/microsoft/TaskWeaver",
+      "ecosystem": "pypi",
+      "month": "2026-03-01",
+      "download_counts": 55
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "ecosystem": "nuget",
+      "month": "2025-07-01",
+      "download_counts": 448491
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "ecosystem": "nuget",
+      "month": "2025-08-01",
+      "download_counts": 496619
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "ecosystem": "nuget",
+      "month": "2025-09-01",
+      "download_counts": 563439
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "ecosystem": "nuget",
+      "month": "2025-10-01",
+      "download_counts": 584967
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "ecosystem": "nuget",
+      "month": "2025-11-01",
+      "download_counts": 652870
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "ecosystem": "nuget",
+      "month": "2025-12-01",
+      "download_counts": 652870
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "ecosystem": "nuget",
+      "month": "2026-01-01",
+      "download_counts": 740103
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "ecosystem": "nuget",
+      "month": "2026-02-01",
+      "download_counts": 828360
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "ecosystem": "nuget",
+      "month": "2026-03-01",
+      "download_counts": 859140
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "ecosystem": "pypi",
+      "month": "2025-06-01",
+      "download_counts": 49963
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "ecosystem": "pypi",
+      "month": "2025-07-01",
+      "download_counts": 56091
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "ecosystem": "pypi",
+      "month": "2025-08-01",
+      "download_counts": 57099
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "ecosystem": "pypi",
+      "month": "2025-09-01",
+      "download_counts": 64453
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "ecosystem": "pypi",
+      "month": "2025-10-01",
+      "download_counts": 67193
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "ecosystem": "pypi",
+      "month": "2025-11-01",
+      "download_counts": 69486
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "ecosystem": "pypi",
+      "month": "2025-12-01",
+      "download_counts": 46032
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "ecosystem": "pypi",
+      "month": "2026-01-01",
+      "download_counts": 38164
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "ecosystem": "pypi",
+      "month": "2026-02-01",
+      "download_counts": 36067
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "ecosystem": "pypi",
+      "month": "2026-03-01",
+      "download_counts": 36238
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
+      "ecosystem": "pypi",
+      "month": "2026-03-01",
+      "download_counts": 200866
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "ecosystem": "npm",
+      "month": "2025-06-01",
+      "download_counts": 125738994
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "ecosystem": "npm",
+      "month": "2025-07-01",
+      "download_counts": 125771424
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "ecosystem": "npm",
+      "month": "2025-08-01",
+      "download_counts": 126001112
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "ecosystem": "npm",
+      "month": "2025-09-01",
+      "download_counts": 126671054
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "ecosystem": "npm",
+      "month": "2025-10-01",
+      "download_counts": 127013382
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "ecosystem": "npm",
+      "month": "2025-11-01",
+      "download_counts": 82395697
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "ecosystem": "npm",
+      "month": "2025-12-01",
+      "download_counts": 81897477
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "ecosystem": "npm",
+      "month": "2026-01-01",
+      "download_counts": 82199579
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "ecosystem": "npm",
+      "month": "2026-02-01",
+      "download_counts": 329964300
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "ecosystem": "npm",
+      "month": "2026-03-01",
+      "download_counts": 329794130
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "ecosystem": "nuget",
+      "month": "2026-03-01",
+      "download_counts": 69737152
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "ecosystem": "pypi",
+      "month": "2026-03-01",
+      "download_counts": 2815996
+    },
+    {
+      "repo": "https://github.com/mistralai/mistral-inference",
+      "ecosystem": "nixpkgs",
+      "month": "2026-03-01",
+      "download_counts": 13999
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "ecosystem": "pypi",
+      "month": "2025-06-01",
+      "download_counts": 228
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "ecosystem": "pypi",
+      "month": "2025-07-01",
+      "download_counts": 228
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "ecosystem": "pypi",
+      "month": "2025-08-01",
+      "download_counts": 228
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "ecosystem": "pypi",
+      "month": "2025-09-01",
+      "download_counts": 228
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "ecosystem": "pypi",
+      "month": "2025-10-01",
+      "download_counts": 228
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "ecosystem": "pypi",
+      "month": "2025-11-01",
+      "download_counts": 228
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "ecosystem": "pypi",
+      "month": "2025-12-01",
+      "download_counts": 228
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "ecosystem": "pypi",
+      "month": "2026-01-01",
+      "download_counts": 228
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "ecosystem": "pypi",
+      "month": "2026-02-01",
+      "download_counts": 228
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "ecosystem": "pypi",
+      "month": "2026-03-01",
+      "download_counts": 228
+    },
+    {
+      "repo": "https://github.com/openai/openai-agents-python",
+      "ecosystem": "pypi",
+      "month": "2026-03-01",
+      "download_counts": 16620193
+    },
+    {
+      "repo": "https://github.com/openclaw/openclaw",
+      "ecosystem": "npm",
+      "month": "2026-02-01",
+      "download_counts": 4526115
+    },
+    {
+      "repo": "https://github.com/openclaw/openclaw",
+      "ecosystem": "npm",
+      "month": "2026-03-01",
+      "download_counts": 7403576
+    },
+    {
+      "repo": "https://github.com/openclaw/openclaw",
+      "ecosystem": "pypi",
+      "month": "2026-03-01",
+      "download_counts": 720
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "ecosystem": "pypi",
+      "month": "2026-03-01",
+      "download_counts": 13794
+    },
+    {
+      "repo": "https://github.com/pipecat-ai/pipecat",
+      "ecosystem": "pypi",
+      "month": "2026-03-01",
+      "download_counts": 505419
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "ecosystem": "npm",
+      "month": "2025-06-01",
+      "download_counts": 1519
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "ecosystem": "npm",
+      "month": "2025-07-01",
+      "download_counts": 1623
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "ecosystem": "npm",
+      "month": "2025-08-01",
+      "download_counts": 2031
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "ecosystem": "npm",
+      "month": "2025-09-01",
+      "download_counts": 2422
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "ecosystem": "npm",
+      "month": "2025-10-01",
+      "download_counts": 1451
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "ecosystem": "npm",
+      "month": "2025-11-01",
+      "download_counts": 1510
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "ecosystem": "npm",
+      "month": "2025-12-01",
+      "download_counts": 1510
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "ecosystem": "npm",
+      "month": "2026-01-01",
+      "download_counts": 294105
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "ecosystem": "npm",
+      "month": "2026-02-01",
+      "download_counts": 294115
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "ecosystem": "npm",
+      "month": "2026-03-01",
+      "download_counts": 415786
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "ecosystem": "pypi",
+      "month": "2025-06-01",
+      "download_counts": 162440
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "ecosystem": "pypi",
+      "month": "2025-07-01",
+      "download_counts": 164827
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "ecosystem": "pypi",
+      "month": "2025-08-01",
+      "download_counts": 160069
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "ecosystem": "pypi",
+      "month": "2025-09-01",
+      "download_counts": 209048
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "ecosystem": "pypi",
+      "month": "2025-10-01",
+      "download_counts": 353228
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "ecosystem": "pypi",
+      "month": "2025-11-01",
+      "download_counts": 383133
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "ecosystem": "pypi",
+      "month": "2026-01-01",
+      "download_counts": 342089
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "ecosystem": "npm",
+      "month": "2026-02-01",
+      "download_counts": 224
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "ecosystem": "npm",
+      "month": "2026-03-01",
+      "download_counts": 224
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "ecosystem": "pypi",
+      "month": "2026-02-01",
+      "download_counts": 45109770
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "ecosystem": "pypi",
+      "month": "2026-03-01",
+      "download_counts": 130986801
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "ecosystem": "cargo",
+      "month": "2025-06-01",
+      "download_counts": 1501
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "ecosystem": "cargo",
+      "month": "2025-07-01",
+      "download_counts": 1684
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "ecosystem": "cargo",
+      "month": "2025-08-01",
+      "download_counts": 1821
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "ecosystem": "cargo",
+      "month": "2025-09-01",
+      "download_counts": 1995
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "ecosystem": "cargo",
+      "month": "2025-10-01",
+      "download_counts": 2099
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "ecosystem": "cargo",
+      "month": "2025-11-01",
+      "download_counts": 2199
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "ecosystem": "conda",
+      "month": "2025-11-01",
+      "download_counts": 2199
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "ecosystem": "conda",
+      "month": "2025-12-01",
+      "download_counts": 2199
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "ecosystem": "conda",
+      "month": "2026-01-01",
+      "download_counts": 2375
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "ecosystem": "conda",
+      "month": "2026-02-01",
+      "download_counts": 2375
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "ecosystem": "nixpkgs",
+      "month": "2026-02-01",
+      "download_counts": 7170
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "ecosystem": "nixpkgs",
+      "month": "2026-03-01",
+      "download_counts": 2509
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "ecosystem": "conda",
+      "month": "2026-03-01",
+      "download_counts": 6585561
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "ecosystem": "pypi",
+      "month": "2025-06-01",
+      "download_counts": 7362527
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "ecosystem": "pypi",
+      "month": "2025-07-01",
+      "download_counts": 7103563
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "ecosystem": "pypi",
+      "month": "2025-08-01",
+      "download_counts": 7305759
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "ecosystem": "pypi",
+      "month": "2025-09-01",
+      "download_counts": 10883990
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "ecosystem": "pypi",
+      "month": "2025-10-01",
+      "download_counts": 12835852
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "ecosystem": "pypi",
+      "month": "2025-11-01",
+      "download_counts": 16604078
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "ecosystem": "pypi",
+      "month": "2025-12-01",
+      "download_counts": 16447070
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "ecosystem": "pypi",
+      "month": "2026-01-01",
+      "download_counts": 13887582
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "ecosystem": "pypi",
+      "month": "2026-02-01",
+      "download_counts": 14900611
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "ecosystem": "pypi",
+      "month": "2026-03-01",
+      "download_counts": 8696812
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "ecosystem": "pypi",
+      "month": "2026-03-01",
+      "download_counts": 240667
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "ecosystem": "conda",
+      "month": "2025-11-01",
+      "download_counts": 2737077
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "ecosystem": "conda",
+      "month": "2025-12-01",
+      "download_counts": 2458920
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "ecosystem": "conda",
+      "month": "2026-03-01",
+      "download_counts": 4804925
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "ecosystem": "pypi",
+      "month": "2025-06-01",
+      "download_counts": 1258720
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "ecosystem": "pypi",
+      "month": "2025-07-01",
+      "download_counts": 1078685
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "ecosystem": "pypi",
+      "month": "2025-08-01",
+      "download_counts": 1252347
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "ecosystem": "pypi",
+      "month": "2025-09-01",
+      "download_counts": 1905588
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "ecosystem": "pypi",
+      "month": "2025-10-01",
+      "download_counts": 2319435
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "ecosystem": "pypi",
+      "month": "2025-11-01",
+      "download_counts": 2657990
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "ecosystem": "pypi",
+      "month": "2025-12-01",
+      "download_counts": 104
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "ecosystem": "pypi",
+      "month": "2026-01-01",
+      "download_counts": 109
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "ecosystem": "pypi",
+      "month": "2026-02-01",
+      "download_counts": 277
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "ecosystem": "pypi",
+      "month": "2026-03-01",
+      "download_counts": 359
+    },
+    {
+      "repo": "https://github.com/sweepai/sweep",
+      "ecosystem": "pypi",
+      "month": "2026-03-01",
+      "download_counts": 385
+    },
+    {
+      "repo": "https://github.com/unclecode/crawl4ai",
+      "ecosystem": "pypi",
+      "month": "2026-03-01",
+      "download_counts": 1267166
+    }
+  ]
+}
