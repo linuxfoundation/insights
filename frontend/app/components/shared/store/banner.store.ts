@@ -14,7 +14,9 @@ export const useBannerStore = defineStore('banner', () => {
   };
 
   const checkBannerVisibility = () => {
-    const bannerFlagged = localStorage.getItem(`${bannerConfig.key}-flagged`) === 'true';
+    const bannerFlagged =
+      typeof window !== 'undefined' &&
+      localStorage.getItem(`${bannerConfig.key}-flagged`) === 'true';
     return new Date() < bannerConfig.validUntil && !bannerFlagged && bannerConfig.enabled;
   };
 

@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "fetched_at": "2026-03-25T15:28:54.342208",
+    "fetched_at": "2026-03-27T10:27:56.731712",
     "schema": {
       "name": "package_downloads_count",
       "description": "Monthly package download counts from Tinybird, broken out by ecosystem.",
@@ -30,50 +30,7 @@
           "optional": false
         }
       ]
-    },
-    "covered_items": [
-      "https://github.com/567-labs/instructor",
-      "https://github.com/AmoyLab/Unla",
-      "https://github.com/Arize-ai/phoenix",
-      "https://github.com/Azure/PyRIT",
-      "https://github.com/FoundationAgents/MetaGPT",
-      "https://github.com/NVIDIA-NeMo/Guardrails",
-      "https://github.com/NVIDIA/garak",
-      "https://github.com/OAI/OpenAPI-Specification",
-      "https://github.com/OpenAutoCoder/Agentless",
-      "https://github.com/PrefectHQ/fastmcp",
-      "https://github.com/SWE-agent/SWE-agent",
-      "https://github.com/SWE-bench/SWE-bench",
-      "https://github.com/Significant-Gravitas/AutoGPT",
-      "https://github.com/a2aproject/A2A",
-      "https://github.com/agentscope-ai/agentscope",
-      "https://github.com/agentsmd/agents.md",
-      "https://github.com/agno-agi/agno",
-      "https://github.com/agntcy/acp-spec",
-      "https://github.com/agntcy/oasf",
-      "https://github.com/aurelio-labs/semantic-router",
-      "https://github.com/firecrawl/firecrawl",
-      "https://github.com/ibm/mcp-context-forge",
-      "https://github.com/infiniflow/ragflow",
-      "https://github.com/janhq/jan",
-      "https://github.com/joonspk-research/generative_agents",
-      "https://github.com/langfuse/langfuse",
-      "https://github.com/microsoft/OmniParser",
-      "https://github.com/milvus-io/milvus",
-      "https://github.com/modelcontextprotocol/modelcontextprotocol",
-      "https://github.com/ollama/ollama",
-      "https://github.com/open-telemetry/semantic-conventions",
-      "https://github.com/open-webui/open-webui",
-      "https://github.com/qodo-ai/pr-agent",
-      "https://github.com/simular-ai/Agent-S",
-      "https://github.com/tavily-ai/tavily-python",
-      "https://github.com/temporalio/temporal",
-      "https://github.com/vibrantlabsai/ragas",
-      "https://github.com/w3c/did",
-      "https://github.com/weaviate/weaviate",
-      "https://github.com/wong2/litemcp",
-      "https://github.com/xlang-ai/OSWorld"
-    ]
+    }
   },
   "data": [
     {
@@ -278,7 +235,7 @@
       "repo": "https://github.com/ComposioHQ/composio",
       "ecosystem": "pypi",
       "month": "2026-03-01",
-      "download_counts": 772562
+      "download_counts": 773516
     },
     {
       "repo": "https://github.com/HKUDS/LightRAG",
@@ -410,25 +367,13 @@
       "repo": "https://github.com/PrefectHQ/prefect",
       "ecosystem": "pypi",
       "month": "2026-03-01",
-      "download_counts": 15685963
+      "download_counts": 15694443
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "ecosystem": "pypi",
       "month": "2026-03-01",
       "download_counts": 199891
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "ecosystem": "pypi",
-      "month": "2026-02-01",
-      "download_counts": 1228750
-    },
-    {
-      "repo": "https://github.com/agno-agi/agno",
-      "ecosystem": "pypi",
-      "month": "2026-03-01",
-      "download_counts": 1219205
     },
     {
       "repo": "https://github.com/agntcy/slim",
@@ -452,7 +397,7 @@
       "repo": "https://github.com/agntcy/slim",
       "ecosystem": "nuget",
       "month": "2026-03-01",
-      "download_counts": 640
+      "download_counts": 693
     },
     {
       "repo": "https://github.com/agntcy/slim",
@@ -806,7 +751,7 @@
       "repo": "https://github.com/chroma-core/chroma",
       "ecosystem": "npm",
       "month": "2026-03-01",
-      "download_counts": 181972
+      "download_counts": 196126
     },
     {
       "repo": "https://github.com/chroma-core/chroma",
@@ -896,7 +841,7 @@
       "repo": "https://github.com/cline/cline",
       "ecosystem": "npm",
       "month": "2026-03-01",
-      "download_counts": 1159784
+      "download_counts": 1161562
     },
     {
       "repo": "https://github.com/cline/cline",
@@ -908,7 +853,7 @@
       "repo": "https://github.com/cline/cline",
       "ecosystem": "openvsx",
       "month": "2026-03-01",
-      "download_counts": 2986654
+      "download_counts": 3028185
     },
     {
       "repo": "https://github.com/comet-ml/opik",
@@ -1016,7 +961,7 @@
       "repo": "https://github.com/continuedev/continue",
       "ecosystem": "openvsx",
       "month": "2026-03-01",
-      "download_counts": 965564
+      "download_counts": 986498
     },
     {
       "repo": "https://github.com/continuedev/continue",
@@ -1154,13 +1099,13 @@
       "repo": "https://github.com/daytonaio/daytona",
       "ecosystem": "pypi",
       "month": "2026-03-01",
-      "download_counts": 1664813
+      "download_counts": 1665707
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "ecosystem": "rubygems",
       "month": "2026-03-01",
-      "download_counts": 13529
+      "download_counts": 16372
     },
     {
       "repo": "https://github.com/deepset-ai/haystack",
@@ -1262,7 +1207,7 @@
       "repo": "https://github.com/huggingface/smolagents",
       "ecosystem": "pypi",
       "month": "2026-03-01",
-      "download_counts": 452109
+      "download_counts": 495624
     },
     {
       "repo": "https://github.com/huggingface/transformers",
@@ -1442,7 +1387,7 @@
       "repo": "https://github.com/kserve/kserve",
       "ecosystem": "pypi",
       "month": "2026-03-01",
-      "download_counts": 123408
+      "download_counts": 126648
     },
     {
       "repo": "https://github.com/langchain-ai/langchain",
@@ -1502,7 +1447,7 @@
       "repo": "https://github.com/langchain-ai/langchain",
       "ecosystem": "conda",
       "month": "2026-03-01",
-      "download_counts": 196500554
+      "download_counts": 197819530
     },
     {
       "repo": "https://github.com/langchain-ai/langchain",
@@ -1562,7 +1507,7 @@
       "repo": "https://github.com/langchain-ai/langchain",
       "ecosystem": "pypi",
       "month": "2026-03-01",
-      "download_counts": 303628788
+      "download_counts": 303628879
     },
     {
       "repo": "https://github.com/langchain-ai/langgraph",
@@ -1694,7 +1639,7 @@
       "repo": "https://github.com/langchain-ai/langgraph",
       "ecosystem": "pypi",
       "month": "2026-03-01",
-      "download_counts": 4294323
+      "download_counts": 4593145
     },
     {
       "repo": "https://github.com/letta-ai/letta",
@@ -1712,13 +1657,13 @@
       "repo": "https://github.com/livekit/agents",
       "ecosystem": "pypi",
       "month": "2026-03-01",
-      "download_counts": 13787915
+      "download_counts": 13788013
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "ecosystem": "npm",
       "month": "2026-03-01",
-      "download_counts": 13897131
+      "download_counts": 14238767
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
@@ -1844,7 +1789,7 @@
       "repo": "https://github.com/microsoft/graphrag",
       "ecosystem": "pypi",
       "month": "2026-03-01",
-      "download_counts": 200866
+      "download_counts": 203522
     },
     {
       "repo": "https://github.com/microsoft/playwright",
@@ -1904,13 +1849,13 @@
       "repo": "https://github.com/microsoft/playwright",
       "ecosystem": "npm",
       "month": "2026-03-01",
-      "download_counts": 329794130
+      "download_counts": 329794211
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "ecosystem": "nuget",
       "month": "2026-03-01",
-      "download_counts": 69737152
+      "download_counts": 70295056
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
@@ -2000,7 +1945,7 @@
       "repo": "https://github.com/openclaw/openclaw",
       "ecosystem": "npm",
       "month": "2026-03-01",
-      "download_counts": 7403576
+      "download_counts": 8796352
     },
     {
       "repo": "https://github.com/openclaw/openclaw",
@@ -2018,7 +1963,7 @@
       "repo": "https://github.com/pipecat-ai/pipecat",
       "ecosystem": "pypi",
       "month": "2026-03-01",
-      "download_counts": 505419
+      "download_counts": 596981
     },
     {
       "repo": "https://github.com/promptfoo/promptfoo",
@@ -2222,7 +2167,7 @@
       "repo": "https://github.com/run-llama/llama_index",
       "ecosystem": "conda",
       "month": "2026-03-01",
-      "download_counts": 6585561
+      "download_counts": 12807891
     },
     {
       "repo": "https://github.com/run-llama/llama_index",
@@ -2282,7 +2227,7 @@
       "repo": "https://github.com/run-llama/llama_index",
       "ecosystem": "pypi",
       "month": "2026-03-01",
-      "download_counts": 8696812
+      "download_counts": 9459490
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
@@ -2306,7 +2251,7 @@
       "repo": "https://github.com/stanfordnlp/dspy",
       "ecosystem": "conda",
       "month": "2026-03-01",
-      "download_counts": 4804925
+      "download_counts": 5113391
     },
     {
       "repo": "https://github.com/stanfordnlp/dspy",
@@ -2378,7 +2323,7 @@
       "repo": "https://github.com/unclecode/crawl4ai",
       "ecosystem": "pypi",
       "month": "2026-03-01",
-      "download_counts": 1267166
+      "download_counts": 1463566
     }
   ]
 }
