@@ -11,7 +11,7 @@ SPDX-License-Identifier: MIT
 
     <div class="absolute h-full w-full flex items-center justify-center -mt-6 -ml-6">
       <div
-        class="shadow-xl bg-gradient-to-b from-violet-50/50 to-white p-8 border border-neutral-200 rounded-xl flex flex-col gap-8 items-center"
+        class="shadow-xl bg-gradient-to-b from-violet-50/50 to-white p-8 border border-neutral-200 rounded-xl flex flex-col gap-8 items-center w-[50rem]"
       >
         <!-- Icon and text section -->
         <div class="flex flex-col gap-5 items-center">
