@@ -73,6 +73,15 @@ export const lfxFooterMenu: FooterMenuSection[] = [
     ],
   },
   {
+    title: 'Reports',
+    links: [
+      {
+        name: 'AI Code Tracker',
+        link: '/report/ai-code-tracker',
+      },
+    ],
+  },
+  {
     title: 'Other LFX Tools',
     links: [
       individualDashboard,
