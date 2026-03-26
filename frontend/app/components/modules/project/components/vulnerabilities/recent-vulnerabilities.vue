@@ -35,9 +35,9 @@ SPDX-License-Identifier: MIT
     <!-- View More Button -->
     <lfx-button
       v-if="props.showViewMore && data && data.length > 0 && !isLoading"
-      type="ghost"
+      type="transparent"
+      button-style="pill"
       label="View more"
-      class="!rounded-full hover:!bg-accent-100 hover:!text-accent-500"
       @click="emit('viewMore')"
     />
   </div>

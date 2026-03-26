@@ -399,11 +399,11 @@ export const getHorizontalBarChartConfig = (
 
   const baseConfig: ECOption = {
     grid: {
-      left: 0,
+      left: 120,
       right: '5%',
       top: 0,
       bottom: 0,
-      containLabel: true,
+      containLabel: false,
     },
     xAxis: {
       type: 'value',
@@ -431,6 +431,10 @@ export const getHorizontalBarChartConfig = (
         fontSize: 14,
         fontWeight: 500,
         color: lfxColors.neutral[900],
+        align: 'left',
+        width: 120,
+        margin: 120,
+        overflow: 'truncate',
       },
       axisLine: {
         show: false,
@@ -457,7 +461,7 @@ export const getHorizontalBarChartConfig = (
         barMaxWidth: 8,
         itemStyle: {
           color,
-          borderRadius: [0, 2, 2, 0],
+          borderRadius: [10, 10, 10, 10],
         },
       },
     ],
