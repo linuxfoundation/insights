@@ -26,7 +26,7 @@ SPDX-License-Identifier: MIT
         You're viewing an aggregated snapshot of security vulnerabilities detected across all project dependencies over
         the last 365 days. For a detailed analysis,
         <span
-          class="underline decoration-dotted cursor-pointer"
+          class="underline cursor-pointer"
           @click="emit('chooseRepository')"
           >choose a specific repository</span
         >.

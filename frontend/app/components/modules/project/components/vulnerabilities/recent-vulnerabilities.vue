@@ -11,13 +11,15 @@ SPDX-License-Identifier: MIT
       <lfx-vulnerabilities-empty v-if="error || isEmpty" />
 
       <!-- Data display -->
-      <lfx-project-vulnerability-table
-        v-else
-        :vulnerabilities="data || []"
-        :is-loading="isLoading"
-        :is-fetching-next-page="false"
-        :load-count="5"
-      />
+      <template v-else>
+        <lfx-project-vulnerability-table-header />
+        <lfx-project-vulnerability-table
+          :vulnerabilities="data || []"
+          :is-loading="isLoading"
+          :is-fetching-next-page="false"
+          :load-count="5"
+        />
+      </template>
 
       <!-- Empty state -->
       <div
@@ -41,6 +43,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import LfxProjectVulnerabilityTableHeader from './vulnerability-table-header.vue';
 import LfxProjectVulnerabilityTable from './vulnerability-table.vue';
 import LfxVulnerabilitiesEmpty from './vulnerabilities-empty.vue';
 import LfxButton from '~/components/uikit/button/button.vue';
