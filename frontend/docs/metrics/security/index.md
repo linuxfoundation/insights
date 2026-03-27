@@ -34,6 +34,12 @@ Vulnerability data is sourced from the CVE program only. CWE (Common Weakness En
 
 OSV-Scanner automatically detects a wide range of package managers and lockfile formats, including npm, Go modules, PyPI, Maven, Cargo, and more. For the full list of supported languages and lockfiles, see the [OSV-Scanner documentation](https://google.github.io/osv-scanner/supported-languages-and-lockfiles/).
 
+#### Vendored dependencies
+
+Some vulnerabilities appear with an ecosystem of **Vendored**. This happens when OSV-Scanner detects a vulnerability in a dependency that lacks package ecosystem, name, or version metadata, typically because it is a vendored dependency.
+
+Vendored dependencies are third-party libraries (commonly C/C++ code) that have been copied directly into a repository's source tree (for example, a `deps/` or `vendor/` directory) rather than installed through a package manager. Because no package manager is involved, OSV-Scanner cannot determine the ecosystem, so Insights labels these as **Vendored** to distinguish them from package-managed dependencies.
+
 ### Metrics
 
 The top of the Vulnerabilities section displays four key indicators:
@@ -61,3 +67,9 @@ For vulnerabilities without an available fix, consider:
 - Monitoring the upstream package for a patch release
 - Evaluating whether the vulnerable code path is reachable in your project
 - Replacing the dependency with a maintained alternative
+
+### Known Limitations
+
+| Limitation | Details |
+|---|---|
+| **Bun lockfiles** | Repositories that use [Bun](https://bun.sh) with `bun.lock` files are not scanned. OSV-Scanner returns an error when processing this lockfile format. This is a [known OSV-Scanner bug](https://github.com/google/osv-scanner/issues/2683) and will be resolved once an upstream fix is available. |
