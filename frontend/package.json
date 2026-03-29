@@ -115,7 +115,7 @@
     "eslint-plugin-storybook": "^0.11.6",
     "eslint-plugin-vue": "^10.7.0",
     "eslint-plugin-vuejs-accessibility": "^2.4.1",
-    "happy-dom": "^20.3.4",
+    "happy-dom": "^20.8.9",
     "husky": "^9.1.7",
     "lint-staged": "^16.2.7",
     "nuxt-echarts": "^1.0.1",
