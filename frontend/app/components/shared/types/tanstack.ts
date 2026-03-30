@@ -11,6 +11,7 @@ export enum TanstackKey {
   CATEGORY_GROUPS = 'category-groups',
   PROJECTS = 'projects',
   PROJECT = 'project',
+  PROJECT_COLLECTIONS = 'project-collections',
 
   // Contributors
   ACTIVE_CONTRIBUTORS = 'active-contributors',
