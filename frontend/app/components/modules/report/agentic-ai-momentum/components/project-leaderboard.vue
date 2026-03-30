@@ -26,50 +26,73 @@ SPDX-License-Identifier: MIT
       v-else
       class="overflow-x-auto"
     >
-      <div class="flex items-center justify-between mb-3">
-        <p class="text-xs text-neutral-400">Select a project to view more detailed metrics</p>
-        <div class="flex items-center gap-3">
-          <div class="flex items-center gap-2">
-            <span class="text-xs text-neutral-500 whitespace-nowrap">Sort by</span>
-            <lfx-tabs
-              v-model="sortMode"
-              :tabs="SORT_MODE_TABS"
-              width-type="inline"
-            />
-          </div>
-          <div class="relative">
-            <button
-              class="flex items-center gap-1 text-xs font-medium text-neutral-600 border border-neutral-200 rounded px-2 py-1 hover:bg-neutral-50"
-              @click.stop="showColumnPicker = !showColumnPicker"
-            >
-              Columns
-              <lfx-icon
-                :name="showColumnPicker ? 'chevron-up' : 'chevron-down'"
-                :size="12"
-              />
-            </button>
-            <div
-              v-if="showColumnPicker"
-              class="absolute right-0 top-8 z-10 bg-white border border-neutral-200 rounded shadow-md p-3 flex flex-col gap-2 min-w-[200px]"
-              @click.stop
-            >
-              <label
-                v-for="col in COLUMN_CONFIG"
-                :key="col.key"
-                class="flex items-center gap-2 cursor-pointer text-body-2 text-neutral-700 hover:text-neutral-900"
-              >
-                <input
-                  type="checkbox"
-                  :checked="activeColumns.includes(col.key)"
-                  class="cursor-pointer"
-                  @change="toggleColumn(col.key)"
-                />
-                {{ col.label }}
-              </label>
-            </div>
-          </div>
+      <div class="flex items-center justify-end mb-3 gap-3">
+        <div class="flex items-center gap-2">
+          <span class="text-xs text-neutral-500 whitespace-nowrap">Sort by</span>
+          <lfx-tabs
+            v-model="sortMode"
+            :tabs="SORT_MODE_TABS"
+            width-type="inline"
+          />
         </div>
+
+        <!-- Column picker -->
+        <lfx-popover
+          v-model:visibility="showColumnPicker"
+          placement="bottom-end"
+          :spacing="6"
+        >
+          <button
+            type="button"
+            class="flex items-center gap-1 text-xs font-medium text-neutral-600 border border-neutral-200 rounded px-2 py-1 hover:bg-neutral-50"
+          >
+            Columns
+            <lfx-icon
+              :name="showColumnPicker ? 'chevron-up' : 'chevron-down'"
+              :size="12"
+            />
+          </button>
+          <template #content>
+            <div
+              class="bg-white border border-neutral-200 rounded shadow-lg p-4 w-[340px] max-h-[80vh] overflow-y-auto"
+            >
+              <template
+                v-for="group in COLUMN_GROUPS"
+                :key="group"
+              >
+                <div class="mb-4 last:mb-0">
+                  <p class="text-xs uppercase tracking-wide text-neutral-400 font-semibold mb-2">
+                    {{ group }}
+                  </p>
+                  <div class="grid grid-cols-2 gap-x-4 gap-y-2">
+                    <label
+                      v-for="col in columnsByGroup(group)"
+                      :key="col.key"
+                      class="flex items-center gap-2 cursor-pointer text-body-2 text-neutral-700 hover:text-neutral-900 select-none"
+                    >
+                      <lfx-checkbox
+                        :model-value="activeColumns.includes(col.key)"
+                        @update:model-value="toggleColumn(col.key)"
+                      />
+                      {{ col.label }}
+                    </label>
+                  </div>
+                </div>
+              </template>
+              <div class="border-t border-neutral-100 pt-2 mt-1 flex justify-end">
+                <button
+                  type="button"
+                  class="text-xs text-primary-500 hover:text-primary-700"
+                  @click="resetColumns"
+                >
+                  Reset to defaults
+                </button>
+              </div>
+            </div>
+          </template>
+        </lfx-popover>
       </div>
+
       <table class="w-full text-body-2">
         <thead>
           <tr class="border-b border-neutral-200">
@@ -129,6 +152,62 @@ SPDX-License-Identifier: MIT
               </div>
             </th>
             <th
+              v-if="activeColumns.includes('downloads')"
+              class="text-right py-3 px-2 font-semibold text-neutral-700 cursor-pointer hover:bg-neutral-50"
+              @click="sortBy('downloads')"
+            >
+              <div class="flex items-center justify-end gap-1">
+                Downloads
+                <lfx-icon
+                  v-if="sortColumn === 'downloads'"
+                  :name="sortDirection === 'asc' ? 'arrow-up' : 'arrow-down'"
+                  :size="14"
+                />
+              </div>
+            </th>
+            <th
+              v-if="activeColumns.includes('dockerHubPulls')"
+              class="text-right py-3 px-2 font-semibold text-neutral-700 cursor-pointer hover:bg-neutral-50"
+              @click="sortBy('dockerHubPulls')"
+            >
+              <div class="flex items-center justify-end gap-1">
+                Docker Pulls
+                <lfx-icon
+                  v-if="sortColumn === 'dockerHubPulls'"
+                  :name="sortDirection === 'asc' ? 'arrow-up' : 'arrow-down'"
+                  :size="14"
+                />
+              </div>
+            </th>
+            <th
+              v-if="activeColumns.includes('dependentRepositories')"
+              class="text-right py-3 px-2 font-semibold text-neutral-700 cursor-pointer hover:bg-neutral-50"
+              @click="sortBy('dependentRepositories')"
+            >
+              <div class="flex items-center justify-end gap-1">
+                Dependent Repos
+                <lfx-icon
+                  v-if="sortColumn === 'dependentRepositories'"
+                  :name="sortDirection === 'asc' ? 'arrow-up' : 'arrow-down'"
+                  :size="14"
+                />
+              </div>
+            </th>
+            <th
+              v-if="activeColumns.includes('dependentPackages')"
+              class="text-right py-3 px-2 font-semibold text-neutral-700 cursor-pointer hover:bg-neutral-50"
+              @click="sortBy('dependentPackages')"
+            >
+              <div class="flex items-center justify-end gap-1">
+                Dependent Pkgs
+                <lfx-icon
+                  v-if="sortColumn === 'dependentPackages'"
+                  :name="sortDirection === 'asc' ? 'arrow-up' : 'arrow-down'"
+                  :size="14"
+                />
+              </div>
+            </th>
+            <th
               v-if="activeColumns.includes('commits')"
               class="text-right py-3 px-2 font-semibold text-neutral-700 cursor-pointer hover:bg-neutral-50"
               @click="sortBy('commits')"
@@ -157,6 +236,34 @@ SPDX-License-Identifier: MIT
               </div>
             </th>
             <th
+              v-if="activeColumns.includes('newContributors')"
+              class="text-right py-3 px-2 font-semibold text-neutral-700 cursor-pointer hover:bg-neutral-50"
+              @click="sortBy('newContributors')"
+            >
+              <div class="flex items-center justify-end gap-1">
+                New Contributors
+                <lfx-icon
+                  v-if="sortColumn === 'newContributors'"
+                  :name="sortDirection === 'asc' ? 'arrow-up' : 'arrow-down'"
+                  :size="14"
+                />
+              </div>
+            </th>
+            <th
+              v-if="activeColumns.includes('githubReleases')"
+              class="text-right py-3 px-2 font-semibold text-neutral-700 cursor-pointer hover:bg-neutral-50"
+              @click="sortBy('githubReleases')"
+            >
+              <div class="flex items-center justify-end gap-1">
+                Releases
+                <lfx-icon
+                  v-if="sortColumn === 'githubReleases'"
+                  :name="sortDirection === 'asc' ? 'arrow-up' : 'arrow-down'"
+                  :size="14"
+                />
+              </div>
+            </th>
+            <th
               v-if="activeColumns.includes('mergeRate')"
               class="text-right py-3 px-2 font-semibold text-neutral-700 cursor-pointer hover:bg-neutral-50"
               @click="sortBy('mergeRate')"
@@ -165,48 +272,6 @@ SPDX-License-Identifier: MIT
                 Merge Rate
                 <lfx-icon
                   v-if="sortColumn === 'mergeRate'"
-                  :name="sortDirection === 'asc' ? 'arrow-up' : 'arrow-down'"
-                  :size="14"
-                />
-              </div>
-            </th>
-            <th
-              v-if="activeColumns.includes('timeToClose')"
-              class="text-right py-3 px-2 font-semibold text-neutral-700 cursor-pointer hover:bg-neutral-50"
-              @click="sortBy('timeToClose')"
-            >
-              <div class="flex items-center justify-end gap-1">
-                Time to Close
-                <lfx-icon
-                  v-if="sortColumn === 'timeToClose'"
-                  :name="sortDirection === 'asc' ? 'arrow-up' : 'arrow-down'"
-                  :size="14"
-                />
-              </div>
-            </th>
-            <th
-              v-if="activeColumns.includes('downloads')"
-              class="text-right py-3 px-2 font-semibold text-neutral-700 cursor-pointer hover:bg-neutral-50"
-              @click="sortBy('downloads')"
-            >
-              <div class="flex items-center justify-end gap-1">
-                Downloads
-                <lfx-icon
-                  v-if="sortColumn === 'downloads'"
-                  :name="sortDirection === 'asc' ? 'arrow-up' : 'arrow-down'"
-                  :size="14"
-                />
-              </div>
-            </th>
-            <th
-              v-if="activeColumns.includes('cocomoValue')"
-              class="text-right py-3 px-2 font-semibold text-neutral-700 cursor-pointer hover:bg-neutral-50"
-              @click="sortBy('cocomoValue')"
-            >
-              <div class="flex items-center justify-end gap-1">
-                COCOMO Value
-                <lfx-icon
-                  v-if="sortColumn === 'cocomoValue'"
                   :name="sortDirection === 'asc' ? 'arrow-up' : 'arrow-down'"
                   :size="14"
                 />
@@ -227,6 +292,48 @@ SPDX-License-Identifier: MIT
               </div>
             </th>
             <th
+              v-if="activeColumns.includes('timeToClose')"
+              class="text-right py-3 px-2 font-semibold text-neutral-700 cursor-pointer hover:bg-neutral-50"
+              @click="sortBy('timeToClose')"
+            >
+              <div class="flex items-center justify-end gap-1">
+                Time to Close
+                <lfx-icon
+                  v-if="sortColumn === 'timeToClose'"
+                  :name="sortDirection === 'asc' ? 'arrow-up' : 'arrow-down'"
+                  :size="14"
+                />
+              </div>
+            </th>
+            <th
+              v-if="activeColumns.includes('issueResponseTime')"
+              class="text-right py-3 px-2 font-semibold text-neutral-700 cursor-pointer hover:bg-neutral-50"
+              @click="sortBy('issueResponseTime')"
+            >
+              <div class="flex items-center justify-end gap-1">
+                Issue Response
+                <lfx-icon
+                  v-if="sortColumn === 'issueResponseTime'"
+                  :name="sortDirection === 'asc' ? 'arrow-up' : 'arrow-down'"
+                  :size="14"
+                />
+              </div>
+            </th>
+            <th
+              v-if="activeColumns.includes('noResponseIssues')"
+              class="text-right py-3 px-2 font-semibold text-neutral-700 cursor-pointer hover:bg-neutral-50"
+              @click="sortBy('noResponseIssues')"
+            >
+              <div class="flex items-center justify-end gap-1">
+                No Response
+                <lfx-icon
+                  v-if="sortColumn === 'noResponseIssues'"
+                  :name="sortDirection === 'asc' ? 'arrow-up' : 'arrow-down'"
+                  :size="14"
+                />
+              </div>
+            </th>
+            <th
               v-if="activeColumns.includes('totalVulnerabilities')"
               class="text-right py-3 px-2 font-semibold text-neutral-700 cursor-pointer hover:bg-neutral-50"
               @click="sortBy('totalVulnerabilities')"
@@ -240,14 +347,27 @@ SPDX-License-Identifier: MIT
                 />
               </div>
             </th>
+            <th
+              v-if="activeColumns.includes('cocomoValue')"
+              class="text-right py-3 px-2 font-semibold text-neutral-700 cursor-pointer hover:bg-neutral-50"
+              @click="sortBy('cocomoValue')"
+            >
+              <div class="flex items-center justify-end gap-1">
+                COCOMO Value
+                <lfx-icon
+                  v-if="sortColumn === 'cocomoValue'"
+                  :name="sortDirection === 'asc' ? 'arrow-up' : 'arrow-down'"
+                  :size="14"
+                />
+              </div>
+            </th>
           </tr>
         </thead>
         <tbody>
           <tr
             v-for="row in sortedData"
             :key="row.rank"
-            class="border-b border-neutral-100 hover:bg-neutral-50 cursor-pointer"
-            @click="handleRowClick(row)"
+            class="border-b border-neutral-100 hover:bg-neutral-50"
           >
             <td class="py-3 px-2 text-neutral-500">
               {{ row.rank }}
@@ -280,6 +400,7 @@ SPDX-License-Identifier: MIT
                 {{ row.layer }}
               </span>
             </td>
+            <!-- Growth columns -->
             <td
               v-if="activeColumns.includes('stars')"
               class="py-3 px-2 text-right"
@@ -309,6 +430,55 @@ SPDX-License-Identifier: MIT
               </div>
             </td>
             <td
+              v-if="activeColumns.includes('downloads')"
+              class="py-3 px-2 text-right"
+            >
+              {{ row.downloads !== null ? formatCompact(row.downloads) : '-' }}
+            </td>
+            <td
+              v-if="activeColumns.includes('dockerHubPulls')"
+              class="py-3 px-2 text-right"
+            >
+              <div class="flex items-center justify-end gap-1">
+                <span>{{ row.dockerHubPulls !== null ? formatCompact(row.dockerHubPulls) : '-' }}</span>
+                <lfx-tooltip
+                  v-if="row.dockerHubPullsDelta !== null && row.dockerHubPullsDelta !== 0"
+                  content="vs. previous 30d"
+                >
+                  <delta-indicator :value="row.dockerHubPullsDelta" />
+                </lfx-tooltip>
+              </div>
+            </td>
+            <td
+              v-if="activeColumns.includes('dependentRepositories')"
+              class="py-3 px-2 text-right"
+            >
+              <div class="flex items-center justify-end gap-1">
+                <span>{{ row.dependentRepositories !== null ? formatCompact(row.dependentRepositories) : '-' }}</span>
+                <lfx-tooltip
+                  v-if="row.dependentRepositoriesDelta !== null && row.dependentRepositoriesDelta !== 0"
+                  content="vs. previous 30d"
+                >
+                  <delta-indicator :value="row.dependentRepositoriesDelta" />
+                </lfx-tooltip>
+              </div>
+            </td>
+            <td
+              v-if="activeColumns.includes('dependentPackages')"
+              class="py-3 px-2 text-right"
+            >
+              <div class="flex items-center justify-end gap-1">
+                <span>{{ row.dependentPackages !== null ? formatCompact(row.dependentPackages) : '-' }}</span>
+                <lfx-tooltip
+                  v-if="row.dependentPackagesDelta !== null && row.dependentPackagesDelta !== 0"
+                  content="vs. previous 30d"
+                >
+                  <delta-indicator :value="row.dependentPackagesDelta" />
+                </lfx-tooltip>
+              </div>
+            </td>
+            <!-- Community columns -->
+            <td
               v-if="activeColumns.includes('commits')"
               class="py-3 px-2 text-right"
             >
@@ -337,6 +507,35 @@ SPDX-License-Identifier: MIT
               </div>
             </td>
             <td
+              v-if="activeColumns.includes('newContributors')"
+              class="py-3 px-2 text-right"
+            >
+              <div class="flex items-center justify-end gap-1">
+                <span>{{ row.newContributors !== null ? formatCompact(row.newContributors) : '-' }}</span>
+                <lfx-tooltip
+                  v-if="row.newContributorsDelta !== null && row.newContributorsDelta !== 0"
+                  content="vs. previous 30d"
+                >
+                  <delta-indicator :value="row.newContributorsDelta" />
+                </lfx-tooltip>
+              </div>
+            </td>
+            <td
+              v-if="activeColumns.includes('githubReleases')"
+              class="py-3 px-2 text-right"
+            >
+              <div class="flex items-center justify-end gap-1">
+                <span>{{ row.githubReleases !== null ? formatCompact(row.githubReleases) : '-' }}</span>
+                <lfx-tooltip
+                  v-if="row.githubReleasesDelta !== null && row.githubReleasesDelta !== 0"
+                  content="vs. previous 30d"
+                >
+                  <delta-indicator :value="row.githubReleasesDelta" />
+                </lfx-tooltip>
+              </div>
+            </td>
+            <!-- Health columns -->
+            <td
               v-if="activeColumns.includes('mergeRate')"
               class="py-3 px-2 text-right"
             >
@@ -349,6 +548,24 @@ SPDX-License-Identifier: MIT
                   <delta-indicator
                     :value="row.mergeRateDelta"
                     format="percent"
+                  />
+                </lfx-tooltip>
+              </div>
+            </td>
+            <td
+              v-if="activeColumns.includes('prTimeToResolve')"
+              class="py-3 px-2 text-right"
+            >
+              <div class="flex items-center justify-end gap-1">
+                <span>{{ row.prTimeToResolve !== null ? formatDays(row.prTimeToResolve) : '-' }}</span>
+                <lfx-tooltip
+                  v-if="row.prTimeToResolveDelta !== null && row.prTimeToResolveDelta !== 0"
+                  content="vs. previous 30d"
+                >
+                  <delta-indicator
+                    :value="row.prTimeToResolveDelta"
+                    format="days"
+                    :invert="true"
                   />
                 </lfx-tooltip>
               </div>
@@ -372,30 +589,36 @@ SPDX-License-Identifier: MIT
               </div>
             </td>
             <td
-              v-if="activeColumns.includes('downloads')"
-              class="py-3 px-2 text-right"
-            >
-              {{ row.downloads !== null ? formatCompact(row.downloads) : '-' }}
-            </td>
-            <td
-              v-if="activeColumns.includes('cocomoValue')"
-              class="py-3 px-2 text-right"
-            >
-              {{ row.cocomoValue !== null ? formatDollars(row.cocomoValue) : '-' }}
-            </td>
-            <td
-              v-if="activeColumns.includes('prTimeToResolve')"
+              v-if="activeColumns.includes('issueResponseTime')"
               class="py-3 px-2 text-right"
             >
               <div class="flex items-center justify-end gap-1">
-                <span>{{ row.prTimeToResolve !== null ? formatDays(row.prTimeToResolve) : '-' }}</span>
+                <span>{{ row.issueResponseTime !== null ? formatDays(row.issueResponseTime) : '-' }}</span>
                 <lfx-tooltip
-                  v-if="row.prTimeToResolveDelta !== null && row.prTimeToResolveDelta !== 0"
+                  v-if="row.issueResponseTimeDelta !== null && row.issueResponseTimeDelta !== 0"
                   content="vs. previous 30d"
                 >
                   <delta-indicator
-                    :value="row.prTimeToResolveDelta"
+                    :value="row.issueResponseTimeDelta"
                     format="days"
+                    :invert="true"
+                  />
+                </lfx-tooltip>
+              </div>
+            </td>
+            <td
+              v-if="activeColumns.includes('noResponseIssues')"
+              class="py-3 px-2 text-right"
+            >
+              <div class="flex items-center justify-end gap-1">
+                <span>{{ row.noResponseIssues !== null ? formatPercent(row.noResponseIssues) : '-' }}</span>
+                <lfx-tooltip
+                  v-if="row.noResponseIssuesDelta !== null && row.noResponseIssuesDelta !== 0"
+                  content="vs. previous 30d"
+                >
+                  <delta-indicator
+                    :value="row.noResponseIssuesDelta"
+                    format="percent"
                     :invert="true"
                   />
                 </lfx-tooltip>
@@ -415,6 +638,13 @@ SPDX-License-Identifier: MIT
                 </lfx-tooltip>
               </div>
             </td>
+            <!-- Value columns -->
+            <td
+              v-if="activeColumns.includes('cocomoValue')"
+              class="py-3 px-2 text-right"
+            >
+              {{ row.cocomoValue !== null ? formatDollars(row.cocomoValue) : '-' }}
+            </td>
           </tr>
         </tbody>
       </table>
@@ -423,12 +653,14 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed, ref, h, onMounted, onUnmounted, type FunctionalComponent } from 'vue';
+import { computed, ref, h, type FunctionalComponent } from 'vue';
 import { getLayerBadgeStyle } from '../config/layer-colors';
 import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
 import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
+import LfxPopover from '~/components/uikit/popover/popover.vue';
+import LfxCheckbox from '~/components/uikit/checkbox/checkbox.vue';
 import { formatNumber } from '~/components/shared/utils/formatter';
 import type {
   AgenticProject,
@@ -436,12 +668,19 @@ import type {
   ForkData,
   CommitCountData,
   ContributorData,
+  NewContributors90dData,
   PullRequestMergeRateData,
   IssueTimeToCloseData,
+  IssueTimeToFirstResponseData,
+  IssueNoResponseShareData,
   PackageDownloadsData,
   CocomoValueData,
   PullRequestTimeToResolveData,
   VulnerabilitiesData,
+  GitHubReleasesData,
+  DockerHubPullsData,
+  DependentReposData,
+  DependentPackagesData,
   ProjectLeaderboardRow,
 } from '~~/types/report/agentic-ai-momentum.types';
 
@@ -451,37 +690,54 @@ const props = defineProps<{
   forksData: ForkData[];
   commitsData: CommitCountData[];
   contributorsData: ContributorData[];
+  newContributors90dData: NewContributors90dData[];
   mergeRateData: PullRequestMergeRateData[];
   timeToCloseData: IssueTimeToCloseData[];
+  issueResponseTimeData: IssueTimeToFirstResponseData[];
+  noResponseShareData: IssueNoResponseShareData[];
   downloadsData: PackageDownloadsData[];
   cocomoData: CocomoValueData[];
   prTimeToResolveData: PullRequestTimeToResolveData[];
   vulnerabilitiesData: VulnerabilitiesData[];
+  githubReleasesData: GitHubReleasesData[];
+  dockerPullsData: DockerHubPullsData[];
+  dependentReposData: DependentReposData[];
+  dependentPackagesData: DependentPackagesData[];
   isLoading: boolean;
 }>();
 
-const emit = defineEmits<{
-  'select-project': [row: ProjectLeaderboardRow];
-}>();
+// Column configuration with groups
+const COLUMN_GROUPS = ['Growth', 'Community', 'Health', 'Value'] as const;
+type ColumnGroup = (typeof COLUMN_GROUPS)[number];
 
-// Column configuration
 const COLUMN_CONFIG = [
-  { key: 'stars', label: 'Stars', defaultOn: true },
-  { key: 'commits', label: 'Commits', defaultOn: true },
-  { key: 'contributors', label: 'Contributors', defaultOn: true },
-  { key: 'timeToClose', label: 'Time to Close', defaultOn: true },
-  { key: 'downloads', label: 'Downloads', defaultOn: true },
-  { key: 'cocomoValue', label: 'COCOMO Value', defaultOn: true },
-  { key: 'mergeRate', label: 'Merge Rate', defaultOn: false },
-  { key: 'forks', label: 'Forks', defaultOn: false },
-  { key: 'prTimeToResolve', label: 'PR Resolve Time', defaultOn: false },
-  { key: 'totalVulnerabilities', label: 'Vulnerabilities', defaultOn: false },
+  { key: 'stars', label: 'Stars', defaultOn: true, group: 'Growth' as ColumnGroup },
+  { key: 'forks', label: 'Forks', defaultOn: false, group: 'Growth' as ColumnGroup },
+  { key: 'downloads', label: 'Downloads', defaultOn: true, group: 'Growth' as ColumnGroup },
+  { key: 'dockerHubPulls', label: 'Docker Pulls', defaultOn: false, group: 'Growth' as ColumnGroup },
+  { key: 'dependentRepositories', label: 'Dependent Repos', defaultOn: false, group: 'Growth' as ColumnGroup },
+  { key: 'dependentPackages', label: 'Dependent Pkgs', defaultOn: false, group: 'Growth' as ColumnGroup },
+  { key: 'commits', label: 'Commits', defaultOn: true, group: 'Community' as ColumnGroup },
+  { key: 'contributors', label: 'Contributors', defaultOn: true, group: 'Community' as ColumnGroup },
+  { key: 'newContributors', label: 'New Contributors', defaultOn: false, group: 'Community' as ColumnGroup },
+  { key: 'githubReleases', label: 'Releases', defaultOn: false, group: 'Community' as ColumnGroup },
+  { key: 'mergeRate', label: 'Merge Rate', defaultOn: false, group: 'Health' as ColumnGroup },
+  { key: 'prTimeToResolve', label: 'PR Resolve Time', defaultOn: false, group: 'Health' as ColumnGroup },
+  { key: 'timeToClose', label: 'Time to Close', defaultOn: true, group: 'Health' as ColumnGroup },
+  { key: 'issueResponseTime', label: 'Issue Response', defaultOn: false, group: 'Health' as ColumnGroup },
+  { key: 'noResponseIssues', label: 'No-Response Issues', defaultOn: false, group: 'Health' as ColumnGroup },
+  { key: 'totalVulnerabilities', label: 'Vulnerabilities', defaultOn: false, group: 'Health' as ColumnGroup },
+  { key: 'cocomoValue', label: 'COCOMO Value', defaultOn: true, group: 'Value' as ColumnGroup },
 ] as const;
 
 type ColumnKey = (typeof COLUMN_CONFIG)[number]['key'];
 
 const activeColumns = ref<ColumnKey[]>(COLUMN_CONFIG.filter((c) => c.defaultOn).map((c) => c.key));
 const showColumnPicker = ref(false);
+
+function columnsByGroup(group: ColumnGroup) {
+  return COLUMN_CONFIG.filter((c) => c.group === group);
+}
 
 // Sort mode toggle
 const SORT_MODE_TABS = [
@@ -499,12 +755,9 @@ function toggleColumn(key: ColumnKey) {
   }
 }
 
-// Close picker on outside click
-function handleOutsideClick() {
-  showColumnPicker.value = false;
+function resetColumns() {
+  activeColumns.value = COLUMN_CONFIG.filter((c) => c.defaultOn).map((c) => c.key);
 }
-onMounted(() => document.addEventListener('click', handleOutsideClick));
-onUnmounted(() => document.removeEventListener('click', handleOutsideClick));
 
 // Delta indicator: standard (green=positive, red=negative)
 const DeltaIndicator: FunctionalComponent<{ value: number; format?: string; invert?: boolean }> = (componentProps) => {
@@ -540,9 +793,16 @@ type SortColumn =
   | 'forks'
   | 'commits'
   | 'contributors'
+  | 'newContributors'
+  | 'githubReleases'
   | 'mergeRate'
   | 'timeToClose'
+  | 'issueResponseTime'
+  | 'noResponseIssues'
   | 'downloads'
+  | 'dockerHubPulls'
+  | 'dependentRepositories'
+  | 'dependentPackages'
   | 'cocomoValue'
   | 'prTimeToResolve'
   | 'totalVulnerabilities';
@@ -589,6 +849,11 @@ const leaderboardData = computed<ProjectLeaderboardRow[]>(() => {
     const forks = getLatestValue(props.forksData, githubUrl ?? '', 'cumulative_forks');
     const commits = getLatestValue(props.commitsData, githubUrl ?? '', 'cumulative_commits');
     const contributors = getLatestValue(props.contributorsData, githubUrl ?? '', 'cumulative_contributors');
+    const newContributors = getLatestValue(props.newContributors90dData, githubUrl ?? '', 'new_contributors_90d_count');
+    const githubReleases = getLatestValue(props.githubReleasesData, githubUrl ?? '', 'cumulative_releases');
+    const dockerHubPulls = getLatestValue(props.dockerPullsData, githubUrl ?? '', 'docker_hub_pulls');
+    const dependentRepositories = getLatestValue(props.dependentReposData, githubUrl ?? '', 'dependent_repos_count');
+    const dependentPackages = getLatestValue(props.dependentPackagesData, githubUrl ?? '', 'dependent_packages_count');
 
     // Merge rate with delta
     const mergeRateFiltered = props.mergeRateData
@@ -608,6 +873,26 @@ const leaderboardData = computed<ProjectLeaderboardRow[]>(() => {
         ? timeToClose - timeToCloseFiltered[1].median_time_to_close_days
         : null;
 
+    // Issue response time with delta
+    const issueResponseFiltered = props.issueResponseTimeData
+      .filter((d) => d.repo === githubUrl)
+      .sort((a, b) => b.month.localeCompare(a.month));
+    const issueResponseTime = issueResponseFiltered[0]?.issue_time_to_first_response_avg_days ?? null;
+    const issueResponseTimeDelta =
+      issueResponseTime !== null && issueResponseFiltered[1] !== undefined
+        ? issueResponseTime - issueResponseFiltered[1].issue_time_to_first_response_avg_days
+        : null;
+
+    // No-response share with delta
+    const noResponseFiltered = props.noResponseShareData
+      .filter((d) => d.repo === githubUrl)
+      .sort((a, b) => b.month.localeCompare(a.month));
+    const noResponseIssues = noResponseFiltered[0]?.issue_share_no_response_30d ?? null;
+    const noResponseIssuesDelta =
+      noResponseIssues !== null && noResponseFiltered[1] !== undefined
+        ? noResponseIssues - noResponseFiltered[1].issue_share_no_response_30d
+        : null;
+
     // Downloads (no delta per plan)
     const downloadsFiltered = props.downloadsData.filter((d) => d.repo === githubUrl);
     const latestMonth =
@@ -625,7 +910,7 @@ const leaderboardData = computed<ProjectLeaderboardRow[]>(() => {
     const downloadsDelta =
       latestDownloads !== null && previousDownloads !== null ? latestDownloads - previousDownloads : null;
 
-    // COCOMO value (no delta per plan)
+    // COCOMO value (no delta)
     const cocomoValue = getLatestValue(props.cocomoData, githubUrl ?? '', 'estimated_cost_usd').value;
 
     // PR time to resolve with delta
@@ -648,10 +933,24 @@ const leaderboardData = computed<ProjectLeaderboardRow[]>(() => {
       commitsDelta: commits.delta,
       contributors: contributors.value,
       contributorsDelta: contributors.delta,
+      newContributors: newContributors.value,
+      newContributorsDelta: newContributors.delta,
+      githubReleases: githubReleases.value,
+      githubReleasesDelta: githubReleases.delta,
+      dockerHubPulls: dockerHubPulls.value,
+      dockerHubPullsDelta: dockerHubPulls.delta,
+      dependentRepositories: dependentRepositories.value,
+      dependentRepositoriesDelta: dependentRepositories.delta,
+      dependentPackages: dependentPackages.value,
+      dependentPackagesDelta: dependentPackages.delta,
       mergeRate,
       mergeRateDelta,
       timeToClose,
       timeToCloseDelta,
+      issueResponseTime,
+      issueResponseTimeDelta,
+      noResponseIssues,
+      noResponseIssuesDelta,
       downloads: latestDownloads,
       downloadsDelta,
       cocomoValue,
@@ -669,8 +968,15 @@ const DELTA_FIELD: Partial<Record<SortColumn, keyof ProjectLeaderboardRow>> = {
   forks: 'forksDelta',
   commits: 'commitsDelta',
   contributors: 'contributorsDelta',
+  newContributors: 'newContributorsDelta',
+  githubReleases: 'githubReleasesDelta',
+  dockerHubPulls: 'dockerHubPullsDelta',
+  dependentRepositories: 'dependentRepositoriesDelta',
+  dependentPackages: 'dependentPackagesDelta',
   mergeRate: 'mergeRateDelta',
   timeToClose: 'timeToCloseDelta',
+  issueResponseTime: 'issueResponseTimeDelta',
+  noResponseIssues: 'noResponseIssuesDelta',
   prTimeToResolve: 'prTimeToResolveDelta',
   totalVulnerabilities: 'totalVulnerabilitiesDelta',
 };
@@ -709,12 +1015,26 @@ const sortedData = computed(() => {
         return cmpNullLast(a.commits, b.commits, dir);
       case 'contributors':
         return cmpNullLast(a.contributors, b.contributors, dir);
+      case 'newContributors':
+        return cmpNullLast(a.newContributors, b.newContributors, dir);
+      case 'githubReleases':
+        return cmpNullLast(a.githubReleases, b.githubReleases, dir);
       case 'mergeRate':
         return cmpNullLast(a.mergeRate, b.mergeRate, dir);
       case 'timeToClose':
         return cmpNullLast(a.timeToClose, b.timeToClose, dir);
+      case 'issueResponseTime':
+        return cmpNullLast(a.issueResponseTime, b.issueResponseTime, dir);
+      case 'noResponseIssues':
+        return cmpNullLast(a.noResponseIssues, b.noResponseIssues, dir);
       case 'downloads':
         return cmpNullLast(a.downloads, b.downloads, dir);
+      case 'dockerHubPulls':
+        return cmpNullLast(a.dockerHubPulls, b.dockerHubPulls, dir);
+      case 'dependentRepositories':
+        return cmpNullLast(a.dependentRepositories, b.dependentRepositories, dir);
+      case 'dependentPackages':
+        return cmpNullLast(a.dependentPackages, b.dependentPackages, dir);
       case 'cocomoValue':
         return cmpNullLast(a.cocomoValue, b.cocomoValue, dir);
       case 'prTimeToResolve':
@@ -760,10 +1080,6 @@ function formatDollars(value: number): string {
     return `$${(value / 1000).toFixed(1)}K`;
   }
   return `$${formatNumber(value)}`;
-}
-
-function handleRowClick(row: ProjectLeaderboardRow) {
-  emit('select-project', row);
 }
 </script>
 

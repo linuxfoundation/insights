@@ -6,29 +6,40 @@ SPDX-License-Identifier: MIT
   <div class="w-full">
     <!-- Controls -->
     <div class="flex flex-col gap-3 mb-4">
-      <!-- Row 1: three columns — X Axis | Y Axis | (Bubble Size + Trend Line stacked) -->
+      <!-- Row 1: four axis controls -->
       <div class="flex flex-wrap gap-x-3 gap-y-3 items-start">
         <!-- X Axis -->
-        <div class="flex flex-col gap-1 w-[8rem]">
+        <div class="flex flex-col gap-1">
           <span class="text-xs font-medium text-neutral-500">X Axis</span>
-          <lfx-dropdown-select
-            v-model="xAxisMetric"
+          <lfx-popover
+            v-model:visibility="showXPicker"
             placement="bottom-start"
-            width="8rem"
+            :spacing="6"
           >
-            <template #trigger="{ selectedOption }">
-              <lfx-dropdown-selector class="whitespace-nowrap !text-sm">
-                <span>{{ selectedOption?.label }}</span>
-              </lfx-dropdown-selector>
+            <button
+              type="button"
+              class="flex items-center gap-1 text-xs font-medium text-neutral-600 border border-neutral-200 rounded px-2 py-1 hover:bg-neutral-50 whitespace-nowrap"
+            >
+              {{ getAxisLabel(xAxisMetric) }}
+              <lfx-icon
+                :name="showXPicker ? 'chevron-up' : 'chevron-down'"
+                :size="12"
+              />
+            </button>
+            <template #content>
+              <metric-picker-panel
+                :config="METRIC_CONFIG"
+                :groups="METRIC_GROUPS"
+                :selected="xAxisMetric"
+                @select="
+                  (key) => {
+                    xAxisMetric = key;
+                    showXPicker = false;
+                  }
+                "
+              />
             </template>
-            <lfx-dropdown-item
-              v-for="option of metricOptions"
-              :key="option.key"
-              :value="option.key"
-              :label="option.label"
-              :checkmark-before="true"
-            />
-          </lfx-dropdown-select>
+          </lfx-popover>
           <lfx-tabs
             v-model="xScaleMode"
             :tabs="scaleTabs"
@@ -37,26 +48,37 @@ SPDX-License-Identifier: MIT
         </div>
 
         <!-- Y Axis -->
-        <div class="flex flex-col gap-1 w-[8rem]">
+        <div class="flex flex-col gap-1">
           <span class="text-xs font-medium text-neutral-500">Y Axis</span>
-          <lfx-dropdown-select
-            v-model="yAxisMetric"
+          <lfx-popover
+            v-model:visibility="showYPicker"
             placement="bottom-start"
-            width="8rem"
+            :spacing="6"
           >
-            <template #trigger="{ selectedOption }">
-              <lfx-dropdown-selector class="whitespace-nowrap !text-sm">
-                <span>{{ selectedOption?.label }}</span>
-              </lfx-dropdown-selector>
+            <button
+              type="button"
+              class="flex items-center gap-1 text-xs font-medium text-neutral-600 border border-neutral-200 rounded px-2 py-1 hover:bg-neutral-50 whitespace-nowrap"
+            >
+              {{ getAxisLabel(yAxisMetric) }}
+              <lfx-icon
+                :name="showYPicker ? 'chevron-up' : 'chevron-down'"
+                :size="12"
+              />
+            </button>
+            <template #content>
+              <metric-picker-panel
+                :config="METRIC_CONFIG"
+                :groups="METRIC_GROUPS"
+                :selected="yAxisMetric"
+                @select="
+                  (key) => {
+                    yAxisMetric = key;
+                    showYPicker = false;
+                  }
+                "
+              />
             </template>
-            <lfx-dropdown-item
-              v-for="option of metricOptions"
-              :key="option.key"
-              :value="option.key"
-              :label="option.label"
-              :checkmark-before="true"
-            />
-          </lfx-dropdown-select>
+          </lfx-popover>
           <lfx-tabs
             v-model="yScaleMode"
             :tabs="scaleTabs"
@@ -64,27 +86,45 @@ SPDX-License-Identifier: MIT
           />
         </div>
 
-        <!-- Bubble Size -->
-        <div class="flex flex-col gap-1 w-[8rem]">
+        <!-- Bubble Size (Z axis) -->
+        <div class="flex flex-col gap-1">
           <span class="text-xs font-medium text-neutral-500">Bubble Size</span>
-          <lfx-dropdown-select
-            v-model="zAxisMetric"
+          <lfx-popover
+            v-model:visibility="showZPicker"
             placement="bottom-start"
-            width="8rem"
+            :spacing="6"
           >
-            <template #trigger="{ selectedOption }">
-              <lfx-dropdown-selector class="whitespace-nowrap !text-sm">
-                <span>{{ selectedOption?.label }}</span>
-              </lfx-dropdown-selector>
+            <button
+              type="button"
+              class="flex items-center gap-1 text-xs font-medium text-neutral-600 border border-neutral-200 rounded px-2 py-1 hover:bg-neutral-50 whitespace-nowrap"
+            >
+              {{ zAxisMetric === 'none' ? 'None' : getAxisLabel(zAxisMetric as MetricKey) }}
+              <lfx-icon
+                :name="showZPicker ? 'chevron-up' : 'chevron-down'"
+                :size="12"
+              />
+            </button>
+            <template #content>
+              <metric-picker-panel
+                :config="METRIC_CONFIG"
+                :groups="METRIC_GROUPS"
+                :selected="zAxisMetric === 'none' ? null : (zAxisMetric as MetricKey)"
+                :show-none="true"
+                @select="
+                  (key) => {
+                    zAxisMetric = key;
+                    showZPicker = false;
+                  }
+                "
+                @select-none="
+                  () => {
+                    zAxisMetric = 'none';
+                    showZPicker = false;
+                  }
+                "
+              />
             </template>
-            <lfx-dropdown-item
-              v-for="option of zMetricOptions"
-              :key="option.key"
-              :value="option.key"
-              :label="option.label"
-              :checkmark-before="true"
-            />
-          </lfx-dropdown-select>
+          </lfx-popover>
         </div>
 
         <!-- Trend Line -->
@@ -180,13 +220,12 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { computed, ref, watch, h, type FunctionalComponent } from 'vue';
 import { getLayerHexColor } from '../config/layer-colors';
 import LfxChart from '~/components/uikit/chart/chart.vue';
 import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
-import LfxDropdownSelect from '~/components/uikit/dropdown/dropdown-select.vue';
-import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
-import LfxDropdownSelector from '~/components/uikit/dropdown/dropdown-selector.vue';
+import LfxPopover from '~/components/uikit/popover/popover.vue';
+import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxTabs from '~/components/uikit/tabs/tabs.vue';
 import { lfxColors } from '~/config/styles/colors';
 import { formatNumber } from '~/components/shared/utils/formatter';
@@ -194,47 +233,165 @@ import type {
   AgenticProject,
   StargazersData,
   ForkData,
+  CommitCountData,
   ContributorData,
+  NewContributors90dData,
   PackageDownloadsData,
   PullRequestMergeRateData,
   IssueTimeToCloseData,
+  IssueTimeToFirstResponseData,
+  IssueNoResponseShareData,
   PullRequestTimeToResolveData,
   VulnerabilitiesData,
   CocomoValueData,
   GitHubReleasesData,
+  DockerHubPullsData,
+  DependentReposData,
+  DependentPackagesData,
   MetricKey,
   MetricOption,
+  MetricGroup,
 } from '~~/types/report/agentic-ai-momentum.types';
 
 const props = defineProps<{
   projectsData: AgenticProject[];
   stargazersData: StargazersData[];
   forksData: ForkData[];
+  commitsData: CommitCountData[];
   contributorsData: ContributorData[];
+  newContributors90dData: NewContributors90dData[];
   downloadsData: PackageDownloadsData[];
   mergeRateData: PullRequestMergeRateData[];
   timeToCloseData: IssueTimeToCloseData[];
+  issueResponseTimeData: IssueTimeToFirstResponseData[];
+  noResponseShareData: IssueNoResponseShareData[];
   prTimeToResolveData: PullRequestTimeToResolveData[];
   totalVulnerabilitiesData: VulnerabilitiesData[];
   cocomoData: CocomoValueData[];
   githubReleasesData: GitHubReleasesData[];
+  dockerPullsData: DockerHubPullsData[];
+  dependentReposData: DependentReposData[];
+  dependentPackagesData: DependentPackagesData[];
   isLoading: boolean;
 }>();
 
-const metricOptions: MetricOption[] = [
-  { key: 'stars', label: 'Stars', format: 'number' },
-  { key: 'forks', label: 'Forks', format: 'number' },
-  { key: 'contributors', label: 'Contributors', format: 'number' },
-  { key: 'downloads', label: 'Downloads', format: 'number' },
-  { key: 'mergeRate', label: 'Merge Rate', format: 'percent' },
-  { key: 'timeToClose', label: 'Time to Close', format: 'days' },
-  { key: 'prTimeToResolve', label: 'PR Time to Resolve', format: 'days' },
-  { key: 'totalVulnerabilities', label: 'Vulnerabilities', format: 'number' },
-  { key: 'cocomoValue', label: 'COCOMO Value', format: 'number' },
-  { key: 'releases', label: 'Releases', format: 'number' },
+// ── Metric config (mirrors leaderboard COLUMN_CONFIG groups) ──────────────────
+
+const METRIC_GROUPS: MetricGroup[] = ['Growth', 'Community', 'Health', 'Value'];
+
+const METRIC_CONFIG: MetricOption[] = [
+  // Growth
+  { key: 'stars', label: 'Stars', format: 'number', group: 'Growth' },
+  { key: 'forks', label: 'Forks', format: 'number', group: 'Growth' },
+  { key: 'downloads', label: 'Downloads', format: 'number', group: 'Growth' },
+  { key: 'dockerHubPulls', label: 'Docker Pulls', format: 'number', group: 'Growth' },
+  { key: 'dependentRepositories', label: 'Dependent Repos', format: 'number', group: 'Growth' },
+  { key: 'dependentPackages', label: 'Dependent Pkgs', format: 'number', group: 'Growth' },
+  // Community
+  { key: 'commits', label: 'Commits', format: 'number', group: 'Community' },
+  { key: 'contributors', label: 'Contributors', format: 'number', group: 'Community' },
+  { key: 'newContributors', label: 'New Contributors', format: 'number', group: 'Community' },
+  { key: 'releases', label: 'Releases', format: 'number', group: 'Community' },
+  // Health
+  { key: 'mergeRate', label: 'Merge Rate', format: 'percent', group: 'Health' },
+  { key: 'prTimeToResolve', label: 'PR Resolve Time', format: 'days', group: 'Health' },
+  { key: 'timeToClose', label: 'Time to Close', format: 'days', group: 'Health' },
+  { key: 'issueResponseTime', label: 'Issue Response', format: 'days', group: 'Health' },
+  { key: 'noResponseIssues', label: 'No-Response Issues', format: 'percent', group: 'Health' },
+  { key: 'totalVulnerabilities', label: 'Vulnerabilities', format: 'number', group: 'Health' },
+  // Value
+  { key: 'cocomoValue', label: 'COCOMO Value', format: 'number', group: 'Value' },
 ];
 
-const zMetricOptions = [{ key: 'none' as const, label: 'None', format: 'number' as const }, ...metricOptions];
+// ── Inline panel component ────────────────────────────────────────────────────
+
+/**
+ * Renders the grouped metric picker panel, used by all three axis pickers.
+ * Emits `select` (MetricKey) or `select-none` for the Z-axis "None" item.
+ */
+const MetricPickerPanel: FunctionalComponent<
+  {
+    config: MetricOption[];
+    groups: MetricGroup[];
+    selected: MetricKey | null;
+    showNone?: boolean;
+  },
+  { select: [key: MetricKey]; 'select-none': [] }
+> = (panelProps, { emit }) => {
+  const { config, groups, selected, showNone = false } = panelProps;
+
+  const groupSections = groups.map((group) => {
+    const items = config.filter((c) => c.group === group);
+    return h('div', { class: 'mb-4 last:mb-0' }, [
+      h('p', { class: 'text-xs uppercase tracking-wide text-neutral-400 font-semibold mb-2' }, group),
+      h(
+        'div',
+        { class: 'grid grid-cols-2 gap-x-4 gap-y-2' },
+        items.map((opt) => {
+          const isSelected = selected === opt.key;
+          return h(
+            'button',
+            {
+              key: opt.key,
+              class:
+                'flex items-center gap-2 cursor-pointer text-body-2 text-left select-none w-full ' +
+                (isSelected ? 'text-primary-600 font-medium' : 'text-neutral-700 hover:text-neutral-900'),
+              onClick: () => emit('select', opt.key),
+            },
+            [
+              h(
+                'span',
+                {
+                  class:
+                    'w-3 h-3 rounded-sm flex-shrink-0 flex items-center justify-center border ' +
+                    (isSelected ? 'bg-primary-600 border-primary-600' : 'bg-white border-neutral-300'),
+                },
+                isSelected ? [h(LfxIcon, { name: 'check', type: 'regular', size: 8, class: 'text-white' })] : [],
+              ),
+              opt.label,
+            ],
+          );
+        }),
+      ),
+    ]);
+  });
+
+  const noneItem = showNone
+    ? h('div', { class: 'mb-4' }, [
+        h(
+          'button',
+          {
+            class:
+              'flex items-center gap-2 cursor-pointer text-body-2 text-left select-none w-full ' +
+              (selected === null ? 'text-primary-600 font-medium' : 'text-neutral-700 hover:text-neutral-900'),
+            onClick: () => emit('select-none'),
+          },
+          [
+            h(
+              'span',
+              {
+                class:
+                  'w-3 h-3 rounded-sm flex-shrink-0 flex items-center justify-center border ' +
+                  (selected === null ? 'bg-primary-600 border-primary-600' : 'bg-white border-neutral-300'),
+              },
+              selected === null ? [h(LfxIcon, { name: 'check', type: 'regular', size: 8, class: 'text-white' })] : [],
+            ),
+            'None',
+          ],
+        ),
+      ])
+    : null;
+
+  return h(
+    'div',
+    { class: 'bg-white border border-neutral-200 rounded shadow-lg p-4 w-[340px] max-h-[80vh] overflow-y-auto' },
+    [noneItem, ...groupSections].filter(Boolean),
+  );
+};
+MetricPickerPanel.props = ['config', 'groups', 'selected', 'showNone'];
+MetricPickerPanel.emits = ['select', 'select-none'];
+
+// ── Axis state ────────────────────────────────────────────────────────────────
 
 const scaleTabs = [
   { value: 'linear', label: 'Linear' },
@@ -257,9 +414,15 @@ const yScaleMode = ref<'linear' | 'log'>('linear');
 const trendLineMode = ref<'off' | 'on'>('off');
 const activeLayers = ref<Set<string>>(new Set());
 
+const showXPicker = ref(false);
+const showYPicker = ref(false);
+const showZPicker = ref(false);
+
 const xLogScale = computed(() => xScaleMode.value === 'log');
 const yLogScale = computed(() => yScaleMode.value === 'log');
 const showTrendLine = computed(() => trendLineMode.value === 'on');
+
+// ── Data helpers ──────────────────────────────────────────────────────────────
 
 // Helper to get latest value from time series data
 function getLatestValue<T extends { month: string }>(data: T[], repo: string, valueKey: keyof T): number | null {
@@ -278,18 +441,32 @@ function getMetricValue(project: AgenticProject, metric: MetricKey): number | nu
       return getLatestValue(props.stargazersData, repo, 'cumulative_stars');
     case 'forks':
       return getLatestValue(props.forksData, repo, 'cumulative_forks');
+    case 'commits':
+      return getLatestValue(props.commitsData, repo, 'cumulative_commits');
     case 'contributors':
       return getLatestValue(props.contributorsData, repo, 'cumulative_contributors');
+    case 'newContributors':
+      return getLatestValue(props.newContributors90dData, repo, 'new_contributors_90d_count');
     case 'downloads': {
       const downloadsFiltered = props.downloadsData.filter((d) => d.repo === repo);
       if (downloadsFiltered.length === 0) return null;
       const latestMonth = downloadsFiltered.sort((a, b) => b.month.localeCompare(a.month))[0]?.month;
       return downloadsFiltered.filter((d) => d.month === latestMonth).reduce((sum, d) => sum + d.download_counts, 0);
     }
+    case 'dockerHubPulls':
+      return getLatestValue(props.dockerPullsData, repo, 'docker_hub_pulls');
+    case 'dependentRepositories':
+      return getLatestValue(props.dependentReposData, repo, 'dependent_repos_count');
+    case 'dependentPackages':
+      return getLatestValue(props.dependentPackagesData, repo, 'dependent_packages_count');
     case 'mergeRate':
       return getLatestValue(props.mergeRateData, repo, 'pr_merge_rate');
     case 'timeToClose':
       return getLatestValue(props.timeToCloseData, repo, 'median_time_to_close_days');
+    case 'issueResponseTime':
+      return getLatestValue(props.issueResponseTimeData, repo, 'issue_time_to_first_response_avg_days');
+    case 'noResponseIssues':
+      return getLatestValue(props.noResponseShareData, repo, 'issue_share_no_response_30d');
     case 'prTimeToResolve':
       return getLatestValue(props.prTimeToResolveData, repo, 'median_time_to_resolve_days');
     case 'totalVulnerabilities':
@@ -303,7 +480,8 @@ function getMetricValue(project: AgenticProject, metric: MetricKey): number | nu
   }
 }
 
-// Build scatter data (includes z value + log-scale zero filtering)
+// ── Scatter data ──────────────────────────────────────────────────────────────
+
 const scatterData = computed(() => {
   const result: Array<{
     name: string;
@@ -340,8 +518,6 @@ const scatterData = computed(() => {
 const allLayerNames = computed(() => [...new Set(scatterData.value.map((p) => p.layer))]);
 
 // Sync activeLayers: add new layers as they appear, preserve existing deselections.
-// Uses watch(allLayerNames) so it only fires when the set of layers changes —
-// NOT when activeLayers itself changes (which would undo clearAllLayers()).
 watch(
   allLayerNames,
   (newLayers) => {
@@ -376,8 +552,6 @@ const layerFilterTabs = [
   { value: 'none', label: 'None' },
 ];
 
-// Writable computed: reflects current selection state; setter drives select-all/clear-all.
-// Returns '' (no match) when a partial subset is active so neither tab appears selected.
 const layerFilterMode = computed({
   get: (): string => {
     if (activeLayers.value.size === 0) return 'none';
@@ -390,7 +564,8 @@ const layerFilterMode = computed({
   },
 });
 
-// Z normalization
+// ── Z normalization ───────────────────────────────────────────────────────────
+
 const zRange = computed(() => {
   if (zAxisMetric.value === 'none') return null;
   const vals = scatterData.value
@@ -415,9 +590,10 @@ const zLegendEntries = computed(() => {
   }));
 });
 
-// Format axis label
+// ── Axis label / value formatting ─────────────────────────────────────────────
+
 function formatAxisValue(value: number, metric: MetricKey): string {
-  const option = metricOptions.find((o) => o.key === metric);
+  const option = METRIC_CONFIG.find((o) => o.key === metric);
   if (option?.format === 'percent') {
     return `${(value * 100).toFixed(0)}%`;
   }
@@ -430,9 +606,8 @@ function formatAxisValue(value: number, metric: MetricKey): string {
   return formatNumber(value);
 }
 
-// Get axis label
 function getAxisLabel(metric: MetricKey): string {
-  return metricOptions.find((o) => o.key === metric)?.label || metric;
+  return METRIC_CONFIG.find((o) => o.key === metric)?.label || metric;
 }
 
 // ── Linear regression helpers ─────────────────────────────────────────────────

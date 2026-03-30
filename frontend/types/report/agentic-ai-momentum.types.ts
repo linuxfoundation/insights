@@ -216,6 +216,20 @@ export interface ProjectLeaderboardRow {
   prTimeToResolveDelta: number | null;
   totalVulnerabilities: number | null;
   totalVulnerabilitiesDelta: number | null;
+  newContributors: number | null;
+  newContributorsDelta: number | null;
+  githubReleases: number | null;
+  githubReleasesDelta: number | null;
+  issueResponseTime: number | null;
+  issueResponseTimeDelta: number | null;
+  noResponseIssues: number | null;
+  noResponseIssuesDelta: number | null;
+  dockerHubPulls: number | null;
+  dockerHubPullsDelta: number | null;
+  dependentRepositories: number | null;
+  dependentRepositoriesDelta: number | null;
+  dependentPackages: number | null;
+  dependentPackagesDelta: number | null;
 }
 
 // KPI summary data
@@ -241,12 +255,21 @@ export type MetricKey =
   | 'cocomoValue'
   | 'totalVulnerabilities'
   | 'prTimeToResolve'
-  | 'releases';
+  | 'releases'
+  | 'dockerHubPulls'
+  | 'dependentRepositories'
+  | 'dependentPackages'
+  | 'newContributors'
+  | 'issueResponseTime'
+  | 'noResponseIssues';
+
+export type MetricGroup = 'Growth' | 'Community' | 'Health' | 'Value';
 
 export interface MetricOption {
   key: MetricKey;
   label: string;
   format: 'number' | 'percent' | 'days';
+  group: MetricGroup;
 }
 
 // Scatter plot data point
