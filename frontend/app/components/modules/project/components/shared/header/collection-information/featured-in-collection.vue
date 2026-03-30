@@ -20,7 +20,8 @@ SPDX-License-Identifier: MIT
     <lfx-button
       v-else
       type="ghost"
-      class="!text-neutral-600 !font-medium"
+      button-style="pill"
+      class="!text-neutral-900 !font-medium"
       @click="handleOpenAddToCollectionModal"
     >
       <lfx-icon
