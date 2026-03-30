@@ -101,7 +101,7 @@ export interface PullRequestCountData extends RepoMonthMetric {
 
 // GitHub releases
 export interface GitHubReleasesData extends RepoMonthMetric {
-  cumulative_releases: number;
+  cumulative_release_count: number;
 }
 
 // Open issues
@@ -116,17 +116,19 @@ export interface ClosedIssuesData extends RepoMonthMetric {
 
 // Dependent packages
 export interface DependentPackagesData extends RepoMonthMetric {
-  dependent_packages_count: number;
+  ecosystem: string;
+  dependent_package_count: number;
 }
 
 // Dependent repos
 export interface DependentReposData extends RepoMonthMetric {
-  dependent_repos_count: number;
+  ecosystem: string;
+  dependent_repo_count: number;
 }
 
 // Docker Hub pulls
 export interface DockerHubPullsData extends RepoMonthMetric {
-  docker_hub_pulls: number;
+  pull_count: number;
 }
 
 // Docker dependents
@@ -151,12 +153,12 @@ export interface CocomoValueData extends RepoMonthMetric {
 
 // Issue response time
 export interface IssueTimeToFirstResponseData extends RepoMonthMetric {
-  issue_time_to_first_response_avg_days: number;
+  median_time_to_first_response_hours: number;
 }
 
 // Issue no response share
 export interface IssueNoResponseShareData extends RepoMonthMetric {
-  issue_share_no_response_30d: number;
+  issues_no_response_pct_30d: number;
 }
 
 // PR time to resolve

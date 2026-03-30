@@ -454,19 +454,31 @@ function getMetricValue(project: AgenticProject, metric: MetricKey): number | nu
       return downloadsFiltered.filter((d) => d.month === latestMonth).reduce((sum, d) => sum + d.download_counts, 0);
     }
     case 'dockerHubPulls':
-      return getLatestValue(props.dockerPullsData, repo, 'docker_hub_pulls');
-    case 'dependentRepositories':
-      return getLatestValue(props.dependentReposData, repo, 'dependent_repos_count');
-    case 'dependentPackages':
-      return getLatestValue(props.dependentPackagesData, repo, 'dependent_packages_count');
+      return getLatestValue(props.dockerPullsData, repo, 'pull_count');
+    case 'dependentRepositories': {
+      const depRepos = props.dependentReposData.filter((d) => d.repo === repo);
+      const latestDepReposMonth = depRepos.sort((a, b) => b.month.localeCompare(a.month))[0]?.month;
+      return latestDepReposMonth
+        ? depRepos.filter((d) => d.month === latestDepReposMonth).reduce((s, d) => s + d.dependent_repo_count, 0)
+        : null;
+    }
+    case 'dependentPackages': {
+      const depPkgs = props.dependentPackagesData.filter((d) => d.repo === repo);
+      const latestDepPkgsMonth = depPkgs.sort((a, b) => b.month.localeCompare(a.month))[0]?.month;
+      return latestDepPkgsMonth
+        ? depPkgs.filter((d) => d.month === latestDepPkgsMonth).reduce((s, d) => s + d.dependent_package_count, 0)
+        : null;
+    }
     case 'mergeRate':
       return getLatestValue(props.mergeRateData, repo, 'pr_merge_rate');
     case 'timeToClose':
       return getLatestValue(props.timeToCloseData, repo, 'median_time_to_close_days');
-    case 'issueResponseTime':
-      return getLatestValue(props.issueResponseTimeData, repo, 'issue_time_to_first_response_avg_days');
+    case 'issueResponseTime': {
+      const hours = getLatestValue(props.issueResponseTimeData, repo, 'median_time_to_first_response_hours');
+      return hours !== null ? hours / 24 : null;
+    }
     case 'noResponseIssues':
-      return getLatestValue(props.noResponseShareData, repo, 'issue_share_no_response_30d');
+      return getLatestValue(props.noResponseShareData, repo, 'issues_no_response_pct_30d');
     case 'prTimeToResolve':
       return getLatestValue(props.prTimeToResolveData, repo, 'median_time_to_resolve_days');
     case 'totalVulnerabilities':
@@ -474,7 +486,7 @@ function getMetricValue(project: AgenticProject, metric: MetricKey): number | nu
     case 'cocomoValue':
       return getLatestValue(props.cocomoData, repo, 'estimated_cost_usd');
     case 'releases':
-      return getLatestValue(props.githubReleasesData, repo, 'cumulative_releases');
+      return getLatestValue(props.githubReleasesData, repo, 'cumulative_release_count');
     default:
       return null;
   }

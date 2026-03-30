@@ -850,10 +850,40 @@ const leaderboardData = computed<ProjectLeaderboardRow[]>(() => {
     const commits = getLatestValue(props.commitsData, githubUrl ?? '', 'cumulative_commits');
     const contributors = getLatestValue(props.contributorsData, githubUrl ?? '', 'cumulative_contributors');
     const newContributors = getLatestValue(props.newContributors90dData, githubUrl ?? '', 'new_contributors_90d_count');
-    const githubReleases = getLatestValue(props.githubReleasesData, githubUrl ?? '', 'cumulative_releases');
-    const dockerHubPulls = getLatestValue(props.dockerPullsData, githubUrl ?? '', 'docker_hub_pulls');
-    const dependentRepositories = getLatestValue(props.dependentReposData, githubUrl ?? '', 'dependent_repos_count');
-    const dependentPackages = getLatestValue(props.dependentPackagesData, githubUrl ?? '', 'dependent_packages_count');
+    const githubReleases = getLatestValue(props.githubReleasesData, githubUrl ?? '', 'cumulative_release_count');
+    const dockerHubPulls = getLatestValue(props.dockerPullsData, githubUrl ?? '', 'pull_count');
+
+    // Dependent repos — aggregate across ecosystems per month
+    const depReposFiltered = props.dependentReposData.filter((d) => d.repo === githubUrl);
+    const depReposMonths = [...new Set(depReposFiltered.map((d) => d.month))].sort().reverse();
+    const depReposLatestMonth = depReposMonths[0] ?? null;
+    const depReposPrevMonth = depReposMonths[1] ?? null;
+    const depReposLatest = depReposLatestMonth
+      ? depReposFiltered.filter((d) => d.month === depReposLatestMonth).reduce((s, d) => s + d.dependent_repo_count, 0)
+      : null;
+    const depReposPrev = depReposPrevMonth
+      ? depReposFiltered.filter((d) => d.month === depReposPrevMonth).reduce((s, d) => s + d.dependent_repo_count, 0)
+      : null;
+    const dependentRepositories = {
+      value: depReposLatest,
+      delta: depReposLatest !== null && depReposPrev !== null ? depReposLatest - depReposPrev : null,
+    };
+
+    // Dependent packages — aggregate across ecosystems per month
+    const depPkgsFiltered = props.dependentPackagesData.filter((d) => d.repo === githubUrl);
+    const depPkgsMonths = [...new Set(depPkgsFiltered.map((d) => d.month))].sort().reverse();
+    const depPkgsLatestMonth = depPkgsMonths[0] ?? null;
+    const depPkgsPrevMonth = depPkgsMonths[1] ?? null;
+    const depPkgsLatest = depPkgsLatestMonth
+      ? depPkgsFiltered.filter((d) => d.month === depPkgsLatestMonth).reduce((s, d) => s + d.dependent_package_count, 0)
+      : null;
+    const depPkgsPrev = depPkgsPrevMonth
+      ? depPkgsFiltered.filter((d) => d.month === depPkgsPrevMonth).reduce((s, d) => s + d.dependent_package_count, 0)
+      : null;
+    const dependentPackages = {
+      value: depPkgsLatest,
+      delta: depPkgsLatest !== null && depPkgsPrev !== null ? depPkgsLatest - depPkgsPrev : null,
+    };
 
     // Merge rate with delta
     const mergeRateFiltered = props.mergeRateData
@@ -877,20 +907,21 @@ const leaderboardData = computed<ProjectLeaderboardRow[]>(() => {
     const issueResponseFiltered = props.issueResponseTimeData
       .filter((d) => d.repo === githubUrl)
       .sort((a, b) => b.month.localeCompare(a.month));
-    const issueResponseTime = issueResponseFiltered[0]?.issue_time_to_first_response_avg_days ?? null;
+    const issueResponseTimeRaw = issueResponseFiltered[0]?.median_time_to_first_response_hours ?? null;
+    const issueResponseTime = issueResponseTimeRaw !== null ? issueResponseTimeRaw / 24 : null;
     const issueResponseTimeDelta =
       issueResponseTime !== null && issueResponseFiltered[1] !== undefined
-        ? issueResponseTime - issueResponseFiltered[1].issue_time_to_first_response_avg_days
+        ? issueResponseTime - issueResponseFiltered[1].median_time_to_first_response_hours / 24
         : null;
 
     // No-response share with delta
     const noResponseFiltered = props.noResponseShareData
       .filter((d) => d.repo === githubUrl)
       .sort((a, b) => b.month.localeCompare(a.month));
-    const noResponseIssues = noResponseFiltered[0]?.issue_share_no_response_30d ?? null;
+    const noResponseIssues = noResponseFiltered[0]?.issues_no_response_pct_30d ?? null;
     const noResponseIssuesDelta =
       noResponseIssues !== null && noResponseFiltered[1] !== undefined
-        ? noResponseIssues - noResponseFiltered[1].issue_share_no_response_30d
+        ? noResponseIssues - noResponseFiltered[1].issues_no_response_pct_30d
         : null;
 
     // Downloads (no delta per plan)
