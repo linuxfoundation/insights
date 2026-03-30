@@ -21,7 +21,7 @@ export default defineEventHandler(async (event) => {
   ];
 
   // Public report routes that don't require authentication
-  const publicReportRoutes = ['/api/report/cncf/geo-distribution'];
+  const publicReportRoutes = ['/api/report/cncf/geo-distribution', '/api/report/ai-code-tracker'];
   const isPublicReport = publicReportRoutes.some((route) => url.startsWith(route));
   if (isPublicReport) {
     return;
@@ -29,11 +29,13 @@ export default defineEventHandler(async (event) => {
 
   // Protected report routes (other /api/report endpoints)
   const isProtectedReport = url.startsWith('/api/report') && !isPublicReport;
+  const isProtectedVulnerabilityRoute = url.includes('/security/vulnerabilities');
   const protectedAndPermissionRoutes = ['/api/chat'];
 
   const isProtectedRoute =
     [...protectedRoutes, ...protectedAndPermissionRoutes].some((route) => url.startsWith(route)) ||
-    isProtectedReport;
+    isProtectedReport ||
+    isProtectedVulnerabilityRoute;
 
   const isPermissionRequired = protectedAndPermissionRoutes.some((route) => url.startsWith(route));
 
