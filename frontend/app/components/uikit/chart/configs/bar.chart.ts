@@ -13,6 +13,7 @@ import {
 
 import type { ChartData, ChartSeries, SeriesTypes } from '../types/ChartTypes';
 import defaultOption from './defaults.chart';
+import { formatNumber } from '~/components/shared/utils/formatter';
 import { lfxColors } from '~/config/styles/colors';
 import { formatByGranularity } from '~/components/shared/types/granularity';
 
@@ -373,4 +374,98 @@ export const getBarChartConfigCustom = (
     },
     overrideConfig,
   );
+};
+
+export interface HorizontalBarData {
+  category: string;
+  value: number;
+}
+
+/**
+ * Get horizontal bar chart config. This creates a bar chart where bars extend horizontally.
+ * The yAxis displays categories and xAxis displays values.
+ * @param data - Array of category-value pairs
+ * @param color - Bar color (default: accent-500)
+ * @param overrideConfig - Additional config to merge
+ * @returns Chart config
+ */
+export const getHorizontalBarChartConfig = (
+  data: HorizontalBarData[],
+  color: string = lfxColors.accent[500],
+  overrideConfig?: Partial<ECOption>,
+): ECOption => {
+  const categories = data.map((item) => item.category);
+  const values = data.map((item) => item.value);
+
+  const baseConfig: ECOption = {
+    grid: {
+      left: 120,
+      right: '5%',
+      top: 0,
+      bottom: 0,
+      containLabel: false,
+    },
+    xAxis: {
+      type: 'value',
+      axisLabel: {
+        fontSize: 10,
+        fontWeight: 'normal',
+        color: lfxColors.neutral[400],
+      },
+      axisLine: {
+        show: false,
+      },
+      splitLine: {
+        lineStyle: {
+          type: 'solid',
+          color: lfxColors.neutral[200],
+        },
+      },
+      axisTick: { show: false },
+    },
+    yAxis: {
+      type: 'category',
+      data: categories,
+      inverse: true,
+      axisLabel: {
+        fontSize: 14,
+        fontWeight: 500,
+        color: lfxColors.neutral[900],
+        align: 'left',
+        width: 120,
+        margin: 120,
+        overflow: 'truncate',
+      },
+      axisLine: {
+        show: false,
+      },
+      axisTick: { show: false },
+    },
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: {
+        type: 'shadow',
+      },
+      formatter: (params: unknown) => {
+        const paramArray = params as Array<{ name: string; value: number }>;
+        if (!paramArray || paramArray.length === 0) return '';
+        const item = paramArray[0];
+        if (!item) return '';
+        return `${item.name}: ${formatNumber(item.value)}`;
+      },
+    },
+    series: [
+      {
+        type: 'bar',
+        data: values,
+        barMaxWidth: 8,
+        itemStyle: {
+          color,
+          borderRadius: [10, 10, 10, 10],
+        },
+      },
+    ],
+  };
+
+  return overrideConfig ? merge({}, baseConfig, overrideConfig) : baseConfig;
 };

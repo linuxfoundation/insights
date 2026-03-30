@@ -23,6 +23,10 @@
     }
   }
 
+  &-size-xsmall {
+    @apply h-5 text-xs px-1.5;
+  }
+
   &-type-bordered {
     @apply bg-white border border-solid border-neutral-200;
   }
