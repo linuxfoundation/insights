@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ### Package Management
 - Use `pnpm` for package management (not npm/yarn)
-- `pnpm install --filter lfx-insights...` - Install dependencies from project root
+- `pnpm install --filter frontend` - Install dependencies from project root
 - `pnpm dev` - Start development server on localhost:3000 (run from frontend directory)
 - Always run install commands from project root using workspace filter
 
@@ -31,7 +31,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Architecture Overview
 
 ### Framework & Technology Stack
-- **Nuxt 3** (Vue 3) framework with TypeScript
+- **Nuxt 4** (Vue 3) framework with TypeScript
 - **Tailwind CSS** for styling with **PrimeVue** component library
 - **Pinia** for state management
 - **TanStack Vue Query** for data fetching and caching
@@ -41,28 +41,33 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **Vitest** for testing, **Storybook** for component development
 
 ### Project Structure
+All paths below are relative to the `frontend/` directory.
+
 ```
-app/                    # Main application code
-├── assets/            # Static assets and styles
-├── components/        # Vue components (UI kit and feature components)
-├── config/           # Configuration files
-├── layouts/          # Nuxt layout components
-├── pages/            # File-based routing pages
-└── plugins/          # Nuxt plugins
-
-server/                # Server-side code
-├── api/              # API routes and endpoints
-├── constants/        # Server constants
-├── data/            # Data layer and queries
-├── helpers/         # Utility functions
-├── middleware/      # Server middleware
-├── mocks/           # Mock data for development
-├── repo/            # Repository pattern implementations
-└── utils/           # Server utilities
-
-types/                # TypeScript type definitions
-composables/          # Vue composables
-setup/               # Nuxt configuration modules
+frontend/
+├── app/                    # Main application code
+│   ├── assets/            # Static assets and styles
+│   ├── components/        # Vue components (UI kit and feature components)
+│   ├── config/           # Configuration files
+│   ├── layouts/          # Nuxt layout components
+│   ├── pages/            # File-based routing pages
+│   ├── middleware/       # Client-side middleware
+│   └── plugins/          # Nuxt plugins
+│
+├── server/                # Server-side code
+│   ├── api/              # API routes and endpoints
+│   ├── constants/        # Server constants
+│   ├── data/            # Data layer and queries
+│   ├── helpers/         # Utility functions
+│   ├── middleware/      # Server middleware
+│   ├── mocks/           # Mock data for development
+│   ├── repo/            # Repository pattern implementations
+│   ├── types/           # Server-side type definitions
+│   └── utils/           # Server utilities
+│
+├── types/                # TypeScript type definitions
+├── composables/          # Vue composables
+└── setup/               # Nuxt configuration modules
 ```
 
 ### Key Architectural Patterns
@@ -93,6 +98,18 @@ setup/               # Nuxt configuration modules
   - `primevue.ts` - PrimeVue theming
   - `caching.ts` - Route caching rules
   - `sitemap.ts` - Sitemap generation
+  - `analytics.ts` - Analytics (Google Analytics, Plausible)
+  - `echarts.ts` - ECharts configuration
+  - `hooks.ts` - Nuxt lifecycle hooks
+  - `image.ts` - Image optimization
+  - `modules.ts` - Nuxt modules registration
+  - `og-image.ts` - Open Graph image generation
+  - `robots.ts` - Robots.txt configuration
+  - `runtime-config.ts` - Runtime environment config
+  - `site.ts` - Site metadata
+  - `vite.ts` - Vite bundler config
+  - `vue.ts` - Vue compiler options
+  - `rate-limiter.ts` - API rate limiting
 
 #### Environment & Deployment
 - Environment-specific configuration via runtime config
@@ -136,5 +153,5 @@ setup/               # Nuxt configuration modules
 - Prettier for code formatting
 - Husky git hooks for pre-commit checks
 - License headers automatically added via lint-staged
-- whenever you generate html/vue code make sure to use ui components from the ui kit in the project src/components/uikit
+- whenever you generate html/vue code make sure to use ui components from the ui kit in the project `frontend/app/components/uikit/`
 - make sure to always consider tailwind config file to see correct classes names

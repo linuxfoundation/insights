@@ -1,0 +1,24 @@
+{
+    "$schema": "https://json.schemastore.org/claude-code-settings.json",
+    "permissions": {
+      "allow": [
+        "Bash(pnpm *)",
+        "Bash(git status)",
+        "Bash(git diff *)",
+        "Bash(git log *)",
+        "Bash(git checkout *)",
+        "Bash(git commit *)",
+        "Read",
+        "Write",
+        "Edit"
+      ],
+      "deny": [
+        "Bash(rm -rf *)",
+        "Bash(curl *)",
+        "Bash(git push *)",
+        "Bash(git reset --hard)",
+        "Read(./.env)",
+        "Read(./.env.*)"
+      ]
+    }
+  }
