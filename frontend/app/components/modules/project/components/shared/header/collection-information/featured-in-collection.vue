@@ -11,6 +11,7 @@ SPDX-License-Identifier: MIT
     <lfx-button
       v-if="totalCount > 0"
       type="ghost"
+      button-style="pill"
       class="!text-neutral-600 !font-medium"
     >
       <lfx-icon name="rectangle-history" />
