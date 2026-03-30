@@ -1,0 +1,51 @@
+{
+  "metadata": {
+    "fetched_at": "2026-03-27T10:27:46.361869",
+    "schema": {
+      "name": "test_metric",
+      "description": "Dummy test metric.",
+      "fields": [
+        {
+          "name": "unit",
+          "type": "string",
+          "description": "Unit name",
+          "optional": false
+        },
+        {
+          "name": "time",
+          "type": "date",
+          "description": "Time in YYYY-MM format",
+          "optional": false
+        },
+        {
+          "name": "value",
+          "type": "number",
+          "description": "Value at the given time",
+          "optional": false
+        }
+      ]
+    }
+  },
+  "data": [
+    {
+      "unit": "foo",
+      "time": "2024-01",
+      "value": 123
+    },
+    {
+      "unit": "foo",
+      "time": "2024-02",
+      "value": 150
+    },
+    {
+      "unit": "bar",
+      "time": "2024-01",
+      "value": 80
+    },
+    {
+      "unit": "bar",
+      "time": "2024-02",
+      "value": 90
+    }
+  ]
+}

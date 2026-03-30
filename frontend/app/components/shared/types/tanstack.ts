@@ -88,4 +88,30 @@ export enum TanstackKey {
 
   // AI Code Tracker
   AI_CODE_TRACKER = 'ai-code-tracker',
+
+  // Agentic AI Momentum
+  AGENTIC_AI_PROJECTS = 'agentic-ai-projects',
+  AGENTIC_AI_STARGAZERS = 'agentic-ai-stargazers',
+  AGENTIC_AI_FORKS = 'agentic-ai-forks',
+  AGENTIC_AI_CONTRIBUTORS = 'agentic-ai-contributors',
+  AGENTIC_AI_NEW_CONTRIBUTORS = 'agentic-ai-new-contributors',
+  AGENTIC_AI_PR_MERGE_RATE = 'agentic-ai-pr-merge-rate',
+  AGENTIC_AI_DOWNLOADS = 'agentic-ai-downloads',
+  AGENTIC_AI_RESEARCH_PAPERS = 'agentic-ai-research-papers',
+  AGENTIC_AI_GITHUB_BREADTH = 'agentic-ai-github-breadth',
+  AGENTIC_AI_COMMITS = 'agentic-ai-commits',
+  AGENTIC_AI_TIME_TO_CLOSE = 'agentic-ai-time-to-close',
+  AGENTIC_AI_COCOMO = 'agentic-ai-cocomo',
+  AGENTIC_AI_DOCKER_PULLS = 'agentic-ai-docker-pulls',
+  AGENTIC_AI_DEPENDENT_REPOS = 'agentic-ai-dependent-repos',
+  AGENTIC_AI_DEPENDENT_PACKAGES = 'agentic-ai-dependent-packages',
+  AGENTIC_AI_DOCKER_DEPENDENTS = 'agentic-ai-docker-dependents',
+  AGENTIC_AI_GITHUB_RELEASES = 'agentic-ai-github-releases',
+  AGENTIC_AI_OPEN_ISSUES = 'agentic-ai-open-issues',
+  AGENTIC_AI_CLOSED_ISSUES = 'agentic-ai-closed-issues',
+  AGENTIC_AI_TIME_TO_FIRST_RESPONSE = 'agentic-ai-time-to-first-response',
+  AGENTIC_AI_NO_RESPONSE_SHARE = 'agentic-ai-no-response-share',
+  AGENTIC_AI_PR_TIME_TO_RESOLVE = 'agentic-ai-pr-time-to-resolve',
+  AGENTIC_AI_TOTAL_VULNERABILITIES = 'agentic-ai-total-vulnerabilities',
+  AGENTIC_AI_FIXED_VULNERABILITIES = 'agentic-ai-fixed-vulnerabilities',
 }
