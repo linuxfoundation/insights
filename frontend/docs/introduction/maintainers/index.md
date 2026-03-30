@@ -26,11 +26,11 @@ Files are discovered recursively across the full repository tree. Files inside t
 
 Our automated system scans the full repository tree recursively — not just the root — to find governance-related files. If a file was identified on a previous run, it is reused as the starting point.
 
-`README.md` files are only analyzed when they explicitly mention maintainers. For README and governance files, only sections relevant to maintainer information (e.g., headings like "Maintainers", "Owners", or "Reviewers") are extracted before analysis, improving accuracy on large files.
+`README.md` files are analyzed using a broad set of maintainer-related keywords (e.g., “maintainer”, “contributor”, “reviewer”, etc.). For README and governance files, only sections relevant to maintainer information (such as headings like "Maintainers", "Owners", or "Reviewers") are extracted before analysis, improving accuracy on large files.
 
 Once a file is identified, an AI model extracts structured maintainer information from it:
 
-- **Full coverage** — every person listed in the file is extracted, regardless of section or role.
+- **Full coverage** — every person listed in the extracted maintainer-related sections of the file is captured, regardless of role.
 - **YAML and TOML support** — for structured files, top-level keys matching governance terms are extracted.
 - **Role normalization** — each person is assigned a standardized role. Reviewers and designated reviewers are normalized to "maintainer".
 
@@ -50,7 +50,7 @@ Extracted contributors are matched against known identities using their GitHub u
 
 ## Data Refresh Frequency
 
-Maintainer data is collected and updated daily to ensure accuracy and reflect changes over time. This automated process runs every 24 hours to capture any updates to maintainer files across all monitored repositories.
+Maintainer data is collected and updated weekly to ensure accuracy and reflect changes over time. This automated process runs once a week for each repository to capture any updates to maintainer files across all monitored repositories.
 
 ## Current Limitations
 
@@ -62,7 +62,7 @@ Maintainer data is collected and updated daily to ensure accuracy and reflect ch
 
 We are actively working on expanding maintainer data collection capabilities, including:
 
-- Users being able to directly update and correct maintainer information through the LFX platform.
+- Users being able to directly update and correct maintainer information through the LFX Platform.
 - Git history analysis to track maintainer role changes over time.
 
 ## Data Privacy and Accuracy
