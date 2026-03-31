@@ -12,7 +12,7 @@ SPDX-License-Identifier: MIT
         :type="props.type"
         :sort="sort"
         :view="view"
-        :is-empty="flatData.length === 0"
+        :is-empty="isEmpty"
         :is-scrolled-state="isScrolledState"
         :is-loading="isPending || isFetchingNextPage"
         @update:sort="updateSort"
@@ -33,7 +33,6 @@ SPDX-License-Identifier: MIT
             v-for="collection in flatData"
             :key="collection.slug"
             :collection="collection"
-            :show-like-count="props.type !== 'my-collections'"
             :variant="props.type"
             @updated="refreshList"
           />
@@ -94,13 +93,18 @@ SPDX-License-Identifier: MIT
     v-if="props.type === 'my-collections'"
     class="container mt-10"
   >
-    <lfx-liked-collections :view="view" />
+    <lfx-liked-collections
+      :view="view"
+      :in-my-collections="true"
+      @loaded="handleLikedCollectionsLoaded"
+    />
   </section>
 </template>
 
 <script setup lang="ts">
 import { watch, computed, ref } from 'vue';
 import { storeToRefs } from 'pinia';
+import { useQueryClient } from '@tanstack/vue-query';
 import { collectionListParamsGetter, collectionListParamsSetter } from '../services/collections.query.service';
 import { headerBackground } from '../config/collection-type-config';
 import type { Pagination } from '~~/types/shared/pagination';
@@ -124,6 +128,9 @@ import { useBannerStore } from '~/components/shared/store/banner.store';
 import { useAuthStore } from '~/components/modules/auth/store/auth.store';
 import { type CollectionViewType } from '~/components/modules/collection/store/collections.store';
 import { useLikeCounts } from '~/components/modules/collection/composables/useLikeCounts';
+import { TanstackKey } from '~/components/shared/types/tanstack';
+
+const queryClient = useQueryClient();
 
 const props = defineProps<{
   type?: CollectionType;
@@ -140,6 +147,7 @@ const { user } = storeToRefs(useAuthStore());
 const sort = ref(listSort || 'starred_desc');
 const pageSize = computed(() => (view.value === 'grid' ? 99 : 100));
 const view = ref<CollectionViewType>('grid');
+const likedDataCount = ref(0);
 
 const params = computed(() => ({
   pageSize: pageSize.value,
@@ -197,7 +205,20 @@ const updateSort = (value: string) => {
 };
 
 const refreshList = () => {
-  refetch();
+  queryClient.invalidateQueries({ queryKey: [TanstackKey.MY_COLLECTIONS] });
+  queryClient.invalidateQueries({ queryKey: [TanstackKey.COLLECTIONS] });
+};
+
+const isEmpty = computed(() => {
+  if (props.type === 'my-collections') {
+    return flatData.value.length === 0 && likedDataCount.value === 0;
+  }
+
+  return flatData.value.length === 0;
+});
+
+const handleLikedCollectionsLoaded = (count: number) => {
+  likedDataCount.value = count;
 };
 
 /**

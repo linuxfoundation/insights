@@ -106,7 +106,7 @@ SPDX-License-Identifier: MIT
           </div>
           <div
             v-if="props.collection && !loading"
-            class="flex lg:justify-end transition-all ease-linear gap-4 w-full lg:w-auto shrink-0"
+            class="flex transition-all ease-linear gap-4 w-full lg:w-auto shrink-0"
           >
             <template v-if="!!user">
               <lfx-tooltip content="Duplicate collection">
@@ -125,12 +125,11 @@ SPDX-License-Identifier: MIT
                 <lfx-icon name="pencil" />
                 Edit Collection
               </lfx-button>
-              <lfx-like-button
+              <like-button
                 v-else
                 :collection="props.collection"
                 button-type="outline"
                 class="!rounded-full"
-                size="large"
               />
             </template>
             <lfx-button
@@ -232,7 +231,7 @@ import { useAuthStore } from '~/components/modules/auth/store/auth.store';
 import { useShareStore } from '~/components/shared/modules/share/store/share.store';
 import { LfxRoutes } from '~/components/shared/types/routes';
 import type { CollectionType } from '~~/types/collection';
-import LfxLikeButton from '~/components/shared/components/like-button.vue';
+import LikeButton from '~/components/shared/components/like-button.vue';
 import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
 import { useEditCollectionStore } from '~/components/modules/collection/store/edit-collection.store';
 import { useDuplicateCollectionStore } from '~/components/modules/collection/store/duplicate-collection.store';

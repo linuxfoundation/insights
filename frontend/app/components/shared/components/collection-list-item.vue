@@ -80,7 +80,7 @@ SPDX-License-Identifier: MIT
           </span>
         </div>
         <div
-          v-if="showLikeCount && !!user"
+          v-if="showLikeCount && !!user && !showLikeInContext"
           class="ml-4"
         >
           <like-button
@@ -138,6 +138,13 @@ SPDX-License-Identifier: MIT
               Delete
             </lfx-dropdown-item>
           </template>
+          <like-button
+            v-if="showLikeCount && !!user && showLikeInContext"
+            :collection="props.collection"
+            :variant="props.variant"
+            :show-as-dropdown="true"
+            @updated="handleLikeUpdated"
+          />
         </lfx-dropdown>
       </div>
     </div>
@@ -180,18 +187,20 @@ const emit = defineEmits<{
 const props = withDefaults(
   defineProps<{
     collection: Collection;
-    showLikeCount?: boolean;
     variant?: CollectionType;
+    showLikeInContext?: boolean;
   }>(),
   {
-    showLikeCount: false,
     variant: 'curated',
+    showLikeInContext: false,
   },
 );
 
 const collectionProjects = computed<CollectionFeaturedProject[]>(() => {
   return props.collection.featuredProjects.slice(0, 5);
 });
+
+const showLikeCount = computed(() => props.variant !== 'my-collections');
 
 const isSingleLogo = computed(() => props.variant === 'liked-collections' || props.variant === 'curated');
 

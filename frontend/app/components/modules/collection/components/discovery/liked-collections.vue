@@ -67,7 +67,7 @@ SPDX-License-Identifier: MIT
             :key="collection.slug"
             :collection="collection"
             variant="liked-collections"
-            :show-like-count="true"
+            :show-like-in-context="inMyCollections"
             @updated="handleLikeUpdated"
           />
         </template>
@@ -103,11 +103,17 @@ import { useLikeCounts } from '~/components/modules/collection/composables/useLi
 const props = withDefaults(
   defineProps<{
     view?: string;
+    inMyCollections?: boolean;
   }>(),
   {
     view: 'list',
+    inMyCollections: false,
   },
 );
+
+const emit = defineEmits<{
+  (e: 'loaded', count: number): void;
+}>();
 
 const { user } = storeToRefs(useAuthStore());
 const { showToast } = useToastService();
@@ -158,6 +164,14 @@ const handleLikeUpdated = () => {
 watch(user, () => {
   refetch();
 });
+
+watch(
+  likedData,
+  (data) => {
+    emit('loaded', data?.total || 0);
+  },
+  { immediate: true },
+);
 </script>
 
 <script lang="ts">

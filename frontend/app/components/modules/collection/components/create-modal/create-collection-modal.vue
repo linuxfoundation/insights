@@ -9,9 +9,9 @@ SPDX-License-Identifier: MIT
     content-class="!overflow-hidden"
     :close-function="handleCloseAttempt"
   >
-    <div class="flex flex-col gap-8 p-6 bg-white rounded-xl shadow-xl">
+    <div class="flex flex-col gap-8 p-6 bg-white rounded-xl shadow-xl max-h-[75vh]">
       <!-- Header section -->
-      <div class="flex flex-col gap-6">
+      <div class="flex flex-col gap-6 flex-1 min-h-0">
         <lf-create-collection-modal-header
           :step="step"
           :is-duplicate-mode="isDuplicateMode"
@@ -25,6 +25,7 @@ SPDX-License-Identifier: MIT
           v-if="currentStep"
           ref="stepRef"
           v-model="form"
+          class="flex-1 min-h-0"
         />
       </div>
 
@@ -96,8 +97,8 @@ const initializeFromSourceCollection = async () => {
   if (!props.sourceCollection) return;
 
   form.value.name = `Copy of ${props.sourceCollection.name}`;
-  form.value.description = props.sourceCollection.description || '';
-  form.value.visibility = props.sourceCollection.isPrivate ? 'private' : 'public';
+  form.value.description = '';
+  form.value.visibility = 'private';
 
   isLoadingProjects.value = true;
   try {
