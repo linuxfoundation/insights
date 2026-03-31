@@ -103,7 +103,7 @@ export interface ProjectInsightsAchievement {
 
 export interface ProjectInsightsTinybird {
   id: string;
-  type: string;
+  type: 'project' | 'repo';
   repoUrl: string;
   name: string;
   slug: string;
@@ -136,7 +136,7 @@ export interface ProjectInsightsTinybird {
 
 export interface ProjectInsights {
   id: string;
-  type: string;
+  type: 'project' | 'repo';
   repoUrl: string;
   name: string;
   slug: string;

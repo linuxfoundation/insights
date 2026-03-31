@@ -41,8 +41,19 @@ export default defineEventHandler(async (event): Promise<Pagination<unknown> | E
   const orderByField = lastUnderscoreIndex > 0 ? sort.substring(0, lastUnderscoreIndex) : sort;
   const orderByDirection =
     lastUnderscoreIndex > 0 ? sort.substring(lastUnderscoreIndex + 1) : 'desc';
-  const isLfx = query?.isLF === 'true' ? 1 : query?.isLF === 'false' ? 0 : undefined;
-  const type = query?.type as string | undefined;
+  let isLfx: number | undefined;
+  if (query?.isLF === 'true') {
+    isLfx = 1;
+  } else if (query?.isLF === 'false') {
+    isLfx = 0;
+  }
+
+  const validTypes = ['project', 'repo'] as const;
+  const typeParam = query?.type as string | undefined;
+  const type =
+    typeParam && validTypes.includes(typeParam as (typeof validTypes)[number])
+      ? (typeParam as 'project' | 'repo')
+      : undefined;
 
   const page: number = Number(query?.page) || 0;
   const pageSize: number = Number(query?.pageSize) || 10;
