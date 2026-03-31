@@ -85,6 +85,7 @@ import { useProjectStore } from '~~/app/components/modules/project/store/project
 import LfxSkeletonState from '~/components/modules/project/components/shared/skeleton-state.vue';
 import { PROJECT_COMMUNITY_API_SERVICE } from '~/components/modules/project/services/community.api.service';
 import { useAuthStore } from '~/components/modules/auth/store/auth.store';
+import { VULNERABILITY_API_SERVICE } from '~/components/modules/project/services/vulnerability.api.service';
 
 const props = defineProps<{
   project?: Project;
@@ -93,8 +94,16 @@ const props = defineProps<{
 const route = useRoute();
 const repoName = computed(() => route.params.name as string);
 
-const { selectedRepositoryGroup } = storeToRefs(useProjectStore());
+const { selectedRepositoryGroup, selectedReposValues } = storeToRefs(useProjectStore());
 const { user } = storeToRefs(useAuthStore());
+
+const queryParams = computed(() => ({
+  projectSlug: props.project?.slug as string,
+  repos: selectedReposValues.value || undefined,
+}));
+const { data } = VULNERABILITY_API_SERVICE.fetchVulnerabilitySummary(queryParams);
+
+const hasVulnerabilitiesData = computed(() => (data.value ? data.value.lastScanStatus === 'success' : false));
 
 const activeLink = computed(() =>
   lfProjectLinks.find((link) => {
@@ -116,7 +125,10 @@ const isAreaEnabled = (area: WidgetArea) => {
   }
 
   if (area === WidgetArea.SECURITY) {
-    return props.project?.connectedPlatforms?.some((platform) => platform.toLowerCase().includes('github'));
+    return (
+      props.project?.connectedPlatforms?.some((platform) => platform.toLowerCase().includes('github')) ||
+      hasVulnerabilitiesData.value
+    );
   }
 
   return widgets.length === 0 || widgets.some((widget) => props.project?.widgets?.includes(lfxWidgets[widget]?.key));

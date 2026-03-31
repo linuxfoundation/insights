@@ -56,8 +56,12 @@ export const lfxFooterMenu: FooterMenuSection[] = [
     ],
   },
   {
-    title: 'Latest blog posts',
+    title: 'Featured',
     links: [
+      {
+        name: 'AI Code Tracker',
+        link: '/report/ai-code-tracker',
+      },
       {
         name: 'Product Update November 2025',
         link: '/blog/product-update-nov-2025',
