@@ -145,6 +145,29 @@ SPDX-License-Identifier: MIT
               <lfx-icon name="share-nodes" />
               Share
             </lfx-button>
+
+            <lfx-dropdown
+              v-if="props.type === 'my-collections'"
+              placement="bottom-end"
+              :class="isDeleting ? 'opacity-50 cursor-not-allowed' : ''"
+              :disabled="isDeleting"
+            >
+              <template #trigger>
+                <lfx-icon-button
+                  icon="ellipsis"
+                  type="transparent"
+                  class="!text-neutral-900"
+                />
+              </template>
+              <lfx-dropdown-item @click.stop.prevent="handleDelete">
+                <lfx-icon
+                  name="trash"
+                  :size="16"
+                  class="!text-negative-500"
+                />
+                <span class="text-negative-500">Delete</span>
+              </lfx-dropdown-item>
+            </lfx-dropdown>
           </div>
         </div>
       </div>
@@ -216,18 +239,34 @@ SPDX-License-Identifier: MIT
       </div>
     </section>
   </div>
+
+  <!-- Full-page loading overlay for delete operation -->
+  <teleport to="body">
+    <div
+      v-if="isDeleting"
+      class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/50"
+    >
+      <lfx-spinner
+        :size="48"
+        class="text-white"
+      />
+      <p class="mt-4 text-white text-sm font-medium">Deleting collection...</p>
+    </div>
+  </teleport>
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useRouter } from 'nuxt/app';
+import { useQueryClient } from '@tanstack/vue-query';
 import { collectionTabs, headerBackground } from '../../config/collection-type-config';
 import type { Collection } from '~~/types/collection';
 import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import useScroll from '~/components/shared/utils/scroll';
 import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
+import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 import LfxButton from '~/components/uikit/button/button.vue';
 import CollectionOwner from '~/components/shared/components/collection-owner.vue';
 import { formatDate } from '~/components/shared/utils/formatter';
@@ -240,9 +279,16 @@ import LfxLikeButton from '~/components/shared/components/like-button.vue';
 import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
 import { useEditCollectionStore } from '~/components/modules/collection/store/edit-collection.store';
 import { useDuplicateCollectionStore } from '~/components/modules/collection/store/duplicate-collection.store';
+import LfxDropdown from '~/components/uikit/dropdown/dropdown.vue';
+import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
+import { useConfirmStore } from '~/components/shared/modules/confirm/store/confirm.store';
+import { TanstackKey } from '~/components/shared/types/tanstack';
+import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
 
 const { openEditModal } = useEditCollectionStore();
 const { openDuplicateModal } = useDuplicateCollectionStore();
+const { openConfirmModal } = useConfirmStore();
+const queryClient = useQueryClient();
 
 const authStore = useAuthStore();
 const { user } = storeToRefs(authStore);
@@ -286,6 +332,8 @@ const currentSort = computed(() => {
   }
   return { field: props.sort, direction: 'asc' as const };
 });
+
+const isDeleting = ref(false);
 
 const handleSort = (field: string) => {
   const defaultDirections: Record<string, 'asc' | 'desc'> = {
@@ -346,6 +394,32 @@ const handleClone = () => {
       collection: props.collection,
     });
   }
+};
+
+const handleDelete = () => {
+  if (props.collection && !isDeleting.value) {
+    openConfirmModal({
+      title: 'Delete collection',
+      message: `Are you sure you want to delete this collection?`,
+      confirmLabel: 'Delete',
+      cancelLabel: 'Cancel',
+    }).then(async (result) => {
+      if (result) {
+        isDeleting.value = true;
+        await COLLECTIONS_API_SERVICE.deleteCollection(props.collection!.id);
+
+        invalidateMyCollections();
+        isDeleting.value = false;
+        router.push({ name: LfxRoutes.COLLECTIONS_MY_COLLECTIONS });
+      }
+    });
+  }
+};
+
+const invalidateMyCollections = () => {
+  queryClient.invalidateQueries({
+    queryKey: [TanstackKey.MY_COLLECTIONS, 'starred_desc', undefined, 99, undefined, user.value?.sub],
+  });
 };
 </script>
 

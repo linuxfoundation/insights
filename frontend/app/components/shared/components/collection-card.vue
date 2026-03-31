@@ -59,7 +59,7 @@ SPDX-License-Identifier: MIT
             <lfx-icon
               name="trash"
               :size="16"
-              class="text-negative-500"
+              class="!text-negative-500"
             />
             <span class="text-negative-500">Delete</span>
           </lfx-dropdown-item>

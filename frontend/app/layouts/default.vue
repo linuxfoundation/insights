@@ -18,6 +18,7 @@ SPDX-License-Identifier: MIT
     <lf-duplicate-collection-global />
     <lfx-copilot-global />
     <lfx-community-filter-global />
+    <lfx-confirm-global />
     <lfx-insights-footer />
   </main>
 </template>
@@ -35,6 +36,7 @@ import LfEditCollectionGlobal from '~/components/modules/collection/components/e
 import LfDuplicateCollectionGlobal from '~/components/modules/collection/components/create-modal/duplicate-collection-global.vue';
 import LfxCopilotGlobal from '~/components/shared/modules/copilot/components/copilot-global.vue';
 import LfxCommunityFilterGlobal from '~/components/modules/project/components/community/sections/community-filter-global.vue';
+import LfxConfirmGlobal from '~/components/shared/modules/confirm/components/confirm-global.vue';
 import { useRichSchema } from '~~/composables/useRichSchema';
 import { useBannerStore } from '~/components/shared/store/banner.store';
 
