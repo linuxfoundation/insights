@@ -45,6 +45,7 @@ SPDX-License-Identifier: MIT
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import { useQueryClient } from '@tanstack/vue-query';
 import pluralize from 'pluralize';
 import LfxFeaturedInCollectionDropdown from './featured-in-collection-dropdown.vue';
 import { PROJECT_API_SERVICE } from '~/components/modules/project/services/project.api.service';
@@ -54,6 +55,7 @@ import LfxIcon from '~/components/uikit/icon/icon.vue';
 import { useAuth } from '~~/composables/useAuth';
 import { useAddToCollectionStore } from '~/components/modules/collection/store/add-to-collection.store';
 import type { Project } from '~~/types/project';
+import { TanstackKey } from '~/components/shared/types/tanstack';
 
 const props = defineProps<{
   project: Project;
@@ -61,6 +63,7 @@ const props = defineProps<{
 
 const { isAuthenticated, login } = useAuth();
 const { openModal } = useAddToCollectionStore();
+const queryClient = useQueryClient();
 
 const { data } = PROJECT_API_SERVICE.fetchProjectCollections(props.project.slug);
 
@@ -87,6 +90,11 @@ const handleOpenAddToCollectionModal = () => {
       name: props.project.name,
       slug: props.project.slug,
       logo: props.project.logo,
+    },
+    onAdded: () => {
+      queryClient.invalidateQueries({
+        queryKey: [TanstackKey.PROJECT_COLLECTIONS, props.project.slug],
+      });
     },
   });
 };

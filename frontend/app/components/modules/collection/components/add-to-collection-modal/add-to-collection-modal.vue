@@ -190,7 +190,7 @@ const selectedCollectionSlug = computed(() => {
 
 const collectionProjectsParams = computed(() => ({
   slug: selectedCollectionSlug.value || '',
-  pageSize: 100000,
+  pageSize: 1000,
 }));
 
 const { data: projectCollectionsData, isLoading: isLoadingProjectCollections } =
