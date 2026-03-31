@@ -44,7 +44,13 @@ export default defineEventHandler(async (event) => {
     granularity: query.granularity as Granularity,
     repos,
     countType: (query.countType as ActivityFilterCountType) || ActivityFilterCountType.NEW,
-    activity_type: (query.activityType as ActivityTypes) || ActivityTypes.AUTHORED_COMMIT,
+    activity_types: query.activityType
+      ? [query.activityType as ActivityTypes]
+      : [
+          ActivityTypes.AUTHORED_COMMIT,
+          ActivityTypes.COMMITTED_COMMIT,
+          ActivityTypes.PATCHSET_CREATED,
+        ],
     onlyContributions: true, // only count contributions
     includeCodeContributions: true,
     includeCollaborations: false,

@@ -124,7 +124,6 @@ const barParams = computed<QueryParams>(() => ({
   endDate: endDate.value,
   type: 'new',
   countType: 'new',
-  activityType: 'authored-commit',
 }));
 
 const lineParams = computed<QueryParams>(() => ({
@@ -135,7 +134,6 @@ const lineParams = computed<QueryParams>(() => ({
   endDate: endDate.value,
   type: 'cumulative',
   countType: 'cumulative',
-  activityType: 'authored-commit',
 }));
 
 const { data, status, error } = DEVELOPMENT_API_SERVICE.fetchCommitActivities(barParams);
