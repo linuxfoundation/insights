@@ -9,7 +9,13 @@ SPDX-License-Identifier: MIT
       <nuxt-page />
     </div>
     <div
-      v-else-if="!isLoading && !projectIsOnboarded"
+      v-else-if="isError"
+      class="w-full flex justify-center py-20 text-neutral-500 text-sm"
+    >
+      Something went wrong loading this project. Please try refreshing.
+    </div>
+    <div
+      v-else-if="data && !projectIsOnboarded"
       class="w-full flex justify-center py-20 text-neutral-500 text-sm"
     >
       This project hasn't been onboarded to LFX Insights.
@@ -48,7 +54,8 @@ const queryKey = computed(() => [TanstackKey.PROJECT, slug]);
 const { isLoading, data, suspense, isError, error } = useQuery<Project>({
   queryKey,
   queryFn: PROJECT_API_SERVICE.fetchProject(slug as string),
-  retry: false,
+  retry: 2,
+  retryDelay: 1000,
 });
 
 const projectIsOnboarded = computed(() => !!project.value?.contributorCount || !!project.value?.organizationCount);
