@@ -122,7 +122,7 @@ import { useQueryParam, type URLParams } from '~/components/shared/utils/query-p
 import type { Collection, CollectionType } from '~~/types/collection';
 import { useBannerStore } from '~/components/shared/store/banner.store';
 import { useAuthStore } from '~/components/modules/auth/store/auth.store';
-import { useCollectionsStore } from '~/components/modules/collection/store/collections.store';
+import { type CollectionViewType } from '~/components/modules/collection/store/collections.store';
 import { useLikeCounts } from '~/components/modules/collection/composables/useLikeCounts';
 
 const props = defineProps<{
@@ -135,12 +135,11 @@ const { showToast } = useToastService();
 const { scrollTop } = useScroll();
 const { headerTopClass } = storeToRefs(useBannerStore());
 const { user } = storeToRefs(useAuthStore());
-const collectionsStore = useCollectionsStore();
-const { view } = storeToRefs(collectionsStore);
 
 // NOTE: This is a temporary workaround to highlight the most important collections within the LF featured collections
 const sort = ref(listSort || 'starred_desc');
 const pageSize = computed(() => (view.value === 'grid' ? 99 : 100));
+const view = ref<CollectionViewType>('grid');
 
 const params = computed(() => ({
   pageSize: pageSize.value,
@@ -174,7 +173,7 @@ const classDisplay = computed(() => {
 const isScrolledState = computed(() => scrollTop.value < 10);
 
 const updateView = (value: string) => {
-  collectionsStore.setView(value as 'grid' | 'list');
+  view.value = value as CollectionViewType;
 };
 
 const headerBackgroundStyle = computed(() => headerBackground(props.type));

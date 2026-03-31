@@ -27,38 +27,34 @@ SPDX-License-Identifier: MIT
       </div>
       <div
         class="transition-all ease-linear flex"
-        :class="scrollTop > 50 ? 'flex-row gap-4' : 'flex-col'"
+        :class="scrollTop > 50 ? 'flex-row gap-4 items-center' : 'flex-col'"
       >
         <div
-          class="flex items-center gap-1.5 transition-all"
+          class="transition-all"
           :class="scrollTop > 50 ? 'mb-0' : 'mb-6'"
         >
-          <div
-            :class="
-              scrollTop > 50
-                ? 'w-9 opacity-100 visible'
-                : 'w-0 sm:w-9 opacity-0 sm:opacity-100 invisible sm:visible pr-0'
-            "
-            class="transition-all ease-linear"
+          <nuxt-link
+            :to="{ name: collectionTab?.route }"
+            class="ease-linear transition-all items-center gap-1.5"
+            :class="scrollTop > 50 ? 'flex' : 'hidden sm:flex'"
           >
-            <nuxt-link
-              :to="{ name: collectionTab?.route }"
-              class="ease-linear transition-all"
-              :class="scrollTop > 50 ? 'block' : 'hidden sm:block'"
+            <div
+              :class="scrollTop > 50 ? 'opacity-100 visible' : 'opacity-0 sm:opacity-100 invisible sm:visible pr-0'"
+              class="transition-all ease-linear"
             >
-              <lfx-icon-button
-                type="transparent"
-                icon="angle-left"
-                class=""
+              <lfx-icon
+                name="angle-left"
+                class="text-neutral-500"
+                :size="16"
               />
-            </nuxt-link>
-          </div>
-          <div
-            class="text-sm text-neutral-500 font-medium transition-all"
-            :class="scrollTop > 50 ? 'hidden' : 'block'"
-          >
-            {{ collectionTab?.detailsLabel }}
-          </div>
+            </div>
+            <div
+              class="text-sm text-neutral-500 font-medium transition-all"
+              :class="scrollTop > 50 ? 'hidden' : 'block'"
+            >
+              {{ collectionTab?.detailsLabel }}
+            </div>
+          </nuxt-link>
         </div>
         <div class="flex justify-between gap-x-5 md:gap-x-15 flex-grow flex-col lg:flex-row items-start">
           <div
@@ -172,7 +168,7 @@ SPDX-License-Identifier: MIT
           />
           <p
             v-if="projectCount > 0"
-            class="text-xs leading-5 text-neutral-600"
+            class="text-sm leading-5 text-neutral-600"
           >
             {{ projectCount }} projects
             <span v-if="props.collection?.updatedAt">

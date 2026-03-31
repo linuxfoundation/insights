@@ -6,29 +6,28 @@ SPDX-License-Identifier: MIT
   <lfx-tooltip :content="isLiked ? 'Dislike collection' : 'Like collection'">
     <lfx-button
       :type="buttonType"
+      button-style="pill"
       :size="size"
       class="w-full flex justify-center items-center"
-      :class="[
-        isLiked || buttonType !== 'transparent' ? 'opacity-100' : 'opacity-50 hover:!opacity-100',
-        buttonType === 'transparent' ? 'hover:!bg-transparent' : '',
-        $attrs.class,
-      ]"
+      :class="[isLiked || buttonType !== 'ghost' ? 'opacity-100' : 'opacity-50 hover:!opacity-100', $attrs.class]"
       @click.stop.prevent="handleLike"
     >
-      <lfx-icon
-        v-if="variant === 'my-collections' || (showUnlikeIcon && isLiked)"
-        :name="isLiked ? 'heart-slash' : 'heart'"
-        :size="16"
-        :class="'text-neutral-900'"
-        :type="'light'"
-      />
-      <lfx-icon
-        v-else
-        name="heart"
-        :size="16"
-        :class="isLiked ? '!text-negative-500' : 'text-neutral-900'"
-        :type="isLiked ? 'solid' : 'light'"
-      />
+      <div class="p-0.5">
+        <lfx-icon
+          v-if="variant === 'my-collections' || (showUnlikeIcon && isLiked)"
+          :name="isLiked ? 'heart-slash' : 'heart'"
+          :size="16"
+          :class="'text-neutral-900'"
+          :type="'light'"
+        />
+        <lfx-icon
+          v-else
+          name="heart"
+          :size="16"
+          :class="isLiked ? '!text-negative-500' : 'text-neutral-900'"
+          :type="isLiked ? 'solid' : 'light'"
+        />
+      </div>
       <lfx-spinner
         v-if="likeCountLoading"
         :size="12"
@@ -75,7 +74,7 @@ const props = withDefaults(
     showUnlikeIcon?: boolean;
   }>(),
   {
-    buttonType: 'transparent',
+    buttonType: 'ghost',
     variant: 'community',
     size: 'medium',
     showUnlikeIcon: false,

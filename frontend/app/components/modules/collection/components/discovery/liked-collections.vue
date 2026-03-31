@@ -4,7 +4,7 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <section>
-    <div class="flex items-center gap-2 mb-6 pb-2 border-b border-neutral-200">
+    <div class="flex items-center gap-2 mb-6 pb-2">
       <lfx-icon
         name="hearts"
         :size="16"
@@ -14,6 +14,7 @@ SPDX-License-Identifier: MIT
         Liked Collections
         <span v-if="status === 'success'">({{ likedCollections.length }})</span>
       </h3>
+      <hr class="border-neutral-200 flex-1 ml-1" />
     </div>
 
     <!-- Loading State -->
@@ -65,9 +66,8 @@ SPDX-License-Identifier: MIT
             v-for="collection in likedCollections"
             :key="collection.slug"
             :collection="collection"
-            variant="community"
+            variant="liked-collections"
             :show-like-count="true"
-            :show-unlike-icon="true"
             @updated="handleLikeUpdated"
           />
         </template>
