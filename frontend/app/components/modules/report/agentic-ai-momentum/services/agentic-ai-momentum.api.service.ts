@@ -1,6 +1,7 @@
 // Copyright (c) 2025 The Linux Foundation and each contributor.
 // SPDX-License-Identifier: MIT
 import { useQuery } from '@tanstack/vue-query';
+import { useRequestURL } from 'nuxt/app';
 import { TanstackKey } from '~/components/shared/types/tanstack';
 import type {
   AgenticDataResponse,
@@ -19,15 +20,11 @@ import type {
   DockerHubPullsData,
   DependentReposData,
   DependentPackagesData,
-  DockerDependentsData,
   GitHubReleasesData,
-  OpenIssuesData,
-  ClosedIssuesData,
   IssueTimeToFirstResponseData,
   IssueNoResponseShareData,
   PullRequestTimeToResolveData,
   VulnerabilitiesData,
-  FixedVulnerabilitiesData,
 } from '~~/types/report/agentic-ai-momentum.types';
 
 const STALE_TIME = 1000 * 60 * 60; // 1 hour
@@ -35,11 +32,16 @@ const GC_TIME = 1000 * 60 * 60 * 24; // 24 hours - static data, cache longer
 
 const BASE_PATH = '/data/agentic-ai-momentum';
 
+function publicFetch<T>(path: string) {
+  const { origin } = useRequestURL();
+  return $fetch<T>(path, { baseURL: origin });
+}
+
 class AgenticAiMomentumApiService {
   fetchProjects() {
     return useQuery<AgenticDataResponse<AgenticProject>>({
       queryKey: [TanstackKey.AGENTIC_AI_PROJECTS],
-      queryFn: async () => $fetch(`${BASE_PATH}/projects.json`),
+      queryFn: () => publicFetch<AgenticDataResponse<AgenticProject>>(`${BASE_PATH}/projects.json`),
       staleTime: STALE_TIME,
       gcTime: GC_TIME,
     });
@@ -48,7 +50,8 @@ class AgenticAiMomentumApiService {
   fetchStargazers() {
     return useQuery<AgenticDataResponse<StargazersData>>({
       queryKey: [TanstackKey.AGENTIC_AI_STARGAZERS],
-      queryFn: async () => $fetch(`${BASE_PATH}/stargazers_count.json`),
+      queryFn: () =>
+        publicFetch<AgenticDataResponse<StargazersData>>(`${BASE_PATH}/stargazers_count.json`),
       staleTime: STALE_TIME,
       gcTime: GC_TIME,
     });
@@ -57,7 +60,7 @@ class AgenticAiMomentumApiService {
   fetchForks() {
     return useQuery<AgenticDataResponse<ForkData>>({
       queryKey: [TanstackKey.AGENTIC_AI_FORKS],
-      queryFn: async () => $fetch(`${BASE_PATH}/fork_count.json`),
+      queryFn: () => publicFetch<AgenticDataResponse<ForkData>>(`${BASE_PATH}/fork_count.json`),
       staleTime: STALE_TIME,
       gcTime: GC_TIME,
     });
@@ -66,7 +69,8 @@ class AgenticAiMomentumApiService {
   fetchContributors() {
     return useQuery<AgenticDataResponse<ContributorData>>({
       queryKey: [TanstackKey.AGENTIC_AI_CONTRIBUTORS],
-      queryFn: async () => $fetch(`${BASE_PATH}/contributor_count.json`),
+      queryFn: () =>
+        publicFetch<AgenticDataResponse<ContributorData>>(`${BASE_PATH}/contributor_count.json`),
       staleTime: STALE_TIME,
       gcTime: GC_TIME,
     });
@@ -75,7 +79,10 @@ class AgenticAiMomentumApiService {
   fetchNewContributors90d() {
     return useQuery<AgenticDataResponse<NewContributors90dData>>({
       queryKey: [TanstackKey.AGENTIC_AI_NEW_CONTRIBUTORS],
-      queryFn: async () => $fetch(`${BASE_PATH}/new_contributors_90d.json`),
+      queryFn: () =>
+        publicFetch<AgenticDataResponse<NewContributors90dData>>(
+          `${BASE_PATH}/new_contributors_90d.json`,
+        ),
       staleTime: STALE_TIME,
       gcTime: GC_TIME,
     });
@@ -84,7 +91,10 @@ class AgenticAiMomentumApiService {
   fetchPullRequestMergeRate() {
     return useQuery<AgenticDataResponse<PullRequestMergeRateData>>({
       queryKey: [TanstackKey.AGENTIC_AI_PR_MERGE_RATE],
-      queryFn: async () => $fetch(`${BASE_PATH}/pull_request_merge_rate.json`),
+      queryFn: () =>
+        publicFetch<AgenticDataResponse<PullRequestMergeRateData>>(
+          `${BASE_PATH}/pull_request_merge_rate.json`,
+        ),
       staleTime: STALE_TIME,
       gcTime: GC_TIME,
     });
@@ -93,7 +103,10 @@ class AgenticAiMomentumApiService {
   fetchPackageDownloads() {
     return useQuery<AgenticDataResponse<PackageDownloadsData>>({
       queryKey: [TanstackKey.AGENTIC_AI_DOWNLOADS],
-      queryFn: async () => $fetch(`${BASE_PATH}/package_downloads_count.json`),
+      queryFn: () =>
+        publicFetch<AgenticDataResponse<PackageDownloadsData>>(
+          `${BASE_PATH}/package_downloads_count.json`,
+        ),
       staleTime: STALE_TIME,
       gcTime: GC_TIME,
     });
@@ -102,7 +115,10 @@ class AgenticAiMomentumApiService {
   fetchResearchPapers() {
     return useQuery<AgenticDataResponse<ResearchPapersData>>({
       queryKey: [TanstackKey.AGENTIC_AI_RESEARCH_PAPERS],
-      queryFn: async () => $fetch(`${BASE_PATH}/research_papers_count.json`),
+      queryFn: () =>
+        publicFetch<AgenticDataResponse<ResearchPapersData>>(
+          `${BASE_PATH}/research_papers_count.json`,
+        ),
       staleTime: STALE_TIME,
       gcTime: GC_TIME,
     });
@@ -111,7 +127,10 @@ class AgenticAiMomentumApiService {
   fetchGitHubEcosystemBreadth() {
     return useQuery<AgenticDataResponse<GitHubEcosystemBreadthData>>({
       queryKey: [TanstackKey.AGENTIC_AI_GITHUB_BREADTH],
-      queryFn: async () => $fetch(`${BASE_PATH}/github_ecosystem_breadth.json`),
+      queryFn: () =>
+        publicFetch<AgenticDataResponse<GitHubEcosystemBreadthData>>(
+          `${BASE_PATH}/github_ecosystem_breadth.json`,
+        ),
       staleTime: STALE_TIME,
       gcTime: GC_TIME,
     });
@@ -120,7 +139,8 @@ class AgenticAiMomentumApiService {
   fetchCommits() {
     return useQuery<AgenticDataResponse<CommitCountData>>({
       queryKey: [TanstackKey.AGENTIC_AI_COMMITS],
-      queryFn: async () => $fetch(`${BASE_PATH}/commit_count.json`),
+      queryFn: () =>
+        publicFetch<AgenticDataResponse<CommitCountData>>(`${BASE_PATH}/commit_count.json`),
       staleTime: STALE_TIME,
       gcTime: GC_TIME,
     });
@@ -129,7 +149,10 @@ class AgenticAiMomentumApiService {
   fetchIssueTimeToClose() {
     return useQuery<AgenticDataResponse<IssueTimeToCloseData>>({
       queryKey: [TanstackKey.AGENTIC_AI_TIME_TO_CLOSE],
-      queryFn: async () => $fetch(`${BASE_PATH}/issue_time_to_close.json`),
+      queryFn: () =>
+        publicFetch<AgenticDataResponse<IssueTimeToCloseData>>(
+          `${BASE_PATH}/issue_time_to_close.json`,
+        ),
       staleTime: STALE_TIME,
       gcTime: GC_TIME,
     });
@@ -138,7 +161,8 @@ class AgenticAiMomentumApiService {
   fetchCocomoValue() {
     return useQuery<AgenticDataResponse<CocomoValueData>>({
       queryKey: [TanstackKey.AGENTIC_AI_COCOMO],
-      queryFn: async () => $fetch(`${BASE_PATH}/project_value_cocomo.json`),
+      queryFn: () =>
+        publicFetch<AgenticDataResponse<CocomoValueData>>(`${BASE_PATH}/project_value_cocomo.json`),
       staleTime: STALE_TIME,
       gcTime: GC_TIME,
     });
@@ -147,7 +171,8 @@ class AgenticAiMomentumApiService {
   fetchDockerHubPulls() {
     return useQuery<AgenticDataResponse<DockerHubPullsData>>({
       queryKey: [TanstackKey.AGENTIC_AI_DOCKER_PULLS],
-      queryFn: async () => $fetch(`${BASE_PATH}/docker_hub_pulls.json`),
+      queryFn: () =>
+        publicFetch<AgenticDataResponse<DockerHubPullsData>>(`${BASE_PATH}/docker_hub_pulls.json`),
       staleTime: STALE_TIME,
       gcTime: GC_TIME,
     });
@@ -156,7 +181,10 @@ class AgenticAiMomentumApiService {
   fetchDependentRepos() {
     return useQuery<AgenticDataResponse<DependentReposData>>({
       queryKey: [TanstackKey.AGENTIC_AI_DEPENDENT_REPOS],
-      queryFn: async () => $fetch(`${BASE_PATH}/dependent_repos_count.json`),
+      queryFn: () =>
+        publicFetch<AgenticDataResponse<DependentReposData>>(
+          `${BASE_PATH}/dependent_repos_count.json`,
+        ),
       staleTime: STALE_TIME,
       gcTime: GC_TIME,
     });
@@ -165,16 +193,10 @@ class AgenticAiMomentumApiService {
   fetchDependentPackages() {
     return useQuery<AgenticDataResponse<DependentPackagesData>>({
       queryKey: [TanstackKey.AGENTIC_AI_DEPENDENT_PACKAGES],
-      queryFn: async () => $fetch(`${BASE_PATH}/dependent_packages_count.json`),
-      staleTime: STALE_TIME,
-      gcTime: GC_TIME,
-    });
-  }
-
-  fetchDockerDependents() {
-    return useQuery<AgenticDataResponse<DockerDependentsData>>({
-      queryKey: [TanstackKey.AGENTIC_AI_DOCKER_DEPENDENTS],
-      queryFn: async () => $fetch(`${BASE_PATH}/docker_dependents_count.json`),
+      queryFn: () =>
+        publicFetch<AgenticDataResponse<DependentPackagesData>>(
+          `${BASE_PATH}/dependent_packages_count.json`,
+        ),
       staleTime: STALE_TIME,
       gcTime: GC_TIME,
     });
@@ -183,25 +205,10 @@ class AgenticAiMomentumApiService {
   fetchGitHubReleases() {
     return useQuery<AgenticDataResponse<GitHubReleasesData>>({
       queryKey: [TanstackKey.AGENTIC_AI_GITHUB_RELEASES],
-      queryFn: async () => $fetch(`${BASE_PATH}/github_releases_count.json`),
-      staleTime: STALE_TIME,
-      gcTime: GC_TIME,
-    });
-  }
-
-  fetchOpenIssues() {
-    return useQuery<AgenticDataResponse<OpenIssuesData>>({
-      queryKey: [TanstackKey.AGENTIC_AI_OPEN_ISSUES],
-      queryFn: async () => $fetch(`${BASE_PATH}/open_issues_count.json`),
-      staleTime: STALE_TIME,
-      gcTime: GC_TIME,
-    });
-  }
-
-  fetchClosedIssues() {
-    return useQuery<AgenticDataResponse<ClosedIssuesData>>({
-      queryKey: [TanstackKey.AGENTIC_AI_CLOSED_ISSUES],
-      queryFn: async () => $fetch(`${BASE_PATH}/closed_issues_count.json`),
+      queryFn: () =>
+        publicFetch<AgenticDataResponse<GitHubReleasesData>>(
+          `${BASE_PATH}/github_releases_count.json`,
+        ),
       staleTime: STALE_TIME,
       gcTime: GC_TIME,
     });
@@ -210,7 +217,10 @@ class AgenticAiMomentumApiService {
   fetchIssueTimeToFirstResponse() {
     return useQuery<AgenticDataResponse<IssueTimeToFirstResponseData>>({
       queryKey: [TanstackKey.AGENTIC_AI_TIME_TO_FIRST_RESPONSE],
-      queryFn: async () => $fetch(`${BASE_PATH}/issue_time_to_first_response.json`),
+      queryFn: () =>
+        publicFetch<AgenticDataResponse<IssueTimeToFirstResponseData>>(
+          `${BASE_PATH}/issue_time_to_first_response.json`,
+        ),
       staleTime: STALE_TIME,
       gcTime: GC_TIME,
     });
@@ -219,7 +229,10 @@ class AgenticAiMomentumApiService {
   fetchIssueNoResponseShare() {
     return useQuery<AgenticDataResponse<IssueNoResponseShareData>>({
       queryKey: [TanstackKey.AGENTIC_AI_NO_RESPONSE_SHARE],
-      queryFn: async () => $fetch(`${BASE_PATH}/issue_share_no_response_30d.json`),
+      queryFn: () =>
+        publicFetch<AgenticDataResponse<IssueNoResponseShareData>>(
+          `${BASE_PATH}/issue_share_no_response_30d.json`,
+        ),
       staleTime: STALE_TIME,
       gcTime: GC_TIME,
     });
@@ -228,7 +241,10 @@ class AgenticAiMomentumApiService {
   fetchPullRequestTimeToResolve() {
     return useQuery<AgenticDataResponse<PullRequestTimeToResolveData>>({
       queryKey: [TanstackKey.AGENTIC_AI_PR_TIME_TO_RESOLVE],
-      queryFn: async () => $fetch(`${BASE_PATH}/pull_request_time_to_resolve.json`),
+      queryFn: () =>
+        publicFetch<AgenticDataResponse<PullRequestTimeToResolveData>>(
+          `${BASE_PATH}/pull_request_time_to_resolve.json`,
+        ),
       staleTime: STALE_TIME,
       gcTime: GC_TIME,
     });
@@ -237,16 +253,10 @@ class AgenticAiMomentumApiService {
   fetchTotalVulnerabilities() {
     return useQuery<AgenticDataResponse<VulnerabilitiesData>>({
       queryKey: [TanstackKey.AGENTIC_AI_TOTAL_VULNERABILITIES],
-      queryFn: async () => $fetch(`${BASE_PATH}/total_vulnerabilities_count.json`),
-      staleTime: STALE_TIME,
-      gcTime: GC_TIME,
-    });
-  }
-
-  fetchFixedVulnerabilities() {
-    return useQuery<AgenticDataResponse<FixedVulnerabilitiesData>>({
-      queryKey: [TanstackKey.AGENTIC_AI_FIXED_VULNERABILITIES],
-      queryFn: async () => $fetch(`${BASE_PATH}/fixed_vulnerabilities_count.json`),
+      queryFn: () =>
+        publicFetch<AgenticDataResponse<VulnerabilitiesData>>(
+          `${BASE_PATH}/total_vulnerabilities_count.json`,
+        ),
       staleTime: STALE_TIME,
       gcTime: GC_TIME,
     });

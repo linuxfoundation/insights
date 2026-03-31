@@ -104,16 +104,6 @@ export interface GitHubReleasesData extends RepoMonthMetric {
   cumulative_release_count: number;
 }
 
-// Open issues
-export interface OpenIssuesData extends RepoMonthMetric {
-  open_issues_count: number;
-}
-
-// Closed issues
-export interface ClosedIssuesData extends RepoMonthMetric {
-  closed_issues_count: number;
-}
-
 // Dependent packages
 export interface DependentPackagesData extends RepoMonthMetric {
   ecosystem: string;
@@ -131,19 +121,9 @@ export interface DockerHubPullsData extends RepoMonthMetric {
   pull_count: number;
 }
 
-// Docker dependents
-export interface DockerDependentsData extends RepoMonthMetric {
-  docker_dependents_count: number;
-}
-
 // Vulnerabilities
 export interface VulnerabilitiesData extends RepoMonthMetric {
   vulnerabilities_count: number;
-}
-
-// Fixed vulnerabilities
-export interface FixedVulnerabilitiesData extends RepoMonthMetric {
-  fixed_vulnerabilities_count: number;
 }
 
 // COCOMO project value

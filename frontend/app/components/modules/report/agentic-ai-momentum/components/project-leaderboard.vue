@@ -406,7 +406,7 @@ SPDX-License-Identifier: MIT
               class="py-3 px-2 text-right"
             >
               <div class="flex items-center justify-end gap-1">
-                <span>{{ row.stars !== null ? formatCompact(row.stars) : '-' }}</span>
+                <span>{{ row.stars !== null ? formatNumberShort(row.stars) : '-' }}</span>
                 <lfx-tooltip
                   v-if="row.starsDelta !== null && row.starsDelta !== 0"
                   content="vs. previous 30d"
@@ -420,7 +420,7 @@ SPDX-License-Identifier: MIT
               class="py-3 px-2 text-right"
             >
               <div class="flex items-center justify-end gap-1">
-                <span>{{ row.forks !== null ? formatCompact(row.forks) : '-' }}</span>
+                <span>{{ row.forks !== null ? formatNumberShort(row.forks) : '-' }}</span>
                 <lfx-tooltip
                   v-if="row.forksDelta !== null && row.forksDelta !== 0"
                   content="vs. previous 30d"
@@ -433,14 +433,14 @@ SPDX-License-Identifier: MIT
               v-if="activeColumns.includes('downloads')"
               class="py-3 px-2 text-right"
             >
-              {{ row.downloads !== null ? formatCompact(row.downloads) : '-' }}
+              {{ row.downloads !== null ? formatNumberShort(row.downloads) : '-' }}
             </td>
             <td
               v-if="activeColumns.includes('dockerHubPulls')"
               class="py-3 px-2 text-right"
             >
               <div class="flex items-center justify-end gap-1">
-                <span>{{ row.dockerHubPulls !== null ? formatCompact(row.dockerHubPulls) : '-' }}</span>
+                <span>{{ row.dockerHubPulls !== null ? formatNumberShort(row.dockerHubPulls) : '-' }}</span>
                 <lfx-tooltip
                   v-if="row.dockerHubPullsDelta !== null && row.dockerHubPullsDelta !== 0"
                   content="vs. previous 30d"
@@ -454,7 +454,9 @@ SPDX-License-Identifier: MIT
               class="py-3 px-2 text-right"
             >
               <div class="flex items-center justify-end gap-1">
-                <span>{{ row.dependentRepositories !== null ? formatCompact(row.dependentRepositories) : '-' }}</span>
+                <span>{{
+                  row.dependentRepositories !== null ? formatNumberShort(row.dependentRepositories) : '-'
+                }}</span>
                 <lfx-tooltip
                   v-if="row.dependentRepositoriesDelta !== null && row.dependentRepositoriesDelta !== 0"
                   content="vs. previous 30d"
@@ -468,7 +470,7 @@ SPDX-License-Identifier: MIT
               class="py-3 px-2 text-right"
             >
               <div class="flex items-center justify-end gap-1">
-                <span>{{ row.dependentPackages !== null ? formatCompact(row.dependentPackages) : '-' }}</span>
+                <span>{{ row.dependentPackages !== null ? formatNumberShort(row.dependentPackages) : '-' }}</span>
                 <lfx-tooltip
                   v-if="row.dependentPackagesDelta !== null && row.dependentPackagesDelta !== 0"
                   content="vs. previous 30d"
@@ -483,7 +485,7 @@ SPDX-License-Identifier: MIT
               class="py-3 px-2 text-right"
             >
               <div class="flex items-center justify-end gap-1">
-                <span>{{ row.commits !== null ? formatCompact(row.commits) : '-' }}</span>
+                <span>{{ row.commits !== null ? formatNumberShort(row.commits) : '-' }}</span>
                 <lfx-tooltip
                   v-if="row.commitsDelta !== null && row.commitsDelta !== 0"
                   content="vs. previous 30d"
@@ -497,7 +499,7 @@ SPDX-License-Identifier: MIT
               class="py-3 px-2 text-right"
             >
               <div class="flex items-center justify-end gap-1">
-                <span>{{ row.contributors !== null ? formatCompact(row.contributors) : '-' }}</span>
+                <span>{{ row.contributors !== null ? formatNumberShort(row.contributors) : '-' }}</span>
                 <lfx-tooltip
                   v-if="row.contributorsDelta !== null && row.contributorsDelta !== 0"
                   content="vs. previous 30d"
@@ -511,7 +513,7 @@ SPDX-License-Identifier: MIT
               class="py-3 px-2 text-right"
             >
               <div class="flex items-center justify-end gap-1">
-                <span>{{ row.newContributors !== null ? formatCompact(row.newContributors) : '-' }}</span>
+                <span>{{ row.newContributors !== null ? formatNumberShort(row.newContributors) : '-' }}</span>
                 <lfx-tooltip
                   v-if="row.newContributorsDelta !== null && row.newContributorsDelta !== 0"
                   content="vs. previous 30d"
@@ -525,7 +527,7 @@ SPDX-License-Identifier: MIT
               class="py-3 px-2 text-right"
             >
               <div class="flex items-center justify-end gap-1">
-                <span>{{ row.githubReleases !== null ? formatCompact(row.githubReleases) : '-' }}</span>
+                <span>{{ row.githubReleases !== null ? formatNumberShort(row.githubReleases) : '-' }}</span>
                 <lfx-tooltip
                   v-if="row.githubReleasesDelta !== null && row.githubReleasesDelta !== 0"
                   content="vs. previous 30d"
@@ -629,7 +631,7 @@ SPDX-License-Identifier: MIT
               class="py-3 px-2 text-right"
             >
               <div class="flex items-center justify-end gap-1">
-                <span>{{ row.totalVulnerabilities !== null ? formatCompact(row.totalVulnerabilities) : '-' }}</span>
+                <span>{{ row.totalVulnerabilities !== null ? formatNumberShort(row.totalVulnerabilities) : '-' }}</span>
                 <lfx-tooltip
                   v-if="row.totalVulnerabilitiesDelta !== null && row.totalVulnerabilitiesDelta !== 0"
                   content="vs. previous 30d"
@@ -643,7 +645,7 @@ SPDX-License-Identifier: MIT
               v-if="activeColumns.includes('cocomoValue')"
               class="py-3 px-2 text-right"
             >
-              {{ row.cocomoValue !== null ? formatDollars(row.cocomoValue) : '-' }}
+              {{ row.cocomoValue !== null ? formatNumberCurrency(row.cocomoValue, 'USD') : '-' }}
             </td>
           </tr>
         </tbody>
@@ -661,7 +663,7 @@ import LfxTabs from '~/components/uikit/tabs/tabs.vue';
 import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
 import LfxPopover from '~/components/uikit/popover/popover.vue';
 import LfxCheckbox from '~/components/uikit/checkbox/checkbox.vue';
-import { formatNumber } from '~/components/shared/utils/formatter';
+import { formatNumberCurrency, formatNumberShort } from '~/components/shared/utils/formatter';
 import type {
   AgenticProject,
   StargazersData,
@@ -770,7 +772,7 @@ const DeltaIndicator: FunctionalComponent<{ value: number; format?: string; inve
   } else if (format === 'days') {
     display = `${value > 0 ? '+' : ''}${value.toFixed(0)}d`;
   } else {
-    display = value > 0 ? `+${formatCompact(value)}` : formatCompact(value);
+    display = value > 0 ? `+${formatNumberShort(value)}` : formatNumberShort(value);
   }
   return h('span', { class: `${colorClass} text-xs` }, display);
 };
@@ -780,7 +782,7 @@ DeltaIndicator.props = ['value', 'format', 'invert'];
 const VulnDeltaIndicator: FunctionalComponent<{ value: number }> = (componentProps) => {
   const { value } = componentProps;
   if (value > 0) {
-    return h('span', { class: 'text-violet-500 text-xs' }, `+${formatCompact(value)}`);
+    return h('span', { class: 'text-violet-500 text-xs' }, `+${formatNumberShort(value)}`);
   }
   return null;
 };
@@ -1079,38 +1081,12 @@ const sortedData = computed(() => {
 });
 
 // Format helpers
-function formatCompact(value: number): string {
-  if (value >= 1000000000) {
-    return `${(value / 1000000000).toFixed(1)}B`;
-  }
-  if (value >= 1000000) {
-    return `${(value / 1000000).toFixed(1)}M`;
-  }
-  if (value >= 1000) {
-    return `${(value / 1000).toFixed(1)}K`;
-  }
-  return formatNumber(value);
-}
-
 function formatPercent(value: number): string {
   return `${(value * 100).toFixed(0)}%`;
 }
 
 function formatDays(value: number): string {
   return `${value.toFixed(0)}d`;
-}
-
-function formatDollars(value: number): string {
-  if (value >= 1000000000) {
-    return `$${(value / 1000000000).toFixed(1)}B`;
-  }
-  if (value >= 1000000) {
-    return `$${(value / 1000000).toFixed(1)}M`;
-  }
-  if (value >= 1000) {
-    return `$${(value / 1000).toFixed(1)}K`;
-  }
-  return `$${formatNumber(value)}`;
 }
 </script>
 

@@ -32,7 +32,7 @@ SPDX-License-Identifier: MIT
               class="text-xs font-medium"
               :class="kpi.delta > 0 ? 'text-positive-500' : 'text-negative-500'"
             >
-              {{ kpi.delta > 0 ? '+' : '' }}{{ formatCompactNumber(kpi.delta) }} (last 30d)
+              {{ kpi.delta > 0 ? '+' : '' }}{{ formatNumberShort(kpi.delta) }} (last 30d)
             </span>
           </div>
         </div>
@@ -77,16 +77,16 @@ SPDX-License-Identifier: MIT
               Community Growth
             </span>
           </dt>
-          <dd class="flex items-center">
+          <dd class="flex items-center flex-wrap gap-x-1">
             The open source agentic AI ecosystem added
             <span class="font-bold text-positive-500 mx-1"
-              >+{{ formatCompactNumber(communityGrowth.contribDelta) }} contributors</span
+              >+{{ formatNumberShort(communityGrowth.contribDelta) }} contributors</span
             >
             and
             <span class="font-bold text-positive-500 mx-1"
-              >+{{ formatCompactNumber(communityGrowth.commitDelta) }} commits</span
+              >+{{ formatNumberShort(communityGrowth.commitDelta) }} commits</span
             >
-            last month ({{ formatCompactNumber(communityGrowth.total) }} total contributors).
+            last month ({{ formatNumberShort(communityGrowth.total) }} total contributors).
           </dd>
 
           <!-- Most Active Projects -->
@@ -106,12 +106,12 @@ SPDX-License-Identifier: MIT
               <span class="font-bold text-neutral-900">{{ topGrowingProjects[0]?.name }}</span>
               led contributor growth with
               <span class="font-bold text-positive-500"
-                >+{{ formatCompactNumber(topGrowingProjects[0]?.delta ?? 0) }}</span
+                >+{{ formatNumberShort(topGrowingProjects[0]?.delta ?? 0) }}</span
               >
               new contributors last month<template v-if="topGrowingProjects[1]"
                 >, followed by
                 <span class="font-bold text-neutral-900">{{ topGrowingProjects[1].name }}</span>
-                (<span class="font-bold text-positive-500">+{{ formatCompactNumber(topGrowingProjects[1].delta) }}</span
+                (<span class="font-bold text-positive-500">+{{ formatNumberShort(topGrowingProjects[1].delta) }}</span
                 >)</template
               >.
             </dd>
@@ -132,7 +132,7 @@ SPDX-License-Identifier: MIT
           <dd class="flex items-center flex-wrap gap-x-1">
             <span class="font-bold text-neutral-900">{{ researchHighlights.largestTopic }}</span>
             leads with
-            <span class="font-bold text-neutral-900">{{ formatCompactNumber(researchHighlights.largestCount) }}</span>
+            <span class="font-bold text-neutral-900">{{ formatNumberShort(researchHighlights.largestCount) }}</span>
             research papers published to date. New research in
             <span class="font-bold text-neutral-900">{{ researchHighlights.fastestTopic }}</span>
             is growing fastest (<span class="font-bold text-positive-500"
@@ -141,9 +141,7 @@ SPDX-License-Identifier: MIT
             last month).
             <span class="font-bold text-neutral-900">{{ researchHighlights.topGhTerm }}</span>
             is the top GitHub search term with
-            <span class="font-bold text-neutral-900"
-              >{{ formatCompactNumber(researchHighlights.topGhRepos) }} repos</span
-            >
+            <span class="font-bold text-neutral-900">{{ formatNumberShort(researchHighlights.topGhRepos) }} repos</span>
             matching that term.
           </dd>
 
@@ -196,7 +194,8 @@ import { computed } from 'vue';
 import LfxCard from '~/components/uikit/card/card.vue';
 import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
-import { formatNumber } from '~/components/shared/utils/formatter';
+import { formatNumber, formatNumberCurrency, formatNumberShort } from '~/components/shared/utils/formatter';
+import { getResearchTopicLabel } from '~/components/modules/report/agentic-ai-momentum/config/layer-colors';
 import type {
   AgenticProject,
   ContributorData,
@@ -280,33 +279,6 @@ const researchPapersWithDelta = computed(() => {
   return { value: total, delta: latestMonthPapers };
 });
 
-// Format large numbers
-function formatCompact(value: number): string {
-  if (value >= 1000000000) {
-    return `$${(value / 1000000000).toFixed(1)}B`;
-  }
-  if (value >= 1000000) {
-    return `$${(value / 1000000).toFixed(1)}M`;
-  }
-  if (value >= 1000) {
-    return `$${(value / 1000).toFixed(1)}K`;
-  }
-  return `$${formatNumber(value)}`;
-}
-
-function formatCompactNumber(value: number): string {
-  if (value >= 1000000000) {
-    return `${(value / 1000000000).toFixed(1)}B`;
-  }
-  if (value >= 1000000) {
-    return `${(value / 1000000).toFixed(1)}M`;
-  }
-  if (value >= 1000) {
-    return `${(value / 1000).toFixed(1)}K`;
-  }
-  return formatNumber(value);
-}
-
 const kpiCards = computed(() => [
   {
     label: 'Projects Tracked',
@@ -315,29 +287,20 @@ const kpiCards = computed(() => [
   },
   {
     label: 'Total Software Value (COCOMO)',
-    value: formatCompact(totalProjectValue.value),
+    value: formatNumberCurrency(totalProjectValue.value, 'USD'),
     delta: null,
   },
   {
     label: 'Total Contributors',
-    value: formatCompactNumber(contributorsWithDelta.value.value),
+    value: formatNumberShort(contributorsWithDelta.value.value),
     delta: contributorsWithDelta.value.delta,
   },
   {
     label: 'Research Papers',
-    value: formatCompactNumber(researchPapersWithDelta.value.value),
+    value: formatNumberShort(researchPapersWithDelta.value.value),
     delta: researchPapersWithDelta.value.delta,
   },
 ]);
-
-const TOPIC_LABELS: Record<string, string> = {
-  autonomous_agents: 'Autonomous Agents',
-  multi_agent_systems: 'Multi-Agent Systems',
-  llm_tool_use: 'LLM Tool Use',
-  agent_memory_planning: 'Agent Memory & Planning',
-  agent_safety_alignment: 'Agent Safety & Alignment',
-  agentic_rag: 'Agentic RAG',
-};
 
 // Card 1: Community growth (contributors + commits)
 const communityGrowth = computed(() => {
@@ -413,11 +376,11 @@ const researchHighlights = computed(() => {
   const topGhTerm = ghTotals[0];
 
   return {
-    largestTopic: TOPIC_LABELS[largestTopic] ?? largestTopic,
+    largestTopic: getResearchTopicLabel(largestTopic),
     largestCount: totals[largestTopic] ?? 0,
-    fastestTopic: TOPIC_LABELS[fastestTopic] ?? fastestTopic,
+    fastestTopic: getResearchTopicLabel(fastestTopic),
     fastestRate: growthRates[fastestTopic] ?? 0,
-    topGhTerm: TOPIC_LABELS[topGhTerm?.term ?? ''] ?? topGhTerm?.term ?? '',
+    topGhTerm: getResearchTopicLabel(topGhTerm?.term ?? ''),
     topGhRepos: topGhTerm?.repos ?? 0,
   };
 });
