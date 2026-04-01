@@ -39,18 +39,13 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useRoute } from 'nuxt/app';
-import { storeToRefs } from 'pinia';
 import LfxMenuGithubButton from './github-button.vue';
 import LfxMenuButton from '~/components/uikit/menu-button/menu-button.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import { lfxMenu, type MenuItem } from '~/config/menu';
 import { LfxRoutes } from '~/components/shared/types/routes';
-import { useAuthStore } from '~/components/modules/auth/store/auth.store';
 
 const route = useRoute();
-
-const authStore = useAuthStore();
-const { user } = storeToRefs(authStore);
 
 // TODO: This is a temporary workaround to highlight the collections link since we haven't done
 // the discovery page yet
@@ -68,18 +63,8 @@ const isLinkActive = (link: MenuItem): boolean => {
   return false;
 };
 
-// TODO: remove this once we have everything done and tested
-const canCreateCollection = computed(() => {
-  return user.value?.isLfInsightsTeamMember || false;
-});
-
 const menuLinks = computed(() => {
-  return lfxMenu.links.filter((link) => {
-    if (link.route === LfxRoutes.COLLECTIONS) {
-      return canCreateCollection.value;
-    }
-    return true;
-  });
+  return lfxMenu.links;
 });
 </script>
 

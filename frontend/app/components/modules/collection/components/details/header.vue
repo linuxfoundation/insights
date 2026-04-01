@@ -112,7 +112,7 @@ SPDX-License-Identifier: MIT
             v-if="props.collection && !loading"
             class="flex lg:justify-end transition-all ease-linear gap-4 w-full lg:w-auto shrink-0"
           >
-            <template v-if="isLfInsightsTeamMember">
+            <template v-if="!!user">
               <lfx-tooltip content="Duplicate collection">
                 <lfx-icon-button
                   icon="clone"
@@ -249,8 +249,6 @@ const { user } = storeToRefs(authStore);
 
 const router = useRouter();
 const { openShareModal } = useShareStore();
-
-const isLfInsightsTeamMember = computed(() => user.value?.isLfInsightsTeamMember || false);
 
 const props = defineProps<{
   collection?: Collection;

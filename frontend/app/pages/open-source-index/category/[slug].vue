@@ -9,6 +9,7 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { computed, onServerPrefetch, ref } from 'vue';
 import { useRoute } from 'vue-router';
+import { createError, showError } from 'nuxt/app';
 import LfxOpenSourceIndexCategory from '~/components/modules/open-source-index/views/open-source-index-category.vue';
 import { OSS_INDEX_API_SERVICE, type SortType } from '~/components/modules/open-source-index/services/osi.api.service';
 
@@ -16,10 +17,17 @@ const route = useRoute();
 const slug = ref<string>((route.params.slug as string) || '');
 const sort = ref<SortType>((route.query.sort as SortType) || 'totalContributors');
 
-const { data, suspense } = OSS_INDEX_API_SERVICE.fetchOSSCollection(slug.value, sort);
+const { data, isError, suspense } = OSS_INDEX_API_SERVICE.fetchOSSCollection(slug.value, sort);
 
 onServerPrefetch(async () => {
   await suspense();
+  if (isError.value) {
+    if (import.meta.server) {
+      throw createError({ statusCode: 404, statusMessage: 'Category not found' });
+    } else {
+      showError({ statusCode: 404, statusMessage: 'Category not found' });
+    }
+  }
 });
 
 const title = computed(() => `${data.value?.name || 'Projects'} Projects | LFX Insights`);

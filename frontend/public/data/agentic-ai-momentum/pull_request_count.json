@@ -1,0 +1,5066 @@
+{
+  "metadata": {
+    "fetched_at": "2026-03-27T10:28:23.909937",
+    "schema": {
+      "name": "pull_request_count",
+      "description": "Cumulative monthly pull request counts for tracked repositories.",
+      "fields": [
+        {
+          "name": "repo",
+          "type": "string",
+          "description": "GitHub repository channel URL",
+          "optional": false
+        },
+        {
+          "name": "month",
+          "type": "date",
+          "description": "First day of the month (YYYY-MM-DD)",
+          "optional": false
+        },
+        {
+          "name": "cumulative_pull_requests",
+          "type": "number",
+          "description": "Cumulative count of pull requests opened up to and including this month",
+          "optional": false
+        }
+      ]
+    }
+  },
+  "data": [
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2024-03-01",
+      "cumulative_pull_requests": 100
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2024-04-01",
+      "cumulative_pull_requests": 110
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2024-05-01",
+      "cumulative_pull_requests": 121
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2024-06-01",
+      "cumulative_pull_requests": 141
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2024-07-01",
+      "cumulative_pull_requests": 165
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2024-08-01",
+      "cumulative_pull_requests": 198
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2024-09-01",
+      "cumulative_pull_requests": 271
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2024-10-01",
+      "cumulative_pull_requests": 311
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2024-11-01",
+      "cumulative_pull_requests": 338
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2024-12-01",
+      "cumulative_pull_requests": 380
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2025-01-01",
+      "cumulative_pull_requests": 440
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2025-02-01",
+      "cumulative_pull_requests": 489
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2025-03-01",
+      "cumulative_pull_requests": 536
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2025-04-01",
+      "cumulative_pull_requests": 589
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2025-05-01",
+      "cumulative_pull_requests": 646
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2025-06-01",
+      "cumulative_pull_requests": 702
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2025-07-01",
+      "cumulative_pull_requests": 729
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2025-08-01",
+      "cumulative_pull_requests": 751
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2025-09-01",
+      "cumulative_pull_requests": 765
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2025-10-01",
+      "cumulative_pull_requests": 793
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2025-11-01",
+      "cumulative_pull_requests": 810
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2025-12-01",
+      "cumulative_pull_requests": 823
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2026-01-01",
+      "cumulative_pull_requests": 837
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2026-02-01",
+      "cumulative_pull_requests": 870
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2024-03-01",
+      "cumulative_pull_requests": 862
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2024-04-01",
+      "cumulative_pull_requests": 1167
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2024-05-01",
+      "cumulative_pull_requests": 1502
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2024-06-01",
+      "cumulative_pull_requests": 1800
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2024-07-01",
+      "cumulative_pull_requests": 2091
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2024-08-01",
+      "cumulative_pull_requests": 2371
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2024-09-01",
+      "cumulative_pull_requests": 2655
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2024-10-01",
+      "cumulative_pull_requests": 2906
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2024-11-01",
+      "cumulative_pull_requests": 3130
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2024-12-01",
+      "cumulative_pull_requests": 3437
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2025-01-01",
+      "cumulative_pull_requests": 3814
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2025-02-01",
+      "cumulative_pull_requests": 4204
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2025-03-01",
+      "cumulative_pull_requests": 4583
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2025-04-01",
+      "cumulative_pull_requests": 4982
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2025-05-01",
+      "cumulative_pull_requests": 5473
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2025-06-01",
+      "cumulative_pull_requests": 5960
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2025-07-01",
+      "cumulative_pull_requests": 6572
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2025-08-01",
+      "cumulative_pull_requests": 6992
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2025-09-01",
+      "cumulative_pull_requests": 7508
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2025-10-01",
+      "cumulative_pull_requests": 8170
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2025-11-01",
+      "cumulative_pull_requests": 8910
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2025-12-01",
+      "cumulative_pull_requests": 9792
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2026-01-01",
+      "cumulative_pull_requests": 10967
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2026-02-01",
+      "cumulative_pull_requests": 12706
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2024-10-01",
+      "cumulative_pull_requests": 41
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2024-11-01",
+      "cumulative_pull_requests": 68
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2024-12-01",
+      "cumulative_pull_requests": 145
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2025-01-01",
+      "cumulative_pull_requests": 221
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2025-02-01",
+      "cumulative_pull_requests": 366
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2025-03-01",
+      "cumulative_pull_requests": 511
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2025-04-01",
+      "cumulative_pull_requests": 623
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2025-05-01",
+      "cumulative_pull_requests": 667
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2025-06-01",
+      "cumulative_pull_requests": 693
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2025-07-01",
+      "cumulative_pull_requests": 773
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2025-08-01",
+      "cumulative_pull_requests": 838
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2025-09-01",
+      "cumulative_pull_requests": 899
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2025-10-01",
+      "cumulative_pull_requests": 966
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2025-11-01",
+      "cumulative_pull_requests": 1050
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2025-12-01",
+      "cumulative_pull_requests": 1133
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2026-01-01",
+      "cumulative_pull_requests": 1207
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2026-02-01",
+      "cumulative_pull_requests": 1248
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2024-03-01",
+      "cumulative_pull_requests": 499
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2024-04-01",
+      "cumulative_pull_requests": 543
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2024-05-01",
+      "cumulative_pull_requests": 602
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2024-06-01",
+      "cumulative_pull_requests": 646
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2024-07-01",
+      "cumulative_pull_requests": 670
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2024-08-01",
+      "cumulative_pull_requests": 739
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2024-09-01",
+      "cumulative_pull_requests": 782
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2024-10-01",
+      "cumulative_pull_requests": 814
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2024-11-01",
+      "cumulative_pull_requests": 860
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2024-12-01",
+      "cumulative_pull_requests": 893
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2025-01-01",
+      "cumulative_pull_requests": 917
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2025-02-01",
+      "cumulative_pull_requests": 956
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2025-03-01",
+      "cumulative_pull_requests": 1050
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2025-04-01",
+      "cumulative_pull_requests": 1069
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2025-05-01",
+      "cumulative_pull_requests": 1121
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2025-06-01",
+      "cumulative_pull_requests": 1210
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2025-07-01",
+      "cumulative_pull_requests": 1259
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2025-08-01",
+      "cumulative_pull_requests": 1341
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2025-09-01",
+      "cumulative_pull_requests": 1406
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2025-10-01",
+      "cumulative_pull_requests": 1479
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2025-11-01",
+      "cumulative_pull_requests": 1514
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2025-12-01",
+      "cumulative_pull_requests": 1526
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2026-01-01",
+      "cumulative_pull_requests": 1535
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2026-02-01",
+      "cumulative_pull_requests": 1562
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2024-03-01",
+      "cumulative_pull_requests": 242
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2024-04-01",
+      "cumulative_pull_requests": 663
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2024-05-01",
+      "cumulative_pull_requests": 1107
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2024-06-01",
+      "cumulative_pull_requests": 1480
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2024-07-01",
+      "cumulative_pull_requests": 1843
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2024-08-01",
+      "cumulative_pull_requests": 2211
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2024-09-01",
+      "cumulative_pull_requests": 2539
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2024-10-01",
+      "cumulative_pull_requests": 2939
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2024-11-01",
+      "cumulative_pull_requests": 3338
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2024-12-01",
+      "cumulative_pull_requests": 3721
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-01-01",
+      "cumulative_pull_requests": 4098
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-02-01",
+      "cumulative_pull_requests": 4385
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-03-01",
+      "cumulative_pull_requests": 4771
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-04-01",
+      "cumulative_pull_requests": 5181
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-05-01",
+      "cumulative_pull_requests": 5616
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-06-01",
+      "cumulative_pull_requests": 5998
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-07-01",
+      "cumulative_pull_requests": 6379
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-08-01",
+      "cumulative_pull_requests": 6842
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-09-01",
+      "cumulative_pull_requests": 7167
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-10-01",
+      "cumulative_pull_requests": 7450
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-11-01",
+      "cumulative_pull_requests": 7613
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-12-01",
+      "cumulative_pull_requests": 7873
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2026-01-01",
+      "cumulative_pull_requests": 8168
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2026-02-01",
+      "cumulative_pull_requests": 8433
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/fastmcp",
+      "month": "2025-09-01",
+      "cumulative_pull_requests": 2
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/fastmcp",
+      "month": "2026-01-01",
+      "cumulative_pull_requests": 4
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/fastmcp",
+      "month": "2026-02-01",
+      "cumulative_pull_requests": 83
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2024-03-01",
+      "cumulative_pull_requests": 6855
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2024-04-01",
+      "cumulative_pull_requests": 7236
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2024-05-01",
+      "cumulative_pull_requests": 7706
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2024-06-01",
+      "cumulative_pull_requests": 8173
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2024-07-01",
+      "cumulative_pull_requests": 8461
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2024-08-01",
+      "cumulative_pull_requests": 8718
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2024-09-01",
+      "cumulative_pull_requests": 8964
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2024-10-01",
+      "cumulative_pull_requests": 9187
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2024-11-01",
+      "cumulative_pull_requests": 9345
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2024-12-01",
+      "cumulative_pull_requests": 9616
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2025-01-01",
+      "cumulative_pull_requests": 9906
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2025-02-01",
+      "cumulative_pull_requests": 10191
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2025-03-01",
+      "cumulative_pull_requests": 10417
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2025-04-01",
+      "cumulative_pull_requests": 10600
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2025-05-01",
+      "cumulative_pull_requests": 10767
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2025-06-01",
+      "cumulative_pull_requests": 10885
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2025-07-01",
+      "cumulative_pull_requests": 11029
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2025-08-01",
+      "cumulative_pull_requests": 11164
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2025-09-01",
+      "cumulative_pull_requests": 11341
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2025-10-01",
+      "cumulative_pull_requests": 11531
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2025-11-01",
+      "cumulative_pull_requests": 11705
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2025-12-01",
+      "cumulative_pull_requests": 12142
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2026-01-01",
+      "cumulative_pull_requests": 12474
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2026-02-01",
+      "cumulative_pull_requests": 12818
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2024-03-01",
+      "cumulative_pull_requests": 3730
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2024-04-01",
+      "cumulative_pull_requests": 3760
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2024-05-01",
+      "cumulative_pull_requests": 3799
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2024-06-01",
+      "cumulative_pull_requests": 3858
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2024-07-01",
+      "cumulative_pull_requests": 4042
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2024-08-01",
+      "cumulative_pull_requests": 4172
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2024-09-01",
+      "cumulative_pull_requests": 4353
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2024-10-01",
+      "cumulative_pull_requests": 4542
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2024-11-01",
+      "cumulative_pull_requests": 4734
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2024-12-01",
+      "cumulative_pull_requests": 4903
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2025-01-01",
+      "cumulative_pull_requests": 5051
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2025-02-01",
+      "cumulative_pull_requests": 5173
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2025-03-01",
+      "cumulative_pull_requests": 5305
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2025-04-01",
+      "cumulative_pull_requests": 5433
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2025-05-01",
+      "cumulative_pull_requests": 5575
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2025-06-01",
+      "cumulative_pull_requests": 5751
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2025-07-01",
+      "cumulative_pull_requests": 5942
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2025-08-01",
+      "cumulative_pull_requests": 6145
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2025-09-01",
+      "cumulative_pull_requests": 6322
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2025-10-01",
+      "cumulative_pull_requests": 6520
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2025-11-01",
+      "cumulative_pull_requests": 6665
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2025-12-01",
+      "cumulative_pull_requests": 6792
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2026-01-01",
+      "cumulative_pull_requests": 6976
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2026-02-01",
+      "cumulative_pull_requests": 7252
+    },
+    {
+      "repo": "https://github.com/a2aproject/A2A",
+      "month": "2025-04-01",
+      "cumulative_pull_requests": 2
+    },
+    {
+      "repo": "https://github.com/a2aproject/A2A",
+      "month": "2025-05-01",
+      "cumulative_pull_requests": 15
+    },
+    {
+      "repo": "https://github.com/a2aproject/A2A",
+      "month": "2025-06-01",
+      "cumulative_pull_requests": 39
+    },
+    {
+      "repo": "https://github.com/a2aproject/A2A",
+      "month": "2025-07-01",
+      "cumulative_pull_requests": 108
+    },
+    {
+      "repo": "https://github.com/a2aproject/A2A",
+      "month": "2025-08-01",
+      "cumulative_pull_requests": 137
+    },
+    {
+      "repo": "https://github.com/a2aproject/A2A",
+      "month": "2025-09-01",
+      "cumulative_pull_requests": 182
+    },
+    {
+      "repo": "https://github.com/a2aproject/A2A",
+      "month": "2025-10-01",
+      "cumulative_pull_requests": 220
+    },
+    {
+      "repo": "https://github.com/a2aproject/A2A",
+      "month": "2025-11-01",
+      "cumulative_pull_requests": 248
+    },
+    {
+      "repo": "https://github.com/a2aproject/A2A",
+      "month": "2025-12-01",
+      "cumulative_pull_requests": 277
+    },
+    {
+      "repo": "https://github.com/a2aproject/A2A",
+      "month": "2026-01-01",
+      "cumulative_pull_requests": 308
+    },
+    {
+      "repo": "https://github.com/a2aproject/A2A",
+      "month": "2026-02-01",
+      "cumulative_pull_requests": 344
+    },
+    {
+      "repo": "https://github.com/agentsmd/agents.md",
+      "month": "2025-08-01",
+      "cumulative_pull_requests": 2
+    },
+    {
+      "repo": "https://github.com/agentsmd/agents.md",
+      "month": "2025-09-01",
+      "cumulative_pull_requests": 10
+    },
+    {
+      "repo": "https://github.com/agentsmd/agents.md",
+      "month": "2025-10-01",
+      "cumulative_pull_requests": 13
+    },
+    {
+      "repo": "https://github.com/agentsmd/agents.md",
+      "month": "2025-12-01",
+      "cumulative_pull_requests": 28
+    },
+    {
+      "repo": "https://github.com/agentsmd/agents.md",
+      "month": "2026-01-01",
+      "cumulative_pull_requests": 37
+    },
+    {
+      "repo": "https://github.com/agentsmd/agents.md",
+      "month": "2026-02-01",
+      "cumulative_pull_requests": 44
+    },
+    {
+      "repo": "https://github.com/agntcy/acp-spec",
+      "month": "2025-02-01",
+      "cumulative_pull_requests": 30
+    },
+    {
+      "repo": "https://github.com/agntcy/acp-spec",
+      "month": "2025-03-01",
+      "cumulative_pull_requests": 38
+    },
+    {
+      "repo": "https://github.com/agntcy/acp-spec",
+      "month": "2025-04-01",
+      "cumulative_pull_requests": 39
+    },
+    {
+      "repo": "https://github.com/agntcy/acp-spec",
+      "month": "2025-05-01",
+      "cumulative_pull_requests": 44
+    },
+    {
+      "repo": "https://github.com/agntcy/oasf",
+      "month": "2025-02-01",
+      "cumulative_pull_requests": 12
+    },
+    {
+      "repo": "https://github.com/agntcy/oasf",
+      "month": "2025-03-01",
+      "cumulative_pull_requests": 62
+    },
+    {
+      "repo": "https://github.com/agntcy/oasf",
+      "month": "2025-04-01",
+      "cumulative_pull_requests": 89
+    },
+    {
+      "repo": "https://github.com/agntcy/oasf",
+      "month": "2025-05-01",
+      "cumulative_pull_requests": 98
+    },
+    {
+      "repo": "https://github.com/agntcy/oasf",
+      "month": "2025-06-01",
+      "cumulative_pull_requests": 112
+    },
+    {
+      "repo": "https://github.com/agntcy/oasf",
+      "month": "2025-07-01",
+      "cumulative_pull_requests": 150
+    },
+    {
+      "repo": "https://github.com/agntcy/oasf",
+      "month": "2025-08-01",
+      "cumulative_pull_requests": 176
+    },
+    {
+      "repo": "https://github.com/agntcy/oasf",
+      "month": "2025-09-01",
+      "cumulative_pull_requests": 207
+    },
+    {
+      "repo": "https://github.com/agntcy/oasf",
+      "month": "2025-10-01",
+      "cumulative_pull_requests": 219
+    },
+    {
+      "repo": "https://github.com/agntcy/oasf",
+      "month": "2025-11-01",
+      "cumulative_pull_requests": 221
+    },
+    {
+      "repo": "https://github.com/agntcy/oasf",
+      "month": "2025-12-01",
+      "cumulative_pull_requests": 229
+    },
+    {
+      "repo": "https://github.com/agntcy/oasf",
+      "month": "2026-01-01",
+      "cumulative_pull_requests": 244
+    },
+    {
+      "repo": "https://github.com/agntcy/oasf",
+      "month": "2026-02-01",
+      "cumulative_pull_requests": 257
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "month": "2025-02-01",
+      "cumulative_pull_requests": 68
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "month": "2025-03-01",
+      "cumulative_pull_requests": 128
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "month": "2025-04-01",
+      "cumulative_pull_requests": 186
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "month": "2025-05-01",
+      "cumulative_pull_requests": 279
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "month": "2025-06-01",
+      "cumulative_pull_requests": 335
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "month": "2025-07-01",
+      "cumulative_pull_requests": 421
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "month": "2025-08-01",
+      "cumulative_pull_requests": 474
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "month": "2025-09-01",
+      "cumulative_pull_requests": 567
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "month": "2025-10-01",
+      "cumulative_pull_requests": 648
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "month": "2025-11-01",
+      "cumulative_pull_requests": 720
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "month": "2025-12-01",
+      "cumulative_pull_requests": 757
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "month": "2026-01-01",
+      "cumulative_pull_requests": 835
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "month": "2026-02-01",
+      "cumulative_pull_requests": 898
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2024-03-01",
+      "cumulative_pull_requests": 225
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2024-04-01",
+      "cumulative_pull_requests": 241
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2024-05-01",
+      "cumulative_pull_requests": 284
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2024-06-01",
+      "cumulative_pull_requests": 313
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2024-07-01",
+      "cumulative_pull_requests": 362
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2024-08-01",
+      "cumulative_pull_requests": 411
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2024-09-01",
+      "cumulative_pull_requests": 446
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2024-10-01",
+      "cumulative_pull_requests": 500
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2024-11-01",
+      "cumulative_pull_requests": 512
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2024-12-01",
+      "cumulative_pull_requests": 545
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2025-01-01",
+      "cumulative_pull_requests": 561
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2025-02-01",
+      "cumulative_pull_requests": 617
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2025-03-01",
+      "cumulative_pull_requests": 656
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2025-04-01",
+      "cumulative_pull_requests": 680
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2025-05-01",
+      "cumulative_pull_requests": 704
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2025-06-01",
+      "cumulative_pull_requests": 719
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2025-07-01",
+      "cumulative_pull_requests": 732
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2025-08-01",
+      "cumulative_pull_requests": 744
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2025-09-01",
+      "cumulative_pull_requests": 754
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2025-10-01",
+      "cumulative_pull_requests": 759
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2025-11-01",
+      "cumulative_pull_requests": 774
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2025-12-01",
+      "cumulative_pull_requests": 781
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2026-01-01",
+      "cumulative_pull_requests": 803
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2026-02-01",
+      "cumulative_pull_requests": 825
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2024-08-01",
+      "cumulative_pull_requests": 22
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2024-09-01",
+      "cumulative_pull_requests": 80
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2024-10-01",
+      "cumulative_pull_requests": 171
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2024-11-01",
+      "cumulative_pull_requests": 332
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2024-12-01",
+      "cumulative_pull_requests": 477
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2025-01-01",
+      "cumulative_pull_requests": 867
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2025-02-01",
+      "cumulative_pull_requests": 1148
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2025-03-01",
+      "cumulative_pull_requests": 1486
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2025-04-01",
+      "cumulative_pull_requests": 1854
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2025-05-01",
+      "cumulative_pull_requests": 2130
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2025-06-01",
+      "cumulative_pull_requests": 2445
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2025-07-01",
+      "cumulative_pull_requests": 2859
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2025-08-01",
+      "cumulative_pull_requests": 3338
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2025-09-01",
+      "cumulative_pull_requests": 3628
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2025-10-01",
+      "cumulative_pull_requests": 4087
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2025-11-01",
+      "cumulative_pull_requests": 4386
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2025-12-01",
+      "cumulative_pull_requests": 4639
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2026-01-01",
+      "cumulative_pull_requests": 5046
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2026-02-01",
+      "cumulative_pull_requests": 5586
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2024-03-01",
+      "cumulative_pull_requests": 293
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2024-04-01",
+      "cumulative_pull_requests": 314
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2024-05-01",
+      "cumulative_pull_requests": 355
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2024-06-01",
+      "cumulative_pull_requests": 394
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2024-07-01",
+      "cumulative_pull_requests": 432
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2024-08-01",
+      "cumulative_pull_requests": 487
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2024-09-01",
+      "cumulative_pull_requests": 546
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2024-10-01",
+      "cumulative_pull_requests": 623
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2024-11-01",
+      "cumulative_pull_requests": 677
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2024-12-01",
+      "cumulative_pull_requests": 742
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-01-01",
+      "cumulative_pull_requests": 820
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-02-01",
+      "cumulative_pull_requests": 890
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-03-01",
+      "cumulative_pull_requests": 1102
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-04-01",
+      "cumulative_pull_requests": 1222
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-05-01",
+      "cumulative_pull_requests": 1348
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-06-01",
+      "cumulative_pull_requests": 1485
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-07-01",
+      "cumulative_pull_requests": 1617
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-08-01",
+      "cumulative_pull_requests": 1680
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-09-01",
+      "cumulative_pull_requests": 1755
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-10-01",
+      "cumulative_pull_requests": 1826
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-11-01",
+      "cumulative_pull_requests": 1893
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-12-01",
+      "cumulative_pull_requests": 2011
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2026-01-01",
+      "cumulative_pull_requests": 2082
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2026-02-01",
+      "cumulative_pull_requests": 2159
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2024-03-01",
+      "cumulative_pull_requests": 1026
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2024-04-01",
+      "cumulative_pull_requests": 1123
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2024-05-01",
+      "cumulative_pull_requests": 1266
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2024-06-01",
+      "cumulative_pull_requests": 1376
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2024-07-01",
+      "cumulative_pull_requests": 1506
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2024-08-01",
+      "cumulative_pull_requests": 1597
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2024-09-01",
+      "cumulative_pull_requests": 1691
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2024-10-01",
+      "cumulative_pull_requests": 1836
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2024-11-01",
+      "cumulative_pull_requests": 1985
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2024-12-01",
+      "cumulative_pull_requests": 2130
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-01-01",
+      "cumulative_pull_requests": 2351
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-02-01",
+      "cumulative_pull_requests": 2545
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-03-01",
+      "cumulative_pull_requests": 2760
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-04-01",
+      "cumulative_pull_requests": 3009
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-05-01",
+      "cumulative_pull_requests": 3272
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-06-01",
+      "cumulative_pull_requests": 3551
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-07-01",
+      "cumulative_pull_requests": 3704
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-08-01",
+      "cumulative_pull_requests": 3894
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-09-01",
+      "cumulative_pull_requests": 4023
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-10-01",
+      "cumulative_pull_requests": 4258
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-11-01",
+      "cumulative_pull_requests": 4363
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-12-01",
+      "cumulative_pull_requests": 4530
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2026-01-01",
+      "cumulative_pull_requests": 4709
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2026-02-01",
+      "cumulative_pull_requests": 4926
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2024-07-01",
+      "cumulative_pull_requests": 1
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2024-08-01",
+      "cumulative_pull_requests": 21
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2024-09-01",
+      "cumulative_pull_requests": 42
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2024-10-01",
+      "cumulative_pull_requests": 65
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2024-11-01",
+      "cumulative_pull_requests": 109
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2024-12-01",
+      "cumulative_pull_requests": 169
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2025-01-01",
+      "cumulative_pull_requests": 310
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2025-02-01",
+      "cumulative_pull_requests": 489
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2025-03-01",
+      "cumulative_pull_requests": 737
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2025-04-01",
+      "cumulative_pull_requests": 1092
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2025-05-01",
+      "cumulative_pull_requests": 1499
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2025-06-01",
+      "cumulative_pull_requests": 1823
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2025-07-01",
+      "cumulative_pull_requests": 2191
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2025-08-01",
+      "cumulative_pull_requests": 2562
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2025-09-01",
+      "cumulative_pull_requests": 2939
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2025-10-01",
+      "cumulative_pull_requests": 3325
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2025-11-01",
+      "cumulative_pull_requests": 3622
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2025-12-01",
+      "cumulative_pull_requests": 3950
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2026-01-01",
+      "cumulative_pull_requests": 4389
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2026-02-01",
+      "cumulative_pull_requests": 4782
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2024-03-01",
+      "cumulative_pull_requests": 292
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2024-04-01",
+      "cumulative_pull_requests": 343
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2024-05-01",
+      "cumulative_pull_requests": 412
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2024-06-01",
+      "cumulative_pull_requests": 515
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2024-07-01",
+      "cumulative_pull_requests": 661
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2024-08-01",
+      "cumulative_pull_requests": 804
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2024-09-01",
+      "cumulative_pull_requests": 945
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2024-10-01",
+      "cumulative_pull_requests": 1124
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2024-11-01",
+      "cumulative_pull_requests": 1339
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2024-12-01",
+      "cumulative_pull_requests": 1570
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2025-01-01",
+      "cumulative_pull_requests": 1735
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2025-02-01",
+      "cumulative_pull_requests": 1954
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2025-03-01",
+      "cumulative_pull_requests": 2183
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2025-04-01",
+      "cumulative_pull_requests": 2448
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2025-05-01",
+      "cumulative_pull_requests": 2684
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2025-06-01",
+      "cumulative_pull_requests": 2904
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2025-07-01",
+      "cumulative_pull_requests": 3289
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2025-08-01",
+      "cumulative_pull_requests": 3638
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2025-09-01",
+      "cumulative_pull_requests": 4019
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2025-10-01",
+      "cumulative_pull_requests": 4303
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2025-11-01",
+      "cumulative_pull_requests": 4518
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2025-12-01",
+      "cumulative_pull_requests": 4712
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2026-01-01",
+      "cumulative_pull_requests": 4893
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2026-02-01",
+      "cumulative_pull_requests": 5049
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2024-03-01",
+      "cumulative_pull_requests": 119
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2024-04-01",
+      "cumulative_pull_requests": 154
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2024-05-01",
+      "cumulative_pull_requests": 210
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2024-06-01",
+      "cumulative_pull_requests": 253
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2024-07-01",
+      "cumulative_pull_requests": 347
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2024-08-01",
+      "cumulative_pull_requests": 412
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2024-09-01",
+      "cumulative_pull_requests": 453
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2024-10-01",
+      "cumulative_pull_requests": 522
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2024-11-01",
+      "cumulative_pull_requests": 578
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2024-12-01",
+      "cumulative_pull_requests": 662
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2025-01-01",
+      "cumulative_pull_requests": 744
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2025-02-01",
+      "cumulative_pull_requests": 891
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2025-03-01",
+      "cumulative_pull_requests": 1053
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2025-04-01",
+      "cumulative_pull_requests": 1188
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2025-05-01",
+      "cumulative_pull_requests": 1318
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2025-06-01",
+      "cumulative_pull_requests": 1419
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2025-07-01",
+      "cumulative_pull_requests": 1530
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2025-08-01",
+      "cumulative_pull_requests": 1665
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2025-09-01",
+      "cumulative_pull_requests": 1827
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2025-10-01",
+      "cumulative_pull_requests": 1976
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2025-11-01",
+      "cumulative_pull_requests": 2110
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2025-12-01",
+      "cumulative_pull_requests": 2232
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2026-01-01",
+      "cumulative_pull_requests": 2352
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2026-02-01",
+      "cumulative_pull_requests": 2615
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2024-03-01",
+      "cumulative_pull_requests": 3531
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2024-04-01",
+      "cumulative_pull_requests": 3629
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2024-05-01",
+      "cumulative_pull_requests": 3709
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2024-06-01",
+      "cumulative_pull_requests": 3793
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2024-07-01",
+      "cumulative_pull_requests": 3878
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2024-08-01",
+      "cumulative_pull_requests": 3952
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2024-09-01",
+      "cumulative_pull_requests": 4017
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2024-10-01",
+      "cumulative_pull_requests": 4059
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2024-11-01",
+      "cumulative_pull_requests": 4104
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2024-12-01",
+      "cumulative_pull_requests": 4142
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2025-01-01",
+      "cumulative_pull_requests": 4196
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2025-02-01",
+      "cumulative_pull_requests": 4274
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2025-03-01",
+      "cumulative_pull_requests": 4376
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2025-04-01",
+      "cumulative_pull_requests": 4475
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2025-05-01",
+      "cumulative_pull_requests": 4548
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2025-06-01",
+      "cumulative_pull_requests": 4602
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2025-07-01",
+      "cumulative_pull_requests": 4662
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2025-08-01",
+      "cumulative_pull_requests": 4710
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2025-09-01",
+      "cumulative_pull_requests": 4756
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2025-10-01",
+      "cumulative_pull_requests": 4874
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2025-11-01",
+      "cumulative_pull_requests": 4994
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2025-12-01",
+      "cumulative_pull_requests": 5102
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2026-01-01",
+      "cumulative_pull_requests": 5261
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2026-02-01",
+      "cumulative_pull_requests": 5427
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2024-12-01",
+      "cumulative_pull_requests": 9
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2025-01-01",
+      "cumulative_pull_requests": 265
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2025-02-01",
+      "cumulative_pull_requests": 489
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2025-03-01",
+      "cumulative_pull_requests": 654
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2025-04-01",
+      "cumulative_pull_requests": 742
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2025-05-01",
+      "cumulative_pull_requests": 816
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2025-06-01",
+      "cumulative_pull_requests": 882
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2025-07-01",
+      "cumulative_pull_requests": 971
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2025-08-01",
+      "cumulative_pull_requests": 1038
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2025-09-01",
+      "cumulative_pull_requests": 1071
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2025-10-01",
+      "cumulative_pull_requests": 1103
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2025-11-01",
+      "cumulative_pull_requests": 1132
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2025-12-01",
+      "cumulative_pull_requests": 1158
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2026-01-01",
+      "cumulative_pull_requests": 1184
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2026-02-01",
+      "cumulative_pull_requests": 1229
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2024-03-01",
+      "cumulative_pull_requests": 15097
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2024-04-01",
+      "cumulative_pull_requests": 15464
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2024-05-01",
+      "cumulative_pull_requests": 15801
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2024-06-01",
+      "cumulative_pull_requests": 16102
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2024-07-01",
+      "cumulative_pull_requests": 16476
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2024-08-01",
+      "cumulative_pull_requests": 17103
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2024-09-01",
+      "cumulative_pull_requests": 17476
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2024-10-01",
+      "cumulative_pull_requests": 17909
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2024-11-01",
+      "cumulative_pull_requests": 18187
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2024-12-01",
+      "cumulative_pull_requests": 18458
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2025-01-01",
+      "cumulative_pull_requests": 18805
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2025-02-01",
+      "cumulative_pull_requests": 19094
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2025-03-01",
+      "cumulative_pull_requests": 19555
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2025-04-01",
+      "cumulative_pull_requests": 20090
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2025-05-01",
+      "cumulative_pull_requests": 20514
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2025-06-01",
+      "cumulative_pull_requests": 20976
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2025-07-01",
+      "cumulative_pull_requests": 21493
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2025-08-01",
+      "cumulative_pull_requests": 22043
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2025-09-01",
+      "cumulative_pull_requests": 22557
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2025-10-01",
+      "cumulative_pull_requests": 23143
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2025-11-01",
+      "cumulative_pull_requests": 23556
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2025-12-01",
+      "cumulative_pull_requests": 23995
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2026-01-01",
+      "cumulative_pull_requests": 24462
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2026-02-01",
+      "cumulative_pull_requests": 25015
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2024-03-01",
+      "cumulative_pull_requests": 180
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2024-04-01",
+      "cumulative_pull_requests": 361
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2024-05-01",
+      "cumulative_pull_requests": 530
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2024-06-01",
+      "cumulative_pull_requests": 657
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2024-07-01",
+      "cumulative_pull_requests": 897
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2024-08-01",
+      "cumulative_pull_requests": 1128
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2024-09-01",
+      "cumulative_pull_requests": 1404
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2024-10-01",
+      "cumulative_pull_requests": 1585
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2024-11-01",
+      "cumulative_pull_requests": 1881
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2024-12-01",
+      "cumulative_pull_requests": 2132
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2025-01-01",
+      "cumulative_pull_requests": 2282
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2025-02-01",
+      "cumulative_pull_requests": 2512
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2025-03-01",
+      "cumulative_pull_requests": 2905
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2025-04-01",
+      "cumulative_pull_requests": 3125
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2025-05-01",
+      "cumulative_pull_requests": 3357
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2025-06-01",
+      "cumulative_pull_requests": 3608
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2025-07-01",
+      "cumulative_pull_requests": 3873
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2025-08-01",
+      "cumulative_pull_requests": 4203
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2025-09-01",
+      "cumulative_pull_requests": 4462
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2025-10-01",
+      "cumulative_pull_requests": 4747
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2025-11-01",
+      "cumulative_pull_requests": 5079
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2025-12-01",
+      "cumulative_pull_requests": 5511
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2026-01-01",
+      "cumulative_pull_requests": 5814
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2026-02-01",
+      "cumulative_pull_requests": 6033
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2024-03-01",
+      "cumulative_pull_requests": 1225
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2024-04-01",
+      "cumulative_pull_requests": 1347
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2024-05-01",
+      "cumulative_pull_requests": 1407
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2024-06-01",
+      "cumulative_pull_requests": 1461
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2024-07-01",
+      "cumulative_pull_requests": 1506
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2024-08-01",
+      "cumulative_pull_requests": 1648
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2024-09-01",
+      "cumulative_pull_requests": 1708
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2024-10-01",
+      "cumulative_pull_requests": 1762
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2024-11-01",
+      "cumulative_pull_requests": 1877
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2024-12-01",
+      "cumulative_pull_requests": 1981
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2025-01-01",
+      "cumulative_pull_requests": 2071
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2025-02-01",
+      "cumulative_pull_requests": 2185
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2025-03-01",
+      "cumulative_pull_requests": 2231
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2025-04-01",
+      "cumulative_pull_requests": 2262
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2025-05-01",
+      "cumulative_pull_requests": 2419
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2025-06-01",
+      "cumulative_pull_requests": 2682
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2025-07-01",
+      "cumulative_pull_requests": 2845
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2025-08-01",
+      "cumulative_pull_requests": 2992
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2025-09-01",
+      "cumulative_pull_requests": 3196
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2025-10-01",
+      "cumulative_pull_requests": 3280
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2025-11-01",
+      "cumulative_pull_requests": 3407
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2025-12-01",
+      "cumulative_pull_requests": 3621
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2026-01-01",
+      "cumulative_pull_requests": 3693
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2026-02-01",
+      "cumulative_pull_requests": 3777
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2024-03-01",
+      "cumulative_pull_requests": 1778
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2024-04-01",
+      "cumulative_pull_requests": 1842
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2024-05-01",
+      "cumulative_pull_requests": 1878
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2024-06-01",
+      "cumulative_pull_requests": 1904
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2024-07-01",
+      "cumulative_pull_requests": 1935
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2024-08-01",
+      "cumulative_pull_requests": 1970
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2024-09-01",
+      "cumulative_pull_requests": 1995
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2024-10-01",
+      "cumulative_pull_requests": 2027
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2024-11-01",
+      "cumulative_pull_requests": 2061
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2024-12-01",
+      "cumulative_pull_requests": 2102
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-01-01",
+      "cumulative_pull_requests": 2138
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-02-01",
+      "cumulative_pull_requests": 2167
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-03-01",
+      "cumulative_pull_requests": 2205
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-04-01",
+      "cumulative_pull_requests": 2258
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-05-01",
+      "cumulative_pull_requests": 2298
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-06-01",
+      "cumulative_pull_requests": 2322
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-07-01",
+      "cumulative_pull_requests": 2371
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-08-01",
+      "cumulative_pull_requests": 2391
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-09-01",
+      "cumulative_pull_requests": 2426
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-10-01",
+      "cumulative_pull_requests": 2468
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-11-01",
+      "cumulative_pull_requests": 2512
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-12-01",
+      "cumulative_pull_requests": 2549
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2026-01-01",
+      "cumulative_pull_requests": 2614
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2026-02-01",
+      "cumulative_pull_requests": 2703
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2024-03-01",
+      "cumulative_pull_requests": 11153
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2024-04-01",
+      "cumulative_pull_requests": 11913
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2024-05-01",
+      "cumulative_pull_requests": 12664
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2024-06-01",
+      "cumulative_pull_requests": 13324
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2024-07-01",
+      "cumulative_pull_requests": 13995
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2024-08-01",
+      "cumulative_pull_requests": 14578
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2024-09-01",
+      "cumulative_pull_requests": 15268
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2024-10-01",
+      "cumulative_pull_requests": 15680
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2024-11-01",
+      "cumulative_pull_requests": 16056
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2024-12-01",
+      "cumulative_pull_requests": 16362
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2025-01-01",
+      "cumulative_pull_requests": 16674
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2025-02-01",
+      "cumulative_pull_requests": 16951
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2025-03-01",
+      "cumulative_pull_requests": 17284
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2025-04-01",
+      "cumulative_pull_requests": 17590
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2025-05-01",
+      "cumulative_pull_requests": 17835
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2025-06-01",
+      "cumulative_pull_requests": 18043
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2025-07-01",
+      "cumulative_pull_requests": 18464
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2025-08-01",
+      "cumulative_pull_requests": 18808
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2025-09-01",
+      "cumulative_pull_requests": 19127
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2025-10-01",
+      "cumulative_pull_requests": 19614
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2025-11-01",
+      "cumulative_pull_requests": 19878
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2025-12-01",
+      "cumulative_pull_requests": 20198
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2026-01-01",
+      "cumulative_pull_requests": 20509
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2026-02-01",
+      "cumulative_pull_requests": 20950
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2024-03-01",
+      "cumulative_pull_requests": 173
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2024-04-01",
+      "cumulative_pull_requests": 259
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2024-05-01",
+      "cumulative_pull_requests": 384
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2024-06-01",
+      "cumulative_pull_requests": 605
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2024-07-01",
+      "cumulative_pull_requests": 774
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2024-08-01",
+      "cumulative_pull_requests": 1003
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2024-09-01",
+      "cumulative_pull_requests": 1234
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2024-10-01",
+      "cumulative_pull_requests": 1454
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2024-11-01",
+      "cumulative_pull_requests": 1631
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2024-12-01",
+      "cumulative_pull_requests": 1825
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2025-01-01",
+      "cumulative_pull_requests": 2043
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2025-02-01",
+      "cumulative_pull_requests": 2253
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2025-03-01",
+      "cumulative_pull_requests": 2491
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2025-04-01",
+      "cumulative_pull_requests": 2699
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2025-05-01",
+      "cumulative_pull_requests": 2967
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2025-06-01",
+      "cumulative_pull_requests": 3187
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2025-07-01",
+      "cumulative_pull_requests": 3489
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2025-08-01",
+      "cumulative_pull_requests": 3647
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2025-09-01",
+      "cumulative_pull_requests": 3761
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2025-10-01",
+      "cumulative_pull_requests": 3842
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2025-11-01",
+      "cumulative_pull_requests": 3936
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2025-12-01",
+      "cumulative_pull_requests": 4028
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2026-01-01",
+      "cumulative_pull_requests": 4092
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2026-02-01",
+      "cumulative_pull_requests": 4291
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2024-03-01",
+      "cumulative_pull_requests": 1128
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2024-04-01",
+      "cumulative_pull_requests": 1386
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2024-05-01",
+      "cumulative_pull_requests": 1538
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2024-06-01",
+      "cumulative_pull_requests": 1736
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2024-07-01",
+      "cumulative_pull_requests": 1925
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2024-08-01",
+      "cumulative_pull_requests": 2174
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2024-09-01",
+      "cumulative_pull_requests": 2352
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2024-10-01",
+      "cumulative_pull_requests": 2630
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2024-11-01",
+      "cumulative_pull_requests": 2943
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2024-12-01",
+      "cumulative_pull_requests": 3126
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2025-01-01",
+      "cumulative_pull_requests": 3393
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2025-02-01",
+      "cumulative_pull_requests": 3617
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2025-03-01",
+      "cumulative_pull_requests": 3839
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2025-04-01",
+      "cumulative_pull_requests": 3994
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2025-05-01",
+      "cumulative_pull_requests": 4212
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2025-06-01",
+      "cumulative_pull_requests": 4410
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2025-07-01",
+      "cumulative_pull_requests": 4713
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2025-08-01",
+      "cumulative_pull_requests": 4962
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2025-09-01",
+      "cumulative_pull_requests": 5239
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2025-10-01",
+      "cumulative_pull_requests": 5594
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2025-11-01",
+      "cumulative_pull_requests": 5974
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2025-12-01",
+      "cumulative_pull_requests": 6272
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2026-01-01",
+      "cumulative_pull_requests": 6515
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2026-02-01",
+      "cumulative_pull_requests": 6806
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2024-03-01",
+      "cumulative_pull_requests": 673
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2024-04-01",
+      "cumulative_pull_requests": 737
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2024-05-01",
+      "cumulative_pull_requests": 793
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2024-06-01",
+      "cumulative_pull_requests": 827
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2024-07-01",
+      "cumulative_pull_requests": 878
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2024-08-01",
+      "cumulative_pull_requests": 942
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2024-09-01",
+      "cumulative_pull_requests": 1018
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2024-10-01",
+      "cumulative_pull_requests": 1145
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2024-11-01",
+      "cumulative_pull_requests": 1266
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2024-12-01",
+      "cumulative_pull_requests": 1427
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2025-01-01",
+      "cumulative_pull_requests": 1479
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2025-02-01",
+      "cumulative_pull_requests": 1516
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2025-03-01",
+      "cumulative_pull_requests": 1560
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2025-04-01",
+      "cumulative_pull_requests": 1599
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2025-05-01",
+      "cumulative_pull_requests": 1641
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2025-06-01",
+      "cumulative_pull_requests": 1663
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2025-07-01",
+      "cumulative_pull_requests": 1687
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2025-08-01",
+      "cumulative_pull_requests": 1711
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2025-09-01",
+      "cumulative_pull_requests": 1916
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2025-10-01",
+      "cumulative_pull_requests": 1947
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2025-11-01",
+      "cumulative_pull_requests": 1962
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2025-12-01",
+      "cumulative_pull_requests": 1978
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2026-01-01",
+      "cumulative_pull_requests": 1993
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2026-02-01",
+      "cumulative_pull_requests": 2007
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2024-08-01",
+      "cumulative_pull_requests": 231
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2024-09-01",
+      "cumulative_pull_requests": 416
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2024-10-01",
+      "cumulative_pull_requests": 615
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2024-11-01",
+      "cumulative_pull_requests": 888
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2024-12-01",
+      "cumulative_pull_requests": 1222
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2025-01-01",
+      "cumulative_pull_requests": 1639
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2025-02-01",
+      "cumulative_pull_requests": 2074
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2025-03-01",
+      "cumulative_pull_requests": 2552
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2025-04-01",
+      "cumulative_pull_requests": 3043
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2025-05-01",
+      "cumulative_pull_requests": 3439
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2025-06-01",
+      "cumulative_pull_requests": 3809
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2025-07-01",
+      "cumulative_pull_requests": 4285
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2025-08-01",
+      "cumulative_pull_requests": 4668
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2025-09-01",
+      "cumulative_pull_requests": 5236
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2025-10-01",
+      "cumulative_pull_requests": 5921
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2025-11-01",
+      "cumulative_pull_requests": 6498
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2025-12-01",
+      "cumulative_pull_requests": 7023
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2026-01-01",
+      "cumulative_pull_requests": 7696
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2026-02-01",
+      "cumulative_pull_requests": 8395
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2024-03-01",
+      "cumulative_pull_requests": 1020
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2024-04-01",
+      "cumulative_pull_requests": 1189
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2024-05-01",
+      "cumulative_pull_requests": 1306
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2024-06-01",
+      "cumulative_pull_requests": 1413
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2024-07-01",
+      "cumulative_pull_requests": 1496
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2024-08-01",
+      "cumulative_pull_requests": 1593
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2024-09-01",
+      "cumulative_pull_requests": 1647
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2024-10-01",
+      "cumulative_pull_requests": 1849
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2024-11-01",
+      "cumulative_pull_requests": 2043
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2024-12-01",
+      "cumulative_pull_requests": 2244
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2025-01-01",
+      "cumulative_pull_requests": 2455
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2025-02-01",
+      "cumulative_pull_requests": 2652
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2025-03-01",
+      "cumulative_pull_requests": 2819
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2025-04-01",
+      "cumulative_pull_requests": 2957
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2025-05-01",
+      "cumulative_pull_requests": 3022
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2025-06-01",
+      "cumulative_pull_requests": 3086
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2025-07-01",
+      "cumulative_pull_requests": 3154
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2025-08-01",
+      "cumulative_pull_requests": 3198
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2025-09-01",
+      "cumulative_pull_requests": 3226
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2025-10-01",
+      "cumulative_pull_requests": 3242
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2025-11-01",
+      "cumulative_pull_requests": 3253
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2025-12-01",
+      "cumulative_pull_requests": 3267
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2026-01-01",
+      "cumulative_pull_requests": 3296
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2026-02-01",
+      "cumulative_pull_requests": 3346
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2024-03-01",
+      "cumulative_pull_requests": 13827
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2024-04-01",
+      "cumulative_pull_requests": 14010
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2024-05-01",
+      "cumulative_pull_requests": 14203
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2024-06-01",
+      "cumulative_pull_requests": 14375
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2024-07-01",
+      "cumulative_pull_requests": 14582
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2024-08-01",
+      "cumulative_pull_requests": 14793
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2024-09-01",
+      "cumulative_pull_requests": 15074
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2024-10-01",
+      "cumulative_pull_requests": 15308
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2024-11-01",
+      "cumulative_pull_requests": 15518
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2024-12-01",
+      "cumulative_pull_requests": 15664
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-01-01",
+      "cumulative_pull_requests": 15865
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-02-01",
+      "cumulative_pull_requests": 16087
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-03-01",
+      "cumulative_pull_requests": 16307
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-04-01",
+      "cumulative_pull_requests": 16526
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-05-01",
+      "cumulative_pull_requests": 16718
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-06-01",
+      "cumulative_pull_requests": 16922
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-07-01",
+      "cumulative_pull_requests": 17133
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-08-01",
+      "cumulative_pull_requests": 17344
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-09-01",
+      "cumulative_pull_requests": 17631
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-10-01",
+      "cumulative_pull_requests": 17881
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-11-01",
+      "cumulative_pull_requests": 18029
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-12-01",
+      "cumulative_pull_requests": 18231
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2026-01-01",
+      "cumulative_pull_requests": 18514
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2026-02-01",
+      "cumulative_pull_requests": 18800
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2024-03-01",
+      "cumulative_pull_requests": 3008
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2024-04-01",
+      "cumulative_pull_requests": 3186
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2024-05-01",
+      "cumulative_pull_requests": 3410
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2024-06-01",
+      "cumulative_pull_requests": 3578
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2024-07-01",
+      "cumulative_pull_requests": 3799
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2024-08-01",
+      "cumulative_pull_requests": 3975
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2024-09-01",
+      "cumulative_pull_requests": 4166
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2024-10-01",
+      "cumulative_pull_requests": 4348
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2024-11-01",
+      "cumulative_pull_requests": 4516
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2024-12-01",
+      "cumulative_pull_requests": 4595
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2025-01-01",
+      "cumulative_pull_requests": 4702
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2025-02-01",
+      "cumulative_pull_requests": 4866
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2025-03-01",
+      "cumulative_pull_requests": 5109
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2025-04-01",
+      "cumulative_pull_requests": 5333
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2025-05-01",
+      "cumulative_pull_requests": 5574
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2025-06-01",
+      "cumulative_pull_requests": 5680
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2025-07-01",
+      "cumulative_pull_requests": 5748
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2025-08-01",
+      "cumulative_pull_requests": 5819
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2025-09-01",
+      "cumulative_pull_requests": 5885
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2025-10-01",
+      "cumulative_pull_requests": 5941
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2025-11-01",
+      "cumulative_pull_requests": 5979
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2025-12-01",
+      "cumulative_pull_requests": 5998
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2026-01-01",
+      "cumulative_pull_requests": 6039
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2026-02-01",
+      "cumulative_pull_requests": 6096
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2024-03-01",
+      "cumulative_pull_requests": 19540
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2024-04-01",
+      "cumulative_pull_requests": 20172
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2024-05-01",
+      "cumulative_pull_requests": 20623
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2024-06-01",
+      "cumulative_pull_requests": 21074
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2024-07-01",
+      "cumulative_pull_requests": 21639
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2024-08-01",
+      "cumulative_pull_requests": 22078
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2024-09-01",
+      "cumulative_pull_requests": 22450
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2024-10-01",
+      "cumulative_pull_requests": 22876
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2024-11-01",
+      "cumulative_pull_requests": 23335
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2024-12-01",
+      "cumulative_pull_requests": 23747
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2025-01-01",
+      "cumulative_pull_requests": 24162
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2025-02-01",
+      "cumulative_pull_requests": 24427
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2025-03-01",
+      "cumulative_pull_requests": 24740
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2025-04-01",
+      "cumulative_pull_requests": 25009
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2025-05-01",
+      "cumulative_pull_requests": 25294
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2025-06-01",
+      "cumulative_pull_requests": 25571
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2025-07-01",
+      "cumulative_pull_requests": 25922
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2025-08-01",
+      "cumulative_pull_requests": 26185
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2025-09-01",
+      "cumulative_pull_requests": 26494
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2025-10-01",
+      "cumulative_pull_requests": 26869
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2025-11-01",
+      "cumulative_pull_requests": 27367
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2025-12-01",
+      "cumulative_pull_requests": 27905
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2026-01-01",
+      "cumulative_pull_requests": 28383
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2026-02-01",
+      "cumulative_pull_requests": 28729
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "month": "2025-02-01",
+      "cumulative_pull_requests": 1
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "month": "2025-03-01",
+      "cumulative_pull_requests": 10
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "month": "2025-04-01",
+      "cumulative_pull_requests": 43
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "month": "2025-05-01",
+      "cumulative_pull_requests": 91
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "month": "2025-06-01",
+      "cumulative_pull_requests": 139
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "month": "2025-07-01",
+      "cumulative_pull_requests": 184
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "month": "2025-08-01",
+      "cumulative_pull_requests": 240
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "month": "2025-09-01",
+      "cumulative_pull_requests": 266
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "month": "2025-10-01",
+      "cumulative_pull_requests": 297
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "month": "2025-11-01",
+      "cumulative_pull_requests": 318
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "month": "2025-12-01",
+      "cumulative_pull_requests": 343
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "month": "2026-01-01",
+      "cumulative_pull_requests": 370
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "month": "2026-02-01",
+      "cumulative_pull_requests": 417
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "month": "2024-10-01",
+      "cumulative_pull_requests": 4
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "month": "2024-11-01",
+      "cumulative_pull_requests": 12
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "month": "2024-12-01",
+      "cumulative_pull_requests": 17
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "month": "2025-01-01",
+      "cumulative_pull_requests": 20
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "month": "2025-02-01",
+      "cumulative_pull_requests": 22
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "month": "2025-03-01",
+      "cumulative_pull_requests": 40
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "month": "2025-04-01",
+      "cumulative_pull_requests": 116
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "month": "2025-05-01",
+      "cumulative_pull_requests": 199
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "month": "2025-06-01",
+      "cumulative_pull_requests": 341
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "month": "2025-07-01",
+      "cumulative_pull_requests": 452
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "month": "2025-08-01",
+      "cumulative_pull_requests": 508
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "month": "2025-09-01",
+      "cumulative_pull_requests": 593
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "month": "2025-10-01",
+      "cumulative_pull_requests": 666
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "month": "2025-11-01",
+      "cumulative_pull_requests": 763
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "month": "2025-12-01",
+      "cumulative_pull_requests": 825
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "month": "2026-01-01",
+      "cumulative_pull_requests": 900
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "month": "2026-02-01",
+      "cumulative_pull_requests": 979
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2024-03-01",
+      "cumulative_pull_requests": 1234
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2024-04-01",
+      "cumulative_pull_requests": 1451
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2024-05-01",
+      "cumulative_pull_requests": 1665
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2024-06-01",
+      "cumulative_pull_requests": 1846
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2024-07-01",
+      "cumulative_pull_requests": 2100
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2024-08-01",
+      "cumulative_pull_requests": 2239
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2024-09-01",
+      "cumulative_pull_requests": 2374
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2024-10-01",
+      "cumulative_pull_requests": 2510
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2024-11-01",
+      "cumulative_pull_requests": 2632
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2024-12-01",
+      "cumulative_pull_requests": 2759
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2025-01-01",
+      "cumulative_pull_requests": 2842
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2025-02-01",
+      "cumulative_pull_requests": 3040
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2025-03-01",
+      "cumulative_pull_requests": 3218
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2025-04-01",
+      "cumulative_pull_requests": 3340
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2025-05-01",
+      "cumulative_pull_requests": 3479
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2025-06-01",
+      "cumulative_pull_requests": 3574
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2025-07-01",
+      "cumulative_pull_requests": 3676
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2025-08-01",
+      "cumulative_pull_requests": 3801
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2025-09-01",
+      "cumulative_pull_requests": 3911
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2025-10-01",
+      "cumulative_pull_requests": 4076
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2025-11-01",
+      "cumulative_pull_requests": 4228
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2025-12-01",
+      "cumulative_pull_requests": 4365
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2026-01-01",
+      "cumulative_pull_requests": 4554
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2026-02-01",
+      "cumulative_pull_requests": 4801
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2024-03-01",
+      "cumulative_pull_requests": 480
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2024-04-01",
+      "cumulative_pull_requests": 559
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2024-05-01",
+      "cumulative_pull_requests": 625
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2024-06-01",
+      "cumulative_pull_requests": 652
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2024-07-01",
+      "cumulative_pull_requests": 694
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2024-08-01",
+      "cumulative_pull_requests": 739
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2024-09-01",
+      "cumulative_pull_requests": 779
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2024-10-01",
+      "cumulative_pull_requests": 830
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2024-11-01",
+      "cumulative_pull_requests": 884
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2024-12-01",
+      "cumulative_pull_requests": 923
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2025-01-01",
+      "cumulative_pull_requests": 1000
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2025-02-01",
+      "cumulative_pull_requests": 1041
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2025-03-01",
+      "cumulative_pull_requests": 1079
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2025-04-01",
+      "cumulative_pull_requests": 1169
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2025-05-01",
+      "cumulative_pull_requests": 1219
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2025-06-01",
+      "cumulative_pull_requests": 1281
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2025-07-01",
+      "cumulative_pull_requests": 1364
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2025-08-01",
+      "cumulative_pull_requests": 1452
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2025-09-01",
+      "cumulative_pull_requests": 1526
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2025-10-01",
+      "cumulative_pull_requests": 1626
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2025-11-01",
+      "cumulative_pull_requests": 1705
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2025-12-01",
+      "cumulative_pull_requests": 1760
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2026-01-01",
+      "cumulative_pull_requests": 1830
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2026-02-01",
+      "cumulative_pull_requests": 1910
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2024-03-01",
+      "cumulative_pull_requests": 555
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2024-04-01",
+      "cumulative_pull_requests": 730
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2024-05-01",
+      "cumulative_pull_requests": 962
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2024-06-01",
+      "cumulative_pull_requests": 1180
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2024-07-01",
+      "cumulative_pull_requests": 1333
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2024-08-01",
+      "cumulative_pull_requests": 1520
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2024-09-01",
+      "cumulative_pull_requests": 1663
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2024-10-01",
+      "cumulative_pull_requests": 1822
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2024-11-01",
+      "cumulative_pull_requests": 1972
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2024-12-01",
+      "cumulative_pull_requests": 2089
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2025-01-01",
+      "cumulative_pull_requests": 2236
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2025-02-01",
+      "cumulative_pull_requests": 2539
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2025-03-01",
+      "cumulative_pull_requests": 2779
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2025-04-01",
+      "cumulative_pull_requests": 3075
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2025-05-01",
+      "cumulative_pull_requests": 3407
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2025-06-01",
+      "cumulative_pull_requests": 3716
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2025-07-01",
+      "cumulative_pull_requests": 3963
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2025-08-01",
+      "cumulative_pull_requests": 4221
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2025-09-01",
+      "cumulative_pull_requests": 4518
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2025-10-01",
+      "cumulative_pull_requests": 4820
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2025-11-01",
+      "cumulative_pull_requests": 5175
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2025-12-01",
+      "cumulative_pull_requests": 5460
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2026-01-01",
+      "cumulative_pull_requests": 5821
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2026-02-01",
+      "cumulative_pull_requests": 6287
+    },
+    {
+      "repo": "https://github.com/openclaw/openclaw",
+      "month": "2025-11-01",
+      "cumulative_pull_requests": 2
+    },
+    {
+      "repo": "https://github.com/openclaw/openclaw",
+      "month": "2025-12-01",
+      "cumulative_pull_requests": 31
+    },
+    {
+      "repo": "https://github.com/openclaw/openclaw",
+      "month": "2026-01-01",
+      "cumulative_pull_requests": 2862
+    },
+    {
+      "repo": "https://github.com/openclaw/openclaw",
+      "month": "2026-02-01",
+      "cumulative_pull_requests": 15538
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2024-03-01",
+      "cumulative_pull_requests": 308
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2024-04-01",
+      "cumulative_pull_requests": 386
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2024-05-01",
+      "cumulative_pull_requests": 444
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2024-06-01",
+      "cumulative_pull_requests": 590
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2024-07-01",
+      "cumulative_pull_requests": 806
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2024-08-01",
+      "cumulative_pull_requests": 994
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2024-09-01",
+      "cumulative_pull_requests": 1165
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2024-10-01",
+      "cumulative_pull_requests": 1369
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2024-11-01",
+      "cumulative_pull_requests": 1554
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2024-12-01",
+      "cumulative_pull_requests": 1780
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2025-01-01",
+      "cumulative_pull_requests": 2174
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2025-02-01",
+      "cumulative_pull_requests": 2443
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2025-03-01",
+      "cumulative_pull_requests": 2722
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2025-04-01",
+      "cumulative_pull_requests": 2997
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2025-05-01",
+      "cumulative_pull_requests": 3378
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2025-06-01",
+      "cumulative_pull_requests": 3788
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2025-07-01",
+      "cumulative_pull_requests": 4190
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2025-08-01",
+      "cumulative_pull_requests": 4462
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2025-09-01",
+      "cumulative_pull_requests": 4792
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2025-10-01",
+      "cumulative_pull_requests": 5069
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2025-11-01",
+      "cumulative_pull_requests": 5379
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2025-12-01",
+      "cumulative_pull_requests": 5842
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2026-01-01",
+      "cumulative_pull_requests": 6314
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2026-02-01",
+      "cumulative_pull_requests": 6794
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2024-10-01",
+      "cumulative_pull_requests": 26
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2024-11-01",
+      "cumulative_pull_requests": 97
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2024-12-01",
+      "cumulative_pull_requests": 238
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2025-01-01",
+      "cumulative_pull_requests": 366
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2025-02-01",
+      "cumulative_pull_requests": 463
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2025-03-01",
+      "cumulative_pull_requests": 614
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2025-04-01",
+      "cumulative_pull_requests": 754
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2025-05-01",
+      "cumulative_pull_requests": 878
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2025-06-01",
+      "cumulative_pull_requests": 983
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2025-07-01",
+      "cumulative_pull_requests": 1152
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2025-08-01",
+      "cumulative_pull_requests": 1361
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2025-09-01",
+      "cumulative_pull_requests": 1518
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2025-10-01",
+      "cumulative_pull_requests": 1654
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2025-11-01",
+      "cumulative_pull_requests": 1829
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2025-12-01",
+      "cumulative_pull_requests": 2003
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2026-01-01",
+      "cumulative_pull_requests": 2156
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2026-02-01",
+      "cumulative_pull_requests": 2361
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2024-03-01",
+      "cumulative_pull_requests": 2717
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2024-04-01",
+      "cumulative_pull_requests": 2865
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2024-05-01",
+      "cumulative_pull_requests": 3044
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2024-06-01",
+      "cumulative_pull_requests": 3210
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2024-07-01",
+      "cumulative_pull_requests": 3375
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2024-08-01",
+      "cumulative_pull_requests": 3518
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2024-09-01",
+      "cumulative_pull_requests": 3648
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2024-10-01",
+      "cumulative_pull_requests": 3784
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2024-11-01",
+      "cumulative_pull_requests": 3962
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2024-12-01",
+      "cumulative_pull_requests": 4083
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2025-01-01",
+      "cumulative_pull_requests": 4248
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2025-02-01",
+      "cumulative_pull_requests": 4380
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2025-03-01",
+      "cumulative_pull_requests": 4544
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2025-04-01",
+      "cumulative_pull_requests": 4687
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2025-05-01",
+      "cumulative_pull_requests": 4803
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2025-06-01",
+      "cumulative_pull_requests": 4932
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2025-07-01",
+      "cumulative_pull_requests": 5079
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2025-08-01",
+      "cumulative_pull_requests": 5266
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2025-09-01",
+      "cumulative_pull_requests": 5390
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2025-10-01",
+      "cumulative_pull_requests": 5517
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2025-11-01",
+      "cumulative_pull_requests": 5633
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2025-12-01",
+      "cumulative_pull_requests": 5809
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2026-01-01",
+      "cumulative_pull_requests": 5952
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2026-02-01",
+      "cumulative_pull_requests": 6162
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2024-03-01",
+      "cumulative_pull_requests": 4193
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2024-04-01",
+      "cumulative_pull_requests": 4542
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2024-05-01",
+      "cumulative_pull_requests": 4849
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2024-06-01",
+      "cumulative_pull_requests": 5136
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2024-07-01",
+      "cumulative_pull_requests": 5379
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2024-08-01",
+      "cumulative_pull_requests": 5713
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2024-09-01",
+      "cumulative_pull_requests": 5949
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2024-10-01",
+      "cumulative_pull_requests": 6151
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2024-11-01",
+      "cumulative_pull_requests": 6322
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2024-12-01",
+      "cumulative_pull_requests": 6484
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-01-01",
+      "cumulative_pull_requests": 6626
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-02-01",
+      "cumulative_pull_requests": 6768
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-03-01",
+      "cumulative_pull_requests": 6946
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-04-01",
+      "cumulative_pull_requests": 7079
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-05-01",
+      "cumulative_pull_requests": 7301
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-06-01",
+      "cumulative_pull_requests": 7490
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-07-01",
+      "cumulative_pull_requests": 7661
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-08-01",
+      "cumulative_pull_requests": 7781
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-09-01",
+      "cumulative_pull_requests": 7930
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-10-01",
+      "cumulative_pull_requests": 8071
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-11-01",
+      "cumulative_pull_requests": 8150
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-12-01",
+      "cumulative_pull_requests": 8232
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2026-01-01",
+      "cumulative_pull_requests": 8342
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2026-02-01",
+      "cumulative_pull_requests": 8521
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2024-03-01",
+      "cumulative_pull_requests": 393
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2024-04-01",
+      "cumulative_pull_requests": 485
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2024-05-01",
+      "cumulative_pull_requests": 554
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2024-06-01",
+      "cumulative_pull_requests": 608
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2024-07-01",
+      "cumulative_pull_requests": 648
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2024-08-01",
+      "cumulative_pull_requests": 689
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2024-09-01",
+      "cumulative_pull_requests": 753
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2024-10-01",
+      "cumulative_pull_requests": 859
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2024-11-01",
+      "cumulative_pull_requests": 949
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2024-12-01",
+      "cumulative_pull_requests": 1026
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2025-01-01",
+      "cumulative_pull_requests": 1074
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2025-02-01",
+      "cumulative_pull_requests": 1142
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2025-03-01",
+      "cumulative_pull_requests": 1232
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2025-04-01",
+      "cumulative_pull_requests": 1304
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2025-05-01",
+      "cumulative_pull_requests": 1410
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2025-06-01",
+      "cumulative_pull_requests": 1539
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2025-07-01",
+      "cumulative_pull_requests": 1608
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2025-08-01",
+      "cumulative_pull_requests": 1703
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2025-09-01",
+      "cumulative_pull_requests": 1771
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2025-10-01",
+      "cumulative_pull_requests": 1847
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2025-11-01",
+      "cumulative_pull_requests": 1894
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2025-12-01",
+      "cumulative_pull_requests": 1926
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2026-01-01",
+      "cumulative_pull_requests": 1989
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2026-02-01",
+      "cumulative_pull_requests": 2085
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2024-03-01",
+      "cumulative_pull_requests": 4394
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2024-04-01",
+      "cumulative_pull_requests": 4557
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2024-05-01",
+      "cumulative_pull_requests": 4770
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2024-06-01",
+      "cumulative_pull_requests": 4910
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2024-07-01",
+      "cumulative_pull_requests": 5039
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2024-08-01",
+      "cumulative_pull_requests": 5135
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2024-09-01",
+      "cumulative_pull_requests": 5221
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2024-10-01",
+      "cumulative_pull_requests": 5365
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2024-11-01",
+      "cumulative_pull_requests": 5518
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2024-12-01",
+      "cumulative_pull_requests": 5632
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2025-01-01",
+      "cumulative_pull_requests": 5793
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2025-02-01",
+      "cumulative_pull_requests": 5976
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2025-03-01",
+      "cumulative_pull_requests": 6103
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2025-04-01",
+      "cumulative_pull_requests": 6222
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2025-05-01",
+      "cumulative_pull_requests": 6366
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2025-06-01",
+      "cumulative_pull_requests": 6493
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2025-07-01",
+      "cumulative_pull_requests": 6613
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2025-08-01",
+      "cumulative_pull_requests": 6729
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2025-09-01",
+      "cumulative_pull_requests": 6853
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2025-10-01",
+      "cumulative_pull_requests": 7010
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2025-11-01",
+      "cumulative_pull_requests": 7136
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2025-12-01",
+      "cumulative_pull_requests": 7323
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2026-01-01",
+      "cumulative_pull_requests": 7571
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2026-02-01",
+      "cumulative_pull_requests": 7803
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2024-03-01",
+      "cumulative_pull_requests": 407
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2024-04-01",
+      "cumulative_pull_requests": 444
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2024-05-01",
+      "cumulative_pull_requests": 481
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2024-06-01",
+      "cumulative_pull_requests": 490
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2024-07-01",
+      "cumulative_pull_requests": 516
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2024-08-01",
+      "cumulative_pull_requests": 558
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2024-09-01",
+      "cumulative_pull_requests": 635
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2024-10-01",
+      "cumulative_pull_requests": 753
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2024-11-01",
+      "cumulative_pull_requests": 806
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2024-12-01",
+      "cumulative_pull_requests": 845
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2025-01-01",
+      "cumulative_pull_requests": 896
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2025-02-01",
+      "cumulative_pull_requests": 917
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2025-03-01",
+      "cumulative_pull_requests": 940
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2025-04-01",
+      "cumulative_pull_requests": 959
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2025-05-01",
+      "cumulative_pull_requests": 974
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2025-06-01",
+      "cumulative_pull_requests": 994
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2025-07-01",
+      "cumulative_pull_requests": 1032
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2025-08-01",
+      "cumulative_pull_requests": 1107
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2025-09-01",
+      "cumulative_pull_requests": 1173
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2025-10-01",
+      "cumulative_pull_requests": 1223
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2025-11-01",
+      "cumulative_pull_requests": 1267
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2025-12-01",
+      "cumulative_pull_requests": 1329
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2026-01-01",
+      "cumulative_pull_requests": 1349
+    },
+    {
+      "repo": "https://github.com/vibrantlabsai/ragas",
+      "month": "2026-02-01",
+      "cumulative_pull_requests": 1371
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2024-03-01",
+      "cumulative_pull_requests": 2224
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2024-04-01",
+      "cumulative_pull_requests": 2431
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2024-05-01",
+      "cumulative_pull_requests": 2656
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2024-06-01",
+      "cumulative_pull_requests": 2806
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2024-07-01",
+      "cumulative_pull_requests": 3015
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2024-08-01",
+      "cumulative_pull_requests": 3190
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2024-09-01",
+      "cumulative_pull_requests": 3376
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2024-10-01",
+      "cumulative_pull_requests": 3586
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2024-11-01",
+      "cumulative_pull_requests": 3903
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2024-12-01",
+      "cumulative_pull_requests": 4172
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2025-01-01",
+      "cumulative_pull_requests": 4464
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2025-02-01",
+      "cumulative_pull_requests": 4732
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2025-03-01",
+      "cumulative_pull_requests": 5008
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2025-04-01",
+      "cumulative_pull_requests": 5283
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2025-05-01",
+      "cumulative_pull_requests": 5612
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2025-06-01",
+      "cumulative_pull_requests": 5797
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2025-07-01",
+      "cumulative_pull_requests": 6039
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2025-08-01",
+      "cumulative_pull_requests": 6261
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2025-09-01",
+      "cumulative_pull_requests": 6554
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2025-10-01",
+      "cumulative_pull_requests": 6802
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2025-11-01",
+      "cumulative_pull_requests": 7032
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2025-12-01",
+      "cumulative_pull_requests": 7270
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2026-01-01",
+      "cumulative_pull_requests": 7497
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2026-02-01",
+      "cumulative_pull_requests": 7766
+    }
+  ]
+}

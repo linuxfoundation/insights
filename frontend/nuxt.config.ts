@@ -34,7 +34,12 @@ export default defineNuxtConfig({
   image,
   site,
   ogImage,
-  plugins: ['~/plugins/vue-query.ts', '~/plugins/analytics.ts', '~/plugins/canonical.ts'],
+  plugins: [
+    '~/plugins/vue-query.ts',
+    '~/plugins/analytics.ts',
+    '~/plugins/canonical.ts',
+    '~/plugins/intercom.ts',
+  ],
   css: ['~/assets/styles/main.scss'],
   tailwindcss,
   primevue,

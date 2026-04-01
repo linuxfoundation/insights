@@ -10,10 +10,11 @@ SPDX-License-Identifier: MIT
   >
     <div class="flex items-center">
       <router-link
+        v-if="data?.categoryGroupSlug"
         :to="{
           name: LfxRoutes.OPENSOURCEINDEX_GROUP,
           params: {
-            slug: data?.categoryGroupSlug || '',
+            slug: data.categoryGroupSlug,
           },
           query: {
             sort,

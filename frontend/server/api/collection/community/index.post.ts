@@ -20,6 +20,7 @@ import { checkGuardrails } from '~~/server/utils/guardrail';
  * - description (string, optional): Collection description
  * - isPrivate (boolean, optional): Whether the collection is private (default: false)
  * - projects (string[], optional): List of project IDs
+ * - repositoryUrls (string[], optional): List of repository URLs
  *
  * Response:
  * - 201: Created collection
@@ -38,6 +39,44 @@ export default defineEventHandler(async (event): Promise<CommunityCollection | E
 
   if (!body?.name?.trim()) {
     throw createError({ statusCode: 400, statusMessage: 'Name is required' });
+  }
+
+  if (body.projects !== undefined) {
+    if (!Array.isArray(body.projects) || body.projects.some((p) => typeof p !== 'string' || !p)) {
+      throw createError({
+        statusCode: 400,
+        statusMessage: 'projects must be an array of non-empty strings',
+      });
+    }
+
+    if (body.projects.length > 1000) {
+      throw createError({ statusCode: 400, statusMessage: 'projects cannot exceed 1000 items' });
+    }
+  }
+
+  if (body.repositoryUrls !== undefined) {
+    if (!Array.isArray(body.repositoryUrls)) {
+      throw createError({
+        statusCode: 400,
+        statusMessage: 'repositoryUrls must be an array of non-empty strings',
+      });
+    }
+
+    body.repositoryUrls = body.repositoryUrls.map((u) => (typeof u === 'string' ? u.trim() : u));
+
+    if (body.repositoryUrls.some((u) => typeof u !== 'string' || !u)) {
+      throw createError({
+        statusCode: 400,
+        statusMessage: 'repositoryUrls must be an array of non-empty strings',
+      });
+    }
+
+    if (body.repositoryUrls.length > 1000) {
+      throw createError({
+        statusCode: 400,
+        statusMessage: 'repositoryUrls cannot exceed 1000 items',
+      });
+    }
   }
 
   const cmDbPool = event.context.cmDbPool as Pool | undefined;
@@ -83,6 +122,7 @@ export default defineEventHandler(async (event): Promise<CommunityCollection | E
       isPrivate: body.isPrivate,
       ssoUserId: ssoUser.id,
       projects: body.projects,
+      repositoryUrls: body.repositoryUrls,
     });
 
     setResponseStatus(event, 201);

@@ -25,6 +25,10 @@ SPDX-License-Identifier: MIT
         label="Featured"
       />
       <lfx-dropdown-item
+        value="likeCount_desc"
+        label="Most liked"
+      />
+      <lfx-dropdown-item
         value="projectCount_desc"
         label="Most projects"
       />

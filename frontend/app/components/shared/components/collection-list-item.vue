@@ -62,12 +62,13 @@ SPDX-License-Identifier: MIT
           </span>
         </div>
         <div
-          v-if="showLikeCount && isLfInsightsTeamMember"
+          v-if="showLikeCount && !!user"
           class="ml-4"
         >
           <like-button
             :collection="props.collection"
             :variant="props.variant"
+            :show-unlike-icon="props.showUnlikeIcon"
             @updated="handleLikeUpdated"
           />
         </div>
@@ -83,7 +84,7 @@ SPDX-License-Identifier: MIT
               class="!p-2"
             />
           </template>
-          <template v-if="props.variant === 'my-collections' && isLfInsightsTeamMember">
+          <template v-if="props.variant === 'my-collections' && !!user">
             <lfx-dropdown-item @click="handleEditCollection()">
               <lfx-icon
                 name="pencil"
@@ -109,7 +110,7 @@ SPDX-License-Identifier: MIT
             />
             Duplicate
           </lfx-dropdown-item>
-          <template v-if="props.variant === 'my-collections' && isLfInsightsTeamMember">
+          <template v-if="props.variant === 'my-collections' && !!user">
             <lfx-dropdown-item @click="handleDeleteCollection()">
               <lfx-icon
                 name="trash"
@@ -128,7 +129,6 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { useRouter } from 'nuxt/app';
 import { storeToRefs } from 'pinia';
-import { computed } from 'vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
 import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
@@ -162,14 +162,14 @@ const props = withDefaults(
     collection: Collection;
     showLikeCount?: boolean;
     variant?: CollectionType;
+    showUnlikeIcon?: boolean;
   }>(),
   {
     showLikeCount: false,
     variant: 'curated',
+    showUnlikeIcon: false,
   },
 );
-
-const isLfInsightsTeamMember = computed(() => user.value?.isLfInsightsTeamMember || false);
 
 const handleShare = () => {
   const title = `LFX Insights | Collections - ${props.collection.name}`;
