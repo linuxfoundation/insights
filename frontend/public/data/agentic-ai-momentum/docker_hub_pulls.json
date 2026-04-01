@@ -1,0 +1,806 @@
+{
+  "metadata": {
+    "fetched_at": "2026-03-27T10:27:57.228959",
+    "schema": {
+      "name": "docker_hub_pulls",
+      "description": "Monthly Docker Hub pull counts from Tinybird packageDownloads datasource.",
+      "fields": [
+        {
+          "name": "repo",
+          "type": "string",
+          "description": "Repository identifier",
+          "optional": false
+        },
+        {
+          "name": "month",
+          "type": "date",
+          "description": "Month as YYYY-MM-DD",
+          "optional": false
+        },
+        {
+          "name": "pull_count",
+          "type": "number",
+          "description": "Sum of dockerDownloadsCount across all Docker PURLs for the month",
+          "optional": false
+        }
+      ]
+    }
+  },
+  "data": [
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2025-06-01",
+      "pull_count": 16
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2025-07-01",
+      "pull_count": 16
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2025-08-01",
+      "pull_count": 16
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2025-09-01",
+      "pull_count": 16
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2025-10-01",
+      "pull_count": 16
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2025-11-01",
+      "pull_count": 16
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2025-12-01",
+      "pull_count": 16
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2026-01-01",
+      "pull_count": 16
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2025-06-01",
+      "pull_count": 32103
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2025-07-01",
+      "pull_count": 32103
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2025-08-01",
+      "pull_count": 32103
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2025-09-01",
+      "pull_count": 32103
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2025-10-01",
+      "pull_count": 64206
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2025-11-01",
+      "pull_count": 32103
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2026-02-01",
+      "pull_count": 32103
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2026-03-01",
+      "pull_count": 32103
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "month": "2025-06-01",
+      "pull_count": 1597
+    },
+    {
+      "repo": "https://github.com/OpenInterpreter/open-interpreter",
+      "month": "2026-03-01",
+      "pull_count": 46
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2025-06-01",
+      "pull_count": 109000279
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2025-07-01",
+      "pull_count": 108383784
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2025-08-01",
+      "pull_count": 108383784
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2025-09-01",
+      "pull_count": 108383784
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2025-10-01",
+      "pull_count": 216765189
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2025-11-01",
+      "pull_count": 108383784
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2025-12-01",
+      "pull_count": 108383784
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2026-01-01",
+      "pull_count": 108383784
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2026-02-01",
+      "pull_count": 2379
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2026-03-01",
+      "pull_count": 2379
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-06-01",
+      "pull_count": 14183521
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-07-01",
+      "pull_count": 14183521
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-08-01",
+      "pull_count": 14183521
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-09-01",
+      "pull_count": 14183521
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-10-01",
+      "pull_count": 14183521
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-11-01",
+      "pull_count": 14183521
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-12-01",
+      "pull_count": 14183521
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2026-01-01",
+      "pull_count": 14183521
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2026-02-01",
+      "pull_count": 14183521
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2026-03-01",
+      "pull_count": 14183521
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2026-02-01",
+      "pull_count": 17682614
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2026-03-01",
+      "pull_count": 17682614
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2025-06-01",
+      "pull_count": 9
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2025-06-01",
+      "pull_count": 66617
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2025-06-01",
+      "pull_count": 865
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2025-07-01",
+      "pull_count": 865
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2025-08-01",
+      "pull_count": 865
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2025-09-01",
+      "pull_count": 865
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2025-10-01",
+      "pull_count": 865
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2025-11-01",
+      "pull_count": 865
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2025-12-01",
+      "pull_count": 865
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2026-01-01",
+      "pull_count": 865
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2026-02-01",
+      "pull_count": 865
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2026-03-01",
+      "pull_count": 865
+    },
+    {
+      "repo": "https://github.com/e2b-dev/code-interpreter",
+      "month": "2026-03-01",
+      "pull_count": 5038550
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2025-06-01",
+      "pull_count": 44559042
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2025-07-01",
+      "pull_count": 44558964
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2025-08-01",
+      "pull_count": 44558964
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2025-09-01",
+      "pull_count": 44558964
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2025-10-01",
+      "pull_count": 89117928
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2025-11-01",
+      "pull_count": 44558964
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2025-12-01",
+      "pull_count": 44558964
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2026-01-01",
+      "pull_count": 44558964
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2026-02-01",
+      "pull_count": 89117928
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2026-03-01",
+      "pull_count": 44558964
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-06-01",
+      "pull_count": 140380
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-07-01",
+      "pull_count": 140380
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-08-01",
+      "pull_count": 140380
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-09-01",
+      "pull_count": 140380
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-10-01",
+      "pull_count": 140380
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-11-01",
+      "pull_count": 140380
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-12-01",
+      "pull_count": 140380
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2026-01-01",
+      "pull_count": 140380
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2026-02-01",
+      "pull_count": 140380
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2026-03-01",
+      "pull_count": 140380
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2025-06-01",
+      "pull_count": 18779237
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2025-07-01",
+      "pull_count": 14945557
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2025-08-01",
+      "pull_count": 14943377
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2025-09-01",
+      "pull_count": 14945893
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2025-10-01",
+      "pull_count": 14943545
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2025-11-01",
+      "pull_count": 14943545
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2025-12-01",
+      "pull_count": 14940861
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2026-01-01",
+      "pull_count": 14943545
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2026-02-01",
+      "pull_count": 14943713
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2026-03-01",
+      "pull_count": 14943713
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2025-06-01",
+      "pull_count": 54924
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2025-08-01",
+      "pull_count": 168
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2025-09-01",
+      "pull_count": 168
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2025-10-01",
+      "pull_count": 336
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2025-11-01",
+      "pull_count": 168
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2025-12-01",
+      "pull_count": 168
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2026-01-01",
+      "pull_count": 168
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2026-02-01",
+      "pull_count": 168
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2026-03-01",
+      "pull_count": 168
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2025-06-01",
+      "pull_count": 43729
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-06-01",
+      "pull_count": 1660270266
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-07-01",
+      "pull_count": 1660270266
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-08-01",
+      "pull_count": 1660270266
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-09-01",
+      "pull_count": 1660270266
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-10-01",
+      "pull_count": 1660270266
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-11-01",
+      "pull_count": 1165035025
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-12-01",
+      "pull_count": 1165035025
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2026-01-01",
+      "pull_count": 1165035025
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2026-02-01",
+      "pull_count": 1660270266
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2026-03-01",
+      "pull_count": 1660270266
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2026-03-01",
+      "pull_count": 168
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2025-06-01",
+      "pull_count": 11414968
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2025-07-01",
+      "pull_count": 11414968
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2025-08-01",
+      "pull_count": 11414968
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2025-09-01",
+      "pull_count": 11414968
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2025-10-01",
+      "pull_count": 11414968
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2025-11-01",
+      "pull_count": 11414968
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2025-12-01",
+      "pull_count": 11414968
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2026-01-01",
+      "pull_count": 11414968
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2026-02-01",
+      "pull_count": 11414968
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2026-03-01",
+      "pull_count": 11414968
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2025-08-01",
+      "pull_count": 168
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2025-09-01",
+      "pull_count": 168
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2025-10-01",
+      "pull_count": 168
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2025-11-01",
+      "pull_count": 168
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2025-12-01",
+      "pull_count": 168
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2026-01-01",
+      "pull_count": 168
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2026-02-01",
+      "pull_count": 168
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2026-03-01",
+      "pull_count": 168
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2025-06-01",
+      "pull_count": 23282367
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2025-07-01",
+      "pull_count": 23282367
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2025-08-01",
+      "pull_count": 23282367
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2025-09-01",
+      "pull_count": 23282367
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2025-10-01",
+      "pull_count": 23282367
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2025-11-01",
+      "pull_count": 46564734
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2025-12-01",
+      "pull_count": 23282367
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2026-01-01",
+      "pull_count": 23282367
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2026-02-01",
+      "pull_count": 93129468
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2026-03-01",
+      "pull_count": 23282367
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-06-01",
+      "pull_count": 5134426
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-07-01",
+      "pull_count": 637410
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-08-01",
+      "pull_count": 637410
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-09-01",
+      "pull_count": 637410
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-10-01",
+      "pull_count": 637410
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-11-01",
+      "pull_count": 637410
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-12-01",
+      "pull_count": 637410
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2026-01-01",
+      "pull_count": 637410
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2026-02-01",
+      "pull_count": 637410
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2026-03-01",
+      "pull_count": 644394
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2025-06-01",
+      "pull_count": 12421
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2026-02-01",
+      "pull_count": 2754978
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2026-03-01",
+      "pull_count": 2754978
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2025-06-01",
+      "pull_count": 14658
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2025-07-01",
+      "pull_count": 14658
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2025-08-01",
+      "pull_count": 14658
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2025-09-01",
+      "pull_count": 14658
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2025-10-01",
+      "pull_count": 14658
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2025-11-01",
+      "pull_count": 14658
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2025-12-01",
+      "pull_count": 14658
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2026-01-01",
+      "pull_count": 14658
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2026-02-01",
+      "pull_count": 14658
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2026-03-01",
+      "pull_count": 14658
+    }
+  ]
+}

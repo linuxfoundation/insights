@@ -188,6 +188,7 @@ const createCollection = async () => {
 
   try {
     await COLLECTIONS_API_SERVICE.createCollection(payload);
+    showToast('Collection created successfully!', ToastTypesEnum.positive);
     emit('created', form.value);
     isModalOpen.value = false;
   } catch (error: unknown) {

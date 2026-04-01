@@ -3,6 +3,7 @@
 
 import { getCookie } from 'h3';
 import jwt from 'jsonwebtoken';
+import { jwtDecode } from 'jwt-decode';
 import type { DecodedOidcToken } from '~~/types/auth/auth-jwt.types';
 
 export default defineEventHandler(async (event) => {
@@ -51,6 +52,19 @@ export default defineEventHandler(async (event) => {
       algorithms: ['HS256'],
     }) as DecodedOidcToken;
 
+    // Extract Intercom claims from the original Auth0 ID token
+    let intercomJwt: string | undefined;
+    let username: string | undefined;
+    if (decodedToken.original_id_token) {
+      try {
+        const idTokenClaims = jwtDecode<Record<string, string>>(decodedToken.original_id_token);
+        intercomJwt = idTokenClaims['http://lfx.dev/claims/intercom'];
+        username = idTokenClaims['https://sso.linuxfoundation.org/claims/username'];
+      } catch (error) {
+        console.error('Intercom: Boot failed', error);
+      }
+    }
+
     return {
       isAuthenticated: true,
       user: {
@@ -62,6 +76,8 @@ export default defineEventHandler(async (event) => {
         updated_at: decodedToken.updated_at,
         hasLfxInsightsPermission: decodedToken.hasLfxInsightsPermission,
         isLfInsightsTeamMember: decodedToken.isLfInsightsTeamMember,
+        username,
+        intercomJwt,
       },
       token: decodedToken.original_id_token,
     };

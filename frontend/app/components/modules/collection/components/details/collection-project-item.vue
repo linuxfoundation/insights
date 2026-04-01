@@ -21,37 +21,46 @@ SPDX-License-Identifier: MIT
         type="project"
       />
     </div>
-    <div class="w-2/12">
-      <lfx-popover
-        placement="top"
-        trigger-event="hover"
-        :allow-pass-through="true"
-      >
-        <lfx-health-score :score="project.healthScore" />
-        <template #content>
-          <lfx-health-score-details :project="props.project" />
-        </template>
-      </lfx-popover>
-    </div>
-    <div class="w-1/12">
-      {{ formatNumber(props.project.contributorCount) }}
-    </div>
-    <div class="w-1/12">${{ formatNumberShort(props.project.softwareValue || 0) }}</div>
-    <div class="w-3/12">
-      <lfx-popover
-        placement="top"
-        trigger-event="hover"
-        :allow-pass-through="true"
-      >
-        <lfx-dependency-column :project="props.project" />
-        <template #content>
-          <lfx-dependency-details :project="props.project" />
-        </template>
-      </lfx-popover>
-    </div>
-    <div class="w-2/12">
-      <lfx-badge-details :project="props.project" />
-    </div>
+    <template v-if="isOnboarded">
+      <div class="w-2/12">
+        <lfx-popover
+          placement="top"
+          trigger-event="hover"
+          :allow-pass-through="true"
+        >
+          <lfx-health-score :score="project.healthScore" />
+          <template #content>
+            <lfx-health-score-details :project="props.project" />
+          </template>
+        </lfx-popover>
+      </div>
+      <div class="w-1/12">
+        {{ formatNumber(props.project.contributorCount) }}
+      </div>
+      <div class="w-1/12">${{ formatNumberShort(props.project.softwareValue || 0) }}</div>
+      <div class="w-3/12">
+        <lfx-popover
+          placement="top"
+          trigger-event="hover"
+          :allow-pass-through="true"
+        >
+          <lfx-dependency-column :project="props.project" />
+          <template #content>
+            <lfx-dependency-details :project="props.project" />
+          </template>
+        </lfx-popover>
+      </div>
+      <div class="w-2/12">
+        <lfx-badge-details :project="props.project" />
+      </div>
+    </template>
+    <template v-else>
+      <div class="w-2/12 text-neutral-400">-</div>
+      <div class="w-1/12 text-neutral-400">-</div>
+      <div class="w-1/12 text-neutral-400">-</div>
+      <div class="w-3/12 text-neutral-400">-</div>
+      <div class="w-2/12 text-neutral-400">-</div>
+    </template>
   </div>
 </template>
 
@@ -79,6 +88,10 @@ const router = useRouter();
 // TODO: waiting on the backend to provide this
 const status = computed(() => {
   return 'active';
+});
+
+const isOnboarded = computed(() => {
+  return props.project.contributorCount > 0 || props.project.organizationCount > 0;
 });
 
 const navigateToProject = (slug: string) => {

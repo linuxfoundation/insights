@@ -1,0 +1,86 @@
+<!--
+Copyright (c) 2025 The Linux Foundation and each contributor.
+SPDX-License-Identifier: MIT
+-->
+<template>
+  <div class="flex flex-col gap-6 items-center pt-6 w-full">
+    <div class="flex flex-col gap-2 items-start w-full">
+      <p class="text-base font-bold leading-6 text-neutral-900">Recent vulnerabilities</p>
+
+      <!-- Error state or empty state -->
+      <lfx-vulnerabilities-empty v-if="error || isEmpty" />
+
+      <!-- Data display -->
+      <template v-else>
+        <lfx-project-vulnerability-table-header />
+        <lfx-project-vulnerability-table
+          :vulnerabilities="data || []"
+          :is-loading="isLoading"
+          :is-fetching-next-page="false"
+          :load-count="5"
+        />
+      </template>
+
+      <!-- Empty state -->
+      <div
+        v-if="!isLoading && !data"
+        class="flex items-center justify-center py-10 w-full"
+      >
+        <p class="text-neutral-500 text-sm">No recent vulnerabilities</p>
+      </div>
+    </div>
+
+    <!-- View More Button -->
+    <lfx-button
+      v-if="props.showViewMore && data && data.length > 0 && !isLoading"
+      type="transparent"
+      button-style="pill"
+      label="View more"
+      @click="emit('viewMore')"
+    />
+  </div>
+</template>
+
+<script setup lang="ts">
+import { computed } from 'vue';
+import LfxProjectVulnerabilityTableHeader from './vulnerability-table-header.vue';
+import LfxProjectVulnerabilityTable from './vulnerability-table.vue';
+import LfxVulnerabilitiesEmpty from './vulnerabilities-empty.vue';
+import LfxButton from '~/components/uikit/button/button.vue';
+import {
+  VULNERABILITY_API_SERVICE,
+  type VulnerabilitiesQueryParams,
+} from '~/components/modules/project/services/vulnerability.api.service';
+
+const props = withDefaults(
+  defineProps<{
+    params: VulnerabilitiesQueryParams;
+    showViewMore?: boolean;
+  }>(),
+  {
+    showViewMore: true,
+  },
+);
+
+const queryParams = computed(() => props.params);
+
+const { data, error, isLoading } = VULNERABILITY_API_SERVICE.fetchRecentVulnerabilities(queryParams);
+
+const isEmpty = computed(() => {
+  if (isLoading.value) {
+    return false;
+  }
+
+  return data.value?.length === 0;
+});
+
+const emit = defineEmits<{
+  (e: 'viewMore'): void;
+}>();
+</script>
+
+<script lang="ts">
+export default {
+  name: 'LfxProjectRecentVulnerabilities',
+};
+</script>

@@ -23,7 +23,7 @@ SPDX-License-Identifier: MIT
   </div>
 
   <section>
-    <div class="container py-3 flex flex-col">
+    <div class="container pt-6 pb-3 flex flex-col">
       <div
         v-if="flatData.length"
         :class="classDisplay"
@@ -45,6 +45,7 @@ SPDX-License-Identifier: MIT
             :collection="collection"
             :variant="props.type"
             @deleted="refreshList"
+            @updated="refreshList"
           />
         </template>
       </div>
@@ -52,6 +53,7 @@ SPDX-License-Identifier: MIT
       <div
         v-if="isPending || isFetchingNextPage"
         :class="classDisplay"
+        class="pt-6"
       >
         <template v-if="view === 'list'">
           <lfx-collection-list-item-loading
@@ -121,6 +123,7 @@ import type { Collection, CollectionType } from '~~/types/collection';
 import { useBannerStore } from '~/components/shared/store/banner.store';
 import { useAuthStore } from '~/components/modules/auth/store/auth.store';
 import { useCollectionsStore } from '~/components/modules/collection/store/collections.store';
+import { useLikeCounts } from '~/components/modules/collection/composables/useLikeCounts';
 
 const props = defineProps<{
   type?: CollectionType;
@@ -157,6 +160,9 @@ const flatData = computed(() =>
     data.value?.pages.flatMap((page: Pagination<Collection>) => page.data) || [],
   ),
 );
+
+const collectionIds = computed(() => (props.type !== 'my-collections' ? flatData.value.map((c) => c.id) : []));
+useLikeCounts(collectionIds);
 
 const classDisplay = computed(() => {
   if (view.value === 'grid') {
