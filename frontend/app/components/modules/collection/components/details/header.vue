@@ -418,7 +418,7 @@ const handleDelete = () => {
 
 const invalidateMyCollections = () => {
   queryClient.invalidateQueries({
-    queryKey: [TanstackKey.MY_COLLECTIONS, 'starred_desc', undefined, 99, undefined, user.value?.sub],
+    queryKey: [TanstackKey.MY_COLLECTIONS],
   });
 };
 </script>
