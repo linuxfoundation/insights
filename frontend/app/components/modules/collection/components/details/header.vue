@@ -284,10 +284,13 @@ import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
 import { useConfirmStore } from '~/components/shared/modules/confirm/store/confirm.store';
 import { TanstackKey } from '~/components/shared/types/tanstack';
 import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
+import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
+import useToastService from '~/components/uikit/toast/toast.service';
 
 const { openEditModal } = useEditCollectionStore();
 const { openDuplicateModal } = useDuplicateCollectionStore();
 const { openConfirmModal } = useConfirmStore();
+const { showToast } = useToastService();
 const queryClient = useQueryClient();
 
 const authStore = useAuthStore();
@@ -398,21 +401,28 @@ const handleClone = () => {
 
 const handleDelete = () => {
   if (props.collection && !isDeleting.value) {
-    openConfirmModal({
-      title: 'Delete collection',
-      message: `Are you sure you want to delete this collection?`,
-      confirmLabel: 'Delete',
-      cancelLabel: 'Cancel',
-    }).then(async (result) => {
-      if (result) {
-        isDeleting.value = true;
-        await COLLECTIONS_API_SERVICE.deleteCollection(props.collection!.id);
+    try {
+      openConfirmModal({
+        title: 'Delete collection',
+        message: `Are you sure you want to delete this collection?`,
+        confirmLabel: 'Delete',
+        cancelLabel: 'Cancel',
+      }).then(async (result) => {
+        if (result) {
+          isDeleting.value = true;
+          await COLLECTIONS_API_SERVICE.deleteCollection(props.collection!.id);
 
-        invalidateMyCollections();
-        isDeleting.value = false;
-        router.push({ name: LfxRoutes.COLLECTIONS_MY_COLLECTIONS });
-      }
-    });
+          invalidateMyCollections();
+          isDeleting.value = false;
+          router.push({ name: LfxRoutes.COLLECTIONS_MY_COLLECTIONS });
+        }
+      });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Failed to delete collection';
+      showToast(message, ToastTypesEnum.negative);
+    } finally {
+      isDeleting.value = false;
+    }
   }
 };
 

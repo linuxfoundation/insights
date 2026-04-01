@@ -23,6 +23,12 @@ export const useConfirmStore = defineStore('confirm', () => {
   const resolvePromise = ref<((value: boolean) => void) | null>(null);
 
   const openConfirmModal = (options: ConfirmOptions): Promise<boolean> => {
+    // Auto-cancel any pending confirm to prevent orphaned Promises
+    if (resolvePromise.value) {
+      resolvePromise.value(false);
+      resolvePromise.value = null;
+    }
+
     confirmOptions.value = { ...defaultOptions, ...options };
     isConfirmModalOpen.value = true;
 
