@@ -503,6 +503,7 @@ class CollectionsApiService {
         return nextPage < totalPages ? nextPage : null;
       },
       initialPageParam: 0,
+      enabled: computed(() => params.value.slug !== ''),
     });
   }
 
