@@ -4,129 +4,137 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <div class="container pt-4 md:pt-10 flex flex-col gap-8">
-    <div
-      v-if="hasSelectedArchivedRepos && !isFetching"
-      class="flex items-center justify-center gap-2"
-    >
-      <hr class="grow border-t border-neutral-200" />
-      <lfx-repos-exclusion-footer page-content="security" />
-      <hr class="grow border-t border-neutral-200" />
-    </div>
-    <lfx-card class="p-4 sm:p-6">
-      <lfx-project-security-control-assessment-head />
-
-      <div class="flex md:gap-8 gap-6 md:flex-row flex-col-reverse py-4">
-        <div class="md:w-3/4 w-full md:border-r border-neutral-200 pr-6 sm:pr-8">
-          <!-- Disclaimer for aggregated view -->
-          <div
-            v-if="!isRepository && !isArchived"
-            class="p-3 bg-neutral-50 border-y border-neutral-100 flex items-center gap-1.5 rounded-md"
-          >
-            <lfx-icon
-              name="info-circle"
-              :size="14"
-              class="text-neutral-500"
-            />
-            <p class="text-body-2 text-neutral-500 font-semibold">
-              You’re viewing an aggregated score and controls assessment for the entire project. For a detailed
-              analysis,
-              <span
-                class="cursor-pointer underline decoration-dotted"
-                @click="isSearchRepoModalOpen = true"
-                >choose a specific repository.</span
-              >
-            </p>
-          </div>
-          <div>
-            <!-- Show spinner when loading -->
-            <div
-              v-if="isFetching"
-              class="pt-5"
-            >
-              <div class="flex flex-col items-center justify-center py-20">
-                <lfx-spinner
-                  :size="40"
-                  type="light"
-                  class="text-neutral-300"
-                />
-                <p class="text-neutral-500 text-center text-body-1 pt-5">Loading controls assessment...</p>
-              </div>
-            </div>
-
-            <!-- show if all repos are archived -->
-            <lfx-empty-state
-              v-else-if="isArchived"
-              icon="archive"
-              :title="emptyStateTitle"
-              :description="emptyStateDescription"
-            />
-
-            <!-- Show if no data available -->
-            <div
-              v-else-if="data?.length === 0 || error"
-              class="pt-5 border-t border-neutral-100"
-            >
-              <div class="flex flex-col items-center justify-center py-20">
-                <lfx-icon
-                  name="eyes"
-                  class="text-neutral-300"
-                  :size="40"
-                />
-                <p class="text-neutral-500 text-center text-body-1 pt-5">
-                  No data available to perform controls assessment
-                </p>
-              </div>
-            </div>
-            <div v-else>
-              <!-- Display checks -->
-
-              <lfx-accordion
-                v-if="isRepository"
-                v-model="accordion"
-              >
-                <lfx-project-security-evaluation-section-accordion
-                  v-for="(checks, title) in groupedData"
-                  :key="title"
-                  :title="title"
-                  :checks="checks"
-                  :tooltip="
-                    isRepository ? 'Category success rate' : 'Average category success rate of all repositories'
-                  "
-                >
-                  <template
-                    v-for="check in checks"
-                    :key="check.controlId"
-                  >
-                    <lfx-project-security-evaluation-assesment
-                      v-for="assessment in check.assessments"
-                      :key="assessment.requirementId"
-                      :assessment="assessment"
-                    />
-                  </template>
-                </lfx-project-security-evaluation-section-accordion>
-              </lfx-accordion>
-
-              <template v-else>
-                <lfx-project-security-evaluation-section-row
-                  v-for="(checks, title) in groupedData"
-                  :key="title"
-                  :title="title"
-                  :checks="checks"
-                  :tooltip="
-                    isRepository ? 'Category success rate' : 'Average category success rate of all repositories'
-                  "
-                  @open-repos-eval-modal="openReposEvalModal"
-                />
-              </template>
-            </div>
-          </div>
-        </div>
-
-        <div class="md:w-1/4 md:block hidden">
-          <lfx-project-security-generate-yaml-section />
-        </div>
+    <template v-if="showSecurityAssessment">
+      <div
+        v-if="hasSelectedArchivedRepos && !isFetching"
+        class="flex items-center justify-center gap-2"
+      >
+        <hr class="grow border-t border-neutral-200" />
+        <lfx-repos-exclusion-footer page-content="security" />
+        <hr class="grow border-t border-neutral-200" />
       </div>
-    </lfx-card>
+      <lfx-card class="p-4 sm:p-6">
+        <lfx-project-security-control-assessment-head />
+
+        <div class="flex md:gap-8 gap-6 md:flex-row flex-col-reverse py-4">
+          <div class="md:w-3/4 w-full md:border-r border-neutral-200 pr-6 sm:pr-8">
+            <!-- Disclaimer for aggregated view -->
+            <div
+              v-if="!isRepository && !isArchived"
+              class="p-3 bg-neutral-50 border-y border-neutral-100 flex items-center gap-1.5 rounded-md"
+            >
+              <lfx-icon
+                name="info-circle"
+                :size="14"
+                class="text-neutral-500"
+              />
+              <p class="text-body-2 text-neutral-500 font-semibold">
+                You’re viewing an aggregated score and controls assessment for the entire project. For a detailed
+                analysis,
+                <span
+                  class="cursor-pointer underline decoration-dotted"
+                  @click="isSearchRepoModalOpen = true"
+                  >choose a specific repository.</span
+                >
+              </p>
+            </div>
+            <div>
+              <!-- Show spinner when loading -->
+              <div
+                v-if="isFetching"
+                class="pt-5"
+              >
+                <div class="flex flex-col items-center justify-center py-20">
+                  <lfx-spinner
+                    :size="40"
+                    type="light"
+                    class="text-neutral-300"
+                  />
+                  <p class="text-neutral-500 text-center text-body-1 pt-5">Loading controls assessment...</p>
+                </div>
+              </div>
+
+              <!-- show if all repos are archived -->
+              <lfx-empty-state
+                v-else-if="isArchived"
+                icon="archive"
+                :title="emptyStateTitle"
+                :description="emptyStateDescription"
+              />
+
+              <!-- Show if no data available -->
+              <div
+                v-else-if="data?.length === 0 || error"
+                class="pt-5 border-t border-neutral-100"
+              >
+                <div class="flex flex-col items-center justify-center py-20">
+                  <lfx-icon
+                    name="eyes"
+                    class="text-neutral-300"
+                    :size="40"
+                  />
+                  <p class="text-neutral-500 text-center text-body-1 pt-5">
+                    No data available to perform controls assessment
+                  </p>
+                </div>
+              </div>
+              <div v-else>
+                <!-- Display checks -->
+
+                <lfx-accordion
+                  v-if="isRepository"
+                  v-model="accordion"
+                >
+                  <lfx-project-security-evaluation-section-accordion
+                    v-for="(checks, title) in groupedData"
+                    :key="title"
+                    :title="title"
+                    :checks="checks"
+                    :tooltip="
+                      isRepository ? 'Category success rate' : 'Average category success rate of all repositories'
+                    "
+                  >
+                    <template
+                      v-for="check in checks"
+                      :key="check.controlId"
+                    >
+                      <lfx-project-security-evaluation-assesment
+                        v-for="assessment in check.assessments"
+                        :key="assessment.requirementId"
+                        :assessment="assessment"
+                      />
+                    </template>
+                  </lfx-project-security-evaluation-section-accordion>
+                </lfx-accordion>
+
+                <template v-else>
+                  <lfx-project-security-evaluation-section-row
+                    v-for="(checks, title) in groupedData"
+                    :key="title"
+                    :title="title"
+                    :checks="checks"
+                    :tooltip="
+                      isRepository ? 'Category success rate' : 'Average category success rate of all repositories'
+                    "
+                    @open-repos-eval-modal="openReposEvalModal"
+                  />
+                </template>
+              </div>
+            </div>
+          </div>
+
+          <div class="md:w-1/4 md:block hidden">
+            <lfx-project-security-generate-yaml-section />
+          </div>
+        </div>
+      </lfx-card>
+    </template>
+
+    <lfx-project-vulnerabilities-section
+      v-if="isAuthenticated"
+      @choose-repository="isSearchRepoModalOpen = true"
+    />
+    <lfx-auth-wall-vulnerabilities v-else />
   </div>
 
   <lfx-project-repository-switch
@@ -165,14 +173,18 @@ import LfxProjectSecurityControlAssessmentHead from '~/components/modules/projec
 import LfxProjectRepositorySwitch from '~/components/modules/project/components/shared/header/repository-switch.vue';
 import LfxProjectSecurityReposEvalModal from '~/components/modules/project/components/security/repos-eval-modal.vue';
 import { SECURITY_API_SERVICE } from '~/components/modules/project/services/security.api.service';
+import LfxProjectVulnerabilitiesSection from '~/components/modules/project/components/vulnerabilities/vulnerabilities-section.vue';
+import { useAuthStore } from '~/components/modules/auth/store/auth.store';
+import LfxAuthWallVulnerabilities from '~/components/modules/project/components/vulnerabilities/auth-wall-vulnerabilities.vue';
 
 const isSearchRepoModalOpen = ref(false);
 
 const route = useRoute();
 const { name } = route.params;
 
-const { selectedReposValues, isArchived, emptyStateTitle, emptyStateDescription, hasSelectedArchivedRepos } =
+const { selectedReposValues, project, isArchived, emptyStateTitle, emptyStateDescription, hasSelectedArchivedRepos } =
   storeToRefs(useProjectStore());
+const { isAuthenticated } = storeToRefs(useAuthStore());
 
 const isRepository = computed(() => !!name);
 const isReposEvalModalOpen = ref(false);
@@ -183,6 +195,10 @@ const params = computed(() => ({
   projectSlug: route.params.slug as string,
   repos: selectedReposValues.value || undefined,
 }));
+
+const showSecurityAssessment = computed(() =>
+  project.value?.connectedPlatforms?.some((platform) => platform.toLowerCase().includes('github')),
+);
 
 const { data, suspense, error, isFetching } = SECURITY_API_SERVICE.fetchSecurityAssessment(params);
 

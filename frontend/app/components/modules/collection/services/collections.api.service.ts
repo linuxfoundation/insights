@@ -15,6 +15,7 @@ import type { ProjectInsights } from '~~/types/project';
 import { TanstackKey } from '~/components/shared/types/tanstack';
 import type { SearchProject, SearchResults } from '~~/types/search';
 import { type User } from '~~/types/auth/auth-user.types';
+import { CollectionTypeEnum } from '~/components/modules/collection/config/collection-type-config';
 
 export interface CategoryGroupOptions {
   value: string;
@@ -220,10 +221,10 @@ class CollectionsApiService {
   }
 
   fetchDiscoveryCuratedCollections() {
-    const params = this.discoveryParams('curated');
+    const params = this.discoveryParams(CollectionTypeEnum.CURATED);
     const queryKey = computed(() => [
       TanstackKey.COLLECTION_DISCOVERY,
-      'curated',
+      CollectionTypeEnum.CURATED,
       params.sort,
       params.pageSize,
       params.type,
@@ -238,10 +239,10 @@ class CollectionsApiService {
   }
 
   fetchDiscoveryCommunityCollections() {
-    const params = this.discoveryParams('community');
+    const params = this.discoveryParams(CollectionTypeEnum.COMMUNITY);
     const queryKey = computed(() => [
       TanstackKey.COLLECTION_DISCOVERY,
-      'community',
+      CollectionTypeEnum.COMMUNITY,
       params.sort,
       params.pageSize,
       params.type,
@@ -256,10 +257,10 @@ class CollectionsApiService {
   }
 
   fetchDiscoveryMyCollections(user: User | null) {
-    const params = this.discoveryParams('my-collections');
+    const params = this.discoveryParams(CollectionTypeEnum.MY_COLLECTIONS);
     const queryKey = computed(() => [
       TanstackKey.COLLECTION_DISCOVERY,
-      'my',
+      CollectionTypeEnum.MY_COLLECTIONS,
       params.sort,
       params.pageSize,
       params.type,
@@ -277,14 +278,21 @@ class CollectionsApiService {
   async prefetchDiscoveryCollections() {
     const queryClient = useQueryClient();
 
-    const curatedQueryKey = [TanstackKey.COLLECTION_DISCOVERY, 'curated'];
-    const communityQueryKey = [TanstackKey.COLLECTION_DISCOVERY, 'community'];
-    const myCollectionsQueryKey = [TanstackKey.COLLECTION_DISCOVERY, 'my'];
+    const curatedQueryKey = [TanstackKey.COLLECTION_DISCOVERY, CollectionTypeEnum.CURATED];
+    const communityQueryKey = [TanstackKey.COLLECTION_DISCOVERY, CollectionTypeEnum.COMMUNITY];
+    const myCollectionsQueryKey = [
+      TanstackKey.COLLECTION_DISCOVERY,
+      CollectionTypeEnum.MY_COLLECTIONS,
+    ];
 
-    const curatedQueryFn = this.fetchCollectionsQueryFn(() => this.discoveryParams('curated'));
-    const communityQueryFn = this.fetchCollectionsQueryFn(() => this.discoveryParams('community'));
+    const curatedQueryFn = this.fetchCollectionsQueryFn(() =>
+      this.discoveryParams(CollectionTypeEnum.CURATED),
+    );
+    const communityQueryFn = this.fetchCollectionsQueryFn(() =>
+      this.discoveryParams(CollectionTypeEnum.COMMUNITY),
+    );
     const myCollectionsQueryFn = this.fetchMyCollectionsQueryFn(() =>
-      this.discoveryParams('my-collections'),
+      this.discoveryParams(CollectionTypeEnum.MY_COLLECTIONS),
     );
 
     await Promise.all([
@@ -495,6 +503,7 @@ class CollectionsApiService {
         return nextPage < totalPages ? nextPage : null;
       },
       initialPageParam: 0,
+      enabled: computed(() => params.value.slug !== ''),
     });
   }
 

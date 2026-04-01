@@ -11,6 +11,7 @@ export default defineEventHandler(async (event) => {
     '/api/auth/callback',
     '/api/auth/logout',
     '/api/collection',
+    '/api/project',
   ];
   if (allowedRoutes.some((route) => event.node.req.url?.startsWith(route))) {
     // Add the database pool to the event context

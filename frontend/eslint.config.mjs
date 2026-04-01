@@ -29,6 +29,7 @@ export default [
       'storybook-static/**',
       'docs/**',
       '**/.vitepress/**',
+      'public/data/**',
     ],
   },
 

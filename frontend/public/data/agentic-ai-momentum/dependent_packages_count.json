@@ -1,0 +1,1423 @@
+{
+  "metadata": {
+    "fetched_at": "2026-03-27T10:27:58.415018",
+    "schema": {
+      "name": "dependent_packages_count",
+      "description": "Monthly dependent package counts from Tinybird, broken out by ecosystem.",
+      "fields": [
+        {
+          "name": "repo",
+          "type": "string",
+          "description": "Repository identifier",
+          "optional": false
+        },
+        {
+          "name": "ecosystem",
+          "type": "string",
+          "description": "Package ecosystem (e.g. 'pypi', 'conda')",
+          "optional": false
+        },
+        {
+          "name": "month",
+          "type": "date",
+          "description": "Month as YYYY-MM-DD",
+          "optional": false
+        },
+        {
+          "name": "dependent_package_count",
+          "type": "number",
+          "description": "Sum of dependentPackagesCount across all PURLs for the month",
+          "optional": false
+        }
+      ]
+    }
+  },
+  "data": [
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "ecosystem": "pypi",
+      "month": "2025-06-01",
+      "dependent_package_count": 1
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "ecosystem": "pypi",
+      "month": "2025-07-01",
+      "dependent_package_count": 1
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "ecosystem": "pypi",
+      "month": "2025-08-01",
+      "dependent_package_count": 1
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "ecosystem": "pypi",
+      "month": "2025-09-01",
+      "dependent_package_count": 1
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "ecosystem": "pypi",
+      "month": "2025-10-01",
+      "dependent_package_count": 1
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "ecosystem": "pypi",
+      "month": "2025-11-01",
+      "dependent_package_count": 1
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "ecosystem": "pypi",
+      "month": "2025-12-01",
+      "dependent_package_count": 1
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "ecosystem": "pypi",
+      "month": "2026-01-01",
+      "dependent_package_count": 1
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "ecosystem": "conda",
+      "month": "2025-10-01",
+      "dependent_package_count": 116
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "ecosystem": "conda",
+      "month": "2025-11-01",
+      "dependent_package_count": 116
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "ecosystem": "nixpkgs",
+      "month": "2026-02-01",
+      "dependent_package_count": 116
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "ecosystem": "nixpkgs",
+      "month": "2026-03-01",
+      "dependent_package_count": 116
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "ecosystem": "pypi",
+      "month": "2025-06-01",
+      "dependent_package_count": 116
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "ecosystem": "pypi",
+      "month": "2025-07-01",
+      "dependent_package_count": 116
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "ecosystem": "pypi",
+      "month": "2025-08-01",
+      "dependent_package_count": 116
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "ecosystem": "pypi",
+      "month": "2025-09-01",
+      "dependent_package_count": 116
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "ecosystem": "pypi",
+      "month": "2025-10-01",
+      "dependent_package_count": 116
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "ecosystem": "pypi",
+      "month": "2025-06-01",
+      "dependent_package_count": 3
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "ecosystem": "pypi",
+      "month": "2025-07-01",
+      "dependent_package_count": 3
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "ecosystem": "pypi",
+      "month": "2025-08-01",
+      "dependent_package_count": 3
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "ecosystem": "pypi",
+      "month": "2025-09-01",
+      "dependent_package_count": 3
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "ecosystem": "pypi",
+      "month": "2025-10-01",
+      "dependent_package_count": 3
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "ecosystem": "pypi",
+      "month": "2025-11-01",
+      "dependent_package_count": 3
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "ecosystem": "pypi",
+      "month": "2025-12-01",
+      "dependent_package_count": 3
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "ecosystem": "pypi",
+      "month": "2026-01-01",
+      "dependent_package_count": 3
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "ecosystem": "pypi",
+      "month": "2026-02-01",
+      "dependent_package_count": 3
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "ecosystem": "pypi",
+      "month": "2026-03-01",
+      "dependent_package_count": 3
+    },
+    {
+      "repo": "https://github.com/OpenInterpreter/open-interpreter",
+      "ecosystem": "pypi",
+      "month": "2026-03-01",
+      "dependent_package_count": 7
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "ecosystem": "conda",
+      "month": "2025-07-01",
+      "dependent_package_count": 123
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "ecosystem": "conda",
+      "month": "2025-08-01",
+      "dependent_package_count": 123
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "ecosystem": "conda",
+      "month": "2025-09-01",
+      "dependent_package_count": 123
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "ecosystem": "conda",
+      "month": "2025-10-01",
+      "dependent_package_count": 246
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "ecosystem": "conda",
+      "month": "2025-11-01",
+      "dependent_package_count": 123
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "ecosystem": "conda",
+      "month": "2025-12-01",
+      "dependent_package_count": 123
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "ecosystem": "conda",
+      "month": "2026-01-01",
+      "dependent_package_count": 123
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "ecosystem": "nixpkgs",
+      "month": "2026-03-01",
+      "dependent_package_count": 8
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "ecosystem": "pypi",
+      "month": "2025-06-01",
+      "dependent_package_count": 213
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "ecosystem": "pypi",
+      "month": "2025-07-01",
+      "dependent_package_count": 37
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "ecosystem": "pypi",
+      "month": "2025-08-01",
+      "dependent_package_count": 37
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "ecosystem": "pypi",
+      "month": "2025-09-01",
+      "dependent_package_count": 37
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "ecosystem": "pypi",
+      "month": "2025-10-01",
+      "dependent_package_count": 29
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "ecosystem": "pypi",
+      "month": "2025-11-01",
+      "dependent_package_count": 29
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "ecosystem": "pypi",
+      "month": "2025-12-01",
+      "dependent_package_count": 29
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "ecosystem": "pypi",
+      "month": "2026-01-01",
+      "dependent_package_count": 37
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "ecosystem": "pypi",
+      "month": "2026-02-01",
+      "dependent_package_count": 37
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "ecosystem": "pypi",
+      "month": "2026-03-01",
+      "dependent_package_count": 29
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "ecosystem": "pypi",
+      "month": "2025-06-01",
+      "dependent_package_count": 350
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "ecosystem": "pypi",
+      "month": "2025-07-01",
+      "dependent_package_count": 350
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "ecosystem": "pypi",
+      "month": "2025-08-01",
+      "dependent_package_count": 350
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "ecosystem": "pypi",
+      "month": "2025-09-01",
+      "dependent_package_count": 350
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "ecosystem": "pypi",
+      "month": "2025-10-01",
+      "dependent_package_count": 350
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "ecosystem": "pypi",
+      "month": "2025-11-01",
+      "dependent_package_count": 350
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "ecosystem": "pypi",
+      "month": "2025-12-01",
+      "dependent_package_count": 350
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "ecosystem": "pypi",
+      "month": "2026-01-01",
+      "dependent_package_count": 350
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "ecosystem": "pypi",
+      "month": "2026-02-01",
+      "dependent_package_count": 350
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "ecosystem": "pypi",
+      "month": "2026-03-01",
+      "dependent_package_count": 350
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "ecosystem": "npm",
+      "month": "2026-02-01",
+      "dependent_package_count": 23
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "ecosystem": "npm",
+      "month": "2026-03-01",
+      "dependent_package_count": 23
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "ecosystem": "pypi",
+      "month": "2026-03-01",
+      "dependent_package_count": 7
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "ecosystem": "nixpkgs",
+      "month": "2026-02-01",
+      "dependent_package_count": 9
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "ecosystem": "pypi",
+      "month": "2025-06-01",
+      "dependent_package_count": 9
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "ecosystem": "pypi",
+      "month": "2025-07-01",
+      "dependent_package_count": 9
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "ecosystem": "pypi",
+      "month": "2025-08-01",
+      "dependent_package_count": 9
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "ecosystem": "pypi",
+      "month": "2025-09-01",
+      "dependent_package_count": 9
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "ecosystem": "pypi",
+      "month": "2025-10-01",
+      "dependent_package_count": 18
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "ecosystem": "pypi",
+      "month": "2025-11-01",
+      "dependent_package_count": 18
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "ecosystem": "pypi",
+      "month": "2025-12-01",
+      "dependent_package_count": 18
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "ecosystem": "pypi",
+      "month": "2026-01-01",
+      "dependent_package_count": 18
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "ecosystem": "pypi",
+      "month": "2026-02-01",
+      "dependent_package_count": 9
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "ecosystem": "pypi",
+      "month": "2026-03-01",
+      "dependent_package_count": 9
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "ecosystem": "conda",
+      "month": "2026-03-01",
+      "dependent_package_count": 51
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "ecosystem": "pypi",
+      "month": "2025-06-01",
+      "dependent_package_count": 72
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "ecosystem": "pypi",
+      "month": "2025-07-01",
+      "dependent_package_count": 72
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "ecosystem": "pypi",
+      "month": "2025-08-01",
+      "dependent_package_count": 72
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "ecosystem": "pypi",
+      "month": "2025-09-01",
+      "dependent_package_count": 72
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "ecosystem": "pypi",
+      "month": "2025-10-01",
+      "dependent_package_count": 72
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "ecosystem": "pypi",
+      "month": "2025-11-01",
+      "dependent_package_count": 72
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "ecosystem": "pypi",
+      "month": "2025-12-01",
+      "dependent_package_count": 72
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "ecosystem": "pypi",
+      "month": "2026-01-01",
+      "dependent_package_count": 72
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "ecosystem": "pypi",
+      "month": "2026-02-01",
+      "dependent_package_count": 72
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "ecosystem": "pypi",
+      "month": "2026-03-01",
+      "dependent_package_count": 72
+    },
+    {
+      "repo": "https://github.com/e2b-dev/code-interpreter",
+      "ecosystem": "pypi",
+      "month": "2026-03-01",
+      "dependent_package_count": 1
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "ecosystem": "pypi",
+      "month": "2026-03-01",
+      "dependent_package_count": 4
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "ecosystem": "conda",
+      "month": "2025-06-01",
+      "dependent_package_count": 2589
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "ecosystem": "conda",
+      "month": "2025-07-01",
+      "dependent_package_count": 2589
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "ecosystem": "conda",
+      "month": "2025-08-01",
+      "dependent_package_count": 2589
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "ecosystem": "conda",
+      "month": "2025-09-01",
+      "dependent_package_count": 2589
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "ecosystem": "conda",
+      "month": "2025-10-01",
+      "dependent_package_count": 5178
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "ecosystem": "conda",
+      "month": "2025-11-01",
+      "dependent_package_count": 2589
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "ecosystem": "conda",
+      "month": "2025-12-01",
+      "dependent_package_count": 2589
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "ecosystem": "conda",
+      "month": "2026-01-01",
+      "dependent_package_count": 2589
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "ecosystem": "conda",
+      "month": "2026-02-01",
+      "dependent_package_count": 5178
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "ecosystem": "conda",
+      "month": "2026-03-01",
+      "dependent_package_count": 2589
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "ecosystem": "pypi",
+      "month": "2025-06-01",
+      "dependent_package_count": 5
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "ecosystem": "pypi",
+      "month": "2025-07-01",
+      "dependent_package_count": 25
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "ecosystem": "pypi",
+      "month": "2025-08-01",
+      "dependent_package_count": 25
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "ecosystem": "pypi",
+      "month": "2025-09-01",
+      "dependent_package_count": 25
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "ecosystem": "pypi",
+      "month": "2025-10-01",
+      "dependent_package_count": 25
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "ecosystem": "pypi",
+      "month": "2025-11-01",
+      "dependent_package_count": 25
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "ecosystem": "pypi",
+      "month": "2025-12-01",
+      "dependent_package_count": 1
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "ecosystem": "pypi",
+      "month": "2026-01-01",
+      "dependent_package_count": 25
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "ecosystem": "pypi",
+      "month": "2026-02-01",
+      "dependent_package_count": 25
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "ecosystem": "pypi",
+      "month": "2026-03-01",
+      "dependent_package_count": 5
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "ecosystem": "spack",
+      "month": "2025-06-01",
+      "dependent_package_count": 1
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "ecosystem": "spack",
+      "month": "2025-07-01",
+      "dependent_package_count": 1
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "ecosystem": "spack",
+      "month": "2025-08-01",
+      "dependent_package_count": 1
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "ecosystem": "spack",
+      "month": "2025-09-01",
+      "dependent_package_count": 1
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "ecosystem": "spack",
+      "month": "2025-10-01",
+      "dependent_package_count": 1
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "ecosystem": "spack",
+      "month": "2025-11-01",
+      "dependent_package_count": 1
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "ecosystem": "spack",
+      "month": "2025-12-01",
+      "dependent_package_count": 1
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "ecosystem": "spack",
+      "month": "2026-01-01",
+      "dependent_package_count": 1
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "ecosystem": "spack",
+      "month": "2026-02-01",
+      "dependent_package_count": 1
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "ecosystem": "spack",
+      "month": "2026-03-01",
+      "dependent_package_count": 1
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "ecosystem": "go",
+      "month": "2025-06-01",
+      "dependent_package_count": 22
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "ecosystem": "go",
+      "month": "2025-07-01",
+      "dependent_package_count": 5
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "ecosystem": "go",
+      "month": "2025-08-01",
+      "dependent_package_count": 5
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "ecosystem": "go",
+      "month": "2025-09-01",
+      "dependent_package_count": 5
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "ecosystem": "go",
+      "month": "2025-10-01",
+      "dependent_package_count": 5
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "ecosystem": "go",
+      "month": "2025-11-01",
+      "dependent_package_count": 5
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "ecosystem": "go",
+      "month": "2025-12-01",
+      "dependent_package_count": 5
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "ecosystem": "go",
+      "month": "2026-01-01",
+      "dependent_package_count": 5
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "ecosystem": "go",
+      "month": "2026-02-01",
+      "dependent_package_count": 5
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "ecosystem": "go",
+      "month": "2026-03-01",
+      "dependent_package_count": 5
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "ecosystem": "pypi",
+      "month": "2025-06-01",
+      "dependent_package_count": 10
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "ecosystem": "pypi",
+      "month": "2025-07-01",
+      "dependent_package_count": 10
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "ecosystem": "pypi",
+      "month": "2025-08-01",
+      "dependent_package_count": 10
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "ecosystem": "pypi",
+      "month": "2025-09-01",
+      "dependent_package_count": 10
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "ecosystem": "pypi",
+      "month": "2025-10-01",
+      "dependent_package_count": 10
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "ecosystem": "pypi",
+      "month": "2025-11-01",
+      "dependent_package_count": 10
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "ecosystem": "pypi",
+      "month": "2025-12-01",
+      "dependent_package_count": 10
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "ecosystem": "pypi",
+      "month": "2026-01-01",
+      "dependent_package_count": 10
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "ecosystem": "pypi",
+      "month": "2026-02-01",
+      "dependent_package_count": 10
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "ecosystem": "pypi",
+      "month": "2026-03-01",
+      "dependent_package_count": 10
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "ecosystem": "conda",
+      "month": "2025-06-01",
+      "dependent_package_count": 232
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "ecosystem": "conda",
+      "month": "2025-07-01",
+      "dependent_package_count": 586
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "ecosystem": "conda",
+      "month": "2025-08-01",
+      "dependent_package_count": 192
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "ecosystem": "conda",
+      "month": "2025-09-01",
+      "dependent_package_count": 381
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "ecosystem": "conda",
+      "month": "2025-10-01",
+      "dependent_package_count": 397
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "ecosystem": "conda",
+      "month": "2025-11-01",
+      "dependent_package_count": 397
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "ecosystem": "conda",
+      "month": "2025-12-01",
+      "dependent_package_count": 27
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "ecosystem": "conda",
+      "month": "2026-01-01",
+      "dependent_package_count": 397
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "ecosystem": "conda",
+      "month": "2026-02-01",
+      "dependent_package_count": 397
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "ecosystem": "conda",
+      "month": "2026-03-01",
+      "dependent_package_count": 397
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "ecosystem": "pypi",
+      "month": "2025-06-01",
+      "dependent_package_count": 1690
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "ecosystem": "pypi",
+      "month": "2025-07-01",
+      "dependent_package_count": 1131
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "ecosystem": "pypi",
+      "month": "2025-08-01",
+      "dependent_package_count": 1131
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "ecosystem": "pypi",
+      "month": "2025-09-01",
+      "dependent_package_count": 1131
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "ecosystem": "pypi",
+      "month": "2025-10-01",
+      "dependent_package_count": 1125
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "ecosystem": "pypi",
+      "month": "2025-11-01",
+      "dependent_package_count": 1125
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "ecosystem": "pypi",
+      "month": "2025-12-01",
+      "dependent_package_count": 1125
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "ecosystem": "pypi",
+      "month": "2026-01-01",
+      "dependent_package_count": 1125
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "ecosystem": "pypi",
+      "month": "2026-02-01",
+      "dependent_package_count": 1151
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "ecosystem": "pypi",
+      "month": "2026-03-01",
+      "dependent_package_count": 1330
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "ecosystem": "conda",
+      "month": "2025-10-01",
+      "dependent_package_count": 15
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "ecosystem": "conda",
+      "month": "2025-11-01",
+      "dependent_package_count": 15
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "ecosystem": "conda",
+      "month": "2025-12-01",
+      "dependent_package_count": 15
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "ecosystem": "conda",
+      "month": "2026-01-01",
+      "dependent_package_count": 15
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "ecosystem": "conda",
+      "month": "2026-02-01",
+      "dependent_package_count": 15
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "ecosystem": "conda",
+      "month": "2026-03-01",
+      "dependent_package_count": 15
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "ecosystem": "pypi",
+      "month": "2025-06-01",
+      "dependent_package_count": 15
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "ecosystem": "pypi",
+      "month": "2025-07-01",
+      "dependent_package_count": 15
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "ecosystem": "pypi",
+      "month": "2025-08-01",
+      "dependent_package_count": 15
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "ecosystem": "pypi",
+      "month": "2025-09-01",
+      "dependent_package_count": 15
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "ecosystem": "pypi",
+      "month": "2025-10-01",
+      "dependent_package_count": 15
+    },
+    {
+      "repo": "https://github.com/livekit/agents",
+      "ecosystem": "pypi",
+      "month": "2026-03-01",
+      "dependent_package_count": 7
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "ecosystem": "nuget",
+      "month": "2025-07-01",
+      "dependent_package_count": 5
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "ecosystem": "nuget",
+      "month": "2025-08-01",
+      "dependent_package_count": 5
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "ecosystem": "nuget",
+      "month": "2025-09-01",
+      "dependent_package_count": 5
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "ecosystem": "nuget",
+      "month": "2025-10-01",
+      "dependent_package_count": 5
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "ecosystem": "nuget",
+      "month": "2025-11-01",
+      "dependent_package_count": 5
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "ecosystem": "nuget",
+      "month": "2025-12-01",
+      "dependent_package_count": 5
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "ecosystem": "nuget",
+      "month": "2026-01-01",
+      "dependent_package_count": 5
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "ecosystem": "nuget",
+      "month": "2026-02-01",
+      "dependent_package_count": 5
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "ecosystem": "nuget",
+      "month": "2026-03-01",
+      "dependent_package_count": 5
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "ecosystem": "pypi",
+      "month": "2025-06-01",
+      "dependent_package_count": 5
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "ecosystem": "pypi",
+      "month": "2025-07-01",
+      "dependent_package_count": 5
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "ecosystem": "pypi",
+      "month": "2025-08-01",
+      "dependent_package_count": 5
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "ecosystem": "pypi",
+      "month": "2025-09-01",
+      "dependent_package_count": 5
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "ecosystem": "pypi",
+      "month": "2025-10-01",
+      "dependent_package_count": 5
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "ecosystem": "pypi",
+      "month": "2025-11-01",
+      "dependent_package_count": 5
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "ecosystem": "pypi",
+      "month": "2025-12-01",
+      "dependent_package_count": 5
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "ecosystem": "pypi",
+      "month": "2026-01-01",
+      "dependent_package_count": 5
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "ecosystem": "pypi",
+      "month": "2026-02-01",
+      "dependent_package_count": 5
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "ecosystem": "pypi",
+      "month": "2026-03-01",
+      "dependent_package_count": 5
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "ecosystem": "npm",
+      "month": "2025-06-01",
+      "dependent_package_count": 5561
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "ecosystem": "npm",
+      "month": "2025-07-01",
+      "dependent_package_count": 5561
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "ecosystem": "npm",
+      "month": "2025-08-01",
+      "dependent_package_count": 5561
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "ecosystem": "npm",
+      "month": "2025-09-01",
+      "dependent_package_count": 5561
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "ecosystem": "npm",
+      "month": "2025-10-01",
+      "dependent_package_count": 5561
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "ecosystem": "npm",
+      "month": "2025-11-01",
+      "dependent_package_count": 3613
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "ecosystem": "npm",
+      "month": "2025-12-01",
+      "dependent_package_count": 3613
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "ecosystem": "npm",
+      "month": "2026-01-01",
+      "dependent_package_count": 3613
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "ecosystem": "npm",
+      "month": "2026-02-01",
+      "dependent_package_count": 5561
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "ecosystem": "npm",
+      "month": "2026-03-01",
+      "dependent_package_count": 5561
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "ecosystem": "nuget",
+      "month": "2026-03-01",
+      "dependent_package_count": 255
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "ecosystem": "pypi",
+      "month": "2026-03-01",
+      "dependent_package_count": 10
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "ecosystem": "go",
+      "month": "2025-06-01",
+      "dependent_package_count": 11414970
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "ecosystem": "go",
+      "month": "2025-07-01",
+      "dependent_package_count": 2
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "ecosystem": "go",
+      "month": "2025-08-01",
+      "dependent_package_count": 2
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "ecosystem": "go",
+      "month": "2025-09-01",
+      "dependent_package_count": 2
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "ecosystem": "go",
+      "month": "2025-10-01",
+      "dependent_package_count": 2
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "ecosystem": "go",
+      "month": "2025-11-01",
+      "dependent_package_count": 2
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "ecosystem": "go",
+      "month": "2025-12-01",
+      "dependent_package_count": 2
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "ecosystem": "go",
+      "month": "2026-01-01",
+      "dependent_package_count": 2
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "ecosystem": "go",
+      "month": "2026-02-01",
+      "dependent_package_count": 2
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "ecosystem": "go",
+      "month": "2026-03-01",
+      "dependent_package_count": 2
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "ecosystem": "pypi",
+      "month": "2026-03-01",
+      "dependent_package_count": 1
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "ecosystem": "cargo",
+      "month": "2025-06-01",
+      "dependent_package_count": 23282367
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "ecosystem": "conda",
+      "month": "2026-03-01",
+      "dependent_package_count": 671
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "ecosystem": "pypi",
+      "month": "2025-06-01",
+      "dependent_package_count": 742
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "ecosystem": "pypi",
+      "month": "2025-07-01",
+      "dependent_package_count": 742
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "ecosystem": "pypi",
+      "month": "2025-08-01",
+      "dependent_package_count": 742
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "ecosystem": "pypi",
+      "month": "2025-09-01",
+      "dependent_package_count": 742
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "ecosystem": "pypi",
+      "month": "2025-10-01",
+      "dependent_package_count": 742
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "ecosystem": "pypi",
+      "month": "2025-11-01",
+      "dependent_package_count": 742
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "ecosystem": "pypi",
+      "month": "2025-12-01",
+      "dependent_package_count": 742
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "ecosystem": "pypi",
+      "month": "2026-01-01",
+      "dependent_package_count": 742
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "ecosystem": "pypi",
+      "month": "2026-02-01",
+      "dependent_package_count": 742
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "ecosystem": "pypi",
+      "month": "2026-03-01",
+      "dependent_package_count": 589
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "ecosystem": "go",
+      "month": "2026-02-01",
+      "dependent_package_count": 44
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "ecosystem": "go",
+      "month": "2026-03-01",
+      "dependent_package_count": 44
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "ecosystem": "go",
+      "month": "2025-06-01",
+      "dependent_package_count": 36
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "ecosystem": "go",
+      "month": "2025-07-01",
+      "dependent_package_count": 36
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "ecosystem": "go",
+      "month": "2025-08-01",
+      "dependent_package_count": 36
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "ecosystem": "go",
+      "month": "2025-09-01",
+      "dependent_package_count": 36
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "ecosystem": "go",
+      "month": "2025-10-01",
+      "dependent_package_count": 36
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "ecosystem": "go",
+      "month": "2025-11-01",
+      "dependent_package_count": 36
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "ecosystem": "go",
+      "month": "2025-12-01",
+      "dependent_package_count": 36
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "ecosystem": "go",
+      "month": "2026-01-01",
+      "dependent_package_count": 36
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "ecosystem": "go",
+      "month": "2026-02-01",
+      "dependent_package_count": 36
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "ecosystem": "go",
+      "month": "2026-03-01",
+      "dependent_package_count": 36
+    }
+  ]
+}
