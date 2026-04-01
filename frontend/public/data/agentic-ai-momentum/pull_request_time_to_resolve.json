@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "fetched_at": "2026-03-27T11:21:37.860567",
+    "fetched_at": "2026-04-01T07:13:59.939679",
     "schema": {
       "name": "pull_request_time_to_resolve",
       "description": "3-month trailing average of the monthly median time to resolve pull requests (days) per repo.",

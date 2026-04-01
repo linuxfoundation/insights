@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "fetched_at": "2026-03-27T10:27:56.276709",
+    "fetched_at": "2026-04-01T07:13:33.289263",
     "schema": {
       "name": "fork_count",
       "description": "Cumulative monthly fork counts for tracked repositories.",
@@ -145,127 +145,127 @@
     {
       "repo": "https://github.com/Aider-AI/aider",
       "month": "2026-02-01",
-      "cumulative_forks": 3898
+      "cumulative_forks": 3899
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2024-03-01",
-      "cumulative_forks": 193
+      "cumulative_forks": 202
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2024-04-01",
-      "cumulative_forks": 203
+      "cumulative_forks": 215
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2024-05-01",
-      "cumulative_forks": 219
+      "cumulative_forks": 232
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2024-06-01",
-      "cumulative_forks": 231
+      "cumulative_forks": 244
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2024-07-01",
-      "cumulative_forks": 243
+      "cumulative_forks": 258
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2024-08-01",
-      "cumulative_forks": 260
+      "cumulative_forks": 280
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2024-09-01",
-      "cumulative_forks": 279
+      "cumulative_forks": 305
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2024-10-01",
-      "cumulative_forks": 300
+      "cumulative_forks": 330
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2024-11-01",
-      "cumulative_forks": 309
-    },
-    {
-      "repo": "https://github.com/Azure/PyRIT",
-      "month": "2024-12-01",
-      "cumulative_forks": 320
-    },
-    {
-      "repo": "https://github.com/Azure/PyRIT",
-      "month": "2025-01-01",
       "cumulative_forks": 340
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
+      "month": "2024-12-01",
+      "cumulative_forks": 353
+    },
+    {
+      "repo": "https://github.com/Azure/PyRIT",
+      "month": "2025-01-01",
+      "cumulative_forks": 377
+    },
+    {
+      "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-02-01",
-      "cumulative_forks": 356
+      "cumulative_forks": 398
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-03-01",
-      "cumulative_forks": 374
+      "cumulative_forks": 422
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-04-01",
-      "cumulative_forks": 391
+      "cumulative_forks": 446
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-05-01",
-      "cumulative_forks": 401
+      "cumulative_forks": 461
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-06-01",
-      "cumulative_forks": 415
+      "cumulative_forks": 480
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-07-01",
-      "cumulative_forks": 430
+      "cumulative_forks": 498
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-08-01",
-      "cumulative_forks": 438
+      "cumulative_forks": 512
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-09-01",
-      "cumulative_forks": 458
+      "cumulative_forks": 537
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-10-01",
-      "cumulative_forks": 469
+      "cumulative_forks": 552
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-11-01",
-      "cumulative_forks": 483
+      "cumulative_forks": 572
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-12-01",
-      "cumulative_forks": 502
+      "cumulative_forks": 594
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2026-01-01",
-      "cumulative_forks": 515
+      "cumulative_forks": 612
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2026-02-01",
-      "cumulative_forks": 533
+      "cumulative_forks": 645
     },
     {
       "repo": "https://github.com/BerriAI/litellm",
@@ -400,107 +400,107 @@
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2024-06-01",
-      "cumulative_forks": 59
+      "cumulative_forks": 121
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2024-07-01",
-      "cumulative_forks": 503
+      "cumulative_forks": 789
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2024-08-01",
-      "cumulative_forks": 791
+      "cumulative_forks": 1211
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2024-09-01",
-      "cumulative_forks": 1243
+      "cumulative_forks": 2042
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2024-10-01",
-      "cumulative_forks": 2160
+      "cumulative_forks": 3265
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2024-11-01",
-      "cumulative_forks": 2233
+      "cumulative_forks": 3338
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2024-12-01",
-      "cumulative_forks": 2277
+      "cumulative_forks": 3382
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-01-01",
-      "cumulative_forks": 2323
+      "cumulative_forks": 3429
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-02-01",
-      "cumulative_forks": 2377
+      "cumulative_forks": 3484
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-03-01",
-      "cumulative_forks": 2538
+      "cumulative_forks": 3654
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-04-01",
-      "cumulative_forks": 2582
+      "cumulative_forks": 3701
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-05-01",
-      "cumulative_forks": 2619
+      "cumulative_forks": 3739
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-06-01",
-      "cumulative_forks": 2653
+      "cumulative_forks": 3777
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-07-01",
-      "cumulative_forks": 2672
+      "cumulative_forks": 3797
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-08-01",
-      "cumulative_forks": 2694
+      "cumulative_forks": 3819
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-09-01",
-      "cumulative_forks": 2725
+      "cumulative_forks": 3850
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-10-01",
-      "cumulative_forks": 2749
+      "cumulative_forks": 3876
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-11-01",
-      "cumulative_forks": 2801
+      "cumulative_forks": 3931
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-12-01",
-      "cumulative_forks": 2816
+      "cumulative_forks": 3946
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2026-01-01",
-      "cumulative_forks": 2852
+      "cumulative_forks": 3985
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2026-02-01",
-      "cumulative_forks": 2919
+      "cumulative_forks": 4055
     },
     {
       "repo": "https://github.com/HKUDS/LightRAG",
@@ -715,337 +715,337 @@
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
       "month": "2024-08-01",
-      "cumulative_forks": 55
+      "cumulative_forks": 56
     },
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
       "month": "2024-09-01",
-      "cumulative_forks": 63
+      "cumulative_forks": 65
     },
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
       "month": "2024-10-01",
-      "cumulative_forks": 68
+      "cumulative_forks": 72
     },
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
       "month": "2024-11-01",
-      "cumulative_forks": 71
+      "cumulative_forks": 76
     },
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
       "month": "2024-12-01",
-      "cumulative_forks": 79
+      "cumulative_forks": 84
     },
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
       "month": "2025-01-01",
-      "cumulative_forks": 109
+      "cumulative_forks": 118
     },
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
       "month": "2025-02-01",
-      "cumulative_forks": 126
+      "cumulative_forks": 138
     },
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
       "month": "2025-03-01",
-      "cumulative_forks": 137
+      "cumulative_forks": 152
     },
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
       "month": "2025-04-01",
-      "cumulative_forks": 143
+      "cumulative_forks": 158
     },
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
       "month": "2025-05-01",
-      "cumulative_forks": 154
-    },
-    {
-      "repo": "https://github.com/OpenAutoCoder/Agentless",
-      "month": "2025-06-01",
-      "cumulative_forks": 160
-    },
-    {
-      "repo": "https://github.com/OpenAutoCoder/Agentless",
-      "month": "2025-07-01",
-      "cumulative_forks": 171
-    },
-    {
-      "repo": "https://github.com/OpenAutoCoder/Agentless",
-      "month": "2025-08-01",
       "cumulative_forks": 173
     },
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
+      "month": "2025-06-01",
+      "cumulative_forks": 179
+    },
+    {
+      "repo": "https://github.com/OpenAutoCoder/Agentless",
+      "month": "2025-07-01",
+      "cumulative_forks": 192
+    },
+    {
+      "repo": "https://github.com/OpenAutoCoder/Agentless",
+      "month": "2025-08-01",
+      "cumulative_forks": 195
+    },
+    {
+      "repo": "https://github.com/OpenAutoCoder/Agentless",
       "month": "2025-09-01",
-      "cumulative_forks": 176
+      "cumulative_forks": 199
     },
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
       "month": "2025-10-01",
-      "cumulative_forks": 178
+      "cumulative_forks": 201
     },
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
       "month": "2025-11-01",
-      "cumulative_forks": 183
+      "cumulative_forks": 207
     },
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
       "month": "2025-12-01",
-      "cumulative_forks": 185
+      "cumulative_forks": 209
     },
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
       "month": "2026-01-01",
-      "cumulative_forks": 188
+      "cumulative_forks": 213
     },
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
       "month": "2026-02-01",
-      "cumulative_forks": 190
+      "cumulative_forks": 216
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-03-01",
-      "cumulative_forks": 836
+      "cumulative_forks": 918
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-04-01",
-      "cumulative_forks": 2016
+      "cumulative_forks": 2219
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-05-01",
-      "cumulative_forks": 2377
+      "cumulative_forks": 2608
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-06-01",
-      "cumulative_forks": 2560
+      "cumulative_forks": 2812
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-07-01",
-      "cumulative_forks": 2705
+      "cumulative_forks": 2970
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-08-01",
-      "cumulative_forks": 2877
+      "cumulative_forks": 3154
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-09-01",
-      "cumulative_forks": 3009
+      "cumulative_forks": 3294
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-10-01",
-      "cumulative_forks": 3114
+      "cumulative_forks": 3412
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-11-01",
-      "cumulative_forks": 3472
+      "cumulative_forks": 3790
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-12-01",
-      "cumulative_forks": 3658
+      "cumulative_forks": 3993
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-01-01",
-      "cumulative_forks": 4118
+      "cumulative_forks": 4491
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-02-01",
-      "cumulative_forks": 4414
+      "cumulative_forks": 4799
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-03-01",
-      "cumulative_forks": 4793
+      "cumulative_forks": 5207
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-04-01",
-      "cumulative_forks": 5009
+      "cumulative_forks": 5455
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-05-01",
-      "cumulative_forks": 5347
+      "cumulative_forks": 5829
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-06-01",
-      "cumulative_forks": 5727
+      "cumulative_forks": 6268
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-07-01",
-      "cumulative_forks": 6006
+      "cumulative_forks": 6609
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-08-01",
-      "cumulative_forks": 6206
+      "cumulative_forks": 6837
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-09-01",
-      "cumulative_forks": 6358
+      "cumulative_forks": 7021
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-10-01",
-      "cumulative_forks": 6475
+      "cumulative_forks": 7156
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-11-01",
-      "cumulative_forks": 6610
+      "cumulative_forks": 7316
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-12-01",
-      "cumulative_forks": 6771
+      "cumulative_forks": 7503
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2026-01-01",
-      "cumulative_forks": 6978
+      "cumulative_forks": 7738
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2026-02-01",
-      "cumulative_forks": 7136
+      "cumulative_forks": 7920
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2024-03-01",
-      "cumulative_forks": 3242
+      "cumulative_forks": 3504
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2024-04-01",
-      "cumulative_forks": 3461
+      "cumulative_forks": 3734
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2024-05-01",
-      "cumulative_forks": 3552
+      "cumulative_forks": 3831
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2024-06-01",
-      "cumulative_forks": 3640
+      "cumulative_forks": 3923
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2024-07-01",
-      "cumulative_forks": 3721
+      "cumulative_forks": 4010
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2024-08-01",
-      "cumulative_forks": 3812
+      "cumulative_forks": 4107
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2024-09-01",
-      "cumulative_forks": 3871
+      "cumulative_forks": 4170
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2024-10-01",
-      "cumulative_forks": 3992
+      "cumulative_forks": 4308
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2024-11-01",
-      "cumulative_forks": 4115
+      "cumulative_forks": 4443
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2024-12-01",
-      "cumulative_forks": 4160
+      "cumulative_forks": 4493
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2025-01-01",
-      "cumulative_forks": 4205
+      "cumulative_forks": 4539
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2025-02-01",
-      "cumulative_forks": 4241
+      "cumulative_forks": 4575
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2025-03-01",
-      "cumulative_forks": 4284
+      "cumulative_forks": 4621
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2025-04-01",
-      "cumulative_forks": 4314
+      "cumulative_forks": 4657
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2025-05-01",
-      "cumulative_forks": 4352
+      "cumulative_forks": 4698
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2025-06-01",
-      "cumulative_forks": 4382
+      "cumulative_forks": 4730
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2025-07-01",
-      "cumulative_forks": 4425
+      "cumulative_forks": 4778
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2025-08-01",
-      "cumulative_forks": 4473
+      "cumulative_forks": 4833
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2025-09-01",
-      "cumulative_forks": 4498
+      "cumulative_forks": 4861
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2025-10-01",
-      "cumulative_forks": 4526
+      "cumulative_forks": 4894
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2025-11-01",
-      "cumulative_forks": 4552
+      "cumulative_forks": 4923
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2025-12-01",
-      "cumulative_forks": 4595
+      "cumulative_forks": 4973
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2026-01-01",
-      "cumulative_forks": 4669
+      "cumulative_forks": 5049
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2026-02-01",
-      "cumulative_forks": 4740
+      "cumulative_forks": 5128
     },
     {
       "repo": "https://github.com/PrefectHQ/prefect",
@@ -1165,127 +1165,127 @@
     {
       "repo": "https://github.com/PrefectHQ/prefect",
       "month": "2026-02-01",
-      "cumulative_forks": 2057
+      "cumulative_forks": 2058
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-03-01",
-      "cumulative_forks": 572
+      "cumulative_forks": 608
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-04-01",
-      "cumulative_forks": 624
+      "cumulative_forks": 665
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-05-01",
-      "cumulative_forks": 651
+      "cumulative_forks": 694
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-06-01",
-      "cumulative_forks": 691
+      "cumulative_forks": 736
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-07-01",
-      "cumulative_forks": 718
+      "cumulative_forks": 765
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-08-01",
-      "cumulative_forks": 751
+      "cumulative_forks": 800
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-09-01",
-      "cumulative_forks": 771
+      "cumulative_forks": 825
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-10-01",
-      "cumulative_forks": 797
+      "cumulative_forks": 865
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-11-01",
-      "cumulative_forks": 820
+      "cumulative_forks": 891
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-12-01",
-      "cumulative_forks": 829
+      "cumulative_forks": 903
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-01-01",
-      "cumulative_forks": 848
+      "cumulative_forks": 922
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-02-01",
-      "cumulative_forks": 862
+      "cumulative_forks": 939
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-03-01",
-      "cumulative_forks": 880
+      "cumulative_forks": 959
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-04-01",
-      "cumulative_forks": 899
+      "cumulative_forks": 981
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-05-01",
-      "cumulative_forks": 919
+      "cumulative_forks": 1008
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-06-01",
-      "cumulative_forks": 940
+      "cumulative_forks": 1035
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-07-01",
-      "cumulative_forks": 960
+      "cumulative_forks": 1058
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-08-01",
-      "cumulative_forks": 982
+      "cumulative_forks": 1082
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-09-01",
-      "cumulative_forks": 998
+      "cumulative_forks": 1100
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-10-01",
-      "cumulative_forks": 1018
+      "cumulative_forks": 1128
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-11-01",
-      "cumulative_forks": 1037
+      "cumulative_forks": 1151
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2025-12-01",
-      "cumulative_forks": 1050
+      "cumulative_forks": 1170
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2026-01-01",
-      "cumulative_forks": 1061
+      "cumulative_forks": 1183
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2026-02-01",
-      "cumulative_forks": 1079
+      "cumulative_forks": 1202
     },
     {
       "repo": "https://github.com/Significant-Gravitas/AutoGPT",
@@ -1405,7 +1405,7 @@
     {
       "repo": "https://github.com/Significant-Gravitas/AutoGPT",
       "month": "2026-02-01",
-      "cumulative_forks": 45910
+      "cumulative_forks": 45912
     },
     {
       "repo": "https://github.com/agntcy/acp-spec",
@@ -1770,202 +1770,202 @@
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2024-11-01",
-      "cumulative_forks": 173
+      "cumulative_forks": 179
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2024-12-01",
-      "cumulative_forks": 480
+      "cumulative_forks": 511
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-01-01",
-      "cumulative_forks": 1764
+      "cumulative_forks": 1936
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-02-01",
-      "cumulative_forks": 2831
+      "cumulative_forks": 3156
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-03-01",
-      "cumulative_forks": 4361
+      "cumulative_forks": 4860
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-04-01",
-      "cumulative_forks": 5186
+      "cumulative_forks": 5780
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-05-01",
-      "cumulative_forks": 5667
+      "cumulative_forks": 6330
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-06-01",
-      "cumulative_forks": 6009
+      "cumulative_forks": 6739
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-07-01",
-      "cumulative_forks": 6308
-    },
-    {
-      "repo": "https://github.com/browser-use/browser-use",
-      "month": "2025-08-01",
-      "cumulative_forks": 6596
-    },
-    {
-      "repo": "https://github.com/browser-use/browser-use",
-      "month": "2025-09-01",
-      "cumulative_forks": 6851
-    },
-    {
-      "repo": "https://github.com/browser-use/browser-use",
-      "month": "2025-10-01",
       "cumulative_forks": 7085
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
+      "month": "2025-08-01",
+      "cumulative_forks": 7433
+    },
+    {
+      "repo": "https://github.com/browser-use/browser-use",
+      "month": "2025-09-01",
+      "cumulative_forks": 7729
+    },
+    {
+      "repo": "https://github.com/browser-use/browser-use",
+      "month": "2025-10-01",
+      "cumulative_forks": 7993
+    },
+    {
+      "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-11-01",
-      "cumulative_forks": 7255
+      "cumulative_forks": 8196
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-12-01",
-      "cumulative_forks": 7415
+      "cumulative_forks": 8400
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2026-01-01",
-      "cumulative_forks": 7668
+      "cumulative_forks": 8704
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2026-02-01",
-      "cumulative_forks": 7872
+      "cumulative_forks": 8958
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2024-03-01",
-      "cumulative_forks": 388
+      "cumulative_forks": 467
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2024-04-01",
-      "cumulative_forks": 401
+      "cumulative_forks": 482
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2024-05-01",
-      "cumulative_forks": 416
-    },
-    {
-      "repo": "https://github.com/camel-ai/camel",
-      "month": "2024-06-01",
-      "cumulative_forks": 432
-    },
-    {
-      "repo": "https://github.com/camel-ai/camel",
-      "month": "2024-07-01",
-      "cumulative_forks": 460
-    },
-    {
-      "repo": "https://github.com/camel-ai/camel",
-      "month": "2024-08-01",
-      "cumulative_forks": 483
-    },
-    {
-      "repo": "https://github.com/camel-ai/camel",
-      "month": "2024-09-01",
       "cumulative_forks": 498
     },
     {
       "repo": "https://github.com/camel-ai/camel",
-      "month": "2024-10-01",
+      "month": "2024-06-01",
       "cumulative_forks": 514
     },
     {
       "repo": "https://github.com/camel-ai/camel",
+      "month": "2024-07-01",
+      "cumulative_forks": 543
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2024-08-01",
+      "cumulative_forks": 566
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2024-09-01",
+      "cumulative_forks": 585
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2024-10-01",
+      "cumulative_forks": 604
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
       "month": "2024-11-01",
-      "cumulative_forks": 533
+      "cumulative_forks": 624
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2024-12-01",
-      "cumulative_forks": 557
+      "cumulative_forks": 650
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-01-01",
-      "cumulative_forks": 574
+      "cumulative_forks": 668
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-02-01",
-      "cumulative_forks": 599
+      "cumulative_forks": 693
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-03-01",
-      "cumulative_forks": 964
+      "cumulative_forks": 1079
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-04-01",
-      "cumulative_forks": 1046
-    },
-    {
-      "repo": "https://github.com/camel-ai/camel",
-      "month": "2025-05-01",
-      "cumulative_forks": 1117
-    },
-    {
-      "repo": "https://github.com/camel-ai/camel",
-      "month": "2025-06-01",
       "cumulative_forks": 1170
     },
     {
       "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-05-01",
+      "cumulative_forks": 1247
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-06-01",
+      "cumulative_forks": 1306
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
       "month": "2025-07-01",
-      "cumulative_forks": 1231
+      "cumulative_forks": 1373
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-08-01",
-      "cumulative_forks": 1284
+      "cumulative_forks": 1435
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-09-01",
-      "cumulative_forks": 1327
+      "cumulative_forks": 1480
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-10-01",
-      "cumulative_forks": 1356
+      "cumulative_forks": 1517
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-11-01",
-      "cumulative_forks": 1388
+      "cumulative_forks": 1552
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-12-01",
-      "cumulative_forks": 1422
+      "cumulative_forks": 1589
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2026-01-01",
-      "cumulative_forks": 1486
+      "cumulative_forks": 1661
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2026-02-01",
-      "cumulative_forks": 1538
+      "cumulative_forks": 1714
     },
     {
       "repo": "https://github.com/chroma-core/chroma",
@@ -2190,237 +2190,237 @@
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2024-03-01",
-      "cumulative_forks": 23
-    },
-    {
-      "repo": "https://github.com/comet-ml/opik",
-      "month": "2024-04-01",
-      "cumulative_forks": 24
-    },
-    {
-      "repo": "https://github.com/comet-ml/opik",
-      "month": "2024-05-01",
       "cumulative_forks": 25
     },
     {
       "repo": "https://github.com/comet-ml/opik",
-      "month": "2024-07-01",
+      "month": "2024-04-01",
       "cumulative_forks": 26
     },
     {
       "repo": "https://github.com/comet-ml/opik",
+      "month": "2024-05-01",
+      "cumulative_forks": 27
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2024-07-01",
+      "cumulative_forks": 28
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
       "month": "2024-08-01",
-      "cumulative_forks": 29
+      "cumulative_forks": 31
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2024-09-01",
-      "cumulative_forks": 70
+      "cumulative_forks": 73
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2024-10-01",
-      "cumulative_forks": 95
+      "cumulative_forks": 99
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2024-11-01",
-      "cumulative_forks": 121
+      "cumulative_forks": 126
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2024-12-01",
-      "cumulative_forks": 187
+      "cumulative_forks": 195
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-01-01",
-      "cumulative_forks": 263
+      "cumulative_forks": 277
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-02-01",
-      "cumulative_forks": 291
+      "cumulative_forks": 308
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-03-01",
-      "cumulative_forks": 365
+      "cumulative_forks": 384
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-04-01",
-      "cumulative_forks": 440
+      "cumulative_forks": 463
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-05-01",
-      "cumulative_forks": 527
+      "cumulative_forks": 558
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-06-01",
-      "cumulative_forks": 613
+      "cumulative_forks": 652
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-07-01",
-      "cumulative_forks": 702
+      "cumulative_forks": 749
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-08-01",
-      "cumulative_forks": 789
+      "cumulative_forks": 848
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-09-01",
-      "cumulative_forks": 873
+      "cumulative_forks": 938
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-10-01",
-      "cumulative_forks": 975
+      "cumulative_forks": 1056
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-11-01",
-      "cumulative_forks": 1028
+      "cumulative_forks": 1119
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2025-12-01",
-      "cumulative_forks": 1076
+      "cumulative_forks": 1179
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2026-01-01",
-      "cumulative_forks": 1139
+      "cumulative_forks": 1255
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2026-02-01",
-      "cumulative_forks": 1174
+      "cumulative_forks": 1298
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2024-03-01",
-      "cumulative_forks": 83
+      "cumulative_forks": 91
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2024-04-01",
-      "cumulative_forks": 99
+      "cumulative_forks": 110
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2024-05-01",
-      "cumulative_forks": 120
+      "cumulative_forks": 132
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2024-06-01",
-      "cumulative_forks": 135
+      "cumulative_forks": 149
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2024-07-01",
-      "cumulative_forks": 155
+      "cumulative_forks": 170
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2024-08-01",
-      "cumulative_forks": 177
+      "cumulative_forks": 194
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2024-09-01",
-      "cumulative_forks": 201
-    },
-    {
-      "repo": "https://github.com/confident-ai/deepeval",
-      "month": "2024-10-01",
       "cumulative_forks": 226
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2024-10-01",
+      "cumulative_forks": 254
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
       "month": "2024-11-01",
-      "cumulative_forks": 257
+      "cumulative_forks": 289
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2024-12-01",
-      "cumulative_forks": 284
+      "cumulative_forks": 320
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-01-01",
-      "cumulative_forks": 322
+      "cumulative_forks": 360
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-02-01",
-      "cumulative_forks": 370
+      "cumulative_forks": 413
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-03-01",
-      "cumulative_forks": 415
+      "cumulative_forks": 461
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-04-01",
-      "cumulative_forks": 453
+      "cumulative_forks": 500
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-05-01",
-      "cumulative_forks": 541
+      "cumulative_forks": 591
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-06-01",
-      "cumulative_forks": 634
+      "cumulative_forks": 694
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-07-01",
-      "cumulative_forks": 709
+      "cumulative_forks": 775
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-08-01",
-      "cumulative_forks": 769
+      "cumulative_forks": 840
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-09-01",
-      "cumulative_forks": 834
+      "cumulative_forks": 912
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-10-01",
-      "cumulative_forks": 894
-    },
-    {
-      "repo": "https://github.com/confident-ai/deepeval",
-      "month": "2025-11-01",
-      "cumulative_forks": 938
-    },
-    {
-      "repo": "https://github.com/confident-ai/deepeval",
-      "month": "2025-12-01",
       "cumulative_forks": 978
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2025-11-01",
+      "cumulative_forks": 1030
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2025-12-01",
+      "cumulative_forks": 1073
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
       "month": "2026-01-01",
-      "cumulative_forks": 1023
+      "cumulative_forks": 1123
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2026-02-01",
-      "cumulative_forks": 1094
+      "cumulative_forks": 1201
     },
     {
       "repo": "https://github.com/continuedev/continue",
@@ -2660,127 +2660,127 @@
     {
       "repo": "https://github.com/crewAIInc/crewAI",
       "month": "2026-02-01",
-      "cumulative_forks": 5931
+      "cumulative_forks": 5932
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-03-01",
-      "cumulative_forks": 149
+      "cumulative_forks": 152
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-04-01",
-      "cumulative_forks": 172
+      "cumulative_forks": 177
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-05-01",
-      "cumulative_forks": 183
+      "cumulative_forks": 190
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-06-01",
-      "cumulative_forks": 453
+      "cumulative_forks": 569
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-07-01",
-      "cumulative_forks": 484
+      "cumulative_forks": 604
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-08-01",
-      "cumulative_forks": 507
+      "cumulative_forks": 629
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-09-01",
-      "cumulative_forks": 531
+      "cumulative_forks": 660
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-10-01",
-      "cumulative_forks": 558
+      "cumulative_forks": 691
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-11-01",
-      "cumulative_forks": 601
+      "cumulative_forks": 756
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-12-01",
-      "cumulative_forks": 914
+      "cumulative_forks": 1185
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-01-01",
-      "cumulative_forks": 930
+      "cumulative_forks": 1202
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-02-01",
-      "cumulative_forks": 941
+      "cumulative_forks": 1214
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-03-01",
-      "cumulative_forks": 948
+      "cumulative_forks": 1222
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-04-01",
-      "cumulative_forks": 1253
+      "cumulative_forks": 1534
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-05-01",
-      "cumulative_forks": 1739
+      "cumulative_forks": 2033
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-06-01",
-      "cumulative_forks": 1761
+      "cumulative_forks": 2056
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-07-01",
-      "cumulative_forks": 1808
+      "cumulative_forks": 2112
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-08-01",
-      "cumulative_forks": 1829
+      "cumulative_forks": 2136
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-09-01",
-      "cumulative_forks": 1855
+      "cumulative_forks": 2165
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-10-01",
-      "cumulative_forks": 1970
+      "cumulative_forks": 2310
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-11-01",
-      "cumulative_forks": 2149
+      "cumulative_forks": 2550
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-12-01",
-      "cumulative_forks": 2585
+      "cumulative_forks": 3457
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2026-01-01",
-      "cumulative_forks": 2893
+      "cumulative_forks": 4233
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2026-02-01",
-      "cumulative_forks": 3112
+      "cumulative_forks": 4719
     },
     {
       "repo": "https://github.com/deepset-ai/haystack",
@@ -2900,7 +2900,7 @@
     {
       "repo": "https://github.com/deepset-ai/haystack",
       "month": "2026-02-01",
-      "cumulative_forks": 2553
+      "cumulative_forks": 2554
     },
     {
       "repo": "https://github.com/e2b-dev/code-interpreter",
@@ -2910,287 +2910,287 @@
     {
       "repo": "https://github.com/e2b-dev/code-interpreter",
       "month": "2024-05-01",
-      "cumulative_forks": 31
+      "cumulative_forks": 32
     },
     {
       "repo": "https://github.com/e2b-dev/code-interpreter",
       "month": "2024-06-01",
-      "cumulative_forks": 42
+      "cumulative_forks": 43
     },
     {
       "repo": "https://github.com/e2b-dev/code-interpreter",
       "month": "2024-07-01",
-      "cumulative_forks": 49
+      "cumulative_forks": 51
     },
     {
       "repo": "https://github.com/e2b-dev/code-interpreter",
       "month": "2024-08-01",
-      "cumulative_forks": 56
+      "cumulative_forks": 58
     },
     {
       "repo": "https://github.com/e2b-dev/code-interpreter",
       "month": "2024-09-01",
-      "cumulative_forks": 64
+      "cumulative_forks": 66
     },
     {
       "repo": "https://github.com/e2b-dev/code-interpreter",
       "month": "2024-10-01",
-      "cumulative_forks": 72
+      "cumulative_forks": 74
     },
     {
       "repo": "https://github.com/e2b-dev/code-interpreter",
       "month": "2024-11-01",
-      "cumulative_forks": 78
+      "cumulative_forks": 80
     },
     {
       "repo": "https://github.com/e2b-dev/code-interpreter",
       "month": "2024-12-01",
-      "cumulative_forks": 84
+      "cumulative_forks": 86
     },
     {
       "repo": "https://github.com/e2b-dev/code-interpreter",
       "month": "2025-01-01",
-      "cumulative_forks": 94
+      "cumulative_forks": 96
     },
     {
       "repo": "https://github.com/e2b-dev/code-interpreter",
       "month": "2025-02-01",
-      "cumulative_forks": 99
+      "cumulative_forks": 101
     },
     {
       "repo": "https://github.com/e2b-dev/code-interpreter",
       "month": "2025-03-01",
-      "cumulative_forks": 108
-    },
-    {
-      "repo": "https://github.com/e2b-dev/code-interpreter",
-      "month": "2025-04-01",
       "cumulative_forks": 110
     },
     {
       "repo": "https://github.com/e2b-dev/code-interpreter",
+      "month": "2025-04-01",
+      "cumulative_forks": 112
+    },
+    {
+      "repo": "https://github.com/e2b-dev/code-interpreter",
       "month": "2025-05-01",
-      "cumulative_forks": 116
+      "cumulative_forks": 119
     },
     {
       "repo": "https://github.com/e2b-dev/code-interpreter",
       "month": "2025-06-01",
-      "cumulative_forks": 123
+      "cumulative_forks": 126
     },
     {
       "repo": "https://github.com/e2b-dev/code-interpreter",
       "month": "2025-07-01",
-      "cumulative_forks": 133
+      "cumulative_forks": 136
     },
     {
       "repo": "https://github.com/e2b-dev/code-interpreter",
       "month": "2025-08-01",
-      "cumulative_forks": 142
+      "cumulative_forks": 145
     },
     {
       "repo": "https://github.com/e2b-dev/code-interpreter",
       "month": "2025-09-01",
-      "cumulative_forks": 143
+      "cumulative_forks": 146
     },
     {
       "repo": "https://github.com/e2b-dev/code-interpreter",
       "month": "2025-10-01",
-      "cumulative_forks": 144
+      "cumulative_forks": 147
     },
     {
       "repo": "https://github.com/e2b-dev/code-interpreter",
       "month": "2025-11-01",
-      "cumulative_forks": 152
+      "cumulative_forks": 155
     },
     {
       "repo": "https://github.com/e2b-dev/code-interpreter",
       "month": "2025-12-01",
-      "cumulative_forks": 164
+      "cumulative_forks": 167
     },
     {
       "repo": "https://github.com/e2b-dev/code-interpreter",
       "month": "2026-01-01",
-      "cumulative_forks": 172
+      "cumulative_forks": 175
     },
     {
       "repo": "https://github.com/e2b-dev/code-interpreter",
       "month": "2026-02-01",
-      "cumulative_forks": 174
+      "cumulative_forks": 179
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-04-01",
-      "cumulative_forks": 644
+      "cumulative_forks": 695
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-05-01",
-      "cumulative_forks": 903
+      "cumulative_forks": 977
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-06-01",
-      "cumulative_forks": 1124
+      "cumulative_forks": 1232
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-07-01",
-      "cumulative_forks": 1289
+      "cumulative_forks": 1415
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-08-01",
-      "cumulative_forks": 1492
+      "cumulative_forks": 1653
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-09-01",
-      "cumulative_forks": 1643
+      "cumulative_forks": 1823
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-10-01",
-      "cumulative_forks": 1793
+      "cumulative_forks": 2010
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-11-01",
-      "cumulative_forks": 2046
+      "cumulative_forks": 2361
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-12-01",
-      "cumulative_forks": 2209
+      "cumulative_forks": 2556
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2026-01-01",
-      "cumulative_forks": 2318
+      "cumulative_forks": 2691
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2026-02-01",
-      "cumulative_forks": 2461
+      "cumulative_forks": 2867
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2024-03-01",
-      "cumulative_forks": 196
+      "cumulative_forks": 206
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2024-04-01",
-      "cumulative_forks": 204
+      "cumulative_forks": 214
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2024-05-01",
-      "cumulative_forks": 210
-    },
-    {
-      "repo": "https://github.com/guardrails-ai/guardrails",
-      "month": "2024-06-01",
       "cumulative_forks": 221
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2024-06-01",
+      "cumulative_forks": 234
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2024-07-01",
-      "cumulative_forks": 232
+      "cumulative_forks": 245
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2024-08-01",
-      "cumulative_forks": 243
+      "cumulative_forks": 257
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2024-09-01",
-      "cumulative_forks": 252
+      "cumulative_forks": 268
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2024-10-01",
-      "cumulative_forks": 261
+      "cumulative_forks": 280
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2024-11-01",
-      "cumulative_forks": 271
+      "cumulative_forks": 290
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2024-12-01",
-      "cumulative_forks": 285
+      "cumulative_forks": 305
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-01-01",
-      "cumulative_forks": 296
+      "cumulative_forks": 318
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-02-01",
-      "cumulative_forks": 302
+      "cumulative_forks": 325
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-03-01",
-      "cumulative_forks": 319
+      "cumulative_forks": 343
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-04-01",
-      "cumulative_forks": 333
+      "cumulative_forks": 359
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-05-01",
-      "cumulative_forks": 348
+      "cumulative_forks": 375
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-06-01",
-      "cumulative_forks": 355
+      "cumulative_forks": 384
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-07-01",
-      "cumulative_forks": 367
+      "cumulative_forks": 397
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-08-01",
-      "cumulative_forks": 378
+      "cumulative_forks": 409
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-09-01",
-      "cumulative_forks": 386
+      "cumulative_forks": 419
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-10-01",
-      "cumulative_forks": 405
+      "cumulative_forks": 439
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-11-01",
-      "cumulative_forks": 417
+      "cumulative_forks": 455
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-12-01",
-      "cumulative_forks": 432
+      "cumulative_forks": 470
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2026-01-01",
-      "cumulative_forks": 448
+      "cumulative_forks": 486
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2026-02-01",
-      "cumulative_forks": 460
+      "cumulative_forks": 500
     },
     {
       "repo": "https://github.com/huggingface/smolagents",
@@ -3230,42 +3230,42 @@
     {
       "repo": "https://github.com/huggingface/smolagents",
       "month": "2025-07-01",
-      "cumulative_forks": 1784
+      "cumulative_forks": 1785
     },
     {
       "repo": "https://github.com/huggingface/smolagents",
       "month": "2025-08-01",
-      "cumulative_forks": 1857
+      "cumulative_forks": 1858
     },
     {
       "repo": "https://github.com/huggingface/smolagents",
       "month": "2025-09-01",
-      "cumulative_forks": 1912
+      "cumulative_forks": 1913
     },
     {
       "repo": "https://github.com/huggingface/smolagents",
       "month": "2025-10-01",
-      "cumulative_forks": 1971
+      "cumulative_forks": 1972
     },
     {
       "repo": "https://github.com/huggingface/smolagents",
       "month": "2025-11-01",
-      "cumulative_forks": 2017
+      "cumulative_forks": 2018
     },
     {
       "repo": "https://github.com/huggingface/smolagents",
       "month": "2025-12-01",
-      "cumulative_forks": 2076
+      "cumulative_forks": 2077
     },
     {
       "repo": "https://github.com/huggingface/smolagents",
       "month": "2026-01-01",
-      "cumulative_forks": 2139
+      "cumulative_forks": 2140
     },
     {
       "repo": "https://github.com/huggingface/smolagents",
       "month": "2026-02-01",
-      "cumulative_forks": 2195
+      "cumulative_forks": 2196
     },
     {
       "repo": "https://github.com/huggingface/transformers",
@@ -3390,52 +3390,52 @@
     {
       "repo": "https://github.com/ibm/mcp-context-forge",
       "month": "2025-05-01",
-      "cumulative_forks": 1
+      "cumulative_forks": 2
     },
     {
       "repo": "https://github.com/ibm/mcp-context-forge",
       "month": "2025-06-01",
-      "cumulative_forks": 80
+      "cumulative_forks": 88
     },
     {
       "repo": "https://github.com/ibm/mcp-context-forge",
       "month": "2025-07-01",
-      "cumulative_forks": 131
+      "cumulative_forks": 143
     },
     {
       "repo": "https://github.com/ibm/mcp-context-forge",
       "month": "2025-08-01",
-      "cumulative_forks": 223
+      "cumulative_forks": 239
     },
     {
       "repo": "https://github.com/ibm/mcp-context-forge",
       "month": "2025-09-01",
-      "cumulative_forks": 277
+      "cumulative_forks": 298
     },
     {
       "repo": "https://github.com/ibm/mcp-context-forge",
       "month": "2025-10-01",
-      "cumulative_forks": 316
+      "cumulative_forks": 341
     },
     {
       "repo": "https://github.com/ibm/mcp-context-forge",
       "month": "2025-11-01",
-      "cumulative_forks": 348
+      "cumulative_forks": 382
     },
     {
       "repo": "https://github.com/ibm/mcp-context-forge",
       "month": "2025-12-01",
-      "cumulative_forks": 381
+      "cumulative_forks": 421
     },
     {
       "repo": "https://github.com/ibm/mcp-context-forge",
       "month": "2026-01-01",
-      "cumulative_forks": 411
+      "cumulative_forks": 459
     },
     {
       "repo": "https://github.com/ibm/mcp-context-forge",
       "month": "2026-02-01",
-      "cumulative_forks": 451
+      "cumulative_forks": 517
     },
     {
       "repo": "https://github.com/infiniflow/ragflow",
@@ -3550,7 +3550,7 @@
     {
       "repo": "https://github.com/infiniflow/ragflow",
       "month": "2026-02-01",
-      "cumulative_forks": 8221
+      "cumulative_forks": 8222
     },
     {
       "repo": "https://github.com/janhq/jan",
@@ -3675,122 +3675,122 @@
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2024-03-01",
-      "cumulative_forks": 1483
+      "cumulative_forks": 1611
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2024-04-01",
-      "cumulative_forks": 1536
+      "cumulative_forks": 1670
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2024-05-01",
-      "cumulative_forks": 1587
+      "cumulative_forks": 1726
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2024-06-01",
-      "cumulative_forks": 1622
+      "cumulative_forks": 1768
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2024-07-01",
-      "cumulative_forks": 1660
+      "cumulative_forks": 1811
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2024-08-01",
-      "cumulative_forks": 1682
+      "cumulative_forks": 1842
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2024-09-01",
-      "cumulative_forks": 1704
+      "cumulative_forks": 1872
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2024-10-01",
-      "cumulative_forks": 1798
+      "cumulative_forks": 1983
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2024-11-01",
-      "cumulative_forks": 1862
+      "cumulative_forks": 2061
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2024-12-01",
-      "cumulative_forks": 1902
+      "cumulative_forks": 2107
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2025-01-01",
-      "cumulative_forks": 1930
+      "cumulative_forks": 2145
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2025-02-01",
-      "cumulative_forks": 1960
+      "cumulative_forks": 2181
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2025-03-01",
-      "cumulative_forks": 2006
+      "cumulative_forks": 2235
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2025-04-01",
-      "cumulative_forks": 2038
+      "cumulative_forks": 2269
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2025-05-01",
-      "cumulative_forks": 2062
+      "cumulative_forks": 2305
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2025-06-01",
-      "cumulative_forks": 2086
+      "cumulative_forks": 2338
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2025-07-01",
-      "cumulative_forks": 2112
+      "cumulative_forks": 2372
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2025-08-01",
-      "cumulative_forks": 2142
+      "cumulative_forks": 2407
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2025-09-01",
-      "cumulative_forks": 2185
+      "cumulative_forks": 2456
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2025-10-01",
-      "cumulative_forks": 2217
+      "cumulative_forks": 2498
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2025-11-01",
-      "cumulative_forks": 2245
+      "cumulative_forks": 2528
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2025-12-01",
-      "cumulative_forks": 2265
+      "cumulative_forks": 2559
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2026-01-01",
-      "cumulative_forks": 2288
+      "cumulative_forks": 2591
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2026-02-01",
-      "cumulative_forks": 2339
+      "cumulative_forks": 2660
     },
     {
       "repo": "https://github.com/kserve/kserve",
@@ -4030,7 +4030,7 @@
     {
       "repo": "https://github.com/langchain-ai/langchain",
       "month": "2026-02-01",
-      "cumulative_forks": 20731
+      "cumulative_forks": 20733
     },
     {
       "repo": "https://github.com/langchain-ai/langgraph",
@@ -4150,7 +4150,7 @@
     {
       "repo": "https://github.com/langchain-ai/langgraph",
       "month": "2026-02-01",
-      "cumulative_forks": 4386
+      "cumulative_forks": 4387
     },
     {
       "repo": "https://github.com/langfuse/langfuse",
@@ -4395,122 +4395,122 @@
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-03-01",
-      "cumulative_forks": 19
+      "cumulative_forks": 20
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-04-01",
-      "cumulative_forks": 27
+      "cumulative_forks": 29
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-05-01",
-      "cumulative_forks": 46
+      "cumulative_forks": 49
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-06-01",
-      "cumulative_forks": 70
+      "cumulative_forks": 73
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-07-01",
-      "cumulative_forks": 96
+      "cumulative_forks": 103
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-08-01",
-      "cumulative_forks": 128
+      "cumulative_forks": 137
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-09-01",
-      "cumulative_forks": 165
+      "cumulative_forks": 186
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-10-01",
-      "cumulative_forks": 289
+      "cumulative_forks": 318
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-11-01",
-      "cumulative_forks": 336
+      "cumulative_forks": 367
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-12-01",
-      "cumulative_forks": 393
+      "cumulative_forks": 427
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-01-01",
-      "cumulative_forks": 448
+      "cumulative_forks": 489
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-02-01",
-      "cumulative_forks": 497
+      "cumulative_forks": 547
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-03-01",
-      "cumulative_forks": 554
+      "cumulative_forks": 618
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-04-01",
-      "cumulative_forks": 617
+      "cumulative_forks": 694
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-05-01",
-      "cumulative_forks": 698
+      "cumulative_forks": 785
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-06-01",
-      "cumulative_forks": 769
+      "cumulative_forks": 881
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-07-01",
-      "cumulative_forks": 838
+      "cumulative_forks": 970
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-08-01",
-      "cumulative_forks": 915
+      "cumulative_forks": 1062
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-09-01",
-      "cumulative_forks": 982
+      "cumulative_forks": 1145
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-10-01",
-      "cumulative_forks": 1078
+      "cumulative_forks": 1259
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-11-01",
-      "cumulative_forks": 1225
+      "cumulative_forks": 1593
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-12-01",
-      "cumulative_forks": 1293
+      "cumulative_forks": 1684
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2026-01-01",
-      "cumulative_forks": 1379
+      "cumulative_forks": 1790
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2026-02-01",
-      "cumulative_forks": 1444
+      "cumulative_forks": 1873
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
@@ -4520,287 +4520,287 @@
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2024-11-01",
-      "cumulative_forks": 20
+      "cumulative_forks": 21
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2024-12-01",
-      "cumulative_forks": 29
+      "cumulative_forks": 30
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-01-01",
-      "cumulative_forks": 54
+      "cumulative_forks": 55
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-02-01",
-      "cumulative_forks": 273
+      "cumulative_forks": 293
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-03-01",
-      "cumulative_forks": 470
+      "cumulative_forks": 499
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-04-01",
-      "cumulative_forks": 561
+      "cumulative_forks": 595
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-05-01",
-      "cumulative_forks": 647
+      "cumulative_forks": 692
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-06-01",
-      "cumulative_forks": 752
+      "cumulative_forks": 805
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-07-01",
-      "cumulative_forks": 823
+      "cumulative_forks": 882
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-08-01",
-      "cumulative_forks": 892
+      "cumulative_forks": 953
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-09-01",
-      "cumulative_forks": 977
+      "cumulative_forks": 1041
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-10-01",
-      "cumulative_forks": 1069
+      "cumulative_forks": 1141
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-11-01",
-      "cumulative_forks": 1137
+      "cumulative_forks": 1217
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-12-01",
-      "cumulative_forks": 1195
+      "cumulative_forks": 1280
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2026-01-01",
-      "cumulative_forks": 1296
+      "cumulative_forks": 1398
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2026-02-01",
-      "cumulative_forks": 1429
+      "cumulative_forks": 1550
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2024-10-01",
-      "cumulative_forks": 211
+      "cumulative_forks": 228
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2024-11-01",
-      "cumulative_forks": 316
+      "cumulative_forks": 340
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2024-12-01",
-      "cumulative_forks": 344
+      "cumulative_forks": 372
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-01-01",
-      "cumulative_forks": 367
+      "cumulative_forks": 397
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-02-01",
-      "cumulative_forks": 1192
+      "cumulative_forks": 1316
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-03-01",
-      "cumulative_forks": 1447
+      "cumulative_forks": 1588
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-04-01",
-      "cumulative_forks": 1522
-    },
-    {
-      "repo": "https://github.com/microsoft/OmniParser",
-      "month": "2025-05-01",
-      "cumulative_forks": 1554
-    },
-    {
-      "repo": "https://github.com/microsoft/OmniParser",
-      "month": "2025-06-01",
-      "cumulative_forks": 1583
-    },
-    {
-      "repo": "https://github.com/microsoft/OmniParser",
-      "month": "2025-07-01",
-      "cumulative_forks": 1626
-    },
-    {
-      "repo": "https://github.com/microsoft/OmniParser",
-      "month": "2025-08-01",
       "cumulative_forks": 1675
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
+      "month": "2025-05-01",
+      "cumulative_forks": 1712
+    },
+    {
+      "repo": "https://github.com/microsoft/OmniParser",
+      "month": "2025-06-01",
+      "cumulative_forks": 1745
+    },
+    {
+      "repo": "https://github.com/microsoft/OmniParser",
+      "month": "2025-07-01",
+      "cumulative_forks": 1794
+    },
+    {
+      "repo": "https://github.com/microsoft/OmniParser",
+      "month": "2025-08-01",
+      "cumulative_forks": 1847
+    },
+    {
+      "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-09-01",
-      "cumulative_forks": 1706
+      "cumulative_forks": 1880
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-10-01",
-      "cumulative_forks": 1732
+      "cumulative_forks": 1906
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-11-01",
-      "cumulative_forks": 1751
+      "cumulative_forks": 1928
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-12-01",
-      "cumulative_forks": 1766
+      "cumulative_forks": 1944
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2026-01-01",
-      "cumulative_forks": 1806
+      "cumulative_forks": 1989
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2026-02-01",
-      "cumulative_forks": 1828
+      "cumulative_forks": 2016
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-03-01",
-      "cumulative_forks": 475
+      "cumulative_forks": 500
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-04-01",
-      "cumulative_forks": 504
+      "cumulative_forks": 530
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-05-01",
-      "cumulative_forks": 518
+      "cumulative_forks": 550
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-06-01",
-      "cumulative_forks": 531
+      "cumulative_forks": 563
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-07-01",
-      "cumulative_forks": 543
+      "cumulative_forks": 575
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-08-01",
-      "cumulative_forks": 555
+      "cumulative_forks": 587
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-09-01",
-      "cumulative_forks": 565
-    },
-    {
-      "repo": "https://github.com/microsoft/TaskWeaver",
-      "month": "2024-10-01",
-      "cumulative_forks": 577
-    },
-    {
-      "repo": "https://github.com/microsoft/TaskWeaver",
-      "month": "2024-11-01",
-      "cumulative_forks": 592
-    },
-    {
-      "repo": "https://github.com/microsoft/TaskWeaver",
-      "month": "2024-12-01",
       "cumulative_forks": 598
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
+      "month": "2024-10-01",
+      "cumulative_forks": 610
+    },
+    {
+      "repo": "https://github.com/microsoft/TaskWeaver",
+      "month": "2024-11-01",
+      "cumulative_forks": 625
+    },
+    {
+      "repo": "https://github.com/microsoft/TaskWeaver",
+      "month": "2024-12-01",
+      "cumulative_forks": 631
+    },
+    {
+      "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2025-01-01",
-      "cumulative_forks": 605
+      "cumulative_forks": 638
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2025-02-01",
-      "cumulative_forks": 614
+      "cumulative_forks": 650
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2025-03-01",
-      "cumulative_forks": 629
-    },
-    {
-      "repo": "https://github.com/microsoft/TaskWeaver",
-      "month": "2025-04-01",
-      "cumulative_forks": 634
-    },
-    {
-      "repo": "https://github.com/microsoft/TaskWeaver",
-      "month": "2025-05-01",
-      "cumulative_forks": 642
-    },
-    {
-      "repo": "https://github.com/microsoft/TaskWeaver",
-      "month": "2025-06-01",
-      "cumulative_forks": 651
-    },
-    {
-      "repo": "https://github.com/microsoft/TaskWeaver",
-      "month": "2025-07-01",
-      "cumulative_forks": 658
-    },
-    {
-      "repo": "https://github.com/microsoft/TaskWeaver",
-      "month": "2025-08-01",
-      "cumulative_forks": 662
-    },
-    {
-      "repo": "https://github.com/microsoft/TaskWeaver",
-      "month": "2025-09-01",
       "cumulative_forks": 666
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
-      "month": "2025-10-01",
-      "cumulative_forks": 669
-    },
-    {
-      "repo": "https://github.com/microsoft/TaskWeaver",
-      "month": "2025-11-01",
+      "month": "2025-04-01",
       "cumulative_forks": 673
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
+      "month": "2025-05-01",
+      "cumulative_forks": 681
+    },
+    {
+      "repo": "https://github.com/microsoft/TaskWeaver",
+      "month": "2025-06-01",
+      "cumulative_forks": 691
+    },
+    {
+      "repo": "https://github.com/microsoft/TaskWeaver",
+      "month": "2025-07-01",
+      "cumulative_forks": 698
+    },
+    {
+      "repo": "https://github.com/microsoft/TaskWeaver",
+      "month": "2025-08-01",
+      "cumulative_forks": 703
+    },
+    {
+      "repo": "https://github.com/microsoft/TaskWeaver",
+      "month": "2025-09-01",
+      "cumulative_forks": 707
+    },
+    {
+      "repo": "https://github.com/microsoft/TaskWeaver",
+      "month": "2025-10-01",
+      "cumulative_forks": 710
+    },
+    {
+      "repo": "https://github.com/microsoft/TaskWeaver",
+      "month": "2025-11-01",
+      "cumulative_forks": 714
+    },
+    {
+      "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2025-12-01",
-      "cumulative_forks": 677
+      "cumulative_forks": 719
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2026-01-01",
-      "cumulative_forks": 680
+      "cumulative_forks": 722
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2026-02-01",
-      "cumulative_forks": 684
+      "cumulative_forks": 726
     },
     {
       "repo": "https://github.com/microsoft/autogen",
@@ -4925,102 +4925,102 @@
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2024-07-01",
-      "cumulative_forks": 976
+      "cumulative_forks": 1030
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2024-08-01",
-      "cumulative_forks": 1262
+      "cumulative_forks": 1339
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2024-09-01",
-      "cumulative_forks": 1396
+      "cumulative_forks": 1486
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2024-10-01",
-      "cumulative_forks": 1498
+      "cumulative_forks": 1601
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2024-11-01",
-      "cumulative_forks": 1611
+      "cumulative_forks": 1723
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2024-12-01",
-      "cumulative_forks": 1716
+      "cumulative_forks": 1836
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-01-01",
-      "cumulative_forks": 1808
+      "cumulative_forks": 1941
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-02-01",
-      "cumulative_forks": 1891
+      "cumulative_forks": 2033
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-03-01",
-      "cumulative_forks": 2005
+      "cumulative_forks": 2153
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-04-01",
-      "cumulative_forks": 2099
+      "cumulative_forks": 2257
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-05-01",
-      "cumulative_forks": 2175
+      "cumulative_forks": 2346
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-06-01",
-      "cumulative_forks": 2256
+      "cumulative_forks": 2442
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-07-01",
-      "cumulative_forks": 2345
+      "cumulative_forks": 2545
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-08-01",
-      "cumulative_forks": 2409
+      "cumulative_forks": 2621
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-09-01",
-      "cumulative_forks": 2497
+      "cumulative_forks": 2720
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-10-01",
-      "cumulative_forks": 2553
+      "cumulative_forks": 2788
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-11-01",
-      "cumulative_forks": 2619
+      "cumulative_forks": 2863
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-12-01",
-      "cumulative_forks": 2679
+      "cumulative_forks": 2934
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2026-01-01",
-      "cumulative_forks": 2747
+      "cumulative_forks": 3010
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2026-02-01",
-      "cumulative_forks": 2799
+      "cumulative_forks": 3071
     },
     {
       "repo": "https://github.com/microsoft/playwright",
@@ -5145,122 +5145,122 @@
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-03-01",
-      "cumulative_forks": 1916
+      "cumulative_forks": 2259
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-04-01",
-      "cumulative_forks": 2005
+      "cumulative_forks": 2371
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-05-01",
-      "cumulative_forks": 2075
+      "cumulative_forks": 2452
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-06-01",
-      "cumulative_forks": 2210
+      "cumulative_forks": 2610
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-07-01",
-      "cumulative_forks": 2283
-    },
-    {
-      "repo": "https://github.com/microsoft/semantic-kernel",
-      "month": "2024-08-01",
-      "cumulative_forks": 2337
-    },
-    {
-      "repo": "https://github.com/microsoft/semantic-kernel",
-      "month": "2024-09-01",
-      "cumulative_forks": 2389
-    },
-    {
-      "repo": "https://github.com/microsoft/semantic-kernel",
-      "month": "2024-10-01",
-      "cumulative_forks": 2448
-    },
-    {
-      "repo": "https://github.com/microsoft/semantic-kernel",
-      "month": "2024-11-01",
-      "cumulative_forks": 2491
-    },
-    {
-      "repo": "https://github.com/microsoft/semantic-kernel",
-      "month": "2024-12-01",
-      "cumulative_forks": 2546
-    },
-    {
-      "repo": "https://github.com/microsoft/semantic-kernel",
-      "month": "2025-01-01",
-      "cumulative_forks": 2611
-    },
-    {
-      "repo": "https://github.com/microsoft/semantic-kernel",
-      "month": "2025-02-01",
       "cumulative_forks": 2695
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2024-08-01",
+      "cumulative_forks": 2753
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2024-09-01",
+      "cumulative_forks": 2815
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2024-10-01",
+      "cumulative_forks": 2885
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2024-11-01",
+      "cumulative_forks": 2936
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2024-12-01",
+      "cumulative_forks": 3000
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2025-01-01",
+      "cumulative_forks": 3079
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2025-02-01",
+      "cumulative_forks": 3171
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-03-01",
-      "cumulative_forks": 2783
+      "cumulative_forks": 3285
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-04-01",
-      "cumulative_forks": 2881
+      "cumulative_forks": 3414
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-05-01",
-      "cumulative_forks": 2986
+      "cumulative_forks": 3535
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-06-01",
-      "cumulative_forks": 3085
+      "cumulative_forks": 3662
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-07-01",
-      "cumulative_forks": 3150
+      "cumulative_forks": 3746
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-08-01",
-      "cumulative_forks": 3221
+      "cumulative_forks": 3834
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-09-01",
-      "cumulative_forks": 3295
+      "cumulative_forks": 3926
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-10-01",
-      "cumulative_forks": 3349
+      "cumulative_forks": 3999
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-11-01",
-      "cumulative_forks": 3404
+      "cumulative_forks": 4056
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-12-01",
-      "cumulative_forks": 3449
+      "cumulative_forks": 4106
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2026-01-01",
-      "cumulative_forks": 3498
+      "cumulative_forks": 4159
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2026-02-01",
-      "cumulative_forks": 3541
+      "cumulative_forks": 4211
     },
     {
       "repo": "https://github.com/milvus-io/milvus",
@@ -5385,122 +5385,122 @@
     {
       "repo": "https://github.com/mistralai/mistral-inference",
       "month": "2024-03-01",
-      "cumulative_forks": 573
+      "cumulative_forks": 605
     },
     {
       "repo": "https://github.com/mistralai/mistral-inference",
       "month": "2024-04-01",
-      "cumulative_forks": 604
+      "cumulative_forks": 639
     },
     {
       "repo": "https://github.com/mistralai/mistral-inference",
       "month": "2024-05-01",
-      "cumulative_forks": 627
+      "cumulative_forks": 662
     },
     {
       "repo": "https://github.com/mistralai/mistral-inference",
       "month": "2024-06-01",
-      "cumulative_forks": 647
+      "cumulative_forks": 682
     },
     {
       "repo": "https://github.com/mistralai/mistral-inference",
       "month": "2024-07-01",
-      "cumulative_forks": 673
+      "cumulative_forks": 708
     },
     {
       "repo": "https://github.com/mistralai/mistral-inference",
       "month": "2024-08-01",
-      "cumulative_forks": 692
+      "cumulative_forks": 728
     },
     {
       "repo": "https://github.com/mistralai/mistral-inference",
       "month": "2024-09-01",
-      "cumulative_forks": 700
+      "cumulative_forks": 737
     },
     {
       "repo": "https://github.com/mistralai/mistral-inference",
       "month": "2024-10-01",
-      "cumulative_forks": 713
+      "cumulative_forks": 751
     },
     {
       "repo": "https://github.com/mistralai/mistral-inference",
       "month": "2024-11-01",
-      "cumulative_forks": 726
+      "cumulative_forks": 764
     },
     {
       "repo": "https://github.com/mistralai/mistral-inference",
       "month": "2024-12-01",
-      "cumulative_forks": 730
+      "cumulative_forks": 769
     },
     {
       "repo": "https://github.com/mistralai/mistral-inference",
       "month": "2025-01-01",
-      "cumulative_forks": 738
+      "cumulative_forks": 779
     },
     {
       "repo": "https://github.com/mistralai/mistral-inference",
       "month": "2025-02-01",
-      "cumulative_forks": 749
+      "cumulative_forks": 794
     },
     {
       "repo": "https://github.com/mistralai/mistral-inference",
       "month": "2025-03-01",
-      "cumulative_forks": 760
+      "cumulative_forks": 806
     },
     {
       "repo": "https://github.com/mistralai/mistral-inference",
       "month": "2025-04-01",
-      "cumulative_forks": 768
+      "cumulative_forks": 814
     },
     {
       "repo": "https://github.com/mistralai/mistral-inference",
       "month": "2025-05-01",
-      "cumulative_forks": 776
+      "cumulative_forks": 824
     },
     {
       "repo": "https://github.com/mistralai/mistral-inference",
       "month": "2025-06-01",
-      "cumulative_forks": 784
+      "cumulative_forks": 833
     },
     {
       "repo": "https://github.com/mistralai/mistral-inference",
       "month": "2025-07-01",
-      "cumulative_forks": 800
+      "cumulative_forks": 850
     },
     {
       "repo": "https://github.com/mistralai/mistral-inference",
       "month": "2025-08-01",
-      "cumulative_forks": 816
+      "cumulative_forks": 868
     },
     {
       "repo": "https://github.com/mistralai/mistral-inference",
       "month": "2025-09-01",
-      "cumulative_forks": 827
+      "cumulative_forks": 882
     },
     {
       "repo": "https://github.com/mistralai/mistral-inference",
       "month": "2025-10-01",
-      "cumulative_forks": 836
+      "cumulative_forks": 891
     },
     {
       "repo": "https://github.com/mistralai/mistral-inference",
       "month": "2025-11-01",
-      "cumulative_forks": 848
+      "cumulative_forks": 905
     },
     {
       "repo": "https://github.com/mistralai/mistral-inference",
       "month": "2025-12-01",
-      "cumulative_forks": 860
+      "cumulative_forks": 919
     },
     {
       "repo": "https://github.com/mistralai/mistral-inference",
       "month": "2026-01-01",
-      "cumulative_forks": 873
+      "cumulative_forks": 932
     },
     {
       "repo": "https://github.com/mistralai/mistral-inference",
       "month": "2026-02-01",
-      "cumulative_forks": 886
+      "cumulative_forks": 946
     },
     {
       "repo": "https://github.com/modelcontextprotocol/inspector",
@@ -5760,12 +5760,12 @@
     {
       "repo": "https://github.com/ollama/ollama",
       "month": "2026-01-01",
-      "cumulative_forks": 14154
+      "cumulative_forks": 14155
     },
     {
       "repo": "https://github.com/ollama/ollama",
       "month": "2026-02-01",
-      "cumulative_forks": 14590
+      "cumulative_forks": 14594
     },
     {
       "repo": "https://github.com/open-telemetry/semantic-conventions",
@@ -5955,117 +5955,117 @@
     {
       "repo": "https://github.com/open-webui/open-webui",
       "month": "2025-04-01",
-      "cumulative_forks": 10871
+      "cumulative_forks": 10870
     },
     {
       "repo": "https://github.com/open-webui/open-webui",
       "month": "2025-05-01",
-      "cumulative_forks": 11810
+      "cumulative_forks": 11809
     },
     {
       "repo": "https://github.com/open-webui/open-webui",
       "month": "2025-06-01",
-      "cumulative_forks": 12612
+      "cumulative_forks": 12611
     },
     {
       "repo": "https://github.com/open-webui/open-webui",
       "month": "2025-07-01",
-      "cumulative_forks": 13354
+      "cumulative_forks": 13353
     },
     {
       "repo": "https://github.com/open-webui/open-webui",
       "month": "2025-08-01",
-      "cumulative_forks": 14125
+      "cumulative_forks": 14124
     },
     {
       "repo": "https://github.com/open-webui/open-webui",
       "month": "2025-09-01",
-      "cumulative_forks": 14789
+      "cumulative_forks": 14788
     },
     {
       "repo": "https://github.com/open-webui/open-webui",
       "month": "2025-10-01",
-      "cumulative_forks": 15426
+      "cumulative_forks": 15425
     },
     {
       "repo": "https://github.com/open-webui/open-webui",
       "month": "2025-11-01",
-      "cumulative_forks": 16101
+      "cumulative_forks": 16100
     },
     {
       "repo": "https://github.com/open-webui/open-webui",
       "month": "2025-12-01",
-      "cumulative_forks": 16696
+      "cumulative_forks": 16695
     },
     {
       "repo": "https://github.com/open-webui/open-webui",
       "month": "2026-01-01",
-      "cumulative_forks": 17357
+      "cumulative_forks": 17356
     },
     {
       "repo": "https://github.com/open-webui/open-webui",
       "month": "2026-02-01",
-      "cumulative_forks": 17993
+      "cumulative_forks": 17992
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-03-01",
-      "cumulative_forks": 744
+      "cumulative_forks": 796
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-04-01",
-      "cumulative_forks": 1029
+      "cumulative_forks": 1130
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-05-01",
-      "cumulative_forks": 1232
+      "cumulative_forks": 1371
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-06-01",
-      "cumulative_forks": 1456
+      "cumulative_forks": 1633
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-07-01",
-      "cumulative_forks": 1634
+      "cumulative_forks": 1853
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-08-01",
-      "cumulative_forks": 1811
+      "cumulative_forks": 2063
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-09-01",
-      "cumulative_forks": 1994
+      "cumulative_forks": 2277
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-10-01",
-      "cumulative_forks": 2209
+      "cumulative_forks": 2541
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-11-01",
-      "cumulative_forks": 2325
+      "cumulative_forks": 2676
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-12-01",
-      "cumulative_forks": 2407
+      "cumulative_forks": 2779
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2026-01-01",
-      "cumulative_forks": 2505
+      "cumulative_forks": 2889
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2026-02-01",
-      "cumulative_forks": 2585
+      "cumulative_forks": 2983
     },
     {
       "repo": "https://github.com/openclaw/openclaw",
@@ -6085,127 +6085,127 @@
     {
       "repo": "https://github.com/openclaw/openclaw",
       "month": "2026-02-01",
-      "cumulative_forks": 47469
+      "cumulative_forks": 47470
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2024-03-01",
-      "cumulative_forks": 42
+      "cumulative_forks": 53
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2024-04-01",
-      "cumulative_forks": 48
+      "cumulative_forks": 59
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2024-05-01",
-      "cumulative_forks": 56
+      "cumulative_forks": 72
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2024-06-01",
-      "cumulative_forks": 66
+      "cumulative_forks": 83
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2024-07-01",
-      "cumulative_forks": 69
+      "cumulative_forks": 86
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2024-08-01",
-      "cumulative_forks": 76
+      "cumulative_forks": 96
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2024-09-01",
-      "cumulative_forks": 80
+      "cumulative_forks": 103
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2024-10-01",
-      "cumulative_forks": 87
+      "cumulative_forks": 111
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2024-11-01",
-      "cumulative_forks": 91
+      "cumulative_forks": 116
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2024-12-01",
-      "cumulative_forks": 140
+      "cumulative_forks": 179
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-01-01",
-      "cumulative_forks": 194
+      "cumulative_forks": 242
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-02-01",
-      "cumulative_forks": 202
+      "cumulative_forks": 250
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-03-01",
-      "cumulative_forks": 225
+      "cumulative_forks": 282
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-04-01",
-      "cumulative_forks": 233
+      "cumulative_forks": 297
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-05-01",
-      "cumulative_forks": 395
+      "cumulative_forks": 469
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-06-01",
-      "cumulative_forks": 428
+      "cumulative_forks": 521
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-07-01",
-      "cumulative_forks": 535
+      "cumulative_forks": 662
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-08-01",
-      "cumulative_forks": 648
+      "cumulative_forks": 812
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-09-01",
-      "cumulative_forks": 920
+      "cumulative_forks": 1141
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-10-01",
-      "cumulative_forks": 1005
+      "cumulative_forks": 1243
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-11-01",
-      "cumulative_forks": 1034
+      "cumulative_forks": 1277
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2025-12-01",
-      "cumulative_forks": 1061
+      "cumulative_forks": 1329
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2026-01-01",
-      "cumulative_forks": 1108
+      "cumulative_forks": 1407
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2026-02-01",
-      "cumulative_forks": 1138
+      "cumulative_forks": 1450
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
@@ -6220,107 +6220,107 @@
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2024-06-01",
-      "cumulative_forks": 92
+      "cumulative_forks": 94
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2024-07-01",
-      "cumulative_forks": 139
+      "cumulative_forks": 141
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2024-08-01",
-      "cumulative_forks": 180
+      "cumulative_forks": 186
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2024-09-01",
-      "cumulative_forks": 223
+      "cumulative_forks": 233
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2024-10-01",
-      "cumulative_forks": 249
+      "cumulative_forks": 262
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2024-11-01",
-      "cumulative_forks": 270
+      "cumulative_forks": 286
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2024-12-01",
-      "cumulative_forks": 318
+      "cumulative_forks": 341
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-01-01",
-      "cumulative_forks": 389
+      "cumulative_forks": 417
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-02-01",
-      "cumulative_forks": 445
+      "cumulative_forks": 481
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-03-01",
-      "cumulative_forks": 500
+      "cumulative_forks": 553
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-04-01",
-      "cumulative_forks": 560
+      "cumulative_forks": 618
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-05-01",
-      "cumulative_forks": 680
+      "cumulative_forks": 779
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-06-01",
-      "cumulative_forks": 741
+      "cumulative_forks": 850
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-07-01",
-      "cumulative_forks": 852
+      "cumulative_forks": 975
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-08-01",
-      "cumulative_forks": 941
+      "cumulative_forks": 1081
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-09-01",
-      "cumulative_forks": 1020
+      "cumulative_forks": 1180
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-10-01",
-      "cumulative_forks": 1076
+      "cumulative_forks": 1249
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-11-01",
-      "cumulative_forks": 1139
+      "cumulative_forks": 1324
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-12-01",
-      "cumulative_forks": 1217
+      "cumulative_forks": 1417
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2026-01-01",
-      "cumulative_forks": 1317
+      "cumulative_forks": 1530
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2026-02-01",
-      "cumulative_forks": 1390
+      "cumulative_forks": 1622
     },
     {
       "repo": "https://github.com/promptfoo/promptfoo",
@@ -6440,7 +6440,7 @@
     {
       "repo": "https://github.com/promptfoo/promptfoo",
       "month": "2026-02-01",
-      "cumulative_forks": 931
+      "cumulative_forks": 932
     },
     {
       "repo": "https://github.com/pydantic/pydantic-ai",
@@ -6640,7 +6640,7 @@
     {
       "repo": "https://github.com/qdrant/qdrant",
       "month": "2026-02-01",
-      "cumulative_forks": 2004
+      "cumulative_forks": 2005
     },
     {
       "repo": "https://github.com/run-llama/llama_index",
@@ -6765,122 +6765,122 @@
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2024-03-01",
-      "cumulative_forks": 292
+      "cumulative_forks": 312
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2024-04-01",
-      "cumulative_forks": 311
+      "cumulative_forks": 333
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2024-05-01",
-      "cumulative_forks": 322
+      "cumulative_forks": 344
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2024-06-01",
-      "cumulative_forks": 337
+      "cumulative_forks": 360
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2024-07-01",
-      "cumulative_forks": 351
+      "cumulative_forks": 374
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2024-08-01",
-      "cumulative_forks": 371
+      "cumulative_forks": 395
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2024-09-01",
-      "cumulative_forks": 390
+      "cumulative_forks": 414
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2024-10-01",
-      "cumulative_forks": 405
+      "cumulative_forks": 430
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2024-11-01",
-      "cumulative_forks": 421
+      "cumulative_forks": 448
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2024-12-01",
-      "cumulative_forks": 435
+      "cumulative_forks": 462
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-01-01",
-      "cumulative_forks": 452
+      "cumulative_forks": 480
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-02-01",
-      "cumulative_forks": 472
+      "cumulative_forks": 501
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-03-01",
-      "cumulative_forks": 498
+      "cumulative_forks": 527
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-04-01",
-      "cumulative_forks": 525
+      "cumulative_forks": 557
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-05-01",
-      "cumulative_forks": 541
+      "cumulative_forks": 576
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-06-01",
-      "cumulative_forks": 568
+      "cumulative_forks": 605
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-07-01",
-      "cumulative_forks": 589
+      "cumulative_forks": 632
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-08-01",
-      "cumulative_forks": 606
+      "cumulative_forks": 651
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-09-01",
-      "cumulative_forks": 645
+      "cumulative_forks": 696
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-10-01",
-      "cumulative_forks": 677
+      "cumulative_forks": 730
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-11-01",
-      "cumulative_forks": 704
+      "cumulative_forks": 761
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-12-01",
-      "cumulative_forks": 733
+      "cumulative_forks": 794
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2026-01-01",
-      "cumulative_forks": 771
+      "cumulative_forks": 837
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2026-02-01",
-      "cumulative_forks": 808
+      "cumulative_forks": 876
     },
     {
       "repo": "https://github.com/stanfordnlp/dspy",
@@ -7005,117 +7005,117 @@
     {
       "repo": "https://github.com/sweepai/sweep",
       "month": "2024-03-01",
-      "cumulative_forks": 319
-    },
-    {
-      "repo": "https://github.com/sweepai/sweep",
-      "month": "2024-04-01",
       "cumulative_forks": 333
     },
     {
       "repo": "https://github.com/sweepai/sweep",
+      "month": "2024-04-01",
+      "cumulative_forks": 349
+    },
+    {
+      "repo": "https://github.com/sweepai/sweep",
       "month": "2024-05-01",
-      "cumulative_forks": 346
+      "cumulative_forks": 363
     },
     {
       "repo": "https://github.com/sweepai/sweep",
       "month": "2024-06-01",
-      "cumulative_forks": 351
+      "cumulative_forks": 369
     },
     {
       "repo": "https://github.com/sweepai/sweep",
       "month": "2024-07-01",
-      "cumulative_forks": 356
+      "cumulative_forks": 374
     },
     {
       "repo": "https://github.com/sweepai/sweep",
       "month": "2024-08-01",
-      "cumulative_forks": 360
+      "cumulative_forks": 378
     },
     {
       "repo": "https://github.com/sweepai/sweep",
       "month": "2024-09-01",
-      "cumulative_forks": 362
-    },
-    {
-      "repo": "https://github.com/sweepai/sweep",
-      "month": "2024-10-01",
-      "cumulative_forks": 368
-    },
-    {
-      "repo": "https://github.com/sweepai/sweep",
-      "month": "2024-11-01",
-      "cumulative_forks": 370
-    },
-    {
-      "repo": "https://github.com/sweepai/sweep",
-      "month": "2024-12-01",
-      "cumulative_forks": 373
-    },
-    {
-      "repo": "https://github.com/sweepai/sweep",
-      "month": "2025-01-01",
       "cumulative_forks": 380
     },
     {
       "repo": "https://github.com/sweepai/sweep",
-      "month": "2025-02-01",
+      "month": "2024-10-01",
       "cumulative_forks": 386
     },
     {
       "repo": "https://github.com/sweepai/sweep",
-      "month": "2025-03-01",
+      "month": "2024-11-01",
       "cumulative_forks": 388
     },
     {
       "repo": "https://github.com/sweepai/sweep",
-      "month": "2025-04-01",
-      "cumulative_forks": 390
+      "month": "2024-12-01",
+      "cumulative_forks": 391
     },
     {
       "repo": "https://github.com/sweepai/sweep",
-      "month": "2025-05-01",
-      "cumulative_forks": 392
-    },
-    {
-      "repo": "https://github.com/sweepai/sweep",
-      "month": "2025-06-01",
-      "cumulative_forks": 395
-    },
-    {
-      "repo": "https://github.com/sweepai/sweep",
-      "month": "2025-07-01",
-      "cumulative_forks": 399
-    },
-    {
-      "repo": "https://github.com/sweepai/sweep",
-      "month": "2025-08-01",
+      "month": "2025-01-01",
       "cumulative_forks": 400
     },
     {
       "repo": "https://github.com/sweepai/sweep",
+      "month": "2025-02-01",
+      "cumulative_forks": 406
+    },
+    {
+      "repo": "https://github.com/sweepai/sweep",
+      "month": "2025-03-01",
+      "cumulative_forks": 409
+    },
+    {
+      "repo": "https://github.com/sweepai/sweep",
+      "month": "2025-04-01",
+      "cumulative_forks": 411
+    },
+    {
+      "repo": "https://github.com/sweepai/sweep",
+      "month": "2025-05-01",
+      "cumulative_forks": 413
+    },
+    {
+      "repo": "https://github.com/sweepai/sweep",
+      "month": "2025-06-01",
+      "cumulative_forks": 418
+    },
+    {
+      "repo": "https://github.com/sweepai/sweep",
+      "month": "2025-07-01",
+      "cumulative_forks": 422
+    },
+    {
+      "repo": "https://github.com/sweepai/sweep",
+      "month": "2025-08-01",
+      "cumulative_forks": 423
+    },
+    {
+      "repo": "https://github.com/sweepai/sweep",
       "month": "2025-09-01",
-      "cumulative_forks": 401
+      "cumulative_forks": 425
     },
     {
       "repo": "https://github.com/sweepai/sweep",
       "month": "2025-11-01",
-      "cumulative_forks": 402
+      "cumulative_forks": 426
     },
     {
       "repo": "https://github.com/sweepai/sweep",
       "month": "2025-12-01",
-      "cumulative_forks": 403
+      "cumulative_forks": 427
     },
     {
       "repo": "https://github.com/sweepai/sweep",
       "month": "2026-01-01",
-      "cumulative_forks": 404
+      "cumulative_forks": 429
     },
     {
       "repo": "https://github.com/sweepai/sweep",
       "month": "2026-02-01",
-      "cumulative_forks": 406
+      "cumulative_forks": 431
     },
     {
       "repo": "https://github.com/temporalio/temporal",
@@ -7240,112 +7240,112 @@
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2024-05-01",
-      "cumulative_forks": 57
+      "cumulative_forks": 59
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2024-06-01",
-      "cumulative_forks": 98
+      "cumulative_forks": 100
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2024-07-01",
-      "cumulative_forks": 132
+      "cumulative_forks": 135
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2024-08-01",
-      "cumulative_forks": 163
+      "cumulative_forks": 170
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2024-09-01",
-      "cumulative_forks": 494
+      "cumulative_forks": 529
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2024-10-01",
-      "cumulative_forks": 880
+      "cumulative_forks": 958
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2024-11-01",
-      "cumulative_forks": 1039
+      "cumulative_forks": 1133
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2024-12-01",
-      "cumulative_forks": 1143
+      "cumulative_forks": 1245
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-01-01",
-      "cumulative_forks": 1842
+      "cumulative_forks": 2013
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-02-01",
-      "cumulative_forks": 2198
+      "cumulative_forks": 2409
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-03-01",
-      "cumulative_forks": 2557
+      "cumulative_forks": 2802
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-04-01",
-      "cumulative_forks": 3173
+      "cumulative_forks": 3468
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-05-01",
-      "cumulative_forks": 3532
+      "cumulative_forks": 3854
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-06-01",
-      "cumulative_forks": 3780
+      "cumulative_forks": 4129
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-07-01",
-      "cumulative_forks": 4106
+      "cumulative_forks": 4490
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-08-01",
-      "cumulative_forks": 4364
+      "cumulative_forks": 4783
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-09-01",
-      "cumulative_forks": 4562
+      "cumulative_forks": 5012
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-10-01",
-      "cumulative_forks": 4688
+      "cumulative_forks": 5159
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-11-01",
-      "cumulative_forks": 4840
+      "cumulative_forks": 5327
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-12-01",
-      "cumulative_forks": 5002
+      "cumulative_forks": 5500
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2026-01-01",
-      "cumulative_forks": 5192
+      "cumulative_forks": 5710
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2026-02-01",
-      "cumulative_forks": 5410
+      "cumulative_forks": 5954
     },
     {
       "repo": "https://github.com/weaviate/weaviate",
@@ -7505,112 +7505,117 @@
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2024-04-01",
-      "cumulative_forks": 54
+      "cumulative_forks": 55
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2024-05-01",
-      "cumulative_forks": 101
+      "cumulative_forks": 104
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2024-06-01",
-      "cumulative_forks": 107
-    },
-    {
-      "repo": "https://github.com/xlang-ai/OSWorld",
-      "month": "2024-07-01",
       "cumulative_forks": 110
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2024-07-01",
+      "cumulative_forks": 113
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2024-08-01",
-      "cumulative_forks": 112
+      "cumulative_forks": 115
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2024-09-01",
+      "cumulative_forks": 116
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2024-10-01",
-      "cumulative_forks": 126
+      "cumulative_forks": 131
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2024-11-01",
-      "cumulative_forks": 136
+      "cumulative_forks": 143
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2024-12-01",
-      "cumulative_forks": 140
+      "cumulative_forks": 147
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2025-01-01",
-      "cumulative_forks": 145
+      "cumulative_forks": 153
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2025-02-01",
-      "cumulative_forks": 152
+      "cumulative_forks": 161
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2025-03-01",
-      "cumulative_forks": 163
+      "cumulative_forks": 175
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2025-04-01",
-      "cumulative_forks": 182
+      "cumulative_forks": 194
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2025-05-01",
-      "cumulative_forks": 190
+      "cumulative_forks": 203
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2025-06-01",
-      "cumulative_forks": 197
+      "cumulative_forks": 214
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2025-07-01",
-      "cumulative_forks": 208
+      "cumulative_forks": 226
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2025-08-01",
-      "cumulative_forks": 229
+      "cumulative_forks": 250
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2025-09-01",
-      "cumulative_forks": 240
+      "cumulative_forks": 264
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2025-10-01",
-      "cumulative_forks": 254
+      "cumulative_forks": 282
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2025-11-01",
-      "cumulative_forks": 268
+      "cumulative_forks": 300
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2025-12-01",
-      "cumulative_forks": 286
+      "cumulative_forks": 323
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2026-01-01",
-      "cumulative_forks": 303
+      "cumulative_forks": 349
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2026-02-01",
-      "cumulative_forks": 316
+      "cumulative_forks": 364
     }
   ]
 }

@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "fetched_at": "2026-03-27T10:27:58.415018",
+    "fetched_at": "2026-04-01T07:13:35.612256",
     "schema": {
       "name": "dependent_packages_count",
       "description": "Monthly dependent package counts from Tinybird, broken out by ecosystem.",
@@ -247,7 +247,7 @@
       "repo": "https://github.com/PrefectHQ/prefect",
       "ecosystem": "nixpkgs",
       "month": "2026-03-01",
-      "dependent_package_count": 8
+      "dependent_package_count": 123
     },
     {
       "repo": "https://github.com/PrefectHQ/prefect",
@@ -1201,7 +1201,7 @@
       "repo": "https://github.com/microsoft/semantic-kernel",
       "ecosystem": "nuget",
       "month": "2026-03-01",
-      "dependent_package_count": 255
+      "dependent_package_count": 256
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",

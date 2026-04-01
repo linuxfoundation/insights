@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "fetched_at": "2026-03-27T10:28:13.286352",
+    "fetched_at": "2026-04-01T07:13:47.791473",
     "schema": {
       "name": "contributor_count",
       "description": "Cumulative monthly distinct contributor counts for tracked repositories.",
@@ -150,107 +150,122 @@
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2024-03-01",
-      "cumulative_contributors": 15
+      "cumulative_contributors": 29
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2024-04-01",
-      "cumulative_contributors": 19
+      "cumulative_contributors": 40
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2024-05-01",
-      "cumulative_contributors": 25
-    },
-    {
-      "repo": "https://github.com/Azure/PyRIT",
-      "month": "2024-06-01",
-      "cumulative_contributors": 28
-    },
-    {
-      "repo": "https://github.com/Azure/PyRIT",
-      "month": "2024-09-01",
-      "cumulative_contributors": 37
-    },
-    {
-      "repo": "https://github.com/Azure/PyRIT",
-      "month": "2024-10-01",
       "cumulative_contributors": 48
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
+      "month": "2024-06-01",
+      "cumulative_contributors": 52
+    },
+    {
+      "repo": "https://github.com/Azure/PyRIT",
+      "month": "2024-07-01",
+      "cumulative_contributors": 54
+    },
+    {
+      "repo": "https://github.com/Azure/PyRIT",
+      "month": "2024-08-01",
+      "cumulative_contributors": 59
+    },
+    {
+      "repo": "https://github.com/Azure/PyRIT",
+      "month": "2024-09-01",
+      "cumulative_contributors": 74
+    },
+    {
+      "repo": "https://github.com/Azure/PyRIT",
+      "month": "2024-10-01",
+      "cumulative_contributors": 97
+    },
+    {
+      "repo": "https://github.com/Azure/PyRIT",
       "month": "2024-11-01",
-      "cumulative_contributors": 50
+      "cumulative_contributors": 99
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2024-12-01",
-      "cumulative_contributors": 51
+      "cumulative_contributors": 103
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-01-01",
-      "cumulative_contributors": 55
+      "cumulative_contributors": 109
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-02-01",
-      "cumulative_contributors": 60
+      "cumulative_contributors": 126
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-03-01",
-      "cumulative_contributors": 68
+      "cumulative_contributors": 144
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-04-01",
-      "cumulative_contributors": 76
+      "cumulative_contributors": 157
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-05-01",
-      "cumulative_contributors": 77
+      "cumulative_contributors": 164
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-06-01",
-      "cumulative_contributors": 81
+      "cumulative_contributors": 174
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-07-01",
-      "cumulative_contributors": 85
+      "cumulative_contributors": 183
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-08-01",
-      "cumulative_contributors": 86
+      "cumulative_contributors": 190
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-09-01",
-      "cumulative_contributors": 88
+      "cumulative_contributors": 192
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-10-01",
-      "cumulative_contributors": 91
+      "cumulative_contributors": 198
+    },
+    {
+      "repo": "https://github.com/Azure/PyRIT",
+      "month": "2025-11-01",
+      "cumulative_contributors": 200
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2025-12-01",
-      "cumulative_contributors": 94
+      "cumulative_contributors": 210
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2026-01-01",
-      "cumulative_contributors": 98
+      "cumulative_contributors": 220
     },
     {
       "repo": "https://github.com/Azure/PyRIT",
       "month": "2026-02-01",
-      "cumulative_contributors": 103
+      "cumulative_contributors": 234
     },
     {
       "repo": "https://github.com/BerriAI/litellm",
@@ -370,7 +385,7 @@
     {
       "repo": "https://github.com/BerriAI/litellm",
       "month": "2026-02-01",
-      "cumulative_contributors": 2931
+      "cumulative_contributors": 2933
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
@@ -380,117 +395,117 @@
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2024-04-01",
-      "cumulative_contributors": 6
+      "cumulative_contributors": 7
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2024-05-01",
-      "cumulative_contributors": 11
+      "cumulative_contributors": 12
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2024-06-01",
-      "cumulative_contributors": 17
+      "cumulative_contributors": 20
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2024-07-01",
-      "cumulative_contributors": 24
+      "cumulative_contributors": 27
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2024-08-01",
-      "cumulative_contributors": 35
+      "cumulative_contributors": 42
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2024-09-01",
-      "cumulative_contributors": 46
+      "cumulative_contributors": 55
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2024-10-01",
-      "cumulative_contributors": 65
+      "cumulative_contributors": 75
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2024-11-01",
-      "cumulative_contributors": 68
+      "cumulative_contributors": 79
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2024-12-01",
-      "cumulative_contributors": 70
+      "cumulative_contributors": 81
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-01-01",
-      "cumulative_contributors": 76
+      "cumulative_contributors": 87
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-02-01",
-      "cumulative_contributors": 78
-    },
-    {
-      "repo": "https://github.com/ComposioHQ/composio",
-      "month": "2025-03-01",
       "cumulative_contributors": 89
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
+      "month": "2025-03-01",
+      "cumulative_contributors": 100
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-04-01",
-      "cumulative_contributors": 102
+      "cumulative_contributors": 114
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-05-01",
-      "cumulative_contributors": 108
+      "cumulative_contributors": 121
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-06-01",
-      "cumulative_contributors": 118
+      "cumulative_contributors": 134
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-07-01",
-      "cumulative_contributors": 124
+      "cumulative_contributors": 143
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-08-01",
-      "cumulative_contributors": 128
+      "cumulative_contributors": 148
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-09-01",
-      "cumulative_contributors": 138
+      "cumulative_contributors": 162
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-10-01",
-      "cumulative_contributors": 141
+      "cumulative_contributors": 166
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-11-01",
-      "cumulative_contributors": 144
+      "cumulative_contributors": 170
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2025-12-01",
-      "cumulative_contributors": 146
+      "cumulative_contributors": 179
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2026-01-01",
-      "cumulative_contributors": 151
+      "cumulative_contributors": 187
     },
     {
       "repo": "https://github.com/ComposioHQ/composio",
       "month": "2026-02-01",
-      "cumulative_contributors": 159
+      "cumulative_contributors": 201
     },
     {
       "repo": "https://github.com/HKUDS/LightRAG",
@@ -575,7 +590,7 @@
     {
       "repo": "https://github.com/HKUDS/LightRAG",
       "month": "2026-02-01",
-      "cumulative_contributors": 565
+      "cumulative_contributors": 567
     },
     {
       "repo": "https://github.com/OAI/OpenAPI-Specification",
@@ -635,252 +650,267 @@
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
       "month": "2024-07-01",
-      "cumulative_contributors": 3
-    },
-    {
-      "repo": "https://github.com/OpenAutoCoder/Agentless",
-      "month": "2024-08-01",
-      "cumulative_contributors": 4
-    },
-    {
-      "repo": "https://github.com/OpenAutoCoder/Agentless",
-      "month": "2024-10-01",
-      "cumulative_contributors": 5
-    },
-    {
-      "repo": "https://github.com/OpenAutoCoder/Agentless",
-      "month": "2025-02-01",
-      "cumulative_contributors": 6
-    },
-    {
-      "repo": "https://github.com/OpenAutoCoder/Agentless",
-      "month": "2025-03-01",
       "cumulative_contributors": 7
     },
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
-      "month": "2025-05-01",
+      "month": "2024-08-01",
       "cumulative_contributors": 9
     },
     {
       "repo": "https://github.com/OpenAutoCoder/Agentless",
-      "month": "2025-11-01",
+      "month": "2024-09-01",
       "cumulative_contributors": 10
+    },
+    {
+      "repo": "https://github.com/OpenAutoCoder/Agentless",
+      "month": "2024-10-01",
+      "cumulative_contributors": 11
+    },
+    {
+      "repo": "https://github.com/OpenAutoCoder/Agentless",
+      "month": "2025-02-01",
+      "cumulative_contributors": 12
+    },
+    {
+      "repo": "https://github.com/OpenAutoCoder/Agentless",
+      "month": "2025-03-01",
+      "cumulative_contributors": 14
+    },
+    {
+      "repo": "https://github.com/OpenAutoCoder/Agentless",
+      "month": "2025-05-01",
+      "cumulative_contributors": 16
+    },
+    {
+      "repo": "https://github.com/OpenAutoCoder/Agentless",
+      "month": "2025-07-01",
+      "cumulative_contributors": 17
+    },
+    {
+      "repo": "https://github.com/OpenAutoCoder/Agentless",
+      "month": "2025-11-01",
+      "cumulative_contributors": 18
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-03-01",
-      "cumulative_contributors": 78
+      "cumulative_contributors": 100
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-04-01",
-      "cumulative_contributors": 163
+      "cumulative_contributors": 221
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-05-01",
-      "cumulative_contributors": 216
+      "cumulative_contributors": 294
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-06-01",
-      "cumulative_contributors": 242
+      "cumulative_contributors": 328
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-07-01",
-      "cumulative_contributors": 269
+      "cumulative_contributors": 362
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-08-01",
-      "cumulative_contributors": 280
+      "cumulative_contributors": 375
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-09-01",
-      "cumulative_contributors": 291
+      "cumulative_contributors": 394
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-10-01",
-      "cumulative_contributors": 306
+      "cumulative_contributors": 417
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-11-01",
-      "cumulative_contributors": 330
+      "cumulative_contributors": 454
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2024-12-01",
-      "cumulative_contributors": 350
+      "cumulative_contributors": 474
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-01-01",
-      "cumulative_contributors": 379
+      "cumulative_contributors": 516
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-02-01",
-      "cumulative_contributors": 412
+      "cumulative_contributors": 556
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-03-01",
-      "cumulative_contributors": 450
+      "cumulative_contributors": 607
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-04-01",
-      "cumulative_contributors": 501
+      "cumulative_contributors": 674
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2025-05-01",
-      "cumulative_contributors": 543
-    },
-    {
-      "repo": "https://github.com/OpenHands/OpenHands",
-      "month": "2025-06-01",
-      "cumulative_contributors": 585
-    },
-    {
-      "repo": "https://github.com/OpenHands/OpenHands",
-      "month": "2025-07-01",
-      "cumulative_contributors": 606
-    },
-    {
-      "repo": "https://github.com/OpenHands/OpenHands",
-      "month": "2025-08-01",
-      "cumulative_contributors": 642
-    },
-    {
-      "repo": "https://github.com/OpenHands/OpenHands",
-      "month": "2025-09-01",
-      "cumulative_contributors": 662
-    },
-    {
-      "repo": "https://github.com/OpenHands/OpenHands",
-      "month": "2025-10-01",
-      "cumulative_contributors": 681
-    },
-    {
-      "repo": "https://github.com/OpenHands/OpenHands",
-      "month": "2025-11-01",
-      "cumulative_contributors": 700
-    },
-    {
-      "repo": "https://github.com/OpenHands/OpenHands",
-      "month": "2025-12-01",
       "cumulative_contributors": 732
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-06-01",
+      "cumulative_contributors": 791
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-07-01",
+      "cumulative_contributors": 822
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-08-01",
+      "cumulative_contributors": 873
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-09-01",
+      "cumulative_contributors": 908
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-10-01",
+      "cumulative_contributors": 940
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-11-01",
+      "cumulative_contributors": 968
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-12-01",
+      "cumulative_contributors": 1014
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2026-01-01",
-      "cumulative_contributors": 764
+      "cumulative_contributors": 1052
     },
     {
       "repo": "https://github.com/OpenHands/OpenHands",
       "month": "2026-02-01",
-      "cumulative_contributors": 792
+      "cumulative_contributors": 1086
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2024-03-01",
-      "cumulative_contributors": 183
+      "cumulative_contributors": 241
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2024-04-01",
-      "cumulative_contributors": 203
+      "cumulative_contributors": 269
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2024-05-01",
-      "cumulative_contributors": 212
+      "cumulative_contributors": 279
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2024-06-01",
-      "cumulative_contributors": 215
+      "cumulative_contributors": 284
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2024-07-01",
-      "cumulative_contributors": 220
+      "cumulative_contributors": 294
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2024-08-01",
-      "cumulative_contributors": 225
+      "cumulative_contributors": 302
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2024-09-01",
-      "cumulative_contributors": 232
+      "cumulative_contributors": 313
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2024-10-01",
-      "cumulative_contributors": 237
+      "cumulative_contributors": 321
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2024-11-01",
-      "cumulative_contributors": 245
+      "cumulative_contributors": 329
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2024-12-01",
-      "cumulative_contributors": 246
+      "cumulative_contributors": 330
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2025-01-01",
-      "cumulative_contributors": 248
+      "cumulative_contributors": 332
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2025-02-01",
-      "cumulative_contributors": 250
+      "cumulative_contributors": 334
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2025-03-01",
-      "cumulative_contributors": 251
+      "cumulative_contributors": 336
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2025-04-01",
-      "cumulative_contributors": 252
+      "cumulative_contributors": 338
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2025-07-01",
-      "cumulative_contributors": 253
+      "cumulative_contributors": 339
+    },
+    {
+      "repo": "https://github.com/OpenInterpreter/open-interpreter",
+      "month": "2025-08-01",
+      "cumulative_contributors": 340
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2025-10-01",
-      "cumulative_contributors": 255
+      "cumulative_contributors": 342
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2025-11-01",
-      "cumulative_contributors": 256
+      "cumulative_contributors": 343
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2026-01-01",
-      "cumulative_contributors": 259
+      "cumulative_contributors": 346
     },
     {
       "repo": "https://github.com/OpenInterpreter/open-interpreter",
       "month": "2026-02-01",
-      "cumulative_contributors": 263
+      "cumulative_contributors": 351
     },
     {
       "repo": "https://github.com/PrefectHQ/prefect",
@@ -1005,122 +1035,122 @@
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-03-01",
-      "cumulative_contributors": 48
+      "cumulative_contributors": 72
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-04-01",
-      "cumulative_contributors": 66
+      "cumulative_contributors": 93
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-05-01",
-      "cumulative_contributors": 74
+      "cumulative_contributors": 104
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-06-01",
-      "cumulative_contributors": 76
+      "cumulative_contributors": 108
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-07-01",
-      "cumulative_contributors": 81
+      "cumulative_contributors": 116
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-08-01",
-      "cumulative_contributors": 87
+      "cumulative_contributors": 127
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-09-01",
-      "cumulative_contributors": 95
+      "cumulative_contributors": 140
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-10-01",
-      "cumulative_contributors": 110
+      "cumulative_contributors": 169
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-11-01",
-      "cumulative_contributors": 115
+      "cumulative_contributors": 180
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2024-12-01",
-      "cumulative_contributors": 120
-    },
-    {
-      "repo": "https://github.com/ShishirPatil/gorilla",
-      "month": "2025-01-01",
-      "cumulative_contributors": 128
-    },
-    {
-      "repo": "https://github.com/ShishirPatil/gorilla",
-      "month": "2025-02-01",
-      "cumulative_contributors": 134
-    },
-    {
-      "repo": "https://github.com/ShishirPatil/gorilla",
-      "month": "2025-03-01",
-      "cumulative_contributors": 142
-    },
-    {
-      "repo": "https://github.com/ShishirPatil/gorilla",
-      "month": "2025-04-01",
-      "cumulative_contributors": 145
-    },
-    {
-      "repo": "https://github.com/ShishirPatil/gorilla",
-      "month": "2025-05-01",
-      "cumulative_contributors": 151
-    },
-    {
-      "repo": "https://github.com/ShishirPatil/gorilla",
-      "month": "2025-06-01",
-      "cumulative_contributors": 162
-    },
-    {
-      "repo": "https://github.com/ShishirPatil/gorilla",
-      "month": "2025-07-01",
-      "cumulative_contributors": 163
-    },
-    {
-      "repo": "https://github.com/ShishirPatil/gorilla",
-      "month": "2025-08-01",
-      "cumulative_contributors": 167
-    },
-    {
-      "repo": "https://github.com/ShishirPatil/gorilla",
-      "month": "2025-09-01",
-      "cumulative_contributors": 176
-    },
-    {
-      "repo": "https://github.com/ShishirPatil/gorilla",
-      "month": "2025-10-01",
-      "cumulative_contributors": 183
-    },
-    {
-      "repo": "https://github.com/ShishirPatil/gorilla",
-      "month": "2025-11-01",
-      "cumulative_contributors": 186
-    },
-    {
-      "repo": "https://github.com/ShishirPatil/gorilla",
-      "month": "2025-12-01",
       "cumulative_contributors": 188
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2025-01-01",
+      "cumulative_contributors": 198
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2025-02-01",
+      "cumulative_contributors": 207
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2025-03-01",
+      "cumulative_contributors": 218
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2025-04-01",
+      "cumulative_contributors": 228
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2025-05-01",
+      "cumulative_contributors": 240
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2025-06-01",
+      "cumulative_contributors": 266
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2025-07-01",
+      "cumulative_contributors": 271
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2025-08-01",
+      "cumulative_contributors": 278
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2025-09-01",
+      "cumulative_contributors": 292
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2025-10-01",
+      "cumulative_contributors": 308
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2025-11-01",
+      "cumulative_contributors": 312
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2025-12-01",
+      "cumulative_contributors": 316
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2026-01-01",
-      "cumulative_contributors": 190
+      "cumulative_contributors": 320
     },
     {
       "repo": "https://github.com/ShishirPatil/gorilla",
       "month": "2026-02-01",
-      "cumulative_contributors": 194
+      "cumulative_contributors": 325
     },
     {
       "repo": "https://github.com/Significant-Gravitas/AutoGPT",
@@ -1240,7 +1270,7 @@
     {
       "repo": "https://github.com/Significant-Gravitas/AutoGPT",
       "month": "2026-02-01",
-      "cumulative_contributors": 2580
+      "cumulative_contributors": 2581
     },
     {
       "repo": "https://github.com/agntcy/acp-spec",
@@ -1585,7 +1615,7 @@
     {
       "repo": "https://github.com/block/goose",
       "month": "2026-02-01",
-      "cumulative_contributors": 677
+      "cumulative_contributors": 678
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
@@ -1595,202 +1625,202 @@
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2024-11-01",
-      "cumulative_contributors": 17
+      "cumulative_contributors": 19
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2024-12-01",
-      "cumulative_contributors": 30
+      "cumulative_contributors": 33
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-01-01",
-      "cumulative_contributors": 95
+      "cumulative_contributors": 127
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-02-01",
-      "cumulative_contributors": 164
+      "cumulative_contributors": 215
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-03-01",
-      "cumulative_contributors": 232
+      "cumulative_contributors": 319
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-04-01",
-      "cumulative_contributors": 291
+      "cumulative_contributors": 403
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-05-01",
-      "cumulative_contributors": 334
+      "cumulative_contributors": 472
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-06-01",
-      "cumulative_contributors": 368
+      "cumulative_contributors": 514
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-07-01",
-      "cumulative_contributors": 397
+      "cumulative_contributors": 555
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-08-01",
-      "cumulative_contributors": 428
+      "cumulative_contributors": 596
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-09-01",
-      "cumulative_contributors": 459
+      "cumulative_contributors": 643
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-10-01",
-      "cumulative_contributors": 493
+      "cumulative_contributors": 685
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-11-01",
-      "cumulative_contributors": 519
+      "cumulative_contributors": 718
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2025-12-01",
-      "cumulative_contributors": 542
+      "cumulative_contributors": 751
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2026-01-01",
-      "cumulative_contributors": 568
+      "cumulative_contributors": 784
     },
     {
       "repo": "https://github.com/browser-use/browser-use",
       "month": "2026-02-01",
-      "cumulative_contributors": 599
+      "cumulative_contributors": 824
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2024-03-01",
-      "cumulative_contributors": 33
+      "cumulative_contributors": 50
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2024-04-01",
-      "cumulative_contributors": 38
-    },
-    {
-      "repo": "https://github.com/camel-ai/camel",
-      "month": "2024-05-01",
-      "cumulative_contributors": 43
-    },
-    {
-      "repo": "https://github.com/camel-ai/camel",
-      "month": "2024-06-01",
-      "cumulative_contributors": 55
-    },
-    {
-      "repo": "https://github.com/camel-ai/camel",
-      "month": "2024-07-01",
       "cumulative_contributors": 56
     },
     {
       "repo": "https://github.com/camel-ai/camel",
+      "month": "2024-05-01",
+      "cumulative_contributors": 65
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2024-06-01",
+      "cumulative_contributors": 84
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2024-07-01",
+      "cumulative_contributors": 89
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
       "month": "2024-08-01",
-      "cumulative_contributors": 64
+      "cumulative_contributors": 101
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2024-09-01",
-      "cumulative_contributors": 67
+      "cumulative_contributors": 108
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2024-10-01",
-      "cumulative_contributors": 77
+      "cumulative_contributors": 125
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2024-11-01",
-      "cumulative_contributors": 78
+      "cumulative_contributors": 136
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2024-12-01",
-      "cumulative_contributors": 83
+      "cumulative_contributors": 146
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-01-01",
-      "cumulative_contributors": 94
+      "cumulative_contributors": 161
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-02-01",
-      "cumulative_contributors": 102
+      "cumulative_contributors": 174
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-03-01",
-      "cumulative_contributors": 141
+      "cumulative_contributors": 229
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-04-01",
-      "cumulative_contributors": 163
+      "cumulative_contributors": 258
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-05-01",
-      "cumulative_contributors": 183
+      "cumulative_contributors": 286
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-06-01",
-      "cumulative_contributors": 192
+      "cumulative_contributors": 308
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-07-01",
-      "cumulative_contributors": 207
+      "cumulative_contributors": 329
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-08-01",
-      "cumulative_contributors": 214
+      "cumulative_contributors": 343
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-09-01",
-      "cumulative_contributors": 225
+      "cumulative_contributors": 356
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-10-01",
-      "cumulative_contributors": 232
+      "cumulative_contributors": 367
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-11-01",
-      "cumulative_contributors": 239
+      "cumulative_contributors": 380
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2025-12-01",
-      "cumulative_contributors": 244
+      "cumulative_contributors": 391
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2026-01-01",
-      "cumulative_contributors": 257
+      "cumulative_contributors": 407
     },
     {
       "repo": "https://github.com/camel-ai/camel",
       "month": "2026-02-01",
-      "cumulative_contributors": 275
+      "cumulative_contributors": 432
     },
     {
       "repo": "https://github.com/chroma-core/chroma",
@@ -2030,212 +2060,212 @@
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2024-09-01",
-      "cumulative_contributors": 25
+      "cumulative_contributors": 40
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2024-10-01",
-      "cumulative_contributors": 28
+      "cumulative_contributors": 46
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2024-11-01",
-      "cumulative_contributors": 30
-    },
-    {
-      "repo": "https://github.com/comet-ml/opik",
-      "month": "2024-12-01",
-      "cumulative_contributors": 34
-    },
-    {
-      "repo": "https://github.com/comet-ml/opik",
-      "month": "2025-01-01",
-      "cumulative_contributors": 42
-    },
-    {
-      "repo": "https://github.com/comet-ml/opik",
-      "month": "2025-02-01",
-      "cumulative_contributors": 45
-    },
-    {
-      "repo": "https://github.com/comet-ml/opik",
-      "month": "2025-03-01",
       "cumulative_contributors": 51
     },
     {
       "repo": "https://github.com/comet-ml/opik",
-      "month": "2025-04-01",
-      "cumulative_contributors": 61
+      "month": "2024-12-01",
+      "cumulative_contributors": 57
     },
     {
       "repo": "https://github.com/comet-ml/opik",
-      "month": "2025-05-01",
-      "cumulative_contributors": 69
+      "month": "2025-01-01",
+      "cumulative_contributors": 68
     },
     {
       "repo": "https://github.com/comet-ml/opik",
-      "month": "2025-06-01",
-      "cumulative_contributors": 79
+      "month": "2025-02-01",
+      "cumulative_contributors": 75
     },
     {
       "repo": "https://github.com/comet-ml/opik",
-      "month": "2025-07-01",
+      "month": "2025-03-01",
       "cumulative_contributors": 86
     },
     {
       "repo": "https://github.com/comet-ml/opik",
-      "month": "2025-08-01",
-      "cumulative_contributors": 95
+      "month": "2025-04-01",
+      "cumulative_contributors": 101
     },
     {
       "repo": "https://github.com/comet-ml/opik",
-      "month": "2025-09-01",
-      "cumulative_contributors": 97
+      "month": "2025-05-01",
+      "cumulative_contributors": 119
     },
     {
       "repo": "https://github.com/comet-ml/opik",
-      "month": "2025-10-01",
-      "cumulative_contributors": 116
-    },
-    {
-      "repo": "https://github.com/comet-ml/opik",
-      "month": "2025-11-01",
-      "cumulative_contributors": 124
-    },
-    {
-      "repo": "https://github.com/comet-ml/opik",
-      "month": "2025-12-01",
+      "month": "2025-06-01",
       "cumulative_contributors": 132
     },
     {
       "repo": "https://github.com/comet-ml/opik",
+      "month": "2025-07-01",
+      "cumulative_contributors": 142
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2025-08-01",
+      "cumulative_contributors": 155
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2025-09-01",
+      "cumulative_contributors": 159
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2025-10-01",
+      "cumulative_contributors": 184
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2025-11-01",
+      "cumulative_contributors": 197
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2025-12-01",
+      "cumulative_contributors": 213
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
       "month": "2026-01-01",
-      "cumulative_contributors": 144
+      "cumulative_contributors": 229
     },
     {
       "repo": "https://github.com/comet-ml/opik",
       "month": "2026-02-01",
-      "cumulative_contributors": 154
+      "cumulative_contributors": 244
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2024-03-01",
-      "cumulative_contributors": 46
+      "cumulative_contributors": 64
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2024-04-01",
-      "cumulative_contributors": 59
+      "cumulative_contributors": 78
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2024-05-01",
-      "cumulative_contributors": 68
+      "cumulative_contributors": 93
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2024-06-01",
-      "cumulative_contributors": 73
+      "cumulative_contributors": 100
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2024-07-01",
-      "cumulative_contributors": 81
-    },
-    {
-      "repo": "https://github.com/confident-ai/deepeval",
-      "month": "2024-08-01",
-      "cumulative_contributors": 86
-    },
-    {
-      "repo": "https://github.com/confident-ai/deepeval",
-      "month": "2024-09-01",
-      "cumulative_contributors": 95
-    },
-    {
-      "repo": "https://github.com/confident-ai/deepeval",
-      "month": "2024-10-01",
       "cumulative_contributors": 112
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2024-08-01",
+      "cumulative_contributors": 120
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2024-09-01",
+      "cumulative_contributors": 138
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2024-10-01",
+      "cumulative_contributors": 157
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
       "month": "2024-11-01",
-      "cumulative_contributors": 122
+      "cumulative_contributors": 177
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2024-12-01",
-      "cumulative_contributors": 129
+      "cumulative_contributors": 190
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-01-01",
-      "cumulative_contributors": 151
+      "cumulative_contributors": 216
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-02-01",
-      "cumulative_contributors": 169
+      "cumulative_contributors": 246
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-03-01",
-      "cumulative_contributors": 192
+      "cumulative_contributors": 283
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-04-01",
-      "cumulative_contributors": 207
+      "cumulative_contributors": 306
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-05-01",
-      "cumulative_contributors": 224
+      "cumulative_contributors": 331
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-06-01",
-      "cumulative_contributors": 235
+      "cumulative_contributors": 346
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-07-01",
-      "cumulative_contributors": 252
+      "cumulative_contributors": 377
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-08-01",
-      "cumulative_contributors": 271
+      "cumulative_contributors": 408
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-09-01",
-      "cumulative_contributors": 282
+      "cumulative_contributors": 425
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-10-01",
-      "cumulative_contributors": 308
+      "cumulative_contributors": 463
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-11-01",
-      "cumulative_contributors": 317
+      "cumulative_contributors": 473
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2025-12-01",
-      "cumulative_contributors": 320
+      "cumulative_contributors": 479
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2026-01-01",
-      "cumulative_contributors": 332
+      "cumulative_contributors": 495
     },
     {
       "repo": "https://github.com/confident-ai/deepeval",
       "month": "2026-02-01",
-      "cumulative_contributors": 347
+      "cumulative_contributors": 512
     },
     {
       "repo": "https://github.com/continuedev/continue",
@@ -2480,112 +2510,112 @@
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-03-01",
-      "cumulative_contributors": 38
+      "cumulative_contributors": 42
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-04-01",
-      "cumulative_contributors": 41
+      "cumulative_contributors": 46
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-05-01",
-      "cumulative_contributors": 48
+      "cumulative_contributors": 53
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-06-01",
-      "cumulative_contributors": 54
+      "cumulative_contributors": 60
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-07-01",
-      "cumulative_contributors": 65
+      "cumulative_contributors": 74
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-08-01",
-      "cumulative_contributors": 73
+      "cumulative_contributors": 84
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-09-01",
-      "cumulative_contributors": 77
+      "cumulative_contributors": 91
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-10-01",
-      "cumulative_contributors": 78
+      "cumulative_contributors": 92
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-11-01",
-      "cumulative_contributors": 83
+      "cumulative_contributors": 97
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2024-12-01",
-      "cumulative_contributors": 233
+      "cumulative_contributors": 358
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-01-01",
-      "cumulative_contributors": 234
+      "cumulative_contributors": 362
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-04-01",
-      "cumulative_contributors": 238
+      "cumulative_contributors": 368
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-05-01",
-      "cumulative_contributors": 241
+      "cumulative_contributors": 373
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-06-01",
-      "cumulative_contributors": 249
+      "cumulative_contributors": 382
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-07-01",
-      "cumulative_contributors": 253
+      "cumulative_contributors": 390
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-08-01",
-      "cumulative_contributors": 256
+      "cumulative_contributors": 395
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-09-01",
-      "cumulative_contributors": 260
+      "cumulative_contributors": 400
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-10-01",
-      "cumulative_contributors": 265
+      "cumulative_contributors": 408
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-11-01",
-      "cumulative_contributors": 272
+      "cumulative_contributors": 419
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2025-12-01",
-      "cumulative_contributors": 278
+      "cumulative_contributors": 430
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2026-01-01",
-      "cumulative_contributors": 283
+      "cumulative_contributors": 441
     },
     {
       "repo": "https://github.com/daytonaio/daytona",
       "month": "2026-02-01",
-      "cumulative_contributors": 287
+      "cumulative_contributors": 450
     },
     {
       "repo": "https://github.com/deepset-ai/haystack",
@@ -2763,144 +2793,149 @@
       "cumulative_contributors": 27
     },
     {
+      "repo": "https://github.com/e2b-dev/code-interpreter",
+      "month": "2026-02-01",
+      "cumulative_contributors": 28
+    },
+    {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-04-01",
-      "cumulative_contributors": 70
+      "cumulative_contributors": 93
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-05-01",
-      "cumulative_contributors": 147
+      "cumulative_contributors": 215
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-06-01",
-      "cumulative_contributors": 207
+      "cumulative_contributors": 293
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-07-01",
-      "cumulative_contributors": 251
+      "cumulative_contributors": 347
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-08-01",
-      "cumulative_contributors": 291
+      "cumulative_contributors": 408
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-09-01",
-      "cumulative_contributors": 323
+      "cumulative_contributors": 451
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-10-01",
-      "cumulative_contributors": 375
+      "cumulative_contributors": 534
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-11-01",
-      "cumulative_contributors": 429
+      "cumulative_contributors": 620
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2025-12-01",
-      "cumulative_contributors": 474
+      "cumulative_contributors": 680
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2026-01-01",
-      "cumulative_contributors": 513
+      "cumulative_contributors": 736
     },
     {
       "repo": "https://github.com/google/adk-python",
       "month": "2026-02-01",
-      "cumulative_contributors": 558
+      "cumulative_contributors": 793
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2024-03-01",
-      "cumulative_contributors": 71
+      "cumulative_contributors": 87
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2024-04-01",
-      "cumulative_contributors": 73
-    },
-    {
-      "repo": "https://github.com/guardrails-ai/guardrails",
-      "month": "2024-05-01",
-      "cumulative_contributors": 77
-    },
-    {
-      "repo": "https://github.com/guardrails-ai/guardrails",
-      "month": "2024-06-01",
-      "cumulative_contributors": 83
-    },
-    {
-      "repo": "https://github.com/guardrails-ai/guardrails",
-      "month": "2024-07-01",
       "cumulative_contributors": 90
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
-      "month": "2024-08-01",
-      "cumulative_contributors": 92
-    },
-    {
-      "repo": "https://github.com/guardrails-ai/guardrails",
-      "month": "2024-10-01",
-      "cumulative_contributors": 95
-    },
-    {
-      "repo": "https://github.com/guardrails-ai/guardrails",
-      "month": "2024-11-01",
+      "month": "2024-05-01",
       "cumulative_contributors": 96
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
-      "month": "2024-12-01",
-      "cumulative_contributors": 97
-    },
-    {
-      "repo": "https://github.com/guardrails-ai/guardrails",
-      "month": "2025-01-01",
-      "cumulative_contributors": 98
-    },
-    {
-      "repo": "https://github.com/guardrails-ai/guardrails",
-      "month": "2025-03-01",
-      "cumulative_contributors": 101
-    },
-    {
-      "repo": "https://github.com/guardrails-ai/guardrails",
-      "month": "2025-06-01",
-      "cumulative_contributors": 102
-    },
-    {
-      "repo": "https://github.com/guardrails-ai/guardrails",
-      "month": "2025-07-01",
-      "cumulative_contributors": 103
-    },
-    {
-      "repo": "https://github.com/guardrails-ai/guardrails",
-      "month": "2025-09-01",
-      "cumulative_contributors": 104
-    },
-    {
-      "repo": "https://github.com/guardrails-ai/guardrails",
-      "month": "2025-11-01",
+      "month": "2024-06-01",
       "cumulative_contributors": 106
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2024-07-01",
+      "cumulative_contributors": 119
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2024-08-01",
+      "cumulative_contributors": 121
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2024-10-01",
+      "cumulative_contributors": 124
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2024-11-01",
+      "cumulative_contributors": 125
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2024-12-01",
+      "cumulative_contributors": 127
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2025-01-01",
+      "cumulative_contributors": 130
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2025-03-01",
+      "cumulative_contributors": 135
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2025-06-01",
+      "cumulative_contributors": 136
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2025-07-01",
+      "cumulative_contributors": 137
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2025-09-01",
+      "cumulative_contributors": 139
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2025-11-01",
+      "cumulative_contributors": 141
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2025-12-01",
-      "cumulative_contributors": 108
+      "cumulative_contributors": 143
     },
     {
       "repo": "https://github.com/guardrails-ai/guardrails",
       "month": "2026-02-01",
-      "cumulative_contributors": 111
+      "cumulative_contributors": 146
     },
     {
       "repo": "https://github.com/huggingface/smolagents",
@@ -2910,242 +2945,242 @@
     {
       "repo": "https://github.com/huggingface/smolagents",
       "month": "2025-01-01",
-      "cumulative_contributors": 162
+      "cumulative_contributors": 161
     },
     {
       "repo": "https://github.com/huggingface/smolagents",
       "month": "2025-02-01",
-      "cumulative_contributors": 258
+      "cumulative_contributors": 257
     },
     {
       "repo": "https://github.com/huggingface/smolagents",
       "month": "2025-03-01",
-      "cumulative_contributors": 308
+      "cumulative_contributors": 307
     },
     {
       "repo": "https://github.com/huggingface/smolagents",
       "month": "2025-04-01",
-      "cumulative_contributors": 336
+      "cumulative_contributors": 335
     },
     {
       "repo": "https://github.com/huggingface/smolagents",
       "month": "2025-05-01",
-      "cumulative_contributors": 361
+      "cumulative_contributors": 360
     },
     {
       "repo": "https://github.com/huggingface/smolagents",
       "month": "2025-06-01",
-      "cumulative_contributors": 384
+      "cumulative_contributors": 383
     },
     {
       "repo": "https://github.com/huggingface/smolagents",
       "month": "2025-07-01",
-      "cumulative_contributors": 417
+      "cumulative_contributors": 416
     },
     {
       "repo": "https://github.com/huggingface/smolagents",
       "month": "2025-08-01",
-      "cumulative_contributors": 443
+      "cumulative_contributors": 442
     },
     {
       "repo": "https://github.com/huggingface/smolagents",
       "month": "2025-09-01",
-      "cumulative_contributors": 455
+      "cumulative_contributors": 454
     },
     {
       "repo": "https://github.com/huggingface/smolagents",
       "month": "2025-10-01",
-      "cumulative_contributors": 465
+      "cumulative_contributors": 464
     },
     {
       "repo": "https://github.com/huggingface/smolagents",
       "month": "2025-11-01",
-      "cumulative_contributors": 478
+      "cumulative_contributors": 477
     },
     {
       "repo": "https://github.com/huggingface/smolagents",
       "month": "2025-12-01",
-      "cumulative_contributors": 489
+      "cumulative_contributors": 488
     },
     {
       "repo": "https://github.com/huggingface/smolagents",
       "month": "2026-01-01",
-      "cumulative_contributors": 501
+      "cumulative_contributors": 500
     },
     {
       "repo": "https://github.com/huggingface/smolagents",
       "month": "2026-02-01",
-      "cumulative_contributors": 515
+      "cumulative_contributors": 514
     },
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2024-03-01",
-      "cumulative_contributors": 4989
+      "cumulative_contributors": 4983
     },
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2024-04-01",
-      "cumulative_contributors": 5083
+      "cumulative_contributors": 5077
     },
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2024-05-01",
-      "cumulative_contributors": 5189
+      "cumulative_contributors": 5183
     },
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2024-06-01",
-      "cumulative_contributors": 5309
+      "cumulative_contributors": 5303
     },
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2024-07-01",
-      "cumulative_contributors": 5458
+      "cumulative_contributors": 5452
     },
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2024-08-01",
-      "cumulative_contributors": 5596
+      "cumulative_contributors": 5590
     },
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2024-09-01",
-      "cumulative_contributors": 5722
+      "cumulative_contributors": 5716
     },
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2024-10-01",
-      "cumulative_contributors": 5878
+      "cumulative_contributors": 5872
     },
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2024-11-01",
-      "cumulative_contributors": 5979
+      "cumulative_contributors": 5973
     },
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2024-12-01",
-      "cumulative_contributors": 6080
+      "cumulative_contributors": 6073
     },
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2025-01-01",
-      "cumulative_contributors": 6199
+      "cumulative_contributors": 6191
     },
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2025-02-01",
-      "cumulative_contributors": 6299
+      "cumulative_contributors": 6291
     },
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2025-03-01",
-      "cumulative_contributors": 6438
+      "cumulative_contributors": 6429
     },
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2025-04-01",
-      "cumulative_contributors": 6621
+      "cumulative_contributors": 6612
     },
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2025-05-01",
-      "cumulative_contributors": 6749
+      "cumulative_contributors": 6739
     },
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2025-06-01",
-      "cumulative_contributors": 6924
+      "cumulative_contributors": 6914
     },
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2025-07-01",
-      "cumulative_contributors": 7110
+      "cumulative_contributors": 7100
     },
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2025-08-01",
-      "cumulative_contributors": 7314
+      "cumulative_contributors": 7304
     },
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2025-09-01",
-      "cumulative_contributors": 7400
+      "cumulative_contributors": 7390
     },
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2025-10-01",
-      "cumulative_contributors": 7528
+      "cumulative_contributors": 7518
     },
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2025-11-01",
-      "cumulative_contributors": 7612
+      "cumulative_contributors": 7602
     },
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2025-12-01",
-      "cumulative_contributors": 7706
+      "cumulative_contributors": 7696
     },
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2026-01-01",
-      "cumulative_contributors": 7817
+      "cumulative_contributors": 7807
     },
     {
       "repo": "https://github.com/huggingface/transformers",
       "month": "2026-02-01",
-      "cumulative_contributors": 7961
+      "cumulative_contributors": 7951
     },
     {
       "repo": "https://github.com/ibm/mcp-context-forge",
       "month": "2025-05-01",
-      "cumulative_contributors": 2
+      "cumulative_contributors": 9
     },
     {
       "repo": "https://github.com/ibm/mcp-context-forge",
       "month": "2025-06-01",
-      "cumulative_contributors": 14
+      "cumulative_contributors": 35
     },
     {
       "repo": "https://github.com/ibm/mcp-context-forge",
       "month": "2025-07-01",
-      "cumulative_contributors": 30
-    },
-    {
-      "repo": "https://github.com/ibm/mcp-context-forge",
-      "month": "2025-08-01",
-      "cumulative_contributors": 45
-    },
-    {
-      "repo": "https://github.com/ibm/mcp-context-forge",
-      "month": "2025-09-01",
       "cumulative_contributors": 64
     },
     {
       "repo": "https://github.com/ibm/mcp-context-forge",
+      "month": "2025-08-01",
+      "cumulative_contributors": 87
+    },
+    {
+      "repo": "https://github.com/ibm/mcp-context-forge",
+      "month": "2025-09-01",
+      "cumulative_contributors": 116
+    },
+    {
+      "repo": "https://github.com/ibm/mcp-context-forge",
       "month": "2025-10-01",
-      "cumulative_contributors": 80
+      "cumulative_contributors": 136
     },
     {
       "repo": "https://github.com/ibm/mcp-context-forge",
       "month": "2025-11-01",
-      "cumulative_contributors": 93
+      "cumulative_contributors": 167
     },
     {
       "repo": "https://github.com/ibm/mcp-context-forge",
       "month": "2025-12-01",
-      "cumulative_contributors": 111
+      "cumulative_contributors": 191
     },
     {
       "repo": "https://github.com/ibm/mcp-context-forge",
       "month": "2026-01-01",
-      "cumulative_contributors": 127
+      "cumulative_contributors": 221
     },
     {
       "repo": "https://github.com/ibm/mcp-context-forge",
       "month": "2026-02-01",
-      "cumulative_contributors": 154
+      "cumulative_contributors": 285
     },
     {
       "repo": "https://github.com/infiniflow/ragflow",
@@ -3389,28 +3424,58 @@
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
-      "month": "2024-04-01",
-      "cumulative_contributors": 32
+      "month": "2024-03-01",
+      "cumulative_contributors": 36
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
-      "month": "2024-05-01",
+      "month": "2024-04-01",
       "cumulative_contributors": 37
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
+      "month": "2024-05-01",
+      "cumulative_contributors": 42
+    },
+    {
+      "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2024-07-01",
-      "cumulative_contributors": 38
+      "cumulative_contributors": 43
+    },
+    {
+      "repo": "https://github.com/joonspk-research/generative_agents",
+      "month": "2024-08-01",
+      "cumulative_contributors": 44
+    },
+    {
+      "repo": "https://github.com/joonspk-research/generative_agents",
+      "month": "2024-09-01",
+      "cumulative_contributors": 45
+    },
+    {
+      "repo": "https://github.com/joonspk-research/generative_agents",
+      "month": "2024-10-01",
+      "cumulative_contributors": 48
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2025-01-01",
-      "cumulative_contributors": 40
+      "cumulative_contributors": 50
+    },
+    {
+      "repo": "https://github.com/joonspk-research/generative_agents",
+      "month": "2025-02-01",
+      "cumulative_contributors": 51
+    },
+    {
+      "repo": "https://github.com/joonspk-research/generative_agents",
+      "month": "2025-08-01",
+      "cumulative_contributors": 52
     },
     {
       "repo": "https://github.com/joonspk-research/generative_agents",
       "month": "2025-12-01",
-      "cumulative_contributors": 41
+      "cumulative_contributors": 54
     },
     {
       "repo": "https://github.com/kserve/kserve",
@@ -3530,7 +3595,7 @@
     {
       "repo": "https://github.com/kserve/kserve",
       "month": "2026-02-01",
-      "cumulative_contributors": 609
+      "cumulative_contributors": 610
     },
     {
       "repo": "https://github.com/langchain-ai/langchain",
@@ -3565,92 +3630,92 @@
     {
       "repo": "https://github.com/langchain-ai/langchain",
       "month": "2024-09-01",
-      "cumulative_contributors": 6359
+      "cumulative_contributors": 6358
     },
     {
       "repo": "https://github.com/langchain-ai/langchain",
       "month": "2024-10-01",
-      "cumulative_contributors": 6530
+      "cumulative_contributors": 6529
     },
     {
       "repo": "https://github.com/langchain-ai/langchain",
       "month": "2024-11-01",
-      "cumulative_contributors": 6671
+      "cumulative_contributors": 6670
     },
     {
       "repo": "https://github.com/langchain-ai/langchain",
       "month": "2024-12-01",
-      "cumulative_contributors": 6811
+      "cumulative_contributors": 6810
     },
     {
       "repo": "https://github.com/langchain-ai/langchain",
       "month": "2025-01-01",
-      "cumulative_contributors": 6958
+      "cumulative_contributors": 6957
     },
     {
       "repo": "https://github.com/langchain-ai/langchain",
       "month": "2025-02-01",
-      "cumulative_contributors": 7080
+      "cumulative_contributors": 7079
     },
     {
       "repo": "https://github.com/langchain-ai/langchain",
       "month": "2025-03-01",
-      "cumulative_contributors": 7224
+      "cumulative_contributors": 7223
     },
     {
       "repo": "https://github.com/langchain-ai/langchain",
       "month": "2025-04-01",
-      "cumulative_contributors": 7339
+      "cumulative_contributors": 7338
     },
     {
       "repo": "https://github.com/langchain-ai/langchain",
       "month": "2025-05-01",
-      "cumulative_contributors": 7430
+      "cumulative_contributors": 7429
     },
     {
       "repo": "https://github.com/langchain-ai/langchain",
       "month": "2025-06-01",
-      "cumulative_contributors": 7521
+      "cumulative_contributors": 7520
     },
     {
       "repo": "https://github.com/langchain-ai/langchain",
       "month": "2025-07-01",
-      "cumulative_contributors": 7644
+      "cumulative_contributors": 7643
     },
     {
       "repo": "https://github.com/langchain-ai/langchain",
       "month": "2025-08-01",
-      "cumulative_contributors": 7766
+      "cumulative_contributors": 7765
     },
     {
       "repo": "https://github.com/langchain-ai/langchain",
       "month": "2025-09-01",
-      "cumulative_contributors": 7858
+      "cumulative_contributors": 7857
     },
     {
       "repo": "https://github.com/langchain-ai/langchain",
       "month": "2025-10-01",
-      "cumulative_contributors": 7911
+      "cumulative_contributors": 7910
     },
     {
       "repo": "https://github.com/langchain-ai/langchain",
       "month": "2025-11-01",
-      "cumulative_contributors": 7971
+      "cumulative_contributors": 7970
     },
     {
       "repo": "https://github.com/langchain-ai/langchain",
       "month": "2025-12-01",
-      "cumulative_contributors": 8055
+      "cumulative_contributors": 8054
     },
     {
       "repo": "https://github.com/langchain-ai/langchain",
       "month": "2026-01-01",
-      "cumulative_contributors": 8153
+      "cumulative_contributors": 8152
     },
     {
       "repo": "https://github.com/langchain-ai/langchain",
       "month": "2026-02-01",
-      "cumulative_contributors": 8251
+      "cumulative_contributors": 8250
     },
     {
       "repo": "https://github.com/langchain-ai/langgraph",
@@ -4015,207 +4080,207 @@
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-03-01",
-      "cumulative_contributors": 20
+      "cumulative_contributors": 27
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-04-01",
-      "cumulative_contributors": 23
+      "cumulative_contributors": 30
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-05-01",
-      "cumulative_contributors": 25
-    },
-    {
-      "repo": "https://github.com/livekit/agents",
-      "month": "2024-06-01",
       "cumulative_contributors": 33
     },
     {
       "repo": "https://github.com/livekit/agents",
+      "month": "2024-06-01",
+      "cumulative_contributors": 42
+    },
+    {
+      "repo": "https://github.com/livekit/agents",
       "month": "2024-07-01",
-      "cumulative_contributors": 41
+      "cumulative_contributors": 54
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-08-01",
-      "cumulative_contributors": 47
+      "cumulative_contributors": 66
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-09-01",
-      "cumulative_contributors": 65
+      "cumulative_contributors": 90
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-10-01",
-      "cumulative_contributors": 88
+      "cumulative_contributors": 127
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-11-01",
-      "cumulative_contributors": 99
+      "cumulative_contributors": 140
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2024-12-01",
-      "cumulative_contributors": 112
+      "cumulative_contributors": 157
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-01-01",
-      "cumulative_contributors": 118
+      "cumulative_contributors": 168
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-02-01",
-      "cumulative_contributors": 138
+      "cumulative_contributors": 192
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-03-01",
-      "cumulative_contributors": 166
+      "cumulative_contributors": 236
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-04-01",
-      "cumulative_contributors": 190
+      "cumulative_contributors": 271
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-05-01",
-      "cumulative_contributors": 224
+      "cumulative_contributors": 324
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-06-01",
-      "cumulative_contributors": 245
+      "cumulative_contributors": 374
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-07-01",
-      "cumulative_contributors": 273
+      "cumulative_contributors": 419
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-08-01",
-      "cumulative_contributors": 302
+      "cumulative_contributors": 463
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-09-01",
-      "cumulative_contributors": 317
+      "cumulative_contributors": 492
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-10-01",
-      "cumulative_contributors": 346
+      "cumulative_contributors": 536
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-11-01",
-      "cumulative_contributors": 394
+      "cumulative_contributors": 650
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2025-12-01",
-      "cumulative_contributors": 426
+      "cumulative_contributors": 713
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2026-01-01",
-      "cumulative_contributors": 462
+      "cumulative_contributors": 774
     },
     {
       "repo": "https://github.com/livekit/agents",
       "month": "2026-02-01",
-      "cumulative_contributors": 503
+      "cumulative_contributors": 832
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2024-08-01",
-      "cumulative_contributors": 12
+      "cumulative_contributors": 16
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2024-11-01",
-      "cumulative_contributors": 18
+      "cumulative_contributors": 25
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2024-12-01",
-      "cumulative_contributors": 23
+      "cumulative_contributors": 31
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-01-01",
-      "cumulative_contributors": 35
+      "cumulative_contributors": 49
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-02-01",
-      "cumulative_contributors": 56
+      "cumulative_contributors": 73
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-03-01",
-      "cumulative_contributors": 109
+      "cumulative_contributors": 134
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-04-01",
-      "cumulative_contributors": 158
+      "cumulative_contributors": 193
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-05-01",
-      "cumulative_contributors": 197
+      "cumulative_contributors": 243
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-06-01",
-      "cumulative_contributors": 251
+      "cumulative_contributors": 307
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-07-01",
-      "cumulative_contributors": 302
+      "cumulative_contributors": 369
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-08-01",
-      "cumulative_contributors": 319
+      "cumulative_contributors": 392
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-09-01",
-      "cumulative_contributors": 357
+      "cumulative_contributors": 436
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-10-01",
-      "cumulative_contributors": 391
+      "cumulative_contributors": 489
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-11-01",
-      "cumulative_contributors": 427
+      "cumulative_contributors": 536
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2025-12-01",
-      "cumulative_contributors": 450
+      "cumulative_contributors": 571
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2026-01-01",
-      "cumulative_contributors": 479
+      "cumulative_contributors": 612
     },
     {
       "repo": "https://github.com/mastra-ai/mastra",
       "month": "2026-02-01",
-      "cumulative_contributors": 548
+      "cumulative_contributors": 699
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
@@ -4225,102 +4290,122 @@
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2024-10-01",
-      "cumulative_contributors": 27
+      "cumulative_contributors": 30
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2024-11-01",
-      "cumulative_contributors": 30
+      "cumulative_contributors": 33
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2024-12-01",
-      "cumulative_contributors": 32
+      "cumulative_contributors": 35
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-01-01",
-      "cumulative_contributors": 35
+      "cumulative_contributors": 40
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
       "month": "2025-02-01",
-      "cumulative_contributors": 48
-    },
-    {
-      "repo": "https://github.com/microsoft/OmniParser",
-      "month": "2025-03-01",
       "cumulative_contributors": 57
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
-      "month": "2025-04-01",
-      "cumulative_contributors": 59
-    },
-    {
-      "repo": "https://github.com/microsoft/OmniParser",
-      "month": "2025-05-01",
-      "cumulative_contributors": 60
-    },
-    {
-      "repo": "https://github.com/microsoft/OmniParser",
-      "month": "2025-06-01",
-      "cumulative_contributors": 62
-    },
-    {
-      "repo": "https://github.com/microsoft/OmniParser",
-      "month": "2025-07-01",
-      "cumulative_contributors": 63
-    },
-    {
-      "repo": "https://github.com/microsoft/OmniParser",
-      "month": "2025-08-01",
+      "month": "2025-03-01",
       "cumulative_contributors": 67
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
-      "month": "2025-09-01",
+      "month": "2025-04-01",
+      "cumulative_contributors": 69
+    },
+    {
+      "repo": "https://github.com/microsoft/OmniParser",
+      "month": "2025-05-01",
       "cumulative_contributors": 70
     },
     {
       "repo": "https://github.com/microsoft/OmniParser",
+      "month": "2025-06-01",
+      "cumulative_contributors": 72
+    },
+    {
+      "repo": "https://github.com/microsoft/OmniParser",
+      "month": "2025-07-01",
+      "cumulative_contributors": 74
+    },
+    {
+      "repo": "https://github.com/microsoft/OmniParser",
+      "month": "2025-08-01",
+      "cumulative_contributors": 78
+    },
+    {
+      "repo": "https://github.com/microsoft/OmniParser",
+      "month": "2025-09-01",
+      "cumulative_contributors": 81
+    },
+    {
+      "repo": "https://github.com/microsoft/OmniParser",
+      "month": "2025-10-01",
+      "cumulative_contributors": 83
+    },
+    {
+      "repo": "https://github.com/microsoft/OmniParser",
+      "month": "2025-12-01",
+      "cumulative_contributors": 84
+    },
+    {
+      "repo": "https://github.com/microsoft/OmniParser",
       "month": "2026-01-01",
-      "cumulative_contributors": 71
+      "cumulative_contributors": 86
+    },
+    {
+      "repo": "https://github.com/microsoft/OmniParser",
+      "month": "2026-02-01",
+      "cumulative_contributors": 87
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-03-01",
-      "cumulative_contributors": 30
+      "cumulative_contributors": 44
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-04-01",
-      "cumulative_contributors": 35
+      "cumulative_contributors": 51
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-05-01",
-      "cumulative_contributors": 36
+      "cumulative_contributors": 52
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-06-01",
-      "cumulative_contributors": 37
+      "cumulative_contributors": 53
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2024-11-01",
-      "cumulative_contributors": 38
+      "cumulative_contributors": 54
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2025-02-01",
-      "cumulative_contributors": 39
+      "cumulative_contributors": 55
     },
     {
       "repo": "https://github.com/microsoft/TaskWeaver",
       "month": "2025-05-01",
-      "cumulative_contributors": 40
+      "cumulative_contributors": 56
+    },
+    {
+      "repo": "https://github.com/microsoft/TaskWeaver",
+      "month": "2026-01-01",
+      "cumulative_contributors": 58
     },
     {
       "repo": "https://github.com/microsoft/autogen",
@@ -4450,107 +4535,112 @@
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2024-04-01",
-      "cumulative_contributors": 8
+      "cumulative_contributors": 9
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2024-06-01",
-      "cumulative_contributors": 10
+      "cumulative_contributors": 12
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2024-07-01",
-      "cumulative_contributors": 54
+      "cumulative_contributors": 69
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2024-08-01",
-      "cumulative_contributors": 77
+      "cumulative_contributors": 107
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2024-09-01",
-      "cumulative_contributors": 84
-    },
-    {
-      "repo": "https://github.com/microsoft/graphrag",
-      "month": "2024-10-01",
-      "cumulative_contributors": 93
-    },
-    {
-      "repo": "https://github.com/microsoft/graphrag",
-      "month": "2024-11-01",
-      "cumulative_contributors": 97
-    },
-    {
-      "repo": "https://github.com/microsoft/graphrag",
-      "month": "2024-12-01",
-      "cumulative_contributors": 108
-    },
-    {
-      "repo": "https://github.com/microsoft/graphrag",
-      "month": "2025-01-01",
-      "cumulative_contributors": 114
-    },
-    {
-      "repo": "https://github.com/microsoft/graphrag",
-      "month": "2025-02-01",
-      "cumulative_contributors": 116
-    },
-    {
-      "repo": "https://github.com/microsoft/graphrag",
-      "month": "2025-03-01",
       "cumulative_contributors": 121
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
+      "month": "2024-10-01",
+      "cumulative_contributors": 132
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
+      "month": "2024-11-01",
+      "cumulative_contributors": 137
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
+      "month": "2024-12-01",
+      "cumulative_contributors": 150
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
+      "month": "2025-01-01",
+      "cumulative_contributors": 160
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
+      "month": "2025-02-01",
+      "cumulative_contributors": 163
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
+      "month": "2025-03-01",
+      "cumulative_contributors": 168
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-04-01",
-      "cumulative_contributors": 127
+      "cumulative_contributors": 174
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-05-01",
-      "cumulative_contributors": 135
+      "cumulative_contributors": 182
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-06-01",
-      "cumulative_contributors": 138
+      "cumulative_contributors": 185
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-07-01",
-      "cumulative_contributors": 141
+      "cumulative_contributors": 188
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-08-01",
-      "cumulative_contributors": 143
+      "cumulative_contributors": 190
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-09-01",
-      "cumulative_contributors": 145
+      "cumulative_contributors": 192
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-10-01",
-      "cumulative_contributors": 147
+      "cumulative_contributors": 194
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-11-01",
-      "cumulative_contributors": 149
+      "cumulative_contributors": 196
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2025-12-01",
-      "cumulative_contributors": 151
+      "cumulative_contributors": 199
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
+      "month": "2026-01-01",
+      "cumulative_contributors": 200
     },
     {
       "repo": "https://github.com/microsoft/graphrag",
       "month": "2026-02-01",
-      "cumulative_contributors": 153
+      "cumulative_contributors": 202
     },
     {
       "repo": "https://github.com/microsoft/playwright",
@@ -4675,122 +4765,122 @@
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-03-01",
-      "cumulative_contributors": 376
+      "cumulative_contributors": 523
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-04-01",
-      "cumulative_contributors": 397
+      "cumulative_contributors": 558
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-05-01",
-      "cumulative_contributors": 415
+      "cumulative_contributors": 586
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-06-01",
-      "cumulative_contributors": 433
+      "cumulative_contributors": 613
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-07-01",
-      "cumulative_contributors": 448
+      "cumulative_contributors": 633
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-08-01",
-      "cumulative_contributors": 460
+      "cumulative_contributors": 654
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-09-01",
-      "cumulative_contributors": 474
+      "cumulative_contributors": 670
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-10-01",
-      "cumulative_contributors": 486
+      "cumulative_contributors": 685
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-11-01",
-      "cumulative_contributors": 487
+      "cumulative_contributors": 691
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2024-12-01",
-      "cumulative_contributors": 493
+      "cumulative_contributors": 698
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-01-01",
-      "cumulative_contributors": 501
+      "cumulative_contributors": 716
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-02-01",
-      "cumulative_contributors": 519
+      "cumulative_contributors": 736
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-03-01",
-      "cumulative_contributors": 542
+      "cumulative_contributors": 768
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-04-01",
-      "cumulative_contributors": 556
+      "cumulative_contributors": 790
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-05-01",
-      "cumulative_contributors": 571
+      "cumulative_contributors": 808
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-06-01",
-      "cumulative_contributors": 581
+      "cumulative_contributors": 823
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-07-01",
-      "cumulative_contributors": 594
+      "cumulative_contributors": 838
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-08-01",
-      "cumulative_contributors": 609
+      "cumulative_contributors": 860
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-09-01",
-      "cumulative_contributors": 626
+      "cumulative_contributors": 880
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-10-01",
-      "cumulative_contributors": 638
+      "cumulative_contributors": 895
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-11-01",
-      "cumulative_contributors": 646
+      "cumulative_contributors": 910
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2025-12-01",
-      "cumulative_contributors": 651
+      "cumulative_contributors": 918
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2026-01-01",
-      "cumulative_contributors": 657
+      "cumulative_contributors": 925
     },
     {
       "repo": "https://github.com/microsoft/semantic-kernel",
       "month": "2026-02-01",
-      "cumulative_contributors": 671
+      "cumulative_contributors": 941
     },
     {
       "repo": "https://github.com/milvus-io/milvus",
@@ -4915,67 +5005,72 @@
     {
       "repo": "https://github.com/mistralai/mistral-inference",
       "month": "2024-03-01",
-      "cumulative_contributors": 34
-    },
-    {
-      "repo": "https://github.com/mistralai/mistral-inference",
-      "month": "2024-05-01",
       "cumulative_contributors": 41
     },
     {
       "repo": "https://github.com/mistralai/mistral-inference",
-      "month": "2024-06-01",
-      "cumulative_contributors": 44
-    },
-    {
-      "repo": "https://github.com/mistralai/mistral-inference",
-      "month": "2024-07-01",
+      "month": "2024-05-01",
       "cumulative_contributors": 48
     },
     {
       "repo": "https://github.com/mistralai/mistral-inference",
-      "month": "2024-08-01",
-      "cumulative_contributors": 53
+      "month": "2024-06-01",
+      "cumulative_contributors": 52
     },
     {
       "repo": "https://github.com/mistralai/mistral-inference",
-      "month": "2024-09-01",
-      "cumulative_contributors": 55
-    },
-    {
-      "repo": "https://github.com/mistralai/mistral-inference",
-      "month": "2024-11-01",
+      "month": "2024-07-01",
       "cumulative_contributors": 56
     },
     {
       "repo": "https://github.com/mistralai/mistral-inference",
-      "month": "2025-03-01",
-      "cumulative_contributors": 59
-    },
-    {
-      "repo": "https://github.com/mistralai/mistral-inference",
-      "month": "2025-08-01",
+      "month": "2024-08-01",
       "cumulative_contributors": 61
     },
     {
       "repo": "https://github.com/mistralai/mistral-inference",
+      "month": "2024-09-01",
+      "cumulative_contributors": 65
+    },
+    {
+      "repo": "https://github.com/mistralai/mistral-inference",
+      "month": "2024-11-01",
+      "cumulative_contributors": 66
+    },
+    {
+      "repo": "https://github.com/mistralai/mistral-inference",
+      "month": "2025-03-01",
+      "cumulative_contributors": 69
+    },
+    {
+      "repo": "https://github.com/mistralai/mistral-inference",
+      "month": "2025-07-01",
+      "cumulative_contributors": 70
+    },
+    {
+      "repo": "https://github.com/mistralai/mistral-inference",
+      "month": "2025-08-01",
+      "cumulative_contributors": 72
+    },
+    {
+      "repo": "https://github.com/mistralai/mistral-inference",
       "month": "2025-09-01",
-      "cumulative_contributors": 62
+      "cumulative_contributors": 75
     },
     {
       "repo": "https://github.com/mistralai/mistral-inference",
       "month": "2025-11-01",
-      "cumulative_contributors": 63
+      "cumulative_contributors": 76
     },
     {
       "repo": "https://github.com/mistralai/mistral-inference",
       "month": "2025-12-01",
-      "cumulative_contributors": 64
+      "cumulative_contributors": 77
     },
     {
       "repo": "https://github.com/mistralai/mistral-inference",
       "month": "2026-02-01",
-      "cumulative_contributors": 66
+      "cumulative_contributors": 79
     },
     {
       "repo": "https://github.com/modelcontextprotocol/inspector",
@@ -5150,7 +5245,7 @@
     {
       "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
       "month": "2026-02-01",
-      "cumulative_contributors": 689
+      "cumulative_contributors": 690
     },
     {
       "repo": "https://github.com/ollama/ollama",
@@ -5265,12 +5360,12 @@
     {
       "repo": "https://github.com/ollama/ollama",
       "month": "2026-01-01",
-      "cumulative_contributors": 1733
+      "cumulative_contributors": 1734
     },
     {
       "repo": "https://github.com/ollama/ollama",
       "month": "2026-02-01",
-      "cumulative_contributors": 1793
+      "cumulative_contributors": 1794
     },
     {
       "repo": "https://github.com/open-telemetry/semantic-conventions",
@@ -5480,97 +5575,97 @@
     {
       "repo": "https://github.com/open-webui/open-webui",
       "month": "2025-08-01",
-      "cumulative_contributors": 1841
+      "cumulative_contributors": 1840
     },
     {
       "repo": "https://github.com/open-webui/open-webui",
       "month": "2025-09-01",
-      "cumulative_contributors": 1898
+      "cumulative_contributors": 1897
     },
     {
       "repo": "https://github.com/open-webui/open-webui",
       "month": "2025-10-01",
-      "cumulative_contributors": 1978
+      "cumulative_contributors": 1977
     },
     {
       "repo": "https://github.com/open-webui/open-webui",
       "month": "2025-11-01",
-      "cumulative_contributors": 2028
+      "cumulative_contributors": 2027
     },
     {
       "repo": "https://github.com/open-webui/open-webui",
       "month": "2025-12-01",
-      "cumulative_contributors": 2062
+      "cumulative_contributors": 2061
     },
     {
       "repo": "https://github.com/open-webui/open-webui",
       "month": "2026-01-01",
-      "cumulative_contributors": 2092
+      "cumulative_contributors": 2091
     },
     {
       "repo": "https://github.com/open-webui/open-webui",
       "month": "2026-02-01",
-      "cumulative_contributors": 2163
+      "cumulative_contributors": 2162
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-03-01",
-      "cumulative_contributors": 110
+      "cumulative_contributors": 140
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-04-01",
-      "cumulative_contributors": 143
+      "cumulative_contributors": 184
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-05-01",
-      "cumulative_contributors": 174
+      "cumulative_contributors": 225
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-06-01",
-      "cumulative_contributors": 204
+      "cumulative_contributors": 265
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-07-01",
-      "cumulative_contributors": 247
+      "cumulative_contributors": 341
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-08-01",
-      "cumulative_contributors": 281
+      "cumulative_contributors": 403
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-09-01",
-      "cumulative_contributors": 314
+      "cumulative_contributors": 453
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-10-01",
-      "cumulative_contributors": 332
+      "cumulative_contributors": 478
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-11-01",
-      "cumulative_contributors": 346
+      "cumulative_contributors": 503
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2025-12-01",
-      "cumulative_contributors": 371
+      "cumulative_contributors": 536
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2026-01-01",
-      "cumulative_contributors": 385
+      "cumulative_contributors": 552
     },
     {
       "repo": "https://github.com/openai/openai-agents-python",
       "month": "2026-02-01",
-      "cumulative_contributors": 410
+      "cumulative_contributors": 584
     },
     {
       "repo": "https://github.com/openclaw/openclaw",
@@ -5590,192 +5685,217 @@
     {
       "repo": "https://github.com/openclaw/openclaw",
       "month": "2026-02-01",
-      "cumulative_contributors": 4508
+      "cumulative_contributors": 4514
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
       "month": "2024-03-01",
-      "cumulative_contributors": 7
-    },
-    {
-      "repo": "https://github.com/pathwaycom/pathway",
-      "month": "2024-07-01",
-      "cumulative_contributors": 9
-    },
-    {
-      "repo": "https://github.com/pathwaycom/pathway",
-      "month": "2024-10-01",
-      "cumulative_contributors": 10
-    },
-    {
-      "repo": "https://github.com/pathwaycom/pathway",
-      "month": "2024-11-01",
-      "cumulative_contributors": 12
-    },
-    {
-      "repo": "https://github.com/pathwaycom/pathway",
-      "month": "2024-12-01",
-      "cumulative_contributors": 14
-    },
-    {
-      "repo": "https://github.com/pathwaycom/pathway",
-      "month": "2025-01-01",
-      "cumulative_contributors": 16
-    },
-    {
-      "repo": "https://github.com/pathwaycom/pathway",
-      "month": "2025-03-01",
       "cumulative_contributors": 17
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
-      "month": "2025-08-01",
-      "cumulative_contributors": 18
+      "month": "2024-04-01",
+      "cumulative_contributors": 19
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
-      "month": "2025-10-01",
-      "cumulative_contributors": 20
-    },
-    {
-      "repo": "https://github.com/pathwaycom/pathway",
-      "month": "2025-11-01",
+      "month": "2024-05-01",
       "cumulative_contributors": 22
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
-      "month": "2025-12-01",
+      "month": "2024-07-01",
+      "cumulative_contributors": 25
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2024-08-01",
       "cumulative_contributors": 27
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
-      "month": "2026-01-01",
+      "month": "2024-10-01",
+      "cumulative_contributors": 28
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2024-11-01",
+      "cumulative_contributors": 30
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2024-12-01",
+      "cumulative_contributors": 32
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2025-01-01",
+      "cumulative_contributors": 35
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2025-02-01",
+      "cumulative_contributors": 36
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2025-03-01",
+      "cumulative_contributors": 37
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2025-05-01",
+      "cumulative_contributors": 38
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2025-08-01",
+      "cumulative_contributors": 39
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2025-10-01",
       "cumulative_contributors": 41
     },
     {
       "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2025-11-01",
+      "cumulative_contributors": 44
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2025-12-01",
+      "cumulative_contributors": 50
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2026-01-01",
+      "cumulative_contributors": 66
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
       "month": "2026-02-01",
-      "cumulative_contributors": 42
+      "cumulative_contributors": 67
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2024-03-01",
-      "cumulative_contributors": 8
+      "cumulative_contributors": 13
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2024-04-01",
-      "cumulative_contributors": 9
+      "cumulative_contributors": 16
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2024-05-01",
-      "cumulative_contributors": 14
+      "cumulative_contributors": 22
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2024-06-01",
-      "cumulative_contributors": 18
+      "cumulative_contributors": 30
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2024-07-01",
-      "cumulative_contributors": 26
+      "cumulative_contributors": 40
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2024-08-01",
-      "cumulative_contributors": 36
+      "cumulative_contributors": 59
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2024-09-01",
-      "cumulative_contributors": 51
+      "cumulative_contributors": 84
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2024-10-01",
-      "cumulative_contributors": 69
+      "cumulative_contributors": 114
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2024-11-01",
-      "cumulative_contributors": 76
+      "cumulative_contributors": 126
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2024-12-01",
-      "cumulative_contributors": 85
+      "cumulative_contributors": 142
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-01-01",
-      "cumulative_contributors": 102
+      "cumulative_contributors": 172
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-02-01",
-      "cumulative_contributors": 109
+      "cumulative_contributors": 185
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-03-01",
-      "cumulative_contributors": 128
+      "cumulative_contributors": 212
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-04-01",
-      "cumulative_contributors": 149
+      "cumulative_contributors": 248
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-05-01",
-      "cumulative_contributors": 178
+      "cumulative_contributors": 296
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-06-01",
-      "cumulative_contributors": 198
+      "cumulative_contributors": 321
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-07-01",
-      "cumulative_contributors": 218
+      "cumulative_contributors": 357
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-08-01",
-      "cumulative_contributors": 243
+      "cumulative_contributors": 398
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-09-01",
-      "cumulative_contributors": 265
+      "cumulative_contributors": 432
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-10-01",
-      "cumulative_contributors": 285
+      "cumulative_contributors": 462
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-11-01",
-      "cumulative_contributors": 300
+      "cumulative_contributors": 491
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2025-12-01",
-      "cumulative_contributors": 335
+      "cumulative_contributors": 532
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2026-01-01",
-      "cumulative_contributors": 375
+      "cumulative_contributors": 584
     },
     {
       "repo": "https://github.com/pipecat-ai/pipecat",
       "month": "2026-02-01",
-      "cumulative_contributors": 400
+      "cumulative_contributors": 621
     },
     {
       "repo": "https://github.com/promptfoo/promptfoo",
@@ -6230,122 +6350,122 @@
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2024-03-01",
-      "cumulative_contributors": 107
+      "cumulative_contributors": 139
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2024-04-01",
-      "cumulative_contributors": 111
-    },
-    {
-      "repo": "https://github.com/skypilot-org/skypilot",
-      "month": "2024-05-01",
-      "cumulative_contributors": 113
-    },
-    {
-      "repo": "https://github.com/skypilot-org/skypilot",
-      "month": "2024-06-01",
-      "cumulative_contributors": 117
-    },
-    {
-      "repo": "https://github.com/skypilot-org/skypilot",
-      "month": "2024-07-01",
-      "cumulative_contributors": 124
-    },
-    {
-      "repo": "https://github.com/skypilot-org/skypilot",
-      "month": "2024-08-01",
-      "cumulative_contributors": 133
-    },
-    {
-      "repo": "https://github.com/skypilot-org/skypilot",
-      "month": "2024-09-01",
       "cumulative_contributors": 144
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2024-05-01",
+      "cumulative_contributors": 147
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2024-06-01",
+      "cumulative_contributors": 152
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2024-07-01",
+      "cumulative_contributors": 159
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2024-08-01",
+      "cumulative_contributors": 168
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2024-09-01",
+      "cumulative_contributors": 184
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2024-10-01",
-      "cumulative_contributors": 155
+      "cumulative_contributors": 202
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2024-11-01",
-      "cumulative_contributors": 161
-    },
-    {
-      "repo": "https://github.com/skypilot-org/skypilot",
-      "month": "2024-12-01",
-      "cumulative_contributors": 166
-    },
-    {
-      "repo": "https://github.com/skypilot-org/skypilot",
-      "month": "2025-01-01",
-      "cumulative_contributors": 173
-    },
-    {
-      "repo": "https://github.com/skypilot-org/skypilot",
-      "month": "2025-02-01",
-      "cumulative_contributors": 182
-    },
-    {
-      "repo": "https://github.com/skypilot-org/skypilot",
-      "month": "2025-03-01",
-      "cumulative_contributors": 193
-    },
-    {
-      "repo": "https://github.com/skypilot-org/skypilot",
-      "month": "2025-04-01",
-      "cumulative_contributors": 203
-    },
-    {
-      "repo": "https://github.com/skypilot-org/skypilot",
-      "month": "2025-05-01",
       "cumulative_contributors": 211
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2024-12-01",
+      "cumulative_contributors": 217
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2025-01-01",
+      "cumulative_contributors": 227
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2025-02-01",
+      "cumulative_contributors": 238
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2025-03-01",
+      "cumulative_contributors": 251
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2025-04-01",
+      "cumulative_contributors": 264
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2025-05-01",
+      "cumulative_contributors": 275
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-06-01",
-      "cumulative_contributors": 232
+      "cumulative_contributors": 298
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-07-01",
-      "cumulative_contributors": 240
+      "cumulative_contributors": 316
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-08-01",
-      "cumulative_contributors": 252
+      "cumulative_contributors": 338
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-09-01",
-      "cumulative_contributors": 263
+      "cumulative_contributors": 355
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-10-01",
-      "cumulative_contributors": 272
+      "cumulative_contributors": 370
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-11-01",
-      "cumulative_contributors": 290
+      "cumulative_contributors": 400
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2025-12-01",
-      "cumulative_contributors": 305
+      "cumulative_contributors": 421
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2026-01-01",
-      "cumulative_contributors": 326
+      "cumulative_contributors": 449
     },
     {
       "repo": "https://github.com/skypilot-org/skypilot",
       "month": "2026-02-01",
-      "cumulative_contributors": 346
+      "cumulative_contributors": 473
     },
     {
       "repo": "https://github.com/stanfordnlp/dspy",
@@ -6470,7 +6590,17 @@
     {
       "repo": "https://github.com/sweepai/sweep",
       "month": "2024-03-01",
-      "cumulative_contributors": 52
+      "cumulative_contributors": 64
+    },
+    {
+      "repo": "https://github.com/sweepai/sweep",
+      "month": "2024-04-01",
+      "cumulative_contributors": 65
+    },
+    {
+      "repo": "https://github.com/sweepai/sweep",
+      "month": "2024-06-01",
+      "cumulative_contributors": 66
     },
     {
       "repo": "https://github.com/temporalio/temporal",
@@ -6590,112 +6720,112 @@
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2024-05-01",
-      "cumulative_contributors": 3
+      "cumulative_contributors": 4
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2024-06-01",
-      "cumulative_contributors": 7
-    },
-    {
-      "repo": "https://github.com/unclecode/crawl4ai",
-      "month": "2024-07-01",
       "cumulative_contributors": 9
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
-      "month": "2024-08-01",
+      "month": "2024-07-01",
       "cumulative_contributors": 13
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
+      "month": "2024-08-01",
+      "cumulative_contributors": 19
+    },
+    {
+      "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2024-09-01",
-      "cumulative_contributors": 16
+      "cumulative_contributors": 22
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2024-10-01",
-      "cumulative_contributors": 27
+      "cumulative_contributors": 37
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2024-11-01",
-      "cumulative_contributors": 40
+      "cumulative_contributors": 54
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2024-12-01",
-      "cumulative_contributors": 52
+      "cumulative_contributors": 70
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-01-01",
-      "cumulative_contributors": 66
+      "cumulative_contributors": 87
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-02-01",
-      "cumulative_contributors": 83
+      "cumulative_contributors": 108
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-03-01",
-      "cumulative_contributors": 95
+      "cumulative_contributors": 124
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-04-01",
-      "cumulative_contributors": 111
+      "cumulative_contributors": 142
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-05-01",
-      "cumulative_contributors": 133
+      "cumulative_contributors": 167
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-06-01",
-      "cumulative_contributors": 147
-    },
-    {
-      "repo": "https://github.com/unclecode/crawl4ai",
-      "month": "2025-07-01",
-      "cumulative_contributors": 161
-    },
-    {
-      "repo": "https://github.com/unclecode/crawl4ai",
-      "month": "2025-08-01",
-      "cumulative_contributors": 175
-    },
-    {
-      "repo": "https://github.com/unclecode/crawl4ai",
-      "month": "2025-09-01",
       "cumulative_contributors": 182
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
+      "month": "2025-07-01",
+      "cumulative_contributors": 201
+    },
+    {
+      "repo": "https://github.com/unclecode/crawl4ai",
+      "month": "2025-08-01",
+      "cumulative_contributors": 221
+    },
+    {
+      "repo": "https://github.com/unclecode/crawl4ai",
+      "month": "2025-09-01",
+      "cumulative_contributors": 229
+    },
+    {
+      "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-10-01",
-      "cumulative_contributors": 183
+      "cumulative_contributors": 232
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-11-01",
-      "cumulative_contributors": 191
+      "cumulative_contributors": 245
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2025-12-01",
-      "cumulative_contributors": 198
+      "cumulative_contributors": 253
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2026-01-01",
-      "cumulative_contributors": 210
+      "cumulative_contributors": 267
     },
     {
       "repo": "https://github.com/unclecode/crawl4ai",
       "month": "2026-02-01",
-      "cumulative_contributors": 218
+      "cumulative_contributors": 276
     },
     {
       "repo": "https://github.com/weaviate/weaviate",
@@ -6830,117 +6960,117 @@
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2024-03-01",
-      "cumulative_contributors": 9
-    },
-    {
-      "repo": "https://github.com/xlang-ai/OSWorld",
-      "month": "2024-04-01",
-      "cumulative_contributors": 12
-    },
-    {
-      "repo": "https://github.com/xlang-ai/OSWorld",
-      "month": "2024-05-01",
-      "cumulative_contributors": 13
-    },
-    {
-      "repo": "https://github.com/xlang-ai/OSWorld",
-      "month": "2024-06-01",
-      "cumulative_contributors": 14
-    },
-    {
-      "repo": "https://github.com/xlang-ai/OSWorld",
-      "month": "2024-07-01",
-      "cumulative_contributors": 17
-    },
-    {
-      "repo": "https://github.com/xlang-ai/OSWorld",
-      "month": "2024-09-01",
-      "cumulative_contributors": 18
-    },
-    {
-      "repo": "https://github.com/xlang-ai/OSWorld",
-      "month": "2024-10-01",
-      "cumulative_contributors": 19
-    },
-    {
-      "repo": "https://github.com/xlang-ai/OSWorld",
-      "month": "2024-11-01",
       "cumulative_contributors": 20
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
-      "month": "2024-12-01",
-      "cumulative_contributors": 21
-    },
-    {
-      "repo": "https://github.com/xlang-ai/OSWorld",
-      "month": "2025-01-01",
-      "cumulative_contributors": 22
-    },
-    {
-      "repo": "https://github.com/xlang-ai/OSWorld",
-      "month": "2025-02-01",
+      "month": "2024-04-01",
       "cumulative_contributors": 25
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2024-05-01",
+      "cumulative_contributors": 28
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2024-06-01",
+      "cumulative_contributors": 32
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2024-07-01",
+      "cumulative_contributors": 35
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2024-09-01",
+      "cumulative_contributors": 39
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2024-10-01",
+      "cumulative_contributors": 40
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2024-11-01",
+      "cumulative_contributors": 43
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2024-12-01",
+      "cumulative_contributors": 44
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2025-01-01",
+      "cumulative_contributors": 46
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2025-02-01",
+      "cumulative_contributors": 55
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2025-03-01",
-      "cumulative_contributors": 27
-    },
-    {
-      "repo": "https://github.com/xlang-ai/OSWorld",
-      "month": "2025-04-01",
-      "cumulative_contributors": 31
-    },
-    {
-      "repo": "https://github.com/xlang-ai/OSWorld",
-      "month": "2025-05-01",
-      "cumulative_contributors": 34
-    },
-    {
-      "repo": "https://github.com/xlang-ai/OSWorld",
-      "month": "2025-06-01",
-      "cumulative_contributors": 37
-    },
-    {
-      "repo": "https://github.com/xlang-ai/OSWorld",
-      "month": "2025-07-01",
-      "cumulative_contributors": 49
-    },
-    {
-      "repo": "https://github.com/xlang-ai/OSWorld",
-      "month": "2025-08-01",
-      "cumulative_contributors": 54
-    },
-    {
-      "repo": "https://github.com/xlang-ai/OSWorld",
-      "month": "2025-09-01",
       "cumulative_contributors": 57
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
-      "month": "2025-10-01",
-      "cumulative_contributors": 59
-    },
-    {
-      "repo": "https://github.com/xlang-ai/OSWorld",
-      "month": "2025-11-01",
+      "month": "2025-04-01",
       "cumulative_contributors": 63
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2025-05-01",
+      "cumulative_contributors": 70
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2025-06-01",
+      "cumulative_contributors": 77
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2025-07-01",
+      "cumulative_contributors": 98
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2025-08-01",
+      "cumulative_contributors": 108
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2025-09-01",
+      "cumulative_contributors": 119
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2025-10-01",
+      "cumulative_contributors": 124
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2025-11-01",
+      "cumulative_contributors": 133
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2025-12-01",
-      "cumulative_contributors": 64
+      "cumulative_contributors": 138
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2026-01-01",
-      "cumulative_contributors": 66
+      "cumulative_contributors": 143
     },
     {
       "repo": "https://github.com/xlang-ai/OSWorld",
       "month": "2026-02-01",
-      "cumulative_contributors": 68
+      "cumulative_contributors": 147
     }
   ]
 }
