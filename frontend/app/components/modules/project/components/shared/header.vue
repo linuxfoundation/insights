@@ -105,7 +105,7 @@ SPDX-License-Identifier: MIT
             </div>
             <div class="hidden md:flex items-center gap-4 flex-grow justify-end">
               <lfx-project-featured-in-collection
-                v-if="props.project && isLfInsightsTeamMember"
+                v-if="props.project"
                 :project="props.project"
               />
               <lfx-icon-button
@@ -259,9 +259,7 @@ const { openCopilotModal } = useCopilotStore();
 const { filterCount } = storeToRefs(useCommunityStore());
 const { openCommunityFilterModal } = useCommunityStore();
 
-const { hasLfxInsightsPermission, user } = storeToRefs(useAuthStore());
-
-const isLfInsightsTeamMember = computed(() => user.value?.isLfInsightsTeamMember || false);
+const { hasLfxInsightsPermission } = storeToRefs(useAuthStore());
 
 const repos = computed<ProjectRepository[]>(() =>
   projectRepos.value
