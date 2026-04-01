@@ -15,7 +15,7 @@ SPDX-License-Identifier: MIT
       <div
         v-else
         class="flex items-center gap-2 p-4 min-h-16 rounded-t-xl"
-        :class="{ 'justify-between': props.variant === 'my-collections' }"
+        :class="{ 'justify-between': props.variant === CollectionTypeEnum.MY_COLLECTIONS }"
         :style="headerBackground"
       >
         <lfx-avatar-group type="project">
@@ -28,7 +28,7 @@ SPDX-License-Identifier: MIT
           />
         </lfx-avatar-group>
         <lfx-dropdown
-          v-if="props.variant === 'my-collections'"
+          v-if="props.variant === CollectionTypeEnum.MY_COLLECTIONS"
           placement="bottom-end"
         >
           <template #trigger>
@@ -78,7 +78,7 @@ SPDX-License-Identifier: MIT
         <div class="mt-auto">
           <!-- owner info - different display based on variant -->
           <div
-            v-if="props.variant !== 'my-collections'"
+            v-if="props.variant !== CollectionTypeEnum.MY_COLLECTIONS"
             class="flex items-center gap-2 mb-2"
           >
             <collection-owner
@@ -102,11 +102,11 @@ SPDX-License-Identifier: MIT
               <span v-if="props.collection.updatedAt">
                 ・ Updated {{ formatDate(props.collection.updatedAt, 'dd MMM') }}
               </span>
-              <template v-if="props.variant === 'my-collections'"> ・ </template>
+              <template v-if="props.variant === CollectionTypeEnum.MY_COLLECTIONS"> ・ </template>
             </p>
             <!-- visibility badge for my-collections -->
             <span
-              v-if="props.variant === 'my-collections'"
+              v-if="props.variant === CollectionTypeEnum.MY_COLLECTIONS"
               class="flex items-center gap-1.5"
             >
               <lfx-icon
@@ -125,7 +125,7 @@ SPDX-License-Identifier: MIT
 
           <!-- footer actions - not shown for my-collections -->
           <div
-            v-if="props.variant !== 'my-collections'"
+            v-if="props.variant !== CollectionTypeEnum.MY_COLLECTIONS"
             class="pt-3 mt-3 border-t border-neutral-200 flex items-center justify-center gap-2"
           >
             <lfx-button
@@ -188,6 +188,7 @@ import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/service
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 import { useAuthStore } from '~/components/modules/auth/store/auth.store';
+import { CollectionTypeEnum } from '~/components/modules/collection/config/collection-type-config';
 
 const router = useRouter();
 const { openShareModal } = useShareStore();
@@ -214,7 +215,7 @@ const emit = defineEmits<{
 // This only applies to the collection card header, in the designs the header gradient seems to be different
 // from the card background gradient for communinity and my collections
 const headerBackground = computed(() => {
-  if (props.variant === 'curated') {
+  if (props.variant === CollectionTypeEnum.CURATED) {
     // curated collections should have an image so we don't need a background
     // however, if the image is not set, we need to use a default background
     if (props.collection.imageUrl) {

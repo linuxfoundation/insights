@@ -84,7 +84,7 @@ SPDX-License-Identifier: MIT
               class="!p-2"
             />
           </template>
-          <template v-if="props.variant === 'my-collections' && !!user">
+          <template v-if="props.variant === CollectionTypeEnum.MY_COLLECTIONS && !!user">
             <lfx-dropdown-item @click="handleEditCollection()">
               <lfx-icon
                 name="pencil"
@@ -110,7 +110,7 @@ SPDX-License-Identifier: MIT
             />
             Duplicate
           </lfx-dropdown-item>
-          <template v-if="props.variant === 'my-collections' && !!user">
+          <template v-if="props.variant === CollectionTypeEnum.MY_COLLECTIONS && !!user">
             <lfx-dropdown-item @click="handleDeleteCollection()">
               <lfx-icon
                 name="trash"
@@ -147,6 +147,7 @@ import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 import { useAuthStore } from '~/components/modules/auth/store/auth.store';
 import { useDuplicateCollectionStore } from '~/components/modules/collection/store/duplicate-collection.store';
+import { CollectionTypeEnum } from '~/components/modules/collection/config/collection-type-config';
 
 const router = useRouter();
 const { user } = storeToRefs(useAuthStore());
@@ -166,7 +167,7 @@ const props = withDefaults(
   }>(),
   {
     showLikeCount: false,
-    variant: 'curated',
+    variant: CollectionTypeEnum.CURATED,
     showUnlikeIcon: false,
   },
 );

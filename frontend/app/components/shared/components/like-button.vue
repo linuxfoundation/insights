@@ -16,7 +16,7 @@ SPDX-License-Identifier: MIT
       @click.stop.prevent="handleLike"
     >
       <lfx-icon
-        v-if="variant === 'my-collections' || (showUnlikeIcon && isLiked)"
+        v-if="variant === CollectionTypeEnum.MY_COLLECTIONS || (showUnlikeIcon && isLiked)"
         :name="isLiked ? 'heart-slash' : 'heart'"
         :size="16"
         :class="'text-neutral-900'"
@@ -59,6 +59,7 @@ import { formatNumberShort } from '~/components/shared/utils/formatter';
 import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
 import type { ButtonSize } from '~/components/uikit/button/types/button.types';
 import { TanstackKey } from '~/components/shared/types/tanstack';
+import { CollectionTypeEnum } from '~/components/modules/collection/config/collection-type-config';
 // import { useAuth } from '~~/composables/useAuth';
 
 const collectionsStore = useCollectionsStore();
@@ -76,7 +77,7 @@ const props = withDefaults(
   }>(),
   {
     buttonType: 'transparent',
-    variant: 'community',
+    variant: CollectionTypeEnum.COMMUNITY,
     size: 'medium',
     showUnlikeIcon: false,
   },

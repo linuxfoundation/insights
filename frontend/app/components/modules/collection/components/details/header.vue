@@ -121,7 +121,7 @@ SPDX-License-Identifier: MIT
                 />
               </lfx-tooltip>
               <lfx-button
-                v-if="props.type === 'my-collections'"
+                v-if="props.type === CollectionTypeEnum.MY_COLLECTIONS"
                 type="outline"
                 class="!rounded-full"
                 @click="handleEdit"
@@ -147,7 +147,7 @@ SPDX-License-Identifier: MIT
             </lfx-button>
 
             <lfx-dropdown
-              v-if="props.type === 'my-collections'"
+              v-if="props.type === CollectionTypeEnum.MY_COLLECTIONS"
               placement="bottom-end"
               :class="isDeleting ? 'opacity-50 cursor-not-allowed' : ''"
               :disabled="isDeleting"
@@ -260,7 +260,7 @@ import { computed, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useRouter } from 'nuxt/app';
 import { useQueryClient } from '@tanstack/vue-query';
-import { collectionTabs, headerBackground } from '../../config/collection-type-config';
+import { collectionTabs, headerBackground, CollectionTypeEnum } from '../../config/collection-type-config';
 import type { Collection } from '~~/types/collection';
 import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
