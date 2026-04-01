@@ -147,31 +147,29 @@ SPDX-License-Identifier: MIT
                 </div>
               </lfx-button>
             </lfx-tooltip>
-            <template v-if="!!user">
-              <lfx-tooltip
-                content="Duplicate collection"
-                class="!w-full"
+            <lfx-tooltip
+              content="Duplicate collection"
+              class="!w-full"
+            >
+              <lfx-button
+                type="ghost"
+                button-style="pill"
+                class="w-full justify-center items-center opacity-50 hover:!opacity-100"
+                @click.stop.prevent="handleClone"
               >
-                <lfx-button
-                  type="ghost"
-                  button-style="pill"
-                  class="w-full justify-center items-center opacity-50 hover:!opacity-100"
-                  @click.stop.prevent="handleClone"
-                >
-                  <div class="p-0.5">
-                    <lfx-icon
-                      name="clone"
-                      :size="16"
-                      class="!text-neutral-900"
-                    />
-                  </div>
-                </lfx-button>
-              </lfx-tooltip>
-              <like-button
-                :collection="props.collection"
-                class="!w-full"
-              />
-            </template>
+                <div class="p-0.5">
+                  <lfx-icon
+                    name="clone"
+                    :size="16"
+                    class="!text-neutral-900"
+                  />
+                </div>
+              </lfx-button>
+            </lfx-tooltip>
+            <like-button
+              :collection="props.collection"
+              class="!w-full"
+            />
           </div>
         </div>
       </div>
@@ -182,7 +180,6 @@ SPDX-License-Identifier: MIT
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useRouter } from 'nuxt/app';
-import { storeToRefs } from 'pinia';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
 import LfxButton from '~/components/uikit/button/button.vue';
@@ -203,7 +200,6 @@ import { useDuplicateCollectionStore } from '~/components/modules/collection/sto
 import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
-import { useAuthStore } from '~/components/modules/auth/store/auth.store';
 import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
 import { CollectionTypeEnum } from '~/components/modules/collection/config/collection-type-config';
 
@@ -212,7 +208,6 @@ const { openShareModal } = useShareStore();
 const { openEditModal } = useEditCollectionStore();
 const { openDuplicateModal } = useDuplicateCollectionStore();
 const { showToast } = useToastService();
-const { user } = storeToRefs(useAuthStore());
 
 const props = withDefaults(
   defineProps<{
