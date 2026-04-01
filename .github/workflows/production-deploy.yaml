@@ -32,8 +32,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          submodules: recursive
+
+      - name: Init submodules
+        run: bash init-submodules.sh --https
 
       - name: Set service config
         id: config
