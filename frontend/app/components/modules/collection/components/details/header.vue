@@ -27,38 +27,34 @@ SPDX-License-Identifier: MIT
       </div>
       <div
         class="transition-all ease-linear flex"
-        :class="scrollTop > 50 ? 'flex-row gap-4' : 'flex-col'"
+        :class="scrollTop > 50 ? 'flex-row gap-4 items-center' : 'flex-col'"
       >
         <div
-          class="flex items-center gap-1.5 transition-all"
+          class="transition-all"
           :class="scrollTop > 50 ? 'mb-0' : 'mb-6'"
         >
-          <div
-            :class="
-              scrollTop > 50
-                ? 'w-9 opacity-100 visible'
-                : 'w-0 sm:w-9 opacity-0 sm:opacity-100 invisible sm:visible pr-0'
-            "
-            class="transition-all ease-linear"
+          <nuxt-link
+            :to="{ name: collectionTab?.route }"
+            class="ease-linear transition-all items-center gap-1.5"
+            :class="scrollTop > 50 ? 'flex' : 'hidden sm:flex'"
           >
-            <nuxt-link
-              :to="{ name: collectionTab?.route }"
-              class="ease-linear transition-all"
-              :class="scrollTop > 50 ? 'block' : 'hidden sm:block'"
+            <div
+              :class="scrollTop > 50 ? 'opacity-100 visible' : 'opacity-0 sm:opacity-100 invisible sm:visible pr-0'"
+              class="transition-all ease-linear"
             >
-              <lfx-icon-button
-                type="transparent"
-                icon="angle-left"
-                class=""
+              <lfx-icon
+                name="angle-left"
+                class="text-neutral-500"
+                :size="16"
               />
-            </nuxt-link>
-          </div>
-          <div
-            class="text-sm text-neutral-500 font-medium transition-all"
-            :class="scrollTop > 50 ? 'hidden' : 'block'"
-          >
-            {{ collectionTab?.detailsLabel }}
-          </div>
+            </div>
+            <div
+              class="text-sm text-neutral-500 font-medium transition-all"
+              :class="scrollTop > 50 ? 'hidden' : 'block'"
+            >
+              {{ collectionTab?.detailsLabel }}
+            </div>
+          </nuxt-link>
         </div>
         <div class="flex justify-between gap-x-5 md:gap-x-15 flex-grow flex-col lg:flex-row items-start">
           <div
@@ -110,7 +106,7 @@ SPDX-License-Identifier: MIT
           </div>
           <div
             v-if="props.collection && !loading"
-            class="flex lg:justify-end transition-all ease-linear gap-4 w-full lg:w-auto shrink-0"
+            class="flex transition-all ease-linear gap-4 w-full lg:w-auto shrink-0"
           >
             <template v-if="!!user">
               <lfx-tooltip content="Duplicate collection">
@@ -121,7 +117,7 @@ SPDX-License-Identifier: MIT
                 />
               </lfx-tooltip>
               <lfx-button
-                v-if="props.type === 'my-collections'"
+                v-if="props.type === CollectionTypeEnum.MY_COLLECTIONS"
                 type="outline"
                 class="!rounded-full"
                 @click="handleEdit"
@@ -129,12 +125,11 @@ SPDX-License-Identifier: MIT
                 <lfx-icon name="pencil" />
                 Edit Collection
               </lfx-button>
-              <lfx-like-button
+              <like-button
                 v-else
                 :collection="props.collection"
                 button-type="outline"
                 class="!rounded-full"
-                size="large"
               />
             </template>
             <lfx-button
@@ -145,6 +140,29 @@ SPDX-License-Identifier: MIT
               <lfx-icon name="share-nodes" />
               Share
             </lfx-button>
+
+            <lfx-dropdown
+              v-if="props.type === CollectionTypeEnum.MY_COLLECTIONS"
+              placement="bottom-end"
+              :class="isDeleting ? 'opacity-50 cursor-not-allowed' : ''"
+              :disabled="isDeleting"
+            >
+              <template #trigger>
+                <lfx-icon-button
+                  icon="ellipsis"
+                  type="transparent"
+                  class="!text-neutral-900"
+                />
+              </template>
+              <lfx-dropdown-item @click.stop.prevent="handleDelete">
+                <lfx-icon
+                  name="trash"
+                  :size="16"
+                  class="!text-negative-500"
+                />
+                <span class="text-negative-500">Delete</span>
+              </lfx-dropdown-item>
+            </lfx-dropdown>
           </div>
         </div>
       </div>
@@ -172,7 +190,7 @@ SPDX-License-Identifier: MIT
           />
           <p
             v-if="projectCount > 0"
-            class="text-xs leading-5 text-neutral-600"
+            class="text-sm leading-5 text-neutral-600"
           >
             {{ projectCount }} projects
             <span v-if="props.collection?.updatedAt">
@@ -216,18 +234,34 @@ SPDX-License-Identifier: MIT
       </div>
     </section>
   </div>
+
+  <!-- Full-page loading overlay for delete operation -->
+  <teleport to="body">
+    <div
+      v-if="isDeleting"
+      class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/50"
+    >
+      <lfx-spinner
+        :size="48"
+        class="text-white"
+      />
+      <p class="mt-4 text-white text-sm font-medium">Deleting collection...</p>
+    </div>
+  </teleport>
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useRouter } from 'nuxt/app';
-import { collectionTabs, headerBackground } from '../../config/collection-type-config';
+import { useQueryClient } from '@tanstack/vue-query';
+import { collectionTabs, headerBackground, CollectionTypeEnum } from '../../config/collection-type-config';
 import type { Collection } from '~~/types/collection';
 import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import useScroll from '~/components/shared/utils/scroll';
 import LfxSkeleton from '~/components/uikit/skeleton/skeleton.vue';
+import LfxSpinner from '~/components/uikit/spinner/spinner.vue';
 import LfxButton from '~/components/uikit/button/button.vue';
 import CollectionOwner from '~/components/shared/components/collection-owner.vue';
 import { formatDate } from '~/components/shared/utils/formatter';
@@ -236,13 +270,23 @@ import { useAuthStore } from '~/components/modules/auth/store/auth.store';
 import { useShareStore } from '~/components/shared/modules/share/store/share.store';
 import { LfxRoutes } from '~/components/shared/types/routes';
 import type { CollectionType } from '~~/types/collection';
-import LfxLikeButton from '~/components/shared/components/like-button.vue';
+import LikeButton from '~/components/shared/components/like-button.vue';
 import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
 import { useEditCollectionStore } from '~/components/modules/collection/store/edit-collection.store';
 import { useDuplicateCollectionStore } from '~/components/modules/collection/store/duplicate-collection.store';
+import LfxDropdown from '~/components/uikit/dropdown/dropdown.vue';
+import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
+import { useConfirmStore } from '~/components/shared/modules/confirm/store/confirm.store';
+import { TanstackKey } from '~/components/shared/types/tanstack';
+import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
+import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
+import useToastService from '~/components/uikit/toast/toast.service';
 
 const { openEditModal } = useEditCollectionStore();
 const { openDuplicateModal } = useDuplicateCollectionStore();
+const { openConfirmModal } = useConfirmStore();
+const { showToast } = useToastService();
+const queryClient = useQueryClient();
 
 const authStore = useAuthStore();
 const { user } = storeToRefs(authStore);
@@ -286,6 +330,8 @@ const currentSort = computed(() => {
   }
   return { field: props.sort, direction: 'asc' as const };
 });
+
+const isDeleting = ref(false);
 
 const handleSort = (field: string) => {
   const defaultDirections: Record<string, 'asc' | 'desc'> = {
@@ -346,6 +392,39 @@ const handleClone = () => {
       collection: props.collection,
     });
   }
+};
+
+const handleDelete = () => {
+  if (props.collection && !isDeleting.value) {
+    try {
+      openConfirmModal({
+        title: 'Delete collection',
+        message: `Are you sure you want to delete this collection?`,
+        confirmLabel: 'Delete',
+        cancelLabel: 'Cancel',
+      }).then(async (result) => {
+        if (result) {
+          isDeleting.value = true;
+          await COLLECTIONS_API_SERVICE.deleteCollection(props.collection!.id);
+
+          invalidateMyCollections();
+          isDeleting.value = false;
+          router.push({ name: LfxRoutes.COLLECTIONS_MY_COLLECTIONS });
+        }
+      });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Failed to delete collection';
+      showToast(message, ToastTypesEnum.negative);
+    } finally {
+      isDeleting.value = false;
+    }
+  }
+};
+
+const invalidateMyCollections = () => {
+  queryClient.invalidateQueries({
+    queryKey: [TanstackKey.MY_COLLECTIONS],
+  });
 };
 </script>
 

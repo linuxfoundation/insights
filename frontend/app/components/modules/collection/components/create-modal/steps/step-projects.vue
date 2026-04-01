@@ -3,7 +3,7 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <div class="flex flex-col gap-6">
+  <div class="flex flex-col gap-6 flex-1 min-h-0">
     <!-- Search input with dropdown -->
     <lf-project-search-dropdown
       :selected-slugs="selectedSlugs"

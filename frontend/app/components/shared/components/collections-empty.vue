@@ -18,7 +18,7 @@ SPDX-License-Identifier: MIT
       </p>
     </div>
     <lfx-create-collection-button
-      type="ghost"
+      type="transparent"
       @created="handleCreated"
     />
   </div>

@@ -4,27 +4,17 @@ SPDX-License-Identifier: MIT
 -->
 <template>
   <!-- Header Section -->
-  <lfx-maintain-height
-    :scroll-top="scrollTop"
-    :loaded="!loading"
-    :class="scrollTop > 0 ? ['fixed', ...headerTopClass].join(' ') : 'relative'"
-    class="z-10 w-full left-0"
-  >
-    <div class="container bg-white">
-      <section
-        class="flex items-start justify-between gap-4 border-b border-neutral-200"
-        :class="scrollTop > 50 ? '!border-b-0 py-5' : 'pt-16 pb-10'"
-      >
-        <div class="flex-1">
-          <h1 class="font-secondary font-light text-4xl leading-[56px] text-neutral-900">Discover Collections</h1>
-          <p class="text-base leading-6 text-neutral-600">
-            Explore and curate open source projects organized into themed collections.
-          </p>
-        </div>
-        <lf-create-collection-button @created="handleCollectionCreated" />
-      </section>
-    </div>
-  </lfx-maintain-height>
+  <div class="container bg-white">
+    <section class="flex items-start justify-between gap-4 border-b border-neutral-200 pt-16 pb-10">
+      <div class="flex-1">
+        <h1 class="font-secondary font-light text-4xl leading-[56px] text-neutral-900">Discover Collections</h1>
+        <p class="text-base leading-6 text-neutral-600">
+          Explore and curate open source projects organized into themed collections.
+        </p>
+      </div>
+      <lf-create-collection-button @created="handleCollectionCreated" />
+    </section>
+  </div>
 
   <div class="container">
     <div class="flex flex-col gap-10 pt-10">
@@ -103,18 +93,12 @@ import LfxLikedCollections from '../components/discovery/liked-collections.vue';
 import LfxCollectionSection from '~/components/shared/components/collection-section.vue';
 import LfxCollectionCard from '~/components/shared/components/collection-card.vue';
 import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/services/collections.api.service';
-import LfxMaintainHeight from '~/components/uikit/maintain-height/maintain-height.vue';
-import useScroll from '~/components/shared/utils/scroll';
-import { useBannerStore } from '~/components/shared/store/banner.store';
 import { useLikeCounts } from '~/components/modules/collection/composables/useLikeCounts';
 
 import { useAuthStore } from '~/components/modules/auth/store/auth.store';
 
 const authStore = useAuthStore();
 const { user } = storeToRefs(authStore);
-
-const { scrollTop } = useScroll();
-const { headerTopClass } = storeToRefs(useBannerStore());
 
 const {
   data: curatedData,
@@ -151,12 +135,6 @@ const allCollectionIds = computed(() => {
 });
 
 useLikeCounts(allCollectionIds);
-
-const loading = computed(() => {
-  return (
-    curatedStatus.value === 'pending' || communityStatus.value === 'pending' || myCollectionsStatus.value === 'pending'
-  );
-});
 
 const handleCollectionCreated = () => {
   refetchMyCollections();
