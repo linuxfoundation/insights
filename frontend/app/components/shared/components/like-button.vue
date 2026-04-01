@@ -3,32 +3,44 @@ Copyright (c) 2025 The Linux Foundation and each contributor.
 SPDX-License-Identifier: MIT
 -->
 <template>
-  <lfx-tooltip :content="isLiked ? 'Dislike collection' : 'Like collection'">
-    <lfx-button
-      :type="buttonType"
-      :size="size"
-      class="w-full flex justify-center items-center"
-      :class="[
-        isLiked || buttonType !== 'transparent' ? 'opacity-100' : 'opacity-50 hover:!opacity-100',
-        buttonType === 'transparent' ? 'hover:!bg-transparent' : '',
-        $attrs.class,
-      ]"
-      @click.stop.prevent="handleLike"
-    >
+  <template v-if="showAsDropdown">
+    <lfx-dropdown-item @click="handleLike">
       <lfx-icon
-        v-if="variant === CollectionTypeEnum.MY_COLLECTIONS || (showUnlikeIcon && isLiked)"
         :name="isLiked ? 'heart-slash' : 'heart'"
         :size="16"
         :class="'text-neutral-900'"
         :type="'light'"
       />
-      <lfx-icon
-        v-else
-        name="heart"
-        :size="16"
-        :class="isLiked ? '!text-negative-500' : 'text-neutral-900'"
-        :type="isLiked ? 'solid' : 'light'"
-      />
+      {{ isLiked ? 'Dislike collection' : 'Like collection' }}
+    </lfx-dropdown-item>
+  </template>
+  <lfx-tooltip
+    v-else
+    :content="isLiked ? 'Dislike collection' : 'Like collection'"
+  >
+    <lfx-button
+      :type="buttonType"
+      button-style="pill"
+      class="w-full flex justify-center items-center"
+      :class="[isLiked || buttonType !== 'ghost' ? 'opacity-100' : 'opacity-50 hover:!opacity-100', $attrs.class]"
+      @click.stop.prevent="handleLike"
+    >
+      <div class="p-0.5">
+        <lfx-icon
+          v-if="variant === 'my-collections' || (showUnlikeIcon && isLiked)"
+          :name="isLiked ? 'heart-slash' : 'heart'"
+          :size="16"
+          :class="'text-neutral-900'"
+          :type="'light'"
+        />
+        <lfx-icon
+          v-else
+          name="heart"
+          :size="16"
+          :class="isLiked ? '!text-negative-500' : 'text-neutral-900'"
+          :type="isLiked ? 'solid' : 'light'"
+        />
+      </div>
       <lfx-spinner
         v-if="likeCountLoading"
         :size="12"
@@ -57,14 +69,13 @@ import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 import type { ButtonType } from '~/components/uikit/button/types/button.types';
 import { formatNumberShort } from '~/components/shared/utils/formatter';
 import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
-import type { ButtonSize } from '~/components/uikit/button/types/button.types';
 import { TanstackKey } from '~/components/shared/types/tanstack';
+import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
 import { CollectionTypeEnum } from '~/components/modules/collection/config/collection-type-config';
 // import { useAuth } from '~~/composables/useAuth';
 
 const collectionsStore = useCollectionsStore();
 const queryClient = useQueryClient();
-// const { isAuthenticated, login } = useAuth();
 const { showToast } = useToastService();
 
 const props = withDefaults(
@@ -72,14 +83,15 @@ const props = withDefaults(
     collection: Collection;
     buttonType?: ButtonType;
     variant?: CollectionType;
-    size?: ButtonSize;
     showUnlikeIcon?: boolean;
+    showAsDropdown?: boolean;
   }>(),
   {
-    buttonType: 'transparent',
+    buttonType: 'ghost',
     variant: CollectionTypeEnum.COMMUNITY,
     size: 'medium',
     showUnlikeIcon: false,
+    showAsDropdown: false,
   },
 );
 
@@ -100,11 +112,6 @@ const invalidateCollectionQueries = () => {
 };
 
 const handleLike = async () => {
-  // if (!isAuthenticated.value) {
-  //   login(window.location.pathname + window.location.search + window.location.hash);
-  //   return;
-  // }
-
   const wasLiked = isLiked.value;
 
   try {

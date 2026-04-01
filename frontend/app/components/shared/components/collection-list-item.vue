@@ -7,29 +7,45 @@ SPDX-License-Identifier: MIT
     :to="{ name: LfxRoutes.COLLECTION, params: { slug: props.collection.slug } }"
     class="flex items-center justify-between py-4 px-2 hover:bg-neutral-50 transition border-b border-neutral-100"
   >
-    <div class="flex items-center gap-3 w-1/2">
+    <div
+      class="flex items-center w-1/2 min-w-0"
+      :class="{ 'gap-3': isSingleLogo, 'gap-4': !isSingleLogo }"
+    >
       <!-- Collection Avatar -->
-      <div class="relative shrink-0">
-        <lfx-avatar
-          v-if="props.collection.logoUrl"
-          :src="props.collection.logoUrl"
-          type="project"
-        />
-        <div
-          v-else
-          class="w-8 h-8 rounded-sm border border-neutral-200 flex items-center justify-center"
-        >
-          <lfx-icon
-            name="rectangle-history"
-            :size="16"
-            class="text-neutral-400"
+      <template v-if="isSingleLogo">
+        <div class="relative shrink-0">
+          <lfx-avatar
+            v-if="props.collection.logoUrl"
+            :src="props.collection.logoUrl"
+            type="project"
           />
+          <div
+            v-else
+            class="w-8 h-8 rounded-sm border border-neutral-200 flex items-center justify-center"
+          >
+            <lfx-icon
+              name="rectangle-history"
+              :size="16"
+              class="text-neutral-400"
+            />
+          </div>
         </div>
-      </div>
-
+      </template>
+      <template v-else>
+        <lfx-avatar-group type="project">
+          <lfx-avatar
+            v-for="project of collectionProjects"
+            :key="project.slug"
+            :src="project.logo"
+            size="small"
+            type="project"
+            :aria-label="project.logo && project.name"
+          />
+        </lfx-avatar-group>
+      </template>
       <!-- Collection Info -->
-      <div class="flex flex-col min-w-0 flex-1">
-        <h4 class="text-sm font-medium text-neutral-900 truncate">
+      <div class="flex flex-col min-w-0 flex-1 pr-4">
+        <h4 class="text-sm font-semibold text-neutral-900 truncate">
           {{ props.collection.name }}
         </h4>
         <p class="text-xs text-neutral-500 truncate">
@@ -42,12 +58,14 @@ SPDX-License-Identifier: MIT
     <div class="flex items-center gap-4 shrink-0">
       <!-- Owner info -->
       <div class="flex items-center gap-2">
-        <collection-owner
-          :collection="props.collection"
-          by-prefix="Curated "
-        />
+        <template v-if="props.variant !== 'my-collections'">
+          <collection-owner
+            :collection="props.collection"
+            by-prefix="Curated "
+          />
 
-        <span class="text-neutral-600 text-sm"> ・ </span>
+          <span class="text-neutral-600 text-sm"> ・ </span>
+        </template>
 
         <!-- Project count and updated date -->
         <div class="flex items-center gap-1.5">
@@ -62,13 +80,13 @@ SPDX-License-Identifier: MIT
           </span>
         </div>
         <div
-          v-if="showLikeCount && !!user"
+          v-if="showLikeCount && !!user && !showLikeInContext"
           class="ml-4"
         >
           <like-button
             :collection="props.collection"
             :variant="props.variant"
-            :show-unlike-icon="props.showUnlikeIcon"
+            :show-unlike-icon="props.variant === 'liked-collections'"
             @updated="handleLikeUpdated"
           />
         </div>
@@ -120,6 +138,13 @@ SPDX-License-Identifier: MIT
               Delete
             </lfx-dropdown-item>
           </template>
+          <like-button
+            v-if="showLikeCount && !!user && showLikeInContext"
+            :collection="props.collection"
+            :variant="props.variant"
+            :show-as-dropdown="true"
+            @updated="handleLikeUpdated"
+          />
         </lfx-dropdown>
       </div>
     </div>
@@ -127,13 +152,15 @@ SPDX-License-Identifier: MIT
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
 import { useRouter } from 'nuxt/app';
 import { storeToRefs } from 'pinia';
 import LfxIcon from '~/components/uikit/icon/icon.vue';
 import LfxIconButton from '~/components/uikit/icon-button/icon-button.vue';
 import LfxAvatar from '~/components/uikit/avatar/avatar.vue';
+import LfxAvatarGroup from '~/components/uikit/avatar-group/avatar-group.vue';
 import { LfxRoutes } from '~/components/shared/types/routes';
-import type { Collection } from '~~/types/collection';
+import type { Collection, CollectionFeaturedProject } from '~~/types/collection';
 import { formatDate } from '~/components/shared/utils/formatter';
 import { useShareStore } from '~/components/shared/modules/share/store/share.store';
 import LfxDropdown from '~/components/uikit/dropdown/dropdown.vue';
@@ -161,16 +188,22 @@ const emit = defineEmits<{
 const props = withDefaults(
   defineProps<{
     collection: Collection;
-    showLikeCount?: boolean;
     variant?: CollectionType;
-    showUnlikeIcon?: boolean;
+    showLikeInContext?: boolean;
   }>(),
   {
-    showLikeCount: false,
     variant: CollectionTypeEnum.CURATED,
-    showUnlikeIcon: false,
+    showLikeInContext: false,
   },
 );
+
+const collectionProjects = computed<CollectionFeaturedProject[]>(() => {
+  return props.collection.featuredProjects.slice(0, 5);
+});
+
+const showLikeCount = computed(() => props.variant !== 'my-collections');
+
+const isSingleLogo = computed(() => props.variant === 'liked-collections' || props.variant === 'curated');
 
 const handleShare = () => {
   const title = `LFX Insights | Collections - ${props.collection.name}`;

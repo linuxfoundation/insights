@@ -126,34 +126,50 @@ SPDX-License-Identifier: MIT
           <!-- footer actions - not shown for my-collections -->
           <div
             v-if="props.variant !== CollectionTypeEnum.MY_COLLECTIONS"
-            class="pt-3 mt-3 border-t border-neutral-200 flex items-center justify-center gap-2"
+            class="pt-3 mt-3 border-t border-neutral-200 grid grid-cols-3 gap-2"
           >
-            <lfx-button
-              type="transparent"
-              class="opacity-50 hover:!opacity-100 flex-1 flex justify-center items-center hover:!bg-transparent"
-              @click.stop.prevent="handleShare"
+            <lfx-tooltip
+              content="Share collection"
+              class="!w-full"
             >
-              <lfx-icon
-                name="share-nodes"
-                :size="16"
-                class="!text-neutral-900"
-              />
-            </lfx-button>
-            <template v-if="!!user">
               <lfx-button
-                type="transparent"
-                class="opacity-50 hover:!opacity-100 flex-1 flex justify-center items-center hover:!bg-transparent"
-                @click.stop.prevent="handleClone"
+                type="ghost"
+                button-style="pill"
+                class="w-full justify-center items-center opacity-50 hover:!opacity-100"
+                @click.stop.prevent="handleShare"
               >
-                <lfx-icon
-                  name="clone"
-                  :size="16"
-                  class="!text-neutral-900"
-                />
+                <div class="p-0.5">
+                  <lfx-icon
+                    name="share-nodes"
+                    :size="16"
+                    class="!text-neutral-900"
+                  />
+                </div>
               </lfx-button>
+            </lfx-tooltip>
+            <template v-if="!!user">
+              <lfx-tooltip
+                content="Duplicate collection"
+                class="!w-full"
+              >
+                <lfx-button
+                  type="ghost"
+                  button-style="pill"
+                  class="w-full justify-center items-center opacity-50 hover:!opacity-100"
+                  @click.stop.prevent="handleClone"
+                >
+                  <div class="p-0.5">
+                    <lfx-icon
+                      name="clone"
+                      :size="16"
+                      class="!text-neutral-900"
+                    />
+                  </div>
+                </lfx-button>
+              </lfx-tooltip>
               <like-button
                 :collection="props.collection"
-                class="flex-1"
+                class="!w-full"
               />
             </template>
           </div>
@@ -188,6 +204,7 @@ import { COLLECTIONS_API_SERVICE } from '~/components/modules/collection/service
 import useToastService from '~/components/uikit/toast/toast.service';
 import { ToastTypesEnum } from '~/components/uikit/toast/types/toast.types';
 import { useAuthStore } from '~/components/modules/auth/store/auth.store';
+import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
 import { CollectionTypeEnum } from '~/components/modules/collection/config/collection-type-config';
 
 const router = useRouter();

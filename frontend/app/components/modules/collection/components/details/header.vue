@@ -27,38 +27,34 @@ SPDX-License-Identifier: MIT
       </div>
       <div
         class="transition-all ease-linear flex"
-        :class="scrollTop > 50 ? 'flex-row gap-4' : 'flex-col'"
+        :class="scrollTop > 50 ? 'flex-row gap-4 items-center' : 'flex-col'"
       >
         <div
-          class="flex items-center gap-1.5 transition-all"
+          class="transition-all"
           :class="scrollTop > 50 ? 'mb-0' : 'mb-6'"
         >
-          <div
-            :class="
-              scrollTop > 50
-                ? 'w-9 opacity-100 visible'
-                : 'w-0 sm:w-9 opacity-0 sm:opacity-100 invisible sm:visible pr-0'
-            "
-            class="transition-all ease-linear"
+          <nuxt-link
+            :to="{ name: collectionTab?.route }"
+            class="ease-linear transition-all items-center gap-1.5"
+            :class="scrollTop > 50 ? 'flex' : 'hidden sm:flex'"
           >
-            <nuxt-link
-              :to="{ name: collectionTab?.route }"
-              class="ease-linear transition-all"
-              :class="scrollTop > 50 ? 'block' : 'hidden sm:block'"
+            <div
+              :class="scrollTop > 50 ? 'opacity-100 visible' : 'opacity-0 sm:opacity-100 invisible sm:visible pr-0'"
+              class="transition-all ease-linear"
             >
-              <lfx-icon-button
-                type="transparent"
-                icon="angle-left"
-                class=""
+              <lfx-icon
+                name="angle-left"
+                class="text-neutral-500"
+                :size="16"
               />
-            </nuxt-link>
-          </div>
-          <div
-            class="text-sm text-neutral-500 font-medium transition-all"
-            :class="scrollTop > 50 ? 'hidden' : 'block'"
-          >
-            {{ collectionTab?.detailsLabel }}
-          </div>
+            </div>
+            <div
+              class="text-sm text-neutral-500 font-medium transition-all"
+              :class="scrollTop > 50 ? 'hidden' : 'block'"
+            >
+              {{ collectionTab?.detailsLabel }}
+            </div>
+          </nuxt-link>
         </div>
         <div class="flex justify-between gap-x-5 md:gap-x-15 flex-grow flex-col lg:flex-row items-start">
           <div
@@ -110,7 +106,7 @@ SPDX-License-Identifier: MIT
           </div>
           <div
             v-if="props.collection && !loading"
-            class="flex lg:justify-end transition-all ease-linear gap-4 w-full lg:w-auto shrink-0"
+            class="flex transition-all ease-linear gap-4 w-full lg:w-auto shrink-0"
           >
             <template v-if="!!user">
               <lfx-tooltip content="Duplicate collection">
@@ -129,12 +125,11 @@ SPDX-License-Identifier: MIT
                 <lfx-icon name="pencil" />
                 Edit Collection
               </lfx-button>
-              <lfx-like-button
+              <like-button
                 v-else
                 :collection="props.collection"
                 button-type="outline"
                 class="!rounded-full"
-                size="large"
               />
             </template>
             <lfx-button
@@ -195,7 +190,7 @@ SPDX-License-Identifier: MIT
           />
           <p
             v-if="projectCount > 0"
-            class="text-xs leading-5 text-neutral-600"
+            class="text-sm leading-5 text-neutral-600"
           >
             {{ projectCount }} projects
             <span v-if="props.collection?.updatedAt">
@@ -275,7 +270,7 @@ import { useAuthStore } from '~/components/modules/auth/store/auth.store';
 import { useShareStore } from '~/components/shared/modules/share/store/share.store';
 import { LfxRoutes } from '~/components/shared/types/routes';
 import type { CollectionType } from '~~/types/collection';
-import LfxLikeButton from '~/components/shared/components/like-button.vue';
+import LikeButton from '~/components/shared/components/like-button.vue';
 import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
 import { useEditCollectionStore } from '~/components/modules/collection/store/edit-collection.store';
 import { useDuplicateCollectionStore } from '~/components/modules/collection/store/duplicate-collection.store';

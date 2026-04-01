@@ -12,11 +12,6 @@ export const useCollectionsStore = defineStore('collections', () => {
   const likedCollectionIds = ref<Set<string>>(new Set());
   const isLikedCollectionsLoaded = ref(false);
   const likeCounts = ref<Record<string, number>>({});
-  const view = ref<CollectionViewType>('grid');
-
-  const setView = (value: CollectionViewType) => {
-    view.value = value;
-  };
 
   const likedCollectionsList = computed(() => Array.from(likedCollectionIds.value));
 
@@ -88,12 +83,10 @@ export const useCollectionsStore = defineStore('collections', () => {
     likedCollectionsList,
     isLikedCollectionsLoaded,
     likeCounts,
-    view,
     isLiked,
     getLikeCount,
     setLikeCounts,
     adjustLikeCount,
-    setView,
     setLikedCollections,
     addLikedCollection,
     removeLikedCollection,
