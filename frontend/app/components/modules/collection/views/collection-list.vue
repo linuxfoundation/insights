@@ -130,7 +130,7 @@ import { type CollectionViewType } from '~/components/modules/collection/store/c
 import { useLikeCounts } from '~/components/modules/collection/composables/useLikeCounts';
 import { TanstackKey } from '~/components/shared/types/tanstack';
 import { CollectionTypeEnum } from '~/components/modules/collection/config/collection-type-config';
-  
+
 const queryClient = useQueryClient();
 
 const props = defineProps<{
