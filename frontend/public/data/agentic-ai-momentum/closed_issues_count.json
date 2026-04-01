@@ -1,0 +1,6861 @@
+{
+  "metadata": {
+    "fetched_at": "2026-03-27T10:28:21.216010",
+    "schema": {
+      "name": "closed_issues_count",
+      "description": "Monthly count of issues closed for tracked repositories.",
+      "fields": [
+        {
+          "name": "repo",
+          "type": "string",
+          "description": "GitHub repository channel URL",
+          "optional": false
+        },
+        {
+          "name": "month",
+          "type": "date",
+          "description": "First day of the month (YYYY-MM-DD)",
+          "optional": false
+        },
+        {
+          "name": "closed_issues_count",
+          "type": "number",
+          "description": "Count of issues closed in this month",
+          "optional": false
+        }
+      ]
+    }
+  },
+  "data": [
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2024-03-01",
+      "closed_issues_count": 10
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2024-04-01",
+      "closed_issues_count": 52
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2024-05-01",
+      "closed_issues_count": 35
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2024-06-01",
+      "closed_issues_count": 84
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2024-07-01",
+      "closed_issues_count": 164
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2024-08-01",
+      "closed_issues_count": 211
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2024-09-01",
+      "closed_issues_count": 447
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2024-10-01",
+      "closed_issues_count": 260
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2024-11-01",
+      "closed_issues_count": 226
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2024-12-01",
+      "closed_issues_count": 66
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2025-01-01",
+      "closed_issues_count": 71
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2025-02-01",
+      "closed_issues_count": 61
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2025-03-01",
+      "closed_issues_count": 43
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2025-04-01",
+      "closed_issues_count": 31
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2025-05-01",
+      "closed_issues_count": 40
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2025-06-01",
+      "closed_issues_count": 14
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2025-07-01",
+      "closed_issues_count": 7
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2025-08-01",
+      "closed_issues_count": 10
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2025-09-01",
+      "closed_issues_count": 5
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2025-10-01",
+      "closed_issues_count": 3
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2025-11-01",
+      "closed_issues_count": 6
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2025-12-01",
+      "closed_issues_count": 6
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2026-01-01",
+      "closed_issues_count": 5
+    },
+    {
+      "repo": "https://github.com/Aider-AI/aider",
+      "month": "2026-02-01",
+      "closed_issues_count": 3
+    },
+    {
+      "repo": "https://github.com/Azure/PyRIT",
+      "month": "2024-03-01",
+      "closed_issues_count": 2
+    },
+    {
+      "repo": "https://github.com/Azure/PyRIT",
+      "month": "2024-04-01",
+      "closed_issues_count": 7
+    },
+    {
+      "repo": "https://github.com/Azure/PyRIT",
+      "month": "2024-06-01",
+      "closed_issues_count": 1
+    },
+    {
+      "repo": "https://github.com/Azure/PyRIT",
+      "month": "2024-07-01",
+      "closed_issues_count": 1
+    },
+    {
+      "repo": "https://github.com/Azure/PyRIT",
+      "month": "2024-08-01",
+      "closed_issues_count": 9
+    },
+    {
+      "repo": "https://github.com/Azure/PyRIT",
+      "month": "2024-09-01",
+      "closed_issues_count": 12
+    },
+    {
+      "repo": "https://github.com/Azure/PyRIT",
+      "month": "2024-10-01",
+      "closed_issues_count": 6
+    },
+    {
+      "repo": "https://github.com/Azure/PyRIT",
+      "month": "2024-11-01",
+      "closed_issues_count": 15
+    },
+    {
+      "repo": "https://github.com/Azure/PyRIT",
+      "month": "2024-12-01",
+      "closed_issues_count": 2
+    },
+    {
+      "repo": "https://github.com/Azure/PyRIT",
+      "month": "2025-01-01",
+      "closed_issues_count": 2
+    },
+    {
+      "repo": "https://github.com/Azure/PyRIT",
+      "month": "2025-02-01",
+      "closed_issues_count": 6
+    },
+    {
+      "repo": "https://github.com/Azure/PyRIT",
+      "month": "2025-03-01",
+      "closed_issues_count": 14
+    },
+    {
+      "repo": "https://github.com/Azure/PyRIT",
+      "month": "2025-04-01",
+      "closed_issues_count": 10
+    },
+    {
+      "repo": "https://github.com/Azure/PyRIT",
+      "month": "2025-05-01",
+      "closed_issues_count": 3
+    },
+    {
+      "repo": "https://github.com/Azure/PyRIT",
+      "month": "2025-06-01",
+      "closed_issues_count": 10
+    },
+    {
+      "repo": "https://github.com/Azure/PyRIT",
+      "month": "2025-07-01",
+      "closed_issues_count": 3
+    },
+    {
+      "repo": "https://github.com/Azure/PyRIT",
+      "month": "2025-08-01",
+      "closed_issues_count": 2
+    },
+    {
+      "repo": "https://github.com/Azure/PyRIT",
+      "month": "2025-09-01",
+      "closed_issues_count": 5
+    },
+    {
+      "repo": "https://github.com/Azure/PyRIT",
+      "month": "2025-10-01",
+      "closed_issues_count": 5
+    },
+    {
+      "repo": "https://github.com/Azure/PyRIT",
+      "month": "2025-11-01",
+      "closed_issues_count": 3
+    },
+    {
+      "repo": "https://github.com/Azure/PyRIT",
+      "month": "2025-12-01",
+      "closed_issues_count": 9
+    },
+    {
+      "repo": "https://github.com/Azure/PyRIT",
+      "month": "2026-01-01",
+      "closed_issues_count": 5
+    },
+    {
+      "repo": "https://github.com/Azure/PyRIT",
+      "month": "2026-02-01",
+      "closed_issues_count": 5
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2024-03-01",
+      "closed_issues_count": 156
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2024-04-01",
+      "closed_issues_count": 209
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2024-05-01",
+      "closed_issues_count": 192
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2024-06-01",
+      "closed_issues_count": 278
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2024-07-01",
+      "closed_issues_count": 179
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2024-08-01",
+      "closed_issues_count": 186
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2024-09-01",
+      "closed_issues_count": 181
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2024-10-01",
+      "closed_issues_count": 176
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2024-11-01",
+      "closed_issues_count": 94
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2024-12-01",
+      "closed_issues_count": 133
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2025-01-01",
+      "closed_issues_count": 129
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2025-02-01",
+      "closed_issues_count": 185
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2025-03-01",
+      "closed_issues_count": 142
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2025-04-01",
+      "closed_issues_count": 143
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2025-05-01",
+      "closed_issues_count": 169
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2025-06-01",
+      "closed_issues_count": 178
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2025-07-01",
+      "closed_issues_count": 203
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2025-08-01",
+      "closed_issues_count": 222
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2025-09-01",
+      "closed_issues_count": 189
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2025-10-01",
+      "closed_issues_count": 159
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2025-11-01",
+      "closed_issues_count": 175
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2025-12-01",
+      "closed_issues_count": 192
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2026-01-01",
+      "closed_issues_count": 388
+    },
+    {
+      "repo": "https://github.com/BerriAI/litellm",
+      "month": "2026-02-01",
+      "closed_issues_count": 297
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "month": "2024-04-01",
+      "closed_issues_count": 1
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "month": "2024-05-01",
+      "closed_issues_count": 5
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "month": "2024-06-01",
+      "closed_issues_count": 11
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "month": "2024-07-01",
+      "closed_issues_count": 15
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "month": "2024-08-01",
+      "closed_issues_count": 13
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "month": "2024-09-01",
+      "closed_issues_count": 10
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "month": "2024-10-01",
+      "closed_issues_count": 9
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "month": "2024-11-01",
+      "closed_issues_count": 6
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "month": "2024-12-01",
+      "closed_issues_count": 30
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "month": "2025-01-01",
+      "closed_issues_count": 30
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "month": "2025-02-01",
+      "closed_issues_count": 64
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "month": "2025-03-01",
+      "closed_issues_count": 11
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "month": "2025-04-01",
+      "closed_issues_count": 14
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "month": "2025-05-01",
+      "closed_issues_count": 1
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "month": "2025-06-01",
+      "closed_issues_count": 6
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "month": "2025-07-01",
+      "closed_issues_count": 14
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "month": "2025-08-01",
+      "closed_issues_count": 16
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "month": "2025-09-01",
+      "closed_issues_count": 28
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "month": "2025-10-01",
+      "closed_issues_count": 65
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "month": "2025-11-01",
+      "closed_issues_count": 7
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "month": "2025-12-01",
+      "closed_issues_count": 16
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "month": "2026-01-01",
+      "closed_issues_count": 10
+    },
+    {
+      "repo": "https://github.com/ComposioHQ/composio",
+      "month": "2026-02-01",
+      "closed_issues_count": 8
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2024-10-01",
+      "closed_issues_count": 113
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2024-11-01",
+      "closed_issues_count": 89
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2024-12-01",
+      "closed_issues_count": 21
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2025-01-01",
+      "closed_issues_count": 38
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2025-02-01",
+      "closed_issues_count": 249
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2025-03-01",
+      "closed_issues_count": 41
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2025-04-01",
+      "closed_issues_count": 43
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2025-05-01",
+      "closed_issues_count": 19
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2025-06-01",
+      "closed_issues_count": 23
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2025-07-01",
+      "closed_issues_count": 308
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2025-08-01",
+      "closed_issues_count": 26
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2025-09-01",
+      "closed_issues_count": 23
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2025-10-01",
+      "closed_issues_count": 25
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2025-11-01",
+      "closed_issues_count": 14
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2025-12-01",
+      "closed_issues_count": 10
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2026-01-01",
+      "closed_issues_count": 8
+    },
+    {
+      "repo": "https://github.com/HKUDS/LightRAG",
+      "month": "2026-02-01",
+      "closed_issues_count": 10
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2024-03-01",
+      "closed_issues_count": 14
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2024-04-01",
+      "closed_issues_count": 29
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2024-05-01",
+      "closed_issues_count": 77
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2024-06-01",
+      "closed_issues_count": 45
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2024-07-01",
+      "closed_issues_count": 5
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2024-08-01",
+      "closed_issues_count": 14
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2024-09-01",
+      "closed_issues_count": 4
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2024-10-01",
+      "closed_issues_count": 12
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2024-11-01",
+      "closed_issues_count": 9
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2024-12-01",
+      "closed_issues_count": 10
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2025-01-01",
+      "closed_issues_count": 6
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2025-02-01",
+      "closed_issues_count": 14
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2025-03-01",
+      "closed_issues_count": 16
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2025-04-01",
+      "closed_issues_count": 4
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2025-05-01",
+      "closed_issues_count": 4
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2025-06-01",
+      "closed_issues_count": 3
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2025-07-01",
+      "closed_issues_count": 23
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2025-08-01",
+      "closed_issues_count": 15
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2025-09-01",
+      "closed_issues_count": 25
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2025-10-01",
+      "closed_issues_count": 15
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2025-11-01",
+      "closed_issues_count": 5
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2025-12-01",
+      "closed_issues_count": 3
+    },
+    {
+      "repo": "https://github.com/OAI/OpenAPI-Specification",
+      "month": "2026-01-01",
+      "closed_issues_count": 4
+    },
+    {
+      "repo": "https://github.com/OpenAutoCoder/Agentless",
+      "month": "2024-07-01",
+      "closed_issues_count": 1
+    },
+    {
+      "repo": "https://github.com/OpenAutoCoder/Agentless",
+      "month": "2024-08-01",
+      "closed_issues_count": 1
+    },
+    {
+      "repo": "https://github.com/OpenAutoCoder/Agentless",
+      "month": "2024-09-01",
+      "closed_issues_count": 1
+    },
+    {
+      "repo": "https://github.com/OpenAutoCoder/Agentless",
+      "month": "2024-10-01",
+      "closed_issues_count": 2
+    },
+    {
+      "repo": "https://github.com/OpenAutoCoder/Agentless",
+      "month": "2024-12-01",
+      "closed_issues_count": 1
+    },
+    {
+      "repo": "https://github.com/OpenAutoCoder/Agentless",
+      "month": "2025-01-01",
+      "closed_issues_count": 3
+    },
+    {
+      "repo": "https://github.com/OpenAutoCoder/Agentless",
+      "month": "2025-10-01",
+      "closed_issues_count": 1
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2024-03-01",
+      "closed_issues_count": 133
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2024-04-01",
+      "closed_issues_count": 397
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2024-05-01",
+      "closed_issues_count": 161
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2024-06-01",
+      "closed_issues_count": 83
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2024-07-01",
+      "closed_issues_count": 64
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2024-08-01",
+      "closed_issues_count": 57
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2024-09-01",
+      "closed_issues_count": 63
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2024-10-01",
+      "closed_issues_count": 58
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2024-11-01",
+      "closed_issues_count": 118
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2024-12-01",
+      "closed_issues_count": 114
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-01-01",
+      "closed_issues_count": 81
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-02-01",
+      "closed_issues_count": 60
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-03-01",
+      "closed_issues_count": 69
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-04-01",
+      "closed_issues_count": 61
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-05-01",
+      "closed_issues_count": 75
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-06-01",
+      "closed_issues_count": 78
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-07-01",
+      "closed_issues_count": 57
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-08-01",
+      "closed_issues_count": 64
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-09-01",
+      "closed_issues_count": 37
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-10-01",
+      "closed_issues_count": 45
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-11-01",
+      "closed_issues_count": 33
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2025-12-01",
+      "closed_issues_count": 61
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2026-01-01",
+      "closed_issues_count": 57
+    },
+    {
+      "repo": "https://github.com/OpenHands/OpenHands",
+      "month": "2026-02-01",
+      "closed_issues_count": 25
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2024-03-01",
+      "closed_issues_count": 123
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2024-04-01",
+      "closed_issues_count": 77
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2024-05-01",
+      "closed_issues_count": 53
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2024-06-01",
+      "closed_issues_count": 146
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2024-07-01",
+      "closed_issues_count": 161
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2024-08-01",
+      "closed_issues_count": 81
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2024-09-01",
+      "closed_issues_count": 146
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2024-10-01",
+      "closed_issues_count": 65
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2024-11-01",
+      "closed_issues_count": 44
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2024-12-01",
+      "closed_issues_count": 52
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2025-01-01",
+      "closed_issues_count": 75
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2025-02-01",
+      "closed_issues_count": 63
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2025-03-01",
+      "closed_issues_count": 81
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2025-04-01",
+      "closed_issues_count": 79
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2025-05-01",
+      "closed_issues_count": 74
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2025-06-01",
+      "closed_issues_count": 65
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2025-07-01",
+      "closed_issues_count": 51
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2025-08-01",
+      "closed_issues_count": 32
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2025-09-01",
+      "closed_issues_count": 34
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2025-10-01",
+      "closed_issues_count": 41
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2025-11-01",
+      "closed_issues_count": 38
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2025-12-01",
+      "closed_issues_count": 68
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2026-01-01",
+      "closed_issues_count": 45
+    },
+    {
+      "repo": "https://github.com/PrefectHQ/prefect",
+      "month": "2026-02-01",
+      "closed_issues_count": 74
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2024-03-01",
+      "closed_issues_count": 9
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2024-04-01",
+      "closed_issues_count": 11
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2024-05-01",
+      "closed_issues_count": 6
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2024-06-01",
+      "closed_issues_count": 7
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2024-07-01",
+      "closed_issues_count": 9
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2024-08-01",
+      "closed_issues_count": 10
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2024-09-01",
+      "closed_issues_count": 8
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2024-10-01",
+      "closed_issues_count": 10
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2024-11-01",
+      "closed_issues_count": 16
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2024-12-01",
+      "closed_issues_count": 9
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2025-01-01",
+      "closed_issues_count": 6
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2025-02-01",
+      "closed_issues_count": 19
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2025-03-01",
+      "closed_issues_count": 6
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2025-04-01",
+      "closed_issues_count": 10
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2025-05-01",
+      "closed_issues_count": 9
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2025-06-01",
+      "closed_issues_count": 13
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2025-07-01",
+      "closed_issues_count": 8
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2025-08-01",
+      "closed_issues_count": 5
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2025-09-01",
+      "closed_issues_count": 6
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2025-10-01",
+      "closed_issues_count": 6
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2025-11-01",
+      "closed_issues_count": 2
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2025-12-01",
+      "closed_issues_count": 6
+    },
+    {
+      "repo": "https://github.com/ShishirPatil/gorilla",
+      "month": "2026-01-01",
+      "closed_issues_count": 4
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2024-03-01",
+      "closed_issues_count": 10
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2024-04-01",
+      "closed_issues_count": 7
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2024-05-01",
+      "closed_issues_count": 5
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2024-06-01",
+      "closed_issues_count": 24
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2024-07-01",
+      "closed_issues_count": 49
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2024-08-01",
+      "closed_issues_count": 74
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2024-09-01",
+      "closed_issues_count": 79
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2024-10-01",
+      "closed_issues_count": 30
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2024-11-01",
+      "closed_issues_count": 71
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2024-12-01",
+      "closed_issues_count": 130
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2025-01-01",
+      "closed_issues_count": 32
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2025-02-01",
+      "closed_issues_count": 19
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2025-03-01",
+      "closed_issues_count": 21
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2025-04-01",
+      "closed_issues_count": 40
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2025-05-01",
+      "closed_issues_count": 27
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2025-06-01",
+      "closed_issues_count": 24
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2025-07-01",
+      "closed_issues_count": 21
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2025-08-01",
+      "closed_issues_count": 41
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2025-09-01",
+      "closed_issues_count": 42
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2025-10-01",
+      "closed_issues_count": 26
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2025-11-01",
+      "closed_issues_count": 11
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2025-12-01",
+      "closed_issues_count": 15
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2026-01-01",
+      "closed_issues_count": 12
+    },
+    {
+      "repo": "https://github.com/Significant-Gravitas/AutoGPT",
+      "month": "2026-02-01",
+      "closed_issues_count": 9
+    },
+    {
+      "repo": "https://github.com/agntcy/oasf",
+      "month": "2025-02-01",
+      "closed_issues_count": 2
+    },
+    {
+      "repo": "https://github.com/agntcy/oasf",
+      "month": "2025-03-01",
+      "closed_issues_count": 5
+    },
+    {
+      "repo": "https://github.com/agntcy/oasf",
+      "month": "2025-04-01",
+      "closed_issues_count": 1
+    },
+    {
+      "repo": "https://github.com/agntcy/oasf",
+      "month": "2025-05-01",
+      "closed_issues_count": 3
+    },
+    {
+      "repo": "https://github.com/agntcy/oasf",
+      "month": "2025-06-01",
+      "closed_issues_count": 12
+    },
+    {
+      "repo": "https://github.com/agntcy/oasf",
+      "month": "2025-07-01",
+      "closed_issues_count": 19
+    },
+    {
+      "repo": "https://github.com/agntcy/oasf",
+      "month": "2025-08-01",
+      "closed_issues_count": 18
+    },
+    {
+      "repo": "https://github.com/agntcy/oasf",
+      "month": "2025-09-01",
+      "closed_issues_count": 23
+    },
+    {
+      "repo": "https://github.com/agntcy/oasf",
+      "month": "2025-10-01",
+      "closed_issues_count": 14
+    },
+    {
+      "repo": "https://github.com/agntcy/oasf",
+      "month": "2025-11-01",
+      "closed_issues_count": 1
+    },
+    {
+      "repo": "https://github.com/agntcy/oasf",
+      "month": "2025-12-01",
+      "closed_issues_count": 8
+    },
+    {
+      "repo": "https://github.com/agntcy/oasf",
+      "month": "2026-01-01",
+      "closed_issues_count": 12
+    },
+    {
+      "repo": "https://github.com/agntcy/oasf",
+      "month": "2026-02-01",
+      "closed_issues_count": 6
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "month": "2025-02-01",
+      "closed_issues_count": 3
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "month": "2025-03-01",
+      "closed_issues_count": 1
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "month": "2025-04-01",
+      "closed_issues_count": 1
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "month": "2025-05-01",
+      "closed_issues_count": 1
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "month": "2025-06-01",
+      "closed_issues_count": 12
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "month": "2025-07-01",
+      "closed_issues_count": 18
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "month": "2025-08-01",
+      "closed_issues_count": 5
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "month": "2025-09-01",
+      "closed_issues_count": 56
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "month": "2025-10-01",
+      "closed_issues_count": 46
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "month": "2025-11-01",
+      "closed_issues_count": 36
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "month": "2025-12-01",
+      "closed_issues_count": 17
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "month": "2026-01-01",
+      "closed_issues_count": 29
+    },
+    {
+      "repo": "https://github.com/agntcy/slim",
+      "month": "2026-02-01",
+      "closed_issues_count": 27
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2024-03-01",
+      "closed_issues_count": 14
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2024-04-01",
+      "closed_issues_count": 20
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2024-05-01",
+      "closed_issues_count": 23
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2024-06-01",
+      "closed_issues_count": 43
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2024-07-01",
+      "closed_issues_count": 16
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2024-08-01",
+      "closed_issues_count": 34
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2024-09-01",
+      "closed_issues_count": 13
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2024-10-01",
+      "closed_issues_count": 22
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2024-11-01",
+      "closed_issues_count": 29
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2024-12-01",
+      "closed_issues_count": 9
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2025-01-01",
+      "closed_issues_count": 9
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2025-02-01",
+      "closed_issues_count": 55
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2025-03-01",
+      "closed_issues_count": 22
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2025-04-01",
+      "closed_issues_count": 2
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2025-05-01",
+      "closed_issues_count": 16
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2025-06-01",
+      "closed_issues_count": 4
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2025-07-01",
+      "closed_issues_count": 3
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2025-08-01",
+      "closed_issues_count": 3
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2025-09-01",
+      "closed_issues_count": 5
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2025-10-01",
+      "closed_issues_count": 9
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2025-11-01",
+      "closed_issues_count": 8
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2025-12-01",
+      "closed_issues_count": 1
+    },
+    {
+      "repo": "https://github.com/assafelovic/gpt-researcher",
+      "month": "2026-02-01",
+      "closed_issues_count": 1
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2024-08-01",
+      "closed_issues_count": 3
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2024-09-01",
+      "closed_issues_count": 9
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2024-10-01",
+      "closed_issues_count": 8
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2024-11-01",
+      "closed_issues_count": 2
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2025-01-01",
+      "closed_issues_count": 40
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2025-02-01",
+      "closed_issues_count": 125
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2025-03-01",
+      "closed_issues_count": 83
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2025-04-01",
+      "closed_issues_count": 48
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2025-05-01",
+      "closed_issues_count": 19
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2025-06-01",
+      "closed_issues_count": 57
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2025-07-01",
+      "closed_issues_count": 120
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2025-08-01",
+      "closed_issues_count": 206
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2025-09-01",
+      "closed_issues_count": 71
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2025-10-01",
+      "closed_issues_count": 318
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2025-11-01",
+      "closed_issues_count": 145
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2025-12-01",
+      "closed_issues_count": 29
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2026-01-01",
+      "closed_issues_count": 82
+    },
+    {
+      "repo": "https://github.com/block/goose",
+      "month": "2026-02-01",
+      "closed_issues_count": 117
+    },
+    {
+      "repo": "https://github.com/browser-use/browser-use",
+      "month": "2024-11-01",
+      "closed_issues_count": 7
+    },
+    {
+      "repo": "https://github.com/browser-use/browser-use",
+      "month": "2024-12-01",
+      "closed_issues_count": 6
+    },
+    {
+      "repo": "https://github.com/browser-use/browser-use",
+      "month": "2025-01-01",
+      "closed_issues_count": 38
+    },
+    {
+      "repo": "https://github.com/browser-use/browser-use",
+      "month": "2025-02-01",
+      "closed_issues_count": 74
+    },
+    {
+      "repo": "https://github.com/browser-use/browser-use",
+      "month": "2025-03-01",
+      "closed_issues_count": 56
+    },
+    {
+      "repo": "https://github.com/browser-use/browser-use",
+      "month": "2025-04-01",
+      "closed_issues_count": 62
+    },
+    {
+      "repo": "https://github.com/browser-use/browser-use",
+      "month": "2025-05-01",
+      "closed_issues_count": 122
+    },
+    {
+      "repo": "https://github.com/browser-use/browser-use",
+      "month": "2025-06-01",
+      "closed_issues_count": 41
+    },
+    {
+      "repo": "https://github.com/browser-use/browser-use",
+      "month": "2025-07-01",
+      "closed_issues_count": 44
+    },
+    {
+      "repo": "https://github.com/browser-use/browser-use",
+      "month": "2025-08-01",
+      "closed_issues_count": 104
+    },
+    {
+      "repo": "https://github.com/browser-use/browser-use",
+      "month": "2025-09-01",
+      "closed_issues_count": 326
+    },
+    {
+      "repo": "https://github.com/browser-use/browser-use",
+      "month": "2025-10-01",
+      "closed_issues_count": 24
+    },
+    {
+      "repo": "https://github.com/browser-use/browser-use",
+      "month": "2025-11-01",
+      "closed_issues_count": 40
+    },
+    {
+      "repo": "https://github.com/browser-use/browser-use",
+      "month": "2025-12-01",
+      "closed_issues_count": 14
+    },
+    {
+      "repo": "https://github.com/browser-use/browser-use",
+      "month": "2026-01-01",
+      "closed_issues_count": 22
+    },
+    {
+      "repo": "https://github.com/browser-use/browser-use",
+      "month": "2026-02-01",
+      "closed_issues_count": 21
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2024-03-01",
+      "closed_issues_count": 11
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2024-04-01",
+      "closed_issues_count": 16
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2024-05-01",
+      "closed_issues_count": 17
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2024-06-01",
+      "closed_issues_count": 24
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2024-07-01",
+      "closed_issues_count": 30
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2024-08-01",
+      "closed_issues_count": 28
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2024-09-01",
+      "closed_issues_count": 35
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2024-10-01",
+      "closed_issues_count": 40
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2024-11-01",
+      "closed_issues_count": 35
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2024-12-01",
+      "closed_issues_count": 50
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-01-01",
+      "closed_issues_count": 26
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-02-01",
+      "closed_issues_count": 46
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-03-01",
+      "closed_issues_count": 80
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-04-01",
+      "closed_issues_count": 52
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-05-01",
+      "closed_issues_count": 68
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-06-01",
+      "closed_issues_count": 58
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-07-01",
+      "closed_issues_count": 28
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-08-01",
+      "closed_issues_count": 25
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-09-01",
+      "closed_issues_count": 27
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-10-01",
+      "closed_issues_count": 37
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-11-01",
+      "closed_issues_count": 15
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2025-12-01",
+      "closed_issues_count": 24
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2026-01-01",
+      "closed_issues_count": 9
+    },
+    {
+      "repo": "https://github.com/camel-ai/camel",
+      "month": "2026-02-01",
+      "closed_issues_count": 212
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2024-03-01",
+      "closed_issues_count": 11
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2024-04-01",
+      "closed_issues_count": 16
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2024-05-01",
+      "closed_issues_count": 17
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2024-06-01",
+      "closed_issues_count": 17
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2024-07-01",
+      "closed_issues_count": 22
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2024-08-01",
+      "closed_issues_count": 13
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2024-09-01",
+      "closed_issues_count": 41
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2024-10-01",
+      "closed_issues_count": 9
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2024-11-01",
+      "closed_issues_count": 11
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2024-12-01",
+      "closed_issues_count": 24
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-01-01",
+      "closed_issues_count": 241
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-02-01",
+      "closed_issues_count": 17
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-03-01",
+      "closed_issues_count": 7
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-04-01",
+      "closed_issues_count": 34
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-05-01",
+      "closed_issues_count": 19
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-06-01",
+      "closed_issues_count": 130
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-07-01",
+      "closed_issues_count": 7
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-08-01",
+      "closed_issues_count": 9
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-09-01",
+      "closed_issues_count": 3
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-10-01",
+      "closed_issues_count": 3
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-11-01",
+      "closed_issues_count": 18
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2025-12-01",
+      "closed_issues_count": 10
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2026-01-01",
+      "closed_issues_count": 15
+    },
+    {
+      "repo": "https://github.com/chroma-core/chroma",
+      "month": "2026-02-01",
+      "closed_issues_count": 7
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2024-07-01",
+      "closed_issues_count": 23
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2024-08-01",
+      "closed_issues_count": 81
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2024-09-01",
+      "closed_issues_count": 187
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2024-10-01",
+      "closed_issues_count": 64
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2024-11-01",
+      "closed_issues_count": 54
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2024-12-01",
+      "closed_issues_count": 65
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2025-01-01",
+      "closed_issues_count": 59
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2025-02-01",
+      "closed_issues_count": 60
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2025-03-01",
+      "closed_issues_count": 80
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2025-04-01",
+      "closed_issues_count": 86
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2025-05-01",
+      "closed_issues_count": 102
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2025-06-01",
+      "closed_issues_count": 538
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2025-07-01",
+      "closed_issues_count": 251
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2025-08-01",
+      "closed_issues_count": 145
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2025-09-01",
+      "closed_issues_count": 66
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2025-10-01",
+      "closed_issues_count": 54
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2025-11-01",
+      "closed_issues_count": 122
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2025-12-01",
+      "closed_issues_count": 309
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2026-01-01",
+      "closed_issues_count": 231
+    },
+    {
+      "repo": "https://github.com/cline/cline",
+      "month": "2026-02-01",
+      "closed_issues_count": 189
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2024-06-01",
+      "closed_issues_count": 1
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2024-09-01",
+      "closed_issues_count": 9
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2024-10-01",
+      "closed_issues_count": 7
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2024-11-01",
+      "closed_issues_count": 35
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2024-12-01",
+      "closed_issues_count": 14
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2025-01-01",
+      "closed_issues_count": 15
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2025-02-01",
+      "closed_issues_count": 24
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2025-03-01",
+      "closed_issues_count": 19
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2025-04-01",
+      "closed_issues_count": 15
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2025-05-01",
+      "closed_issues_count": 29
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2025-06-01",
+      "closed_issues_count": 16
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2025-07-01",
+      "closed_issues_count": 18
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2025-08-01",
+      "closed_issues_count": 17
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2025-09-01",
+      "closed_issues_count": 21
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2025-10-01",
+      "closed_issues_count": 25
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2025-11-01",
+      "closed_issues_count": 27
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2025-12-01",
+      "closed_issues_count": 26
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2026-01-01",
+      "closed_issues_count": 20
+    },
+    {
+      "repo": "https://github.com/comet-ml/opik",
+      "month": "2026-02-01",
+      "closed_issues_count": 9
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2024-03-01",
+      "closed_issues_count": 6
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2024-04-01",
+      "closed_issues_count": 14
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2024-05-01",
+      "closed_issues_count": 6
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2024-06-01",
+      "closed_issues_count": 4
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2024-07-01",
+      "closed_issues_count": 2
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2024-08-01",
+      "closed_issues_count": 6
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2024-09-01",
+      "closed_issues_count": 6
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2024-10-01",
+      "closed_issues_count": 16
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2024-11-01",
+      "closed_issues_count": 2
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2024-12-01",
+      "closed_issues_count": 5
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2025-01-01",
+      "closed_issues_count": 8
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2025-02-01",
+      "closed_issues_count": 7
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2025-03-01",
+      "closed_issues_count": 10
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2025-04-01",
+      "closed_issues_count": 3
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2025-05-01",
+      "closed_issues_count": 14
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2025-06-01",
+      "closed_issues_count": 10
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2025-07-01",
+      "closed_issues_count": 9
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2025-08-01",
+      "closed_issues_count": 12
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2025-09-01",
+      "closed_issues_count": 11
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2025-10-01",
+      "closed_issues_count": 28
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2025-11-01",
+      "closed_issues_count": 5
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2025-12-01",
+      "closed_issues_count": 9
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2026-01-01",
+      "closed_issues_count": 5
+    },
+    {
+      "repo": "https://github.com/confident-ai/deepeval",
+      "month": "2026-02-01",
+      "closed_issues_count": 9
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2024-03-01",
+      "closed_issues_count": 57
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2024-04-01",
+      "closed_issues_count": 40
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2024-05-01",
+      "closed_issues_count": 63
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2024-06-01",
+      "closed_issues_count": 56
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2024-07-01",
+      "closed_issues_count": 62
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2024-08-01",
+      "closed_issues_count": 31
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2024-09-01",
+      "closed_issues_count": 68
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2024-10-01",
+      "closed_issues_count": 46
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2024-11-01",
+      "closed_issues_count": 78
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2024-12-01",
+      "closed_issues_count": 38
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2025-01-01",
+      "closed_issues_count": 66
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2025-02-01",
+      "closed_issues_count": 179
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2025-03-01",
+      "closed_issues_count": 131
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2025-04-01",
+      "closed_issues_count": 112
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2025-05-01",
+      "closed_issues_count": 159
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2025-06-01",
+      "closed_issues_count": 93
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2025-07-01",
+      "closed_issues_count": 85
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2025-08-01",
+      "closed_issues_count": 54
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2025-09-01",
+      "closed_issues_count": 25
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2025-10-01",
+      "closed_issues_count": 70
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2025-11-01",
+      "closed_issues_count": 61
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2025-12-01",
+      "closed_issues_count": 74
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2026-01-01",
+      "closed_issues_count": 479
+    },
+    {
+      "repo": "https://github.com/continuedev/continue",
+      "month": "2026-02-01",
+      "closed_issues_count": 260
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2024-03-01",
+      "closed_issues_count": 18
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2024-04-01",
+      "closed_issues_count": 14
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2024-05-01",
+      "closed_issues_count": 25
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2024-06-01",
+      "closed_issues_count": 13
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2024-07-01",
+      "closed_issues_count": 32
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2024-08-01",
+      "closed_issues_count": 32
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2024-09-01",
+      "closed_issues_count": 18
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2024-10-01",
+      "closed_issues_count": 38
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2024-11-01",
+      "closed_issues_count": 14
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2024-12-01",
+      "closed_issues_count": 20
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2025-01-01",
+      "closed_issues_count": 11
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2025-02-01",
+      "closed_issues_count": 30
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2025-03-01",
+      "closed_issues_count": 41
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2025-04-01",
+      "closed_issues_count": 75
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2025-05-01",
+      "closed_issues_count": 48
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2025-06-01",
+      "closed_issues_count": 34
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2025-07-01",
+      "closed_issues_count": 17
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2025-08-01",
+      "closed_issues_count": 15
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2025-09-01",
+      "closed_issues_count": 12
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2025-10-01",
+      "closed_issues_count": 19
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2025-11-01",
+      "closed_issues_count": 23
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2025-12-01",
+      "closed_issues_count": 14
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2026-01-01",
+      "closed_issues_count": 8
+    },
+    {
+      "repo": "https://github.com/crewAIInc/crewAI",
+      "month": "2026-02-01",
+      "closed_issues_count": 17
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2024-03-01",
+      "closed_issues_count": 101
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2024-04-01",
+      "closed_issues_count": 41
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2024-05-01",
+      "closed_issues_count": 63
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2024-06-01",
+      "closed_issues_count": 38
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2024-07-01",
+      "closed_issues_count": 48
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2024-08-01",
+      "closed_issues_count": 44
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2024-09-01",
+      "closed_issues_count": 59
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2024-10-01",
+      "closed_issues_count": 47
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2024-11-01",
+      "closed_issues_count": 24
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2024-12-01",
+      "closed_issues_count": 24
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2025-01-01",
+      "closed_issues_count": 21
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2025-02-01",
+      "closed_issues_count": 4
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2025-04-01",
+      "closed_issues_count": 71
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2025-05-01",
+      "closed_issues_count": 17
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2025-06-01",
+      "closed_issues_count": 20
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2025-07-01",
+      "closed_issues_count": 9
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2025-08-01",
+      "closed_issues_count": 8
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2025-09-01",
+      "closed_issues_count": 7
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2025-10-01",
+      "closed_issues_count": 26
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2025-11-01",
+      "closed_issues_count": 21
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2025-12-01",
+      "closed_issues_count": 7
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2026-01-01",
+      "closed_issues_count": 18
+    },
+    {
+      "repo": "https://github.com/daytonaio/daytona",
+      "month": "2026-02-01",
+      "closed_issues_count": 16
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2024-03-01",
+      "closed_issues_count": 203
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2024-04-01",
+      "closed_issues_count": 58
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2024-05-01",
+      "closed_issues_count": 76
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2024-06-01",
+      "closed_issues_count": 68
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2024-07-01",
+      "closed_issues_count": 62
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2024-08-01",
+      "closed_issues_count": 79
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2024-09-01",
+      "closed_issues_count": 59
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2024-10-01",
+      "closed_issues_count": 40
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2024-11-01",
+      "closed_issues_count": 37
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2024-12-01",
+      "closed_issues_count": 16
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2025-01-01",
+      "closed_issues_count": 33
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2025-02-01",
+      "closed_issues_count": 64
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2025-03-01",
+      "closed_issues_count": 77
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2025-04-01",
+      "closed_issues_count": 72
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2025-05-01",
+      "closed_issues_count": 53
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2025-06-01",
+      "closed_issues_count": 45
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2025-07-01",
+      "closed_issues_count": 32
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2025-08-01",
+      "closed_issues_count": 33
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2025-09-01",
+      "closed_issues_count": 24
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2025-10-01",
+      "closed_issues_count": 28
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2025-11-01",
+      "closed_issues_count": 37
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2025-12-01",
+      "closed_issues_count": 25
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2026-01-01",
+      "closed_issues_count": 40
+    },
+    {
+      "repo": "https://github.com/deepset-ai/haystack",
+      "month": "2026-02-01",
+      "closed_issues_count": 43
+    },
+    {
+      "repo": "https://github.com/e2b-dev/code-interpreter",
+      "month": "2024-03-01",
+      "closed_issues_count": 1
+    },
+    {
+      "repo": "https://github.com/e2b-dev/code-interpreter",
+      "month": "2024-04-01",
+      "closed_issues_count": 4
+    },
+    {
+      "repo": "https://github.com/e2b-dev/code-interpreter",
+      "month": "2024-05-01",
+      "closed_issues_count": 1
+    },
+    {
+      "repo": "https://github.com/e2b-dev/code-interpreter",
+      "month": "2024-06-01",
+      "closed_issues_count": 2
+    },
+    {
+      "repo": "https://github.com/e2b-dev/code-interpreter",
+      "month": "2024-07-01",
+      "closed_issues_count": 3
+    },
+    {
+      "repo": "https://github.com/e2b-dev/code-interpreter",
+      "month": "2024-08-01",
+      "closed_issues_count": 4
+    },
+    {
+      "repo": "https://github.com/e2b-dev/code-interpreter",
+      "month": "2024-11-01",
+      "closed_issues_count": 1
+    },
+    {
+      "repo": "https://github.com/e2b-dev/code-interpreter",
+      "month": "2025-01-01",
+      "closed_issues_count": 1
+    },
+    {
+      "repo": "https://github.com/e2b-dev/code-interpreter",
+      "month": "2025-02-01",
+      "closed_issues_count": 2
+    },
+    {
+      "repo": "https://github.com/e2b-dev/code-interpreter",
+      "month": "2025-03-01",
+      "closed_issues_count": 6
+    },
+    {
+      "repo": "https://github.com/e2b-dev/code-interpreter",
+      "month": "2025-04-01",
+      "closed_issues_count": 2
+    },
+    {
+      "repo": "https://github.com/e2b-dev/code-interpreter",
+      "month": "2025-05-01",
+      "closed_issues_count": 5
+    },
+    {
+      "repo": "https://github.com/e2b-dev/code-interpreter",
+      "month": "2025-06-01",
+      "closed_issues_count": 3
+    },
+    {
+      "repo": "https://github.com/e2b-dev/code-interpreter",
+      "month": "2025-08-01",
+      "closed_issues_count": 2
+    },
+    {
+      "repo": "https://github.com/e2b-dev/code-interpreter",
+      "month": "2025-09-01",
+      "closed_issues_count": 1
+    },
+    {
+      "repo": "https://github.com/e2b-dev/code-interpreter",
+      "month": "2025-10-01",
+      "closed_issues_count": 1
+    },
+    {
+      "repo": "https://github.com/e2b-dev/code-interpreter",
+      "month": "2025-11-01",
+      "closed_issues_count": 1
+    },
+    {
+      "repo": "https://github.com/google/adk-python",
+      "month": "2025-04-01",
+      "closed_issues_count": 86
+    },
+    {
+      "repo": "https://github.com/google/adk-python",
+      "month": "2025-05-01",
+      "closed_issues_count": 141
+    },
+    {
+      "repo": "https://github.com/google/adk-python",
+      "month": "2025-06-01",
+      "closed_issues_count": 42
+    },
+    {
+      "repo": "https://github.com/google/adk-python",
+      "month": "2025-07-01",
+      "closed_issues_count": 49
+    },
+    {
+      "repo": "https://github.com/google/adk-python",
+      "month": "2025-08-01",
+      "closed_issues_count": 63
+    },
+    {
+      "repo": "https://github.com/google/adk-python",
+      "month": "2025-09-01",
+      "closed_issues_count": 23
+    },
+    {
+      "repo": "https://github.com/google/adk-python",
+      "month": "2025-10-01",
+      "closed_issues_count": 72
+    },
+    {
+      "repo": "https://github.com/google/adk-python",
+      "month": "2025-11-01",
+      "closed_issues_count": 126
+    },
+    {
+      "repo": "https://github.com/google/adk-python",
+      "month": "2025-12-01",
+      "closed_issues_count": 20
+    },
+    {
+      "repo": "https://github.com/google/adk-python",
+      "month": "2026-01-01",
+      "closed_issues_count": 25
+    },
+    {
+      "repo": "https://github.com/google/adk-python",
+      "month": "2026-02-01",
+      "closed_issues_count": 25
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2024-03-01",
+      "closed_issues_count": 8
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2024-04-01",
+      "closed_issues_count": 7
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2024-05-01",
+      "closed_issues_count": 11
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2024-06-01",
+      "closed_issues_count": 18
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2024-07-01",
+      "closed_issues_count": 18
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2024-08-01",
+      "closed_issues_count": 9
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2024-09-01",
+      "closed_issues_count": 4
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2024-10-01",
+      "closed_issues_count": 8
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2024-11-01",
+      "closed_issues_count": 7
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2024-12-01",
+      "closed_issues_count": 7
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2025-01-01",
+      "closed_issues_count": 2
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2025-02-01",
+      "closed_issues_count": 4
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2025-03-01",
+      "closed_issues_count": 1
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2025-04-01",
+      "closed_issues_count": 3
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2025-06-01",
+      "closed_issues_count": 5
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2025-07-01",
+      "closed_issues_count": 2
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2025-09-01",
+      "closed_issues_count": 7
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2025-10-01",
+      "closed_issues_count": 3
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2025-11-01",
+      "closed_issues_count": 5
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2025-12-01",
+      "closed_issues_count": 3
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2026-01-01",
+      "closed_issues_count": 1
+    },
+    {
+      "repo": "https://github.com/guardrails-ai/guardrails",
+      "month": "2026-02-01",
+      "closed_issues_count": 6
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2024-12-01",
+      "closed_issues_count": 10
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2025-01-01",
+      "closed_issues_count": 92
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2025-02-01",
+      "closed_issues_count": 126
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2025-03-01",
+      "closed_issues_count": 71
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2025-04-01",
+      "closed_issues_count": 41
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2025-05-01",
+      "closed_issues_count": 41
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2025-06-01",
+      "closed_issues_count": 29
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2025-07-01",
+      "closed_issues_count": 20
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2025-08-01",
+      "closed_issues_count": 20
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2025-09-01",
+      "closed_issues_count": 9
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2025-10-01",
+      "closed_issues_count": 12
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2025-11-01",
+      "closed_issues_count": 6
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2025-12-01",
+      "closed_issues_count": 8
+    },
+    {
+      "repo": "https://github.com/huggingface/smolagents",
+      "month": "2026-01-01",
+      "closed_issues_count": 4
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2024-03-01",
+      "closed_issues_count": 160
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2024-04-01",
+      "closed_issues_count": 142
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2024-05-01",
+      "closed_issues_count": 156
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2024-06-01",
+      "closed_issues_count": 97
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2024-07-01",
+      "closed_issues_count": 130
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2024-08-01",
+      "closed_issues_count": 105
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2024-09-01",
+      "closed_issues_count": 120
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2024-10-01",
+      "closed_issues_count": 162
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2024-11-01",
+      "closed_issues_count": 105
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2024-12-01",
+      "closed_issues_count": 62
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2025-01-01",
+      "closed_issues_count": 103
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2025-02-01",
+      "closed_issues_count": 144
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2025-03-01",
+      "closed_issues_count": 108
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2025-04-01",
+      "closed_issues_count": 121
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2025-05-01",
+      "closed_issues_count": 118
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2025-06-01",
+      "closed_issues_count": 91
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2025-07-01",
+      "closed_issues_count": 109
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2025-08-01",
+      "closed_issues_count": 121
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2025-09-01",
+      "closed_issues_count": 105
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2025-10-01",
+      "closed_issues_count": 73
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2025-11-01",
+      "closed_issues_count": 80
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2025-12-01",
+      "closed_issues_count": 83
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2026-01-01",
+      "closed_issues_count": 94
+    },
+    {
+      "repo": "https://github.com/huggingface/transformers",
+      "month": "2026-02-01",
+      "closed_issues_count": 107
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2024-03-01",
+      "closed_issues_count": 1
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2024-04-01",
+      "closed_issues_count": 183
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2024-05-01",
+      "closed_issues_count": 153
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2024-06-01",
+      "closed_issues_count": 75
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2024-07-01",
+      "closed_issues_count": 130
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2024-08-01",
+      "closed_issues_count": 98
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2024-09-01",
+      "closed_issues_count": 130
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2024-10-01",
+      "closed_issues_count": 76
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2024-11-01",
+      "closed_issues_count": 262
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2024-12-01",
+      "closed_issues_count": 206
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2025-01-01",
+      "closed_issues_count": 63
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2025-02-01",
+      "closed_issues_count": 144
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2025-03-01",
+      "closed_issues_count": 261
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2025-04-01",
+      "closed_issues_count": 161
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2025-05-01",
+      "closed_issues_count": 108
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2025-06-01",
+      "closed_issues_count": 105
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2025-07-01",
+      "closed_issues_count": 61
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2025-08-01",
+      "closed_issues_count": 131
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2025-09-01",
+      "closed_issues_count": 115
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2025-10-01",
+      "closed_issues_count": 207
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2025-11-01",
+      "closed_issues_count": 372
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2025-12-01",
+      "closed_issues_count": 196
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2026-01-01",
+      "closed_issues_count": 99
+    },
+    {
+      "repo": "https://github.com/infiniflow/ragflow",
+      "month": "2026-02-01",
+      "closed_issues_count": 281
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2024-03-01",
+      "closed_issues_count": 120
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2024-04-01",
+      "closed_issues_count": 125
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2024-05-01",
+      "closed_issues_count": 56
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2024-06-01",
+      "closed_issues_count": 70
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2024-07-01",
+      "closed_issues_count": 52
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2024-08-01",
+      "closed_issues_count": 151
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2024-09-01",
+      "closed_issues_count": 105
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2024-10-01",
+      "closed_issues_count": 72
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2024-11-01",
+      "closed_issues_count": 96
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2024-12-01",
+      "closed_issues_count": 110
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2025-01-01",
+      "closed_issues_count": 89
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2025-02-01",
+      "closed_issues_count": 66
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2025-03-01",
+      "closed_issues_count": 16
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2025-04-01",
+      "closed_issues_count": 98
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2025-05-01",
+      "closed_issues_count": 38
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2025-06-01",
+      "closed_issues_count": 120
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2025-07-01",
+      "closed_issues_count": 207
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2025-08-01",
+      "closed_issues_count": 185
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2025-09-01",
+      "closed_issues_count": 127
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2025-10-01",
+      "closed_issues_count": 68
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2025-11-01",
+      "closed_issues_count": 65
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2025-12-01",
+      "closed_issues_count": 11
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2026-01-01",
+      "closed_issues_count": 25
+    },
+    {
+      "repo": "https://github.com/janhq/jan",
+      "month": "2026-02-01",
+      "closed_issues_count": 31
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2024-03-01",
+      "closed_issues_count": 8
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2024-04-01",
+      "closed_issues_count": 19
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2024-05-01",
+      "closed_issues_count": 16
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2024-06-01",
+      "closed_issues_count": 15
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2024-07-01",
+      "closed_issues_count": 15
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2024-08-01",
+      "closed_issues_count": 26
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2024-09-01",
+      "closed_issues_count": 14
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2024-10-01",
+      "closed_issues_count": 15
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2024-11-01",
+      "closed_issues_count": 13
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2024-12-01",
+      "closed_issues_count": 40
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-01-01",
+      "closed_issues_count": 18
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-02-01",
+      "closed_issues_count": 6
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-03-01",
+      "closed_issues_count": 21
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-04-01",
+      "closed_issues_count": 12
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-05-01",
+      "closed_issues_count": 20
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-06-01",
+      "closed_issues_count": 16
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-07-01",
+      "closed_issues_count": 9
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-08-01",
+      "closed_issues_count": 12
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-09-01",
+      "closed_issues_count": 10
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-10-01",
+      "closed_issues_count": 9
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-11-01",
+      "closed_issues_count": 20
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2025-12-01",
+      "closed_issues_count": 4
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2026-01-01",
+      "closed_issues_count": 16
+    },
+    {
+      "repo": "https://github.com/kserve/kserve",
+      "month": "2026-02-01",
+      "closed_issues_count": 20
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2024-03-01",
+      "closed_issues_count": 14
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2024-04-01",
+      "closed_issues_count": 9
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2024-05-01",
+      "closed_issues_count": 63
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2024-06-01",
+      "closed_issues_count": 73
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2024-07-01",
+      "closed_issues_count": 85
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2024-08-01",
+      "closed_issues_count": 72
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2024-09-01",
+      "closed_issues_count": 56
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2024-10-01",
+      "closed_issues_count": 63
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2024-11-01",
+      "closed_issues_count": 28
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2024-12-01",
+      "closed_issues_count": 45
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2025-01-01",
+      "closed_issues_count": 42
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2025-02-01",
+      "closed_issues_count": 45
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2025-03-01",
+      "closed_issues_count": 46
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2025-04-01",
+      "closed_issues_count": 51
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2025-05-01",
+      "closed_issues_count": 24
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2025-06-01",
+      "closed_issues_count": 36
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2025-07-01",
+      "closed_issues_count": 89
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2025-08-01",
+      "closed_issues_count": 17
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2025-09-01",
+      "closed_issues_count": 107
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2025-10-01",
+      "closed_issues_count": 51
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2025-11-01",
+      "closed_issues_count": 82
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2025-12-01",
+      "closed_issues_count": 56
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2026-01-01",
+      "closed_issues_count": 38
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langchain",
+      "month": "2026-02-01",
+      "closed_issues_count": 98
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2024-03-01",
+      "closed_issues_count": 19
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2024-04-01",
+      "closed_issues_count": 7
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2024-05-01",
+      "closed_issues_count": 29
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2024-06-01",
+      "closed_issues_count": 23
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2024-07-01",
+      "closed_issues_count": 24
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2024-08-01",
+      "closed_issues_count": 54
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2024-09-01",
+      "closed_issues_count": 30
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2024-10-01",
+      "closed_issues_count": 37
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2024-11-01",
+      "closed_issues_count": 17
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2024-12-01",
+      "closed_issues_count": 40
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2025-01-01",
+      "closed_issues_count": 59
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2025-02-01",
+      "closed_issues_count": 47
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2025-03-01",
+      "closed_issues_count": 50
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2025-04-01",
+      "closed_issues_count": 53
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2025-05-01",
+      "closed_issues_count": 55
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2025-06-01",
+      "closed_issues_count": 79
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2025-07-01",
+      "closed_issues_count": 69
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2025-08-01",
+      "closed_issues_count": 33
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2025-09-01",
+      "closed_issues_count": 84
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2025-10-01",
+      "closed_issues_count": 19
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2025-11-01",
+      "closed_issues_count": 44
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2025-12-01",
+      "closed_issues_count": 9
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2026-01-01",
+      "closed_issues_count": 30
+    },
+    {
+      "repo": "https://github.com/langchain-ai/langgraph",
+      "month": "2026-02-01",
+      "closed_issues_count": 24
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2024-03-01",
+      "closed_issues_count": 20
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2024-04-01",
+      "closed_issues_count": 37
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2024-05-01",
+      "closed_issues_count": 33
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2024-06-01",
+      "closed_issues_count": 22
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2024-07-01",
+      "closed_issues_count": 57
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2024-08-01",
+      "closed_issues_count": 32
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2024-09-01",
+      "closed_issues_count": 90
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2024-10-01",
+      "closed_issues_count": 69
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2024-11-01",
+      "closed_issues_count": 43
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2024-12-01",
+      "closed_issues_count": 50
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2025-01-01",
+      "closed_issues_count": 93
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2025-02-01",
+      "closed_issues_count": 81
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2025-03-01",
+      "closed_issues_count": 80
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2025-04-01",
+      "closed_issues_count": 51
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2025-05-01",
+      "closed_issues_count": 48
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2025-06-01",
+      "closed_issues_count": 96
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2025-07-01",
+      "closed_issues_count": 110
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2025-08-01",
+      "closed_issues_count": 115
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2025-09-01",
+      "closed_issues_count": 98
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2025-10-01",
+      "closed_issues_count": 84
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2025-11-01",
+      "closed_issues_count": 60
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2025-12-01",
+      "closed_issues_count": 60
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2026-01-01",
+      "closed_issues_count": 45
+    },
+    {
+      "repo": "https://github.com/langfuse/langfuse",
+      "month": "2026-02-01",
+      "closed_issues_count": 46
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2024-03-01",
+      "closed_issues_count": 21
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2024-04-01",
+      "closed_issues_count": 15
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2024-05-01",
+      "closed_issues_count": 28
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2024-06-01",
+      "closed_issues_count": 8
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2024-07-01",
+      "closed_issues_count": 19
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2024-08-01",
+      "closed_issues_count": 5
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2024-09-01",
+      "closed_issues_count": 10
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2024-10-01",
+      "closed_issues_count": 16
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2024-11-01",
+      "closed_issues_count": 14
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2024-12-01",
+      "closed_issues_count": 29
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2025-01-01",
+      "closed_issues_count": 9
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2025-02-01",
+      "closed_issues_count": 11
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2025-03-01",
+      "closed_issues_count": 9
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2025-04-01",
+      "closed_issues_count": 8
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2025-05-01",
+      "closed_issues_count": 8
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2025-06-01",
+      "closed_issues_count": 6
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2025-07-01",
+      "closed_issues_count": 6
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2025-08-01",
+      "closed_issues_count": 7
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2025-09-01",
+      "closed_issues_count": 4
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2025-10-01",
+      "closed_issues_count": 5
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2025-12-01",
+      "closed_issues_count": 7
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2026-01-01",
+      "closed_issues_count": 8
+    },
+    {
+      "repo": "https://github.com/letta-ai/letta",
+      "month": "2026-02-01",
+      "closed_issues_count": 5
+    },
+    {
+      "repo": "https://github.com/livekit/agents",
+      "month": "2024-03-01",
+      "closed_issues_count": 1
+    },
+    {
+      "repo": "https://github.com/livekit/agents",
+      "month": "2024-04-01",
+      "closed_issues_count": 3
+    },
+    {
+      "repo": "https://github.com/livekit/agents",
+      "month": "2024-05-01",
+      "closed_issues_count": 18
+    },
+    {
+      "repo": "https://github.com/livekit/agents",
+      "month": "2024-06-01",
+      "closed_issues_count": 13
+    },
+    {
+      "repo": "https://github.com/livekit/agents",
+      "month": "2024-07-01",
+      "closed_issues_count": 16
+    },
+    {
+      "repo": "https://github.com/livekit/agents",
+      "month": "2024-08-01",
+      "closed_issues_count": 15
+    },
+    {
+      "repo": "https://github.com/livekit/agents",
+      "month": "2024-09-01",
+      "closed_issues_count": 14
+    },
+    {
+      "repo": "https://github.com/livekit/agents",
+      "month": "2024-10-01",
+      "closed_issues_count": 46
+    },
+    {
+      "repo": "https://github.com/livekit/agents",
+      "month": "2024-11-01",
+      "closed_issues_count": 27
+    },
+    {
+      "repo": "https://github.com/livekit/agents",
+      "month": "2024-12-01",
+      "closed_issues_count": 25
+    },
+    {
+      "repo": "https://github.com/livekit/agents",
+      "month": "2025-01-01",
+      "closed_issues_count": 31
+    },
+    {
+      "repo": "https://github.com/livekit/agents",
+      "month": "2025-02-01",
+      "closed_issues_count": 18
+    },
+    {
+      "repo": "https://github.com/livekit/agents",
+      "month": "2025-03-01",
+      "closed_issues_count": 40
+    },
+    {
+      "repo": "https://github.com/livekit/agents",
+      "month": "2025-04-01",
+      "closed_issues_count": 56
+    },
+    {
+      "repo": "https://github.com/livekit/agents",
+      "month": "2025-05-01",
+      "closed_issues_count": 84
+    },
+    {
+      "repo": "https://github.com/livekit/agents",
+      "month": "2025-06-01",
+      "closed_issues_count": 67
+    },
+    {
+      "repo": "https://github.com/livekit/agents",
+      "month": "2025-07-01",
+      "closed_issues_count": 50
+    },
+    {
+      "repo": "https://github.com/livekit/agents",
+      "month": "2025-08-01",
+      "closed_issues_count": 59
+    },
+    {
+      "repo": "https://github.com/livekit/agents",
+      "month": "2025-09-01",
+      "closed_issues_count": 64
+    },
+    {
+      "repo": "https://github.com/livekit/agents",
+      "month": "2025-10-01",
+      "closed_issues_count": 50
+    },
+    {
+      "repo": "https://github.com/livekit/agents",
+      "month": "2025-11-01",
+      "closed_issues_count": 44
+    },
+    {
+      "repo": "https://github.com/livekit/agents",
+      "month": "2025-12-01",
+      "closed_issues_count": 56
+    },
+    {
+      "repo": "https://github.com/livekit/agents",
+      "month": "2026-01-01",
+      "closed_issues_count": 29
+    },
+    {
+      "repo": "https://github.com/livekit/agents",
+      "month": "2026-02-01",
+      "closed_issues_count": 36
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2024-11-01",
+      "closed_issues_count": 3
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2024-12-01",
+      "closed_issues_count": 8
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2025-01-01",
+      "closed_issues_count": 8
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2025-02-01",
+      "closed_issues_count": 33
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2025-03-01",
+      "closed_issues_count": 87
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2025-04-01",
+      "closed_issues_count": 74
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2025-05-01",
+      "closed_issues_count": 117
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2025-06-01",
+      "closed_issues_count": 270
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2025-07-01",
+      "closed_issues_count": 256
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2025-08-01",
+      "closed_issues_count": 201
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2025-09-01",
+      "closed_issues_count": 356
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2025-10-01",
+      "closed_issues_count": 350
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2025-11-01",
+      "closed_issues_count": 198
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2025-12-01",
+      "closed_issues_count": 155
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2026-01-01",
+      "closed_issues_count": 113
+    },
+    {
+      "repo": "https://github.com/mastra-ai/mastra",
+      "month": "2026-02-01",
+      "closed_issues_count": 96
+    },
+    {
+      "repo": "https://github.com/microsoft/OmniParser",
+      "month": "2024-10-01",
+      "closed_issues_count": 6
+    },
+    {
+      "repo": "https://github.com/microsoft/OmniParser",
+      "month": "2024-11-01",
+      "closed_issues_count": 9
+    },
+    {
+      "repo": "https://github.com/microsoft/OmniParser",
+      "month": "2024-12-01",
+      "closed_issues_count": 2
+    },
+    {
+      "repo": "https://github.com/microsoft/OmniParser",
+      "month": "2025-01-01",
+      "closed_issues_count": 2
+    },
+    {
+      "repo": "https://github.com/microsoft/OmniParser",
+      "month": "2025-02-01",
+      "closed_issues_count": 22
+    },
+    {
+      "repo": "https://github.com/microsoft/OmniParser",
+      "month": "2025-03-01",
+      "closed_issues_count": 4
+    },
+    {
+      "repo": "https://github.com/microsoft/OmniParser",
+      "month": "2025-04-01",
+      "closed_issues_count": 1
+    },
+    {
+      "repo": "https://github.com/microsoft/OmniParser",
+      "month": "2025-05-01",
+      "closed_issues_count": 2
+    },
+    {
+      "repo": "https://github.com/microsoft/OmniParser",
+      "month": "2025-06-01",
+      "closed_issues_count": 3
+    },
+    {
+      "repo": "https://github.com/microsoft/OmniParser",
+      "month": "2025-07-01",
+      "closed_issues_count": 3
+    },
+    {
+      "repo": "https://github.com/microsoft/OmniParser",
+      "month": "2025-09-01",
+      "closed_issues_count": 1
+    },
+    {
+      "repo": "https://github.com/microsoft/TaskWeaver",
+      "month": "2024-03-01",
+      "closed_issues_count": 9
+    },
+    {
+      "repo": "https://github.com/microsoft/TaskWeaver",
+      "month": "2024-04-01",
+      "closed_issues_count": 24
+    },
+    {
+      "repo": "https://github.com/microsoft/TaskWeaver",
+      "month": "2024-05-01",
+      "closed_issues_count": 16
+    },
+    {
+      "repo": "https://github.com/microsoft/TaskWeaver",
+      "month": "2024-06-01",
+      "closed_issues_count": 7
+    },
+    {
+      "repo": "https://github.com/microsoft/TaskWeaver",
+      "month": "2024-07-01",
+      "closed_issues_count": 9
+    },
+    {
+      "repo": "https://github.com/microsoft/TaskWeaver",
+      "month": "2024-09-01",
+      "closed_issues_count": 3
+    },
+    {
+      "repo": "https://github.com/microsoft/TaskWeaver",
+      "month": "2024-10-01",
+      "closed_issues_count": 6
+    },
+    {
+      "repo": "https://github.com/microsoft/TaskWeaver",
+      "month": "2024-11-01",
+      "closed_issues_count": 1
+    },
+    {
+      "repo": "https://github.com/microsoft/TaskWeaver",
+      "month": "2024-12-01",
+      "closed_issues_count": 1
+    },
+    {
+      "repo": "https://github.com/microsoft/TaskWeaver",
+      "month": "2025-01-01",
+      "closed_issues_count": 5
+    },
+    {
+      "repo": "https://github.com/microsoft/TaskWeaver",
+      "month": "2025-03-01",
+      "closed_issues_count": 1
+    },
+    {
+      "repo": "https://github.com/microsoft/TaskWeaver",
+      "month": "2025-09-01",
+      "closed_issues_count": 10
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2024-03-01",
+      "closed_issues_count": 81
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2024-04-01",
+      "closed_issues_count": 68
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2024-05-01",
+      "closed_issues_count": 76
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2024-06-01",
+      "closed_issues_count": 176
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2024-07-01",
+      "closed_issues_count": 57
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2024-08-01",
+      "closed_issues_count": 166
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2024-09-01",
+      "closed_issues_count": 42
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2024-10-01",
+      "closed_issues_count": 222
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2024-11-01",
+      "closed_issues_count": 119
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2024-12-01",
+      "closed_issues_count": 124
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2025-01-01",
+      "closed_issues_count": 94
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2025-02-01",
+      "closed_issues_count": 312
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2025-03-01",
+      "closed_issues_count": 119
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2025-04-01",
+      "closed_issues_count": 56
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2025-05-01",
+      "closed_issues_count": 39
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2025-06-01",
+      "closed_issues_count": 150
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2025-07-01",
+      "closed_issues_count": 38
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2025-08-01",
+      "closed_issues_count": 19
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2025-09-01",
+      "closed_issues_count": 16
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2025-10-01",
+      "closed_issues_count": 3
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2025-11-01",
+      "closed_issues_count": 2
+    },
+    {
+      "repo": "https://github.com/microsoft/autogen",
+      "month": "2026-02-01",
+      "closed_issues_count": 2
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
+      "month": "2024-04-01",
+      "closed_issues_count": 7
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
+      "month": "2024-06-01",
+      "closed_issues_count": 2
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
+      "month": "2024-07-01",
+      "closed_issues_count": 171
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
+      "month": "2024-08-01",
+      "closed_issues_count": 71
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
+      "month": "2024-09-01",
+      "closed_issues_count": 19
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
+      "month": "2024-10-01",
+      "closed_issues_count": 14
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
+      "month": "2024-11-01",
+      "closed_issues_count": 18
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
+      "month": "2024-12-01",
+      "closed_issues_count": 13
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
+      "month": "2025-01-01",
+      "closed_issues_count": 17
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
+      "month": "2025-02-01",
+      "closed_issues_count": 47
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
+      "month": "2025-03-01",
+      "closed_issues_count": 21
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
+      "month": "2025-04-01",
+      "closed_issues_count": 16
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
+      "month": "2025-05-01",
+      "closed_issues_count": 6
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
+      "month": "2025-06-01",
+      "closed_issues_count": 27
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
+      "month": "2025-07-01",
+      "closed_issues_count": 2
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
+      "month": "2025-08-01",
+      "closed_issues_count": 38
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
+      "month": "2025-09-01",
+      "closed_issues_count": 10
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
+      "month": "2025-10-01",
+      "closed_issues_count": 8
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
+      "month": "2025-11-01",
+      "closed_issues_count": 36
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
+      "month": "2025-12-01",
+      "closed_issues_count": 7
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
+      "month": "2026-01-01",
+      "closed_issues_count": 6
+    },
+    {
+      "repo": "https://github.com/microsoft/graphrag",
+      "month": "2026-02-01",
+      "closed_issues_count": 15
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2024-03-01",
+      "closed_issues_count": 222
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2024-04-01",
+      "closed_issues_count": 348
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2024-05-01",
+      "closed_issues_count": 257
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2024-06-01",
+      "closed_issues_count": 176
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2024-07-01",
+      "closed_issues_count": 219
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2024-08-01",
+      "closed_issues_count": 315
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2024-09-01",
+      "closed_issues_count": 197
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2024-10-01",
+      "closed_issues_count": 235
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2024-11-01",
+      "closed_issues_count": 206
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2024-12-01",
+      "closed_issues_count": 182
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-01-01",
+      "closed_issues_count": 188
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-02-01",
+      "closed_issues_count": 168
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-03-01",
+      "closed_issues_count": 183
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-04-01",
+      "closed_issues_count": 150
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-05-01",
+      "closed_issues_count": 125
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-06-01",
+      "closed_issues_count": 117
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-07-01",
+      "closed_issues_count": 163
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-08-01",
+      "closed_issues_count": 127
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-09-01",
+      "closed_issues_count": 444
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-10-01",
+      "closed_issues_count": 153
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-11-01",
+      "closed_issues_count": 106
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2025-12-01",
+      "closed_issues_count": 89
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2026-01-01",
+      "closed_issues_count": 100
+    },
+    {
+      "repo": "https://github.com/microsoft/playwright",
+      "month": "2026-02-01",
+      "closed_issues_count": 98
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2024-03-01",
+      "closed_issues_count": 226
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2024-04-01",
+      "closed_issues_count": 124
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2024-05-01",
+      "closed_issues_count": 92
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2024-06-01",
+      "closed_issues_count": 149
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2024-07-01",
+      "closed_issues_count": 121
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2024-08-01",
+      "closed_issues_count": 85
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2024-09-01",
+      "closed_issues_count": 98
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2024-10-01",
+      "closed_issues_count": 100
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2024-11-01",
+      "closed_issues_count": 160
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2024-12-01",
+      "closed_issues_count": 121
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2025-01-01",
+      "closed_issues_count": 98
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2025-02-01",
+      "closed_issues_count": 86
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2025-03-01",
+      "closed_issues_count": 93
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2025-04-01",
+      "closed_issues_count": 123
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2025-05-01",
+      "closed_issues_count": 117
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2025-06-01",
+      "closed_issues_count": 84
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2025-07-01",
+      "closed_issues_count": 59
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2025-08-01",
+      "closed_issues_count": 39
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2025-09-01",
+      "closed_issues_count": 20
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2025-10-01",
+      "closed_issues_count": 33
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2025-11-01",
+      "closed_issues_count": 11
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2025-12-01",
+      "closed_issues_count": 6
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2026-01-01",
+      "closed_issues_count": 9
+    },
+    {
+      "repo": "https://github.com/microsoft/semantic-kernel",
+      "month": "2026-02-01",
+      "closed_issues_count": 20
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2024-03-01",
+      "closed_issues_count": 204
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2024-04-01",
+      "closed_issues_count": 145
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2024-05-01",
+      "closed_issues_count": 115
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2024-06-01",
+      "closed_issues_count": 118
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2024-07-01",
+      "closed_issues_count": 116
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2024-08-01",
+      "closed_issues_count": 84
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2024-09-01",
+      "closed_issues_count": 117
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2024-10-01",
+      "closed_issues_count": 155
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2024-11-01",
+      "closed_issues_count": 212
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2024-12-01",
+      "closed_issues_count": 92
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2025-01-01",
+      "closed_issues_count": 76
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2025-02-01",
+      "closed_issues_count": 51
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2025-03-01",
+      "closed_issues_count": 60
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2025-04-01",
+      "closed_issues_count": 100
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2025-05-01",
+      "closed_issues_count": 109
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2025-06-01",
+      "closed_issues_count": 158
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2025-07-01",
+      "closed_issues_count": 142
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2025-08-01",
+      "closed_issues_count": 81
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2025-09-01",
+      "closed_issues_count": 71
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2025-10-01",
+      "closed_issues_count": 74
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2025-11-01",
+      "closed_issues_count": 131
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2025-12-01",
+      "closed_issues_count": 101
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2026-01-01",
+      "closed_issues_count": 99
+    },
+    {
+      "repo": "https://github.com/milvus-io/milvus",
+      "month": "2026-02-01",
+      "closed_issues_count": 59
+    },
+    {
+      "repo": "https://github.com/mistralai/mistral-inference",
+      "month": "2024-03-01",
+      "closed_issues_count": 2
+    },
+    {
+      "repo": "https://github.com/mistralai/mistral-inference",
+      "month": "2024-05-01",
+      "closed_issues_count": 2
+    },
+    {
+      "repo": "https://github.com/mistralai/mistral-inference",
+      "month": "2024-06-01",
+      "closed_issues_count": 1
+    },
+    {
+      "repo": "https://github.com/mistralai/mistral-inference",
+      "month": "2024-07-01",
+      "closed_issues_count": 1
+    },
+    {
+      "repo": "https://github.com/mistralai/mistral-inference",
+      "month": "2024-08-01",
+      "closed_issues_count": 2
+    },
+    {
+      "repo": "https://github.com/mistralai/mistral-inference",
+      "month": "2025-02-01",
+      "closed_issues_count": 1
+    },
+    {
+      "repo": "https://github.com/mistralai/mistral-inference",
+      "month": "2026-02-01",
+      "closed_issues_count": 1
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "month": "2024-10-01",
+      "closed_issues_count": 4
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "month": "2024-11-01",
+      "closed_issues_count": 16
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "month": "2024-12-01",
+      "closed_issues_count": 5
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "month": "2025-01-01",
+      "closed_issues_count": 1
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "month": "2025-02-01",
+      "closed_issues_count": 6
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "month": "2025-03-01",
+      "closed_issues_count": 28
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "month": "2025-04-01",
+      "closed_issues_count": 48
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "month": "2025-05-01",
+      "closed_issues_count": 40
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "month": "2025-06-01",
+      "closed_issues_count": 25
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "month": "2025-07-01",
+      "closed_issues_count": 6
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "month": "2025-08-01",
+      "closed_issues_count": 44
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "month": "2025-09-01",
+      "closed_issues_count": 26
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "month": "2025-10-01",
+      "closed_issues_count": 39
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "month": "2025-11-01",
+      "closed_issues_count": 43
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "month": "2025-12-01",
+      "closed_issues_count": 18
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "month": "2026-01-01",
+      "closed_issues_count": 23
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/inspector",
+      "month": "2026-02-01",
+      "closed_issues_count": 12
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "month": "2024-09-01",
+      "closed_issues_count": 1
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "month": "2024-10-01",
+      "closed_issues_count": 2
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "month": "2024-11-01",
+      "closed_issues_count": 11
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "month": "2024-12-01",
+      "closed_issues_count": 2
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "month": "2025-01-01",
+      "closed_issues_count": 5
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "month": "2025-02-01",
+      "closed_issues_count": 3
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "month": "2025-03-01",
+      "closed_issues_count": 19
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "month": "2025-04-01",
+      "closed_issues_count": 10
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "month": "2025-05-01",
+      "closed_issues_count": 15
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "month": "2025-06-01",
+      "closed_issues_count": 27
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "month": "2025-07-01",
+      "closed_issues_count": 18
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "month": "2025-08-01",
+      "closed_issues_count": 19
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "month": "2025-09-01",
+      "closed_issues_count": 21
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "month": "2025-10-01",
+      "closed_issues_count": 36
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "month": "2025-11-01",
+      "closed_issues_count": 46
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "month": "2025-12-01",
+      "closed_issues_count": 33
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "month": "2026-01-01",
+      "closed_issues_count": 82
+    },
+    {
+      "repo": "https://github.com/modelcontextprotocol/modelcontextprotocol",
+      "month": "2026-02-01",
+      "closed_issues_count": 30
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2024-03-01",
+      "closed_issues_count": 439
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2024-04-01",
+      "closed_issues_count": 210
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2024-05-01",
+      "closed_issues_count": 471
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2024-06-01",
+      "closed_issues_count": 258
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2024-07-01",
+      "closed_issues_count": 363
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2024-08-01",
+      "closed_issues_count": 225
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2024-09-01",
+      "closed_issues_count": 332
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2024-10-01",
+      "closed_issues_count": 206
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2024-11-01",
+      "closed_issues_count": 288
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2024-12-01",
+      "closed_issues_count": 273
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2025-01-01",
+      "closed_issues_count": 252
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2025-02-01",
+      "closed_issues_count": 280
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2025-03-01",
+      "closed_issues_count": 419
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2025-04-01",
+      "closed_issues_count": 258
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2025-05-01",
+      "closed_issues_count": 247
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2025-06-01",
+      "closed_issues_count": 154
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2025-07-01",
+      "closed_issues_count": 217
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2025-08-01",
+      "closed_issues_count": 247
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2025-09-01",
+      "closed_issues_count": 214
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2025-10-01",
+      "closed_issues_count": 220
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2025-11-01",
+      "closed_issues_count": 167
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2025-12-01",
+      "closed_issues_count": 136
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2026-01-01",
+      "closed_issues_count": 221
+    },
+    {
+      "repo": "https://github.com/ollama/ollama",
+      "month": "2026-02-01",
+      "closed_issues_count": 239
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2024-03-01",
+      "closed_issues_count": 19
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2024-04-01",
+      "closed_issues_count": 28
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2024-05-01",
+      "closed_issues_count": 24
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2024-06-01",
+      "closed_issues_count": 19
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2024-07-01",
+      "closed_issues_count": 26
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2024-08-01",
+      "closed_issues_count": 20
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2024-09-01",
+      "closed_issues_count": 14
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2024-10-01",
+      "closed_issues_count": 25
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2024-11-01",
+      "closed_issues_count": 26
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2024-12-01",
+      "closed_issues_count": 17
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2025-01-01",
+      "closed_issues_count": 27
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2025-02-01",
+      "closed_issues_count": 14
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2025-03-01",
+      "closed_issues_count": 12
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2025-04-01",
+      "closed_issues_count": 33
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2025-05-01",
+      "closed_issues_count": 24
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2025-06-01",
+      "closed_issues_count": 20
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2025-07-01",
+      "closed_issues_count": 17
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2025-08-01",
+      "closed_issues_count": 25
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2025-09-01",
+      "closed_issues_count": 30
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2025-10-01",
+      "closed_issues_count": 58
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2025-11-01",
+      "closed_issues_count": 16
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2025-12-01",
+      "closed_issues_count": 14
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2026-01-01",
+      "closed_issues_count": 40
+    },
+    {
+      "repo": "https://github.com/open-telemetry/semantic-conventions",
+      "month": "2026-02-01",
+      "closed_issues_count": 21
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2024-03-01",
+      "closed_issues_count": 3
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2024-04-01",
+      "closed_issues_count": 1
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2024-05-01",
+      "closed_issues_count": 1
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2024-06-01",
+      "closed_issues_count": 3
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2024-07-01",
+      "closed_issues_count": 2
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2024-08-01",
+      "closed_issues_count": 1
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2024-09-01",
+      "closed_issues_count": 1
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2024-10-01",
+      "closed_issues_count": 3
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2024-11-01",
+      "closed_issues_count": 1
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2024-12-01",
+      "closed_issues_count": 4
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2025-01-01",
+      "closed_issues_count": 4
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2025-02-01",
+      "closed_issues_count": 4
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2025-03-01",
+      "closed_issues_count": 4
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2025-04-01",
+      "closed_issues_count": 6
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2025-05-01",
+      "closed_issues_count": 7
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2025-06-01",
+      "closed_issues_count": 7
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2025-07-01",
+      "closed_issues_count": 12
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2025-08-01",
+      "closed_issues_count": 107
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2025-09-01",
+      "closed_issues_count": 136
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2025-10-01",
+      "closed_issues_count": 128
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2025-11-01",
+      "closed_issues_count": 191
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2025-12-01",
+      "closed_issues_count": 150
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2026-01-01",
+      "closed_issues_count": 148
+    },
+    {
+      "repo": "https://github.com/open-webui/open-webui",
+      "month": "2026-02-01",
+      "closed_issues_count": 179
+    },
+    {
+      "repo": "https://github.com/openai/openai-agents-python",
+      "month": "2025-03-01",
+      "closed_issues_count": 101
+    },
+    {
+      "repo": "https://github.com/openai/openai-agents-python",
+      "month": "2025-04-01",
+      "closed_issues_count": 61
+    },
+    {
+      "repo": "https://github.com/openai/openai-agents-python",
+      "month": "2025-05-01",
+      "closed_issues_count": 17
+    },
+    {
+      "repo": "https://github.com/openai/openai-agents-python",
+      "month": "2025-06-01",
+      "closed_issues_count": 54
+    },
+    {
+      "repo": "https://github.com/openai/openai-agents-python",
+      "month": "2025-07-01",
+      "closed_issues_count": 63
+    },
+    {
+      "repo": "https://github.com/openai/openai-agents-python",
+      "month": "2025-08-01",
+      "closed_issues_count": 84
+    },
+    {
+      "repo": "https://github.com/openai/openai-agents-python",
+      "month": "2025-09-01",
+      "closed_issues_count": 59
+    },
+    {
+      "repo": "https://github.com/openai/openai-agents-python",
+      "month": "2025-10-01",
+      "closed_issues_count": 42
+    },
+    {
+      "repo": "https://github.com/openai/openai-agents-python",
+      "month": "2025-11-01",
+      "closed_issues_count": 21
+    },
+    {
+      "repo": "https://github.com/openai/openai-agents-python",
+      "month": "2025-12-01",
+      "closed_issues_count": 28
+    },
+    {
+      "repo": "https://github.com/openai/openai-agents-python",
+      "month": "2026-01-01",
+      "closed_issues_count": 79
+    },
+    {
+      "repo": "https://github.com/openai/openai-agents-python",
+      "month": "2026-02-01",
+      "closed_issues_count": 31
+    },
+    {
+      "repo": "https://github.com/openclaw/openclaw",
+      "month": "2025-11-01",
+      "closed_issues_count": 2
+    },
+    {
+      "repo": "https://github.com/openclaw/openclaw",
+      "month": "2025-12-01",
+      "closed_issues_count": 27
+    },
+    {
+      "repo": "https://github.com/openclaw/openclaw",
+      "month": "2026-01-01",
+      "closed_issues_count": 1527
+    },
+    {
+      "repo": "https://github.com/openclaw/openclaw",
+      "month": "2026-02-01",
+      "closed_issues_count": 7637
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2024-03-01",
+      "closed_issues_count": 4
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2024-04-01",
+      "closed_issues_count": 12
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2024-05-01",
+      "closed_issues_count": 6
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2024-06-01",
+      "closed_issues_count": 1
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2024-07-01",
+      "closed_issues_count": 1
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2024-08-01",
+      "closed_issues_count": 5
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2024-11-01",
+      "closed_issues_count": 2
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2024-12-01",
+      "closed_issues_count": 1
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2025-01-01",
+      "closed_issues_count": 3
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2025-02-01",
+      "closed_issues_count": 3
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2025-04-01",
+      "closed_issues_count": 2
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2025-06-01",
+      "closed_issues_count": 3
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2025-07-01",
+      "closed_issues_count": 5
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2025-08-01",
+      "closed_issues_count": 2
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2025-09-01",
+      "closed_issues_count": 1
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2025-10-01",
+      "closed_issues_count": 8
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2025-11-01",
+      "closed_issues_count": 9
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2025-12-01",
+      "closed_issues_count": 17
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2026-01-01",
+      "closed_issues_count": 9
+    },
+    {
+      "repo": "https://github.com/pathwaycom/pathway",
+      "month": "2026-02-01",
+      "closed_issues_count": 6
+    },
+    {
+      "repo": "https://github.com/pipecat-ai/pipecat",
+      "month": "2024-03-01",
+      "closed_issues_count": 2
+    },
+    {
+      "repo": "https://github.com/pipecat-ai/pipecat",
+      "month": "2024-04-01",
+      "closed_issues_count": 2
+    },
+    {
+      "repo": "https://github.com/pipecat-ai/pipecat",
+      "month": "2024-05-01",
+      "closed_issues_count": 10
+    },
+    {
+      "repo": "https://github.com/pipecat-ai/pipecat",
+      "month": "2024-06-01",
+      "closed_issues_count": 12
+    },
+    {
+      "repo": "https://github.com/pipecat-ai/pipecat",
+      "month": "2024-07-01",
+      "closed_issues_count": 9
+    },
+    {
+      "repo": "https://github.com/pipecat-ai/pipecat",
+      "month": "2024-08-01",
+      "closed_issues_count": 16
+    },
+    {
+      "repo": "https://github.com/pipecat-ai/pipecat",
+      "month": "2024-09-01",
+      "closed_issues_count": 6
+    },
+    {
+      "repo": "https://github.com/pipecat-ai/pipecat",
+      "month": "2024-10-01",
+      "closed_issues_count": 19
+    },
+    {
+      "repo": "https://github.com/pipecat-ai/pipecat",
+      "month": "2024-11-01",
+      "closed_issues_count": 22
+    },
+    {
+      "repo": "https://github.com/pipecat-ai/pipecat",
+      "month": "2024-12-01",
+      "closed_issues_count": 21
+    },
+    {
+      "repo": "https://github.com/pipecat-ai/pipecat",
+      "month": "2025-01-01",
+      "closed_issues_count": 62
+    },
+    {
+      "repo": "https://github.com/pipecat-ai/pipecat",
+      "month": "2025-02-01",
+      "closed_issues_count": 34
+    },
+    {
+      "repo": "https://github.com/pipecat-ai/pipecat",
+      "month": "2025-03-01",
+      "closed_issues_count": 39
+    },
+    {
+      "repo": "https://github.com/pipecat-ai/pipecat",
+      "month": "2025-04-01",
+      "closed_issues_count": 41
+    },
+    {
+      "repo": "https://github.com/pipecat-ai/pipecat",
+      "month": "2025-05-01",
+      "closed_issues_count": 38
+    },
+    {
+      "repo": "https://github.com/pipecat-ai/pipecat",
+      "month": "2025-06-01",
+      "closed_issues_count": 18
+    },
+    {
+      "repo": "https://github.com/pipecat-ai/pipecat",
+      "month": "2025-07-01",
+      "closed_issues_count": 39
+    },
+    {
+      "repo": "https://github.com/pipecat-ai/pipecat",
+      "month": "2025-08-01",
+      "closed_issues_count": 32
+    },
+    {
+      "repo": "https://github.com/pipecat-ai/pipecat",
+      "month": "2025-09-01",
+      "closed_issues_count": 37
+    },
+    {
+      "repo": "https://github.com/pipecat-ai/pipecat",
+      "month": "2025-10-01",
+      "closed_issues_count": 15
+    },
+    {
+      "repo": "https://github.com/pipecat-ai/pipecat",
+      "month": "2025-11-01",
+      "closed_issues_count": 25
+    },
+    {
+      "repo": "https://github.com/pipecat-ai/pipecat",
+      "month": "2025-12-01",
+      "closed_issues_count": 36
+    },
+    {
+      "repo": "https://github.com/pipecat-ai/pipecat",
+      "month": "2026-01-01",
+      "closed_issues_count": 57
+    },
+    {
+      "repo": "https://github.com/pipecat-ai/pipecat",
+      "month": "2026-02-01",
+      "closed_issues_count": 40
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2024-03-01",
+      "closed_issues_count": 42
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2024-04-01",
+      "closed_issues_count": 47
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2024-05-01",
+      "closed_issues_count": 27
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2024-06-01",
+      "closed_issues_count": 50
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2024-07-01",
+      "closed_issues_count": 60
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2024-08-01",
+      "closed_issues_count": 27
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2024-09-01",
+      "closed_issues_count": 54
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2024-10-01",
+      "closed_issues_count": 41
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2024-11-01",
+      "closed_issues_count": 31
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2024-12-01",
+      "closed_issues_count": 15
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2025-01-01",
+      "closed_issues_count": 20
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2025-02-01",
+      "closed_issues_count": 26
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2025-03-01",
+      "closed_issues_count": 31
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2025-04-01",
+      "closed_issues_count": 13
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2025-05-01",
+      "closed_issues_count": 17
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2025-06-01",
+      "closed_issues_count": 19
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2025-07-01",
+      "closed_issues_count": 25
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2025-08-01",
+      "closed_issues_count": 19
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2025-09-01",
+      "closed_issues_count": 17
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2025-10-01",
+      "closed_issues_count": 36
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2025-11-01",
+      "closed_issues_count": 35
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2025-12-01",
+      "closed_issues_count": 91
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2026-01-01",
+      "closed_issues_count": 31
+    },
+    {
+      "repo": "https://github.com/promptfoo/promptfoo",
+      "month": "2026-02-01",
+      "closed_issues_count": 15
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2024-11-01",
+      "closed_issues_count": 1
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2024-12-01",
+      "closed_issues_count": 100
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2025-01-01",
+      "closed_issues_count": 84
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2025-02-01",
+      "closed_issues_count": 64
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2025-03-01",
+      "closed_issues_count": 79
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2025-04-01",
+      "closed_issues_count": 113
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2025-05-01",
+      "closed_issues_count": 102
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2025-06-01",
+      "closed_issues_count": 80
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2025-07-01",
+      "closed_issues_count": 90
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2025-08-01",
+      "closed_issues_count": 181
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2025-09-01",
+      "closed_issues_count": 128
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2025-10-01",
+      "closed_issues_count": 84
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2025-11-01",
+      "closed_issues_count": 91
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2025-12-01",
+      "closed_issues_count": 83
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2026-01-01",
+      "closed_issues_count": 65
+    },
+    {
+      "repo": "https://github.com/pydantic/pydantic-ai",
+      "month": "2026-02-01",
+      "closed_issues_count": 69
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2024-03-01",
+      "closed_issues_count": 33
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2024-04-01",
+      "closed_issues_count": 67
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2024-05-01",
+      "closed_issues_count": 17
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2024-06-01",
+      "closed_issues_count": 11
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2024-07-01",
+      "closed_issues_count": 17
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2024-08-01",
+      "closed_issues_count": 24
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2024-09-01",
+      "closed_issues_count": 20
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2024-10-01",
+      "closed_issues_count": 20
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2024-11-01",
+      "closed_issues_count": 11
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2024-12-01",
+      "closed_issues_count": 15
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2025-01-01",
+      "closed_issues_count": 25
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2025-02-01",
+      "closed_issues_count": 30
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2025-03-01",
+      "closed_issues_count": 11
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2025-04-01",
+      "closed_issues_count": 19
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2025-05-01",
+      "closed_issues_count": 15
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2025-06-01",
+      "closed_issues_count": 18
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2025-07-01",
+      "closed_issues_count": 23
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2025-08-01",
+      "closed_issues_count": 24
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2025-09-01",
+      "closed_issues_count": 15
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2025-10-01",
+      "closed_issues_count": 8
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2025-11-01",
+      "closed_issues_count": 23
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2025-12-01",
+      "closed_issues_count": 16
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2026-01-01",
+      "closed_issues_count": 11
+    },
+    {
+      "repo": "https://github.com/qdrant/qdrant",
+      "month": "2026-02-01",
+      "closed_issues_count": 8
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2024-03-01",
+      "closed_issues_count": 286
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2024-04-01",
+      "closed_issues_count": 173
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2024-05-01",
+      "closed_issues_count": 178
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2024-06-01",
+      "closed_issues_count": 117
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2024-07-01",
+      "closed_issues_count": 124
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2024-08-01",
+      "closed_issues_count": 163
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2024-09-01",
+      "closed_issues_count": 151
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2024-10-01",
+      "closed_issues_count": 104
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2024-11-01",
+      "closed_issues_count": 78
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2024-12-01",
+      "closed_issues_count": 64
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-01-01",
+      "closed_issues_count": 97
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-02-01",
+      "closed_issues_count": 69
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-03-01",
+      "closed_issues_count": 85
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-04-01",
+      "closed_issues_count": 245
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-05-01",
+      "closed_issues_count": 81
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-06-01",
+      "closed_issues_count": 105
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-07-01",
+      "closed_issues_count": 69
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-08-01",
+      "closed_issues_count": 38
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-09-01",
+      "closed_issues_count": 50
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-10-01",
+      "closed_issues_count": 42
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-11-01",
+      "closed_issues_count": 35
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2025-12-01",
+      "closed_issues_count": 27
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2026-01-01",
+      "closed_issues_count": 27
+    },
+    {
+      "repo": "https://github.com/run-llama/llama_index",
+      "month": "2026-02-01",
+      "closed_issues_count": 49
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2024-03-01",
+      "closed_issues_count": 29
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2024-04-01",
+      "closed_issues_count": 14
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2024-05-01",
+      "closed_issues_count": 22
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2024-06-01",
+      "closed_issues_count": 23
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2024-07-01",
+      "closed_issues_count": 21
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2024-08-01",
+      "closed_issues_count": 17
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2024-09-01",
+      "closed_issues_count": 22
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2024-10-01",
+      "closed_issues_count": 26
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2024-11-01",
+      "closed_issues_count": 26
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2024-12-01",
+      "closed_issues_count": 27
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2025-01-01",
+      "closed_issues_count": 22
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2025-02-01",
+      "closed_issues_count": 36
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2025-03-01",
+      "closed_issues_count": 46
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2025-04-01",
+      "closed_issues_count": 65
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2025-05-01",
+      "closed_issues_count": 62
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2025-06-01",
+      "closed_issues_count": 39
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2025-07-01",
+      "closed_issues_count": 45
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2025-08-01",
+      "closed_issues_count": 64
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2025-09-01",
+      "closed_issues_count": 61
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2025-10-01",
+      "closed_issues_count": 41
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2025-11-01",
+      "closed_issues_count": 31
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2025-12-01",
+      "closed_issues_count": 22
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2026-01-01",
+      "closed_issues_count": 30
+    },
+    {
+      "repo": "https://github.com/skypilot-org/skypilot",
+      "month": "2026-02-01",
+      "closed_issues_count": 14
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2024-03-01",
+      "closed_issues_count": 39
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2024-04-01",
+      "closed_issues_count": 67
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2024-05-01",
+      "closed_issues_count": 33
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2024-06-01",
+      "closed_issues_count": 81
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2024-07-01",
+      "closed_issues_count": 32
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2024-08-01",
+      "closed_issues_count": 27
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2024-09-01",
+      "closed_issues_count": 115
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2024-10-01",
+      "closed_issues_count": 43
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2024-11-01",
+      "closed_issues_count": 94
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2024-12-01",
+      "closed_issues_count": 54
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2025-01-01",
+      "closed_issues_count": 98
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2025-02-01",
+      "closed_issues_count": 47
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2025-03-01",
+      "closed_issues_count": 29
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2025-04-01",
+      "closed_issues_count": 56
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2025-05-01",
+      "closed_issues_count": 22
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2025-06-01",
+      "closed_issues_count": 42
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2025-07-01",
+      "closed_issues_count": 21
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2025-08-01",
+      "closed_issues_count": 26
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2025-09-01",
+      "closed_issues_count": 36
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2025-10-01",
+      "closed_issues_count": 28
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2025-11-01",
+      "closed_issues_count": 24
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2025-12-01",
+      "closed_issues_count": 12
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2026-01-01",
+      "closed_issues_count": 11
+    },
+    {
+      "repo": "https://github.com/stanfordnlp/dspy",
+      "month": "2026-02-01",
+      "closed_issues_count": 17
+    },
+    {
+      "repo": "https://github.com/sweepai/sweep",
+      "month": "2024-03-01",
+      "closed_issues_count": 17
+    },
+    {
+      "repo": "https://github.com/sweepai/sweep",
+      "month": "2024-04-01",
+      "closed_issues_count": 36
+    },
+    {
+      "repo": "https://github.com/sweepai/sweep",
+      "month": "2024-05-01",
+      "closed_issues_count": 38
+    },
+    {
+      "repo": "https://github.com/sweepai/sweep",
+      "month": "2024-06-01",
+      "closed_issues_count": 3
+    },
+    {
+      "repo": "https://github.com/sweepai/sweep",
+      "month": "2025-03-01",
+      "closed_issues_count": 51
+    },
+    {
+      "repo": "https://github.com/sweepai/sweep",
+      "month": "2025-06-01",
+      "closed_issues_count": 1
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2024-03-01",
+      "closed_issues_count": 5
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2024-04-01",
+      "closed_issues_count": 6
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2024-05-01",
+      "closed_issues_count": 12
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2024-06-01",
+      "closed_issues_count": 5
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2024-07-01",
+      "closed_issues_count": 7
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2024-08-01",
+      "closed_issues_count": 5
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2024-09-01",
+      "closed_issues_count": 4
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2024-10-01",
+      "closed_issues_count": 6
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2024-11-01",
+      "closed_issues_count": 9
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2024-12-01",
+      "closed_issues_count": 2
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2025-01-01",
+      "closed_issues_count": 6
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2025-02-01",
+      "closed_issues_count": 7
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2025-03-01",
+      "closed_issues_count": 7
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2025-04-01",
+      "closed_issues_count": 6
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2025-05-01",
+      "closed_issues_count": 6
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2025-06-01",
+      "closed_issues_count": 6
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2025-07-01",
+      "closed_issues_count": 9
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2025-08-01",
+      "closed_issues_count": 10
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2025-09-01",
+      "closed_issues_count": 17
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2025-10-01",
+      "closed_issues_count": 13
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2025-11-01",
+      "closed_issues_count": 9
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2025-12-01",
+      "closed_issues_count": 3
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2026-01-01",
+      "closed_issues_count": 25
+    },
+    {
+      "repo": "https://github.com/temporalio/temporal",
+      "month": "2026-02-01",
+      "closed_issues_count": 13
+    },
+    {
+      "repo": "https://github.com/unclecode/crawl4ai",
+      "month": "2024-05-01",
+      "closed_issues_count": 9
+    },
+    {
+      "repo": "https://github.com/unclecode/crawl4ai",
+      "month": "2024-06-01",
+      "closed_issues_count": 12
+    },
+    {
+      "repo": "https://github.com/unclecode/crawl4ai",
+      "month": "2024-07-01",
+      "closed_issues_count": 27
+    },
+    {
+      "repo": "https://github.com/unclecode/crawl4ai",
+      "month": "2024-08-01",
+      "closed_issues_count": 13
+    },
+    {
+      "repo": "https://github.com/unclecode/crawl4ai",
+      "month": "2024-09-01",
+      "closed_issues_count": 19
+    },
+    {
+      "repo": "https://github.com/unclecode/crawl4ai",
+      "month": "2024-10-01",
+      "closed_issues_count": 43
+    },
+    {
+      "repo": "https://github.com/unclecode/crawl4ai",
+      "month": "2024-11-01",
+      "closed_issues_count": 35
+    },
+    {
+      "repo": "https://github.com/unclecode/crawl4ai",
+      "month": "2024-12-01",
+      "closed_issues_count": 33
+    },
+    {
+      "repo": "https://github.com/unclecode/crawl4ai",
+      "month": "2025-01-01",
+      "closed_issues_count": 91
+    },
+    {
+      "repo": "https://github.com/unclecode/crawl4ai",
+      "month": "2025-02-01",
+      "closed_issues_count": 19
+    },
+    {
+      "repo": "https://github.com/unclecode/crawl4ai",
+      "month": "2025-03-01",
+      "closed_issues_count": 36
+    },
+    {
+      "repo": "https://github.com/unclecode/crawl4ai",
+      "month": "2025-04-01",
+      "closed_issues_count": 28
+    },
+    {
+      "repo": "https://github.com/unclecode/crawl4ai",
+      "month": "2025-05-01",
+      "closed_issues_count": 33
+    },
+    {
+      "repo": "https://github.com/unclecode/crawl4ai",
+      "month": "2025-06-01",
+      "closed_issues_count": 4
+    },
+    {
+      "repo": "https://github.com/unclecode/crawl4ai",
+      "month": "2025-07-01",
+      "closed_issues_count": 48
+    },
+    {
+      "repo": "https://github.com/unclecode/crawl4ai",
+      "month": "2025-08-01",
+      "closed_issues_count": 36
+    },
+    {
+      "repo": "https://github.com/unclecode/crawl4ai",
+      "month": "2025-09-01",
+      "closed_issues_count": 10
+    },
+    {
+      "repo": "https://github.com/unclecode/crawl4ai",
+      "month": "2025-10-01",
+      "closed_issues_count": 22
+    },
+    {
+      "repo": "https://github.com/unclecode/crawl4ai",
+      "month": "2025-11-01",
+      "closed_issues_count": 21
+    },
+    {
+      "repo": "https://github.com/unclecode/crawl4ai",
+      "month": "2025-12-01",
+      "closed_issues_count": 13
+    },
+    {
+      "repo": "https://github.com/unclecode/crawl4ai",
+      "month": "2026-01-01",
+      "closed_issues_count": 8
+    },
+    {
+      "repo": "https://github.com/unclecode/crawl4ai",
+      "month": "2026-02-01",
+      "closed_issues_count": 8
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2024-03-01",
+      "closed_issues_count": 17
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2024-04-01",
+      "closed_issues_count": 6
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2024-05-01",
+      "closed_issues_count": 14
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2024-06-01",
+      "closed_issues_count": 19
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2024-07-01",
+      "closed_issues_count": 34
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2024-08-01",
+      "closed_issues_count": 7
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2024-09-01",
+      "closed_issues_count": 20
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2024-10-01",
+      "closed_issues_count": 115
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2024-11-01",
+      "closed_issues_count": 9
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2024-12-01",
+      "closed_issues_count": 9
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2025-01-01",
+      "closed_issues_count": 10
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2025-02-01",
+      "closed_issues_count": 12
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2025-03-01",
+      "closed_issues_count": 5
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2025-04-01",
+      "closed_issues_count": 12
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2025-05-01",
+      "closed_issues_count": 20
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2025-06-01",
+      "closed_issues_count": 4
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2025-07-01",
+      "closed_issues_count": 12
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2025-08-01",
+      "closed_issues_count": 13
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2025-09-01",
+      "closed_issues_count": 13
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2025-10-01",
+      "closed_issues_count": 18
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2025-11-01",
+      "closed_issues_count": 2
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2025-12-01",
+      "closed_issues_count": 5
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2026-01-01",
+      "closed_issues_count": 5
+    },
+    {
+      "repo": "https://github.com/weaviate/weaviate",
+      "month": "2026-02-01",
+      "closed_issues_count": 6
+    },
+    {
+      "repo": "https://github.com/wong2/litemcp",
+      "month": "2025-01-01",
+      "closed_issues_count": 1
+    },
+    {
+      "repo": "https://github.com/wong2/litemcp",
+      "month": "2026-02-01",
+      "closed_issues_count": 1
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2024-04-01",
+      "closed_issues_count": 5
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2024-05-01",
+      "closed_issues_count": 2
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2024-06-01",
+      "closed_issues_count": 4
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2024-07-01",
+      "closed_issues_count": 2
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2024-08-01",
+      "closed_issues_count": 1
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2024-10-01",
+      "closed_issues_count": 4
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2024-11-01",
+      "closed_issues_count": 2
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2024-12-01",
+      "closed_issues_count": 1
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2025-02-01",
+      "closed_issues_count": 3
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2025-03-01",
+      "closed_issues_count": 5
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2025-04-01",
+      "closed_issues_count": 4
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2025-05-01",
+      "closed_issues_count": 3
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2025-07-01",
+      "closed_issues_count": 3
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2025-08-01",
+      "closed_issues_count": 9
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2025-09-01",
+      "closed_issues_count": 5
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2025-10-01",
+      "closed_issues_count": 3
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2025-11-01",
+      "closed_issues_count": 1
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2025-12-01",
+      "closed_issues_count": 7
+    },
+    {
+      "repo": "https://github.com/xlang-ai/OSWorld",
+      "month": "2026-01-01",
+      "closed_issues_count": 2
+    }
+  ]
+}
