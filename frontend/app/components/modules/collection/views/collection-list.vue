@@ -90,7 +90,7 @@ SPDX-License-Identifier: MIT
   </div>
 
   <section
-    v-if="props.type === 'my-collections'"
+    v-if="props.type === CollectionTypeEnum.MY_COLLECTIONS"
     class="container mt-10"
   >
     <lfx-liked-collections
@@ -129,7 +129,8 @@ import { useAuthStore } from '~/components/modules/auth/store/auth.store';
 import { type CollectionViewType } from '~/components/modules/collection/store/collections.store';
 import { useLikeCounts } from '~/components/modules/collection/composables/useLikeCounts';
 import { TanstackKey } from '~/components/shared/types/tanstack';
-
+import { CollectionTypeEnum } from '~/components/modules/collection/config/collection-type-config';
+  
 const queryClient = useQueryClient();
 
 const props = defineProps<{
@@ -153,11 +154,11 @@ const params = computed(() => ({
   pageSize: pageSize.value,
   sort: sort.value || 'starred_desc',
   categories: undefined,
-  type: props.type === 'my-collections' ? undefined : props.type,
+  type: props.type === CollectionTypeEnum.MY_COLLECTIONS ? undefined : props.type,
 }));
 
 const { data, isPending, isFetchingNextPage, fetchNextPage, hasNextPage, isSuccess, error, refetch } =
-  props.type === 'my-collections'
+  props.type === CollectionTypeEnum.MY_COLLECTIONS
     ? COLLECTIONS_API_SERVICE.fetchMyCollections(params, user)
     : COLLECTIONS_API_SERVICE.fetchCollections(params);
 
@@ -168,7 +169,9 @@ const flatData = computed(() =>
   ),
 );
 
-const collectionIds = computed(() => (props.type !== 'my-collections' ? flatData.value.map((c) => c.id) : []));
+const collectionIds = computed(() =>
+  props.type !== CollectionTypeEnum.MY_COLLECTIONS ? flatData.value.map((c) => c.id) : [],
+);
 useLikeCounts(collectionIds);
 
 const classDisplay = computed(() => {

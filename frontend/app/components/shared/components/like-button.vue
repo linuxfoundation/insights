@@ -71,6 +71,8 @@ import { formatNumberShort } from '~/components/shared/utils/formatter';
 import LfxTooltip from '~/components/uikit/tooltip/tooltip.vue';
 import { TanstackKey } from '~/components/shared/types/tanstack';
 import LfxDropdownItem from '~/components/uikit/dropdown/dropdown-item.vue';
+import { CollectionTypeEnum } from '~/components/modules/collection/config/collection-type-config';
+// import { useAuth } from '~~/composables/useAuth';
 
 const collectionsStore = useCollectionsStore();
 const queryClient = useQueryClient();
@@ -86,7 +88,7 @@ const props = withDefaults(
   }>(),
   {
     buttonType: 'ghost',
-    variant: 'community',
+    variant: CollectionTypeEnum.COMMUNITY,
     size: 'medium',
     showUnlikeIcon: false,
     showAsDropdown: false,
